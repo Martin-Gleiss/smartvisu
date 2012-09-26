@@ -1,0 +1,25 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+    <h5>Example</h5>
+    <div class="twig">
+        <code>&#123;&#123; basic.checkbox('checkbox1', 'buero_licht_tuer_schalten', 'Light') &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.checkbox('checkbox1', 'buero_licht_tuer_schalten', 'Light') }}
+    </div>
+
+{% endblock %}
+
+

@@ -1,0 +1,44 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "index.html" %}
+
+{% block content %}
+
+    <h3>Icons</h3>
+    
+    <div class="docu">
+    Icons are used only with the icon-name. As path use "icon0" for "normal" icons and "icon1" for the highlighted version.
+    
+        <div class="twig">
+            <code>
+                icon0~'licht_licht.png'<br />
+                icon1~'licht_licht.png'<br />
+            </code>
+        </div>
+    </div>
+    
+    
+    <h5>Examples</h5>
+    
+    <div class="docu">
+        Icons located in "{{ icon0 }}"
+    </div>
+    
+    {% for file in dir(icon0) %}
+        <div style="float:left; width: 160px; background-color: #222; border: 1px dotted #666; margin: 5px; text-align: center;">
+            <img class="icon" src="{{ icon0~file.name }}" />
+            <br />
+            {{ file.name }}
+        </div>
+    {% endfor %}
+    
+{% endblock %}
+

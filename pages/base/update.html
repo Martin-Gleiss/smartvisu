@@ -1,0 +1,26 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+
+{% extends "system.html" %}
+
+{% block content %}
+
+    <h3>Update</h3>
+    <p>
+    A new update of smartVISU is found!
+    
+    <br /><br />
+    Your version is: {{ local }}
+    <br /><br />
+    New version is: {{ remote }}
+    <br /><br />
+    Please visit <a rel="external" href="http://sourceforge.net/projects/smartvisu">sourceforge</a> to download the new version!
+                 
+{% endblock %}
+

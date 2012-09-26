@@ -1,0 +1,57 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "index.html" %}
+
+{% block content %}
+
+    <h3>Device-Widgets</h3>
+    
+    {% set widgetlist = docu('widgets/device.html') %}
+    
+    {% for widget in widgetlist %}
+        <a href="index.php?page=widget_{{ widget.command }}">{{ widget.command }}</a>
+    {% endfor %}
+   
+    {% set widget = page|substr(7)|replace({'_': '.'}) %}
+    
+    <br /><hr /><br />
+    
+    {% if widget != 'device' %}
+    <div class="docu">
+
+        <div class="macro">
+            <code>{{ widget }}</code>
+        </div>
+        
+        <p>{{ widgetlist[widget].desc }}</p>
+        
+        <h5>Parameters</h5>
+        <div class="twig">
+            <code>&#123;&#123; {{ widgetlist[widget].call }} &#125;&#125;</code>
+        </div>
+        
+        <div class="param">
+        {% for param_name, param_docu in widgetlist[widget].param %}
+            <code>{{ param_name }}</code>
+            <div class="desc">{{ param_docu }}</div>
+        {% endfor %}
+        </div>
+        
+        {% block example %}{% endblock %}
+        
+        <br /><hr />
+        
+        <div class="mini">Author: {{ widgetlist[widget].author }}</div>
+    </div>
+    {% endif %}
+    
+{% endblock %}
+

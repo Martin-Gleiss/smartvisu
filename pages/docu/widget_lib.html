@@ -1,0 +1,79 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "index.html" %}
+
+{% block content %}
+
+    <h3>Time/Clock/Weather-Widgets</h3>
+    
+    {% import "lib.html" as lib %}
+    {% set widgetlist = docu('widgets/lib.html') %}
+    
+    {% for widget in widgetlist %}
+        <a href="index.php?page=widget_{{ widget.command }}">{{ widget.command }}</a>
+    {% endfor %}
+   
+    {% set widget = page|substr(7)|replace({'_': '.'}) %}
+    
+    <br /><hr /><br />
+    
+    {% if widget != 'lib' %}
+    
+    <div class="docu">
+
+        <div class="macro">
+            <code>{{ widget }}</code>
+        </div>
+        
+        <p>{{ widgetlist[widget].desc }}</p>
+        
+        <h5>Parameters</h5>
+        <div class="twig">
+            <code>&#123;&#123; {{ widgetlist[widget].call }} &#125;&#125;</code>
+        </div>
+        
+        <div class="param">
+        {% for param_name, param_docu in widgetlist[widget].param %}
+            <code>{{ param_name }}</code>
+            <div class="desc">{{ param_docu }}</div>
+        {% endfor %}
+        </div>
+        
+        {% block example %}{% endblock %}
+        
+        <br /><hr />
+        
+        <div class="mini">Author: {{ widgetlist[widget].author }}</div>
+    </div>
+    
+    {% else %}
+    
+    The weather-widgets get there information from a weather-service. Each services works
+    a little bit different especially the 'location' format.
+    <br /><br />
+    <b><a href="http://www.yr.no" target="_blank">yr.no</a></b><br />
+    The location format must be 'Tyskland/Bayern/Würzburg'. Go to the webpage to get your location form the url.
+    
+    <br /><br />
+    <b><a href="http://www.wunderground.com/weather/api/" target="_blank">wunderground.com</a></b><br />
+    You need a key for that service. Go to the webpage to generate your own key
+    
+    <br /><br />
+    <b><a href="http://www.google.de" target="_blank">google.de</a></b><br />
+    The service is deprecated and does not work any longer.
+    
+    <br /><br /><br />
+    Choose your service and enter your location and key at the <a href="index.php?page=config">configuration</a>.
+    
+    {% endif %}
+    
+{% endblock %}
+

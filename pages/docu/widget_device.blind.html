@@ -1,0 +1,23 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "widget_device.html" %}
+
+{% block example %}
+
+    <h5>Example</h5>
+    <div class="twig">
+        <code>&#123;&#123; device.blind('blind1', 'Blind', 'buero_jalousie_fahren', 'buero_jalousie_pos', 'buero_jalousie_verstellen', 'buero_jalousie_winkel') &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ device.blind('blind1', 'Blind', 'buero_jalousie_fahren', 'buero_jalousie_pos', 'buero_jalousie_verstellen', 'buero_jalousie_winkel') }}
+    </div>
+
+{% endblock %}

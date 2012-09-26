@@ -1,0 +1,44 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "index.html" %}
+
+{% block content %}
+
+    <h3>Backgrounds</h3>
+    
+    <div class="docu">
+    If you want to add ab background use the "visu.css" in your pages directory.
+    
+        <div class="twig">
+            <code>
+                .page-bg { 
+                    background-image: url('../../pics/bg/<b>NAME.png</b>');
+                }
+            </code>
+        </div>
+    </div>
+    
+
+    <h5>Examples</h5>
+    <div class="docu">
+        Located in "pics/bg/"
+    </div>
+    
+    {% for file in dir('pics/bg') %}
+        <div style="float:left; width: 380px; background-color: #222; border: 1px dotted #666; margin: 5px; text-align: center;">
+            <img style="width: 380px;" src="pics/bg/{{ file.name }}" />
+            <br />
+            {{ file.name }}
+        </div>
+    {% endfor %}
+    
+{% endblock %}
+

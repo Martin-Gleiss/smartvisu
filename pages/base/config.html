@@ -1,0 +1,160 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+ 
+{% extends "system.html" %}
+
+{% block content %}
+
+    <h3>Configuration</h3>
+    
+    {% import "forms.html" as forms %}
+    <form>
+    <fieldset>
+    
+        <div class="block">
+        <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        
+        	<div data-role="collapsible" data-collapsed="false" >
+                <h3>KNX-Connection</h3>
+                
+                <div data-role="fieldcontain">
+				    <label for="driver" class="select">Driver</label>
+    				<select name="driver" id="driver" data-native-menu="false">
+    				    {% for file in dir('driver', '^driver_(?!base)(.+?).php') %}
+                        <option value="{{ file.name }}">{{ file.label }}</option>
+                        {% endfor %}
+                	</select>
+                    {{ forms.select_init('driver', driver) }}
+                </div>
+                
+                <div data-role="fieldcontain">
+                    <label for="driver_address">Address<br /><span class="mini">URL / IP</span></label>
+                    <input type="text" name="driver_address" id="driver_address" />
+                    {{ forms.text_init('driver_address', driver_address|e ) }}
+                </div>
+                
+                <div data-role="fieldcontain">
+                    <label for="driver_port">Port<br /></label>
+                    <input type="text" name="driver_port" id="driver_port" />
+                    {{ forms.text_init('driver_port', driver_port|e ) }}
+                </div>
+            </div>
+            
+        </div>    
+        </div>
+        
+        <div class="block">
+        <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        
+        	<div data-role="collapsible" data-collapsed="false" >
+                <h3>User-Interface</h3>
+                
+                <div data-role="fieldcontain">
+    				<label for="pages" class="select">Pages</label>
+    				<select name="pages" id="pages" data-native-menu="false">
+    				    {% for file in dir('pages', '^(?!base)(.+?)') %}
+                        <option value="{{ file.name }}">{{ file.label }}</option>
+                        {% endfor %}
+                    </select>
+                    {{ forms.select_init('pages', pages) }}
+               	</div>
+               	
+               	<div data-role="fieldcontain">
+                    <label for="title">Title<br /></label>
+                    <input type="text" name="title" id="title" />
+                    {{ forms.text_init('title', title|e ) }}
+                </div>
+                
+                <div data-role="fieldcontain">
+    				<label for="design" class="select">Design</label>
+    				<select name="design" id="design" data-native-menu="false">
+    				    {% for file in dir('designs', '(.+?).min.css') %}
+                        <option value="{{ file.name }}">{{ file.label }}</option>
+                        {% endfor %}
+                    </select>
+                    {{ forms.select_init('design', design) }}
+               	</div>
+                
+                <div data-role="fieldcontain">
+    				<label for="lang" class="select">Language<br /><span class="mini">*for some widgets</span></label>
+    				<select name="lang" id="lang" data-native-menu="false">
+    				    <option value="en">english</option>
+                        <option value="de">german</option>
+                    </select>
+                    {{ forms.select_init('lang', lang) }}
+               	</div>
+                
+                <div data-role="fieldcontain">
+                
+                    <label for="cache">Pagecache<br /></label>
+                	<select name="cache" id="cache" data-role="slider" data-theme="a">
+                		<option value="false">off</option>
+                		<option value="true">on</option>
+                	</select> 
+                    {{ forms.flip_init('cache', cache) }}
+                </div>
+           
+            </div>
+        	
+        </div>    
+        </div>
+        
+       
+        <div class="block">
+        <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        
+        	<div data-role="collapsible" data-collapsed="false" >
+                <h3>Weather</h3>
+                
+                <div data-role="fieldcontain">
+				    <label for="weather_service" class="select">Service</label>
+    				<select name="weather_service" id="weather_service" data-native-menu="false">
+    				    {% for file in dir('lib/weather/service', '(.+?).php') %}
+                        <option value="{{ file.name }}">{{ file.label }}</option>
+                        {% endfor %}
+                	</select>
+                    {{ forms.select_init('weather_service', weather_service) }}
+                </div>
+                
+                <div data-role="fieldcontain">
+                    <label for="weather_location">Location<br /></label>
+                    <input type="text" name="weather_location" id="weather_location" />
+                    {{ forms.text_init('weather_location', weather_location|e ) }}
+                </div>
+                
+                <div data-role="fieldcontain">
+                    <label for="weather_key">Key<br /><span class="mini">*if service requiers one</span></label>
+                    <input type="text" name="weather_key" id="weather_key" />
+                    {{ forms.text_init('weather_key', weather_key|e ) }}
+                </div>
+            </div>
+            
+        </div>    
+        </div>
+        
+    
+    </fieldset>
+    <button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">Save</button>
+    <div id="form-info"></div>
+    </form> 
+ 
+    /** Events */
+    <script type="text/javascript">    
+        $('form').submit(function() {  
+            $.post('pages/base/configure.php', $(this).serialize(), function(data){  
+                $('#form-info').html(data);
+                location.reload();
+            });
+            return false;
+        });  
+    </script>                         
+                           
+{% endblock %}
+

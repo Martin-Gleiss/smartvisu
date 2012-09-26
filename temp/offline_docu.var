@@ -1,0 +1,23 @@
+buero_licht_tuer_schalten = 1
+buero_heizung_text = 
+buero_licht_tuer_setzen = 130
+buero_licht_ecke_setzen = 55
+buero_licht_ecke_schalten = 
+buero_heizung_komfort = 1
+buero_heizung_sollwert = 21.3
+buero_heizung_frost = 
+buero_heizung_schalten = 
+buero_heizung_nacht = 
+buero_fenster_ab = 1
+buero_fenster_auf = 0
+buero_licht_tuer = 
+buero_licht_ecke = 
+buero_heizung_istwert = 24.1
+buero_rollo_pos = 60
+buero_rollo_winkel = 50
+buero_jalousie_winkel = 40
+buero_jalousie_pos = 75
+buero_jalousie_verstellen = 0
+buero_jalousie_fahren = 0
+
+

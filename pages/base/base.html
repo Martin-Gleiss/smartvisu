@@ -1,0 +1,102 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+
+
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>{{ config_title }}</title> 
+	
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta http-equiv="expires" content="0">
+
+    <link rel="icon" href="favicon.png" />
+	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" href="favicon.png" />
+
+    <link rel="stylesheet" href="lib/jQuery/jquery.mobile-1.1.1.min.css" />
+    <script type="text/javascript" src="lib/jQuery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="lib/jQuery/jquery.mobile-1.1.1.min.js"></script>
+    <script type="text/javascript" src="lib/base/jquery.mobile.slider.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="designs/{{ design }}.min.css" />
+	<link rel="stylesheet" type="text/css" href="pages/base/base.css" />
+	<link rel="stylesheet" type="text/css" href="pages/{{ pages }}/visu.css" />
+	<script type="text/javascript" src="widgets/knx.js"></script>
+
+   {% import "basic.html" as basic %}
+   {% import "device.html" as device %}
+   
+</head> 
+
+
+<body> 
+    
+<div data-role="page" id="{{ page }}" data-theme="a">
+    <script type="text/javascript">
+        $('#{{ page }}').die();
+    </script> 
+    
+    <div data-role="header" data-position="fixed">
+        <div class="ui-left">
+            {% include 'menu.html' %}
+        </div>
+        <div class="ui-right">
+            <div class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span></div>
+            <div class="mini"><span id="miniclock">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ version }}</div>
+        </div>
+        <p id="alert" class="alert"><a href=""><img src="pages/base/pics/trans.png"></a></p>
+         
+        <script type="text/javascript"> 
+            $('#{{ page }}').live('pageshow',function(event, ui){
+                (function($) {
+                    $.fn.extend({
+                        miniclock: function() {
+                            return this.each(function() {
+                            var $this = $(this);
+                            $this.displayMiniClock($this);
+                        });
+                    }});
+                   
+                    $.fn.displayMiniClock = function(el) {
+                        var now = new Date();
+                        el.html(now.getHours() + ':' + (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()));
+                        setTimeout(function() {$.fn.displayMiniClock(el)}, $.fn.delay());
+                    }
+                
+                    $.fn.delay = function() {
+                        var now = new Date();
+                        var delay = (60 - now.getSeconds()) * 1000;
+                        return delay;
+                    }
+                })(jQuery);
+                
+                $('#miniclock').miniclock();
+            });
+        </script>  
+    </div>
+ 	
+    <div data-role="content">
+        <div class="content-primary">
+           {% block content %}{% endblock %}
+        </div>
+        
+        <div class="content-secondary"> 
+            {% block sidebar %}{% endblock %}
+        </div>
+    </div>
+    
+    <div class="page-bg"></div>
+</div>
+
+</body>
+
+</html>

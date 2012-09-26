@@ -1,0 +1,189 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+ 
+/**
+ * Displays a digital clock
+ * 
+ * @author      based on jDigiClock by Radoslav Dimov
+ * @param       unique id for this widget
+ * @param       location as string, optional
+ */ 
+{% macro digiclock(id, location) %}
+    /** Design */
+    {% if once('digiclock') %}  
+        <link rel="stylesheet" type="text/css" href="lib/clock/jdigiclock.css" />
+        <script type="text/javascript" src="lib/clock/jquery.jdigiclock.js"></script>
+    {% endif %}
+    
+    <div id="{{ page }}-{{ id }}-clock" class="digiclock"></div>
+    
+    {% if location %}
+        {% if once('digiweather') %}
+            <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
+        {% endif %}
+        
+        <div class="center">
+            <div id="{{ page }}-{{ id }}-spot" class="spot">
+                <div class="temp"></div>
+                <div class="city"></div>
+                <div class="cond"></div>
+                <img src="">
+            </div>
+        </div>
+    {% endif %}
+         
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){ 
+            $('#{{ page }}-{{ id }}-clock').digiclock();
+            
+            {% if location %}
+                $.getJSON('lib/weather/service/{{ weather_service }}.php?location={{ location|default(weather_location) }}&lang={{ lang|default(en) }}', function(data) {
+                    $('#{{ page }}-{{ id }}-spot img').attr('src', 'lib/weather/pics/' + data.current.icon + '.png');
+                    $('#{{ page }}-{{ id }}-spot .city').html(data.city);
+                    $('#{{ page }}-{{ id }}-spot .cond').html(data.current.conditions);
+                    $('#{{ page }}-{{ id }}-spot .temp').html(data.current.temp);
+                });
+            {% endif %}
+        });
+    </script>  
+{% endmacro %}
+
+
+/**
+ * Displays the actual weather at location
+ * 
+ * @author      based on jDigiClock by Radoslav Dimov 
+ * @param       unique id for this widget
+ * @param       location as string, optional 
+ */ 
+{% macro weather(id, location) %}
+    /** Design */
+    {% if once('digiweather') %}
+        <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
+    {% endif %}
+    
+    <div class="center">
+        <div id="{{ page }}-{{ id }}-weather" class="weather">
+            <div class="humi"></div>
+            <div class="wind"></div>
+            <div class="temp"></div>
+            <div class="city"></div>
+            <div class="cond"></div>
+        </div>
+    </div>
+        
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){
+            $.getJSON('lib/weather/service/{{ weather_service }}.php?location={{ location|default(weather_location) }}&lang={{ lang|default(en) }}', function(data) {
+                $('#{{ page }}-{{ id }}-weather').css('background','url(lib/weather/pics/' + data.current.icon + '.png) 50% 0 no-repeat')
+                $('#{{ page }}-{{ id }}-weather .city').html(data.city);
+                $('#{{ page }}-{{ id }}-weather .cond').html(data.current.conditions);
+                $('#{{ page }}-{{ id }}-weather .temp').html(data.current.temp);
+                $('#{{ page }}-{{ id }}-weather .humi').html(data.current.more);
+                $('#{{ page }}-{{ id }}-weather .wind').html(data.current.wind);
+            });
+        });
+    </script>  
+{% endmacro %}
+
+
+/**
+ * Displays the forecast weather of one day at location
+ * 
+ * @author      based on jDigiClock by Radoslav Dimov
+ * @param       unique id for this widget
+ * @param       location as string, optional 
+ * @param       offset, optional
+ */ 
+{% macro forecast(id, location, day) %}
+    /** Design */   
+    {% if once('digiweather') %}
+        <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
+    {% endif %}
+    
+    <div class="center">
+        <div id="{{ page }}-{{ id }}-forecast" class="forecast">
+            <div class="day"></div>
+            <div class="highlow"></div>
+            <div class="city"></div>
+            <div class="cond"></div>
+        </div>
+    </div>
+        
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){
+            $.getJSON('lib/weather/service/{{ weather_service }}.php?location={{ location|default(weather_location) }}&lang={{ lang|default(en) }}', function(data) {
+                $('#{{ page }}-{{ id }}-forecast').css('background','url(lib/weather/pics/' + data.forecast[{{ day|default(0) }}].icon + '.png) 50% 0 no-repeat')
+                $('#{{ page }}-{{ id }}-forecast .city').html(data.city);
+                $('#{{ page }}-{{ id }}-forecast .cond').html(data.forecast[{{ day|default(0) }}].conditions);
+                $('#{{ page }}-{{ id }}-forecast .highlow').html(data.forecast[{{ day|default(0) }}].temp);
+                $('#{{ page }}-{{ id }}-forecast .day').html(data.forecast[{{ day|default(0) }}].date);
+            });
+        });
+    </script>  
+{% endmacro %}
+
+
+/**
+ * Displays the forecast weather of the next 4 days
+ * 
+ * @author      based on jDigiClock by Radoslav Dimov
+ * @param       unique id for this widget
+ * @param       location as string, optional 
+ */ 
+{% macro forecastweek(id, location) %}
+    /** Design */        
+    {% if once('digiweather') %}
+        <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
+    {% endif %}
+    
+    <div id="{{ page }}-{{ id }}-forecastweek" class="forecastweek">
+    </div>
+            
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){
+            $.getJSON('lib/weather/service/{{ weather_service }}.php?location={{ location|default(weather_location) }}&lang={{ lang|default(en) }}', function(data) {
+                var forecast = '';
+                for (var i in data.forecast) {
+                    forecast += '<div class=\'day\'>'
+                    forecast += '<div>' + data.forecast[i].date + '</div>';
+                    forecast += '<img src="lib/weather/pics/' + data.forecast[i].icon + '.png" alt="' + data.forecast[i].conditions + '" title="' + data.forecast[i].conditions + '" />';
+                    forecast += '<div>' + data.forecast[i].temp + '</div>';
+                    forecast += '</div>';
+                }
+                $('#{{ page }}-{{ id }}-forecastweek').html(forecast);
+            });
+        });
+    </script>  
+{% endmacro %}
+
+
+/**
+ * Check for new updates of smartVISU
+ */ 
+{% macro updatecheck( ) %}
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){ 
+            $.getJSON('lib/base/updatecheck.php', function(data) {
+                if (data.update)
+                {
+                    $('#alert img').attr('src', 'pages/base/pics/alert_update.png');
+                    $('#alert a').attr('href', 'index.php?page=update&local=' + data.local + '&remote=' + data.remote);
+                    $('#alert').show();
+                }
+            });
+        });
+    </script>  
+{% endmacro %}

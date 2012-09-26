@@ -1,0 +1,150 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */ 
+                
+ 
+/**
+ * Standard dimmer with switching and dimming function
+ * 
+ * @param       unique id for this widget
+ * @param       name of the dimmer
+ * @param       the knx gad (groupaddress) for switching
+ * @param       the knx gad (groupaddress) for dimming 
+ * @param       the minimum value if the slider ist moved to total left (default 0)
+ * @param       the maximum value if the slider ist moved to total right (default 255)
+ * @param       step betwenn to values (default 5) 
+ */
+{% macro dimmer(id, txt, gad_switch, gad_value, min, max, step) %}
+    {% import   "basic.html" as basic %}
+    
+    /** Design */
+    <div class="dimmer">
+        {{ basic.switch(id|_('switch'), gad_switch, icon1~'licht_licht.png', icon0~'licht_licht.png') }}
+        <p>{{ txt|e }}</p>
+        {{ basic.slider(id|_('silder'), gad_value, min, max, step) }}
+    </div>                 
+            
+    /** Events */
+    {{ basic.glue(id|_('switch'), id|_('silder')) }}
+    
+    <div id="{{ page }}-{{ id }}"></div>
+    <script type="text/javascript">
+        $('#{{ page }}').live('pageshow',function(event, ui){ 
+            // reload
+            /*
+            $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
+                $("#{{ page }}-{{ id|_('switch') }}").trigger('reload');  
+                $("#{{ page }}-{{ id|_('slider') }}").trigger('reload');  
+            });
+            */
+        });
+    </script>  
+    
+{% endmacro %}
+
+
+/**
+ * Standard rtr
+ * 
+ * @param       unique id for this widget
+ * @param       name of the rtr
+ * @param       the knx gad (groupaddress) for the actual temparature
+ * @param       the knx gad (groupaddress) for the set temparature
+ * @param       the knx gad (groupaddress) for mode (bit) 
+ * @param       the knx gad (groupaddress) for night (bit)
+ * @param       the knx gad (groupaddress) for frost (bit)
+ * @param       the knx gad (groupaddress) for the current state of the actor
+ * @param       the knx gad (groupaddress) for a text (some rtr have a text-display), optional
+ */
+{% macro rtr(id, txt, gad_actual, gad_set, gad_mode, gad_night, gad_frost, gad_state, gad_txt) %}
+    {% import   "basic.html" as basic %}
+    
+    /** Design */
+    <div class="rtr">
+        <div class="actual">
+            <h4>{{ basic.float(id|_('actual'), gad_actual, '°C' ) }}</h4>
+            <div class="text">{{ txt }} 
+                {% if gad_txt %} {{ basic.value(id|_('txt'), gad_txt) }} {% endif %}
+            </div>
+        </div>
+        
+        {% if gad_set %}
+            <div class="set">
+                {{ basic.button(id|_('minus'), '', '', 'minus') }}
+                <div class="text">{{ basic.float(id|_('set'), gad_set, '°C' ) }}</div>
+                {{ basic.button(id|_('plus'), '', '', 'plus') }}
+            </div>
+            
+            /** Events */
+            <script type="text/javascript">  
+                // plus / minus
+                $("#{{ page }}-{{ id|_('minus') }}").unbind('click').bind('click', function(){ 
+                    var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) - 0.1) * 10) / 10).toFixed(1);
+                    $("#{{ page }}-{{ id|_('set') }}").html(temp + ' °C');
+                    knx("{{ gad_set }}", temp);
+                });
+                $("#{{ page }}-{{ id|_('plus') }}").unbind('click').bind('click', function(){ 
+                    var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) + 0.1) * 10) / 10).toFixed(1);
+                    $("#{{ page }}-{{ id|_('set') }}").html(temp + ' °C');
+                    knx("{{ gad_set }}", temp);
+                });
+            </script> 
+        {% endif %}
+        
+        <div class="control">
+            {{ basic.switch(id|_('mode'), gad_mode, icon1~'user_anwesend.png', icon0~'user_abwesend.png') }}
+            {{ basic.switch(id|_('night'), gad_night, icon1~'szene_nacht.png', icon0~'szene_nacht.png') }}
+            {{ basic.switch(id|_('frost'), gad_frost, icon1~'temp_frost.png', icon0~'temp_frost.png') }}
+            <div class="switch" style="width: 5px; height: 48px;"></div>
+            {{ basic.switch(id|_('state'), gad_state, icon1~'steuer_ein_aus.png', icon0~'steuer_ein_aus.png') }}
+        </div>
+    </div>
+{% endmacro %}
+    
+        
+/**
+ * Standard blind
+ * 
+ * @param       unique id for this widget
+ * @param       name of the blind
+ * @param       the knx gad (groupaddress) for the up- and down- movement
+ * @param       the knx gad (groupaddress) for the actual position of the blinds
+ * @param       the knx gad (groupaddress) for increase- and decreace- of the blade
+ * @param       the knx gad (groupaddress) for the actual angle of the blade
+ */
+{% macro blind(id, txt, gad_move, gad_pos, gad_shift, gad_angle) %}
+    {% import   "basic.html" as basic %}
+    
+    /** Design */
+    <div class="blind">
+        <table align="center">
+        <tr>
+            <td valign="top">
+                <div class="set">{{ basic.button(id|_('up'), gad_move, '', 'arrow-u', 1) }}</div></td>
+            <td rowspan="3" align="left" class="pos">
+                {{ basic.slider(id|_('pos'), gad_pos, 0, 100, 5, 'vertical') }}</td>
+            <td class="angle">
+                {{ basic.slider(id|_('angle'), gad_angle, 0, 100, 5, 'semicircle') }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <div class="set">
+                    <span style="float: left;">{{ basic.button(id|_('minus'), gad_shift, '', 'minus', 0) }}</span>
+                    <span style="float: right;">{{ basic.button(id|_('plus'), gad_shift, '', 'plus', 1) }}</span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="bottom">
+                <div class="set">{{ basic.button(id|_('down'), gad_move, '', 'arrow-d', 0) }}</div></td>
+            <td>{{ txt }}</td>
+        </tr>
+        </table>
+    </div>        
+{% endmacro %}
