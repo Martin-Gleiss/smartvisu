@@ -1,0 +1,25 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+<div id="menu" class="menu">
+
+    <a id="menu-rooms" data-ajax="false" href="index.php">
+        <img class="icon" src="{{ page == 'index' ? icon1 : icon0 }}steuer_alles_ein_aus.png"/></a>
+    
+    <a id="menu-category" data-ajax="false" href="index.php?page=category">
+        <img class="icon" src="{{ page == 'category' ? icon1 : icon0 }}steuer_home.png"/></a>
+    
+    <a id="menu-special" data-ajax="false" href="index.php?page=special">
+        <img class="icon" src="{{ page == 'special' ? icon1 : icon0 }}zeit_handbetrieb.png"/></a>
+    
+    <a id="menu-system" data-ajax="false" href="index.php?page=config">
+        <img class="icon" src="{{ page == 'config' ? icon1 : icon0 }}meld_service.png"/></a>
+   
+</div>

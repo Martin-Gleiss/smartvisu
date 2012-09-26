@@ -1,0 +1,88 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+<ul data-role="listview" data-dividertheme="c"> 
+                            
+	<li data-role="list-divider">Obergeschoss</li>
+    <li data-icon="false">
+        <a href="index.php?page=room2_schlafen">
+            <img class="icon" src="{{ icon0 }}szene_schlafen.png"/><h3>Schlafzimmer</h3>
+            <div class="ui-li-aside">{{ basic.float('schlafen_temperatur', 'schlafen_heizung_istwert', '°C') }}</div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room2_buero">
+            <img class="icon" src="{{ icon0 }}it_pc.png"/><h3>Büro</h3>
+            <div class="ui-li-aside">{{ basic.float('buero_temperatur', 'buero_heizung_istwert', '°C') }}</div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room2_kind">
+            <img class="icon" src="{{ icon0 }}szene_party.png"/><h3>Kinderzimmer</h3>
+            <div class="ui-li-aside">{{ basic.float('kind_temperatur', 'kind_heizung_istwert', '°C') }}</div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room2_bad">
+            <img class="icon" src="{{ icon0 }}szene_schwimmen.png"/><h3>Bad</h3>
+            <div class="ui-li-aside">{{ basic.float('bad_temperatur', 'bad_heizung_istwert', '°C') }}</div>
+        </a>
+    </li>
+        
+	
+    <li data-role="list-divider">Erdgeschoss</li>
+    <li data-icon="false">
+        <a href="index.php?page=room1_gaeste">
+            <img class="icon" src="{{ icon0 }}user_ext_away.png"/><h3>Gästezimmer</h3>
+            <div class="ui-li-aside"></div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room1_wohnen">
+            <img class="icon" src="{{ icon0 }}it_fernsehen.png"/><h3>Wohnzimmer</h3>
+            <div class="ui-li-aside"></div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room1_kueche">
+            <img class="icon" src="{{ icon0 }}szene_kochen.png"/><h3>Küche</h3>
+            <div class="ui-li-aside"></div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room1_treppe">
+            <img class="icon" src="{{ icon0 }}steuer_home.png"/><h3>Treppe</h3>
+            <div class="ui-li-aside"></div>
+        </a>
+    </li>
+        
+    
+	<li data-role="list-divider">Keller</li>
+    <li data-icon="false">
+        <a href="index.php?page=room0_werkstatt">
+            <img class="icon" src="{{ icon0 }}meld_service.png"/><h3>Werkstatt</h3>
+            <div class="ui-li-aside"></div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room0_wellness">
+            <img class="icon" src="{{ icon0 }}szene_party.png"/><h3>Wellness</h3>
+            <div class="ui-li-aside"></div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room0_heizung">
+            <img class="icon" src="{{ icon0 }}sani_kessel_temp.png"/><h3>Heizung</h3>
+            <div class="ui-li-aside"></div>
+        </a>
+    </li>
+    
+</ul>	
+

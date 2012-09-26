@@ -1,0 +1,36 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+  
+    {% import "lib.html" as lib %}
+    {{ lib.updatecheck() }}
+    
+    {% include 'widget_menu.html' %}
+
+{% endblock %}
+
+
+{% block content %}
+
+    <h3><div class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span> Online-Documentation</div></h3>
+
+    <p> 
+    Here is a documentation of the widgets. Choose one of them:
+    </p>
+    
+    <br /> 
+    
+    {% include 'widget_menu.html' %}
+        
+{% endblock %}
+

@@ -1,0 +1,44 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+    {% import "lib.html" as lib %}
+    {{ lib.updatecheck() }}
+                    
+    {{ lib.digiclock('clock') }}    
+    
+    <div class="center">
+       {{ now|date('l') }}, {{ now|date('d.m.Y') }}
+    </div> 
+    
+    <hr>
+    
+    {{ lib.weather('weather') }}    
+    
+    <hr>
+    
+    {{ lib.forecastweek('weather_forecast') }}    
+    
+    <hr>
+ 
+    <script type="text/javascript">
+        $('img', '#menu-rooms').first().hide(); 
+        $('img', '#menu-rooms').last().show(); 
+    </script> 
+{% endblock %}
+
+
+{% block content %}
+    {% include 'rooms_menu.html' %}
+{% endblock %}
+

@@ -1,0 +1,353 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */ 
+                
+ 
+/**
+ * Widget to glue to html-elements together.
+ * If the 'from' ist changed the 'to' will be reloaded after a delay. 
+ * 
+ * @param        id form the element who ist changing 
+ * @param        id from the element that should be changed
+ */
+{% macro glue(id_from, id_to) %}
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pageshow',function(event, ui){ 
+            $('#{{ page }}-{{ id_from|e }}').bind('click', function(){
+                window.setTimeout(function(){ $('#{{ page }}-{{ id_to|e }}').trigger('reload'); }, {{ delay }});
+            });
+        });
+    </script>  
+{% endmacro %}
+
+
+/**
+ * display a value
+ * 
+ * @param        unique id for this widget
+ * @param        the knx gad (groupaddress)  
+ * @param        a unit
+ * @param        the parent html-tag for the value                   
+ */
+{% macro value(id, gad, unit, tag) %}
+    /** Design */
+    <{{ tag|default('span') }} id="{{ page }}-{{ id }}"></{{ tag|default('span') }}>
+
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){ 
+            // reload
+            $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
+                knx('{{ gad }}').success(function(response) {                                                         
+                     $('#{{ page }}-{{ id }}').html(response + ' {{ unit }}');
+                });
+            });
+            
+            // init
+            $('#{{ page }}-{{ id }}').trigger('reload');
+        });
+    </script>    
+{% endmacro %}
+
+
+/**
+ * Displays a value as float
+ * 
+ * @param        unique id for this widget
+ * @param        the knx gad (groupaddress)  
+ * @param        a unit
+ * @param        the parent html-tag for the value     
+ */
+{% macro float(id, gad, unit, tag) %}
+    /** Design */
+    <{{ tag|default('span') }} id="{{ page }}-{{ id }}">0.0</{{ tag|default('span') }}>
+
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){ 
+            // reload
+            $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
+                knx('{{ gad }}').success(function(response) {                                                         
+                    $('#{{ page }}-{{ id }}').html( ((Math.round(response * 10) / 10).toFixed(1)).replace('.', ',') + ' {{ unit }}');
+                });
+            });
+            
+            // init
+            $('#{{ page }}-{{ id }}').trigger('reload');
+        });
+    </script>   
+{% endmacro %}
+
+
+/**
+ * Displays a checkbox
+ * 
+ * @param        unique id for this widget
+ * @param        the knx gad (groupaddress)  
+ * @param        text printed on the checkbox
+ */
+{% macro checkbox(id, gad, txt) %}
+    /** Design */
+    <label><input type="checkbox" id="{{ page }}-{{ id }}" />{{ txt }}</label>
+    
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pageshow',function(event, ui){
+            // reload
+            $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
+                knx('{{ gad }}').success(function(response) {                                                         
+                    $('#{{ page }}-{{ id }}').attr('checked', (response > 0 ? true : false)).checkboxradio('refresh');
+                });
+            });
+            
+            // write
+            $('#{{ page }}-{{ id }}').unbind('change').bind('change', function(){ 
+                knx('{{ gad }}', ($('#{{ page }}-{{ id }}:checked').val() == 'on' ? 1 : 0));
+            });    
+            
+            // init
+            $('#{{ page }}-{{ id }}').trigger('reload');
+        });
+    </script>    
+{% endmacro %}
+
+
+/**
+ * Displays a flip-switch
+ * 
+ * @param        unique id for this widget
+ * @param        the knx gad (groupaddress)  
+ * @param        text for the 'on' state
+ * @param        text for the 'off' state
+ */
+ {% macro flip(id, gad, txt_on, txt_off) %}
+    /** Design */
+    <select id="{{ page }}-{{ id }}" data-role="slider">
+	   <option value="off">{{ txt_off|default('Off') }}</option>
+	   <option value="on">{{ txt_on|default('On') }}</option>
+    </select> 
+
+    /** Events */
+    <script type="text/javascript">
+         $('#{{ page }}').live('pageshow',function(event, ui){ 
+            // reload
+            $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
+                knx('{{ gad }}').success(function(response) {
+                    $('#{{ page }}-{{ id }}').val(response > 0 ? 'on' : 'off').slider('refresh');
+                }) ;
+            }); 
+            
+            // write
+            var fval = $('#{{ page }}-{{ id }}').unbind('change').bind('change', function(){  
+                if(fval != $(this).val())
+                {
+                    fval = $(this).val();
+                    knx('{{ gad }}', (fval == 'on' ? 1 : 0));
+                }
+            }).val();
+
+            // init
+            $('#{{ page }}-{{ id }}').trigger('reload');
+        });
+    </script>    
+{% endmacro %}
+
+
+/**
+ * Displays a slider-control
+ * 
+ * @param        unique id for this widget
+ * @param        the knx gad (groupaddress)  
+ * @param        the minimum value if the slider ist moved to total left (default 0)
+ * @param        the maximum value if the slider ist moved to total right (default 255)
+ * @param        step betwenn to values (default 5) 
+ */
+ {% macro slider(id, gad, min, max, step, orientation) %}
+    /** Design */
+    <input type="range" id="{{ page }}-{{ id }}" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}" orientation="{{ orientation }}" data-highlight="true" />
+
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pageshow', function(event, ui){ 
+            // reload
+            $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
+                knx('{{ gad }}').success(function(response) {
+                    $('#{{ page }}-{{ id }}').val(response).slider('refresh');
+                }) ;
+            }); 
+            
+            // write
+            var sval = $('#{{ page }}-{{ id }}').unbind('change').bind('change', function(){
+                if(sval != $(this).val())
+                {
+                    sval = $(this).val();          
+                    
+                    $('#{{ page }}-{{ id }}').trigger('click');
+                }   
+            }).val();
+       
+            $('#{{ page }}-{{ id }}').unbind('click').bind('click', function(){ 
+                knx('{{ gad }}', $('#{{ page }}-{{ id }}').val());
+            }); 
+            
+            
+            // init
+            $('#{{ page }}-{{ id }}').trigger('reload');
+        });
+    </script>    
+{% endmacro %}
+
+
+/**
+ * A symbol, with no writing to knx, only displayed when the value of gad is equal to val. Symols may be used in menu-items
+ * 
+ * @param        unique id for this widget
+ * @param        the knx gad (groupaddress)  
+ * @param        text  
+ * @param        the pic
+ * @param        value 
+ */
+ {% macro symbol(id, gad, txt, pic, val) %}
+    /** Design */
+    <span id="{{ page }}-{{ id }}" class="symbol hide"><img class="icon" src="{{ pic|default(icon1~'steuer_ein_aus.png') }}"/>{{ txt }}</span>
+        
+    /** Events */
+    <script type="text/javascript">   
+        $('#{{ page }}').live('pagecreate',function(event, ui){ 
+            // reload                               
+            $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
+                knx('{{ gad }}').success(function(response){
+                    if (response == {{ val|default('1') }})
+                        $('#{{ page }}-{{ id }}').show();
+                    else
+                        $('#{{ page }}-{{ id }}').hide();
+                }) ;
+            });
+            
+            // init
+            $('#{{ page }}-{{ id }}').trigger('reload');
+        });
+    </script>    
+{% endmacro %} 
+
+
+/**
+ * A switch, build of two pics
+ * 
+ * @param        unique id for this widget
+ * @param        the knx gad (groupaddress)  
+ * @param        the pic for the 'on' state
+ * @param        the pic for the 'off' state
+ * @param        value send for the 'on' state
+ * @param        value send for the 'off' state 
+ */
+ {% macro switch(id, gad, pic_on, pic_off, val_on, val_off) %}
+    /** Design */
+    <span class="switch">
+        <a id="{{ page }}-{{ id }}"><img class="icon" src="{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"/></a>
+    </span>
+        
+    /** Events */
+    <script type="text/javascript">   
+        $('#{{ page }}').live('pageshow',function(event, ui){ 
+            // reload
+            $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
+                knx('{{ gad }}').success(function(response){
+                    $('#{{ page }}-{{ id }} img').attr('src', (response != {{ val_off|default('0') }} ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
+                }) ;
+            });
+            
+            // write
+            $('#{{ page }}-{{ id }}').unbind('click').bind('click', function(){
+                knx('{{ gad }}').success(function(response){
+                    response = (response != {{ valOn|default('1') }} ? {{ val_on|default('1') }} : {{ val_off|default('0') }}); 
+                    knx('{{ gad }}', response);
+                    $('#{{ page }}-{{ id }} img').attr('src', (response != {{ val_off|default('0') }} ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
+                }); 
+            });
+            
+            // init
+            $('#{{ page }}-{{ id }}').trigger('reload');
+            
+            // effects
+            $('#{{ page }}-{{ id }} img').hover(
+                function() { $(this).addClass("ui-focus");  },  
+                function() { $(this).removeClass("ui-focus"); }
+            ); 
+        });
+    </script>    
+{% endmacro %} 
+
+
+/**
+ * A button
+ * 
+ * @param        unique id for this widget
+ * @param        the knx gad (groupaddress)  
+ * @param        text printed on the button
+ * @param        a small pic above the button
+ * @param        value send if the button is pressed
+ */
+ {% macro button(id, gad, txt, pic, val) %}
+    /** Design */
+    <a id="{{ page }}-{{ id }}" data-theme="a" data-role="button" data-icon="{{ pic|default('grid') }}"
+        {% if txt %} data-iconpos="top" {% else %} data-iconpos="notext" {% endif %} data-mini="true" data-inline="true">{{ txt|e }}</a>
+    
+    {% if gad %}
+        /** Events */
+        <script type="text/javascript">  
+            // write             
+            $('#{{ page }}-{{ id }}').unbind('click').bind('click', function(){ 
+                knx('{{ gad }}', {{ val|default('1') }}); 
+            });
+        </script>    
+    {% endif %}
+{% endmacro %}
+
+
+/**
+ * A switch with to states displayed as a button
+ * 
+ * @param        unique id for this widget
+ * @param        the knx gad (groupaddress)  
+ * @param        the pic for the 'on' state
+ * @param        the pic for the 'off' state
+ */
+ {% macro dual(id, gad, pic_on, pic_off) %}
+    /** Design */
+    <a id="{{ page }}-{{ id }}" data-role="button" data-mini="true" data-inline="true">
+        <img class="icon" src="{{ pic_off|default(icon0~'steuer_ein_aus.png') }}">
+    </a> 
+    
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pageshow', function(event, ui){
+            // reload
+            $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
+                knx('{{ gad }}').success(function (response) {
+                    $('#{{ page }}-{{ id }} img').attr('src', (response > 0 ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
+                })
+            });
+            
+            // write
+            $('#{{ page }}-{{ id }}').unbind('click').bind('click', function(){ 
+                knx('{{ gad }}').success(function(response){
+                    response = (response > 0 ? 0 : 1); 
+                    knx('{{ gad }}', response); 
+                    $('#{{ page }}-{{ id }} img').attr('src', (response > 0 ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
+                });
+            });
+            
+            // init
+            $('#{{ page }}-{{ id }}').trigger('reload');
+        });            
+    </script>    
+{% endmacro %}
+
+ 

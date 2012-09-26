@@ -1,0 +1,70 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "rooms.html" %}
+
+{% block content %}
+    
+    <h3><img class="icon" src='{{ icon0 }}szene_schlafen.png'/>Schlafzimmer</h3>
+    
+    <div class="preblock">
+        {{ basic.button('all_off', 'schlafen_licht_schalten', 'Aus', 'delete', '0') }}
+        {{ basic.glue('all_off', 'licht_tuer') }}
+        {{ basic.glue('all_off', 'licht_ecke') }}
+        {{ basic.glue('all_off', 'licht_schrank') }}
+        {{ basic.glue('all_off', 'licht_bett_li') }}
+        {{ basic.glue('all_off', 'licht_bett_re') }}
+    </div>
+        
+            
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Licht</h3>
+            {{ device.dimmer('licht_tuer', 'Tür dimmen', 'schlafen_licht_schalten', 'schlafen_licht_setzen') }}
+        
+            <div class="switch-row">
+                {{ basic.switch('licht_ecke', 'schlafen_licht_ecke_schalten', 'icons/or/licht_stehlampe.png', 'icons/ws/licht_stehlampe.png') }}
+                {{ basic.switch('licht_schrank', 'schlafen_licht_schrank_schalten', 'icons/or/licht_indirekt.png', 'icons/ws/licht_indirekt.png') }}
+                {{ basic.switch('licht_bett_li', 'schlafen_licht_bett_li_schalten', 'icons/or/licht_led.png', 'icons/ws/licht_led.png') }}
+                {{ basic.switch('licht_bett_re', 'schlafen_licht_bett_re_schalten', 'icons/or/licht_led.png', 'icons/ws/licht_led.png') }}
+            </div>
+        
+            {{ basic.switch('steckdose', 'schlafen_steckdose_schalten', 'icons/or/meld_steckdose.png', 'icons/ws/meld_steckdose.png') }}
+        </div>
+    	
+    	<div data-role="collapsible">
+            <h3>Einstellungen</h3>
+        </div>
+      	
+    </div>    
+    </div>
+    
+    
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Raumtemperatur</h3>
+            {{ device.rtr('schlafen_rtr', 'Heizung', 'schlafen_heizung_istwert', 'schlafen_heizung_sollwert', 
+                'schlafen_heizung_komfort', 'schlafen_heizung_nacht', 'schlafen_heizung_frost', 'schlafen_heizung_schalten', 'schlafen_heizung_text') }}
+        </div>
+    	
+    	<div data-role="collapsible">
+            <h3>Einstellungen</h3>
+            <p></p>
+        </div>
+      	
+    </div>    
+    </div>
+    
+{% endblock %}
+

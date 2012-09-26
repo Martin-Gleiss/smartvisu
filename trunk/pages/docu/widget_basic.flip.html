@@ -1,0 +1,33 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+    <h5>Examples</h5>
+    <div class="twig">
+        <code>&#123;&#123; basic.flip('flip1', 'buero_licht_tuer_schalten') &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.flip('flip1', 'buero_licht_tuer_schalten') }}
+    </div>
+    
+    With other on/off-text
+    <div class="twig">
+        <code>&#123;&#123; basic.flip('flip2', 'buero_licht_tuer_schalten', '1', '0') &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.flip('flip2', 'buero_licht_tuer_schalten', '1', '0')  }}
+    </div>
+
+{% endblock %}
+
+

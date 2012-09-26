@@ -1,0 +1,32 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+    <h5>Examples</h5>
+    <div class="twig">
+        <code>&#123;&#123; basic.slider('slider1', 'buero_licht_tuer_setzen') &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.slider('slider1', 'buero_licht_tuer_setzen') }}
+    </div>
+    
+    <div class="twig">
+        <code>&#123;&#123; basic.slider('slider2', 'buero_licht_tuer_setzen', 100, 200, 10) &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.slider('slider2', 'buero_licht_tuer_setzen', 100, 200, 10) }}
+    </div>
+
+{% endblock %}
+
+

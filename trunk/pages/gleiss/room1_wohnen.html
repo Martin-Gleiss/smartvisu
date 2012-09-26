@@ -1,0 +1,42 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Bewässerung</h3>
+            
+            {{ basic.switch('wassersaeule_1', 'wassersaeule_1_schalten', icon1~'sani_bewaesserung.png', icon0~'sani_bewaesserung.png') }}
+            <p>Wassersäule 1</p>
+
+            {{ basic.switch('wassersaeule_2', 'wassersaeule_2_schalten', icon1~'sani_bewaesserung.png', icon0~'sani_bewaesserung.png') }}
+            <p>Wassersäule 2</p>
+        
+        </div>
+    	
+    	<div data-role="collapsible">
+            <h3>Einstellungen</h3>
+       
+            <div data-role="fieldcontain">
+                <label for="{{ page }}-wassersaeulen">Automatik<br></label>
+                {{ basic.flip('wassersaeulen', 'wassersaeulen_auto', 'an', 'aus') }}
+            </div>
+       </div>
+      	
+    </div>    
+    </div>
+    
+{% endblock %}
+

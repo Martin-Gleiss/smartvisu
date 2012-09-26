@@ -1,0 +1,543 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+ 
+@CHARSET "UTF-8";
+
+@font-face {
+  font-family: 'Dosis';
+  font-style: normal;
+  font-weight: 400;
+  src: url('dosis.eot') format('embedded-opentype'), url('dosis.woff') format('woff'), url('dosis.ttf') format('truetype');
+}
+
+
+.content-secondary {
+    display:none;
+}
+ 
+@media all and (min-width: 640px) {
+    .content-primary {
+        float: right;
+        margin-right: 1%;
+        padding-right: 1%;
+        width: 62%;
+    }
+    .content-secondary {
+        display: block;
+        float: left;
+        text-align: left;
+        width: 33%;
+    }
+}
+
+
+/**
+ * --- j Q u e r y M o b i l e -------------------------------------------------
+ */
+
+.ui-header {
+    text-align: center;
+	height: 62px;
+	border-bottom: 1px solid #555;
+}  
+    
+.ui-header .ui-left {
+    margin: 5px 0px 0px 5px;
+    float: left;
+}
+
+.ui-header .ui-right {
+    float: right;
+    margin: 9px 15px 0px 0px;
+}
+
+.ui-content {
+    position: relative;
+    min-height: 800px;
+    z-index: 1;
+}
+    
+.ui-li-has-thumb .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-thumb  {
+    min-height: 40px;
+    padding-left: 70px;
+}
+
+.ui-btn-inner.ui-li .ui-li-thumb {
+    padding: 6px 0px 0px 4px;
+}
+
+.ui-btn.ui-mini .icon {
+    width: 48px;
+    height: 48px;
+}
+
+.ui-right .mini {
+    font-size: 14px;
+}
+
+.ui-li-aside {
+    font-size: 14px;
+}
+
+.ui-li-aside .icon {
+    width: 32px;
+    height: 32px;
+    vertical-align: top;
+}
+
+
+div.ui-slider-vertical, div.ui-slider-vertical-invers { 
+    position: relative; 
+    display: inline-block; 
+    overflow: visible; 
+    height: 200px; 
+    padding: 0; 
+    margin: 0 2% 0 20px; 
+    top: 4px; 
+    width:15px ;
+}
+
+label.ui-slider-vertical, label.ui-slider-vertical-invers { 
+    display: inline-block;
+    width: 20%;
+    margin: 0 2% 0 0;
+}
+
+div.ui-slider-vertical, div.ui-slider-vertical-invers {
+    width: 15px;
+}
+
+a.ui-slider-handle-vertical, a.ui-slider-handle-vertical-invers { 
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    width: 38px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -13px;
+}
+
+a.ui-slider-handle-vertical {
+	-moz-border-radius: 0.3em;
+	-webkit-border-radius: 0.3em;
+	border-radius: 0.3em;
+}
+
+a.ui-slider-handle-vertical .ui-btn-inner  {
+    display: none;
+}
+
+.ui-slider-semicircle-box { 
+    position: relative; 
+    display: inline-block;
+    padding: 5px;
+    width: 152px;
+}
+
+.ui-slider-semicircle-cut { 
+    height: 80px;
+    overflow: hidden;
+}
+
+.ui-slider-semicircle{ 
+    width: 150px;
+    height: 150px;
+    padding: 0;
+    -moz-border-radius: 10em 10em 0 0;
+	-webkit-border-radius: 10em 10em 0 0;
+	border-radius: 10em 10em 0 0;
+}
+
+.ui-slider-semicircle-highlight-cut{
+    height: 160px;
+    width: 1px;
+    overflow: hidden;
+}
+
+.ui-slider-semicircle-inner {
+    position:relative;
+    top: -136px;
+    left: 15px;
+    width: 120px;
+    height: 118px;
+    border: 1px solid #000;
+    -moz-border-radius: 10em 10em 0 0;
+	-webkit-border-radius: 10em 10em 0 0;
+	border-radius: 10em 10em 0 0;
+}
+
+.ui-slider-semicircle-bottom {
+    width: 14px;
+    height: 10px;
+    border-top: 0;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    -moz-border-radius: 0 0 2em 2em;
+	-webkit-border-radius: 0 0 2em 2em;
+	border-radius: 0 0 2em 2em;
+}
+
+a.ui-slider-handle-semicircle { 
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    width: 30px;
+    height: 30px;
+    margin-top: -20px;
+    margin-left: -16px;
+    outline: 0;
+} 
+
+a.ui-slider-handle-semicircle .ui-btn-inner  {
+    display: none;
+}
+
+
+/**
+ * -----------------------------------------------------------------------------
+ */
+
+h3 .icon {
+    vertical-align: middle;
+    margin: 0px 10px 0px 10px;
+}
+
+hr {
+    border: 1px; 
+    border-top-style: dotted;
+    border-bottom-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+.hide {
+    display: none;
+}
+
+.center {
+    width: 100%;
+    text-align: center;
+}
+
+.unit {
+    font-size: 14pt;
+    vertical-align:top;
+}
+
+.icon {
+    width: 48px;
+    height: 48px;
+}
+
+.mini {
+    font-size: 14px;
+}
+
+.alert {
+    display: none;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: -18px;
+    height: 62px;
+    width: 100px;
+    z-index: 50;
+}
+
+.alert img {
+    height: 62px;
+    width: 100px;
+}
+
+      
+/**
+ * -----------------------------------------------------------------------------
+ */
+
+.smartvisu {
+    padding: 0px 0px 4px 0px;
+    font-size: 1.1em;
+}
+
+.smartvisu .smart {
+    padding:  1px 3px 1px 2px;
+    text-shadow: none;
+    font-weight: 200;
+}
+
+.smartvisu .visu {
+    padding: 1px 4px 1px 4px;
+    background-color: #fff; 
+    text-shadow: none;
+    color: #000;
+    -moz-border-radius: .2em;
+	-webkit-border-radius: .2em;
+	border-radius: .2em;
+   	background:   			#222  
+	background-image: -webkit-gradient(linear, left, left bottom, from(#fff), to(#ddd)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(left, #fff, #ddd); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient(left, #fff, #ddd); /* FF3.6 */
+	background-image:     -ms-linear-gradient(left, #fff, #ddd); /* IE10 */
+	background-image:      -o-linear-gradient(left, #fff, #ddd); /* Opera 11.10+ */
+	background-image:         linear-gradient(left, #fff, #ddd);
+}
+
+.page-bg {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 2000px;
+    height: 500px;
+    background-repeat: no-repeat;
+    display:none;
+}
+
+@media all and (min-width: 600px) {
+    .page-bg {
+        display:block;
+    }
+}
+
+.preblock {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.preblock .ui-btn {
+    min-width: 64px;
+}
+
+.block {
+    width: 100%;
+    text-align: center;
+}
+
+@media all and (min-width: 900px) {
+    .block { 
+        width: 50%;
+        float: left;
+        text-align: center;
+    }
+}       
+
+.block .ui-collapsible-set {
+    margin: 5px 15px 13px 13px;
+}
+
+.block .set-1 .ui-collapsible-content {
+    min-height: 232px;
+    padding: 10px 5px 10px 5px;
+}  
+ 
+.block .set-2 .ui-collapsible-content {
+    min-height: 200px;
+    padding: 10px 5px 10px 5px;
+}  
+    
+.block .set-3 .ui-collapsible-content {
+    min-height: 168px; 
+    padding: 10px 5px 10px 5px;
+}   
+    
+
+.block .ui-bar-c {
+    margin: 5px 5px 0px 5px;
+}
+  
+.block .ui-fixed {
+    margin: 0px 5px 10px 5px;
+    padding: 0px 10px 0px 10px;
+    min-height: 250px;
+}  
+
+.block .ui-field-contain {
+    text-align: left;
+    border-bottom: 0px;
+}
+   
+.block .ui-field-contain label {
+    display: inline-block;
+    margin: 0 2% 0 0;
+    vertical-align: top;
+    width: 30%; 
+    font-size: 16px;  
+}
+
+.block .ui-field-contain label .mini {
+    font-size: 12px;
+}
+
+ 
+/**
+ * -----------------------------------------------------------------------------
+ */
+ .docu .macro {
+    font-size: 18px;
+ }
+ 
+ .docu h5 {
+    margin: 25px 0px 10px 0px;
+ }
+ 
+ .docu .twig {
+    margin: 5px;
+    background-color: #000;
+    padding: 5px 10px 10px 10px;
+    color: #fff;
+ }
+ 
+ .docu .html {
+    margin: 5px;
+    border: 1px; 
+    border-style: dotted;
+    border-color: #666;
+    padding: 10px;
+    margin-bottom: 15px;
+ }
+
+ .docu .param {
+    margin: 10px 20px 20px 20px;
+ }
+
+ .docu .param .desc{
+    margin-left: 50px;
+ }
+ 
+ 
+/**
+ * --- W i d g e t s -----------------------------------------------------------
+ */
+
+.switch-row {
+    margin: auto;
+    width: 210px;
+    height: 48px;
+    padding: 10px 0px 10px 0px;
+    text-align: center;
+}
+
+.switch-row .switch {
+    margin: 2px;
+    float:left;
+}
+
+.symbol img {
+    vertical-align: middle;
+}
+
+.dimmer {
+    vertical-align: absmiddle;
+    height: 48px;
+    margin: 15px 0px 10px 0px;
+}
+
+.dimmer .switch {
+    padding-left: 0px;
+    width: 64px;
+    float: left;
+}
+
+.dimmer .icon {
+    width: 48px;
+    height: 48px;
+}
+
+.dimmer p {
+    margin: 0px;
+    padding: 0px;
+}
+
+.dimmer .ui-input-text {
+    display:none;
+}
+
+.dimmer .ui-slider {
+    margin: 5px 0px 0px 10px;
+}
+
+
+.rtr .actual {
+    padding: 5px 0px 5px 0px;
+    width: 184px;
+    height: 48px;
+    margin:auto;
+}
+
+.rtr .actual h4 {
+    margin: 5px 0px 5px 0px;
+}
+
+.rtr .set {
+    padding: 10px 0px 10px 0px;
+    width: 190px;
+    height: 48px;
+    margin:auto;
+}
+
+.rtr .set .text {
+    width: 80px;
+    height: 48px;
+    padding-top: 10px;
+    float:left;
+}
+
+.rtr .set .ui-btn {
+    margin: 2px;
+    width: 46px;
+    height: 46px;
+    float:left;
+}
+
+.rtr .set .ui-btn .ui-icon {
+    margin: 14px 0px 0px 14px;
+}    
+
+.rtr .control {
+    padding: 10px 0px 10px 0px;
+    width: 218px;
+    height: 48px;
+    margin:auto;
+}
+
+.rtr .control .switch {
+    margin: 2px;
+    float:left;
+}
+
+
+.blind .set .ui-btn {
+    margin: 2px;
+    width: 46px;
+    height: 46px;
+}
+
+.blind .set .ui-btn .ui-icon {
+    margin: 14px 0px 0px 14px;
+}  
+
+.blind .pos {
+    width: 50px;
+}
+
+.blind .pos div.ui-slider-vertical { 
+    margin: 0 2% 0 10px;
+}
+    
+.blind .pos .ui-input-text {
+    display:none;
+}
+
+.blind .angle .ui-input-text {
+    display:none;
+}
+
+
