@@ -1,0 +1,68 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "index.html" %}
+
+{% block content %}
+
+    {% block headline %}<h3>Widgets</h3>{% endblock %}
+   
+    {% if pagepath != '' %}
+        {% set widgetlist = docu('widgets/' ~ pagepath ~ '.html') %}
+        
+        {% for widget in widgetlist %}
+            <a href="index.php?page={{ pagepath }}/widget_{{ widget.command }}">{{ widget.command }}</a>
+        {% endfor %}
+    {% endif %}
+   
+    <br /><hr /><br />
+    
+    {% set widget = page|substr(7)|replace({'_': '.'}) %}
+    
+    {% if pagepath != '' and widget != pagepath %}
+   
+    <div class="docu">
+
+        <div class="macro">
+            <code>{{ widget }}</code>
+        </div>
+        
+        <p>{{ widgetlist[widget].desc }}</p>
+        
+        <h5>Parameters</h5>
+        <div class="twig">
+            <code>&#123;&#123; {{ widgetlist[widget].call }} &#125;&#125;</code>
+        </div>
+        
+        <div class="param">
+        {% for param_name, param_docu in widgetlist[widget].param %}
+            <code>{{ param_name }}</code>
+            <div class="desc">{{ param_docu }}</div>
+        {% endfor %}
+        </div>
+        
+        {% block example %}{% endblock %}
+        
+        <div style="clear:left;"></div>
+        <br /><hr />
+        
+        <div class="mini">Author: {{ widgetlist[widget].author }}</div>
+    </div>
+
+    {% else %}
+    
+    {% block intro %}
+        Intro         
+    {% endblock %}
+   
+    {% endif %}
+    
+{% endblock %}
+

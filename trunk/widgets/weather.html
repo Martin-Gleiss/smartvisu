@@ -1,0 +1,196 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */ 
+                
+ 
+/**
+ * Displays the actual weather at location
+ * 
+ * @param       unique id for this widget
+ * @param       location as string, optional 
+ *  
+ * @author      based on jDigiClock by Radoslav Dimov 
+ */ 
+{% macro current(id, location) %}
+    /** Design */
+    {% if once('digiweather') %}
+        <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
+    {% endif %}
+    
+    <div class="center">
+        <div id="{{ page }}-{{ id }}-weather" class="weather">
+            <div class="humi"></div>
+            <div class="wind"></div>
+            <div class="temp"></div>
+            <div class="city"></div>
+            <div class="cond"></div>
+        </div>
+    </div>
+        
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){
+            $.getJSON('lib/weather/service/{{ weather_service }}.php?location={{ location|default(weather_location) }}&lang={{ lang|default(en) }}', function(data) {
+                $('#{{ page }}-{{ id }}-weather').css('background','url(lib/weather/pics/' + data.current.icon + '.png) 50% 0 no-repeat')
+                $('#{{ page }}-{{ id }}-weather .city').html(data.city);
+                $('#{{ page }}-{{ id }}-weather .cond').html(data.current.conditions);
+                $('#{{ page }}-{{ id }}-weather .temp').html(data.current.temp);
+                $('#{{ page }}-{{ id }}-weather .humi').html(data.current.more);
+                $('#{{ page }}-{{ id }}-weather .wind').html(data.current.wind);
+            });
+        });
+    </script>  
+{% endmacro %}
+
+
+/**
+ * Displays the forecast weather of one day at location
+ * 
+ * @param       unique id for this widget
+ * @param       location as string, optional 
+ * @param       offset: 1 for tomorrow (default), 2 the day after tomorrow ..., optional
+ *  
+ * @author      based on jDigiClock by Radoslav Dimov
+ */ 
+{% macro forecast(id, location, day) %}
+    /** Design */   
+    {% if once('digiweather') %}
+        <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
+    {% endif %}
+    
+    <div class="center">
+        <div id="{{ page }}-{{ id }}-forecast" class="forecast">
+            <div class="day"></div>
+            <div class="highlow"></div>
+            <div class="city"></div>
+            <div class="cond"></div>
+        </div>
+    </div>
+        
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){
+            $.getJSON('lib/weather/service/{{ weather_service }}.php?location={{ location|default(weather_location) }}&lang={{ lang|default(en) }}', function(data) {
+                $('#{{ page }}-{{ id }}-forecast').css('background','url(lib/weather/pics/' + data.forecast[{{ day|default(1) }}].icon + '.png) 50% 0 no-repeat')
+                $('#{{ page }}-{{ id }}-forecast .city').html(data.city);
+                $('#{{ page }}-{{ id }}-forecast .cond').html(data.forecast[{{ day|default(1) }}].conditions);
+                $('#{{ page }}-{{ id }}-forecast .highlow').html(data.forecast[{{ day|default(1) }}].temp);
+                $('#{{ page }}-{{ id }}-forecast .day').html(data.forecast[{{ day|default(1) }}].date);
+            });
+        });
+    </script>  
+{% endmacro %}
+
+
+/**
+ * Displays the forecast weather of the next 4 days
+ * 
+ * @param       unique id for this widget
+ * @param       location as string, optional 
+ * 
+ * @author      based on jDigiClock by Radoslav Dimov
+ */ 
+{% macro forecastweek(id, location) %}
+    /** Design */        
+    {% if once('digiweather') %}
+        <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
+    {% endif %}
+    
+    <div id="{{ page }}-{{ id }}-forecastweek" class="forecastweek">
+    </div>
+            
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){
+            $.getJSON('lib/weather/service/{{ weather_service }}.php?location={{ location|default(weather_location) }}&lang={{ lang|default(en) }}', function(data) {
+                var forecast = '';
+                for (var i in data.forecast) {
+                    forecast += '<div class=\'day\'>'
+                    forecast += '<div>' + data.forecast[i].date + '</div>';
+                    forecast += '<img src="lib/weather/pics/' + data.forecast[i].icon + '.png" alt="' + data.forecast[i].conditions + '" title="' + data.forecast[i].conditions + '" />';
+                    forecast += '<div>' + data.forecast[i].temp + '</div>';
+                    forecast += '</div>';
+                }
+                $('#{{ page }}-{{ id }}-forecastweek').html(forecast);
+            });
+        });
+    </script>  
+{% endmacro %}
+
+
+/**
+ * A Block with a map. The type specifies the kind of map.
+ * 
+ * @param       unique id for this widget
+ * @param       title of the block
+ * @param       type may be: day, night, forecast, wind, europe
+ *   
+ * @copyright   tagesschau.de, Hessischer Rundfunk, Deutscher Wetterdienst 
+ */
+{% macro map(id, title, type) %}
+    
+    /** Design */
+    <div class="block">
+        <div class="ui-bar-c ui-li-divider ui-corner-top">{{ title }}</div>
+        <div class="image">
+        
+            {% if type == 'day' %}
+                <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tt_webL.jpg">
+            {% endif %}
+            
+            {% if type == 'night' %}
+                <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tn_webL.jpg">
+            {% endif %}
+       
+            {% if type == 'forecast' %}
+                <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-3t_webL.jpg">
+            {% endif %}
+       
+            {% if type == 'wind' %}
+                <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-wi_webL.jpg">
+            {% endif %}
+       
+            {% if type == 'europe' %}
+                <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/eu-vs-t_webL.jpg">
+            {% endif %}
+            
+        </div>
+    </div>
+   
+{% endmacro %}
+
+
+/**
+ * A block with a some weather-maps in a slideshow
+ * 
+ * @param       unique id for this widget
+ * @param       title of the block
+ *  
+ * @copyright   tagesschau.de, Hessischer Rundfunk, Deutscher Wetterdienst 
+ */
+{% macro mapslides(id, title) %}
+    
+    /** Design */
+    {% if once('cycle2') %}
+        <script src="lib/jQuery/plugins/jquery.cycle2.js"></script>
+    {% endif %}
+    
+    <div class="block">
+        <div class="ui-bar-c ui-li-divider ui-corner-top">{{ title }}</div>
+            <div class="image">
+            <div class="cycle-slideshow" data-cycle-speed="750">
+                <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tt_webL.jpg">
+                <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tn_webL.jpg">
+                <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-3t_webL.jpg">
+                <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-wi_webL.jpg">
+                <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/eu-vs-t_webL.jpg">
+            </div>
+        </div>
+    </div>
+   
+{% endmacro %}

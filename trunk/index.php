@@ -27,7 +27,16 @@
         require_once const_path.'lib/Twig/Autoloader.php';
         Twig_Autoloader::register();
         
-        $loader = new Twig_Loader_Filesystem(array(const_path."pages/".config_pages, const_path."pages/base", const_path."widgets"));
+        if (dirname($request['page']) != '.')
+        {
+            $pagepath = dirname($request['page']);
+            $path[] = const_path.'pages/'.config_pages.'/'.$pagepath;
+        }
+        $path[] = const_path.'pages/'.config_pages;
+        $path[] = const_path.'pages/base';
+        $path[] = const_path.'widgets';
+        
+        $loader = new Twig_Loader_Filesystem($path);
         
         $parm = array();
         
@@ -47,10 +56,11 @@
         foreach($request as $key => $val)
         {
             if ($key == "page")
-                $val = str_replace('.', '_', $val);
-        
+                $val = basename(str_replace('.', '_', $val));
+                
             $twig->addGlobal($key, $val);
         }
+        $twig->addGlobal('pagepath', $pagepath);
         
         if (config_design == 'ice')
         {

@@ -1,0 +1,57 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+
+
+/**
+ * Displays a digital clock
+ * 
+ * @param       unique id for this widget
+ * @param       location as string, optional
+ * @author      based on jDigiClock by Radoslav Dimov
+ */ 
+{% macro digiclock(id, location) %}
+    /** Design */
+    {% if once('digiclock') %}  
+        <link rel="stylesheet" type="text/css" href="lib/clock/jdigiclock.css" />
+        <script type="text/javascript" src="lib/clock/jquery.jdigiclock.js"></script>
+    {% endif %}
+    
+    <div id="{{ page }}-{{ id }}-clock" class="digiclock"></div>
+    
+    {% if location %}
+        {% if once('digiweather') %}
+            <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
+        {% endif %}
+        
+        <div class="center">
+            <div id="{{ page }}-{{ id }}-spot" class="spot">
+                <div class="temp"></div>
+                <div class="city"></div>
+                <div class="cond"></div>
+                <img src="">
+            </div>
+        </div>
+    {% endif %}
+         
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){ 
+            $('#{{ page }}-{{ id }}-clock').digiclock();
+            
+            {% if location %}
+                $.getJSON('lib/weather/service/{{ weather_service }}.php?location={{ location|default(weather_location) }}&lang={{ lang|default(en) }}', function(data) {
+                    $('#{{ page }}-{{ id }}-spot img').attr('src', 'lib/weather/pics/' + data.current.icon + '.png');
+                    $('#{{ page }}-{{ id }}-spot .city').html(data.city);
+                    $('#{{ page }}-{{ id }}-spot .cond').html(data.current.conditions);
+                    $('#{{ page }}-{{ id }}-spot .temp').html(data.current.temp);
+                });
+            {% endif %}
+        });
+    </script>  
+{% endmacro %}

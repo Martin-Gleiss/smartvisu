@@ -10,6 +10,7 @@
 
     // get config-variables 
     require_once '../../../config.php';
+    require_once const_path_system.'class_cache.php';
     
     // init parameters
     $request = array_merge($_GET, $_POST);
@@ -19,38 +20,50 @@
     $lang = $request['lang'];
     
     // api call 
-    $url = 'http://www.yr.no/place/'.$location.'/forecast.xml';
-    $xml = simplexml_load_string(file_get_contents($url));
+    $cache = new class_cache('yr.no.xml');
     
-     // today
-    $weather['city']       = (string)$xml->location->name;
-    
-    // forecast
-    $i = 0;
-    foreach($xml->forecast->tabular->time as $day) {
-        if ($i == 0) {
-            $weather['current']['date']        = date('D', strtotime((string)$day->attributes()->from));
-            $weather['current']['conditions']  = (string)$day->symbol->attributes()->name;                 
-            $weather['current']['wind']        = (string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code.' at '.(string)$day->windSpeed->attributes()->mps.' MPH';                 
-            $weather['current']['icon']        = icon((string)$day->symbol->attributes()->number);
-            $weather['current']['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
-            $weather['current']['more']        = (int)$day->pressure->attributes()->value.' hPa';
-            $i++;
+    if ($cache->hit())
+        $xml = simplexml_load_string($cache->read());
+    else
+    {
+        $url = 'http://www.yr.no/place/'.$location.'/forecast.xml';
+        $xml = simplexml_load_string($cache->write(file_get_contents($url)));
+    }
+      
+    if($xml)
+    {
+        //today
+        $weather['city']       = (string)$xml->location->name;
+        
+        // forecast
+        $i = 0;
+        foreach($xml->forecast->tabular->time as $day) {
+            if ($i == 0) {
+                $weather['current']['date']        = date('D', strtotime((string)$day->attributes()->from));
+                $weather['current']['conditions']  = (string)$day->symbol->attributes()->name;                 
+                $weather['current']['wind']        = (string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code.' at '.(string)$day->windSpeed->attributes()->mps.' MPH';                 
+                $weather['current']['icon']        = icon((string)$day->symbol->attributes()->number);
+                $weather['current']['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
+                $weather['current']['more']        = (int)$day->pressure->attributes()->value.' hPa';
+                $i++;
+            }
+            
+            if ($i < 5 and $day->attributes()->period == 2) {
+                $weather['forecast'][$i]['date']        = date('D', strtotime((string)$day->attributes()->from));
+                $weather['forecast'][$i]['conditions']  = (string)$day->symbol->attributes()->name;                 
+                $weather['forecast'][$i]['wind']        = (string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code.' at '.(string)$day->windSpeed->attributes()->mps.' MPH';                 
+                $weather['forecast'][$i]['icon']        = icon((string)$day->symbol->attributes()->number);
+                $weather['forecast'][$i]['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
+                $weather['forecast'][$i]['more']        = (int)$day->pressure->attributes()->value.' hPa';
+                $i++;
+            }
         }
         
-        if ($i < 5 and $day->attributes()->period == 2) {
-            $weather['forecast'][$i]['date']        = date('D', strtotime((string)$day->attributes()->from));
-            $weather['forecast'][$i]['conditions']  = (string)$day->symbol->attributes()->name;                 
-            $weather['forecast'][$i]['wind']        = (string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code.' at '.(string)$day->windSpeed->attributes()->mps.' MPH';                 
-            $weather['forecast'][$i]['icon']        = icon((string)$day->symbol->attributes()->number);
-            $weather['forecast'][$i]['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
-            $weather['forecast'][$i]['more']        = (int)$day->pressure->attributes()->value.' hPa';
-            $i++;
-        }
-    }
-  
-    echo json_encode($weather);
-    
+        echo json_encode($weather);
+    } 
+    else
+        header("HTTP/1.0 404 Not Found");
+        
     
 // -----------------------------------------------------------------------------
 // I C O N - M A P P E R

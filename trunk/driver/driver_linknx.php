@@ -96,7 +96,7 @@ class driver_linknx extends driver_base
     
     
   /** 
-	* Wirte to bus
+	* Write to bus
 	*/      
     public function write($gad, $val)
     {
