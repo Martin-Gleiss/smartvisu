@@ -1,0 +1,25 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "widget_device.html" %}
+
+{% block example %}
+
+    <h5>Example</h5>
+    <div class="twig">
+        <code>&#123;&#123; device.rtr('rtr', 'Heizung', 'buero_heizung_istwert', 'buero_heizung_sollwert', 
+            'buero_heizung_komfort', 'buero_heizung_nacht', 'buero_heizung_frost', 'buero_heizung_schalten', 'buero_heizung_text') &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ device.rtr('rtr', 'Heizung', 'buero_heizung_istwert', 'buero_heizung_sollwert', 
+            'buero_heizung_komfort', 'buero_heizung_nacht', 'buero_heizung_frost', 'buero_heizung_schalten', 'buero_heizung_text') }}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "special.html" %}
+
+{% block content %}
+
+    <h3><img class="icon" src='{{ icon0 }}it_pc.png'/>Wetter</h3>
+    
+    {% import   "weather.html" as weather %}
+    
+    {{ weather.map ('day', 'Tag', 'day') }}
+    {{ weather.map ('day', 'Nacht', 'night') }}
+    {{ weather.map ('day', 'Aussichten', 'forecast') }}
+    {{ weather.map ('day', 'Wind', 'wind') }}
+    {{ weather.map ('day', 'Europawetter', 'europe') }}
+
+    {{ weather.mapslides ('day', 'Wetterüberblick') }}
+
+    <div style="width: 100%">&nbsp;</div>
+    <hr />
+    <div class="mini">© tagesschau.de, Hessischer Rundfunk, Deutscher Wetterdienst</div>
+{% endblock %}
+

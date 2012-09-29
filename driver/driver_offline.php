@@ -77,7 +77,7 @@ class driver_offline extends driver_base
     
     
   /** 
-	* Wirte to bus
+	* Write to bus
 	*/      
     public function write($gad, $val)
     {

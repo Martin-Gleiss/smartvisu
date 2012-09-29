@@ -19,6 +19,7 @@
     // api call 
     $url = 'http://.../api?location='.$location.'&lang='.$lang;
     
+    
     // today
     $weather['city'] = ucfirst($location);
     

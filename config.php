@@ -96,7 +96,7 @@
     * What is the default location?
     *     
     */
-    define ('config_weather_location',      'Würzburg');
+    define ('config_weather_location',      'Germany/Bayern/Würzburg');
  
   /**
     * Is there a key for the service?
@@ -115,5 +115,10 @@
     * Path of smartVISU
     */
     define ('const_path',                   dirname(__FILE__).'/');
+
+  /**
+    * Path of smartVISU system files
+    */
+    define ('const_path_system',            const_path.'lib/');
 
 ?>

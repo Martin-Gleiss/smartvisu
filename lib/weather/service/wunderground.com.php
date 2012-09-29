@@ -23,33 +23,45 @@
         $wlang = strtoupper($lang);
     
     // api call 
-    $url = 'http://api.wunderground.com/api/'.config_weather_key.'/conditions/forecast/lang:' . $wlang . '/q/' . $location . '.json';
-    $parsed_json = json_decode(file_get_contents($url));
+    $cache = new class_cache('wunderground_'.$location.'.xml');
     
-    // today
-    $weather['city'] = (string)$parsed_json->{'current_observation'}->{'display_location'}->{'city'};
-    
-    if (config_lang == 'de')
-        $weather['current']['temp'] = (int)$parsed_json->{'current_observation'}->{'temp_c'}.'&deg;C';
+    if ($cache->hit())
+        $parsed_json = json_decode($cache->read());
     else
-        $weather['current']['temp'] = (int)$parsed_json->{'current_observation'}->{'temp_f'}.'&deg;F';
-    
-    $weather['current']['conditions']   = (string)$parsed_json->{'current_observation'}->{'weather'};
-    $weather['current']['icon']         = icon((string)$parsed_json->{'current_observation'}->{'icon'});
-    $weather['current']['wind']         = (string)$parsed_json->{'current_observation'}->{'wind_string'}; 
-    $weather['current']['more']         = (string)$parsed_json->{'current_observation'}->{'relative_humidity'};
-
-    // forecast
-    $i=0;
-    foreach($parsed_json->{'forecast'}->{'simpleforecast'}->{'forecastday'} as $day) {
-        $weather['forecast'][$i]['date']        = (string)$day->{'date'}->{'weekday'};
-        $weather['forecast'][$i]['conditions']  = (string)$day->{'conditions'}; 
-        $weather['forecast'][$i]['icon']        = icon((string)$day->{'icon'});
-        $weather['forecast'][$i]['temp']        = (int)$day->{'low'}->{'celsius'}.'&deg; / '.(int)$day->{'high'}->{'celsius'}.'&deg;';
-        $i++;
+    {
+        $url = 'http://api.wunderground.com/api/'.config_weather_key.'/conditions/forecast/lang:' . $wlang . '/q/' . $location . '.json';
+        $parsed_json = json_decode(file_get_contents($url));
     }
-
-    echo json_encode($weather);
+      
+    if($parsed_json)
+    {
+        // today
+        $weather['city'] = (string)$parsed_json->{'current_observation'}->{'display_location'}->{'city'};
+        
+        if (config_lang == 'de')
+            $weather['current']['temp'] = (int)$parsed_json->{'current_observation'}->{'temp_c'}.'&deg;C';
+        else
+            $weather['current']['temp'] = (int)$parsed_json->{'current_observation'}->{'temp_f'}.'&deg;F';
+        
+        $weather['current']['conditions']   = (string)$parsed_json->{'current_observation'}->{'weather'};
+        $weather['current']['icon']         = icon((string)$parsed_json->{'current_observation'}->{'icon'});
+        $weather['current']['wind']         = (string)$parsed_json->{'current_observation'}->{'wind_string'}; 
+        $weather['current']['more']         = (string)$parsed_json->{'current_observation'}->{'relative_humidity'};
+    
+        // forecast
+        $i=0;
+        foreach($parsed_json->{'forecast'}->{'simpleforecast'}->{'forecastday'} as $day) {
+            $weather['forecast'][$i]['date']        = (string)$day->{'date'}->{'weekday'};
+            $weather['forecast'][$i]['conditions']  = (string)$day->{'conditions'}; 
+            $weather['forecast'][$i]['icon']        = icon((string)$day->{'icon'});
+            $weather['forecast'][$i]['temp']        = (int)$day->{'low'}->{'celsius'}.'&deg; / '.(int)$day->{'high'}->{'celsius'}.'&deg;';
+            $i++;
+        }
+    
+        echo json_encode($weather);
+    } 
+    else
+        header("HTTP/1.0 404 Not Found");
     
     
 // -----------------------------------------------------------------------------

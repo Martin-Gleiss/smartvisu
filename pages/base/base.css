@@ -318,16 +318,22 @@ hr {
 
 .block {
     width: 100%;
-    text-align: center;
 }
-
+   
 @media all and (min-width: 900px) {
     .block { 
         width: 50%;
         float: left;
-        text-align: center;
     }
 }       
+
+.block .image {
+    margin: 0px 5px 13px 5px;
+}
+
+.block .image img {
+    width: 100%;
+}
 
 .block .ui-collapsible-set {
     margin: 5px 15px 13px 13px;
@@ -348,7 +354,6 @@ hr {
     padding: 10px 5px 10px 5px;
 }   
     
-
 .block .ui-bar-c {
     margin: 5px 5px 0px 5px;
 }

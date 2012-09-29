@@ -12,13 +12,34 @@
 
 {% block sidebar %}
      
-    Special Menü
+    <ul data-role="listview" data-dividertheme="c"> 
+    
+    	<li data-role="list-divider">Spezial</li>
+        <li data-icon="false">
+            <a href="index.php?page=special_weather">
+                <img class="icon" src="{{ icon0 }}meld_service.png"/><h3>Wetter</h3>
+            </a>
+        </li>
+        <li data-icon="false">
+            <a href="index.php?page=credits">
+                <img class="icon" src="{{ icon0 }}zeit_notiz.png"/><h3>Credits</h3>
+            </a>
+        </li>
+        <li data-icon="false">
+            <a href="index.php?page=copyright">
+                <img class="icon" src="{{ icon0 }}zeit_notiz.png"/><h3>Copyright</h3>
+            </a>
+        </li>
+        
+    </ul>
     
 {% endblock %}
 
 {% block content %}
 
-    Special Content
+    <h3><img class="icon" src='{{ icon0 }}it_pc.png'/>Special</h3>
+    
+    <a href="index.php?page=special_weather">Wetter</a>
     
 {% endblock %}
 

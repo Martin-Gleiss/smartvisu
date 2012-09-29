@@ -15,7 +15,8 @@
     {% import "lib.html" as lib %}
     {{ lib.updatecheck() }}
                     
-    {{ lib.digiclock('clock') }}    
+    {% import "clock.html" as clock %}
+    {{ clock.digiclock('clock') }}    
     
     <div class="center">
        {{ now|date('l') }}, {{ now|date('d.m.Y') }}
@@ -23,11 +24,12 @@
     
     <hr>
     
-    {{ lib.weather('weather') }}    
+    {% import "weather.html" as weather %}
+    {{ weather.current('weather') }}    
     
     <hr>
     
-    {{ lib.forecastweek('weather_forecast') }}    
+    {{ weather.forecastweek('weather_forecast') }}    
     
     <hr>
  
