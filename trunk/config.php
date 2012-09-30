@@ -51,7 +51,7 @@
     * smartVISU supports different projects, located under 'pages'
     * this ist the directory for your project    
     */
-    define ('config_pages',                 'gleiss');
+    define ('config_pages',                 'docu');
    
   /**
     * Select your language. Some widgets are multilanguage 
@@ -115,10 +115,5 @@
     * Path of smartVISU
     */
     define ('const_path',                   dirname(__FILE__).'/');
-
-  /**
-    * Path of smartVISU system files
-    */
-    define ('const_path_system',            const_path.'lib/');
 
 ?>

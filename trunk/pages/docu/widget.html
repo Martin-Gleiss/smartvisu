@@ -23,7 +23,7 @@
     {% endif %}
    
     <br /><hr /><br />
-    
+              
     {% set widget = page|substr(7)|replace({'_': '.'}) %}
     
     {% if pagepath != '' and widget != pagepath %}
@@ -50,8 +50,8 @@
         
         {% block example %}{% endblock %}
         
-        <div style="clear:left;"></div>
-        <br /><hr />
+        <div style="clear:left;"><br /></div>
+        <hr />
         
         <div class="mini">Author: {{ widgetlist[widget].author }}</div>
     </div>
