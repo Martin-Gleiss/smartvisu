@@ -19,7 +19,7 @@ buero_heizung_nacht =
 wassersaeule_1_schalten = 
 wassersaeulen_auto = 1
 bad_licht_led_schalten = 1
-bad_licht_spiegel_schalten = 
+bad_licht_spiegel_schalten = 1
 bad_licht_decke_6_schalten = 
 bad_licht_wand_schalten = 
 bad_licht_decke_3_schalten = 
@@ -53,4 +53,3 @@ buero_jalousie_position = 60
 buero_jalousie_lamelle = 30
 buero_licht_schalten = 0
 buero_szene_arbeit = 1
-

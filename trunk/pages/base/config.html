@@ -17,7 +17,7 @@
     {% import "forms.html" as forms %}
     <form>
     <fieldset>
-    
+              
         <div class="block">
         <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
         
@@ -35,7 +35,7 @@
                 </div>
                 
                 <div data-role="fieldcontain">
-                    <label for="driver_address">Address<br /><span class="mini">URL / IP</span></label>
+                    <label for="driver_address">Address<br /><span class="note">URL / IP</span></label>
                     <input type="text" name="driver_address" id="driver_address" />
                     {{ forms.text_init('driver_address', driver_address|e ) }}
                 </div>
@@ -83,11 +83,12 @@
                	</div>
                 
                 <div data-role="fieldcontain">
-    				<label for="lang" class="select">Language<br /><span class="mini">*for some widgets</span></label>
+    				<label for="lang" class="select">Language</label>
     				<select name="lang" id="lang" data-native-menu="false">
     				    <option value="en">english</option>
                         <option value="de">german</option>
                     </select>
+                    <div class="note">*for some widgets</div>
                     {{ forms.select_init('lang', lang) }}
                	</div>
                 
@@ -130,8 +131,9 @@
                 </div>
                 
                 <div data-role="fieldcontain">
-                    <label for="weather_key">Key<br /><span class="mini">*if service requiers one</span></label>
+                    <label for="weather_key">Key</label>
                     <input type="text" name="weather_key" id="weather_key" />
+                    <div class="note">*if service requiers one</div>
                     {{ forms.text_init('weather_key', weather_key|e ) }}
                 </div>
             </div>

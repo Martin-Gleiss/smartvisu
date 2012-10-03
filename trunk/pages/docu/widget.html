@@ -53,7 +53,15 @@
         <div style="clear:left;"><br /></div>
         <hr />
         
-        <div class="mini">Author: {{ widgetlist[widget].author }}</div>
+        <div class="mini">
+            Author: {{ widgetlist[widget].author }}
+            {% if widgetlist[widget].info %}
+            - {{ widgetlist[widget].info }}
+            {% endif %}
+            {% if widgetlist[widget].link %}
+            - <a href="http://{{ widgetlist[widget].link }}" target="_blank">{{ widgetlist[widget].link }}</a>
+            {% endif %}
+        </div>
     </div>
 
     {% else %}

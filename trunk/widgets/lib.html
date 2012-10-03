@@ -9,6 +9,27 @@
 
 
 /**
+ * Widget to place an app-symbol
+ * If you write a app by yourself, place a @title, @icon, @color tag in your
+ * header. These tags are used to display the symbol   
+ * 
+ * @param        the name of the app (located in pages/apps) 
+ * @param        a titel of the app
+ */
+{% macro app(name, title) %}
+
+    {% set app = docu('pages/apps/' ~ name ~ '.html') %}
+    
+    <div class="app">
+        <a href="index.php?page={{ name }}">
+            <div class="image" style="background-color: #{{ app.color }};"><img src="{{ app.icon }}"></div>
+            <div>{{ title|default(app.title) }}</div>
+        </a>
+    </div>
+{% endmacro %}
+
+
+/**
  * Check for new updates of smartVISU
  */ 
 {% macro updatecheck( ) %}

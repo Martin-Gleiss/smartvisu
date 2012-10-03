@@ -21,6 +21,7 @@
     
      
     if ( is_file(const_path."pages/".config_pages."/".$request['page'].".html")
+        or is_file(const_path."pages/apps/".$request['page'].".html")
         or is_file(const_path."pages/base/".$request['page'].".html") )
     {
         // init template engine
@@ -33,6 +34,7 @@
             $path[] = const_path.'pages/'.config_pages.'/'.$pagepath;
         }
         $path[] = const_path.'pages/'.config_pages;
+        $path[] = const_path.'pages/apps';
         $path[] = const_path.'pages/base';
         $path[] = const_path.'widgets';
         
@@ -200,44 +202,52 @@
         // Body 
         preg_match_all('#\/\*\*\r\n(.+?)\*\/.+?\{\% macro(.+?)\%\}#is', strstr($file, '*/'), $widgets);
         
-        foreach ($widgets[2] as $no => $macro)
+        if (count($widgets[2]) > 0)
         {
-            preg_match_all('#(.+?)\((.+?)\)#i', $macro, $desc);
-            $rettmp[$no]['name'] = trim($desc[1][0]);
-            $rettmp[$no]['params'] = trim($desc[2][0]);
-        }
-        
-        foreach ($widgets[1] as $no => $docu)
-        {
-            $rettmp[$no]['desc'] = trim(str_replace('* ', '', substr($docu, 0, strpos($docu, '@'))));
-        
-            // Header-Tags 
-            foreach ($header[1] as $headerno => $headertag)
-                $rettmp[$no][$headertag] = trim($header[2][$headerno]);    
-            $rettmp[$no]['subpackage'] = substr(strtolower(basename($filename)), 0, -5);
-            $rettmp[$no]['command'] = $rettmp[$no]['subpackage'].".".$rettmp[$no]['name'];
-            $rettmp[$no]['call'] = $rettmp[$no]['command']."(".$rettmp[$no]['params'].")";
-        
-            // Widget-Tags
-            preg_match_all('#.+?@(.+?)\W+(.*)#i', $docu, $tags);
-            
-            $param = 0;
-            $params = explode(',', $rettmp[$no]['params']);
-            
-            foreach($tags[1] as $id => $tag)
+            foreach ($widgets[2] as $no => $macro)
             {
-                if ($tag == 'param')
+                preg_match_all('#(.+?)\((.+?)\)#i', $macro, $desc);
+                $rettmp[$no]['name'] = trim($desc[1][0]);
+                $rettmp[$no]['params'] = trim($desc[2][0]);
+            }
+            
+            foreach ($widgets[1] as $no => $docu)
+            {
+                $rettmp[$no]['desc'] = trim(str_replace('* ', '', substr($docu, 0, strpos($docu, '@'))));
+            
+                // Header-Tags 
+                foreach ($header[1] as $headerno => $headertag)
+                    $rettmp[$no][$headertag] = trim($header[2][$headerno]);    
+                $rettmp[$no]['subpackage'] = substr(strtolower(basename($filename)), 0, -5);
+                $rettmp[$no]['command'] = $rettmp[$no]['subpackage'].".".$rettmp[$no]['name'];
+                $rettmp[$no]['call'] = $rettmp[$no]['command']."(".$rettmp[$no]['params'].")";
+            
+                // Widget-Tags
+                preg_match_all('#.+?@(.+?)\W+(.*)#i', $docu, $tags);
+                
+                $param = 0;
+                $params = explode(',', $rettmp[$no]['params']);
+                
+                foreach($tags[1] as $id => $tag)
                 {
-                    $rettmp[$no]['param'][trim($params[$param++])] = trim($tags[2][$id]);     
-                }
-                else
-                    $rettmp[$no][$tag] = trim($tags[2][$id]);     
-            }    
+                    if ($tag == 'param')
+                    {
+                        $rettmp[$no]['param'][trim($params[$param++])] = trim($tags[2][$id]);     
+                    }
+                    else
+                        $rettmp[$no][$tag] = trim($tags[2][$id]);     
+                }    
+            }
+    	               
+    	    foreach ($rettmp as $attributes)
+    	       $ret[$attributes['subpackage'].'.'.$attributes['name']] = $attributes;
         }
-	               
-	    foreach ($rettmp as $attributes)
-	       $ret[$attributes['subpackage'].'.'.$attributes['name']] = $attributes;
-          
+        else
+        {
+            foreach($header[1] as $headerno => $headertag)
+                $ret[$headertag] = trim($header[2][$headerno]);
+        }
+         
         return $ret;
  	}      
 
