@@ -41,11 +41,11 @@
 /**
  * --- j Q u e r y M o b i l e -------------------------------------------------
  */
-
+ 
 .ui-header {
     text-align: center;
 	height: 62px;
-	border-bottom: 1px solid #555;
+	border-bottom: 1px solid #222;
 }  
     
 .ui-header .ui-left {
@@ -281,12 +281,12 @@ hr {
     -moz-border-radius: .2em;
 	-webkit-border-radius: .2em;
 	border-radius: .2em;
-   	background:   			#222  
-	background-image: -webkit-gradient(linear, left, left bottom, from(#fff), to(#ddd)); /* Saf4+, Chrome */
-	background-image: -webkit-linear-gradient(left, #fff, #ddd); /* Chrome 10+, Saf5.1+ */
-	background-image:    -moz-linear-gradient(left, #fff, #ddd); /* FF3.6 */
-	background-image:     -ms-linear-gradient(left, #fff, #ddd); /* IE10 */
-	background-image:      -o-linear-gradient(left, #fff, #ddd); /* Opera 11.10+ */
+   	background: #fff;  
+	background-image: -webkit-gradient(linear, left, left bottom, from(#fff), to(#ddd));
+	background-image: -webkit-linear-gradient(left, #fff, #ddd);
+	background-image:    -moz-linear-gradient(left, #fff, #ddd);
+	background-image:     -ms-linear-gradient(left, #fff, #ddd);
+	background-image:      -o-linear-gradient(left, #fff, #ddd);
 	background-image:         linear-gradient(left, #fff, #ddd);
 }
 
@@ -318,6 +318,7 @@ hr {
 
 .block {
     width: 100%;
+    text-align: center;
 }
    
 @media all and (min-width: 900px) {
@@ -336,7 +337,7 @@ hr {
 }
 
 .block .ui-collapsible-set {
-    margin: 5px 15px 13px 13px;
+    margin: 5px 5px 13px 3px;
 }
 
 .block .set-1 .ui-collapsible-content {
@@ -368,23 +369,54 @@ hr {
     text-align: left;
     border-bottom: 0px;
 }
-   
-.block .ui-field-contain label {
-    display: inline-block;
-    margin: 0 2% 0 0;
-    vertical-align: top;
-    width: 30%; 
-    font-size: 16px;  
+
+.block .ui-field-contain .note {
+    text-align: right;
+    font-size: 12px;
 }
 
-.block .ui-field-contain label .mini {
-    font-size: 12px;
+.block .ui-field-contain input + .note {
+    margin-top: 3px;
 }
 
  
 /**
  * -----------------------------------------------------------------------------
  */
+
+.app {
+    margin-bottom: 4px;
+    float: left;  
+    text-align: center;  
+}
+ 
+.app a:link { text-decoration:none; }
+.app a:visited { text-decoration:none; }
+.app a:focus { text-decoration:none; }
+.app a:hover { text-decoration:none; }
+.app a:active { text-decoration:none; }
+ 
+.app .image {
+    margin: 4px;
+    height: 64px;
+    width: 64px;
+    float: left;
+    background-color: #111;
+    background-image: url('pics/app.png');
+    -moz-border-radius: .7em;
+	-webkit-border-radius: .7em;
+	border-radius: .7em;
+ }
+ 
+.app .image img{
+    height: 64px;
+    width: 64px;
+ }
+ 
+.app + p {
+    margin: 4px 0px 4px 76px;
+}
+ 
  .docu .macro {
     font-size: 18px;
  }

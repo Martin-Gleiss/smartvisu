@@ -11,14 +11,25 @@
 {% extends "base.html" %}
 
 {% block sidebar %}
+     
+    <ul data-role="listview" data-dividertheme="c"> 
     
-    Special Menü
+    	<li data-role="list-divider">Apps</li>
+        <li data-icon="false">
+            <a href="index.php?page=app_weather">
+                <img class="icon" src="{{ icon0 }}meld_service.png"/><h3>Wetter</h3>
+            </a>
+        </li>
+    
+    </ul>
     
 {% endblock %}
 
 {% block content %}
 
-    Special Content
+    <h3>Apps</h3>
+    
+    {{ lib.app('app_weather', 'Wetter') }}
     
 {% endblock %}
 

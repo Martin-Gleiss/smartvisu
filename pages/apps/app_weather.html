@@ -4,17 +4,21 @@
  * @author      Martin Gleiß
  * @copyright   2012
  * @license     GPL <http://www.gnu.de>
+ * 
+ * @title       Weather
+ * @icon        icons/ws/wetter_bewoelkt.png
+ * @color       #2f5bc4
  * ----------------------------------------------------------------------------- 
  */
  
 
-{% extends "special.html" %}
+{% extends "apps.html" %}
 
 {% block content %}
 
-    <h3><img class="icon" src='{{ icon0 }}it_pc.png'/>Wetter</h3>
+    <h3>Wetter</h3>
     
-    {% import   "weather.html" as weather %}
+    {% import   "weather.html" as weather  %}
     
     {{ weather.map ('day', 'Tag', 'day') }}
     {{ weather.map ('day', 'Nacht', 'night') }}

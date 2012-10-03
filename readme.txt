@@ -82,7 +82,14 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 1.7
+    - new featuer: Apps (a complete html-page, witch can be easily used in your
+      project. Use lib.app('NAME OF APP'). All apps are located in pages/apps
     - basic.symbol now with text
+    - new widget-file: widgets/weather.html with weather.map, weather.mapslides
+    - new widget-file: widgets/clock.html
+    - pages/project folders now support subdirectories
+    - improved forms
+    - update lib/jQueryMobile 1.2.0
  
 v 1.6  25.09.2012
     - weather-widget now configurable
@@ -93,7 +100,7 @@ v 1.6  25.09.2012
       get your location at: http://www.yr.no
     - iPad improvements
     - fixed basic.glue
-    - update lib/jquery 1.8.2
+    - update lib/jQuery 1.8.2
     - update lib/Twig 1.92
 
 v 1.5 01.08.12
