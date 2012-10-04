@@ -82,7 +82,7 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 1.7
-    - new featuer: Apps (a complete html-page, witch can be easily used in your
+    - new feature: Apps (a complete html-page, witch can be easily used in your
       project. Use lib.app('NAME OF APP'). All apps are located in pages/apps
     - basic.symbol now with text
     - new widget-file: widgets/weather.html with weather.map, weather.mapslides
@@ -112,7 +112,8 @@ v 1.5 01.08.12
     - update lib/jQueryMobile 1.1.1
     
 v 1.4 02.07.12
-    - New and official "smartVISU" - Logo
+    - New and official "smartVISU" - Logo 
+      special thanks to by Björn Bertschy
     - position fixed on MainMenu
     - smother scrolling, better responsive design
     
