@@ -18,12 +18,12 @@
  */
 {% macro app(name, title) %}
 
-    {% set app = docu('pages/apps/' ~ name ~ '.html') %}
+    {% set app = docu('pages/apps/'~name~'.html') %}
     
     <div class="app">
         <a href="index.php?page={{ name }}">
             <div class="image" style="background-color: #{{ app.color }};"><img src="{{ app.icon }}"></div>
-            <div>{{ title|default(app.title) }}</div>
+            <div>{{ title|default(app.title|e) }}</div>
         </a>
     </div>
 {% endmacro %}
