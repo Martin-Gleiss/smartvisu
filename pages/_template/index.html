@@ -14,8 +14,24 @@
 
     {% import "lib.html" as lib %}
     {{ lib.updatecheck() }}
+                    
+    {% import "clock.html" as clock %}
+    {{ clock.digiclock('clock') }}    
     
-    <p>Welcome!</p>
+    <div class="center">
+       {{ now|date('l') }}, {{ now|date('d.m.Y') }}
+    </div> 
+    
+    <hr>
+    
+    {% import "weather.html" as weather %}
+    {{ weather.current('weather') }}    
+    
+    <hr>
+    
+    {{ weather.forecastweek('weather_forecast') }}    
+    
+    <hr>
 
 {% endblock %}
 
