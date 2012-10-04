@@ -59,7 +59,7 @@
                 <div data-role="fieldcontain">
     				<label for="pages" class="select">Pages</label>
     				<select name="pages" id="pages" data-native-menu="false">
-    				    {% for file in dir('pages', '^(?!base)(.+?)') %}
+    				    {% for file in dir('pages', '^(?!base|apps)(.+?)') %}
                         <option value="{{ file.name }}">{{ file.label }}</option>
                         {% endfor %}
                     </select>

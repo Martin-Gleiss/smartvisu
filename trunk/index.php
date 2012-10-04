@@ -179,7 +179,7 @@
             if ($item != '.' and $item != '..' and$item != '.svn' and substr($item, 0, 1) != '_')
             {
                 if (preg_match("#".$filter."$#i", $item, $itemparts) > 0)
-                    $ret[] = array("name" => $itemparts[1], "label" => ucfirst($itemparts[1]));
+                    $ret[] = array("file" => $itemparts[0], "name" => $itemparts[1], "label" => ucfirst($itemparts[1]));
 		    }
    		}
    		

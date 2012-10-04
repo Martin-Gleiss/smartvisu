@@ -16,15 +16,15 @@
 
 {% block content %}
 
-    <h3>Wetter</h3>
+    <h3>Weather</h3>
     
     {% import   "weather.html" as weather  %}
     
-    {{ weather.map ('day', 'Tag', 'day') }}
-    {{ weather.map ('day', 'Nacht', 'night') }}
-    {{ weather.map ('day', 'Aussichten', 'forecast') }}
-    {{ weather.map ('day', 'Wind', 'wind') }}
-    {{ weather.map ('day', 'Europawetter', 'europe') }}
+    {{ weather.map ('day', 'Day', 'day') }}
+    {{ weather.map ('day', 'Night', 'night') }}
+    {{ weather.map ('day', 'Forecast', 'forecast') }}
+    {{ weather.map ('day', 'Winds', 'wind') }}
+    {{ weather.map ('day', 'Europe', 'europe') }}
 
     <div style="clear:left;"></div>
     <hr />

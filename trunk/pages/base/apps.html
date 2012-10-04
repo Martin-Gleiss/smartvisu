@@ -11,10 +11,16 @@
 {% extends "base.html" %}
 
 {% block sidebar %}
-    
+     
 {% endblock %}
 
 {% block content %}
 
+    <h3>Apps</h3>
+    
+    {% for file in dir('pages/apps', 'app_(.+?).html') %}
+        {{ lib.app('app_'~file.name) }}
+    {% endfor %}
+    
 {% endblock %}
 
