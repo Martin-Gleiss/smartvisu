@@ -116,4 +116,8 @@
     */
     define ('const_path',                   dirname(__FILE__).'/');
 
+  /**
+    * Path of system-directory
+    */
+    define ('const_path_system',            const_path.'lib/'); 
 ?>
