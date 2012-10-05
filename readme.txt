@@ -82,8 +82,9 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 1.7
-    - new feature: Apps (a complete html-page, witch can be easily used in your
-      project. Use lib.app('NAME OF APP'). All apps are located in pages/apps
+    - new feature: Apps (an app is a complete html-page, witch can be easily
+      used in your project. Use lib.app('NAME OF APP') to use one.
+      All apps are located in pages/apps
     - basic.symbol now with text
     - new widget-file: widgets/weather.html with weather.map, weather.mapslides
     - new widget-file: widgets/clock.html
@@ -91,7 +92,7 @@ v 1.7
     - improved forms
     - update lib/jQueryMobile 1.2.0
  
-v 1.6  25.09.2012
+v 1.6  25.09.12
     - weather-widget now configurable
     - weather-widget with new service: wunderground.com
       generate your key for free at: http://www.wunderground.com/weather/api/

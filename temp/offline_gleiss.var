@@ -50,6 +50,7 @@ bad_heizung_frost =
 bad_heizung_schalten = 
 wassersaeule_2_schalten = 
 buero_jalousie_position = 60
-buero_jalousie_lamelle = 30
+buero_jalousie_lamelle = 80
 buero_licht_schalten = 0
 buero_szene_arbeit = 1
+
