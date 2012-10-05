@@ -20,7 +20,7 @@
     $lang = $request['lang'];
     
     // api call 
-    $cache = new class_cache('yr.no_'.strstr($location, '/').'.xml');
+    $cache = new class_cache('yr.no_'.substr(strrchr($location, '/'), 1).'.xml');
     
     if ($cache->hit())
         $xml = simplexml_load_string($cache->read());

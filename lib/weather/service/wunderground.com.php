@@ -10,6 +10,7 @@
 
     // get config-variables 
     require_once '../../../config.php';
+    require_once const_path_system.'class_cache.php';
     
     // init parameters
     $request = array_merge($_GET, $_POST);
@@ -23,14 +24,14 @@
         $wlang = strtoupper($lang);
     
     // api call 
-    $cache = new class_cache('wunderground_'.$location.'.xml');
+    $cache = new class_cache('wunderground_'.$location.'.json');
     
     if ($cache->hit())
         $parsed_json = json_decode($cache->read());
     else
     {
-        $url = 'http://api.wunderground.com/api/'.config_weather_key.'/conditions/forecast/lang:' . $wlang . '/q/' . $location . '.json';
-        $parsed_json = json_decode(file_get_contents($url));
+        $url = 'http://api.wunderground.com/api/'.config_weather_key.'/conditions/forecast/lang:'.$wlang.'/q/'.$location.'.json';
+        $parsed_json = json_decode($cache->write(file_get_contents($url)));
     }
       
     if($parsed_json)

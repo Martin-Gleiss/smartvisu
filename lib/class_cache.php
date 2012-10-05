@@ -21,7 +21,11 @@ class class_cache
     
     public function __construct($id)
 	{
-        $this->file = 'temp/cache_'.strtolower($id);
+	    $set = array(
+            "[ ]" => "_", "[ä]" => "ae", "[ö]" => "oe", "[ü]" => "ue", "[ß]" => "ss", 
+            "'[^\w.-]'" => "", "'(_+)'" => "_");
+		
+		$this->file = 'temp/'.preg_replace(array_keys($set), array_values($set), strtolower($id));
     }
 
             
