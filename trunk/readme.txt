@@ -81,17 +81,22 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
-v 1.7
+v 1.7 06.10.12
     - new feature: Apps (an app is a complete html-page, witch can be easily
       used in your project. Use lib.app('NAME OF APP') to use one.
       All apps are located in pages/apps
+    - App: Impressions Frankfurt, Impressions Würzburg
+    - App: Weather Tagesschau
     - basic.symbol now with text
     - new widget-file: widgets/weather.html with weather.map, weather.mapslides
     - new widget-file: widgets/clock.html
+    - cacheing for remote-calls
     - pages/project folders now support subdirectories
     - improved forms
+    - favicon
     - update lib/jQueryMobile 1.2.0
- 
+    - smartVISU moved to code.google.com 
+    
 v 1.6  25.09.12
     - weather-widget now configurable
     - weather-widget with new service: wunderground.com
