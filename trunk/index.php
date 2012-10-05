@@ -28,25 +28,24 @@
         require_once const_path.'lib/Twig/Autoloader.php';
         Twig_Autoloader::register();
         
+        $loader = new Twig_Loader_Filesystem(const_path.'pages/'.config_pages);
+        
         if (dirname($request['page']) != '.')
-        {
-            $pagepath = dirname($request['page']);
-            $path[] = const_path.'pages/'.config_pages.'/'.$pagepath;
-        }
-        $path[] = const_path.'pages/'.config_pages;
-        $path[] = const_path.'pages/apps';
-        $path[] = const_path.'pages/base';
-        $path[] = const_path.'widgets';
+            $loader->addPath(const_path.'pages/'.config_pages.'/'.dirname($request['page']));
         
-        $loader = new Twig_Loader_Filesystem($path);
+        $loader->addPath(const_path.'pages/apps');
+        $loader->addPath(const_path.'pages/base');
+        $loader->addPath(const_path.'widgets');
         
-        $parm = array();
+        
+        // get environment
+        $twig = new Twig_Environment($loader);
         
         if (config_cache)
-            $parm['cache'] = dirname(__FILE__).'/temp';
+            $twig->setCache(dirname(__FILE__).'/temp');
         
-        $twig = new Twig_Environment($loader, $parm);
         
+        // get lexer
     	$lexer = new Twig_Lexer($twig, array(
     		'tag_comment'  => array('/**', '*/'),
     		'tag_block'    => array('{%', '%}'),
@@ -62,7 +61,7 @@
                 
             $twig->addGlobal($key, $val);
         }
-        $twig->addGlobal('pagepath', $pagepath);
+        $twig->addGlobal('pagepath', dirname($request['page']));
         
         if (config_design == 'ice')
         {
