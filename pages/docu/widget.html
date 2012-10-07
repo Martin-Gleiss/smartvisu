@@ -51,17 +51,25 @@
         {% block example %}{% endblock %}
         
         <div style="clear:left;"><br /></div>
+        
+        {% if widgetlist[widget].author or widgetlist[widget].info or widgetlist[widget].link %}
         <hr />
         
         <div class="mini">
+            {% if widgetlist[widget].author %}
             Author: {{ widgetlist[widget].author }}
-            {% if widgetlist[widget].info %}
-            - {{ widgetlist[widget].info }}
             {% endif %}
+            
+            {% if widgetlist[widget].info %}
+            {{ widgetlist[widget].info }}
+            {% endif %}
+            
             {% if widgetlist[widget].link %}
             - <a href="http://{{ widgetlist[widget].link }}" target="_blank">{{ widgetlist[widget].link }}</a>
             {% endif %}
         </div>
+        {% endif %}
+        
     </div>
 
     {% else %}

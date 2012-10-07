@@ -44,6 +44,6 @@
     	fclose($fp);
     	}
     
-    echo "smartVISU > config.php saved";
+    echo "true";
     
 ?>

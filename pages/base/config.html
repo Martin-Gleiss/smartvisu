@@ -150,9 +150,16 @@
     /** Events */
     <script type="text/javascript">    
         $('form').submit(function() {  
-            $.post('pages/base/configure.php', $(this).serialize(), function(data){  
-                $('#form-info').html(data);
-                location.reload();
+            $.post('pages/base/configure.php', $(this).serialize(), function(data){ 
+                $('#alert').show();
+                
+                if (data == 'true') {
+                    $('#alert img').attr('src', 'pages/base/pics/alert_ok.png');
+                    location.reload();
+                } else {
+                    $('#alert img').attr('src', 'pages/base/pics/alert_error.png');
+                }
+            
             });
             return false;
         });  
