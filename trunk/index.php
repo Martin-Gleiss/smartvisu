@@ -215,8 +215,12 @@
                 $rettmp[$no]['desc'] = trim(str_replace('* ', '', substr($docu, 0, strpos($docu, '@'))));
             
                 // Header-Tags 
-                foreach ($header[1] as $headerno => $headertag)
-                    $rettmp[$no][$headertag] = trim($header[2][$headerno]);    
+                foreach($header[1] as $headerno => $headertag)
+                {
+                    if ( !($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß") )
+                        $ret[$headertag] = trim($header[2][$headerno]);
+                }
+                
                 $rettmp[$no]['subpackage'] = substr(strtolower(basename($filename)), 0, -5);
                 $rettmp[$no]['command'] = $rettmp[$no]['subpackage'].".".$rettmp[$no]['name'];
                 $rettmp[$no]['call'] = $rettmp[$no]['command']."(".$rettmp[$no]['params'].")";
@@ -244,7 +248,10 @@
         else
         {
             foreach($header[1] as $headerno => $headertag)
-                $ret[$headertag] = trim($header[2][$headerno]);
+            {
+                if ( !($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß") )
+                    $ret[$headertag] = trim($header[2][$headerno]);
+            }
         }
          
         return $ret;

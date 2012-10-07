@@ -12,6 +12,49 @@
 
 {% block sidebar %}
      
+     {% if page=='apps' %}
+     
+         {% for file in dir('pages/apps', 'app_(.+?).html') %}
+            
+            {% set app = docu('pages/apps/app_'~file.name~'.html') %}
+            
+            <div class="hide" id="{{ page }}-{{ file.name }}-docu">    
+            
+            <div class="app">
+                <div class="image" style="background-color: #{{ app.color }};"><img src="{{ app.icon }}"></div>
+            </div>
+            
+            <h3 style="padding-top: 40px;">{{ app.title|e }}</h3>
+            
+            {{ app.description }}
+            
+            {% if app.info or app.link %}
+            <hr />
+            {% endif %}
+            
+            {% if app.info %}
+            {{ app.info }} <br />
+            {% endif %}
+            {% if app.link %}
+            <a href="http://{{ app.link }}" target="_blank">{{ app.link }}</a> <br />
+            {% endif %}
+            
+            {% if app.author or app.version %}
+            <hr />
+            {% endif %}
+            
+            {% if app.author %}
+            Author: {{ app.author }}<br />
+            {% endif %}
+            {% if app.version %}
+            <div class="mini">Version: {{ app.version }}</div>
+            {% endif %}
+            
+            </div>
+        {% endfor %}
+    
+    {% endif %}
+      
 {% endblock %}
 
 {% block content %}
@@ -19,7 +62,21 @@
     <h3>Apps</h3>
     
     {% for file in dir('pages/apps', 'app_(.+?).html') %}
+        <span id="{{ page }}-{{ file.name }}">
         {{ lib.app('app_'~file.name) }}
+        </span>
+        
+        <script type="text/javascript">   
+        $('#{{ page }}').live('pagecreate', function(event, ui){ 
+                                    
+            $('#{{ page }}-{{ file.name }}').mouseover(function(){
+                $('#{{ page }}-{{ file.name }}-docu').show();
+            }).mouseout(function(){
+                $('#{{ page }}-{{ file.name }}-docu').hide();
+            });
+        });
+        </script> 
+    
     {% endfor %}
     
 {% endblock %}
