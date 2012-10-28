@@ -90,7 +90,7 @@
     * @value    google: google api (deprecated)
     * @value    wunderground: get key: http://www.wunderground.com/weather/api/     
     */
-    define ('config_weather_service',       'offline');
+    define ('config_weather_service',       'yr.no');
 
   /**
     * What is the default location?

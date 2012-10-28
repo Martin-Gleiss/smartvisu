@@ -19,7 +19,7 @@ SYSTEMREQUIREMENTS
     -   KNX-Bus
     -   eibd, linknx
     -   Webserver with PHP 5.2.4 
-    -   Firefox, Chrome, IE, Safari, iPphone, iPad, Android Phone or Android 
+    -   Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android 
         Tablet
  
  
@@ -77,10 +77,14 @@ TODO
     -       Main: Alert function
     -       Buttons: change icon
     -       Buttons: pressed short / long
+    -       Szenes
  
 
 HISTORY
 --------------------------------------------------------------------------------
+v 1.8
+    - Apps with more docu
+    
 v 1.7 06.10.12
     - new feature: Apps (an app is a complete html-page, witch can be easily
       used in your project. Use lib.app('NAME OF APP') to use one.
@@ -107,7 +111,7 @@ v 1.6  25.09.12
     - iPad improvements
     - fixed basic.glue
     - update lib/jQuery 1.8.2
-    - update lib/Twig 1.92
+    - update lib/Twig 1.9.2
 
 v 1.5 01.08.12
     - New basic-widget: "basic.smybol" to display a gad
