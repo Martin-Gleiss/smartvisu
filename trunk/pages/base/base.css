@@ -590,3 +590,32 @@ hr {
 }
 
 
+.phonelist h2 {
+    font-size: 12pt;
+    margin-bottom: 4px;
+}
+
+.phonelist ul {
+    margin: 0px !important;
+}
+
+.phonelist li {
+    padding: 0px !important;
+    height: 50px;
+}
+
+.phonelist a {
+    padding: 0 10px 0 60px !important;
+    height: 50px;
+}
+
+.phonelist img {
+    padding: 0px !important;
+    width: 48px;
+    height: 48px;
+}
+
+.phonelist h3 {
+    margin: 6px 0 6px 0;
+}
+

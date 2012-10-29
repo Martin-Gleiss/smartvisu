@@ -36,7 +36,7 @@
     /** Events */
     <script type="text/javascript">
         $('#{{ page }}').live('pagecreate',function(event, ui){
-            $.getJSON('lib/weather/service/{{ weather_service }}.php?location={{ location|default(weather_location) }}&lang={{ lang|default(en) }}', function(data) {
+            $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}&lang={{ config_lang|default(en) }}', function(data) {
                 $('#{{ page }}-{{ id }}-weather').css('background','url(lib/weather/pics/' + data.current.icon + '.png) 50% 0 no-repeat')
                 $('#{{ page }}-{{ id }}-weather .city').html(data.city);
                 $('#{{ page }}-{{ id }}-weather .cond').html(data.current.conditions);
@@ -77,7 +77,7 @@
     /** Events */
     <script type="text/javascript">
         $('#{{ page }}').live('pagecreate',function(event, ui){
-            $.getJSON('lib/weather/service/{{ weather_service }}.php?location={{ location|default(weather_location) }}&lang={{ lang|default(en) }}', function(data) {
+            $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}&lang={{ config_lang|default(en) }}', function(data) {
                 $('#{{ page }}-{{ id }}-forecast').css('background','url(lib/weather/pics/' + data.forecast[{{ day|default(1) }}].icon + '.png) 50% 0 no-repeat')
                 $('#{{ page }}-{{ id }}-forecast .city').html(data.city);
                 $('#{{ page }}-{{ id }}-forecast .cond').html(data.forecast[{{ day|default(1) }}].conditions);
@@ -110,7 +110,7 @@
     /** Events */
     <script type="text/javascript">
         $('#{{ page }}').live('pagecreate',function(event, ui){
-            $.getJSON('lib/weather/service/{{ weather_service }}.php?location={{ location|default(weather_location) }}&lang={{ lang|default(en) }}', function(data) {
+            $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}&lang={{ config_lang|default(en) }}', function(data) {
                 var forecast = '';
                 for (var i in data.forecast) {
                     forecast += '<div class=\'day\'>'

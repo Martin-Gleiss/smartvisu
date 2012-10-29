@@ -21,11 +21,10 @@ class class_cache
     
     public function __construct($id)
 	{
-	    $set = array(
-            "[ ]" => "_", "[ä]" => "ae", "[ö]" => "oe", "[ü]" => "ue", "[ß]" => "ss", 
-            "'[^\w.-]'" => "", "'(_+)'" => "_");
-		
-		$this->file = 'temp/'.preg_replace(array_keys($set), array_values($set), strtolower($id));
+	    $set = array("[ ]u" => "_", "[ä]u" => "ae", "[ö]u" => "oe", "[ü]u" => "ue", "[ß]u" => "ss", 
+            "'[^\w.-]'u" => "", "'(_+)'u" => "_");
+	                                                                                         
+	    $this->file = 'temp/'.preg_replace(array_keys($set), array_values($set), mb_strtolower($id, "UTF-8"));
     }
 
             

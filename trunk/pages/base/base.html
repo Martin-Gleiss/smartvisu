@@ -10,7 +10,7 @@
 
 <html> 
 	<head> 
-	<title>{{ title }}</title> 
+	<title>{{ config_title }}</title> 
 	
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,9 +26,9 @@
     <script type="text/javascript" src="lib/jQuery/jquery.mobile-1.2.0.min.js"></script>
     <script type="text/javascript" src="lib/base/jquery.mobile.slider.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="designs/{{ design }}.min.css" />
+	<link rel="stylesheet" type="text/css" href="designs/{{ config_design }}.min.css" />
 	<link rel="stylesheet" type="text/css" href="pages/base/base.css" />
-	<link rel="stylesheet" type="text/css" href="pages/{{ pages }}/visu.css" />
+	<link rel="stylesheet" type="text/css" href="pages/{{ config_pages }}/visu.css" />
 	<script type="text/javascript" src="widgets/knx.js"></script>
 
    {% import "lib.html" as lib %}
@@ -50,7 +50,7 @@
         </div>
         <div class="ui-right">
             <div class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span></div>
-            <div class="mini"><span id="miniclock">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ version }}</div>
+            <div class="mini"><span id="miniclock">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
         </div>
         <p id="alert" class="alert"><a href=""><img src="pages/base/pics/trans.png"></a></p>
          

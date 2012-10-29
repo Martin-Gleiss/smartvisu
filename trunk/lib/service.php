@@ -41,8 +41,6 @@ class service
         $this->server = $request['server'];
         $this->user = $request['user'];
         $this->pass = $request['pass'];
-        
-        $this->server = '192.168.45.99'; $this->user = 'admin'; $this->pass = '472010'; 
     }
     
   /** 

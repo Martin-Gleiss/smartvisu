@@ -31,14 +31,14 @@ class phone_offline extends phone
             "name" => "Gleiß Martin");
     
         $this->data[] = array (
-            "pos" => "1", 
+            "pos" => "2", 
             "date" => "01.10.2012", 
             "time" => "13:00:00", 
-            "number" => "0931".rand(1000000, 9999999), 
+            "number" => "08003007707", 
             "name" => "");       
             
         $this->data[] = array (
-            "pos" => "1", 
+            "pos" => "3", 
             "date" => "01.10.2012", 
             "time" => "14:00:00", 
             "number" => "0931".rand(1000000, 9999999), 

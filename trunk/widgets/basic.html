@@ -20,7 +20,7 @@
     <script type="text/javascript">
         $('#{{ page }}').live('pageshow',function(event, ui){ 
             $('#{{ page }}-{{ id_from|e }}').bind('click', function(){
-                window.setTimeout(function(){ $('#{{ page }}-{{ id_to|e }}').trigger('reload'); }, {{ delay }});
+                window.setTimeout(function(){ $('#{{ page }}-{{ id_to|e }}').trigger('reload'); }, {{ config_delay }});
             });
         });
     </script>  

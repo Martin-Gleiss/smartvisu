@@ -77,7 +77,7 @@
         foreach(get_defined_constants() as $key => $val)
         {
             if (substr($key, 0, 6) == 'config')
-                $twig->addGlobal(substr($key, 7), $val);
+                $twig->addGlobal($key, $val);
         }
         
         $twig->addFilter('_', new Twig_Filter_Function('filter_concat'));
@@ -221,7 +221,7 @@
                         $ret[$headertag] = trim($header[2][$headerno]);
                 }
                 
-                $rettmp[$no]['subpackage'] = substr(strtolower(basename($filename)), 0, -5);
+                $rettmp[$no]['subpackage'] = substr(mb_strtolower(basename($filename), 'UTF-8'), 0, -5);
                 $rettmp[$no]['command'] = $rettmp[$no]['subpackage'].".".$rettmp[$no]['name'];
                 $rettmp[$no]['call'] = $rettmp[$no]['command']."(".$rettmp[$no]['params'].")";
             
