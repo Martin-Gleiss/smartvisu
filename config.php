@@ -91,7 +91,7 @@
     * @value    wunderground: get key: http://www.wunderground.com/weather/api  
     * @value    yr.no: http://www.yr.no       
     */
-    define ('config_weather_service',       'yr.no');
+    define ('config_weather_service',       'offline');
 
   /**
     * What is the default location?

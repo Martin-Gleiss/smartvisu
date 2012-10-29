@@ -12,22 +12,76 @@
 
 {% block sidebar %}
   
-    {% include 'widget_menu.html' %}
+    <ul data-role="listview" data-dividertheme="c"> 
+        
+        <li data-role="list-divider">Widgets</li>
+        <li data-icon="false">
+            <a href="index.php?page=basic/widget_basic">
+                <img class="icon" src="{{ icon0 }}licht_esstisch.png"/><h3>Basic</h3>
+            </a>
+        </li>
+        <li data-icon="false">
+            <a href="index.php?page=device/widget_device">
+                <img class="icon" src="{{ icon0 }}temp_regelung.png"/><h3>Device</h3>
+            </a>
+        </li>
+        <li data-icon="false">
+            <a href="index.php?page=clock/widget_clock">
+                <img class="icon" src="{{ icon0 }}zeit_uhr.png"/><h3>Time/Clock</h3>
+            </a>
+        </li>
+        <li data-icon="false">
+            <a href="index.php?page=weather/widget_weather">
+                <img class="icon" src="{{ icon0 }}wetter_sommer.png"/><h3>Weather</h3>
+            </a>
+        </li>
+        <li data-icon="false">
+            <a href="index.php?page=phone/widget_phone">
+                <img class="icon" src="{{ icon0 }}it_telefon.png"/><h3>Phone</h3>
+            </a>
+        </li>
+        
+        <li data-role="list-divider">Design</li>
+        <li data-icon="false">
+            <a href="index.php?page=design_block">
+                <img class="icon" src="{{ icon0 }}steuer_home.png"/><h3>Blocks</h3>
+            </a>
+        </li>
+        <li data-icon="false">
+            <a href="index.php?page=design_icons">
+                <img class="icon" src="{{ icon0 }}wetter_winter.png"/><h3>Icons</h3>
+            </a>
+        </li>
+        <li data-icon="false">
+            <a href="index.php?page=design_bg">
+                <img class="icon" src="{{ icon0 }}zeit_diagramm.png"/><h3>Backgrounds</h3>
+            </a>
+        </li>
+        
+    </ul>
 
 {% endblock %}
 
 
 {% block content %}
 
-    <h3><div class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span> Online-Documentation</div></h3>
+    <h1><div class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span> Online-Documentation</div></h1>
 
     <p> 
     Here is a documentation of the widgets. Choose one of them:
     </p>
     
-    <br /> 
-    
-    {% include 'widget_menu.html' %}
+    <h2>Widgets</h2>
+    <a href="index.php?page=basic/widget_basic">Basic</a>&nbsp;
+    <a href="index.php?page=device/widget_device">Device</a>&nbsp;
+    <a href="index.php?page=clock/widget_clock">Time/Clock</a>&nbsp;
+    <a href="index.php?page=weather/widget_weather">Weather</a>&nbsp;
+    <a href="index.php?page=phone/widget_phone">Phone</a>&nbsp;
+
+    <h2>Design</h2>
+    <a href="index.php?page=design_block">Blocks</a>&nbsp;
+    <a href="index.php?page=design_icons">Icons</a>&nbsp;
+    <a href="index.php?page=design_bg">Backgrounds</a>&nbsp;
         
 {% endblock %}
 
