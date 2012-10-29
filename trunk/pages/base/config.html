@@ -12,7 +12,7 @@
 
 {% block content %}
 
-    <h3>Configuration</h3>
+    <h1>Configuration</h1>
     
     {% import "forms.html" as forms %}
     <form>
@@ -51,10 +51,10 @@
         </div>
         
         <div class="block">
-        <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
         
-        	<div data-role="collapsible" data-collapsed="false" >
-                <h3>User-Interface</h3>
+        	<div data-role="collapsible" data-collapsed="false">
+                <h3>Interface</h3>
                 
                 <div data-role="fieldcontain">
     				<label for="pages" class="select">Pages</label>
@@ -66,12 +66,7 @@
                     {{ forms.select_init('pages', config_pages) }}
                	</div>
                	
-               	<div data-role="fieldcontain">
-                    <label for="title">Title<br /></label>
-                    <input type="text" name="title" id="title" />
-                    {{ forms.text_init('title', config_title|e ) }}
-                </div>
-                
+               	
                 <div data-role="fieldcontain">
     				<label for="design" class="select">Design</label>
     				<select name="design" id="design" data-native-menu="false">
@@ -82,18 +77,8 @@
                     {{ forms.select_init('design', config_design) }}
                	</div>
                 
-                <div data-role="fieldcontain">
-    				<label for="lang" class="select">Language</label>
-    				<select name="lang" id="lang" data-native-menu="false">
-    				    <option value="en">english</option>
-                        <option value="de">german</option>
-                    </select>
-                    <div class="note">*for some widgets</div>
-                    {{ forms.select_init('lang', config_lang) }}
-               	</div>
                 
                 <div data-role="fieldcontain">
-                
                     <label for="cache">Pagecache<br /></label>
                 	<select name="cache" id="cache" data-role="slider" data-theme="a">
                 		<option value="false">off</option>
@@ -103,6 +88,26 @@
                 </div>
            
             </div>
+            
+            <div data-role="collapsible" data-collapsed="true">
+                <h3>Texts</h3>
+            
+                <div data-role="fieldcontain">
+                    <label for="title">Title<br /></label>
+                    <input type="text" name="title" id="title" />
+                    {{ forms.text_init('title', config_title|e ) }}
+                </div>
+                
+                <div data-role="fieldcontain">
+    				<label for="lang" class="select">Language</label>
+    				<select name="lang" id="lang" data-native-menu="false">
+    				    <option value="en">english</option>
+                        <option value="de">german</option>
+                    </select>
+                    <div class="note">*for some widgets</div>
+                    {{ forms.select_init('lang', config_lang) }}
+               	</div>
+            </div>   
         	
         </div>    
         </div>
@@ -111,7 +116,7 @@
         <div class="block">
         <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
         
-        	<div data-role="collapsible" data-collapsed="false" >
+        	<div data-role="collapsible" data-collapsed="false">
                 <h3>Weather</h3>
                 
                 <div data-role="fieldcontain">
@@ -145,7 +150,7 @@
         <div class="block">
         <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
             
-            <div data-role="collapsible" data-collapsed="false" >
+            <div data-role="collapsible" data-collapsed="false">
                 <h3>Phone</h3>
                 
                 <div data-role="fieldcontain">

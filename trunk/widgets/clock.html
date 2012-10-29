@@ -47,7 +47,7 @@
             $('#{{ page }}-{{ id }}-clock').digiclock();
             
             {% if location %}
-                $.getJSON('lib/weather/service/{{ weather_service }}.php?location={{ location|default(weather_location) }}&lang={{ lang|default(en) }}', function(data) {
+                $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}&lang={{ config_lang|default(en) }}', function(data) {
                     $('#{{ page }}-{{ id }}-spot img').attr('src', 'lib/weather/pics/' + data.current.icon + '.png');
                     $('#{{ page }}-{{ id }}-spot .city').html(data.city);
                     $('#{{ page }}-{{ id }}-spot .cond').html(data.current.conditions);

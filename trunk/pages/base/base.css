@@ -205,9 +205,42 @@ a.ui-slider-handle-semicircle .ui-btn-inner  {
  * -----------------------------------------------------------------------------
  */
 
+
+h1 {
+    font-size: 16pt;
+    margin: 20px 0px 6px 0px;
+}
+
+div.content-primary > h1 {
+    margin: 0px 0px 6px 0px;
+} 
+
+h1 .icon {
+    vertical-align: middle;
+    margin: 0px 10px 0px 10px;
+}
+
+h2 {
+    font-size: 14pt;
+    margin: 19px 0px 5px 0px;
+}
+
+h2 .icon {
+    vertical-align: middle;
+    margin: 0px 10px 0px 10px;
+}
+
+h3  {
+    margin: 18px 0px 4px 0px;
+}
+ 
 h3 .icon {
     vertical-align: middle;
     margin: 0px 10px 0px 10px;
+}
+
+h4  {
+    margin: 17px 0px 3px 0px;
 }
 
 hr {
@@ -352,12 +385,12 @@ hr {
 }  
  
 .block .set-2 .ui-collapsible-content {
-    min-height: 200px;
+    min-height: 202px;
     padding: 10px 5px 10px 5px;
 }  
     
 .block .set-3 .ui-collapsible-content {
-    min-height: 168px; 
+    min-height: 173px; 
     padding: 10px 5px 10px 5px;
 }   
     

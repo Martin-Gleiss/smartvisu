@@ -8,16 +8,16 @@
  */
  
 
-{% extends "widget_weather.html" %}
+{% extends "widget_phone.html" %}
 
 {% block example %}
 
-    <h5>Examples</h5>
+    <h5>Example</h5>
     <div class="twig">
-        <code>&#123;&#123; weather.forecastweek('weather1', 'Germany/Berlin/Berlin') &#125;&#125;</code>
+        <code>&#123;&#123; phone.missedlist('phonelist', 'Phonelist', 3) &#125;&#125;</code>
     </div>
     <div class="html">
-        {{ weather.forecastweek('weather1', 'Germany/Berlin/Berlin') }}
+        {{ phone.missedlist('phonelist', 'Phonelist', 3) }}
     </div>
 
 {% endblock %}

@@ -1,0 +1,32 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "widget.html" %}
+{% import "phone.html" as phone %}
+
+{% block headline %}
+    <h1>Phone-Widgets</h1>
+{% endblock %}
+
+{% block intro %}
+    The phone-widgets are used to display information from a phone or phone system. Supported are
+    <br /><br />
+    <b><a href="http://www.auerswald.de" target="_blank">Auerswald</a></b><br />
+    VoiP 5010, Voip 5020, Commander Basic.2
+    
+    <h4>Personal Pictures</h4>
+    You may add some personal pics to your phone lists. Place them in 'pics/phone' and name them with the number of the person.<br />
+    Example:<br />
+    <img style="width: 48px; height: 48px;" src='pics/phone/08003007707.jpg'><br /> 
+    'pics/phone/<b>08003007707.jpg</b>', is being displayed if the mailbox calls.
+    
+    <h4>Configuration</h4>
+    Choose your phone system and enter user and password the <a href="index.php?page=config">configuration</a> page.
+{% endblock %}

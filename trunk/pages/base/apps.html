@@ -61,7 +61,7 @@
 
 {% block content %}
 
-    <h3>Apps</h3>
+    <h1>Apps</h1>
     
     {% for file in dir('pages/apps', 'app_(.+?).html') %}
         <span id="{{ page }}-{{ file.name }}">

@@ -14,7 +14,7 @@
 
     <h5>Examples</h5>
     
-    If no location is given, the default location from config (<b>{{ weather_location }}</b>) ist being used.
+    If no location is given, the default location from config (<b>{{ config_weather_location }}</b>) ist being used.
     <div class="twig">
         <code>&#123;&#123; weather.forecast('weather1') &#125;&#125;</code>
     </div>
@@ -24,10 +24,10 @@
     
     Forecast for tomorrow
     <div class="twig">
-        <code>&#123;&#123; weather.forecast('weather2', 'berlin', 1) &#125;&#125;</code>
+        <code>&#123;&#123; weather.forecast('weather2', 'Germany/Berlin/Berlin', 1) &#125;&#125;</code>
     </div>
     <div class="html">
-        {{ weather.forecast('weather2', 'berlin', 1) }}
+        {{ weather.forecast('weather2', 'Germany/Berlin/Berlin', 1) }}
     </div>
 
 {% endblock %}
