@@ -12,7 +12,7 @@
   /**
     * Version of smartVISU
     */
-    define ('config_version',               '1.7');
+    define ('config_version',               '1.8');
     
 
 // -----------------------------------------------------------------------------
@@ -88,13 +88,13 @@
     * 
     * @value    offline: random values
     * @value    google: google api (deprecated)
-    * @value    wunderground: get key: http://www.wunderground.com/weather/api/     
+    * @value    wunderground: get key: http://www.wunderground.com/weather/api  
+    * @value    yr.no: http://www.yr.no       
     */
     define ('config_weather_service',       'yr.no');
 
   /**
     * What is the default location?
-    *     
     */
     define ('config_weather_location',      'Germany/Bayern/Würzburg');
  
@@ -103,7 +103,31 @@
     */
     define ('config_weather_key',           '');
     
-    
+  
+  /**
+    * Witch phone-system should by used?
+    * 
+    * @value    offline: random values
+    * @value    auerswald: Auerswald VoiP 5010, 5020, Commander Basic.2
+    * @value    fritzbox: Firtzbox 7050     
+    */
+    define ('config_phone_service',         'offline');
+
+  /**
+    * What is the ip-address of the phone-system?
+    */
+    define ('config_phone_server',         '192.168.x.x');
+ 
+  /**
+    * Is there a user to autheticate?
+    */
+    define ('config_phone_user',            'admin');
+  
+  /**
+    * Is there a user to autheticate?
+    */
+    define ('config_phone_pass',            '');  
+      
 
 // -----------------------------------------------------------------------------
 // Common

@@ -1,0 +1,47 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */ 
+                
+ 
+/**
+ * Displays the phonelist from a phone system
+ * 
+ * @param       unique id for this widget
+ * @param       a title to display
+ * @param       the number of displayed lines  
+ */ 
+{% macro missedlist(id, title, count) %}
+    /** Design */
+    <div id="{{ page }}-{{ id }}-phonelist" class="phonelist">
+        <h2>{{ title }}</h2>
+        <ul data-role="listview">
+        </ul>
+    </div>
+            
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){
+            $.getJSON('lib/phone/service/{{ config_phone_service }}.php', function(data) {
+                var line = '';
+                for (var i in data) {
+                    if (i == {{ count|default(3) }}) break;
+                
+                    ret = '<img src="pics/phone/' + data[i].pic + '" />';
+                    ret += '<h3>' + data[i].name + '&nbsp;</h3>';
+                    ret += '<p>' + data[i].number + '&nbsp;</p>';
+                    ret += '<span class="ui-li-count">' + data[i].date + ' ' + data[i].time + '</span>';
+                    if (data[i].number)
+                        ret = '<a href="callto://' + data[i].number + '">' + ret + '</a>'; 
+                    line += '<li data-icon="false">' + ret + '</li>';
+                }
+                
+                $('#{{ page }}-{{ id }}-phonelist ul').html(line).listview('refresh');
+            });
+        });
+    </script>
+{% endmacro %}
