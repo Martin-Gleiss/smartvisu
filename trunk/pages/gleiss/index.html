@@ -33,6 +33,44 @@
     
     <hr>
     
+    
+    
+    <div id="{{ page }}-phone" class="phone">
+        Telefonliste:<br /> <br />
+        <ul id="phone" data-role="listview">
+        <li>Test</li>
+        </ul>
+    </div>
+            
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){
+            $.getJSON('lib/phone/service/offline.php', function(data) {
+                var ret = '';
+                
+                for (var i in data) {
+                    ret += '<li>'; // class1="ui-li ui-li-static ui-btn-up-a ui-li-has-count ui-li-has-icon" style1="padding: 0px; height: 48px;">';
+                    
+                    if (data[i].number)
+                        ret += '<a href="callto://' + data[i].number + '">';
+                    /*    
+                    ret += '<img style="width: 48px; height: 48px;" src="pics/phone/' + data[i].pic + '" />';
+                    
+                    ret += '<h3 class="ui-li-heading" style="margin: 6px 0 6px 0;">' + data[i].name + '&nbsp;</h3>';
+                    ret += '<p class="ui-li-desc">' + data[i].number + '&nbsp;</p>';
+                    
+                    ret += '<span class="ui-li-count">' + data[i].date + ' ' + data[i].time + '</span>';
+                    */
+                    
+                    if (data[i].number)
+                        ret += 'Test</a>'; 
+                    
+                    ret += '</li>';
+                }
+                $('#phone').append(ret).listview().trigger('create');
+            });
+        });
+    </script>
 {% endblock %}
 
 

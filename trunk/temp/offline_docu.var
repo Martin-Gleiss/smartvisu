@@ -16,7 +16,7 @@ buero_heizung_istwert = 24.1
 buero_rollo_pos = 60
 buero_rollo_winkel = 50
 buero_jalousie_winkel = 65
-buero_jalousie_pos = 85
+buero_jalousie_pos = 45
 buero_jalousie_verstellen = 0
 buero_jalousie_fahren = 0
 

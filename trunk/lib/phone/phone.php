@@ -25,6 +25,8 @@ class phone extends service
     {
         foreach($this->data as $id => $ds)
         {
+            $this->data[$id]['time'] = date('H:i', strtotime($ds['time'])); 
+            
             if ($ds['number'] != '' and is_file(const_path.'pics/phone/'.$ds['number'].'.jpg'))
                 $this->data[$id]['pic'] = $ds['number'].'.jpg';
             else
