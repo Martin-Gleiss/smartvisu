@@ -390,7 +390,7 @@ hr {
 }  
     
 .block .set-3 .ui-collapsible-content {
-    min-height: 173px; 
+    min-height: 170px; 
     padding: 10px 5px 10px 5px;
 }   
     
@@ -638,14 +638,23 @@ hr {
 }
 
 .phonelist a {
-    padding: 0 10px 0 60px !important;
+    padding: 0 10px 0 64px !important;
     height: 50px;
 }
 
-.phonelist img {
-    padding: 0px !important;
+.phonelist .icon {
+    padding: 0 !important;
     width: 48px;
     height: 48px;
+}
+
+.phonelist .dir {
+    position: absolute;
+    padding: 0 !important;
+    left: 38px;
+    top: 22px;
+    width: 24px;
+    height: 24px;
 }
 
 .phonelist h3 {

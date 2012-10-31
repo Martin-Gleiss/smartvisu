@@ -51,7 +51,7 @@
     * smartVISU supports different projects, located under 'pages'
     * this ist the directory for your project    
     */
-    define ('config_pages',                 'gleiss');
+    define ('config_pages',                 'docu');
    
   /**
     * Select your language. Some widgets are multilanguage 
@@ -121,7 +121,7 @@
   /**
     * Is there a user to autheticate?
     */
-    define ('config_phone_user',            'admin');
+    define ('config_phone_user',            '');
   
   /**
     * Is there a user to autheticate?

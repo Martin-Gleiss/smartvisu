@@ -59,15 +59,23 @@ class phone_auerswald extends phone
             
             // 2. data
             $url = 'http://'.$this->server.'/page_listgespr_state';
-            $context = stream_context_create(array('http'=>array('method'=>"GET", 'header' => 'Cookie: '.implode ('; ', $cookie).'\r\n')) );
+            $context = stream_context_create(array('http'=>array('method'=> 'GET', 'header' => 'Cookie: '.implode ('; ', $cookie))) );
             
             $data = json_decode(mb_convert_encoding(file_get_contents($url, false, $context), "UTF-8", "ISO-8859-1"));
             $this->debug($data, "data");
             
             foreach ($data as $ds)
             {
-                if ($ds[14] == 'kommend' and trim($ds[15]) == 'vergebl.')
-                    $this->data[] = array ("pos" => $ds[19], "date" => $ds[1], "time" => $ds[2], "number" => $ds[5], "name" => $ds[6]);
+                $dir = "";    
+                if (trim($ds[15]) == 'vergebl.')
+                    $dir = "0";
+                elseif (trim($ds[14]) == 'gehend')
+                    $dir = "-1";
+                elseif (trim($ds[14]) == 'kommend')
+                    $dir = "1";
+                
+                $this->data[] = array('pos' => $ds[19], 'dir' => $dir, 'date' => $ds[1].' '.$ds[2], 'number' => $ds[5], 'name' => $ds[6],
+                    'duration' => $ds[3]);
             }
         }
         
