@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary A design is a visual appearance of smartVISU.
 
 = Introduction =
 
