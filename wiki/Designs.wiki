@@ -1,4 +1,5 @@
 #summary A design is a visual appearance of smartVISU.
+#labels Featured,Phase-Design
 
 
 = Introduction =
