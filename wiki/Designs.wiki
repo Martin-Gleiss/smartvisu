@@ -22,8 +22,13 @@ Open the configuration-page with a webbrowser and choose your new design from th
 
 Some designs shipped with smartVISU:
   * 'night': black in rounded style
-  * 'cube': black in squared style 
   * 'ice': white and blue and cold colors
+  * 'cube': black in squared style 
   * 'sand': brown and warm colors
+
+[http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_night.jpg]
+[http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_ice.jpg]
+[http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_cube.jpg]
+[http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_sand.jpg]
 
 If you have made a new design, please send me the .css files and i will integrate them into smartVISU!
