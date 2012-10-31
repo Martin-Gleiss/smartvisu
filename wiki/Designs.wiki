@@ -15,7 +15,7 @@ To create a new design just use the [http://jquerymobile.com/themeroller/index.p
   * change the visual appearance, colors an styles
   * Download the theme and store both files in 'designs'
 
-Open the configuration-page with a webbrowser and choose your new design from the dropdown box. After pressing 'save' the project will be reloaded with your new visual apperance.
+Open the configuration-page with a webbrowser and choose your new design from the dropdown box. After pressing 'save' the project will be reloaded with your new visual appearance.
 
 
 = Examples =
