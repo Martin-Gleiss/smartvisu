@@ -1,4 +1,4 @@
-#Select a design for your preferd visual apperance
+#Select a design for your prefered visual apperance.
 
 = Introduction =
 
