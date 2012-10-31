@@ -39,13 +39,22 @@ class phone extends service
         {
             if ($ds['number'] != '' or $ds['name'] != '')
             {
-                $ds['time'] = date('H:i', strtotime($ds['time'])); 
+                $ds['date'] = date('d.m.y H:i', strtotime($ds['date'])); 
                 
                 if ($ds['number'] != '' and is_file(const_path.'pics/phone/'.$ds['number'].'.jpg'))
                     $ds['pic'] = $ds['number'].'.jpg';
                 else
                     $ds['pic'] = '0.jpg'; 
                 	
+                
+                $ds['dirpic'] = 'dir.png';
+                
+                if($ds['dir'] > 0)
+                    $ds['dirpic'] = 'dir_incoming.png';
+                
+                if($ds['dir'] < 0)
+                    $ds['dirpic'] = 'dir_outgoing.png';
+                
                 $ret[] = $ds;
             }
         }
