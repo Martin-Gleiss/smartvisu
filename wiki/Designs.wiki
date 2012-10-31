@@ -1,8 +1,9 @@
 #summary A design is a visual appearance of smartVISU.
 
+
 = Introduction =
 
-Desings are used to display smartVISU with colors you like. There are a couple of different designs shipped with smartVISU, but is is easy to create one with your preferd styles.
+Desings are used to display smartVISU with colors you like. There are a couple of different designs shipped with smartVISU, but is is easy to create one with your prefered styles.
 
 
 = Details =
