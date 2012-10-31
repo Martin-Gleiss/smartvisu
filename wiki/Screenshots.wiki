@@ -1,4 +1,5 @@
 #summary Some screenshots from smartVISU
+#labels Featured,Phase-Design
 
 
 = Screenshots =
