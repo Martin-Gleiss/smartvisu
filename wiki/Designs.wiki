@@ -26,9 +26,9 @@ Some designs shipped with smartVISU:
   * 'cube': black in squared style 
   * 'sand': brown and warm colors
 
-[http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_night.jpg]
-[http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_ice.jpg]
-[http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_cube.jpg]
-[http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_sand.jpg]
+<img src='http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_night.jpg' width='200'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_ice.jpg' width='200'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_cube.jpg' width='200'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_sand.jpg' width='200'>
 
 If you have made a new design, please send me the .css files and i will integrate them into smartVISU!
