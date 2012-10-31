@@ -1,0 +1,14 @@
+#How to install smartVISU on a Webserver
+
+= Introduction =
+
+Ist quite easy to install smartVISU on a Webserver. 
+
+
+= Details =
+
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
