@@ -7,7 +7,7 @@ Desings are used to display smartVISU with colors you like. There are a couple o
 
 = Details =
 
-All designs used with smartVISU are located in the directory 'designs'. A complete design consists of to files, with the same name. Mention that smartVISU uses the 'NAME.min.css' for performance reasons. 
+All designs used with smartVISU are located in the directory 'designs'. A complete design consists of two .css files, with the same name. Mention that smartVISU uses the 'NAME.min.css' for performance reasons. 
 
 To create a new design just use the [http://jquerymobile.com/themeroller/index.php themeroller]!
   * Import a .css theme from 'designs' into the themeroller
