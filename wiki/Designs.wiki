@@ -2,11 +2,27 @@
 
 = Introduction =
 
+Desings are used to display smartVISU with colors you like. There are a couple of different designs shipped with smartVISU, but is is easy to create one with your preferd styles.
 
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+All designs used with smartVISU are located in the directory 'designs'. A complete design consists of to files, with the same name. Mention that smartVISU uses the 'NAME.min.css' for performance reasons. 
+
+To create a new design just use the [http://jquerymobile.com/themeroller/index.php themeroller]!
+  * Import a .css theme from 'designs' into the themeroller
+  * change the visual appearance, colors an styles
+  * Download the theme and store both files in 'designs'
+
+Open the configuration-page with a webbrowser and choose your new design from the dropdown box. After pressing 'save' the project will be reloaded with your new visual apperance.
+
+
+= Examples =
+
+Some designs shipped with smartVISU:
+  * 'night': black in rounded style
+  * 'cube': black in squared style 
+  * 'ice': white and blue and cold colors
+  * 'sand': brown and warm colors
+
+If you have made a new design, please send me the .css files and i will integrate them into smartVISU!
