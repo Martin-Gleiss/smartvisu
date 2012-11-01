@@ -17,38 +17,6 @@
     {% import "forms.html" as forms %}
     <form>
     <fieldset>
-              
-        <div class="block">
-        <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-        
-        	<div data-role="collapsible" data-collapsed="false" >
-                <h3>KNX-Connection</h3>
-                
-                <div data-role="fieldcontain">
-				    <label for="driver" class="select">Driver</label>
-    				<select name="driver" id="driver" data-native-menu="false">
-    				    {% for file in dir('driver', '^driver_(?!base)(.+?).php') %}
-                        <option value="{{ file.name }}">{{ file.label }}</option>
-                        {% endfor %}
-                	</select>
-                    {{ forms.select_init('driver', config_driver) }}
-                </div>
-                
-                <div data-role="fieldcontain">
-                    <label for="driver_address">Address<br /><span class="note">URL / IP</span></label>
-                    <input type="text" name="driver_address" id="driver_address" />
-                    {{ forms.text_init('driver_address', config_driver_address|e ) }}
-                </div>
-                
-                <div data-role="fieldcontain">
-                    <label for="driver_port">Port<br /></label>
-                    <input type="text" name="driver_port" id="driver_port" />
-                    {{ forms.text_init('driver_port', config_driver_port|e ) }}
-                </div>
-            </div>
-            
-        </div>    
-        </div>
         
         <div class="block">
         <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
@@ -112,7 +80,40 @@
         </div>    
         </div>
         
-       
+              
+        <div class="block">
+        <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        
+        	<div data-role="collapsible" data-collapsed="false" >
+                <h3>KNX-Connection</h3>
+                
+                <div data-role="fieldcontain">
+				    <label for="driver" class="select">Driver</label>
+    				<select name="driver" id="driver" data-native-menu="false">
+    				    {% for file in dir('driver', '^driver_(?!base)(.+?).php') %}
+                        <option value="{{ file.name }}">{{ file.label }}</option>
+                        {% endfor %}
+                	</select>
+                    {{ forms.select_init('driver', config_driver) }}
+                </div>
+                
+                <div data-role="fieldcontain">
+                    <label for="driver_address">Address<br /><span class="note">URL / IP</span></label>
+                    <input type="text" name="driver_address" id="driver_address" />
+                    {{ forms.text_init('driver_address', config_driver_address|e ) }}
+                </div>
+                
+                <div data-role="fieldcontain">
+                    <label for="driver_port">Port<br /></label>
+                    <input type="text" name="driver_port" id="driver_port" />
+                    {{ forms.text_init('driver_port', config_driver_port|e ) }}
+                </div>
+            </div>
+            
+        </div>    
+        </div>
+        
+        
         <div class="block">
         <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
         

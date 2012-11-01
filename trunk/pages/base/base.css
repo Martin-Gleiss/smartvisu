@@ -49,13 +49,13 @@
 }  
     
 .ui-header .ui-left {
-    margin: 5px 0px 0px 5px;
+    margin: 5px 0 0 5px;
     float: left;
 }
 
 .ui-header .ui-right {
     float: right;
-    margin: 9px 15px 0px 0px;
+    margin: 9px 15px 0 0;
 }
 
 .ui-content {
@@ -70,7 +70,7 @@
 }
 
 .ui-btn-inner.ui-li .ui-li-thumb {
-    padding: 6px 0px 0px 4px;
+    padding: 6px 0 0 4px;
 }
 
 .ui-btn.ui-mini .icon {
@@ -83,15 +83,14 @@
 }
 
 .ui-li-aside {
+    margin: 0;
     font-size: 14px;
 }
 
 .ui-li-aside .icon {
     width: 32px;
     height: 32px;
-    vertical-align: top;
 }
-
 
 div.ui-slider-vertical, div.ui-slider-vertical-invers { 
     position: relative; 
@@ -208,39 +207,39 @@ a.ui-slider-handle-semicircle .ui-btn-inner  {
 
 h1 {
     font-size: 16pt;
-    margin: 20px 0px 6px 0px;
+    margin: 20px 0 6px 0;
 }
 
 div.content-primary > h1 {
-    margin: 0px 0px 6px 0px;
+    margin: 0 0 6px 0;
 } 
 
 h1 .icon {
     vertical-align: middle;
-    margin: 0px 10px 0px 10px;
+    margin: 0 10px 0 10px;
 }
 
 h2 {
     font-size: 14pt;
-    margin: 19px 0px 5px 0px;
+    margin: 19px 0 5px 0;
 }
 
 h2 .icon {
     vertical-align: middle;
-    margin: 0px 10px 0px 10px;
+    margin: 0 10px 0 10px;
 }
 
 h3  {
-    margin: 18px 0px 4px 0px;
+    margin: 18px 0 4px 0;
 }
  
 h3 .icon {
     vertical-align: middle;
-    margin: 0px 10px 0px 10px;
+    margin: 0 10px 0 10px;
 }
 
 h4  {
-    margin: 17px 0px 3px 0px;
+    margin: 17px 0 3px 0;
 }
 
 hr {
@@ -296,7 +295,7 @@ hr {
  */
 
 .smartvisu {
-    padding: 0px 0px 4px 0px;
+    padding: 0 0 4px 0;
     font-size: 1.1em;
 }
 
@@ -326,8 +325,8 @@ hr {
 
 .page-bg {
     position: fixed;
-    bottom: 0px;
-    left: 0px;
+    bottom: 0;
+    left: 0;
     width: 2000px;
     height: 500px;
     background-repeat: no-repeat;
@@ -363,7 +362,7 @@ hr {
 }       
 
 .block .image {
-    margin: 0px 5px 13px 5px;
+    margin: 0 5px 13px 5px;
 }
 
 .block .image img {
@@ -372,7 +371,7 @@ hr {
 
 .block .image + .mini {
     text-align: left;
-    margin: -10px 0px 10px 10px;
+    margin: -10px 0 10px 10px;
 }
 
 .block .ui-collapsible-set {
@@ -385,7 +384,7 @@ hr {
 }  
  
 .block .set-2 .ui-collapsible-content {
-    min-height: 202px;
+    min-height: 200px;
     padding: 10px 5px 10px 5px;
 }  
     
@@ -395,18 +394,18 @@ hr {
 }   
     
 .block .ui-bar-c {
-    margin: 5px 5px 0px 5px;
+    margin: 5px 5px 0 5px;
 }
   
 .block .ui-fixed {
-    margin: 0px 5px 10px 5px;
-    padding: 0px 10px 0px 10px;
+    margin: 0 5px 10px 5px;
+    padding: 0 10px 0 10px;
     min-height: 250px;
 }  
 
 .block .ui-field-contain {
     text-align: left;
-    border-bottom: 0px;
+    border-bottom: 0;
 }
 
 .block .ui-field-contain .note {
@@ -454,7 +453,7 @@ hr {
 }
  
 .app + p {
-    margin: 4px 0px 4px 76px;
+    margin: 4px 0 4px 76px;
 }
  
 .app .image .smartvisu {
@@ -467,7 +466,7 @@ hr {
 }
 
 .docu h5 {
-    margin: 25px 0px 10px 0px;
+    margin: 25px 0 10px 0;
 }
 
 .docu .twig {
@@ -503,7 +502,7 @@ hr {
     margin: auto;
     width: 210px;
     height: 48px;
-    padding: 10px 0px 10px 0px;
+    padding: 10px 0 10px 0;
     text-align: center;
 }
 
@@ -512,18 +511,24 @@ hr {
     float:left;
 }
 
-.symbol img {
+.symbol .icon {
     vertical-align: middle;
+}
+
+.ui-li-aside .symbol .icon {
+    vertical-align: middle;
+    width: 22px;
+    height: 22px;    
 }
 
 .dimmer {
     vertical-align: absmiddle;
     height: 48px;
-    margin: 15px 0px 10px 0px;
+    margin: 15px 0 10px 0;
 }
 
 .dimmer .switch {
-    padding-left: 0px;
+    padding-left: 0;
     width: 64px;
     float: left;
 }
@@ -534,8 +539,8 @@ hr {
 }
 
 .dimmer p {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
 .dimmer .ui-input-text {
@@ -543,23 +548,23 @@ hr {
 }
 
 .dimmer .ui-slider {
-    margin: 5px 0px 0px 10px;
+    margin: 5px 0 0 10px;
 }
 
 
 .rtr .actual {
-    padding: 5px 0px 5px 0px;
+    padding: 5px 0 5px 0;
     width: 184px;
     height: 48px;
     margin:auto;
 }
 
 .rtr .actual h4 {
-    margin: 5px 0px 5px 0px;
+    margin: 5px 0 5px 0;
 }
 
 .rtr .set {
-    padding: 10px 0px 10px 0px;
+    padding: 10px 0 10px 0;
     width: 190px;
     height: 48px;
     margin:auto;
@@ -580,11 +585,11 @@ hr {
 }
 
 .rtr .set .ui-btn .ui-icon {
-    margin: 14px 0px 0px 14px;
+    margin: 14px 0 0 14px;
 }    
 
 .rtr .control {
-    padding: 10px 0px 10px 0px;
+    padding: 10px 0 10px 0;
     width: 218px;
     height: 48px;
     margin:auto;
@@ -603,7 +608,7 @@ hr {
 }
 
 .blind .set .ui-btn .ui-icon {
-    margin: 14px 0px 0px 14px;
+    margin: 14px 0 0 14px;
 }  
 
 .blind .pos {
@@ -629,11 +634,11 @@ hr {
 }
 
 .phonelist ul {
-    margin: 0px !important;
+    margin: 0 !important;
 }
 
 .phonelist li {
-    padding: 0px !important;
+    padding: 0 !important;
     height: 50px;
 }
 

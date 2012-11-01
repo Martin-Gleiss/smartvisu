@@ -83,14 +83,19 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 1.8
-    - Apps with more docu
+    - new widget-file: widgets/phone.html for phonelists
+      A phone system is required. Supported are:
+      Auerwald VoiP 5010, VoiP 5020, Commander Basic.2
+      fritz!box 7050, 7170 and similar types
+    - add: apps now support more docu
+    - updated: jQuery plugins
     
 v 1.7 06.10.12
     - new feature: Apps (an app is a complete html-page, witch can be easily
-      used in your project. Use lib.app('NAME OF APP') to use one.
-      All apps are located in pages/apps
-    - App: Impressions Frankfurt, Impressions Würzburg
-    - App: Weather Tagesschau
+      used in your project. Use lib.app('NAME OF APP') to show one on your page.
+      all apps are located in pages/apps
+    - app: Impressions Frankfurt, Impressions Würzburg
+    - app: Weather Tagesschau
     - basic.symbol now with text
     - new widget-file: widgets/weather.html with weather.map, weather.mapslides
     - new widget-file: widgets/clock.html
@@ -114,15 +119,15 @@ v 1.6  25.09.12
     - update lib/Twig 1.9.2
 
 v 1.5 01.08.12
-    - New basic-widget: "basic.smybol" to display a gad
-    - New device-widget: "device.blind" to control blinds, with 2 new slider 
+    - new basic-widget: "basic.smybol" to display a gad
+    - new device-widget: "device.blind" to control blinds, with 2 new slider 
       types (vertical, semicircle)
     - offline-driver enhancement (values now for each project)
     - more docu     
     - update lib/jQueryMobile 1.1.1
     
 v 1.4 02.07.12
-    - New and official "smartVISU" - Logo 
+    - new and official "smartVISU" - Logo 
       special thanks to by Björn Bertschy
     - position fixed on MainMenu
     - smother scrolling, better responsive design
@@ -142,8 +147,6 @@ v 1.1 03.05.12
     
 v 1.0 26.04.12
     - first offical release
- 
- 
- 
+
  
     

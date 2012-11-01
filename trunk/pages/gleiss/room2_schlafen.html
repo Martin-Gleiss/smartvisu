@@ -32,13 +32,13 @@
             {{ device.dimmer('licht_tuer', 'Tür dimmen', 'schlafen_licht_schalten', 'schlafen_licht_setzen') }}
         
             <div class="switch-row">
-                {{ basic.switch('licht_ecke', 'schlafen_licht_ecke_schalten', 'icons/or/licht_stehlampe.png', 'icons/ws/licht_stehlampe.png') }}
-                {{ basic.switch('licht_schrank', 'schlafen_licht_schrank_schalten', 'icons/or/licht_indirekt.png', 'icons/ws/licht_indirekt.png') }}
-                {{ basic.switch('licht_bett_li', 'schlafen_licht_bett_li_schalten', 'icons/or/licht_led.png', 'icons/ws/licht_led.png') }}
-                {{ basic.switch('licht_bett_re', 'schlafen_licht_bett_re_schalten', 'icons/or/licht_led.png', 'icons/ws/licht_led.png') }}
+                {{ basic.switch('licht_ecke', 'schlafen_licht_ecke_schalten', icon1~'licht_stehlampe.png', icon0~'licht_stehlampe.png') }}
+                {{ basic.switch('licht_schrank', 'schlafen_licht_schrank_schalten', icon1~'licht_indirekt.png', icon0~'licht_indirekt.png') }}
+                {{ basic.switch('licht_bett_li', 'schlafen_licht_bett_li_schalten', icon1~'licht_led.png', icon0~'licht_led.png') }}
+                {{ basic.switch('licht_bett_re', 'schlafen_licht_bett_re_schalten', icon1~'licht_led.png', icon0~'licht_led.png') }}
             </div>
         
-            {{ basic.switch('steckdose', 'schlafen_steckdose_schalten', 'icons/or/meld_steckdose.png', 'icons/ws/meld_steckdose.png') }}
+            {{ basic.switch('steckdose', 'schlafen_steckdose_schalten', icon1~'meld_steckdose.png', icon0~'meld_steckdose.png') }}
         </div>
     	
     	<div data-role="collapsible">

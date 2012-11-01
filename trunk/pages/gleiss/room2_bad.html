@@ -12,7 +12,7 @@
 
 {% block content %}
 
-    <h1><img class="icon" src='{{ icon0 }}szene_schwimmen.png'/>Badezimmer</h1>
+    <h1><img class="icon" src='{{ icon0 }}szene_schwimmen.png'/>Bad</h1>
     
     <div class="preblock">
         {{ basic.button('all_off', 'bad_licht_schalten', 'Aus', 'delete', '0') }}
@@ -29,13 +29,13 @@
     
     	<div data-role="collapsible" data-collapsed="false" >
             <h3>Licht</h3>
-            {{ basic.dual('licht_decke_6', 'bad_licht_decke_6_schalten', 'icons/or/licht_licht.png', 'icons/ws/licht_licht.png') }}
+            {{ basic.dual('licht_decke_6', 'bad_licht_decke_6_schalten', icon1~'licht_licht.png', icon0~'licht_licht.png') }}
                 
             <div class="switch-row">
-                {{ basic.switch('licht_decke_3', 'bad_licht_decke_3_schalten', 'icons/or/licht_licht.png', 'icons/ws/licht_licht.png') }}
-                {{ basic.switch('licht_led', 'bad_licht_led_schalten', 'icons/or/licht_led.png', 'icons/ws/licht_led.png') }}
-                {{ basic.switch('licht_spiegel', 'bad_licht_spiegel_schalten', 'icons/or/licht_esstisch.png', 'icons/ws/licht_esstisch.png') }}
-                {{ basic.switch('licht_wand', 'bad_licht_wand_schalten', 'icons/or/licht_indirekt.png', 'icons/ws/licht_indirekt.png') }}
+                {{ basic.switch('licht_decke_3', 'bad_licht_decke_3_schalten', icon1~'licht_licht.png', icon0~'licht_licht.png') }}
+                {{ basic.switch('licht_led', 'bad_licht_led_schalten', icon1~'licht_led.png', icon0~'licht_led.png') }}
+                {{ basic.switch('licht_spiegel', 'bad_licht_spiegel_schalten', icon1~'licht_esstisch.png', icon0~'licht_esstisch.png') }}
+                {{ basic.switch('licht_wand', 'bad_licht_wand_schalten', icon1~'licht_indirekt.png', icon0~'licht_indirekt.png') }}
             </div>
         </div>
     	
