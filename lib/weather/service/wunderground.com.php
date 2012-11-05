@@ -55,7 +55,7 @@
             $weather['forecast'][$i]['date']        = (string)$day->{'date'}->{'weekday'};
             $weather['forecast'][$i]['conditions']  = (string)$day->{'conditions'}; 
             $weather['forecast'][$i]['icon']        = icon((string)$day->{'icon'});
-            $weather['forecast'][$i]['temp']        = (int)$day->{'low'}->{'celsius'}.'&deg; / '.(int)$day->{'high'}->{'celsius'}.'&deg;';
+            $weather['forecast'][$i]['temp']        = (int)$day->{'low'}->{'celsius'}.'&deg;/'.(int)$day->{'high'}->{'celsius'}.'&deg;';
             $i++;
         }
     
