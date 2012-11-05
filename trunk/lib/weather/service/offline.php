@@ -39,7 +39,7 @@
         $weather['forecast'][$i]['date']        = date('D', time() + 24 * 60 * 60 * ($i + 1));
         $weather['forecast'][$i]['conditions']  = 'sunny';                 
         $weather['forecast'][$i]['icon']        = 'sun_'.rand(1,5);
-        $weather['forecast'][$i]['temp']        = rand(22, 25).'&deg; / '.rand(18, 20).'&deg;';
+        $weather['forecast'][$i]['temp']        = rand(22, 25).'&deg;/'.rand(18, 20).'&deg;';
     }
     
     echo json_encode($weather);
