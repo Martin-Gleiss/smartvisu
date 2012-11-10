@@ -52,10 +52,7 @@
     	<div data-role="collapsible">
             <h3>Einstellungen</h3>
        
-            <div data-role="fieldcontain">
-                <label for="{{ page }}-wassersaeulen">Automatik<br></label>
-                {{ basic.flip('wassersaeulen', 'wassersaeulen_auto', 'an', 'aus') }}
-            </div>
+           {{ basic.checkbox('wassersaeulen_auto', 'wassersaeulen_auto', 'Automatik') }} 
        </div>
       	
     </div>    

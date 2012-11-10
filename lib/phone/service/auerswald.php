@@ -24,7 +24,8 @@ require_once const_path_system.'phone/phone.php';
  */   
 class phone_auerswald extends phone
 {
-    /** 
+
+  /** 
     * Check if the cache-file exists
     */      
     public function run()

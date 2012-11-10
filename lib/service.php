@@ -9,6 +9,9 @@
  */
  
  
+require_once const_path_system.'functions.php';
+
+
 /** 
 * This class is the base class of all services
 */ 
@@ -17,10 +20,12 @@ class service
     var $debug = false;
     
     var $server = '';
+    var $url = '';
     var $user = '';
     var $pass = '';
     
     var $data = array();
+    var $error = array();
     
     
   /** 
@@ -39,9 +44,19 @@ class service
         $this->debug = ($request['debug'] == 1);
         
         $this->server = $request['server'];
+        $this->url = $request['url'];
         $this->user = $request['user'];
         $this->pass = $request['pass'];
     }
+    
+  /** 
+	* sets an errormassage
+	*/      
+    public function error($message)
+    {
+        $this->error[] = $message;
+    }
+    
     
   /** 
 	* retrieve the content
@@ -57,7 +72,7 @@ class service
 	*/      
     public function prepare()
     {
-        foreach($this->data as $ds)
+        foreach($this->data as $id => $ds)
         {
             true;
         }
@@ -70,10 +85,18 @@ class service
 	{
         $ret = "";
 	   
-        $this->run();
-        $this->prepare();
+        if (count($this->error) == 0)
+            $this->run();
         
-        return json_encode($this->data); 
+        if (count($this->error) == 0)
+        {
+            $this->prepare();
+            $ret = $this->data; 
+        }
+        else
+            $ret = implode(', ', $this->error);
+        
+    return json_encode($ret);
     }
        
   /** 

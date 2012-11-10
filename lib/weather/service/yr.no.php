@@ -8,67 +8,75 @@
  * ----------------------------------------------------------------------------- 
  */
 
-    // get config-variables 
-    require_once '../../../config.php';
-    require_once const_path_system.'class_cache.php';
+
+require_once '../../../config.php';
+require_once const_path_system.'weather/weather.php';
+require_once const_path_system.'class_cache.php';
     
-    // init parameters
-    $request = array_merge($_GET, $_POST);
-    
-    // Tyskland/Bayern/Würzburg
-    $location = $request['location'];  
-    $lang = $request['lang'];
-    
-    // api call 
-    $cache = new class_cache('yr.no_'.substr(strrchr($location, '/'), 1).'.xml');
-    
-    if ($cache->hit())
-        $xml = simplexml_load_string($cache->read());
-    else
+
+/** 
+ * This class generates a weather
+ */   
+class weather_yr extends weather
+{
+
+  /** 
+	* retrieve the content
+	*/     
+    public function run()
     {
-        $url = 'http://www.yr.no/place/'.$location.'/forecast.xml';
-        $xml = simplexml_load_string($cache->write(file_get_contents($url)));
-    }
-      
-    if($xml)
-    {
-        //today
-        $weather['city']       = (string)$xml->location->name;
+        // api call 
+        $cache = new class_cache('yr.no_'.substr(strrchr($this->location, '/'), 1).'.xml');
         
-        // forecast
-        $i = 0;
-        foreach($xml->forecast->tabular->time as $day) {
-            if ($i == 0) {
-                $weather['current']['date']        = date('D', strtotime((string)$day->attributes()->from));
-                $weather['current']['conditions']  = (string)$day->symbol->attributes()->name;                 
-                $weather['current']['wind']        = (string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code.' at '.(string)$day->windSpeed->attributes()->mps.' MPH';                 
-                $weather['current']['icon']        = icon((string)$day->symbol->attributes()->number);
-                $weather['current']['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
-                $weather['current']['more']        = (int)$day->pressure->attributes()->value.' hPa';
-                $i++;
-            }
+        if ($cache->hit())
+            $xml = simplexml_load_string($cache->read());
+        else
+        {
+            $url = 'http://www.yr.no/place/'.urlencode($this->location).'/forecast.xml';
+            $xml = simplexml_load_string($cache->write(file_get_contents($url)));
+        }
+          
+        if($xml)
+        {
+            //today
+            $this->data['city']       = (string)$xml->location->name;
             
-            if ($i < 5 and $day->attributes()->period == 2) {
-                $weather['forecast'][$i]['date']        = date('D', strtotime((string)$day->attributes()->from));
-                $weather['forecast'][$i]['conditions']  = (string)$day->symbol->attributes()->name;                 
-                $weather['forecast'][$i]['wind']        = (string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code.' at '.(string)$day->windSpeed->attributes()->mps.' MPH';                 
-                $weather['forecast'][$i]['icon']        = icon((string)$day->symbol->attributes()->number);
-                $weather['forecast'][$i]['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
-                $weather['forecast'][$i]['more']        = (int)$day->pressure->attributes()->value.' hPa';
-                $i++;
+            // forecast
+            $i = 0;
+            foreach($xml->forecast->tabular->time as $day)
+            {
+                if ($i == 0)
+                {
+                    $this->data['current']['date']        = (string)$day->attributes()->from;
+                    $this->data['current']['conditions']  = (string)$day->symbol->attributes()->name;                 
+                    $this->data['current']['wind']        = (string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code.' at '.(string)$day->windSpeed->attributes()->mps.' MPH';                 
+                    $this->data['current']['icon']        = $this->icon((string)$day->symbol->attributes()->number);
+                    $this->data['current']['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
+                    $this->data['current']['more']        = (int)$day->pressure->attributes()->value.' hPa';
+                    $i++;
+                }
+                
+                if ($i < 5 and $day->attributes()->period == 2)
+                {
+                    $this->data['forecast'][$i]['date']        = (string)$day->attributes()->from;
+                    $this->data['forecast'][$i]['conditions']  = (string)$day->symbol->attributes()->name;                 
+                    $this->data['forecast'][$i]['wind']        = (string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code.' at '.(string)$day->windSpeed->attributes()->mps.' MPH';                 
+                    $this->data['forecast'][$i]['icon']        = $this->icon((string)$day->symbol->attributes()->number);
+                    $this->data['forecast'][$i]['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
+                    $this->data['forecast'][$i]['more']        = (int)$day->pressure->attributes()->value.' hPa';
+                    $i++;
+                }
             }
         }
-        
-        echo json_encode($weather);
-    } 
-    else
-        header("HTTP/1.0 404 Not Found");
-        
-    
-// -----------------------------------------------------------------------------
-// I C O N - M A P P E R
-// -----------------------------------------------------------------------------
+        else
+            $this->error('ERROR: yr.no read request failed!');
+     
+    }
 
+
+   /*
+    * Icon-Mapper
+    */
     function icon($name)
     {
         $ret = '';
@@ -124,5 +132,16 @@
         $ret = $icon[$name];
         
         return $ret;
-    }    
+    }   
+
+}
+   
+
+// -----------------------------------------------------------------------------
+// call the service
+// -----------------------------------------------------------------------------
+
+$service = new weather_yr(array_merge($_GET, $_POST));
+echo $service->json();
+
 ?>

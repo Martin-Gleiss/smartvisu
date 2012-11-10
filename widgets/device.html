@@ -148,3 +148,48 @@
         </table>
     </div>        
 {% endmacro %}
+
+/**
+ * Standard shutter
+ *
+ * @param       unique id for this widget
+ * @param       name of the blind
+ * @param       the knx gad (groupaddress) for the up- and down- movement
+ * @param       the knx gad (groupaddress) for the actual position of the blinds (read-only)
+ * @param       the knx gad (groupaddress) for stopping the movement
+ * @param       the knx gad (groupaddress) for saved positions (optional)
+ */
+{% macro shutter(id, txt, gad_move, gad_pos, gad_stop, gad_saved) %}
+    {% import   "basic.html" as basic %}
+
+    /** Design */
+    <div class="blind">
+        <table align="center">
+        <tr height=65>
+            <td valign="top">
+                <div class="set">{{ basic.button(id|_('up'), gad_move, '', 'arrow-u', 0) }}</div></td>
+            <td rowspan="3" align="center" class="pos">
+              {% if once('shutter') %}
+                  <link rel="stylesheet" type="text/css" href="lib/shutter/shutter.css" />
+              {% endif %}
+                {{ basic.shutter(id|_('pos'), gad_pos, 0, 100, 5, 'vertical') }}</td>
+            <td valign="center"><div>
+                {% if gad_saved %} {{ basic.button(id|_('saved0'), gad_saved, 'Pos1', '', 0) }} {% endif %}
+            </div></td>
+        </tr>
+        <tr height=65>
+            <td valign="center">
+                <div class="set">{{ basic.button(id|_('stop'), gad_stop, '', 'delete', 1) }}</div></td>
+            <td valign="center"><div>
+                {% if gad_saved %} {{ basic.button(id|_('saved1'), gad_saved, 'Pos2', '', 1) }} {% endif %}
+            </div></td>
+        </tr>
+        <tr height=65>
+            <td valign="bottom">
+                <div class="set">{{ basic.button(id|_('down'), gad_move, '', 'arrow-d', 1) }}</div></td>
+            <td>{{ txt }}</td>
+        </tr>
+        </table>
+    </div>
+
+{% endmacro %}

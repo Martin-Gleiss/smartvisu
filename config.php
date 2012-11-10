@@ -12,7 +12,7 @@
   /**
     * Version of smartVISU
     */
-    define ('config_version',               '1.8');
+    define ('config_version',               '1.9');
     
 
 // -----------------------------------------------------------------------------
@@ -116,7 +116,7 @@
   /**
     * What is the ip-address of the phone-system?
     */
-    define ('config_phone_server',         '192.168.x.x');
+    define ('config_phone_server',          '192.168.x.x');
  
   /**
     * Is there a user to autheticate?
@@ -127,7 +127,21 @@
     * Is there a user to autheticate?
     */
     define ('config_phone_pass',            '');  
+    
       
+  /**
+    * Witch calender should be used?
+    * 
+    * @value offline: random values
+    * @value google: Google Calendar            
+    */
+    define ('config_calendar_service',      'offline');
+  
+  /**
+    * What is the private url?
+    */
+    define ('config_calendar_url',          ''); 
+    
 
 // -----------------------------------------------------------------------------
 // Common

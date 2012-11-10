@@ -79,3 +79,10 @@ kueche_heizung_sollwert =
 kueche_heizung_frost = 
 kueche_heizung_komfort = 
 kueche_heizung_nacht = 
+info_zeit = 12:00:00
+modus_heizung_nacht = 
+modus_licht_tag_nacht = 0
+modus_heizung_frost = 
+modus_heizung_komfort = 
+info_datum = 01.01.2012
+

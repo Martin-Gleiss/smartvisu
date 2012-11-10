@@ -14,13 +14,14 @@ require_once const_path_system.'phone/phone.php';
     
 
 /** 
- * This class reads the phonelist of an auerswald phonesystem
+ * This class reads the phonelist of an fritz!box phonesystem
  */   
 class phone_fritzbox extends phone
 {
-    /** 
-    * Check if the cache-file exists
-    */      
+
+  /** 
+	* retrieve the content
+	*/      
     public function run()
     {
         // 1. login
@@ -67,8 +68,10 @@ class phone_fritzbox extends phone
                     $dir = "-1";
                 elseif (trim($parts[0]) == 1)
                     $dir = "1";
-                    
-                $this->data[] = array('pos' => $i++, 'dir' => $dir, 'date' => trim($parts[1]),
+                
+                $date = trim($parts[1]);
+                $date = '20'.substr($date, 6, 2).'-'.substr($date, 3, 2).'-'.substr($date, 0, 2).' '.substr($date, 9, 5).':00';  
+                $this->data[] = array('pos' => $i++, 'dir' => $dir, 'date' => $date,
                         'number' => trim($parts[3]), 'name' => '', 'duration' => trim($parts[7])
                     );
             }

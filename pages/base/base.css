@@ -19,7 +19,7 @@
 
 
 .content-secondary {
-    display:none;
+    display: none; 
 }
  
 @media all and (min-width: 640px) {
@@ -63,7 +63,11 @@
     min-height: 800px;
     z-index: 1;
 }
-    
+  
+.ui-br {
+    border: 0;
+}  
+
 .ui-li-has-thumb .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-thumb  {
     min-height: 40px;
     padding-left: 70px;
@@ -197,6 +201,34 @@ a.ui-slider-handle-semicircle {
 
 a.ui-slider-handle-semicircle .ui-btn-inner  {
     display: none;
+}
+
+.ui-grid-f {
+    overflow: hidden;
+}
+
+.ui-block-f, .ui-block-g {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    float: left;
+    min-height: 1px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ui-grid-f .ui-block-a, .ui-grid-f .ui-block-b, .ui-grid-f .ui-block-c, .ui-grid-f .ui-block-d, .ui-grid-f .ui-block-e, .ui-grid-f .ui-block-f, .ui-grid-f .ui-block-g {
+    width: 14%;
+}
+
+.ui-grid-f > :nth-child(n) { 
+    width: 14%;
+}
+
+.ui-grid-f .ui-block-a {
+    clear: left;
 }
 
 
@@ -477,12 +509,9 @@ hr {
 }
 
 .docu .html {
-    margin: 5px;
-    border: 1px; 
-    border-style: dotted;
-    border-color: #666;
+    margin: 5px 5px 15px 5px;
+    border: 1px dotted #666;
     padding: 10px;
-    margin-bottom: 15px;
 }
 
 .docu .param {
@@ -666,3 +695,49 @@ hr {
     margin: 6px 0 6px 0;
 }
 
+.phonelist p {
+    font-size: 10pt;
+}
+
+
+
+.calendarlist h2 {
+    font-size: 12pt;
+    margin-bottom: 4px;
+}
+
+.calendarlist ul {
+    margin: 0 !important;
+}
+
+.calendarlist li {
+    padding: 0 !important;
+    height: 50px;
+}
+
+.calendarlist a {
+    padding: 0 10px 0 50px !important;
+    height: 50px;
+}
+
+.calendarlist .icon {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 48px;
+    height: 48px;
+}
+
+.calendarlist .color {
+    width: 6px;
+    height: 48px;
+    margin-right: 10px;
+    float: left;
+}
+
+.calendarlist h3 {
+    margin: 6px 0 6px 0;
+}
+
+.calendarlist p {
+    font-size: 10pt;
+}
