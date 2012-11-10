@@ -350,4 +350,33 @@
     </script>    
 {% endmacro %}
 
- 
+ {% macro shutter(id, gad, min, max, step, orientation) %}
+    /** Design */
+    <div class="shutter" id="{{ page }}-{{ id }}">
+        <div class="shutter-value">
+            <div class="shutter-cover"></div>
+        </div>
+    </div>
+
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pageshow', function(event, ui){ 
+            // reload
+            $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
+                knx('{{ gad }}').success(function(response) {
+                    Wert = 50; //parseInt(response);
+                    if ( Wert < '80')
+                      $('#{{ page }}-{{ id }} .shutter-cover').css('bottom', 100 - Wert * 100 / 80 + '%' );
+                    if (Wert >= '80') {
+                      $('#{{ page }}-{{ id }} .shutter-cover').css('bottom', '0%' );
+                      $('#{{ page }}-{{ id }} .shutter-cover').css('background', 'url("lib/shutter/pics/shutter_closed.png")' );
+                    };
+                }) ;
+            }); 
+            
+            // init
+            $('#{{ page }}-{{ id }}').trigger('reload');
+        });
+    </script>
+{% endmacro %} 
+

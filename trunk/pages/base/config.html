@@ -24,8 +24,9 @@
         	<div data-role="collapsible" data-collapsed="false">
                 <h3>Interface</h3>
                 
+
                 <div data-role="fieldcontain">
-    				<label for="pages" class="select">Pages</label>
+    				<label for="pages">Pages</label>
     				<select name="pages" id="pages" data-native-menu="false">
     				    {% for file in dir('pages', '^(?!base|apps)(.+?)') %}
                         <option value="{{ file.name }}">{{ file.label }}</option>
@@ -36,7 +37,7 @@
                	
                	
                 <div data-role="fieldcontain">
-    				<label for="design" class="select">Design</label>
+    				<label for="design">Design</label>
     				<select name="design" id="design" data-native-menu="false">
     				    {% for file in dir('designs', '(.+?).min.css') %}
                         <option value="{{ file.name }}">{{ file.label }}</option>
@@ -67,7 +68,7 @@
                 </div>
                 
                 <div data-role="fieldcontain">
-    				<label for="lang" class="select">Language</label>
+    				<label for="lang">Language</label>
     				<select name="lang" id="lang" data-native-menu="false">
     				    <option value="en">english</option>
                         <option value="de">german</option>
@@ -88,7 +89,7 @@
                 <h3>KNX-Connection</h3>
                 
                 <div data-role="fieldcontain">
-				    <label for="driver" class="select">Driver</label>
+				    <label for="driver">Driver</label>
     				<select name="driver" id="driver" data-native-menu="false">
     				    {% for file in dir('driver', '^driver_(?!base)(.+?).php') %}
                         <option value="{{ file.name }}">{{ file.label }}</option>
@@ -121,7 +122,7 @@
                 <h3>Weather</h3>
                 
                 <div data-role="fieldcontain">
-				    <label for="weather_service" class="select">Service</label>
+				    <label for="weather_service">Service</label>
     				<select name="weather_service" id="weather_service" data-native-menu="false">
     				    {% for file in dir('lib/weather/service', '(.+?).php') %}
                         <option value="{{ file.name }}">{{ file.label }}</option>
@@ -155,7 +156,7 @@
                 <h3>Phone</h3>
                 
                 <div data-role="fieldcontain">
-				    <label for="phone_service" class="select">System</label>
+				    <label for="phone_service">System</label>
     				<select name="phone_service" id="phone_service" data-native-menu="false">
     				    {% for file in dir('lib/phone/service', '(.+?).php') %}
                         <option value="{{ file.name }}">{{ file.label }}</option>
@@ -185,6 +186,34 @@
              
         </div> 
         </div>
+        
+        
+        <div class="block">
+        <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Calendar</h3>
+                
+                <div data-role="fieldcontain">
+				    <label for="calendar_service">System</label>
+    				<select name="calendar_service" id="calendar_service" data-native-menu="false">
+    				    {% for file in dir('lib/calendar/service', '(.+?).php') %}
+                        <option value="{{ file.name }}">{{ file.label }}</option>
+                        {% endfor %}
+                	</select>
+                    {{ forms.select_init('calendar_service', config_calendar_service) }}
+                </div>
+                
+                <div data-role="fieldcontain">
+                    <label for="calendar_url">Url</label>
+                    <input type="text" name="calendar_url" id="calendar_url" />
+                    {{ forms.text_init('calendar_url', config_calendar_url|e ) }}
+                </div>
+            </div>
+             
+        </div> 
+        </div>
+       
            
     </fieldset>
     <button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">Save</button>
@@ -199,7 +228,7 @@
                 
                 if (data == 'true') {
                     $('#alert img').attr('src', 'pages/base/pics/alert_ok.png');
-                    location.reload();
+                    window.setTimeout('location.reload();', {{ config_delay }});
                 } else {
                     $('#alert img').attr('src', 'pages/base/pics/alert_error.png');
                 }

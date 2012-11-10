@@ -17,32 +17,58 @@ require_once const_path_system.'service.php';
 */ 
 class calendar extends service
 {
-
+    var $count = 1;
+    
+    
   /** 
 	* initalisation of some parameters
 	*/      
     public function init($request)
     {
-        $this->debug = ($request['debug'] == 1);
+        parent::init($request);
         
-        $this->server = config_calendar_server;
-        $this->user = config_calendar_user;
-        $this->pass = config_calendar_pass;
+        $this->count = $request['count'];
     }
-          
+    
   /** 
 	* prepare the data
 	*/      
     public function prepare()
     {
-        /*
         foreach($this->data as $id => $ds)
         {
-            $ret[] = $ds;
+            $start = strtotime($ds['start']);
+            $end = strtotime($ds['end']);
+            
+            $this->data[$id]['starttime'] = smartdate('time', $start);
+            $this->data[$id]['endtime'] = smartdate('time', $end);
+            
+            if (date('Y-m-d', $start) == date('Y-m-d', $end))
+                $this->data[$id]['period'] = smartdate('short', $start).' - '.date('H:i', $end);
+            else
+                $this->data[$id]['period'] = smartdate('short', $start).' - '.smartdate('short', $end);
+            
+            $this->data[$id]['weekday'] = smartdate('l', $start);
+            
+            // content
+            $tags = null;
+            
+            if ($this->data[$id]['icon'] == '')
+                $this->data[$id]['icon'] = 'pages/base/pics/trans.png';  
+            
+            preg_match_all('#@(.+?)\W+(.*)#i', $this->data[$id]['content'], $tags);
+            foreach($tags[0] as $nr => $hit)
+            {
+                $tag = trim($tags[1][$nr]);
+                if ($tag == 'icon')
+                {
+                    if (is_file(const_path.$tags[2][$nr]))
+                        $this->data[$id][$tag] = $tags[2][$nr];  
+                }
+                elseif ($tag == 'color')
+                    $this->data[$id][$tag] = '#'.trim($tags[2][$nr]);   
+            }
         }
-        
-        $this->data = $ret;
-        */
     }
 
 }

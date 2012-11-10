@@ -38,11 +38,16 @@
     
     <hr>
     
+    {% import "calendar.html" as calendar %}
+    {{ calendar.list('calendarlist', 'Kalender', 5) }}    
+    
    
 {% endblock %}
 
 
 {% block content %}
+    
     {% include 'rooms_menu.html' %}
+    
 {% endblock %}
 

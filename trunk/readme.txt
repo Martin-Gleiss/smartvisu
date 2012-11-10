@@ -82,7 +82,13 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
-v 1.8
+v 1.9
+    - new widget-file: widgets/calendar.html for google calendar
+    - function.php: smartdate for dates relating on language
+    - improved design of configuration
+    - fixes in phonelist
+    
+v 1.8 02.11.12
     - new widget-file: widgets/phone.html for phonelists
       A phone system is required. Supported are:
       Auerwald VoiP 5010, VoiP 5020, Commander Basic.2

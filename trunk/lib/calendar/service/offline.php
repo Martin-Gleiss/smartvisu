@@ -10,39 +10,37 @@
 
 
 require_once '../../../config.php';
-require_once const_path_system.'phone/phone.php';
+require_once const_path_system.'calendar/calendar.php';
     
 
 /** 
- * This class reads the phonelist of an auerswald phonesystem
+ * This class creates some calendar entries
  */   
-class phone_offline extends phone
+class calendar_offline extends calendar
 {
-    /** 
+
+  /** 
     * Check if the cache-file exists
     */      
     public function run()
     {
-        for($i = 9; $i > 0; $i--)
+        for($i = 1; $i <= $this->count; $i++)
         {
+            $tag = $tag + rand(1,3);
+            $event = array('Meeting', 'Doctor', 'Waste');
+            $waste = array('#222266', '#664422', '#555555', '#666600');
+            $title = $event[rand(0,2)];
+            
             $this->data[] = array (
                 'pos' => $i, 
-                'dir' => rand(-1, 1),
-                'date' => '01.10.2012 1'.$i.':'.rand(1,59).':00', 
-                'number' => '0931'.rand(1000000, 9999999), 
-                'name' => 'Gleiss Martin',
-                'duration' => '00:00:'.rand(10,50)
+                'start' => date('y-m-d', time() + $tag * 24 * 60 * 60).' '.rand(8,14).':00:00',
+                'end' => date('y-m-d', time() + $tag * 24 * 60 * 60).' '.rand(15,20).':00:00',
+                'title' => $title,
+                'where' => ($title == 'Doctor' ?  'Würzburg' : ''),
+                'icon' => ($title == 'Waste' ? 'icons/ws/meld_muell.png' : ''), 
+                'color' => ($title == 'Waste' ?  $waste[rand(0,3)] : '')
             );
         }
-            
-        $this->data[] = array (
-            'pos' => '2', 
-            'dir' => '1',
-            'date' => '01.10.2012 10:00:00', 
-            'number' => '08003007707', 
-            'name' => '',
-            'duration' => '00:00:10'
-        );         
     }
 }
 
@@ -51,7 +49,7 @@ class phone_offline extends phone
 // call the service
 // -----------------------------------------------------------------------------
 
-$service = new phone_offline(array_merge($_GET, $_POST));
+$service = new calendar_offline(array_merge($_GET, $_POST));
 echo $service->json();
 
 ?>

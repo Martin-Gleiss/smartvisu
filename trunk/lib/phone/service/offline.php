@@ -14,11 +14,12 @@ require_once const_path_system.'phone/phone.php';
     
 
 /** 
- * This class reads the phonelist of an auerswald phonesystem
+ * This class creates a phonelist
  */   
 class phone_offline extends phone
 {
-    /** 
+
+  /** 
     * Check if the cache-file exists
     */      
     public function run()

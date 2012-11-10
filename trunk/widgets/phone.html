@@ -18,7 +18,7 @@
 {% macro missedlist(id, title, count) %}
     /** Design */
     <div id="{{ page }}-{{ id }}-phonelist" class="phonelist">
-        <h2>{{ title }}</h2>
+        {% if title %} <h2>{{ title }}</h2> {% endif %}
         <ul data-role="listview">
         </ul>
     </div>
@@ -61,7 +61,7 @@
 {% macro list(id, title, count) %}
     /** Design */
     <div id="{{ page }}-{{ id }}-phonelist" class="phonelist">
-        <h2>{{ title }}</h2>
+        {% if title %} <h2>{{ title }}</h2> {% endif %}
         <ul data-role="listview">
         </ul>
     </div>

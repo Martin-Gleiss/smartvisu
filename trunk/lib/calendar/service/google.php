@@ -14,39 +14,54 @@ require_once const_path_system.'calendar/calendar.php';
     
 
 /** 
- * This class reads the phonelist of an auerswald phonesystem
+ * This class reads a google calendar
  */   
 class calendar_google extends calendar
 {
+
+  /** 
+	* initalisation of some parameters
+	*/      
+    public function init($request)
+    {
+        parent::init($request);
+        
+        $this->url = str_replace("/basic", "/full?max-results=".(int)$request['count']."&singleevents=true&futureevents=true&orderby=starttime&sortorder=a", $this->url);
+    }
+    
     /** 
     * Check if the cache-file exists
     */      
     public function run()
     {
-        $url = 'http://www.google.com/calendar/feeds/gleiss.martin%40googlemail.com/private-af446a68a2aa4fc7540238e3870b785c/basic';
-        $url = str_replace("/basic", "/full?singleevents=true&futureevents=true&orderby=starttime&sortorder=a", $url);
         $context = stream_context_create(array('http'=>array('method'=>"GET")));
-        $content = file_get_contents($url, false, $context);
+        $content = @file_get_contents($this->url, false, $context);
         $this->debug($content);
         
-        $xml = simplexml_load_string($content);
-        
-        $i = 1;
-        foreach ($xml->entry as $entry)
+        if($content !== false)
         {
-            $meta = $entry->children('http://schemas.google.com/g/2005');
+            $xml = simplexml_load_string($content);
             
-            $startstamp = strtotime($meta->when->attributes()->startTime) + date("Z", strtotime($meta->when->attributes()->startTime));
-            $endstamp = strtotime($meta->when->attributes()->endTime) + date("Z", strtotime($meta->when->attributes()->endTime));
+            $i = 1;
             
-            $this->data[] = array('pos' => $i++, 
-                'start' => date('d.m.y', $startstamp).' '.gmdate('H:i', $startstamp),
-                'end' => date('d.m.y', $endstamp).' '.gmdate('H:i', $endstamp),
-                'title' => (string)($entry->title),
-                'where' => (string)$meta->where->attributes()->valueString,
+            foreach ($xml->entry as $entry)
+            {
+                $meta = $entry->children('http://schemas.google.com/g/2005');
+                $startstamp = strtotime($meta->when->attributes()->startTime) + date("Z", strtotime($meta->when->attributes()->startTime));
+                $endstamp = strtotime($meta->when->attributes()->endTime) + date("Z", strtotime($meta->when->attributes()->endTime));
                 
-                );
+                $this->data[] = array('pos' => $i++, 
+                    'start' => date('y-m-d', $startstamp).' '.gmdate('H:i:s', $startstamp),
+                    'end' => date('y-m-d', $endstamp).' '.gmdate('H:i:s', $endstamp),
+                    'title' => (string)($entry->title),
+                    'content' => (string)($entry->content),
+                    'where' => (string)$meta->where->attributes()->valueString,
+                    'link' => (string)($entry->link->attributes()->href)
+                    );
+            }
         }
+        else
+            $this->error('ERROR: Google calender read request failed!');
     }
 }
 
