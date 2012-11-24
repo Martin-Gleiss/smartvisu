@@ -193,7 +193,8 @@
     
     /** Design */
     {% if once('cycle2') %}
-        <script src="lib/jQuery/plugins/jquery.cycle2.min.js"></script>
+        <script src="vendor/jquery.cycle2/jquery.cycle2.core.js"></script>
+        <script src="vendor/jquery.cycle2/jquery.cycle2.autoheight.js"></script>
     {% endif %}
     
     <div class="block">
@@ -212,7 +213,7 @@
     /** Events */
     <script type="text/javascript">
         $('#{{ page }}').live('pagecreate', function(event, ui){
-            $('#{{ page }}-{{ id }}').cycle();    
+            $('#{{ page }}-{{ id }}').cycle();  
         });
     </script> 
  
