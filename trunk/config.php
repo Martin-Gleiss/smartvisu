@@ -140,7 +140,7 @@
   /**
     * What is the private url?
     */
-    define ('config_calendar_url',          ''); 
+    define ('config_calendar_url',          'http://www.google.com/calendar/feeds/...'); 
     
 
 // -----------------------------------------------------------------------------
@@ -158,4 +158,6 @@
     * Path of system-directory
     */
     define ('const_path_system',            const_path.'lib/'); 
+    
+    date_default_timezone_set('Europe/Berlin');
 ?>

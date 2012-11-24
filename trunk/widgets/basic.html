@@ -209,9 +209,9 @@
  * 
  * @param        unique id for this widget
  * @param        the knx gad (groupaddress)  
- * @param        text  
- * @param        the pic
- * @param        value 
+ * @param        the text, printed when gad has value val 
+ * @param        the pic, shown when gad has value val
+ * @param        value (default 1) 
  */
  {% macro symbol(id, gad, txt, pic, val) %}
     /** Design */
@@ -350,33 +350,66 @@
     </script>    
 {% endmacro %}
 
- {% macro shutter(id, gad, min, max, step, orientation) %}
+
+/**
+ * Displays a shutter-control
+ * 
+ * @param        unique id for this widget
+ * @param        the knx gad (groupaddress) for the actual position of the blinds (readonly)
+ * @param        the knx gad (groupaddress) for the actual angle of the blinds (optional, readonly)
+ */
+ {% macro shutter(id, gad_pos, gad_angle) %}
     /** Design */
     <div class="shutter" id="{{ page }}-{{ id }}">
-        <div class="shutter-value">
-            <div class="shutter-cover"></div>
-        </div>
+        {% for i in 1..12 %}
+            <div class="blade" id="{{ page }}-{{ id }}-{{ i }}"></div>
+       {% endfor %}
     </div>
+   
 
     /** Events */
     <script type="text/javascript">
-        $('#{{ page }}').live('pageshow', function(event, ui){ 
+        knx2.add('{{ gad_pos }}', '{{ page }}-{{ id }}');
+                
+        $('#{{ page }}').live('pageshow', function(event, ui){
             // reload
             $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
-                knx('{{ gad }}').success(function(response) {
-                    Wert = 50; //parseInt(response);
-                    if ( Wert < '80')
-                      $('#{{ page }}-{{ id }} .shutter-cover').css('bottom', 100 - Wert * 100 / 80 + '%' );
-                    if (Wert >= '80') {
-                      $('#{{ page }}-{{ id }} .shutter-cover').css('bottom', '0%' );
-                      $('#{{ page }}-{{ id }} .shutter-cover').css('background', 'url("lib/shutter/pics/shutter_closed.png")' );
-                    };
-                }) ;
-            }); 
+                a = 0;
+                {% if gad_angle %}
+                    knx('{{ gad_angle }}').success(function (response) {
+                    a = parseInt(13 * response / 100);
+                    })
+                {% endif %}
+                
+                knx('{{ gad_pos }}').success(function (response) {
+                var style;
+                    
+                h = parseInt(response * 13 * 14 / 100);
+                for (var i = 12; i >= 1; i--) {
+                    if (h >= 14) {
+                        style  = 'height: ' + ((h > i * 14) && a == 0 ? (14 - a) : (15 - a)) + 'px;';
+                        
+                        if (a > 0)
+                            style += 'margin-top: ' + (h - 15 >= 14 ? a : parseInt(a / 2)) + 'px;';
+                        else
+                            style += 'border-top: 1px dotted ' + (h > i * 14 ? '#ccc' : '#333') + ';';
+                        
+                        $('#{{ page }}-{{ id }}-' + i).attr('style', style);
+                        h = h - 15;
+                    }
+                    else {
+                        style  = 'height: ' + h + 'px;';
+                        style += 'border-top: 1px dotted #aaa;';
+                        $('#{{ page }}-{{ id }}-' + i).attr('style', style);
+                        h = 1;
+                    }
+                }
+                })
+            });
             
             // init
-            $('#{{ page }}-{{ id }}').trigger('reload');
-        });
-    </script>
+            // $('#{{ page }}-{{ id }}').trigger('reload');
+        });            
+    </script> 
 {% endmacro %} 
 

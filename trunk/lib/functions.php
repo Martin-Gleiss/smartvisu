@@ -37,7 +37,10 @@
             case 'long':    $format = (config_lang == 'de' ? 'd.m.Y H:i:s' : 'm/d/Y H:i:s'); break;
             }                 
         
-        $date = date($format, $timestamp);
+        if ($timestamp == '')
+            $date = date($format);
+        else
+            $date = date($format, $timestamp);
         
         if (strpos($format, 'D') !== false && config_lang == 'de')
             $date = str_replace(array_keys($de_D), array_values($de_D), $date);
