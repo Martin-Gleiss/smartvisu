@@ -1,13 +1,14 @@
-#How to install smartVISU on a Webserver
+= How to install smartVISU on a Webserver =
 
-= Introduction =
+== Introduction ==
 
 Ist quite easy to install smartVISU on a Webserver. 
 
-
-= Details =
+== Details ==
 
 To run smartVISU on your system you need the following prerequisites:
  * EIBD
  * LinKNX
  * webserver (f.e. Apache2)
+
+Download the latest version of smartVISU from the download section. Extract the ZIP file and move the extracted content to your webserver.
