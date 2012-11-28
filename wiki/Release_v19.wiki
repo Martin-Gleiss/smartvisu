@@ -23,7 +23,7 @@ for example:
 == calendar.list ==
 for all events in a Google-Calendar. You may place this widget on your startscreen.
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v1.9/tb_startscreen.jpg' title='widget: calendar.list on startscreen' width='600'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v1.9/tb_startscreen_calendar.jpg' title='widget: calendar.list on startscreen' width='600'>
 
 = Details =
 The calendar widgets must be configured through the config-page.
