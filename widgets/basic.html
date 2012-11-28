@@ -369,8 +369,6 @@
 
     /** Events */
     <script type="text/javascript">
-        knx2.add('{{ gad_pos }}', '{{ page }}-{{ id }}');
-                
         $('#{{ page }}').live('pageshow', function(event, ui){
             // reload
             $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
