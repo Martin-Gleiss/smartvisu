@@ -7,8 +7,7 @@ Ist quite easy to install smartVISU on a Webserver.
 
 = Details =
 
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+To run smartVISU on your system you need the following prerequisites:
+ * EIBD
+ * LinKNX
+ * webserver (f.e. Apache2)
