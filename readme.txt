@@ -82,8 +82,13 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
-v 1.9
+v 1.9 28.11.12
     - new widget-file: widgets/calendar.html for google calendar
+      use the google-calendar private xml-adress in the config dialog
+      with http: (not https:). In your event you may use:
+        @icon        icons/ws/meld_muell.png
+        @color       #222266
+      as description to set the icon and color.
     - function.php: smartdate for dates relating on language
     - improved design of configuration
     - fixes in phonelist
