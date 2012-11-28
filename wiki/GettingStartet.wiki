@@ -2,11 +2,24 @@
 
 = Introduction =
 
-To create your own visualisation with smartVISU it is important to understand the structure of smartVISU. This is explained in the [GettingStartet#Basics] section.
+To create your own visualisation with smartVISU it is important to understand the structure of smartVISU. This is explained in the [Basics] section.
 
 
 = Basics =
 
 == The pages folder ==
 
+
 == The basic HTML files ==
+
+=== Index ===
+
+==== Sidebar ====
+
+==== Content ====
+
+=== Menu ===
+
+
+
+= First visualisation =
