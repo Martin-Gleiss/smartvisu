@@ -29,18 +29,40 @@ Every visualisation can be build by the HTML files in its folder. If a needed ba
 
 == The basic HTML files ==
 
-=== Index ===
+=== index.html ===
 This file represents the first site that is displayed if you access your visualisation via a browser. It is splited in two parts that devide the screen in a left and right section. 
 
+{{{
+[...]
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+}}}
+
+<img src="http://smartvisu.googlecode.com/svn/wiki/v1.8/tb_startscreen.jpg" title="Startscreen with widgets" width="600">
+
 ==== Sidebar ====
-This is the left section in the *index.html* file, here you can display widgets like _weather_, _phone_ or _calendar_.
+This is the left section in the *index.html* file, here you usualy can display widgets like _weather_, _phone_ or _calendar_.
 
-
+{{{
+INCLUDE CODE FOR WIDGETS
+}}}
 
 ==== Content ====
+This is the right section in the *index.html* file, here usualy a menu is diplayed.
+
+{{{
+INCLUDE CODE FOR MENU
+}}}
 
 === Menu ===
 
-
+===  ===
 
 = First visualisation =
