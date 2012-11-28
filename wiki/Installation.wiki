@@ -9,6 +9,6 @@ Ist quite easy to install smartVISU on a Webserver.
 To run smartVISU on your system you need the following prerequisites:
  * EIBD
  * LinKNX
- * webserver (f.e. Apache2)
+ * webserver with PHP 5.2.4 (f.e. Apache2)
 
 Download the latest version of smartVISU from the download section. Extract the ZIP file and move the extracted content to your webserver.
