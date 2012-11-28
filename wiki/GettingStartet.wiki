@@ -9,6 +9,19 @@ To create your own visualisation with smartVISU it is important to understand th
 
 == The pages folder ==
 
+This folder holds all available visualisations that come with smartVISU
+
+{{{
+Folder structure:
+ - pages
+   - _template  (templates for quick start)
+   - apps       (all apps that are available)
+   - base       (holds the base HTML files)
+   - docu       (A docu as a visualisation)
+   - gleiss     (Demo visualaisation)
+}}}
+
+
 
 == The basic HTML files ==
 
