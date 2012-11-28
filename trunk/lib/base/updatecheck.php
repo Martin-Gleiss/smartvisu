@@ -21,13 +21,13 @@
     $xml = simplexml_load_string($data);
     
     $file = basename((string)$xml->entry->id);
-              
-    $ret["local"] = config_version;
-    $ret["remote"] = substr(strstr($file, '_'), 1, -4);
-    $ret["update"] = false;
     
-    if ( (int)str_replace('.', '', $ret["remote"]) > (int)str_replace('.', '', $ret["local"]))
-        $ret["update"] = true;
+    $ret["local"] = (strlen(config_version) > 3 ? config_version : str_replace('.', '.0', config_version));
+    
+    $remote = substr(strstr($file, '_'), 1, -4);
+    $ret["remote"] = (strlen($remote) > 3 ? $remote : str_replace('.', '.0', $remote));
+    
+    $ret["update"] = ( (float)$ret["remote"] > (float)$ret["local"] );
     
     echo json_encode($ret);
 ?>
