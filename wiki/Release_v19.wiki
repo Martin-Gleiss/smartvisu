@@ -1,4 +1,5 @@
 #summary New in this release
+#labels Featured
 
 = What is new in release v1.9? =
 
@@ -25,16 +26,25 @@ for all events in a Google-Calendar. You may place this widget on your startscre
 <img src='http://smartvisu.googlecode.com/svn/wiki/v1.9/tb_startscreen.jpg' title='widget: calendar.list on startscreen' width='600'>
 
 = Details =
-The calendar widgets must be configured through the config-page. 
-# First you have to copy the private-xml link from your Google-Calendar.
-# Login into Google-Calendar and select "settings" from your calender you want to integrate.
-# Click 'xml' on the private link
-<img src='http://smartvisu.googlecode.com/svn/wiki/v1.9/google_calendar_private.jpg' title='copy private xml-link' width='600'>
-# Copy the link into the smartVISU config dialog
-<img src='http://smartvisu.googlecode.com/svn/wiki/v1.9/tb_config_calendar.jpg' title='copy private xml-link' width='400'>
-# Make sure to use http: not https: (you can only use https: if php is compiled with ssl support).
-# Place the calendar.list in any page:
+The calendar widgets must be configured through the config-page.
+
+*1.* First you have to copy the private-xml link from your Google-Calendar.
+
+*2.* Login into Google-Calendar and select "settings" from your calender you want to integrate.
+
+*3.* Click 'xml' on the private link:
+
+<img border="2" src='http://smartvisu.googlecode.com/svn/wiki/v1.9/google_calendar_private.jpg' title='click xml' width='600'>
+
+*4.* Copy the link into the smartVISU config dialog: URL
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v1.9/tb_config_calendar.jpg' title='copy to URL' width='300'>
+
+*5.* Make sure to use http: not https: (you can only use https: if php is compiled with ssl support).
+
+*6.* Place the calendar.list in any page:
 {{{
-    {% import "calendar.html" as calendar %}
-    {{ calendar.list('calendarlist', 'Kalender', 5) }}  
+{% import "calendar.html" as calendar %}
+{{ calendar.list('calendarlist', 'My Calendar', 5) }}  
 }}}
+In this example next 5 events are shown.
