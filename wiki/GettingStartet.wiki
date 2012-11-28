@@ -21,13 +21,21 @@ Folder structure:
    - gleiss     (Demo visualaisation)
 }}}
 
+The visualisations _docu_ and _gleiss_ can be activated in the configuration of samrtVISU.
 
+For a quick start you can copy the _template_ folder and rename it to your visualisation name.
+
+Every visualisation can be build by the HTML files in its folder. If a needed basic HTML file ([GettingStartet#The_basic_HTML_files]) is not in the folder of you visualisation, smartVISU loads it from the _base_ folder.
 
 == The basic HTML files ==
 
 === Index ===
+This file represents the first site that is displayed if you access your visualisation via a browser. It is splited in two parts that devide the screen in a left and right section. 
 
 ==== Sidebar ====
+This is the left section in the *index.html* file, here you can display widgets like _weather_, _phone_ or _calendar_.
+
+
 
 ==== Content ====
 
