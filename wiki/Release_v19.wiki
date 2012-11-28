@@ -18,3 +18,23 @@ for example:
 @icon        icons/ws/meld_muell.png
 @color       #222266
 }}}
+
+== calendar.list ==
+for all events in a Google-Calendar. You may place this widget on your startscreen.
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v1.9/tb_startscreen.jpg' title='widget: calendar.list on startscreen' width='600'>
+
+= Details =
+The calendar widgets must be configured through the config-page. 
+# First you have to copy the private-xml link from your Google-Calendar.
+# Login into Google-Calendar and select "settings" from your calender you want to integrate.
+# Click 'xml' on the private link
+<img src='http://smartvisu.googlecode.com/svn/wiki/v1.9/google_calendar_private.jpg' title='copy private xml-link' width='600'>
+# Copy the link into the smartVISU config dialog
+<img src='http://smartvisu.googlecode.com/svn/wiki/v1.9/tb_config_calendar.jpg' title='copy private xml-link' width='400'>
+# Make sure to use http: not https: (you can only use https: if php is compiled with ssl support).
+# Place the calendar.list in any page:
+{{{
+    {% import "calendar.html" as calendar %}
+    {{ calendar.list('calendarlist', 'Kalender', 5) }}  
+}}}
