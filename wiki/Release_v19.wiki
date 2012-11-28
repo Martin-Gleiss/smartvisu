@@ -1,0 +1,20 @@
+#summary New in this release
+
+= What is new in release v1.9? =
+
+The focus in this relase was to integrate Google-Calendar.
+
+A new widgets (located in 'widgets/calendar.html') come to show the calendar-events.
+
+You enter your events in Google-Calendar as usual. In the event-description to tags are supported, to change color and icon in the calendar-list.:
+
+{{{
+@icon        icons/ws/ICON.png
+@color       #COLOR
+}}} 
+
+for example:
+{{{
+@icon        icons/ws/meld_muell.png
+@color       #222266
+}}}
