@@ -1,24 +1,11 @@
-buero_licht_tuer_schalten = 0
-buero_heizung_text = 
-buero_licht_tuer_setzen = 130
-buero_licht_ecke_setzen = 55
-buero_licht_ecke_schalten = 
-buero_heizung_komfort = 1
-buero_heizung_sollwert = 21.3
-buero_heizung_frost = 
-buero_heizung_schalten = 
-buero_heizung_nacht = 
-buero_fenster_ab = 1
-buero_fenster_auf = 0
-buero_licht_tuer = 
-buero_licht_ecke = 
-buero_heizung_istwert = 24.1
-buero_rollo_pos = 60
-buero_rollo_winkel = 50
-buero_jalousie_winkel = 60
-buero_jalousie_pos = 60
-buero_jalousie_verstellen = 0
-buero_jalousie_fahren = 0
-
-
-
+bath_light_value = 135
+bath_light_switch = 0
+bath_rtr_state = 1
+bath_rtr_mode = 1
+bath_rtr_set = 22.5
+bath_rtr_act = 21.4
+bath_rtr_text = heating is on
+bath_blind_pos = 100
+bath_blind_angle = 145
+bath_rtr_night = 0
+bath_rtr_frost = 0

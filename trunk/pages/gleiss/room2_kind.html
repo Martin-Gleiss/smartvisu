@@ -19,12 +19,14 @@
         {{ basic.glue('all_off', 'licht_tuer') }}
         {{ basic.glue('all_off', 'licht_ecke') }}
     </div>
+     
     
-    
+
+     
     <div class="block">
     <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
     
-        <div data-role="collapsible" data-collapsed="false" >
+        <div data-role="collapsible" data-collapsed="false">
             <h3>Licht</h3>
             <div>{{ device.dimmer('licht_tuer', 'Tür dimmen', 'kind_licht_tuer_schalten', 'kind_licht_tuer_setzen') }}</div>
             <div>{{ device.dimmer('licht_ecke', 'Ecke dimmen', 'kind_licht_ecke_schalten', 'kind_licht_ecke_setzen') }}</div>

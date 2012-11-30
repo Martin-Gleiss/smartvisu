@@ -8,18 +8,18 @@
  */
  
 
-{% extends "widget_weather.html" %}
+{% extends "widget_basic.html" %}
 
 {% block example %}
 
-    <h5>Example</h5>
-    
+    <h5>Examples</h5>
     <div class="twig">
-        <code class="prettyprint">
-            &#123;&#123; weather.mapslides('map1', 'Forecast') &#125;&#125;<br />
-        </code>
+        <code class="prettyprint">&#123;&#123; basic.shutter('shutter1', 'bath_blind_pos', 'bath_blind_angle') &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.shutter('slider1', 'bath_blind_pos', 'bath_blind_angle') }}
     </div>
     
-    {{ weather.mapslides('map1', 'Forecast') }}
-    
 {% endblock %}
+
+

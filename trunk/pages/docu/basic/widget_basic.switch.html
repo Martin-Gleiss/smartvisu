@@ -14,22 +14,22 @@
 
     <h5>Examples</h5>
     <div class="twig">
-        <code>&#123;&#123; basic.switch('switch1', 'buero_licht_tuer_schalten') &#125;&#125;</code>
+        <code class="prettyprint">&#123;&#123; basic.switch('switch1', 'bath_light_switch') &#125;&#125;</code>
     </div>
     <div class="html">
-        {{ basic.switch('switch1', 'buero_licht_tuer_schalten') }}
+        {{ basic.switch('switch1', 'bath_light_switch') }}
     </div>
 
     With other pictures (use 'icon0' and 'icon1' as path)   
     <div class="twig">
-        <code>
-            &#123;&#123; basic.switch('switch2', 'buero_fenster_auf', icon1~'steuer_auf.png', icon0~'steuer_auf.png') &#125;&#125;<br />
-            &#123;&#123; basic.switch('switch3', 'buero_fenster_ab', icon1~'steuer_ab.png', icon0~'steuer_ab.png') &#125;&#125;
+        <code class="prettyprint">
+            &#123;&#123; basic.switch('switch2', 'bath_blind_move_up', icon1~'steuer_auf.png', icon0~'steuer_auf.png') &#125;&#125;<br />
+            &#123;&#123; basic.switch('switch3', 'bath_blind_move_down', icon1~'steuer_ab.png', icon0~'steuer_ab.png') &#125;&#125;
         </code>
     </div>
     <div class="html">
-        {{ basic.switch('switch2', 'buero_fenster_auf', icon1~'steuer_auf.png', icon0~'steuer_auf.png') }}
-        {{ basic.switch('switch3', 'buero_fenster_ab', icon1~'steuer_ab.png', icon0~'steuer_ab.png') }}
+        {{ basic.switch('switch2', 'bath_blind_move_up', icon1~'steuer_auf.png', icon0~'steuer_auf.png') }}
+        {{ basic.switch('switch3', 'bath_blind_move_down', icon1~'steuer_ab.png', icon0~'steuer_ab.png') }}
     </div>
 
 {% endblock %}

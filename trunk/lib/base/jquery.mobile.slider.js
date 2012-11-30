@@ -138,7 +138,7 @@ $.widget( "mobile.slider", $.mobile.widget, {
 			mouseMoved: false
 		});
 
-		if ( cType == "select" ) {
+		if ( cType === "select" ) {
 			var wrapper = document.createElement('div');
 			wrapper.className = 'ui-slider-inneroffset';
 

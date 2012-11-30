@@ -14,24 +14,24 @@
 
     <h5>Examples</h5>
     <div class="twig">
-        <code>&#123;&#123; basic.symbol('symbol1', 'buero_licht_tuer_schalten') &#125;&#125;</code>
+        <code class="prettyprint">&#123;&#123; basic.symbol('symbol1', 'bath_light_switch') &#125;&#125;</code>
     </div>
     
     Symbol is only shown when 'buero_licht_tuer_schalten' = 1   
     <div class="html">
-        {{ basic.symbol('symbol1', 'buero_licht_tuer_schalten') }}
+        {{ basic.symbol('symbol1', 'bath_light_switch') }}
     </div>
 
     With other pictures (use 'icon0' and 'icon1' as path), in this example both val = 1 an val = 0 is shown. 
-    <div class="twig">
-        <code>
-            &#123;&#123; basic.symbol('symbol2', 'buero_licht_tuer_schalten', 'Licht an', icon1~'licht_licht.png') &#125;&#125;<br />
-            &#123;&#123; basic.symbol('symbol3', 'buero_licht_tuer_schalten', 'Licht aus', icon1~'licht_licht.png', 0) &#125;&#125;
+    <div class="twig" >
+        <code class="prettyprint">
+            &#123;&#123; basic.symbol('symbol2', 'bath_light_switch', 'Light on', icon1~'licht_licht.png') &#125;&#125;<br />
+            &#123;&#123; basic.symbol('symbol3', 'bath_light_switch', 'Light off', icon1~'licht_licht.png', 0) &#125;&#125;
         </code>
     </div>
     <div class="html">
-        {{ basic.symbol('symbol2', 'buero_licht_tuer_schalten', 'Licht an', icon1~'licht_licht.png') }}
-        {{ basic.symbol('symbol3', 'buero_licht_tuer_schalten', 'Licht aus', icon0~'licht_licht.png', 0) }}
+        {{ basic.symbol('symbol2', 'bath_light_switch', 'Light on', icon1~'licht_licht.png') }}
+        {{ basic.symbol('symbol3', 'bath_light_switch', 'Light off', icon0~'licht_licht.png', 0) }}
     </div>
 
 {% endblock %}

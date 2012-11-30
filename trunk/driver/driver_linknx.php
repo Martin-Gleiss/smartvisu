@@ -62,10 +62,22 @@ class driver_linknx extends driver_base
         
         if ($this->fp)
             {
-            fwrite($this->fp, "<read><object id='$gad'/></read>\n\4");
+            if (count(explode(',', $gad)) > 1)
+            {
+                $req = "<read><objects>";
+                foreach (explode(',', $gad) as $gad1)
+                {
+                    if (trim($gad1) != '' && $gad1 != ',')
+            		  $req .= "<object id='".$gad1."' />";
+                }
+                $req .= "</objects></read>";
+            }
+            else
+                $req = "<read><object id='$gad'/></read>";
             
-            $cnt = 0;
-            while ($cnt < 4 && $this->fp && !feof($this->fp))
+            fwrite($this->fp, $req."\n\4");
+            
+            while ($this->fp && !feof($this->fp))
                 {
                 $ret .= fgets($this->fp, 128);
                 $stc = fgetc($this->fp);
@@ -81,14 +93,11 @@ class driver_linknx extends driver_base
                     }
                     
                 $ret .= $stc;
-                $cnt++;
                 }
             
             // Check if $respons is binary
-            if ($ret == "on")
-                $ret = 1;
-            elseif ($ret == "off")
-                $ret = 0;
+            $ret = str_replace("on", "1", $ret);
+            $ret = str_replace("off", "0", $ret);
             }
         
         return $ret;

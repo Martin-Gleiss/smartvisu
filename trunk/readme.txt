@@ -70,18 +70,22 @@ SYSTEMREQUIREMENTS
  
 TODO
 --------------------------------------------------------------------------------
-    -       Real-time-polling
-    -       Advanced driver model
-    -       MainMenu: Display selected menu-button
-    -       basic.tristate button for rtr-mode
-    -       Main: Alert function
-    -       Buttons: change icon
-    -       Buttons: pressed short / long
-    -       Szenes
+    - MainMenu: Display selected menu-button
+    - basic.tristate button for rtr-mode
+    - Main: Alert function
+    - Buttons: change icon
+    - Buttons: pressed short / long
+    - Szenes
  
 
 HISTORY
 --------------------------------------------------------------------------------
+v 2.0
+    - Real-time polling
+    - updated driver: 'linknx' for polling
+    - updated driver: 'offline' for polling
+    - new widget: shutter (widgets/device.html)
+    
 v 1.9 28.11.12
     - new widget-file: widgets/calendar.html for google calendar
       use the google-calendar private xml-adress in the config dialog

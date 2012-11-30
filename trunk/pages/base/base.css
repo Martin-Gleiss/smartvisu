@@ -69,8 +69,8 @@
 }  
 
 .ui-li-has-thumb .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-thumb  {
-    min-height: 40px;
-    padding-left: 70px;
+    min-height: 42px;
+    padding: 10px 15px 10px 70px;
 }
 
 .ui-btn-inner.ui-li .ui-li-thumb {
@@ -431,8 +431,8 @@ hr {
   
 .block .ui-fixed {
     margin: 0 5px 10px 5px;
-    padding: 0 10px 0 10px;
-    min-height: 250px;
+    padding: 10px 5px 10px 5px;
+    min-height: 230px;
 }  
 
 .block .ui-field-contain {
@@ -512,6 +512,15 @@ hr {
     margin: 5px 5px 15px 5px;
     border: 1px dotted #666;
     padding: 10px;
+}
+
+.docu .html:after {
+    content: ".";
+    display: block;
+    clear: both;
+    font-size: 0;
+    height: 0;
+    visibility: hidden;
 }
 
 .docu .param {

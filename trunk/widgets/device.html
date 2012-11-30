@@ -27,29 +27,13 @@
         {{ basic.switch(id|_('switch'), gad_switch, icon1~'licht_licht.png', icon0~'licht_licht.png') }}
         <p>{{ txt|e }}</p>
         {{ basic.slider(id|_('silder'), gad_value, min, max, step) }}
-    </div>                 
-            
-    /** Events */
-    {{ basic.glue(id|_('switch'), id|_('silder')) }}
-    
-    <div id="{{ page }}-{{ id }}"></div>
-    <script type="text/javascript">
-        $('#{{ page }}').live('pageshow',function(event, ui){ 
-            // reload
-            /*
-            $('#{{ page }}-{{ id }}').unbind('reload').bind('reload', function(){ 
-                $("#{{ page }}-{{ id|_('switch') }}").trigger('reload');  
-                $("#{{ page }}-{{ id|_('slider') }}").trigger('reload');  
-            });
-            */
-        });
-    </script>  
+    </div>     
     
 {% endmacro %}
 
 
 /**
- * Standard rtr
+ * Standard RTR (Room Temperatur Regulator)
  * 
  * @param       unique id for this widget
  * @param       name of the rtr
@@ -86,12 +70,12 @@
                 $("#{{ page }}-{{ id|_('minus') }}").unbind('click').bind('click', function(){ 
                     var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) - 0.1) * 10) / 10).toFixed(1);
                     $("#{{ page }}-{{ id|_('set') }}").html(temp + ' °C');
-                    knx("{{ gad_set }}", temp);
+                    knx.write("{{ gad_set }}", temp);
                 });
                 $("#{{ page }}-{{ id|_('plus') }}").unbind('click').bind('click', function(){ 
                     var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) + 0.1) * 10) / 10).toFixed(1);
                     $("#{{ page }}-{{ id|_('set') }}").html(temp + ' °C');
-                    knx("{{ gad_set }}", temp);
+                    knx.write("{{ gad_set }}", temp);
                 });
             </script> 
         {% endif %}
@@ -128,10 +112,10 @@
             <td valign="top">
                 <div class="set">{{ basic.button(id|_('up'), gad_move, '', 'arrow-u', 1) }}</div></td>
             <td rowspan="3" align="left" class="pos">
-                {{ basic.slider(id|_('pos'), gad_pos, 0, 100, 5, 'vertical') }}</td>
+                {{ basic.slider(id|_('pos'), gad_pos, 0, 255, 5, 'vertical') }}</td>
             <td rowspan="2" valign="bottom" class="angle">
                 {{ txt }}<br />
-                {% if gad_angle %} {{ basic.slider(id|_('angle'), gad_angle, 0, 100, 5, 'semicircle') }} {% endif %}</td>
+                {% if gad_angle %} {{ basic.slider(id|_('angle'), gad_angle, 0, 255, 5, 'semicircle') }} {% endif %}</td>
         </tr>
         <tr>
             <td>
@@ -153,3 +137,47 @@
     </div>        
 {% endmacro %}
 
+
+/**
+ * Standard shutter 
+ * 
+ * @param       unique id for this widget
+ * @param       name of the shutter
+ * @param       the knx gad (groupaddress) for the up- and down- movement
+ * @param       the knx gad (groupaddress) for stopping the movement (optional)
+ * @param       the knx gad (groupaddress) for the actual position of the blinds
+ * @param       the knx gad (groupaddress) for increase- and decreace- of the blade (optional, for future use)
+ * @param       the knx gad (groupaddress) for the actual angle of the blade (optional)
+ * @param       the knx gad (groupaddress) for the some saved positions (optional)
+ * 
+ * @info        inspired by Jörg Gutowski       
+ */
+{% macro shutter(id, txt, gad_move, gad_stop, gad_pos, gad_shift, gad_angle, gad_saved) %}
+    {% import   "basic.html" as basic %}
+
+    /** Design */
+    <div class="blind">
+        <table align="center" cellpadding="0">
+        <tr>
+            <td valign="top">
+                <div class="set">{{ basic.button(id|_('up'), gad_move, '', 'arrow-u', 0) }}</div></td>
+            <td rowspan="3" align="center" class="pos">
+                {{ basic.shutter(id|_('pos'), gad_pos, gad_angle, 0, 255) }}</td>
+            <td valign="top">
+                {% if gad_saved %} <div>{{ basic.button(id|_('saved1'), gad_saved, 'Pos 1', '', 0) }} </div>{% endif %}</td>
+        </tr>
+        <tr>
+            <td valign="center">
+                {% if gad_stop %} <div class="set">{{ basic.button(id|_('stop'), gad_stop, '', 'delete', 1) }}</div> {% endif %}</td>
+            <td valign="center">{{ txt }}</td>
+        </tr>
+        <tr>          
+            <td valign="bottom">
+                <div class="set">{{ basic.button(id|_('down'), gad_move, '', 'arrow-d', 1) }}</div></td>
+            <td valign="bottom">
+                {% if gad_saved %} <div>{{ basic.button(id|_('saved2'), gad_saved, 'Pos 2', '', 1) }} </div>{% endif %}</td>
+        </tr>
+        </table>
+    </div>
+
+{% endmacro %}

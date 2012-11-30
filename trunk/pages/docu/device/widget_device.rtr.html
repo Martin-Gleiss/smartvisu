@@ -14,12 +14,24 @@
 
     <h5>Example</h5>
     <div class="twig">
-        <code>&#123;&#123; device.rtr('rtr', 'Heizung', 'buero_heizung_istwert', 'buero_heizung_sollwert', 
-            'buero_heizung_komfort', 'buero_heizung_nacht', 'buero_heizung_frost', 'buero_heizung_schalten', 'buero_heizung_text') &#125;&#125;</code>
+        <code class="prettyprint">&#123;&#123; device.rtr('rtr', 'Heating', 'bath_rtr_act', 'bath_rtr_set', 'bath_rtr_mode', 'bath_rtr_night',
+            'bath_rtr_frost', 'bath_rtr_state', 'bath_rtr_text') &#125;&#125;</code>
     </div>
     <div class="html">
-        {{ device.rtr('rtr', 'Heizung', 'buero_heizung_istwert', 'buero_heizung_sollwert', 
-            'buero_heizung_komfort', 'buero_heizung_nacht', 'buero_heizung_frost', 'buero_heizung_schalten', 'buero_heizung_text') }}
+    
+    <div class="block">
+        <div class="ui-bar-c ui-li-divider ui-corner-top">RTR</div>
+        <div class="ui-fixed ui-body-a ui-corner-bottom">
+            <p>
+            
+            {{ device.rtr('rtr', 'Heating', 'bath_rtr_act', 'bath_rtr_set', 'bath_rtr_mode', 'bath_rtr_night',
+                 'bath_rtr_frost', 'bath_rtr_state', 'bath_rtr_text') }}
+            
+            </p>
+        </div>
+    </div>
+    
+    
     </div>
 
 {% endblock %}
