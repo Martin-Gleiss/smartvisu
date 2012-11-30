@@ -7,55 +7,53 @@
  * @license     GPL <http://www.gnu.de>
  * ----------------------------------------------------------------------------- 
  */
- 
- 
-require_once("driver_base.php");
 
+
+// get config-variables 
+require_once '../config.php';
+    
+   
 /** 
-* This driver stores all data in a file
-*/ 
-class driver_offline extends driver_base
-	{
+ * This class is an offline driver as a replacement for knx-bus
+ */   
+class driver_offline
+{
+    var $gad        = '';
+    var $val        = '';
+   
+    var $filename   = ''; 
     var $fp         = null;
-    var $data       = array();
+   
     
-    
-    public function __construct($address = '', $port = '')
+  /** 
+	* constructor
+	*/ 
+    public function __construct($request)
 	{
-	    parent::__construct('temp/offline_'.config_pages.'.var', $port);
+        $this->gad = explode(",", $request['gad']);
+	    $this->val = $request['val'];
+	    $this->filename = const_path.'temp/offline_'.config_pages.'.var';
     }
-    
-        
+
+
   /** 
-	* About this dirver
+	* Read all gads from the file
 	*/      
-    public function info()
+    private function fileread()
     {
-        $ret = 'smartVISU Offline-Treiber: Dieser Treiber speichert die Gruppenadressen lokal in eine Datei,
-            es wird keine Verbinung zum Bus aufgebaut.';
+        $ret = array();
         
-        return $ret;
-    }
-    
-            
-  /** 
-	* Open the connection
-	*/      
-    public function open()
-    {
-        $ret = '';
+        if (!is_file($this->filename))
+            touch($this->filename);
         
-        if (!is_file($this->address))
-            touch($this->address);
-        
-        $this->fp = fopen($this->address, 'r+');
+        $this->fp = fopen($this->filename, 'r+');
 		
         if ($this->fp)
         {
             while (($line = fgets($this->fp, 4096)) !== false)
             {
                 list($gad, $val) = explode('=', $line);
-                $this->data[trim($gad)] = trim($val);
+                $ret[trim($gad)] = trim($val);
             }
         }
  
@@ -64,35 +62,9 @@ class driver_offline extends driver_base
     
     
   /** 
-	* Read from bus
+	* Store all gads in the file
 	*/      
-    public function read($gad)
-    {
-        $ret = $this->data[$gad];
-        
-        $this->data[$gad] = $ret;
-        
-        return $ret;
-    }
-    
-    
-  /** 
-	* Write to bus
-	*/      
-    public function write($gad, $val)
-    {
-        $ret = '';
-        
-        $this->data[$gad] = $val;
-        
-        return $ret;
-    }    
-
-
-  /** 
-	* Close connection
-	*/      
-    public function close()
+    private function filewrite($data)
     {
         $ret = '';
         
@@ -100,7 +72,7 @@ class driver_offline extends driver_base
         {
             fseek($this->fp, 0, SEEK_SET);
             
-            foreach($this->data as $gad => $val)
+            foreach($data as $gad => $val)
             {
                 if ($gad != '')
                     $line .= $gad.' = '.$val."\r\n";
@@ -112,6 +84,39 @@ class driver_offline extends driver_base
         
         return $ret;
     }
+    
+    
+  /** 
+	* get a json formated response
+	*/ 
+    public function json()
+	{
+        $ret = array();
+	   
+        $data = $this->fileread();
+        
+        // write if a value is given
+        if ($this->val != '')
+        {
+            foreach ($this->gad as $gad)
+                $data[$gad] = $this->val;
+            
+            $this->filewrite($data);    
+        }
+        
+        foreach ($this->gad as $gad)
+            $ret[$gad] = $data[$gad];
+        
+        return json_encode($ret);
+    }
 }
+
+
+// -----------------------------------------------------------------------------
+// call the driver
+// -----------------------------------------------------------------------------
+
+$driver = new driver_offline(array_merge($_GET, $_POST));
+echo $driver->json();
 
 ?>

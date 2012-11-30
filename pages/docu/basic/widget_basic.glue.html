@@ -12,19 +12,26 @@
 
 {% block example %}
 
+    <h5>Info</h5>
+    DEPRECATED!<br />
+    Not needed any longer with polling!
+    
     <h5>Example</h5>
-    If you press the left button, the right will be changed after a delay.
+    If you press a button the others will follow.
     <div class="twig">
-        <code>
-            &#123;&#123; basic.switch('switch1', 'buero_licht_tuer_schalten') &#125;&#125;<br />
-            &#123;&#123; basic.switch('switch2', 'buero_licht_tuer_schalten') &#125;&#125;<br />
-            &#123;&#123; basic.glue('switch1', 'switch2')) &#125;&#125;<br />
+        <code class="prettyprint">
+            &#123;&#123; basic.switch('switch1', 'bath_light_switch') &#125;&#125;<br />
+            &#123;&#123; basic.switch('switch2', 'bath_light_switch') &#125;&#125;<br />
+            &#123;&#123; basic.switch('switch3', 'bath_light_switch') &#125;&#125;<br />
+            &#123;&#123; basic.switch('switch4', 'bath_light_switch') &#125;&#125;<br />
+            /** &#123;&#123; basic.glue('switch1', 'switch2')) &#125;&#125; */ <br />
         </code>
     </div>
     <div class="html">
-        {{ basic.switch('switch1', 'buero_licht_tuer_schalten') }}
-        {{ basic.switch('switch2', 'buero_licht_tuer_schalten') }}
-        {{ basic.glue('switch1', 'switch2') }}
+        {{ basic.switch('switch1', 'bath_light_switch') }}
+        {{ basic.switch('switch2', 'bath_light_switch') }}
+        {{ basic.switch('switch3', 'bath_light_switch') }}
+        {{ basic.switch('switch4', 'bath_light_switch') }}
     </div>
     
 {% endblock %}
