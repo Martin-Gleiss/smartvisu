@@ -89,7 +89,7 @@
     
     /** start prettify */ 
     <script type="text/javascript">
-        $(document).unbind('pageinit').bind('pageinit', function (event) { prettyPrint(); }); 
+        $(document).live('pageshow', function (event) { prettyPrint(); }); 
     </script>
     
 {% endblock %}
