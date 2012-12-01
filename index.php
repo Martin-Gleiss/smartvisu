@@ -27,7 +27,7 @@
         or is_file(const_path."pages/base/".$request['page'].".html") )
     {
         // init template engine
-        require_once const_path.'vendor/twig/Autoloader.php';
+        require_once const_path.'vendor/Twig/Autoloader.php';
         Twig_Autoloader::register();
         
         $loader = new Twig_Loader_Filesystem(const_path.'pages/'.config_pages);

@@ -185,11 +185,9 @@
                 }
             }).val();
             
-            /**    
             $("#{{ page }}-{{ id }}").on('stop', function(event) { 
                 knx.write('{{ gad }}', $('#{{ page }}-{{ id }}').val());   
             });
-            */
         });
     </script>    
 {% endmacro %}
