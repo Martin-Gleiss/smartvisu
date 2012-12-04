@@ -18,7 +18,7 @@
  */
 {% macro app(name, title) %}
 
-    {% set app = docu('pages/apps/'~name~'.html') %}
+    {% set app = docu('apps/'~name~'.html') %}
     
     <div class="app">
         <a href="index.php?page={{ name }}">

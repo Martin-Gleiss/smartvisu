@@ -51,7 +51,7 @@
     * smartVISU supports different projects, located under 'pages'
     * this ist the directory for your project    
     */
-    define ('config_pages',                 'docu');
+    define ('config_pages',                 'gleiss');
    
   /**
     * Select your language. Some widgets are multilanguage 
@@ -152,6 +152,11 @@
   /**
     * Path of smartVISU
     */
+    define ('const_debug',                  true);
+
+  /**
+    * Path of smartVISU
+    */
     define ('const_path',                   dirname(__FILE__).'/');
 
   /**
@@ -159,5 +164,8 @@
     */
     define ('const_path_system',            const_path.'lib/'); 
     
-    date_default_timezone_set('Europe/Berlin');
+  /**
+    * The timezone
+    */    
+    date_default_timezone_set(              'Europe/Berlin');
 ?>

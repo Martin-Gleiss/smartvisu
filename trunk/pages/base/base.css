@@ -511,7 +511,7 @@ hr {
 .docu .html {
     margin: 5px 5px 15px 5px;
     border: 1px dotted #666;
-    padding: 10px;
+    padding: 5px;
 }
 
 .docu .html:after {
