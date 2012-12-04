@@ -10,13 +10,6 @@
 
 {% extends "index.html" %}
 
-
-{% block head %}
-    <link href="vendor/google.prettify/styles/sunburst.css" type="text/css" rel="stylesheet" />
-    <script type="text/javascript" src="vendor/google.prettify/src/prettify.js"></script>
-{% endblock %}
-
-
 {% block content %}
 
     {% block headline %}<h3>Widgets</h3>{% endblock %}
@@ -87,9 +80,12 @@
    
     {% endif %}
     
+    
     /** start prettify */ 
+    <link href="vendor/google.prettify/styles/sunburst.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="vendor/google.prettify/src/prettify.js"></script>
     <script type="text/javascript">
-        $(document).live('pageshow', function (event) { prettyPrint(); }); 
+        $('#{{ page }}').on('pageinit', function (event) { prettyPrint(); }); 
     </script>
     
 {% endblock %}

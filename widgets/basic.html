@@ -19,7 +19,7 @@
     /** Events */
     <script type="text/javascript">
         /*
-        $('#{{ page }}').live('pageshow',function(event, ui){ 
+        $('#{{ page }}').on('pageshow',function(event, ui){ 
             $('#{{ page }}-{{ id_from|e }}').bind('click', function(){
                 window.setTimeout(function(){ $('#{{ page }}-{{ id_to|e }}').trigger('reload'); }, {{ config_delay }});
             });
@@ -43,14 +43,10 @@
 
     /** Events */
     <script type="text/javascript">
-        var jm_{{ page }}_{{ id }}; if (!jm_{{ page }}_{{ id }}) { jm_{{ page }}_{{ id }} = true; // jquery.mobile double-call-fix
-        
-            knx.add({
-                gad: '{{ gad }}', 
-                update: function(response){ $('#{{ page }}-{{ id }}').html(response + ' {{ unit }}'); }
-            });
-        
-        }
+        knx.add({
+            gad: '{{ gad }}', 
+            update: function(response){ $('#{{ page }}-{{ id }}').html(response + ' {{ unit }}'); }
+        });
     </script>    
 {% endmacro %}
 
@@ -69,16 +65,12 @@
 
     /** Events */
     <script type="text/javascript">
-        var jm_{{ page }}_{{ id }}; if (!jm_{{ page }}_{{ id }}) { jm_{{ page }}_{{ id }} = true; // jquery.mobile double-call-fix
-        
-            knx.add({
-                gad: '{{ gad }}', 
-                update: function(response){
-                    $('#{{ page }}-{{ id }}').html( ((Math.round(response * 10) / 10).toFixed(1)).replace('.', ',') + ' {{ unit }}');
-                }
-            });
-        
-        }
+        knx.add({
+            gad: '{{ gad }}', 
+            update: function(response){
+                $('#{{ page }}-{{ id }}').html( ((Math.round(response * 10) / 10).toFixed(1)).replace('.', ',') + ' {{ unit }}');
+            }
+        });
     </script>   
 {% endmacro %}
 
@@ -96,20 +88,16 @@
     
     /** Events */
     <script type="text/javascript">
-        var jm_{{ page }}_{{ id }}; if (!jm_{{ page }}_{{ id }}) { jm_{{ page }}_{{ id }} = true; // jquery.mobile double-call-fix
+        knx.add({ 
+            gad: '{{ gad }}',
+            update: function(response){
+                $('#{{ page }}-{{ id }}').attr('checked', (response > 0 ? true : false)).checkboxradio('refresh');    
+            }
+        });
         
-            knx.add({ 
-                gad: '{{ gad }}',
-                update: function(response){
-                    $('#{{ page }}-{{ id }}').attr('checked', (response > 0 ? true : false)).checkboxradio('refresh');    
-                }
-            });
-            
             $('#{{ page }}-{{ id }}').on('change', function(){ 
                 knx.write('{{ gad }}', ($('#{{ page }}-{{ id }}:checked').val() == 'on' ? 1 : 0));
-            });    
-            
-        }
+            });
     </script>    
 {% endmacro %}
 
@@ -131,24 +119,21 @@
 
     /** Events */
     <script type="text/javascript">
-        var jm_{{ page }}_{{ id }}; if (!jm_{{ page }}_{{ id }}) { jm_{{ page }}_{{ id }} = true; // jquery.mobile double-call-fix
-        
-            knx.add({ 
-                gad: '{{ gad }}',
-                update: function(response){ $('#{{ page }}-{{ id }}').val(response > 0 ? 'on' : 'off').slider('refresh'); }
-            }); 
-        
-        
-            $('#{{ page }}').live('pageshow', function(event, ui){ 
-                 var fval = $('#{{ page }}-{{ id }}').on('change', function(){  
-                    if(fval != $(this).val())
-                    {
-                        fval = $(this).val();
-                        knx.write('{{ gad }}', (fval == 'on' ? 1 : 0));
-                    }
-                }).val();
-            });
-        }
+        knx.add({ 
+            gad: '{{ gad }}',
+            update: function(response){ $('#{{ page }}-{{ id }}').val(response > 0 ? 'on' : 'off').slider('refresh'); }
+        }); 
+    
+    
+        $('#{{ page }}').on('pageshow', function(event, ui){ 
+             var fval = $('#{{ page }}-{{ id }}').unbind('change').bind('change', function(){  
+                if(fval != $(this).val())
+                {
+                    fval = $(this).val();
+                    knx.write('{{ gad }}', (fval == 'on' ? 1 : 0));
+                }
+            }).val();
+        });
     </script>    
 {% endmacro %}
 
@@ -168,26 +153,24 @@
 
     /** Events */
     <script type="text/javascript">
-        var jm_{{ page }}_{{ id }}; if (!jm_{{ page }}_{{ id }}) { jm_{{ page }}_{{ id }} = true; // jquery.mobile double-call-fix
-        
-            knx.add({ 
-                gad: '{{ gad }}',
-                update: function(response){ $('#{{ page }}-{{ id }}').val(response).slider('refresh'); }
-            }); 
-        
-        }
+        knx.add({ 
+            gad: '{{ gad }}',
+            update: function(response){ $('#{{ page }}-{{ id }}').val(response).slider('refresh'); }
+        }); 
       
-        $('#{{ page }}').live('pageshow', function(event, ui){ 
-            var sval = $("#{{ page }}-{{ id }}").on('change', function(event){
+        $('#{{ page }}').on('pageshow', function(event, ui){ 
+            var sval = $("#{{ page }}-{{ id }}").unbind('change').bind('change', function(event){
                 if(sval != $(this).val()){
                     sval = $(this).val(); 
                     knx.write('{{ gad }}', $('#{{ page }}-{{ id }}').val());  
                 }
             }).val();
             
+            /*
             $("#{{ page }}-{{ id }}").on('stop', function(event) { 
                 knx.write('{{ gad }}', $('#{{ page }}-{{ id }}').val());   
             });
+            */
         });
     </script>    
 {% endmacro %}
@@ -208,19 +191,15 @@
         
     /** Events */
     <script type="text/javascript">  
-        var jm_{{ page }}_{{ id }}; if (!jm_{{ page }}_{{ id }}) { jm_{{ page }}_{{ id }} = true; // jquery.mobile double-call-fix
-        
-            knx.add({ 
-                gad: '{{ gad }}',
-                update: function(response){ 
-                    if (response == {{ val|default('1') }})
-                        $('#{{ page }}-{{ id }}').show();
-                    else
-                        $('#{{ page }}-{{ id }}').hide();
-                }
-            });  
-        
-        }
+        knx.add({ 
+            gad: '{{ gad }}',
+            update: function(response){ 
+                if (response == {{ val|default('1') }})
+                    $('#{{ page }}-{{ id }}').show();
+                else
+                    $('#{{ page }}-{{ id }}').hide();
+            }
+        });  
     </script>    
 {% endmacro %} 
 
@@ -243,30 +222,32 @@
         
     /** Events */
     <script type="text/javascript"> 
-        var jm_{{ page }}_{{ id }}; if (!jm_{{ page }}_{{ id }}) { jm_{{ page }}_{{ id }} = true; // jquery.mobile double-call-fix
-        
-            knx.add({ 
-                gad: '{{ gad }}',
-                update: function(response){ 
-                    $('#{{ page }}-{{ id }} img').attr('src', (response != {{ val_off|default('0') }} ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
-                }
-            });
-                 
-            // write
-            $('#{{ page }}-{{ id }}').on('click', function(){
-                if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" )
-                    knx.write('{{ gad }}', "{{ val_on|default('1') }}");
-                else
-                    knx.write('{{ gad }}', "{{ val_off|default('0') }}");
-            });
-            
-            // effects
-            $('#{{ page }}-{{ id }} img').hover(
-                function() { $(this).addClass("ui-focus");  },  
-                function() { $(this).removeClass("ui-focus"); }
-            );
+        knx.add({ 
+            gad: '{{ gad }}',
+            update: function(response){ 
+                $('#{{ page }}-{{ id }} img').attr('src', (response != {{ val_off|default('0') }} ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
+            }
+        });
              
-        }
+        // write
+        $('#{{ page }}-{{ id }}').unbind('click').bind('click', function(){
+            if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" )
+            {
+                knx.write('{{ gad }}', "{{ val_on|default('1') }}");
+                knx.update('{{ gad }}', "{{ val_on|default('1') }}");
+            }
+            else
+            {
+                knx.write('{{ gad }}', "{{ val_off|default('0') }}");
+                knx.update('{{ gad }}', "{{ val_off|default('0') }}");
+            }
+        });
+        
+        // effects
+        $('#{{ page }}-{{ id }} img').hover(
+            function() { $(this).addClass("ui-focus");  },  
+            function() { $(this).removeClass("ui-focus"); }
+        );
     </script>    
 {% endmacro %} 
 
@@ -288,13 +269,9 @@
     {% if gad %}
         /** Events */
         <script type="text/javascript">
-            var jm_{{ page }}_{{ id }}; if (!jm_{{ page }}_{{ id }}) { jm_{{ page }}_{{ id }} = true; // jquery.mobile double-call-fix
-            
-                $('#{{ page }}-{{ id }}').on('click', function(){ 
-                    knx.write('{{ gad }}', {{ val|default('1') }}); 
-                });
-            
-            }
+            $('#{{ page }}-{{ id }}').unbind('click').bind('click', function(){ 
+                knx.write('{{ gad }}', {{ val|default('1') }}); 
+            });
         </script>    
     {% endif %}
 {% endmacro %}
@@ -316,23 +293,19 @@
     
     /** Events */
     <script type="text/javascript"> 
-        var jm_{{ page }}_{{ id }}; if (!jm_{{ page }}_{{ id }}) { jm_{{ page }}_{{ id }} = true; // jquery.mobile double-call-fix
+        knx.add({ 
+            gad: '{{ gad }}',
+            update: function(response){ 
+                $('#{{ page }}-{{ id }} img').attr('src', (response != 0 ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
+            }
+        });
         
-            knx.add({ 
-                gad: '{{ gad }}',
-                update: function(response){ 
-                    $('#{{ page }}-{{ id }} img').attr('src', (response != 0 ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
-                }
-            });
-            
-            $('#{{ page }}-{{ id }}').on('click', function(){
-                if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" )
-                    knx.write('{{ gad }}', '1');
-                else
-                    knx.write('{{ gad }}', '0');
-            });
-        
-        }
+        $('#{{ page }}-{{ id }}').unbind('click').bind('click', function(){
+            if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" )
+                knx.write('{{ gad }}', '1');
+            else
+                knx.write('{{ gad }}', '0');
+        });
     </script>     
 {% endmacro %}
 
@@ -359,43 +332,39 @@
 
     /** Events */
     <script type="text/javascript">  
-        var jm_{{ page }}_{{ id }}; if (!jm_{{ page }}_{{ id }}) { jm_{{ page }}_{{ id }} = true; // jquery.mobile double-call-fix
-        
-            knx.add({ 
-                gad: Array('{{ gad_pos }}', '{{ gad_angle }}'),
-                update: function(response){
+        knx.add({ 
+            gad: Array('{{ gad_pos }}', '{{ gad_angle }}'),
+            update: function(response){
+                
+                var a = 0;
+                {% if gad_angle %}
+                    a = parseInt(13 * response[1] / {{ max|default(255) }});
+                {% endif %} 
+             
+                var style;
                     
-                    var a = 0;
-                    {% if gad_angle %}
-                        a = parseInt(13 * response[1] / {{ max|default(255) }});
-                    {% endif %} 
-                 
-                    var style;
+                h = parseInt(response[0] * 13 * 14 / {{ max|default(255) }});
+                for (var i = 12; i >= 1; i--) {
+                    if (h >= 14) {
+                        style  = 'height: ' + ((h > i * 14) && a == 0 ? (14 - a) : (15 - a)) + 'px;';
                         
-                    h = parseInt(response[0] * 13 * 14 / {{ max|default(255) }});
-                    for (var i = 12; i >= 1; i--) {
-                        if (h >= 14) {
-                            style  = 'height: ' + ((h > i * 14) && a == 0 ? (14 - a) : (15 - a)) + 'px;';
-                            
-                            if (a > 0)
-                                style += 'margin-top: ' + (h - 15 >= 14 ? a : parseInt(a / 2)) + 'px;';
-                            else
-                                style += 'border-top: 1px dotted ' + (h > i * 14 ? '#ccc' : '#333') + ';';
-                            
-                            $('#{{ page }}-{{ id }}-' + i).attr('style', style);
-                            h = h - 15;
-                        }
-                        else {
-                            style  = 'height: ' + h + 'px;';
-                            style += 'border-top: 1px dotted #aaa;';
-                            $('#{{ page }}-{{ id }}-' + i).attr('style', style);
-                            h = 1;
-                        }
+                        if (a > 0)
+                            style += 'margin-top: ' + (h - 15 >= 14 ? a : parseInt(a / 2)) + 'px;';
+                        else
+                            style += 'border-top: 1px dotted ' + (h > i * 14 ? '#ccc' : '#333') + ';';
+                        
+                        $('#{{ page }}-{{ id }}-' + i).attr('style', style);
+                        h = h - 15;
+                    }
+                    else {
+                        style  = 'height: ' + h + 'px;';
+                        style += 'border-top: 1px dotted #aaa;';
+                        $('#{{ page }}-{{ id }}-' + i).attr('style', style);
+                        h = 1;
                     }
                 }
-            });  
-        
-        }
+            }
+        });  
     </script>    
 {% endmacro %} 
 

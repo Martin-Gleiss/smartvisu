@@ -14,9 +14,9 @@
      
      {% if page=='apps' %}
      
-         {% for file in dir('pages/apps', 'app_(.+?).html') %}
+         {% for file in dir('apps', 'app_(.+?).html') %}
             
-            {% set app = docu('pages/apps/app_'~file.name~'.html') %}
+            {% set app = docu('apps/app_'~file.name~'.html') %}
             
             <div class="hide" id="{{ page }}-{{ file.name }}-docu">    
             
@@ -63,7 +63,7 @@
 
     <h1>Apps</h1>
     
-    {% for file in dir('pages/apps', 'app_(.+?).html') %}
+    {% for file in dir('apps', 'app_(.+?).html') %}
         <span id="{{ page }}-{{ file.name }}">
         {{ lib.app('app_'~file.name) }}
         </span>

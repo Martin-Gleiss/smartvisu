@@ -13,7 +13,7 @@
 	<title>{{ config_title }}</title> 
 	
     <meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scaleable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta http-equiv="expires" content="0">
 
@@ -36,14 +36,12 @@
     {% import "basic.html" as basic %}
     {% import "device.html" as device %}  
     
-    {% block head %}{% endblock %}
 </head> 
 
 
 <body> 
     
 <div data-role="page" id="{{ page }}" data-theme="a">
-    
     <div data-role="header" data-position="fixed">
         <div class="ui-left">
             {% include 'menu.html' %}
@@ -83,6 +81,11 @@
         </script>  
     </div>
  	
+    <script type="text/javascript">
+        knx.stop();
+        knx.remove();
+ 	</script>
+       
     <div data-role="content">
         <div class="content-primary">
             {% block content %}{% endblock %}
@@ -93,11 +96,26 @@
         </div>
     </div>
     
-    <div class="page-bg"></div>
+    <div data-role="footer" data-position="fixed">
+        <a onClick="knx.refresh(true);" data-icon="refresh"></a>
+        <a onClick="knx.start();" data-icon="arrow-r"></a>
+        <a onClick="knx.stop();" data-icon="grid"></a>
+        <a onClick="knx.remove();" data-icon="delete"></a>
+    </div>
+    
+    <div class="page-bg"></div>  
+
+    <script type="text/javascript">
+        knx.list();
+        knx.refresh(true);
+        knx.start();
+    </script>
+    
 </div>
 
 <script type="text/javascript">
     // bugfix: jquery.mobile fix on slider events triggers
+    /*
     $(document).on({
         "mousedown touchstart": function () { $(this).siblings("input").trigger("start"); },
         "mouseup touchend": function () { $(this).siblings("input").trigger("stop"); }
@@ -112,14 +130,7 @@
         "mousedown touchstart": function () { $(this).siblings("input").trigger("start"); },
         "mouseup touchend": function () { $(this).siblings("input").trigger("stop"); }
     }, ".ui-slider-semicircle-box");
-</script> 
-    
-
-<script type="text/javascript">
-$(document).on('pageshow',function(event, ui){ 
-    knx.refresh(true);
-   // knx.periodic();
-});
+    */
 </script> 
     
 </body>
