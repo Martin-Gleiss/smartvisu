@@ -124,7 +124,6 @@
             update: function(response){ $('#{{ page }}-{{ id }}').val(response > 0 ? 'on' : 'off').slider('refresh'); }
         }); 
     
-    
         $('#{{ page }}').on('pageshow', function(event, ui){ 
              var fval = $('#{{ page }}-{{ id }}').unbind('change').bind('change', function(){  
                 if(fval != $(this).val())
@@ -155,23 +154,18 @@
     <script type="text/javascript">
         knx.add({ 
             gad: '{{ gad }}',
-            update: function(response){ $('#{{ page }}-{{ id }}').val(response).slider('refresh'); }
-        }); 
-      
-        $('#{{ page }}').on('pageshow', function(event, ui){ 
-            var sval = $("#{{ page }}-{{ id }}").unbind('change').bind('change', function(event){
+            update: function(response){ 
+                $('#{{ page }}-{{ id }}').unbind('change');
+                $('#{{ page }}-{{ id }}').val(response).slider('refresh');
+                
+                var sval = $("#{{ page }}-{{ id }}").bind('change', function(event){
                 if(sval != $(this).val()){
                     sval = $(this).val(); 
                     knx.write('{{ gad }}', $('#{{ page }}-{{ id }}').val());  
-                }
-            }).val();
-            
-            /*
-            $("#{{ page }}-{{ id }}").on('stop', function(event) { 
-                knx.write('{{ gad }}', $('#{{ page }}-{{ id }}').val());   
-            });
-            */
-        });
+                    }
+                }).val();
+            }
+        }); 
     </script>    
 {% endmacro %}
 
