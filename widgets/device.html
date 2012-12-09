@@ -68,12 +68,12 @@
             <script type="text/javascript">  
                 // plus / minus
                 $("#{{ page }}-{{ id|_('minus') }}").unbind('click').bind('click', function(){ 
-                    var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) - 0.1) * 10) / 10).toFixed(1);
+                    var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) - 0.5) * 10) / 10).toFixed(1);
                     $("#{{ page }}-{{ id|_('set') }}").html(temp + ' °C');
                     knx.write("{{ gad_set }}", temp);
                 });
                 $("#{{ page }}-{{ id|_('plus') }}").unbind('click').bind('click', function(){ 
-                    var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) + 0.1) * 10) / 10).toFixed(1);
+                    var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) + 0.5) * 10) / 10).toFixed(1);
                     $("#{{ page }}-{{ id|_('set') }}").html(temp + ' °C');
                     knx.write("{{ gad_set }}", temp);
                 });
@@ -164,7 +164,7 @@
             <td rowspan="3" align="center" class="pos">
                 {{ basic.shutter(id|_('pos'), gad_pos, gad_angle, 0, 255) }}</td>
             <td valign="top">
-                {% if gad_saved %} <div>{{ basic.button(id|_('saved1'), gad_saved, 'Pos 1', '', 0) }} </div>{% endif %}</td>
+                {% if gad_saved %} <div>{{ basic.button(id|_('saved1'), gad_saved, 'Pos1', '', 0) }} </div>{% endif %}</td>
         </tr>
         <tr>
             <td valign="center">
@@ -175,7 +175,7 @@
             <td valign="bottom">
                 <div class="set">{{ basic.button(id|_('down'), gad_move, '', 'arrow-d', 1) }}</div></td>
             <td valign="bottom">
-                {% if gad_saved %} <div>{{ basic.button(id|_('saved2'), gad_saved, 'Pos 2', '', 1) }} </div>{% endif %}</td>
+                {% if gad_saved %} <div>{{ basic.button(id|_('saved2'), gad_saved, 'Pos2', '', 1) }} </div>{% endif %}</td>
         </tr>
         </table>
     </div>

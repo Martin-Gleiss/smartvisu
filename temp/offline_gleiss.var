@@ -49,8 +49,8 @@ bad_heizung_nacht =
 bad_heizung_frost = 
 bad_heizung_schalten = 
 wassersaeule_2_schalten = 
-buero_jalousie_position = 100
-buero_jalousie_lamelle = 0
+buero_jalousie_position = 160
+buero_jalousie_lamelle = 10
 buero_licht_schalten = 0
 buero_szene_arbeit = 1
 bad_licht_schalten = 0
@@ -89,5 +89,4 @@ buero_jalousie_fahren = 0
 buero_jalousie_verstellen = 1
 buero_stop = 1
 buero_jalousie_stop = 1
-
 

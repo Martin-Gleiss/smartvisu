@@ -63,7 +63,9 @@
     min-height: 800px;
     z-index: 1;
 }
-  
+
+
+/** --------- lists --------- */
 .ui-br {
     border: 0;
 }  
@@ -96,6 +98,77 @@
     height: 32px;
 }
 
+
+/** --------- button --------- */
+a.ui-btn-inline {
+    margin: 1px;
+    min-height: 60px;
+    min-width: 62px;
+} 
+
+a.ui-btn-inline .ui-btn-inner {
+    padding: 4px 6px 2px 6px;
+}   
+
+a.ui-btn-inline.ui-mini {
+    min-height: 46px;
+    min-width: 46px;
+} 
+
+a.ui-btn-inline.ui-mini[data-iconpos="notext"] .ui-icon {
+    margin: 14px 0 0 14px !important;
+}  
+
+a.ui-btn-inline.ui-mini[data-iconpos="notext"] .ui-btn-inner {
+    padding: 0px;
+}  
+  
+a.ui-btn-inline.ui-mini[data-iconpos="top"] .ui-btn-inner {
+    padding: 25px 2px 2px 2px;
+} 
+ 
+a.ui-btn-inline.ui-mini span.ui-btn-inner { 
+    padding: 1px 2px 1px 2px;
+    overflow: visible;
+}
+
+a.ui-btn-inline.ui-mini .icon { 
+    width: 40px;
+    height: 40px;    
+}
+
+
+
+/** --------- controlgroup --------- 
+.ui-controlgroup-horizontal {
+    margin: 19px 0 23px 0;
+}
+
+.ui-controlgroup-horizontal span { 
+    padding: 4px 3px 1px 3px ;
+}
+
+.ui-controlgroup-horizontal .icon { 
+    width: 48px;
+    height: 48px;    
+}
+
+.ui-controlgroup-horizontal.ui-mini {
+    margin: 13px 0 17px 0;
+}
+
+.ui-controlgroup-horizontal.ui-mini span { 
+    padding: 1px 2px 4px 2px ;
+}
+
+.ui-controlgroup-horizontal.ui-mini .icon { 
+    width: 40px;
+    height: 40px;    
+}
+*/
+
+
+/** --------- slider --------- */
 div.ui-slider-vertical, div.ui-slider-vertical-invers { 
     position: relative; 
     display: inline-block; 
@@ -203,6 +276,8 @@ a.ui-slider-handle-semicircle .ui-btn-inner  {
     display: none;
 }
 
+
+/** --------- grid --------- */
 .ui-grid-f {
     overflow: hidden;
 }
@@ -536,6 +611,10 @@ hr {
  * --- W i d g e t s -----------------------------------------------------------
  */
 
+.switch {
+    vertical-align:bottom;    
+}
+
 .switch-row {
     margin: auto;
     width: 210px;
@@ -605,7 +684,7 @@ hr {
 }
 
 .rtr .set {
-    padding: 10px 0 10px 0;
+    padding: 10px 0px 10px 0;
     width: 190px;
     height: 48px;
     margin:auto;
@@ -619,15 +698,8 @@ hr {
 }
 
 .rtr .set .ui-btn {
-    margin: 2px;
-    width: 46px;
-    height: 46px;
     float:left;
 }
-
-.rtr .set .ui-btn .ui-icon {
-    margin: 14px 0 0 14px;
-}    
 
 .rtr .control {
     padding: 10px 0 10px 0;
@@ -642,16 +714,6 @@ hr {
 }
 
 
-
-.blind .set .ui-btn {
-    margin: 2px;
-    width: 46px;
-    height: 46px;
-}
-
-.blind .set .ui-btn .ui-icon {
-    margin: 14px 0 0 14px;
-}  
 
 .blind .pos {
     width: 50px;
