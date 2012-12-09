@@ -1,0 +1,62 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "index.html" %}
+
+{% block content %}
+
+    <h1>Buttons</h1>
+    
+    
+    <div class="docu">
+    Here are some examples to show what buttons are possible in <span class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span></span>.
+    </div>
+    
+
+    <h5>Examples</h5>
+   
+    A simple button: only pic, with text, with text and icon
+    <div class="html">
+        {{ basic.button('button_single1', 'bath_light_switch', '', 'grid') }}
+        {{ basic.button('button_single2', 'bath_light_switch', 'Light') }}
+        {{ basic.button('button_single3', 'bath_light_switch', 'Control down', icon0~'steuer_ab.png') }}
+    </div>
+    
+    <br />
+    
+    More Buttons grouped together
+    <div class="html">
+        <span data-role="controlgroup" data-type="horizontal" data-mini="true">
+        {{ basic.button('button1', 'bath_light_switch', 'Light1', 'plus') }}
+        {{ basic.button('button2', 'bath_light_switch', 'Light2', 'minus') }}
+        {{ basic.button('button3', 'bath_light_switch', 'Light3', icon0~'steuer_ab.png') }}
+        </span>
+    </div>
+
+    <br /><br />
+    
+    A dual-button
+    <div class="html">
+        {{ basic.dual('dual0', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
+    </div>
+    
+    <br />
+    
+    More dual-buttons grouped together
+    <div class="html">
+        <span data-role="controlgroup" data-type="horizontal">
+        {{ basic.dual('dual1', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
+        {{ basic.dual('dual2', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
+        {{ basic.dual('dual3', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
+        </span>
+    </div>
+    
+{% endblock %}
+

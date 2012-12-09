@@ -372,7 +372,11 @@ $.widget( "mobile.slider", $.mobile.widget, {
             {
                 var x = ( data.pageX - this.slider.offset().left ) - this.slider.width() / 2 - 2;
                 var y = -(( data.pageY - this.slider.offset().top ) - this.slider.height() + 8);
-                percent = ((Math.atan2(x, y) / Math.PI) * 180 + 90) / 180 * 100;
+                percent = Math.round(((Math.atan2(x, y) / Math.PI) * 180 + 90) / 180 * 100);
+                if (percent < 0)
+                    percent = 0;
+                if (percent > 100)
+                    percent = 100;
             }
             else
             {
@@ -433,7 +437,7 @@ $.widget( "mobile.slider", $.mobile.widget, {
         
         else if(orientation == "semicircle")
         {
-            var angle = (percent / 100 * 180 - 90 ) / 180 * Math.PI;
+            var angle = (percent / 100 * 180 - 90 ) / 180 * Math.PI;  
             this.handle.css( "top",  Math.round(-Math.cos(angle) * (this.slider.width() / 2 - 8) + ((this.slider.height() == 0 ? 92 : this.slider.height()) - 4)) + 'px' );
      		this.handle.css( "left",  Math.round(Math.sin(angle) * (this.slider.width() / 2 - 8) + (this.slider.width() / 2 + 4)) + 'px' );
             

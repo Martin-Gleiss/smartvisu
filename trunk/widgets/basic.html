@@ -68,7 +68,7 @@
         knx.add({
             gad: '{{ gad }}', 
             update: function(response){
-                $('#{{ page }}-{{ id }}').html( ((Math.round(response * 10) / 10).toFixed(1)).replace('.', ',') + ' {{ unit }}');
+                $('#{{ page }}-{{ id }}').html( ((Math.round(response * 10) / 10).toFixed(1)) + ' {{ unit }}');
             }
         });
     </script>   
@@ -155,6 +155,8 @@
         knx.add({ 
             gad: '{{ gad }}',
             update: function(response){ 
+                // jquery mobile fix: change is triggert after refresh
+                
                 $('#{{ page }}-{{ id }}').unbind('change');
                 $('#{{ page }}-{{ id }}').val(response).slider('refresh');
                 
@@ -171,7 +173,7 @@
 
 
 /**
- * A symbol, with no writing to knx, only displayed when the value of gad is equal to val. Symols may be used in menu-items
+ * A symbol, with no writing to knx, only displayed when the value of gad is equal to val. Symbols may be used in menu-items
  * 
  * @param        unique id for this widget
  * @param        the knx gad (groupaddress)  
@@ -225,13 +227,10 @@
              
         // write
         $('#{{ page }}-{{ id }}').unbind('click').bind('click', function(){
-            if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" )
-            {
+            if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" ){
                 knx.write('{{ gad }}', "{{ val_on|default('1') }}");
                 knx.update('{{ gad }}', "{{ val_on|default('1') }}");
-            }
-            else
-            {
+            } else {
                 knx.write('{{ gad }}', "{{ val_off|default('0') }}");
                 knx.update('{{ gad }}', "{{ val_off|default('0') }}");
             }
@@ -252,13 +251,19 @@
  * @param        unique id for this widget
  * @param        the knx gad (groupaddress)  
  * @param        text printed on the button
- * @param        a small pic above the button
+ * @param        a icon or a inline pic (arrow-l, arrow-r, arrow-u, arrow-d, delete, plus, minus, check, gear, refresh, forward, back, grid, star, alert, info, home, search)
  * @param        value send if the button is pressed
  */
  {% macro button(id, gad, txt, pic, val) %}
     /** Design */
-    <a id="{{ page }}-{{ id }}" data-theme="a" data-role="button" data-icon="{{ pic|default('grid') }}"
-        {% if txt %} data-iconpos="top" {% else %} data-iconpos="notext" {% endif %} data-mini="true" data-inline="true">{{ txt|e }}</a>
+    <a id="{{ page }}-{{ id }}" data-theme="a" data-role="button" data-mini="true" data-inline="true"
+        {% if pic|substr(-4, 4) == '.png' %}
+            ><img class="icon" title="{{ txt|e }}" src="{{ pic }}">
+        {% else %}
+            {% if txt %} data-iconpos="top" {% else %} data-iconpos="notext" {% endif %}
+            {% if pic %} data-icon="{{ pic }}" {% endif %}>{{ txt|e }}
+        {% endif %}
+        </a>
     
     {% if gad %}
         /** Events */
@@ -281,7 +286,7 @@
  */
  {% macro dual(id, gad, pic_on, pic_off) %}
     /** Design */
-    <a id="{{ page }}-{{ id }}" data-role="button" data-mini="true" data-inline="true">
+    <a id="{{ page }}-{{ id }}" data-role="button" data-inline="true">
         <img class="icon" src="{{ pic_off|default(icon0~'steuer_ein_aus.png') }}">
     </a> 
     
@@ -295,10 +300,13 @@
         });
         
         $('#{{ page }}-{{ id }}').unbind('click').bind('click', function(){
-            if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" )
+            if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" ){
                 knx.write('{{ gad }}', '1');
-            else
+                knx.update('{{ gad }}', '1');
+            } else {
                 knx.write('{{ gad }}', '0');
+                knx.update('{{ gad }}', '0');
+            }
         });
     </script>     
 {% endmacro %}
@@ -320,7 +328,7 @@
     <div class="shutter" id="{{ page }}-{{ id }}">
         {% for i in 1..12 %}
             <div class="blade" id="{{ page }}-{{ id }}-{{ i }}"></div>
-       {% endfor %}
+        {% endfor %}
     </div>
    
 

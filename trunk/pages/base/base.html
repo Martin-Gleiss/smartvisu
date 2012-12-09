@@ -22,7 +22,7 @@
 	<link rel="apple-touch-icon" href="favicon.png" />
 
     <link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.2.0.min.css" />
-    <script type="text/javascript" src="vendor/jquery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="vendor/jquery/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.2.0.min.js"></script>
     <script type="text/javascript" src="lib/base/jquery.mobile.slider.min.js"></script>
 
@@ -96,18 +96,11 @@
         </div>
     </div>
     
-    <div data-role="footer" data-position="fixed">
-        <a onClick="knx.refresh(true);" data-icon="refresh"></a>
-        <a onClick="knx.start();" data-icon="arrow-r"></a>
-        <a onClick="knx.stop();" data-icon="grid"></a>
-        <a onClick="knx.remove();" data-icon="delete"></a>
-    </div>
-    
     <div class="page-bg"></div>  
 
     <script type="text/javascript">
         knx.list();
-        knx.refresh(true);
+        knx.refresh();
         knx.start();
     </script>
     
