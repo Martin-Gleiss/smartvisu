@@ -1,5 +1,5 @@
 bath_light_value = 60
-bath_light_switch = 1
+bath_light_switch = 0
 bath_rtr_state = 1
 bath_rtr_mode = 1
 bath_rtr_set = 22.6

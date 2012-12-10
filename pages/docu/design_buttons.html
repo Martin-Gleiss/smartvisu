@@ -16,47 +16,81 @@
     
     
     <div class="docu">
-    Here are some examples to show what buttons are possible in <span class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span></span>.
+        
+        Here are some examples to show what buttons are possible in <span class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span></span>
+    
+        <h5>Examples</h5>
+       
+        All buttons are glued together, because they have all the same gad!
+        <br /><br />
+        
+        A simple button: only pic, only text, pic and text, big icon (and text as title)
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+                {{ basic.button('single1', 'bath_light_switch', '', 'grid') }}
+                {{ basic.button('single2', 'bath_light_switch', 'Up') }}
+                {{ basic.button('single3', 'bath_light_switch', 'Up', 'grid') }}
+                {{ basic.button('single4', 'bath_light_switch', 'Down', icon0~'steuer_ab.png', 0) }}
+             {% endraw %}{% endfilter  %}</code>
+        </div>
+        <div class="html">
+            {{ basic.button('single1', 'bath_light_switch', '', 'grid') }}
+            {{ basic.button('single2', 'bath_light_switch', 'Up') }}
+            {{ basic.button('single3', 'bath_light_switch', 'Up', 'grid') }}
+            {{ basic.button('single4', 'bath_light_switch', 'Down', icon0~'steuer_ab.png', 0) }}
+        </div>
+        
+        Some Buttons grouped together
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+                <span data-role="controlgroup" data-type="horizontal" data-mini="true">   
+                {{ basic.button('button1', 'bath_light_switch', 'Up', 'plus') }}
+                {{ basic.button('button2', 'bath_light_switch', 'Up', 'minus') }}
+                {{ basic.button('button3', 'bath_light_switch', 'Down', icon0~'steuer_ab.png', 0) }}
+                </span>
+            {% endraw %}{% endfilter  %}</code>
+        </div>
+        <div class="html">
+            <span data-role="controlgroup" data-type="horizontal" data-mini="true">
+            {{ basic.button('button1', 'bath_light_switch', 'Up', 'plus') }}
+            {{ basic.button('button2', 'bath_light_switch', 'Up', 'minus') }}
+            {{ basic.button('button3', 'bath_light_switch', 'Down', icon0~'steuer_ab.png', 0) }}
+             </span>
+        </div>
+    
+        <br />
+        
+        A dual-button
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+                {{ basic.dual('dual0', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
+            {% endraw %}{% endfilter  %}</code>
+        </div>
+        <div class="html">
+            {{ basic.dual('dual0', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
+        </div>
+    
+        More dual-buttons grouped together.
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+                <span data-role="controlgroup" data-type="horizontal">   
+                {{ basic.dual('dual1', 'bath_light_switch') }}
+                {{ basic.dual('dual2', 'bath_light_switch', icon1~'fts_tuer_offen.png', icon0~'fts_tuer.png') }}
+                {{ basic.dual('dual3', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
+                </span>
+            {% endraw %}{% endfilter  %}</code>
+        </div>
+        <div class="html">
+            <span data-role="controlgroup" data-type="horizontal">
+            {{ basic.dual('dual1', 'bath_light_switch') }}
+            {{ basic.dual('dual2', 'bath_light_switch', icon1~'fts_tuer_offen.png', icon0~'fts_tuer.png') }}
+            {{ basic.dual('dual3', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
+            </span>
+        </div>
+        
+      
     </div>
     
 
-    <h5>Examples</h5>
-   
-    A simple button: only pic, with text, with text and icon
-    <div class="html">
-        {{ basic.button('button_single1', 'bath_light_switch', '', 'grid') }}
-        {{ basic.button('button_single2', 'bath_light_switch', 'Light') }}
-        {{ basic.button('button_single3', 'bath_light_switch', 'Control down', icon0~'steuer_ab.png') }}
-    </div>
-    
-    <br />
-    
-    More Buttons grouped together
-    <div class="html">
-        <span data-role="controlgroup" data-type="horizontal" data-mini="true">
-        {{ basic.button('button1', 'bath_light_switch', 'Light1', 'plus') }}
-        {{ basic.button('button2', 'bath_light_switch', 'Light2', 'minus') }}
-        {{ basic.button('button3', 'bath_light_switch', 'Light3', icon0~'steuer_ab.png') }}
-        </span>
-    </div>
-
-    <br /><br />
-    
-    A dual-button
-    <div class="html">
-        {{ basic.dual('dual0', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
-    </div>
-    
-    <br />
-    
-    More dual-buttons grouped together
-    <div class="html">
-        <span data-role="controlgroup" data-type="horizontal">
-        {{ basic.dual('dual1', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
-        {{ basic.dual('dual2', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
-        {{ basic.dual('dual3', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
-        </span>
-    </div>
-    
 {% endblock %}
 

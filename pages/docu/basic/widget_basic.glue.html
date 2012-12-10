@@ -13,7 +13,7 @@
 {% block example %}
 
     <h5>Info</h5>
-    DEPRECATED!<br />
+    <b>DEPRECATED!</b><br />
     Not needed any longer with polling!
     
     <h5>Example</h5>
@@ -24,14 +24,13 @@
             &#123;&#123; basic.switch('switch2', 'bath_light_switch') &#125;&#125;<br />
             &#123;&#123; basic.switch('switch3', 'bath_light_switch') &#125;&#125;<br />
             &#123;&#123; basic.switch('switch4', 'bath_light_switch') &#125;&#125;<br />
-            /** &#123;&#123; basic.glue('switch1', 'switch2')) &#125;&#125; */ <br />
+            ...
         </code>
     </div>
     <div class="html">
-        {{ basic.switch('switch1', 'bath_light_switch') }}
-        {{ basic.switch('switch2', 'bath_light_switch') }}
-        {{ basic.switch('switch3', 'bath_light_switch') }}
-        {{ basic.switch('switch4', 'bath_light_switch') }}
+        {% for i in 1..14 %}
+            {{ basic.switch('switch' ~ i, 'bath_light_switch') }}
+        {% endfor %}
     </div>
     
 {% endblock %}
