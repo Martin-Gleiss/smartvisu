@@ -80,11 +80,15 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
-v 2.0
+v 2.0 20.12.12
     - Real-time polling
     - updated driver: 'linknx' for polling
     - updated driver: 'offline' for polling
     - new widget: shutter (widgets/device.html)
+    - widget: basic.button now supports different icons
+    - docu for buttongroups
+    - docu for popups
+    - new <?php tags in all files
     
 v 1.9 28.11.12
     - new widget-file: widgets/calendar.html for google calendar
@@ -121,7 +125,7 @@ v 1.7 06.10.12
     - update lib/jQueryMobile 1.2.0
     - smartVISU moved to code.google.com 
     
-v 1.6  25.09.12
+v 1.6 25.09.12
     - weather-widget now configurable
     - weather-widget with new service: wunderground.com
       generate your key for free at: http://www.wunderground.com/weather/api/

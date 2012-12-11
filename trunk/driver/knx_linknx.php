@@ -1,0 +1,190 @@
+<?php
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+
+
+// get config-variables 
+require_once '../config.php';
+    
+   
+/** 
+ * This class is an offline driver as a replacement for knx-bus
+ */   
+class driver_linknx
+{
+    var $gad        = '';
+    var $val        = '';
+    
+    var $fp         = null;
+   
+   
+  /** 
+	* constructor
+	*/ 
+    public function __construct($request)
+	{
+        $this->gad = explode(",", $request['gad']);
+	    $this->val = $request['val'];
+    }
+
+
+  /** 
+	* Open the connection
+	*/      
+    public function open()
+    {
+        $ret = '';
+        
+        $this->fp = fsockopen(config_driver_address, config_driver_port, $errno, $errstr, 3);
+		
+		if (!$this->fp) 
+           $ret = "$errno ($errstr)\n";
+           
+        return $ret;
+    }
+    
+    
+  /** 
+	* Read from bus
+	*/      
+    public function read()
+    {
+        $res = '';
+        
+        if ($this->fp)
+            {
+            $req = "<read><objects>";
+            foreach ($this->gad as $gad)
+                $req .= "<object id='".$gad."' />";
+            $req .= "</objects></read>";
+        
+            fwrite($this->fp, $req."\n\4");
+       
+            while ($this->fp && !feof($this->fp))
+                {
+                $res .= fgets($this->fp, 128);
+                $stc = fgetc($this->fp);
+                
+                if ($stc == "\4")
+                    {
+                    $xml = simplexml_load_string($res);
+                    
+                    if ((string)$xml->attributes()->status == 'success')
+                    {
+                        foreach($xml->objects->object as $obj)
+                        {
+                            $gad = (string)$obj->attributes()->id;
+                            $val = (string)$obj->attributes()->value;
+                            
+                            // Check if $res is binary
+                            $val = str_replace("on", "1", $val);
+                            $val = str_replace("off", "0", $val); 
+                            $ret[$gad] = $val;
+                        }
+                    }
+                    else
+                        $ret = (string)$xml; 
+                        
+                    break;
+                    }
+                    
+                $res .= $stc;
+                }
+            }
+        
+        return $ret;
+    }
+    
+    
+  /** 
+	* Write to bus
+	*/      
+    public function write()
+    {
+        $res = '';
+        
+        if ($this->fp)
+        {
+            fwrite($this->fp, "<write><object id='".$this->gad[0]."' value='".$this->val."'/></write>\n\4");
+            
+            $cnt = 0;
+            while ($cnt < 4 && $this->fp && !feof($this->fp))
+            {
+                $res .= fgets($this->fp, 128);
+                $stc = fgetc($this->fp);
+                
+                if ($stc == "\4")
+                    {
+                    if (preg_match("#<write status='success'#i", $res))
+                        $ret[$this->gad[0]] = $this->val;
+                        
+                    break;
+                    }
+                
+                $res .= $stc;
+                $cnt++;
+            }
+        }
+        
+        return $ret;
+    }    
+
+
+  /** 
+	* Close connection
+	*/      
+    public function close()
+    {
+        $ret = '';
+        
+        if ($this->fp)
+        {
+            fclose($this->fp);
+        }
+        
+        return $ret;
+    }
+    
+    
+  /** 
+	* get a json formated response
+	*/ 
+    public function json()
+	{
+        $ret = array();
+	   
+	    // open
+        $ret = $this->open();
+        
+		if ($this->fp) 
+        {
+            $ret = $this->read();
+            
+            // write if a value is given
+            if ($this->val != '')
+                $ret = $this->write();
+            else
+                $ret = $this->read();
+        }
+        
+        $this->close();
+        
+        return json_encode($ret);
+    }
+}
+
+
+// -----------------------------------------------------------------------------
+// call the driver
+// -----------------------------------------------------------------------------
+
+$driver = new driver_linknx(array_merge($_GET, $_POST));
+echo $driver->json();
+
+?>
