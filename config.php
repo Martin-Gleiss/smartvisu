@@ -34,6 +34,11 @@
     */
     define ('config_driver_port',           '1028');
 
+  /**
+    * Use the realtime-mode if possible
+    */
+    define ('config_driver_realtime',       false);
+    
 
 // -----------------------------------------------------------------------------
 // User-Interface

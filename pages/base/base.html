@@ -30,7 +30,7 @@
 	<link rel="stylesheet" type="text/css" href="pages/base/base.css" />
 	<link rel="stylesheet" type="text/css" href="pages/{{ config_pages }}/visu.css" />
 	
-    <script type="text/javascript" src="driver/knx.js"></script>
+    <script type="text/javascript" src="driver/knx_{{ config_driver }}.js"></script>
 	
     {% import "lib.html" as lib %}
     {% import "basic.html" as basic %}
@@ -100,9 +100,12 @@
 
     {% block footer %}{% endblock %}
     <script type="text/javascript">
-        knx.list();
+        // knx.list();
         knx.refresh();
-        knx.start();
+        
+        {% if config_driver_realtime %}
+            knx.start();
+        {% endif %}
     </script>
     
 </div>

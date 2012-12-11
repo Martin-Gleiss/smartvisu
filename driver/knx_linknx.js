@@ -162,7 +162,7 @@ var knx = {
      * Read a specific gad from bus and add it to the cache
      */         
 	read: function(gad) {
-	    $.ajax ({  url: "driver/driver_linknx.php", 
+	    $.ajax ({  url: "driver/knx_linknx.php", 
                 data: ({gad: gad}), 
                 type: "GET",   
                 dataType: 'text',                                      
@@ -178,16 +178,19 @@ var knx = {
      * Write a value to bus
      */         
     write: function (gad, val) {
+        var timer_run = knx.timer_run;
+        
         knx.stop();
         $.ajax 
-            ({  url: "driver/driver_linknx.php", 
+            ({  url: "driver/knx_linknx.php", 
                 data: ({gad: gad, val: val}), 
                 type: "GET", 
                 dataType: 'text', 
                 cache: false
             })
             .done(function ( response ) {
-                knx.start();
+                if (timer_run)
+                    knx.start();
             })
     },
 	
@@ -206,7 +209,7 @@ var knx = {
                 gads += gad + ',';
             gads = gads.substr(0, gads.length - 1);
         
-            $.ajax ({  url: 'driver/driver_linknx.php', 
+            $.ajax ({  url: 'driver/knx_linknx.php', 
                     data: ({gad: gads}), 
                     type: 'POST',   
                     dataType: 'json',                                      

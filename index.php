@@ -21,7 +21,6 @@
     if($request['page'] == '')
        $request['page'] = config_index;
     
-     
     if ( is_file(const_path."pages/".config_pages."/".$request['page'].".html")
         or is_file(const_path."apps/".$request['page'].".html")
         or is_file(const_path."pages/base/".$request['page'].".html") )
