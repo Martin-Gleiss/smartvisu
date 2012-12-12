@@ -1,4 +1,4 @@
-#Getting startet with your visualisation
+#Getting started with your visualisation
 
 = Introduction =
 

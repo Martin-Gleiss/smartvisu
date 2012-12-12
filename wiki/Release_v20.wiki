@@ -21,13 +21,13 @@ You may easily bind two (or more) widgets together, if you are going to use the 
 
 The left widget is 'device.blind' and the right one 'device.shutter':
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.0/wt_shutter_1.jpg' title='widget: device.shutter' width='400'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.0/wt_shutter_1.jpg' title='widget: device.shutter' width='600'>
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.0/wt_shutter_2.jpg' title='widget: device.shutter' width='400'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.0/wt_shutter_2.jpg' title='widget: device.shutter, no blades' width='600'>
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.0/wt_shutter_3.jpg' title='widget: device.shutter' width='400'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.0/wt_shutter_3.jpg' title='widget: device.shutter, fully opened blades' width='600'>
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.0/wt_shutter_4.jpg' title='widget: device.shutter' width='400'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.0/wt_shutter_4.jpg' title='widget: device.shutter, partly opened blades' width='600'>
 
 Implement it like this:
 {{{
