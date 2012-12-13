@@ -80,14 +80,12 @@ kueche_heizung_frost =
 kueche_heizung_komfort = 
 kueche_heizung_nacht = 
 info_zeit = 12:00:00
-modus_heizung_nacht = 
+modus_heizung_nacht = 0
 modus_licht_tag_nacht = 1
 modus_heizung_frost = 
-modus_heizung_komfort = 
+modus_heizung_komfort = 0
 info_datum = 01.01.2012
 buero_jalousie_fahren = 0
 buero_jalousie_verstellen = 1
 buero_stop = 1
 buero_jalousie_stop = 1
-
-

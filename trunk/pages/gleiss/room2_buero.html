@@ -16,10 +16,8 @@
     
     <div class="preblock">
         {{ basic.button('all_off', 'buero_licht_schalten', 'Aus', 'delete', '0') }}
-        {{ basic.glue('all_off', 'licht_tuer') }}
-        {{ basic.glue('all_off', 'licht_ecke') }}
-        
-        {{ basic.button('arbeit', 'buero_szene_arbeit', 'Arbeit') }}
+        {{ basic.button('szene1', 'buero_szene_arbeit', 'Arbeit') }}
+        {{ basic.button('szene2', 'buero_szene_privat', 'Privat') }}
     </div>
         
             
@@ -63,8 +61,9 @@
     
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Jalousie</h3>
+            
             {{ device.blind('buero_blind', 'Jalousie', 'buero_jalousie_fahren', 'buero_jalousie_stop', 'buero_jalousie_position', 
-                'buero_jalousie_verstellen', 'buero_jalousie_lamelle') }}
+                'buero_jalousie_verstellen', 'buero_jalousie_lamelle') }} 
         </div>
     	
     	<div data-role="collapsible">
