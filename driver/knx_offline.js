@@ -178,6 +178,8 @@ var knx = {
      * Write a value to bus
      */         
     write: function (gad, val) {
+        var timer_run = knx.timer_run;
+        
         knx.stop();
         $.ajax 
             ({  url: "driver/knx_offline.php", 
@@ -187,7 +189,8 @@ var knx = {
                 cache: false
             })
             .done(function ( response ) {
-                knx.start();
+                if (timer_run)
+                    knx.start();
             })
     },
 	
