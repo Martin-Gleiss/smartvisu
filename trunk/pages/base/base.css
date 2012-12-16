@@ -138,6 +138,9 @@ a.ui-btn-inline.ui-mini .icon {
 }
 
 
+.ui-popup {
+    padding: 4px 3px 0 3px;
+}
 
 
 /** --------- controlgroup --------- 
