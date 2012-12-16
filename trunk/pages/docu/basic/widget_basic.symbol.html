@@ -13,11 +13,11 @@
 {% block example %}
 
     <h5>Examples</h5>
+    
+    Symbol is only shown when 'bath_light_switch' = 1   
     <div class="twig">
         <code class="prettyprint">&#123;&#123; basic.symbol('symbol1', 'bath_light_switch') &#125;&#125;</code>
     </div>
-    
-    Symbol is only shown when 'bath_light_switch' = 1   
     <div class="html">
         {{ basic.symbol('symbol1', 'bath_light_switch') }}
     </div>
@@ -32,6 +32,14 @@
     <div class="html">
         {{ basic.symbol('symbol2', 'bath_light_switch', 'Light on', icon1~'licht_licht.png') }}
         {{ basic.symbol('symbol3', 'bath_light_switch', 'Light off', icon0~'licht_licht.png', 0) }}
+    </div>
+
+    Symbol is shown when 'bath_light_switch' is on OR 'bath_rtr_state' is on.
+    <div class="twig">
+        <code class="prettyprint">&#123;&#123; basic.symbol('symbol4', ['bath_light_switch', 'bath_rtr_state']) &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.symbol('symbol4', ['bath_light_switch', 'bath_rtr_state']) }}
     </div>
 
 {% endblock %}

@@ -96,9 +96,9 @@
             }
         });
         
-            $('#{{ page }}-{{ id }}').on('change', function(){ 
-                knx.write('{{ gad }}', ($('#{{ page }}-{{ id }}:checked').val() == 'on' ? 1 : 0));
-            });
+        $('#{{ page }}-{{ id }}').on('change', function(){ 
+            knx.write('{{ gad }}', ($('#{{ page }}-{{ id }}:checked').val() == 'on' ? 1 : 0));
+        });
     </script>    
 {% endmacro %}
 
@@ -156,42 +156,57 @@
         knx.add({ 
             gad: '{{ gad }}',
             update: function(response){ 
-                // jquery mobile fix: change is triggert after refresh
-                
-                $('#{{ page }}-{{ id }}').unbind('change');
+                // jquery.mobile bugfix: change is triggert after refresh
+                //$('#{{ page }}-{{ id }}').unbind('change');
                 $('#{{ page }}-{{ id }}').val(response).slider('refresh');
                 
+                /*
                 var sval = $("#{{ page }}-{{ id }}").bind('change', function(event){
                 if(sval != $(this).val()){
                     sval = $(this).val(); 
                     knx.write('{{ gad }}', $('#{{ page }}-{{ id }}').val());  
                     }
                 }).val();
+                */
             }
+        });
+        
+        $("#{{ page }}-{{ id }}").on('stop', function(event) { 
+            knx.write('{{ gad }}', $('#{{ page }}-{{ id }}').val());   
         }); 
     </script>    
 {% endmacro %}
 
 
 /**
- * A symbol, with no writing to knx, only displayed when the value of gad is equal to val. Symbols may be used in menu-items
+ * A symbol, with no writing to knx, only displayed when the value of gad is equal to val. Symbols may be used in menu-items.
+ * If more than one gad is given, they will be combined with 'or' 
  * 
  * @param        unique id for this widget
- * @param        the knx gad (groupaddress)  
+ * @param        the knx gad(s)
  * @param        the text, printed when gad has value val 
  * @param        the pic, shown when gad has value val
  * @param        value (default 1) 
  */
- {% macro symbol(id, gad, txt, pic, val) %}
+ {% macro symbol(id, gads, txt, pic, val) %}
     /** Design */
     <span id="{{ page }}-{{ id }}" class="symbol hide"><img class="icon" src="{{ pic|default(icon1~'steuer_ein_aus.png') }}"/>{{ txt }}</span>
         
     /** Events */
     <script type="text/javascript">  
         knx.add({ 
-            gad: '{{ gad }}',
+            gad: {{ array2script(gads) }},
             update: function(response){ 
-                if (response == {{ val|default('1') }})
+                // response will be an array, if more then one gad is used 
+                var bit = false;
+                if (response instanceof Array) {
+                    for(var i = 0; i < response.length; i++) {
+                        bit = bit || (response[i] == {{ val|default('1') }});
+    		    }}
+                else
+                    bit = (response == {{ val|default('1') }});   
+    		      
+                if (bit)
                     $('#{{ page }}-{{ id }}').show();
                 else
                     $('#{{ page }}-{{ id }}').hide();
@@ -368,6 +383,17 @@
                 }
             }
         });  
+        
+        $("#{{ page }}-{{ id }}").unbind('click').bind('click', function(event) { 
+            var offset = $(this).offset();
+            var x = (event.pageX - offset.left);
+            var y = (event.pageY - offset.top);
+            var val = Math.floor((y / 160 - 10 / 160) * 255 / 5) * 5;
+                val = Math.max(0, Math.min(val, 255));
+                
+	        knx.write('{{ gad_pos }}', val);
+	        knx.update('{{ gad_pos }}', val);
+        });
     </script>    
 {% endmacro %} 
 

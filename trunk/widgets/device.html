@@ -101,6 +101,8 @@
  * @param       the knx gad (groupaddress) for the actual position of the blinds
  * @param       the knx gad (groupaddress) for increase- and decreace- of the blade (optional)
  * @param       the knx gad (groupaddress) for the actual angle of the blade (optional)
+ * 
+ * @info        inspired by Frank Berlenz    
  */
 {% macro blind(id, txt, gad_move, gad_stop, gad_pos, gad_shift, gad_angle) %}
     {% import   "basic.html" as basic %}
@@ -162,9 +164,9 @@
             <td valign="top">
                 <div class="set">{{ basic.button(id|_('up'), gad_move, '', 'arrow-u', 0) }}</div></td>
             <td rowspan="3" align="center" class="pos">
-                {{ basic.shutter(id|_('pos'), gad_pos, gad_angle, 0, 255) }}</td>
+                {{ basic.shutter(id, gad_pos, gad_angle, 0, 255) }}</td>
             <td valign="top">
-                {% if gad_saved %} <div>{{ basic.button(id|_('saved1'), gad_saved, 'Pos1', '', 0) }} </div>{% endif %}</td>
+                {% if gad_saved %} <div>{{ basic.button(id|_('saved1'), gad_saved, 'Pos1', 'grid', 0) }} </div>{% endif %}</td>
         </tr>
         <tr>
             <td valign="center">
@@ -175,7 +177,7 @@
             <td valign="bottom">
                 <div class="set">{{ basic.button(id|_('down'), gad_move, '', 'arrow-d', 1) }}</div></td>
             <td valign="bottom">
-                {% if gad_saved %} <div>{{ basic.button(id|_('saved2'), gad_saved, 'Pos2', '', 1) }} </div>{% endif %}</td>
+                {% if gad_saved %} <div>{{ basic.button(id|_('saved2'), gad_saved, 'Pos2', 'grid', 1) }} </div>{% endif %}</td>
         </tr>
         </table>
     </div>
