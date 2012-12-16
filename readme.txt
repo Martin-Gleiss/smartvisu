@@ -80,8 +80,12 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
-v 2.0 20.12.12
-    - Real-time polling
+v 2.1
+    - widget: basic.symbol allows more gads now
+    - widget: basic.shutter may now be clicked to change the position
+
+v 2.0 14.12.12
+    - realtime polling
     - updated driver: 'linknx' for polling
     - updated driver: 'offline' for polling
     - new widget: shutter (widgets/device.html)

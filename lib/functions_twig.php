@@ -49,10 +49,9 @@
     
  
 // -----------------------------------------------------------------------------
-// Functions for Twig
+// General functions for Twig
 // -----------------------------------------------------------------------------
-       
-
+      
     function twig_once($name)
     {
         $ret = false;
@@ -160,4 +159,25 @@
         return $ret;
  	}      
 
+
+// -----------------------------------------------------------------------------
+// Special functions for Twig
+// -----------------------------------------------------------------------------
+     
+    function twig_array2script($gads)
+    {
+        $ret = '';
+        
+        if (is_array($gads))
+        {
+            foreach ($gads as $gad)
+                $ret .= "'".$gad."', ";
+                
+            $ret = 'Array('.substr($ret, 0, -2).')';    
+        }
+        else
+            $ret = "'".$gads."'";
+        
+        return $ret;
+    }
 ?>

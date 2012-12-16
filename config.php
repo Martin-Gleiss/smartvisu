@@ -12,7 +12,7 @@
   /**
     * Version of smartVISU
     */
-    define ('config_version',               '2.0');
+    define ('config_version',               '2.1');
     
 
 // -----------------------------------------------------------------------------
