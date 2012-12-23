@@ -171,9 +171,11 @@
             }
         });
         
-        $("#{{ page }}-{{ id }}").on('stop', function(event) { 
-            knx.write('{{ gad }}', $('#{{ page }}-{{ id }}').val());   
-        }); 
+        $('#{{ page }}').on('pageinit',function(){
+            $("#{{ page }}-{{ id }}").on('stop', function(event) { 
+                knx.write('{{ gad }}', $('#{{ page }}-{{ id }}').val());   
+            }); 
+        });
     </script>    
 {% endmacro %}
 
@@ -388,8 +390,8 @@
             var offset = $(this).offset();
             var x = (event.pageX - offset.left);
             var y = (event.pageY - offset.top);
-            var val = Math.floor((y / 160 - 10 / 160) * 255 / 5) * 5;
-                val = Math.max(0, Math.min(val, 255));
+            var val = Math.floor((y / 160 - 10 / 160) * {{ max|default(255) }} / 5) * 5;
+                val = Math.max(0, Math.min(val, {{ max|default(255) }}));
                 
 	        knx.write('{{ gad_pos }}', val);
 	        knx.update('{{ gad_pos }}', val);

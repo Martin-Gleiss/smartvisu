@@ -25,7 +25,7 @@
             <img class="icon" src="{{ icon0 }}it_pc.png"/><h3>Büro</h3>
             <div class="ui-li-aside">
                 {{ basic.float('buero_temperatur', 'buero_heizung_istwert', '°C') }} <br />
-                {{ basic.symbol('buero_heizung', 'buero_heizung_schalten', '', icon1~'sani_heizung.png') }} 
+                {{ basic.symbol('buero_heizung', ['schlafen_heizung_schalten','buero_heizung_schalten'], '', icon1~'sani_heizung.png') }} 
             </div>
         </a>
     </li>
@@ -43,6 +43,7 @@
             <img class="icon" src="{{ icon0 }}szene_schwimmen.png"/><h3>Bad</h3>
             <div class="ui-li-aside">
                 {{ basic.float('bad_temperatur', 'bad_heizung_istwert', '°C') }} <br />
+                {{ basic.symbol('bad_heizung_wand', 'bad_wandheizung_schalten', '', icon1~'sani_fussbodenheizung.png') }} 
                 {{ basic.symbol('bad_heizung', 'bad_heizung_schalten', '', icon1~'sani_heizung.png') }} 
             </div>
         </a>

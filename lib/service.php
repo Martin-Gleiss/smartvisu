@@ -20,6 +20,7 @@ class service
     var $debug = false;
     
     var $server = '';
+    var $port = 0;
     var $url = '';
     var $user = '';
     var $pass = '';
@@ -44,6 +45,7 @@ class service
         $this->debug = ($request['debug'] == 1);
         
         $this->server = $request['server'];
+        $this->port = (int)$request['port'];
         $this->url = $request['url'];
         $this->user = $request['user'];
         $this->pass = $request['pass'];
