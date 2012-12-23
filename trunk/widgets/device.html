@@ -101,10 +101,13 @@
  * @param       the knx gad (groupaddress) for the actual position of the blinds
  * @param       the knx gad (groupaddress) for increase- and decreace- of the blade (optional)
  * @param       the knx gad (groupaddress) for the actual angle of the blade (optional)
+ * @param       the minimum value for close (optional, default 0)
+ * @param       the maximum value for open (optional, default 255) 
+ * @param       step betwenn to values (optional, default 5)  
  * 
  * @info        inspired by Frank Berlenz    
  */
-{% macro blind(id, txt, gad_move, gad_stop, gad_pos, gad_shift, gad_angle) %}
+{% macro blind(id, txt, gad_move, gad_stop, gad_pos, gad_shift, gad_angle, min, max, step) %}
     {% import   "basic.html" as basic %}
     
     /** Design */
@@ -114,10 +117,10 @@
             <td valign="top">
                 <div class="set">{{ basic.button(id|_('up'), gad_move, '', 'arrow-u', 1) }}</div></td>
             <td rowspan="3" align="left" class="pos">
-                {{ basic.slider(id|_('pos'), gad_pos, 0, 255, 5, 'vertical') }}</td>
+                {{ basic.slider(id|_('pos'), gad_pos, min, max, step, 'vertical') }}</td>
             <td rowspan="2" valign="bottom" class="angle">
                 {{ txt }}<br />
-                {% if gad_angle %} {{ basic.slider(id|_('angle'), gad_angle, 0, 255, 5, 'semicircle') }} {% endif %}</td>
+                {% if gad_angle %} {{ basic.slider(id|_('angle'), gad_angle, min, max, step, 'semicircle') }} {% endif %}</td>
         </tr>
         <tr>
             <td>
@@ -151,10 +154,14 @@
  * @param       the knx gad (groupaddress) for increase- and decreace- of the blade (optional, for future use)
  * @param       the knx gad (groupaddress) for the actual angle of the blade (optional)
  * @param       the knx gad (groupaddress) for the some saved positions (optional)
+ * @param       the minimum value for close (optional, default 0)
+ * @param       the maximum value for open (optional, default 255) 
+ * @param       step betwenn to values (optional, default 5) 
+ * @param       the mode: 'half' blade turns from -1 to +1), or 'full' blade turns form 0 to +1 (optional, default 'half') 
  * 
  * @info        inspired by Jörg Gutowski       
  */
-{% macro shutter(id, txt, gad_move, gad_stop, gad_pos, gad_shift, gad_angle, gad_saved) %}
+{% macro shutter(id, txt, gad_move, gad_stop, gad_pos, gad_shift, gad_angle, gad_saved, min, max, step, mode) %}
     {% import   "basic.html" as basic %}
 
     /** Design */
@@ -164,7 +171,7 @@
             <td valign="top">
                 <div class="set">{{ basic.button(id|_('up'), gad_move, '', 'arrow-u', 0) }}</div></td>
             <td rowspan="3" align="center" class="pos">
-                {{ basic.shutter(id, gad_pos, gad_angle, 0, 100) }}</td>
+                {{ basic.shutter(id, gad_pos, gad_angle, min, max, step, mode) }}</td>
             <td valign="top">
                 {% if gad_saved %} <div>{{ basic.button(id|_('saved1'), gad_saved, 'Pos1', 'grid', 0) }} </div>{% endif %}</td>
         </tr>
