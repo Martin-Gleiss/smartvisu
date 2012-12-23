@@ -748,16 +748,28 @@ hr {
     background: url('pics/shutter.jpg') #111;
 }
 
-.shutter .blade {
+.shutter .blade-pos {
     width: 100px;
     height: 1px;
     background: #fff;  
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#aaa));
-	background-image: -webkit-linear-gradient(#eee, #aaa);
-	background-image:    -moz-linear-gradient(#eee, #aaa);
-	background-image:     -ms-linear-gradient(#eee, #aaa);
-	background-image:      -o-linear-gradient(#eee, #aaa);
-	background-image:         linear-gradient(#eee, #aaa);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#888));
+	background-image: -webkit-linear-gradient(#fff, #888);
+	background-image:    -moz-linear-gradient(#fff, #888);
+	background-image:     -ms-linear-gradient(#fff, #888);
+	background-image:      -o-linear-gradient(#fff, #888);
+	background-image:         linear-gradient(#fff, #888);
+}
+
+.shutter .blade-neg {
+    width: 100px;
+    height: 1px;
+    background: #fff;  
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#777), to(#eee));
+	background-image: -webkit-linear-gradient(#777, #eee);
+	background-image:    -moz-linear-gradient(#777, #eee);
+	background-image:     -ms-linear-gradient(#777, #eee);
+	background-image:      -o-linear-gradient(#777, #eee);
+	background-image:         linear-gradient(#777, #eee);
 }
 
 
