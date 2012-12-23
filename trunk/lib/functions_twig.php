@@ -61,7 +61,7 @@
         if (!isset($singular[$name]))
             $ret = true;    
         
-        $singular[$name] += 1;       
+        $singular[$name] = true;       
         
         return $ret;
     }

@@ -40,7 +40,7 @@ kind_heizung_text =
 kind_heizung_sollwert = 22.5
 kind_heizung_komfort = 1
 kind_heizung_frost = 
-kind_heizung_schalten = 
+kind_heizung_schalten = 0
 kind_heizung_nacht = 
 bad_heizung_text = Baden in 1h
 bad_heizung_sollwert = 24.0
@@ -49,8 +49,8 @@ bad_heizung_nacht =
 bad_heizung_frost = 
 bad_heizung_schalten = 
 wassersaeule_2_schalten = 
-buero_jalousie_position = 185
-buero_jalousie_lamelle = 0
+buero_jalousie_position = 0
+buero_jalousie_lamelle = 145
 buero_licht_schalten = 0
 buero_szene_arbeit = 1
 bad_licht_schalten = 0
@@ -89,6 +89,5 @@ buero_jalousie_fahren = 0
 buero_jalousie_verstellen = 1
 buero_stop = 1
 buero_jalousie_stop = 1
-
 
 
