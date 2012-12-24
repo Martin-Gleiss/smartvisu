@@ -46,6 +46,7 @@
     text-align: center;
 	height: 62px;
 	border-bottom: 1px solid #222;
+    min-width: 320px;
 }  
     
 .ui-header .ui-left {
@@ -61,6 +62,7 @@
 .ui-content {
     position: relative;
     min-height: 800px;
+   	min-width: 290px;
     z-index: 1;
 }
 
@@ -137,9 +139,8 @@ a.ui-btn-inline.ui-mini .icon {
     height: 40px;    
 }
 
-
 .ui-popup {
-    padding: 4px 3px 0 3px;
+   padding: 4px;
 }
 
 
@@ -860,13 +861,24 @@ hr {
 }
 
 
-.rgb div {
+.rgb span {
+    display: inline-block;
+    width: 28px; 
+    height: 28px;
+    border-top: 2px solid #666;
+    border-right: 2px solid #eee;
+    border-bottom: 2px solid #ccc;
+    border-left: 2px solid #888;
+    background-color: #333;
+}
+
+.rgb-popup div {
     width: 25px; 
     height: 25px;
     margin: 0 1px 1px 0;
     float: left;
 }
 
-.rgb br {
+.rgb-popup br {
     clear:left;
 }

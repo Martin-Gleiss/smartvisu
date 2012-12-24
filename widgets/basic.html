@@ -410,37 +410,48 @@
 
 
 /**
- * Displays a shutter-control
+ * Displays a rgb-selector
  * 
  * @param       unique id for this widget
  */
  {% macro rgb(id) %}
     /** Design */
-    <div class="rgb" id="{{ page }}-{{ id }}">
+    <a  id="{{ page }}-{{ id }}" class="rgb" href="#{{ page }}-{{ id }}-popup" data-rel="popup"><span></span></a>
+
+    <div id="{{ page }}-{{ id }}-popup" class="rgb-popup" data-role="popup"></div>
+    
     
     <script type="text/javascript"> 
         // design
+        var html = '';
+        
         for (var s = 25; s <= 75; s += 25) {
-            for (var h = 1; h < 360; h += 20) {
-                document.write('<div style="background-color:' + hsv2rgb(h, s, 100) + ';"></div>');      
+            for (var h = 0; h <= 288; h += 36) {
+                html += '<div style="background-color:' + hsv2rgb(h, s, 100) + ';"></div>';      
             }
-            document.write('<br />');
+            html += '<div style="background-color:' + hsv2rgb(h, 0, 100 - (s / 25 - 1) *  14.2 ) + ';"></div><br />';      
         }
-        for (var v = 100; v >= 1; v -= 25) {
-            for (var h = 1; h < 360; h += 20) {
-                document.write('<div style="background-color:' + hsv2rgb(h, 100, v) + ';"></div>');      
+        for (var v = 100; v >= 25; v -= 25) {
+            for (var h = 0; h <= 288; h += 36) {
+                html += '<div style="background-color:' + hsv2rgb(h, 100, v) + ';"></div>';      
             }
-            document.write('<br />');
+            html += '<div style="background-color:' + hsv2rgb(h, 0, (v / 25) *  14.2) + ';"></div><br />';      
         }
         
+        $("#{{ page }}-{{ id }}-popup").html(html);
+        
+        // click
+        $('#{{ page }}-{{ id }}-popup div').click(function() {
+            $('#{{ page }}-{{ id }} span').css('background-color', $(this).css('background-color'));
+            $('#{{ page }}-{{ id }}-popup').popup('close');      
+        });
+        
         // effects
-        $('#{{ page }}-{{ id }} div').hover(
-            function() { $(this).addClass("ui-focus"); },  
-            function() { $(this).removeClass("ui-focus"); }
+        $('#{{ page }}-{{ id }}-popup div').hover(
+            function() { $(this).addClass('ui-focus'); },  
+            function() { $(this).removeClass('ui-focus'); }
         );
     </script> 
-    
-    </div>   
 {% endmacro %} 
 
 
