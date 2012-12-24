@@ -12,7 +12,7 @@
  * Widget to glue to html-elements together.
  * If the 'from' ist changed the 'to' will be reloaded after a delay. 
  * 
- * @param        id form the element who ist changing 
+ * @param        id from the element who ist changing 
  * @param        id from the element that should be changed
  */
 {% macro glue(id_from, id_to) %}
@@ -34,7 +34,7 @@
  * display a value
  * 
  * @param        unique id for this widget
- * @param        the knx gad (groupaddress)  
+ * @param        a item/gad  
  * @param        a unit
  * @param        the parent html-tag for the value                   
  */
@@ -56,7 +56,7 @@
  * Displays a value as float
  * 
  * @param        unique id for this widget
- * @param        the knx gad (groupaddress)  
+ * @param        a item/gad  
  * @param        a unit
  * @param        the parent html-tag for the value     
  */
@@ -80,7 +80,7 @@
  * Displays a checkbox
  * 
  * @param        unique id for this widget
- * @param        the knx gad (groupaddress)  
+ * @param        a item/gad  
  * @param        text printed on the checkbox
  */
 {% macro checkbox(id, gad, txt) %}
@@ -107,7 +107,7 @@
  * Displays a flip-switch
  * 
  * @param        unique id for this widget
- * @param        the knx gad (groupaddress)  
+ * @param        a item/gad  
  * @param        text for the 'on' state
  * @param        text for the 'off' state
  */
@@ -142,7 +142,7 @@
  * Displays a slider-control
  * 
  * @param        unique id for this widget
- * @param        the knx gad (groupaddress)  
+ * @param        a item/gad  
  * @param        the minimum value if the slider ist moved to total left (optional, default 0)
  * @param        the maximum value if the slider ist moved to total right (optional, default 255)
  * @param        step betwenn to values (optional, default 5) 
@@ -222,7 +222,7 @@
  * A switch, build of two pics
  * 
  * @param        unique id for this widget
- * @param        the knx gad (groupaddress)  
+ * @param        a item/gad  
  * @param        the pic for the 'on' state
  * @param        the pic for the 'off' state
  * @param        value send for the 'on' state
@@ -239,7 +239,7 @@
         knx.add({ 
             gad: '{{ gad }}',
             update: function(response){ 
-                $('#{{ page }}-{{ id }} img').attr('src', (response != {{ val_off|default('0') }} ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
+                $('#{{ page }}-{{ id }} img').attr('src', (response == {{ val_on|default('1') }} ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
             }
         });
              
@@ -267,7 +267,7 @@
  * A button
  * 
  * @param        unique id for this widget
- * @param        the knx gad (groupaddress)  
+ * @param        a item/gad  
  * @param        text printed on the button
  * @param        a icon or a inline pic (arrow-l, arrow-r, arrow-u, arrow-d, delete, plus, minus, check, gear, refresh, forward, back, grid, star, alert, info, home, search)
  * @param        value send if the button is pressed
@@ -298,7 +298,7 @@
  * A switch with to states displayed as a button
  * 
  * @param        unique id for this widget
- * @param        the knx gad (groupaddress)  
+ * @param        a item/gad  
  * @param        the pic for the 'on' state
  * @param        the pic for the 'off' state
  */
@@ -334,8 +334,8 @@
  * Displays a shutter-control
  * 
  * @param       unique id for this widget
- * @param       the knx gad (groupaddress) for the actual position of the blinds
- * @param       the knx gad (groupaddress) for the actual angle of the blinds (optional, readonly)
+ * @param       a item/gad for the actual position of the blinds
+ * @param       a item/gad for the actual angle of the blinds (optional, readonly)
  * @param       the minimum value for close (optional, default 0)
  * @param       the maximum value for open (optional, default 255) 
  * @param       step betwenn to values (optional, default 5) 
@@ -407,4 +407,40 @@
         });
     </script>    
 {% endmacro %} 
+
+
+/**
+ * Displays a shutter-control
+ * 
+ * @param       unique id for this widget
+ */
+ {% macro rgb(id) %}
+    /** Design */
+    <div class="rgb" id="{{ page }}-{{ id }}">
+    
+    <script type="text/javascript"> 
+        // design
+        for (var s = 25; s <= 75; s += 25) {
+            for (var h = 1; h < 360; h += 20) {
+                document.write('<div style="background-color:' + hsv2rgb(h, s, 100) + ';"></div>');      
+            }
+            document.write('<br />');
+        }
+        for (var v = 100; v >= 1; v -= 25) {
+            for (var h = 1; h < 360; h += 20) {
+                document.write('<div style="background-color:' + hsv2rgb(h, 100, v) + ';"></div>');      
+            }
+            document.write('<br />');
+        }
+        
+        // effects
+        $('#{{ page }}-{{ id }} div').hover(
+            function() { $(this).addClass("ui-focus"); },  
+            function() { $(this).removeClass("ui-focus"); }
+        );
+    </script> 
+    
+    </div>   
+{% endmacro %} 
+
 
