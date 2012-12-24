@@ -51,5 +51,5 @@ function hsv2rgb(h, s, v) {
     g = Math.round(g * 255).toString(16);
     b = Math.round(b * 255).toString(16);
     
-    return '#' + (r <=9 ? '0' + r : r) + (g <=9 ? '0' + g : g) + (b <=9 ? '0' + b : b);
+    return '#' + (r.length == 1 ? '0' + r : r) + (g.length == 1 ? '0' + g : g) + (b.length == 1 ? '0' + b : b);
 }
