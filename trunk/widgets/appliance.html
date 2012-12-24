@@ -1,0 +1,27 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */ 
+
+
+/**
+ * enertex KNXnet/IP-Router
+ *  
+ * @param        unique id for this widget
+ * @param        the ip of the router  
+ */ 
+{% macro iprouter(id, server) %}
+    <div id="{{ page }}-{{ id }}"></div>
+    /** Events */
+    <script type="text/javascript">
+        $('#{{ page }}').live('pagecreate',function(event, ui){ 
+            $.getJSON('lib/appliance/enertex.iprouter.php?server={{ server }}', function(data) {
+                    
+            });
+        });
+    </script>  
+{% endmacro %}

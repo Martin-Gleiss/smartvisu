@@ -858,3 +858,15 @@ hr {
 .calendarlist p {
     font-size: 10pt;
 }
+
+
+.rgb div {
+    width: 25px; 
+    height: 25px;
+    margin: 0 1px 1px 0;
+    float: left;
+}
+
+.rgb br {
+    clear:left;
+}
