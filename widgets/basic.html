@@ -34,7 +34,7 @@
  * display a value
  * 
  * @param        unique id for this widget
- * @param        a item/gad  
+ * @param        a gad/item  
  * @param        a unit
  * @param        the parent html-tag for the value                   
  */
@@ -56,7 +56,7 @@
  * Displays a value as float
  * 
  * @param        unique id for this widget
- * @param        a item/gad  
+ * @param        a gad/item  
  * @param        a unit
  * @param        the parent html-tag for the value     
  */
@@ -80,7 +80,7 @@
  * Displays a checkbox
  * 
  * @param        unique id for this widget
- * @param        a item/gad  
+ * @param        a gad/item  
  * @param        text printed on the checkbox
  */
 {% macro checkbox(id, gad, txt) %}
@@ -107,7 +107,7 @@
  * Displays a flip-switch
  * 
  * @param        unique id for this widget
- * @param        a item/gad  
+ * @param        a gad/item  
  * @param        text for the 'on' state
  * @param        text for the 'off' state
  */
@@ -142,7 +142,7 @@
  * Displays a slider-control
  * 
  * @param        unique id for this widget
- * @param        a item/gad  
+ * @param        a gad/item  
  * @param        the minimum value if the slider ist moved to total left (optional, default 0)
  * @param        the maximum value if the slider ist moved to total right (optional, default 255)
  * @param        step betwenn to values (optional, default 5) 
@@ -222,7 +222,7 @@
  * A switch, build of two pics
  * 
  * @param        unique id for this widget
- * @param        a item/gad  
+ * @param        a gad/item  
  * @param        the pic for the 'on' state
  * @param        the pic for the 'off' state
  * @param        value send for the 'on' state
@@ -267,7 +267,7 @@
  * A button
  * 
  * @param        unique id for this widget
- * @param        a item/gad  
+ * @param        a gad/item  
  * @param        text printed on the button
  * @param        a icon or a inline pic (arrow-l, arrow-r, arrow-u, arrow-d, delete, plus, minus, check, gear, refresh, forward, back, grid, star, alert, info, home, search)
  * @param        value send if the button is pressed
@@ -298,7 +298,7 @@
  * A switch with to states displayed as a button
  * 
  * @param        unique id for this widget
- * @param        a item/gad  
+ * @param        a gad/item  
  * @param        the pic for the 'on' state
  * @param        the pic for the 'off' state
  */
@@ -334,8 +334,8 @@
  * Displays a shutter-control
  * 
  * @param       unique id for this widget
- * @param       a item/gad for the actual position of the blinds
- * @param       a item/gad for the actual angle of the blinds (optional, readonly)
+ * @param       a gad/item for the actual position of the blinds
+ * @param       a gad/item for the actual angle of the blinds (optional, readonly)
  * @param       the minimum value for close (optional, default 0)
  * @param       the maximum value for open (optional, default 255) 
  * @param       step betwenn to values (optional, default 5) 
@@ -413,8 +413,11 @@
  * Displays a rgb-selector
  * 
  * @param       unique id for this widget
+ * @param       a gad/item for the r - value
+ * @param       a gad/item for the g - value
+ * @param       a gad/item for the b - value  
  */
- {% macro rgb(id) %}
+ {% macro rgb(id, gad_r, gad_g, gad_b) %}
     /** Design */
     <a  id="{{ page }}-{{ id }}" class="rgb" href="#{{ page }}-{{ id }}-popup" data-rel="popup"><span></span></a>
 
@@ -440,10 +443,22 @@
         
         $("#{{ page }}-{{ id }}-popup").html(html);
         
+        // knx
+        knx.add({ 
+            gad: Array('{{ gad_r }}', '{{ gad_g }}', '{{ gad_b }}'),
+            update: function(response){
+                $('#{{ page }}-{{ id }} span').css('background-color', 'rgb(' + response[0] + ',' + response[1] + ',' + response[2] + ')');  
+            }
+        });  
+        
         // click
         $('#{{ page }}-{{ id }}-popup div').click(function() {
-            $('#{{ page }}-{{ id }} span').css('background-color', $(this).css('background-color'));
-            $('#{{ page }}-{{ id }}-popup').popup('close');      
+            var rgb = $(this).css('background-color');
+            $('#{{ page }}-{{ id }} span').css('background-color', rgb);
+            $('#{{ page }}-{{ id }}-popup').popup('close');  
+            
+            rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/); 
+            knx.write('{{ gad_r }}', rgb[1]); knx.write('{{ gad_g }}', rgb[2]); knx.write('{{ gad_b }}', rgb[3]); 
         });
         
         // effects
