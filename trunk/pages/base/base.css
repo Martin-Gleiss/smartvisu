@@ -863,12 +863,12 @@ hr {
 
 .rgb span {
     display: inline-block;
-    width: 28px; 
-    height: 28px;
-    border-top: 2px solid #666;
-    border-right: 2px solid #eee;
-    border-bottom: 2px solid #ccc;
-    border-left: 2px solid #888;
+    width: 30px; 
+    height: 30px;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #555;
+    border-bottom: 1px solid #444;
+    border-left: 1px solid #fff;
     background-color: #333;
 }
 

@@ -15,3 +15,8 @@ bath_blind_move_down = 1
 bath_blind_stop = 1
 bath_blind_mov = 1
 bath_blind_stored = 1
+bath_color_r = 51
+bath_color_g = 255
+bath_color_b = 0
+
+

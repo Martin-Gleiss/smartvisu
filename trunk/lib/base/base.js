@@ -47,9 +47,9 @@ function hsv2rgb(h, s, v) {
         }
     }
      
-    r = Math.round(r * 255).toString(16);
-    g = Math.round(g * 255).toString(16);
-    b = Math.round(b * 255).toString(16);
+    r = Math.round(r * 255);
+    g = Math.round(g * 255);
+    b = Math.round(b * 255);
     
-    return '#' + (r.length == 1 ? '0' + r : r) + (g.length == 1 ? '0' + g : g) + (b.length == 1 ? '0' + b : b);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
 }

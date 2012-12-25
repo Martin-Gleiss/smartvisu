@@ -13,8 +13,8 @@
  * 
  * @param       unique id for this widget
  * @param       name of the dimmer
- * @param       a item/gad for switching
- * @param       a item/gad for dimming 
+ * @param       a gad/item for switching
+ * @param       a gad/item for dimming 
  * @param       the minimum value if the slider ist moved to total left (default 0)
  * @param       the maximum value if the slider ist moved to total right (default 255)
  * @param       step betwenn to values (default 5) 
@@ -37,13 +37,13 @@
  * 
  * @param       unique id for this widget
  * @param       name of the rtr
- * @param       a item/gad for the actual temparature
- * @param       a item/gad for the set temparature
- * @param       a item/gad for mode (bit) 
- * @param       a item/gad for night (bit)
- * @param       a item/gad for frost (bit)
- * @param       a item/gad for the current state of the actor
- * @param       a item/gad for a text (some rtr have a text-display), optional
+ * @param       a gad/item for the actual temparature
+ * @param       a gad/item for the set temparature
+ * @param       a gad/item for mode (bit) 
+ * @param       a gad/item for night (bit)
+ * @param       a gad/item for frost (bit)
+ * @param       a gad/item for the current state of the actor
+ * @param       a gad/item for a text (some rtr have a text-display), optional
  */
 {% macro rtr(id, txt, gad_actual, gad_set, gad_mode, gad_night, gad_frost, gad_state, gad_txt) %}
     {% import   "basic.html" as basic %}
@@ -96,11 +96,11 @@
  * 
  * @param       unique id for this widget
  * @param       name of the blind
- * @param       a item/gad for the up- and down- movement
- * @param       a item/gad for stopping the movement (optional)
- * @param       a item/gad for the actual position of the blinds
- * @param       a item/gad for increase- and decreace- of the blade (optional)
- * @param       a item/gad for the actual angle of the blade (optional)
+ * @param       a gad/item for the up- and down- movement
+ * @param       a gad/item for stopping the movement (optional)
+ * @param       a gad/item for the actual position of the blinds
+ * @param       a gad/item for increase- and decreace- of the blade (optional)
+ * @param       a gad/item for the actual angle of the blade (optional)
  * @param       the minimum value for close (optional, default 0)
  * @param       the maximum value for open (optional, default 255) 
  * @param       step betwenn to values (optional, default 5)  
@@ -148,12 +148,12 @@
  * 
  * @param       unique id for this widget
  * @param       name of the shutter
- * @param       a item/gad for the up- and down- movement
- * @param       a item/gad for stopping the movement (optional)
- * @param       a item/gad for the actual position of the blinds
- * @param       a item/gad for increase- and decreace- of the blade (optional, for future use)
- * @param       a item/gad for the actual angle of the blade (optional)
- * @param       a item/gad for the some saved positions (optional)
+ * @param       a gad/item for the up- and down- movement
+ * @param       a gad/item for stopping the movement (optional)
+ * @param       a gad/item for the actual position of the blinds
+ * @param       a gad/item for increase- and decreace- of the blade (optional, for future use)
+ * @param       a gad/item for the actual angle of the blade (optional)
+ * @param       a gad/item for the some saved positions (optional)
  * @param       the minimum value for close (optional, default 0)
  * @param       the maximum value for open (optional, default 255) 
  * @param       step betwenn to values (optional, default 5) 
