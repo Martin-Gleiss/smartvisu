@@ -149,7 +149,7 @@
  */
  {% macro slider(id, gad, min, max, step, orientation) %}
     /** Design */
-    <input type="range" id="{{ page }}-{{ id }}" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}" orientation="{{ orientation }}" data-highlight="true" />
+    <input id="{{ page }}-{{ id }}" type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}" orientation="{{ orientation }}" data-highlight="true" />
 
     /** Events */
     <script type="text/javascript">
@@ -230,8 +230,8 @@
  */
  {% macro switch(id, gad, pic_on, pic_off, val_on, val_off) %}
     /** Design */
-    <span class="switch">
-        <a id="{{ page }}-{{ id }}"><img class="icon" src="{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"/></a>
+    <span id="{{ page }}-{{ id }}" class="switch">
+        <a><img class="icon" src="{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"/></a>
     </span>
         
     /** Events */
@@ -239,13 +239,13 @@
         knx.add({ 
             gad: '{{ gad }}',
             update: function(response){ 
-                $('#{{ page }}-{{ id }} img').attr('src', (response == {{ val_on|default('1') }} ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
+                $('#{{ page }}-{{ id }} .icon').attr('src', (response == {{ val_on|default('1') }} ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
             }
         });
              
         // write
-        $('#{{ page }}-{{ id }}').unbind('click').bind('click', function(){
-            if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" ){
+        $('#{{ page }}-{{ id }} a').unbind('click').bind('click', function(){
+            if ($('#{{ page }}-{{ id }} .icon').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" ){
                 knx.write('{{ gad }}', "{{ val_on|default('1') }}");
                 knx.update('{{ gad }}', "{{ val_on|default('1') }}");
             } else {
@@ -255,7 +255,7 @@
         });
         
         // effects
-        $('#{{ page }}-{{ id }} img').hover(
+        $('#{{ page }}-{{ id }} .icon').hover(
             function() { $(this).addClass("ui-focus");  },  
             function() { $(this).removeClass("ui-focus"); }
         );
@@ -345,7 +345,7 @@
  */
  {% macro shutter(id, gad_pos, gad_angle, min, max, step, mode) %}
     /** Design */
-    <div class="shutter" id="{{ page }}-{{ id }}">
+    <div id="{{ page }}-{{ id }}" class="shutter">
         {% for i in 1..12 %}
             <div class="blade-pos" id="{{ page }}-{{ id }}-{{ i }}"></div>
         {% endfor %}
@@ -413,14 +413,14 @@
  * Displays a rgb-selector
  * 
  * @param       unique id for this widget
- * @param       a gad/item for the r - value
- * @param       a gad/item for the g - value
- * @param       a gad/item for the b - value  
+ * @param       a gad/item for the r - value (0 - 255)
+ * @param       a gad/item for the g - value (0 - 255)
+ * @param       a gad/item for the b - value (0 - 255) 
  */
  {% macro rgb(id, gad_r, gad_g, gad_b) %}
     /** Design */
-    <a  id="{{ page }}-{{ id }}" class="rgb" href="#{{ page }}-{{ id }}-popup" data-rel="popup"><span></span></a>
-
+    <a id="{{ page }}-{{ id }}" class="rgb" href="#{{ page }}-{{ id }}-popup" data-rel="popup"><span></span></a>
+    
     <div id="{{ page }}-{{ id }}-popup" class="rgb-popup" data-role="popup"></div>
     
     
