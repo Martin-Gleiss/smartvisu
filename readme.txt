@@ -81,6 +81,7 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 2.1
+    - widget: basic.rgb with colorselector
     - widget: basic.symbol allows more gads now
     - widget: basic.shutter may now be clicked to change the position
 
