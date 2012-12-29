@@ -146,6 +146,7 @@
  * @param        the minimum value if the slider ist moved to total left (optional, default 0)
  * @param        the maximum value if the slider ist moved to total right (optional, default 255)
  * @param        step betwenn to values (optional, default 5) 
+ * @param        the orientation (none, vertical, semicircle)
  */
  {% macro slider(id, gad, min, max, step, orientation) %}
     /** Design */
@@ -157,17 +158,16 @@
             gad: '{{ gad }}',
             update: function(response){ 
                 // jquery.mobile bugfix: change is triggert after refresh
-                //$('#{{ page }}-{{ id }}').unbind('change');
+                $('#{{ page }}-{{ id }}').unbind('change');
                 $('#{{ page }}-{{ id }}').val(response).slider('refresh');
                 
-                /*
                 var sval = $("#{{ page }}-{{ id }}").bind('change', function(event){
-                if(sval != $(this).val()){
+                if(sval != $(this).val() ){
                     sval = $(this).val(); 
-                    knx.write('{{ gad }}', $('#{{ page }}-{{ id }}').val());  
+                    if (sval == {{ min|default(0) }} || sval == {{ max|default(255) }})
+                        knx.write('{{ gad }}', $('#{{ page }}-{{ id }}').val());  
                     }
                 }).val();
-                */
             }
         });
         

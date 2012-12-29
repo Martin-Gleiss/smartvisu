@@ -69,24 +69,23 @@
  * @param       a gad/item for night (bit)
  * @param       a gad/item for frost (bit)
  * @param       a gad/item for the current state of the actor
- * @param       a gad/item for a text (some rtr have a text-display), optional
+ * @param       a gad/item for a text (some rtr have a text-display), (optional)
+ * @param       step for plus/minus buttons (optional, default 0.5°) 
  */
-{% macro rtr(id, txt, gad_actual, gad_set, gad_mode, gad_night, gad_frost, gad_state, gad_txt) %}
+{% macro rtr(id, txt, gad_actual, gad_set, gad_mode, gad_night, gad_frost, gad_state, gad_txt, step) %}
     {% import   "basic.html" as basic %}
     
     /** Design */
     <div id="{{ page }}-{{ id }}" class="rtr">
         <div class="actual">
-            <h4>{{ basic.float(id|_('actual'), gad_actual, '°C' ) }}</h4>
-            <div class="text">{{ txt }} 
-                {% if gad_txt %} {{ basic.value(id|_('txt'), gad_txt) }} {% endif %}
-            </div>
+            <div class="temp">{{ basic.float(id|_('actual'), gad_actual, '°C' ) }}</div>
+            <div class="text">{{ txt }} {% if gad_txt %} {{ basic.value(id|_('txt'), gad_txt) }} {% endif %}</div>
         </div>
         
         {% if gad_set %}
             <div class="set">
                 {{ basic.button(id|_('minus'), '', '', 'minus') }}
-                <div class="text">{{ basic.float(id|_('set'), gad_set, '°C' ) }}</div>
+                <div class="temp">{{ basic.float(id|_('set'), gad_set, '°C' ) }}</div>
                 {{ basic.button(id|_('plus'), '', '', 'plus') }}
             </div>
             
@@ -94,12 +93,12 @@
             <script type="text/javascript">  
                 // plus / minus
                 $("#{{ page }}-{{ id|_('minus') }}").unbind('click').bind('click', function(){ 
-                    var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) - 0.5) * 10) / 10).toFixed(1);
+                    var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) - {{ step|default(0.5) }}) * 10) / 10).toFixed(1);
                     $("#{{ page }}-{{ id|_('set') }}").html(temp + ' °C');
                     knx.write("{{ gad_set }}", temp);
                 });
                 $("#{{ page }}-{{ id|_('plus') }}").unbind('click').bind('click', function(){ 
-                    var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) + 0.5) * 10) / 10).toFixed(1);
+                    var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) + {{ step|default(0.5) }}) * 10) / 10).toFixed(1);
                     $("#{{ page }}-{{ id|_('set') }}").html(temp + ' °C');
                     knx.write("{{ gad_set }}", temp);
                 });
@@ -110,8 +109,8 @@
             {{ basic.switch(id|_('mode'), gad_mode, icon1~'user_anwesend.png', icon0~'user_abwesend.png') }}
             {{ basic.switch(id|_('night'), gad_night, icon1~'szene_nacht.png', icon0~'szene_nacht.png') }}
             {{ basic.switch(id|_('frost'), gad_frost, icon1~'temp_frost.png', icon0~'temp_frost.png') }}
-            <div class="switch" style="width: 5px; height: 48px;"></div>
-            {{ basic.switch(id|_('state'), gad_state, icon1~'steuer_ein_aus.png', icon0~'steuer_ein_aus.png') }}
+            <div style="float:left; width: 5px; height: 48px;"></div>
+            {{ basic.switch(id|_('state'), gad_state, icon1~'sani_heizung.png', icon0~'sani_heizung.png') }}
         </div>
     </div>
 {% endmacro %}
