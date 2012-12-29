@@ -212,7 +212,10 @@ a.ui-slider-handle-vertical {
 }
 
 a.ui-slider-handle-vertical .ui-btn-inner  {
-    display: none;
+    padding: 5px !important;
+    -moz-border-radius: 0.8em;
+	-webkit-border-radius: 0.8em;
+	border-radius: 0.8em;
 }
 
 .ui-slider-semicircle-box { 
@@ -278,7 +281,10 @@ a.ui-slider-handle-semicircle {
 } 
 
 a.ui-slider-handle-semicircle .ui-btn-inner  {
-    display: none;
+    padding: 7px !important;
+    -moz-border-radius: 10em 10em 0 0;
+	-webkit-border-radius: 10em 10em 0 0;
+	border-radius: 10em 10em 0 0;
 }
 
 
@@ -704,24 +710,25 @@ hr {
 
 
 .rtr .actual {
-    padding: 5px 0 5px 0;
-    width: 184px;
-    height: 48px;
+    padding: 5px 0 5px 5px;
+    width: 200px;
     margin:auto;
 }
 
-.rtr .actual h4 {
+.rtr .actual .temp {
     margin: 5px 0 5px 0;
+    font-size: 1.4em; 
+    font-weight: bold;
 }
 
 .rtr .set {
-    padding: 10px 0px 10px 0;
-    width: 190px;
+    padding: 5px 0px 5px 15px;
+    width: 200px;
     height: 48px;
     margin:auto;
 }
 
-.rtr .set .text {
+.rtr .set .temp {
     width: 80px;
     height: 48px;
     padding-top: 10px;
@@ -733,8 +740,8 @@ hr {
 }
 
 .rtr .control {
-    padding: 10px 0 10px 0;
-    width: 218px;
+    padding: 5px 0 5px 0;
+    width: 215px;
     height: 48px;
     margin:auto;
 }

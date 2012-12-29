@@ -26,6 +26,20 @@
     <div class="html">
         {{ basic.slider('slider2', 'bath_light_value', 0, 100, 10) }}
     </div>
+    
+    <div class="twig">
+        <code class="prettyprint">&#123;&#123; basic.slider('slider3', 'bath_light_value', 0, 255, 5, 'vertical') &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.slider('slider3', 'bath_light_value', 0, 255, 5, 'vertical') }}
+    </div>
+    
+    <div class="twig">
+        <code class="prettyprint">&#123;&#123; basic.slider('slider4', 'bath_light_value', 0, 255, 5, 'semicircle') &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.slider('slider4', 'bath_light_value', 0, 255, 5, 'semicircle') }}
+    </div>
 
 {% endblock %}
 

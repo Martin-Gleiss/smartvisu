@@ -37,7 +37,7 @@
   /**
     * Use the realtime-mode if possible
     */
-    define ('config_driver_realtime',       false);
+    define ('config_driver_realtime',       true);
     
 
 // -----------------------------------------------------------------------------
@@ -56,7 +56,7 @@
     * smartVISU supports different projects, located under 'pages'
     * this ist the directory for your project    
     */
-    define ('config_pages',                 'test');
+    define ('config_pages',                 'docu');
    
   /**
     * Select your language. Some widgets are multilanguage 
