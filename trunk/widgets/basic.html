@@ -108,8 +108,8 @@
  * 
  * @param        unique id for this widget
  * @param        a gad/item  
- * @param        text for the 'on' state
- * @param        text for the 'off' state
+ * @param        text for the 'on' state (optional, default 'On')
+ * @param        text for the 'off' state (optional, default 'Off')
  */
  {% macro flip(id, gad, txt_on, txt_off) %}
     /** Design */
@@ -146,7 +146,7 @@
  * @param        the minimum value if the slider ist moved to total left (optional, default 0)
  * @param        the maximum value if the slider ist moved to total right (optional, default 255)
  * @param        step betwenn to values (optional, default 5) 
- * @param        the orientation (none, vertical, semicircle)
+ * @param        the orientation ('none', 'vertical', 'semicircle')
  */
  {% macro slider(id, gad, min, max, step, orientation) %}
     /** Design */
@@ -186,7 +186,7 @@
  * 
  * @param        unique id for this widget
  * @param        one or more gad(s)/item(s)
- * @param        the text, printed when gad has value val 
+ * @param        the text, printed when gad has value val (optional) 
  * @param        the pic, shown when gad has value val
  * @param        value (default 1) 
  */
@@ -223,10 +223,10 @@
  * 
  * @param        unique id for this widget
  * @param        a gad/item  
- * @param        the pic for the 'on' state
- * @param        the pic for the 'off' state
- * @param        value send for the 'on' state
- * @param        value send for the 'off' state 
+ * @param        the pic for the 'on' state (optional)
+ * @param        the pic for the 'off' state (optional)
+ * @param        value send for the 'on' state (optional, default 1)
+ * @param        value send for the 'off' state (optional, default 0)
  */
  {% macro switch(id, gad, pic_on, pic_off, val_on, val_off) %}
     /** Design */
@@ -268,9 +268,9 @@
  * 
  * @param        unique id for this widget
  * @param        a gad/item  
- * @param        text printed on the button
+ * @param        text printed on the button (optional)
  * @param        a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search'
- * @param        value send if the button is pressed
+ * @param        value send if the button is pressed (optional, default 1)
  */
  {% macro button(id, gad, txt, pic, val) %}
     /** Design */
@@ -299,8 +299,8 @@
  * 
  * @param        unique id for this widget
  * @param        a gad/item  
- * @param        the pic for the 'on' state
- * @param        the pic for the 'off' state
+ * @param        the pic for the 'on' state (optional)
+ * @param        the pic for the 'off' state (optional)
  */
  {% macro dual(id, gad, pic_on, pic_off) %}
     /** Design */
@@ -339,7 +339,7 @@
  * @param       the minimum value for close (optional, default 0)
  * @param       the maximum value for open (optional, default 255) 
  * @param       step betwenn to values (optional, default 5) 
- * @param       the mode: 'half' blade turns from -1 to +1), or 'full' blade turns form 0 to +1 (optional, default 'half')
+ * @param       the mode: 'half' blade turns from -1 to +1, or 'full' blade turns form 0 to +1 (optional, default 'half')
  * 
  * @info        inspired by Jörg Gutowski     
  */

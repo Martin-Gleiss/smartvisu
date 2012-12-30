@@ -184,7 +184,7 @@
  * 
  * @param       unique id for this widget
  * @param       title of the block
- * @param       delay between the slides (default: 1000 ms)
+ * @param       delay between the slides (optional, default: 1000 ms)
  *  
  * @info        based on cycle2 jquery-plugin: (c) 2012 M. Alsup; Dual licensed: MIT/GPL 
  * @link        http://jquery.malsup.com/cycle2 
@@ -212,8 +212,11 @@
     
     /** Events */
     <script type="text/javascript">
-        $('#{{ page }}').live('pagecreate', function(event, ui){
-            $('#{{ page }}-{{ id }}').cycle();  
+        $('#{{ page }}').live('pageinit', function(event, ui){
+            $('#{{ page }}-{{ id }}').cycle(); 
+        });
+        $('#{{ page }}').live('pageshow', function(event, ui){
+            $(window).triggerHandler('resize');
         });
     </script> 
  

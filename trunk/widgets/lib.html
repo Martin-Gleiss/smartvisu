@@ -9,23 +9,16 @@
 
 
 /**
- * Widget to place an app-symbol
- * If you write a app by yourself, place a @title, @icon, @color tag in your
- * header. These tags are used to display the symbol   
- * 
- * @param        the name of the app (located in pages/apps) 
- * @param        a titel of the app
+ * the smartVISU-logo
  */
-{% macro app(name, title) %}
+{% macro smartvisu(mode) %}
 
-    {% set app = docu('apps/'~name~'.html') %}
+    {% if mode == 'app' %}    
+    <div class="app"><div class="image"><div class="smartvisu"><span class="smart">smart</span><br /><span class="visu">VISU</span></div></div></div>
+    {% else %}
+    <span class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span></span>
+    {% endif %}
     
-    <div class="app">
-        <a href="index.php?page={{ name }}">
-            <div class="image" style="background-color: #{{ app.color }};"><img src="{{ app.icon }}"></div>
-            <div>{{ title|default(app.title|e) }}</div>
-        </a>
-    </div>
 {% endmacro %}
 
 
@@ -47,3 +40,26 @@
         });
     </script>  
 {% endmacro %}
+
+    
+/**
+ * Widget to place an app-symbol
+ * If you write a app by yourself, place a @title, @icon, @color tag in your
+ * header. These tags are used to display the symbol   
+ * 
+ * @param        the name of the app (located in pages/apps) 
+ * @param        a titel of the app
+ */
+{% macro app(name, title) %}
+
+    {% set app = docu('apps/'~name~'.html') %}
+    
+    <div class="app">
+        <a href="index.php?page={{ name }}">
+            <div class="image" style="background-color: #{{ app.color }};"><img src="{{ app.icon }}"></div>
+            <div>{{ title|default(app.title|e) }}</div>
+        </a>
+    </div>
+{% endmacro %}
+
+

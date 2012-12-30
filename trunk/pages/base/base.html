@@ -9,7 +9,8 @@
 <!DOCTYPE html> 
 
 <html> 
-	<head> 
+
+<head> 
 	<title>{{ config_title }}</title> 
 	
     <meta charset="utf-8">
@@ -32,11 +33,11 @@
 	<link rel="stylesheet" type="text/css" href="pages/{{ config_pages }}/visu.css" />
 	
     <script type="text/javascript" src="driver/knx_{{ config_driver }}.js"></script>
+	{% block head %}{% endblock %}
 	
-    {% import "lib.html" as lib %}
+	{% import "lib.html" as lib %}
     {% import "basic.html" as basic %}
     {% import "device.html" as device %}  
-    
 </head> 
 
 
@@ -48,7 +49,7 @@
             {% include 'menu.html' %}
         </div>
         <div class="ui-right">
-            <div class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span></div>
+            {{ lib.smartvisu }}
             <div class="mini"><span id="miniclock">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
         </div>
         <p id="alert" class="alert"><a href=""><img src="pages/base/pics/trans.png"></a></p>
@@ -97,7 +98,9 @@
     </div>
     
     <div class="page-bg"></div>  
-
+    
+    {% block footer %}{% endblock %}
+    
     <script type="text/javascript">
         // knx.list();
         knx.refresh();
