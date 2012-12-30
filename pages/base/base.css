@@ -59,6 +59,10 @@
     margin: 9px 15px 0 0;
 }
 
+.ui-page-header-fixed { 
+    padding-top: 62px;
+}
+
 .ui-content {
     position: relative;
     min-height: 800px;
