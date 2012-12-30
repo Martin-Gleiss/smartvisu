@@ -147,6 +147,10 @@ a.ui-btn-inline.ui-mini .icon {
    padding: 4px;
 }
 
+.ui-popup > span {
+   margin: 0;
+}
+
 
 /** --------- controlgroup --------- 
 .ui-controlgroup-horizontal {

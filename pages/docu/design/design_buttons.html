@@ -17,7 +17,7 @@
     
     <div class="docu">
         
-        Here are some examples to show what buttons are possible in <span class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span></span>
+        Here are some examples to show what buttons are possible in {{ lib.smartVISU }}
     
         <h5>Examples</h5>
        
@@ -34,10 +34,10 @@
              {% endraw %}{% endfilter  %}</code>
         </div>
         <div class="html">
-            {{ basic.button('single1', 'bath_light_switch', '', 'grid') }}
-            {{ basic.button('single2', 'bath_light_switch', 'Up') }}
-            {{ basic.button('single3', 'bath_light_switch', 'Up', 'grid') }}
-            {{ basic.button('single4', 'bath_light_switch', 'Down', icon0~'steuer_ab.png', 0) }}
+                {{ basic.button('single1', 'bath_light_switch', '', 'grid') }}
+                {{ basic.button('single2', 'bath_light_switch', 'Up') }}
+                {{ basic.button('single3', 'bath_light_switch', 'Up', 'grid') }}
+                {{ basic.button('single4', 'bath_light_switch', 'Down', icon0~'steuer_ab.png', 0) }}
         </div>
         
         Some Buttons grouped together
@@ -51,11 +51,11 @@
             {% endraw %}{% endfilter  %}</code>
         </div>
         <div class="html">
-            <span data-role="controlgroup" data-type="horizontal" data-mini="true">
-            {{ basic.button('button1', 'bath_light_switch', 'Up', 'plus') }}
-            {{ basic.button('button2', 'bath_light_switch', 'Up', 'minus') }}
-            {{ basic.button('button3', 'bath_light_switch', 'Down', icon0~'steuer_ab.png', 0) }}
-             </span>
+                <span data-role="controlgroup" data-type="horizontal" data-mini="true">
+                {{ basic.button('button1', 'bath_light_switch', 'Up', 'plus') }}
+                {{ basic.button('button2', 'bath_light_switch', 'Up', 'minus') }}
+                {{ basic.button('button3', 'bath_light_switch', 'Down', icon0~'steuer_ab.png', 0) }}
+                 </span>
         </div>
     
         <br />
@@ -81,11 +81,11 @@
             {% endraw %}{% endfilter  %}</code>
         </div>
         <div class="html">
-            <span data-role="controlgroup" data-type="horizontal">
-            {{ basic.dual('dual1', 'bath_light_switch') }}
-            {{ basic.dual('dual2', 'bath_light_switch', icon1~'fts_tuer_offen.png', icon0~'fts_tuer.png') }}
-            {{ basic.dual('dual3', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
-            </span>
+                <span data-role="controlgroup" data-type="horizontal">
+                {{ basic.dual('dual1', 'bath_light_switch') }}
+                {{ basic.dual('dual2', 'bath_light_switch', icon1~'fts_tuer_offen.png', icon0~'fts_tuer.png') }}
+                {{ basic.dual('dual3', 'bath_light_switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
+                </span>
         </div>
         
       

@@ -82,7 +82,7 @@ HISTORY
 --------------------------------------------------------------------------------
 v 2.1
     - widget: basic.rgb with color-selector
-    - widget: basic.symbol allows more gads now
+    - widget: basic.symbol allows more gads/items now
     - widget: basic.shutter may now be clicked to change the position
     - improved design: device.rtr
     - improved design:  weather and clock for small devices  
