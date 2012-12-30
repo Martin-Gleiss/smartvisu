@@ -10,39 +10,31 @@
  
 .spot {
     margin: auto;
-    width: 300px;
+    width: 260px;
     height: 70px;
     text-align: left;
 }
 
 .spot img {
-    margin-left: 75px;
+    margin-left: 50px;
     width: 160px;
     height: 103px;
     position: relative;
     top: -70px;
-    z-index: 105;
+    z-index: 100;
 }
 
 .spot .city {
     font-weight: bold;
-    width: 50%;
 }
 
 .spot .cond {
-    width: 50%;
 }
 
 .spot .temp {
     float: right;
     text-align: right;
     font-size: 20pt;
-    width: 49%;
-}
-
-.spot .temp .unit {
-    font-size: 14pt;
-    vertical-align: texttop;
 }
 
 
@@ -92,7 +84,7 @@
 
 .forecast {
     margin: auto;
-    width: 300px;
+    width: 100%;
     height: 200px;
 } 
 

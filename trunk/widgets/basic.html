@@ -185,7 +185,7 @@
  * If more than one gad is given, they will be combined with 'or' 
  * 
  * @param        unique id for this widget
- * @param        the knx gad(s)
+ * @param        one or more gad(s)/item(s)
  * @param        the text, printed when gad has value val 
  * @param        the pic, shown when gad has value val
  * @param        value (default 1) 
@@ -269,7 +269,7 @@
  * @param        unique id for this widget
  * @param        a gad/item  
  * @param        text printed on the button
- * @param        a icon or a inline pic (arrow-l, arrow-r, arrow-u, arrow-d, delete, plus, minus, check, gear, refresh, forward, back, grid, star, alert, info, home, search)
+ * @param        a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search'
  * @param        value send if the button is pressed
  */
  {% macro button(id, gad, txt, pic, val) %}
@@ -413,9 +413,9 @@
  * Displays a rgb-selector
  * 
  * @param       unique id for this widget
- * @param       a gad/item for the r - value (0 - 255)
- * @param       a gad/item for the g - value (0 - 255)
- * @param       a gad/item for the b - value (0 - 255) 
+ * @param       a gad/item for the r - value (0-255)
+ * @param       a gad/item for the g - value (0-255)
+ * @param       a gad/item for the b - value (0-255) 
  */
  {% macro rgb(id, gad_r, gad_g, gad_b) %}
     /** Design */

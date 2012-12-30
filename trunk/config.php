@@ -37,7 +37,7 @@
   /**
     * Use the realtime-mode if possible
     */
-    define ('config_driver_realtime',       true);
+    define ('config_driver_realtime',       false);
     
 
 // -----------------------------------------------------------------------------

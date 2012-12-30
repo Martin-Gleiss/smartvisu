@@ -13,7 +13,7 @@
 	<title>{{ config_title }}</title> 
 	
     <meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scaleable=no">
+	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta http-equiv="expires" content="0">
 
@@ -43,7 +43,7 @@
 <body> 
     
 <div data-role="page" id="{{ page }}" data-theme="a">
-    <div data-role="header" data-position="fixed">
+    <div data-role="header" data-position="fixed" data-tap-toggle="false">
         <div class="ui-left">
             {% include 'menu.html' %}
         </div>
@@ -52,7 +52,6 @@
             <div class="mini"><span id="miniclock">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
         </div>
         <p id="alert" class="alert"><a href=""><img src="pages/base/pics/trans.png"></a></p>
-         
         <script type="text/javascript"> 
             $('#{{ page }}').live('pageshow',function(event, ui){
                 (function($) {
@@ -99,7 +98,6 @@
     
     <div class="page-bg"></div>  
 
-    {% block footer %}{% endblock %}
     <script type="text/javascript">
         // knx.list();
         knx.refresh();
