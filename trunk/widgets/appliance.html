@@ -41,7 +41,7 @@
                         ret += '<div class="address">knx: ' + data.tunnels[i].knx_address + '<br />ip: ' + data.tunnels[i].ip_control + '</div>';
                     }
                     $('#{{ page }}-{{ id }} .tunnels').html(ret);
-                    $('#{{ page }}-{{ id }} .version').html(data.date + ', uptime: ' + data.uptime + ', v ' + data.firmware_version);
+                    $('#{{ page }}-{{ id }} .version').html(data.date + ', up: ' + data.uptime + ', v ' + data.firmware_version);
            
                 } else 
                     $('#{{ page }}-{{ id }}').html(data);
