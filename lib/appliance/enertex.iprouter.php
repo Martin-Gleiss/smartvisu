@@ -112,7 +112,7 @@ class enertex_iprouter extends service
                         fputs ($this->fp, "tunnel ".$tunnelid."\r\n"); 
                         
                         usleep($this->delay);
-                        $this->data[$tunnelid] = $this->str2array(fread($this->fp, 1024));
+                        $this->data['tunnels'][$tunnelid] = $this->str2array(fread($this->fp, 1024));
                     }
                 }   
                 

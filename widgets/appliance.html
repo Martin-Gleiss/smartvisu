@@ -12,15 +12,39 @@
  * enertex KNXnet/IP-Router
  *  
  * @param        unique id for this widget
- * @param        the ip of the router  
+ * @param        the ip of the KNXnet/IP-Router  
  */ 
 {% macro iprouter(id, server) %}
-    <div id="{{ page }}-{{ id }}"></div>
+    <div id="{{ page }}-{{ id }}" class="iprouter">
+        <div class="from"></div>
+        <div class="to"></div>
+        
+        <div class="tunnels"></div>
+        <div class="version"></div>
+    </div>
+    
     /** Events */
     <script type="text/javascript">
         $('#{{ page }}').live('pagecreate',function(event, ui){ 
             $.getJSON('lib/appliance/enertex.iprouter.php?server={{ server }}', function(data) {
+               if (data instanceof Object) {
+                    $('#{{ page }}-{{ id }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png">');
+                    $('#{{ page }}-{{ id }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png">');
+           
+               
+                    var ret = '';
+                    for (var i in data.tunnels) {
                     
+                        ret += '<div class="traffic">' + data.tunnels[i].tx_tun_req + ' t<img src="lib/appliance/pics/dir_in.png">';
+                        ret += '<br />' + data.tunnels[i].rx_tun_req + ' t<img src="lib/appliance/pics/dir_out.png"></div>';
+                        ret += '<div class="tunnel">T ' + i + '</div>';
+                        ret += '<div class="address">knx: ' + data.tunnels[i].knx_address + '<br />ip: ' + data.tunnels[i].ip_control + '</div>';
+                    }
+                    $('#{{ page }}-{{ id }} .tunnels').html(ret);
+                    $('#{{ page }}-{{ id }} .version').html(data.date + ', uptime: ' + data.uptime + ', v ' + data.firmware_version);
+           
+                } else 
+                    $('#{{ page }}-{{ id }}').html(data);
             });
         });
     </script>  
