@@ -1,0 +1,66 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */ 
+
+/**
+ * Standard Multimedia
+ * 
+ * @param       unique id for this widget
+ * @param       the knx gad (groupaddress) for play and pause
+ * @param       the knx gad (groupaddress) for stopping the music (optional)
+ * @param       the knx gad (groupaddress) for fast forward and rewind (optional)
+ * @param       the knx gad (groupaddress) for next an previous playlist title
+ * @param       the knx gad (groupaddress) for the position (optional)
+ * @param       the knx gad (groupaddress) for the volume (optional)
+ * @param       the knx gad (groupaddress) to mute the music (optional)
+ * @param       the knx gad (groupaddress) for the song title (optional)
+ * @param       the knx gad (groupaddress) for repeat (optional)                      
+ * @param       the knx gad (groupaddress) to load the default playlist (optional)
+ * 
+ * @author      Axel Otterstätter
+ */
+ 
+{% macro music(id, gad_play, gad_stop, gad_ff, gad_next, gad_pos, gad_vol, gad_mute, gad_title, gad_repeat, gad_playlist) %}
+    {% import   "basic.html" as basic %}
+    
+    /** Design */
+    <div class="multimedia">
+        <table align="center" cellpadding="3" width="100%">
+        <tr>
+             {% if gad_vol %}<td rowspan="3" valign="top">
+                {{ basic.slider(id|_('vol'), gad_vol, 0, 100, 5, 'vertical') }}</td> {% endif %}
+            <td>
+                {% if gad_title %} {{ gad_title|e }} {% endif %}</td>
+            <td>
+				{% if gad_mute %} {{ basic.button(id|_('mute'), gad_mute, 'Ton aus', icon0~'audio_mute.png', 1) }} {% endif %}</td>				
+        </tr>
+        <tr>
+             {% if gad_pos %}<td>
+                {{ basic.slider(id|_('pos'), gad_pos, 0, 100, 1) }} 
+            </td>{% endif %}
+            {% if gad_repeat %}<td>
+				<!--{{ basic.button(id|_('repeat'), gad_repeat, 'Playlist wiederholen', icon0~'steuer_return.png', 1) }}-->
+				 {{ basic.dual(id|_('repeat'), gad_repeat, icon1~'steuer_return.png', icon0~'steuer_return.png') }} 
+            </td>{% endif %}
+        </tr>
+        <tr><td>
+        <span data-role="controlgroup" data-type="horizontal" data-mini="true">
+			{{ basic.button(id|_('prev'), gad_next, 'Zurück', icon0~'steuer_zurueck.png', 0) }}
+			{% if gad_ff %} {{ basic.button(id|_('rew'), gad_ff, 'Schneller Rücklauf', icon0~'audio_rew.png', 0) }} {% endif %}
+			{{ basic.dual(id|_('play'), gad_play, icon1~'audio_pause.png', icon0~'audio_play.png') }}
+			{% if gad_stop %}{{ basic.button(id|_('stop'), gad_stop, 'Stopp', icon0~'audio_stop.png', 1) }} {% endif %}
+			{% if gad_ff %} {{ basic.button(id|_('ff'), gad_ff, 'Schneller Vorlauf', icon0~'audio_ff.png', 1) }} {% endif %}
+			{{ basic.button(id|_('next'), gad_next, 'Weiter', icon0~'steuer_vor.png', 1) }} 
+	   </span></td>
+	   {% if gad_playlist %}<td>
+		 {{ basic.button(id|_('playlist'), gad_playlist, 'Default Playlist laden', icon0~'audio_playliste.png', 1) }} 
+	   </td>{% endif %}
+       </tr>
+        </table>
+    </div>        
+{% endmacro %}
