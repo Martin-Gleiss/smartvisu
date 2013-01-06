@@ -150,7 +150,7 @@
  */
  {% macro slider(id, gad, min, max, step, type) %}
     /** Design */
-    <input id="{{ page }}-{{ id }}" type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}" orientation="{{ type }}" data-highlight="true" />
+    <span><input id="{{ page }}-{{ id }}" type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}" orientation="{{ type }}" data-highlight="true" /></span>
 
     /** Events */
     <script type="text/javascript">
