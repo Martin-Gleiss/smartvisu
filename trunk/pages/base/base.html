@@ -117,17 +117,7 @@
     $(document).on({
         "mousedown touchstart": function () { $(this).siblings("input").trigger("start"); },
         "mouseup touchend": function () { $(this).siblings("input").trigger("stop"); }
-    }, ".ui-slider");
-    
-    $(document).on({
-        "mousedown touchstart": function () { $(this).siblings("input").trigger("start"); },
-        "mouseup touchend": function () { $(this).siblings("input").trigger("stop"); }
-    }, ".ui-slider-vertical");
-    
-    $(document).on({
-        "mousedown touchstart": function () { $(this).siblings("input").trigger("start"); },
-        "mouseup touchend": function () { $(this).siblings("input").trigger("stop"); }
-    }, ".ui-slider-semicircle-box");
+    }, ".ui-slider, .ui-slider-vertical, .ui-slider-bottomup, .ui-slider-semicircle-box");
 </script> 
     
 </body>
