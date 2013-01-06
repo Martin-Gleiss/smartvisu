@@ -13,4 +13,11 @@
 .page-bg { 
     background-image: url('../../pics/bg/fractal.png');
 }
+                                                                 
+#widget_device_shutter-shutter2 {
+    background-image: url('../../pics/shutter/shutter_ocean.jpg');
+}
 
+#widget_device_shutter-shutter3 {
+    background-image: url('../../pics/shutter/shutter_cliff.jpg');
+}

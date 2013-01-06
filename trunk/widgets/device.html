@@ -35,32 +35,6 @@
 /**
  * Standard RTR (Room Temperatur Regulator)
  * 
- */
-{% macro rtr_vent(id) %}
-    {% import   "basic.html" as basic %}
-    
-    <div id="{{ page }}-{{ id }}-vent">
-         <a href="#{{ page }}-{{ id }}-vent-popup" data-rel="popup">
-            <img class="icon" src="{{ icon0~'steuer_ein_aus.png' }}"/>
-         </a>
-    </div>
-    
-    <div id="{{ page }}-{{ id }}-vent-popup" class="" data-role="popup">
-        {{ basic.switch(id|_('vent1'), 'xxx', icon1~'user_anwesend.png', icon0~'user_abwesend.png') }}
-        {{ basic.switch(id|_('vent2'), 'xxx', icon1~'user_anwesend.png', icon0~'user_abwesend.png') }}
-        {{ basic.switch(id|_('vent3'), 'xxx', icon1~'user_anwesend.png', icon0~'user_abwesend.png') }}
-        {{ basic.switch(id|_('vent4'), 'xxx', icon1~'user_anwesend.png', icon0~'user_abwesend.png') }}
-    </div>
-    
-    <script type="text/javascript">  
-        $("#{{ page }}-{{ id }} .switch").parent().prepend( $("#{{ page }}-{{ id }}-vent") );
-    </script> 
-    
-{% endmacro %}
-
-/**
- * Standard RTR (Room Temperatur Regulator)
- * 
  * @param       unique id for this widget
  * @param       name of the rtr
  * @param       a gad/item for the actual temparature
