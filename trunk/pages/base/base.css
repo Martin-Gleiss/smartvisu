@@ -273,7 +273,7 @@ a.ui-btn-inline.ui-maxi .icon {
 
 
 /** --------- slider --------- */
-div.ui-slider-vertical, div.ui-slider-vertical-invers { 
+div.ui-slider-vertical, div.ui-slider-bottomup { 
     position: relative; 
     display: inline-block; 
     overflow: visible; 
@@ -284,17 +284,17 @@ div.ui-slider-vertical, div.ui-slider-vertical-invers {
     width:15px ;
 }
 
-label.ui-slider-vertical, label.ui-slider-vertical-invers { 
+label.ui-slider-vertical, label.ui-slider-bottomup { 
     display: inline-block;
     width: 20%;
     margin: 0 2% 0 0;
 }
 
-div.ui-slider-vertical, div.ui-slider-vertical-invers {
+div.ui-slider-vertical, div.ui-slider-bottomup {
     width: 15px;
 }
 
-a.ui-slider-handle-vertical, a.ui-slider-handle-vertical-invers { 
+a.ui-slider-handle-vertical, a.ui-slider-handle-bottomup { 
     position: absolute;
     z-index: 10;
     top: 50%;
@@ -304,18 +304,26 @@ a.ui-slider-handle-vertical, a.ui-slider-handle-vertical-invers {
     margin-left: -13px;
 }
 
-a.ui-slider-handle-vertical {
+a.ui-slider-handle-vertical, a.ui-slider-handle-bottomup {
 	-moz-border-radius: 0.3em;
 	-webkit-border-radius: 0.3em;
 	border-radius: 0.3em;
 }
 
-a.ui-slider-handle-vertical .ui-btn-inner  {
+a.ui-slider-handle-vertical .ui-btn-inner, a.ui-slider-handle-bottomup .ui-btn-inner  {
     padding: 5px !important;
     -moz-border-radius: 0.8em;
 	-webkit-border-radius: 0.8em;
 	border-radius: 0.8em;
 }
+
+.slider-vertical-scale, .slider-bottomup-scale {
+    position: relative;
+    top: 3px;
+    margin-right: -20px;
+}
+
+
 
 .ui-slider-semicircle-box { 
     position: relative; 
@@ -1073,6 +1081,8 @@ hr {
 /**
  * --- W i d g e t s :   M U L T I M E D I A -----------------------------------
  */
+ 
 .music .ui-input-text {
 	display: none;
 }
+

@@ -364,7 +364,7 @@ $.widget( "mobile.slider", $.mobile.widget, {
             {
                 percent = Math.round( ( ( data.pageY - this.slider.offset().top ) / this.slider.height() ) * 100 );
             }
-            else if(orientation == "vertical-invers")
+            else if(orientation == "bottomup")
             {
                 percent = 100 - Math.round( ( ( data.pageY - this.slider.offset().top ) / this.slider.height() ) * 100 );
             }
@@ -429,10 +429,11 @@ $.widget( "mobile.slider", $.mobile.widget, {
 			this.handle.css( "top", percent + "%" );
             this.valuebg && this.valuebg.css( "height", percent + "%" );
 		}		
-		else if(orientation == "vertical-invers")
+		else if(orientation == "bottomup")
 		{
 			this.handle.css( "top",  100 - percent + "%" );
-            this.valuebg && this.valuebg.css( "height", 100 - percent + "%" );
+            this.valuebg && this.valuebg.css("margin-top", (this.slider.height() * (100 - percent) / 100).toFixed(0) + 'px');
+            this.valuebg && this.valuebg.css("height", percent + "%");
         }
         
         else if(orientation == "semicircle")
