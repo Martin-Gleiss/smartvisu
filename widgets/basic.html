@@ -467,7 +467,9 @@
             $('#{{ page }}-{{ id }}-popup').popup('close');  
             
             rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/); 
-            knx.write('{{ gad_r }}', rgb[1]); knx.write('{{ gad_g }}', rgb[2]); knx.write('{{ gad_b }}', rgb[3]); 
+            knx.write('{{ gad_r }}', rgb[1]);
+            knx.write('{{ gad_g }}', rgb[2]);
+            knx.write('{{ gad_b }}', rgb[3]); 
         });
         
         // effects
