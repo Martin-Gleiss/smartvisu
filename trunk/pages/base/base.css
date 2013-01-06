@@ -718,7 +718,7 @@ hr {
  
  
 /**
- * --- W i d g e t s -----------------------------------------------------------
+ * --- W i d g e t s :   B A S I C ---------------------------------------------
  */
 
 .switch .icon {
@@ -775,7 +775,10 @@ hr {
 }
 
 
-
+/**
+ * --- W i d g e t s :   D E V I C E -------------------------------------------
+ */
+ 
 .dimmer {
     vertical-align: absmiddle;
     height: 48px;
@@ -906,7 +909,10 @@ hr {
 }
 
 
-
+/**
+ * --- W i d g e t s :   P H O N E ---------------------------------------------
+ */
+ 
 .phonelist h2 {
     font-size: 12pt;
     margin-bottom: 4px;
@@ -950,7 +956,10 @@ hr {
 }
 
 
-
+/**
+ * --- W i d g e t s :   C A L E N D A R ---------------------------------------
+ */
+ 
 .calendarlist h2 {
     font-size: 12pt;
     margin-bottom: 4px;
@@ -993,7 +1002,10 @@ hr {
 }
 
 
-
+/**
+ * --- W i d g e t s :   A P P L I A N C E -------------------------------------
+ */
+ 
 .iprouter {
     height: 230px;
     position: relative;
@@ -1055,4 +1067,12 @@ hr {
     text-align: right;
     font-size: 0.8em;
     color: #666; 
+}
+
+
+/**
+ * --- W i d g e t s :   M U L T I M E D I A -----------------------------------
+ */
+.music .ui-input-text {
+	display: none;
 }
