@@ -35,6 +35,6 @@ Implement it like this:
 {{ device.shutter ('shutter1', 'Shutter 1', 'bath_blind_mov', 'bath_blind_stop', 'bath_blind_pos', '', 'bath_blind_angle', 'bath_blind_stored') }}
 }}}
 
-The full documentation of all parameters is in the inline 'docu' project.
+The full documentation of all parameters are in the inline 'docu' project.
 
 The widget was inspired by Jörg Gutowski.
