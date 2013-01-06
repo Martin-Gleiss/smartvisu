@@ -32,8 +32,9 @@
     <div class="music">
         <table align="center" cellpadding="3" width="100%">
         <tr>
-             {% if gad_vol %}<td rowspan="3" valign="top">
-                {{ basic.slider(id|_('vol'), gad_vol, 0, 100, 5, 'vertical') }}</td> {% endif %}
+             {% if gad_vol %}<td rowspan="3" valign="top" style="width: 55px;">
+                <img class="slider-bottomup-scale" src="pages/base/pics/scale_buttomup.png">
+                {{ basic.slider(id|_('vol'), gad_vol, 0, 100, 5, 'bottomup') }}</td> {% endif %}
             <td>
                 {% if gad_title %} {{ gad_title|e }} {% endif %}</td>
             <td>
