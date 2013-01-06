@@ -125,40 +125,122 @@
 /** --------- button --------- */
 a.ui-btn-inline {
     margin: 1px;
-    min-height: 60px;
-    min-width: 62px;
 } 
 
-a.ui-btn-inline .ui-btn-inner {
-    padding: 4px 6px 2px 6px;
+a.ui-btn-inline span.ui-btn-inner {
+    padding: 0;
 }   
 
+/** --------- button: micro --------- */
+a.ui-btn-inline.ui-micro {
+    min-height: 28px;
+    min-width: 28px;
+}        
+
+a.ui-btn-inline.ui-micro[data-iconpos="nopic"] .ui-btn-inner {
+    padding: 5px 2px 2px 2px;
+    font-size: 0.8em; 
+} 
+
+a.ui-btn-inline.ui-micro[data-iconpos="notext"] .ui-icon {
+    margin: 4px 0 0 5px !important;
+}  
+
+a.ui-btn-inline.ui-micro span.ui-btn-inner { 
+    padding-top: 1px;
+}
+
+a.ui-btn-inline.ui-micro .icon {
+    width: 22px;
+    height: 22px;    
+}
+
+/** --------- button: mini --------- */
 a.ui-btn-inline.ui-mini {
-    min-height: 46px;
-    min-width: 46px;
+    min-height: 42px;
+    min-width: 42px;
+} 
+
+a.ui-btn-inline.ui-mini[data-iconpos="nopic"] .ui-btn-inner {
+    padding-top: 12px;
 } 
 
 a.ui-btn-inline.ui-mini[data-iconpos="notext"] .ui-icon {
-    margin: 14px 0 0 14px !important;
+    margin: 9px 0 0 10px !important;
 }  
 
-a.ui-btn-inline.ui-mini[data-iconpos="notext"] .ui-btn-inner {
-    padding: 0px;
-}  
-  
 a.ui-btn-inline.ui-mini[data-iconpos="top"] .ui-btn-inner {
-    padding: 25px 2px 2px 2px;
+    padding-top: 21px;
 } 
  
 a.ui-btn-inline.ui-mini span.ui-btn-inner { 
-    padding: 1px 2px 1px 2px;
-    overflow: visible;
+    padding: 3px 2px 0px 2px;
 }
 
 a.ui-btn-inline.ui-mini .icon { 
+    width: 32px;
+    height: 32px;    
+}
+     
+/** --------- button: midi --------- */
+a.ui-btn-inline.ui-midi {
+    min-height: 56px;
+    min-width: 56px;
+} 
+
+a.ui-btn-inline.ui-midi[data-iconpos="nopic"] .ui-btn-inner {
+    padding-top: 16px;
+} 
+
+a.ui-btn-inline.ui-midi[data-iconpos="notext"] .ui-icon {
+    margin: 19px 0 0 20px;
+}  
+
+a.ui-btn-inline.ui-midi[data-iconpos="top"] .ui-btn-inner {
+    padding-top: 32px;
+    font-size: 0.9em;
+} 
+ 
+a.ui-btn-inline.ui-midi[data-iconpos="center"] .ui-btn-inner { 
+    padding: 6px 2px 0px 2px;
+}
+
+a.ui-btn-inline.ui-midi .ui-btn-inner .ui-btn-text > img + div { 
+    line-height: 10px;
+}
+
+a.ui-btn-inline.ui-midi .ui-btn-inner .ui-btn-text div { 
+    margin-top: -4px;
+    font-size: 0.8em;
+}
+
+a.ui-btn-inline.ui-midi .icon { 
     width: 40px;
     height: 40px;    
 }
+
+
+/** --------- button: maxi --------- */
+/*
+a.ui-btn-inline.ui-maxi {
+    min-height: 80px;
+    min-width: 84px;
+} 
+
+a.ui-btn-inline.ui-maxi[data-iconpos="notext"] .ui-icon {
+    margin: 30px 0 0 33px !important;
+}  
+
+a.ui-btn-inline.ui-maxi[data-iconpos="nopic"] .ui-btn-inner {
+    padding-top: 28px;
+} 
+
+a.ui-btn-inline.ui-maxi .icon {
+    display: block;      
+    margin-left: 12px;
+}
+*/
+
 
 
 /** --------- controlgroup --------- 
@@ -779,11 +861,11 @@ hr {
 }
     
 .blind .pos .ui-input-text {
-    display:none;
+    display: none;
 }
 
 .blind .angle .ui-input-text {
-    display:none;
+    display: none;
 }
 
 

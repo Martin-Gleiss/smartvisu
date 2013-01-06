@@ -148,9 +148,9 @@
  * @param        step betwenn to values (optional, default 5) 
  * @param        the orientation ('none', 'vertical', 'semicircle')
  */
- {% macro slider(id, gad, min, max, step, orientation) %}
+ {% macro slider(id, gad, min, max, step, type) %}
     /** Design */
-    <input id="{{ page }}-{{ id }}" type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}" orientation="{{ orientation }}" data-highlight="true" />
+    <input id="{{ page }}-{{ id }}" type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}" orientation="{{ type }}" data-highlight="true" />
 
     /** Events */
     <script type="text/javascript">
@@ -269,17 +269,23 @@
  * @param        unique id for this widget
  * @param        a gad/item  
  * @param        text printed on the button (optional)
- * @param        a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search'
+ * @param        a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search' (optional)
  * @param        value send if the button is pressed (optional, default 1)
+ * @param        type: 'micro', 'mini', 'midi' (optional, default: mini) 
  */
- {% macro button(id, gad, txt, pic, val) %}
+ {% macro button(id, gad, txt, pic, val, type) %}
     /** Design */
-    <a id="{{ page }}-{{ id }}" data-theme="a" data-role="button" data-mini="true" data-inline="true"
-        {% if pic|substr(-4, 4) == '.png' %}
-            ><img class="icon" title="{{ txt|e }}" src="{{ pic }}">
+    <a id="{{ page }}-{{ id }}" class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" 
+        {% if not pic %}
+            data-iconpos="nopic">{{ txt|e }}
+        {% elseif pic|substr(-4, 4) != '.png' and not txt %}
+            data-icon="{{ pic }}" data-iconpos="notext">
+        {% elseif pic|substr(-4, 4) != '.png' and txt %}
+            data-icon="{{ pic }}" data-iconpos="top">{{ txt|e }}
+        {% elseif type == 'midi' and txt %}
+            ><img class="icon" src="{{ pic }}"><div>{{ txt|e }}</div>
         {% else %}
-            {% if txt %} data-iconpos="top" {% else %} data-iconpos="notext" {% endif %}
-            {% if pic %} data-icon="{{ pic }}" {% endif %}>{{ txt|e }}
+            data-iconpos="center"><img class="icon" src="{{ pic }}">
         {% endif %}
         </a>
     
@@ -301,10 +307,13 @@
  * @param        a gad/item  
  * @param        the pic for the 'on' state (optional)
  * @param        the pic for the 'off' state (optional)
+ * @param        value send for the 'on' state (optional, default 1)
+ * @param        value send for the 'off' state (optional, default 0) 
+ * @param        type: 'micro', 'mini', 'midi' (optional, default: mini) 
  */
- {% macro dual(id, gad, pic_on, pic_off) %}
+ {% macro dual(id, gad, pic_on, pic_off, val_on, val_off, type) %}
     /** Design */
-    <a id="{{ page }}-{{ id }}" data-role="button" data-inline="true">
+    <a id="{{ page }}-{{ id }}" class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
         <img class="icon" src="{{ pic_off|default(icon0~'steuer_ein_aus.png') }}">
     </a> 
     
@@ -319,11 +328,11 @@
         
         $('#{{ page }}-{{ id }}').unbind('click').bind('click', function(){
             if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" ){
-                knx.write('{{ gad }}', '1');
-                knx.update('{{ gad }}', '1');
+                knx.write('{{ gad }}', "{{ val_on|default('1') }}");
+                knx.update('{{ gad }}', "{{ val_on|default('1') }}");
             } else {
-                knx.write('{{ gad }}', '0');
-                knx.update('{{ gad }}', '0');
+                knx.write('{{ gad }}', "{{ val_off|default('0') }}");
+                knx.update('{{ gad }}', "{{ val_off|default('0') }}");
             }
         });
     </script>     

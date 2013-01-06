@@ -12,77 +12,89 @@
 
 {% block sidebar %}
   
-    <ul data-role="listview" data-dividertheme="c"> 
-        
-        <li data-role="list-divider">Widgets</li>
-        <li data-icon="false">
+<div data-role="collapsible-set" style="margin-top: -15px;" data-inset="false" data-mini="true" data-theme="c">
+
+	<div data-role="collapsible" data-collapsed="false">
+	    <h3>Widgets</h3>
+    	
+        <ul data-role="listview" data-dividertheme="c"> 
+            <li data-icon="false">
             <a href="index.php?page=basic/widget_basic">
                 <img class="icon" src="{{ icon0 }}licht_esstisch.png"/><h3>Basic</h3>
             </a>
-        </li>
-        <li data-icon="false">
-            <a href="index.php?page=device/widget_device">
-                <img class="icon" src="{{ icon0 }}temp_regelung.png"/><h3>Device</h3>
-            </a>
-        </li>
-        <li data-icon="false">
-            <a href="index.php?page=clock/widget_clock">
-                <img class="icon" src="{{ icon0 }}zeit_uhr.png"/><h3>Time/Clock</h3>
-            </a>
-        </li>
-        <li data-icon="false">
-            <a href="index.php?page=weather/widget_weather">
-                <img class="icon" src="{{ icon0 }}wetter_sommer.png"/><h3>Weather</h3>
-            </a>
-        </li>
-        <li data-icon="false">
-            <a href="index.php?page=phone/widget_phone">
-                <img class="icon" src="{{ icon0 }}it_telefon.png"/><h3>Phone</h3>
-            </a>
-        </li>
-        <li data-icon="false">
-            <a href="index.php?page=calendar/widget_calendar">
-                <img class="icon" src="{{ icon0 }}zeit_kalender.png"/><h3>Calendar</h3>
-            </a>
-        </li>
-        
-        
-        <li data-role="list-divider">Design</li>
-        <li data-icon="false">
+            </li>
+            <li data-icon="false">
+                <a href="index.php?page=device/widget_device">
+                    <img class="icon" src="{{ icon0 }}temp_regelung.png"/><h3>Device</h3>
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="index.php?page=clock/widget_clock">
+                    <img class="icon" src="{{ icon0 }}zeit_uhr.png"/><h3>Time/Clock</h3>
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="index.php?page=weather/widget_weather">
+                    <img class="icon" src="{{ icon0 }}wetter_sommer.png"/><h3>Weather</h3>
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="index.php?page=phone/widget_phone">
+                    <img class="icon" src="{{ icon0 }}it_telefon.png"/><h3>Phone</h3>
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="index.php?page=calendar/widget_calendar">
+                    <img class="icon" src="{{ icon0 }}zeit_kalender.png"/><h3>Calendar</h3>
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="index.php?page=multimedia/widget_multimedia">
+                    <img class="icon" src="{{ icon0 }}it_fernsehen.png"/><h3>Multimedia</h3>
+                </a>
+            </li>
+        </ul>
+	</div>
+	
+	<div data-role="collapsible">
+        <h3>Design</h3>
+            
+        <ul data-role="listview" data-dividertheme="c"> 
+            <li data-icon="false">
             <a href="index.php?page=design/design_block">
                 <img class="icon" src="{{ icon0 }}steuer_home.png"/><h3>Blocks</h3>
             </a>
-        </li>
-        <li data-icon="false">
-            <a href="index.php?page=design/design_buttons">
-                <img class="icon" src="{{ icon0 }}steuer_aussen_ein_aus.png"/><h3>Buttons</h3>
-            </a>
-        </li>
-        <li data-icon="false">
-            <a href="index.php?page=design/design_popup">
-                <img class="icon" src="{{ icon0 }}steuer_minus.png"/><h3>Popups</h3>
-            </a>
-        </li>
-        <li data-icon="false">
-            <a href="index.php?page=design/design_icons">
-                <img class="icon" src="{{ icon0 }}wetter_winter.png"/><h3>Icons</h3>
-            </a>
-        </li>
-        <li data-icon="false">
-            <a href="index.php?page=design/design_bg">
-                <img class="icon" src="{{ icon0 }}zeit_diagramm.png"/><h3>Backgrounds</h3>
-            </a>
-        </li>
-        
-        
-        <li data-role="list-divider">Misc</li>
-        <li data-icon="false">
-            <a href="index.php?page=appliances">
+            </li>
+            <li data-icon="false">
+                <a href="index.php?page=design/design_popup">
+                    <img class="icon" src="{{ icon0 }}steuer_minus.png"/><h3>Popups</h3>
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="index.php?page=design/design_icons">
+                    <img class="icon" src="{{ icon0 }}wetter_winter.png"/><h3>Icons</h3>
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="index.php?page=design/design_bg">
+                    <img class="icon" src="{{ icon0 }}zeit_diagramm.png"/><h3>Backgrounds</h3>
+                </a>
+            </li>
+        </ul>
+	</div>
+	
+	<div data-role="collapsible">
+        <h3>Misc</h3>
+        <ul data-role="listview" data-dividertheme="c"> 
+            <li data-icon="false">
+            <a href="index.php?page=misc/appliances">
                 <img class="icon" src="{{ icon0 }}steuer_home.png"/><h3>Appliances</h3>
             </a>
         </li>
-        
-    </ul>
+        </ul>
+   	</div>
+	
+</div>
 
 {% endblock %}
 
@@ -102,16 +114,16 @@
     <a href="index.php?page=weather/widget_weather">Weather</a>&nbsp;
     <a href="index.php?page=phone/widget_phone">Phone</a>&nbsp;
     <a href="index.php?page=calendar/widget_calendar">Calendar</a>&nbsp;
+    <a href="index.php?page=multimedia/widget_multimedia">Multimedia</a>&nbsp;
 
     <h2>Design</h2>
     <a href="index.php?page=design/design_block">Blocks</a>&nbsp;
-    <a href="index.php?page=design/design_buttons">Buttons</a>&nbsp;
     <a href="index.php?page=design/design_popup">Popups</a>&nbsp;
     <a href="index.php?page=design/design_icons">Icons</a>&nbsp;
     <a href="index.php?page=design/design_bg">Backgrounds</a>&nbsp;
     
     <h2>Misc</h2> 
-    <a href="index.php?page=appliances">Appliances</a>&nbsp;
+    <a href="index.php?page=misc/appliances">Appliances</a>&nbsp;
        
 {% endblock %}
 
