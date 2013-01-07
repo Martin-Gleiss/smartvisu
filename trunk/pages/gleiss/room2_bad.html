@@ -15,7 +15,7 @@
     <h1><img class="icon" src='{{ icon0 }}szene_schwimmen.png'/>Bad</h1>
     
     <div class="preblock">
-        {{ basic.button('all_off', 'bad_licht_schalten', 'Aus', 'delete', '0') }}
+        {{ basic.button('all_off', 'bad_licht_schalten', 'Aus', 'delete', '0', 'midi') }}
     </div>
         
             
@@ -24,7 +24,7 @@
     
     	<div data-role="collapsible" data-collapsed="false" >
             <h3>Licht</h3>
-            {{ basic.dual('licht_decke_6', 'bad_licht_decke_6_schalten', icon1~'licht_licht.png', icon0~'licht_licht.png') }}
+            {{ basic.dual('licht_decke_6', 'bad_licht_decke_6_schalten', icon1~'licht_licht.png', icon0~'licht_licht.png', '', '', 'midi') }}
                 
             <div class="switch-row">
                 {{ basic.switch('licht_decke_3', 'bad_licht_decke_3_schalten', icon1~'licht_licht.png', icon0~'licht_licht.png') }}
