@@ -1,0 +1,32 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */ 
+
+               
+ 
+/**
+ * Standard rgb-controller with switching
+ * 
+ * @param       unique id for this widget
+ * @param       name of the rgb-controller
+ * @param       a gad/item for switching
+ * @param       a gad/item for rgb red
+ * @param       a gad/item for rgb green
+ * @param       a gad/item for rgb blue
+ */
+
+{% macro rgb(id, txt, gad_switch, gad_r, gad_g, gad_b) %}
+    {% import   "basic.html" as basic %}
+   
+    /** Design */
+    <div class="dimmer">
+        {{ basic.switch(id|_('switch'), gad_switch, icon1~'licht_licht.png', icon0~'licht_licht.png') }}
+        <p><table width="70%"><tr><td width="60px" align="left">{{ basic.rgb(id|_('rgb'), gad_r, gad_g, gad_b) }}</td><td>{{ txt|e }}</td></tr></table></p>
+    </div>     
+   
+{% endmacro %}
