@@ -63,12 +63,6 @@
 
     <h1>Apps</h1>
    
-   
-         {{ basic.button('single10', '...', 'Up', '', '', 'maxi') }}
-        {{ basic.button('single10', '...', 'Up', '', '', 'maxi') }}
-        {{ basic.button('single10', '...', 'Up', '', '', 'maxi') }}
-        {{ basic.button('single10', '...', 'Up', '', '', 'maxi') }}
-    
     {% for file in dir('apps', 'app_(.+?).html') %}
         <span id="{{ page }}-{{ file.name }}">
         {{ lib.app('app_'~file.name) }}
