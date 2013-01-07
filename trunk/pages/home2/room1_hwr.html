@@ -1,0 +1,81 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "rooms.html" %}
+
+{% block content %}
+    <h1><img class="icon" src='{{ icon0 }}sani_kessel_temp.png'/>Hauswirtschaftsraum</h1>
+    
+    <div class="preblock">
+	<table width="100%">
+		<tr>
+		<td align="left" width="50%">
+		</td>
+		<td align="right">
+		{{ basic.symbol('rm1', 'hwr_rm_alarm', '', icon1~'secur_rauchmelder.png',1, 'mini') }}
+		     {{ basic.symbol('rm2', 'hwr_rm_alarm', '', icon0~'secur_rauchmelder.png', 0, 'mini') }}
+		{{ basic.symbol('rm3', 'hwr_rm_stoerung', '', icon1~'meld_service.png',1, 'mini') }}
+		     {{ basic.symbol('rm4', 'hwr_rm_stoerung', '', icon0~'meld_service.png', 0, 'mini') }}
+		</td>
+		</tr>
+	</table>
+    </div>
+    
+    
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Deckenleuchte</h3>
+            <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'hwr_beleuchtung_decke_schalten', icon1~'licht_licht.png', icon0~'licht_licht.png') }} </td><td>Deckenleuchte</td></tr></table>
+      	</div>
+    	
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+        </div>
+      	
+    </div>    
+    </div>
+    
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Rollladen</h3>
+            {% import "widget_shutter.html" as shutter %}
+			{{ shutter.one ('shutter1', 'Fenster', 'hwr_rollladen_fahren', 'hwr_rollladen_stopp', 'hwr_rollladen_position', 'hwr_rollladen_beschatten' ) }}
+        </div>
+    	
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>    	
+    </div>    
+    </div> 
+
+   <!-- <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Raumtemperatur</h3>
+            {{ device.rtr('hwr_rtr', 'Heizung', 'hwr_temperatur_luft', 'hwr_heizung_sollwert', 
+                'hwr_heizung_komfort', 'hwr_heizung_nacht', 'hwr_heizung_frost', 'hwr_heizung_schalten') }}
+        </div>
+    	
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>
+      	
+    </div>    
+    </div> -->
+    
+{% endblock %}
+

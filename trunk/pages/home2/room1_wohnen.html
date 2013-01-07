@@ -1,0 +1,115 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <h1><img class="icon" src='{{ icon0 }}it_fernsehen.png'/>Wohnzimmer</h1>
+    
+    <div class="preblock">
+	<table width="100%">
+		<tr>
+		<td align="left" width="70%">
+			Szenen&nbsp;&nbsp;&nbsp;
+			<span data-role="controlgroup" data-type="horizontal"> 
+				{{ basic.dual('szene1', 'kueche_szene_kochen', icon1~'szene_kochen.png', icon0~'szene_kochen.png', 1, 0, 'mini') }}
+				{{ basic.dual('szene2', 'essen_szene_essen', icon1~'szene_essen.png', icon0~'szene_essen.png', 1, 0, 'mini') }}
+				{{ basic.dual('szene3', 'wohnen_szene_fernsehen', icon1~'it_fernsehen.png', icon0~'it_fernsehen.png', 1, 0, 'mini') }}
+				{{ basic.dual('szene4', 'kueche_szene_party', icon1~'szene_party.png', icon0~'szene_party.png', 1, 0, 'mini') }}
+				{{ basic.button('szene5', 'szenen_kueche_essen_wohnen', 'Aus', icon0~'steuer_ein_aus.png', 13, 'mini') }}
+			</span>
+		</td>
+		<td align="right">
+		{{ basic.symbol('rm1', 'wohnen_rm_alarm', '', icon1~'secur_rauchmelder.png', 1, 'mini') }}
+		     {{ basic.symbol('rm2', 'wohnen_rm_alarm', '', icon0~'secur_rauchmelder.png', 0, 'mini') }}
+		{{ basic.symbol('rm3', 'wohnen_rm_stoerung', '', icon1~'meld_service.png', 1, 'mini') }}
+		     {{ basic.symbol('rm4', 'wohnen_rm_stoerung', '', icon0~'meld_service.png', 0, 'mini') }}
+		</td>
+		</tr>
+	</table>
+    </div>
+        
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Deckenstrahler</h3>
+            {{ device.dimmer('light1', 'Terrassenseite', 'wohnen_beleuchtung_decke1_schalten', 'wohnen_beleuchtung_decke1_dimmwert') }}
+            {{ device.dimmer('light2', 'Mitte', 'wohnen_beleuchtung_decke2_schalten', 'wohnen_beleuchtung_decke2_dimmwert') }}
+            {{ device.dimmer('light3', 'Fernseher', 'wohnen_beleuchtung_decke3_schalten', 'wohnen_beleuchtung_decke3_dimmwert') }}
+        </div> 
+	<div data-role="collapsible">
+            <h3>RGB-Beleuchtung</h3>
+            <p>
+	    {% import "widget_rgb.html" as rgb %}
+	    {{ rgb.rgb('rgb1', 'Indirekte Beleuchtung', 'essen_rgb_indirekt_schalten', 'essen_rot_indirekt_dimmwert', 'essen_gruen_indirekt_dimmwert', 'essen_blau_indirekt_dimmwert') }}</p>
+        </div>
+      	
+    </div>    
+    </div>
+
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Rollladen</h3>
+            {% import "widget_shutter.html" as shutter %}
+			<table width="100%"><tr>
+				<td width="50%">{{ shutter.two ('shutter1', 'Tür Süd', 'wohnen_rollladen_sued_fahren', 'wohnen_rollladen_sued_stopp', 'wohnen_rollladen_sued_position', 'wohnen_rollladen_sued_beschatten' ) }}</td>            
+				<td width="50%">{{ shutter.two ('shutter2', 'Tür West', 'wohnen_rollladen_west_fahren', 'wohnen_rollladen_west_stopp', 'wohnen_rollladen_west_position', 'wohnen_rollladen_west_beschatten' ) }}</td>
+                <tr></table>
+        </div>
+    	
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>    	
+    </div>    
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Fernsehen</h3>
+            {% import "multimedia.html" as multi %}
+			{{ multi.music ('music1', 'wohnen_fernsehen_play', 'wohnen_fernsehen_stopp', 'wohnen_fernsehen_vor-ruecklauf', 
+			     'wohnen_fernsehen_weiter-zurueck', 'wohnen_fernsehen_position', 'wohnen_fernsehen_lautstaerke', 
+			     'wohnen_fernsehen_stumm', 'wohnen_fernsehen_titel') }}
+        </div>
+    	
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>    	
+    </div>    
+    </div>
+          
+   <!-- <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Raumtemperatur</h3>
+            {{ device.rtr('wohnen_rtr', 'Heizung', 'wohnen_temperatur_luft', 'wohnen_heizung_sollwert', 
+                'wohnen_heizung_komfort', 'wohnen_heizung_nacht', 'wohnen_heizung_frost', 'wohnen_heizung_schalten') }}
+        </div>
+    	
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>
+      	
+    </div>    
+    </div> -->
+
+{% endblock %}
+
