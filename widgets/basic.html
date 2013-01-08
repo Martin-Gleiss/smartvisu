@@ -415,8 +415,10 @@
  * @param       a gad/item for the r - value (0-255)
  * @param       a gad/item for the g - value (0-255)
  * @param       a gad/item for the b - value (0-255) 
+ * @param       the minimum value if the light is off (optional, for future use)
+ * @param       the maximum value if the light is full on (optional, default 255)  
  */
- {% macro rgb(id, gad_r, gad_g, gad_b) %}
+ {% macro rgb(id, gad_r, gad_g, gad_b, min, max) %}
     /** Design */
     <a id="{{ page }}-{{ id }}" class="rgb" href="#{{ page }}-{{ id }}-popup" data-rel="popup"><span></span></a>
     
@@ -457,9 +459,9 @@
             $('#{{ page }}-{{ id }}-popup').popup('close');  
             
             rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/); 
-            knx.write('{{ gad_r }}', rgb[1]);
-            knx.write('{{ gad_g }}', rgb[2]);
-            knx.write('{{ gad_b }}', rgb[3]); 
+            knx.write('{{ gad_r }}', Math.round(rgb[1] / 255 * {{ max|default(255) }}) );
+            knx.write('{{ gad_g }}', Math.round(rgb[2] / 255 * {{ max|default(255) }}) );
+            knx.write('{{ gad_b }}', Math.round(rgb[3] / 255 * {{ max|default(255) }}) ); 
         });
         
         // effects
