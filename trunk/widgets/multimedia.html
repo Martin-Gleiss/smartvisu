@@ -8,19 +8,19 @@
  */ 
 
 /**
- * Standard Multimedia
+ * Standard Multimedia Player
  * 
  * @param       unique id for this widget
- * @param       the knx gad (groupaddress) for play and pause
- * @param       the knx gad (groupaddress) for stopping the music (optional)
- * @param       the knx gad (groupaddress) for fast forward and rewind (optional)
- * @param       the knx gad (groupaddress) for next an previous playlist title
- * @param       the knx gad (groupaddress) for the position (optional)
- * @param       the knx gad (groupaddress) for the volume (optional)
- * @param       the knx gad (groupaddress) to mute the music (optional)
- * @param       the knx gad (groupaddress) for the song title (optional)
- * @param       the knx gad (groupaddress) for repeat (optional)                      
- * @param       the knx gad (groupaddress) to load the default playlist (optional)
+ * @param       the gad/item for play and pause
+ * @param       the gad/item for stopping the music (optional)
+ * @param       the gad/item for fast forward and rewind (optional)
+ * @param       the gad/item for next an previous playlist title
+ * @param       the gad/item for the position (optional)
+ * @param       the gad/item for the volume (optional)
+ * @param       the gad/item to mute the music (optional)
+ * @param       the gad/item for the song title (optional)
+ * @param       the gad/item for repeat (optional)                      
+ * @param       the gad/item to load the default playlist (optional)
  * 
  * @author      Axel Otterstätter
  */
@@ -30,38 +30,38 @@
     
     /** Design */
     <div class="music">
-        <table align="center" cellpadding="3" width="100%">
-        <tr>
-             {% if gad_vol %}<td rowspan="3" valign="top" style="width: 55px;">
-                <img class="slider-bottomup-scale" src="pages/base/pics/scale_buttomup.png">
-                {{ basic.slider(id|_('vol'), gad_vol, 0, 100, 5, 'bottomup') }}</td> {% endif %}
-            <td>
-                {% if gad_title %} {{ gad_title|e }} {% endif %}</td>
-            <td>
-				{% if gad_mute %} {{ basic.button(id|_('mute'), gad_mute, 'Ton aus', icon0~'audio_mute.png', 1) }} {% endif %}</td>				
-        </tr>
-        <tr>
-             {% if gad_pos %}<td>
+        
+        {% if gad_vol %}
+        <div class="vol">
+            <img class="slider-bottomup-scale" src="pages/base/pics/scale_buttomup.png">
+            {{ basic.slider(id|_('vol'), gad_vol, 0, 100, 5, 'bottomup') }}
+        </div>
+        {% endif %}
+        
+        <div class="control">
+        {% if gad_mute %} {{ basic.button(id|_('mute'), gad_mute, 'Ton aus', icon0~'audio_mute.png', 1) }} {% endif %}
+        {% if gad_repeat %} {{ basic.dual(id|_('repeat'), gad_repeat, icon1~'steuer_return.png', icon0~'steuer_return.png') }} {% endif %}
+        {% if gad_playlist %} {{ basic.button(id|_('playlist'), gad_playlist, 'Default Playlist laden', icon0~'audio_playliste.png', 1) }} {% endif %}
+        </div>
+        
+        <div class="title">{{ basic.value(gad_title) }}</div>
+        
+        <div class="set"> 
+            {% if gad_pos %}
+            <div class="pos">
+                <div class="scale">&nbsp;</div>
                 {{ basic.slider(id|_('pos'), gad_pos, 0, 100, 1) }} 
-            </td>{% endif %}
-            {% if gad_repeat %}<td>
-				<!--{{ basic.button(id|_('repeat'), gad_repeat, 'Playlist wiederholen', icon0~'steuer_return.png', 1) }}-->
-				 {{ basic.dual(id|_('repeat'), gad_repeat, icon1~'steuer_return.png', icon0~'steuer_return.png') }} 
-            </td>{% endif %}
-        </tr>
-        <tr><td>
-        <span data-role="controlgroup" data-type="horizontal">
-			{{ basic.button(id|_('prev'), gad_next, 'Zurück', icon0~'steuer_zurueck.png', 0) }}
-			{% if gad_ff %} {{ basic.button(id|_('rew'), gad_ff, 'Schneller Rücklauf', icon0~'audio_rew.png', 0) }} {% endif %}
-			{{ basic.dual(id|_('play'), gad_play, icon1~'audio_pause.png', icon0~'audio_play.png') }}
-			{% if gad_stop %}{{ basic.button(id|_('stop'), gad_stop, 'Stopp', icon0~'audio_stop.png', 1) }} {% endif %}
-			{% if gad_ff %} {{ basic.button(id|_('ff'), gad_ff, 'Schneller Vorlauf', icon0~'audio_ff.png', 1) }} {% endif %}
-			{{ basic.button(id|_('next'), gad_next, 'Weiter', icon0~'steuer_vor.png', 1) }} 
-	   </span></td>
-	   {% if gad_playlist %}<td>
-		 {{ basic.button(id|_('playlist'), gad_playlist, 'Default Playlist laden', icon0~'audio_playliste.png', 1) }} 
-	   </td>{% endif %}
-       </tr>
-        </table>
+            </div>
+            {% endif %}
+            
+            <div data-role="controlgroup" data-type="horizontal">
+    			{{ basic.button(id|_('prev'), gad_next, 'back', icon0~'steuer_zurueck.png', 0) }}
+    			{% if gad_ff %} {{ basic.button(id|_('rew'), gad_ff, 'rev', icon0~'audio_rew.png', 0) }} {% endif %}
+    			{{ basic.dual(id|_('play'), gad_play, icon1~'audio_pause.png', icon0~'audio_play.png') }}
+    			{% if gad_stop %} {{ basic.button(id|_('stop'), gad_stop, 'stop', icon0~'audio_stop.png', 1) }} {% endif %}
+    			{% if gad_ff %} {{ basic.button(id|_('ff'), gad_ff, 'fwd', icon0~'audio_ff.png', 1) }} {% endif %}
+    			{{ basic.button(id|_('next'), gad_next, 'next', icon0~'steuer_vor.png', 1) }} 
+    	   </div>
+	   </div>
     </div>        
 {% endmacro %}
