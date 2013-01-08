@@ -724,6 +724,18 @@ hr {
     margin-left: 50px;
 }
  
+.author {
+    margin: 4px;
+    float: left;
+}
+
+.author img{
+    height: 64px;
+    width: 64px;
+    -moz-border-radius: .7em;
+	-webkit-border-radius: .7em;
+	border-radius: .7em;
+}
  
 /**
  * --- W i d g e t s :   B A S I C ---------------------------------------------
