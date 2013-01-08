@@ -27,6 +27,7 @@
     <script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.2.0.min.js"></script>
     <script type="text/javascript" src="lib/base/base.js"></script>
     <script type="text/javascript" src="lib/base/jquery.mobile.slider.min.js"></script>
+    <script type="text/javascript" src="lib/base/jquery.mobile.fix.js"></script>
     
     <link rel="stylesheet" type="text/css" href="designs/{{ config_design }}.min.css" />
 	<link rel="stylesheet" type="text/css" href="pages/base/base.css" />
@@ -112,29 +113,6 @@
     
 </div>
 
-<script type="text/javascript">
-    // jquery.mobile fix: normalize events
-    // basic.flip
-    $(document).on("change", 'select[data-role="slider"]', function() {
-        $(this).trigger('click');
-    }); 
-     
-    // basic.slider
-    $(document).on("change", 'input[data-type="range"]', function() { 
-        // use a lock to fire event only every 500ms
-        if ($(this).attr('lock') == 'false')
-        {
-            $(this).attr('lock', 'true');
-            setTimeout(
-                "if($('#" + this.id + "').val() != " + $(this).val() + ") $('#" + this.id + "').trigger('click');" +
-                "$('#" + this.id + "').attr('lock', 'false');", 400);
-        }
-        // no click on init    
-        if($(this).attr('lock') === undefined)
-            $(this).attr('lock', 'false');  
-    });
-</script> 
-    
 </body>
 
 </html>

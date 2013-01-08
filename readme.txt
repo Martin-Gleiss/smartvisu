@@ -81,11 +81,14 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 2.1
+    - new demo-home: otterstaetter
+    - widget: multimedia.music for a player
+    - reengineered widget: basic.slider 
     - widget: basic.rgb with color-selector
     - widget: basic.symbol allows more gads/items now
     - widget: basic.shutter may now be clicked to change the position
     - improved design: device.rtr
-    - improved design:  weather and clock for small devices  
+    - improved design: weather and clock for small devices  
     - changed design: header now fixed on mobile devices
     
 v 2.0 14.12.12
