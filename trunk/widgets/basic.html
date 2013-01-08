@@ -448,7 +448,7 @@
         knx.add({ 
             gad: Array('{{ gad_r }}', '{{ gad_g }}', '{{ gad_b }}'),
             update: function(response){
-                $('#{{ page }}-{{ id }} span').css('background-color', 'rgb(' + response[0] + ',' + response[1] + ',' + response[2] + ')');  
+                $('#{{ page }}-{{ id }} span').css('background-color', 'rgb(' + Math.round(response[0] / {{ max|default(255) }} * 255) + ',' + Math.round(response[1] / {{ max|default(255) }} * 255) + ',' + Math.round(response[2] / {{ max|default(255) }} * 255) + ')');  
             }
         });  
         
