@@ -114,7 +114,7 @@
     * 
     * @value    offline: random values
     * @value    auerswald: Auerswald VoiP 5010, 5020, Commander Basic.2
-    * @value    fritzbox: Firtzbox 7050     
+    * @value    fritz!box: Fritzbox 7050     
     */
     define ('config_phone_service',         'offline');
 
@@ -157,7 +157,7 @@
   /**
     * Path of smartVISU
     */
-    define ('const_debug',                  true);
+    define ('const_debug',                  false);
 
   /**
     * Path of smartVISU

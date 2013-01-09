@@ -94,7 +94,7 @@ class enertex_iprouter extends service
                 $this->debug($dateutc);
                 
                 $this->data = $this->str2array($version.$stats.$dateutc);
-                
+                $this->data["uptime"] = substr($this->data["uptime"], 0, -6);
                 
                 // tunnel
                 usleep($this->delay);
