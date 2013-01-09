@@ -13,6 +13,12 @@ To select a color the 'basic.rgb'-widget is been used.
 <img src='http://smartvisu.googlecode.com/svn/wiki/v2.1/wt_rgb.jpg' title='widget: basic.rgb' width='300'>
 
 
+== basic.button == 
+
+The basic.button now supports 3 different sizes:
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.1/wt_button_list.jpg' title='widget: basic.button' width='400'>
+
 
 == multimedia.music ==
 
