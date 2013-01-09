@@ -10,7 +10,7 @@ We have made many improvements. New widgets and a new demo-home comes with this 
 
 To select a color the 'basic.rgb'-widget is been used.
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.1/wt_rgb.jpg' title='widget: basic.rgb' width='600'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.1/wt_rgb.jpg' title='widget: basic.rgb' width='300'>
 
 
 
@@ -18,28 +18,26 @@ To select a color the 'basic.rgb'-widget is been used.
 
 This new widget is for controlling a media-player in the network.
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.1/wt_music.jpg' title='widget: multimedia.music' width='600'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.1/wt_music.jpg' title='widget: multimedia.music' width='300'>
 
 
 == appliance.iprouter ==
 
 This widget shows some stats from a enertex knxnet/ip-router. 
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.1/wt_iprouter.jpg' title='widget: appliance.iprouter' width='600'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.1/wt_iprouter.jpg' title='widget: appliance.iprouter' width='300'>
 
 
 == device.shutter ==
 The shutter ist now available with a 'half'-mode and a 'full'-mode for different blade types.
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.1/wt_shutter_half.jpg' title='widget: device.shutter in half-mode' width='600'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.1/wt_shutter_half.jpg' title='widget: device.shutter in half-mode' width='300'>
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.1/wt_shutter_full.jpg' title='widget: device.shutter in full-mode' width='600'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.1/wt_shutter_full.jpg' title='widget: device.shutter in full-mode' width='300'>
 
-In this example the value of angle the same. In 'half'-mode the blade may turn to negativ setting.
+In this example the value of the blade-angle is the same. In 'half'-mode the blade may turn to negativ setting.
 
 if you want to chance the background of your shutter use your 'visu.css' and add something like that:
-
-Implement it like this:
 {{{
 #widget_device_shutter-shutter2 {
 background-image: url('../../pics/shutter/shutter_ocean.jpg');
