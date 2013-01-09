@@ -80,7 +80,7 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
-v 2.1
+v 2.1 09.01.12
     - new demo-home: otterstaetter
     - widget: multimedia.music for a player
     - reengineered widget: basic.slider 

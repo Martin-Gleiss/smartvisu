@@ -28,7 +28,7 @@
             'May' => 'Mai', 'June' => 'Juni', 'July' => 'Juli', 'August' => 'August', 
             'September' => 'September', 'October' => 'Oktober', 'November' => 'November', 'December' => 'Dezmeber');
         
-        // allowd formats
+        // allowed formats
         switch ($format)
             {
             case 'date':    $format = (config_lang == 'de' ? 'd.m.y' : 'm/d/y'); break;
