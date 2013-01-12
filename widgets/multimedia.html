@@ -39,12 +39,12 @@
         {% endif %}
         
         <div class="control">
-        {% if gad_mute %} {{ basic.button(id|_('mute'), gad_mute, 'Ton aus', icon0~'audio_mute.png', 1) }} {% endif %}
+        {% if gad_mute %} {{ basic.button(id|_('mute'), gad_mute, 'Mute', icon0~'audio_mute.png', 1) }} {% endif %}
         {% if gad_repeat %} {{ basic.dual(id|_('repeat'), gad_repeat, icon1~'steuer_return.png', icon0~'steuer_return.png') }} {% endif %}
-        {% if gad_playlist %} {{ basic.button(id|_('playlist'), gad_playlist, 'Default Playlist laden', icon0~'audio_playliste.png', 1) }} {% endif %}
+        {% if gad_playlist %} {{ basic.button(id|_('playlist'), gad_playlist, 'Default Playlist', icon0~'audio_playliste.png', 1) }} {% endif %}
         </div>
         
-        <div class="title">{{ basic.value(gad_title) }}</div>
+        {% if gad_title %}<div class="title">{{ basic.value(gad_title) }}</div>{% endif %}
         
         <div class="set"> 
             {% if gad_pos %}
