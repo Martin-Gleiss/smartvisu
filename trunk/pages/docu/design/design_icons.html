@@ -19,8 +19,8 @@
     
         <div class="twig">
             <code class="prettyprint">
-                icon0~'licht_licht.png'<br />
-                icon1~'licht_licht.png'<br />
+                icon0~'light_light.png'<br />
+                icon1~'light_light.png'<br />
             </code>
         </div>
     </div>
@@ -32,11 +32,16 @@
         Icons located in "{{ icon0 }}"
     </div>
     
+    {% set cat = 'au' %}
     {% for file in dir(icon0) %}
+        {% if cat != file.name|slice(0, 2) %}
+            <div style="clear:left;"><br /><br /></div>
+            {% set cat = file.name|slice(0, 2) %}
+        {% endif %}
         <div style="float:left; width: 160px; background-color: #222; border: 1px dotted #666; margin: 5px; text-align: center;">
             <img class="icon" src="{{ icon0~file.name }}" />
             <br />
-            {{ file.name }}
+            <span style="font-size: 0.8em;">{{ file.name }}</span>
         </div>
     {% endfor %}
     
