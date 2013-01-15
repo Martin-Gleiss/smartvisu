@@ -15,7 +15,7 @@
     {% block headline %}<h3>Widgets</h3>{% endblock %}
    
     {% if pagepath != '' %}
-        {% set widgetlist = docu('widgets/' ~ pagepath ~ '.html') %}
+        {% set widgetlist = docu('widgets/'~pagepath~'.html') %}
         
         {% for widget in widgetlist %}
             <a href="index.php?page={{ pagepath }}/widget_{{ widget.command }}">{{ widget.command }}</a>
@@ -24,7 +24,7 @@
    
     <br /><hr /><br />
               
-    {% set widget = page|substr(7)|replace({'_': '.'}) %}
+    {% set widget = page|slice(7)|replace({'_': '.'}) %}
     
     {% if pagepath != '' and widget != pagepath %}
    
