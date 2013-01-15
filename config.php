@@ -12,7 +12,7 @@
   /**
     * Version of smartVISU
     */
-    define ('config_version',               '2.1');
+    define ('config_version',               '2.2');
     
 
 // -----------------------------------------------------------------------------
@@ -27,7 +27,7 @@
   /**
     * The address, might be a url or filename
     */
-    define ('config_driver_address',        '192.168.x.x');
+    define ('config_driver_address',        '192.168.45.10');
 
   /**
     * The port, if the driver needs one
@@ -96,7 +96,7 @@
     * @value    wunderground: get key: http://www.wunderground.com/weather/api  
     * @value    yr.no: http://www.yr.no       
     */
-    define ('config_weather_service',       'offline');
+    define ('config_weather_service',       'yr.no');
 
   /**
     * What is the default location?

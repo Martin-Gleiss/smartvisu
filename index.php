@@ -35,7 +35,12 @@
             $loader->addPath(const_path.'pages/'.config_pages.'/'.dirname($request['page']));
         
         $loader->addPath(const_path.'apps');
-        $loader->addPath(const_path.'pages/base');
+        $loader->addPath(const_path.'pages/base'); 
+        
+        // add dir if is not directly choosen
+        if (config_driver == 'smarthome.py' and config_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
+            $loader->addPath(const_path.'pages/smarthome');
+        
         $loader->addPath(const_path.'widgets');
         
         

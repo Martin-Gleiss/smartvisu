@@ -42,19 +42,19 @@
  * --- j Q u e r y M o b i l e -------------------------------------------------
  */
  
-.ui-header {
+.ui-page > .ui-header {
     text-align: center;
 	height: 62px;
 	border-bottom: 1px solid #222;
     min-width: 320px;
 }  
     
-.ui-header .ui-left {
+.ui-page > .ui-header .ui-left {
     margin: 5px 0 0 5px;
     float: left;
 }
 
-.ui-header .ui-right {
+.ui-page > .ui-header .ui-right {
     float: right;
     margin: 9px 15px 0 0;
 }
@@ -112,9 +112,8 @@
     top: -2px;
 }
 
-
 .ui-popup {
-   padding: 4px;
+    padding: 4px;
 }
 
 .ui-popup > span {
@@ -498,22 +497,6 @@ hr {
     font-size: 14px;
 }
 
-.alert {
-    display: none;
-    overflow: hidden;
-    position: absolute;
-    right: 0;
-    top: -18px;
-    height: 62px;
-    width: 100px;
-    z-index: 50;
-}
-
-.alert img {
-    height: 62px;
-    width: 100px;
-}
-
       
 /**
  * -----------------------------------------------------------------------------
@@ -642,6 +625,40 @@ hr {
     margin-top: 3px;
 }
 
+.alert {
+    display1: none;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: -18px;
+    height: 62px;
+    width: 100px;
+    z-index: 10;
+} /* pic displayed in header, defined in base.html */
+
+.alert img {
+    height: 62px;
+    width: 100px;
+}
+
+#alertx-popup {
+    width: 280px;
+}
+
+#alertx .ui-header {
+    -moz-border-radius-top: .6em .6em 0 0;
+	-webkit-border-radius-top: .6em .6em 0 0;
+	border-radius: .6em .6em 0 0;
+} /* jquery.mobile fix: should be rounded */ 
+
+#alertx img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 37px;
+    width: 60px;
+}
+
  
 /**
  * -----------------------------------------------------------------------------
@@ -736,6 +753,7 @@ hr {
 	-webkit-border-radius: .7em;
 	border-radius: .7em;
 }
+
  
 /**
  * --- W i d g e t s :   B A S I C ---------------------------------------------
@@ -767,7 +785,6 @@ hr {
     width: 22px;
     height: 22px;    
 }
-
 
 
 .rgb span {
@@ -874,7 +891,6 @@ hr {
 }
 
 
-
 .blind .pos {
     width: 50px;
 }
@@ -890,7 +906,6 @@ hr {
 .blind .angle .ui-input-text {
     display: none;
 }
-
 
 
 .shutter {

@@ -44,12 +44,10 @@
 
     /** Events */
     <script type="text/javascript">
-        knx.add({
-            gad: '{{ gad }}', 
-            update: function(response){
+         io.add('{{ gad }}', 
+            function(response){
                 $('#{{ page }}-{{ id }}').html(response + ' {{ unit }}');
-            }
-        });
+            });
     </script>    
 {% endmacro %}
 
@@ -59,6 +57,7 @@
  * 
  * @param        unique id for this widget
  * @param        a gad/item  
+ *  
  * @param        a unit
  * @param        the parent html-tag for the value     
  */
@@ -68,12 +67,10 @@
 
     /** Events */
     <script type="text/javascript">
-        knx.add({
-            gad: '{{ gad }}', 
-            update: function(response){
+        io.add('{{ gad }}', 
+            function(response){
                 $('#{{ page }}-{{ id }}').html( ((Math.round(response * 10) / 10).toFixed(1)) + ' {{ unit }}');
-            }
-        });
+            });
     </script>   
 {% endmacro %}
 
@@ -91,15 +88,13 @@
     
     /** Events */
     <script type="text/javascript">
-        knx.add({ 
-            gad: '{{ gad }}',
-            update: function(response){
+        io.add('{{ gad }}',
+            function(response){
                 $('#{{ page }}-{{ id }}').attr('checked', (response > 0 ? true : false)).checkboxradio('refresh');    
-            }
-        });
+            });
         
         $("#{{ page }}-{{ id }}").unbind('change').bind('change', function() { 
-            knx.write('{{ gad }}', ($('#{{ page }}-{{ id }}:checked').val() == 'on' ? 1 : 0));
+            io.write('{{ gad }}', ($('#{{ page }}-{{ id }}:checked').val() == 'on' ? 1 : 0));
         });
     </script>    
 {% endmacro %}
@@ -122,16 +117,14 @@
 
     /** Events */
     <script type="text/javascript">
-        knx.add({ 
-            gad: '{{ gad }}',
-            update: function(response){
+        io.add('{{ gad }}',
+            function(response){
                 $('#{{ page }}-{{ id }}').val(response > 0 ? 'on' : 'off').slider('refresh');
-            }
-        }); 
+            }); 
 
         $('#{{ page }}').on('pageinit', function(){
             $("#{{ page }}-{{ id }}").unbind('click').bind('click', function() { 
-                knx.write('{{ gad }}', ($(this).val() == 'on' ? 1 : 0));   
+                io.write('{{ gad }}', ($(this).val() == 'on' ? 1 : 0));   
             });
         });
     </script>    
@@ -154,16 +147,14 @@
 
     /** Events */
     <script type="text/javascript">
-        knx.add({ 
-            gad: '{{ gad }}',
-            update: function(response){ 
+        io.add('{{ gad }}',
+            function(response){ 
                 $('#{{ page }}-{{ id }}').val(response).slider('refresh');
-            }
-        });
+            });
         
         $('#{{ page }}').on('pageinit', function(){
             $("#{{ page }}-{{ id }}").unbind('click').bind('click', function() { 
-                knx.write('{{ gad }}', $(this).val());   
+                io.write('{{ gad }}', $(this).val());   
             });
         });
     </script>    
@@ -182,13 +173,12 @@
  */
  {% macro symbol(id, gads, txt, pic, val) %}
     /** Design */
-    <span id="{{ page }}-{{ id }}" class="symbol hide"><img class="icon" src="{{ pic|default(icon1~'steuer_ein_aus.png') }}"/>{{ txt }}</span>
+    <span id="{{ page }}-{{ id }}" class="symbol hide"><img class="icon" src="{{ pic|default(icon1~'control_on_off.png') }}"/>{{ txt }}</span>
         
     /** Events */
     <script type="text/javascript">  
-        knx.add({ 
-            gad: {{ array2script(gads) }},
-            update: function(response){ 
+        io.add({{ array2script(gads) }},
+            function(response){ 
                 // response will be an array, if more then one gad is used 
                 var bit = false;
                 if (response instanceof Array) {
@@ -202,8 +192,7 @@
                     $('#{{ page }}-{{ id }}').show();
                 else
                     $('#{{ page }}-{{ id }}').hide();
-            }
-        });  
+            });  
     </script>    
 {% endmacro %} 
 
@@ -226,21 +215,19 @@
         
     /** Events */
     <script type="text/javascript"> 
-        knx.add({ 
-            gad: '{{ gad }}',
-            update: function(response){ 
-                $('#{{ page }}-{{ id }} .icon').attr('src', (response == {{ val_on|default('1') }} ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
-            }
-        });
+        io.add('{{ gad }}',
+            function(response){ 
+                $('#{{ page }}-{{ id }} .icon').attr('src', (response == {{ val_on|default('1') }} ? "{{ pic_on|default(icon1~'control_on_off.png') }}" : "{{ pic_off|default(icon0~'control_on_off.png') }}"));
+            });
              
         // write
         $('#{{ page }}-{{ id }} a').unbind('click').bind('click', function() {
-            if ($('#{{ page }}-{{ id }} .icon').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" ){
-                knx.write('{{ gad }}', "{{ val_on|default('1') }}");
-                knx.update('{{ gad }}', "{{ val_on|default('1') }}");
+            if ($('#{{ page }}-{{ id }} .icon').attr('src') == "{{ pic_off|default(icon0~'control_on_off.png') }}" ){
+                io.write('{{ gad }}', "{{ val_on|default('1') }}");
+                io.update('{{ gad }}', "{{ val_on|default('1') }}");
             } else {
-                knx.write('{{ gad }}', "{{ val_off|default('0') }}");
-                knx.update('{{ gad }}', "{{ val_off|default('0') }}");
+                io.write('{{ gad }}', "{{ val_off|default('0') }}");
+                io.update('{{ gad }}', "{{ val_off|default('0') }}");
             }
         });
         
@@ -283,7 +270,7 @@
         /** Events */
         <script type="text/javascript">
             $('#{{ page }}-{{ id }}').unbind('click').bind('click', function() {
-                knx.write('{{ gad }}', {{ val|default('1') }}); 
+                io.write('{{ gad }}', {{ val|default('1') }}); 
             });
         </script>    
     {% endif %}
@@ -309,20 +296,18 @@
     
     /** Events */
     <script type="text/javascript"> 
-        knx.add({ 
-            gad: '{{ gad }}',
-            update: function(response){ 
-                $('#{{ page }}-{{ id }} img').attr('src', (response != 0 ? "{{ pic_on|default(icon1~'steuer_ein_aus.png') }}" : "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}"));
-            }
-        });
+        io.add('{{ gad }}',
+            function(response){ 
+                $('#{{ page }}-{{ id }} img').attr('src', (response != 0 ? "{{ pic_on|default(icon1~'control_on_off.png') }}" : "{{ pic_off|default(icon0~'control_on_off.png') }}"));
+            });
         
         $('#{{ page }}-{{ id }}').unbind('click').bind('click', function() {
-            if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'steuer_ein_aus.png') }}" ){
-                knx.write('{{ gad }}', "{{ val_on|default('1') }}");
-                knx.update('{{ gad }}', "{{ val_on|default('1') }}");
+            if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'control_on_off.png') }}" ){
+                io.write('{{ gad }}', "{{ val_on|default('1') }}");
+                io.update('{{ gad }}', "{{ val_on|default('1') }}");
             } else {
-                knx.write('{{ gad }}', "{{ val_off|default('0') }}");
-                knx.update('{{ gad }}', "{{ val_off|default('0') }}");
+                io.write('{{ gad }}', "{{ val_off|default('0') }}");
+                io.update('{{ gad }}', "{{ val_off|default('0') }}");
             }
         });
     </script>     
@@ -353,9 +338,8 @@
 
     /** Events */
     <script type="text/javascript">  
-        knx.add({ 
-            gad: Array('{{ gad_pos }}', '{{ gad_angle }}'),
-            update: function(response){
+        io.add(Array('{{ gad_pos }}', '{{ gad_angle }}'),
+            function(response){
                 
                 var a = 13;
                 var mode = {% if mode|default('half') == 'half' %}0.5{% else %}1{% endif %};
@@ -391,8 +375,7 @@
                         h = 1;
                     }
                 }
-            }
-        });  
+            });  
         
         $("#{{ page }}-{{ id }}").unbind('click').bind('click', function(event) { 
             var offset = $(this).offset();
@@ -401,8 +384,8 @@
             var val = Math.floor((y / 160 - 10 / 160) * {{ max|default(255) }} / {{ step|default(5) }}) * {{ step|default(5) }};
                 val = Math.max({{ min|default(0) }}, Math.min(val, {{ max|default(255) }}));
                 
-	        knx.write('{{ gad_pos }}', val);
-	        knx.update('{{ gad_pos }}', val);
+	        io.write('{{ gad_pos }}', val);
+	        io.update('{{ gad_pos }}', val);
         });
     </script>    
 {% endmacro %} 
@@ -431,26 +414,24 @@
         
         for (var s = 25; s <= 75; s += 25) {
             for (var h = 0; h <= 288; h += 36) {
-                html += '<div style="background-color:' + hsv2rgb(h, s, 100) + ';"></div>';      
+                html += '<div style="background-color:' + smart.hsv2rgb(h, s, 100) + ';"></div>';      
             }
-            html += '<div style="background-color:' + hsv2rgb(h, 0, 100 - (s / 25 - 1) *  14.2 ) + ';"></div><br />';      
+            html += '<div style="background-color:' + smart.hsv2rgb(h, 0, 100 - (s / 25 - 1) *  14.2 ) + ';"></div><br />';      
         }
         for (var v = 100; v >= 25; v -= 25) {
             for (var h = 0; h <= 288; h += 36) {
-                html += '<div style="background-color:' + hsv2rgb(h, 100, v) + ';"></div>';      
+                html += '<div style="background-color:' + smart.hsv2rgb(h, 100, v) + ';"></div>';      
             }
-            html += '<div style="background-color:' + hsv2rgb(h, 0, (v / 25) *  14.2) + ';"></div><br />';      
+            html += '<div style="background-color:' + smart.hsv2rgb(h, 0, (v / 25) *  14.2) + ';"></div><br />';      
         }
         
         $("#{{ page }}-{{ id }}-popup").html(html);
         
         // knx
-        knx.add({ 
-            gad: Array('{{ gad_r }}', '{{ gad_g }}', '{{ gad_b }}'),
-            update: function(response){
+        io.add(Array('{{ gad_r }}', '{{ gad_g }}', '{{ gad_b }}'),
+            function(response){
                 $('#{{ page }}-{{ id }} span').css('background-color', 'rgb(' + Math.round(response[0] / {{ max|default(255) }} * 255) + ',' + Math.round(response[1] / {{ max|default(255) }} * 255) + ',' + Math.round(response[2] / {{ max|default(255) }} * 255) + ')');  
-            }
-        });  
+            });  
         
         // click
         $('#{{ page }}-{{ id }}-popup div').unbind('click').bind('click', function() {
@@ -459,9 +440,9 @@
             $('#{{ page }}-{{ id }}-popup').popup('close');  
             
             rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/); 
-            knx.write('{{ gad_r }}', Math.round(rgb[1] / 255 * {{ max|default(255) }}) );
-            knx.write('{{ gad_g }}', Math.round(rgb[2] / 255 * {{ max|default(255) }}) );
-            knx.write('{{ gad_b }}', Math.round(rgb[3] / 255 * {{ max|default(255) }}) ); 
+            io.write('{{ gad_r }}', Math.round(rgb[1] / 255 * {{ max|default(255) }}) );
+            io.write('{{ gad_g }}', Math.round(rgb[2] / 255 * {{ max|default(255) }}) );
+            io.write('{{ gad_b }}', Math.round(rgb[3] / 255 * {{ max|default(255) }}) ); 
         });
         
         // effects

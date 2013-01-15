@@ -24,7 +24,7 @@
     
     /** Design */
     <div class="dimmer">
-        {{ basic.switch(id|_('switch'), gad_switch, icon1~'licht_licht.png', icon0~'licht_licht.png') }}
+        {{ basic.switch(id|_('switch'), gad_switch, icon1~'light_light.png', icon0~'light_light.png') }}
         <p>{{ txt|e }}</p>
         {{ basic.slider(id|_('silder'), gad_value, min, max, step) }}
     </div>     
@@ -80,11 +80,11 @@
         {% endif %}
         
         <div class="control">
-            {{ basic.switch(id|_('mode'), gad_mode, icon1~'user_anwesend.png', icon0~'user_abwesend.png') }}
-            {{ basic.switch(id|_('night'), gad_night, icon1~'szene_nacht.png', icon0~'szene_nacht.png') }}
-            {{ basic.switch(id|_('frost'), gad_frost, icon1~'temp_frost.png', icon0~'temp_frost.png') }}
+            {{ basic.switch(id|_('mode'), gad_mode, icon1~'user_available.png', icon0~'user_away.png') }}
+            {{ basic.switch(id|_('night'), gad_night, icon1~'scene_night.png', icon0~'scene_day.png') }}
+            {{ basic.switch(id|_('frost'), gad_frost, icon1~'weather_frost.png', icon0~'weather_frost.png') }}
             <div style="float:left; width: 5px; height: 48px;"></div>
-            {{ basic.switch(id|_('state'), gad_state, icon1~'sani_heizung.png', icon0~'sani_heizung.png') }}
+            {{ basic.switch(id|_('state'), gad_state, icon1~'sani_heating.png', icon0~'sani_heating.png') }}
         </div>
     </div>
 {% endmacro %}
@@ -156,7 +156,7 @@
  * @param       the minimum value for close (optional, default 0)
  * @param       the maximum value for open (optional, default 255) 
  * @param       step betwenn to values (optional, default 5) 
- * @param       the mode: 'half' blade turns from -1 to +1), or 'full' blade turns form 0 to +1 (optional, default 'half') 
+ * @param       the mode: 'half' blade turns from -1 to +1, or 'full' blade turns form 0 to +1 (optional, default 'half') 
  * 
  * @info        inspired by Jörg Gutowski       
  */

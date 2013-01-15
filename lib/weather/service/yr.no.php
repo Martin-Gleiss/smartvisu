@@ -114,7 +114,7 @@ class weather_yr extends weather
         $icon[5]                    = "sun_7";
         $icon[6]                    = "sun_9";
         $icon[7]                    = "sun_11";
-        $icon[7]                    = "sun_13";
+        $icon[8]                    = "sun_13";
         
         $icon[9]                    = "cloud_7";
         $icon[10]                   = "cloud_8";
