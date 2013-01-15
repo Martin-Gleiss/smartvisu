@@ -80,10 +80,19 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
+v 2.2
+    - new icons. They are named englisch. thanks to mfd
+    - new driver: smarthome.py with websocket-connection
+    - improved driver: offline, linknx, json
+    - new smart.alert js-function for alerts and logging
+    - driver linknx: with error-handling
+    
 v 2.1 09.01.12
-    - new demo-home: otterstaetter
+    - new pages: otterstaetter (as demo-home)
     - widget: multimedia.music for a player
+    - widget: appliance.iprouter for the enertex knxnet/ip-router
     - reengineered widget: basic.slider 
+    - reengineered widget: basic.button 
     - widget: basic.rgb with color-selector
     - widget: basic.symbol allows more gads/items now
     - widget: basic.shutter may now be clicked to change the position

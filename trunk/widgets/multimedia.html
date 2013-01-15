@@ -39,9 +39,9 @@
         {% endif %}
         
         <div class="control">
-        {% if gad_mute %} {{ basic.button(id|_('mute'), gad_mute, 'Mute', icon0~'audio_mute.png', 1) }} {% endif %}
-        {% if gad_repeat %} {{ basic.dual(id|_('repeat'), gad_repeat, icon1~'steuer_return.png', icon0~'steuer_return.png') }} {% endif %}
-        {% if gad_playlist %} {{ basic.button(id|_('playlist'), gad_playlist, 'Default Playlist', icon0~'audio_playliste.png', 1) }} {% endif %}
+        {% if gad_mute %} {{ basic.button(id|_('mute'), gad_mute, 'Mute', icon0~'audio_audio.png', 1) }} {% endif %}
+        {% if gad_repeat %} {{ basic.dual(id|_('repeat'), gad_repeat, icon1~'audio_repeat.png', icon0~'audio_repeat.png') }} {% endif %}
+        {% if gad_playlist %} {{ basic.button(id|_('playlist'), gad_playlist, 'Default Playlist', icon0~'audio_playlist.png', 1) }} {% endif %}
         </div>
         
         {% if gad_title %}<div class="title">{{ basic.value(gad_title) }}</div>{% endif %}
@@ -55,12 +55,12 @@
             {% endif %}
             
             <div data-role="controlgroup" data-type="horizontal">
-    			{{ basic.button(id|_('prev'), gad_next, 'back', icon0~'steuer_zurueck.png', 0) }}
+    			{{ basic.button(id|_('prev'), gad_next, 'back', icon0~'control_arrow_left.png', 0) }}
     			{% if gad_ff %} {{ basic.button(id|_('rew'), gad_ff, 'rev', icon0~'audio_rew.png', 0) }} {% endif %}
     			{{ basic.dual(id|_('play'), gad_play, icon1~'audio_pause.png', icon0~'audio_play.png') }}
     			{% if gad_stop %} {{ basic.button(id|_('stop'), gad_stop, 'stop', icon0~'audio_stop.png', 1) }} {% endif %}
     			{% if gad_ff %} {{ basic.button(id|_('ff'), gad_ff, 'fwd', icon0~'audio_ff.png', 1) }} {% endif %}
-    			{{ basic.button(id|_('next'), gad_next, 'next', icon0~'steuer_vor.png', 1) }} 
+    			{{ basic.button(id|_('next'), gad_next, 'next', icon0~'control_arrow_right.png', 1) }} 
     	   </div>
 	   </div>
     </div>        

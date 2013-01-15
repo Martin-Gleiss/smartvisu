@@ -11,7 +11,10 @@
 {% extends "base.html" %}
 
 {% block sidebar %}
-  
+
+{% import "lib.html" as lib %}
+{{ lib.updatecheck() }}
+
 <div data-role="collapsible-set" style="margin-top: -15px;" data-inset="false" data-mini="true" data-theme="c">
 
 	<div data-role="collapsible" data-collapsed="false">
@@ -20,37 +23,37 @@
         <ul data-role="listview" data-dividertheme="c"> 
             <li data-icon="false">
             <a href="index.php?page=basic/widget_basic">
-                <img class="icon" src="{{ icon0 }}licht_esstisch.png"/><h3>Basic</h3>
+                <img class="icon" src="{{ icon0 }}light_dinner_table.png"/><h3>Basic</h3>
             </a>
             </li>
             <li data-icon="false">
                 <a href="index.php?page=device/widget_device">
-                    <img class="icon" src="{{ icon0 }}temp_regelung.png"/><h3>Device</h3>
+                    <img class="icon" src="{{ icon0 }}temp_control.png"/><h3>Device</h3>
                 </a>
             </li>
             <li data-icon="false">
                 <a href="index.php?page=clock/widget_clock">
-                    <img class="icon" src="{{ icon0 }}zeit_uhr.png"/><h3>Time/Clock</h3>
+                    <img class="icon" src="{{ icon0 }}time_clock.png"/><h3>Time/Clock</h3>
                 </a>
             </li>
             <li data-icon="false">
                 <a href="index.php?page=weather/widget_weather">
-                    <img class="icon" src="{{ icon0 }}wetter_sommer.png"/><h3>Weather</h3>
+                    <img class="icon" src="{{ icon0 }}weather_summer.png"/><h3>Weather</h3>
                 </a>
             </li>
             <li data-icon="false">
                 <a href="index.php?page=phone/widget_phone">
-                    <img class="icon" src="{{ icon0 }}it_telefon.png"/><h3>Phone</h3>
+                    <img class="icon" src="{{ icon0 }}it_telephone.png"/><h3>Phone</h3>
                 </a>
             </li>
             <li data-icon="false">
                 <a href="index.php?page=calendar/widget_calendar">
-                    <img class="icon" src="{{ icon0 }}zeit_kalender.png"/><h3>Calendar</h3>
+                    <img class="icon" src="{{ icon0 }}time_calendar.png"/><h3>Calendar</h3>
                 </a>
             </li>
             <li data-icon="false">
                 <a href="index.php?page=multimedia/widget_multimedia">
-                    <img class="icon" src="{{ icon0 }}it_fernsehen.png"/><h3>Multimedia</h3>
+                    <img class="icon" src="{{ icon0 }}it_television.png"/><h3>Multimedia</h3>
                 </a>
             </li>
         </ul>
@@ -62,22 +65,22 @@
         <ul data-role="listview" data-dividertheme="c"> 
             <li data-icon="false">
             <a href="index.php?page=design/design_block">
-                <img class="icon" src="{{ icon0 }}steuer_home.png"/><h3>Blocks</h3>
+                <img class="icon" src="{{ icon0 }}control_outside_on_off.png"/><h3>Blocks</h3>
             </a>
             </li>
             <li data-icon="false">
                 <a href="index.php?page=design/design_popup">
-                    <img class="icon" src="{{ icon0 }}steuer_minus.png"/><h3>Popups</h3>
+                    <img class="icon" src="{{ icon0 }}audio_stop.png"/><h3>Popups</h3>
                 </a>
             </li>
             <li data-icon="false">
                 <a href="index.php?page=design/design_icons">
-                    <img class="icon" src="{{ icon0 }}wetter_winter.png"/><h3>Icons</h3>
+                    <img class="icon" src="{{ icon0 }}weather_winter.png"/><h3>Icons</h3>
                 </a>
             </li>
             <li data-icon="false">
                 <a href="index.php?page=design/design_bg">
-                    <img class="icon" src="{{ icon0 }}zeit_diagramm.png"/><h3>Backgrounds</h3>
+                    <img class="icon" src="{{ icon0 }}time_statistic.png"/><h3>Backgrounds</h3>
                 </a>
             </li>
         </ul>
@@ -88,7 +91,7 @@
         <ul data-role="listview" data-dividertheme="c"> 
             <li data-icon="false">
             <a href="index.php?page=misc/appliances">
-                <img class="icon" src="{{ icon0 }}steuer_home.png"/><h3>Appliances</h3>
+                <img class="icon" src="{{ icon0 }}it_server.png"/><h3>Appliances</h3>
             </a>
         </li>
         </ul>

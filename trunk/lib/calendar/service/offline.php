@@ -37,7 +37,7 @@ class calendar_offline extends calendar
                 'end' => date('y-m-d', time() + $tag * 24 * 60 * 60).' '.rand(15,20).':00:00',
                 'title' => $title,
                 'where' => ($title == 'Doctor' ?  'Würzburg' : ''),
-                'icon' => ($title == 'Waste' ? 'icons/ws/meld_muell.png' : ''), 
+                'icon' => ($title == 'Waste' ? 'icons/ws/message_garbage.png' : ''), 
                 'color' => ($title == 'Waste' ?  $waste[rand(0,3)] : '')
             );
         }

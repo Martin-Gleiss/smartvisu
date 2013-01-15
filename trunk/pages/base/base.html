@@ -22,7 +22,7 @@
 	<link rel="icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="apple-touch-icon" href="favicon.png" />
 
-    <link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.2.0.min.css" />
+    <link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile-1.2.0.min.css" />
     <script type="text/javascript" src="vendor/jquery/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.2.0.min.js"></script>
     <script type="text/javascript" src="lib/base/base.js"></script>
@@ -33,7 +33,7 @@
 	<link rel="stylesheet" type="text/css" href="pages/base/base.css" />
 	<link rel="stylesheet" type="text/css" href="pages/{{ config_pages }}/visu.css" />
 	
-    <script type="text/javascript" src="driver/knx_{{ config_driver }}.js"></script>
+    <script type="text/javascript" src="driver/io_{{ config_driver }}.js"></script>
 	{% block head %}{% endblock %}
 	
 	{% import "lib.html" as lib %}
@@ -43,7 +43,7 @@
 
 
 <body> 
-    
+
 <div data-role="page" id="{{ page }}" data-theme="a">
     <div data-role="header" data-position="fixed" data-tap-toggle="false">
         <div class="ui-left">
@@ -53,40 +53,16 @@
             {{ lib.smartvisu }}
             <div class="mini"><span id="miniclock">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
         </div>
-        <p id="alert" class="alert"><a href=""><img src="pages/base/pics/trans.png"></a></p>
-        <script type="text/javascript"> 
-            $('#{{ page }}').live('pageshow',function(event, ui){
-                (function($) {
-                    $.fn.extend({
-                        miniclock: function() {
-                            return this.each(function() {
-                            var $this = $(this);
-                            $this.displayMiniClock($this);
-                        });
-                    }});
-                   
-                    $.fn.displayMiniClock = function(el) {
-                        var now = new Date();
-                        el.html(now.getHours() + ':' + (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()));
-                        setTimeout(function() {$.fn.displayMiniClock(el)}, $.fn.delay());
-                    }
-                
-                    $.fn.delay = function() {
-                        var now = new Date();
-                        var delay = (60 - now.getSeconds()) * 1000;
-                        return delay;
-                    }
-                })(jQuery);
-                
-                $('#miniclock').miniclock();
-            });
-        </script>  
+        <p class="alert"><a data-role="none" data-rel="popup" data-position-to="window" href=""><img src="pages/base/pics/trans.png"></a></p>
+        <div id="alertx" class="alertx" data-role="popup" data-overlay-theme="a" style="padding: 0px;">
+            <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+            <div data-role="header" data-theme="c"><h1></h1><img src="pages/base/pics/trans.png"></div><p></p>
+        </div> 
     </div>
- 	
+    
     <script type="text/javascript">
-        knx.stop();
-        knx.remove();
- 	</script>
+        io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
+    </script>
        
     <div data-role="content">
         <div class="content-primary">
@@ -98,18 +74,24 @@
         </div>
     </div>
     
-    <div class="page-bg"></div>  
-    
+    <div class="page-bg"></div> 
+	
     {% block footer %}{% endblock %}
-    
-    <script type="text/javascript">
-        // knx.list();
-        knx.refresh();
+
+    <script type="text/javascript"> 
+        //$('#{{ page }}').on('pagebeforeshow',function(event, ui){
+            $('#miniclock').miniclock();
+            io.run({{ config_driver_realtime }});
+            // io.list();
+            //$.mobile.page.prototype.options.domCache = true;
+        //});
         
-        {% if config_driver_realtime %}
-            knx.start();
-        {% endif %}
-    </script>
+        /*
+        $('#index').live('pagehide', function () {
+            $(this).remove();
+        });
+        */
+    </script>  
     
 </div>
 
