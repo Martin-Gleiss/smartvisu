@@ -139,19 +139,22 @@ a.ui-btn-inline.ui-micro {
 a.ui-btn-inline.ui-micro[data-iconpos="nopic"] .ui-btn-inner {
     padding: 5px 2px 2px 2px;
     font-size: 0.8em; 
-} 
+} /* only text */ 
 
 a.ui-btn-inline.ui-micro[data-iconpos="notext"] .ui-icon {
     margin: 4px 0 0 5px !important;
-}  
+} /* only pic (inline) */  
 
-a.ui-btn-inline.ui-micro span.ui-btn-inner { 
-    padding-top: 1px;
-}
+a.ui-btn-inline.ui-micro[data-iconpos="center"] span.ui-btn-inner { 
+    display: block;
+    height: 27px;
+    overflow: hidden; 
+} /* only pic (icon) */ 
 
 a.ui-btn-inline.ui-micro .icon {
-    width: 22px;
-    height: 22px;    
+    margin-top: -1px;
+    width: 28px;
+    height: 28px;    
 }
 
 /** --------- button: mini --------- */
@@ -166,7 +169,7 @@ a.ui-btn-inline.ui-mini[data-iconpos="nopic"] .ui-btn-inner {
 
 a.ui-btn-inline.ui-mini[data-iconpos="notext"] .ui-icon {
     margin: 9px 0 0 10px !important;
-}  
+} /* only pic (inline) */   
 
 a.ui-btn-inline.ui-mini[data-iconpos="top"] .ui-btn-inner {
     padding-top: 21px;
@@ -189,16 +192,16 @@ a.ui-btn-inline.ui-midi {
 
 a.ui-btn-inline.ui-midi[data-iconpos="nopic"] .ui-btn-inner {
     padding-top: 16px;
-} 
+} /* only text */ 
 
 a.ui-btn-inline.ui-midi[data-iconpos="notext"] .ui-icon {
     margin: 19px 0 0 20px;
-}  
+} /* only pic (inline) */  
 
 a.ui-btn-inline.ui-midi[data-iconpos="top"] .ui-btn-inner {
     padding-top: 32px;
     font-size: 0.9em;
-} 
+} /* txt and pic (inline) */
  
 a.ui-btn-inline.ui-midi[data-iconpos="center"] .ui-btn-inner { 
     padding: 7px 2px 0px 2px;
@@ -612,12 +615,14 @@ hr {
 }  
 
 .block .ui-field-contain {
+    margin: 8px 0 8px 0;
+    padding: 0px;
     text-align: left;
-    border-bottom: 0;
 }
 
 .block .ui-field-contain .note {
     text-align: right;
+    margin-top: -3px;
     font-size: 12px;
 }
 

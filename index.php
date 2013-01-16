@@ -44,22 +44,12 @@
         $loader->addPath(const_path.'widgets');
         
         
-        // get environment
-        $twig = new Twig_Environment($loader);
+        // init environment
+        $twig = new Twig_Environment($loader);  
         
         if (config_cache)
             $twig->setCache(dirname(__FILE__).'/temp');
         
-        
-        // get lexer
-    	$lexer = new Twig_Lexer($twig, array(
-    		'tag_comment'  => array('/**', '*/'),
-    		'tag_block'    => array('{%', '%}'),
-    		'tag_variable' => array('{{', '}}'),
-    		));
-    		
-    	$twig->setLexer($lexer);
-    
         foreach($request as $key => $val)
         {
             if ($key == "page")
@@ -96,7 +86,13 @@
         $twig->addFunction('once',      new Twig_Function_Function('twig_once'));
         $twig->addFunction('docu',      new Twig_Function_Function('twig_docu'));    
         $twig->addFunction('array2script',  new Twig_Function_Function('twig_array2script', array('is_safe' => array('html'))));
-        
+               
+               
+        // init lexer comments                   
+        $lexer = new Twig_Lexer($twig, array('tag_comment' => array('/**', '*/')));
+        $twig->setLexer($lexer);
+           
+           
         // load template
         try
         {
