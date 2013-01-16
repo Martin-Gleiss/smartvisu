@@ -73,7 +73,6 @@ TODO
     - MainMenu: Display selected menu-button
     - basic.tristate button for rtr-mode
     - Main: Alert function
-    - Buttons: change icon
     - Buttons: pressed short / long
     - Szenes
  
@@ -81,7 +80,8 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 2.2
-    - new icons. They are named englisch. thanks to mfd
+    - update: Twig, with continuous integration
+    - new icons: They are named in englisch. thanks to mfd
     - new driver: smarthome.py with websocket-connection
     - improved driver: offline, linknx, json
     - new smart.alert js-function for alerts and logging
