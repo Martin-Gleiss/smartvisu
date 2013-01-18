@@ -37,7 +37,8 @@
     {{ phone.missedlist('phonelist', 'Telefonliste', 5) }} -->
     
     <hr>
-    
+    {% import "widget_calendar.html" as calendar2 %}
+    {{ calendar2.list('calendarlist2', 'Abfalltermine', 3, '', 'http://www.google.com/calendar/feeds/') }}
     {% import "calendar.html" as calendar %}
     {{ calendar.list('calendarlist', 'Kalender', 5) }}    
     

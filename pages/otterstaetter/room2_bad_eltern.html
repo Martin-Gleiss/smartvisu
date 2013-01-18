@@ -4,84 +4,119 @@
  * @author      Martin Gleiß
  * @copyright   2012
  * @license     GPL <http://www.gnu.de>
- * ----------------------------------------------------------------------------- 
+ * -----------------------------------------------------------------------------
  */
- 
+
 
 {% extends "rooms.html" %}
 
 {% block content %}
 
-    <h1><img class="icon" src='{{ icon0 }}szene_toilette.png'/>Bad Eltern</h1>
-    
+    <h1><img class="icon" src='{{ icon0 }}scene_bathroom.png'/>Bad Eltern</h1>
+
     <div class="preblock">
-        
+	<table width="100%">
+		<tr>
+		<td align="left" width="50%">
+		</td>
+		<td align="right">
+		</td>
+		<td align="right" padding="20">
+		{{ basic.symbol('pir1', 'bad-eltern_praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
+			 {{ basic.symbol('pir2', 'bad-eltern_praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
+		</td>
+		</tr>
+	</table>
+
     </div>
-        
+
     <div class="block">
     <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-    
+
     	<div data-role="collapsible" data-collapsed="false" >
             <h3>Licht</h3>
             {{ device.dimmer('light1', 'Deckenstrahler', 'bad-eltern_beleuchtung_decke_schalten', 'bad-eltern_beleuchtung_decke_dimmwert') }}
-           <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'bad-eltern_spiegel_schalten', icon1~'licht_licht.png', icon0~'licht_licht.png') }} </td><td>Spiegelbeleuchtung</td></tr></table>
+           <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'bad-eltern_spiegel_schalten', icon1~'light_mirror.png', icon0~'light_mirror.png') }} </td><td>Spiegelbeleuchtung</td></tr></table>
 	    {% import "widget_rgb.html" as rgb %}
-	    {{ rgb.rgb('rgb1', 'Indirekte Beleuchtung', 'bad-eltern_rgb_indirekt_schalten', 'bad-eltern_rot_indirekt_dimmwert', 'bad-eltern_gruen_indirekt_dimmwert', 'bad-eltern_blau_indirekt_dimmwert') }}</p>
+	    {{ rgb.rgb('rgb1', 'Indirekte Beleuchtung', 'bad-eltern_rgb_indirekt_schalten', 'bad-eltern_rot_indirekt_dimmwert', 'bad-eltern_gruen_indirekt_dimmwert', 'bad-eltern_blau_indirekt_dimmwert',0,150) }}</p>
       	</div>
-    </div>    
+    </div>
     </div>
 
 
     <div class="block">
     <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-    
+
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Rollladen</h3>
             {% import "widget_shutter.html" as shutter %}
-		{{ shutter.one ('shutter1', 'Tür', 'bad-eltern_rollladen_fahren', 'bad-eltern_rollladen_stopp', 
+		{{ shutter.one ('shutter1', 'Tür', 'bad-eltern_rollladen_fahren', 'bad-eltern_rollladen_stopp',
 			'bad-eltern_rollladen_position', 'bad-eltern_rollladen_beschatten' ) }}
         </div>
-    	
+
     	<div data-role="collapsible">
             <h3>&nbsp;</h3>
             <p></p>
-        </div>    	
-    </div>    
+        </div>
+    </div>
     </div>
 
     <div class="block">
     <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-    
+
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Musik</h3>
             {% import "multimedia.html" as multi %}
-			{{ multi.music ('music1', 'bad-eltern_musik_play', 'bad-eltern_musik_stopp', 'bad-eltern_musik_vor-ruecklauf', 'bad-eltern_musik_weiter-zurueck', 'bad-eltern_musik_position', 'bad-eltern_musik_lautstaerke', 'bad-eltern_musik_stumm', 'bad-eltern_musik_titel') }}
+			{{ multi.music ('music1', 'bad-eltern_musik_play', 'bad-eltern_musik_stopp', 'bad-eltern_musik_vor-ruecklauf', 'bad-eltern_musik_weiter-zurueck', 'bad-eltern_musik_position', 'bad-eltern_musik_lautstaerke', 'bad-eltern_musik_stumm', '') }}
 
         </div>
-    	
+
     	<div data-role="collapsible">
-            <h3>Details</h3>
-		<!--<iframe src="http://ip-server:8080/mobile.html" width="100%" style="height:100%;" seamless></iframe>-->
+            <h3>VLC Details</h3>
+            <!--<iframe src="http://server:8010/mobile.html" width="100%" style="height:100%;" seamless></iframe>-->
+        </div>
+    </div>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+	<div data-role="collapsible" data-collapsed="false">
+            <h3>Status</h3>
+		<table width="100%">
+			<tr>
+				<td align="left">
+        	{{ basic.symbol('status1', 'bad-eltern_waschmaschine_status', 'Waschmaschine ein', icon1~'control_on_off.png') }}
+		     {{ basic.symbol('status2', 'bad-eltern_waschmaschine_status', 'Waschmaschine aus', icon0~'control_on_off.png', 0) }}
+				</td><td align="left">
+		{{ basic.symbol('status3', 'bad-eltern_trockner_status', 'Trockner ein', icon1~'control_on_off.png') }}
+		{{ basic.symbol('status4', 'bad-eltern_trockner_status', 'Trockner aus', icon0~'control_on_off.png', 0) }}
+				</td>
+			</tr>
+		</table>
 	</div>
-    </div>    
-    </div> 
-          
+	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>
+    </div>
+    </div>
+
   <!--  <div class="block">
     <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-    
+
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Raumtemperatur</h3>
-            {{ device.rtr('bad-eltern_rtr', 'Heizung', 'bad-eltern_temperatur_luft', 'bad-eltern_heizung_sollwert', 
+            {{ device.rtr('bad-eltern_rtr', 'Heizung', 'bad-eltern_temperatur_luft', 'bad-eltern_heizung_sollwert',
                 'bad-eltern_heizung_komfort', 'bad-eltern_heizung_nacht', 'bad-eltern_heizung_frost', 'bad-eltern_heizung_schalten') }}
         </div>
-    	
+
     	<div data-role="collapsible">
             <h3>&nbsp;</h3>
             <p></p>
         </div>
-      	
-    </div>          
-    </div>-->
-    
+
+    </div>
+    </div>   -->
+
 {% endblock %}
 
