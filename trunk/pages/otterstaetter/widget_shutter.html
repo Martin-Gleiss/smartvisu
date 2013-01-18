@@ -23,8 +23,8 @@
         <tr>
 		<td>
 			<span data-role="controlgroup" data-type="horizontal"> 
-				{{ basic.button(id|_('up'), gad_move, '', icon0~'steuer_auf.png', 0, 'mini') }}
-				{{ basic.button(id|_('down'), gad_move, '', icon0~'steuer_ab.png', 1, 'mini') }}
+				{{ basic.button(id|_('up'), gad_move, '', icon0~'control_arrow_up.png', 0, 'mini') }}
+				{{ basic.button(id|_('down'), gad_move, '', icon0~'control_arrow_down.png', 1, 'mini') }}
 			</span>
 		</td> 
         </tr>
@@ -32,7 +32,7 @@
             <td valign="top">
 		<span data-role="controlgroup" data-type="horizontal"> 
 		  {% if gad_stop %} {{ basic.button(id|_('stop'), gad_stop, '', icon0~'audio_stop.png', 1, 'mini') }} {% endif %}
-                  {% if gad_shade %} {{ basic.button(id|_('shade'), gad_shade, '', icon0~'fts_rollo.png', 1, 'mini') }} {% endif %}
+                  {% if gad_shade %} {{ basic.button(id|_('shade'), gad_shade, '', icon0~'fts_shutter_50.png', 1, 'mini') }} {% endif %}
 		</span></td>
         </tr>
         </table>
@@ -63,8 +63,8 @@
         <tr>
 		<td>
         		<span data-role="controlgroup" data-type="horizontal"> 
-				{{ basic.button(id|_('up'), gad_move, '', icon0~'steuer_auf.png', 0, 'mini') }}
-				{{ basic.button(id|_('down'), gad_move, '', icon0~'steuer_ab.png', 1, 'mini') }}
+				{{ basic.button(id|_('up'), gad_move, '', icon0~'control_arrow_up.png', 0, 'mini') }}
+				{{ basic.button(id|_('down'), gad_move, '', icon0~'control_arrow_down.png', 1, 'mini') }}
 			</span>
 		</td>  
         </tr>
@@ -72,7 +72,7 @@
             <td valign="bottom" align="center">
 		<span data-role="controlgroup" data-type="horizontal">
                 {% if gad_stop %} {{ basic.button(id|_('stop'), gad_stop, '', icon0~'audio_stop.png', 1, 'mini') }} {% endif %}
-				{% if gad_shade %} {{ basic.button(id|_('shade'), gad_shade, '', icon0~'fts_rollo.png', 1, 'mini') }} {% endif %}
+				{% if gad_shade %} {{ basic.button(id|_('shade'), gad_shade, '', icon0~'fts_shutter_50.png', 1, 'mini') }} {% endif %}
 		</span>
             </td>
         </tr>
@@ -103,7 +103,7 @@
         </tr>
 	 <tr>
 	    <td valign="bottom">{% if gad_shade %}
-		 {{ basic.button(id|_('shade'), gad_shade, 'Beschatten', icon0~'fts_rollo.png', 1, 'mini') }}{% endif %}
+		 {{ basic.button(id|_('shade'), gad_shade, 'Beschatten', icon0~'fts_shutter_50.png', 1, 'mini') }}{% endif %}
 	    </td></tr>
         </table>
     </div>        

@@ -12,7 +12,7 @@
 
 {% block content %}
 
-    <h1><img class="icon" src='{{ icon0 }}szene_toilette.png'/>Bad Kinder</h1>
+    <h1><img class="icon" src='{{ icon0 }}scene_bathroom.png'/>Bad Kinder</h1>
     
     <div class="preblock">
 
@@ -24,7 +24,7 @@
     	<div data-role="collapsible" data-collapsed="false" >
             <h3>Licht</h3>
             {{ device.dimmer('light1', 'Deckenstrahler', 'bad-kinder_beleuchtung_decke_schalten', 'bad-kinder_beleuchtung_decke_dimmwert') }}
-           <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'bad-kinder_spiegel_schalten', icon1~'licht_licht.png', icon0~'licht_licht.png') }} </td><td>Spiegelbeleuchtung</td></tr></table>
+           <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'bad-kinder_spiegel_schalten', icon1~'light_mirror.png', icon0~'light_mirror.png') }} </td><td>Spiegelbeleuchtung</td></tr></table>
       	</div>
     	
     	<div data-role="collapsible">

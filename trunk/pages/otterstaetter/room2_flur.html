@@ -4,60 +4,64 @@
  * @author      Martin Gleiß
  * @copyright   2012
  * @license     GPL <http://www.gnu.de>
- * ----------------------------------------------------------------------------- 
+ * -----------------------------------------------------------------------------
  */
- 
+
 
 {% extends "rooms.html" %}
 
 {% block content %}
 
-    <h1><img class="icon" src='{{ icon0 }}szene_treppe.png'/>Flur</h1>
-    
+    <h1><img class="icon" src='{{ icon0 }}scene_stairs.png'/>Flur</h1>
+
     <div class="preblock">
 	<table width="100%">
 		<tr>
 		<td align="left" width="50%">
 		</td>
 		<td align="right">
-		{{ basic.symbol('rm1', 'flur_rm_alarm', '', icon1~'secur_rauchmelder.png',1, 'mini') }}
-		     {{ basic.symbol('rm2', 'flur_rm_alarm', '', icon0~'secur_rauchmelder.png', 0, 'mini') }}
-		{{ basic.symbol('rm3', 'flur_rm_stoerung', '', icon1~'meld_service.png',1, 'mini') }}
-		     {{ basic.symbol('rm4', 'flur_rm_stoerung', '', icon0~'meld_service.png', 0, 'mini') }}
+		{{ basic.symbol('rm1', 'flur_rm_alarm', '', icon1~'secur_smoke_detector.png',1, 'mini') }}
+		     {{ basic.symbol('rm2', 'flur_rm_alarm', '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
+		{{ basic.symbol('rm3', 'flur_rm_stoerung', '', icon1~'message_service.png',1, 'mini') }}
+		     {{ basic.symbol('rm4', 'flur_rm_stoerung', '', icon0~'message_service.png', 0, 'mini') }}
+		</td>
+		<td align="right" padding="20">
+		{{ basic.symbol('pir1', 'flur_praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
+			 {{ basic.symbol('pir2', 'flur_praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
 		</td>
 		</tr>
 	</table>
     </div>
-        
+
     <div class="block">
     <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
     	<div data-role="collapsible" data-collapsed="false" >
             <h3>Licht</h3>
             {{ device.dimmer('light1', 'Deckenstrahler', 'flur_beleuchtung_decke_schalten', 'flur_beleuchtung_decke_dimmwert') }}
-            <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'dachboden_beleuchtung_schalten', icon1~'licht_licht.png', icon0~'licht_licht.png') }} </td><td>Dachboden</td></tr></table>
+            <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'dachboden_beleuchtung_schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Dachboden</td></tr></table>
             {% import "widget_rgb.html" as rgb %}
 	        {{ rgb.rgb('rgb1', 'Treppenbeleuchtung', 'diele_rgb_treppe_schalten', 'diele_rot_treppe_dimmwert', 'diele_gruen_treppe_dimmwert', 'diele_blau_treppe_dimmwert') }}
         </div>
 
-    </div>    
     </div>
-        
+    </div>
+
    <!-- <div class="block">
     <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-    
+
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Raumtemperatur</h3>
-            {{ device.rtr('flur_rtr', 'Heizung', 'flur_temperatur_luft', 'flur_heizung_sollwert', 
+            {{ device.rtr('flur_rtr', 'Heizung', 'flur_temperatur_luft', 'flur_heizung_sollwert',
                 'flur_heizung_komfort', 'flur_heizung_nacht', 'flur_heizung_frost', 'diele_heizung_schalten') }}
         </div>
-    	
+
     	<div data-role="collapsible">
             <h3>&nbsp;</h3>
             <p></p>
         </div>
-      	
-    </div>    
+
+    </div>
     </div>-->
-    
+
 {% endblock %}
 
