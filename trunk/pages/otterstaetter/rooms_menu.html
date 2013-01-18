@@ -11,6 +11,27 @@
 <ul data-role="listview" data-dividertheme="c">
     <li data-role="list-divider">Erdgeschoss</li>
     <li data-icon="false">
+		<a href="index.php?page=room1_essen">
+            <img class="icon" src="{{ icon0 }}scene_dinner.png"/><h3>Küchen-, Ess- und Wohnbereich</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('kueche_temperatur', 'essen_temperatur_luft', ' °C') }} <br />
+				{{ basic.symbol('rm1', 'kueche_rm_alarm', '', icon1~'secur_smoke_detector.png', 1) }}
+				     {{ basic.symbol('rm2', 'kueche_rm_alarm', '', icon0~'secur_smoke_detector.png', 0) }}
+				{{ basic.symbol('rm3', 'kueche_rm_stoerung', '', icon1~'message_service.png', 1) }}
+				     {{ basic.symbol('rm4', 'kueche_rm_stoerung', '', icon1~'message_service.png', 0) }}
+				&nbsp;&nbsp;{{ basic.symbol('rm5', 'wohnen_rm_alarm', 'Wohnen', icon1~'secur_smoke_detector.png', 1) }}
+		     		{{ basic.symbol('rm6', 'wohnen_rm_alarm', '', icon0~'secur_smoke_detector.png', 0) }}
+				{{ basic.symbol('rm7', 'wohnen_rm_stoerung', '', icon1~'message_service.png', 1) }}
+		     		{{ basic.symbol('rm8', 'wohnen_rm_stoerung', '', icon0~'message_service.png', 0) }}
+				<!--{{ basic.symbol('kueche_heizung', 'kueche_heizung_schalten', '', icon1~'sani_floor_heating.png') }}
+				{{ basic.symbol('essen_heizung', 'essen_heizung_schalten', '', icon1~'sani_floor_heating.png') }}
+				{{ basic.symbol('wohnen_heizung', 'wohnen_heizung_schalten', '', icon1~'sani_floor_heating.png') }} -->
+				&nbsp;&nbsp;&nbsp;{{ basic.symbol('pir1', 'koch-wohn_praesenz', '', icon1~'message_presence.png', 1) }}
+				    {{ basic.symbol('pir2', 'koch-wohn_praesenz', '', icon0~'message_presence.png', 0) }}
+            </div>
+        </a>
+    </li>
+    <!--<li data-icon="false">
         <a href="index.php?page=room1_kueche">
             <img class="icon" src="{{ icon0 }}scene_cooking.png"/><h3>Küche</h3>
             <div class="ui-li-aside">
@@ -19,7 +40,7 @@
 				     {{ basic.symbol('rm2', 'kueche_rm_alarm', '', icon0~'secur_smoke_detector.png', 0) }}
 				{{ basic.symbol('rm3', 'kueche_rm_stoerung', '', icon1~'message_service.png', 1) }}
 				     {{ basic.symbol('rm4', 'kueche_rm_stoerung', '', icon0~'message_service.png', 0) }}
-				<!--{{ basic.symbol('kueche_heizung', 'kueche_heizung_schalten', '', icon1~'sani_floor_heating.png') }}-->
+				<!--{{ basic.symbol('kueche_heizung', 'kueche_heizung_schalten', '', icon1~'sani_floor_heating.png') }}
 				&nbsp;&nbsp;&nbsp;{{ basic.symbol('pir1', 'kueche_praesenz', '', icon1~'message_presence.png', 1) }}
 				    {{ basic.symbol('pir2', 'kueche_praesenz', '', icon0~'message_presence.png', 0) }}
             </div>
@@ -30,7 +51,7 @@
             <img class="icon" src="{{ icon0 }}scene_dinner.png"/><h3>Esszimmer</h3>
             <div class="ui-li-aside">
                 {{ basic.float('essen_temperatur', 'essen_temperatur_luft', ' °C') }} <br />
-                <!-- {{ basic.symbol('essen_heizung', 'essen_heizung_schalten', '', icon1~'sani_floor_heating.png') }} -->
+                <!-- {{ basic.symbol('essen_heizung', 'essen_heizung_schalten', '', icon1~'sani_floor_heating.png') }}
                 &nbsp;&nbsp;&nbsp;{{ basic.symbol('pir3', 'essen_praesenz', '', icon1~'message_presence.png', 1) }}
 				    {{ basic.symbol('pir4', 'essen_praesenz', '', icon0~'message_presence.png', 0) }}
             </div>
@@ -45,12 +66,12 @@
 		     		{{ basic.symbol('rm6', 'wohnen_rm_alarm', '', icon0~'secur_smoke_detector.png', 0) }}
 				{{ basic.symbol('rm7', 'wohnen_rm_stoerung', '', icon1~'message_service.png', 1) }}
 		     		{{ basic.symbol('rm8', 'wohnen_rm_stoerung', '', icon0~'message_service.png', 0) }}
-		        <!-- {{ basic.symbol('wohnen_heizung', 'wohnen_heizung_schalten', '', icon1~'sani_floor_heating.png') }} -->
+		        <!-- {{ basic.symbol('wohnen_heizung', 'wohnen_heizung_schalten', '', icon1~'sani_floor_heating.png') }}
 		        &nbsp;&nbsp;&nbsp;{{ basic.symbol('pir5', 'essen_praesenz', '', icon1~'message_presence.png', 1) }}
 				    {{ basic.symbol('pir6', 'essen_praesenz', '', icon0~'message_presence.png', 0) }}
             </div>
         </a>
-    </li>
+    </li>-->
     <li data-icon="false">
         <a href="index.php?page=room1_buero">
             <img class="icon" src="{{ icon0 }}scene_office.png"/><h3>Büro</h3>

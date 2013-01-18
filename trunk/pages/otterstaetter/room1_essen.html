@@ -12,7 +12,22 @@
 
 {% block content %}
 
-    <h1><img class="icon" src='{{ icon0 }}scene_dinner.png'/>Esszimmer</h1>
+    <!--<h1><img class="icon" src='{{ icon0 }}scene_dinner.png'/>Esszimmer</h1>-->
+
+    <style>
+		.nav-custom .ui-btn .ui-btn-inner { padding-top: 40px !important; }
+		.nav-custom .ui-btn .ui-icon { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
+		#kochen .ui-icon { background:  url({{ icon0 }}scene_cooking.png) 50% 50% no-repeat; background-size: 36px 36px; }
+		#essen .ui-icon { background:  url({{ icon0 }}scene_dinner.png) 50% 50% no-repeat; background-size: 36px 36px;  }
+		#wohnen .ui-icon { background:  url({{ icon0 }}it_television.png) 50% 50% no-repeat;  background-size: 36px 36px; }
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=room1_kueche" id="kochen" data-icon="custom">Kochbereich</a></li>
+			<li><a href="index.php?page=room1_essen" class="ui-btn-active" id="essen" data-icon="custom">Essbereich</a></li>
+			<li><a href="index.php?page=room1_wohnen" id="wohnen" data-icon="custom">Wohnbereich</a></li>
+		</ul>
+	</div>
 
     <div class="preblock">
 	<table width="100%">
