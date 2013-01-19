@@ -115,7 +115,10 @@ var io = {
     * 
     * @param      the item         
     */         
-    update: function(item) {
+    update: function(item, val) {
+        if (val)
+            io.buffer[item] = val;
+            
         var listeners = io.listeners[item];
         if (listeners) {
             for (var i = 0; i < listeners.length; i++) {
@@ -152,7 +155,6 @@ var io = {
     * @param      the value 
     */
     write: function(item, val) {
-        io.buffer[item] = val;
         io.put(item, val);
     },
     

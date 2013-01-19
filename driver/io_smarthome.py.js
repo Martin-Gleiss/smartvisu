@@ -137,7 +137,7 @@ var io = {
                 }
             }
         }
-	},
+	}, 
 	
   /**
     * Does a read-request and adds the result to the buffer
@@ -145,7 +145,6 @@ var io = {
     * @param      the item      
     */
 	read: function(item) {
-	   io.get(item);
     },
     
   /**
@@ -155,7 +154,7 @@ var io = {
     * @param      the value 
     */
     write: function(item, val) {
-        io.put(item, val);
+        io.send([ 'item', [ item, val ]]);
     },
     
   /**
@@ -167,7 +166,6 @@ var io = {
    	init: function(address, port) {
    	    io.address = address;
    	    io.port = port;
-        io.stop();
         io.remove();
     },
     
@@ -175,129 +173,74 @@ var io = {
     * Lets the driver work
     */
     run: function(realtime) {
-        io.all(true);
-        
-        if (realtime)
-            io.start();   
+        io.open();   
     },
 		
 
 // -----------------------------------------------------------------------------
 // C O M M U N I C A T I O N   F U N C T I O N S
 // -----------------------------------------------------------------------------
-// The function in this paragrah may be changed. They are all private and are
+// The functions in this paragrah may be changed. They are all private and are
 // only be called from the public functions above. You may add or delete some
-// to fit your requerements and your connected system.
-	
-    timer: 0,               
-    timer_run: false,
+// to fit your requirements and your connected system.
+	 
+  /**
+    * This driver uses a websocket
+    */
+    socket: false,
     
   /**
-    * The real-time pollin loop, only if there are listeners     
-    */         
-    loop: function()
-    {
-        if (io.listening())
-            io.timer = setTimeout('io.loop(); io.all();', 5000);
-    },
-    
-  /**
-    * Start the real-time values. Can only be started once
-    */         
-    start: function ()
-    {
-        if (!io.timer_run && io.listening())
-        {
-            io.loop();
-            io.timer_run = true;
-        }
-    },
-    
-  /**
-    * Stop the real-time values
-    */         
-    stop: function ()
-    {
-        clearTimeout(io.timer);
-        io.timer_run = false;
-    },
-    
-  /**
-    * Read a specific item from bus and add it to the buffer
-    */         
-	get: function(item) {
-	    $.ajax ({  url: "driver/io_linknx.php", 
-                data: ({item: item}), 
-                type: "GET",   
-                dataType: 'text',                                      
-                async: true,
-                cache: false
-            })
-            .done(function ( response ) {
-                io.buffer[item] = response;
-            })
-    },
-
-  /**
-    * Write a value to bus
-    */         
-    put: function (item, val) {
-        var timer_run = io.timer_run;
-        
-        io.stop();
-        $.ajax 
-            ({  url: "driver/io_linknx.php", 
-                data: ({item: item, val: val}), 
-                type: "GET", 
-                dataType: 'text', 
-                cache: false
-            })
-            .done(function ( response ) {
-                if (timer_run)
-                    io.start();
-            })
-    },
-	
-  /**
-    * Reads all values from bus and refreshes the pages	
-    */	 
-	all: function(force) {
-        var items = '';
-        var actual = new Object();
-        
-        // only if anyone listens
-        if (io.listening())
-        {        
-            // prepare url
+    * Opens the connection and add some handlers
+    */
+    open: function() {
+        io.socket = new WebSocket('ws://' + io.address + ':' + io.port + '/');
+        io.socket.onopen = function(){
+            io.send([ 'SmartHome.py', 1 ]);
+            var monitor = new Array();
             for (var item in io.listeners)
-                items += item + ',';
-            items = items.substr(0, items.length - 1);
-        
-            $.ajax ({  url: 'driver/io_linknx.php', 
-                    data: ({item: items}), 
-                    type: 'POST',   
-                    dataType: 'json',                                      
-                    async: true,
-                    cache: false                       
-                })
-                .done(function (response) {
-                    if (typeof(response) == 'object') {
-                        // these are the new values
-                        $.each(response, function(item, val) {
-                            actual[item] = val;
-                        })
-                        
-                        for (var item in actual)
-                        {
-                            // did they change? only then call update
-                            if (io.buffer[item] != actual[item] || (force))
-                                io.update(item, actual[item]);
-                        }
-                    }
-                    else
-                        smart.alert('error', '', 'linknx', response);
-                })
+                monitor.push(item);
+            io.send(['monitor', monitor]);
+        };
+        io.socket.onmessage = function(event) {
+            var item, val;
+            var data = JSON.parse(event.data);
+            console.log("io (smarthome.py): receiving data: " + event.data);
+            command = data[0];
+            delete data[0];
+            switch(command) {
+                case 'item':
+                    for (var i = 1; i < data.length; i++) {
+                        item = data[i][0];
+                        val = data[i][1];
+                        if ( data[i].length > 2 ) {
+                            // not supported: data[i][2]; options for visu
+                        };
+                        io.update(item, val);
+                    };
+                    break;
+                case 'rrd':
+                    break;
+                case 'dialog':
+                    smart.alert('info', '', data[1][0], data[1][1]);
+            };
+        };
+        io.socket.onerror = function(error){
+            smart.alert('error', '', 'smarthome.py', 'Websocket error: ' + error);
+        };
+        io.socket.onclose = function(){
+            smart.alert('error', '', 'smarthome.py', 'Could not connect to smarthome.py server!');
+        };
+    },
+    
+  /**
+    * Sends data to the connected system
+    */         
+    send: function(data) {
+        if (io.socket.readyState == 1) {
+            io.socket.send(unescape(encodeURIComponent(JSON.stringify(data))));
+            console.log('io (smarthome.py): sending data: ' + JSON.stringify(data));
         }
-    }
+    },
+    
 
 }

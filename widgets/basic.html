@@ -63,7 +63,7 @@
  */
 {% macro float(id, gad, unit, tag) %}
     /** Design */
-    <{{ tag|default('span') }} id="{{ page }}-{{ id }}">0.0</{{ tag|default('span') }}>
+    <{{ tag|default('span') }} id="{{ page }}-{{ id }}" data-widget="basic.float" data-item="{{ gad }}">0.0</{{ tag|default('span') }}>
 
     /** Events */
     <script type="text/javascript">
@@ -97,6 +97,14 @@
             io.write('{{ gad }}', ($('#{{ page }}-{{ id }}:checked').val() == 'on' ? 1 : 0));
         });
     </script>    
+{% endmacro %}
+
+
+{% macro checkbox_v2(id, gad, txt) %}
+
+    <label><input id="{{ page }}-{{ id }}" data-widget="basic.checkbox" data-item="{{ gad }}"
+        type="checkbox"/>{{ txt }}</label>  
+        
 {% endmacro %}
 
 
@@ -384,9 +392,9 @@
             var val = Math.floor((y / 160 - 10 / 160) * {{ max|default(255) }} / {{ step|default(5) }}) * {{ step|default(5) }};
                 val = Math.max({{ min|default(0) }}, Math.min(val, {{ max|default(255) }}));
                 
-	        io.write('{{ gad_pos }}', val);
 	        io.update('{{ gad_pos }}', val);
-        });
+            io.write('{{ gad_pos }}', val);
+	    });
     </script>    
 {% endmacro %} 
 

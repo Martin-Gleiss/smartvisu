@@ -16,7 +16,7 @@
     
 
 // -----------------------------------------------------------------------------
-// Communication
+// C O M M U N I C A T I O N
 // -----------------------------------------------------------------------------
 
   /**
@@ -41,7 +41,7 @@
     
 
 // -----------------------------------------------------------------------------
-// User-Interface
+// U S E R - I N T E R F A C E
 // -----------------------------------------------------------------------------
     
   /**
@@ -56,7 +56,7 @@
     * smartVISU supports different projects, located under 'pages'
     * this ist the directory for your project    
     */
-    define ('config_pages',                 'docu');
+    define ('config_pages',                 'otterstaetter');
    
   /**
     * Select your language. Some widgets are multilanguage 
@@ -85,7 +85,7 @@
 
 
 // -----------------------------------------------------------------------------
-// Widgets
+// W I D G E T S
 // -----------------------------------------------------------------------------
 
   /**
@@ -149,15 +149,10 @@
     
 
 // -----------------------------------------------------------------------------
-// Common
+// C O M M O N
 // -----------------------------------------------------------------------------
     
 // Normaly, no need to change values here!
-
-  /**
-    * Path of smartVISU
-    */
-    define ('const_debug',                  false);
 
   /**
     * Path of smartVISU
@@ -168,6 +163,11 @@
     * Path of system-directory
     */
     define ('const_path_system',            const_path.'lib/'); 
+
+  /**
+    * Special design variable. Defines the eye cancer of using a flavor.
+    */
+    define ('const_cvsucks',                10);
     
   /**
     * The timezone
