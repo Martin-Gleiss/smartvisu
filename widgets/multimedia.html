@@ -40,7 +40,7 @@
         {% endif %}
 
         <div class="control">
-        {% if gad_mute %} {{ basic.button(id|_('mute'), gad_mute, 'Mute', icon0~'audio_audio.png', 1) }} {% endif %}
+        {% if gad_mute %} {{ basic.button(id|_('mute'), gad_mute, 'Mute', icon0~'audio_volume_mute.png', 1) }} {% endif %}
         {% if gad_repeat %} {{ basic.dual(id|_('repeat'), gad_repeat, icon1~'audio_repeat.png', icon0~'audio_repeat.png') }} {% endif %}
         {% if gad_playlist %} {{ basic.button(id|_('playlist'), gad_playlist, 'Default Playlist', icon0~'audio_playlist.png', 1) }} {% endif %}
         </div>
