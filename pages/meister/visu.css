@@ -1,0 +1,19 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+ 
+@CHARSET "UTF-8";
+
+.page-bg { 
+    background-image: url('../../pics/bg/greenhand.png');
+}
+
+#widget_device_shutter-shutter2 {
+background-image: url('../../pics/shutter/shutter_ocean.jpg');
+} 
