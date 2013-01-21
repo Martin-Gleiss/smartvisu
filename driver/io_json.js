@@ -106,8 +106,14 @@ var io = {
     * List all items and the number of listeners in console.log
     */         
 	list: function() {
-        for (var item in this.listeners)
-            console.log("io: " + io.listeners[item].length + " widget(s) listen on '" + item + "'");
+	    var items = 0;
+        var listeners = 0;
+        for (var item in this.listeners) {
+            console.log("[io] " + io.listeners[item].length + " widget(s) listen on '" + item + "'");
+            listeners += io.listeners[item].length;
+            items++;
+        }
+        console.log("[io] --> " + listeners + " widget(s) listen on " + items + " items.");
     },
     
   /**
