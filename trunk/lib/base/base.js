@@ -7,6 +7,87 @@
  * ----------------------------------------------------------------------------- 
  */
  
+ 
+ 
+/**
+* Class for displaying notifications and notes in smartVISU
+*/
+var note = {
+
+    i: 0,
+    
+    // a list with all values, all communication it through the buffer
+    messages: new Object(),
+    
+  /**
+    *  Checks if there are any messages 
+    */            
+    exists: function() {
+        var ret = false;
+        
+        for (var i in note.messages)
+            ret = true;
+        
+        return ret;        
+    },
+    
+  /**
+    * Add a new note to add
+    */     
+    add: function(status, link, title, text){
+        note.i++;
+        note.messages[note.i] = Array();
+        note.messages[note.i] = ({status: status, link: link, title: title, text:text});   
+    },
+    
+  /**
+    * Removes a note, or all it no id is given
+    */         
+    remove: function(id) {
+        if (id !== undefined)
+            delete io.messages[id];
+        else
+            io.messages = new Object(); 
+        
+        $('.alert img').attr('src', '');
+        $('.alert a').attr('href', '');
+        $('.alert').hide(); 
+    },
+    
+    display: function() {
+        var message = note.messages[1];
+    
+        if (message)
+            {
+            if (message.status == 'ok')
+                $('.alert img, .alertx img').attr('src', 'pages/base/pics/alert_ok.png');
+            else if (message.status == 'info')
+                $('.alert img, .alertx img').attr('src', 'pages/base/pics/alert_info.png');
+            else if (message.status == 'error')
+                $('.alert img, .alertx img').attr('src', 'pages/base/pics/alert_error.png');
+            else if (message.status == 'update')
+                $('.alert img, .alertx img').attr('src', 'pages/base/pics/alert_update.png');
+            else
+                $('.alert img').attr('src', 'pages/base/pics/alert.png');
+            
+            if (message.link != '')
+                $('.alert a').attr('href', message.link);
+            
+            if (message.title != '' || message.text != '') {
+                $('.alert a').attr('href', '#alertx');
+                $('.alertx h1').html(message.title);
+                $('.alertx p').html(message.text);
+            }   
+            
+            $('.alert').show();
+            
+            // log to console
+            console.log('[note.' + message.status + '] ' + message.title + ': ' + message.text);
+            }    
+    }
+};
+
+
    
 /**
  * -----------------------------------------------------------------------------

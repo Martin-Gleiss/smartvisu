@@ -9,7 +9,6 @@
 <!DOCTYPE html> 
 
 <html> 
-
 <head> 
 	<title>{{ config_title }}</title> 
 	
@@ -35,19 +34,6 @@
     <script type="text/javascript" src="lib/base/base.js"></script>
     <script type="text/javascript" src="driver/io_{{ config_driver }}.js"></script>
 	
-    <script type="text/javascript">
-        io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
-        // console.log('io: init');
-        
-        $(document).on('pageshow', function(){
-            io.run({{ config_driver_realtime }});
-            // io.list();
-            // console.log('io: run');
-        });
-        
-        //$.mobile.page.prototype.options.domCache = true;
-    </script>  
-    
     {% block head %}{% endblock %}
 	
 	{% import "lib.html" as lib %}
@@ -57,6 +43,20 @@
 
 
 <body> 
+<script type="text/javascript">
+    io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
+    // console.log('io: init');
+    
+    $(document).on('pageshow', function(){
+        io.run({{ config_driver_realtime }});
+        note.display();
+        // io.list();
+        // console.log('io: run');
+    });
+    
+    $.mobile.page.prototype.options.domCache = true;
+</script>  
+
 
 <div data-role="page" id="{{ page }}" data-theme="a">
     <div data-role="header" data-position="fixed" data-tap-toggle="false">
@@ -86,9 +86,9 @@
     
     <div class="page-bg"></div> 
 	
-    {% block footer %}{% endblock %}
+	{% block footer %}{% endblock %}
 </div>
 
-</body>
 
+</body>
 </html>
