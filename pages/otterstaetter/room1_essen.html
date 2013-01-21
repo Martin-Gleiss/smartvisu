@@ -105,9 +105,9 @@
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Musik</h3>
             {% import "multimedia.html" as multi %}
-			{{ multi.music ('music1', 'kueche_musik_play', '', '',
-			     'kueche_musik_weiter-zurueck', '', 'kueche_musik_lautstaerke',
-			     'kueche_musik_stumm', '') }}
+			{{ multi.music ('music1', 'kueche_musik_pause', 'kueche_musik_stopp', 'kueche_musik_vor-ruecklauf',
+			     'kueche_musik_weiter-zurueck', 'kueche_musik_position', 'kueche_musik_lautstaerke',
+			     'kueche_musik_stumm', 'kueche_musik_titel', 'kueche_musik_artist', 'kueche_musik_repeat' , '') }}
         </div>
 
     	<div data-role="collapsible">
