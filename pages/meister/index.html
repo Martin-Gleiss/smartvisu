@@ -13,41 +13,39 @@
 {% block sidebar %}
 
     {% import "lib.html" as lib %}
-    {% import "weather.html" as weather %}
-    {% import "calendar.html" as calendar %}
     {{ lib.updatecheck() }}
                     
-    {{ lib.digiclock('clock') }}    
+    {% import "clock.html" as clock %}
+    {{ clock.digiclock('clock') }}    
     
     <div class="center">
-       {{ now|date('l') }}, {{ now|date('d.m.Y') }}
+       {{ now|smartdate('l') }}, {{ now|smartdate() }}
     </div> 
     
     <hr>
-
-    {{ weather.current('weather') }}
+    
+    {% import "weather.html" as weather %}
+    {{ weather.current('weather') }}    
     
     <hr>
     
-    {{ weather.forecastweek('weather_forecast') }}
+    {{ weather.forecastweek('weather_forecast') }}    
     
     <hr>
-
-    {{ calendar.list('google-cal', '', 5, '#FF0000') }}
+    
+    {% import "calendar.html" as calendar %}
+    {{ calendar.list('calendarlist', 'Kalender', 5) }}    
     
     <hr>
 
     {% include 'reed_contacts.html' %}
-
-    
-    <script type="text/javascript">
-        $('img', '#menu-rooms').first().hide(); 
-        $('img', '#menu-rooms').last().show(); 
-    </script> 
+   
 {% endblock %}
 
 
 {% block content %}
+    
     {% include 'rooms_menu.html' %}
+    
 {% endblock %}
 
