@@ -45,11 +45,16 @@ class weather_yr extends weather
             $i = 0;
             foreach($xml->forecast->tabular->time as $day)
             {
+                if (config_lang == 'de')
+                    $windspeed = ' mit '.round( ((string)$day->windSpeed->attributes()->mps * 3.6), 1).' km/h';
+                else
+                    $windspeed = ' at '.round( (string)$day->windSpeed->attributes()->mps, 1).' MPH';
+                
                 if ($i == 0)
                 {
                     $this->data['current']['date']        = (string)$day->attributes()->from;
-                    $this->data['current']['conditions']  = (string)$day->symbol->attributes()->name;                 
-                    $this->data['current']['wind']        = (string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code.' at '.(string)$day->windSpeed->attributes()->mps.' MPH';                 
+                    $this->data['current']['conditions']  = $this->translate((string)$day->symbol->attributes()->name);
+                    $this->data['current']['wind']        = $this->translate((string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code).$windspeed;
                     $this->data['current']['icon']        = $this->icon((string)$day->symbol->attributes()->number);
                     $this->data['current']['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
                     $this->data['current']['more']        = (int)$day->pressure->attributes()->value.' hPa';
@@ -58,9 +63,10 @@ class weather_yr extends weather
                 
                 if ($i < 5 and $day->attributes()->period == 2)
                 {
+                    
                     $this->data['forecast'][$i]['date']        = (string)$day->attributes()->from;
-                    $this->data['forecast'][$i]['conditions']  = (string)$day->symbol->attributes()->name;                 
-                    $this->data['forecast'][$i]['wind']        = (string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code.' at '.(string)$day->windSpeed->attributes()->mps.' MPH';                 
+                    $this->data['forecast'][$i]['conditions']  = $this->translate((string)$day->symbol->attributes()->name);
+                    $this->data['forecast'][$i]['wind']        = $this->translate((string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code).$windspeed;
                     $this->data['forecast'][$i]['icon']        = $this->icon((string)$day->symbol->attributes()->number);
                     $this->data['forecast'][$i]['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
                     $this->data['forecast'][$i]['more']        = (int)$day->pressure->attributes()->value.' hPa';
@@ -73,7 +79,42 @@ class weather_yr extends weather
      
     }
 
+   /*
+    * translate and convert retrieved information
+    */
+    function translate($data)
+    {
+        $ret = $data;
+        
+        $de = array(
+            'N' => 'Nord', 'NNE' => 'Nordnordost', 'NE' => 'Nordost', 'ENE' => 'Ostnordost',
+            'E' => 'Ost', 'ESE' => 'Ostsüdost', 'SE' => 'Südost', 'SSE' => 'Südsüdost',
+            'S' => 'Süd', 'SSW' => 'Südsüdwest', 'SW' => 'Südwest', 'WSW' => 'Westsüdwest',
+            'W' => 'West', 'WNW'=> 'Westnordwest', 'NW' => 'Nordwest', 'NNW' => 'Nordnordwest',
+            
+            'clear sky' => 'klarer Himmel', 'Fair' => 'Schönwetter', 'Cloudy' => 'bewölkt',
+            'Partly cloudy' => 'leicht bewölkt', 'Rain showers' => 'Regenschauer',
+            'Rain showers with thunder' => 'Regenschauer mit Gewitter', 'Sleet showers' => 'Graupelschauer',
+            'Snow showers' => 'Schneeschauer', 'Rain' => 'Regen', 'Heavy Rain' => 'starker Regen',
+            'Rain and thunder' => 'Regen und Gewitter', 'Sleet'=> 'Graupel', 'Snow' => 'Schnee',
+            'Snow and thunder' => 'Schnee und Gewitter', 'Sleet showers and thunder' => 'Graupelschauer mit Gewitter',
+            'Fog' => 'Nebel', 'Sleet and thunder'=> 'Graupel und Gewitter',
+            
+            'Calm' => 'still', 'Light air' => 'leichter Zug', 'Light breeze' => 'leichte Brise',
+            'Gentle breeze' => 'schwache Brise' , 'Moderate breeze' => 'mäßige Brise',
+            'Fresh breeze' => 'frische Brise', 'Strong breeze' => 'starker Wind', 'Near gale' => 'steifer Wind',
+            'Gale' => 'stürmischer Wind', 'Strong gale' => 'Sturm', 'Storm' => 'schwerer Sturm',
+            'Violent storm' => 'orkanartiger Sturm' , 'Hurricane' => 'Orkan',
+            
+            'from' => 'aus'
+            );
 
+        if (config_lang == 'de')
+            $ret = str_replace(array_keys($de), array_values($de), $ret);
+            
+        return $ret;
+    }
+    
    /*
     * Icon-Mapper
     */
@@ -114,7 +155,7 @@ class weather_yr extends weather
         $icon[5]                    = "sun_7";
         $icon[6]                    = "sun_9";
         $icon[7]                    = "sun_11";
-        $icon[8]                    = "sun_13";
+        $icon[7]                    = "sun_13";
         
         $icon[9]                    = "cloud_7";
         $icon[10]                   = "cloud_8";
