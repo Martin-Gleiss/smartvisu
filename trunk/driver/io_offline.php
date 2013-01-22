@@ -23,6 +23,9 @@ class driver_offline
    
     var $filename   = ''; 
     var $fp         = null;
+    
+    // if this is set to true, all values will be written.
+    var $writeall   = false;
    
     
   /** 
@@ -96,7 +99,7 @@ class driver_offline
         $data = $this->fileread();
         
         // write if a value is given
-        if ($this->val != '')
+        if ($this->val != '' or $this->writeall)
         {
             foreach ($this->item as $item)
                 $data[$item] = $this->val;
