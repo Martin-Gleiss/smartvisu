@@ -12,24 +12,24 @@
 
 {% block content %}
     
-	<h3><img class="icon" src='{{ icon0 }}licht_licht.png'/>Beleuchtung</h3>
+	<h3><img class="icon" src='{{ icon0 }}light_light.png'/>Beleuchtung</h3>
 	<div class="preblock">
 		<span data-role="controlgroup" data-type="horizontal"> 
 		Türoffner<br />
-			{{ basic.button('DoorOpener', 'DoorOpener', '', icon0~"fts_tuer.png", '1', 'midi') }}
+			{{ basic.button('DoorOpener', 'DoorOpener', '', icon0~"fts_door.png", '1', 'midi') }}
 		</span>
 		<span data-role="controlgroup" data-type="horizontal"> 
 			Szenen<br />
-			{{ basic.button('ScenesLivingRoom0', 'ScenesLivingRoom', '', icon0~"szene_party.png", '0', 'midi') }}
-			{{ basic.button('ScenesLivingRoom1', 'ScenesLivingRoom', '', icon0~"szene_besuch_gaeste.png", '1', 'midi') }}
-			{{ basic.button('ScenesLivingRoom2', 'ScenesLivingRoom', '', icon0~"it_fernsehen.png", '2', 'midi') }}
-			{{ basic.button('ScenesLivingRoom3', 'ScenesLivingRoom', '', icon0~"licht_esstisch.png", '3', 'midi') }}
-			{{ basic.button('ScenesLivingRoom4', 'ScenesLivingRoom', '', icon0~"szene_kochen.png", '4', 'midi') }}
-			{{ basic.button('ScenesLivingRoom5', 'ScenesLivingRoom', '', icon0~"licht_licht.png", '5', 'midi') }}
+			{{ basic.button('ScenesLivingRoom0', 'ScenesLivingRoom', '', icon0~"scene_party.png", '0', 'midi') }}
+			{{ basic.button('ScenesLivingRoom1', 'ScenesLivingRoom', '', icon0~"scene_visit_guests.png", '1', 'midi') }}
+			{{ basic.button('ScenesLivingRoom2', 'ScenesLivingRoom', '', icon0~"it_television.png", '2', 'midi') }}
+			{{ basic.button('ScenesLivingRoom3', 'ScenesLivingRoom', '', icon0~"light_dinner_table.png", '3', 'midi') }}
+			{{ basic.button('ScenesLivingRoom4', 'ScenesLivingRoom', '', icon0~"scene_cooking.png", '4', 'midi') }}
+			{{ basic.button('ScenesLivingRoom5', 'ScenesLivingRoom', '', icon0~"light_light.png", '5', 'midi') }}
 		</span>
 		<span data-role="controlgroup" data-type="horizontal"> 
 		zentral aus<br />
-			{{ basic.button('Lights2ndFloorCentralSwitch', 'Lights2ndFloorCentralSwitch', '', icon0~"licht_licht.png", '0', 'midi') }}
+			{{ basic.button('Lights2ndFloorCentralSwitch', 'Lights2ndFloorCentralSwitch', '', icon0~"light_light.png", '0', 'midi') }}
 		</span>
 	</div>
     
@@ -47,7 +47,7 @@
 			<div data-role="collapsible" data-collapsed="false" >
 			<h3>LED Band RGB Farbwähler</h3>
 			<label for="Lights2ndFloorLEDSwitch">LEDBand</label>
-			{{ basic.dual('Lights2ndFloorLEDSwitch', 'Lights2ndFloorLEDSwitch', icon1~'licht_led.png', icon0~'licht_led.png', '', '', 'midi') }}
+			{{ basic.dual('Lights2ndFloorLEDSwitch', 'Lights2ndFloorLEDSwitch', icon1~'light_led.png', icon0~'light_led.png', '', '', 'midi') }}
 			{{ basic.rgb('Lights2ndFloorLEDRGB', 'Lights2ndFloorLEDRed', 'Lights2ndFloorLEDGreen', 'Lights2ndFloorLEDBlue') }}
         		</div>
 			<div data-role="collapsible" data-collapsed="true" >
@@ -69,11 +69,11 @@
 			{{ device.dimmer('LightsDiningRoom', 'Esszimmer Hängelampe', 'LightsDiningRoomSwitch', 'LightsDiningRoomDimVal') }}
 			{{ device.dimmer('LightsKitchen', 'Küche Lampe', 'LightsKitchenSwitch', 'LightsKitchenDimVal') }}
 			<label for="AmbientLightSideboardTV">Sideboard</label>        
-			{{ basic.dual('AmbientLightSideboardTVSwitch', 'AmbientLightSideboardTVSwitch', icon1~'licht_led.png', icon0~'licht_led.png', '', '', 'midi') }}
+			{{ basic.dual('AmbientLightSideboardTVSwitch', 'AmbientLightSideboardTVSwitch', icon1~'light_led.png', icon0~'light_led.png', '', '', 'midi') }}
 			<label for="Ambilight">Ambilight</label>        
-			{{ basic.dual('Ambilight', 'Ambilight', icon1~'licht_led.png', icon0~'licht_led.png', '', '', 'midi') }}
+			{{ basic.dual('Ambilight', 'Ambilight', icon1~'light_led.png', icon0~'light_led.png', '', '', 'midi') }}
 			<label for="LightsFishTanks">Aquarium</label>
-			{{ basic.dual('LightsFishTanksSwitch', 'LightsFishTanksSwitch', icon1~'licht_led.png', icon0~'licht_led.png', '', '', 'midi') }}
+			{{ basic.dual('LightsFishTanksSwitch', 'LightsFishTanksSwitch', icon1~'light_led.png', icon0~'light_led.png', '', '', 'midi') }}
         		</div>
 		</div>    
 	</div>
