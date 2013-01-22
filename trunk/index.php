@@ -64,6 +64,11 @@
             $twig->addGlobal('icon1', 'icons/bl/');
             $twig->addGlobal('icon0', 'icons/sw/');
         }
+        elseif (config_design == 'greenhornet')
+        {
+            $twig->addGlobal('icon1', 'icons/gn/');
+            $twig->addGlobal('icon0', 'icons/ws/');
+        }
         else
         {
             $twig->addGlobal('icon1', 'icons/or/');
