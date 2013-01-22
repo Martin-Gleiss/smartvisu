@@ -80,6 +80,10 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 2.2
+    - new design: greenhornet
+    - new icons: gn (green)
+    - new pages: meister (as model-home)
+    - weather: yr.no now in en and de. Special thanks to Raik Alber
     - update: Twig, with continuous integration
     - new icons: They are named in englisch. thanks to mfd
     - new driver: smarthome.py with websocket-connection
@@ -88,7 +92,7 @@ v 2.2
     - driver linknx: with error-handling
     
 v 2.1 09.01.12
-    - new pages: otterstaetter (as demo-home)
+    - new pages: otterstaetter (as model-home)
     - widget: multimedia.music for a player
     - widget: appliance.iprouter for the enertex knxnet/ip-router
     - reengineered widget: basic.slider 
