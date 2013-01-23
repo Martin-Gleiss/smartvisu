@@ -84,9 +84,7 @@ class weather_yr extends weather
     */
     function translate($data)
     {
-        $ret = $data;
-        
-        $de = array(
+        $lang['de'] = array(
             'N' => 'Nord', 'NNE' => 'Nordnordost', 'NE' => 'Nordost', 'ENE' => 'Ostnordost',
             'E' => 'Ost', 'ESE' => 'Ostsüdost', 'SE' => 'Südost', 'SSE' => 'Südsüdost',
             'S' => 'Süd', 'SSW' => 'Südsüdwest', 'SW' => 'Südwest', 'WSW' => 'Westsüdwest',
@@ -109,10 +107,7 @@ class weather_yr extends weather
             'from' => 'aus'
             );
 
-        if (config_lang == 'de')
-            $ret = str_replace(array_keys($de), array_values($de), $ret);
-            
-        return $ret;
+        return translate($lang, $data);
     }
     
    /*

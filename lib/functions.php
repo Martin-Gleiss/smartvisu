@@ -8,9 +8,30 @@
  * ----------------------------------------------------------------------------- 
  */
  
+
+// -----------------------------------------------------------------------------
+// L A N G U A G E 
+// -----------------------------------------------------------------------------
+
+  /** 
+  	* Easy translate function
+  	* 
+  	* @param expects an array $lang['de'] = array()
+  	* @param the text be parsed               	
+	*/ 
+    function translate($language, $text)
+    {
+        $ret = $text;
+        
+        if (config_lang != 'en')
+            $ret = str_replace(array_keys($language[config_lang]), array_values($language[config_lang]), $ret);
+        
+        return $ret;
+    }
+    
  
 // -----------------------------------------------------------------------------
-// Date handling
+// D A T E 
 // -----------------------------------------------------------------------------
        
   /** 
@@ -21,12 +42,15 @@
 	*/      
     function smartdate($format = '', $timestamp = '')
     {
-        $de_D = array('Sun' => 'So', 'Mon' => 'Mo', 'Tue' => 'Di', 'Wed' => 'Mi', 'Thu' => 'Do', 'Fri' => 'Fr', 'Sat' => 'Sa');
-        $de_l = array('Sunday' => 'Sonntag', 'Monday' => 'Montag', 'Tuesday' => 'Dienstag', 'Wednesday' => 'Mittwoch',
-            'Thursday' => 'Donnerstag', 'Friday' => 'Freitag', 'Saturday' => 'Samstag');
-        $de_F = array('January' => 'Januar', 'February' => 'Februar', 'March' => 'März', 'April' => 'April', 
+        $lang['de'] = array(
+            'January' => 'Januar', 'February' => 'Februar', 'March' => 'März', 'April' => 'April', 
             'May' => 'Mai', 'June' => 'Juni', 'July' => 'Juli', 'August' => 'August', 
-            'September' => 'September', 'October' => 'Oktober', 'November' => 'November', 'December' => 'Dezmeber');
+            'September' => 'September', 'October' => 'Oktober', 'November' => 'November', 'December' => 'Dezmeber',
+            
+            'Sunday' => 'Sonntag', 'Monday' => 'Montag', 'Tuesday' => 'Dienstag', 'Wednesday' => 'Mittwoch',
+            'Thursday' => 'Donnerstag', 'Friday' => 'Freitag', 'Saturday' => 'Samstag',
+            
+            'Sun' => 'So', 'Mon' => 'Mo', 'Tue' => 'Di', 'Wed' => 'Mi', 'Thu' => 'Do', 'Fri' => 'Fr', 'Sat' => 'Sa');
         
         // allowed formats
         switch ($format)
@@ -42,21 +66,15 @@
         else
             $date = date($format, $timestamp);
         
-        if (strpos($format, 'D') !== false && config_lang == 'de')
-            $date = str_replace(array_keys($de_D), array_values($de_D), $date);
-        
-        if (strpos($format, 'l') !== false && config_lang == 'de')
-            $date = str_replace(array_keys($de_l), array_values($de_l), $date);
-        
-        if (strpos($format, 'F') !== false && config_lang == 'de')
-            $date = str_replace(array_keys($de_F), array_values($de_F), $date);
+        if ((strpos($format, 'D') !== false or strpos($format, 'l') !== false or strpos($format, 'F') !== false) && config_lang != 'en')
+            $date = translate($lang, $date);
         
         return $date;
     }
     
               
 // -----------------------------------------------------------------------------
-// File handling
+// F I L E
 // -----------------------------------------------------------------------------
   
   /** 
@@ -116,5 +134,9 @@
         return $ret;
     }    
 
+    function lang()
+    {
+    }
+    
 
 ?>
