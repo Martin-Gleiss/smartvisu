@@ -45,7 +45,8 @@
                 }
                 
                 $('#{{ page }}-{{ id }}-phonelist ul').html(line).listview('refresh');
-            });
+            })
+            .error(notify.json);
         });
     </script>
 {% endmacro %}
@@ -86,7 +87,8 @@
                 }
                 
                 $('#{{ page }}-{{ id }}-phonelist ul').html(line).listview('refresh');
-            });
+            })
+            .error(notify.json);
         });
     </script>
 {% endmacro %}

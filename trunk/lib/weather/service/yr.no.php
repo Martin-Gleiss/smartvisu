@@ -75,7 +75,7 @@ class weather_yr extends weather
             }
         }
         else
-            $this->error('ERROR: yr.no read request failed!');
+            $this->error('Weather: yr.no', 'Read request failed!');
      
     }
 

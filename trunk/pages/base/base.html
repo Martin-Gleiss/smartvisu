@@ -49,7 +49,7 @@
     
     $(document).on('pageshow', function(){
         io.run({{ config_driver_realtime }});
-        note.display();
+        notify.display();
         // io.list();
         // console.log('io: run');
     });
@@ -71,6 +71,7 @@
         <div id="alertx" class="alertx" data-role="popup" data-overlay-theme="a" style="padding: 0px;">
             <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
             <div data-role="header" data-theme="c"><h1></h1><img src="pages/base/pics/trans.png"></div><p></p>
+            <div class="control"><a href="javascript:notify.remove();" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a></div>
         </div> 
     </div>
     
@@ -85,7 +86,6 @@
     </div>
     
     <div class="page-bg"></div> 
-	
 	{% block footer %}{% endblock %}
 </div>
 

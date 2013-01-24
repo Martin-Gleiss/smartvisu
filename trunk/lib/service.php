@@ -54,9 +54,9 @@ class service
   /** 
 	* sets an errormassage
 	*/      
-    public function error($message)
+    public function error($title, $message)
     {
-        $this->error[] = $message;
+        $this->error[] = array('title' => $title, 'text' => $message);
     }
     
     
@@ -96,8 +96,11 @@ class service
             $ret = $this->data; 
         }
         else
-            $ret = implode(', ', $this->error);
-        
+        {
+            header("HTTP/1.0 600 smartVISU Service Error");
+            $ret = $this->error;
+        }
+
     return json_encode($ret);
     }
        

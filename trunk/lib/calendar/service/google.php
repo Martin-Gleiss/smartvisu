@@ -61,7 +61,7 @@ class calendar_google extends calendar
             }
         }
         else
-            $this->error('ERROR: Google calender read request failed!');
+            $this->error('Calendar: Google', 'Calendar read request failed!');
     }
 }
 

@@ -12,7 +12,7 @@
 /**
 * Class for displaying notifications and notes in smartVISU
 */
-var note = {
+var notify = {
 
     i: 0,
     
@@ -32,12 +32,45 @@ var note = {
     },
     
   /**
-    * Add a new note to add
+    * Add a new error-message form a ajax error request
+    * @param    error object
+    * @param    status
+    * @param    '600 smartVISU Service Error'
+    */     
+    json: function(jqXHR, status, errorthrown) {
+        
+        var messages = jQuery.parseJSON(jqXHR.responseText)
+        
+        for(var i = 0; i < messages.length; i++) {
+            notify.add('error', '', messages[i].title, messages[i].text);
+        }
+
+        notify.display();
+    },
+
+  /**
+    * Add a new error-message
+    */     
+    error: function(title, text){
+        notify.add('error', '', title, text);
+        notify.display();
+    },
+
+  /**
+    * Add a new info-message
+    */     
+    info: function(title, text){
+        notify.add('info', '', title, text);
+        notify.display();
+    },
+
+  /**
+    * Add a new message
     */     
     add: function(status, link, title, text){
-        note.i++;
-        note.messages[note.i] = Array();
-        note.messages[note.i] = ({status: status, link: link, title: title, text:text});   
+        notify.i++;
+        notify.messages[notify.i] = Array();
+        notify.messages[notify.i] = ({status: status, link: link, title: title, text:text});   
     },
     
   /**
@@ -45,17 +78,18 @@ var note = {
     */         
     remove: function(id) {
         if (id !== undefined)
-            delete io.messages[id];
+            delete notify.messages[id];
         else
-            io.messages = new Object(); 
+            notify.messages = new Object(); 
         
+        $('.alertx').popup('close');
         $('.alert img').attr('src', '');
         $('.alert a').attr('href', '');
         $('.alert').hide(); 
     },
     
     display: function() {
-        var message = note.messages[1];
+        var message = notify.messages[1];
     
         if (message)
             {
@@ -82,7 +116,7 @@ var note = {
             $('.alert').show();
             
             // log to console
-            console.log('[note.' + message.status + '] ' + message.title + ': ' + message.text);
+            console.log('[notify.' + message.status + '] ' + message.title + ' - ' + message.text);
             }    
     }
 };
@@ -95,45 +129,7 @@ var note = {
  * ----------------------------------------------------------------------------- 
  */  
 var smart = {
-  
-  /**
-    * Displays an alert message in the top-right corner
-    */
-    alert: function(status, link, title, text) {
-    
-        if (status == 'ok')
-            $('.alert img, .alertx img').attr('src', 'pages/base/pics/alert_ok.png');
-        else if (status == 'info')
-            $('.alert img, .alertx img').attr('src', 'pages/base/pics/alert_info.png');
-        else if (status == 'error')
-            $('.alert img, .alertx img').attr('src', 'pages/base/pics/alert_error.png');
-        else if (status == 'update')
-            $('.alert img, .alertx img').attr('src', 'pages/base/pics/alert_update.png');
-        else
-            $('.alert img').attr('src', 'pages/base/pics/alert.png');
-        
-        if (link != '')
-            $('.alert a').attr('href', link);
-        
-        if (title != '' || text != '') {
-            $('.alert a').attr('href', '#alertx');
-            $('.alertx h1').html(title);
-            $('.alertx p').html(text);
-        }   
-        
-        $('.alert').show();
-        
-        // log to console
-        console.log(status + ': ' + title + ' ' + text);
-    },
-    
-    
-/**
- * -----------------------------------------------------------------------------
- * H E L P E R 
- * ----------------------------------------------------------------------------- 
- */
-    
+      
   /**
     * Converts a hsv value to rgb value
     */

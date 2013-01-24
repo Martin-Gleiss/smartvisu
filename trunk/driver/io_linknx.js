@@ -204,7 +204,7 @@ var io = {
     loop: function()
     {
         if (io.listening())
-            io.timer = setTimeout('io.loop(); io.all();', 5000);
+            io.timer = setTimeout('io.loop(); io.all();', 1000);
     },
     
   /**
@@ -301,7 +301,7 @@ var io = {
                         }
                     }
                     else
-                        smart.alert('error', '', 'linknx', response);
+                        notify.error('Driver: linknx', response);
                 })
         }
     }

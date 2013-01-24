@@ -52,7 +52,7 @@ class enertex_iprouter extends service
         $this->fp = fsockopen($this->server, '23', $errno, $errstr, 3);
 		
 		if (!$this->fp) 
-           $this->error("$errno ($errstr)");
+           $this->error('enertex IP-Router', $errstr.' ('.$errno.')');
         else
             usleep(10 * $this->delay);
     }

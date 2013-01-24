@@ -79,7 +79,9 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
-v 2.2
+v 2.2 01.02.13
+    - improved error handling and notification
+    - phone service: fritz!box v5.50. Special thanks to Stefan Vonbrunn
     - new design: greenhornet
     - new icons: gn (green)
     - new pages: meister (as model-home)

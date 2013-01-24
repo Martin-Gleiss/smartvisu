@@ -64,7 +64,7 @@ class weather_wunderground extends weather
             }
         }
         else
-            $this->error('ERROR: wounderground.com read request failed!');
+            $this->error('Weather: wounderground.com', 'Read request failed!');
     }
 
 

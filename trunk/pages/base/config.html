@@ -233,15 +233,11 @@
     <script type="text/javascript">    
         $('form').submit(function() {  
             $.post('pages/base/configure.php', $(this).serialize(), function(data){ 
-                $('#alert').show();
-                
                 if (data == 'true') {
-                    $('#alert img').attr('src', 'pages/base/pics/alert_ok.png');
                     window.setTimeout('location.reload();', {{ config_delay }});
                 } else {
-                    $('#alert img').attr('src', 'pages/base/pics/alert_error.png');
+                    notify.error('Config', 'Error saving config!');
                 }
-            
             });
             return false;
         });  
