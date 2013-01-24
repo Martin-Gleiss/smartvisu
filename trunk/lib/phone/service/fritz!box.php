@@ -76,7 +76,8 @@ class phone_fritzbox extends phone
                     );
             }
         }
-        $this->error('Phone: fritz!box', "Can't read phonelist! Got wrong or no data. Most likely fritz!box has the wrong firmware version.");
+        else
+            $this->error('Phone: fritz!box', "Can't read phonelist! Got wrong or no data. Most likely fritz!box has the wrong firmware version.");
     }
 }
 
