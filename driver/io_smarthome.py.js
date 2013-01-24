@@ -210,7 +210,7 @@ var io = {
         io.socket.onmessage = function(event) {
             var item, val;
             var data = JSON.parse(event.data);
-            console.log("io (smarthome.py): receiving data: " + event.data);
+            console.log("[io.smarthome.py] receiving data: " + event.data);
             command = data[0];
             delete data[0];
             switch(command) {
@@ -227,14 +227,14 @@ var io = {
                 case 'rrd':
                     break;
                 case 'dialog':
-                    smart.alert('info', '', data[1][0], data[1][1]);
+                    notify.info(data[1][0], data[1][1]);
             };
         };
         io.socket.onerror = function(error){
-            smart.alert('error', '', 'smarthome.py', 'Websocket error: ' + error);
+            notify.error('Driver: smarthome.py', 'Websocket error: ' + error);
         };
         io.socket.onclose = function(){
-            smart.alert('error', '', 'smarthome.py', 'Could not connect to smarthome.py server!');
+            notify.error('Driver: smarthome.py', 'Could not connect to smarthome.py server!');
         };
     },
     
@@ -244,7 +244,7 @@ var io = {
     send: function(data) {
         if (io.socket.readyState == 1) {
             io.socket.send(unescape(encodeURIComponent(JSON.stringify(data))));
-            console.log('io (smarthome.py): sending data: ' + JSON.stringify(data));
+            console.log('[io.smarthome.py] sending data: ' + JSON.stringify(data));
         }
     },
     

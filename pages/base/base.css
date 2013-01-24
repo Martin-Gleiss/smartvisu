@@ -636,7 +636,7 @@ hr {
 }
 
 .alert {
-    display1: none;
+    display: none;
     overflow: hidden;
     position: absolute;
     right: 0;
@@ -667,6 +667,11 @@ hr {
     right: 0;
     height: 37px;
     width: 60px;
+}
+
+#alertx .control {
+    margin: 5px;
+    text-align:right;
 }
 
  

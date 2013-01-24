@@ -37,17 +37,14 @@
     <script type="text/javascript">
         $('#{{ page }}').live('pagecreate',function(event, ui) {
             $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function(data) {
-                if (data) {
-                    $('#{{ page }}-{{ id }}-weather').css('background','url(lib/weather/pics/' + data.current.icon + '.png) 50% 0 no-repeat')
-                    $('#{{ page }}-{{ id }}-weather .city').html(data.city);
-                    $('#{{ page }}-{{ id }}-weather .cond').html(data.current.conditions);
-                    $('#{{ page }}-{{ id }}-weather .temp').html(data.current.temp);
-                    $('#{{ page }}-{{ id }}-weather .humi').html(data.current.more);
-                    $('#{{ page }}-{{ id }}-weather .wind').html(data.current.wind);
-                } 
-                else 
-                    $('#{{ page }}-{{ id }}-weather .city').html(data);
-            });
+                $('#{{ page }}-{{ id }}-weather').css('background','url(lib/weather/pics/' + data.current.icon + '.png) 50% 0 no-repeat')
+                $('#{{ page }}-{{ id }}-weather .city').html(data.city);
+                $('#{{ page }}-{{ id }}-weather .cond').html(data.current.conditions);
+                $('#{{ page }}-{{ id }}-weather .temp').html(data.current.temp);
+                $('#{{ page }}-{{ id }}-weather .humi').html(data.current.more);
+                $('#{{ page }}-{{ id }}-weather .wind').html(data.current.wind);
+            })
+            .error(notify.json);
         });
     </script>  
 {% endmacro %}
@@ -82,15 +79,13 @@
     <script type="text/javascript">
         $('#{{ page }}').live('pagecreate',function(event, ui){
             $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function(data) {
-                if (data) {
-                    $('#{{ page }}-{{ id }}-forecast').css('background','url(lib/weather/pics/' + data.forecast[{{ day|default(1) }}].icon + '.png) 50% 0 no-repeat')
-                    $('#{{ page }}-{{ id }}-forecast .city').html(data.city);
-                    $('#{{ page }}-{{ id }}-forecast .cond').html(data.forecast[{{ day|default(1) }}].conditions);
-                    $('#{{ page }}-{{ id }}-forecast .highlow').html(data.forecast[{{ day|default(1) }}].temp);
-                    $('#{{ page }}-{{ id }}-forecast .day').html(data.forecast[{{ day|default(1) }}].date);
-                } else 
-                     $('#{{ page }}-{{ id }}-forecast .city').html(data);
-            });
+                $('#{{ page }}-{{ id }}-forecast').css('background','url(lib/weather/pics/' + data.forecast[{{ day|default(1) }}].icon + '.png) 50% 0 no-repeat')
+                $('#{{ page }}-{{ id }}-forecast .city').html(data.city);
+                $('#{{ page }}-{{ id }}-forecast .cond').html(data.forecast[{{ day|default(1) }}].conditions);
+                $('#{{ page }}-{{ id }}-forecast .highlow').html(data.forecast[{{ day|default(1) }}].temp);
+                $('#{{ page }}-{{ id }}-forecast .day').html(data.forecast[{{ day|default(1) }}].date);
+            })
+            .error(notify.json);
         });
     </script>  
 {% endmacro %}
@@ -118,18 +113,17 @@
     <script type="text/javascript">
         $('#{{ page }}').live('pagecreate',function(event, ui){
             $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function(data) {
-                if (data) {
-                    var forecast = '';
-                    for (var i in data.forecast) {
-                        forecast += '<div class=\'day\'>'
-                        forecast += '<div>' + data.forecast[i].date + '</div>';
-                        forecast += '<img src="lib/weather/pics/' + data.forecast[i].icon + '.png" alt="' + data.forecast[i].conditions + '" title="' + data.forecast[i].conditions + '" />';
-                        forecast += '<div>' + data.forecast[i].temp + '</div>';
-                        forecast += '</div>';
-                    }
-                    $('#{{ page }}-{{ id }}-forecastweek').html(forecast);
+                var forecast = '';
+                for (var i in data.forecast) {
+                    forecast += '<div class=\'day\'>'
+                    forecast += '<div>' + data.forecast[i].date + '</div>';
+                    forecast += '<img src="lib/weather/pics/' + data.forecast[i].icon + '.png" alt="' + data.forecast[i].conditions + '" title="' + data.forecast[i].conditions + '" />';
+                    forecast += '<div>' + data.forecast[i].temp + '</div>';
+                    forecast += '</div>';
                 }
-            });
+                $('#{{ page }}-{{ id }}-forecastweek').html(forecast);
+            })
+            .error(notify.json);
         });
     </script> 
      

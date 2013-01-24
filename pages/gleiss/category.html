@@ -41,26 +41,7 @@
     <a href="index.php?page=category_house">Haus</a>&nbsp;
     <a href="index.php?page=category_phone">Telefonliste</a>&nbsp;
     <a href="index.php?page=category_calendar">Terminkalender</a>&nbsp;
-    
-    
-    <a id="myalerton" class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true">ON</a>
 
-    <script type="text/javascript">
-        $('#myalerton').unbind('click').bind('click', function() {
-            note.add('info', '', 'Hallo Marcus', 'Noch mehr Probleme');
-            note.display();
-        });
-    </script>    
-
-    <a id="myalertoff" class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true">OFF</a>
-
-    <script type="text/javascript">
-        $('#myalertoff').unbind('click').bind('click', function() {
-            note.remove();
-        });
-    </script>    
-
-    
 {% endblock %}
 
 

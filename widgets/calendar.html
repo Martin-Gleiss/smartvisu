@@ -28,26 +28,24 @@
     <script type="text/javascript">
         $('#{{ page }}').live('pagecreate',function(event, ui){
             $.getJSON('lib/calendar/service/{{ config_calendar_service }}.php?url={{ config_calendar_url|url_encode() }}&count={{ count|default(25) }}', function(data) {
-                if (data instanceof Array) {
-                    var line = '';
-                    var sum = 1;
-                    for (var i in data) {
-                        ret  = '<img style="background: ' + data[i].color + ';" class="icon" src="' + data[i].icon + '" />';
-                        ret += '<div class="color" style="background: {{ color|default('#666666') }};"></div>';
-                        ret += '<h3>' + data[i].title + '</h3>';
-                        ret += '<p>' + data[i].weekday + ',&nbsp;' + data[i].period + '&nbsp;</p>';
-                        
-                        if (data[i].where)
-                            ret += '<span class="ui-li-count">' + data[i].where + '</span>';
-                        
-                        ret = '<a href="' + (data[i].link ? data[i].link : '#') + '">' + ret + '</a>'; 
-                        line += '<li data-icon="false">' + ret + '</li>';
-                        }
-                } else 
-                    line = data;
+                var line = '';
+                var sum = 1;
+                for (var i in data) {
+                    ret  = '<img style="background: ' + data[i].color + ';" class="icon" src="' + data[i].icon + '" />';
+                    ret += '<div class="color" style="background: {{ color|default('#666666') }};"></div>';
+                    ret += '<h3>' + data[i].title + '</h3>';
+                    ret += '<p>' + data[i].weekday + ',&nbsp;' + data[i].period + '&nbsp;</p>';
+                    
+                    if (data[i].where)
+                        ret += '<span class="ui-li-count">' + data[i].where + '</span>';
+                    
+                    ret = '<a href="' + (data[i].link ? data[i].link : '#') + '">' + ret + '</a>'; 
+                    line += '<li data-icon="false">' + ret + '</li>';
+                }
                 
                 $('#{{ page }}-{{ id }}-calendarlist ul').html(line).listview('refresh');
-            });
+            })
+            .error(notify.json);
         });
     </script>
 {% endmacro %}

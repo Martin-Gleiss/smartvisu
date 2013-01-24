@@ -27,7 +27,7 @@
   /**
     * The address, might be a url or filename
     */
-    define ('config_driver_address',        '192.168.45.10');
+    define ('config_driver_address',        '192.168.x.x');
 
   /**
     * The port, if the driver needs one
@@ -56,7 +56,7 @@
     * smartVISU supports different projects, located under 'pages'
     * this ist the directory for your project    
     */
-    define ('config_pages',                 'otterstaetter');
+    define ('config_pages',                 'docu');
    
   /**
     * Select your language. Some widgets are multilanguage 
@@ -114,7 +114,8 @@
     * 
     * @value    offline: random values
     * @value    auerswald: Auerswald VoiP 5010, 5020, Commander Basic.2
-    * @value    fritz!box: Fritzbox 7050     
+    * @value    fritz!box: Fritzbox 7050 
+    * @value    fritz!box_v5.50: Fritzbox 7390        
     */
     define ('config_phone_service',         'offline');
 

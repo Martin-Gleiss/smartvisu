@@ -79,6 +79,8 @@ class phone_auerswald extends phone
                     'duration' => $ds[3]);
             }
         }
+        else
+            $this->error('Phone: Auerswald', 'Login failed!');
         
         // 3. logout
         $url = 'http://'.$this->server.'/unlogAdmin?loginRechte=3&loginName='.$this->user.'&tnId=0';
