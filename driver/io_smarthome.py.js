@@ -160,7 +160,7 @@ var io = {
     * @param      the value 
     */
     write: function(item, val) {
-        io.send([ 'item', [ item, val ]]);
+        io.send({'cmd': 'item', 'id': item, 'val': val});
     },
     
   /**
@@ -201,25 +201,23 @@ var io = {
     open: function() {
         io.socket = new WebSocket('ws://' + io.address + ':' + io.port + '/');
         io.socket.onopen = function(){
-            io.send([ 'SmartHome.py', 1 ]);
+            io.send({'cmd': 'proto', 'ver': 1});
             var monitor = new Array();
             for (var item in io.listeners)
                 monitor.push(item);
-            io.send(['monitor', monitor]);
+            io.send({'cmd': 'monitor', 'items': monitor});
         };
         io.socket.onmessage = function(event) {
             var item, val;
             var data = JSON.parse(event.data);
             console.log("[io.smarthome.py] receiving data: " + event.data);
-            command = data[0];
-            delete data[0];
-            switch(command) {
+            switch(data.cmd) {
                 case 'item':
-                    for (var i = 1; i < data.length; i++) {
-                        item = data[i][0];
-                        val = data[i][1];
-                        if ( data[i].length > 2 ) {
-                            // not supported: data[i][2]; options for visu
+                    for (var i = 0; i < data.items.length; i++) {
+                        item = data.items[i][0];
+                        val = data.items[i][1];
+                        if ( data.items[i].length > 2 ) {
+                            // not supported: data.p[i][2] options for visu
                         };
                         io.update(item, val);
                     };
@@ -227,7 +225,13 @@ var io = {
                 case 'rrd':
                     break;
                 case 'dialog':
-                    notify.info(data[1][0], data[1][1]);
+                    notify.info(data.header, data.content);
+                case 'proto':
+                    var proto = parseInt(data.ver);
+                    if (proto != 1) {
+                        notify.info('Driver: smarthome.py', 'Protcol missmatch, update smarthome.py');
+                    };
+                    break;
             };
         };
         io.socket.onerror = function(error){
@@ -245,6 +249,8 @@ var io = {
         if (io.socket.readyState == 1) {
             io.socket.send(unescape(encodeURIComponent(JSON.stringify(data))));
             console.log('[io.smarthome.py] sending data: ' + JSON.stringify(data));
+        } else {
+            notify.error('Driver: smarthome.py', 'Websocket not available. Could not send data!');
         }
     },
     

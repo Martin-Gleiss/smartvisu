@@ -24,7 +24,7 @@
                 <div class="image" style="background-color: #{{ app.color }};"><img src="{{ app.icon }}"></div>
             </div>
             
-            <h3 style="padding-top: 40px;">{{ app.title|e }}</h3>
+            <h3 style="padding: 40px 0 8px 0;">{{ app.title|e }}</h3>
             
             <div>
             {{ app.description }}
@@ -48,6 +48,7 @@
             {% if app.author %}
             Author: {{ app.author }}<br />
             {% endif %}
+            <div class="mini">File: {{ file.file }}</div>
             {% if app.version %}
             <div class="mini">Version: {{ app.version }}</div>
             {% endif %}

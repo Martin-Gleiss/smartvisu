@@ -41,7 +41,7 @@
                
         return $ret;
     } 
-    
+
     function twig_smartdate($val, $format = 'date')
     {
         return smartdate($format, $val);
@@ -65,6 +65,11 @@
         
         return $ret;
     }
+
+    function twig_isfile($file)
+    {
+        return is_file(const_path.$file);
+    }
     
  	function twig_dir($dir, $filter = '(.*)')
     {
@@ -82,13 +87,16 @@
                 if (preg_match("#".$filter."$#i", $item, $itemparts) > 0)
                 {
                     $name = str_replace("_", " ", $itemparts[1]);
-                    $ret[] = array("file" => $itemparts[0], "name" => $itemparts[1], "label" => ucfirst($name));
+                    $ret[$name] = array("file" => $itemparts[0], "name" => $itemparts[1], "label" => ucfirst($name));
                 }
 		    }
    		}
    		
 		$dirlist->close();
-	   
+
+        // sort
+        ksort($ret);
+
 		return $ret;
  		}       
     

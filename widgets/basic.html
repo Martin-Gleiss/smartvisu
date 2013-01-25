@@ -46,7 +46,8 @@
     <script type="text/javascript">
          io.add('{{ gad }}', 
             function(response){
-                $('#{{ page }}-{{ id }}').html(response + ' {{ unit }}');
+                if (response !== undefined)
+                    $('#{{ page }}-{{ id }}').html(response + ' {{ unit }}');
             });
     </script>    
 {% endmacro %}
