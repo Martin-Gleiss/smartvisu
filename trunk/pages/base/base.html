@@ -29,7 +29,10 @@
     
     <link rel="stylesheet" type="text/css" href="designs/{{ config_design }}.min.css" />
 	<link rel="stylesheet" type="text/css" href="pages/base/base.css" />
-	<link rel="stylesheet" type="text/css" href="pages/{{ config_pages }}/visu.css" />
+
+    {% if isfile('pages/'~config_pages~'/visu.css') %}
+    <link rel="stylesheet" type="text/css" href="pages/{{ config_pages }}/visu.css" />
+    {% endif %}
 	
     <script type="text/javascript" src="lib/base/base.js"></script>
     <script type="text/javascript" src="driver/io_{{ config_driver }}.js"></script>

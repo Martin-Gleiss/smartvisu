@@ -48,7 +48,7 @@ class weather_yr extends weather
                 if (config_lang == 'de')
                     $windspeed = ' mit '.round( ((string)$day->windSpeed->attributes()->mps * 3.6), 1).' km/h';
                 else
-                    $windspeed = ' at '.round( (string)$day->windSpeed->attributes()->mps, 1).' MPH';
+                    $windspeed = ' at '.round( ((string)$day->windSpeed->attributes()->mps * 2.24), 1).' MPH';
                 
                 if ($i == 0)
                 {
