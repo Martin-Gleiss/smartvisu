@@ -52,6 +52,13 @@
 // General functions for Twig
 // -----------------------------------------------------------------------------
       
+    function twig_uid($str1, $str2 = '', $str3 = '')
+    {
+        $ret = str_replace('.', '_', $str1.($str2 != '' ? '-'.$str2 : '').($str3 != '' ? '-'.$str3 : ''));
+        
+        return $ret;
+    }
+
     function twig_once($name)
     {
         $ret = false;

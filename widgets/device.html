@@ -20,13 +20,13 @@
  * @param       step betwenn to values (optional, default 5) 
  */
 {% macro dimmer(id, txt, gad_switch, gad_value, min, max, step) %}
-    {% import   "basic.html" as basic %}
+    {% import "basic.html" as basic %}
     
     /** Design */
     <div class="dimmer">
-        {{ basic.switch(id|_('switch'), gad_switch, icon1~'light_light.png', icon0~'light_light.png') }}
+        {{ basic.switch(id~'switch', gad_switch, icon1~'light_light.png', icon0~'light_light.png') }}
         <p>{{ txt|e }}</p>
-        {{ basic.slider(id|_('silder'), gad_value, min, max, step) }}
+        {{ basic.slider(id~'silder', gad_value, min, max, step) }}
     </div>     
     
 {% endmacro %}
@@ -47,44 +47,45 @@
  * @param       step for plus/minus buttons (optional, default 0.5°) 
  */
 {% macro rtr(id, txt, gad_actual, gad_set, gad_mode, gad_night, gad_frost, gad_state, gad_txt, step) %}
-    {% import   "basic.html" as basic %}
+    {% import "basic.html" as basic %}
+    {% set uid = uid(page, id) %}
     
     /** Design */
-    <div id="{{ page }}-{{ id }}" class="rtr">
+    <div id="{{ uid }}" class="rtr">
         <div class="actual">
-            <div class="temp">{{ basic.float(id|_('actual'), gad_actual, '°C' ) }}</div>
-            <div class="text">{{ txt }} {% if gad_txt %} {{ basic.value(id|_('txt'), gad_txt) }} {% endif %}</div>
+            <div class="temp">{{ basic.float(id~'actual', gad_actual, '°C' ) }}</div>
+            <div class="text">{{ txt }} {% if gad_txt %} {{ basic.value(id~'txt', gad_txt) }} {% endif %}</div>
         </div>
         
         {% if gad_set %}
             <div class="set">
-                {{ basic.button(id|_('minus'), '', '', 'minus') }}
-                <div class="temp">{{ basic.float(id|_('set'), gad_set, '°C' ) }}</div>
-                {{ basic.button(id|_('plus'), '', '', 'plus') }}
+                {{ basic.button(id~'minus', '', '', 'minus') }}
+                <div class="temp">{{ basic.float(id~'set', gad_set, '°C' ) }}</div>
+                {{ basic.button(id~'plus', '', '', 'plus') }}
             </div>
             
             /** Events */
             <script type="text/javascript">  
                 // plus / minus
-                $("#{{ page }}-{{ id|_('minus') }}").unbind('click').bind('click', function(){ 
-                    var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) - {{ step|default(0.5) }}) * 10) / 10).toFixed(1);
-                    $("#{{ page }}-{{ id|_('set') }}").html(temp + ' °C');
-                    knx.write("{{ gad_set }}", temp);
+                $("#{{ uid~'minus' }}").unbind('click').bind('click', function(){ 
+                    var temp = (Math.round((parseFloat($("#{{ uid~'set' }}").html()) - {{ step|default(0.5) }}) * 10) / 10).toFixed(1);
+                    $("#{{ uid~'set' }}").html(temp + ' °C');
+                    io.write("{{ gad_set }}", temp);
                 });
-                $("#{{ page }}-{{ id|_('plus') }}").unbind('click').bind('click', function(){ 
-                    var temp = (Math.round((parseFloat($("#{{ page }}-{{ id|_('set') }}").html()) + {{ step|default(0.5) }}) * 10) / 10).toFixed(1);
-                    $("#{{ page }}-{{ id|_('set') }}").html(temp + ' °C');
-                    knx.write("{{ gad_set }}", temp);
+                $("#{{ uid~'plus' }}").unbind('click').bind('click', function(){ 
+                    var temp = (Math.round((parseFloat($("#{{ uid~'set' }}").html()) + {{ step|default(0.5) }}) * 10) / 10).toFixed(1);
+                    $("#{{ uid~'set' }}").html(temp + ' °C');
+                    io.write("{{ gad_set }}", temp);
                 });
             </script> 
         {% endif %}
         
         <div class="control">
-            {{ basic.switch(id|_('mode'), gad_mode, icon1~'user_available.png', icon0~'user_away.png') }}
-            {{ basic.switch(id|_('night'), gad_night, icon1~'scene_night.png', icon0~'scene_day.png') }}
-            {{ basic.switch(id|_('frost'), gad_frost, icon1~'weather_frost.png', icon0~'weather_frost.png') }}
+            {{ basic.switch(id~'mode', gad_mode, icon1~'user_available.png', icon0~'user_away.png') }}
+            {{ basic.switch(id~'night', gad_night, icon1~'scene_night.png', icon0~'scene_day.png') }}
+            {{ basic.switch(id~'frost', gad_frost, icon1~'weather_frost.png', icon0~'weather_frost.png') }}
             <div style="float:left; width: 5px; height: 48px;"></div>
-            {{ basic.switch(id|_('state'), gad_state, icon1~'sani_heating.png', icon0~'sani_heating.png') }}
+            {{ basic.switch(id~'state', gad_state, icon1~'sani_heating.png', icon0~'sani_heating.png') }}
         </div>
     </div>
 {% endmacro %}
@@ -107,32 +108,33 @@
  * @info        inspired by Frank Berlenz    
  */
 {% macro blind(id, txt, gad_move, gad_stop, gad_pos, gad_shift, gad_angle, min, max, step) %}
-    {% import   "basic.html" as basic %}
+    {% import "basic.html" as basic %}
+    {% set uid = uid(page, id) %}
     
     /** Design */
     <div class="blind">
         <table align="center" cellpadding="0">
         <tr>
             <td valign="top">
-                <div class="set">{{ basic.button(id|_('up'), gad_move, '', 'arrow-u', 1) }}</div></td>
+                <div class="set">{{ basic.button(id~'up', gad_move, '', 'arrow-u', 1) }}</div></td>
             <td rowspan="3" align="left" class="pos">
-                {{ basic.slider(id|_('pos'), gad_pos, min, max, step, 'vertical') }}</td>
+                {{ basic.slider(id~'pos', gad_pos, min, max, step, 'vertical') }}</td>
             <td rowspan="2" valign="bottom" class="angle">
                 {{ txt }}<br />
-                {% if gad_angle %} {{ basic.slider(id|_('angle'), gad_angle, min, max, step, 'semicircle') }} {% endif %}</td>
+                {% if gad_angle %} {{ basic.slider(id~'angle', gad_angle, min, max, step, 'semicircle') }} {% endif %}</td>
         </tr>
         <tr>
             <td>
-                {% if gad_stop %} <div class="set">{{ basic.button(id|_('stop'), gad_stop, '', 'delete', 1) }}</div> {% endif %}</td>
+                {% if gad_stop %} <div class="set">{{ basic.button(id~'stop', gad_stop, '', 'delete', 1) }}</div> {% endif %}</td>
         </tr>
         <tr>
             <td valign="bottom">
-                <div class="set">{{ basic.button(id|_('down'), gad_move, '', 'arrow-d', 0) }}</div></td>
+                <div class="set">{{ basic.button(id~'down', gad_move, '', 'arrow-d', 0) }}</div></td>
             <td valign="bottom">
                 {% if gad_shift %}
                     <div class="set">
-                        <span style="float: left;">{{ basic.button(id|_('minus'), gad_shift, '', 'minus', 0) }}</span>
-                        <span style="float: right;">{{ basic.button(id|_('plus'), gad_shift, '', 'plus', 1) }}</span>
+                        <span style="float: left;">{{ basic.button(id~'minus', gad_shift, '', 'minus', 0) }}</span>
+                        <span style="float: right;">{{ basic.button(id~'plus', gad_shift, '', 'plus', 1) }}</span>
                     </div>
                 {% endif %}
             </td>
@@ -161,29 +163,30 @@
  * @info        inspired by Jörg Gutowski       
  */
 {% macro shutter(id, txt, gad_move, gad_stop, gad_pos, gad_shift, gad_angle, gad_saved, min, max, step, mode) %}
-    {% import   "basic.html" as basic %}
+    {% import "basic.html" as basic %}
+    {% set uid = uid(page, id) %}
 
     /** Design */
     <div class="blind">
         <table align="center" cellpadding="0">
-        <tr>
+        <tr>                                          
             <td valign="top">
-                <div class="set">{{ basic.button(id|_('up'), gad_move, '', 'arrow-u', 0) }}</div></td>
+                <div class="set">{{ basic.button(id~'up', gad_move, '', 'arrow-u', 0) }}</div></td>
             <td rowspan="3" align="center" class="pos">
                 {{ basic.shutter(id, gad_pos, gad_angle, min, max, step, mode) }}</td>
             <td valign="top">
-                {% if gad_saved %} <div>{{ basic.button(id|_('saved1'), gad_saved, 'Pos1', 'grid', 0) }} </div>{% endif %}</td>
+                {% if gad_saved %} <div>{{ basic.button(id~'saved1', gad_saved, 'Pos1', 'grid', 0) }} </div>{% endif %}</td>
         </tr>
         <tr>
             <td valign="center">
-                {% if gad_stop %} <div class="set">{{ basic.button(id|_('stop'), gad_stop, '', 'delete', 1) }}</div> {% endif %}</td>
+                {% if gad_stop %} <div class="set">{{ basic.button(id~'stop', gad_stop, '', 'delete', 1) }}</div> {% endif %}</td>
             <td valign="center">{{ txt }}</td>
         </tr>
         <tr>          
             <td valign="bottom">
-                <div class="set">{{ basic.button(id|_('down'), gad_move, '', 'arrow-d', 1) }}</div></td>
+                <div class="set">{{ basic.button(id~'down', gad_move, '', 'arrow-d', 1) }}</div></td>
             <td valign="bottom">
-                {% if gad_saved %} <div>{{ basic.button(id|_('saved2'), gad_saved, 'Pos2', 'grid', 1) }} </div>{% endif %}</td>
+                {% if gad_saved %} <div>{{ basic.button(id~'saved2', gad_saved, 'Pos2', 'grid', 1) }} </div>{% endif %}</td>
         </tr>
         </table>
     </div>

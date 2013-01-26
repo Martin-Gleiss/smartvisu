@@ -16,8 +16,10 @@
  * @param       the number of displayed lines, default 3 
  */ 
 {% macro missedlist(id, title, count) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
-    <div id="{{ page }}-{{ id }}-phonelist" class="phonelist">
+    <div id="{{ uid }}-phonelist" class="phonelist">
         {% if title %} <h2>{{ title }}</h2> {% endif %}
         <ul data-role="listview">
         </ul>
@@ -44,7 +46,7 @@
                     }
                 }
                 
-                $('#{{ page }}-{{ id }}-phonelist ul').html(line).listview('refresh');
+                $('#{{ uid }}-phonelist ul').html(line).listview('refresh');
             })
             .error(notify.json);
         });
@@ -60,8 +62,10 @@
  * @param       the number of displayed lines, default 10
  */ 
 {% macro list(id, title, count) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
-    <div id="{{ page }}-{{ id }}-phonelist" class="phonelist">
+    <div id="{{ uid }}-phonelist" class="phonelist">
         {% if title %} <h2>{{ title }}</h2> {% endif %}
         <ul data-role="listview">
         </ul>
@@ -86,7 +90,7 @@
                     if (sum++ == {{ count|default(10) }}) break;
                 }
                 
-                $('#{{ page }}-{{ id }}-phonelist ul').html(line).listview('refresh');
+                $('#{{ uid }}-phonelist ul').html(line).listview('refresh');
             })
             .error(notify.json);
         });

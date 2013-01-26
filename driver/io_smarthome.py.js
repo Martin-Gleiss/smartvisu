@@ -122,9 +122,9 @@ var io = {
     * @param      the item         
     */         
     update: function(item, val) {
-        if (val)
+        if (val !== undefined)
             io.buffer[item] = val;
-            
+    
         var listeners = io.listeners[item];
         if (listeners) {
             for (var i = 0; i < listeners.length; i++) {

@@ -18,6 +18,8 @@
  * @link        http://www.radoslavdimov.com
  */ 
 {% macro current(id, location) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
     {% if once('digiweather') %}
         <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
@@ -37,12 +39,12 @@
     <script type="text/javascript">
         $('#{{ page }}').live('pagecreate',function(event, ui) {
             $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function(data) {
-                $('#{{ page }}-{{ id }}-weather').css('background','url(lib/weather/pics/' + data.current.icon + '.png) 50% 0 no-repeat')
-                $('#{{ page }}-{{ id }}-weather .city').html(data.city);
-                $('#{{ page }}-{{ id }}-weather .cond').html(data.current.conditions);
-                $('#{{ page }}-{{ id }}-weather .temp').html(data.current.temp);
-                $('#{{ page }}-{{ id }}-weather .humi').html(data.current.more);
-                $('#{{ page }}-{{ id }}-weather .wind').html(data.current.wind);
+                $('#{{ uid }}-weather').css('background','url(lib/weather/pics/' + data.current.icon + '.png) 50% 0 no-repeat')
+                $('#{{ uid }}-weather .city').html(data.city);
+                $('#{{ uid }}-weather .cond').html(data.current.conditions);
+                $('#{{ uid }}-weather .temp').html(data.current.temp);
+                $('#{{ uid }}-weather .humi').html(data.current.more);
+                $('#{{ uid }}-weather .wind').html(data.current.wind);
             })
             .error(notify.json);
         });
@@ -61,13 +63,15 @@
  * @link        http://www.radoslavdimov.com
  */ 
 {% macro forecast(id, location, day) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */   
     {% if once('digiweather') %}
         <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
     {% endif %}
     
     <div class="center">
-        <div id="{{ page }}-{{ id }}-forecast" class="forecast">
+        <div id="{{ uid }}-forecast" class="forecast">
             <div class="day"></div>
             <div class="highlow"></div>
             <div class="city"></div>
@@ -79,11 +83,11 @@
     <script type="text/javascript">
         $('#{{ page }}').live('pagecreate',function(event, ui){
             $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function(data) {
-                $('#{{ page }}-{{ id }}-forecast').css('background','url(lib/weather/pics/' + data.forecast[{{ day|default(1) }}].icon + '.png) 50% 0 no-repeat')
-                $('#{{ page }}-{{ id }}-forecast .city').html(data.city);
-                $('#{{ page }}-{{ id }}-forecast .cond').html(data.forecast[{{ day|default(1) }}].conditions);
-                $('#{{ page }}-{{ id }}-forecast .highlow').html(data.forecast[{{ day|default(1) }}].temp);
-                $('#{{ page }}-{{ id }}-forecast .day').html(data.forecast[{{ day|default(1) }}].date);
+                $('#{{ uid }}-forecast').css('background','url(lib/weather/pics/' + data.forecast[{{ day|default(1) }}].icon + '.png) 50% 0 no-repeat')
+                $('#{{ uid }}-forecast .city').html(data.city);
+                $('#{{ uid }}-forecast .cond').html(data.forecast[{{ day|default(1) }}].conditions);
+                $('#{{ uid }}-forecast .highlow').html(data.forecast[{{ day|default(1) }}].temp);
+                $('#{{ uid }}-forecast .day').html(data.forecast[{{ day|default(1) }}].date);
             })
             .error(notify.json);
         });
@@ -101,12 +105,14 @@
  * @link        http://www.radoslavdimov.com 
  */ 
 {% macro forecastweek(id, location) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */        
     {% if once('digiweather') %}
         <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
     {% endif %}
     
-    <div id="{{ page }}-{{ id }}-forecastweek" class="forecastweek">
+    <div id="{{ uid }}-forecastweek" class="forecastweek">
     </div>
             
     /** Events */
@@ -121,7 +127,7 @@
                     forecast += '<div>' + data.forecast[i].temp + '</div>';
                     forecast += '</div>';
                 }
-                $('#{{ page }}-{{ id }}-forecastweek').html(forecast);
+                $('#{{ uid }}-forecastweek').html(forecast);
             })
             .error(notify.json);
         });
@@ -141,6 +147,7 @@
  * @link        http://www.tagesschau.de  
  */
 {% macro map(id, title, type) %}
+    {% set uid = uid(page, id) %}
     
     /** Design */
     <div class="block">
@@ -184,6 +191,7 @@
  * @link        http://jquery.malsup.com/cycle2 
  */
 {% macro mapslides(id, title, delay) %}
+    {% set uid = uid(page, id) %}
     
     /** Design */
     {% if once('cycle2') %}
@@ -194,7 +202,7 @@
     <div class="block">
         <div class="ui-bar-c ui-li-divider ui-corner-top">{{ title }}</div>
         <div class="image">
-            <div id='{{ page }}-{{ id }}' data-cycle-auto-height="7:4" data-cycle-log="false" data-cycle-speed="{{ delay|default(1000) }}">  
+            <div id='{{ uid }}' data-cycle-auto-height="7:4" data-cycle-log="false" data-cycle-speed="{{ delay|default(1000) }}">  
                 <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tt_webL.jpg">
                 <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tn_webL.jpg">
                 <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-3t_webL.jpg">
@@ -207,7 +215,7 @@
     /** Events */
     <script type="text/javascript">
         $('#{{ page }}').live('pageinit', function(event, ui){
-            $('#{{ page }}-{{ id }}').cycle(); 
+            $('#{{ uid }}').cycle(); 
         });
         $('#{{ page }}').live('pageshow', function(event, ui){
             $(window).triggerHandler('resize');
