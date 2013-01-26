@@ -15,7 +15,9 @@
  * @param        the ip of the KNXnet/IP-Router  
  */ 
 {% macro iprouter(id, server) %}
-    <div id="{{ page }}-{{ id }}" class="iprouter">
+    {% set uid = uid(page, id) %}
+
+    <div id="{{ uid }}" class="iprouter">
         <div class="from"></div>
         <div class="to"></div>
         
@@ -27,8 +29,8 @@
     <script type="text/javascript">
         $('#{{ page }}').live('pagecreate',function(event, ui){ 
             $.getJSON('lib/appliance/enertex.iprouter.php?server={{ server }}', function(data) {
-                $('#{{ page }}-{{ id }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png">');
-                $('#{{ page }}-{{ id }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png">');
+                $('#{{ uid }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png">');
+                $('#{{ uid }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png">');
        
            
                 var ret = '';
@@ -39,8 +41,8 @@
                     ret += '<div class="tunnel">T ' + i + '</div>';
                     ret += '<div class="address">knx: ' + data.tunnels[i].knx_address + '<br />ip: ' + data.tunnels[i].ip_control + '</div>';
                 }
-                $('#{{ page }}-{{ id }} .tunnels').html(ret);
-                $('#{{ page }}-{{ id }} .version').html(data.date + ', up: ' + data.uptime + ', v ' + data.firmware_version);
+                $('#{{ uid }} .tunnels').html(ret);
+                $('#{{ uid }} .version').html(data.date + ', up: ' + data.uptime + ', v ' + data.firmware_version);
             })
             .error(notify.json);
         });

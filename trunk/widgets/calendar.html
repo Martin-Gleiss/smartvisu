@@ -17,8 +17,10 @@
  * @param       a color for this calendar, default grey 
  */ 
 {% macro list(id, title, count, color) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
-    <div id="{{ page }}-{{ id }}-calendarlist" class="calendarlist">
+    <div id="{{ uid }}-calendarlist" class="calendarlist">
         {% if title %} <h2>{{ title }}</h2> {% endif %}
         <ul data-role="listview">
         </ul>
@@ -43,7 +45,7 @@
                     line += '<li data-icon="false">' + ret + '</li>';
                 }
                 
-                $('#{{ page }}-{{ id }}-calendarlist ul').html(line).listview('refresh');
+                $('#{{ uid }}-calendarlist ul').html(line).listview('refresh');
             })
             .error(notify.json);
         });

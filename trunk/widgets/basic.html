@@ -38,16 +38,18 @@
  * @param        a unit
  * @param        the parent html-tag for the value                   
  */
-{% macro value(id, gad, unit, tag) %}
+{% macro value(id, gad, unit, tag) %}   
+    {% set uid = uid(page, id) %}
+    
     /** Design */
-    <{{ tag|default('span') }} id="{{ page }}-{{ id }}"></{{ tag|default('span') }}>
+    <{{ tag|default('span') }} id="{{ uid }}"></{{ tag|default('span') }}>
 
     /** Events */
     <script type="text/javascript">
          io.add('{{ gad }}', 
             function(response){
                 if (response !== undefined)
-                    $('#{{ page }}-{{ id }}').html(response + ' {{ unit }}');
+                    $('#{{ uid }}').html(response + ' {{ unit }}');
             });
     </script>    
 {% endmacro %}
@@ -63,14 +65,16 @@
  * @param        the parent html-tag for the value     
  */
 {% macro float(id, gad, unit, tag) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
-    <{{ tag|default('span') }} id="{{ page }}-{{ id }}" data-widget="basic.float" data-item="{{ gad }}">0.0</{{ tag|default('span') }}>
+    <{{ tag|default('span') }} id="{{ uid }}" data-widget="basic.float" data-item="{{ gad }}">0.0</{{ tag|default('span') }}>
 
     /** Events */
     <script type="text/javascript">
         io.add('{{ gad }}', 
             function(response){
-                $('#{{ page }}-{{ id }}').html( ((Math.round(response * 10) / 10).toFixed(1)) + ' {{ unit }}');
+                $('#{{ uid }}').html( ((Math.round(response * 10) / 10).toFixed(1)) + ' {{ unit }}');
             });
     </script>   
 {% endmacro %}
@@ -84,17 +88,19 @@
  * @param        text printed on the checkbox
  */
 {% macro checkbox(id, gad, txt) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
-    <label><input type="checkbox" id="{{ page }}-{{ id }}" />{{ txt }}</label>
+    <label><input type="checkbox" id="{{ uid }}" />{{ txt }}</label>
     
     /** Events */
     <script type="text/javascript">
         io.add('{{ gad }}',
             function(response){
-                $('#{{ page }}-{{ id }}').attr('checked', (response > 0 ? true : false)).checkboxradio('refresh');    
+                $('#{{ uid }}').attr('checked', (response > 0 ? true : false)).checkboxradio('refresh');    
             });
         
-        $("#{{ page }}-{{ id }}").unbind('change').bind('change', function() { 
+        $("#{{ uid }}").unbind('change').bind('change', function() { 
             io.write('{{ gad }}', ($('#{{ page }}-{{ id }}:checked').val() == 'on' ? 1 : 0));
         });
     </script>    
@@ -110,8 +116,10 @@
  * @param        text for the 'off' state (optional, default 'Off')
  */
  {% macro flip(id, gad, txt_on, txt_off) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
-    <select id="{{ page }}-{{ id }}" data-role="slider">
+    <select id="{{ uid }}" data-role="slider">
 	   <option value="off">{{ txt_off|default('Off') }}</option>
 	   <option value="on">{{ txt_on|default('On') }}</option>
     </select> 
@@ -120,11 +128,11 @@
     <script type="text/javascript">
         io.add('{{ gad }}',
             function(response){
-                $('#{{ page }}-{{ id }}').val(response > 0 ? 'on' : 'off').slider('refresh');
+                $('#{{ uid }}').val(response > 0 ? 'on' : 'off').slider('refresh');
             }); 
 
         $('#{{ page }}').on('pageinit', function(){
-            $("#{{ page }}-{{ id }}").unbind('click').bind('click', function() { 
+            $("#{{ uid }}").unbind('click').bind('click', function() { 
                 io.write('{{ gad }}', ($(this).val() == 'on' ? 1 : 0));   
             });
         });
@@ -143,18 +151,20 @@
  * @param        the orientation ('none', 'vertical', 'bottomup', 'semicircle')
  */
  {% macro slider(id, gad, min, max, step, type) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
-    <span><input id="{{ page }}-{{ id }}" type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}" orientation="{{ type }}" data-highlight="true" /></span>
+    <span><input id="{{ uid }}" type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}" orientation="{{ type }}" data-highlight="true" /></span>
 
     /** Events */
     <script type="text/javascript">
         io.add('{{ gad }}',
             function(response){ 
-                $('#{{ page }}-{{ id }}').val(response).slider('refresh');
+                $('#{{ uid }}').val(response).slider('refresh');
             });
         
         $('#{{ page }}').on('pageinit', function(){
-            $("#{{ page }}-{{ id }}").unbind('click').bind('click', function() { 
+            $("#{{ uid }}").unbind('click').bind('click', function() { 
                 io.write('{{ gad }}', $(this).val());   
             });
         });
@@ -173,8 +183,10 @@
  * @param        value (default 1) 
  */
  {% macro symbol(id, gads, txt, pic, val) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
-    <span id="{{ page }}-{{ id }}" class="symbol hide"><img class="icon" src="{{ pic|default(icon1~'control_on_off.png') }}"/>{{ txt }}</span>
+    <span id="{{ uid }}" class="symbol hide"><img class="icon" src="{{ pic|default(icon1~'control_on_off.png') }}"/>{{ txt }}</span>
         
     /** Events */
     <script type="text/javascript">  
@@ -190,9 +202,9 @@
                     bit = (response == {{ val|default('1') }});   
     		      
                 if (bit)
-                    $('#{{ page }}-{{ id }}').show();
+                    $('#{{ uid }}').show();
                 else
-                    $('#{{ page }}-{{ id }}').hide();
+                    $('#{{ uid }}').hide();
             });  
     </script>    
 {% endmacro %} 
@@ -209,8 +221,10 @@
  * @param        value send for the 'off' state (optional, default 0)
  */
  {% macro switch(id, gad, pic_on, pic_off, val_on, val_off) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
-    <span id="{{ page }}-{{ id }}" class="switch">
+    <span id="{{ uid }}" class="switch">
         <a><img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}"/></a>
     </span>
         
@@ -218,12 +232,12 @@
     <script type="text/javascript"> 
         io.add('{{ gad }}',
             function(response){ 
-                $('#{{ page }}-{{ id }} .icon').attr('src', (response == {{ val_on|default('1') }} ? "{{ pic_on|default(icon1~'control_on_off.png') }}" : "{{ pic_off|default(icon0~'control_on_off.png') }}"));
+                $('#{{ uid }} .icon').attr('src', (response == {{ val_on|default('1') }} ? "{{ pic_on|default(icon1~'control_on_off.png') }}" : "{{ pic_off|default(icon0~'control_on_off.png') }}"));
             });
              
         // write
-        $('#{{ page }}-{{ id }} a').unbind('click').bind('click', function() {
-            if ($('#{{ page }}-{{ id }} .icon').attr('src') == "{{ pic_off|default(icon0~'control_on_off.png') }}" ){
+        $('#{{ uid }} a').unbind('click').bind('click', function() {
+            if ($('#{{ uid }} .icon').attr('src') == "{{ pic_off|default(icon0~'control_on_off.png') }}" ){
                 io.write('{{ gad }}', "{{ val_on|default('1') }}");
                 io.update('{{ gad }}', "{{ val_on|default('1') }}");
             } else {
@@ -233,7 +247,7 @@
         });
         
         // effects
-        $('#{{ page }}-{{ id }} .icon').hover(
+        $('#{{ uid }} .icon').hover(
             function() { $(this).addClass("ui-focus");  },  
             function() { $(this).removeClass("ui-focus"); }
         );
@@ -252,8 +266,10 @@
  * @param        type: 'micro', 'mini', 'midi' (optional, default: mini) 
  */
  {% macro button(id, gad, txt, pic, val, type) %}
+    {% set uid = uid(page, id) %}
+    
     /** Design */
-    <a id="{{ page }}-{{ id }}" class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" 
+    <a id="{{ uid }}" class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" 
         {% if not pic %}
             data-iconpos="nopic">{{ txt|e }}
         {% elseif pic|slice(-4, 4) != '.png' and not txt %}
@@ -270,7 +286,7 @@
     {% if gad %}
         /** Events */
         <script type="text/javascript">
-            $('#{{ page }}-{{ id }}').unbind('click').bind('click', function() {
+            $('#{{ uid }}').unbind('click').bind('click', function() {
                 io.write('{{ gad }}', {{ val|default('1') }}); 
             });
         </script>    
@@ -290,8 +306,10 @@
  * @param        type: 'micro', 'mini', 'midi' (optional, default: mini) 
  */
  {% macro dual(id, gad, pic_on, pic_off, val_on, val_off, type) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
-    <a id="{{ page }}-{{ id }}" class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
+    <a id="{{ uid }}" class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
         <img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}">
     </a> 
     
@@ -299,11 +317,11 @@
     <script type="text/javascript"> 
         io.add('{{ gad }}',
             function(response){ 
-                $('#{{ page }}-{{ id }} img').attr('src', (response != 0 ? "{{ pic_on|default(icon1~'control_on_off.png') }}" : "{{ pic_off|default(icon0~'control_on_off.png') }}"));
+                $('#{{ uid }} img').attr('src', (response != 0 ? "{{ pic_on|default(icon1~'control_on_off.png') }}" : "{{ pic_off|default(icon0~'control_on_off.png') }}"));
             });
         
-        $('#{{ page }}-{{ id }}').unbind('click').bind('click', function() {
-            if ($('#{{ page }}-{{ id }} img').attr('src') == "{{ pic_off|default(icon0~'control_on_off.png') }}" ){
+        $('#{{ uid }}').unbind('click').bind('click', function() {
+            if ($('#{{ uid }} img').attr('src') == "{{ pic_off|default(icon0~'control_on_off.png') }}" ){
                 io.write('{{ gad }}', "{{ val_on|default('1') }}");
                 io.update('{{ gad }}', "{{ val_on|default('1') }}");
             } else {
@@ -329,14 +347,15 @@
  * @info        inspired by Jörg Gutowski     
  */
  {% macro shutter(id, gad_pos, gad_angle, min, max, step, mode) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
-    <div id="{{ page }}-{{ id }}" class="shutter">
+    <div id="{{ uid }}" class="shutter">
         {% for i in 1..12 %}
-            <div class="blade-pos" id="{{ page }}-{{ id }}-{{ i }}"></div>
+            <div class="blade-pos" id="{{ uid }}-{{ i }}"></div>
         {% endfor %}
     </div>
    
-
     /** Events */
     <script type="text/javascript">  
         io.add(Array('{{ gad_pos }}', '{{ gad_angle }}'),
@@ -362,23 +381,23 @@
                             style += 'border-top: 1px dotted ' + (h > i * 14 ? '#ccc' : '#333') + ';';
                        
                         if (a > 0)
-                            $('#{{ page }}-{{ id }}-' + i).attr('class', 'blade-pos');
+                            $('#{{ uid }}-' + i).attr('class', 'blade-pos');
                         else
-                            $('#{{ page }}-{{ id }}-' + i).attr('class', 'blade-neg');
+                            $('#{{ uid }}-' + i).attr('class', 'blade-neg');
                         
-                        $('#{{ page }}-{{ id }}-' + i).attr('style', style);
+                        $('#{{ uid }}-' + i).attr('style', style);
                         h = h - 15;
                     }
                     else {
                         style  = 'height: ' + h + 'px;';
                         style += 'border-top: 1px dotted #aaa;';
-                        $('#{{ page }}-{{ id }}-' + i).attr('style', style);
+                        $('#{{ uid }}-' + i).attr('style', style);
                         h = 1;
                     }
                 }
             });  
         
-        $("#{{ page }}-{{ id }}").unbind('click').bind('click', function(event) { 
+        $("#{{ uid }}").unbind('click').bind('click', function(event) { 
             var offset = $(this).offset();
             var x = (event.pageX - offset.left);
             var y = (event.pageY - offset.top);
@@ -403,12 +422,13 @@
  * @param       the maximum value if the light is full on (optional, default 255)  
  */
  {% macro rgb(id, gad_r, gad_g, gad_b, min, max) %}
+    {% set uid = uid(page, id) %}
+
     /** Design */
-    <a id="{{ page }}-{{ id }}" class="rgb" href="#{{ page }}-{{ id }}-popup" data-rel="popup"><span></span></a>
+    <a id="{{ uid }}" class="rgb" href="#{{ uid }}-popup" data-rel="popup"><span></span></a>
+    <div id="{{ uid }}-popup" class="rgb-popup" data-role="popup"></div>
     
-    <div id="{{ page }}-{{ id }}-popup" class="rgb-popup" data-role="popup"></div>
-    
-    
+    /** Events */
     <script type="text/javascript"> 
         // design
         var html = '';
@@ -426,19 +446,19 @@
             html += '<div style="background-color:' + smart.hsv2rgb(h, 0, (v / 25) *  14.2) + ';"></div><br />';      
         }
         
-        $("#{{ page }}-{{ id }}-popup").html(html);
+        $("#{{ uid }}-popup").html(html);
         
         // knx
         io.add(Array('{{ gad_r }}', '{{ gad_g }}', '{{ gad_b }}'),
             function(response){
-                $('#{{ page }}-{{ id }} span').css('background-color', 'rgb(' + Math.round(response[0] / {{ max|default(255) }} * 255) + ',' + Math.round(response[1] / {{ max|default(255) }} * 255) + ',' + Math.round(response[2] / {{ max|default(255) }} * 255) + ')');  
+                $('#{{ uid }} span').css('background-color', 'rgb(' + Math.round(response[0] / {{ max|default(255) }} * 255) + ',' + Math.round(response[1] / {{ max|default(255) }} * 255) + ',' + Math.round(response[2] / {{ max|default(255) }} * 255) + ')');  
             });  
         
         // click
-        $('#{{ page }}-{{ id }}-popup div').unbind('click').bind('click', function() {
+        $('#{{ uid }}-popup div').unbind('click').bind('click', function() {
             var rgb = $(this).css('background-color');
-            $('#{{ page }}-{{ id }} span').css('background-color', rgb);
-            $('#{{ page }}-{{ id }}-popup').popup('close');  
+            $('#{{ uid }} span').css('background-color', rgb);
+            $('#{{ uid }}-popup').popup('close');  
             
             rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/); 
             io.write('{{ gad_r }}', Math.round(rgb[1] / 255 * {{ max|default(255) }}) );
@@ -447,7 +467,7 @@
         });
         
         // effects
-        $('#{{ page }}-{{ id }}-popup div').hover(
+        $('#{{ uid }}-popup div').hover(
             function() { $(this).addClass('ui-focus'); },  
             function() { $(this).removeClass('ui-focus'); }
         );

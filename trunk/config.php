@@ -32,7 +32,7 @@
   /**
     * The port, if the driver needs one
     */
-    define ('config_driver_port',           '1028');
+    define ('config_driver_port',           '2121');
 
   /**
     * Use the realtime-mode if possible
@@ -169,12 +169,17 @@
     * Special design variable. Defines the eye cancer of using a flavor.
     */
     define ('const_cvsucks',                10);
-    
+   
   /**
     * The timezone
     */    
     date_default_timezone_set(              'Europe/Berlin');
 
+  /**
+    * Change permissions to enable delete in temp dir
+    */    
+    umask(                                  0002);
+ 
   /**
     * PHP Error-level
     */    

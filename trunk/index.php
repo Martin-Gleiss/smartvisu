@@ -87,6 +87,7 @@
         $twig->addFilter('substr',      new Twig_Filter_Function('twig_substr'));
         $twig->addFilter('smartdate',   new Twig_Filter_Function('twig_smartdate'));
         
+        $twig->addFunction('uid',       new Twig_Function_Function('twig_uid'));
         $twig->addFunction('once',      new Twig_Function_Function('twig_once'));
         $twig->addFunction('isfile',    new Twig_Function_Function('twig_isfile'));
         $twig->addFunction('dir',       new Twig_Function_Function('twig_dir'));
