@@ -11,7 +11,7 @@ DISCRIPTION
 --------------------------------------------------------------------------------
 smartVISU is a framework to create a visualisation for a knx-installation with
 simple html-pages. To read and write group-telegramms special tags are used.
-You don't need to know javscript.
+You don't need to know javascript.
 
 
 SYSTEMREQUIREMENTS
@@ -44,7 +44,7 @@ SYSTEMREQUIREMENTS
         Note: Do not use "base.html, basic.html, device.html", these are system
         pages
     
-    5.  Fill the page with your prefered content and widgets
+    5.  Fill the page with your preferred content and widgets
     
     6.  If you need to change the design, use a "visu.css" - stylesheet file in 
         your pages-directory ("visu" or "YOURNAME")
@@ -74,7 +74,7 @@ TODO
     - basic.tristate button for rtr-mode
     - Main: Alert function
     - Buttons: pressed short / long
-    - Szenes
+    - Scenes
  
 
 HISTORY

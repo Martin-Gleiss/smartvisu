@@ -52,13 +52,53 @@
             
             'Sun' => 'So', 'Mon' => 'Mo', 'Tue' => 'Di', 'Wed' => 'Mi', 'Thu' => 'Do', 'Fri' => 'Fr', 'Sat' => 'Sa');
         
+        $lang['nl'] = array(
+            'January' => 'Januari', 'February' => 'Februari', 'March' => 'Maart', 'April' => 'April', 
+            'May' => 'Mei', 'June' => 'Juni', 'July' => 'Juli', 'August' => 'Augustus', 
+            'September' => 'September', 'October' => 'Oktober', 'November' => 'November', 'December' => 'December',
+            
+            'Sunday' => 'Zondag', 'Monday' => 'Maandag', 'Tuesday' => 'Dinsdag', 'Wednesday' => 'Woensdag',
+            'Thursday' => 'Donderdag', 'Friday' => 'Vrijdag', 'Saturday' => 'Zaterdag',
+            
+            'Sun' => 'zo', 'Mon' => 'ma', 'Tue' => 'di', 'Wed' => 'wo', 'Thu' => 'do', 'Fri' => 'vr', 'Sat' => 'za');
+        
         // allowed formats
         switch ($format)
             {
-            case 'date':    $format = (config_lang == 'de' ? 'd.m.y' : 'm/d/y'); break;
+            case 'date':
+                 if (config_lang == 'de') {
+                     $format = 'd.m.y';
+                     break;
+                 } elseif (config_lang == 'nl') {
+                     $format = 'd.m.y';
+                     break;
+                 } else {
+                     $format = 'm/d/y';
+                     break;
+                 }
             case 'time':    $format = 'H:i'; break;
-            case 'short':   $format = (config_lang == 'de' ? 'd.m.y H:i' : 'm/d/y H:i'); break;
-            case 'long':    $format = (config_lang == 'de' ? 'd.m.Y H:i:s' : 'm/d/Y H:i:s'); break;
+            case 'short':
+                 if (config_lang == 'de') {
+                     $format = 'd.m.y H:i';
+                     break;
+                 } elseif (config_lang == 'nl') {
+                     $format = 'd.m.y H:i';
+                     break;
+                 } else {
+                     $format = 'm/d/y H:i';
+                     break;
+                 }
+            case 'long':
+                 if (config_lang == 'de') {
+                     $format = 'd.m.Y H:i:s';
+                     break;
+                 } elseif (config_lang == 'nl') {
+                     $format = 'd.m.Y H:i:s';
+                     break;
+                 } else {
+                     $format = 'm/d/Y H:i:s';
+                     break;
+                 }
             }                 
         
         if ($timestamp == '')

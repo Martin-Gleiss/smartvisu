@@ -15,7 +15,7 @@ require_once const_path_system.'service.php';
     
    
 /** 
- * This service reads some information form a enertex knxnet/iprouter
+ * This service reads some information from an enertex knxnet/iprouter
  */   
 class enertex_iprouter extends service
 {

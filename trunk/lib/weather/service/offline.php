@@ -35,6 +35,14 @@ class weather_offline extends weather
             $this->data['current']['wind']         = 'leichter Wind aus Nordost mit 5 km/h'; 
             $this->data['current']['more']         = '45%, 1050 hPa'; 
         }
+        elseif (config_lang == "nl")
+        {
+            $this->data['current']['temp']   = '25&deg;C';
+            $this->data['current']['conditions']   = 'zonnig';
+            $this->data['current']['icon']         = 'sun_1';
+            $this->data['current']['wind']         = 'Lichte wind uit het noordoosten, snelheid 5 km/u'; 
+            $this->data['current']['more']         = '45%, 1050 hPa'; 
+        }
         else
         {    
             $this->data['current']['temp']   = '10&deg;F';
@@ -52,6 +60,8 @@ class weather_offline extends weather
 
             if (config_lang == "de")
                 $this->data['forecast'][$i]['conditions']  = 'sonnig';                 
+            elseif (config_lang == "nl")
+                $this->data['forecast'][$i]['conditions']  = 'zonnig';                 
             else        
                 $this->data['forecast'][$i]['conditions']  = 'sunny';
                  

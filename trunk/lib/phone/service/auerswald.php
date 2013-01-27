@@ -6,10 +6,10 @@
  * @copyright   2012
  * @license     GPL <http://www.gnu.de>
  * 
- * To get the phonelist form Auerswald VoiP 5010 or VoiP 5020 or 
- * COMmander Basic.2 it is nessesary to login into the telephone system.
- * You sould create a new account only for this service, because only one 
- * session allowed per user. After loged in successfully the cookie must be 
+ * To get the phonelist from Auerswald VoiP 5010 or VoiP 5020 or 
+ * COMmander Basic.2 it is necessary to login into the telephone system.
+ * You should create a new account only for this service, because only one 
+ * session allowed per user. After logged in successfully the cookie must be 
  * stored and used for all further calls.               
  * ----------------------------------------------------------------------------- 
  */
