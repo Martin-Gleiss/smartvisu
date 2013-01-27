@@ -47,6 +47,8 @@ class weather_yr extends weather
             {
                 if (config_lang == 'de')
                     $windspeed = ' mit '.round( ((string)$day->windSpeed->attributes()->mps * 3.6), 1).' km/h';
+                elseif (config_lang == 'nl')
+                    $windspeed = ' mit '.round( ((string)$day->windSpeed->attributes()->mps * 3.6), 1).' km/u';
                 else
                     $windspeed = ' at '.round( ((string)$day->windSpeed->attributes()->mps * 2.24), 1).' MPH';
                 
@@ -105,6 +107,29 @@ class weather_yr extends weather
             'Violent storm' => 'orkanartiger Sturm' , 'Hurricane' => 'Orkan',
             
             'from' => 'aus'
+            );
+
+        $lang['nl'] = array(
+            'N' => 'Noord', 'NNE' => 'Noordnoordoost', 'NE' => 'Noordoost', 'ENE' => 'Oostnoordoost',
+            'E' => 'Oost', 'ESE' => 'Oostzuidoost', 'SE' => 'Zuidoost', 'SSE' => 'Zuidzuidoost',
+            'S' => 'Zuid', 'SSW' => 'Zuidzuidwest', 'SW' => 'Zuidwest', 'WSW' => 'Westzuidwest',
+            'W' => 'West', 'WNW'=> 'Westnoordwest', 'NW' => 'Noordwest', 'NNW' => 'Noordnoordwest',
+            
+            'clear sky' => 'heldere hemel', 'Fair' => 'goed weer', 'Cloudy' => 'bewolkt',
+            'Partly cloudy' => 'licht bewolk', 'Rain showers' => 'regenbui',
+            'Rain showers with thunder' => 'regenbuien met onweer', 'Sleet showers' => 'natte sneeuw',
+            'Snow showers' => 'sneeuwbuien', 'Rain' => 'regen', 'Heavy Rain' => 'zware regenval',
+            'Rain and thunder' => 'regen en onweer', 'Sleet'=> 'Graupel', 'Snow' => 'sneeuw',
+            'Snow and thunder' => 'sneeuw en onweer', 'Sleet showers and thunder' => 'natte neeuwbuien en onweer',
+            'Fog' => 'mist', 'Sleet and thunder'=> 'natte sneeuw en onweer',
+            
+            'Calm' => 'windstil', 'Light air' => 'flauwe bries', 'Light breeze' => 'lichte bries',
+            'Gentle breeze' => 'zwakke bries' , 'Moderate breeze' => 'matige wind',
+            'Fresh breeze' => 'frisse wind', 'Strong breeze' => 'harde wind', 'Near gale' => 'stormachtig',
+            'Gale' => 'storm', 'Strong gale' => 'sterke storm', 'Storm' => 'zware storm',
+            'Violent storm' => 'orkaan-achtige storm' , 'Hurricane' => 'orkaan',
+            
+            'from' => 'uit'
             );
 
         return translate($lang, $data);

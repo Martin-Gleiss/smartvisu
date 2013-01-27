@@ -17,7 +17,7 @@
     // init parameters
     $request = array_merge($_GET, $_POST);
     
-    // dedect page and path
+    // detect page and path
     if($request['page'] == '')
        $request['page'] = config_index;
     

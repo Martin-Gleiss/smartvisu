@@ -44,6 +44,8 @@ class weather_wunderground extends weather
             
             if (config_lang == 'de')
                 $this->data['current']['temp'] = (int)$parsed_json->{'current_observation'}->{'temp_c'}.'&deg;C';
+            elseif (config_lang == 'nl')
+                $this->data['current']['temp'] = (int)$parsed_json->{'current_observation'}->{'temp_c'}.'&deg;C';
             else
                 $this->data['current']['temp'] = (int)$parsed_json->{'current_observation'}->{'temp_f'}.'&deg;F';
             

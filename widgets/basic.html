@@ -10,9 +10,9 @@
 
 /**
  * Widget to glue to html-elements together.
- * If the 'from' ist changed the 'to' will be reloaded after a delay. 
+ * If the 'from' is changed the 'to' will be reloaded after a delay. 
  * 
- * @param        id from the element who ist changing 
+ * @param        id from the element that is requesting change 
  * @param        id from the element that should be changed
  */
 {% macro glue(id_from, id_to) %}
@@ -145,9 +145,9 @@
  * 
  * @param        unique id for this widget
  * @param        a gad/item  
- * @param        the minimum value if the slider ist moved to total left (optional, default 0)
- * @param        the maximum value if the slider ist moved to total right (optional, default 255)
- * @param        step betwenn to values (optional, default 5) 
+ * @param        the minimum value if the slider is moved to total left (optional, default 0)
+ * @param        the maximum value if the slider is moved to total right (optional, default 255)
+ * @param        step between two values (optional, default 5) 
  * @param        the orientation ('none', 'vertical', 'bottomup', 'semicircle')
  */
  {% macro slider(id, gad, min, max, step, type) %}
@@ -341,7 +341,7 @@
  * @param       a gad/item for the actual angle of the blinds (optional, readonly)
  * @param       the minimum value for close (optional, default 0)
  * @param       the maximum value for open (optional, default 255) 
- * @param       step betwenn to values (optional, default 5) 
+ * @param       step between two values (optional, default 5) 
  * @param       the mode: 'half' blade turns from -1 to +1, or 'full' blade turns form 0 to +1 (optional, default 'half')
  * 
  * @info        inspired by Jörg Gutowski     
