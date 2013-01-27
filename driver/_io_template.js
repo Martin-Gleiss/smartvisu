@@ -68,7 +68,7 @@ var io = {
     * @param      the function for update the widget 
     */         	
 	add: function(item, update) { 	
-    	// 'item' is a array if listeing on more than one
+    	// 'item' is a array if listening on more than one
     	if (item instanceof Array) {
     		for(var i = 0; i < item.length; i++) {
                 if (item[i] != '') {
@@ -81,7 +81,7 @@ var io = {
             }
             
         // 'item' is a string
-        } else {
+        } else if (item != '') {
             if (!io.listeners[item])
                 io.listeners[item] = Array();
             

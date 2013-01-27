@@ -68,7 +68,7 @@ var io = {
     * @param      the function for update the widget 
     */         	
 	add: function(item, update) { 	
-    	// 'item' is a array if listeing on more than one
+    	// 'item' is a array if listening on more than one
     	if (item instanceof Array) {
     		for(var i = 0; i < item.length; i++) {
                 if (item[i] != '') {
@@ -81,7 +81,7 @@ var io = {
             }
             
         // 'item' is a string
-        } else {
+        } else if (item != '') {
             if (!io.listeners[item])
                 io.listeners[item] = Array();
             
@@ -173,13 +173,17 @@ var io = {
    	    io.address = address;
    	    io.port = port;
         io.remove();
+        io.open();
     },
     
   /**
     * Lets the driver work
     */
     run: function(realtime) {
-        io.open();   
+        if (io.socket.readyState > 1)
+            io.open();
+        else
+            io.monitor();          
     },
 		
 
@@ -191,6 +195,11 @@ var io = {
 // to fit your requirements and your connected system.
 	 
   /**
+    * This driver version
+    */
+    version: '0.8-DEV',
+
+  /**
     * This driver uses a websocket
     */
     socket: false,
@@ -201,11 +210,8 @@ var io = {
     open: function() {
         io.socket = new WebSocket('ws://' + io.address + ':' + io.port + '/');
         io.socket.onopen = function(){
-            io.send({'cmd': 'proto', 'ver': 1});
-            var monitor = new Array();
-            for (var item in io.listeners)
-                monitor.push(item);
-            io.send({'cmd': 'monitor', 'items': monitor});
+            io.send({'cmd': 'proto', 'ver': io.version});
+            io.monitor();
         };
         io.socket.onmessage = function(event) {
             var item, val;
@@ -228,8 +234,8 @@ var io = {
                     notify.info(data.header, data.content);
                 case 'proto':
                     var proto = parseInt(data.ver);
-                    if (proto != 1) {
-                        notify.info('Driver: smarthome.py', 'Protcol missmatch, update smarthome.py');
+                    if (proto != io.version) {
+                        notify.info('Driver: smarthome.py', 'Protocol mismatch<br \>driver is: v' + io.version + '<br />smarthome.py is: v' + proto);
                     };
                     break;
             };
@@ -249,10 +255,29 @@ var io = {
         if (io.socket.readyState == 1) {
             io.socket.send(unescape(encodeURIComponent(JSON.stringify(data))));
             console.log('[io.smarthome.py] sending data: ' + JSON.stringify(data));
-        } else {
-            notify.error('Driver: smarthome.py', 'Websocket not available. Could not send data!');
-        }
+        // } else {
+        // notify.error('Driver: smarthome.py', 'Websocket not available. Could not send data!');
+            }
     },
-    
+
+  /**
+    * Monitors the items
+    */         
+    monitor: function() {
+        var monitor = new Array();
+        
+        for (var item in io.listeners)
+            monitor.push(item);
+
+        io.send({'cmd': 'monitor', 'items': monitor});
+    },
+
+  /**
+    * Closes the connection
+    */     
+    close: function() {
+        io.socket.close(); 
+        io.socket = null;
+    }
 
 }
