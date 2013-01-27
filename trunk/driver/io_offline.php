@@ -90,7 +90,7 @@ class driver_offline
     
     
   /** 
-	* get a json formated response
+	* get a json formatted response
 	*/ 
     public function json()
 	{
