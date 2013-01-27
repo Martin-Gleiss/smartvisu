@@ -14,6 +14,7 @@ Beside that we have made many improvements:
   * New language: dutch
 
 
+
 == Driver: smarthome.py == 
 
 If you are going to use this driver all items should be divided with a '.' point. They have to be in the structure defined in your smarthome.py config like:
@@ -27,17 +28,17 @@ The standard-port is 2424.
 
 == Model-home: Otterstaetter  == 
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.2/tb_otterstaetter.jpg' title='model-home: Otterstaetter' width='600'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.2/tb_otterstaetter.jpg' title='model-home: Otterstaetter' width='700'>
 
 
 == Model-home: Meister == 
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.2/tb_meister.jpg' title='model-home: Meister' width='600'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.2/tb_meister.jpg' title='model-home: Meister' width='700'>
 
 
 == Event and Notification Center ==
 
-A notification might be: an info, an 'ok' or an error. All drivers or services display there messages with the notification-center. 
+A notification might be: an info, an 'ok' or an 'error'. All drivers or services display there messages with the notification-center. 
 
 <img src='http://smartvisu.googlecode.com/svn/wiki/v2.2/mo_event_error.jpg' title='notify: an error' width='300'>
 
