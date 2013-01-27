@@ -664,6 +664,10 @@ hr {
 	border-radius: .6em .6em 0 0;
 } /* jquery.mobile fix: should be rounded */ 
 
+#alertx .ui-title {
+    margin: 8px 20px 8px 8px;
+} /* more space for the title */
+
 #alertx img {
     position: absolute;
     top: 0;

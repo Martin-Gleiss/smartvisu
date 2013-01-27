@@ -192,7 +192,7 @@
     <script type="text/javascript">  
         io.add({{ array2script(gads) }},
             function(response){ 
-                // response will be an array, if more then one gad is used 
+                // response will be an array, if more then one gad is requested 
                 var bit = false;
                 if (response instanceof Array) {
                     for(var i = 0; i < response.length; i++) {

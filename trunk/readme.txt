@@ -71,8 +71,6 @@ SYSTEMREQUIREMENTS
 TODO
 --------------------------------------------------------------------------------
     - MainMenu: Display selected menu-button
-    - basic.tristate button for rtr-mode
-    - Main: Alert function
     - Buttons: pressed short / long
     - Scenes
  
@@ -80,6 +78,8 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 2.2 01.02.13
+    - new driver: smarthome.py (with websocket)
+    - new driver: domotiga (with websocket)
     - improved error handling and notification
     - phone service: fritz!box v5.50. Special thanks to Stefan Vonbrunn
     - new design: greenhornet
@@ -87,8 +87,7 @@ v 2.2 01.02.13
     - new pages: meister (as model-home)
     - weather: yr.no now in en and de. Special thanks to Raik Alber
     - update: Twig, with continuous integration
-    - new icons: They are named in englisch. thanks to mfd
-    - new driver: smarthome.py with websocket-connection
+    - new icons: They are named in english. thanks to mfd
     - improved driver: offline, linknx, json
     - new smart.alert js-function for alerts and logging
     - driver linknx: with error-handling
