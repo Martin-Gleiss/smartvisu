@@ -28,12 +28,12 @@ The standard-port is 2424.
 
 == Model-home: Otterstaetter  == 
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.2/tb_otterstaetter.jpg' title='model-home: Otterstaetter' width='700'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.2/tb_otterstaetter.jpg' title='model-home: Otterstaetter' width='800'>
 
 
 == Model-home: Meister == 
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.2/tb_meister.jpg' title='model-home: Meister' width='700'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.2/tb_meister.jpg' title='model-home: Meister' width='800'>
 
 
 == Event and Notification Center ==
