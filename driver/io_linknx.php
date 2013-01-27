@@ -153,7 +153,7 @@ class driver_linknx
     
     
   /** 
-	* get a json formated response
+	* get a json formatted response
 	*/ 
     public function json()
 	{

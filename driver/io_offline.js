@@ -10,7 +10,7 @@
  
 /**
  * Class for controlling all communication with a connected system. There are 
- * simple I/O functions, and komplex functions for real-time values. 
+ * simple I/O functions, and complex functions for real-time values. 
  */  
 var io = {
 
@@ -20,7 +20,7 @@ var io = {
     // the port
     port:       '',
     
-    // a list with all values, all communication it through the buffer
+    // a list with all values, all communication goes through the buffer
     buffer: new Object(),
 
     // a list with all listeners
@@ -35,7 +35,7 @@ var io = {
   /**
     *  Checks if there are any listeners 
     *       
-    *  @param      a specific obj ist tested     
+    *  @param      a specific obj is tested     
     *  @return     true, if there are any listeners     
     */            
     listening: function(item, update) {
@@ -58,8 +58,8 @@ var io = {
 // -----------------------------------------------------------------------------
 // P U B L I C   F U N C T I O N S
 // -----------------------------------------------------------------------------
-// The function-interfaces in this paragrah should not be changed. They are 
-// called form the widgets.
+// The function-interfaces in this paragraph should not be changed. They are 
+// called from the widgets.
 
   /**
     * Add a item to listen on. 
@@ -168,7 +168,7 @@ var io = {
     * Initializion of the driver
     *
     * @param      the ip or url to the system (optional)
-    * @param      the port on witch the connection should be made (optional) 
+    * @param      the port on which the connection should be made (optional) 
     */
    	init: function(address, port) {
    	    io.address = address;
@@ -191,7 +191,7 @@ var io = {
 // -----------------------------------------------------------------------------
 // C O M M U N I C A T I O N   F U N C T I O N S
 // -----------------------------------------------------------------------------
-// The functions in this paragrah may be changed. They are all private and are
+// The functions in this paragraph may be changed. They are all private and are
 // only be called from the public functions above. You may add or delete some
 // to fit your requirements and your connected system.
 	
@@ -199,7 +199,7 @@ var io = {
     timer_run: false,
     
   /**
-    * The real-time pollin loop, only if there are listeners     
+    * The real-time polling loop, only if there are listeners     
     */         
     loop: function()
     {
