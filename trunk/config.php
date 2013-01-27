@@ -46,7 +46,7 @@
     
   /**
     * The name of the stylesheet. Results in NAME.min.css
-    * You may change your desing with the jquerymobile theme roller
+    * You may change your design with the jquerymobile theme roller
     *     
     * @link     http://jquerymobile.com/themeroller/        
     */
@@ -54,7 +54,7 @@
    
   /**
     * smartVISU supports different projects, located under 'pages'
-    * this ist the directory for your project    
+    * this is the directory for your project    
     */
     define ('config_pages',                 'docu');
    
@@ -89,7 +89,7 @@
 // -----------------------------------------------------------------------------
 
   /**
-    * Witch service should by used?
+    * Which service should by used?
     * 
     * @value    offline: random values
     * @value    google: google api (deprecated)
@@ -110,7 +110,7 @@
     
   
   /**
-    * Witch phone-system should by used?
+    * Which phone-system should by used?
     * 
     * @value    offline: random values
     * @value    auerswald: Auerswald VoiP 5010, 5020, Commander Basic.2
@@ -125,18 +125,18 @@
     define ('config_phone_server',          '192.168.x.x');
  
   /**
-    * Is there a user to autheticate?
+    * Is there a user to authenticate?
     */
     define ('config_phone_user',            '');
   
   /**
-    * Is there a user to autheticate?
+    * Is there a user to authenticate?
     */
     define ('config_phone_pass',            '');  
     
       
   /**
-    * Witch calender should be used?
+    * Which calender should be used?
     * 
     * @value offline: random values
     * @value google: Google Calendar            
@@ -153,7 +153,7 @@
 // C O M M O N
 // -----------------------------------------------------------------------------
     
-// Normaly, no need to change values here!
+// Normally, no need to change values here!
 
   /**
     * Path of smartVISU
