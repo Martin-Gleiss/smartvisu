@@ -32,7 +32,7 @@
   /**
     * The port, if the driver needs one
     */
-    define ('config_driver_port',           '2121');
+    define ('config_driver_port',           '1028');
 
   /**
     * Use the realtime-mode if possible
@@ -50,7 +50,7 @@
     *     
     * @link     http://jquerymobile.com/themeroller/        
     */
-    define ('config_design',                'night');
+    define ('config_design',                'greenhornet');
    
   /**
     * smartVISU supports different projects, located under 'pages'

@@ -44,7 +44,7 @@ class driver_linknx
         $this->fp = fsockopen(config_driver_address, config_driver_port, $errno, $errstr, 3);
 		
 		if (!$this->fp) 
-           $ret = "$errno ($errstr)\n";
+           $ret = "$errstr ($errno)\n";
            
         return $ret;
     }
