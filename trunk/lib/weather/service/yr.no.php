@@ -116,11 +116,11 @@ class weather_yr extends weather
             'W' => 'West', 'WNW'=> 'Westnoordwest', 'NW' => 'Noordwest', 'NNW' => 'Noordnoordwest',
             
             'clear sky' => 'heldere hemel', 'Fair' => 'goed weer', 'Cloudy' => 'bewolkt',
-            'Partly cloudy' => 'licht bewolk', 'Rain showers' => 'regenbui',
+            'Partly cloudy' => 'licht bewolkt', 'Rain showers' => 'regenbuien',
             'Rain showers with thunder' => 'regenbuien met onweer', 'Sleet showers' => 'natte sneeuw',
             'Snow showers' => 'sneeuwbuien', 'Rain' => 'regen', 'Heavy Rain' => 'zware regenval',
             'Rain and thunder' => 'regen en onweer', 'Sleet'=> 'Graupel', 'Snow' => 'sneeuw',
-            'Snow and thunder' => 'sneeuw en onweer', 'Sleet showers and thunder' => 'natte neeuwbuien en onweer',
+            'Snow and thunder' => 'sneeuw en onweer', 'Sleet showers and thunder' => 'natte neeuwbuien met onweer',
             'Fog' => 'mist', 'Sleet and thunder'=> 'natte sneeuw en onweer',
             
             'Calm' => 'windstil', 'Light air' => 'flauwe bries', 'Light breeze' => 'lichte bries',
