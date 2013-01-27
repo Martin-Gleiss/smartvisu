@@ -125,6 +125,9 @@
    margin: 0;
 }
 
+.ui-collapsible-heading .ui-icon-shadow {
+    background-color: #b8b8b8;
+} /* grey background for the symbol in an collapsible set */
 
 /** --------- button --------- */
 a.ui-btn-inline {
@@ -173,11 +176,11 @@ a.ui-btn-inline.ui-mini[data-iconpos="nopic"] .ui-btn-inner {
 } 
 
 a.ui-btn-inline.ui-mini[data-iconpos="notext"] .ui-icon {
-    margin: 9px 0 0 10px !important;
+    margin: 7px 0 0 10px !important;
 } /* only pic (inline) */   
 
 a.ui-btn-inline.ui-mini[data-iconpos="top"] .ui-btn-inner {
-    padding-top: 21px;
+    padding-top: 22px;
 } 
  
 a.ui-btn-inline.ui-mini span.ui-btn-inner { 
