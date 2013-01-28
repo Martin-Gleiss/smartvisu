@@ -38,7 +38,7 @@ class service
     }
 
   /** 
-	* initalisation of some parameters
+	* initialization of some parameters
 	*/      
     public function init($request)
     {
