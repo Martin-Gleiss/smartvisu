@@ -197,7 +197,7 @@ var io = {
   /**
     * This driver version
     */
-    version: '0.8-DEV',
+    version: '0.8',
 
   /**
     * This driver uses a websocket
