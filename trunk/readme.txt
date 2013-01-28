@@ -135,7 +135,7 @@ v 1.8 02.11.12
     - updated: jQuery plugins
     
 v 1.7 06.10.12
-    - new feature: Apps (an app is a complete html-page, witch can be easily
+    - new feature: Apps (an app is a complete html-page, which can be easily
       used in your project. Use lib.app('NAME OF APP') to show one on your page.
       all apps are located in pages/apps
     - app: Impressions Frankfurt, Impressions Würzburg

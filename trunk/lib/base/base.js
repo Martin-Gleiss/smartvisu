@@ -32,7 +32,7 @@ var notify = {
     },
     
   /**
-    * Add a new error-message form a ajax error request
+    * Add a new error-message from a ajax error request
     * @param    error object
     * @param    status
     * @param    '600 smartVISU Service Error'
@@ -74,7 +74,7 @@ var notify = {
     },
     
   /**
-    * Removes a note, or all it no id is given
+    * Removes a note, or all if no id is given
     */         
     remove: function(id) {
         if (id !== undefined)
