@@ -115,7 +115,8 @@
     * @value    offline: random values
     * @value    auerswald: Auerswald VoiP 5010, 5020, Commander Basic.2
     * @value    fritz!box: Fritzbox 7050 
-    * @value    fritz!box_v5.50: Fritzbox 7390        
+    * @value    fritz!box_v5.20: Fritzbox 7390 with fw 5.20+
+    * @value    fritz!box_v5.50: Fritzbox 7390 with fw 5.50 
     */
     define ('config_phone_service',         'offline');
 
@@ -130,7 +131,7 @@
     define ('config_phone_user',            '');
   
   /**
-    * Is there a user to authenticate?
+    * Is there a password to authenticate?
     */
     define ('config_phone_pass',            '');  
     
