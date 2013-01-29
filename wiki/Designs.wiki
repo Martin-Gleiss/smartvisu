@@ -26,10 +26,12 @@ Some designs shipped with smartVISU:
   * 'ice': white and blue and cold colors
   * 'cube': black in squared style 
   * 'sand': brown and warm colors
+  * 'greenhornet': modern and green
 
 <img src='http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_night.jpg' title='night' width='200'>
 <img src='http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_ice.jpg' title='ice' width='200'>
 <img src='http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_cube.jpg' title='cube' width='200'>
 <img src='http://smartvisu.googlecode.com/svn/wiki/v1.8/mo_design_sand.jpg' title='sand' width='200'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.2/mo_design_greenhornet.jpg' title='greenhornet' width='200'>
 
 If you have made a new design, please send me the .css files and i will integrate them into smartVISU!
