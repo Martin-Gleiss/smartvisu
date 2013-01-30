@@ -239,62 +239,80 @@ var io = {
         io.timer_run = false;
     },
 
-    convertData: function(inputData, direction) {
+    convertData: function(inputData, dataType, direction) {
 
-	if ( ( String(inputData).indexOf('.') > -1 ) || (direction == 'from') ) {
+	if ( dataType == '9.xxx' ) {
 
-       	    if (direction == 'from') {
-            	data = parseInt(inputData,16).toString(10);
-            	wert = (data & 0x07ff);
+        if (direction == 'from') {
 
+            data = parseInt(inputData,16).toString(10);
+            wert = (data & 0x07ff);
 
-            	if ((data & 0x08000) != 0)
-            	{
-            	    wert = wert | 0xfffff800;
-            	    wert = wert * -1;
-            	}
+            if ((data & 0x08000) != 0) {
+                wert = wert | 0xfffff800;
+            	wert = wert * -1;
+            }
 	
-	            wert = wert << ((data & 0x07800) >> 11);
+	        wert = wert << ((data & 0x07800) >> 11);
 	
-	            if ((data & 0x08000) != 0)
-	            {
-	                wert = wert * -1;
-	            }
-	            returnData = wert/100;
-	
-            } else {
+	        if ((data & 0x08000) != 0) {
+	            wert = wert * -1;
+	        }
+	        returnData = wert/100;
 
-                inputData = inputData * 100;
-                var dpt9 = 0;
-                var exponent = 0;
-                if (inputData < 0)
-                {
-                    dpt9 = 0x08000;
-                    inputData = -inputData;
-                }
-                while (inputData > 0x07ff)
-                {
-                    inputData >>= 1;
-                    exponent++;
-                }
-                if (dpt9 != 0) inputData = -inputData;
+        } else {
+            inputData = inputData * 100;
 
-                dpt9 |= inputData & 0x7ff;
-                dpt9 |= (exponent << 11) & 0x07800;
+            var dpt9 = 0;
+            var exponent = 0;
 
-                returnData = Number(dpt9 + 0x800000  ).toString(16);
+            if (inputData < 0) {
+                dpt9 = 0x08000;
+                inputData = -inputData;
+            }
+            while (inputData > 0x07ff) {
+                inputData >>= 1;
+                exponent++;
+            }
+            if (dpt9 != 0) {
+                inputData = -inputData;
+            }
 
-                while (returnData.length < 5) {
-                    returnData = "0" + returnData;
-                }
+            dpt9 |= inputData & 0x7ff;
+            dpt9 |= (exponent << 11) & 0x07800;
+
+            returnData = Number(dpt9 + 0x800000  ).toString(16);
+
+            while (returnData.length < 5) {
+
+                returnData = "0" + returnData;
+            }
 
            }
-	} else if (inputData == 0 || inputData == 1) {
-	    returnData = '8' + inputData;
-	} else {
-	    returnData = inputData;
-	}
+	} else if (dataType == '1.001') {
+	    if (direction == 'to') {
 
+	        returnData = '8' + inputData;
+            }
+	} else if (dataType == '5.001') {
+
+        if (direction == 'from') {
+
+            returnData = inputData;
+            //returnData = Math.round(parseInt(inputData, 10) / 2.55);
+
+
+        } else if (direction == 'to') {
+
+            returnData = inputData;
+            returnData = Math.round(inputData * 2.55) + 0x8000;
+            returnData = returnData.toString(16);
+        }
+
+    } else {
+
+        returnData = inputData;
+	}
         return returnData;
     },
     
@@ -319,12 +337,12 @@ var io = {
     */         
     put: function (item, val) {
         var timer_run = io.timer_run;
-        
+
         io.stop();
 
         $.ajax 
             ({  url: "/cgi-bin/w",
-                data: ({a: item, v: io.convertData(val, 'to'), ts: $.now()}),
+                data: ({a: item.substring(0, (item.length - 6) ), v: io.convertData(val,item.slice(-5), 'to'), ts: $.now()}),
                 type: "GET", 
                 dataType: 'text', 
                 cache: false
@@ -360,7 +378,7 @@ var io = {
                     getForUrl = getForUrl + '&';
                 }
 
-                getForUrl = getForUrl + 'a=' + item;
+                getForUrl = getForUrl + 'a=' + item.substring(0, (item.length - 6) );
                 counter++;
             }
             getForUrl = getForUrl + '&i=' + io.actualIndexNumber;
@@ -380,10 +398,14 @@ var io = {
                             }
                             if (item == 'd') {
                                 $.each(val, function(id, value) {
-                                    if (parseInt(value, 16)) {
-                                        value = io.convertData(value, 'from');
+                                    for(var item in io.listeners) {
+                                        if (item.substring(0, (item.length - 6) ) == id) {
+                                            var dataType = item.slice(-5);
+                                            value = io.convertData(value, dataType, 'from');
+                                            actual[item] = value;
+                                        }
                                     }
-                                    actual[id] = value;
+
                                 } );
                             }
                         })
