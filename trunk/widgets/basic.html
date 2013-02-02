@@ -42,7 +42,7 @@
     {% set uid = uid(page, id) %}
     
     /** Design */
-    <{{ tag|default('span') }} id="{{ uid }}"></{{ tag|default('span') }}>
+    <{{ tag|default('span') }} id="{{ uid }}">--- {{ unit }}</{{ tag|default('span') }}>
 
     /** Events */
     <script type="text/javascript">
@@ -68,7 +68,7 @@
     {% set uid = uid(page, id) %}
 
     /** Design */
-    <{{ tag|default('span') }} id="{{ uid }}" data-widget="basic.float" data-item="{{ gad }}">0.0</{{ tag|default('span') }}>
+    <{{ tag|default('span') }} id="{{ uid }}" data-widget="basic.float" data-item="{{ gad }}">--.- {{ unit }}</{{ tag|default('span') }}>
 
     /** Events */
     <script type="text/javascript">
