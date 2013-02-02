@@ -38,7 +38,7 @@ $(document).on("change", 'input[data-type="range"]', function() {
         setTimeout(
             "if($('#" + this.id + "').val() != " + $(this).val() + " && $('#" + this.id + "').attr('lock') == 'true')" +
             "   $('#" + this.id + "').trigger('click');" +
-            "$('#" + this.id + "').attr('lock', 'false');", 1400);
+            "$('#" + this.id + "').attr('lock', 'false');", 400);
     }
     // no click on init    
     if($(this).attr('lock') === undefined)
