@@ -10,6 +10,13 @@
  
 @CHARSET "UTF-8";
 
+@media all and (min-width: 1500px) {
+    .block { 
+        width: 50%;
+        float: left;
+    }
+}  
+
 .page-bg { 
     background-image: url('../../pics/bg/light_vortex.png');
 }
