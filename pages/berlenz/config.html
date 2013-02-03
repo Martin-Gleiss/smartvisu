@@ -1,8 +1,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Frank Berlenz
- * @copyright   2013
+ * @author      Martin Gleiß
+ * @copyright   2012
  * @license     GPL <http://www.gnu.de>
  * ----------------------------------------------------------------------------- 
  */
@@ -123,6 +123,34 @@
             
         </div>    
         </div>
+
+        <script type="text/javascript">
+            $('#driver').change(function() {
+                switch(this.value)
+                {
+                    case 'offline':
+                        $('#driver_realtime').val('false').slider('refresh');
+                        break;
+                    
+                    case 'linknx':
+                        $('#driver_address').val('192.168.x.x');
+                        $('#driver_port').val('1028');
+                        break;
+                    
+                    case 'smarthome.py':
+                        $('#driver_address').val('smarthome.local');
+                        $('#driver_port').val('2424');
+                        $('#driver_realtime').val('true').slider('refresh');
+                        break;
+                    
+                    case 'domotiga':
+                        $('#driver_address').val('domotiga.local');
+                        $('#driver_port').val('2121');
+                        $('#driver_realtime').val('true').slider('refresh');
+                        break;
+                }
+            });
+        </script>   
         
         
         <div class="block">
@@ -157,7 +185,7 @@
             
         </div> 
         </div>
-               
+             
         
         <div class="block">
         <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
