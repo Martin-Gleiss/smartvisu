@@ -39,10 +39,10 @@
                         Warmwasser
                     </td>
                     <td align=left style="padding-left: 10px;" width=48>
-                        {{ basic.symbol('lueftung0', 'lwz_lueftung_stufe0', '', icon1~'vent_ventilation_level_0.png', 1) }}
-                        {{ basic.symbol('lueftung1', 'lwz_lueftung_stufe1', '', icon1~'vent_ventilation_level_1.png', 1) }}
-                        {{ basic.symbol('lueftung2', 'lwz_lueftung_stufe2', '', icon1~'vent_ventilation_level_2.png', 1) }}
-                        {{ basic.symbol('lueftung3', 'lwz_lueftung_stufe3', '', icon1~'vent_ventilation_level_3.png', 1) }}
+                        {{ basic.symbol('lueftung0', 'lwz_lueftungstufe', '', icon1~'vent_ventilation_level_0.png', 0) }}
+                        {{ basic.symbol('lueftung1', 'lwz_lueftungstufe', '', icon1~'vent_ventilation_level_1.png', 1) }}
+                        {{ basic.symbol('lueftung2', 'lwz_lueftungstufe', '', icon1~'vent_ventilation_level_2.png', 2) }}
+                        {{ basic.symbol('lueftung3', 'lwz_lueftungstufe', '', icon1~'vent_ventilation_level_3.png', 3) }}
                     </td>
                     <td align=left">
                         Stufe {{ basic.value('heizen_lueftungsstufe', 'lwz_lueftungstufe', '') }}<br>
@@ -65,19 +65,19 @@
             <h3>Einstellungen</h3>
             <table width=100%>
                 <tr>
-                    <td align=left colslpan=3>
+                    <td align=left colspan=3>
                         L&uuml;ftungsstufe Sollwert:
                     </td>
                 </tr>
                 <tr>
                     <td align=left width=33%>
-                        {{ basic.switch('kueche_lueftung_stufe0', 'lwz_lueftungstufe_sollwert', icon1~'vent_ventilation_level_0.png', icon0~'vent_ventilation_level_0.png', 0, -1) }} Stufe 0
+                        {{ basic.switch('kueche_lueftung_stufe0', 'lwz_lueftungstufe_sollwert', icon1~'vent_ventilation_level_0.png', icon0~'vent_ventilation_level_0.png', 0, -1) }} Stufe&nbsp;0
                     </td>
                     <td align=left width=33%>
-                        {{ basic.switch('kueche_lueftung_stufe1', 'lwz_lueftungstufe_sollwert', icon1~'vent_ventilation_level_1.png', icon0~'vent_ventilation_level_1.png', 1, -1) }} Stufe 1
+                        {{ basic.switch('kueche_lueftung_stufe1', 'lwz_lueftungstufe_sollwert', icon1~'vent_ventilation_level_1.png', icon0~'vent_ventilation_level_1.png', 1, -1) }} Stufe&nbsp;1
                     </td>
                     <td align=left width=33%>
-                        {{ basic.switch('kueche_lueftung_stufe2', 'lwz_lueftungstufe_sollwert', icon1~'vent_ventilation_level_2.png', icon0~'vent_ventilation_level_2.png', 2, -1) }} Stufe 2
+                        {{ basic.switch('kueche_lueftung_stufe2', 'lwz_lueftungstufe_sollwert', icon1~'vent_ventilation_level_2.png', icon0~'vent_ventilation_level_2.png', 2, -1) }} Stufe&nbsp;2
                     </td>
                 </tr>
             </table>      
