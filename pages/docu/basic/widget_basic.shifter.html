@@ -1,0 +1,41 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+    <h5>Examples</h5>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+                
+            {{ basic.shifter('shifter1', 'bath_light_switch', 'bath_light_value') }}
+            {{ basic.shifter('shifter2', '...', '...', icon1~'fts_shutter_00.png', icon0~'fts_shutter_10.png' ) }}
+            {{ basic.shifter('shifter3', '...', '...', icon1~'fts_garage_door_00.png', icon0~'fts_garage.png') }}
+            
+        {% endverbatim %}{% endfilter  %}</code>
+    </div>
+    <br />
+    
+    Use the slider to control the shifter, when it is switched on   
+    <div class="html">
+        {{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
+    </div>
+    
+    There are three icon-series located in the icons directory.
+    <div class="html">
+ 
+            {{ basic.shifter('shifter1', 'bath_light_switch', 'bath_light_value') }}
+            {{ basic.shifter('shifter2', 'bath_light_switch', 'bath_light_value', icon1~'fts_shutter_00.png', icon0~'fts_shutter_10.png' ) }}
+            {{ basic.shifter('shifter3', 'bath_light_switch', 'bath_light_value', icon1~'fts_garage_door_00.png', icon0~'fts_garage.png') }}
+ 
+    </div>
+    
+{% endblock %}

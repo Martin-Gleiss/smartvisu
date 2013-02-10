@@ -205,38 +205,44 @@ $(document).delegate('select[data-widget="basic.flip"]', {
 // ----- basic.silder -----
 $(document).delegate('input[data-widget="basic.slider"]', {
 	'update': function(event, response) {
+		// DEBUG: console.log("[basic.slider] update val: " + $(this).val() + " lock: " + $(this).attr('lock'));  
+
 		$('#' + this.id).val(response).slider('refresh');
     },
 
 	'slidestop': function(event, response) {
 		// DEBUG: console.log("[basic.slider] slidestop val: " + $(this).val() + " lock: " + $(this).attr('lock'));  
 		
-		// tigger only, if not timeout hat triggerd
-		if ($(this).attr('lock') > 0 || $(this).attr('lock') === undefined)
+		// tigger only, if not timeout hat triggered
+		if ($(this).attr('lock') > -1 || $(this).attr('lock') === undefined)
 		{
-			$(this).attr('lock', 0);
-			$(this).trigger('click'); 
-		}
+        	$(this).attr('lock', -1);
+		    $(this).trigger('click'); 
+        }
 	},
 
 	'change': function(event, response) {
 	    // DEBUG: console.log("[basic.slider] change val: " + $(this).val() + " lock: " + $(this).attr('lock'));   
 	    
 		// use a lock to fire event only every 400ms
-	    if ($(this).attr('lock') == 0)
+	    if ($(this).attr('lock') == -1)
 	    {
 	        $(this).attr('lock', $(this).val());   
 			
 			// trigger, if the value had changed and lock is present
 	        setTimeout(
-				"if($('#" + this.id + "').val() != $('#" + this.id + "').attr('lock') && $('#" + this.id + "').attr('lock') > 0)" +
+			    "if($('#" + this.id + "').val() != $('#" + this.id + "').attr('lock') && $('#" + this.id + "').attr('lock') > -1) {" +
 	            "   $('#" + this.id + "').trigger('click');" +
-	            "$('#" + this.id + "').attr('lock', 0);", 400);
+                "}" +
+                "$('#" + this.id + "').attr('lock', -1);", 400);
 	    }
+        
+        if($(this).attr('lock') === undefined)
+            $(this).attr('lock', -1);    
 	},
 
 	'click': function(event) {
-		io.write($(this).attr('data-item'), $(this).val());  
+        io.write($(this).attr('data-item'), $(this).val());  
 	} 
 }); 
 
@@ -269,12 +275,49 @@ $(document).delegate('span[data-widget="basic.switch"]', {
     },
 
 	'click': function(event) {
-		if ($('#' + this.id + ' img').attr('src') == $(this).attr('data-pic-off') ){
+		if ($('#' + this.id + ' img').attr('src') == $(this).attr('data-pic-off') ) {
 			io.write($(this).attr('data-item'), $(this).attr('data-val-on')); 
 	    } else {
       		io.write($(this).attr('data-item'), $(this).attr('data-val-off'));
 	    }
 	}
+});
+
+$(document).delegate('span[data-widget="basic.switch"] > a > img', 'hover', function( event ) {
+    if( event.type === 'mouseenter' )  
+        $(this).addClass("ui-focus");
+    else
+        $(this).removeClass("ui-focus");  
+});
+
+
+// ----- basic.shifter -----
+$(document).delegate('span[data-widget="basic.shifter"]', { 
+	'update': function(event, response) {
+        var step = Math.min((response[1] / $(this).attr('data-max') * 10 + 0.49).toFixed(0) * 10, 100);
+        
+        if (response[0] != 0 && step > 0)
+            $('#' + this.id + ' img').attr('src', $(this).attr('data-pic-on').replace('00', step));
+        else
+            $('#' + this.id + ' img').attr('src', $(this).attr('data-pic-off'));
+    },
+
+	'click': function(event) {
+        var items = $(this).attr('data-item').split(',');
+        
+		if ($('#' + this.id + ' img').attr('src') == $(this).attr('data-pic-off') ) {
+			io.write(items[0].trim(), 1); 
+	    } else {
+      		io.write(items[0].trim(), 0);
+	    }
+	}
+});
+
+$(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', function( event ) {
+    if( event.type === 'mouseenter' )  
+        $(this).addClass("ui-focus");
+    else
+        $(this).removeClass("ui-focus");  
 });
 
 
@@ -294,7 +337,7 @@ $(document).delegate('a[data-widget="basic.dual"]', {
     },
 
 	'click': function(event) {
-		if ($('#' + this.id + ' img').attr('src') == $(this).attr('data-pic-off') ){
+		if ($('#' + this.id + ' img').attr('src') == $(this).attr('data-pic-off') ) {
 			io.write($(this).attr('data-item'), $(this).attr('data-val-on')); 
 		} else {
       		io.write($(this).attr('data-item'), $(this).attr('data-val-off'));
@@ -365,4 +408,27 @@ $(document).delegate('a[data-widget="basic.rgb"]', {
 		var max = $(this).attr('data-max');
 		$('#' + this.id + ' span').css('background-color', 'rgb(' + Math.round(response[0] / max * 255) + ',' + Math.round(response[1] / max * 255) + ',' + Math.round(response[2] / max * 255) + ')');  
     },
+});
+
+$(document).delegate('div[data-widget="basic.rgb-popup"] > div', { 
+    'click': function(event) {
+        var rgb = $(this).css('background-color');
+            rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/); 
+        
+        var max = $(this).parent().attr('data-max');
+        var items = $(this).parent().attr('data-item').split(',');
+        
+        io.write(items[0].trim(), Math.round(rgb[1] / 255 * max ));
+        io.write(items[1].trim(), Math.round(rgb[2] / 255 * max ));
+        io.write(items[2].trim(), Math.round(rgb[3] / 255 * max ));   
+        
+        $(this).parent().popup('close'); 
+    },
+    
+    'hover': function(event) {
+        if( event.type === 'mouseenter' )  
+            $(this).addClass("ui-focus");
+        else
+            $(this).removeClass("ui-focus"); 
+    }
 });

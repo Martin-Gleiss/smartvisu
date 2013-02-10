@@ -12,8 +12,8 @@
  * Widget to glue to html-elements together.
  * If the 'from' is changed the 'to' will be reloaded after a delay. 
  * 
- * @param        id from the element that is requesting change 
- * @param        id from the element that should be changed
+ * @param       id from the element that is requesting change 
+ * @param       id from the element that should be changed
  */
 {% macro glue(id_from, id_to) %}
     <script type="text/javascript">
@@ -32,10 +32,10 @@
 /**
  * display a value
  * 
- * @param        unique id for this widget
- * @param        a gad/item  
- * @param        a unit
- * @param        the parent html-tag for the value                   
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       a unit
+ * @param       the parent html-tag for the value                   
  */
 {% macro value(id, gad, unit, tag) %}   
  
@@ -48,11 +48,10 @@
 /**
  * Displays a value as float
  * 
- * @param        unique id for this widget
- * @param        a gad/item  
- *  
- * @param        a unit
- * @param        the parent html-tag for the value     
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       a unit
+ * @param       the parent html-tag for the value     
  */
 {% macro float(id, gad, unit, tag) %}
 
@@ -65,9 +64,9 @@
 /**
  * Displays a checkbox
  * 
- * @param        unique id for this widget
- * @param        a gad/item  
- * @param        text printed on the checkbox
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       text printed on the checkbox
  */
 {% macro checkbox(id, gad, txt) %}
 
@@ -80,10 +79,10 @@
 /**
  * Displays a flip-switch
  * 
- * @param        unique id for this widget
- * @param        a gad/item  
- * @param        text for the 'on' state (optional, default 'On')
- * @param        text for the 'off' state (optional, default 'Off')
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       text for the 'on' state (optional, default 'On')
+ * @param       text for the 'off' state (optional, default 'Off')
  */
 {% macro flip(id, gad, txt_on, txt_off) %}
 
@@ -99,12 +98,12 @@
 /**
  * Displays a slider-control
  * 
- * @param        unique id for this widget
- * @param        a gad/item  
- * @param        the minimum value if the slider is moved to total left (optional, default 0)
- * @param        the maximum value if the slider is moved to total right (optional, default 255)
- * @param        step between two values (optional, default 5) 
- * @param        the orientation ('none', 'vertical', 'bottomup', 'semicircle')
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       the minimum value if the slider is moved to total left (optional, default 0)
+ * @param       the maximum value if the slider is moved to total right (optional, default 255)
+ * @param       step between two values (optional, default 5) 
+ * @param       the orientation ('none', 'vertical', 'bottomup', 'semicircle')
  */
 {% macro slider(id, gad, min, max, step, type) %}
 
@@ -119,11 +118,11 @@
  * A symbol, with no writing to knx, only displayed when the value of gad is equal to val. Symbols may be used in menus.
  * If more than one gad is given, they will be combined with 'or'. 
  * 
- * @param        unique id for this widget
- * @param        one or more gad(s)/item(s)
- * @param        the text, printed when gad has value val (optional) 
- * @param        the pic, shown when gad has value val
- * @param        value (default 1) 
+ * @param       unique id for this widget
+ * @param       one or more gad(s)/item(s)
+ * @param       the text, printed when gad has value val (optional) 
+ * @param       the pic, shown when gad has value val
+ * @param       value (default 1) 
  */
 {% macro symbol(id, items, txt, pic, val) %}
   
@@ -136,12 +135,13 @@
 /**
  * A switch, build of two pics
  * 
- * @param        unique id for this widget
- * @param        a gad/item  
- * @param        the pic for the 'on' state (optional)
- * @param        the pic for the 'off' state (optional)
- * @param        value send for the 'on' state (optional, default 1)
- * @param        value send for the 'off' state (optional, default 0)
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       the pic for the 'on' state (optional)
+ * @param       the pic for the 'off' state (optional)
+ * @param       value send for the 'on' state (optional, default 1)
+ * @param       value send for the 'off' state (optional, default 0
+ 
  */
 {% macro switch(id, gad, pic_on, pic_off, val_on, val_off) %}
 
@@ -151,25 +151,40 @@
 		class="switch"><a><img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}"/></a>
     </span>
         
-    <script type="text/javascript"> 
-        $('#{{ uid(page, id) }} .icon').hover(
-            function() { $(this).addClass("ui-focus");  },  
-            function() { $(this).removeClass("ui-focus"); }
-        );
-    </script>    
+{% endmacro %} 
 
+
+/**
+ * A switch, build of a series of pics
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item for switching
+ * @param       a gad/item for the serie
+ * @param       the pic for the 'on' state, must include '_00.png' in path (optional)
+ * @param       the pic for the 'off' state (optional)
+ * @param       the minimum value if it is off (optional, for future use)
+ * @param       the maximum value if it is on (optional, default 255)   
+ */
+{% macro shifter(id, gad_switch, gad_value, pic_on, pic_off, min, max) %}
+
+    <span id="{{ uid(page, id) }}" data-widget="basic.shifter" data-item="{{ gad_switch }}, {{ gad_value }}"
+		data-pic-on="{{ pic_on|default(icon1~'light_light_dim_00.png') }}" data-pic-off="{{ pic_off|default(icon0~'light_light_dim_00.png') }}"
+        data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+		class="switch"><a><img class="icon" src="{{ pic_off|default(icon0~'light_light_dim_00.png') }}"/></a>
+    </span>
+        
 {% endmacro %} 
 
 
 /**
  * A button
  * 
- * @param        unique id for this widget
- * @param        a gad/item  
- * @param        text printed on the button (optional)
- * @param        a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search' (optional)
- * @param        value send if the button is pressed (optional, default 1)
- * @param        type: 'micro', 'mini', 'midi' (optional, default: mini) 
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       text printed on the button (optional)
+ * @param       a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search' (optional)
+ * @param       value send if the button is pressed (optional, default 1)
+ * @param       type: 'micro', 'mini', 'midi' (optional, default: mini) 
  */
 {% macro button(id, gad, txt, pic, val, type) %}
     
@@ -194,13 +209,13 @@
 /**
  * A switch with to states displayed as a button
  * 
- * @param        unique id for this widget
- * @param        a gad/item  
- * @param        the pic for the 'on' state (optional)
- * @param        the pic for the 'off' state (optional)
- * @param        value send for the 'on' state (optional, default 1)
- * @param        value send for the 'off' state (optional, default 0) 
- * @param        type: 'micro', 'mini', 'midi' (optional, default: mini) 
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       the pic for the 'on' state (optional)
+ * @param       the pic for the 'off' state (optional)
+ * @param       value send for the 'on' state (optional, default 1)
+ * @param       value send for the 'off' state (optional, default 0) 
+ * @param       type: 'micro', 'mini', 'midi' (optional, default: mini) 
  */
 {% macro dual(id, gad, pic_on, pic_off, val_on, val_off, type) %}
 
@@ -258,7 +273,10 @@
     <a id="{{ uid }}" data-widget="basic.rgb" data-item="{{ gad_r }}, {{ gad_g }}, {{ gad_b }}" 
 		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="rgb" href="#{{ uid }}-popup" data-rel="popup"><span></span></a>
-    <div id="{{ uid }}-popup" class="rgb-popup" data-role="popup"></div>
+        
+    <div id="{{ uid }}-popup" data-widget="basic.rgb-popup" data-item="{{ gad_r }}, {{ gad_g }}, {{ gad_b }}"
+        data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+        class="rgb-popup" data-role="popup"></div>
     
     <script type="text/javascript"> 
         var html = '';
@@ -277,24 +295,6 @@
         }
         
         $("#{{ uid }}-popup").html(html);
-                  
-       // click
-        $('#{{ uid }}-popup div').unbind('click').bind('click', function() {
-            var rgb = $(this).css('background-color');
-            $('#{{ uid }} span').css('background-color', rgb);
-            $('#{{ uid }}-popup').popup('close');  
-            
-            rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/); 
-            io.write('{{ gad_r }}', Math.round(rgb[1] / 255 * {{ max|default(255) }}) );
-            io.write('{{ gad_g }}', Math.round(rgb[2] / 255 * {{ max|default(255) }}) );
-            io.write('{{ gad_b }}', Math.round(rgb[3] / 255 * {{ max|default(255) }}) ); 
-        });
-        
-        // effects
-        $('#{{ uid }}-popup div').hover(
-            function() { $(this).addClass('ui-focus'); },  
-            function() { $(this).removeClass('ui-focus'); }
-        );
     </script> 
 {% endmacro %} 
 
