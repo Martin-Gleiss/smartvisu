@@ -34,8 +34,12 @@
         </code>
     </div>
     <div class="html">
-        {{ basic.slider('slider3', 'bath_light_value', 0, 255, 5, 'vertical') }}
-        {{ basic.slider('slider4', 'bath_light_value', 0, 255, 5, 'bottomup') }}
+		<div style="height: 180px; width: 100px; display: inline-block;"> 
+			{{ basic.slider('slider3', 'bath_light_value', 0, 255, 5, 'vertical') }}	
+		</div>
+       	<div style="height: 180px; width: 100px; display: inline-block;">
+			{{ basic.slider('slider4', 'bath_light_value', 0, 255, 5, 'bottomup') }}
+		</div>
     </div>
     
     <div class="twig">

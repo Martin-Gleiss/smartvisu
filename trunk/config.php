@@ -12,7 +12,7 @@
   /**
     * Version of smartVISU
     */
-    define ('config_version',               '2.2');
+    define ('config_version',               '2.3');
     
 
 // -----------------------------------------------------------------------------
@@ -27,7 +27,7 @@
   /**
     * The address, might be a url or filename
     */
-    define ('config_driver_address',        '192.168.x.x');
+    define ('config_driver_address',        '192.168.45.10');
 
   /**
     * The port, if the driver needs one
@@ -50,7 +50,7 @@
     *     
     * @link     http://jquerymobile.com/themeroller/        
     */
-    define ('config_design',                'greenhornet');
+    define ('config_design',                'night');
    
   /**
     * smartVISU supports different projects, located under 'pages'
@@ -167,7 +167,7 @@
     define ('const_path_system',            const_path.'lib/'); 
 
   /**
-    * Special design variable. Defines the eye cancer of using a flavor.
+    * Special design variable. Defines the eye cancer of using a flavour.
     */
     define ('const_cvsucks',                10);
    

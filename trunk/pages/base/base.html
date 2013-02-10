@@ -21,11 +21,11 @@
 	<link rel="icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="apple-touch-icon" href="favicon.png" />
 
-    <link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile-1.2.0.min.css" />
+    <link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.3.0-beta.1.min.css" />
     <script type="text/javascript" src="vendor/jquery/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.2.0.min.js"></script>
+    <script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.3.0-beta.1.js"></script>
     <script type="text/javascript" src="lib/base/jquery.mobile.slider.min.js"></script>
-    <script type="text/javascript" src="lib/base/jquery.mobile.fix.js"></script>
+    <script type="text/javascript" src="widgets/widget.js"></script>
     
     <link rel="stylesheet" type="text/css" href="designs/{{ config_design }}.min.css" />
 	<link rel="stylesheet" type="text/css" href="pages/base/base.css" />
@@ -48,13 +48,13 @@
 <body> 
 <script type="text/javascript">
     io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
-    // console.log('io: init');
+    // console.log('[io] init');
     
-    $(document).on('pageshow', function(){
+    $(document).on('pagebeforeshow', function(){
         io.run({{ config_driver_realtime }});
+		//console.log('[io] run');       	
         notify.display();
-        // io.list();
-        // console.log('io: run');
+		widget.refresh();
     });
 
     $.mobile.page.prototype.options.domCache = true;

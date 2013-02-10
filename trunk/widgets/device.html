@@ -22,7 +22,6 @@
 {% macro dimmer(id, txt, gad_switch, gad_value, min, max, step) %}
     {% import "basic.html" as basic %}
     
-    /** Design */
     <div class="dimmer">
         {{ basic.switch(id~'switch', gad_switch, icon1~'light_light.png', icon0~'light_light.png') }}
         <p>{{ txt|e }}</p>
@@ -50,7 +49,6 @@
     {% import "basic.html" as basic %}
     {% set uid = uid(page, id) %}
     
-    /** Design */
     <div id="{{ uid }}" class="rtr">
         <div class="actual">
             <div class="temp">{{ basic.float(id~'actual', gad_actual, '°C' ) }}</div>
@@ -64,7 +62,6 @@
                 {{ basic.button(id~'plus', '', '', 'plus') }}
             </div>
             
-            /** Events */
             <script type="text/javascript">  
                 // plus / minus
                 $("#{{ uid~'minus' }}").unbind('click').bind('click', function(){ 
@@ -111,7 +108,6 @@
     {% import "basic.html" as basic %}
     {% set uid = uid(page, id) %}
     
-    /** Design */
     <div class="blind">
         <table align="center" cellpadding="0">
         <tr>
@@ -166,7 +162,6 @@
     {% import "basic.html" as basic %}
     {% set uid = uid(page, id) %}
 
-    /** Design */
     <div class="blind">
         <table align="center" cellpadding="0">
         <tr>                                          

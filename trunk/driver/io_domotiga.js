@@ -20,130 +20,10 @@ var io = {
     // the port
     port:       '',
     
-    // a list with all values, all communication goes through the buffer
-    buffer: new Object(),
 
-    // a list with all listeners
-    listeners: new Object(),
-
-
-// -----------------------------------------------------------------------------
-// H E L P E R   F U N C T I O N S
-// -----------------------------------------------------------------------------
-// These functions are private and only called from other functions within.
-   
-  /**
-    *  Checks if there are any listeners 
-    *       
-    *  @param      a specific obj is tested     
-    *  @return     true, if there are any listeners     
-    */            
-    listening: function(item, update) {
-        var ret = false;
-        
-        if (item !== undefined && update !== undefined) {
-            for(var i = 0; i < io.listeners[item].length; i++) {
-                if ((io.listeners[item][i].update).toString() == (update).toString())
-                    ret = true;    
-            }
-        }
-        else
-            for (var i in io.listeners)
-                ret = true;
-        
-        return ret;        
-    },
-
-    
 // -----------------------------------------------------------------------------
 // P U B L I C   F U N C T I O N S
 // -----------------------------------------------------------------------------
-// The function-interfaces in this paragraph should not be changed. They are 
-// called from the widgets.
-
-  /**
-    * Add a item to listen on. 
-    *     
-    * @param      the item 
-    * @param      the function for update the widget 
-    */         	
-	add: function(item, update) { 	
-    	// 'item' is a array if listening on more than one
-    	if (item instanceof Array) {
-    		for(var i = 0; i < item.length; i++) {
-                if (item[i] != '') {
-                    if (!io.listeners[item[i]])
-                        io.listeners[item[i]] = Array();
-                    
-                    if (!io.listening(item[i], update))    
-                        io.listeners[item[i]].push({item: item, update: update});
-                }
-            }
-            
-        // 'item' is a string
-        } else if (item != '') {
-            if (!io.listeners[item])
-                io.listeners[item] = Array();
-            
-            if (!io.listening(item, update))
-                io.listeners[item].push({item: item, update: update});
-        }
-    },
-    
-  /**
-    * Remove a item from the listeners
-    *      
-    * @param      the item, (optional, removes all if no item is given)
-    */         
-    remove: function(item) {
-        if (item !== undefined)
-            delete io.listeners[item];
-        else
-            io.listeners = new Object();  
-    },
-    
-  /**
-    * List all items and the number of listeners in console.log
-    */         
-	list: function() {
-	    var items = 0;
-        var listeners = 0;
-        for (var item in this.listeners) {
-            console.log("[io] " + io.listeners[item].length + " widget(s) listen on '" + item + "'");
-            listeners += io.listeners[item].length;
-            items++;
-        }
-        console.log("[io] --> " + listeners + " widget(s) listen on " + items + " items.");
-    },
-    
-  /**
-    * Update all listeners hearing on a item
-    * 
-    * @param      the item         
-    */         
-    update: function(item, val) {
-        if (val !== undefined)
-            io.buffer[item] = val;
-
-        var listeners = io.listeners[item];
-        if (listeners) {
-            for (var i = 0; i < listeners.length; i++) {
-                {
-                // more than on item? than all values in repsonse
-                if (listeners[i].item instanceof Array)
-                {
-                    vals = Array();
-                    for(var j = 0; j < listeners[i].item.length; j++) {
-                        vals.push(io.buffer[listeners[i].item[j]]);
-                    }
-                    listeners[i].update(vals);
-                }
-                else
-                    listeners[i].update(io.buffer[item]);
-                }
-            }
-        }
-	}, 
 	
   /**
     * Does a read-request and adds the result to the buffer
@@ -172,7 +52,6 @@ var io = {
    	init: function(address, port) {
    	    io.address = address;
    	    io.port = port;
-        io.remove();
         io.open();
     },
     
@@ -223,7 +102,7 @@ var io = {
                         item = data.items[i];
                         val = data.items[i+1];
                         console.log("[io.domotiga]: update item: " + item + " val: " + val);
-                        io.update(item, val);
+                        widget.update(item, val);
                     };
 /*
                     for (var i = 0; i < data.items.length; i++) {
@@ -244,7 +123,7 @@ var io = {
                 case 'proto':
                     var proto = data.ver;
                     if (proto != io.version) {
-                        notify.info('Driver: domotiga', 'Protocol mismatch<br \>Driver is at version v' + io.version + '<br />DomotiGa is at version v' + proto);
+                        notify.info('Driver: DomotiGa', 'Protocol mismatch<br \>Driver is at version v' + io.version + '<br />DomotiGa is at version v' + proto);
                     };
                 case 'log':
                     break;
@@ -274,12 +153,7 @@ var io = {
     * Monitors the items
     */
     monitor: function() {
-        var monitor = new Array();
-        
-        for (var item in io.listeners)
-            monitor.push(item);
-
-        io.send({'cmd': 'monitor', 'items': monitor});
+        io.send({'cmd': 'monitor', 'items': widget.listeners()});
     },
 
 

@@ -20,7 +20,6 @@
 {% macro current(id, location) %}
     {% set uid = uid(page, id) %}
 
-    /** Design */
     {% if once('digiweather') %}
         <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
     {% endif %}
@@ -35,9 +34,8 @@
         </div>
     </div>
         
-    /** Events */
     <script type="text/javascript">
-        $('#{{ page }}').live('pagecreate',function(event, ui) {
+        $('#{{ page }}').on('pagecreate',function(event, ui) {
             $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function(data) {
                 $('#{{ uid }}-weather').css('background','url(lib/weather/pics/' + data.current.icon + '.png) 50% 0 no-repeat')
                 $('#{{ uid }}-weather .city').html(data.city);
@@ -65,7 +63,6 @@
 {% macro forecast(id, location, day) %}
     {% set uid = uid(page, id) %}
 
-    /** Design */   
     {% if once('digiweather') %}
         <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
     {% endif %}
@@ -79,9 +76,8 @@
         </div>
     </div>
         
-    /** Events */
     <script type="text/javascript">
-        $('#{{ page }}').live('pagecreate',function(event, ui){
+        $('#{{ page }}').on('pagecreate',function(event, ui){
             $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function(data) {
                 $('#{{ uid }}-forecast').css('background','url(lib/weather/pics/' + data.forecast[{{ day|default(1) }}].icon + '.png) 50% 0 no-repeat')
                 $('#{{ uid }}-forecast .city').html(data.city);
@@ -107,7 +103,6 @@
 {% macro forecastweek(id, location) %}
     {% set uid = uid(page, id) %}
 
-    /** Design */        
     {% if once('digiweather') %}
         <link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
     {% endif %}
@@ -115,9 +110,8 @@
     <div id="{{ uid }}-forecastweek" class="forecastweek">
     </div>
             
-    /** Events */
     <script type="text/javascript">
-        $('#{{ page }}').live('pagecreate',function(event, ui){
+        $('#{{ page }}').on('pagecreate',function(event, ui){
             $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function(data) {
                 var forecast = '';
                 for (var i in data.forecast) {
@@ -149,7 +143,6 @@
 {% macro map(id, title, type) %}
     {% set uid = uid(page, id) %}
     
-    /** Design */
     <div class="block">
         <div class="ui-bar-c ui-li-divider ui-corner-top">{{ title }}</div>
         <div class="image">
@@ -185,7 +178,7 @@
  * 
  * @param       unique id for this widget
  * @param       title of the block
- * @param       delay between the slides (optional, default: 1000 ms)
+ * @param       delay between the slides (optional, default: 2000 ms)
  *  
  * @info        based on cycle2 jquery-plugin: (c) 2012 M. Alsup; Dual licensed: MIT/GPL 
  * @link        http://jquery.malsup.com/cycle2 
@@ -193,7 +186,6 @@
 {% macro mapslides(id, title, delay) %}
     {% set uid = uid(page, id) %}
     
-    /** Design */
     {% if once('cycle2') %}
         <script src="vendor/jquery.cycle2/jquery.cycle2.core.js"></script>
         <script src="vendor/jquery.cycle2/jquery.cycle2.autoheight.js"></script>
@@ -202,7 +194,7 @@
     <div class="block">
         <div class="ui-bar-c ui-li-divider ui-corner-top">{{ title }}</div>
         <div class="image">
-            <div id='{{ uid }}' data-cycle-auto-height="7:4" data-cycle-log="false" data-cycle-speed="{{ delay|default(1000) }}">  
+            <div id='{{ uid }}' data-cycle-auto-height="7:4" data-cycle-log="false" data-cycle-speed="{{ delay|default(2000) }}">  
                 <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tt_webL.jpg">
                 <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tn_webL.jpg">
                 <img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-3t_webL.jpg">
@@ -212,12 +204,11 @@
         </div>
     </div>
     
-    /** Events */
     <script type="text/javascript">
-        $('#{{ page }}').live('pageinit', function(event, ui){
+        $('#{{ page }}').on('pageinit', function(event, ui){
             $('#{{ uid }}').cycle(); 
         });
-        $('#{{ page }}').live('pageshow', function(event, ui){
+        $('#{{ page }}').on('pagebeforeshow', function(event, ui){
             $(window).triggerHandler('resize');
         });
     </script> 

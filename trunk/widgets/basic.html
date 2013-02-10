@@ -16,7 +16,6 @@
  * @param        id from the element that should be changed
  */
 {% macro glue(id_from, id_to) %}
-    /** Events */
     <script type="text/javascript">
         /*
         $('#{{ page }}').on('pageshow',function(event, ui){ 
@@ -39,19 +38,10 @@
  * @param        the parent html-tag for the value                   
  */
 {% macro value(id, gad, unit, tag) %}   
-    {% set uid = uid(page, id) %}
-    
-    /** Design */
-    <{{ tag|default('span') }} id="{{ uid }}">--- {{ unit }}</{{ tag|default('span') }}>
+ 
+   <{{ tag|default('span') }} id="{{ uid(page, id) }}" data-widget="basic.value" data-item="{{ gad }}"
+		data-unit="{{ unit }}">--- {{ unit }}</{{ tag|default('span') }}>
 
-    /** Events */
-    <script type="text/javascript">
-         io.add('{{ gad }}', 
-            function(response){
-                if (response !== undefined)
-                    $('#{{ uid }}').html(response + ' {{ unit }}');
-            });
-    </script>    
 {% endmacro %}
 
 
@@ -65,18 +55,10 @@
  * @param        the parent html-tag for the value     
  */
 {% macro float(id, gad, unit, tag) %}
-    {% set uid = uid(page, id) %}
 
-    /** Design */
-    <{{ tag|default('span') }} id="{{ uid }}" data-widget="basic.float" data-item="{{ gad }}">--.- {{ unit }}</{{ tag|default('span') }}>
+    <{{ tag|default('span') }} id="{{ uid(page, id) }}" data-widget="basic.float" data-item="{{ gad }}"
+		data-unit="{{ unit }}">--.- {{ unit }}</{{ tag|default('span') }}>
 
-    /** Events */
-    <script type="text/javascript">
-        io.add('{{ gad }}', 
-            function(response){
-                $('#{{ uid }}').html( ((Math.round(response * 10) / 10).toFixed(1)) + ' {{ unit }}');
-            });
-    </script>   
 {% endmacro %}
 
 
@@ -88,22 +70,10 @@
  * @param        text printed on the checkbox
  */
 {% macro checkbox(id, gad, txt) %}
-    {% set uid = uid(page, id) %}
 
-    /** Design */
-    <label><input type="checkbox" id="{{ uid }}" />{{ txt }}</label>
-    
-    /** Events */
-    <script type="text/javascript">
-        io.add('{{ gad }}',
-            function(response){
-                $('#{{ uid }}').attr('checked', (response > 0 ? true : false)).checkboxradio('refresh');    
-            });
-        
-        $("#{{ uid }}").unbind('change').bind('change', function() { 
-            io.write('{{ gad }}', ($('#{{ page }}-{{ id }}:checked').val() == 'on' ? 1 : 0));
-        });
-    </script>    
+    <label><input type="checkbox" id="{{ uid(page, id) }}" data-widget="basic.checkbox" data-item="{{ gad }}" />
+		{{ txt }}</label>
+
 {% endmacro %}
 
 
@@ -115,28 +85,14 @@
  * @param        text for the 'on' state (optional, default 'On')
  * @param        text for the 'off' state (optional, default 'Off')
  */
- {% macro flip(id, gad, txt_on, txt_off) %}
-    {% set uid = uid(page, id) %}
+{% macro flip(id, gad, txt_on, txt_off) %}
 
-    /** Design */
-    <select id="{{ uid }}" data-role="slider">
-	   <option value="off">{{ txt_off|default('Off') }}</option>
-	   <option value="on">{{ txt_on|default('On') }}</option>
+    <select id="{{ uid(page, id) }}" data-widget="basic.flip" data-item="{{ gad }}"
+		data-role="slider">
+		<option value="off">{{ txt_off|default('Off') }}</option>
+	   	<option value="on">{{ txt_on|default('On') }}</option>
     </select> 
 
-    /** Events */
-    <script type="text/javascript">
-        io.add('{{ gad }}',
-            function(response){
-                $('#{{ uid }}').val(response > 0 ? 'on' : 'off').slider('refresh');
-            }); 
-
-        $('#{{ page }}').on('pageinit', function(){
-            $("#{{ uid }}").unbind('click').bind('click', function() { 
-                io.write('{{ gad }}', ($(this).val() == 'on' ? 1 : 0));   
-            });
-        });
-    </script>    
 {% endmacro %}
 
 
@@ -150,31 +106,18 @@
  * @param        step between two values (optional, default 5) 
  * @param        the orientation ('none', 'vertical', 'bottomup', 'semicircle')
  */
- {% macro slider(id, gad, min, max, step, type) %}
-    {% set uid = uid(page, id) %}
+{% macro slider(id, gad, min, max, step, type) %}
 
-    /** Design */
-    <span><input id="{{ uid }}" type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}" orientation="{{ type }}" data-highlight="true" /></span>
+    <input id="{{ uid(page, id) }}" data-widget="basic.slider" data-item="{{ gad }}" 
+		type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}"
+		orientation="{{ type }}" data-highlight="true" />
 
-    /** Events */
-    <script type="text/javascript">
-        io.add('{{ gad }}',
-            function(response){ 
-                $('#{{ uid }}').val(response).slider('refresh');
-            });
-        
-        $('#{{ page }}').on('pageinit', function(){
-            $("#{{ uid }}").unbind('click').bind('click', function() { 
-                io.write('{{ gad }}', $(this).val());   
-            });
-        });
-    </script>    
 {% endmacro %}
 
 
 /**
- * A symbol, with no writing to knx, only displayed when the value of gad is equal to val. Symbols may be used in menu-items.
- * If more than one gad is given, they will be combined with 'or' 
+ * A symbol, with no writing to knx, only displayed when the value of gad is equal to val. Symbols may be used in menus.
+ * If more than one gad is given, they will be combined with 'or'. 
  * 
  * @param        unique id for this widget
  * @param        one or more gad(s)/item(s)
@@ -182,31 +125,11 @@
  * @param        the pic, shown when gad has value val
  * @param        value (default 1) 
  */
- {% macro symbol(id, gads, txt, pic, val) %}
-    {% set uid = uid(page, id) %}
-
-    /** Design */
-    <span id="{{ uid }}" class="symbol hide"><img class="icon" src="{{ pic|default(icon1~'control_on_off.png') }}"/>{{ txt }}</span>
+{% macro symbol(id, items, txt, pic, val) %}
+  
+	<span id="{{ uid(page, id) }}" data-widget="basic.symbol" data-item="{{ array2items(items) }}" data-val="{{ val|default('1') }}"
+		class="symbol hide"><img class="icon" src="{{ pic|default(icon1~'control_on_off.png') }}"/>{{ txt }}</span>
         
-    /** Events */
-    <script type="text/javascript">  
-        io.add({{ array2script(gads) }},
-            function(response){ 
-                // response will be an array, if more then one gad is requested 
-                var bit = false;
-                if (response instanceof Array) {
-                    for(var i = 0; i < response.length; i++) {
-                        bit = bit || (response[i] == {{ val|default('1') }});
-    		    }}
-                else
-                    bit = (response == {{ val|default('1') }});   
-    		      
-                if (bit)
-                    $('#{{ uid }}').show();
-                else
-                    $('#{{ uid }}').hide();
-            });  
-    </script>    
 {% endmacro %} 
 
 
@@ -220,38 +143,21 @@
  * @param        value send for the 'on' state (optional, default 1)
  * @param        value send for the 'off' state (optional, default 0)
  */
- {% macro switch(id, gad, pic_on, pic_off, val_on, val_off) %}
-    {% set uid = uid(page, id) %}
+{% macro switch(id, gad, pic_on, pic_off, val_on, val_off) %}
 
-    /** Design */
-    <span id="{{ uid }}" class="switch">
-        <a><img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}"/></a>
+    <span id="{{ uid(page, id) }}" data-widget="basic.switch" data-item="{{ gad }}"
+		data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
+		data-pic-on="{{ pic_on|default(icon1~'control_on_off.png') }}" data-pic-off="{{ pic_off|default(icon0~'control_on_off.png') }}"
+		class="switch"><a><img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}"/></a>
     </span>
         
-    /** Events */
     <script type="text/javascript"> 
-        io.add('{{ gad }}',
-            function(response){ 
-                $('#{{ uid }} .icon').attr('src', (response == {{ val_on|default('1') }} ? "{{ pic_on|default(icon1~'control_on_off.png') }}" : "{{ pic_off|default(icon0~'control_on_off.png') }}"));
-            });
-             
-        // write
-        $('#{{ uid }} a').unbind('click').bind('click', function() {
-            if ($('#{{ uid }} .icon').attr('src') == "{{ pic_off|default(icon0~'control_on_off.png') }}" ){
-                io.write('{{ gad }}', "{{ val_on|default('1') }}");
-                io.update('{{ gad }}', "{{ val_on|default('1') }}");
-            } else {
-                io.write('{{ gad }}', "{{ val_off|default('0') }}");
-                io.update('{{ gad }}', "{{ val_off|default('0') }}");
-            }
-        });
-        
-        // effects
-        $('#{{ uid }} .icon').hover(
+        $('#{{ uid(page, id) }} .icon').hover(
             function() { $(this).addClass("ui-focus");  },  
             function() { $(this).removeClass("ui-focus"); }
         );
     </script>    
+
 {% endmacro %} 
 
 
@@ -265,11 +171,10 @@
  * @param        value send if the button is pressed (optional, default 1)
  * @param        type: 'micro', 'mini', 'midi' (optional, default: mini) 
  */
- {% macro button(id, gad, txt, pic, val, type) %}
-    {% set uid = uid(page, id) %}
+{% macro button(id, gad, txt, pic, val, type) %}
     
-    /** Design */
-    <a id="{{ uid }}" class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" 
+	<a id="{{ uid(page, id) }}" data-widget="basic.button" data-item="{{ gad }}" data-val="{{ val|default('1') }}" 
+		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" 
         {% if not pic %}
             data-iconpos="nopic">{{ txt|e }}
         {% elseif pic|slice(-4, 4) != '.png' and not txt %}
@@ -283,14 +188,6 @@
         {% endif %}
         </a>
     
-    {% if gad %}
-        /** Events */
-        <script type="text/javascript">
-            $('#{{ uid }}').unbind('click').bind('click', function() {
-                io.write('{{ gad }}', {{ val|default('1') }}); 
-            });
-        </script>    
-    {% endif %}
 {% endmacro %}
 
 
@@ -305,31 +202,16 @@
  * @param        value send for the 'off' state (optional, default 0) 
  * @param        type: 'micro', 'mini', 'midi' (optional, default: mini) 
  */
- {% macro dual(id, gad, pic_on, pic_off, val_on, val_off, type) %}
-    {% set uid = uid(page, id) %}
+{% macro dual(id, gad, pic_on, pic_off, val_on, val_off, type) %}
 
-    /** Design */
-    <a id="{{ uid }}" class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
-        <img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}">
-    </a> 
-    
-    /** Events */
-    <script type="text/javascript"> 
-        io.add('{{ gad }}',
-            function(response){ 
-                $('#{{ uid }} img').attr('src', (response != 0 ? "{{ pic_on|default(icon1~'control_on_off.png') }}" : "{{ pic_off|default(icon0~'control_on_off.png') }}"));
-            });
+	<a id="{{ uid(page, id) }}" data-widget="basic.dual" data-item="{{ gad }}" 
+		data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
+		data-pic-on="{{ pic_on|default(icon1~'control_on_off.png') }}" data-pic-off="{{ pic_off|default(icon0~'control_on_off.png') }}"
+		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
         
-        $('#{{ uid }}').unbind('click').bind('click', function() {
-            if ($('#{{ uid }} img').attr('src') == "{{ pic_off|default(icon0~'control_on_off.png') }}" ){
-                io.write('{{ gad }}', "{{ val_on|default('1') }}");
-                io.update('{{ gad }}', "{{ val_on|default('1') }}");
-            } else {
-                io.write('{{ gad }}', "{{ val_off|default('0') }}");
-                io.update('{{ gad }}', "{{ val_off|default('0') }}");
-            }
-        });
-    </script>     
+		<img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}">
+    </a> 
+
 {% endmacro %}
 
 
@@ -346,68 +228,17 @@
  * 
  * @info        inspired by Jörg Gutowski     
  */
- {% macro shutter(id, gad_pos, gad_angle, min, max, step, mode) %}
+{% macro shutter(id, gad_pos, gad_angle, min, max, step, mode) %}
     {% set uid = uid(page, id) %}
 
-    /** Design */
-    <div id="{{ uid }}" class="shutter">
+    <div id="{{ uid(page, id) }}" data-widget="basic.shutter" data-item="{{ gad_pos }}, {{ gad_angle }}"
+		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" data-step="{{ step|default(5) }}"
+		data-mode="{{ mode|default('half') }}" class="shutter">
         {% for i in 1..12 %}
             <div class="blade-pos" id="{{ uid }}-{{ i }}"></div>
         {% endfor %}
     </div>
-   
-    /** Events */
-    <script type="text/javascript">  
-        io.add(Array('{{ gad_pos }}', '{{ gad_angle }}'),
-            function(response){
-                
-                var a = 13;
-                var mode = {% if mode|default('half') == 'half' %}0.5{% else %}1{% endif %};
-                {% if gad_angle %}
-                    a = parseInt(13 / mode * (response[1] / {{ max|default(255) }} + mode - 1));
-                {% endif %} 
-             
-                var style;
-                    
-                h = parseInt(response[0] * 13 * 14 / {{ max|default(255) }});
-                for (var i = 12; i >= 1; i--) {
-                    if (h >= 14) {
-                        var w = 13 - Math.abs(a);
-                        style  = 'height: ' + ((h > i * 14) && a == 13 ? (14 - w) : (15 - w)) + 'px;';
-                        
-                        if (a != 13)
-                            style += 'margin-top: ' + (h - 15 >= 14 ? w : parseInt(w / 2)) + 'px;';
-                        else
-                            style += 'border-top: 1px dotted ' + (h > i * 14 ? '#ccc' : '#333') + ';';
-                       
-                        if (a > 0)
-                            $('#{{ uid }}-' + i).attr('class', 'blade-pos');
-                        else
-                            $('#{{ uid }}-' + i).attr('class', 'blade-neg');
-                        
-                        $('#{{ uid }}-' + i).attr('style', style);
-                        h = h - 15;
-                    }
-                    else {
-                        style  = 'height: ' + h + 'px;';
-                        style += 'border-top: 1px dotted #aaa;';
-                        $('#{{ uid }}-' + i).attr('style', style);
-                        h = 1;
-                    }
-                }
-            });  
-        
-        $("#{{ uid }}").unbind('click').bind('click', function(event) { 
-            var offset = $(this).offset();
-            var x = (event.pageX - offset.left);
-            var y = (event.pageY - offset.top);
-            var val = Math.floor((y / 160 - 10 / 160) * {{ max|default(255) }} / {{ step|default(5) }}) * {{ step|default(5) }};
-                val = Math.max({{ min|default(0) }}, Math.min(val, {{ max|default(255) }}));
-                
-	        io.update('{{ gad_pos }}', val);
-            io.write('{{ gad_pos }}', val);
-	    });
-    </script>    
+       
 {% endmacro %} 
 
 
@@ -421,16 +252,15 @@
  * @param       the minimum value if the light is off (optional, for future use)
  * @param       the maximum value if the light is full on (optional, default 255)  
  */
- {% macro rgb(id, gad_r, gad_g, gad_b, min, max) %}
+{% macro rgb(id, gad_r, gad_g, gad_b, min, max) %}
     {% set uid = uid(page, id) %}
 
-    /** Design */
-    <a id="{{ uid }}" class="rgb" href="#{{ uid }}-popup" data-rel="popup"><span></span></a>
+    <a id="{{ uid }}" data-widget="basic.rgb" data-item="{{ gad_r }}, {{ gad_g }}, {{ gad_b }}" 
+		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+		class="rgb" href="#{{ uid }}-popup" data-rel="popup"><span></span></a>
     <div id="{{ uid }}-popup" class="rgb-popup" data-role="popup"></div>
     
-    /** Events */
     <script type="text/javascript"> 
-        // design
         var html = '';
         
         for (var s = 25; s <= 75; s += 25) {
@@ -447,14 +277,8 @@
         }
         
         $("#{{ uid }}-popup").html(html);
-        
-        // knx
-        io.add(Array('{{ gad_r }}', '{{ gad_g }}', '{{ gad_b }}'),
-            function(response){
-                $('#{{ uid }} span').css('background-color', 'rgb(' + Math.round(response[0] / {{ max|default(255) }} * 255) + ',' + Math.round(response[1] / {{ max|default(255) }} * 255) + ',' + Math.round(response[2] / {{ max|default(255) }} * 255) + ')');  
-            });  
-        
-        // click
+                  
+       // click
         $('#{{ uid }}-popup div').unbind('click').bind('click', function() {
             var rgb = $(this).css('background-color');
             $('#{{ uid }} span').css('background-color', rgb);

@@ -26,9 +26,8 @@
  * Check for new updates of smartVISU
  */ 
 {% macro updatecheck( ) %}
-    /** Events */
     <script type="text/javascript">
-        $('#index').live('pagecreate',function(event, ui){ 
+        $('#index').on('pagecreate',function(event, ui){ 
             $.getJSON('lib/base/updatecheck.php', function(data) {
                 if (data.update)
                 {

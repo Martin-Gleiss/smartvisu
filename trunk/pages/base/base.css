@@ -283,24 +283,19 @@ a.ui-btn-inline.ui-maxi .icon {
 
 
 /** --------- slider --------- */
-div.ui-slider-vertical, div.ui-slider-bottomup { 
-    position: relative; 
-    display: inline-block; 
+div.ui-slider { 
+	height: auto;
+	margin: 0;
+} /* dynamic for more orientations */
+
+.ui-slider-track-vertical, .ui-slider-track-bottomup { 
+    position: relative;
+	display: inline-block;
     overflow: visible; 
     height: 180px; 
     padding: 0; 
     margin: 0 2% 0 20px; 
     top: 4px; 
-    width:15px ;
-}
-
-label.ui-slider-vertical, label.ui-slider-bottomup { 
-    display: inline-block;
-    width: 20%;
-    margin: 0 2% 0 0;
-}
-
-div.ui-slider-vertical, div.ui-slider-bottomup {
     width: 15px;
 }
 
@@ -312,9 +307,6 @@ a.ui-slider-handle-vertical, a.ui-slider-handle-bottomup {
     height: 20px;
     margin-top: -10px;
     margin-left: -13px;
-}
-
-a.ui-slider-handle-vertical, a.ui-slider-handle-bottomup {
 	-moz-border-radius: 0.3em;
 	-webkit-border-radius: 0.3em;
 	border-radius: 0.3em;
@@ -347,7 +339,7 @@ a.ui-slider-handle-vertical .ui-btn-inner, a.ui-slider-handle-bottomup .ui-btn-i
     overflow: hidden;
 }
 
-.ui-slider-semicircle{ 
+.ui-slider-track-semicircle { 
     width: 150px;
     height: 150px;
     padding: 0;
@@ -356,7 +348,7 @@ a.ui-slider-handle-vertical .ui-btn-inner, a.ui-slider-handle-bottomup .ui-btn-i
 	border-radius: 10em 10em 0 0;
 }
 
-.ui-slider-semicircle-highlight-cut{
+.ui-slider-track-semicircle .ui-slider-bg {
     height: 160px;
     width: 1px;
     overflow: hidden;
@@ -403,6 +395,12 @@ a.ui-slider-handle-semicircle .ui-btn-inner  {
 	-webkit-border-radius: 10em 10em 0 0;
 	border-radius: 10em 10em 0 0;
 }
+
+
+/** --------- flip --------- */
+.ui-slider.ui-slider-switch {
+	height: 32px;
+} /* corection because ui-slider is now dynamic */
 
 
 /** --------- grid --------- */
@@ -860,8 +858,8 @@ hr {
     padding: 0;
 }
 
-.dimmer .ui-input-text {
-    display:none;
+.dimmer .ui-slider .ui-input-text {
+    display:none !important;
 }
 
 .dimmer .ui-slider {
@@ -921,12 +919,12 @@ hr {
     margin: 0 2% 0 10px;
 }
     
-.blind .pos .ui-input-text {
-    display: none;
+.blind .pos .ui-slider .ui-input-text {
+    display: none !important;
 }
 
-.blind .angle .ui-input-text {
-    display: none;
+.blind .angle .ui-slider .ui-input-text {
+    display: none !important;
 }
 
 
@@ -1090,6 +1088,7 @@ hr {
 
 .iprouter .tunnels .traffic {
     width: 70px;
+	height: 38px;
     text-align: right;
     font-size: 0.9em
 }
@@ -1113,6 +1112,7 @@ hr {
 
 .iprouter .tunnels .address {
     width: 140px;
+	height: 38px;
     text-align: left;
     font-size: 0.9em;
 }
@@ -1136,12 +1136,16 @@ hr {
     padding: 10px 0 10px 0;
 }
 
-.music .ui-input-text {
-	display: none;
-}
-
 .music .vol {
     width: 55px;    
+}
+
+.music .vol .ui-slider {
+	display: inline-block;
+}
+
+.music .ui-slider .ui-input-text {
+	display: none !important;
 }
 
 .music .title {
@@ -1177,9 +1181,8 @@ hr {
     background-image: url('pics/scale_horizontal.png');
 }
 
-.music .set .ui-slider {
-    margin: 0 !important;
-    width: 100%;
+.music .set .ui-slider-track {
+    margin: 0 0 5px 0 !important;
 }
 
 .music .set .ui-controlgroup-horizontal{
