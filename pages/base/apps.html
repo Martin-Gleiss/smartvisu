@@ -70,7 +70,7 @@
         </span>
         
         <script type="text/javascript">   
-        $('#{{ page }}').live('pagecreate', function(event, ui){ 
+        $('#{{ page }}').on('pagecreate', function(event, ui){ 
                                     
             $('#{{ page }}-{{ file.name }}').mouseover(function(){
                 $('#{{ page }}-{{ file.name }}-docu').show();

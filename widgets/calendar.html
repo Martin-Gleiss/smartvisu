@@ -19,16 +19,14 @@
 {% macro list(id, title, count, color) %}
     {% set uid = uid(page, id) %}
 
-    /** Design */
     <div id="{{ uid }}-calendarlist" class="calendarlist">
         {% if title %} <h2>{{ title }}</h2> {% endif %}
         <ul data-role="listview">
         </ul>
     </div>
             
-    /** Events */
     <script type="text/javascript">
-        $('#{{ page }}').live('pagecreate',function(event, ui){
+        $('#{{ page }}').on('pagecreate',function(event, ui){
             $.getJSON('lib/calendar/service/{{ config_calendar_service }}.php?url={{ config_calendar_url|url_encode() }}&count={{ count|default(25) }}', function(data) {
                 var line = '';
                 var sum = 1;

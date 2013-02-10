@@ -20,7 +20,6 @@
 {% macro digiclock(id, location) %}
     {% set uid = uid(page, id) %}
 
-    /** Design */
     {% if once('digiclock') %}  
         <link rel="stylesheet" type="text/css" href="lib/clock/jdigiclock.css" />
         <script type="text/javascript" src="lib/clock/jquery.jdigiclock.js"></script>
@@ -43,9 +42,8 @@
         </div>
     {% endif %}
          
-    /** Events */
     <script type="text/javascript">
-        $('#{{ page }}').live('pagecreate',function(event, ui){ 
+        $('#{{ page }}').on('pagecreate',function(event, ui){ 
             $('#{{ uid }}-clock').digiclock();
             
             {% if location %}

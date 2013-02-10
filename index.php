@@ -92,7 +92,7 @@
         $twig->addFunction('isfile',    new Twig_Function_Function('twig_isfile'));
         $twig->addFunction('dir',       new Twig_Function_Function('twig_dir'));
         $twig->addFunction('docu',      new Twig_Function_Function('twig_docu'));    
-        $twig->addFunction('array2script',  new Twig_Function_Function('twig_array2script', array('is_safe' => array('html'))));
+        $twig->addFunction('array2items',  new Twig_Function_Function('twig_array2items', array('is_safe' => array('html'))));
                
                
         // init lexer comments                   
@@ -104,7 +104,16 @@
         try
         {
             $template = $twig->loadTemplate($request['page'].'.html');
-            echo $template->render(array());
+    		$ret = $template->render(array());
+	
+			// try to zip the output
+			if( (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) && !strtolower(ini_get('zlib.output_compression')))
+			{
+				header("Content-Encoding: gzip");
+				$ret = "\x1f\x8b\x08\x00\x00\x00\x00\x00".substr(gzcompress($ret, 9), 0, -4).pack("V",crc32($ret)).pack("V",strlen($ret)); 
+			}
+			
+            echo $ret;
         }
         catch (Exception $e)
         {

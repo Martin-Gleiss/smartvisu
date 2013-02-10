@@ -12,6 +12,10 @@
 
 {% block content %}
 
+	<style type="text/css">
+		.box { float:left; width: 280px; background-color: #222; border: 1px dotted #666; margin: 5px; text-align: center; }	
+	</style>
+
     <h1>Backgrounds</h1>
     
     <div class="docu">
@@ -33,8 +37,8 @@
     </div>
     
     {% for file in dir('pics/bg') %}
-        <div style="float:left; width: 360px; background-color: #222; border: 1px dotted #666; margin: 5px; text-align: center;">
-            <img style="width: 360px;" src="pics/bg/{{ file.name }}" />
+        <div class="box">
+            <img style="width: 280px;" src="pics/bg/{{ file.name }}" />
             <br />
             <span style="font-size: 0.8em;">{{ file.name }}</span>
         </div>

@@ -77,8 +77,18 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
+v 2.3
+    - new driver: eibd (with ajax long-polling)
+    - phone service: fritz!box v5.20 (international version)
+	- new icons from mfd
+	- docu improved
+	- update vendor/jquery 1.9
+	- update vendor/jquery.mobile 1.3
+	- speed improved: gzip compressed output
+	- speed improved: javascript seperated
+    
 v 2.2 01.02.13
-    - new driver: smarthome.py (with websocket)
+    - new driver: SmartHome.py (with websocket)
     - new driver: domotiga (with websocket)
     - improved error handling and notification
     - phone service: fritz!box v5.50. Special thanks to Stefan Vonbrunn

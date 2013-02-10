@@ -18,16 +18,14 @@
 {% macro missedlist(id, title, count) %}
     {% set uid = uid(page, id) %}
 
-    /** Design */
     <div id="{{ uid }}-phonelist" class="phonelist">
         {% if title %} <h2>{{ title }}</h2> {% endif %}
         <ul data-role="listview">
         </ul>
     </div>
             
-    /** Events */
     <script type="text/javascript">
-        $('#{{ page }}').live('pagecreate',function(event, ui){
+        $('#{{ page }}').on('pagecreate',function(event, ui){
             $.getJSON('lib/phone/service/{{ config_phone_service }}.php', function(data) {
                 var line = '';
                 var sum = 1;
@@ -64,16 +62,14 @@
 {% macro list(id, title, count) %}
     {% set uid = uid(page, id) %}
 
-    /** Design */
     <div id="{{ uid }}-phonelist" class="phonelist">
         {% if title %} <h2>{{ title }}</h2> {% endif %}
         <ul data-role="listview">
         </ul>
     </div>
             
-    /** Events */
     <script type="text/javascript">
-        $('#{{ page }}').live('pagecreate',function(event, ui){
+        $('#{{ page }}').on('pagecreate',function(event, ui){
             $.getJSON('lib/phone/service/{{ config_phone_service }}.php', function(data) {
                 var line = '';
                 var sum = 1;
