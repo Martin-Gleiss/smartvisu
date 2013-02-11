@@ -160,7 +160,7 @@ var widget = {
 // -----------------------------------------------------------------------------
 
 
-// ----- basic.value -----
+// ----- basic.value -----------------------------------------------------------
 $(document).delegate('[data-widget="basic.value"]', { 
 	'update': function(event, response) {
 		$('#' + this.id).html(response + ' ' + $(this).attr('data-unit'));
@@ -168,7 +168,7 @@ $(document).delegate('[data-widget="basic.value"]', {
 });
 
 
-// ----- basic.float -----
+// ----- basic.float -----------------------------------------------------------
 $(document).delegate('[data-widget="basic.float"]', { 
 	'update': function(event, response) {
 		$('#' + this.id).html( ((Math.round(response * 10) / 10).toFixed(1)) + ' ' + $(this).attr('data-unit'));
@@ -176,7 +176,7 @@ $(document).delegate('[data-widget="basic.float"]', {
 });
 
 
-// ----- basic.checkbox -----
+// ----- basic.checkbox --------------------------------------------------------
 $(document).delegate('input[data-widget="basic.checkbox"]', { 
 	'update': function(event, response) {
 		$('#' + this.id).attr('checked', (response > 0 ? true : false)).checkboxradio('refresh'); 
@@ -189,7 +189,7 @@ $(document).delegate('input[data-widget="basic.checkbox"]', {
 });    
 
 
-// ----- basic.flip -----
+// ----- basic.flip ------------------------------------------------------------
 $(document).delegate('select[data-widget="basic.flip"]', { 
 	'update': function(event, response) {
 		$('#' + this.id).val(response > 0 ? 'on' : 'off').slider('refresh');
@@ -202,52 +202,45 @@ $(document).delegate('select[data-widget="basic.flip"]', {
 });
 
 
-// ----- basic.silder -----
+// ----- basic.silder ----------------------------------------------------------
 $(document).delegate('input[data-widget="basic.slider"]', {
 	'update': function(event, response) {
-		// DEBUG: console.log("[basic.slider] update val: " + $(this).val() + " lock: " + $(this).attr('lock'));  
-
-		$('#' + this.id).val(response).slider('refresh');
+		// DEBUG: console.log("[basic.slider] update val: " + $(this).val() + " lock: " + $(this).attr('lock'));   
+	    $('#' + this.id).attr('old', response).val(response).slider('refresh');
     },
 
-	'slidestop': function(event, response) {
+	'slidestop': function(event) {
 		// DEBUG: console.log("[basic.slider] slidestop val: " + $(this).val() + " lock: " + $(this).attr('lock'));  
-		
-		// tigger only, if not timeout hat triggered
-		if ($(this).attr('lock') > -1 || $(this).attr('lock') === undefined)
-		{
-        	$(this).attr('lock', -1);
-		    $(this).trigger('click'); 
-        }
-	},
 
-	'change': function(event, response) {
+		// use a lock to fire event only every 400ms and if value has changed
+		if ($(this).val() != $(this).attr('old')) {
+			$(this).attr('lock', 1);
+   			$(this).trigger('click'); 
+
+			setTimeout("$('#" + this.id + "').attr('lock', 0);", 1400);
+		}
+   	},
+
+	'change': function(event) {
 	    // DEBUG: console.log("[basic.slider] change val: " + $(this).val() + " lock: " + $(this).attr('lock'));   
 	    
-		// use a lock to fire event only every 400ms
-	    if ($(this).attr('lock') == -1)
-	    {
-	        $(this).attr('lock', $(this).val());   
-			
-			// trigger, if the value had changed and lock is present
-	        setTimeout(
-			    "if($('#" + this.id + "').val() != $('#" + this.id + "').attr('lock') && $('#" + this.id + "').attr('lock') > -1) {" +
-	            "   $('#" + this.id + "').trigger('click');" +
-                "}" +
-                "$('#" + this.id + "').attr('lock', -1);", 400);
+		// use a lock to fire event only every 400ms, and don't trigger on init
+	    if ($(this).attr('lock') == 0 || $(this).attr('lock') === undefined) {
+	        $(this).attr('lock', 1);
+   			if ($(this).val() != $(this).attr('old') && $(this).attr('old') !== undefined)
+				$(this).trigger('click');
+       		
+			setTimeout("$('#" + this.id + "').attr('lock', 0);", 1400);
 	    }
-        
-        if($(this).attr('lock') === undefined)
-            $(this).attr('lock', -1);    
-	},
+    },
 
-	'click': function(event) {
-        io.write($(this).attr('data-item'), $(this).val());  
+	'click': function(event) {             
+		io.write($(this).attr('data-item'), $(this).val());  
 	} 
 }); 
 
 
-// ----- basic.symbol -----
+// ----- basic.symbol ----------------------------------------------------------
 $(document).delegate('span[data-widget="basic.symbol"]', { 
 	'update': function(event, response) {
 
@@ -268,7 +261,7 @@ $(document).delegate('span[data-widget="basic.symbol"]', {
 });
 
 
-// ----- basic.switch -----
+// ----- basic.switch ----------------------------------------------------------
 $(document).delegate('span[data-widget="basic.switch"]', { 
 	'update': function(event, response) {
 		$('#' + this.id + ' img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
@@ -291,7 +284,7 @@ $(document).delegate('span[data-widget="basic.switch"] > a > img', 'hover', func
 });
 
 
-// ----- basic.shifter -----
+// ----- basic.shifter ---------------------------------------------------------
 $(document).delegate('span[data-widget="basic.shifter"]', { 
 	'update': function(event, response) {
         var step = Math.min((response[1] / $(this).attr('data-max') * 10 + 0.49).toFixed(0) * 10, 100);
@@ -321,7 +314,7 @@ $(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', fun
 });
 
 
-// ----- basic.button -----
+// ----- basic.button ----------------------------------------------------------
 $(document).delegate('a[data-widget="basic.button"]', { 
 	'click': function(event) {
 		if ($(this).attr('data-val') != '')
@@ -330,7 +323,7 @@ $(document).delegate('a[data-widget="basic.button"]', {
 });
 
 
-// ----- basic.dual -----
+// ----- basic.dual ------------------------------------------------------------
 $(document).delegate('a[data-widget="basic.dual"]', { 
 	'update': function(event, response) {
 		$('#' + this.id + ' img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
@@ -346,7 +339,7 @@ $(document).delegate('a[data-widget="basic.dual"]', {
 });
 
 
-// ----- basic.shutter -----
+// ----- basic.shutter ---------------------------------------------------------
 $(document).delegate('div[data-widget="basic.shutter"]', { 
 	'update': function(event, response) {
 		// response is: {{ gad_pos }}, {{ gad_angle }}
@@ -389,18 +382,21 @@ $(document).delegate('div[data-widget="basic.shutter"]', {
 
 	'click': function(event) {
         var offset = $(this).offset();
-        var x = (event.pageX - offset.left);
+        var x = Math.round(event.pageX - offset.left);
         var y = (event.pageY - offset.top);
         var val = Math.floor((y / 160 - 10 / 160) * $(this).attr('data-max') / $(this).attr('data-step')) * $(this).attr('data-step');
             val = Math.max( $(this).attr('data-min'), Math.min(val, $(this).attr('data-max')) );
         
 		var items = $(this).attr('data-item').split(',');
-		io.write(items[0].trim(), val);
+		if (items[1].trim() !='' && x > 52)
+			io.write(items[1].trim(), val);
+		else
+			io.write(items[0].trim(), val);
 	}
 });
 
 
-// ----- basic.rgb -----
+// ----- basic.rgb -------------------------------------------------------------
 $(document).delegate('a[data-widget="basic.rgb"]', { 
 	'update': function(event, response) {
 		// response is: {{ gad_r }}, {{ gad_g }}, {{ gad_b }}

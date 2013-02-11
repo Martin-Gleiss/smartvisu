@@ -78,14 +78,17 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 2.3
-    - new driver: eibd (with ajax long-polling)
+	- new wiget: basic.shifter for switch an value on one symbol
+	- improved widget: basic.shutter now supports sending of the angle
+    - re-engineered widget: basic.slider with super soft sliding
+	- new driver: eibd (with ajax long-polling)
     - phone service: fritz!box v5.20 (international version)
 	- new icons from mfd
 	- docu improved
 	- update vendor/jquery 1.9
 	- update vendor/jquery.mobile 1.3
-	- speed improved: gzip compressed output
-	- speed improved: javascript seperated
+	- improved speed: gzip compressed output
+	- improved speed: javascript separated
     
 v 2.2 01.02.13
     - new driver: SmartHome.py (with websocket)
@@ -106,8 +109,8 @@ v 2.1 09.01.12
     - new pages: otterstaetter (as model-home)
     - widget: multimedia.music for a player
     - widget: appliance.iprouter for the enertex knxnet/ip-router
-    - reengineered widget: basic.slider 
-    - reengineered widget: basic.button 
+    - re-engineered widget: basic.slider 
+    - re-engineered widget: basic.button 
     - widget: basic.rgb with color-selector
     - widget: basic.symbol allows more gads/items now
     - widget: basic.shutter may now be clicked to change the position
