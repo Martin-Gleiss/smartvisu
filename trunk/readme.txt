@@ -78,6 +78,7 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 2.3
+	- new widget: basic.tank for (partly) filled tanks
 	- new wiget: basic.shifter for switch an value on one symbol
 	- improved widget: basic.shutter now supports sending of the angle
     - re-engineered widget: basic.slider with super soft sliding

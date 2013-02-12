@@ -1,5 +1,5 @@
-bath_light_value = 85
-bath_light_switch = 0
+bath_light_value = 74
+bath_light_switch = 1
 bath_rtr_state = 0
 bath_rtr_mode = 1
 bath_rtr_set = 22.6
@@ -15,9 +15,9 @@ bath_blind_move_down = 1
 bath_blind_stop = 1
 bath_blind_mov = 1
 bath_blind_stored = 1
-bath_color_r = 128
-bath_color_g = 179
-bath_color_b = 255
+bath_color_r = 255
+bath_color_g = 153
+bath_color_b = 0
 bath_music_vol = 70
 bath_music_repeat = 1
 bath_music_artist = R.E.M.
@@ -27,4 +27,4 @@ bath_music_play = 1
 bath_radio_vol = 35
 bath_radio_title = NDR 2
 bath_radio_play = 1
-
+bath_value = 120
