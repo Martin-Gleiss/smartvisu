@@ -832,6 +832,32 @@ hr {
 }
 
 
+.tank {
+	position: relative;
+    display: inline-block;
+    vertical-align: bottom;
+    margin: 0px 7px 0px 7px;
+    width: 30px; 
+    height: 180px;
+    border: 2px solid #fff;
+	background-image: url('pics/scale_ri.png');
+	-moz-border-radius: .5em;
+	-webkit-border-radius: .5em;
+	border-radius: .5em;
+}
+
+.tank div {
+	position: absolute;
+	bottom: 0;
+	width: 30px; 
+	height: 100px;
+	background-color: #999;
+	-moz-border-radius: 0.1em 0.1em 0.3em 0.3em;
+	-webkit-border-radius: 0.1em 0.1em 0.3em 0.3em;
+	border-radius: 0.1em 0.1em 0.3em 0.3em;
+	}
+
+
 /**
  * --- W i d g e t s :   D E V I C E -------------------------------------------
  */
@@ -1058,6 +1084,69 @@ hr {
 
 
 /**
+ * --- W i d g e t s :   M U L T I M E D I A -----------------------------------
+ */
+ 
+.music {
+    position: relative;
+    padding: 10px 0 10px 0;
+}
+
+.music .vol {
+    width: 55px;    
+}
+
+.music .vol .ui-slider {
+	display: inline-block;
+}
+
+.music .ui-slider .ui-input-text {
+	display: none !important;
+}
+
+.music .title {
+    position: absolute;
+    margin-left: 80px;
+    top: 50px;
+    left: 0;
+    right: 0;
+}
+
+.music .control {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.music .set {
+    position: absolute;
+    margin-left: 80px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.music .set .pos {
+    margin: 10px;
+}
+
+.music .set .scale {
+    position: relative;
+    height: 15px;
+    top: 2px;
+    background-image: url('pics/scale_horizontal.png');
+}
+
+.music .set .ui-slider-track {
+    margin: 0 0 5px 0 !important;
+}
+
+.music .set .ui-controlgroup-horizontal{
+    margin: 10px 10px 0px 10px;
+}
+
+
+/**
  * --- W i d g e t s :   A P P L I A N C E -------------------------------------
  */
  
@@ -1124,69 +1213,6 @@ hr {
     text-align: right;
     font-size: 0.8em;
     color: #666; 
-}
-
-
-/**
- * --- W i d g e t s :   M U L T I M E D I A -----------------------------------
- */
- 
-.music {
-    position: relative;
-    padding: 10px 0 10px 0;
-}
-
-.music .vol {
-    width: 55px;    
-}
-
-.music .vol .ui-slider {
-	display: inline-block;
-}
-
-.music .ui-slider .ui-input-text {
-	display: none !important;
-}
-
-.music .title {
-    position: absolute;
-    margin-left: 80px;
-    top: 50px;
-    left: 0;
-    right: 0;
-}
-
-.music .control {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-.music .set {
-    position: absolute;
-    margin-left: 80px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.music .set .pos {
-    margin: 10px;
-}
-
-.music .set .scale {
-    position: relative;
-    height: 15px;
-    top: 2px;
-    background-image: url('pics/scale_horizontal.png');
-}
-
-.music .set .ui-slider-track {
-    margin: 0 0 5px 0 !important;
-}
-
-.music .set .ui-controlgroup-horizontal{
-    margin: 10px 10px 0px 10px;
 }
 
 

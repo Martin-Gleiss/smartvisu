@@ -428,3 +428,11 @@ $(document).delegate('div[data-widget="basic.rgb-popup"] > div', {
             $(this).removeClass("ui-focus"); 
     }
 });
+
+
+// ----- basic.tank -------------------------------------------------------------
+$(document).delegate('div[data-widget="basic.tank"]', { 
+	'update': function(event, response) {
+		$('#' + this.id + ' div').css('height', Math.round(Math.min(response / $(this).attr('data-max'), 1) * 180));  
+    }
+});

@@ -299,3 +299,34 @@
 {% endmacro %} 
 
 
+/**
+ * Displays a (partly) filled tank
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item for the actual position of filled tank
+ * @param       the minimum value for empty (optional, default 0, for future use)
+ * @param       the maximum value for full (optional, default 255) 
+ * @param       step between two values (optional, default 5, for future use) 
+ * @param       the mode: 'none', 'cylinder', 'water', 'pallets' (optional, default 'none')
+ * @param       the color of the filling e. g. '#f00' for red (optional, default grey)
+ */
+{% macro tank(id, gad_pos, min, max, step, mode, color) %}
+    
+    <div id="{{ uid(page, id) }}" data-widget="basic.tank" data-item="{{ gad_pos }}" 
+		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+		class="tank">
+		<div 
+		{% if mode == 'cylinder' %}
+            style="background-image: url('pages/base/pics/scale_cylinder.png'); background-color: {{ color|default('#999') }};"
+        {% elseif mode == 'water' %}
+            style="background-image: url('pages/base/pics/scale_water.png'); background-color: {{ color|default('#09f') }};"
+        {% elseif mode == 'pallets' %}
+            style="background-image: url('pages/base/pics/scale_pallets.png'); background-color: {{ color|default('#eb7') }};
+				-moz-border-radius: 10em 10em 0.3em 0.3em; -webkit-border-radius: 10em 10em 0.3em 0.3em; border-radius: 10em 10em 0.3em 0.3em;"
+        {% else %}
+           
+        {% endif %}
+		>&nbsp;</div>
+	</div>
+   
+{% endmacro %} 
