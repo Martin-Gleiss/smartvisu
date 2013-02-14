@@ -6,15 +6,38 @@
  * @license     GPL <http://www.gnu.de>
  * ----------------------------------------------------------------------------- 
  */
- 
+<!DOCTYPE html> 
 
-{% extends "base.html" %}
+<html> 
+<head> 
+	<title>{{ config_title }}</title> 
+	
+    <meta charset="utf-8">
+	<meta name="viewport" content="user-scalable=no,width=device-width">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta http-equiv="expires" content="0">
 
-{% block sidebar %}
+    <link rel="icon" href="favicon.png" />
+	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" href="favicon.png" />
 
-{% endblock %}
+    <link rel="stylesheet" type="text/css" href="pages/base/base.css" />
 
-{% block content %}
+</head> 
 
-{% endblock %}
-
+<body style="font-family: Dosis"> 
+    <div style="position: absolute; width: 100%; padding-top: 100px;">
+        <div style="margin: auto; width: 128px;">
+            <div style="margin: 0 0 25px 5px; font-size: 20px;">Perfect choice!</div>
+            <div>
+                <img src="pages/base/pics/smartvisu_l.png">
+				<div style="text-align:right;">v{{ config_version }}</div>
+            </div>
+        </div>
+		
+		<div style="margin: auto; width: 250px;">
+      	
+		</div>
+    </div>
+</body>
+</html>

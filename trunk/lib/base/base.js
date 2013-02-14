@@ -35,15 +35,16 @@ var notify = {
     * Add a new error-message from a ajax error request
     * @param    error object
     * @param    status
-    * @param    '600 smartVISU Service Error'
+    * @param    '600 smartVISU Config Error'
+    * @param    '601 smartVISU Service Error'
     */     
     json: function(jqXHR, status, errorthrown) {
         
         var messages = jQuery.parseJSON(jqXHR.responseText)
-        
+                           
         for(var i = 0; i < messages.length; i++) {
             notify.add('error', '', messages[i].title, messages[i].text);
-        }
+        }             
 
         notify.display();
     },
@@ -70,7 +71,7 @@ var notify = {
     add: function(status, link, title, text){
         notify.i++;
         notify.messages[notify.i] = Array();
-        notify.messages[notify.i] = ({status: status, link: link, title: title, text:text});   
+        notify.messages[notify.i] = ({status: status, link: link, title: title, text:text});    
     },
     
   /**

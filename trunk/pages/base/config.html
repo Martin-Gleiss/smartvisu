@@ -255,20 +255,22 @@
            
     </fieldset>
     <button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">Save</button>
-    <div id="form-info"></div>
     </form> 
  
     /** Events */
     <script type="text/javascript">    
         $('form').submit(function() {  
-            $.post('pages/base/configure.php', $(this).serialize(), function(data){ 
-                if (data == 'true') {
-                    window.setTimeout('location.reload();', {{ config_delay }});
-                } else {
-                    notify.error('Config', 'Error saving config!');
-                }
-            });
-            return false;
+			$.ajax({
+				type: "POST",
+				url: 'pages/base/configure.php',
+				data: $(this).serialize(),
+				success:  function(data) {
+	           		window.setTimeout('location.reload();', {{ config_delay }});
+				},
+			})
+			.fail(notify.json);
+			
+			return false;
         });  
     </script>                         
                            
