@@ -206,7 +206,8 @@ $(document).delegate('select[data-widget="basic.flip"]', {
 $(document).delegate('input[data-widget="basic.slider"]', {
 	'update': function(event, response) {
 		// DEBUG: console.log("[basic.slider] update val: " + $(this).val() + " lock: " + $(this).attr('lock'));   
-	    $('#' + this.id).attr('old', response).val(response).slider('refresh');
+	    $('#' + this.id).attr('old', response);
+		$('#' + this.id).val(response).slider('refresh');
     },
 
 	'slidestop': function(event) {
@@ -217,11 +218,11 @@ $(document).delegate('input[data-widget="basic.slider"]', {
 			$(this).attr('lock', 1);
    			$(this).trigger('click'); 
 
-			setTimeout("$('#" + this.id + "').attr('lock', 0);", 1400);
+			setTimeout("$('#" + this.id + "').attr('lock', 0);", 400);
 		}
    	},
 
-	'change': function(event) {
+	'change': function(event, ui) {
 	    // DEBUG: console.log("[basic.slider] change val: " + $(this).val() + " lock: " + $(this).attr('lock'));   
 	    
 		// use a lock to fire event only every 400ms, and don't trigger on init
@@ -230,7 +231,7 @@ $(document).delegate('input[data-widget="basic.slider"]', {
    			if ($(this).val() != $(this).attr('old') && $(this).attr('old') !== undefined)
 				$(this).trigger('click');
        		
-			setTimeout("$('#" + this.id + "').attr('lock', 0);", 1400);
+			setTimeout("$('#" + this.id + "').attr('lock', 0);", 400);
 	    }
     },
 

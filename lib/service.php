@@ -97,7 +97,7 @@ class service
         }
         else
         {
-            header("HTTP/1.0 600 smartVISU Service Error");
+            header("HTTP/1.0 601 smartVISU Service Error");
             $ret = $this->error;
         }
 

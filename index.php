@@ -31,6 +31,9 @@
     
         $loader = new Twig_Loader_Filesystem(const_path.'pages/'.config_pages);
         
+		if (config_pages)
+			$loader->addPath(const_path.'pages/'.config_pages); 
+	
         if (dirname($request['page']) != '.')
             $loader->addPath(const_path.'pages/'.config_pages.'/'.dirname($request['page']));
         

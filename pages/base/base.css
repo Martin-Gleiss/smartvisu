@@ -807,6 +807,42 @@ hr {
 }
 
 
+.shutter {
+    width: 100px;
+    height: 180px;
+    padding: 1px;
+    border-top: 3px solid #666;
+    border-right: 3px solid #eee;
+    border-bottom: 4px solid #ccc;
+    border-left: 3px solid #888;
+    background: url('pics/shutter.jpg') #111;
+}
+
+.shutter .blade-pos {
+    width: 100px;
+    height: 1px;
+    background: #fff;  
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#888));
+	background-image: -webkit-linear-gradient(#fff, #888);
+	background-image:    -moz-linear-gradient(#fff, #888);
+	background-image:     -ms-linear-gradient(#fff, #888);
+	background-image:      -o-linear-gradient(#fff, #888);
+	background-image:         linear-gradient(#fff, #888);
+}
+
+.shutter .blade-neg {
+    width: 100px;
+    height: 1px;
+    background: #fff;  
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#777), to(#eee));
+	background-image: -webkit-linear-gradient(#777, #eee);
+	background-image:    -moz-linear-gradient(#777, #eee);
+	background-image:     -ms-linear-gradient(#777, #eee);
+	background-image:      -o-linear-gradient(#777, #eee);
+	background-image:         linear-gradient(#777, #eee);
+}
+
+
 .rgb span {
     display: inline-block;
     vertical-align: middle;
@@ -840,7 +876,7 @@ hr {
     width: 30px; 
     height: 180px;
     border: 2px solid #fff;
-	background-image: url('pics/scale_ri.png');
+	background-image: url('pics/scale_gamut.png');
 	-moz-border-radius: .5em;
 	-webkit-border-radius: .5em;
 	border-radius: .5em;
@@ -951,42 +987,6 @@ hr {
 
 .blind .angle .ui-slider .ui-input-text {
     display: none !important;
-}
-
-
-.shutter {
-    width: 100px;
-    height: 180px;
-    padding: 1px;
-    border-top: 3px solid #666;
-    border-right: 3px solid #eee;
-    border-bottom: 4px solid #ccc;
-    border-left: 3px solid #888;
-    background: url('pics/shutter.jpg') #111;
-}
-
-.shutter .blade-pos {
-    width: 100px;
-    height: 1px;
-    background: #fff;  
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#888));
-	background-image: -webkit-linear-gradient(#fff, #888);
-	background-image:    -moz-linear-gradient(#fff, #888);
-	background-image:     -ms-linear-gradient(#fff, #888);
-	background-image:      -o-linear-gradient(#fff, #888);
-	background-image:         linear-gradient(#fff, #888);
-}
-
-.shutter .blade-neg {
-    width: 100px;
-    height: 1px;
-    background: #fff;  
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#777), to(#eee));
-	background-image: -webkit-linear-gradient(#777, #eee);
-	background-image:    -moz-linear-gradient(#777, #eee);
-	background-image:     -ms-linear-gradient(#777, #eee);
-	background-image:      -o-linear-gradient(#777, #eee);
-	background-image:         linear-gradient(#777, #eee);
 }
 
 
@@ -1134,7 +1134,7 @@ hr {
     position: relative;
     height: 15px;
     top: 2px;
-    background-image: url('pics/scale_horizontal.png');
+    background-image: url('pics/scalex_linear.png');
 }
 
 .music .set .ui-slider-track {
