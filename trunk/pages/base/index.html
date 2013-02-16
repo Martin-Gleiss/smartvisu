@@ -10,7 +10,7 @@
 
 <html> 
 <head> 
-	<title>{{ config_title }}</title> 
+	<title>[smartVISU]</title> 
 	
     <meta charset="utf-8">
 	<meta name="viewport" content="user-scalable=no,width=device-width">
@@ -21,7 +21,15 @@
 	<link rel="icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="apple-touch-icon" href="favicon.png" />
 
+    <script type="text/javascript" src="vendor/jquery/jquery-1.9.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="pages/base/base.css" />
+    <style type="text/css">
+    <!--
+	body { background-color: #eee; }
+    .check { font-size: 14px; }
+	.check img { width: 24px; height: 24px; margin-right: 10px; vertical-align: middle; }
+    -->
+    </style>
 
 </head> 
 
@@ -35,9 +43,91 @@
             </div>
         </div>
 		
-		<div style="margin: auto; width: 250px;">
-      	
+	    
+		<div style="margin: auto; margin-top: 20px; width: 300px;">
+
+			<div style="margin: 5px 0 5px 0;">Your commands...</div>
+			
+			<div class="app">
+		        <a href="index.php?page=config">
+		            <div class="image" style="background-color: #000000;"><img src="icons/ws/message_service.png"></div>
+		            <div>Config</div>
+		        </a>
+		    </div>
+			
+			<div class="app">
+		        <a id="docu" href="#">
+		            <div class="image" style="background-color: #cc7402;"><img src="icons/ws/edit_copy.png"></div>
+		            <div>Docu</div>
+		        </a>
+		    </div>
+			
+		 	<script type="text/javascript">    
+		        $('#docu').click(function() {  
+					$.ajax({
+						type: "POST",
+						url: 'pages/base/configure.php?pages=docu',
+						success:  function(data) {
+			           		window.setTimeout('location.reload();', {{ config_delay }});
+						},
+					})
+			    });  
+		    </script> 
+
+            <div class="app">
+		        <a href="http://code.google.com/p/smartvisu/w/list" target="_blank">
+		            <div class="image" style="background-color: #0000cc;"><img src="icons/ws/weather_sun.png"></div>
+		            <div>Wiki</div>
+		        </a>
+		    </div>
+
+
+
+
+		</div>
+
+
+		<br style="clear: both;" />
+
+		
+		<div style="margin: auto; margin-top: 20px; width: 300px;">
+        	<hr style="margin-top: 40px;" />
+		
+			<div style="margin: 5px 0 5px 0;">Checking your configuration...</div>
+	
+			<div class="check" data-check="check_config.php">
+				<img src="pages/base/pics/trans.png"><span>'config.php' file...</span></div>
+			
+			<div class="check" data-check="check_temp.php">
+				<img src="pages/base/pics/trans.png"><span>'temp' directory...</span></div>
+			
+			<div class="check" data-check="check_php.php">
+				<img src="pages/base/pics/trans.png"><span>php version...</span></div>
+			
+			<hr style="margin-top: 10px;" />
 		</div>
     </div>
+
+
+    <div class="page-bg" style="background-image: url('pics/bg/smoke_spirals.png');"></div> 
+
+	<script type="text/javascript">
+   	$('.check').each(function(index) {
+    	// DEBUG: console.log('[check] ' + $(this).attr('data-check') + '...');
+	
+		$.getJSON('lib/base/' + $(this).attr('data-check'), function(data) {
+			$('.check').eq(index).children('img').attr('src', data.icon);
+			$('.check').eq(index).children('span').html(data.text);
+		})
+		.error( function(jqXHR) {
+			var data = jQuery.parseJSON(jqXHR.responseText)
+			$('.check').eq(index).children('img').attr('src', data.icon);
+			$('.check').eq(index).children('span').html(data.text);
+		});
+
+	});
+    </script>
+
+
 </body>
 </html>

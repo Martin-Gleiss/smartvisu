@@ -203,36 +203,36 @@ $(document).delegate('select[data-widget="basic.flip"]', {
 
 
 // ----- basic.silder ----------------------------------------------------------
+// The slider had to be handled in a more complex manner. A 'lock' is used
+// to stop the change after a refresh. And a timer is used to fire the trigger
+// only every 400ms if it was been moved. There should be no trigger on init.
 $(document).delegate('input[data-widget="basic.slider"]', {
 	'update': function(event, response) {
-		// DEBUG: console.log("[basic.slider] update val: " + $(this).val() + " lock: " + $(this).attr('lock'));   
-	    $('#' + this.id).attr('old', response);
-		$('#' + this.id).val(response).slider('refresh');
+		$(this).attr('lock', 1); 
+	    $('#' + this.id).val(response).slider('refresh');
+		$('#' + this.id).attr('mem', $(this).val());
     },
 
 	'slidestop': function(event) {
-		// DEBUG: console.log("[basic.slider] slidestop val: " + $(this).val() + " lock: " + $(this).attr('lock'));  
-
-		// use a lock to fire event only every 400ms and if value has changed
-		if ($(this).val() != $(this).attr('old')) {
-			$(this).attr('lock', 1);
-   			$(this).trigger('click'); 
-
-			setTimeout("$('#" + this.id + "').attr('lock', 0);", 400);
-		}
+		if ($(this).val() != $(this).attr('mem')) {
+			$(this).trigger('click'); 
+    	}
    	},
 
-	'change': function(event, ui) {
-	    // DEBUG: console.log("[basic.slider] change val: " + $(this).val() + " lock: " + $(this).attr('lock'));   
-	    
-		// use a lock to fire event only every 400ms, and don't trigger on init
-	    if ($(this).attr('lock') == 0 || $(this).attr('lock') === undefined) {
-	        $(this).attr('lock', 1);
-   			if ($(this).val() != $(this).attr('old') && $(this).attr('old') !== undefined)
+	'change': function(event) {
+        // DEBUG: console.log("[basic.slider] change val: " + $(this).val() + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));   
+
+        if( ( $(this).attr('timer') === undefined || $(this).attr('timer') == 0 && $(this).attr('lock') == 0 )
+			&& ($(this).val() != $(this).attr('mem')) ) {
+			
+			if ($(this).attr('timer') !== undefined)
 				$(this).trigger('click');
-       		
-			setTimeout("$('#" + this.id + "').attr('lock', 0);", 400);
-	    }
+			
+			$(this).attr('timer', 1);
+			setTimeout("$('#" + this.id + "').attr('timer', 0);", 400);
+		}
+
+		$(this).attr('lock', 0);
     },
 
 	'click': function(event) {             
