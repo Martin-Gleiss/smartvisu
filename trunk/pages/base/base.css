@@ -693,8 +693,8 @@ hr {
  
 .app a:link { text-decoration:none; }
 .app a:visited { text-decoration:none; }
-.app a:focus { text-decoration:none; }
-.app a:hover { text-decoration:none; }
+.app a:focus { text-decoration:underline; }
+.app a:hover { text-decoration:underline; }
 .app a:active { text-decoration:none; }
  
 .app .image {
@@ -709,7 +709,7 @@ hr {
 	border-radius: .7em;
 }
  
-.app .image img{
+.app .image img {
     height: 60px;
     width: 60px;
 }
@@ -722,6 +722,7 @@ hr {
     margin-top: 2px;
     font-size: 20px;
 }
+
 
 .docu .macro {
     font-size: 18px;
