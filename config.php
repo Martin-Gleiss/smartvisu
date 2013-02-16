@@ -56,7 +56,7 @@
     * smartVISU supports different projects, located under 'pages'
     * this is the directory for your project    
     */
-    define ('config_pages',                 'docu');
+    define ('config_pages',                 '');
    
   /**
     * Select your language. Some widgets are multilanguage 
