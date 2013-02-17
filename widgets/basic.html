@@ -105,29 +105,31 @@
  * @param       step between two values (optional, default 5) 
  * @param       the orientation ('none', 'vertical', 'bottomup', 'semicircle')
  */
-{% macro slider(id, gad, min, max, step, type) %}
+{% macro slider(id, gad, min, max, step, mode) %}
 
     <input id="{{ uid(page, id) }}" data-widget="basic.slider" data-item="{{ gad }}" 
 		type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}"
-		orientation="{{ type }}" data-highlight="true" />
+		orientation="{{ mode }}" data-highlight="true" />
 
 {% endmacro %}
 
 
 /**
  * A symbol, with no writing to knx, only displayed when the value of gad is equal to val. Symbols may be used in menus.
- * If more than one gad is given, they will be combined with 'or'. 
+ * If more than one gad is given, they will be combined with mode ('or' / 'and). 
  * 
  * @param       unique id for this widget
  * @param       one or more gad(s)/item(s)
  * @param       the text, printed when gad has value val (optional) 
  * @param       the pic, shown when gad has value val
  * @param       value (default 1) 
+ * @param       the mode, 'or', 'and' (default 'or') 
  */
-{% macro symbol(id, items, txt, pic, val) %}
+{% macro symbol(id, items, txt, pic, val, mode) %}
   
 	<span id="{{ uid(page, id) }}" data-widget="basic.symbol" data-item="{{ array2items(items) }}" data-val="{{ val|default('1') }}"
-		class="symbol hide"><img class="icon" src="{{ pic|default(icon1~'control_on_off.png') }}"/>{{ txt }}</span>
+		data-mode="{{ mode|default('or') }}" class="symbol hide">
+        <img class="icon" src="{{ pic|default(icon1~'control_on_off.png') }}"/>{{ txt }}</span>
         
 {% endmacro %} 
 
