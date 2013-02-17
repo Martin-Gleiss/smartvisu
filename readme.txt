@@ -78,6 +78,8 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 2.3
+    - new language: fr, special tanks to Pierre-Yves Kerviel
+    - basic.symbol now with mode 'or', 'and'
 	- new: smartVISU checks configuration of the server
 	- new widget: basic.tank for (partly) filled tanks
 	- new wiget: basic.shifter for switch an value on one symbol
