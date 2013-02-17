@@ -34,12 +34,20 @@
         {{ basic.symbol('symbol3', 'bath_light_switch', 'Light off', icon0~'light_light.png', 0) }}
     </div>
 
-    Symbol is shown when 'bath_light_switch' is on OR 'bath_rtr_state' is on.
+    Symbol is shown when 'bath_light_switch' is on <b>OR</b> 'bath_rtr_state' is on.
     <div class="twig">
         <code class="prettyprint">&#123;&#123; basic.symbol('symbol4', ['bath_light_switch', 'bath_rtr_state']) &#125;&#125;</code>
     </div>
     <div class="html">
         {{ basic.symbol('symbol4', ['bath_light_switch', 'bath_rtr_state']) }}
+    </div>
+    
+    Symbol is shown when 'bath_light_switch' is on <b>AND</b> 'bath_rtr_state' is on.
+    <div class="twig">
+        <code class="prettyprint">&#123;&#123; basic.symbol('symbol5', ['bath_light_switch', 'bath_rtr_state'], '', '', 1, 'and') &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.symbol('symbol5', ['bath_light_switch', 'bath_rtr_state'], '', '', 1, 'and') }}
     </div>
 
 {% endblock %}

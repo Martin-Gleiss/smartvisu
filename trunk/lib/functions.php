@@ -51,7 +51,7 @@
             'Thursday' => 'Donnerstag', 'Friday' => 'Freitag', 'Saturday' => 'Samstag',
             
             'Sun' => 'So', 'Mon' => 'Mo', 'Tue' => 'Di', 'Wed' => 'Mi', 'Thu' => 'Do', 'Fri' => 'Fr', 'Sat' => 'Sa');
-        
+      
         $lang['nl'] = array(
             'January' => 'Januari', 'February' => 'Februari', 'March' => 'Maart', 'April' => 'April', 
             'May' => 'Mei', 'June' => 'Juni', 'July' => 'Juli', 'August' => 'Augustus', 
@@ -61,7 +61,18 @@
             'Thursday' => 'Donderdag', 'Friday' => 'Vrijdag', 'Saturday' => 'Zaterdag',
             
             'Sun' => 'zo', 'Mon' => 'ma', 'Tue' => 'di', 'Wed' => 'wo', 'Thu' => 'do', 'Fri' => 'vr', 'Sat' => 'za');
+  
+        $lang['fr'] = array(
+            'January' => 'Janvier', 'February' => 'Février', 'March' => 'Mars', 'April' => 'Avril', 
+            'May' => 'Mai', 'June' => 'Juin', 'July' => 'Juillet', 'August' => 'Août', 
+            'September' => 'Septembre', 'October' => 'Octobre', 'November' => 'Novembre', 'December' => 'Décembre',
+            
+            'Sunday' => 'Dimanche', 'Monday' => 'Lunid', 'Tuesday' => 'Mardi', 'Wednesday' => 'Mercredi',
+            'Thursday' => 'Jeudi', 'Friday' => 'Vendredi', 'Saturday' => 'Samedi',
+            
+            'Sun' => 'Dim', 'Mon' => 'Lun', 'Tue' => 'Mar', 'Wed' => 'Mer', 'Thu' => 'Jeu', 'Fri' => 'Ven', 'Sat' => 'Sam');
         
+
         // allowed formats
         switch ($format)
             {
@@ -71,6 +82,9 @@
                      break;
                  } elseif (config_lang == 'nl') {
                      $format = 'd.m.y';
+                     break;
+                 } elseif (config_lang == 'fr') {
+                     $format = 'd/m/y';
                      break;
                  } else {
                      $format = 'm/d/y';
@@ -84,6 +98,9 @@
                  } elseif (config_lang == 'nl') {
                      $format = 'd.m.y H:i';
                      break;
+                 } elseif (config_lang == 'fr') {
+                     $format = 'd/m/y H:i';
+                     break;
                  } else {
                      $format = 'm/d/y H:i';
                      break;
@@ -94,6 +111,9 @@
                      break;
                  } elseif (config_lang == 'nl') {
                      $format = 'd.m.Y H:i:s';
+                     break;
+                 } elseif (config_lang == 'fr') {
+                     $format = 'd/m/Y H:i:s';
                      break;
                  } else {
                      $format = 'm/d/Y H:i:s';
@@ -173,10 +193,5 @@
         
         return $ret;
     }    
-
-    function lang()
-    {
-    }
-    
 
 ?>

@@ -246,11 +246,16 @@ $(document).delegate('span[data-widget="basic.symbol"]', {
 	'update': function(event, response) {
 
 		// response will be an array, if more then one item is requested 
-		var bit = false;
-		if (response instanceof Array) {
+        var bit = ($(this).attr('data-mode') == 'and');
+        if (response instanceof Array) {
+            console.log(this.id + ' ' + $(this).attr('data-mode') )
 		    for(var i = 0; i < response.length; i++) {
-		        bit = bit || (response[i] == $(this).attr('data-val'));
-		}}
+                if ($(this).attr('data-mode') == 'and')
+                    bit = bit && (response[i] == $(this).attr('data-val'));
+	            else
+                    bit = bit || (response[i] == $(this).attr('data-val'));
+            }
+        }
 		else
 		    bit = (response == $(this).attr('data-val'));   
 		  
