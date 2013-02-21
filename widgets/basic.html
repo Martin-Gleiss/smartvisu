@@ -330,3 +330,30 @@
 	</div>
    
 {% endmacro %} 
+
+
+/**
+ * Displays a image with is been reloaded after a given time
+ * 
+ * @param       unique id for this widget
+ * @param       the path/url to the image
+ * @param       the mode: 'none', 'corner', 'corner-bottom' (optional, default 'none')
+ * @param       the time in sec (optional, default 600 sec = 10 min)
+ */
+{% macro image(id, src, mode, time) %}
+    
+	<img id="{{ uid(page, id) }}" data-widget="basic.image"
+		{% if mode == 'corner' %}
+			class="ui-corner-all" 
+		{% elseif mode == 'corner-bottom' %}
+			class="ui-corner-bottom" 
+		{% endif %}
+		src="{{ src }}" />
+   
+    <script type="text/javascript"> 
+		setInterval(function(){
+			$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_='+new Date().getTime());
+		}, {{ time|default(600) * 1000 }});
+    </script> 
+
+{% endmacro %} 

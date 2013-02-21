@@ -118,7 +118,7 @@
         // Header
         preg_match_all('#.+?@(.+?)\W+(.*)#i', substr($file, 0, strpos($file, '*/') + 2), $header);
         
-        // Body 
+	    // Body 
         preg_match_all('#\/\*\*[\r\n](.+?)\*\/.+?\{\% macro(.+?)\%\}#is', strstr($file, '*/'), $widgets);
         
         if (count($widgets[2]) > 0)
@@ -138,7 +138,7 @@
                 foreach($header[1] as $headerno => $headertag)
                 {
                     if ( !($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß") )
-                        $ret[$headertag] = trim($header[2][$headerno]);
+                        $rettmp[$no][$headertag] = trim($header[2][$headerno]);
                 }
                 
                 $rettmp[$no]['subpackage'] = substr(mb_strtolower(basename($filename), 'UTF-8'), 0, -5);
@@ -174,7 +174,7 @@
             }
         }
          
-        return $ret;
+		return $ret;
  	}      
 
 
