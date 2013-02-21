@@ -55,6 +55,7 @@
 }
 
 .ui-page > .ui-header .ui-right {
+	width: 95px; 
     float: right;
     margin: 9px 15px 0 0;
 }

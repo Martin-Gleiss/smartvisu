@@ -248,8 +248,7 @@ $(document).delegate('span[data-widget="basic.symbol"]', {
 		// response will be an array, if more then one item is requested 
         var bit = ($(this).attr('data-mode') == 'and');
         if (response instanceof Array) {
-            console.log(this.id + ' ' + $(this).attr('data-mode') )
-		    for(var i = 0; i < response.length; i++) {
+            for(var i = 0; i < response.length; i++) {
                 if ($(this).attr('data-mode') == 'and')
                     bit = bit && (response[i] == $(this).attr('data-val'));
 	            else
