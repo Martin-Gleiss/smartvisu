@@ -125,7 +125,7 @@
             echo str_repeat(" ", 62).date('H:i, d.m').", v".config_version."\n";
             echo str_repeat("-", 80)."\n\n";
             echo "Error accoured in twig-template engine!\n\n";
-            echo "error: ".$e->getRawMessage()."\n";
+            echo "error: <b>".$e->getRawMessage()."</b>\n";
             echo "file:  ".$e->getTemplateFile()."\n";
             echo "line:  ".$e->getTemplateLine()."\n\n";
             echo str_repeat("-", 80)."\n\n";
@@ -133,6 +133,17 @@
         }
     }
     else
+	{
         header("HTTP/1.0 404 Not Found");
 
+ 		echo "<pre>\n";
+        echo str_repeat(" ", 69)."smart[VISU]\n";
+        echo str_repeat(" ", 62).date('H:i, d.m').", v".config_version."\n";
+        echo str_repeat("-", 80)."\n\n";
+		echo "Page '<b>".$request['page']."</b>' not found!\n\n";
+		echo "Check config.php -> 'config_pages' for correct Pages/Project configuration\n";
+		echo "or try the <a href='index.php'>index</a> page!\n\n";
+        echo str_repeat("-", 80)."\n\n";
+        echo "\n</pre>";
+	}
 ?>
