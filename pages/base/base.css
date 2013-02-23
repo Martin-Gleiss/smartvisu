@@ -548,7 +548,7 @@ hr {
     width: 2000px;
     height: 500px;
     background-repeat: no-repeat;
-    display:none;
+    display:none; 
 }
 
 @media all and (min-width: 600px) {

@@ -13,6 +13,13 @@
 {% block example %}
 
     <h5>Examples</h5>
+
+	Use this basic.flips (one for 'bath_light_switch' and the other for 'bath_rtr_state') to control the basic.symbol(s)
+    <div class="html">
+        {{ basic.flip('flip1', 'bath_light_switch')  }}
+        {{ basic.flip('flip2', 'bath_rtr_state')  }}
+    </div>
+
     
     Symbol is only shown when 'bath_light_switch' = 1   
     <div class="twig">
