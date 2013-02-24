@@ -55,7 +55,7 @@
 }
 
 .ui-page > .ui-header .ui-right {
-	width: 95px; 
+	width: 97px; 
     float: right;
     margin: 9px 15px 0 0;
 }
@@ -65,16 +65,21 @@
     font-weight: normal;
 } /* time, date and version */
 
-.ui-page-header-fixed { 
-    padding-top: 62px;
-}
-
 .ui-content {
-    position: relative;
     min-height: 800px;
    	min-width: 290px;
-    z-index: 1;
 } /* min-height for scrollbars, min-width for smallest device */
+
+.ui-corner-top {
+	-webkit-border-radius: 0.8em 0.8em 0 0;
+	border-radius: 0.8em 0.8em 0 0;
+} /* only top edges */
+
+.ui-corner-bottom {
+	-webkit-border-radius: 0 0 0.8em 0.8em;
+	border-radius: 0 0 0.8em 0.8em;
+} /* only top edges */
+
 
 
 /** --------- lists --------- */

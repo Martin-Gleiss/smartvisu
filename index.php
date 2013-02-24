@@ -140,7 +140,7 @@
         echo str_repeat(" ", 69)."smart[VISU]\n";
         echo str_repeat(" ", 62).date('H:i, d.m').", v".config_version."\n";
         echo str_repeat("-", 80)."\n\n";
-		echo "Page '<b>".$request['page']."</b>' not found!\n\n";
+		echo "Error loading Page '<b>".$request['page']."</b>' !\n\n";
 		echo "Check config.php -> 'config_pages' for correct Pages/Project configuration\n";
 		echo "or try the <a href='index.php'>index</a> page!\n\n";
         echo str_repeat("-", 80)."\n\n";
