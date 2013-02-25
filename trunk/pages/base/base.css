@@ -55,7 +55,7 @@
 }
 
 .ui-page > .ui-header .ui-right {
-	width: 97px; 
+	width: 98px; 
     float: right;
     margin: 9px 15px 0 0;
 }
@@ -68,7 +68,7 @@
 .ui-content {
     min-height: 800px;
    	min-width: 290px;
-} /* min-height for scrollbars, min-width for smallest device */
+} /* min-height for scrollbars and push out url, min-width for smallest device */
 
 .ui-corner-top {
 	-webkit-border-radius: 0.8em 0.8em 0 0;
@@ -79,7 +79,6 @@
 	-webkit-border-radius: 0 0 0.8em 0.8em;
 	border-radius: 0 0 0.8em 0.8em;
 } /* only top edges */
-
 
 
 /** --------- lists --------- */
@@ -254,36 +253,6 @@ a.ui-btn-inline.ui-maxi[data-iconpos="nopic"] .ui-btn-inner {
 a.ui-btn-inline.ui-maxi .icon {
     display: block;      
     margin-left: 12px;
-}
-*/
-
-
-
-/** --------- controlgroup --------- 
-.ui-controlgroup-horizontal {
-    margin: 19px 0 23px 0;
-}
-
-.ui-controlgroup-horizontal span { 
-    padding: 4px 3px 1px 3px ;
-}
-
-.ui-controlgroup-horizontal .icon { 
-    width: 48px;
-    height: 48px;    
-}
-
-.ui-controlgroup-horizontal.ui-mini {
-    margin: 13px 0 17px 0;
-}
-
-.ui-controlgroup-horizontal.ui-mini span { 
-    padding: 1px 2px 4px 2px ;
-}
-
-.ui-controlgroup-horizontal.ui-mini .icon { 
-    width: 40px;
-    height: 40px;    
 }
 */
 
@@ -546,6 +515,7 @@ hr {
 	background-image:         linear-gradient(left, #fff, #ccc);
 }
 
+/* 
 .page-bg {
     position: fixed;
     bottom: 0;
@@ -553,14 +523,16 @@ hr {
     width: 2000px;
     height: 500px;
     background-repeat: no-repeat;
-    display:none; 
-}
+    display: none;
+} 
+only if page-bg is placed in a div
+*/
 
-@media all and (min-width: 600px) {
-    .page-bg {
-        display:block;
-    }
-}
+.page-bg {
+    background-repeat: no-repeat;
+	background-position: bottom;
+	background-attachment: fixed;
+} /* used in ui-content, because we want the color from ui-page */ 
 
 .preblock {
     width: 100%;
@@ -1221,5 +1193,3 @@ hr {
     font-size: 0.8em;
     color: #666; 
 }
-
-

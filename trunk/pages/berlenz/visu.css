@@ -17,10 +17,12 @@
     }
 }  
 
-.page-bg { 
-    background-image: url('../../pics/bg/light_vortex.png');
+/* display background only on larger displays */
+@media all and (min-width: 600px) {
+    .page-bg {
+	    background-image: url('../../pics/bg/light_vortex.png');
+    }
 }
-
                                                                         
 .heating  .ui-input-text {
     display:none;
