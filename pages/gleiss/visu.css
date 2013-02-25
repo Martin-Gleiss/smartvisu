@@ -10,6 +10,9 @@
  
 @CHARSET "UTF-8";
 
-.page-bg { 
-    background-image: url('../../pics/bg/light_lines.png');
+@media all and (min-width: 600px) {
+	.page-bg { 
+    	background-image: url('../../pics/bg/light_lines.png');
+	}
 }
+

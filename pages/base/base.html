@@ -65,11 +65,9 @@
     $.mobile.page.prototype.options.domCache = true;
 </script>  
 
-
 <div data-role="page" id="{{ page }}" data-theme="a">
-    <div class="page-bg"></div> 
 
-    <div data-role="header" data-position="fixed" data-tap-toggle="false">
+	<div data-role="header" data-position="fixed" data-tap-toggle="false">
         <div class="ui-left">
             {% include 'menu.html' %}
         </div>
@@ -85,8 +83,8 @@
         </div> 
     </div>
     
-    <div data-role="content">
-        <div class="content-primary">
+    <div data-role="content" class="page-bg">
+		<div class="content-primary">
             {% block content %}{% endblock %}
         </div>
         
