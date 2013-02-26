@@ -114,12 +114,12 @@ var io = {
 	    $.ajax ({  url: "driver/io_offline.php", 
                 data: ({item: item}), 
                 type: "GET",   
-                dataType: 'text',                                      
+                dataType: 'json',                                      
                 async: true,
                 cache: false
             })
             .done(function ( response ) {
-				widget.update(item, response);
+				widget.update(item, response[item]);
             })
     },
 

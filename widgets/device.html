@@ -23,9 +23,9 @@
     {% import "basic.html" as basic %}
     
     <div class="dimmer">
-        {{ basic.switch(id~'switch', gad_switch, icon1~'light_light.png', icon0~'light_light.png') }}
+        {{ basic.switch(id~'switch', gad_switch, icon1~'light_light.png', icon0~'light_light.png') }}  
         <p>{{ txt|e }}</p>
-        {{ basic.slider(id~'silder', gad_value, min, max, step) }}
+        {{ basic.slider(id~'slider', gad_value, min, max, step) }}
     </div>     
     
 {% endmacro %}

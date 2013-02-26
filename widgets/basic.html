@@ -9,22 +9,29 @@
                 
 
 /**
- * Widget to glue to html-elements together.
- * If the 'from' is changed the 'to' will be reloaded after a delay. 
+ * Used to glue to widgets together. Only needed if you don't use 'Realtime'! 
+ * If you click the 'from'-widget, the 'to'-widget will be reloaded and updated after a delay. 
  * 
- * @param       id from the element that is requesting change 
- * @param       id from the element that should be changed
+ * @param       id from the element that is been clicked 
+ * @param       id from the element that contain a item that might be changed
  */
 {% macro glue(id_from, id_to) %}
     <script type="text/javascript">
-        /*
-        $('#{{ page }}').on('pageshow',function(event, ui){ 
-            $('#{{ page }}-{{ id_from|e }}').bind('click', function(){
-                window.setTimeout(function(){ $('#{{ page }}-{{ id_to|e }}').trigger('reload'); }, {{ config_delay }});
+        $('#{{ page }}').on('pageinit', function(event, ui){ 
+            $('#{{ uid(page, id_from) }}').on('click', function(){
+		        window.setTimeout( function(){ 
+					var dataitem = $('#{{ uid(page, id_to) }}').attr('data-item'); 
+	
+					if (dataitem.indexOf(',') >= 0) {
+						var items = dataitem.split(',');
+						for (var i = 0; i < items.length; i++)  
+							io.read(items[i].trim());
+					} 
+					else 
+						io.read(dataitem.trim());	
+				}, {{ config_delay }});
             });
         });
-        */
-        console.log('warning: basic.glue is deprecated!');
     </script>  
 {% endmacro %}
 
