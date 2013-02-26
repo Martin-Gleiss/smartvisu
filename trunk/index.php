@@ -29,21 +29,19 @@
         require_once const_path.'vendor/Twig/Autoloader.php';
         Twig_Autoloader::register();
     
-        $loader = new Twig_Loader_Filesystem(const_path.'pages/'.config_pages);
+        $loader = new Twig_Loader_Filesystem(const_path.'apps');
         
-		if (trim(config_pages) != '')
+		if (is_dir(const_path.'pages/'.config_pages))
 			$loader->addPath(const_path.'pages/'.config_pages); 
 	
         if (dirname($request['page']) != '.')
             $loader->addPath(const_path.'pages/'.config_pages.'/'.dirname($request['page']));
         
-        $loader->addPath(const_path.'apps');
-        $loader->addPath(const_path.'pages/base'); 
-        
         // add dir if is not directly choosen
         if (config_driver == 'smarthome.py' and config_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
             $loader->addPath(const_path.'pages/smarthome');
         
+		$loader->addPath(const_path.'pages/base'); 
         $loader->addPath(const_path.'widgets');
         
         
@@ -102,7 +100,6 @@
         $lexer = new Twig_Lexer($twig, array('tag_comment' => array('/**', '*/')));
         $twig->setLexer($lexer);
            
-           
         // load template
         try
         {
@@ -115,10 +112,9 @@
 				header("Content-Encoding: gzip");
 				$ret = "\x1f\x8b\x08\x00\x00\x00\x00\x00".substr(gzcompress($ret, 9), 0, -4).pack("V",crc32($ret)).pack("V",strlen($ret)); 
 			}
-			
             echo $ret;
         }
-        catch (Exception $e)
+       catch (Exception $e)
         {
             echo "<pre>\n";
             echo str_repeat(" ", 69)."smart[VISU]\n";
