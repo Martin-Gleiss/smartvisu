@@ -787,6 +787,7 @@ only if page-bg is placed in a div
 
 
 .shutter {
+	position: relative;
     width: 100px;
     height: 180px;
     padding: 1px;

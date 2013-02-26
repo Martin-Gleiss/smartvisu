@@ -38,7 +38,7 @@
             {{ app.info }} <br />
             {% endif %}
             {% if app.link %}
-            <a href="http://{{ app.link }}" target="_blank">{{ app.link }}</a> <br />
+            <a href="{{ app.link }}" target="_blank">{{ app.link|e }}</a> <br />
             {% endif %}
             
             {% if app.author or app.version %}
@@ -73,9 +73,8 @@
         $('#{{ page }}').on('pagecreate', function(event, ui){ 
                                     
             $('#{{ page }}-{{ file.name }}').mouseover(function(){
-                $('#{{ page }}-{{ file.name }}-docu').show();
-            }).mouseout(function(){
-                $('#{{ page }}-{{ file.name }}-docu').hide();
+                $('.hide:not(#{{ page }}-{{ file.name }}-docu)').hide();
+                $('#{{ page }}-{{ file.name }}-docu').fadeIn(400);
             });
         });
         </script> 

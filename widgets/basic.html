@@ -251,6 +251,7 @@
     <div id="{{ uid(page, id) }}" data-widget="basic.shutter" data-item="{{ gad_pos }}, {{ gad_angle }}"
 		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" data-step="{{ step|default(5) }}"
 		data-mode="{{ mode|default('half') }}" class="shutter">
+
         {% for i in 1..12 %}
             <div class="blade-pos" id="{{ uid }}-{{ i }}"></div>
         {% endfor %}
@@ -348,9 +349,11 @@
 		{% elseif mode == 'corner-bottom' %}
 			class="ui-corner-bottom" 
 		{% endif %}
-		src="{{ src }}" />
+		src="pages/base/pics/trans.png" />
    
     <script type="text/javascript"> 
+		$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_='+new Date().getTime());
+
 		setInterval(function(){
 			$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_='+new Date().getTime());
 		}, {{ time|default(600) * 1000 }});
