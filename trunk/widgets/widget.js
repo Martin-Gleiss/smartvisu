@@ -86,7 +86,7 @@ var widget = {
 	},
 
   /**
-    * Update a item and all widgets listening on a that
+    * Update a item and all widgets listening on that
     * 
     * @param    the item 
     * @param	the val        
@@ -97,7 +97,7 @@ var widget = {
 		if (widget.buffer[item] != val || val === undefined) {
 
 			widget.set(item, val);
-    	    
+		    
 			$('[data-item*=' + item + ']').each(function(idx) {
 				var dataitem = $(this).attr('data-item'); 
 					
@@ -129,7 +129,7 @@ var widget = {
   /**
     * Refreshes all widgets on the current page
     */ 
-	refresh: function() {
+	refresh: function() {             
 		$('[id^=' + $.mobile.activePage.attr('id') + '-][data-item]').each(function(idx) {
 			var dataitem = $(this).attr('data-item'); 
 					

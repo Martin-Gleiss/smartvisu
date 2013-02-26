@@ -169,8 +169,6 @@ class driver_linknx
             // write if a value is given
             if ($this->val != '')
                 $ret = $this->write();
-            else
-                $ret = $this->read();
         }
         
         $this->close();

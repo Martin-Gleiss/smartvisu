@@ -114,12 +114,16 @@ var io = {
 	    $.ajax ({  url: "driver/io_linknx.php", 
                 data: ({item: item}), 
                 type: "GET",   
-                dataType: 'text',                                      
+                dataType: 'json',                                      
                 async: true,
                 cache: false
             })
             .done(function ( response ) {
-                widget.update(item, response);
+				if (typeof(response) == 'object') {
+					widget.update(item, response[item]);
+                }
+				else
+                    notify.error('Driver: linknx', response);
             })
     },
 
