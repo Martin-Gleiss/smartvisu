@@ -98,7 +98,7 @@ var widget = {
 
 			widget.set(item, val);
 		    
-			$('[data-item*=' + item + ']').each(function(idx) {
+			$('[data-item*="' + item + '"]').each(function(idx) {
 				var dataitem = $(this).attr('data-item'); 
 					
 				// More than one item?
@@ -130,7 +130,7 @@ var widget = {
     * Refreshes all widgets on the current page
     */ 
 	refresh: function() {             
-		$('[id^=' + $.mobile.activePage.attr('id') + '-][data-item]').each(function(idx) {
+		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function(idx) {
 			var dataitem = $(this).attr('data-item'); 
 					
 			// More than one item?
