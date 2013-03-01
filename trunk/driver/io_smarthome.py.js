@@ -77,7 +77,7 @@ var io = {
   /**
     * This driver version
     */
-    version: '1',
+    version: 1,
 
   /**
     * This driver uses a websocket
@@ -134,9 +134,7 @@ var io = {
     send: function(data) {
         if (io.socket.readyState == 1) {
             io.socket.send(unescape(encodeURIComponent(JSON.stringify(data))));
-            console.log('[io.smarthome.py] sending data: ' + JSON.stringify(data));
-        // } else {
-        // notify.error('Driver: smarthome.py', 'Websocket not available. Could not send data!');
+            // console.log('[io.smarthome.py] sending data: ' + JSON.stringify(data));
             }
     },
 

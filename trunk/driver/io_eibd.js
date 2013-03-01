@@ -207,7 +207,7 @@ var io = {
                 cache: false
             })
             .done(function ( response ) {
-                widget.update(item, response);
+                widget.update(item, response[item]);
             })
     },
 
@@ -223,7 +223,7 @@ var io = {
             ({  url: "/cgi-bin/w",
                 data: ({a: item.substring(0, (item.length - 6) ), v: io.convertData(val,item.slice(-5), 'to'), ts: $.now()}),
                 type: "GET", 
-                dataType: 'text', 
+                dataType: 'json', 
                 cache: false
             })
             .done(function ( response ) {

@@ -138,14 +138,17 @@ var io = {
             ({  url: "driver/io_linknx.php", 
                 data: ({item: item, val: val}), 
                 type: "GET", 
-                dataType: 'text', 
+                dataType: 'json', 
                 cache: false
             })
             .done(function ( response ) {
-				widget.update(item, val);
-                
-				if (timer_run)
-                    io.start();
+				if (typeof(response) == 'object') {
+					widget.update(item, response[item]);
+					if (timer_run)
+    	                io.start();
+                }
+				else
+                    notify.error('Driver: linknx', response);
             })
     },
 	
