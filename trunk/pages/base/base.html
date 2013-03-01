@@ -52,8 +52,9 @@
     
     $(document).on('pagebeforeshow', function(){
         io.run({{ config_driver_realtime }});
-		//console.log('[io] run');       	
+		// console.log('[io] run');       	
         notify.display();
+		// widget.list();
 		widget.refresh();
     });
 
