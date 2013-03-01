@@ -41,6 +41,7 @@ var io = {
     */
     write: function(item, val) {
         io.send({'cmd': 'item', 'id': item, 'val': val});
+		widget.update(item, val);
     },
     
   /**

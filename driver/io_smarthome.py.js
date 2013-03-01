@@ -40,7 +40,8 @@ var io = {
     * @param      the value 
     */
     write: function(item, val) {
-        io.send({'cmd': 'item', 'id': item, 'val': val});
+		io.send({'cmd': 'item', 'id': item, 'val': val});
+		widget.update(item, val);
     },
     
   /**
