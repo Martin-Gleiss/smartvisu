@@ -27,13 +27,13 @@
         float: right;
         margin-right: 1%;
         padding-right: 1%;
-        width: 62%;
+        width: 60%;
     }
     .content-secondary {
         display: block;
         float: left;
         text-align: left;
-        width: 33%;
+        width: 35%;
     }
 }
 

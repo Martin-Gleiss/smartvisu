@@ -155,8 +155,9 @@ var io = {
         if (widget.listening())
         {        
             // prepare url
-            for (var item in widget.listeners())
-                items += item + ',';
+			var item = widget.listeners();
+			for (var i = 0; i < widget.listeners().length; i++)
+                items += item[i] + ',';
             items = items.substr(0, items.length - 1);
         
             $.ajax ({  url: 'driver/io_json.php', 

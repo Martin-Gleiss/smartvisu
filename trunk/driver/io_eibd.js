@@ -253,12 +253,14 @@ var io = {
             // prepare url
             var getForUrl = '';
             var counter = 0;
-            for(var item in widget.listeners()) {
+
+			var item = widget.listeners();
+			for (var i = 0; i < widget.listeners().length; i++)
                 if (counter > 0 ) {
                     getForUrl = getForUrl + '&';
                 }
 
-                getForUrl = getForUrl + 'a=' + item.substring(0, (item.length - 6) );
+                getForUrl = getForUrl + 'a=' + item[i].substring(0, (item[i].length - 6) );
                 counter++;
             }
             getForUrl = getForUrl + '&i=' + io.actualIndexNumber;
