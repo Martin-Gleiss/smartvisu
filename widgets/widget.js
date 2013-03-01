@@ -35,7 +35,7 @@ var widget = {
     * Returns all items listening on
     */         
 	listeners: function() {
-		var ret = Array();
+		var tmp = Array();
 
 		$('[data-item]').each(function(idx) {
 			var dataitem = $(this).attr('data-item'); 
@@ -46,14 +46,18 @@ var widget = {
 
 				for (var i = 0; i < items.length; i++) {
 					if (items[i].trim() != '')
-						ret[items[i].trim()] = '';
+						tmp[items[i].trim()] = '';
 				}
 			} 
 			// One item
 			else if (dataitem.trim() != '') {
-				ret[dataitem.trim()] = '';
+				tmp[dataitem.trim()] = '';
 			};
 		}); 
+
+		var ret = Array();
+		for (var item in tmp)     
+            ret.push(item);
 
         return ret;       
     },
@@ -64,8 +68,10 @@ var widget = {
 	list: function() {
 	    var widgets = 0;
 		$('[data-item]' ).each(function(idx) {
-            console.log("[widget] '" + this.id + "' listen on '" + $(this).attr('data-item') + "'");
-            widgets++;
+			if ($(this).attr('data-item').trim() != '') {
+            	console.log("[widget] '" + this.id + "' listen on '" + $(this).attr('data-item') + "'");
+            	widgets++;
+			}
     	});
         console.log("[widget] --> " + widgets + " listening.");
     },
