@@ -38,18 +38,18 @@
  * @param       name of the rtr
  * @param       a gad/item for the actual temperature
  * @param       a gad/item for the set temperature
- * @param       a gad/item for mode (bit) 
- * @param       a gad/item for night (bit)
- * @param       a gad/item for frost (bit)
+ * @param       a gad/item for comfort / standby (3x bit or 1x byte) 
+ * @param       a gad/item for night (3x bit or 1x byte)
+ * @param       a gad/item for frost (3x bit or 1x byte)
  * @param       a gad/item for the current state of the actor
  * @param       a gad/item for a text (some rtr have a text-display), (optional)
- * @param       step for plus/minus buttons (optional, default 0.5°) 
+ * @param       step for plus/minus buttons (optional, default 0.5) 
  */
 {% macro rtr(id, txt, gad_actual, gad_set, gad_mode, gad_night, gad_frost, gad_state, gad_txt, step) %}
     {% import "basic.html" as basic %}
-    {% set uid = uid(page, id) %}
-    
-    <div id="{{ uid }}" class="rtr">
+  
+	<div id="{{ uid(page, id) }}" data-widget="device.rtr" data-step="{{ step|default(0.5) }}"
+		class="rtr">
         <div class="actual">
             <div class="temp">{{ basic.float(id~'actual', gad_actual, '°C' ) }}</div>
             <div class="text">{{ txt }} {% if gad_txt %} {{ basic.value(id~'txt', gad_txt) }} {% endif %}</div>
@@ -57,31 +57,23 @@
         
         {% if gad_set %}
             <div class="set">
-                {{ basic.button(id~'minus', '', '', 'minus') }}
+				<a data-role="button" data-icon="minus" data-inline="true" data-iconpos="notext" class="ui-mini"></a>
                 <div class="temp">{{ basic.float(id~'set', gad_set, '°C' ) }}</div>
-                {{ basic.button(id~'plus', '', '', 'plus') }}
+        		<a data-role="button" data-icon="plus" data-inline="true" data-iconpos="notext" class="ui-mini"></a>
             </div>
-            
-            <script type="text/javascript">  
-                // plus / minus
-                $("#{{ uid~'minus' }}").unbind('click').bind('click', function(){ 
-                    var temp = (Math.round((parseFloat($("#{{ uid~'set' }}").html()) - {{ step|default(0.5) }}) * 10) / 10).toFixed(1);
-                    $("#{{ uid~'set' }}").html(temp + ' °C');
-                    io.write("{{ gad_set }}", temp);
-                });
-                $("#{{ uid~'plus' }}").unbind('click').bind('click', function(){ 
-                    var temp = (Math.round((parseFloat($("#{{ uid~'set' }}").html()) + {{ step|default(0.5) }}) * 10) / 10).toFixed(1);
-                    $("#{{ uid~'set' }}").html(temp + ' °C');
-                    io.write("{{ gad_set }}", temp);
-                });
-            </script> 
         {% endif %}
         
         <div class="control">
-            {{ basic.switch(id~'mode', gad_mode, icon1~'user_available.png', icon0~'user_away.png') }}
-            {{ basic.switch(id~'night', gad_night, icon1~'scene_night.png', icon0~'scene_day.png') }}
-            {{ basic.switch(id~'frost', gad_frost, icon1~'weather_frost.png', icon0~'weather_frost.png') }}
-            <div style="float:left; width: 5px; height: 48px;"></div>
+            {% if (gad_mode == gad_night) and (gad_night == gad_frost) %}
+				{{ basic.switch(id~'mode', gad_mode, icon1~'user_available.png', icon0~'user_away.png', 1, 2) }}
+	            {{ basic.switch(id~'night', gad_night, icon1~'scene_night.png', icon0~'scene_day.png', 3, 2) }}
+	            {{ basic.switch(id~'frost', gad_frost, icon1~'weather_frost.png', icon0~'weather_frost.png', 4, 2) }}
+        	{% else %}
+				{{ basic.switch(id~'mode', gad_mode, icon1~'user_available.png', icon0~'user_away.png') }}
+	            {{ basic.switch(id~'night', gad_night, icon1~'scene_night.png', icon0~'scene_day.png') }}
+	            {{ basic.switch(id~'frost', gad_frost, icon1~'weather_frost.png', icon0~'weather_frost.png') }}
+            {% endif %}
+			<div style="float:left; width: 5px; height: 48px;"></div>
             {{ basic.switch(id~'state', gad_state, icon1~'sani_heating.png', icon0~'sani_heating.png') }}
         </div>
     </div>

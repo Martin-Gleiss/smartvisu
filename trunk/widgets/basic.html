@@ -255,7 +255,7 @@
 {% macro shutter(id, gad_pos, gad_angle, min, max, step, mode) %}
     {% set uid = uid(page, id) %}
 
-    <div id="{{ uid(page, id) }}" data-widget="basic.shutter" data-item="{{ gad_pos }}, {{ gad_angle }}"
+    <div id="{{ uid }}" data-widget="basic.shutter" data-item="{{ gad_pos }}, {{ gad_angle }}"
 		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" data-step="{{ step|default(5) }}"
 		data-mode="{{ mode|default('half') }}" class="shutter">
 
