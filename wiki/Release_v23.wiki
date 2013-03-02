@@ -13,20 +13,17 @@ Beside that we have made many improvements:
   * New icons  
 
 
-With a tank you can display the hight of its content.
-
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.3/wt_tank.jpg' title='widget: basic.tank' width='300'>
-
-
 == basic.shifter == 
 
 The basic.shifter is an extention to the basic.switch. It may be used a 'normal' switch and can display a value at the 'on' state.
 
 basic.shifter 'on' and ~40 percent.
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.3/wt_shifter_40.jpg' title='widget: basic.shifter' width='200'>
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.3/wt_shifter_40.jpg' title='widget: basic.shifter'>
 
 basic.shifter 'on' and ~80 percent.
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.3/wt_shifter_40.jpg' title='widget: basic.shifter' width='200'>
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.3/wt_shifter_80.jpg' title='widget: basic.shifter'>
 
 
 == basic.tank == 
@@ -45,4 +42,5 @@ This widget is used if you want to keep a picture actual. The image is been refr
 
 <img src='http://smartvisu.googlecode.com/svn/wiki/v2.3/mo_startscreen.jpg' title='Startscreen' width='300'>
 
-
+If all checks are 'green' everything is ok and you may go on with the 'config' or start with the inline 'docu' or with
+a 'model house'!
