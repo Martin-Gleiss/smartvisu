@@ -1,0 +1,48 @@
+#summary New in this release
+#labels Featured
+
+= What is new in release v2.3? =
+
+This release is focused on many speed improvments. We have re-engineered all basic widgets to speed up the 
+client and enabled the dom cache for a better experience.
+Some new widgets inclueded in this shipping: widget.shifter, widget.tank and widget.image
+
+Beside that we have made many improvements:
+  * New startscreen with installation-check 
+  * New language: french
+  * New icons  
+
+
+With a tank you can display the hight of its content.
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.3/wt_tank.jpg' title='widget: basic.tank' width='300'>
+
+
+== basic.shifter == 
+
+The basic.shifter is an extention to the basic.switch. It may be used a 'normal' switch and can display a value at the 'on' state.
+
+basic.shifter 'on' and ~40 percent.
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.3/wt_shifter_40.jpg' title='widget: basic.shifter' width='200'>
+
+basic.shifter 'on' and ~80 percent.
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.3/wt_shifter_40.jpg' title='widget: basic.shifter' width='200'>
+
+
+== basic.tank == 
+
+With a tank you can display the hight of its content.
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.3/wt_tank.jpg' title='widget: basic.tank' width='300'>
+
+
+== basic.image == 
+
+This widget is used if you want to keep a picture actual. The image is been refresed every x secounds.
+
+
+== Startscreen with Installation-Check == 
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.3/mo_startscreen.jpg' title='Startscreen' width='300'>
+
+

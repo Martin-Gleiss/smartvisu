@@ -1,5 +1,5 @@
 #summary New in this release
-#labels Featured
+#labels
 
 = What is new in release v2.1? =
 
