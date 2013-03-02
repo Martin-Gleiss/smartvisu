@@ -77,6 +77,16 @@ var widget = {
     },
     
   /**
+    * Get a val for a item from the buffer
+    * 
+    * @param    the item 
+    */         
+	get: function(item) {
+    	
+		return (widget.buffer[item]);
+	},
+
+  /**
     * Set a val for a item in the buffer
     * 
     * @param    the item 
@@ -447,3 +457,30 @@ $(document).delegate('div[data-widget="basic.tank"]', {
 		$('#' + this.id + ' div').css('height', Math.round(Math.min(response / $(this).attr('data-max'), 1) * 180));  
     }
 });
+
+
+// ----- device.rtr ------------------------------------------------------------
+$(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="minus"]', {
+	'click': function(event, response) {
+		var uid = $(this).parent().parent().attr('id');
+		var step = $('#' + uid).attr('data-step');
+		var item = $('#' + uid + 'set').attr('data-item');
+
+		var temp = (Math.round((widget.get(item) - step) * 10) / 10).toFixed(1);
+        io.write(item, temp);
+    },
+});
+
+$(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="plus"]', {
+	'click': function(event, response) {
+		var uid = $(this).parent().parent().attr('id');
+		var step = $('#' + uid).attr('data-step');
+		var item = $('#' + uid + 'set').attr('data-item');
+
+		var temp = (Math.round((widget.get(item) * 1 + step * 1) * 10) / 10).toFixed(1);
+        io.write(item, temp);
+    },
+});
+
+
+    
