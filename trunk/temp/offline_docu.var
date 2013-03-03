@@ -1,8 +1,8 @@
-bath_light_value = 110
+bath_light_value = 85
 bath_light_switch = 1
 bath_rtr_state = 0
 bath_rtr_comfort = 1
-bath_rtr_set = 22.6
+bath_rtr_set = 22.5
 bath_rtr_act = 21.4
 bath_rtr_text = heating is on
 bath_blind_pos = 165
@@ -28,5 +28,6 @@ bath_music_play = 1
 bath_radio_vol = 35
 bath_radio_title = NDR 2
 bath_radio_play = 1
-bath_value = 120
+bath_value = 200
 bath_light_switch1 = 0
+
