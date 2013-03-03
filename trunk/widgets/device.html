@@ -65,9 +65,9 @@
         
         <div class="control">
             {% if (gad_mode == gad_night) and (gad_night == gad_frost) %}
-				{{ basic.switch(id~'mode', gad_mode, icon1~'user_available.png', icon0~'user_away.png', 1, 2) }}
-	            {{ basic.switch(id~'night', gad_night, icon1~'scene_night.png', icon0~'scene_day.png', 3, 2) }}
-	            {{ basic.switch(id~'frost', gad_frost, icon1~'weather_frost.png', icon0~'weather_frost.png', 4, 2) }}
+				{{ basic.switch(id~'mode', gad_mode, icon1~'user_available.png', icon0~'user_away.png', 'comfort', 'standby') }}
+	            {{ basic.switch(id~'night', gad_night, icon1~'scene_night.png', icon0~'scene_day.png', 'night', 'standby') }}
+	            {{ basic.switch(id~'frost', gad_frost, icon1~'weather_frost.png', icon0~'weather_frost.png', 'frost', 'standby') }}
         	{% else %}
 				{{ basic.switch(id~'mode', gad_mode, icon1~'user_available.png', icon0~'user_away.png') }}
 	            {{ basic.switch(id~'night', gad_night, icon1~'scene_night.png', icon0~'scene_day.png') }}
