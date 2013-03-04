@@ -77,7 +77,10 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
-v 2.3 08.03.13
+v 2.4
+	-
+
+v 2.3 04.03.13
 	- device.rtr now with 3x bit-mode or 1x byte-mode
 	- undeprecated: basic.glue: used to glue widgets together
     - new language: fr, special tanks to Pierre-Yves Kerviel
