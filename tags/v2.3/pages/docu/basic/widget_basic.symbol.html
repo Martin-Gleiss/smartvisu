@@ -1,0 +1,62 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+    <h5>Examples</h5>
+
+	Use this basic.flips (one for 'bath_light_switch' and the other for 'bath_rtr_state') to control the basic.symbol(s)
+    <div class="html">
+        {{ basic.flip('flip1', 'bath_light_switch')  }}
+        {{ basic.flip('flip2', 'bath_rtr_state')  }}
+    </div>
+
+    
+    Symbol is only shown when 'bath_light_switch' = 1   
+    <div class="twig">
+        <code class="prettyprint">&#123;&#123; basic.symbol('symbol1', 'bath_light_switch') &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.symbol('symbol1', 'bath_light_switch') }}
+    </div>
+
+    With other pictures (use 'icon0' and 'icon1' as path), in this example both val = 1 an val = 0 is shown. 
+    <div class="twig" >
+        <code class="prettyprint">
+            &#123;&#123; basic.symbol('symbol2', 'bath_light_switch', 'Light on', icon1~'licht_licht.png') &#125;&#125;<br />
+            &#123;&#123; basic.symbol('symbol3', 'bath_light_switch', 'Light off', icon1~'light_light.png', 0) &#125;&#125;
+        </code>
+    </div>
+    <div class="html">
+        {{ basic.symbol('symbol2', 'bath_light_switch', 'Light on', icon1~'light_light.png') }}
+        {{ basic.symbol('symbol3', 'bath_light_switch', 'Light off', icon0~'light_light.png', 0) }}
+    </div>
+
+    Symbol is shown when 'bath_light_switch' is on <b>OR</b> 'bath_rtr_state' is on.
+    <div class="twig">
+        <code class="prettyprint">&#123;&#123; basic.symbol('symbol4', ['bath_light_switch', 'bath_rtr_state']) &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.symbol('symbol4', ['bath_light_switch', 'bath_rtr_state']) }}
+    </div>
+    
+    Symbol is shown when 'bath_light_switch' is on <b>AND</b> 'bath_rtr_state' is on.
+    <div class="twig">
+        <code class="prettyprint">&#123;&#123; basic.symbol('symbol5', ['bath_light_switch', 'bath_rtr_state'], '', '', 1, 'and') &#125;&#125;</code>
+    </div>
+    <div class="html">
+        {{ basic.symbol('symbol5', ['bath_light_switch', 'bath_rtr_state'], '', '', 1, 'and') }}
+    </div>
+
+{% endblock %}
+
+

@@ -1,0 +1,369 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */ 
+                
+
+/**
+ * Used to glue to widgets together. Only needed if you don't use 'Realtime'! 
+ * If you click the 'from'-widget, the 'to'-widget will be reloaded and updated after a delay. 
+ * 
+ * @param       id from the element that is been clicked 
+ * @param       id from the element that contain a item that might be changed
+ */
+{% macro glue(id_from, id_to) %}
+    <script type="text/javascript">
+        $('#{{ page }}').on('pageinit', function(event, ui){ 
+            $('#{{ uid(page, id_from) }}').on('click', function(){
+		        window.setTimeout( function(){ 
+					var dataitem = $('#{{ uid(page, id_to) }}').attr('data-item'); 
+	
+					if (dataitem.indexOf(',') >= 0) {
+						var items = dataitem.split(',');
+						for (var i = 0; i < items.length; i++)  
+							io.read(items[i].trim());
+					} 
+					else 
+						io.read(dataitem.trim());	
+				}, {{ config_delay }});
+            });
+        });
+    </script>  
+{% endmacro %}
+
+
+/**
+ * display a value
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       a unit
+ * @param       the parent html-tag for the value                   
+ */
+{% macro value(id, gad, unit, tag) %}   
+ 
+   <{{ tag|default('span') }} id="{{ uid(page, id) }}" data-widget="basic.value" data-item="{{ gad }}"
+		data-unit="{{ unit }}">--- {{ unit }}</{{ tag|default('span') }}>
+
+{% endmacro %}
+
+
+/**
+ * Displays a value as float
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       a unit
+ * @param       the parent html-tag for the value     
+ */
+{% macro float(id, gad, unit, tag) %}
+
+    <{{ tag|default('span') }} id="{{ uid(page, id) }}" data-widget="basic.float" data-item="{{ gad }}"
+		data-unit="{{ unit }}">--.- {{ unit }}</{{ tag|default('span') }}>
+
+{% endmacro %}
+
+
+/**
+ * Displays a checkbox
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       text printed on the checkbox
+ */
+{% macro checkbox(id, gad, txt) %}
+
+    <label><input type="checkbox" id="{{ uid(page, id) }}" data-widget="basic.checkbox" data-item="{{ gad }}" />
+		{{ txt }}</label>
+
+{% endmacro %}
+
+
+/**
+ * Displays a flip-switch
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       text for the 'on' state (optional, default 'On')
+ * @param       text for the 'off' state (optional, default 'Off')
+ */
+{% macro flip(id, gad, txt_on, txt_off) %}
+
+    <select id="{{ uid(page, id) }}" data-widget="basic.flip" data-item="{{ gad }}"
+		data-role="slider">
+		<option value="off">{{ txt_off|default('Off') }}</option>
+	   	<option value="on">{{ txt_on|default('On') }}</option>
+    </select> 
+
+{% endmacro %}
+
+
+/**
+ * Displays a slider-control
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       the minimum value if the slider is moved to total left (optional, default 0)
+ * @param       the maximum value if the slider is moved to total right (optional, default 255)
+ * @param       step between two values (optional, default 5) 
+ * @param       the orientation ('none', 'vertical', 'bottomup', 'semicircle')
+ */
+{% macro slider(id, gad, min, max, step, mode) %}
+
+    <input id="{{ uid(page, id) }}" data-widget="basic.slider" data-item="{{ gad }}" 
+		type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}"
+		orientation="{{ mode }}" data-highlight="true" />
+
+{% endmacro %}
+
+
+/**
+ * A symbol, with no writing to knx, only displayed when the value of gad is equal to val. Symbols may be used in menus.
+ * If more than one gad is given, they will be combined with mode ('or' / 'and). 
+ * 
+ * @param       unique id for this widget
+ * @param       one or more gad(s)/item(s). More gads/items in array form: [ item1 , item2 ]
+ * @param       the text, printed when gad has value val (optional) 
+ * @param       the pic, shown when gad has value val
+ * @param       value (default 1) 
+ * @param       the mode, 'or', 'and' (default 'or') 
+ */
+{% macro symbol(id, items, txt, pic, val, mode) %}
+  
+	<span id="{{ uid(page, id) }}" data-widget="basic.symbol" data-item="{{ array2items(items) }}" data-val="{{ val|default('1') }}"
+		data-mode="{{ mode|default('or') }}" class="symbol hide">
+        <img class="icon" src="{{ pic|default(icon1~'control_on_off.png') }}"/>{{ txt }}</span>
+        
+{% endmacro %} 
+
+
+/**
+ * A switch, build of two pics
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       the pic for the 'on' state (optional)
+ * @param       the pic for the 'off' state (optional)
+ * @param       value send for the 'on' state (optional, default 1)
+ * @param       value send for the 'off' state (optional, default 0
+ 
+ */
+{% macro switch(id, gad, pic_on, pic_off, val_on, val_off) %}
+
+    <span id="{{ uid(page, id) }}" data-widget="basic.switch" data-item="{{ gad }}"
+		data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
+		data-pic-on="{{ pic_on|default(icon1~'control_on_off.png') }}" data-pic-off="{{ pic_off|default(icon0~'control_on_off.png') }}"
+		class="switch"><a><img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}"/></a>
+    </span>
+        
+{% endmacro %} 
+
+
+/**
+ * A switch, build of a series of pics
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item for switching
+ * @param       a gad/item for the serie
+ * @param       the pic for the 'on' state, must include '_00.png' in path (optional)
+ * @param       the pic for the 'off' state (optional)
+ * @param       the minimum value if it is off (optional, for future use)
+ * @param       the maximum value if it is on (optional, default 255)   
+ */
+{% macro shifter(id, gad_switch, gad_value, pic_on, pic_off, min, max) %}
+
+    <span id="{{ uid(page, id) }}" data-widget="basic.shifter" data-item="{{ gad_switch }}, {{ gad_value }}"
+		data-pic-on="{{ pic_on|default(icon1~'light_light_dim_00.png') }}" data-pic-off="{{ pic_off|default(icon0~'light_light_dim_00.png') }}"
+        data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+		class="switch"><a><img class="icon" src="{{ pic_off|default(icon0~'light_light_dim_00.png') }}"/></a>
+    </span>
+        
+{% endmacro %} 
+
+
+/**
+ * A button
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       text printed on the button (optional)
+ * @param       a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search' (optional)
+ * @param       value send if the button is pressed (optional, default 1)
+ * @param       type: 'micro', 'mini', 'midi' (optional, default: mini) 
+ */
+{% macro button(id, gad, txt, pic, val, type) %}
+    
+	<a id="{{ uid(page, id) }}" data-widget="basic.button" data-item="{{ gad }}" data-val="{{ val|default('1') }}" 
+		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" 
+        {% if not pic %}
+            data-iconpos="nopic">{{ txt|e }}
+        {% elseif pic|slice(-4, 4) != '.png' and not txt %}
+            data-icon="{{ pic }}" data-iconpos="notext">
+        {% elseif pic|slice(-4, 4) != '.png' and txt %}
+            data-icon="{{ pic }}" data-iconpos="top">{{ txt|e }}
+        {% elseif type == 'midi' and txt %}
+            ><img class="icon" src="{{ pic }}"><div>{{ txt|e }}</div>
+        {% else %}
+            data-iconpos="center"><img class="icon" src="{{ pic }}">
+        {% endif %}
+        </a>
+    
+{% endmacro %}
+
+
+/**
+ * A switch with to states displayed as a button
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item  
+ * @param       the pic for the 'on' state (optional)
+ * @param       the pic for the 'off' state (optional)
+ * @param       value send for the 'on' state (optional, default 1)
+ * @param       value send for the 'off' state (optional, default 0) 
+ * @param       type: 'micro', 'mini', 'midi' (optional, default: mini) 
+ */
+{% macro dual(id, gad, pic_on, pic_off, val_on, val_off, type) %}
+
+	<a id="{{ uid(page, id) }}" data-widget="basic.dual" data-item="{{ gad }}" 
+		data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
+		data-pic-on="{{ pic_on|default(icon1~'control_on_off.png') }}" data-pic-off="{{ pic_off|default(icon0~'control_on_off.png') }}"
+		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
+        
+		<img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}">
+    </a> 
+
+{% endmacro %}
+
+
+/**
+ * Displays a shutter-control
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item for the actual position of the blinds
+ * @param       a gad/item for the actual angle of the blinds (optional, readonly)
+ * @param       the minimum value for close (optional, default 0)
+ * @param       the maximum value for open (optional, default 255) 
+ * @param       step between two values (optional, default 5) 
+ * @param       the mode: 'half' blade turns from -1 to +1, or 'full' blade turns from 0 to +1 (optional, default 'half')
+ * 
+ * @info        inspired by Jörg Gutowski     
+ */
+{% macro shutter(id, gad_pos, gad_angle, min, max, step, mode) %}
+    {% set uid = uid(page, id) %}
+
+    <div id="{{ uid }}" data-widget="basic.shutter" data-item="{{ gad_pos }}, {{ gad_angle }}"
+		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" data-step="{{ step|default(5) }}"
+		data-mode="{{ mode|default('half') }}" class="shutter">
+
+        {% for i in 1..12 %}
+            <div class="blade-pos" id="{{ uid }}-{{ i }}"></div>
+        {% endfor %}
+    </div>
+       
+{% endmacro %} 
+
+
+/**
+ * Displays a rgb-selector
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item for the r - value (0-255)
+ * @param       a gad/item for the g - value (0-255)
+ * @param       a gad/item for the b - value (0-255) 
+ * @param       the minimum value if the light is off (optional, for future use)
+ * @param       the maximum value if the light is full on (optional, default 255)  
+ */
+{% macro rgb(id, gad_r, gad_g, gad_b, min, max) %}
+    {% set uid = uid(page, id) %}
+
+    <a id="{{ uid }}" data-widget="basic.rgb" data-item="{{ gad_r }}, {{ gad_g }}, {{ gad_b }}" 
+		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+		class="rgb" href="#{{ uid }}-popup" data-rel="popup"><span></span></a>
+        
+    <div id="{{ uid }}-popup" data-widget="basic.rgb-popup" data-item="{{ gad_r }}, {{ gad_g }}, {{ gad_b }}"
+        data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+        class="rgb-popup" data-role="popup"></div>
+    
+    <script type="text/javascript"> 
+        var html = '';
+        
+        for (var s = 25; s <= 75; s += 25) {
+            for (var h = 0; h <= 288; h += 36) {
+                html += '<div style="background-color:' + smart.hsv2rgb(h, s, 100) + ';"></div>';      
+            }
+            html += '<div style="background-color:' + smart.hsv2rgb(h, 0, 100 - (s / 25 - 1) *  14.2 ) + ';"></div><br />';      
+        }
+        for (var v = 100; v >= 25; v -= 25) {
+            for (var h = 0; h <= 288; h += 36) {
+                html += '<div style="background-color:' + smart.hsv2rgb(h, 100, v) + ';"></div>';      
+            }
+            html += '<div style="background-color:' + smart.hsv2rgb(h, 0, (v / 25) *  14.2) + ';"></div><br />';      
+        }
+        
+        $("#{{ uid }}-popup").html(html);
+    </script> 
+{% endmacro %} 
+
+
+/**
+ * Displays a (partly) filled tank
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item for the actual position of filled tank
+ * @param       the minimum value for empty (optional, default 0, for future use)
+ * @param       the maximum value for full (optional, default 255) 
+ * @param       step between two values (optional, default 5, for future use) 
+ * @param       the mode: 'none', 'cylinder', 'water', 'pallets' (optional, default 'none')
+ * @param       the color of the filling e. g. '#f00' for red (optional, default grey)
+ */
+{% macro tank(id, gad_pos, min, max, step, mode, color) %}
+    
+    <div id="{{ uid(page, id) }}" data-widget="basic.tank" data-item="{{ gad_pos }}" 
+		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+		class="tank">
+		<div 
+		{% if mode == 'cylinder' %}
+            style="background-image: url('pages/base/pics/scale_cylinder.png'); background-color: {{ color|default('#999') }};"
+        {% elseif mode == 'water' %}
+            style="background-image: url('pages/base/pics/scale_water.png'); background-color: {{ color|default('#09f') }};"
+        {% elseif mode == 'pallets' %}
+            style="background-image: url('pages/base/pics/scale_pallets.png'); background-color: {{ color|default('#eb7') }};
+				-moz-border-radius: 10em 10em 0.3em 0.3em; -webkit-border-radius: 10em 10em 0.3em 0.3em; border-radius: 10em 10em 0.3em 0.3em;"
+        {% endif %}
+		>&nbsp;</div>
+	</div>
+   
+{% endmacro %} 
+
+
+/**
+ * Displays a image with is been reloaded after a given time
+ * 
+ * @param       unique id for this widget
+ * @param       the path/url to the image
+ * @param       the mode: 'none', 'corner', 'corner-bottom' (optional, default 'none')
+ * @param       the time in sec (optional, default 600 sec = 10 min)
+ */
+{% macro image(id, src, mode, time) %}
+    
+	<img id="{{ uid(page, id) }}" data-widget="basic.image"
+		{% if mode == 'corner' %}
+			class="ui-corner-all" 
+		{% elseif mode == 'corner-bottom' %}
+			class="ui-corner-bottom" 
+		{% endif %}
+		src="pages/base/pics/trans.png" />
+   
+    <script type="text/javascript"> 
+		$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_='+new Date().getTime());
+
+		setInterval(function(){
+			$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_='+new Date().getTime());
+		}, {{ time|default(600) * 1000 }});
+    </script> 
+
+{% endmacro %} 
