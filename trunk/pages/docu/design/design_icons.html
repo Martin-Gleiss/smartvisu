@@ -52,10 +52,10 @@
 
 
 	<script type="text/javascript">
-		$(document).on('vmouseover', '.icon', function() {
+		$(document).on('vmouseover', '.box > .icon', function() {
 			this.src = '{{ icon1 }}' + $(this).attr('data-pic');
 		});
-		$(document).on('vmouseout', '.icon', function() {
+		$(document).on('vmouseout', '.box > .icon', function() {
 			this.src = '{{ icon0 }}' + $(this).attr('data-pic');
 		});
     </script>  
