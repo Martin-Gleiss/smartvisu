@@ -120,78 +120,76 @@ var io = {
 
     convertData: function(inputData, dataType, direction) {
 
-	if ( dataType == '9.xxx' ) {
+        var returnData = inputData;
+	    if ( dataType == '9.xxx' ) {
 
-        if (direction == 'from') {
+            if (direction == 'from') {
 
-            data = parseInt(inputData,16).toString(10);
-            wert = (data & 0x07ff);
+                data = parseInt(inputData,16).toString(10);
+                wert = (data & 0x07ff);
 
-            if ((data & 0x08000) != 0) {
-                wert = wert | 0xfffff800;
-            	wert = wert * -1;
+                if ((data & 0x08000) != 0) {
+                    wert = wert | 0xfffff800;
+                    wert = wert * -1;
+                }
+
+                wert = wert << ((data & 0x07800) >> 11);
+
+                if ((data & 0x08000) != 0) {
+                    wert = wert * -1;
+                }
+                returnData = wert/100;
+
+            } else {
+                inputData = inputData * 100;
+
+                var dpt9 = 0;
+                var exponent = 0;
+
+                if (inputData < 0) {
+                    dpt9 = 0x08000;
+                    inputData = -inputData;
+                }
+                while (inputData > 0x07ff) {
+                    inputData >>= 1;
+                    exponent++;
+                }
+                if (dpt9 != 0) {
+                    inputData = -inputData;
+                }
+
+                dpt9 |= inputData & 0x7ff;
+                dpt9 |= (exponent << 11) & 0x07800;
+
+                returnData = Number(dpt9 + 0x800000  ).toString(16);
+
+                while (returnData.length < 5) {
+
+                    returnData = "0" + returnData;
+                }
+
             }
-	
-	        wert = wert << ((data & 0x07800) >> 11);
-	
-	        if ((data & 0x08000) != 0) {
-	            wert = wert * -1;
-	        }
-	        returnData = wert/100;
+        } else if (dataType == '1.001') {
+            if (direction == 'to') {
 
-        } else {
-            inputData = inputData * 100;
+                returnData = '8' + inputData;
+                }
+        } else if (dataType == '5.001') {
 
-            var dpt9 = 0;
-            var exponent = 0;
+            if (direction == 'from') {
 
-            if (inputData < 0) {
-                dpt9 = 0x08000;
-                inputData = -inputData;
-            }
-            while (inputData > 0x07ff) {
-                inputData >>= 1;
-                exponent++;
-            }
-            if (dpt9 != 0) {
-                inputData = -inputData;
+                returnData = inputData;
+                //returnData = Math.round(parseInt(inputData, 10) / 2.55);
+
+
+            } else if (direction == 'to') {
+
+                returnData = inputData;
+                returnData = Math.round(inputData * 2.55) + 0x8000;
+                returnData = returnData.toString(16);
             }
 
-            dpt9 |= inputData & 0x7ff;
-            dpt9 |= (exponent << 11) & 0x07800;
-
-            returnData = Number(dpt9 + 0x800000  ).toString(16);
-
-            while (returnData.length < 5) {
-
-                returnData = "0" + returnData;
-            }
-
-           }
-	} else if (dataType == '1.001') {
-	    if (direction == 'to') {
-
-	        returnData = '8' + inputData;
-            }
-	} else if (dataType == '5.001') {
-
-        if (direction == 'from') {
-
-            returnData = inputData;
-            //returnData = Math.round(parseInt(inputData, 10) / 2.55);
-
-
-        } else if (direction == 'to') {
-
-            returnData = inputData;
-            returnData = Math.round(inputData * 2.55) + 0x8000;
-            returnData = returnData.toString(16);
-        }
-
-    } else {
-
-        returnData = inputData;
-	}
+        } 
         return returnData;
     },
     
@@ -255,7 +253,7 @@ var io = {
             var counter = 0;
 
 			var item = widget.listeners();
-			for (var i = 0; i < widget.listeners().length; i++)
+			for (var i = 0; i < item.length; i++) {
                 if (counter > 0 ) {
                     getForUrl = getForUrl + '&';
                 }
@@ -263,6 +261,7 @@ var io = {
                 getForUrl = getForUrl + 'a=' + item[i].substring(0, (item[i].length - 6) );
                 counter++;
             }
+
             getForUrl = getForUrl + '&i=' + io.actualIndexNumber;
 
             io.actualRequest = $.ajax ({  url: '/cgi-bin/r?' + getForUrl,
@@ -274,17 +273,18 @@ var io = {
                 .done(function (response) {
                     if (typeof(response) == 'object') {
                         // these are the new values
-                        $.each(response, function(item, val) {
-                            if (item == 'i') {
+                        $.each(response, function(key, val) {
+                            if (key == 'i') {
                                 io.actualIndexNumber = val;
                             }
-                            if (item == 'd') {
+                            if (key == 'd') {
                                 $.each(val, function(id, value) {
-                                    for(var item in io.listeners) {
-                                        if (item.substring(0, (item.length - 6) ) == id) {
-                                            var dataType = item.slice(-5);
+                                    for(var i = 0; i < item.length; i++) {
+                                        oneItem = item[i];
+                                        if (oneItem.substring(0, (oneItem.length - 6) ) == id) {
+                                            var dataType = oneItem.slice(-5);
                                             value = io.convertData(value, dataType, 'from');
-                                            widget.update(item, value);
+                                            widget.update(oneItem, value);
 			                            }
                                     }
 
@@ -297,6 +297,5 @@ var io = {
 						notify.error('Driver: eibd', response);
                 })
         }
-    }
-
+  }
 }
