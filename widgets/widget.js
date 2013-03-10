@@ -195,11 +195,11 @@ $(document).delegate('[data-widget="basic.float"]', {
 // ----- basic.checkbox --------------------------------------------------------
 $(document).delegate('input[data-widget="basic.checkbox"]', { 
 	'update': function(event, response) {
-		$('#' + this.id).attr('checked', (response > 0 ? true : false)).checkboxradio('refresh'); 
+ 		$('#' + this.id).attr('checked', (response > 0 ? 'on' : '')).checkboxradio('refresh'); 
     },
 
 	'change': function(event) {
-	    // DEBUG: console.log("[basic.flip] click item: " + $(this).attr('data-item') + " val: " + $(this).val()); 
+	    // DEBUG: console.log("[basic.checkbox] click item: " + $(this).attr('data-item') + " val: " + $(this).val()); 
 		io.write($(this).attr('data-item'), ($('#' + this.id + ':checked').val() == 'on' ? 1 : 0)); 
 	}
 });    
