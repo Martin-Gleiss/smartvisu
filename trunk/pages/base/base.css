@@ -182,7 +182,8 @@ a.ui-btn-inline.ui-mini {
 
 a.ui-btn-inline.ui-mini[data-iconpos="nopic"] .ui-btn-inner {
     padding-top: 12px;
-} 
+    padding-bottom: 12px;
+} /* only text */ 
 
 a.ui-btn-inline.ui-mini[data-iconpos="notext"] .ui-icon {
     margin: 7px 0 0 10px !important;
@@ -783,12 +784,15 @@ only if page-bg is placed in a div
     vertical-align: middle;
 }
 
+.ui-slider-switch {
+    vertical-align: middle;
+} /* text beside the flip */
+
 .ui-li-aside .symbol .icon {
     vertical-align: middle;
     width: 22px;
     height: 22px;    
 }
-
 
 .shutter {
 	position: relative;
