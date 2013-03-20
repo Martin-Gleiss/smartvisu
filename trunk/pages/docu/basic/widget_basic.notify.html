@@ -1,0 +1,30 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+    <h5>Examples</h5>
+    
+    If you flip the switch to 'on' the gad/item 'bath_trigger' is been triggerd and the notification will be shown.
+    <div class="twig">
+        <code class="prettyprint">
+			&#123;&#123; basic.notify('n1', 'bath_trigger', 'bath_rtr_text') &#125;&#125;
+		</code>
+    </div>
+    <div class="html">
+        {{ basic.flip('f1', 'bath_trigger')  }}
+        {{ basic.notify('n1', 'bath_trigger', 'bath_rtr_text', 'INFO', 'This is a Information!', 'This is the reason!', 'warning') }}
+  	</div>
+
+{% endblock %}
+
+

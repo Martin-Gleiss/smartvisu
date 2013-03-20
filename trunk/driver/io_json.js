@@ -60,6 +60,7 @@ var io = {
     * Let the driver work
     */
     run: function(realtime) {
+        widget.refresh();
         io.all();
         
         if (realtime)

@@ -78,7 +78,12 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 2.4
-	-
+	- new widget: plot.period for plotting graphs
+	- new widget: basic.notify for notifications (info, warnings, errors)
+	- new widget: basic.colordisc by Marcus Popp
+	- imporved widget: basic.rgb now with configurable colors
+	- improved widgets for speed
+	- improved drivers: only refresh if necessary
 
 v 2.3 04.03.13
 	- device.rtr now with 3x bit-mode or 1x byte-mode
@@ -87,7 +92,7 @@ v 2.3 04.03.13
     - basic.symbol now with mode 'or', 'and'
 	- new: smartVISU checks configuration of the server
 	- new widget: basic.tank for (partly) filled tanks
-	- new wiget: basic.shifter for switch an value on one symbol
+	- new widget: basic.shifter for switch an value on one symbol
 	- improved widget: basic.shutter now supports sending of the angle
     - re-engineered widget: basic.slider with super soft sliding
 	- new driver: eibd (with ajax long-polling)

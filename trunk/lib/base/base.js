@@ -8,134 +8,48 @@
  */
  
  
- 
-/**
-* Class for displaying notifications and notes in smartVISU
-*/
-var notify = {
-
-    i: 0,
-    
-    // a list with all values, all communication it through the buffer
-    messages: new Object(),
-    
-  /**
-    *  Checks if there are any messages 
-    */            
-    exists: function() {
-        var ret = false;
-        
-        for (var i in note.messages)
-            ret = true;
-        
-        return ret;        
-    },
-    
-  /**
-    * Add a new error-message from a ajax error request
-    * @param    error object
-    * @param    status
-    * @param    '600 smartVISU Config Error'
-    * @param    '601 smartVISU Service Error'
-    */     
-    json: function(jqXHR, status, errorthrown) {
-        
-        var messages = jQuery.parseJSON(jqXHR.responseText)
-                           
-        for(var i = 0; i < messages.length; i++) {
-            notify.add('error', '', messages[i].title, messages[i].text);
-        }             
-
-        notify.display();
-    },
-
-  /**
-    * Add a new error-message
-    */     
-    error: function(title, text){
-        notify.add('error', '', title, text);
-        notify.display();
-    },
-
-  /**
-    * Add a new info-message
-    */     
-    info: function(title, text){
-        notify.add('info', '', title, text);
-        notify.display();
-    },
-
-  /**
-    * Add a new message
-    */     
-    add: function(status, link, title, text){
-        notify.i++;
-        notify.messages[notify.i] = Array();
-        notify.messages[notify.i] = ({status: status, link: link, title: title, text:text});    
-    },
-    
-  /**
-    * Removes a note, or all if no id is given
-    */         
-    remove: function(id) {
-        if (id !== undefined)
-            delete notify.messages[id];
-        else
-            notify.messages = new Object(); 
-        
-        $('.alertx').popup('close');
-        $('.alert img').attr('src', '');
-        $('.alert a').attr('href', '');
-        $('.alert').hide(); 
-    },
-    
-    display: function() {
-        var message = notify.messages[1];
-    
-        if (message)
-            {
-            if (message.status == 'ok')
-                $('.alert img, .alertx img').attr('src', 'pages/base/pics/alert_ok.png');
-            else if (message.status == 'info')
-                $('.alert img, .alertx img').attr('src', 'pages/base/pics/alert_info.png');
-            else if (message.status == 'error')
-                $('.alert img, .alertx img').attr('src', 'pages/base/pics/alert_error.png');
-            else if (message.status == 'update')
-                $('.alert img, .alertx img').attr('src', 'pages/base/pics/alert_update.png');
-            else
-                $('.alert img').attr('src', 'pages/base/pics/alert.png');
-            
-            if (message.link != '')
-                $('.alert a').attr('href', message.link);
-            
-            if (message.title != '' || message.text != '') {
-                $('.alert a').attr('href', '#alertx');
-                $('.alertx h1').html(message.title);
-                $('.alertx p').html(message.text);
-            }   
-            
-            $('.alert').show();
-            
-            // log to console
-            console.log('[notify.' + message.status + '] ' + message.title + ' - ' + message.text);
-            }    
-    }
-};
-
-
-   
 /**
  * -----------------------------------------------------------------------------
- * S M A R T   F U N C T I O N S 
+ * J A V A S C R I P T    E X T E N T I O N S
  * ----------------------------------------------------------------------------- 
- */  
-var smart = {
-      
+ */ 
+
+  /**
+    * Checks min / max and step
+    */
+	Number.prototype.limit = function(min, max, step) {
+		ret = this;
+		
+		if (ret < min)
+			ret = min;
+
+		if (ret > max)
+			ret = max;
+
+		if (step)
+			ret = Math.floor(ret, step);  
+
+		return ret;
+	};
+
+  /**
+    * Splits a string into parts
+    */
+	String.prototype.explode = function(delimiter) {
+		ret = Array();
+		
+		if (this.length) {
+			ret = this.replace(/\s/g, '').split(delimiter !== undefined ? delimiter : ',');
+		};
+
+		return ret;
+	};
+
   /**
     * Converts a hsv value to rgb value
     */
-    hsv2rgb: function(h, s, v) {
-        var r, g, b;
+    function hsv2rgb(h, s, v) {
+	    var r, g, b;
         var i;
         var f, p, q, t;
          
@@ -175,9 +89,7 @@ var smart = {
         b = Math.round(b * 255);
         
         return 'rgb(' + r + ',' + g + ',' + b + ')';
-    }   
-
-};
+	};
 
 
 
@@ -186,7 +98,24 @@ var smart = {
  * Q U E R Y   E X T E N T I O N S
  * ----------------------------------------------------------------------------- 
  */  
- 
+   
+/*
+	(function($) {
+		$.fn.explode = function(min) {
+
+			this.each(function() {
+
+				var $this = $(this);
+				
+				console.log($this);
+			
+			});
+			
+			return this;
+		}
+	})(jQuery);
+  */
+
   /**
     * Mini-Clock
     */
@@ -213,22 +142,105 @@ var smart = {
     })(jQuery);
     
     
-    
+ 
 /**
  * -----------------------------------------------------------------------------
- * S P E C I A L   E F F E C T S
+ * C L A S S   E X T E N T I O N S
  * ----------------------------------------------------------------------------- 
- */ 
- 
-   /**
-    * Hover on menu.html
-    */
-    $(document).delegate('.menu > a > img', 'hover', function( event ) {
-        if( event.type === 'mouseenter' )  
-            $(this).addClass("ui-focus");
-        else
-            $(this).removeClass("ui-focus");  
-    });
+ */    
 
-     
-   
+/**
+* Class for displaying notifications and notes in smartVISU
+*/
+var notify = {
+
+    i: 0,
+    
+    // a list with all values, all communication it through the buffer
+    messages: new Object(),
+    
+  /**
+    *  Checks if there are any messages 
+    */            
+    exists: function() {
+        var ret = false;
+        
+        for (var i in notify.messages)
+            ret = true;
+        
+        return ret;        
+    },
+    
+  /**
+    * Add a new error-message from a ajax error request
+    * @param    error object
+    * @param    status
+    * @param    '600 smartVISU Config Error'
+    * @param    '601 smartVISU Service Error'
+    */     
+    json: function(jqXHR, status, errorthrown) {
+        
+        var messages = jQuery.parseJSON(jqXHR.responseText)
+                           
+        for(var i = 0; i < messages.length; i++) {
+            notify.add('error', 'ERROR', messages[i].title, messages[i].text);
+        }             
+
+        notify.display();
+    },
+
+  /**
+    * Add a new error-message
+    */     
+    error: function(title, text){
+        notify.add('error', 'ERROR', title, text);
+        notify.display();
+    },
+
+  /**
+    * Add a new info-message
+    */     
+    info: function(title, text){
+        notify.add('info', 'INFO', title, text);
+        notify.display();
+    },
+
+  /**
+    * Add a new message
+    */     
+    add: function(status, signal, title, text){
+        notify.i++;
+        notify.messages[notify.i] = Array();
+        notify.messages[notify.i] = ({status: status, signal: signal, title: title, text: text});  
+    },
+    
+  /**
+    * Removes a note, or all if no id is given
+    */         
+    remove: function(id) {
+        if (id !== undefined)
+            delete notify.messages[id];
+        else
+            notify.messages = new Object(); 
+        
+        $('.alert').popup('close');
+        $('.signal').hide(); 
+    },
+    
+    display: function() {
+        var message = notify.messages[notify.i];
+    
+        if (message)
+            {
+			$('.signal').addClass(message.status);
+			$('.signal').html(message.signal);
+			$('.alert h1').html(message.title);
+            $('.alert p').html(message.text);
+            
+            $('.signal').show();
+            
+            // log to console
+            console.log('[notify.' + message.status + '] ' + message.title + ' - ' + message.text);
+            }    
+    }
+};

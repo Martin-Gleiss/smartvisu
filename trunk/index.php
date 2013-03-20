@@ -93,7 +93,7 @@
         $twig->addFunction('isfile',    new Twig_Function_Function('twig_isfile'));
         $twig->addFunction('dir',       new Twig_Function_Function('twig_dir'));
         $twig->addFunction('docu',      new Twig_Function_Function('twig_docu'));    
-        $twig->addFunction('array2items',  new Twig_Function_Function('twig_array2items', array('is_safe' => array('html'))));
+        $twig->addFunction('implode',  	new Twig_Function_Function('twig_implode', array('is_safe' => array('html'))));
                
                
         // init lexer comments                   

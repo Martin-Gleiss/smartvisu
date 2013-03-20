@@ -13,7 +13,7 @@
 	<title>{{ config_title }}</title> 
 	
     <meta charset="utf-8">
-	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1, minimum-scale=1">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta http-equiv="expires" content="0">
 
@@ -25,6 +25,11 @@
     <script type="text/javascript" src="vendor/jquery/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.3.0.min.js"></script>
     <script type="text/javascript" src="lib/base/jquery.mobile.slider.min.js"></script>
+
+	<!--[if lte IE 8]><script type="text/javascript" src="vendor/jquery.flot/excanvas.min.js"></script><![endif]-->
+	<script type="text/javascript" src="vendor/jquery.flot/jquery.flot.js"></script>
+    <script type="text/javascript" src="vendor/jquery.flot/jquery.flot.time.js"></script>
+
     <script type="text/javascript" src="widgets/widget.js"></script>
     
     <link rel="stylesheet" type="text/css" href="designs/{{ config_design }}.min.css" />
@@ -42,6 +47,7 @@
 	{% import "lib.html" as lib %}
     {% import "basic.html" as basic %}
     {% import "device.html" as device %}  
+    {% import "plot.html" as plot %}
 </head> 
 
 
@@ -53,9 +59,9 @@
     $(document).on('pagebeforeshow', function(){
         io.run({{ config_driver_realtime }});
 		// console.log('[io] run');       	
+
         notify.display();
 		// widget.list();
-		widget.refresh();
     });
 
     $.mobile.page.prototype.options.domCache = true;
@@ -71,12 +77,14 @@
             {{ lib.smartvisu }}
             <div class="mini"><span id="miniclock">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
         </div>
-        <p class="alert"><a data-role="none" data-rel="popup" data-position-to="window" href=""><img src="pages/base/pics/trans.png"></a></p>
-        <div id="alertx" class="alertx" data-role="popup" data-overlay-theme="a" style="padding: 0px;">
-            <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-            <div data-role="header" data-theme="c"><h1></h1><img src="pages/base/pics/trans.png"></div><p></p>
-            <div class="control"><a href="javascript:notify.remove();" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a></div>
-        </div> 
+		<div class="signal hide" onClick="$('#alert').popup('open');"></div>
+        <div id="alert" class="alert" data-role="popup" data-overlay-theme="a">
+            <div data-role="header" data-theme="c"><h1></h1></div><p></p>
+            <div class="control">
+				<a onClick="notify.remove();" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
+				<a onClick="$('.alert').popup('close');" class="ui-mini" class="ui-mini" data-icon="delete" data-iconpos="top" data-role="button" data-inline="true">Cancel</a>
+            </div>
+        </div>  
     </div>
     
     <div data-role="content" class="page-bg">
