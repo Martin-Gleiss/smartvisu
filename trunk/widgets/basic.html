@@ -453,10 +453,11 @@
  * 
  * @param       unique id for this widget
  * @param       a gad/item witch triggers the notification
- * @param       a gad/item with the message    
+ * @param       a gad/item with the dynamic message 
+ * @param		a word for the signal corner   
  * @param       a title of the messagebox
- * @param 		additional static text
- * @param		the mode (optional, default 'info') 
+ * @param 		a additional static text
+ * @param		the mode: 'info', 'warning', 'error' (optional, default 'info') 
  */
 {% macro notify(id, gad_trigger, gad_message, signal, title, text, mode) %}
     
