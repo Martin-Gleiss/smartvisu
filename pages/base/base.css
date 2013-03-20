@@ -632,10 +632,10 @@ only if page-bg is placed in a div
 	border: solid #fff;
 	border-width: 2px 0;
 	position: absolute;
-	right: -60px;
+	right: -44px;
 	top: -10px;
-	min-width: 150px;
-	padding: 25px 0 5px 0;
+	min-width: 120px;
+	padding: 24px 0 4px 0;
 	color: #000 !important;
 	text-align: center;
 	font-weight: bold;
@@ -654,22 +654,37 @@ only if page-bg is placed in a div
 }
 
 .signal.info {
+	right: -44px;
+	top: -10px;
+	padding: 24px 0 4px 0;
 	background: #3ad064;
 }
 
 .signal.warning {
+	right: -44px;
+	top: -10px;
+	padding: 24px 0 4px 0;
+	background: #f7cf57;
 }
 
 .signal.error {
+	right: -44px;
+	top: -10px;
+	padding: 24px 0 4px 0;
 	background: #e03d3d;
 }
 
-
 .signal.update {
-	right: -35px;
-	top: -10px;
-	padding: 0.25em 3em;
+	right: -37px;
+	top: 7px;
+	padding: 4px 0 4px 0;
+	background: #f7cf57;
 }
+
+.signal:hover {
+	cursor: pointer;
+} /* 'hand' on onClick */
+
 
 .alert {
     width: 280px;

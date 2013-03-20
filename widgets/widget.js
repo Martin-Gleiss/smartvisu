@@ -99,9 +99,27 @@ var widget = {
     },
     
   /**
-    * Get one or more value(s) for a item from the buffer
+    * Checks if all item/s defined in the buffer
     * 
-    * @param    the item 
+    * @param    the item/s 
+    */         
+	check: function(items) {
+
+		if (items instanceof Array) {
+			for (var i = 0; i < items.length; i++)
+				if (items[i] === undefined)
+					return false;
+		} else
+			if (widget.buffer[items] === undefined)
+				return false;
+		
+		return true;
+	},
+
+  /**
+    * Get one or more value/s for a item/s from the buffer
+    * 
+    * @param    the item/s 
     */         
 	get: function(items) {
 
@@ -148,8 +166,10 @@ var widget = {
 
 				// only the item witch is been updated
 				for (var i = 0; i < items.length; i++) { 
-                	if (items[i] == item) {
-						$(this).trigger('update', [widget.get(items)]);
+					var values = widget.get(items);
+			
+                	if (items[i] == item && widget.check(values)) {
+						$(this).trigger('update', [values]);
 				}}
 			});
 		}
@@ -161,14 +181,7 @@ var widget = {
 	refresh: function() {             
 		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function(idx) {
 			var items = widget.get(widget.explode($(this).attr('data-item'))); 
-			
-			// only if all items are in buffer 
-			var update = true;
-			for (var i = 0; i < items.length; i++)
-				if (items[i] === undefined)
-					update = false;
-			
-			if (update)
+			if (widget.check(items))
 				$(this).trigger('update', [items]);
 		})
 	},

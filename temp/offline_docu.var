@@ -1,5 +1,5 @@
 bath_light_value = 85
-bath_light_switch = 1
+bath_light_switch = 0
 bath_rtr_state = 0
 bath_rtr_comfort = 1
 bath_rtr_set = 22.5
@@ -30,4 +30,7 @@ bath_radio_title = NDR 2
 bath_radio_play = 1
 bath_value = 200
 bath_light_switch1 = 0
-
+bath_alert_info = 0
+bath_alert_warning = 0
+bath_alert_error = 0
+bath_alert_text = heating to hot!
