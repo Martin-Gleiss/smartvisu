@@ -53,17 +53,14 @@ var io = {
    	init: function(address, port) {
    	    io.address = address;
    	    io.port = port;
-        io.open();
-    },
+	    io.open();
+	},
     
   /**
     * Lets the driver work
     */
     run: function(realtime) {
-        if (io.socket.readyState > 1)
-            io.open();
-        else
-            io.monitor();          
+       	io.monitor();   
     },
 		
 
@@ -77,7 +74,7 @@ var io = {
   /**
     * This driver version
     */
-    version: 1,
+    version: 2,
 
   /**
     * This driver uses a websocket
@@ -89,14 +86,16 @@ var io = {
     */
     open: function() {
         io.socket = new WebSocket('ws://' + io.address + ':' + io.port + '/');
+
         io.socket.onopen = function(){
             io.send({'cmd': 'proto', 'ver': io.version});
             io.monitor();
-        };
+		};
+
         io.socket.onmessage = function(event) {
             var item, val;
             var data = JSON.parse(event.data);
-            console.log("[io.smarthome.py] receiving data: " + event.data);
+            // DEBUG: console.log("[io.smarthome.py] receiving data: " + event.data);
             switch(data.cmd) {
                 case 'item':
                     for (var i = 0; i < data.items.length; i++) {
@@ -108,10 +107,56 @@ var io = {
                         widget.update(item, val);
                     };
                     break;
+
                 case 'rrd':
-                    break;
+					// DEBUG: console.log("[io.smarthome.py] receiving rrd: " + event.data);
+            
+					var time = data.start * 1000;
+			        var step = data.step * 1000;
+					
+					if (data.frame == 'update') {
+						// single value (remove the oldest)
+                		widget.plot().each(function(idx) {
+							if (data.step == $(this).attr('data-step') || $(this).attr('data-step') === undefined) {
+								var items = widget.explode($(this).attr('data-item')); 
+								for (var i = 0; i < items.length; i++) { 
+									if (items[i] == data.item) {
+					            	var series = widget.get(items[i] + '.rrd.' + $(this).attr('data-period'));
+									series.shift();
+									series.push([time, data.series[0]]);
+									widget.set(data.item + '.rrd.' + $(this).attr('data-period'), series);	
+					   			}}
+							}
+						});
+					} else {
+				    	// complete graph  
+					 	var series = Array();
+				        for (var i = 0; i < data.series.length; i++) {
+				            series.push([time, data.series[i]]);
+				            time += step;
+				        };
+
+						widget.set(data.item + '.rrd.' + data.frame, series);
+					};
+					
+					widget.plot(data.item).each(function(idx) {
+						var items = widget.explode($(this).attr('data-item'));	
+			        	var values = Array();
+			
+						for (var i = 0; i < items.length; i++) { 
+							series = widget.get(items[i] + '.rrd.' + $(this).attr('data-period'));
+							if (series !== undefined)
+								values.push(series);
+						}
+						
+						$(this).trigger('update', [values]);
+					})	
+					break;
+
                 case 'dialog':
                     notify.info(data.header, data.content);
+					break;
+
                 case 'proto':
                     var proto = parseInt(data.ver);
                     if (proto != io.version) {
@@ -120,11 +165,13 @@ var io = {
                     break;
             };
         };
+
         io.socket.onerror = function(error){
-            notify.error('Driver: smarthome.py', 'Websocket error: ' + error);
+            notify.error('Driver: smarthome.py', 'Could not connect to smarthome.py server!<br \> Websocket error ' + error.data + '.');
         };
+
         io.socket.onclose = function(){
-            notify.error('Driver: smarthome.py', 'Could not connect to smarthome.py server!');
+            // notify.error('Driver: smarthome.py', 'Connection closed to smarthome.py server!');
         };
     },
     
@@ -134,7 +181,7 @@ var io = {
     send: function(data) {
         if (io.socket.readyState == 1) {
             io.socket.send(unescape(encodeURIComponent(JSON.stringify(data))));
-            // console.log('[io.smarthome.py] sending data: ' + JSON.stringify(data));
+            // DEBUG: console.log('[io.smarthome.py] sending data: ' + JSON.stringify(data));
             }
     },
 
@@ -144,14 +191,24 @@ var io = {
     monitor: function() {
 		if (widget.listening()) {
 	    	io.send({'cmd': 'monitor', 'items': widget.listeners()});
-		}
+			
+			widget.plot().each(function(idx) {
+				var items = widget.explode($(this).attr('data-item')); 
+				for (var i = 0; i < items.length; i++) { 
+	            	io.send({'cmd': 'rrd', 'item': items[i], 'frame': $(this).attr('data-period')});
+		   	}});
+        }
     },
 
   /**
     * Closes the connection
     */     
     close: function() {
-        io.socket.close(); 
+		console.log("[io.smarthome.py] close connection");
+		
+		if (io.socket.readyState > 0)
+        	io.socket.close(); 
+
         io.socket = null;
     }
 

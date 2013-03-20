@@ -60,7 +60,8 @@ var io = {
     * Lets the driver work
     */
     run: function(realtime) {
-        io.all(true);
+		widget.refresh();
+        io.all();
         
         if (realtime)
             io.start();   
@@ -148,7 +149,7 @@ var io = {
   /**
     * Reads all values from bus and refreshes the pages	
     */	 
-	all: function(force) {
+	all: function() {
         var items = '';
         
         // only if anyone listens

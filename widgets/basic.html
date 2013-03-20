@@ -20,15 +20,9 @@
         $('#{{ page }}').on('pageinit', function(event, ui){ 
             $('#{{ uid(page, id_from) }}').on('click', function(){
 		        window.setTimeout( function(){ 
-					var dataitem = $('#{{ uid(page, id_to) }}').attr('data-item'); 
-	
-					if (dataitem.indexOf(',') >= 0) {
-						var items = dataitem.split(',');
-						for (var i = 0; i < items.length; i++)  
-							io.read(items[i].trim());
-					} 
-					else 
-						io.read(dataitem.trim());	
+					var items = widget.explode($('#{{ uid(page, id_to) }}').attr('data-item')); 
+					for (var i = 0; i < items.length; i++)
+						io.read(items[i]);
 				}, {{ config_delay }});
             });
         });
@@ -134,7 +128,7 @@
  */
 {% macro symbol(id, items, txt, pic, val, mode) %}
   
-	<span id="{{ uid(page, id) }}" data-widget="basic.symbol" data-item="{{ array2items(items) }}" data-val="{{ val|default('1') }}"
+	<span id="{{ uid(page, id) }}" data-widget="basic.symbol" data-item="{{ implode(items) }}" data-val="{{ val|default('1') }}"
 		data-mode="{{ mode|default('or') }}" class="symbol hide">
         <img class="icon" src="{{ pic|default(icon1~'control_on_off.png') }}"/>{{ txt }}</span>
         
@@ -276,8 +270,10 @@
  * @param       a gad/item for the b - value (0-255) 
  * @param       the minimum value if the light is off (optional, for future use)
  * @param       the maximum value if the light is full on (optional, default 255)  
+ * @param		step (for future use)
+ * @param		the number of colors (default 10) 
  */
-{% macro rgb(id, gad_r, gad_g, gad_b, min, max) %}
+{% macro rgb(id, gad_r, gad_g, gad_b, min, max, step, colors) %}
     {% set uid = uid(page, id) %}
 
     <a id="{{ uid }}" data-widget="basic.rgb" data-item="{{ gad_r }}, {{ gad_g }}, {{ gad_b }}" 
@@ -286,26 +282,138 @@
         
     <div id="{{ uid }}-popup" data-widget="basic.rgb-popup" data-item="{{ gad_r }}, {{ gad_g }}, {{ gad_b }}"
         data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-        class="rgb-popup" data-role="popup"></div>
+        class="rgb-popup" data-role="popup" data-overlay-theme="a"></div>
     
     <script type="text/javascript"> 
         var html = '';
         
+		var colors = {{ colors|default(10) }};
+		var share = 360 / colors;
+
         for (var s = 25; s <= 75; s += 25) {
-            for (var h = 0; h <= 288; h += 36) {
-                html += '<div style="background-color:' + smart.hsv2rgb(h, s, 100) + ';"></div>';      
+             for(var i = 0; i < colors; i++) {
+                html += '<div style="background-color:' + hsv2rgb(i * share, s, 100) + ';"></div>';      
             }
-            html += '<div style="background-color:' + smart.hsv2rgb(h, 0, 100 - (s / 25 - 1) *  14.2 ) + ';"></div><br />';      
+            html += '<div style="background-color:' + hsv2rgb(i * share, 0, 100 - (s / 25 - 1) *  14.2 ) + ';"></div><br />';      
         }
         for (var v = 100; v >= 25; v -= 25) {
-            for (var h = 0; h <= 288; h += 36) {
-                html += '<div style="background-color:' + smart.hsv2rgb(h, 100, v) + ';"></div>';      
+            for(var i = 0; i < colors; i++) {
+                html += '<div style="background-color:' + hsv2rgb(i * share, 100, v) + ';"></div>';      
             }
-            html += '<div style="background-color:' + smart.hsv2rgb(h, 0, (v / 25) *  14.2) + ';"></div><br />';      
+            html += '<div style="background-color:' + hsv2rgb(i * share, 0, (v / 25) *  14.2) + ';"></div><br />';      
         }
         
         $("#{{ uid }}-popup").html(html);
     </script> 
+{% endmacro %} 
+
+
+/**
+ * Displays a colordisc-rgb-selector
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item for the r - value (0-255)
+ * @param       a gad/item for the g - value (0-255)
+ * @param       a gad/item for the b - value (0-255) 
+ * @param       the minimum value if the light is off (optional, for future use)
+ * @param       the maximum value if the light is full on (optional, default 255)
+ * @param		the granularity of the rings (optional, default 8)
+ * @param		the number of colored segments (optional, default 10)  
+ * 
+ * @author  	Marcus Popp   
+ */
+{% macro colordisc(id, gad_r, gad_g, gad_b, min, max, step, colors) %}
+    {% set uid = uid(page, id) %}
+
+    <a id="{{ uid }}" data-widget="basic.colordisc" data-item="{{ gad_r }}, {{ gad_g }}, {{ gad_b }}" 
+		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+		class="colordisc"><span></span></a>
+
+	<div id="{{ uid }}-screen" data-widget="basic.colordisc" class="ui-popup-screen ui-overlay-a hide"></div>
+	
+	<canvas id="{{ uid }}-disc" data-widget="basic.colordisc" class="colordisc hide"></canvas>
+
+    <script type="text/javascript"> 
+		var colors = {{ colors|default(10) }};
+		var size = 280;
+		var canvas = $("#{{ uid }}-disc")[0];
+		var step = 100 / {{ step|default(8) / 2 }};
+		
+	    var arc = Math.PI / (colors + 2) * 2;
+	    var startangle = -(Math.PI / 2) + arc;
+	    var gauge = (size - 10) / 16 / {{ step|default(8) / 8 }};
+	    var share = 360 / colors;
+	    var ctx;
+
+	    canvas.width = size;
+	    canvas.height = size;
+		
+		if (canvas.getContext) {
+	        var center = size / 2 - 1;
+	        ctx = canvas.getContext("2d");
+
+			// draw background
+    		ctx.beginPath();
+	        ctx.fillStyle = '#888';
+	        ctx.shadowColor = 'rgba(96,96,96,0.4)' 
+			ctx.shadowOffsetX = 2; 
+			ctx.shadowOffsetY = 2; 
+			ctx.shadowBlur = 4;
+            ctx.arc(center, center, size / 2 - 1, 0, 2 * Math.PI);
+			ctx.fill();
+			ctx.beginPath();
+			ctx.shadowOffsetX = 0; 
+			ctx.shadowOffsetY = 0; 
+			ctx.shadowBlur = 0;
+		    ctx.fillStyle = '#555';
+	        ctx.arc(center, center, size / 2 - 2, 0, 2 * Math.PI);
+		    ctx.fill();
+
+			// draw colors
+	        for(var i = 0; i <= colors; i++) {
+	            var angle = startangle + i * arc;
+	            var ring = 1;
+	            var h = i * share;
+	            for (var v = step; v <= 100; v += step) {
+	                ctx.beginPath();
+	                ctx.fillStyle = hsv2rgb(h, 100, v);
+	                ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
+	                ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
+	                ctx.fill();
+	                ring += 1;
+	            };
+	            for (var s = (100 - step); s >= step; s -= step) {
+	                ctx.beginPath();
+	                ctx.fillStyle = hsv2rgb(h, s, 100);
+	                ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
+	                ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
+	                ctx.fill();
+	                ring += 1;
+	            };
+	        };
+
+			// draw grey
+	        i -= 1;
+	        angle = startangle + i * arc;
+	        ring = 1;
+	        h = i * share;
+	        for (var v = step; v <= 100; v += (step / 2)) {
+	            ctx.beginPath();
+	            ctx.fillStyle = hsv2rgb(h, 0, v);
+	            ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + 2 * arc + 0.01, false);
+	            ctx.arc(center, center, ring * gauge, angle + 2 * arc + 0.01, angle, true);
+	            ctx.fill();
+	            ring += 1;
+	        };
+
+			// draw center
+	        ctx.beginPath();
+	        ctx.fillStyle = 'rgb(0,0,0)';
+	        ctx.arc(center, center, gauge + 1, 0, 2 * Math.PI);
+	        ctx.fill();
+	    };
+    </script> 
+
 {% endmacro %} 
 
 
@@ -341,29 +449,21 @@
 
 
 /**
- * Displays a image with is been reloaded after a given time
+ * Displays a notification popup window
  * 
  * @param       unique id for this widget
- * @param       the path/url to the image
- * @param       the mode: 'none', 'corner', 'corner-bottom' (optional, default 'none')
- * @param       the time in sec (optional, default 600 sec = 10 min)
+ * @param       a gad/item witch triggers the notification
+ * @param       a gad/item with the message    
+ * @param       a title of the messagebox
+ * @param 		additional static text
+ * @param		the mode (optional, default 'info') 
  */
-{% macro image(id, src, mode, time) %}
+{% macro notify(id, gad_trigger, gad_message, signal, title, text, mode) %}
     
-	<img id="{{ uid(page, id) }}" data-widget="basic.image"
-		{% if mode == 'corner' %}
-			class="ui-corner-all" 
-		{% elseif mode == 'corner-bottom' %}
-			class="ui-corner-bottom" 
-		{% endif %}
-		src="pages/base/pics/trans.png" />
-   
-    <script type="text/javascript"> 
-		$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_='+new Date().getTime());
-
-		setInterval(function(){
-			$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_='+new Date().getTime());
-		}, {{ time|default(600) * 1000 }});
-    </script> 
+	<span id="{{ uid(page, id) }}" data-widget="basic.notify" data-item="{{ gad_trigger }}, {{ gad_message }}"
+		data-signal="{{ signal|default('INFO') }}" data-mode="{{ mode|default('info') }}"
+		class="hide"><h1>{{ title }}</h1><p>{{ text }}</p>
+	</span>
 
 {% endmacro %} 
+

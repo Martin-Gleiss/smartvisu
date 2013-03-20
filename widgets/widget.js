@@ -18,6 +18,35 @@ var widget = {
 
 
   /**
+    *  Static function for exploding the a text with comma-seperated values into unique array  
+    *       
+    *  @return     the values as array  
+    */        
+	explode: function(text) {
+	    var ret = Array();
+		var unique = Array();
+
+    	// More than one item?
+		if (text.indexOf(',') >= 0) {
+			var parts = text.explode();
+
+			for (var i = 0; i < parts.length; i++) {
+				if (parts[i] != '')
+					unique[parts[i]] = '';
+			}
+		} 
+		// One item
+		else if (text != '') {
+			unique[text] = '';
+		};
+		
+		for (var part in unique)     
+            ret.push(part);
+
+		return ret;   
+    },
+
+  /**
     *  Checks if there are any listeners 
     *       
     *  @return     true, if there are any listeners     
@@ -33,30 +62,23 @@ var widget = {
 
   /**
     * Returns all items listening on
+    * 
+    * @param	retain only widgets with special data-entity attribute
     */         
-	listeners: function() {
-		var tmp = Array();
+	listeners: function(entity) {
+		var ret = Array();
+		var unique = Array();
 
+		//$('[data-item]' + ((type !== undefined) ? ' [data-type]="' + type + '"' : '') ).each(function(idx) {
 		$('[data-item]').each(function(idx) {
-			var dataitem = $(this).attr('data-item'); 
-				
-			// More than one item?
-			if (dataitem.indexOf(',') >= 0) {
-				var items = dataitem.split(',');
-
-				for (var i = 0; i < items.length; i++) {
-					if (items[i].trim() != '')
-						tmp[items[i].trim()] = '';
-				}
-			} 
-			// One item
-			else if (dataitem.trim() != '') {
-				tmp[dataitem.trim()] = '';
-			};
+			if (entity == $(this).attr('data-entity')) {
+				var items = widget.explode($(this).attr('data-item')); 
+				for (var i = 0; i < items.length; i++)
+					unique[items[i]] = '';
+			}
 		}); 
 
-		var ret = Array();
-		for (var item in tmp)     
+		for (var item in unique)     
             ret.push(item);
 
         return ret;       
@@ -67,9 +89,9 @@ var widget = {
     */         
 	list: function() {
 	    var widgets = 0;
-		$('[data-item]' ).each(function(idx) {
+		$('[data-item]').each(function(idx) {
 			if ($(this).attr('data-item').trim() != '') {
-            	console.log("[widget] '" + this.id + "' listen on '" + $(this).attr('data-item') + "'");
+		    	console.log("[widget] '" + this.id + "' listen on '" + $(this).attr('data-item') + "'");
             	widgets++;
 			}
     	});
@@ -77,20 +99,29 @@ var widget = {
     },
     
   /**
-    * Get a val for a item from the buffer
+    * Get one or more value(s) for a item from the buffer
     * 
     * @param    the item 
     */         
-	get: function(item) {
-    	
-		return (widget.buffer[item]);
+	get: function(items) {
+
+		if (items instanceof Array) {
+        	var ret = Array();
+
+			for (var i = 0; i < items.length; i++) { 
+				ret.push(widget.buffer[items[i]]);
+			}
+		} else
+			var ret = widget.buffer[items]; 
+		
+		return ret;
 	},
 
   /**
-    * Set a val for a item in the buffer
+    * Set a value for a item in the buffer
     * 
     * @param    the item 
-    * @param	the val        
+    * @param	the value        
     */         
 	set: function(item, val) {
 
@@ -98,47 +129,29 @@ var widget = {
             widget.buffer[item] = val;
 			// console.log("[widget] '" + item + "' -> '" + widget.buffer[item] + "'");
 		}
-
 	},
 
   /**
     * Update a item and all widgets listening on that
     * 
     * @param    the item 
-    * @param	the val        
+    * @param	the value        
     */         
     update: function(item, val) {
         
 		// update if value has changed
-		if (widget.buffer[item] != val || val === undefined) {
-
+		if (widget.buffer[item] !== val || val === undefined) {
 			widget.set(item, val);
 		    
 			$('[data-item*="' + item + '"]').each(function(idx) {
-				var dataitem = $(this).attr('data-item'); 
-					
-				// More than one item?
-				if (dataitem.indexOf(',') >= 0) {
-					var items = dataitem.split(',');
-	
-					for (var i = 0; i < items.length; i++) { 
-						if(items[i].trim() == item) {
-						
-							var vals = Array();        
-		                    for(var j = 0; j < items.length; j++) {
-		                        vals.push(widget.buffer[items[j].trim()]);
-							}
-		                	$(this).trigger('update', [vals]);
-	
-						}
-					}
-				} 
-				// One item
-				else if (dataitem.trim() == item) {
-					$(this).trigger('update', [widget.buffer[item]]);
-				};
-			});
+				var items = widget.explode($(this).attr('data-item')); 
 
+				// only the item witch is been updated
+				for (var i = 0; i < items.length; i++) { 
+                	if (items[i] == item) {
+						$(this).trigger('update', [widget.get(items)]);
+				}}
+			});
 		}
 	},
 
@@ -147,27 +160,43 @@ var widget = {
     */ 
 	refresh: function() {             
 		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function(idx) {
-			var dataitem = $(this).attr('data-item'); 
-					
-			// More than one item?
-			if (dataitem.indexOf(',') >= 0) {
-				var items = dataitem.split(',');
+			var items = widget.get(widget.explode($(this).attr('data-item'))); 
+			
+			// only if all items are in buffer 
+			var update = true;
+			for (var i = 0; i < items.length; i++)
+				if (items[i] === undefined)
+					update = false;
+			
+			if (update)
+				$(this).trigger('update', [items]);
+		})
+	},
+
+  /**
+    *  Returns the widgets with plot functionality 
+    *       
+    *  @return     true, if there are any listeners     
+    */        
+	plot: function(item) {
+	   	var ret = $();
+		
+		if (item) {
+    		$('[data-widget*="plot."][data-item*="' + item + '"]').each(function(idx) {
+				var items = widget.explode($(this).attr('data-item')); 
 
 				for (var i = 0; i < items.length; i++) { 
-					var vals = Array();        
-                    for(var j = 0; j < items.length; j++) {
-                        vals.push(widget.buffer[items[j].trim()]);
-					}
-                	$(this).trigger('update', [vals]);
-				}
-			} 
-			// One item
-			else {
-				$(this).trigger('update', [widget.buffer[dataitem.trim()]]);
-			};
-		})
-	}
+                	if (items[i] == item) {
+						ret = ret.add(this);
+				}};
+			})
+		} else
+			ret = $('[data-widget*="plot."][data-item]'); 
+      
+        return ret;   
+    }
 } 
+
 
 
 
@@ -176,13 +205,16 @@ var widget = {
 // -----------------------------------------------------------------------------
 
 
+
+// ----- b a s i c -------------------------------------------------------------
+// -----------------------------------------------------------------------------
+
 // ----- basic.value -----------------------------------------------------------
 $(document).delegate('[data-widget="basic.value"]', { 
 	'update': function(event, response) {
 		$('#' + this.id).html(response + ' ' + $(this).attr('data-unit'));
     }
-});
-
+});                                                
 
 // ----- basic.float -----------------------------------------------------------
 $(document).delegate('[data-widget="basic.float"]', { 
@@ -195,8 +227,7 @@ $(document).delegate('[data-widget="basic.float"]', {
 // ----- basic.checkbox --------------------------------------------------------
 $(document).delegate('input[data-widget="basic.checkbox"]', { 
 	'update': function(event, response) {
-        if (response !== undefined)
-            $(this).prop('checked', response != 0).checkboxradio('refresh');
+  		$(this).prop('checked', response != 0).checkboxradio('refresh');
     },
 
 	'change': function(event) {
@@ -209,7 +240,7 @@ $(document).delegate('input[data-widget="basic.checkbox"]', {
 // ----- basic.flip ------------------------------------------------------------
 $(document).delegate('select[data-widget="basic.flip"]', { 
 	'update': function(event, response) {
-		$('#' + this.id).val(response > 0 ? 'on' : 'off').slider('refresh');
+		$(this).val(response > 0 ? 'on' : 'off').slider('refresh');
     },
 
 	'change': function(event) {
@@ -225,6 +256,8 @@ $(document).delegate('select[data-widget="basic.flip"]', {
 // only every 400ms if it was been moved. There should be no trigger on init.
 $(document).delegate('input[data-widget="basic.slider"]', {
 	'update': function(event, response) {
+		// DEBUG: console.log("[basic.slider] update val: " + response + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));   
+
 		$(this).attr('lock', 1); 
 	    $('#' + this.id).val(response).slider('refresh');
 		$('#' + this.id).attr('mem', $(this).val());
@@ -318,12 +351,12 @@ $(document).delegate('span[data-widget="basic.shifter"]', {
     },
 
 	'click': function(event) {
-        var items = $(this).attr('data-item').split(',');
+        var items = $(this).attr('data-item').explode();
         
 		if ($('#' + this.id + ' img').attr('src') == $(this).attr('data-pic-off') ) {
-			io.write(items[0].trim(), 1); 
+			io.write(items[0], 1); 
 	    } else {
-      		io.write(items[0].trim(), 0);
+      		io.write(items[0], 0);
 	    }
 	}
 });
@@ -407,13 +440,13 @@ $(document).delegate('div[data-widget="basic.shutter"]', {
         var x = Math.round(event.pageX - offset.left);
         var y = (event.pageY - offset.top);
         var val = Math.floor((y / 160 - 10 / 160) * $(this).attr('data-max') / $(this).attr('data-step')) * $(this).attr('data-step');
-            val = Math.max( $(this).attr('data-min'), Math.min(val, $(this).attr('data-max')) );
+            val = val.limit($(this).attr('data-min'), $(this).attr('data-max'), 1);
         
-		var items = $(this).attr('data-item').split(',');
-		if (items[1].trim() !='' && x > 52)
-			io.write(items[1].trim(), val);
+		var items = $(this).attr('data-item').explode();
+		if (items[1] !='' && x > 52)
+			io.write(items[1], val);
 		else
-			io.write(items[0].trim(), val);
+			io.write(items[0], val);
 	}
 });
 
@@ -434,31 +467,113 @@ $(document).delegate('div[data-widget="basic.rgb-popup"] > div', {
             rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/); 
         
         var max = $(this).parent().attr('data-max');
-        var items = $(this).parent().attr('data-item').split(',');
+        var items = $(this).parent().attr('data-item').explode();
         
-        io.write(items[0].trim(), Math.round(rgb[1] / 255 * max ));
-        io.write(items[1].trim(), Math.round(rgb[2] / 255 * max ));
-        io.write(items[2].trim(), Math.round(rgb[3] / 255 * max ));   
+        io.write(items[0], Math.round(rgb[1] / 255 * max ));
+        io.write(items[1], Math.round(rgb[2] / 255 * max ));
+        io.write(items[2], Math.round(rgb[3] / 255 * max ));   
         
         $(this).parent().popup('close'); 
     },
     
-    'hover': function(event) {
-        if( event.type === 'mouseenter' )  
-            $(this).addClass("ui-focus");
-        else
-            $(this).removeClass("ui-focus"); 
-    }
+    'mouseenter': function(event) {
+		$(this).addClass("ui-focus");
+	},
+
+    'mouseleave': function(event) {
+		$(this).removeClass("ui-focus");
+	}
 });
 
 
-// ----- basic.tank -------------------------------------------------------------
+// ----- basic.colordisc -------------------------------------------------------
+$(document).delegate('a[data-widget="basic.colordisc"]', { 
+	'update': function(event, response) {
+		// response is: {{ gad_r }}, {{ gad_g }}, {{ gad_b }}
+        
+		var max = $(this).attr('data-max');
+		$('#' + this.id + ' span').css('background-color', 'rgb(' + Math.round(response[0] / max * 255) + ',' + Math.round(response[1] / max * 255) + ',' + Math.round(response[2] / max * 255) + ')');  
+    },
+
+    'click': function(event) {
+		$('#' + this.id + '-screen').removeClass('hide');
+		$('#' + this.id + '-screen').addClass('in');
+
+		// reposition canvas
+		var offset = $(this).offset();
+        var disc = $('#' + this.id + '-disc');
+		var top = offset.top - (disc.height() / 2) + 15;
+		var left = offset.left - (disc.width() / 2) + 25;
+		
+		disc.css('top', top.limit(5, $(window).height() + $(document).scrollTop() - disc.height() - 5, 1) );
+		disc.css('left', left.limit(5, $(window).width() - disc.width() - 5, 1) );
+		disc.show();
+    }
+});
+
+$(document).delegate('div[data-widget="basic.colordisc"]', { 
+	'click': function(event) {
+		var uid = this.id.substr(0, this.id.length - 7);
+
+		$('#' + uid + '-disc').hide(); 
+
+		$('#' + uid + '-screen').removeClass('in');
+		$('#' + uid + '-screen').addClass('hide');	
+	}
+});
+
+$(document).delegate('canvas[data-widget="basic.colordisc"]', { 
+    'click': function(event) {
+		var uid = this.id.substr(0, this.id.length - 5);
+		var disc = $(this)[0];
+		var ctx = disc.getContext("2d");
+	   	
+		var offset = $(this).offset();
+        var x = Math.round(event.pageX - offset.left);
+        var y = Math.round(event.pageY - offset.top);
+        var rgb = ctx.getImageData(x, y, 1, 1).data;
+	    // DEBUG: console.log([rgb[0], rgb[1], rgb[2]]);
+		
+		var max = $('#' + uid).attr('data-max');
+        var items = $('#' + uid).attr('data-item').explode();
+        
+        io.write(items[0], Math.round(rgb[0] / 255 * max ));
+        io.write(items[1], Math.round(rgb[1] / 255 * max ));
+        io.write(items[2], Math.round(rgb[2] / 255 * max ));   
+        
+        $(this).hide(); 
+    
+		$('#' + uid + '-screen').removeClass('in');
+		$('#' + uid + '-screen').addClass('hide');	
+	}
+});
+
+
+// ----- basic.tank ------------------------------------------------------------
 $(document).delegate('div[data-widget="basic.tank"]', { 
 	'update': function(event, response) {
 		$('#' + this.id + ' div').css('height', Math.round(Math.min(response / $(this).attr('data-max'), 1) * 180));  
     }
 });
 
+
+// ----- basic.notify ----------------------------------------------------------
+$(document).delegate('span[data-widget="basic.notify"]', { 
+	'update': function(event, response) {
+		// response is: {{ gad_trigger }}, {{ gad_message }}
+
+		if (response[0] != 0) {
+	        notify.add($(this).attr('data-mode'), $(this).attr('data-signal'), $('#' + this.id + ' h1').html(), 
+				'<b>' + response[1] + '</b><br />' + $('#' + this.id + ' p').html());
+	        notify.display();
+    	}
+	}
+});
+
+
+
+// ----- d e v i c e -----------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 // ----- device.rtr ------------------------------------------------------------
 $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="minus"]', {
@@ -484,4 +599,40 @@ $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="plus"]'
 });
 
 
-    
+
+// ----- p l o t ---------------------------------------------------------------
+// -----------------------------------------------------------------------------
+
+// ----- plot.series -----------------------------------------------------------
+$(document).delegate('div[data-widget="plot.period"]', { 
+	'update': function(event, response) {
+       	// DEBUG: console.log("[plot.series] update '" + this.id + "' with "); console.log(response);
+		
+		var label = $(this).attr('data-label').explode();
+		var color = $(this).attr('data-color').explode();
+		var exposure = $(this).attr('data-exposure').explode();
+		
+		var plots = Array();
+		for (var i = 0; i < response.length; i++) { 
+			plots[i] = {
+				data: response[i],
+				label: (label[i] !== undefined ? label[i] : null),
+				color: (color[i] !== undefined ? color[i] : null),
+				lines:  { 
+					show: (exposure[i] == 'lines' || exposure[i] == 'steps' || exposure[i] == '' || exposure[i] === undefined), 
+					steps: (exposure[i] == 'steps')
+				},
+				bars: 	{ show: (exposure[i] == 'bars') },
+				points: { show: (exposure[i] == 'points'), radius: 1 },
+			};
+		};
+
+		var options = {
+			xaxis: { mode: "time" },
+            yaxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max') },   
+			legend: { position: 'nw' }
+		};
+
+	    $.plot('#' + this.id, plots, options);
+    }
+});

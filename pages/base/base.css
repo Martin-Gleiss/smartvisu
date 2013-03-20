@@ -66,7 +66,7 @@
 } /* time, date and version */
 
 .ui-content {
-    min-height: 800px;
+    min-height: 850px;
    	min-width: 290px;
 } /* min-height for scrollbars and push out url, min-width for smallest device */
 
@@ -80,9 +80,16 @@
 	border-radius: 0 0 0.8em 0.8em;
 } /* only top edges */
 
+.ui-li-count {
+	padding-top: 4px !important;
+	font-family: Arial;
+	font-size: 11px !important;
+} /* for better readability */
+
 a:hover {
 	cursor: pointer;
 } /* 'hand' on all links */
+
 
 
 /** --------- lists --------- */
@@ -619,48 +626,69 @@ only if page-bg is placed in a div
     margin-top: 3px;
 }
 
+
+.signal {
+	background: #f7cf57;
+	border: solid #fff;
+	border-width: 2px 0;
+	position: absolute;
+	right: -60px;
+	top: -10px;
+	min-width: 150px;
+	padding: 25px 0 5px 0;
+	color: #000 !important;
+	text-align: center;
+	font-weight: bold;
+	text-shadow: 0 1px 0 #666;
+	width: auto !important;
+	z-index: 9;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	transform: rotate(45deg);
+
+	-webkit-box-shadow: 0 0 6px rgba(0,0,0,.75);
+	-moz-box-shadow: 0 0 6px rgba(0,0,0,.75);
+	-o-box-shadow: 0 0 6px rgba(0,0,0,.75);
+	box-shadow: 0 0 6px rgba(0,0,0,.75); 
+}
+
+.signal.info {
+	background: #3ad064;
+}
+
+.signal.warning {
+}
+
+.signal.error {
+	background: #e03d3d;
+}
+
+
+.signal.update {
+	right: -35px;
+	top: -10px;
+	padding: 0.25em 3em;
+}
+
 .alert {
-    display: none;
-    overflow: hidden;
-    position: absolute;
-    right: 0;
-    top: -18px;
-    height: 62px;
-    width: 100px;
-    z-index: 10;
-} /* pic displayed in header, defined in base.html */
-
-.alert img {
-    height: 62px;
-    width: 100px;
-}
-
-#alertx-popup {
     width: 280px;
+	padding: 0px;
 }
 
-#alertx .ui-header {
-    -moz-border-radius-top: .6em .6em 0 0;
-	-webkit-border-radius-top: .6em .6em 0 0;
-	border-radius: .6em .6em 0 0;
-} /* jquery.mobile fix: should be rounded */ 
-
-#alertx .ui-title {
+.alert .ui-title {
     margin: 8px 20px 8px 8px;
 } /* more space for the title */
 
-#alertx img {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 37px;
-    width: 60px;
+.alert p {
+	min-height: 180px;
 }
 
-#alertx .control {
+.alert .control {
     margin: 5px;
     text-align:right;
 }
+
 
  
 /**
@@ -741,7 +769,7 @@ only if page-bg is placed in a div
     margin: 10px 20px 20px 20px;
 }
 
-.docu .param .desc{
+.docu .param .desc {
     margin-left: 50px;
 }
  
@@ -750,7 +778,7 @@ only if page-bg is placed in a div
     float: left;
 }
 
-.author img{
+.author img {
     height: 64px;
     width: 64px;
     -moz-border-radius: .7em;
@@ -831,7 +859,7 @@ only if page-bg is placed in a div
 }
 
 
-.rgb span {
+.rgb span, .colordisc span {
     display: inline-block;
     vertical-align: middle;
     margin: 0px 7px 0px 7px;
@@ -845,8 +873,8 @@ only if page-bg is placed in a div
 }
 
 .rgb-popup div {
-    width: 25px; 
-    height: 25px;
+    width: 24px; 
+    height: 24px;
     margin: 0 1px 1px 0;
     float: left;
 }
@@ -855,6 +883,10 @@ only if page-bg is placed in a div
     clear:left;
 }
 
+canvas.colordisc {
+	position:absolute;
+	z-index: 1100; 
+}
 
 .tank {
 	position: relative;
@@ -1094,7 +1126,7 @@ only if page-bg is placed in a div
 
 .music .title {
     position: absolute;
-    margin-left: 80px;
+    margin-left: 65px;
     top: 50px;
     left: 0;
     right: 0;
@@ -1108,7 +1140,7 @@ only if page-bg is placed in a div
 
 .music .set {
     position: absolute;
-    margin-left: 80px;
+    margin-left: 65px;
     left: 0;
     right: 0;
     bottom: 0;

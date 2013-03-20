@@ -182,19 +182,19 @@
 // Special functions for Twig
 // -----------------------------------------------------------------------------
      
-    function twig_array2items($gads)
+    function twig_implode($array)
     {
         $ret = '';
         
-        if (is_array($gads))
+        if (is_array($array))
         {
-            foreach ($gads as $gad)
-                $ret .= $gad.", ";
+            foreach ($array as $value)
+                $ret .= $value.", ";
                 
             $ret = substr($ret, 0, -2);    
         }
         else
-            $ret = $gads;
+            $ret = $array;
         
         return $ret;
     }

@@ -87,10 +87,10 @@ class weather_yr extends weather
     function translate($data)
     {
         $lang['de'] = array(
-            'N' => 'Nord', 'NNE' => 'Nordnordost', 'NE' => 'Nordost', 'ENE' => 'Ostnordost',
-            'E' => 'Ost', 'ESE' => 'Ostsüdost', 'SE' => 'Südost', 'SSE' => 'Südsüdost',
-            'S' => 'Süd', 'SSW' => 'Südsüdwest', 'SW' => 'Südwest', 'WSW' => 'Westsüdwest',
-            'W' => 'West', 'WNW'=> 'Westnordwest', 'NW' => 'Nordwest', 'NNW' => 'Nordnordwest',
+            'NNE' => 'Nordnordost', 'NE' => 'Nordost', 'ENE' => 'Ostnordost', 'N' => 'Nord', 
+            'ESE' => 'Ostsüdost', 'SE' => 'Südost', 'SSE' => 'Südsüdost', 'E' => 'Ost', 
+            'SSW' => 'Südsüdwest', 'SW' => 'Südwest', 'WSW' => 'Westsüdwest', 'S' => 'Süd', 
+            'WNW'=> 'Westnordwest', 'NW' => 'Nordwest', 'NNW' => 'Nordnordwest', 'W' => 'West', 
             
             'clear sky' => 'klarer Himmel', 'Fair' => 'Schönwetter', 'Cloudy' => 'bewölkt',
             'Partly cloudy' => 'leicht bewölkt', 'Rain showers' => 'Regenschauer',
@@ -110,10 +110,10 @@ class weather_yr extends weather
             );
 
         $lang['nl'] = array(
-            'N' => 'Noord', 'NNE' => 'Noordnoordoost', 'NE' => 'Noordoost', 'ENE' => 'Oostnoordoost',
-            'E' => 'Oost', 'ESE' => 'Oostzuidoost', 'SE' => 'Zuidoost', 'SSE' => 'Zuidzuidoost',
-            'S' => 'Zuid', 'SSW' => 'Zuidzuidwest', 'SW' => 'Zuidwest', 'WSW' => 'Westzuidwest',
-            'W' => 'West', 'WNW'=> 'Westnoordwest', 'NW' => 'Noordwest', 'NNW' => 'Noordnoordwest',
+            'NNE' => 'Noordnoordoost', 'NE' => 'Noordoost', 'ENE' => 'Oostnoordoost', 'N' => 'Noord', 
+            'ESE' => 'Oostzuidoost', 'SE' => 'Zuidoost', 'SSE' => 'Zuidzuidoost', 'E' => 'Oost', 
+            'SSW' => 'Zuidzuidwest', 'SW' => 'Zuidwest', 'WSW' => 'Westzuidwest', 'S' => 'Zuid', 
+            'WNW'=> 'Westnoordwest', 'NW' => 'Noordwest', 'NNW' => 'Noordnoordwest', 'W' => 'West', 
             
             'clear sky' => 'heldere hemel', 'Fair' => 'goed weer', 'Cloudy' => 'bewolkt',
             'Partly cloudy' => 'licht bewolkt', 'Rain showers' => 'regenbuien',
