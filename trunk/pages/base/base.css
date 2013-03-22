@@ -1182,6 +1182,20 @@ canvas.colordisc {
 
 
 /**
+ * --- W i d g e t s :   P L O T -----------------------------------------------
+ */
+ 
+.plot {
+	position: relative;
+	height: 200px;
+}
+
+.plot .legendLabel {
+    color: #999;
+}
+
+
+/**
  * --- W i d g e t s :   A P P L I A N C E -------------------------------------
  */
  
