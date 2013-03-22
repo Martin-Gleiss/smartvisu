@@ -60,9 +60,13 @@ var io = {
     * Lets the driver work
     */
     run: function(realtime) {
+		// refresh from buffer
 		widget.refresh();
+
+		// get new values 
         io.all();
         
+		// run polling
         if (realtime)
             io.start();   
     },
@@ -112,7 +116,7 @@ var io = {
     * Read a specific item from bus and add it to the buffer
     */         
 	get: function(item) {
-	    $.ajax ({  url: "driver/io_offline.php", 
+	    $.ajax({  url: "driver/io_offline.php", 
                 data: ({item: item}), 
                 type: "GET",   
                 dataType: 'json',                                      
@@ -131,8 +135,7 @@ var io = {
         var timer_run = io.timer_run;
         
         io.stop();
-        $.ajax 
-            ({  url: "driver/io_offline.php", 
+        $.ajax({  url: "driver/io_offline.php", 
                 data: ({item: item, val: val}), 
                 type: "GET", 
                 dataType: 'json', 
@@ -161,7 +164,7 @@ var io = {
                 items += item[i] + ',';
             items = items.substr(0, items.length - 1);
         
-            $.ajax ({  url: 'driver/io_offline.php', 
+            $.ajax({  url: 'driver/io_offline.php', 
                     data: ({item: items}), 
                     type: 'POST',   
                     dataType: 'json',                                      
@@ -169,11 +172,46 @@ var io = {
                     cache: false                       
                 })                            
                 .done(function (response) {
-                    $.each(response, function(item, val) {
- 						widget.update(item, val);
+					
+					// if there are plots, fill them with random values
+					widget.plot().each(function(idx) {
+						var items = widget.explode($(this).attr('data-item')); 
+						for (var i = 0; i < items.length; i++) {
+							if (response[items[i]] == null)
+								response[items[i]] = io.series($(this).attr('data-period'), $(this).attr('data-step'),
+									$(this).attr('data-min'), $(this).attr('data-max'));	
+						}	
+					});
+				
+					// update all items	
+				    $.each(response, function(item, val) {
+						widget.update(item, val);
                     })
                 })
         }
-    }
+    },
 
+  /**
+    * Builds a series out of random values	
+    */	 
+	series: function(period, step, min, max) {
+
+        var ret = Array();
+        var val = (max - min) / 2;
+		var delta = (max - min) / 20;
+		
+		period = new Date().parse(period);
+		step = step * 1000;
+
+		var now = new Date();
+		var start = now - period;
+		
+		while (start <= now) {
+			val += Math.random() * (2 * delta) - delta;		
+            ret.push([start, val]);
+			start += step;
+		}
+
+		return ret;
+	}
 }

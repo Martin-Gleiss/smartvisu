@@ -16,7 +16,7 @@
  * @param       the period shown in the plot: '1h', '2h'...
  * @param		the minimum y-value (optional, default 0)
  * @param       the maximum y-value (optional, default 275)
- * @param       step between two values (optional, for future use)
+ * @param       step between two values in seconds (optional, default 100)
  * @param       a label for each serie (optional) 
  * @param       a color(s) for each serie e. g. '#f00' for red (optional, default: sutiable for design) 
  * @param       a style for each serie: 'lines', 'steps', 'bars', 'points' (optional, default 'lines') 
@@ -24,7 +24,7 @@
 {% macro period(id, gad, period, min, max, step, label, color, exposure) %}
    
 	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(gad) }}" data-period="{{ period }}" 
-		data-min="{{ min|default(0) }}" data-max="{{ max|default(275) }}" data-step="{{ step|default(5) }}" 
+		data-min="{{ min|default(0) }}" data-max="{{ max|default(275) }}" data-step="{{ step|default(300) }}" 
 		data-label="{{ implode(label) }}" data-exposure="{{ implode(exposure) }}"
 		
 		{% if color != '' %}
@@ -37,8 +37,8 @@
         	data-color="#f9a028, #ab6e1b, #7c5014" 
         {% endif %}
 		
-		style="position:relative; height: 200px;"></div>
-  
+		class="plot"></div>
+
 {% endmacro %}
 
 
@@ -46,30 +46,39 @@
  * A temperature-chart for use with an rtr. Plots actual and set-temperature.
  * 
  * @param       unique id for this widget
- * @param       a gad/item for the actual temperature
- * @param       a gad/item for the set temperature
+ * @param       a gad/item for the actual-temperature
+ * @param       a gad/item for the set-temperature
  */ 
-{% macro rtr(id, gad_actual, gad_set) %}
+{% macro rtr(id, gad_temp_actual, gad_temp_set) %}
     {% import "plot.html" as plot %}
 
-	{{ plot.period(id, [gad_actual, gad_set], '1h', 0, 40, 0, ['Actual', 'Set'], '', ['lines', 'points']) }}
-
-	{ plot.period(id ~ '1', [gad_actual, gad_set], '1d', 0, 40, 0, ['Actual', 'Set'], '', ['lines', 'points']) }
-
-	{ plot.period(id ~ '2', [gad_actual, gad_set], '1w', 0, 40, 0, ['Actual', 'Set'], '', ['lines', 'points']) }
+	{{ plot.period(id, [gad_temp_actual, gad_temp_set], '2h', 0, 35, '', ['Actual', 'Set'], '', ['lines', 'points']) }}
 
 {% endmacro %}
 
 
 
-{% macro rtr1(id, gad_actual, gad_set, gad_state) %}
-    {% import "plot.html" as plot %}
-    <script type="text/javascript">
-        $('#{{ page }}').on('pageinit', function(event, ui){ 
-
-            $('#{{ uid(page, id) }}').attr("data-label", "Test");
-
-        });
-    </script> 
+/**
+ * A temperature-chart for use with an rtr. Plots actual and set-temperature.
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item for the actual-temperature
+ * @param       a gad/item for the set-temperature
+ */ 
+{% macro comfortchart(id, gad_temp, gad_humidity) %}
+    
+	<div id="{{ uid(page, id) }}" data-widget="plot.comfortchart" data-item="{{ gad_temp }}, {{ gad_humidity }}"		
+		
+		{% if color != '' %}
+	    	data-color="{{ implode(color) }}" 
+    	{% elseif config_design == 'greenhornet' %}
+            data-color="#a6f829, #65961a, #486c12" 
+        {% elseif config_design == 'ice' %}
+            data-color="#5595c6, #416f92, #2e4f68" 
+        {% else %}
+        	data-color="#f9a028, #ab6e1b, #7c5014" 
+        {% endif %}
+		
+		class="plot"></div>
 
 {% endmacro %}

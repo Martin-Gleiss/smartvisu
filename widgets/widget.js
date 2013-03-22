@@ -117,7 +117,7 @@ var widget = {
 	},
 
   /**
-    * Get one or more value/s for a item/s from the buffer
+    * Get one or more value/s for an item/s from the buffer
     * 
     * @param    the item/s 
     */         
@@ -136,9 +136,9 @@ var widget = {
 	},
 
   /**
-    * Set a value for a item in the buffer
+    * Set a value of an item in the buffer
     * 
-    * @param    the item 
+    * @param    an item 
     * @param	the value        
     */         
 	set: function(item, val) {
@@ -150,7 +150,7 @@ var widget = {
 	},
 
   /**
-    * Update a item and all widgets listening on that
+    * Update an item and all widgets listening on that
     * 
     * @param    the item 
     * @param	the value        
@@ -168,7 +168,7 @@ var widget = {
 				for (var i = 0; i < items.length; i++) { 
 					var values = widget.get(items);
 			
-                	if (items[i] == item && widget.check(values)) {
+		        	if (items[i] == item && widget.check(values)) {
 						$(this).trigger('update', [values]);
 				}}
 			});
@@ -189,7 +189,7 @@ var widget = {
   /**
     *  Returns the widgets with plot functionality 
     *       
-    *  @return     true, if there are any listeners     
+    *  @return     jQuery Objectlist    
     */        
 	plot: function(item) {
 	   	var ret = $();
@@ -616,11 +616,13 @@ $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="plus"]'
 // ----- p l o t ---------------------------------------------------------------
 // -----------------------------------------------------------------------------
 
-// ----- plot.series -----------------------------------------------------------
+// ----- plot.period -----------------------------------------------------------
 $(document).delegate('div[data-widget="plot.period"]', { 
 	'update': function(event, response) {
-       	// DEBUG: console.log("[plot.series] update '" + this.id + "' with "); console.log(response);
+		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
+	 	// DEBUG: console.log("[plot.series] update '" + this.id + "' with "); console.log(response);
 		
+		var step = $(this).attr('data-step'); 
 		var label = $(this).attr('data-label').explode();
 		var color = $(this).attr('data-color').explode();
 		var exposure = $(this).attr('data-exposure').explode();
@@ -635,15 +637,58 @@ $(document).delegate('div[data-widget="plot.period"]', {
 					show: (exposure[i] == 'lines' || exposure[i] == 'steps' || exposure[i] == '' || exposure[i] === undefined), 
 					steps: (exposure[i] == 'steps')
 				},
-				bars: 	{ show: (exposure[i] == 'bars') },
-				points: { show: (exposure[i] == 'points'), radius: 1 },
+				bars: 	{ show: (exposure[i] == 'bars'), align: 'center', barWidth: step * 750 },
+				points: { show: (exposure[i] == 'points'), radius: 1 }
 			};
 		};
 
 		var options = {
-			xaxis: { mode: "time" },
-            yaxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max') },   
-			legend: { position: 'nw' }
+			xaxis: { mode: "time", timezone: "browser", font: { color: '#999' } },
+            yaxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'), font: { color: '#999' } },   
+			legend: { position: 'nw', backgroundOpacity: 0 }
+		};
+
+	    $.plot('#' + this.id, plots, options);
+    }
+});
+
+// ----- plot.comfortchart -----------------------------------------------------
+$(document).delegate('div[data-widget="plot.comfortchart"]', { 
+	'update': function(event, response) {
+		// response is: {{ gad_trigger }}, {{ gad_message }}
+		
+       	var color = $(this).attr('data-color').explode();
+		var plots = Array();
+		
+		plots[0] = {
+			data: [ [17, 35, 35], [16, 75, 35], [17, 85, 35], [21, 80, 35], [25, 60, 35], [27, 35, 35] ],
+			 label: 'almost nice', color: color[1], lines: { show: true, fill: true }
+		};
+
+		plots[1] = {
+			data: [ [17, 35, 35], [20, 20, 35], [25, 19, 35], [27, 35, 35] ],
+			color: color[1], lines: { show: true, fill: true }
+		};
+
+		plots[2] = {
+			data: [ [18, 50, 50], [17, 75, 50], [22.5, 65, 50], [23.7, 50, 50] ],
+			label: 'comfortable',  color: color[0], lines: { show: true, fill: true }
+		};
+
+		plots[3] = {
+			data: [ [18, 50, 50], [18.5, 35, 50], [25, 33, 50], [23.7, 50, 50] ],
+			color: color[0], lines: { show: true, fill: true }
+		};
+
+		plots[4] = {
+			data: [ [response[0], response[1]] ], 
+			color: '#fff', points: { show: true,  fill: false, radius: 4 }
+		};
+		
+		var options = {
+			xaxis: { min: 10, max: 35, font: { color: '#999' } },
+            yaxis: { min: 0, max: 100, font: { color: '#999' } }, 
+			legend: { position: 'se', backgroundOpacity: 0 }  
 		};
 
 	    $.plot('#' + this.id, plots, options);
