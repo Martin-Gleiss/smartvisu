@@ -1188,7 +1188,8 @@ canvas.colordisc {
 .plot {
 	position: relative;
 	height: 200px;
-}
+	width: 100%;
+} /* width is very importent due to the redraw of the plot */
 
 .plot .legendLabel {
     color: #999;
