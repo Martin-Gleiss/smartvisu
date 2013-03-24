@@ -196,8 +196,8 @@ var io = {
     */	 
 	series: function(period, step, min, max) {
 
-        var ret = Array();
-        var val = (max - min) / 2;
+	    var ret = Array();
+        var val = (min * 1) + ((max - min) / 2);
 		var delta = (max - min) / 20;
 		
 		period = new Date().parse(period);
@@ -208,7 +208,7 @@ var io = {
 		
 		while (start <= now) {
 			val += Math.random() * (2 * delta) - delta;		
-            ret.push([start, val]);
+            ret.push([start, Math.round(val * 10) / 10]);
 			start += step;
 		}
 

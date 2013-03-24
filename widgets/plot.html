@@ -14,29 +14,18 @@
  * @param       unique id for this widget
  * @param       one/more gad(s)/item(s) each is a series. More gads/items in array form: [ item1 , item2 ]
  * @param       the period shown in the plot: '1h', '2h'...
- * @param		the minimum y-value (optional, default 0)
- * @param       the maximum y-value (optional, default 275)
- * @param       step between two values in seconds (optional, default 100)
+ * @param		the minimum y-value (optional)
+ * @param       the maximum y-value (optional)
+ * @param       step between two values in seconds (optional, default 300)
  * @param       a label for each serie (optional) 
  * @param       a color(s) for each serie e. g. '#f00' for red (optional, default: sutiable for design) 
- * @param       a style for each serie: 'lines', 'steps', 'bars', 'points' (optional, default 'lines') 
+ * @param       a style for each serie: 'line', 'spline', 'area', 'areaspline', 'column' (optional, default 'line') 
  */ 
 {% macro period(id, gad, period, min, max, step, label, color, exposure) %}
    
 	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(gad) }}" data-period="{{ period }}" 
 		data-min="{{ min|default(0) }}" data-max="{{ max|default(275) }}" data-step="{{ step|default(300) }}" 
-		data-label="{{ implode(label) }}" data-exposure="{{ implode(exposure) }}"
-		
-		{% if color != '' %}
-	    	data-color="{{ implode(color) }}" 
-    	{% elseif config_design == 'greenhornet' %}
-            data-color="#a6f829, #65961a, #486c12" 
-        {% elseif config_design == 'ice' %}
-            data-color="#5595c6, #416f92, #2e4f68" 
-        {% else %}
-        	data-color="#f9a028, #ab6e1b, #7c5014" 
-        {% endif %}
-		
+		data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}"
 		class="plot"></div>
 
 {% endmacro %}
@@ -50,16 +39,17 @@
  * @param       a gad/item for the set-temperature
  */ 
 {% macro rtr(id, gad_temp_actual, gad_temp_set) %}
-    {% import "plot.html" as plot %}
-
-	{{ plot.period(id, [gad_temp_actual, gad_temp_set], '2h', 0, 35, '', ['Actual', 'Set'], '', ['lines', 'points']) }}
+   
+	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ gad_temp_actual }}, {{ gad_temp_set }}" data-period="2h" 
+		data-min="10" data-max="30" data-step="300" data-label="Actual, Set"
+		class="plot"></div>
 
 {% endmacro %}
 
 
 
 /**
- * A temperature-chart for use with an rtr. Plots actual and set-temperature.
+ * The diagram showing curves of relative humidity and effective temperature superimposed upon rectangular coordinates. The comfort zones indicate when humans feel good.
  * 
  * @param       unique id for this widget
  * @param       a gad/item for the actual-temperature
