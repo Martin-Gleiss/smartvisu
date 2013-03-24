@@ -62,7 +62,7 @@ Highcharts.theme = {
 			}
 		},
 		title: {
-			x: 9,
+			x: 10,
 			style: {
 				color: '#aaa', fontSize: '14px'
 			}
@@ -109,8 +109,11 @@ Highcharts.theme = {
 			shadow: true,
 			marker: {
 				enabled: false
-			}
-		},
+			},
+            animation: {
+                duration: 1500
+            }
+       	},
 		line: {
 			dataLabels: {
 				color: '#ccc'
