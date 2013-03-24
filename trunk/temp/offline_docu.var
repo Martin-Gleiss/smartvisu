@@ -35,4 +35,4 @@ bath_alert_warning = 0
 bath_alert_error = 0
 bath_alert_text = heating to hot!
 bath_plot_temp = 20
-bath_plot_humidity = 51
+bath_plot_humidity = 52

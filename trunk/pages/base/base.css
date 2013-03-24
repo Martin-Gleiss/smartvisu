@@ -13,7 +13,7 @@
 @font-face {
   font-family: 'Dosis';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   src: url('dosis.eot') format('embedded-opentype'), url('dosis.woff') format('woff'), url('dosis.ttf') format('truetype');
 }
 
@@ -144,6 +144,7 @@ a:hover {
 .ui-collapsible-heading .ui-icon-shadow {
     background-color: #b8b8b8;
 } /* grey background for the symbol in an collapsible set */
+
 
 /** --------- button --------- */
 a.ui-btn-inline {
@@ -1186,13 +1187,9 @@ canvas.colordisc {
  */
  
 .plot {
-	position: relative;
 	height: 200px;
-	width: 100%;
-} /* width is very importent due to the redraw of the plot */
-
-.plot .legendLabel {
-    color: #999;
+	min-width: 280px;
+	margin: 0 auto;
 }
 
 

@@ -622,6 +622,61 @@ $(document).delegate('div[data-widget="plot.period"]', {
 		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
 	 	// DEBUG: console.log("[plot.series] update '" + this.id + "' with "); console.log(response);
 		
+		var label = $(this).attr('data-label').explode();
+		var color = $(this).attr('data-color').explode();
+		var exposure = $(this).attr('data-exposure').explode();
+		
+		var series = Array();
+		for (var i = 0; i < response.length; i++) { 
+			series[i] = {
+				type: (exposure[i] != '' ? exposure[i] : 'line'),
+				name: label[i],
+				data: response[i],
+				color: (color[i] != '' ? color[i] : null)
+		}};
+	
+		$('#' + this.id).highcharts({
+            series: series,
+ 		    xAxis: { type: 'datetime' },
+		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max') }
+        });
+    }
+});
+
+
+// ----- plot.rtr -----------------------------------------------------------
+$(document).delegate('div[data-widget="plot.rtr"]', { 
+	'update': function(event, response) {
+		// response is: {{ gad_actual }}, {{ gad_set }} 
+	 	
+		var label = $(this).attr('data-label').explode();
+		
+		$('#' + this.id).highcharts({
+            chart: { type: 'line' },
+			series: [{ 
+				name: label[0],
+				data: response[0],
+			} , {
+				name: label[1],
+				data: response[1],
+				dashStyle: 'shortdot',
+				
+			}],
+ 		    xAxis: { type: 'datetime' },
+		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'),
+				title: { text: 'Temperature' } },
+			tooltip: { valueSuffix: '°'}
+        });
+    }
+});
+
+
+
+$(document).delegate('div[data-widget="xxplot.period"]', { 
+	'update': function(event, response) {
+		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
+	 	// DEBUG: console.log("[plot.series] update '" + this.id + "' with "); console.log(response);
+		
 		var step = $(this).attr('data-step'); 
 		var label = $(this).attr('data-label').explode();
 		var color = $(this).attr('data-color').explode();
