@@ -51,8 +51,8 @@ var io = {
     * @param      the ip or url to the system (optional)
     * @param      the port on which the connection should be made (optional) 
     */
-   	init: function(address, port) {
-   	    io.address = address;
+   	init: function(adress, port) {
+   	    io.adress = adress;
    	    io.port = port;
         io.stop();
     },
@@ -199,7 +199,7 @@ var io = {
     */         
 	get: function(item) {
 
-	    $.ajax ({  url: "/cgi-bin/r?" + getForUrl,
+	    $.ajax ({  url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/r?' + getForUrl,
                 type: "GET",
                 dataType: 'json',
                 async: true,
@@ -219,7 +219,7 @@ var io = {
         io.stop();
 
         $.ajax 
-            ({  url: "/cgi-bin/w",
+            ({  url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/w',
                 data: ({a: item.substring(0, (item.length - 6) ), v: io.convertData(val,item.slice(-5), 'to'), ts: $.now()}),
                 type: "GET", 
                 dataType: 'json', 
@@ -265,7 +265,7 @@ var io = {
 
             getForUrl = getForUrl + '&i=' + io.actualIndexNumber;
 
-            io.actualRequest = $.ajax ({  url: '/cgi-bin/r?' + getForUrl,
+            io.actualRequest = $.ajax ({  url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/r?' + getForUrl,
                     type: 'GET',
                     dataType: 'json',                                      
                     async: true,
