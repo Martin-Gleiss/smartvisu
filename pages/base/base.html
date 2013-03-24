@@ -27,7 +27,7 @@
     <script type="text/javascript" src="lib/base/jquery.mobile.slider.min.js"></script>
 
 	<script type="text/javascript" src="vendor/plot.highcharts/js/highcharts.js"></script>
-	<script type="text/javascript" src="lib/plot/{{ config_design }}.js"></script>
+	<script type="text/javascript" src="designs/{{ config_design }}.js"></script>
    
     <script type="text/javascript" src="widgets/widget.js"></script>
     
@@ -55,7 +55,7 @@
     io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
     // console.log('[io] init');
     
-    $(document).on('pagebeforeshow', function(){
+    $(document).on('pageshow', function(){
         io.run({{ config_driver_realtime }});
 		// console.log('[io] run');       	
 

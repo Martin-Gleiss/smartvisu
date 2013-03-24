@@ -60,7 +60,7 @@ var io = {
     * Lets the driver work
     */
     run: function(realtime) {
-		// refresh from buffer
+		// refresh from buffer (for new widgets with existing values)
 		widget.refresh();
 
 		// get new values 
@@ -177,9 +177,11 @@ var io = {
 					widget.plot().each(function(idx) {
 						var items = widget.explode($(this).attr('data-item')); 
 						for (var i = 0; i < items.length; i++) {
-							if (response[items[i]] == null)
-								response[items[i]] = io.series($(this).attr('data-period'), $(this).attr('data-step'),
-									$(this).attr('data-min'), $(this).attr('data-max'));	
+                           	if (response[items[i]] == null) 
+                                if (!widget.check(items[i]))
+    								response[items[i]] = io.series($(this).attr('data-period'), $(this).attr('data-step'), $(this).attr('data-min'), $(this).attr('data-max'));
+                                else
+                                    response[items[i]] = widget.get(items[i]);	
 						}	
 					});
 				

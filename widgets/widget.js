@@ -158,7 +158,7 @@ var widget = {
     update: function(item, val) {
         
 		// update if value has changed
-		if (widget.buffer[item] !== val || val === undefined) {
+        if (widget.buffer[item] !== val || val === undefined) {
 			widget.set(item, val);
 		    
 			$('[data-item*="' + item + '"]').each(function(idx) {
@@ -181,8 +181,7 @@ var widget = {
 	refresh: function() {             
 		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function(idx) {
 			var items = widget.get(widget.explode($(this).attr('data-item'))); 
-			if (widget.check(items))
-				$(this).trigger('update', [items]);
+			$(this).trigger('update', [items]);
 		})
 	},
 
@@ -623,9 +622,14 @@ $(document).delegate('div[data-widget="plot.period"]', {
 	 	// DEBUG: console.log("[plot.series] update '" + this.id + "' with "); console.log(response);
 		
 		var label = $(this).attr('data-label').explode();
-		var color = $(this).attr('data-color').explode();
+        var color = $(this).attr('data-color').explode();
 		var exposure = $(this).attr('data-exposure').explode();
+        var axes = $(this).attr('data-axes').explode();
 		
+        // distroy and make new animation
+        if ($('#' + this.id).highcharts())
+            $('#' + this.id).highcharts().destroy();
+            
 		var series = Array();
 		for (var i = 0; i < response.length; i++) { 
 			series[i] = {
@@ -648,10 +652,16 @@ $(document).delegate('div[data-widget="plot.period"]', {
 $(document).delegate('div[data-widget="plot.rtr"]', { 
 	'update': function(event, response) {
 		// response is: {{ gad_actual }}, {{ gad_set }} 
-	 	
-		var label = $(this).attr('data-label').explode();
-		
-		$('#' + this.id).highcharts({
+	 	// DEBUG: console.log("[plot.rtr] update '" + this.id + "' with "); console.log(response);
+        
+        var label = $(this).attr('data-label').explode();
+        var axes = $(this).attr('data-axes').explode();
+        
+    	// distroy and make new animation
+        if ($('#' + this.id).highcharts())
+            $('#' + this.id).highcharts().destroy();
+        
+       	$('#' + this.id).highcharts({
             chart: { type: 'line' },
 			series: [{ 
 				name: label[0],
@@ -664,88 +674,46 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 			}],
  		    xAxis: { type: 'datetime' },
 		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'),
-				title: { text: 'Temperature' } },
+				title: { text: axes[1] } },
 			tooltip: { valueSuffix: '°'}
         });
     }
 });
 
 
-
-$(document).delegate('div[data-widget="xxplot.period"]', { 
-	'update': function(event, response) {
-		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
-	 	// DEBUG: console.log("[plot.series] update '" + this.id + "' with "); console.log(response);
-		
-		var step = $(this).attr('data-step'); 
-		var label = $(this).attr('data-label').explode();
-		var color = $(this).attr('data-color').explode();
-		var exposure = $(this).attr('data-exposure').explode();
-		
-		var plots = Array();
-		for (var i = 0; i < response.length; i++) { 
-			plots[i] = {
-				data: response[i],
-				label: (label[i] !== undefined ? label[i] : null),
-				color: (color[i] !== undefined ? color[i] : null),
-				lines:  { 
-					show: (exposure[i] == 'lines' || exposure[i] == 'steps' || exposure[i] == '' || exposure[i] === undefined), 
-					steps: (exposure[i] == 'steps')
-				},
-				bars: 	{ show: (exposure[i] == 'bars'), align: 'center', barWidth: step * 750 },
-				points: { show: (exposure[i] == 'points'), radius: 1 }
-			};
-		};
-
-		var options = {
-			xaxis: { mode: "time", timezone: "browser", font: { color: '#999' } },
-            yaxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'), font: { color: '#999' } },   
-			legend: { position: 'nw', backgroundOpacity: 0 }
-		};
-
-	    $.plot('#' + this.id, plots, options);
-    }
-});
-
 // ----- plot.comfortchart -----------------------------------------------------
 $(document).delegate('div[data-widget="plot.comfortchart"]', { 
 	'update': function(event, response) {
 		// response is: {{ gad_trigger }}, {{ gad_message }}
+		// DEBUG: console.log("[plot.comfortchart] update '" + this.id + "' with " + response[0] + "/" + response[1]);
+        
+        var axes = $(this).attr('data-axes').explode();
+       	var plots = Array();
 		
-       	var color = $(this).attr('data-color').explode();
-		var plots = Array();
-		
-		plots[0] = {
-			data: [ [17, 35, 35], [16, 75, 35], [17, 85, 35], [21, 80, 35], [25, 60, 35], [27, 35, 35] ],
-			 label: 'almost nice', color: color[1], lines: { show: true, fill: true }
-		};
+        plots[0] = {
+            type: 'area', name: 'almost nice', lineWidth: 0,
+			data: [ [17, 35], [16, 75], [17, 85], [21, 80], [25, 60], [27, 35], [25, 19], [20, 20], [17, 35]  ]
+     	};
+        plots[1] = {
+            type: 'area', name: 'comfortable', lineWidth: 0,
+			data: [ [17, 75], [22.5, 65], [25, 33], [18.5, 35], [17, 75] ]
+     	};
 
-		plots[1] = {
-			data: [ [17, 35, 35], [20, 20, 35], [25, 19, 35], [27, 35, 35] ],
-			color: color[1], lines: { show: true, fill: true }
-		};
-
-		plots[2] = {
-			data: [ [18, 50, 50], [17, 75, 50], [22.5, 65, 50], [23.7, 50, 50] ],
-			label: 'comfortable',  color: color[0], lines: { show: true, fill: true }
-		};
-
-		plots[3] = {
-			data: [ [18, 50, 50], [18.5, 35, 50], [25, 33, 50], [23.7, 50, 50] ],
-			color: color[0], lines: { show: true, fill: true }
-		};
-
-		plots[4] = {
-			data: [ [response[0], response[1]] ], 
-			color: '#fff', points: { show: true,  fill: false, radius: 4 }
-		};
-		
-		var options = {
-			xaxis: { min: 10, max: 35, font: { color: '#999' } },
-            yaxis: { min: 0, max: 100, font: { color: '#999' } }, 
-			legend: { position: 'se', backgroundOpacity: 0 }  
-		};
-
-	    $.plot('#' + this.id, plots, options);
+        plots[2] = {
+            data: [ [ 10, 0 ] ], 
+            marker: { enabled: true, lineWidth: 2, radius: 6, symbol: 'circle' },
+            showInLegend: false
+        }
+        
+        if ( $('#' + this.id).highcharts() === undefined)
+            $('#' + this.id).highcharts({
+                series: plots,
+     		    xAxis: { min: 10, max: 35 },
+    		   	yAxis: { min: 0, max: 100, title: { x: 12, text: axes[1] } },
+                plotOptions: { area: { enableMouseTracking: false } },
+                tooltip: { formatter: function() { return 't: ' + this.x +'°C / h: '+ this.y + '%'; } }
+            });
+        else
+            $('#' + this.id).highcharts().series[2].data[0].update( [response[0] * 1.0, response[1] * 1.0], true);    
     }
 });
