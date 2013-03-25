@@ -119,6 +119,11 @@ Highcharts.theme = {
 				color: '#ccc'
 			},
 		},
+		
+		pie: {
+			borderColor: null,
+			borderWidth: 2
+		},
 		candlestick: {
 			lineColor: 'white'
 		}

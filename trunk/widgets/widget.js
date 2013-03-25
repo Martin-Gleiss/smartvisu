@@ -18,9 +18,11 @@ var widget = {
 
 
   /**
-    *  Static function for exploding the a text with comma-seperated values into unique array  
+    * Static function for exploding the a text with comma-seperated values into
+    * unique array.  
     *       
-    *  @return     the values as array  
+    * @param	the text
+    * @return   the values as array  
     */        
 	explode: function(text) {
 	    var ret = Array();
@@ -47,7 +49,7 @@ var widget = {
     },
 
   /**
-    *  Checks if there are any listeners 
+    *  Checks if there are any listeners. 
     *       
     *  @return     true, if there are any listeners     
     */        
@@ -61,21 +63,19 @@ var widget = {
     },
 
   /**
-    * Returns all items listening on
+    * Returns all items listening on. This is used to get an unique list of the
+    * items independent on the number of widgets.
     * 
-    * @param	retain only widgets with special data-entity attribute
+    * @return	unique list of the items
     */         
-	listeners: function(entity) {
+	listeners: function() {
 		var ret = Array();
 		var unique = Array();
 
-		//$('[data-item]' + ((type !== undefined) ? ' [data-type]="' + type + '"' : '') ).each(function(idx) {
 		$('[data-item]').each(function(idx) {
-			if (entity == $(this).attr('data-entity')) {
-				var items = widget.explode($(this).attr('data-item')); 
-				for (var i = 0; i < items.length; i++)
-					unique[items[i]] = '';
-			}
+			var items = widget.explode($(this).attr('data-item')); 
+			for (var i = 0; i < items.length; i++)
+				unique[items[i]] = '';
 		}); 
 
 		for (var item in unique)     
@@ -85,7 +85,7 @@ var widget = {
     },
 
   /**
-    * List all items and the number of listeners in console.log
+    * List all items and the number of listeners in console.log.
     */         
 	list: function() {
 	    var widgets = 0;
@@ -99,27 +99,29 @@ var widget = {
     },
     
   /**
-    * Checks if all item/s defined in the buffer
+    * Checks if the values are valid. 
     * 
-    * @param    the item/s 
+    * @param    the value/s
+    * @return	true if no item is undefined
     */         
-	check: function(items) {
+	check: function(values) {
 
-		if (items instanceof Array) {
-			for (var i = 0; i < items.length; i++)
-				if (items[i] === undefined)
+		if (values instanceof Array) {
+			for (var i = 0; i < values.length; i++)
+				if (values[i] === undefined)
 					return false;
 		} else
-			if (widget.buffer[items] === undefined)
+			if (values === undefined)
 				return false;
 		
 		return true;
 	},
 
   /**
-    * Get one or more value/s for an item/s from the buffer
+    * Get one or more value/s for an item/s from the buffer.
     * 
     * @param    the item/s 
+    * @return	a single value or an array of values 
     */         
 	get: function(items) {
 
@@ -136,7 +138,7 @@ var widget = {
 	},
 
   /**
-    * Set a value of an item in the buffer
+    * Set a value of an item in the buffer.
     * 
     * @param    an item 
     * @param	the value        
@@ -150,14 +152,14 @@ var widget = {
 	},
 
   /**
-    * Update an item and all widgets listening on that
+    * Update an item and all widgets listening on that. The value is been written
+    * to the buffer and the widgets are called if all values are set.
     * 
     * @param    the item 
     * @param	the value        
     */         
     update: function(item, val) {
-        
-		// update if value has changed
+        // update if value has changed
         if (widget.buffer[item] !== val || val === undefined) {
 			widget.set(item, val);
 		    
@@ -176,19 +178,25 @@ var widget = {
 	},
 
   /**
-    * Refreshes all widgets on the current page
+    * Refreshes all widgets on the current page. Used to put the values to the
+    * widgets if a new page has been opened.
     */ 
 	refresh: function() {             
 		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function(idx) {
-			var items = widget.get(widget.explode($(this).attr('data-item'))); 
-			$(this).trigger('update', [items]);
+
+			var values = widget.get(widget.explode($(this).attr('data-item'))); 
+
+			if (widget.check(values))
+				$(this).trigger('update', [values]);	
 		})
 	},
 
   /**
-    *  Returns the widgets with plot functionality 
+    * Returns all widgets with plot functionality. Matching 'plot' in attribute
+    * 'data-widget'. 
     *       
-    *  @return     jQuery Objectlist    
+    * @param	item: matches all plot-widgets with that item
+    * @return   jQuery objectlist    
     */        
 	plot: function(item) {
 	   	var ret = $();
@@ -634,11 +642,11 @@ $(document).delegate('div[data-widget="plot.period"]', {
 		for (var i = 0; i < response.length; i++) { 
 			series[i] = {
 				type: (exposure[i] != '' ? exposure[i] : 'line'),
-				name: label[i],
-				data: response[i],
+				name: label[i], data: response[i],
 				color: (color[i] != '' ? color[i] : null)
 		}};
 	
+		// draw the plot
 		$('#' + this.id).highcharts({
             series: series,
  		    xAxis: { type: 'datetime' },
@@ -651,31 +659,53 @@ $(document).delegate('div[data-widget="plot.period"]', {
 // ----- plot.rtr -----------------------------------------------------------
 $(document).delegate('div[data-widget="plot.rtr"]', { 
 	'update': function(event, response) {
-		// response is: {{ gad_actual }}, {{ gad_set }} 
+		// response is: {{ gad_actual }}, {{ gad_set }}, {{ gat_state }} 
 	 	// DEBUG: console.log("[plot.rtr] update '" + this.id + "' with "); console.log(response);
         
         var label = $(this).attr('data-label').explode();
         var axes = $(this).attr('data-axes').explode();
-        
+
     	// distroy and make new animation
         if ($('#' + this.id).highcharts())
             $('#' + this.id).highcharts().destroy();
         
-       	$('#' + this.id).highcharts({
+		// calculate state: diff between timestamps in relation to duration
+       	var state = response[2];
+		var stamp = state[0][0];
+		var percent = 0;
+		for (var i = 0; i < state.length; i++) { 
+			if (state[i][1])
+				percent += (state[i][0] - stamp);	
+			stamp = state[i][0];
+		};
+		percent = Math.round(percent / (state[i - 1][0] - state[0][0]) * 100);		
+
+		// draw the plot
+		$('#' + this.id).highcharts({
             chart: { type: 'line' },
 			series: [{ 
-				name: label[0],
-				data: response[0],
+				name: label[0], data: response[0]
 			} , {
-				name: label[1],
-				data: response[1],
-				dashStyle: 'shortdot',
-				
+				name: label[1], data: response[1], dashStyle: 'shortdot'
+			} , {
+				type: 'pie', name: '∑ ',
+                data: [{ 
+					name: 'On', y: percent,
+					color: (state[i - 1][1] ? Highcharts.getOptions().colors[0] : null)
+				 }, { 
+					name: 'Off', y: (100 - percent), 
+					color: (!state[i - 1][1] ? Highcharts.getOptions().colors[2] : null) 
+				}],
+				center: [ '5%', '90%' ],
+                size: 15,
+                showInLegend: false,
+                dataLabels: { enabled: false },
+				tooltip: { valueSuffix: ' %' }
 			}],
  		    xAxis: { type: 'datetime' },
 		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'),
 				title: { text: axes[1] } },
-			tooltip: { valueSuffix: '°'}
+			tooltip: { valueSuffix: ' °' }
         });
     }
 });
@@ -700,7 +730,8 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
      	};
 
         plots[2] = {
-            data: [ [ 10, 0 ] ], 
+			name: 'point',
+            data: [ [response[0] * 1.0, response[1] * 1.0] ], 
             marker: { enabled: true, lineWidth: 2, radius: 6, symbol: 'circle' },
             showInLegend: false
         }
@@ -711,7 +742,7 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
      		    xAxis: { min: 10, max: 35 },
     		   	yAxis: { min: 0, max: 100, title: { x: 12, text: axes[1] } },
                 plotOptions: { area: { enableMouseTracking: false } },
-                tooltip: { formatter: function() { return 't: ' + this.x +'°C / h: '+ this.y + '%'; } }
+                tooltip: { formatter: function() { return this.x +' °C / '+ this.y + ' %'; } }
             });
         else
             $('#' + this.id).highcharts().series[2].data[0].update( [response[0] * 1.0, response[1] * 1.0], true);    
