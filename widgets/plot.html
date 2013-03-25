@@ -12,15 +12,15 @@
  * The basic macro for plotting charts
  * 
  * @param       unique id for this widget
- * @param       one/more gad(s)/item(s) each is a series. More gads/items in array form: [ item1 , item2 ]
+ * @param       series of item/s. More item/s in array form: [ item1 , item2 ]
  * @param       the period shown in the plot: '1h', '2h'...
  * @param		the minimum y-value (optional)
  * @param       the maximum y-value (optional)
  * @param       step between two values in seconds (optional, default 300)
- * @param       a label for each serie (optional) 
- * @param       a color(s) for each serie e. g. '#f00' for red (optional, default: sutiable for design) 
- * @param       a style for each serie: 'line', 'spline', 'area', 'areaspline', 'column' (optional, default 'line') 
- * @param       a title for the x-axis and y-axis 
+ * @param       label/s for each serie (optional) 
+ * @param       color/s for each serie e. g. '#f00' for red (optional, default: sutiable for design) 
+ * @param       type/s for each serie: 'line', 'spline', 'area', 'areaspline', 'column' (optional, default 'line') 
+ * @param       title/s for the x-axis and y-axis 
  */ 
 {% macro period(id, gad, period, min, max, step, label, color, exposure, axes) %}
    
@@ -33,15 +33,16 @@
 
 
 /**
- * A temperature-chart for use with an rtr. Plots actual and set-temperature.
+ * A temperature-chart for use with an rtr. Plots actual and set temperature. If the state is given it will be shown as pie.
  * 
  * @param       unique id for this widget
- * @param       a gad/item for the actual-temperature
- * @param       a gad/item for the set-temperature
+ * @param       series of a gad/item for the actual temperature
+ * @param       series of a gad/item for the set temperature
+ * @param       series (bit) of a gad/item for the state of the actor
  */ 
-{% macro rtr(id, gad_temp_actual, gad_temp_set) %}
+{% macro rtr(id, gad_actual, gad_set, gad_state) %}
    
-	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ gad_temp_actual }}, {{ gad_temp_set }}" data-period="2h" 
+	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ gad_actual }}, {{ gad_set }}, {{ gad_state }}" data-period="2h" 
 		data-min="10" data-max="30" data-step="300" data-label="Actual, Set" data-axes="Time, Temperature"
 		class="plot"></div>
 

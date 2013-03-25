@@ -178,8 +178,11 @@ var io = {
 						var items = widget.explode($(this).attr('data-item')); 
 						for (var i = 0; i < items.length; i++) {
                            	if (response[items[i]] == null) 
-                                if (!widget.check(items[i]))
-    								response[items[i]] = io.series($(this).attr('data-period'), $(this).attr('data-step'), $(this).attr('data-min'), $(this).attr('data-max'));
+                                if (!widget.get(items[i]))
+									if(items[i].substr(items[i].length - 4, 4) == '.bit')
+										response[items[i]] = io.seriesBit($(this).attr('data-period'), $(this).attr('data-step'));
+                                	else	
+										response[items[i]] = io.seriesFloat($(this).attr('data-period'), $(this).attr('data-step'), $(this).attr('data-min'), $(this).attr('data-max'));
                                 else
                                     response[items[i]] = widget.get(items[i]);	
 						}	
@@ -194,9 +197,31 @@ var io = {
     },
 
   /**
-    * Builds a series out of random values	
+    * Builds a series out of random bit values	
     */	 
-	series: function(period, step, min, max) {
+	seriesBit: function(period, step) {
+
+	    var ret = Array();
+        var val = 0;
+		
+		period = new Date().parse(period);
+		step = step * 1000;
+
+		var now = new Date();
+		var start = now - period;
+		
+		while (start <= now) {
+			ret.push([start, Math.random() > 0.5]);
+			start += step;
+		}
+
+		return ret;
+	},
+
+  /**
+    * Builds a series out of random float values	
+    */	 
+	seriesFloat: function(period, step, min, max) {
 
 	    var ret = Array();
         var val = (min * 1) + ((max - min) / 2);
