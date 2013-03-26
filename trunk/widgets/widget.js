@@ -696,7 +696,7 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 					name: 'Off', y: (100 - percent), 
 					color: (!state[i - 1][1] ? Highcharts.getOptions().colors[2] : null) 
 				}],
-				center: [ '5%', '90%' ],
+				center: [ '95%', '90%' ],
                 size: 15,
                 showInLegend: false,
                 dataLabels: { enabled: false },
