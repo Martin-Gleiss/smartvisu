@@ -23,29 +23,29 @@ Highcharts.theme = {
 	title: {
 		text: null,
 		style: {
-			color: '#fff'
+			color: '#000'
 		}
 	},
 	subtitle: {
 		style: {
-			color: '#ddd'
+			color: '#666'
 		}
 	},
 	xAxis: {
 		gridLineWidth: 1,
 		gridLineColor: 'rgba(255, 255, 255, .1)',
 		lineWidth: 2,
-		lineColor: '#666',
+		lineColor: '#333',
 		tickWidth: 2,
-		tickColor: '#666',
+		tickColor: '#333',
 		labels: {
 			style: {
-				color: '#999', fontSize: '14px'
+				color: '#666', fontSize: '14px'
 			}
 		},
 		title: {
 			style: {
-				color: '#aaa', fontSize: '14px'
+				color: '#999', fontSize: '14px'
 			}
 		}
 	},
@@ -53,18 +53,18 @@ Highcharts.theme = {
 		gridLineWidth: 1,
 		gridLineColor: 'rgba(255, 255, 255, .1)',
 		lineWidth: 2,
-		lineColor: '#666',
-		tickWidth: 2,
-		tickColor: '#666',
+		lineColor: '#333',
+		tickWidth: 1,
+		tickColor: '#333',
 		labels: {
 			style: {
-				color: '#999', fontSize: '14px'
+				color: '#666', fontSize: '14px'
 			}
 		},
 		title: {
-			x: 9,
+			x: 10,
 			style: {
-				color: '#aaa', fontSize: '14px'
+				color: '#999', fontSize: '14px'
 			}
 		}
 	},
@@ -75,31 +75,31 @@ Highcharts.theme = {
     	floating: true,
         borderWidth: 0,
       	itemStyle: { 
-			color: '#ccc'
+			color: '#666'
 		},
 		itemHoverStyle: { 
-			color: '#fff'
+			color: '#333'
 		},
 		itemHiddenStyle: {
-			color: '#333'
+			color: '#ccc'
 		}
 	},
 	labels: {
 		style: {
-			color: '#ccc'
+			color: '#aaa'
 		}
 	},
 	tooltip: {
 		backgroundColor: {
 			linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
 			stops: [
-				[0, 'rgba(96, 96, 96, .8)'],
-				[1, 'rgba(16, 16, 16, .8)']
+				[0, 'rgba(240, 240, 240, .8)'],
+				[1, 'rgba(200, 200, 200, .8)']
 			]
 		},
 		borderWidth: 0,
 		style: {
-			color: '#fff'
+			color: '#000'
 		}
 	},
 
@@ -109,12 +109,20 @@ Highcharts.theme = {
 			shadow: true,
 			marker: {
 				enabled: false
-			}
-		},
+			},
+            animation: {
+                duration: 1500
+            }
+       	},
 		line: {
 			dataLabels: {
-				color: '#ccc'
+				color: '#aaa'
 			},
+		},
+		
+		pie: {
+			borderColor: null,
+			borderWidth: 2
 		},
 		candlestick: {
 			lineColor: 'white'

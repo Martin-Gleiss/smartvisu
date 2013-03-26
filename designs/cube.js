@@ -54,7 +54,7 @@ Highcharts.theme = {
 		gridLineColor: 'rgba(255, 255, 255, .1)',
 		lineWidth: 2,
 		lineColor: '#666',
-		tickWidth: 2,
+		tickWidth: 1,
 		tickColor: '#666',
 		labels: {
 			style: {
@@ -62,7 +62,7 @@ Highcharts.theme = {
 			}
 		},
 		title: {
-			x: 9,
+			x: 10,
 			style: {
 				color: '#aaa', fontSize: '14px'
 			}
@@ -109,12 +109,20 @@ Highcharts.theme = {
 			shadow: true,
 			marker: {
 				enabled: false
-			}
-		},
+			},
+            animation: {
+                duration: 1500
+            }
+       	},
 		line: {
 			dataLabels: {
 				color: '#ccc'
 			},
+		},
+		
+		pie: {
+			borderColor: null,
+			borderWidth: 2
 		},
 		candlestick: {
 			lineColor: 'white'
