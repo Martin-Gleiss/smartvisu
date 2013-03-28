@@ -183,6 +183,7 @@ Highcharts.theme = {
 	},
 
 	global: {
+		canvasToolsURL: 'vendor/plot.highcharts/modules/canvas-tools.js',
 		useUTC: false
 	},
 

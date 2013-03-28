@@ -96,7 +96,7 @@ a:hover {
 .ui-br {
     border: 0;
 }  
-
+                 
 .ui-li-has-thumb .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-thumb  {
     min-height: 42px;
     padding: 10px 15px 10px 70px;
@@ -222,6 +222,7 @@ a.ui-btn-inline.ui-midi[data-iconpos="nopic"] .ui-btn-inner {
 
 a.ui-btn-inline.ui-midi[data-iconpos="notext"] .ui-icon {
     margin: 19px 0 0 20px;
+	line-height: 50px;
 } /* only pic (inline) */  
 
 a.ui-btn-inline.ui-midi[data-iconpos="top"] .ui-btn-inner {
@@ -1260,4 +1261,4 @@ canvas.colordisc {
     text-align: right;
     font-size: 0.8em;
     color: #666; 
-}
+}               
