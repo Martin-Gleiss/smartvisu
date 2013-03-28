@@ -17,7 +17,8 @@ You don't need to know javascript.
 SYSTEMREQUIREMENTS
 --------------------------------------------------------------------------------
     -   KNX-Bus
-    -   eibd, linknx
+    -   eibd
+	-	linknx or smarthome.py
     -   Webserver with PHP 5.2.4 
     -   Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android 
         Tablet
@@ -79,6 +80,8 @@ HISTORY
 --------------------------------------------------------------------------------
 v 2.4
 	- new widget: plot.period for plotting graphs
+	- new widget: plot.rtr for an rtr graph visualisation
+	- new widget: plot.comfortchart for a graph showing humans well-feel-zone
 	- new widget: basic.notify for notifications (info, warnings, errors)
 	- new widget: basic.colordisc by Marcus Popp
 	- imporved widget: basic.rgb now with configurable colors

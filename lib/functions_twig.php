@@ -164,6 +164,8 @@
     	               
     	    foreach ($rettmp as $attributes)
     	       $ret[$attributes['subpackage'].'.'.$attributes['name']] = $attributes;
+
+			ksort($ret);
         }
         else
         {

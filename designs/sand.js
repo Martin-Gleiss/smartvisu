@@ -8,7 +8,7 @@
  */ 
 
 Highcharts.theme = {
-	colors: ["#5595c6", "#416f92", "#2e4f68"],
+	colors: ["#f9a028", "#ab6e1b", "#7c5014"],
 	chart: {
 		backgroundColor: null,
 		plotBackgroundColor: null,
@@ -23,29 +23,29 @@ Highcharts.theme = {
 	title: {
 		text: null,
 		style: {
-			color: '#000'
+			color: '#fff'
 		}
 	},
 	subtitle: {
 		style: {
-			color: '#666'
+			color: '#ddd'
 		}
 	},
 	xAxis: {
 		gridLineWidth: 1,
 		gridLineColor: 'rgba(255, 255, 255, .1)',
 		lineWidth: 2,
-		lineColor: '#333',
+		lineColor: '#666',
 		tickWidth: 2,
-		tickColor: '#333',
+		tickColor: '#666',
 		labels: {
 			style: {
-				color: '#666', fontSize: '14px'
+				color: '#999', fontSize: '14px'
 			}
 		},
 		title: {
 			style: {
-				color: '#999', fontSize: '14px'
+				color: '#aaa', fontSize: '14px'
 			}
 		}
 	},
@@ -53,18 +53,18 @@ Highcharts.theme = {
 		gridLineWidth: 1,
 		gridLineColor: 'rgba(255, 255, 255, .1)',
 		lineWidth: 2,
-		lineColor: '#333',
+		lineColor: '#666',
 		tickWidth: 1,
-		tickColor: '#333',
+		tickColor: '#666',
 		labels: {
 			style: {
-				color: '#666', fontSize: '14px'
+				color: '#999', fontSize: '14px'
 			}
 		},
 		title: {
 			x: 10,
 			style: {
-				color: '#999', fontSize: '14px'
+				color: '#aaa', fontSize: '14px'
 			}
 		}
 	},
@@ -75,31 +75,31 @@ Highcharts.theme = {
     	floating: true,
         borderWidth: 0,
       	itemStyle: { 
-			color: '#666'
+			color: '#ccc'
 		},
 		itemHoverStyle: { 
-			color: '#333'
+			color: '#fff'
 		},
 		itemHiddenStyle: {
-			color: '#ccc'
+			color: '#333'
 		}
 	},
 	labels: {
 		style: {
-			color: '#aaa'
+			color: '#ccc'
 		}
 	},
 	tooltip: {
 		backgroundColor: {
 			linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
 			stops: [
-				[0, 'rgba(240, 240, 240, .8)'],
-				[1, 'rgba(200, 200, 200, .8)']
+				[0, 'rgba(96, 96, 96, .8)'],
+				[1, 'rgba(16, 16, 16, .8)']
 			]
 		},
 		borderWidth: 0,
 		style: {
-			color: '#000'
+			color: '#fff'
 		}
 	},
 
@@ -116,7 +116,7 @@ Highcharts.theme = {
        	},
 		line: {
 			dataLabels: {
-				color: '#aaa'
+				color: '#ccc'
 			},
 		},
 		

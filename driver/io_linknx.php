@@ -83,8 +83,11 @@ class driver_linknx
                             $val = (string)$obj->attributes()->value;
                             
                             // Check if $res is binary
-                            $val = str_replace("on", "1", $val);
-                            $val = str_replace("off", "0", $val); 
+                            if (strlen($val)==2)
+                                $val = str_replace("on", "1", $val);
+                            if (strlen($val)==3)
+                                $val = str_replace("off", "0", $val);
+
                             $ret[$item] = $val;
                         }
                     }
