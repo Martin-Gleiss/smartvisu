@@ -14,17 +14,6 @@
 // -----------------------------------------------------------------------------
 
   /** 
-  	* String replace with no string in string
-  	*/
-	function search_replace($s, $r, $text)
-	{ 
-		$e = '/('.implode('|',array_map('preg_quote', $s)).')/';
-		$r = array_combine($s, $r);
-
-		return preg_replace_callback($e, function($v) use ($s,$r) { return $r[$v[1]]; }, $text);
-	} 
-
-  /** 
   	* Easy translate function
   	* 
   	* @param expects an array $lang['de'] = array()
@@ -35,8 +24,18 @@
         $ret = $text;
         
         if (config_lang != 'en')
-            $ret = search_replace(array_keys($language[config_lang]), array_values($language[config_lang]), $ret);
-        
+		{
+			$ret = '_'.str_replace(' ', '_', $ret).'_';
+
+			foreach ($language[config_lang] as $key => $val)
+			{                                                   
+				$keys[] = '#_'.str_replace(' ', '_', $key).'([_!\,\.])#i';
+				$vals[] = '_'.$val.'$1';
+			}
+	
+			$ret = trim(str_replace('_', ' ', preg_replace($keys, $vals, $ret)));
+		}
+
         return $ret;
     }
     
