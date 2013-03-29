@@ -29,26 +29,30 @@ SYSTEMREQUIREMENTS
 
     For your own Project do the following:
     
-    1.  Create a new pages directory in "pages", for example "pages/visu" or 
-        "pages/YOURNAME"
-        Copy all files from "pages/_template" to "pages/visu" directory
+    1.  Create a new directory in "pages", for example "pages/visu" or 
+        "pages/YOURPROJECT". This is your individual project-directory where you
+		may work. Copy all files from "pages/_template" to your project-directory
     
-    2.  Check the config.php and set the "config_pages" to "visu" or "YOURNAME"
+    2.  Check the config.php and set the "config_pages" to "YOURPROJECT"
       
-    3.  Set the "config_driver" to your KNX-environment
+    3.  Set the "config_driver" to your backend-environment
         - linknx: for linxknx and eibd environment
+		- smarthome.py for smarthome environment
+		- eibd for direct access
         - offline: only for testing, all GADs will be stored in a textfile 
           ("temp/offline.var")
-        - debug: only for testing, all GADs will gather a random number
         
-    4.  Create a new page in your pages-directory, for example "mypage.html"
+    4.  Create a new page in your project-directory, for example "mypage.html"
         Note: Do not use "base.html, basic.html, device.html", these are system
         pages
     
     5.  Fill the page with your preferred content and widgets
     
     6.  If you need to change the design, use a "visu.css" - stylesheet file in 
-        your pages-directory ("visu" or "YOURNAME")
+        your project-directory. 
+		If you wand to develop own widgets, also place them in your directory.
+		Name a the javascript-file (if you need on) to "visu.js" and it will be
+		included automatically. Name the file with the widgets e. g. "custom.html"
     
     7.  Change your design (theme) with:
         http://jquerymobile.com/themeroller/
@@ -78,12 +82,14 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
-v 2.4
+v 2.4                                             	
+	- project: visu.css and visu.js are included if they are in own project
 	- new widget: plot.period for plotting graphs
 	- new widget: plot.rtr for an rtr graph visualisation
 	- new widget: plot.comfortchart for a graph showing humans well-feel-zone
 	- new widget: basic.notify for notifications (info, warnings, errors)
 	- new widget: basic.colordisc by Marcus Popp
+	- improved design: shutter pics now .png with transparency
 	- imporved widget: basic.rgb now with configurable colors
 	- improved widgets for speed
 	- improved drivers: only refresh if necessary

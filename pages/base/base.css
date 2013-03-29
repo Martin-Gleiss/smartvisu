@@ -848,7 +848,7 @@ only if page-bg is placed in a div
     border-right: 3px solid #eee;
     border-bottom: 4px solid #ccc;
     border-left: 3px solid #888;
-    background: url('pics/shutter.jpg') #111;
+    background: url('pics/shutter.png');
 }
 
 .shutter .blade-pos {

@@ -92,8 +92,8 @@ class weather_yr extends weather
             'SSW' => 'Südsüdwest', 'SW' => 'Südwest', 'WSW' => 'Westsüdwest', 'S' => 'Süd', 
             'WNW'=> 'Westnordwest', 'NW' => 'Nordwest', 'NNW' => 'Nordnordwest', 'W' => 'West', 
             
-            'clear sky' => 'klarer Himmel', 'Fair' => 'Schönwetter', 'Cloudy' => 'bewölkt',
-            'Partly cloudy' => 'leicht bewölkt', 'Rain showers' => 'Regenschauer',
+            'clear sky' => 'klarer Himmel', 'Fair' => 'Schönwetter', 'Partly cloudy' => 'leicht bewölkt', 
+            'Cloudy' => 'bewölkt', 'Rain showers' => 'Regenschauer',
             'Rain showers with thunder' => 'Regenschauer mit Gewitter', 'Sleet showers' => 'Graupelschauer',
             'Snow showers' => 'Schneeschauer', 'Rain' => 'Regen', 'Heavy Rain' => 'starker Regen',
             'Rain and thunder' => 'Regen und Gewitter', 'Sleet'=> 'Graupel', 'Snow' => 'Schnee',
@@ -115,8 +115,8 @@ class weather_yr extends weather
             'SSW' => 'Zuidzuidwest', 'SW' => 'Zuidwest', 'WSW' => 'Westzuidwest', 'S' => 'Zuid', 
             'WNW'=> 'Westnoordwest', 'NW' => 'Noordwest', 'NNW' => 'Noordnoordwest', 'W' => 'West', 
             
-            'clear sky' => 'heldere hemel', 'Fair' => 'goed weer', 'Cloudy' => 'bewolkt',
-            'Partly cloudy' => 'licht bewolkt', 'Rain showers' => 'regenbuien',
+            'clear sky' => 'heldere hemel', 'Fair' => 'goed weer', 'Partly cloudy' => 'licht bewolkt',  
+            'Cloudy' => 'bewolkt', 'Rain showers' => 'regenbuien',
             'Rain showers with thunder' => 'regenbuien met onweer', 'Sleet showers' => 'natte sneeuw',
             'Snow showers' => 'sneeuwbuien', 'Rain' => 'regen', 'Heavy Rain' => 'zware regenval',
             'Rain and thunder' => 'regen en onweer', 'Sleet'=> 'Graupel', 'Snow' => 'sneeuw',
