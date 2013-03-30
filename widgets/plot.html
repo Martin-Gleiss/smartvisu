@@ -9,24 +9,26 @@
 
 
 /**
- * The basic macro for plotting charts
+ * A simple widget for plotting charts
  * 
  * @param       unique id for this widget
  * @param       series of item/s. More item/s in array form: [ item1 , item2 ]
  * @param       the period shown in the plot: '1h', '2h'...
  * @param		the minimum y-value (optional)
  * @param       the maximum y-value (optional)
- * @param       step between two values in seconds (optional, default 300)
+ * @param       step (optional, for future use)
  * @param       label/s for each serie (optional) 
  * @param       color/s for each serie e. g. '#f00' for red (optional, default: sutiable for design) 
  * @param       type/s for each serie: 'line', 'spline', 'area', 'areaspline', 'column' (optional, default 'line') 
  * @param       title/s for the x-axis and y-axis 
+ * 
+ * @see 		misc/fundamentals#Array-Form		
  */ 
 {% macro period(id, gad, period, min, max, step, label, color, exposure, axes) %}
    
 	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(gad) }}" data-period="{{ period }}" 
-		data-min="{{ min|default(0) }}" data-max="{{ max|default(275) }}" data-step="{{ step|default(300) }}" 
-		data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axes="{{ implode(axes) }}"
+		data-min="{{ min|default(0) }}" data-max="{{ max|default(275) }}" data-label="{{ implode(label) }}"  
+		data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axes="{{ implode(axes) }}"
 		class="plot"></div>
 
 {% endmacro %}
@@ -38,12 +40,12 @@
  * @param       unique id for this widget
  * @param       series of a gad/item for the actual temperature
  * @param       series of a gad/item for the set temperature
- * @param       series (bit) of a gad/item for the state of the actor
+ * @param       series of a gad/item for the state of the actor (> 0 is considered as 'on')
  */ 
 {% macro rtr(id, gad_actual, gad_set, gad_state) %}
    
 	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ gad_actual }}, {{ gad_set }}, {{ gad_state }}" data-period="2h" 
-		data-min="10" data-max="30" data-step="300" data-label="Actual, Set" data-axes="Time, Temperature"
+		data-min="10" data-max="35" data-label="Actual, Set" data-mode="avg" data-axes="Time, Temperature"
 		class="plot"></div>
 
 {% endmacro %}
