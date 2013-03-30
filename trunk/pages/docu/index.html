@@ -94,11 +94,16 @@
 	<div data-role="collapsible">
         <h3>Misc</h3>
         <ul data-role="listview" data-dividertheme="c"> 
+			<li data-icon="false">
+                <a href="index.php?page=misc/fundamentals">
+                    <img class="icon" src="{{ icon0 }}control_on_off.png"/><h3>Fundamentals</h3>
+                </a>
+            </li>
             <li data-icon="false">
-            <a href="index.php?page=misc/appliances">
-                <img class="icon" src="{{ icon0 }}it_server.png"/><h3>Appliances</h3>
-            </a>
-        </li>
+            	<a href="index.php?page=misc/appliances">
+                	<img class="icon" src="{{ icon0 }}it_server.png"/><h3>Appliances</h3>
+            	</a>
+        	</li>
         </ul>
    	</div>
 	
@@ -109,16 +114,20 @@
 
 {% block content %}
 
-    <h1>{{ lib.smartvisu }} Online-Documentation</h1>
+    <h1>{{ lib.smartvisu }} Inline-Documentation</h1>
 
     <p> 
-    Here is the documentation of the widgets. Choose one of them:
+   	This ist the interactive and inline {{ lib.smartvisu }} documentation. You will find the API to all widgets, some design modules
+	and the icons and backgrounds. Use the widgets in your html-pages, the number ist not limited, but each widget needs its own
+	and unique identifier (id) on a page. The gad/s or item/s may be used as often as you need them. Mention that each driver has
+	its own format of the gad/s or item/s.<br /> 
+	<br />
+	Choose one of them:
 		
     <div class="app" style="float:right;"><div class="image"><span style="font-size: 1.8em;">34</span><br /><span class="mini">widgets</span></div></div>
 
 	</p>
-    
-	
+  	
     <h2>Widgets</h2>
     <a href="index.php?page=basic/widget_basic">Basic</a>&nbsp;
     <a href="index.php?page=device/widget_device">Device</a>&nbsp;
@@ -136,6 +145,7 @@
     <a href="index.php?page=design/design_bg">Backgrounds</a>&nbsp;
     
     <h2>Misc</h2> 
+    <a href="index.php?page=misc/fundamentals">Fundamentals</a>&nbsp;
     <a href="index.php?page=misc/appliances">Appliances</a>&nbsp;
        
 {% endblock %}

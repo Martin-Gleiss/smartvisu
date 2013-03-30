@@ -82,7 +82,8 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
-v 2.4                                             	
+v 2.4       
+	- improved design: cube v2, best viewed with solar_winds.png background                                      	
 	- project: visu.css and visu.js are included if they are in own project
 	- new widget: plot.period for plotting graphs
 	- new widget: plot.rtr for an rtr graph visualisation

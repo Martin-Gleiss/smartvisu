@@ -47,6 +47,19 @@
             <div class="desc">{{ param_docu }}</div>
         {% endfor %}
         </div>
+
+        <div class="see">
+		{% if widgetlist[widget].see %}
+			<h5>More Information</h5>
+			<div class="links">
+		    {% for see in widgetlist[widget].see %}
+				<a href="index.php?page={{ see.page }}">{{ see.anchor }}</a>
+	        {% endfor %}
+			</div>
+        {% endif %}
+		</div>
+
+		
         
         {% block example %}{% endblock %}
         

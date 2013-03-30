@@ -154,10 +154,13 @@
                 foreach($tags[1] as $id => $tag)
                 {
                     if ($tag == 'param')
-                    {
-                        $rettmp[$no]['param'][trim($params[$param++])] = trim($tags[2][$id]);     
-                    }
-                    else
+                        $rettmp[$no]['param'][trim($params[$param++])] = trim($tags[2][$id]);  
+                    elseif ($tag == 'see')
+					{
+						$see = explode('#', trim($tags[2][$id]));
+				        $rettmp[$no]['see'][] = array("page" => $see[0], "anchor" => $see[1]);  
+   					}
+					else
                         $rettmp[$no][$tag] = trim($tags[2][$id]);     
                 }    
             }
@@ -175,7 +178,7 @@
                     $ret[$headertag] = trim($header[2][$headerno]);
             }
         }
-         
+
 		return $ret;
  	}      
 

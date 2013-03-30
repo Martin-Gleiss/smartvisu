@@ -180,9 +180,9 @@ var io = {
                            	if (response[items[i]] == null) 
                                 if (!widget.get(items[i]))
 									if(items[i].substr(items[i].length - 4, 4) == '.bit')
-										response[items[i]] = io.seriesBit($(this).attr('data-period'), $(this).attr('data-step'));
+										response[items[i]] = io.seriesBit($(this).attr('data-period'));
                                 	else	
-										response[items[i]] = io.seriesFloat($(this).attr('data-period'), $(this).attr('data-step'), $(this).attr('data-min'), $(this).attr('data-max'));
+										response[items[i]] = io.seriesFloat($(this).attr('data-period'), $(this).attr('data-min'), $(this).attr('data-max'));
                                 else
                                     response[items[i]] = widget.get(items[i]);	
 						}	
@@ -199,17 +199,16 @@ var io = {
   /**
     * Builds a series out of random bit values	
     */	 
-	seriesBit: function(period, step) {
+	seriesBit: function(period) {
 
 	    var ret = Array();
         var val = 0;
 		
-		period = new Date().parse(period);
-		step = step * 1000;
-
+		period = new Date().duration(period);
 		var now = new Date();
 		var start = now - period;
-		
+		var step = Math.round((now - start) / 20);
+	
 		while (start <= now) {
 			ret.push([start, Math.random() > 0.5]);
 			start += step;
@@ -221,17 +220,16 @@ var io = {
   /**
     * Builds a series out of random float values	
     */	 
-	seriesFloat: function(period, step, min, max) {
+	seriesFloat: function(period, min, max) {
 
 	    var ret = Array();
         var val = (min * 1) + ((max - min) / 2);
 		var delta = (max - min) / 20;
 		
-		period = new Date().parse(period);
-		step = step * 1000;
-
+		period = new Date().duration(period);
 		var now = new Date();
 		var start = now - period;
+		var step = Math.round((now - start) / 20);
 		
 		while (start <= now) {
 			val += Math.random() * (2 * delta) - delta;		

@@ -670,16 +670,16 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
             $('#' + this.id).highcharts().destroy();
         
 		// calculate state: diff between timestamps in relation to duration
-       	var state = response[2];
+	 	var state = response[2];
 		var stamp = state[0][0];
 		var percent = 0;
 		for (var i = 0; i < state.length; i++) { 
-			if (state[i][1])
+			if (state[i][1] > 0)
 				percent += (state[i][0] - stamp);	
 			stamp = state[i][0];
 		};
 		percent = Math.round(percent / (state[i - 1][0] - state[0][0]) * 100);		
-
+    
 		// draw the plot
 		$('#' + this.id).highcharts({
             chart: { type: 'line' },

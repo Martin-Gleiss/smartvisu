@@ -789,6 +789,14 @@ only if page-bg is placed in a div
 .docu .param .desc {
     margin-left: 50px;
 }
+
+.docu .see {
+	margin-bottom: 40px;
+}
+
+.docu .see .links {
+    margin: 10px 20px 20px 70px;
+}
  
 .author {
     margin: 4px;
