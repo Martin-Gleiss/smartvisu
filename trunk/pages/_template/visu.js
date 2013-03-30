@@ -7,18 +7,7 @@
  * ----------------------------------------------------------------------------- 
  */
  
- 
+   
 /**
- * This file is for your own stylesheets.
+ * This file is for your own widgets.
  */ 
-
-
-@CHARSET "UTF-8";
-
-/* display background only on larger displays */
-@media all and (min-width: 600px) {
-    .page-bg {
-	    background-image: url('../../pics/bg/luminous_lines.png');
-    }
-}
-
