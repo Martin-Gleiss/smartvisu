@@ -27,44 +27,25 @@ class weather_offline extends weather
         // today
         $this->data['city'] = ucfirst($this->location);
         
-        if (config_lang == "de")
-        {
-            $this->data['current']['temp']   = '25&deg;C';
-            $this->data['current']['conditions']   = 'sonnig';
-            $this->data['current']['icon']         = 'sun_1';
-            $this->data['current']['wind']         = 'leichter Wind aus Nordost mit 5 km/h'; 
-            $this->data['current']['more']         = '45%, 1050 hPa'; 
-        }
-        elseif (config_lang == "nl")
-        {
-            $this->data['current']['temp']   = '25&deg;C';
-            $this->data['current']['conditions']   = 'zonnig';
-            $this->data['current']['icon']         = 'sun_1';
-            $this->data['current']['wind']         = 'Lichte wind uit het noordoosten, snelheid 5 km/u'; 
-            $this->data['current']['more']         = '45%, 1050 hPa'; 
-        }
+		if (config_lang == 'de')
+            $windspeed = ' mit '.round( 1 * 3.6, 1).' km/h';
+        elseif (config_lang == 'nl')
+            $windspeed = ' mit '.round( 1 * 3.6, 1).' km/u';
         else
-        {    
-            $this->data['current']['temp']   = '10&deg;F';
-            $this->data['current']['conditions']   = 'sunny';
-            $this->data['current']['icon']         = 'sun_1';
-            $this->data['current']['wind']         = 'light winds from NO at 5 MPH'; 
-            $this->data['current']['more']         = '45%, 1050 hPa'; 
-        }
+            $windspeed = ' at '.round( 1 * 2.24, 1).' MPH';
+        
+        $this->data['current']['temp']   = '25&deg;C';
+        $this->data['current']['conditions']   = translate('clear sky', 'yr.no');
+        $this->data['current']['icon']         = 'sun_1';
+        $this->data['current']['wind']         = translate('light breeze from N', 'yr.no').$windspeed; 
+        $this->data['current']['more']         = '45%, 1050 hPa'; 
         
         // forecast
         $days = 4;
         for ($i = 0; $i < $days; $i++)
         {
             $this->data['forecast'][$i]['date']        = date('Y-m-d', time() + 24 * 60 * 60 * ($i + 1));
-
-            if (config_lang == "de")
-                $this->data['forecast'][$i]['conditions']  = 'sonnig';                 
-            elseif (config_lang == "nl")
-                $this->data['forecast'][$i]['conditions']  = 'zonnig';                 
-            else        
-                $this->data['forecast'][$i]['conditions']  = 'sunny';
-                 
+	        $this->data['forecast'][$i]['conditions']  = translate('clear sky', 'yr.no');
             $this->data['forecast'][$i]['icon']        = 'sun_'.rand(1,5);
             $this->data['forecast'][$i]['temp']        = rand(22, 25).'&deg;/'.rand(18, 20).'&deg;';
         }

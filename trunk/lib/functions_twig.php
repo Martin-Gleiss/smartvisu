@@ -44,7 +44,7 @@
 
     function twig_smartdate($val, $format = 'date')
     {
-        return smartdate($format, $val);
+        return transdate($format, $val);
     }
     
  
