@@ -104,7 +104,7 @@
         <table align="center" cellpadding="0">
         <tr>
             <td valign="top">
-                <div class="set">{{ basic.button(id~'up', gad_move, '', 'arrow-u', 1) }}</div></td>
+                <div class="set">{{ basic.button(id~'up', gad_move, '', 'arrow-u', 0) }}</div></td>
             <td rowspan="3" align="left" class="pos">
                 {{ basic.slider(id~'pos', gad_pos, min, max, step, 'vertical') }}</td>
             <td rowspan="2" valign="bottom" class="angle">
@@ -117,7 +117,7 @@
         </tr>
         <tr>
             <td valign="bottom">
-                <div class="set">{{ basic.button(id~'down', gad_move, '', 'arrow-d', 0) }}</div></td>
+                <div class="set">{{ basic.button(id~'down', gad_move, '', 'arrow-d', 1) }}</div></td>
             <td valign="bottom">
                 {% if gad_shift %}
                     <div class="set">
