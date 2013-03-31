@@ -40,15 +40,15 @@ class calendar extends service
             $start = strtotime($ds['start']);
             $end = strtotime($ds['end']);
             
-            $this->data[$id]['starttime'] = smartdate('time', $start);
-            $this->data[$id]['endtime'] = smartdate('time', $end);
+            $this->data[$id]['starttime'] = transdate('time', $start);
+            $this->data[$id]['endtime'] = transdate('time', $end);
             
             if (date('Y-m-d', $start) == date('Y-m-d', $end))
-                $this->data[$id]['period'] = smartdate('short', $start).' - '.date('H:i', $end);
+                $this->data[$id]['period'] = transdate('short', $start).' - '.date('H:i', $end);
             else
-                $this->data[$id]['period'] = smartdate('short', $start).' - '.smartdate('short', $end);
+                $this->data[$id]['period'] = transdate('short', $start).' - '.transdate('short', $end);
             
-            $this->data[$id]['weekday'] = smartdate('l', $start);
+            $this->data[$id]['weekday'] = transdate('l', $start);
             
             // content
             $tags = null;

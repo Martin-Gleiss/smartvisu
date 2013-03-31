@@ -10,24 +10,29 @@
  
 
 // -----------------------------------------------------------------------------
-// L A N G U A G E 
+// T R A N S L A T I O N 
 // -----------------------------------------------------------------------------
 
   /** 
   	* Easy translate function
   	* 
-  	* @param expects an array $lang['de'] = array()
-  	* @param the text be parsed               	
-	*/ 
-    function translate($language, $text)
+  	* @param the text that should be translated    
+  	* @param the subset of translation keys   
+  	*/ 
+    function translate($text, $subset)
     {
         $ret = $text;
-        
-        if (config_lang != 'en')
+
+		static $lang;
+
+		if (!$lang)
+			eval(fileread('lang/lang_'.config_lang.'.txt'));
+    
+		if (is_array($lang[$subset]))
 		{
 			$ret = '_'.str_replace(' ', '_', $ret).'_';
-
-			foreach ($language[config_lang] as $key => $val)
+			
+			foreach(($lang[$subset]) as $key => $val)
 			{                                                   
 				$keys[] = '#_'.str_replace(' ', '_', $key).'([_!\,\.])#i';
 				$vals[] = '_'.$val.'$1';
@@ -35,110 +40,39 @@
 	
 			$ret = trim(str_replace('_', ' ', preg_replace($keys, $vals, $ret)));
 		}
-
+		
         return $ret;
     }
-    
- 
-// -----------------------------------------------------------------------------
-// D A T E 
-// -----------------------------------------------------------------------------
-       
+        
   /** 
   	* Date and Time 
   	* 
   	* @param a format for a timestamp, based on php date function
   	* @param a timestamp                     	
 	*/      
-    function smartdate($format = '', $timestamp = '')
+    function transdate($format = '', $timestamp = '')
     {
-        $lang['de'] = array(
-            'January' => 'Januar', 'February' => 'Februar', 'March' => 'März', 'April' => 'April', 
-            'May' => 'Mai', 'June' => 'Juni', 'July' => 'Juli', 'August' => 'August', 
-            'September' => 'September', 'October' => 'Oktober', 'November' => 'November', 'December' => 'Dezmeber',
-            
-            'Sunday' => 'Sonntag', 'Monday' => 'Montag', 'Tuesday' => 'Dienstag', 'Wednesday' => 'Mittwoch',
-            'Thursday' => 'Donnerstag', 'Friday' => 'Freitag', 'Saturday' => 'Samstag',
-            
-            'Sun' => 'So', 'Mon' => 'Mo', 'Tue' => 'Di', 'Wed' => 'Mi', 'Thu' => 'Do', 'Fri' => 'Fr', 'Sat' => 'Sa',
-			'Motag' => 'Montag');
-      
-        $lang['nl'] = array(
-            'January' => 'Januari', 'February' => 'Februari', 'March' => 'Maart', 'April' => 'April', 
-            'May' => 'Mei', 'June' => 'Juni', 'July' => 'Juli', 'August' => 'Augustus', 
-            'September' => 'September', 'October' => 'Oktober', 'November' => 'November', 'December' => 'December',
-            
-            'Sunday' => 'Zondag', 'Monday' => 'Maandag', 'Tuesday' => 'Dinsdag', 'Wednesday' => 'Woensdag',
-            'Thursday' => 'Donderdag', 'Friday' => 'Vrijdag', 'Saturday' => 'Zaterdag',
-            
-            'Sun' => 'zo', 'Mon' => 'ma', 'Tue' => 'di', 'Wed' => 'wo', 'Thu' => 'do', 'Fri' => 'vr', 'Sat' => 'za');
-  
-        $lang['fr'] = array(
-            'January' => 'Janvier', 'February' => 'Février', 'March' => 'Mars', 'April' => 'Avril', 
-            'May' => 'Mai', 'June' => 'Juin', 'July' => 'Juillet', 'August' => 'Août', 
-            'September' => 'Septembre', 'October' => 'Octobre', 'November' => 'Novembre', 'December' => 'Décembre',
-            
-            'Sunday' => 'Dimanche', 'Monday' => 'Lunid', 'Tuesday' => 'Mardi', 'Wednesday' => 'Mercredi',
-            'Thursday' => 'Jeudi', 'Friday' => 'Vendredi', 'Saturday' => 'Samedi',
-            
-            'Sun' => 'Dim', 'Mon' => 'Lun', 'Tue' => 'Mar', 'Wed' => 'Mer', 'Thu' => 'Jeu', 'Fri' => 'Ven', 'Sat' => 'Sam');
-        
+		static $lang;
 
-        // allowed formats
-        switch ($format)
-            {
-            case 'date':
-                 if (config_lang == 'de') {
-                     $format = 'd.m.y';
-                     break;
-                 } elseif (config_lang == 'nl') {
-                     $format = 'd.m.y';
-                     break;
-                 } elseif (config_lang == 'fr') {
-                     $format = 'd/m/y';
-                     break;
-                 } else {
-                     $format = 'm/d/y';
-                     break;
-                 }
-            case 'time':    $format = 'H:i'; break;
-            case 'short':
-                 if (config_lang == 'de') {
-                     $format = 'd.m.y H:i';
-                     break;
-                 } elseif (config_lang == 'nl') {
-                     $format = 'd.m.y H:i';
-                     break;
-                 } elseif (config_lang == 'fr') {
-                     $format = 'd/m/y H:i';
-                     break;
-                 } else {
-                     $format = 'm/d/y H:i';
-                     break;
-                 }
-            case 'long':
-                 if (config_lang == 'de') {
-                     $format = 'd.m.Y H:i:s';
-                     break;
-                 } elseif (config_lang == 'nl') {
-                     $format = 'd.m.Y H:i:s';
-                     break;
-                 } elseif (config_lang == 'fr') {
-                     $format = 'd/m/Y H:i:s';
-                     break;
-                 } else {
-                     $format = 'm/d/Y H:i:s';
-                     break;
-                 }
-            }                 
-        
+		if (!$lang)
+			eval(fileread('lang/lang_'.config_lang.'.txt'));
+
+		if ($lang['format'][$format] != '')
+			$format = $lang['format'][$format];
+
         if ($timestamp == '')
             $date = date($format);
         else
             $date = date($format, $timestamp);
         
-        if ((strpos($format, 'D') !== false or strpos($format, 'l') !== false or strpos($format, 'F') !== false) && config_lang != 'en')
-            $date = translate($lang, $date);
+        if (strpos($format, 'F') !== false)
+        	$date = translate($date, 'month');
+
+        if (strpos($format, 'l') !== false)
+        	$date = translate($date, 'weekday');
+
+        if (strpos($format, 'D') !== false)
+        	$date = translate($date, 'shortday');
         
         return $date;
     }

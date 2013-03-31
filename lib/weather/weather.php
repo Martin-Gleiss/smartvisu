@@ -36,7 +36,7 @@ class weather extends service
     {
         foreach($this->data['forecast'] as $id => $ds)
         {
-            $this->data['forecast'][$id]['date'] = smartdate('D', strtotime($ds['date']));   
+            $this->data['forecast'][$id]['date'] = transdate('D', strtotime($ds['date']));   
         }
     }
 

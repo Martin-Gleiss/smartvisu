@@ -39,7 +39,7 @@ class phone extends service
         {
             if ($ds['number'] != '' or $ds['name'] != '')
             {
-                $ds['date'] = smartdate('short', strtotime($ds['date'])); 
+                $ds['date'] = transdate('short', strtotime($ds['date'])); 
                 
                 if ($ds['number'] != '' and is_file(const_path.'pics/phone/'.$ds['number'].'.jpg'))
                     $ds['pic'] = $ds['number'].'.jpg';

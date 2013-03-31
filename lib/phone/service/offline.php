@@ -29,7 +29,7 @@ class phone_offline extends phone
             $this->data[] = array (
                 'pos' => $i, 
                 'dir' => rand(-1, 1),
-                'date' => '01.10.2012 1'.$i.':'.rand(1,59).':00', 
+                'date' => transdate('date').' 1'.$i.':'.rand(1,59).':00', 
                 'number' => '0931'.rand(1000000, 9999999), 
                 'name' => 'Gleiss Martin',
                 'duration' => '00:00:'.rand(10,50)

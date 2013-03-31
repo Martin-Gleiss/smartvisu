@@ -55,8 +55,8 @@ class weather_yr extends weather
                 if ($i == 0)
                 {
                     $this->data['current']['date']        = (string)$day->attributes()->from;
-                    $this->data['current']['conditions']  = $this->translate((string)$day->symbol->attributes()->name);
-                    $this->data['current']['wind']        = $this->translate((string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code).$windspeed;
+                    $this->data['current']['conditions']  = translate((string)$day->symbol->attributes()->name, 'yr.no');
+                    $this->data['current']['wind']		  = translate((string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code, 'yr.no').$windspeed;
                     $this->data['current']['icon']        = $this->icon((string)$day->symbol->attributes()->number);
                     $this->data['current']['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
                     $this->data['current']['more']        = (int)$day->pressure->attributes()->value.' hPa';
@@ -67,8 +67,8 @@ class weather_yr extends weather
                 {
                     
                     $this->data['forecast'][$i]['date']        = (string)$day->attributes()->from;
-                    $this->data['forecast'][$i]['conditions']  = $this->translate((string)$day->symbol->attributes()->name);
-                    $this->data['forecast'][$i]['wind']        = $this->translate((string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code).$windspeed;
+                    $this->data['forecast'][$i]['conditions']  = translate((string)$day->symbol->attributes()->name, 'yr.no');
+                    $this->data['forecast'][$i]['wind']        = translate((string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code, 'yr.no').$windspeed;
                     $this->data['forecast'][$i]['icon']        = $this->icon((string)$day->symbol->attributes()->number);
                     $this->data['forecast'][$i]['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
                     $this->data['forecast'][$i]['more']        = (int)$day->pressure->attributes()->value.' hPa';
@@ -79,60 +79,6 @@ class weather_yr extends weather
         else
             $this->error('Weather: yr.no', 'Read request failed!');
      
-    }
-
-   /*
-    * translate and convert retrieved information
-    */
-    function translate($data)
-    {
-        $lang['de'] = array(
-            'NNE' => 'Nordnordost', 'NE' => 'Nordost', 'ENE' => 'Ostnordost', 'N' => 'Nord', 
-            'ESE' => 'Ostsüdost', 'SE' => 'Südost', 'SSE' => 'Südsüdost', 'E' => 'Ost', 
-            'SSW' => 'Südsüdwest', 'SW' => 'Südwest', 'WSW' => 'Westsüdwest', 'S' => 'Süd', 
-            'WNW'=> 'Westnordwest', 'NW' => 'Nordwest', 'NNW' => 'Nordnordwest', 'W' => 'West', 
-            
-            'clear sky' => 'klarer Himmel', 'Fair' => 'Schönwetter', 'Partly cloudy' => 'leicht bewölkt', 
-            'Cloudy' => 'bewölkt', 'Rain showers' => 'Regenschauer',
-            'Rain showers with thunder' => 'Regenschauer mit Gewitter', 'Sleet showers' => 'Graupelschauer',
-            'Snow showers' => 'Schneeschauer', 'Rain' => 'Regen', 'Heavy Rain' => 'starker Regen',
-            'Rain and thunder' => 'Regen und Gewitter', 'Sleet'=> 'Graupel', 'Snow' => 'Schnee',
-            'Snow and thunder' => 'Schnee und Gewitter', 'Sleet showers and thunder' => 'Graupelschauer mit Gewitter',
-            'Fog' => 'Nebel', 'Sleet and thunder'=> 'Graupel und Gewitter',
-            
-            'Calm' => 'still', 'Light air' => 'leichter Zug', 'Light breeze' => 'leichte Brise',
-            'Gentle breeze' => 'schwache Brise' , 'Moderate breeze' => 'mäßige Brise',
-            'Fresh breeze' => 'frische Brise', 'Strong breeze' => 'starker Wind', 'Near gale' => 'steifer Wind',
-            'Gale' => 'stürmischer Wind', 'Strong gale' => 'Sturm', 'Storm' => 'schwerer Sturm',
-            'Violent storm' => 'orkanartiger Sturm' , 'Hurricane' => 'Orkan',
-            
-            'from' => 'aus'
-            );
-
-        $lang['nl'] = array(
-            'NNE' => 'Noordnoordoost', 'NE' => 'Noordoost', 'ENE' => 'Oostnoordoost', 'N' => 'Noord', 
-            'ESE' => 'Oostzuidoost', 'SE' => 'Zuidoost', 'SSE' => 'Zuidzuidoost', 'E' => 'Oost', 
-            'SSW' => 'Zuidzuidwest', 'SW' => 'Zuidwest', 'WSW' => 'Westzuidwest', 'S' => 'Zuid', 
-            'WNW'=> 'Westnoordwest', 'NW' => 'Noordwest', 'NNW' => 'Noordnoordwest', 'W' => 'West', 
-            
-            'clear sky' => 'heldere hemel', 'Fair' => 'goed weer', 'Partly cloudy' => 'licht bewolkt',  
-            'Cloudy' => 'bewolkt', 'Rain showers' => 'regenbuien',
-            'Rain showers with thunder' => 'regenbuien met onweer', 'Sleet showers' => 'natte sneeuw',
-            'Snow showers' => 'sneeuwbuien', 'Rain' => 'regen', 'Heavy Rain' => 'zware regenval',
-            'Rain and thunder' => 'regen en onweer', 'Sleet'=> 'Graupel', 'Snow' => 'sneeuw',
-            'Snow and thunder' => 'sneeuw en onweer', 'Sleet showers and thunder' => 'natte neeuwbuien met onweer',
-            'Fog' => 'mist', 'Sleet and thunder'=> 'natte sneeuw en onweer',
-            
-            'Calm' => 'windstil', 'Light air' => 'flauwe bries', 'Light breeze' => 'lichte bries',
-            'Gentle breeze' => 'zwakke bries' , 'Moderate breeze' => 'matige wind',
-            'Fresh breeze' => 'frisse wind', 'Strong breeze' => 'harde wind', 'Near gale' => 'stormachtig',
-            'Gale' => 'storm', 'Strong gale' => 'sterke storm', 'Storm' => 'zware storm',
-            'Violent storm' => 'orkaan-achtige storm' , 'Hurricane' => 'orkaan',
-            
-            'from' => 'uit'
-            );
-
-        return translate($lang, $data);
     }
     
    /*

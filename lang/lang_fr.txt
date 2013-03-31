@@ -19,10 +19,10 @@ $lang['format']['temp']				= '1000,0 °C';
 $lang['format']['percent']			= '1000,0 %';
 $lang['format']['currency']			= '1.000,00 €';
 
-$lang['format']['date']				= 'd.m.y';
+$lang['format']['date']				= 'd/m/y';
 $lang['format']['time']				= 'H:i';
-$lang['format']['short']			= 'd.m.y H:i';
-$lang['format']['long']				= 'd.m.Y H:i:s';
+$lang['format']['short']			= 'd/m/y H:i';
+$lang['format']['long']				= 'd/m/Y H:i:s';
 
 
 
@@ -31,36 +31,36 @@ $lang['format']['long']				= 'd.m.Y H:i:s';
 // -----------------------------------------------------------------------------
 
 // ----- month -----------------------------------------------------------------
-$lang['month']['january']			= 'Januar';
-$lang['month']['february']			= 'Februar';
-$lang['month']['march']				= 'März';
-$lang['month']['april']				= 'April';
+$lang['month']['january']			= 'Janvier';
+$lang['month']['february']			= 'Février';
+$lang['month']['march']				= 'Mars';
+$lang['month']['april']				= 'Avril';
 $lang['month']['may']				= 'Mai';
-$lang['month']['june']				= 'Juni';
-$lang['month']['july']				= 'Juli';
-$lang['month']['august']			= 'August';
-$lang['month']['september']			= 'September';
-$lang['month']['october']			= 'Oktober';
-$lang['month']['november']			= 'November';
-$lang['month']['december']			= 'Dezember';
+$lang['month']['june']				= 'Juin';
+$lang['month']['july']				= 'Juillet';
+$lang['month']['august']			= 'Août';
+$lang['month']['september']			= 'Septembre';
+$lang['month']['october']			= 'Octobre';
+$lang['month']['november']			= 'Novembre';
+$lang['month']['december']			= 'Décembre';
 
 // ----- weekday ---------------------------------------------------------------
-$lang['weekday']['sunday']			= 'Sonntag';
-$lang['weekday']['monday']			= 'Montag';
-$lang['weekday']['tuesday']			= 'Dienstag';
-$lang['weekday']['wednesday']		= 'Mittwoch';
-$lang['weekday']['thursday']		= 'Donnerstag';
-$lang['weekday']['friday']			= 'Freitag';
-$lang['weekday']['saturday']		= 'Samstag';
+$lang['weekday']['sunday']			= 'Dimanche';
+$lang['weekday']['monday']			= 'Lunid';
+$lang['weekday']['tuesday']			= 'Mardi';
+$lang['weekday']['wednesday']		= 'Mercredi';
+$lang['weekday']['thursday']		= 'Jeudi';
+$lang['weekday']['friday']			= 'Vendredi';
+$lang['weekday']['saturday']		= 'Samedi';
 
 // ----- shortday --------------------------------------------------------------
-$lang['shortday']['sun']			= 'So';
-$lang['shortday']['mon']			= 'Mo';
-$lang['shortday']['tue']			= 'Di';
-$lang['shortday']['wed']			= 'Mi';
-$lang['shortday']['thu']			= 'Do';
-$lang['shortday']['fri']			= 'Fr';
-$lang['shortday']['sat']			= 'Sa';
+$lang['shortday']['sun']			= 'Dim';
+$lang['shortday']['mon']			= 'Lun';
+$lang['shortday']['tue']			= 'Mar';
+$lang['shortday']['wed']			= 'Mer';
+$lang['shortday']['thu']			= 'Jeu';
+$lang['shortday']['fri']			= 'Ven';
+$lang['shortday']['sat']			= 'Sam';
 
 
 
