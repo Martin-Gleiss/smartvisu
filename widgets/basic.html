@@ -35,8 +35,8 @@
  * 
  * @param       unique id for this widget
  * @param       a gad/item  
- * @param       a unit
- * @param       the parent html-tag for the value                   
+ * @param       a unit (optional)
+ * @param       the parent html-tag for the value (optional, default 'span')                  
  */
 {% macro value(id, gad, unit, tag) %}   
  
@@ -51,8 +51,8 @@
  * 
  * @param       unique id for this widget
  * @param       a gad/item  
- * @param       a unit
- * @param       the parent html-tag for the value     
+ * @param       a unit (optional)
+ * @param       the parent html-tag for the value (optional, default 'span')       
  */
 {% macro float(id, gad, unit, tag) %}
 
@@ -256,6 +256,14 @@
         {% for i in 1..12 %}
             <div class="blade-pos" id="{{ uid }}-{{ i }}"></div>
         {% endfor %}
+		
+		<div class="control hide">
+			<img class="icon pos" src="{{ icon0~'control_arrow_up.png' }}"/>
+			{% if gad_angle != '' %}
+        	<div class="line">&nbsp;</div>
+			<img class="icon angle" src="{{ icon0~'control_arrow_down_right.png' }}"/>
+			{% endif %}
+        </div>
     </div>
        
 {% endmacro %} 
