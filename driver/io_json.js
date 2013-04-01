@@ -60,11 +60,15 @@ var io = {
     * Let the driver work
     */
     run: function(realtime) {
-        widget.refresh();
+		// old items
+		widget.refresh();
+
+		// new items
         io.all();
-        
+		
+		// run polling
         if (realtime)
-            io.start();   
+            io.start();    
     },
 		
 

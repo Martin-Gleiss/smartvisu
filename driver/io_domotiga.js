@@ -62,9 +62,14 @@ var io = {
     run: function(realtime) {
         if (io.socket.readyState > 1)
             io.open();
-        else
+        else {
+			// old items
+			widget.refresh();
+
+			// new items
             io.monitor();          
-    },
+    	}
+	},
 		
 
 // -----------------------------------------------------------------------------
@@ -116,8 +121,6 @@ var io = {
                         io.update(item, val);
                     };
 */
-                    break;
-                case 'rrd':
                     break;
                 case 'dialog':
                     notify.info(data.header, data.content);
