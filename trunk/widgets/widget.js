@@ -467,6 +467,14 @@ $(document).delegate('div[data-widget="basic.shutter"]', {
 			io.write(items[1], val);
 		else
 			io.write(items[0], val);
+	},
+
+    'mouseenter': function(event) {
+		$('#' + this.id + ' .control').fadeIn(400);
+	},
+
+    'mouseleave': function(event) {
+		$('#' + this.id + ' .control').fadeOut(400);
 	}
 });
 

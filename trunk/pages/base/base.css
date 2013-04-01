@@ -465,11 +465,8 @@ h4  {
 }
 
 hr {
-    border: 1px; 
+    border: 1px none #999;  
     border-top-style: dotted;
-    border-bottom-style: none;
-    border-left-style: none;
-    border-right-style: none;
 }
 
 .hide {
@@ -769,7 +766,7 @@ only if page-bg is placed in a div
 
 .docu .html {
     margin: 5px 5px 15px 5px;
-    border: 1px dotted #666;
+    border: 1px dotted #999;
     padding: 5px;
 }
 
@@ -881,6 +878,38 @@ only if page-bg is placed in a div
 	background-image:     -ms-linear-gradient(#777, #eee);
 	background-image:      -o-linear-gradient(#777, #eee);
 	background-image:         linear-gradient(#777, #eee);
+}
+
+.shutter .control {
+	position: absolute;
+	top: 0;
+	width: 100px;
+	height: 180px;
+}
+
+.shutter .control .icon {
+    width: 32px;
+    height: 32px;
+}
+
+.shutter .control .pos {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+}
+
+.shutter .control .line {
+    position: absolute;
+	left: 50px;
+	height: 180px;
+    border: 1px none #999; 
+    border-left-style: dotted;
+}
+
+.shutter .control .angle {
+    position: absolute;
+	right: 0;
+	bottom: 0;
 }
 
 
