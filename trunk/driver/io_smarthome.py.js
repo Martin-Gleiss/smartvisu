@@ -60,6 +60,10 @@ var io = {
     * Lets the driver work
     */
     run: function(realtime) {
+		// old items
+		widget.refresh();
+		
+		// new items
        	io.monitor();   
     },
 		
@@ -96,6 +100,7 @@ var io = {
             var item, val;
             var data = JSON.parse(event.data);
             // DEBUG: console.log("[io.smarthome.py] receiving data: " + event.data);
+			
             switch(data.cmd) {
                 case 'item':
                     for (var i = 0; i < data.items.length; i++) {
@@ -108,12 +113,10 @@ var io = {
                     };
                     break;
 
-                case 'rrd':
+                case 'series':
 					// DEBUG: console.log("[io.smarthome.py] receiving rrd: " + event.data);
             
-					var time = data.start * 1000;
-			        var step = data.step * 1000;
-					
+					/*
 					if (data.frame == 'update') {
 						// single value (remove the oldest)
                 		widget.plot().each(function(idx) {
@@ -129,28 +132,31 @@ var io = {
 							}
 						});
 					} else {
-				    	// complete graph  
-					 	var series = Array();
-				        for (var i = 0; i < data.series.length; i++) {
-				            series.push([time, data.series[i]]);
-				            time += step;
-				        };
-
-						widget.set(data.item + '.rrd.' + data.frame, series);
+					// complete graph  
+				 	var series = Array();
+			        for (var i = 0; i < data.series.length; i++) {
+			            series.push([time, data.series[i]]);
+			            time += step;
+			        };
+					
+					widget.set(data.item + '.series', data.data);
 					};
+                    */
+
+					widget.set(data.item + '.series', data.data);
 					
 					widget.plot(data.item).each(function(idx) {
 						var items = widget.explode($(this).attr('data-item'));	
 			        	var values = Array();
 			
 						for (var i = 0; i < items.length; i++) { 
-							series = widget.get(items[i] + '.rrd.' + $(this).attr('data-period'));
+							series = widget.get(items[i] + '.series');
 							if (series !== undefined)
 								values.push(series);
 						}
 						
 						$(this).trigger('update', [values]);
-					})	
+					});	
 					break;
 
                 case 'dialog':
@@ -171,7 +177,7 @@ var io = {
         };
 
         io.socket.onclose = function(){
-            // notify.error('Driver: smarthome.py', 'Connection closed to smarthome.py server!');
+        	notify.debug('Driver: smarthome.py', 'Connection closed to smarthome.py server!');
         };
     },
     
@@ -192,10 +198,11 @@ var io = {
 		if (widget.listening()) {
 	    	io.send({'cmd': 'monitor', 'items': widget.listeners()});
 			
+			// series: avg, min, max, sum, diff, rate
 			widget.plot().each(function(idx) {
 				var items = widget.explode($(this).attr('data-item')); 
 				for (var i = 0; i < items.length; i++) { 
-	            	io.send({'cmd': 'rrd', 'item': items[i], 'frame': $(this).attr('data-period')});
+	            	io.send({'cmd': 'series', 'item': items[i], 'series' : $(this).attr('data-mode'), 'start': $(this).attr('data-period')});
 		   	}});
         }
     },
@@ -207,7 +214,7 @@ var io = {
 		console.log("[io.smarthome.py] close connection");
 		
 		if (io.socket.readyState > 0)
-        	io.socket.close(); 
+        	io.socket.close();         
 
         io.socket = null;
     }

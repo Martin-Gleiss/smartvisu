@@ -56,13 +56,11 @@
 <body> 
 <script type="text/javascript">
     io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
-    // console.log('[io] init');
     
     $(document).on('pageshow', function(){
         io.run({{ config_driver_realtime }});
 		// console.log('[io] run');       	
-
-        notify.display();
+		notify.display();
 		// widget.list();
     });
 

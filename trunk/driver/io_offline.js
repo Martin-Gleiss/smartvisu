@@ -60,10 +60,10 @@ var io = {
     * Lets the driver work
     */
     run: function(realtime) {
-		// refresh from buffer (for new widgets with existing values)
+		// old items (for new widgets with existing values)
 		widget.refresh();
 
-		// get new values 
+		// new items
         io.all();
         
 		// run polling
