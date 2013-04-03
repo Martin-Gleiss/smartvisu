@@ -1,0 +1,71 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "index.html" %}
+{% import "basic.html" as basic %}
+
+{% block content %}
+    <h1>Widget-Overview</h1>
+	<p>Here are some widgets working together. This is not a complete list!</p>
+
+	<h2>Basic</h2>
+	{{ basic.value('value1', 'bath_light_switch', 'Unit') }},
+	{{ basic.float('float1', 'bath_light_switch', '°C') }},
+    <br />
+	{{ basic.flip('flip1', 'bath_light_switch') }}
+	{{ basic.switch('switch1', 'bath_light_switch') }}
+	{{ basic.shifter('shifter2', 'bath_light_switch', 'bath_light_value') }}
+    {{ basic.button('button1', 'bath_light_switch', '1') }}
+	{{ basic.dual('dual1', 'bath_light_switch') }}
+    {{ basic.rgb('rgb1', 'bath_color_r', 'bath_color_g', 'bath_color_b') }}
+    {{ basic.colordisc('colordisc1', 'bath_color_r', 'bath_color_g', 'bath_color_b') }}
+    {{ basic.symbol('symbol1', 'bath_light_switch') }}
+    
+	{{ basic.checkbox('checkbox1', 'bath_light_switch1', 'Checkbox') }}
+	{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
+	
+	<br />
+	<div style="height: 180px; width: 100px; display: inline-block;"> 
+		{{ basic.slider('slider2', 'bath_light_value', 0, 255, 1, 'vertical') }}
+	</div>
+		<div style="height: 180px; width: 100px; display: inline-block;"> 
+		{{ basic.slider('slider3', 'bath_light_value', 0, 255, 1, 'bottomup') }}
+	</div>
+
+	{{ basic.shutter('shutter1', 'bath_light_value', 'bath_blind_angle') }} 
+	{{ basic.tank('tank1', 'bath_light_value', 0, 255, 5, 'water') }}
+    
+	<h2>Plots</h2>
+
+	{{ plot.period('p1', 'bath_plot_value', '1i') }}
+
+<style type="text/css">
+<!--
+
+
+-->
+</style>
+
+
+<script type="text/javascript"> 
+$(document).delegate('input[data-widget="basic.slider"]', {
+	'click': function(event) {   
+		$('#overview-p1').trigger('point', [ [ (new Date()).getTime() ,  parseFloat($(this).val()) ] ] );
+		//var series = widget.get('bath_plot_value');
+		//series.shift();
+		//series.push([(new Date()).getTime(), parseFloat($(this).val()) ]); 
+		//widget.update('bath_plot_value', series);  
+	} 
+}); 
+</script>  
+
+
+
+{% endblock %}

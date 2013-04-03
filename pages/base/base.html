@@ -42,6 +42,7 @@
     {% endif %}
 	
     <script type="text/javascript" src="lib/base/base.js"></script>
+    <script type="text/javascript" src="lib/base/base.php"></script>
     <script type="text/javascript" src="driver/io_{{ config_driver }}.js"></script>
 	
     {% block head %}{% endblock %}
@@ -54,8 +55,8 @@
 
 
 <body> 
-<script type="text/javascript">
-    io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
+<script type="text/javascript"> 
+	io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
     
     $(document).on('pageshow', function(){
         io.run({{ config_driver_realtime }});
