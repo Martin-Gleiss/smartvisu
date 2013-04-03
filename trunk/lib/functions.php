@@ -52,6 +52,7 @@
 	*/      
     function transdate($format = '', $timestamp = '')
     {
+		$date = null;
 		static $lang;
 
 		if (!$lang)
@@ -76,7 +77,24 @@
         
         return $date;
     }
-    
+   
+
+	function transparam($subset)
+	{
+		$ret = '';
+		static $lang;
+
+		if (!$lang)
+			eval(fileread('lang/lang_'.config_lang.'.txt'));
+
+		foreach(($lang[$subset]) as $key => $val)
+			$ret .= "'".$val."', ";
+
+		$ret = '['.substr($ret, 0, -2).']';
+
+		return $ret;
+	} 
+
               
 // -----------------------------------------------------------------------------
 // F I L E
