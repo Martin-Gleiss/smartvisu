@@ -8,6 +8,11 @@
  */
 
 
+/**
+ * Translation by
+ * @author		Pierre-Yves 	
+ */
+
 
 // -----------------------------------------------------------------------------
 // F O R M A T
@@ -44,6 +49,19 @@ $lang['month']['october']			= 'Octobre';
 $lang['month']['november']			= 'Novembre';
 $lang['month']['december']			= 'Décembre';
 
+$lang['shortmonth']['jan']			= 'Jan';
+$lang['shortmonth']['feb']			= 'Fév';
+$lang['shortmonth']['mar']			= 'Mar';
+$lang['shortmonth']['apr']			= 'Avr';
+$lang['shortmonth']['may']			= 'Mai';
+$lang['shortmonth']['jun']			= 'Jun';
+$lang['shortmonth']['jul']			= 'Jul';
+$lang['shortmonth']['aug']			= 'Aoû';
+$lang['shortmonth']['sep']			= 'Sep';
+$lang['shortmonth']['oct']			= 'Oct';
+$lang['shortmonth']['nov']			= 'Nov';
+$lang['shortmonth']['dec']			= 'Déc';
+
 // ----- weekday ---------------------------------------------------------------
 $lang['weekday']['sunday']			= 'Dimanche';
 $lang['weekday']['monday']			= 'Lunid';
@@ -68,54 +86,55 @@ $lang['shortday']['sat']			= 'Sam';
 // S E R V I C E
 // -----------------------------------------------------------------------------
 
+// ----- yr.no -----------------------------------------------------------------   
 // ----- yr.no -----------------------------------------------------------------
-$lang['yr.no']['n']					= 'Nord';
-$lang['yr.no']['nne']				= 'Nordnordost';
-$lang['yr.no']['ne']				= 'Nordost';
-$lang['yr.no']['ene']				= 'Ostnordost';
-$lang['yr.no']['e']					= 'Ost';
-$lang['yr.no']['ese']				= 'Ostsüdost';
-$lang['yr.no']['se']				= 'Südost';
-$lang['yr.no']['sse']				= 'Südsüdost';
-$lang['yr.no']['s']					= 'Süd';
-$lang['yr.no']['ssw']				= 'Südsüdwest';
-$lang['yr.no']['sw']				= 'Südwest';
-$lang['yr.no']['wsw']				= 'Westsüdwest';
-$lang['yr.no']['w']					= 'West';
-$lang['yr.no']['wnw']				= 'Westnordwest';
-$lang['yr.no']['nw']				= 'Nordwest';
-$lang['yr.no']['nnw']				= 'Nordnordwest';
+$lang['yr.no']['n'] 				= 'nord';
+$lang['yr.no']['nne'] 				= 'nord-nord-est';
+$lang['yr.no']['ne'] 				= 'nord-est';
+$lang['yr.no']['ene'] 				= 'est-nord-est';
+$lang['yr.no']['e'] 				= 'est';
+$lang['yr.no']['ese']				= 'est-sud-est';
+$lang['yr.no']['se'] 				= 'sud-est';
+$lang['yr.no']['sse'] 				= 'sud-sud-est';
+$lang['yr.no']['s'] 				= 'sud';
+$lang['yr.no']['ssw'] 				= 'sud-sud-ouest';
+$lang['yr.no']['sw'] 				= 'sud-ouest';
+$lang['yr.no']['wsw'] 				= 'ouest-sud-ouest';
+$lang['yr.no']['w'] 				= 'ouest';
+$lang['yr.no']['wnw'] 				= 'ouest-nord-ouest';
+$lang['yr.no']['nw']				= 'nord-ouest';
+$lang['yr.no']['nnw'] 				= 'nord-nord-ouest';
 
-$lang['yr.no']['clear sky']			= 'klarer Himmel';
-$lang['yr.no']['fair']				= 'Schönwetter';
-$lang['yr.no']['partly cloudy']		= 'leicht bewölkt';
-$lang['yr.no']['cloudy']			= 'bewölkt';
-$lang['yr.no']['rain showers with thunder']	= 'Regenschauer mit Gewitter';
-$lang['yr.no']['rain showers']		= 'Regenschauer';
-$lang['yr.no']['sleet showers']		= 'Graupelschauer';
-$lang['yr.no']['snow showers']		= 'Schneeschauer';
-$lang['yr.no']['heavy rain']		= 'starker Regen';
-$lang['yr.no']['rain and thunder']	= 'Regen und Gewitter';
-$lang['yr.no']['rain']				= 'Regen';
-$lang['yr.no']['sleet showers and thunder']	= 'Graupelschauer mit Gewitter';
-$lang['yr.no']['sleet and thunder']	= 'Graupel und Gewitter';
-$lang['yr.no']['sleet']				= 'Graupel';
-$lang['yr.no']['snow and thunder']	= 'Schnee und Gewitter';
-$lang['yr.no']['snow']				= 'Schnee';
-$lang['yr.no']['fog']				= 'Nebel';
+$lang['yr.no']['clear sky'] 		= 'ciel dégagé';
+$lang['yr.no']['fair'] 				= 'beau temps';
+$lang['yr.no']['partly cloudy'] 	= 'partiellement couvert';
+$lang['yr.no']['cloudy'] 			= 'nuageux';
+$lang['yr.no']['rain showers with thunder'] = 'averses avec orage';
+$lang['yr.no']['rain showers'] 		= 'averses';
+$lang['yr.no']['sleet showers'] 	= 'averses de grésil';
+$lang['yr.no']['snow showers'] 		= 'averses de neige';
+$lang['yr.no']['heavy rain'] 		= 'pluie forte';
+$lang['yr.no']['rain and thunder'] 	= 'pluie et orage';
+$lang['yr.no']['rain'] 				= 'pluie';
+$lang['yr.no']['sleet showers and thunder'] = 'averses de grésil et orage';
+$lang['yr.no']['sleet and thunder'] = 'neige fondue et orage';
+$lang['yr.no']['sleet'] 			= 'neige fondue';
+$lang['yr.no']['snow and thunder'] 	= 'neige et orage';
+$lang['yr.no']['snow'] 				= 'neige';
+$lang['yr.no']['fog'] 				= 'brouillard';
 
-$lang['yr.no']['calm']				= 'still';
-$lang['yr.no']['light air']			= 'leichter Zug';
-$lang['yr.no']['light breeze']		= 'leichte Brise';
-$lang['yr.no']['gentle breeze']		= 'schwache Brise';
-$lang['yr.no']['moderate breeze']	= 'mäßige Brise';
-$lang['yr.no']['fresh breeze']		= 'frische Brise';
-$lang['yr.no']['strong breeze']		= 'starker Wind';
-$lang['yr.no']['near gale']			= 'steifer Wind';
-$lang['yr.no']['strong gale']		= 'Sturm';
-$lang['yr.no']['gale']				= 'stürmischer Wind';
-$lang['yr.no']['violent storm']		= 'orkanartiger Sturm';
-$lang['yr.no']['storm']				= 'schwerer Sturm';
-$lang['yr.no']['hurricane']			= 'Orkan';
+$lang['yr.no']['calm'] 				= 'clame';
+$lang['yr.no']['light air'] 		= 'très légère brise';
+$lang['yr.no']['light breeze'] 		= 'légère brise';
+$lang['yr.no']['gentle breeze'] 	= 'petite brise';
+$lang['yr.no']['moderate breeze'] 	= 'brise modérée';
+$lang['yr.no']['fresh breeze'] 		= 'brise fraîche';
+$lang['yr.no']['strong breeze'] 	= 'forte brise';
+$lang['yr.no']['near gale'] 		= 'vent fort';
+$lang['yr.no']['strong gale'] 		= 'fort coup de vent';
+$lang['yr.no']['gale'] 				= 'coup de vent';
+$lang['yr.no']['violent storm'] 	= 'violente tempête';
+$lang['yr.no']['storm'] 			= 'tempête';
+$lang['yr.no']['hurricane'] 		= 'ouragan';
 
-$lang['yr.no']['from']				= 'aus';
+$lang['yr.no']['from'] 				= 'venant de';

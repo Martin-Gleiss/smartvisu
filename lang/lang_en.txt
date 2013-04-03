@@ -31,18 +31,31 @@ $lang['format']['long']				= 'm/d/Y H:i:s';
 // -----------------------------------------------------------------------------
 
 // ----- month -----------------------------------------------------------------
-$lang['month']['january']			= 'Januar';
-$lang['month']['february']			= 'Februar';
-$lang['month']['march']				= 'März';
+$lang['month']['january']			= 'January';
+$lang['month']['february']			= 'February';
+$lang['month']['march']				= 'March';
 $lang['month']['april']				= 'April';
-$lang['month']['may']				= 'Mai';
-$lang['month']['june']				= 'Juni';
-$lang['month']['july']				= 'Juli';
+$lang['month']['may']				= 'May';
+$lang['month']['june']				= 'June';
+$lang['month']['july']				= 'July';
 $lang['month']['august']			= 'August';
 $lang['month']['september']			= 'September';
-$lang['month']['october']			= 'Oktober';
+$lang['month']['october']			= 'October';
 $lang['month']['november']			= 'November';
-$lang['month']['december']			= 'Dezember';
+$lang['month']['december']			= 'December';
+
+$lang['shortmonth']['jan']			= 'Jan';
+$lang['shortmonth']['feb']			= 'Feb';
+$lang['shortmonth']['mar']			= 'Mar';
+$lang['shortmonth']['apr']			= 'Apr';
+$lang['shortmonth']['may']			= 'May';
+$lang['shortmonth']['jun']			= 'Jun';
+$lang['shortmonth']['jul']			= 'Jul';
+$lang['shortmonth']['aug']			= 'Aug';
+$lang['shortmonth']['sep']			= 'Sep';
+$lang['shortmonth']['oct']			= 'Oct';
+$lang['shortmonth']['nov']			= 'Nov';
+$lang['shortmonth']['dec']			= 'Dec';
 
 // ----- weekday ---------------------------------------------------------------
 $lang['weekday']['sunday']			= 'Sonntag';

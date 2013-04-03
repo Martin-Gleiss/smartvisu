@@ -8,6 +8,11 @@
  */
 
 
+/**
+ * Translation by
+ * @author		Ron 	
+ */
+
 
 // -----------------------------------------------------------------------------
 // F O R M A T
@@ -43,6 +48,19 @@ $lang['month']['september']			= 'September';
 $lang['month']['october']			= 'Oktober';
 $lang['month']['november']			= 'November';
 $lang['month']['december']			= 'December';
+
+$lang['shortmonth']['jan']			= 'Jan';
+$lang['shortmonth']['feb']			= 'Feb';
+$lang['shortmonth']['mar']			= 'Maa';
+$lang['shortmonth']['apr']			= 'Apr';
+$lang['shortmonth']['may']			= 'Mei';
+$lang['shortmonth']['jun']			= 'Jun';
+$lang['shortmonth']['jul']			= 'Jul';
+$lang['shortmonth']['aug']			= 'Aug';
+$lang['shortmonth']['sep']			= 'Sep';
+$lang['shortmonth']['oct']			= 'Okt';
+$lang['shortmonth']['nov']			= 'Nov';
+$lang['shortmonth']['dec']			= 'Dec';
 
 // ----- weekday ---------------------------------------------------------------
 $lang['weekday']['sunday']			= 'Zondag';
