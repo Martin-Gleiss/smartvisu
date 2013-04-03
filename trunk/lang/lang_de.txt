@@ -44,6 +44,19 @@ $lang['month']['october']			= 'Oktober';
 $lang['month']['november']			= 'November';
 $lang['month']['december']			= 'Dezember';
 
+$lang['shortmonth']['jan']			= 'Jan';
+$lang['shortmonth']['feb']			= 'Feb';
+$lang['shortmonth']['mar']			= 'Mrz';
+$lang['shortmonth']['apr']			= 'Apr';
+$lang['shortmonth']['may']			= 'Mai';
+$lang['shortmonth']['jun']			= 'Jun';
+$lang['shortmonth']['jul']			= 'Jul';
+$lang['shortmonth']['aug']			= 'Aug';
+$lang['shortmonth']['sep']			= 'Sep';
+$lang['shortmonth']['oct']			= 'Okt';
+$lang['shortmonth']['nov']			= 'Nov';
+$lang['shortmonth']['dec']			= 'Dez';
+
 // ----- weekday ---------------------------------------------------------------
 $lang['weekday']['sunday']			= 'Sonntag';
 $lang['weekday']['monday']			= 'Montag';
@@ -53,7 +66,6 @@ $lang['weekday']['thursday']		= 'Donnerstag';
 $lang['weekday']['friday']			= 'Freitag';
 $lang['weekday']['saturday']		= 'Samstag';
 
-// ----- shortday --------------------------------------------------------------
 $lang['shortday']['sun']			= 'So';
 $lang['shortday']['mon']			= 'Mo';
 $lang['shortday']['tue']			= 'Di';
