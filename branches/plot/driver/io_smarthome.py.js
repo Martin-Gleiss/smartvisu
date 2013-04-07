@@ -200,9 +200,15 @@ var io = {
 			
 			// series: avg, min, max, sum, diff, rate
 			widget.plot().each(function(idx) {
-				var items = widget.explode($(this).attr('data-item')); 
+            	var items = widget.explode($(this).attr('data-item')); 
 				for (var i = 0; i < items.length; i++) { 
-	            	io.send({'cmd': 'series', 'item': items[i], 'series' : $(this).attr('data-mode'), 'start': $(this).attr('data-period')});
+	                var item = items[i].split('.');
+					var mode = item[item.length - 3];
+					var tmin = item[item.length - 2];
+					var tmax = item[item.length - 1];
+	 
+            
+                	io.send({'cmd': 'series', 'item': items[i], 'series' : $(this).attr('data-mode'), 'start': $(this).attr('data-period')});
 		   	}});
         }
     },

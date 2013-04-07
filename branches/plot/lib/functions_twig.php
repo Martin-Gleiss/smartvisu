@@ -183,23 +183,44 @@
  	}      
 
 
+  /** 
+  	* Parameter
+  	* 
+  	* @param the subset of translation keys                       	
+	*/   
+	function twig_lang($subset, $key)
+	{
+		static $lang;
+
+		if (!$lang)
+			eval(fileread('lang/lang_'.config_lang.'.txt'));
+
+		return $lang[$subset][$key];
+	}
+
+
 // -----------------------------------------------------------------------------
 // Special functions for Twig
 // -----------------------------------------------------------------------------
      
-    function twig_implode($array)
+    function twig_implode($mixed, $suffix = '')
     {
         $ret = '';
         
-        if (is_array($array))
+        if (is_array($suffix))
+            $suffix = '.'.implode('.', $suffix);
+        elseif ($suffix != '') 
+            $suffix = '.'.$suffix;
+        
+        if (is_array($mixed))
         {
-            foreach ($array as $value)
-                $ret .= $value.", ";
+            foreach ($mixed as $value)
+                $ret .= $value.$suffix.", ";
                 
             $ret = substr($ret, 0, -2);    
         }
         else
-            $ret = $array;
+            $ret = $mixed.$suffix;
         
         return $ret;
     }

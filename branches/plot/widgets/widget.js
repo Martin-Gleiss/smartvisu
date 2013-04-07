@@ -145,19 +145,16 @@ var widget = {
     */         
 	set: function(item, value) {
 
-		if (value !== undefined) {
-	    	// is it a series?
-    	    if (widget.buffer[item] instanceof Array)
-			{
-				//var series = widget.buffer[item];
-				//series.push(value);
-				//console.log(series);
+	    if (widget.buffer[item] instanceof Array)
+		{
+            // don't add it to the buffer, because highchart will do it for us.   
+			//var series = widget.buffer[item];
+			//series.push(value);
+		
+		} else if (value !== undefined)
+        	widget.buffer[item] = value; 
 
-			} else
-            	widget.buffer[item] = value; 
-	
-			console.log("[widget] '" + item + "' -> '" + widget.buffer[item] + "'");
-		}
+		// DEBUG: console.log("[widget] '" + item + "' -> '" + widget.buffer[item] + "'");
 	},
 
   /**
@@ -171,7 +168,6 @@ var widget = {
 		
 		// update if value has changed
         if (value === undefined || widget.buffer[item] !== value || widget.buffer[item] instanceof Array ) {
-			var oldval = widget.get(item);
 			widget.set(item, value);
 		    
 			$('[data-item*="' + item + '"]').each(function(idx) {
@@ -183,11 +179,17 @@ var widget = {
 			
 		        	if (items[i] == item && widget.check(values)) {
 					
-						if ($(this).attr('data-widget').substr(0,5) == 'plot.' && oldval !== undefined) {
-							// only another point to the series
-							$(this).trigger('point', [value]);
+						if ($(this).attr('data-widget').substr(0,5) == 'plot.' && $('#' + this.id).highcharts()) {
+                            // if series than only the item with the value
+                            if (value instanceof Array) {
+                                values = Array();
+                                for (var j = 0; j < items.length; j++) {
+                                    values.push (items[j] == item ? value : null );
+                            }}
+                   			// only another point to plot
+							$(this).trigger('point', [values]);
 						} else
-							// regular update
+							// regular update to the widget
 							$(this).trigger('update', [values]);
 					}}
 			});
@@ -195,12 +197,25 @@ var widget = {
 	},
 
   /**
+    * Prepares some widgets on the current page. 
+    * Bind to jquery mobile 'pagebeforeshow'.
+    */ 
+	prepare: function() {
+        // all plots on the current page.
+		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget^="plot."][data-item]').each(function(idx) {
+            
+            if ($('#' + this.id).highcharts())
+                    $('#' + this.id).highcharts().destroy(); 
+        });   
+	},
+    
+  /**
     * Refreshes all widgets on the current page. Used to put the values to the
-    * widgets if a new page has been opened.
+    * widgets if a new page has been opened. Bind to jquery mobile 'pageshow'.
     */ 
 	refresh: function() {             
 		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function(idx) {
-
+            
 			var values = widget.get(widget.explode($(this).attr('data-item'))); 
 
 			if (widget.check(values))
@@ -209,8 +224,7 @@ var widget = {
 	},
 
 
-// ----- p l o t ---------------------------------------------------------------
-// -----------------------------------------------------------------------------
+// ----- s p e c i a l ---------------------------------------------------------
 
   /**
     * Returns all widgets with plot functionality. Matching 'plot' in attribute
@@ -327,7 +341,7 @@ $(document).delegate('input[data-widget="basic.slider"]', {
     },
 
 	'click': function(event) {      
-		$('#' + this.id).attr('mem', $(this).val());       
+		// $('#' + this.id).attr('mem', $(this).val());       
 		io.write($(this).attr('data-item'), $(this).val());  
 	} 
 }); 
@@ -657,27 +671,23 @@ $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="plus"]'
 $(document).delegate('div[data-widget="plot.period"]', { 
 	'update': function(event, response) {
 		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
-	 	// DEBUG: 
-		console.log("[plot.series] update '" + this.id + "' with "); console.log(response);
+	 	// DEBUG: console.log("[plot.period] update '" + this.id + "' with "); console.log(response);
 		
 		var label = $(this).attr('data-label').explode();
         var color = $(this).attr('data-color').explode();
 		var exposure = $(this).attr('data-exposure').explode();
-        var axes = $(this).attr('data-axes').explode();
-		
-        // distroy and make new animation
-        if ($('#' + this.id).highcharts())
-            $('#' + this.id).highcharts().destroy();
-            
+        var axis = $(this).attr('data-axis').explode();
 		var series = Array();
-		for (var i = 0; i < response.length; i++) { 
+		
+        for (var i = 0; i < response.length; i++) { 
 			series[i] = {
-				type: (exposure[i] != '' ? exposure[i] : 'line'),
-				name: label[i], data: response[i],
-				color: (color[i] != '' ? color[i] : null)
+				type: (exposure[i] ? exposure[i] : 'line'),
+				name: label[i], 
+                data: response[i],
+				color: (color[i] ? color[i] : null)
 		}};
 	
-		// draw the plot
+ 		// draw the plot
 		$('#' + this.id).highcharts({
             series: series,
  		    xAxis: { type: 'datetime' },
@@ -686,15 +696,13 @@ $(document).delegate('div[data-widget="plot.period"]', {
     },
 
 	'point': function(event, response) {
-		console.log("[plot.series] point '" + this.id + "' with "); console.log(response);
-			
-
-		//for (var i = 0; i < response.length; i++) { 
-		//	if (response[i] !== undefined) {
-				var series = $('#' + this.id).highcharts().series[0];
-		        series.addPoint(response, true, true);
-		//}};
-
+		// DEBUG: console.log("[plot.period] point '" + this.id + "' with "); console.log(response);
+		
+		for (var i = 0; i < response.length; i++) { 
+            if (response[i]) {
+                var series = $('#' + this.id).highcharts().series[i];
+                series.addPoint(response[i], true, true);
+        }};
 	}
 });
 
@@ -706,16 +714,13 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 	 	// DEBUG: console.log("[plot.rtr] update '" + this.id + "' with "); console.log(response);
         
         var label = $(this).attr('data-label').explode();
-        var axes = $(this).attr('data-axes').explode();
+        var axis = $(this).attr('data-axis').explode();
 
-    	// distroy and make new animation
-        if ($('#' + this.id).highcharts())
-            $('#' + this.id).highcharts().destroy();
-        
 		// calculate state: diff between timestamps in relation to duration
 	 	var state = response[2];
 		var stamp = state[0][0];
 		var percent = 0;
+        
 		for (var i = 0; i < state.length; i++) { 
 			if (state[i][1] > 0)
 				percent += (state[i][0] - stamp);	
@@ -747,7 +752,7 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 			}],
  		    xAxis: { type: 'datetime' },
 		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'),
-				title: { text: axes[1] } },
+				title: { text: axis[1] } },
 			tooltip: { valueSuffix: ' °' }
         });
     }
@@ -760,15 +765,16 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
 		// response is: {{ gad_trigger }}, {{ gad_message }}
 		// DEBUG: console.log("[plot.comfortchart] update '" + this.id + "' with " + response[0] + "/" + response[1]);
         
-        var axes = $(this).attr('data-axes').explode();
+        var label = $(this).attr('data-label').explode();
+        var axis = $(this).attr('data-axis').explode();
        	var plots = Array();
 		
         plots[0] = {
-            type: 'area', name: 'almost nice', lineWidth: 0,
+            type: 'area', name: label[0], lineWidth: 0,
 			data: [ [17, 35], [16, 75], [17, 85], [21, 80], [25, 60], [27, 35], [25, 19], [20, 20], [17, 35]  ]
      	};
         plots[1] = {
-            type: 'area', name: 'comfortable', lineWidth: 0,
+            type: 'area', name: label[1], lineWidth: 0,
 			data: [ [17, 75], [22.5, 65], [25, 33], [18.5, 35], [17, 75] ]
      	};
 
@@ -779,15 +785,17 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
             showInLegend: false
         }
         
-        if ( $('#' + this.id).highcharts() === undefined)
-            $('#' + this.id).highcharts({
-                series: plots,
-     		    xAxis: { min: 10, max: 35 },
-    		   	yAxis: { min: 0, max: 100, title: { x: 12, text: axes[1] } },
-                plotOptions: { area: { enableMouseTracking: false } },
-                tooltip: { formatter: function() { return this.x +' °C / '+ this.y + ' %'; } }
-            });
-        else
-            $('#' + this.id).highcharts().series[2].data[0].update( [response[0] * 1.0, response[1] * 1.0], true);    
-    }
+        $('#' + this.id).highcharts({
+            series: plots,
+ 		    xAxis: { min: 10, max: 35, title: { text: axis[0], align: 'high', margin: -2 } },
+		   	yAxis: { min: 0, max: 100, title: { text: axis[1], margin: 5 } },
+            plotOptions: { area: { enableMouseTracking: false } },
+            tooltip: { formatter: function() { return this.x +' °C / '+ this.y + ' %'; } }
+        });
+    },
+    
+	'point': function(event, response) {
+		// DEBUG: console.log("[plot.comfortchart] point '" + this.id + "' with " + response[0] + "/" + response[1]);
+        $('#' + this.id).highcharts().series[2].data[0].update( [response[0] * 1.0, response[1] * 1.0], true); 
+	}
 });
