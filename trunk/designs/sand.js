@@ -45,7 +45,7 @@ Highcharts.theme = {
 		},
 		title: {
 			style: {
-				color: '#aaa', fontSize: '14px'
+				color: '#aaa', fontSize: '12px'
 			}
 		}
 	},
@@ -64,7 +64,7 @@ Highcharts.theme = {
 		title: {
 			x: 10,
 			style: {
-				color: '#aaa', fontSize: '14px'
+				color: '#aaa', fontSize: '12px'
 			}
 		}
 	},

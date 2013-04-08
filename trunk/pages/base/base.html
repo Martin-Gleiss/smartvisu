@@ -58,6 +58,12 @@
 <script type="text/javascript"> 
 	io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
     
+    // Do some actions before page is shown
+    $(document).on('pagebeforeshow', function(){
+        widget.prepare();
+    });
+    
+    // Run the io and all widgets
     $(document).on('pageshow', function(){
         io.run({{ config_driver_realtime }});
 		// console.log('[io] run');       	

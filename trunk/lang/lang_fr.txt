@@ -80,6 +80,12 @@ $lang['shortday']['thu']			= 'Jeu';
 $lang['shortday']['fri']			= 'Ven';
 $lang['shortday']['sat']			= 'Sam';
 
+// ----- plots -----------------------------------------------------------------
+$lang['plot.rtr']['label']			= 'Actual, Set';
+$lang['plot.rtr']['axis']			= 'Time, Temerature';
+$lang['plot.comfortchart']['label'] = 'almost nice, comfortable';
+$lang['plot.comfortchart']['axis']	= 'Temperature, Humidity';
+
 
 
 // -----------------------------------------------------------------------------

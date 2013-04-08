@@ -49,7 +49,7 @@
   /**
     * Calculates a date based on a relative time (1h 30m) 
     */
-	Date.prototype.duration = function(dur) {
+	Date.prototype.parse = function(str) {
 		
 		var toks = {
 			y: 30758400000, /* 365 * d */
@@ -63,8 +63,8 @@
 
 		var result = 0;
 		
-		if (dur) {
-			var tokens = dur.toLowerCase().split(" ");
+		if (str) {
+			var tokens = str.toLowerCase().split(" ");
 	
 			var val = 0;
 			var scale = 1;
