@@ -33,7 +33,7 @@
 	
 	<br />
 	<div style="height: 180px; width: 100px; display: inline-block;"> 
-		{{ basic.slider('slider2', 'bath_light_value', 0, 255, 1, 'vertical') }}
+		{{ basic.slider('slider2', 'bath_light_value2', 0, 255, 1, 'vertical') }}
 	</div>
 		<div style="height: 180px; width: 100px; display: inline-block;"> 
 		{{ basic.slider('slider3', 'bath_light_value', 0, 255, 1, 'bottomup') }}
@@ -73,11 +73,17 @@
 
 
 <script type="text/javascript"> 
-$(document).delegate('input[data-widget="basic.slider"]', {
+$(document).delegate('input[data-widget="basic.slider"][data-item="bath_light_value"]', {
 	'click': function(event) {
 		widget.update('bath_plot_value.avg.5i.0', [ (new Date()).getTime() ,  parseFloat($(this).val()) ]);
 	} 
 }); 
+
+$(document).delegate('input[data-widget="basic.slider"][data-item="bath_light_value2"]', {
+	'click': function(event) {
+		widget.update('bath_plot_value2.avg.5i.0', [ (new Date()).getTime() ,  parseFloat($(this).val()) ]);
+	} 
+});
 </script>  
 
 

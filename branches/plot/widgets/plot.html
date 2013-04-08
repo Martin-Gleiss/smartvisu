@@ -43,7 +43,7 @@
  * @param       unique id for this widget
  * @param       series of a gad/item for the actual-temperature
  * @param       series of a gad/item for the set-temperature
- * @param       series of a gad/item for the state of the actor (> 0 is considered as 'on')
+ * @param       series of a gad/item for the state of the actor. It is shown as percental value within the pie. (> 0 is considered as 'on')
  */ 
 {% macro rtr(id, gad_actual, gad_set, gad_state) %}
    
@@ -56,11 +56,11 @@
 
 
 /**
- * The diagram showing curves of relative humidity and effective temperature superimposed upon rectangular coordinates. The comfort zones indicate when humans feel good.
+ * The diagram showing curves of relative humidity and effective temperature superimposed upon rectangular coordinates. The comfort-zones indicate when humans feel good.
  * 
  * @param       unique id for this widget
- * @param       a gad/item for the actual-temperature
- * @param       a gad/item for the set-temperature
+ * @param       a gad/item for the temperature
+ * @param       a gad/item for the humidity
  */ 
 {% macro comfortchart(id, gad_temp, gad_humidity) %}
     

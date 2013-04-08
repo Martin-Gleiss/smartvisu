@@ -167,9 +167,10 @@ var widget = {
     update: function(item, value) {
 		
 		// update if value has changed
-        if (value === undefined || widget.buffer[item] !== value || widget.buffer[item] instanceof Array ) {
+        if (value === undefined || widget.buffer[item] !== value || 
+			(widget.buffer[item] instanceof Array && widget.buffer[item].toString() != value.toString()) ) {
 			widget.set(item, value);
-		    
+			
 			$('[data-item*="' + item + '"]').each(function(idx) {
 				var items = widget.explode($(this).attr('data-item')); 
 
@@ -701,7 +702,10 @@ $(document).delegate('div[data-widget="plot.period"]', {
 		for (var i = 0; i < response.length; i++) { 
             if (response[i]) {
                 var series = $('#' + this.id).highcharts().series[i];
-                series.addPoint(response[i], true, true);
+				
+				// more points?
+				for (var j = 0; j < response[i].length; j++)
+                	series.addPoint(response[i][j], true, false);
         }};
 	}
 });
@@ -755,7 +759,20 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 				title: { text: axis[1] } },
 			tooltip: { valueSuffix: ' °' }
         });
-    }
+    },
+
+	'point': function(event, response) {
+		// DEBUG: console.log("[plot.rtr] point '" + this.id + "' with "); console.log(response);
+		
+		for (var i = 0; i < response.length; i++) { 
+            if (response[i]) {
+                var series = $('#' + this.id).highcharts().series[i];
+				
+				// more points?
+				for (var j = 0; j < response[i].length; j++)
+                	series.addPoint(response[i][j], true, false);
+        }};
+	}
 });
 
 
@@ -788,7 +805,7 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
         $('#' + this.id).highcharts({
             series: plots,
  		    xAxis: { min: 10, max: 35, title: { text: axis[0], align: 'high', margin: -2 } },
-		   	yAxis: { min: 0, max: 100, title: { text: axis[1], margin: 5 } },
+		   	yAxis: { min: 0, max: 100, title: { text: axis[1], margin: 7 } },
             plotOptions: { area: { enableMouseTracking: false } },
             tooltip: { formatter: function() { return this.x +' °C / '+ this.y + ' %'; } }
         });
