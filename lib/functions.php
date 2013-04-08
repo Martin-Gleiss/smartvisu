@@ -78,7 +78,11 @@
         return $date;
     }
    
-
+  /** 
+  	* Parameter
+  	* 
+  	* @param the subset of translation keys                       	
+	*/   
 	function transparam($subset)
 	{
 		$ret = '';

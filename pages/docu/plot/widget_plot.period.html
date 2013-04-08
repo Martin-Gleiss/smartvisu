@@ -15,8 +15,8 @@
     <h5>Example</h5>
     <div class="twig">
         <code class="prettyprint">
-			&#123;&#123; plot.period('p1', 'bath_plot_value', '3h') &#125;&#125;<br />
-			&#123;&#123; plot.period('p2', ['bath_plot1', 'bath_plot2', 'bath_plot3'], '1h', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) &#125;&#125;
+			&#123;&#123; plot.period('p1', 'bath_plot_value', 'avg', '3h') &#125;&#125;<br />
+			&#123;&#123; plot.period('p2', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 0, 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) &#125;&#125;
 		</code>
     </div>
     <div class="html">
@@ -27,7 +27,7 @@
 	    
 	    	<div data-role="collapsible" data-collapsed="false">
 	    	   	<h3>p1: a simple plot</h3>
-				{{ plot.period('p1', 'bath_plot_value', '3h') }}
+				{{ plot.period('p1', 'bath_plot_value', 'avg', '3h') }}
 			</div>
 	      	
 	    </div>    
@@ -39,7 +39,7 @@
 	    
 	    	<div data-role="collapsible" data-collapsed="false">
 	    	   	<h3>p2: a plot with 3 series</h3>
-				{{ plot.period('p2', ['bath_plot1', 'bath_plot2', 'bath_plot3'], '1h', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) }}
+				{{ plot.period('p2', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 0, 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) }}
 			</div>
 	      	
 	    </div>    

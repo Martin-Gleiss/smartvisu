@@ -173,68 +173,48 @@ var io = {
                 })                            
                 .done(function (response) {
 					
-					// if there are plots, fill them with random values
+					// are there any plots?
 					widget.plot().each(function(idx) {
-						var items = widget.explode($(this).attr('data-item')); 
-						for (var i = 0; i < items.length; i++) {
-                           	if (response[items[i]] == null) 
-                                if (!widget.get(items[i]))
-									if(items[i].substr(items[i].length - 4, 4) == '.bit')
-										response[items[i]] = io.seriesBit($(this).attr('data-period'));
-                                	else	
-										response[items[i]] = io.seriesFloat($(this).attr('data-period'), $(this).attr('data-min'), $(this).attr('data-max'));
-                                else
-                                    response[items[i]] = widget.get(items[i]);	
-						}	
+						var items = widget.explode($(this).attr('data-item'));
+												
+                        for (var i = 0; i < items.length; i++) {
+							var item = items[i].split('.');
+
+						    if (response[items[i]] == null) 
+                                if (!(response[items[i]] = widget.get(items[i])))
+									response[items[i]] = io.random(item[item.length - 2], item[item.length - 1], $(this).attr('data-min'), $(this).attr('data-max'), $(this).attr('data-step'));
+                        }	
 					});
 				
 					// update all items	
 				    $.each(response, function(item, val) {
-						widget.update(item, val);
+                   		widget.update(item, val);
                     })
+
+					
+					
                 })
         }
     },
 
   /**
-    * Builds a series out of random bit values	
-    */	 
-	seriesBit: function(period) {
-
-	    var ret = Array();
-        var val = 0;
-		
-		period = new Date().duration(period);
-		var now = new Date();
-		var start = now - period;
-		var step = Math.round((now - start) / 20);
-	
-		while (start <= now) {
-			ret.push([start, Math.random() > 0.5]);
-			start += step;
-		}
-
-		return ret;
-	},
-
-  /**
     * Builds a series out of random float values	
     */	 
-	seriesFloat: function(period, min, max) {
+	random: function(tmin, tmax, min, max, cnt) {
 
 	    var ret = Array();
         var val = (min * 1) + ((max - min) / 2);
 		var delta = (max - min) / 20;
 		
-		period = new Date().duration(period);
-		var now = new Date();
-		var start = now - period;
-		var step = Math.round((now - start) / 20);
-		
-		while (start <= now) {
+		tmin = new Date().getTime() - new Date().parse(tmin);
+		tmax = new Date().getTime() - new Date().parse(tmax);
+		var step = Math.round((tmax - tmin) / cnt);
+	
+		while (tmin <= tmax) {
+            
 			val += Math.random() * (2 * delta) - delta;		
-            ret.push([start, Math.round(val * 10) / 10]);
-			start += step;
+            ret.push([tmin, Math.round(val * 10) / 10]);
+			tmin += step;
 		}
 
 		return ret;

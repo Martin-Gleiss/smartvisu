@@ -114,49 +114,8 @@ var io = {
                     break;
 
                 case 'series':
-					// DEBUG: console.log("[io.smarthome.py] receiving rrd: " + event.data);
-            
-					/*
-					if (data.frame == 'update') {
-						// single value (remove the oldest)
-                		widget.plot().each(function(idx) {
-							if (data.step == $(this).attr('data-step') || $(this).attr('data-step') === undefined) {
-								var items = widget.explode($(this).attr('data-item')); 
-								for (var i = 0; i < items.length; i++) { 
-									if (items[i] == data.item) {
-					            	var series = widget.get(items[i] + '.rrd.' + $(this).attr('data-period'));
-									series.shift();
-									series.push([time, data.series[0]]);
-									widget.set(data.item + '.rrd.' + $(this).attr('data-period'), series);	
-					   			}}
-							}
-						});
-					} else {
-					// complete graph  
-				 	var series = Array();
-			        for (var i = 0; i < data.series.length; i++) {
-			            series.push([time, data.series[i]]);
-			            time += step;
-			        };
-					
-					widget.set(data.item + '.series', data.data);
-					};
-                    */
-
-					widget.set(data.item + '.series', data.data);
-					
-					widget.plot(data.item).each(function(idx) {
-						var items = widget.explode($(this).attr('data-item'));	
-			        	var values = Array();
-			
-						for (var i = 0; i < items.length; i++) { 
-							series = widget.get(items[i] + '.series');
-							if (series !== undefined)
-								values.push(series);
-						}
-						
-						$(this).trigger('update', [values]);
-					});	
+					// DEBUG: console.log("[io.smarthome.py] receiving series: " + event.data);
+            		widget.update(data.sid.replace(/\|/g, '\.'), data.series);
 					break;
 
                 case 'dialog':
@@ -200,9 +159,12 @@ var io = {
 			
 			// series: avg, min, max, sum, diff, rate
 			widget.plot().each(function(idx) {
-				var items = widget.explode($(this).attr('data-item')); 
+            	var items = widget.explode($(this).attr('data-item')); 
 				for (var i = 0; i < items.length; i++) { 
-	            	io.send({'cmd': 'series', 'item': items[i], 'series' : $(this).attr('data-mode'), 'start': $(this).attr('data-period')});
+			
+	                var pt = items[i].split('.');
+					var item = items[i].substr(0, items[i].length - 3 - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
+					io.send({'cmd': 'series', 'item': item, 'series' : pt[pt.length - 3], 'start': pt[pt.length - 2]});
 		   	}});
         }
     },
