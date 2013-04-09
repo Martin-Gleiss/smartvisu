@@ -28,12 +28,12 @@
     {{ basic.colordisc('colordisc1', 'bath_color_r', 'bath_color_g', 'bath_color_b') }}
     {{ basic.symbol('symbol1', 'bath_light_switch') }}
     
-	{{ basic.checkbox('checkbox1', 'bath_light_switch1', 'Checkbox') }}
+	{{ basic.checkbox('checkbox1', 'bath_light_switch', 'Checkbox') }}
 	{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
 	
 	<br />
 	<div style="height: 180px; width: 100px; display: inline-block;"> 
-		{{ basic.slider('slider2', 'bath_light_value', 0, 255, 1, 'vertical') }}
+		{{ basic.slider('slider2', 'bath_light_value2', 0, 255, 1, 'vertical') }}
 	</div>
 		<div style="height: 180px; width: 100px; display: inline-block;"> 
 		{{ basic.slider('slider3', 'bath_light_value', 0, 255, 1, 'bottomup') }}
@@ -44,7 +44,25 @@
     
 	<h2>Plots</h2>
 
-	{{ plot.period('p1', 'bath_plot_value', '1i') }}
+    <div class="block">
+        <div class="ui-bar-c ui-li-divider ui-corner-top">Plot</div>
+        <div class="ui-fixed ui-body-a ui-corner-bottom">
+            
+            <p>	{{ plot.period('p1', 'bath_plot_value', 'avg', '5i', 0, 0, 255, 50) }}</p>
+          
+        </div>
+    </div>
+
+    <div class="block">
+        <div class="ui-bar-c ui-li-divider ui-corner-top">Plot</div>
+        <div class="ui-fixed ui-body-a ui-corner-bottom">
+            
+            <p>	{{ plot.period('p2', ['bath_plot_value', 'bath_plot_value2'] , 'avg' , '5i', 0, 0, 255, 50, '', '', ['spline', 'area']) }}</p>
+
+        </div>
+    </div>
+
+
 
 <style type="text/css">
 <!--
@@ -55,17 +73,18 @@
 
 
 <script type="text/javascript"> 
-$(document).delegate('input[data-widget="basic.slider"]', {
-	'click': function(event) {   
-		$('#overview-p1').trigger('point', [ [ (new Date()).getTime() ,  parseFloat($(this).val()) ] ] );
-		//var series = widget.get('bath_plot_value');
-		//series.shift();
-		//series.push([(new Date()).getTime(), parseFloat($(this).val()) ]); 
-		//widget.update('bath_plot_value', series);  
+$(document).delegate('input[data-widget="basic.slider"][data-item="bath_light_value"]', {
+	'click': function(event) {
+		widget.update('bath_plot_value.avg.5i.0', [ (new Date()).getTime() ,  parseFloat($(this).val()) ]);
 	} 
 }); 
-</script>  
 
+$(document).delegate('input[data-widget="basic.slider"][data-item="bath_light_value2"]', {
+	'click': function(event) {
+		widget.update('bath_plot_value2.avg.5i.0', [ (new Date()).getTime() ,  parseFloat($(this).val()) ]);
+	} 
+});
+</script>  
 
 
 {% endblock %}
