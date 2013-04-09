@@ -61,7 +61,7 @@
   /**
     * Select your language. Some widgets are multilanguage 
     */
-    define ('config_lang',                  'de');
+    define ('config_lang',                  'en');
      
   /**
     * The default page loaded in the project directory   
@@ -82,7 +82,7 @@
     * How is the page-transition made?
     * 'none', 'fade' (default), 'slide' 
     */
-    define ('config_transition',    		'none');
+    define ('config_transition',    		'fade');
 
   /**
     * the refresh-delay between glued widgets 

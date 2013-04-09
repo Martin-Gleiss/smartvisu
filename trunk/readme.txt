@@ -83,6 +83,7 @@ TODO
 HISTORY
 --------------------------------------------------------------------------------
 v 2.4       
+	- improved widget: basic.shutter, now with dynamic symbols
 	- improved design: cube v2, best viewed with solar_winds.png background                                      	
 	- project: visu.css and visu.js are included if they are in own project
 	- new widget: plot.period for plotting graphs
