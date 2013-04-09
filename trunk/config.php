@@ -12,7 +12,7 @@
   /**
     * Version of smartVISU
     */
-    define ('config_version',               '2.3');
+    define ('config_version',               '2.4');
     
 
 // -----------------------------------------------------------------------------
@@ -20,7 +20,7 @@
 // -----------------------------------------------------------------------------
 
   /**
-    * Driver to KNX
+    * The backend
     */
     define ('config_driver',                'offline');
   
@@ -77,6 +77,12 @@
     * Is the page-cache enabled?
     */
     define ('config_cache',                 false);
+
+  /**
+    * How is the page-transition made?
+    * 'none', 'fade' (default), 'slide' 
+    */
+    define ('config_transition',    		'none');
 
   /**
     * the refresh-delay between glued widgets 
