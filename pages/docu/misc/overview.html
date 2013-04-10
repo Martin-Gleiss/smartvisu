@@ -75,13 +75,13 @@
 <script type="text/javascript"> 
 $(document).delegate('input[data-widget="basic.slider"][data-item="bath_light_value"]', {
 	'click': function(event) {
-		widget.update('bath_plot_value.avg.5i.0', [ (new Date()).getTime() ,  parseFloat($(this).val()) ]);
+		widget.update('bath_plot_value.avg.5i.0', [[ (new Date()).getTime() ,  parseFloat($(this).val()) ]] );
 	} 
 }); 
 
 $(document).delegate('input[data-widget="basic.slider"][data-item="bath_light_value2"]', {
 	'click': function(event) {
-		widget.update('bath_plot_value2.avg.5i.0', [ (new Date()).getTime() ,  parseFloat($(this).val()) ]);
+		widget.update('bath_plot_value2.avg.5i.0', [[ (new Date()).getTime() ,  parseFloat($(this).val()) ]] );
 	} 
 });
 </script>  
