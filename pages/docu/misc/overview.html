@@ -35,13 +35,16 @@
 	<div style="height: 180px; width: 100px; display: inline-block;"> 
 		{{ basic.slider('slider2', 'bath_light_value2', 0, 255, 1, 'vertical') }}
 	</div>
-		<div style="height: 180px; width: 100px; display: inline-block;"> 
-		{{ basic.slider('slider3', 'bath_light_value', 0, 255, 1, 'bottomup') }}
+	<div style="display: inline-block; margin: 10px;"> 
+		{{ basic.slider('slider3', 'bath_blind_angle', 0, 255, 1, 'semicircle') }}
 	</div>
 
-	{{ basic.shutter('shutter1', 'bath_light_value', 'bath_blind_angle') }} 
-	{{ basic.tank('tank1', 'bath_light_value', 0, 255, 5, 'water') }}
-    
+	{{ basic.shutter('shutter1', 'bath_light_value2', 'bath_blind_angle') }} 
+	
+	<div style=" display: inline-block;"> 
+		{{ basic.tank('tank1', 'bath_light_value', 0, 255, 5, 'water') }}
+    </div>
+
 	<h2>Plots</h2>
 
     <div class="block">
@@ -57,7 +60,7 @@
         <div class="ui-bar-c ui-li-divider ui-corner-top">Plot</div>
         <div class="ui-fixed ui-body-a ui-corner-bottom">
             
-            <p>	{{ plot.period('p2', ['bath_plot_value', 'bath_plot_value2'] , 'avg' , '5i', 0, 0, 255, 50, '', '', ['spline', 'area']) }}</p>
+            <p>	{{ plot.period('p2', ['bath_plot_value2', 'bath_blind_angle'] , 'avg' , '5i', 0, 0, 255, 50, '', '', ['spline', 'area']) }}</p>
 
         </div>
     </div>
@@ -82,6 +85,12 @@ $(document).delegate('input[data-widget="basic.slider"][data-item="bath_light_va
 $(document).delegate('input[data-widget="basic.slider"][data-item="bath_light_value2"]', {
 	'click': function(event) {
 		widget.update('bath_plot_value2.avg.5i.0', [[ (new Date()).getTime() ,  parseFloat($(this).val()) ]] );
+	} 
+});
+
+$(document).delegate('input[data-widget="basic.slider"][data-item="bath_blind_angle"]', {
+	'click': function(event) {
+		widget.update('bath_blind_angle.avg.5i.0', [[ (new Date()).getTime() ,  parseFloat($(this).val()) ]] );
 	} 
 });
 </script>  

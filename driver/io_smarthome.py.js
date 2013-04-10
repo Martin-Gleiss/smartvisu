@@ -162,9 +162,11 @@ var io = {
             	var items = widget.explode($(this).attr('data-item')); 
 				for (var i = 0; i < items.length; i++) { 
 			
-	                var pt = items[i].split('.');
-					var item = items[i].substr(0, items[i].length - 3 - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
-					io.send({'cmd': 'series', 'item': item, 'series' : pt[pt.length - 3], 'start': pt[pt.length - 2]});
+					if (widget.is_series(items[i])) {
+		                var pt = items[i].split('.');
+						var item = items[i].substr(0, items[i].length - 3 - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
+						io.send({'cmd': 'series', 'item': item, 'series' : pt[pt.length - 3], 'start': pt[pt.length - 2]});
+					}
 		   	}});
         }
     },
