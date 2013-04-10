@@ -250,7 +250,23 @@ var widget = {
 			ret = $('[data-widget^="plot."][data-item]'); 
       
         return ret;   
-    }
+    },
+
+  /**
+    * Checks if the item is a series.
+    *       
+    * @param	item: matches all plot-widgets with that item
+    */
+	is_series: function(item) {
+
+		var pt = item.split('.');
+		
+		if ((pt instanceof Array) && (pt[pt.length - 3] == 'avg' || pt[pt.length - 3] == 'sum' || 
+			pt[pt.length - 3] == 'min' || pt[pt.length - 3]	== 'max')) {
+			return true;		
+		} else
+			return false;
+	},
 } 
 
 

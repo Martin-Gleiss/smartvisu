@@ -181,18 +181,19 @@ var io = {
 							var item = items[i].split('.');
 
 						    if (response[items[i]] == null) 
-                                if (!(response[items[i]] = widget.get(items[i])))
-									response[items[i]] = io.random(item[item.length - 2], item[item.length - 1], $(this).attr('data-min'), $(this).attr('data-max'), $(this).attr('data-step'));
-                        }	
+                                if (!(response[items[i]] = widget.get(items[i]))) {
+									if (widget.is_series(items[i]))
+										response[items[i]] = io.series(item[item.length - 2], item[item.length - 1], $(this).attr('data-min'), $(this).attr('data-max'), $(this).attr('data-step'));
+                        			else
+                                    	response[items[i]] = 0;
+								}
+						}	
 					});
 				
 					// update all items	
 				    $.each(response, function(item, val) {
                    		widget.update(item, val);
                     })
-
-					
-					
                 })
         }
     },
@@ -200,7 +201,7 @@ var io = {
   /**
     * Builds a series out of random float values	
     */	 
-	random: function(tmin, tmax, min, max, cnt) {
+	series: function(tmin, tmax, min, max, cnt) {
 
 	    var ret = Array();
         var val = (min * 1) + ((max - min) / 2);
