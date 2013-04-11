@@ -28,12 +28,11 @@
 {% macro updatecheck( ) %}
     <script type="text/javascript">
         $('#index').on('pagecreate',function(event, ui){ 
-            $.getJSON('lib/base/updatecheck.php', function(data) {
-                if (data.update)
-                {
-                    $('#alert img').attr('src', 'pages/base/pics/alert_update.png');
-                    $('#alert a').attr('href', 'index.php?page=update&local=' + data.local + '&remote=' + data.remote);
-                    $('#alert').show();
+            $.getJSON('lib/base/check_update.php?local={{ config_version }}', function(data) {
+                if (data.update) {
+					notify.update('smartVISU update available!', 'Your local version is: <b>' + data.local + '</b><br>' +
+						'New remote version is: <b>' + data.remote + '</b><br><br>' +
+						'Please visit <a target="_blank" href="http://code.google.com/p/smartvisu">code.google.com</a> to download the new version!<br />');
                 }
             });
         });
