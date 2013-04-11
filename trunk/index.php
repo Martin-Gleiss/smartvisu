@@ -8,6 +8,11 @@
  * ----------------------------------------------------------------------------- 
  */
  
+
+  /**
+    * Version of smartVISU
+    */
+    define ('config_version', '2.4');
  
     // get config-variables 
     require_once 'config.php';
