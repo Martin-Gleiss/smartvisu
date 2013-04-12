@@ -604,6 +604,87 @@ $(document).delegate('div[data-widget="basic.colordisc"]', {
 });
 
 $(document).delegate('canvas[data-widget="basic.colordisc"]', { 
+	'init': function(event) { 
+		var colors = parseFloat($(this).attr('data-colors'));  
+		var size = 280;
+		var canvas = $(this)[0];
+		var step = 100 / ($(this).attr('data-step') / 2);
+		
+	    var arc = Math.PI / (colors + 2) * 2;
+	    var startangle = -(Math.PI / 2) + arc;
+	    var gauge = (size - 10) / 16 / ($(this).attr('data-step') / 8);
+	    var share = 360 / colors;
+	    var ctx;
+
+	    canvas.width = size;
+	    canvas.height = size;
+		
+		if (canvas.getContext) {
+	        var center = size / 2 - 1;
+	        ctx = canvas.getContext("2d");
+
+			// draw background
+    		ctx.beginPath();
+	        ctx.fillStyle = '#888';
+	        ctx.shadowColor = 'rgba(96,96,96,0.4)' 
+			ctx.shadowOffsetX = 2; 
+			ctx.shadowOffsetY = 2; 
+			ctx.shadowBlur = 4;
+            ctx.arc(center, center, size / 2 - 1, 0, 2 * Math.PI);
+			ctx.fill();
+			ctx.beginPath();
+			ctx.shadowOffsetX = 0; 
+			ctx.shadowOffsetY = 0; 
+			ctx.shadowBlur = 0;
+		    ctx.fillStyle = '#555';
+	        ctx.arc(center, center, size / 2 - 2, 0, 2 * Math.PI);
+		    ctx.fill();
+
+			// draw colors
+	        for(var i = 0; i <= colors; i++) {
+	            var angle = startangle + i * arc;
+	            var ring = 1;
+	            var h = i * share;
+	            for (var v = step; v <= 100; v += step) {
+	                ctx.beginPath();
+	                ctx.fillStyle = hsv2rgb(h, 100, v);
+	                ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
+	                ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
+	                ctx.fill();
+	                ring += 1;
+	            };
+	            for (var s = (100 - step); s >= step; s -= step) {
+	                ctx.beginPath();
+	                ctx.fillStyle = hsv2rgb(h, s, 100);
+	                ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
+	                ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
+	                ctx.fill();
+	                ring += 1;
+	            };
+	        };
+
+			// draw grey
+	        i -= 1;
+	        angle = startangle + i * arc;
+	        ring = 1;
+	        h = i * share;
+	        for (var v = step; v <= 100; v += (step / 2)) {
+	            ctx.beginPath();
+	            ctx.fillStyle = hsv2rgb(h, 0, v);
+	            ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + 2 * arc + 0.01, false);
+	            ctx.arc(center, center, ring * gauge, angle + 2 * arc + 0.01, angle, true);
+	            ctx.fill();
+	            ring += 1;
+	        };
+
+			// draw center
+	        ctx.beginPath();
+	        ctx.fillStyle = 'rgb(0,0,0)';
+	        ctx.arc(center, center, gauge + 1, 0, 2 * Math.PI);
+	        ctx.fill();
+	    }
+	},
+
     'click': function(event) {
 		var uid = this.id.substr(0, this.id.length - 5);
 		var disc = $(this)[0];
