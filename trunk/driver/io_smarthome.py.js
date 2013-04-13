@@ -99,10 +99,11 @@ var io = {
         io.socket.onmessage = function(event) {
             var item, val;
             var data = JSON.parse(event.data);
-            // DEBUG: console.log("[io.smarthome.py] receiving data: " + event.data);
+            // DEBUG: 
+			console.log("[io.smarthome.py] receiving data: " + event.data);
 			
             switch(data.cmd) {
-                case 'item':
+                case 'item':       
                     for (var i = 0; i < data.items.length; i++) {
                         item = data.items[i][0];
                         val = data.items[i][1];
@@ -115,6 +116,7 @@ var io = {
 
                 case 'series':
 					// DEBUG: console.log("[io.smarthome.py] receiving series: " + event.data);
+					data.sid = data.sid.substr(0, data.sid.length - 3) + '0';
             		widget.update(data.sid.replace(/\|/g, '\.'), data.series);
 					break;
 
