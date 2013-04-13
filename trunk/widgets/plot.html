@@ -27,10 +27,11 @@
  * @see 		misc/fundamentals#Array-Form	
  * @see 		misc/fundamentals#Duration-Format		
  */ 
-{% macro period(id, gad, mode, tmin, tmax, min, max, step, label, color, exposure, axes) %}
+{% macro period(id, gad, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes) %}
    
 	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(gad, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}" 
-        data-min="{{ ymin|default(0) }}" data-max="{{ ymax|default(275) }}" data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}" 
+        {% if ymin %} data-min="{{ ymin }}" {% endif %} {% if ymax %} data-max="{{ ymax }}" {% endif %}
+		data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}" 
         data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axes) }}"
 		class="plot"></div>
 
@@ -47,7 +48,7 @@
  */ 
 {% macro rtr(id, gad_actual, gad_set, gad_state) %}
    
-	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([gad_actual, gad_set, gad_state], ['avg', '2h', 0]) }}" 
+	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([gad_actual, gad_set, gad_state], ['avg', '6h', 0]) }}" 
 		data-step="50" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
 		class="plot"></div>
 
