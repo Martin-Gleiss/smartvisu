@@ -2,7 +2,7 @@ How to install smartVISU on a Debian based Webserver
 
 = Introduction =
 
-It is quite easy to install smartVISU on a Webserver. 
+It is quite easy to install smartVISU on a Webserver. This tutorial discribes, how to setup a server with eibd, LinKNX and smartVisu on Debian.
 
 *required hadware:*
  * a server, with internet connection, of you choise...
