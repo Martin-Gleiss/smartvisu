@@ -39,8 +39,11 @@
 		ret = Array();
 		
 		if (this.length) {
-			ret = this.replace(/\s/g, '').split(delimiter !== undefined ? delimiter : ',');
-		};
+			ret = this.split(delimiter !== undefined ? delimiter : ',');
+			
+			for (var i = 0; i < ret.length; i++) {
+				ret[i] = ret[i].trim();
+		}};
 
 		return ret;
 	};
