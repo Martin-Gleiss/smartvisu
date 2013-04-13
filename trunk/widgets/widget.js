@@ -255,7 +255,7 @@ var widget = {
   /**
     * Checks if the item is a series.
     *       
-    * @param	item: matches all plot-widgets with that item
+    * @param	an item
     */
 	is_series: function(item) {
 
@@ -266,7 +266,7 @@ var widget = {
 			return true;		
 		} else
 			return false;
-	},
+	}
 } 
 
 
@@ -779,7 +779,8 @@ $(document).delegate('div[data-widget="plot.period"]', {
 		
         for (var i = 0; i < response.length; i++) { 
 			series[i] = {
-				type: (exposure[i] ? exposure[i] : 'line'),
+				type: (exposure[i] != 'stair' ? exposure[i] : 'line'),
+				step: (exposure[i] == 'stair' ? 'left' : false),
 				name: label[i], 
                 data: response[i],
 				color: (color[i] ? color[i] : null)
@@ -788,8 +789,8 @@ $(document).delegate('div[data-widget="plot.period"]', {
  		// draw the plot
 		$('#' + this.id).highcharts({
             series: series,
- 		    xAxis: { type: 'datetime' },
-		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max') }
+ 		    xAxis: { type: 'datetime', title: { text: axis[0] } },
+		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'), title: { text: axis[1] } }
         });
     },
 
@@ -833,9 +834,9 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 		$('#' + this.id).highcharts({
             chart: { type: 'line' },
 			series: [{ 
-				name: label[0], data: response[0]
+				name: label[0], data: response[0], type: 'spline'
 			} , {
-				name: label[1], data: response[1], dashStyle: 'shortdot'
+				name: label[1], data: response[1], dashStyle: 'shortdot', step: 'left',
 			} , {
 				type: 'pie', name: '∑ ',
                 data: [{ 
@@ -859,16 +860,17 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
     },
 
 	'point': function(event, response) {
-		// DEBUG: console.log("[plot.rtr] point '" + this.id + "' with "); console.log(response);
+		// DEBUG: 
+		console.log("[plot.rtr] point '" + this.id + "' with "); console.log(response);
 		
 		for (var i = 0; i < response.length; i++) { 
-            if (response[i]) {
-                var series = $('#' + this.id).highcharts().series[i];
-				
-				// more points?
-				for (var j = 0; j < response[i].length; j++)
-                	series.addPoint(response[i][j], true, false);
-        }};
+            if (response[i] && (i == 0 || i == 1)) {
+	                var series = $('#' + this.id).highcharts().series[i];
+					for (var j = 0; j < response[i].length; j++)
+	                	series.addPoint(response[i][j], true, false);
+        	} else if (response[i] && (i == 2)) {
+				console.log("recalc");	
+		}};
 	}
 });
 

@@ -21,7 +21,7 @@
  * @param       the step between two time-points (optional, only for 'offline'-driver)
  * @param       label/s for each serie (optional) 
  * @param       color/s for each serie e. g. '#f00' for red (optional, default: sutiable for design) 
- * @param       type/s for each serie: 'line', 'spline', 'area', 'areaspline', 'column' (optional, default 'line') 
+ * @param       type/s for each serie: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line') 
  * @param       title/s for the x-axis and y-axis 
  * 
  * @see 		misc/fundamentals#Array-Form	
@@ -48,8 +48,7 @@
 {% macro rtr(id, gad_actual, gad_set, gad_state) %}
    
 	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([gad_actual, gad_set, gad_state], ['avg', '2h', 0]) }}" 
-        data-min="10" data-max="35" data-step="50"
-		data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
+		data-step="50" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
 		class="plot"></div>
 
 {% endmacro %}

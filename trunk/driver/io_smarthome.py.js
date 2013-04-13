@@ -99,8 +99,7 @@ var io = {
         io.socket.onmessage = function(event) {
             var item, val;
             var data = JSON.parse(event.data);
-            // DEBUG: 
-			console.log("[io.smarthome.py] receiving data: " + event.data);
+            // DEBUG: console.log("[io.smarthome.py] receiving data: " + event.data);
 			
             switch(data.cmd) {
                 case 'item':       

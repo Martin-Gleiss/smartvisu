@@ -204,6 +204,10 @@ var io = {
 	series: function(tmin, tmax, min, max, cnt) {
 
 	    var ret = Array();
+
+		if (!min) min = 0;
+		if (!max) max = 255;
+
         var val = (min * 1) + ((max - min) / 2);
 		var delta = (max - min) / 20;
 		
