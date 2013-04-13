@@ -15,7 +15,7 @@ Highcharts.theme = {
 		plotShadow: false,
 		plotBorderWidth: 0,
 		marginRight: 10,
-		marginLeft: 45,
+		marginLeft: 50,
         style: {
         	fontFamily: 'Dosis, sans-serif'
 		}
@@ -44,8 +44,9 @@ Highcharts.theme = {
 			}
 		},
 		title: {
+			align: 'high',
 			style: {
-				color: '#aaa', fontSize: '12px'
+				color: '#aaa', fontSize: '13px'
 			}
 		}
 	},
@@ -62,9 +63,8 @@ Highcharts.theme = {
 			}
 		},
 		title: {
-			x: 10,
 			style: {
-				color: '#aaa', fontSize: '12px'
+				color: '#aaa', fontSize: '13px'
 			}
 		}
 	},
