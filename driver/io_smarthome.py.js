@@ -109,6 +109,11 @@ var io = {
                         if ( data.items[i].length > 2 ) {
                             // not supported: data.p[i][2] options for visu
                         };
+
+						// convert binary
+						if (val === false) val = 0;
+                        if (val === true) val = 1;
+
                         widget.update(item, val);
                     };
                     break;
