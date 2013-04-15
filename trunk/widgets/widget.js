@@ -803,7 +803,7 @@ $(document).delegate('div[data-widget="plot.period"]', {
 				
 				// more points?
 				for (var j = 0; j < response[i].length; j++)
-                	series.addPoint(response[i][j], true, false);
+                	series.addPoint(response[i][j], true, (series.data.length >= 100) );
         }};
 	}
 });
@@ -860,16 +860,17 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
     },
 
 	'point': function(event, response) {
-		// DEBUG: 
-		console.log("[plot.rtr] point '" + this.id + "' with "); console.log(response);
+		// DEBUG: console.log("[plot.rtr] point '" + this.id + "' with "); console.log(response);
 		
 		for (var i = 0; i < response.length; i++) { 
-            if (response[i] && (i == 0 || i == 1)) {
-	                var series = $('#' + this.id).highcharts().series[i];
-					for (var j = 0; j < response[i].length; j++)
-	                	series.addPoint(response[i][j], true, false);
+            var series = $('#' + this.id).highcharts().series[i];
+			if (response[i] && (i == 0 || i == 1)) {
+                for (var j = 0; j < response[i].length; j++)
+                	series.addPoint(response[i][j], true, (series.data.length >= 100));
         	} else if (response[i] && (i == 2)) {
-				console.log("recalc");	
+				
+				console.log("recalc");
+
 		}};
 	}
 });

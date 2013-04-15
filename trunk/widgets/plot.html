@@ -48,7 +48,7 @@
  */ 
 {% macro rtr(id, gad_actual, gad_set, gad_state) %}
    
-	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([gad_actual, gad_set, gad_state], ['avg', '6h', 0]) }}" 
+	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([gad_actual, gad_set, gad_state], ['avg', '1d', 0]) }}" 
 		data-step="50" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
 		class="plot"></div>
 
