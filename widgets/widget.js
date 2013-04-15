@@ -206,7 +206,7 @@ var widget = {
 		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget^="plot."][data-item]').each(function(idx) {
             
             if ($('#' + this.id).highcharts())
-                    $('#' + this.id).highcharts().destroy(); 
+				$('#' + this.id).highcharts().destroy(); 
         });   
 	},
     
@@ -247,7 +247,7 @@ var widget = {
 				}};
 			})
 		} else
-			ret = $('[data-widget^="plot."][data-item]'); 
+			ret = $('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget^="plot."][data-item]'); 
       
         return ret;   
     },
@@ -392,6 +392,7 @@ $(document).delegate('span[data-widget="basic.symbol"]', {
 // ----- basic.switch ----------------------------------------------------------
 $(document).delegate('span[data-widget="basic.switch"]', { 
 	'update': function(event, response) {
+		// DEBUG: console.log("[basic.switch] update val: " + response);   
 		$('#' + this.id + ' img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
     },
 
