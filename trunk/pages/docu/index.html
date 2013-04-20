@@ -128,9 +128,23 @@
 	its own format of the gad/s or item/s.<br /> 
 	<br />
 	Choose one of them:
-		
-    <div class="app" style="float:right;"><div class="image"><span style="font-size: 1.8em;">34</span><br /><span class="mini">widgets</span></div></div>
+	
+	<div style="float:right; width: 72px; color:#000; text-shadow: 0 1px 1px #fff;">
 
+	{% set widgets = 0 %}
+	{% for file in dir('widgets', '^(?!forms|lib)(.+?.html)') %}
+	{% set widgets = widgets + docu('widgets/'~file.name)|length %}
+	{% endfor %}
+    <div class="app"><div class="image" style="background-color: #cc0;"><span style="font-size: 1.8em;">{{ widgets }}</span><br /><span class="mini">widgets</span></div></div>
+	
+	{% set designs = dir('designs', '(.+?.min.css)')|length %}
+	<div class="app"><div class="image" style="background-color: #fa0;"><span style="font-size: 1.8em;">{{ designs }}</span><br /><span class="mini">designs</span></div></div>
+	
+	{% set driver = dir('driver', '^(?!_)(.+?.js)')|length %}
+	<div class="app"><div class="image" style="background-color: #0c0;"><span style="font-size: 1.8em;">{{ driver }}</span><br /><span class="mini">drivers</span></div></div>
+	
+	</div>
+    
 	</p>
   	
     <h2>Widgets</h2>

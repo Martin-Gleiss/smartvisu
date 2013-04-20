@@ -84,7 +84,7 @@ class weather_wunderground extends weather
         $icon["mostlycloudy"]       = "sun_5";
         $icon["mist"]               = "sun_6";
         $icon["chancerain"]         = "sun_7";
-        $icon["rain"]               = "sun_8";
+        $icon["rain"]               = "cloud_8";
         $icon["chancestorm"]        = "sun_9";
         $icon["storm"]              = "sun_10";
         $icon["chancesnow"]         = "sun_11";
