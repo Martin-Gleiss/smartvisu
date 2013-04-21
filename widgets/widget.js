@@ -825,7 +825,7 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 		var percent = 0;
         
 		for (var i = 0; i < state.length; i++) { 
-			if (state[i][1] > 0)
+			if (state[i][1] > 0.5)
 				percent += (state[i][0] - stamp);	
 			stamp = state[i][0];
 		};
