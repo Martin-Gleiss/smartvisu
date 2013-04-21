@@ -113,15 +113,17 @@ class weather_yr extends weather
         22 lightrainthunder
         23 sleetthunder
         */
-    
-        $icon[1]                    = "sun_1";
-        $icon[2]                    = "sun_2";
-        $icon[3]                    = "sun_3";
-        $icon[4]                    = "sun_5";
-        $icon[5]                    = "sun_7";
-        $icon[6]                    = "sun_9";
-        $icon[7]                    = "sun_11";
-        $icon[7]                    = "sun_13";
+
+		$sm = ((date('H') <= 6 || date('H') >= 20) ? 'moon' : 'sun');
+
+        $icon[1]                    = $sm."_1";
+        $icon[2]                    = $sm."_2";
+        $icon[3]                    = $sm."_3";
+        $icon[4]                    = $sm."_5";
+        $icon[5]                    = $sm."_7";
+        $icon[6]                    = $sm."_9";
+        $icon[7]                    = $sm."_11";
+        $icon[8]                    = $sm."_13";
         
         $icon[9]                    = "cloud_7";
         $icon[10]                   = "cloud_8";
@@ -131,8 +133,8 @@ class weather_yr extends weather
         $icon[14]                   = "cloud_15";
         $icon[15]                   = "cloud_6";
         
-        $icon[20]                   = "sun_10";
-        $icon[21]                   = "sun_10";
+        $icon[20]                   = $sm."_10";
+        $icon[21]                   = $sm."_10";
         $icon[22]                   = "cloud_10";
         $icon[23]                   = "cloud_17";
         
