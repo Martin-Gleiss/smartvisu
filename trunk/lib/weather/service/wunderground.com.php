@@ -77,24 +77,22 @@ class weather_wunderground extends weather
     {
         $ret = '';
         
-		$sm = ((date('H') <= 6 || date('H') >= 20) ? 'moon' : 'sun');
-
-        $icon["sunny"]              = $sm."_1";
-        $icon["mostlysunny"]        = $sm."_2";
-        $icon["clear"]              = $sm."_2";
-        $icon["partlycloudy"]       = $sm."_3";
-        $icon["mostlycloudy"]       = $sm."_5";
-        $icon["mist"]               = $sm."_6";
-        $icon["chancerain"]         = $sm."_7";
+		$icon["sunny"]              = $this->icon_sm."1";
+        $icon["mostlysunny"]        = $this->icon_sm."2";
+        $icon["clear"]              = $this->icon_sm."2";
+        $icon["partlycloudy"]       = $this->icon_sm."3";
+        $icon["mostlycloudy"]       = $this->icon_sm."5";
+        $icon["mist"]               = $this->icon_sm."6";
+        $icon["chancerain"]         = $this->icon_sm."7";
         $icon["rain"]               = "cloud_8";
-        $icon["chancestorm"]        = $sm."_9";
-		$icon["storm"]              = $sm."_10";
-        $icon["chancesnow"]         = $sm."_11";
-        $icon["snow"]               = $sm."_12";  
+        $icon["chancestorm"]        = $this->icon_sm."9";
+		$icon["storm"]              = $this->icon_sm."10";
+        $icon["chancesnow"]         = $this->icon_sm."11";
+        $icon["snow"]               = $this->icon_sm."12";
         
         $icon["cloudy"]             = "cloud_4";
         $icon["showers"]            = "cloud_8";
-		$icon["chancetstorms"]      = $sm."_9"; 
+		$icon["chancetstorms"]      = $this->icon_sm."9";
         $icon["thunderstorm"]       = "cloud_10";
         $icon["tstorms"]            = "cloud_10";
 		$icon["rain_snow"]          = "cloud_15";
