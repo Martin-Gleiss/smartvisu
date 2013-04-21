@@ -46,7 +46,7 @@ class weather_offline extends weather
         {
             $this->data['forecast'][$i]['date']        = date('Y-m-d', time() + 24 * 60 * 60 * ($i + 1));
 	        $this->data['forecast'][$i]['conditions']  = translate('clear sky', 'yr.no');
-            $this->data['forecast'][$i]['icon']        = $this->icon_sm.rand(1,5);
+            $this->data['forecast'][$i]['icon']        = 'sun_'.rand(1,5);
             $this->data['forecast'][$i]['temp']        = rand(22, 25).'&deg;/'.rand(18, 20).'&deg;';
         }
     }

@@ -57,7 +57,7 @@ class weather_yr extends weather
                     $this->data['current']['date']        = (string)$day->attributes()->from;
                     $this->data['current']['conditions']  = translate((string)$day->symbol->attributes()->name, 'yr.no');
                     $this->data['current']['wind']		  = translate((string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code, 'yr.no').$windspeed;
-                    $this->data['current']['icon']        = $this->icon((string)$day->symbol->attributes()->number);
+                    $this->data['current']['icon']        = $this->icon((string)$day->symbol->attributes()->number, $this->icon_sm);
                     $this->data['current']['temp']        = (float)$day->temperature->attributes()->value.'&deg;C';
                     $this->data['current']['more']        = (int)$day->pressure->attributes()->value.' hPa';
                     $i++;
@@ -84,7 +84,7 @@ class weather_yr extends weather
    /*
     * Icon-Mapper
     */
-    function icon($name)
+    function icon($name, $sm = 'sun_')
     {
         $ret = '';
         
@@ -114,27 +114,27 @@ class weather_yr extends weather
         23 sleetthunder
         */
 
-		$icon[1]                    = $this->icon_sm."1";
-        $icon[2]                    = $this->icon_sm."2";
-        $icon[3]                    = $this->icon_sm."3";
-        $icon[4]                    = $this->icon_sm."5";
-        $icon[5]                    = $this->icon_sm."7";
-        $icon[6]                    = $this->icon_sm."9";
-        $icon[7]                    = $this->icon_sm."11";
-        $icon[8]                    = $this->icon_sm."13";
+		$icon[1]                    = $sm.'1';
+        $icon[2]                    = $sm.'2';
+        $icon[3]                    = $sm.'3';
+        $icon[4]                    = $sm.'5';
+        $icon[5]                    = $sm.'7';
+        $icon[6]                    = $sm.'9';
+        $icon[7]                    = $sm.'11';
+        $icon[8]                    = $sm.'13';
         
-        $icon[9]                    = "cloud_7";
-        $icon[10]                   = "cloud_8";
-        $icon[11]                   = "cloud_10";
-        $icon[12]                   = "cloud_11";
-        $icon[13]                   = "cloud_13";
-        $icon[14]                   = "cloud_15";
-        $icon[15]                   = "cloud_6";
+        $icon[9]                    = 'cloud_7';
+        $icon[10]                   = 'cloud_8';
+        $icon[11]                   = 'cloud_10';
+        $icon[12]                   = 'cloud_11';
+        $icon[13]                   = 'cloud_13';
+        $icon[14]                   = 'cloud_15';
+        $icon[15]                   = 'cloud_6';
         
-        $icon[20]                   = $this->icon_sm."10";
-        $icon[21]                   = $this->icon_sm."10";
-        $icon[22]                   = "cloud_10";
-        $icon[23]                   = "cloud_17";
+        $icon[20]                   = $sm.'10';
+        $icon[21]                   = $sm.'10';
+        $icon[22]                   = 'cloud_10';
+        $icon[23]                   = 'cloud_17';
         
         $ret = $icon[$name];
         
