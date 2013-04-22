@@ -21,7 +21,7 @@
   /**
     * The address, might be a url or filename
     */
-    define ('config_driver_address',        '192.168.45.166');
+    define ('config_driver_address',        '192.168.x.x');
 
   /**
     * The port, if the driver needs one
