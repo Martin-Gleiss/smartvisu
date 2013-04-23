@@ -288,11 +288,20 @@ $(document).delegate('[data-widget="basic.value"]', {
     }
 });                                                
 
+
 // ----- basic.float -----------------------------------------------------------
 $(document).delegate('[data-widget="basic.float"]', { 
 	'update': function(event, response) {
-		$('#' + this.id).html( ((Math.round(response * 10) / 10).toFixed(1)) + ' ' + $(this).attr('data-unit'));
-    }
+		if ($(this).attr('data-unit') == '°')
+			$('#' + this.id).html( parseFloat(response).transTemp() );
+    	else if ($(this).attr('data-unit') == '%')
+			$('#' + this.id).html( parseFloat(response).transPercent() );
+    	else if ($(this).attr('data-unit') == '€')
+			$('#' + this.id).html( parseFloat(response).transCurrency() );
+    	else
+			$('#' + this.id).html( parseFloat(response).transFloat() + ' ' + $(this).attr('data-unit') );
+    
+	}
 });
 
 
@@ -380,8 +389,10 @@ $(document).delegate('span[data-widget="basic.symbol"]', {
         }
 		else
 		    bit = (response == $(this).attr('data-val'));   
-		  
-		if (bit)
+		
+		$('#' + this.id + ' img').attr('title', new Date());
+  
+	    if (bit)
 		    $('#' + this.id).show();
 		else
 		    $('#' + this.id).hide();

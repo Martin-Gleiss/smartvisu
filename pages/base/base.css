@@ -889,6 +889,7 @@ only if page-bg is placed in a div
 	top: 0;
 	width: 100px;
 	height: 180px;
+	cursor: pointer;
 }
 
 .shutter .control .icon {

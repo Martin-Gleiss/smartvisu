@@ -83,7 +83,7 @@
   	* 
   	* @param the subset of translation keys                       	
 	*/   
-	function transparam($subset)
+	function trans($subset, $key = '')
 	{
 		$ret = '';
 		static $lang;
@@ -91,10 +91,15 @@
 		if (!$lang)
 			eval(fileread('lang/lang_'.config_lang.'.txt'));
 
-		foreach(($lang[$subset]) as $key => $val)
-			$ret .= "'".$val."', ";
-
-		$ret = '['.substr($ret, 0, -2).']';
+		if (is_array($lang[$subset]) && $key == '')
+		{
+			foreach(($lang[$subset]) as $key => $val)
+				$ret .= "'".$val."', ";
+	
+			$ret = '['.substr($ret, 0, -2).']';
+		}
+		elseif (isset($lang[$subset][$key]))
+			$ret = $lang[$subset][$key];
 
 		return $ret;
 	} 

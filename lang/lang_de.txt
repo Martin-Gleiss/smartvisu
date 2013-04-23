@@ -13,11 +13,11 @@
 // F O R M A T
 // -----------------------------------------------------------------------------
 
-$lang['format']['int']				= '1000';
-$lang['format']['float']			= '1.000,00';
-$lang['format']['temp']				= '1000,0 °C';
-$lang['format']['percent']			= '1000,0 %';
-$lang['format']['currency']			= '1.000,00 €';
+$lang['format']['int']				= '%d';
+$lang['format']['float']			= '%01,2f';
+$lang['format']['temp']				= '%01,1f °C';
+$lang['format']['percent']			= '%01,1f %';
+$lang['format']['currency']			= '%01,2f €';
 
 $lang['format']['date']				= 'd.m.y';
 $lang['format']['time']				= 'H:i';
