@@ -406,7 +406,7 @@
 
 		setInterval(function(){
 			$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_='+new Date().getTime());
-		}, new Date().parse('{{time|default("10i")}}') );
+		}, new Date().duration('{{time|default("10i")}}') );
     </script> 
 
 {% endmacro %} 

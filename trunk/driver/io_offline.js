@@ -176,20 +176,15 @@ var io = {
 					// are there any plots?
 					widget.plot().each(function(idx) {
 						var items = widget.explode($(this).attr('data-item'));
-												
-                        for (var i = 0; i < items.length; i++) {
+						
+						for (var i = 0; i < items.length; i++) {
 							var item = items[i].split('.');
-
-						    if (response[items[i]] == null) 
-                                if (!(response[items[i]] = widget.get(items[i]))) {
-									if (widget.is_series(items[i]))
-										response[items[i]] = io.series(item[item.length - 2], item[item.length - 1], $(this).attr('data-min'), $(this).attr('data-max'), $(this).attr('data-step'));
-                        			else
-                                    	response[items[i]] = 0;
-								}
-						}	
-					});
 				
+							if (response[items[i]] == null &&  widget.get(items[i]) == null && widget.is_series(items[i]))
+                                response[items[i]] = io.series(item[item.length - 2], item[item.length - 1], $(this).attr('data-min'), $(this).attr('data-max'), $(this).attr('data-step'));
+                		}	
+					});
+				    
 					// update all items	
 				    $.each(response, function(item, val) {
                    		widget.update(item, val);
@@ -202,7 +197,7 @@ var io = {
     * Builds a series out of random float values	
     */	 
 	series: function(tmin, tmax, min, max, cnt) {
-
+                                  
 	    var ret = Array();
 
 		if (!min) min = 0;
@@ -211,14 +206,14 @@ var io = {
         var val = (min * 1) + ((max - min) / 2);
 		var delta = (max - min) / 20;
 		
-		tmin = new Date().getTime() - new Date().parse(tmin);
-		tmax = new Date().getTime() - new Date().parse(tmax);
+		tmin = new Date().getTime() - new Date().duration(tmin);
+		tmax = new Date().getTime() - new Date().duration(tmax);
 		var step = Math.round((tmax - tmin) / cnt);
 	
 		while (tmin <= tmax) {
             
 			val += Math.random() * (2 * delta) - delta;		
-            ret.push([tmin, Math.round(val * 10) / 10]);
+            ret.push([tmin, val.toFixed(2) * 1.0]);
 			tmin += step;
 		}
 

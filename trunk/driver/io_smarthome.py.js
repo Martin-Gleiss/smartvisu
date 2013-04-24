@@ -119,7 +119,7 @@ var io = {
                     break;
 
                 case 'series':
-					// DEBUG: console.log("[io.smarthome.py] receiving series: " + event.data);
+					// DEBUG: console.log("[io.smarthome.py] receiving series: ", data);
 					data.sid = data.sid.substr(0, data.sid.length - 3) + '0';
             		widget.update(data.sid.replace(/\|/g, '\.'), data.series);
 					break;
