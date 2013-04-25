@@ -82,7 +82,7 @@ TODO
 
 HISTORY
 --------------------------------------------------------------------------------
-v 2.4       
+v 2.4 26.04.13 Happy Birthday smartVISU!       
 	- improved widget: basic.shutter, now with dynamic symbols
 	- improved design: cube v2, best viewed with solar_winds.png background                                      	
 	- project: visu.css and visu.js are included if they are in own project
@@ -95,6 +95,7 @@ v 2.4
 	- imporved widget: basic.rgb now with configurable colors
 	- improved widgets for speed
 	- improved drivers: only refresh if necessary
+	- update vendor/jquery.mobile 1.3.1
 
 v 2.3 04.03.13
 	- device.rtr now with 3x bit-mode or 1x byte-mode
