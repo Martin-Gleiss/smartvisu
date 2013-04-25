@@ -8,15 +8,14 @@ plots build in: plot.period, plot.rtr, plot.comfortchart. If you want to use
 plots smarthome.py as backend is been required.
 
 Some new widgets inclueded in this shipping:
-  * basic.colordisc by Marcus Popp
+  * basic.colordisc a new color chooser
   * basic.notify for notifications
 
 Beside that we have made many improvements:
   * New desing: cube v2, best viewed with solar_winds.png background  
   * New language options, located in lang/
   * New icons  
-  * device.rtr now with 3x bit-mode or 1x byte-mode
-
+  
 
 
 == plot.period == 
@@ -43,7 +42,7 @@ This plot shows when we feel comfortable.
 
 More plots will come in future!
 
-
+---- 
 
 
 == basic.colordisc == 
