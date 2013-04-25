@@ -1,0 +1,63 @@
+#summary New in this release
+#labels Featured
+
+= What is new in release v2.4 =
+
+A new functionality added in this release: PLOTS!. There a a couple of standard
+plots build in: plot.period, plot.rtr, plot.comfortchart. If you want to use
+plots smarthome.py as backend is been required.
+
+Some new widgets inclueded in this shipping:
+  * basic.colordisc by Marcus Popp
+  * basic.notify for notifications
+
+Beside that we have made many improvements:
+  * New desing: cube v2, best viewed with solar_winds.png background  
+  * New language options, located in lang/
+  * New icons  
+  * device.rtr now with 3x bit-mode or 1x byte-mode
+
+
+
+== plot.period == 
+
+A plot with one or more series.
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.4/wt_plot_period_std.jpg' title='widget: plot.period' width='300'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.4/wt_plot_period_individual.jpg' title='widget: plot.period' width='300'>
+
+
+== plot.rtr == 
+
+A plot designed for use with a rtr. One serie for set-value, one for actual-value and a pie chart for the time the actor is on.
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.4/wt_plot_rtr.jpg' title='widget: plot.rtr' width='300'>
+
+
+== plot.comfortchart == 
+
+This plot shows when we feel comfortable.
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.4/wt_comfortchart.jpg' title='widget: plot.comfortchart' width='300'>
+
+
+More plots will come in future!
+
+
+
+
+== basic.colordisc == 
+
+A new way to choose a color. Written by Marcus Popp.
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.4/wt_colordisc.jpg' title='widget: basic.colordisc' width='300'>
+
+
+== design: cube v2 == 
+
+Design "Cube" has become a facelift.
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.4/tb_cube_v2.jpg' title='design: cube v2' width='600'>
+
+
+
