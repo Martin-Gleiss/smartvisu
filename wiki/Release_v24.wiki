@@ -4,8 +4,8 @@
 = What is new in release v2.4 =
 
 A new functionality added in this release: PLOTS!. There a a couple of standard
-plots build in: plot.period, plot.rtr, plot.comfortchart. If you want to use
-plots smarthome.py as backend is been required.
+plots build in: plot.period, plot.rtr, plot.comfortchart. Plots work only with backend
+*smarthome.py*!
 
 Some new widgets inclueded in this shipping:
   * basic.colordisc a new color chooser
@@ -42,7 +42,7 @@ This plot shows when we feel comfortable.
 
 More plots will come in future!
 
----- 
+<br> 
 
 
 == basic.colordisc == 
