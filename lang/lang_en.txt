@@ -58,22 +58,22 @@ $lang['shortmonth']['nov']			= 'Nov';
 $lang['shortmonth']['dec']			= 'Dec';
 
 // ----- weekday ---------------------------------------------------------------
-$lang['weekday']['sunday']			= 'Sonntag';
-$lang['weekday']['monday']			= 'Montag';
-$lang['weekday']['tuesday']			= 'Dienstag';
-$lang['weekday']['wednesday']		= 'Mittwoch';
-$lang['weekday']['thursday']		= 'Donnerstag';
-$lang['weekday']['friday']			= 'Freitag';
-$lang['weekday']['saturday']		= 'Samstag';
+$lang['weekday']['sunday']			= 'Sunday';
+$lang['weekday']['monday']			= 'Monday';
+$lang['weekday']['tuesday']			= 'Tuesday';
+$lang['weekday']['wednesday']		= 'Wednesday';
+$lang['weekday']['thursday']		= 'Thursday';
+$lang['weekday']['friday']			= 'Friday';
+$lang['weekday']['saturday']		= 'Saturday';
 
 // ----- shortday --------------------------------------------------------------
-$lang['shortday']['sun']			= 'So';
-$lang['shortday']['mon']			= 'Mo';
-$lang['shortday']['tue']			= 'Di';
-$lang['shortday']['wed']			= 'Mi';
-$lang['shortday']['thu']			= 'Do';
-$lang['shortday']['fri']			= 'Fr';
-$lang['shortday']['sat']			= 'Sa';
+$lang['shortday']['sun']			= 'Sun';
+$lang['shortday']['mon']			= 'Mon';
+$lang['shortday']['tue']			= 'Tue';
+$lang['shortday']['wed']			= 'Wed';
+$lang['shortday']['thu']			= 'Thu';
+$lang['shortday']['fri']			= 'Fri';
+$lang['shortday']['sat']			= 'Sat';
 
 // ----- plots -----------------------------------------------------------------
 $lang['plot.rtr']['label']			= 'Actual, Set';
