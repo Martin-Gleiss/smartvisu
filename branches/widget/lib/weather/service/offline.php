@@ -34,9 +34,9 @@ class weather_offline extends weather
         else
             $windspeed = ' at '.round( 1 * 2.24, 1).' MPH';
         
-        $this->data['current']['temp']   = '25&deg;C';
+        $this->data['current']['temp']         = '25&deg;C';
         $this->data['current']['conditions']   = translate('clear sky', 'yr.no');
-        $this->data['current']['icon']         = 'sun_1';
+        $this->data['current']['icon']         = $this->icon_sm.'1';
         $this->data['current']['wind']         = translate('light breeze from N', 'yr.no').$windspeed; 
         $this->data['current']['more']         = '45%, 1050 hPa'; 
         

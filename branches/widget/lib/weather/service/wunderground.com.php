@@ -50,7 +50,7 @@ class weather_wunderground extends weather
                 $this->data['current']['temp'] = (int)$parsed_json->{'current_observation'}->{'temp_f'}.'&deg;F';
             
             $this->data['current']['conditions']   = (string)$parsed_json->{'current_observation'}->{'weather'};
-            $this->data['current']['icon']         = $this->icon((string)$parsed_json->{'current_observation'}->{'icon'});
+            $this->data['current']['icon']         = $this->icon((string)$parsed_json->{'current_observation'}->{'icon'}, $this->icon_sm);
             $this->data['current']['wind']         = (string)$parsed_json->{'current_observation'}->{'wind_string'}; 
             $this->data['current']['more']         = (string)$parsed_json->{'current_observation'}->{'relative_humidity'};
         
@@ -73,33 +73,35 @@ class weather_wunderground extends weather
    /*
     * Icon-Mapper
     */
-    function icon($name)
+    function icon($name, $sm = 'sun_')
     {
         $ret = '';
         
-        $icon["sunny"]              = "sun_1";
-        $icon["mostlysunny"]        = "sun_2";
-        $icon["clear"]              = "sun_2";
-        $icon["partlycloudy"]       = "sun_3";
-        $icon["mostlycloudy"]       = "sun_5";
-        $icon["mist"]               = "sun_6";
-        $icon["chancerain"]         = "sun_7";
-        $icon["rain"]               = "sun_8";
-        $icon["chancestorm"]        = "sun_9";
-        $icon["storm"]              = "sun_10";
-        $icon["chancesnow"]         = "sun_11";
-        $icon["snow"]               = "sun_12";  
+		$icon['sunny']              = $sm.'1';
+        $icon['mostlysunny']        = $sm.'2';
+        $icon['clear']              = $sm.'2';
+        $icon['partlycloudy']       = $sm.'3';
+        $icon['mostlycloudy']       = $sm.'5';
+        $icon['mist']               = $sm.'6';
+        $icon['chancerain']         = $sm.'7';
+        $icon['rain']               = 'cloud_8';
+        $icon['chancestorm']        = $sm.'9';
+		$icon['storm']              = $sm.'10';
+        $icon['chancesnow']         = $sm.'11';
+        $icon['snow']               = $sm.'12';
         
-        $icon["cloudy"]             = "cloud_4";
-        $icon["showers"]            = "cloud_8";
-        $icon["thunderstorm"]       = "cloud_10";
-        $icon["rain_snow"]          = "cloud_15";
-        $icon["foggy"]              = "cloud_6";
-        $icon["fog"]                = "cloud_6";
-        $icon["icy"]                = "cloud_16";
-        $icon["smoke"]              = "na";
-        $icon["dusty"]              = "na";
-        $icon["hazy"]               = "na"; 
+        $icon['cloudy']             = 'cloud_4';
+        $icon['showers']            = 'cloud_8';
+		$icon['chancetstorms']      = §sm.'9';
+        $icon['thunderstorm']       = 'cloud_10';
+        $icon['tstorms']            = 'cloud_10';
+		$icon['rain_snow']          = 'cloud_15';
+        $icon['foggy']              = 'cloud_6';
+        $icon['fog']                = 'cloud_6';
+        $icon['icy']                = 'cloud_16';
+        $icon['smoke']              = 'na';
+        $icon['dusty']              = 'na';
+        $icon['hazy']               = 'na'; 
         
         $ret = $icon[$name];
         

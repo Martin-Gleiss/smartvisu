@@ -108,10 +108,10 @@ var widget = {
 
 		if (values instanceof Array) {
 			for (var i = 0; i < values.length; i++)
-				if (values[i] === undefined || values[i] === null)
+				if (values[i] === undefined || values[i] == null)
 					return false;
 		} else
-			if (values === undefined || values[i] === null)
+			if (values === undefined || values == null)
 				return false;
 		
 		return true;
@@ -154,7 +154,7 @@ var widget = {
 		} else if (value !== undefined)
         	widget.buffer[item] = value; 
 
-		// DEBUG: console.log("[widget] '" + item + "' -> '" + widget.buffer[item] + "'");
+		// DEBUG: console.log("[widget] '" + item, widget.buffer[item]);
 	},
 
   /**
@@ -176,23 +176,29 @@ var widget = {
 
 				// only the item witch is been updated
 				for (var i = 0; i < items.length; i++) { 
-					var values = widget.get(items);
-			
-		        	if (items[i] == item && widget.check(values)) {
-					
+					if (items[i] == item) {
+						var values = Array();
+		        	
+						// update to a plot: only add a point
 						if ($(this).attr('data-widget').substr(0,5) == 'plot.' && $('#' + this.id).highcharts()) {
-                            // if series than only the item with the value
-                            if (value instanceof Array) {
-                                values = Array();
-                                for (var j = 0; j < items.length; j++) {
+
+							// if more than one item, only that with the value
+                            if (items instanceof Array) {
+							    for (var j = 0; j < items.length; j++) {
                                     values.push (items[j] == item ? value : null );
                             }}
-                   			// only another point to plot
-							$(this).trigger('point', [values]);
-						} else
-							// regular update to the widget
-							$(this).trigger('update', [values]);
-					}}
+                   			if (value !== undefined || value != null)
+								$(this).trigger('point', [values]);
+						} 
+
+						// regular update to the widget with all items   
+   						else {
+							values = widget.get(items);
+							if (widget.check(values))
+								$(this).trigger('update', [values]);
+						}
+					}
+				}
 			});
 		}
 	},
@@ -206,7 +212,7 @@ var widget = {
 		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget^="plot."][data-item]').each(function(idx) {
             
             if ($('#' + this.id).highcharts())
-                    $('#' + this.id).highcharts().destroy(); 
+				$('#' + this.id).highcharts().destroy(); 
         });   
 	},
     
@@ -247,7 +253,7 @@ var widget = {
 				}};
 			})
 		} else
-			ret = $('[data-widget^="plot."][data-item]'); 
+			ret = $('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget^="plot."][data-item]'); 
       
         return ret;   
     },
@@ -255,7 +261,7 @@ var widget = {
   /**
     * Checks if the item is a series.
     *       
-    * @param	item: matches all plot-widgets with that item
+    * @param	an item
     */
 	is_series: function(item) {
 
@@ -266,7 +272,7 @@ var widget = {
 			return true;		
 		} else
 			return false;
-	},
+	}
 } 
 
 
@@ -288,11 +294,20 @@ $(document).delegate('[data-widget="basic.value"]', {
     }
 });                                                
 
+
 // ----- basic.float -----------------------------------------------------------
 $(document).delegate('[data-widget="basic.float"]', { 
 	'update': function(event, response) {
-		$('#' + this.id).html( ((Math.round(response * 10) / 10).toFixed(1)) + ' ' + $(this).attr('data-unit'));
-    }
+		if ($(this).attr('data-unit') == '°')
+			$('#' + this.id).html( parseFloat(response).transTemp() );
+    	else if ($(this).attr('data-unit') == '%')
+			$('#' + this.id).html( parseFloat(response).transPercent() );
+    	else if ($(this).attr('data-unit') == '€')
+			$('#' + this.id).html( parseFloat(response).transCurrency() );
+    	else
+			$('#' + this.id).html( parseFloat(response).transFloat() + ' ' + $(this).attr('data-unit') );
+    
+	}
 });
 
 
@@ -380,8 +395,10 @@ $(document).delegate('span[data-widget="basic.symbol"]', {
         }
 		else
 		    bit = (response == $(this).attr('data-val'));   
-		  
-		if (bit)
+		
+		$('#' + this.id + ' img').attr('title', new Date());
+  
+	    if (bit)
 		    $('#' + this.id).show();
 		else
 		    $('#' + this.id).hide();
@@ -392,6 +409,7 @@ $(document).delegate('span[data-widget="basic.symbol"]', {
 // ----- basic.switch ----------------------------------------------------------
 $(document).delegate('span[data-widget="basic.switch"]', { 
 	'update': function(event, response) {
+		// DEBUG: console.log("[basic.switch] update val: " + response);   
 		$('#' + this.id + ' img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
     },
 
@@ -779,7 +797,8 @@ $(document).delegate('div[data-widget="plot.period"]', {
 		
         for (var i = 0; i < response.length; i++) { 
 			series[i] = {
-				type: (exposure[i] ? exposure[i] : 'line'),
+				type: (exposure[i] != 'stair' ? exposure[i] : 'line'),
+				step: (exposure[i] == 'stair' ? 'left' : false),
 				name: label[i], 
                 data: response[i],
 				color: (color[i] ? color[i] : null)
@@ -788,8 +807,8 @@ $(document).delegate('div[data-widget="plot.period"]', {
  		// draw the plot
 		$('#' + this.id).highcharts({
             series: series,
- 		    xAxis: { type: 'datetime' },
-		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max') }
+ 		    xAxis: { type: 'datetime', title: { text: axis[0] } },
+		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'), title: { text: axis[1] } }
         });
     },
 
@@ -798,11 +817,12 @@ $(document).delegate('div[data-widget="plot.period"]', {
 		
 		for (var i = 0; i < response.length; i++) { 
             if (response[i]) {
-                var series = $('#' + this.id).highcharts().series[i];
+                var chart = $('#' + this.id).highcharts();
 				
 				// more points?
 				for (var j = 0; j < response[i].length; j++)
-                	series.addPoint(response[i][j], true, false);
+                	chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= 100));
+				chart.redraw();
         }};
 	}
 });
@@ -823,7 +843,7 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 		var percent = 0;
         
 		for (var i = 0; i < state.length; i++) { 
-			if (state[i][1] > 0)
+			if (state[i][1] > 0.5)
 				percent += (state[i][0] - stamp);	
 			stamp = state[i][0];
 		};
@@ -833,9 +853,9 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 		$('#' + this.id).highcharts({
             chart: { type: 'line' },
 			series: [{ 
-				name: label[0], data: response[0]
+				name: label[0], data: response[0], type: 'spline'
 			} , {
-				name: label[1], data: response[1], dashStyle: 'shortdot'
+				name: label[1], data: response[1], dashStyle: 'shortdot', step: 'left',
 			} , {
 				type: 'pie', name: '∑ ',
                 data: [{ 
@@ -862,13 +882,16 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 		// DEBUG: console.log("[plot.rtr] point '" + this.id + "' with "); console.log(response);
 		
 		for (var i = 0; i < response.length; i++) { 
-            if (response[i]) {
-                var series = $('#' + this.id).highcharts().series[i];
+			var chart = $('#' + this.id).highcharts();
 				
-				// more points?
-				for (var j = 0; j < response[i].length; j++)
-                	series.addPoint(response[i][j], true, false);
-        }};
+            if (response[i] && (i == 0 || i == 1)) {
+                for (var j = 0; j < response[i].length; j++)
+                	chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= 100));
+        	} else if (response[i] && (i == 2)) {
+				console.log("recalc");
+            }
+			chart.redraw();
+		};
 	}
 });
 

@@ -26,7 +26,7 @@
   /**
     * The port, if the driver needs one
     */
-    define ('config_driver_port',           '1028');
+    define ('config_driver_port',           '2424');
 
   /**
     * Use the realtime-mode if possible
@@ -50,7 +50,7 @@
     * smartVISU supports different projects, located under 'pages'
     * this is the directory for your project    
     */
-    define ('config_pages',                 '');
+    define ('config_pages',                 'docu');
    
   /**
     * Select your language. Some widgets are multilanguage 

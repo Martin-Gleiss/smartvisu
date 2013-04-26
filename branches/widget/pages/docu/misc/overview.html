@@ -17,7 +17,7 @@
 
 	<h2>Basic</h2>
 	{{ basic.value('value1', 'bath_light_switch', 'Unit') }},
-	{{ basic.float('float1', 'bath_light_switch', '°C') }},
+	{{ basic.float('float1', 'bath_light_switch', '°') }},
     <br />
 	{{ basic.flip('flip1', 'bath_light_switch') }}
 	{{ basic.switch('switch1', 'bath_light_switch') }}
@@ -65,6 +65,8 @@
         </div>
     </div>
 
+
+	{{ basic.dropdown('d1', ['bath_plot_value2', 'bath_blind_angle'], ['bath_plot_value2', 'bath_blind_angle']) }}
 
 
 <style type="text/css">

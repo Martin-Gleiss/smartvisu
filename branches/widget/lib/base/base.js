@@ -10,7 +10,7 @@
  
 /**
  * -----------------------------------------------------------------------------
- * J A V A S C R I P T    E X T E N T I O N S
+ * J A V A S C R I P T    S T A T I C   E X T E N T I O N S
  * ----------------------------------------------------------------------------- 
  */ 
 
@@ -39,8 +39,11 @@
 		ret = Array();
 		
 		if (this.length) {
-			ret = this.replace(/\s/g, '').split(delimiter !== undefined ? delimiter : ',');
-		};
+			ret = this.split(delimiter !== undefined ? delimiter : ',');
+			
+			for (var i = 0; i < ret.length; i++) {
+				ret[i] = ret[i].trim();
+		}};
 
 		return ret;
 	};
@@ -49,7 +52,7 @@
   /**
     * Calculates a date based on a relative time (1h 30m) 
     */
-	Date.prototype.parse = function(str) {
+	Date.prototype.duration = function(str) {
 		
 		var toks = {
 			y: 30758400000, /* 365 * d */
@@ -161,23 +164,6 @@
  * ----------------------------------------------------------------------------- 
  */  
    
-/*
-	(function($) {
-		$.fn.explode = function(min) {
-
-			this.each(function() {
-
-				var $this = $(this);
-				
-				console.log($this);
-			
-			});
-			
-			return this;
-		}
-	})(jQuery);
-  */
-
   /**
     * Mini-Clock
     */

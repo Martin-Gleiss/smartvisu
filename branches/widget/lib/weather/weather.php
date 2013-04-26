@@ -18,6 +18,7 @@ require_once const_path_system.'service.php';
 class weather extends service
 {
     var $location = '';
+    var $icon_sm = 'sun_';
       
   /** 
 	* initialization of some parameters
@@ -26,7 +27,16 @@ class weather extends service
     {
         parent::init($request);
         
-        $this->location = $request['location']; 
+        $this->location = $request['location'];
+
+        if (!isset($request['sunrise']))
+            $request['sunrise'] = 6;
+
+        if (!isset($request['sunset']))
+            $request['sunset'] = 20;
+
+        if ((date('H') <= $request['sunrise'] || date('H') >= $request['sunset']))
+            $this->icon_sm = 'moon_';
     }
 
   /** 

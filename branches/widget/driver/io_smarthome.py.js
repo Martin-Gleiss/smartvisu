@@ -102,19 +102,25 @@ var io = {
             // DEBUG: console.log("[io.smarthome.py] receiving data: " + event.data);
 			
             switch(data.cmd) {
-                case 'item':
+                case 'item':       
                     for (var i = 0; i < data.items.length; i++) {
                         item = data.items[i][0];
                         val = data.items[i][1];
                         if ( data.items[i].length > 2 ) {
                             // not supported: data.p[i][2] options for visu
                         };
+
+						// convert binary
+						if (val === false) val = 0;
+                        if (val === true) val = 1;
+
                         widget.update(item, val);
                     };
                     break;
 
                 case 'series':
-					// DEBUG: console.log("[io.smarthome.py] receiving series: " + event.data);
+					// DEBUG: console.log("[io.smarthome.py] receiving series: ", data);
+					data.sid = data.sid.substr(0, data.sid.length - 3) + '0';
             		widget.update(data.sid.replace(/\|/g, '\.'), data.series);
 					break;
 
@@ -162,7 +168,7 @@ var io = {
             	var items = widget.explode($(this).attr('data-item')); 
 				for (var i = 0; i < items.length; i++) { 
 			
-					if (widget.is_series(items[i])) {
+					if (widget.is_series(items[i]) && !widget.get(items[i])) {
 		                var pt = items[i].split('.');
 						var item = items[i].substr(0, items[i].length - 3 - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 						io.send({'cmd': 'series', 'item': item, 'series' : pt[pt.length - 3], 'start': pt[pt.length - 2]});

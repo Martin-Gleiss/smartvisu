@@ -113,7 +113,7 @@
     		$ret = $template->render(array());
 	
 			// try to zip the output
-			if( (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) && !strtolower(ini_get('zlib.output_compression')))
+			if( (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) && (ini_get('zlib.output_compression') !== false))
 			{
 				header("Content-Encoding: gzip");
 				$ret = "\x1f\x8b\x08\x00\x00\x00\x00\x00".substr(gzcompress($ret, 9), 0, -4).pack("V",crc32($ret)).pack("V",strlen($ret)); 
