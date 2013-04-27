@@ -50,7 +50,7 @@
     * smartVISU supports different projects, located under 'pages'
     * this is the directory for your project    
     */
-    define ('config_pages',                 '');
+    define ('config_pages',                 'docu');
    
   /**
     * Select your language. Some widgets are multilanguage 
@@ -139,8 +139,8 @@
   /**
     * Which calender should be used?
     * 
-    * @value offline: random values
-    * @value google: Google Calendar            
+    * @value 	offline: random values
+    * @value 	google: Google Calendar            
     */
     define ('config_calendar_service',      'offline');
   
@@ -149,6 +149,17 @@
     */
     define ('config_calendar_url',          'http://www.google.com/calendar/feeds/...'); 
     
+
+// -----------------------------------------------------------------------------
+// O P T I M A T I O N S
+// -----------------------------------------------------------------------------
+
+  /**
+    * Use the minimised files? 
+    * @value 	'js' or 'min.js'
+    */
+    define ('config_js',                   	'js');
+
 
 // -----------------------------------------------------------------------------
 // C O M M O N

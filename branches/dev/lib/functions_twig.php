@@ -89,7 +89,7 @@
         	
         while (($item = $dirlist->read()) !== false)
         {
-            if ($item != '.' and $item != '..' and$item != '.svn' and substr($item, 0, 1) != '_')
+            if ($item != '.' and $item != '..' and $item != '.svn' and substr($item, 0, 1) != '_')
             {
                 if (preg_match("#".$filter."$#i", $item, $itemparts) > 0)
                 {

@@ -73,15 +73,12 @@ SYSTEMREQUIREMENTS
         Enjoy smartVISU!
         
  
-TODO
---------------------------------------------------------------------------------
-    - MainMenu: Display selected menu-button
-    - Buttons: pressed short / long
-    - Scenes
- 
 
 HISTORY
 --------------------------------------------------------------------------------
+v 2.5
+	- new model-house: fleischer
+
 v 2.4 26.04.13 Happy Birthday smartVISU!       
 	- improved widget: basic.shutter, now with dynamic symbols
 	- improved design: cube v2, best viewed with solar_winds.png background                                      	

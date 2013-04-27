@@ -32,10 +32,13 @@
     <script type="text/javascript" src="lib/base/jquery.mobile.slider.min.js"></script>
 
 	<script type="text/javascript" src="vendor/plot.highcharts/highcharts.js"></script>
-	<script type="text/javascript" src="designs/{{ config_design }}.js"></script>
+	<script type="text/javascript" src="designs/{{ config_design }}.{{ config_js }}"></script>
    
-    <script type="text/javascript" src="widgets/widget.js"></script>
-    
+    <script type="text/javascript" src="widgets/widget.{{ config_js }}"></script>
+    <script type="text/javascript" src="lib/base/base.{{ config_js }}"></script>
+    <script type="text/javascript" src="lib/base/base.php"></script>
+    <script type="text/javascript" src="driver/io_{{ config_driver }}.{{ config_js }}"></script>
+	
     <link rel="stylesheet" type="text/css" href="designs/{{ config_design }}.min.css" />
 	<link rel="stylesheet" type="text/css" href="pages/base/base.css" />
 
@@ -45,10 +48,6 @@
 	{% if isfile('pages/'~config_pages~'/visu.css') %}
     <link rel="stylesheet" type="text/css" href="pages/{{ config_pages }}/visu.css" />
     {% endif %}
-	
-    <script type="text/javascript" src="lib/base/base.js"></script>
-    <script type="text/javascript" src="lib/base/base.php"></script>
-    <script type="text/javascript" src="driver/io_{{ config_driver }}.js"></script>
 	
     {% block head %}{% endblock %}
 	
@@ -66,6 +65,7 @@
     // Do some actions before page is shown
     $(document).on('pagebeforeshow', function(){
         widget.prepare();
+		$('.miniclock').miniclock();
     });
     
     // Run the io and all widgets
@@ -87,7 +87,7 @@
         </div>
         <div class="ui-right">
             {{ lib.smartvisu }}
-            <div class="mini"><span id="miniclock">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
+            <div class="mini"><span class="miniclock">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
         </div>
 		<div class="signal hide" onClick="$('.ui-page-active .alert').popup('open');"></div>
 		<div class="alert" data-role="popup" data-overlay-theme="a">
