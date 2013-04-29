@@ -93,7 +93,7 @@
                 <div data-role="fieldcontain">
 				    <label for="driver">Driver</label>
     				<select name="driver" id="driver" data-native-menu="false">
-    				    {% for file in dir('driver', '^io_(.+?).js') %}
+    				    {% for file in dir('driver', '^io_(.+?).min.js') %}
                         <option value="{{ file.name }}">{{ file.label }}</option>
                         {% endfor %}
                 	</select>

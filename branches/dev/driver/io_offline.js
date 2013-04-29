@@ -187,7 +187,7 @@ var io = {
 				    
 					// update all items	
 				    $.each(response, function(item, val) {
-                   		widget.update(item, val);
+						widget.update(item, val);
                     })
                 })
         }

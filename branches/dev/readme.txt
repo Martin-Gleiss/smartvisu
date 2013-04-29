@@ -77,6 +77,7 @@ SYSTEMREQUIREMENTS
 HISTORY
 --------------------------------------------------------------------------------
 v 2.5
+	- new .js files are now minified. Based on google closure
 	- new model-house: fleischer
 
 v 2.4 26.04.13 Happy Birthday smartVISU!       

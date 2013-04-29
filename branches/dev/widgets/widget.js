@@ -72,7 +72,7 @@ var widget = {
 		var ret = Array();
 		var unique = Array();
 
-		$('[data-item]').each(function(idx) {
+		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function(idx) {
 			var items = widget.explode($(this).attr('data-item')); 
 			for (var i = 0; i < items.length; i++)
 				unique[items[i]] = '';
@@ -106,7 +106,7 @@ var widget = {
     */         
 	check: function(values) {
 
-		if (values instanceof Array) {
+		if (values instanceof Array && values.length > 1) {
 			for (var i = 0; i < values.length; i++)
 				if (values[i] === undefined || values[i] == null)
 					return false;
@@ -125,7 +125,7 @@ var widget = {
     */         
 	get: function(items) {
 
-		if (items instanceof Array) {
+		if (items instanceof Array && items.length > 1) {
         	var ret = Array();
 
 			for (var i = 0; i < items.length; i++) { 
