@@ -60,9 +60,9 @@ diese 2 Verzeichnisse.
 {{{
 /usr/local/smarthome/items/ <-- dort liegen die items
 }}}
-Falls nötig noch die /usr/local/smarthome/etc/plugin.conf anpassen. Ich glaube aber das die eh von Haus aus passt, sofern man nicht das smartvisu-Verzeichnis umbenennt.
+Falls nötig noch die */usr/local/smarthome/etc/plugin.conf* anpassen. Ich glaube aber das die eh von Haus aus passt, sofern man nicht das smartvisu-Verzeichnis umbenennt.
 
-= 2.1 Items =
+=== 2.1 Items ===
 Ich empfehle zu Beginn ein paar items zu erstellen.
 Bei diesen ist es wichtig das die Datentypen passen und im Verzeichnis die Endung .conf haben. Ich poste hier einfach mal das Beispiel.
 (das rot/braune im Code sind nur Erklärungen. Die haben sonst nichts im Code zu suchen)
@@ -219,7 +219,7 @@ dann
 /usr/local/smarthome/bin/smarthome.py --start
 }}}
 
-= 2.2 html-Seiten =
+=== 2.2 html-Seiten ===
 Soweit so gut. Nun zu den html-Seiten.
 Erstellt Euch einen Ordner im pages-Verzeichnis unter
 {{{
@@ -229,7 +229,7 @@ So wie ihr das benennt erscheint es nacher im Auswahlmenu auf der Config-Seite.
 Wichtige Grundlage in diesem Ordner sind nun 4 Files. Im Besipiel sind das index.html, visu.css, navigation.thml, room.html
 Diese Files liegen (wenn auch teilweise anders bezeichnet) in jedem der BeispielPage-Ordner. Man könnte sie sich auch dort heraus kopieren.
 Um aber beim hier beschriebenen Beispiel zu bleiben, könnt Ihr die Dateien aus dem Anhang nehmen. Also kopiert diese Dateien in Euern erstellten Page-Ordner.
-Da es jetzt schwierig und zu aufwendig wäre jede einzelne Seite detailiert zu erklären, empfehle ich Euch sich mal die navigation.thml und die EG.Raum00.html mal in Ruhe anzuschauen. Dort findet Ihr unter anderem die items wieder und ich denke es sollte bald klar sein wie was zusammenspielt. Die einzelnen Macros (basic.shwith, basic.symbol etc.) sind auf der Docu-Page Meiner Meinung nach eh recht gut beschrieben.Die ID's (im Code vor den Items) sind frei wählbar, dürfen jedoch nur einmal vorkommen bzw. müssen eindeutig sein.
+Da es jetzt schwierig und zu aufwendig wäre jede einzelne Seite detailiert zu erklären, empfehle ich Euch sich mal die *navigation.thml* und die *EG.Raum00.html* mal in Ruhe anzuschauen. Dort findet Ihr unter anderem die items wieder und ich denke es sollte bald klar sein wie was zusammenspielt. Die einzelnen Macros (basic.shwith, basic.symbol etc.) sind auf der Docu-Page Meiner Meinung nach eh recht gut beschrieben.Die ID's (im Code vor den Items) sind frei wählbar, dürfen jedoch nur einmal vorkommen bzw. müssen eindeutig sein.
 
 = 3. Schluß =
 So.... ich hoffe das ich alles soweit einiger Maßen verständlich und richtig beschrieben habe, so das dem ein oder anderen der Start etwas leichter fällt.
