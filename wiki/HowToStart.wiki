@@ -1,23 +1,32 @@
-#summary DE: Kurzanleitung für den Start mit Smarthome.py
+#summary Kurzanleitung für den Start mit Smarthome.py
 
 = Einleitung =
 
 smartVISU + SmartHome.py ist in meinen Augen eine der momentan ansprechensten Visus die ich kenne.
 Sicherlich gerade für Einsteiger nicht leicht zu verstehen. Ich habe die ersten Tage selber davor gesessen und so gut wie nichts verstanden.
 Linux-mäßig habe ich auch nur minimalste Kenntnisse.
-Aber dank der Unterstützung von den 2 Moderatoren kamen die Erkenntnisse Stück für Stück und nach kurzer Zeit war die VISU fertig.
+Aber dank der Unterstützung von den 2 Moderatoren im Forum kamen die Erkenntnisse Stück für Stück und nach kurzer Zeit war die VISU fertig.
 Ich denke was dem Einsteiger fehlt ist mal eine kleine Beschreibung der Vorgehensweise mit dazugehörigen Beispielen. Dies möchte ich hiermit mal versuchen. 
 
 Ich verzichte hier bewußt auf die Erstellung mit dem Autogenerator, da dieser sicher gut ist, aber vorerst "nur" für die Erstellung schneller einfacher Seiten gedacht ist.
-Die Beispiele der hier aufgeführten Beschreibung ergeben am Ende das hier. Wobei ich dazu noch anmerken möchte, das es sich dabei um eine Offline-Demo handelt, bei denen z.B. die Werte der Plots abweichen,
+Die Beispiele der hier aufgeführten Beschreibung ergeben am Ende das hier
+{{{
+http://smartvisu.emf-online.de/board/
+}}}
+Wobei ich dazu noch anmerken möchte, das es sich dabei um eine Offline-Demo handelt, bei denen z.B. die Werte der Plots abweichen,
 da keine KNX-Verbindung besteht. Es geht bei der Demo hauptsächlich um das Visuelle.
+Ich empfehle noch die freien Programme Putty und WinSCP für die Bearbeitung. Wobei in WINSCP noch unter Einstellungen --> Einstellungen --> Editoren > bei Standartkodierung auf UTF-8 umgestellt werden sollte.
 OK... los gehts.
 
 
 = 1. Schnittstelle einrichten =
 Als erstes richten wir Eibd ein, um SmartHome.py als Schnittstelle benutzen zu können.
 Dies ist eigentlich sehr simple.
-Wir gehen ins Verzeichniss /etc/default/eibd . Unter Verwendung einer IP-Schnittstelle sollte die Datei dann so bearbeitet werden (das rote müßt ihr euren Gegebenheiten anpassen)
+Wir gehen ins Verzeichniss
+{{{
+/etc/default/eibd 
+}}}
+Unter Verwendung einer IP-Schnittstelle sollte die Datei dann so bearbeitet werden (die IP müßt ihr euren Gegebenheiten anpassen)
 
 {{{
 EIB_ARGS="--daemon --Server --Tunnelling --Discovery --GroupCache --listen-tcp"
@@ -26,11 +35,202 @@ EIB_IF="ipt:192.168.1.190"
 EIB_UID="1000"
 }}}
 
-...
+Dann speichern und Eibd mit folgendem Befehl neu starten
 
+{{{
+/etc/init.d/eibd restart
+}}}
 
+Ob das erfolgreich war und Ihr Verbindung zum Bus habt, könnt Ihr testen indem Ihr eine Gruppenadresse folgender maßen ansprecht. (erste Zeile für EIN, zweite für AUS...HINWEIS: 0/0/67 mit einer GA von Euch austauschen)
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+{{{
+groupswrite ip:localhost 0/0/67 1
+}}}
+{{{
+groupswrite ip:localhost 0/0/67 0
+}}}
+
+= 2. Items und die html-Seiten =
+Weiter ghts.
+Was ist erstmal wichtig?
+diese 2 Verzeichnisse.
+{{{
+/var/www/smartvisu/pages/ <-- dort liegen die html Seiten für die VISU
+}}}
+{{{
+/usr/local/smarthome/items/ <-- dort liegen die items
+}}}
+Falls nötig noch die /usr/local/smarthome/etc/plugin.conf anpassen. Ich glaube aber das die eh von Haus aus passt, sofern man nicht das smartvisu-Verzeichnis umbenennt.
+
+= 2.1 Items =
+Ich empfehle zu Beginn ein paar items zu erstellen.
+Bei diesen ist es wichtig das die Datentypen passen und im Verzeichnis die Endung .conf haben. Ich poste hier einfach mal das Beispiel.
+(das rot/braune im Code sind nur Erklärungen. Die haben sonst nichts im Code zu suchen)
+{{{
+[EG]
+    [[Raum00]]
+        [[[Deckenspots]]]
+            type = bool
+            visu = yes
+            knx_dpt = 1
+            knx_listen = 0/5/23
+            knx_send = 0/0/7
+            [[[[dimmen]]]]
+                type = num
+                visu = yes
+                knx_dpt = 5
+                knx_listen = 0/4/22
+                knx_send = 0/0/27
+                knx_init = 0/4/22
+        [[[Pendelleuchte]]]
+            type = bool
+            visu = yes
+            knx_dpt = 1
+            knx_listen = 0/5/24
+            knx_send = 0/0/9
+            [[[[dimmen]]]]
+                type = num
+                visu = yes
+                knx_dpt = 5
+                knx_listen = 0/4/23
+                knx_send = 0/0/26
+                knx_init = 0/4/23
+        [[[Grundbeleuchtung]]]
+            type = bool
+            visu = yes
+            knx_dpt = 1
+            knx_listen = 0/5/21
+            knx_send = 0/0/21
+        [[[Stedo_Wuerfel_Sofa]]]
+            type = bool
+            visu = yes
+            knx_dpt = 1
+            knx_listen = 0/5/21, 0/0/13
+            knx_send = 0/0/13
+        [[[Fensterbank]]]
+            type = bool
+            visu = yes
+            knx_dpt = 1
+            knx_listen = 0/5/5
+            knx_send = 0/0/15
+        [[[Stedo_Schrank]]]
+            type = bool
+            visu = yes
+            knx_dpt = 1
+            knx_listen = 0/5/3
+            knx_send = 0/0/17
+        [[[FreigabeTuer]]]
+            type = bool
+            visu = yes
+            knx_dpt = 1
+            knx_listen = 0/0/24
+            knx_send = 0/0/24
+         [[[temperature]]]
+            type = num
+            visu = yes
+            history = true #<<- wenn ihr den Wert in Plots verwenden wollt
+             knx_dpt = 9
+                knx_listen = 2/0/6
+            [[[[set]]]]
+                type = num
+                visu = yes
+                history = true #<<- wenn ihr den Wert in Plots verwenden wollt
+             knx_dpt = 9
+                knx_send = 2/2/6
+                knx_listen = 2/1/6
+            [[[[mode]]]]
+                type = num
+                visu = yes
+                knx_dpt = 5
+                knx_listen = 3/2/20
+                knx_send = 3/2/20
+            [[[[night]]]]
+                type = num
+                visu = yes
+                knx_dpt = 5
+                knx_listen = 3/2/20
+                knx_send = 3/2/20
+            [[[[frost]]]]
+                type = num
+                visu = yes
+                knx_dpt = 5
+                knx_listen = 3/2/20
+            [[[[state]]]]
+                type = num
+                visu = yes
+                history = true #<<- wenn ihr den Wert in Plots verwenden wollt
+                knx_dpt = 5
+                knx_listen = 3/1/6
+                knx_init = 3/1/6
+        [[[Fenster1]]]
+            type = bool
+            visu = yes
+                knx_dpt = 1
+                knx_listen = 0/4/26
+                knx_init = 0/4/26
+        [[[Tuer]]]
+            type = bool
+            visu = yes
+                knx_dpt = 1
+                knx_listen = 0/4/24
+                knx_init = 0/4/24
+        [[[Rollo]]]
+            [[[[move]]]]
+                type = num
+                visu = yes
+               knx_dpt = 1
+                knx_send = 0/2/5
+            [[[[stop]]]]
+                type = num
+                visu = yes
+                enforce_updates = yes #<<- damit der Stop-Befehl auch greift
+               knx_dpt = 1
+                knx_send = 0/2/6
+            [[[[pos]]]]
+                type = num
+                visu = yes
+                knx_dpt = 5
+                knx_listen = 0/2/11
+                knx_send = 0/2/12
+                knx_init = 0/2/11
+            [[[[tilt]]]]
+                type = num
+                visu = yes
+}}}
+
+Schauen wir uns nun mal die ersten 2 items an.
+In der Seiten-html kann nun z.B. über 
+{{{
+EG.Raum00.Deckenspots
+}}}
+das item bzw. die GA 0/5/23 hörend und 0/0/7 sendend angesprochen werden (1bit).
+Über 
+{{{
+EG.Raum00.Deckenspots.dimmen
+}}}
+gleichermaßen die dort eingetragenen GA's (1byte) etc.
+Eins wäre noch als wichtige Anmerkung hinzuzufügen. Jedes mal wenn Ihr an den items oder der html geändert hab, müßt Ihr Smarthome neu starten damit die Änderungen auch übernommen werden. Es geht zwar auch mit restart ich bevorzuge aber die konventionelle Varriante
+also erst
+{{{
+/usr/local/smarthome/bin/smarthome.py --stop
+}}}
+dann
+{{{
+/usr/local/smarthome/bin/smarthome.py --start
+}}}
+
+= 2.2 html-Seiten =
+Soweit so gut. Nun zu den html-Seiten.
+Erstellt Euch einen Ordner im pages-Verzeichnis unter
+{{{
+/var/www/smartvisu/pages/
+}}}
+So wie ihr das benennt erscheint es nacher im Auswahlmenu auf der Config-Seite.
+Wichtige Grundlage in diesem Ordner sind nun 4 Files. Im Besipiel sind das index.html, visu.css, navigation.thml, room.html
+Diese Files liegen (wenn auch teilweise anders bezeichnet) in jedem der BeispielPage-Ordner. Man könnte sie sich auch dort heraus kopieren.
+Um aber beim hier beschriebenen Beispiel zu bleiben, könnt Ihr die Dateien aus dem Anhang nehmen. Also kopiert diese Dateien in Euern erstellten Page-Ordner.
+Da es jetzt schwierig und zu aufwendig wäre jede einzelne Seite detailiert zu erklären, empfehle ich Euch sich mal die navigation.thml und die EG.Raum00.html mal in Ruhe anzuschauen. Dort findet Ihr unter anderem die items wieder und ich denke es sollte bald klar sein wie was zusammenspielt. Die einzelnen Macros (basic.shwith, basic.symbol etc.) sind auf der Docu-Page Meiner Meinung nach eh recht gut beschrieben.Die ID's (im Code vor den Items) sind frei wählbar, dürfen jedoch nur einmal vorkommen bzw. müssen eindeutig sein.
+
+= 3. Schluß =
+So.... ich hoffe das ich alles soweit einiger Maßen verständlich und richtig beschrieben habe, so das dem ein oder anderen der Start etwas leichter fällt.
+Wem smatVISU und SmartHome.py gefällt, der kann ja wenn er mag als Unterstützung zur Weiterentwicklung auch etwas Spenden. Ich habe im Forum u.a. da in Apollos Signatur einen entsprechenden Link gesehen und was soll ich sagen ..... er funktioniert. :)
