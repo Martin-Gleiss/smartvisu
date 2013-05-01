@@ -1,4 +1,4 @@
-#summary Kurzanleitung für den Start mit Smarthome.py
+#summary DE: Kurzanleitung für den Start mit Smarthome.py
 
 = Einleitung =
 
