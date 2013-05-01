@@ -234,3 +234,7 @@ Da es jetzt schwierig und zu aufwendig wäre jede einzelne Seite detailiert zu e
 = 3. Schluß =
 So.... ich hoffe das ich alles soweit einiger Maßen verständlich und richtig beschrieben habe, so das dem ein oder anderen der Start etwas leichter fällt.
 Wem smatVISU und SmartHome.py gefällt, der kann ja wenn er mag als Unterstützung zur Weiterentwicklung auch etwas Spenden. Ich habe im Forum u.a. da in Apollos Signatur einen entsprechenden Link gesehen und was soll ich sagen ..... er funktioniert. :)
+
+
+Hier noch die Beispielfiles:
+http://smartvisu.googlecode.com/svn/wiki/files/beginners.zip
