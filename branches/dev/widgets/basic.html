@@ -389,14 +389,14 @@
     <div id="{{ uid(page, id) }}" data-widget="basic.tank" data-item="{{ gad_pos }}" 
 		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="tank">
-		<div 
+		<div
 		{% if mode == 'cylinder' %}
             style="background-image: url('pages/base/pics/scale_cylinder.png'); background-color: {{ color|default('#999') }};"
         {% elseif mode == 'water' %}
             style="background-image: url('pages/base/pics/scale_water.png'); background-color: {{ color|default('#09f') }};"
         {% elseif mode == 'pallets' %}
             style="background-image: url('pages/base/pics/scale_pallets.png'); background-color: {{ color|default('#eb7') }};
-				-moz-border-radius: 10em 10em 0.3em 0.3em; -webkit-border-radius: 10em 10em 0.3em 0.3em; border-radius: 10em 10em 0.3em 0.3em;"
+				-moz-border-radius: 10em 10em 0.5em 0.5em; -webkit-border-radius: 10em 10em 0.5em 0.5em; border-radius: 10em 10em 0.5em 0.5em;"
         {% endif %}
 		>&nbsp;</div>
 	</div>

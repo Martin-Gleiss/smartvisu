@@ -10,6 +10,16 @@
    
 /**
  * Class for controlling all widgets. 
+ *
+ * Concept:
+ * Every item has a name. The value of the item may be of type: int, float, or
+ * array. The items are stored in the widget.buffer. The drivers will fill the
+ * buffer through the widget.update (and therefore widget.set). Asynchronly
+ * all widgets on a page may be updated. The update is been triggerd from
+ * widget.update, if a item has been changed. Updates are only made if all
+ * items are in buffer needed for that update. If one is missing the update is
+ * not been made. If some plots placed on the page, the update will look if it
+ * is possible to add only one point (if the widget is already initialized).
  */ 
 var widget = {
 
@@ -22,7 +32,7 @@ var widget = {
     * unique array.  
     *       
     * @param	the text
-    * @return   the values as array  
+    * @return   the items as an array (one or more entries)
     */        
 	explode: function(text) {
 	    var ret = Array();
@@ -36,16 +46,17 @@ var widget = {
 				if (parts[i] != '')
 					unique[parts[i]] = '';
 			}
+
+            for (var part in unique)
+            	ret.push(part);
 		} 
+
 		// One item
-		else if (text != '') {
-			unique[text] = '';
+		else if (text.trim() != '') {
+			ret.push(text.trim());
 		};
 		
-		for (var part in unique)     
-            ret.push(part);
-
-		return ret;   
+		return ret;
     },
 
   /**
@@ -56,7 +67,7 @@ var widget = {
 	listening: function() {
 	    var ret = false;
         
-	    if ($('[data-item]').size() > 0)
+	    if ($('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').size() > 0)
         	ret = true;
         
         return ret;        
@@ -102,17 +113,19 @@ var widget = {
     * Checks if the value/s are valid (not undefined and not null) 
     * 
     * @param    the value/s
-    * @return	true if no item is undefined
+    * @return	true if no item is undefined or null
     */         
 	check: function(values) {
 
-		if (values instanceof Array && values.length > 1) {
+		// case: more values
+		if (values instanceof Array) {
 			for (var i = 0; i < values.length; i++)
 				if (values[i] === undefined || values[i] == null)
 					return false;
-		} else
-			if (values === undefined || values == null)
-				return false;
+		}
+		// case: one value
+		else if (values === undefined || values == null)
+			return false;
 		
 		return true;
 	},
@@ -125,15 +138,18 @@ var widget = {
     */         
 	get: function(items) {
 
-		if (items instanceof Array && items.length > 1) {
-        	var ret = Array();
+		// case: more items
+		if (items instanceof Array) {
+			var ret = Array();
 
 			for (var i = 0; i < items.length; i++) { 
 				ret.push(widget.buffer[items[i]]);
 			}
-		} else
+		}
+		// case: one item
+		else
 			var ret = widget.buffer[items]; 
-		
+
 		return ret;
 	},
 
@@ -145,13 +161,13 @@ var widget = {
     */         
 	set: function(item, value) {
 
-	    if (widget.buffer[item] instanceof Array)
-		{
+		// case: a series
+	    if (widget.buffer[item] instanceof Array) {
             // don't add it to the buffer, because highchart will do it for us.   
 			//var series = widget.buffer[item];
 			//series.push(value);
-		
-		} else if (value !== undefined)
+		}
+		else if (value !== undefined)
         	widget.buffer[item] = value; 
 
 		// DEBUG: console.log("[widget] '" + item, widget.buffer[item]);
@@ -183,10 +199,9 @@ var widget = {
 						if ($(this).attr('data-widget').substr(0,5) == 'plot.' && $('#' + this.id).highcharts()) {
 
 							// if more than one item, only that with the value
-                            if (items instanceof Array) {
-							    for (var j = 0; j < items.length; j++) {
-                                    values.push (items[j] == item ? value : null );
-                            }}
+                            for (var j = 0; j < items.length; j++) {
+                            	values.push(items[j] == item ? value : null );
+                            }
                    			if (value !== undefined && value != null) {
 								// DEBUG:
 								console.log("[" + $(this).attr('data-widget') + "] point '" + this.id + "':", values);
@@ -197,7 +212,7 @@ var widget = {
 						// regular update to the widget with all items   
    						else {
 							values = widget.get(items);
-							if (widget.check(values)) {
+				   			if (widget.check(values)) {
 								// DEBUG:
 								console.log("[" + $(this).attr('data-widget') + "] update '" + this.id + "':", values);
 								$(this).trigger('update', [values]);
@@ -506,7 +521,7 @@ $(document).delegate('div[data-widget="basic.shutter"]', {
         if (response[1] !== undefined) {
             a = parseInt(13 / mode * (response[1] / $(this).attr('data-max') + mode - 1));
         }
-     
+
         var style;
             
         h = parseInt(response[0] * 13 * 14 / $(this).attr('data-max') );
@@ -798,7 +813,8 @@ $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="plus"]'
 $(document).delegate('div[data-widget="plot.period"]', { 
 	'update': function(event, response) {
 		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
-	 
+	    console.log(this.id, response);
+
 		var label = $(this).attr('data-label').explode();
         var color = $(this).attr('data-color').explode();
 		var exposure = $(this).attr('data-exposure').explode();
@@ -935,8 +951,8 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
         });
     },
     
-	'point': function(event, response) {                                                       
-		var chart = $('#' + this.id).highcharts();	
+	'point': function(event, response) {
+		var chart = $('#' + this.id).highcharts();
 		var point = chart.series[2].data[0];
 		if (!response[0]) response[0] = point.x; 
 		if (!response[1]) response[1] = point.y; 

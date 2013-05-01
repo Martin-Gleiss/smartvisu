@@ -107,9 +107,11 @@ var io = {
                     for (var i = 0; i < data.items.length; i++) {
                         item = data.items[i][0];
                         val = data.items[i][1];
-                        if ( data.items[i].length > 2 ) {
-                            // not supported: data.p[i][2] options for visu
+						/* not supported:
+						if (data.items[i].length > 2) {
+                            data.p[i][2] options for visu
                         };
+						*/
 
 						// convert binary
 						if (val === false) val = 0;

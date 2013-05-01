@@ -50,7 +50,7 @@
     * smartVISU supports different projects, located under 'pages'
     * this is the directory for your project    
     */
-    define ('config_pages',                 'docu');
+    define ('config_pages',                 '');
    
   /**
     * Select your language. Some widgets are multilanguage 
@@ -158,7 +158,7 @@
     * Use the minimised files? 
     * @value 	'js' or 'min.js'
     */
-    define ('config_js',                   	'js');
+    define ('config_js',                   	'min.js');
 
 
 // -----------------------------------------------------------------------------

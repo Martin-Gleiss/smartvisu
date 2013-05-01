@@ -176,7 +176,7 @@ var io = {
 					// are there any plots?
 					widget.plot().each(function(idx) {
 						var items = widget.explode($(this).attr('data-item'));
-						
+
 						for (var i = 0; i < items.length; i++) {
 							var item = items[i].split('.');
 				

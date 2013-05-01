@@ -952,10 +952,10 @@ canvas.colordisc {
     display: inline-block;
     vertical-align: bottom;
     margin: 0px 7px 0px 7px;
-    width: 30px; 
+    width: 30px;
     height: 180px;
     border: 2px solid #fff;
-	background-image: url('pics/scale_gamut.png');
+	background: url('pics/scale_gamut.png') no-repeat right;
 	-moz-border-radius: .5em;
 	-webkit-border-radius: .5em;
 	border-radius: .5em;
@@ -964,13 +964,14 @@ canvas.colordisc {
 .tank div {
 	position: absolute;
 	bottom: 0;
-	width: 30px; 
-	height: 100px;
+	width: inherit;
+	height: 50%;
 	background-color: #999;
 	-moz-border-radius: 0.1em 0.1em 0.3em 0.3em;
 	-webkit-border-radius: 0.1em 0.1em 0.3em 0.3em;
 	border-radius: 0.1em 0.1em 0.3em 0.3em;
-	}
+    opacity:0.85; filter:alpha(opacity=85);
+}
 
 
 /**
