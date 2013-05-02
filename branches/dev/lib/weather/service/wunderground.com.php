@@ -32,86 +32,75 @@ class weather_wunderground extends weather
             $parsed_json = json_decode($cache->read());
         else
         {
-		    if (config_lang == 'fr')
-	            	$url = 'http://api.wunderground.com/api/'.config_weather_key.'/conditions/forecast/lang:FR/q/'.$this->location.'.json';
-		    elseif (config_lang == 'de')
-		        $url = 'http://api.wunderground.com/api/'.config_weather_key.'/conditions/forecast/lang:DL/q/'.urlencode($this->location).'.json';
-		    elseif (config_lang == 'de')
-		        $url = 'http://api.wunderground.com/api/'.config_weather_key.'/conditions/forecast/lang:NL/q/'.urlencode($this->location).'.json';
-		    else
-		        $url = 'http://api.wunderground.com/api/'.config_weather_key.'/conditions/forecast/lang:EN/q/'.urlencode($this->location).'.json';
-	    
+        	$url = 'http://api.wunderground.com/api/'.config_weather_key.'/conditions/forecast/lang:'.trans('wunderground', 'lang').'/q/'.urlencode($this->location).'.json';
             $parsed_json = json_decode($cache->write(file_get_contents($url)));
         }
-        $this->debug($parsed_json);  
-          
-        if($parsed_json)
-        {
-            // today
-            $this->data['city'] = (string)$parsed_json->{'current_observation'}->{'display_location'}->{'city'};
-            
-            if (config_lang == 'de')
-                $this->data['current']['temp'] = (int)$parsed_json->{'current_observation'}->{'temp_c'}.'&deg;C';
-            elseif (config_lang == 'nl')
-                $this->data['current']['temp'] = (int)$parsed_json->{'current_observation'}->{'temp_c'}.'&deg;C';
-            elseif (config_lang == 'fr')
-                $this->data['current']['temp'] = (int)$parsed_json->{'current_observation'}->{'temp_c'}.'&deg;C';
-            else
-                $this->data['current']['temp'] = (int)$parsed_json->{'current_observation'}->{'temp_f'}.'&deg;F';
-            
-            $this->data['current']['conditions']   = (string)$parsed_json->{'current_observation'}->{'weather'};
-            $this->data['current']['icon']         = $this->icon((string)$parsed_json->{'current_observation'}->{'icon'}, $this->icon_sm);
+	        $this->debug($parsed_json);
 
-		 // get the good values by countries in km/h or mph for the wind and gusts
-		if ((config_lang == 'de') || (config_lang == 'nl') || (config_lang == 'fr'))
-		{
-			$wind_speed = (int)$parsed_json->{'current_observation'}->{'wind_kph'};
-			$wind_gust = (int)$parsed_json->{'current_observation'}->{'wind_gust_kph'};
-			$unit = 'km/h';
-		}
-		else
-		{
-			$wind_speed = (int)$parsed_json->{'current_observation'}->{'wind_mph'};
-			$wind_gust = (int)$parsed_json->{'current_observation'}->{'wind_gust_mph'};
-			$unit = 'mph';
-		}
+	        if($parsed_json)
+	        {
+	            // today
+	            $this->data['city'] = (string)$parsed_json->{'current_observation'}->{'display_location'}->{'city'};
 
-		$wind_direction = translate((string)$parsed_json->{'current_observation'}->{'wind_dir'},'wunderground');
+				if (substr(trans('format', 'temp'), -1, 1) != "F")
+	            	$this->data['current']['temp'] = transtemp((float)$parsed_json->{'current_observation'}->{'temp_c'});
+				else
+	            	$this->data['current']['temp'] = transtemp((float)$parsed_json->{'current_observation'}->{'temp_f'});
 
-		// in french, there is a difference when the word stars with a vowel
-	    // de (from) becomes d'
-	    // can be use if a language has the same exception
-	    if (config_lang == 'fr')
-	    {
-			if ((substr($wind_direction,0,1) == 'O') || (substr($wind_direction,0,1) == 'E'))
-				$from=translate('fromEW','wunderground');
+	            $this->data['current']['conditions']   = (string)$parsed_json->{'current_observation'}->{'weather'};
+	            $this->data['current']['icon']         = $this->icon((string)$parsed_json->{'current_observation'}->{'icon'}, $this->icon_sm);
+
+			 // get the good values by countries in km/h or mph for the wind and gusts
+			if (trim(strrchr(trans('format', 'speed', ' '))) != 'mph')
+			{
+				$wind_speed = transspeed((float)$parsed_json->{'current_observation'}->{'wind_kph'});
+				$wind_gust =  transspeed((float)$parsed_json->{'current_observation'}->{'wind_gust_kph'});
+			}
 			else
-				$from=translate('fromNS','wunderground');
-	    }
-	    else
-			$from = translate('from','wunderground');
+			{
+				$wind_speed = transspeed((float)$parsed_json->{'current_observation'}->{'wind_mph'});
+				$wind_gust =  transspeed((float)$parsed_json->{'current_observation'}->{'wind_gust_mph'});
+			}
 
-	    // when the wind has no fix direction from is blank
-	    if ((string)$parsed_json->{'current_observation'}->{'wind_dir'} == 'Variable')
-		$from = '';
+			$wind_direction = translate((string)$parsed_json->{'current_observation'}->{'wind_dir'},'wunderground');
 
-            $this->data['current']['wind'] = translate('wind','wunderground')." ".$from." ".$wind_direction."&nbsp;&nbsp;".translate('wind_speed','wunderground')." ".$wind_speed."".$unit;
-            if($wind_gust > 0)
-            {
-                $this->data['current']['wind'] = $this->data['current']['wind']."<P>".translate('wind_gust','wunderground').": ".$wind_gust."".$unit."</P>";
-            }
-            $this->data['current']['more'] = translate('humidity','wunderground').": ".(string)$parsed_json->{'current_observation'}->{'relative_humidity'};
+			// in french, there is a difference when the word stars with a vowel
+		    // de (from) becomes d' can be use if a language has the same exception
+		    if (config_lang == 'fr')
+		    {
+				if ((substr($wind_direction,0,1) == 'O') || (substr($wind_direction,0,1) == 'E'))
+					$from = translate('fromEW','wunderground');
+				else
+					$from = translate('fromNS','wunderground');
+		    }
+		    else
+				$from = translate('from','wunderground');
 
-            // forecast
-            $i=0;
-            foreach($parsed_json->{'forecast'}->{'simpleforecast'}->{'forecastday'} as $day)
-            {
-                $this->data['forecast'][$i]['date']        = (string)$day->{'date'}->{'year'}.'-'.(string)$day->{'date'}->{'month'}.'-'.(string)$day->{'date'}->{'day'};
-                $this->data['forecast'][$i]['conditions']  = (string)$day->{'conditions'}; 
-                $this->data['forecast'][$i]['icon']        = $this->icon((string)$day->{'icon'});
-                $this->data['forecast'][$i]['temp']        = (int)$day->{'low'}->{'celsius'}.'&deg;/'.(int)$day->{'high'}->{'celsius'}.'&deg;';
-                $i++;
-            }
+	    	// when the wind has no fix direction from is blank
+	    	if ((string)$parsed_json->{'current_observation'}->{'wind_dir'} == 'Variable')
+				$from = '';
+
+	        $this->data['current']['wind'] = translate('wind','wunderground')." ".$from." ".$wind_direction.", ".translate('wind_speed','wunderground')." ".$wind_speed;
+	        if($wind_gust > 0)
+	            $this->data['current']['wind'] .= ", ".translate('wind_gust','wunderground')." ".$wind_gust;
+
+			$this->data['current']['more'] = translate('humidity', 'wunderground')." ".(string)$parsed_json->{'current_observation'}->{'relative_humidity'};
+
+	        // forecast
+	        $i=0;
+	        foreach($parsed_json->{'forecast'}->{'simpleforecast'}->{'forecastday'} as $day)
+	        {
+	            $this->data['forecast'][$i]['date']        = (string)$day->{'date'}->{'year'}.'-'.(string)$day->{'date'}->{'month'}.'-'.(string)$day->{'date'}->{'day'};
+	            $this->data['forecast'][$i]['conditions']  = (string)$day->{'conditions'};
+	            $this->data['forecast'][$i]['icon']        = $this->icon((string)$day->{'icon'});
+
+	            if (substr(trans('format', 'temp'), -1, 1) != "F")
+	            	$this->data['forecast'][$i]['temp']    = (float)$day->{'low'}->{'celsius'}.'&deg;/'.(float)$day->{'high'}->{'celsius'}.'&deg;';
+				else
+	            	$this->data['forecast'][$i]['temp']    = (float)$day->{'low'}->{'fahrenheit'}.'&deg;/'.(float)$day->{'high'}->{'fahrenheit'}.'&deg;';
+
+	            $i++;
+	        }
         }
         else
             $this->error('Weather: wounderground.com', 'Read request failed!');

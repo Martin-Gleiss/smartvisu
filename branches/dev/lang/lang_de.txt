@@ -18,6 +18,7 @@ $lang['format']['float']			= '%01,2f';
 $lang['format']['temp']				= '%01,1f °C';
 $lang['format']['percent']			= '%01,1f %';
 $lang['format']['currency']			= '%01,2f €';
+$lang['format']['speed']			= '%01,0f km/h';
 
 $lang['format']['date']				= 'd.m.y';
 $lang['format']['time']				= 'H:i';
@@ -139,33 +140,30 @@ $lang['yr.no']['hurricane']			= 'Orkan';
 $lang['yr.no']['from']				= 'aus';
 
 // ----- wunderground.com -----------------------------------------------------------------
-$lang['wunderground']['North']                  = 'Nord';
-$lang['wunderground']['NNE']                    = 'Nordnordost';
-$lang['wunderground']['NE']                     = 'Nordost';
-$lang['wunderground']['ENE']                    = 'Ostnordost';
-$lang['wunderground']['East']                   = 'Ost';
-$lang['wunderground']['ESE']                    = 'Ostsüdost';
-$lang['wunderground']['SE']                     = 'Südost';
-$lang['wunderground']['SSE']                    = 'Südsüdost';
-$lang['wunderground']['South']                  = 'Süd';
-$lang['wunderground']['SSW']                    = 'Südsüdwest';
-$lang['wunderground']['SW']                     = 'Südwest';
-$lang['wunderground']['WSW']                    = 'Westsüdwest';
-$lang['wunderground']['West']                   = 'West';
-$lang['wunderground']['WNW']                    = 'Westnordwest';
-$lang['wunderground']['NW']                     = 'Nordwest';
-$lang['wunderground']['NNW']                    = 'Nordnordwest';
-$lang['wunderground']['Variable']               = 'Variable';
+$lang['wunderground']['lang']		= 'DL';
 
-$lang['wunderground']['humidity']                      = 'Humidity';
-$lang['wunderground']['wind_gust']                     = 'Gusts';
-$lang['wunderground']['wind_speed']                    = 'Speed';
-$lang['wunderground']['wind']                          = 'Wind';
-// ----- For french language
-// ----- gestion du "de" ou du "d'" pour la provenance du vent
-// ----- vent de nord et vent d'est.
-$lang['wunderground']['fromNS']                = 'de';
-$lang['wunderground']['fromEW']                = 'd\'';
-// ----- for others languages
-$lang['wunderground']['from']                  = 'aus';
+$lang['wunderground']['North']      = 'Nord';
+$lang['wunderground']['NNE']        = 'Nordnordost';
+$lang['wunderground']['NE']         = 'Nordost';
+$lang['wunderground']['ENE']        = 'Ostnordost';
+$lang['wunderground']['East']       = 'Ost';
+$lang['wunderground']['ESE']        = 'Ostsüdost';
+$lang['wunderground']['SE']         = 'Südost';
+$lang['wunderground']['SSE']        = 'Südsüdost';
+$lang['wunderground']['South']      = 'Süd';
+$lang['wunderground']['SSW']        = 'Südsüdwest';
+$lang['wunderground']['SW']         = 'Südwest';
+$lang['wunderground']['WSW']        = 'Westsüdwest';
+$lang['wunderground']['West']       = 'West';
+$lang['wunderground']['WNW']        = 'Westnordwest';
+$lang['wunderground']['NW']         = 'Nordwest';
+$lang['wunderground']['NNW']        = 'Nordnordwest';
+$lang['wunderground']['Variable']   = 'Variable';
+
+$lang['wunderground']['humidity']   = 'Luftfeuchte';
+$lang['wunderground']['wind_gust']  = 'Böen';
+$lang['wunderground']['wind_speed'] = 'Geschwindigkeit';
+$lang['wunderground']['wind']       = 'Wind';
+
+$lang['wunderground']['from']       = 'aus';
 

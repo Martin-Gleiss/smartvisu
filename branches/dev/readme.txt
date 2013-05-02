@@ -77,6 +77,8 @@ SYSTEMREQUIREMENTS
 HISTORY
 --------------------------------------------------------------------------------
 v 2.5
+	- improved: drivers now with datatypes: int, float, string, array
+	- improved: basic.tank now with variable width
 	- new .js files are now minified. Based on google closure
 	- new model-house: fleischer
 

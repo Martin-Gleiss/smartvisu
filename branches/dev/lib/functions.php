@@ -13,6 +13,32 @@
 // T R A N S L A T I O N 
 // -----------------------------------------------------------------------------
 
+  /**
+  	* Get a Parameter form the lang-file
+  	*
+  	* @param the subset of translation keys
+	*/
+	function trans($subset, $key = '')
+	{
+		$ret = '';
+		static $lang;
+
+		if (!$lang)
+			eval(fileread('lang/lang_'.config_lang.'.txt'));
+
+		if (is_array($lang[$subset]) && $key == '')
+		{
+			foreach(($lang[$subset]) as $key => $val)
+				$ret .= "'".$val."', ";
+
+			$ret = '['.substr($ret, 0, -2).']';
+		}
+		elseif (isset($lang[$subset][$key]))
+			$ret = $lang[$subset][$key];
+
+		return $ret;
+	}
+
   /** 
   	* Easy translate function
   	* 
@@ -78,31 +104,51 @@
         return $date;
     }
    
-  /** 
-  	* Parameter
-  	* 
-  	* @param the subset of translation keys                       	
-	*/   
-	function trans($subset, $key = '')
+   /**
+  	* Convert to lang-based float
+  	*
+  	* @param a float
+  	*/
+	function transfloat($float)
 	{
-		$ret = '';
-		static $lang;
+		$fmt = trans('format', 'float');
 
-		if (!$lang)
-			eval(fileread('lang/lang_'.config_lang.'.txt'));
+		if (strpos($fmt, ',') !== false)
+			return str_replace('.', ',', sprintf(str_replace(',', '.', $fmt), $float));
+		else
+			return sprintf($fmt, $float);
+	}
 
-		if (is_array($lang[$subset]) && $key == '')
-		{
-			foreach(($lang[$subset]) as $key => $val)
-				$ret .= "'".$val."', ";
-	
-			$ret = '['.substr($ret, 0, -2).']';
-		}
-		elseif (isset($lang[$subset][$key]))
-			$ret = $lang[$subset][$key];
+   /**
+  	* Convert to lang-based float
+  	*
+  	* @param a float
+  	*/
+	function transtemp($temp)
+	{
+		$fmt = trans('format', 'temp');
 
-		return $ret;
-	} 
+		if (strpos($fmt, ',') !== false)
+			return str_replace('.', ',', sprintf(str_replace(',', '.', $fmt), $temp));
+		else
+			return sprintf($fmt, $temp);
+	}
+
+   /**
+  	* Convert to lang-based float
+  	*
+  	* @param a float
+  	*/
+	function transspeed($speed)
+	{
+		$fmt = trans('format', 'speed');
+
+		if (strpos($fmt, ',') !== false)
+			return str_replace('.', ',', sprintf(str_replace(',', '.', $fmt), $speed));
+		else
+			return sprintf($fmt, $speed);
+	}
+
 
               
 // -----------------------------------------------------------------------------
