@@ -3,6 +3,7 @@
 = Einleitung =
 
 smartVISU + SmartHome.py ist in meinen Augen eine der momentan ansprechensten Visus die ich kenne.
+Diese Beschreibung beszieht sich auf das frei zum Download stehende Image welches unter http://sourceforge.net/projects/smarthome/files/ geladen werden kann (2013-02-02.img). Dieses Image ist wurde für die Verwendung auf einem RaspberryPI entwickelt bzw. zusammengestellt.
 Sicherlich gerade für Einsteiger nicht leicht zu verstehen. Ich habe die ersten Tage selber davor gesessen und so gut wie nichts verstanden.
 Linux-mäßig habe ich auch nur minimalste Kenntnisse.
 Aber dank der Unterstützung von den 2 Moderatoren im Forum kamen die Erkenntnisse Stück für Stück und nach kurzer Zeit war die VISU fertig.
@@ -19,7 +20,7 @@ OK... los gehts.
 = 1. Schnittstelle einrichten =
 Als erstes richten wir Eibd ein, um SmartHome.py als Schnittstelle benutzen zu können.
 Dies ist eigentlich sehr simple.
-Wir gehen ins Verzeichniss
+Wir bearbeiten einfach die Datei
 {{{
 /etc/default/eibd 
 }}}
