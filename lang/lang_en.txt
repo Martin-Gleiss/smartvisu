@@ -138,3 +138,7 @@ $lang['yr.no']['storm']				= 'storm';
 $lang['yr.no']['hurricane']			= 'hurricane';
 
 $lang['yr.no']['from']				= 'from';
+
+
+//Phone Strings
+$lang['phone']['callerUnknown']     = 'Unknown';
