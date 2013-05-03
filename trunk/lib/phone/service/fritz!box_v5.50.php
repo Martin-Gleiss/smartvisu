@@ -102,14 +102,15 @@ class phone_fritzbox_v5_50 extends phone
             
 			$parts[2] = trim($parts[2]);
             if (strlen($parts[2]) == 0)
-                $parts[2] = ' ? ';
+                $parts[2] = trans('phone', 'callerUnknown');
             	
 			$this->data[] = array(
 				'pos' => $i++,
 				'dir' => $dir,
 				'date' => $date,
 				'number' => $parts[3],
-				'name' => $parts[2] . ' (' . $parts[5] . ')',
+                'name' => $parts[2],
+                'called' => ' (' . $parts[5] . ')',
 				'duration' => $parts[6]
 			);
         }
@@ -120,15 +121,17 @@ class phone_fritzbox_v5_50 extends phone
 	*/        
     public function run()
     {
-		//try to get sid and challenge
-		$this->login_parm = simplexml_load_string(file_get_contents('http://' . $this->server . '/login_sid.lua'));
+		//try to get sid and challengeA
+        $loginUrl = 'http://' . $this->server . '/fon_num/foncalls_list.lua?sid=' . $this->login_parm->SID . '&csv=';
+		$this->login_parm = simplexml_load_string(file_get_contents($loginUrl));
 		
 		//if sid not set do login
 		if ($this->login_parm->SID == '0000000000000000' || strlen($this->login_parm->SID) != '16')
 			$this->connect();
 			
 		// get csv
-		$this->csv = file_get_contents('http://' . $this->server . '/fon_num/foncalls_list.lua?sid=' . $this->login_parm->SID . '&csv=');
+        $getCsvUrl = 'http://' . $this->server . '/fon_num/foncalls_list.lua?sid=' . $this->login_parm->SID . '&csv=';
+		$this->csv = file_get_contents($getCsvUrl);
 		
         // handle csv
 		if (strlen($this->csv) > 10)
