@@ -33,6 +33,16 @@ EIB_IF="ipt:192.168.1.190"
 EIB_UID="1000"
 }}}
 
+Bei Verwendung einer USB-Schnittstelle sollte folgendes drin stehen.
+Wobei ich dies selber noch nicht getestet habe.
+
+{{{
+EIB_ARGS="--daemon --Server --Tunnelling --Discovery --GroupCache --listen-tcp"
+EIB_ADDR="0.0.1"
+USBID=$(findknxusb | grep device: | cut -d' ' -f2)
+EIB_IF="usb:$USBID"
+}}}
+
 Dann speichern und Eibd mit folgendem Befehl neu starten
 
 {{{
