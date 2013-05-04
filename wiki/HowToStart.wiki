@@ -58,7 +58,14 @@ diese 2 Verzeichnisse.
 {{{
 /usr/local/smarthome/items/ <-- dort liegen die items
 }}}
-Falls nötig noch die */usr/local/smarthome/etc/plugin.conf* anpassen. Ich glaube aber das die eh von Haus aus passt, sofern man nicht das smartvisu-Verzeichnis umbenennt.
+Falls nötig noch die */usr/local/smarthome/etc/plugin.conf* anpassen. Diese müßt ihr u.a. immer dann anpassen wenn Ihr z.B. den smartVISU Ordner umbenennt oder beispielsweise Plugins von Smarthome.py einbinden wollt. Um Plots (Diagramme) auf der Visu einzubinden müßt ihr diese 3 Zeilen in die plugin.conf einfügen.
+{{{
+[sql]
+class_name = SQL
+class_path = plugins.sqlite
+}}}
+Das dazugehörige SQLite Plugin ist bis dato allerdings noch nicht ganz fertig/released und daher auch noch nicht dokumentiert. Für die Funktion und Anzeige der Diagramme funktioniert es aber. Es fehlen dem Plugin wohl noch ein paar Features. Alle Werte werden bei dem Plugin in einer Datenbank gespeichert, so das sie auch nach ein restart noch verfügbar sind.
+
 
 === 2.1 Items ===
 Ich empfehle zu Beginn ein paar items zu erstellen.
@@ -228,6 +235,8 @@ Wichtige Grundlage in diesem Ordner sind nun 4 Files. Im Besipiel sind das index
 Diese Files liegen (wenn auch teilweise anders bezeichnet) in jedem der BeispielPage-Ordner. Man könnte sie sich auch dort heraus kopieren.
 Um aber beim hier beschriebenen Beispiel zu bleiben, könnt Ihr die Dateien aus dem Anhang nehmen. Also kopiert diese Dateien in Euern erstellten Page-Ordner.
 Da es jetzt schwierig und zu aufwendig wäre jede einzelne Seite detailiert zu erklären, empfehle ich Euch sich mal die *navigation.thml* und die *EG.Raum00.html* mal in Ruhe anzuschauen. Dort findet Ihr unter anderem die items wieder und ich denke es sollte bald klar sein wie was zusammenspielt. Die einzelnen Macros (basic.shwith, basic.symbol etc.) sind auf der Docu-Page Meiner Meinung nach eh recht gut beschrieben.Die ID's (im Code vor den Items) sind frei wählbar, dürfen jedoch nur einmal vorkommen bzw. müssen eindeutig sein.
+Zu den Plots ist noch zu sagen, das diese erst angezeigt werden, sofern alle im Plot verwendetetn Werten/Daten 1-mal gesendet bzw. empfangen wurden. Dies ist in Anbetracht des plot.rtr gut zu wissen, da sich gerade im Sommer z.b. der Wert der Stellgröße nicht oft ändert oder über 0 steigt. Es ist daher ggf. zu empfehlen die benötigten Werte dann über die ETS anzufordern oder zu senden. 
+
 
 = 3. Schluß =
 So.... ich hoffe das ich alles soweit einiger Maßen verständlich und richtig beschrieben habe, so das dem ein oder anderen der Start etwas leichter fällt.
