@@ -59,11 +59,11 @@ Das Beispiel-Item könnte dann so aussehen
 = 2. Der html-Teil =
 
 in der smartVISU-Docu ist schön beschrieben wie wir an unser gewünschte Ziel kommen. 
-  * *(1.)* laut docu _tmin - the minimum time (x-axis): '1h', '2h'... (duration-format)_ --> also brauchen wir ein *'12h'*
-  * *(2.)* laut docu _exposure - type/s for each serie: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')_ --> also brauchen wir *''* Ich gebe da aber trotzdem gern den Code vor und deshlab ein *['line', 'line', 'line']*
-  * *(3.)* laut docu _color - color/s for each serie e. g. '#f00' for red (optional, default: sutiable for design)_ --> also brauchen wir *['#000', '#a60', '#aaa']*
-  * *(4.)* laut docu _label - label/s for each serie (optional)_ --> also brauchen wir ein *['Phase L1', 'Phase L2', 'Phase L3']*
-  * *(5.)* laut docu _axes - title/s for the x-axis and y-axis_ --> also brauchen wir ein *['', 'Verbrauch in W']*
+  # laut docu _tmin - the minimum time (x-axis): '1h', '2h'... (duration-format)_ --> also brauchen wir ein *'12h'*
+  # laut docu _exposure - type/s for each serie: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')_ --> also brauchen wir *''* Ich gebe da aber trotzdem gern den Code vor und deshlab ein *['line', 'line', 'line']*
+  # laut docu _color - color/s for each serie e. g. '#f00' for red (optional, default: sutiable for design)_ --> also brauchen wir *['#000', '#a60', '#aaa']*
+  # laut docu _label - label/s for each serie (optional)_ --> also brauchen wir ein *['Phase L1', 'Phase L2', 'Phase L3']*
+  # laut docu _axes - title/s for the x-axis and y-axis_ --> also brauchen wir ein *['', 'Verbrauch in W']*
 
 die gesamte Codezeile sieht dann so aus:
 {{{
@@ -71,9 +71,9 @@ die gesamte Codezeile sieht dann so aus:
 
 }}}
 
-Je nachdem ob wir uns das Diagramm nun in einem blog anzeigen lassen wollen oder nicht, kann der in die html einzubringende Code wie folgt aussehen.
+Je nachdem ob wir uns das Diagramm nun in einem 'Block' anzeigen lassen wollen oder nicht, kann der in die html einzubringende Code wie folgt aussehen.
 
-*ohne blog* (Screen vom iPad)
+*ohne Block* (Screen vom iPad)
 
 <img src='http://smartvisu.emf-online.de/ohneBlog.jpg' title='plot.periode ohne blog'>
 {{{
@@ -84,7 +84,7 @@ Je nachdem ob wir uns das Diagramm nun in einem blog anzeigen lassen wollen oder
 ---
 
 
-*in einem blog* (Screen vom iPad)
+*in einem Block* (Screen vom iPad)
 
 <img src='http://smartvisu.emf-online.de/mitBlog.jpg' title='plot.periode im blog'>
 {{{
