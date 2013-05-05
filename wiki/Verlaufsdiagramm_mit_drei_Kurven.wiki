@@ -7,11 +7,11 @@ Verwendung des fertige Image auf einen RaspberryPI.
 Ich möchte hier mal aufzeigen wie man schnell einen und plot.periode mit 3 Verlaufskurven erstellt und diesen auch etwas nach seinen Wünschen anpasst.
 
 OK.... der Plot soll weiterhin folgendes beinhalten:
-  * *(1.)* Verlaufsanzeige = die letzten 12h
-  * *(2.)* Verläufe als Linien
-  * *(3.)* Farben der Verlaufskurven (L1=schwarz, L2=braub, L3=grau)
-  * *(4.)* Bezeichnung der einzelnen Verlauskurven (Phase L1, Phase L2, Phase L3)
-  * *(5.)* Bezeichnung y-Achse (Verbrauch in W)
+  # Verlaufsanzeige = die letzten 12h
+  # Verläufe als Linien
+  # Farben der Verlaufskurven (L1=schwarz, L2=braub, L3=grau)
+  # Bezeichnung der einzelnen Verlauskurven (Phase L1, Phase L2, Phase L3)
+  # Bezeichnung y-Achse (Verbrauch in W)
 
 
 = 1. Einbindung des Plugins =
