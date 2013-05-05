@@ -1,0 +1,108 @@
+#summary plot.period als Beispiel
+
+= Einleitung =
+
+Auch hier beziehe ich in dieser Anleitung auf folgende Voraussetzungen:
+Verwendung des fertige Image auf einen RaspberryPI.
+Ich möchte hier mal aufzeigen wie man schnell einen und plot.periode mit 3 Verlaufskurven erstellt und diesen auch etwas nach seinen Wünschen anpasst.
+
+OK.... der Plot soll weiterhin folgendes beinhalten:
+  * *(1.)* Verlaufsanzeige = die letzten 12h
+  * *(2.)* Verläufe als Linien
+  * *(3.)* Farben der Verlaufskurven (L1=schwarz, L2=braub, L3=grau)
+  * *(4.)* Bezeichnung der einzelnen Verlauskurven (Phase L1, Phase L2, Phase L3)
+  * *(5.)* Bezeichnung y-Achse (Verbrauch in W)
+
+
+= 1. Einbindung des Plugins =
+Vorweg: Das Plugin von Marcus ist bis dato noch nicht ganz fertig. Es funktioniert aber soweit schon sehr gut.
+
+Das benötigte SQLite-Plugin ist bereits in Smarthome.py intergriert. Wir müssen es nur "aktivieren" bzw. einbinden.
+Dies machen wir indem wir in die _/usr/local/smarthome/etc/plugin.conf_ folgendes einfügen
+{{{
+[sql]
+class_name = SQL
+class_path = plugins.sqlite
+}}}
+Wie im Wiki "HowToStart" steht, müssen wir in den item noch bei jedem Wert der in einem Plot angezeigt werden soll noch eine weitere Zeile.
+*history = true*
+
+Das Beispiel-Item könnte dann so aussehen
+{{{
+   [Verbrauchsdaten]
+      [[EeltLeistung]]
+        [[[PL1]]]
+            name = WirkleistungL1
+            type = num
+            visu = yes
+            history = true
+                knx_dpt = 14
+                knx_listen = 5/2/2
+        [[[PL2]]]
+            name = WirkleistungL2
+            type = num
+            visu = yes
+            history = true
+                knx_dpt = 14
+                knx_listen = 5/2/3
+        [[[PL3]]]
+            name = WirkleistungL3
+            type = num
+            visu = yes
+            history = true
+                knx_dpt = 14
+                knx_listen = 5/2/4
+}}}
+
+
+
+= 2. Der html-Teil =
+
+in der smartVISU-Docu ist schön beschrieben wie wir an unser gewünschte Ziel kommen. 
+  * *(1.)* laut docu _tmin - the minimum time (x-axis): '1h', '2h'... (duration-format)_ --> also brauchen wir ein *'12h'*
+  * *(2.)* laut docu _exposure - type/s for each serie: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')_ --> also brauchen wir *''* Ich gebe da aber trotzdem gern den Code vor und deshlab ein *['line', 'line', 'line']*
+  * *(3.)* laut docu _color - color/s for each serie e. g. '#f00' for red (optional, default: sutiable for design)_ --> also brauchen wir *['#000', '#a60', '#aaa']*
+  * *(4.)* laut docu _label - label/s for each serie (optional)_ --> also brauchen wir ein *['Phase L1', 'Phase L2', 'Phase L3']*
+  * *(5.)* laut docu _axes - title/s for the x-axis and y-axis_ --> also brauchen wir ein *['', 'Verbrauch in W']*
+
+die gesamte Codezeile sieht dann so aus:
+{{{
+{{ plot.period('p2', ['Verbrauchsdaten.EeltLeistung.PL1', 'Verbrauchsdaten.EeltLeistung.PL2', 'Verbrauchsdaten.EeltLeistung.PL3'], 'avg', '12h', 0, 0, '', '', ['Phase L1', 'Phase L2', 'Phase L3'], ['#000', '#a60', '#aaa'], ['line', 'line', 'line'], ['', 'Verbrauch in W']) }}
+
+}}}
+
+Je nachdem ob wir uns das Diagramm nun in einem blog anzeigen lassen wollen oder nicht, kann der in die html einzubringende Code wie folgt aussehen.
+
+*ohne blog* (Screen vom iPad)
+
+<img src='http://smartvisu.emf-online.de/ohneBlog.jpg' title='plot.periode ohne blog'>
+{{{
+<h3>Leistung L1 - L3</h3>		
+   {{ plot.period('p2', ['Verbrauchsdaten.EeltLeistung.PL1', 'Verbrauchsdaten.EeltLeistung.PL2', 'Verbrauchsdaten.EeltLeistung.PL3'], 'avg', '12h', 0, 0, '', '', ['Phase L1', 'Phase L2', 'Phase L3'], ['#000', '#a60', '#aaa'], ['line', 'line', 'line'], ['', 'Verbrauch in W']) }}
+}}}
+
+---
+
+
+*in einem blog* (Screen vom iPad)
+
+<img src='http://smartvisu.emf-online.de/mitBlog.jpg' title='plot.periode im blog'>
+{{{
+<div class="block">
+<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+   <div data-role="collapsible" data-collapsed="false" >
+	 <h3>Leistung L1 - L3</h3>
+		{{ plot.period('p2', ['Verbrauchsdaten.EeltLeistung.PL1', 'Verbrauchsdaten.EeltLeistung.PL2', 'Verbrauchsdaten.EeltLeistung.PL3'], 'avg', '12h', 0, 0, '', '', ['Phase L1', 'Phase L2', 'Phase L3'], ['#000', '#a60', '#aaa'], ['line', 'line', 'line'], ['', 'Verbrauch in W']) }}  
+	</div>
+
+    </div>
+    </div> 
+}}}
+
+= 3. Schlußbemerkung =
+Die Farbvorgaben der Verläufe sind Standart-html (z. b. http://html-color-codes.info/webfarben_hexcodes/). _Man kann z. b. statt: #e0e0e0 nur #eee schreiben_
+
+Wie auch bereits im Wiki "HowToStart" angemerkt müßt ihr Smarthome.py nach Änderung der Items, conf oder html noch neu starten.
+
+Ebenfalls ist zu beachten das die Daten erst angezeigt werden, sobald alle 3 Daten einmal gesendet wurden. Also erst wenn alle 3 GA's einmal einen Wert gesendet haben ist etwas zu sehen.
