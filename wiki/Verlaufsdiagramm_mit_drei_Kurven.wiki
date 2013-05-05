@@ -15,7 +15,7 @@ OK.... der Plot soll weiterhin folgendes beinhalten:
 
 
 = 1. Einbindung des Plugins =
-Vorweg: Das Plugin von Marcus ist bis dato noch nicht ganz fertig. Es funktioniert aber soweit schon sehr gut.
+Vorweg: Das Plugin von smarthome.py ist bis dato noch nicht ganz fertig. Es funktioniert aber soweit schon sehr gut.
 
 Das benötigte SQLite-Plugin ist bereits in Smarthome.py intergriert. Wir müssen es nur "aktivieren" bzw. einbinden.
 Dies machen wir indem wir in die _/usr/local/smarthome/etc/plugin.conf_ folgendes einfügen
