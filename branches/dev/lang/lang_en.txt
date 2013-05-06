@@ -168,3 +168,10 @@ $lang['wunderground']['wind']       = 'Wind';
 
 $lang['wunderground']['from']       = 'from';
 
+
+
+//Phone Strings
+$lang['phone']['callerUnknown']     = 'unknown caller';
+$lang['phone']['incoming']          = 'incoming';
+$lang['phone']['outgoing']          = 'outgoing';
+$lang['phone']['missed']            = 'missed';

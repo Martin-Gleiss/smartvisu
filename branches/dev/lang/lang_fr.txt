@@ -176,3 +176,10 @@ $lang['wunderground']['fromNS']		= 'de';
 $lang['wunderground']['fromEW']		= 'd\'';
 $lang['wunderground']['from']		= 'de';
 
+
+
+//Phone Strings
+$lang['phone']['callerUnknown']     = 'inconnue';
+$lang['phone']['incoming']          = 'entrante';
+$lang['phone']['outgoing']          = 'sortants';
+$lang['phone']['missed']            = 'manqué';

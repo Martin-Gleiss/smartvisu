@@ -167,3 +167,11 @@ $lang['wunderground']['wind']       = 'Wind';
 
 $lang['wunderground']['from']       = 'aus';
 
+
+
+//Phone Strings
+$lang['phone']['callerUnknown']     = 'Unbekannter Anrufer';
+$lang['phone']['incoming']          = 'Eingehend';
+$lang['phone']['outgoing']          = 'Ausgehend';
+$lang['phone']['missed']            = 'Verpasst';
+‚
