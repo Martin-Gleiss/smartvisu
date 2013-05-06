@@ -69,9 +69,9 @@ class weather_wunderground extends weather
 		    if (config_lang == 'fr')
 		    {
 				if ((substr($wind_direction,0,1) == 'O') || (substr($wind_direction,0,1) == 'E'))
-					$from = translate('fromEW','wunderground');
+					$from = translate('from_ew','wunderground');
 				else
-					$from = translate('fromNS','wunderground');
+					$from = translate('from_ns','wunderground');
 		    }
 		    else
 				$from = translate('from','wunderground');

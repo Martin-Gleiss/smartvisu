@@ -148,23 +148,23 @@ $lang['yr.no']['from'] 				= 'de';
 // ----- wunderground.com -----------------------------------------------------------------
 $lang['wunderground']['lang']		= 'FR';
 
-$lang['wunderground']['North']		= 'Nord';
-$lang['wunderground']['NNE']        = 'Nord-nord-est';
-$lang['wunderground']['NE']         = 'Nord-est';
-$lang['wunderground']['ENE']        = 'Est-nord-est';
-$lang['wunderground']['East']       = 'Est';
-$lang['wunderground']['ESE']        = 'Est-sud-est';
-$lang['wunderground']['SE']         = 'Sud-est';
-$lang['wunderground']['SSE']        = 'Sud-sud-est';
-$lang['wunderground']['South']      = 'Sud';
-$lang['wunderground']['SSW']        = 'Sud-sud-ouest';
-$lang['wunderground']['SW']         = 'Sud-ouest';
-$lang['wunderground']['WSW']        = 'Ouest-sud-ouest';
-$lang['wunderground']['West']       = 'Ouest';
-$lang['wunderground']['WNW']        = 'Ouest-nord-ouest';
-$lang['wunderground']['NW']         = 'Nord-ouest';
-$lang['wunderground']['NNW']        = 'Nord-nord-ouest';
-$lang['wunderground']['Variable']   = 'Variable';
+$lang['wunderground']['north']		= 'Nord';
+$lang['wunderground']['nne']        = 'Nord-nord-est';
+$lang['wunderground']['ne']         = 'Nord-est';
+$lang['wunderground']['ene']        = 'Est-nord-est';
+$lang['wunderground']['east']       = 'Est';
+$lang['wunderground']['ese']        = 'Est-sud-est';
+$lang['wunderground']['se']         = 'Sud-est';
+$lang['wunderground']['sse']        = 'Sud-sud-est';
+$lang['wunderground']['south']      = 'Sud';
+$lang['wunderground']['ssw']        = 'Sud-sud-ouest';
+$lang['wunderground']['sw']         = 'Sud-ouest';
+$lang['wunderground']['wsw']        = 'Ouest-sud-ouest';
+$lang['wunderground']['west']       = 'Ouest';
+$lang['wunderground']['wnw']        = 'Ouest-nord-ouest';
+$lang['wunderground']['nw']         = 'Nord-ouest';
+$lang['wunderground']['nnw']        = 'Nord-nord-ouest';
+$lang['wunderground']['variable']   = 'Variable';
 
 $lang['wunderground']['humidity']	= 'Humidité';
 $lang['wunderground']['wind_gust']	= 'Rafales';
@@ -172,8 +172,8 @@ $lang['wunderground']['wind_speed']	= 'Vitesse';
 $lang['wunderground']['wind']		= 'Vent';
 // ----- gestion du "de" ou du "d'" pour la provenance du vent
 // ----- vent de nord et vent d'est.
-$lang['wunderground']['fromNS']		= 'de';
-$lang['wunderground']['fromEW']		= 'd\'';
+$lang['wunderground']['from_ns']	= 'de';
+$lang['wunderground']['from_ew']	= 'd\'';
 $lang['wunderground']['from']		= 'de';
 
 

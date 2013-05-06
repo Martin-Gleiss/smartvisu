@@ -23,7 +23,7 @@ $lang['format']['float']			= '%01,2f';
 $lang['format']['temp']				= '%01,1f °C';
 $lang['format']['percent']			= '%01,1f %';
 $lang['format']['currency']			= '%01,2f €';
-$lang['format']['speed']			= '%01,0f km/h';
+$lang['format']['speed']			= '%01,0f km/u';
 
 $lang['format']['date']				= 'd.m.y';
 $lang['format']['time']				= 'H:i';
@@ -148,22 +148,22 @@ $lang['yr.no']['from']				= 'uit';
 // ----- wunderground.com -----------------------------------------------------------------
 $lang['wunderground']['lang']		= 'NL';
 
-$lang['wunderground']['North']      = 'Noord';
-$lang['wunderground']['NNE']        = 'Noordnoordoost';
-$lang['wunderground']['NE']         = 'Noordoost';
-$lang['wunderground']['ENE']        = 'Oostnoordoost';
-$lang['wunderground']['East']       = 'Oost';
-$lang['wunderground']['ESE']        = 'Oostzuidoost';
-$lang['wunderground']['SE']         = 'Zuidoost';
-$lang['wunderground']['SSE']        = 'Zuidzuidoost';
-$lang['wunderground']['South']      = 'Zuid';
-$lang['wunderground']['SSW']        = 'Zuidzuidwest';
-$lang['wunderground']['SW']         = 'Zuidwest';
-$lang['wunderground']['WSW']        = 'Westzuidwest';
-$lang['wunderground']['West']       = 'West';
-$lang['wunderground']['WNW']        = 'Westnoordwest';
-$lang['wunderground']['NW']         = 'Noordwest';
-$lang['wunderground']['NNW']        = 'Noordnoordwest';
+$lang['wunderground']['north']      = 'Noord';
+$lang['wunderground']['nne']        = 'Noordnoordoost';
+$lang['wunderground']['ne']         = 'Noordoost';
+$lang['wunderground']['ene']        = 'Oostnoordoost';
+$lang['wunderground']['east']       = 'Oost';
+$lang['wunderground']['ede']        = 'Oostzuidoost';
+$lang['wunderground']['se']         = 'Zuidoost';
+$lang['wunderground']['sse']        = 'Zuidzuidoost';
+$lang['wunderground']['south']      = 'Zuid';
+$lang['wunderground']['ssw']        = 'Zuidzuidwest';
+$lang['wunderground']['sw']         = 'Zuidwest';
+$lang['wunderground']['wsw']        = 'Westzuidwest';
+$lang['wunderground']['west']       = 'West';
+$lang['wunderground']['wnw']        = 'Westnoordwest';
+$lang['wunderground']['nw']         = 'Noordwest';
+$lang['wunderground']['nnw']        = 'Noordnoordwest';
 
 $lang['wunderground']['humidity']   = 'Humidity';
 $lang['wunderground']['wind_gust']  = 'Gusts';
