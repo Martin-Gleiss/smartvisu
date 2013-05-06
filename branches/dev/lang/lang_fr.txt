@@ -179,7 +179,7 @@ $lang['wunderground']['from']		= 'de';
 
 
 //Phone Strings
-$lang['phone']['callerUnknown']     = 'inconnue';
+$lang['phone']['unknown']           = 'inconnue';
 $lang['phone']['incoming']          = 'entrante';
 $lang['phone']['outgoing']          = 'sortants';
 $lang['phone']['missed']            = 'manqué';

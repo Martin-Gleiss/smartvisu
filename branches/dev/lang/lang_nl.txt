@@ -174,7 +174,7 @@ $lang['wunderground']['from']       = 'uit';
 
 
 //Phone Strings
-$lang['phone']['callerUnknown']     = 'onbekend';
+$lang['phone']['unknown']           = 'onbekend';
 $lang['phone']['incoming']          = 'inkomend';
 $lang['phone']['outgoing']          = 'uitgaande';
 $lang['phone']['missed']            = 'gemiste';

@@ -113,7 +113,7 @@ class phone_fritzbox_v5_20 extends phone
             
 			$parts[2] = trim($parts[2]);
             if (strlen($parts[2]) == 0)
-                $parts[2] = ' ? ';
+                $parts[2] = trans('phone', 'unknown');
             	
 			$this->data[] = array(
 				'pos' => $i++,
