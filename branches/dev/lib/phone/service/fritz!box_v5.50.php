@@ -91,25 +91,40 @@ class phone_fritzbox_v5_50 extends phone
         foreach ($this->csv as $parts)
         {
             $dir = "";
-            if (trim($parts[0]) == 2)
+            $dirPic = '';
+            $altPic = '';
+            if (trim($parts[0]) == 2) {
                 $dir = "0";
-            elseif (trim($parts[0]) == 4)
+                $dirPic = "dir_incoming.png";
+                $altPic =  trans('phone', 'incoming');
+            }
+            elseif (trim($parts[0]) == 4) {
                 $dir = "-1";
-            elseif (trim($parts[0]) == 1)
+                $dirPic = "dir_missed.png";
+                $altPic =  trans('phone', 'missed');
+            }
+            elseif (trim($parts[0]) == 1) {
                 $dir = "1";
+                $dirPic = "dir_outgoing.png";
+                $altPic =  trans('phone', 'outgoing');
+            }
 			$date     = trim($parts[1]);
             $date     = '20' . substr($date, 6, 2) . '-' . substr($date, 3, 2) . '-' . substr($date, 0, 2) . ' ' . substr($date, 9, 5) . ':00';
             
 			$parts[2] = trim($parts[2]);
             if (strlen($parts[2]) == 0)
-                $parts[2] = ' ? ';
+                $parts[2] = trans('phone', 'callerUnknown');
             	
 			$this->data[] = array(
 				'pos' => $i++,
 				'dir' => $dir,
+                'dirpic' => $dirPic,
+                'altPic' => $altPic,
 				'date' => $date,
 				'number' => $parts[3],
 				'name' => $parts[2] . ' (' . $parts[5] . ')',
+                'onlyName' => $parts[2],
+                'onlyCalledNumber' => $parts[5],
 				'duration' => $parts[6]
 			);
         }
