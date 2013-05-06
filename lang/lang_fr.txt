@@ -144,7 +144,3 @@ $lang['yr.no']['storm'] 			= 'tempête';
 $lang['yr.no']['hurricane'] 		= 'ouragan';
 
 $lang['yr.no']['from'] 				= 'venant de';
-
-
-//Phone Strings
-$lang['phone']['callerUnknown']     = 'inconnue';
