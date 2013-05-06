@@ -44,6 +44,8 @@ class phone_offline extends phone
             'name' => '',
             'duration' => '00:00:10'
         );         
+
+        $this->debug($this->data, "data");
     }
 }
 

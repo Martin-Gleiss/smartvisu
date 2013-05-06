@@ -31,8 +31,8 @@
                 var sum = 1;
                 for (var i in data) {
                     ret  = '<img class="icon" src="pics/phone/' + data[i].pic + '" />';
-                    ret += '<img class="dir" src="lib/phone/pics/' + data[i].dirpic + '" />';
-                    ret += '<h3>' + data[i].name + '&nbsp;</h3>';
+                    ret += '<img class="dir" src="lib/phone/pics/' + data[i].dirpic + '"/>';
+                    ret += '<h3>' + data[i].text + '&nbsp;</h3>';
                     ret += '<p>' + data[i].number + '&nbsp;</p>';
                     ret += '<span class="ui-li-count">' + data[i].date + '</span>';
                     if (data[i].number)
@@ -76,7 +76,7 @@
                 for (var i in data) {
                     ret  = '<img class="icon" src="pics/phone/' + data[i].pic + '" />';
                     ret += '<img class="dir" src="lib/phone/pics/' + data[i].dirpic + '" />';
-                    ret += '<h3>' + data[i].name + '&nbsp;</h3>';
+                    ret += '<h3>' + data[i].text + '&nbsp;</h3>';
                     ret += '<p>' + data[i].number + '&nbsp;</p>';
                     ret += '<span class="ui-li-count">' + data[i].date + '</span>';
                     if (data[i].number)

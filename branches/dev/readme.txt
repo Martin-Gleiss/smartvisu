@@ -72,11 +72,12 @@ SYSTEMREQUIREMENTS
         
         Enjoy smartVISU!
         
- 
+
 
 HISTORY
 --------------------------------------------------------------------------------
 v 2.5
+	- improved: phone drivers
 	- improved: drivers now with datatypes: int, float, string, array
 	- improved: basic.tank now with variable width
 	- new .js files are now minified. Based on google closure
@@ -230,6 +231,3 @@ v 1.1 03.05.12
     
 v 1.0 26.04.12
     - first offical release
-
- 
-    

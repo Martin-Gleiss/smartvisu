@@ -145,6 +145,7 @@ $lang['yr.no']['hurricane'] 		= 'ouragan';
 
 $lang['yr.no']['from'] 				= 'de';
 
+
 // ----- wunderground.com -----------------------------------------------------------------
 $lang['wunderground']['lang']		= 'FR';
 
@@ -177,8 +178,7 @@ $lang['wunderground']['from_ew']	= 'd\'';
 $lang['wunderground']['from']		= 'de';
 
 
-
-//Phone Strings
+// ----- Phone -----------------------------------------------------------------
 $lang['phone']['unknown']           = 'inconnue';
 $lang['phone']['incoming']          = 'entrante';
 $lang['phone']['outgoing']          = 'sortants';
