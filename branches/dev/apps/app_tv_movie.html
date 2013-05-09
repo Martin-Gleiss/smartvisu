@@ -10,7 +10,7 @@
  * @category    tv
  * @icon        icons/ws/it_television.png
  * @color       #e00
- * @description List of all tv-stations from TV-Movie
+ * @description List of all tv-stations from www.TVMovie.de
  *
  * @info        More feeds on
  * @link        http://www.tvmovie.de/rss-feeds
@@ -38,7 +38,7 @@
     <style type="text/css">
 		.tvlist ul { margin: 0 !important; }
 		.tvlist li { padding: 0 0 0 125px !important; }
-		.tvlist .ui-li-thumb { height: 63px; max-width: 113px; top: 5px; left: 5px; }
+		.tvlist .ui-li-thumb { height: 63px; max-width: 113px; top: 5px; left: 5px; border: 1px solid #aaa; }
 		.tvlist .ui-li-aside { background-color: white; border: 1px solid #ccc; border-radius: 5px;
 			height: 25px; width: 70px; margin: 3px; text-align: center; vertical-align: middle; line-height: 27px; }
 
@@ -63,8 +63,12 @@
 				var entry = data['entry'];
 
                 for (var i in entry) {
-                    ret  = '<img src="' + entry[i].image.url + '" />';
-                    ret += '<h3>' + entry[i].title + '&nbsp;</h3>';
+                    ret  = '';
+
+					if (entry[i].image)
+                    	ret += '<img src="' + entry[i].image.url + '" />';
+
+					ret += '<h3>' + entry[i].title + '&nbsp;</h3>';
                     ret += '<p>' + entry[i].description + '&nbsp;</p>';
 
                     var pic = '';
@@ -92,10 +96,14 @@
 						ret += '</div>';
 					}
 
-                    line += '<li>' + ret + '</li>';
+                    line += '<li style="display: none;">' + ret + '</li>';
                 }
 
                 $('#tv ul').html(line).listview('refresh');
+
+ 				$('#tv li').each(function(index) {
+                	setTimeout(function(){ $('li:hidden:first').fadeIn(); }, 100 * index);
+				});
             })
             .error(notify.json);
         });
