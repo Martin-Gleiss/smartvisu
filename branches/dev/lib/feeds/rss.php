@@ -30,6 +30,9 @@ class rss extends service
 		parent::init($request);
 
 		$this->url = $request['url'];
+
+		if ((int)$request['limit'] > 0)
+			$this->limit = (int)$request['limit'];
 	}
 	
   /**
