@@ -1,0 +1,83 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * @version     1.0 
+ *  
+ * @title       TV-Movie
+ * @category    tv
+ * @icon        icons/ws/it_television.png
+ * @color       #e00
+ * @description List of all tv-stations from TV-Movie
+ *
+ * @info        More feeds on
+ * @link        http://www.tvmovie.de/rss-feeds
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "apps.html" %}
+
+{% block sidebar %}
+	<ul data-role="listview" data-dividertheme="c">
+		<li><a data-ajax="false" href="index.php?page=app_tv_movie"><h3>Jetzt</h3></a></li>
+		<li><a data-ajax="false" href="index.php?page=app_tv_movie&feed=2015"><h3>20:15</h3></a></li>
+    	<li><a data-ajax="false" href="index.php?page=app_tv_movie&feed=2200"><h3>22:00</h3></a></li>
+	</ul>
+{% endblock %}
+
+
+{% block content %}
+
+    <h3>TV-Programm</h3>
+	<br />
+
+
+    <style type="text/css">
+		.tvlist ul { margin: 0 !important; }
+		.tvlist li { padding: 0 0 0 90px !important; }
+		.tvlist .preview { width: 80px; }
+    </style>
+
+    <div id="tv" class="tvlist">
+        <ul data-role="listview">
+        </ul>
+    </div>
+
+    <script type="text/javascript">
+        $('#{{ page }}').on('pagecreate',function(event, ui) {
+
+			var feed = document.URL.explode('&');
+			if (feed[1] == null)
+				feed = 'jetzt';
+			else
+				feed = feed[1].substring(5, 9);
+
+			console.log(feed);
+
+            $.getJSON('lib/feeds/rss.php?url=tvmovie.de/rss/tv' + feed + '.xml', function(data) {
+                var line = '';
+				var entry = data['entry'];
+
+                for (var i in entry) {
+                    ret  = '<img class="preview" src="' + entry[i].image.url + '" />';
+                    ret += '<h3>' + entry[i].title + '&nbsp;</h3>';
+                    ret += '<p>' + entry[i].description + '&nbsp;</p>';
+
+                    line += '<li>' + ret + '</li>';
+                }
+
+                $('#tv ul').html(line).listview('refresh');
+            })
+            .error(notify.json);
+        });
+    </script>
+
+
+	<hr />
+	<div class="mini">&#169; <a href="http://www.tvmovie.de" target="_blank">http://www.tvmovie.de</a></div>
+
+{% endblock %}
+
