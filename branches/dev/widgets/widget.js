@@ -67,6 +67,7 @@ var widget = {
 	listening: function() {
 	    var ret = false;
         
+		// are there any?
 	    if ($('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').size() > 0)
         	ret = true;
         
@@ -83,11 +84,14 @@ var widget = {
 		var ret = Array();
 		var unique = Array();
 
+		// all except plots
 		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function(idx) {
-			var items = widget.explode($(this).attr('data-item')); 
-			for (var i = 0; i < items.length; i++)
-				unique[items[i]] = '';
-		}); 
+			if ($(this).attr('data-widget').substr(0, 5) != 'plot.' ) {
+				var items = widget.explode($(this).attr('data-item'));
+				for (var i = 0; i < items.length; i++)
+					unique[items[i]] = '';
+			}
+		});
 
 		for (var item in unique)     
             ret.push(item);
@@ -102,7 +106,7 @@ var widget = {
 	    var widgets = 0;
 		$('[data-item]').each(function(idx) {
 			if ($(this).attr('data-item').trim() != '') {
-		    	console.log("[widget] '" + this.id + "' listen on '" + $(this).attr('data-item') + "'");
+		    	console.log("[" + $(this).attr('data-widget') + "] '" + this.id + "' listen on '" + $(this).attr('data-item') + "'");
             	widgets++;
 			}
     	});
@@ -255,8 +259,8 @@ var widget = {
 // ----- s p e c i a l ---------------------------------------------------------
 
   /**
-    * Returns all widgets with plot functionality. Matching 'plot' in attribute
-    * 'data-widget'. 
+    * Returns all widgets with plot functionality or plots listening to an item.
+    * Matching 'plot' in attribute 'data-widget'.
     *       
     * @param	item: matches all plot-widgets with that item
     * @return   jQuery objectlist    
@@ -265,7 +269,7 @@ var widget = {
 	   	var ret = $();
 		
 		if (item) {
-    		$('[data-widget^="plot."][data-item*="' + item + '"]').each(function(idx) {
+    		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget^="plot."][data-item*="' + item + '"]').each(function(idx) {
 				var items = widget.explode($(this).attr('data-item')); 
 
 				for (var i = 0; i < items.length; i++) { 
