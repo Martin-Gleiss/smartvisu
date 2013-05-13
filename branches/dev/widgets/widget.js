@@ -12,6 +12,7 @@
  * Class for controlling all widgets. 
  *
  * Concept:
+ * --------
  * Every item has a name. The value of the item may be of type: int, float, or
  * array. The items are stored in the widget.buffer. The drivers will fill the
  * buffer through the widget.update (and therefore widget.set). Asynchronly
@@ -20,6 +21,25 @@
  * items are in buffer needed for that update. If one is missing the update is
  * not been made. If some plots placed on the page, the update will look if it
  * is possible to add only one point (if the widget is already initialized).
+ *
+ * Events:
+ * -------
+ * Some new events are introduced to control the widgets and there visual
+ * appearance.
+ *
+ * 'init': function(event) { }
+ * Triggered from the widget (macro) itself to change it dynamically on startup.
+ *
+ * 'update': function(event, response) { }
+ * Triggered through widget.update if a item has been changed.
+ *
+ * 'point': function(event, response) { }
+ * Triggerd only for plots through widget.update if the plot is already drawn
+ * and only a new point has to be added to the series.
+ *
+ * 'change', 'click' ...
+ * Standard jquery-mobile events, triggered from the framework.
+ *
  */ 
 var widget = {
 
@@ -172,7 +192,7 @@ var widget = {
 			//series.push(value);
 		}
 		else if (value !== undefined)
-        	widget.buffer[item] = value; 
+			widget.buffer[item] = ( $.isNumeric(value) ? value * 1.0 : value);
 
 		// DEBUG: console.log("[widget] '" + item, widget.buffer[item]);
 	},
@@ -216,7 +236,7 @@ var widget = {
 						// regular update to the widget with all items   
    						else {
 							values = widget.get(items);
-				   			if (widget.check(values)) {
+							if (widget.check(values)) {
 								// DEBUG:
 								console.log("[" + $(this).attr('data-widget') + "] update '" + this.id + "':", values);
 								$(this).trigger('update', [values]);
@@ -856,7 +876,7 @@ $(document).delegate('div[data-widget="plot.period"]', {
 });
 
 
-// ----- plot.rtr -----------------------------------------------------------
+// ----- plot.rtr --------------------------------------------------------------
 $(document).delegate('div[data-widget="plot.rtr"]', { 
 	'update': function(event, response) {
 		// response is: {{ gad_actual }}, {{ gad_set }}, {{ gat_state }} 
@@ -869,12 +889,12 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 		var stamp = state[0][0];
 		var percent = 0;
         
-		for (var i = 0; i < state.length; i++) { 
-			if (state[i][1] > 0.5)
+		for (var i = 1; i < state.length; i++) {
+			if (state[i - 1][1] > 0.5)
 				percent += (state[i][0] - stamp);	
 			stamp = state[i][0];
 		};
-		percent = Math.round(percent / (state[i - 1][0] - state[0][0]) * 100);		
+		percent = Math.round(percent / (state[i - 1][0] - state[0][0]) * 100);
     
 		// draw the plot
 		$('#' + this.id).highcharts({

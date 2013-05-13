@@ -18,7 +18,7 @@
 {% macro missedlist(id, title, count) %}
     {% set uid = uid(page, id) %}
 
-    <div id="{{ uid }}-phonelist" class="phonelist">
+    <div id="{{ uid }}-missedlist" data-widget="phone.missedlist" class="phonelist">
         {% if title %} <h2>{{ title }}</h2> {% endif %}
         <ul data-role="listview">
         </ul>
@@ -39,12 +39,13 @@
                         ret = '<a href="callto://' + data[i].number + '">' + ret + '</a>'; 
                     
                     if (data[i].dir == 0) {
-                        line += '<li data-icon="false">' + ret + '</li>';
+                        line += '<li style="display: none;" data-icon="false">' + ret + '</li>';
                         if (sum++ == {{ count|default(3) }}) break;
                     }
                 }
                 
-                $('#{{ uid }}-phonelist ul').html(line).listview('refresh');
+                $('#{{ uid }}-missedlist ul').html(line).listview('refresh');
+				$('#{{ uid }}-missedlist ul').trigger('redraw');
             })
             .error(notify.json);
         });
@@ -62,7 +63,7 @@
 {% macro list(id, title, count) %}
     {% set uid = uid(page, id) %}
 
-    <div id="{{ uid }}-phonelist" class="phonelist">
+    <div id="{{ uid }}-phonelist" data-widget="phone.list" class="phonelist">
         {% if title %} <h2>{{ title }}</h2> {% endif %}
         <ul data-role="listview">
         </ul>
@@ -82,11 +83,12 @@
                     if (data[i].number)
                         ret = '<a href="callto://' + data[i].number + '">' + ret + '</a>'; 
                     
-                    line += '<li data-icon="false">' + ret + '</li>';
+                    line += '<li style="display: none;" data-icon="false">' + ret + '</li>';
                     if (sum++ == {{ count|default(10) }}) break;
                 }
                 
                 $('#{{ uid }}-phonelist ul').html(line).listview('refresh');
+                $('#{{ uid }}-phonelist ul').trigger('redraw');
             })
             .error(notify.json);
         });

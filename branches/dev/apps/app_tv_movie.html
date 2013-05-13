@@ -44,7 +44,7 @@
 
     </style>
 
-    <div id="tv" class="tvlist">
+    <div id="tv" data-widget="app.tvmovie" class="tvlist">
         <ul data-role="listview">
         </ul>
     </div>
@@ -100,10 +100,7 @@
                 }
 
                 $('#tv ul').html(line).listview('refresh');
-
- 				$('#tv li').each(function(index) {
-                	setTimeout(function(){ $('li:hidden:first').fadeIn(); }, 100 * index);
-				});
+ 				$('#tv ul').trigger('redraw');
             })
             .error(notify.json);
         });

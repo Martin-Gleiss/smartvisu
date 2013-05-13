@@ -127,9 +127,9 @@ hr {
 }
 
 .ui-page > .ui-header .ui-right {
-	width: 98px; 
+	width: 95px;
     float: right;
-    margin: 9px 15px 0 0;
+    margin: 9px 10px 0 0;
 }
 
 .ui-page > .ui-header .ui-right .mini {

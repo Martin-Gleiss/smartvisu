@@ -28,6 +28,8 @@
 	
 	compile("widgets/widget.js");
 	echo "\n";
+    compile("widgets/animation.js");
+	echo "\n";
 
 	echo "\n";
 	
