@@ -30,7 +30,7 @@
 {% macro period(id, gad, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes) %}
    
 	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(gad, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}" 
-        {% if ymin %} data-min="{{ ymin }}" {% endif %} {% if ymax %} data-max="{{ ymax }}" {% endif %}
+        {% if ymin is not empty %} data-min="{{ ymin }}" {% endif %} {% if ymax is not empty %} data-max="{{ ymax }}" {% endif %}
 		data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}" 
         data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axes) }}"
 		class="plot"></div>
