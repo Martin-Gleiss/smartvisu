@@ -30,7 +30,7 @@ class weather_offline extends weather
 		if (config_lang == 'de')
             $windspeed = ' mit '.round( 1 * 3.6, 1).' km/h';
         elseif (config_lang == 'nl')
-            $windspeed = ' mit '.round( 1 * 3.6, 1).' km/u';
+            $windspeed = ' met '.round( 1 * 3.6, 1).' km/u';
         else
             $windspeed = ' at '.round( 1 * 2.24, 1).' MPH';
         
