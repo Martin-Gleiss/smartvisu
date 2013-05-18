@@ -19,6 +19,9 @@ class smartClosure extends PhpClosure {
         $lines = file($src);
 		foreach($lines as $line_num => $line)
 		{
+            if (substr(trim($line), 0, 8) == '// TODO:')
+				echo trim($line)."\n";
+
 			if (substr(trim($line), 0, 11) != 'console.log')
 			$code .= $line;
 		}

@@ -106,11 +106,11 @@ var widget = {
 
 		// all except plots
 		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function(idx) {
-			if ($(this).attr('data-widget').substr(0, 5) != 'plot.' ) {
+			//if ($(this).attr('data-widget').substr(0, 5) != 'plot.' ) {
 				var items = widget.explode($(this).attr('data-item'));
 				for (var i = 0; i < items.length; i++)
 					unique[items[i]] = '';
-			}
+			//}
 		});
 
 		for (var item in unique)     
@@ -837,7 +837,6 @@ $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="plus"]'
 $(document).delegate('div[data-widget="plot.period"]', { 
 	'update': function(event, response) {
 		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
-	    console.log(this.id, response);
 
 		var label = $(this).attr('data-label').explode();
         var color = $(this).attr('data-color').explode();
@@ -858,7 +857,7 @@ $(document).delegate('div[data-widget="plot.period"]', {
 		$('#' + this.id).highcharts({
             series: series,
  		    xAxis: { type: 'datetime', title: { text: axis[0] } },
-		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'), title: { text: axis[1] } }
+		   	yAxis: { min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: { text: axis[1] } }
         });
     },
 
@@ -916,12 +915,11 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
                 size: 15,
                 showInLegend: false,
                 dataLabels: { enabled: false },
-				tooltip: { valueSuffix: ' %' }
+				tooltip: { formatter: function() { return this.series.name + ' xxx <b>' + this.y.transPercent() + '</b>'; } }
 			}],
  		    xAxis: { type: 'datetime' },
-		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'),
-				title: { text: axis[1] } },
-			tooltip: { valueSuffix: ' °' }
+		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'), title: { text: axis[1] } },
+            tooltip: { formatter: function() { return this.series.name + ': <b>' + this.y.transTemp() + '</b>'; } }
         });
     },
 
@@ -933,7 +931,7 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
                 for (var j = 0; j < response[i].length; j++)
                 	chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= 100));
         	} else if (response[i] && (i == 2)) {
-				console.log("recalc");
+				// TODO: plot.rtr, recalc pie diagram afer new point received
             }
 			chart.redraw();
 		};
@@ -942,14 +940,14 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 
 
 // ----- plot.comfortchart -----------------------------------------------------
-$(document).delegate('div[data-widget="plot.comfortchart"]', { 
+$(document).delegate('div[data-widget="plot.comfortchart"]', {
 	'update': function(event, response) {
 		// response is: {{ gad_temp }}, {{ gad_humidity }}
-        
+
 	    var label = $(this).attr('data-label').explode();
         var axis = $(this).attr('data-axis').explode();
        	var plots = Array();
-		
+
         plots[0] = {
             type: 'area', name: label[0], lineWidth: 0,
 			data: [ [17, 35], [16, 75], [17, 85], [21, 80], [25, 60], [27, 35], [25, 19], [20, 20], [17, 35]  ]
@@ -961,26 +959,71 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
 
         plots[2] = {
 			name: 'point',
-            data: [ [response[0] * 1.0, response[1] * 1.0] ], 
+            data: [ [response[0] * 1.0, response[1] * 1.0] ],
             marker: { enabled: true, lineWidth: 2, radius: 6, symbol: 'circle' },
             showInLegend: false
         }
-        
+
         $('#' + this.id).highcharts({
             series: plots,
  		    xAxis: { min: 10, max: 35, title: { text: axis[0], align: 'high', margin: -2 } },
 		   	yAxis: { min: 0, max: 100, title: { text: axis[1], margin: 7 } },
             plotOptions: { area: { enableMouseTracking: false } },
-            tooltip: { formatter: function() { return this.x +' °C / '+ this.y + ' %'; } }
+            tooltip: { formatter: function() { return this.x.transTemp() + ' / ' + this.y.transPercent(); } }
         });
     },
-    
+
 	'point': function(event, response) {
 		var chart = $('#' + this.id).highcharts();
 		var point = chart.series[2].data[0];
-		if (!response[0]) response[0] = point.x; 
-		if (!response[1]) response[1] = point.y; 
-		
-        chart.series[2].data[0].update( [response[0] * 1.0, response[1] * 1.0], true); 
+		if (!response[0]) response[0] = point.x;
+		if (!response[1]) response[1] = point.y;
+
+        chart.series[2].data[0].update( [response[0] * 1.0, response[1] * 1.0], true);
+	}
+});
+
+
+// ----- plot.temprose -----------------------------------------------------
+$(document).delegate('div[data-widget="plot.temprose"]', {
+	'update': function(event, response) {
+		// response is: {{ gad_actual_1, gad_actual_2, gad_actual_3, gad_set_1, gad_set_2, gad_set_3 }}
+
+		console.log(this.id, response);
+
+	    var label = $(this).attr('data-label').explode();
+        var axis = $(this).attr('data-axis').explode();
+        var count = parseInt($(this).attr('data-count'));
+
+        var plots = Array();
+        plots[0] = {
+        	name: label[0], pointPlacement: 'on',
+			data: response.slice(0, count)
+     	};
+
+		if(response.slice(count).length == count) {
+			plots[1] = {
+	            name: label[1], pointPlacement: 'on',
+				data: response.slice(count),
+	            dashStyle: 'shortdot'
+	   	}};
+
+		$('#' + this.id).highcharts({
+		    chart: {polar: true, type: 'line', marginLeft: 10 },
+		    series: plots,
+ 		    xAxis: { categories: axis, tickmarkPlacement: 'on', lineWidth: 0 },
+		   	yAxis: { gridLineInterpolation: 'polygon', lineWidth: 0 },
+			tooltip: { formatter: function() { return this.x +' - '+ this.series.name + ': <b>' + this.y.transTemp() + '</b>'; } },
+			legend: { x: 10, layout: 'vertical' }
+        });
+    },
+
+	'point': function(event, response) {
+		var chart = $('#' + this.id).highcharts();
+		var point = chart.series[2].data[0];
+		if (!response[0]) response[0] = point.x;
+		if (!response[1]) response[1] = point.y;
+
+        chart.series[2].data[0].update( [response[0] * 1.0, response[1] * 1.0], true);
 	}
 });

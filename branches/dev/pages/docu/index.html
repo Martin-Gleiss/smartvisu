@@ -143,6 +143,9 @@
 	{% set driver = dir('driver', '^(?!_)(.+?.min.js)')|length %}
 	<div class="app"><div class="image" style="background-color: #0c0;"><span style="font-size: 1.8em;">{{ driver }}</span><br /><span class="mini">drivers</span></div></div>
 	
+    {% set icons = dir('icons/ws', '^(?!_)(.+?.png)')|length %}
+	<div class="app"><div class="image" style="background-color: #07c;"><span style="font-size: 1.8em;">{{ icons }}</span><br /><span class="mini">icons</span></div></div>
+
 	</div>
     
 	</p>
