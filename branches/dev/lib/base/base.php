@@ -23,6 +23,9 @@
  * ----------------------------------------------------------------------------- 
  */ 
 
+
+// ----- number ----------------------------------------------------------------
+
   /**
     * transforms a number to int
     */
@@ -65,6 +68,51 @@
 		var ret = this.toFixed(<?php echo $fmt[4] ?>).replace('.', '<?php echo $fmt[3] ?>');
 		return ret.toString() + '<?php echo strrchr($fmt, ' ') ?>';
 	};
+
+
+// ----- date ------------------------------------------------------------------
+
+  /**
+    * transforms a date to date
+    */
+  	Date.prototype.transDate = function(ret) {
+		if (!ret)
+			ret = '<?php echo trans('format', 'date'); ?>';
+
+		ret = ret.replace('d', (this.getDate().toString().length == 1 ? '0' : '') + this.getDate());
+        ret = ret.replace('m', (this.getMonth().toString().length == 1 ? '0' : '') + this.getMonth());
+		ret = ret.replace('y', this.getFullYear().toString().substr(2,2));
+        ret = ret.replace('Y', this.getFullYear());
+
+		ret = ret.replace('H', this.getHours());
+        ret = ret.replace('i', (this.getMinutes().toString().length == 1 ? '0' : '') + this.getMinutes());
+		ret = ret.replace('s', (this.getSeconds().toString().length == 1 ? '0' : '') + this.getSeconds());
+
+		return ret;
+	};
+
+  /**
+    * transforms a date to time
+    */
+  	Date.prototype.transTime = function() {
+		return this.transDate('<?php echo trans('format', 'time'); ?>');
+	};
+
+  /**
+    * transforms a date to short
+    */
+  	Date.prototype.transShort = function() {
+		return this.transDate('<?php echo trans('format', 'short'); ?>');
+	};
+
+  /**
+    * transforms a date to long
+    */
+  	Date.prototype.transLong = function() {
+		return this.transDate('<?php echo trans('format', 'long'); ?>');
+	};
+
+
 
 
 /**

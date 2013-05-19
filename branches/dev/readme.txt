@@ -77,6 +77,9 @@ SYSTEMREQUIREMENTS
 HISTORY
 --------------------------------------------------------------------------------
 v 2.5
+	- new: animations :-)
+	- new: rss-feed-reader (lib/feeds)
+    - new widget: plot.temprose
 	- improved: phone drivers
 	- improved: drivers now with datatypes: int, float, string, array
 	- improved: basic.tank now with variable width

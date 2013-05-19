@@ -705,6 +705,15 @@ only if page-bg is placed in a div
     text-align:right;
 }
 
+.alert .control .stamp {
+    margin-right: 30px;
+    position: absolute;
+    bottom: 10px;
+	left: 10px;
+	font-size: 0.8em;
+    color: #666;
+}
+
 
  
 /**
