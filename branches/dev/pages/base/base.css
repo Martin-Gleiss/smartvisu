@@ -277,9 +277,9 @@ a.ui-btn-inline.ui-mini span.ui-btn-inner {
     padding: 4px 2px 0px 2px;
 }
 
-a.ui-btn-inline.ui-mini .icon { 
+a.ui-btn-inline.ui-mini .icon {
     width: 32px;
-    height: 32px;    
+    height: 32px;
 }
      
 /** --------- button: midi --------- */
@@ -1236,6 +1236,29 @@ canvas.colordisc {
     margin: 10px 10px 0px 10px;
 }
 
+
+.station {
+    display: inline-block;
+}
+
+.station a.ui-btn-inline.ui-mini .ui-btn-inner {
+	padding: 1px 1px 0px 1px;
+}
+
+.station a.ui-btn-inline.ui-mini .ui-btn-text {
+	display: table-cell;
+ 	text-align: center;
+	vertical-align: middle;
+   	height: 40px;
+   	width: 40px;
+}
+
+.station a.ui-btn-inline.ui-mini .icon {
+    width: auto;
+	max-width: 39px;
+    height: auto;
+	max-height: 37px;
+}
 
 /**
  * --- W i d g e t s :   P L O T -----------------------------------------------

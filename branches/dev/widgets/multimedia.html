@@ -7,6 +7,7 @@
  * -----------------------------------------------------------------------------
  */
 
+
 /**
  * Standard Multimedia Player
  * 
@@ -65,5 +66,24 @@
     			{{ basic.button(id~'next', gad_next, 'next', icon0~'control_arrow_right.png', 1) }}
     	   </div>
 	   </div>
+    </div>
+{% endmacro %}
+
+
+
+/**
+ * Displays a tv- or radio- station
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item
+ * @param       a icon (e. g. located in pics/station)
+ * @param       value send if the button is pressed (optional, default 1)
+ */
+{% macro station(id, gad, pic, val) %}
+    {% import "basic.html" as basic %}
+    {% set uid = uid(page, id) %}
+
+    <div id="{{ uid }}" class="station">
+        {{ basic.button(id, gad, '', pic, 1, 'mini') }}
     </div>
 {% endmacro %}
