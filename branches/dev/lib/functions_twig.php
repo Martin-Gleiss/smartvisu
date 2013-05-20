@@ -94,7 +94,11 @@
                 if (preg_match("#".$filter."$#i", $item, $itemparts) > 0)
                 {
                     $name = str_replace("_", " ", $itemparts[1]);
-                    $ret[$name] = array("file" => $itemparts[0], "name" => $itemparts[1], "label" => ucfirst($name));
+                    $ret[$name] = array(
+                        "path" => $dir.'/'.$itemparts[0],
+                        "file" => $itemparts[0],
+                        "name" => $itemparts[1],
+                        "label" => ucfirst($name));
                 }
 		    }
    		}
