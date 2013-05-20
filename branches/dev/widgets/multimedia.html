@@ -72,18 +72,19 @@
 
 
 /**
- * Displays a tv- or radio- station
+ * Displays a tv- or radio- station button
  * 
  * @param       unique id for this widget
  * @param       a gad/item
  * @param       a icon (e. g. located in pics/station)
  * @param       value send if the button is pressed (optional, default 1)
+ * @param       type: 'mini', 'midi' (optional, default: mini)
  */
-{% macro station(id, gad, pic, val) %}
+{% macro station(id, gad, pic, val, type) %}
     {% import "basic.html" as basic %}
     {% set uid = uid(page, id) %}
 
     <div id="{{ uid }}" class="station">
-        {{ basic.button(id, gad, '', pic, 1, 'mini') }}
+        {{ basic.button(id, gad, '', pic, 1, type|default('mini')) }}
     </div>
 {% endmacro %}

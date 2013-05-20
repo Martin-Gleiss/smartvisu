@@ -79,7 +79,8 @@ HISTORY
 v 2.5
 	- new: animations :-)
 	- new: rss-feed-reader (lib/feeds)
-    - new widget: plot.temprose
+    - new widget: multimedia.station for tv- and radio-stations 
+    - new widget: plot.temprose for all temperatures in a building
 	- improved: phone drivers
 	- improved: drivers now with datatypes: int, float, string, array
 	- improved: basic.tank now with variable width

@@ -95,7 +95,7 @@ class phone_fritzbox_v5_50 extends phone
             
 			$this->data[] = array(
 				'pos' => $i++,
-				'dir' => (trim($parts[0]) == 1 ? -1 : (trim($parts[0]) == 2 ? 1 : 0)),
+				'dir' => (trim($parts[0]) == 1 ? 1 : (trim($parts[0]) == 2 ? 0 : -1)),
                 'date' => $date,
 				'number' => $parts[3],
 				'name' => $parts[2],

@@ -1260,6 +1260,26 @@ canvas.colordisc {
 	max-height: 37px;
 }
 
+.station a.ui-btn-inline.ui-midi .ui-btn-inner {
+	padding: 2px 1px 0px 1px;
+}
+
+.station a.ui-btn-inline.ui-midi .ui-btn-text {
+	display: table-cell;
+ 	text-align: center;
+	vertical-align: middle;
+   	height: 54px;
+   	width: 54px;
+}
+
+.station a.ui-btn-inline.ui-midi .icon {
+    width: auto;
+	max-width: 50px;
+    height: auto;
+	max-height: 50px;
+}
+
+
 /**
  * --- W i d g e t s :   P L O T -----------------------------------------------
  */
