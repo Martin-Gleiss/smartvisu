@@ -1280,6 +1280,15 @@ canvas.colordisc {
 }
 
 
+.slideshow {
+    width: 100%;
+}
+
+.slideshow img {
+    width: 100%;
+}
+
+
 /**
  * --- W i d g e t s :   P L O T -----------------------------------------------
  */
