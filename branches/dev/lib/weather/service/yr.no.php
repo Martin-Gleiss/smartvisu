@@ -39,7 +39,7 @@ class weather_yr extends weather
         if($xml)
         {
             //today
-            $this->data['city']       = (string)$xml->location->name;
+            $this->data['city'] = (string)$xml->location->name;
             
             // forecast
             $i = 0;

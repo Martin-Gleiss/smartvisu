@@ -14,7 +14,7 @@
 
 
   /**
-    *
+    * Attach all 'prepare' and 'redraw' Triggers
     */
 	$(document).on('pagebeforeshow',function(event, ui){
 		// DEBUG:
@@ -31,7 +31,6 @@
 	});
 
 
-
   /**
     * Fadein the listitems form top to bottom
     */
@@ -42,7 +41,7 @@
 
 		'redraw': function(event) {
 		   	$(this).children().each(function(index) {
-				var li = $(this);
+                var li = $(this);
 	     		setTimeout(function(){ li.fadeIn(); }, 100 * (index + 1));
 			});
 		}

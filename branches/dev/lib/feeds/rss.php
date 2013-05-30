@@ -58,10 +58,17 @@ class rss extends service
 				$item = (array)$item;
 
 				// media?
-				if (isset($item['enclosure']) && (string)$item['enclosure']->attributes()->type == 'image/jpeg')
-					$item['image']['url'] = (string)$item['enclosure']->attributes()->url;
+				if (isset($item['enclosure']) && 
+                    ((string)$item['enclosure']->attributes()->type == 'image/jpeg' || (string)$item['enclosure']->attributes()->type == 'image/jpg'))
+                {   
+                    unset($item['image']);
+                    $item['image']['url'] = (string)$item['enclosure']->attributes()->url;
+                }
 
                 unset($item['enclosure']);
+
+                // description
+                $item["description"] = (string)$item["description"];    
 
             	$this->data['entry'][] = $item;
 

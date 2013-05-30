@@ -101,7 +101,9 @@ class service
             $ret = $this->error;
         }
 
-    return json_encode($ret);
+        $this->debug($ret, "data");
+
+        return json_encode($ret);
     }
        
   /** 

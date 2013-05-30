@@ -15,7 +15,7 @@
   font-style: normal;
   font-weight: 500;
   src: url('dosis.eot') format('embedded-opentype'), url('dosis.woff') format('woff'), url('dosis.ttf') format('truetype');
-}
+}                                                                                          
 
 
 .content-secondary {
@@ -528,18 +528,9 @@ a.ui-slider-handle-semicircle .ui-btn-inner  {
 	background-image:         linear-gradient(left, #fff, #ccc);
 }
 
-/* 
-.page-bg {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 2000px;
-    height: 500px;
-    background-repeat: no-repeat;
-    display: none;
-} 
-only if page-bg is placed in a div
-*/
+.app .smartvisu .smart {
+    color: #fff;
+}
 
 .page-bg {
     background-repeat: no-repeat;
@@ -1351,6 +1342,7 @@ canvas.colordisc {
 	-webkit-border-radius: .5em;
 	border-radius: .5em;
 	line-height: 28px;
+    color: #fff;
 }
 
 .iprouter .tunnels .address {
