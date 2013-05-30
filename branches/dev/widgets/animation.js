@@ -9,9 +9,27 @@
  
    
 /**
- * Animate the widgets.
- */
-
+ * Animation of some html-elements and some widgets. 
+ *
+ * Concept:
+ * --------
+ * This file may be optionally included. If it is not included, all html
+ * elements will be shown with the rendering of the page. If animation is
+ * switched on (config) the element will be hidden. After showing the page
+ * the elements will be animated.
+ *
+ * Events:
+ * -------
+ * Some new events are introduced to control the widgets and there visual
+ * appearance.
+ *
+ * 'prepare': function(event) { }
+ * Triggered before a page is been shown.
+ *
+ * 'redraw': function(event, response) { }
+ * Triggered after the page is visible and the animimation could be made
+ *
+ */ 
 
   /**
     * Attach all 'prepare' and 'redraw' Triggers
@@ -32,7 +50,7 @@
 
 
   /**
-    * Fadein the listitems form top to bottom
+    * Fade-In the listitems from top to bottom
     */
 	$(document).delegate('[data-widget] > ul', {
 		'prepare': function(event) {

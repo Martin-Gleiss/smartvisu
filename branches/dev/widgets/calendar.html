@@ -45,11 +45,10 @@
 	                        ret += '<span class="ui-li-count">' + data[i].where + '</span>';
 
 	                    ret = '<a href="' + (data[i].link ? data[i].link : '#') + '">' + ret + '</a>';
-	                    line += '<li style="display:none;" data-icon="false">' + ret + '</li>';
+	                    line += '<li data-icon="false">' + ret + '</li>';
 	                }
 
-				    $('#' + uid + ' ul').html(line).listview('refresh');
-					$('#' + uid + ' ul').trigger('redraw');
+                    $('#' + uid + ' ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
 	            })
 	            .error(notify.json);
 			}

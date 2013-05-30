@@ -39,13 +39,12 @@
                         ret = '<a href="callto://' + data[i].number + '">' + ret + '</a>'; 
                     
                     if (data[i].dir == 0) {
-                        line += '<li style="display: none;" data-icon="false">' + ret + '</li>';
+                        line += '<li data-icon="false">' + ret + '</li>';
                         if (sum++ == {{ count|default(3) }}) break;
                     }
                 }
                 
-                $('#{{ uid }}-missedlist ul').html(line).listview('refresh');
-				$('#{{ uid }}-missedlist ul').trigger('redraw');
+                $('#{{ uid }}-missedlist ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
             })
             .error(notify.json);
         });
@@ -83,12 +82,11 @@
                     if (data[i].number)
                         ret = '<a href="callto://' + data[i].number + '">' + ret + '</a>'; 
                     
-                    line += '<li style="display: none;" data-icon="false">' + ret + '</li>';
+                    line += '<li data-icon="false">' + ret + '</li>';
                     if (sum++ == {{ count|default(10) }}) break;
                 }
-                
-                $('#{{ uid }}-phonelist ul').html(line).listview('refresh');
-                $('#{{ uid }}-phonelist ul').trigger('redraw');
+
+                $('#{{ uid }}-phonelist ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
             })
             .error(notify.json);
         });

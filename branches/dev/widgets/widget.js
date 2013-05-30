@@ -889,37 +889,40 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 		var percent = 0;
         
 		for (var i = 1; i < state.length; i++) {
-			if (state[i - 1][1] > 0.5)
-				percent += (state[i][0] - stamp);	
+            percent += state[i - 1][1] * (state[i][0] - stamp);	
 			stamp = state[i][0];
 		};
-		percent = Math.round(percent / (state[i - 1][0] - state[0][0]) * 100);
+		percent = percent  / (stamp - state[0][0]);
+
+        if (percent < 1)
+            percent = percent * 100;
+        else if (percent > 100)
+            percent = percent / 255 * 100;
     
-		// draw the plot
+        // draw the plot
 		$('#' + this.id).highcharts({
             chart: { type: 'line' },
-			series: [{ 
+            series: [{ 
 				name: label[0], data: response[0], type: 'spline'
-			} , {
+    		} , {
 				name: label[1], data: response[1], dashStyle: 'shortdot', step: 'left'
-			} , {
-				type: 'pie', name: '∑ ',
-                data: [{ 
-					name: 'On', y: percent,
-					color: (state[i - 1][1] ? Highcharts.getOptions().colors[0] : null)
-				 }, { 
-					name: 'Off', y: (100 - percent), 
-					color: (!state[i - 1][1] ? Highcharts.getOptions().colors[2] : null) 
+            } , {
+				type: 'pie', name: '∑ On: ',
+                data: [{
+                    name: 'On', y: percent
+				}, {
+                    name: 'Off', y: (100 - percent), color: null 
 				}],
 				center: [ '95%', '90%' ],
                 size: 15,
                 showInLegend: false,
-                dataLabels: { enabled: false },
-				tooltip: { formatter: function() { return this.series.name + ' xxx <b>' + this.y.transPercent() + '</b>'; } }
+                dataLabels: { enabled: false }
 			}],
  		    xAxis: { type: 'datetime' },
 		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'), title: { text: axis[1] } },
-            tooltip: { formatter: function() { return this.series.name + ': <b>' + this.y.transTemp() + '</b>'; } }
+            tooltip: { formatter: function() { 
+                return this.series.name + ' <b>' + (this.percentage ? this.y.transPercent() : this.y.transTemp()) + '</b>';
+            }}
         });
     },
 
@@ -931,7 +934,7 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
                 for (var j = 0; j < response[i].length; j++)
                 	chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= 100));
         	} else if (response[i] && (i == 2)) {
-				// TODO: plot.rtr, recalc pie diagram afer new point received
+				// TODO: plot.rtr, recalc pie diagram after new point received
             }
 			chart.redraw();
 		};
@@ -989,9 +992,7 @@ $(document).delegate('div[data-widget="plot.temprose"]', {
 	'update': function(event, response) {
 		// response is: {{ gad_actual_1, gad_actual_2, gad_actual_3, gad_set_1, gad_set_2, gad_set_3 }}
 
-		console.log(this.id, response);
-
-	    var label = $(this).attr('data-label').explode();
+		var label = $(this).attr('data-label').explode();
         var axis = $(this).attr('data-axis').explode();
         var count = parseInt($(this).attr('data-count'));
 

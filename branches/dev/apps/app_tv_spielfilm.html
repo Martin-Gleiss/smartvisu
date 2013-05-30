@@ -6,7 +6,7 @@
  * @license     GPL <http://www.gnu.de>
  * @version     1.0 
  *  
- * @title       TV-Spielfilm
+ * @title       TV- Spielfilm
  * @category    tv
  * @icon        icons/ws/it_television.png
  * @color       #b00
@@ -102,10 +102,7 @@
                     line += '<li>' + ret + '</li>';
                 }
 
-                $('#tv ul').html(line);
-            	$('#tv ul').trigger('prepare');
-                $('#tv ul').listview('refresh');
-            	$('#tv ul').trigger('redraw');
+                $('#tv ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
             })
             .error(notify.json);
         });

@@ -28,7 +28,7 @@
         <script type="text/javascript">$(document).on("mobileinit", function(){ $.mobile.defaultPageTransition = '{{ config_transition }}'; });</script>{% endif %}
 
     <script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.3.1.min.js"></script>
-    <script type="text/javascript" src="lib/base/jquery.mobile.slider.min.js"></script>
+    <script type="text/javascript" src="lib/base/jquery.mobile.slider.{{ config_js }}"></script>
 
 	<script type="text/javascript" src="vendor/plot.highcharts/highcharts.js"></script>
 	<script type="text/javascript" src="designs/{{ config_design }}.{{ config_js }}"></script>
