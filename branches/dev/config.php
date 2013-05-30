@@ -50,7 +50,7 @@
     * smartVISU supports different projects, located under 'pages'
     * this is the directory for your project    
     */
-    define ('config_pages',                 'gleiss');
+    define ('config_pages',                 '');
    
   /**
     * Select your language. Some widgets are multilanguage 
@@ -77,6 +77,11 @@
     * 'none', 'fade' (default), 'slide' 
     */
     define ('config_transition',    		'fade');
+
+  /**
+    * Should some html-elements and widgets be animated?
+    */
+    define ('config_animation',    		   false);
 
   /**
     * the refresh-delay between glued widgets 
