@@ -77,7 +77,7 @@ SYSTEMREQUIREMENTS
 HISTORY
 --------------------------------------------------------------------------------
 v 2.5
-	- new: animations :-)
+    - new apps: tv-movie, tv-spielfilm
 	- new: rss-feed-reader (lib/feeds)
     - new widget: multimedia.station for tv- and radio-stations 
     - new widget: plot.temprose for all temperatures in a building
@@ -86,7 +86,8 @@ v 2.5
 	- improved: basic.tank now with variable width
 	- new .js files are now minified. Based on google closure
 	- new model-house: fleischer
-
+    - new: animations :-) [beta]
+	
 v 2.4 26.04.13 Happy Birthday smartVISU!       
 	- improved widget: basic.shutter, now with dynamic symbols
 	- improved design: cube v2, best viewed with solar_winds.png background                                      	
