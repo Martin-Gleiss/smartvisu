@@ -28,11 +28,7 @@
                 monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 dayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
             }
-            regional['fr'] = {
-                monthNames: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
-                dayNames: ['Dim', 'Lun', 'Mar', 'Mer', 'jeu', 'Ven', 'Sam']
-            }
-
+            
             var options = $.extend(defaults, options);
 
             return this.each(function() {

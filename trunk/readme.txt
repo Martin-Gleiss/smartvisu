@@ -72,16 +72,23 @@ SYSTEMREQUIREMENTS
         
         Enjoy smartVISU!
         
- 
-TODO
---------------------------------------------------------------------------------
-    - MainMenu: Display selected menu-button
-    - Buttons: pressed short / long
-    - Scenes
- 
+
 
 HISTORY
 --------------------------------------------------------------------------------
+v 2.5 01.06.13
+    - new apps: tv-movie, tv-spielfilm
+	- new: rss-feed-reader (lib/feeds)
+    - new widget: multimedia.station for tv- and radio-stations 
+    - new widget: multimedia.slideshow for image-based slideshows 
+    - new widget: plot.temprose for all temperatures in a building
+    - improved: phone drivers
+	- improved: drivers now with datatypes: int, float, string, array
+	- improved: basic.tank now with variable width
+	- new .js files are now minified. Based on google closure
+	- new model-house: fleischer
+    - new: animations :-) [beta]
+	
 v 2.4 26.04.13 Happy Birthday smartVISU!       
 	- improved widget: basic.shutter, now with dynamic symbols
 	- improved design: cube v2, best viewed with solar_winds.png background                                      	
@@ -230,6 +237,3 @@ v 1.1 03.05.12
     
 v 1.0 26.04.12
     - first offical release
-
- 
-    

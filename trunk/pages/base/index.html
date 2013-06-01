@@ -23,16 +23,16 @@
 
     <script type="text/javascript" src="vendor/jquery/jquery-1.9.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="pages/base/base.css" />
+</head>
+
+
+<body class="page-bg" style="font-family: Dosis; background-image: url('pics/bg/smoke_spirals.png');"> 
     <style type="text/css">
 		body { background-color: #eee; }
 	    .check { font-size: 14px; }
 		.check img { width: 24px; height: 24px; margin-right: 10px; vertical-align: middle; }
     </style>
 
-</head> 
-
-<body class="page-bg" style="font-family: Dosis; background-image: url('pics/bg/smoke_spirals.png');"> 
-    
     <div style="position: absolute; width: 95%; padding-top: 100px;">
         <div style="margin: auto; width: 128px;">
             <div style="margin: 0 0 25px 5px; font-size: 20px;">Perfect choice!</div>
@@ -146,10 +146,8 @@
 			$('.check').eq(index).children('img').attr('src', data.icon);
 			$('.check').eq(index).children('span').html(data.text);
 		});
-
 	});
     </script>
-
 
 </body>
 </html>

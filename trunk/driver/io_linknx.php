@@ -84,12 +84,15 @@ class driver_linknx
                             
                             // Check if $res is binary
                             if (strlen($val) == 2)
-                                $val = str_replace("on", "1", $val);
+                                $val = str_replace("on", 1, $val);
 							
                             if (strlen($val) == 3)
-                                $val = str_replace("off", "0", $val);
+                                $val = str_replace("off", 0, $val);
 
-                            $ret[$item] = $val;
+							if (is_numeric($val))
+								$ret[$item] = (float)$val;
+                        	else
+								$ret[$item] = $val;
                         }
                     }
                     else

@@ -61,23 +61,20 @@ class phone_fritzbox extends phone
                 $posend = strpos($line, '))', $posstart);
                 $parts = explode(',', str_replace('"', '', substr($line, $posstart + 7, $posend - $posstart - 7)));
                 
-                $dir = "";    
-                if (trim($parts[0]) == 2)
-                    $dir = "0";
-                elseif (trim($parts[0]) == 3)
-                    $dir = "-1";
-                elseif (trim($parts[0]) == 1)
-                    $dir = "1";
-                
                 $date = trim($parts[1]);
                 $date = '20'.substr($date, 6, 2).'-'.substr($date, 3, 2).'-'.substr($date, 0, 2).' '.substr($date, 9, 5).':00';  
-                $this->data[] = array('pos' => $i++, 'dir' => $dir, 'date' => $date,
-                        'number' => trim($parts[3]), 'name' => '', 'duration' => trim($parts[7])
-                    );
+                $this->data[] = array(
+					'pos' => $i++,
+					'dir' => (trim($parts[0]) == 3 ? -1 : (trim($parts[0]) == 1 ? 1 : 0)),
+					'date' => $date,
+                    'number' => trim($parts[3]),
+					'name' => '',
+					'duration' => trim($parts[7])
+             	);
             }
         }
         else
-            $this->error('Phone: fritz!box', "Can't read phonelist! Got wrong or no data. Most likely fritz!box has the wrong firmware version.");
+            $this->error('Phone: fritz!box', "Can't read phonelist! Login faild or it is not the correct firmware version!");
     }
 }
 

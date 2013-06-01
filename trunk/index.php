@@ -12,7 +12,7 @@
   /**
     * Version of smartVISU
     */
-    define ('config_version', '2.4');
+    define ('config_version', '2.5');
  
     // get config-variables 
     require_once 'config.php';
@@ -28,6 +28,7 @@
     
     if ( is_file(const_path."pages/".config_pages."/".$request['page'].".html")
         or is_file(const_path."apps/".$request['page'].".html")
+        or is_file(const_path."pages/smarthome/".$request['page'].".html")
         or is_file(const_path."pages/base/".$request['page'].".html") )
     {
         // init template engine

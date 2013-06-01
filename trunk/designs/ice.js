@@ -117,7 +117,7 @@ Highcharts.theme = {
 		line: {
 			dataLabels: {
 				color: '#aaa'
-			},
+			}
 		},
 		
 		pie: {
@@ -189,7 +189,7 @@ Highcharts.theme = {
 
 	credits: {
     	enabled: false
-	},
+	}
 };
 
 // Apply the theme

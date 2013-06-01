@@ -20,10 +20,10 @@ class phone_offline extends phone
 {
 
   /** 
-    * Check if the cache-file exists
+    * Create some data
     */      
     public function run()
-    {
+    {   
         for($i = 9; $i > 0; $i--)
         {
             $this->data[] = array (
@@ -31,7 +31,7 @@ class phone_offline extends phone
                 'dir' => rand(-1, 1),
                 'date' => transdate('date').' 1'.$i.':'.rand(1,59).':00', 
                 'number' => '0931'.rand(1000000, 9999999), 
-                'name' => 'Gleiss Martin',
+                'name' => 'Hans Mustermann',
                 'duration' => '00:00:'.rand(10,50)
             );
         }
@@ -44,6 +44,8 @@ class phone_offline extends phone
             'name' => '',
             'duration' => '00:00:10'
         );         
+
+        $this->debug($this->data, "data");
     }
 }
 

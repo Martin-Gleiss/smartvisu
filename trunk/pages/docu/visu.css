@@ -26,3 +26,8 @@
 #widget_device_shutter-shutter3 {
     background-image: url('../../pics/shutter/shutter_cliff.png');
 }
+
+/* width of a tank */
+#widget_basic_tank-tank6 {
+    width: 60px;
+}

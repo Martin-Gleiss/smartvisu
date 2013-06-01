@@ -176,18 +176,18 @@ var io = {
 					// are there any plots?
 					widget.plot().each(function(idx) {
 						var items = widget.explode($(this).attr('data-item'));
-						
+
 						for (var i = 0; i < items.length; i++) {
 							var item = items[i].split('.');
 				
 							if (response[items[i]] == null &&  widget.get(items[i]) == null && widget.is_series(items[i]))
-                                response[items[i]] = io.series(item[item.length - 2], item[item.length - 1], $(this).attr('data-min'), $(this).attr('data-max'), $(this).attr('data-step'));
+                                response[items[i]] = io.series(item[item.length - 2], item[item.length - 1], $(this).attr('data-ymin'), $(this).attr('data-ymax'), $(this).attr('data-step'));
                 		}	
 					});
 				    
 					// update all items	
 				    $.each(response, function(item, val) {
-                   		widget.update(item, val);
+						widget.update(item, val);
                     })
                 })
         }

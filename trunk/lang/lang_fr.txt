@@ -23,6 +23,7 @@ $lang['format']['float']			= '%01,2f';
 $lang['format']['temp']				= '%01,1f °C';
 $lang['format']['percent']			= '%01,1f %';
 $lang['format']['currency']			= '%01,2f €';
+$lang['format']['speed']			= '%01,0f km/h';
 
 $lang['format']['date']				= 'd/m/y';
 $lang['format']['time']				= 'H:i';
@@ -81,10 +82,10 @@ $lang['shortday']['fri']			= 'Ven';
 $lang['shortday']['sat']			= 'Sam';
 
 // ----- plots -----------------------------------------------------------------
-$lang['plot.rtr']['label']			= 'Actual, Set';
-$lang['plot.rtr']['axis']			= 'Time, Temerature';
-$lang['plot.comfortchart']['label'] = 'almost nice, comfortable';
-$lang['plot.comfortchart']['axis']	= 'Temperature, Humidity';
+$lang['plot.rtr']['label']			= 'Actuelle, Fixée';
+$lang['plot.rtr']['axis']			= 'Heure, Température';
+$lang['plot.comfortchart']['label'] = 'Acceptable, Comfortable';
+$lang['plot.comfortchart']['axis']	= 'Température, Humidité';
 
 
 
@@ -92,7 +93,6 @@ $lang['plot.comfortchart']['axis']	= 'Temperature, Humidity';
 // S E R V I C E
 // -----------------------------------------------------------------------------
 
-// ----- yr.no -----------------------------------------------------------------   
 // ----- yr.no -----------------------------------------------------------------
 $lang['yr.no']['n'] 				= 'nord';
 $lang['yr.no']['nne'] 				= 'nord-nord-est';
@@ -143,4 +143,43 @@ $lang['yr.no']['violent storm'] 	= 'violente tempête';
 $lang['yr.no']['storm'] 			= 'tempête';
 $lang['yr.no']['hurricane'] 		= 'ouragan';
 
-$lang['yr.no']['from'] 				= 'venant de';
+$lang['yr.no']['from'] 				= 'de';
+
+
+// ----- wunderground.com -----------------------------------------------------------------
+$lang['wunderground']['lang']		= 'FR';
+
+$lang['wunderground']['north']		= 'Nord';
+$lang['wunderground']['nne']        = 'Nord-nord-est';
+$lang['wunderground']['ne']         = 'Nord-est';
+$lang['wunderground']['ene']        = 'Est-nord-est';
+$lang['wunderground']['east']       = 'Est';
+$lang['wunderground']['ese']        = 'Est-sud-est';
+$lang['wunderground']['se']         = 'Sud-est';
+$lang['wunderground']['sse']        = 'Sud-sud-est';
+$lang['wunderground']['south']      = 'Sud';
+$lang['wunderground']['ssw']        = 'Sud-sud-ouest';
+$lang['wunderground']['sw']         = 'Sud-ouest';
+$lang['wunderground']['wsw']        = 'Ouest-sud-ouest';
+$lang['wunderground']['west']       = 'Ouest';
+$lang['wunderground']['wnw']        = 'Ouest-nord-ouest';
+$lang['wunderground']['nw']         = 'Nord-ouest';
+$lang['wunderground']['nnw']        = 'Nord-nord-ouest';
+$lang['wunderground']['variable']   = 'Variable';
+
+$lang['wunderground']['humidity']	= 'Humidité';
+$lang['wunderground']['wind_gust']	= 'Rafales';
+$lang['wunderground']['wind_speed']	= 'Vitesse';
+$lang['wunderground']['wind']		= 'Vent';
+// ----- gestion du "de" ou du "d'" pour la provenance du vent
+// ----- vent de nord et vent d'est.
+$lang['wunderground']['from_ns']	= 'de';
+$lang['wunderground']['from_ew']	= 'd\'';
+$lang['wunderground']['from']		= 'de';
+
+
+// ----- Phone -----------------------------------------------------------------
+$lang['phone']['unknown']           = 'inconnue';
+$lang['phone']['incoming']          = 'entrante';
+$lang['phone']['outgoing']          = 'sortants';
+$lang['phone']['missed']            = 'manqué';

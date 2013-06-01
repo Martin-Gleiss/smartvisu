@@ -44,4 +44,14 @@
 
     </div>
     
+    If you want a individual width of the tank add a line to your "visu.css" with <b>#PAGE-ID</b> (current pagename, hyphen, id of the tank-widget).
+	For example for tank 6:
+
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			#widget_basic_tank-tank6 {
+				width: 60px;
+			}
+        {% endraw %}{% endfilter  %}</code>
+    </div>
 {% endblock %}

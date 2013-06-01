@@ -4,69 +4,69 @@
  * @author      Martin Gleiß
  * @copyright   2012
  * @license     GPL <http://www.gnu.de>
- * ----------------------------------------------------------------------------- 
+ * -----------------------------------------------------------------------------
  */
- 
- 
+
+
 /**
- * Class for controlling all communication with a connected system. There are 
- * simple I/O functions, and complex functions for real-time values. 
- */  
+ * Class for controlling all communication with a connected system. There are
+ * simple I/O functions, and complex functions for real-time values.
+ */
 var io = {
 
     // the adress
     adress:     '',
-    
+
     // the port
     port:       '',
-    
+
 
 // -----------------------------------------------------------------------------
 // P U B L I C   F U N C T I O N S
 // -----------------------------------------------------------------------------
-	
+
   /**
     * Does a read-request and adds the result to the buffer
-    * 
-    * @param      the item      
+    *
+    * @param      the item
     */
 	read: function(item) {
     },
-    
+
   /**
     * Does a write-request with a value
     *
-    * @param      the item 
-    * @param      the value 
+    * @param      the item
+    * @param      the value
     */
     write: function(item, val) {
 		io.send({'cmd': 'item', 'id': item, 'val': val});
-		widget.update(item, val);
+        widget.update(item, val);
     },
-    
+
   /**
     * Initializion of the driver
     *
     * @param      the ip or url to the system (optional)
-    * @param      the port on which the connection should be made (optional) 
+    * @param      the port on which the connection should be made (optional)
     */
    	init: function(address, port) {
    	    io.address = address;
    	    io.port = port;
 	    io.open();
 	},
-    
+
   /**
     * Lets the driver work
     */
     run: function(realtime) {
 		// old items
 		widget.refresh();
-		
+
 		// new items
-       	io.monitor();   
+       	io.monitor();
     },
-		
+
 
 // -----------------------------------------------------------------------------
 // C O M M U N I C A T I O N   F U N C T I O N S
@@ -74,7 +74,7 @@ var io = {
 // The functions in this paragraph may be changed. They are all private and are
 // only be called from the public functions above. You may add or delete some
 // to fit your requirements and your connected system.
-	 
+
   /**
     * This driver version
     */
@@ -84,7 +84,7 @@ var io = {
     * This driver uses a websocket
     */
     socket: false,
-    
+
   /**
     * Opens the connection and add some handlers
     */
@@ -99,16 +99,19 @@ var io = {
         io.socket.onmessage = function(event) {
             var item, val;
             var data = JSON.parse(event.data);
-            // DEBUG: console.log("[io.smarthome.py] receiving data: " + event.data);
-			
+            // DEBUG:
+			console.log("[io.smarthome.py] receiving data: ", event.data);
+
             switch(data.cmd) {
-                case 'item':       
+                case 'item':
                     for (var i = 0; i < data.items.length; i++) {
                         item = data.items[i][0];
                         val = data.items[i][1];
-                        if ( data.items[i].length > 2 ) {
-                            // not supported: data.p[i][2] options for visu
+						/* not supported:
+						if (data.items[i].length > 2) {
+                            data.p[i][2] options for visu
                         };
+						*/
 
 						// convert binary
 						if (val === false) val = 0;
@@ -145,29 +148,29 @@ var io = {
         	notify.debug('Driver: smarthome.py', 'Connection closed to smarthome.py server!');
         };
     },
-    
+
   /**
     * Sends data to the connected system
-    */         
+    */
     send: function(data) {
         if (io.socket.readyState == 1) {
             io.socket.send(unescape(encodeURIComponent(JSON.stringify(data))));
-            // DEBUG: console.log('[io.smarthome.py] sending data: ' + JSON.stringify(data));
+            // DEBUG: console.log('[io.smarthome.py] sending data: ', JSON.stringify(data));
             }
     },
 
   /**
     * Monitors the items
-    */         
+    */
     monitor: function() {
 		if (widget.listening()) {
 	    	io.send({'cmd': 'monitor', 'items': widget.listeners()});
-			
+
 			// series: avg, min, max, sum, diff, rate
 			widget.plot().each(function(idx) {
-            	var items = widget.explode($(this).attr('data-item')); 
-				for (var i = 0; i < items.length; i++) { 
-			
+            	var items = widget.explode($(this).attr('data-item'));
+				for (var i = 0; i < items.length; i++) {
+
 					if (widget.is_series(items[i]) && !widget.get(items[i])) {
 		                var pt = items[i].split('.');
 						var item = items[i].substr(0, items[i].length - 3 - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
@@ -179,12 +182,12 @@ var io = {
 
   /**
     * Closes the connection
-    */     
+    */
     close: function() {
 		console.log("[io.smarthome.py] close connection");
-		
+
 		if (io.socket.readyState > 0)
-        	io.socket.close();         
+        	io.socket.close();
 
         io.socket = null;
     }

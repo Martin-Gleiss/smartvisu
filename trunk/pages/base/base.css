@@ -15,7 +15,7 @@
   font-style: normal;
   font-weight: 500;
   src: url('dosis.eot') format('embedded-opentype'), url('dosis.woff') format('woff'), url('dosis.ttf') format('truetype');
-}
+}                                                                                          
 
 
 .content-secondary {
@@ -38,10 +38,82 @@
 }
 
 
+
+/**
+ * --- G E N E R A L  ----------------------------------------------------------
+ */
+
+h1 {
+    font-size: 16pt;
+    margin: 20px 0 6px 0;
+}
+
+div.content-primary > h1 {
+    margin: 0 0 6px 0;
+}
+
+h1 .icon {
+    vertical-align: middle;
+    margin: 0 10px 0 10px;
+}
+
+h2 {
+    font-size: 14pt;
+    margin: 19px 0 5px 0;
+}
+
+h2 .icon {
+    vertical-align: middle;
+    margin: 0 10px 0 10px;
+}
+
+h3  {
+    margin: 18px 0 4px 0;
+}
+
+h3 .icon {
+    vertical-align: middle;
+    margin: 0 10px 0 10px;
+}
+
+h4  {
+    margin: 17px 0 3px 0;
+}
+
+hr {
+    border: 1px none #999;
+    border-top-style: dotted;
+}
+
+.hide {
+    display: none;
+}
+
+.center {
+    width: 100%;
+    text-align: center;
+}
+
+.unit {
+    font-size: 14pt;
+    vertical-align: top;
+}
+
+.icon {
+    width: 48px;
+    height: 48px;
+}
+
+.mini {
+    font-size: 14px;
+}
+
+
 /**
  * --- j Q u e r y M o b i l e -------------------------------------------------
  */
  
+
 .ui-page > .ui-header {
     text-align: center;
 	height: 62px;
@@ -55,9 +127,9 @@
 }
 
 .ui-page > .ui-header .ui-right {
-	width: 98px; 
+	width: 95px;
     float: right;
-    margin: 9px 15px 0 0;
+    margin: 9px 10px 0 0;
 }
 
 .ui-page > .ui-header .ui-right .mini {
@@ -205,9 +277,9 @@ a.ui-btn-inline.ui-mini span.ui-btn-inner {
     padding: 4px 2px 0px 2px;
 }
 
-a.ui-btn-inline.ui-mini .icon { 
+a.ui-btn-inline.ui-mini .icon {
     width: 32px;
-    height: 32px;    
+    height: 32px;
 }
      
 /** --------- button: midi --------- */
@@ -422,77 +494,7 @@ a.ui-slider-handle-semicircle .ui-btn-inner  {
 }
 
 
-/**
- * -----------------------------------------------------------------------------
- */
 
-
-h1 {
-    font-size: 16pt;
-    margin: 20px 0 6px 0;
-}
-
-div.content-primary > h1 {
-    margin: 0 0 6px 0;
-} 
-
-h1 .icon {
-    vertical-align: middle;
-    margin: 0 10px 0 10px;
-}
-
-h2 {
-    font-size: 14pt;
-    margin: 19px 0 5px 0;
-}
-
-h2 .icon {
-    vertical-align: middle;
-    margin: 0 10px 0 10px;
-}
-
-h3  {
-    margin: 18px 0 4px 0;
-}
- 
-h3 .icon {
-    vertical-align: middle;
-    margin: 0 10px 0 10px;
-}
-
-h4  {
-    margin: 17px 0 3px 0;
-}
-
-hr {
-    border: 1px none #999;  
-    border-top-style: dotted;
-}
-
-.hide {
-    display: none;
-}
-
-.center {
-    width: 100%;
-    text-align: center;
-}
-
-.unit {
-    font-size: 14pt;
-    vertical-align:top;
-}
-
-.icon {
-    width: 48px;
-    height: 48px;
-}
-
-.mini {
-    font-size: 14px;
-}
-
-      
 /**
  * -----------------------------------------------------------------------------
  */
@@ -525,19 +527,6 @@ hr {
 	background-image:      -o-linear-gradient(left, #fff, #ccc);
 	background-image:         linear-gradient(left, #fff, #ccc);
 }
-
-/* 
-.page-bg {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 2000px;
-    height: 500px;
-    background-repeat: no-repeat;
-    display: none;
-} 
-only if page-bg is placed in a div
-*/
 
 .page-bg {
     background-repeat: no-repeat;
@@ -703,6 +692,15 @@ only if page-bg is placed in a div
     text-align:right;
 }
 
+.alert .control .stamp {
+    margin-right: 30px;
+    position: absolute;
+    bottom: 10px;
+	left: 10px;
+	font-size: 0.8em;
+    color: #666;
+}
+
 
  
 /**
@@ -713,10 +711,10 @@ only if page-bg is placed in a div
     margin-bottom: 4px;
     width: 72px;
     float: left;  
-    text-align: center;  
+    text-align: center; 
 }
  
-.app a:link { text-decoration:none; }
+.app a:link { font-weight: normal; text-decoration:none; }
 .app a:visited { text-decoration:none; }
 .app a:focus { text-decoration:underline; }
 .app a:hover { text-decoration:underline; }
@@ -746,6 +744,10 @@ only if page-bg is placed in a div
 .app .image .smartvisu {
     margin-top: 2px;
     font-size: 20px;
+}   
+
+.app .smartvisu .smart {
+    color: #fff;
 }
 
 
@@ -952,10 +954,10 @@ canvas.colordisc {
     display: inline-block;
     vertical-align: bottom;
     margin: 0px 7px 0px 7px;
-    width: 30px; 
+    width: 30px;
     height: 180px;
     border: 2px solid #fff;
-	background-image: url('pics/scale_gamut.png');
+	background: url('pics/scale_gamut.png') no-repeat right;
 	-moz-border-radius: .5em;
 	-webkit-border-radius: .5em;
 	border-radius: .5em;
@@ -964,13 +966,14 @@ canvas.colordisc {
 .tank div {
 	position: absolute;
 	bottom: 0;
-	width: 30px; 
-	height: 100px;
+	width: inherit;
+	height: 50%;
 	background-color: #999;
 	-moz-border-radius: 0.1em 0.1em 0.3em 0.3em;
 	-webkit-border-radius: 0.1em 0.1em 0.3em 0.3em;
 	border-radius: 0.1em 0.1em 0.3em 0.3em;
-	}
+    opacity:0.85; filter:alpha(opacity=85);
+}
 
 
 /**
@@ -1225,6 +1228,58 @@ canvas.colordisc {
 }
 
 
+.station {
+    display: inline-block;
+}
+
+.station a.ui-btn-inline.ui-mini .ui-btn-inner {
+	padding: 1px 1px 0px 1px;
+}
+
+.station a.ui-btn-inline.ui-mini .ui-btn-text {
+	display: table-cell;
+ 	text-align: center;
+	vertical-align: middle;
+   	height: 40px;
+   	width: 40px;
+}
+
+.station a.ui-btn-inline.ui-mini .icon {
+    width: auto;
+	max-width: 39px;
+    height: auto;
+	max-height: 37px;
+}
+
+.station a.ui-btn-inline.ui-midi .ui-btn-inner {
+	padding: 2px 1px 0px 1px;
+}
+
+.station a.ui-btn-inline.ui-midi .ui-btn-text {
+	display: table-cell;
+ 	text-align: center;
+	vertical-align: middle;
+   	height: 54px;
+   	width: 54px;
+}
+
+.station a.ui-btn-inline.ui-midi .icon {
+    width: auto;
+	max-width: 50px;
+    height: auto;
+	max-height: 50px;
+}
+
+
+.slideshow {
+    width: 100%;
+}
+
+.slideshow img {
+    width: 100%;
+}
+
+
 /**
  * --- W i d g e t s :   P L O T -----------------------------------------------
  */
@@ -1287,6 +1342,7 @@ canvas.colordisc {
 	-webkit-border-radius: .5em;
 	border-radius: .5em;
 	line-height: 28px;
+    color: #fff;
 }
 
 .iprouter .tunnels .address {
