@@ -10,7 +10,7 @@
 
 /**
  * Translation by
- * @author		Ron Klinkien
+ * @author		Ron 	
  */
 
 
@@ -23,6 +23,7 @@ $lang['format']['float']			= '%01,2f';
 $lang['format']['temp']				= '%01,1f °C';
 $lang['format']['percent']			= '%01,1f %';
 $lang['format']['currency']			= '%01,2f €';
+$lang['format']['speed']			= '%01,0f km/u';
 
 $lang['format']['date']				= 'd.m.y';
 $lang['format']['time']				= 'H:i';
@@ -66,10 +67,10 @@ $lang['shortmonth']['dec']			= 'Dec';
 $lang['weekday']['sunday']			= 'Zondag';
 $lang['weekday']['monday']			= 'Maandag';
 $lang['weekday']['tuesday']			= 'Dinsdag';
-$lang['weekday']['wednesday']			= 'Woensdag';
-$lang['weekday']['thursday']			= 'Donderdag';
+$lang['weekday']['wednesday']		= 'Woensdag';
+$lang['weekday']['thursday']		= 'Donderdag';
 $lang['weekday']['friday']			= 'Vrijdag';
-$lang['weekday']['saturday']			= 'Zaterdag';
+$lang['weekday']['saturday']		= 'Zaterdag';
 
 // ----- shortday --------------------------------------------------------------
 $lang['shortday']['sun']			= 'zo';
@@ -83,8 +84,8 @@ $lang['shortday']['sat']			= 'za';
 // ----- plots -----------------------------------------------------------------
 $lang['plot.rtr']['label']			= 'Actual, Set';
 $lang['plot.rtr']['axis']			= 'Time, Temerature';
-$lang['plot.comfortchart']['label'] 		= 'almost nice, comfortable';
-$lang['plot.comfortchart']['axis']		= 'Temperature, Humidity';
+$lang['plot.comfortchart']['label'] = 'almost nice, comfortable';
+$lang['plot.comfortchart']['axis']	= 'Temperature, Humidity';
 
 
 
@@ -93,53 +94,88 @@ $lang['plot.comfortchart']['axis']		= 'Temperature, Humidity';
 // -----------------------------------------------------------------------------
 
 // ----- yr.no -----------------------------------------------------------------
-$lang['yr.no']['n']				= 'Noord';
+$lang['yr.no']['n']					= 'Noord';
 $lang['yr.no']['nne']				= 'Noordnoordoost';
 $lang['yr.no']['ne']				= 'Noordoost';
 $lang['yr.no']['ene']				= 'Oostnoordoost';
-$lang['yr.no']['e']				= 'Oost';
+$lang['yr.no']['e']					= 'Oost';
 $lang['yr.no']['ese']				= 'Oostzuidoost';
 $lang['yr.no']['se']				= 'Zuidoost';
 $lang['yr.no']['sse']				= 'Zuidzuidoost';
-$lang['yr.no']['s']				= 'Zuid';
+$lang['yr.no']['s']					= 'Zuid';
 $lang['yr.no']['ssw']				= 'Zuidzuidwest';
 $lang['yr.no']['sw']				= 'Zuidwest';
 $lang['yr.no']['wsw']				= 'Westzuidwest';
-$lang['yr.no']['w']				= 'West';
+$lang['yr.no']['w']					= 'West';
 $lang['yr.no']['wnw']				= 'Westnoordwest';
 $lang['yr.no']['nw']				= 'Noordwest';
 $lang['yr.no']['nnw']				= 'Noordnoordwest';
 
 $lang['yr.no']['clear sky']			= 'heldere hemel';
 $lang['yr.no']['fair']				= 'goed weer';
-$lang['yr.no']['partly cloudy']			= 'licht bewolkt';
+$lang['yr.no']['partly cloudy']		= 'licht bewolkt';
 $lang['yr.no']['cloudy']			= 'bewolkt';
 $lang['yr.no']['rain showers with thunder']	= 'regenbuien met onweer';
-$lang['yr.no']['rain showers']			= 'regenbuien';
-$lang['yr.no']['sleet showers']			= 'natte sneeuw';
-$lang['yr.no']['snow showers']			= 'sneeuwbuien';
-$lang['yr.no']['heavy rain']			= 'zware regenval';
-$lang['yr.no']['rain and thunder']	 	= 'regen en onweer';
+$lang['yr.no']['rain showers']		= 'regenbuien';
+$lang['yr.no']['sleet showers']		= 'natte sneeuw';
+$lang['yr.no']['snow showers']		= 'sneeuwbuien';
+$lang['yr.no']['heavy rain']		= 'zware regenval';
+$lang['yr.no']['rain and thunder']	= 'regen en onweer';
 $lang['yr.no']['rain']				= 'regen';
-$lang['yr.no']['sleet showers and thunder']	= 'natte sneeuwbuien met onweer';
-$lang['yr.no']['sleet and thunder']		= 'natte sneeuw en onweer';
+$lang['yr.no']['sleet showers and thunder']	= 'natte neeuwbuien met onweer';
+$lang['yr.no']['sleet and thunder']	= 'natte sneeuw en onweer';
 $lang['yr.no']['sleet']				= 'natte sneeuw';
-$lang['yr.no']['snow and thunder']		= 'sneeuw en onweer';
+$lang['yr.no']['snow and thunder']	= 'sneeuw en onweer';
 $lang['yr.no']['snow']				= 'sneeuw';
 $lang['yr.no']['fog']				= 'mist';
 
 $lang['yr.no']['calm']				= 'windstil';
 $lang['yr.no']['light air']			= 'flauwe bries';
-$lang['yr.no']['light breeze']			= 'lichte bries';
-$lang['yr.no']['gentle breeze']			= 'zwakke bries';
-$lang['yr.no']['moderate breeze']		= 'matige wind';
-$lang['yr.no']['fresh breeze']			= 'frisse wind';
-$lang['yr.no']['strong breeze']			= 'harde wind';
+$lang['yr.no']['light breeze']		= 'lichte bries';
+$lang['yr.no']['gentle breeze']		= 'zwakke bries';
+$lang['yr.no']['moderate breeze']	= 'matige wind';
+$lang['yr.no']['fresh breeze']		= 'frisse wind';
+$lang['yr.no']['strong breeze']		= 'harde wind';
 $lang['yr.no']['near gale']			= 'stormachtig';
-$lang['yr.no']['strong gale']			= 'sterke storm';
+$lang['yr.no']['strong gale']		= 'sterke storm';
 $lang['yr.no']['gale']				= 'storm';
-$lang['yr.no']['violent storm']			= 'orkaan-achtige storm';
+$lang['yr.no']['violent storm']		= 'orkaan-achtige storm';
 $lang['yr.no']['storm']				= 'zware storm';
 $lang['yr.no']['hurricane']			= 'orkaan';
 
 $lang['yr.no']['from']				= 'uit';
+
+
+// ----- wunderground.com ------------------------------------------------------
+$lang['wunderground']['lang']		= 'NL';
+
+$lang['wunderground']['north']      = 'Noord';
+$lang['wunderground']['nne']        = 'Noordnoordoost';
+$lang['wunderground']['ne']         = 'Noordoost';
+$lang['wunderground']['ene']        = 'Oostnoordoost';
+$lang['wunderground']['east']       = 'Oost';
+$lang['wunderground']['ede']        = 'Oostzuidoost';
+$lang['wunderground']['se']         = 'Zuidoost';
+$lang['wunderground']['sse']        = 'Zuidzuidoost';
+$lang['wunderground']['south']      = 'Zuid';
+$lang['wunderground']['ssw']        = 'Zuidzuidwest';
+$lang['wunderground']['sw']         = 'Zuidwest';
+$lang['wunderground']['wsw']        = 'Westzuidwest';
+$lang['wunderground']['west']       = 'West';
+$lang['wunderground']['wnw']        = 'Westnoordwest';
+$lang['wunderground']['nw']         = 'Noordwest';
+$lang['wunderground']['nnw']        = 'Noordnoordwest';
+
+$lang['wunderground']['humidity']   = 'Humidity';
+$lang['wunderground']['wind_gust']  = 'Gusts';
+$lang['wunderground']['wind_speed'] = 'Speed';
+$lang['wunderground']['wind']       = 'Wind';
+
+$lang['wunderground']['from']       = 'uit';
+
+
+// ----- Phone -----------------------------------------------------------------
+$lang['phone']['unknown']           = 'onbekend';
+$lang['phone']['incoming']          = 'inkomend';
+$lang['phone']['outgoing']          = 'uitgaande';
+$lang['phone']['missed']            = 'gemiste';

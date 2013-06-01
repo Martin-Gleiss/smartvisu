@@ -26,7 +26,7 @@
   /**
     * The port, if the driver needs one
     */
-    define ('config_driver_port',           '2424');
+    define ('config_driver_port',           '1028');
 
   /**
     * Use the realtime-mode if possible
@@ -73,10 +73,20 @@
     define ('config_cache',                 false);
 
   /**
+    * Is the client-dom-cache enabled?
+    */
+    define ('config_cache_dom',             true);
+
+  /**
     * How is the page-transition made?
     * 'none', 'fade' (default), 'slide' 
     */
-    define ('config_transition',    		'fade');
+    define ('config_transition',    		'none');
+
+  /**
+    * Should some html-elements and widgets be animated?
+    */
+    define ('config_animation',             false);
 
   /**
     * the refresh-delay between glued widgets 
@@ -139,8 +149,8 @@
   /**
     * Which calender should be used?
     * 
-    * @value offline: random values
-    * @value google: Google Calendar            
+    * @value 	offline: random values
+    * @value 	google: Google Calendar            
     */
     define ('config_calendar_service',      'offline');
   
@@ -149,6 +159,17 @@
     */
     define ('config_calendar_url',          'http://www.google.com/calendar/feeds/...'); 
     
+
+// -----------------------------------------------------------------------------
+// O P T I M A T I O N S
+// -----------------------------------------------------------------------------
+
+  /**
+    * Use the minimised files? 
+    * @value 	'js' or 'min.js'
+    */
+    define ('config_js',                   	'min.js');
+
 
 // -----------------------------------------------------------------------------
 // C O M M O N

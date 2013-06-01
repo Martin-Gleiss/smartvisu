@@ -19,9 +19,9 @@
  * @param		the minimum y-axis (optional)
  * @param       the maximum y-axis (optional)
  * @param       the step between two time-points (optional, only for 'offline'-driver)
- * @param       label/s for each serie (optional) 
- * @param       color/s for each serie e. g. '#f00' for red (optional, default: sutiable for design) 
- * @param       type/s for each serie: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line') 
+ * @param       label/s for each series (optional)
+ * @param       color/s for each series e. g. '#f00' for red (optional, default: sutiable for design)
+ * @param       type/s for each series: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')
  * @param       title/s for the x-axis and y-axis 
  * 
  * @see 		misc/fundamentals#Array-Form	
@@ -30,7 +30,7 @@
 {% macro period(id, gad, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes) %}
    
 	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(gad, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}" 
-        {% if ymin %} data-min="{{ ymin }}" {% endif %} {% if ymax %} data-max="{{ ymax }}" {% endif %}
+        {% if ymin is not empty %} data-ymin="{{ ymin }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ ymax }}" {% endif %}
 		data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}" 
         data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axes) }}"
 		class="plot"></div>
@@ -66,6 +66,29 @@
     
 	<div id="{{ uid(page, id) }}" data-widget="plot.comfortchart" data-item="{{ gad_temp }}, {{ gad_humidity }}"
 		data-label="{{ lang('plot.comfortchart', 'label') }}" data-axis="{{ lang('plot.comfortchart', 'axis') }}"		
+		class="plot"></div>
+
+{% endmacro %}
+
+
+/**
+ * A complete house temperature plot. The rose shows all rooms with there actual and set temperature in one diagramm.
+ *
+ * @param       unique id for this widget
+ * @param       a gad/item for the actual-temperature. More item/s in array form: [ item1 , item2 ]
+ * @param       a gad/item for the set-temperature. More item/s in array form: [ item1 , item2 ]
+ * @param       label/s for each axis
+ *
+ * @see 		misc/fundamentals#Array-Form
+ */
+{% macro temprose(id, gad_actual, gad_set, axis) %}
+
+    {% if once('highcharts-more') %}
+		<script src="vendor/plot.highcharts/highcharts-more.js"></script>
+    {% endif %}
+
+	<div id="{{ uid(page, id) }}" data-widget="plot.temprose" data-item="{{ implode(gad_actual) }}, {{ implode(gad_set) }}"
+		data-count="{{ gad_actual|length }}" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ implode(axis) }}"
 		class="plot"></div>
 
 {% endmacro %}

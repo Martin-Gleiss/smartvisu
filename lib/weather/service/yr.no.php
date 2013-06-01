@@ -39,7 +39,7 @@ class weather_yr extends weather
         if($xml)
         {
             //today
-            $this->data['city']       = (string)$xml->location->name;
+            $this->data['city'] = (string)$xml->location->name;
             
             // forecast
             $i = 0;
@@ -87,32 +87,6 @@ class weather_yr extends weather
     function icon($name, $sm = 'sun_')
     {
         $ret = '';
-        
-        /*
-        1 sun
-        2 lightcloud
-        3 partlycloud
-        4 cloud
-        5 lightrainsun
-        6 lightrainthundersun
-        7 sleetsun
-        8 snowsun
-        9 lightrain
-        10 rain
-        11 rainthunder
-        12 sleet
-        13 snow
-        14 snowthunder
-        15 fog
-        16 sun ( used for winter darkness )
-        17 lightcloud ( winter darkness )
-        18 lightrainsun ( used for winter darkness )
-        19 snowsun ( used for winter darkness )
-        20 sleetsunthunder
-        21 snowsunthunder
-        22 lightrainthunder
-        23 sleetthunder
-        */
 
 		$icon[1]                    = $sm.'1';
         $icon[2]                    = $sm.'2';
@@ -142,6 +116,37 @@ class weather_yr extends weather
     }   
 
 }
+
+
+// -----------------------------------------------------------------------------
+// i c o n - f o r m a t
+// -----------------------------------------------------------------------------
+
+/*
+    1 sun
+    2 lightcloud
+    3 partlycloud
+    4 cloud
+    5 lightrainsun
+    6 lightrainthundersun
+    7 sleetsun
+    8 snowsun
+    9 lightrain
+    10 rain
+    11 rainthunder
+    12 sleet
+    13 snow
+    14 snowthunder
+    15 fog
+    16 sun ( used for winter darkness )
+    17 lightcloud ( winter darkness )
+    18 lightrainsun ( used for winter darkness )
+    19 snowsun ( used for winter darkness )
+    20 sleetsunthunder
+    21 snowsunthunder
+    22 lightrainthunder
+    23 sleetthunder
+*/
    
 
 // -----------------------------------------------------------------------------

@@ -9,6 +9,18 @@
 
 
 /**
+ * Displays a mini text-based clock
+ * 
+ * @param       unique id for this widget
+ */ 
+{% macro miniclock(id) %}
+    
+	<span id="{{ uid(page, id) }}-miniclock" class="miniclock">{{ now|date('H:i') }}</span>
+
+{% endmacro %}
+
+
+/**
  * Displays a digital clock
  * 
  * @param       unique id for this widget
@@ -25,7 +37,7 @@
         <script type="text/javascript" src="lib/clock/jquery.jdigiclock.js"></script>
     {% endif %}
     
-    <div id="{{ uid }}-clock" class="digiclock"></div>
+    <div id="{{ uid }}-digiclock" class="digiclock"></div>
     
     {% if location %}
         {% if once('digiweather') %}
@@ -44,7 +56,7 @@
          
     <script type="text/javascript">
         $('#{{ page }}').on('pagecreate',function(event, ui){ 
-            $('#{{ uid }}-clock').digiclock();
+            $('#{{ uid }}-digiclock').digiclock();
             
             {% if location %}
                 $.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}&lang={{ config_lang|default(en) }}', function(data) {

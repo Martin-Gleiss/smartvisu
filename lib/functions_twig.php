@@ -89,12 +89,16 @@
         	
         while (($item = $dirlist->read()) !== false)
         {
-            if ($item != '.' and $item != '..' and$item != '.svn' and substr($item, 0, 1) != '_')
+            if ($item != '.' and $item != '..' and $item != '.svn' and substr($item, 0, 1) != '_')
             {
                 if (preg_match("#".$filter."$#i", $item, $itemparts) > 0)
                 {
                     $name = str_replace("_", " ", $itemparts[1]);
-                    $ret[$name] = array("file" => $itemparts[0], "name" => $itemparts[1], "label" => ucfirst($name));
+                    $ret[$name] = array(
+                        "path" => $dir.'/'.$itemparts[0],
+                        "file" => $itemparts[0],
+                        "name" => $itemparts[1],
+                        "label" => ucfirst($name));
                 }
 		    }
    		}

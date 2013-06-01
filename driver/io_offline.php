@@ -108,8 +108,13 @@ class driver_offline
         }
         
         foreach ($this->item as $item)
-            $ret[$item] = $data[$item];
-        
+		{
+			if (is_numeric($data[$item]))
+				$ret[$item] = (float)$data[$item];
+        	else
+				$ret[$item] = $data[$item];
+        }
+
         return json_encode($ret);
     }
 }

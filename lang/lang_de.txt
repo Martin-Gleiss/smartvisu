@@ -18,6 +18,7 @@ $lang['format']['float']			= '%01,2f';
 $lang['format']['temp']				= '%01,1f °C';
 $lang['format']['percent']			= '%01,1f %';
 $lang['format']['currency']			= '%01,2f €';
+$lang['format']['speed']			= '%01,0f km/h';
 
 $lang['format']['date']				= 'd.m.y';
 $lang['format']['time']				= 'H:i';
@@ -137,3 +138,39 @@ $lang['yr.no']['storm']				= 'schwerer Sturm';
 $lang['yr.no']['hurricane']			= 'Orkan';
 
 $lang['yr.no']['from']				= 'aus';
+
+
+// ----- wunderground.com ------------------------------------------------------
+$lang['wunderground']['lang']		= 'DL';
+
+$lang['wunderground']['north']      = 'Nord';
+$lang['wunderground']['nne']        = 'Nordnordost';
+$lang['wunderground']['ne']         = 'Nordost';
+$lang['wunderground']['ene']        = 'Ostnordost';
+$lang['wunderground']['east']       = 'Ost';
+$lang['wunderground']['ese']        = 'Ostsüdost';
+$lang['wunderground']['se']         = 'Südost';
+$lang['wunderground']['sse']        = 'Südsüdost';
+$lang['wunderground']['south']      = 'Süd';
+$lang['wunderground']['ssw']        = 'Südsüdwest';
+$lang['wunderground']['sw']         = 'Südwest';
+$lang['wunderground']['wsw']        = 'Westsüdwest';
+$lang['wunderground']['west']       = 'West';
+$lang['wunderground']['wnw']        = 'Westnordwest';
+$lang['wunderground']['nw']         = 'Nordwest';
+$lang['wunderground']['nnw']        = 'Nordnordwest';
+$lang['wunderground']['variable']   = 'Variable';
+
+$lang['wunderground']['humidity']   = 'Luftfeuchte';
+$lang['wunderground']['wind_gust']  = 'Böen';
+$lang['wunderground']['wind_speed'] = 'Geschwindigkeit';
+$lang['wunderground']['wind']       = 'Wind';
+
+$lang['wunderground']['from']       = 'aus';
+
+
+// ----- Phone -----------------------------------------------------------------
+$lang['phone']['unknown']           = 'Unbekannter Anrufer';
+$lang['phone']['incoming']          = 'Eingehend';
+$lang['phone']['outgoing']          = 'Ausgehend';
+$lang['phone']['missed']            = 'Verpasst';

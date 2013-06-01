@@ -10,6 +10,36 @@
    
 /**
  * Class for controlling all widgets. 
+ *
+ * Concept:
+ * --------
+ * Every item has a name. The value of the item may be of type: int, float, or
+ * array. The items are stored in the widget.buffer. The drivers will fill the
+ * buffer through the widget.update (and therefore widget.set). Asynchronly
+ * all widgets on a page may be updated. The update is been triggerd from
+ * widget.update, if a item has been changed. Updates are only made if all
+ * items are in buffer needed for that update. If one is missing the update is
+ * not been made. If some plots placed on the page, the update will look if it
+ * is possible to add only one point (if the widget is already initialized).
+ *
+ * Events:
+ * -------
+ * Some new events are introduced to control the widgets and there visual
+ * appearance.
+ *
+ * 'init': function(event) { }
+ * Triggered from the widget (macro) itself to change it dynamically on startup.
+ *
+ * 'update': function(event, response) { }
+ * Triggered through widget.update if a item has been changed.
+ *
+ * 'point': function(event, response) { }
+ * Triggerd only for plots through widget.update if the plot is already drawn
+ * and only a new point has to be added to the series.
+ *
+ * 'change', 'click' ...
+ * Standard jquery-mobile events, triggered from the framework.
+ *
  */ 
 var widget = {
 
@@ -22,7 +52,7 @@ var widget = {
     * unique array.  
     *       
     * @param	the text
-    * @return   the values as array  
+    * @return   the items as an array (one or more entries)
     */        
 	explode: function(text) {
 	    var ret = Array();
@@ -36,16 +66,17 @@ var widget = {
 				if (parts[i] != '')
 					unique[parts[i]] = '';
 			}
+
+            for (var part in unique)
+            	ret.push(part);
 		} 
+
 		// One item
-		else if (text != '') {
-			unique[text] = '';
+		else if (text.trim() != '') {
+			ret.push(text.trim());
 		};
 		
-		for (var part in unique)     
-            ret.push(part);
-
-		return ret;   
+		return ret;
     },
 
   /**
@@ -56,7 +87,8 @@ var widget = {
 	listening: function() {
 	    var ret = false;
         
-	    if ($('[data-item]').size() > 0)
+		// are there any?
+	    if ($('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').size() > 0)
         	ret = true;
         
         return ret;        
@@ -72,11 +104,14 @@ var widget = {
 		var ret = Array();
 		var unique = Array();
 
-		$('[data-item]').each(function(idx) {
-			var items = widget.explode($(this).attr('data-item')); 
-			for (var i = 0; i < items.length; i++)
-				unique[items[i]] = '';
-		}); 
+		// all except plots
+		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function(idx) {
+			//if ($(this).attr('data-widget').substr(0, 5) != 'plot.' ) {
+				var items = widget.explode($(this).attr('data-item'));
+				for (var i = 0; i < items.length; i++)
+					unique[items[i]] = '';
+			//}
+		});
 
 		for (var item in unique)     
             ret.push(item);
@@ -91,7 +126,7 @@ var widget = {
 	    var widgets = 0;
 		$('[data-item]').each(function(idx) {
 			if ($(this).attr('data-item').trim() != '') {
-		    	console.log("[widget] '" + this.id + "' listen on '" + $(this).attr('data-item') + "'");
+		    	console.log("[" + $(this).attr('data-widget') + "] '" + this.id + "' listen on '" + $(this).attr('data-item') + "'");
             	widgets++;
 			}
     	});
@@ -102,17 +137,19 @@ var widget = {
     * Checks if the value/s are valid (not undefined and not null) 
     * 
     * @param    the value/s
-    * @return	true if no item is undefined
+    * @return	true if no item is undefined or null
     */         
 	check: function(values) {
 
+		// case: more values
 		if (values instanceof Array) {
 			for (var i = 0; i < values.length; i++)
 				if (values[i] === undefined || values[i] == null)
 					return false;
-		} else
-			if (values === undefined || values == null)
-				return false;
+		}
+		// case: one value
+		else if (values === undefined || values == null)
+			return false;
 		
 		return true;
 	},
@@ -125,15 +162,18 @@ var widget = {
     */         
 	get: function(items) {
 
+		// case: more items
 		if (items instanceof Array) {
-        	var ret = Array();
+			var ret = Array();
 
 			for (var i = 0; i < items.length; i++) { 
 				ret.push(widget.buffer[items[i]]);
 			}
-		} else
+		}
+		// case: one item
+		else
 			var ret = widget.buffer[items]; 
-		
+
 		return ret;
 	},
 
@@ -145,14 +185,14 @@ var widget = {
     */         
 	set: function(item, value) {
 
-	    if (widget.buffer[item] instanceof Array)
-		{
+		// case: a series
+	    if (widget.buffer[item] instanceof Array) {
             // don't add it to the buffer, because highchart will do it for us.   
 			//var series = widget.buffer[item];
 			//series.push(value);
-		
-		} else if (value !== undefined)
-        	widget.buffer[item] = value; 
+		}
+		else if (value !== undefined)
+			widget.buffer[item] = ( $.isNumeric(value) ? value * 1.0 : value);
 
 		// DEBUG: console.log("[widget] '" + item, widget.buffer[item]);
 	},
@@ -183,19 +223,24 @@ var widget = {
 						if ($(this).attr('data-widget').substr(0,5) == 'plot.' && $('#' + this.id).highcharts()) {
 
 							// if more than one item, only that with the value
-                            if (items instanceof Array) {
-							    for (var j = 0; j < items.length; j++) {
-                                    values.push (items[j] == item ? value : null );
-                            }}
-                   			if (value !== undefined || value != null)
+                            for (var j = 0; j < items.length; j++) {
+                            	values.push(items[j] == item ? value : null );
+                            }
+                   			if (value !== undefined && value != null) {
+								// DEBUG:
+								console.log("[" + $(this).attr('data-widget') + "] point '" + this.id + "':", values);
 								$(this).trigger('point', [values]);
+							}
 						} 
 
 						// regular update to the widget with all items   
    						else {
 							values = widget.get(items);
-							if (widget.check(values))
+							if (widget.check(values)) {
+								// DEBUG:
+								console.log("[" + $(this).attr('data-widget') + "] update '" + this.id + "':", values);
 								$(this).trigger('update', [values]);
+							}
 						}
 					}
 				}
@@ -234,8 +279,8 @@ var widget = {
 // ----- s p e c i a l ---------------------------------------------------------
 
   /**
-    * Returns all widgets with plot functionality. Matching 'plot' in attribute
-    * 'data-widget'. 
+    * Returns all widgets with plot functionality or plots listening to an item.
+    * Matching 'plot' in attribute 'data-widget'.
     *       
     * @param	item: matches all plot-widgets with that item
     * @return   jQuery objectlist    
@@ -244,7 +289,7 @@ var widget = {
 	   	var ret = $();
 		
 		if (item) {
-    		$('[data-widget^="plot."][data-item*="' + item + '"]').each(function(idx) {
+    		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget^="plot."][data-item*="' + item + '"]').each(function(idx) {
 				var items = widget.explode($(this).attr('data-item')); 
 
 				for (var i = 0; i < items.length; i++) { 
@@ -311,6 +356,14 @@ $(document).delegate('[data-widget="basic.float"]', {
 });
 
 
+// ----- basic.text ------------------------------------------------------------
+$(document).delegate('[data-widget="basic.text"]', {
+   'update': function(event, response) {
+		$('#' + this.id).html((response == $(this).attr('data-val-on') ? $(this).attr('data-txt-on') : $(this).attr('data-txt-off')));
+    }
+});  
+
+
 // ----- basic.checkbox --------------------------------------------------------
 $(document).delegate('input[data-widget="basic.checkbox"]', { 
 	'update': function(event, response) {
@@ -318,7 +371,7 @@ $(document).delegate('input[data-widget="basic.checkbox"]', {
     },
 
 	'change': function(event) {
-	    // DEBUG: console.log("[basic.checkbox] click item: " + $(this).attr('data-item') + " val: " + $(this).prop("checked")); 
+	    // DEBUG: console.log("[basic.checkbox] change '" + this.id + "':", $(this).prop("checked")); 
 		io.write($(this).attr('data-item'), ($(this).prop('checked') ? 1 : 0)); 
 	}
 });    
@@ -331,7 +384,7 @@ $(document).delegate('select[data-widget="basic.flip"]', {
     },
 
 	'change': function(event) {
-	    // DEBUG: console.log("[basic.flip] click item: " + $(this).attr('data-item') + " val: " + $(this).val());  
+	    // DEBUG: console.log("[basic.flip] change '" + this.id + "':", $(this).val());  
 		io.write($(this).attr('data-item'), ($(this).val() == 'on' ? 1 : 0));
 	}
 });
@@ -343,8 +396,7 @@ $(document).delegate('select[data-widget="basic.flip"]', {
 // only every 400ms if it was been moved. There should be no trigger on init.
 $(document).delegate('input[data-widget="basic.slider"]', {
 	'update': function(event, response) {
-		// DEBUG: console.log("[basic.slider] update val: " + response + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));   
-
+		// DEBUG: console.log("[basic.slider] update '" + this.id + "': " + response + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));   
 		$(this).attr('lock', 1); 
 	    $('#' + this.id).val(response).slider('refresh');
 		$('#' + this.id).attr('mem', $(this).val());
@@ -357,9 +409,8 @@ $(document).delegate('input[data-widget="basic.slider"]', {
    	},
 
 	'change': function(event) {
-        // DEBUG: console.log("[basic.slider] change val: " + $(this).val() + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));   
-
-        if( ( $(this).attr('timer') === undefined || $(this).attr('timer') == 0 && $(this).attr('lock') == 0 )
+        // DEBUG: console.log("[basic.slider] change '" + this.id + "': " + $(this).val() + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));   
+		if( ( $(this).attr('timer') === undefined || $(this).attr('timer') == 0 && $(this).attr('lock') == 0 )
 			&& ($(this).val() != $(this).attr('mem')) ) {
 			
 			if ($(this).attr('timer') !== undefined)
@@ -409,7 +460,6 @@ $(document).delegate('span[data-widget="basic.symbol"]', {
 // ----- basic.switch ----------------------------------------------------------
 $(document).delegate('span[data-widget="basic.switch"]', { 
 	'update': function(event, response) {
-		// DEBUG: console.log("[basic.switch] update val: " + response);   
 		$('#' + this.id + ' img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
     },
 
@@ -495,7 +545,7 @@ $(document).delegate('div[data-widget="basic.shutter"]', {
         if (response[1] !== undefined) {
             a = parseInt(13 / mode * (response[1] / $(this).attr('data-max') + mode - 1));
         }
-     
+
         var style;
             
         h = parseInt(response[0] * 13 * 14 / $(this).attr('data-max') );
@@ -557,7 +607,7 @@ $(document).delegate('a[data-widget="basic.rgb"]', {
         
 		var max = $(this).attr('data-max');
 		$('#' + this.id + ' span').css('background-color', 'rgb(' + Math.round(response[0] / max * 255) + ',' + Math.round(response[1] / max * 255) + ',' + Math.round(response[2] / max * 255) + ')');  
-    },
+    }
 });
 
 $(document).delegate('div[data-widget="basic.rgb-popup"] > div', { 
@@ -764,7 +814,7 @@ $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="minus"]
 
 		var temp = (Math.round((widget.get(item) - step) * 10) / 10).toFixed(1);
         io.write(item, temp);
-    },
+    }
 });
 
 $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="plus"]', {
@@ -775,7 +825,7 @@ $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="plus"]'
 
 		var temp = (Math.round((widget.get(item) * 1 + step * 1) * 10) / 10).toFixed(1);
         io.write(item, temp);
-    },
+    }
 });
 
 
@@ -787,8 +837,7 @@ $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="plus"]'
 $(document).delegate('div[data-widget="plot.period"]', { 
 	'update': function(event, response) {
 		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
-	 	// DEBUG: console.log("[plot.period] update '" + this.id + "' with "); console.log(response);
-		
+
 		var label = $(this).attr('data-label').explode();
         var color = $(this).attr('data-color').explode();
 		var exposure = $(this).attr('data-exposure').explode();
@@ -808,13 +857,11 @@ $(document).delegate('div[data-widget="plot.period"]', {
 		$('#' + this.id).highcharts({
             series: series,
  		    xAxis: { type: 'datetime', title: { text: axis[0] } },
-		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'), title: { text: axis[1] } }
+		   	yAxis: { min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: { text: axis[1] } }
         });
     },
 
 	'point': function(event, response) {
-		// DEBUG: console.log("[plot.period] point '" + this.id + "' with "); console.log(response);
-		
 		for (var i = 0; i < response.length; i++) { 
             if (response[i]) {
                 var chart = $('#' + this.id).highcharts();
@@ -828,12 +875,11 @@ $(document).delegate('div[data-widget="plot.period"]', {
 });
 
 
-// ----- plot.rtr -----------------------------------------------------------
+// ----- plot.rtr --------------------------------------------------------------
 $(document).delegate('div[data-widget="plot.rtr"]', { 
 	'update': function(event, response) {
 		// response is: {{ gad_actual }}, {{ gad_set }}, {{ gat_state }} 
-	 	// DEBUG: console.log("[plot.rtr] update '" + this.id + "' with "); console.log(response);
-        
+	    
         var label = $(this).attr('data-label').explode();
         var axis = $(this).attr('data-axis').explode();
 
@@ -842,45 +888,45 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 		var stamp = state[0][0];
 		var percent = 0;
         
-		for (var i = 0; i < state.length; i++) { 
-			if (state[i][1] > 0.5)
-				percent += (state[i][0] - stamp);	
+		for (var i = 1; i < state.length; i++) {
+            percent += state[i - 1][1] * (state[i][0] - stamp);	
 			stamp = state[i][0];
 		};
-		percent = Math.round(percent / (state[i - 1][0] - state[0][0]) * 100);		
+		percent = percent  / (stamp - state[0][0]);
+
+        if (percent < 1)
+            percent = percent * 100;
+        else if (percent > 100)
+            percent = percent / 255 * 100;
     
-		// draw the plot
+        // draw the plot
 		$('#' + this.id).highcharts({
             chart: { type: 'line' },
-			series: [{ 
+            series: [{ 
 				name: label[0], data: response[0], type: 'spline'
-			} , {
-				name: label[1], data: response[1], dashStyle: 'shortdot', step: 'left',
-			} , {
-				type: 'pie', name: '∑ ',
-                data: [{ 
-					name: 'On', y: percent,
-					color: (state[i - 1][1] ? Highcharts.getOptions().colors[0] : null)
-				 }, { 
-					name: 'Off', y: (100 - percent), 
-					color: (!state[i - 1][1] ? Highcharts.getOptions().colors[2] : null) 
+    		} , {
+				name: label[1], data: response[1], dashStyle: 'shortdot', step: 'left'
+            } , {
+				type: 'pie', name: '∑ On: ',
+                data: [{
+                    name: 'On', y: percent
+				}, {
+                    name: 'Off', y: (100 - percent), color: null 
 				}],
 				center: [ '95%', '90%' ],
                 size: 15,
                 showInLegend: false,
-                dataLabels: { enabled: false },
-				tooltip: { valueSuffix: ' %' }
+                dataLabels: { enabled: false }
 			}],
  		    xAxis: { type: 'datetime' },
-		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'),
-				title: { text: axis[1] } },
-			tooltip: { valueSuffix: ' °' }
+		   	yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'), title: { text: axis[1] } },
+            tooltip: { formatter: function() { 
+                return this.series.name + ' <b>' + (this.percentage ? this.y.transPercent() : this.y.transTemp()) + '</b>';
+            }}
         });
     },
 
 	'point': function(event, response) {
-		// DEBUG: console.log("[plot.rtr] point '" + this.id + "' with "); console.log(response);
-		
 		for (var i = 0; i < response.length; i++) { 
 			var chart = $('#' + this.id).highcharts();
 				
@@ -888,7 +934,7 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
                 for (var j = 0; j < response[i].length; j++)
                 	chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= 100));
         	} else if (response[i] && (i == 2)) {
-				console.log("recalc");
+				// TODO: plot.rtr, recalc pie diagram after new point received
             }
 			chart.redraw();
 		};
@@ -897,15 +943,14 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 
 
 // ----- plot.comfortchart -----------------------------------------------------
-$(document).delegate('div[data-widget="plot.comfortchart"]', { 
+$(document).delegate('div[data-widget="plot.comfortchart"]', {
 	'update': function(event, response) {
-		// response is: {{ gad_trigger }}, {{ gad_message }}
-		// DEBUG: console.log("[plot.comfortchart] update '" + this.id + "' with " + response[0] + "/" + response[1]);
-        
-        var label = $(this).attr('data-label').explode();
+		// response is: {{ gad_temp }}, {{ gad_humidity }}
+
+	    var label = $(this).attr('data-label').explode();
         var axis = $(this).attr('data-axis').explode();
        	var plots = Array();
-		
+
         plots[0] = {
             type: 'area', name: label[0], lineWidth: 0,
 			data: [ [17, 35], [16, 75], [17, 85], [21, 80], [25, 60], [27, 35], [25, 19], [20, 20], [17, 35]  ]
@@ -917,22 +962,69 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
 
         plots[2] = {
 			name: 'point',
-            data: [ [response[0] * 1.0, response[1] * 1.0] ], 
+            data: [ [response[0] * 1.0, response[1] * 1.0] ],
             marker: { enabled: true, lineWidth: 2, radius: 6, symbol: 'circle' },
             showInLegend: false
         }
-        
+
         $('#' + this.id).highcharts({
             series: plots,
  		    xAxis: { min: 10, max: 35, title: { text: axis[0], align: 'high', margin: -2 } },
 		   	yAxis: { min: 0, max: 100, title: { text: axis[1], margin: 7 } },
             plotOptions: { area: { enableMouseTracking: false } },
-            tooltip: { formatter: function() { return this.x +' °C / '+ this.y + ' %'; } }
+            tooltip: { formatter: function() { return this.x.transTemp() + ' / ' + this.y.transPercent(); } }
         });
     },
-    
+
 	'point': function(event, response) {
-		// DEBUG: console.log("[plot.comfortchart] point '" + this.id + "' with " + response[0] + "/" + response[1]);
-        $('#' + this.id).highcharts().series[2].data[0].update( [response[0] * 1.0, response[1] * 1.0], true); 
+		var chart = $('#' + this.id).highcharts();
+		var point = chart.series[2].data[0];
+		if (!response[0]) response[0] = point.x;
+		if (!response[1]) response[1] = point.y;
+
+        chart.series[2].data[0].update( [response[0] * 1.0, response[1] * 1.0], true);
+	}
+});
+
+
+// ----- plot.temprose -----------------------------------------------------
+$(document).delegate('div[data-widget="plot.temprose"]', {
+	'update': function(event, response) {
+		// response is: {{ gad_actual_1, gad_actual_2, gad_actual_3, gad_set_1, gad_set_2, gad_set_3 }}
+
+		var label = $(this).attr('data-label').explode();
+        var axis = $(this).attr('data-axis').explode();
+        var count = parseInt($(this).attr('data-count'));
+
+        var plots = Array();
+        plots[0] = {
+        	name: label[0], pointPlacement: 'on',
+			data: response.slice(0, count)
+     	};
+
+		if(response.slice(count).length == count) {
+			plots[1] = {
+	            name: label[1], pointPlacement: 'on',
+				data: response.slice(count),
+	            dashStyle: 'shortdot'
+	   	}};
+
+		$('#' + this.id).highcharts({
+		    chart: {polar: true, type: 'line', marginLeft: 10 },
+		    series: plots,
+ 		    xAxis: { categories: axis, tickmarkPlacement: 'on', lineWidth: 0 },
+		   	yAxis: { gridLineInterpolation: 'polygon', lineWidth: 0 },
+			tooltip: { formatter: function() { return this.x +' - '+ this.series.name + ': <b>' + this.y.transTemp() + '</b>'; } },
+			legend: { x: 10, layout: 'vertical' }
+        });
+    },
+
+	'point': function(event, response) {
+		var chart = $('#' + this.id).highcharts();
+		var point = chart.series[2].data[0];
+		if (!response[0]) response[0] = point.x;
+		if (!response[1]) response[1] = point.y;
+
+        chart.series[2].data[0].update( [response[0] * 1.0, response[1] * 1.0], true);
 	}
 });
