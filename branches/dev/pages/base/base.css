@@ -528,10 +528,6 @@ a.ui-slider-handle-semicircle .ui-btn-inner  {
 	background-image:         linear-gradient(left, #fff, #ccc);
 }
 
-.app .smartvisu .smart {
-    color: #fff;
-}
-
 .page-bg {
     background-repeat: no-repeat;
 	background-position: bottom;
@@ -715,10 +711,10 @@ a.ui-slider-handle-semicircle .ui-btn-inner  {
     margin-bottom: 4px;
     width: 72px;
     float: left;  
-    text-align: center;  
+    text-align: center; 
 }
  
-.app a:link { text-decoration:none; }
+.app a:link { font-weight: normal; text-decoration:none; }
 .app a:visited { text-decoration:none; }
 .app a:focus { text-decoration:underline; }
 .app a:hover { text-decoration:underline; }
@@ -748,6 +744,10 @@ a.ui-slider-handle-semicircle .ui-btn-inner  {
 .app .image .smartvisu {
     margin-top: 2px;
     font-size: 20px;
+}   
+
+.app .smartvisu .smart {
+    color: #fff;
 }
 
 

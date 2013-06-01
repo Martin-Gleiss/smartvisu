@@ -17,6 +17,7 @@
 	header('Content-Type: text/javascript');
 ?>
 
+
 /**
  * -----------------------------------------------------------------------------
  * J A V A S C R I P T   D Y N A M I C   E X T E N T I O N S
@@ -111,8 +112,6 @@
   	Date.prototype.transLong = function() {
 		return this.transDate('<?php echo trans('format', 'long'); ?>');
 	};
-
-
 
 
 /**
