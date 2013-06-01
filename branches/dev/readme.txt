@@ -76,7 +76,7 @@ SYSTEMREQUIREMENTS
 
 HISTORY
 --------------------------------------------------------------------------------
-v 2.5
+v 2.5 01.06.13
     - new apps: tv-movie, tv-spielfilm
 	- new: rss-feed-reader (lib/feeds)
     - new widget: multimedia.station for tv- and radio-stations 
