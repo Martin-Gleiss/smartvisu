@@ -10,7 +10,7 @@
  
  
     // get config-variables 
-    require_once '../../config.php';
+    require_once '../../lib/includes.php';
      
     // init parameters
     $request = array_merge($_GET, $_POST);

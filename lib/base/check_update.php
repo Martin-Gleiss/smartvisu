@@ -10,7 +10,7 @@
  
  
     // get config-variables 
-    require_once '../../config.php';
+    require_once '../../lib/includes.php';
      
     // init parameters
     $request = array_merge($_GET, $_POST);
@@ -38,7 +38,7 @@
 	{
 	    $ret["update"] = false;
 		$ret["icon"] = 'icons/gn/message_ok.png';
-		$ret["text"] = 'smartVISU is actual (no update needed)';
+		$ret["text"] = 'smartVISU is up to date';
 	}
    
     echo json_encode($ret);

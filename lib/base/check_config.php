@@ -10,19 +10,19 @@
  
  
     // get config-variables 
-    require_once '../../config.php';
+    require_once '../../lib/includes.php';
      
     // init parameters
     $request = array_merge($_GET, $_POST);
     
-    if (is_writeable(const_path.'config.php')) 
+    if (is_writeable(const_path)) 
     {
-        $ret = array('icon' => 'icons/gn/message_ok.png', 'text' => "'config.php' is writeable");
+        $ret = array('icon' => 'icons/gn/message_ok.png', 'text' => "'config.php' can be created");
     }
     else
     {
         header("HTTP/1.0 600 smartVISU Config Error");
-        $ret = array('icon' => 'icons/or/message_attention.png', 'text' => "'config.php' is not writeable!");
+        $ret = array('icon' => 'icons/or/message_attention.png', 'text' => "'config.php' can't be created!");
     }
     
     echo json_encode($ret);

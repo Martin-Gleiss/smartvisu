@@ -10,8 +10,7 @@
  
  
     // get config-variables 
-    require_once '../../config.php';
-    require_once const_path_system.'functions.php';
+    require_once '../../lib/includes.php';
 
 	header('Cache-Control: public, must-revalidate');
 	header('Content-Type: text/javascript');
