@@ -7,10 +7,7 @@
  * @license     GPL <http://www.gnu.de>
  * ----------------------------------------------------------------------------- 
  */
- 
- 
-require_once const_path_system.'functions.php';
-
+            
 
 /** 
 * This class is the base class of all services

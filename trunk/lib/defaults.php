@@ -81,7 +81,7 @@
     * How is the page-transition made?
     * 'none', 'fade' (default), 'slide' 
     */
-    define ('config_transition',    		'none');
+    define ('config_transition',    		'fade');
 
   /**
     * Should some html-elements and widgets be animated?
@@ -176,16 +176,6 @@
 // -----------------------------------------------------------------------------
     
 // Normally, no need to change values here!
-
-  /**
-    * Path of smartVISU
-    */
-    define ('const_path',                   dirname(__FILE__).'/');
-
-  /**
-    * Path of system-directory
-    */
-    define ('const_path_system',            const_path.'lib/'); 
 
   /**
     * Special design variable. Defines the eye cancer of using a flavour.

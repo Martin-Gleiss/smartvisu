@@ -10,40 +10,45 @@
  
    
 	// get config-variables 
-    require_once '../../config.php';
+    require_once '../../lib/includes.php';
      
     // init parameters
     $request = array_merge($_GET, $_POST);
+
     
-   	// is it writeable?
+    $line = "<?php\n";
+    $line .= "/**\n";
+    $line .= "  * -----------------------------------------------------------------------------\n";
+    $line .= "  * @package     smartVISU\n";
+    $line .= "  * @author      Martin Gleiß\n";
+    $line .= "  * @copyright   2012\n";
+    $line .= "  * @license     GPL <http://www.gnu.de>\n";
+    $line .= "  * -----------------------------------------------------------------------------\n"; 
+    $line .= "  */\n\n\n";
+
+
+    touch(const_path.'config.php');
+
+    // is it writeable?
 	if (is_writeable(const_path.'config.php')) 
 	{
-	    // read config
-	    $lines = file(const_path.'config.php');
-	    
-	    foreach($lines as $line)
-	    {
-	        if (preg_match("#\(\'config_(.+?)\',[[:space:]]+(\'?)(.+?)(\'?)\);#i", $line, $match) > 0)
-	        {
-	            if ($match[3] == "'" and $match[4] == "")
-	            {
-	                $match[3] = "";
-	                $match[4] = "'";
-	            }
-	            
-	            if (isset($request[$match[1]]))
-	                $config .= str_replace($match[2].$match[3].$match[4], $match[2].str_replace("'", "", $request[$match[1]]).$match[4], $line);    
-	            else
-	                $config .= $line;
-	        }
-	        else
-	            $config .= $line;
-	    }
-	    
-	    // write config
+        foreach($request as $var => $val)
+        {
+            if (defined('config_'.$var))
+            {
+                if ($val == 'true' || $val == 'false')
+                    $line .= "  define('config_".$var."', ".$val.");\n";
+                else
+                    $line .= "  define('config_".$var."', '".$val."');\n";
+            }
+        }
+
+        $line .= "\n".'?'.'>';
+        
+        // write config
 	    if (($fp = fopen(const_path.'config.php', 'w')) !== false)
 	    {
-	    	fwrite($fp, $config);
+	    	fwrite($fp, $line);
 	    	fclose($fp);
 	    }
 	}

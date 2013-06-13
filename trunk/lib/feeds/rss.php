@@ -9,7 +9,7 @@
  */
 
 
-require_once '../../config.php';
+require_once '../../lib/includes.php';
 require_once const_path_system.'service.php';
 require_once const_path_system.'class_cache.php';
     
