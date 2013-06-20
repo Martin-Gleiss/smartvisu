@@ -89,22 +89,22 @@ $lang['plot.comfortchart']['axis']	= 'Temperature, Humidity';
 // -----------------------------------------------------------------------------
 
 // ----- yr.no -----------------------------------------------------------------
-$lang['yr.no']['n']					= 'Nord';
-$lang['yr.no']['nne']				= 'Nordnordost';
-$lang['yr.no']['ne']				= 'Nordost';
-$lang['yr.no']['ene']				= 'Ostnordost';
-$lang['yr.no']['e']					= 'Ost';
-$lang['yr.no']['ese']				= 'Ostsüdost';
-$lang['yr.no']['se']				= 'Südost';
-$lang['yr.no']['sse']				= 'Südsüdost';
-$lang['yr.no']['s']					= 'Süd';
-$lang['yr.no']['ssw']				= 'Südsüdwest';
-$lang['yr.no']['sw']				= 'Südwest';
-$lang['yr.no']['wsw']				= 'Westsüdwest';
+$lang['yr.no']['n']					= 'North';
+$lang['yr.no']['nne']				= 'North-north-east';
+$lang['yr.no']['ne']				= 'North-east';
+$lang['yr.no']['ene']				= 'East-north-east';
+$lang['yr.no']['e']					= 'East';
+$lang['yr.no']['ese']				= 'East-south-east';
+$lang['yr.no']['se']				= 'South-east';
+$lang['yr.no']['sse']				= 'South-sud-east';
+$lang['yr.no']['s']					= 'South';
+$lang['yr.no']['ssw']				= 'South-south-west';
+$lang['yr.no']['sw']				= 'South-west';
+$lang['yr.no']['wsw']				= 'West-south-west';
 $lang['yr.no']['w']					= 'West';
-$lang['yr.no']['wnw']				= 'Westnordwest';
-$lang['yr.no']['nw']				= 'Nordwest';
-$lang['yr.no']['nnw']				= 'Nordnordwest';
+$lang['yr.no']['wnw']				= 'West-north-west';
+$lang['yr.no']['nw']				= 'North-west';
+$lang['yr.no']['nnw']				= 'North-north-west';
 
 $lang['yr.no']['clear sky']			= 'clear sky';
 $lang['yr.no']['fair']				= 'fair';
@@ -154,7 +154,7 @@ $lang['wunderground']['se']         = 'South-east';
 $lang['wunderground']['sse']        = 'South-sud-east';
 $lang['wunderground']['south']      = 'South';
 $lang['wunderground']['ssw']        = 'South-south-west';
-$lang['wunderground']['sw']         = 'South-ouest';
+$lang['wunderground']['sw']         = 'South-west';
 $lang['wunderground']['wsw']        = 'West-south-west';
 $lang['wunderground']['west']       = 'West';
 $lang['wunderground']['wnw']        = 'West-north-west';
