@@ -9,7 +9,7 @@
  */
 
 	// get config-variables 
-    require_once 'config.php';
+    require_once 'lib/includes.php';
     require_once const_path_system.'functions.php';
     require_once 'vendor/google.closure/smart_closure.php';
     

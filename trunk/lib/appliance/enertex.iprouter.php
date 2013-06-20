@@ -10,7 +10,7 @@
 
 
 // get config-variables 
-require_once '../../../lib/includes.php';
+require_once '../includes.php';
 require_once const_path_system.'service.php';
     
    
