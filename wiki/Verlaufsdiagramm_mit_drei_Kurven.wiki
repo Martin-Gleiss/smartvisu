@@ -1,7 +1,6 @@
 #summary plot.period als Beispiel
 
 = Einleitung =
-
 Auch hier beziehe ich in dieser Anleitung auf folgende Voraussetzungen:
 Verwendung des fertige Image auf einen RaspberryPI.
 Ich möchte hier mal aufzeigen wie man schnell einen und plot.periode mit 3 Verlaufskurven erstellt und diesen auch etwas nach seinen Wünschen anpasst.
@@ -15,8 +14,6 @@ OK.... der Plot soll weiterhin folgendes beinhalten:
 
 
 = 1. Einbindung des Plugins =
-Vorweg: Das Plugin von smarthome.py ist bis dato noch nicht ganz fertig. Es funktioniert aber soweit schon sehr gut.
-
 Das benötigte SQLite-Plugin ist bereits in Smarthome.py intergriert. Wir müssen es nur "aktivieren" bzw. einbinden.
 Dies machen wir indem wir in die _/usr/local/smarthome/etc/plugin.conf_ folgendes einfügen
 {{{
@@ -57,7 +54,6 @@ Das Beispiel-Item könnte dann so aussehen
 
 
 = 2. Der html-Teil =
-
 in der smartVISU-Docu ist schön beschrieben wie wir an unser gewünschte Ziel kommen. 
   # laut docu _tmin - the minimum time (x-axis): '1h', '2h'... (duration-format)_ --> also brauchen wir ein *'12h'*
   # laut docu _exposure - type/s for each serie: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')_ --> also brauchen wir *''* Ich gebe da aber trotzdem gern den Code vor und deshlab ein *['line', 'line', 'line']*
