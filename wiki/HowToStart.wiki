@@ -250,7 +250,7 @@ Zu den Plots ist noch zu sagen, das diese erst angezeigt werden, sofern alle im 
 
 
 = 3. Schluß =
-Auf die Thematik der zu verwendenden Datentypen bin ich hier absichtlich nicht detailiert eingegangen, da dies Basics sind bzw. sein sollten. Wer weitere Infos zu den unterstützten Datentypen benötigt oder sich zu den möglichen Attributen informieren will, kann dies unter http://mknx.github.io/smarthome/plugins/knx/ tun. Bitte beachten das auf der Seite auch beschrieben wird, wie man eibd installiert. DIES BRAUCH MAN ABER NICHT TUN, DA ES BEREITS IM IMAGE ENTHALTEN IST.
+Auf die Thematik der zu verwendenden Datentypen bin ich hier absichtlich nicht detailiert eingegangen, da dies Basics sind bzw. sein sollten. Wer weitere Infos zu den unterstützten Datentypen benötigt oder sich zu den möglichen Attributen informieren will, kann dies unter http://mknx.github.io/smarthome/plugins/knx/ tun. Bitte beachten das auf der Seite auch beschrieben wird, wie man eibd installiert. *DIES BRAUCH MAN ABER NICHT TUN, DA EIBD BEREITS IM IMAGE ENTHALTEN IST.*
 So.... ich hoffe das ich alles soweit einiger Maßen verständlich und richtig beschrieben habe, so das dem ein oder anderen der Start etwas leichter fällt.
 Wem smatVISU und SmartHome.py gefällt, der kann ja wenn er mag als Unterstützung zur Weiterentwicklung auch etwas Spenden. Ich habe im Forum u.a. da in Apollos Signatur einen entsprechenden Link gesehen und was soll ich sagen ..... er funktioniert. :)
 
