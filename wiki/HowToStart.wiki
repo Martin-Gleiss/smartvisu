@@ -3,7 +3,7 @@
 = Einleitung =
 
 smartVISU + SmartHome.py ist in meinen Augen eine der momentan ansprechensten Visus die ich kenne.
-Diese Beschreibung beszieht sich auf das frei zum Download stehende Image welches unter http://sourceforge.net/projects/smarthome/files/ geladen werden kann (2013-02-02.img). Dieses Image ist wurde für die Verwendung auf einem RaspberryPI entwickelt bzw. zusammengestellt.
+Diese Beschreibung beszieht sich auf das frei zum Download stehende Image welches unter http://sourceforge.net/projects/smarthome/files/ geladen werden kann (2013-06-15.img.zip). Dieses Image ist wurde für die Verwendung auf einem RaspberryPI entwickelt bzw. zusammengestellt.
 Sicherlich gerade für Einsteiger nicht leicht zu verstehen. Ich habe die ersten Tage selber davor gesessen und so gut wie nichts verstanden.
 Linux-mäßig habe ich auch nur minimalste Kenntnisse.
 Aber dank der Unterstützung von den 2 Moderatoren im Forum kamen die Erkenntnisse Stück für Stück und nach kurzer Zeit war die VISU fertig.
@@ -66,7 +66,7 @@ diese 2 Verzeichnisse.
 /var/www/smartvisu/pages/ <-- dort liegen die html Seiten für die VISU
 }}}
 {{{
-/usr/local/smarthome/items/ <-- dort liegen die items
+/usr/smarthome/items/ <-- dort liegen die items
 }}}
 Falls nötig noch die */usr/local/smarthome/etc/plugin.conf* anpassen. Diese müßt ihr u.a. immer dann anpassen wenn Ihr z.B. den smartVISU Ordner umbenennt oder beispielsweise Plugins von Smarthome.py einbinden wollt. Um Plots (Diagramme) auf der Visu einzubinden müßt ihr diese 3 Zeilen in die plugin.conf einfügen.
 {{{
@@ -227,11 +227,11 @@ gleichermaßen die dort eingetragenen GA's (1byte) etc.
 Eins wäre noch als wichtige Anmerkung hinzuzufügen. Jedes mal wenn Ihr an den items oder der html geändert hab, müßt Ihr Smarthome neu starten damit die Änderungen auch übernommen werden. Es geht zwar auch mit restart ich bevorzuge aber die konventionelle Varriante
 also erst
 {{{
-/usr/local/smarthome/bin/smarthome.py --stop
+/usr/smarthome/bin/smarthome.py --stop
 }}}
 dann
 {{{
-/usr/local/smarthome/bin/smarthome.py --start
+/usr/smarthome/bin/smarthome.py --start
 }}}
 
 === 2.2 html-Seiten ===
