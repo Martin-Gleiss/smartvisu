@@ -71,7 +71,7 @@ Je nachdem ob wir uns das Diagramm nun in einem 'Block' anzeigen lassen wollen o
 
 *ohne Block* (Screen vom iPad)
 
-<img src='http://LINKfolgt' title='plot.periode ohne blog'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/pics/wt_plot_example1.jpg' title='plot.periode ohne Block'>
 {{{
 <h3>Leistung L1 - L3</h3>		
    {{ plot.period('p2', ['Verbrauchsdaten.EeltLeistung.PL1', 'Verbrauchsdaten.EeltLeistung.PL2', 'Verbrauchsdaten.EeltLeistung.PL3'], 'avg', '12h', 0, 0, '', '', ['Phase L1', 'Phase L2', 'Phase L3'], ['#000', '#a60', '#aaa'], ['line', 'line', 'line'], ['', 'Verbrauch in W']) }}
@@ -82,7 +82,7 @@ Je nachdem ob wir uns das Diagramm nun in einem 'Block' anzeigen lassen wollen o
 
 *in einem Block* (Screen vom iPad)
 
-<img src='http://LINKfolgt' title='plot.periode im blog'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/pics/wt_plot_example2.jpg' title='plot.periode im Block'>
 {{{
 <div class="block">
 <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
