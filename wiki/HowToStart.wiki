@@ -10,7 +10,7 @@ Aber dank der Unterstützung von den 2 Moderatoren im Forum kamen die Erkenntnis
 Ich denke was dem Einsteiger fehlt ist mal eine kleine Beschreibung der Vorgehensweise mit dazugehörigen Beispielen. Dies möchte ich hiermit mal versuchen. 
 
 Ich verzichte hier bewußt auf die Erstellung mit dem Autogenerator, da dieser sicher gut ist, aber vorerst "nur" für die Erstellung schneller einfacher Seiten gedacht ist.
-Die Beispiele der hier aufgeführten Beschreibung ergeben am Ende das hier --> http://smartvisu.emf-online.de/board/
+Die Beispiele der hier aufgeführten Beschreibung ergeben am Ende das hier --> LINK GELÖSCHT ... Es folgt bald ein neuer.
 Wobei ich dazu noch anmerken möchte, das es sich dabei um eine Offline-Demo handelt, bei denen z.B. die Werte der Plots abweichen,
 da keine KNX-Verbindung besteht. Es geht bei der Demo hauptsächlich um das Visuelle.
 Ich empfehle noch die freien Programme Putty und WinSCP für die Bearbeitung. Wobei in WINSCP noch unter Einstellungen --> Einstellungen --> Editoren > bei Standartkodierung auf UTF-8 umgestellt werden sollte.
