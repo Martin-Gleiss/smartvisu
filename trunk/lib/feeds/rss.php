@@ -4,27 +4,27 @@
  * @package     smartVISU
  * @author      Martin Gleiß
  * @copyright   2012
- * @license     GPL <http://www.gnu.de>
- * ----------------------------------------------------------------------------- 
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
  */
 
 
 require_once '../../lib/includes.php';
 require_once const_path_system.'service.php';
 require_once const_path_system.'class_cache.php';
-    
 
-/** 
+
+/**
  * This class generates a weather
- */   
+ */
 class rss extends service
 {
 	var $url = '';
 	var $limit = 10;
-	
-  /**
-	* initialization of some parameters
-	*/
+
+	/**
+	 * initialization of some parameters
+	 */
 	public function init($request)
 	{
 		parent::init($request);
@@ -34,51 +34,52 @@ class rss extends service
 		if ((int)$request['limit'] > 0)
 			$this->limit = (int)$request['limit'];
 	}
-	
-  /**
-	* retrieve the content
-	*/     
-    public function run()
-    {
-        // api call 
-        $cache = new class_cache('rss_'.strtolower($this->url));
-        
-        if ($cache->hit())
-            $xml = simplexml_load_string($cache->read());
-        else
-            $xml = simplexml_load_string($cache->write(file_get_contents('http://'.$this->url)));
-          
-        if($xml)
-        {
+
+	/**
+	 * retrieve the content
+	 */
+	public function run()
+	{
+		// api call 
+		$cache = new class_cache('rss_'.strtolower($this->url));
+
+		if ($cache->hit())
+			$xml = simplexml_load_string($cache->read());
+		else
+			$xml = simplexml_load_string($cache->write(file_get_contents('http://'.$this->url)));
+
+		if ($xml)
+		{
 			$i = 1;
 
 			// the entries
-   			foreach($xml->channel->item as $item)
-            {
+			foreach ($xml->channel->item as $item)
+			{
 				$item = (array)$item;
 
 				// media?
-				if (isset($item['enclosure']) && 
-                    ((string)$item['enclosure']->attributes()->type == 'image/jpeg' || (string)$item['enclosure']->attributes()->type == 'image/jpg'))
-                {   
-                    unset($item['image']);
-                    $item['image']['url'] = (string)$item['enclosure']->attributes()->url;
-                }
+				if (isset($item['enclosure']) &&
+						((string)$item['enclosure']->attributes()->type == 'image/jpeg' || (string)$item['enclosure']->attributes()->type == 'image/jpg')
+				)
+				{
+					unset($item['image']);
+					$item['image']['url'] = (string)$item['enclosure']->attributes()->url;
+				}
 
-                unset($item['enclosure']);
+				unset($item['enclosure']);
 
-                // description
-                $item["description"] = (string)$item["description"];    
+				// description
+				$item["description"] = (string)$item["description"];
 
-            	$this->data['entry'][] = $item;
+				$this->data['entry'][] = $item;
 
 				if ($i++ >= $this->limit)
-     				break;
+					break;
 			}
 
 			// the channel
 			$channel = (array)$xml->channel;
-            if (isset($channel['image']))
+			if (isset($channel['image']))
 				$channel['image'] = array(
 					'url' => (string)$channel['image']->url,
 					'title' => (string)$channel['image']->title,
@@ -89,10 +90,10 @@ class rss extends service
 
 			$this->data['channel'] = $channel;
 		}
-        else
-            $this->error('RSS', 'Read request failed \''.$this->url.'\'');
-     
-    }
+		else
+			$this->error('RSS', 'Read request failed \''.$this->url.'\'');
+
+	}
 
 }
 

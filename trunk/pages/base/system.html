@@ -1,41 +1,49 @@
 /**
- * -----------------------------------------------------------------------------
- * @package     smartVISU
- * @author      Martin Gleiß
- * @copyright   2012
- * @license     GPL <http://www.gnu.de>
- * ----------------------------------------------------------------------------- 
- */
- 
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
 
 {% extends "base.html" %}
 
 {% block sidebar %}
-    <ul data-role="listview" data-dividertheme="c"> 
-    
-    	<li data-role="list-divider">System</li>
-        <li data-icon="false">
-            <a href="index.php?page=config">
-                <img class="icon" src="{{ icon0 }}message_service.png"/><h3>Configuration</h3>
-            </a>
-        </li>
-        <li data-icon="false">
-            <a href="index.php?page=team">
-                <img class="icon" src="{{ icon0 }}weather_sun.png"/><h3>Team</h3>
-            </a>
-        </li>
-        <li data-icon="false">
-            <a href="index.php?page=credits">
-                <img class="icon" src="{{ icon0 }}time_note.png"/><h3>Credits</h3>
-            </a>
-        </li>
-        <li data-icon="false">
-            <a href="index.php?page=copyright">
-                <img class="icon" src="{{ icon0 }}message_attention.png"/><h3>Copyright</h3>
-            </a>
-        </li>
-        
-    </ul>	
+	<ul data-role="listview" data-dividertheme="c">
+
+		<li data-role="list-divider">System</li>
+		<li data-icon="false">
+			<a href="index.php?page=config">
+				<img class="icon" src="{{ icon0 }}message_service.png" />
+
+				<h3>Configuration</h3>
+			</a>
+		</li>
+		<li data-icon="false">
+			<a href="index.php?page=team">
+				<img class="icon" src="{{ icon0 }}weather_sun.png" />
+
+				<h3>Team</h3>
+			</a>
+		</li>
+		<li data-icon="false">
+			<a href="index.php?page=credits">
+				<img class="icon" src="{{ icon0 }}time_note.png" />
+
+				<h3>Credits</h3>
+			</a>
+		</li>
+		<li data-icon="false">
+			<a href="index.php?page=copyright">
+				<img class="icon" src="{{ icon0 }}message_attention.png" />
+
+				<h3>Copyright</h3>
+			</a>
+		</li>
+
+	</ul>
 {% endblock %}
 
 

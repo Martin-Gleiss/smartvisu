@@ -3,7 +3,7 @@
  * @package     smartVISU
  * @author      Raik Alber and Martin Gleiß
  * @copyright   2013
- * @license     GPL <http://www.gnu.de>
+ * @license     GPL [http://www.gnu.de]
  * @version	    0.1
  * ----------------------------------------------------------------------------- 
  */

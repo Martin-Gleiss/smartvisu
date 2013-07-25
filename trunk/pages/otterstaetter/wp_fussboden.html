@@ -1,53 +1,92 @@
 /**
- * -----------------------------------------------------------------------------
- * @package     smartVISU
- * @author      Martin Gleiß
- * @copyright   2012
- * @license     GPL <http://www.gnu.de>
- * ----------------------------------------------------------------------------- 
- */
- 
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
 
 {% extends "wp.html" %}
 
 {% block content %}
 
-    <h1><img class="icon" src='{{ icon0 }}sani_floor_heating.png'/>Temperaturen Fußbodenheizung</h1>
-    
-    <div class="preblock">
-		
-    </div>
+	<h1><img class="icon" src='{{ icon0 }}sani_floor_heating.png' />Temperaturen Fußbodenheizung</h1>
 
-    <div class="block">
-    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-	<div data-role="collapsible" data-collapsed="false">
-            <h3>Erdgeschoss</h3>
-		<table width="100%">
-		<tr><td align="left">Küche:</td><td align="left"> {{ basic.float('kueche_temperatur', 'kueche_temperatur_boden', ' °C') }}</td></tr>
-		<tr><td align="left">Esszimmer: </td><td align="left">{{ basic.float('essen_temperatur', 'essen_temperatur_boden', ' °C') }}</td></tr>
-		<tr><td align="left">Wohnzimmer: </td><td align="left">{{ basic.float('wohnen_temperatur', 'wohnen_temperatur_boden', ' °C') }}</td></tr>
-		<tr><td align="left">Büro: </td><td align="left">{{ basic.float('buero_temperatur', 'buero_temperatur_boden', ' °C') }}</td></tr>
-		<tr><td align="left">Hauswirtschaftsraum: </td><td align="left">{{ basic.float('hwr_temperatur', 'hwr_temperatur_boden', ' °C') }}</td></tr>
-		<tr><td align="left">Diele und Gäste WC: </td><td align="left">{{ basic.float('diele_temperatur', 'diele_temperatur_boden', ' °C') }}</td></tr>
-	        </table>	
+	<div class="preblock">
+
 	</div>
-    </div>    
-    </div> 
- 
-    <div class="block">
-    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-	<div data-role="collapsible" data-collapsed="false">
-            <h3>Dachgeschoss</h3>
-		<table width="100%">
-		<tr><td align="left">Bad Eltern:</td><td align="left"> {{ basic.float('bad-eltern_temperatur', 'bad-eltern_temperatur_boden', ' °C') }}</td></tr>
-		<tr><td align="left">Schlafen: </td><td align="left">{{ basic.float('schlafen_temperatur', 'schlafen_temperatur_boden', ' °C') }}</td></tr>
-		<tr><td align="left">Gäste: </td><td align="left">{{ basic.float('gast_temperatur', 'gast_temperatur_boden', ' °C') }}</td></tr>
-		<tr><td align="left">Kind 1: </td><td align="left">{{ basic.float('kind1_temperatur', 'kind1_temperatur_boden', ' °C') }}</td></tr>
-		<tr><td align="left">Kind 2: </td><td align="left">{{ basic.float('kind2_temperatur', 'kind2_temperatur_boden', ' °C') }}</td></tr>
-		<tr><td align="left">Bad Kinder: </td><td align="left">{{ basic.float('bad-kinder_temperatur', 'bad-kinder_temperatur_boden', ' °C') }}</td></tr>
-		<tr><td align="left">Flur: </td><td align="left">{{ basic.float('flur_temperatur', 'flur_temperatur_boden', ' °C') }}</td></tr>
-	        </table>  	
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Erdgeschoss</h3>
+				<table width="100%">
+					<tr>
+						<td align="left">Küche:</td>
+						<td align="left"> {{ basic.float('kueche_temperatur', 'kueche_temperatur_boden', ' °C') }}</td>
+					</tr>
+					<tr>
+						<td align="left">Esszimmer:</td>
+						<td align="left">{{ basic.float('essen_temperatur', 'essen_temperatur_boden', ' °C') }}</td>
+					</tr>
+					<tr>
+						<td align="left">Wohnzimmer:</td>
+						<td align="left">{{ basic.float('wohnen_temperatur', 'wohnen_temperatur_boden', ' °C') }}</td>
+					</tr>
+					<tr>
+						<td align="left">Büro:</td>
+						<td align="left">{{ basic.float('buero_temperatur', 'buero_temperatur_boden', ' °C') }}</td>
+					</tr>
+					<tr>
+						<td align="left">Hauswirtschaftsraum:</td>
+						<td align="left">{{ basic.float('hwr_temperatur', 'hwr_temperatur_boden', ' °C') }}</td>
+					</tr>
+					<tr>
+						<td align="left">Diele und Gäste WC:</td>
+						<td align="left">{{ basic.float('diele_temperatur', 'diele_temperatur_boden', ' °C') }}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
-    </div>    
-    </div>   
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Dachgeschoss</h3>
+				<table width="100%">
+					<tr>
+						<td align="left">Bad Eltern:</td>
+						<td align="left"> {{ basic.float('bad-eltern_temperatur', 'bad-eltern_temperatur_boden', ' °C') }}</td>
+					</tr>
+					<tr>
+						<td align="left">Schlafen:</td>
+						<td align="left">{{ basic.float('schlafen_temperatur', 'schlafen_temperatur_boden', ' °C') }}</td>
+					</tr>
+					<tr>
+						<td align="left">Gäste:</td>
+						<td align="left">{{ basic.float('gast_temperatur', 'gast_temperatur_boden', ' °C') }}</td>
+					</tr>
+					<tr>
+						<td align="left">Kind 1:</td>
+						<td align="left">{{ basic.float('kind1_temperatur', 'kind1_temperatur_boden', ' °C') }}</td>
+					</tr>
+					<tr>
+						<td align="left">Kind 2:</td>
+						<td align="left">{{ basic.float('kind2_temperatur', 'kind2_temperatur_boden', ' °C') }}</td>
+					</tr>
+					<tr>
+						<td align="left">Bad Kinder:</td>
+						<td align="left">{{ basic.float('bad-kinder_temperatur', 'bad-kinder_temperatur_boden', ' °C') }}</td>
+					</tr>
+					<tr>
+						<td align="left">Flur:</td>
+						<td align="left">{{ basic.float('flur_temperatur', 'flur_temperatur_boden', ' °C') }}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
 {% endblock %}

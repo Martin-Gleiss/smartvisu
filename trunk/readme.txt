@@ -3,7 +3,7 @@
  * @package     smartVisu
  * @author      Martin Gleiß
  * @copyright   2012
- * @license     GPL <http://www.gnu.de>
+ * @license     GPL [http://www.gnu.de]
  * ----------------------------------------------------------------------------- 
  */
 
@@ -76,6 +76,12 @@ SYSTEMREQUIREMENTS
 
 HISTORY
 --------------------------------------------------------------------------------
+v 2.6
+	- dynamic icons: svg-icons for continuous values
+	- update vendor/plot.highcharts 3.0.2   	
+	- update vendor/jquery 2.0.3 (IE 6, 7, 8 are no longer supported)
+	- update vendor/jquery.mobile 1.3.2
+	
 v 2.5 01.06.13
     - new apps: tv-movie, tv-spielfilm
 	- new: rss-feed-reader (lib/feeds)
