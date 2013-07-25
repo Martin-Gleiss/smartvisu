@@ -1012,7 +1012,7 @@ canvas.colordisc {
  */
 
 .dimmer {
-	vertical-align: absmiddle;
+	vertical-align: middle;
 	height: 48px;
 	margin: 15px 0 10px 0;
 }
@@ -1385,6 +1385,7 @@ canvas.colordisc {
 /**
  * --- W i d g e t s :   I C O N -----------------------------------------------
  */
+
 svg.icon {
 	display: inline-block;
 	vertical-align: middle;
