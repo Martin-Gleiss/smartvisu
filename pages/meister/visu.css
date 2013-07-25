@@ -3,18 +3,17 @@
  * @package     smartVISU
  * @author      Martin Gleiß
  * @copyright   2012
- * @license     GPL <http://www.gnu.de>
+ * @license     GPL [http://www.gnu.de]
  * ----------------------------------------------------------------------------- 
  */
- 
- 
+
 @CHARSET "UTF-8";
 
 /* display background only on larger displays */
 @media all and (min-width: 600px) {
-    .page-bg {
-	    background-image: url('../../pics/bg/greenhand.png');
-    }
+	.page-bg {
+		background-image: url('../../pics/bg/greenhand.png');
+	}
 }
 
 #widget_device_shutter-shutter2 {

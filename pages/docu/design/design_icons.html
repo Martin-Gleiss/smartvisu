@@ -1,64 +1,79 @@
 /**
- * -----------------------------------------------------------------------------
- * @package     smartVISU
- * @author      Martin Gleiß
- * @copyright   2012
- * @license     GPL <http://www.gnu.de>
- * ----------------------------------------------------------------------------- 
- */
- 
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
 
 {% extends "index.html" %}
 
 {% block content %}
 
 	<style type="text/css">
-		.box { float:left; width: 130px; background-color: #222; border: 1px dotted #666; margin: 5px; text-align: center; }	
-		.box div { font-size: 0.8em; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; white-space: nowrap; }
+		.box {
+			float: left;
+			width: 130px;
+			background-color: #222;
+			border: 1px dotted #666;
+			margin: 5px;
+			text-align: center;
+		}
+
+		.box div {
+			font-size: 0.8em;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			-o-text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 	</style>
-    
 
-    <h1>Icons</h1>
-    
-    <div class="docu">
-    Icons are used only with the icon-name. As path use "icon0" for "normal" icons and "icon1" for the highlighted version.
-    
-        <div class="twig">
-            <code class="prettyprint">
-                icon0~'light_light.png'<br />
-                icon1~'light_light.png'<br />
-            </code>
-        </div>
-    </div>
-    
-    
-    <h5>Examples</h5>
-    
-    <div class="docu">
-        Icons located in "{{ icon0 }}"
-    </div>
 
-    {% set cat = 'au' %}
-    {% for file in dir(icon0) %}
-        {% if cat != file.name|slice(0, 2) %}
-            <div style="clear:left;"><br /><br /></div>
-            {% set cat = file.name|slice(0, 2) %}
-        {% endif %}
-        <div class="box">
-            <img class="icon" src="{{ icon0~file.name }}" data-pic="{{ file.name }}" /><br />
-            <div>{{ file.name }}</div>
-        </div>
-    {% endfor %}
+	<h1>Icons</h1>
+
+	<div class="docu">
+		Icons are used only with the icon-name. As path use "icon0" for "normal" icons and "icon1" for the highlighted version.
+
+		<div class="twig">
+			<code class="prettyprint">
+				icon0~'light_light.png'<br />
+				icon1~'light_light.png'<br />
+			</code>
+		</div>
+	</div>
+
+
+	<h5>Examples</h5>
+
+	<div class="docu">
+		Icons located in "{{ icon0 }}"
+	</div>
+
+	{% set cat = 'au' %}
+	{% for file in dir(icon0) %}
+		{% if cat != file.name|slice(0, 2) %}
+			<div style="clear:left;"><br /><br /></div>
+			{% set cat = file.name|slice(0, 2) %}
+		{% endif %}
+		<div class="box">
+			<img class="icon" src="{{ icon0~file.name }}" data-pic="{{ file.name }}" /><br />
+
+			<div>{{ file.name }}</div>
+		</div>
+	{% endfor %}
 
 
 	<script type="text/javascript">
-		$(document).on('vmouseover', '.box > .icon', function() {
+		$(document).on('vmouseover', '.box > .icon', function () {
 			this.src = '{{ icon1 }}' + $(this).attr('data-pic');
 		});
-		$(document).on('vmouseout', '.box > .icon', function() {
+		$(document).on('vmouseout', '.box > .icon', function () {
 			this.src = '{{ icon0 }}' + $(this).attr('data-pic');
 		});
-    </script>  
-    
+	</script>
+
 {% endblock %}
 

@@ -3,9 +3,9 @@
  * @package     smartVISU
  * @author      Martin Gleiß
  * @copyright   2012
- * @license     GPL <http://www.gnu.de>
- * ----------------------------------------------------------------------------- 
- */ 
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
 
 Highcharts.theme = {
 	colors: ["#f9a028", "#ab6e1b", "#7c5014"],
@@ -16,8 +16,8 @@ Highcharts.theme = {
 		plotBorderWidth: 0,
 		marginRight: 10,
 		marginLeft: 50,
-        style: {
-        	fontFamily: 'Dosis, sans-serif'
+		style: {
+			fontFamily: 'Dosis, sans-serif'
 		}
 	},
 	title: {
@@ -71,13 +71,13 @@ Highcharts.theme = {
 	legend: {
 		x: 40,
 		align: 'left',
-        verticalAlign: 'top',
-    	floating: true,
-        borderWidth: 0,
-      	itemStyle: { 
+		verticalAlign: 'top',
+		floating: true,
+		borderWidth: 0,
+		itemStyle: {
 			color: '#ccc'
 		},
-		itemHoverStyle: { 
+		itemHoverStyle: {
 			color: '#fff'
 		},
 		itemHiddenStyle: {
@@ -110,16 +110,16 @@ Highcharts.theme = {
 			marker: {
 				enabled: false
 			},
-            animation: {
-                duration: 1500
-            }
-       	},
+			animation: {
+				duration: 1500
+			}
+		},
 		line: {
 			dataLabels: {
 				color: '#ccc'
 			}
 		},
-		
+
 		pie: {
 			borderColor: null,
 			borderWidth: 2
@@ -188,7 +188,7 @@ Highcharts.theme = {
 	},
 
 	credits: {
-    	enabled: false
+		enabled: false
 	}
 };
 

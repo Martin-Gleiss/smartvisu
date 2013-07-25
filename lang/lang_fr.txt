@@ -3,7 +3,7 @@
  * @package     smartVISU
  * @author      Martin Gleiß
  * @copyright   2012
- * @license     GPL <http://www.gnu.de>
+ * @license     GPL [http://www.gnu.de]
  * ----------------------------------------------------------------------------- 
  */
 
@@ -65,7 +65,7 @@ $lang['shortmonth']['dec']			= 'Déc';
 
 // ----- weekday ---------------------------------------------------------------
 $lang['weekday']['sunday']			= 'Dimanche';
-$lang['weekday']['monday']			= 'Lunid';
+$lang['weekday']['monday']			= 'Lundi';
 $lang['weekday']['tuesday']			= 'Mardi';
 $lang['weekday']['wednesday']		= 'Mercredi';
 $lang['weekday']['thursday']		= 'Jeudi';

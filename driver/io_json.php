@@ -4,7 +4,7 @@
  * @package     smartVISU
  * @author      Frank Berlenz
  * @copyright   2012
- * @license     GPL <http://www.gnu.de>
+ * @license     GPL [http://www.gnu.de]
  * ----------------------------------------------------------------------------- 
  */
 

@@ -1,90 +1,98 @@
 /**
- * -----------------------------------------------------------------------------
- * @package     smartVISU
- * @author      Martin Gleiß
- * @copyright   2012
- * @license     GPL <http://www.gnu.de>
- * -----------------------------------------------------------------------------
- */
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
 
 
 {% extends "rooms.html" %}
 
 {% block content %}
-    <h1><img class="icon" src='{{ icon0 }}sani_buffer_temp_all.png'/>Hauswirtschaftsraum</h1>
+	<h1><img class="icon" src='{{ icon0 }}sani_buffer_temp_all.png' />Hauswirtschaftsraum</h1>
 
-    <div class="preblock">
-	<table width="100%">
-		<tr>
-		<td align="left" width="50%">
-		</td>
-		<td align="right">
-		{{ basic.symbol('rm1', 'hwr_rm_alarm', '', icon1~'secur_smoke_detector.png',1, 'mini') }}
-		     {{ basic.symbol('rm2', 'hwr_rm_alarm', '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
-		{{ basic.symbol('rm3', 'hwr_rm_stoerung', '', icon1~'message_service.png',1, 'mini') }}
-		     {{ basic.symbol('rm4', 'hwr_rm_stoerung', '', icon0~'message_service.png', 0, 'mini') }}
-		</td>
-		<td align="right" padding="20">
-		{{ basic.symbol('pir1', 'hwr_praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
-			 {{ basic.symbol('pir2', 'hwr_praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
-		</td>
-		</tr>
-	</table>
-    </div>
-
-
-    <div class="block">
-    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-    	<div data-role="collapsible" data-collapsed="false" >
-            <h3>Deckenleuchte</h3>
-            <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'hwr_beleuchtung_decke_schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Deckenleuchte</td></tr></table>
-      	</div>
-
-    	<div data-role="collapsible">
-            <h3>&nbsp;</h3>
-        </div>
-
-    </div>
-    </div>
-
-    <div class="block">
-    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-    	<div data-role="collapsible" data-collapsed="false">
-            <h3>Rollladen</h3>
-            {% import "widget_shutter.html" as shutter %}
-			{{ shutter.one ('shutter1', 'Fenster', 'hwr_rollladen_fahren', 'hwr_rollladen_stopp', 'hwr_rollladen_position', 'hwr_rollladen_beschatten' ) }}
-        </div>
-
-    	<div data-role="collapsible">
-            <h3>&nbsp;</h3>
-            <p></p>
-        </div>
-    </div>
-    </div>
-
-    <div class="block">
-    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-	<div data-role="collapsible" data-collapsed="false">
-            <h3>Status</h3>
+	<div class="preblock">
 		<table width="100%">
 			<tr>
-				<td align="left">
-        	{{ basic.symbol('status1', 'hwr_gefrierschrank_status', 'Gefrierschrank ein', icon1~'control_on_off.png') }}
-		     {{ basic.symbol('status2', 'hwr_gefrierschrank_status', 'Gefrierschrank aus', icon0~'control_on_off.png', 0) }}
-				</td><td align="left">
+				<td align="left" width="50%">
+				</td>
+				<td align="right">
+					{{ basic.symbol('rm1', 'hwr_rm_alarm', '', icon1~'secur_smoke_detector.png',1, 'mini') }}
+					{{ basic.symbol('rm2', 'hwr_rm_alarm', '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
+					{{ basic.symbol('rm3', 'hwr_rm_stoerung', '', icon1~'message_service.png',1, 'mini') }}
+					{{ basic.symbol('rm4', 'hwr_rm_stoerung', '', icon0~'message_service.png', 0, 'mini') }}
+				</td>
+				<td align="right" padding="20">
+					{{ basic.symbol('pir1', 'hwr_praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
+					{{ basic.symbol('pir2', 'hwr_praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
 				</td>
 			</tr>
 		</table>
 	</div>
-	<div data-role="collapsible">
-            <h3>&nbsp;</h3>
-            <p></p>
-        </div>
-    </div>
-    </div>
-   <!-- <div class="block">
+
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Deckenleuchte</h3>
+				<table width="90%">
+					<tr>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'hwr_beleuchtung_decke_schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td>
+						<td>Deckenleuchte</td>
+					</tr>
+				</table>
+			</div>
+
+			<div data-role="collapsible">
+				<h3>&nbsp;</h3>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Rollladen</h3>
+				{% import "widget_shutter.html" as shutter %}
+				{{ shutter.one ('shutter1', 'Fenster', 'hwr_rollladen_fahren', 'hwr_rollladen_stopp', 'hwr_rollladen_position', 'hwr_rollladen_beschatten' ) }}
+			</div>
+
+			<div data-role="collapsible">
+				<h3>&nbsp;</h3>
+
+				<p></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Status</h3>
+				<table width="100%">
+					<tr>
+						<td align="left">
+							{{ basic.symbol('status1', 'hwr_gefrierschrank_status', 'Gefrierschrank ein', icon1~'control_on_off.png') }}
+							{{ basic.symbol('status2', 'hwr_gefrierschrank_status', 'Gefrierschrank aus', icon0~'control_on_off.png', 0) }}
+						</td>
+						<td align="left">
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div data-role="collapsible">
+				<h3>&nbsp;</h3>
+
+				<p></p>
+			</div>
+		</div>
+	</div>
+	<!-- <div class="block">
     <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
     	<div data-role="collapsible" data-collapsed="false">
