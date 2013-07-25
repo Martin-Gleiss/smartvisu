@@ -1,4 +1,4 @@
-bath_light_value = 62
+bath_light_value = 165
 bath_light_switch = 1
 bath_rtr_state = 0
 bath_rtr_comfort = 1
@@ -44,3 +44,5 @@ kid_rtr_act = 23.3
 kid_rtr_set = 21
 floor_rtr_act = 22.7
 floor_rtr_set = 17
+bath_light_value2 = 13
+

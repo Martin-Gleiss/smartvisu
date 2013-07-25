@@ -24,20 +24,29 @@ class phone_offline extends phone
 	 */
 	public function run()
 	{
-		for ($i = 9; $i > 0; $i--)
+		for ($i = 9; $i > 2; $i--)
 		{
 			$this->data[] = array(
 				'pos' => $i,
 				'dir' => rand(-1, 1),
 				'date' => transdate('date').' 1'.$i.':'.rand(1, 59).':00',
 				'number' => '0931'.rand(1000000, 9999999),
-				'name' => 'Hans Mustermann',
+				'name' => 'John Q. Public',
 				'duration' => '00:00:'.rand(10, 50)
 			);
 		}
 
 		$this->data[] = array(
 			'pos' => '2',
+			'dir' => '1',
+			'date' => '01.10.2012 10:00:00',
+			'number' => '',
+			'name' => 'no number',
+			'duration' => '00:00:10'
+		);
+		
+		$this->data[] = array(
+			'pos' => '1',
 			'dir' => '1',
 			'date' => '01.10.2012 10:00:00',
 			'number' => '08003007707',
