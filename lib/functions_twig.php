@@ -135,7 +135,10 @@ function twig_docu($filename)
 		foreach ($widgets[1] as $no => $docu)
 		{
 			$rettmp[$no]['desc'] = trim(str_replace('* ', '', substr($docu, 0, strpos($docu, '@'))));
-
+			
+			if (substr($rettmp[$no]['desc'], -1, 1) == '*')
+				$rettmp[$no]['desc'] = substr($rettmp[$no]['desc'], 0, -1);
+			
 			// Header-Tags 
 			foreach ($header[1] as $headerno => $headertag)
 			{

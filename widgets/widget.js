@@ -1107,6 +1107,7 @@ $(document).delegate('svg[data-widget="icon.compass"]', {
 	}
 });
 
+// ----- icon.windrose ---------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.windrose"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_angle }}
@@ -1126,3 +1127,29 @@ $(document).delegate('svg[data-widget="icon.windrose"]', {
 	}
 });
 
+// ----- icon.shutter ---------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.shutter"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_pos }}
+
+		var pos = 30;
+		var val = Math.round(response[0] / $(this).attr('data-max') * 46);
+
+		$('#' + this.id + ' g').children().each(function (index) {
+			var g = $(this);
+			if (g.is('line')) {
+				g.remove();
+			}
+		});
+
+		while (val > 0) {
+			line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+			line.setAttribute('x1', 11);
+			line.setAttribute('y1', pos + val);
+			line.setAttribute('x2', 89);
+			line.setAttribute('y2', pos + val);
+			$('#' + this.id + ' g').append(line);
+			val = val - 4;
+		}
+	}
+});
