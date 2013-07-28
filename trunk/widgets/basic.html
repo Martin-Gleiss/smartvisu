@@ -168,7 +168,6 @@
 * @param       the pic for the 'off' state (optional)
 * @param       value send for the 'on' state (optional, default 1)
 * @param       value send for the 'off' state (optional, default 0)
-
 */
 {% macro switch(id, gad, pic_on, pic_off, val_on, val_off) %}
 
@@ -303,8 +302,8 @@
 * @param       a gad/item for the b - value (0-255)
 * @param       the minimum value if the light is off (optional, for future use)
 * @param       the maximum value if the light is full on (optional, default 255)
-* @param        step (for future use)
-* @param        the number of colors (default 10)
+* @param       step (for future use)
+* @param       the number of colors (default 10)
 */
 {% macro rgb(id, gad_r, gad_g, gad_b, min, max, step, colors) %}
 	{% set uid = uid(page, id) %}
@@ -414,7 +413,7 @@
 * @param       the mode: 'none', 'corner', 'corner-bottom' (optional, default 'none')
 * @param       the reload-time in duration-format (optional, default '10i')
 *
-* @see        misc/fundamentals#Duration-Format
+* @see         misc/fundamentals#Duration-Format
 */
 {% macro image(id, src, mode, time) %}
 
@@ -443,10 +442,10 @@
 * @param       unique id for this widget
 * @param       a gad/item witch triggers the notification
 * @param       a gad/item with the dynamic message
-* @param        a word for the signal corner
+* @param       a word for the signal corner
 * @param       a title of the messagebox
-* @param        a additional static text
-* @param        the mode: 'info', 'warning', 'error' (optional, default 'info')
+* @param       a additional static text
+* @param       the mode: 'info', 'warning', 'error' (optional, default 'info')
 */
 {% macro notify(id, gad_trigger, gad_message, signal, title, text, mode) %}
 

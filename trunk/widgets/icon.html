@@ -8,6 +8,11 @@
 */
 
 
+/*
+* <rect rx="20" x="3" y="3" width="94" height="94" />
+*/
+
+
 /**
 * A compass
 *
@@ -23,14 +28,13 @@
 			class="icon" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100"
 			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}">
 			<g>
-				<line x1="50" y1="3" x2="50" y2="12" />
-				<line x1="50" y1="88" x2="50" y2="97" />
-				<line x1="3" y1="50" x2="12" y2="50" />
-				<line x1="88" y1="50" x2="97" y2="50" />
+				<line x1="50" y1="1" x2="50" y2="12" />
+				<line x1="50" y1="88" x2="50" y2="99" />
+				<line x1="1" y1="50" x2="12" y2="50" />
+				<line x1="88" y1="50" x2="99" y2="50" />
+				<text x="25" y="20">N</text>
 				<polyline id="pin0" points="40,50, 50,20, 60,50" />
 				<polyline id="pin1" points="40,50, 50,80, 60,50" fill="none" />
-				<text x="25" y="35">N</text>
-				<rect rx="20" x="3" y="3" width="94" height="94" />
 			</g>
 		</svg>
 	</a>
@@ -45,23 +49,49 @@
 * @param       the minimum value for 0° (optional, default 0, for future use)
 * @param       the maximum value for 360°  (optional, default 255)
 */
-{% macro windrose(id, gad_angle) %}
+{% macro windrose(id, gad_angle, min, max) %}
 
 	<a class="icon">
 		<svg id="{{ uid(page, id) }}" data-widget="icon.windrose" data-item="{{ gad_angle }}"
 			class="icon" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100"
 			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}">
 			<g>
-				<line x1="50" y1="3" x2="50" y2="12" />
-				<line x1="50" y1="88" x2="50" y2="97" />
-				<line x1="3" y1="50" x2="12" y2="50" />
-				<line x1="88" y1="50" x2="97" y2="50" />
+				<line x1="50" y1="1" x2="50" y2="12" />
+				<line x1="50" y1="88" x2="50" y2="99" />
+				<line x1="1" y1="50" x2="12" y2="50" />
+				<line x1="88" y1="50" x2="99" y2="50" />
+				<text x="25" y="20">N</text>
 				<polyline id="pin0" points="50,60, 36,77, 50,20" />
 				<polyline id="pin1" points="50,60, 64,77, 50,20" fill="none" />
-				<text x="25" y="35">N</text>
-				<rect rx="20" x="3" y="3" width="94" height="94" />
 			</g>
 		</svg>
 	</a>
 
 {% endmacro %}
+
+
+/**
+* a windrose
+*
+* @param       unique id for this widget
+* @param       the angle of the pin
+* @param       the minimum value for 0° (optional, default 0, for future use)
+* @param       the maximum value for 360°  (optional, default 255)
+*/
+{% macro shutter(id, gad_pos, min, max) %}
+
+	<a class="icon">
+		<svg id="{{ uid(page, id) }}" data-widget="icon.shutter" data-item="{{ gad_pos }}"
+			class="icon" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100"
+			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}">
+			<g>
+				<rect rx="1" x="12" y="25" width="76" height="4" />
+				<rect x="15" y="28" width="70" height="50" fill="none" />
+				<rect x="49" y="28" width="2" height="50" />
+				<rect x="46" y="52" width="8" height="2" />
+			</g>
+		</svg>
+	</a>
+
+{% endmacro %}
+
