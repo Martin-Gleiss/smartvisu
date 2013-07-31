@@ -40,7 +40,7 @@ SYSTEMREQUIREMENTS
 		- smarthome.py for smarthome environment
 		- eibd for direct access
         - offline: only for testing, all GADs will be stored in a textfile 
-          ("temp/offline.var")
+          ("temp/offline_YOURPROJECT.var")
         
     4.  Create a new page in your project-directory, for example "mypage.html"
         Note: Do not use "base.html, basic.html, device.html", these are system
@@ -78,6 +78,8 @@ HISTORY
 --------------------------------------------------------------------------------
 v 2.6
 	- dynamic icons: svg-icons for continuous values
+	- new: config splitted in lib/defaults.php and config.php (individual)
+	- improved devive.rtr now with more modes depending on the driver
 	- update vendor/plot.highcharts 3.0.2   	
 	- update vendor/jquery 2.0.3 (IE 6, 7, 8 are no longer supported)
 	- update vendor/jquery.mobile 1.3.2

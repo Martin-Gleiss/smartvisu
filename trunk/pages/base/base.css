@@ -1079,7 +1079,7 @@ canvas.colordisc {
 
 .rtr .control {
 	padding: 5px 0 5px 0;
-	width: 215px;
+	width: 220px;
 	height: 48px;
 	margin: auto;
 }
@@ -1424,8 +1424,9 @@ a.icon.ui-link, span.icon {
 	fill: #fff;
 }
 
+/*
 a.icon.ui-link:hover, a.icon.ui-link:visited, a.icon.ui-link:active {
-	stroke: #a6f829;
-	fill: #a6f829;
-}
+	stroke: #f9a028;
+	fill: #f9a028;
+} */ /* individual colors in design.css */
 

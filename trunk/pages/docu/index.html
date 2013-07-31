@@ -162,7 +162,7 @@
 	<div style="float:right; width: 72px; color:#000; text-shadow: 0 1px 1px #fff;">
 
 		{% set widgets = 0 %}
-		{% for file in dir('widgets', '^(?!forms|lib)(.+?.html)') %}
+		{% for file in dir('widgets', '^(?!forms|icon|lib)(.+?.html)') %}
 			{% set widgets = widgets + docu('widgets/'~file.name)|length %}
 		{% endfor %}
 		<div class="app">
@@ -184,7 +184,7 @@
 
 		{% set icons = dir('icons/ws', '^(?!_)(.+?.png)')|length %}
 		<div class="app">
-			<div class="image" style="background-color: #07c;">
+			<div class="image" style="background-color: #08e;">
 				<span style="font-size: 1.8em;">{{ icons }}</span><br /><span class="mini">icons</span></div>
 		</div>
 
