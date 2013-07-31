@@ -732,7 +732,7 @@ $(document).delegate('canvas[data-widget="basic.colordisc"]', {
 				var h = i * share;
 				for (v = step; v <= 100; v += step) {
 					ctx.beginPath();
-					ctx.fillStyle = hsv2rgb(h, 100, v);
+					ctx.fillStyle = fx.hsv2rgb(h, 100, v);
 					ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
 					ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
 					ctx.fill();
@@ -740,7 +740,7 @@ $(document).delegate('canvas[data-widget="basic.colordisc"]', {
 				}
 				for (s = (100 - step); s >= step; s -= step) {
 					ctx.beginPath();
-					ctx.fillStyle = hsv2rgb(h, s, 100);
+					ctx.fillStyle = fx.hsv2rgb(h, s, 100);
 					ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
 					ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
 					ctx.fill();
@@ -755,7 +755,7 @@ $(document).delegate('canvas[data-widget="basic.colordisc"]', {
 			h = i * share;
 			for (v = step; v <= 100; v += (step / 2)) {
 				ctx.beginPath();
-				ctx.fillStyle = hsv2rgb(h, 0, v);
+				ctx.fillStyle = fx.hsv2rgb(h, 0, v);
 				ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + 2 * arc + 0.01, false);
 				ctx.arc(center, center, ring * gauge, angle + 2 * arc + 0.01, angle, true);
 				ctx.fill();
@@ -1092,38 +1092,31 @@ $(document).delegate('svg[data-widget="icon.compass"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_angle }}
 
-		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI - 0.5 * Math.PI;
-		var pt;
+		var pt = [];
+		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
 
-		pt = Math.round(Math.cos(ang - 0.5 * Math.PI) * 10 + 50) + ',' + Math.round(Math.sin(ang - 0.5 * Math.PI) * 10 + 50) + ', ';
-		pt += Math.round(Math.cos(ang) * 30 + 50) + ',' + Math.round(Math.sin(ang) * 30 + 50) + ', ';
-		pt += Math.round(Math.cos(ang + 0.5 * Math.PI) * 10 + 50) + ',' + Math.round(Math.sin(ang + 0.5 * Math.PI) * 10 + 50);
-		$('#' + this.id + ' #pin0').attr('points', pt);
+		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 20], ang, [50, 50]), fx.rotate([60, 50], ang, [50, 50]));
+		$('#' + this.id + ' #pin0').attr('points', pt.toString());
 
-		pt = Math.round(Math.cos(ang + 0.5 * Math.PI) * 10 + 50) + ',' + Math.round(Math.sin(ang + 0.5 * Math.PI) * 10 + 50) + ', ';
-		pt += Math.round(Math.cos(ang + Math.PI) * 30 + 50) + ',' + Math.round(Math.sin(ang + Math.PI) * 30 + 50) + ', ';
-		pt += Math.round(Math.cos(ang + 1.5 * Math.PI) * 10 + 50) + ',' + Math.round(Math.sin(ang + 1.5 * Math.PI) * 10 + 50);
-		$('#' + this.id + ' #pin1').attr('points', pt);
+		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 80], ang, [50, 50]), fx.rotate([60, 50], ang, [50, 50]));
+		$('#' + this.id + ' #pin1').attr('points', pt.toString());
 	}
 });
 
 // ----- icon.windrose ---------------------------------------------------------
+
 $(document).delegate('svg[data-widget="icon.windrose"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_angle }}
 
-		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI - 0.5 * Math.PI;
-		var pt;
+		var pt = [];
+		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
 
-		pt = Math.round(Math.cos(ang - Math.PI) * 10 + 50) + ',' + Math.round(Math.sin(ang - Math.PI) * 10 + 50) + ', ';
-		pt += Math.round(Math.cos(ang - 0.85 * Math.PI) * 30 + 50) + ',' + Math.round(Math.sin(ang - 0.85 * Math.PI) * 30 + 50) + ', ';
-		pt += Math.round(Math.cos(ang) * 30 + 50) + ',' + Math.round(Math.sin(ang) * 30 + 50);
-		$('#' + this.id + ' #pin0').attr('points', pt);
+		pt = pt.concat(fx.rotate([50, 60], ang, [50, 50]), fx.rotate([35, 76], ang, [50, 50]), fx.rotate([50, 24], ang, [50, 50]));
+		$('#' + this.id + ' #pin0').attr('points', pt.toString());
 
-		pt = Math.round(Math.cos(ang + Math.PI) * 10 + 50) + ',' + Math.round(Math.sin(ang + Math.PI) * 10 + 50) + ', ';
-		pt += Math.round(Math.cos(ang + 0.85 * Math.PI) * 30 + 50) + ',' + Math.round(Math.sin(ang + 0.85 * Math.PI) * 30 + 50) + ', ';
-		pt += Math.round(Math.cos(ang) * 30 + 50) + ',' + Math.round(Math.sin(ang) * 30 + 50);
-		$('#' + this.id + ' #pin1').attr('points', pt);
+		pt = pt.concat(fx.rotate([50, 60], ang, [50, 50]), fx.rotate([65, 76], ang, [50, 50]), fx.rotate([50, 24], ang, [50, 50]));
+		$('#' + this.id + ' #pin1').attr('points', pt.toString());
 	}
 });
 
@@ -1132,24 +1125,7 @@ $(document).delegate('svg[data-widget="icon.shutter"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_pos }}
 
-		var pos = 30;
 		var val = Math.round(response[0] / $(this).attr('data-max') * 46);
-
-		$('#' + this.id + ' g').children().each(function (index) {
-			var g = $(this);
-			if (g.is('line')) {
-				g.remove();
-			}
-		});
-
-		while (val > 0) {
-			line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-			line.setAttribute('x1', 11);
-			line.setAttribute('y1', pos + val);
-			line.setAttribute('x2', 89);
-			line.setAttribute('y2', pos + val);
-			$('#' + this.id + ' g').append(line);
-			val = val - 4;
-		}
+		fx.grid('#' + this.id + ' g', val, [11, 30], [89, 30]);
 	}
 });

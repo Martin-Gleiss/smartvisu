@@ -29,13 +29,45 @@
 			-o-text-overflow: ellipsis;
 			white-space: nowrap;
 		}
+		
+		.box svg {
+			margin: 5px;
+		}
 	</style>
 
 
 	<h1>Icons</h1>
-
 	<div class="docu">
-		Icons are used only with the icon-name. As path use "icon0" for "normal" icons and "icon1" for the highlighted version.
+		{{ lib.smartvisu }} uses two kinds of icons
+	</div>
+
+	
+	<h4>Dynamic Icons</h4>
+	<div class="docu">
+		Dynamic icons are based on svg-images. They are directly rendered in the browser and are the fastest way to show dynamic changes.
+		Use the slider to see how the dynamic icon changes.<br />
+		<br />
+		{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
+	</div>
+	<br />
+	
+	{% import "icon.html" as icon %}
+	{% set widgetlist = docu('widgets/icon.html') %}
+
+	{% for widget in widgetlist %}
+	<div class="box">
+		{{ attribute(icon, widget.name, [widget.name, 'bath_light_value'] ) }}
+		<div>{{ widget.command }}</div>
+	</div>
+	{% endfor %}
+	
+	<div style="clear:left;"><br /><br /></div>
+	
+
+	<h4>Static Icons</h4>
+	<div class="docu">
+		Static icons are base on png-images. Some color-variants are shipped in the icons directory.
+		To make them responsable to the design use as path "icon0" for "normal" icons and "icon1" for the highlighted version.
 
 		<div class="twig">
 			<code class="prettyprint">

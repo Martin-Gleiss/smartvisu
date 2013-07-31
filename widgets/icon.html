@@ -9,7 +9,8 @@
 
 
 /*
-* <rect rx="20" x="3" y="3" width="94" height="94" />
+*
+<rect rx="20" x="3" y="3" width="94" height="94" />
 */
 
 
@@ -21,10 +22,10 @@
 * @param       the minimum value for 0° (optional, default 0, for future use)
 * @param       the maximum value for 360°  (optional, default 255)
 */
-{% macro compass(id, gad_angle, min, max) %}
+{% macro compass(id, gad, min, max) %}
 
 	<a class="icon">
-		<svg id="{{ uid(page, id) }}" data-widget="icon.compass" data-item="{{ gad_angle }}"
+		<svg id="{{ uid(page, id) }}" data-widget="icon.compass" data-item="{{ gad }}"
 			class="icon" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100"
 			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}">
 			<g>
@@ -49,10 +50,10 @@
 * @param       the minimum value for 0° (optional, default 0, for future use)
 * @param       the maximum value for 360°  (optional, default 255)
 */
-{% macro windrose(id, gad_angle, min, max) %}
+{% macro windrose(id, gad, min, max) %}
 
 	<a class="icon">
-		<svg id="{{ uid(page, id) }}" data-widget="icon.windrose" data-item="{{ gad_angle }}"
+		<svg id="{{ uid(page, id) }}" data-widget="icon.windrose" data-item="{{ gad }}"
 			class="icon" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100"
 			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}">
 			<g>
@@ -61,8 +62,8 @@
 				<line x1="1" y1="50" x2="12" y2="50" />
 				<line x1="88" y1="50" x2="99" y2="50" />
 				<text x="25" y="20">N</text>
-				<polyline id="pin0" points="50,60, 36,77, 50,20" />
-				<polyline id="pin1" points="50,60, 64,77, 50,20" fill="none" />
+				<polyline id="pin0" points="50,60, 35,76, 50,24" />
+				<polyline id="pin1" points="50,60, 65,76, 50,24" fill="none" />
 			</g>
 		</svg>
 	</a>
@@ -78,10 +79,10 @@
 * @param       the minimum value for 0° (optional, default 0, for future use)
 * @param       the maximum value for 360°  (optional, default 255)
 */
-{% macro shutter(id, gad_pos, min, max) %}
+{% macro shutter(id, gad, min, max) %}
 
 	<a class="icon">
-		<svg id="{{ uid(page, id) }}" data-widget="icon.shutter" data-item="{{ gad_pos }}"
+		<svg id="{{ uid(page, id) }}" data-widget="icon.shutter" data-item="{{ gad }}"
 			class="icon" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100"
 			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}">
 			<g>
