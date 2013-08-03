@@ -183,9 +183,10 @@
 		</div>
 
 		{% set icons = dir('icons/ws', '^(?!_)(.+?.png)')|length %}
+		{% set svgs = docu('widgets/icon.html')|length %}
 		<div class="app">
 			<div class="image" style="background-color: #08e;">
-				<span style="font-size: 1.8em;">{{ icons }}</span><br /><span class="mini">icons</span></div>
+				<span style="font-size: 1.7em;">{{ icons }}</span><span style="font-size: 1.2em;">+{{ svgs }}</span><br /><span class="mini">icons</span></div>
 		</div>
 
 	</div>

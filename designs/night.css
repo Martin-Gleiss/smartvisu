@@ -1075,7 +1075,7 @@ a.ui-link-inherit {
 
 /* smartVISU
 -----------------------------------------------------------------------------------------------------------*/
-a.icon.ui-link:hover, a.icon.ui-link:visited, a.icon.ui-link:active {
+a.icon.ui-link:hover, a.icon.ui-link:visited, a.icon.ui-link:active, .activex {
 	stroke: #f9a028;
 	fill: #f9a028;
 }
