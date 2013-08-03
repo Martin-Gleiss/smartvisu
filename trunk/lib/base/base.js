@@ -194,9 +194,9 @@ var fx = {
 		while (val > 0) {
 			line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
 			line.setAttribute('x1', start[0]);
-			line.setAttribute('y1', start[1] + val);
+			line.setAttribute('y1', (start[1] < end[1] ? start[1] + val : start[1] - val));
 			line.setAttribute('x2', end[0]);
-			line.setAttribute('y2', start[1] + val);
+			line.setAttribute('y2', (start[1] < end[1] ? start[1] + val : start[1] - val));
 			$(obj).append(line);
 			val = val - 6;
 		}

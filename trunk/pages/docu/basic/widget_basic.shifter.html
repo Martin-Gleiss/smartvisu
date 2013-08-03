@@ -47,6 +47,12 @@
 		{{ basic.shifter('shifter4', 'bath_light_switch', 'bath_light_value', icon1~'status_bat_00.png', icon0~'status_bat_unknown.png') }}
 		{{ basic.shifter('shifter5', 'bath_light_switch', 'bath_light_value', icon1~'temp_temperature_00.png', icon0~'temp_temperature.png') }}
 
+		{% import "icon.html" as icon %}
+		{% set widgetlist = docu('widgets/icon.html') %}
+
+		{% for widget in widgetlist %}
+			{{ attribute(icon, widget.name, [widget.name, 'bath_light_switch', 'bath_light_value'] ) }}
+		{% endfor %}
 	</div>
 
 {% endblock %}

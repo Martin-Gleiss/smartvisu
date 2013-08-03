@@ -29,7 +29,7 @@
 			-o-text-overflow: ellipsis;
 			white-space: nowrap;
 		}
-		
+
 		.box svg {
 			margin: 5px;
 		}
@@ -41,7 +41,7 @@
 		{{ lib.smartvisu }} uses two kinds of icons
 	</div>
 
-	
+
 	<h4>Dynamic Icons</h4>
 	<div class="docu">
 		Dynamic icons are based on svg-images. They are directly rendered in the browser and are the fastest way to show dynamic changes.
@@ -50,19 +50,19 @@
 		{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
 	</div>
 	<br />
-	
+
 	{% import "icon.html" as icon %}
 	{% set widgetlist = docu('widgets/icon.html') %}
 
 	{% for widget in widgetlist %}
-	<div class="box">
-		{{ attribute(icon, widget.name, [widget.name, 'bath_light_value'] ) }}
-		<div>{{ widget.command }}</div>
-	</div>
+		<div class="box">
+			{{ attribute(icon, widget.name, [widget.name, 'bath_light_switch', 'bath_light_value'] ) }}
+			<div>{{ widget.command }}</div>
+		</div>
 	{% endfor %}
-	
+
 	<div style="clear:left;"><br /><br /></div>
-	
+
 
 	<h4>Static Icons</h4>
 	<div class="docu">
