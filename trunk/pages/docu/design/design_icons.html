@@ -16,7 +16,6 @@
 		.box {
 			float: left;
 			width: 130px;
-			background-color: #222;
 			border: 1px dotted #666;
 			margin: 5px;
 			text-align: center;
@@ -38,17 +37,23 @@
 
 	<h1>Icons</h1>
 	<div class="docu">
-		{{ lib.smartvisu }} uses two kinds of icons
+		{{ lib.smartvisu }} uses two kinds of icons:
 	</div>
 
 
 	<h4>Dynamic Icons</h4>
 	<div class="docu">
 		Dynamic icons are based on svg-images. They are directly rendered in the browser and are the fastest way to show dynamic changes.
-		Use the slider to see how the dynamic icon changes.<br />
-		<br />
-		{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
+		Use the slider to see how the dynamic icon changes.
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				{{ icon.arrow('icon1', '', 'bath_light_value') }}
+				{{ icon.battery('icon2', '', 'bath_light_value') }}
+				{% endverbatim %}{% endfilter %}</code>
+		</div>
 	</div>
+	<br />
+	{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
 	<br />
 
 	{% import "icon.html" as icon %}
@@ -56,7 +61,7 @@
 
 	{% for widget in widgetlist %}
 		<div class="box">
-			{{ attribute(icon, widget.name, [widget.name, 'bath_light_switch', 'bath_light_value'] ) }}
+			{{ attribute(icon, widget.name, [widget.name, '', 'bath_light_value'] ) }}
 			<div>{{ widget.command }}</div>
 		</div>
 	{% endfor %}
@@ -99,6 +104,12 @@
 
 
 	<script type="text/javascript">
+		$(document).on('vmouseover', '.box > svg', function () {
+			document.getElementById(this.id).setAttributeNS(null , 'class', 'icon icon1');
+		});
+		$(document).on('vmouseout', '.box > svg', function () {
+			document.getElementById(this.id).setAttributeNS(null , 'class', 'icon icon0');
+		});
 		$(document).on('vmouseover', '.box > .icon', function () {
 			this.src = '{{ icon1 }}' + $(this).attr('data-pic');
 		});

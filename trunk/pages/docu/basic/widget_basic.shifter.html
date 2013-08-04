@@ -17,7 +17,7 @@
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
 			{{ basic.shifter('shifter1', 'bath_light_switch', 'bath_light_value') }}
-			{{ basic.shifter('shifter2', '...', '...', icon1~'fts_shutter_00.png', icon0~'fts_shutter_10.png' ) }}
+			{{ basic.shifter('shifter2', '...', '...', icon1~'temp_temperature_00.png' ) }}
 			...
 
 			{% endverbatim %}{% endfilter %}</code>
@@ -29,29 +29,24 @@
 		{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
 	</div>
 
-	There are some icon-series shipped with {{ lib.smartvisu }}
-	<div class="twig">
-		<code>
-			1. light_light_dim_00.png<br />
-			2. fts_shutter_00.png<br />
-			3. fts_garage_door_00.png<br />
-			4. status_bat_00.png<br />
-			5. temp_temperature_00.png<br />
-		</code>
-	</div>
+	There are some <b>.png</b>-icon-series shipped with {{ lib.smartvisu }}
 	<div class="html">
 
 		{{ basic.shifter('shifter1', 'bath_light_switch', 'bath_light_value') }}
-		{{ basic.shifter('shifter2', 'bath_light_switch', 'bath_light_value', icon1~'fts_shutter_00.png', icon0~'fts_shutter_10.png' ) }}
-		{{ basic.shifter('shifter3', 'bath_light_switch', 'bath_light_value', icon1~'fts_garage_door_00.png', icon0~'fts_garage.png') }}
-		{{ basic.shifter('shifter4', 'bath_light_switch', 'bath_light_value', icon1~'status_bat_00.png', icon0~'status_bat_unknown.png') }}
-		{{ basic.shifter('shifter5', 'bath_light_switch', 'bath_light_value', icon1~'temp_temperature_00.png', icon0~'temp_temperature.png') }}
+		{{ basic.shifter('shifter2', 'bath_light_switch', 'bath_light_value', icon1~'temp_temperature_00.png') }}
+		{{ basic.shifter('shifter3', 'bath_light_switch', 'bath_light_value', icon1~'fts_shutter_00.png', icon0~'fts_shutter_10.png' ) }}
+		{{ basic.shifter('shifter4', 'bath_light_switch', 'bath_light_value', icon1~'fts_garage_door_00.png', icon0~'fts_garage.png') }}
+		{{ basic.shifter('shifter5', 'bath_light_switch', 'bath_light_value', icon1~'status_bat_00.png', icon0~'status_bat_unknown.png') }}
+	</div>
 
+	There are some <b>svg</b>-icon-series shipped with {{ lib.smartvisu }}
+	<div class="html">	
 		{% import "icon.html" as icon %}
 		{% set widgetlist = docu('widgets/icon.html') %}
 
 		{% for widget in widgetlist %}
-			{{ attribute(icon, widget.name, [widget.name, 'bath_light_switch', 'bath_light_value'] ) }}
+			{% set i = i + 1 %}
+			{{ basic.shifter('svg' + i, 'bath_light_switch', 'bath_light_value', widget.command) }}
 		{% endfor %}
 	</div>
 

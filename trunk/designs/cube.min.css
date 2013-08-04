@@ -14,7 +14,11 @@
 
 /* smartVISU
 -----------------------------------------------------------------------------------------------------------*/
-a.icon.ui-link:hover, a.icon.ui-link:visited, a.icon.ui-link:active {
+svg.icon0 {
+	stroke: #fff;
+	fill: #fff;
+}
+svg.icon1, a.icon.ui-link:hover, a.icon.ui-link:visited, a.icon.ui-link:active {
 	stroke: #f9a028;
 	fill: #f9a028;
 }

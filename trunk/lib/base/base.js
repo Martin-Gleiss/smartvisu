@@ -184,7 +184,7 @@ var fx = {
 	grid: function (obj, val, start, end) {
 		var line;
 
-		$(obj).children().each(function (index) {
+		$('#' + obj.id + ' g').children().each(function (index) {
 			var g = $(this);
 			if (g.is('line')) {
 				g.remove();
@@ -193,11 +193,11 @@ var fx = {
 
 		while (val > 0) {
 			line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-			line.setAttribute('x1', start[0]);
-			line.setAttribute('y1', (start[1] < end[1] ? start[1] + val : start[1] - val));
-			line.setAttribute('x2', end[0]);
-			line.setAttribute('y2', (start[1] < end[1] ? start[1] + val : start[1] - val));
-			$(obj).append(line);
+			line.setAttributeNS(null, 'x1', start[0]);
+			line.setAttributeNS(null, 'y1', (start[1] < end[1] ? start[1] + val : start[1] - val));
+			line.setAttributeNS(null, 'x2', end[0]);
+			line.setAttributeNS(null, 'y2', (start[1] < end[1] ? start[1] + val : start[1] - val));
+			$('#' + obj.id + ' g').append(line);
 			val = val - 6;
 		}
 	},
