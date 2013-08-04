@@ -92,7 +92,7 @@
 			{% include 'menu.html' %}
 		</div>
 		<div class="ui-right">
-			{{ lib.smartvisu }}
+			{{ lib.smartvisu() }}
 			<div class="mini">
 				<span class="miniclock">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
 		</div>
