@@ -110,7 +110,6 @@ img.icon {
 	margin: 1px;
 }
 
-
 /**
  * --- j Q u e r y M o b i l e -------------------------------------------------
  */
@@ -1395,6 +1394,12 @@ canvas.colordisc {
 svg.icon {
 	display: inline-block;
 	vertical-align: middle;
+	width: 50px;
+	height: 50px;
+}
+
+svg.icon:hover {
+	cursor: pointer;
 }
 
 svg.icon line {
@@ -1413,20 +1418,3 @@ svg.icon text {
 	font-size: 30px;
 	font-weight: normal;
 }
-
-a.icon svg.icon {
-	width: 50px;
-	height: 50px;
-}
-
-a.icon.ui-link, span.icon {
-	stroke: #fff;
-	fill: #fff;
-}
-
-/*
-a.icon.ui-link:hover, a.icon.ui-link:visited, a.icon.ui-link:active {
-	stroke: #f9a028;
-	fill: #f9a028;
-} */ /* individual colors in design.css */
-

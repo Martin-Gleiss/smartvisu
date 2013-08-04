@@ -1088,30 +1088,30 @@ $(document).delegate('div[data-widget="plot.temprose"]', {
 // -----------------------------------------------------------------------------
 
 
-$(document).delegate('a[data-widget^="icon."]', {
+$(document).delegate('svg[data-widget^="icon."]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+		
+		if (response instanceof Array) {
+			document.getElementById(this.id).setAttributeNS(null , 'class', 'icon' + (response[1] ? ' icon1' : ' icon0'));
+		}
+	},
+	
 	'click': function (event) {
 		var items = $(this).attr('data-item').explode();
-
-		if ($(this).attr('mem') == 0) {
-			$(this).attr('mem', 1);
-			io.write(items[0], 1);
+		
+		if (items[1]) {
+			io.write(items[1], (widget.get(items[1]) == 0 ? 1 : 0));
 		}
-		else {
-			$(this).attr('mem', 0);
-			io.write(items[0], 0);
-		}
-
-		$(this).child().addClass('activex');
-			
 	}
 });
 
 // ----- icon.arrow ---------------------------------------------------------
-$(document).delegate('a[data-widget="icon.arrow"]', {
+$(document).delegate('svg[data-widget="icon.arrow"]', {
 	'update': function (event, response) {
-		// response is: {{ gad_switch }}, {{ gad_value }}
+		// response is: {{ gad_value }}, {{ gad_switch }}
 
-		var ang = response[1] / $(this).attr('data-max') * 2 * Math.PI;
+		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
 		
 		var pt = [];
 		pt = pt.concat([50, 50], fx.rotate([25, 50], ang, [50, 50]), fx.rotate([50, 18], ang, [50, 50]), fx.rotate([75, 50], ang, [50, 50]), [50, 50]);
@@ -1124,21 +1124,21 @@ $(document).delegate('a[data-widget="icon.arrow"]', {
 });
 
 // ----- icon.shutter ---------------------------------------------------------
-$(document).delegate('a[data-widget="icon.battery"]', {
+$(document).delegate('svg[data-widget="icon.battery"]', {
 	'update': function (event, response) {
-		// response is: {{ gad_switch }}, {{ gad_value }}
+		// response is: {{ gad_value }}, {{ gad_switch }}
 
-		var val = Math.round(response[1] / $(this).attr('data-max') * 40);
-		fx.grid('#' + this.id + ' g', val, [38, 68], [61, 28]);
+		var val = Math.round(response[0] / $(this).attr('data-max') * 40);
+		fx.grid(this, val, [38, 68], [61, 28]);
 	}
 });
 
 // ----- icon.compass ----------------------------------------------------------
-$(document).delegate('a[data-widget="icon.compass"]', {
+$(document).delegate('svg[data-widget="icon.compass"]', {
 	'update': function (event, response) {
-		// response is: {{ gad_switch }}, {{ gad_value }}
-		
-		var ang = response[1] / $(this).attr('data-max') * 2 * Math.PI;
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
 		
 		var pt = [];
 		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 25], ang, [50, 50]), fx.rotate([60, 50], ang, [50, 50]));
@@ -1151,21 +1151,21 @@ $(document).delegate('a[data-widget="icon.compass"]', {
 });
 
 // ----- icon.shutter ---------------------------------------------------------
-$(document).delegate('a[data-widget="icon.shutter"]', {
+$(document).delegate('svg[data-widget="icon.shutter"]', {
 	'update': function (event, response) {
-		// response is: {{ gad_switch }}, {{ gad_value }}
+		// response is: {{ gad_value }}, {{ gad_switch }}
 
-		var val = Math.round(response[1] / $(this).attr('data-max') * 38);
-		fx.grid('#' + this.id + ' g', val, [14, 30], [86, 68]);
+		var val = Math.round(response[0] / $(this).attr('data-max') * 38);
+		fx.grid(this, val, [14, 30], [86, 68]);
 	}
 });
 
 // ----- icon.windrose ---------------------------------------------------------
-$(document).delegate('a[data-widget="icon.windrose"]', {
+$(document).delegate('svg[data-widget="icon.windrose"]', {
 	'update': function (event, response) {
-		// response is: {{ gad_switch }}, {{ gad_value }}
+		// response is: {{ gad_value }}, {{ gad_switch }}
 
-		var ang = response[1] / $(this).attr('data-max') * 2 * Math.PI;
+		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
 		
 		var pt = [];
 		pt = pt.concat(fx.rotate([50, 60], ang, [50, 50]), fx.rotate([37, 71], ang, [50, 50]), fx.rotate([50, 29], ang, [50, 50]));
@@ -1178,11 +1178,11 @@ $(document).delegate('a[data-widget="icon.windrose"]', {
 });
 
 // ----- icon.windsock ---------------------------------------------------------
-$(document).delegate('a[data-widget="icon.windsock"]', {
+$(document).delegate('svg[data-widget="icon.windsock"]', {
 	'update': function (event, response) {
-		// response is: {{ gad_switch }}, {{ gad_value }}
+		// response is: {{ gad_value }}, {{ gad_switch }}
 
-		var ang = response[1] / $(this).attr('data-max') * 0.45 * Math.PI;
+		var ang = response[0] / $(this).attr('data-max') * 0.45 * Math.PI;
 		
 		var pt = [];
 		pt = pt.concat(fx.rotate([70, 40], ang, [80, 22]), [80, 22], fx.rotate([90, 40], ang, [80, 22]));
