@@ -57,6 +57,7 @@ Highcharts.theme = {
 		lineColor: '#333',
 		tickWidth: 1,
 		tickColor: '#333',
+		minTickInterval: 1,
 		labels: {
 			style: {
 				color: '#666', fontSize: '14px'
