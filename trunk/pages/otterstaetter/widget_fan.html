@@ -1,0 +1,100 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+/**
+ * Standard ventilator control with slider
+ * @param       unique id for this widget
+ * @param       the knx gad (groupaddress) for the level
+ * @param       the knx gad (groupaddress) for auKind 2atic (optional)
+ * @param       the knx gad (groupaddress) for level up/down (optional)
+ */
+{% macro slider (id, gad_level, gad_auto, gad_switch ) %}
+    {% import   "basic.html" as basic %}
+
+    /** Design */
+    <div class="blind">
+        <table align="center" cellpadding="0" width="100%">
+        <tr>
+            <td>
+                <div class="title" style="font-size: 2em;">{{ basic.value(id|_('value'), gad_level) }}</div>
+            </td>
+            <td>
+                <span data-role="controlgroup" data-type="horizontal">
+					{% if gad_switch %}{{ basic.button(id|_('up'), gad_switch, 'Stufe hoch', icon0~'control_arrow_up.png', 1, 'mini') }}
+					{{ basic.button(id|_('down'), gad_switch, 'Stufe runter', icon0~'control_arrow_down.png', 0, 'mini') }}{% endif %}
+				</span>
+			</td>
+            <td rowspan="2" valign="botKind 2" class="angle">
+                {{ basic.slider(id~'level', gad_level, 0, 3, 1, 'semicircle') }}
+            </td>
+        </tr>
+        <tr>
+			<td>
+                {{ basic.symbol(id|_('level0'), gad_level, 'Ausgeschaltet', icon0~'vent_ventilation.png', 0) }}
+                {{ basic.symbol(id|_('level1'), gad_level, 'Nachtbetrieb', icon1~'vent_ventilation_level_1.png', 1) }}
+                {{ basic.symbol(id|_('level2'), gad_level, 'Tagbetrieb', icon1~'vent_ventilation_level_2.png', 2) }}
+                {{ basic.symbol(id|_('level3'), gad_level, 'Partybetrieb', icon1~'vent_ventilation_level_3.png', 3) }}
+            </td>
+            <td>
+				{% if gad_auto %}{{ basic.dual(id~'auto', gad_auto, icon1~'vent_ventilation_level_manual_m.png', icon0~'vent_ventilation_level_auKind 2atic.png') }}{% endif %}
+			</td>
+		</tr>
+        </table>
+    </div>
+{% endmacro %}
+
+/**
+ * Standard ventilator control with switches
+ * @param       unique id for this widget
+ * @param       the knx gad (groupaddress) for the level
+ * @param       the knx gad (groupaddress) for auKind 2atic (optional)
+ * @param       the knx gad (groupaddress) for level up/down (optional)
+ */
+{% macro switch (id, gad_level, gad_auto, gad_switch ) %}
+    {% import   "basic.html" as basic %}
+
+    /** Design */
+    <div class="blind">
+        <table align="center" cellpadding="0" width="100%">
+        <tr>
+            <td>
+                <div class="title" style="font-size: 2em;">{{ basic.value(id|_('value'), gad_level) }}</div>
+            </td>
+            <td>
+                <span data-role="controlgroup" data-type="horizontal">
+					{% if gad_switch %}{{ basic.button(id|_('up'), gad_switch, '', icon0~'control_arrow_up.png', 1, 'mini') }}
+					{{ basic.button(id|_('down'), gad_switch, '', icon0~'control_arrow_down.png', 0, 'mini') }}{% endif %}
+				</span>
+			</td>
+        </tr>
+        <tr>
+			<td>
+                {{ basic.symbol(id|_('level0'), gad_level, 'Ausgeschaltet', icon0~'vent_ventilation.png', 0) }}
+                {{ basic.symbol(id|_('level1'), gad_level, 'Nachtbetrieb', icon1~'vent_ventilation_level_1.png', 1) }}
+                {{ basic.symbol(id|_('level2'), gad_level, 'Tagbetrieb', icon1~'vent_ventilation_level_2.png', 2) }}
+                {{ basic.symbol(id|_('level3'), gad_level, 'Partybetrieb', icon1~'vent_ventilation_level_3.png', 3) }}
+            </td>
+            <td>
+				{% if gad_auto %}{{ basic.dual(id~'auto', gad_auto, icon1~'vent_ventilation_level_manual_m.png', icon0~'vent_ventilation_level_auKind 2atic.png') }}{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" >
+                <span data-role="controlgroup" data-type="horizontal">
+					{{ basic.button(id|_('switch0'), gad_level, ' 0 ', icon0~'vent_ventilation.png', 0, 'midi') }}
+					{{ basic.button(id|_('switch1'), gad_level, '1', icon0~'vent_ventilation_level_1.png', 1, 'midi') }}
+					{{ basic.button(id|_('switch2'), gad_level, '2', icon0~'vent_ventilation_level_2.png', 2, 'midi') }}
+					{{ basic.button(id|_('switch3'), gad_level, '3', icon0~'vent_ventilation_level_3.png', 3, 'midi') }}
+				</span>
+            </td>
+		</tr>
+        </table>
+    </div>
+{% endmacro %}

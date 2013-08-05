@@ -1,0 +1,31 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+
+/**
+ * Standard RM status
+ *
+ * @param       unique id for this widget
+ * @param       a gad/item for alarm
+ * @param       a gad/item for service
+ */
+
+{% macro rm(id, gad_alarm, gad_service) %}
+    {% import   "basic.html" as basic %}
+
+    /** Design */
+    <span class="switch">
+        {{ basic.symbol(id|_('rm1'), gad_alarm, '', icon1~'secur_smoke_detector.png',1, 'mini') }}
+		     {{ basic.symbol(id|_('rm2'), gad_alarm, '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
+		{{ basic.symbol(id|_('rm3'), gad_service, '', icon1~'message_service.png',1, 'mini') }}
+		     {{ basic.symbol(id|_('rm4'), gad_service, '', icon0~'message_service.png', 0, 'mini') }}
+    </span>
+
+{% endmacro %}
