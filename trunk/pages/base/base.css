@@ -942,7 +942,7 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 	bottom: 0;
 }
 
-.shutter .control .line {
+.shutter .control .separator {
 	position: absolute;
 	left: 50px;
 	height: 180px;
