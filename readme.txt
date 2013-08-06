@@ -76,7 +76,7 @@ SYSTEMREQUIREMENTS
 
 HISTORY
 --------------------------------------------------------------------------------
-v 2.6
+v 2.6 06.08.13
 	- dynamic icons: svg-icons for continuous values
 	- new: config splitted in lib/defaults.php and config.php (individual)
 	- improved devive.rtr now with more modes depending on the driver
