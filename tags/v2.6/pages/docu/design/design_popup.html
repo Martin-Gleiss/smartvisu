@@ -1,0 +1,122 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+	<h1>Popups</h1>
+
+
+	<div class="docu">
+
+		Here are some examples to show how popups are used.
+
+		<h5>Examples</h5>
+
+		A vertical popup with some switches
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+				<a href="#popup1" data-rel="popup">
+					<img class="icon" src="{{ icon1~'licht_licht.png' }}">
+				</a>
+
+				<div id="popup1" data-role="popup">
+					<div>
+						{{ basic.switch('switch1', 'bath_light_switch') }}
+						{{ basic.switch('switch2', 'bath_light_switch') }}
+						{{ basic.switch('switch3', 'bath_light_switch') }}
+					</div>
+				</div>
+
+				{% endverbatim %}{% endfilter %}</code>
+		</div>
+		<div class="html">
+
+			<a href="#popup1" data-rel="popup">
+				<img class="icon" src="{{ icon1~'light_light.png' }}">
+			</a>
+
+			<div id="popup1" data-role="popup">
+				<div>
+					{{ basic.switch('switch1', 'bath_light_switch') }}
+					{{ basic.switch('switch2', 'bath_light_switch') }}
+					{{ basic.switch('switch3', 'bath_light_switch') }}
+				</div>
+			</div>
+
+		</div>
+
+
+		A horizontal popup with some switches
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+				<a href="#popup2" data-rel="popup">
+					<img class="icon" src="{{ icon1~'light_light.png' }}">
+				</a>
+
+				<div id="popup2" data-role="popup">
+					{{ basic.switch('switch4', 'bath_light_switch') }}
+					{{ basic.switch('switch5', 'bath_light_switch') }}
+					{{ basic.switch('switch6', 'bath_light_switch') }}
+				</div>
+
+				{% endverbatim %}{% endfilter %}</code>
+		</div>
+		<div class="html">
+
+			<a href="#popup2" data-rel="popup">
+				<img class="icon" src="{{ icon1~'light_light.png' }}">
+			</a>
+
+			<div id="popup2" data-role="popup">
+				{{ basic.switch('switch4', 'bath_light_switch') }}
+				{{ basic.switch('switch5', 'bath_light_switch') }}
+				{{ basic.switch('switch6', 'bath_light_switch') }}
+			</div>
+
+		</div>
+
+
+		Individual size popup with a close button
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+				<a href="#popup3" data-rel="popup">
+					<img class="icon" src="{{ icon1~'light_light.png' }}">
+				</a>
+
+				<div id="popup3" data-role="popup" style="width:280px; height:200px;">
+					<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+					Content
+				</div>
+
+				{% endverbatim %}{% endfilter %}</code>
+		</div>
+		<div class="html">
+
+			<a href="#popup3" data-rel="popup">
+				<img class="icon" src="{{ icon1~'light_light.png' }}">
+			</a>
+
+			<div id="popup3" data-role="popup" style="width:280px; height:200px;">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+				Content
+			</div>
+
+		</div>
+
+	</div>
+
+
+{% endblock %}
+

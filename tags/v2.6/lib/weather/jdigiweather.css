@@ -1,0 +1,132 @@
+ /**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Radoslav Dimov, Martin Gleiß
+ * @copyright   2009
+ * @license     Dual licensed under the MIT and GPL  
+ * ----------------------------------------------------------------------------- 
+ */
+
+ 
+.spot {
+    margin: auto;
+    width: 260px;
+    height: 70px;
+    text-align: left;
+}
+
+.spot img {
+    margin-left: 50px;
+    width: 160px;
+    height: 103px;
+    position: relative;
+    top: -70px;
+    z-index: 100;
+}
+
+.spot .city {
+    font-weight: bold;
+}
+
+.spot .cond {
+}
+
+.spot .temp {
+    float: right;
+    text-align: right;
+    font-size: 20pt;
+}
+
+
+/**
+ * -----------------------------------------------------------------------------
+ */
+
+.weather {
+    margin: auto;
+    width: 100%;
+}
+
+.weather .humi {
+    padding-top: 10px;
+    text-align: right;
+}
+
+.weather .wind {
+    text-align: right;
+}
+
+.weather .temp {
+    padding-top: 30px;
+    font-size: 25pt;
+    text-align: left;
+}
+
+.weather .temp .unit {
+    font-size: 14pt;
+    vertical-align: texttop;
+}
+
+.weather .city {
+    padding-top: 30px;
+    font-weight: bold;
+    width: 100%;
+}
+
+.weather .cond {
+    width:100%;
+}
+
+
+/**
+ * -----------------------------------------------------------------------------
+ */
+
+.forecast {
+    margin: auto;
+    width: 100%;
+    height: 200px;
+} 
+
+.forecast .day {
+    padding-top: 70px;
+    font-size: 16pt;
+    text-align: left;
+}
+
+.forecast .highlow {
+    font-size: 16pt;
+    text-align: left;
+}
+
+.forecast .city {
+    padding-top: 30px;
+    font-weight: bold;
+    width: 100%;
+}
+
+.forecast .cond {
+    width:100%;
+}
+
+
+/**
+ * -----------------------------------------------------------------------------
+ */
+
+.forecastweek {
+    height: 95px;
+}
+
+.forecastweek .day {
+    width: 25%;
+    text-align: center;
+    float: left;
+}
+
+.forecastweek img {
+    width: 80px;
+    height: 51px;
+}
+
+

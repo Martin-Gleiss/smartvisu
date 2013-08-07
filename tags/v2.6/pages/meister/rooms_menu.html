@@ -1,0 +1,110 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+<ul data-role="listview" data-dividertheme="c">
+
+
+	<li data-role="list-divider">Obergeschoss</li>
+	<li data-icon="false">
+		<a href="index.php?page=og_beleuchtung">
+			<img class="icon" src="{{ icon0 }}light_light.png" />
+
+			<h3>Beleuchtung</h3>
+
+			<div class="ui-li-aside">{{ basic.float('HeatingTemperatureLivingRoom1', 'HeatingTemperatureLivingRoom', '°C') }}</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=og_beschattung">
+			<img class="icon" src="{{ icon0 }}fts_sunblind.png" />
+
+			<h3>Beschattung</h3>
+
+			<div class="ui-li-aside">{{ basic.float('RoomsMenuWindSpeed', 'WindSpeed', 'km/h') }} {{ basic.symbol('RoomsMenuWindAlarm', 'WindAlarm', '', icon1~'weather_wind.png', 1) }}</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=og_dachfenster">
+			<img class="icon" src="{{ icon0 }}sani_solar.png" />
+
+			<h3>Dachfenster</h3>
+
+			<div class="ui-li-aside">{{ basic.symbol('RoomsMenuRainAlarm', 'RainAlarm', '', icon1~'weather_rain.png', 1) }} {{ basic.symbol('RoomsMenuFrostAlarm', 'FrostAlarm', '', icon1~'weather_frost.png', 1) }}</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=og_heizung">
+			<img class="icon" src="{{ icon0 }}sani_heating.png" />
+
+			<h3>Heizung</h3>
+
+			<div class="ui-li-aside">{{ basic.float('HeatingTemperatureLivingRoom2', 'HeatingTemperatureLivingRoom', '°C') }}</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=og_wc">
+			<img class="icon" src="{{ icon0 }}scene_toilet.png" />
+
+			<h3>WC</h3>
+
+			<div class="ui-li-aside">{{ basic.symbol('RoomsMenuLightToilet', 'LightsToiletSwitch', '', icon1~'light_light.png', 1) }}</div>
+		</a>
+	</li>
+
+	<li data-role="list-divider">Erdgeschoss</li>
+	<li data-icon="false">
+		<a href="index.php?page=eg_bad_schlafen">
+			<img class="icon" src="{{ icon0 }}scene_sleeping.png" />
+
+			<h3>Schlaf/Badezimmer</h3>
+
+			<div class="ui-li-aside">{{ basic.float('HeatingTemperatureBedRoom', 'HeatingTemperatureBedRoom', '°C') }}</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=eg_buero">
+			<img class="icon" src="{{ icon0 }}it_pc.png" />
+
+			<h3>Büro</h3>
+
+			<div class="ui-li-aside">{{ basic.float('HeatingTemperatureGuestRoom', 'HeatingTemperatureGuestRoom', '°C') }}</div>
+		</a>
+	</li>
+
+	<li data-role="list-divider">Keller</li>
+	<li data-icon="false">
+		<a href="index.php?page=ug_technik">
+			<img class="icon" src="{{ icon0 }}message_service.png" />
+
+			<h3>Technik</h3>
+
+			<div class="ui-li-aside"></div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=ug_waschen">
+			<img class="icon" src="{{ icon0 }}scene_party.png" />
+
+			<h3>Waschen</h3>
+
+			<div class="ui-li-aside"></div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=ug_kino">
+			<img class="icon" src="{{ icon0 }}scene_party.png" />
+
+			<h3>Kino</h3>
+
+			<div class="ui-li-aside">{{ basic.float('HeatingTemperatureCinema', 'HeatingTemperatureCinema', '°C') }}</div>
+		</a>
+	</li>
+
+</ul>	

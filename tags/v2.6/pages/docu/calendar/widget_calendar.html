@@ -1,0 +1,27 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget.html" %}
+{% import "calendar.html" as calendar %}
+
+{% block headline %}
+	<h1>Calendar-Widgets</h1>
+{% endblock %}
+
+{% block intro %}
+	The calendar-widgets are used to integrate a calendar into {{ lib.smartvisu }}.
+
+	<h4>Calendars</h4>
+	<b><a href="http://www.google.de" target="_blank">Google</a></b> Google calendar is supported.
+	<br />If you want to simulate the list without a real calendar, use the 'offline' setting.
+
+	<h4>Configuration</h4>
+	Enter user and password the <a href="index.php?page=config">configuration</a> page.
+{% endblock %}

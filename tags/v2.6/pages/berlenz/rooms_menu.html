@@ -1,0 +1,260 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+<ul data-role="listview" data-dividertheme="c">
+
+
+/**
+* --- Spitzboden ---
+*/
+<li data-role="list-divider">
+	<table width=100%>
+		<tr>
+			<td align=left>Spitzboden</td>
+			<td align=right>&nbsp;</td>
+		</tr>
+	</table>
+</li>
+<li data-icon="false">
+	<a href="index.php?page=room_sp_arbeiten">
+		<img class="icon" src='{{ icon0 }}it_pc.png' />
+
+		<h3>Arbeiten</h3>
+
+		<div class="ui-li-aside">
+			{{ basic.float('menu_arbeiten_1', 'arbeiten_heizung_istwert', '°C') }} <br>
+			{{ basic.symbol('menu_arbeiten_2', 'arbeiten_licht_schalten', '', icon1~'light_light.png', 1) }}
+			{{ basic.symbol('menu_arbeiten_3', 'arbeiten_heizung_heizen_schalten', '', icon1~'sani_heating.png', 1) }}
+		</div>
+	</a>
+</li>
+
+/**
+* --- Obergeschoß ---
+*/
+<li data-role="list-divider">
+	<table width=100%>
+		<tr>
+			<td align=left>Obergeschoß</td>
+			<td align=right>
+				<div class="ui-li-aside">{{ basic.symbol('menu_flurdg', 'flurdg_bewegung', '', icon1~'user_available.png', 1) }}</div>
+			</td>
+		</tr>
+	</table>
+</li>
+<li data-icon="false">
+	<a href="index.php?page=room_dg_bad">
+		<img class="icon" src='{{ icon0 }}scene_bath.png' />
+
+		<h3>Bad</h3>
+
+		<div class="ui-li-aside">
+			{{ basic.float('menu_bad_1', 'bad_heizung_istwert', '°C') }} <br>
+			{{ basic.symbol('menu_bad_2', 'bad_licht_schalten', '', icon1~'light_light.png', 1) }}
+			{{ basic.symbol('menu_bad_3', 'bad_heizung_heizen_schalten', '', icon1~'sani_heating.png', 1) }}
+		</div>
+	</a>
+</li>
+
+<li data-icon="false">
+	<a href="index.php?page=room_dg_eltern">
+		<img class="icon" src='{{ icon0 }}scene_sleeping.png' />
+
+		<h3>Eltern</h3>
+
+		<div class="ui-li-aside">
+			{{ basic.float('menu_eltern_1', 'eltern_heizung_istwert', '°C') }} <br>
+			{{ basic.symbol('menu_eltern_2', 'eltern_licht_schalten', '', icon1~'light_light.png', 1) }}
+			{{ basic.symbol('menu_eltern_3', 'eltern_heizung_heizen_schalten', '', icon1~'sani_heating.png', 1) }}
+		</div>
+	</a>
+</li>
+
+<li data-icon="false">
+	<a href="index.php?page=room_dg_kind1">
+		<img class="icon" src='{{ icon0 }}scene_childs_room.png' />
+
+		<h3>Kind 1</h3>
+
+		<div class="ui-li-aside">
+			{{ basic.float('menu_kind1_1', 'kind1_heizung_istwert', '°C') }} <br>
+			{{ basic.symbol('menu_kind1_2', 'kind1_licht_schalten', '', icon1~'light_light.png', 1) }}
+			{{ basic.symbol('menu_kind1_3', 'kind1_heizung_heizen_schalten', '', icon1~'sani_heating.png', 1) }}
+		</div>
+	</a>
+</li>
+
+<li data-icon="false">
+	<a href="index.php?page=room_dg_kind2">
+		<img class="icon" src='{{ icon0 }}scene_childs_room.png' />
+
+		<h3>Kind 2</h3>
+
+		<div class="ui-li-aside">
+			{{ basic.float('menu_kind2_1', 'kind2_heizung_istwert', '°C') }} <br>
+			{{ basic.symbol('menu_kind2_2', 'kind2_licht_schalten', '', icon1~'light_light.png', 1) }}
+			{{ basic.symbol('menu_kind2_3', 'kind2_heizung_heizen_schalten', '', icon1~'sani_heating.png', 1) }}
+		</div>
+	</a>
+</li>
+
+/**
+* --- Erdgeschoß ---
+*/
+<li data-role="list-divider">
+	<table width=100%>
+		<tr>
+			<td align=left>Erdgeschoß</td>
+			<td align=right>
+				<div class="ui-li-aside">{{ basic.symbol('menu_flur', 'flur_bewegung', '', icon1~'user_available.png', 1) }}</div>
+			</td>
+		</tr>
+	</table>
+</li>
+<li data-icon="false">
+	<a href="index.php?page=room_eg_kueche">
+		<img class="icon" src='{{ icon0 }}scene_cooking.png' />
+
+		<h3>K&uuml;che</h3>
+
+		<div class="ui-li-aside">
+			{{ basic.float('menu_kueche_1', 'kueche_heizung_istwert', '°C') }} <br>
+			{{ basic.symbol('menu_kueche_2', ['kueche_arbeitsbereich_licht_schalten', 'kueche_sitzecke_licht_schalten'], '', icon1~'light_light.png', 1) }}
+			{{ basic.symbol('menu_kueche_3', 'kueche_heizung_heizen_schalten', '', icon1~'sani_heating.png', 1) }}
+		</div>
+	</a>
+</li>
+
+<li data-icon="false">
+	<a href="index.php?page=room_eg_wohnen">
+		<img class="icon" src='{{ icon0 }}scene_livingroom.png' />
+
+		<h3>Wohnen</h3>
+
+		<div class="ui-li-aside">
+			{{ basic.float('menu_wohnen_1', 'wohnen_heizung_istwert', '°C') }} <br>
+			{{ basic.symbol('menu_wohnen_2', 'wohnen_tv_steckdose_schalten', '', icon1~'it_television.png', 1) }}
+			{{ basic.symbol('menu_wohnen_3', ['wohnen_decketv_licht_schalten', 'wohnen_decke1_licht_schalten'], '', icon1~'light_light.png', 1) }}
+			{{ basic.symbol('menu_wohnen_4', 'wohnen_heizung_heizen_schalten', '', icon1~'sani_heating.png', 1) }}
+		</div>
+	</a>
+</li>
+
+<li data-icon="false">
+	<a href="index.php?page=room_eg_flur">
+		<img class="icon" src='{{ icon0 }}scene_stairs.png' />
+
+		<h3>Flur / Windfang</h3>
+
+		<div class="ui-li-aside">
+			{{ basic.value('menu_flur_1', 'windfang_sollwert', '%') }} <br>
+			{{ basic.symbol('menu_flur_2', 'flur_licht_schalten', '', icon1~'light_light.png', 1) }}
+			{{ basic.symbol('menu_flur_3', 'windfang_heizen_schalten', '', icon1~'sani_heating.png', 1) }}
+		</div>
+	</a>
+</li>
+
+<li data-icon="false">
+	<a href="index.php?page=room_eg_aussen">
+		<img class="icon" src='{{ icon0 }}scene_garden.png' />
+
+		<h3>Aussenbereich</h3>
+
+		<div class="ui-li-aside">
+			{{ basic.value('menu_aussen_1', 'aussentemperatur', '°C') }}<br>
+			{{ basic.symbol('menu_aussen_2', 'aussen_regen', '', icon1~'weather_rain.png', 1) }}
+			{{ basic.symbol('menu_aussen_3', 'aussen_wind', '', icon1~'weather_wind.png', 1) }}
+			{{ basic.symbol('menu_aussen_4', ['aussen_gartenlicht_schalten', 'aussen_haustuerlicht_schalten'], '', icon1~'light_light.png', 1) }}
+			{{ basic.symbol('menu_aussen_5', 'aussen_steckdose_schalten', '', icon1~'message_socket.png', 1) }}
+			{{ basic.symbol('menu_aussen_6', 'aussen_freischaltung', '', icon1~'secur_open.png', 1) }}
+		</div>
+	</a>
+</li>
+/** --- Zentralsteuerung --- */
+<li data-icon="false">
+	<a href="index.php?page=room_zentral">
+		<img class="icon" src='{{ icon0 }}control_building_control.png' />
+
+		<h3>Zentralsteuerung</h3>
+
+		<div class="ui-li-aside">
+		</div>
+	</a>
+</li>
+
+/**
+* --- Kellergeschoß ---
+*/
+<li data-role="list-divider" data-icon="false">
+	<table width=100%>
+		<tr>
+			<td align=left>Kellergeschoß</td>
+			<td align=right>
+				<div class="ui-li-aside">{{ basic.symbol('menu_flurkg', 'flurkg_bewegung', '', icon1~'user_available.png', 1) }}</div>
+			</td>
+		</tr>
+	</table>
+</li>
+<li data-icon="false">
+	<a href="index.php?page=room_kg_heizen">
+		<img class="icon" src='{{ icon0 }}sani_buffer_temp_down.png' />
+
+		<h3>Technik</h3>
+
+		<div class="ui-li-aside">
+			WW: {{ basic.float('menu_heizen_1', 'lwz_speichertemperatur', '°C') }} <br>
+			{{ basic.symbol('menu_heizen_2', '([lwz_verdichter] && [lwz_pumpe_wasser])', '', icon1~'sani_water_hot.png', 1) }}
+			{{ basic.symbol('menu_heizen_3', '([lwz_verdichter] && [lwz_pumpe_heizung])', '', icon1~'sani_buffer_temp_down.png', 1) }}
+		</div>
+	</a>
+</li>
+
+<li data-icon="false">
+	<a href="index.php?page=room_kg_trockenraum">
+		<img class="icon" src='{{ icon0 }}scene_laundry_room_fem.png' />
+
+		<h3>Trockenraum</h3>
+
+		<div class="ui-li-aside">
+			{{ basic.value('menu_trocknen_1', 'trockenraum_sollwert', '%') }} <br>
+			{{ basic.symbol('menu_trocknen_2', 'trocknen_heizen_schalten', '', icon1~'sani_heating.png', 1) }}
+		</div>
+	</a>
+</li>
+
+<li data-icon="false">
+	<a href="index.php?page=room_kg_werkstatt">
+		<img class="icon" src='{{ icon0 }}message_service.png' />
+
+		<h3>Werkstatt</h3>
+
+		<div class="ui-li-aside">
+			{{ basic.value('menu_werkstatt_1', 'werkstatt_sollwert', '%') }} <br>
+			{{ basic.symbol('menu_werkstatt_2', 'werkstatt_heizen_schalten', '', icon1~'sani_heating.png') }}
+		</div>
+	</a>
+</li>
+
+<li data-icon="false">
+	<a href="index.php?page=room_kg_flur">
+		<img class="icon" src='{{ icon0 }}scene_stairs.png' />
+
+		<h3>Flur</h3>
+
+		<div class="ui-li-aside">
+			{{ basic.value('menu_flurkg_1', 'flurkg_sollwert', '%') }} <br>
+			{{ basic.symbol('menu_flurkg_2', 'flurkg_licht_schalten', '', icon1~'light_light.png') }}
+			{{ basic.symbol('menu_flurkg_3', 'flurkg_heizen_schalten', '', icon1~'sani_heating.png') }}
+		</div>
+	</a>
+</li>
+
+</ul>	
+

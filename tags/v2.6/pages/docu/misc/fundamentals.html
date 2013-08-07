@@ -1,0 +1,55 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "index.html" %}
+{% import "appliance.html" as appliance %}
+
+{% block content %}
+
+	<h1>Fundamentals</h1>
+
+	<div class="docu">
+
+		<h2>Array-Form</h2>
+
+		Some widgets may have an array as a parameter. Use [ ... , ... ] to define it. An array is only needed if you have more than one object.<br />
+
+		<h5>Example</h5>
+
+		<div class="twig">
+			<code class="prettyprint">
+				... ['bath_plot1', 'bath_plot2', 'bath_plot3'] ... -> 3 items as an array<br />
+				... 'bath_plot1' ... -> only one item, no array needed<br />
+			</code>
+		</div>
+
+
+		<br />
+
+		<h2>Duration-Format</h2>
+
+		Some widgets require as a parameter the duration or period. This is specifyed with following letters:<br />
+		<b>s</b> (second), <b>i</b> (minute), <b>h</b> (hour), <b>d</b> (day), <b>w</b> (week),
+		<b>m</b> (month, 30 days), <b>y</b> (year, 365 days)
+
+		<h5>Example</h5>
+
+		<div class="twig">
+			<code class="prettyprint">
+				... '10i 30s' ... -> 10 minutes + 30 seconds<br />
+				... '2w' ... -> 2 weeks<br />
+			</code>
+		</div>
+
+
+	</div>
+
+{% endblock %}
+

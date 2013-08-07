@@ -1,0 +1,27 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; basic.txt('text1', 'bath_light_switch', 'Text for the on-state', 'It is off now') &#125;&#125;</code>
+	</div>
+
+	Use the switch to change the state: {{ basic.switch('switch1', 'bath_light_switch') }}
+
+	<div class="html">
+		{{ basic.text('text1', 'bath_light_switch', 'Text for the on-state', 'It is off now') }}
+	</div>
+
+{% endblock %}
+
