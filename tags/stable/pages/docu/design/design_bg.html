@@ -1,0 +1,55 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+	<style type="text/css">
+		.box {
+			float: left;
+			width: 280px;
+			background-color: #222;
+			border: 1px dotted #666;
+			margin: 5px;
+			text-align: center;
+		}
+	</style>
+
+	<h1>Backgrounds</h1>
+
+	<div class="docu">
+		If you want to add a background use the "visu.css" in your pages directory.
+
+		<div class="twig">
+			<code class="prettyprint">
+				.page-bg {
+				background-image: url('../../pics/bg/<b>NAME.png</b>');
+				}
+			</code>
+		</div>
+	</div>
+
+
+	<h5>Examples</h5>
+	<div class="docu">
+		Located in "pics/bg/"
+	</div>
+
+	{% for file in dir('pics/bg') %}
+		<div class="box">
+			<img style="width: 280px;" src="pics/bg/{{ file.name }}" />
+			<br />
+			<span style="font-size: 0.8em;">{{ file.name }}</span>
+		</div>
+	{% endfor %}
+
+{% endblock %}
+

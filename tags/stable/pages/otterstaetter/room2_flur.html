@@ -1,0 +1,67 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <h1><img class="icon" src='{{ icon0 }}scene_stairs.png'/>Flur</h1>
+
+    <div class="preblock">
+	<table width="100%">
+		<tr>
+		<td align="left" width="50%">
+		</td>
+		<td align="right">
+		{{ basic.symbol('rm1', 'dg.flur.rm.alarm', '', icon1~'secur_smoke_detector.png',1, 'mini') }}
+		     {{ basic.symbol('rm2', 'dg.flur.rm.alarm', '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
+		{{ basic.symbol('rm3', 'dg.flur.rm.stoerung', '', icon1~'message_service.png',1, 'mini') }}
+		     {{ basic.symbol('rm4', 'dg.flur.rm.stoerung', '', icon0~'message_service.png', 0, 'mini') }}
+		</td>
+		<td align="right" padding="20">
+		{{ basic.symbol('pir1', 'dg.flur.praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
+			 {{ basic.symbol('pir2', 'dg.flur.praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
+		</td>
+		</tr>
+	</table>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Licht</h3>
+            {{ device.dimmer('light1', 'Deckenstrahler', 'dg.flur.beleuchtung.decke.schalten', 'dg.flur.beleuchtung.decke.dimmwert') }}
+            <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'dg.dachboden.beleuchtung.schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Dachboden</td></tr></table>
+            {% import "widget_rgb.html" as rgb %}
+	        {{ rgb.rgb('rgb1', 'Treppenbeleuchtung', 'eg.diele.beleuchtung.rgb-treppe.schalten', 'eg.diele.beleuchtung.rgb-treppe.rot.dimmwert', 'eg.diele.beleuchtung.rgb-treppe.gruen.dimmwert', 'eg.diele.beleuchtung.rgb-treppe.blau.dimmwert') }}
+        </div>
+
+    </div>
+    </div>
+
+   <!-- <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Raumtemperatur</h3>
+            {{ device.rtr('dg.flur.rtr', 'Heizung', 'dg.flur.temperatur.luft', 'dg.flur.heizung.sollwert',
+                'dg.flur.heizung.komfort', 'dg.flur.heizung.nacht', 'dg.flur.heizung.frost', 'eg.diele.heizung.schalten') }}
+        </div>
+
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>
+
+    </div>
+    </div>-->
+
+{% endblock %}
+

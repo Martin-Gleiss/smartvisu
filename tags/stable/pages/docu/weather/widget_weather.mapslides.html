@@ -1,0 +1,25 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_weather.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; weather.mapslides('map1', 'Forecast') &#125;&#125;<br />
+		</code>
+	</div>
+
+	{{ weather.mapslides('map1', 'Forecast') }}
+
+{% endblock %}

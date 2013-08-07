@@ -1,0 +1,46 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_plot.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+			{{ plot.temprose('p1',
+			['sleep_rtr_act', 'office_rtr_act', 'kid_rtr_act', 'bath_rtr_act', 'floor_rtr_act'],
+			['sleep_rtr_set', 'office_rtr_set', 'kid_rtr_set', 'bath_rtr_set', 'floor_rtr_set'],
+			['Sleeping', 'Office', 'Kid', 'Bath', 'Floor']) }}
+
+			{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>house temperature plot</h3>
+
+					{{ plot.temprose('p1',
+					['sleep_rtr_act', 'office_rtr_act', 'kid_rtr_act', 'bath_rtr_act', 'floor_rtr_act'],
+					['sleep_rtr_set', 'office_rtr_set', 'kid_rtr_set', 'bath_rtr_set', 'floor_rtr_set'],
+					['Sleeping', 'Office', 'Kid', 'Bath', 'Floor']) }}
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}

@@ -1,0 +1,120 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}scene_livingroom.png' />DG-Wohnen</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Deckenlicht</h3>
+				{{ device.dimmer('DG.Wohnen.SchieneLANG', 'lange Schiene', 'DG.Wohnen.SchieneLANG', 'DG.Wohnen.SchieneLANG.dimmen', 0, 100, 10) }}
+				{{ device.dimmer('DG.Wohnen.SchieneKURZ', 'kurze Schiene', 'DG.Wohnen.SchieneKURZ', 'DG.Wohnen.SchieneKURZ.dimmen', 0, 100, 10) }}
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Heizung</h3>
+				{{ device.rtrmacflei('DG.Wohnen.temperature', 'DG.Wohnen.temperature.stellgroesse', 'DG.Wohnen.temperature', 'DG.Wohnen.temperature.set', 'DG.Wohnen.temperature.mode', 'DG.Wohnen.temperature.night', 'DG.Wohnen.temperature.frost', '', 'DG.Wohnen.temperature.zwangon', 'DG.Wohnen.temperature.zwangoff', '', '0.5') }}
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Lichter</h3>
+				<table width="90%">
+					<tr>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('DGWandLED', 'DG.Wohnen.LEDWand', icon1~'light_wall_2.png', icon0~'light_wall_2.png') }} </td>
+						<td>LED-Wandspots</td>
+					</tr>
+				</table>
+				<table width="90%">
+					<tr>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('DGBodenLED', 'DG.Wohnen.LEDBoden', icon1~'light_uplight.png', icon0~'light_uplight.png') }} </td>
+						<td>LED Bodenspots</td>
+					</tr>
+				</table>
+				<table width="90%">
+					<tr>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('DGStedoTV', 'DG.Wohnen.StedoTV', icon1~'message_socket.png', icon0~'message_socket.png') }} </td>
+						<td>Steckdose TV</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Status Fenster</h3>
+				<table width="100%">
+					<tr>
+						<td align="left">
+							{{ basic.symbol('WoFensterNord1', 'DG.Wohnen.Fenster1', 'Dachfenster Nord ist offen', icon1~'fts_window_roof_open_2.png') }}
+							{{ basic.symbol('WoFensterNord2', 'DG.Wohnen.Fenster1', 'Dachfenster Nord ist zu', icon0~'fts_window_roof_shutter.png', 0) }}
+						</td>
+					</tr>
+					<tr>
+						<td align="left">
+							{{ basic.symbol('WoFensterSuedlinks1', 'DG.Wohnen.Fenster2', 'Dachfenster Süd links ist offen', icon1~'fts_window_roof_open_2.png') }}
+							{{ basic.symbol('WoFensterSuedlinks2', 'DG.Wohnen.Fenster2', 'Dachfenster Süd links ist zu', icon0~'fts_window_roof_shutter.png', 0) }}
+						</td>
+					</tr>
+					<tr>
+						<td align="left">
+							{{ basic.symbol('WoFensterSuedrechts1', 'DG.Wohnen.Fenster3', 'Dachfenster Süd rechts offen', icon1~'fts_window_roof_open_2.png') }}
+							{{ basic.symbol('WoFensterSuedrechts2', 'DG.Wohnen.Fenster3', 'Dachfenster Süd rechts zu', icon0~'fts_window_roof_shutter.png', 0) }}
+						</td>
+					</tr>
+					<tr>
+						<td align="left">
+							{{ basic.symbol('WoTuer1', 'DG.Wohnen.Tuer', 'Tür ist offen', icon1~'fts_door_open.png') }}
+							{{ basic.symbol('WoTuer2', 'DG.Wohnen.Tuer', 'Tür ist zu', icon0~'fts_door.png', 0) }}
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Rollo</h3>
+				{{ device.shutter('DG.Wohnen.Rollo', '', 'DG.Wohnen.Rollo.move', 'DG.Wohnen.Rollo.stop', 'DG.Wohnen.Rollo.pos', '', 'DG.Wohnen.Rollo.tilt') }}
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Temperaturverlauf</h3>
+				{{ plot.rtr('p39', 'DG.Wohnen.temperature', 'DG.Wohnen.temperature.set', 'DG.Wohnen.temperature.state') }}
+			</div>
+
+		</div>
+	</div>
+{% endblock %}
+

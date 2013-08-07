@@ -1,0 +1,93 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <h1><img class="icon" src='{{ icon0 }}scene_office.png'/>Büro</h1>
+
+    <div class="preblock">
+	<table width="100%">
+		<tr>
+		<td align="left" width="50%">
+		</td>
+		<td align="right">
+		{{ basic.symbol('rm1', 'eg.buero.rm.alarm', '', icon1~'secur_smoke_detector.png',1, 'mini') }}
+		     {{ basic.symbol('rm2', 'eg.buero.rm.alarm', '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
+		{{ basic.symbol('rm3', 'eg.buero.rm.stoerung', '', icon1~'message_service.png',1, 'mini') }}
+		     {{ basic.symbol('rm4', 'eg.buero.rm.stoerung', '', icon0~'message_service.png', 0, 'mini') }}
+        </td>
+		<td align="right" padding="20">
+		{{ basic.symbol('pir1', 'eg.buero.praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
+			 {{ basic.symbol('pir2', 'eg.buero.praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
+		</td>
+		</tr>
+	</table>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Licht</h3>
+            {{ device.dimmer('light1', 'Deckenleuchte', 'eg.buero.beleuchtung.decke.schalten', 'eg.buero.beleuchtung.decke.dimmwert') }}
+            {{ device.dimmer('light2', 'Schreibtischleuchte', 'eg.buero.beleuchtung.schreibtisch.schalten', 'eg.buero.beleuchtung.schreibtisch.dimmwert') }}
+      	</div>
+
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+        </div>
+
+    </div>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Rollladen</h3>
+            {% import "widget_shutter.html" as shutter %}
+			<table width="100%"><tr>
+				<td width="50%">{{ shutter.two ('shutter1', 'Tür', 'eg.buero.rollladen.west.fahren', 'eg.buero.rollladen.west.stopp', 'eg.buero.rollladen.west.position', 'eg.buero.rollladen.west.beschatten') }}</td>
+
+				<td width="50%">{{ shutter.two ('shutter2', 'Fenster', 'eg.buero.rollladen.nord.fahren', 'eg.buero.rollladen.nord.stopp', 'eg.buero.rollladen.nord.position', 'eg.buero.rollladen.nord.beschatten' ) }}</td>
+                <tr></table>
+        </div>
+
+    	<div data-role="collapsible">
+          <h3>Status Tür und Fenster</h3>
+          {% import "widget_window.html" as window %}
+          <p>
+            {{ window.two ('window1', 'Tür', 'eg.buero.fenster.west' ) }}
+            {{ window.two ('window2', 'Fenster', 'eg.buero.fenster.nord' ) }}
+          </p>
+        </div>
+    </div>
+    </div>
+
+    <!--<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Raumtemperatur</h3>
+            {{ device.rtr('eg.buero.rtr', 'Heizung', 'eg.buero.temperatur.luft', 'eg.buero.heizung.sollwert',
+                'eg.buero.heizung.komfort', 'eg.buero.heizung.nacht', 'eg.buero.heizung.frost', 'eg.buero.heizung.schalten', 'eg.buero.heizung.text') }}
+        </div>
+
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>
+
+    </div>
+    </div>-->
+{% endblock %}
+

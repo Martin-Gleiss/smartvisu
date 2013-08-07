@@ -1,0 +1,42 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <h1><img class="icon" src='{{ icon0 }}scene_bathroom.png'/>Bad Kinder</h1>
+
+    <div class="preblock">
+
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Licht</h3>
+            {{ device.dimmer('light1', 'Deckenstrahler', 'dg.bad-kinder.beleuchtung.decke.schalten', 'dg.bad-kinder.beleuchtung.decke.dimmwert') }}
+           <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'dg.bad-kinder.spiegel.schalten', icon1~'light_mirror.png', icon0~'light_mirror.png') }} </td><td>Spiegelbeleuchtung</td></tr></table>
+      	</div>
+
+    	<div data-role="collapsible">
+          <h3>Status Fenster</h3>
+          {% import "widget_window.html" as window %}
+          <p>
+            {{ window.one ('win1', 'Dachfenster', 'dg.bad-kinder.fenster' ) }}
+          </p>
+        </div>
+
+    </div>
+    </div>
+
+{% endblock %}
+

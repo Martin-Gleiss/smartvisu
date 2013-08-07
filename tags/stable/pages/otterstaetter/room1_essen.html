@@ -1,0 +1,147 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <!--<h1><img class="icon" src='{{ icon0 }}scene_dinner.png'/>Esszimmer</h1>-->
+
+    <style>
+		.nav-cusKind 2 .ui-btn .ui-btn-inner { padding-top: 40px !important; }
+		.nav-cusKind 2 .ui-btn .ui-icon { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
+		#kochen .ui-icon { background:  url({{ icon0 }}scene_cooking.png) 50% 50% no-repeat; background-size: 36px 36px; }
+		#essen .ui-icon { background:  url({{ icon0 }}scene_dinner.png) 50% 50% no-repeat; background-size: 36px 36px;  }
+		#wohnen .ui-icon { background:  url({{ icon0 }}it_television.png) 50% 50% no-repeat;  background-size: 36px 36px; }
+	</style>
+	<div data-role="navbar" class="nav-cusKind 2">
+		<ul>
+			<li><a href="index.php?page=room1_kueche" id="kochen" data-icon="cusKind 2">Kochbereich</a></li>
+			<li><a href="index.php?page=room1_essen" class="ui-btn-active" id="essen" data-icon="cusKind 2">Essbereich</a></li>
+			<li><a href="index.php?page=room1_wohnen" id="wohnen" data-icon="cusKind 2">Wohnbereich</a></li>
+		</ul>
+	</div>
+
+    <div class="preblock">
+	<table width="100%">
+		<tr>
+		<td align="left" width="70%">
+			Szenen&nbsp;&nbsp;&nbsp;
+			<span data-role="controlgroup" data-type="horizontal">
+				{{ basic.dual('szene1', 'eg.kueche.szene.kochen', icon1~'scene_cooking.png', icon0~'scene_cooking.png', 1, 0, 'mini') }}
+				{{ basic.dual('szene2', 'eg.essen.szene.essen', icon1~'scene_dinner.png', icon0~'scene_dinner.png', 1, 0, 'mini') }}
+				{{ basic.dual('szene3', 'eg.wohnen.szene.fernsehen', icon1~'scene_livingroom.png', icon0~'scene_livingroom.png', 1, 0, 'mini') }}
+				{{ basic.dual('szene4', 'eg.kueche.szene.party', icon1~'scene_party.png', icon0~'scene_party.png', 1, 0, 'mini') }}
+				{{ basic.button('szene5', 'eg.szenen.kueche_essen_wohnen', 'Aus', icon0~'control_on_off.png', 13, 'mini') }}
+			</span>
+		</td>
+		<td align="right">
+		{{ basic.symbol('rm1', 'eg.kueche.rm.alarm', '', icon1~'secur_smoke_detector.png',1, 'mini') }}
+		     {{ basic.symbol('rm2', 'eg.kueche.rm.alarm', '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
+		{{ basic.symbol('rm3', 'eg.wohnen.rm.alarm', '', icon1~'secur_smoke_detector.png', 1, 'mini') }}
+		     {{ basic.symbol('rm4', 'eg.wohnen.rm.alarm', '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
+		{{ basic.symbol('rm3', ['eg.kueche.rm.stoerung', 'eg.wohnen.rm.stoerung'], '', icon1~'message_service.png', 1) }}
+			 {{ basic.symbol('rm4', ['eg.kueche.rm.stoerung', 'eg.wohnen.rm.stoerung'], '', icon0~'message_service.png', 0) }}
+		</td>
+		<td align="right" padding="20">
+		{{ basic.symbol('pir1', 'eg.kueche.praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
+			 {{ basic.symbol('pir2', 'eg.kueche.praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
+		</td>
+		</tr>
+	</table>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Deckenstrahler</h3>
+            {{ device.dimmer('light1', 'Fensternische', 'eg.essen.beleuchtung.decke1.schalten', 'eg.essen.beleuchtung.decke1.dimmwert',0 ,100) }}
+            {{ device.dimmer('light2', 'Mitte', 'eg.essen.beleuchtung.decke2.schalten', 'eg.essen.beleuchtung.decke2.dimmwert',0 ,100) }}
+            {{ device.dimmer('light3', 'Flurseite', 'eg.essen.beleuchtung.decke3.schalten', 'eg.essen.beleuchtung.decke3.dimmwert',0 ,100) }}
+            <!--RGB-Beleuchtung {{ basic.flip('flip1', 'eg.essen.beleuchtung.rgb.schalten', 'Ein', 'Aus') }}
+            {{ basic.rgb('rgb1', 'eg.essen.beleuchtung.rgb.rot.dimmwert', 'eg.essen.beleuchtung.rgb.gruen.dimmwert', 'eg.essen.beleuchtung.rgb.blau.dimmwert') }}-->
+
+        </div>
+	<div data-role="collapsible">
+            <h3>RGB-Beleuchtung</h3>
+            <p>
+	    {% import "widget_rgb.html" as rgb %}
+	    {{ rgb.rgb('rgb1', 'Indirekte Beleuchtung', 'eg.essen.beleuchtung.rgb.schalten', 'eg.essen.beleuchtung.rgb.rot.dimmwert', 'eg.essen.beleuchtung.rgb.gruen.dimmwert', 'eg.essen.beleuchtung.rgb.blau.dimmwert', 0, 150) }}</p>
+        </div>
+
+    </div>
+    </div>
+
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Rollladen</h3>
+            {% import "widget_shutter.html" as shutter %}
+			<table width="100%"><tr>
+				<td width="33%">{{ shutter.three ('shutter1', 'Fenster Ost', 'eg.essen.rollladen.ost.position', 'eg.essen.rollladen.ost.beschatten' ) }}</td>
+				<td width="33%">{{ shutter.three ('shutter2', 'Tür Süd', 'eg.essen.rollladen.sued.position', 'eg.essen.rollladen.sued.beschatten' ) }}</td>
+                		<td width="33%">{{ shutter.three ('shutter3', 'Fenster West', 'eg.essen.rollladen.west.position', 'eg.essen.rollladen.west.beschatten' ) }}</td>
+                <tr></table>
+        </div>
+
+    	<div data-role="collapsible">
+          <h3>Status Tür</h3>
+          {% import "widget_window.html" as window %}
+          <p>
+            {{ window.two ('win1', 'Tür', 'eg.essen.fenster' ) }}
+          </p>
+        </div>
+    </div>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Musik</h3>
+            {% import "multimedia.html" as multi %}
+			{{ multi.music ('music1', 'eg.kueche.musik.pause', '', 'eg.kueche.musik.vor-ruecklauf',
+			     'eg.kueche.musik.weiter-zurueck', 'eg.kueche.musik.position', 'eg.kueche.musik.lautstaerke',
+			     'eg.kueche.musik.stumm', 'eg.kueche.musik.titel', 'eg.kueche.musik.artist', 'eg.kueche.musik.repeat' , '') }}
+        </div>
+
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>
+    </div>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible">
+            <h3>Raumtemperatur und Luftfeuchtigkeit</h3>
+         <!--   {{ device.rtr('eg.essen.rtr', 'Heizung', 'eg.essen.temperatur.luft', 'eg.essen.heizung.sollwert',
+                'eg.essen.heizung.komfort', 'eg.essen.heizung.nacht', 'eg.essen.heizung.frost', 'eg.essen.heizung.schalten') }} -->
+             {% import "plot.html" as plot %}
+             {{ plot.comfortchart('comfort', 'eg.essen.temperatur.luft', 'eg.essen.humidity') }}
+             Lufttemperatur:  {{ basic.value('temperatur', 'eg.essen.temperatur.luft', ' °C') }} &nbsp; &nbsp; &nbsp; relative Luftfeuchtigkeit: {{ basic.value('humidity', 'eg.essen.humidity', ' %') }}
+        </div>
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Lüftungsanlage</h3>
+            {% import "widget_fan.html" as fan %}
+            {{ fan.switch ('fan1', 'zentral.lueftung.stufe', 'zentral.lueftung.auto', 'zentral.lueftung.schalten') }}
+        </div>
+
+    </div>
+    </div>
+
+{% endblock %}
+

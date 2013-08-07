@@ -1,0 +1,31 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+
+	Choose your color! If you have finised the rgb values will be send.
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; basic.colordisc('c1', 'bath_color_r', 'bath_color_g', 'bath_color_b') &#125;&#125;<br />
+			&#123;&#123; basic.colordisc('c2', 'bath_color_r', 'bath_color_g', 'bath_color_b', 0, 255, 16, 20) &#125;&#125;
+		</code>
+	</div>
+	<div class="html">
+		{{ basic.colordisc('c1', 'bath_color_r', 'bath_color_g', 'bath_color_b') }} 10 colors
+		{{ basic.colordisc('c2', 'bath_color_r', 'bath_color_g', 'bath_color_b', 0, 255, 16, 20) }} 16 steps and 20 colors
+	</div>
+
+{% endblock %}
+
+

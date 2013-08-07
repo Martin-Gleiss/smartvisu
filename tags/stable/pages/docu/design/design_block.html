@@ -1,0 +1,82 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+	<h1>Blocks</h1>
+
+	<div class="block">
+		<div class="ui-bar-c ui-li-divider ui-corner-top">Block 1</div>
+		<div class="ui-fixed ui-body-a ui-corner-bottom">
+
+			<p>Content 1</p>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Block 2</h3>
+
+				<p>Content 2</p>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Title 1</h3>
+
+				<p>Content 1</p>
+			</div>
+
+			<div data-role="collapsible">
+				<h3>Title 2</h3>
+
+				<p>Content 2</p>
+			</div>
+
+		</div>
+	</div>
+
+
+	<div class="block">
+		<div class="set-3" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Title 1</h3>
+
+				<p>Content 1</p>
+			</div>
+
+			<div data-role="collapsible">
+				<h3>Title 2</h3>
+
+				<p>Content 2</p>
+			</div>
+
+			<div data-role="collapsible">
+				<h3>Title 3</h3>
+
+				<p>Content 3</p>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}
+

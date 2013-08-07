@@ -1,0 +1,29 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_weather.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; weather.map('map1', 'Forecast Day', 'day') &#125;&#125;<br />
+			&#123;&#123; weather.map('map2', 'Forecast Night', 'night') &#125;&#125; <br />
+			&#123;&#123; weather.map('map3', 'Forecast Winds', 'wind') &#125;&#125;
+		</code>
+	</div>
+
+	{{ weather.map('map1', 'Forecast Day', 'day') }}
+	{{ weather.map('map2', 'Forecast Night', 'night') }}
+	{{ weather.map('map3', 'Forecast Winds', 'wind') }}
+
+{% endblock %}

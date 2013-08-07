@@ -1,0 +1,103 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}scene_livingroom.png' />Wohnen</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Licht / Aktoren</h3>
+
+				<table width=100%>
+					<tr>
+						<th colspan="2">
+							{{ device.dimmer('licht_decke1', 'Deckenlicht - Klavier', 'wohnen_decke1_licht_schalten', 'wohnen_decke1_licht_schalten', 0, 1, 1) }}
+						</th>
+					</tr>
+					<tr>
+						<th colspan="2">
+							{{ device.dimmer('licht_tv', 'Deckenlicht - Fernseher', 'wohnen_decketv_licht_schalten', 'wohnen_decketv_licht_dimmwert', 0, 100, 10) }}
+						</th>
+					</tr>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							{{ basic.switch('licht_wand', 'wohnen_wand_licht_schalten', icon1~'light_light.png', icon0~'light_light.png') }} Wandleuchte
+						</td>
+						<td align=left>
+							{{ basic.switch('steckdose_tv', 'wohnen_tv_steckdose_schalten', icon1~'it_television.png', icon0~'it_television.png') }} Fernseher
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Raumtemperatur</h3>
+				{{ device.rtr('wohnen_rtr', '', 'wohnen_heizung_istwert', 'wohnen_heizung_sollwert',
+				'wohnen_heizung_komfort', 'wohnen_heizung_nacht', 'wohnen_heizung_frost', 'wohnen_heizung_heizen_schalten', null, 0.2) }}
+			</div>
+
+		</div>
+	</div>
+
+
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalousie - Südseite</h3>
+
+				{{ device.shutter ('shutter1', 'Garage', 'wohnen1_jalousie_fahren', 'wohnen1_jalousie_stop', 'wohnen1_jalousie_position_status',
+				'', 'wohnen1_jalousie_angle_status', 'wohnen1_jalousie_store', 0, 100, 10) }}
+			</div>
+
+		</div>
+	</div>
+
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalousie - Westseite</h3>
+
+				<table width=100%>
+					<tr>
+						<td align=center width=50%>
+							{{ device.shutter ('shutter2', 'Terrasse', 'wohnen2_jalousie_fahren', 'wohnen2_jalousie_stop', 'wohnen2_jalousie_position_status',
+							'', 'wohnen2_jalousie_angle_status', 'wohnen2_jalousie_store', 0, 100, 10) }}
+						</td>
+						<td align=center width=50%>
+							{{ device.shutter ('shutter3', 'Rosenbeet', 'wohnen3_jalousie_fahren', 'wohnen3_jalousie_stop', 'wohnen3_jalousie_position_status',
+							'', 'wohnen3_jalousie_angle_status', 'wohnen3_jalousie_store', 0, 100, 10) }}
+						</td>
+					</tr>
+				</table>
+
+			</div>
+
+		</div>
+	</div>
+
+
+
+{% endblock %}
+

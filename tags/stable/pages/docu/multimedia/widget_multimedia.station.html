@@ -1,0 +1,44 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_multimedia.html" %}
+
+{% block example %}
+
+	Download some station-logos and place them in pics/station. The best results are with .png and transparent background.
+	For copyright-reasons only dummy-logos are shipped with {{ lib.smartvisu }}.
+
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+			{{ multimedia.station('s1', 'bath_tv_1', 'pics/station/das_erste.png', 1, 'midi') }}
+			{{ multimedia.station('s2', 'bath_tv_2', 'pics/station/zdf.png', 1, 'midi') }}
+			{{ multimedia.station('s3', 'bath_tv_3', 'pics/station/pro7.png', 1, 'midi') }}
+			{{ multimedia.station('s4', 'bath_tv_4', 'pics/station/rtl.png') }}
+			{{ multimedia.station('s5', 'bath_tv_5', 'pics/station/sat1.png') }}
+
+			{% endverbatim %}{% endfilter %}</code>
+	</div>
+
+	<div class="block">
+		<div class="ui-bar-c ui-li-divider ui-corner-top">Some TV-Stations</div>
+		<div class="ui-fixed ui-body-a ui-corner-bottom">
+
+			{{ multimedia.station('s1', 'bath_tv_1', 'pics/station/das_erste.png', 1, 'midi') }}
+			{{ multimedia.station('s2', 'bath_tv_2', 'pics/station/zdf.png', 1, 'midi') }}
+			{{ multimedia.station('s3', 'bath_tv_3', 'pics/station/pro7.png', 1, 'midi') }}
+			{{ multimedia.station('s4', 'bath_tv_4', 'pics/station/rtl.png') }}
+			{{ multimedia.station('s5', 'bath_tv_5', 'pics/station/sat1.png') }}
+
+		</div>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}scene_childs_room.png' />Kind 1</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Licht</h3>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							{{ device.dimmer('licht_decke1', 'Deckenlicht', 'kind1_licht_schalten', 'kind1_licht_dimmwert', 0, 100, 10) }}
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Raumtemperatur</h3>
+				{{ device.rtr('kind1_rtr', '', 'kind1_heizung_istwert', 'kind1_heizung_sollwert',
+				'kind1_heizung_komfort', 'kind1_heizung_nacht', 'kind1_heizung_frost', 'kind1_heizung_heizen_schalten', null, 0.2) }}
+			</div>
+
+		</div>
+	</div>
+
+
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalousie</h3>
+
+				{{ device.shutter ('shutter', '', 'kind1_jalousie_fahren', 'kind1_jalousie_stop', 'kind1_jalousie_position_status',
+				'', 'kind1_jalousie_angle_status', 'kind1_jalousie_store', 0, 100, 10) }}
+			</div>
+
+		</div>
+	</div>
+
+
+
+{% endblock %}
+
