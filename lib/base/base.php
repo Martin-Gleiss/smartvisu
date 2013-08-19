@@ -79,14 +79,14 @@
 		if (!ret)
 			ret = '<?php echo trans('format', 'date'); ?>';
 
-		ret = ret.replace('d', (this.getDate().toString().length == 1 ? '0' : '') + this.getDate());
-        ret = ret.replace('m', (this.getMonth().toString().length == 1 ? '0' : '') + this.getMonth());
+        ret = ret.replace('d', ('0' + this.getDate()).slice(-2));
+        ret = ret.replace('m', ('0' + (this.getMonth()+1)).slice(-2));
 		ret = ret.replace('y', this.getFullYear().toString().substr(2,2));
         ret = ret.replace('Y', this.getFullYear());
 
 		ret = ret.replace('H', this.getHours());
-        ret = ret.replace('i', (this.getMinutes().toString().length == 1 ? '0' : '') + this.getMinutes());
-		ret = ret.replace('s', (this.getSeconds().toString().length == 1 ? '0' : '') + this.getSeconds());
+        ret = ret.replace('i', ('0' + this.getMinutes()).slice(-2));
+        ret = ret.replace('s', ('0' + this.getSeconds()).slice(-2));
 
 		return ret;
 	};
@@ -110,7 +110,7 @@
     */
   	Date.prototype.transLong = function() {
 		return this.transDate('<?php echo trans('format', 'long'); ?>');
-	};
+    };
 
 
 /**
