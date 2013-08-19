@@ -889,6 +889,52 @@ $(document).delegate('div[data-widget="plot.period"]', {
 	}
 });
 
+// ----- plot.period_zoomable  -----------------------------------------------------
+$(document).delegate('div[data-widget="plot.period_zoomable"]', {
+	'update': function (event, response) {
+		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
+
+		var label = $(this).attr('data-label').explode();
+		var color = $(this).attr('data-color').explode();
+		var exposure = $(this).attr('data-exposure').explode();
+		var axis = $(this).attr('data-axis').explode();
+        var minRange = $(this).attr('data-minRange');
+		var series = Array();
+
+		for (var i = 0; i < response.length; i++) {
+			series[i] = {
+				type: (exposure[i] != 'stair' ? exposure[i] : 'line'),
+				step: (exposure[i] == 'stair' ? 'left' : false),
+				name: label[i],
+				data: response[i],
+				color: (color[i] ? color[i] : null)
+			}
+		}
+
+		// draw the plot
+		$('#' + this.id).highcharts({
+            chart: { zoomType: 'x' },
+            series: series,
+			xAxis: { type: 'datetime', title: { text: axis[0] }, minRange: minRange },
+			yAxis: { min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: { text: axis[1] } }
+		});
+	},
+
+	'point': function (event, response) {
+		for (var i = 0; i < response.length; i++) {
+			if (response[i]) {
+				var chart = $('#' + this.id).highcharts();
+
+				// more points?
+				for (var j = 0; j < response[i].length; j++) {
+					chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= 100));
+				}
+				chart.redraw();
+			}
+		}
+	}
+});
+
 // ----- plot.rtr --------------------------------------------------------------
 $(document).delegate('div[data-widget="plot.rtr"]', {
 	'update': function (event, response) {
