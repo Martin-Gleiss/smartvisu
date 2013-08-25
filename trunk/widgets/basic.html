@@ -181,12 +181,12 @@
 
 
 /**
-* A switch, build of a series of icons. The series may be a .png series (NAME_00.png, NAME_10.png, NAME_20.png...) or may be a dynamic icon (icon.NAME)
+* A switch, build of a series of icons. The series may be a .png-iconseries (NAME_00.png, NAME_10.png, NAME_20.png...) or may be a dynamic svg-icon (icon.NAME)
 *
 * @param unique id for this widget
 * @param a gad/item for the switch (optional)
 * @param a gad/item for the value
-* @param the icon for the 'on' state: either a .png (ending with '_00.png') or a icon (starting with 'icon.')
+* @param the iconseries or dynamic icon for the 'on' state
 * @param the icon for the 'off' state (optional)
 * @param the minimum value if it is off (optional, for future use)
 * @param the maximum value if it is on (optional, default 255)
@@ -200,9 +200,9 @@
 	{% if pic_on|slice(0, 5) == 'icon.' %}
 		{{ attribute(icon, pic_on|slice(5), [id, gad_switch, gad_value]) }}
 	{% else %}
-		<span id="{{ uid(page, id) }}" data-widget="basic.shifter" data-item="{{ gad_switch }}, {{ gad_value }}"
+		<span id="{{ uid(page, id) }}" data-widget="basic.shifter" data-item="{{ gad_value }}, {{ gad_switch }}"
 			{% set pic_on = pic_on|default(icon1~'light_light_dim_00.png') %}
-			data-pic-on="{{ pic_on }}" data-pic-off="{{ pic_off|default(icon0~pic_on|slice(icon1|length)) }}"
+			data-pic-on="{{ pic_on }}" data-pic-off="{{ pic_off |default(icon0~pic_on|slice(icon1|length)) }}"
 			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 			class="switch"><a><img class="icon" src="{{ pic_off|default(icon0~'light_light_dim_00.png') }}" /></a>
     	</span>
