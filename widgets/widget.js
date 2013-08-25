@@ -492,10 +492,15 @@ $(document).delegate('span[data-widget="basic.switch"] > a > img', 'hover', func
 // ----- basic.shifter ---------------------------------------------------------
 $(document).delegate('span[data-widget="basic.shifter"]', {
 	'update': function (event, response) {
-		var step = Math.min((response[1] / $(this).attr('data-max') * 10 + 0.49).toFixed(0) * 10, 100);
+		// response is: {{ gad_value }}, {{ gad_switch }}
 
-		if (response[0] != 0 && step > 0) {
+		var step = Math.min((response[0] / $(this).attr('data-max') * 10 + 0.49).toFixed(0) * 10, 100);
+
+		if (step > 0 && response[1] != 0) {
 			$('#' + this.id + ' img').attr('src', $(this).attr('data-pic-on').replace('00', step));
+		}
+		else if (step > 0 && $(this).attr('data-pic-off').substr(-7) == '_00.png') {
+			$('#' + this.id + ' img').attr('src', $(this).attr('data-pic-off').replace('00', step));
 		}
 		else {
 			$('#' + this.id + ' img').attr('src', $(this).attr('data-pic-off'));
@@ -505,11 +510,8 @@ $(document).delegate('span[data-widget="basic.shifter"]', {
 	'click': function (event) {
 		var items = $(this).attr('data-item').explode();
 
-		if ($('#' + this.id + ' img').attr('src') == $(this).attr('data-pic-off')) {
-			io.write(items[0], 1);
-		}
-		else {
-			io.write(items[0], 0);
+		if (items[1]) {
+			io.write(items[1], (widget.get(items[1]) == 0 ? 1 : 0));
 		}
 	}
 });
@@ -898,7 +900,7 @@ $(document).delegate('div[data-widget="plot.period_zoomable"]', {
 		var color = $(this).attr('data-color').explode();
 		var exposure = $(this).attr('data-exposure').explode();
 		var axis = $(this).attr('data-axis').explode();
-        var minRange = $(this).attr('data-minRange');
+		var minRange = $(this).attr('data-minRange');
 		var series = Array();
 
 		for (var i = 0; i < response.length; i++) {
@@ -913,8 +915,8 @@ $(document).delegate('div[data-widget="plot.period_zoomable"]', {
 
 		// draw the plot
 		$('#' + this.id).highcharts({
-            chart: { zoomType: 'x' },
-            series: series,
+			chart: { zoomType: 'x' },
+			series: series,
 			xAxis: { type: 'datetime', title: { text: axis[0] }, minRange: minRange },
 			yAxis: { min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: { text: axis[1] } }
 		});
@@ -982,7 +984,7 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 						}
 					],
 					center: [ '95%', '90%' ],
-					size: 15,
+					size: 35,
 					showInLegend: false,
 					dataLabels: { enabled: false }
 				}
@@ -1137,15 +1139,15 @@ $(document).delegate('div[data-widget="plot.temprose"]', {
 $(document).delegate('svg[data-widget^="icon."]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
-		
+
 		if (response instanceof Array) {
-			document.getElementById(this.id).setAttributeNS(null , 'class', 'icon' + (response[1] ? ' icon1' : ' icon0'));
+			document.getElementById(this.id).setAttributeNS(null, 'class', 'icon' + (response[1] ? ' icon1' : ' icon0'));
 		}
 	},
-	
+
 	'click': function (event) {
 		var items = $(this).attr('data-item').explode();
-		
+
 		if (items[1]) {
 			io.write(items[1], (widget.get(items[1]) == 0 ? 1 : 0));
 		}
@@ -1158,13 +1160,15 @@ $(document).delegate('svg[data-widget="icon.arrow"]', {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 
 		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
-		
+
 		var pt = [];
-		pt = pt.concat([50, 50], fx.rotate([25, 50], ang, [50, 50]), fx.rotate([50, 18], ang, [50, 50]), fx.rotate([75, 50], ang, [50, 50]), [50, 50]);
+		pt = pt.concat([50, 50], fx.rotate([25, 50], ang, [50, 50]), fx.rotate([50, 18], ang, [50, 50]), fx.rotate([75,
+			50], ang, [50, 50]), [50, 50]);
 		$('#' + this.id + ' #line0').attr('points', pt.toString());
 
 		pt = [];
-		pt = pt.concat(fx.rotate([32, 50], ang, [50, 50]), fx.rotate([32, 60], ang, [50, 50]), fx.rotate([68, 60], ang, [50, 50]), fx.rotate([68, 50], ang, [50, 50]));
+		pt = pt.concat(fx.rotate([32, 50], ang, [50, 50]), fx.rotate([32, 60], ang, [50, 50]), fx.rotate([68, 60], ang,
+			[50, 50]), fx.rotate([68, 50], ang, [50, 50]));
 		$('#' + this.id + ' #line1').attr('points', pt.toString());
 	}
 });
@@ -1185,13 +1189,15 @@ $(document).delegate('svg[data-widget="icon.compass"]', {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 
 		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
-		
+
 		var pt = [];
-		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 25], ang, [50, 50]), fx.rotate([60, 50], ang, [50, 50]));
+		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 25], ang, [50, 50]), fx.rotate([60, 50], ang,
+			[50, 50]));
 		$('#' + this.id + ' #pin0').attr('points', pt.toString());
 
 		pt = [];
-		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 75], ang, [50, 50]), fx.rotate([60, 50], ang, [50, 50]));
+		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 75], ang, [50, 50]), fx.rotate([60, 50], ang,
+			[50, 50]));
 		$('#' + this.id + ' #pin1').attr('points', pt.toString());
 	}
 });
@@ -1212,13 +1218,15 @@ $(document).delegate('svg[data-widget="icon.windrose"]', {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 
 		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
-		
+
 		var pt = [];
-		pt = pt.concat(fx.rotate([50, 60], ang, [50, 50]), fx.rotate([37, 71], ang, [50, 50]), fx.rotate([50, 29], ang, [50, 50]));
+		pt = pt.concat(fx.rotate([50, 60], ang, [50, 50]), fx.rotate([37, 71], ang, [50, 50]), fx.rotate([50, 29], ang,
+			[50, 50]));
 		$('#' + this.id + ' #pin0').attr('points', pt.toString());
 
 		pt = [];
-		pt = pt.concat(fx.rotate([50, 60], ang, [50, 50]), fx.rotate([63, 71], ang, [50, 50]), fx.rotate([50, 29], ang, [50, 50]));
+		pt = pt.concat(fx.rotate([50, 60], ang, [50, 50]), fx.rotate([63, 71], ang, [50, 50]), fx.rotate([50, 29], ang,
+			[50, 50]));
 		$('#' + this.id + ' #pin1').attr('points', pt.toString());
 	}
 });
@@ -1229,20 +1237,23 @@ $(document).delegate('svg[data-widget="icon.windsock"]', {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 
 		var ang = response[0] / $(this).attr('data-max') * 0.45 * Math.PI;
-		
+
 		var pt = [];
 		pt = pt.concat(fx.rotate([70, 40], ang, [80, 22]), [80, 22], fx.rotate([90, 40], ang, [80, 22]));
 		$('#' + this.id + ' #top').attr('points', pt.toString());
 
 		for (var i = 0; i < 3; i++) {
 			pt = [];
-			pt = pt.concat(fx.rotate([71 + i * 2, 50 + i * 14], ang, [80, 22]), fx.rotate([89 - i * 2, 50 + i * 14], ang, [80, 22]),
-				fx.rotate([88 - i * 2, 54 + i * 14], ang, [80, 22]), fx.rotate([72 + i * 2, 54 + i * 14], ang, [80, 22]));
+			pt = pt.concat(fx.rotate([71 + i * 2, 50 + i * 14], ang, [80, 22]), fx.rotate([89 - i * 2, 50 + i * 14
+			], ang, [80, 22]),
+				fx.rotate([88 - i * 2, 54 + i * 14], ang, [80, 22]), fx.rotate([72 + i * 2, 54 + i * 14], ang, [80, 22
+				]));
 			$('#' + this.id + ' #part' + i).attr('points', pt.toString());
 		}
-		
+
 		pt = [];
-		pt = pt.concat(fx.rotate([70, 40], ang, [80, 22]), fx.rotate([76, 82], ang, [80, 22]), fx.rotate([84, 82], ang, [80, 22]), fx.rotate([90, 40], ang, [80, 22]));
+		pt = pt.concat(fx.rotate([70, 40], ang, [80, 22]), fx.rotate([76, 82], ang, [80, 22]), fx.rotate([84, 82], ang,
+			[80, 22]), fx.rotate([90, 40], ang, [80, 22]));
 		$('#' + this.id + ' #part3').attr('points', pt.toString());
 	}
 });
