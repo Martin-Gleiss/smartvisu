@@ -336,13 +336,13 @@
 			for (var i = 0; i < colors; i++) {
 				html += '<div style="background-color:' + fx.hsv2rgb(i * share, s, 100) + ';"></div>';
 			}
-			html += '<div style="background-color:' + fx.hsv2rgb(i * share, 0, 100 - (s / 25 - 1) * 14.2) + ';"></div><br />';
+			html += '<div style="background-color:' + fx.hsv2rgb(i * share, 0, 100 - (s / 25 - 1) * 16.7) + ';"></div><br />';
 		}
 		for (var v = 100; v >= 25; v -= 25) {
 			for (var i = 0; i < colors; i++) {
 				html += '<div style="background-color:' + fx.hsv2rgb(i * share, 100, v) + ';"></div>';
 			}
-			html += '<div style="background-color:' + fx.hsv2rgb(i * share, 0, (v / 25) * 14.2) + ';"></div><br />';
+			html += '<div style="background-color:' + fx.hsv2rgb(i * share, 0, (v / 25 - 1) * 16.7) + ';"></div><br />';
 		}
 
 		$("#{{ uid }}-popup").html(html);
