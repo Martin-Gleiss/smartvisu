@@ -310,7 +310,70 @@ var fx = {
         }
     },
 
-	/**
+    rotategridbezier: function (obj,angle) {
+        var line,val;
+
+        $('#' + obj.id + ' g').children().each(function (index) {
+            var g = $(this);
+            if (g.is('path')) {
+                g.remove();
+            }
+        });
+
+        var start,end;
+        start = 30;
+        end = 70;
+
+        // calculate angle in %
+        angle = 90/255*angle;
+        angle = angle*-1;
+
+        line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('class','light');
+        line.setAttributeNS(null, 'x1', 50);
+        line.setAttributeNS(null, 'y1', 10);
+        line.setAttributeNS(null, 'x2', 50);
+        line.setAttributeNS(null, 'y2', 20);
+        $('#' + obj.id + ' g').append(line);
+
+        line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('class','light');
+        line.setAttributeNS(null, 'x1', 50);
+        line.setAttributeNS(null, 'y1', 30);
+        line.setAttributeNS(null, 'x2', 50);
+        line.setAttributeNS(null, 'y2', 60);
+        $('#' + obj.id + ' g').append(line);
+
+        line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('class','light');
+        line.setAttributeNS(null, 'x1', 50);
+        line.setAttributeNS(null, 'y1', 70);
+        line.setAttributeNS(null, 'x2', 50);
+        line.setAttributeNS(null, 'y2', 90);
+        $('#' + obj.id + ' g').append(line);
+
+
+        val = 0;
+
+        while (val < 50) {
+
+        // rotate Q
+        var rotated_q=fx.rotatepoint([50,10+val],angle,[50,30+val]);
+        var rotated_m=fx.rotatepoint([start,40+val],angle,[50,30+val]);
+        var rotated_e=fx.rotatepoint([end,40+val],angle,[50,30+val]);
+
+        line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        line.setAttribute('d', 'M '+rotated_m[0]+' '+rotated_m[1]+' Q '+rotated_q[0]+' '+rotated_q[1]+' '+rotated_e[0]+' '+rotated_e[1]);
+        $('#' + obj.id + ' g').append(line);
+
+
+            val = val +40;
+        }
+
+    },
+
+
+    /**
 	 * Draws a grid made of lines
 	 */
 	grid: function (obj, val, start, end) {

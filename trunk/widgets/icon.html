@@ -130,13 +130,27 @@
 * @param       the maximum value for 255  (optional, default 255)
 */
 {% macro shutterangle_z(id, gad_switch, gad_value,min,max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.shutterangle_z" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
      class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
     <g>
     </g>
 </svg>
+{% endmacro %}
 
+/**
+* a shutter angle (round profile)
+*
+* @param       unique id for this widget
+* @param       a gad/item for switching
+* @param       a gad/item for the angle of the blades
+* @param       the minimum value for 0 (optional, default 0, for future use)
+* @param       the maximum value for 255  (optional, default 255)
+*/
+{% macro shutterangle_round(id, gad_switch, gad_value,min,max) %}
+<svg id="{{ uid(page, id) }}" data-widget="icon.shutterangle_round" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+     class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
+    <g></g>
+</svg>
 {% endmacro %}
 
 /**
