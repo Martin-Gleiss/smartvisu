@@ -1419,3 +1419,7 @@ svg.icon text {
 	font-size: 30px;
 	font-weight: normal;
 }
+
+svg.icon line.light {
+    stroke-width: 1;
+}

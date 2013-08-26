@@ -178,6 +178,138 @@ var fx = {
 		return [xd, yd];
 	},
 
+    rotatepoint: function (coordinates, angle, origin) {
+
+        angle = (angle)*(Math.PI/180);
+        var px = Math.cos(angle)*(coordinates[0]-origin[0])-Math.sin(angle)*(coordinates[1]-origin[1])+origin[0];
+        var py = Math.sin(angle)*(coordinates[0]-origin[0])+Math.cos(angle)*(coordinates[1]-origin[1])+origin[1];
+        return [px,py];
+
+
+    },
+
+    /**
+     * draw rotated grid
+     * @param obj
+     * @param val
+     * @param start
+     * @param end
+     */
+
+    rotategrid: function (obj,angle) {
+        var line,val,rotated;
+
+        var start,end;
+        start = 45;
+        end = 55;
+
+        // calculate angle in %
+        angle = 90/255*angle;
+
+        $('#' + obj.id + ' g').children().each(function (index) {
+            var g = $(this);
+            if (g.is('line')) {
+                g.remove();
+            }
+        });
+        val = 50;
+
+        while (val > 0) {
+            line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+            // rotate point 1
+            rotated=fx.rotatepoint([start,20+val],angle,[50,20+val]);
+            line.setAttributeNS(null, 'x1', rotated[0]);
+            line.setAttributeNS(null, 'y1', rotated[1] );
+
+            // rotante point 2
+            rotated=fx.rotatepoint([end,20+val],angle,[50,20+val]);
+            line.setAttributeNS(null, 'x2', rotated[0]);
+            line.setAttributeNS(null, 'y2', rotated[1] );
+
+            $('#' + obj.id + ' g').append(line);
+            val = val - 10;
+        }
+    },
+
+    rotategridz: function (obj,angle) {
+        var line,val;
+
+        var start,end;
+        start = 25;
+        end = 75;
+
+        // calculate angle in %
+        angle = 90/255*angle;
+        angle = angle*-1;
+
+        $('#' + obj.id + ' g').children().each(function (index) {
+            var g = $(this);
+            if (g.is('line')) {
+                g.remove();
+            }
+        });
+        val = 0;
+
+        line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('class','light');
+        line.setAttributeNS(null, 'x1', 50);
+        line.setAttributeNS(null, 'y1', 10);
+        line.setAttributeNS(null, 'x2', 50);
+        line.setAttributeNS(null, 'y2', 20);
+        $('#' + obj.id + ' g').append(line);
+
+        line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('class','light');
+        line.setAttributeNS(null, 'x1', 50);
+        line.setAttributeNS(null, 'y1', 40);
+        line.setAttributeNS(null, 'x2', 50);
+        line.setAttributeNS(null, 'y2', 60);
+        $('#' + obj.id + ' g').append(line);
+
+        line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('class','light');
+        line.setAttributeNS(null, 'x1', 50);
+        line.setAttributeNS(null, 'y1', 80);
+        line.setAttributeNS(null, 'x2', 50);
+        line.setAttributeNS(null, 'y2', 90);
+        $('#' + obj.id + ' g').append(line);
+
+        while (val < 50) {
+            // line left
+            line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            var rotated_1=fx.rotatepoint([start,30+val-5],angle,[50,30+val]);
+            line.setAttributeNS(null, 'x1', rotated_1[0]);
+            line.setAttributeNS(null, 'y1', rotated_1[1] );
+            // rotate short point
+            var rotated_2=fx.rotatepoint([start+20,30+val-5],angle,[50,30+val]);
+            line.setAttributeNS(null, 'x2', rotated_2[0]);
+            line.setAttributeNS(null, 'y2', rotated_2[1]);
+            $('#' + obj.id + ' g').append(line);
+
+            // line right
+            line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            // rotate long point
+            var rotated_3=fx.rotatepoint([end,30+val+5],angle,[50,30+val]);
+            line.setAttributeNS(null, 'x1', rotated_3[0]);
+            line.setAttributeNS(null, 'y1', rotated_3[1] );
+            // rotate short point
+            var rotated_4=fx.rotatepoint([55,30+val+5],angle,[50,30+val]);
+            line.setAttributeNS(null, 'x2', rotated_4[0]);
+            line.setAttributeNS(null, 'y2', rotated_4[1]);
+            $('#' + obj.id + ' g').append(line);
+
+            // connector line
+            line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttributeNS(null, 'x1', rotated_2[0]);
+            line.setAttributeNS(null, 'y1', rotated_2[1]);
+            line.setAttributeNS(null, 'x2', rotated_4[0]);
+            line.setAttributeNS(null, 'y2', rotated_4[1]);
+            $('#' + obj.id + ' g').append(line);
+            val = val +40;
+        }
+    },
+
 	/**
 	 * Draws a grid made of lines
 	 */
