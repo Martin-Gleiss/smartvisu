@@ -1212,6 +1212,26 @@ $(document).delegate('svg[data-widget="icon.shutter"]', {
 	}
 });
 
+// ----- icon.shutterangle ---------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.shutterangle"]', {
+    'update': function (event, response) {
+        // response is: {{ gad_value }}, {{ gad_switch }}
+
+        fx.rotategrid(this, response[0]);
+
+    }
+});
+
+// ----- icon.shutterangle_z ---------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.shutterangle_z"]', {
+    'update': function (event, response) {
+        // response is: {{ gad_value }}, {{ gad_switch }}
+
+        fx.rotategridz(this, response[0]);
+
+    }
+});
+
 // ----- icon.windrose ---------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.windrose"]', {
 	'update': function (event, response) {
