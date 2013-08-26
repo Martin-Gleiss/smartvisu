@@ -1232,6 +1232,16 @@ $(document).delegate('svg[data-widget="icon.shutterangle_z"]', {
     }
 });
 
+// ----- icon.shutterangle_z ---------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.shutterangle_round"]', {
+    'update': function (event, response) {
+        // response is: {{ gad_value }}, {{ gad_switch }}
+
+        fx.rotategridbezier(this, response[0]);
+
+    }
+});
+
 // ----- icon.windrose ---------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.windrose"]', {
 	'update': function (event, response) {

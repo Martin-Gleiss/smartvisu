@@ -1423,3 +1423,8 @@ svg.icon text {
 svg.icon line.light {
     stroke-width: 1;
 }
+
+svg.icon path {
+    stroke-width: 3;
+    fill:none;
+}
