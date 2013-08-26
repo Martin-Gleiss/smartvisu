@@ -318,6 +318,9 @@ var fx = {
             if (g.is('path')) {
                 g.remove();
             }
+            if (g.is('line')) {
+                g.remove();
+            }
         });
 
         var start,end;
