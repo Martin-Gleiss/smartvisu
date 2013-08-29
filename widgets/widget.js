@@ -1215,28 +1215,14 @@ $(document).delegate('svg[data-widget="icon.blade"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 
-		// calculate angle in (0 - 90°)
-		var ang = response[0] / $(this).attr('data-max') * 0.5 * Math.PI;
-		var val = 50;
-		var line, rotated;
-
-		fx.remove(this);
-
-		while (val > 0) {
-			line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-
-			// rotate point 1
-			rotated = fx.rotate([43, 20 + val], ang, [50, 20 + val]);
-			line.setAttributeNS(null, 'x1', rotated[0]);
-			line.setAttributeNS(null, 'y1', rotated[1]);
-
-			// rotante point 2
-			rotated = fx.rotate([57, 20 + val], ang, [50, 20 + val]);
-			line.setAttributeNS(null, 'x2', rotated[0]);
-			line.setAttributeNS(null, 'y2', rotated[1]);
-
-			$('#' + this.id + ' g').append(line);
-			val = val - 10;
+		// calculate angle in (0 - ~90°)
+		var ang = response[0] / $(this).attr('data-max') * 0.4 * Math.PI;
+		var pt;
+		
+		for (var i = 0; i <= 3; i++) {
+			pt = [];
+			pt = pt.concat(fx.rotate([37, 20 + i * 20], ang, [50, 20 + i * 20]), fx.rotate([63, 20 + i * 20], ang, [50, 20 + i * 20]));
+			$('#' + this.id + ' #blade' + i).attr('points', pt.toString());
 		}
 	}
 });
@@ -1259,19 +1245,19 @@ $(document).delegate('svg[data-widget="icon.blade_z"]', {
 	}
 });
 
-// ----- icon.blade_round ---------------------------------------------------------
-$(document).delegate('svg[data-widget="icon.blade_round"]', {
+// ----- icon.blade_arc ---------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.blade_arc"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 
 		// calculate angle in (0 - 90°)
-		var ang = response[0] / $(this).attr('data-max') * -0.5 * Math.PI;
+		var ang = response[0] / $(this).attr('data-max') * -0.7 * Math.PI + 0.35 * Math.PI;
 		var pt;
 		
-		pt = 'M ' + fx.rotate([30, 40], ang, [50, 30]) + ' Q ' + fx.rotate([50, 15], ang, [50, 30]) + ' ' + fx.rotate([70, 40], ang, [50, 30]);
+		pt = 'M ' + fx.rotate([30, 40], ang, [50, 37]) + ' Q ' + fx.rotate([50, 22], ang, [50, 30]) + ' ' + fx.rotate([70, 40], ang, [50, 37]);
 		$('#' + this.id + ' #blade0').attr('d', pt);
 
-		pt = 'M ' + fx.rotate([30, 80], ang, [50, 70]) + ' Q ' + fx.rotate([50, 55], ang, [50, 70]) + ' ' + fx.rotate([70, 80], ang, [50, 70]);
+		pt = 'M ' + fx.rotate([30, 80], ang, [50, 77]) + ' Q ' + fx.rotate([50, 62], ang, [50, 70]) + ' ' + fx.rotate([70, 80], ang, [50, 77]);
 		$('#' + this.id + ' #blade1').attr('d', pt);
 	}
 });
