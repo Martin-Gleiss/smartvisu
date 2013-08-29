@@ -11,7 +11,7 @@
 /**
  * Version of smartVISU
  */
-define ('config_version', '2.6');
+define ('config_version', '2.7');
 
 // get config-variables 
 require_once 'lib/includes.php';
