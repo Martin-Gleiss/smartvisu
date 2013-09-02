@@ -11,7 +11,7 @@
 /**
 * Displays a mini text-based clock
 *
-* @param       unique id for this widget
+* @param unique id for this widget
 */
 {% macro miniclock(id) %}
 
@@ -21,13 +21,26 @@
 
 
 /**
+* Displays a clock in icon style
+*
+* @param unique id for this widget
+*/
+{% macro iconclock(id) %}
+	{% import "icon.html" as icon %}
+
+	<span id="{{ uid(page, id) }}-iconclock" class="iconclock">{{ icon.clock(uid(page, id)) }}</span>
+
+{% endmacro %}
+
+
+/**
 * Displays a digital clock
 *
-* @param       unique id for this widget
-* @param       location as string (optional)
+* @param unique id for this widget
+* @param location as string (optional)
 *
-* @info        based on jDigiClock by Radoslav Dimov
-* @link        http://www.radoslavdimov.com
+* @info based on jDigiClock by Radoslav Dimov
+* @link http://www.radoslavdimov.com
 */
 {% macro digiclock(id, location) %}
 	{% set uid = uid(page, id) %}

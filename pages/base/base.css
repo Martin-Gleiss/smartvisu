@@ -122,14 +122,14 @@ img.icon {
 }
 
 .ui-page > .ui-header .ui-left {
-	margin: 5px 0 0 5px;
+	margin: 5px 0 0 2px;
 	float: left;
 }
 
 .ui-page > .ui-header .ui-right {
-	width: 95px;
+	width: 94px;
 	float: right;
-	margin: 9px 10px 0 0;
+	margin: 9px 2px 0 0;
 }
 
 .ui-page > .ui-header .ui-right .mini {
@@ -1406,9 +1406,18 @@ svg.icon line {
 	stroke-width: 3;
 }
 
+svg.icon .light {
+	stroke-width: 1;
+}
+
 svg.icon polyline {
 	stroke-width: 3;
 	stroke-linejoin: round;
+}
+
+svg.icon path {
+	stroke-width: 3;
+	fill:none;
 }
 
 svg.icon rect {
@@ -1418,13 +1427,4 @@ svg.icon rect {
 svg.icon text {
 	font-size: 30px;
 	font-weight: normal;
-}
-
-svg.icon line.light {
-    stroke-width: 1;
-}
-
-svg.icon path {
-    stroke-width: 3;
-    fill:none;
 }

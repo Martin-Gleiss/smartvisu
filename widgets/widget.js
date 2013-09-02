@@ -1173,40 +1173,13 @@ $(document).delegate('svg[data-widget="icon.arrow"]', {
 	}
 });
 
-// ----- icon.shutter ---------------------------------------------------------
+// ----- icon.battery ---------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.battery"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 
 		var val = Math.round(response[0] / $(this).attr('data-max') * 40);
 		fx.grid(this, val, [39, 68], [61, 28]);
-	}
-});
-
-// ----- icon.compass ----------------------------------------------------------
-$(document).delegate('svg[data-widget="icon.compass"]', {
-	'update': function (event, response) {
-		// response is: {{ gad_value }}, {{ gad_switch }}
-
-		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
-
-		var pt = [];
-		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 25], ang, [50, 50]), fx.rotate([60, 50], ang, [50, 50]));
-		$('#' + this.id + ' #pin0').attr('points', pt.toString());
-
-		pt = [];
-		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 75], ang, [50, 50]), fx.rotate([60, 50], ang, [50, 50]));
-		$('#' + this.id + ' #pin1').attr('points', pt.toString());
-	}
-});
-
-// ----- icon.shutter ---------------------------------------------------------
-$(document).delegate('svg[data-widget="icon.shutter"]', {
-	'update': function (event, response) {
-		// response is: {{ gad_value }}, {{ gad_switch }}
-
-		var val = Math.round(response[0] / $(this).attr('data-max') * 38);
-		fx.grid(this, val, [14, 30], [86, 68]);
 	}
 });
 
@@ -1218,7 +1191,7 @@ $(document).delegate('svg[data-widget="icon.blade"]', {
 		// calculate angle in (0 - ~90°)
 		var ang = response[0] / $(this).attr('data-max') * 0.4 * Math.PI;
 		var pt;
-		
+
 		for (var i = 0; i <= 3; i++) {
 			pt = [];
 			pt = pt.concat(fx.rotate([37, 20 + i * 20], ang, [50, 20 + i * 20]), fx.rotate([63, 20 + i * 20], ang, [50, 20 + i * 20]));
@@ -1245,7 +1218,7 @@ $(document).delegate('svg[data-widget="icon.blade_z"]', {
 	}
 });
 
-// ----- icon.blade_arc ---------------------------------------------------------
+// ----- icon.blade_arc -------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.blade_arc"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1253,7 +1226,7 @@ $(document).delegate('svg[data-widget="icon.blade_arc"]', {
 		// calculate angle in (0 - 90°)
 		var ang = response[0] / $(this).attr('data-max') * -0.7 * Math.PI + 0.35 * Math.PI;
 		var pt;
-		
+
 		pt = 'M ' + fx.rotate([30, 40], ang, [50, 37]) + ' Q ' + fx.rotate([50, 22], ang, [50, 30]) + ' ' + fx.rotate([70, 40], ang, [50, 37]);
 		$('#' + this.id + ' #blade0').attr('d', pt);
 
@@ -1262,7 +1235,57 @@ $(document).delegate('svg[data-widget="icon.blade_arc"]', {
 	}
 });
 
-// ----- icon.windrose ---------------------------------------------------------
+// ----- icon.clock -----------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.clock"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var ang_l = (response[0] % 60) / 60 * 2 * Math.PI;
+		$('#' + this.id + ' #hand_l').attr('points', '50,50 ' + fx.rotate([50, 30], ang_l, [50, 50]).toString());
+
+		var ang_s = (Math.floor(response[0] / 60) * 5) / 60 * 2 * Math.PI;
+		$('#' + this.id + ' #hand_s').attr('points', '50,50 ' + fx.rotate([50, 35], ang_s, [50, 50]).toString());
+	}
+});
+
+// ----- icon.compass ---------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.compass"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
+
+		var pt = [];
+		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 25], ang, [50, 50]), fx.rotate([60, 50], ang, [50, 50]));
+		$('#' + this.id + ' #pin0').attr('points', pt.toString());
+
+		pt = [];
+		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 75], ang, [50, 50]), fx.rotate([60, 50], ang, [50, 50]));
+		$('#' + this.id + ' #pin1').attr('points', pt.toString());
+	}
+});
+
+// ----- icon.meter -----------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.meter"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var ang = response[0] / $(this).attr('data-max') * 0.44 * Math.PI;
+		$('#' + this.id + ' #pointer').attr('points', '50,85 ' + fx.rotate([15, 48], ang, [50, 85]).toString());
+	}
+});
+
+// ----- icon.shutter ---------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.shutter"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var val = Math.round(response[0] / $(this).attr('data-max') * 38);
+		fx.grid(this, val, [14, 30], [86, 68]);
+	}
+});
+
+// ----- icon.windrose --------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.windrose"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1279,7 +1302,7 @@ $(document).delegate('svg[data-widget="icon.windrose"]', {
 	}
 });
 
-// ----- icon.windsock ---------------------------------------------------------
+// ----- icon.windsock --------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.windsock"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1292,10 +1315,8 @@ $(document).delegate('svg[data-widget="icon.windsock"]', {
 
 		for (var i = 0; i < 3; i++) {
 			pt = [];
-			pt = pt.concat(fx.rotate([71 + i * 2, 50 + i * 14], ang, [80, 22]), fx.rotate([89 - i * 2, 50 + i * 14
-			], ang, [80, 22]),
-				fx.rotate([88 - i * 2, 54 + i * 14], ang, [80, 22]), fx.rotate([72 + i * 2, 54 + i * 14], ang, [80, 22
-				]));
+			pt = pt.concat(fx.rotate([71 + i * 2, 50 + i * 14], ang, [80, 22]), fx.rotate([89 - i * 2, 50 + i * 14], ang, [80, 22]),
+				fx.rotate([88 - i * 2, 54 + i * 14], ang, [80, 22]), fx.rotate([72 + i * 2, 54 + i * 14], ang, [80, 22]));
 			$('#' + this.id + ' #part' + i).attr('points', pt.toString());
 		}
 
