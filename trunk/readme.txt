@@ -76,6 +76,13 @@ SYSTEMREQUIREMENTS
 
 HISTORY
 --------------------------------------------------------------------------------
+v 2.7
+	- new model house: alber thx to Raik Alber
+	- new widget: clock.iconclock
+    - new svg-icons: icon.blade, icon.blade_arc, icon.blade_z thx to Mario Zanier
+	- new svg-icons: icon.meter
+	- improvments on svg-icons
+	
 v 2.6 06.08.13
 	- dynamic icons: svg-icons for continuous values
 	- new: config splitted in lib/defaults.php and config.php (individual)
