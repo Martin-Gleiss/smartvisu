@@ -15,7 +15,8 @@
 */
 {% macro miniclock(id) %}
 
-	<span id="{{ uid(page, id) }}-miniclock" class="miniclock">{{ now|date('H:i') }}</span>
+	<span id="{{ uid(page, id) }}" data-widget="clock.miniclock" data-repeat="1i" 
+		class="miniclock">{{ now|date('H:i') }}</span>
 
 {% endmacro %}
 
@@ -28,7 +29,8 @@
 {% macro iconclock(id) %}
 	{% import "icon.html" as icon %}
 
-	<span id="{{ uid(page, id) }}-iconclock" class="iconclock">{{ icon.clock(uid(page, id)) }}</span>
+	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i"
+		class="iconclock">{{ icon.clock(id) }}</span>
 
 {% endmacro %}
 
@@ -50,7 +52,8 @@
 		<script type="text/javascript" src="lib/clock/jquery.jdigiclock.js"></script>
 	{% endif %}
 
-	<div id="{{ uid }}-digiclock" class="digiclock"></div>
+	<div id="{{ uid }}-digiclock" data-widget="clock.digiclock"
+		class="digiclock"></div>
 
 	{% if location %}
 		{% if once('digiweather') %}

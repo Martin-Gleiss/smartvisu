@@ -119,7 +119,7 @@
 *
 * @author Mario Zanier
 */
-{% macro blade_arc(id, gad_switch, gad_value,min,max) %}
+{% macro blade_arc(id, gad_switch, gad_value, min, max) %}
 	<svg id="{{ uid(page, id) }}" data-widget="icon.blade_arc" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
@@ -142,7 +142,7 @@
 */
 {% macro clock(id, gad_switch, gad_value, min, max) %}
 
-	<svg id="{{ uid(page, id) }}" data-widget="icon.clock" data-item="{{ gad_value }}, {{ gad_switch }}"
+	<svg id="{{ uid(page, id) }}" data-widget="icon.clock" {% if gad_value is not empty %} data-item="{{ gad_value }}, {{ gad_switch }}" {%  endif %}
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<rect rx="3" x="15" y="15" width="70" height="70" fill="none"/>
