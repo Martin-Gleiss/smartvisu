@@ -376,7 +376,7 @@ var notify = {
  * Events:
  * -------
  *
- * 'repeat: function(event) { }
+ * 'repeat': function(event) { }
  * Triggerd after the specified time.
  *
  */
