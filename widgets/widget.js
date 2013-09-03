@@ -7,20 +7,12 @@
  * -----------------------------------------------------------------------------
  */
 
+
+// ----------------------------------------------------------------------------
+// W I D G E T   F U N C T I O N S
+// ----------------------------------------------------------------------------
+
 /**
- * Class for controlling all widgets.
- *
- * Concept:
- * --------
- * Every item has a name. The value of the item may be of type: int, float, or
- * array. The items are stored in the widget.buffer. The drivers will fill the
- * buffer through the widget.update (and therefore widget.set). Asynchronly
- * all widgets on a page may be updated. The update is been triggerd from
- * widget.update, if a item has been changed. Updates are only made if all
- * items are in buffer needed for that update. If one is missing the update is
- * not been made. If some plots placed on the page, the update will look if it
- * is possible to add only one point (if the widget is already initialized).
- *
  * Events:
  * -------
  * Some new events are introduced to control the widgets and there visual
@@ -36,315 +28,26 @@
  * Triggerd only for plots through widget.update if the plot is already drawn
  * and only a new point has to be added to the series.
  *
+ * 'repeat: function(event) { }
+ * Triggerd after the specified time, when 'data-repeat' ist been used.
+ * 
  * 'change', 'click' ...
  * Standard jquery-mobile events, triggered from the framework.
  *
  */
-var widget = {
-
-	// a list with all item and values
-	buffer: new Object(),
-
-	/**
-	 * Static function for exploding the a text with comma-seperated values into
-	 * unique array.
-	 *
-	 * @param    text   the text
-	 * @return   array  the items as an array (one or more entries)
-	 */
-	explode: function (text) {
-		var ret = Array();
-		var unique = Array();
-
-		// More than one item?
-		if (text.indexOf(',') >= 0) {
-			var parts = text.explode();
-
-			for (var i = 0; i < parts.length; i++) {
-				if (parts[i] != '') {
-					unique[parts[i]] = '';
-				}
-			}
-
-			for (var part in unique) {
-				ret.push(part);
-			}
-		}
-
-		// One item
-		else if (text.trim() != '') {
-			ret.push(text.trim());
-		}
-
-		return ret;
-	},
-
-	/**
-	 *  Checks if there are any listeners.
-	 *
-	 *  @return    boolean  true, if there are any listeners
-	 */
-	listening: function () {
-		var ret = false;
-
-		// are there any?
-		if ($('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').size() > 0) {
-			ret = true;
-		}
-
-		return ret;
-	},
-
-	/**
-	 * Returns all items listening on. This is used to get an unique list of the
-	 * items independent on the number of widgets.
-	 *
-	 * @return    array  unique list of the items
-	 */
-	listeners: function () {
-		var ret = Array();
-		var unique = Array();
-
-		// all except plots
-		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function (idx) {
-			//if ($(this).attr('data-widget').substr(0, 5) != 'plot.' ) {
-			var items = widget.explode($(this).attr('data-item'));
-			for (var i = 0; i < items.length; i++) {
-				unique[items[i]] = '';
-			}
-			//}
-		});
-
-		for (var item in unique) {
-			ret.push(item);
-		}
-
-		return ret;
-	},
-
-	/**
-	 * List all items and the number of listeners in console.log.
-	 */
-	list: function () {
-		var widgets = 0;
-		$('[data-item]').each(function (idx) {
-			if ($(this).attr('data-item').trim() != '') {
-				console.log("[" + $(this).attr('data-widget') + "] '" + this.id + "' listen on '" + $(this).attr('data-item') + "'");
-				widgets++;
-			}
-		});
-		console.log("[widget] --> " + widgets + " listening.");
-	},
-
-	/**
-	 * Checks if the value/s are valid (not undefined and not null)
-	 *
-	 * @param    values   the value/s
-	 * @return   boolean  true if no item is undefined or null
-	 */
-	check: function (values) {
-
-		// case: more values
-		if (values instanceof Array) {
-			for (var i = 0; i < values.length; i++) {
-				if (values[i] === undefined || values[i] == null) {
-					return false;
-				}
-			}
-		}
-		// case: one value
-		else if (values === undefined || values == null) {
-			return false;
-		}
-
-		return true;
-	},
-
-	/**
-	 * Get one or more value/s for an item/s from the buffer.
-	 *
-	 * @param    items   the item/s
-	 * @return   string  a single value or an array of values
-	 */
-	get: function (items) {
-
-		// case: more items
-		if (items instanceof Array) {
-			var ret = Array();
-
-			for (var i = 0; i < items.length; i++) {
-				ret.push(widget.buffer[items[i]]);
-			}
-		}
-		// case: one item
-		else {
-			var ret = widget.buffer[items];
-		}
-
-		return ret;
-	},
-
-	/**
-	 * Set a value of an item in the buffer.
-	 *
-	 * @param    item   an item
-	 * @param    value  the value
-	 */
-	set: function (item, value) {
-
-		// case: a series
-		if (widget.buffer[item] instanceof Array) {
-			// don't add it to the buffer, because highchart will do it for us.   
-			//var series = widget.buffer[item];
-			//series.push(value);
-		}
-		else if (value !== undefined) {
-			widget.buffer[item] = ( $.isNumeric(value) ? value * 1.0 : value);
-		}
-
-		// DEBUG: console.log("[widget] '" + item, widget.buffer[item]);
-	},
-
-	/**
-	 * Update an item and all widgets listening on that. The value is been written
-	 * to the buffer and the widgets are called if all values are set.
-	 *
-	 * @param    item   the item
-	 * @param    value  the value
-	 */
-	update: function (item, value) {
-
-		// update if value has changed
-		if (value === undefined || widget.buffer[item] !== value ||
-			(widget.buffer[item] instanceof Array && widget.buffer[item].toString() != value.toString())) {
-			widget.set(item, value);
-
-			$('[data-item*="' + item + '"]').each(function (idx) {
-				var items = widget.explode($(this).attr('data-item'));
-
-				// only the item witch is been updated
-				for (var i = 0; i < items.length; i++) {
-					if (items[i] == item) {
-						var values = Array();
-
-						// update to a plot: only add a point
-						if ($(this).attr('data-widget').substr(0, 5) == 'plot.' && $('#' + this.id).highcharts()) {
-
-							// if more than one item, only that with the value
-							for (var j = 0; j < items.length; j++) {
-								values.push(items[j] == item ? value : null);
-							}
-							if (value !== undefined && value != null) {
-								// DEBUG:
-								console.log("[" + $(this).attr('data-widget') + "] point '" + this.id + "':", values);
-								$(this).trigger('point', [values]);
-							}
-						}
-
-						// regular update to the widget with all items   
-						else {
-							values = widget.get(items);
-							if (widget.check(values)) {
-								// DEBUG:
-								console.log("[" + $(this).attr('data-widget') + "] update '" + this.id + "':", values);
-								$(this).trigger('update', [values]);
-							}
-						}
-					}
-				}
-			});
-		}
-	},
-
-	/**
-	 * Prepares some widgets on the current page.
-	 * Bind to jquery mobile 'pagebeforeshow'.
-	 */
-	prepare: function () {
-		// all plots on the current page.
-		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget^="plot."][data-item]').each(function (idx) {
-
-			if ($('#' + this.id).highcharts()) {
-				$('#' + this.id).highcharts().destroy();
-			}
-		});
-	},
-
-	/**
-	 * Refreshes all widgets on the current page. Used to put the values to the
-	 * widgets if a new page has been opened. Bind to jquery mobile 'pageshow'.
-	 */
-	refresh: function () {
-		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function (idx) {
-
-			var values = widget.get(widget.explode($(this).attr('data-item')));
-
-			if (widget.check(values)) {
-				$(this).trigger('update', [values]);
-			}
-		})
-	},
-
-	// ----- s p e c i a l ---------------------------------------------------------
-
-	/**
-	 * Returns all widgets with plot functionality or plots listening to an item.
-	 * Matching 'plot' in attribute 'data-widget'.
-	 *
-	 * @param    item  item: matches all plot-widgets with that item
-	 * @return   jQuery objectlist
-	 */
-	plot: function (item) {
-		var ret = $();
-
-		if (item) {
-			$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget^="plot."][data-item*="' + item + '"]').each(function (idx) {
-				var items = widget.explode($(this).attr('data-item'));
-
-				for (var i = 0; i < items.length; i++) {
-					if (items[i] == item) {
-						ret = ret.add(this);
-					}
-				}
-			})
-		}
-		else {
-			ret = $('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget^="plot."][data-item]');
-		}
-
-		return ret;
-	},
-
-	/**
-	 * Checks if the item is a series.
-	 *
-	 * @param    item  an item
-	 */
-	is_series: function (item) {
-
-		var pt = item.split('.');
-
-		return ((pt instanceof Array) && (pt[pt.length - 3] == 'avg' || pt[pt.length - 3] == 'sum' ||
-			pt[pt.length - 3] == 'min' || pt[pt.length - 3] == 'max'))
-	}
-};
 
 
-// -----------------------------------------------------------------------------
-// W I D G E T   D E L E G A T E   F U N C T I O N S
-// -----------------------------------------------------------------------------
+// ----- b a s i c ------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
-// ----- b a s i c -------------------------------------------------------------
-// -----------------------------------------------------------------------------
-
-// ----- basic.value -----------------------------------------------------------
+// ----- basic.value ----------------------------------------------------------
 $(document).delegate('[data-widget="basic.value"]', {
 	'update': function (event, response) {
 		$('#' + this.id).html(response + ' ' + $(this).attr('data-unit'));
 	}
 });
 
-// ----- basic.float -----------------------------------------------------------
+// ----- basic.float ----------------------------------------------------------
 $(document).delegate('[data-widget="basic.float"]', {
 	'update': function (event, response) {
 		if ($(this).attr('data-unit') == '°') {
@@ -363,14 +66,14 @@ $(document).delegate('[data-widget="basic.float"]', {
 	}
 });
 
-// ----- basic.text ------------------------------------------------------------
+// ----- basic.text -----------------------------------------------------------
 $(document).delegate('[data-widget="basic.text"]', {
 	'update': function (event, response) {
 		$('#' + this.id).html((response == $(this).attr('data-val-on') ? $(this).attr('data-txt-on') : $(this).attr('data-txt-off')));
 	}
 });
 
-// ----- basic.checkbox --------------------------------------------------------
+// ----- basic.checkbox -------------------------------------------------------
 $(document).delegate('input[data-widget="basic.checkbox"]', {
 	'update': function (event, response) {
 		$(this).prop('checked', response != 0).checkboxradio('refresh');
@@ -382,7 +85,7 @@ $(document).delegate('input[data-widget="basic.checkbox"]', {
 	}
 });
 
-// ----- basic.flip ------------------------------------------------------------
+// ----- basic.flip -----------------------------------------------------------
 $(document).delegate('select[data-widget="basic.flip"]', {
 	'update': function (event, response) {
 		$(this).val(response > 0 ? 'on' : 'off').slider('refresh');
@@ -394,7 +97,7 @@ $(document).delegate('select[data-widget="basic.flip"]', {
 	}
 });
 
-// ----- basic.silder ----------------------------------------------------------
+// ----- basic.silder ---------------------------------------------------------
 // The slider had to be handled in a more complex manner. A 'lock' is used
 // to stop the change after a refresh. And a timer is used to fire the trigger
 // only every 400ms if it was been moved. There should be no trigger on init.
@@ -433,7 +136,7 @@ $(document).delegate('input[data-widget="basic.slider"]', {
 	}
 });
 
-// ----- basic.symbol ----------------------------------------------------------
+// ----- basic.symbol ---------------------------------------------------------
 $(document).delegate('span[data-widget="basic.symbol"]', {
 	'update': function (event, response) {
 
@@ -464,7 +167,7 @@ $(document).delegate('span[data-widget="basic.symbol"]', {
 	}
 });
 
-// ----- basic.switch ----------------------------------------------------------
+// ----- basic.switch ---------------------------------------------------------
 $(document).delegate('span[data-widget="basic.switch"]', {
 	'update': function (event, response) {
 		$('#' + this.id + ' img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
@@ -489,7 +192,7 @@ $(document).delegate('span[data-widget="basic.switch"] > a > img', 'hover', func
 	}
 });
 
-// ----- basic.shifter ---------------------------------------------------------
+// ----- basic.shifter --------------------------------------------------------
 $(document).delegate('span[data-widget="basic.shifter"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
@@ -525,7 +228,7 @@ $(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', fun
 	}
 });
 
-// ----- basic.button ----------------------------------------------------------
+// ----- basic.button ---------------------------------------------------------
 $(document).delegate('a[data-widget="basic.button"]', {
 	'click': function (event) {
 		if ($(this).attr('data-val') != '') {
@@ -534,7 +237,7 @@ $(document).delegate('a[data-widget="basic.button"]', {
 	}
 });
 
-// ----- basic.dual ------------------------------------------------------------
+// ----- basic.dual -----------------------------------------------------------
 $(document).delegate('a[data-widget="basic.dual"]', {
 	'update': function (event, response) {
 		$('#' + this.id + ' img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
@@ -550,7 +253,7 @@ $(document).delegate('a[data-widget="basic.dual"]', {
 	}
 });
 
-// ----- basic.shutter ---------------------------------------------------------
+// ----- basic.shutter --------------------------------------------------------
 $(document).delegate('div[data-widget="basic.shutter"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_pos }}, {{ gad_angle }}
@@ -620,7 +323,7 @@ $(document).delegate('div[data-widget="basic.shutter"]', {
 	}
 });
 
-// ----- basic.rgb -------------------------------------------------------------
+// ----- basic.rgb ------------------------------------------------------------
 $(document).delegate('a[data-widget="basic.rgb"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_r }}, {{ gad_g }}, {{ gad_b }}
@@ -654,7 +357,7 @@ $(document).delegate('div[data-widget="basic.rgb-popup"] > div', {
 	}
 });
 
-// ----- basic.colordisc -------------------------------------------------------
+// ----- basic.colordisc ------------------------------------------------------
 $(document).delegate('a[data-widget="basic.colordisc"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_r }}, {{ gad_g }}, {{ gad_b }}
@@ -796,7 +499,7 @@ $(document).delegate('canvas[data-widget="basic.colordisc"]', {
 	}
 });
 
-// ----- basic.tank ------------------------------------------------------------
+// ----- basic.tank -----------------------------------------------------------
 $(document).delegate('div[data-widget="basic.tank"]', {
 	'update': function (event, response) {
 		$('#' + this.id + ' div').css('height', Math.round(Math.min(response / $(this).attr('data-max'), 1) * 180));
@@ -817,10 +520,34 @@ $(document).delegate('span[data-widget="basic.notify"]', {
 });
 
 
-// ----- d e v i c e -----------------------------------------------------------
-// -----------------------------------------------------------------------------
+// ----- c l o c k ------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
-// ----- device.rtr ------------------------------------------------------------
+// ----- clock.miniclock ------------------------------------------------------
+$(document).delegate('span[data-widget="clock.miniclock"]', {
+	'repeat': function (event) {
+
+		var now = new Date();
+		$(this).html(now.getHours() + ':' + (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()));
+	}
+});
+
+// ----- clock.iconclock ------------------------------------------------------
+$(document).delegate('span[data-widget="clock.iconclock"]', {
+	'repeat': function (event) {
+		
+		var minutes = Math.floor((new Date() - new Date().setHours(0,0,0,0)) / 1000 / 60);
+		$('#' + this.id + ' svg').trigger('update', [[minutes], [0]]);
+	
+		// DEBUG: console.log("[iconclock] '" + this.id + "'", minutes);
+	}
+});
+
+
+// ----- d e v i c e ----------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+// ----- device.rtr -----------------------------------------------------------
 $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="minus"]', {
 	'click': function (event, response) {
 		var uid = $(this).parent().parent().attr('id');
@@ -844,10 +571,10 @@ $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="plus"]'
 });
 
 
-// ----- p l o t ---------------------------------------------------------------
-// -----------------------------------------------------------------------------
+// ----- p l o t --------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
-// ----- plot.period -----------------------------------------------------------
+// ----- plot.period ----------------------------------------------------------
 $(document).delegate('div[data-widget="plot.period"]', {
 	'update': function (event, response) {
 		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
@@ -891,7 +618,7 @@ $(document).delegate('div[data-widget="plot.period"]', {
 	}
 });
 
-// ----- plot.period_zoomable  -----------------------------------------------------
+// ----- plot.period_zoomable  ------------------------------------------------
 $(document).delegate('div[data-widget="plot.period_zoomable"]', {
 	'update': function (event, response) {
 		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
@@ -937,7 +664,7 @@ $(document).delegate('div[data-widget="plot.period_zoomable"]', {
 	}
 });
 
-// ----- plot.rtr --------------------------------------------------------------
+// ----- plot.rtr -------------------------------------------------------------
 $(document).delegate('div[data-widget="plot.rtr"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_actual }}, {{ gad_set }}, {{ gat_state }} 
@@ -1014,7 +741,7 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 	}
 });
 
-// ----- plot.comfortchart -----------------------------------------------------
+// ----- plot.comfortchart ----------------------------------------------------
 $(document).delegate('div[data-widget="plot.comfortchart"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_temp }}, {{ gad_humidity }}
@@ -1082,7 +809,7 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
 	}
 });
 
-// ----- plot.temprose -----------------------------------------------------
+// ----- plot.temprose --------------------------------------------------------
 $(document).delegate('div[data-widget="plot.temprose"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_actual_1, gad_actual_2, gad_actual_3, gad_set_1, gad_set_2, gad_set_3 }}
@@ -1132,9 +859,8 @@ $(document).delegate('div[data-widget="plot.temprose"]', {
 });
 
 
-// ----- i c o n ---------------------------------------------------------------
-// -----------------------------------------------------------------------------
-
+// ----- i c o n --------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 $(document).delegate('svg[data-widget^="icon."]', {
 	'update': function (event, response) {
@@ -1154,7 +880,7 @@ $(document).delegate('svg[data-widget^="icon."]', {
 	}
 });
 
-// ----- icon.arrow ---------------------------------------------------------
+// ----- icon.arrow -----------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.arrow"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1273,13 +999,14 @@ $(document).delegate('svg[data-widget="icon.graph"]', {
 		var val = Math.round(response[0] / $(this).attr('data-max') * 70);
 		var graph = $('#' + this.id + ' #graph').attr('d').substr(8);
 		var points = graph.split('L');
-		
-		if (points.length > 8)
+
+		if (points.length > 8) {
 			points.shift();
+		}
 
 		graph = 'M 15,85 ';
 		for (var i = 1; i < points.length; i++) {
-			graph += 'L ' + (i * 10 + 5) + ',' + points[i].substr(points[i].indexOf(',') + 1).trim() + ' ';		
+			graph += 'L ' + (i * 10 + 5) + ',' + points[i].substr(points[i].indexOf(',') + 1).trim() + ' ';
 		}
 
 		$('#' + this.id + ' #graph').attr('d', graph + 'L ' + (i * 10 + 5) + ',' + (85 - val));

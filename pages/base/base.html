@@ -71,7 +71,7 @@
 	// Do some actions before page is shown
 	$(document).on('pagebeforeshow', function () {
 		widget.prepare();
-		$('.miniclock').miniclock();
+		repeater.init();
 	});
 
 	// Run the io and all widgets
@@ -94,7 +94,7 @@
 		<div class="ui-right">
 			{{ lib.smartvisu() }}
 			<div class="mini">
-				<span class="miniclock">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
+				<span id="miniclock" data-widget="clock.miniclock" data-repeat="1i">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
 		</div>
 		<div class="signal hide" onClick="$('.ui-page-active .alert').popup('open');"></div>
 		<div class="alert" data-role="popup" data-overlay-theme="a">
