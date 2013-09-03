@@ -6,10 +6,11 @@
  * @copyright   2012
  * @license     GPL [http://www.gnu.de]
  *              To get the phonelist from Auerswald VoiP 5010 or VoiP 5020 or
- *              COMmander Basic.2 it is necessary to login into the telephone system.
- *              You should create a new account only for this service, because only one
- *              session allowed per user. After logged in successfully the cookie must be
- *              stored and used for all further calls.
+ *              COMmander Basic.2 it is necessary to login into the telephone 
+ * 			    system. If you will use the 'admin' account, you will get
+ * 				all calls. If you will use a sub-admin, you will get only those.
+ *				After logged in successfully the cookie must be stored and used
+ *				for all further calls.
  * -----------------------------------------------------------------------------
  */
 
@@ -37,7 +38,7 @@ class phone_auerswald extends phone
 		$login = json_decode(file_get_contents($url, false, $context));
 		$this->debug($login, "login");
 
-		if ($login->login == 1)
+		if ((int)$login->login > 0)
 		{
 			/*
 			---> response-header
@@ -50,7 +51,6 @@ class phone_auerswald extends phone
 			[6] => Set-Cookie: AUERSessionID=JWHXBVEKTGXVKOK
 			[7] => Set-Cookie: AUERWEB_COOKIE=admin
 			*/
-
 			foreach ($http_response_header as $response)
 			{
 				if (substr($response, 0, 11) == "Set-Cookie:")
@@ -82,8 +82,17 @@ class phone_auerswald extends phone
 			$this->error('Phone: Auerswald', 'Login failed!');
 
 		// 3. logout
-		$url = 'http://'.$this->server.'/unlogAdmin?loginRechte=3&loginName='.$this->user.'&tnId=0';
-		file_get_contents($url);
+		if ((int)$login->login > 1)
+		{
+			$url = 'http://'.$this->server.'/appclose';
+			$context = stream_context_create(array('http' => array('method' => 'POST', 'header' => 'Cookie: '.implode('; ', $cookie))));
+			file_get_contents($url, false, $context);
+		}	
+		else
+		{
+			$url = 'http://'.$this->server.'/unlogAdmin?loginRechte=3&loginName='.$this->user.'&tnId=0';
+			file_get_contents($url);
+		}
 	}
 }
 
