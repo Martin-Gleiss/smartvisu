@@ -74,7 +74,7 @@ class phone_auerswald extends phone
 				elseif (trim($ds[14]) == 'kommend')
 					$dir = "1";
 
-				$this->data[] = array('pos' => $ds[19], 'dir' => $dir, 'date' => $ds[1].' '.$ds[2], 'number' => $ds[5], 'name' => $ds[6],
+				$this->data[] = array('pos' => $ds[19], 'dir' => $dir, 'date' => str_replace('.', '-', $ds[1]).' '.$ds[2], 'number' => $ds[5], 'name' => $ds[6],
 					'duration' => $ds[3]);
 			}
 		}

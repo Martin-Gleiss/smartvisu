@@ -28,7 +28,7 @@
  * Triggerd only for plots through widget.update if the plot is already drawn
  * and only a new point has to be added to the series.
  *
- * 'repeat: function(event) { }
+ * 'repeat': function(event) { }
  * Triggerd after the specified time, when 'data-repeat' ist been used.
  * 
  * 'change', 'click' ...
@@ -542,7 +542,6 @@ $(document).delegate('span[data-widget="clock.miniclock"]', {
 		$(this).html(now.getHours() + ':' + (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()));
 	}
 });
-
 
 
 // ----- d e v i c e ----------------------------------------------------------
