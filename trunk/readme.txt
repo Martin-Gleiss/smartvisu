@@ -77,9 +77,9 @@ SYSTEMREQUIREMENTS
 HISTORY
 --------------------------------------------------------------------------------
 v 2.7
-	- new model house: alber thx to Raik Alber
+	- new model house: alber, as eibd-driver example by to Raik Alber
 	- new widget: clock.iconclock
-    - new svg-icons: icon.blade, icon.blade_arc, icon.blade_z thx to Mario Zanier
+    - new svg-icons: icon.blade, icon.blade_arc, icon.blade_z by to Mario Zanier
 	- new svg-icons: icon.meter
 	- improvments on svg-icons
 	

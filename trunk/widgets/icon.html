@@ -185,6 +185,31 @@
 
 
 /**
+* a graph
+*
+* @param unique id for this widget
+* @param a gad/item for switching
+* @param a gad/item for the height of the blades
+* @param the minimum value for 0 (optional, default 0, for future use)
+* @param the maximum value for 255 (optional, default 255)
+*/
+{% macro graph(id, gad_switch, gad_value, min, max) %}
+
+	<svg id="{{ uid(page, id) }}" data-widget="icon.graph" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
+		<g>
+			<polyline points="7,20, 15,20" fill="none" />
+			<polyline points="15,15, 15,93" fill="none" />
+			<polyline points="7,85, 85,85" fill="none" />
+			<polyline points="80,85, 80,93" fill="none" />
+			<path id="graph" d="M 15,85" fill="none" />
+		</g>
+	</svg>
+
+{% endmacro %}
+
+
+/**
 * a meter
 *
 * @param unique id for this widget

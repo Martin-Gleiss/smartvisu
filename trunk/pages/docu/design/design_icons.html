@@ -62,10 +62,11 @@
 	{% for widget in widgetlist %}
 		<div class="box">
 			{{ attribute(icon, widget.name, [widget.name, '', 'bath_light_value'] ) }}
-			<div>{{ widget.command }}</div>
+
+			<div {% if widget.author %} title="Author: {{ widget.author }}" {% endif %}>{{ widget.command }}</div>
 		</div>
 	{% endfor %}
-
+	
 	<div style="clear:left;"><br /><br /></div>
 
 

@@ -1265,6 +1265,27 @@ $(document).delegate('svg[data-widget="icon.compass"]', {
 	}
 });
 
+// ----- icon.graph -----------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.graph"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var val = Math.round(response[0] / $(this).attr('data-max') * 70);
+		var graph = $('#' + this.id + ' #graph').attr('d').substr(8);
+		var points = graph.split('L');
+		
+		if (points.length > 8)
+			points.shift();
+
+		graph = 'M 15,85 ';
+		for (var i = 1; i < points.length; i++) {
+			graph += 'L ' + (i * 10 + 5) + ',' + points[i].substr(points[i].indexOf(',') + 1).trim() + ' ';		
+		}
+
+		$('#' + this.id + ' #graph').attr('d', graph + 'L ' + (i * 10 + 5) + ',' + (85 - val));
+	}
+});
+
 // ----- icon.meter -----------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.meter"]', {
 	'update': function (event, response) {
