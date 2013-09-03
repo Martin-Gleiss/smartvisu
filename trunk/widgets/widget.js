@@ -523,6 +523,17 @@ $(document).delegate('span[data-widget="basic.notify"]', {
 // ----- c l o c k ------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
+// ----- clock.iconclock ------------------------------------------------------
+$(document).delegate('span[data-widget="clock.iconclock"]', {
+	'repeat': function (event) {
+
+		var minutes = Math.floor((new Date() - new Date().setHours(0,0,0,0)) / 1000 / 60);
+		$('#' + this.id + ' svg').trigger('update', [[minutes], [0]]);
+
+		// DEBUG: console.log("[iconclock] '" + this.id + "'", minutes);
+	}
+});
+
 // ----- clock.miniclock ------------------------------------------------------
 $(document).delegate('span[data-widget="clock.miniclock"]', {
 	'repeat': function (event) {
@@ -532,16 +543,6 @@ $(document).delegate('span[data-widget="clock.miniclock"]', {
 	}
 });
 
-// ----- clock.iconclock ------------------------------------------------------
-$(document).delegate('span[data-widget="clock.iconclock"]', {
-	'repeat': function (event) {
-		
-		var minutes = Math.floor((new Date() - new Date().setHours(0,0,0,0)) / 1000 / 60);
-		$('#' + this.id + ' svg').trigger('update', [[minutes], [0]]);
-	
-		// DEBUG: console.log("[iconclock] '" + this.id + "'", minutes);
-	}
-});
 
 
 // ----- d e v i c e ----------------------------------------------------------
@@ -872,10 +873,12 @@ $(document).delegate('svg[data-widget^="icon."]', {
 	},
 
 	'click': function (event) {
-		var items = $(this).attr('data-item').explode();
-
-		if (items[1]) {
-			io.write(items[1], (widget.get(items[1]) == 0 ? 1 : 0));
+		if ($(this).attr('data-item')) {
+			var items = $(this).attr('data-item').explode();
+	
+			if (items[1]) {
+				io.write(items[1], (widget.get(items[1]) == 0 ? 1 : 0));
+			}
 		}
 	}
 });
