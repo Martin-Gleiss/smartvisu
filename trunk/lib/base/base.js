@@ -435,7 +435,7 @@ var repeater = {
 			count++;
 		});
 		
-		console.log("[repeater] --> " + count + " repeaters");
+		console.log("[repeater] --> " + count + " widgets - ", Object.keys(repeater.dir).length + " in dir");
 	}
 
 };

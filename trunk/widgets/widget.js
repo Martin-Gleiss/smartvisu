@@ -539,7 +539,7 @@ $(document).delegate('span[data-widget="clock.miniclock"]', {
 	'repeat': function (event) {
 
 		var now = new Date();
-		$(this).html(now.getHours() + ':' + (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()));
+		$('.miniclock').html(now.getHours() + ':' + (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()));
 	}
 });
 
