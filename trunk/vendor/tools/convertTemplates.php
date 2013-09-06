@@ -10,7 +10,7 @@ error_reporting(0);
 $shortOptions = 's:d:i::o::c::h';
 $longOptions = array('source:', 'dest:', 'input::', 'output::', 'cfilespath::', 'help');
 
-$possibleSchema = array('linknx', 'eibd', 'smarthome.py', 'domotiga');
+$possibleSchema = array('linknx', 'eibd', 'smarthome.py');
 
 $sendOptions = getopt($shortOptions, $longOptions);
 $goOn = true;
