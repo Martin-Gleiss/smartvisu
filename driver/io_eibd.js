@@ -4,7 +4,7 @@
  * @author      Raik Alber and Martin Gleiß
  * @copyright   2013
  * @license     GPL [http://www.gnu.de]
- * @version	    0.1
+ * @version	    0.2
  * ----------------------------------------------------------------------------- 
  */
  
@@ -179,6 +179,9 @@ var io = {
 
                 returnData = '8' + inputData;
                 }
+        } else if (dataType = '13.xx') {
+	    
+            returnData = parseInt(inputData, 16);
         } else if (dataType == '5.001') {
 
             if (direction == 'from') {
@@ -224,7 +227,7 @@ var io = {
 
         $.ajax 
             ({  url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/w',
-                data: ({a: item.substring(0, (item.length - 6) ), v: io.convertData(val,item.slice(-5), 'to'), ts: $.now()}),
+                data: ({a: io.getItemFromItem(item), v: io.convertData(val, io.getDataTypeFromItem(item), 'to'), ts: $.now()}),
                 type: "GET", 
                 dataType: 'json', 
                 cache: false
@@ -263,7 +266,7 @@ var io = {
                     getForUrl = getForUrl + '&';
                 }
 
-                getForUrl = getForUrl + 'a=' + item[i].substring(0, (item[i].length - 6) );
+                getForUrl = getForUrl + 'a=' + io.getItemFromItem(item[i]);
                 counter++;
             }
 
@@ -286,8 +289,8 @@ var io = {
                                 $.each(val, function(id, value) {
                                     for(var i = 0; i < item.length; i++) {
                                         oneItem = item[i];
-                                        if (oneItem.substring(0, (oneItem.length - 6) ) == id) {
-                                            var dataType = oneItem.slice(-5);
+                                        if (io.getItemFromItem(oneItem) == id) {
+                                            var dataType = io.getDataTypeFromItem(oneItem);
                                             value = io.convertData(value, dataType, 'from');
                                             widget.update(oneItem, value);
 			                            }
@@ -302,5 +305,34 @@ var io = {
 						notify.error('Driver: eibd', response);
                 })
         }
-  }
+  },
+
+    /** get Datatype from GA String
+     *
+     */
+  getDataTypeFromItem: function(myItem){
+
+        itemArray = myItem.split('/');
+
+        if (itemArray.length == 4) {
+
+            dataType = itemArray[3];
+        } else {
+
+            dataType = '1.001';
+        }
+        return dataType;
+        requestItem = itemArray[0]+'/'+itemArray[1]+'/'+itemArray[2];
+    },
+
+    /** get Item from GA String
+     *
+     */
+    getItemFromItem: function(myItem){
+
+        itemArray = myItem.split('/');
+        requestItem = itemArray[0]+'/'+itemArray[1]+'/'+itemArray[2];
+
+        return requestItem;
+    }
 }
