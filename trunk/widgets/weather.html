@@ -35,7 +35,7 @@
 	</div>
 
 	<script type="text/javascript">
-		$('#{{ page }}').on('pagecreate', function (event, ui) {
+		$('#{{ page }}').on('pagebeforeshow', function (event, ui) {
 			$.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function (data) {
 				$('#{{ uid }}-weather').css('background', 'url(lib/weather/pics/' + data.current.icon + '.png) 50% 0 no-repeat')
 				$('#{{ uid }}-weather .city').html(data.city);
@@ -77,7 +77,7 @@
 	</div>
 
 	<script type="text/javascript">
-		$('#{{ page }}').on('pagecreate', function (event, ui) {
+		$('#{{ page }}').on('pagebeforeshow', function (event, ui) {
 			$.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function (data) {
 				$('#{{ uid }}-forecast').css('background', 'url(lib/weather/pics/' + data.forecast[{{ day|default(1) }}].icon + '.png) 50% 0 no-repeat')
 				$('#{{ uid }}-forecast .city').html(data.city);
@@ -111,7 +111,7 @@
 	</div>
 
 	<script type="text/javascript">
-		$('#{{ page }}').on('pagecreate', function (event, ui) {
+		$('#{{ page }}').on('pagebeforeshow', function (event, ui) {
 			$.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function (data) {
 				var forecast = '';
 				for (var i in data.forecast) {

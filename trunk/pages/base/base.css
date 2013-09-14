@@ -1417,7 +1417,7 @@ svg.icon polyline {
 
 svg.icon path {
 	stroke-width: 3;
-	fill:none;
+	fill: none;
 }
 
 svg.icon rect {
@@ -1428,3 +1428,11 @@ svg.icon text {
 	font-size: 30px;
 	font-weight: normal;
 }
+
+svg.fx-icon {
+	display: inline-block;
+	vertical-align: middle;
+	width: 50px;
+	height: 50px;
+}
+
