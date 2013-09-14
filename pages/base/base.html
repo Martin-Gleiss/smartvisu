@@ -70,8 +70,9 @@
 
 	// Do some actions before page is shown
 	$(document).on('pagebeforeshow', function () {
-		widget.prepare();
+		fx.init();
 		repeater.init();
+		widget.prepare();
 		// repeater.list();
 	});
 

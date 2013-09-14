@@ -30,7 +30,7 @@
 				var ret;
 				var line = '';
 				var sum = 1;
-				
+
 				for (var i in data) {
 					ret = '<img class="icon" src="pics/phone/' + data[i].pic + '" />';
 					ret += '<img class="dir" src="lib/phone/pics/' + data[i].dirpic + '"/>';
@@ -38,7 +38,7 @@
 					ret += '<p>' + data[i].number + '&nbsp;</p>';
 					ret += '<span class="ui-li-count">' + data[i].date + '</span>';
 					ret = '<a ' + (data[i].number ? 'href="callto://' + data[i].number : '') + '">' + ret + '</a>';
-					
+
 					if (data[i].dir == 0) {
 						line += '<li data-icon="false">' + ret + '</li>';
 						if (sum++ == {{ count|default(3) }}) {
@@ -77,7 +77,7 @@
 				var ret;
 				var line = '';
 				var sum = 1;
-				
+
 				for (var i in data) {
 					ret = '<img class="icon" src="pics/phone/' + data[i].pic + '" />';
 					ret += '<img class="dir" src="lib/phone/pics/' + data[i].dirpic + '" />';
