@@ -132,47 +132,42 @@ img.icon {
 	margin: 9px 2px 0 0;
 }
 
+/* time, date and version */
 .ui-page > .ui-header .ui-right .mini {
 	font-size: 14px;
 	font-weight: normal;
 }
 
-/* time, date and version */
-
+/* min-height for scrollbars and push out url, min-width for smallest device */
 .ui-content {
-	min-height: 850px;
+	/* min-height: 850px; */
 	min-width: 290px;
 }
 
-/* min-height for scrollbars and push out url, min-width for smallest device */
-
+/* only top edges */
 .ui-corner-top {
 	-webkit-border-radius: 0.8em 0.8em 0 0;
 	border-radius: 0.8em 0.8em 0 0;
 }
 
 /* only top edges */
-
 .ui-corner-bottom {
 	-webkit-border-radius: 0 0 0.8em 0.8em;
 	border-radius: 0 0 0.8em 0.8em;
 }
 
-/* only top edges */
-
+/* for better readability */
 .ui-li-count {
 	padding-top: 4px !important;
 	font-family: Arial, serif;
 	font-size: 11px !important;
 }
 
-/* for better readability */
+/* 'hand' on all links */
 
 a:hover {
 	cursor: pointer;
 }
-
-/* 'hand' on all links */
 
 /** --------- lists --------- */
 .ui-br {
@@ -223,11 +218,10 @@ a:hover {
 	margin: 0;
 }
 
+/* grey background for the symbol in an collapsible set */
 .ui-collapsible-heading .ui-icon-shadow {
 	background-color: #b8b8b8;
 }
-
-/* grey background for the symbol in an collapsible set */
 
 /** --------- button --------- */
 a.ui-btn-inline {
@@ -244,26 +238,23 @@ a.ui-btn-inline.ui-micro {
 	min-width: 28px;
 }
 
+/* only text */
 a.ui-btn-inline.ui-micro[data-iconpos="nopic"] .ui-btn-inner {
 	padding: 5px 2px 2px 2px;
 	font-size: 0.8em;
 }
 
-/* only text */
-
+/* only pic (inline) */
 a.ui-btn-inline.ui-micro[data-iconpos="notext"] .ui-icon {
 	margin: 4px 0 0 5px !important;
 }
 
-/* only pic (inline) */
-
+/* only pic (icon) */
 a.ui-btn-inline.ui-micro[data-iconpos="center"] span.ui-btn-inner {
 	display: block;
 	height: 27px;
 	overflow: hidden;
 }
-
-/* only pic (icon) */
 
 a.ui-btn-inline.ui-micro .icon {
 	margin-top: -1px;
@@ -277,18 +268,16 @@ a.ui-btn-inline.ui-mini {
 	min-width: 42px;
 }
 
+/* only text */
 a.ui-btn-inline.ui-mini[data-iconpos="nopic"] .ui-btn-inner {
 	padding-top: 12px;
 	padding-bottom: 12px;
 }
 
-/* only text */
-
+/* only pic (inline) */
 a.ui-btn-inline.ui-mini[data-iconpos="notext"] .ui-icon {
 	margin: 7px 0 0 10px !important;
 }
-
-/* only pic (inline) */
 
 a.ui-btn-inline.ui-mini[data-iconpos="top"] .ui-btn-inner {
 	padding-top: 22px;
@@ -309,25 +298,22 @@ a.ui-btn-inline.ui-midi {
 	min-width: 56px;
 }
 
+/* only text */
 a.ui-btn-inline.ui-midi[data-iconpos="nopic"] .ui-btn-inner {
 	padding-top: 16px;
 }
 
-/* only text */
-
+/* only pic (inline) */
 a.ui-btn-inline.ui-midi[data-iconpos="notext"] .ui-icon {
 	margin: 19px 0 0 20px;
 	line-height: 50px;
 }
 
-/* only pic (inline) */
-
+/* txt and pic (inline) */
 a.ui-btn-inline.ui-midi[data-iconpos="top"] .ui-btn-inner {
 	padding-top: 32px;
 	font-size: 0.9em;
 }
-
-/* txt and pic (inline) */
 
 a.ui-btn-inline.ui-midi[data-iconpos="center"] .ui-btn-inner {
 	padding: 7px 2px 0 2px;
@@ -369,12 +355,11 @@ a.ui-btn-inline.ui-maxi .icon {
 */
 
 /** --------- slider --------- */
+/* dynamic for more orientations */
 div.ui-slider {
 	height: auto;
 	margin: 0;
 }
-
-/* dynamic for more orientations */
 
 .ui-slider-track-vertical, .ui-slider-track-bottomup {
 	position: relative;
@@ -483,11 +468,10 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 }
 
 /** --------- flip --------- */
+/* corection because ui-slider is now dynamic */
 .ui-slider.ui-slider-switch {
 	height: 32px;
 }
-
-/* corection because ui-slider is now dynamic */
 
 /** --------- grid --------- */
 .ui-grid-f {
@@ -551,11 +535,10 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 	background-image: linear-gradient(left, #fff, #ccc);
 }
 
+/* used in ui-content, because we want the color from ui-page */
 .page-bg {
 	background: no-repeat fixed bottom;
 }
-
-/* used in ui-content, because we want the color from ui-page */
 
 .preblock {
 	width: 100%;
@@ -871,11 +854,10 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 	vertical-align: middle;
 }
 
+/* text beside the flip */
 .ui-slider-switch {
 	vertical-align: middle;
 }
-
-/* text beside the flip */
 
 .ui-li-aside .symbol .icon {
 	vertical-align: middle;
