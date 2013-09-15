@@ -1,0 +1,160 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "quad.html" %}
+
+{% block quad1 %}
+
+	<ul data-role="listview" data-dividertheme="c">
+		<li data-role="list-divider">Licht</li>
+	</ul>
+
+	<div>
+		<div class="cell4 ui-btn-up-a">1.1</div>
+		<div class="cell2 ui-btn-up-a">1.2</div>
+		<div class="cell2 ui-btn-up-a">1.3</div>
+		<div class="cell2 ui-btn-up-a">1.4</div>
+	</div>
+	<div>
+		<div class="cell4 ui-btn-up-a">2.1</div>
+		<div class="cell2 ui-btn-up-a">2.2</div>
+		<div class="cell2 ui-btn-up-a">2.3</div>
+		<div class="cell2 ui-btn-up-a">2.4</div>
+	</div>
+
+	<div>
+		<div class="cell4 ui-btn-up-a">3.1</div>
+		<div class="cell2 ui-btn-up-a">3.2</div>
+		<div class="cell2 ui-btn-up-a">3.3</div>
+		<div class="cell2 ui-btn-up-a">3.4</div>
+	</div>
+
+	<div>
+		<div class="cell4 ui-btn-up-a">4.1</div>
+		<div class="cell4 ui-btn-up-a">4.2</div>
+		<div class="cell2 ui-btn-up-a">4.3</div>
+	</div>
+
+	<div>
+		<div class="cell4 ui-btn-up-a">5.1</div>
+		<div class="cell3 ui-btn-up-a">5.2</div>
+		<div class="cell3 ui-btn-up-a">5.3</div>
+	</div>
+
+	<div>
+		<div class="cell4 ui-btn-up-a">6.1</div>
+		<div class="cell1 ui-btn-up-a">6.2</div>
+		<div class="cell1 ui-btn-up-a">6.3</div>
+		<div class="cell1 ui-btn-up-a">6.4</div>
+		<div class="cell1 ui-btn-up-a">6.5</div>
+		<div class="cell1 ui-btn-up-a">6.6</div>
+		<div class="cell1 ui-btn-up-a">6.7</div>
+	</div>
+
+
+
+{% endblock %}
+
+
+{% block quad2 %}
+
+	<ul data-role="listview" data-dividertheme="c">
+		<li data-role="list-divider">Obergeschoss</li>
+		<li data-icon="false">
+			<a href="index.php?page=room2_schlafen">
+				<img class="icon" src="{{ icon0 }}scene_sleeping.png" />
+
+				<h3>Schlafzimmer</h3>
+
+				<div class="ui-li-aside">
+					{{ basic.float('schlafen_temperatur', 'schlafen_heizung_istwert', '°') }} <br />
+					{{ basic.symbol('schlafen_heizung', 'schlafen_heizung_schalten', '', icon1~'sani_heating.png') }}
+				</div>
+			</a>
+		</li>
+		<li data-icon="false">
+			<a href="index.php?page=room2_buero">
+				<img class="icon" src="{{ icon0 }}scene_office.png" />
+
+				<h3>Büro</h3>
+
+				<div class="ui-li-aside">
+					{{ basic.float('buero_temperatur', 'buero_heizung_istwert', '°') }} <br />
+					{{ basic.symbol('buero_heizung', 'buero_heizung_schalten', '', icon1~'sani_heating.png') }}
+				</div>
+			</a>
+		</li>
+	</ul>
+
+{% endblock %}
+
+
+{% block quad3 %}
+	QUAD3
+
+{% endblock %}
+
+
+{% block quad4 %}
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+	QUAD4 <br />
+
+{% endblock %}

@@ -88,11 +88,7 @@
 	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};
 </script>
 
-<div data-role="page" id="{{ page }}" data-theme="a">
-
-	{% block page %}{% endblock %}
-
-</div>
+{% block body %}{% endblock %}
 
 </body>
 </html>

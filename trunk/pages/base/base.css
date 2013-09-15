@@ -37,9 +37,8 @@
 }
 
 /**
- * --- G E N E R A L  ----------------------------------------------------------
+ * --- G E N E R A L  ---------------------------------------------------------
  */
-
 h1 {
 	font-size: 16pt;
 	margin: 20px 0 6px 0;
@@ -111,9 +110,8 @@ img.icon {
 }
 
 /**
- * --- j Q u e r y M o b i l e -------------------------------------------------
+ * --- j Q u e r y M o b i l e ------------------------------------------------
  */
-
 .ui-page > .ui-header {
 	text-align: center;
 	height: 62px;
@@ -140,7 +138,7 @@ img.icon {
 
 /* min-height for scrollbars and push out url, min-width for smallest device */
 .ui-content {
-	/* min-height: 850px; */
+	min-height: 850px;
 	min-width: 290px;
 }
 
@@ -164,7 +162,6 @@ img.icon {
 }
 
 /* 'hand' on all links */
-
 a:hover {
 	cursor: pointer;
 }
@@ -503,9 +500,8 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 }
 
 /**
- * -----------------------------------------------------------------------------
+ * ----------------------------------------------------------------------------
  */
-
 .smartvisu {
 	padding: 0 0 4px 0;
 	font-size: 1.1em;
@@ -710,9 +706,8 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 }
 
 /**
- * -----------------------------------------------------------------------------
+ * ----------------------------------------------------------------------------
  */
-
 .app {
 	margin-bottom: 4px;
 	width: 72px;
@@ -829,10 +824,10 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 	border-radius: .7em;
 }
 
-/**
- * --- W i d g e t s :   B A S I C ---------------------------------------------
- */
 
+/**
+ * --- W i d g e t s :   B A S I C --------------------------------------------
+ */
 .switch .icon {
 	vertical-align: middle;
 }
@@ -995,9 +990,8 @@ canvas.colordisc {
 }
 
 /**
- * --- W i d g e t s :   D E V I C E -------------------------------------------
+ * --- W i d g e t s :   D E V I C E ------------------------------------------
  */
-
 .dimmer {
 	vertical-align: middle;
 	height: 48px;
@@ -1087,9 +1081,8 @@ canvas.colordisc {
 }
 
 /**
- * --- W i d g e t s :   P H O N E ---------------------------------------------
+ * --- W i d g e t s :   P H O N E --------------------------------------------
  */
-
 .phonelist h2 {
 	font-size: 12pt;
 	margin-bottom: 4px;
@@ -1133,9 +1126,8 @@ canvas.colordisc {
 }
 
 /**
- * --- W i d g e t s :   C A L E N D A R ---------------------------------------
+ * --- W i d g e t s :   C A L E N D A R --------------------------------------
  */
-
 .calendarlist h2 {
 	font-size: 12pt;
 	margin-bottom: 4px;
@@ -1178,9 +1170,8 @@ canvas.colordisc {
 }
 
 /**
- * --- W i d g e t s :   M U L T I M E D I A -----------------------------------
+ * --- W i d g e t s :   M U L T I M E D I A ----------------------------------
  */
-
 .music {
 	position: relative;
 	padding: 10px 0 10px 0;
@@ -1290,9 +1281,8 @@ canvas.colordisc {
 }
 
 /**
- * --- W i d g e t s :   P L O T -----------------------------------------------
+ * --- W i d g e t s :   P L O T ----------------------------------------------
  */
-
 .plot {
 	height: 200px;
 	min-width: 250px;
@@ -1300,9 +1290,8 @@ canvas.colordisc {
 }
 
 /**
- * --- W i d g e t s :   A P P L I A N C E -------------------------------------
+ * --- W i d g e t s :   A P P L I A N C E ------------------------------------
  */
-
 .iprouter {
 	height: 230px;
 	position: relative;
@@ -1370,9 +1359,8 @@ canvas.colordisc {
 }
 
 /**
- * --- W i d g e t s :   I C O N -----------------------------------------------
+ * --- W i d g e t s :   I C O N ----------------------------------------------
  */
-
 svg.icon {
 	display: inline-block;
 	vertical-align: middle;
@@ -1417,4 +1405,80 @@ svg.fx-icon {
 	width: 50px;
 	height: 50px;
 }
+
+
+
+
+
+/**
+ * --- Q U A D ----------------------------------------------------------------
+ */
+
+.quad .content-primary {
+	position: absolute;
+	top: 62px;
+	bottom: 0;
+	margin-right: 0;
+	padding-right: 0;
+	width: 100%;
+}
+
+@media all and (min-width: 640px) {
+	.quad .content-primary {
+		width: 50%;
+	}
+	.quad .content-secondary {
+		position: absolute;
+		top: 62px;
+		bottom: 0;
+		left: 50%;
+		margin-right: 0;
+		padding-right: 0;
+		width: 50%;
+	}
+}
+
+.quad1, .quad2, .quad3, .quad4 {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	overflow: auto;
+	height: 50%;
+}
+
+
+div.cell1, div.cell2, div.cell3, div.cell4 {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	height: 35px;
+	padding-top: 6px;
+	text-align: center;
+	text-overflow: ellipsis;
+	border-top: 0;
+	border-right: 0;
+}
+
+.cell1 {
+	display: inline-block;
+	float: left;
+	width: 10%;
+}
+
+.cell2 {
+	display: inline-block;
+	float: left;
+	width: 20%;
+}
+
+.cell3 {
+	display: inline-block;
+	float: left;
+	width: 30%;
+}
+
+.cell4 {
+	display: inline-block;
+	float: left;
+	width: 40%;
+}
+
 

@@ -9,58 +9,58 @@
 
 {% extends "root.html" %}
 
-{% block page %}
+{% block body %}
 
-	<div data-role="header" data-position="fixed" data-tap-toggle="false">
-		<div class="ui-left">
-			{% include 'menu.html' %}
-		</div>
-		<div class="ui-right">
-			{{ lib.smartvisu() }}
-			<div class="mini">
-				<span id="miniclock" class="miniclock" data-widget="clock.miniclock" data-repeat="1i">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
-		</div>
-		<div class="signal hide" onClick="$('.ui-page-active .alert').popup('open');"></div>
-		<div class="alert" data-role="popup" data-overlay-theme="a">
-			<div data-role="header" data-theme="c"><h1></h1></div>
-			<p></p>
+	<div data-role="page" id="{{ page }}" data-theme="a" class="quad">
 
-			<div class="control">
-				<span class="stamp"></span>
-				<a onClick="notify.remove();" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
-				<a onClick="$('.alert').popup('close');" class="ui-mini" class="ui-mini" data-icon="delete" data-iconpos="top" data-role="button" data-inline="true">Cancel</a>
+		<div data-role="header" data-position="fixed" data-tap-toggle="false">
+			<div class="ui-left">
+				{% include 'menu.html' %}
 			</div>
+			<div class="ui-right">
+				{{ lib.smartvisu() }}
+				<div class="mini">
+					<span id="miniclock" class="miniclock" data-widget="clock.miniclock" data-repeat="1i">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
+			</div>
+			<div class="signal hide" onClick="$('.ui-page-active .alert').popup('open');"></div>
+			<div class="alert" data-role="popup" data-overlay-theme="a">
+				<div data-role="header" data-theme="c"><h1></h1></div>
+				<p></p>
 
+				<div class="control">
+					<span class="stamp"></span>
+					<a onClick="notify.remove();" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
+					<a onClick="$('.alert').popup('close');" class="ui-mini" class="ui-mini" data-icon="delete" data-iconpos="top" data-role="button" data-inline="true">Cancel</a>
+				</div>
+
+			</div>
 		</div>
+
+		<div class="content-primary">
+			{% block content %}
+				<div class="quad1" style="background-color: #888;">
+					{% block quad1 %}{% endblock %}
+				</div>
+				<div class="quad2" style="background-color: #777;">
+					{% block quad2 %}{% endblock %}
+				</div>
+			{% endblock %}
+		</div>
+
+		<div class="content-secondary">
+			{% block sidebar %}
+				<div class="quad3" style="background-color: #666;">
+					{% block quad3 %}{% endblock %}
+				</div>
+				<div class="quad4" style="background-color: #555;">
+					{% block quad4 %}{% endblock %}
+				</div>
+			{% endblock %}
+		</div>
+
+		{% block footer %}{% endblock %}
+
 	</div>
-
-	<div data-role="content" class="page-bg">
-		{% block content %}
-			<div class="content-primary">
-				{% block content %}
-					<div class="">
-						{% block content_top %}{% endblock %}
-					</div>
-					<div class="">
-						{% block content_bottom %}{% endblock %}
-					</div>
-				{% endblock %}
-			</div>
-
-			<div class="content-secondary">
-				{% block sidebar %}
-					<div class="">
-						{% block sidebar_top %}{% endblock %}
-					</div>
-					<div class="">
-						{% block sidebar_bottom %}{% endblock %}
-					</div>
-				{% endblock %}
-			</div>
-		{% endblock %}
-	</div>
-
-	{% block footer %}{% endblock %}
 
 {% endblock %}
 
