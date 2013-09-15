@@ -1445,39 +1445,36 @@ svg.fx-icon {
 	height: 50%;
 }
 
+.cells {
+	display: table;
+	width: 100%;
+}
 
 div.cell1, div.cell2, div.cell3, div.cell4 {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	height: 35px;
-	padding-top: 6px;
+	height: 48px;
 	text-align: center;
 	text-overflow: ellipsis;
 	border-top: 0;
 	border-right: 0;
+	display: table-cell;
+	vertical-align: middle;
 }
 
 .cell1 {
-	display: inline-block;
-	float: left;
 	width: 10%;
 }
 
 .cell2 {
-	display: inline-block;
-	float: left;
 	width: 20%;
 }
 
 .cell3 {
-	display: inline-block;
-	float: left;
 	width: 30%;
 }
 
 .cell4 {
-	display: inline-block;
-	float: left;
 	width: 40%;
 }
 
