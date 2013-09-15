@@ -342,6 +342,7 @@ var notify = {
 	 * @param    status
 	 * @param    '600 smartVISU Config Error'
 	 * @param    '601 smartVISU Service Error'
+	 * @param    '602 smartVISU Template Error'
 	 */
 	json: function (jqXHR, status, errorthrown) {
 
@@ -565,12 +566,11 @@ var widget = {
 
 		// all except plots
 		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function (idx) {
-			//if ($(this).attr('data-widget').substr(0, 5) != 'plot.' ) {
 			var items = widget.explode($(this).attr('data-item'));
 			for (var i = 0; i < items.length; i++) {
-				unique[items[i]] = '';
+				if (!widget.is_series(items[i]))
+					unique[items[i]] = '';
 			}
-			//}
 		});
 
 		for (var item in unique) {

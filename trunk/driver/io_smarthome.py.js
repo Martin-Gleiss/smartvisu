@@ -134,14 +134,14 @@ var io = {
                 case 'proto':
                     var proto = parseInt(data.ver);
                     if (proto != io.version) {
-                        notify.info('Driver: smarthome.py', 'Protocol mismatch<br \>driver is: v' + io.version + '<br />smarthome.py is: v' + proto);
+                        notify.info('Driver: smarthome.py', 'Protocol mismatch<br />driver is: v' + io.version + '<br />smarthome.py is: v' + proto);
                     };
                     break;
             };
         };
 
         io.socket.onerror = function(error){
-            notify.error('Driver: smarthome.py', 'Could not connect to smarthome.py server!<br \> Websocket error ' + error.data + '.');
+            notify.error('Driver: smarthome.py', 'Could not connect to smarthome.py server!<br /> Websocket error ' + error.data + '.');
         };
 
         io.socket.onclose = function(){
