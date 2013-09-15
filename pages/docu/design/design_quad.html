@@ -16,39 +16,40 @@
 		<li data-role="list-divider">Licht</li>
 	</ul>
 
-	<div>
-		<div class="cell4 ui-btn-up-a">1.1</div>
-		<div class="cell2 ui-btn-up-a">1.2</div>
-		<div class="cell2 ui-btn-up-a">1.3</div>
-		<div class="cell2 ui-btn-up-a">1.4</div>
-	</div>
-	<div>
-		<div class="cell4 ui-btn-up-a">2.1</div>
-		<div class="cell2 ui-btn-up-a">2.2</div>
-		<div class="cell2 ui-btn-up-a">2.3</div>
-		<div class="cell2 ui-btn-up-a">2.4</div>
+	<div class="cells">
+		<div class="cell4 ui-btn-up-a">Schlafzimmer</div>
+		<div class="cell2 ui-btn-up-a">{{ basic.float('schlafen_temperatur', 'schlafen_heizung_istwert', '°') }}</div>
+		<div class="cell2 ui-btn-up-a"></div>
+		<div class="cell2 ui-btn-up-a"></div>
 	</div>
 
-	<div>
-		<div class="cell4 ui-btn-up-a">3.1</div>
-		<div class="cell2 ui-btn-up-a">3.2</div>
+	<div class="cells">
+		<div class="cell4 ui-btn-up-a">Büro</div>
+		<div class="cell2 ui-btn-up-a">{{ basic.button('b11', 'bath_light_switch', 'On', '', '', 'micro') }}</div>
+		<div class="cell2 ui-btn-up-a">{{ basic.switch('switch1', 'bath_light_switch') }} </div>
+		<div class="cell2 ui-btn-up-a"></div>
+	</div>
+
+	<div class="cells">
+		<div class="cell4 ui-btn-up-a">Zimmer</div>
+		<div class="cell2 ui-btn-up-a"> </div>
 		<div class="cell2 ui-btn-up-a">3.3</div>
 		<div class="cell2 ui-btn-up-a">3.4</div>
 	</div>
 
-	<div>
+	<div class="cells">
 		<div class="cell4 ui-btn-up-a">4.1</div>
 		<div class="cell4 ui-btn-up-a">4.2</div>
 		<div class="cell2 ui-btn-up-a">4.3</div>
 	</div>
 
-	<div>
+	<div class="cells">
 		<div class="cell4 ui-btn-up-a">5.1</div>
 		<div class="cell3 ui-btn-up-a">5.2</div>
 		<div class="cell3 ui-btn-up-a">5.3</div>
 	</div>
 
-	<div>
+	<div class="cells">
 		<div class="cell4 ui-btn-up-a">6.1</div>
 		<div class="cell1 ui-btn-up-a">6.2</div>
 		<div class="cell1 ui-btn-up-a">6.3</div>
