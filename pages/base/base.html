@@ -11,7 +11,7 @@
 
 {% block body %}
 
-	<div data-role="page" id="{{ page }}" data-theme="a">
+	<div data-role="page" id="{{ page }}" class="base" data-theme="a">
 
 		<div data-role="header" data-position="fixed" data-tap-toggle="false">
 			<div class="ui-left">
@@ -36,12 +36,12 @@
 			</div>
 		</div>
 
-		<div data-role="content" class="page-bg">
-			<div class="content-primary">
+		<div data-role="content">
+			<div class="primary">
 				{% block content %}{% endblock %}
 			</div>
 
-			<div class="content-secondary">
+			<div class="secondary minimum-tablet">
 				{% block sidebar %}{% endblock %}
 			</div>
 		</div>
