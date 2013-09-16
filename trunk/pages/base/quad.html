@@ -11,7 +11,7 @@
 
 {% block body %}
 
-	<div data-role="page" id="{{ page }}" data-theme="a" class="quad">
+	<div data-role="page" id="{{ page }}" class="quad" data-theme="a">
 
 		<div data-role="header" data-position="fixed" data-tap-toggle="false">
 			<div class="ui-left">
@@ -36,26 +36,28 @@
 			</div>
 		</div>
 
-		<div class="content-primary">
-			{% block content %}
-				<div class="quad1" style="background-color: #888;">
-					{% block quad1 %}{% endblock %}
-				</div>
-				<div class="quad2" style="background-color: #777;">
-					{% block quad2 %}{% endblock %}
-				</div>
-			{% endblock %}
-		</div>
+		<div>
+			<div class="primary">
+				{% block content %}
+					<div class="quad1">
+						{% block quad1 %}{% endblock %}
+					</div>
+					<div class="quad3 minimum-tablet">
+						{% block quad3 %}{% endblock %}
+					</div>
+				{% endblock %}
+			</div>
 
-		<div class="content-secondary">
-			{% block sidebar %}
-				<div class="quad3" style="background-color: #666;">
-					{% block quad3 %}{% endblock %}
-				</div>
-				<div class="quad4" style="background-color: #555;">
-					{% block quad4 %}{% endblock %}
-				</div>
-			{% endblock %}
+			<div class="secondary minimum-tablet">
+				{% block sidebar %}
+					<div class="quad2">
+						{% block quad2 %}{% endblock %}
+					</div>
+					<div class="quad4">
+						{% block quad4 %}{% endblock %}
+					</div>
+				{% endblock %}
+			</div>
 		</div>
 
 		{% block footer %}{% endblock %}
