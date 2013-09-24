@@ -1,0 +1,10 @@
+keep-dupl-defs
+keep-singly-grads
+keep-gaussian-blur
+keep-version
+keep-unref-ids
+keep-grad-coords
+keep-absolute-paths
+no-viewbox
+join-style-atts
+keep-basic-shapes
