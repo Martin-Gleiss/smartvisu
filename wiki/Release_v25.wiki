@@ -12,7 +12,6 @@ Some new widgets inclueded in this shipping:
 Beside that we have made many improvements:
   * New apps: tv-movie, tv-spielfilm  
   * New: rss-feed-reader (lib/feeds)
-  * phone drivers
   * drivers now with datatypes: int, float, string, array
   * phone drivers 
   * New .js files are now minified. Based on google closure
@@ -55,8 +54,6 @@ If you want a individual width of the tank
 New apps with rss-feed-reeder 
 
 <img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/app_tv_spielfim.png' title='apps: tv-movie' width='800'>
-
-
 
 
 
