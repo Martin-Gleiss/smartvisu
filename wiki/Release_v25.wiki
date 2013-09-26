@@ -1,0 +1,66 @@
+#summary New in this release
+
+= What is new in release v2.5 =
+
+Some new widgets inclueded in this shipping:
+  * multimedia.station for tv- and radio-stations
+  * multimedia.slideshow for image-based slideshows
+  * plot.temprose for all temperatures in a building
+  * improved: basic.tank now with variable width
+
+
+Beside that we have made many improvements:
+  * New apps: tv-movie, tv-spielfilm  
+  * New: rss-feed-reader (lib/feeds)
+  * phone drivers
+  * drivers now with datatypes: int, float, string, array
+  * phone drivers 
+  * New .js files are now minified. Based on google closure
+  * New model-house: fleischer
+  * New: animations :-) [beta]
+  
+
+
+== multimedia.station == 
+
+Such as for a TV-Remote Control.
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_sender.png' title='widget: multimedia.station' width='600'>
+
+
+== multimedia.slideshow == 
+
+A widget to display a slideshow, controlled by gads/items
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_slider1.png' title='widget: multimedia.slideshow' width='300'> ---> 5 sec.
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_slider2.png' title='widget: multimedia.slideshow' width='300'> ---> 5 sec.
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_slider3.png' title='widget: multimedia.slideshow' width='300'>
+
+
+== plot.temprose == 
+
+A complete house temperature plot. The rose shows all rooms with there actual and set temperature in one diagramm.
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_temprose.png' title='widget: plot.temprose' width='300'>
+
+
+== basic.tank now with variable width == 
+
+If you want a individual width of the tank
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_basic_tank_ext.png' title='widget: basic.tank' width='500'>
+
+== apps: tv-movie, tv-spielfilm / rss-feed-reader (lib/feeds)== 
+
+New apps with rss-feed-reeder 
+
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/app_tv_spielfim.png' title='apps: tv-movie' width='800'>
+
+
+
+
+
+
+
+
+
