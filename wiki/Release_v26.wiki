@@ -13,7 +13,7 @@ News & improvements:
 
   
 
-== dynamic icons == 
+== dynamic icons ==
 
 Dynamic icons are based on svg-images. They are directly rendered in the browser and are the fastest way to show dynamic changes.
 
