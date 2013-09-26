@@ -24,16 +24,16 @@ Beside that we have made many improvements:
 
 Such as for a TV-Remote Control.
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_sender.png' title='widget: multimedia.station' width='600'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_sender.png' title='widget: multimedia.station' width='500'>
 
 
 == multimedia.slideshow == 
 
 A widget to display a slideshow, controlled by gads/items
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_slider1.png' title='widget: multimedia.slideshow' width='300'> ---> 5 sec.
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_slider2.png' title='widget: multimedia.slideshow' width='300'> ---> 5 sec.
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_slider3.png' title='widget: multimedia.slideshow' width='300'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_slider1.png' title='widget: multimedia.slideshow' width='200'> ---> 5 sec.
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_slider2.png' title='widget: multimedia.slideshow' width='200'> ---> 5 sec.
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_slider3.png' title='widget: multimedia.slideshow' width='200'>
 
 
 == plot.temprose == 
@@ -54,8 +54,6 @@ If you want a individual width of the tank
 New apps with rss-feed-reeder 
 
 <img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/app_tv_spielfim.png' title='apps: tv-movie' width='800'>
-
-
 
 
 
