@@ -50,13 +50,27 @@
 	<h2>Icons</h2>
 
 	<p>
-		{{ icon.arrow('icon0', '', 'bath_light_value') }}
-		{{ icon.compass('icon1', '', 'bath_light_value') }}
-		{{ icon.windrose('icon2', '', 'bath_light_value') }}
-		{{ icon.shutter('icon3', '', 'bath_light_value2') }}
-		{{ basic.shifter('svg' ~ i, 'bath_light_switch', 'bath_light_value', 'icon.shutter') }}
+		Static Icon PNG:
+		<img class="icon" src="{{ icon0 }}audio_audio.png" />
+		<img class="icon" src="{{ icon1 }}audio_audio.png" />
+		<a><img class="icon" src="{{ icon0 }}audio_audio.png" /></a>
+		<a><img class="icon" src="{{ icon1 }}audio_audio.png" /></a>
+
+		SVG:
+		<img class="icon icon0" src="{{ icon0 }}audio_audio.svg" />
+		<img class="icon icon1" src="{{ icon0 }}audio_audio.svg" />
+		<a class="icon0"><img class="icon" src="{{ icon0 }}audio_audio.svg" /></a>
+		<a class="icon1"><img class="icon" src="{{ icon0 }}audio_audio.svg" /></a>
 		
-		<a><img class="icon icon1" src="icons/audio_audio.svg" /></a>
+		<br />
+		Dynamic Icon PNG:
+		{{ basic.shifter('svg1', 'bath_light_switch', 'bath_light_value', icon1~'light_light_dim_00.png') }}
+
+		SVG:
+		{{ basic.shifter('svg1', 'bath_light_switch', 'bath_light_value', 'icon.shutter') }}
+		{{ icon.windrose('icon1', 'bath_light_switch', 'bath_light_value') }}
+		
+		<br />
 	</p>
 
 	<h2>Plots</h2>
@@ -65,7 +79,7 @@
 		<div class="ui-bar-c ui-li-divider ui-corner-top">Plot</div>
 		<div class="ui-fixed ui-body-a ui-corner-bottom">
 
-			<p>    {{ plot.period('p1', 'bath_plot_value', 'avg', '5i', 0, 0, 255, 50) }}</p>
+			<p>{{ plot.period('p1', 'bath_plot_value', 'avg', '5i', 0, 0, 255, 50) }}</p>
 
 		</div>
 	</div>
@@ -74,7 +88,7 @@
 		<div class="ui-bar-c ui-li-divider ui-corner-top">Plot</div>
 		<div class="ui-fixed ui-body-a ui-corner-bottom">
 
-			<p>    {{ plot.period('p2', ['bath_plot_value2', 'bath_blind_angle'] , 'avg' , '5i', 0, 0, 255, 50, '', '', ['spline', 'area']) }}</p>
+			<p>{{ plot.period('p2', ['bath_plot_value2', 'bath_blind_angle'] , 'avg' , '5i', 0, 0, 255, 50, '', '', ['spline', 'area']) }}</p>
 
 		</div>
 	</div>

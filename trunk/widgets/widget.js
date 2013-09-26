@@ -867,7 +867,7 @@ $(document).delegate('svg[data-widget^="icon."]', {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 
 		if (response instanceof Array) {
-			document.getElementById(this.id).setAttributeNS(null, 'class', 'icon' + (response[0] && response[1] ? ' icon1' : ' icon0'));
+			this.setAttributeNS(null, 'class', 'icon' + (response[0] && response[1] ? ' icon1' : ' icon0'));
 		}
 	},
 
