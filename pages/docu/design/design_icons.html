@@ -41,7 +41,19 @@
 	</div>
 
 
+
+	{% import "icon.html" as icon %}
+	{% set widgetlist = docu('widgets/icon.html') %}
+
+	<div style="float:right; width: 72px; color:#000; text-shadow: 0 1px 1px #fff;">
+		<div class="app">
+			<div class="image" style="background-color: #08e;">
+				<span style="font-size: 1.7em;">{{ widgetlist|length }}</span><br /><span class="mini">icons</span></div>
+		</div>
+	</div>
+
 	<h4>Dynamic Icons</h4>
+
 	<div class="docu">
 		Dynamic icons are based on svg-images. They are directly rendered in the browser and are the fastest way to show dynamic changes.
 		Use the slider to see how the dynamic icon changes.
@@ -56,8 +68,6 @@
 	{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
 	<br />
 
-	{% import "icon.html" as icon %}
-	{% set widgetlist = docu('widgets/icon.html') %}
 
 	{% for widget in widgetlist %}
 		<div class="box">
@@ -66,20 +76,43 @@
 			<div {% if widget.author %} title="Author: {{ widget.author }}" {% endif %}>{{ widget.command }}</div>
 		</div>
 	{% endfor %}
-	
+
 	<div style="clear:left;"><br /><br /></div>
 
 
+
+	{% set iconlist = dir(icon0, '(.*\.svg)') %}
+
+	<div style="float:right; width: 72px; color:#000; text-shadow: 0 1px 1px #fff;">
+		<div class="app">
+			<div class="image" style="background-color: #08e;">
+				<span style="font-size: 1.7em;">{{ iconlist|length }}</span><br /><span class="mini">icons</span></div>
+		</div>
+	</div>
+
 	<h4>Static Icons</h4>
+
 	<div class="docu">
-		Static icons are base on png-images. Some color-variants are shipped in the icons directory.
-		To make them responsable to the design use as path "icon0" for "normal" icons and "icon1" for the highlighted version.
+		A static icon may be based on .png-image or .svg-image. Use "icon0" to show the "normal" version.
+		If you like to show the "hilighted" version .png and .svg differ. The .png based images need a completed directory (located in icons) with all icons rendered in the highlighted color.
+		Highlighted .svg-images only need a style-sheet, defined in the design (located in design).
 
 		<div class="twig">
-			<code class="prettyprint">
-				icon0~'light_light.png'<br />
-				icon1~'light_light.png'<br />
-			</code>
+			<h5 style="margin-top: 5px;">normal:</h5>
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+				<img class="icon" src="{{ icon0 }}light_light.png" />
+				<img class="icon" src="{{ icon0 }}light_light.svg" />
+
+				{% endverbatim %}{% endfilter %}</code>
+
+			<h5>highlighted:</h5>
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+				<img class="icon" src="{{ icon1 }}light_light.png" />
+				<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
+
+				{% endverbatim %}{% endfilter %}</code>
 		</div>
 	</div>
 
@@ -91,13 +124,13 @@
 	</div>
 
 	{% set cat = 'au' %}
-	{% for file in dir(icon0) %}
+	{% for file in  iconlist %}
 		{% if cat != file.name|slice(0, 2) %}
 			<div style="clear:left;"><br /><br /></div>
 			{% set cat = file.name|slice(0, 2) %}
 		{% endif %}
 		<div class="box">
-			<img class="icon" src="{{ icon0~file.name }}" data-pic="{{ file.name }}" /><br />
+			<img class="icon icon0" src="{{ icon0~file.name }}" />
 
 			<div>{{ file.name }}</div>
 		</div>
@@ -105,17 +138,17 @@
 
 
 	<script type="text/javascript">
-		$(document).on('vmouseover', '.box > svg', function () {
-			document.getElementById(this.id).setAttributeNS(null , 'class', 'icon icon1');
-		});
-		$(document).on('vmouseout', '.box > svg', function () {
-			document.getElementById(this.id).setAttributeNS(null , 'class', 'icon icon0');
-		});
 		$(document).on('vmouseover', '.box > .icon', function () {
-			this.src = '{{ icon1 }}' + $(this).attr('data-pic');
+			this.setAttributeNS(null, 'class', 'icon icon1');
 		});
 		$(document).on('vmouseout', '.box > .icon', function () {
-			this.src = '{{ icon0 }}' + $(this).attr('data-pic');
+			this.setAttributeNS(null, 'class', 'icon icon0');
+		});
+		$(document).on('vmouseover', '.box > .static-icon', function () {
+			this.setAttributeNS(null, 'class', 'static-icon icon1');
+		});
+		$(document).on('vmouseout', '.box > .static-icon', function () {
+			this.setAttributeNS(null, 'class', 'static-icon icon0');
 		});
 	</script>
 

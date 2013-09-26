@@ -37,7 +37,7 @@ SYSTEMREQUIREMENTS
       
     3.  Set the "config_driver" to your backend-environment
         - linknx: for linxknx and eibd environment
-		- smarthome.py for smarthome environment
+		- smarthome.py for SmartHome.py environment
 		- eibd for direct access
         - offline: only for testing, all GADs will be stored in a textfile 
           ("temp/offline_YOURPROJECT.var")
@@ -77,10 +77,11 @@ SYSTEMREQUIREMENTS
 HISTORY
 --------------------------------------------------------------------------------
 v 2.7
-	- new model house: alber, as eibd-driver example by to Raik Alber
+	- new model house: alber, as eibd-driver example by Raik Alber
 	- new widget: clock.iconclock
-    - new svg-icons: icon.blade, icon.blade_arc, icon.blade_z by to Mario Zanier
-	- new svg-icons: icon.meter
+	- new static-svg-icons colored white (ws), black (sw)
+    - new svg-icons: icon.blade, icon.blade_arc, icon.blade_z by Mario Zanier
+	- new svg-icon: icon.meter, icon.clock
 	- improvments on svg-icons
 	
 v 2.6 06.08.13
@@ -101,7 +102,7 @@ v 2.5 01.06.13
 	- improved: drivers now with datatypes: int, float, string, array
 	- improved: basic.tank now with variable width
 	- new .js files are now minified. Based on google closure
-	- new model-house: fleischer
+	- new model-house: fleischer by Marco Fleischer
     - new: animations :-) [beta]
 	
 v 2.4 26.04.13 Happy Birthday smartVISU!       
@@ -233,7 +234,7 @@ v 1.5 01.08.12
     
 v 1.4 02.07.12
     - new and official "smartVISU" - Logo 
-      special thanks to by Björn Bertschy
+      special thanks to Björn Bertschy
     - position fixed on MainMenu
     - smother scrolling, better responsive design
     

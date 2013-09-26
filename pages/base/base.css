@@ -143,7 +143,7 @@ img.icon {
 
 /* min-height for scrollbars and push out url, min-width for smallest device */
 .ui-content {
-	/* min-height: 850px; */
+	min-height: 850px;
 	min-width: 290px;
 }
 
@@ -1443,6 +1443,7 @@ svg.fx-icon {
 	margin-right: 0;
 	padding-right: 0;
 	width: 50%;
+	min-width: 320px;
 }
 
 .quad .secondary {
@@ -1453,6 +1454,11 @@ svg.fx-icon {
 	margin-right: 0;
 	padding-right: 0;
 	width: 50%;
+}
+
+.quad .content {
+	min-height: 850px;
+	min-width: 290px;
 }
 
 .quad1, .quad2, .quad3, .quad4 {
@@ -1468,7 +1474,7 @@ svg.fx-icon {
 }
 
 .cells .icon {
-	margin1: -2px 0 -2px 0;
+	margin: -2px 0 -2px 0;
 }
 
 .cell1, .cell2, .cell3, .cell4 {
