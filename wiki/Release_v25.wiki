@@ -22,9 +22,9 @@ Beside that we have made many improvements:
 
 == multimedia.station == 
 
-Such as for a TV-Remote Control.
+Such as for a tv-remote control. You can use your own logos. A sample you can find in the model-house: fleischer
 
-<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_sender.png' title='widget: multimedia.station' width='500'>
+<img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/wt_sender.png' title='widget: multimedia.station' width='300'>
 
 
 == multimedia.slideshow == 
@@ -54,8 +54,6 @@ If you want a individual width of the tank
 New apps with rss-feed-reeder 
 
 <img src='http://smartvisu.googlecode.com/svn/wiki/v2.5/app_tv_spielfim.png' title='apps: tv-movie' width='800'>
-
-
 
 
 
