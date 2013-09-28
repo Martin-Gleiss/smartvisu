@@ -9,6 +9,62 @@
 
 
 /**
+* Standard blind
+*
+* @param       unique id for this widget
+* @param       name of the blind
+* @param       a gad/item for the up- and down- movement
+* @param       a gad/item for stopping the movement (optional)
+* @param       a gad/item for the actual absolute position of the blinds
+* @param       a gad/item for increase- and decreace- of the blade (optional)
+* @param       a gad/item for the actual absolute angle of the blade (optional)
+* @param       the minimum value for close (optional, default 0)
+* @param       the maximum value for open (optional, default 255)
+* @param       step between two values (optional, default 5)
+*
+* @info        inspired by Frank Berlenz
+*/
+{% macro blind(id, txt, gad_move, gad_stop, gad_pos, gad_shift, gad_angle, min, max, step) %}
+	{% import "basic.html" as basic %}
+	{% set uid = uid(page, id) %}
+
+	<div class="blind">
+		<table align="center" cellpadding="0">
+			<tr>
+				<td valign="top">
+					<div class="set">{{ basic.button(id~'up', gad_move, '', 'arrow-u', 0) }}</div>
+				</td>
+				<td rowspan="3" align="left" class="pos">
+					{{ basic.slider(id~'pos', gad_pos, min, max, step, 'vertical') }}</td>
+				<td rowspan="2" valign="bottom" class="angle">
+					{{ txt }}<br />
+					{% if gad_angle %} {{ basic.slider(id~'angle', gad_angle, min, max, step, 'semicircle') }} {% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					{% if gad_stop %}
+						<div class="set">{{ basic.button(id~'stop', gad_stop, '', 'delete', 1) }}</div> {% endif %}</td>
+			</tr>
+			<tr>
+				<td valign="bottom">
+					<div class="set">{{ basic.button(id~'down', gad_move, '', 'arrow-d', 1) }}</div>
+				</td>
+				<td valign="bottom">
+					{% if gad_shift %}
+						<div class="set">
+							<span style="float: left;">{{ basic.button(id~'minus', gad_shift, '', 'minus', 0) }}</span>
+							<span style="float: right;">{{ basic.button(id~'plus', gad_shift, '', 'plus', 1) }}</span>
+						</div>
+					{% endif %}
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}
+
+
+/**
 * Standard dimmer with switching and dimming function
 *
 * @param       unique id for this widget
@@ -81,62 +137,6 @@
 			<div style="float:left; width: 3px; height: 50px;"></div>
 			{{ basic.switch(id~'state', gad_state, icon1~'sani_heating.png', icon0~'sani_heating.png') }}
 		</div>
-	</div>
-{% endmacro %}
-
-
-/**
-* Standard blind
-*
-* @param       unique id for this widget
-* @param       name of the blind
-* @param       a gad/item for the up- and down- movement
-* @param       a gad/item for stopping the movement (optional)
-* @param       a gad/item for the actual absolute position of the blinds
-* @param       a gad/item for increase- and decreace- of the blade (optional)
-* @param       a gad/item for the actual absolute angle of the blade (optional)
-* @param       the minimum value for close (optional, default 0)
-* @param       the maximum value for open (optional, default 255)
-* @param       step between two values (optional, default 5)
-*
-* @info        inspired by Frank Berlenz
-*/
-{% macro blind(id, txt, gad_move, gad_stop, gad_pos, gad_shift, gad_angle, min, max, step) %}
-	{% import "basic.html" as basic %}
-	{% set uid = uid(page, id) %}
-
-	<div class="blind">
-		<table align="center" cellpadding="0">
-			<tr>
-				<td valign="top">
-					<div class="set">{{ basic.button(id~'up', gad_move, '', 'arrow-u', 0) }}</div>
-				</td>
-				<td rowspan="3" align="left" class="pos">
-					{{ basic.slider(id~'pos', gad_pos, min, max, step, 'vertical') }}</td>
-				<td rowspan="2" valign="bottom" class="angle">
-					{{ txt }}<br />
-					{% if gad_angle %} {{ basic.slider(id~'angle', gad_angle, min, max, step, 'semicircle') }} {% endif %}
-				</td>
-			</tr>
-			<tr>
-				<td>
-					{% if gad_stop %}
-						<div class="set">{{ basic.button(id~'stop', gad_stop, '', 'delete', 1) }}</div> {% endif %}</td>
-			</tr>
-			<tr>
-				<td valign="bottom">
-					<div class="set">{{ basic.button(id~'down', gad_move, '', 'arrow-d', 1) }}</div>
-				</td>
-				<td valign="bottom">
-					{% if gad_shift %}
-						<div class="set">
-							<span style="float: left;">{{ basic.button(id~'minus', gad_shift, '', 'minus', 0) }}</span>
-							<span style="float: right;">{{ basic.button(id~'plus', gad_shift, '', 'plus', 1) }}</span>
-						</div>
-					{% endif %}
-				</td>
-			</tr>
-		</table>
 	</div>
 {% endmacro %}
 

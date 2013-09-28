@@ -53,11 +53,11 @@ $(document).on('pageshow', function (event, ui) {
  * Fade-In the listitems from top to bottom
  */
 $(document).delegate('[data-widget] > ul', {
-	'prepare' : function (event) {
+	'prepare': function (event) {
 		$(this).children().hide();
 	},
 
-	'redraw' : function (event) {
+	'redraw': function (event) {
 		$(this).children().each(function (index) {
 			var li = $(this);
 			setTimeout(function () {
