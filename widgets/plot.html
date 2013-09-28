@@ -9,6 +9,22 @@
 
 
 /**
+* The diagram showing curves of relative humidity and effective temperature superimposed upon rectangular coordinates. The comfort-zones indicate when humans feel good.
+*
+* @param       unique id for this widget
+* @param       a gad/item for the temperature
+* @param       a gad/item for the humidity
+*/
+{% macro comfortchart(id, gad_temp, gad_humidity) %}
+
+	<div id="{{ uid(page, id) }}" data-widget="plot.comfortchart" data-item="{{ gad_temp }}, {{ gad_humidity }}"
+		data-label="{{ lang('plot.comfortchart', 'label') }}" data-axis="{{ lang('plot.comfortchart', 'axis') }}"
+		class="plot"></div>
+
+{% endmacro %}
+
+
+/**
 * A simple widget for plotting charts
 *
 * @param       unique id for this widget
@@ -83,22 +99,6 @@
 
 	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([gad_actual, gad_set, gad_state], ['avg', '1d', 0]) }}"
 		data-step="50" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
-		class="plot"></div>
-
-{% endmacro %}
-
-
-/**
-* The diagram showing curves of relative humidity and effective temperature superimposed upon rectangular coordinates. The comfort-zones indicate when humans feel good.
-*
-* @param       unique id for this widget
-* @param       a gad/item for the temperature
-* @param       a gad/item for the humidity
-*/
-{% macro comfortchart(id, gad_temp, gad_humidity) %}
-
-	<div id="{{ uid(page, id) }}" data-widget="plot.comfortchart" data-item="{{ gad_temp }}, {{ gad_humidity }}"
-		data-label="{{ lang('plot.comfortchart', 'label') }}" data-axis="{{ lang('plot.comfortchart', 'axis') }}"
 		class="plot"></div>
 
 {% endmacro %}

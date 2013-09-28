@@ -9,33 +9,6 @@
 
 
 /**
-* Displays a mini text-based clock
-*
-* @param unique id for this widget
-*/
-{% macro miniclock(id) %}
-
-	<span id="{{ uid(page, id) }}" data-widget="clock.miniclock" data-repeat="1i" 
-		class="miniclock">{{ now|date('H:i') }}</span>
-
-{% endmacro %}
-
-
-/**
-* Displays a clock in icon style
-*
-* @param unique id for this widget
-*/
-{% macro iconclock(id) %}
-	{% import "icon.html" as icon %}
-
-	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i"
-		class="iconclock">{{ icon.clock(id) }}</span>
-
-{% endmacro %}
-
-
-/**
 * Displays a digital clock
 *
 * @param unique id for this widget
@@ -85,3 +58,31 @@
 		});
 	</script>
 {% endmacro %}
+
+
+/**
+* Displays a clock in icon style
+*
+* @param unique id for this widget
+*/
+{% macro iconclock(id) %}
+	{% import "icon.html" as icon %}
+
+	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i"
+		class="iconclock">{{ icon.clock(id) }}</span>
+
+{% endmacro %}
+
+
+/**
+* Displays a mini text-based clock
+*
+* @param unique id for this widget
+*/
+{% macro miniclock(id) %}
+
+	<span id="{{ uid(page, id) }}" data-widget="clock.miniclock" data-repeat="1i"
+		class="miniclock">{{ now|date('H:i') }}</span>
+
+{% endmacro %}
+

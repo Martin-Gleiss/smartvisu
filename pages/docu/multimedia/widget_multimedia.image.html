@@ -8,7 +8,7 @@
 */
 
 
-{% extends "widget_basic.html" %}
+{% extends "widget_multimedia.html" %}
 
 {% block example %}
 
@@ -16,7 +16,7 @@
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-			{{ basic.image('image1', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner') }}
+			{{ multimedia.image('image1', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner') }}
 
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
@@ -26,7 +26,7 @@
 	<div class="html">
 		<div class="block">
 			<div class="image" style="margin: 0px;">
-				{{ basic.image('image1', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner') }}
+				{{ multimedia.image('image1', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner') }}
 			</div>
 		</div>
 	</div>

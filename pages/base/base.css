@@ -1457,7 +1457,6 @@ svg.fx-icon {
 }
 
 .quad .content {
-	min-height: 850px;
 	min-width: 290px;
 }
 
@@ -1505,6 +1504,114 @@ svg.fx-icon {
 .cell4 {
 	width: 40%;
 }
+
+
+.tiles li {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	border-top: 0;
+	border-right: 0;
+	display: block;
+	float: left;
+	height: 70px;
+	width: 50%;
+	padding: 0 5px 5px 0;
+	margin: 0px;
+	position: relative;
+	overflow: hidden;
+}
+
+.tiles .ui-btn-inner {
+	border: 0;
+}
+
+.tiles li.double {
+	height: 140px;
+	padding: 0;
+}
+
+.tiles li.double .table {
+	height: 100%;
+	width: 100%;
+	display: table;
+}
+
+.tiles li.double .table .row {
+	display: table-row;
+	height: 1px;
+	width: 100%;
+	overflow: hidden;
+}
+
+.tiles li.double .table .row .single {
+	display: table-cell;
+	text-align: right;
+	padding: 0 10px 10px 0;
+	font-size: 1.5em;
+}
+
+.tiles li.double table {
+	width: 100%;
+}
+
+.tiles li.double table td {
+	font-size: 0.7em;
+	font-weight: lighter;
+	padding: 0 10px;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+.tiles li.double table  td.right {
+	text-align: right;
+}
+
+.tiles li.double .table .expand {
+	display: table-row;
+	height: auto;
+	overflow: hidden;
+}
+
+.tiles li.double .table .expand h3 {
+	font-weight: normal;
+	margin-left: 60px;
+}
+
+.tiles li.double img.icon {
+	float: left;
+	margin-top: 5px;
+}
+
+.tiles li.double svg {
+	float: left;
+	margin: 10px;
+	width: 40px;
+	height: 40px;
+}
+
+
+.tiles .ui-li-has-thumb .ui-btn-inner a.ui-link-inherit {
+	padding: 0 0 0 60px;
+	height: 65px;
+}
+
+.tiles .ui-ri-aside img.icon {
+	height: 24px;
+	width: 24px;
+}
+
+.tiles .ui-ri-aside {
+	text-align: right;
+	font-size: 10px;
+	line-height: 25px;
+	height: 25px;
+	bottom: 5px;
+	left: 7px;
+	right: 0;
+	position: absolute;
+}
+
+
 
 /* some corrections for smaller displays */
 @media all and (max-width: 767px) {

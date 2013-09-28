@@ -130,12 +130,10 @@
 			{% set cat = file.name|slice(0, 2) %}
 		{% endif %}
 		<div class="box">
-			<img class="icon icon0" src="{{ icon0~file.name }}" />
-
+			<img class="icon" src="{{ icon0~file.name }}" />
 			<div>{{ file.name }}</div>
 		</div>
 	{% endfor %}
-
 
 	<script type="text/javascript">
 		$(document).on('vmouseover', '.box > .icon', function () {
@@ -143,12 +141,6 @@
 		});
 		$(document).on('vmouseout', '.box > .icon', function () {
 			this.setAttributeNS(null, 'class', 'icon icon0');
-		});
-		$(document).on('vmouseover', '.box > .static-icon', function () {
-			this.setAttributeNS(null, 'class', 'static-icon icon1');
-		});
-		$(document).on('vmouseout', '.box > .static-icon', function () {
-			this.setAttributeNS(null, 'class', 'static-icon icon0');
 		});
 	</script>
 

@@ -79,6 +79,9 @@ HISTORY
 v 2.7
 	- new model house: alber, as eibd-driver example by Raik Alber
 	- new widget: clock.iconclock
+	- new widget: status.log
+	- moved widget: basic.image -> mulimedia.image
+	- moved widget: basic.notify -> status.notify
 	- new static-svg-icons colored white (ws), black (sw)
     - new svg-icons: icon.blade, icon.blade_arc, icon.blade_z by Mario Zanier
 	- new svg-icon: icon.meter, icon.clock

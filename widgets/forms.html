@@ -9,19 +9,6 @@
 
 
 /**
-* Init of a text-form-element
-*
-* @param       id of the form-element
-* @param       init-value
-*/
-{% macro text_init(id, val) %}
-	<script type="text/javascript">
-		$('#{{ id }}').val('{{ val }}');
-	</script>
-{% endmacro %}
-
-
-/**
 * Init of a flip-form-element
 *
 * @param       id of the form-element
@@ -51,5 +38,15 @@
 {% endmacro %}
 
 
+/**
+* Init of a text-form-element
+*
+* @param       id of the form-element
+* @param       init-value
+*/
+{% macro text_init(id, val) %}
+	<script type="text/javascript">
+		$('#{{ id }}').val('{{ val }}');
+	</script>
+{% endmacro %}
 
- 

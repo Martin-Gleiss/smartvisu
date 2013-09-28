@@ -9,6 +9,37 @@
 
 
 /**
+* Displays a image witch is been reloaded after a given time
+*
+* @param unique id for this widget
+* @param the path/url to the image
+* @param the mode: 'none', 'corner', 'corner-bottom' (optional, default 'none')
+* @param the reload-time in duration-format (optional, default '10i')
+*
+* @see misc/fundamentals#Duration-Format
+*/
+{% macro image(id, src, mode, time) %}
+
+	<img id="{{ uid(page, id) }}" data-widget="multimedia.image"
+		{% if mode == 'corner' %}
+			class="ui-corner-all"
+		{% elseif mode == 'corner-bottom' %}
+			class="ui-corner-bottom"
+		{% endif %}
+		src="pages/base/pics/trans.png" />
+
+	<script type="text/javascript">
+		$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_=' + new Date().getTime());
+
+		setInterval(function () {
+			$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_=' + new Date().getTime());
+		}, new Date().duration('{{time|default("10i")}}'));
+	</script>
+
+{% endmacro %}
+
+
+/**
 * Standard Multimedia Player
 *
 * @param       unique id for this widget
@@ -70,25 +101,6 @@
 
 
 /**
-* Displays a tv- or radio- station button
-*
-* @param       unique id for this widget
-* @param       a gad/item
-* @param       a icon (e. g. located in pics/station)
-* @param       value send if the button is pressed (optional, default 1)
-* @param       type: 'mini', 'midi' (optional, default: mini)
-*/
-{% macro station(id, gad, pic, val, type) %}
-	{% import "basic.html" as basic %}
-	{% set uid = uid(page, id) %}
-
-	<div id="{{ uid }}" class="station">
-		{{ basic.button(id, gad, '', pic, 1, type|default('mini')) }}
-	</div>
-{% endmacro %}
-
-
-/**
 * A widget to display a slideshow, controlled by gads/items
 *
 * @param       unique id for this widget
@@ -124,4 +136,23 @@
 			$(window).triggerHandler('resize');
 		});
 	</script>
+{% endmacro %}
+
+
+/**
+* Displays a tv- or radio- station button
+*
+* @param       unique id for this widget
+* @param       a gad/item
+* @param       a icon (e. g. located in pics/station)
+* @param       value send if the button is pressed (optional, default 1)
+* @param       type: 'mini', 'midi' (optional, default: mini)
+*/
+{% macro station(id, gad, pic, val, type) %}
+	{% import "basic.html" as basic %}
+	{% set uid = uid(page, id) %}
+
+	<div id="{{ uid }}" class="station">
+		{{ basic.button(id, gad, '', pic, 1, type|default('mini')) }}
+	</div>
 {% endmacro %}
