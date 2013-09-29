@@ -1079,7 +1079,7 @@ svg.icon0, a.ui-link {
 	stroke: #000;
 	fill: #000;
 }
-svg.icon1, a.ui-link:hover, a.ui-link:visited, a.ui-link:active {
+svg.icon1, a.ui-link:hover, a.ui-link:active {
 	stroke: #5595c6;
 	fill: #5595c6;
 }
