@@ -14,8 +14,6 @@ Highcharts.theme = {
 		plotBackgroundColor: null,
 		plotShadow: false,
 		plotBorderWidth: 0,
-		marginRight: 10,
-		marginLeft: 50,
 		style: {
 			fontFamily: 'Dosis, sans-serif'
 		}
@@ -39,6 +37,7 @@ Highcharts.theme = {
 		tickWidth: 2,
 		tickColor: '#666',
 		labels: {
+			y: 20,
 			style: {
 				color: '#999', fontSize: '14px'
 			}
@@ -120,7 +119,6 @@ Highcharts.theme = {
 				color: '#ccc'
 			}
 		},
-
 		pie: {
 			borderColor: null,
 			borderWidth: 2
