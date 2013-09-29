@@ -14,13 +14,7 @@ OK.... der Plot soll weiterhin folgendes beinhalten:
 
 
 = 1. Einbindung des Plugins =
-Das benötigte SQLite-Plugin ist bereits in Smarthome.py intergriert. Wir müssen es nur "aktivieren" bzw. einbinden.
-Dies machen wir indem wir in die _/usr/local/smarthome/etc/plugin.conf_ folgendes einfügen
-{{{
-[sql]
-class_name = SQL
-class_path = plugins.sqlite
-}}}
+Das benötigte SQLite-Plugin ist bereits in Smarthome.py intergriert. 
 Wie im Wiki "HowToStart" steht, müssen wir in den item noch bei jedem Wert der in einem Plot angezeigt werden soll noch eine weitere Zeile.
 *history = true*
 
