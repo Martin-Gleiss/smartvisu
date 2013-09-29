@@ -43,6 +43,15 @@ USBID=$(findknxusb | grep device: | cut -d' ' -f2)
 EIB_IF="usb:$USBID"
 }}}
 
+Bei Verwendung der ROT-Erweiterung (Ft1.2) versucht. (selber nicht getestet) 
+
+{{{
+EIB_ARGS="--daemon --Server --Tunnelling --Discovery --GroupCache --listen-tcp"
+EIB_ADDR="0.0.1"
+EIB_IF="tpuarts:/dev/ttyAMA0"
+}}}
+
+
 Dann speichern und Eibd mit folgendem Befehl neu starten
 
 {{{
@@ -68,14 +77,7 @@ diese 2 Verzeichnisse.
 {{{
 /usr/smarthome/items/ <-- dort liegen die items
 }}}
-Falls nötig noch die */usr/local/smarthome/etc/plugin.conf* anpassen. Diese müßt ihr u.a. immer dann anpassen wenn Ihr z.B. den smartVISU Ordner umbenennt oder beispielsweise Plugins von Smarthome.py einbinden wollt. Um Plots (Diagramme) auf der Visu einzubinden müßt ihr diese 3 Zeilen in die plugin.conf einfügen.
-{{{
-[sql]
-class_name = SQL
-class_path = plugins.sqlite
-}}}
-Das dazugehörige SQLite Plugin ist bis dato allerdings noch nicht ganz fertig/released und daher auch noch nicht dokumentiert. Für die Funktion und Anzeige der Diagramme funktioniert es aber. Es fehlen dem Plugin wohl noch ein paar Features. Alle Werte werden bei dem Plugin in einer Datenbank gespeichert, so das sie auch nach ein restart noch verfügbar sind.
-
+Falls nötig noch die */usr/local/smarthome/etc/plugin.conf* anpassen. Diese müßt ihr u.a. immer dann anpassen wenn Ihr z.B. den smartVISU Ordner umbenennt oder beispielsweise Plugins von Smarthome.py einbinden wollt. 
 
 === 2.1 Items ===
 Ich empfehle zu Beginn ein paar items zu erstellen.
