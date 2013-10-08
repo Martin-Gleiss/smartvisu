@@ -74,6 +74,22 @@
     </div>
     </div>
 
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Haustür</h3>
+            {% import "widget_camera.html" as camera %}
+            {{ camera.vlc('cam2', 'http://upload.wikimedia.org/wikipedia/commons/transcoded/4/41/Big_Buck_Bunny_medium.ogv/Big_Buck_Bunny_medium.ogv.480p.ogv') }}
+        </div>
+
+    	<div data-role="collapsible">
+          <h3>&nbsp;</h3>
+          <p>Zur Wiedergabe des Kamerabildes wird das VLC-Plugin im Browser benötigt.</p>
+        </div>
+    </div>
+    </div>
+
    <!-- <div class="block">
     <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
