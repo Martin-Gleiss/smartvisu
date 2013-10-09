@@ -1,0 +1,25 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Raik Alber
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; basic.formula('actpowcon', 'actual power consumption: ', ['system_metering_sa1_total_sumpower', 'system_metering_sa2_total_sumpower', 'system_metering_sa3_total_sumpower','system_metering_sa4_total_sumpower'], 'W', 'SUM( VAR ) / 1000 * 230', '4')<br/>
+            &#125;&#125;</code>
+	</div>
+	<div class="html">
+        {{ basic.formula('actpowcon', 'actual power consumption: ', ['system_metering_sa1_total_sumpower', 'system_metering_sa2_total_sumpower', 'system_metering_sa3_total_sumpower','system_metering_sa4_total_sumpower'], 'W', 'SUM( VAR ) / 1000 * 230', '4') }}<br/>
+    </div>
+
+{% endblock %}
+

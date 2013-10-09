@@ -514,6 +514,30 @@ $(document).delegate('[data-widget="basic.value"]', {
 	}
 });
 
+// ----- basic.formula ----------------------------------------------------------
+$(document).delegate('[data-widget="basic.formula"]', {
+    'update': function (event, response) {
+        calculated = 0;
+        checkMode = $(this).attr('data-formula').substring(0,3); // functions SUM, AVG, SUB  only used, if they are the first 3 chars in formula string
+        for (var i = 0; i < response.length; i++) {
+            if (checkMode == 'SUB') {
+                calculated = calculated - response[i];
+            } else {
+                calculated = calculated + response[i];
+            }
+        }
+        if (checkMode == 'AVG') {
+            calculated = calculated / i ;
+        }
+        toCalc = $(this).attr('data-formula').replace(/VAR/g, calculated).replace(/AVG/g, '').replace(/SUM/g, '').replace(/SUB/g, '');
+        calculated =   eval(toCalc);
+        if ($(this).attr('data-round') != '') {
+            calculated = calculated.toFixed($(this).attr('data-round'));
+        }
+        $("#" + this.id ).html(calculated + $(this).attr('data-unit'));
+    }
+});
+
 
 // ----- c l o c k ------------------------------------------------------------
 // ----------------------------------------------------------------------------

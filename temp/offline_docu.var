@@ -1,4 +1,4 @@
-bath_light_value = 165
+bath_light_value = 9
 bath_light_switch = 1
 bath_rtr_state = 0
 bath_rtr_comfort = 1
@@ -17,8 +17,8 @@ bath_blind_stop = 1
 bath_blind_mov = 1
 bath_blind_stored = 1
 bath_color_r = 255
-bath_color_g = 153
-bath_color_b = 0
+bath_color_g = 64
+bath_color_b = 64
 bath_music_vol = 70
 bath_music_repeat = 1
 bath_music_artist = R.E.M.
@@ -45,4 +45,12 @@ kid_rtr_set = 21
 floor_rtr_act = 22.7
 floor_rtr_set = 17
 bath_light_value2 = 13
+system_metering_total_sumcount = 4553662
+system_metering_sa1_total_sumpower = 536.34
+system_metering_sa2_total_sumpower = 211.98
+system_metering_sa3_total_sumpower = 19.05
+system_metering_sa4_total_sumpower = 187.33
+
+
+
 
