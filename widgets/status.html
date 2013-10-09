@@ -9,20 +9,24 @@
 
 
 /**
-* Displays a notification popup window
+* Displays a list of logging-information
 *
 * @param unique id for this widget
 * @param the name of the log
-* @param maximal number of entries
+* @param maximal number of entries (1 - 50)
 */
-{% macro log(id, name, max) %}
+{% macro log(id, name, count) %}
 
-	<span id="{{ uid(page, id) }}" data-widget="status.log" data-name="{{ name }}" data-max="{{ max }}"
-
+	<span id="{{ uid(page, id) }}" data-widget="status.log" data-name="{{ name }}" data-count="{{ count }}"
+		class="log">
+		<ul data-role="listview">
+		</ul>
 	</span>
 
 	<script type="text/javascript">
-		$('#{{ uid(page, id) }}').trigger('init');
+		$('#{{ page }}').on('pagebeforeshow', function (event, ui) {
+			$('#{{ uid(page, id) }}').trigger('init');
+		})
 	</script>
 
 {% endmacro %}

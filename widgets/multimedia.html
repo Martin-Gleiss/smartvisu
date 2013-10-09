@@ -42,20 +42,20 @@
 /**
 * Standard Multimedia Player
 *
-* @param       unique id for this widget
-* @param       the gad/item for play/pause
-* @param       the gad/item for stopping the music (optional)
-* @param       the gad/item for fast forward and rewind (optional)
-* @param       the gad/item for next an previous playlist title
-* @param       the gad/item for the position (optional)
-* @param       the gad/item for the volume (optional)
-* @param       the gad/item to mute the music (optional)
-* @param       the gad/item for the song title (optional)
-* @param       the gad/item for the song artist (optional)
-* @param       the gad/item for repeat (optional)
-* @param       the gad/item to load the default playlist (optional)
+* @param unique id for this widget
+* @param the gad/item for play/pause
+* @param the gad/item for stopping the music (optional)
+* @param the gad/item for fast forward and rewind (optional)
+* @param the gad/item for next an previous playlist title
+* @param the gad/item for the position (optional)
+* @param the gad/item for the volume (optional)
+* @param the gad/item to mute the music (optional)
+* @param the gad/item for the song title (optional)
+* @param the gad/item for the song artist (optional)
+* @param the gad/item for repeat (optional)
+* @param the gad/item to load the default playlist (optional)
 *
-* @author      Axel Otterstätter
+* @author Axel Otterstätter
 */
 {% macro music(id, gad_play, gad_stop, gad_ff, gad_next, gad_pos, gad_vol, gad_mute, gad_title, gad_artist, gad_repeat, gad_playlist) %}
 	{% import "basic.html" as basic %}
@@ -103,18 +103,18 @@
 /**
 * A widget to display a slideshow, controlled by gads/items
 *
-* @param       unique id for this widget
-* @param       a directory where the pictures are located
-* @param       delay between the slides in sec (optional, default: 2 sec)
-* @param       gad/item to switch to the next slide
-* @param       gad/item to switch to the previous slide
-* @param       gad/item to stop the animation
-* @param       gad/item to start the animation
+* @param unique id for this widget
+* @param a directory where the pictures are located
+* @param delay between the slides in sec (optional, default: 2 sec)
+* @param gad/item to switch to the next slide
+* @param gad/item to switch to the previous slide
+* @param gad/item to stop the animation
+* @param gad/item to start the animation
 *
-* @author      Alex
+* @author Alex
 *
-* @info        based on cycle2 jquery-plugin: (c) 2012 M. Alsup; Dual licensed: MIT/GPL
-* @link        http://jquery.malsup.com/cycle2
+* @info based on cycle2 jquery-plugin: (c) 2012 M. Alsup; Dual licensed: MIT/GPL
+* @link http://jquery.malsup.com/cycle2
 */
 {% macro slideshow(id, dir, delay, gad_next, gad_prev, gad_stop, gad_start) %}
 	{% set uid = uid(page, id) %}
@@ -142,11 +142,11 @@
 /**
 * Displays a tv- or radio- station button
 *
-* @param       unique id for this widget
-* @param       a gad/item
-* @param       a icon (e. g. located in pics/station)
-* @param       value send if the button is pressed (optional, default 1)
-* @param       type: 'mini', 'midi' (optional, default: mini)
+* @param unique id for this widget
+* @param a gad/item
+* @param a icon (e. g. located in pics/station)
+* @param value send if the button is pressed (optional, default 1)
+* @param type: 'mini', 'midi' (optional, default: mini)
 */
 {% macro station(id, gad, pic, val, type) %}
 	{% import "basic.html" as basic %}

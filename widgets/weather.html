@@ -11,11 +11,11 @@
 /**
 * Displays the actual weather at location
 *
-* @param       unique id for this widget
-* @param       location as string (optional)
+* @param unique id for this widget
+* @param location as string (optional)
 *
-* @info        based on jDigiClock by Radoslav Dimov
-* @link        http://www.radoslavdimov.com
+* @info based on jDigiClock by Radoslav Dimov
+* @link http://www.radoslavdimov.com
 */
 {% macro current(id, location) %}
 	{% set uid = uid(page, id) %}
@@ -53,12 +53,12 @@
 /**
 * Displays the forecast weather of one day at location
 *
-* @param       unique id for this widget
-* @param       location as string (optional)
-* @param       offset: 1 for tomorrow (default), 2 the day after tomorrow ..., (optional)
+* @param unique id for this widget
+* @param location as string (optional)
+* @param offset: 1 for tomorrow (default), 2 the day after tomorrow ..., (optional)
 *
-* @info        based on jDigiClock by Radoslav Dimov
-* @link        http://www.radoslavdimov.com
+* @info based on jDigiClock by Radoslav Dimov
+* @link http://www.radoslavdimov.com
 */
 {% macro forecast(id, location, day) %}
 	{% set uid = uid(page, id) %}
@@ -94,11 +94,11 @@
 /**
 * Displays the forecast weather of the next 4 days
 *
-* @param       unique id for this widget
-* @param       location as string (optional)
+* @param unique id for this widget
+* @param location as string (optional)
 *
-* @info        based on jDigiClock by Radoslav Dimov
-* @link        http://www.radoslavdimov.com
+* @info based on jDigiClock by Radoslav Dimov
+* @link http://www.radoslavdimov.com
 */
 {% macro forecastweek(id, location) %}
 	{% set uid = uid(page, id) %}
@@ -133,12 +133,12 @@
 /**
 * A Block with a map. The type specifies the kind of map.
 *
-* @param       unique id for this widget
-* @param       title of the block
-* @param       the mode: 'day', 'night', 'forecast', 'wind', 'europe'
+* @param unique id for this widget
+* @param title of the block
+* @param the mode: 'day', 'night', 'forecast', 'wind', 'europe'
 *
-* @info        Maps from tagesschau.de, Hessischer Rundfunk, Deutscher Wetterdienst
-* @link        http://www.tagesschau.de
+* @info Maps from tagesschau.de, Hessischer Rundfunk, Deutscher Wetterdienst
+* @link http://www.tagesschau.de
 */
 {% macro map(id, title, mode) %}
 	{% import "basic.html" as basic %}
@@ -166,12 +166,12 @@
 /**
 * A block with a some weather-maps in a slideshow
 *
-* @param       unique id for this widget
-* @param       title of the block
-* @param       delay between the slides in sec (optional, default: 2 sec)
+* @param unique id for this widget
+* @param title of the block
+* @param delay between the slides in sec (optional, default: 2 sec)
 *
-* @info        based on cycle2 jquery-plugin: (c) 2012 M. Alsup; Dual licensed: MIT/GPL
-* @link        http://jquery.malsup.com/cycle2
+* @info based on cycle2 jquery-plugin: (c) 2012 M. Alsup; Dual licensed: MIT/GPL
+* @link http://jquery.malsup.com/cycle2
 */
 {% macro mapslides(id, title, delay) %}
 	{% set uid = uid(page, id) %}

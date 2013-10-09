@@ -11,9 +11,9 @@
 /**
 * The diagram showing curves of relative humidity and effective temperature superimposed upon rectangular coordinates. The comfort-zones indicate when humans feel good.
 *
-* @param       unique id for this widget
-* @param       a gad/item for the temperature
-* @param       a gad/item for the humidity
+* @param unique id for this widget
+* @param a gad/item for the temperature
+* @param a gad/item for the humidity
 */
 {% macro comfortchart(id, gad_temp, gad_humidity) %}
 
@@ -27,21 +27,21 @@
 /**
 * A simple widget for plotting charts
 *
-* @param       unique id for this widget
-* @param       series of item/s. More item/s in array form: [ item1 , item2 ]
-* @param       the mode: 'avg', 'sum', 'min', 'max'
-* @param       the minimum time (x-axis): '1h', '2h'... (duration-format)
-* @param       the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
-* @param        the minimum y-axis (optional)
-* @param       the maximum y-axis (optional)
-* @param       the step between two time-points (optional, only for 'offline'-driver)
-* @param       label/s for each series (optional)
-* @param       color/s for each series e. g. '#f00' for red (optional, default: sutiable for design)
-* @param       type/s for each series: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')
-* @param       title/s for the x-axis and y-axis
+* @param unique id for this widget
+* @param series of item/s. More item/s in array form: [ item1 , item2 ]
+* @param the mode: 'avg', 'sum', 'min', 'max'
+* @param the minimum time (x-axis): '1h', '2h'... (duration-format)
+* @param the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
+* @param  the minimum y-axis (optional)
+* @param the maximum y-axis (optional)
+* @param the step between two time-points (optional, only for 'offline'-driver)
+* @param label/s for each series (optional)
+* @param color/s for each series e. g. '#f00' for red (optional, default: sutiable for design)
+* @param type/s for each series: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')
+* @param title/s for the x-axis and y-axis
 *
-* @see        misc/fundamentals#Array-Form
-* @see        misc/fundamentals#Duration-Format
+* @see misc/fundamentals#Array-Form
+* @see misc/fundamentals#Duration-Format
 */
 {% macro period(id, gad, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes) %}
 
@@ -57,22 +57,22 @@
 /**
 * A simple widget for plotting zoomable charts
 *
-* @param       unique id for this widget
-* @param       series of item/s. More item/s in array form: [ item1 , item2 ]
-* @param       the mode: 'avg', 'sum', 'min', 'max'
-* @param       the minimum time (x-axis): '1h', '2h'... (duration-format)
-* @param       the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
-* @param        the minimum y-axis (optional)
-* @param       the maximum y-axis (optional)
-* @param       the step between two time-points (optional, only for 'offline'-driver)
-* @param       label/s for each series (optional)
-* @param       color/s for each series e. g. '#f00' for red (optional, default: sutiable for design)
-* @param       type/s for each series: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')
-* @param       title/s for the x-axis and y-axis
-* @param       minimum range while zooming for the x-axis in milliseconds (optional, default one hour)
+* @param unique id for this widget
+* @param series of item/s. More item/s in array form: [ item1 , item2 ]
+* @param the mode: 'avg', 'sum', 'min', 'max'
+* @param the minimum time (x-axis): '1h', '2h'... (duration-format)
+* @param the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
+* @param  the minimum y-axis (optional)
+* @param the maximum y-axis (optional)
+* @param the step between two time-points (optional, only for 'offline'-driver)
+* @param label/s for each series (optional)
+* @param color/s for each series e. g. '#f00' for red (optional, default: sutiable for design)
+* @param type/s for each series: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')
+* @param title/s for the x-axis and y-axis
+* @param minimum range while zooming for the x-axis in milliseconds (optional, default one hour)
 *
-* @see        misc/fundamentals#Array-Form
-* @see        misc/fundamentals#Duration-Format
+* @see misc/fundamentals#Array-Form
+* @see misc/fundamentals#Duration-Format
 *
 * @author Niko Will
 */
@@ -90,10 +90,10 @@
 /**
 * A temperature-chart for use with an rtr. Plots actual and set temperature. If the state is given it will be shown as pie.
 *
-* @param       unique id for this widget
-* @param       series of a gad/item for the actual-temperature
-* @param       series of a gad/item for the set-temperature
-* @param       series of a gad/item for the state of the actor. It is shown as percental value within the pie. (> 0 is considered as 'on')
+* @param unique id for this widget
+* @param series of a gad/item for the actual-temperature
+* @param series of a gad/item for the set-temperature
+* @param series of a gad/item for the state of the actor. It is shown as percental value within the pie. (> 0 is considered as 'on')
 */
 {% macro rtr(id, gad_actual, gad_set, gad_state) %}
 
@@ -107,12 +107,12 @@
 /**
 * A complete house temperature plot. The rose shows all rooms with there actual and set temperature in one diagramm.
 *
-* @param       unique id for this widget
-* @param       a gad/item for the actual-temperature. More item/s in array form: [ item1 , item2 ]
-* @param       a gad/item for the set-temperature. More item/s in array form: [ item1 , item2 ]
-* @param       label/s for each axis
+* @param unique id for this widget
+* @param a gad/item for the actual-temperature. More item/s in array form: [ item1 , item2 ]
+* @param a gad/item for the set-temperature. More item/s in array form: [ item1 , item2 ]
+* @param label/s for each axis
 *
-* @see        misc/fundamentals#Array-Form
+* @see misc/fundamentals#Array-Form
 */
 {% macro temprose(id, gad_actual, gad_set, axis) %}
 

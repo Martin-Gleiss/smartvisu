@@ -621,6 +621,18 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 	margin-top: 3px;
 }
 
+.color.info, .signal.info {
+	background: #3ad064;
+}
+
+.color.warning, .signal.warning {
+	background: #f7cf57;
+}
+
+.color.error, .color.exception, .color.critical, .signal.error {
+	background: #e03d3d;
+}
+
 .signal {
 	background: #f7cf57;
 	border: solid #fff;
@@ -645,27 +657,6 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 	-moz-box-shadow: 0 0 6px rgba(0, 0, 0, .75);
 	-o-box-shadow: 0 0 6px rgba(0, 0, 0, .75);
 	box-shadow: 0 0 6px rgba(0, 0, 0, .75);
-}
-
-.signal.info {
-	right: -44px;
-	top: -10px;
-	padding: 24px 0 4px 0;
-	background: #3ad064;
-}
-
-.signal.warning {
-	right: -44px;
-	top: -10px;
-	padding: 24px 0 4px 0;
-	background: #f7cf57;
-}
-
-.signal.error {
-	right: -44px;
-	top: -10px;
-	padding: 24px 0 4px 0;
-	background: #e03d3d;
 }
 
 .signal.update {
@@ -994,6 +985,50 @@ canvas.colordisc {
 }
 
 /**
+ * --- W i d g e t s :   C A L E N D A R --------------------------------------
+ */
+.calendarlist h2 {
+	font-size: 12pt;
+	margin-bottom: 4px;
+}
+
+.calendarlist ul {
+	margin: 0 !important;
+}
+
+.calendarlist li {
+	padding: 0 !important;
+	height: 50px;
+}
+
+.calendarlist a {
+	padding: 0 10px 0 50px !important;
+	height: 50px;
+}
+
+.calendarlist .icon {
+	padding: 0 !important;
+	margin: 0 !important;
+	width: 48px;
+	height: 48px;
+}
+
+.calendarlist .color {
+	width: 6px;
+	height: 48px;
+	margin-right: 10px;
+	float: left;
+}
+
+.calendarlist h3 {
+	margin: 6px 0 6px 0;
+}
+
+.calendarlist p {
+	font-size: 10pt;
+}
+
+/**
  * --- W i d g e t s :   D E V I C E ------------------------------------------
  */
 .dimmer {
@@ -1082,95 +1117,6 @@ canvas.colordisc {
 
 .blind .angle .ui-slider .ui-input-text {
 	display: none !important;
-}
-
-/**
- * --- W i d g e t s :   P H O N E --------------------------------------------
- */
-.phonelist h2 {
-	font-size: 12pt;
-	margin-bottom: 4px;
-}
-
-.phonelist ul {
-	margin: 0 !important;
-}
-
-.phonelist li {
-	padding: 0 !important;
-	height: 50px;
-}
-
-.phonelist a {
-	padding: 0 10px 0 64px !important;
-	height: 50px;
-}
-
-.phonelist .icon {
-	padding: 0 !important;
-	width: 48px;
-	height: 48px;
-}
-
-.phonelist .dir {
-	position: absolute;
-	padding: 0 !important;
-	left: 38px;
-	top: 22px;
-	width: 24px;
-	height: 24px;
-}
-
-.phonelist h3 {
-	margin: 6px 0 6px 0;
-}
-
-.phonelist p {
-	font-size: 10pt;
-}
-
-/**
- * --- W i d g e t s :   C A L E N D A R --------------------------------------
- */
-.calendarlist h2 {
-	font-size: 12pt;
-	margin-bottom: 4px;
-}
-
-.calendarlist ul {
-	margin: 0 !important;
-}
-
-.calendarlist li {
-	padding: 0 !important;
-	height: 50px;
-}
-
-.calendarlist a {
-	padding: 0 10px 0 50px !important;
-	height: 50px;
-}
-
-.calendarlist .icon {
-	padding: 0 !important;
-	margin: 0 !important;
-	width: 48px;
-	height: 48px;
-}
-
-.calendarlist .color {
-	width: 6px;
-	height: 48px;
-	margin-right: 10px;
-	float: left;
-}
-
-.calendarlist h3 {
-	margin: 6px 0 6px 0;
-}
-
-.calendarlist p {
-	font-size: 10pt;
 }
 
 /**
@@ -1285,12 +1231,89 @@ canvas.colordisc {
 }
 
 /**
+ * --- W i d g e t s :   P H O N E --------------------------------------------
+ */
+.phonelist h2 {
+	font-size: 12pt;
+	margin-bottom: 4px;
+}
+
+.phonelist ul {
+	margin: 0 !important;
+}
+
+.phonelist li {
+	padding: 0 !important;
+	height: 50px;
+}
+
+.phonelist a {
+	padding: 0 10px 0 64px !important;
+	height: 50px;
+}
+
+.phonelist .icon {
+	padding: 0 !important;
+	width: 48px;
+	height: 48px;
+}
+
+.phonelist .dir {
+	position: absolute;
+	padding: 0 !important;
+	left: 38px;
+	top: 22px;
+	width: 24px;
+	height: 24px;
+}
+
+.phonelist h3 {
+	margin: 6px 0 6px 0;
+}
+
+.phonelist p {
+	font-size: 10pt;
+}
+
+/**
  * --- W i d g e t s :   P L O T ----------------------------------------------
  */
 .plot {
 	height: 200px;
 	min-width: 250px;
 	margin: 0 auto;
+}
+
+/**
+ * --- W i d g e t s :   S T A T U S ------------------------------------------
+ */
+.log h2 {
+	font-size: 12pt;
+	margin-bottom: 4px;
+}
+
+.log ul {
+	margin: 0 !important;
+}
+
+.log li {
+	padding: 0 !important;
+	height: 48px;
+}
+
+.log .color {
+	width: 6px;
+	height: 48px;
+	margin-right: 8px;
+	float: left;
+}
+
+.log h3 {
+	margin: 6px 0 6px 0;
+}
+
+.log p {
+	font-size: 10pt;
 }
 
 /**
@@ -1505,7 +1528,6 @@ svg.fx-icon {
 	width: 40%;
 }
 
-
 .tiles li {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -1589,7 +1611,6 @@ svg.fx-icon {
 	height: 40px;
 }
 
-
 .tiles .ui-li-has-thumb .ui-btn-inner a.ui-link-inherit {
 	padding: 0 0 0 60px;
 	height: 65px;
@@ -1610,8 +1631,6 @@ svg.fx-icon {
 	right: 0;
 	position: absolute;
 }
-
-
 
 /* some corrections for smaller displays */
 @media all and (max-width: 767px) {
