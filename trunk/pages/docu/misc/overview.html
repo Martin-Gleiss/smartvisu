@@ -31,8 +31,12 @@
 
 	{{ basic.checkbox('checkbox1', 'bath_light_switch', 'Checkbox') }}
 	{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
-
-	<br />
+    <br/>
+    <p>demonstration of basic formula. Calculates values</p>
+    {{ basic.formula('totalpowcons', 'total power consumption: ', 'system_metering_total_sumcount','kWh', '( VAR ) /1000', '2') }}<br/>
+    {{ basic.formula('actpowcons', 'actual power consumption: ', ['bath_light_value', 'system_metering_sa1_total_sumpower', 'system_metering_sa2_total_sumpower', 'system_metering_sa3_total_sumpower','system_metering_sa4_total_sumpower'], 'W', '( VAR ) / 1000 * 230', '2') }}<br/>
+    <br/>
+    <br />
 	<div style="height: 180px; width: 100px; display: inline-block;">
 		{{ basic.slider('slider2', 'bath_light_value2', 0, 255, 1, 'vertical') }}
 	</div>
@@ -93,8 +97,7 @@
 		</div>
 	</div>
 
-
-	<style type="text/css">
+<style type="text/css">
 		<!--
 
 		-->
