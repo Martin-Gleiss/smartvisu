@@ -1,38 +1,17 @@
-/**
- * -----------------------------------------------------------------------------
- * @package     smartVISU
- * @author      Martin Gleiß
- * @copyright   2012
- * @license     GPL [http://www.gnu.de]
- * ----------------------------------------------------------------------------- 
- */
-
-@CHARSET "UTF-8";
-
-.page-bg {
-	background-image: url('../../pics/bg/light_lines.png');
+body {
+        font-family: 'Verdana'  !important;
+        font-style: normal  !important;
+        font-weight: 500  !important;
+        text-shadow: none;
 }
 
-.ui-li-heading {
-	font-weight: 200;
+.setRed {
+        color: red;
+}
+.setBlue {
+        color: blue;
 }
 
-.calendarlist h2 {
-	font-weight: 200;
-}
+.sunIcon { border: 0px; padding: 0px; vertical-align: text-bottom; width: 35px;}
+.moonIcon { border: 0px; padding: 0px; vertical-align: text-bottom; width: 35px;}
 
-.ui-bar-a button, .ui-bar-b button, .ui-bar-c button, .ui-bar-d button {
-	font-family: Helvetica, Arial, sans-serif /*{global-font-family}*/;
-}
-
-.ui-body-a button, .ui-body-b button, .ui-body-c button, .ui-body-d button {
-	font-family: Helvetica, Arial, sans-serif /*{global-font-family}*/;
-}
-
-.ui-btn-down-a, .ui-btn-down-b, .ui-btn-down-c, .ui-btn-down-d {
-	font-family: Helvetica, Arial, sans-serif /*{global-font-family}*/;
-}
-
-.blockFull {
-	width: 100%;
-}
