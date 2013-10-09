@@ -1,0 +1,35 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <h1><img class="icon" src='{{ icon0 }}szene_garten.png'/>Garten</h1>
+    
+    <div class="preblock">
+		
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Hausbeleuchtung</h3>
+    		<table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'haustuer_beleuchtung_schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Wandleuchten Haustür</td></tr>
+		<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch2', 'dachueberstand_ost_beleuchtung_schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Strahler Dachüberstand Hauswirtschaftsraum</td></tr>
+		<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch3', 'dachueberstand_west_beleuchtung_schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Strahler Dachüberstand Büro</td></tr>
+		<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch4', 'giebel_west_beleuchtung_schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Wandleuchten Westgiebel</td></tr>
+		</table>		
+ 	</div>
+    </div>    
+    </div>   
+{% endblock %}
+
