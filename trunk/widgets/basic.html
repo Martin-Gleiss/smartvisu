@@ -148,6 +148,24 @@
 
 
 /**
+* calculate values and display
+*
+* @param unique id for this widget
+* @param text to display
+* @param one or more gad(s)/item(s). More gads/items in array form: [ item1 , item2 ]
+* @param unit for displaying (optional, default '')
+* @param formula to use: SUM(VAR), AVG(VAR), SUB(VAR), your own, ( optional, default SUM(VAR) )
+* @param round to X digits
+*/
+{% macro formula(id, txt, gad, unit, formula, round) %}
+
+	{% if txt %} {{ txt }} {% endif %}
+	<span id="{{ uid(page, id) }}" data-item="{{ implode(gad) }}" class="text" data-widget="basic.formula" data-unit="{{ unit }}" data-formula="{{ formula }}" data-round="{{ round }}"></span>
+
+{% endmacro %}
+
+
+/**
 * Used to glue to widgets together. Only needed if you don't use 'Realtime'!
 * If you click the 'from'-widget, the 'to'-widget will be reloaded and updated after a delay.
 *
@@ -400,7 +418,7 @@
 
 
 /**
-* A trigger for a logic
+* A widget to trigger a logic (e. g. in SmartHome.py)
 *
 * @param unique id for this widget
 * @param the name of the trigger (logic)
@@ -445,20 +463,3 @@
 
 {% endmacro %}
 
-
-/**
-* calculate values and display
-*
-* @param       unique id for this widget
-* @param       text to display
-* @param       one or more gad(s)/item(s). More gads/items in array form: [ item1 , item2 ]
-* @param       unit for displaying (optional, default '')
-* @param       formula to use: SUM(VAR), AVG(VAR), SUB(VAR), your own, ( optional, default SUM(VAR) )
-* @param       round to X digits
-*/
-{% macro formula(id, txt, gad, unit, formula, round) %}
-
-    {% if txt %} {{ txt }} {% endif %}
-    <span id="{{ uid(page, id) }}" data-item="{{ implode(gad) }}" class="text" data-widget="basic.formula" data-unit="{{ unit }}" data-formula="{{ formula }}" data-round="{{ round }}"></span>
-
-{% endmacro %}

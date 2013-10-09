@@ -251,6 +251,33 @@ $(document).delegate('[data-widget="basic.float"]', {
 	}
 });
 
+// ----- basic.formula ----------------------------------------------------------
+$(document).delegate('[data-widget="basic.formula"]', {
+	'update': function (event, response) {
+		var calculated = 0;
+		var checkmode = $(this).attr('data-formula').substring(0,3); // functions SUM, AVG, SUB  only used, if they are the first 3 chars in formula string
+		
+		for (var i = 0; i < response.length; i++) {
+			if (checkmode == 'SUB') {
+				calculated = calculated - response[i];
+			} else {
+				calculated = calculated + response[i];
+			}
+		}
+		
+		if (checkmode == 'AVG') {
+			calculated = calculated / i ;
+		}
+		
+		calculated = eval($(this).attr('data-formula').replace(/VAR/g, calculated).replace(/AVG/g, '').replace(/SUM/g, '').replace(/SUB/g, ''));
+		
+		if ($(this).attr('data-round') != '') {
+			calculated = calculated.toFixed($(this).attr('data-round'));
+		}
+		$("#" + this.id ).html(calculated + $(this).attr('data-unit'));
+	}
+});
+
 // ----- basic.rgb ------------------------------------------------------------
 $(document).delegate('a[data-widget="basic.rgb"]', {
 	'update': function (event, response) {
@@ -512,30 +539,6 @@ $(document).delegate('[data-widget="basic.value"]', {
 	'update': function (event, response) {
 		$('#' + this.id).html(response + ' ' + $(this).attr('data-unit'));
 	}
-});
-
-// ----- basic.formula ----------------------------------------------------------
-$(document).delegate('[data-widget="basic.formula"]', {
-    'update': function (event, response) {
-        calculated = 0;
-        checkMode = $(this).attr('data-formula').substring(0,3); // functions SUM, AVG, SUB  only used, if they are the first 3 chars in formula string
-        for (var i = 0; i < response.length; i++) {
-            if (checkMode == 'SUB') {
-                calculated = calculated - response[i];
-            } else {
-                calculated = calculated + response[i];
-            }
-        }
-        if (checkMode == 'AVG') {
-            calculated = calculated / i ;
-        }
-        toCalc = $(this).attr('data-formula').replace(/VAR/g, calculated).replace(/AVG/g, '').replace(/SUM/g, '').replace(/SUB/g, '');
-        calculated =   eval(toCalc);
-        if ($(this).attr('data-round') != '') {
-            calculated = calculated.toFixed($(this).attr('data-round'));
-        }
-        $("#" + this.id ).html(calculated + $(this).attr('data-unit'));
-    }
 });
 
 
@@ -887,11 +890,23 @@ $(document).delegate('div[data-widget="plot.temprose"]', {
 // ----- status.log -----------------------------------------------------------
 $(document).delegate('span[data-widget="status.log"]', {
 	'update': function (event, response) {
-		console.log('[status.log] sending data: ', response);
+		var ret;
+		var line = '';
+		
+		// only the last entries
+		response = response.slice(0, $(this).attr('data-count'));
+		
+		for (var i in response) {
+			ret  = '<div class="color ' + response[i].level.toLowerCase() + '"></div>';
+			ret += '<h3>' + new Date(response[i].time).transLong() + '</h3>';
+			ret += '<p>' + response[i].message + '</p>';
+			line += '<li data-icon="false">' + ret + '</li>';
+		}
+		$('#' + this.id + ' ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
 	},
 
 	'init': function (event) {
-		io.log($(this).attr('data-name'), $(this).attr('data-max'));
+		io.log($(this).attr('data-name'));
 	}
 });
 
@@ -903,7 +918,7 @@ $(document).delegate('span[data-widget="status.notify"]', {
 
 		if (response[0] != 0) {
 			notify.add($(this).attr('data-mode'), $(this).attr('data-signal'), $('#' + this.id + ' h1').html(),
-				'<b>' + response[1] + '</b><br />' + $('#' + this.id + ' p').html());
+				'<b>' + response[1] + '</b><br  />' + $('#' + this.id + ' p').html());
 			notify.display();
 		}
 	}
