@@ -4,7 +4,7 @@ $(document).delegate('[data-widget="calc.calculate"]', {
         for (var i = 0; i < response.length; i++) {
             if ($(this).attr('data-mode') == 'sub') {
                 calculated = calculated - response[i];
-            } else { 
+            } else {
                 calculated = calculated + response[i];
             }
         }
@@ -18,4 +18,3 @@ $(document).delegate('[data-widget="calc.calculate"]', {
         $("#" + this.id ).html(calculated + $(this).attr('data-unit'));
     }
 });
-
