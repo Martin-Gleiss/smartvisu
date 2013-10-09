@@ -45,6 +45,9 @@ if (array_key_exists('d', $sendOptions) || array_key_exists('dest', $sendOptions
 
 if (array_key_exists('input', $sendOptions)) {
     $inputDirectory =  $sendOptions['input'];
+    if (substr($inputDirectory,-1,1) != '/') {
+        $inputDirectory .= '/';
+    }
 } else {
     $inputDirectory = './';
 }
