@@ -33,8 +33,10 @@
 	{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
     <br/>
     <p>demonstration of basic formula. Calculates values</p>
-    {{ basic.formula('totalpowcons', 'total power consumption: ', 'system_metering_total_sumcount','kWh', '( VAR ) /1000', '2') }}<br/>
-    {{ basic.formula('actpowcons', 'actual power consumption: ', ['bath_light_value', 'system_metering_sa1_total_sumpower', 'system_metering_sa2_total_sumpower', 'system_metering_sa3_total_sumpower','system_metering_sa4_total_sumpower'], 'W', '( VAR ) / 1000 * 230', '2') }}<br/>
+    {{ basic.formula('totalpowcons', 'total power consumption: ', 'system_metering_total_sumcount','kWh', '( VAR ) /1000') }}<br/>
+    {{ basic.formula('actpowcons', 'actual power consumption: ', ['bath_light_value', 'system_metering_sa1_total_sumpower', 'system_metering_sa2_total_sumpower', 'system_metering_sa3_total_sumpower','system_metering_sa4_total_sumpower'], 'W', '( VAR ) / 1000 * 230') }}<br/>
+    {{ basic.formula('lastpowcons', 'this month power consumption: ', ['system_metering_total_sumcount', 'system_metering_last_total_sumpower'], 'kWh', 'SUB( VAR ) / 1000 ') }}<br/>
+    {{ basic.formula('avgtemp', 'average temperature: ', ['bath_rtr_act', 'sleep_rtr_act', 'kid_rtr_act'], 'temp', 'AVG( VAR )') }}<br/>
     <br/>
     <br />
 	<div style="height: 180px; width: 100px; display: inline-block;">
