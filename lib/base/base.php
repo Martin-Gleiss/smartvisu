@@ -69,6 +69,23 @@
 		return ret.toString() + '<?php echo strrchr($fmt, ' ') ?>';
 	};
 
+    /**
+    * transforms a number to a defined unit
+    */
+    Number.prototype.transUnit = function(unit, round) {
+        <?php echo 'allFormats  = ' . trans('format', '', true) . ';'; ?>
+        var getUnit = eval('allFormats.' + unit);
+        if (getUnit == '') {
+            return this;
+        }
+        var roundTo = getUnit[4];
+        var devider = getUnit[3];
+        if (parseInt(round)) {
+            roundTo = parseInt(round);
+        }
+        var ret = this.toFixed(roundTo).replace('.', devider );
+        return ret.toString() + getUnit.substr(getUnit.lastIndexOf(' '));
+    };
 
 // ----- date ------------------------------------------------------------------
 
