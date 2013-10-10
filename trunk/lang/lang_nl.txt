@@ -24,6 +24,8 @@ $lang['format']['temp']				= '%01,1f °C';
 $lang['format']['percent']			= '%01,1f %';
 $lang['format']['currency']			= '%01,2f €';
 $lang['format']['speed']			= '%01,0f km/u';
+$lang['format']['kWh']			    = '%01,2f kWh';
+$lang['format']['W']			    = '%01,2f W';
 
 $lang['format']['date']				= 'd.m.y';
 $lang['format']['time']				= 'H:i';

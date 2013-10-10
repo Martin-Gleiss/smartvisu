@@ -236,13 +236,13 @@ $(document).delegate('select[data-widget="basic.flip"]', {
 $(document).delegate('[data-widget="basic.float"]', {
 	'update': function (event, response) {
 		if ($(this).attr('data-unit') == '°') {
-			$('#' + this.id).html(parseFloat(response).transTemp());
+			$('#' + this.id).html(parseFloat(response).transUnit('temp'));
 		}
 		else if ($(this).attr('data-unit') == '%') {
-			$('#' + this.id).html(parseFloat(response).transPercent());
+			$('#' + this.id).html(parseFloat(response).transUnit('percent'));
 		}
 		else if ($(this).attr('data-unit') == '€') {
-			$('#' + this.id).html(parseFloat(response).transCurrency());
+			$('#' + this.id).html(parseFloat(response).transUnit('currency'));
 		}
 		else {
 			$('#' + this.id).html(parseFloat(response).transFloat() + ' ' + $(this).attr('data-unit'));
@@ -255,6 +255,7 @@ $(document).delegate('[data-widget="basic.float"]', {
 $(document).delegate('[data-widget="basic.formula"]', {
 	'update': function (event, response) {
 		var calculated = 0;
+        var unit = $(this).attr('data-unit');
 		var checkmode = $(this).attr('data-formula').substring(0,3); // functions SUM, AVG, SUB  only used, if they are the first 3 chars in formula string
 		
 		for (var i = 0; i < response.length; i++) {
@@ -271,10 +272,11 @@ $(document).delegate('[data-widget="basic.formula"]', {
 		
 		calculated = eval($(this).attr('data-formula').replace(/VAR/g, calculated).replace(/AVG/g, '').replace(/SUM/g, '').replace(/SUB/g, ''));
 		
-		if ($(this).attr('data-round') != '') {
-			calculated = calculated.toFixed($(this).attr('data-round'));
-		}
-		$("#" + this.id ).html(calculated + $(this).attr('data-unit'));
+		//if ($(this).attr('data-round') != '') {
+		//	calculated = calculated.toFixed($(this).attr('data-round'));
+		//}
+		//$("#" + this.id ).html(calculated + $(this).attr('data-unit'));
+		$("#" + this.id ).html(parseFloat(calculated).transUnit(unit));
 	}
 });
 

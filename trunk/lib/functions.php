@@ -21,7 +21,7 @@
  *
  * @return string
  */
-function trans($subset, $key = '')
+function trans($subset, $key = '', $withKeys = false)
 {
 	$ret = '';
 	static $lang;
@@ -31,12 +31,19 @@ function trans($subset, $key = '')
 
 	if (is_array($lang[$subset]) && $key == '')
 	{
-		foreach (($lang[$subset]) as $val)
+		foreach (($lang[$subset]) as $thisKey =>$val)
 		{
+            if ($withKeys) {
+                $ret .= $thisKey .':';
+            }
 			$ret .= "'".$val."', ";
 		}
+        if ($withKeys) {
+            $ret = '{'.substr($ret, 0, -2).'}';
+        } else {
+            $ret = '['.substr($ret, 0, -2).']';
+        }
 
-		$ret = '['.substr($ret, 0, -2).']';
 	}
 	elseif (isset($lang[$subset][$key]))
 		$ret = $lang[$subset][$key];
@@ -159,12 +166,30 @@ function transtemp($temp)
  */
 function transspeed($speed)
 {
-	$fmt = trans('format', 'speed');
+    $fmt = trans('format', 'speed');
 
-	if (strpos($fmt, ',') !== false)
-		return str_replace('.', ',', sprintf(str_replace(',', '.', $fmt), $speed));
-	else
-		return sprintf($fmt, $speed);
+    if (strpos($fmt, ',') !== false)
+        return str_replace('.', ',', sprintf(str_replace(',', '.', $fmt), $speed));
+    else
+        return sprintf($fmt, $speed);
+}
+
+/**
+ * Convert to unit
+ *
+ * @param string $unit a unit as string
+ * @param float $value a value as float
+ *
+ * @return string string representation of the value
+ */
+function transunit($unit, $value)
+{
+    $fmt = trans('format', $unit);
+
+    if (strpos($fmt, ',') !== false)
+        return str_replace('.', ',', sprintf(str_replace(',', '.', $fmt), $value));
+    else
+        return sprintf($fmt, $value);
 }
 
 // -----------------------------------------------------------------------------
