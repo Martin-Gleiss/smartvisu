@@ -9,7 +9,6 @@
 */
 {% macro smallshut(id, txt, gad_move, gad_stop, gad_position) %}
 {% import "basic.html" as basic %}
-{% import   "widgets/calculate.html" as calc %}
 {% set uid = uid(page, id) %}
 
 /** Design */
@@ -33,7 +32,7 @@
                 {% endif %}
             </td>
             <td width="20%">
-                 {{ calc.calculate(id~'position', '', gad_position,'sum', '%', '(', ')', '2') }}
+                 {{ basic.formula(id~'position', '', gad_position, 'percent', '( VAR )') }}
             </td>
         </tr>
     </table>
