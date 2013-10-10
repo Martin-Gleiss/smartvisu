@@ -255,23 +255,28 @@ $(document).delegate('[data-widget="basic.float"]', {
 $(document).delegate('[data-widget="basic.formula"]', {
 	'update': function (event, response) {
 		var calculated = 0;
+        var starti = 0;
         var unit = $(this).attr('data-unit');
 		var checkmode = $(this).attr('data-formula').substring(0,3); // functions SUM, AVG, SUB  only used, if they are the first 3 chars in formula string
-		
-		for (var i = 0; i < response.length; i++) {
+
+        if (checkmode == 'SUB') {
+            calculated = response[starti];
+            starti++;
+        }
+		for (var i = starti; i < response.length; i++) {
 			if (checkmode == 'SUB') {
 				calculated = calculated - response[i];
 			} else {
 				calculated = calculated + response[i];
 			}
 		}
-		
+
 		if (checkmode == 'AVG') {
 			calculated = calculated / i ;
 		}
-		
+
 		calculated = eval($(this).attr('data-formula').replace(/VAR/g, calculated).replace(/AVG/g, '').replace(/SUM/g, '').replace(/SUB/g, ''));
-		
+
 		//if ($(this).attr('data-round') != '') {
 		//	calculated = calculated.toFixed($(this).attr('data-round'));
 		//}
