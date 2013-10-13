@@ -18,10 +18,11 @@
  *
  * @param string $subset the subset of translation keys (first array dimension)
  * @param string $key    a key in that subset (secound array dimension)
+ * @param string $mode   if $mode == 'obj', all values will be served as object-string
  *
  * @return string
  */
-function trans($subset, $key = '', $withKeys = false)
+function trans($subset, $key = '', $mode = '')
 {
 	$ret = '';
 	static $lang;
@@ -31,14 +32,14 @@ function trans($subset, $key = '', $withKeys = false)
 
 	if (is_array($lang[$subset]) && $key == '')
 	{
-		foreach (($lang[$subset]) as $thisKey =>$val)
+		foreach (($lang[$subset]) as $key => $val)
 		{
-            if ($withKeys) {
-                $ret .= $thisKey .':';
+            if ($mode == 'obj') {
+                $ret .= "'".$key ."':";
             }
 			$ret .= "'".$val."', ";
 		}
-        if ($withKeys) {
+        if ($mode == 'obj') {
             $ret = '{'.substr($ret, 0, -2).'}';
         } else {
             $ret = '['.substr($ret, 0, -2).']';
@@ -52,7 +53,7 @@ function trans($subset, $key = '', $withKeys = false)
 }
 
 /**
- * Easy translate function
+ * Translates a text
  *
  * @param string $text   the text that should be translated
  * @param string $subset the subset of translation keys
@@ -88,7 +89,26 @@ function translate($text, $subset)
 }
 
 /**
- * Date and Time
+ * Translates a unit
+ *
+ * @param string $unit a unit as string
+ * @param float $value a value as float
+ *
+ * @return string string representation of the value
+ */
+function transunit($unit, $value)
+{
+	$fmt = trans('format', $unit);
+
+	if (strpos($fmt, ',') !== false)
+		return str_replace('.', ',', sprintf(str_replace(',', '.', $fmt), $value));
+	else
+		return sprintf($fmt, $value);
+}
+
+
+/**
+ * Translates a Date and Time
  *
  * @param string $format    a format for a timestamp, based on php date function
  * @param int    $timestamp a timestamp
@@ -123,74 +143,6 @@ function transdate($format = '', $timestamp = null)
 	return $date;
 }
 
-/**
- * Convert to lang-based float
- *
- * @param float $float a number as float
- *
- * @return string string representation of the number
- */
-function transfloat($float)
-{
-	$fmt = trans('format', 'float');
-
-	if (strpos($fmt, ',') !== false)
-		return str_replace('.', ',', sprintf(str_replace(',', '.', $fmt), $float));
-	else
-		return sprintf($fmt, $float);
-}
-
-/**
- * Convert to lang-based float
- *
- * @param float $temp a temperature as float
- *
- * @return string string representation of the temperature
- */
-function transtemp($temp)
-{
-	$fmt = trans('format', 'temp');
-
-	if (strpos($fmt, ',') !== false)
-		return str_replace('.', ',', sprintf(str_replace(',', '.', $fmt), $temp));
-	else
-		return sprintf($fmt, $temp);
-}
-
-/**
- * Convert to lang-based float
- *
- * @param float $speed a speed as float
- *
- * @return string string representation of the speed
- */
-function transspeed($speed)
-{
-    $fmt = trans('format', 'speed');
-
-    if (strpos($fmt, ',') !== false)
-        return str_replace('.', ',', sprintf(str_replace(',', '.', $fmt), $speed));
-    else
-        return sprintf($fmt, $speed);
-}
-
-/**
- * Convert to unit
- *
- * @param string $unit a unit as string
- * @param float $value a value as float
- *
- * @return string string representation of the value
- */
-function transunit($unit, $value)
-{
-    $fmt = trans('format', $unit);
-
-    if (strpos($fmt, ',') !== false)
-        return str_replace('.', ',', sprintf(str_replace(',', '.', $fmt), $value));
-    else
-        return sprintf($fmt, $value);
-}
 
 // -----------------------------------------------------------------------------
 // F I L E
