@@ -235,17 +235,11 @@ $(document).delegate('select[data-widget="basic.flip"]', {
 // ----- basic.float ----------------------------------------------------------
 $(document).delegate('[data-widget="basic.float"]', {
 	'update': function (event, response) {
-		if ($(this).attr('data-unit') == '°') {
-			$('#' + this.id).html(parseFloat(response).transUnit('temp'));
-		}
-		else if ($(this).attr('data-unit') == '%') {
-			$('#' + this.id).html(parseFloat(response).transUnit('percent'));
-		}
-		else if ($(this).attr('data-unit') == '€') {
-			$('#' + this.id).html(parseFloat(response).transUnit('currency'));
+		if ($(this).attr('data-unit') != '') {
+			$('#' + this.id).html(parseFloat(response).transUnit($(this).attr('data-unit')));
 		}
 		else {
-			$('#' + this.id).html(parseFloat(response).transFloat() + ' ' + $(this).attr('data-unit'));
+			$('#' + this.id).html(parseFloat(response).transFloat());
 		}
 
 	}
@@ -254,34 +248,30 @@ $(document).delegate('[data-widget="basic.float"]', {
 // ----- basic.formula ----------------------------------------------------------
 $(document).delegate('[data-widget="basic.formula"]', {
 	'update': function (event, response) {
-		var calculated = 0;
-        var starti = 0;
-        var unit = $(this).attr('data-unit');
-		var checkmode = $(this).attr('data-formula').substring(0,3); // functions SUM, AVG, SUB  only used, if they are the first 3 chars in formula string
+		var calc = 0;
+        var pos = 0;
+        var mode = $(this).attr('data-formula').substring(0,3); // functions SUM, AVG, SUB only used, if they are the first 3 chars in formula string
 
-        if (checkmode == 'SUB') {
-            calculated = response[starti];
-            starti++;
+        if (mode == 'SUB') {
+			calc = response[pos];
+			pos++;
         }
-		for (var i = starti; i < response.length; i++) {
-			if (checkmode == 'SUB') {
-				calculated = calculated - response[i];
+		for (var i = pos; i < response.length; i++) {
+			if (mode == 'SUB') {
+				calc = calc - response[i];
 			} else {
-				calculated = calculated + response[i];
+				calc = calc + response[i];
 			}
 		}
 
-		if (checkmode == 'AVG') {
-			calculated = calculated / i ;
+		if (mode == 'AVG') {
+			calc = calc / i ;
 		}
 
-		calculated = eval($(this).attr('data-formula').replace(/VAR/g, calculated).replace(/AVG/g, '').replace(/SUM/g, '').replace(/SUB/g, ''));
-
-		//if ($(this).attr('data-round') != '') {
-		//	calculated = calculated.toFixed($(this).attr('data-round'));
-		//}
-		//$("#" + this.id ).html(calculated + $(this).attr('data-unit'));
-		$("#" + this.id ).html(parseFloat(calculated).transUnit(unit));
+		if (mode != '')
+			calc = eval($(this).attr('data-formula').replace(/VAR/g, calc).replace(/AVG/g, '').replace(/SUM/g, '').replace(/SUB/g, ''));
+		
+		$("#" + this.id ).html(parseFloat(calc).transUnit($(this).attr('data-unit')));
 	}
 });
 
@@ -655,7 +645,7 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
 			yAxis: { min: 0, max: 100, title: { text: axis[1], margin: 7 } },
 			plotOptions: { area: { enableMouseTracking: false } },
 			tooltip: { formatter: function () {
-				return this.x.transTemp() + ' / ' + this.y.transPercent();
+				return this.x.transUnit('temp') + ' / ' + this.y.transUnit('%');
 			} }
 		});
 	},
@@ -819,7 +809,7 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 			xAxis: { type: 'datetime' },
 			yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'), title: { text: axis[1] } },
 			tooltip: { formatter: function () {
-				return this.series.name + ' <b>' + (this.percentage ? this.y.transPercent() : this.y.transTemp()) + '</b>';
+				return this.series.name + ' <b>' + (this.percentage ? this.y.transUnit('%') : this.y.transUnit('temp')) + '</b>';
 			}}
 		});
 	},
@@ -870,7 +860,7 @@ $(document).delegate('div[data-widget="plot.temprose"]', {
 			xAxis: { categories: axis, tickmarkPlacement: 'on', lineWidth: 0 },
 			yAxis: { gridLineInterpolation: 'polygon', lineWidth: 0 },
 			tooltip: { formatter: function () {
-				return this.x + ' - ' + this.series.name + ': <b>' + this.y.transTemp() + '</b>';
+				return this.x + ' - ' + this.series.name + ': <b>' + this.y.transUnit('temp') + '</b>';
 			} },
 			legend: { x: 10, layout: 'vertical' }
 		});

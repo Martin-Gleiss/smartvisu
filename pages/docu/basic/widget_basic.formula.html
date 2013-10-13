@@ -14,12 +14,19 @@
 
 	<h5>Example</h5>
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.formula('actpowcon', 'actual power consumption: ', ['system_metering_sa1_total_sumpower', 'system_metering_sa2_total_sumpower', 'system_metering_sa3_total_sumpower','system_metering_sa4_total_sumpower'], 'W', 'SUM( VAR ) / 1000 * 230', '4')<br/>
-            &#125;&#125;</code>
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+			{{ basic.formula('formula1', 'actual power:', ['bath_p1', 'bath_p2', 'bath_p3'], 'W', 'SUM( VAR )') }}<br />
+			{{ basic.formula('formula2', 'per phase:', ['bath_p1', 'bath_p2', 'bath_p3'], 'W', 'AVG( VAR )') }}<br />
+			{{ basic.formula('formula3', 'a voltage:', ['bath_value'], 'V') }}<br />
+
+			{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-        {{ basic.formula('actpowcon', 'actual power consumption: ', ['system_metering_sa1_total_sumpower', 'system_metering_sa2_total_sumpower', 'system_metering_sa3_total_sumpower','system_metering_sa4_total_sumpower'], 'W', 'SUM( VAR ) / 1000 * 230', '4') }}<br/>
-    </div>
+		{{ basic.formula('formula1', 'actual power:', ['bath_p1', 'bath_p2', 'bath_p3'], 'W', 'SUM( VAR )') }}<br />
+		{{ basic.formula('formula2', 'per phase:', ['bath_p1', 'bath_p2', 'bath_p3'], 'W', 'AVG( VAR )') }}<br />
+		{{ basic.formula('formula3', 'a voltage:', ['bath_value'], 'V') }}<br />
+	</div>
 
 {% endblock %}
 

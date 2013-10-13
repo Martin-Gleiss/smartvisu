@@ -43,49 +43,20 @@
 	};
 
   /**
-    * transforms a number to temp
-    */
-  	Number.prototype.transTemp = function() {
-		<?php $fmt = trans('format', 'temp'); ?>
-		var ret = this.toFixed(<?php echo $fmt[4] ?>).replace('.', '<?php echo $fmt[3] ?>');
-		return ret.toString() + '<?php echo strrchr($fmt, ' ') ?>';
+	* transforms a number to a defined unit
+	*/
+	Number.prototype.transUnit = function(unit) {
+	<?php echo 'formats  = ' . trans('format', '', 'obj') . ';'; ?>
+	
+	var fmt = eval("formats['" + unit.toLowerCase() + "']");
+	if (fmt == '') {
+		return this;
+	}
+
+	var ret = this.toFixed(fmt[4]).replace('.', fmt[3]);
+	return ret.toString() + fmt.substr(fmt.lastIndexOf(' '));
 	};
 
-  /**
-    * transforms a number to percent
-    */
-  	Number.prototype.transPercent = function() {
-		<?php $fmt = trans('format', 'percent'); ?>
-		var ret = this.toFixed(<?php echo $fmt[4] ?>).replace('.', '<?php echo $fmt[3] ?>');
-		return ret.toString() + '<?php echo strrchr($fmt, ' ') ?>';
-	};
-
-  /**
-    * transforms a number to currency
-    */
-  	Number.prototype.transCurrency = function() {
-		<?php $fmt = trans('format', 'currency'); ?>
-		var ret = this.toFixed(<?php echo $fmt[4] ?>).replace('.', '<?php echo $fmt[3] ?>');
-		return ret.toString() + '<?php echo strrchr($fmt, ' ') ?>';
-	};
-
-    /**
-    * transforms a number to a defined unit
-    */
-    Number.prototype.transUnit = function(unit, round) {
-        <?php echo 'allFormats  = ' . trans('format', '', true) . ';'; ?>
-        var getUnit = eval('allFormats.' + unit);
-        if (getUnit == '') {
-            return this;
-        }
-        var roundTo = getUnit[4];
-        var devider = getUnit[3];
-        if (parseInt(round)) {
-            roundTo = parseInt(round);
-        }
-        var ret = this.toFixed(roundTo).replace('.', devider );
-        return ret.toString() + getUnit.substr(getUnit.lastIndexOf(' '));
-    };
 
 // ----- date ------------------------------------------------------------------
 

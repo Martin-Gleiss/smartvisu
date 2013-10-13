@@ -154,10 +154,9 @@
 * @param text to display
 * @param one or more gad(s)/item(s). More gads/items in array form: [ item1 , item2 ]
 * @param unit for displaying (optional, default '')
-* @param formula to use: SUM(VAR), AVG(VAR), SUB(VAR), your own, ( optional, default SUM(VAR) )
-* @param round to X digits
+* @param formula to use: SUM(VAR), AVG(VAR), SUB(VAR), your own, (optional, default: SUM(VAR))
 */
-{% macro formula(id, txt, gad, unit, formula, round) %}
+{% macro formula(id, txt, gad, unit, formula) %}
 
 	{% if txt %} {{ txt }} {% endif %}
 	<span id="{{ uid(page, id) }}" data-item="{{ implode(gad) }}" class="text" data-widget="basic.formula" data-unit="{{ unit }}" data-formula="{{ formula }}" data-round="{{ round }}"></span>
