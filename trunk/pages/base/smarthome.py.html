@@ -16,17 +16,21 @@
 
 	<h1>SmartHome.py Monitor</h1>
 	
-	Version: {{ basic.value('version', 'env.core.version') }}<br />
-	Uptime: {{ basic.formula('uptime', 'env.system.uptime', 'time', 'VAR - 60 * 60 * 1000') }}<br />
+	<div style="float:right;">
+		Name: <b>{{ basic.value('name', 'env.system.name') }}</b>, Version: {{ basic.value('version', 'env.core.version') }}<br />
+	</div><br /><br />
 	
-	<br />
-
 	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
 			<div data-role="collapsible" data-collapsed="false">
-				<h3>sytem load</h3>
+				<h3>sytem load ({{ basic.value('loadnow', 'env.system.load') }})</h3>
 				{{ plot.period('load', 'env.system.load', 'avg', '1d', '', '', '', '', 'system load') }}
+			</div>
+
+			<div data-role="collapsible" data-collapsed="true">
+				<h3>threads ({{ basic.value('threadsnow', 'env.core.threads') }})</h3>
+				{{ plot.period('threads', 'env.core.threads', 'avg', '1d', '', '', '', '', 'threads') }}
 			</div>
 
 		</div>
@@ -36,45 +40,55 @@
 		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
 			<div data-role="collapsible" data-collapsed="false">
-				<h3>memory</h3>
+				<h3>memory ({{ basic.formula('memorynow', 'env.core.memory', 'kB', 'VAR / 1024') }})</h3>
 				{{ plot.period('memory', 'env.core.memory', 'avg', '1d', '', '', '', '', 'memory') }}
 			</div>
 
 		</div>
 	</div>
 
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-			<div data-role="collapsible" data-collapsed="false">
-				<h3>threads</h3>
-				{{ plot.period('threads', 'env.core.threads', 'avg', '1d', '', '', '', '', 'threads') }}
-			</div>
-
-		</div>
-	</div>
-
 	<div style="clear: left;"></div>
+	system-uptime: {{ basic.formula('systemuptime', 'env.system.uptime', 'time', 'VAR - 60 * 60 * 1000') }},
+	SmartHome.py-uptime: {{ basic.formula('coreuptime', 'env.core.uptime', 'time', 'VAR - 60 * 60 * 1000') }}<br />
+
 	
-	<h2>Logfile</h2>
+	<h2>Location</h2>
+	<div>
+		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/sun_up.png">
+		{{ basic.formula('sunrise', 'env.location.sunrise', 'time', 'VAR - 60 * 60 * 1000') }}
+		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/sun_down.png">
+		{{ basic.formula('sunset', 'env.location.sunset', 'time', 'VAR - 60 * 60 * 1000') }}
+		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/moon_up.png">
+		{{ basic.formula('moonrise', 'env.location.moonrise', 'time', 'VAR - 60 * 60 * 1000') }}
+		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/moon_down.png">
+		{{ basic.formula('moonset', 'env.location.moonset', 'time', 'VAR - 60 * 60 * 1000') }},
+		moonphase: {{ basic.value('moonphase', 'env.location.moonphase') }}, moonlight: {{ basic.value('moonlight', 'env.location.moonlight', '%') }}
+	</div>
+	
+	
+	<h2>Log</h2>
 	{{ status.log('log1', 'env.core.log', 10) }}
 	
 {% endblock %}
 
 /**
-env.core.version = 0.9-335-gca9a1c7
-env.core.uptime = 0:40:11.593281
-env.core.memory = 13250560
+env.core.version = 0.9-341-gc9ff622
+env.core.uptime = 0:00:08.564816
+env.core.memory = 13508608
 env.core.threads = 8
 env.core.garbage = 0
 env.core
-env.location.sunrise = 0
-env.location.sunset = 0
-env.location.moonrise = 0
-env.location.moonset = 0
-env.location.moonphase = 0
+env.location.day = False
+env.location.sunrise = 2013-10-15 05:41:25.208615+00:00
+env.location.sunset = 2013-10-15 16:25:38.796390+00:00
+env.location.moonrise = 2013-10-15 14:39:46.741376+00:00
+env.location.moonset = 2013-10-15 01:23:01.553577+00:00
+env.location.moonphase = 3
+env.location.moonlight = 80
 env.location
-env.system.uptime = 0:45:08
-env.system.load = 0.01
+env.system.uptime = 1:11:10
+env.system.load = 0.06
 env.system.name = smarthome.local
+env.system
+env
 */
