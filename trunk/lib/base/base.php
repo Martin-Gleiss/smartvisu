@@ -46,15 +46,19 @@
 	* transforms a number to a defined unit
 	*/
 	Number.prototype.transUnit = function(unit) {
-	<?php echo 'formats  = ' . trans('format', '', 'obj') . ';'; ?>
-	
-	var fmt = eval("formats['" + unit.toLowerCase() + "']");
-	if (fmt == '') {
-		return this;
-	}
+		<?php echo 'formats  = ' . trans('format', '', 'obj') . ';'; ?>
+		
+		if (unit == '') {
+			return this;
+		}
 
-	var ret = this.toFixed(fmt[4]).replace('.', fmt[3]);
-	return ret.toString() + fmt.substr(fmt.lastIndexOf(' '));
+		var fmt = eval("formats['" + unit.toLowerCase() + "']");
+		if (fmt == '') {
+			return this;
+		}
+	
+		var ret = this.toFixed(fmt[4]).replace('.', fmt[3]);
+		return ret.toString() + fmt.substr(fmt.lastIndexOf(' '));
 	};
 
 
@@ -63,13 +67,13 @@
   /**
     * transforms a date to date
     */
-  	Date.prototype.transDate = function(ret) {
+	Date.prototype.transDate = function(ret) {
 		if (!ret)
 			ret = '<?php echo trans('format', 'date'); ?>';
 
         ret = ret.replace('d', ('0' + this.getDate()).slice(-2));
-        ret = ret.replace('m', ('0' + (this.getMonth()+1)).slice(-2));
-		ret = ret.replace('y', this.getFullYear().toString().substr(2,2));
+        ret = ret.replace('m', ('0' + (this.getMonth() + 1)).slice(-2));
+		ret = ret.replace('y', this.getFullYear().toString().substr(2, 2));
         ret = ret.replace('Y', this.getFullYear());
 
 		ret = ret.replace('H', this.getHours());

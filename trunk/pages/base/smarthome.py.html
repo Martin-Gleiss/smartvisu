@@ -1,0 +1,80 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "system.html" %}
+
+{% block content %}
+	{% import "plot.html" as plot %}
+	{% import "status.html" as status %}
+
+	<h1>SmartHome.py Monitor</h1>
+	
+	Version: {{ basic.value('version', 'env.core.version') }}<br />
+	Uptime: {{ basic.formula('uptime', 'env.system.uptime', 'time', 'VAR - 60 * 60 * 1000') }}<br />
+	
+	<br />
+
+	<div class="block">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>sytem load</h3>
+				{{ plot.period('load', 'env.system.load', 'avg', '1d', '', '', '', '', 'system load') }}
+			</div>
+
+		</div>
+	</div>
+	
+	<div class="block">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>memory</h3>
+				{{ plot.period('memory', 'env.core.memory', 'avg', '1d', '', '', '', '', 'memory') }}
+			</div>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>threads</h3>
+				{{ plot.period('threads', 'env.core.threads', 'avg', '1d', '', '', '', '', 'threads') }}
+			</div>
+
+		</div>
+	</div>
+
+	<div style="clear: left;"></div>
+	
+	<h2>Logfile</h2>
+	{{ status.log('log1', 'env.core.log', 10) }}
+	
+{% endblock %}
+
+/**
+env.core.version = 0.9-335-gca9a1c7
+env.core.uptime = 0:40:11.593281
+env.core.memory = 13250560
+env.core.threads = 8
+env.core.garbage = 0
+env.core
+env.location.sunrise = 0
+env.location.sunset = 0
+env.location.moonrise = 0
+env.location.moonset = 0
+env.location.moonphase = 0
+env.location
+env.system.uptime = 0:45:08
+env.system.load = 0.01
+env.system.name = smarthome.local
+*/

@@ -779,6 +779,34 @@ var widget = {
 	},
 
 	/**
+	 * Returns all widgets with log functionality.
+	 * Matching 'plot' in attribute 'data-widget'.
+	 *
+	 * @param    item  item: matches all plot-widgets with that item
+	 * @return   jQuery objectlist
+	 */
+	log: function (item) {
+		var ret = $();
+
+		if (item) {
+			$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget="status.log"][data-item="' + item + '"]').each(function (idx) {
+				var items = widget.explode($(this).attr('data-item'));
+
+				for (var i = 0; i < items.length; i++) {
+					if (items[i] == item) {
+						ret = ret.add(this);
+					}
+				}
+			})
+		}
+		else {
+			ret = $('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget="status.log"][data-item]');
+		}
+
+		return ret;
+	},
+	
+	/**
 	 * Checks if the item is a series.
 	 *
 	 * @param    item  an item
@@ -789,19 +817,6 @@ var widget = {
 
 		return ((pt instanceof Array) && (pt[pt.length - 3] == 'avg' || pt[pt.length - 3] == 'sum' ||
 			pt[pt.length - 3] == 'min' || pt[pt.length - 3] == 'max'))
-	},
-
-	/**
-	 * Redraws a widget with data-name attribute
-	 *
-	 * @param    the name 
-	 * @param    the value
-	 */
-	redraw: function (name, val) {
-
-		$('[data-name*="' + name + '"]').each(function (idx) {
-			$(this).trigger('update', [val]);
-		})
 	}
 	
 };

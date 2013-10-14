@@ -45,6 +45,16 @@ var io = {
 	},
 
 	/**
+	 * Trigger a logic
+	 *
+	 * @param      the logic
+	 * @param      the value
+	 */
+	trigger: function (name, val) {
+		// not supported
+	},
+
+	/**
 	 * Initializion of the driver
 	 *
 	 * @param      the ip or url to the system (optional)
@@ -129,7 +139,7 @@ var io = {
 				case 'proto':
 					var proto = data.ver;
 					if (proto != io.version) {
-						notify.info('Driver: DomotiGa', 'Protocol mismatch<br \>Driver is at version v' + io.version + '<br />DomotiGa is at version v' + proto);
+						notify.info('Driver: DomotiGa', 'Protocol mismatch<br />Driver is at version v' + io.version + '<br />DomotiGa is at version v' + proto);
 					}
 					;
 				case 'log':
