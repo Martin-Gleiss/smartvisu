@@ -53,8 +53,8 @@
 		}
 
 		var fmt = eval("formats['" + unit.toLowerCase() + "']");
-		if (fmt == '') {
-			return this;
+		if (fmt == undefined) {
+			return this.toString() + ' ' + unit;
 		}
 	
 		var ret = this.toFixed(fmt[4]).replace('.', fmt[3]);
