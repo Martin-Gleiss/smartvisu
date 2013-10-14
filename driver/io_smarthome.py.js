@@ -55,16 +55,6 @@ var io = {
 	},
 
 	/**
-	 * Log
-	 *
-	 * @param      the name of the log
-	 * @param      maximum number of entries
-	 */
-	log: function (name, max) {
-		io.send({'cmd': 'log', 'name': name, 'max': max});
-	},
-
-	/**
 	 * Initializion of the driver
 	 *
 	 * @param      the ip or url to the system (optional)
@@ -140,13 +130,11 @@ var io = {
 						if (val === true) {
 							val = 1;
 						}
-
 						widget.update(item, val);
 					}
 					break;
 
 				case 'series':
-					// DEBUG: console.log("[io.smarthome.py] receiving series: ", data);
 					data.sid = data.sid.substr(0, data.sid.length - 3) + '0';
 					widget.update(data.sid.replace(/\|/g, '\.'), data.series);
 					break;
@@ -156,13 +144,22 @@ var io = {
 					break;
 
 				case 'log':
+					var log;
 					if (data.init) {
-						console.log('[io.smarthome.py] sending data: --- ', data.log);
-						widget.update(data.name, data.log);
+						log = data.log;
 					}
 					else {
-						console.log('[io.smarthome.py] sending data: ', data.log);
+						// shift first element and add the new one at last
+						var log = widget.get(data.name);
+					
+						for (var i = 0; i < data.log.length; i++) {
+							log.unshift(data.log[i]);
+						
+							if (log.length >= 50)
+								log.pop();
+						}
 					}
+					widget.update(data.name, log);
 					break;
 
 				case 'proto':
@@ -189,7 +186,8 @@ var io = {
 	send: function (data) {
 		if (io.socket.readyState == 1) {
 			io.socket.send(unescape(encodeURIComponent(JSON.stringify(data))));
-			// DEBUG: console.log('[io.smarthome.py] sending data: ', JSON.stringify(data));
+			// DEBUG: 
+			console.log('[io.smarthome.py] sending data: ', JSON.stringify(data));
 		}
 	},
 
@@ -211,6 +209,10 @@ var io = {
 						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 3], 'start': pt[pt.length - 2]});
 					}
 				}
+			});
+			
+			widget.log().each(function (idx) {
+				io.send({'cmd': 'log', 'name': $(this).attr('data-item'), 'max': $(this).attr('data-count')});
 			});
 		}
 	},

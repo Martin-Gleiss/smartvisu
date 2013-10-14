@@ -51,17 +51,7 @@ var io = {
 	 * @param      the value
 	 */
 	trigger: function (name, val) {
-		// TODO
-	},
-
-	/**
-	 * Log
-	 *
-	 * @param      the name of the log
-	 * @param      maximum number of entries
-	 */
-	log: function (name, max) {
-		// TODO
+		// not supported
 	},
 
 	/**
@@ -200,11 +190,15 @@ var io = {
 							var item = items[i].split('.');
 
 							if (response[items[i]] == null && widget.get(items[i]) == null && widget.is_series(items[i])) {
-								response[items[i]] = io.series(item[item.length - 2], item[item.length - 1], $(this).attr('data-ymin'), $(this).attr('data-ymax'), $(this).attr('data-step'));
+								response[items[i]] = io.demoseries(item[item.length - 2], item[item.length - 1], $(this).attr('data-ymin'), $(this).attr('data-ymax'), $(this).attr('data-step'));
 							}
 						}
 					});
 
+					widget.log().each(function (idx) {
+						widget.set($(this).attr('data-item'), io.demolog($(this).attr('data-count')));
+					});
+					
 					// update all items	
 					$.each(response, function (item, val) {
 						widget.update(item, val);
@@ -216,7 +210,7 @@ var io = {
 	/**
 	 * Builds a series out of random float values
 	 */
-	series: function (tmin, tmax, min, max, cnt) {
+	demoseries: function (tmin, tmax, min, max, cnt) {
 
 		var ret = Array();
 
@@ -238,6 +232,29 @@ var io = {
 
 			val += Math.random() * (2 * delta) - delta;
 			ret.push([tmin, val.toFixed(2) * 1.0]);
+			tmin += step;
+		}
+
+		return ret;
+	},
+
+	/**
+	 * Builds a list out of random values
+	 */
+	demolog: function (count) {
+
+		var ret = Array();
+		var no;
+		var levels = ['info', 'warning', 'error'];
+		var messages = ['The heating ist to hot!', 'The heating ist to hot! Please switch it off!', 'The heating ist to hot! It will burn now!'];
+		
+		var tmin = new Date().getTime() - new Date().duration(count + 'i');
+		var tmax = new Date().getTime();
+		var step = Math.round((tmax - tmin) / count);
+		
+		while (tmin < tmax) {
+			no = Math.floor((Math.random() * 3));
+			ret.push({'time': Math.floor(tmin + (Math.random() * step * 0.2) - step * 0.1), 'level': levels[no], 'message': messages[no]});
 			tmin += step;
 		}
 

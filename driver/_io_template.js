@@ -52,16 +52,6 @@ var io = {
 	trigger: function (name, val) {
 		// TODO
 	},
-
-	/**
-	 * Log
-	 *
-	 * @param      the name of the log
-	 * @param      maximum number of entries
-	 */
-	log: function (name, max) {
-		// TODO
-	},
 	
 	/**
 	 * Initializion of the driver

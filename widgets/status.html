@@ -15,19 +15,13 @@
 * @param the name of the log
 * @param maximal number of entries (1 - 50)
 */
-{% macro log(id, name, count) %}
+{% macro log(id, item, count) %}
 
-	<span id="{{ uid(page, id) }}" data-widget="status.log" data-name="{{ name }}" data-count="{{ count }}"
+	<span id="{{ uid(page, id) }}" data-widget="status.log" data-item="{{ item }}" data-count="{{ count }}"
 		class="log">
 		<ul data-role="listview">
 		</ul>
 	</span>
-
-	<script type="text/javascript">
-		$('#{{ page }}').on('pagebeforeshow', function (event, ui) {
-			$('#{{ uid(page, id) }}').trigger('init');
-		})
-	</script>
 
 {% endmacro %}
 

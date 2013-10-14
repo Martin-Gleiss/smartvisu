@@ -22,6 +22,17 @@
 				<h3>Configuration</h3>
 			</a>
 		</li>
+		
+		{% if config_driver == 'smarthome.py' %}
+		<li data-icon="false">
+			<a href="index.php?page=smarthome.py">
+				<img class="icon" src="{{ icon0 }}message_info.png" />
+
+				<h3>SmartHome.py Monitor</h3>
+			</a>
+		</li>
+		{% endif %}
+
 		<li data-icon="false">
 			<a href="index.php?page=team">
 				<img class="icon" src="{{ icon0 }}weather_sun.svg" />

@@ -250,12 +250,14 @@ $(document).delegate('[data-widget="basic.formula"]', {
 	'update': function (event, response) {
 		var calc = 0;
         var pos = 0;
+		var unit = $(this).attr('data-unit');
         var mode = $(this).attr('data-formula').substring(0,3); // functions SUM, AVG, SUB only used, if they are the first 3 chars in formula string
 
         if (mode == 'SUB') {
 			calc = response[pos];
 			pos++;
         }
+		
 		for (var i = pos; i < response.length; i++) {
 			if (mode == 'SUB') {
 				calc = calc - response[i];
@@ -264,14 +266,20 @@ $(document).delegate('[data-widget="basic.formula"]', {
 			}
 		}
 
-		if (mode == 'AVG') {
+		if (mode == 'AVG')
 			calc = calc / i ;
-		}
-
+		
 		if (mode != '')
 			calc = eval($(this).attr('data-formula').replace(/VAR/g, calc).replace(/AVG/g, '').replace(/SUM/g, '').replace(/SUB/g, ''));
 		
-		$("#" + this.id ).html(parseFloat(calc).transUnit($(this).attr('data-unit')));
+		if (unit == 'time') {
+			var date = new Date();
+			date.setTime(parseInt(calc));
+			$("#" + this.id ).html(date.transTime());	
+		}
+		else {
+			$("#" + this.id ).html(parseFloat(calc).transUnit(unit));
+		}
 	}
 });
 
@@ -891,22 +899,17 @@ $(document).delegate('span[data-widget="status.log"]', {
 		var line = '';
 		
 		// only the last entries
-		response = response.slice(0, $(this).attr('data-count'));
-		
-		for (var i in response) {
-			ret  = '<div class="color ' + response[i].level.toLowerCase() + '"></div>';
-			ret += '<h3>' + new Date(response[i].time).transLong() + '</h3>';
-			ret += '<p>' + response[i].message + '</p>';
+		console.log(response[0].length);
+		for (var i = 0; i < response[0].length; i++) {
+			ret  = '<div class="color ' + response[0][i].level.toLowerCase() + '"></div>';
+			ret += '<h3>' + new Date(response[0][i].time).transLong() + '</h3>';
+			ret += '<p>' + response[0][i].message + '</p>';
 			line += '<li data-icon="false">' + ret + '</li>';
 		}
+	
 		$('#' + this.id + ' ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
-	},
-
-	'init': function (event) {
-		io.log($(this).attr('data-name'));
 	}
 });
-
 
 // ----- status.notify ----------------------------------------------------------
 $(document).delegate('span[data-widget="status.notify"]', {

@@ -51,17 +51,7 @@ var io = {
 	 * @param      the value
 	 */
 	trigger: function (name, val) {
-		// TODO
-	},
-
-	/**
-	 * Log
-	 *
-	 * @param      the name of the log
-	 * @param      maximum number of entries
-	 */
-	log: function (name, max) {
-		// TODO
+		// not supported
 	},
 	
 	/**

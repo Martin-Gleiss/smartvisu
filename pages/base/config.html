@@ -270,7 +270,7 @@
 				data: $(this).serialize(),
 				success: function (data) {
 					window.setTimeout('location.reload();', {{ config_delay }});
-				},
+				}
 			})
 				.fail(notify.json);
 
