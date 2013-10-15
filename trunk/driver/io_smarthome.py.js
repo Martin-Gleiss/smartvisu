@@ -144,13 +144,11 @@ var io = {
 					break;
 
 				case 'log':
-					var log;
 					if (data.init) {
-						log = data.log;
+						widget.update(data.name, data.log);
 					}
 					else {
-						// shift first element and add the new one at last
-						var log = widget.get(data.name);
+						var log = widget.get(data.name); // only a reference
 					
 						for (var i = 0; i < data.log.length; i++) {
 							log.unshift(data.log[i]);
@@ -158,8 +156,9 @@ var io = {
 							if (log.length >= 50)
 								log.pop();
 						}
+						
+						widget.update(data.name);
 					}
-					widget.update(data.name, log);
 					break;
 
 				case 'proto':

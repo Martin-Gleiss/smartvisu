@@ -56,6 +56,15 @@
 					{{ forms.flip_init('cache', config_cache) }}
 				</div>
 
+				<div data-role="fieldcontain">
+					<label for="animation">Animation<br /></label>
+					<select name="animation" id="animation" data-role="slider" data-theme="a">
+						<option value="false">off</option>
+						<option value="true">on</option>
+					</select>
+					{{ forms.flip_init('animation', config_animation) }}
+				</div>
+
 			</div>
 
 			<div data-role="collapsible" data-collapsed="true">

@@ -54,31 +54,26 @@ SYSTEMREQUIREMENTS
 		Name a the javascript-file (if you need on) to "visu.js" and it will be
 		included automatically. Name the file with the widgets e. g. "custom.html"
     
-    7.  Change your design (theme) with:
-        http://jquerymobile.com/themeroller/
-        
-        Drop your new design (theme) in the "designs" directory
-        Set "config_design" to your new design-name (without .css), mention that
-        "NAME.min.css" is been loaded
-     
-    8.  Test your page with:
+    7.  Test your page with:
         http://localhost/smartVISU/index.php?page=mypage
         Note: replace "localhost" with your hostname from your server      
    
-    9.  Create all pages you need
+    8.  Create all pages you need
      
-   10.  At the end of your project set "config_cache" to "true" to speed up your
+    9.  At the end of your project set "config_cache" to "true" to speed up your
         smartVISU
         
-        Enjoy smartVISU!
+   10.  Enjoy smartVISU!
         
 
 
 HISTORY
 --------------------------------------------------------------------------------
 v 2.7
+	- new: animations on/off for better performance on slow devices
 	- new model house: alber, as eibd-driver example by Raik Alber
-	- new widget: clock.iconclock
+	- new SmartHome.py Monitor
+    - new widget: clock.iconclock
 	- new widget: status.log
 	- moved widget: basic.image -> mulimedia.image
 	- moved widget: basic.notify -> status.notify
