@@ -122,6 +122,11 @@
 				shortMonths: <?php echo trans('shortmonth') ?>,
 				weekdays: <?php echo trans('weekday') ?>
 			},
+			plotOptions: {
+				series: {
+					animation: <?php echo (config_animation ? 'true' : 'false') ?>
+				}
+			}
 	    });
 	
 	});

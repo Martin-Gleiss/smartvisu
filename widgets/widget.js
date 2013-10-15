@@ -897,17 +897,21 @@ $(document).delegate('span[data-widget="status.log"]', {
 	'update': function (event, response) {
 		var ret;
 		var line = '';
-		
-		// only the last entries
-		console.log(response[0].length);
-		for (var i = 0; i < response[0].length; i++) {
-			ret  = '<div class="color ' + response[0][i].level.toLowerCase() + '"></div>';
-			ret += '<h3>' + new Date(response[0][i].time).transLong() + '</h3>';
-			ret += '<p>' + response[0][i].message + '</p>';
-			line += '<li data-icon="false">' + ret + '</li>';
+
+		if (response[0] instanceof Array)
+		{
+			// only the last entries
+			var list = response[0].slice(0, $(this).attr('data-count'));
+
+			for (var i = 0; i < list.length; i++) {
+				ret = '<div class="color ' + list[i].level.toLowerCase() + '"></div>';
+				ret += '<h3>' + new Date(list[i].time).transLong() + '</h3>';
+				ret += '<p>' + list[i].message + '</p>';
+				line += '<li data-icon="false">' + ret + '</li>';
+			}
+
+			$('#' + this.id + ' ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
 		}
-	
-		$('#' + this.id + ' ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
 	}
 });
 
