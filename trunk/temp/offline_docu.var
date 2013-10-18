@@ -47,11 +47,4 @@ kid_rtr_act = 23.3
 kid_rtr_set = 21
 floor_rtr_act = 22.7
 floor_rtr_set = 17
-system_metering_total_sumcount = 4553662
-system_metering_sa1_total_sumpower = 536.34
-system_metering_sa2_total_sumpower = 211.98
-system_metering_sa3_total_sumpower = 19.05
-system_metering_sa4_total_sumpower = 187.33
-system_metering_last_total_sumpower = 3953662
-
 
