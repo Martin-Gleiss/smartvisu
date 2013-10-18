@@ -82,6 +82,8 @@ $lang['shortday']['fri']			= 'Fr';
 $lang['shortday']['sat']			= 'Sa';
 
 // ----- plots -----------------------------------------------------------------
+$lang['plot']['resetzoom']			= 'Reset';
+$lang['plot']['resetzoomtip']		= 'Zoom auf Maßstab 1:1';
 $lang['plot.rtr']['label']			= 'Ist, Soll';
 $lang['plot.rtr']['axis']			= 'Zeit, Temperatur';
 $lang['plot.comfortchart']['label'] = 'noch-behaglich, behaglich';

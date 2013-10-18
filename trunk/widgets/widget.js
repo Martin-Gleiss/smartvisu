@@ -36,12 +36,12 @@
  *
  */
 
-	
 
-// ----- b a s i c ------------------------------------------------------------
-// ----------------------------------------------------------------------------
 
-// ----- basic.button ---------------------------------------------------------
+	// ----- b a s i c ------------------------------------------------------------
+	// ----------------------------------------------------------------------------
+
+	// ----- basic.button ---------------------------------------------------------
 $(document).delegate('a[data-widget="basic.button"]', {
 	'click': function (event) {
 		if ($(this).attr('data-val') != '') {
@@ -249,36 +249,39 @@ $(document).delegate('[data-widget="basic.float"]', {
 $(document).delegate('[data-widget="basic.formula"]', {
 	'update': function (event, response) {
 		var calc = 0;
-        var pos = 0;
+		var pos = 0;
 		var unit = $(this).attr('data-unit');
-        var mode = $(this).attr('data-formula').substring(0,3); // functions SUM, AVG, SUB only used, if they are the first 3 chars in formula string
+		var mode = $(this).attr('data-formula').substring(0, 3); // functions SUM, AVG, SUB only used, if they are the first 3 chars in formula string
 
-        if (mode == 'SUB') {
+		if (mode == 'SUB') {
 			calc = response[pos];
 			pos++;
-        }
-		
+		}
+
 		for (var i = pos; i < response.length; i++) {
 			if (mode == 'SUB') {
 				calc = calc - response[i];
-			} else {
+			}
+			else {
 				calc = calc + response[i];
 			}
 		}
 
-		if (mode == 'AVG')
-			calc = calc / i ;
-		
-		if (mode != '')
+		if (mode == 'AVG') {
+			calc = calc / i;
+		}
+
+		if (mode != '') {
 			calc = eval($(this).attr('data-formula').replace(/VAR/g, calc).replace(/AVG/g, '').replace(/SUM/g, '').replace(/SUB/g, ''));
-		
+		}
+
 		if (unit == 'time') {
 			var date = new Date();
 			date.setTime(parseInt(calc));
-			$("#" + this.id ).html(date.transTime());	
+			$("#" + this.id).html(date.transTime());
 		}
 		else {
-			$("#" + this.id ).html(parseFloat(calc).transUnit(unit));
+			$("#" + this.id).html(parseFloat(calc).transUnit(unit));
 		}
 	}
 });
@@ -681,6 +684,7 @@ $(document).delegate('div[data-widget="plot.period"]', {
 		var color = $(this).attr('data-color').explode();
 		var exposure = $(this).attr('data-exposure').explode();
 		var axis = $(this).attr('data-axis').explode();
+		var zoom = $(this).attr('data-zoom');
 		var series = Array();
 
 		for (var i = 0; i < response.length; i++) {
@@ -694,57 +698,21 @@ $(document).delegate('div[data-widget="plot.period"]', {
 		}
 
 		// draw the plot
-		$('#' + this.id).highcharts({
-			series: series,
-			xAxis: { type: 'datetime', title: { text: axis[0] } },
-			yAxis: { min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: { text: axis[1] } }
-		});
-	},
-
-	'point': function (event, response) {
-		for (var i = 0; i < response.length; i++) {
-			if (response[i]) {
-				var chart = $('#' + this.id).highcharts();
-
-				// more points?
-				for (var j = 0; j < response[i].length; j++) {
-					chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= 100));
-				}
-				chart.redraw();
-			}
+		if (zoom) {
+			$('#' + this.id).highcharts({
+				chart: { zoomType: 'x' },
+				series: series,
+				xAxis: { type: 'datetime', title: { text: axis[0] }, minRange: new Date().duration(zoom).valueOf() },
+				yAxis: { min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: { text: axis[1] } }
+			});
 		}
-	}
-});
-
-// ----- plot.period_zoomable  ------------------------------------------------
-$(document).delegate('div[data-widget="plot.period_zoomable"]', {
-	'update': function (event, response) {
-		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
-
-		var label = $(this).attr('data-label').explode();
-		var color = $(this).attr('data-color').explode();
-		var exposure = $(this).attr('data-exposure').explode();
-		var axis = $(this).attr('data-axis').explode();
-		var minRange = $(this).attr('data-minRange');
-		var series = Array();
-
-		for (var i = 0; i < response.length; i++) {
-			series[i] = {
-				type: (exposure[i] != 'stair' ? exposure[i] : 'line'),
-				step: (exposure[i] == 'stair' ? 'left' : false),
-				name: label[i],
-				data: response[i],
-				color: (color[i] ? color[i] : null)
-			}
+		else {
+			$('#' + this.id).highcharts({
+				series: series,
+				xAxis: { type: 'datetime', title: { text: axis[0] } },
+				yAxis: { min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: { text: axis[1] } }
+			});
 		}
-
-		// draw the plot
-		$('#' + this.id).highcharts({
-			chart: { zoomType: 'x' },
-			series: series,
-			xAxis: { type: 'datetime', title: { text: axis[0] }, minRange: minRange },
-			yAxis: { min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: { text: axis[1] } }
-		});
 	},
 
 	'point': function (event, response) {
@@ -898,8 +866,7 @@ $(document).delegate('span[data-widget="status.log"]', {
 		var ret;
 		var line = '';
 
-		if (response[0] instanceof Array)
-		{
+		if (response[0] instanceof Array) {
 			// only the last entries
 			var list = response[0].slice(0, $(this).attr('data-count'));
 
