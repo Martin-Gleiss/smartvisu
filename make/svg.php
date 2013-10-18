@@ -29,34 +29,41 @@ foreach ($dir as $file)
 	$name = $file['name'];
 	
     // DEBUG: $name = "audio_audio.svg";
+    $f = substr($name, -6, 6);
 
-	$out = fileread('temp/'.$name);
-
-	echo $name.' ('.strlen($out).' Bytes) ...';
-
-    if($form['debug'])
-		echo htmlentities($out);
+    if (!($f == "00.svg" || $f == "10.svg" || $f == "20.svg" || $f == "30.svg" || $f == "40.svg" || $f == "50.svg"
+        || $f == "60.svg" || $f == "70.svg" || $f == "80.svg" || $f == "90.svg"))
+    {
+    	$out = fileread('temp/'.$name);
     
-    $out = str_replace(' xmlns:xlink="http://www.w3.org/1999/xlink"', '', $out);
-    $out = str_replace(' viewBox="0 0 361 361"', ' viewBox="20 20 321 321"', $out);
-    $out = str_replace(' width="361"', '', $out);
-    $out = str_replace(' height="361"', '', $out);
+    	echo $name.' ('.strlen($out).' Bytes) ...';
     
-    $out = str_replace(' enable-background="new 0 0 361 361"', '', $out);
-    // $out = str_replace(' stroke-width="10"', '', $out);
-    $out = str_replace(' stroke-miterlimit="10"', '', $out);
-     
-	echo '... '.strlen($out).' Bytes'."\n";
-
-	if($form['debug'])
-		echo htmlentities($out);
-
-	filewrite('../smartVISU/icons/ws/'.$name, $out);
+        if($form['debug'])
+    		echo htmlentities($out);
+        
+        $out = str_replace(' xmlns:xlink="http://www.w3.org/1999/xlink"', '', $out);
+        $out = str_replace(' viewBox="0 0 361 361"', ' viewBox="20 20 321 321"', $out);
+        $out = str_replace(' width="361"', '', $out);
+        $out = str_replace(' height="361"', '', $out);
+        
+        $out = str_replace(' enable-background="new 0 0 361 361"', '', $out);
+        // $out = str_replace(' stroke-width="10"', '', $out);
+        $out = str_replace(' stroke-miterlimit="10"', '', $out);
+         
+    	echo '... '.strlen($out).' Bytes'."\n";
     
-    $out = str_replace(' fill="#fff"', ' fill="#000"', $out);
-    $out = str_replace(' stroke="#fff"', '  stroke="#000"', $out);
+    	if($form['debug'])
+    		echo htmlentities($out);
     
-    filewrite('../smartVISU/icons/sw/'.$name, $out);
+    	filewrite('../smartVISU/icons/ws/'.$name, $out);
+        
+        $out = str_replace(' fill="#fff"', ' fill="#000"', $out);
+        $out = str_replace(' stroke="#fff"', '  stroke="#000"', $out);
+        
+        filewrite('../smartVISU/icons/sw/'.$name, $out);
+    }
+    else
+        echo $name.' <strike>('.strlen($out).' Bytes)</strike> '."\n";
 }
 
 echo str_repeat("-", 80)."\n\n";
