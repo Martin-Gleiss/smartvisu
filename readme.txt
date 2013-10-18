@@ -70,6 +70,7 @@ SYSTEMREQUIREMENTS
 HISTORY
 --------------------------------------------------------------------------------
 v 2.7
+	- new: SmartHome.py Montior page
 	- new: animations on/off for better performance on slow devices
 	- new model house: alber, as eibd-driver example by Raik Alber
 	- new SmartHome.py Monitor
@@ -81,6 +82,8 @@ v 2.7
     - new svg-icons: icon.blade, icon.blade_arc, icon.blade_z by Mario Zanier
 	- new svg-icon: icon.meter, icon.clock
 	- improvments on svg-icons
+	- deprecated: icons/bl, icons/or, icons/gn -> use .svg instead 
+	  see index.php?page=design/design_icons for examples
 	- update plot.highcharts 3.0.5
 	
 v 2.6 06.08.13
