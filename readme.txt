@@ -76,6 +76,7 @@ v 2.7
 	- new SmartHome.py Monitor
     - new widget: clock.iconclock
 	- new widget: status.log
+	- improved widget: plot.period now zoomable
 	- moved widget: basic.image -> mulimedia.image
 	- moved widget: basic.notify -> status.notify
 	- new static-svg-icons colored white (ws), black (sw)

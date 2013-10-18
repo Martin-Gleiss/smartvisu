@@ -124,7 +124,7 @@
 
 	<div id="{{ uid }}" class="slideshow" data-cycle-log="false" data-cycle-speed="{{ delay|default(2) * 1000 }}">
 		{% for file in dir(dir, '(.+?).(jpg|png)') %}
-			<img src="{{ file.path }}" style="display: block;" title="{{ file.label }}" data-title="Sonnenberg Gardens" />
+			<img src="{{ file.path }}" style="display: block;" title="{{ file.label }}" />
 		{% endfor %}
 	</div>
 

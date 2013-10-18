@@ -32,57 +32,26 @@
 * @param the mode: 'avg', 'sum', 'min', 'max'
 * @param the minimum time (x-axis): '1h', '2h'... (duration-format)
 * @param the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
-* @param  the minimum y-axis (optional)
+* @param the minimum y-axis (optional)
 * @param the maximum y-axis (optional)
 * @param the step between two time-points (optional, only for 'offline'-driver)
 * @param label/s for each series (optional)
 * @param color/s for each series e. g. '#f00' for red (optional, default: sutiable for design)
 * @param type/s for each series: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')
 * @param title/s for the x-axis and y-axis
+* @param minimum time while zooming in sec (optional, duration-format)
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
 */
-{% macro period(id, gad, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes) %}
+{% macro period(id, gad, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes, zoom) %}
 
 	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(gad, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}"
 		{% if ymin is not empty %} data-ymin="{{ ymin }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ ymax }}" {% endif %}
 		data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}"
 		data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axes) }}"
+		{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
 		class="plot"></div>
-
-{% endmacro %}
-
-
-/**
-* A simple widget for plotting zoomable charts
-*
-* @param unique id for this widget
-* @param series of item/s. More item/s in array form: [ item1 , item2 ]
-* @param the mode: 'avg', 'sum', 'min', 'max'
-* @param the minimum time (x-axis): '1h', '2h'... (duration-format)
-* @param the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
-* @param  the minimum y-axis (optional)
-* @param the maximum y-axis (optional)
-* @param the step between two time-points (optional, only for 'offline'-driver)
-* @param label/s for each series (optional)
-* @param color/s for each series e. g. '#f00' for red (optional, default: sutiable for design)
-* @param type/s for each series: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')
-* @param title/s for the x-axis and y-axis
-* @param minimum range while zooming for the x-axis in milliseconds (optional, default one hour)
-*
-* @see misc/fundamentals#Array-Form
-* @see misc/fundamentals#Duration-Format
-*
-* @author Niko Will
-*/
-{% macro period_zoomable(id, gad, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes, minRange) %}
-
-	<div id="{{ uid(page, id) }}" data-widget="plot.period_zoomable" data-item="{{ implode(gad, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}"
-		{% if ymin is not empty %} data-ymin="{{ ymin }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ ymax }}" {% endif %}
-		data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}"
-		data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axes) }}"
-        data-minRange="{{ minRange|default(3600000) }}" class="plot"></div>
 
 {% endmacro %}
 

@@ -88,6 +88,8 @@ $lang['shortday']['fri']			= 'vr';
 $lang['shortday']['sat']			= 'za';
  
 // ----- plots -----------------------------------------------------------------
+$lang['plot']['resetzoom']			= 'Reset zoom';
+$lang['plot']['resetzoomtip']		= 'Reset zoom level 1:1';
 $lang['plot.rtr']['label']			= 'Actual, Set';
 $lang['plot.rtr']['axis']			= 'Time, Temerature';
 $lang['plot.comfortchart']['label'] = 'almost nice, comfortable';

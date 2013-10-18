@@ -120,7 +120,9 @@
 			lang: { 
 				months: <?php echo trans('month') ?>,
 				shortMonths: <?php echo trans('shortmonth') ?>,
-				weekdays: <?php echo trans('weekday') ?>
+				weekdays: <?php echo trans('weekday') ?>,
+				resetZoom: '<?php echo trans('plot', 'resetzoom') ?>',
+				resetZoomTitle: '<?php echo trans('plot', 'resetzoomtip') ?>'
 			},
 			plotOptions: {
 				series: {
