@@ -149,14 +149,15 @@ var io = {
 					}
 					else {
 						var log = widget.get(data.name); // only a reference
-					
+
 						for (var i = 0; i < data.log.length; i++) {
 							log.unshift(data.log[i]);
-						
-							if (log.length >= 50)
+
+							if (log.length >= 50) {
 								log.pop();
+							}
 						}
-						
+
 						widget.update(data.name);
 					}
 					break;
@@ -164,7 +165,7 @@ var io = {
 				case 'proto':
 					var proto = parseInt(data.ver);
 					if (proto != io.version) {
-						notify.info('Driver: smarthome.py', 'Protocol mismatch<br />driver is: v' + io.version + '<br />smarthome.py is: v' + proto);
+						notify.warning('Driver: smarthome.py', 'Protocol mismatch<br />smartVISU-driver is: v' + io.version + '<br />SmartHome.py is: v' + proto + '<br /><br /> Update the system!');
 					}
 					break;
 			}
@@ -195,21 +196,25 @@ var io = {
 	 */
 	monitor: function () {
 		if (widget.listening()) {
+			// items
 			io.send({'cmd': 'monitor', 'items': widget.listeners()});
 
 			// series: avg, min, max, sum, diff, rate
+			var unique = Array();
 			widget.plot().each(function (idx) {
 				var items = widget.explode($(this).attr('data-item'));
 				for (var i = 0; i < items.length; i++) {
 
-					if (widget.is_series(items[i]) && !widget.get(items[i])) {
+					if (widget.is_series(items[i]) && !widget.get(items[i]) && !unique[items[i]]) {
 						var pt = items[i].split('.');
 						var item = items[i].substr(0, items[i].length - 3 - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 3], 'start': pt[pt.length - 2]});
+						unique[items[i]] = 1;
 					}
 				}
 			});
-			
+
+			// log
 			widget.log().each(function (idx) {
 				io.send({'cmd': 'log', 'name': $(this).attr('data-item'), 'max': $(this).attr('data-count')});
 			});
