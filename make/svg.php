@@ -32,7 +32,8 @@ foreach ($dir as $file)
     $f = substr($name, -6, 6);
 
     if (!($f == "00.svg" || $f == "10.svg" || $f == "20.svg" || $f == "30.svg" || $f == "40.svg" || $f == "50.svg"
-        || $f == "60.svg" || $f == "70.svg" || $f == "80.svg" || $f == "90.svg"))
+        || $f == "60.svg" || $f == "70.svg" || $f == "80.svg" || $f == "90.svg"
+        || $f == "25.svg" || $f == "75.svg"))
     {
     	$out = fileread('temp/'.$name);
     
