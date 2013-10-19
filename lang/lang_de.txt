@@ -15,8 +15,8 @@
 
 $lang['format']['int']				= '%d';
 $lang['format']['float']			= '%01,2f';
-$lang['format']['temp']				= '%01,1f °F';
-$lang['format']['°']				= '%01,1f °F';
+$lang['format']['temp']				= '%01,1f °C';
+$lang['format']['°']				= '%01,1f °C';
 $lang['format']['%']	  			= '%01,1f %';
 $lang['format']['€']				= '%01,2f €';
 $lang['format']['speed']			= '%01,0f km/h';
