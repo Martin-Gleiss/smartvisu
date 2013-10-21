@@ -185,4 +185,4 @@ var io = {
 		io.socket = null;
 	}
 
-}
+};

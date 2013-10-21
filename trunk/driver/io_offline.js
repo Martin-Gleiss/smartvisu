@@ -198,7 +198,7 @@ var io = {
 					widget.log().each(function (idx) {
 						widget.set($(this).attr('data-item'), io.demolog($(this).attr('data-count')));
 					});
-					
+
 					// update all items	
 					$.each(response, function (item, val) {
 						widget.update(item, val);
@@ -247,11 +247,11 @@ var io = {
 		var no;
 		var levels = ['info', 'warning', 'error'];
 		var messages = ['The heating ist to hot!', 'The heating ist to hot! Please switch it off!', 'The heating ist to hot! It will burn now!'];
-		
+
 		var tmin = new Date().getTime() - new Date().duration(count + 'i');
 		var tmax = new Date().getTime();
 		var step = Math.round((tmax - tmin) / count);
-		
+
 		while (tmin < tmax) {
 			no = Math.floor((Math.random() * 3));
 			ret.push({'time': Math.floor(tmin + (Math.random() * step * 0.2) - step * 0.1), 'level': levels[no], 'message': messages[no]});
@@ -260,4 +260,5 @@ var io = {
 
 		return ret;
 	}
-}
+
+};

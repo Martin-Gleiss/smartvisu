@@ -567,33 +567,6 @@ var widget = {
 	},
 
 	/**
-	 * Returns all items listening on. This is used to get an unique list of the
-	 * items independent on the number of widgets.
-	 *
-	 * @return    array  unique list of the items
-	 */
-	listeners: function () {
-		var ret = Array();
-		var unique = Array();
-
-		// all except plots
-		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function (idx) {
-			var items = widget.explode($(this).attr('data-item'));
-			for (var i = 0; i < items.length; i++) {
-				if (!widget.is_series(items[i])) {
-					unique[items[i]] = '';
-				}
-			}
-		});
-
-		for (var item in unique) {
-			ret.push(item);
-		}
-
-		return ret;
-	},
-
-	/**
 	 * List all items and the number of listeners in console.log.
 	 */
 	list: function () {
@@ -757,10 +730,37 @@ var widget = {
 	},
 
 
-	// ----- s p e c i a l ----------------------------------------------------
+	// ----- l i s t e n e r s ------------------------------------------------
+
+	/**
+	 * Returns all unique items from all widgets except plots and logs.
+	 *
+	 * @return    array  unique list of the items
+	 */
+	listeners: function () {
+		var ret = Array();
+		var unique = Array();
+
+		$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function (idx) {
+			if (!($(this).attr('data-widget').substr(0, 5) == 'plot.' || $(this).attr('data-widget') == 'status.log')) {
+				var items = widget.explode($(this).attr('data-item'));
+				for (var i = 0; i < items.length; i++) {
+					unique[items[i]] = '';
+				}
+			}
+
+		});
+
+		for (var item in unique) {
+			ret.push(item);
+		}
+
+		return ret;
+	},
+
 	/**
 	 * Returns all widgets with plot functionality or plots listening to an item.
-	 * Matching 'plot' in attribute 'data-widget'.
+	 * Matching 'plot.' in attribute 'data-widget'.
 	 *
 	 * @param    item  item: matches all plot-widgets with that item
 	 * @return   jQuery objectlist
@@ -771,7 +771,6 @@ var widget = {
 		if (item) {
 			$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget^="plot."][data-item*="' + item + '"]').each(function (idx) {
 				var items = widget.explode($(this).attr('data-item'));
-
 				for (var i = 0; i < items.length; i++) {
 					if (items[i] == item) {
 						ret = ret.add(this);
@@ -788,9 +787,9 @@ var widget = {
 
 	/**
 	 * Returns all widgets with log functionality.
-	 * Matching 'plot' in attribute 'data-widget'.
+	 * Matching 'status.log' in attribute 'data-widget'.
 	 *
-	 * @param    item  item: matches all plot-widgets with that item
+	 * @param    item  item: matches all log-widgets with that item
 	 * @return   jQuery objectlist
 	 */
 	log: function (item) {
@@ -799,7 +798,6 @@ var widget = {
 		if (item) {
 			$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-widget="status.log"][data-item="' + item + '"]').each(function (idx) {
 				var items = widget.explode($(this).attr('data-item'));
-
 				for (var i = 0; i < items.length; i++) {
 					if (items[i] == item) {
 						ret = ret.add(this);
@@ -812,19 +810,6 @@ var widget = {
 		}
 
 		return ret;
-	},
-
-	/**
-	 * Checks if the item is a series.
-	 *
-	 * @param    item  an item
-	 */
-	is_series: function (item) {
-
-		var pt = item.split('.');
-
-		return ((pt instanceof Array) && (pt[pt.length - 3] == 'avg' || pt[pt.length - 3] == 'sum' ||
-			pt[pt.length - 3] == 'min' || pt[pt.length - 3] == 'max'))
 	}
 
 };
