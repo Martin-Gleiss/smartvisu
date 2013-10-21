@@ -1,22 +1,22 @@
 /**
- * -----------------------------------------------------------------------------
- * @package     smartVISU
- * @author      Martin Gleiß
- * @copyright   2012
- * @license     GPL <http://www.gnu.de>
- * ----------------------------------------------------------------------------- 
- */
- 
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
 
 {% extends "category.html" %}
 
 {% block content %}
 
-    <h1><img class="icon" src='{{ icon0 }}it_telephone.png'/>Telefonliste</h1>
-    
-    {% import "phone.html" as phone %}
-    {{ phone.list('phonelist') }}    
-    
+	<h1><img class="icon" src='{{ icon0 }}it_telephone.svg' />Telefonliste</h1>
+
+	{% import "phone.html" as phone %}
+	{{ phone.list('phonelist') }}
+
 {% endblock %}
 
 

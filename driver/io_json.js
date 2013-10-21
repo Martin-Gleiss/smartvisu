@@ -53,7 +53,7 @@ var io = {
 	trigger: function (name, val) {
 		// not supported
 	},
-	
+
 	/**
 	 * Initializion of the driver
 	 *
@@ -189,4 +189,4 @@ var io = {
 		}
 	}
 
-}
+};

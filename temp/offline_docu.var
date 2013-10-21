@@ -1,4 +1,4 @@
-bath_light_value = 12
+bath_light_value = 206
 bath_light_switch = 1
 bath_rtr_state = 0
 bath_rtr_comfort = 1
@@ -6,7 +6,7 @@ bath_rtr_set = 22.5
 bath_rtr_act = 24.4
 bath_rtr_text = heating is on
 bath_blind_pos = 165
-bath_blind_angle = 255
+bath_blind_angle = 250
 bath_rtr_night = 0
 bath_rtr_frost = 0
 bath_rtr_mode = 3
