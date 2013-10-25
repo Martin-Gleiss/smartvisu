@@ -123,7 +123,7 @@ if (is_file(const_path."pages/".config_pages."/".$request['page'].".html")
 		// header("HTTP/1.0 602 smartVISU Template Error");
 		
 		echo "<pre>\n";
-		echo str_repeat(" ", 69)."smart[VISU]\n";
+		echo str_repeat(" ", 71)."smartVISU\n";
 		echo str_repeat(" ", 62).date('H:i, d.m').", v".config_version."\n";
 		echo str_repeat("-", 80)."\n\n";
 		echo "Error accoured in twig-template engine!\n\n";
@@ -139,7 +139,7 @@ else
 	header("HTTP/1.0 404 Not Found");
 
 	echo "<pre>\n";
-	echo str_repeat(" ", 69)."smart[VISU]\n";
+	echo str_repeat(" ", 71)."smartVISU\n";
 	echo str_repeat(" ", 62).date('H:i, d.m').", v".config_version."\n";
 	echo str_repeat("-", 80)."\n\n";
 	echo "Error loading Page '<b>".$request['page']."</b>' !\n\n";
