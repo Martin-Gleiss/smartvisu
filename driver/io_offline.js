@@ -188,8 +188,9 @@ var io = {
 
 						for (var i = 0; i < items.length; i++) {
 							var item = items[i].split('.');
-
-							if (response[items[i]] == null && widget.get(items[i]) == null && widget.is_series(items[i])) {
+	
+							if (response[items[i]] == null && widget.get(items[i]) == null 
+								&& ($.inArray(item[item.length - 3], Array('avg', 'min', 'max', 'sum', 'diff', 'rate', 'on')) >= 0)) {
 								response[items[i]] = io.demoseries(item[item.length - 2], item[item.length - 1], $(this).attr('data-ymin'), $(this).attr('data-ymax'), $(this).attr('data-step'));
 							}
 						}
