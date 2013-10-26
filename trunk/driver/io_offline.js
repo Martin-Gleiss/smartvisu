@@ -190,7 +190,7 @@ var io = {
 							var item = items[i].split('.');
 	
 							if (response[items[i]] == null && widget.get(items[i]) == null 
-								&& ($.inArray(item[item.length - 3], Array('avg', 'min', 'max', 'sum', 'diff', 'rate', 'on')) >= 0)) {
+								&& (widget.checkseries(items[i]))) {
 								response[items[i]] = io.demoseries(item[item.length - 2], item[item.length - 1], $(this).attr('data-ymin'), $(this).attr('data-ymax'), $(this).attr('data-step'));
 							}
 						}
