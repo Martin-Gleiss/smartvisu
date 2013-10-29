@@ -16,7 +16,7 @@
 */
 {% macro flip_init(id, val) %}
 	<script type="text/javascript">
-		$('#{{ page }}').on('pageshow', function (event, ui) {
+		$('#{{ page }}').on('pageinit', function (event, ui) {
 			$('#{{ id }}').val('{{ val|bit }}').slider('refresh');
 		});
 	</script>
@@ -31,7 +31,7 @@
 */
 {% macro select_init(id, val) %}
 	<script type="text/javascript">
-		$('#{{ page }}').on('pageshow', function (event, ui) {
+		$('#{{ page }}').on('pageinit', function (event, ui) {
 			$('#{{ id }}').val('{{ val }}').selectmenu('refresh');
 		});
 	</script>
