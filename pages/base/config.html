@@ -83,6 +83,9 @@
 						<option value="de">German</option>
 						<option value="nl">Dutch</option>
 						<option value="fr">Fran&ccedil;ais</option>
+						{% for file in dir('lang', '^lang_(?!en|de|nl|fr)(.+?).txt') %}
+							<option value="{{ file.name }}">{{ file.label }}</option>
+						{% endfor %}
 					</select>
 
 					<div class="note">*for some widgets</div>
