@@ -68,7 +68,7 @@ Highcharts.theme = {
 		}
 	},
 	legend: {
-		align: 'center',
+		align: 'right',
 		verticalAlign: 'top',
 		floating: true,
 		borderWidth: 0,
