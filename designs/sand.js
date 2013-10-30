@@ -37,7 +37,6 @@ Highcharts.theme = {
 		tickWidth: 2,
 		tickColor: '#666',
 		labels: {
-			y: 20,
 			style: {
 				color: '#999', fontSize: '14px'
 			}
@@ -69,8 +68,7 @@ Highcharts.theme = {
 		}
 	},
 	legend: {
-		x: 40,
-		align: 'left',
+		align: 'center',
 		verticalAlign: 'top',
 		floating: true,
 		borderWidth: 0,
