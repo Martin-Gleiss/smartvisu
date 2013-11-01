@@ -15,24 +15,22 @@ require_once '../../lib/includes.php';
 // init parameters
 $request = array_merge($_GET, $_POST);
 
-$url = "http://code.google.com/feeds/p/smartvisu/downloads/basic";
-
 // get contents
-$data = file_get_contents($url);
-$xml = simplexml_load_string($data);
+$url = "http://smartvisu.de/download/check.php";
 
-$file = basename((string)$xml->entry->id);
+$url .= "?local=".$request["local"];
+exec('cat /sys/class/net/eth0/address', $out, $error);
+if ($error)
+	$out[0] = $_SERVER['SERVER_SOFTWARE'].$_SERVER['SERVER_NAME'].$_SERVER['SERVER_ADDR'];
 
-$ret["local"] = (strlen($request["local"]) > 3 ? $request["local"] : str_replace('.', '.0', $request["local"]));
+$url .= "&hash=".md5($out[0]).substr(config_driver, 0, 1);
+$data = json_decode(file_get_contents($url, false));
 
-$remote = substr(strstr($file, '_'), 1, -4);
-$ret["remote"] = (strlen($remote) > 3 ? $remote : str_replace('.', '.0', $remote));
-
-if ((float)$ret["remote"] > (float)$ret["local"])
+if ($data->update)
 {
 	$ret["update"] = true;
 	$ret["icon"] = 'icons/or/message_attention.png';
-	$ret["text"] = 'please make a update!';
+	$ret["text"] = 'please make update to v'.$data->remote;
 }
 else
 {

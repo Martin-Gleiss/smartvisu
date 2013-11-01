@@ -48,8 +48,8 @@
 	</div>
 
 	<div style="clear: left;"></div>
-	system uptime: {{ basic.formula('systemuptime', 'env.system.uptime', '', 'VAR - 60 * 60 * 1000') }},
-	SmartHome.py uptime: {{ basic.formula('coreuptime', 'env.core.uptime', '', 'VAR - 60 * 60 * 1000') }}<br />
+	system start: {{ basic.text('systemstart', 'env.system.start') }},
+	SmartHome.py start: {{ basic.text('corestart', 'env.core.start') }}<br />
 
 	
 	<h2>Location</h2>
