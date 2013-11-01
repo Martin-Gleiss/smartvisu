@@ -253,34 +253,37 @@ $(document).delegate('[data-widget="basic.formula"]', {
 		var unit = $(this).attr('data-unit');
 		var mode = $(this).attr('data-formula').substring(0, 3); // functions SUM, AVG, SUB only used, if they are the first 3 chars in formula string
 
-		if (mode == 'SUB') {
-			calc = response[pos];
-			pos++;
-		}
-
-		for (var i = pos; i < response.length; i++) {
-			if (mode == 'SUB') {
-				calc = calc - response[i];
-			}
-			else {
-				calc = calc + response[i];
-			}
-		}
-
-		if (mode == 'AVG') {
-			calc = calc / i;
-		}
-
-		if (mode != '') {
-			calc = eval($(this).attr('data-formula').replace(/VAR/g, calc).replace(/AVG/g, '').replace(/SUM/g, '').replace(/SUB/g, ''));
-		}
-
 		if (unit == 'time') {
-			var date = new Date();
-			date.setTime(parseInt(calc));
+			var date = new Date(response[0]);
 			$("#" + this.id).html(date.transTime());
 		}
+		else if (unit == 'short') {
+			var date = new Date(response[0]);
+			$("#" + this.id).html(date.transShort());
+		}
 		else {
+			if (mode == 'SUB') {
+				calc = response[pos];
+				pos++;
+			}
+
+			for (var i = pos; i < response.length; i++) {
+				if (mode == 'SUB') {
+					calc = calc - response[i];
+				}
+				else {
+					calc = calc + response[i];
+				}
+			}
+
+			if (mode == 'AVG') {
+				calc = calc / i;
+			}
+
+			if (mode != '') {
+				calc = eval($(this).attr('data-formula').replace(/VAR/g, calc).replace(/AVG/g, '').replace(/SUM/g, '').replace(/SUB/g, ''));
+			}
+
 			$("#" + this.id).html(parseFloat(calc).transUnit(unit));
 		}
 	}
