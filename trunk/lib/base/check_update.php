@@ -26,6 +26,9 @@ if ($error)
 $url .= "&hash=".md5($out[0]).substr(config_driver, 0, 1);
 $data = json_decode(file_get_contents($url, false));
 
+$ret["local"] = $data->local;
+$ret["remote"] = $data->remote;
+
 if ($data->update)
 {
 	$ret["update"] = true;

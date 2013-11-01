@@ -48,20 +48,20 @@
 	</div>
 
 	<div style="clear: left;"></div>
-	system start: {{ basic.text('systemstart', 'env.system.start') }},
-	SmartHome.py start: {{ basic.text('corestart', 'env.core.start') }}<br />
+	system start: {{ basic.formula('systemstart', 'env.system.start', 'short') }},
+	SmartHome.py start: {{ basic.formula('corestart', 'env.core.start', 'short') }}<br />
 
 	
 	<h2>Location</h2>
 	<div>
 		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/sun_up.png">
-		{{ basic.formula('sunrise', 'env.location.sunrise', 'time', 'VAR - 60 * 60 * 1000') }}
+		{{ basic.formula('sunrise', 'env.location.sunrise', 'time') }}
 		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/sun_down.png">
-		{{ basic.formula('sunset', 'env.location.sunset', 'time', 'VAR - 60 * 60 * 1000') }}
+		{{ basic.formula('sunset', 'env.location.sunset', 'time') }}
 		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/moon_up.png">
-		{{ basic.formula('moonrise', 'env.location.moonrise', 'time', 'VAR - 60 * 60 * 1000') }}
+		{{ basic.formula('moonrise', 'env.location.moonrise', 'time') }}
 		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/moon_down.png">
-		{{ basic.formula('moonset', 'env.location.moonset', 'time', 'VAR - 60 * 60 * 1000') }},
+		{{ basic.formula('moonset', 'env.location.moonset', 'time') }},
 		moonphase: {{ basic.value('moonphase', 'env.location.moonphase') }}, moonlight: {{ basic.value('moonlight', 'env.location.moonlight', '%') }}
 	</div>
 	
@@ -73,7 +73,7 @@
 
 /**
 env.core.version = 0.9-341-gc9ff622
-env.core.uptime = 0:00:08.564816
+env.core.start = 2013-10-15 05:41:25.208615+00:00
 env.core.memory = 13508608
 env.core.threads = 8
 env.core.garbage = 0
@@ -86,7 +86,7 @@ env.location.moonset = 2013-10-15 01:23:01.553577+00:00
 env.location.moonphase = 3
 env.location.moonlight = 80
 env.location
-env.system.uptime = 1:11:10
+env.system.start = 2013-10-15 05:41:25.208615+00:00
 env.system.load = 0.06
 env.system.name = smarthome.local
 env.system
