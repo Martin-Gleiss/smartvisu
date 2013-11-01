@@ -26,15 +26,15 @@ class phone_fritzbox_v5_50 extends phone
 	 */
 	private function connect()
 	{
-		$content = "response=";
-		$content .= $this->login_parm->Challenge.'-'.md5(mb_convert_encoding($this->login_parm->Challenge.'-'.$this->pass, "UCS-2LE", "UTF-8"));
+		$content = 'response=';
+		$content .= $this->login_parm->Challenge.'-'.md5(mb_convert_encoding($this->login_parm->Challenge.'-'.$this->pass, 'UCS-2LE', 'UTF-8'));
 		$content .= '&page=/login_sid.lua';
 		$header[] = 'Content-type: application/x-www-form-urlencoded';
 		$header[] = 'Accept: application/xml';
 		$header[] = sprintf('Content-Length: %d', strlen($content));
 		$context = array(
 			'http' => array(
-				'method' => "POST",
+				'method' => 'POST',
 				'header' => implode("\r\n", $header),
 				'content' => $content
 			)

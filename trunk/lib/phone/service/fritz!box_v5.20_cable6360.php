@@ -26,15 +26,15 @@ class phone_fritzbox_v5_20_6360 extends phone
 	 */
 	private function connect()
 	{
-		$content = "login:command/response=";
-		$content .= $this->login_parm->Challenge.'-'.md5(mb_convert_encoding($this->login_parm->Challenge.'-'.$this->pass, "UCS-2LE", "UTF-8"));
+		$content = 'login:command/response=';
+		$content .= $this->login_parm->Challenge.'-'.md5(mb_convert_encoding($this->login_parm->Challenge.'-'.$this->pass, 'UCS-2LE', 'UTF-8'));
 		$content .= '&getpage=../html/login_sid.xml';
 		$header[] = 'Content-type: application/x-www-form-urlencoded';
 		$header[] = 'Accept: application/xml';
 		$header[] = sprintf('Content-Length: %d', strlen($content));
 		$context = array(
 			'http' => array(
-				'method' => "POST",
+				'method' => 'POST',
 				'header' => implode("\r\n", $header),
 				'content' => $content
 			)
@@ -53,7 +53,7 @@ class phone_fritzbox_v5_20_6360 extends phone
 	 */
 	private function my_str_getcsv($input, $delimiter = ';', $enclosure = '"', $escape = null, $eol = null)
 	{
-		$temp = fopen("php://memory", "rw");
+		$temp = fopen('php://memory', 'rw');
 		fwrite($temp, $input);
 		fseek($temp, 0);
 		$r = array();
