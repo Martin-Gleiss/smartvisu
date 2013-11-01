@@ -32,11 +32,11 @@ class phone_auerswald extends phone
 	{
 		// 1. login
 		$url = 'http://'.$this->server.'/login_json?LOGIN_NAME='.$this->user.'&LOGIN_PASS='.$this->pass.'&LOGIN_NOW=';
-		$context = stream_context_create(array('http' => array('method' => "POST")));
+		$context = stream_context_create(array('http' => array('method' => 'POST')));
 
 		// ---> response
 		$login = json_decode(file_get_contents($url, false, $context));
-		$this->debug($login, "login");
+		$this->debug($login, 'login');
 
 		if ((int)$login->login > 0)
 		{
@@ -53,7 +53,7 @@ class phone_auerswald extends phone
 			*/
 			foreach ($http_response_header as $response)
 			{
-				if (substr($response, 0, 11) == "Set-Cookie:")
+				if (substr($response, 0, 11) == 'Set-Cookie:')
 					$cookie[] = substr($response, 12);
 			}
 
@@ -61,8 +61,8 @@ class phone_auerswald extends phone
 			$url = 'http://'.$this->server.'/page_listgespr_state';
 			$context = stream_context_create(array('http' => array('method' => 'GET', 'header' => 'Cookie: '.implode('; ', $cookie))));
 
-			$data = json_decode(mb_convert_encoding(file_get_contents($url, false, $context), "UTF-8", "ISO-8859-1"));
-			$this->debug($data, "data");
+			$data = json_decode(mb_convert_encoding(file_get_contents($url, false, $context), 'UTF-8', 'ISO-8859-1'));
+			$this->debug($data, 'data');
 
 			foreach ($data as $ds)
 			{
