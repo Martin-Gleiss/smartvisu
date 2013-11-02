@@ -165,7 +165,8 @@ var io = {
 		var items = '';
 
 		// only if anyone listens
-		if (widget.listening()) {
+		if (widget.listeners().length) {
+			
 			// prepare url       
 			var item = widget.listeners();
 			for (var i = 0; i < widget.listeners().length; i++) {
@@ -181,31 +182,30 @@ var io = {
 				cache: false
 			})
 				.done(function (response) {
-
-					// are there any plots?
-					widget.plot().each(function (idx) {
-						var items = widget.explode($(this).attr('data-item'));
-
-						for (var i = 0; i < items.length; i++) {
-							var item = items[i].split('.');
-
-							if (response[items[i]] == null && widget.get(items[i]) == null
-								&& (widget.checkseries(items[i]))) {
-								response[items[i]] = io.demoseries(item[item.length - 2], item[item.length - 1], $(this).attr('data-ymin'), $(this).attr('data-ymax'), $(this).attr('data-step'));
-							}
-						}
-					});
-
-					widget.log().each(function (idx) {
-						widget.set($(this).attr('data-item'), io.demolog($(this).attr('data-count')));
-					});
-
 					// update all items	
 					$.each(response, function (item, val) {
 						widget.update(item, val);
 					})
 				})
 		}
+
+		// are there any plots?
+		widget.plot().each(function (idx) {
+			var items = widget.explode($(this).attr('data-item'));
+
+			for (var i = 0; i < items.length; i++) {
+				var item = items[i].split('.');
+
+				if (widget.get(items[i]) == null && (widget.checkseries(items[i]))) {
+					widget.update(items[i], io.demoseries(item[item.length - 2], item[item.length - 1], $(this).attr('data-ymin'), $(this).attr('data-ymax'), $(this).attr('data-step')));
+				}
+			}
+		});
+
+		// are ther any logs?
+		widget.log().each(function (idx) {
+			widget.update($(this).attr('data-item'), io.demolog($(this).attr('data-count')));
+		});
 	},
 
 	/**

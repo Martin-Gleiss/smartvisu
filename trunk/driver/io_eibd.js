@@ -270,7 +270,7 @@ var io = {
 		io.lastRequestStarted = Math.floor($.now() / 1000);
 
 		// only if anyone listens
-		if (widget.listening()) {
+		if (widget.listeners().length) {
 			// prepare url
 			var getForUrl = '';
 			var counter = 0;
