@@ -171,7 +171,7 @@ var io = {
 	 * Monitors the items
 	 */
 	monitor: function () {
-		if (widget.listening()) {
+		if (widget.listeners().length) {
 			io.send({'cmd': 'monitor', 'items': widget.listeners()});
 		}
 	},
