@@ -189,7 +189,7 @@ var io = {
 				})
 		}
 
-		// are there any plots?
+		// plots
 		widget.plot().each(function (idx) {
 			var items = widget.explode($(this).attr('data-item'));
 
@@ -202,7 +202,7 @@ var io = {
 			}
 		});
 
-		// are ther any logs?
+		// logs
 		widget.log().each(function (idx) {
 			widget.update($(this).attr('data-item'), io.demolog($(this).attr('data-count')));
 		});
