@@ -38,7 +38,8 @@
 						'New remote version is: <b>' + data.remote + '</b><br><br>' +
 						'Please visit <a target="_blank" href="http://smartvisu.de">smartVISU.de</a> to download the new version!<br />');
 				}
-			});
+			})
+				.error(notify.json);;
 		});
 	</script>
 {% endmacro %}
