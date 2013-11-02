@@ -29,23 +29,27 @@ class weather_wunderground extends weather
 		$cache = new class_cache('wunderground_'.$this->location.'.json');
 
 		if ($cache->hit())
-			$parsed_json = json_decode($cache->read());
+			$content = $cache->read();
 		else
 		{
 			$url = 'http://api.wunderground.com/api/'.config_weather_key.'/conditions/forecast/lang:'.trans('wunderground', 'lang').'/q/'.$this->location.'.json';
-			$parsed_json = json_decode($cache->write(file_get_contents($url)));
+			$content = file_get_contents($url);
 		}
-		$this->debug($parsed_json);
 
-		if ($parsed_json)
+		$parsed_json = json_decode($content);
+		if ($parsed_json->{'forecast'})
 		{
+			// write cache
+			$cache->write($content);
+			$this->debug($parsed_json);
+
 			// today
 			$this->data['city'] = (string)$parsed_json->{'current_observation'}->{'display_location'}->{'city'};
 
 			if (substr(trans('format', 'temp'), -1, 1) != "F")
-				$this->data['current']['temp'] = transtemp((float)$parsed_json->{'current_observation'}->{'temp_c'});
+				$this->data['current']['temp'] = transunit('temp', (float)$parsed_json->{'current_observation'}->{'temp_c'});
 			else
-				$this->data['current']['temp'] = transtemp((float)$parsed_json->{'current_observation'}->{'temp_f'});
+				$this->data['current']['temp'] = transunit('temp', (float)$parsed_json->{'current_observation'}->{'temp_f'});
 
 			$this->data['current']['conditions'] = (string)$parsed_json->{'current_observation'}->{'weather'};
 			$this->data['current']['icon'] = $this->icon((string)$parsed_json->{'current_observation'}->{'icon'}, $this->icon_sm);
@@ -53,13 +57,13 @@ class weather_wunderground extends weather
 			// get the good values by countries in km/h or mph for the wind and gusts
 			if (trim(strrchr(trans('format', 'speed'), ' ')) != 'mph')
 			{
-				$wind_speed = transspeed((float)$parsed_json->{'current_observation'}->{'wind_kph'});
-				$wind_gust = transspeed((float)$parsed_json->{'current_observation'}->{'wind_gust_kph'});
+				$wind_speed = transunit('speed', (float)$parsed_json->{'current_observation'}->{'wind_kph'});
+				$wind_gust = transunit('speed', (float)$parsed_json->{'current_observation'}->{'wind_gust_kph'});
 			}
 			else
 			{
-				$wind_speed = transspeed((float)$parsed_json->{'current_observation'}->{'wind_mph'});
-				$wind_gust = transspeed((float)$parsed_json->{'current_observation'}->{'wind_gust_mph'});
+				$wind_speed = transunit('speed', (float)$parsed_json->{'current_observation'}->{'wind_mph'});
+				$wind_gust = transunit('speed', (float)$parsed_json->{'current_observation'}->{'wind_gust_mph'});
 			}
 
 			$wind_direction = translate((string)$parsed_json->{'current_observation'}->{'wind_dir'}, 'wunderground');
@@ -103,12 +107,15 @@ class weather_wunderground extends weather
 			}
 		}
 		else
-			$this->error('Weather: wounderground.com', 'Read request failed!');
+		{
+			$add = $parsed_json->{'response'}->{'error'}->{'description'};
+			$this->error('Weather: wounderground.com', 'Read request failed'.($add ? ': '.$add : '').'!');
+		}	
 	}
 
 	/*
-		* Icon-Mapper
-		*/
+	* Icon-Mapper
+	*/
 	function icon($name, $sm = 'sun_')
 	{
 		$ret = '';
@@ -143,7 +150,6 @@ class weather_wunderground extends weather
 
 		return $ret;
 	}
-
 }
 
 

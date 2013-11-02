@@ -29,16 +29,21 @@ class weather_yr extends weather
 		$cache = new class_cache('yr.no_'.substr(strrchr($this->location, '/'), 1).'.xml');
 
 		if ($cache->hit())
-			$xml = simplexml_load_string($cache->read());
+			$content = $cache->read();
 		else
 		{
 			$url = 'http://www.yr.no/place/'.urlencode($this->location).'/forecast.xml';
-			$xml = simplexml_load_string($cache->write(file_get_contents($url)));
+			$content = file_get_contents($url);
 		}
-
-		if ($xml)
+		
+		if (substr($content, 0, 5) == '<?xml')
 		{
-			//today
+			// write cache
+			$cache->write($content);
+			$xml = simplexml_load_string($content);
+			$this->debug($xml);
+
+			// today 
 			$this->data['city'] = (string)$xml->location->name;
 
 			// forecast
