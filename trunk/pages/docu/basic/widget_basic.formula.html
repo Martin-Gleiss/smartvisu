@@ -19,13 +19,15 @@
 			{{ basic.formula('formula1', ['bath_value'], 'V') }}<br />
 			{{ basic.formula('formula2', ['bath_p1', 'bath_p2', 'bath_p3'], 'W', 'SUM( VAR )') }}<br />
 			{{ basic.formula('formula3', ['bath_p1', 'bath_p2', 'bath_p3'], 'W', 'AVG( VAR ) * 3 / 100') }}<br />
-
+			{{ basic.formula('formula4', 'bath_value', 'Mwh') }}<br />
+				
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		a voltage: {{ basic.formula('formula1', ['bath_value'], 'V') }}<br />
 		actual power: {{ basic.formula('formula2', ['bath_p1', 'bath_p2', 'bath_p3'], 'W', 'SUM( VAR )') }}<br />
 		some calc: {{ basic.formula('formula3', ['bath_p1', 'bath_p2', 'bath_p3'], 'W', 'AVG( VAR ) * 3 / 100') }}<br />
+		a unknown unit: {{ basic.formula('formula4', 'bath_value', 'Mwh') }}<br />
 	</div>
 
 {% endblock %}
