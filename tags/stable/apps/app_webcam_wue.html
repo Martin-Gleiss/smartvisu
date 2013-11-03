@@ -1,0 +1,43 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL
+* @version     1.0
+*
+* @title       Würzburg
+* @category    webcam
+* @icon        icons/ws/it_camera.png
+* @color       #da0
+* @description Some webcams with live-impressions from Würzburg
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "apps.html" %}
+
+
+{% block content %}
+	<h3>Impressions from Würzburg</h3>
+
+	<div class="block">
+		<div class="ui-bar-c ui-li-divider ui-corner-top">Festung Marienberg</div>
+		<div class="image">
+			{{ basic.image('image1', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner-bottom') }}
+		</div>
+		<div class="mini">© by <a href="http://www.wuerzburg.de" target="_blank">http://www.wuerzburg.de</a></div>
+	</div>
+
+	<div class="block">
+		<div class="ui-bar-c ui-li-divider ui-corner-top">View over the city</div>
+		<div class="image">
+			{{ basic.image('image2', 'http://www.bllvwh-wue.de/current.jpg', 'corner-bottom') }}
+		</div>
+		<div class="mini">© by <a href="http://www.bllvwh-wue.de" target="_blank">http://www.bllvwh-wue.de</a></div>
+	</div>
+
+	<div style="clear:left;"></div>
+	<hr />
+	<div class="mini"></div>
+{% endblock %}
+

@@ -1,0 +1,145 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* @version     1.0
+*
+* @title       TV-Spielfilm
+* @category    tv
+* @icon        icons/ws/it_television.png
+* @color       #b00
+* @description List of all tv-stations from www.TVSpielfilm.de
+*
+* @info        More feeds on
+* @link        http://www.tvspielfilm.de/services/widgets/rss-feeds/rss-feeds-im-ueberblick,3538128,ApplicationArticle.html
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "apps.html" %}
+
+{% block sidebar %}
+	<ul data-role="listview" data-dividertheme="c">
+		<li><a data-ajax="false" href="index.php?page=app_tv_spielfilm"><h3>Jetzt</h3></a></li>
+		<li><a data-ajax="false" href="index.php?page=app_tv_spielfilm&feed=heute2015"><h3>Heute, 20:15</h3></a></li>
+		<li><a data-ajax="false" href="index.php?page=app_tv_spielfilm&feed=heute2200"><h3>Heute, 22:00 Uhr</h3></a></li>
+		<li><a data-ajax="false" href="index.php?page=app_tv_spielfilm&feed=filme"><h3>Spielfilm-Highlights des Tages</h3></a></li>
+	</ul>
+{% endblock %}
+
+
+{% block content %}
+
+	<h3>TV-Programm</h3>
+	<br />
+
+
+	<style type="text/css">
+		.tvlist ul {
+			margin: 0 !important;
+		}
+
+		.tvlist li {
+			padding: 0 0 0 125px !important;
+		}
+
+		.tvlist .ui-li-thumb {
+			height: 63px;
+			max-width: 113px;
+			top: 5px;
+			left: 5px;
+			border: 1px solid #aaa;
+		}
+
+		.tvlist .ui-li-aside {
+			background-color: white;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			height: 25px;
+			width: 70px;
+			margin: 3px;
+			text-align: center;
+			vertical-align: middle;
+			line-height: 27px;
+		}
+
+		.tvlist li p {
+			height: 35px;
+			white-space: normal;
+		}
+	</style>
+
+	<div id="tv" data-widget="app.tvspielfim" class="tvlist">
+		<ul data-role="listview">
+		</ul>
+	</div>
+
+	<script type="text/javascript">
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
+
+			var feed = document.URL.explode('&');
+			if (feed[1] == null) {
+				feed = 'jetzt';
+			}
+			else {
+				feed = feed[1].substring(5, 20);
+			}
+
+			$.getJSON('lib/feeds/rss.php?url=tvspielfilm.de/tv-programm/rss/' + feed + '.xml&limit=15', function (data) {
+				var line = '';
+				var entry = data['entry'];
+
+				for (var i in entry) {
+					var ret = '';
+
+					if (entry[i].image) {
+						ret += '<img src="' + entry[i].image.url + '" />';
+					}
+
+					ret += '<h3><a class="ui-link" href="' + entry[i].link + '" target="_blank">' + entry[i].title + '</a></h3>';
+					ret += '<p>' + entry[i].description + '&nbsp;</p>';
+
+					var pic = '';
+					var station = entry[i].title.substr(7, 15).split('|');
+
+					switch (station[0].trim()) {
+						case 'Das Erste':   pic = '1/das-erste_s.png'; break;
+						case 'ZDF': 		pic = '2/zdf_s.png'; break;
+						case 'RTL': 		pic = '3/rtl.png'; break;
+						case 'SAT.1':		pic = '4/sat1_s.png'; break;
+						case 'ProSieben': 	pic = '11/pro7_s.png'; break;
+						case 'RTL II': 		pic = '43/rtl2_s.png'; break;
+						case 'kabel eins': 	pic = '39/kabel1_s.png'; break;
+						case 'VOX': 		pic = '46/vox_s.png'; break;
+						case 'Sport1': 		pic = '45/sport1_s.png'; break;
+						case 'EUROSPORT': 	pic = '30/eurosport-1.jpg'; break;
+						case 'Eurosport 2':	pic = '239/eurosport-2_s.png'; break;
+						case 'TELE 5': 		pic = '55/tele-5_s.png'; break;
+						case 'sixx': 		pic = '318/sixx_s.png'; break;
+						case 'DMAX': 		pic = '52/dmax_s.png'; break;
+						case 'Das Vierte': 	pic = '70/das-vierte_s.png'; break;
+					}
+					
+					if (pic) {
+						ret += '<div class="ui-li-aside">';
+						ret += '<img src="http://www.tvmovie.de/sites/www.tvmovie.de/files/imagecache/tv-logo-list-stations/dikr_tvm_tv_guide/tv_stations/images/' + pic + '">';
+						ret += '</div>';
+					}
+
+					line += '<li>' + ret + '</li>';
+				}
+
+				$('#tv ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
+			})
+				.error(notify.json);
+		});
+	</script>
+
+
+	<hr />
+	<div class="mini">&#169; <a href="http://www.tvspielfilm.de" target="_blank">http://www.tvspielfilm.de</a></div>
+
+{% endblock %}
+

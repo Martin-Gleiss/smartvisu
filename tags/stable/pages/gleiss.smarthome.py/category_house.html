@@ -1,0 +1,42 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "category.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}control_building_control.svg' />Haus</h1>
+
+	<div class="preblock">
+		{{ basic.dual('modus_mode', 'modus_heizung_komfort', icon1~'user_available.png', icon0~'user_away.png', '', '', 'midi') }}
+		{{ basic.dual('modus_night', 'modus_heizung_nacht', icon1~'scene_night.png', icon0~'weather_sun.png', '', '', 'midi') }}
+		{{ basic.dual('modus_frost', 'modus_heizung_frost', icon1~'temp_frost.png', icon0~'temp_frost.png', '', '', 'midi') }}
+	</div>
+
+	<h2>Modus</h2>
+	<div data-role="fieldcontain">
+		<label class="ui-slider">Lichtmodus</label>
+		{{ basic.flip('modus_licht', 'modus_licht_tag_nacht', 'Tag', 'Nacht') }}
+	</div>
+
+	<div data-role="fieldcontain">
+		<fieldset data-role="controlgroup">
+			<legend>Wassersäulen</legend>
+			{{ basic.checkbox('wassersaeulen_auto', 'wassersaeulen_auto', 'Automatik') }}
+		</fieldset>
+	</div>
+
+	<h2>Info</h2>
+	Datum: {{ basic.value ('datum', 'info_datum') }}, Uhrzeit: {{ basic.value ('zeit', 'info_zeit') }} <br />
+
+
+{% endblock %}
+
+

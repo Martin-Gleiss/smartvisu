@@ -1,0 +1,111 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <h1><img class="icon" src='{{ icon0 }}scene_stairs.png'/>Diele und Treppe</h1>
+
+    <div class="preblock">
+	<table width="100%">
+		<tr>
+		<td align="left" width="50%">
+		</td>
+		<td align="right">
+		{{ basic.symbol('rm1', 'eg.diele.rm.alarm', '', icon1~'secur_smoke_detector.png',1, 'mini') }}
+		     {{ basic.symbol('rm2', 'eg.diele.rm.alarm', '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
+		{{ basic.symbol('rm3', 'eg.diele.rm.stoerung', '', icon1~'message_service.png',1, 'mini') }}
+		     {{ basic.symbol('rm4', 'eg.diele.rm.stoerung', '', icon0~'message_service.png', 0, 'mini') }}
+		</td>
+		<td align="right" padding="20">
+		{{ basic.symbol('pir1', 'eg.diele.praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
+			 {{ basic.symbol('pir2', 'eg.diele.praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
+		</td>
+		</tr>
+	</table>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Licht</h3>
+            {{ device.dimmer('light1', 'Deckenleuchte', 'eg.diele.beleuchtung.decke.schalten', 'eg.diele.beleuchtung.decke.dimmwert',0 ,100) }}
+	    {% import "widget_rgb.html" as rgb %}
+	    {{ rgb.rgb('rgb1', 'Treppenbeleuchtung', 'eg.diele.beleuchtung.rgb-treppe.schalten', 'eg.diele.beleuchtung.rgb-treppe.rot.dimmwert', 'eg.diele.beleuchtung.rgb-treppe.gruen.dimmwert', 'eg.diele.beleuchtung.rgb-treppe.blau.dimmwert') }}
+            <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'aussen.haustuer.beleuchtung.schalten', icon1~'light_wall_2.png', icon0~'light_wall_2.png') }} </td><td>Wandleuchte Haustür</td></tr></table>
+	</div>
+      	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Rollladen</h3>
+            {% import "widget_shutter.html" as shutter %}
+			{{ shutter.one ('shutter1', 'Fenster', 'eg.diele.rollladen.fahren', 'eg.diele.rollladen.stopp', 'eg.diele.rollladen.position', 'eg.diele.rollladen.beschatten' ) }}
+        </div>
+
+    	<div data-role="collapsible">
+          <h3>Status Tür und Fenster</h3>
+          {% import "widget_window.html" as window %}
+          <p>
+            <div>
+              Haustür:&nbsp;&nbsp;&nbsp;&nbsp;
+              {{ basic.symbol('tuer1', 'eg.diele.haustuer', 'abgeschlossen', icon1~'secur_locked.png', 1) }}
+              {{ basic.symbol('tuer2', 'eg.diele.haustuer', 'nicht abgeschlossen', icon0~'secur_open.png', 0) }}
+            </div>
+            {{ window.one ('win1', 'Fenster', 'eg.essen.fenster' ) }}
+          </p>
+        </div>
+    </div>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Haustür</h3>
+            {% import "widget_camera.html" as camera %}
+            {{ camera.vlc('cam2', 'http://upload.wikimedia.org/wikipedia/commons/transcoded/4/41/Big_Buck_Bunny_medium.ogv/Big_Buck_Bunny_medium.ogv.480p.ogv') }}
+        </div>
+
+    	<div data-role="collapsible">
+          <h3>&nbsp;</h3>
+          <p>Zur Wiedergabe des Kamerabildes wird das VLC-Plugin im Browser benötigt.</p>
+        </div>
+    </div>
+    </div>
+
+   <!-- <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Raumtemperatur</h3>
+            {{ device.rtr('eg.diele.rtr', 'Heizung', 'eg.diele.temperatur.luft', 'eg.diele.heizung.sollwert',
+                'eg.diele.heizung.komfort', 'eg.diele.heizung.nacht', 'eg.diele.heizung.frost', 'eg.diele.heizung.schalten') }}
+        </div>
+
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>
+
+    </div>
+    </div> -->
+
+{% endblock %}
+

@@ -1,0 +1,31 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_clock.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; clock.digiclock('clock1') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ clock.digiclock('clock1') }}
+	</div>
+
+	Clock and weather combination
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; clock.digiclock('clock2', 'Germany/Berlin/Berlin') &#125;&#125;<br /></code>
+	</div>
+	<div class="html">
+		<br />{{ clock.digiclock('clock2', 'Germany/Berlin/Berlin') }}<br />
+	</div>
+
+{% endblock %}

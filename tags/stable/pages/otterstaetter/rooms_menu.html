@@ -1,0 +1,197 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+{% import "icon.html" as icon %}
+
+<ul data-role="listview" data-dividertheme="c">
+    <li data-role="list-divider">Erdgeschoss</li>
+    <li data-icon="false">
+        <a href="index.php?page=room1_essen">
+            <img class="icon" src="{{ icon0 }}scene_dinner.png"/><h3>Küchen-, Ess- und Wohnbereich</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('eg.essen.temperatur', 'eg.essen.temperatur.luft', ' °C') }} &nbsp;
+                {{ basic.float('eg.essen.humidity', 'eg.essen.humidity', ' %') }}<br />
+                {{ basic.symbol('rm1', ['eg.kueche.rm.alarm', 'eg.wohnen.rm.alarm'], '', icon1~'secur_smoke_detector.png', 1 , 'or' ) }}
+                {{ basic.symbol('rm3', ['eg.kueche.rm.stoerung', 'eg.wohnen.rm.stoerung'], '', icon1~'message_service.png', 1, 'or') }}
+                {{ basic.symbol('pir1', 'eg.koch-wohn.praesenz', '', icon1~'message_presence.png', 1) }}
+                {{ icon.shutter('eg.kueche.shifter', 'eg.kueche.rollladen.fahren', 'eg.kueche.rollladen.position.status', '', '255' ) }}
+                {{ basic.symbol('eg.kueche.fensterauf', ['eg.kueche.fenster', 'eg.essen.fenster', 'eg.wohnen.fenster.sued', 'eg.wohnen.fenster.west'], '', icon1~'fts_window_2w_open.png', 2, 'or') }}
+                {{ basic.symbol('eg.kueche.fenstergekippt', ['eg.kueche.fenster', 'eg.essen.fenster', 'eg.wohnen.fenster.sued', 'eg.wohnen.fenster.west'], '', icon1~'fts_window_2w_tilt.png', 1, 'or') }}
+            </div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room1_buero">
+            <img class="icon" src="{{ icon0 }}scene_office.png"/><h3>Büro</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('eg.buero.temperatur', 'eg.buero.temperatur.luft', '°C') }}<br />
+				{{ basic.symbol('rm9', 'eg.buero.rm.alarm', '', icon1~'secur_smoke_detector.png', 1) }}
+				{{ basic.symbol('rm11', 'eg.buero.rm.stoerung', '', icon1~'message_service.png', 1) }}
+				{{ basic.symbol('pir7', 'eg.buero.praesenz', '', icon1~'message_presence.png', 1) }}
+                {{ icon.shutter('eg.buero.shifter', 'eg.buero.rollladen.west.fahren', 'eg.buero.rollladen.west.position', '', '255' ) }}
+                {{ basic.symbol('eg.buero.fensterauf', ['eg.buero.fenster.west', 'eg.buero.fenster.nord'], '', icon1~'fts_window_2w_open.png', 2) }}
+                {{ basic.symbol('eg.buero.fenstergekippt', ['eg.buero.fenster.west', 'eg.buero.fenster.nord'], '', icon1~'fts_window_2w_tilt.png', 1) }}
+            </div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room1_wc">
+            <img class="icon" src="{{ icon0 }}scene_toilet.png"/><h3>Gäste WC</h3>
+            <div class="ui-li-aside"><br />
+                {{ basic.symbol('pir9', 'eg.gaeste-wc.praesenz', '', icon1~'message_presence.png', 1) }}
+                {{ icon.shutter('eg.gaeste-wc.shifter', 'eg.gaeste-wc.rollladen.fahren', 'eg.gaeste-wc.rollladen.position', '', '255' ) }}
+                {{ basic.symbol('eg.gaeste-wc.fensterauf', 'eg.gaeste-wc.fenster', '', icon1~'fts_window_1w_open.png', 2) }}
+                {{ basic.symbol('eg.gaeste-wc.fenstergekippt', 'eg.gaeste-wc.fenster', '', icon1~'fts_window_1w_tilt.png', 1) }}
+			</div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room1_hwr">
+            <img class="icon" src="{{ icon0 }}sani_buffer_temp_all.png"/><h3>Hauswirtschaftsraum</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('eg.hwr.temperatur', 'eg.hwr.temperatur.luft', '°C') }}<br />
+				{{ basic.symbol('rm13', 'eg.hwr.rm.alarm', '', icon1~'secur_smoke_detector.png', 1) }}
+				{{ basic.symbol('rm15', 'eg.hwr.rm.stoerung', '', icon1~'message_service.png', 1) }}
+                {{ basic.symbol('pir11', 'eg.hwr.praesenz', '', icon1~'message_presence.png', 1) }}
+                {{ icon.shutter('eg.hwr.shifter', 'eg.hwr.rollladen.fahren', 'eg.hwr.rollladen.position', '', '255' ) }}
+                {{ basic.symbol('eg.hwr.fensterauf', 'eg.hwr.fenster', '', icon1~'fts_window_2w_open.png', 2) }}
+                {{ basic.symbol('eg.hwr.fenstergekippt', 'eg.hwr.fenster', '', icon1~'fts_window_2w_tilt.png', 1) }}
+            </div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room1_diele">
+            <img class="icon" src="{{ icon0 }}scene_stairs.png"/><h3>Diele/Treppe</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('eg.diele.temperatur', 'eg.diele.temperatur.luft', ' °C') }}<br />
+				{{ basic.symbol('rm17', 'eg.diele.rm.alarm', '', icon1~'secur_smoke_detector.png', 1) }}
+				{{ basic.symbol('rm19', 'eg.diele.rm.stoerung', '', icon1~'message_service.png', 1) }}
+                {{ basic.symbol('pir13', 'eg.diele.praesenz', '', icon1~'message_presence.png', 1) }}
+                {{ icon.shutter('eg.diele.shifter', 'eg.diele.rollladen.fahren', 'eg.diele.rollladen.position.status', '', '255' ) }}
+                {{ basic.symbol('eg.diele.fensterauf', 'eg.diele.fenster', '', icon1~'fts_window_1w_open.png', 2) }}
+                {{ basic.symbol('eg.diele.fenstergekippt', 'eg.diele.fenster', '', icon1~'fts_window_1w_tilt.png', 1) }}
+            </div>
+        </a>
+    </li>
+
+
+<li data-role="list-divider">Dachgeschoss</li>
+    <li data-icon="false">
+        <a href="index.php?page=room2_bad_eltern">
+            <img class="icon" src="{{ icon0 }}scene_bathroom.png"/><h3>Bad Eltern</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('dg.bad-eltern.temperatur', 'dg.bad-eltern.temperatur.luft', ' °C') }}<br />
+		        {{ basic.symbol('pir20', 'dg.bad-eltern.praesenz', '', icon1~'message_presence.png', 1) }}
+                {{ icon.shutter('dg.bad-eltern.shifter', 'dg.bad-eltern.rollladen.fahren', 'dg.bad-eltern.rollladen.position', '', '255' ) }}
+                {{ basic.symbol('dg.bad-eltern.fensterauf', 'dg.bad-eltern.fenster', '', icon1~'fts_window_2w_open.png', 2) }}
+                {{ basic.symbol('dg.bad-eltern.fenstergekippt', 'dg.bad-eltern.fenster', '', icon1~'fts_window_2w_tilt.png', 1) }}
+            </div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room2_schlafen">
+            <img class="icon" src="{{ icon0 }}scene_sleeping_alternat.png"/><h3>Schlafzimmer</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('dg.schlafen.temperatur', 'dg.schlafen.temperatur.luft', ' °C') }}<br />
+				{{ basic.symbol('rm21', 'dg.schlafen.rm.alarm', '', icon1~'secur_smoke_detector.png', 1) }}
+				{{ basic.symbol('rm23', 'dg.schlafen.rm.stoerung', '', icon1~'message_service.png', 1) }}
+		        {{ basic.symbol('pir22', 'dg.schlafen.praesenz', '', icon1~'message_presence.png', 1) }}
+                {{ icon.shutter('dg.schlafen.shifter', 'dg.schlafen.rollladen.fahren', 'dg.schlafen.rollladen.position', '', '255' ) }}
+                {{ basic.symbol('dg.schlafen.fensterauf', 'dg.schlafen.fenster', '', icon1~'fts_window_2w_open.png', 2) }}
+                {{ basic.symbol('dg.schlafen.fenstergekippt', 'dg.schlafen.fenster', '', icon1~'fts_window_2w_tilt.png', 1) }}
+            </div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room2_gast">
+            <img class="icon" src="{{ icon0 }}scene_visit_guests.png"/><h3>Gast</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('dg.gast.temperatur', 'dg.gast.temperatur.luft', ' °C') }}<br />
+				{{ basic.symbol('rm25', 'dg.gast.rm.alarm', '', icon1~'secur_smoke_detector.png', 1) }}
+				{{ basic.symbol('rm27', 'dg.gast.rm.stoerung', '', icon1~'message_service.png', 1) }}
+		        {{ basic.symbol('pir24', 'dg.gast.praesenz', '', icon1~'message_presence.png', 1) }}
+                {{ icon.shutter('dg.gast.shifter', 'dg.gast.rollladen.links.fahren', 'dg.gast.rollladen.links.position', '', '255' ) }}
+                {{ basic.symbol('dg.gast.fensterauf', ['dg.gast1.fenster', 'dg.gast2.fenster', 'dg.gast3.fenster'], '', icon1~'fts_window_1w_open.png', 2) }}
+                {{ basic.symbol('dg.gast.fenstergekippt', ['dg.gast1.fenster', 'dg.gast2.fenster', 'dg.gast3.fenster'], '', icon1~'fts_window_1w_tilt.png', 1) }}
+           </div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room2_kind1">
+            <img class="icon" src="{{ icon0 }}scene_childs_room.png"/><h3>Kind 1</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('dg.kind1.temperatur', 'dg.kind1.temperatur.luft', ' °C') }}<br />
+				{{ basic.symbol('rm29', 'dg.kind1.rm.alarm', '', icon1~'secur_smoke_detector.png', 1) }}
+				{{ basic.symbol('rm31', 'dg.kind1.rm.stoerung', '', icon1~'message_service.png', 1) }}
+		        {{ basic.symbol('pir26', 'dg.kind1.praesenz', '', icon1~'message_presence.png', 1) }}
+                {{ icon.shutter('dg.kind1.shifter', 'dg.kind1.rollladen.fahren', 'dg.kind1.rollladen.position', '', '255' ) }}
+                {{ basic.symbol('dg.kind1.fensterauf', 'dg.kind1.fenster', '', icon1~'fts_window_2w_open.png', 2) }}
+                {{ basic.symbol('dg.kind1.fenstergekippt', 'dg.kind1.fenster', '', icon1~'fts_window_2w_tilt.png', 1) }}
+           </div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room2_kind2">
+            <img class="icon" src="{{ icon0 }}scene_childs_room.png"/><h3>Kind 2</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('dg.kind2.temperatur', 'dg.kind2.temperatur.luft', ' °C') }}<br />
+				{{ basic.symbol('rm33', 'dg.kind2.rm.alarm', '', icon1~'secur_smoke_detector.png', 1) }}
+				{{ basic.symbol('rm35', 'dg.kind2.rm.stoerung', '', icon1~'message_service.png', 1) }}
+		        {{ basic.symbol('pir28', 'dg.kind2.praesenz', '', icon1~'message_presence.png', 1) }}
+                {{ icon.shutter('dg.kind2.shifter', 'dg.kind2.rollladen.fahren', 'dg.kind2.rollladen.position', '', '255' ) }}
+                {{ basic.symbol('dg.kind2.fensterauf', 'dg.kind2.fenster', '', icon1~'fts_window_2w_open.png', 2) }}
+                {{ basic.symbol('dg.kind2.fenstergekippt', 'dg.kind2.fenster', '', icon1~'fts_window_2w_tilt.png', 1) }}
+            </div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room2_bad_kinder">
+            <img class="icon" src="{{ icon0 }}scene_bathroom.png"/><h3>Bad Kinder</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('dg.bad-kinder.temperatur', 'dg.bad-kinder.temperatur.luft', ' °C') }}<br />
+		        {{ basic.symbol('pir30', 'dg.bad-kinder.praesenz', '', icon1~'message_presence.png', 1) }}
+				{{ basic.symbol('dg.kind2.fensterauf', 'dg.bad-kinder.fenster', '', icon1~'fts_window_1w_open.png', 2) }}
+            </div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room2_flur">
+            <img class="icon" src="{{ icon0 }}scene_stairs.png"/><h3>Flur</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('dg.flur.temperatur', 'dg.flur.temperatur.luft', ' °C') }}<br />
+				{{ basic.symbol('rm37', 'dg.flur.rm.alarm', '', icon1~'secur_smoke_detector.png', 1) }}
+				{{ basic.symbol('rm39', 'dg.flur.rm.stoerung', '', icon1~'message_service.png', 1) }}
+		        {{ basic.symbol('pir32', 'dg.flur.praesenz', '', icon1~'message_presence.png', 1) }}
+            </div>
+        </a>
+    </li>
+
+
+	<li data-role="list-divider">Außen
+		<div class="ui-li-aside">{{ basic.float('aussen.temperatur', 'aussen.temperatur', ' °C') }}</div></li>
+    <li data-icon="false">
+        <a href="index.php?page=room0_carport">
+            <img class="icon" src="{{ icon0 }}fts_garage.png"/><h3>Carport</h3>
+            <div class="ui-li-aside"></div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room0_terrasse">
+            <img class="icon" src="{{ icon0 }}scene_terrace.png"/><h3>Terrasse</h3>
+            <div class="ui-li-aside"></div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=room0_garten">
+            <img class="icon" src="{{ icon0 }}scene_garden.png"/><h3>Garten</h3>
+            <div class="ui-li-aside"></div>
+        </a>
+    </li>
+
+</ul>
+

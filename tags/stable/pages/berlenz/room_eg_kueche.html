@@ -1,0 +1,135 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}scene_cooking.png' />K&uuml;che</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Licht / Aktoren</h3>
+
+
+				<table width=100%>
+					<tr align=left height=60>
+						<td colspan=2 align=left style="padding-left: 10px;">
+							{{ basic.switch('kueche_licht_arbeiten', 'kueche_arbeitsbereich_licht_schalten', icon1~'light_light.png', icon0~'light_light.png') }} Arbeiten
+						</td>
+						<td colspan=2 align=left style="padding-left: 10px;">
+							{{ basic.switch('kueche_licht_sitzecke', 'kueche_sitzecke_licht_schalten', icon1~'light_dinner_table.png', icon0~'light_dinner_table.png') }} Sitzecke
+						</td>
+					</tr>
+					<tr align=left height=60>
+						<td align=left style="padding-left: 10px;" width=48>
+							{{ basic.switch('wasser', 'umwaelzpumpe_schalten', icon1~'sani_water_hot.png', icon0~'sani_water_hot.png') }}
+						</td>
+						<td align=left
+						">
+						{{ basic.float('heizen_speichertemperatur', 'lwz_speichertemperatur', '°C') }} <br>
+						Warmwasser
+						</td>
+						<td align=left style="padding-left: 10px;" width=48>
+							{{ basic.symbol('lueftung0', 'lwz_lueftungstufe', '', icon1~'vent_ventilation_level_0.png', 0) }}
+							{{ basic.symbol('lueftung1', 'lwz_lueftungstufe', '', icon1~'vent_ventilation_level_1.png', 1) }}
+							{{ basic.symbol('lueftung2', 'lwz_lueftungstufe', '', icon1~'vent_ventilation_level_2.png', 2) }}
+							{{ basic.symbol('lueftung3', 'lwz_lueftungstufe', '', icon1~'vent_ventilation_level_3.png', 3) }}
+						</td>
+						<td align=left
+						">
+						Stufe {{ basic.value('heizen_lueftungsstufe', 'lwz_lueftungstufe', '') }}<br>
+						Lüftung
+						</td>
+					</tr>
+					<tr align=left height=60>
+						<td colspan=2 align=left
+						" style="padding-left: 10px;">
+						{{ basic.switch('automode', 'jalousie_automode', icon1~'fts_shutter_daynight_auto.png', icon0~'fts_shutter_daynight_auto.png') }} Tag/Nacht<br>
+						</td>
+						<td colspan=2 align=left
+						" style="padding-left: 10px;">
+						{{ basic.switch('beschattung', 'jalousie_beschattungsmode', icon1~'fts_shutter_auto.png', icon0~'fts_shutter_auto.png') }} Beschattung
+						</td>
+					</tr>
+
+				</table>
+
+			</div>
+			<div data-role="collapsible">
+				<h3>Einstellungen</h3>
+				<table width=100%>
+					<tr>
+						<td align=left colspan=3>
+							L&uuml;ftungsstufe Sollwert:
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=33%>
+							{{ basic.switch('kueche_lueftung_stufe0', 'lwz_lueftungstufe_sollwert', icon1~'vent_ventilation_level_0.png', icon0~'vent_ventilation_level_0.png', 0, -1) }} Stufe&nbsp;0
+						</td>
+						<td align=left width=33%>
+							{{ basic.switch('kueche_lueftung_stufe1', 'lwz_lueftungstufe_sollwert', icon1~'vent_ventilation_level_1.png', icon0~'vent_ventilation_level_1.png', 1, -1) }} Stufe&nbsp;1
+						</td>
+						<td align=left width=33%>
+							{{ basic.switch('kueche_lueftung_stufe2', 'lwz_lueftungstufe_sollwert', icon1~'vent_ventilation_level_2.png', icon0~'vent_ventilation_level_2.png', 2, -1) }} Stufe&nbsp;2
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Raumtemperatur</h3>
+				{{ device.rtr('kueche_rtr', '', 'kueche_heizung_istwert', 'kueche_heizung_sollwert',
+				'kueche_heizung_komfort', 'kueche_heizung_nacht', 'kueche_heizung_frost', 'kueche_heizung_heizen_schalten', '', 0.2) }}
+			</div>
+
+			<div data-role="collapsible">
+				&nbsp;
+			</div>
+
+		</div>
+	</div>
+
+
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalousie</h3>
+
+				<table width=100%>
+					<tr>
+						<td align=center width=50%>
+							{{ device.shutter ('shutter1', 'Strasse', 'kueche1_jalousie_fahren', 'kueche1_jalousie_stop', 'kueche1_jalousie_position_status',
+							'', 'kueche1_jalousie_angle_status', 'kueche1_jalousie_store', 0, 100, 10, 'half') }}
+						</td>
+						<td align=center width=50%>
+							{{ device.shutter ('shutter2', 'Popp', 'kueche2_jalousie_fahren', 'kueche2_jalousie_stop', 'kueche2_jalousie_position_status',
+							'', 'kueche2_jalousie_angle_status', 'kueche2_jalousie_store', 0, 100, 10, 'half') }}
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}
+

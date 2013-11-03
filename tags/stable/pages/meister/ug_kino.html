@@ -1,0 +1,59 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h3><img class="icon" src='{{ icon0 }}light_light.png' />Kino</h3>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Licht</h3>
+				<label for="LightsCinemaBack">Licht<br /></label>
+				{{ basic.flip('LightsCinemaBack', 'LightsCinemaBackSwitch') }}
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Heizung</h3>
+				{{ device.rtr('HeatingCinema', 'Heizung', 'HeatingTemperatureCinema', 'schlafen_heizung_sollwert',
+				'schlafen_heizung_komfort', 'schlafen_heizung_nacht', 'schlafen_heizung_frost', 'schlafen_heizung_schalten', 'schlafen_heizung_text') }}
+			</div>
+		</div>
+	</div>
+
+
+
+{% endblock %}
+/**
+
+<object type="1.001" id="LightsGuestRoomSwitch" gad="1/1/3" init="persist" log="true">LightsGuestRoomSwitch
+	<object type="3.007" id="LightsGuestRoomDim" gad="1/1/4" init="persist" log="true">LightsGuestRoomDim</object>
+	<object type="5.001" id="LightsGuestRoomDimVal" gad="1/1/5" init="persist" log="true">LightsGuestRoomDimVal
+		<object type="1.001" id="LightsGuestRoomSwitchStatus" gad="1/1/72" init="persist" log="true">LightsGuestRoomSwitchStatus</object>
+		<object type="5.001" id="LightsGuestRoomDimValStatus" gad="1/1/73" init="persist" log="true">LightsGuestRoomDimValStatus</object>
+		<object type="1.001" id="BlindsGuestRoomUpDown" gad="2/1/0" init="persist" log="true">BlindsGuestRoomUpDown
+			<listener gad="0/1/0" />
+			<listener gad="0/1/8" />
+		</object>
+		<object type="1.001" id="BlindsGuestRoomStep" gad="2/1/1" init="persist" log="true">BlindsGuestRoomStep
+			<listener gad="0/1/9" />
+		</object>
+		<object type="1.001" id="BlindsGuestRoomAutoMode" gad="2/1/10" init="persist" log="true">BlindsGuestRoomAutoMode</object>
+		<object type="5.001" id="HeatingControlValueGuestRoom" gad="3/1/1" init="persist" log="true">HeatingControlValueGuestRoom</object>
+		<object type="5.001" id="HeatingValveGuestRoom" gad="3/1/14" init="persist" log="true">HeatingValveGuestRoom</object>
+		<object type="9.xxx" id="HeatingTemperatureGuestRoom" gad="3/1/82" init="persist" log="true">HeatingTemperatureGuestRoom</object>
+		<object type="1.001" id="ReedGuestRoom" gad="4/1/0" init="persist" log="true">ReedGuestRoom</object>
+
+		*/

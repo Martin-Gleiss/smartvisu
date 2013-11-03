@@ -1,0 +1,62 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h3><img class="icon" src='{{ icon0 }}sani_solar.png' />Dachfenster</h3>
+	<div class="preblock">
+		<span data-role="controlgroup" data-type="horizontal">
+			Rollo zentral<br />
+			{{ basic.button('BlindsSkyLightsUp', 'BlindsSkyLightsUpDown', '', icon0~"control_arrow_up.png", '0', 'midi') }}
+			{{ basic.button('BlindsSkyLightsDown', 'BlindsSkyLightsUpDown', '', icon0~"control_arrow_down.png", '1', 'midi') }}
+			{{ basic.button('BlindsSkyLightsStep', 'BlindsSkyLightsStep', '', icon0~"control_x.png", '0', 'midi') }}
+		</span>
+		<span data-role="controlgroup" data-type="horizontal"> 
+			Öffner zentral<br />
+			{{ basic.button('WindowOpenerSkyLightsUp', 'WindowOpenerSkyLightsUpDown', '', icon0~"control_arrow_up.png", '0', 'midi') }}
+			{{ basic.button('WindowOpenerSkyLightsDown', 'WindowOpenerSkyLightsUpDown', '', icon0~"control_arrow_down.png", '1', 'midi') }}
+			{{ basic.button('WindowOpenerSkyLightsStep', 'WindowOpenerSkyLightsStep', '', icon0~"control_x.png", '0', 'midi') }}
+		</span>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Dachfenster Rollo Küche</h3>
+				{{ device.shutter ('BlindsSkyLightKitchen', 'Rollo Dachfenster Küche', 'BlindsSkyLightKitchenUpDown', 'BlindsSkyLightKitchenStep', 'BlindsSkyLightKitchenPositionSunBlinds') }}
+			</div>
+		</div>
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Dachfenster Rollo Esszimmer</h3>
+				{{ device.shutter ('BlindsSkyLightDiningRoom', 'Rollo Dachfenster Esszimmer', 'BlindsSkyLightDiningRoomUpDown', 'BlindsSkyLightDiningRoomStep', 'BlindsSkyLightDiningRoomPositionSunBlinds') }}
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Dachfenster Öffner Küche</h3>
+				{{ device.shutter ('WindowOpenerSkyLightKitchen', 'Dachfenster Öffner Küche', 'WindowOpenerSkyLightKitchenUpDown', 'WindowOpenerSkyLightKitchenStep', 'WindowOpenerSkyLightKitchenPositionOpen') }}
+			</div>
+		</div>
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Dachfenster Öffner Esszimmer</h3>
+				{{ device.shutter ('WindowOpenerSkyLightDiningRoom', 'Dachfenster Öffner Esszimmer', 'WindowOpenerSkyLightDiningRoomUpDown', 'WindowOpenerSkyLightDiningRoomStep', 'WindowOpenerSkyLightDiningRoomPositionOpen') }}
+			</div>
+		</div>
+	</div>
+
+
+
+{% endblock %}

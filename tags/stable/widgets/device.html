@@ -1,0 +1,195 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+/**
+* Standard blind
+*
+* @param unique id for this widget
+* @param name of the blind
+* @param a gad/item for the up- and down- movement
+* @param a gad/item for stopping the movement (optional)
+* @param a gad/item for the actual absolute position of the blinds
+* @param a gad/item for increase- and decreace- of the blade (optional)
+* @param a gad/item for the actual absolute angle of the blade (optional)
+* @param the minimum value for close (optional, default 0)
+* @param the maximum value for open (optional, default 255)
+* @param step between two values (optional, default 5)
+*
+* @info inspired by Frank Berlenz
+*/
+{% macro blind(id, txt, gad_move, gad_stop, gad_pos, gad_shift, gad_angle, min, max, step) %}
+	{% import "basic.html" as basic %}
+	{% set uid = uid(page, id) %}
+
+	<div class="blind">
+		<table align="center" cellpadding="0">
+			<tr>
+				<td valign="top">
+					<div class="set">{{ basic.button(id~'up', gad_move, '', 'arrow-u', 0) }}</div>
+				</td>
+				<td rowspan="3" align="left" class="pos">
+					{{ basic.slider(id~'pos', gad_pos, min, max, step, 'vertical') }}</td>
+				<td rowspan="2" valign="bottom" class="angle">
+					{{ txt }}<br />
+					{% if gad_angle %} {{ basic.slider(id~'angle', gad_angle, min, max, step, 'semicircle') }} {% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					{% if gad_stop %}
+						<div class="set">{{ basic.button(id~'stop', gad_stop, '', 'delete', 1) }}</div> {% endif %}</td>
+			</tr>
+			<tr>
+				<td valign="bottom">
+					<div class="set">{{ basic.button(id~'down', gad_move, '', 'arrow-d', 1) }}</div>
+				</td>
+				<td valign="bottom">
+					{% if gad_shift %}
+						<div class="set">
+							<span style="float: left;">{{ basic.button(id~'minus', gad_shift, '', 'minus', 0) }}</span>
+							<span style="float: right;">{{ basic.button(id~'plus', gad_shift, '', 'plus', 1) }}</span>
+						</div>
+					{% endif %}
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}
+
+
+/**
+* Standard dimmer with switching and dimming function
+*
+* @param unique id for this widget
+* @param name of the dimmer
+* @param a gad/item for switching
+* @param a gad/item for dimming
+* @param the minimum value if the slider is moved to total left (optional, default 0)
+* @param the maximum value if the slider is moved to total right (optional, default 255)
+* @param step between two values (optional, default 5)
+*/
+{% macro dimmer(id, txt, gad_switch, gad_value, min, max, step) %}
+	{% import "basic.html" as basic %}
+
+	<div class="dimmer">
+		{{ basic.switch(id~'switch', gad_switch, icon1~'light_light.png', icon0~'light_light.png') }}
+		<p>{{ txt|e }}</p>
+		{{ basic.slider(id~'slider', gad_value, min, max, step) }}
+	</div>
+
+{% endmacro %}
+
+
+/**
+* Standard RTR (Room Temperatur Regulator)
+*
+* @param unique id for this widget
+* @param name of the rtr
+* @param a gad/item for the actual temperature
+* @param a gad/item for the set temperature
+* @param a gad/item for comfort / standby (3x bit or 1x byte)
+* @param a gad/item for night (3x bit or 1x byte)
+* @param a gad/item for frost (3x bit or 1x byte)
+* @param a gad/item for the current state of the actor
+* @param a gad/item for a text (some rtr have a text-display), (optional)
+* @param step for plus/minus buttons (optional, default 0.5)
+*/
+{% macro rtr(id, txt, gad_actual, gad_set, gad_comfort, gad_night, gad_frost, gad_state, gad_txt, step) %}
+	{% import "basic.html" as basic %}
+
+	<div id="{{ uid(page, id) }}" data-widget="device.rtr" data-step="{{ step|default(0.5) }}"
+		class="rtr">
+		<div class="actual">
+			<div class="temp">{{ basic.float(id~'actual', gad_actual, '°' ) }}</div>
+			<div class="text">{{ txt }} {% if gad_txt %} {{ basic.value(id~'txt', gad_txt) }} {% endif %}</div>
+		</div>
+
+		{% if gad_set %}
+			<div class="set">
+				<a data-role="button" data-icon="minus" data-inline="true" data-iconpos="notext" class="ui-mini"></a>
+
+				<div class="temp">{{ basic.float(id~'set', gad_set, '°' ) }}</div>
+				<a data-role="button" data-icon="plus" data-inline="true" data-iconpos="notext" class="ui-mini"></a>
+			</div>
+		{% endif %}
+
+		<div class="control">
+			{% if ((config_driver == 'linknx') and (gad_comfort == gad_night) and (gad_night == gad_frost)) %}
+				{{ basic.switch(id~'mode', gad_comfort, icon1~'user_available.png', icon0~'user_away.png', 'comfort', 'standby') }}
+				{{ basic.switch(id~'night', gad_night, icon1~'scene_night.png', icon0~'scene_day.png', 'night', 'standby') }}
+				{{ basic.switch(id~'frost', gad_frost, icon1~'weather_frost.png', icon0~'weather_frost.png', 'frost', 'standby') }}
+			{% elseif ((gad_comfort == gad_night) and (gad_night == gad_frost)) %}
+				{{ basic.switch(id~'mode', gad_comfort, icon1~'user_available.png', icon0~'user_away.png', '1', '2') }}
+				{{ basic.switch(id~'night', gad_night, icon1~'scene_night.png', icon0~'scene_day.png', '3', '2') }}
+				{{ basic.switch(id~'frost', gad_frost, icon1~'weather_frost.png', icon0~'weather_frost.png', '4', '2') }}
+			{% else %}
+				{{ basic.switch(id~'mode', gad_comfort, icon1~'user_available.png', icon0~'user_away.png') }}
+				{{ basic.switch(id~'night', gad_night, icon1~'scene_night.png', icon0~'scene_day.png') }}
+				{{ basic.switch(id~'frost', gad_frost, icon1~'weather_frost.png', icon0~'weather_frost.png') }}
+			{% endif %}
+			<div style="float:left; width: 3px; height: 50px;"></div>
+			{{ basic.switch(id~'state', gad_state, icon1~'sani_heating.png', icon0~'sani_heating.png') }}
+		</div>
+	</div>
+{% endmacro %}
+
+
+/**
+* Standard shutter
+*
+* @param unique id for this widget
+* @param name of the shutter
+* @param a gad/item for the up- and down- movement
+* @param a gad/item for stopping the movement (optional)
+* @param a gad/item for the actual absolute position of the blinds
+* @param a gad/item for increase- and decreace- of the blade (optional, for future use)
+* @param a gad/item for the actual absolute angle of the blade (optional)
+* @param a gad/item for some saved positions (optional)
+* @param the minimum value for close (optional, default 0)
+* @param the maximum value for open (optional, default 255)
+* @param step between two values (optional, default 5)
+* @param the mode: 'half' blade turns from -1 to +1, or 'full' blade turns from 0 to +1 (optional, default 'half')
+*
+* @info inspired by Jörg Gutowski
+*/
+{% macro shutter(id, txt, gad_move, gad_stop, gad_pos, gad_shift, gad_angle, gad_saved, min, max, step, mode) %}
+	{% import "basic.html" as basic %}
+	{% set uid = uid(page, id) %}
+
+	<div class="blind">
+		<table align="center" cellpadding="0">
+			<tr>
+				<td valign="top">
+					<div class="set">{{ basic.button(id~'up', gad_move, '', 'arrow-u', 0) }}</div>
+				</td>
+				<td rowspan="3" align="center" class="pos">
+					{{ basic.shutter(id, gad_pos, gad_angle, min, max, step, mode) }}</td>
+				<td valign="top">
+					{% if gad_saved %}
+						<div>{{ basic.button(id~'saved1', gad_saved, 'Pos1', 'grid', 0) }} </div>{% endif %}</td>
+			</tr>
+			<tr>
+				<td valign="center">
+					{% if gad_stop %}
+						<div class="set">{{ basic.button(id~'stop', gad_stop, '', 'delete', 1) }}</div> {% endif %}</td>
+				<td valign="center">{{ txt }}</td>
+			</tr>
+			<tr>
+				<td valign="bottom">
+					<div class="set">{{ basic.button(id~'down', gad_move, '', 'arrow-d', 1) }}</div>
+				</td>
+				<td valign="bottom">
+					{% if gad_saved %}
+						<div>{{ basic.button(id~'saved2', gad_saved, 'Pos2', 'grid', 1) }} </div>{% endif %}</td>
+			</tr>
+		</table>
+	</div>
+
+{% endmacro %}

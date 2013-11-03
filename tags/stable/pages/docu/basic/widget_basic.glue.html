@@ -1,0 +1,39 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Info</h5>
+	To glue to widgets together is only needed if the bus changes items and no 'Realtime' is used.<br />
+	It is not necessary with 'Realtime', because all items are refresed every second.<br />
+	Also it is not necessary with 'Websocket' based drivers, because they will commit changes immediately.
+
+	<h5>Example</h5>
+	If you press the switch, a write for the switch and a (delayed) read-request for the slider will be send.
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; basic.switch('switch1', 'bath_light_switch') &#125;&#125;<br />
+			&#123;&#123; basic.slider('slider1', 'bath_light_value') &#125;&#125;<br />
+			&#123;&#123; basic.glue('switch1', 'slider1') &#125;&#125;<br />
+		</code>
+	</div>
+	<div class="html">
+		<div class="dimmer">
+			{{ basic.switch('switch1', 'bath_light_switch', icon1~'light_light.png', icon0~'light_light.png') }}
+			{{ basic.slider('slider1', 'bath_light_value') }}
+			{{ basic.glue('switch1', 'slider1') }}
+		</div>
+	</div>
+
+{% endblock %}
+
+

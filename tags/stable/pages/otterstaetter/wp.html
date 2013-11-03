@@ -1,0 +1,43 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+	<ul data-role="listview" data-dividertheme="c">
+
+		<li data-role="list-divider">Wärmepumpe</li>
+		<li data-icon="false">
+			<a href="index.php?page=wp">
+				<img class="icon" src="{{ icon0 }}sani_buffer_temp_all.png" />
+
+				<h3>Wärmepumpe</h3>
+			</a>
+		</li>
+		<li data-icon="false">
+			<a href="index.php?page=wp_fussboden">
+				<img class="icon" src="{{ icon0 }}sani_floor_heating.png" />
+
+				<h3>Fußbodenheizung</h3>
+			</a>
+		</li>
+	</ul>
+
+{% endblock %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}sani_buffer_temp_all.png' />Wärmepumpe</h1>
+	<iframe src="http://www.passivhaustagung.de/fuenfzehnte/download/Presse/Stiebel/isg.jpg" style="width:100%; height:700px; border:0;" seamless></iframe>
+
+{% endblock %}
+
+

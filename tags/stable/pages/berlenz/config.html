@@ -1,0 +1,241 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "system.html" %}
+
+{% block content %}
+
+	<h1>Configuration</h1>
+
+	{% import "forms.html" as forms %}
+	<form>
+	<fieldset>
+
+		<div class="block">
+			<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>Interface</h3>
+
+
+					<div data-role="fieldcontain">
+						<label for="pages">Pages</label>
+						<select name="pages" id="pages" data-native-menu="false">
+							{% for file in dir('pages', '^(?!base|apps)(.+?)') %}
+								<option value="{{ file.name }}">{{ file.label }}</option>
+							{% endfor %}
+						</select>
+						{{ forms.select_init('pages', config_pages) }}
+					</div>
+
+
+					<div data-role="fieldcontain">
+						<label for="design">Design</label>
+						<select name="design" id="design" data-native-menu="false">
+							{% for file in dir('designs', '(.+?).min.css') %}
+								<option value="{{ file.name }}">{{ file.label }}</option>
+							{% endfor %}
+						</select>
+						{{ forms.select_init('design', config_design) }}
+					</div>
+
+
+					<div data-role="fieldcontain">
+						<label for="cache">Pagecache<br /></label>
+						<select name="cache" id="cache" data-role="slider" data-theme="a">
+							<option value="false">off</option>
+							<option value="true">on</option>
+						</select>
+						{{ forms.flip_init('cache', config_cache) }}
+					</div>
+
+				</div>
+
+				<div data-role="collapsible" data-collapsed="true">
+					<h3>Texts</h3>
+
+					<div data-role="fieldcontain">
+						<label for="title">Title<br /></label>
+						<input type="text" name="title" id="title" />
+						{{ forms.text_init('title', config_title|e ) }}
+					</div>
+
+					<div data-role="fieldcontain">
+						<label for="lang">Language</label>
+						<select name="lang" id="lang" data-native-menu="false">
+							<option value="en">English</option>
+							<option value="de">German</option>
+							<option value="nl">Dutch</option>
+						</select>
+
+						<div class="note">*for some widgets</div>
+						{{ forms.select_init('lang', config_lang) }}
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>I/O-Connection</h3>
+
+					<div data-role="fieldcontain">
+						<label for="driver">Driver</label>
+						<select name="driver" id="driver" data-native-menu="false">
+							{% for file in dir('driver', '^io_(.+?).js') %}
+								<option value="{{ file.name }}">{{ file.label }}</option>
+							{% endfor %}
+						</select>
+						{{ forms.select_init('driver', config_driver) }}
+					</div>
+
+					<div data-role="fieldcontain">
+						<label for="driver_address">Address
+							<div class="note">URL / IP</div>
+						</label>
+						<input type="text" name="driver_address" id="driver_address" />
+						{{ forms.text_init('driver_address', config_driver_address|e ) }}
+					</div>
+
+					<div data-role="fieldcontain">
+						<label for="driver_port">Port</label>
+						<input type="text" name="driver_port" id="driver_port" />
+						{{ forms.text_init('driver_port', config_driver_port|e ) }}
+					</div>
+
+					<div data-role="fieldcontain">
+						<label for="driver_realtime">Realtime</label>
+						<select name="driver_realtime" id="driver_realtime" data-role="slider" data-theme="a">
+							<option value="false">off</option>
+							<option value="true">on</option>
+						</select>
+						{{ forms.flip_init('driver_realtime', config_driver_realtime) }}
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			$('#driver').change(function () {
+				switch (this.value) {
+					case 'offline':
+						$('#driver_realtime').val('false').slider('refresh');
+						break;
+
+					case 'linknx':
+						$('#driver_address').val('192.168.x.x');
+						$('#driver_port').val('1028');
+						break;
+
+					case 'smarthome.py':
+						$('#driver_address').val('smarthome.local');
+						$('#driver_port').val('2424');
+						$('#driver_realtime').val('true').slider('refresh');
+						break;
+
+					case 'domotiga':
+						$('#driver_address').val('domotiga.local');
+						$('#driver_port').val('2121');
+						$('#driver_realtime').val('true').slider('refresh');
+						break;
+				}
+			});
+		</script>
+
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>Weather</h3>
+
+					<div data-role="fieldcontain">
+						<label for="weather_service">Service</label>
+						<select name="weather_service" id="weather_service" data-native-menu="false">
+							{% for file in dir('lib/weather/service', '(.+?).php') %}
+								<option value="{{ file.name }}">{{ file.label }}</option>
+							{% endfor %}
+						</select>
+						{{ forms.select_init('weather_service', config_weather_service) }}
+					</div>
+
+					<div data-role="fieldcontain">
+						<label for="weather_location">Location<br /></label>
+						<input type="text" name="weather_location" id="weather_location" />
+						{{ forms.text_init('weather_location', config_weather_location|e ) }}
+					</div>
+
+					<div data-role="fieldcontain">
+						<label for="weather_key">Key</label>
+						<input type="text" name="weather_key" id="weather_key" />
+
+						<div class="note">*if service requiers one</div>
+						{{ forms.text_init('weather_key', config_weather_key|e ) }}
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>Calendar</h3>
+
+					<div data-role="fieldcontain">
+						<label for="calendar_service">System</label>
+						<select name="calendar_service" id="calendar_service" data-native-menu="false">
+							{% for file in dir('lib/calendar/service', '(.+?).php') %}
+								<option value="{{ file.name }}">{{ file.label }}</option>
+							{% endfor %}
+						</select>
+						{{ forms.select_init('calendar_service', config_calendar_service) }}
+					</div>
+
+					<div data-role="fieldcontain">
+						<label for="calendar_url">Url</label>
+						<input type="text" name="calendar_url" id="calendar_url" />
+						{{ forms.text_init('calendar_url', config_calendar_url|e ) }}
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+	</fieldset>
+	<button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">Save</button>
+	<div id="form-info"></div>
+	</form>
+
+	/** Events */
+	<script type="text/javascript">
+		$('form').submit(function () {
+			$.post('pages/base/configure.php', $(this).serialize(), function (data) {
+				if (data == 'true') {
+					window.setTimeout('location.reload();', {{ config_delay }});
+				}
+				else {
+					notify.error('Config', 'Error saving config!');
+				}
+			});
+			return false;
+		});
+	</script>
+
+{% endblock %}
+

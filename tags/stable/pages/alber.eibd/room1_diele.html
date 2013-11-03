@@ -1,0 +1,43 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <h1><img class="icon" src='{{ icon0 }}scene_stairs.png'/>Diele EG</h1>
+
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Heizung</h3>
+                {{ device.rtr('diele_eg_heizen', 'Heizung', '4/0/4/9.xxx', '4/0/3/9.xxx', '4/0/8/1.001', '4/0/6/1.001', '4/0/7/1.001', '4/0/2/1.001') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Licht</h3>
+                 {{ device.dimmer('decke', 'Decke', '4/1/1/1.001', '4/1/5/5.xxx', 0, 200 ,5) }}<br />
+                 {{ device.dimmer('treppe', 'Treppe', '4/1/31/1.001', '4/1/35/5.xxx', 0, 200 ,5) }}<br />
+                 Wand Spiegel {{ basic.flip('spiegel', '4/1/11/1.001', 'Ein', 'Aus') }}<br/>
+                 Wand Bild    {{ basic.flip('bild', '4/1/21/1.001', 'Ein', 'Aus') }}<br/> 
+            </div>
+
+        </div>
+    </div>
+
+    
+{% endblock %}
+

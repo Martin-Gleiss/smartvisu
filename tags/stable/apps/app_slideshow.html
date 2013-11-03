@@ -1,0 +1,24 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL
+* @version     1.0
+*
+* @title       Slideshow
+* @category    slideshow
+* @icon        icons/ws/control_zoom_in.png
+* @color       #00a700
+* @description A slideshow
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "full.html" %}
+
+
+{% block content %}
+	{% import "multimedia.html" as multimedia %}
+	{{ multimedia.slideshow('s1', 'pics/slideshow') }}
+{% endblock %}
+

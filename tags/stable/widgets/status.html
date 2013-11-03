@@ -1,0 +1,47 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+/**
+* Displays a list of logging-information
+*
+* @param unique id for this widget
+* @param the name of the log
+* @param maximal number of entries (1 - 50)
+*/
+{% macro log(id, item, count) %}
+
+	<span id="{{ uid(page, id) }}" data-widget="status.log" data-item="{{ item }}" data-count="{{ count }}"
+		class="log">
+		<ul data-role="listview">
+		</ul>
+	</span>
+
+{% endmacro %}
+
+
+/**
+* Displays a notification popup window
+*
+* @param unique id for this widget
+* @param a gad/item witch triggers the notification
+* @param a gad/item with the dynamic message
+* @param a word for the signal corner
+* @param a title of the messagebox
+* @param a additional static text
+* @param the mode: 'info', 'warning', 'error' (optional, default 'info')
+*/
+{% macro notify(id, gad_trigger, gad_message, signal, title, text, mode) %}
+
+	<span id="{{ uid(page, id) }}" data-widget="status.notify" data-item="{{ gad_trigger }}, {{ gad_message }}"
+		data-signal="{{ signal|default('INFO') }}" data-mode="{{ mode|default('info') }}"
+		class="hide"><h1>{{ title }}</h1><p>{{ text }}</p>
+	</span>
+
+{% endmacro %}
