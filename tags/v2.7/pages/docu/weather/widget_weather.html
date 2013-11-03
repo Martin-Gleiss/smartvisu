@@ -1,0 +1,31 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget.html" %}
+{% import "weather.html" as weather %}
+
+{% block headline %}
+	<h1>Weather-Widgets</h1>
+{% endblock %}
+
+{% block intro %}
+	The weather-widgets get their information from a weather-service. Each services works
+	a little bit different especially the 'location' format.
+	<br /><br />
+	<b><a href="http://www.yr.no" target="_blank">yr.no</a></b><br />
+	The location format must be 'Tyskland/Bayern/Würzburg'. Go to the webpage to get your location from the url.
+
+	<br /><br />
+	<b><a href="http://www.wunderground.com/weather/api/" target="_blank">wunderground.com</a></b><br />
+	You need a key for that service. Go to the webpage to generate your own key
+
+	<br /><br /><br />
+	Choose your service and enter your location and key at the <a href="index.php?page=config">configuration</a>.
+{% endblock %}

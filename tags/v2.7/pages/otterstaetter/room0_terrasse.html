@@ -1,0 +1,56 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <h1><img class="icon" src='{{ icon0 }}scene_terrace.png'/>Terrasse</h1>
+
+    <div class="preblock">
+
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Beleuchtung</h3>
+    		<table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'aussen.terrasse.west.beleuchtung.schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Strahler Dachüberstand Wohnzimmer</td></tr>
+		<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch2', 'aussen.terrasse.sued.beleuchtung.schalten', icon1~'light_light.png', icon0~'light_wall_2.png') }} </td><td>Wandleuchten Friesengiebel</td></tr>
+		<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch3', 'aussen.terrasse.ost.beleuchtung.schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Strahler Dachüberstand Küche</td></tr>
+		</table>
+ 	</div>
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+        </div>
+    </div>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Musik</h3>
+           {% import "multimedia.html" as multi %}
+			{{ multi.music ('music1', 'aussen.terrasse.musik.play', 'aussen.terrasse.musik.stopp', 'aussen.terrasse.musik.vor-ruecklauf',
+			     'aussen.terrasse.musik.weiter-zurueck', 'aussen.terrasse.musik.position', 'aussen.terrasse.musik.lautstaerke',
+			     'aussen.terrasse.musik.stumm', '') }}
+        </div>
+
+    	<div data-role="collapsible">
+            <h3>VLC Details</h3>
+               <!--<iframe src="http://server:8012/mobile.html" width="100%" style="height:100%;" seamless></iframe>-->
+        </div>
+    </div>
+    </div>
+
+{% endblock %}
+

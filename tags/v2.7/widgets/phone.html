@@ -1,0 +1,100 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+/**
+* Displays the phonelist from a phone system
+*
+* @param unique id for this widget
+* @param a title to display
+* @param the number of displayed lines, default 10
+*/
+{% macro list(id, title, count) %}
+	{% set uid = uid(page, id) %}
+
+	<div id="{{ uid }}-phonelist" data-widget="phone.list" class="phonelist">
+		{% if title %} <h2>{{ title }}</h2> {% endif %}
+		<ul data-role="listview">
+		</ul>
+	</div>
+
+	<script type="text/javascript">
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
+			$.getJSON('lib/phone/service/{{ config_phone_service }}.php', function (data) {
+				var ret;
+				var line = '';
+				var sum = 1;
+
+				for (var i in data) {
+					ret = '<img class="icon" src="pics/phone/' + data[i].pic + '" />';
+					ret += '<img class="dir" src="lib/phone/pics/' + data[i].dirpic + '" />';
+					ret += '<h3>' + data[i].text + '&nbsp;</h3>';
+					ret += '<p>' + data[i].number + '&nbsp;</p>';
+					ret += '<span class="ui-li-count">' + data[i].date + '</span>';
+					ret = '<a ' + (data[i].number ? 'href="callto://' + data[i].number : '') + '">' + ret + '</a>';
+
+					line += '<li data-icon="false">' + ret + '</li>';
+					if (sum++ == {{ count|default(10) }}) {
+						break;
+					}
+				}
+
+				$('#{{ uid }}-phonelist ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
+			})
+				.error(notify.json);
+		});
+	</script>
+{% endmacro %}
+
+
+/**
+* Displays the phonelist (only missed phonecalls) from a phone system
+*
+* @param unique id for this widget
+* @param a title to display
+* @param the number of displayed lines, default 3
+*/
+{% macro missedlist(id, title, count) %}
+	{% set uid = uid(page, id) %}
+
+	<div id="{{ uid }}-missedlist" data-widget="phone.missedlist" class="phonelist">
+		{% if title %} <h2>{{ title }}</h2> {% endif %}
+		<ul data-role="listview">
+		</ul>
+	</div>
+
+	<script type="text/javascript">
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
+			$.getJSON('lib/phone/service/{{ config_phone_service }}.php', function (data) {
+				var ret;
+				var line = '';
+				var sum = 1;
+
+				for (var i in data) {
+					ret = '<img class="icon" src="pics/phone/' + data[i].pic + '" />';
+					ret += '<img class="dir" src="lib/phone/pics/' + data[i].dirpic + '"/>';
+					ret += '<h3>' + data[i].text + '&nbsp;</h3>';
+					ret += '<p>' + data[i].number + '&nbsp;</p>';
+					ret += '<span class="ui-li-count">' + data[i].date + '</span>';
+					ret = '<a ' + (data[i].number ? 'href="callto://' + data[i].number : '') + '">' + ret + '</a>';
+
+					if (data[i].dir == 0) {
+						line += '<li data-icon="false">' + ret + '</li>';
+						if (sum++ == {{ count|default(3) }}) {
+							break;
+						}
+					}
+				}
+
+				$('#{{ uid }}-missedlist ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
+			})
+				.error(notify.json);
+		});
+	</script>
+{% endmacro %}

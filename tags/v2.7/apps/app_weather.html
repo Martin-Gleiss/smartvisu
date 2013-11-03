@@ -1,0 +1,38 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL
+* @version     1.0
+*
+* @title       Weather
+* @category    weather
+* @icon        icons/ws/weather_sun.png
+* @color       #2f5bc4
+* @description Some weather-maps from tagesschau.de
+*
+* @info        Maps from tagesschau.de, Hessischer Rundfunk, Deutscher Wetterdienst
+* @link        http://www.tagesschau.de
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "apps.html" %}
+
+
+{% block content %}
+	<h3>Weather</h3>
+
+	{% import   "weather.html" as weather %}
+
+	{{ weather.map ('day1', 'Day', 'day') }}
+	{{ weather.map ('day2', 'Night', 'night') }}
+	{{ weather.map ('day3', 'Forecast', 'forecast') }}
+	{{ weather.map ('day4', 'Winds', 'wind') }}
+	{{ weather.map ('day5', 'Europe', 'europe') }}
+
+	<div style="clear:left;"></div>
+	<hr />
+	<div class="mini">&copy; tagesschau.de, Hessischer Rundfunk, Deutscher Wetterdienst</div>
+{% endblock %}
+

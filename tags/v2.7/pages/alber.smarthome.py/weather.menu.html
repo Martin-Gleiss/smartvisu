@@ -1,0 +1,33 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+<ul data-role="listview" data-dividertheme="c"> 
+                            
+    <li data-icon="false">
+        <a href="index.php?page=weather.current">
+            <img class="icon" src="{{ icon0 }}weather_cloudy.png"/><h3>Wetter</h3>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=weather.station">
+            <img class="icon" src="{{ icon0 }}time_graph.png"/><h3>Wetterstation</h3>
+            <div class="ui-li-aside">
+                {{ basic.float('aussen_temperatur', 'system.wetter.temperatur', '°C') }}
+            </div>
+        </a>
+    </li>
+    <li data-icon="false">
+        <a href="index.php?page=weather.cams">
+            <img class="icon" src="{{ icon0 }}it_camera.png"/><h3>Webcams</h3>
+        </a>
+    </li>
+   
+</ul>	
+

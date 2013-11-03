@@ -1,0 +1,64 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+/**
+* Displays the calendarlist
+*
+* @param unique id for this widget
+* @param a title to display
+* @param the number of displayed calendar-entries, default 25
+* @param a color for this calendar, default grey
+*/
+{% macro list(id, title, count, color) %}
+	{% set uid = uid(page, id) %}
+
+	<div id="{{ uid }}" data-widget="calendar.list" class="calendarlist">
+		{% if title %} <h2>{{ title }}</h2> {% endif %}
+		<ul data-role="listview">
+		</ul>
+	</div>
+
+
+	<script type="text/javascript">
+
+		$(document).delegate('div[data-widget="calendar.list"]', {
+			'init' : function (event) {
+				var uid = this.id;
+				
+				$.getJSON('lib/calendar/service/{{ config_calendar_service }}.php?url={{ config_calendar_url|url_encode() }}&count={{ count|default(25) }}', function (data) {
+					var ret;
+					var line = '';
+					
+					for (var i in data) {
+						ret = '<img style="background: ' + data[i].color + ';" class="icon" src="' + data[i].icon + '" />';
+						ret += '<div class="color" style="background: {{ color|default('#666666') }};"></div>';
+						ret += '<h3>' + data[i].title + '</h3>';
+						ret += '<p>' + data[i].weekday + ',&nbsp;' + data[i].period + '&nbsp;</p>';
+
+						if (data[i].where) {
+							ret += '<span class="ui-li-count">' + data[i].where + '</span>';
+						}
+
+						ret = '<a href="' + (data[i].link ? data[i].link : '#') + '">' + ret + '</a>';
+						line += '<li data-icon="false">' + ret + '</li>';
+					}
+
+					$('#' + uid + ' ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
+				})
+					.error(notify.json);
+			}
+		});
+
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
+			$('#{{ uid }}').trigger('init');
+		});
+	</script>
+{% endmacro %}
+

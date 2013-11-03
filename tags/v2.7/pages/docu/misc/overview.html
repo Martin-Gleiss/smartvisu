@@ -1,0 +1,132 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "index.html" %}
+{% import "basic.html" as basic %}
+{% import "icon.html" as icon %}
+
+{% block content %}
+	<h1>Widget-Overview</h1>
+	<p>Here are some widgets working together. This is not a complete list!</p>
+
+	<h2>Basic</h2>
+	{{ basic.value('value1', 'bath_light_switch', 'Unit') }},
+	{{ basic.float('float1', 'bath_light_switch', '°') }},
+	Formula: {{ basic.formula('formula1', ['bath_p1', 'bath_p2', 'bath_p3'], 'W', '( VAR ) / 1000 * 230') }}
+
+	<br />
+	{{ basic.flip('flip1', 'bath_light_switch') }}
+	{{ basic.switch('switch1', 'bath_light_switch') }}
+	{{ basic.shifter('shifter2', 'bath_light_switch', 'bath_light_value') }}
+	{{ basic.button('button1', 'bath_light_switch', '1') }}
+	{{ basic.dual('dual1', 'bath_light_switch') }}
+	{{ basic.rgb('rgb1', 'bath_color_r', 'bath_color_g', 'bath_color_b') }}
+	{{ basic.colordisc('colordisc1', 'bath_color_r', 'bath_color_g', 'bath_color_b') }}
+	{{ basic.symbol('symbol1', 'bath_light_switch') }}
+
+	{{ basic.checkbox('checkbox1', 'bath_light_switch', 'Checkbox') }}
+	{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
+    <br/>
+    
+	<div style="height: 180px; width: 100px; display: inline-block;">
+		{{ basic.slider('slider2', 'bath_light_value2', 0, 255, 1, 'vertical') }}
+	</div>
+	<div style="display: inline-block; margin: 10px;">
+		{{ basic.slider('slider3', 'bath_blind_angle', 0, 255, 1, 'semicircle') }}
+	</div>
+
+	{{ basic.shutter('shutter1', 'bath_light_value2', 'bath_blind_angle') }}
+
+	<div style=" display: inline-block;">
+		{{ basic.tank('tank1', 'bath_light_value', 0, 255, 5, 'water') }}
+	</div>
+
+	
+	<h2>Icons</h2>
+
+	<p>
+		Static Icon PNG:
+		<img class="icon" src="{{ icon0 }}audio_audio.png" />
+		<img class="icon" src="{{ icon1 }}audio_audio.png" />
+		<a><img class="icon" src="{{ icon0 }}audio_audio.png" /></a>
+		<a><img class="icon" src="{{ icon1 }}audio_audio.png" /></a>
+
+		SVG:
+		<img class="icon icon0" src="{{ icon0 }}audio_audio.svg" />
+		<img class="icon icon1" src="{{ icon0 }}audio_audio.svg" />
+		<a class="icon0"><img class="icon" src="{{ icon0 }}audio_audio.svg" /></a>
+		<a class="icon1"><img class="icon" src="{{ icon0 }}audio_audio.svg" /></a>
+		
+		<br />
+		Dynamic Icon PNG:
+		{{ basic.shifter('svg1', 'bath_light_switch', 'bath_light_value', icon1~'light_light_dim_00.png') }}
+
+		SVG:
+		{{ basic.shifter('svg1', 'bath_light_switch', 'bath_light_value', 'icon.shutter') }}
+		{{ icon.windrose('icon1', 'bath_light_switch', 'bath_light_value') }}
+		
+		<br />
+	</p>
+
+	<h2>Plots</h2>
+
+	<div class="block">
+		<div class="ui-bar-c ui-li-divider ui-corner-top">Plot</div>
+		<div class="ui-fixed ui-body-a ui-corner-bottom">
+
+			<p>{{ plot.period('p1', ['bath_plot_value', 'bath_plot_value2'], 'avg', '5i', 0, 0, 255, 50) }}</p>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="ui-bar-c ui-li-divider ui-corner-top">Plot</div>
+		<div class="ui-fixed ui-body-a ui-corner-bottom">
+
+			<p>{{ plot.period('p2', ['bath_plot_value2', 'bath_blind_angle'] , 'avg' , '5i', 0, 0, 255, 50, '', '', ['spline', 'area']) }}</p>
+
+		</div>
+	</div>
+
+<style type="text/css">
+		<!--
+
+		-->
+	</style>
+
+
+	<script type="text/javascript">
+		$(document).delegate('input[data-widget="basic.slider"][data-item="bath_light_value"]', {
+			'click': function (event) {
+				widget.update('bath_plot_value.avg.5i.0', [
+					[ (new Date()).getTime() , parseFloat($(this).val()) ]
+				]);
+			}
+		});
+
+		$(document).delegate('input[data-widget="basic.slider"][data-item="bath_light_value2"]', {
+			'click': function (event) {
+				widget.update('bath_plot_value2.avg.5i.0', [
+					[ (new Date()).getTime() , parseFloat($(this).val()) ]
+				]);
+			}
+		});
+
+		$(document).delegate('input[data-widget="basic.slider"][data-item="bath_blind_angle"]', {
+			'click': function (event) {
+				widget.update('bath_blind_angle.avg.5i.0', [
+					[ (new Date()).getTime() , parseFloat($(this).val()) ]
+				]);
+			}
+		});
+	</script>
+
+
+{% endblock %}

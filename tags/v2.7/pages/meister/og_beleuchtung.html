@@ -1,0 +1,128 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h3><img class="icon" src='{{ icon0 }}light_light.png' />Beleuchtung</h3>
+	<div class="preblock">
+		<span data-role="controlgroup" data-type="horizontal"> 
+		Türoffner<br />
+			{{ basic.button('DoorOpener', 'DoorOpener', '', icon0~"fts_door.png", '1', 'midi') }}
+		</span>
+		<span data-role="controlgroup" data-type="horizontal"> 
+			Szenen<br />
+			{{ basic.button('ScenesLivingRoom0', 'ScenesLivingRoom', '', icon0~"scene_party.png", '0', 'midi') }}
+			{{ basic.button('ScenesLivingRoom1', 'ScenesLivingRoom', '', icon0~"scene_visit_guests.png", '1', 'midi') }}
+			{{ basic.button('ScenesLivingRoom2', 'ScenesLivingRoom', '', icon0~"it_television.png", '2', 'midi') }}
+			{{ basic.button('ScenesLivingRoom3', 'ScenesLivingRoom', '', icon0~"light_dinner_table.png", '3', 'midi') }}
+			{{ basic.button('ScenesLivingRoom4', 'ScenesLivingRoom', '', icon0~"scene_cooking.png", '4', 'midi') }}
+			{{ basic.button('ScenesLivingRoom5', 'ScenesLivingRoom', '', icon0~"light_light.png", '5', 'midi') }}
+		</span>
+		<span data-role="controlgroup" data-type="horizontal"> 
+		zentral aus<br />
+			{{ basic.button('Lights2ndFloorCentralSwitch', 'Lights2ndFloorCentralSwitch', '', icon0~"light_light.png", '0', 'midi') }}
+		</span>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Träger</h3>
+				{{ device.dimmer('LightsGirderHillSideMid', 'Strahler WZ goldene Wand', 'LightsGirderHillSideMidSwitch', 'LightsGirderHillSideMidDimVal') }}
+				{{ device.dimmer('LightsGirderStreetSideMid', 'Strahler WZ Terrasse', 'LightsGirderStreetSideMidSwitch', 'LightsGirderStreetSideMidDimVal') }}
+				{{ device.dimmer('LightsGirderStreetSideEdge', 'Strahler Küche Dachfenster', 'LightsGirderStreetSideEdgeSwitch', 'LightsGirderStreetSideEdgeDimVal') }}
+				{{ device.dimmer('LightsGirderHillSideEdge', 'Strahler Küche Weinetiketten', 'LightsGirderHillSideEdgeSwitch', 'LightsGirderHillSideEdgeDimVal') }}
+			</div>
+		</div>
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>LED Band RGB Farbwähler</h3>
+				<label for="Lights2ndFloorLEDSwitch">LEDBand</label>
+				{{ basic.dual('Lights2ndFloorLEDSwitch', 'Lights2ndFloorLEDSwitch', icon1~'light_led.png', icon0~'light_led.png', '', '', 'midi') }}
+				{{ basic.rgb('Lights2ndFloorLEDRGB', 'Lights2ndFloorLEDRed', 'Lights2ndFloorLEDGreen', 'Lights2ndFloorLEDBlue') }}
+			</div>
+			<div data-role="collapsible" data-collapsed="true">
+				<h3>LED Band RGB separat</h3>
+				<label for="Lights2ndFloorLEDRed">ROT<br /></label>
+				{{ basic.slider('Lights2ndFloorLEDRed', 'Lights2ndFloorLEDRed') }}
+				<br /><label for="Lights2ndFloorLEDGreen">GRÜN<br /></label>
+				{{ basic.slider('Lights2ndFloorLEDGreen', 'Lights2ndFloorLEDGreen') }}
+				<br /><label for="Lights2ndFloorLEDBlue">BLAU<br /></label>
+				{{ basic.slider('Lights2ndFloorLEDBlue', 'Lights2ndFloorLEDBlue') }}
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Andere</h3>
+				{{ device.dimmer('LightsLivingRoom', 'Wohnzimmer Hängelampe', 'LightsLivingRoomSwitch', 'LightsLivingRoomDimVal') }}
+				{{ device.dimmer('LightsDiningRoom', 'Esszimmer Hängelampe', 'LightsDiningRoomSwitch', 'LightsDiningRoomDimVal') }}
+				{{ device.dimmer('LightsKitchen', 'Küche Lampe', 'LightsKitchenSwitch', 'LightsKitchenDimVal') }}
+				<label for="AmbientLightSideboardTV">Sideboard</label>
+				{{ basic.dual('AmbientLightSideboardTVSwitch', 'AmbientLightSideboardTVSwitch', icon1~'light_led.png', icon0~'light_led.png', '', '', 'midi') }}
+				<label for="Ambilight">Ambilight</label>
+				{{ basic.dual('Ambilight', 'Ambilight', icon1~'light_led.png', icon0~'light_led.png', '', '', 'midi') }}
+				<label for="LightsFishTanks">Aquarium</label>
+				{{ basic.dual('LightsFishTanksSwitch', 'LightsFishTanksSwitch', icon1~'light_led.png', icon0~'light_led.png', '', '', 'midi') }}
+			</div>
+		</div>
+	</div>
+
+
+
+{% endblock %}
+/**
+<!--
+	<object type="1.001" id="LightsLivingRoomSwitch" gad="1/2/3" init="persist" log="true">LightsLivingRoomSwitch
+	<object type="3.007" id="LightsLivingRoomDim" gad="1/2/4" init="persist" log="true">LightsLivingRoomDim</object>
+	<object type="5.001" id="LightsLivingRoomDimVal" gad="1/2/5" init="persist" log="true">LightsLivingRoomDimVal
+	<object type="1.001" id="LightsLivingRoomSwitchStatus" gad="1/2/72" init="persist" log="true">LightsLivingRoomSwitchStatus</object>
+	<object type="5.001" id="LightsLivingRoomDimValStatus" gad="1/2/73" init="persist" log="true">LightsLivingRoomDimValStatus</object>
+	<object type="1.001" id="LightsDiningRoomSwitch" gad="1/2/6" init="persist" log="true">LightsDiningRoomSwitch
+	<object type="3.007" id="LightsDiningRoomDim" gad="1/2/7" init="persist" log="true">LightsDiningRoomDim</object>
+	<object type="5.001" id="LightsDiningRoomDimVal" gad="1/2/8" init="persist" log="true">LightsDiningRoomDimVal
+	<object type="1.001" id="LightsDiningRoomSwitchStatus" gad="1/2/74" init="persist" log="true">LightsDiningRoomSwitchStatus</object>
+	<object type="5.001" id="LightsDiningRoomDimValStatus" gad="1/2/75" init="persist" log="true">LightsDiningRoomDimValStatus</object>
+	<object type="1.001" id="LightsKitchenSwitch" gad="1/2/9" init="persist" log="true">LightsKitchenSwitch
+	<object type="3.007" id="LightsKitchenDim" gad="1/2/10" init="persist" log="true">LightsKitchenDim</object>
+	<object type="5.001" id="LightsKitchenDimVal" gad="1/2/11" init="persist" log="true">LightsKitchenDimVal
+	<object type="1.001" id="LightsKitchenSwitchStatus" gad="1/2/76" init="persist" log="true">LightsKitchenSwitchStatus</object>
+	<object type="5.001" id="LightsKitchenDimValStatus" gad="1/2/77" init="persist" log="true">LightsKitchenDimValStatus</object>
+	<object type="1.001" id="LightsGirderStreetSideEdgeSwitch" gad="1/2/12" init="persist" log="true">LightsGirderStreetSideEdgeSwitch
+	<object type="3.007" id="LightsGirderStreetSideEdgeDim" gad="1/2/13" init="persist" log="true">LightsGirderStreetSideEdgeDim</object>
+	<object type="5.001" id="LightsGirderStreetSideEdgeDimVal" gad="1/2/14" init="persist" log="true">LightsGirderStreetSideEdgeDimVal
+	<object type="1.001" id="LightsGirderStreetSideEdgeSwitchStatus" gad="1/2/78" init="persist" log="true">LightsGirderStreetSideEdgeSwitchStatus</object>
+	<object type="5.001" id="LightsGirderStreetSideEdgeDimValStatus" gad="1/2/79" init="persist" log="true">LightsGirderStreetSideEdgeDimValStatus</object>
+	<object type="1.001" id="LightsGirderStreetSideMidSwitch" gad="1/2/15" init="persist" log="true">LightsGirderStreetSideMidSwitch
+	<object type="3.007" id="LightsGirderStreetSideMidDim" gad="1/2/16" init="persist" log="true">LightsGirderStreetSideMidDim</object>
+	<object type="5.001" id="LightsGirderStreetSideMidDimVal" gad="1/2/17" init="persist" log="true">LightsGirderStreetSideMidDimVal
+	<object type="1.001" id="LightsGirderStreetSideMidSwitchStatus" gad="1/2/80" init="persist" log="true">LightsGirderStreetSideMidSwitchStatus</object>
+	<object type="5.001" id="LightsGirderStreetSideMidDimValStatus" gad="1/2/81" init="persist" log="true">LightsGirderStreetSideMidDimValStatus</object>
+	<object type="1.001" id="LightsGirderHillSideEdgeSwitch" gad="1/2/18" init="persist" log="true">LightsGirderHillSideEdgeSwitch
+	<object type="3.007" id="LightsGirderHillSideEdgeDim" gad="1/2/19" init="persist" log="true">LightsGirderHillSideEdgeDim</object>
+	<object type="5.001" id="LightsGirderHillSideEdgeDimVal" gad="1/2/20" init="persist" log="true">LightsGirderHillSideEdgeDimVal
+	<object type="1.001" id="LightsGirderHillSideEdgeSwitchStatus" gad="1/2/82" init="persist" log="true">LightsGirderHillSideEdgeSwitchStatus</object>
+	<object type="5.001" id="LightsGirderHillSideEdgeDimValStatus" gad="1/2/83" init="persist" log="true">LightsGirderHillSideEdgeDimValStatus</object>
+	<object type="1.001" id="LightsGirderHillSideMidSwitch" gad="1/2/21" init="persist" log="true">LightsGirderHillSideMidSwitch
+	<object type="3.007" id="LightsGirderHillSideMidDim" gad="1/2/22" init="persist" log="true">LightsGirderHillSideMidDim</object>
+	<object type="5.001" id="LightsGirderHillSideMidDimVal" gad="1/2/23" init="persist" log="true">LightsGirderHillSideMidDimVal
+	<object type="1.001" id="LightsGirderHillSideMidSwitchStatus" gad="1/2/84" init="persist" log="true">LightsGirderHillSideMidSwitchStatus</object>
+	<object type="5.001" id="LightsGirderHillSideMidDimValStatus" gad="1/2/85" init="persist" log="true">LightsGirderHillSideMidDimValStatus</object>
+	<object type="1.001" id="LightsFishTanksSwitch" gad="1/2/24" init="persist" log="true">LightsFishTanksSwitch
+	<object type="1.001" id="LightsFishTanksSwitchStatus" gad="1/2/86" init="persist" log="true">LightsFishTanksSwitchStatus</object>
+	<object type="1.001" id="AmbientLightSideboardTVSwitch" gad="1/2/27" init="persist" log="true">AmbientLightSideboardTVSwitch</object>
+	<object type="1.001" id="Lights2ndFloorCentralSwitch" gad="1/2/50" init="persist" log="true">Lights2ndFloorCentralSwitch
+	<object type="1.001" id="BlindsSkyLightsUpDown" gad="2/2/8" init="persist" log="true">BlindsSkyLightsUpDown<listener gad="0/1/18"/></object>
+	<object type="1.001" id="BlindsSkyLightsStep" gad="2/2/9" init="persist" log="true">BlindsSkyLightsStep</object>
+
+-->*/

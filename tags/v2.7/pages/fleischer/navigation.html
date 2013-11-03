@@ -1,0 +1,176 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+<ul data-role="listview" data-dividertheme="c">
+	<li data-role="list-divider">Verbrauchsdaten</li>
+	<li data-icon="false">
+		<a href="index.php?page=KG.Keller">
+			<img class="icon" src="{{ icon0 }}sani_pump.png" />
+
+			<h3>Energieverbrauch</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.float('WirkleistungGesamt', 'Allgemein.Zaehler.LeistungGesamt', 'W') }} <br />
+				{{ basic.float('WasserTagesverbrauch', 'Allgemein.Zaehler.WasserTag', '&nbsp;L') }}
+
+			</div>
+
+		</a>
+	</li>
+	<li data-role="list-divider">Erdgeschoss</li>
+	<li data-icon="false">
+		<a href="index.php?page=EG.Esszimmer">
+			<img class="icon" src="{{ icon0 }}scene_dinner.png" />
+
+			<h3>Esszimmer / Küche</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.float('TemperaturEsszimmer', 'EG.Esszimmer.temperature', '°C') }} <br />
+				{{ basic.symbol('FensterSuedEssen', 'EG.Esszimmer.Fenster1', '', icon1~'fts_window_1w_open.png', 1) }}
+				{{ basic.symbol('FensterWestEssen', 'EG.Esszimmer.Fenster2', '', icon1~'fts_window_1w_open.png', 1) }}
+				{{ basic.symbol('FensterKueche', 'EG.Esszimmer.Fenster3', '', icon1~'fts_window_1w_open.png', 0) }}
+				{{ basic.symbol('TuerEssen', 'EG.Esszimmer.Tuer', '', icon1~'fts_door_open.png', 0) }}
+				{{ basic.float('heiztmitEGEssen', 'EG.Esszimmer.temperature.stellgroesse', '&nbsp;%') }}
+			</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=EG.Marco">
+			<img class="icon" src="{{ icon0 }}it_pc.png" />
+
+			<h3>Büro Marco</h3>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=EG.Badezimmer">
+			<img class="icon" src="{{ icon0 }}scene_bathroom.png" />
+
+			<h3>Bad / WC</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.float('TemperaturBad', 'EG.Bad.temperature', '°C') }} <br />
+				{{ basic.float('heiztmitEGBad', 'EG.Bad.temperature.stellgroesse', '&nbsp;%') }}
+
+			</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=EG.Flure">
+			<img class="icon" src="{{ icon0 }}scene_stairs.png" />
+
+			<h3>Flure / Nebenräume</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.symbol('FlurEingangHeizen', 'EG.FlureNebenraume.Heizung1', '', icon1~'sani_heating.png', 1) }}
+				{{ basic.float('FlurEingangTemperatur', 'EG.FlureNebenraume.temperature1', '°C') }} <br />
+				{{ basic.symbol('FlurDieleHeizen', 'EG.FlureNebenraume.Heizung2', '', icon1~'sani_heating.png', 1) }}
+				{{ basic.symbol('FensterFluroffenRegen', 'Allgemein.Alarm.RegenFensterEgOg', '', icon1~'message_attention.png', 1) }}
+				{{ basic.float('FlurDieleTemperatur', 'EG.FlureNebenraume.temperature2', '°C') }}
+			</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=EG.Aussen">
+			<img class="icon" src="{{ icon0 }}control_building_outside.png" />
+
+			<h3>Aussenanlage</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.float('AussenTemperatur', 'EG.Aussen.temperature', '°C') }} <br />
+				{{ basic.symbol('AussenRegen', 'EG.Aussen.Regen', '', icon1~'weather_rain.png', 1) }}
+				{{ basic.symbol('HaustuerVerriegelt', 'EG.Aussen.HaustuerRiegel', '', icon1~'status_locked.png', 1) }}
+				{{ basic.symbol('HaustuerOffen', 'EG.Aussen.Haustuer', '', icon1~'fts_door_open.png', 0) }}
+
+			</div>
+		</a>
+	</li>
+	<li data-role="list-divider">Obergeschoss</li>
+	<li data-icon="false">
+		<a href="index.php?page=OG.Johanna">
+			<img class="icon" src="{{ icon0 }}scene_childs_room.png" />
+
+			<h3>Johanna</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.float('TemperaturJohanna', 'OG.Johanna.temperature', '°C') }} <br />
+				{{ basic.symbol('FensterJohanna', 'OG.Johanna.Fenster', '', icon1~'fts_window_1w_open.png', 1) }}
+				{{ basic.symbol('TuerJohanna', 'OG.Johanna.Tuer', '', icon1~'fts_door_open.png', 1) }}
+				{{ basic.float('heiztmitJohanna', 'OG.Johanna.temperature.stellgroesse', '&nbsp;%') }}
+			</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=OG.BueroIngrid">
+			<img class="icon" src="{{ icon0 }}it_pc.png" />
+
+			<h3>Büro Ingrid</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.float('TemperaturPhilipp', 'OG.Philipp.temperature', '°C') }} <br />
+				{{ basic.symbol('FensterPhilipp', 'OG.Philipp.Fenster', '', icon1~'fts_window_1w_open.png', 1) }}
+				{{ basic.symbol('TuerPhilipp', 'OG.Philipp.Tuer', '', icon1~'fts_door_open.png', 1) }}
+				{{ basic.float('heiztmitPhilipp', 'OG.Philipp.temperature.stellgroesse', '&nbsp;%') }}
+			</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=OG.SchlafenAnkleide">
+			<img class="icon" src="{{ icon0 }}scene_sleeping_alternat.png" />
+
+			<h3>Schlafen / Ankleide</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.symbol('FensterSued', 'OG.Schlafen.Fenster1', '', icon1~'fts_window_1w_open.png', 1) }}
+				{{ basic.symbol('FensterWest', 'OG.Schlafen.Fenster2', '', icon1~'fts_window_1w_open.png', 1) }}
+				{{ basic.symbol('TuerSchlafen', 'OG.Schlafen.Tuer', '', icon1~'fts_door_open.png', 1) }}
+				{{ basic.float('SchlafenTemperatur', 'OG.Schlafen.temperature', '°C') }} <br />
+				{{ basic.symbol('FensterAnkleide', 'OG.Ankleide.Fenster', '', icon1~'fts_window_1w_open.png', 1) }}
+				{{ basic.float('AnkleideTemperatur', 'OG.Ankleide.temperature', '°C') }}
+
+			</div>
+		</a>
+	</li>
+	<li data-role="list-divider">Dachgeschoss</li>
+	<li data-icon="false">
+		<a href="index.php?page=DG.Wohnen">
+			<img class="icon" src="{{ icon0 }}scene_livingroom.png" />
+
+			<h3>Wohnen</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.float('TemperaturDGWohnen', 'DG.Wohnen.temperature', '°C') }} <br />
+				{{ basic.symbol('FensterDGNord', 'DG.Wohnen.FensterNord', '', icon1~'fts_window_1w_open.png', 1) }}
+				{{ basic.symbol('FensterDGSuedlinks', 'DG.Wohnen.FensterSuedlinks', '', icon1~'fts_window_1w_open.png', 1) }}
+				{{ basic.symbol('FensterDGSuedrechts', 'DG.Wohnen.FensterSuedrechts', '', icon1~'fts_window_1w_open.png', 1) }}
+				{{ basic.symbol('TuerDG', 'DG.Wohnen.Tuer', '', icon1~'fts_door_open.png', 1) }}
+				{{ basic.symbol('FensteroffenDGWohRegen', 'Allgemein.Alarm.RegenFensterDGWohnen', '', icon1~'message_attention.png', 1) }}
+				{{ basic.float('heiztmitDGWohnen', 'DG.Wohnen.stellgroesse', '&nbsp;%') }}
+
+			</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=DG.Schlafen">
+			<img class="icon" src="{{ icon0 }}scene_sleeping_alternat.png" />
+
+			<h3>Schlafen</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.float('TemperaturDgSchlafen', 'DG.Schlafen.temperature', '°C') }} <br />
+				{{ basic.symbol('FensterDGNord', 'DG.Schlafen.Fensterlinks', '', icon1~'fts_window_1w_open.png', 1) }}
+				{{ basic.symbol('FensterDGSued', 'DG.Schlafen.Fensterrechts', '', icon1~'fts_door_open.png', 1) }}
+				{{ basic.symbol('FensteroffenDGSchRegen', 'Allgemein.Alarm.RegenFensterDGSchlafen', '', icon1~'message_attention.png', 1) }}
+				{{ basic.float('heiztmitDGSchlafen', 'DG.Schlafen.stellgroesse', '&nbsp;%') }}
+
+			</div>
+		</a>
+
+</ul>	
+

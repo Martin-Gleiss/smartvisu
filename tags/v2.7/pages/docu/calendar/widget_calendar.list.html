@@ -1,0 +1,31 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_calendar.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; calendar.list('calendarlist1', 'Calendar', 3) &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ calendar.list('calendarlist1', 'Calendar', 3) }}
+	</div>
+
+	Calendar with individual color 'magenta':
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; calendar.list('calendarlist2', '', 3, '#993399') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ calendar.list('calendarlist2', '', 3, '#993399') }}
+	</div>
+
+{% endblock %}

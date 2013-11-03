@@ -1,0 +1,139 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <!--<h1><img class="icon" src='{{ icon0 }}scene_livingroom.png'/>Wohnzimmer</h1>-->
+    <style>
+		.nav-cusKind 2 .ui-btn .ui-btn-inner { padding-top: 40px !important; }
+		.nav-cusKind 2 .ui-btn .ui-icon { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
+		#kochen .ui-icon { background:  url({{ icon0 }}scene_cooking.png) 50% 50% no-repeat; background-size: 36px 36px; }
+		#essen .ui-icon { background:  url({{ icon0 }}scene_dinner.png) 50% 50% no-repeat; background-size: 36px 36px;  }
+		#wohnen .ui-icon { background:  url({{ icon0 }}it_television.png) 50% 50% no-repeat;  background-size: 36px 36px; }
+	</style>
+	<div data-role="navbar" class="nav-cusKind 2">
+		<ul>
+			<li><a href="index.php?page=room1_kueche" id="kochen" data-icon="cusKind 2">Kochbereich</a></li>
+			<li><a href="index.php?page=room1_essen" id="essen" data-icon="cusKind 2">Essbereich</a></li>
+			<li><a href="index.php?page=room1_wohnen" class="ui-btn-active" id="wohnen" data-icon="cusKind 2">Wohnbereich</a></li>
+		</ul>
+	</div>
+
+    <div class="preblock">
+	<table width="100%">
+		<tr>
+		<td align="left" width="70%">
+			Szenen&nbsp;&nbsp;&nbsp;
+			<span data-role="controlgroup" data-type="horizontal">
+				{{ basic.dual('szene1', 'eg.kueche.szene.kochen', icon1~'scene_cooking.png', icon0~'scene_cooking.png', 1, 0, 'mini') }}
+				{{ basic.dual('szene2', 'eg.essen.szene.essen', icon1~'scene_dinner.png', icon0~'scene_dinner.png', 1, 0, 'mini') }}
+				{{ basic.dual('szene3', 'eg.wohnen.szene.fernsehen', icon1~'scene_livingroom.png', icon0~'scene_livingroom.png', 1, 0, 'mini') }}
+				{{ basic.dual('szene4', 'eg.kueche.szene.party', icon1~'scene_party.png', icon0~'scene_party.png', 1, 0, 'mini') }}
+				{{ basic.button('szene5', 'eg.szenen.kueche_essen_wohnen', 'Aus', icon0~'control_on_off.png', 13, 'mini') }}
+			</span>
+		</td>
+		<td align="right">
+		{{ basic.symbol('rm1', 'eg.wohnen.rm.alarm', '', icon1~'secur_smoke_detector.png', 1, 'mini') }}
+		     {{ basic.symbol('rm2', 'eg.wohnen.rm.alarm', '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
+		{{ basic.symbol('rm3', 'eg.wohnen.rm.stoerung', '', icon1~'message_service.png', 1, 'mini') }}
+		     {{ basic.symbol('rm4', 'eg.wohnen.rm.stoerung', '', icon0~'message_service.png', 0, 'mini') }}
+		</td>
+		<td align="right" padding="20">
+		{{ basic.symbol('pir1', 'eg.wohnen.praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
+			 {{ basic.symbol('pir2', 'eg.wohnen.praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
+
+		</td>
+		</tr>
+	</table>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Deckenstrahler</h3>
+            {{ device.dimmer('light1', 'Terrassenseite', 'eg.wohnen.beleuchtung.decke1.schalten', 'eg.wohnen.beleuchtung.decke1.dimmwert') }}
+            {{ device.dimmer('light2', 'Mitte', 'eg.wohnen.beleuchtung.decke2.schalten', 'eg.wohnen.beleuchtung.decke2.dimmwert') }}
+            {{ device.dimmer('light3', 'Fernseher', 'eg.wohnen.beleuchtung.decke3.schalten', 'eg.wohnen.beleuchtung.decke3.dimmwert') }}
+        </div>
+	<div data-role="collapsible">
+            <h3>RGB-Beleuchtung</h3>
+            <p>
+	    {% import "widget_rgb.html" as rgb %}
+	    {{ rgb.rgb('rgb1', 'Indirekte Beleuchtung', 'eg.essen.beleuchtung.rgb.schalten', 'eg.essen.beleuchtung.rgb.rot.dimmwert', 'eg.essen.beleuchtung.rgb.gruen.dimmwert', 'eg.essen.beleuchtung.rgb.blau.dimmwert', 0, 150) }}</p>
+        </div>
+
+    </div>
+    </div>
+
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Rollladen</h3>
+            {% import "widget_shutter.html" as shutter %}
+			<table width="100%"><tr>
+				<td width="50%">{{ shutter.two ('shutter1', 'Tür Süd', 'eg.wohnen.rollladen.sued.fahren', 'eg.wohnen.rollladen.sued.stopp', 'eg.wohnen.rollladen.sued.position', 'eg.wohnen.rollladen.sued.beschatten' ) }}</td>
+				<td width="50%">{{ shutter.two ('shutter2', 'Tür West', 'eg.wohnen.rollladen.west.fahren', 'eg.wohnen.rollladen.west.stopp', 'eg.wohnen.rollladen.west.position', 'eg.wohnen.rollladen.west.beschatten' ) }}</td>
+                <tr></table>
+        </div>
+
+    	<div data-role="collapsible">
+          <h3>Status Türen</h3>
+          {% import "widget_window.html" as window %}
+          <p>
+            {{ window.two ('window1', 'Tür Terrasse', 'eg.wohnen.fenster.west' ) }}
+            {{ window.two ('window2', 'Tür Westseite', 'eg.wohnen.fenster.sued' ) }}
+          </p>
+        </div>
+    </div>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Fernsehen</h3>
+            {% import "multimedia.html" as multi %}
+			{{ multi.music ('music1', 'eg.wohnen.fernsehen.play', 'eg.wohnen.fernsehen.stopp', 'eg.wohnen.fernsehen.vor-ruecklauf',
+			     'eg.wohnen.fernsehen.weiter-zurueck', 'eg.wohnen.fernsehen.position', 'eg.wohnen.fernsehen.lautstaerke',
+			     'eg.wohnen.fernsehen.stumm', '', '', '') }}
+        </div>
+
+    	<div data-role="collapsible">
+            <h3>Subwoofer</h3>
+            {{ basic.flip('flip2', 'eg.wohnen.subwoofer.schalten', 'Ein', 'Aus') }}  Subwoofer
+            <p></p>
+        </div>
+    </div>
+    </div>
+
+   <!-- <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Raumtemperatur</h3>
+            {{ device.rtr('eg.wohnen.rtr', 'Heizung', 'eg.wohnen.temperatur.luft', 'eg.wohnen.heizung.sollwert',
+                'eg.wohnen.heizung.komfort', 'eg.wohnen.heizung.nacht', 'eg.wohnen.heizung.frost', 'eg.wohnen.heizung.schalten') }}
+        </div>
+
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>
+
+    </div>
+    </div> -->
+
+{% endblock %}
+

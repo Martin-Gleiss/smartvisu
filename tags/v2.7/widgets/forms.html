@@ -1,0 +1,52 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+/**
+* Init of a flip-form-element
+*
+* @param id of the form-element
+* @param init-value
+*/
+{% macro flip_init(id, val) %}
+	<script type="text/javascript">
+		$('#{{ page }}').on('pageinit', function (event, ui) {
+			$('#{{ id }}').val('{{ val|bit }}').slider('refresh');
+		});
+	</script>
+{% endmacro %}
+
+
+/**
+* Init of a select-form-element
+*
+* @param id of the form-element
+* @param init-value
+*/
+{% macro select_init(id, val) %}
+	<script type="text/javascript">
+		$('#{{ page }}').on('pageinit', function (event, ui) {
+			$('#{{ id }}').val('{{ val }}').selectmenu('refresh');
+		});
+	</script>
+{% endmacro %}
+
+
+/**
+* Init of a text-form-element
+*
+* @param id of the form-element
+* @param init-value
+*/
+{% macro text_init(id, val) %}
+	<script type="text/javascript">
+		$('#{{ id }}').val('{{ val }}');
+	</script>
+{% endmacro %}
+

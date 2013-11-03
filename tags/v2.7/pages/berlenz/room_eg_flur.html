@@ -1,0 +1,42 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}scene_stairs.png' />Flur / Windfang</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Licht / Aktoren</h3>
+
+				<table width=100%>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.switch('flur_licht1', 'flur_licht_schalten', icon1~'light_light.png', icon0~'light_light.png') }} Flur
+						</td>
+						<td align=left width=50%>
+							{{ basic.symbol('flur_bewegung', 'flur_bewegung', 'Bewegung', icon1~'user_available.png', 1) }}
+						</td>
+					</tr>
+				</table>
+
+				<div class="icon">&nbsp;</div>
+				<br>
+
+				{{ device_fb.heating('room_flur_5', 'windfang_heizen_schalten', 'windfang_sollwert', 0, 100, 10) }}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+

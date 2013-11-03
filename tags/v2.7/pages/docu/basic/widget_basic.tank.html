@@ -1,0 +1,58 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+			{{ basic.tank('tank1', 'bath_value') }}
+			{{ basic.tank('tank2', 'bath_value', 0, 255, 5, 'cylinder') }}
+			{{ basic.tank('tank3', 'bath_value', 0, 255, 5, 'cylinder', '#f90' ) }}
+			{{ basic.tank('tank4', 'bath_value', 0, 255, 5, 'water') }}
+			{{ basic.tank('tank5', 'bath_value', 0, 255, 5, 'water', '#0c0') }}
+			{{ basic.tank('tank6', 'bath_value', 0, 255, 5, 'pallets') }}
+
+			{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<br />
+
+	Use the slider to control the filling of the tanks
+	<div class="html">
+		{{ basic.slider('slider1', 'bath_value', 0, 255, 5) }}
+	</div>
+
+	From left to right: 'none', 'cylinder', 'cylinder' orange, 'water', 'water' green, 'pallets'
+	<div class="html">
+
+		{{ basic.tank('tank1', 'bath_value') }}
+		{{ basic.tank('tank2', 'bath_value', 0, 255, 5, 'cylinder') }}
+		{{ basic.tank('tank3', 'bath_value', 0, 255, 5, 'cylinder', '#f90' ) }}
+		{{ basic.tank('tank4', 'bath_value', 0, 255, 5, 'water') }}
+		{{ basic.tank('tank5', 'bath_value', 0, 255, 5, 'water', '#0c0') }}
+		{{ basic.tank('tank6', 'bath_value', 0, 255, 5, 'pallets') }}
+
+	</div>
+
+	If you want a individual width of the tank add a line to your "visu.css" with
+	<b>#PAGE-ID</b> (current pagename, hyphen, id of the tank-widget).
+	For example for tank 6:
+
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			#widget_basic_tank-tank6 {
+			width: 60px;
+			}
+			{% endraw %}{% endfilter %}</code>
+	</div>
+{% endblock %}

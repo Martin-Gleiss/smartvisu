@@ -1,0 +1,34 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; basic.trigger('trigger1', 'Dev', '', 'check') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ basic.trigger('trigger1', 'Dev', '', 'check') }}
+	</div>
+
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; basic.trigger('trigger2', 'Dev', 'Trigger', '', 1) &#125;&#125;<br />
+		</code>
+	</div>
+	<div class="html">
+		{{ basic.trigger('trigger2', 'Dev', 'Trigger', '', 1) }}
+	</div>
+
+{% endblock %}
+
+

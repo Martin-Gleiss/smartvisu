@@ -1,0 +1,36 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h3><img class="icon" src='{{ icon0 }}light_light.png' />Technikraum</h3>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Licht</h3>
+				<label for="LightsToilet">Licht WC<br /></label>
+				{{ basic.flip('LightsToilet', 'LightsToiletSwitch') }}
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalousie</h3>
+				{{ device.shutter ('BlindsToilet', 'Jalousie WC', 'BlindsToiletUpDown', 'BlindsToiletStep', 'BlindsToiletPositionSunBlinds', 'BlindsToiletStep', 'BlindsToiletPositionFins', 'BlindsToiletStep',0,255,1,'full' ) }}
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

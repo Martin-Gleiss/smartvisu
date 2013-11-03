@@ -1,0 +1,36 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+	<ul data-role="listview" data-dividertheme="c">
+
+		<li data-icon="false">
+			<a href="index.php?page=category_calendar">
+				<img class="icon" src="{{ icon0 }}zeit_kalender.png" />
+
+				<h3>Terminkalender</h3>
+			</a>
+		</li>
+
+	</ul>
+
+
+{% endblock %}
+
+{% block content %}
+
+	<a href="index.php?page=category_calendar">Terminkalender</a>&nbsp;
+
+{% endblock %}
+
+

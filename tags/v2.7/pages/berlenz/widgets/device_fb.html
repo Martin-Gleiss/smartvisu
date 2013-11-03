@@ -1,0 +1,36 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+/**
+* heating with PWM control
+*
+* @param       unique id for this widget
+* @param       the knx gad (groupaddress) for switching
+* @param       the knx gad (groupaddress) for dimming
+* @param       the minimum value if the slider is moved to total left (optional, default 0)
+* @param       the maximum value if the slider is moved to total right (optional, default 255)
+* @param       step between two values (optional, default 5)
+*/
+{% macro heating(id, gad_status, gad_value, min, max, step) %}
+	{% import   "basic.html" as basic %}
+
+	/** Design */
+	<div class="heating">
+		{{ basic.switch(id|_('icon'), gad_status, icon1~'sani_heating.png', icon0~'sani_heating.png') }}
+	</div>
+	<div class="text">{{ txt }}
+		{{ basic.value(id|_('value'), gad_value, '%') }}<br>
+	</div>
+	<div class="heating">
+		{{ basic.slider(id|_('slider'), gad_value, min, max, step) }}
+	</div>
+
+{% endmacro %}
+

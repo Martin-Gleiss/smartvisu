@@ -1,0 +1,100 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+	{% block headline %}<h3>Widgets</h3>{% endblock %}
+
+	{% if pagepath != '' %}
+		{% set widgetlist = docu('widgets/'~pagepath~'.html') %}
+
+		{% for widget in widgetlist %}
+			<a href="index.php?page={{ pagepath }}/widget_{{ widget.command }}">{{ widget.command }}</a>
+		{% endfor %}
+	{% endif %}
+
+	<br />
+	<hr /><br />
+
+	{% set widget = page|slice(7)|replace({'_': '.'}) %}
+
+	{% if pagepath != '' and widget != pagepath %}
+
+		<div class="docu">
+
+			<div class="macro">
+				<code>{{ widget }}</code>
+			</div>
+
+			<p>{{ widgetlist[widget].desc }}</p>
+
+			<h5>Parameters</h5>
+
+			<div class="twig">
+				<code>&#123;&#123; {{ widgetlist[widget].call }} &#125;&#125;</code>
+			</div>
+
+			<div class="param">
+				{% for param_name, param_docu in widgetlist[widget].param %}
+					<code>{{ param_name }}</code>
+					<div class="desc">{{ param_docu }}</div>
+				{% endfor %}
+			</div>
+
+			<div class="see">
+				{% if widgetlist[widget].see %}
+					<h5>More Information</h5>
+					<div class="links">
+						{% for see in widgetlist[widget].see %}
+							<a href="index.php?page={{ see.page }}">{{ see.anchor }}</a>
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div>
+
+
+
+			{% block example %}{% endblock %}
+
+			<div style="clear:left;"></div>
+
+			{% if widgetlist[widget].author or widgetlist[widget].info or widgetlist[widget].link %}
+				<hr />
+
+				<div class="mini">
+					{% if widgetlist[widget].author %}
+						Author: {{ widgetlist[widget].author }}<br />
+					{% endif %}
+
+					{% if widgetlist[widget].info %}
+						{{ widgetlist[widget].info }}
+					{% endif %}
+
+					{% if widgetlist[widget].link %}
+						- <a href="{{ widgetlist[widget].link }}" target="_blank">{{ widgetlist[widget].link }}</a>
+					{% endif %}
+				</div>
+			{% endif %}
+
+		</div>
+
+	{% else %}
+
+		{% block intro %}
+			Intro
+		{% endblock %}
+
+	{% endif %}
+
+
+{% endblock %}
+
