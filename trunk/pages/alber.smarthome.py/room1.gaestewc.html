@@ -24,7 +24,8 @@
             </div>
             <div data-role="collapsible" data-collapsed="false">
             <h3>Temperatur</h3>
-            {{ plot.period('tempGaesteWC', ['gaestewc.heizung.ist_temperatur', 'gaestewc.heizung.soll_temperatur'], 'max', '36h', '', '20', '24', '', ['Ist', 'Soll'], ['#3366ff', '#ff3366'], ['line', 'line'],['Temperatur in °C', ''] ) }}
+		{{ plot.period('tempGaesteWC', ['gaestewc.heizung.ist_temperatur', 'gaestewc.heizung.soll_temperatur', 'system.temperaturen.raeume.bad_eg.boden'], 'max', '36h', '', '20', '26', '', ['Ist', 'Soll', 'Bodentemp'], ['#3366ff', '#ff3366', '#fff'], 
+['line', 'line', 'line'],['Temperatur in °C', ''] ) }}
             </div>
         </div>
     </div>
