@@ -1,4 +1,4 @@
-﻿/**
+/**
  * -----------------------------------------------------------------------------
  * @package     smartVisu
  * @author      Martin Gleiß
@@ -69,7 +69,7 @@ SYSTEMREQUIREMENTS
 
 HISTORY
 --------------------------------------------------------------------------------
-v 2.7
+v 2.7 03.11.13
 	- new: SmartHome.py Montior page
 	- new: animations on/off for better performance on slow devices
 	- new model house: alber, as eibd-driver example by Raik Alber
