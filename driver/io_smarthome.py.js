@@ -200,7 +200,7 @@ var io = {
 			io.send({'cmd': 'monitor', 'items': widget.listeners()});
 		}
 		
-		// plot (avg, min, max, sum, diff, rate, on)
+		// plot (avg, min, max, on)
 		var unique = Array();
 		widget.plot().each(function (idx) {
 			var items = widget.explode($(this).attr('data-item'));

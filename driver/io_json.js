@@ -97,7 +97,7 @@ var io = {
 	 * The real-time polling loop, only if there are listeners
 	 */
 	loop: function () {
-		if (widget.listening()) {
+		if (widget.listeners().length) {
 			io.timer = setTimeout('io.loop(); io.all();', 1000);
 		}
 	},
@@ -106,7 +106,7 @@ var io = {
 	 * Start the real-time values. Can only be started once
 	 */
 	start: function () {
-		if (!io.timer_run && widget.listening()) {
+		if (!io.timer_run && widget.listeners().length) {
 			io.loop();
 			io.timer_run = true;
 		}
