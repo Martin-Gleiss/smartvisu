@@ -1,0 +1,89 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <h1><img class="icon" src='{{ icon0 }}scene_childs_room.png'/>Kind 2</h1>
+
+    <div class="preblock">
+	<table width="100%">
+		<tr>
+		<td align="left" width="50%">
+		</td>
+		<td align="right">
+		{{ basic.symbol('rm1', 'dg.kind2.rm.alarm', '', icon1~'secur_smoke_detector.png',1, 'mini') }}
+		     {{ basic.symbol('rm2', 'dg.kind2.rm.alarm', '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
+		{{ basic.symbol('rm3', 'dg.kind2.rm.stoerung', '', icon1~'message_service.png',1, 'mini') }}
+		     {{ basic.symbol('rm4', 'dg.kind2.rm.stoerung', '', icon0~'message_service.png', 0, 'mini') }}
+		</td>
+		<td align="right" padding="20">
+		{{ basic.symbol('pir1', 'dg.kind2.praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
+			 {{ basic.symbol('pir2', 'dg.kind2.praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
+		</td>
+		</tr>
+	</table>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Licht</h3>
+            {{ device.dimmer('light1', 'Deckenleuchte', 'dg.kind2.beleuchtung.decke.schalten', 'dg.kind2.beleuchtung.decke.dimmwert') }}
+      	</div>
+
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+        </div>
+
+    </div>
+    </div>
+
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Rollladen</h3>
+            {% import "widget_shutter.html" as shutter %}
+			{{ shutter.one ('shutter1', 'Fenster', 'dg.kind2.rollladen.fahren', 'dg.kind2.rollladen.stopp', 'dg.kind2.rollladen.position', 'dg.kind2.rollladen.beschatten' ) }}
+        </div>
+
+    	<div data-role="collapsible">
+          <h3>Status Fenster</h3>
+          {% import "widget_window.html" as window %}
+          <p>
+            {{ window.two ('win1', 'Fenster', 'dg.kind2.fenster' ) }}
+          </p>
+        </div>
+    </div>
+    </div>
+
+   <!-- <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Raumtemperatur</h3>
+            {{ device.rtr('dg.kind2.rtr', 'Heizung', 'dg.kind2.temperatur.luft', 'dg.kind2.heizung.sollwert',
+                'dg.kind2.heizung.komfort', 'dg.kind2.heizung.nacht', 'dg.kind2.heizung.frost', 'dg.kind2.heizung.schalten') }}
+        </div>
+
+    	<div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>
+
+    </div>
+    </div> -->
+
+{% endblock %}
+

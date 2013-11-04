@@ -1,0 +1,82 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h3><img class="icon" src='{{ icon0 }}light_light.png' />Schlaf/Badezimmer</h3>
+	<div class="preblock">
+		<span data-role="controlgroup" data-type="horizontal"> 
+			Jalousien zentral<br />
+			{{ basic.button('BlindsBathAndSleepingRoomUp', 'BlindsBathAndSleepingRoomUpDown', '', icon0~"control_arrow_up.png", '0', 'midi') }}
+			{{ basic.button('BlindsBathAndSleepingRoomDown', 'BlindsBathAndSleepingRoomUpDown', '', icon0~"control_arrow_down.png", '1', 'midi') }}
+			{{ basic.button('BlindsBathAndSleepingRoomStep', 'BlindsBathAndSleepingRoomStep', '', icon0~"control_x.png", '0', 'midi') }}
+			{{ basic.button('BlindsBathAndSleepingRoomStepUp', 'BlindsBathAndSleepingRoomStep', '', icon0~"control_plus.png", '0', 'midi') }}
+			{{ basic.button('BlindsBathAndSleepingRoomStepDown', 'BlindsBathAndSleepingRoomStep', '', icon0~"control_minus.png", '1', 'midi') }}
+		</span>
+		<span data-role="controlgroup" data-type="horizontal"> 
+			Szenen<br />
+			{{ basic.button('ScenesBathRoom8', 'ScenesBathRoom', '', icon0~"scene_party.png", '8', 'midi') }}
+			{{ basic.button('ScenesBathRoom9', 'ScenesBathRoom', '', icon0~"scene_visit_guests.png", '9', 'midi') }}
+			{{ basic.button('ScenesBathRoom10', 'ScenesBathRoom', '', icon0~"it_television.png", '10', 'midi') }}
+			{{ basic.button('ScenesBathRoom11', 'ScenesBathRoom', '', icon0~"light_dinner_table.png", '11', 'midi') }}
+			{{ basic.button('ScenesBathRoom12', 'ScenesBathRoom', '', icon0~"scene_cooking.png", '12', 'midi') }}
+			{{ basic.button('ScenesBathRoom13', 'ScenesBathRoom', '', icon0~"light_light.png", '13', 'midi') }}
+		</span>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Licht</h3>
+				{{ device.dimmer('LightsBedStreetside', 'Bett Mike', 'LightsBedStreetsideSwitch', 'LightsBedStreetsideDimVal') }}
+				{{ device.dimmer('LightsBedHillside', 'Bett Flo', 'LightsBedHillsideSwitch', 'LightsBedHillsideDimVal') }}
+				{{ device.dimmer('LightsBathroom', 'Badezimmer', 'LightsBathroomSwitch', 'LightsBathroomDimVal') }}
+				{{ device.dimmer('LightsSleepingRoom', 'Schlafzimmer', 'LightsSleepingRoomSwitch', 'LightsSleepingRoomDimVal') }}
+				{{ device.dimmer('LightsDressingRoom', 'Ankleide', 'LightsDressingRoomSwitch', 'LightsDressingRoomDimVal') }}
+				<label for="LightsBathroomMirrorSwitch">Spiegel<br /></label>
+				{{ basic.dual('LightsBathroomMirrorSwitch', 'LightsBathroomMirrorSwitch', '', '', '', '', 'midi') }}
+			</div>
+		</div>
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>LED Band</h3>
+				<label for="LightsBathroomLEDSwitch">LED Band Bad</label><br />
+				{{ basic.dual('LightsBathroomLEDSwitch', 'LightsBathroomLEDSwitch', icon1~'light_led.png', icon0~'light_led.png', '', '', 'midi') }}
+				{{ basic.rgb('LightsBathroomLEDRGB', 'LightsBathroomLEDRed', 'LightsBathroomLEDGreen', 'LightsBathroomLEDBlue') }}
+				<br /><br />
+				<label for="LightsBathroomLEDNicheSwitch">LED Band Bad Nische</label><br />
+				{{ basic.dual('LightsBathroomLEDNicheSwitch', 'LightsBathroomLEDNicheSwitch', icon1~'light_led.png', icon0~'light_led.png', '', '', 'midi') }}
+				{{ basic.rgb('LightsBathroomLEDNicheRGB', 'LightsBathroomLEDNicheRed', 'LightsBathroomLEDNicheGreen', 'LightsBathroomLEDNicheBlue') }}
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalousien</h3>
+				{{ device.shutter ('BlindsSleepingRoom', 'Schlafzimmer', 'BlindsSleepingRoomUpDown', 'BlindsSleepingRoomStep', 'BlindsSleepingRoomPositionSunBlinds', 'BlindsSleepingRoomStep', 'BlindsSleepingRoomPositionFins', 'BlindsSleepingRoomStep',0,255,1,'full' ) }}
+				<br />
+				{{ device.shutter ('BlindsBathRoom', 'Badezimmer', 'BlindsBathRoomUpDown', 'BlindsBathRoomStep', 'BlindsBathRoomPositionSunBlinds', 'BlindsBathRoomStep', 'BlindsBathRoomPositionFins', 'BlindsBathRoomStep',0,255,1,'full' ) }}
+			</div>
+		</div>
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Heizung</h3>
+				<!--    {{ device.rtr('HeatingLivingRoom', 'Heizung', 'HeatingTemperatureBedRoom', 'schlafen_heizung_sollwert',
+                        'schlafen_heizung_komfort', 'schlafen_heizung_nacht', 'schlafen_heizung_frost', 'schlafen_heizung_schalten', 'schlafen_heizung_text') }}-->
+			</div>
+		</div>
+	</div>
+
+
+
+{% endblock %}

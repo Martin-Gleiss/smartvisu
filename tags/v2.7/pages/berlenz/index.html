@@ -1,0 +1,43 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+	{% import "lib.html" as lib %}
+	{{ lib.updatecheck() }}
+
+	{% import "clock.html" as clock %}
+	{{ clock.digiclock('clock') }}
+
+	<div class="center">
+		{{ now|smartdate('l') }}, {{ now|smartdate() }}
+	</div>
+
+	<hr>
+
+	{% import "weather.html" as weather %}
+	{{ weather.current('weather') }}
+
+	<hr>
+
+	{{ weather.forecastweek('weather_forecast') }}
+
+
+{% endblock %}
+
+
+{% block content %}
+
+	{% include 'rooms_menu.html' %}
+
+{% endblock %}
+

@@ -1,0 +1,24 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; basic.value('value', 'bath_light_value') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ basic.value('value1', 'bath_light_value') }}
+	</div>
+
+{% endblock %}
+

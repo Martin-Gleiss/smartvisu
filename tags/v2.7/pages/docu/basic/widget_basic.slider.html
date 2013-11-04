@@ -1,0 +1,54 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; basic.slider('slider1', 'bath_light_value') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ basic.slider('slider1', 'bath_light_value') }}
+	</div>
+
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; basic.slider('slider2', 'bath_light_value', 0, 100, 10) &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ basic.slider('slider2', 'bath_light_value', 0, 100, 10) }}
+	</div>
+
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; basic.slider('slider3', 'bath_light_value', 0, 255, 5, 'vertical') &#125;&#125;<br />
+			&#123;&#123; basic.slider('slider4', 'bath_light_value', 0, 255, 5, 'bottomup') &#125;&#125;
+		</code>
+	</div>
+	<div class="html">
+		<div style="height: 180px; width: 100px; display: inline-block;">
+			{{ basic.slider('slider3', 'bath_light_value', 0, 255, 5, 'vertical') }}
+		</div>
+		<div style="height: 180px; width: 100px; display: inline-block;">
+			{{ basic.slider('slider4', 'bath_light_value', 0, 255, 5, 'bottomup') }}
+		</div>
+	</div>
+
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; basic.slider('slider5', 'bath_light_value', 0, 255, 5, 'semicircle') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ basic.slider('slider5', 'bath_light_value', 0, 255, 5, 'semicircle') }}
+	</div>
+
+{% endblock %}
+
+

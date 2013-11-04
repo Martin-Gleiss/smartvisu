@@ -1,0 +1,220 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}control_building_control.png' />Zentralsteuerung</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalousien</h3>
+
+				<table>
+					<tr>
+						<td width=150 align=left style="padding-left: 10px;">Gesamt:</td>
+						<td width=80>
+							<div class="set">{{ basic.button('zentral_jalousie_gesamt_up', 'gesamt_jalousie_fahren', 'Auf', 'arrow-u', 0) }}</div>
+						</td>
+						<td width=80>
+							<div class="set">{{ basic.button('zentral_jalousie_gesamt_down', 'gesamt_jalousie_fahren', 'Ab', 'arrow-d', 1) }}</div>
+						</td>
+						<td width=80>
+							<div>{{ basic.button('zentral_jalousie_gesamt_pos1', 'gesamt_jalousie_beschattung', 'Pos1', 'grid', 0) }} </div>
+						</td>
+						<td width=80>
+							<div>{{ basic.button('zentral_jalousie_gesamt_pos2', 'gesamt_jalousie_beschattung', 'Pos2', 'grid', 1) }} </div>
+						</td>
+					</tr>
+					<tr>
+						<td align=left style="padding-left: 10px;">Osten:</td>
+						<td width=80>
+							<div class="set">{{ basic.button('zentral_jalousie_osten_up', 'ost_jalousie_fahren', 'Auf', 'arrow-u', 0) }}</div>
+						</td>
+						<td width=80>
+							<div class="set">{{ basic.button('zentral_jalousie_osten_down', 'ost_jalousie_fahren', 'Ab', 'arrow-d', 1) }}</div>
+						</td>
+						<td width=80>
+							<div>{{ basic.button('zentral_jalousie_osten_pos1', 'ost_jalousie_beschattung', 'Pos1', 'grid', 0) }} </div>
+						</td>
+						<td width=80>
+							<div>{{ basic.button('zentral_jalousie_osten_pos2', 'ost_jalousie_beschattung', 'Pos2', 'grid', 1) }} </div>
+						</td>
+					</tr>
+					<tr>
+						<td align=left style="padding-left: 10px;">Süden:</td>
+						<td width=80>
+							<div class="set">{{ basic.button('zentral_jalousie_sueden_up', 'sued_jalousie_fahren', 'Auf', 'arrow-u', 0) }}</div>
+						</td>
+						<td width=80>
+							<div class="set">{{ basic.button('zentral_jalousie_sueden_down', 'sued_jalousie_fahren', 'Ab', 'arrow-d', 1) }}</div>
+						</td>
+						<td width=80>
+							<div>{{ basic.button('zentral_jalousie_sueden_pos1', 'sued_jalousie_beschattung', 'Pos1', 'grid', 0) }} </div>
+						</td>
+						<td width=80>
+							<div>{{ basic.button('zentral_jalousie_sueden_pos2', 'sued_jalousie_beschattung', 'Pos2', 'grid', 1) }} </div>
+						</td>
+					</tr>
+					<tr>
+						<td align=left style="padding-left: 10px;">Westen:</td>
+						<td width=80>
+							<div class="set">{{ basic.button('zentral_jalousie_westen_up', 'west_jalousie_fahren', 'Auf', 'arrow-u', 0) }}</div>
+						</td>
+						<td width=80>
+							<div class="set">{{ basic.button('zentral_jalousie_westen_down', 'west_jalousie_fahren', 'Ab', 'arrow-d', 1) }}</div>
+						</td>
+						<td width=80>
+							<div>{{ basic.button('zentral_jalousie_westen_pos1', 'west_jalousie_beschattung', 'Pos1', 'grid', 0) }} </div>
+						</td>
+						<td width=80>
+							<div>{{ basic.button('zentral_jalousie_westen_pos2', 'west_jalousie_beschattung', 'Pos2', 'grid', 1) }} </div>
+						</td>
+					</tr>
+				</table>
+				<br />
+				<table width=100%>
+					<tr align=left height=60>
+						<td align=left width=33% style="padding-left: 10px;">
+							{{ basic.switch('zentral_jalousie_automode', 'jalousie_automode', icon1~'fts_shutter_daynight_auto.png', icon0~'fts_shutter_daynight_auto.png') }} Tag/Nacht<br>
+						</td>
+						<td align=center width=33%>
+							{{ basic.switch('zentral_jalousie_beschattung', 'jalousie_beschattungsmode', icon1~'fts_shutter_auto.png', icon0~'fts_shutter_auto.png') }} Beschattung
+						</td>
+						<td align=right width=33%>{{ basic.switch('zentral_jalousie_schlafen_blockiert', 'schlafen_jalousie_blockiert', icon1~'scene_sleeping.png', icon0~'scene_sleeping.png') }} Blockiert</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Verbrauch</h3>
+
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Haus - akt. Verbrauch:
+						</td>
+						<td align=right>
+							{{ basic.value('verbrauch_haus_act', 'consumption_house_act', 'W') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Haus - min. Verbrauch:
+						</td>
+						<td align=right>
+							{{ basic.value('verbrauch_haus_min', 'consumption_house_min', 'W') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Haus - max. Verbrauch:
+						</td>
+						<td align=right>
+							{{ basic.value('verbrauch_haus_max', 'consumption_house_max', 'W') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Haus - Verbrauch Stunde:
+						</td>
+						<td align=right>
+							{{ basic.value('verbrauch_haus_hour', 'consumption_house_hour', 'W') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Haus - Verbrauch Tag:
+						</td>
+						<td align=right>
+							{{ basic.value('verbrauch_haus_day', 'consumption_house_day', 'W') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							&nbsp;
+						</td>
+						<td align=right>
+							&nbsp;
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							WP - akt. Verbrauch:
+						</td>
+						<td align=right>
+							{{ basic.value('verbrauch_wp_act', 'consumption_lwz_act', 'W') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							WP - min. Verbrauch:
+						</td>
+						<td align=right>
+							{{ basic.value('verbrauch_wp_min', 'consumption_lwz_min', 'W') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							WP - max. Verbrauch:
+						</td>
+						<td align=right>
+							{{ basic.value('verbrauch_wp_max', 'consumption_lwz_max', 'W') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							WP - Verbrauch Stunde:
+						</td>
+						<td align=right>
+							{{ basic.value('verbrauch_wp_hour', 'consumption_lwz_hour', 'W') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							WP - Verbrauch Tag:
+						</td>
+						<td align=right>
+							{{ basic.value('verbrauch_wp_day', 'consumption_lwz_day', 'W') }}
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+

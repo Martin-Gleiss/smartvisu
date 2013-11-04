@@ -1,0 +1,23 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_phone.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; phone.missedlist('phonelist', 'Phonelist', 3) &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ phone.missedlist('phonelist', 'Phonelist', 3) }}
+	</div>
+
+{% endblock %}

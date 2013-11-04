@@ -1,0 +1,69 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h3><img class="icon" src='{{ icon0 }}fts_sunblind.png' />Beschattung</h3>
+	<div class="preblock">
+		<span data-role="controlgroup" data-type="horizontal"> 
+			Jalousien zentral<br />
+			{{ basic.button('Blinds2ndFloorCentralUp', 'Blinds2ndFloorCentralUpDown', '', icon0~"control_arrow_up.png", '0', 'midi') }}
+			{{ basic.button('Blinds2ndFloorCentralDown', 'Blinds2ndFloorCentralUpDown', '', icon0~"control_arrow_down.png", '1', 'midi') }}
+			{{ basic.button('Blinds2ndFloorCentralStep', 'Blinds2ndFloorCentralStep', '', icon0~"control_x.png", '0', 'midi') }}
+			{{ basic.button('Blinds2ndFloorCentralStepUp', 'Blinds2ndFloorCentralStep', '', icon0~"control_plus.png", '0', 'midi') }}
+			{{ basic.button('Blinds2ndFloorCentralStepDown', 'Blinds2ndFloorCentralStep', '', icon0~"control_minus.png", '1', 'midi') }}
+		</span>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalosie WZ Tür</h3>
+				{{ device.shutter ('BlindsLivingRoomDoor', 'OG Tür', 'BlindsLivingRoomDoorUpDown', 'BlindsLivingRoomDoorStep', 'BlindsLivingRoomDoorPositionSunBlinds', 'BlindsLivingRoomDoorStep', 'BlindsLivingRoomDoorPositionFins', 'BlindsLivingRoomDoorStep',0,255,1,'full' ) }}
+			</div>
+		</div>
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalosie WZ neben Schiebetür</h3>
+				{{ device.shutter ('BlindsLivingRoomTerrace', 'OG Tür', 'BlindsLivingRoomTerraceUpDown', 'BlindsLivingRoomTerraceStep', 'BlindsLivingRoomTerracePositionSunBlinds', 'BlindsLivingRoomTerraceStep', 'BlindsLivingRoomTerracePositionFins', 'BlindsLivingRoomTerraceStep',0,255,1,'full' ) }}
+			</div>
+		</div>
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalosie WZ Schiebetür</h3>
+				{{ device.shutter ('BlindsLivingRoomSlideDoor', 'OG Schiebetür', 'BlindsLivingRoomSlideDoorUpDown', 'BlindsLivingRoomSlideDoorStep', 'BlindsLivingRoomSlideDoorPositionSunBlinds', 'BlindsLivingRoomSlideDoorStep', 'BlindsLivingRoomSlideDoorPositionFins', 'BlindsLivingRoomSlideDoorStep',0,255,1,'full' ) }}
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalosie Esszimmer</h3>
+				{{ device.shutter ('BlindsDiningRoom', 'Esszimmer', 'BlindsDiningRoomUpDown', 'BlindsDiningRoomStep', 'BlindsDiningRoomPositionSunBlinds', 'BlindsDiningRoomStep', 'BlindsDiningRoomPositionFins', 'BlindsDiningRoomStep',0,255,1,'full' ) }}
+			</div>
+		</div>
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalosie Küche</h3>
+				{{ device.shutter ('BlindsKitchen', 'Küche', 'BlindsKitchenUpDown', 'BlindsKitchenStep', 'BlindsKitchenPositionSunBlinds', 'BlindsKitchenStep', 'BlindsKitchenPositionFins', 'BlindsKitchenStep',0,255,1,'full' ) }}
+			</div>
+		</div>
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalosien Stiegenhaus</h3>
+				{{ device.shutter ('BlindsStairs', 'Stiegenhaus', 'BlindsStairsUpDown', 'BlindsStairsStep', 'BlindsStairsPositionSunBlinds', 'BlindsStairsStep', 'BlindsStairsPositionFins', 'BlindsStairsStep',0,255,1,'full' ) }}
+			</div>
+		</div>
+	</div>
+
+
+
+{% endblock %}

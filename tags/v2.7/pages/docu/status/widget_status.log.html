@@ -1,0 +1,28 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_status.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; status.log('log1', 'bath_log', 10) &#125;&#125;
+		</code>
+	</div>
+	<div class="html">
+		{{ status.log('log1', 'bath_log', 10) }}
+	</div>
+
+{% endblock %}
+
+

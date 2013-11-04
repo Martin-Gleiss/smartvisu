@@ -1,0 +1,85 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @author      Raik Alber
+ * @copyright   2013
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+DESCRIPTION
+--------------------------------------------------------------------------------
+SmartVISU is able to use different drivers for the connection to the backend.
+There are drivers for smarthome.py, linknx, domotiga or eibd use. Unfortunally the
+notation for the group adresses is unique for each driver.
+
+If you use the eibd driver, you have to use the "real" knx groupadress (like 
+1/3/4) followed by the used knx dpt (like 9.xxx for temparatures). Smarthome.py
+ and Linknx instead uses an alias system, but it's different for linknx and 
+smarthome.py.
+
+So, if you want to develop your templates, you just have to know, which backend 
+system you will use. Later change of backend driver will result in changing all 
+templates to meet the requirements of the new backend driver.
+
+The script "convertTemplates.php" is used to convert templates. So you can use 
+different drivers without much extravagant expenses for changing the templates.
+You can use the script to convert templates from eibd driver to linknx or 
+smarthome.py driver. Or you can convert from linknx or smarthome.py to eibd.
+
+Converting from linknx to smarthome.py or smarthome.py to linknx is not 
+implemented actually.
+
+Please create a backup of your templates befor you use the script. And check the
+ result before using smartVISU with you new templates.
+
+The script needs a php cli executable. Maybe you have to install it.
+
+USAGE
+-------------------------------------------------------------------------------- 
+
+php convertTemplates.php -s|--source=sourceSchema -d|--dest=destinationSchema \
+                         [--input=inputDirectory] [--output=outputDirectory] \
+                         [--cfilespath=converterFilesPath]
+
+    -s|--source=sourceSchema    This parameter is mandantory. It describes the 
+                                source Schema to use. 
+                                Possible values are: eibd, linkx, smarthome.py
+                                Needed files like linknx.xml or smarthome.py
+                                item files are expected in the current directory
+                                Use --cfilespath to change the path to these
+                                files
+
+    -d|--dest=destinationSchema This parameter is mandantory. It describes the
+                                destination Schema to use.
+                                Possible values are: eibd, linkx, smarthome.py
+                                Needed files like linknx.xml or smarthome.py
+                                item files are expected in the current directory
+                                Use --cfilespath to change the path to these
+                                files
+
+    --input=inputDirectory      This parameter ist optional. If you don't use 
+                                this parameter the current directory is used.
+                                Here your input templates are expected.
+
+    --output=outputDirectory    This parameter ist optional. If you don't use
+                                this parameter the current directory is used 
+                                and the filenames of the new templates are 
+                                changed to <destinationSchema>.<oldFilename>.
+                                Converted templates are written to this directory
+                                The directory will be created if needed.
+                              
+    --cfilespath=converterFilesPath    this parameter is optional. Needed files 
+                               for converting templates (linknx.xml, smarthome.py 
+                               item files) are found within this directory. 
+                               Default is "./" if you don't use the parameter.
+
+ 
+
+HISTORY
+----------------------------------------------------------------------------------
+v 2.0
+        - converting from eibd to smarthome.py or smarthome.py to eibd
+        - correct dpt's used
+
+v 1.0   - converting from eibd to linknx or linknx to eibd
+

@@ -1,0 +1,16 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+@CHARSET "UTF-8";
+
+.page-bg {
+    background-image: url('../../pics/bg/light_lines.png');
+}
+	

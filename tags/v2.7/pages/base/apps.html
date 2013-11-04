@@ -1,0 +1,85 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+	{% if page=='apps' %}
+
+		{% for file in dir('apps', 'app_(.+?).html') %}
+
+			{% set app = docu('apps/app_'~file.name~'.html') %}
+
+			<div class="hide" id="{{ page }}-{{ file.name }}-docu">
+
+				<div class="app">
+					<div class="image" style="background-color: #{{ app.color }};"><img src="{{ app.icon }}"></div>
+				</div>
+
+				<h3 style="padding: 40px 0 8px 0;">{{ app.title|e }}</h3>
+
+				<div>
+					{{ app.description }}
+				</div>
+
+				{% if app.info or app.link %}
+					<hr />
+				{% endif %}
+
+				{% if app.info %}
+					{{ app.info }} <br />
+				{% endif %}
+				{% if app.link %}
+					<a href="{{ app.link }}" target="_blank">{{ app.link|e }}</a> <br />
+				{% endif %}
+
+				{% if app.author or app.version %}
+					<hr />
+				{% endif %}
+
+				{% if app.author %}
+					Author: {{ app.author }}<br />
+				{% endif %}
+				<div class="mini">File: {{ file.file }}</div>
+				{% if app.version %}
+					<div class="mini">Version: {{ app.version }}</div>
+				{% endif %}
+
+			</div>
+		{% endfor %}
+
+	{% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+	<h1>Apps</h1>
+
+	{% for file in dir('apps', 'app_(.+?).html') %}
+		<span id="{{ page }}-{{ file.name }}">
+        {{ lib.app('app_'~file.name) }}
+        </span>
+
+		<script type="text/javascript">
+			$('#{{ page }}').on('pagecreate', function (event, ui) {
+
+				$('#{{ page }}-{{ file.name }}').mouseover(function () {
+					$('.hide:not(#{{ page }}-{{ file.name }}-docu)').hide();
+					$('#{{ page }}-{{ file.name }}-docu').fadeIn(400);
+				});
+			});
+		</script>
+
+	{% endfor %}
+
+{% endblock %}
+
