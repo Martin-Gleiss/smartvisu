@@ -69,6 +69,9 @@ SYSTEMREQUIREMENTS
 
 HISTORY
 --------------------------------------------------------------------------------
+v 2.8
+	-
+	
 v 2.7 03.11.13
 	- new: SmartHome.py Montior page
 	- new: animations on/off for better performance on slow devices
