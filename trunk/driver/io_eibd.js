@@ -118,7 +118,7 @@ var io = {
 	 * Start the real-time values. Can only be started once
 	 */
 	start: function () {
-		if (!io.timer_run && widget.listening()) {
+		if (!io.timer_run && widget.listeners().length) {
 
 			io.timer_run = true;
 			setTimeout('io.checkRequest()', 1000);
