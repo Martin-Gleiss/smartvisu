@@ -1,0 +1,95 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}scene_sleeping_alternat.png' />DG-Schlafen</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Lichter</h3>
+				<table width="90%">
+					<tr>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('SchDeckenspots', 'DG.Schlafen.SpotsDecke', icon1~'light_downlight.png', icon0~'light_downlight.png') }} </td>
+						<td>Deckenspots</td>
+					</tr>
+				</table>
+				<table width="90%">
+					<tr>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('WLBettlinks', 'DG.Schlafen.Bettlinks', icon1~'light_wall_3.png', icon0~'light_wall_3.png') }} </td>
+						<td>Bett Leselampe links</td>
+					</tr>
+				</table>
+				<table width="90%">
+					<tr>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('WLBettrechts', 'DG.Schlafen.Bettrechts', icon1~'light_wall_3.png', icon0~'light_wall_3.png') }} </td>
+						<td>Bett Leselampe rechts</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Heizung</h3>
+				{{ device.rtrmacflei('DG.Schlafen.temperature', 'DG.Schlafen.temperature.stellgroesse', 'DG.Schlafen.temperature', 'DG.Schlafen.temperature.set', 'DG.Schlafen.temperature.mode', 'DG.Schlafen.temperature.night', 'DG.Schlafen.temperature.frost', '', 'DG.Schlafen.temperature.zwangon', 'DG.Schlafen.temperature.zwangoff', '', '0.5') }}
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Leselampen Bett</h3>
+				{{ basic.flip('WLBettbeide', 'DG.Schlafen.BettBeide', 'Ein', 'Aus') }} Beide
+
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Status</h3>
+				<table width="100%">
+					<tr>
+						<td align="left">
+							{{ basic.symbol('SchDachfensterlinks1', 'DG.Schlafen.Fensterlinks', 'Dachfenster Nord ist offen', icon1~'fts_window_roof_open_2.png') }}
+							{{ basic.symbol('SchDachfensterlinks2', 'DG.Schlafen.Fensterlinks', 'Dachfenster Nord ist zu', icon0~'fts_window_roof_shutter.png', 0) }}
+						</td>
+					</tr>
+					<tr>
+						<td align="left">
+							{{ basic.symbol('SchDachfensterrechts1', 'DG.Schlafen.HzZwang', 'Dachfenster Süd ist offen', icon1~'fts_window_roof_open_2.png') }}
+							{{ basic.symbol('SchDachfensterrechts2', 'DG.Schlafen.HzZwang', 'Dachfenster Süd ist zu', icon0~'fts_window_roof_shutter.png', 0) }}
+						</td>
+					</tr>
+					<td align="left">
+						{{ basic.symbol('HeizungZwang1', 'DG.Schlafen.Fensterrechts', 'Heizung in Zwangsstellung', icon1~'sani_heating_manual.png') }}
+						{{ basic.symbol('HeizungZwang2', 'DG.Schlafen.Fensterrechts', 'Heizung normal', icon0~'sani_heating_automatic.png', 0) }}
+					</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+	<h3>Temperaturverlauf</h3>
+	{{ plot.rtr('p20', 'DG.Schlafen.temperature', 'DG.Schlafen.temperature.set', 'DG.Schlafen.temperature.state') }}
+{% endblock %}
+

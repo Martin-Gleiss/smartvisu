@@ -1,0 +1,115 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}scene_garden.png' />Aussenbereich</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Licht / Aktoren</h3>
+
+				<table width=100%>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.switch('aussen_gartenlicht', 'aussen_gartenlicht_schalten', icon1~'light_fairy_lights.png', icon0~'light_fairy_lights.png') }} Terrasse
+						</td>
+						<td align=left>
+							{{ basic.switch('aussen_steckdose', 'aussen_steckdose_schalten', icon1~'message_socket.png', icon0~'message_socket.png') }}  Terrasse
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.switch('aussen_haustuerlicht', 'aussen_haustuerlicht_schalten', icon1~'light_wall_3.png', icon0~'light_wall_3.png') }} Haust&uuml;re
+						</td>
+						<td align=left>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.switch('aussen_garagentor', 'aussen_garagentor', icon1~'fts_garage.png', icon0~'fts_garage.png') }} Garagentor
+						</td>
+						<td align=left>
+							{{ basic.switch('aussen_freischaltung', 'aussen_freischaltung', icon1~'secur_open.png', icon0~'secur_locked.png') }}  Freischaltung
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Sensoren</h3>
+
+				<table width=100%>
+					<tr>
+						<td align=left width=50%>
+							<img class="icon" src=" {{ icon0~'temp_outside.png' }} " />
+							{{ basic.float('aussen_temperatur', 'aussentemperatur', '�C') }}
+						</td>
+						<td align=left>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.symbol('aussen_regen', 'aussen_regen', 'Regen', icon1~'weather_rain.png', 1) }}
+						</td>
+						<td align=left>
+							{{ basic.symbol('aussen_wind', 'aussen_wind', 'Wind', icon1~'weather_wind.png', 1) }}
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Gew&auml;chshaus</h3>
+
+				<table width=100%>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.slider('gewaechshaus3', 'gewaechshaus_position', 0, 100, 5, 'vertical') }}
+						</td>
+						<td align=left valign=top>
+							<table width=100%>
+								<tr>
+									<td align=left width=50%>
+										<img class="icon" src=" {{ icon0~'temp_inside.png' }} " />
+										{{ basic.float('gewaechshaus1', 'gewaechshaus_temperatur', '�C') }}
+									</td>
+								</tr>
+								<tr>
+									<td align=left>
+										{{ basic.switch('gewaechshaus2', 'gewaechshaus_bewaesserung', icon1~'sani_irrigation.png', icon0~'sani_irrigation.png') }} Bew&auml;sserung
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+

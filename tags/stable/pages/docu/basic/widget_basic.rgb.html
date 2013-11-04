@@ -1,0 +1,27 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+
+	Select your color! If you have finised the rgb values will be send.
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; basic.rgb('rgb1', 'bath_color_r', 'bath_color_g', 'bath_color_b') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ basic.rgb('rgb1', 'bath_color_r', 'bath_color_g', 'bath_color_b') }}
+	</div>
+
+{% endblock %}
+
+

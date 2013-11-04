@@ -1,0 +1,47 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}scene_laundry_room_fem.png' />Trockenraum</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Heizung</h3>
+
+				<div class="icon">&nbsp;</div>
+				<br>
+
+				<div class="icon">&nbsp;</div>
+				<br>
+
+				{{ device_fb.heating('room_trockenraum_1', 'trocknen_heizen_schalten', 'trockenraum_sollwert', 0, 100, 10) }}
+			</div>
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Rollo</h3>
+
+				{{ device.shutter ('room_trockenraum_2', '', 'trocknen_jalousie_fahren', '', 'trocknen_jalousie_position_status',
+				'', '', '', 0, 100, 10) }}
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}
+

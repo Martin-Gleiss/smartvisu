@@ -1,0 +1,158 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+/**
+* Displays a image witch is been reloaded after a given time
+*
+* @param unique id for this widget
+* @param the path/url to the image
+* @param the mode: 'none', 'corner', 'corner-bottom' (optional, default 'none')
+* @param the reload-time in duration-format (optional, default '10i')
+*
+* @see misc/fundamentals#Duration-Format
+*/
+{% macro image(id, src, mode, time) %}
+
+	<img id="{{ uid(page, id) }}" data-widget="multimedia.image"
+		{% if mode == 'corner' %}
+			class="ui-corner-all"
+		{% elseif mode == 'corner-bottom' %}
+			class="ui-corner-bottom"
+		{% endif %}
+		src="pages/base/pics/trans.png" />
+
+	<script type="text/javascript">
+		$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_=' + new Date().getTime());
+
+		setInterval(function () {
+			$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_=' + new Date().getTime());
+		}, new Date().duration('{{time|default("10i")}}'));
+	</script>
+
+{% endmacro %}
+
+
+/**
+* Standard Multimedia Player
+*
+* @param unique id for this widget
+* @param the gad/item for play/pause
+* @param the gad/item for stopping the music (optional)
+* @param the gad/item for fast forward and rewind (optional)
+* @param the gad/item for next an previous playlist title
+* @param the gad/item for the position (optional)
+* @param the gad/item for the volume (optional)
+* @param the gad/item to mute the music (optional)
+* @param the gad/item for the song title (optional)
+* @param the gad/item for the song artist (optional)
+* @param the gad/item for repeat (optional)
+* @param the gad/item to load the default playlist (optional)
+*
+* @author Axel Otterstätter
+*/
+{% macro music(id, gad_play, gad_stop, gad_ff, gad_next, gad_pos, gad_vol, gad_mute, gad_title, gad_artist, gad_repeat, gad_playlist) %}
+	{% import "basic.html" as basic %}
+	{% set uid = uid(page, id) %}
+
+	<div id="{{ uid }}" class="music">
+
+		{% if gad_vol %}
+			<div class="vol">
+				<img class="slider-bottomup-scale" src="pages/base/pics/scale_buttomup.png">
+				{{ basic.slider(id~'vol', gad_vol, 0, 100, 5, 'bottomup') }}
+			</div>
+		{% endif %}
+
+		<div class="control">
+			{% if gad_mute %} {{ basic.button(id~'mute', gad_mute, 'Mute', icon0~'audio_volume_mute.png', 1) }} {% endif %}
+			{% if gad_repeat %} {{ basic.dual(id~'repeat', gad_repeat, icon1~'audio_repeat.png', icon0~'audio_repeat.png') }} {% endif %}
+			{% if gad_playlist %} {{ basic.button(id~'playlist', gad_playlist, 'Default Playlist', icon0~'audio_playlist.png', 1) }} {% endif %}
+		</div>
+
+		<div class="title">{% if gad_artist %}{{ basic.value(id~'artist', gad_artist) }} &nbsp; {% endif %}
+			{% if gad_title %}{{ basic.value(id~'title', gad_title) }}{% endif %}</div>
+
+		<div class="set">
+			{% if gad_pos %}
+				<div class="pos">
+					<div class="scale">&nbsp;</div>
+					{{ basic.slider(id~'pos', gad_pos, 0, 100, 1) }}
+				</div>
+			{% endif %}
+
+			<div data-role="controlgroup" data-type="horizontal">
+				{{ basic.button(id~'prev', gad_next, 'back', icon0~'control_arrow_left.png', 0) }}
+				{% if gad_ff %} {{ basic.button(id~'rew', gad_ff, 'rev', icon0~'audio_rew.png', 0) }} {% endif %}
+				{{ basic.dual(id~'play', gad_play, icon1~'audio_pause.png', icon0~'audio_play.png') }}
+				{% if gad_stop %} {{ basic.button(id~'stop', gad_stop, 'stop', icon0~'audio_stop.png', 1) }} {% endif %}
+				{% if gad_ff %} {{ basic.button(id~'ff', gad_ff, 'fwd', icon0~'audio_ff.png', 1) }} {% endif %}
+				{{ basic.button(id~'next', gad_next, 'next', icon0~'control_arrow_right.png', 1) }}
+			</div>
+		</div>
+	</div>
+{% endmacro %}
+
+
+/**
+* A widget to display a slideshow, controlled by gads/items
+*
+* @param unique id for this widget
+* @param a directory where the pictures are located
+* @param delay between the slides in sec (optional, default: 2 sec)
+* @param gad/item to switch to the next slide
+* @param gad/item to switch to the previous slide
+* @param gad/item to stop the animation
+* @param gad/item to start the animation
+*
+* @author Alex
+*
+* @info based on cycle2 jquery-plugin: (c) 2012 M. Alsup; Dual licensed: MIT/GPL
+* @link http://jquery.malsup.com/cycle2
+*/
+{% macro slideshow(id, dir, delay, gad_next, gad_prev, gad_stop, gad_start) %}
+	{% set uid = uid(page, id) %}
+
+	<script src="vendor/jquery.cycle2/jquery.cycle2.core.js"></script>
+	<script src="vendor/jquery.cycle2/jquery.cycle2.autoheight.js"></script>
+
+	<div id="{{ uid }}" class="slideshow" data-cycle-log="false" data-cycle-speed="{{ delay|default(2) * 1000 }}">
+		{% for file in dir(dir, '(.+?).(jpg|png)') %}
+			<img src="{{ file.path }}" style="display: block;" title="{{ file.label }}" />
+		{% endfor %}
+	</div>
+
+	<script type="text/javascript">
+		$('#{{ page }}').on('pageinit', function (event, ui) {
+			$('#{{ uid }}').cycle();
+		});
+		$('#{{ page }}').on('pagebeforeshow', function (event, ui) {
+			$(window).triggerHandler('resize');
+		});
+	</script>
+{% endmacro %}
+
+
+/**
+* Displays a tv- or radio- station button
+*
+* @param unique id for this widget
+* @param a gad/item
+* @param a icon (e. g. located in pics/station)
+* @param value send if the button is pressed (optional, default 1)
+* @param type: 'mini', 'midi' (optional, default: mini)
+*/
+{% macro station(id, gad, pic, val, type) %}
+	{% import "basic.html" as basic %}
+	{% set uid = uid(page, id) %}
+
+	<div id="{{ uid }}" class="station">
+		{{ basic.button(id, gad, '', pic, 1, type|default('mini')) }}
+	</div>
+{% endmacro %}

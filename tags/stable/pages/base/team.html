@@ -1,0 +1,76 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "system.html" %}
+
+{% block content %}
+
+	<h1>Team</h1>
+	<p>
+		Here is the team around {{ lib.smartvisu }}.<br />
+		You will be very welcome, if you like to join us. Go to be a part of the {{ lib.smartvisu }} story!
+	</p>
+
+	<br />
+
+	<div class="author"><img src="pages/base/pics/author_martin.jpg"></div>
+	<p><a href="mailto:Gleiss.Martin@gmail.com"><b>Martin Gleiß</b></a><br />
+		Lead of project vision and roadmap
+	</p><br style="clear:both" />
+
+
+	<div class="author"><img src="pages/base/pics/author_frank.jpg"></div>
+	<p><a href="mailto:fb.sf.1974@gmail.com"><b>Frank Berlenz</b></a><br />
+		Design core libraries, write code and design icons
+	</p><br style="clear:both" />
+
+
+	<div class="author"><img src="pages/base/pics/author_axel.jpg"></div>
+	<p><a href="mailto:axel.otterstaetter@googlemail.com"><b>Axel Otterstätter</b></a><br />
+		Design core libraries, write code and tests, write end-user documentation and help new members
+	</p><br style="clear:both" />
+
+	<div class="author"><img src="pages/base/pics/author_raik.jpg"></div>
+	<p><a href="mailto:smartvisu@alber.org"><b>Raik Alber</b></a><br />
+		Design core libraries, write the 'eibd' driver
+	</p><br style="clear:both" />
+
+	<div class="author"><img src="pages/base/pics/author_marco.jpg"></div>
+	<p><a href="mailto:fleischer@emf-online.de"><b>Marco Fleischer</b></a><br />
+		Test the system before each release and help new members
+	</p><br style="clear:both" />
+
+	<br />
+
+	<div class="docu">
+		<div class="html ui-corner-all" style="background-color: #111; opacity:0.8; filter:alpha(opacity=80);">
+			<table>
+				<tr>
+					<td style="padding: 20px 15px 15px 15px;">
+
+						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+							<input type="hidden" name="cmd" value="_s-xclick">
+							<input type="hidden" name="hosted_button_id" value="M3T44V86HQ7K4">
+							<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+							<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1">
+						</form>
+
+					</td>
+					<td style="color: #fff;">
+						Please support our development!<br />
+						We have spend a lot of time to give you the best experience with your smarthome!
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+{% endblock %}
+

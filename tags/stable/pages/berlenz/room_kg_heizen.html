@@ -1,0 +1,247 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}sani_buffer_temp_down.png' />Technik</h1>
+
+	<div class="block">
+	<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+	<div data-role="collapsible" data-collapsed="false">
+	<h3>LWZ 303</h3>
+
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				Vorlauftemperatur:
+			</td>
+			<td align=right>
+				{{ basic.float('heizen_vorlauf', 'lwz_vorlauftemperatur', '°C') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				Rücklauftemperatur:
+			</td>
+			<td align=right>
+				{{ basic.float('heizen_ruecklauf', 'lwz_ruecklauftemperatur', '°C') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				Speichertemperatur:
+			</td>
+			<td align=right>
+				{{ basic.float('heizen_speicher', 'lwz_speichertemperatur', '°C') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				Programmzustand:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_programmzustand', '#lwz_programmzustand_heizung') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				Betriebsmodus:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_betriebszustand', '#lwz_betriebsmodus') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				Verdichter:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_verdichter', '#lwz_verdichter') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				Pumpe-Heizung:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_pumpe_heizung', '#lwz_pumpe_heizung') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				Pumpe-WW:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_pumpe_wasser', '#lwz_pumpe_wasser') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				E-Heizung:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_eheizung', '#lwz_eheizung') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr valign=top>
+			<td align=left style="padding-left: 10px;">
+				Betriebsstunden Heizung:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_betriebsstunden_heizmodus', '#lwz_betriebsstunden_heizmodus') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr valign=top>
+			<td align=left style="padding-left: 10px;">
+				Betriebsstunden Wasser;
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_betriebsstunden_wasser', '#lwz_betriebsstunden_wasser') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr valign=top>
+			<td align=left style="padding-left: 10px;">
+				Betriebsstunden E-Heizung;
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_betriebsstunden_eheizung', '#lwz_betriebsstunden_eheizung') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr valign=top>
+			<td align=left style="padding-left: 10px;">
+				Betriebsstunden E-Wasser;
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_betriebsstunden_ewasser', '#lwz_betriebsstunden_ewasser') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left width=80% style="padding-left: 10px;">
+				Drehzahl Zuluft:
+			</td>
+			<td align=right width=20%>
+				{{ basic.value('heizen_zuluft', '#lwz_drehzahlzuluft_ist') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				Drehzahl Abluft:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_ablauf', '#lwz_drehzahlabluft_ist') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				Drehzahl Fortluft:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_fortluft', '#lwz_drehzahlfortluft_ist') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				Lüftungsstufe:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_lueftungsstufe', '#lwz_lueftungstufe') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr>
+			<td align=left style="padding-left: 10px;">
+				Stoßlüften Restlauf:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_lueftung_restlaufzeit', '#lwz_lueftung_restlaufzeit') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr valign=top>
+			<td align=left style="padding-left: 10px;">
+				Abwesenheit:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_abwesenheit', '#lwz_abwesenheit') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr valign=top>
+			<td colspan=2 align=right style="padding-left: 10px;">
+				{{ basic.value('heizen_abwesenheit_zeit', '#lwz_abwesenheit_endezeit') }}&nbsp;&nbsp;&nbsp;{{ basic.value('heizen_abwesenheit_datum', '#lwz_abwesenheit_endedatum') }}
+			</td>
+		</tr>
+	</table>
+	<table width=100%>
+		<tr valign=top>
+			<td align=left style="padding-left: 10px;">
+				Fehler:
+			</td>
+			<td align=right>
+				{{ basic.value('heizen_fehler', '#lwz_fehlernummer') }}
+			</td>
+		</tr>
+	</table>
+	</div>
+	<div data-role="collapsible">
+		<h3>Einstellungen</h3>
+		<table width=100%>
+			<tr>
+				<td align=left width=50%>
+					{{ basic.switch('flur_licht1', 'flur_licht_schalten', icon1~'light_light.png', icon0~'light_light.png') }} Flur
+				</td>
+				<td align=left width=50%>
+					{{ basic.symbol('flur_bewegung', 'flur_bewegung', 'Bewegung', icon1~'user_available.png', 1) }}
+				</td>
+			</tr>
+		</table>
+	</div>
+	</div>
+	</div>
+
+{% endblock %}
+

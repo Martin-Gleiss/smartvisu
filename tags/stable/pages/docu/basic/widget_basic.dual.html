@@ -1,0 +1,73 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; basic.dual('dual0', 'bath_light_switch') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ basic.dual('dual0', 'bath_light_switch') }}
+	</div>
+
+	Dual-button with two pics 'mini' and 'midi'
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+
+			{{ basic.dual('dual1', '...', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png', '', '', 'micro') }}
+			{{ basic.dual('dual2', '...', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png') }}
+			{{ basic.dual('dual3', '...', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png', '', '', 'midi') }}
+
+			{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.dual('dual1', 'bath_light_switch', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png', '', '', 'micro') }}
+		{{ basic.dual('dual2', 'bath_light_switch', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png') }}
+		{{ basic.dual('dual3', 'bath_light_switch', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png', '', '', 'midi') }}
+	</div>
+
+	Some Buttons grouped together. You may mix buttons and duals.
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+
+			<span data-role="controlgroup" data-type="horizontal">   
+            ...
+        </span>
+
+			{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+        
+        <span data-role="controlgroup" data-type="horizontal">   
+        {{ basic.button('cg11', 'bath_light_switch', 'Up', '', '', 'micro') }}
+			{{ basic.button('cg12', 'bath_light_switch', 'Dw', '', '', 'micro') }}
+			{{ basic.dual('cg13', 'bath_light_switch', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png', '', '', 'micro') }}
+        </span>
+        
+        <span data-role="controlgroup" data-type="horizontal">   
+        {{ basic.button('cg21', 'bath_light_switch', 'Up', 'plus') }}
+			{{ basic.button('cg22', 'bath_light_switch', 'Down', 'minus', 0) }}
+			{{ basic.dual('cg23', 'bath_light_switch', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png') }}
+        </span>
+
+        <span data-role="controlgroup" data-type="horizontal">    
+        {{ basic.button('cg31', 'bath_light_switch', 'Up', 'plus', '', 'midi') }}
+			{{ basic.button('cg32', 'bath_light_switch', 'Down', 'minus', 0, 'midi') }}
+			{{ basic.dual('cg33', 'bath_light_switch', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png', '', '', 'midi') }}
+        </span>
+
+	</div>
+
+{% endblock %}
+
+

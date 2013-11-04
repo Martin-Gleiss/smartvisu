@@ -1,0 +1,48 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_device.html" %}
+
+{% block example %}
+
+	If you want to use knx dpt '20.102' use that gad/item 3 times for 'gad_mode', 'gad_night' and 'gad_frost'.
+
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; device.rtr('rtr1', 'Heating', 'bath_rtr_act', 'bath_rtr_set', 'bath_rtr_comfort', 'bath_rtr_night',
+			'bath_rtr_frost', 'bath_rtr_state', 'bath_rtr_text') &#125;&#125;
+			<br /><br />
+			&#123;&#123; device.rtr('rtr2', 'Heating', 'bath_rtr_act', 'bath_rtr_set', 'bath_rtr_mode', 'bath_rtr_mode',
+			'bath_rtr_mode', 'bath_rtr_state', 'bath_rtr_text') &#125;&#125;
+		</code>
+	</div>
+
+	<div class="html">
+
+		<div class="block">
+			<div class="ui-bar-c ui-li-divider ui-corner-top">RTR in 3x bit-mode</div>
+			<div class="ui-fixed ui-body-a ui-corner-bottom">
+				{{ device.rtr('rtr1', 'Heating', 'bath_rtr_act', 'bath_rtr_set', 'bath_rtr_comfort', 'bath_rtr_night',
+				'bath_rtr_frost', 'bath_rtr_state', 'bath_rtr_text') }}
+			</div>
+		</div>
+
+		<div class="block">
+			<div class="ui-bar-c ui-li-divider ui-corner-top">RTR in 1x byte-mode</div>
+			<div class="ui-fixed ui-body-a ui-corner-bottom">
+				{{ device.rtr('rtr2', 'Heating', 'bath_rtr_act', 'bath_rtr_set', 'bath_rtr_mode', 'bath_rtr_mode',
+				'bath_rtr_mode', 'bath_rtr_state', 'bath_rtr_text') }}
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}

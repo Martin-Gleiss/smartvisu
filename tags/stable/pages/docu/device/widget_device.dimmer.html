@@ -1,0 +1,23 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_device.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; device.dimmer('dimmer1', 'Dimmer', 'bath_light_switch', 'bath_light_value') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ device.dimmer('dimmer1', 'Dimmer', 'bath_light_switch', 'bath_light_value') }}
+	</div>
+
+{% endblock %}

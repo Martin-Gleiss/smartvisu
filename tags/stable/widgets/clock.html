@@ -1,0 +1,88 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+/**
+* Displays a digital clock
+*
+* @param unique id for this widget
+* @param location as string (optional)
+*
+* @info based on jDigiClock by Radoslav Dimov
+* @link http://www.radoslavdimov.com
+*/
+{% macro digiclock(id, location) %}
+	{% set uid = uid(page, id) %}
+
+	{% if once('digiclock') %}
+		<link rel="stylesheet" type="text/css" href="lib/clock/jdigiclock.css" />
+		<script type="text/javascript" src="lib/clock/jquery.jdigiclock.js"></script>
+	{% endif %}
+
+	<div id="{{ uid }}-digiclock" data-widget="clock.digiclock"
+		class="digiclock"></div>
+
+	{% if location %}
+		{% if once('digiweather') %}
+			<link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
+		{% endif %}
+
+		<div class="center">
+			<div id="{{ uid }}-spot" class="spot">
+				<div class="temp"></div>
+				<div class="city"></div>
+				<div class="cond"></div>
+				<img src="">
+			</div>
+		</div>
+	{% endif %}
+
+	<script type="text/javascript">
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
+			$('#{{ uid }}-digiclock').digiclock();
+
+			{% if location %}
+			$.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}&lang={{ config_lang|default(en) }}', function (data) {
+				$('#{{ uid }}-spot img').attr('src', 'lib/weather/pics/' + data.current.icon + '.png');
+				$('#{{ uid }}-spot .city').html(data.city);
+				$('#{{ uid }}-spot .cond').html(data.current.conditions);
+				$('#{{ uid }}-spot .temp').html(data.current.temp);
+			});
+			{% endif %}
+		});
+	</script>
+{% endmacro %}
+
+
+/**
+* Displays a clock in icon style
+*
+* @param unique id for this widget
+*/
+{% macro iconclock(id) %}
+	{% import "icon.html" as icon %}
+
+	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i"
+		class="iconclock">{{ icon.clock(id) }}</span>
+
+{% endmacro %}
+
+
+/**
+* Displays a mini text-based clock
+*
+* @param unique id for this widget
+*/
+{% macro miniclock(id) %}
+
+	<span id="{{ uid(page, id) }}" data-widget="clock.miniclock" data-repeat="1i"
+		class="miniclock">{{ now|date('H:i') }}</span>
+
+{% endmacro %}
+

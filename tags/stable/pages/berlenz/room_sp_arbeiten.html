@@ -1,0 +1,64 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Frank Berlenz
+* @copyright   2013
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}it_pc.png' />Arbeiten</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Licht</h3>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							{{ device.dimmer('licht_decke1', 'Deckenlicht', 'arbeiten_licht_schalten', 'arbeiten_licht_schalten', 0, 1, 1) }}
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Raumtemperatur</h3>
+				{{ device.rtr('arbeiten_rtr', '', 'arbeiten_heizung_istwert', 'arbeiten_heizung_sollwert',
+				'arbeiten_heizung_komfort', 'arbeiten_heizung_nacht', 'arbeiten_heizung_frost', 'arbeiten_heizung_heizen_schalten', null, 0.2) }}
+			</div>
+
+		</div>
+	</div>
+
+
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Jalousie</h3>
+
+				{{ device.shutter ('shutter', '', 'arbeiten_jalousie_fahren', 'arbeiten_jalousie_stop', 'arbeiten_jalousie_position_status',
+				'', 'arbeiten_jalousie_angle_status', 'arbeiten_jalousie_store', 0, 0, 100, 10) }}
+			</div>
+
+		</div>
+	</div>
+
+
+
+{% endblock %}
+

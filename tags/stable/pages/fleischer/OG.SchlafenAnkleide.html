@@ -1,0 +1,168 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}scene_making_love.png' />Schlafzimmer und Ankleide</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Schlafzimmer</h3>
+				<table width=100%>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.switch('SchlafenLEDBett', 'OG.Schlafen.LEDBett', icon1~'light_uplight.png', icon0~'light_uplight.png') }} LED-Bett
+						</td>
+						<td align=left>
+							{{ basic.switch('SchlafenTV', 'OG.Schlafen.TV', icon1~'message_socket.png', icon0~'message_socket.png') }} TV
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.switch('SchlafenLEDWand', 'OG.Schlafen.LEDWand', icon1~'light_wall_1.png', icon0~'light_wall_1.png') }}  LED-Wand
+						</td>
+						<td align=left width=50%>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.switch('IngridNachttisch', 'OG.Schlafen.NachttischIngrid', icon1~'light_mirror.png', icon0~'light_mirror.png') }} Ingrid
+						</td>
+						<td align=left>
+							{{ basic.switch('FreigabeBMBettSchlafen', 'OG.Schlafen.FreigabeBM', icon1~'message_presence.png', icon0~'message_presence_disabled.png') }}  Freigabe
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Ankleide</h3>
+				<table width=100%>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.switch('DeckeSchiene', 'OG.Ankleide.Schiene', icon1~'light_wire_system_1.png', icon0~'light_wire_system_1.png') }} Schiene
+						</td>
+						<td align=left>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.symbol('FensterAnkleide1', 'OG.Ankleide.Fenster', 'Fenster ist offen', icon1~'fts_window_2w_open.png') }}
+							{{ basic.symbol('FensterAnkleide2', 'OG.Ankleide.Fenster', 'Fenster ist zu', icon0~'fts_window_2w.png', 0) }}
+						</td>
+						<td align=left>
+							&nbsp;
+						</td>
+					</tr>
+
+				</table>
+
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Schlafen Heizung</h3>
+				{{ device.rtrmacflei('OG.Schlafen.temperature', 'OG.Schlafen.temperature.stellgröesse', 'OG.Schlafen.temperature', 'OG.Schlafen.temperature.set', 'OG.Schlafen.temperature.mode', 'OG.Schlafen.temperature.night', 'OG.Schlafen.temperature.frost', '', 'OG.Schlafen.temperature.zwangon', 'OG.Schlafen.temperature.zwangoff', '', '0.5') }}
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Ankleide Heizung</h3>
+				{{ device.rtrmacflei('OG.Ankleide.temperature', 'OG.Ankleide.temperature.stellgroesse', 'OG.Ankleide.temperature', 'OG.Ankleide.temperature.set', 'OG.Ankleide.temperature.mode', 'OG.Ankleide.temperature.night', 'OG.Ankleide.temperature.frost', '', 'OG.Ankleide.temperature.zwangon', 'OG.Ankleide.temperature.zwangoff', '', '0.5') }}
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Rollo</h3>
+				{% import "widget_shutter.html" as shutter %}
+				{{ shutter.one ('OG.Schlafen.Rollo', 'West', 'OG.Schlafen.Rollo.move', 'OG.Schlafen.Rollo.stop', 'OG.Schlafen.Rollo.pos', OG.Schlafen.Rollo.tilt) }}
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Status Schlafzimmer</h3>
+				<table width=100%>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.symbol('FensterWest1', 'OG.Schlafen.Fenster2', 'Fenster West ist offen', icon1~'fts_window_2w_open.png') }}
+							{{ basic.symbol('FensterWest2', 'OG.Schlafen.Fenster2', 'Fenster West ist zu', icon0~'fts_window_2w.png', 0) }}
+						</td>
+						<td align=left>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.symbol('FensterSued1', 'OG.Schlafen.Fenster1', 'Fenster Süd ist offen', icon1~'fts_window_2w_open.png') }}
+							{{ basic.symbol('FensterSued2', 'OG.Schlafen.Fenster1', 'Fenster Süd ist zu', icon0~'fts_window_2w.png', 0) }}
+						</td>
+						<td align=left>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.symbol('TuerSchlafen1', 'OG.Schlafen.Tuer', 'Tür ist offen', icon1~'fts_door_open.png') }}
+							{{ basic.symbol('TuerSchlafen2', 'OG.Schlafen.Tuer', 'Tür ist zu', icon0~'fts_door.png', 0) }}
+						</td>
+						<td align=left>
+							&nbsp;
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Schlafen</h3>
+				{{ plot.rtr('p43', 'OG.Schlafen.temperature', 'OG.Schlafen.temperature.set', 'OG.Schlafen.temperature.state') }}
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Ankleide</h3>
+				{{ plot.rtr('p44', 'OG.Ankleide.temperature', 'OG.Ankleide.temperature.set', 'OG.Ankleide.temperature.state') }}
+			</div>
+
+		</div>
+	</div>
+{% endblock %}
+

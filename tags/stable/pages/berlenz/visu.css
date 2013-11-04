@@ -1,0 +1,51 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL [http://www.gnu.de]
+ * ----------------------------------------------------------------------------- 
+ */
+
+@CHARSET "UTF-8";
+
+@media all and (min-width: 1500px) {
+	.block {
+		width: 50%;
+		float: left;
+	}
+}
+
+/* display background only on larger displays */
+@media all and (min-width: 600px) {
+	.page-bg {
+		background-image: url('../../pics/bg/light_vortex.png');
+	}
+}
+
+.heating  .ui-input-text {
+	display: none;
+	vertical-align: middle;
+	height: 48px;
+	margin: 15px 0 10px 0;
+}
+
+.heating .switch {
+	padding-left: 0;
+	width: 64px;
+	float: left;
+}
+
+.heating .icon {
+	width: 48px;
+	height: 48px;
+}
+
+.heating p {
+	margin: 0;
+	padding: 0;
+}
+
+.heating .ui-slider {
+	margin: 5px 0 0 10px;
+}

@@ -1,0 +1,67 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+	<ul data-role="listview" data-dividertheme="c">
+
+		<li data-role="list-divider">System</li>
+		<li data-icon="false">
+			<a href="index.php?page=config">
+				<img class="icon" src="{{ icon0 }}message_service.svg" />
+
+				<h3>Configuration</h3>
+			</a>
+		</li>
+		
+		{% if config_driver == 'smarthome.py' %}
+		<li data-icon="false">
+			<a href="index.php?page=smarthome.py">
+				<img class="icon" src="{{ icon0 }}it_television.svg" />
+
+				<h3>SmartHome.py</h3>
+			</a>
+		</li>
+		{% endif %}
+
+		<li data-role="list-divider">Info</li>
+		<li data-icon="false">
+			<a href="index.php?page=team">
+				<img class="icon" src="{{ icon0 }}weather_sun.svg" />
+
+				<h3>Team</h3>
+			</a>
+		</li>
+		<li data-icon="false">
+			<a href="index.php?page=credits">
+				<img class="icon" src="{{ icon0 }}time_note.svg" />
+
+				<h3>Credits</h3>
+			</a>
+		</li>
+		<li data-icon="false">
+			<a href="index.php?page=copyright">
+				<img class="icon" src="{{ icon0 }}message_attention.svg" />
+
+				<h3>Copyright</h3>
+			</a>
+		</li>
+
+	</ul>
+
+{% endblock %}
+
+
+{% block content %}
+
+{% endblock %}
+

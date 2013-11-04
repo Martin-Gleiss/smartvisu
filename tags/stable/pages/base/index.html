@@ -1,0 +1,166 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>[smartVISU]</title>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="user-scalable=no,width=device-width">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta http-equiv="expires" content="0">
+
+	<link rel="icon" href="favicon.png" />
+	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" href="favicon.png" />
+
+	<script type="text/javascript" src="vendor/jquery/jquery-2.0.3.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="pages/base/base.css" />
+</head>
+
+
+<body class="page-bg" style="font-family: Dosis; background-image: url('pics/bg/smoke_spirals.png');">
+<style type="text/css">
+	body {
+		background-color: #eee;
+	}
+
+	.check {
+		font-size: 14px;
+	}
+
+	.check img {
+		width: 24px;
+		height: 24px;
+		margin-right: 10px;
+		vertical-align: middle;
+	}
+</style>
+
+<div style="position: absolute; width: 95%; padding-top: 100px;">
+	<div style="margin: auto; width: 128px;">
+		<div style="margin: 0 0 25px 5px; font-size: 20px;">Perfect choice!</div>
+		<div>
+			<img src="pages/base/pics/smartvisu_l.png">
+
+			<div style="text-align:right;">v{{ config_version }}</div>
+		</div>
+	</div>
+
+
+	<div style="margin: auto; margin-top: 20px; width: 290px;">
+
+		<div style="margin: 5px 0 5px 0;">Your commands...</div>
+
+		<div class="app">
+			<a href="index.php?page=config">
+				<div class="image" style="background-color: #cc0;"><img src="icons/sw/edit_settings.svg" /></div>
+				<div>Config</div>
+			</a>
+		</div>
+
+		<div class="app">
+			<a id="docu" href="#">
+				<div class="image" style="background-color: #fa0;"><img src="icons/sw/edit_copy.svg"></div>
+				<div>Docu</div>
+			</a>
+		</div>
+
+		<script type="text/javascript">
+			$('#docu').click(function () {
+				$.ajax({
+					type: "POST",
+					url: 'pages/base/configure.php?pages=docu',
+					success: function (data) {
+						window.setTimeout('location.reload();', {{ config_delay }});
+					}
+				})
+			});
+		</script>
+
+
+		<div class="app">
+			<a id="house" href="#">
+				<div class="image" style="background-color: #0c0;"><img src="icons/sw/scene_summerhouse.svg"></div>
+				<div>Model House</div>
+			</a>
+		</div>
+
+		<script type="text/javascript">
+			$('#house').click(function () {
+				$.ajax({
+					type: "POST",
+					url: 'pages/base/configure.php?pages=otterstaetter',
+					success: function (data) {
+						window.setTimeout('location.reload();', {{ config_delay }});
+					}
+				})
+			});
+		</script>
+
+		<div class="app">
+			<a href="http://code.google.com/p/smartvisu/w/list" target="_blank">
+				<div class="image" style="background-color: #07c;"><img src="icons/sw/weather_sun.svg"></div>
+				<div>Wiki</div>
+			</a>
+		</div>
+
+
+	</div>
+
+
+	<br style="clear: both;" />
+
+
+	<div style="margin: auto; margin-top: 20px; width: 290px;">
+		<hr style="margin-top: 40px;" />
+
+		<div style="margin: 5px 0 5px 0;">Checking your configuration...</div>
+
+		<div class="check" data-check="check_config.php">
+			<img src="pages/base/pics/trans.png"><span>'config.php' file...</span></div>
+
+		<div class="check" data-check="check_temp.php">
+			<img src="pages/base/pics/trans.png"><span>'temp' directory...</span></div>
+
+		<div class="check" data-check="check_php.php">
+			<img src="pages/base/pics/trans.png"><span>php version...</span></div>
+
+		<div class="check" data-check="check_php_mbstring.php">
+			<img src="pages/base/pics/trans.png"><span>php extention 'mbstring'...</span></div>
+
+		<div class="check" data-check="check_update.php?local={{ config_version }}">
+			<img src="pages/base/pics/trans.png"><span>for newer version...</span></div>
+
+		<hr style="margin-top: 10px;" />
+	</div>
+
+	<br /><br />
+</div>
+
+
+<script type="text/javascript">
+	$('.check').each(function (index) {
+		// DEBUG: console.log('[check] ' + $(this).attr('data-check') + '...');
+
+		$.getJSON('lib/base/' + $(this).attr('data-check'), function (data) {
+			$('.check').eq(index).children('img').attr('src', data.icon);
+			$('.check').eq(index).children('span').html(data.text);
+		})
+			.error(function (jqXHR) {
+				var data = jQuery.parseJSON(jqXHR.responseText)
+				$('.check').eq(index).children('img').attr('src', data.icon);
+				$('.check').eq(index).children('span').html(data.text);
+			});
+	});
+</script>
+
+</body>
+</html>

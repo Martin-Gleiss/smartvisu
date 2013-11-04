@@ -1,0 +1,256 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+	{% import "lib.html" as lib %}
+	{{ lib.updatecheck() }}
+
+	<div data-role="collapsible-set" style="margin-top: -15px;" data-inset="false" data-mini="true" data-theme="c">
+
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Widgets</h3>
+
+			<ul data-role="listview" data-dividertheme="c">
+				<li data-icon="false">
+					<a href="index.php?page=basic/widget_basic">
+						<img class="icon" src="{{ icon0 }}light_dinner_table.png" />
+
+						<h3>Basic</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=calendar/widget_calendar">
+						<img class="icon" src="{{ icon0 }}time_calendar.svg" />
+
+						<h3>Calendar</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=device/widget_device">
+						<img class="icon" src="{{ icon0 }}temp_control.svg" />
+
+						<h3>Device</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=multimedia/widget_multimedia">
+						<img class="icon" src="{{ icon0 }}it_television.svg" />
+
+						<h3>Multimedia</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=phone/widget_phone">
+						<img class="icon" src="{{ icon0 }}it_telephone.svg" />
+
+						<h3>Phone</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=plot/widget_plot">
+						<img class="icon" src="{{ icon0 }}time_graph.svg" />
+
+						<h3>Plots</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=status/widget_status">
+						<img class="icon" src="{{ icon0 }}status_automatic.svg" />
+
+						<h3>Status</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=clock/widget_clock">
+						<img class="icon" src="{{ icon0 }}time_clock.svg" />
+
+						<h3>Time/Clock</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=weather/widget_weather">
+						<img class="icon" src="{{ icon0 }}weather_summer.svg" />
+
+						<h3>Weather</h3>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		<div data-role="collapsible">
+			<h3>Design</h3>
+
+			<ul data-role="listview" data-dividertheme="c">
+				<li data-icon="false">
+					<a href="index.php?page=design/design_block">
+						<img class="icon" src="{{ icon0 }}audio_playlist.svg" />
+
+						<h3>Blocks</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=design/design_quad">
+						<img class="icon" src="{{ icon0 }}control_outside_on_off.svg" />
+
+						<h3>Quad</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=design/design_popup">
+						<img class="icon" src="{{ icon0 }}audio_stop.svg" />
+
+						<h3>Popups</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=design/design_icons">
+						<img class="icon" src="{{ icon0 }}weather_winter.svg" />
+
+						<h3>Icons</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=design/design_bg">
+						<img class="icon" src="{{ icon0 }}time_statistic.svg" />
+
+						<h3>Backgrounds</h3>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		<div data-role="collapsible">
+			<h3>Misc</h3>
+			<ul data-role="listview" data-dividertheme="c">
+				<li data-icon="false">
+					<a href="index.php?page=misc/fundamentals">
+						<img class="icon" src="{{ icon0 }}control_on_off.svg" />
+
+						<h3>Fundamentals</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=misc/overview">
+						<img class="icon" src="{{ icon0 }}control_all_on_off.svg" />
+
+						<h3>Overview</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=misc/appliances">
+						<img class="icon" src="{{ icon0 }}it_server.svg" />
+
+						<h3>Appliances</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=misc/preview">
+						<img class="icon" src="{{ icon0 }}message_info.svg" />
+
+						<h3>Preview</h3>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+
+{% endblock %}
+
+
+{% block content %}
+
+	<h1>{{ lib.smartvisu }} Inline-Documentation</h1>
+
+	<p>
+		This ist the interactive and inline {{ lib.smartvisu }} documentation. You will find the API to all widgets, some design modules
+		and the icons and backgrounds. Use the widgets in your html-pages, the number ist not limited, but each widget needs its own
+		and unique identifier (id) on a page. The gad/s or item/s may be used as often as you need them. Mention that each driver has
+		its own format of the gad/s or item/s.<br />
+		<br />
+		Choose one of them:
+
+	<div style="float:right; width: 72px; color:#000; text-shadow: 0 1px 1px #fff;">
+
+		{% set widgets = 0 %}
+		{% for file in dir('widgets', '^(?!forms|icon|lib)(.+?\.html)') %}
+			{% set widgets = widgets + docu('widgets/'~file.name)|length %}
+		{% endfor %}
+		<div class="app">
+			<div class="image" style="background-color: #cc0;">
+				<span style="font-size: 1.8em;">{{ widgets }}</span><br /><span class="mini">widgets</span></div>
+		</div>
+
+		{% set designs = dir('designs', '(.+?\.min\.css)')|length %}
+		<div class="app">
+			<div class="image" style="background-color: #fa0;">
+				<span style="font-size: 1.8em;">{{ designs }}</span><br /><span class="mini">designs</span></div>
+		</div>
+
+		{% set driver = dir('driver', '^(?!_)(.+?\.min\.js)')|length %}
+		<div class="app">
+			<div class="image" style="background-color: #0c0;"><span style="font-size: 1.8em;">{{ driver }}</span><br /><span class="mini">drivers</span>
+			</div>
+		</div>
+
+		{% set icons = dir('icons/ws/', '^(?!_)(.+?\.svg)')|length %}
+		{% set svgs = docu('widgets/icon.html')|length %}
+		<div class="app">
+			<div class="image" style="background-color: #08e;">
+				<span style="font-size: 1.7em;">{{ icons }}</span><span style="font-size: 1.2em;">+{{ svgs }}</span><br /><span class="mini">icons</span></div>
+		</div>
+
+	</div>
+
+	</p>
+
+	<h2>Widgets</h2>
+	<a href="index.php?page=basic/widget_basic">Basic</a>&nbsp;
+	<a href="index.php?page=calendar/widget_calendar">Calendar</a>&nbsp;
+	<a href="index.php?page=device/widget_device">Device</a>&nbsp;
+	<a href="index.php?page=multimedia/widget_multimedia">Multimedia</a>&nbsp;
+	<a href="index.php?page=phone/widget_phone">Phone</a>&nbsp;
+	<a href="index.php?page=plot/widget_plot">Plots</a>&nbsp;
+	<a href="index.php?page=status/widget_status">Status</a>&nbsp;
+	<a href="index.php?page=clock/widget_clock">Time/Clock</a>&nbsp;
+	<a href="index.php?page=weather/widget_weather">Weather</a>&nbsp;
+
+	<h2>Design</h2>
+	<a href="index.php?page=design/design_block">Blocks</a>&nbsp;
+	<a href="index.php?page=design/design_quad">Quad</a>&nbsp;
+	<a href="index.php?page=design/design_popup">Popups</a>&nbsp;
+	<a href="index.php?page=design/design_icons">Icons</a>&nbsp;
+	<a href="index.php?page=design/design_bg">Backgrounds</a>&nbsp;
+
+	<h2>Misc</h2>
+	<a href="index.php?page=misc/fundamentals">Fundamentals</a>&nbsp;
+	<a href="index.php?page=misc/overview">Overview</a>&nbsp;
+	<a href="index.php?page=misc/appliances">Appliances</a>&nbsp;
+	<a href="index.php?page=misc/preview">Preview</a>&nbsp;
+
+{% endblock %}
+
+
+{% block head %}
+	<link href="vendor/google.prettify/styles/sunburst.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="vendor/google.prettify/src/prettify.js"></script>
+{% endblock %}
+    
+{% block footer %}
+	<script type="text/javascript">
+		$('#{{ page }}').on('pageinit', function (event) {
+			prettyPrint();
+		});
+	</script>
+{% endblock %}
+
