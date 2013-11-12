@@ -8,7 +8,7 @@
 *
 * @title       Seiser Alm
 * @category    webcam
-* @icon        icons/ws/it_camera.png
+* @icon        icons/ws/it_camera.svg
 * @color       #da0
 * @description Webcam for Seiser Alm (Dolomitisuperski)
 *
@@ -18,6 +18,8 @@
 */
 
 {% extends "apps.html" %}
+
+{% import "multimedia.html" as multimedia %}
 
 
 {% block sidebar %}
@@ -33,17 +35,18 @@
 
 
 {% block content %}
+
 	<div class="block">
 		<div class="ui-bar-c ui-li-divider ui-corner-top">Lang- Plattkofel</div>
 		<div class="image">
-			{{ basic.image('image1', 'http://www.rolbox.it/rk-kastelruth/webcam/web01.jpg', 'corner-bottom') }}
+			{{ multimedia.image('image1', 'http://www.rolbox.it/rk-kastelruth/webcam/web01.jpg', 'corner-bottom') }}
 		</div>
 	</div>
 
 	<div class="block">
 		<div class="ui-bar-c ui-li-divider ui-corner-top">Schlern</div>
 		<div class="image">
-			{{ basic.image('image2', 'http://www.rolbox.it/rk-kastelruth/webcam/web02.jpg', 'corner-bottom') }}
+			{{ multimedia.image('image2', 'http://www.rolbox.it/rk-kastelruth/webcam/web02.jpg', 'corner-bottom') }}
 		</div>
 	</div>
 

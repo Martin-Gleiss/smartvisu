@@ -8,7 +8,7 @@
 *
 * @title       Slideshow
 * @category    slideshow
-* @icon        icons/ws/control_zoom_in.png
+* @icon        icons/ws/control_zoom_in.svg
 * @color       #00a700
 * @description A slideshow
 * -----------------------------------------------------------------------------
@@ -16,9 +16,10 @@
 
 {% extends "full.html" %}
 
+{% import "multimedia.html" as multimedia %}
+
 
 {% block content %}
-	{% import "multimedia.html" as multimedia %}
 	{{ multimedia.slideshow('s1', 'pics/slideshow') }}
 {% endblock %}
 
