@@ -8,7 +8,7 @@
 *
 * @title       Weather
 * @category    weather
-* @icon        icons/ws/weather_sun.png
+* @icon        icons/ws/weather_sun.svg
 * @color       #2f5bc4
 * @description Some weather-maps from tagesschau.de
 *
@@ -19,11 +19,11 @@
 
 {% extends "apps.html" %}
 
+{% import "weather.html" as weather %}
+
 
 {% block content %}
 	<h3>Weather</h3>
-
-	{% import   "weather.html" as weather %}
 
 	{{ weather.map ('day1', 'Day', 'day') }}
 	{{ weather.map ('day2', 'Night', 'night') }}
