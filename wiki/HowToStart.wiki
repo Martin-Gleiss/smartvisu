@@ -15,7 +15,7 @@ OK... los gehts.
 
 
 = 1. Schnittstelle einrichten =
-Als erstes richten wir Eibd ein, um SmartHome.py als Schnittstelle benutzen zu können.
+Als erstes richten wir Eibd ein, um SmartHome.py als Schnittstelle benutzen zu können (getestet u.a. mit ABB IPS/S2.1).
 Dies ist eigentlich sehr simple.
 Wir bearbeiten einfach die Datei
 {{{
@@ -31,11 +31,11 @@ EIB_UID="1000"
 }}}
 
 Bei Verwendung einer USB-Schnittstelle sollte folgendes drin stehen.
-Wobei ich dies selber noch nicht getestet habe.
+(getestet u.a. mit GIRA 1080 00, wobei die Schnittstelle die GA 1.1.6 hat)
 
 {{{
 EIB_ARGS="--daemon --Server --Tunnelling --Discovery --GroupCache --listen-tcp"
-EIB_ADDR="0.0.1"
+EIB_ADDR="1.1.6"
 USBID=$(findknxusb | grep device: | cut -d' ' -f2)
 EIB_IF="usb:$USBID"
 }}}
