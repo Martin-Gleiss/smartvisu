@@ -172,7 +172,7 @@ Bei diesen ist es wichtig das die Datentypen passen und im Verzeichnis die Endun
             [[[[state]]]]
                 type = num
                 visu_acl = rw
-                history = true #<<- wenn ihr den Wert in Plots verwenden wollt
+                sqlite = yes #<<- wenn ihr den Wert in Plots verwenden wollt
                 knx_dpt = 5
                 knx_listen = 3/1/6
                 knx_init = 3/1/6
