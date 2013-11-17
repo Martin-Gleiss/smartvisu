@@ -88,131 +88,129 @@ Bei diesen ist es wichtig das die Datentypen passen und im Verzeichnis die Endun
     [[Raum00]]
         [[[Deckenspots]]]
             type = bool
-            visu = yes
+            visu_acl = rw
             knx_dpt = 1
             knx_listen = 0/5/23
             knx_send = 0/0/7
             [[[[dimmen]]]]
                 type = num
-                visu = yes
+                visu_acl = rw
                 knx_dpt = 5
                 knx_listen = 0/4/22
                 knx_send = 0/0/27
                 knx_init = 0/4/22
         [[[Pendelleuchte]]]
             type = bool
-            visu = yes
+            visu_acl = rw
             knx_dpt = 1
             knx_listen = 0/5/24
             knx_send = 0/0/9
             [[[[dimmen]]]]
                 type = num
-                visu = yes
+                visu_acl = rw
                 knx_dpt = 5
                 knx_listen = 0/4/23
                 knx_send = 0/0/26
                 knx_init = 0/4/23
         [[[Grundbeleuchtung]]]
             type = bool
-            visu = yes
+            visu_acl = rw
             knx_dpt = 1
             knx_listen = 0/5/21
             knx_send = 0/0/21
         [[[Stedo_Wuerfel_Sofa]]]
             type = bool
-            visu = yes
+            visu_acl = rw
             knx_dpt = 1
             knx_listen = 0/5/21, 0/0/13
             knx_send = 0/0/13
         [[[Fensterbank]]]
             type = bool
-            visu = yes
+            visu_acl = rw
             knx_dpt = 1
             knx_listen = 0/5/5
             knx_send = 0/0/15
         [[[Stedo_Schrank]]]
             type = bool
-            visu = yes
+            visu_acl = rw
             knx_dpt = 1
             knx_listen = 0/5/3
             knx_send = 0/0/17
         [[[FreigabeTuer]]]
             type = bool
-            visu = yes
+            visu_acl = rw
             knx_dpt = 1
             knx_listen = 0/0/24
             knx_send = 0/0/24
          [[[temperature]]]
             type = num
-            visu = yes
-            history = true #<<- wenn ihr den Wert in Plots verwenden wollt
+            visu_acl = rw
+            sqlite = yes #<<- wenn ihr den Wert in Plots verwenden wollt
              knx_dpt = 9
                 knx_listen = 2/0/6
             [[[[set]]]]
                 type = num
-                visu = yes
-                history = true #<<- wenn ihr den Wert in Plots verwenden wollt
+                visu_acl = rw
+                sqlite = yes #<<- wenn ihr den Wert in Plots verwenden wollt
              knx_dpt = 9
                 knx_send = 2/2/6
                 knx_listen = 2/1/6
             [[[[mode]]]]
                 type = num
-                visu = yes
+                visu_acl = rw
                 knx_dpt = 5
                 knx_listen = 3/2/20
                 knx_send = 3/2/20
             [[[[night]]]]
                 type = num
-                visu = yes
+                visu_acl = rw
                 knx_dpt = 5
                 knx_listen = 3/2/20
                 knx_send = 3/2/20
             [[[[frost]]]]
                 type = num
-                visu = yes
+                visu_acl = rw
                 knx_dpt = 5
                 knx_listen = 3/2/20
             [[[[state]]]]
                 type = num
-                visu = yes
+                visu_acl = rw
                 history = true #<<- wenn ihr den Wert in Plots verwenden wollt
                 knx_dpt = 5
                 knx_listen = 3/1/6
                 knx_init = 3/1/6
         [[[Fenster1]]]
             type = bool
-            visu = yes
+            visu_acl = rw
                 knx_dpt = 1
                 knx_listen = 0/4/26
                 knx_init = 0/4/26
         [[[Tuer]]]
             type = bool
-            visu = yes
+            visu_acl = rw
                 knx_dpt = 1
                 knx_listen = 0/4/24
                 knx_init = 0/4/24
         [[[Rollo]]]
             [[[[move]]]]
                 type = num
-                visu = yes
+                visu_acl = rw
                knx_dpt = 1
                 knx_send = 0/2/5
             [[[[stop]]]]
                 type = num
-                visu = yes
+                visu_acl = rw
                 enforce_updates = yes #<<- damit der Stop-Befehl auch greift
                knx_dpt = 1
                 knx_send = 0/2/6
             [[[[pos]]]]
                 type = num
-                visu = yes
+                visu_acl = rw
                 knx_dpt = 5
                 knx_listen = 0/2/11
                 knx_send = 0/2/12
                 knx_init = 0/2/11
             [[[[tilt]]]]
-                type = num
-                visu = yes
 }}}
 
 Schauen wir uns nun mal die ersten 2 items an.
