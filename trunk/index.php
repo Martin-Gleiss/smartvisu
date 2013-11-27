@@ -87,7 +87,6 @@ if (is_file(const_path."pages/".config_pages."/".$request['page'].".html")
 	}
 
 	$twig->addFilter('_', new Twig_Filter_Function('twig_concat'));
-	$twig->addFilter('round', new Twig_Filter_Function('twig_round'));
 	$twig->addFilter('bit', new Twig_Filter_Function('twig_bit'));
 	$twig->addFilter('substr', new Twig_Filter_Function('twig_substr'));
 	$twig->addFilter('smartdate', new Twig_Filter_Function('twig_smartdate'));

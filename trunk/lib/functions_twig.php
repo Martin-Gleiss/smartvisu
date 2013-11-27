@@ -21,11 +21,6 @@ function twig_concat($val, $text = '')
 	return $val;
 }
 
-function twig_round($val, $precision = 0)
-{
-	return round($val, $precision);
-}
-
 function twig_bit($val)
 {
 	return ($val ? 'true' : 'false');
