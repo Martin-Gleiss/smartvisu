@@ -6,18 +6,17 @@
  * @license     GPL <http://www.gnu.de>
  * ----------------------------------------------------------------------------- 
  */
- 
 
 <div id="menu" class="menu">
 
     <a id="menu-rooms" data-ajax="false" href="index.php">
-        <img class="icon" src="{{ page == 'index' ? icon1 : icon0 }}control_on_off.png"/></a>
+        <img class="icon {{ page starts with 'index' or page starts with 'room' ? 'icon1' }}" src="{{ icon0 }}control_on_off.svg"/></a>
     <a id="menu-weather" data-ajax="false" href="index.php?page=weather.current">
-        <img class="icon" src="{{ page == 'weather' ? icon1 : icon0 }}weather_cloudy.png"/></a>
+        <img class="icon {{ page starts with 'weather' ? 'icon1'}}" src="{{ icon0 }}weather_cloudy.svg"/></a>
     <a id="menu-wp" data-ajax="false" href="index.php?page=stats.temperaturen">
-        <img class="icon" src="{{ page == 'stats.temperaturen' ? icon1 : icon0 }}temp_temperature.png"/></a>
+        <img class="icon {{ page starts with 'stats' ? 'icon1' }}" src="{{ icon0 }}temp_temperature.svg"/></a>
     <a id="menu-system" data-ajax="false" href="index.php?page=config">
-        <img class="icon" src="{{ page == 'config' ? icon1 : icon0 }}message_service.png"/></a>
+        <img class="icon {{ page == 'config' or page == 'team' or page == 'credits' or page == 'copyright' or page == 'smarthome.py' ? 'icon1' }}" src="{{ icon0 }}message_service.svg"/></a>
         
 </div>
     
