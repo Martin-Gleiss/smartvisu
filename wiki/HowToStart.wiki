@@ -74,7 +74,7 @@ diese 2 Verzeichnisse.
 {{{
 /usr/smarthome/items/ <-- dort liegen die items
 }}}
-Falls nötig noch die */usr/local/smarthome/etc/plugin.conf* anpassen. Diese müßt ihr u.a. immer dann anpassen wenn Ihr z.B. den smartVISU Ordner umbenennt oder beispielsweise Plugins von Smarthome.py einbinden wollt. 
+Falls nötig noch die */usr/smarthome/etc/plugin.conf* anpassen. Diese müßt ihr u.a. immer dann anpassen wenn Ihr z.B. den smartVISU Ordner umbenennt oder beispielsweise Plugins von Smarthome.py einbinden wollt. 
 
 === 2.1 Items ===
 Ich empfehle zu Beginn ein paar items zu erstellen.
