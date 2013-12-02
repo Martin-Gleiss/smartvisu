@@ -153,9 +153,7 @@
 * @param unique id for this widget
 * @param one or more gad(s)/item(s). More gads/items in array-form: [ item1 , item2 ]
 * @param unit for displaying, if that unit is found in the language-file that formating is been used (optional)
-* @param formula to use: SUM(VAR), AVG(VAR), SUB(VAR), your own, (optional, default: SUM(VAR)), placeholder "VAR" is replaced with the result of SUM, AVG, SUB of the gad(s)/item(s). 
-*                        If you use "VAR1", "VAR2" ... you can create your own formula. "VAR1", "VAR2"... is replaced with the appropriate gad/item of the list. Then the calculation starts.
-*                        You can't use SUM, AVG, SUB in this mode. You have to ensure, that the quantity of gad(s)/item(s) is equal to the quantity of placeholders.
+* @param formula to use: SUM(VAR), AVG(VAR), SUB(VAR), VAR1 + VAR2, ... "VAR" is replaced with all gad(s)/item(s), "VAR1", "VAR2"... is replaced with the appropriate gad/item of the list (optional, default: SUM(VAR))
 *
 * @see misc/fundamentals#Array-Form
 * @author Raik Alber
@@ -406,7 +404,7 @@
 * @param value send for the 'on' state (optional, default 1)
 * @param value send for the 'off' state (optional, default 0)
 *
-* @author Marco Fleischer
+* @info inspired by Marco Fleischer
 */
 {% macro text(id, gad, txt_on, txt_off, val_on, val_off) %}
 

@@ -67,11 +67,19 @@
   /**
     * transforms a date to date
     */
-	Date.prototype.transDate = function(ret) {
-		if (!ret)
-			ret = '<?php echo trans('format', 'date'); ?>';
+	Date.prototype.transUnit = function(unit) {
+		<?php echo 'formats  = ' . trans('format', '', 'obj') . ';'; ?>
+		
+		if (unit == '') {
+			return this;
+		}
 
-        ret = ret.replace('d', ('0' + this.getDate()).slice(-2));
+		var ret = formats[unit.toLowerCase()];
+		if (ret == undefined) {
+			return this.toString() + ' ' + unit;
+		}
+
+		ret = ret.replace('d', ('0' + this.getDate()).slice(-2));
         ret = ret.replace('m', ('0' + (this.getMonth() + 1)).slice(-2));
 		ret = ret.replace('y', this.getFullYear().toString().substr(2, 2));
         ret = ret.replace('Y', this.getFullYear());
@@ -87,21 +95,21 @@
     * transforms a date to time
     */
   	Date.prototype.transTime = function() {
-		return this.transDate('<?php echo trans('format', 'time'); ?>');
+		return this.transUnit('time');
 	};
 
   /**
     * transforms a date to short
     */
   	Date.prototype.transShort = function() {
-		return this.transDate('<?php echo trans('format', 'short'); ?>');
+		return this.transUnit('short');
 	};
 
   /**
     * transforms a date to long
     */
   	Date.prototype.transLong = function() {
-		return this.transDate('<?php echo trans('format', 'long'); ?>');
+		return this.transUnit('long');
     };
 
 
