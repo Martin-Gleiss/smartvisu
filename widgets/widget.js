@@ -982,7 +982,6 @@ $(document).delegate('span[data-widget="status.notify"]', {
 // ----- i c o n --------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
-
 $(document).delegate('svg[data-widget^="icon."]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1003,7 +1002,7 @@ $(document).delegate('svg[data-widget^="icon."]', {
 	}
 });
 
-// ----- icon.arrow ---------------------------------------------------------
+// ----- icon.arrow -----------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.arrow"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1011,26 +1010,93 @@ $(document).delegate('svg[data-widget="icon.arrow"]', {
 		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
 
 		var pt = [];
-		pt = pt.concat([50, 50], fx.rotate([25, 50], ang, [50, 50]), fx.rotate([50, 18], ang, [50, 50]), fx.rotate([75, 50], ang, [50, 50]), [50, 50]);
+		pt = pt.concat([50, 50], fx.rotate([25, 50], ang, [50, 50]), fx.rotate([50, 18], ang, [50, 50]), fx.rotate([75,
+			50], ang, [50, 50]), [50, 50]);
 		$('#' + this.id + ' #line0').attr('points', pt.toString());
 
 		pt = [];
-		pt = pt.concat(fx.rotate([32, 50], ang, [50, 50]), fx.rotate([32, 60], ang, [50, 50]), fx.rotate([68, 60], ang, [50, 50]), fx.rotate([68, 50], ang, [50, 50]));
+		pt = pt.concat(fx.rotate([32, 50], ang, [50, 50]), fx.rotate([32, 60], ang, [50, 50]), fx.rotate([68, 60], ang,
+			[50, 50]), fx.rotate([68, 50], ang, [50, 50]));
 		$('#' + this.id + ' #line1').attr('points', pt.toString());
 	}
 });
 
-// ----- icon.shutter ---------------------------------------------------------
+// ----- icon.battery ---------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.battery"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 
 		var val = Math.round(response[0] / $(this).attr('data-max') * 40);
-		fx.grid(this, val, [38, 68], [61, 28]);
+		fx.grid(this, val, [39, 68], [61, 28]);
 	}
 });
 
-// ----- icon.compass ----------------------------------------------------------
+// ----- icon.blade -----------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.blade"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		// calculate angle in (0 - ~90°)
+		var ang = response[0] / $(this).attr('data-max') * 0.4 * Math.PI;
+		var pt;
+
+		for (var i = 0; i <= 3; i++) {
+			pt = [];
+			pt = pt.concat(fx.rotate([37, 20 + i * 20], ang, [50, 20 + i * 20]), fx.rotate([63, 20 + i * 20], ang, [50, 20 + i * 20]));
+			$('#' + this.id + ' #blade' + i).attr('points', pt.toString());
+		}
+	}
+});
+
+// ----- icon.blade_z ---------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.blade_z"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		// calculate angle in (0 - 90°)
+		var ang = response[0] / $(this).attr('data-max') * 0.5 * Math.PI * -1;
+
+		var pt = [];
+		pt = pt.concat(fx.rotate([25, 25], ang, [50, 30]), fx.rotate([45, 25], ang, [50, 30]), fx.rotate([55, 35], ang, [50, 30]), fx.rotate([75, 35], ang, [50, 30]));
+		$('#' + this.id + ' #blade0').attr('points', pt.toString());
+
+		pt = [];
+		pt = pt.concat(fx.rotate([25, 65], ang, [50, 70]), fx.rotate([45, 65], ang, [50, 70]), fx.rotate([55, 75], ang, [50, 70]), fx.rotate([75, 75], ang, [50, 70]));
+		$('#' + this.id + ' #blade1').attr('points', pt.toString());
+	}
+});
+
+// ----- icon.blade_arc -------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.blade_arc"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		// calculate angle in (0 - 90°)
+		var ang = response[0] / $(this).attr('data-max') * -0.7 * Math.PI + 0.35 * Math.PI;
+		var pt;
+
+		pt = 'M ' + fx.rotate([30, 40], ang, [50, 37]) + ' Q ' + fx.rotate([50, 22], ang, [50, 30]) + ' ' + fx.rotate([70, 40], ang, [50, 37]);
+		$('#' + this.id + ' #blade0').attr('d', pt);
+
+		pt = 'M ' + fx.rotate([30, 80], ang, [50, 77]) + ' Q ' + fx.rotate([50, 62], ang, [50, 70]) + ' ' + fx.rotate([70, 80], ang, [50, 77]);
+		$('#' + this.id + ' #blade1').attr('d', pt);
+	}
+});
+
+// ----- icon.clock -----------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.clock"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var ang_l = (response[0] % 60) / 60 * 2 * Math.PI;
+		$('#' + this.id + ' #hand_l').attr('points', '50,50 ' + fx.rotate([50, 30], ang_l, [50, 50]).toString());
+
+		var ang_s = (Math.floor(response[0] / 60) * 5) / 60 * 2 * Math.PI;
+		$('#' + this.id + ' #hand_s').attr('points', '50,50 ' + fx.rotate([50, 35], ang_s, [50, 50]).toString());
+	}
+});
+
+// ----- icon.compass ---------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.compass"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1047,6 +1113,38 @@ $(document).delegate('svg[data-widget="icon.compass"]', {
 	}
 });
 
+// ----- icon.graph -----------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.graph"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var val = Math.round(response[0] / $(this).attr('data-max') * 70);
+		var graph = $('#' + this.id + ' #graph').attr('d').substr(8);
+		var points = graph.split('L');
+
+		if (points.length > 8) {
+			points.shift();
+		}
+
+		graph = 'M 15,85 ';
+		for (var i = 1; i < points.length; i++) {
+			graph += 'L ' + (i * 10 + 5) + ',' + points[i].substr(points[i].indexOf(',') + 1).trim() + ' ';
+		}
+
+		$('#' + this.id + ' #graph').attr('d', graph + 'L ' + (i * 10 + 5) + ',' + (85 - val));
+	}
+});
+
+// ----- icon.meter -----------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.meter"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var ang = response[0] / $(this).attr('data-max') * 0.44 * Math.PI;
+		$('#' + this.id + ' #pointer').attr('points', '50,85 ' + fx.rotate([15, 48], ang, [50, 85]).toString());
+	}
+});
+
 // ----- icon.shutter ---------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.shutter"]', {
 	'update': function (event, response) {
@@ -1057,7 +1155,7 @@ $(document).delegate('svg[data-widget="icon.shutter"]', {
 	}
 });
 
-// ----- icon.windrose ---------------------------------------------------------
+// ----- icon.windrose --------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.windrose"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1074,7 +1172,7 @@ $(document).delegate('svg[data-widget="icon.windrose"]', {
 	}
 });
 
-// ----- icon.windsock ---------------------------------------------------------
+// ----- icon.windsock --------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.windsock"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
