@@ -253,4 +253,4 @@ Wem smatVISU und SmartHome.py gefällt, der kann ja wenn er mag als Unterstützu
 
 
 Hier noch die Beispielfiles:
-http://smartvisu.googlecode.com/svn/wiki/files/beginners.zip
+http://smartvisu.googlecode.com/svn/wiki/files/beginners.rar
