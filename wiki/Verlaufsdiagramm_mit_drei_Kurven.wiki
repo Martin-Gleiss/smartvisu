@@ -16,7 +16,7 @@ OK.... der Plot soll weiterhin folgendes beinhalten:
 = 1. Einbindung des Plugins =
 Das benötigte SQLite-Plugin ist bereits in Smarthome.py intergriert. 
 Wie im Wiki "HowToStart" steht, müssen wir in den item noch bei jedem Wert der in einem Plot angezeigt werden soll noch eine weitere Zeile.
-*history = true*
+*sqlite = yes*
 
 Das Beispiel-Item könnte dann so aussehen
 {{{
@@ -26,21 +26,21 @@ Das Beispiel-Item könnte dann so aussehen
             name = WirkleistungL1
             type = num
             visu = yes
-            history = true
+            sqlite = yes
                 knx_dpt = 14
                 knx_listen = 5/2/2
         [[[PL2]]]
             name = WirkleistungL2
             type = num
             visu = yes
-            history = true
+            sqlite = yes
                 knx_dpt = 14
                 knx_listen = 5/2/3
         [[[PL3]]]
             name = WirkleistungL3
             type = num
             visu = yes
-            history = true
+            sqlite = yes
                 knx_dpt = 14
                 knx_listen = 5/2/4
 }}}
