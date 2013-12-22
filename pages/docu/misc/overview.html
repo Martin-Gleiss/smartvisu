@@ -18,7 +18,13 @@
 
 	<h2>Basic</h2>
 	{{ basic.value('value1', 'bath_light_switch', 'Unit') }},
+	
+	
 	{{ basic.float('float1', 'bath_light_switch', '°') }},
+
+	{{ basic.value('value2', 'bath_value', 'int') }},
+	{{ basic.value('value3', 'bath_value', 'float') }},
+	
 	Formula: {{ basic.formula('formula1', ['bath_p1', 'bath_p2', 'bath_p3'], 'W', '( VAR ) / 1000 * 230') }}
 	Date: {{ basic.value('time1', 'bath_time', 'long') }},
 
