@@ -12,12 +12,12 @@
 * The diagram showing curves of relative humidity and effective temperature superimposed upon rectangular coordinates. The comfort-zones indicate when humans feel good.
 *
 * @param unique id for this widget
-* @param a gad/item for the temperature
-* @param a gad/item for the humidity
+* @param a item for the temperature
+* @param a item for the humidity
 */
-{% macro comfortchart(id, gad_temp, gad_humidity) %}
+{% macro comfortchart(id, item_temp, item_humidity) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.comfortchart" data-item="{{ gad_temp }}, {{ gad_humidity }}"
+	<div id="{{ uid(page, id) }}" data-widget="plot.comfortchart" data-item="{{ item_temp }}, {{ item_humidity }}"
 		data-label="{{ lang('plot.comfortchart', 'label') }}" data-axis="{{ lang('plot.comfortchart', 'axis') }}"
 		class="plot"></div>
 
@@ -34,20 +34,20 @@
 * @param the minimum y-axis: Array format, left/right axis [10 0] would be 10 on left 0 on right axis
 * @param the maximum y-axis: Array format, left/right axis [10 0] would be 10 on left 0 on right axis
 * @param the step between two time-points (optional, only for 'offline'-driver)
-* @param label/s for each series as list with one Entry per GAD
-* @param color/s for each series e. g. '#f00' for red (optional, default: sutiable for design) as list with one Entry per GAD
+* @param label/s for each series as list with one Entry per item
+* @param color/s for each series e. g. '#f00' for red (optional, default: sutiable for design) as list with one Entry per item
 * @param type/s for each series: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')
 * @param title/s for the x-axis and y-axis
-* @param assignment of Axes: [1, 2, 1, 1, 1] would assign all gads/items to the left axis and the others to the right axis
+* @param assignment of Axes: [1, 2, 1, 1, 1] would assign all items/items to the left axis and the others to the right axis
 * @param minimum time while zooming in sec (optional, duration-format)
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
 */
 
-{% macro multiaxes(id, gad, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes, axesassign) %}
+{% macro multiaxes(id, item, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes, axesassign) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.multiaxes" data-item="{{ implode(gad, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}"
+	<div id="{{ uid(page, id) }}" data-widget="plot.multiaxes" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}"
 		{% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
 		data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}"
 		data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axes) }}" data-axesassign="{{ implode(axesassign) }}"
@@ -76,9 +76,9 @@
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
 */
-{% macro period(id, gad, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes, zoom) %}
+{% macro period(id, item, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes, zoom) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(gad, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}"
+	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}"
 		{% if ymin is not empty %} data-ymin="{{ ymin }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ ymax }}" {% endif %}
 		data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}"
 		data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axes) }}"
@@ -92,13 +92,13 @@
 * A temperature-chart for use with an rtr. Plots actual and set temperature. If the state is given it will be shown as pie.
 *
 * @param unique id for this widget
-* @param series of a gad/item for the actual-temperature
-* @param series of a gad/item for the set-temperature
-* @param series of a gad/item for the state of the actor. It is shown as percental value within the pie. (> 0 is considered as 'on')
+* @param series of a item for the actual-temperature
+* @param series of a item for the set-temperature
+* @param series of a item for the state of the actor. It is shown as percental value within the pie. (> 0 is considered as 'on')
 */
-{% macro rtr(id, gad_actual, gad_set, gad_state) %}
+{% macro rtr(id, item_actual, item_set, item_state) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([gad_actual, gad_set, gad_state], ['avg', '1d', 0]) }}"
+	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([item_actual, item_set, item_state], ['avg', '1d', 0]) }}"
 		data-step="50" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
 		class="plot"></div>
 
@@ -109,20 +109,20 @@
 * A complete house temperature plot. The rose shows all rooms with there actual and set temperature in one diagramm.
 *
 * @param unique id for this widget
-* @param a gad/item for the actual-temperature. More item/s in array form: [ item1 , item2 ]
-* @param a gad/item for the set-temperature. More item/s in array form: [ item1 , item2 ]
+* @param a item for the actual-temperature. More item/s in array form: [ item1 , item2 ]
+* @param a item for the set-temperature. More item/s in array form: [ item1 , item2 ]
 * @param label/s for each axis
 *
 * @see misc/fundamentals#Array-Form
 */
-{% macro temprose(id, gad_actual, gad_set, axis) %}
+{% macro temprose(id, item_actual, item_set, axis) %}
 
 	{% if once('highcharts-more') %}
 		<script src="vendor/plot.highcharts/highcharts-more.js"></script>
 	{% endif %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.temprose" data-item="{{ implode(gad_actual) }}, {{ implode(gad_set) }}"
-		data-count="{{ gad_actual|length }}" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ implode(axis) }}"
+	<div id="{{ uid(page, id) }}" data-widget="plot.temprose" data-item="{{ implode(item_actual) }}, {{ implode(item_set) }}"
+		data-count="{{ item_actual|length }}" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ implode(axis) }}"
 		class="plot"></div>
 
 {% endmacro %}

@@ -340,9 +340,11 @@ $(document).delegate('div[data-widget="basic.rgb-popup"] > div', {
 // ----- basic.shifter ---------------------------------------------------------
 $(document).delegate('span[data-widget="basic.shifter"]', {
 	'update': function (event, response) {
-		var step = Math.min((response[1] / $(this).attr('data-max') * 10 + 0.49).toFixed(0) * 10, 100);
+		// response is: {{ gad_value }}, {{ gad_switch }}
+		
+		var step = Math.min((response[0] / $(this).attr('data-max') * 10 + 0.49).toFixed(0) * 10, 100);
 
-		if (response[0] != 0 && step > 0) {
+		if (response[1] != 0 && step > 0) {
 			$('#' + this.id + ' img').attr('src', $(this).attr('data-pic-on').replace('00', step));
 		}
 		else {
@@ -354,10 +356,10 @@ $(document).delegate('span[data-widget="basic.shifter"]', {
 		var items = $(this).attr('data-item').explode();
 
 		if ($('#' + this.id + ' img').attr('src') == $(this).attr('data-pic-off')) {
-			io.write(items[0], 1);
+			io.write(items[1], 1);
 		}
 		else {
-			io.write(items[0], 0);
+			io.write(items[1], 0);
 		}
 	}
 });
@@ -860,7 +862,7 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 						}
 					],
 					center: [ '95%', '90%' ],
-					size: 15,
+					size: 35,
 					showInLegend: false,
 					dataLabels: { enabled: false }
 				}

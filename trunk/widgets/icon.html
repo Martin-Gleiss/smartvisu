@@ -12,14 +12,14 @@
 * a arrow
 *
 * @param unique id for this widget
-* @param a gad/item for switching
-* @param a gad/item for the height of the blades
+* @param a item for switching
+* @param a item for the height of the blades
 * @param the minimum value for 0° (optional, default 0, for future use)
 * @param the maximum value for 360° (optional, default 255)
 */
-{% macro arrow(id, gad_switch, gad_value, min, max) %}
+{% macro arrow(id, item_switch, item_value, min, max) %}
 
-	<svg id="{{ uid(page, id) }}" data-widget="icon.arrow" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	<svg id="{{ uid(page, id) }}" data-widget="icon.arrow" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<polyline id="line0" points="50,50, 25,50, 50,18, 75,50, 50,50" fill="none" />
@@ -34,14 +34,14 @@
 * a battery
 *
 * @param unique id for this widget
-* @param a gad/item for switching
-* @param a gad/item for the angle of the pin
+* @param a item for switching
+* @param a item for the angle of the pin
 * @param the minimum value for 0 (optional, default 0, for future use)
 * @param the maximum value for 255 (optional, default 255)
 */
-{% macro battery(id, gad_switch, gad_value, min, max) %}
+{% macro battery(id, item_switch, item_value, min, max) %}
 
-	<svg id="{{ uid(page, id) }}" data-widget="icon.battery" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	<svg id="{{ uid(page, id) }}" data-widget="icon.battery" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<rect x="44" y="21" width="12" height="3" />
@@ -56,16 +56,16 @@
 * a blade
 *
 * @param unique id for this widget
-* @param a gad/item for switching
-* @param a gad/item for the angle of the blades
+* @param a item for switching
+* @param a item for the angle of the blades
 * @param the minimum value for 0 (optional, default 0, for future use)
 * @param the maximum value for 255  (optional, default 255)
 *
 * @author Mario Zanier
 */
-{% macro blade(id, gad_switch, gad_value, min, max) %}
+{% macro blade(id, item_switch, item_value, min, max) %}
 
-	<svg id="{{ uid(page, id) }}" data-widget="icon.blade" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	<svg id="{{ uid(page, id) }}" data-widget="icon.blade" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<line class="light" x1="50" y1="10" x2="50" y2="15" />
@@ -87,15 +87,15 @@
 * a blade (z profile)
 *
 * @param unique id for this widget
-* @param a gad/item for switching
-* @param a gad/item for the angle of the blades
+* @param a item for switching
+* @param a item for the angle of the blades
 * @param the minimum value for 0 (optional, default 0, for future use)
 * @param the maximum value for 255 (optional, default 255)
 *
 * @author Mario Zanier
 */
-{% macro blade_z(id, gad_switch, gad_value, min, max) %}
-	<svg id="{{ uid(page, id) }}" data-widget="icon.blade_z" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+{% macro blade_z(id, item_switch, item_value, min, max) %}
+	<svg id="{{ uid(page, id) }}" data-widget="icon.blade_z" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<line class="light" x1="50" y1="10" x2="50" y2="20" />
@@ -112,15 +112,15 @@
 * a blade (round profile)
 *
 * @param unique id for this widget
-* @param a gad/item for switching
-* @param a gad/item for the angle of the blades
+* @param a item for switching
+* @param a item for the angle of the blades
 * @param the minimum value for 0 (optional, default 0, for future use)
 * @param the maximum value for 255 (optional, default 255)
 *
 * @author Mario Zanier
 */
-{% macro blade_arc(id, gad_switch, gad_value, min, max) %}
-	<svg id="{{ uid(page, id) }}" data-widget="icon.blade_arc" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+{% macro blade_arc(id, item_switch, item_value, min, max) %}
+	<svg id="{{ uid(page, id) }}" data-widget="icon.blade_arc" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<line class="light" x1="50" y1="10" x2="50" y2="20" />
@@ -137,12 +137,12 @@
 * A clock
 *
 * @param unique id for this widget
-* @param a gad/item for switching
-* @param a gad/item for the angle of the blades
+* @param a item for switching
+* @param a item for the angle of the blades
 */
-{% macro clock(id, gad_switch, gad_value, min, max) %}
+{% macro clock(id, item_switch, item_value, min, max) %}
 
-	<svg id="{{ uid(page, id) }}" data-widget="icon.clock" {% if gad_value is not empty %} data-item="{{ gad_value }}, {{ gad_switch }}" {%  endif %}
+	<svg id="{{ uid(page, id) }}" data-widget="icon.clock" {% if item_value is not empty %} data-item="{{ item_value }}, {{ item_switch }}" {%  endif %}
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<rect rx="3" x="15" y="15" width="70" height="70" fill="none"/>
@@ -161,14 +161,14 @@
 * A compass
 *
 * @param unique id for this widget
-* @param a gad/item for switching
-* @param a gad/item for the angle of the pin
+* @param a item for switching
+* @param a item for the angle of the pin
 * @param the minimum value for 0° (optional, default 0, for future use)
 * @param the maximum value for 360° (optional, default 255)
 */
-{% macro compass(id, gad_switch, gad_value, min, max) %}
+{% macro compass(id, item_switch, item_value, min, max) %}
 
-	<svg id="{{ uid(page, id) }}" data-widget="icon.compass" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	<svg id="{{ uid(page, id) }}" data-widget="icon.compass" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<line x1="50" y1="1" x2="50" y2="12" />
@@ -188,14 +188,14 @@
 * a graph
 *
 * @param unique id for this widget
-* @param a gad/item for switching
-* @param a gad/item for the height of the blades
+* @param a item for switching
+* @param a item for the height of the blades
 * @param the minimum value for 0 (optional, default 0, for future use)
 * @param the maximum value for 255 (optional, default 255)
 */
-{% macro graph(id, gad_switch, gad_value, min, max) %}
+{% macro graph(id, item_switch, item_value, min, max) %}
 
-	<svg id="{{ uid(page, id) }}" data-widget="icon.graph" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	<svg id="{{ uid(page, id) }}" data-widget="icon.graph" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<polyline points="7,20, 15,20" fill="none" />
@@ -213,14 +213,14 @@
 * a meter
 *
 * @param unique id for this widget
-* @param a gad/item for switching
-* @param a gad/item for the height of the blades
+* @param a item for switching
+* @param a item for the height of the blades
 * @param the minimum value for 0 (optional, default 0, for future use)
 * @param the maximum value for 255 (optional, default 255)
 */
-{% macro meter(id, gad_switch, gad_value, min, max) %}
+{% macro meter(id, item_switch, item_value, min, max) %}
 
-	<svg id="{{ uid(page, id) }}" data-widget="icon.meter" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	<svg id="{{ uid(page, id) }}" data-widget="icon.meter" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<line x1="10" y1="40" x2="3" y2="32" />
@@ -240,14 +240,14 @@
 * a shutter
 *
 * @param unique id for this widget
-* @param a gad/item for switching
-* @param a gad/item for the height of the blades
+* @param a item for switching
+* @param a item for the height of the blades
 * @param the minimum value for 0 (optional, default 0, for future use)
 * @param the maximum value for 255 (optional, default 255)
 */
-{% macro shutter(id, gad_switch, gad_value, min, max) %}
+{% macro shutter(id, item_switch, item_value, min, max) %}
 
-	<svg id="{{ uid(page, id) }}" data-widget="icon.shutter" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	<svg id="{{ uid(page, id) }}" data-widget="icon.shutter" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<rect rx="1" x="15" y="25" width="70" height="4" />
@@ -264,14 +264,14 @@
 * a windrose
 *
 * @param unique id for this widget
-* @param a gad/item for switching
-* @param a gad/item for the angle of the pin
+* @param a item for switching
+* @param a item for the angle of the pin
 * @param the minimum value for 0° (optional, default 0, for future use)
 * @param the maximum value for 360°  (optional, default 255)
 */
-{% macro windrose(id, gad_switch, gad_value, min, max) %}
+{% macro windrose(id, item_switch, item_value, min, max) %}
 
-	<svg id="{{ uid(page, id) }}" data-widget="icon.windrose" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	<svg id="{{ uid(page, id) }}" data-widget="icon.windrose" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<line x1="50" y1="1" x2="50" y2="12" />
@@ -291,14 +291,14 @@
 * a windsock
 *
 * @param unique id for this widget
-* @param a gad/item for switching
-* @param a gad/item for the angle of the pin
+* @param a item for switching
+* @param a item for the angle of the pin
 * @param the minimum value for 0° (optional, default 0, for future use)
 * @param the maximum value for ~90° (optional, default 255)
 */
-{% macro windsock(id, gad_switch, gad_value, min, max) %}
+{% macro windsock(id, item_switch, item_value, min, max) %}
 
-	<svg id="{{ uid(page, id) }}" data-widget="icon.windsock" data-item="{{ gad_value }}, {{ gad_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	<svg id="{{ uid(page, id) }}" data-widget="icon.windsock" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<g>
 			<line x1="80" y1="22" x2="80" y2="95" />
