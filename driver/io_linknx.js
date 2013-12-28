@@ -53,7 +53,7 @@ var io = {
 	trigger: function (name, val) {
 		// not supported
 	},
-	
+
 	/**
 	 * Initializion of the driver
 	 *
@@ -132,13 +132,9 @@ var io = {
 			cache: false
 		})
 			.done(function (response) {
-				if (typeof(response) == 'object') {
-					widget.update(item, response[item]);
-				}
-				else {
-					notify.error('Driver: linknx', response);
-				}
+				widget.update(item, response[item]);
 			})
+			.error(notify.json);
 	},
 
 	/**
@@ -156,16 +152,12 @@ var io = {
 			cache: false
 		})
 			.done(function (response) {
-				if (typeof(response) == 'object') {
-					widget.update(item, response[item]);
-					if (timer_run) {
-						io.start();
-					}
-				}
-				else {
-					notify.error('Driver: linknx', response);
+				widget.update(item, response[item]);
+				if (timer_run) {
+					io.start();
 				}
 			})
+			.error(notify.json);
 	},
 
 	/**
@@ -191,15 +183,11 @@ var io = {
 				cache: false
 			})
 				.done(function (response) {
-					if (typeof(response) == 'object') {
-						$.each(response, function (item, val) {
-							widget.update(item, val);
-						})
-					}
-					else {
-						notify.error('Driver: linknx', response);
-					}
+					$.each(response, function (item, val) {
+						widget.update(item, val);
+					})
 				})
+				.error(notify.json);
 		}
 	}
 

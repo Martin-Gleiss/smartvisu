@@ -341,7 +341,7 @@ $(document).delegate('div[data-widget="basic.rgb-popup"] > div', {
 $(document).delegate('span[data-widget="basic.shifter"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
-		
+
 		var step = Math.min((response[0] / $(this).attr('data-max') * 10 + 0.49).toFixed(0) * 10, 100);
 
 		if (response[1] != 0 && step > 0) {
@@ -570,8 +570,11 @@ $(document).delegate('[data-widget="basic.value"]', {
 			var date = new Date(response);
 			$("#" + this.id).html(date.transUnit(unit));
 		}
-		else {
+		else if (unit != '' && $.isNumeric(response)) {
 			$("#" + this.id).html(parseFloat(response).transUnit(unit));
+		}
+		else {
+			$("#" + this.id).html(response);
 		}
 	}
 });
