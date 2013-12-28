@@ -221,7 +221,7 @@ var io = {
 	 */
 	get: function (item) {
 
-		$.ajax({  url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/r?' + getForUrl,
+		$.ajax({ url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/r?' + getForUrl,
 			type: "GET",
 			dataType: 'json',
 			async: true,
@@ -230,6 +230,7 @@ var io = {
 			.done(function (response) {
 				widget.update(item, response[item]);
 			})
+			.error(notify.error('Driver: eibd', "Error reading item!"));
 	},
 
 	/**
@@ -240,8 +241,7 @@ var io = {
 
 		io.stop();
 
-		$.ajax
-		({  url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/w',
+		$.ajax({ url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/w',
 			data: ({a: io.getItemFromItem(item), v: io.convertData(val, io.getDataTypeFromItem(item), 'to'), ts: $.now()}),
 			type: "GET",
 			dataType: 'json',
@@ -254,6 +254,7 @@ var io = {
 					io.start();
 				}
 			})
+			.error(notify.error('Driver: eibd', "Error writing item!"));
 	},
 
 	/**
@@ -287,7 +288,7 @@ var io = {
 
 			getForUrl = getForUrl + '&i=' + io.actualIndexNumber;
 
-			io.actualRequest = $.ajax({  url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/r?' + getForUrl,
+			io.actualRequest = $.ajax({ url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/r?' + getForUrl,
 				type: 'GET',
 				dataType: 'json',
 				async: true,

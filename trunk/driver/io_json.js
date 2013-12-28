@@ -134,6 +134,7 @@ var io = {
 			.done(function (response) {
 				widget.update(item, response[item]);
 			})
+			.error(notify.json);
 	},
 
 	/**
@@ -157,6 +158,7 @@ var io = {
 					io.start();
 				}
 			})
+			.error(notify.json);
 	},
 
 	/**
@@ -186,6 +188,7 @@ var io = {
 						widget.update(item, val);
 					})
 				})
+				.error(notify.json);
 		}
 	}
 

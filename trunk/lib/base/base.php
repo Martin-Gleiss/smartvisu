@@ -27,22 +27,6 @@
 // ----- number ----------------------------------------------------------------
 
   /**
-    * transforms a number to int
-    */
-  	Number.prototype.transInt = function() {
-		<?php $fmt = trans('format', 'int'); ?>
-		return Math.round(this);
-	};
-
-  /**
-    * transforms a number to float
-    */
-  	Number.prototype.transFloat = function() {
-		<?php $fmt = trans('format', 'float'); ?>
-		return this.toFixed(<?php echo $fmt[4] ?>).replace('.', '<?php echo $fmt[3] ?>');
-	};
-
-  /**
 	* transforms a number to a defined unit
 	*/
 	Number.prototype.transUnit = function(unit) {
@@ -51,14 +35,27 @@
 		if (unit == '') {
 			return this;
 		}
-
+		
 		var fmt = eval("formats['" + unit.toLowerCase() + "']");
 		if (fmt == undefined) {
 			return this.toString() + ' ' + unit;
 		}
+		else
+			return printf(fmt, this);
+	};
+
+  /**
+	* transforms a number to int
+	*/
+	Number.prototype.transInt = function() {
+		return this.transUnit('int');
+	};
 	
-		var ret = this.toFixed(fmt[4]).replace('.', fmt[3]);
-		return ret.toString() + fmt.substr(fmt.lastIndexOf(' '));
+  /**
+	* transforms a number to float
+	*/
+	Number.prototype.transFloat = function() {
+		return this.transUnit('float');
 	};
 
 

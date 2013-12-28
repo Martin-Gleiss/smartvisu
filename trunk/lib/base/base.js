@@ -10,6 +10,92 @@
 
 /**
  * -----------------------------------------------------------------------------
+ * J A V A S C R I P T   F U N C T I O N S
+ * -----------------------------------------------------------------------------
+ */
+function printf(format, val) {
+	var regex = /%%|%(\d+\$)?([-+\'#0 ]*)(\*\d+\$|\*|\d+)?(([\.,])(\*\d+\$|\*|\d+))?([sScboxXuideEfFgG])/g;
+
+	var fmtString = function (val, wth, prc) {
+		if (prc > 0) {
+			val = val.slice(0, prc);
+		}
+		return val;
+	};
+
+	var fmtBase = function (val, base, pre) {
+		var number = val >>> 0;
+		pre = pre && number && { '2': '0b', '8': '0', '16': '0x' }[base] || '';
+
+		return pre + number.toString(base);
+	};
+
+	var fmtFloat = function (val, sep) {
+		if (sep != '.') {
+			val = val.replace('.', sep);
+		}
+
+		return val;
+	};
+
+	var fmt = function (str, idx, flg, wth, prt, sep, prc, typ) {
+		// DEBUG: console.log('[base.printf]', 'str:' + str, 'idx:' + idx, 'flg:' + flg, 'wth:' + wth, 'prt' + prt, 'sep:' + sep, 'prc:' + prc, 'typ:' + typ);
+
+		var num, pre = '';
+
+		if (str === '%%') {
+			return '%';
+		}
+
+		if (flg == '+') {
+			pre = '+';
+		}
+
+		switch (typ) {
+			case 's':
+				return fmtString(String(val), wth, prc);
+			case 'S':
+				return fmtString(String(val), wth, prc).toUpperCase();
+			case 'c':
+				return fmtString(String.fromCharCode(+val), wth, prc);
+			case 'b':
+				return fmtBase(val, 2, pre);
+			case 'o':
+				return fmtBase(val, 8, pre);
+			case 'x':
+				return fmtBase(val, 16, pre);
+			case 'X':
+				return fmtBase(val, 16, pre).toUpperCase();
+			case 'u':
+				return fmtBase(val, 10, pre);
+			case 'i':
+			case 'd':
+				num = +val || 0;
+				num = Math.round(num - num % 1);
+				pre = num < 0 ? '-' : pre;
+				return pre + String(Math.abs(num));
+			case 'e':
+			case 'E':
+			case 'f':
+			case 'F':
+			case 'g':
+			case 'G':
+				num = +val;
+				pre = num < 0 ? '-' : pre;
+				var method = ['toExponential', 'toFixed', 'toPrecision']['efg'.indexOf(typ.toLowerCase())];
+				var transform = ['toString', 'toUpperCase']['eEfFgG'.indexOf(typ) % 2];
+				return fmtFloat((pre + Math.abs(num)[method](prc))[transform](), sep);
+			default:
+				return str;
+		}
+	}
+
+	return format.replace(regex, fmt);
+}
+
+
+/**
+ * -----------------------------------------------------------------------------
  * J A V A S C R I P T   S T A T I C   E X T E N T I O N S
  * -----------------------------------------------------------------------------
  */
@@ -355,16 +441,14 @@ var notify = {
 	 * @param    '600 smartVISU Config Error'
 	 * @param    '601 smartVISU Service Error'
 	 * @param    '602 smartVISU Template Error'
+	 * @param    '603 smartVISU Driver Error'
 	 * @param    '610 smartVISU Updatecheck Error'
 	 */
 	json: function (jqXHR, status, errorthrown) {
 
-		var messages = jQuery.parseJSON(jqXHR.responseText)
+		var message = jqXHR.responseJSON;
 
-		for (var i = 0; i < messages.length; i++) {
-			notify.add('error', 'ERROR', messages[i].title, messages[i].text);
-		}
-
+		notify.add('error', 'ERROR', message.title, message.text);
 		notify.display();
 	},
 
@@ -717,9 +801,9 @@ var widget = {
 	/**
 	 * Is the item a series?
 	 */
-	checkseries: function(item) {
+	checkseries: function (item) {
 		var pt = item.split('.');
-		return ($.inArray(pt[pt.length - 3], Array('avg', 'min', 'max', 'sum', 'diff', 'rate', 'on')) >=0 );
+		return ($.inArray(pt[pt.length - 3], Array('avg', 'min', 'max', 'sum', 'diff', 'rate', 'on')) >= 0 );
 	},
 
 
@@ -738,8 +822,9 @@ var widget = {
 			if (!($(this).attr('data-widget') == 'status.log')) {
 				var items = widget.explode($(this).attr('data-item'));
 				for (var i = 0; i < items.length; i++) {
-					if (!widget.checkseries(items[i]))
+					if (!widget.checkseries(items[i])) {
 						unique[items[i]] = '';
+					}
 				}
 			}
 		});
