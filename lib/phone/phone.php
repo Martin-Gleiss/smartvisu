@@ -26,6 +26,7 @@ class phone extends service
 		$this->debug = ($request['debug'] == 1);
 
 		$this->server = config_phone_server;
+		$this->port = config_phone_port;
 		$this->user = config_phone_user;
 		$this->pass = config_phone_pass;
 	}
@@ -45,6 +46,8 @@ class phone extends service
 				// is there a picture to the caller?
 				if ($ds['number'] != '' and is_file(const_path.'pics/phone/'.$ds['number'].'.jpg'))
 					$ds['pic'] = $ds['number'].'.jpg';
+				elseif ($ds['number'] != '' and is_file(const_path.'pics/phone/'.$ds['number'].'.png'))
+					$ds['pic'] = $ds['number'].'.png';
 				else
 					$ds['pic'] = '0.jpg';
 
