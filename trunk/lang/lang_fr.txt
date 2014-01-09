@@ -187,7 +187,7 @@ $lang['wunderground']['from']		= 'de';
 
 
 // ----- Phone -----------------------------------------------------------------
-$lang['phone']['unknown']           = 'inconnue';
-$lang['phone']['incoming']          = 'entrante';
-$lang['phone']['outgoing']          = 'sortants';
+$lang['phone']['unknown']           = 'inconnu';
+$lang['phone']['incoming']          = 'entrant';
+$lang['phone']['outgoing']          = 'sortant';
 $lang['phone']['missed']            = 'manqué';
