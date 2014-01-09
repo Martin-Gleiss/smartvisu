@@ -143,6 +143,11 @@ define ('config_phone_service', 'offline');
 define ('config_phone_server', '192.168.x.x');
 
 /**
+ * What is the tcp-port of the phone-system?
+ */
+define ('config_phone_port', '');
+
+/**
  * Is there a user to authenticate?
  */
 define ('config_phone_user', '');

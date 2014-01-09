@@ -225,6 +225,13 @@
 				</div>
 
 				<div data-role="fieldcontain">
+					<label for="phone_port">Port</label>
+					<input type="text" name="phone_port" id="phone_port" />
+					{{ forms.text_init('phone_port', config_phone_port|e ) }}
+					<div class="note">*if service requires one</div>
+				</div>
+
+				<div data-role="fieldcontain">
 					<label for="phone_user">User</label>
 					<input type="text" name="phone_user" id="phone_user" />
 					{{ forms.text_init('phone_user', config_phone_user|e ) }}
