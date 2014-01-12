@@ -69,7 +69,7 @@ class phone_ncid extends phone
 				if ($exploded_line[8] == 'PRIVATE') {
 					$exploded_line[8] = '-';
                                 }
-				$this->data[] = array('pos' => $line_index, 'dir' => '1', 'date' => substr($exploded_line[2], 0,2).'.'.substr($exploded_line[2], 2,2).'.'.substr($exploded_line[2], 4,4).' '.substr($exploded_line[4], 0,2).':'.substr($exploded_line[4], 2,2), 'number' => $exploded_line[8], 'name' => $exploded_line[12], 'duration' => '--:--');
+				$this->data[] = array('pos' => $line_index, 'dir' => '1', 'date' => substr($exploded_line[2], 2,2).'.'.substr($exploded_line[2], 0,2).'.'.substr($exploded_line[2], 4,4).' '.substr($exploded_line[4], 0,2).':'.substr($exploded_line[4], 2,2), 'number' => $exploded_line[8], 'name' => $exploded_line[12], 'duration' => '--:--');
     			}
 		$line_index ++;
 		}
