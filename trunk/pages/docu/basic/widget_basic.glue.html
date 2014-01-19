@@ -21,15 +21,15 @@
 	If you press the switch, a write for the switch and a (delayed) read-request for the slider will be send.
 	<div class="twig">
 		<code class="prettyprint">
-			&#123;&#123; basic.switch('switch1', 'bath_light_switch') &#125;&#125;<br />
-			&#123;&#123; basic.slider('slider1', 'bath_light_value') &#125;&#125;<br />
+			&#123;&#123; basic.switch('switch1', 'bath.light.switch') &#125;&#125;<br />
+			&#123;&#123; basic.slider('slider1', 'bath.light.value') &#125;&#125;<br />
 			&#123;&#123; basic.glue('switch1', 'slider1') &#125;&#125;<br />
 		</code>
 	</div>
 	<div class="html">
 		<div class="dimmer">
-			{{ basic.switch('switch1', 'bath_light_switch', icon1~'light_light.png', icon0~'light_light.png') }}
-			{{ basic.slider('slider1', 'bath_light_value') }}
+			{{ basic.switch('switch1', 'bath.light.switch', icon1~'light_light.png', icon0~'light_light.png') }}
+			{{ basic.slider('slider1', 'bath.light.value') }}
 			{{ basic.glue('switch1', 'slider1') }}
 		</div>
 	</div>

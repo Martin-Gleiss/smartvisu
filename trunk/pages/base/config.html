@@ -117,7 +117,7 @@
 					<label for="driver_address">Address
 						<div class="note">URL / IP</div>
 					</label>
-					<input type="text" name="driver_address" id="driver_address" />
+					<input type="text" name="driver_address" id="driver_address" style="letter-spacing: 0.1em;" />
 					{{ forms.text_init('driver_address', config_driver_address|e ) }}
 				</div>
 
@@ -147,18 +147,15 @@
 					break;
 
 				case 'linknx':
-					$('#driver_address').val('192.168.x.x');
 					$('#driver_port').val('1028');
 					break;
 
 				case 'smarthome.py':
-					$('#driver_address').val('smarthome.local');
 					$('#driver_port').val('2424');
 					$('#driver_realtime').val('true').slider('refresh');
 					break;
 
 				case 'domotiga':
-					$('#driver_address').val('domotiga.local');
 					$('#driver_port').val('2121');
 					$('#driver_realtime').val('true').slider('refresh');
 					break;
@@ -219,8 +216,10 @@
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="phone_server">Address</label>
-					<input type="text" name="phone_server" id="phone_server" />
+					<label for="phone_server">Address
+						<div class="note">IP</div>
+					</label>
+					<input type="text" name="phone_server" id="phone_server" style="letter-spacing: 0.1em;" />
 					{{ forms.text_init('phone_server', config_phone_server|e ) }}
 				</div>
 
@@ -277,7 +276,7 @@
 
 	</fieldset>
 
-	<input type="hidden" name="js" value="{{  config_js }}" />
+	<input type="hidden" name="js" value="{{ config_js }}" />
 	<button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">Save</button>
 	</form>
 

@@ -17,42 +17,42 @@
 	<p>Here are some widgets working together. This is not a complete list!</p>
 
 	<h2>Basic</h2>
-	{{ basic.value('value1', 'bath_light_switch', 'Unit') }},
+	{{ basic.value('value1', 'bath.light.switch', 'Unit') }},
 	
 	
-	{{ basic.float('float1', 'bath_light_switch', '°') }},
+	{{ basic.float('float1', 'bath.light.switch', '°') }},
 
-	{{ basic.value('value2', 'bath_value', 'int') }},
-	{{ basic.value('value3', 'bath_value', 'float') }},
+	{{ basic.value('value2', 'bath.value', 'int') }},
+	{{ basic.value('value3', 'bath.value', 'float') }},
 	
-	Formula: {{ basic.formula('formula1', ['bath_p1', 'bath_p2', 'bath_p3'], 'W', '( VAR ) / 1000 * 230') }}
-	Date: {{ basic.value('time1', 'bath_time', 'long') }},
+	Formula: {{ basic.formula('formula1', ['bath.p1', 'bath.p2', 'bath.p3'], 'W', '( VAR ) / 1000 * 230') }}
+	Date: {{ basic.value('time1', 'bath.time', 'long') }},
 
 	<br />
-	{{ basic.flip('flip1', 'bath_light_switch') }}
-	{{ basic.switch('switch1', 'bath_light_switch') }}
-	{{ basic.shifter('shifter2', 'bath_light_switch', 'bath_light_value') }}
-	{{ basic.button('button1', 'bath_light_switch', '1') }}
-	{{ basic.dual('dual1', 'bath_light_switch') }}
-	{{ basic.rgb('rgb1', 'bath_color_r', 'bath_color_g', 'bath_color_b') }}
-	{{ basic.colordisc('colordisc1', 'bath_color_r', 'bath_color_g', 'bath_color_b') }}
-	{{ basic.symbol('symbol1', 'bath_light_switch') }}
+	{{ basic.flip('flip1', 'bath.light.switch') }}
+	{{ basic.switch('switch1', 'bath.light.switch') }}
+	{{ basic.shifter('shifter2', 'bath.light.switch', 'bath.light.value') }}
+	{{ basic.button('button1', 'bath.light.switch', '1') }}
+	{{ basic.dual('dual1', 'bath.light.switch') }}
+	{{ basic.rgb('rgb1', 'bath.color.r', 'bath.color.g', 'bath.color.b') }}
+	{{ basic.colordisc('colordisc1', 'bath.color.r', 'bath.color.g', 'bath.color.b') }}
+	{{ basic.symbol('symbol1', 'bath.light.switch') }}
 
-	{{ basic.checkbox('checkbox1', 'bath_light_switch', 'Checkbox') }}
-	{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
+	{{ basic.checkbox('checkbox1', 'bath.light.switch', 'Checkbox') }}
+	{{ basic.slider('slider1', 'bath.light.value', 0, 255, 1) }}
     <br/>
     
 	<div style="height: 180px; width: 100px; display: inline-block;">
-		{{ basic.slider('slider2', 'bath_light_value2', 0, 255, 1, 'vertical') }}
+		{{ basic.slider('slider2', 'bath.light.value2', 0, 255, 1, 'vertical') }}
 	</div>
 	<div style="display: inline-block; margin: 10px;">
-		{{ basic.slider('slider3', 'bath_blind_angle', 0, 255, 1, 'semicircle') }}
+		{{ basic.slider('slider3', 'bath.blind.angle', 0, 255, 1, 'semicircle') }}
 	</div>
 
-	{{ basic.shutter('shutter1', 'bath_light_value2', 'bath_blind_angle') }}
+	{{ basic.shutter('shutter1', 'bath.light.value2', 'bath.blind.angle') }}
 
 	<div style=" display: inline-block;">
-		{{ basic.tank('tank1', 'bath_light_value', 0, 255, 5, 'water') }}
+		{{ basic.tank('tank1', 'bath.light.value', 0, 255, 5, 'water') }}
 	</div>
 
 	
@@ -73,11 +73,11 @@
 		
 		<br />
 		Dynamic Icon PNG:
-		{{ basic.shifter('svg1', 'bath_light_switch', 'bath_light_value', icon1~'light_light_dim_00.png') }}
+		{{ basic.shifter('svg1', 'bath.light.switch', 'bath.light.value', icon1~'light_light_dim_00.png') }}
 
 		SVG:
-		{{ basic.shifter('svg1', 'bath_light_switch', 'bath_light_value', 'icon.shutter') }}
-		{{ icon.windrose('icon1', 'bath_light_switch', 'bath_light_value') }}
+		{{ basic.shifter('svg1', 'bath.light.switch', 'bath.light.value', 'icon.shutter') }}
+		{{ icon.windrose('icon1', 'bath.light.switch', 'bath.light.value') }}
 		
 		<br />
 	</p>
@@ -97,7 +97,7 @@
 		<div class="ui-bar-c ui-li-divider ui-corner-top">Plot</div>
 		<div class="ui-fixed ui-body-a ui-corner-bottom">
 
-			<p>{{ plot.period('p2', ['bath_plot_value2', 'bath_blind_angle'] , 'avg' , '5i', 0, 0, 255, 50, '', '', ['spline', 'area']) }}</p>
+			<p>{{ plot.period('p2', ['bath_plot_value2', 'bath.blind.angle'] , 'avg' , '5i', 0, 0, 255, 50, '', '', ['spline', 'area']) }}</p>
 
 		</div>
 	</div>
@@ -110,7 +110,7 @@
 
 
 	<script type="text/javascript">
-		$(document).delegate('input[data-widget="basic.slider"][data-item="bath_light_value"]', {
+		$(document).delegate('input[data-widget="basic.slider"][data-item="bath.light.value"]', {
 			'click': function (event) {
 				widget.update('bath_plot_value.avg.5i.0', [
 					[ (new Date()).getTime() , parseFloat($(this).val()) ]
@@ -118,7 +118,7 @@
 			}
 		});
 
-		$(document).delegate('input[data-widget="basic.slider"][data-item="bath_light_value2"]', {
+		$(document).delegate('input[data-widget="basic.slider"][data-item="bath.light.value2"]', {
 			'click': function (event) {
 				widget.update('bath_plot_value2.avg.5i.0', [
 					[ (new Date()).getTime() , parseFloat($(this).val()) ]
@@ -126,9 +126,9 @@
 			}
 		});
 
-		$(document).delegate('input[data-widget="basic.slider"][data-item="bath_blind_angle"]', {
+		$(document).delegate('input[data-widget="basic.slider"][data-item="bath.blind.angle"]', {
 			'click': function (event) {
-				widget.update('bath_blind_angle.avg.5i.0', [
+				widget.update('bath.blind.angle.avg.5i.0', [
 					[ (new Date()).getTime() , parseFloat($(this).val()) ]
 				]);
 			}

@@ -14,18 +14,18 @@
 
 	<h5>Examples</h5>
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.flip('flip1', 'bath_light_switch') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; basic.flip('flip1', 'bath.light.switch') &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ basic.flip('flip1', 'bath_light_switch') }}
+		{{ basic.flip('flip1', 'bath.light.switch') }}
 	</div>
 
 	With other on/off-text
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.flip('flip2', 'bath_light_switch', '1', '0') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; basic.flip('flip2', 'bath.light.switch', '1', '0') &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ basic.flip('flip2', 'bath_light_switch', '1', '0') }}
+		{{ basic.flip('flip2', 'bath.light.switch', '1', '0') }}
 		Some text beside the flip
 	</div>
 
