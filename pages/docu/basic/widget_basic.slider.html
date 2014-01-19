@@ -14,39 +14,39 @@
 
 	<h5>Examples</h5>
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.slider('slider1', 'bath_light_value') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; basic.slider('slider1', 'bath.light.value') &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ basic.slider('slider1', 'bath_light_value') }}
+		{{ basic.slider('slider1', 'bath.light.value') }}
 	</div>
 
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.slider('slider2', 'bath_light_value', 0, 100, 10) &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; basic.slider('slider2', 'bath.light.value', 0, 100, 10) &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ basic.slider('slider2', 'bath_light_value', 0, 100, 10) }}
+		{{ basic.slider('slider2', 'bath.light.value', 0, 100, 10) }}
 	</div>
 
 	<div class="twig">
 		<code class="prettyprint">
-			&#123;&#123; basic.slider('slider3', 'bath_light_value', 0, 255, 5, 'vertical') &#125;&#125;<br />
-			&#123;&#123; basic.slider('slider4', 'bath_light_value', 0, 255, 5, 'bottomup') &#125;&#125;
+			&#123;&#123; basic.slider('slider3', 'bath.light.value', 0, 255, 5, 'vertical') &#125;&#125;<br />
+			&#123;&#123; basic.slider('slider4', 'bath.light.value', 0, 255, 5, 'bottomup') &#125;&#125;
 		</code>
 	</div>
 	<div class="html">
 		<div style="height: 180px; width: 100px; display: inline-block;">
-			{{ basic.slider('slider3', 'bath_light_value', 0, 255, 5, 'vertical') }}
+			{{ basic.slider('slider3', 'bath.light.value', 0, 255, 5, 'vertical') }}
 		</div>
 		<div style="height: 180px; width: 100px; display: inline-block;">
-			{{ basic.slider('slider4', 'bath_light_value', 0, 255, 5, 'bottomup') }}
+			{{ basic.slider('slider4', 'bath.light.value', 0, 255, 5, 'bottomup') }}
 		</div>
 	</div>
 
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.slider('slider5', 'bath_light_value', 0, 255, 5, 'semicircle') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; basic.slider('slider5', 'bath.light.value', 0, 255, 5, 'semicircle') &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ basic.slider('slider5', 'bath_light_value', 0, 255, 5, 'semicircle') }}
+		{{ basic.slider('slider5', 'bath.light.value', 0, 255, 5, 'semicircle') }}
 	</div>
 
 {% endblock %}

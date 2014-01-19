@@ -16,10 +16,10 @@
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-			{{ multimedia.music('music1', 'bath_music_play', 'raum_musik_stop', 'bath_music_fwdback',
-			'bath_music_more_fwdback', 'bath_music_pos', 'bath_music_vol', 'bath_music_mute', 'bath_music_title', 'bath_music_artist', 'bath_music_repeat') }}
+			{{ multimedia.music('music1', 'bath.music.play', 'bath.music.stop', 'bath.music.fwdback',
+			'bath.music.more.fwdback', 'bath.music.pos', 'bath.music.vol', 'bath_music_mute', 'bath.music.title', 'bath.music.artist', 'bath.music.repeat') }}
 
-			{{ multimedia.music('radio1', 'bath_radio_play', '', '', 'bath_radio_fwdback', '', 'bath_radio_vol', 'bath_radio_stumm', 'bath_radio_title', '', '') }}
+			{{ multimedia.music('radio1', 'bath.radio.play', '', '', 'bath.radio.fwdback', '', 'bath.radio.vol', 'bath.radio.mute', 'bath.radio.title', '', '') }}
 
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
@@ -28,8 +28,8 @@
 		<div class="ui-bar-c ui-li-divider ui-corner-top">Multimedia Full</div>
 		<div class="ui-fixed ui-body-a ui-corner-bottom">
 
-			{{ multimedia.music('music1', 'bath_music_play', 'raum_musik_stop', 'bath_music_fwdback',
-			'bath_music_more_fwdback', 'bath_music_pos', 'bath_music_vol', 'bath_music_mute', 'bath_music_title', 'bath_music_artist', 'bath_music_repeat') }}
+			{{ multimedia.music('music1', 'bath.music.play', 'bath.music.stop', 'bath.music.fwdback',
+			'bath.music.more.fwdback', 'bath.music.pos', 'bath.music.vol', 'bath_music_mute', 'bath.music.title', 'bath.music.artist', 'bath.music.repeat') }}
 
 		</div>
 	</div>
@@ -38,7 +38,7 @@
 		<div class="ui-bar-c ui-li-divider ui-corner-top">Multimedia Radio</div>
 		<div class="ui-fixed ui-body-a ui-corner-bottom">
 
-			{{ multimedia.music('radio1', 'bath_radio_play', '', '', 'bath_radio_fwdback', '', 'bath_radio_vol', 'bath_radio_stumm', 'bath_radio_title', '', '') }}
+			{{ multimedia.music('radio1', 'bath.radio.play', '', '', 'bath.radio.fwdback', '', 'bath.radio.vol', 'bath.radio.mute', 'bath.radio.title', '', '') }}
 
 		</div>
 	</div>

@@ -59,19 +59,19 @@
 		Use the slider to see how the dynamic icon changes.
 		<div class="twig">
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-				{{ icon.arrow('icon1', '', 'bath_light_value') }}
-				{{ icon.battery('icon2', '', 'bath_light_value') }}
+				{{ icon.arrow('icon1', '', 'bath.light.value') }}
+				{{ icon.battery('icon2', '', 'bath.light.value') }}
 				{% endverbatim %}{% endfilter %}</code>
 		</div>
 	</div>
 	<br />
-	{{ basic.slider('slider1', 'bath_light_value', 0, 255, 1) }}
+	{{ basic.slider('slider1', 'bath.light.value', 0, 255, 1) }}
 	<br />
 
 
 	{% for widget in widgetlist %}
 		<div class="box">
-			{{ attribute(icon, widget.name, [widget.name, '', 'bath_light_value'] ) }}
+			{{ attribute(icon, widget.name, [widget.name, '', 'bath.light.value'] ) }}
 
 			<div {% if widget.author %} title="Author: {{ widget.author }}" {% endif %}>{{ widget.command }}</div>
 		</div>

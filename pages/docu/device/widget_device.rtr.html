@@ -17,11 +17,11 @@
 	<h5>Examples</h5>
 	<div class="twig">
 		<code class="prettyprint">
-			&#123;&#123; device.rtr('rtr1', 'Heating', 'bath_rtr_act', 'bath_rtr_set', 'bath_rtr_comfort', 'bath_rtr_night',
-			'bath_rtr_frost', 'bath_rtr_state', 'bath_rtr_text') &#125;&#125;
+			&#123;&#123; device.rtr('rtr1', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.comfort', 'bath.rtr.night',
+			'bath.rtr.frost', 'bath.rtr.state', 'bath.rtr.text') &#125;&#125;
 			<br /><br />
-			&#123;&#123; device.rtr('rtr2', 'Heating', 'bath_rtr_act', 'bath_rtr_set', 'bath_rtr_mode', 'bath_rtr_mode',
-			'bath_rtr_mode', 'bath_rtr_state', 'bath_rtr_text') &#125;&#125;
+			&#123;&#123; device.rtr('rtr2', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode',
+			'bath.rtr.mode', 'bath.rtr.state', 'bath.rtr.text') &#125;&#125;
 		</code>
 	</div>
 
@@ -30,16 +30,16 @@
 		<div class="block">
 			<div class="ui-bar-c ui-li-divider ui-corner-top">RTR in 3x bit-mode</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
-				{{ device.rtr('rtr1', 'Heating', 'bath_rtr_act', 'bath_rtr_set', 'bath_rtr_comfort', 'bath_rtr_night',
-				'bath_rtr_frost', 'bath_rtr_state', 'bath_rtr_text') }}
+				{{ device.rtr('rtr1', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.comfort', 'bath.rtr.night',
+				'bath.rtr.frost', 'bath.rtr.state', 'bath.rtr.text') }}
 			</div>
 		</div>
 
 		<div class="block">
 			<div class="ui-bar-c ui-li-divider ui-corner-top">RTR in 1x byte-mode</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
-				{{ device.rtr('rtr2', 'Heating', 'bath_rtr_act', 'bath_rtr_set', 'bath_rtr_mode', 'bath_rtr_mode',
-				'bath_rtr_mode', 'bath_rtr_state', 'bath_rtr_text') }}
+				{{ device.rtr('rtr2', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode',
+				'bath.rtr.mode', 'bath.rtr.state', 'bath.rtr.text') }}
 			</div>
 		</div>
 
