@@ -52,7 +52,7 @@ class enertex_iprouter extends service
 		if (!$this->fp)
 			$this->error('enertex IP-Router', $errstr.' ('.$errno.')');
 		else
-			usleep(10 * $this->delay);
+			usleep(10 * $this->delay);	
 	}
 
 	/**
@@ -64,14 +64,25 @@ class enertex_iprouter extends service
 
 		if ($this->fp)
 		{
-			if (substr(fread($this->fp, 1024), -5, 4) == "ert>")
+			$ret = fread($this->fp, 1024);
+			
+			if (substr($ret, -10, 9) == "Password:")
+			{
+				usleep($this->delay);
+				fputs($this->fp, $this->pass."\r\n");
+				usleep($this->delay);
+
+				$ret = fread($this->fp, 1024);
+			}
+			
+			if (substr($ret, -5, 4) == "ert>" || substr($ret, -2, 1) == "#")
 			{
 				// version
 				usleep($this->delay);
 				fputs($this->fp, "version\r\n");
 
 				usleep($this->delay);
-				$version = "ert> ".fread($this->fp, 1024);
+				$version = fread($this->fp, 1024);
 				$this->debug($version, 'enertex KNXnet/IP-Router');
 
 				// stats

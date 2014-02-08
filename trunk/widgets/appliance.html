@@ -13,8 +13,9 @@
 *
 * @param unique id for this widget
 * @param the ip of the KNXnet/IP-Router
+* @param the password of the KNXnet/IP-Router
 */
-{% macro iprouter(id, server) %}
+{% macro iprouter(id, server, password) %}
 	{% set uid = uid(page, id) %}
 
 	<div id="{{ uid }}" class="iprouter">
@@ -27,7 +28,7 @@
 
 	<script type="text/javascript">
 		$('#{{ page }}').on('pagecreate', function (event, ui) {
-			$.getJSON('lib/appliance/enertex.iprouter.php?server={{ server }}', function (data) {
+			$.getJSON('lib/appliance/enertex.iprouter.php?server={{ server }}&pass={{ password }}', function (data) {
 				$('#{{ uid }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png">');
 				$('#{{ uid }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png">');
 
