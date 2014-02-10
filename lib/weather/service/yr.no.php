@@ -32,7 +32,7 @@ class weather_yr extends weather
 			$content = $cache->read();
 		else
 		{
-			$url = 'http://www.yr.no/place/'.urlencode($this->location).'/forecast.xml';
+			$url = 'http://www.yr.no/place/'.rawurlencode($this->location).'/forecast.xml';
 			$content = file_get_contents($url);
 		}
 		
