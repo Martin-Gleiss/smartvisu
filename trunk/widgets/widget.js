@@ -65,7 +65,7 @@ $(document).delegate('input[data-widget="basic.checkbox"]', {
 	},
 
 	'change': function (event) {
-		// DEBUG: console.log("[basic.checkbox] change '" + this.id + "':", $(this).prop("checked")); 
+		// DEBUG: console.log("[basic.checkbox] change '" + this.id + "':", $(this).prop("checked"));
 		io.write($(this).attr('data-item'), ($(this).prop('checked') ? 1 : 0));
 	}
 });
@@ -228,6 +228,37 @@ $(document).delegate('a[data-widget="basic.dual"]', {
 	}
 });
 
+// ----- basic.multistate ------------------------------------------------------
+$(document).delegate('a[data-widget="basic.multistate"]', {
+    'update': function (event, response) {
+        // get list of values and images
+        list_val=$(this).attr('data-vals').explode();
+        list_img = $(this).attr('data-img').explode();
+        // get the index of the value received
+        idx = list_val.indexOf(response.toString());
+        // update the image
+        $('#' + this.id + ' img').attr('src', list_img[idx]);
+        // memorise the index for next use
+        $(this).attr('index-mem', idx);
+    },
+    'click': function(event) {
+        // get the list of values
+        list_val=$(this).attr('data-vals').explode();
+        // get the last index memorised
+        old_idx=parseInt($(this).attr('index-mem'));
+        //compute the next index
+        var new_idx = old_idx + 1;
+        if (new_idx>=list_val.length)
+        {
+            new_idx=0;
+        }
+        // send the value to driver
+        io.write($(this).attr('data-item'), list_val[new_idx]);
+        // memorise the index for next use
+        $(this).attr('index-mem', new_idx);
+    }
+});
+
 // ----- basic.flip -----------------------------------------------------------
 $(document).delegate('select[data-widget="basic.flip"]', {
 	'update': function (event, response) {
@@ -235,7 +266,7 @@ $(document).delegate('select[data-widget="basic.flip"]', {
 	},
 
 	'change': function (event) {
-		// DEBUG: console.log("[basic.flip] change '" + this.id + "':", $(this).val());  
+		// DEBUG: console.log("[basic.flip] change '" + this.id + "':", $(this).val());
 		io.write($(this).attr('data-item'), ($(this).val() == 'on' ? 1 : 0));
 	}
 });
@@ -449,7 +480,7 @@ $(document).delegate('div[data-widget="basic.shutter"]', {
 // only every 400ms if it was been moved. There should be no trigger on init.
 $(document).delegate('input[data-widget="basic.slider"]', {
 	'update': function (event, response) {
-		// DEBUG: console.log("[basic.slider] update '" + this.id + "': " + response + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));   
+		// DEBUG: console.log("[basic.slider] update '" + this.id + "': " + response + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));
 		$(this).attr('lock', 1);
 		$('#' + this.id).val(response).slider('refresh').attr('mem', $(this).val());
 	},
@@ -461,7 +492,7 @@ $(document).delegate('input[data-widget="basic.slider"]', {
 	},
 
 	'change': function (event) {
-		// DEBUG: console.log("[basic.slider] change '" + this.id + "': " + $(this).val() + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));   
+		// DEBUG: console.log("[basic.slider] change '" + this.id + "': " + $(this).val() + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));
 		if (( $(this).attr('timer') === undefined || $(this).attr('timer') == 0 && $(this).attr('lock') == 0 )
 			&& ($(this).val() != $(this).attr('mem'))) {
 
@@ -477,7 +508,7 @@ $(document).delegate('input[data-widget="basic.slider"]', {
 	},
 
 	'click': function (event) {
-		// $('#' + this.id).attr('mem', $(this).val());       
+		// $('#' + this.id).attr('mem', $(this).val());
 		io.write($(this).attr('data-item'), $(this).val());
 	}
 });
@@ -511,7 +542,7 @@ $(document).delegate('span[data-widget="basic.switch"] > a > img', 'hover', func
 $(document).delegate('span[data-widget="basic.symbol"]', {
 	'update': function (event, response) {
 
-		// response will be an array, if more then one item is requested 
+		// response will be an array, if more then one item is requested
 		var bit = ($(this).attr('data-mode') == 'and');
 		if (response instanceof Array) {
 			for (var i = 0; i < response.length; i++) {
@@ -708,7 +739,7 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
 // ----- plot.multiaxes -------------------------------------------------------
 $(document).delegate('div[data-widget="plot.multiaxes"]', {
 	'update': function (event, response) {
-		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
+		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ]
 
 		var label = $(this).attr('data-label').explode();
 		var color = $(this).attr('data-color').explode();
@@ -740,7 +771,7 @@ $(document).delegate('div[data-widget="plot.multiaxes"]', {
 			}
 		}
 
-		// draw the plot 
+		// draw the plot
 		$('#' + this.id).highcharts({
 			series: series,
 			xAxis: { type: 'datetime', title: { text: axis[0] } },
@@ -753,7 +784,7 @@ $(document).delegate('div[data-widget="plot.multiaxes"]', {
 			if (response[i]) {
 				var chart = $('#' + this.id).highcharts();
 
-				// more points? 
+				// more points?
 				for (var j = 0; j < response[i].length; j++) {
 					chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= 100));
 				}
@@ -766,7 +797,7 @@ $(document).delegate('div[data-widget="plot.multiaxes"]', {
 // ----- plot.period ----------------------------------------------------------
 $(document).delegate('div[data-widget="plot.period"]', {
 	'update': function (event, response) {
-		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
+		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ]
 
 		var label = $(this).attr('data-label').explode();
 		var color = $(this).attr('data-color').explode();
@@ -821,7 +852,7 @@ $(document).delegate('div[data-widget="plot.period"]', {
 // ----- plot.rtr -------------------------------------------------------------
 $(document).delegate('div[data-widget="plot.rtr"]', {
 	'update': function (event, response) {
-		// response is: {{ gad_actual }}, {{ gad_set }}, {{ gat_state }} 
+		// response is: {{ gad_actual }}, {{ gad_set }}, {{ gat_state }}
 
 		var label = $(this).attr('data-label').explode();
 		var axis = $(this).attr('data-axis').explode();
