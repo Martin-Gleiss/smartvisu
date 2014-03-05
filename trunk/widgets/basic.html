@@ -123,7 +123,7 @@
 * @author Pierre-Yves KERVIEL
 */
 {% macro multistate(id, gad, val, img, type) %}
-    <a id="{{ uid(page, id) }}" data-widget="perso.multistate" data-item="{{ gad }}"
+    <a id="{{ uid(page, id) }}" data-widget="basic.multistate" data-item="{{ gad }}"
         data-vals="{{ implode(val) }}"  data-img="{{ implode(img) }}" index-mem="0"
         class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
         <img class="icon" src="{{ img[0] }}"/>
