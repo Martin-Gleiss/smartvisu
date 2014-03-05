@@ -113,6 +113,25 @@
 
 
 /**
+* A multi states button to extend the basic.dual behavior
+*
+* @param unique id for this widget
+* @param a gad/item for command
+* @param array of values
+* @param array of icons path and name
+* @param type: 'micro', 'mini', 'midi' (optional, default: mini)
+* @author Pierre-Yves KERVIEL
+*/
+{% macro multistate(id, gad, val, img, type) %}
+    <a id="{{ uid(page, id) }}" data-widget="perso.multistate" data-item="{{ gad }}"
+        data-vals="{{ implode(val) }}"  data-img="{{ implode(img) }}" index-mem="0"
+        class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
+        <img class="icon" src="{{ img[0] }}"/>
+    </a>
+{% endmacro %}
+
+
+/**
 * Displays a flip-switch
 *
 * @param unique id for this widget
