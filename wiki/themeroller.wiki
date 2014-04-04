@@ -4,13 +4,13 @@
 In diesem kleinen Tutorial wird erläutert wie ein ThemeRoller-Design in smartVISU eingebunden wird.
 
 = Schritt 1: Template beziehen =
-Als Beispiel dient in diesem Tutorial das "Holo inpired" Theme von Joram Teusink ([http://teusink.blogspot.de/2012/09/android-holo-theme-for-jquery-mobile-111.html Teusink.org]), welches als [http://www.teusink.org/blog/holo_theme_jquerymobile-1.3.2.zip ZIP heruntergeladen] und entpackt werden muss. In der ZIP-Datei interessiert uns nur eine Datei "themes/AndroidHoloDarkLight.css" welche in ThemeRoller [http://themeroller.jquerymobile.com/] eingefügt wird.
+Als Beispiel dient in diesem Tutorial das "Holo inpired" Theme von Joram Teusink ([http://teusink.blogspot.de/2012/09/android-holo-theme-for-jquery-mobile-111.html Teusink.org]), welches als [http://www.teusink.org/blog/holo_theme_jquerymobile-1.3.2.zip ZIP heruntergeladen] und entpackt werden muss. In der ZIP-Datei interessiert uns nur eine Datei "themes/AndroidHoloDarkLight.css" welche in [http://themeroller.jquerymobile.com/ ThemeRoller] eingefügt wird.
 
-= Schritt 2: ThemeRoller =
+= Schritt 2: [http://themeroller.jquerymobile.com/ ThemeRoller] =
 Die Datei muss mit einem Texteditor z.B. [http://notepad-plus-plus.org/ Notepad++] oder [http://www.geany.org/ Geany] geöffnet und komplett in die Zwischenablage kopiert werden (Strg+A und dann Strg+C).
 <img src='http://smartvisu.googlecode.com/svn/wiki/themeroller/geany_original.png' title='Texteditor Geany mit der geöffneten CSS-Datei'>
 
-Anschließend im Browser ThemeRoller aufrufen und im Kopfbereich über den Button „Import“ den Quellcode einfügen (Strg+V). Die smartVISU verwendet zur Zeit Version 1.3.2 von jQuery mobile und daher muss bei "Upgrade to version" ebenfalls "1.3.2" ausgewählt werden.
+Anschließend im Browser [http://themeroller.jquerymobile.com/ ThemeRoller] aufrufen und im Kopfbereich über den Button „Import“ den Quellcode einfügen (Strg+V). Die smartVISU verwendet zur Zeit Version 1.3.2 von jQuery mobile und daher muss bei "Upgrade to version" ebenfalls "1.3.2" ausgewählt werden.
 <img src='http://smartvisu.googlecode.com/svn/wiki/themeroller/themeroller_import.png' title='Importieren eines vorhandenen Themes'>
 
 Der Button "Import" führt den Import durch und das Theme wird angezeigt.
