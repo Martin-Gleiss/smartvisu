@@ -1,6 +1,6 @@
 #summary Ein ThemeRoller-Design in smartVISU verwenden
 
-= Introduction =
+= Einleitung =
 In diesem kleinen Tutorial wird erläutert wie ein ThemeRoller-Design in smartVISU eingebunden wird.
 
 = Schritt 1: Template beziehen =
@@ -34,7 +34,7 @@ Daher ändern wir die Farben von der Header/Footerbar auf die Farbgebung von Swa
 
 = Schritt 4: Export =
 Die Farbgebung ist jetzt für eine Nutzung in der smartVISU vorbereitet und alle weiteren Modifikationen sind nicht mehr in ThemeRoller durchführbar. Das fertige Theme muss über den Button "Download" als ZIP-Datei heruntergeladen werden. Ein Name für das neue Theme wird in dem Eingabefeld rechts oben eingegeben (hier "holo-inspired") und über den Button "Download Zip" wird es als ZIP-Archiv gespeichert.
-(Hinweis: Das Ergebnis ist auch in ThemeRoller unter diesem Link aufrufbar: [http://themeroller.jquerymobile.com/?ver=1.3.2&style_id=20140403-1])
+Hinweis: Wer die vorherigen Schritte abkürzen möchte, kann das Ergebnis in ThemeRoller auch unter diesem Link direkt aufrufen: [http://themeroller.jquerymobile.com/?ver=1.3.2&style_id=20140403-1 holo-inspired]
 <img src='http://smartvisu.googlecode.com/svn/wiki/themeroller/themeroller_download.png' title='Das Design wieder herunterladen'>
 
 = Schritt 5: In smartVISU einbinden =
