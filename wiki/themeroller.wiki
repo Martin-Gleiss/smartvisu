@@ -19,10 +19,10 @@ Der Button "Import" führt den Import durch und das Theme wird angezeigt.
 Die Farbschemata, als swatch bezeichnet, müssen noch in die richtige Reihenfolge gebracht werden.
 Bei der smartVISU wird "Swatch A" u.a. für die Kopfzeile und dem Menü verwendet, Swatch B z.B. für die Inhalte der Blocks. Für das Helle-Farbschema könnte z.B. swatch A und C getauscht werden. Diese Anordnung kann durch kopieren und löschen der Swatches realisiert werden. Die Swatche können zur Bearbeitung auf der linken Seite ausgewählt und dann kopiert (Duplicate) und anschließend gelöscht (Delete) werden. Die benötigte Reihenfolge wird mit folgende Aktionen hergestellt:
 
-# Swatch B auswählen und duplizieren, jetzt ist D und B gleich,
-# Swatch A auswählen und duplizieren, jetzt ist E mit A gleich,
-# jetzt Swatch B löschen und zum Abschluss auch
-# Swatch A löschen.
+1. Swatch B auswählen und duplizieren, jetzt ist D und B gleich,
+2. Swatch A auswählen und duplizieren, jetzt ist E mit A gleich,
+3. jetzt Swatch B löschen und zum Abschluss auch
+4. Swatch A löschen.
 
 Jetzt passt die Reihenfolge wie die folgende Abbildung zeigt:
 <img src='http://smartvisu.googlecode.com/svn/wiki/themeroller/themeroller_swatches.png' title='Sortierte swatches'>
@@ -43,7 +43,7 @@ Zusätzlich ist noch eine JavaScript-Datei (holo-inspired.js und holo-inspired.m
 
 = Schritt 6: Weitere Anpassungen =
 Nicht alle Design-Elemente die in smartVISU verwendet werden, können mit ThemeRoller angepasst werden, daher sind jetzt noch einige weitere Änderungen notwendig.
-Als erstes die Datei "ice.css" aus dem design-Ordner von smartVISU mit einem Texteditor öffnen.Am Ende der Datei finden sich die Farbangaben für die SVG-Icons, diesen Quelltext ab "/* smartVISU" bis zum Ende markieren, kopieren (Strg+C) und am Ende von "holo-inspired.css" einfügen (Strg+V).
+Als erstes die Datei "ice.css" aus dem design-Ordner von smartVISU mit einem Texteditor öffnen. Am Ende der Datei finden sich die Farbangaben für die SVG-Icons, diesen Quelltext ab `/* smartVISU` bis zum Ende markieren, kopieren (Strg+C) und am Ende von "holo-inspired.css" einfügen (Strg+V).
 Die Farben der Icons können noch auf Holo-inspired angepasst werden, hierzu den Farbcode "#5595c6" zweimal  mit den holo-Farben "#33B5E5" ersetzen.
 Wenn das holo-inspired-Design in der Konfiguration ausgewählt wird, dann sieht es schon gut aus, aber die meisten Icons sind weiß und damit nur schwer erkennbar.
 Das Problem liegt darin, dass die png-Icons nicht mit CSS formatiert werden können und daher in der Datei "index.php" auf der obersten Ebene von smartVisu dem gewählten Design zugewiesen werden. Unser neues holo-inspired ist nicht enthalten und deshalb muss dieses durch hinzufügen von diesen Zeilen mit dem Texteditor in index.php ergänzt werden:
