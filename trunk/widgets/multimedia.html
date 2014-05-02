@@ -153,6 +153,6 @@
 	{% set uid = uid(page, id) %}
 
 	<div id="{{ uid }}" class="station">
-		{{ basic.button(id, item, '', pic, 1, type|default('mini')) }}
+		{{ basic.button(id, item, '', pic, val, type|default('mini')) }}
 	</div>
 {% endmacro %}
