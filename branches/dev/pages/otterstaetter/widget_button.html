@@ -1,0 +1,42 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+/**
+* Displays a flip-switch with a label
+*
+* @param unique id for this widget
+* @param a gad/item
+* @param text for the 'on' state (optional, default 'On')
+* @param text for the 'off' state (optional, default 'Off')
+* @param text for the label (optional)
+* @param icon_on (optional)
+* @param icon_off (optional)
+*/
+{% macro flip(id, gad, txt_on, txt_off, label, icon_on, icon_off) %}
+	{% if icon_on %}
+		<div class="ui-field-contain">
+		<span id="{{ uid(page, id) }}" data-widget="basic.switch" data-item="{{ gad }}"
+			data-val-on="1" data-val-off="0"
+			data-pic-on="{{ icon_on|default(icon1~'control_on_off.png') }}" data-pic-off="{{ icon_off|default(icon0~'control_on_off.png') }}"
+			class="switch" style="margin-right: 10pt;"><a><img class="icon" src="{{ icon_off|default(icon0~'control_on_off.png') }}" /></a>
+		</span>
+	{% else %}
+		{% if label %}<div class="ui-field-contain">{% endif %}
+	{% endif %}
+	{% if label %}<label for="{{ uid(page, id) }}" class="cusKind 2-label" style="vertical-align: middle;">{{ label }}</label>{% endif %}
+		<select id="{{ uid(page, id) }}" name="{{ uid(page, id) }}" data-widget="basic.flip" data-item="{{ gad }}" data-role="slider">
+			<option value="off">{{ txt_off|default('Off') }}</option>
+			<option value="on">{{ txt_on|default('On') }}</option>
+		</select>
+	{% if icon_on %}
+		</div>
+	{% else %}
+		{% if label %}</div>{% endif %}
+	{% endif %}
+{% endmacro %}

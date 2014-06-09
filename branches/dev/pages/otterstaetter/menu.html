@@ -10,14 +10,18 @@
 
 <div id="menu" class="menu">
 
-    <a id="menu-rooms" data-ajax="false" href="index.php">
+    <a id="menu-rooms" data-ajax="false" href="index.php" data-prefetch>
         <img class="icon" src="{{ page == 'index' ? icon1 : icon0 }}control_building_empty.png"/></a>
+    <a id="menu-uebersicht" data-ajax="false" href="index.php?page=summery_lights" data-prefetch>
+        <img class="icon" src="{{ page == 'index' ? icon1 : icon0 }}control_building_s_okg_all.png"/></a>
     <a id="menu-weather" data-ajax="false" href="index.php?page=weather_current">
         <img class="icon" src="{{ page == 'weather' ? icon1 : icon0 }}weather_cloudy.png"/></a>
     <a id="menu-wp" data-ajax="false" href="index.php?page=wp">
         <img class="icon" src="{{ page == 'wp' ? icon1 : icon0 }}sani_buffer_temp_all.png"/></a>
+    {% import "widget_camera.html" as camera %}
+    {{ camera.vlc_popup('cam1', 'http://192.168.x.x:5000/', '960px', '540px') }}
     <a id="menu-system" data-ajax="false" href="index.php?page=config">
         <img class="icon" src="{{ page == 'config' ? icon1 : icon0 }}message_service.png"/></a>
-
 </div>
+
 

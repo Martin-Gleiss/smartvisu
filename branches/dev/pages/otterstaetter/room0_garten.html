@@ -23,13 +23,50 @@
 
     	<div data-role="collapsible" data-collapsed="false" >
             <h3>Hausbeleuchtung</h3>
-    		<table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'haustuer_beleuchtung_schalten', icon1~'light_wall_2.png', icon0~'light_wall_2.png') }} </td><td>Wandleuchten Haustür</td></tr>
-		<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch2', 'dachueberstand_ost_beleuchtung_schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Strahler Dachüberstand Hauswirtschaftsraum</td></tr>
-		<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch3', 'dachueberstand_west_beleuchtung_schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Strahler Dachüberstand Büro</td></tr>
-		<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch4', 'giebel_west_beleuchtung_schalten', icon1~'light_wall_2', icon0~'light_wall_2.png') }} </td><td>Wandleuchten Westgiebel</td></tr>
-		</table>
- 	</div>
+            <table width="90%">
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'aussen.nordseite.beleuchtung.schalten', icon1~'light_light_dim_100.png', icon0~'light_light.png') }} </td><td>Nordseite</td></tr>
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch01', 'aussen.terrasse.beleuchtung.schalten', icon1~'light_light_dim_100.png', icon0~'light_light.png') }} </td><td>Terrasse</td></tr>
+			</table>
+		</div>
+      	<div data-role="collapsible">
+            <h3>Details</h3>
+    		<table width="90%">
+			<h4>Nordseite</h4>
+    		<table width="90%">
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch11', 'aussen.nordseite.beleuchtung.haustuer.schalten', icon1~'light_corridor.png', icon0~'light_corridor.png') }} </td><td>Wandleuchten neben der Haustür</td></tr>
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch12', 'dachueberstand.ost.beleuchtung.schalten', icon1~'light_downlight.png', icon0~'light_downlight.png') }} </td><td>Strahler im Dachüberstand beim Hauswirtschaftsraum</td></tr>
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch13', 'dachueberstand.west.beleuchtung.schalten', icon1~'light_downlight.png', icon0~'light_downlight.png') }} </td><td>Strahler im Dachüberstand beim Büro</td></tr>
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch14', 'giebel.west.beleuchtung.schalten', icon1~'light_wall_2', icon0~'light_wall_2.png') }} </td><td>Wandleuchten am Westgiebel</td></tr>
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch15', 'aussen.carport.beleuchtung.durchgang.schalten', icon1~'light_garage', icon0~'light_garage.png') }} </td><td>Durchgang im Carport</td></tr>
+			</table>				
+			<h4>Terrasse</h4>
+    		<table width="90%">
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch21', 'aussen.terrasse.beleuchtung.dachueberstand_west.schalten', icon1~'light_downlight.png', icon0~'light_downlight.png') }} </td><td>Strahler im Dachüberstand beim Wohnzimmer</td></tr>
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch22', 'aussen.terrasse.beleuchtung.giebel_sued.schalten', icon1~'light_wall_2.png', icon0~'light_wall_2.png') }} </td><td>Wandleuchten am Friesengiebel</td></tr>
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch23', 'aussen.terrasse.beleuchtung.dachueberstand_ost.schalten', icon1~'light_downlight.png', icon0~'light_downlight.png') }} </td><td>Strahler im Dachüberstand bei der Küche</td></tr>
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch24', 'aussen.terrasse.beleuchtung.quellsteine.schalten', icon1~'light_fountain_indoor.png', icon0~'light_fountain_indoor.png') }} </td><td>Quellsteine</td></tr>
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch25', 'aussen.terrasse.beleuchtung.bachlauf.schalten', icon1~'light_uplight.png', icon0~'light_uplight.png') }} </td><td>Bachlauf</td></tr>
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch26', 'aussen.terrasse.beleuchtung.pflanzen.schalten', icon1~'light_uplight.png', icon0~'light_uplight.png') }} </td><td>Pflanzen neben der Terrasse</td></tr>
+			</table>
+        </div>
     </div>
+    </div>
+
+    <div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Umgebungsbedingungen</h3>
+    		    <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ icon.windrose('icon1', '', 'quadra.wind.richtung') }}</td><td>Windrichtung</td></tr></table>
+				{{ plot.period('temp.luft', ['aussen.nordseite.temperatur'], 'avg', '24h', 0, 0, '', '', ['Außen'], '', ['spline', 'spline'], ['Zeit', 'Temperatur'], '1h') }}
+				{{ plot.period('temp.feuchtigkeit', ['aussen.nordseite.luftfeuchtigkeit'], 'avg', '24h', 0, 0, '', '', ['Luftfeuchtigkeit'], '', ['spline', 'spline'], ['Zeit', 'Prozent'], '1h') }}
+				{{ plot.period('temp.niederschalg', ['quadra.niederschlag'], 'avg', '24h', 0, 0, '', '', ['Niederschlag'], '', ['spline'], ['Zeit', 'Niederschlag Ja/Nein'], '1h') }}
+				{{ plot.period('temp.windgeschwindigkeit', ['quadra.wind.geschwindigkeit'], 'avg', '24h', 0, 0, '', '', ['Windgeschwindigkeit'], '', ['spline'], ['Zeit', 'Windgeschwindigkeit m/s'], '1h') }}
+			</div>
+			<div data-role="collapsible">
+				<h3>&nbsp;</h3>
+				<p></p>
+			</div>
+		</div>
     </div>
 {% endblock %}
 

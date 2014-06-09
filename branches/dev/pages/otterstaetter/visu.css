@@ -4,15 +4,58 @@
  * @author      Martin Gleiß
  * @copyright   2012
  * @license     GPL <http://www.gnu.de>
- * ----------------------------------------------------------------------------- 
+ * -----------------------------------------------------------------------------
  */
- 
- 
+
+
 @CHARSET "UTF-8";
 
-/* display background only on larger displays */
-@media all and (min-width: 600px) {
-    .page-bg {
-	    background-image: url('../../pics/bg/light_lines.png');
-    }
+.page-bg {
+    background-image: url('../../pics/bg/light_lines.svg');
+}
+
+/* preblock additional icons */
+.preblock .left {
+	width: 67%;
+	text-align: left;
+	valign: middle;
+	display: inline-block;
+	height: 44px;
+}
+.preblock .right {
+	width: 32%;
+	text-align: right;
+	display: inline-block;
+}
+
+.preblock .left .icon-text {
+	height: 44px;
+	display: inline-block;
+	vertical-align: sub;
+}
+
+/* Label */
+@media screen and (min-width: 480px) {
+	.cusKind 2-label {
+		width: 60% !important;
+	}
+}
+
+/* Hide Element in mobile View */
+@media screen and (max-width: 480px) {
+	.hide-mobile {
+		display: none !important;
+	}
+}
+
+/* Rotate Text -90 degrees used in shutter-widget */
+.rotate {
+	display: block;
+	white-space: nowrap;
+	-moz-transform: rotate(-90.0deg);  /* FF3.5+ */
+	-o-transform: rotate(-90.0deg);  /* Opera 10.5 */
+	-webkit-transform: rotate(-90.0deg);  /* Saf3.1+, Chrome */
+	-ms-transform: rotate(-90deg); /* IE */
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); /* IE */
+	transform: rotate(-90deg);
 }

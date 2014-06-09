@@ -9,28 +9,29 @@
 
 
 {% extends "rooms.html" %}
-
+{% import "widget_button.html" as button %}
 {% block content %}
 
     <h1><img class="icon" src='{{ icon0 }}scene_sleeping_alternat.png'/>Schlafzimmer</h1>
 
     <div class="preblock">
-	<table width="100%">
-		<tr>
-		<td align="left" width="50%">
-		</td>
-		<td align="right">
-		{{ basic.symbol('rm1', 'schlafen_rm_alarm', '', icon1~'secur_smoke_detector.png',1, 'mini') }}
-		     {{ basic.symbol('rm2', 'schlafen_rm_alarm', '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
-		{{ basic.symbol('rm3', 'schlafen_rm_stoerung', '', icon1~'message_service.png',1, 'mini') }}
-		     {{ basic.symbol('rm4', 'schlafen_rm_stoerung', '', icon0~'message_service.png', 0, 'mini') }}
-		</td>
-		<td align="right" padding="20">
-		{{ basic.symbol('pir1', 'schlafen_praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
-			 {{ basic.symbol('pir2', 'schlafen_praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
-		</td>
-		</tr>
-	</table>
+			<div class="left">
+		</div>
+		<div class="right">
+			{% import "widget_smoke_detector.html" as detector %}
+			{{ detector.popup('smoke1', 'Rauchmelder Schlafen', 'dg.schlafen.rm.vernetzung.alarm', 'dg.schlafen.rm.vernetzung.testalarm', 'dg.schlafen.rm.alarm_ruecksetzen', 'dg.schlafen.rm.status.alarm',
+				'dg.schlafen.rm.status.testalarm', 'dg.schlafen.rm.status.seriennummer', 'dg.schlafen.rm.status.betriebszeit', 'dg.schlafen.rm.status.rauchkammerwert', 'dg.schlafen.rm.status.verschmutzungsgrad',
+				'dg.schlafen.rm.status.batterie_spannung', 'dg.schlafen.rm.status.temperatur', 'dg.schlafen.rm.status.fehlercode', 'dg.schlafen.rm.status.batterie_leer', 'dg.schlafen.rm.status.fehlfunktion',
+				'dg.schlafen.rm.status.anzahl.rauchalarme', 'dg.schlafen.rm.status.anzahl.temperaturalarme', 'dg.schlafen.rm.status.anzahl.testalarme', 'dg.schlafen.rm.status.anzahl.drahtalarme', 'dg.schlafen.rm.status.anzahl.busalarme',
+				'dg.schlafen.rm.status.anzahl.drahttestalarme', 'dg.schlafen.rm.status.anzahl.bustestalarme') }}
+
+			{{ basic.symbol('pir1', 'dg.schlafen.praesenz', '', icon1~'message_presence_active.png', 1) }}
+				 {{ basic.symbol('pir2', 'dg.schlafen.praesenz', '', icon0~'message_presence.png', 0) }}
+				 
+			{{ icon.shutter('dg.schlafen.shifter', 'dg.schlafen.rollladen.ost.fahren', 'dg.schlafen.rollladen.ost.position', 0, 100 ) }}
+            {{ basic.symbol('dg.schlafen.fensterauf', 'dg.schlafen.fenster.ost', '', icon1~'fts_window_2w_open_l.png', 2) }}
+                {{ basic.symbol('dg.schlafen.fenstergekippt', 'dg.schlafen.fenster.ost', '', icon1~'fts_window_2w_tilt_l.png', 1) }}
+		</div>
     </div>
 
 
@@ -39,9 +40,11 @@
 
     	<div data-role="collapsible" data-collapsed="false" >
             <h3>Licht</h3>
-            {{ device.dimmer('light1', 'Deckenstrahler', 'schlafen_beleuchtung_decke_schalten', 'schlafen_beleuchtung_decke_dimmwert') }}
-            <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'schlafen_beleuchtung_bett_links_schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Bett links</td></tr></table>
-            <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch2', 'schlafen_beleuchtung_bett_rechts_schalten', icon1~'light_light.png', icon0~'light_light.png') }} </td><td>Bett rechts</td></tr></table>
+            <p>
+            {{ device.dimmer('light1', 'Deckenstrahler', 'dg.schlafen.beleuchtung.decke.schalten', 'dg.schlafen.beleuchtung.decke.dimmwert', 0, 100) }}
+            {{ button.flip('flip0', 'dg.schlafen.beleuchtung.bett.links.schalten', 'Ein', 'Aus', 'Bett links', icon1~'light_bedside.png', icon0~'light_bedside.png') }}
+            {{ button.flip('flip1', 'dg.schlafen.beleuchtung.bett.rechts.schalten', 'Ein', 'Aus', 'Bett rechts', icon1~'light_bedside.png', icon0~'light_bedside.png') }}
+            </p>
       	</div>
 
     	<div data-role="collapsible">
@@ -58,32 +61,31 @@
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Rollladen</h3>
             {% import "widget_shutter.html" as shutter %}
-			{{ shutter.one ('shutter1', 'Tür', 'schlafen_rollladen_fahren', 'schlafen_rollladen_stopp', 'schlafen_rollladen_position', 'schlafen_rollladen_beschatten' ) }}
+			{{ shutter.one ('shutter1', 'Tür', 'dg.schlafen.rollladen.ost.fahren', 'dg.schlafen.rollladen.ost.stopp', 'dg.schlafen.rollladen.ost.position', 'dg.schlafen.rollladen.ost.beschatten' ) }}
         </div>
 
     	<div data-role="collapsible">
-            <h3>&nbsp;</h3>
-            <p></p>
+          <h3>Status Tür</h3>
+          {% import "widget_window.html" as window %}
+          <p>
+            {{ window.two ('win1', 'Tür', 'dg.schlafen.fenster' ) }}
+          </p>
         </div>
     </div>
     </div>
 
-   <!-- <div class="block">
-    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-    	<div data-role="collapsible" data-collapsed="false">
-            <h3>Raumtemperatur</h3>
-            {{ device.rtr('schlafen_rtr', 'Heizung', 'schlafen_temperatur_luft', 'schlafen_heizung_sollwert',
-                'schlafen_heizung_komfort', 'schlafen_heizung_nacht', 'schlafen_heizung_frost', 'schlafen_heizung_schalten') }}
-        </div>
-
-    	<div data-role="collapsible">
-            <h3>&nbsp;</h3>
-            <p></p>
-        </div>
-
+    <div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Temperaturen</h3>
+				{{ plot.period('temp.raum', ['dg.schlafen.temperatur.luft', 'dg.schlafen.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Zeit', 'Temperatur'], '1h') }}
+			</div>
+			<div data-role="collapsible">
+				<h3>&nbsp;</h3>
+				<p></p>
+			</div>
+		</div>
     </div>
-    </div> -->
 
 {% endblock %}
 
