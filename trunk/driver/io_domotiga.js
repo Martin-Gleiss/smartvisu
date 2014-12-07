@@ -93,7 +93,7 @@ var io = {
 	/**
 	 * This driver version
 	 */
-	version: '0.1',
+	version: '0.2',
 
 	/**
 	 * This driver uses a websocket
@@ -120,22 +120,32 @@ var io = {
 						val = data.items[i + 1];
 						console.log("[io.domotiga]: update item: " + item + " val: " + val);
 						widget.update(item, val);
-					}
-					;
-					/*
-					 for (var i = 0; i < data.items.length; i++) {
-					 item = data.items[i][0];
-					 val = data.items[i][1];
-					 if ( data.items[i].length > 2 ) {
-					 // not supported: data.p[i][2] options for visu
-					 };
-					 console.log("[io.domotiga] update item: " + item + " val: " + val);
-					 io.update(item, val);
-					 };
-					 */
+					};
+					break;
+				case 'series':
+					console.log("[io.domotiga]: series ID: " + data.items.ID );
+					console.log("[io.domotiga]: series data: " + data.items.plotdata );
+					widget.update(data.items.ID, data.items.plotdata);
 					break;
 				case 'dialog':
 					notify.info(data.header, data.content);
+				case 'log':
+					if (data.init) {
+						widget.update(data.name, data.log);
+					}
+					else {
+						var log = widget.get(data.name); // only a reference
+
+						for (var i = 0; i < data.log.length; i++) {
+							log.unshift(data.log[i]);
+
+						if (log.length >= 50) {
+							log.pop();
+							}
+						}
+						widget.update(data.name);
+					}
+					break;
 				case 'proto':
 					var proto = data.ver;
 					if (proto != io.version) {
@@ -174,6 +184,24 @@ var io = {
 		if (widget.listeners().length) {
 			io.send({'cmd': 'monitor', 'items': widget.listeners()});
 		}
+    
+ 		// plot (avg, min, max, on)
+		var unique = Array();
+		widget.plot().each(function (idx) {
+			var items = widget.explode($(this).attr('data-item'));
+			for (var i = 0; i < items.length; i++) {
+
+				var pt = items[i].split('.');
+				
+				if (!unique[items[i]] && !widget.get(items[i]) && (pt instanceof Array) && widget.checkseries(items[i])) {
+					var item = items[i].substr(0, items[i].length - 3 - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
+					io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 3], 'mode': pt[pt.length - 2]});
+					unique[items[i]] = 1;
+				}
+			}
+		});
+    
+    
 	},
 
 
