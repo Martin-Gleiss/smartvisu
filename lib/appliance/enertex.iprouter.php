@@ -23,6 +23,17 @@ class enertex_iprouter extends service
 	var $delay = 10000;
 
 	/**
+	 * initialization of some parameters
+	 */
+	public function init($request)
+	{
+		$this->debug = ($request['debug'] == 1);
+
+		$this->server = (trim($request['server']) != "" ? trim($request['server']) : config_appliance_iprouter_server);
+		$this->pass = (trim($request['pass']) != "" ? trim($request['pass']) : config_appliance_iprouter_pass);
+	}
+	
+	/**
 	 * Converts a string to an array
 	 */
 	private function str2array($text)
@@ -47,7 +58,7 @@ class enertex_iprouter extends service
 	 */
 	public function open()
 	{
-		$this->fp = fsockopen($this->server, '23', $errno, $errstr, 3);
+		$this->fp = @fsockopen($this->server, '23', $errno, $errstr, 3);
 
 		if (!$this->fp)
 			$this->error('enertex IP-Router', $errstr.' ('.$errno.')');
@@ -65,7 +76,7 @@ class enertex_iprouter extends service
 		if ($this->fp)
 		{
 			$ret = fread($this->fp, 1024);
-			
+
 			if (substr($ret, -10, 9) == "Password:")
 			{
 				usleep($this->delay);
@@ -74,6 +85,9 @@ class enertex_iprouter extends service
 
 				$ret = fread($this->fp, 1024);
 			}
+
+			if (strpos($ret, 'Wrong password') > 0)
+				$this->error('enertex IP-Router', 'Connection closed, wrong password!');
 			
 			if (substr($ret, -5, 4) == "ert>" || substr($ret, -2, 1) == "#")
 			{
@@ -127,7 +141,7 @@ class enertex_iprouter extends service
 				$this->debug($this->data, 'data');
 			}
 		}
-
+		
 		$this->close();
 	}
 
