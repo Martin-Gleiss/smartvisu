@@ -51,7 +51,7 @@ var io = {
 	 * @param      the value
 	 */
 	trigger: function (name, val) {
-		// not supported
+		io.send({'cmd': 'trigger', 'type': name, 'id': val});
 	},
 
 	/**
@@ -93,7 +93,7 @@ var io = {
 	/**
 	 * This driver version
 	 */
-	version: '0.2',
+	version: '0.3',
 
 	/**
 	 * This driver uses a websocket
