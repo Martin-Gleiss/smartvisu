@@ -66,7 +66,7 @@
 * @param the granularity of the rings (optional, default 8)
 * @param the number of colored segments (optional, default 10)
 *
-* @author Marcus Popp
+* @info inspired by Marcus Popp
 */
 {% macro colordisc(id, item_r, item_g, item_b, min, max, step, colors) %}
 	{% set uid = uid(page, id) %}
@@ -116,14 +116,15 @@
 * A multi states button to extend the basic.dual behavior
 *
 * @param unique id for this widget
-* @param a gad/item for command
+* @param a item for command
 * @param array of values
 * @param array of icons path and name
 * @param type: 'micro', 'mini', 'midi' (optional, default: mini)
+*
 * @author Pierre-Yves KERVIEL
 */
-{% macro multistate(id, gad, val, img, type) %}
-    <a id="{{ uid(page, id) }}" data-widget="basic.multistate" data-item="{{ gad }}"
+{% macro multistate(id, item, val, img, type) %}
+    <a id="{{ uid(page, id) }}" data-widget="basic.multistate" data-item="{{ item }}"
         data-vals="{{ implode(val) }}"  data-img="{{ implode(img) }}" index-mem="0"
         class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
         <img class="icon" src="{{ img[0] }}"/>
@@ -175,7 +176,7 @@
 * @param formula to use: SUM(VAR), AVG(VAR), SUB(VAR), VAR1 + VAR2, ... "VAR" is replaced with all item(s), "VAR1", "VAR2"... is replaced with the appropriate item of the list (optional, default: SUM(VAR))
 *
 * @see misc/fundamentals#Array-Form
-* @author Raik Alber
+* @info inspired by Raik Alber
 */
 {% macro formula(id, item, unit, formula) %}
 
@@ -272,7 +273,7 @@
 	{% import "icon.html" as icon %}
 
 	{% if pic_on|slice(0, 5) == 'icon.' %}
-		{{ attribute(icon, pic_on|slice(5), [id, item_switch, item_value]) }}
+		{{ attribute(icon, pic_on|slice(5), [id, item_switch, item_value, min, max]) }}
 	{% else %}
 		<span id="{{ uid(page, id) }}" data-widget="basic.shifter" data-item="{{ item_value }}, {{ item_switch }}"
 			{% set pic_on = pic_on|default(icon1~'light_light_dim_00.png') %}

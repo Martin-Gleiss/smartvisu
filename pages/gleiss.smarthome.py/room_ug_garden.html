@@ -1,0 +1,42 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+<h1><img class="icon" src='{{ icon0 }}scene_summerhouse.svg' />Garten</h1>
+
+<div class="preblock">
+	{{ basic.dual('socket', 'ug.garden.socket', icon1~'message_socket.png', icon0~'message_socket.png', '', '', 'midi') }}
+</div>
+	
+<div class="block">
+	<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Garten</h3>
+			{{ basic.switch('light', 'ug.garden.light', icon1~'light_outdoor.png', icon0~'light_outdoor.png') }}
+			{{ basic.switch('light_res', 'ug.garden.light_res', icon1~'light_wall_2.png', icon0~'light_wall_2.png') }}
+			<br />
+			<br /> 1
+			{{ basic.switch('socket_1_li', 'ug.garden.socket_1_li', icon1~'light_fairy_lights.png', icon0~'light_fairy_lights.png') }}
+			{{ basic.switch('socket_1_re', 'ug.garden.socket_1_re', icon1~'light_fairy_lights.png', icon0~'light_fairy_lights.png') }}
+			<br /> 2
+			{{ basic.switch('socket_2_li', 'ug.garden.socket_2_li', icon1~'message_socket.png', icon0~'message_socket.png') }}
+			{{ basic.switch('socket_2_re', 'ug.garden.socket_2_re', icon1~'message_socket.png', icon0~'message_socket.png') }}
+			<br /> 3
+			{{ basic.switch('socket_3_li', 'ug.garden.socket_3_li', icon1~'message_socket.png', icon0~'message_socket.png') }}
+			{{ basic.switch('socket_4_re', 'ug.garden.socket_3_re', icon1~'message_socket.png', icon0~'message_socket.png') }}
+		</div>
+
+	</div>
+</div>
+{% endblock %}

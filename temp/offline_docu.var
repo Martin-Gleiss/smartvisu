@@ -1,6 +1,6 @@
 bath.time = 1974-01-01T12:00:00.000000+01:00
-bath.light.value = 170
-bath.light.switch = 1
+bath.light.value = 168
+bath.light.switch = 0
 bath.rtr.state = 0
 bath.rtr.comfort = 1
 bath.rtr.set = 22.5
@@ -39,6 +39,7 @@ bath.value = 230.4672
 bath.p1 = 13.2334
 bath.p2 = 14.1113
 bath.p3 = 11.8511
+bath.multistate = 6
 sleep.rtr.act = 20.5
 sleep.rtr.set = 17
 office.rtr.act = 23.5
@@ -47,4 +48,4 @@ kid.rtr.act = 23.3
 kid.rtr.set = 21
 floor.rtr.act = 22.7
 floor.rtr.set = 17
-
+docu.multistate = 5

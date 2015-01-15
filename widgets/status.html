@@ -9,6 +9,19 @@
 
 
 /**
+* Collapse a popup or a html-container
+*
+* @param unique id for this widget. Use this id in the child node (as class-attribute)
+* @param a item witch triggers the collapse
+*/
+{% macro collapse(id, item_trigger) %}
+
+	<span id="{{ uid(page, id) }}" data-widget="status.collapse" data-item="{{ item_trigger }}" data-id="{{ id }}"></span>
+
+{% endmacro %}
+
+	
+/**
 * Displays a list of logging-information
 *
 * @param unique id for this widget
@@ -27,7 +40,7 @@
 
 
 /**
-* Displays a notification popup window
+* Displays a notification edge window
 *
 * @param unique id for this widget
 * @param a item witch triggers the notification
@@ -45,3 +58,32 @@
 	</span>
 
 {% endmacro %}
+
+	
+/**
+* Displays a notification popup window
+*
+* @param unique id for this widget
+* @param a item witch triggers the popup: NOT 0 open it, 0 close it
+* @param a item with the dynamic message
+* @param a item with the a timestamp
+* @param a title of the messagebox
+* @param a additional static text
+* @param the mode: 'info', 'error' (optional, default 'info')
+*/
+{% macro popup(id, item_trigger, item_message, item_timestamp, title, text, mode) %}
+
+	<span id="{{ uid(page, id) }}" data-widget="status.popup" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_timestamp }}"></span>
+
+	<div id="{{ uid(page, id) }}-popup" class="alert" data-role="popup" data-overlay-theme="a" {% if mode == 'error' %} data-dismissible="false" {% endif %}>
+		<div data-role="header" data-theme="c"><h1>{{ title }}</h1></div>
+		<p><span></span>{{ text }}</p>
+	
+		<div class="control">
+			<span class="stamp"></span>
+				<a onClick="$('#{{ uid(page, id) }}-popup').popup('close');" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
+		</div>
+	</div>
+
+{% endmacro %}
+
