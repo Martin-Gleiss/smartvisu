@@ -1,0 +1,73 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_status.html" %}
+
+{% block example %}
+
+<h5>Examples</h5>
+
+You may use this widget to collapse some html-tags. Use the id from the widget in the class-attribute of one or more child-nodes.
+<div class="twig">
+	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+		{{ status.collapse('w1', 'bath.alert.info') }}
+		<div class="w1 hide">
+			... 
+		</div>
+
+		{% endverbatim %}{% endfilter %}</code>
+	</code>
+</div>
+	
+Use it with simle html:<br />
+<div class="html">
+	{{ basic.flip('f1', 'bath.alert.info') }}<br />
+	{{ status.collapse('w1', 'bath.alert.info') }}
+	
+	<div class="w1 hide">
+		Every simple html-code could be collapsed ... with text and icons <img class="icon" src="{{ icon0 }}audio_audio.png" /> ... 
+	</div>
+</div>
+	
+Or use it to show and hide a popup:<br />	
+<div class="html">
+	{{ basic.flip('f2', 'bath.alert.warning') }}<br />
+	{{ status.collapse('w2', 'bath.alert.warning') }}
+
+	<div id="mypopup" class="w2 alert" data-role="popup" data-overlay-theme="a">
+		<div data-role="header" data-theme="c"><h1>Popup</h1></div>
+		<p>... or a popup ...</p>
+	
+		<div class="control">
+			<span class="stamp"></span>
+			<a onClick="$('#mypopup').popup('close');" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
+		</div>
+	</div>
+</div>
+
+Or use it for collapsable sections:<br />
+<div class="html">
+	{{ basic.flip('f3', 'bath.alert.error') }}<br />
+	{{ status.collapse('w3', 'bath.alert.error') }}
+
+	<div class="block">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div class="w3" data-role="collapsible">
+				<h3>Block 1</h3>
+				<p>Content 1</p>
+			</div>
+
+		</div>
+	</div>
+
+</div>
+{% endblock %}

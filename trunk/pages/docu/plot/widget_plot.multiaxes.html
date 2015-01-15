@@ -1,0 +1,26 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_plot.html" %}
+
+{% block example %}
+
+    <h5>Examples</h5>
+    
+	<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>multiaxes</h3>
+               {{ plot.multiaxes('Plot1', ['env.system.load','env.core.memory'], 'avg', '1d', '', '', '', '', ['system load','memory'], ['#f00','#0a0'], '', ['Zeit','Auslastung','Speicher'], '5i', [0,1],[0,1], ['#f00','#0a0']) }}
+		</div>
+
+	</div>
+	    
+{% endblock %}
