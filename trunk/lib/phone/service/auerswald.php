@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012
+ * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  *              To get the phonelist from Auerswald VoiP 5010 or VoiP 5020 or
  *              COMmander Basic.2 it is necessary to login into the telephone 
