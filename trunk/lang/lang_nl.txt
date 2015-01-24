@@ -18,23 +18,23 @@
 // F O R M A T
 // -----------------------------------------------------------------------------
 
-$lang['format']['int']				= '%d';
-$lang['format']['float']			= '%01,2f';
-$lang['format']['temp']				= '%01,1f °F';
-$lang['format']['°']				= '%01,1f °F';
-$lang['format']['%']	  			= '%01,1f %';
-$lang['format']['€']				= '%01,2f €';
-$lang['format']['speed']			= '%d km/u';
-$lang['format']['km/u']				= '%d km/u';
-$lang['format']['v']			    = '%d V';
-$lang['format']['a']			    = '%01,2f A';
-$lang['format']['w']			    = '%01,2f W';
-$lang['format']['kwu']			    = '%01,2f kWu';
+$lang['format']['int']                          = '%d';
+$lang['format']['float']                        = '%01,2f';
+$lang['format']['temp']                         = '%01,1f °C';
+$lang['format']['°']                            = '%01,1f °C';
+$lang['format']['%']                            = '%01,1f %';
+$lang['format']['€']                            = '%01,2f €';
+$lang['format']['speed']                        = '%d km/u';
+$lang['format']['km/h']                         = '%d km/u';
+$lang['format']['v']                        = '%d V';
+$lang['format']['a']                        = '%01,2f A';
+$lang['format']['w']                        = '%01,2f W';
+$lang['format']['kwu']                      = '%01,2f kWh';
 
-$lang['format']['date']				= 'd.m.y';
+$lang['format']['date']				= 'j-n-Y';
 $lang['format']['time']				= 'H:i';
-$lang['format']['short']			= 'd.m.y H:i';
-$lang['format']['long']				= 'd.m.Y H:i:s';
+$lang['format']['short']			= 'd-m-y H:i';
+$lang['format']['long']				= 'd-m-Y H:i:s';
 
 
 
@@ -89,7 +89,7 @@ $lang['shortday']['sat']			= 'za';
  
 // ----- plots -----------------------------------------------------------------
 $lang['plot']['resetzoom']			= 'Reset zoom';
-$lang['plot']['resetzoomtip']		= 'Reset zoom level 1:1';
+$lang['plot']['resetzoomtip']		= 'Reset zoom naar 1:1';
 $lang['plot.rtr']['label']			= 'Actueel, Set';
 $lang['plot.rtr']['axis']			= 'Tijd, Temperatuur';
 $lang['plot.comfortchart']['label'] = 'almost nice, comfortabel';
@@ -175,7 +175,7 @@ $lang['wunderground']['nw']         = 'Noordwest';
 $lang['wunderground']['nnw']        = 'Noordnoordwest';
 
 $lang['wunderground']['humidity']   = 'Luchtvochtigheid';
-$lang['wunderground']['wind_gust']  = 'Windstoot';
+$lang['wunderground']['wind_gust']  = 'Windstoten';
 $lang['wunderground']['wind_speed'] = 'Snelheid';
 $lang['wunderground']['wind']       = 'Wind';
 
