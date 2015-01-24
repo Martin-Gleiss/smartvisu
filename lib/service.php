@@ -48,7 +48,7 @@ class service
 	}
 
 	/**
-	 * sets an errormassage
+	 * sets an error message
 	 */
 	public function error($title, $message)
 	{

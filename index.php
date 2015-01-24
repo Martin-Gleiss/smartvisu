@@ -42,7 +42,7 @@ if (is_file(const_path."pages/".config_pages."/".$request['page'].".html")
 	if (dirname($request['page']) != '.')
 		$loader->addPath(const_path.'pages/'.config_pages.'/'.dirname($request['page']));
 
-	// add dir if is not directly choosen
+	// add dir if is not directly chosen
 	if (config_driver == 'smarthome.py' and config_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
 		$loader->addPath(const_path.'pages/smarthome');
 
@@ -125,7 +125,7 @@ if (is_file(const_path."pages/".config_pages."/".$request['page'].".html")
 		echo str_repeat(" ", 71)."smartVISU\n";
 		echo str_repeat(" ", 62).date('H:i, d.m').", v".config_version."\n";
 		echo str_repeat("-", 80)."\n\n";
-		echo "Error accoured in twig-template engine!\n\n";
+		echo "Error occurred in twig-template engine!\n\n";
 		echo "error: <b>".$e->getRawMessage()."</b>\n";
 		echo "file:  ".$e->getTemplateFile()."\n";
 		echo "line:  ".$e->getTemplateLine()."\n\n";

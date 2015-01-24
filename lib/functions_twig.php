@@ -185,7 +185,7 @@ function twig_docu($filename)
 }
 
 /**
- * Get a language-string form the lang-file
+ * Get a language-string from the lang-file
  *
  * @param string $subset the subset of translation keys (first array dimension)
  * @param string $key    a key in that subset (secound array dimension)
