@@ -86,7 +86,7 @@ $lang['shortday']['sat']			= 'Sat';
 $lang['plot']['resetzoom']			= 'Reset zoom';
 $lang['plot']['resetzoomtip']		= 'Reset zoom level 1:1';
 $lang['plot.rtr']['label']			= 'Actual, Set';
-$lang['plot.rtr']['axis']			= 'Time, Temerature';
+$lang['plot.rtr']['axis']			= 'Time, Temperature';
 $lang['plot.comfortchart']['label'] = 'almost nice, comfortable';
 $lang['plot.comfortchart']['axis']	= 'Temperature, Humidity';
 

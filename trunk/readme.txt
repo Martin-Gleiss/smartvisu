@@ -7,10 +7,10 @@
  * ----------------------------------------------------------------------------- 
  */
 
-DISCRIPTION
+DESCRIPTION
 --------------------------------------------------------------------------------
 smartVISU is a framework to create a visualisation for a knx-installation with
-simple html-pages. To read and write group-telegramms special tags are used.
+simple html-pages. To read and write group-telegrams special tags are used.
 You don't need to know javascript.
 
 
@@ -50,13 +50,13 @@ SYSTEMREQUIREMENTS
     
     6.  If you need to change the design, use a "visu.css" - stylesheet file in 
         your project-directory. 
-		If you wand to develop own widgets, also place them in your directory.
-		Name a the javascript-file (if you need on) to "visu.js" and it will be
-		included automatically. Name the file with the widgets e. g. "custom.html"
+		If you want to develop your own widgets, also place them in your directory.
+		Name the javascript-file (if you need one) to "visu.js" and it will be
+		included automatically. Name the file with the widgets e.g. "custom.html"
     
     7.  Test your page with:
         http://localhost/smartVISU/index.php?page=mypage
-        Note: replace "localhost" with your hostname from your server      
+        Note: replace "localhost" with the hostname from your server      
    
     8.  Create all pages you need
      

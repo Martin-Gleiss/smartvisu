@@ -90,10 +90,10 @@ $lang['shortday']['sat']			= 'za';
 // ----- plots -----------------------------------------------------------------
 $lang['plot']['resetzoom']			= 'Reset zoom';
 $lang['plot']['resetzoomtip']		= 'Reset zoom level 1:1';
-$lang['plot.rtr']['label']			= 'Actual, Set';
-$lang['plot.rtr']['axis']			= 'Time, Temerature';
-$lang['plot.comfortchart']['label'] = 'almost nice, comfortable';
-$lang['plot.comfortchart']['axis']	= 'Temperature, Humidity';
+$lang['plot.rtr']['label']			= 'Actueel, Set';
+$lang['plot.rtr']['axis']			= 'Tijd, Temperatuur';
+$lang['plot.comfortchart']['label'] = 'almost nice, comfortabel';
+$lang['plot.comfortchart']['axis']	= 'Temperatuur, Vochtigheid';
 
 
 
@@ -174,9 +174,9 @@ $lang['wunderground']['wnw']        = 'Westnoordwest';
 $lang['wunderground']['nw']         = 'Noordwest';
 $lang['wunderground']['nnw']        = 'Noordnoordwest';
 
-$lang['wunderground']['humidity']   = 'Humidity';
-$lang['wunderground']['wind_gust']  = 'Gusts';
-$lang['wunderground']['wind_speed'] = 'Speed';
+$lang['wunderground']['humidity']   = 'Luchtvochtigheid';
+$lang['wunderground']['wind_gust']  = 'Windstoot';
+$lang['wunderground']['wind_speed'] = 'Snelheid';
 $lang['wunderground']['wind']       = 'Wind';
 
 $lang['wunderground']['from']       = 'uit';
@@ -185,5 +185,5 @@ $lang['wunderground']['from']       = 'uit';
 // ----- Phone -----------------------------------------------------------------
 $lang['phone']['unknown']           = 'onbekend';
 $lang['phone']['incoming']          = 'inkomend';
-$lang['phone']['outgoing']          = 'uitgaande';
-$lang['phone']['missed']            = 'gemiste';
+$lang['phone']['outgoing']          = 'uitgaand';
+$lang['phone']['missed']            = 'gemist';
