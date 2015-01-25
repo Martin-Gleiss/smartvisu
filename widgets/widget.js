@@ -1060,14 +1060,14 @@ $(document).delegate('span[data-widget="status.collapse"]', {
 		// response is: {{ gad_trigger }}
 
 		if (response[0] != 0) {
-			$('.' + $(this).attr('data-id')).not('.ui-collapsible').show();
-			$('.' + $(this).attr('data-id') + '.ui-popup').popup("open");
-			$('.' + $(this).attr('data-id')).trigger("expand");
+			$('div[data-bind="' + $(this).attr('data-id') + '"]').not('.ui-collapsible').show();
+			$('div[data-bind="' + $(this).attr('data-id') + '"].ui-popup').popup("open");
+			$('div[data-bind="' + $(this).attr('data-id') + '"]').trigger("expand");
 		}
 		else {
-			$('.' + $(this).attr('data-id')).not('.ui-collapsible').hide();
-			$('.' + $(this).attr('data-id') + '.ui-popup').popup("close");
-			$('.' + $(this).attr('data-id')).trigger("collapse");
+			$('div[data-bind="' + $(this).attr('data-id') + '"]').not('.ui-collapsible').hide();
+			$('div[data-bind="' + $(this).attr('data-id') + '"].ui-popup').popup("close");
+			$('div[data-bind="' + $(this).attr('data-id') + '"]').trigger("collapse");
 		}
 	}
 });
