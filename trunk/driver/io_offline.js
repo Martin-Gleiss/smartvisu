@@ -166,7 +166,7 @@ var io = {
 
 		// only if anyone listens
 		if (widget.listeners().length) {
-			
+
 			// prepare url       
 			var item = widget.listeners();
 			for (var i = 0; i < widget.listeners().length; i++) {

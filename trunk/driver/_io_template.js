@@ -52,7 +52,7 @@ var io = {
 	trigger: function (name, val) {
 		// TODO
 	},
-	
+
 	/**
 	 * Initializion of the driver
 	 *
