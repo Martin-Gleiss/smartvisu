@@ -120,11 +120,12 @@ var io = {
 						val = data.items[i + 1];
 						console.log("[io.domotiga]: update item: " + item + " val: " + val);
 						widget.update(item, val);
-					};
+					}
+					;
 					break;
 				case 'series':
-					console.log("[io.domotiga]: series ID: " + data.items.ID );
-					console.log("[io.domotiga]: series data: " + data.items.plotdata );
+					console.log("[io.domotiga]: series ID: " + data.items.ID);
+					console.log("[io.domotiga]: series data: " + data.items.plotdata);
 					widget.update(data.items.ID, data.items.plotdata);
 					break;
 				case 'dialog':
@@ -139,8 +140,8 @@ var io = {
 						for (var i = 0; i < data.log.length; i++) {
 							log.unshift(data.log[i]);
 
-						if (log.length >= 50) {
-							log.pop();
+							if (log.length >= 50) {
+								log.pop();
 							}
 						}
 						widget.update(data.name);
@@ -184,15 +185,15 @@ var io = {
 		if (widget.listeners().length) {
 			io.send({'cmd': 'monitor', 'items': widget.listeners()});
 		}
-    
- 		// plot (avg, min, max, on)
+
+		// plot (avg, min, max, on)
 		var unique = Array();
 		widget.plot().each(function (idx) {
 			var items = widget.explode($(this).attr('data-item'));
 			for (var i = 0; i < items.length; i++) {
 
 				var pt = items[i].split('.');
-				
+
 				if (!unique[items[i]] && !widget.get(items[i]) && (pt instanceof Array) && widget.checkseries(items[i])) {
 					var item = items[i].substr(0, items[i].length - 3 - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 					io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 3], 'mode': pt[pt.length - 2]});
@@ -200,8 +201,8 @@ var io = {
 				}
 			}
 		});
-    
-    
+
+
 	},
 
 

@@ -199,7 +199,7 @@ var io = {
 			// items
 			io.send({'cmd': 'monitor', 'items': widget.listeners()});
 		}
-		
+
 		// plot (avg, min, max, on)
 		var unique = Array();
 		widget.plot().each(function (idx) {
@@ -207,7 +207,7 @@ var io = {
 			for (var i = 0; i < items.length; i++) {
 
 				var pt = items[i].split('.');
-				
+
 				if (!unique[items[i]] && !widget.get(items[i]) && (pt instanceof Array) && widget.checkseries(items[i])) {
 					var item = items[i].substr(0, items[i].length - 3 - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 					io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 3], 'start': pt[pt.length - 2]});
