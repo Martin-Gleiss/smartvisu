@@ -14,12 +14,13 @@
 
 <h5>Examples</h5>
 
-You may use this widget to collapse some html-tags. Use the id from the widget in the class-attribute of one or more child-nodes.
+You may use this widget to collapse some html-tags. To bind some divs to that widget you have to use the "data-bind" attribute in the div - tag.
+In this example the div is binded to the status.collapse and will be controled by it. The additional class="hide" will hide the div at startup.
 <div class="twig">
 	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
 		{{ status.collapse('w1', 'bath.alert.info') }}
-		<div class="w1 hide">
+		<div class="hide" data-bind="w1">
 			... 
 		</div>
 
@@ -27,22 +28,22 @@ You may use this widget to collapse some html-tags. Use the id from the widget i
 	</code>
 </div>
 	
-Use it with simle html:<br />
+Use it with simle html, to show and hide a <b>div</b>:<br />
 <div class="html">
 	{{ basic.flip('f1', 'bath.alert.info') }}<br />
 	{{ status.collapse('w1', 'bath.alert.info') }}
 	
-	<div class="w1 hide">
+	<div class="hide" data-bind="w1">
 		Every simple html-code could be collapsed ... with text and icons <img class="icon" src="{{ icon0 }}audio_audio.png" /> ... 
 	</div>
 </div>
 	
-Or use it to show and hide a popup:<br />	
+Or use it to show and hide a <b>popup</b>:<br />	
 <div class="html">
 	{{ basic.flip('f2', 'bath.alert.warning') }}<br />
 	{{ status.collapse('w2', 'bath.alert.warning') }}
 
-	<div id="mypopup" class="w2 alert" data-role="popup" data-overlay-theme="a">
+	<div id="mypopup" class="alert" data-bind="w2" data-role="popup" data-overlay-theme="a">
 		<div data-role="header" data-theme="c"><h1>Popup</h1></div>
 		<p>... or a popup ...</p>
 	
@@ -53,7 +54,7 @@ Or use it to show and hide a popup:<br />
 	</div>
 </div>
 
-Or use it for collapsable sections:<br />
+Or use it to show and collapsable <b>sections</b>:<br />
 <div class="html">
 	{{ basic.flip('f3', 'bath.alert.error') }}<br />
 	{{ status.collapse('w3', 'bath.alert.error') }}
@@ -61,7 +62,7 @@ Or use it for collapsable sections:<br />
 	<div class="block">
 		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
-			<div class="w3" data-role="collapsible">
+			<div data-bind="w3" data-role="collapsible">
 				<h3>Block 1</h3>
 				<p>Content 1</p>
 			</div>

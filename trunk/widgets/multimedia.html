@@ -119,8 +119,8 @@
 {% macro slideshow(id, dir, delay, item_next, item_prev, item_stop, item_start) %}
 	{% set uid = uid(page, id) %}
 
-	<script src="vendor/jquery.cycle2/jquery.cycle2.core.js"></script>
-	<script src="vendor/jquery.cycle2/jquery.cycle2.autoheight.js"></script>
+	<script src="vendor/jquery.cycle2/src/jquery.cycle2.core.js"></script>
+	<script src="vendor/jquery.cycle2/src/jquery.cycle2.autoheight.js"></script>
 
 	<div id="{{ uid }}" class="slideshow" data-cycle-log="false" data-cycle-speed="{{ delay|default(2) * 1000 }}">
 		{% for file in dir(dir, '(.+?).(jpg|png)') %}
