@@ -16,7 +16,7 @@
 */
 {% macro collapse(id, item_trigger) %}
 
-	<span id="{{ uid(page, id) }}" data-widget="status.collapse" data-item="{{ item_trigger }}" data-id="{{ id }}"></span>
+	<span id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="status.collapse" data-item="{{ item_trigger }}"></span>
 
 {% endmacro %}
 
