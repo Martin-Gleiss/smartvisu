@@ -641,6 +641,40 @@ $(document).delegate('span[data-widget="clock.miniclock"]', {
 // ----- d e v i c e ----------------------------------------------------------
 // ----------------------------------------------------------------------------
 
+// ----- device.codepad -------------------------------------------------------
+$(document).delegate('div[data-widget="device.codepad"] > div > a', {
+	'click': function (event, response) {
+		var node = $(this).parent().parent();
+		var code = $('#' + node.attr('id') + ' #code');
+		var key = $(this).attr('data-val');
+
+		if (key == "ok") {
+			if (node.attr('data-val') == code.val()) {
+				// DEBUG: console.log('[device.codepad] ' + node.attr('id') + ' unlocked');
+				$('div[data-bind="' + node.attr('data-id') + '"]').attr('data-access', new Date().getTime()).removeClass('codepad');
+				setTimeout(function () {
+					$('div[data-bind="' + node.attr('data-id') + '"]').attr('data-access', '').addClass('codepad');
+				}, new Date().duration(node.attr('data-duration')).valueOf());
+				node.popup("close");
+			}
+			else {
+				// DEBUG: console.log('[device.codepad] ' + node.attr('id') + ' wrong code ' + code.val());
+				code.val('');
+				$('#' + node.attr('id')).addClass('ui-focus');
+				setTimeout(function () {
+					$('#' + node.attr('id')).removeClass('ui-focus');
+				}, 400);
+			}
+		}
+		else if (key == "-") {
+			code.val('');
+		}
+		else {
+			code.val(code.val() + key);
+		}
+	}
+});
+
 // ----- device.rtr -----------------------------------------------------------
 $(document).delegate('div[data-widget="device.rtr"] > div > a[data-icon="minus"]', {
 	'click': function (event, response) {

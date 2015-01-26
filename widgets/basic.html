@@ -23,7 +23,7 @@
 	<a id="{{ uid(page, id) }}" data-widget="basic.button" data-item="{{ item }}" data-val="{{ val|default('1') }}"
 		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true"
 		{% if not pic %}
-		data-iconpos="nopic">{{ txt|e }}
+			data-iconpos="nopic">{{ txt|e }}
 		{% elseif pic|slice(-4, 4) != '.png' and not txt %}
 			data-icon="{{ pic }}" data-iconpos="notext">
 		{% elseif pic|slice(-4, 4) != '.png' and txt %}

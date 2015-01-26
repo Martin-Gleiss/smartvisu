@@ -68,17 +68,48 @@
 * Standard dimmer with switching and dimming function
 *
 * @param unique id for this widget
-* @param name of the dimmer
-* @param a item for switching
-* @param a item for dimming
-* @param the minimum value if the slider is moved to total left (optional, default 0)
-* @param the maximum value if the slider is moved to total right (optional, default 255)
-* @param step between two values (optional, default 5)
+* @param code the code
+* @param a title
 */
-{% macro codepad(id, code, keys) %}
+{% macro codepad(id, code, title, duration) %}
+	{% set uid = uid(page, id) %}
 
+	<div id="{{ uid }}" data-id="{{ id }}" data-widget="device.codepad" data-val="{{ code }}" data-duration="{{ duration|default('10s') }}"
+		data-role="popup" data-overlay-theme="a" class="alert" style="width: 166px;" >
+		<div data-role="header" data-theme="c"><h1>{{ title }}</h1></div>
+
+		<input name="code" id="code" type="password" style="text-align: center;"/>
+		
+		<div style="margin: 10px;">
+		{% for i in 1..9 %}
+			<a id="{{ uid~'-'~i }}" data-val="{{ i }}" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >{{ i }}</a>
+		{% endfor %}
+			<a id="{{ uid }}-clear" data-val="-" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >-</a>
+			<a id="{{ uid }}-0" data-val="0" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >0</a>
+			<a id="{{ uid }}-ok" data-val="ok" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >OK</a>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).delegate('xxxdiv[data-bind="{{ id }}"]', 
+			'click', function (event) {
+				if (!$(this).attr('data-access')) {
+					$('#{{ uid }}').popup('open');
+				}
+			}
+		);
+		
+		$('div[data-bind="{{ id }}"]').click(function (event) {
+				if (!$(this).attr('data-access')) {
+					$('#{{ uid }} #code').val('');
+					$('#{{ uid }}').popup('open');
+					event.stopPropagation();
+				}
+		});
+	</script>
 
 {% endmacro %}
+
 
 /**
 * Standard dimmer with switching and dimming function

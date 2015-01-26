@@ -1061,6 +1061,15 @@ canvas.colordisc {
 	margin: 5px 0 0 10px;
 }
 
+.codepad {
+	float: left;
+	border: 1px dotted #888;
+	border-radius: 1em;
+	-moz-border-radius: 1em;
+	-webkit-border-radius: 1em;
+	background-color: rgba(120, 120, 120, 0.3);
+}
+
 .rtr .actual {
 	padding: 5px 0 5px 5px;
 	width: 200px;

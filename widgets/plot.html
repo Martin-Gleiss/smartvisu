@@ -50,13 +50,14 @@
 
 {% macro multiaxes( id, gad, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes, zoom, yaxisnumber, yaxisopposite, yaxiscolor ) %}
 
-	<div id="{{ uid(page, id) }}" class="plot" data-widget="plot.multiaxes" data-item="{{ implode(gad, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}"
+	<div id="{{ uid(page, id) }}" data-widget="plot.multiaxes" data-item="{{ implode(gad, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}"
     	{% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
         data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" 
 		data-axis="{{ implode(axes) }}" {% if yaxisnumber is not empty %} data-yaxisnumber="{{ implode(yaxisnumber) }}" {% endif %}
-    	{% if zoom is not empty %}          data-zoom="{{ zoom }}" {% endif %}
+    	{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
     	{% if yaxisopposite is not empty %} data-yaxisopposite="{{ implode(yaxisopposite) }}" {% endif %}
-    	{% if yaxiscolor is not empty %}    data-yaxiscolor="{{ implode(yaxiscolor) }}" {% endif %} ></div>
+    	{% if yaxiscolor is not empty %} data-yaxiscolor="{{ implode(yaxiscolor) }}" {% endif %}
+		class="plot"></div>
 
 {% endmacro %}
 
