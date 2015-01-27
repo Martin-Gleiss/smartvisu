@@ -1,0 +1,33 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_device.html" %}
+
+{% block example %}
+
+<br />
+
+<h5>Example</h5>
+<div class="twig">
+	<code class="prettyprint">
+	</code>
+</div>
+
+	
+	<div class="codepad" data-bind='c1' >
+		{{ basic.switch('switch1', 'bath.light.switch') }}
+		{{ basic.button('button1', 'bath.light.switch', '1') }}
+		{{ basic.dual('dual1', 'bath.light.switch') }}
+		{{ basic.colordisc('colordisc1', 'bath.color.r', 'bath.color.g', 'bath.color.b') }}
+	</div>
+
+	{{ device.codepad ('c1', '1234', 'Enter Code') }}
+
+{% endblock %}
