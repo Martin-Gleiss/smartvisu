@@ -14,11 +14,11 @@ simple html-pages. To read and write group-telegrams special tags are used.
 You don't need to know javascript.
 
 
-SYSTEMREQUIREMENTS
+SYSTEM REQUIREMENTS
 --------------------------------------------------------------------------------
     -   KNX-Bus
     -   eibd
-	-	linknx or smarthome.py
+    -   linknx or smarthome.py
     -   Webserver with PHP 5.2.4 
     -   Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android 
         Tablet
