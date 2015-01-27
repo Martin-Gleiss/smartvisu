@@ -77,7 +77,7 @@ function compile($file)
 
 		// write it
 		$compiled = substr($result, strpos($result, '*/') + 3);
-		$compiled = "/* smartVISU, Martin Gleiß, 2013, GPL [http://www.gnu.de] */\n".$compiled;
+		$compiled = "/* smartVISU, Martin Gleiß, 2012 - 2015, GPL [http://www.gnu.de] */\n".$compiled;
 		filewrite(substr($file, 0, -3).".min.js", $compiled);
 
 		// status
