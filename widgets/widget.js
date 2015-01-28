@@ -230,33 +230,32 @@ $(document).delegate('a[data-widget="basic.dual"]', {
 
 // ----- basic.multistate ------------------------------------------------------
 $(document).delegate('a[data-widget="basic.multistate"]', {
-    'update': function (event, response) {
-        // get list of values and images
-        list_val=$(this).attr('data-vals').explode();
-        list_img = $(this).attr('data-img').explode();
-        // get the index of the value received
-        idx = list_val.indexOf(response.toString());
-        // update the image
-        $('#' + this.id + ' img').attr('src', list_img[idx]);
-        // memorise the index for next use
-        $(this).attr('index-mem', idx);
-    },
-    'click': function(event) {
-        // get the list of values
-        list_val=$(this).attr('data-vals').explode();
-        // get the last index memorised
-        old_idx=parseInt($(this).attr('index-mem'));
-        //compute the next index
-        var new_idx = old_idx + 1;
-        if (new_idx>=list_val.length)
-        {
-            new_idx=0;
-        }
-        // send the value to driver
-        io.write($(this).attr('data-item'), list_val[new_idx]);
-        // memorise the index for next use
-        $(this).attr('index-mem', new_idx);
-    }
+	'update': function (event, response) {
+		// get list of values and images
+		list_val = $(this).attr('data-vals').explode();
+		list_img = $(this).attr('data-img').explode();
+		// get the index of the value received
+		idx = list_val.indexOf(response.toString());
+		// update the image
+		$('#' + this.id + ' img').attr('src', list_img[idx]);
+		// memorise the index for next use
+		$(this).attr('index-mem', idx);
+	},
+	'click': function (event) {
+		// get the list of values
+		list_val = $(this).attr('data-vals').explode();
+		// get the last index memorised
+		old_idx = parseInt($(this).attr('index-mem'));
+		//compute the next index
+		var new_idx = old_idx + 1;
+		if (new_idx >= list_val.length) {
+			new_idx = 0;
+		}
+		// send the value to driver
+		io.write($(this).attr('data-item'), list_val[new_idx]);
+		// memorise the index for next use
+		$(this).attr('index-mem', new_idx);
+	}
 });
 
 // ----- basic.flip -----------------------------------------------------------
@@ -573,7 +572,7 @@ $(document).delegate('span[data-widget="basic.symbol"]', {
 $(document).delegate('div[data-widget="basic.tank"]', {
 	'update': function (event, response) {
 		// $('#' + this.id + ' div').css('height', Math.round(Math.min(response / $(this).attr('data-max'), 1) * 180));
-		$('#' + this.id + ' div').animate({ height: Math.round(Math.min(response / $(this).attr('data-max'), 1) * 180)}, 'slow');
+		$('#' + this.id + ' div').animate({height: Math.round(Math.min(response / $(this).attr('data-max'), 1) * 180)}, 'slow');
 
 	}
 });
@@ -741,18 +740,20 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
 			data: [
 				[response[0] * 1.0, response[1] * 1.0]
 			],
-			marker: { enabled: true, lineWidth: 2, radius: 6, symbol: 'circle' },
+			marker: {enabled: true, lineWidth: 2, radius: 6, symbol: 'circle'},
 			showInLegend: false
 		};
 
 		$('#' + this.id).highcharts({
 			series: plots,
-			xAxis: { min: 10, max: 35, title: { text: axis[0], align: 'high', margin: -2 } },
-			yAxis: { min: 0, max: 100, title: { text: axis[1], margin: 7 } },
-			plotOptions: { area: { enableMouseTracking: false } },
-			tooltip: { formatter: function () {
-				return this.x.transUnit('temp') + ' / ' + this.y.transUnit('%');
-			} }
+			xAxis: {min: 10, max: 35, title: {text: axis[0], align: 'high', margin: -2}},
+			yAxis: {min: 0, max: 100, title: {text: axis[1], margin: 7}},
+			plotOptions: {area: {enableMouseTracking: false}},
+			tooltip: {
+				formatter: function () {
+					return this.x.transUnit('temp') + ' / ' + this.y.transUnit('%');
+				}
+			}
 		});
 	},
 
@@ -772,56 +773,37 @@ $(document).delegate('div[data-widget="plot.comfortchart"]', {
 
 
 // ----- plot.multiaxes ----------------------------------------------------------
-$(document).delegate('div[data-widget="plot.multiaxes"]', {
+$(document).delegate('div[data-widget="plot.multiaxis"]', {
 	'update': function (event, response) {
 		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
+
+		var ymin = [];
+		if ($(this).attr('data-ymin')) { ymin = $(this).attr('data-ymin').explode(); }
+
+		var ymax = [];
+		if ($(this).attr('data-ymax')) { ymax = $(this).attr('data-ymax').explode(); }
 
 		var label = $(this).attr('data-label').explode();
 		var color = $(this).attr('data-color').explode();
 		var exposure = $(this).attr('data-exposure').explode();
 		var axis = $(this).attr('data-axis').explode();
 		var zoom = $(this).attr('data-zoom');
+
+		var assign = [];
+		if ($(this).attr('data-assign')) { assign = $(this).attr('data-assign').explode(); }
+
+		var opposite = [];
+		if ($(this).attr('data-opposite')) { opposite = $(this).attr('data-opposite').explode(); }
+
+		var ycolor = [];
+		if ($(this).attr('data-ycolor')) { ycolor = $(this).attr('data-ycolor').explode(); }
+
 		var series = [];
-        var yAxes = [];
+		var yaxis = [];
 
-        var ymin;
-        if ($(this).attr('data-ymin')) {
-            ymin = $(this).attr('data-ymin').explode();
-            } else {
-            ymin = [];
-            }
-
-        var ymax;
-        if ($(this).attr('data-ymax')) {
-            ymax = $(this).attr('data-ymax').explode();
-            } else {
-            ymax = [];
-            }
-                        
-        var hc = [];
-        
-        var yaxisnumber;
-        if ($(this).attr('data-yaxisnumber')) {
-            yaxisnumber = $(this).attr('data-yaxisnumber').explode();
-            } else {
-            yaxisnumber = [];
-            }
-            
-        var yaxisopposite;
-        if ($(this).attr('data-yaxisopposite')) { 
-            yaxisopposite = $(this).attr('data-yaxisopposite').explode();
-            } else {
-            yaxisopposite = [];
-            }
-        var yaxiscolor;
-        if ($(this).attr('data-yaxiscolor')) { 
-            yaxiscolor = $(this).attr('data-yaxiscolor').explode();
-            } else {
-            yaxiscolor = [];
-            } 
-        var i = 0;
-        var n = 0;
-
+		var i = 0;
+		
+		// series
 		for (i = 0; i < response.length; i++) {
 			series[i] = {
 				type: (exposure[i] != 'stair' ? exposure[i] : 'line'),
@@ -829,62 +811,47 @@ $(document).delegate('div[data-widget="plot.multiaxes"]', {
 				name: label[i],
 				data: response[i],
 				color: (color[i] ? color[i] : null),
-                yAxis: (yaxisnumber[i] ? parseInt(yaxisnumber[i], 10) : 0),
-                zIndex: 200
+				yAxis: (assign[i] ? assign[i] - 1 : 0)
 			};
 		}
 
-        // we need the number of user defined yaxes: 
-        // One graph my have serveral series of data but the number of different yaxes might be smaller!
-		for ( i = 0; i < yaxisnumber.length; i++) {
-            n = Math.max(n, parseInt(yaxisnumber[i], 10));
-        }
-        // indices are zero based so we need to increase by one
-        n++;
-        
-        // now limit the number of defined yaxes, it must be smaller than the number of series
-        n = Math.min( n, response.length );
-        
-		for ( i = 0; i < n; i++) {
-			yAxes[i] = {
-                    min: (ymin[i] ? ymin[i] : null),
-                    max: (ymax[i] ? ymax[i] : null),
-                    title: { text: axis[1 + i] }, 
-                    opposite: ( yaxisopposite[i] ? (parseInt(yaxisopposite[i],10) > 0 ? true : false ) : false ),
-                    minPadding: 0.05,
-                    maxPadding: 0.05,
-                    endOnTick: false,
-                    startOnTick: false };
-            if (yaxiscolor[i]) { 
-                    yAxes[i].lineColor = yaxiscolor[i];
-                    yAxes[i].tickColor = yaxiscolor[i];
-                    };
-		}    
-
-		// draw the plot
-		if (zoom) {
-            hc = {
-                chart: { 
-                    zoomType: 'x',
-                    type: 'line'
-                },
-				series: series,
-				xAxis: { type: 'datetime', title: { text: axis[0] }, minRange: new Date().duration(zoom).valueOf() },
-				yAxis: yAxes
+		// y-axis
+		for (i = 0; i < axis.length - 1; i++) {
+			yaxis[i] = {
+				min: (ymin[i] ? ymin[i] : null),
+				max: (ymax[i] ? ymax[i] : null),
+				title: {text: axis[i + 1]},
+				opposite: (opposite[i] > 0),
+				minPadding: 0.05,
+				maxPadding: 0.05,
+				endOnTick: false,
+				startOnTick: false
 			};
-			$('#' + this.id).highcharts( hc );
+			if (ycolor[i]) {
+				yaxis[i].lineColor = ycolor[i];
+				yaxis[i].tickColor = ycolor[i];
+			}
+		}
+
+		// draw the plot 
+		if (zoom) {
+			$('#' + this.id).highcharts({
+				chart: {
+					zoomType: 'x'
+				},
+				series: series,
+				xAxis: {type: 'datetime', title: {text: axis[0]}, minRange: new Date().duration(zoom).valueOf()},
+				yAxis: yaxis
+			});
 		}
 		else {
-			hc = {
-                chart: { 
-                    type: 'line'
-                },
+			$('#' + this.id).highcharts({
 				series: series,
-				xAxis: { type: 'datetime', title: { text: axis[0] } },
-				yAxis: yAxes
-			};
-            $('#' + this.id).highcharts(hc);
+				xAxis: {type: 'datetime', title: {text: axis[0]}},
+				yAxis: yaxis
+			});
 		}
+
 	},
 
 	'point': function (event, response) {
@@ -928,17 +895,17 @@ $(document).delegate('div[data-widget="plot.period"]', {
 		// draw the plot
 		if (zoom) {
 			$('#' + this.id).highcharts({
-				chart: { zoomType: 'x' },
+				chart: {zoomType: 'x'},
 				series: series,
-				xAxis: { type: 'datetime', title: { text: axis[0] }, minRange: new Date().duration(zoom).valueOf() },
-				yAxis: { min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: { text: axis[1] } }
+				xAxis: {type: 'datetime', title: {text: axis[0]}, minRange: new Date().duration(zoom).valueOf()},
+				yAxis: {min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: {text: axis[1]}}
 			});
 		}
 		else {
 			$('#' + this.id).highcharts({
 				series: series,
-				xAxis: { type: 'datetime', title: { text: axis[0] } },
-				yAxis: { min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: { text: axis[1] } }
+				xAxis: {type: 'datetime', title: {text: axis[0]}},
+				yAxis: {min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: {text: axis[1]}}
 			});
 		}
 	},
@@ -986,14 +953,14 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 
 		// draw the plot
 		$('#' + this.id).highcharts({
-			chart: { type: 'line' },
+			chart: {type: 'line'},
 			series: [
 				{
 					name: label[0], data: response[0], type: 'spline'
-				} ,
+				},
 				{
 					name: label[1], data: response[1], dashStyle: 'shortdot', step: 'left'
-				} ,
+				},
 				{
 					type: 'pie', name: '∑ On: ',
 					data: [
@@ -1004,17 +971,19 @@ $(document).delegate('div[data-widget="plot.rtr"]', {
 							name: 'Off', y: (100 - percent), color: null
 						}
 					],
-					center: [ '95%', '90%' ],
+					center: ['95%', '90%'],
 					size: 35,
 					showInLegend: false,
-					dataLabels: { enabled: false }
+					dataLabels: {enabled: false}
 				}
 			],
-			xAxis: { type: 'datetime' },
-			yAxis: { min: $(this).attr('data-min'), max: $(this).attr('data-max'), title: { text: axis[1] } },
-			tooltip: { formatter: function () {
-				return this.series.name + ' <b>' + (this.percentage ? this.y.transUnit('%') : this.y.transUnit('temp')) + '</b>';
-			}}
+			xAxis: {type: 'datetime'},
+			yAxis: {min: $(this).attr('data-min'), max: $(this).attr('data-max'), title: {text: axis[1]}},
+			tooltip: {
+				formatter: function () {
+					return this.series.name + ' <b>' + (this.percentage ? this.y.transUnit('%') : this.y.transUnit('temp')) + '</b>';
+				}
+			}
 		});
 	},
 
@@ -1059,14 +1028,16 @@ $(document).delegate('div[data-widget="plot.temprose"]', {
 		}
 
 		$('#' + this.id).highcharts({
-			chart: {polar: true, type: 'line', marginLeft: 10 },
+			chart: {polar: true, type: 'line', marginLeft: 10},
 			series: plots,
-			xAxis: { categories: axis, tickmarkPlacement: 'on', lineWidth: 0 },
-			yAxis: { gridLineInterpolation: 'polygon', lineWidth: 0 },
-			tooltip: { formatter: function () {
-				return this.x + ' - ' + this.series.name + ': <b>' + this.y.transUnit('temp') + '</b>';
-			} },
-			legend: { x: 10, layout: 'vertical' }
+			xAxis: {categories: axis, tickmarkPlacement: 'on', lineWidth: 0},
+			yAxis: {gridLineInterpolation: 'polygon', lineWidth: 0},
+			tooltip: {
+				formatter: function () {
+					return this.x + ' - ' + this.series.name + ': <b>' + this.y.transUnit('temp') + '</b>';
+				}
+			},
+			legend: {x: 10, layout: 'vertical'}
 		});
 	},
 
@@ -1150,7 +1121,7 @@ $(document).delegate('span[data-widget="status.popup"]', {
 		if (response[0] != 0) {
 			$('#' + this.id + '-popup p span').html(response[1] ? '<b>' + response[1] + '</b><br />' : '');
 			$('#' + this.id + '-popup .stamp').html(response[2] ? new Date(response[2]).transShort() : new Date().transShort());
-			$('#' + this.id + '-popup').popup('open');	
+			$('#' + this.id + '-popup').popup('open');
 		}
 		else {
 			$('#' + this.id + '-popup').popup('close');

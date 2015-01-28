@@ -135,7 +135,7 @@ var io = {
 					break;
 
 				case 'series':
-					data.sid = data.sid.substr(0, data.sid.length - 3) + '0';
+					data.sid = data.sid.substr(0, data.sid.length);
 					widget.update(data.sid.replace(/\|/g, '\.'), data.series);
 					break;
 
@@ -209,8 +209,8 @@ var io = {
 				var pt = items[i].split('.');
 
 				if (!unique[items[i]] && !widget.get(items[i]) && (pt instanceof Array) && widget.checkseries(items[i])) {
-					var item = items[i].substr(0, items[i].length - 3 - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
-					io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 3], 'start': pt[pt.length - 2]});
+					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
+					io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'count': pt[pt.length - 1]});
 					unique[items[i]] = 1;
 				}
 			}

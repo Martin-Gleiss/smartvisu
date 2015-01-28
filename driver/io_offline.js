@@ -197,7 +197,7 @@ var io = {
 				var item = items[i].split('.');
 
 				if (widget.get(items[i]) == null && (widget.checkseries(items[i]))) {
-					widget.update(items[i], io.demoseries(item[item.length - 2], item[item.length - 1], $(this).attr('data-ymin'), $(this).attr('data-ymax'), $(this).attr('data-step')));
+					widget.update(items[i], io.demoseries(item[item.length - 3], item[item.length - 2], $(this).attr('data-ymin'), $(this).attr('data-ymax'), $(this).attr('data-step')));
 				}
 			}
 		});
