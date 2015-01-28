@@ -25,7 +25,7 @@
 
 
 /**
-* A simple widget for plotting charts with multiple y-axes (based on macro period)
+* A simple widget for plotting charts with multiple y-axis (based on macro period)
 *
 * @param unique id for this widget
 * @param series of item/s. More item/s in array form: [ item1 , item2 ]
@@ -38,25 +38,28 @@
 * @param label/s for each series (optional)
 * @param color/s for each series e. g. '#f00' for red (optional, default: sutiable for design)
 * @param exposure is type/s for each series: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')
-* @param title/s for the x-axis and y-axis (
+* @param title/s for the x-axis and y-axis (optional)
 * @param minimum time while zooming in sec (optional, duration-format)
-* @param yaxisnumber for each series (optional), 
-* @param yaxisopposite true=1 or false=0 for each axis (optional)
-* @param yaxiscolor for each axis a color might be applied (optional)
+* @param 
+* @param assignment of the series to the axis (optional)
+* @param y-axis setup for left '0' and right '1' hand (optional)
+* @param y-axis color might be applied (optional)
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
 */
 
-{% macro multiaxes( id, gad, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes, zoom, yaxisnumber, yaxisopposite, yaxiscolor ) %}
+{% macro multiaxis( id, item, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axis, zoom, count, assign, opposite, ycolor) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.multiaxes" data-item="{{ implode(gad, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}"
-    	{% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
-        data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" 
-		data-axis="{{ implode(axes) }}" {% if yaxisnumber is not empty %} data-yaxisnumber="{{ implode(yaxisnumber) }}" {% endif %}
-    	{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
-    	{% if yaxisopposite is not empty %} data-yaxisopposite="{{ implode(yaxisopposite) }}" {% endif %}
-    	{% if yaxiscolor is not empty %} data-yaxiscolor="{{ implode(yaxiscolor) }}" {% endif %}
+	<div id="{{ uid(page, id) }}" data-widget="plot.multiaxis" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default('now'), count|default(100) ]) }}"
+		{% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
+		data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}"
+		data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axis) }}" 
+		{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
+		{% if count is not empty %} data-count="{{ count }}" {% endif %}
+		{% if assign is not empty %} data-assign="{{ implode(assign) }}" {% endif %}
+		{% if opposite is not empty %} data-opposite="{{ implode(opposite) }}" {% endif %}
+		{% if ycolor is not empty %} data-ycolor="{{ implode(ycolor) }}" {% endif %}
 		class="plot"></div>
 
 {% endmacro %}
@@ -78,17 +81,19 @@
 * @param type/s for each series: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')
 * @param title/s for the x-axis and y-axis
 * @param minimum time while zooming in sec (optional, duration-format)
+* @param number of samples (points) (optional, default 100)
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
 */
-{% macro period(id, item, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes, zoom) %}
+{% macro period(id, item, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axis, zoom, count) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}"
+	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default('now'), count|default('100')]) }}"
 		{% if ymin is not empty %} data-ymin="{{ ymin }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ ymax }}" {% endif %}
 		data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}"
-		data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axes) }}"
+		data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axis) }}"
 		{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
+		{% if zoom is not empty %} data-count="{{ count }}" {% endif %}
 		class="plot"></div>
 
 {% endmacro %}
@@ -101,11 +106,13 @@
 * @param series of a item for the actual-temperature
 * @param series of a item for the set-temperature
 * @param series of a item for the state of the actor. It is shown as percental value within the pie. (> 0 is considered as 'on')
+* @param number of samples (points) (optional, default 100)
 */
-{% macro rtr(id, item_actual, item_set, item_state) %}
+{% macro rtr(id, item_actual, item_set, item_state, count) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([item_actual, item_set, item_state], ['avg', '1d', 0]) }}"
+	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([item_actual, item_set, item_state], ['avg', '1d', 'now', count|default(100)]) }}"
 		data-step="50" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
+		{% if count is not empty %} data-count="{{ count }}" {% endif %}
 		class="plot"></div>
 
 {% endmacro %}

@@ -803,7 +803,7 @@ var widget = {
 	 */
 	checkseries: function (item) {
 		var pt = item.split('.');
-		return ($.inArray(pt[pt.length - 3], Array('avg', 'min', 'max', 'sum', 'diff', 'rate', 'on')) >= 0 );
+		return ($.inArray(pt[pt.length - 4], Array('avg', 'min', 'max', 'sum', 'diff', 'rate', 'on')) >= 0 );
 	},
 
 

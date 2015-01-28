@@ -18,7 +18,7 @@
 
 		<div data-role="collapsible" data-collapsed="false">
 			<h3>multiaxes</h3>
-               {{ plot.multiaxes('Plot1', ['env.system.load','env.core.memory'], 'avg', '1d', '', '', '', '', ['system load','memory'], ['#f00','#0a0'], '', ['Zeit','Auslastung','Speicher'], '5i', [0,1],[0,1], ['#f00','#0a0']) }}
+               {{ plot.multiaxis('p1', ['env.system.load','env.core.memory'], 'avg', '1d', '', '', '', '', ['system load', 'memory'], ['#a00','#070'], '', ['Zeit', 'Auslastung', 'Speicher'], '5i', '', [1,2], [0,1], ['#f00','#0a0']) }}
 		</div>
 
 	</div>
