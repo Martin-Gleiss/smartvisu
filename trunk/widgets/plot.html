@@ -93,7 +93,7 @@
 		data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}"
 		data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axis) }}"
 		{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
-		{% if zoom is not empty %} data-count="{{ count }}" {% endif %}
+		{% if count is not empty %} data-count="{{ count }}" {% endif %}
 		class="plot"></div>
 
 {% endmacro %}

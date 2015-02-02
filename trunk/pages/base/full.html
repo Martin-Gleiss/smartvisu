@@ -18,10 +18,10 @@
 				{% include 'menu.html' %}
 			</div>
 			<div class="ui-right">
-				<a href="javascript:window.location.href=window.location.href" style="text-decoration:none;color:#fff">
+				<a href="javascript:window.location.href=window.location.href" style="text-decoration:none;color:#fff;">
 					{{ lib.smartvisu() }}
 					<div class="mini">
-						<span id="miniclock" class="miniclock" data-widget="clock.miniclock" data-repeat="1i">{{ now|date('H:i') }}</span>, {{ now|date('d-m,') }} v{{ config_version }}</div>
+						<span id="miniclock" class="miniclock" data-widget="clock.miniclock" data-repeat="1i">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
 				</a>
 			</div>
 			<div class="signal hide" onClick="$('.ui-page-active .alert').popup('open');"></div>
