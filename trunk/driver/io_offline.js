@@ -197,7 +197,14 @@ var io = {
 				var item = items[i].split('.');
 
 				if (widget.get(items[i]) == null && (widget.checkseries(items[i]))) {
-					widget.update(items[i], io.demoseries(item[item.length - 3], item[item.length - 2], $(this).attr('data-ymin'), $(this).attr('data-ymax'), $(this).attr('data-step')));
+
+					var ymin = [];
+					if ($(this).attr('data-ymin')) { ymin = $(this).attr('data-ymin').explode(); }
+
+					var ymax = [];
+					if ($(this).attr('data-ymax')) { ymax = $(this).attr('data-ymax').explode(); }
+
+					widget.update(items[i], io.demoseries(item[item.length - 3], item[item.length - 2], ymin[0], ymax[0], item[item.length - 1]));
 				}
 			}
 		});

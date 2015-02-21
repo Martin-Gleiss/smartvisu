@@ -1113,18 +1113,20 @@ $(document).delegate('span[data-widget="status.notify"]', {
 	}
 });
 
-// ----- status.popup -----------------------------------------------------------
-$(document).delegate('span[data-widget="status.popup"]', {
+// ----- status.message -------------------------------------------------------
+$(document).delegate('span[data-widget="status.message"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_trigger }}, {{ gad_message }}
 
 		if (response[0] != 0) {
-			$('#' + this.id + '-popup p span').html(response[1] ? '<b>' + response[1] + '</b><br />' : '');
-			$('#' + this.id + '-popup .stamp').html(response[2] ? new Date(response[2]).transShort() : new Date().transShort());
-			$('#' + this.id + '-popup').popup('open');
+			$('#' + this.id + '-message p span').html(response[1] ? '<b>' + response[1] + '</b><br />' : '');
+			$('#' + this.id + '-message .stamp').html(response[2] ? new Date(response[2]).transShort() : new Date().transShort());
+			$('#' + this.id + '-message').popup('open');
+			console.log (this.id + ' open ' +response[0]);
 		}
 		else {
-			$('#' + this.id + '-popup').popup('close');
+			$('#' + this.id + '-message').popup('close');
+			console.log (this.id + ' ' +response[0]); 
 		}
 	}
 });

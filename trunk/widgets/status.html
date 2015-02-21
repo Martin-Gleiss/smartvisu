@@ -61,7 +61,7 @@
 
 	
 /**
-* Displays a notification popup window
+* Displays a notification popup window with a message
 *
 * @param unique id for this widget
 * @param a item witch triggers the popup: NOT 0 open it, 0 close it
@@ -71,17 +71,17 @@
 * @param a additional static text
 * @param the mode: 'info', 'error' (optional, default 'info')
 */
-{% macro popup(id, item_trigger, item_message, item_timestamp, title, text, mode) %}
+{% macro message(id, item_trigger, item_message, item_timestamp, title, text, mode) %}
 
-	<span id="{{ uid(page, id) }}" data-widget="status.popup" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_timestamp }}"></span>
+	<span id="{{ uid(page, id) }}" data-widget="status.message" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_timestamp }}"></span>
 
-	<div id="{{ uid(page, id) }}-popup" class="alert" data-role="popup" data-overlay-theme="a" {% if mode == 'error' %} data-dismissible="false" {% endif %}>
+	<div id="{{ uid(page, id) }}-message" class="alert" data-role="popup" data-overlay-theme="a" {% if mode == 'error' %} data-dismissible="false" {% endif %}>
 		<div data-role="header" data-theme="c"><h1>{{ title }}</h1></div>
 		<p><span></span>{{ text }}</p>
 	
 		<div class="control">
 			<span class="stamp"></span>
-				<a onClick="$('#{{ uid(page, id) }}-popup').popup('close');" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
+				<a onClick="$('#{{ uid(page, id) }}-message').popup('close');" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
 		</div>
 	</div>
 

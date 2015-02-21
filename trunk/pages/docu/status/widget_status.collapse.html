@@ -14,7 +14,7 @@
 
 <h5>Examples</h5>
 
-You may use this widget to collapse some html-tags. To bind some divs to that widget you have to use the "data-bind" attribute in the div - tag.
+You may use this widget to collapse some html. To bind some divs to that widget you have to use the "data-bind" attribute in the div - tag.
 In this example the div is binded to the status.collapse and will be controled by it. The additional class="hide" will hide the div at startup.
 <div class="twig">
 	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
@@ -43,13 +43,13 @@ Or use it to show and hide a <b>popup</b>:<br />
 	{{ basic.flip('f2', 'bath.alert.warning') }}<br />
 	{{ status.collapse('w2', 'bath.alert.warning') }}
 
-	<div id="mypopup" class="alert" data-bind="w2" data-role="popup" data-overlay-theme="a">
+	<div id="status-popup" class="alert" data-bind="w2" data-role="popup" data-overlay-theme="a">
 		<div data-role="header" data-theme="c"><h1>Popup</h1></div>
 		<p>... or a popup ...</p>
 	
 		<div class="control">
 			<span class="stamp"></span>
-			<a onClick="$('#mypopup').popup('close');" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
+			<a onClick="$('#status-popup').popup('close');" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
 		</div>
 	</div>
 </div>
