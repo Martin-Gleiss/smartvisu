@@ -70,7 +70,10 @@ SYSTEM REQUIREMENTS
 HISTORY
 --------------------------------------------------------------------------------
 v 2.8
-	-
+	- new: basic.multistate
+	- new: plot.multiaxes
+	- new: status.collapse
+	- new: status.popup
 	
 v 2.7 03.11.13
 	- new: SmartHome.py Montior page

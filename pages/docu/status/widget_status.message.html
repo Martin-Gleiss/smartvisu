@@ -1,0 +1,40 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_status.html" %}
+
+{% block example %}
+
+<h5>Examples</h5>
+
+If you flip the switch to 'on' a popup will be shown.
+<div class="twig">
+	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+		{{ status.message('p1', 'bath.alert.info', '', '', 'Message 1', '... with some plain text ...') }}
+		{{ status.message('p2', 'bath.alert.warning', 'bath.alert.text', 'bath.time', 'Message 2', '... a warning from the backend ...') }}
+		{{ status.message('p3', 'bath.alert.error', '', '', 'Message 3', '... can only be closed with the ok button ...', 'error') }}
+
+		{% endverbatim %}{% endfilter %}</code>
+	</code>
+</div>
+<div class="html">
+	{{ basic.flip('f1', 'bath.alert.info') }} Message 1<br />
+	{{ basic.flip('f2', 'bath.alert.warning') }} Message 2<br />
+	{{ basic.flip('f3', 'bath.alert.error') }} Message 3<br />
+
+	{{ status.message('p1', 'bath.alert.info', '', '', 'Message 1', '... with some plain text ...') }}
+	{{ status.message('p2', 'bath.alert.warning', 'bath.alert.text', 'bath.time', 'Message 2', '... a warning with timestamp from the backend ...') }}
+	{{ status.message('p3', 'bath.alert.error', '', '', 'Message 3', '... an error can only be closed with the ok button ...', 'error') }}
+</div>
+
+{% endblock %}
+
+
