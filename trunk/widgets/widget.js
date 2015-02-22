@@ -641,10 +641,18 @@ $(document).delegate('span[data-widget="clock.miniclock"]', {
 // ----------------------------------------------------------------------------
 
 // ----- device.codepad -------------------------------------------------------
+$(document).delegate('div[data-widget="device.codepad"]', {
+	'keyup': function (event) {
+		if(event.keyCode == 13){
+			$('#' + this.id + '-ok').click();
+		}
+	}
+});
+
 $(document).delegate('div[data-widget="device.codepad"] > div > a', {
 	'click': function (event, response) {
 		var node = $(this).parent().parent();
-		var code = $('#' + node.attr('id') + ' #code');
+		var code = $('#' + node.attr('id') + '-code');
 		var key = $(this).attr('data-val');
 
 		if (key == "ok") {

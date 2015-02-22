@@ -65,46 +65,40 @@
 
 
 /**
-* Standard dimmer with switching and dimming function
+* The Codepad is used to protect some widgets. You have to enter a correct code to use the widgets for a time.
+* You may specify a global code in the connfig.php for all codepads.
 *
 * @param unique id for this widget
-* @param code the code
-* @param a title
+* @param code to be entered (optional, default in config)
+* @param a title for the pad (optional)
+* @param a duration for unlocking the widgets (optional, default  1min)
 */
 {% macro codepad(id, code, title, duration) %}
 	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}" data-id="{{ id }}" data-widget="device.codepad" data-val="{{ code }}" data-duration="{{ duration|default('10s') }}"
+	<div id="{{ uid }}" data-id="{{ id }}" data-widget="device.codepad" data-val="{{ code|default(config_codepad_code) }}" data-duration="{{ duration|default('1i') }}"
 		data-role="popup" data-overlay-theme="a" class="alert" style="width: 166px;" >
-		<div data-role="header" data-theme="c"><h1>{{ title }}</h1></div>
+		<div data-role="header" data-theme="c"><h1>{{ title|default('Enter Code') }}</h1></div>
 
-		<input name="code" id="code" type="password" style="text-align: center;"/>
+		<input id="{{ uid }}-code" type="password" style="text-align: center;"/>
 		
 		<div style="margin: 10px;">
 		{% for i in 1..9 %}
-			<a id="{{ uid~'-'~i }}" data-val="{{ i }}" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >{{ i }}</a>
+			<a data-val="{{ i }}" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >{{ i }}</a>
 		{% endfor %}
-			<a id="{{ uid }}-clear" data-val="-" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >-</a>
-			<a id="{{ uid }}-0" data-val="0" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >0</a>
+			<a data-val="-" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >-</a>
+			<a data-val="0" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >0</a>
 			<a id="{{ uid }}-ok" data-val="ok" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >OK</a>
 		</div>
 	</div>
 
 	<script type="text/javascript">
-		$(document).delegate('xxxdiv[data-bind="{{ id }}"]', 
-			'click', function (event) {
-				if (!$(this).attr('data-access')) {
-					$('#{{ uid }}').popup('open');
-				}
-			}
-		);
-		
 		$('div[data-bind="{{ id }}"]').click(function (event) {
-				if (!$(this).attr('data-access')) {
-					$('#{{ uid }} #code').val('');
-					$('#{{ uid }}').popup('open');
-					event.stopPropagation();
-				}
+			if (!$(this).attr('data-access')) {
+				$('#{{ uid }}').popup('open');
+				$('#{{ uid }}-code').val('').focus();
+				event.stopPropagation();
+			}
 		});
 	</script>
 

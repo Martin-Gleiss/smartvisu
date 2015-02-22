@@ -171,6 +171,13 @@ define ('config_calendar_service', 'offline');
 define ('config_calendar_url', 'http://www.google.com/calendar/feeds/...');
 
 
+/**
+ * The default code for all Codepads
+ */
+define ('config_codepad_code', '');
+
+
+
 // -----------------------------------------------------------------------------
 // O P T I M A T I O N S
 // -----------------------------------------------------------------------------
