@@ -312,6 +312,35 @@
 
 {% endmacro %}
 
-
-
-
+/**
+* a light bulb
+*
+* @param unique id for this widget
+* @param a item for switching
+* @param a item for the value
+* @param the minimum value for 0 (optional, default 0, for future use)
+* @param the maximum value for 255 (optional, default 255)
+*/
+{% macro light(id, item_switch, item_value, min, max) %}
+    <svg id="{{ uid(page, id) }}" data-widget="icon.light" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+            class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
+        <g>
+            <rect width="19" height="32" rx="5" ry="5" x="40" y="33" fill="none"/>
+            <line x1="44" y1="70" x2="56" y2="72" />
+            <line x1="44" y1="76" x2="56" y2="78" />
+            <line x1="46" y1="82" x2="53" y2="83" />
+        </g>
+        <g id="light-rays">
+            <line x1="21" y1="61" x2="31" y2="61" style="visibility: hidden;" />
+            <line x1="21" y1="49" x2="31" y2="49" style="visibility: hidden;" />
+            <line x1="21" y1="36" x2="31" y2="36" style="visibility: hidden;" />
+            <line x1="28" y1="21" x2="35" y2="28" style="visibility: hidden;" />
+            <line x1="44" y1="14" x2="44" y2="24" style="visibility: hidden;" />
+            <line x1="56" y1="14" x2="56" y2="24" style="visibility: hidden;" />
+            <line x1="73" y1="21" x2="66" y2="28" style="visibility: hidden;" />
+            <line x1="68" y1="36" x2="78" y2="36" style="visibility: hidden;" />
+            <line x1="68" y1="49" x2="78" y2="49" style="visibility: hidden;" />
+            <line x1="68" y1="61" x2="78" y2="61" style="visibility: hidden;" />
+        </g>
+    </svg>
+{% endmacro %}
