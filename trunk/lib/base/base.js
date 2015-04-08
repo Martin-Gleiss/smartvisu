@@ -274,6 +274,29 @@ var fx = {
 	},
 
 	/**
+	 * Draws a volume bar made of lines
+	 */
+	bar: function (obj, val, start, end) {
+		var line;
+
+		this.remove(obj);
+
+        var stepx = 6;
+        var stepy = 3;
+        var i = 0;
+        
+		while (i < val) {
+			line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+			line.setAttributeNS(null, 'x1', (start[0] + (stepx * i)));
+			line.setAttributeNS(null, 'y1', start[1]);
+			line.setAttributeNS(null, 'x2', (start[0] + (stepx * i)));
+			line.setAttributeNS(null, 'y2', (start[1] - (stepy * i)));
+			$('#' + obj.id + ' g').append(line);
+			i = i + stepx;
+		}
+	},	
+	
+	/**
 	 * Removes all the elements from the svg
 	 */
 	remove: function (obj, element) {
