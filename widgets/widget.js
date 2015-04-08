@@ -1375,3 +1375,14 @@ $(document).delegate('svg[data-widget="icon.light"]', {
         });
 	}
 });
+
+// ----- icon.volume ---------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.volume"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var val = response[0] / $(this).attr('data-max');
+        // fx.bar(this, val, [left, bottom], [right, top]);
+		fx.bar(this, val, [18, 68], [89, 50]);
+	}
+});

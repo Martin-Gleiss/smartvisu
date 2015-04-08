@@ -344,3 +344,23 @@
         </g>
     </svg>
 {% endmacro %}
+
+/**
+* a volume bar
+*
+* @param unique id for this widget
+* @param a item for switching
+* @param a item for the height of the blades
+* @param the minimum value for 0 (optional, default 0, for future use)
+* @param the maximum value for 255 (optional, default 255)
+*/
+{% macro volume(id, item_switch, item_value, min, max) %}
+
+	<svg id="{{ uid(page, id) }}" data-widget="icon.volume" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
+		<g>
+            <polyline points="2,72, 92,72, 92,26, 2,72" fill="none" />
+		</g>
+	</svg>
+
+{% endmacro %}
