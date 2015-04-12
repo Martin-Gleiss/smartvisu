@@ -283,16 +283,18 @@ var fx = {
 
         var stepx = 6;
         var stepy = 3;
-        var i = 0;
-        
-		while (i < val) {
+        var iy = 0;
+        var ix = 0;
+
+		while (ix < val) {
 			line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-			line.setAttributeNS(null, 'x1', (start[0] + (stepx * i)));
+			line.setAttributeNS(null, 'x1', (start[0] + ix));
 			line.setAttributeNS(null, 'y1', start[1]);
-			line.setAttributeNS(null, 'x2', (start[0] + (stepx * i)));
-			line.setAttributeNS(null, 'y2', (start[1] - (stepy * i)));
+			line.setAttributeNS(null, 'x2', (start[0] + ix));
+			line.setAttributeNS(null, 'y2', (start[1] - iy));
 			$('#' + obj.id + ' g').append(line);
-			i = i + stepx;
+			ix = ix + stepx;
+            iy = iy + stepy;
 		}
 	},	
 	
