@@ -1381,7 +1381,7 @@ $(document).delegate('svg[data-widget="icon.volume"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 
-		var val = response[0] / $(this).attr('data-max');
+		var val = Math.round(response[0] / $(this).attr('data-max') * 71);
         // fx.bar(this, val, [left, bottom], [right, top]);
 		fx.bar(this, val, [18, 68], [89, 50]);
 	}
