@@ -13,12 +13,23 @@ smartVISU is a framework to create a visualisation for a knx-installation with
 simple html-pages. To read and write group-telegrams special tags are used.
 You don't need to know javascript.
 
+SEE: http://www.smartvisu.de
+
+
+FEATURES
+--------------------------------------------------------------------------------
+    Pretty: Responsive design, auto adjustment to smartphones and tablets
+    Strict: One template for all devices
+    Easy: Implementation with HTML5
+    Simple: Connect to KNX with commands directly in HTML
+    Universal: Small concept of widgets
+    Connectable: Using drivers for different KNX installations 
+
 
 SYSTEM REQUIREMENTS
 --------------------------------------------------------------------------------
-    -   KNX-Bus
-    -   eibd
-    -   linknx or smarthome.py
+    -   IP-Network, KNX-Bus
+    -   smarthome.py or linknx or domotiga or eibd backend
     -   Webserver with PHP 5.2.4 
     -   Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android 
         Tablet
@@ -64,4 +75,3 @@ SYSTEM REQUIREMENTS
         smartVISU
         
    10.  Enjoy smartVISU!
-        
