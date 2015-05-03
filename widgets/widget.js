@@ -1358,7 +1358,7 @@ $(document).delegate('svg[data-widget="icon.windmill"]', {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 
 		var val = (1 - response[0] / $(this).attr('data-max')) * 4.5 + 0.5;
-		$('#' + this.id + ' #anim').attr('dur', val);
+		$('#' + this.id + ' #anim').attr('dur', (response[0] > 0 ? val : 0));
 	}
 });
 
