@@ -306,6 +306,32 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 {% endmacro %}
 
 /**
+* a windmill
+*
+* @param unique id for this widget
+* @param a item for switching
+* @param a item for the angle of the pin
+* @param the minimum value for 0 (optional, default 0, for future use)
+* @param the maximum value for 255 (optional, default 255)
+*/
+{% macro windmill(id, item_switch, item_value, min, max) %}
+
+<svg id="{{ uid(page, id) }}" data-widget="icon.windmill" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
+	<g>
+		<polyline points="47,35, 50,2, 53,35" />
+		<polyline points="54,40, 83,59, 52,45" />
+		<polyline points="48,45, 17,59, 45,40" />
+		<animateTransform id="anim" attributeType="xml" attributeName="transform" type="rotate" from="0 50 40" to="360 50 40" dur="1s" repeatCount="indefinite"/>
+	</g>
+
+	<polyline points="46,99, 50,40, 54,99"/>
+
+</svg>
+
+{% endmacro %}
+
+/**
 * a windrose
 *
 * @param unique id for this widget

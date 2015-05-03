@@ -1352,6 +1352,16 @@ $(document).delegate('svg[data-widget="icon.volume"]', {
 	}
 });
 
+// ----- icon.windmill --------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.windmill"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var val = (1 - response[0] / $(this).attr('data-max')) * 4.5 + 0.5;
+		$('#' + this.id + ' #anim').attr('dur', val);
+	}
+});
+
 // ----- icon.windrose --------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.windrose"]', {
 	'update': function (event, response) {
