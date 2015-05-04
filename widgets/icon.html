@@ -17,7 +17,6 @@
 * @param the maximum value for 360° (optional, default 255)
 */
 {% macro arrow(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.arrow" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<g>
@@ -25,8 +24,8 @@
 		<polyline id="line1" points="32,50, 32,60, 68,60, 68,50" fill="none"/>
 	</g>
 </svg>
-
 {% endmacro %}
+		
 
 /**
 * a battery
@@ -38,7 +37,6 @@
 * @param the maximum value for 255 (optional, default 255)
 */
 {% macro battery(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.battery" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<g>
@@ -46,8 +44,8 @@
 		<rect rx="3" x="35" y="25" width="30" height="43" fill="none"/>
 	</g>
 </svg>
-
 {% endmacro %}
+		
 
 /**
 * a blade
@@ -61,7 +59,6 @@
 * @author Mario Zanier
 */
 {% macro blade(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.blade" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<g>
@@ -76,9 +73,9 @@
 		<polyline id="blade3" points="37,80, 63,80" fill="none"/>
 	</g>
 </svg>
-
 {% endmacro %}
 
+		
 /**
 * a blade (z profile)
 *
@@ -103,6 +100,7 @@
 </svg>
 {% endmacro %}
 
+		
 /**
 * a blade (round profile)
 *
@@ -127,6 +125,7 @@
 </svg>
 {% endmacro %}
 
+		
 /**
 * A clock
 *
@@ -135,7 +134,6 @@
 * @param a item for the angle of the blades
 */
 {% macro clock(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.clock" {% if item_value is not empty %} data-item="{{ item_value }}, {{ item_switch }}" {%  endif %}
 class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 <g>
@@ -151,6 +149,7 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 
 {% endmacro %}
 
+		
 /**
 * A compass
 *
@@ -161,7 +160,6 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 * @param the maximum value for 360° (optional, default 255)
 */
 {% macro compass(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.compass" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<g>
@@ -174,9 +172,9 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 		<polyline id="pin1" points="40,50, 50,75, 60,50" fill="none"/>
 	</g>
 </svg>
-
 {% endmacro %}
 
+		
 /**
 * a graph
 *
@@ -187,7 +185,6 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 * @param the maximum value for 255 (optional, default 255)
 */
 {% macro graph(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.graph" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<g>
@@ -198,9 +195,9 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 		<path id="graph" d="M 15,85"/>
 	</g>
 </svg>
-
 {% endmacro %}
 
+		
 /**
 * a light bulb
 *
@@ -211,7 +208,6 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 * @param the maximum value for 255 (optional, default 255)
 */
 {% macro light(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.light" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<g>
@@ -233,8 +229,8 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 		<line x1="68" y1="61" x2="78" y2="61" style="visibility: hidden;"/>
 	</g>
 </svg>
-
 {% endmacro %}
+
 
 /**
 * a meter
@@ -246,7 +242,6 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 * @param the maximum value for 255 (optional, default 255)
 */
 {% macro meter(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.meter" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<g>
@@ -259,9 +254,9 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 		<polyline id="pointer" points="50,85, 15,48"/>
 	</g>
 </svg>
-
 {% endmacro %}
 
+		
 /**
 * a shutter
 *
@@ -272,7 +267,6 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 * @param the maximum value for 255 (optional, default 255)
 */
 {% macro shutter(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.shutter" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<g>
@@ -282,9 +276,32 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 		<rect x="46" y="50" width="8" height="2"/>
 	</g>
 </svg>
-
 {% endmacro %}
 
+
+/**
+* a ventilation
+*
+* @param unique id for this widget
+* @param a item for switching
+* @param a item for the rotation speed
+* @param the minimum value for 0,5s rotation speed (optional, default 0, for future use)
+* @param the maximum value for 5s rotation speed (optional, default 255)
+*/
+{% macro ventilation(id, item_switch, item_value, min, max) %}
+<svg id="{{ uid(page, id) }}" data-widget="icon.ventilation" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
+	<g>
+		<polyline points="54,43, 72,25, 82,36, 64,54, 54,43" fill="none"/>
+		<polyline points="53,57, 60,82, 45,86, 38,61, 53,57" fill="none"/>
+		<polyline points="42,49, 17,42, 22,27, 47,34, 42,49" fill="none"/>
+		<polyline points="48,47, 53,51, 47,52"/>
+		<animateTransform id="anim" attributeType="xml" attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1s" fill="freeze" repeatCount="indefinite"/>
+	</g>
+</svg>
+{% endmacro %}
+		
+		
 /**
 * a volume bar
 *
@@ -295,27 +312,25 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 * @param the maximum value for 255 (optional, default 255)
 */
 {% macro volume(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.volume" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<g>
 		<polyline points="12,67, 12,72, 90,72, 90,26, 12,67" fill="none"/>
 	</g>
 </svg>
-
 {% endmacro %}
 
+		
 /**
 * a windmill
 *
 * @param unique id for this widget
 * @param a item for switching
-* @param a item for the angle of the pin
-* @param the minimum value for 0 (optional, default 0, for future use)
-* @param the maximum value for 255 (optional, default 255)
+* @param a item for the rotation speed
+* @param the minimum value for 0,5s rotation speed (optional, default 0, for future use)
+* @param the maximum value for 5s rotation speed (optional, default 255)
 */
 {% macro windmill(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.windmill" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<g>
@@ -328,9 +343,9 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 	<polyline points="46,99, 50,40, 54,99"/>
 
 </svg>
-
 {% endmacro %}
 
+		
 /**
 * a windrose
 *
@@ -338,10 +353,9 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 * @param a item for switching
 * @param a item for the angle of the pin
 * @param the minimum value for 0° (optional, default 0, for future use)
-* @param the maximum value for 360°  (optional, default 255)
+* @param the maximum value for 360° (optional, default 255)
 */
 {% macro windrose(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.windrose" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<g>
@@ -354,9 +368,9 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 		<polyline id="pin1" points="50,60, 63,71, 50,29" fill="none"/>
 	</g>
 </svg>
-
 {% endmacro %}
 
+		
 /**
 * a windsock
 *
@@ -367,7 +381,6 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 * @param the maximum value for ~90° (optional, default 255)
 */
 {% macro windsock(id, item_switch, item_value, min, max) %}
-
 <svg id="{{ uid(page, id) }}" data-widget="icon.windsock" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<g>
@@ -379,7 +392,6 @@ class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0
 		<polyline id="part3" points="70,40, 76,82, 84,82, 90,40" fill="none"/>
 	</g>
 </svg>
-
 {% endmacro %}
 
 

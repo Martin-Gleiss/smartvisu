@@ -1341,6 +1341,16 @@ $(document).delegate('svg[data-widget="icon.shutter"]', {
 	}
 });
 
+// ----- icon.ventilation -----------------------------------------------------
+$(document).delegate('svg[data-widget="icon.ventilation"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var val = (1 - response[0] / $(this).attr('data-max')) * 4.5 + 0.5;
+		$('#' + this.id + ' #anim').attr('dur', (response[0] > 0 ? val : 0));
+	}
+});
+
 // ----- icon.volume ---------------------------------------------------------
 $(document).delegate('svg[data-widget="icon.volume"]', {
 	'update': function (event, response) {
