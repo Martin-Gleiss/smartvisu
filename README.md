@@ -5,7 +5,7 @@ smartVISU is a framework to create a visualisation for a knx-installation with s
 To read and write group-telegrams special tags are used.  
 You don't need to know javascript.  
   
-SEE: http://www.smartvisu.de
+SEE: [smartvisu.de](http://www.smartvisu.de)
 
 
 ## FEATURES
@@ -19,7 +19,7 @@ SEE: http://www.smartvisu.de
 
 ## SYSTEM REQUIREMENTS
   * IP-Network, KNX-Bus
-  * smarthome.py, linknx, domotiga or eibd backend
+  * [smarthome.py](http://mknx.github.io/smarthome/), [linknx](http://sourceforge.net/projects/linknx/), [domotiga](https://domotiga.nl/projects/domotiga/wiki/Home) or [eibd](http://www.auto.tuwien.ac.at/~mkoegler/index.php/eibd) backend
   * Webserver with PHP 5.2.4 
   * Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android Tablet
  
@@ -33,8 +33,9 @@ For your own Project do the following:
   2. Check the config.php and set the "config_pages" to "YOURPROJECT"
   3. Set the "config_driver" to your backend-environment
        * linknx: for linxknx and eibd environment
-       * smarthome.py for SmartHome.py environment
-       * eibd for direct access
+       * smarthome.py: for SmartHome.py environment
+       * domotiga: for Domotiga environment
+       * eibd: for direct access
        * offline: only for testing, all GADs will be stored in a textfile ("temp/offline_YOURPROJECT.var")
   4. Create a new page in your project-directory, for example "mypage.html"  
        Note: Do not use "base.html, basic.html, device.html", these are system pages
