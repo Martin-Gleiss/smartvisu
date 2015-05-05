@@ -1175,14 +1175,11 @@ $(document).delegate('svg[data-widget="icon.arrow"]', {
 		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
 
 		var pt = [];
-		pt = pt.concat([50, 50], fx.rotate([25, 50], ang, [50, 50]), fx.rotate([50, 18], ang, [50, 50]), fx.rotate([75,
-			50
-		], ang, [50, 50]), [50, 50]);
+		pt = pt.concat([50, 50], fx.rotate([25, 50], ang, [50, 50]), fx.rotate([50, 18], ang, [50, 50]), fx.rotate([75, 50], ang, [50, 50]), [50, 50]);
 		$('#' + this.id + ' #line0').attr('points', pt.toString());
 
 		pt = [];
-		pt = pt.concat(fx.rotate([32, 50], ang, [50, 50]), fx.rotate([32, 60], ang, [50, 50]), fx.rotate([68, 60], ang,
-			[50, 50]), fx.rotate([68, 50], ang, [50, 50]));
+		pt = pt.concat(fx.rotate([32, 50], ang, [50, 50]), fx.rotate([32, 60], ang, [50, 50]), fx.rotate([68, 60], ang, [50, 50]), fx.rotate([68, 50], ang, [50, 50]));
 		$('#' + this.id + ' #line1').attr('points', pt.toString());
 	}
 });
@@ -1223,13 +1220,11 @@ $(document).delegate('svg[data-widget="icon.blade_z"]', {
 		var ang = response[0] / $(this).attr('data-max') * 0.5 * Math.PI * -1;
 
 		var pt = [];
-		pt = pt.concat(fx.rotate([25, 25], ang, [50, 30]), fx.rotate([45, 25], ang, [50, 30]), fx.rotate([55, 35], ang,
-			[50, 30]), fx.rotate([75, 35], ang, [50, 30]));
+		pt = pt.concat(fx.rotate([25, 25], ang, [50, 30]), fx.rotate([45, 25], ang, [50, 30]), fx.rotate([55, 35], ang, [50, 30]), fx.rotate([75, 35], ang, [50, 30]));
 		$('#' + this.id + ' #blade0').attr('points', pt.toString());
 
 		pt = [];
-		pt = pt.concat(fx.rotate([25, 65], ang, [50, 70]), fx.rotate([45, 65], ang, [50, 70]), fx.rotate([55, 75], ang,
-			[50, 70]), fx.rotate([75, 75], ang, [50, 70]));
+		pt = pt.concat(fx.rotate([25, 65], ang, [50, 70]), fx.rotate([45, 65], ang, [50, 70]), fx.rotate([55, 75], ang, [50, 70]), fx.rotate([75, 75], ang, [50, 70]));
 		$('#' + this.id + ' #blade1').attr('points', pt.toString());
 	}
 });
@@ -1243,12 +1238,10 @@ $(document).delegate('svg[data-widget="icon.blade_arc"]', {
 		var ang = response[0] / $(this).attr('data-max') * -0.7 * Math.PI + 0.35 * Math.PI;
 		var pt;
 
-		pt = 'M ' + fx.rotate([30, 40], ang, [50, 37]) + ' Q ' + fx.rotate([50, 22], ang, [50, 30]) + ' ' + fx.rotate([
-			70, 40], ang, [50, 37]);
+		pt = 'M ' + fx.rotate([30, 40], ang, [50, 37]) + ' Q ' + fx.rotate([50, 22], ang, [50, 30]) + ' ' + fx.rotate([70, 40], ang, [50, 37]);
 		$('#' + this.id + ' #blade0').attr('d', pt);
 
-		pt = 'M ' + fx.rotate([30, 80], ang, [50, 77]) + ' Q ' + fx.rotate([50, 62], ang, [50, 70]) + ' ' + fx.rotate([
-			70, 80], ang, [50, 77]);
+		pt = 'M ' + fx.rotate([30, 80], ang, [50, 77]) + ' Q ' + fx.rotate([50, 62], ang, [50, 70]) + ' ' + fx.rotate([70, 80], ang, [50, 77]);
 		$('#' + this.id + ' #blade1').attr('d', pt);
 	}
 });
@@ -1274,13 +1267,11 @@ $(document).delegate('svg[data-widget="icon.compass"]', {
 		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
 
 		var pt = [];
-		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 25], ang, [50, 50]), fx.rotate([60, 50], ang,
-			[50, 50]));
+		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 25], ang, [50, 50]), fx.rotate([60, 50], ang, [50, 50]));
 		$('#' + this.id + ' #pin0').attr('points', pt.toString());
 
 		pt = [];
-		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 75], ang, [50, 50]), fx.rotate([60, 50], ang,
-			[50, 50]));
+		pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 75], ang, [50, 50]), fx.rotate([60, 50], ang, [50, 50]));
 		$('#' + this.id + ' #pin1').attr('points', pt.toString());
 	}
 });
@@ -1380,13 +1371,11 @@ $(document).delegate('svg[data-widget="icon.windrose"]', {
 		var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
 
 		var pt = [];
-		pt = pt.concat(fx.rotate([50, 60], ang, [50, 50]), fx.rotate([37, 71], ang, [50, 50]), fx.rotate([50, 29], ang,
-			[50, 50]));
+		pt = pt.concat(fx.rotate([50, 60], ang, [50, 50]), fx.rotate([37, 71], ang, [50, 50]), fx.rotate([50, 29], ang, [50, 50]));
 		$('#' + this.id + ' #pin0').attr('points', pt.toString());
 
 		pt = [];
-		pt = pt.concat(fx.rotate([50, 60], ang, [50, 50]), fx.rotate([63, 71], ang, [50, 50]), fx.rotate([50, 29], ang,
-			[50, 50]));
+		pt = pt.concat(fx.rotate([50, 60], ang, [50, 50]), fx.rotate([63, 71], ang, [50, 50]), fx.rotate([50, 29], ang, [50, 50]));
 		$('#' + this.id + ' #pin1').attr('points', pt.toString());
 	}
 });
@@ -1404,17 +1393,26 @@ $(document).delegate('svg[data-widget="icon.windsock"]', {
 
 		for (var i = 0; i < 3; i++) {
 			pt = [];
-			pt = pt.concat(fx.rotate([71 + i * 2, 50 + i * 14], ang, [80, 22]), fx.rotate([89 - i * 2, 50 + i * 14
-				], ang, [80, 22]),
-				fx.rotate([88 - i * 2, 54 + i * 14], ang, [80, 22]), fx.rotate([72 + i * 2, 54 + i * 14], ang, [80,
-					22
-				]));
+			pt = pt.concat(fx.rotate([71 + i * 2, 50 + i * 14], ang, [80, 22]), fx.rotate([89 - i * 2, 50 + i * 14], ang, [80, 22]),
+				fx.rotate([88 - i * 2, 54 + i * 14], ang, [80, 22]), fx.rotate([72 + i * 2, 54 + i * 14], ang, [80, 22]));
 			$('#' + this.id + ' #part' + i).attr('points', pt.toString());
 		}
 
 		pt = [];
-		pt = pt.concat(fx.rotate([70, 40], ang, [80, 22]), fx.rotate([76, 82], ang, [80, 22]), fx.rotate([84, 82], ang,
-			[80, 22]), fx.rotate([90, 40], ang, [80, 22]));
+		pt = pt.concat(fx.rotate([70, 40], ang, [80, 22]), fx.rotate([76, 82], ang, [80, 22]), fx.rotate([84, 82], ang, [80, 22]), fx.rotate([90, 40], ang, [80, 22]));
 		$('#' + this.id + ' #part3').attr('points', pt.toString());
+	}
+});
+
+// ----- icon.zenith ----------------------------------------------------------
+$(document).delegate('svg[data-widget="icon.zenith"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+
+		var ang = response[0] / $(this).attr('data-max') * Math.PI;
+		pt = fx.rotate([10, 90], ang, [50, 90]);
+		
+		$('#' + this.id + ' #sun').attr('x', pt[0] - 50);
+		$('#' + this.id + ' #sun').attr('y', pt[1] - 50);
 	}
 });
