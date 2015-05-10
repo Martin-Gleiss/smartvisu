@@ -120,7 +120,7 @@
 	{% import "basic.html" as basic %}
 
 	<div class="dimmer">
-		{{ basic.switch(id~'switch', item_switch, icon1~'light_light.png', icon0~'light_light.png') }}
+		{{ basic.switch(id~'switch', item_switch, 'light_light.svg', 'light_light.svg') }}
 		<p>{{ txt|e }}</p>
 		{{ basic.slider(id~'slider', item_value, min, max, step) }}
 	</div>
@@ -163,20 +163,20 @@
 
 		<div class="control">
 			{% if ((config_driver == 'linknx') and (item_comfort == item_night) and (item_night == item_frost)) %}
-				{{ basic.switch(id~'mode', item_comfort, icon1~'user_available.png', icon0~'user_away.png', 'comfort', 'standby') }}
-				{{ basic.switch(id~'night', item_night, icon1~'scene_night.png', icon0~'scene_day.png', 'night', 'standby') }}
-				{{ basic.switch(id~'frost', item_frost, icon1~'weather_frost.png', icon0~'weather_frost.png', 'frost', 'standby') }}
+				{{ basic.switch(id~'mode', item_comfort, 'user_available.svg', 'user_away.svg', 'comfort', 'standby') }}
+				{{ basic.switch(id~'night', item_night, 'scene_night.svg', 'scene_day.svg', 'night', 'standby') }}
+				{{ basic.switch(id~'frost', item_frost, 'weather_frost.svg', 'weather_frost.svg', 'frost', 'standby') }}
 			{% elseif ((item_comfort == item_night) and (item_night == item_frost)) %}
-				{{ basic.switch(id~'mode', item_comfort, icon1~'user_available.png', icon0~'user_away.png', '1', '2') }}
-				{{ basic.switch(id~'night', item_night, icon1~'scene_night.png', icon0~'scene_day.png', '3', '2') }}
-				{{ basic.switch(id~'frost', item_frost, icon1~'weather_frost.png', icon0~'weather_frost.png', '4', '2') }}
+				{{ basic.switch(id~'mode', item_comfort, 'user_available.svg', 'user_away.svg', '1', '2') }}
+				{{ basic.switch(id~'night', item_night, 'scene_night.svg', 'scene_day.svg', '3', '2') }}
+				{{ basic.switch(id~'frost', item_frost, 'weather_frost.svg', 'weather_frost.svg', '4', '2') }}
 			{% else %}
-				{{ basic.switch(id~'mode', item_comfort, icon1~'user_available.png', icon0~'user_away.png') }}
-				{{ basic.switch(id~'night', item_night, icon1~'scene_night.png', icon0~'scene_day.png') }}
-				{{ basic.switch(id~'frost', item_frost, icon1~'weather_frost.png', icon0~'weather_frost.png') }}
+				{{ basic.switch(id~'mode', item_comfort, 'user_available.svg', 'user_away.svg') }}
+				{{ basic.switch(id~'night', item_night, 'scene_night.svg', 'scene_day.svg') }}
+				{{ basic.switch(id~'frost', item_frost, 'weather_frost.svg', 'weather_frost.svg') }}
 			{% endif %}
 			<div style="float:left; width: 3px; height: 50px;"></div>
-			{{ basic.switch(id~'state', item_state, icon1~'sani_heating.png', icon0~'sani_heating.png') }}
+			{{ basic.switch(id~'state', item_state, 'sani_heating.svg', 'sani_heating.svg') }}
 		</div>
 	</div>
 {% endmacro %}

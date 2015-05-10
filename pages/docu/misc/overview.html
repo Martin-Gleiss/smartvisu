@@ -59,6 +59,7 @@
 	<h2>Icons</h2>
 
 	<p>
+		{% if isfile(icon0~'audio_audio.png') %}
 		Static Icon PNG:
 		<img class="icon" src="{{ icon0 }}audio_audio.png" />
 		<img class="icon" src="{{ icon1 }}audio_audio.png" />
@@ -66,17 +67,22 @@
 		<a><img class="icon" src="{{ icon1 }}audio_audio.png" /></a>
 
 		SVG:
+		{% endif %}
+		
 		<img class="icon icon0" src="{{ icon0 }}audio_audio.svg" />
 		<img class="icon icon1" src="{{ icon0 }}audio_audio.svg" />
 		<a class="icon0"><img class="icon" src="{{ icon0 }}audio_audio.svg" /></a>
 		<a class="icon1"><img class="icon" src="{{ icon0 }}audio_audio.svg" /></a>
 		
 		<br />
+		{% if isfile(icon1~'light_light_dim_00.png') %}
 		Dynamic Icon PNG:
 		{{ basic.shifter('svg1', 'bath.light.switch', 'bath.light.value', icon1~'light_light_dim_00.png') }}
 
 		SVG:
-		{{ basic.shifter('svg1', 'bath.light.switch', 'bath.light.value', 'icon.shutter') }}
+		{% endif %}
+		{{ basic.shifter('svg2', 'bath.light.switch', 'bath.light.value', 'icon.windmill') }}
+		{{ basic.shifter('svg3', 'bath.light.switch', 'bath.light.value', 'icon.shutter') }}
 		{{ icon.windrose('icon1', 'bath.light.switch', 'bath.light.value') }}
 		
 		<br />

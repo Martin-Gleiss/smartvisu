@@ -19,20 +19,21 @@
 * @param type: 'micro', 'mini', 'midi' (optional, default: mini)
 */
 {% macro button(id, item, txt, pic, val, type) %}
+	{% set suffix = pic|slice(-4, 4) %}
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.button" data-item="{{ item }}" data-val="{{ val|default('1') }}"
 		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true"
 		{% if not pic %}
 			data-iconpos="nopic">{{ txt|e }}
-		{% elseif pic|slice(-4, 4) != '.png' and not txt %}
+		{% elseif suffix != '.svg' and suffix != '.png' and not txt %}
 			data-icon="{{ pic }}" data-iconpos="notext">
-		{% elseif pic|slice(-4, 4) != '.png' and txt %}
+		{% elseif suffix != '.svg' and suffix != '.png' and txt %}
 			data-icon="{{ pic }}" data-iconpos="top">{{ txt|e }}
 		{% elseif type == 'midi' and txt %}
-			><img class="icon" src="{{ pic }}">
+			><img class="icon" src="{{ pic|deficon }}">
 			<div>{{ txt|e }}</div>
 		{% else %}
-			data-iconpos="center"><img class="icon" src="{{ pic }}">
+			data-iconpos="center"><img class="icon" src="{{ pic|deficon }}">
 		{% endif %}
 	</a>
 
@@ -103,10 +104,10 @@
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.dual" data-item="{{ item }}"
 		data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
-		data-pic-on="{{ pic_on|default(icon1~'control_on_off.png') }}" data-pic-off="{{ pic_off|default(icon0~'control_on_off.png') }}"
+		data-pic-on="{{ pic_on|deficon('control_on_off.svg') }}" data-pic-off="{{ pic_off|deficon('control_on_off.svg') }}"
 		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
 
-		<img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}">
+		<img class="icon" src="{{ pic_off|deficon('control_on_off.svg') }}">
 	</a>
 
 {% endmacro %}
@@ -124,11 +125,14 @@
 * @author Pierre-Yves KERVIEL
 */
 {% macro multistate(id, item, val, img, type) %}
+
     <a id="{{ uid(page, id) }}" data-widget="basic.multistate" data-item="{{ item }}"
-        data-vals="{{ implode(val) }}"  data-img="{{ implode(img) }}" index-mem="0"
+        data-vals="{{ implode(val) }}"  data-img="{{ implode(img|deficon) }}" value="0"
         class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
-        <img class="icon" src="{{ img[0] }}"/>
+		
+        <img class="icon" src="{{ img[0]|deficon('control_on_off.svg') }}"/>
     </a>
+
 {% endmacro %}
 
 
@@ -353,12 +357,25 @@
 * @param value send for the 'off' state (optional, default 0)
 */
 {% macro switch(id, item, pic_on, pic_off, val_on, val_off) %}
+	{% set uid = uid(page, id) %}
 
-	<span id="{{ uid(page, id) }}" data-widget="basic.switch" data-item="{{ item }}"
-		data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
-		data-pic-on="{{ pic_on|default(icon1~'control_on_off.png') }}" data-pic-off="{{ pic_off|default(icon0~'control_on_off.png') }}"
-		class="switch"><a><img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}" /></a>
-    </span>
+	{% if not pic_on or pic_on|slice(-4, 4) == '.svg' %}
+		<span id="{{ uid }}" data-widget="basic.switch" data-item="{{ item }}"
+			data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
+			data-pic-on="{{ pic_on|deficon('control_on_off.svg') }}" data-pic-off="{{ pic_off|deficon('control_on_off.svg') }}"
+			class="switch icon">
+				<a class="icon1">
+					<img id="{{ uid }}-off" class="icon" src="{{ pic_off|deficon('control_on_off.svg') }}" />
+					<img id="{{ uid }}-on" class="icon icon1 hide" src="{{ pic_on|deficon('control_on_off.svg') }}" />
+				</a>
+		</span>
+	{% else %}
+		<span id="{{ uid }}" data-widget="basic.switch.v1" data-item="{{ item }}"
+			data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
+			data-pic-on="{{ pic_on|default(icon1~'control_on_off.png') }}" data-pic-off="{{ pic_off|default(icon0~'control_on_off.png') }}"
+			class="switch"><a><img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}" /></a>
+		</span>
+	{% endif %}
 
 {% endmacro %}
 
@@ -378,7 +395,7 @@
 
 	<span id="{{ uid(page, id) }}" data-widget="basic.symbol" data-item="{{ implode(items) }}" data-val="{{ val|default('1') }}"
 		data-mode="{{ mode|default('or') }}" class="symbol hide">
-        <img class="icon" src="{{ pic|default(icon1~'control_on_off.png') }}" />{{ txt }}</span>
+        <img class="icon {% if val != 0 %}icon1{% endif %}" src="{{ pic|deficon('control_on_off.svg') }}" />{{ txt }}</span>
 
 {% endmacro %}
 
@@ -448,23 +465,23 @@
 * @param type: 'micro', 'mini', 'midi' (optional, default: mini)
 */
 {% macro trigger(id, name, txt, pic, val, type) %}
+	{% set suffix = pic|slice(-4, 4) %}
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.trigger" data-name="{{ name }}" data-val="{{ val }}"
 		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true"
 		{% if not pic %}
 		data-iconpos="nopic">{{ txt|e }}
-		{% elseif pic|slice(-4, 4) != '.png' and not txt %}
-			data-icon="{{ pic }}" data-iconpos="notext">
-		{% elseif pic|slice(-4, 4) != '.png' and txt %}
-			data-icon="{{ pic }}" data-iconpos="top">{{ txt|e }}
+		{% elseif suffix != '.svg' and suffix != '.png' and not txt %}
+		data-icon="{{ pic }}" data-iconpos="notext">
+		{% elseif suffix != '.svg' and suffix != '.png' and txt %}
+		data-icon="{{ pic }}" data-iconpos="top">{{ txt|e }}
 		{% elseif type == 'midi' and txt %}
-			><img class="icon" src="{{ pic }}">
+			><img class="icon" src="{{ pic|deficon }}">
 			<div>{{ txt|e }}</div>
 		{% else %}
-			data-iconpos="center"><img class="icon" src="{{ pic }}">
+			data-iconpos="center"><img class="icon" src="{{ pic|deficon }}">
 		{% endif %}
 	</a>
-
 {% endmacro %}
 
 

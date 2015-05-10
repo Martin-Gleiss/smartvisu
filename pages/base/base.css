@@ -823,7 +823,11 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 /**
  * --- W i d g e t s :   B A S I C --------------------------------------------
  */
-.switch .icon {
+.switch {
+	display: inline-block;
+}
+
+.switch.icon {
 	vertical-align: middle;
 }
 
@@ -1398,10 +1402,10 @@ canvas.colordisc {
  * --- W i d g e t s :   I C O N ----------------------------------------------
  */
 svg.icon {
-	display: inline-block;
 	vertical-align: middle;
-	width: 50px;
-	height: 50px;
+	width: 48px;
+	height: 48px;
+	margin: 1px;	
 }
 
 svg.icon:hover {
@@ -1436,11 +1440,12 @@ svg.icon text {
 }
 
 svg.fx-icon {
-	display: inline-block;
 	vertical-align: middle;
-	width: 50px;
-	height: 50px;
+	width: 48px;
+	height: 48px;
+	margin: 1px;
 }
+
 
 /**
  * --- T e m p l a t e :   B A S E --------------------------------------------

@@ -20,15 +20,30 @@
 		{{ basic.switch('switch1', 'bath.light.switch') }}
 	</div>
 
-	With other pictures (use 'icon0' and 'icon1' as path)
+	With other icons
 	<div class="twig">
 		<code class="prettyprint">
-			&#123;&#123; basic.switch('switch2', 'bath.blind.move.up', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png') &#125;&#125;<br />
+			&#123;&#123; basic.switch('switch2', 'bath.blind.move.up', 'control_arrow_up.svg', 'control_arrow_down.svg') &#125;&#125;<br />
 		</code>
 	</div>
 	<div class="html">
-		{{ basic.switch('switch2', 'bath.blind.move.up', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png') }}
+		{{ basic.switch('switch2', 'bath.blind.move.up', 'control_arrow_up.svg', 'control_arrow_down.svg') }}
 	</div>
+	
+
+	{% if isfile(icon0~'control_arrow_down.png') %}
+		<hr>
+		<h5>Examples with .png</h5>
+		With other icons (use 'icon0' and 'icon1' as path)
+		<div class="twig">
+			<code class="prettyprint">
+				&#123;&#123; basic.switch('switch3', 'bath.blind.move.up', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png') &#125;&#125;<br />
+			</code>
+		</div>
+		<div class="html">
+			{{ basic.switch('switch3', 'bath.blind.move.up', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png') }}
+		</div>
+	{% endif %}
 
 {% endblock %}
 
