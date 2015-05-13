@@ -28,7 +28,7 @@ class calendar_offline extends calendar
 		{
 			$tag = $tag + rand(1, 3);
 			$event = array('Meeting', 'Doctor', 'Waste');
-			$waste = array('#222266', '#664422', '#555555', '#666600');
+			$waste = array('#44a', '#642', '#555', '#660');
 			$title = $event[rand(0, 2)];
 
 			$this->data[] = array(
@@ -37,7 +37,7 @@ class calendar_offline extends calendar
 				'end' => date('y-m-d', time() + $tag * 24 * 60 * 60).' '.rand(15, 20).':00:00',
 				'title' => $title,
 				'where' => ($title == 'Doctor' ? 'Würzburg' : ''),
-				'icon' => ($title == 'Waste' ? 'icons/ws/message_garbage.png' : ''),
+				'icon' => ($title == 'Waste' ? 'icons/ws/message_garbage.svg' : ''),
 				'color' => ($title == 'Waste' ? $waste[rand(0, 3)] : '')
 			);
 		}

@@ -258,7 +258,7 @@ a.ui-btn-inline.ui-micro[data-iconpos="center"] span.ui-btn-inner {
 	overflow: hidden;
 }
 
-a.ui-btn-inline.ui-micro .icon {
+a.ui-btn-inline.ui-micro .icon, a.ui-btn-inline.ui-micro .fx-icon {
 	margin-top: -1px;
 	width: 28px;
 	height: 28px;
@@ -289,7 +289,7 @@ a.ui-btn-inline.ui-mini span.ui-btn-inner {
 	padding: 4px 2px 0 2px;
 }
 
-a.ui-btn-inline.ui-mini .icon {
+a.ui-btn-inline.ui-mini .icon, a.ui-btn-inline.ui-mini .fx-icon {
 	width: 32px;
 	height: 32px;
 }
@@ -330,7 +330,7 @@ a.ui-btn-inline.ui-midi .ui-btn-inner .ui-btn-text div {
 	font-size: 0.8em;
 }
 
-a.ui-btn-inline.ui-midi .icon {
+a.ui-btn-inline.ui-midi .icon, a.ui-btn-inline.ui-midi .fx-icon {
 	width: 40px;
 	height: 40px;
 }
@@ -853,7 +853,7 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 	vertical-align: middle;
 }
 
-.ui-li-aside .symbol .icon {
+.ui-li-aside .symbol .icon, .ui-li-aside .symbol .fx-icon {
 	vertical-align: middle;
 	width: 22px;
 	height: 22px;
