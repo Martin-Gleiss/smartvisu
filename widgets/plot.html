@@ -50,7 +50,7 @@
 
 {% macro multiaxis( id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.multiaxis" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default('0'), count|default(100) ]) }}"
+	<div id="{{ uid(page, id) }}" data-widget="plot.multiaxis" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default('now'), count|default(100) ]) }}"
 		{% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
 		data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axis) }}" 
 		{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
@@ -86,7 +86,7 @@
 */
 {% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default('0'), count|default('100')]) }}"
+	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default('now'), count|default('100')]) }}"
 		{% if ymin is not empty %} data-ymin="{{ ymin }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ ymax }}" {% endif %}
 		data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axis) }}"
 		{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
@@ -107,7 +107,7 @@
 */
 {% macro rtr(id, item_actual, item_set, item_state, count) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([item_actual, item_set, item_state], ['avg', '1d', '0', count|default(100)]) }}"
+	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([item_actual, item_set, item_state], ['avg', '1d', 'now', count|default(100)]) }}"
 		data-step="50" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
 		class="plot"></div>
 
