@@ -101,17 +101,17 @@
 			<h5 style="margin-top: 5px;">normal:</h5>
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-				<img class="icon" src="{{ icon0 }}light_light.png" />
 				<img class="icon" src="{{ icon0 }}light_light.svg" />
-
+				<img class="icon" src="{{ icon0 }}light_light.png" />
+				
 				{% endverbatim %}{% endfilter %}</code>
 
 			<h5>highlighted:</h5>
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
+				<img class="icon icon1" src="{{ icon }}light_light.svg" />
 				<img class="icon" src="{{ icon1 }}light_light.png" />
-				<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
-
+				
 				{% endverbatim %}{% endfilter %}</code>
 		</div>
 	</div>
@@ -130,19 +130,18 @@
 			{% set cat = file.name|slice(0, 2) %}
 		{% endif %}
 		<div class="box">
-			<img class="icon" src="{{ icon0~file.name }}" />
+			<a><img class="icon" src="{{ icon0~file.name }}" /></a>
 			<div>{{ file.name }}</div>
 		</div>
 	{% endfor %}
 
 	<script type="text/javascript">
-		$(document).on('vmouseover', '.box > .icon', function () {
+		$(document).on('vmouseover', '.box > svg', function () {
 			this.setAttributeNS(null, 'class', 'icon icon1');
 		});
-		$(document).on('vmouseout', '.box > .icon', function () {
+		$(document).on('vmouseout', '.box > svg', function () {
 			this.setAttributeNS(null, 'class', 'icon icon0');
 		});
 	</script>
-
 {% endblock %}
 

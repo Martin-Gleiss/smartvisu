@@ -32,6 +32,9 @@
  * 'update': function(event, response) { }
  * Triggered through widget.update if a item has been changed.
  *
+ * 'draw': function (event) { }
+ * Triggered only for svgs, if it is loaded
+ * 
  * 'point': function(event, response) { }
  * Triggerd only for plots through widget.update if the plot is already drawn
  * and only a new point has to be added to the series.
@@ -215,16 +218,23 @@ $(document).delegate('canvas[data-widget="basic.colordisc"]', {
 // ----- basic.dual -----------------------------------------------------------
 $(document).delegate('a[data-widget="basic.dual"]', {
 	'update': function (event, response) {
-		$('#' + this.id + ' img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
+		$(this).val(response);
+		$(this).trigger('draw');
+	},
+
+	'draw': function(event) {
+		if($(this).val() == $(this).attr('data-val-on')) {
+			$('#' + this.id + '-off').hide();
+			$('#' + this.id + '-on').show();
+		}
+		else {
+			$('#' + this.id + '-on').hide();
+			$('#' + this.id + '-off').show();
+		}
 	},
 
 	'click': function (event) {
-		if ($('#' + this.id + ' img').attr('src') == $(this).attr('data-pic-off')) {
-			io.write($(this).attr('data-item'), $(this).attr('data-val-on'));
-		}
-		else {
-			io.write($(this).attr('data-item'), $(this).attr('data-val-off'));
-		}
+		io.write($(this).attr('data-item'), ($(this).val() == $(this).attr('data-val-off') ? $(this).attr('data-val-on') : $(this).attr('data-val-off')) );
 	}
 });
 
@@ -234,18 +244,24 @@ $(document).delegate('a[data-widget="basic.multistate"]', {
 		// get list of values and images
 		list_val = $(this).attr('data-vals').explode();
 		list_img = $(this).attr('data-img').explode();
+		
 		// get the index of the value received
 		idx = list_val.indexOf(response.toString());
+		
 		// update the image
 		$('#' + this.id + ' img').attr('src', list_img[idx]);
+		
 		// memorise the index for next use
-		$(this).attr('index-mem', idx);
+		$(this).val(idx);
 	},
+	
 	'click': function (event) {
 		// get the list of values
 		list_val = $(this).attr('data-vals').explode();
+		
 		// get the last index memorised
-		old_idx = parseInt($(this).attr('index-mem'));
+		old_idx = parseInt($(this).val());
+		
 		//compute the next index
 		var new_idx = old_idx + 1;
 		if (new_idx >= list_val.length) {
@@ -253,8 +269,9 @@ $(document).delegate('a[data-widget="basic.multistate"]', {
 		}
 		// send the value to driver
 		io.write($(this).attr('data-item'), list_val[new_idx]);
+		
 		// memorise the index for next use
-		$(this).attr('index-mem', new_idx);
+		$(this).val(new_idx);
 	}
 });
 
@@ -515,6 +532,29 @@ $(document).delegate('input[data-widget="basic.slider"]', {
 // ----- basic.switch ---------------------------------------------------------
 $(document).delegate('span[data-widget="basic.switch"]', {
 	'update': function (event, response) {
+		$(this).val(response);
+		$(this).trigger('draw');
+	},
+	
+	'draw': function(event) {
+		if($(this).val() == $(this).attr('data-val-on')) {
+			$('#' + this.id + '-off').hide();
+			$('#' + this.id + '-on').show();
+		}
+		else {
+			$('#' + this.id + '-on').hide();
+			$('#' + this.id + '-off').show();
+		}	
+	},
+	
+	'click': function (event) {
+		io.write($(this).attr('data-item'), ($(this).val() == $(this).attr('data-val-off') ? $(this).attr('data-val-on') : $(this).attr('data-val-off')) );
+	}
+});
+
+// ----- basic.switch.v1 ------------------------------------------------------
+$(document).delegate('span[data-widget="basic.switch.v1"]', {
+	'update': function (event, response) {
 		$('#' + this.id + ' img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
 	},
 
@@ -528,7 +568,7 @@ $(document).delegate('span[data-widget="basic.switch"]', {
 	}
 });
 
-$(document).delegate('span[data-widget="basic.switch"] > a > img', 'hover', function (event) {
+$(document).delegate('span[data-widget="basic.switch.v1"] > a > img', 'hover', function (event) {
 	if (event.type === 'mouseenter') {
 		$(this).addClass("ui-focus");
 	}

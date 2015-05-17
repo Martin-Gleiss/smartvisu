@@ -41,6 +41,36 @@ function twig_smartdate($val, $format = 'date')
 	return transdate($format, $val);
 }
 
+function twig_deficon(Twig_Environment $env, $val, $def = '')
+{
+	$globals = $env->getGlobals();
+	
+	if (is_array($val))
+	{
+		for ($i = 0; $i < count($val); $i++)
+		{
+			$ret[$i] = $val[$i];
+
+			if ($ret[$i] == '')
+				$ret[$i] = $def;
+
+			if (substr($ret[$i], -4, 4) == ".png" || substr($ret[$i], -4, 4) == ".svg" and strpos($ret[$i], "/") === false)
+				$ret[$i] = $globals["icon0"].$ret[$i];
+		}
+	}
+	else
+	{
+		$ret = $val;
+
+		if ($ret == '')
+			$ret = $def;
+
+		if (substr($ret, -4, 4) == ".png" || substr($ret, -4, 4) == ".svg" and strpos($ret, "/") === false)
+			$ret = $globals["icon0"].$ret;
+	}
+	
+	return $ret;
+}
 
 // -----------------------------------------------------------------------------
 // General functions for Twig
