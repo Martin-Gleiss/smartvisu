@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012
  * @license     GPL <http://www.gnu.de>
  * -----------------------------------------------------------------------------
  */
@@ -23,9 +23,9 @@
     /** Design */
     <div class="dimmer">
       &nbsp;{{ txt|e }}:&nbsp;&nbsp;&nbsp;&nbsp;
-      {{ basic.symbol(id|_('win1_icon0'), gad_status, 'geschlossen', icon0~'fts_window_1w.png', 0) }}
-      {{ basic.symbol(id|_('win1_icon1'), gad_status, 'geöffnet', icon1~'fts_window_1w_tilt.png', 1) }}
-      {{ basic.symbol(id|_('win1_icon2'), gad_status, 'gekippt', icon1~'fts_window_1w_open.png', 2) }}
+      {{ basic.symbol(id|_('win1_icon0'), gad_status, 'geschlossen', 'fts_window_1w.svg', 0) }}
+      {{ basic.symbol(id|_('win1_icon1'), gad_status, 'geöffnet', 'fts_window_1w_tilt.svg', 1, '', 'icon1') }}
+      {{ basic.symbol(id|_('win1_icon2'), gad_status, 'gekippt', 'fts_window_1w_open.svg', 2, '', 'icon1') }}
     </div>
 {% endmacro %}
 
@@ -44,8 +44,8 @@
     /** Design */
     <div>
       &nbsp;{{ txt|e }}:&nbsp;&nbsp;&nbsp;&nbsp;
-      {{ basic.symbol(id|_('win2_icon0'), gad_status, 'geschlossen', icon0~'fts_window_2w.png', 0) }}
-      {{ basic.symbol(id|_('win2_icon1'), gad_status, 'geöffnet', icon1~'fts_window_2w_tilt.png', 1) }}
-      {{ basic.symbol(id|_('win2_icon2'), gad_status, 'gekippt', icon1~'fts_window_2w_open.png', 2) }}
+      {{ basic.symbol(id|_('win2_icon0'), gad_status, 'geschlossen', icon0~'fts_window_2w.svg', 0) }}
+      {{ basic.symbol(id|_('win2_icon1'), gad_status, 'geöffnet', icon1~'fts_window_2w_tilt.svg', 1, '', 'icon1') }}
+      {{ basic.symbol(id|_('win2_icon2'), gad_status, 'gekippt', icon1~'fts_window_2w_open.svg', 2, '', 'icon1') }}
     </div>
 {% endmacro %}

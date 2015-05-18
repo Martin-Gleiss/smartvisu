@@ -71,9 +71,9 @@
 		{% endif %}
 
 		<div class="control">
-			{% if item_mute %} {{ basic.button(id~'mute', item_mute, 'Mute', icon0~'audio_volume_mute.png', 1) }} {% endif %}
-			{% if item_repeat %} {{ basic.dual(id~'repeat', item_repeat, icon1~'audio_repeat.png', icon0~'audio_repeat.png') }} {% endif %}
-			{% if item_playlist %} {{ basic.button(id~'playlist', item_playlist, 'Default Playlist', icon0~'audio_playlist.png', 1) }} {% endif %}
+			{% if item_mute %} {{ basic.button(id~'mute', item_mute, 'Mute', 'audio_volume_mute.svg', 1) }} {% endif %}
+			{% if item_repeat %} {{ basic.dual(id~'repeat', item_repeat, 'audio_repeat.svg', 'audio_repeat.svg') }} {% endif %}
+			{% if item_playlist %} {{ basic.button(id~'playlist', item_playlist, 'Default Playlist', 'audio_playlist.svg', 1) }} {% endif %}
 		</div>
 
 		<div class="title">{% if item_artist %}{{ basic.value(id~'artist', item_artist) }} &nbsp; {% endif %}
@@ -88,12 +88,12 @@
 			{% endif %}
 
 			<div data-role="controlgroup" data-type="horizontal">
-				{{ basic.button(id~'prev', item_next, 'back', icon0~'control_arrow_left.png', 0) }}
-				{% if item_ff %} {{ basic.button(id~'rew', item_ff, 'rev', icon0~'audio_rew.png', 0) }} {% endif %}
-				{{ basic.dual(id~'play', item_play, icon1~'audio_pause.png', icon0~'audio_play.png') }}
-				{% if item_stop %} {{ basic.button(id~'stop', item_stop, 'stop', icon0~'audio_stop.png', 1) }} {% endif %}
-				{% if item_ff %} {{ basic.button(id~'ff', item_ff, 'fwd', icon0~'audio_ff.png', 1) }} {% endif %}
-				{{ basic.button(id~'next', item_next, 'next', icon0~'control_arrow_right.png', 1) }}
+				{{ basic.button(id~'prev', item_next, 'back', 'control_arrow_left.svg', 0) }}
+				{% if item_ff %} {{ basic.button(id~'rew', item_ff, 'rev', 'audio_rew.svg', 0) }} {% endif %}
+				{{ basic.dual(id~'play', item_play, icon1~'audio_pause.png', 'audio_play.svg') }}
+				{% if item_stop %} {{ basic.button(id~'stop', item_stop, 'stop', 'audio_stop.svg', 1) }} {% endif %}
+				{% if item_ff %} {{ basic.button(id~'ff', item_ff, 'fwd', 'audio_ff.svg', 1) }} {% endif %}
+				{{ basic.button(id~'next', item_next, 'next', 'control_arrow_right.svg', 1) }}
 			</div>
 		</div>
 	</div>
@@ -123,7 +123,7 @@
 	<script src="vendor/jquery.cycle2/src/jquery.cycle2.autoheight.js"></script>
 
 	<div id="{{ uid }}" class="slideshow" data-cycle-log="false" data-cycle-speed="{{ delay|default(2) * 1000 }}">
-		{% for file in dir(dir, '(.+?).(jpg|png)') %}
+		{% for file in dir(dir, '(.+?).(jpg|png|svg)') %}
 			<img src="{{ file.path }}" style="display: block;" title="{{ file.label }}" />
 		{% endfor %}
 	</div>
