@@ -2,35 +2,36 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012
  * @license     GPL <http://www.gnu.de>
  * -----------------------------------------------------------------------------
  */
 
 
 {% extends "rooms.html" %}
-
+{% import "widgets/button.html" as button %}
 {% block content %}
 
-    <h1><img class="icon" src='{{ icon0 }}scene_childs_room.png'/>Kind 1</h1>
+    <h1><img class="icon" src='{{ icon0 }}scene_childs_room.svg'/>Kind 1 Zimmer</h1>
 
     <div class="preblock">
-	<table width="100%">
-		<tr>
-		<td align="left" width="50%">
-		</td>
-		<td align="right">
-		{{ basic.symbol('rm1', 'dg.kind1.rm.alarm', '', icon1~'secur_smoke_detector.png',1, 'mini') }}
-		     {{ basic.symbol('rm2', 'dg.kind1.rm.alarm', '', icon0~'secur_smoke_detector.png', 0, 'mini') }}
-		{{ basic.symbol('rm3', 'dg.kind1.rm.stoerung', '', icon1~'message_service.png',1, 'mini') }}
-		     {{ basic.symbol('rm4', 'dg.kind1.rm.stoerung', '', icon0~'message_service.png', 0, 'mini') }}
-		</td>
-		<td align="right" padding="20">
-		{{ basic.symbol('pir1', 'dg.kind1.praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
-			 {{ basic.symbol('pir2', 'dg.kind2.praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
-		</td>
-		</tr>
-	</table>
+		<div class="left">
+		</div>
+		<div class="right">
+			{% import "widgets/smoke_detector.html" as detector %}
+			{{ detector.popup('smoke1', 'Rauchmelder Kind 1s Zimmer', 'dg.kind1.rm.vernetzung.alarm', 'dg.kind1.rm.vernetzung.testalarm', 'dg.kind1.rm.alarm_ruecksetzen', 'dg.kind1.rm.status.alarm',
+				'dg.kind1.rm.status.testalarm', 'dg.kind1.rm.status.seriennummer', 'dg.kind1.rm.status.betriebszeit', 'dg.kind1.rm.status.rauchkammerwert', 'dg.kind1.rm.status.verschmutzungsgrad',
+				'dg.kind1.rm.status.batterie_spannung', 'dg.kind1.rm.status.temperatur', 'dg.kind1.rm.status.fehlercode', 'dg.kind1.rm.status.batterie_leer', 'dg.kind1.rm.status.fehlfunktion',
+				'dg.kind1.rm.status.anzahl.rauchalarme', 'dg.kind1.rm.status.anzahl.temperaturalarme', 'dg.kind1.rm.status.anzahl.testalarme', 'dg.kind1.rm.status.anzahl.drahtalarme', 'dg.kind1.rm.status.anzahl.busalarme',
+				'dg.kind1.rm.status.anzahl.drahttestalarme', 'dg.kind1.rm.status.anzahl.bustestalarme') }}
+
+			{{ basic.symbol('pir1', 'dg.kind1.praesenz', '', 'message_presence_active.svg', 1) }}
+				 {{ basic.symbol('pir2', 'dg.kind1.praesenz', '', 'message_presence.svg', 0) }}
+				 
+			{{ icon.shutter('dg.kind1.shifter', 'dg.kind1.rollladen.west.fahren', 'dg.kind1.rollladen.west.position', 0, 100 ) }}
+            {{ basic.symbol('dg.kind1.fensterauf', 'dg.kind1.fenster.west', '', 'fts_window_2w_open.svg', 2) }}
+                {{ basic.symbol('dg.kind1.fenstergekippt', 'dg.kind1.fenster.west', '', 'fts_window_2w_tilt.svg', 1) }}
+		</div>
     </div>
 
     <div class="block">
@@ -38,7 +39,7 @@
 
     	<div data-role="collapsible" data-collapsed="false" >
             <h3>Licht</h3>
-            {{ device.dimmer('light1', 'Deckenleuchte', 'dg.kind1.beleuchtung.decke.schalten', 'dg.kind1.beleuchtung.decke.dimmwert') }}
+            {{ device.dimmer('light1', 'Deckenleuchte', 'dg.kind1.beleuchtung.decke.schalten', 'dg.kind1.beleuchtung.decke.dimmwert', 0, 100) }}
       	</div>
 
     	<div data-role="collapsible">
@@ -54,13 +55,13 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Rollladen</h3>
-            {% import "widget_shutter.html" as shutter %}
-			{{ shutter.one ('shutter1', 'Fenster', 'dg.kind1.rollladen.fahren', 'dg.kind1.rollladen.stopp', 'dg.kind1.rollladen.position', 'dg.kind1.rollladen.beschatten' ) }}
+            {% import "widgets/shutter.html" as shutter %}
+			{{ shutter.one ('shutter1', 'Fenster', 'dg.kind1.rollladen.west.fahren', 'dg.kind1.rollladen.west.stopp', 'dg.kind1.rollladen.west.position', 'dg.kind1.rollladen.west.beschatten' ) }}
         </div>
 
     	<div data-role="collapsible">
           <h3>Status Fenster</h3>
-          {% import "widget_window.html" as window %}
+          {% import "widgets/window.html" as window %}
           <p>
             {{ window.two ('win1', 'Fenster', 'dg.kind1.fenster' ) }}
           </p>
@@ -68,22 +69,38 @@
     </div>
     </div>
 
-   <!-- <div class="block">
-    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-    	<div data-role="collapsible" data-collapsed="false">
-            <h3>Raumtemperatur</h3>
-            {{ device.rtr('dg.kind1.rtr', 'Heizung', 'dg.kind1.temperatur.luft', 'dg.kind1.heizung.sollwert',
-                'dg.kind1.heizung.komfort', 'dg.kind1.heizung.nacht', 'dg.kind1.heizung.frost', 'dg.kind1.heizung.schalten') }}
+    <div class="block">
+      <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false" >
+          <h3>Steckdosen</h3>
+			<p>
+			{{ button.flip('flip1', 'dg.kind1.steckdose.fenster.west.schalten', 'Ein', 'Aus', 'Fenster') }}
+			{{ button.flip('flip2', 'dg.kind1.steckdose.nord1.schalten', 'Ein', 'Aus', 'Nordseite links') }}
+			{{ button.flip('flip3', 'dg.kind1.steckdose.nord2.schalten', 'Ein', 'Aus', 'Nordseite rechts') }}
+			{{ button.flip('flip4', 'dg.kind1.steckdose.sued.schalten', 'Ein', 'Aus', 'Südseite') }}
+			{{ button.flip('flip5', 'dg.kind1.steckdose.west.schalten', 'Ein', 'Aus', 'Westseite') }}
+			{{ button.flip('flip6', 'dg.kind1.steckdose.ost.schalten', 'Ein', 'Aus', 'Ostseite') }}
+			</p>
         </div>
 
-    	<div data-role="collapsible">
+	    <div data-role="collapsible">
             <h3>&nbsp;</h3>
             <p></p>
         </div>
-
+      </div>
     </div>
-    </div>  -->
 
+    <div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Temperaturen</h3>
+				{{ plot.period('temp.raum', ['dg.kind1.temperatur.luft', 'dg.kind1.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Zeit', 'Temperatur'], '1h') }}
+			</div>
+			<div data-role="collapsible">
+				<h3>&nbsp;</h3>
+				<p></p>
+			</div>
+		</div>
+    </div>
 {% endblock %}
 

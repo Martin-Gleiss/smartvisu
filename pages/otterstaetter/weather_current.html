@@ -2,23 +2,23 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012
  * @license     GPL <http://www.gnu.de>
- * ----------------------------------------------------------------------------- 
+ * -----------------------------------------------------------------------------
  */
- 
+
 {% extends "weather1.html" %}
 
 
 {% block content %}
-    <h1><img class="icon" src='{{ icon0 }}weather_cloudy.png'/>Wetter</h1>
-    
+    <h1><img class="icon" src='{{ icon0 }}weather_cloudy.svg'/>Wetter</h1>
+
     <div class="preblock">
-		
+
     </div>
-   
+
    {% import   "weather.html" as weather  %}
-   
+
    <div class="block">
    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 	  <div data-role="collapsible" data-collapsed="false">
@@ -26,7 +26,7 @@
 	    {{ weather.current('weather_current') }}
 	  </div>
     </div>
-    </div> 
+    </div>
 
    <div class="block">
    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
@@ -36,7 +36,7 @@
 	  </div>
     </div>
     </div>
-    
+
     {{ weather.map ('day', 'Tag', 'day') }}
     {{ weather.map ('day', 'Nacht', 'night') }}
     {{ weather.map ('day', 'Vorhersage', 'forecast') }}

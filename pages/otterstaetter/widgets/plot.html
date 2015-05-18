@@ -1,0 +1,31 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+/**
+* A complete house temperature plot. The rose shows all rooms with there actual and set temperature in one diagramm.
+*
+* @param       unique id for this widget
+* @param       a gad/item for the actual-temperature. More item/s in array form: [ item1 , item2 ]
+* @param       a gad/item for the set-temperature. More item/s in array form: [ item1 , item2 ]
+* @param       label/s for each axis
+*
+* @see        misc/fundamentals#Array-Form
+*/
+{% macro temprose(id, gad_actual, gad_set, axis) %}
+
+	{% if once('highcharts-more') %}
+		<script src="vendor/plot.highcharts/highcharts-more.js"></script>
+	{% endif %}
+
+	<div id="{{ uid(page, id) }}" data-widget="plot.temprose" data-item="{{ implode(gad_actual) }}, {{ implode(gad_set) }}"
+		data-count="{{ gad_actual|length }}" data-label="Luft, Boden" data-axis="{{ implode(axis) }}"
+		class="plot"></div>
+
+{% endmacro %}

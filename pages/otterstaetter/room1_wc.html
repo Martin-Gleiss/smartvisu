@@ -2,31 +2,28 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012
  * @license     GPL <http://www.gnu.de>
  * -----------------------------------------------------------------------------
  */
 
 
 {% extends "rooms.html" %}
-
+{% import "widgets/button.html" as button %}
 {% block content %}
 
-    <h1><img class="icon" src='{{ icon0 }}scene_toilet.png'/>Gäste WC</h1>
+    <h1><img class="icon" src='{{ icon0 }}scene_toilet.svg'/>Gäste WC</h1>
 
     <div class="preblock">
-	<table width="100%">
-		<tr>
-		<td align="left" width="50%">
-		</td>
-		<td align="right">
-		</td>
-		<td align="right" padding="20">
-		{{ basic.symbol('pir1', 'eg.gaeste-wc.praesenz', '', icon1~'message_presence.png', 1, 'mini') }}
-			 {{ basic.symbol('pir2', 'eg.gaeste-wc.praesenz', '', icon0~'message_presence.png', 0, 'mini') }}
-		</td>
-		</tr>
-	</table>
+		<div class="left">
+		</div>
+		<div class="right">
+			{{ basic.symbol('pir1', 'eg.gaeste_wc.praesenz', '', 'message_presence_active.svg', 1) }}
+				 {{ basic.symbol('pir2', 'eg.gaeste_wc.praesenz', '', 'message_presence.svg', 0) }}
+			{{ icon.shutter('eg.gaeste_wc.shifter', 'eg.gaeste_wc.rollladen.nord.fahren', 'eg.gaeste_wc.rollladen.nord.position', 0, 100 ) }}
+            {{ basic.symbol('eg.gaeste_wc.fensterauf', 'eg.gaeste_wc.fenster.nord', '', 'fts_window_1w_open.svg', 2) }}
+                {{ basic.symbol('eg.gaeste_wc.fenstergekippt', 'eg.gaeste_wc.fenster.nord', '', 'fts_window_1w_tilt.svg', 1) }}
+		</div>
     </div>
 
     <div class="block">
@@ -34,7 +31,9 @@
 
     	<div data-role="collapsible" data-collapsed="false" >
             <h3>Beleuchtung</h3>
-           <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'eg.gaeste-wc.beleuchtung.schalten', icon1~'light_mirror.png', icon0~'light_mirror.png') }} </td><td>Spiegelbeleuchtung</td></tr></table>
+            <p>
+				{{ button.flip('flip0', 'eg.gaeste_wc.beleuchtung.schalten', 'Ein', 'Aus', 'Spiegel') }}
+            </p>
       	</div>
 
     	<div data-role="collapsible">
@@ -49,19 +48,36 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Rollladen</h3>
-            {% import "widget_shutter.html" as shutter %}
-			{{ shutter.one ('shutter1', 'Fenster', 'eg.gaeste-wc.rollladen.fahren', 'eg.gaeste-wc.rollladen.stopp', 'eg.gaeste-wc.rollladen.position', 'eg.gaeste-wc.rollladen.beschatten' ) }}
+            {% import "widgets/shutter.html" as shutter %}
+			{{ shutter.one ('shutter1', 'Fenster', 'eg.gaeste_wc.rollladen.nord.fahren', 'eg.gaeste_wc.rollladen.nord.stopp', 'eg.gaeste_wc.rollladen.nord.position', 'eg.gaeste_wc.rollladen.nord.beschatten' ) }}
         </div>
 
     	<div data-role="collapsible">
           <h3>Status Fenster</h3>
-          {% import "widget_window.html" as window %}
+          {% import "widgets/window.html" as window %}
           <p>
-            {{ window.one ('win1', 'Fenster', 'eg.gaeste-wc.fenster' ) }}
+            {{ window.one ('win1', 'Fenster', 'eg.gaeste_wc.fenster' ) }}
           </p>
         </div>
     </div>
     </div>
 
+    <div class="block">
+      <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false" >
+          <h3>Steckdosen</h3>
+			<p>
+			{{ button.flip('flip1', 'eg.gaeste_wc.steckdose.fenster.nord.schalten', 'Ein', 'Aus', 'Fenster') }}
+			{{ button.flip('flip2', 'eg.gaeste_wc.steckdose.lautsprecher.schalten', 'Ein', 'Aus', 'Lautsprecher') }}
+			</p>
+        </div>
+
+	    <div data-role="collapsible">
+            <h3>&nbsp;</h3>
+            <p></p>
+        </div>
+      </div>
+    </div>
+    
 {% endblock %}
 
