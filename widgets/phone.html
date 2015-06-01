@@ -28,7 +28,6 @@
 	<script type="text/javascript">
 		$(document).delegate('div[data-widget="phone.list"]', {
 			'init' : function (event) {
-				console.log('init');
 				$.getJSON('lib/phone/service/{{ config_phone_service }}.php', function (data) {
 					var ret;
 					var line = '';
@@ -54,7 +53,6 @@
 			},
 
 			'repeat': function(event) {
-				console.log('repeat');
 				$('#{{ uid }}-phonelist').trigger('init');
 			}
 		});
