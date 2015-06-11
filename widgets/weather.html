@@ -13,11 +13,12 @@
 *
 * @param unique id for this widget
 * @param location as string (optional)
+* @param the refresh interval for this widget (using relative time format), default 1h
 *
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
 */
-{% macro current(id, location) %}
+{% macro current(id, location, repeat) %}
 	{% set uid = uid(page, id) %}
 
 	{% if once('digiweather') %}
@@ -25,7 +26,7 @@
 	{% endif %}
 
 	<div class="center">
-		<div id="{{ page }}-{{ id }}-weather" class="weather">
+		<div id="{{ uid }}-weather" class="weather" data-widget="weather.current" data-repeat="{{ repeat|default('1h') }}">
 			<div class="humi"></div>
 			<div class="wind"></div>
 			<div class="temp"></div>
@@ -35,16 +36,26 @@
 	</div>
 
 	<script type="text/javascript">
-		$('#{{ page }}').on('pagebeforeshow', function (event, ui) {
-			$.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function (data) {
-				$('#{{ uid }}-weather').css('background', 'url(lib/weather/pics/' + data.current.icon + '.png) 50% 0 no-repeat')
-				$('#{{ uid }}-weather .city').html(data.city);
-				$('#{{ uid }}-weather .cond').html(data.current.conditions);
-				$('#{{ uid }}-weather .temp').html(data.current.temp);
-				$('#{{ uid }}-weather .humi').html(data.current.more);
-				$('#{{ uid }}-weather .wind').html(data.current.wind);
-			})
-				.error(notify.json);
+		$(document).delegate('div[data-widget="weather.current"]', {
+			'init' : function (event) {
+				$.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function (data) {
+					$('#{{ uid }}-weather').css('background', 'url(lib/weather/pics/' + data.current.icon + '.png) 50% 0 no-repeat')
+					$('#{{ uid }}-weather .city').html(data.city);
+					$('#{{ uid }}-weather .cond').html(data.current.conditions);
+					$('#{{ uid }}-weather .temp').html(data.current.temp);
+					$('#{{ uid }}-weather .humi').html(data.current.more);
+					$('#{{ uid }}-weather .wind').html(data.current.wind);
+				})
+					.error(notify.json);
+			},
+
+			'repeat': function(event) {
+				$('#{{ uid }}-weather').trigger('init');
+			}
+		});
+
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
+			$('#{{ uid }}-weather').trigger('init');
 		});
 	</script>
 {% endmacro %}
@@ -56,11 +67,12 @@
 * @param unique id for this widget
 * @param location as string (optional)
 * @param offset: 1 for tomorrow (default), 2 the day after tomorrow ..., (optional)
+* @param the refresh interval for this widget (using relative time format), default 3h
 *
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
 */
-{% macro forecast(id, location, day) %}
+{% macro forecast(id, location, day, repeat) %}
 	{% set uid = uid(page, id) %}
 
 	{% if once('digiweather') %}
@@ -68,7 +80,7 @@
 	{% endif %}
 
 	<div class="center">
-		<div id="{{ uid }}-forecast" class="forecast">
+		<div id="{{ uid }}-forecast" class="forecast" data-widget="weather.forecast" data-repeat="{{ repeat|default('3h') }}">
 			<div class="day"></div>
 			<div class="highlow"></div>
 			<div class="city"></div>
@@ -77,15 +89,25 @@
 	</div>
 
 	<script type="text/javascript">
-		$('#{{ page }}').on('pagebeforeshow', function (event, ui) {
-			$.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function (data) {
-				$('#{{ uid }}-forecast').css('background', 'url(lib/weather/pics/' + data.forecast[{{ day|default(1) }}].icon + '.png) 50% 0 no-repeat')
-				$('#{{ uid }}-forecast .city').html(data.city);
-				$('#{{ uid }}-forecast .cond').html(data.forecast[{{ day|default(1) }}].conditions);
-				$('#{{ uid }}-forecast .highlow').html(data.forecast[{{ day|default(1) }}].temp);
-				$('#{{ uid }}-forecast .day').html(data.forecast[{{ day|default(1) }}].date);
-			})
-				.error(notify.json);
+		$(document).delegate('div[data-widget="weather.forecast"]', {
+			'init' : function (event) {
+				$.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function (data) {
+					$('#{{ uid }}-forecast').css('background', 'url(lib/weather/pics/' + data.forecast[{{ day|default(1) }}].icon + '.png) 50% 0 no-repeat')
+					$('#{{ uid }}-forecast .city').html(data.city);
+					$('#{{ uid }}-forecast .cond').html(data.forecast[{{ day|default(1) }}].conditions);
+					$('#{{ uid }}-forecast .highlow').html(data.forecast[{{ day|default(1) }}].temp);
+					$('#{{ uid }}-forecast .day').html(data.forecast[{{ day|default(1) }}].date);
+				})
+					.error(notify.json);
+			},
+
+			'repeat': function(event) {
+				$('#{{ uid }}-forecast').trigger('init');
+			}
+		});
+
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
+			$('#{{ uid }}-forecast').trigger('init');
 		});
 	</script>
 {% endmacro %}
@@ -96,6 +118,7 @@
 *
 * @param unique id for this widget
 * @param location as string (optional)
+* @param the refresh interval for this widget (using relative time format), default 3h
 *
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
@@ -107,23 +130,33 @@
 		<link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
 	{% endif %}
 
-	<div id="{{ uid }}-forecastweek" class="forecastweek">
+	<div id="{{ uid }}-forecastweek" class="forecastweek" data-widget="weather.forecastweek" data-repeat="{{ repeat|default('3h') }}">
 	</div>
 
 	<script type="text/javascript">
-		$('#{{ page }}').on('pagebeforeshow', function (event, ui) {
-			$.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function (data) {
-				var forecast = '';
-				for (var i in data.forecast) {
-					forecast += '<div class=\'day\'>'
-					forecast += '<div>' + data.forecast[i].date + '</div>';
-					forecast += '<img src="lib/weather/pics/' + data.forecast[i].icon + '.png" alt="' + data.forecast[i].conditions + '" title="' + data.forecast[i].conditions + '" />';
-					forecast += '<div>' + data.forecast[i].temp + '</div>';
-					forecast += '</div>';
-				}
-				$('#{{ uid }}-forecastweek').html(forecast);
-			})
-				.error(notify.json);
+		$(document).delegate('div[data-widget="weather.forecastweek"]', {
+			'init' : function (event) {
+				$.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}', function (data) {
+					var forecast = '';
+					for (var i in data.forecast) {
+						forecast += '<div class=\'day\'>'
+						forecast += '<div>' + data.forecast[i].date + '</div>';
+						forecast += '<img src="lib/weather/pics/' + data.forecast[i].icon + '.png" alt="' + data.forecast[i].conditions + '" title="' + data.forecast[i].conditions + '" />';
+						forecast += '<div>' + data.forecast[i].temp + '</div>';
+						forecast += '</div>';
+					}
+					$('#{{ uid }}-forecastweek').html(forecast);
+				})
+					.error(notify.json);
+			},
+
+			'repeat': function(event) {
+				$('#{{ uid }}-forecastweek').trigger('init');
+			}
+		});
+
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
+			$('#{{ uid }}-forecastweek').trigger('init');
 		});
 	</script>
 

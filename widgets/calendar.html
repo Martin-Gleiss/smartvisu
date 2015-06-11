@@ -15,11 +15,12 @@
 * @param a title to display
 * @param the number of displayed calendar-entries, default 25
 * @param a color for this calendar, default grey
+* @param the refresh interval for this widget (using relative time format), default 1h
 */
-{% macro list(id, title, count, color) %}
+{% macro list(id, title, count, color, repeat) %}
 	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}" data-widget="calendar.list" class="calendarlist">
+	<div id="{{ uid }}" data-widget="calendar.list" class="calendarlist" data-repeat="{{ repeat|default('1h') }}">
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
 		<ul data-role="listview">
 		</ul>
@@ -31,11 +32,11 @@
 		$(document).delegate('div[data-widget="calendar.list"]', {
 			'init' : function (event) {
 				var uid = this.id;
-				
+
 				$.getJSON('lib/calendar/service/{{ config_calendar_service }}.php?url={{ config_calendar_url|url_encode() }}&count={{ count|default(25) }}', function (data) {
 					var ret;
 					var line = '';
-					
+
 					for (var i in data) {
 						ret = '<img style="background: ' + data[i].color + ';" class="icon" src="' + data[i].icon + '" />';
 						ret += '<div class="color" style="background: {{ color|default('#666666') }};"></div>';
@@ -53,6 +54,10 @@
 					$('#' + uid + ' ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
 				})
 					.error(notify.json);
+			},
+
+			'repeat': function(event) {
+				$('#{{ uid }}').trigger('init');
 			}
 		});
 
