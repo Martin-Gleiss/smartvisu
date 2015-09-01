@@ -85,10 +85,13 @@ var io = {
 	// only be called from the public functions above. You may add or delete some
 	// to fit your requirements and your connected system.
 
+	// New in
+	// v4: count - Patch
+	
 	/**
-	 * This driver version
+	 * This is the protocol version
 	 */
-	version: 3,
+	version: 0,
 
 	/**
 	 * This driver uses a websocket
@@ -135,7 +138,11 @@ var io = {
 					break;
 
 				case 'series':
-					data.sid = data.sid.substr(0, data.sid.length);
+					data.sid = data.sid.replace('now', '0');
+					
+					if (io.version <= 3)
+						data.sid = data.sid + '.100';
+					
 					widget.update(data.sid.replace(/\|/g, '\.'), data.series);
 					break;
 
@@ -163,9 +170,9 @@ var io = {
 					break;
 
 				case 'proto':
-					var proto = parseInt(data.ver);
-					if (proto != io.version) {
-						notify.warning('Driver: smarthome.py', 'Protocol mismatch<br />smartVISU driver is: v' + io.version + '<br />SmartHome.py is: v' + proto + '<br /><br /> Update the system!');
+					io.version = parseInt(data.ver);
+					if (io.version < 3) {
+						notify.warning('Driver: smarthome.py', 'Protocol mismatch<br />SmartHome.py is: v' + io.version + '<br /><br /> Update the system!');
 					}
 					break;
 			}
@@ -210,7 +217,12 @@ var io = {
 
 				if (!unique[items[i]] && !widget.get(items[i]) && (pt instanceof Array) && widget.checkseries(items[i])) {
 					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
-					io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'count': pt[pt.length - 1]});
+
+					if (io.version <= 3)
+						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': (pt[pt.length - 2] == '0' ? 'now' : pt[pt.length - 2])});
+					else
+						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': (pt[pt.length - 2] == '0' ? 'now' : pt[pt.length - 2]), 'count': pt[pt.length - 1]});
+					
 					unique[items[i]] = 1;
 				}
 			}

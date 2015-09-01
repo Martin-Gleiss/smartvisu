@@ -1115,18 +1115,16 @@ $(document).delegate('div[data-widget="plot.temprose"]', {
 $(document).delegate('span[data-widget="status.collapse"]', {
 	'update': function (event, response) {
 		// response is: {{ gad_trigger }}
-
+		
 		if (response[0] != 0) {
-			$('div[data-bind="' + $(this).attr('data-id') + '"]')
-				.not('.ui-collapsible').show()
-				.trigger("expand");
+			$('div[data-bind="' + $(this).attr('data-id') + '"]').not('.ui-collapsible').show();
 			$('div[data-bind="' + $(this).attr('data-id') + '"].ui-popup').popup("open");
+			$('div[data-bind="' + $(this).attr('data-id') + '"].ui-collapsible').trigger("expand");
 		}
 		else {
-			$('div[data-bind="' + $(this).attr('data-id') + '"]')
-				.not('.ui-collapsible').hide()
-				.trigger("collapse");
+			$('div[data-bind="' + $(this).attr('data-id') + '"]').not('.ui-collapsible').hide();
 			$('div[data-bind="' + $(this).attr('data-id') + '"].ui-popup').popup("close");
+			$('div[data-bind="' + $(this).attr('data-id') + '"].ui-collapsible').trigger("collapse");
 		}
 	}
 });
@@ -1175,11 +1173,9 @@ $(document).delegate('span[data-widget="status.message"]', {
 			$('#' + this.id + '-message p span').html(response[1] ? '<b>' + response[1] + '</b><br />' : '');
 			$('#' + this.id + '-message .stamp').html(response[2] ? new Date(response[2]).transShort() : new Date().transShort());
 			$('#' + this.id + '-message').popup('open');
-			console.log(this.id + ' open ' + response[0]);
 		}
 		else {
 			$('#' + this.id + '-message').popup('close');
-			console.log(this.id + ' ' + response[0]);
 		}
 	}
 });
