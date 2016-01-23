@@ -123,6 +123,7 @@ $lang['yr.no']['sleet showers']		= 'Graupelschauer';
 $lang['yr.no']['snow showers']		= 'Schneeschauer';
 $lang['yr.no']['heavy rain']		= 'starker Regen';
 $lang['yr.no']['rain and thunder']	= 'Regen und Gewitter';
+$lang['yr.no']['light']				= 'leichter';
 $lang['yr.no']['rain']				= 'Regen';
 $lang['yr.no']['sleet showers and thunder']	= 'Graupelschauer mit Gewitter';
 $lang['yr.no']['sleet and thunder']	= 'Graupel und Gewitter';
