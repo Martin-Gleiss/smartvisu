@@ -369,7 +369,7 @@
 			data-pic-on="{{ pic_on|deficon('control_on_off.svg') }}" data-pic-off="{{ pic_off|deficon('control_on_off.svg') }}"
 			class="switch icon">
 				<a>	
-					{% if color_ff is empty  %}
+					{% if color_off is empty  %}
 						<img id="{{ uid }}-off" class="icon" src="{{ pic_off|deficon('control_on_off.svg') }}" />
 					{% else %}
 						<img id="{{ uid }}-off" class="icon icon0" style="stroke:{{ color_off }}; fill:{{ color_off }};" src="{{ pic_off|deficon('control_on_off.svg') }}" />
