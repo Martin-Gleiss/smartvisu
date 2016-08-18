@@ -91,7 +91,7 @@ var io = {
 	/**
 	 * This is the protocol version
 	 */
-	version: 0,
+	version: 4,
 
 	/**
 	 * This driver uses a websocket
