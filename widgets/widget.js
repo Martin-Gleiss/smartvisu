@@ -1165,6 +1165,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	$('div[data-widget="plot.minmaxavg"]').on( {
 		'update': function (event, response) {
 			// response is: [[t1 , {{ gad.min }}], [t2 , {{ gad.max }}], [t3 , {{ gad.avg }}]]
+			event.stopPropagation();
 	
 			var axis = $(this).attr('data-axis').explode();
 			var unit = $(this).attr('data-unit');
@@ -1228,6 +1229,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 			});
 		},
 		'point': function (event, response) {
+			event.stopPropagation();
 			var count = $(this).attr('data-count');
 			if (count < 1) {
 				count = 100;
