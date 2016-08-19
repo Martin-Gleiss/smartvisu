@@ -1161,6 +1161,90 @@ $('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
+// ----- plot.minmaxavg ----------------------------------------------------------
+	$('div[data-widget="plot.minmaxavg"]').on( {
+		'update': function (event, response) {
+			// response is: [[t1 , {{ gad.min }}], [t2 , {{ gad.max }}], [t3 , {{ gad.avg }}]]
+	
+			var axis = $(this).attr('data-axis').explode();
+			var unit = $(this).attr('data-unit');
+	
+			var minValues = response[0];
+			var maxValues = response[1];
+	
+			var ranges = [];
+			for (var i = 0; i < minValues.length; i++) {
+				ranges[i] = [minValues[i][0], minValues[i][1], maxValues[i][1]];
+			}
+	
+			// draw the plot
+			$('#' + this.id).highcharts({
+				chart: {
+					type: 'columnrange',
+					inverted: false
+				},
+				series: [{
+					data: ranges,
+					enableMouseTracking: false
+				}, {
+					type: 'line',
+					data: response[2]
+				}],
+				xAxis: {
+					type: 'datetime',
+					title: { text: axis[0] }
+				},
+				yAxis: {
+					min: $(this).attr('data-ymin'),
+					max: $(this).attr('data-ymax'),
+					title: { text: axis[1] }
+				},
+				plotOptions: {
+					columnrange: {
+						dataLabels: {
+							enabled: true,
+							formatter: function () {
+								if (unit != '') {
+									return parseFloat(this.y).transUnit(unit);
+								} else {
+									return parseFloat(this.y).transFloat();
+								}
+							}
+						}
+					}
+				},
+				tooltip: {
+					pointFormatter: function() {
+						var value = this.y;
+						if (unit != '') {
+							value = parseFloat(this.y).transUnit(unit);
+						} else {
+							value = parseFloat(this.y).transFloat();
+						}
+						return '<span style="color:' + this.color + '">\u00D8</span>  <b>' + value + '</b><br/>'
+					}
+				},
+				legend: { enabled: false }
+			});
+		},
+		'point': function (event, response) {
+			var count = $(this).attr('data-count');
+			if (count < 1) {
+				count = 100;
+			}
+	
+			var minValues = response[0];
+			var maxValues = response[1];
+	
+			for (var i = 0; i < minValues.length; i++) {
+				var chart = $('#' + this.id).highcharts();
+				chart.series[0].addPoint([minValues[i][0], minValues[i][1], maxValues[i][1]], false, (chart.series[i].data.length >= count));
+				chart.series[1].addPoint(response[2][i], false, (chart.series[i].data.length >= count));
+				chart.redraw();
+			}
+		}
+	});
+
 // ----- s t a t u s -----------------------------------------------------------
 // -----------------------------------------------------------------------------
 
