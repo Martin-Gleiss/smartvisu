@@ -104,6 +104,31 @@ define ('config_delay', '750');
 
 
 // -----------------------------------------------------------------------------
+// C O M M U N I C A T I O N
+// -----------------------------------------------------------------------------
+
+/**
+ * should a proxy be used for outgoing requests
+ */
+define ('config_proxy', '');
+
+/**
+ * the URL of the Proxy - in Form tcp://proxy:port
+ */
+define ('config_proxy_url', '');
+
+/**
+ * the proxy user if needed
+ */
+define ('config_proxy_user', '');
+
+/**
+ * the proxy password if needed
+ */
+define ('config_proxy_password', '');
+
+
+// -----------------------------------------------------------------------------
 // W I D G E T S
 // -----------------------------------------------------------------------------
 
@@ -205,4 +230,22 @@ date_default_timezone_set('Europe/Berlin');
  */
 umask(0002);
 
+// -----------------------------------------------------------------------------
+// S E T  P R O X Y
+// -----------------------------------------------------------------------------
+
+if(config_proxy == "true") {
+	$proxy_opts = array(
+		'http'=>array(
+			'method' => 'GET',
+			'proxy' => config_proxy_url,
+			'request_fulluri' => True
+		)
+	);
+
+	if(strlen(proxy_user) > 0) {
+		$proxy_opts['http']['header'] = sprintf('Authorization: Basic %s:%s', base64_encode(config_proxy_user), base64_encode(config_proxy_password));
+	}
+	$default = stream_context_get_default($proxy_opts);
+}
 ?>

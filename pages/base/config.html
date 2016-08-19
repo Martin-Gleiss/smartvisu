@@ -273,6 +273,38 @@
 		</div>
 	</div>
 
+	<div class="block">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Proxy</h3>
+				<div data-role="fieldcontain">
+					<label for="proxy">Use Proxy<br /></label>
+					<select name="proxy" id="proxy" data-role="slider" data-theme="a">
+						<option value="false">off</option>
+						<option value="true">on</option>
+					</select>
+					{{ forms.flip_init('proxy', config_proxy) }}
+				</div>
+				<div data-role="fieldcontain">
+					<label for="proxy_url">Proxy Url</label>
+					<input type="text" name="proxy_url" id="proxy_url" />
+					{{ forms.text_init('proxy_url', config_proxy_url|e ) }}
+				</div>
+				<div data-role="fieldcontain">
+					<label for="proxy_user">Proxy User</label>
+					<input type="text" name="proxy_user" id="proxy_user" />
+					{{ forms.text_init('proxy_user', config_proxy_user|e ) }}
+				</div>
+				<div data-role="fieldcontain">
+					<label for="proxy_password">Proxy Password</label>
+					<input type="password" name="proxy_password" id="proxy_password" />
+					{{ forms.text_init('proxy_password', config_proxy_password|e ) }}
+				</div>
+			</div>
+
+		</div>
+	</div>
 
 	</fieldset>
 
