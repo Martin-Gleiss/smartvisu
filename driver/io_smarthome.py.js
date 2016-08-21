@@ -91,7 +91,7 @@ var io = {
 	/**
 	 * This is the protocol version
 	 */
-	version: 0,
+	version: 4,
 
 	/**
 	 * This driver uses a websocket
@@ -138,8 +138,6 @@ var io = {
 					break;
 
 				case 'series':
-					data.sid = data.sid.replace('now', '0');
-					
 					if (io.version <= 3)
 						data.sid = data.sid + '.100';
 					
@@ -219,9 +217,9 @@ var io = {
 					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 
 					if (io.version <= 3)
-						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': (pt[pt.length - 2] == '0' ? 'now' : pt[pt.length - 2])});
+						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2]});
 					else
-						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': (pt[pt.length - 2] == '0' ? 'now' : pt[pt.length - 2]), 'count': pt[pt.length - 1]});
+						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': pt[pt.length - 1]});
 					
 					unique[items[i]] = 1;
 				}
