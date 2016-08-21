@@ -262,7 +262,7 @@
 
 
 /**
-* A switch, build of a series of icons. The series may be a .png-iconseries (NAME_00.png, NAME_10.png, NAME_20.png...) or may be a dynamic svg-icon (icon.NAME)
+* A switch, build of a series of icons. The series may be a iconseries (NAME_00.svg, NAME_10.svg, NAME_20.svg...) or may be a dynamic svg-icon (icon.NAME)
 *
 * @param unique id for this widget
 * @param a item for the switch (optional)
@@ -282,10 +282,11 @@
 		{{ attribute(icon, pic_on|slice(5), [id, item_switch, item_value, min, max]) }}
 	{% else %}
 		<span id="{{ uid(page, id) }}" data-widget="basic.shifter" data-item="{{ item_value }}, {{ item_switch }}"
-			{% set pic_on = pic_on|default(icon1~'light_light_dim_00.png') %}
-			data-pic-on="{{ pic_on }}" data-pic-off="{{ pic_off |default(icon0~pic_on|slice(icon1|length)) }}"
+			{% set pic_on = pic_on|deficon('light_light_dim_00.svg') %}
+			{% set pic_off = pic_off|deficon(pic_on) %}
+			data-pic-on="{{ pic_on }}" data-pic-off="{{ pic_off |default(pic_on) }}"
 			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-			class="switch"><a><img class="icon" src="{{ pic_off|default(icon0~'light_light_dim_00.png') }}" /></a>
+			class="switch"><a><img class="icon" src="{{ pic_off |default(pic_on) }}" /></a>
     	</span>
 	{% endif %}
 
