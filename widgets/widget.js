@@ -41,13 +41,17 @@
 
 
 $(document).on('pagebeforeshow', function () {
+
+	if(this.svEventsBound === true)
+		return;
+	this.svEventsBound = true;
+
 	// ----- b a s i c ------------------------------------------------------------
 	// ----------------------------------------------------------------------------
 
 	// ----- basic.button ---------------------------------------------------------
 	$('a[data-widget="basic.button"]').on( {
 		'click': function (event) {
-			event.stopPropagation();
 			if ($(this).attr('data-val') != '') {
 				io.write($(this).attr('data-item'), $(this).attr('data-val'));
 			}
@@ -62,7 +66,6 @@ $(document).on('pagebeforeshow', function () {
 		},
 
 		'change': function (event) {
-			event.stopPropagation();
 			// DEBUG: console.log("[basic.checkbox] change '" + this.id + "':", $(this).prop("checked"));
 			io.write($(this).attr('data-item'), ($(this).prop('checked') ? 1 : 0));
 		}
@@ -79,7 +82,6 @@ $(document).on('pagebeforeshow', function () {
 		},
 
 		'click': function (event) {
-			event.stopPropagation();
 			$('#' + this.id + '-screen').removeClass('hide').addClass('in');
 
 			// reposition canvas
@@ -96,7 +98,6 @@ $(document).on('pagebeforeshow', function () {
 
 	$('div[data-widget="basic.colordisc"]').on( {
 		'click': function (event) {
-			event.stopPropagation();
 			var uid = this.id.substr(0, this.id.length - 7);
 
 			$('#' + uid + '-disc').hide();
@@ -106,92 +107,7 @@ $(document).on('pagebeforeshow', function () {
 	});
 
 	$('canvas[data-widget="basic.colordisc"]').on( {
-		'init': function (event) {
-			event.stopPropagation();
-			var colors = parseFloat($(this).attr('data-colors'));
-			var size = 280;
-			var canvas = $(this)[0];
-			var step = 100 / ($(this).attr('data-step') / 2);
-
-			var arc = Math.PI / (colors + 2) * 2;
-			var startangle = -(Math.PI / 2) + arc;
-			var gauge = (size - 10) / 16 / ($(this).attr('data-step') / 8);
-			var share = 360 / colors;
-			var ctx;
-
-			canvas.width = size;
-			canvas.height = size;
-
-			if (canvas.getContext) {
-				var center = size / 2 - 1;
-				ctx = canvas.getContext("2d");
-
-				// draw background
-				ctx.beginPath();
-				ctx.fillStyle = '#888';
-				ctx.shadowColor = 'rgba(96,96,96,0.4)';
-				ctx.shadowOffsetX = 2;
-				ctx.shadowOffsetY = 2;
-				ctx.shadowBlur = 4;
-				ctx.arc(center, center, size / 2 - 1, 0, 2 * Math.PI, false);
-				ctx.fill();
-				ctx.beginPath();
-				ctx.shadowOffsetX = 0;
-				ctx.shadowOffsetY = 0;
-				ctx.shadowBlur = 0;
-				ctx.fillStyle = '#555';
-				ctx.arc(center, center, size / 2 - 2, 0, 2 * Math.PI, false);
-				ctx.fill();
-
-				// draw colors
-				var v, s;
-
-				for (var i = 0; i <= colors; i++) {
-					var angle = startangle + i * arc;
-					var ring = 1;
-					var h = i * share;
-					for (v = step; v <= 100; v += step) {
-						ctx.beginPath();
-						ctx.fillStyle = fx.hsv2rgb(h, 100, v);
-						ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
-						ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
-						ctx.fill();
-						ring += 1;
-					}
-					for (s = (100 - step); s >= step; s -= step) {
-						ctx.beginPath();
-						ctx.fillStyle = fx.hsv2rgb(h, s, 100);
-						ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
-						ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
-						ctx.fill();
-						ring += 1;
-					}
-				}
-
-				// draw grey
-				i -= 1;
-				angle = startangle + i * arc;
-				ring = 1;
-				h = i * share;
-				for (v = step; v <= 100; v += (step / 2)) {
-					ctx.beginPath();
-					ctx.fillStyle = fx.hsv2rgb(h, 0, v);
-					ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + 2 * arc + 0.01, false);
-					ctx.arc(center, center, ring * gauge, angle + 2 * arc + 0.01, angle, true);
-					ctx.fill();
-					ring += 1;
-				}
-
-				// draw center
-				ctx.beginPath();
-				ctx.fillStyle = 'rgb(0,0,0)';
-				ctx.arc(center, center, gauge + 1, 0, 2 * Math.PI, false);
-				ctx.fill();
-			}
-		},
-
 		'click': function (event) {
-			event.stopPropagation();
 			var uid = this.id.substr(0, this.id.length - 5);
 			var disc = $(this)[0];
 			var ctx = disc.getContext("2d");
@@ -236,7 +152,6 @@ $(document).on('pagebeforeshow', function () {
 		},
 
 		'click': function (event) {
-			event.stopPropagation();
 			io.write($(this).attr('data-item'), ($(this).val() == $(this).attr('data-val-off') ? $(this).attr('data-val-on') : $(this).attr('data-val-off')) );
 		}
 	});
@@ -260,7 +175,6 @@ $('a[data-widget="basic.multistate"]').on( {
 		},
 		
 		'click': function (event) {
-			event.stopPropagation();
 			// get the list of values
 			list_val = $(this).attr('data-vals').explode();
 			
@@ -288,7 +202,6 @@ $('a[data-widget="basic.multistate"]').on( {
 		},
 
 		'change': function (event) {
-			event.stopPropagation();
 			// DEBUG: console.log("[basic.flip] change '" + this.id + "':", $(this).val());
 			io.write($(this).attr('data-item'), ($(this).val() == 'on' ? 1 : 0));
 		}
@@ -371,7 +284,6 @@ $('a[data-widget="basic.multistate"]').on( {
 
 	$('div[data-widget="basic.rgb-popup"] > div').on( {
 		'click': function (event) {
-			event.stopPropagation();
 			var rgb = $(this).css('background-color');
 			rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
 
@@ -386,12 +298,10 @@ $('a[data-widget="basic.multistate"]').on( {
 		},
 
 		'mouseenter': function (event) {
-			event.stopPropagation();
 			$(this).addClass("ui-focus");
 		},
 
 		'mouseleave': function (event) {
-			event.stopPropagation();
 			$(this).removeClass("ui-focus");
 		}
 	});
@@ -413,7 +323,6 @@ $('a[data-widget="basic.multistate"]').on( {
 		},
 
 		'click': function (event) {
-			event.stopPropagation();
 			var items = $(this).attr('data-item').explode();
 
 			if ($('#' + this.id + ' img').attr('src') == $(this).attr('data-pic-off')) {
@@ -481,7 +390,6 @@ $(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', fun
 		},
 
 		'click': function (event) {
-			event.stopPropagation();
 			var offset = $(this).offset();
 			var x = Math.round(event.pageX - offset.left);
 			var y = (event.pageY - offset.top);
@@ -498,12 +406,10 @@ $(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', fun
 		},
 
 		'mouseenter': function (event) {
-			event.stopPropagation();
 			$('#' + this.id + ' .control').fadeIn(400);
 		},
 
 		'mouseleave': function (event) {
-			event.stopPropagation();
 			$('#' + this.id + ' .control').fadeOut(400);
 		}
 	});
@@ -521,14 +427,12 @@ $(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', fun
 		},
 
 		'slidestop': function (event) {
-			event.stopPropagation();
 			if ($(this).val() != $(this).attr('mem')) {
 				io.write($(this).attr('data-item'), $(this).val());
 			}
 		},
 
 		'change': function (event) {
-			event.stopPropagation();
 			// DEBUG: console.log("[basic.slider] change '" + this.id + "': " + $(this).val() + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));
 			if (( $(this).attr('timer') === undefined || $(this).attr('timer') == 0 && $(this).attr('lock') == 0 )
 				&& ($(this).val() != $(this).attr('mem'))) {
@@ -545,7 +449,6 @@ $(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', fun
 		},
 
 		'click': function (event) {
-			event.stopPropagation();
 			// $('#' + this.id).attr('mem', $(this).val());
 			io.write($(this).attr('data-item'), $(this).val());
 		}
@@ -562,7 +465,6 @@ $(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', fun
 		},
 
 		'click': function (event) {
-			event.stopPropagation();
 			io.write($(this).attr('data-item'), ($(this).val() == $(this).attr('data-val-off') ? $(this).attr('data-val-on') : $(this).attr('data-val-off')) );
 		},
 		
@@ -589,7 +491,6 @@ $('span[data-widget="basic.switch.v1"]').on({
 		},
 
 		'click': function (event) {
-			event.stopPropagation();
 			if ($('#' + this.id + ' img').attr('src') == $(this).attr('data-pic-off')) {
 				io.write($(this).attr('data-item'), $(this).attr('data-val-on'));
 			}
@@ -662,7 +563,6 @@ $('span[data-widget="basic.switch.v1"]').on({
 	// ----- basic.trigger ---------------------------------------------------------
 	$('a[data-widget="basic.trigger"]').on( {
 		'click': function (event) {
-			event.stopPropagation();
 			io.trigger($(this).attr('data-name'), $(this).attr('data-val'));
 		}
 	});
@@ -721,7 +621,6 @@ $('span[data-widget="basic.switch.v1"]').on({
 // ----- device.codepad -------------------------------------------------------
 	$('div[data-widget="device.codepad"]').on( {
 		'keyup': function (event) {
-			event.stopPropagation();
 			if (event.keyCode == 13) {
 				$('#' + this.id + '-ok').click();
 			}
@@ -730,7 +629,6 @@ $('span[data-widget="basic.switch.v1"]').on({
 
 	$('div[data-widget="device.codepad"] > div > a').on( {
 		'click': function (event) {
-			event.stopPropagation();
 			var node = $(this).parent().parent();
 			var code = $('#' + node.attr('id') + '-code');
 			var key = $(this).attr('data-val');
@@ -765,7 +663,6 @@ $('span[data-widget="basic.switch.v1"]').on({
 	// ----- device.rtr -----------------------------------------------------------
 	$('div[data-widget="device.rtr"] > div > a[data-icon="minus"]').on( {
 		'click': function (event, response) {
-			event.stopPropagation();
 			var uid = $(this).parent().parent().attr('id');
 			var step = $('#' + uid).attr('data-step');
 			var item = $('#' + uid + 'set').attr('data-item');
@@ -777,7 +674,6 @@ $('span[data-widget="basic.switch.v1"]').on({
 
 	$('div[data-widget="device.rtr"] > div > a[data-icon="plus"]').on( {
 		'click': function (event, response) {
-			event.stopPropagation();
 			var uid = $(this).parent().parent().attr('id');
 			var step = $('#' + uid).attr('data-step');
 			var item = $('#' + uid + 'set').attr('data-item');
@@ -1340,7 +1236,6 @@ $('span[data-widget="basic.switch.v1"]').on({
 		},
 
 		'click': function (event) {
-			event.stopPropagation();
 			if ($(this).attr('data-item')) {
 				var items = $(this).attr('data-item').explode();
 
@@ -1618,4 +1513,92 @@ $('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
+});
+
+
+// ----- workaraound for performance patch ------------------------------------
+// ----------------------------------------------------------------------------
+$(document).delegate('canvas[data-widget="basic.colordisc"]', {
+	'init': function (event) {
+		var colors = parseFloat($(this).attr('data-colors'));
+		var size = 280;
+		var canvas = $(this)[0];
+		var step = 100 / ($(this).attr('data-step') / 2);
+
+		var arc = Math.PI / (colors + 2) * 2;
+		var startangle = -(Math.PI / 2) + arc;
+		var gauge = (size - 10) / 16 / ($(this).attr('data-step') / 8);
+		var share = 360 / colors;
+		var ctx;
+
+		canvas.width = size;
+		canvas.height = size;
+
+		if (canvas.getContext) {
+			var center = size / 2 - 1;
+			ctx = canvas.getContext("2d");
+
+			// draw background
+			ctx.beginPath();
+			ctx.fillStyle = '#888';
+			ctx.shadowColor = 'rgba(96,96,96,0.4)';
+			ctx.shadowOffsetX = 2;
+			ctx.shadowOffsetY = 2;
+			ctx.shadowBlur = 4;
+			ctx.arc(center, center, size / 2 - 1, 0, 2 * Math.PI, false);
+			ctx.fill();
+			ctx.beginPath();
+			ctx.shadowOffsetX = 0;
+			ctx.shadowOffsetY = 0;
+			ctx.shadowBlur = 0;
+			ctx.fillStyle = '#555';
+			ctx.arc(center, center, size / 2 - 2, 0, 2 * Math.PI, false);
+			ctx.fill();
+
+			// draw colors
+			var v, s;
+
+			for (var i = 0; i <= colors; i++) {
+				var angle = startangle + i * arc;
+				var ring = 1;
+				var h = i * share;
+				for (v = step; v <= 100; v += step) {
+					ctx.beginPath();
+					ctx.fillStyle = fx.hsv2rgb(h, 100, v);
+					ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
+					ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
+					ctx.fill();
+					ring += 1;
+				}
+				for (s = (100 - step); s >= step; s -= step) {
+					ctx.beginPath();
+					ctx.fillStyle = fx.hsv2rgb(h, s, 100);
+					ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
+					ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
+					ctx.fill();
+					ring += 1;
+				}
+			}
+
+			// draw grey
+			i -= 1;
+			angle = startangle + i * arc;
+			ring = 1;
+			h = i * share;
+			for (v = step; v <= 100; v += (step / 2)) {
+				ctx.beginPath();
+				ctx.fillStyle = fx.hsv2rgb(h, 0, v);
+				ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + 2 * arc + 0.01, false);
+				ctx.arc(center, center, ring * gauge, angle + 2 * arc + 0.01, angle, true);
+				ctx.fill();
+				ring += 1;
+			}
+
+			// draw center
+			ctx.beginPath();
+			ctx.fillStyle = 'rgb(0,0,0)';
+			ctx.arc(center, center, gauge + 1, 0, 2 * Math.PI, false);
+			ctx.fill();
+		}
+	}
 });
