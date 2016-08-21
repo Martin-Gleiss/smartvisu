@@ -40,17 +40,17 @@
  */
 
 
-$(document).on('pagebeforeshow', function () {
+$(document).on('pagebeforeshow', function (bevent, bdata) {
 
-	if(this.svEventsBound === true)
+	if($.mobile.activePage.data("sv-events-bound") == true)
 		return;
-	this.svEventsBound = true;
+	$.mobile.activePage.data("sv-events-bound", true);
 
 	// ----- b a s i c ------------------------------------------------------------
 	// ----------------------------------------------------------------------------
 
 	// ----- basic.button ---------------------------------------------------------
-	$('a[data-widget="basic.button"]').on( {
+	$.mobile.activePage.find('a[data-widget="basic.button"]').on( {
 		'click': function (event) {
 			if ($(this).attr('data-val') != '') {
 				io.write($(this).attr('data-item'), $(this).attr('data-val'));
@@ -59,7 +59,7 @@ $(document).on('pagebeforeshow', function () {
 	});
 
 	// ----- basic.checkbox -------------------------------------------------------
-	$('input[data-widget="basic.checkbox"]').on( {
+	$.mobile.activePage.find('input[data-widget="basic.checkbox"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			$(this).prop('checked', response != 0).checkboxradio('refresh');
@@ -72,7 +72,7 @@ $(document).on('pagebeforeshow', function () {
 	});
 
 	// ----- basic.colordisc ------------------------------------------------------
-	$('a[data-widget="basic.colordisc"]').on( {
+	$.mobile.activePage.find('a[data-widget="basic.colordisc"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_r }}, {{ gad_g }}, {{ gad_b }}
@@ -96,7 +96,7 @@ $(document).on('pagebeforeshow', function () {
 		}
 	});
 
-	$('div[data-widget="basic.colordisc"]').on( {
+	$.mobile.activePage.find('div[data-widget="basic.colordisc"]').on( {
 		'click': function (event) {
 			var uid = this.id.substr(0, this.id.length - 7);
 
@@ -106,7 +106,7 @@ $(document).on('pagebeforeshow', function () {
 		}
 	});
 
-	$('canvas[data-widget="basic.colordisc"]').on( {
+	$.mobile.activePage.find('canvas[data-widget="basic.colordisc"]').on( {
 		'click': function (event) {
 			var uid = this.id.substr(0, this.id.length - 5);
 			var disc = $(this)[0];
@@ -132,7 +132,7 @@ $(document).on('pagebeforeshow', function () {
 	});
 
 	// ----- basic.dual -----------------------------------------------------------
-	$('a[data-widget="basic.dual"]').on( {
+	$.mobile.activePage.find('a[data-widget="basic.dual"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			$(this).val(response);
@@ -157,7 +157,7 @@ $(document).on('pagebeforeshow', function () {
 	});
 	
 // ----- basic.multistate ------------------------------------------------------
-$('a[data-widget="basic.multistate"]').on( {
+$.mobile.activePage.find('a[data-widget="basic.multistate"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// get list of values and images
@@ -195,7 +195,7 @@ $('a[data-widget="basic.multistate"]').on( {
 	});
 
 	// ----- basic.flip -----------------------------------------------------------
-	$('select[data-widget="basic.flip"]').on( {
+	$.mobile.activePage.find('select[data-widget="basic.flip"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			$(this).val(response > 0 ? 'on' : 'off').slider('refresh');
@@ -208,7 +208,7 @@ $('a[data-widget="basic.multistate"]').on( {
 	});
 
 	// ----- basic.float ----------------------------------------------------------
-	$('[data-widget="basic.float"]').on( {
+	$.mobile.activePage.find('[data-widget="basic.float"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			if ($(this).attr('data-unit') != '') {
@@ -221,7 +221,7 @@ $('a[data-widget="basic.multistate"]').on( {
 		}
 	});
 // ----- basic.formula ----------------------------------------------------------
-	$('[data-widget="basic.formula"]').on( {
+	$.mobile.activePage.find('[data-widget="basic.formula"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			var calc = 0;
@@ -272,7 +272,7 @@ $('a[data-widget="basic.multistate"]').on( {
 	});
 
 	// ----- basic.rgb ------------------------------------------------------------
-	$('a[data-widget="basic.rgb"]').on( {
+	$.mobile.activePage.find('a[data-widget="basic.rgb"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_r }}, {{ gad_g }}, {{ gad_b }}
@@ -282,7 +282,7 @@ $('a[data-widget="basic.multistate"]').on( {
 		}
 	});
 
-	$('div[data-widget="basic.rgb-popup"] > div').on( {
+	$.mobile.activePage.find('div[data-widget="basic.rgb-popup"] > div').on( {
 		'click': function (event) {
 			var rgb = $(this).css('background-color');
 			rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
@@ -307,7 +307,7 @@ $('a[data-widget="basic.multistate"]').on( {
 	});
 
 // ----- basic.shifter ---------------------------------------------------------
-	$('span[data-widget="basic.shifter"]').on( {
+	$.mobile.activePage.find('span[data-widget="basic.shifter"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -344,7 +344,7 @@ $(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', fun
 });
 
 	// ----- basic.shutter --------------------------------------------------------
-	$('div[data-widget="basic.shutter"]').on( {
+	$.mobile.activePage.find('div[data-widget="basic.shutter"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_pos }}, {{ gad_angle }}
@@ -418,7 +418,7 @@ $(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', fun
 	// The slider had to be handled in a more complex manner. A 'lock' is used
 	// to stop the change after a refresh. And a timer is used to fire the trigger
 	// only every 400ms if it was been moved. There should be no trigger on init.
-	$('input[data-widget="basic.slider"]').on( {
+	$.mobile.activePage.find('input[data-widget="basic.slider"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// DEBUG: console.log("[basic.slider] update '" + this.id + "': " + response + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));
@@ -456,7 +456,7 @@ $(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', fun
 
 
 	// ----- basic.switch ---------------------------------------------------------
-	$('span[data-widget="basic.switch"]').on({
+	$.mobile.activePage.find('span[data-widget="basic.switch"]').on({
 		'update': function (event, response) {
 			event.stopPropagation();
 			$(this).val(response);
@@ -484,7 +484,7 @@ $(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', fun
 
 
 // ----- basic.switch.v1 ------------------------------------------------------
-$('span[data-widget="basic.switch.v1"]').on({
+$.mobile.activePage.find('span[data-widget="basic.switch.v1"]').on({
 		'update': function (event, response) {
 			event.stopPropagation();
 			$('#' + this.id + ' img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
@@ -500,7 +500,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-	$('span[data-widget="basic.switch.v1"] > a > img', 'hover').on({
+	$.mobile.activePage.find('span[data-widget="basic.switch.v1"] > a > img', 'hover').on({
 		'update': function (event, response) {
 			event.stopPropagation();
 			if (event.type === 'mouseenter') {
@@ -514,7 +514,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- basic.symbol ---------------------------------------------------------
-	$('span[data-widget="basic.symbol"]').on({
+	$.mobile.activePage.find('span[data-widget="basic.symbol"]').on({
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response will be an array, if more then one item is requested
@@ -545,7 +545,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 	// ----- basic.tank -----------------------------------------------------------
-	$('div[data-widget="basic.tank"]').on( {
+	$.mobile.activePage.find('div[data-widget="basic.tank"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			$('#' + this.id + ' div').css('height', Math.round(Math.min(response / $(this).attr('data-max'), 1) * 180));
@@ -553,7 +553,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 	// ----- basic.text -----------------------------------------------------------
-	$('[data-widget="basic.text"]').on( {
+	$.mobile.activePage.find('[data-widget="basic.text"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			$('#' + this.id).html((response == $(this).attr('data-val-on') ? $(this).attr('data-txt-on') : $(this).attr('data-txt-off')));
@@ -561,14 +561,14 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 	// ----- basic.trigger ---------------------------------------------------------
-	$('a[data-widget="basic.trigger"]').on( {
+	$.mobile.activePage.find('a[data-widget="basic.trigger"]').on( {
 		'click': function (event) {
 			io.trigger($(this).attr('data-name'), $(this).attr('data-val'));
 		}
 	});
 
 // ----- basic.value ----------------------------------------------------------
-	$('[data-widget="basic.value"]').on( {
+	$.mobile.activePage.find('[data-widget="basic.value"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			var unit = $(this).attr('data-unit');
@@ -589,7 +589,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 // ----- c l o c k ------------------------------------------------------------
 // ----------------------------------------------------------------------------
 	// ----- clock.iconclock ------------------------------------------------------
-	$('span[data-widget="clock.iconclock"]').on( {
+	$.mobile.activePage.find('span[data-widget="clock.iconclock"]').on( {
 		'repeat': function (event) {
 			event.stopPropagation();
 
@@ -604,7 +604,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 	// ----- clock.miniclock ------------------------------------------------------
-	$('span[data-widget="clock.miniclock"]').on( {
+	$.mobile.activePage.find('span[data-widget="clock.miniclock"]').on( {
 		'repeat': function (event) {
 			event.stopPropagation();
 
@@ -619,7 +619,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 // ----------------------------------------------------------------------------
 
 // ----- device.codepad -------------------------------------------------------
-	$('div[data-widget="device.codepad"]').on( {
+	$.mobile.activePage.find('div[data-widget="device.codepad"]').on( {
 		'keyup': function (event) {
 			if (event.keyCode == 13) {
 				$('#' + this.id + '-ok').click();
@@ -627,7 +627,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-	$('div[data-widget="device.codepad"] > div > a').on( {
+	$.mobile.activePage.find('div[data-widget="device.codepad"] > div > a').on( {
 		'click': function (event) {
 			var node = $(this).parent().parent();
 			var code = $('#' + node.attr('id') + '-code');
@@ -661,7 +661,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 	// ----- device.rtr -----------------------------------------------------------
-	$('div[data-widget="device.rtr"] > div > a[data-icon="minus"]').on( {
+	$.mobile.activePage.find('div[data-widget="device.rtr"] > div > a[data-icon="minus"]').on( {
 		'click': function (event, response) {
 			var uid = $(this).parent().parent().attr('id');
 			var step = $('#' + uid).attr('data-step');
@@ -672,7 +672,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-	$('div[data-widget="device.rtr"] > div > a[data-icon="plus"]').on( {
+	$.mobile.activePage.find('div[data-widget="device.rtr"] > div > a[data-icon="plus"]').on( {
 		'click': function (event, response) {
 			var uid = $(this).parent().parent().attr('id');
 			var step = $('#' + uid).attr('data-step');
@@ -686,7 +686,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 // ----- p l o t ---------------------------------------------------------------
 // -----------------------------------------------------------------------------
 	// ----- plot.comfortchart ----------------------------------------------------
-	$('div[data-widget="plot.comfortchart"]').on( {
+	$.mobile.activePage.find('div[data-widget="plot.comfortchart"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_temp }}, {{ gad_humidity }}
@@ -756,7 +756,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- plot.multiaxes ----------------------------------------------------------
-	$('div[data-widget="plot.multiaxis"]').on( {
+	$.mobile.activePage.find('div[data-widget="plot.multiaxis"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ] 
@@ -859,7 +859,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- plot.period ----------------------------------------------------------
-	$('div[data-widget="plot.period"]').on( {
+	$.mobile.activePage.find('div[data-widget="plot.period"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ]
@@ -920,7 +920,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- plot.rtr -------------------------------------------------------------
-	$('div[data-widget="plot.rtr"]').on( {
+	$.mobile.activePage.find('div[data-widget="plot.rtr"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_actual }}, {{ gad_set }}, {{ gat_state }}
@@ -1005,7 +1005,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 	// ----- plot.temprose --------------------------------------------------------
-	$('div[data-widget="plot.temprose"]').on( {
+	$.mobile.activePage.find('div[data-widget="plot.temprose"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_actual_1, gad_actual_2, gad_actual_3, gad_set_1, gad_set_2, gad_set_3 }}
@@ -1058,7 +1058,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- plot.minmaxavg ----------------------------------------------------------
-	$('div[data-widget="plot.minmaxavg"]').on( {
+	$.mobile.activePage.find('div[data-widget="plot.minmaxavg"]').on( {
 		'update': function (event, response) {
 			// response is: [[t1 , {{ gad.min }}], [t2 , {{ gad.max }}], [t3 , {{ gad.avg }}]]
 			event.stopPropagation();
@@ -1147,7 +1147,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 // -----------------------------------------------------------------------------
 
 // ----- status.collapse -------------------------------------------------------
-	$('span[data-widget="status.collapse"]').on( {
+	$.mobile.activePage.find('span[data-widget="status.collapse"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_trigger }}
@@ -1168,7 +1168,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- status.log -----------------------------------------------------------
-	$('span[data-widget="status.log"]').on( {
+	$.mobile.activePage.find('span[data-widget="status.log"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			var ret;
@@ -1191,7 +1191,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- status.notify ----------------------------------------------------------
-	$('span[data-widget="status.notify"]').on( {
+	$.mobile.activePage.find('span[data-widget="status.notify"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_trigger }}, {{ gad_message }}
@@ -1205,7 +1205,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- status.message -------------------------------------------------------
-	$('span[data-widget="status.message"]').on( {
+	$.mobile.activePage.find('span[data-widget="status.message"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_trigger }}, {{ gad_message }}
@@ -1225,7 +1225,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 // ----- i c o n --------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
-	$('svg[data-widget^="icon."]').on( {
+	$.mobile.activePage.find('svg[data-widget^="icon."]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1247,7 +1247,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.arrow -----------------------------------------------------------
-	$('svg[data-widget="icon.arrow"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.arrow"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1265,7 +1265,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.battery ---------------------------------------------------------
-	$('svg[data-widget="icon.battery"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.battery"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1276,7 +1276,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.blade -----------------------------------------------------------
-	$('svg[data-widget="icon.blade"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.blade"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1294,7 +1294,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.blade_z ---------------------------------------------------------
-	$('svg[data-widget="icon.blade_z"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.blade_z"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1313,7 +1313,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.blade_arc -------------------------------------------------------
-	$('svg[data-widget="icon.blade_arc"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.blade_arc"]').on( {
 			'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1331,7 +1331,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.clock -----------------------------------------------------------
-	$('svg[data-widget="icon.clock"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.clock"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 				
@@ -1346,7 +1346,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.compass ---------------------------------------------------------
-	$('svg[data-widget="icon.compass"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.compass"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 				
@@ -1365,7 +1365,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.graph -----------------------------------------------------------
-	$('svg[data-widget="icon.graph"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.graph"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1402,7 +1402,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.meter -----------------------------------------------------------
-	$('svg[data-widget="icon.meter"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.meter"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1413,7 +1413,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.shutter ---------------------------------------------------------
-	$('svg[data-widget="icon.shutter"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.shutter"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1424,7 +1424,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.ventilation -----------------------------------------------------
-	$('svg[data-widget="icon.ventilation"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.ventilation"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1435,7 +1435,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.volume ---------------------------------------------------------
-	$('svg[data-widget="icon.volume"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.volume"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1446,7 +1446,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.windmill --------------------------------------------------------
-	$('svg[data-widget="icon.windmill"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.windmill"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1457,7 +1457,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.windrose --------------------------------------------------------
-	$('svg[data-widget="icon.windrose"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.windrose"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1475,7 +1475,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.windsock --------------------------------------------------------
-	$('svg[data-widget="icon.windsock"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.windsock"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1500,7 +1500,7 @@ $('span[data-widget="basic.switch.v1"]').on({
 	});
 
 // ----- icon.zenith ----------------------------------------------------------
-	$('svg[data-widget="icon.zenith"]').on( {
+	$.mobile.activePage.find('svg[data-widget="icon.zenith"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
