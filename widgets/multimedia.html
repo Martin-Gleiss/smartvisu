@@ -31,7 +31,7 @@
 		src="pages/base/pics/trans.png" />
 
 	<script type="text/javascript">
-		var noCachesrc ='{{ src }}' +  if('{{ src }}'.indexOf('?') == -1) ? '?' : '&' + '_=' + new Date().getTime();
+		var noCacheSrc ='{{ src }}' +  (('{{ src }}'.indexOf('?') == -1) ? '?' : '&') + '_=' + new Date().getTime();
 		$('#{{ uid(page, id) }}').attr('src', noCacheSrc);
 
 		setInterval(function () {
