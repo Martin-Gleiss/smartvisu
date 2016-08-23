@@ -86,6 +86,29 @@
 		// widget.list();
 	});
 
+	  {% if config_autoreload %}
+                var leavingPage = false;
+                window.onbeforeunload = function() {
+                        console.log("Leaving page...");
+                        leavingPage = true;
+                };
+
+                setInterval(function () {
+                        switch(io.socket.readyState) {
+                                case 0: // CONNECTING
+                                case 1: // CONNECTED
+                                        break;
+                                case 2: // CLOSING
+                                        console.log("WebSocket state: %i", io.socket.readyState);
+                                        break;
+                                case 3: // CLOSED
+                                        if(leavingPage != true) {
+                                                console.log("WebSocket closed, reload page...");
+                                                location.reload(true);
+                                         }
+                                        break;
+                 }}, 5000);
+	{% endif %}
 
 	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};
 </script>
