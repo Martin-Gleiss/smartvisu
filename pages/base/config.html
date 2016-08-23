@@ -1,8 +1,8 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @author      Martin Gleiss, Alexander Schwithal
+* @copyright   2012 - 2016
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -63,6 +63,15 @@
 						<option value="true">on</option>
 					</select>
 					{{ forms.flip_init('animation', config_animation) }}
+				</div>
+				
+				<div data-role="fieldcontain">
+					<label for="autoreload">Auto Reload<br /></label>
+					<select name="autoreload" id="autoreload" data-role="slider" data-theme="a">
+						<option value="false">off</option>
+						<option value="true">on</option>
+					</select>
+					{{ forms.flip_init('autoreload', config_autoreload) }}
 				</div>
 
 			</div>

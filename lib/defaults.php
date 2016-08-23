@@ -98,6 +98,11 @@ define ('config_transition', 'fade');
 define ('config_animation', false);
 
 /**
+ * Shall auto reload for websocket be enabled?
+ */
+define ('config_autoreload', false);
+
+/**
  * the refresh-delay between glued widgets
  */
 define ('config_delay', '750');
