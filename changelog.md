@@ -3,6 +3,7 @@
 ## New / changed Widgets
 - Added min-/max-/avg-chart
 - _multimedia.image_ has new mode "fill"
+- basic.button extended to set color for svgs
 
 ## New / changed Icons
 - New icon _light_standing_light.svg_

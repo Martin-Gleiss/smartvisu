@@ -1,8 +1,8 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @author      Martin Gleiß and others
+* @copyright   2012 - 2016
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -17,8 +17,9 @@
 * @param a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search' (optional)
 * @param value send if the button is pressed (optional, default 1)
 * @param type: 'micro', 'mini', 'midi' (optional, default: mini)
+* @param the color 'icon1' or e. g. '#f00' for red (default 'icon0' of the design)
 */
-{% macro button(id, item, txt, pic, val, type) %}
+{% macro button(id, item, txt, pic, val, type, color) %}
 	{% set suffix = pic|slice(-4, 4) %}
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.button" data-item="{{ item }}" data-val="{{ val|default('1') }}"
@@ -30,10 +31,22 @@
 		{% elseif suffix != '.svg' and suffix != '.png' and txt %}
 			data-icon="{{ pic }}" data-iconpos="top">{{ txt|e }}
 		{% elseif type == 'midi' and txt %}
-			><img class="icon" src="{{ pic|deficon }}">
+			{% if color is empty  %}
+				><img class="icon" src="{{ pic|deficon }}">
+			{% elseif color == 'icon1' %}
+				><img class="icon icon1" src="{{ pic|deficon }}">
+			{% else %}
+				><img class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};" src="{{ pic|deficon }}">
+			{% endif %}
 			<div>{{ txt|e }}</div>
 		{% else %}
-			data-iconpos="center"><img class="icon" src="{{ pic|deficon }}">
+			{% if color is empty  %}
+				data-iconpos="center"><img class="icon" src="{{ pic|deficon }}">
+			{% elseif color == 'icon1' %}
+				data-iconpos="center"><img class="icon icon1" src="{{ pic|deficon }}">
+			{% else %}
+				data-iconpos="center"><img class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};" src="{{ pic|deficon }}">
+			{% endif %}
 		{% endif %}
 	</a>
 
