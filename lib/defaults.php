@@ -174,7 +174,7 @@ define ('config_calendar_url', 'http://www.google.com/calendar/feeds/...');
 /**
  * The default code for all Codepads
  */
-define ('config_codepad_code', '');
+define ('config_codepad_code', '0000');
 
 
 
