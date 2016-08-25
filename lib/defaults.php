@@ -43,6 +43,10 @@ define ('config_driver_port', '1028');
  */
 define ('config_driver_realtime', false);
 
+/**
+ * Use the auto reconnect if possible
+ */
+define ('config_driver_autoreconnect', false);
 
 // -----------------------------------------------------------------------------
 // U S E R - I N T E R F A C E

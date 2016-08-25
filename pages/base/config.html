@@ -64,15 +64,6 @@
 					</select>
 					{{ forms.flip_init('animation', config_animation) }}
 				</div>
-				
-				<div data-role="fieldcontain">
-					<label for="autoreload">Auto Reload<br /></label>
-					<select name="autoreload" id="autoreload" data-role="slider" data-theme="a">
-						<option value="false">off</option>
-						<option value="true">on</option>
-					</select>
-					{{ forms.flip_init('autoreload', config_autoreload) }}
-				</div>
 
 			</div>
 
@@ -144,6 +135,15 @@
 					</select>
 					{{ forms.flip_init('driver_realtime', config_driver_realtime) }}
 				</div>
+
+				<div data-role="fieldcontain">
+					<label for="driver_autoreconnect">Auto Reconnect<br /></label>
+					<select name="driver_autoreconnect" id="driver_autoreconnect" data-role="slider" data-theme="a">
+						<option value="false">off</option>
+						<option value="true">on</option>
+					</select>
+					{{ forms.flip_init('driver_autoreconnect', config_driver_autoreconnect) }}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -153,20 +153,32 @@
 			switch (this.value) {
 				case 'offline':
 					$('#driver_realtime').val('false').slider('refresh');
+					$('#driver_autoreconnect').val('false').slider('refresh');
+					break;
+
+				case 'eibd':
+					$('#driver_autoreconnect').val('false').slider('refresh');
+					break;
+
+				case 'json':
+					$('#driver_autoreconnect').val('false').slider('refresh');
 					break;
 
 				case 'linknx':
 					$('#driver_port').val('1028');
+					$('#driver_autoreconnect').val('false').slider('refresh');
 					break;
 
 				case 'smarthome.py':
 					$('#driver_port').val('2424');
 					$('#driver_realtime').val('true').slider('refresh');
+					$('#driver_autoreconnect').val('true').slider('refresh');
 					break;
 
 				case 'domotiga':
 					$('#driver_port').val('2121');
 					$('#driver_realtime').val('true').slider('refresh');
+					$('#driver_autoreconnect').val('true').slider('refresh');
 					break;
 			}
 		});
