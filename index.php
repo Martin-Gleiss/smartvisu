@@ -8,11 +8,6 @@
  * -----------------------------------------------------------------------------
  */
 
-/**
- * Version of smartVISU
- */
-define ('config_version', '2.9');
-
 // get config-variables 
 require_once 'lib/includes.php';
 require_once const_path_system.'functions_twig.php';
