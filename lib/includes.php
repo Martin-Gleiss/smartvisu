@@ -25,6 +25,8 @@ define ('const_path', substr(const_path_system, 0, -4));
 if (is_file(const_path.'config.php'))
 	require_once const_path.'config.php';
 
+require_once const_path.'version-info.php';
+
 require_once const_path_system.'defaults.php';
 
 /**
