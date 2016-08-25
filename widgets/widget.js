@@ -694,7 +694,7 @@ $(document).delegate('div[data-widget="device.codepad"] > div > a', {
 		var key = $(this).attr('data-val');
 
 		if (key == "ok") {
-			if (node.attr('data-val') == code.val()) {
+			if (node.attr('data-val') == code.val().md5()) {
 				// DEBUG: console.log('[device.codepad] ' + node.attr('id') + ' unlocked');
 				$('div[data-bind="' + node.attr('data-id') + '"]').attr('data-access', new Date().getTime()).removeClass('codepad');
 				setTimeout(function () {
