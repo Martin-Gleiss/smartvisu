@@ -17,12 +17,12 @@ $request = array_merge($_GET, $_POST);
 
 if (is_writeable(const_path.'/temp'))
 {
-	$ret = array('icon' => 'icons/gn/message_ok.png', 'text' => "'temp' directory is writeable");
+	$ret = array('icon' => 'icons/sw/message_ok.svg', 'text' => "'temp' directory is writeable");
 }
 else
 {
 	header("HTTP/1.0 600 smartVISU Config Error");
-	$ret = array('icon' => 'icons/or/message_attention.png', 'text' => "'temp' directory is not writeable!");
+	$ret = array('icon' => 'icons/sw/message_attention.svg', 'text' => "'temp' directory is not writeable!");
 }
 
 echo json_encode($ret);

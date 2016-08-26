@@ -1,11 +1,46 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @author      Martin Gleiß, Martin Sinn
+ * @copyright   2012 - 2016
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
+
+
+function get_browser(){
+    var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || []; 
+    if(/trident/i.test(M[1])){
+        tem=/\brv[ :]+(\d+)/g.exec(ua) || []; 
+        return {name:'IE',version:(tem[1]||'')};
+        }   
+    if(M[1]==='Chrome'){
+        tem=ua.match(/\bOPR\/(\d+)/)
+        if(tem!=null)   {return {name:'Opera', version:tem[1]};}
+        }   
+    M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
+    return {
+      name: M[0],
+      version: M[1]
+    };
+ }
+ 
+
+function get_visuinfo(){
+    function reqListener () {
+      console.log(this.responseText);
+    }
+
+    var oReq = new XMLHttpRequest();
+    oReq.open("get", "driver/io_smarthome_get_visuinfo.php", false);
+    oReq.send();
+    visuinfo = JSON.parse(oReq.responseText)
+    return {
+      name: visuinfo[0],
+      version: visuinfo[1]
+    };
+}
 
 
 /**
@@ -91,7 +126,7 @@ var io = {
 	/**
 	 * This is the protocol version
 	 */
-	version: 0,
+	version: 4,
 
 	/**
 	 * This driver uses a websocket
@@ -106,6 +141,9 @@ var io = {
 
 		io.socket.onopen = function () {
 			io.send({'cmd': 'proto', 'ver': io.version});
+			var visu=get_visuinfo();
+			var browser=get_browser();
+			io.send({'cmd': 'identity', 'sw': visu.name, 'ver': visu.version, 'browser': browser.name, 'bver': browser.version});
 			io.monitor();
 		};
 
@@ -138,8 +176,6 @@ var io = {
 					break;
 
 				case 'series':
-					data.sid = data.sid.replace('now', '0');
-					
 					if (io.version <= 3)
 						data.sid = data.sid + '.100';
 					
@@ -219,9 +255,9 @@ var io = {
 					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 
 					if (io.version <= 3)
-						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': (pt[pt.length - 2] == '0' ? 'now' : pt[pt.length - 2])});
+						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2]});
 					else
-						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': (pt[pt.length - 2] == '0' ? 'now' : pt[pt.length - 2]), 'count': pt[pt.length - 1]});
+						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': pt[pt.length - 1]});
 					
 					unique[items[i]] = 1;
 				}

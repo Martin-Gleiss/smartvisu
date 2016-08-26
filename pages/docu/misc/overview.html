@@ -22,8 +22,8 @@
 	
 	{{ basic.float('float1', 'bath.light.switch', '°') }},
 
-	{{ basic.value('value2', 'bath.value', 'int') }},
-	{{ basic.value('value3', 'bath.value', 'float') }},
+	{{ basic.value('value2', 'bath.light.value', 'int') }},
+	{{ basic.value('value3', 'bath.light.value', 'float') }},
 	
 	Formula: {{ basic.formula('formula1', ['bath.p1', 'bath.p2', 'bath.p3'], 'W', '( VAR ) / 1000 * 230') }}
 	Date: {{ basic.value('time1', 'bath.time', 'long') }},
@@ -59,25 +59,17 @@
 	<h2>Icons</h2>
 
 	<p>
-		{% if isfile(icon0~'audio_audio.png') %}
-		Static Icon PNG:
-		<img class="icon" src="{{ icon0 }}audio_audio.png" />
-		<img class="icon" src="{{ icon1 }}audio_audio.png" />
-		<a><img class="icon" src="{{ icon0 }}audio_audio.png" /></a>
-		<a><img class="icon" src="{{ icon1 }}audio_audio.png" /></a>
-
-		SVG:
-		{% endif %}
-		
 		<img class="icon icon0" src="{{ icon0 }}audio_audio.svg" />
 		<img class="icon icon1" src="{{ icon0 }}audio_audio.svg" />
 		<a class="icon0"><img class="icon" src="{{ icon0 }}audio_audio.svg" /></a>
 		<a class="icon1"><img class="icon" src="{{ icon0 }}audio_audio.svg" /></a>
 		
 		<br />
-		{% if isfile(icon1~'light_light_dim_00.png') %}
-		Dynamic Icon PNG:
-		{{ basic.shifter('svg1', 'bath.light.switch', 'bath.light.value', icon1~'light_light_dim_00.png') }}
+		
+		{% if isfile(icon0~'light_light_dim_00.svg') %}
+		Dynamic Icon (iconseries):
+		{{ basic.shifter('series1', 'bath.light.switch', 'bath.light.value', 'light_light_dim_00.svg') }}
+		
 
 		SVG:
 		{% endif %}

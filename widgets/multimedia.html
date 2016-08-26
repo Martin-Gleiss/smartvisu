@@ -25,14 +25,17 @@
 			class="ui-corner-all"
 		{% elseif mode == 'corner-bottom' %}
 			class="ui-corner-bottom"
+		{% elseif mode == 'fill' %}
+			style="width: 100%"
 		{% endif %}
 		src="pages/base/pics/trans.png" />
 
 	<script type="text/javascript">
-		$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_=' + new Date().getTime());
+		var noCacheSrc ='{{ src }}' +  (('{{ src }}'.indexOf('?') == -1) ? '?' : '&') + '_=' + new Date().getTime();
+		$('#{{ uid(page, id) }}').attr('src', noCacheSrc);
 
 		setInterval(function () {
-			$('#{{ uid(page, id) }}').attr('src', '{{ src }}?_=' + new Date().getTime());
+			$('#{{ uid(page, id) }}').attr('src', noCacheSrc);
 		}, new Date().duration('{{time|default("10i")}}'));
 	</script>
 
@@ -90,7 +93,7 @@
 			<div data-role="controlgroup" data-type="horizontal">
 				{{ basic.button(id~'prev', item_next, 'back', 'control_arrow_left.svg', 0) }}
 				{% if item_ff %} {{ basic.button(id~'rew', item_ff, 'rev', 'audio_rew.svg', 0) }} {% endif %}
-				{{ basic.dual(id~'play', item_play, icon1~'audio_pause.png', 'audio_play.svg') }}
+				{{ basic.dual(id~'play', item_play, 'audio_pause.svg', 'audio_play.svg') }}
 				{% if item_stop %} {{ basic.button(id~'stop', item_stop, 'stop', 'audio_stop.svg', 1) }} {% endif %}
 				{% if item_ff %} {{ basic.button(id~'ff', item_ff, 'fwd', 'audio_ff.svg', 1) }} {% endif %}
 				{{ basic.button(id~'next', item_next, 'next', 'control_arrow_right.svg', 1) }}

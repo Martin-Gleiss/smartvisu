@@ -1,8 +1,8 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @author      Martin Gleiss, Alexander Schwithal
+* @copyright   2012 - 2016
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -135,6 +135,15 @@
 					</select>
 					{{ forms.flip_init('driver_realtime', config_driver_realtime) }}
 				</div>
+
+				<div data-role="fieldcontain">
+					<label for="driver_autoreconnect">Auto Reconnect<br /></label>
+					<select name="driver_autoreconnect" id="driver_autoreconnect" data-role="slider" data-theme="a">
+						<option value="false">off</option>
+						<option value="true">on</option>
+					</select>
+					{{ forms.flip_init('driver_autoreconnect', config_driver_autoreconnect) }}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -144,20 +153,32 @@
 			switch (this.value) {
 				case 'offline':
 					$('#driver_realtime').val('false').slider('refresh');
+					$('#driver_autoreconnect').val('false').slider('refresh');
+					break;
+
+				case 'eibd':
+					$('#driver_autoreconnect').val('false').slider('refresh');
+					break;
+
+				case 'json':
+					$('#driver_autoreconnect').val('false').slider('refresh');
 					break;
 
 				case 'linknx':
 					$('#driver_port').val('1028');
+					$('#driver_autoreconnect').val('false').slider('refresh');
 					break;
 
 				case 'smarthome.py':
 					$('#driver_port').val('2424');
 					$('#driver_realtime').val('true').slider('refresh');
+					$('#driver_autoreconnect').val('true').slider('refresh');
 					break;
 
 				case 'domotiga':
 					$('#driver_port').val('2121');
 					$('#driver_realtime').val('true').slider('refresh');
+					$('#driver_autoreconnect').val('true').slider('refresh');
 					break;
 			}
 		});
@@ -273,6 +294,38 @@
 		</div>
 	</div>
 
+	<div class="block">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Proxy</h3>
+				<div data-role="fieldcontain">
+					<label for="proxy">Use Proxy<br /></label>
+					<select name="proxy" id="proxy" data-role="slider" data-theme="a">
+						<option value="false">off</option>
+						<option value="true">on</option>
+					</select>
+					{{ forms.flip_init('proxy', config_proxy) }}
+				</div>
+				<div data-role="fieldcontain">
+					<label for="proxy_url">Proxy Url</label>
+					<input type="text" name="proxy_url" id="proxy_url" />
+					{{ forms.text_init('proxy_url', config_proxy_url|e ) }}
+				</div>
+				<div data-role="fieldcontain">
+					<label for="proxy_user">Proxy User</label>
+					<input type="text" name="proxy_user" id="proxy_user" />
+					{{ forms.text_init('proxy_user', config_proxy_user|e ) }}
+				</div>
+				<div data-role="fieldcontain">
+					<label for="proxy_password">Proxy Password</label>
+					<input type="password" name="proxy_password" id="proxy_password" />
+					{{ forms.text_init('proxy_password', config_proxy_password|e ) }}
+				</div>
+			</div>
+
+		</div>
+	</div>
 
 	</fieldset>
 
