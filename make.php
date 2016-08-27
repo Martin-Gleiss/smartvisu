@@ -58,6 +58,8 @@ compile("driver/io_offline.js");
 echo "\n";
 compile("driver/io_smarthome.py.js");
 echo "\n";
+compile("driver/io_openhab.js");
+echo "\n";
 
 
 echo "\n";

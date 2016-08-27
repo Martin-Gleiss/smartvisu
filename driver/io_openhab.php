@@ -1,22 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bauhaus
- * Date: 29.07.2016
- * Time: 14:18
- */
 
 require_once '../lib/includes.php';
-
-
 $baseUrl = "http://" . config_driver_address . ":" . config_driver_port . "/rest/";
 
 if (isset($_GET['cmd'])){
     switch ($_GET['cmd'] ){
-        case 'getitems':
-            echo GetItems($baseUrl);
-            break;
-
         case 'getState':
             echo GetItemState($baseUrl, $_GET['item']);
             break;
@@ -25,7 +13,6 @@ if (isset($_GET['cmd'])){
             SetItemState($baseUrl, $_GET['item'], $_GET['state']);
             echo GetItemState($baseUrl, $_GET['item']);
             break;
-
 
         default:
             header("HTTP/1.0 404 Not Found");
@@ -36,11 +23,9 @@ if (isset($_GET['cmd'])){
 }
 
 
-
 function GetItemState($baseUrl, $item){
     return GetOpenHabRequest($baseUrl, "items/" . $item . "/state");
 }
-
 
 function SetItemState($baseUrl, $item, $state){
     $url = $baseUrl . "items/" . $item;
@@ -55,12 +40,7 @@ function SetItemState($baseUrl, $item, $state){
 
     $context  = stream_context_create($options);
     $result = file_get_contents($url, false, $context);
-
     return $result;
-}
-
-function GetItems($baseUrl){
-
 }
 
 function GetOpenHabRequest($baseUrl, $url){
@@ -71,7 +51,6 @@ function GetOpenHabRequest($baseUrl, $url){
             'method'  => 'GET'
         ),
     );
-
 
     $context  = stream_context_create($options);
     $result = file_get_contents($url, false, $context);
