@@ -32,12 +32,12 @@
 				{{ basic.button('single1', '...', '', 'grid') }}
 				{{ basic.button('single2', '...', 'Up') }}
 				{{ basic.button('single3', '...', 'Up', 'grid') }}
-				{{ basic.button('single4', '...', 'Down', icon0~'steuer_ab.png') }}
+				{{ basic.button('single4', '...', 'Down', 'control_arrow_down.svg') }}
 
 				{{ basic.button('single5', '...', '', 'grid', '', 'midi') }}
 				{{ basic.button('single6', '...', 'Up', '', '', 'midi') }}
 				{{ basic.button('single7', '...', 'Up', 'grid', '', 'midi') }}
-				{{ basic.button('single8', '...', 'Down', icon0~'steuer_ab.png', 0, 'midi') }}
+				{{ basic.button('single8', '...', 'Down', 'control_arrow_down.svg', 0, 'midi') }}
 
 				{% endraw %}{% endfilter %}</code>
 		</div>
@@ -45,12 +45,12 @@
 			{{ basic.button('single1', 'bath.light.switch', '', 'grid') }}
 			{{ basic.button('single2', 'bath.light.switch', 'Up') }}
 			{{ basic.button('single3', 'bath.light.switch', 'Up', 'grid') }}
-			{{ basic.button('single4', 'bath.light.switch', 'Down', icon0~'steuer_ab.png') }}
+			{{ basic.button('single4', 'bath.light.switch', 'Down', 'control_arrow_down.svg') }}
 
 			{{ basic.button('single5', 'bath.light.switch', '', 'grid', '', 'midi') }}
 			{{ basic.button('single6', 'bath.light.switch', 'Up', '', '', 'midi') }}
 			{{ basic.button('single7', 'bath.light.switch', 'Up', 'grid', '', 'midi') }}
-			{{ basic.button('single8', 'bath.light.switch', 'Down', icon0~'steuer_ab.png', 0, 'midi') }}
+			{{ basic.button('single8', 'bath.light.switch', 'Down', 'control_arrow_down.svg', 0, 'midi') }}
 		</div>
 
 
@@ -58,14 +58,14 @@
 		<div class="twig">
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
 
-				{{ basic.dual('dual0', '...', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
-				{{ basic.dual('dual1', '...', icon1~'steuer_auf.png', icon0~'steuer_ab.png', '', '', 'midi') }}
+				{{ basic.dual('dual0', '...', 'control_arrow_up.svg','control_arrow_down.svg' }}
+				{{ basic.dual('dual1', '...', 'control_arrow_up.svg', 'control_arrow_down.svg', '', '', 'midi') }}
 
 				{% endraw %}{% endfilter %}</code>
 		</div>
 		<div class="html">
-			{{ basic.dual('dual0', 'bath.light.switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
-			{{ basic.dual('dual1', 'bath.light.switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png', '', '', 'midi') }}
+			{{ basic.dual('dual0', 'bath.light.switch', 'control_arrow_up.svg', 'control_arrow_down.svg') }}
+			{{ basic.dual('dual1', 'bath.light.switch', 'control_arrow_up.svg', 'control_arrow_down.svg', '', '', 'midi') }}
 		</div>
 
 
@@ -75,13 +75,13 @@
 				<span data-role="controlgroup" data-type="horizontal">   
             {{ basic.button('b11', '...', 'Up', 'plus') }}
             {{ basic.button('b12', '...', 'Down', 'minus', 0) }}
-            {{ basic.dual('b13', '...', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
+            {{ basic.dual('b13', '...', 'control_arrow_up.svg', 'control_arrow_down.svg') }}
             </span>
 
 				<span data-role="controlgroup" data-type="horizontal">   
-            {{ basic.button('b21', '...', 'Up', 'plus', '', 'midi') }}
-            {{ basic.button('b22', '...', 'Down', 'minus', 0) }}
-            {{ basic.dual('b23', '...', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
+		{{ basic.button('b31', 'bath.light.switch', 'Up', 'plus', '', 'midi') }}
+		{{ basic.button('b32', 'bath.light.switch', 'Down', 'minus', 0, 'midi') }}
+		{{ basic.dual('b33', 'bath.light.switch', 'control_arrow_up.svg', 'control_arrow_down.svg', '', '', 'midi') }}
             </span>
 
 				{% endraw %}{% endfilter %}</code>
@@ -89,21 +89,21 @@
 		<div class="html">
         
             <span data-role="controlgroup" data-type="horizontal">   
-            {{ basic.button('b11', 'bath.light.switch', 'Up', 'plus', '', 'micro') }}
-				{{ basic.button('b12', 'bath.light.switch', 'Down', 'minus', 0, 'micro') }}
-				{{ basic.dual('b13', 'bath.light.switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png', '', 'micro') }}
+		{{ basic.button('b11', 'bath.light.switch', 'Up', 'plus', '', 'micro') }}
+		{{ basic.button('b12', 'bath.light.switch', 'Down', 'minus', 0, 'micro') }}
+		{{ basic.dual('b13', 'bath.light.switch', 'control_arrow_up.svg', 'control_arrow_down.svg', '', '', 'micro') }}
             </span>
             
             <span data-role="controlgroup" data-type="horizontal">   
-            {{ basic.button('b21', 'bath.light.switch', 'Up', 'plus') }}
-				{{ basic.button('b22', 'bath.light.switch', 'Down', 'minus', 0) }}
-				{{ basic.dual('b23', 'bath.light.switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png') }}
+		{{ basic.button('b21', 'bath.light.switch', 'Up', 'plus') }}
+		{{ basic.button('b22', 'bath.light.switch', 'Down', 'minus', 0) }}
+		{{ basic.dual('b23', 'bath.light.switch', 'control_arrow_up.svg', 'control_arrow_down.svg') }}
             </span>
   
             <span data-role="controlgroup" data-type="horizontal">    
-            {{ basic.button('b31', 'bath.light.switch', 'Up', 'plus', '', 'midi') }}
-				{{ basic.button('b32', 'bath.light.switch', 'Down', 'minus', 0, 'midi') }}
-				{{ basic.dual('b33', 'bath.light.switch', icon1~'steuer_auf.png', icon0~'steuer_ab.png', '', '', 'midi') }}
+		{{ basic.button('b31', 'bath.light.switch', 'Up', 'plus', '', 'midi') }}
+		{{ basic.button('b32', 'bath.light.switch', 'Down', 'minus', 0, 'midi') }}
+		{{ basic.dual('b33', 'bath.light.switch', 'control_arrow_up.svg', 'control_arrow_down.svg', '', '', 'midi') }}
             </span>
 		</div>
 

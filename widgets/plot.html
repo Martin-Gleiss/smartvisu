@@ -49,8 +49,8 @@
 */
 
 {% macro multiaxis( id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor) %}
-
-	<div id="{{ uid(page, id) }}" data-widget="plot.multiaxis" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default(0), count|default(100) ]) }}"
+	{% set tmax = (tmax|lower=='0h' or tmax==0)? 'now' : tmax %}
+	<div id="{{ uid(page, id) }}" data-widget="plot.multiaxis" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default('now'), count|default(100) ]) }}"
 		{% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
 		data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axis) }}" 
 		{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
@@ -85,8 +85,8 @@
 * @see misc/fundamentals#Duration-Format
 */
 {% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom) %}
-
-	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default(0), count|default('100')]) }}"
+	{% set tmax = (tmax|lower=='0h' or tmax==0)? 'now' : tmax %}
+	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-item="{{ implode(item, [mode|default('avg'), tmin|default('1h'), tmax|default('now'), count|default('100')]) }}"
 		{% if ymin is not empty %} data-ymin="{{ ymin }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ ymax }}" {% endif %}
 		data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axis) }}"
 		{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
@@ -107,7 +107,7 @@
 */
 {% macro rtr(id, item_actual, item_set, item_state, count) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([item_actual, item_set, item_state], ['avg', '1d', 0, count|default(100)]) }}"
+	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([item_actual, item_set, item_state], ['avg', '1d', 'now', count|default(100)]) }}"
 		data-step="50" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
 		class="plot"></div>
 
@@ -134,4 +134,34 @@
 		data-count="{{ item_actual|length }}" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ implode(axis) }}"
 		class="plot"></div>
 
+{% endmacro %}
+
+/**
+* A simple widget for plotting item min/max/avg chart
+*
+* @param unique id for this widget
+* @param the item. Only one item supported.
+* @param the minimum time (x-axis): '1h', '2h'... (duration-format)
+* @param the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
+* @param the minimum y-axis (optional)
+* @param the maximum y-axis (optional)
+* @param a unit, tries to get the format for that unit from the language-file (optional)
+* @param title/s for the x-axis and y-axis (optional)
+* @param count number of data points to load, default 100
+*
+* @see misc/fundamentals#Duration-Format
+*/
+{% macro minmaxavg(id, item, tmin, tmax, ymin, ymax, unit, axis, count) %}
+	{% set tmax = (tmax|lower=='0h' or tmax==0)? 'now' : tmax %}
+	{% if once('highcharts-more') %}
+		<script src="vendor/plot.highcharts/highcharts-more.js"></script>
+	{% endif %}
+
+	<div id="{{ uid(page, id) }}" data-widget="plot.minmaxavg" data-unit="{{ unit|default('') }}"
+		 data-item="{{ implode(item, ['min', tmin|default('1h'), tmax|default('now'), count|default(100)]) }},
+		 {{ implode(item, ['max', tmin|default('1h'), tmax|default('now'), count|default(100)]) }},
+		 {{ implode(item, ['avg', tmin|default('1h'), tmax|default('now'), count|default(100)]) }}"
+		 {% if ymin is not empty %} data-ymin="{{ ymin }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ ymax }}" {% endif %}
+		 {% if count is not empty %} data-count="{{ count }}" {% endif %} data-axis="{{ implode(axis) }}"
+		 class="plot"></div>
 {% endmacro %}

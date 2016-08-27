@@ -72,6 +72,12 @@ function twig_deficon(Twig_Environment $env, $val, $def = '')
 	return $ret;
 }
 
+function twig_md5($val)
+{
+	return md5($val);
+}
+
+
 // -----------------------------------------------------------------------------
 // General functions for Twig
 // -----------------------------------------------------------------------------

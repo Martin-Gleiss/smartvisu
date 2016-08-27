@@ -32,13 +32,13 @@ $ret["remote"] = $data->remote;
 if ($data->update)
 {
 	$ret["update"] = true;
-	$ret["icon"] = 'icons/or/message_attention.png';
+	$ret["icon"] = 'icons/sw/message_attention.svg';
 	$ret["text"] = 'please make update to v'.$data->remote;
 }
 else
 {
 	$ret["update"] = false;
-	$ret["icon"] = 'icons/gn/message_ok.png';
+	$ret["icon"] = 'icons/sw/message_ok.svg';
 	$ret["text"] = 'smartVISU is up to date';
 }
 

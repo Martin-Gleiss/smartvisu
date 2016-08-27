@@ -96,6 +96,7 @@
 		A static icon may be based on .png-image or .svg-image. Use "icon0" to show the "normal" version.
 		If you like to show the "highlighted" version .png and .svg differ. The .png based images need a completed directory (located in icons) with all icons rendered in the highlighted color.
 		Highlighted .svg-images only need a style-sheet, defined in the design (located in design).
+		Using .svg-images should be preferred.
 
 		<div class="twig">
 			<h5 style="margin-top: 5px;">normal:</h5>
@@ -121,6 +122,7 @@
 
 	<div class="docu">
 		Icons located in "{{ icon0 }}"
+		<br/><b>Important:</b> These images are available as .svg-image only. By default smartVisu does not come with .png-images. 
 	</div>
 
 	{% set cat = 'au' %}

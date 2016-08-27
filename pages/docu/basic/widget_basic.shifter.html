@@ -17,7 +17,7 @@
 		{{ basic.slider('slider1', 'bath.light.value', 0, 255, 1) }}
 	</div>
 
-	<h5>Examples .png-iconseries</h5>
+	<h5>Examples iconseries</h5>
 	<div class="twig">
 		1: default icons<br />
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
@@ -26,21 +26,20 @@
 
 		2: without switch-function<br />
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.shifter('shifter2', '', 'bath.light.value', icon1~'temp_temperature_00.png' ) }}
+			{{ basic.shifter('shifter2', '', 'bath.light.value', 'fts_shutter_00.svg', 'fts_shutter.svg') }}
 		{% endverbatim %}{% endfilter %}</code><br /><br />
 
 		3: with static 'off' icon<br />
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.shifter('shifter3', 'bath.light.switch', 'bath.light.value', icon1~'fts_shutter_00.png', icon0~'fts_shutter_10.png' ) }}
+			{{ basic.shifter('shifter4', 'bath.light.switch', 'bath.light.value', 'fts_garage_door_00.svg', 'fts_garage.svg') }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<br />
 	<div class="html">
 		1: {{ basic.shifter('shifter1', 'bath.light.switch', 'bath.light.value') }}
-		2: {{ basic.shifter('shifter2', '', 'bath.light.value', icon1~'temp_temperature_00.png') }}
-		3: {{ basic.shifter('shifter3', 'bath.light.switch', 'bath.light.value', icon1~'fts_shutter_00.png', icon0~'fts_shutter_10.png' ) }}
-		... {{ basic.shifter('shifter4', 'bath.light.switch', 'bath.light.value', icon1~'fts_garage_door_00.png', icon0~'fts_garage.png') }}
-		{{ basic.shifter('shifter5', 'bath.light.switch', 'bath.light.value', icon1~'status_bat_00.png', icon0~'status_bat_unknown.png') }}
+		2: {{ basic.shifter('shifter2', '', 'bath.light.value', 'fts_shutter_00.svg', 'fts_shutter.svg') }}
+		3: {{ basic.shifter('shifter4', 'bath.light.switch', 'bath.light.value', 'fts_garage_door_00.svg', 'fts_garage.svg') }}
+		... {{ basic.shifter('shifter5', 'bath.light.switch', 'bath.light.value', 'fts_window_roof_shutter_00.svg', 'fts_window_roof.svg') }}
 	</div>
 
 	<h5>Examples svg-icons</h5>
