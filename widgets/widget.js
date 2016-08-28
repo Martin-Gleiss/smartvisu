@@ -1167,17 +1167,16 @@ $.mobile.activePage.find('span[data-widget="basic.switch.v1"]').on({
 			event.stopPropagation();
 			// response is: {{ gad_trigger }}
 
+			var target = $('div[data-bind="' + $(this).attr('data-id') + '"]');
 			if (response[0] != 0) {
-				$('div[data-bind="' + $(this).attr('data-id') + '"]')
-					.not('.ui-collapsible').show()
-					.trigger("expand");
-				$('div[data-bind="' + $(this).attr('data-id') + '"].ui-popup').popup("open");
+				target.not('.ui-collapsible').not('.ui-popup').show();
+				target.filter('.ui-collapsible').trigger("expand");
+ 				 target.filter('.ui-popup').popup("open");
 			}
 			else {
-				$('div[data-bind="' + $(this).attr('data-id') + '"]')
-					.not('.ui-collapsible').hide()
-					.trigger("collapse");
-				$('div[data-bind="' + $(this).attr('data-id') + '"].ui-popup').popup("close");
+				target.not('.ui-collapsible').not('.ui-popup').hide();
+				target.filter('.ui-collapsible').trigger("collapse");
+				target.filter('.ui-popup').popup("close");
 			}
 		}
 	});
