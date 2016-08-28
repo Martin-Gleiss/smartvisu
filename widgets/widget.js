@@ -179,7 +179,7 @@ $.mobile.activePage.find('a[data-widget="basic.multistate"]').on( {
 			$('#' + this.id + ' img').attr('src', list_img[idx]);
 
 			// memorise the index for next use
-			$(this).val(idx);
+			$(this).attr('data-value', idx);
 		},
 
 		'click': function (event) {
@@ -187,7 +187,7 @@ $.mobile.activePage.find('a[data-widget="basic.multistate"]').on( {
 			list_val = $(this).attr('data-vals').explode();
 
 			// get the last index memorised
-			old_idx = parseInt($(this).val());
+			old_idx = parseInt($(this).attr('data-value'));
 
 			//compute the next index
 			var new_idx = old_idx + 1;
@@ -198,7 +198,7 @@ $.mobile.activePage.find('a[data-widget="basic.multistate"]').on( {
 			io.write($(this).attr('data-item'), list_val[new_idx]);
 
 			// memorise the index for next use
-			$(this).val(new_idx);
+			$(this).attr('data-value', new_idx);
 		}
 	});
 

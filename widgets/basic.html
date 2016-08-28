@@ -142,7 +142,7 @@
 {% macro multistate(id, item, val, img, type) %}
 
     <a id="{{ uid(page, id) }}" data-widget="basic.multistate" data-item="{{ item }}"
-        data-vals="{{ implode(val) }}"  data-img="{{ implode(img|deficon) }}" value="0"
+        data-vals="{{ implode(val) }}"  data-img="{{ implode(img|deficon) }}" data-value="0"
         class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
 		
         <img class="icon" src="{{ img[0]|deficon('control_on_off.svg') }}"/>
