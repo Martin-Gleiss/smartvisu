@@ -403,8 +403,8 @@
 	{% else %}
 		<span id="{{ uid }}" data-widget="basic.switch.v1" data-item="{{ item }}"
 			data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
-			data-pic-on="{{ pic_on|default(icon1~'control_on_off.png') }}" data-pic-off="{{ pic_off|default(icon0~'control_on_off.png') }}"
-			class="switch"><a><img class="icon" src="{{ pic_off|default(icon0~'control_on_off.png') }}" /></a>
+			data-pic-on="{{ pic_on|deficon('control_on_off.svg') }}" data-pic-off="{{ pic_off|deficon('control_on_off.svg') }}"
+			class="switch icon"><a><img class="icon" src="{{ pic_off|default(icon0~'control_on_off.svg') }}" /></a>
 		</span>
 	{% endif %}
 
