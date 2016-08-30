@@ -1,10 +1,15 @@
-##v 2.9
+##v 2.8
 
 ### New / changed Widgets
 - Added min-/max-/avg-chart
 - _multimedia.image_ has new mode "fill"
 - basic.button extended to set color for svgs
 - basic.switch modified to allow color specification 'icon0' and 'icon1' for `color_on` and `color_off`
+- new widget: basic.multistate
+- new widget: plot.multiaxes
+- new widget: device.codepad
+- new widget: status.collapse
+- new widget: status.popup
 
 ### New / changed Icons
 - New icon _light_standing_light.svg_
@@ -24,16 +29,7 @@
 
 ### Changed Libraries
 - _highcharts_ updated to version 4.2.6
-     
-  
 
-##v 2.8 (never released)
-
-- new widget: basic.multistate
-- new widget: plot.multiaxes
-- new widget: device.codepad
-- new widget: status.collapse
-- new widget: status.popup
 
 ##v 2.7 03.11.13
 
