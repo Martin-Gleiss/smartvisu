@@ -57,34 +57,6 @@ $(document).on('pagebeforeshow', function (bevent, bdata) {
 	// ----- b a s i c ------------------------------------------------------------
 	// ----------------------------------------------------------------------------
 
-	// ----- basic.activelist -----------------------------------------------------
-		 $.mobile.activePage.find('span[data-widget="basic.activelist"]').on( {
-		    update:function(d,a){
-		        if (a == $(this).attr('data-val-on')) {
-		        	   $('#' + this.id + ' img').attr("src", $(this).attr("data-pic-on"));
-		            $('#' + this.id).show();
-		        } else {
-		        	   $('#' + this.id + ' img').attr("src", $(this).attr("data-pic-off"));
-		            $('#' + this.id).hide();
-		        }
-		    },
-		    click:function(d){
-		         $("#"+this.id+" img").attr("src")==$(this).attr("data-pic-off")?io.write($(this).attr("data-item"),$(this).attr("data-val-on")):io.write($(this).attr("data-item"),$(this).attr("data-val-off"))
-		    }
-		});
-		$.mobile.activePage.find('span[data-widget="basic.activelist2"]').on( {
-		    update:function(event, response){
-		        if (a == $(this).attr('data-val-on')) {
-		            $(this).show();
-		        } else {
-		            $(this).hide();
-		        }
-		    },
-		    click:function(event){
-		         io.write($(this).attr("data-item"),$(this).attr("data-val-off"))
-		    }
-		});
-
 	// ----- basic.button ---------------------------------------------------------
 	$.mobile.activePage.find('a[data-widget="basic.button"]').on( {
 		'click': function (event) {
