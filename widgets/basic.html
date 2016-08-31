@@ -112,8 +112,10 @@
 * @param value send for the 'on' state (optional, default 1)
 * @param value send for the 'off' state (optional, default 0)
 * @param type: 'micro', 'mini', 'midi' (optional, default: mini)
+* @param the color_on:  e.g. '#f00' for red (default 'icon1' of the design)
+* @param the color_off:  e.g. '#f00' for red (default 'icon0' of the design)
 */
-{% macro dual(id, item, pic_on, pic_off, val_on, val_off, type) %}
+{% macro dual(id, item, pic_on, pic_off, val_on, val_off, type, color_on, color_off) %}
 	{% set uid = uid(page, id) %}
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.dual" data-item="{{ item }}"
@@ -121,8 +123,21 @@
 		data-pic-on="{{ pic_on|deficon('control_on_off.svg') }}" data-pic-off="{{ pic_off|deficon('control_on_off.svg') }}"
 		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
 
-		<img id="{{ uid }}-off" class="icon" src="{{ pic_off|deficon('control_on_off.svg') }}" />
-		<img id="{{ uid }}-on" class="icon icon1 hide" src="{{ pic_on|deficon('control_on_off.svg') }}" />
+		{% if (color_off == 'icon0') or (color_off is empty)  %}
+			<img id="{{ uid }}-off" class="icon" src="{{ pic_off|deficon('control_on_off.svg') }}" />
+		{% elseif color_off == 'icon1' %}
+			<img id="{{ uid }}-off" class="icon icon1" src="{{ pic_off|deficon('control_on_off.svg') }}" />
+		{% else %}
+			<img id="{{ uid }}-off" class="icon icon1" style="stroke:{{ color_off }}; fill:{{ color_off }};" src="{{ pic_off|deficon('control_on_off.svg') }}" />
+		{% endif %}
+
+		{% if color_on == 'icon0' %}
+			<img id="{{ uid }}-on" class="icon hide" src="{{ pic_on|deficon('control_on_off.svg') }}" />
+		{% elseif (color_on == 'icon1') or (color_on is empty)  %}
+        	<img id="{{ uid }}-on" class="icon icon1 hide" src="{{ pic_on|deficon('control_on_off.svg') }}" />
+		{% else %}
+			<img id="{{ uid }}-on" class="icon icon1 hide" style="stroke:{{ color_on }}; fill:{{ color_on }};" src="{{ pic_on|deficon('control_on_off.svg') }}" />
+		{% endif %}
 	</a>
 
 {% endmacro %}
@@ -388,7 +403,7 @@
 					{% elseif color_off == 'icon1' %}
 						<img id="{{ uid }}-off" class="icon icon1" src="{{ pic_off|deficon('control_on_off.svg') }}" />
 					{% else %}
-						<img id="{{ uid }}-off" class="icon icon0" style="stroke:{{ color_off }}; fill:{{ color_off }};" src="{{ pic_off|deficon('control_on_off.svg') }}" />
+						<img id="{{ uid }}-off" class="icon icon1" style="stroke:{{ color_off }}; fill:{{ color_off }};" src="{{ pic_off|deficon('control_on_off.svg') }}" />
 					{% endif %}
 					{% if color_on == 'icon0' %}
 						<img id="{{ uid }}-on" class="icon hide" src="{{ pic_on|deficon('control_on_off.svg') }}" />
