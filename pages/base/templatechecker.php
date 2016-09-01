@@ -256,7 +256,7 @@ class TemplateChecker {
 	private $inline_pics = array('arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete',
 		'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star',
 		'alert', 'info', 'home', 'search');
-
+	
 	/**
 	 * Array containing parameter information on widgeds
 	 * @var array
@@ -270,6 +270,7 @@ class TemplateChecker {
 		'basic.float' => array(),
 		'basic.formula' => array(),
 		'basic.glue' => array(),
+		'basic.imate' => array(1 => 'image'),
 		'basic.multistate' => array(),
 		'basic.rgb' => array(),
 		'basic.shifter' => array(),
@@ -288,6 +289,7 @@ class TemplateChecker {
 		'device.blind' => array(),
 		'device.codepad' => array(),
 		'device.dimmer' => array(),
+		'device.rtr' => array(),
 		'device.shutter' => array(),
 		'lib.updatecheck' => array(),
 		'appliance.iprouter' => array(),
@@ -316,6 +318,10 @@ class TemplateChecker {
 		'weather.weather' => array(),
 	);
 
+	private $ignore_html_error_code = array(
+		68, //error parsing attribute name 
+		);
+	
 	/**
 	 * file to test
 	 * @var type 
@@ -403,12 +409,19 @@ class TemplateChecker {
 	 * @return \DOMDocument
 	 */
 	private function readFile($absFile) {
-		// Read file into DOMDocument, add errors for parsing issues
+		$html = file_get_contents($absFile);
+		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8");
+		//remove comments (/** .... */)
+		$html = preg_replace("/(\/\*\*)(.*?)(\*\/)/si", "", $html);
+		
+		// Create DOMDocument from html, add errors for parsing issues
 		$this->domDocument = new DOMDocument();
 		libxml_use_internal_errors(true);
-		$this->domDocument->loadHTMLFile($absFile);
+		$this->domDocument->loadHTML($html);
 		$errors = libxml_get_errors();
 		foreach ($errors as $error) {
+			if (in_array($error->code, $this->ignore_html_error_code)) 
+				continue;
 			/* @var $error LibXMLError */
 			$data = array(
 				"Level" => $error->level,
@@ -464,14 +477,14 @@ class TemplateChecker {
 		$lineNo = $node->getLineNo();
 		$line = $node->ownerDocument->saveXML($node);
 		$data = array(
-			"Image File" => $src,
+			"Image Source" => $src,
 			"Checked File" => $file,
 		);
 		if (!$existing) {
-			$this->messages->addError('IMG TAG CHECK', 'Missing image', $lineNo, $line,
+			$this->messages->addError('IMG TAG CHECK', 'Image missing', $lineNo, $line,
 					$data);
 		} else if (self::SHOW_SUCCESS_TOO) {
-			$this->messages->addInfo('IMG TAG CHECK', 'Existing image', $lineNo, $line,
+			$this->messages->addInfo('IMG TAG CHECK', 'Image existing', $lineNo, $line,
 					$data);
 		}
 	}
@@ -504,7 +517,6 @@ class TemplateChecker {
 				'Widget' => $widget,
 				'Parameters' => $param_array,
 			);
-
 			$lineNo = $node->getLineNo();
 			$this->messages->addWarning('WIDGET PARAM CHECK',
 					'Unknown Widget found. Check manually!', $lineNo, $macro, $data);
@@ -535,27 +547,21 @@ class TemplateChecker {
 			return true;
 
 		$file = $param;
-		if (!$this->isFileExisting($file)) {
-			$data = array(
+		$existing = $this->isFileExisting($file);
+		$data = array(
 				'Widget' => $widget,
 				'Parameters' => $param_array,
-				'Parameter' => $param_no,
+				'Parameter No.' => $param_no,
 				'Parameter Value' => $param,
-				'File' => $file,
+				'Checked File' => $file,
 			);
 			$lineNo = $node->getLineNo();
-			$this->messages->addWarning('WIDGET PARAM CHECK', 'Image not found', $lineNo,
+			
+		if (!$existing) {
+			$this->messages->addError('WIDGET PARAM CHECK', 'Image missing', $lineNo,
 					$macro, $data);
 		} else if (self::SHOW_SUCCESS_TOO) {
-			$data = array(
-				'Widget' => $widget,
-				'Parameters' => $param_array,
-				'Parameter' => $param_no,
-				'Parameter Value' => $param,
-				'File' => $file,
-			);
-			$lineNo = $node->getLineNo();
-			$this->messages->addInfo('WIDGET PARAM CHECK', 'Image found', $lineNo,
+			$this->messages->addInfo('WIDGET PARAM CHECK', 'Image existing', $lineNo,
 					$macro, $data);
 			return true;
 		}
@@ -572,6 +578,12 @@ class TemplateChecker {
 				strtolower(substr($file, 0, 8)) == 'https://')
 			return true;
 
+		if (substr($file,0,7)=='icon0~\'') {
+			$file = $this->icon0 . substr($file,7);
+		} else if (substr($file,0,7)=='icon1~\'') {
+			$file = $this->icon1 . substr($file,7);
+		}
+		
 		// replace {{ icon0 }} and {{ icon1 }}
 		if (preg_match_all("/{{(.*?)}}/", $file, $match)) {
 			for ($i = 0; $i < count($match[0]); $i++) {

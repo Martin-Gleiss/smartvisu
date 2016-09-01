@@ -19,7 +19,7 @@
 		line-height: 36px;
 	}
 
-	.file:hover {
+	.hover:hover {
 		text-decoration:underline;
 	}
 
@@ -27,6 +27,15 @@
 		padding-left:25px;
 	}
 
+	.details {
+		color:white;
+		line-height: 1.2em;
+	}
+	
+	.details:hover {
+		text-decoration:none;
+	}
+	
 	.severity_N, .severity_I, .severity_W, .severity_E, .severity_U {
 		background-size: 36px 36px;
 		background-repeat: no-repeat;
@@ -93,8 +102,9 @@ $(document).ready(function () {
 						$content = '<div class="severity_N">No messages on this file.</div>';
 					} else {
 						$.each(data['messages'], function (index, value) {
-							$content += '<div class="docu">\
-										<div class="msg_head severity_' + value['severity'] + '">' + value['test'] + ': ' + value['message'] + '</div>';
+							$content += '<div class="severity_' + value['severity'] + '">\
+										<div>' + value['test'] + ': ' + value['message'] + '</div>\
+										<div class="details docu">';
 							if (value['line'])
 								$content += '<div class="twig"><code class="prettyprint prettyprinted" style="">' + escapeHtml(value['line']) + '</code></div>';
 
@@ -135,10 +145,10 @@ $(document).ready(function () {
 					$('#filelist').empty();
 					$.each(data, function (index, value) {
 						$('#filelist').append('<div class="file severity_U" data-file="' + value + '" id="f' + index + '"> \
-												<span>' + value + '</span></div> \
+												<span class="hover">' + value + '</span> \
 												<div class="result" id="r' + index + '" style="display:none;">\
 												<div class="severity_U">Checks not done, yet.</div></div> \
-												');
+												</div>');
 					});
 
 					$('div.file').click(function () {
