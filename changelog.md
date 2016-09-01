@@ -18,6 +18,7 @@
 - Added proxy settings in configuration
 - Auto reconnect for drivers can be enabled in configuration
 - Drivers for FHEM and openHAB2
+- Template Checker
  
 ### Improvements
 - Loading time seriously decreased
