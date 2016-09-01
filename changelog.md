@@ -1,34 +1,35 @@
 ##v 2.8
 
 ### New / changed Widgets
-- Added min-/max-/avg-chart
-- _multimedia.image_ has new mode "fill"
-- basic.button extended to set color for svgs
-- basic.switch modified to allow color specification 'icon0' and 'icon1' for `color_on` and `color_off`
 - new widget: basic.multistate
 - new widget: plot.multiaxes
+- new widget: plot.minmaxavg
 - new widget: device.codepad
 - new widget: status.collapse
 - new widget: status.popup
+- multimedia.image has new mode "fill"
+- basic.button extended to set color for svgs
+- basic.switch modified to allow color specification 'icon0' and 'icon1' for `color_on` and `color_off`
 
 ### New / changed Icons
-- New icon _light_standing_light.svg_
+- New icon light_standing_light.svg
 
 ### Other New Features
 - Added proxy settings in configuration
 - Auto reconnect for drivers can be enabled in configuration
-
+- Drivers for FHEM and openHAB2
+ 
 ### Improvements
 - Loading time seriously decreased
 - Added Google calendar API V3
-- Changed smarthom.py driver to version 4
+- Changed smarthome.py driver to version 4
 
 ### Fixed Bugs
 - switched many broken icons to SVG
-- several small bugs fixed
+- a bunch of bugs fixed
 
 ### Changed Libraries
-- _highcharts_ updated to version 4.2.6
+- highcharts updated to version 4.2.6
 
 
 ##v 2.7 03.11.13
