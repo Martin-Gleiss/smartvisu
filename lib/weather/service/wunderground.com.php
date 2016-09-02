@@ -28,7 +28,7 @@ class weather_wunderground extends weather
 		// api call 
 		$cache = new class_cache('wunderground_'.$this->location.'.json');
 
-		if ($cache->hit())
+		if ($cache->hit(10))
 			$content = $cache->read();
 		else
 		{
