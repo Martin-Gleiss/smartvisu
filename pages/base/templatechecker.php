@@ -242,6 +242,10 @@ class MessageCollection {
 class TemplateChecker {
 
 	const SHOW_SUCCESS_TOO = true;
+	const FILE_MISSING = 0;
+	const FILE_EXISTING = 1;
+	const FILE_REMOTE = 2;
+	const FILE_CONTAINS_PARAMS = 3;
 
 	/**
 	 * Message Collection
@@ -256,14 +260,19 @@ class TemplateChecker {
 	private $inline_pics = array('arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete',
 		'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star',
 		'alert', 'info', 'home', 'search');
-	
+
 	/**
 	 * Array containing parameter information on widgeds
 	 * @var array
 	 */
 	private $image_params = array(
-		'basic.button' => array(3 => 'image'),
-		'basic.dual' => array(2 => 'image', 3 => 'image'),
+		'basic.button' => array(
+			3 => array('type' => 'image', 'color' => 6, 'defaultcolor' => 'icon0')
+		),
+		'basic.dual' => array(
+			2 => array('type' => 'image', 'color' => 7, 'defaultcolor' => 'icon1'),
+			3 => array('type' => 'image', 'color' => 8, 'defaultcolor' => 'icon0')
+		),
 		'basic.checkbox' => array(),
 		'basic.colordisc' => array(),
 		'basic.flip' => array(),
@@ -276,8 +285,13 @@ class TemplateChecker {
 		'basic.shifter' => array(),
 		'basic.shutter' => array(),
 		'basic.slider' => array(),
-		'basic.switch' => array(2 => 'image', 3 => 'image'),
-		'basic.symbol' => array(3 => 'image'),
+		'basic.switch' => array(
+			2 => array('type' => 'image', 'color' => 6, 'defaultcolor' => 'icon1'),
+			3 => array('type' => 'image', 'color' => 7, 'defaultcolor' => 'icon0')
+		),
+		'basic.symbol' => array(
+			3 => array('type' => 'image', 'color' => 6, 'defaultcolor' => 'icon0')
+		),
 		'basic.tank' => array(),
 		'basic.text' => array(),
 		'basic.trigger' => array(),
@@ -302,10 +316,14 @@ class TemplateChecker {
 		'plot.minmaxavg' => array(),
 		'plot.period' => array(),
 		'plot.rtr' => array(),
-		'multimedia.image' => array(1 => 'image'),
+		'multimedia.image' => array(
+			1 => array('type' => 'image')
+		),
 		'multimedia.music' => array(),
 		'multimedia.slideshow' => array(),
-		'multimedia.station' => array(2 => 'image'),
+		'multimedia.station' => array(
+			2 => array('type' => 'image')
+		),
 		'status.collapse' => array(),
 		'status.log' => array(),
 		'status.message' => array(),
@@ -317,11 +335,10 @@ class TemplateChecker {
 		'weather.mapslides' => array(),
 		'weather.weather' => array(),
 	);
-
 	private $ignore_html_error_code = array(
 		68, //error parsing attribute name 
-		);
-	
+	);
+
 	/**
 	 * file to test
 	 * @var type 
@@ -361,7 +378,7 @@ class TemplateChecker {
 		$this->messages = $messages;
 		$this->fileName = $fileName;
 
-		// Taken from index.php, adapted
+// Taken from index.php, adapted
 		if (config_design == 'ice') {
 			$this->icon1 = 'icons/bl/';
 			$this->icon0 = 'icons/sw/';
@@ -378,20 +395,20 @@ class TemplateChecker {
 	 * Run tests and populate message array
 	 */
 	public function performTests() {
-		// dom extension available?
+// dom extension available?
 		if (!extension_loaded('dom')) {
 			$this->messages->addError('PREREQUISITIONS',
 					'php module "dom" not available!');
 			return;
 		}
 
-		// File given?
+// File given?
 		if (!$this->fileName) {
 			$this->messages->addError('FILE CHECK', 'Invalid data. No file given!');
 			return;
 		}
 
-		// File existing?
+// File existing?
 		$absFile = const_path . $this->fileName;
 		if (!is_file($absFile)) {
 			$this->messages->addError('FILE CHECK', 'Not a file: ' . $this->file);
@@ -411,16 +428,16 @@ class TemplateChecker {
 	private function readFile($absFile) {
 		$html = file_get_contents($absFile);
 		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8");
-		//remove comments (/** .... */)
+//remove comments (/** .... */)
 		$html = preg_replace("/(\/\*\*)(.*?)(\*\/)/si", "", $html);
-		
-		// Create DOMDocument from html, add errors for parsing issues
+
+// Create DOMDocument from html, add errors for parsing issues
 		$this->domDocument = new DOMDocument();
 		libxml_use_internal_errors(true);
 		$this->domDocument->loadHTML($html);
 		$errors = libxml_get_errors();
 		foreach ($errors as $error) {
-			if (in_array($error->code, $this->ignore_html_error_code)) 
+			if (in_array($error->code, $this->ignore_html_error_code))
 				continue;
 			/* @var $error LibXMLError */
 			$data = array(
@@ -458,7 +475,7 @@ class TemplateChecker {
 			}
 		}
 
-		// Check child nodes recursively
+// Check child nodes recursively
 		if ($node->hasChildNodes()) {
 			foreach ($node->childNodes as $childNode) {
 				$this->checkNode($childNode, $level + 1);
@@ -480,12 +497,28 @@ class TemplateChecker {
 			"Image Source" => $src,
 			"Checked File" => $file,
 		);
-		if (!$existing) {
-			$this->messages->addError('IMG TAG CHECK', 'Image missing', $lineNo, $line,
-					$data);
-		} else if (self::SHOW_SUCCESS_TOO) {
-			$this->messages->addInfo('IMG TAG CHECK', 'Image existing', $lineNo, $line,
-					$data);
+
+
+		switch ($existing) {
+			case self::FILE_MISSING:
+				$this->messages->addError('IMG TAG CHECK', 'Image missing', $lineNo, $line,
+						$data);
+				break;
+			case self::FILE_EXISTING:
+				if (self::SHOW_SUCCESS_TOO)
+					$this->messages->addInfo('IMG TAG CHECK', 'Image existing', $lineNo, $line,
+							$data);
+				break;
+			case self::FILE_REMOTE:
+				if (self::SHOW_SUCCESS_TOO)
+					$this->messages->addInfo('IMG TAG CHECK', 'Image from remote location',
+							$lineNo, $line, $data);
+				break;
+			case self::FILE_CONTAINS_PARAMS:if (self::SHOW_SUCCESS_TOO)
+					$this->messages->addWarning('IMG TAG CHECK',
+							'Image path still contains parameters. Check manually!', $lineNo, $line,
+							$data);
+				break;
 		}
 	}
 
@@ -502,14 +535,26 @@ class TemplateChecker {
 
 		if (!preg_match("/\((.*?)\)/", $macro, $parameters))
 			return;
-		$param_array = explode(",", $parameters[1]);
+
+		if (!preg_match_all("/\[(?:[^()]|(?R))+\]|'[^']*'|[^(),\s]+/", $parameters[1],
+						$param_array)) {
+			$data = array(
+				'Widget' => $widget,
+				'Parameters' => $parameters[1],
+			);
+			$lineNo = $node->getLineNo();
+			$this->messages->addWarning('WIDGET PARAM CHECK',
+					'Unable to split Parameters. Check manually!', $lineNo, $macro, $data);
+			return;
+		}
+		$param_array = $param_array[0];
 
 		if (array_key_exists($widget, $this->image_params)) {
 			foreach ($this->image_params[$widget] as $param_no => $param_check)
-				switch ($param_check) {
+				switch ($param_check['type']) {
 					case 'image':
 						$this->checkWidgetImageParameter($node, $macro, $widget, $param_array,
-								$param_no);
+								$param_no, $param_check);
 						break;
 				}
 		} else {
@@ -523,6 +568,15 @@ class TemplateChecker {
 		}
 	}
 
+	private function getWidgetParameter($param_array, $param_no) {
+		// optional parameter not given
+		if (count($param_array) <= $param_no)
+			return '';
+
+		// return trimmed parameter
+		return trim($param_array[$param_no], " \t\n\r\0\x0B'");
+	}
+
 	/**
 	 * Check image parameter of widget
 	 * @param \DOMElement $node currently checked node
@@ -530,41 +584,62 @@ class TemplateChecker {
 	 * @param type $widget name of widget
 	 * @param type $param_array array containing parameters
 	 * @param type $param_no index of parameter to check
-	 * @return boolean TRUE: Image parameter OK, FALSE: Image Parameter wrong
+	 * @param array $param_check Config for parameter checker
 	 */
-	private function checkWidgetImageParameter($node, $macro, $widget, $param_array, $param_no) {
-		// optional parameter not given
-		if (count($param_array) <= $param_no)
-			return true;
+	private function checkWidgetImageParameter($node, $macro, $widget, $param_array, $param_no, $param_check) {
+		$param = $this->getWidgetParameter($param_array, $param_no);
 
-		// parameter empty
-		$param = trim($param_array[$param_no], " \t\n\r\0\x0B'");
+		// parameter empty or not given
 		if ($param == '')
-			return true;
+			return;
 
 		// inline pic
 		if (in_array($param, $this->inline_pics))
-			return true;
+			return;
 
 		$file = $param;
+
+		// get color if required
+		if (strpos($file, '/') === false && substr($file, 0, 7) != 'icon0~\'' && substr($file,
+						0, 7) != 'icon1~\'') {
+			$file = $this->icon0 . $file;
+		}
+
 		$existing = $this->isFileExisting($file);
 		$data = array(
-				'Widget' => $widget,
-				'Parameters' => $param_array,
-				'Parameter No.' => $param_no,
-				'Parameter Value' => $param,
-				'Checked File' => $file,
-			);
-			$lineNo = $node->getLineNo();
-			
-		if (!$existing) {
-			$this->messages->addError('WIDGET PARAM CHECK', 'Image missing', $lineNo,
-					$macro, $data);
-		} else if (self::SHOW_SUCCESS_TOO) {
-			$this->messages->addInfo('WIDGET PARAM CHECK', 'Image existing', $lineNo,
-					$macro, $data);
-			return true;
+			'Widget' => $widget,
+			'Parameters' => $param_array,
+			'Parameter No.' => $param_no,
+			'Parameter Value' => $param,
+			'Checked File' => $file,
+		);
+		if ($color)
+			$data['Color'] = $color;
+		$lineNo = $node->getLineNo();
+
+		switch ($existing) {
+			case self::FILE_MISSING:
+				$this->messages->addError('WIDGET PARAM CHECK', 'Image missing', $lineNo,
+						$macro, $data);
+				break;
+			case self::FILE_EXISTING:
+				if (self::SHOW_SUCCESS_TOO)
+					$this->messages->addInfo('WIDGET PARAM CHECK', 'Image existing', $lineNo,
+							$macro, $data);
+				break;
+			case self::FILE_REMOTE:
+				if (self::SHOW_SUCCESS_TOO)
+					$this->messages->addInfo('WIDGET PARAM CHECK',
+							'Image from remote location', $lineNo, $macro, $data);
+				break;
+			case self::FILE_CONTAINS_PARAMS:if (self::SHOW_SUCCESS_TOO)
+					$this->messages->addWarning('WIDGET PARAM CHECK',
+							'Image path still contains parameters. Check manually!', $lineNo, $macro,
+							$data);
+				break;
 		}
+
+		return;
 	}
 
 	/**
@@ -576,14 +651,14 @@ class TemplateChecker {
 		// Remote file via http or https: Do not check further for now
 		if (strtolower(substr($file, 0, 7)) == 'http://' ||
 				strtolower(substr($file, 0, 8)) == 'https://')
-			return true;
+			return self::FILE_REMOTE;
 
-		if (substr($file,0,7)=='icon0~\'') {
-			$file = $this->icon0 . substr($file,7);
-		} else if (substr($file,0,7)=='icon1~\'') {
-			$file = $this->icon1 . substr($file,7);
+		if (substr($file, 0, 7) == 'icon0~\'') {
+			$file = $this->icon0 . substr($file, 7);
+		} else if (substr($file, 0, 7) == 'icon1~\'') {
+			$file = $this->icon1 . substr($file, 7);
 		}
-		
+
 		// replace {{ icon0 }} and {{ icon1 }}
 		if (preg_match_all("/{{(.*?)}}/", $file, $match)) {
 			for ($i = 0; $i < count($match[0]); $i++) {
@@ -596,24 +671,19 @@ class TemplateChecker {
 						break;
 					default:
 						// still a parameter in the image, no further testing at the moment
-						return true;
+						return self::FILE_CONTAINS_PARAMS;
 						break;
 				}
 			}
 		}
 
 		// add const_path if $file is relative
-		if (substr($file, 0, 1) != '/') {
-			if (strpos($file, '/') === false) {
-				$file = const_path . $this->icon0 . $file;
-			} else {
-				$file = const_path . $file;
-			}
-		}
+		if (substr($file, 0, 1) != '/')
+			$file = const_path . $file;
 
 		$file = substr($file, 0, 1) == '/' ? $file : const_path . $file;
 
-		return is_file($file);
+		return is_file($file) ? self::FILE_EXISTING : self::FILE_MISSING;
 	}
 
 }
