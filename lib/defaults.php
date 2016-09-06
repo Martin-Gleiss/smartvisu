@@ -204,6 +204,20 @@ define ('config_calendar_service', 'offline');
  */
 define ('config_calendar_url', 'http://www.google.com/calendar/feeds/...');
 
+/**
+ * What is the username ?
+ */
+define ('config_calendar_username', '');
+
+/**
+ * What is the password ?
+ */
+define ('config_calendar_password', '');
+
+/**
+ * What is the calendar name ?
+ */
+define ('config_calendar_name', '');
 
 /**
  * The default code for all Codepads

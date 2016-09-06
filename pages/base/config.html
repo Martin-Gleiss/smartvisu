@@ -288,8 +288,30 @@
 					<label for="calendar_url">Url</label>
 					<input type="text" name="calendar_url" id="calendar_url" />
 					{{ forms.text_init('calendar_url', config_calendar_url|e ) }}
+					<div class="note">*not used for iCloud</div>
 				</div>
-			</div>
+
+                <div data-role="fieldcontain">
+                        <label for="calendar_username">Username</label>
+                        <input type="text" name="calendar_username" id="calendar_username" />
+                        {{ forms.text_init('calendar_username', config_calendar_username|e ) }}
+                        <div class="note">*if service requires one</div>
+                </div>
+
+                <div data-role="fieldcontain">
+                        <label for="calendar_password">Password</label>
+                        <input type="text" name="calendar_password" id="calendar_password" />
+                        {{ forms.text_init('calendar_password', config_calendar_password|e ) }}
+                        <div class="note">*if service requires one</div>
+                </div>
+
+                <div data-role="fieldcontain">
+                        <label for="calendar_name">Calendar name</label>
+                        <input type="text" name="calendar_name" id="calendar_name" />
+                        {{ forms.text_init('calendar_name', config_calendar_name|e ) }}
+                        <div class="note">*if service requires one</div>
+                </div>
+            </div>
 
 		</div>
 	</div>
