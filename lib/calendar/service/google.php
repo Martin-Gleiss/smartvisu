@@ -11,6 +11,7 @@
 
 require_once '../../../lib/includes.php';
 require_once const_path_system.'calendar/calendar.php';
+require_once const_path_system.'calendar/iCalReader.php';
 
 
 /**
@@ -26,7 +27,7 @@ class calendar_google extends calendar
 	{
 		parent::init($request);
 
-		$this->url = str_replace("/basic", "/full?max-results=".(int)$request['count']."&singleevents=true&futureevents=true&orderby=starttime&sortorder=a", $this->url);
+		$this->url = preg_replace('#/basic(\.ics)?$#', "/full.ics?max-results=".(int)$request['count']."&singleevents=true&futureevents=true&orderby=starttime&sortorder=a", $this->url);
 	}
 
 	/**
@@ -35,11 +36,32 @@ class calendar_google extends calendar
 	public function run()
 	{
 		$context = stream_context_create(array('http' => array('method' => "GET")));
-		$content = @file_get_contents($this->url, false, $context);
+		$ics_content = file_get_contents($this->url, false, $context);
 		$this->debug($content);
 
 		if ($content !== false)
 		{
+			if (!empty($ics_content)) {
+				$ics_content = explode("\n", $ics_content);
+				$ics = new ICal($ics_content);
+				$ics->process_recurrences();
+				$events = $ics->sortEventsWithOrder($ics->events(), SORT_ASC);
+				$events = array_slice($events, 0, $this->count);
+    		// output events as list
+    		$i = 1;
+    		foreach ($events as $event) {
+    			$this->data[] = array('pos' => $i++,
+    				'start' => date('y-m-d', $ics->iCalDateToUnixTimestamp($event['DTSTART'])).' '.gmdate('H:i:s', $ics->iCalDateToUnixTimestamp($event['DTSTART'])),
+    				'end' => date('y-m-d', $ics->iCalDateToUnixTimestamp($event['DTEND'])).' '.gmdate('H:i:s', $ics->iCalDateToUnixTimestamp($event['DTEND'])),
+    				'title' => $event['SUMMARY'],
+    				'content' => '',
+    				'where' => str_replace(array("\n\r", "\n", "\r", "\\"), "<br />", $event['LOCATION']),
+    				'link' => 'https://www.icloud.com/#calendar'
+    			);
+    		}
+			}
+
+/*
 			$xml = simplexml_load_string($content);
 
 			$i = 1;
@@ -59,6 +81,7 @@ class calendar_google extends calendar
 					'link' => (string)($entry->link->attributes()->href)
 				);
 			}
+*/
 		}
 		else
 			$this->error('Calendar: Google', 'Calendar read request failed!');

@@ -13,7 +13,7 @@
 require_once '../../../lib/includes.php';
 require_once const_path_system.'class_cache.php';
 require_once const_path_system.'calendar/calendar.php';
-require_once const_path_system.'calendar/service/addons/class.iCalReader.php';
+require_once const_path_system.'calendar/iCalReader.php';
 
 
 /**
