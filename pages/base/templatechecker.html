@@ -11,181 +11,19 @@
 {% extends "system.html" %}
 
 {% block content %}
-<script src="vendor/google.prettify/src/prettify.js" type="text/javascript"></script>
-<style type="text/css">
-	.file{
-		font-weight:bold;
-		font-size: 14px;
-		line-height: 36px;
-	}
-
-	.hover:hover {
-		text-decoration:underline;
-	}
-
-	.result {
-		padding-left:25px;
-	}
-
-	.details {
-		color:white;
-		line-height: 1.2em;
-	}
-	
-	.details:hover {
-		text-decoration:none;
-	}
-	
-	.severity_N, .severity_I, .severity_W, .severity_E, .severity_U {
-		background-size: 36px 36px;
-		background-repeat: no-repeat;
-		padding-left: 36px;
-		display: block;
-		font-size: 14px;
-		line-height: 36px;
-	}
-	.severity_E {
-		background-image: url('icons/ws/message_stop.svg');
-		color: red;
-	}
-	.severity_W {
-		background-image: url('icons/ws/message_attention.svg');
-		color: yellow;
-	}
-	.severity_N {
-		background-image: url('icons/ws/control_ok.svg');
-		color: greenyellow;
-	}
-	.severity_I {
-		background-image: url('icons/ws/message_info.svg');
-		color: greenyellow;
-	}
-	.severity_U {
-		background-image: url('icons/ws/control_home.svg');
-	}
-</style>
+<link rel="stylesheet" href="/lib/templatechecker/templatechecker.css">
 
 <h1>Template Checker: Page set "{{ config_pages }}"</h1>
-<ul>
-	<li id="run"><a href="#">Run all tests</a></li>
-	<li id="show_errors" style="display:none;"><a href="#">Show warnings/errors only</a></li>
-	<li id="show_all" style="display:none;"><a href="#">Show all messages</a></li>
-	<li id="reset" style="display:none;"><a href="#">Reset result</a></li>
-</ul>
-<h2>Contained files:</h2>
+<div>
+	<div style="width:250px; float:left;"><input type="button" value="Run all tests" id="run"/></div>
+	<div style="width:250px; float:left;"><input type="button" value="Reset result" id="reset"/></div>
+	<div style="width:250px; float:left;"><input type="button" value="Show warnings/errors only" id="show_errors"/></div>
+	<div style="width:250px; float:left;"><input type="button" value="Show all messages" id="show_all"/></div>
+	<div style="clear:both"></div>
+</div>
+<h2>Result:</h2>
 <div id="filelist" style="display:none;"></div>
 
-/** Events */
-<script type="text/javascript">
-function escapeHtml(unsafe) {
-	if (typeof unsafe === 'string' || unsafe instanceof String) {
-		return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-	} else {
-		return unsafe;
-	}
-}
-
-$(document).ready(function () {
-	// on click "Run all tests"
-	$('li#run a').click(function () {
-		$('.file').each(function (i, obj) {
-			var $resultId = 'r' + $(this).attr('id').substring(1);
-			var $fileId = $(this).attr('id');
-			$.ajax({
-				type: "POST",
-				url: 'pages/base/templatechecker.php',
-				data: {"cmd": "analyze", "file": $(this).attr('data-file'), "id": $resultId},
-				dataType: 'json',
-				success: function (data) {
-					var $content = '';
-					if (data['messages'].length == 0) {
-						$content = '<div class="severity_N">No messages on this file.</div>';
-					} else {
-						$.each(data['messages'], function (index, value) {
-							$content += '<div class="severity_' + value['severity'] + '">\
-										<div>' + value['test'] + ': ' + value['message'] + '</div>\
-										<div class="details docu">';
-							if (value['line'])
-								$content += '<div class="twig"><code class="prettyprint prettyprinted" style="">' + escapeHtml(value['line']) + '</code></div>';
-
-							$content += '<ul><li>Line ' + value['lineNo'] + '</li>';
-							$.each(value['data'], function (index, value) {
-								$content += '<li>' + index + ': ' + escapeHtml(value) + '</li>';
-							});
-							$content += '</ul>';
-							$content += '</div></div>';
-						});
-					}
-					$('#' + $resultId).html($content);
-					$('#' + $fileId).removeClass('severity_E severity_W severity_I severity_N severity_U')
-							.addClass('severity_' + data['total_severity']);
-
-					$('#run').hide();
-					$('#show_errors').show();
-					$('#reset').show();
-				},
-				error: function (data) {
-					var $content = data.responseJSON.message;
-					$('#' + $resultId).html($content).show('slow');
-				}
-			});
-		});
-
-	});
-
-	// on click Reset result"
-	$('li#reset a').click(function () {
-		$.ajax({
-			type: "POST",
-			url: 'pages/base/templatechecker.php',
-			data: {"cmd": "getfiles"},
-			dataType: 'json',
-			success: function (data) {
-				$('#filelist').slideUp('slow', function () {
-					$('#filelist').empty();
-					$.each(data, function (index, value) {
-						$('#filelist').append('<div class="file severity_U" data-file="' + value + '" id="f' + index + '"> \
-												<span class="hover">' + value + '</span> \
-												<div class="result" id="r' + index + '" style="display:none;">\
-												<div class="severity_U">Checks not done, yet.</div></div> \
-												</div>');
-					});
-
-					$('div.file').click(function () {
-						$('#r' + $(this).attr('id').substring(1)).slideToggle('slow');
-					});
-					$('#filelist').slideDown('slow');
-				});
-			},
-			error: function (data) {
-				var $content = data.responseJSON.message;
-			}
-		});
-		$('#run').show();
-		$('#show_errors').hide();
-		$('a#show_all').hide();
-		$('#reset').hide();
-	});
-
-	// on click "Show warnings/errors only"
-	$('li#show_errors a').click(function () {
-		$('.severity_N, .severity_U, .severity_I').slideUp('slow');
-		$('a#show_errors').hide();
-		$('a#show_all').show();
-	});
-
-	// on click "Show all messages
-	$('li#show_all a').click(function () {
-		$('.severity_N, .severity_U, .severity_I').slideDown('slow');
-		$('a#show_errors').show();
-		$('a#show_all').hide();
-	});
-
-	// now trigger click on "reset" to fill file list
-	$('li#reset a').click()
-	return false;
-});
-</script>
-
+<script src="/lib/templatechecker/templatechecker.js" type="text/javascript"></script>
 {% endblock %}
 

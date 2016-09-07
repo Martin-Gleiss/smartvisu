@@ -15,7 +15,7 @@ PageChecker::run();
 
 class PageChecker {
 
-	public static function getRequestParameter($param) {
+	private static function getRequestParameter($param) {
 		if (filter_has_var(INPUT_POST, $param))
 			return filter_input(INPUT_POST, $param);
 		if (filter_has_var(INPUT_GET, $param))
@@ -75,11 +75,12 @@ class PageChecker {
 
 	private static function analyzeFile() {
 		$file = self::getRequestParameter('file');
+		$fileid = self::getRequestParameter('fileid');
 		$messages = new MessageCollection();
 		TemplateChecker::run($file, $messages);
 		return array(
 			'file' => $file,
-			'id' => 'r' . substr($id, 1),
+			'resultid' => 'r' . substr($fileid, 1),
 			'total_severity' => $messages->getMaxSeverity(),
 			'messages' => $messages->getMessages(),
 		);
@@ -265,7 +266,7 @@ class TemplateChecker {
 	 * Array containing parameter information on widgeds
 	 * @var array
 	 */
-	private $image_params = array(
+	private $widget_params = array(
 		'basic.button' => array(
 			3 => array('type' => 'image', 'color' => 6, 'defaultcolor' => 'icon0')
 		),
@@ -365,8 +366,23 @@ class TemplateChecker {
 
 	public static function run($fileName, MessageCollection $messages) {
 		$checker = new TemplateChecker($fileName, $messages);
+		$checker->injectCustomWidgets();
 		$checker->performTests();
 		return $checker;
+	}
+
+	private function injectCustomWidgets() {
+		$file = const_path . 'pages/' . config_pages . '/templatechecker.customwidgets.php';
+		if (!is_file($file))
+			return;
+
+		try {
+			@require_once $file;
+			$this->widget_params = array_merge($this->widget_params, $customWidgets);
+		} catch (Exception $ex) {
+			$this->messages->addError('CUSTOM WIDGETS',
+					'merging custom widget information failed: ' + $ex->getMessage());
+		}
 	}
 
 	/**
@@ -378,7 +394,7 @@ class TemplateChecker {
 		$this->messages = $messages;
 		$this->fileName = $fileName;
 
-// Taken from index.php, adapted
+		// Taken from index.php, adapted
 		if (config_design == 'ice') {
 			$this->icon1 = 'icons/bl/';
 			$this->icon0 = 'icons/sw/';
@@ -395,20 +411,20 @@ class TemplateChecker {
 	 * Run tests and populate message array
 	 */
 	public function performTests() {
-// dom extension available?
+		// dom extension available?
 		if (!extension_loaded('dom')) {
 			$this->messages->addError('PREREQUISITIONS',
 					'php module "dom" not available!');
 			return;
 		}
 
-// File given?
+		// File given?
 		if (!$this->fileName) {
 			$this->messages->addError('FILE CHECK', 'Invalid data. No file given!');
 			return;
 		}
 
-// File existing?
+		// File existing?
 		$absFile = const_path . $this->fileName;
 		if (!is_file($absFile)) {
 			$this->messages->addError('FILE CHECK', 'Not a file: ' . $this->file);
@@ -426,15 +442,16 @@ class TemplateChecker {
 	 * @return \DOMDocument
 	 */
 	private function readFile($absFile) {
+		/*
 		$html = file_get_contents($absFile);
 		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8");
-//remove comments (/** .... */)
+		//remove comments (/** .... )
 		$html = preg_replace("/(\/\*\*)(.*?)(\*\/)/si", "", $html);
-
-// Create DOMDocument from html, add errors for parsing issues
+		*/
+		// Create DOMDocument from html, add errors for parsing issues
 		$this->domDocument = new DOMDocument();
 		libxml_use_internal_errors(true);
-		$this->domDocument->loadHTML($html);
+		$this->domDocument->loadHTMLFile($absFile);
 		$errors = libxml_get_errors();
 		foreach ($errors as $error) {
 			if (in_array($error->code, $this->ignore_html_error_code))
@@ -447,7 +464,7 @@ class TemplateChecker {
 			);
 			$this->messages->addWarning('HTML PARSER', $error->message, $error->line, '',
 					$data);
-			return false;
+			//return false;
 		}
 		libxml_clear_errors();
 		libxml_use_internal_errors(false);
@@ -460,6 +477,8 @@ class TemplateChecker {
 	 * @param integer $level Nesting level
 	 */
 	function checkNode($node, $level = 0) {
+		if ($node == NULL)
+			return;
 		if ($node->nodeType == XML_ELEMENT_NODE) {
 			switch ($node->tagName) {
 				case 'img':
@@ -475,7 +494,7 @@ class TemplateChecker {
 			}
 		}
 
-// Check child nodes recursively
+		// Check child nodes recursively
 		if ($node->hasChildNodes()) {
 			foreach ($node->childNodes as $childNode) {
 				$this->checkNode($childNode, $level + 1);
@@ -497,7 +516,6 @@ class TemplateChecker {
 			"Image Source" => $src,
 			"Checked File" => $file,
 		);
-
 
 		switch ($existing) {
 			case self::FILE_MISSING:
@@ -536,21 +554,26 @@ class TemplateChecker {
 		if (!preg_match("/\((.*?)\)/", $macro, $parameters))
 			return;
 
-		if (!preg_match_all("/\[(?:[^()]|(?R))+\]|'[^']*'|[^(),\s]+/", $parameters[1],
-						$param_array)) {
-			$data = array(
-				'Widget' => $widget,
-				'Parameters' => $parameters[1],
-			);
-			$lineNo = $node->getLineNo();
-			$this->messages->addWarning('WIDGET PARAM CHECK',
-					'Unable to split Parameters. Check manually!', $lineNo, $macro, $data);
-			return;
+		if ($parameters[1]) {
+			if (!preg_match_all("/\[(?:[^()]|(?R))+\]|'[^']*'|[^(),\s]+/",
+							$parameters[1], $param_array)) {
+				$data = array(
+					'Widget' => $widget,
+					'Parameters' => $parameters[1],
+				);
+				$lineNo = $node->getLineNo();
+				$this->messages->addWarning('WIDGET PARAM CHECK',
+						'Unable to split Parameters. Check manually!', $lineNo, $macro, $data);
+				return;
+			}
+			$param_array = $param_array[0];
+		} else {
+			// No parameters
+			$param_array = array();
 		}
-		$param_array = $param_array[0];
 
-		if (array_key_exists($widget, $this->image_params)) {
-			foreach ($this->image_params[$widget] as $param_no => $param_check)
+		if (array_key_exists($widget, $this->widget_params)) {
+			foreach ($this->widget_params[$widget] as $param_no => $param_check)
 				switch ($param_check['type']) {
 					case 'image':
 						$this->checkWidgetImageParameter($node, $macro, $widget, $param_array,
