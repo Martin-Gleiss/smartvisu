@@ -12,7 +12,7 @@
 
 {% block content %}
 
-	<h1><img class="icon" src='{{ icon0 }}it_pc.png' />Büro Ingrid</h1>
+	<h1><img class="icon" src='{{ icon0 }}it_pc.svg' />Büro Ingrid</h1>
 
 	<div class="block">
 		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
@@ -21,25 +21,25 @@
 				<h3>Licht, PC, Status</h3>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('PhilippDeckenlicht', 'OG.Philipp.Deckenlicht', icon1~'light_ceiling_light.png', icon0~'light_ceiling_light.png') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('PhilippDeckenlicht', 'OG.Philipp.Deckenlicht', 'light_ceiling_light.svg', 'light_ceiling_light.svg') }} </td>
 						<td>Deckenlampe</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('PhilippTischleuchte', 'OG.Philipp.Tischleuchte', icon1~'light_office_desk.png', icon0~'light_office_desk.png') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('PhilippTischleuchte', 'OG.Philipp.Tischleuchte', 'light_office_desk.svg', 'light_office_desk.svg') }} </td>
 						<td>Tischleuchte</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('IngridPC', 'Allgemein.PCs.PCIngrid', icon1~'it_pc.png', icon0~'it_pc.png') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('IngridPC', 'Allgemein.PCs.PCIngrid', 'it_pc.svg', 'it_pc.svg') }} </td>
 						<td>PC - Ingrid</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', icon1~'it_television.png', icon0~'it_television.png') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', 'it_television.svg', 'it_television.svg') }} </td>
 						<td>Monitor und Drucker</td>
 					</tr>
 				</table>
@@ -74,14 +74,14 @@
 				<table width="100%">
 					<tr>
 						<td align="left">
-							{{ basic.symbol('FensterPhilipp1', 'OG.Philipp.Fenster', 'Fenster ist offen', icon1~'fts_window_1w_open.png') }}
-							{{ basic.symbol('FensterPhilipp2', 'OG.Philipp.Fenster', 'Fenster ist zu', icon0~'fts_window_1w.png', 0) }}
+							{{ basic.symbol('FensterPhilipp1', 'OG.Philipp.Fenster', 'Fenster ist offen', 'fts_window_1w_open.svg', '', '', 'icon1') }}
+							{{ basic.symbol('FensterPhilipp2', 'OG.Philipp.Fenster', 'Fenster ist zu', 'fts_window_1w.svg', 0) }}
 						</td>
 					</tr>
 					<tr>
 						<td align="left">
-							{{ basic.symbol('TuerPhilipp1', 'OG.Philipp.Tuer', 'Tür ist offen', icon1~'fts_door_open.png') }}
-							{{ basic.symbol('TuerPhilipp2', 'OG.Philipp.Tuer', 'Tür ist zu', icon0~'fts_door.png', 0) }}
+							{{ basic.symbol('TuerPhilipp1', 'OG.Philipp.Tuer', 'Tür ist offen', 'fts_door_open.svg', '', '', 'icon1') }}
+							{{ basic.symbol('TuerPhilipp2', 'OG.Philipp.Tuer', 'Tür ist zu', 'fts_door.svg', 0) }}
 						</td>
 					</tr>
 				</table>
