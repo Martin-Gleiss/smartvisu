@@ -19,6 +19,7 @@ class weather extends service
 {
 	var $location = '';
 	var $icon_sm = 'sun_';
+	var $cache_duration_minutes = 0;
 
 	/**
 	 * initialization of some parameters
@@ -28,6 +29,10 @@ class weather extends service
 		parent::init($request);
 
 		$this->location = $request['location'];
+
+		// reduce real cache duration by 2 seconds to avoid getting old weather on calling repeat on widget
+		if (isset($request['cache_duration_minutes']))
+			$this->cache_duration_minutes = $request['cache_duration_minutes'] - (2/60); 
 
 		if (!isset($request['sunrise']))
 			$request['sunrise'] = 6;
