@@ -129,7 +129,6 @@ class calendar_icloud extends calendar
 	 * Get UserID and path to calendar from iCloud
 	 */
 	private function _getCalendarPath() {
-	    print("user: ".$this->username." pw: ".$this->password." server: ".$this->server."\n");
 		// Get my iCloud userID
 		$this->url = $this->server;
 		$request = "<A:propfind xmlns:A='DAV:'><A:prop><A:current-user-principal/></A:prop></A:propfind>";
