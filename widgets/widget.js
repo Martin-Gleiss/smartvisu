@@ -1316,6 +1316,25 @@ $.mobile.activePage.find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
+// ----- icon.blade2 -----------------------------------------------------------
+	$.mobile.activePage.find('svg[data-widget="icon.blade2"]').on( {
+		'update': function (event, response) {
+			event.stopPropagation();
+			// response is: {{ gad_value }}, {{ gad_switch }}
+
+			// calculate angle in (0 - ~180°)
+			var val = response[1];
+			var ang = -1 * (response[0] / $(this).attr('data-max') * -0.7 * Math.PI + 0.35 * Math.PI);
+			var pt;
+
+			for (var i = 0; i <= 3; i++) {
+				pt = [];
+				pt = pt.concat(fx.rotate([37, 20 + i * 20], ang, [50, 20 + i * 20]), fx.rotate([63, 20 + i * 20], ang, [50, 20 + i * 20]));
+				$('#' + this.id + ' #blade' + i).attr('points', pt.toString());
+			}
+		}
+	});
+
 // ----- icon.blade_z ---------------------------------------------------------
 	$.mobile.activePage.find('svg[data-widget="icon.blade_z"]').on( {
 		'update': function (event, response) {

@@ -71,7 +71,7 @@
 
 	{% for widget in widgetlist %}
 		<div class="box">
-			{{ attribute(icon, widget.name, [widget.name, '', 'bath.light.value'] ) }}
+			{{ attribute(icon, widget.name, [widget.name, '', 'bath.light.value', '', '', ''] ) }}
 
 			<div {% if widget.author %} title="Author: {{ widget.author }}" {% endif %}>{{ widget.command }}</div>
 		</div>
@@ -79,6 +79,37 @@
 
 	<div style="clear:left;"><br /><br /></div>
 
+
+
+	<h4>Coloring Dynamic Icons</h4>
+
+	<div class="docu">
+		Dynamic icons can be displayed in different colors. The color has to be specified as hexadecimal value. 'icon0' and 'icon1' can NOT be used!
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				{{ icon.blade2('icon3', '', 'bath.light.value', '', '', '#f9a028') }}
+				{{ icon.battery('icon4', '', 'bath.light.value', '', '', '#4176a9') }}
+				{{ icon.meter('icon5', '', 'bath.light.value', '', '', '#25ea4e') }}
+				{% endverbatim %}{% endfilter %}</code>
+		</div>
+	</div>
+	<br />
+	
+		<div class="box">
+			{{ icon.blade2('icon3', '', 'bath.light.value', '', '', '#f9a028') }}
+			<div>icon.blade2</div>
+		</div>
+		<div class="box">
+			{{ icon.battery('icon4', '', 'bath.light.value', '', '', '#4176a9') }}
+			<div>icon.battery</div>
+		</div>
+		<div class="box">
+			{{ icon.meter('icon5', '', 'bath.light.value', '', '', '#25ea4e') }}
+			<div>icon.meter</div>
+		</div>
+	<br />
+	<br />
+	<div style="clear:left;"><br /><br /></div>
 
 
 	{% set iconlist = dir(icon0, '(.*\.svg)') %}
@@ -89,6 +120,7 @@
 				<span style="font-size: 1.7em;">{{ iconlist|length }}</span><br /><span class="mini">icons</span></div>
 		</div>
 	</div>
+
 
 	<h4>Static Icons</h4>
 
