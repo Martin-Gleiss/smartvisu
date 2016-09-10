@@ -10,6 +10,7 @@
 - multimedia.image has new mode "fill"
 - basic.button extended to set color for svgs
 - basic.switch modified to allow color specification 'icon0' and 'icon1' for `color_on` and `color_off`
+- dynamic icons: added option to set color of icon
 
 ### New / changed Icons
 - New icon light_standing_light.svg
@@ -23,6 +24,7 @@
 - Loading time seriously decreased
 - Added Google calendar API V3
 - Changed smarthome.py driver to version 4
+- Extended smarthome.py driver to send data about the visu client (version, browser)
 
 ### Fixed Bugs
 - switched many broken icons to SVG
