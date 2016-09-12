@@ -311,6 +311,7 @@ class TemplateChecker {
 		'icon.arrow' => array(),
 		'icon.battery' => array(),
 		'icon.windrose' => array(),
+		'icon.shutter' => array(),
 		'phone.list' => array(),
 		'phone.missedlist' => array(),
 		'plot.comfortchart' => array(),
@@ -337,7 +338,9 @@ class TemplateChecker {
 		'weather.weather' => array(),
 	);
 	private $ignore_html_error_code = array(
-		68, //error parsing attribute name 
+		68 => array(), //error parsing attribute name 
+		800 => array(), // Missplaced ***
+		801 => array('maxline' => 10),
 	);
 
 	/**
@@ -431,6 +434,13 @@ class TemplateChecker {
 			return;
 		}
 
+		// HTML FILE
+		$ext = strtolower(pathinfo($absFile, PATHINFO_EXTENSION));
+		if ($ext != 'html') {
+			$this->messages->addInfo('FILE CHECK', 'Not a html file: ' . $this->file);
+			return;
+		}
+
 		if (!$this->readFile($absFile))
 			return;
 
@@ -442,20 +452,22 @@ class TemplateChecker {
 	 * @return \DOMDocument
 	 */
 	private function readFile($absFile) {
-		/*
-		$html = file_get_contents($absFile);
-		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8");
-		//remove comments (/** .... )
-		$html = preg_replace("/(\/\*\*)(.*?)(\*\/)/si", "", $html);
-		*/
 		// Create DOMDocument from html, add errors for parsing issues
 		$this->domDocument = new DOMDocument();
 		libxml_use_internal_errors(true);
 		$this->domDocument->loadHTMLFile($absFile);
 		$errors = libxml_get_errors();
 		foreach ($errors as $error) {
-			if (in_array($error->code, $this->ignore_html_error_code))
-				continue;
+			if (array_key_exists($error->code, $this->ignore_html_error_code)) {
+				$condintions = $this->ignore_html_error_code[$error->code];
+				$ignore = true;
+				if ($conditions['maxline'] && $error->line > maxline)
+					$ignore = false;
+				if ($conditions['minline'] && $error->line < minline)
+					$ignore = false;
+				if ($ignore)
+					continue;
+			}
 			/* @var $error LibXMLError */
 			$data = array(
 				"Level" => $error->level,
@@ -464,7 +476,6 @@ class TemplateChecker {
 			);
 			$this->messages->addWarning('HTML PARSER', $error->message, $error->line, '',
 					$data);
-			//return false;
 		}
 		libxml_clear_errors();
 		libxml_use_internal_errors(false);
