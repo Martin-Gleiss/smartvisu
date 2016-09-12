@@ -49,8 +49,8 @@
 				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch1', 'aussen.nordseite.beleuchtung.haustuer.schalten', 'light_corridor.svg', 'light_corridor.svg') }} </td><td>Wandleuchten neben der Haustür</td></tr>
 				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch2', 'dachueberstand.ost.beleuchtung.schalten', 'light_downlight.svg', 'light_downlight.svg') }} </td><td>Strahler im Dachüberstand beim Hauswirtschaftsraum</td></tr>
 				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch3', 'dachueberstand.west.beleuchtung.schalten', 'light_downlight.svg', 'light_downlight.svg') }} </td><td>Strahler im Dachüberstand beim Büro</td></tr>
-				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch4', 'giebel.west.beleuchtung.schalten', 'light_wall_2', 'light_wall_2.svg') }} </td><td>Wandleuchten am Westgiebel</td></tr>
-				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch5', 'aussen.carport.beleuchtung.durchgang.schalten', 'light_garage', 'light_garage.svg') }} </td><td>Durchgang im Carport</td></tr>
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch4', 'giebel.west.beleuchtung.schalten', 'light_wall_2.svg', 'light_wall_2.svg') }} </td><td>Wandleuchten am Westgiebel</td></tr>
+				<tr><td align="left" width="100px">&nbsp; {{ basic.switch('switch5', 'aussen.carport.beleuchtung.durchgang.schalten', 'light_garage.svg', 'light_garage.svg') }} </td><td>Durchgang im Carport</td></tr>
 			</table>
         </div>
     </div>
@@ -69,14 +69,13 @@
     	<div data-role="collapsible">
           <h3>Status Tür und Fenster</h3>
           {% import "widgets/window.html" as window %}
-          <p>
-            <div>
+          <div>
               Haustür:&nbsp;&nbsp;&nbsp;&nbsp;
               {{ basic.symbol('tuer1', 'eg.diele.haustuer', 'abgeschlossen', 'secur_locked.svg', 1) }}
               {{ basic.symbol('tuer2', 'eg.diele.haustuer', 'nicht abgeschlossen', 'secur_open.svg', 0) }}
             </div>
             {{ window.one ('win1', 'Fenster', 'eg.essen.fenster' ) }}
-          </p>
+          
         </div>
     </div>
     </div>
