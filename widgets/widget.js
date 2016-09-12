@@ -1472,7 +1472,7 @@ $.mobile.activePage.find('span[data-widget="basic.switch.v1"]').on({
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
 			var val = (1 - response[0] / $(this).attr('data-max')) * 4.5 + 0.5;
-			$('#' + this.id + ' #anim').attr('dur', (response[0] > 0 ? val : 0));
+			$('#' + this.id + ' #anim').attr('dur', (response[0] > 0 ? val : 0)).attr('begin', 0);
 		}
 	});
 
@@ -1495,7 +1495,7 @@ $.mobile.activePage.find('span[data-widget="basic.switch.v1"]').on({
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
 			var val = (1 - response[0] / $(this).attr('data-max')) * 4.5 + 0.5;
-			$('#' + this.id + ' #anim1').attr('dur', (response[0] > 0 ? val : 0));
+			$('#' + this.id + ' #anim1').attr('dur', (response[0] > 0 ? val : 0)).attr('begin', 0);
 		}
 	});
 
