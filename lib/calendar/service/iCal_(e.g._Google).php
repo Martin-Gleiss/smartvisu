@@ -11,8 +11,10 @@
 
 require_once '../../../lib/includes.php';
 require_once const_path_system.'calendar/calendar.php';
-require_once const_path_system.'calendar/iCalReader.php';
+require_once const_path_system.'calendar/ICal/ICal.php';
+require_once const_path_system.'calendar/ICal/EventObject.php';
 
+use ICal\ICal;
 
 /**
  * This class reads a google calendar
@@ -32,38 +34,22 @@ class calendar_google extends calendar
 
 	public function run()
 	{
-		$context = stream_context_create(array('http' => array('method' => "GET")));
-		$ics_content = file_get_contents($this->url, false, $context);
-		$this->debug($ics_content);
-
-		if ($ics_content !== false)
-		{
-			if (!empty($ics_content)) {
-				$ics_content = explode("\n", $ics_content);
-				$ics = new ICal($ics_content);
-				$ics->process_recurrences();
+				$ics = new ICal($this->url);
 				$events = $ics->eventsFromRange("today",false);
-				//$ics->sortEventsWithOrder($ics->events(), SORT_ASC);
 				$events = array_slice($events, 0, $this->count);
     		// output events as list
     		$i = 1;
-    		foreach ($events as $event) {
-    			$this->data[] = array('pos' => $i++,
-    				'start' => date('y-m-d', $ics->iCalDateToUnixTimestamp($event['DTSTART'])).' '.gmdate('H:i:s', $ics->iCalDateToUnixTimestamp($event['DTSTART'])),
-    				'end' => date('y-m-d', $ics->iCalDateToUnixTimestamp($event['DTEND'])).' '.gmdate('H:i:s', $ics->iCalDateToUnixTimestamp($event['DTEND'])),
-    				'title' => $event['SUMMARY'],
-    				'content' => '',
-    				'where' => str_replace(array("\n\r", "\n", "\r", "\\"), "<br />", $event['LOCATION'])
-    				//,
-    				//'link' => 'https://www.icloud.com/#calendar'
-    			);
-    		}
-			}
-
-		}
-		else
-			$this->error('Calendar: Google', 'Calendar read request failed!');
-	}
+        foreach ($events as $event) {
+          $this->data[] = array('pos' => $i++,
+            'start' => date('y-m-d H:i:s', $ics->iCalDateToUnixTimestamp($event->dtstart)),
+            'end' => date('y-m-d H:i:s', $ics->iCalDateToUnixTimestamp($event->dtend)),
+            'title' => $event->summary,
+            'content' => str_replace("\\n", "\n", $event->description),
+            'where' => $event->location
+            //,'link' => ''
+          );
+        }
+  }
 }
 
 
