@@ -13,8 +13,10 @@
 require_once '../../../lib/includes.php';
 require_once const_path_system.'class_cache.php';
 require_once const_path_system.'calendar/calendar.php';
-require_once const_path_system.'calendar/iCalReader.php';
+require_once const_path_system.'calendar/ICal/ICal.php';
+require_once const_path_system.'calendar/ICal/EventObject.php';
 
+use ICal\ICal;
 
 /**
  * This class reads an iCloud calendar
@@ -83,25 +85,24 @@ class calendar_icloud extends calendar
 		if (!empty($ics_content)) {
 			$ics_content = explode("\n", $ics_content);
 			$ics = new ICal($ics_content);
-			$ics->process_recurrences();
 			$events = $ics->sortEventsWithOrder($ics->events(), SORT_ASC);
 			$events = array_slice($events, 0, $this->count);
     		// output events as list
     		$i = 1;
     		foreach ($events as $event) {
     			$this->data[] = array('pos' => $i++,
-    				'start' => date('y-m-d', $ics->iCalDateToUnixTimestamp($event['DTSTART'])).' '.gmdate('H:i:s', $ics->iCalDateToUnixTimestamp($event['DTSTART'])),
-    				'end' => date('y-m-d', $ics->iCalDateToUnixTimestamp($event['DTEND'])).' '.gmdate('H:i:s', $ics->iCalDateToUnixTimestamp($event['DTEND'])),
-    				'title' => $event['SUMMARY'],
+    				'start' => date('y-m-d H:i:s', $ics->iCalDateToUnixTimestamp($event->dtstart)),
+    				'end' => date('y-m-d H:i:s', $ics->iCalDateToUnixTimestamp($event->dtend)),
+    				'title' => $event->summary,
     				'content' => '',
-    				'where' => str_replace(array("\n\r", "\n", "\r", "\\"), "<br />", $event['LOCATION']),
+    				'where' => str_replace(array("\n\r", "\n", "\r", "\\"), "<br />", $event->location),
     				'link' => 'https://www.icloud.com/#calendar'
     			);
     			
     		}
 		}
 	}
-	
+
 	/**
 	 * Execute iCloud request
 	 */
