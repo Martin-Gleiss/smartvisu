@@ -48,7 +48,7 @@
                 {{ basic.symbol(id|_('level3'), gad_level, 'Partybetrieb', 'vent_ventilation_level_3.svg', 3, '', 'icon1') }}
             </td>
             <td align="center">
-				{% if gad_auto %}{{ basic.dual(id|_('auto'), gad_auto, icon1~'vent_ventilation_level_manual_m.svg', icon0~'vent_ventilation_level_automatic.svg') }}{% endif %}
+				{% if gad_auto %}{{ basic.dual(id|_('auto'), gad_auto, 'vent_ventilation_level_manual_m.svg', 'vent_ventilation_level_automatic.svg') }}{% endif %}
 			</td>
 		</tr>
         </table>
