@@ -19,18 +19,8 @@ use ICal\ICal;
 /**
  * This class reads a google calendar
  */
-class calendar_google extends calendar
+class calendar_ical extends calendar
 {
-
-	/**
-	 * initialization of some parameters
-	 */
-	public function init($request)
-	{
-		parent::init($request);
-
-		//$this->url = preg_replace('#/basic(\.ics)?$#', "/full.ics?maxResults=".(int)$request['count']."&timeMin=2016-07-03T00:00:00Z&singleEvents=true&orderBy=startTime&sortOrder=a", $this->url);
-	}
 
 	public function run()
 	{
@@ -57,7 +47,7 @@ class calendar_google extends calendar
 // call the service
 // -----------------------------------------------------------------------------
 
-$service = new calendar_google(array_merge($_GET, $_POST));
+$service = new calendar_ical(array_merge($_GET, $_POST));
 echo $service->json();
 
 ?>
