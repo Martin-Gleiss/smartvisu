@@ -337,6 +337,7 @@ class TemplateChecker {
 		'weather.mapslides' => array(),
 		'weather.weather' => array(),
 		'now|smartdate' => array(),
+		'now|date' => array(),
 	);
 	private $ignore_html_error_code = array(
 		68 => array(), //error parsing attribute name 
