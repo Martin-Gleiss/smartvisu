@@ -7,7 +7,30 @@
 * -----------------------------------------------------------------------------
 */
 
+{% macro _icon(pic, color, id, class) %}
 
+	{% if (pic matches '#^icons/../.*\.png$#') and not isfile(pic) and isfile(pic|slice(0, 6) ~ 'ws' ~ pic|slice(8,-4) ~ '.svg') %}
+		{% if pic|slice(6, 2) != 'ws' %}
+			{% set color = pic|slice(6, 2) %}
+		{% endif %}
+		{% set pic = pic|slice(0, 6) ~ 'ws' ~ pic|slice(8,-4) ~ '.svg' %}
+	{% endif %}
+
+	{% if (color == 'icon0') or (color is empty) %}
+		<img id="{{ id }}" class="icon {{ class }}" src="{{ pic|deficon }}">
+	{% elseif color == 'icon1' %}
+		<img id="{{ id }}" class="icon icon1 {{ class }}" src="{{ pic|deficon }}">
+	{% else %}
+		{% set presetColors = {'or': '#f9a028', 'gn': '#84c929', 'bl': '#4176a9', 'sw': '#000'} %}
+		{% if presetColors[color] is defined %}
+			{% set color = presetColors[color] %}
+		{% endif %}
+		<img id="{{ id }}" class="icon icon1 {{ class }}" style="stroke:{{ color }}; fill:{{ color }};" src="{{ pic|deficon }}">
+	{% endif %}
+
+{% endmacro %}
+
+_
 /**
 * A button
 *
@@ -21,6 +44,7 @@
 */
 {% macro button(id, item, txt, pic, val, type, color) %}
 	{% set suffix = pic|slice(-4, 4) %}
+	{% import _self as basic %}
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.button" data-item="{{ item }}" data-val="{{ val|default('1') }}"
 		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true"
@@ -31,22 +55,10 @@
 		{% elseif suffix != '.svg' and suffix != '.png' and txt %}
 			data-icon="{{ pic }}" data-iconpos="top">{{ txt|e }}
 		{% elseif type == 'midi' and txt %}
-			{% if color is empty  %}
-				><img class="icon" src="{{ pic|deficon }}">
-			{% elseif color == 'icon1' %}
-				><img class="icon icon1" src="{{ pic|deficon }}">
-			{% else %}
-				><img class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};" src="{{ pic|deficon }}">
-			{% endif %}
+			>{{ basic._icon(pic|deficon, color) }}
 			<div>{{ txt|e }}</div>
 		{% else %}
-			{% if color is empty  %}
-				data-iconpos="center"><img class="icon" src="{{ pic|deficon }}">
-			{% elseif color == 'icon1' %}
-				data-iconpos="center"><img class="icon icon1" src="{{ pic|deficon }}">
-			{% else %}
-				data-iconpos="center"><img class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};" src="{{ pic|deficon }}">
-			{% endif %}
+			data-iconpos="center">{{ basic._icon(pic|deficon, color) }}
 		{% endif %}
 	</a>
 
@@ -117,27 +129,14 @@
 */
 {% macro dual(id, item, pic_on, pic_off, val_on, val_off, type, color_on, color_off) %}
 	{% set uid = uid(page, id) %}
+	{% import _self as basic %}
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.dual" data-item="{{ item }}"
 		data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
 		data-pic-on="{{ pic_on|deficon('control_on_off.svg') }}" data-pic-off="{{ pic_off|deficon('control_on_off.svg') }}"
 		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
-
-		{% if (color_off == 'icon0') or (color_off is empty)  %}
-			<img id="{{ uid }}-off" class="icon" src="{{ pic_off|deficon('control_on_off.svg') }}" />
-		{% elseif color_off == 'icon1' %}
-			<img id="{{ uid }}-off" class="icon icon1" src="{{ pic_off|deficon('control_on_off.svg') }}" />
-		{% else %}
-			<img id="{{ uid }}-off" class="icon icon1" style="stroke:{{ color_off }}; fill:{{ color_off }};" src="{{ pic_off|deficon('control_on_off.svg') }}" />
-		{% endif %}
-
-		{% if color_on == 'icon0' %}
-			<img id="{{ uid }}-on" class="icon hide" src="{{ pic_on|deficon('control_on_off.svg') }}" />
-		{% elseif (color_on == 'icon1') or (color_on is empty)  %}
-        	<img id="{{ uid }}-on" class="icon icon1 hide" src="{{ pic_on|deficon('control_on_off.svg') }}" />
-		{% else %}
-			<img id="{{ uid }}-on" class="icon icon1 hide" style="stroke:{{ color_on }}; fill:{{ color_on }};" src="{{ pic_on|deficon('control_on_off.svg') }}" />
-		{% endif %}
+		{{ basic._icon(pic_off|deficon('control_on_off.svg'), color_off, uid ~ '-off') }}
+		{{ basic._icon(pic_on|deficon('control_on_off.svg'), color_on|default('icon1'), uid ~ '-on', 'hide') }}
 	</a>
 
 {% endmacro %}
@@ -159,7 +158,7 @@
     <a id="{{ uid(page, id) }}" data-widget="basic.multistate" data-item="{{ item }}"
         data-vals="{{ implode(val) }}"  data-img="{{ implode(img|deficon) }}" data-value="0"
         class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
-		
+
         <img class="icon" src="{{ img[0]|deficon('control_on_off.svg') }}"/>
     </a>
 
@@ -391,28 +390,16 @@
 */
 {% macro switch(id, item, pic_on, pic_off, val_on, val_off, color_on, color_off) %}
 	{% set uid = uid(page, id) %}
+	{% import _self as basic %}
 
 	{% if not pic_on or pic_on|slice(-4, 4) == '.svg' %}
 		<span id="{{ uid }}" data-widget="basic.switch" data-item="{{ item }}"
 			data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
 			data-pic-on="{{ pic_on|deficon('control_on_off.svg') }}" data-pic-off="{{ pic_off|deficon('control_on_off.svg') }}"
 			class="switch icon">
-				<a>	
-					{% if (color_off == 'icon0') or (color_off is empty)  %}
-						<img id="{{ uid }}-off" class="icon" src="{{ pic_off|deficon('control_on_off.svg') }}" />
-					{% elseif color_off == 'icon1' %}
-						<img id="{{ uid }}-off" class="icon icon1" src="{{ pic_off|deficon('control_on_off.svg') }}" />
-					{% else %}
-						<img id="{{ uid }}-off" class="icon icon1" style="stroke:{{ color_off }}; fill:{{ color_off }};" src="{{ pic_off|deficon('control_on_off.svg') }}" />
-					{% endif %}
-					{% if color_on == 'icon0' %}
-						<img id="{{ uid }}-on" class="icon hide" src="{{ pic_on|deficon('control_on_off.svg') }}" />
-					{% elseif (color_on == 'icon1') or (color_on is empty)  %}
-        				<img id="{{ uid }}-on" class="icon icon1 hide" src="{{ pic_on|deficon('control_on_off.svg') }}" />
-					{% else %}
-						<img id="{{ uid }}-on" class="icon icon1 hide" style="stroke:{{ color_on }}; fill:{{ color_on }};" src="{{ pic_on|deficon('control_on_off.svg') }}" />
-					{% endif %}
-					
+				<a>
+					{{ basic._icon(pic_off|deficon('control_on_off.svg'), color_off, uid ~ '-off') }}
+					{{ basic._icon(pic_on|deficon('control_on_off.svg'), color_on|default('icon1'), uid ~ '-on', 'hide') }}
 				</a>
 		</span>
 	{% else %}
@@ -442,13 +429,8 @@
 
 	<span id="{{ uid(page, id) }}" data-widget="basic.symbol" data-item="{{ implode(items) }}" data-val="{{ val|default('1') }}"
 		data-mode="{{ mode|default('or') }}" class="symbol hide">
-		{% if (color == 'icon0') or (color is empty)  %}
-        	<img class="icon" src="{{ pic|deficon('control_on_off.svg') }}" />
-		{% elseif color == 'icon1' %}
-			<img class="icon icon1" src="{{ pic|deficon('control_on_off.svg') }}" />
-		{% else %}
-			<img class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};" src="{{ pic|deficon('control_on_off.svg') }}" />
-		{% endif %}
+		{% import _self as basic %}
+		{{ basic._icon(pic|deficon('control_on_off.svg'), color) }}
 		{{ txt }}
 	</span>
 {% endmacro %}
