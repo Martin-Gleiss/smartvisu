@@ -12,7 +12,7 @@
 
 {% block content %}
 
-	<h1><img class="icon" src='{{ icon0 }}scene_stairs.png' />Flure / Nebenräume</h1>
+	<h1><img class="icon" src='{{ icon0 }}scene_stairs.svg' />Flure / Nebenräume</h1>
 
 	<div class="block">
 		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
@@ -21,7 +21,7 @@
 				<table width=100%>
 					<tr>
 						<td align=left>
-							{{ basic.switch('DeckenlichtKg', 'EG.FlureNebenraume.KgDeckenlicht', icon1~'light_ceiling_light.png', icon0~'light_ceiling_light.png') }} Keller
+							{{ basic.switch('DeckenlichtKg', 'EG.FlureNebenraume.KgDeckenlicht', 'light_ceiling_light.svg', 'light_ceiling_light.svg') }} Keller
 						</td>
 						<td align=left>
 							&nbsp;
@@ -29,18 +29,18 @@
 					</tr>
 					<tr>
 						<td align=left>
-							{{ basic.switch('EgKgNische', 'EG.FlureNebenraume.NischeEGKG', icon1~'light_led.png', icon0~'light_led.png') }} Nische
+							{{ basic.switch('EgKgNische', 'EG.FlureNebenraume.NischeEGKG', 'light_led.svg', 'light_led.svg') }} Nische
 						</td>
 						<td align=left>
-							{{ basic.switch('FlurEingangHeizen1', 'EG.FlureNebenraume.Heizung1', icon1~'sani_heating.png', icon0~'sani_heating.png') }} Eingang
+							{{ basic.switch('FlurEingangHeizen1', 'EG.FlureNebenraume.Heizung1', 'sani_heating.svg', 'sani_heating.svg') }} Eingang
 						</td>
 					</tr>
 					<tr>
 						<td align=left>
-							{{ basic.switch('KgEgTreppe', 'EG.FlureNebenraume.TreppeKGEG', icon1~'light_stairs.png', icon0~'light_stairs.png') }} KG / EG
+							{{ basic.switch('KgEgTreppe', 'EG.FlureNebenraume.TreppeKGEG', 'light_stairs.svg', 'light_stairs.svg') }} KG / EG
 						</td>
 						<td align=left>
-							{{ basic.switch('FlurDieleHeizen1', 'EG.FlureNebenraume.Heizung2', icon1~'sani_heating.png', icon0~'sani_heating.png') }} Flur
+							{{ basic.switch('FlurDieleHeizen1', 'EG.FlureNebenraume.Heizung2', 'sani_heating.svg', 'sani_heating.svg') }} Flur
 						</td>
 					</tr>
 				</table>
@@ -56,26 +56,26 @@
 				<table width=100%>
 					<tr>
 						<td align=left>
-							{{ basic.switch('FGBMEingang', 'Allgemein.Freigaben.FreigabeBMEGEingang', icon1~'message_presence.png', icon0~'message_presence_disabled.png') }} Eingang
+							{{ basic.switch('FGBMEingang', 'Allgemein.Freigaben.FreigabeBMEGEingang', 'message_presence.svg', 'message_presence_disabled.svg') }} Eingang
 						</td>
 						<td align=left>
-							{{ basic.switch('FGBMFlurEG', 'Allgemein.Freigaben.FreigabeBMEGFlur', icon1~'message_presence.png', icon0~'message_presence_disabled.png') }}  EG Flur
-						</td>
-					</tr>
-					<tr>
-						<td align=left>
-							{{ basic.switch('FGMKSpeis', 'Allgemein.Freigaben.FreigabeEGSpeis', icon1~'secur_open.png', icon0~'secur_locked.png') }} EG Speis
-						</td>
-						<td align=left>
-							{{ basic.switch('esKlingeltLichtEinAus', 'Allgemein.Freigaben.FreigabeLichtsignal', icon1~'secur_open.png', icon0~'secur_locked.png') }} Klingel
+							{{ basic.switch('FGBMFlurEG', 'Allgemein.Freigaben.FreigabeBMEGFlur', 'message_presence.svg', 'message_presence_disabled.svg') }}  EG Flur
 						</td>
 					</tr>
 					<tr>
 						<td align=left>
-							{{ basic.switch('FGBMFlurOG', 'Allgemein.Freigaben.FreigabeBMOGFlur', icon1~'message_presence.png', icon0~'message_presence_disabled.png') }} OG-Flur
+							{{ basic.switch('FGMKSpeis', 'Allgemein.Freigaben.FreigabeEGSpeis', 'secur_open.svg', 'secur_locked.svg') }} EG Speis
 						</td>
 						<td align=left>
-							{{ basic.switch('FGBMOGSchlafen', 'Allgemein.Freigaben.FreigabeBMOGSchlafen', icon1~'message_presence.png', icon0~'message_presence_disabled.png') }}  SZ-Bett
+							{{ basic.switch('esKlingeltLichtEinAus', 'Allgemein.Freigaben.FreigabeLichtsignal', 'secur_open.svg', 'secur_locked.svg') }} Klingel
+						</td>
+					</tr>
+					<tr>
+						<td align=left>
+							{{ basic.switch('FGBMFlurOG', 'Allgemein.Freigaben.FreigabeBMOGFlur', 'message_presence.svg', 'message_presence_disabled.svg') }} OG-Flur
+						</td>
+						<td align=left>
+							{{ basic.switch('FGBMOGSchlafen', 'Allgemein.Freigaben.FreigabeBMOGSchlafen', 'message_presence.svg', 'message_presence_disabled.svg') }}  SZ-Bett
 						</td>
 					</tr>
 				</table>
@@ -91,26 +91,26 @@
 				<table width=100%>
 					<tr>
 						<td align=left>
-							{{ basic.switch('EingangEG', 'EG.FlureNebenraume.EGEingang', icon1~'light_downlight.png', icon0~'light_downlight.png') }} Eingang
+							{{ basic.switch('EingangEG', 'EG.FlureNebenraume.EGEingang', 'light_downlight.svg', 'light_downlight.svg') }} Eingang
 						</td>
 						<td align=left>
-							{{ basic.switch('FlurWandRgbGira', 'EG.FlureNebenraume.RgbGiraWand', icon1~'light_wall_2.png', icon0~'light_wall_2.png') }}  RGB Wand
-						</td>
-					</tr>
-					<tr>
-						<td align=left>
-							{{ basic.switch('FlurVouteLed', 'EG.FlureNebenraume.LedVoute', icon1~'light_diffused.png', icon0~'light_diffused.png') }} LED Voute
-						</td>
-						<td align=left>
-							{{ basic.switch('FlurDeckeRgb', 'EG.FlureNebenraume.RGBDecke', icon1~'light_diffused.png', icon0~'light_diffused.png') }} RGB Decke
+							{{ basic.switch('FlurWandRgbGira', 'EG.FlureNebenraume.RgbGiraWand', 'light_wall_2.svg', 'light_wall_2.svg') }}  RGB Wand
 						</td>
 					</tr>
 					<tr>
 						<td align=left>
-							{{ basic.switch('LedFensterbankEssen', 'EG.FlureNebenraume.', icon1~'light_uplight.png', icon0~'light_uplight.png') }} EG / OG
+							{{ basic.switch('FlurVouteLed', 'EG.FlureNebenraume.LedVoute', 'light_diffused.svg', 'light_diffused.svg') }} LED Voute
 						</td>
 						<td align=left>
-							{{ basic.switch('FlurHeizungLed', 'EG.FlureNebenraume.LedHeizung', icon1~'light_diffused.png', icon0~'light_diffused.png') }} LED Heizung
+							{{ basic.switch('FlurDeckeRgb', 'EG.FlureNebenraume.RGBDecke', 'light_diffused.svg', 'light_diffused.svg') }} RGB Decke
+						</td>
+					</tr>
+					<tr>
+						<td align=left>
+							{{ basic.switch('LedFensterbankEssen', 'EG.FlureNebenraume.', 'light_uplight.svg', 'light_uplight.svg') }} EG / OG
+						</td>
+						<td align=left>
+							{{ basic.switch('FlurHeizungLed', 'EG.FlureNebenraume.LedHeizung', 'light_diffused.svg', 'light_diffused.svg') }} LED Heizung
 						</td>
 					</tr>
 				</table>
@@ -125,26 +125,26 @@
 				<table width=100%>
 					<tr>
 						<td align=left>
-							{{ basic.switch('FlurWCOG', 'EG.FlureNebenraume.OgWC', icon1~'light_ceiling_light.png', icon0~'light_ceiling_light.png') }} OG WC
+							{{ basic.switch('FlurWCOG', 'EG.FlureNebenraume.OgWC', 'light_ceiling_light.svg', 'light_ceiling_light.svg') }} OG WC
 						</td>
 						<td align=left>
-							{{ basic.switch('FlurPodestEgOg', 'EG.FlureNebenraume.LedPodest', icon1~'light_uplight.png', icon0~'light_uplight.png') }}  Podest
+							{{ basic.switch('FlurPodestEgOg', 'EG.FlureNebenraume.LedPodest', 'light_uplight.svg', 'light_uplight.svg') }}  Podest
 						</td>
 					</tr>
 					<tr>
 						<td align=left>
-							{{ basic.switch('FlurOgZbV', 'EG.FlureNebenraume.ZbvOG', icon1~'light_ceiling_light.png', icon0~'light_ceiling_light.png') }} OG ZBV
+							{{ basic.switch('FlurOgZbV', 'EG.FlureNebenraume.ZbvOG', 'light_ceiling_light.svg', 'light_ceiling_light.svg') }} OG ZBV
 						</td>
 						<td align=left width=50%>
-							{{ basic.switch('FlurTreppeRGB', 'EG.FlureNebenraume.RgbTreppe', icon1~'light_stairs.png', icon0~'light_stairs.png') }} RGB EG/OG
+							{{ basic.switch('FlurTreppeRGB', 'EG.FlureNebenraume.RgbTreppe', 'light_stairs.svg', 'light_stairs.svg') }} RGB EG/OG
 						</td>
 					</tr>
 					<tr>
 						<td align=left>
-							{{ basic.switch('FlurDeckeOgFlur', 'EG.FlureNebenraume.OgFlurDecke', icon1~'light_ceiling_light.png', icon0~'light_ceiling_light.png') }} OG Flur
+							{{ basic.switch('FlurDeckeOgFlur', 'EG.FlureNebenraume.OgFlurDecke', 'light_ceiling_light.svg', 'light_ceiling_light.svg') }} OG Flur
 						</td>
 						<td align=left>
-							{{ basic.switch('FlurOgDgTreppe', 'EG.FlureNebenraume.TreppeOgDg', icon1~'light_stairs.png', icon0~'light_stairs.png') }} Wand OG/DG
+							{{ basic.switch('FlurOgDgTreppe', 'EG.FlureNebenraume.TreppeOgDg', 'light_stairs.svg', 'light_stairs.svg') }} Wand OG/DG
 						</td>
 					</tr>
 				</table>
@@ -159,26 +159,26 @@
 				<table width="100%">
 					<tr>
 						<td align="left">
-							{{ basic.symbol('verriegelHaustuer1', 'Allgemein.Haustuer.verreigeln', 'Haustür ist verriegelt', icon0~'status_locked.png') }}
-							{{ basic.symbol('verriegelHaustuer2', 'Allgemein.Haustuer.verreigeln', 'Haustür ist entriegelt', icon1~'status_open.png', 0) }}
+							{{ basic.symbol('verriegelHaustuer1', 'Allgemein.Haustuer.verreigeln', 'Haustür ist verriegelt', 'status_locked.svg') }}
+							{{ basic.symbol('verriegelHaustuer2', 'Allgemein.Haustuer.verreigeln', 'Haustür ist entriegelt', 'status_open.svg', 0, '', 'icon1') }}
 						</td>
 					</tr>
 					<tr>
 						<td align="left">
-							{{ basic.symbol('oeffneHaustuer1', 'Allgemein.Haustuer.oeffnen', 'Haustür ist zu', icon0~'fts_door.png') }}
-							{{ basic.symbol('oeffneHaustuer2', 'Allgemein.Haustuer.oeffnen', 'Haustür ist offen', icon1~'fts_door_open.png', 0) }}
+							{{ basic.symbol('oeffneHaustuer1', 'Allgemein.Haustuer.oeffnen', 'Haustür ist zu', 'fts_door.svg') }}
+							{{ basic.symbol('oeffneHaustuer2', 'Allgemein.Haustuer.oeffnen', 'Haustür ist offen', 'fts_door_open.svg', 0, '', 'icon1') }}
 						</td>
 					</tr>
 					<tr>
 						<td align="left">
-							{{ basic.symbol('EingangFlurTuer1', 'EG.FlureNebenraume.TuerEingangFlur', 'Tür Flur/Diele ist offen', icon1~'fts_door_open.png') }}
-							{{ basic.symbol('EingangFlurTuer2', 'EG.FlureNebenraume.TuerEingangFlur', 'Tür Flur/Diele ist zu', icon0~'fts_door.png', 0) }}
+							{{ basic.symbol('EingangFlurTuer1', 'EG.FlureNebenraume.TuerEingangFlur', 'Tür Flur/Diele ist offen', 'fts_door_open.svg', '', '', 'icon1') }}
+							{{ basic.symbol('EingangFlurTuer2', 'EG.FlureNebenraume.TuerEingangFlur', 'Tür Flur/Diele ist zu', 'fts_door.svg', 0) }}
 						</td>
 					</tr>
 					<tr>
 						<td align="left">
-							{{ basic.symbol('EgOgFenster1', 'EG.FlureNebenraume.FensterEgOg', 'Fenster EG / OG ist offen', icon1~'fts_window_1w_open.png') }}
-							{{ basic.symbol('EgOgFenster2', 'EG.FlureNebenraume.FensterEgOg', 'Fenster EG / OG ist zu', icon0~'fts_window_1w.png', 0) }}
+							{{ basic.symbol('EgOgFenster1', 'EG.FlureNebenraume.FensterEgOg', 'Fenster EG / OG ist offen', 'fts_window_1w_open.svg', '', '', 'icon1') }}
+							{{ basic.symbol('EgOgFenster2', 'EG.FlureNebenraume.FensterEgOg', 'Fenster EG / OG ist zu', 'fts_window_1w.svg', 0) }}
 						</td>
 					</tr>
 				</table>

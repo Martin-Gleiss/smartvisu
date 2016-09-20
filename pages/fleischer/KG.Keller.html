@@ -31,33 +31,33 @@
 		}
 
 		#technik .ui-icon {
-			background: url({{ icon0 }}sani_pump.png) 50% 50% no-repeat;
+			background: url({{ icon0 }}sani_pump.svg) 50% 50% no-repeat;
 			background-size: 36px 36px;
 		}
 
 		#strom .ui-icon {
-			background: url({{ icon0 }}measure_power_meter.png) 50% 50% no-repeat;
+			background: url({{ icon0 }}measure_power_meter.svg) 50% 50% no-repeat;
 			background-size: 36px 36px;
 		}
 
 		#solar .ui-icon {
-			background: url({{ icon0 }}time_graph.png) 50% 50% no-repeat;
+			background: url({{ icon0 }}time_graph.svg) 50% 50% no-repeat;
 			background-size: 36px 36px;
 		}
 
 		#heizung .ui-icon {
-			background: url({{ icon0 }}time_graph.png) 50% 50% no-repeat;
+			background: url({{ icon0 }}time_graph.svg) 50% 50% no-repeat;
 			background-size: 36px 36px;
 		}
 
 		#wasser .ui-icon {
-			background: url({{ icon0 }}time_graph.png) 50% 50% no-repeat;
+			background: url({{ icon0 }}time_graph.svg) 50% 50% no-repeat;
 			background-size: 36px 36px;
 		}
 	</style>
 	<div data-role="navbar" class="nav-custom">
 		<ul>
-			<li><a href="index.php?page=KG.Keller" class="ui-btn-active" id="technik" data-icon="custom">Úbersicht</a>
+			<li><a href="index.php?page=KG.Keller" class="ui-btn-active" id="technik" data-icon="custom">Übersicht</a>
 			</li>
 			<li><a href="index.php?page=PlotStrom" id="strom" data-icon="custom">Strom</a></li>
 			<li><a href="index.php?page=PlotSolar" id="solar" data-icon="custom">Solar</a></li>
@@ -87,7 +87,7 @@
 							Zählerstand:
 						</td>
 						<td align=right>
-							{{ basic.float('StandELTzaehler', 'Allgemein.Zaehler.ELTzaehler', '&nbsp;kWh') }}
+							{{ basic.float('StandELTzaehler', 'Allgemein.Zaehler.ELTzaehler', 'kWh') }}
 						</td>
 					</tr>
 				</table>
@@ -97,7 +97,7 @@
 							Wirkleistung Gesamt:
 						</td>
 						<td align=right>
-							{{ basic.float('LesitungGesamt', 'Allgemein.Zaehler.Pgesamt', '&nbsp;W') }}
+							{{ basic.float('LesitungGesamt', 'Allgemein.Zaehler.Pgesamt', 'W') }}
 						</td>
 					</tr>
 				</table>
@@ -107,7 +107,7 @@
 							Wirkleistung L1:
 						</td>
 						<td align=right>
-							{{ basic.float('WirkleistungL1', 'Allgemein.Zaehler.PL1', '&nbsp;W') }}
+							{{ basic.float('WirkleistungL1', 'Allgemein.Zaehler.PL1', 'W') }}
 						</td>
 					</tr>
 				</table>
@@ -117,7 +117,7 @@
 							Wirkleistung L2:
 						</td>
 						<td align=right>
-							{{ basic.float('WirkleistungL2', 'Allgemein.Zaehler.PL2', '&nbsp;W') }}
+							{{ basic.float('WirkleistungL2', 'Allgemein.Zaehler.PL2', 'W') }}
 						</td>
 					</tr>
 				</table>
@@ -127,7 +127,7 @@
 							Wirkleistung L3:
 						</td>
 						<td align=right>
-							{{ basic.float('WirkleistungL3', 'Allgemein.Zaehler.PL3', '&nbsp;W') }}
+							{{ basic.float('WirkleistungL3', 'Allgemein.Zaehler.PL3', 'W') }}
 						</td>
 					</tr>
 				</table>
@@ -137,7 +137,7 @@
 							Verbrauch heute:
 						</td>
 						<td align=right>
-							{{ basic.float('ELTverbrauchHEUTE', 'Allgemein.Zaehler.ELTVerHeute', '&nbsp;kWh') }}
+							{{ basic.float('ELTverbrauchHEUTE', 'Allgemein.Zaehler.ELTVerHeute', 'kWh') }}
 						</td>
 					</tr>
 				</table>
@@ -147,7 +147,7 @@
 							Kosten heute:
 						</td>
 						<td align=right>
-							{{ basic.float('ELTkostenheute', 'Allgemein.Zaehler.ELTKoHeute', '&nbsp;€') }}
+							{{ basic.float('ELTkostenheute', 'Allgemein.Zaehler.ELTKoHeute', '€') }}
 						</td>
 					</tr>
 				</table>
@@ -157,7 +157,7 @@
 							Verbrauch gestern:
 						</td>
 						<td align=right>
-							{{ basic.float('ELTverbrauchGESTERN', 'Allgemein.Zaehler.ELTVerGester', '&nbsp;kWh') }}
+							{{ basic.float('ELTverbrauchGESTERN', 'Allgemein.Zaehler.ELTVerGester', 'kWh') }}
 						</td>
 					</tr>
 				</table>
@@ -167,7 +167,7 @@
 							Kosten gestern:
 						</td>
 						<td align=right>
-							{{ basic.float('ELTkostenGESTERN', 'Allgemein.Zaehler.ELTKoGester', '&nbsp;€') }}
+							{{ basic.float('ELTkostenGESTERN', 'Allgemein.Zaehler.ELTKoGester', '€') }}
 						</td>
 					</tr>
 				</table>
@@ -186,7 +186,7 @@
 							Jahresverbrauch:
 						</td>
 						<td align=right>
-							{{ basic.float('WasserJahrVerbrauch', 'Allgemein.Zaehler.WasserVerbJahr', '&nbsp;l') }}
+							{{ basic.float('WasserJahrVerbrauch', 'Allgemein.Zaehler.WasserVerbJahr', 'l') }}
 						</td>
 					</tr>
 				</table>
@@ -196,7 +196,7 @@
 							Jahreskosen:
 						</td>
 						<td align=right>
-							{{ basic.float('WasserJahrKosten', 'Allgemein.Zaehler.WasserKoJahr', '&nbsp;€') }}
+							{{ basic.float('WasserJahrKosten', 'Allgemein.Zaehler.WasserKoJahr', '€') }}
 						</td>
 					</tr>
 				</table>
@@ -206,7 +206,7 @@
 							Verbrauch heute:
 						</td>
 						<td align=right>
-							{{ basic.float('WasserHeuteVerbrauch', 'Allgemein.Zaehler.WasserVerbHeute', '&nbsp;l') }}
+							{{ basic.float('WasserHeuteVerbrauch', 'Allgemein.Zaehler.WasserVerbHeute', 'l') }}
 						</td>
 					</tr>
 				</table>
@@ -216,7 +216,7 @@
 							Kosten heute:
 						</td>
 						<td align=right>
-							{{ basic.float('WasserHeuteKosten', 'Allgemein.Zaehler.WasserKoHeute', '&nbsp;€') }}
+							{{ basic.float('WasserHeuteKosten', 'Allgemein.Zaehler.WasserKoHeute', '€') }}
 						</td>
 					</tr>
 				</table>
@@ -226,7 +226,7 @@
 							Verbrauch gestern:
 						</td>
 						<td align=right>
-							{{ basic.float('WasserGesternVerbrauch', 'Allgemein.Zaehler.WasserVerbGestern', '&nbsp;l') }}
+							{{ basic.float('WasserGesternVerbrauch', 'Allgemein.Zaehler.WasserVerbGestern', 'l') }}
 						</td>
 					</tr>
 				</table>
@@ -236,7 +236,7 @@
 							Kosten gestern:
 						</td>
 						<td align=right>
-							{{ basic.float('WasserGesternKosten', 'Allgemein.Zaehler.WasserKoGestern', '&nbsp;€') }}
+							{{ basic.float('WasserGesternKosten', 'Allgemein.Zaehler.WasserKoGestern', '€') }}
 						</td>
 					</tr>
 				</table>
@@ -246,7 +246,7 @@
 							Verbrauch 7 Tage:
 						</td>
 						<td align=right>
-							{{ basic.float('Wasser7TageVerbrauch', 'Allgemein.Zaehler.WasserVerb7Tage', '&nbsp;l') }}
+							{{ basic.float('Wasser7TageVerbrauch', 'Allgemein.Zaehler.WasserVerb7Tage', 'l') }}
 						</td>
 					</tr>
 				</table>
@@ -256,7 +256,7 @@
 							Kosten 7 Tage:
 						</td>
 						<td align=right>
-							{{ basic.float('Wasser7TageKosten', 'Allgemein.Zaehler.WasserKo7Tage', '&nbsp;€') }}
+							{{ basic.float('Wasser7TageKosten', 'Allgemein.Zaehler.WasserKo7Tage', '€') }}
 						</td>
 					</tr>
 				</table>

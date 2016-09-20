@@ -12,7 +12,7 @@
 
 {% block content %}
 
-	<h1><img class="icon" src='{{ icon0 }}scene_making_love.png' />Schlafzimmer und Ankleide</h1>
+	<h1><img class="icon" src='{{ icon0 }}scene_making_love.svg' />Schlafzimmer und Ankleide</h1>
 
 	<div class="block">
 		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
@@ -21,15 +21,15 @@
 				<table width=100%>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('SchlafenLEDBett', 'OG.Schlafen.LEDBett', icon1~'light_uplight.png', icon0~'light_uplight.png') }} LED-Bett
+							{{ basic.switch('SchlafenLEDBett', 'OG.Schlafen.LEDBett', 'light_uplight.svg', 'light_uplight.svg') }} LED-Bett
 						</td>
 						<td align=left>
-							{{ basic.switch('SchlafenTV', 'OG.Schlafen.TV', icon1~'message_socket.png', icon0~'message_socket.png') }} TV
+							{{ basic.switch('SchlafenTV', 'OG.Schlafen.TV', 'message_socket.svg', 'message_socket.svg') }} TV
 						</td>
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('SchlafenLEDWand', 'OG.Schlafen.LEDWand', icon1~'light_wall_1.png', icon0~'light_wall_1.png') }}  LED-Wand
+							{{ basic.switch('SchlafenLEDWand', 'OG.Schlafen.LEDWand', 'light_wall_1.svg', 'light_wall_1.svg') }}  LED-Wand
 						</td>
 						<td align=left width=50%>
 							&nbsp;
@@ -37,10 +37,10 @@
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('IngridNachttisch', 'OG.Schlafen.NachttischIngrid', icon1~'light_mirror.png', icon0~'light_mirror.png') }} Ingrid
+							{{ basic.switch('IngridNachttisch', 'OG.Schlafen.NachttischIngrid', 'light_mirror.svg', 'light_mirror.svg') }} Ingrid
 						</td>
 						<td align=left>
-							{{ basic.switch('FreigabeBMBettSchlafen', 'OG.Schlafen.FreigabeBM', icon1~'message_presence.png', icon0~'message_presence_disabled.png') }}  Freigabe
+							{{ basic.switch('FreigabeBMBettSchlafen', 'OG.Schlafen.FreigabeBM', 'message_presence.svg', 'message_presence_disabled.svg') }}  Freigabe
 						</td>
 					</tr>
 				</table>
@@ -55,7 +55,7 @@
 				<table width=100%>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('DeckeSchiene', 'OG.Ankleide.Schiene', icon1~'light_wire_system_1.png', icon0~'light_wire_system_1.png') }} Schiene
+							{{ basic.switch('DeckeSchiene', 'OG.Ankleide.Schiene', 'light_wire_system_1.svg', 'light_wire_system_1.svg') }} Schiene
 						</td>
 						<td align=left>
 							&nbsp;
@@ -63,8 +63,8 @@
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.symbol('FensterAnkleide1', 'OG.Ankleide.Fenster', 'Fenster ist offen', icon1~'fts_window_2w_open.png') }}
-							{{ basic.symbol('FensterAnkleide2', 'OG.Ankleide.Fenster', 'Fenster ist zu', icon0~'fts_window_2w.png', 0) }}
+							{{ basic.symbol('FensterAnkleide1', 'OG.Ankleide.Fenster', 'Fenster ist offen', 'fts_window_2w_open.svg', '', '', 'icon1') }}
+							{{ basic.symbol('FensterAnkleide2', 'OG.Ankleide.Fenster', 'Fenster ist zu', 'fts_window_2w.svg', 0) }}
 						</td>
 						<td align=left>
 							&nbsp;
@@ -114,8 +114,8 @@
 				<table width=100%>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.symbol('FensterWest1', 'OG.Schlafen.Fenster2', 'Fenster West ist offen', icon1~'fts_window_2w_open.png') }}
-							{{ basic.symbol('FensterWest2', 'OG.Schlafen.Fenster2', 'Fenster West ist zu', icon0~'fts_window_2w.png', 0) }}
+							{{ basic.symbol('FensterWest1', 'OG.Schlafen.Fenster2', 'Fenster West ist offen', 'fts_window_2w_open.svg', '', '', 'icon1') }}
+							{{ basic.symbol('FensterWest2', 'OG.Schlafen.Fenster2', 'Fenster West ist zu', 'fts_window_2w.svg', 0) }}
 						</td>
 						<td align=left>
 							&nbsp;
@@ -123,8 +123,8 @@
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.symbol('FensterSued1', 'OG.Schlafen.Fenster1', 'Fenster Süd ist offen', icon1~'fts_window_2w_open.png') }}
-							{{ basic.symbol('FensterSued2', 'OG.Schlafen.Fenster1', 'Fenster Süd ist zu', icon0~'fts_window_2w.png', 0) }}
+							{{ basic.symbol('FensterSued1', 'OG.Schlafen.Fenster1', 'Fenster Süd ist offen', 'fts_window_2w_open.svg', '', '', 'icon1') }}
+							{{ basic.symbol('FensterSued2', 'OG.Schlafen.Fenster1', 'Fenster Süd ist zu', 'fts_window_2w.svg', 0) }}
 						</td>
 						<td align=left>
 							&nbsp;
@@ -132,8 +132,8 @@
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.symbol('TuerSchlafen1', 'OG.Schlafen.Tuer', 'Tür ist offen', icon1~'fts_door_open.png') }}
-							{{ basic.symbol('TuerSchlafen2', 'OG.Schlafen.Tuer', 'Tür ist zu', icon0~'fts_door.png', 0) }}
+							{{ basic.symbol('TuerSchlafen1', 'OG.Schlafen.Tuer', 'Tür ist offen', 'fts_door_open.svg', '', '', 'icon1') }}
+							{{ basic.symbol('TuerSchlafen2', 'OG.Schlafen.Tuer', 'Tür ist zu', 'fts_door.svg', 0) }}
 						</td>
 						<td align=left>
 							&nbsp;
