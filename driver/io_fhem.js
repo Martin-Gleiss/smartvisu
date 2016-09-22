@@ -24,7 +24,7 @@ var io = {
   // -----------------------------------------------------------------------------
   // P U B L I C   F U N C T I O N S
   // -----------------------------------------------------------------------------
-  driverVersion: "1.11",
+  driverVersion: "1.12",
   address: '',
   port: '',
 
@@ -250,7 +250,7 @@ var io = {
           } else {
             var values = widget.get(items);
             if (widget.check(values)) {
-              io.callUpdateHandler(this, values);
+              io.callUpdateHandler(this, [values]);
 
               // for the icon.* widgets there is a second update handler
               // that we must call. It switches the icon
@@ -258,9 +258,9 @@ var io = {
                 var cachedWidget = io.action["icon."];
                 try {
                   if (cachedWidget) {
-                    cachedWidget.handler.call(this, 'update', values);
+                    cachedWidget.handler.call(this, 'update', [values]);
                   } else {
-                    $(this).trigger('update', values);
+                    $(this).trigger('update', [values]);
                   }
                 } catch (ex) {
                   io.log(0, "Widget '" + widgetType + "' - " + gad + ": " + values + " Error: " + ex);
@@ -690,7 +690,7 @@ var io = {
     io.allGADs = [];
 
     // get all delegate handlers
-    var handlers = ($._data($(document)[0], "events") || {})["update"];
+    var handlers = ($._data($(document)[0], "events"))["update"] || {};
 
     for (var i = 0; i < handlers.delegateCount; i++) {
       var raw = handlers[i].selector;
