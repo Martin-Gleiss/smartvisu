@@ -83,8 +83,9 @@ class WidgetParameterChecker {
 
 		$type = $this->getParamConfig('type', 'unknown');
 		switch ($type) {
+			case 'unknown':
+				break;
 			case 'id':
-
 				$this->checkParameterTypeId();
 				break;
 			case 'image':
@@ -109,10 +110,7 @@ class WidgetParameterChecker {
 				$this->checkParameterTypeType();
 				break;
 			default:
-				error_log('unknown type ' . $type);
-				break;
-			case 'unknown':
-			case 'tbd':
+				error_log('Template Checker: Unknown type ' . $type);
 				break;
 		}
 	}

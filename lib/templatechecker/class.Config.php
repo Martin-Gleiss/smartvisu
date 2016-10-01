@@ -48,7 +48,7 @@ class Config {
 		'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back',
 		'grid', 'star', 'alert', 'info', 'home', 'search'
 	);
-	
+
 	/**
 	 * Array containing known button types
 	 * @var array 
@@ -108,7 +108,9 @@ class Config {
 		),
 		'basic.formula' => array(
 			0 => array('type' => 'id'),
-			//@ToDo!
+			1 => array('type' => 'item'),
+			2 => array('type' => 'text', 'optional' => TRUE),
+			3 => array('type' => 'text', 'optional' => TRUE, 'default' => 'SUM(VAR)'),
 		),
 		'basic.glue' => array(
 			0 => array('type' => 'id', 'unique' => FALSE),
@@ -120,7 +122,10 @@ class Config {
 		),
 		'basic.multistate' => array(
 			0 => array('type' => 'id'),
-			// @ToDo!
+			1 => array('type' => 'item'),
+			2 => array('type' => 'text'), //@ToDo : Support array form
+			3 => array('type' => 'text'), //@ToDo : Support array form
+			4 => array('type' => 'text', 'optional' => TRUE, 'default' => 'Off'),
 		),
 		'basic.rgb' => array(
 			0 => array('type' => 'id'),
@@ -140,7 +145,6 @@ class Config {
 			4 => array('type' => 'image', 'optional' => TRUE),
 			5 => array('type' => 'value', 'optional' => TRUE),
 			6 => array('type' => 'value', 'optional' => TRUE, 'default' => '255'),
-			
 		),
 		'basic.shutter' => array(
 			0 => array('type' => 'id'),
@@ -149,7 +153,7 @@ class Config {
 			3 => array('type' => 'value', 'optional' => TRUE, 'default' => '0'),
 			4 => array('type' => 'value', 'optional' => TRUE, 'default' => '255'),
 			5 => array('type' => 'value', 'optional' => TRUE, 'default' => '5'),
-			6 => array('type' => 'tbd', 'optional' => TRUE),
+			6 => array('type' => 'text', 'optional' => TRUE, 'default' => 'half', 'valid_values' => array('half', 'full')),
 		),
 		'basic.slider' => array(
 			0 => array('type' => 'id'),
@@ -157,7 +161,7 @@ class Config {
 			2 => array('type' => 'value', 'optional' => TRUE, 'default' => '0'),
 			3 => array('type' => 'value', 'optional' => TRUE, 'default' => '255'),
 			4 => array('type' => 'value', 'optional' => TRUE, 'default' => '5'),
-			5 => array('type' => 'tbd', 'optional' => TRUE),
+			5 => array('type' => 'text', 'optional' => TRUE, 'valid_values' => array('none', 'vertical', 'bottomup', 'semicircle')),
 		),
 		'basic.switch' => array(
 			0 => array('type' => 'id'),
@@ -175,7 +179,7 @@ class Config {
 			2 => array('type' => 'text', 'optional' => TRUE),
 			3 => array('type' => 'image', 'optional' => TRUE),
 			4 => array('type' => 'value', 'optional' => TRUE, 'default' => '1'),
-			5 => array('type' => 'tbd', 'optional' => TRUE),
+			5 => array('type' => 'text', 'optional' => TRUE, 'default' => 'or', 'valid_values' => array('or', 'and')),
 			6 => array('type' => 'color', 'optional' => TRUE, 'default' => 'icon0'),
 		),
 		'basic.tank' => array(
@@ -184,7 +188,7 @@ class Config {
 			2 => array('type' => 'value', 'optional' => TRUE, 'default' => '0'),
 			3 => array('type' => 'value', 'optional' => TRUE, 'default' => '255'),
 			4 => array('type' => 'value', 'optional' => TRUE, 'default' => '5'),
-			5 => array('type' => 'tbd', 'optional' => TRUE),
+			5 => array('type' => 'text', 'optional' => TRUE, 'default' => 'none', 'valid_values' => array('none', 'cylinder', 'water', 'pallets')),
 			6 => array('type' => 'color', 'optional' => TRUE, 'default' => 'grey'),
 		),
 		'basic.text' => array(
@@ -197,7 +201,7 @@ class Config {
 		),
 		'basic.trigger' => array(
 			0 => array('type' => 'id'),
-			1 => array('type' => 'tbd'),
+			1 => array('type' => 'text'),
 			2 => array('type' => 'text', 'optional' => TRUE),
 			3 => array('type' => 'image', 'optional' => TRUE),
 			4 => array('type' => 'value', 'optional' => TRUE, 'default' => '1'),
@@ -223,6 +227,7 @@ class Config {
 		'icon.arrow' => array(),
 		'icon.battery' => array(),
 		'icon.blade' => array(),
+		'icon.blade2' => array(),
 		'icon.blade_z' => array(),
 		'icon.blade_arc' => array(),
 		'icon.clock' => array(),
@@ -264,4 +269,5 @@ class Config {
 		'now|smartdate' => array(),
 		'now|date' => array(),
 	);
+
 }
