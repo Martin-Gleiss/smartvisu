@@ -1,50 +1,12 @@
-.file, .retest{
-		font-weight:bold;
-		font-size: 14px;
-		line-height: 36px;
-	}
-
-	.hover:hover, .retest:hover{
-		text-decoration:underline;
-	}
-
-	.result {
-		padding-left:25px;
-	}
-
-	.details {
-		color:white;
-		line-height: 1.2em;
-	}
-
-	.details:hover {
-		text-decoration:none;
-	}
-
-	.severity_N, .severity_I, .severity_W, .severity_E, .severity_U {
-		background-size: 36px 36px;
-		background-repeat: no-repeat;
-		padding-left: 36px;
-		display: block;
-		font-size: 14px;
-		line-height: 36px;
-	}
-	.severity_E {
-		background-image: url('/icons/ws/message_stop.svg');
-		color: red;
-	}
-	.severity_W {
-		background-image: url('/icons/ws/message_attention.svg');
-		color: yellow;
-	}
-	.severity_N {
-		background-image: url('/icons/ws/control_ok.svg');
-		color: greenyellow;
-	}
-	.severity_I {
-		background-image: url('/icons/ws/message_info.svg');
-		color: greenyellow;
-	}
-	.severity_U {
-		background-image: url('/icons/ws/control_home.svg');
-	}
+.severity_E .tplchk_text {
+	color: red;
+}
+.severity_W .tplchk_text {
+	color: yellow;
+}
+.severity_N .tplchk_text {
+	color: greenyellow;
+}
+.severity_I .tplchk_text {
+	color: greenyellow;
+}

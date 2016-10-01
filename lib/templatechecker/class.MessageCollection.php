@@ -122,6 +122,26 @@ class MessageCollection {
 	public function getMessages() {
 		return $this->messages;
 	}
+	
+	/**
+	 * return grouped list of messages
+	 * @return nested array severity->test->messages
+	 */
+	public function getMessagesGrouped() {
+		$ret = array(
+			self::SEVERITY_ERROR => array(),
+			self::SEVERITY_WARNING => array(),
+			self::SEVERITY_INFO => array(),
+			self::SEVERITY_NONE => array(),
+		);
+		
+		foreach($this->messages as $message) {
+			if (!array_key_exists($message['test'], $ret[$message['severity']]))
+					$ret[$message['severity']][$message['test']] = array();
+			$ret[$message['severity']][$message['test']][] = $message;
+		}
+		return $ret;
+	}
 
 	/**
 	 * return number of messages for certain severity
@@ -134,6 +154,14 @@ class MessageCollection {
 		return 0;
 	}
 
+	/**
+	 * return number of messages for all severities
+	 * @return array severity->count
+	 */
+	public function getMessageCounts() {
+		return $this->messageCount;
+	}
+	
 	/**
 	 * return total number of messages
 	 * @return int number of messages

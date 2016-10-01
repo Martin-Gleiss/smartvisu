@@ -80,7 +80,7 @@ class RequestHandler {
 					$id = str_replace('.', '-', $id);
 					$ret[$id] = $dir . '/' . $item;
 				}
-			}
+			}			
 		}
 		$dirlist->close();
 		ksort($ret);
@@ -100,7 +100,9 @@ class RequestHandler {
 			'file' => $file,
 			'resultid' => 'r' . substr($fileid, 1),
 			'total_severity' => $messages->getMaxSeverity(),
-			'messages' => $messages->getMessages(),
+			'messages' => $messages->getMessagesGrouped(),
+			'counts' => $messages->getMessageCounts(),
+			'total_count' => $messages->getTotalMessageCount(),
 		);
 	}
 
