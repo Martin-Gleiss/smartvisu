@@ -108,7 +108,7 @@ class Config {
 		),
 		'basic.formula' => array(
 			0 => array('type' => 'id'),
-			1 => array('type' => 'item'),
+			1 => array('type' => 'item', 'array_form' => 'may'),
 			2 => array('type' => 'text', 'optional' => TRUE),
 			3 => array('type' => 'text', 'optional' => TRUE, 'default' => 'SUM(VAR)'),
 		),
@@ -123,8 +123,8 @@ class Config {
 		'basic.multistate' => array(
 			0 => array('type' => 'id'),
 			1 => array('type' => 'item'),
-			2 => array('type' => 'text'), //@ToDo : Support array form
-			3 => array('type' => 'text'), //@ToDo : Support array form
+			2 => array('type' => 'text', 'array_form' => 'must'), 
+			3 => array('type' => 'text', 'array_form' => 'must'), 
 			4 => array('type' => 'text', 'optional' => TRUE, 'default' => 'Off'),
 		),
 		'basic.rgb' => array(
@@ -175,7 +175,7 @@ class Config {
 		),
 		'basic.symbol' => array(
 			0 => array('type' => 'id'),
-			1 => array('type' => 'item'),
+			1 => array('type' => 'item', 'array_form' => 'may'),
 			2 => array('type' => 'text', 'optional' => TRUE),
 			3 => array('type' => 'image', 'optional' => TRUE),
 			4 => array('type' => 'value', 'optional' => TRUE, 'default' => '1'),
