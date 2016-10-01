@@ -56,6 +56,11 @@ class Config {
 	const SmartvisuButtonTypes = array('micro', 'mini', 'midi');
 
 	/**
+	 * Array containing valid interval values for duration format
+	 */
+	const SmartvisuDurationIntervals = array('s', 'i', 'h', 'd', 'w', 'm', 'y');
+	
+	/**
 	 * Configuration array for dynamic icon widget
 	 */
 	const IconWidgetConfiguration = array(
@@ -226,7 +231,7 @@ class Config {
 			1 => array('type' => 'text', 'optional' => TRUE),
 			2 => array('type' => 'value'),
 			3 => array('type' => 'color', 'optional' => TRUE, 'default' => 'grey'),
-			4 => array('type' => 'time', 'optional' => TRUE, 'default' => '1h'),
+			4 => array('type' => 'duration', 'optional' => TRUE, 'default' => '1h'),
 		),
 		'clock.digiclock' => array(
 			0 => array('type' => 'id'),
@@ -313,13 +318,13 @@ class Config {
 			0 => array('type' => 'id'),
 			1 => array('type' => 'text'),
 			2 => array('type' => 'value', 'optional' => TRUE, 'default' => '10'),
-			3 => array('type' => 'time', 'optional' => TRUE, 'default' => '1h'),
+			3 => array('type' => 'duration', 'optional' => TRUE, 'default' => '1h'),
 		),
 		'phone.missedlist' => array(
 			0 => array('type' => 'id'),
 			1 => array('type' => 'text'),
 			2 => array('type' => 'value', 'optional' => TRUE, 'default' => '10'),
-			3 => array('type' => 'time', 'optional' => TRUE, 'default' => '1h'),
+			3 => array('type' => 'duration', 'optional' => TRUE, 'default' => '1h'),
 		),
 		'plot.comfortchart' => array(
 			0 => array('type' => 'id'),
@@ -329,8 +334,8 @@ class Config {
 		'plot.minmaxavg' => array(
 			0 => array('type' => 'id'),
 			1 => array('type' => 'item'),
-			2 => array('type' => 'time', 'optional' => TRUE, 'default' => '1h'),
-			3 => array('type' => 'time', 'optional' => TRUE, 'default' => 'now'),
+			2 => array('type' => 'duration', 'optional' => TRUE, 'default' => '1h'),
+			3 => array('type' => 'duration', 'optional' => TRUE, 'default' => 'now'),
 			4 => array('type' => 'value', 'optional' => TRUE),
 			5 => array('type' => 'value', 'optional' => TRUE),
 			6 => array('type' => 'text', 'optional' => TRUE),
@@ -341,8 +346,8 @@ class Config {
 			0 => array('type' => 'id'),
 			1 => array('type' => 'item', 'array_form' => 'may'),
 			2 => array('type' => 'text', 'valid_values' => array('avg', 'sum', 'min', 'max')),
-			3 => array('type' => 'time', 'optional' => TRUE, 'default' => '1h'),
-			4 => array('type' => 'time', 'optional' => TRUE, 'default' => 'now'),
+			3 => array('type' => 'duration', 'optional' => TRUE, 'default' => '1h'),
+			4 => array('type' => 'duration', 'optional' => TRUE, 'default' => 'now'),
 			5 => array('type' => 'value', 'optional' => TRUE, 'array_form' => 'must'),
 			6 => array('type' => 'value', 'optional' => TRUE, 'array_form' => 'must'),
 			7 => array('type' => 'value', 'optional' => TRUE, 'default' => '100'),
@@ -350,7 +355,7 @@ class Config {
 			9 => array('type' => 'color', 'optional' => TRUE, 'array_form' => 'may'),
 			10 => array('type' => 'text', 'optional' => TRUE, 'default' => 'line', 'array_form' => 'may', 'valid_values' => array('line', 'stair', 'spline', 'area', 'areaspline', 'column')),
 			11 => array('type' => 'text', 'optional' => TRUE, 'array_form' => 'may'),
-			12 => array('type' => 'time', 'optional' => TRUE),
+			12 => array('type' => 'duration', 'optional' => TRUE),
 			13 => array('type' => 'value', 'optional' => TRUE, 'array_form' => 'may'),
 			14 => array('type' => 'text', 'optional' => TRUE, 'valid_values' => array('0', '1')),
 			15 => array('type' => 'color', 'optional' => TRUE),
@@ -359,8 +364,8 @@ class Config {
 			0 => array('type' => 'id'),
 			1 => array('type' => 'item', 'array_form' => 'may'),
 			2 => array('type' => 'text', 'valid_values' => array('avg', 'sum', 'min', 'max')),
-			3 => array('type' => 'time', 'optional' => TRUE, 'default' => '1h'),
-			4 => array('type' => 'time', 'optional' => TRUE, 'default' => 'now'),
+			3 => array('type' => 'duration', 'optional' => TRUE, 'default' => '1h'),
+			4 => array('type' => 'duration', 'optional' => TRUE, 'default' => 'now'),
 			5 => array('type' => 'value', 'optional' => TRUE),
 			6 => array('type' => 'value', 'optional' => TRUE),
 			7 => array('type' => 'value', 'optional' => TRUE, 'default' => '100'),
@@ -368,7 +373,7 @@ class Config {
 			9 => array('type' => 'color', 'optional' => TRUE, 'array_form' => 'may'),
 			10 => array('type' => 'text', 'optional' => TRUE, 'default' => 'line', 'array_form' => 'may', 'valid_values' => array('line', 'stair', 'spline', 'area', 'areaspline', 'column')),
 			11 => array('type' => 'text', 'optional' => TRUE, 'array_form' => 'may'),
-			12 => array('type' => 'time', 'optional' => TRUE),
+			12 => array('type' => 'duration', 'optional' => TRUE),
 		),
 		'plot.rtr' => array(
 			0 => array('type' => 'id'),
@@ -387,7 +392,7 @@ class Config {
 			0 => array('type' => 'id'),
 			1 => array('type' => 'image'),
 			2 => array('type' => 'text', 'optional' => TRUE, 'default' => 'none', 'valid_values' => array('none', 'corner', 'corner-bottom')),
-			3 => array('type' => 'time', 'optional' => TRUE, 'default' => '10i'),
+			3 => array('type' => 'duration', 'optional' => TRUE, 'default' => '10i'),
 		),
 		'multimedia.music' => array(
 			0 => array('type' => 'id'),
@@ -432,7 +437,7 @@ class Config {
 			0 => array('type' => 'id'),
 			1 => array('type' => 'item'),
 			2 => array('type' => 'item', 'optional' => TRUE),
-			3 => array('type' => 'item'),
+			3 => array('type' => 'item', 'optional' => TRUE),
 			4 => array('type' => 'text', 'optional' => TRUE),
 			5 => array('type' => 'text', 'optional' => TRUE),
 			6 => array('type' => 'text', 'optional' => TRUE, 'default' => 'info', 'valid_values' => array('info', 'error')),
@@ -449,13 +454,13 @@ class Config {
 		'weather.current' => array(
 			0 => array('type' => 'id'),
 			1 => array('type' => 'text', 'optional' => TRUE),
-			2 => array('type' => 'time', 'optional' => TRUE, 'default' => '1h'),
+			2 => array('type' => 'duration', 'optional' => TRUE, 'default' => '1h'),
 		),
 		'weather.forecast' => array(
 			0 => array('type' => 'id'),
 			1 => array('type' => 'text', 'optional' => TRUE),
 			2 => array('type' => 'value', 'optional' => TRUE, 'default' => '1'),
-			3 => array('type' => 'time', 'optional' => TRUE, 'default' => '3h'),
+			3 => array('type' => 'duration', 'optional' => TRUE, 'default' => '3h'),
 		),
 		'weather.forecastweek' => array(
 			0 => array('type' => 'id'),
