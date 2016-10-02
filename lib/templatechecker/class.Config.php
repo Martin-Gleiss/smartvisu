@@ -284,7 +284,7 @@ class Config {
 		),
 		'device.shutter' => array(
 			0 => array('type' => 'id'),
-			1 => array('type' => 'text'),
+			1 => array('type' => 'text', 'optional' => TRUE),
 			2 => array('type' => 'item'),
 			3 => array('type' => 'item', 'optional' => TRUE),
 			4 => array('type' => 'item'),
@@ -316,13 +316,13 @@ class Config {
 		'icon.zenith' => IconWidgetConfiguration,
 		'phone.list' => array(
 			0 => array('type' => 'id'),
-			1 => array('type' => 'text'),
+			1 => array('type' => 'text', 'optional' => TRUE),
 			2 => array('type' => 'value', 'optional' => TRUE, 'default' => '10'),
 			3 => array('type' => 'duration', 'optional' => TRUE, 'default' => '1h'),
 		),
 		'phone.missedlist' => array(
 			0 => array('type' => 'id'),
-			1 => array('type' => 'text'),
+			1 => array('type' => 'text', 'optional' => TRUE),
 			2 => array('type' => 'value', 'optional' => TRUE, 'default' => '10'),
 			3 => array('type' => 'duration', 'optional' => TRUE, 'default' => '1h'),
 		),
