@@ -264,8 +264,7 @@ class TemplateChecker {
 				strtolower(substr($file, 0, 8)) == 'https://')
 			return self::FILE_REMOTE;
 
-		if (substr($file, 0, 7) == 'i
-			con0~\'') {
+		if (substr($file, 0, 7) == 'icon0~\'') {
 			$file = $settings->getIcon0() . substr($file, 7);
 		} else if (substr($file, 0, 7) == 'icon1~\'') {
 			$file = $settings->getIcon1() . substr($file, 7);
