@@ -9,6 +9,9 @@
 
 HISTORY
 --------------------------------------------------------------------------------
+v 2.9
+	-
+	
 v 2.8 03.10.16
     - new widget: basic.multistate
     - new widget: plot.multiaxes
