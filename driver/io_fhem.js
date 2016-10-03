@@ -92,6 +92,14 @@ var io = {
       };
     }
 
+    if (address === "") {
+      io.address = window.location.hostname;
+    }
+
+    if (port === "") {
+      io.port = window.location.port;
+    }
+
     if (address === "offline") {
       io.offline = true;
     }
@@ -412,7 +420,17 @@ var io = {
   // Open the connection and listen what fronthem sends
   // -----------------------------------------------------------------------------
   open: function() {
-    io.socket = new WebSocket('ws://' + io.address + ':' + io.port + '/');
+    var socketproto = "ws:";
+
+    if (window.location.protocol == "https:") {
+      socketproto = 'wss:';
+    }
+
+    if (io.port == "80" || io.port == "443") {
+      io.socket = new WebSocket(socketproto + '//' + io.address + '/ws/');
+    } else {
+      io.socket = new WebSocket(socketproto + '//' + io.address + ':' + io.port + '/ws/');
+    }
 
     io.socket.onopen = function() {
       io.log(2, "socket.onopen");
