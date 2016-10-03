@@ -9,12 +9,23 @@
 
 HISTORY
 --------------------------------------------------------------------------------
-v 2.8
-	- new widget: basic.multistate
-	- new widget: plot.multiaxes
-	- new widget: device.codepad
-	- new widget: status.collapse
-	- new widget: status.popup
+v 2.8 03.10.16
+    - new widget: basic.multistate
+    - new widget: plot.multiaxes
+    - new widget: plot.minmaxavg
+    - new widget: device.codepad
+    - new widget: status.collapse
+    - new widget: status.popup
+    - dynamic icons: added option to set color of icon
+    - Added proxy settings in configuration
+    - Auto reconnect for drivers can be enabled in configuration
+    - new driver for FHEM
+    - new driver for openHAB2
+    - improve: loading time seriously decreased
+    - improve: added Google calendar API V3
+    - changed smarthome.py driver to version 4
+    - extended smarthome.py driver to send data about the visu client (version, browser)
+    - a bunch of bugs fixed
 	
 v 2.7 03.11.13
 	- new: SmartHome.py Montior page
