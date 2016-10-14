@@ -24,7 +24,7 @@ var io = {
   // -----------------------------------------------------------------------------
   // P U B L I C   F U N C T I O N S
   // -----------------------------------------------------------------------------
-  driverVersion: "1.11",
+  driverVersion: "1.12",
   address: '',
   port: '',
 
@@ -90,6 +90,14 @@ var io = {
         alert("Error: " + message + "\nurl: " + url + "\nline: " + line);
         return false;
       };
+    }
+
+    if (address === "") {
+      io.address = window.location.hostname;
+    }
+
+    if (port === "") {
+      io.port = window.location.port;
     }
 
     if (address === "offline") {
@@ -412,7 +420,17 @@ var io = {
   // Open the connection and listen what fronthem sends
   // -----------------------------------------------------------------------------
   open: function() {
-    io.socket = new WebSocket('ws://' + io.address + ':' + io.port + '/');
+    var socketproto = "ws:";
+
+    if (window.location.protocol == "https:") {
+      socketproto = 'wss:';
+    }
+
+    if (io.port == "80" || io.port == "443") {
+      io.socket = new WebSocket(socketproto + '//' + io.address + '/ws/');
+    } else {
+      io.socket = new WebSocket(socketproto + '//' + io.address + ':' + io.port + '/ws/');
+    }
 
     io.socket.onopen = function() {
       io.log(2, "socket.onopen");
