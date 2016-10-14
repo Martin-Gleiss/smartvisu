@@ -1,0 +1,12 @@
+.severity_E .tplchk_text {
+	color: red;
+}
+.severity_W .tplchk_text {
+	color: yellow;
+}
+.severity_N .tplchk_text {
+	color: greenyellow;
+}
+.severity_I .tplchk_text {
+	color: greenyellow;
+}
