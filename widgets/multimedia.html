@@ -35,6 +35,7 @@
 		$('#{{ uid(page, id) }}').attr('src', noCacheSrc);
 
 		setInterval(function () {
+			var noCacheSrc ='{{ src }}' +  (('{{ src }}'.indexOf('?') == -1) ? '?' : '&') + '_=' + new Date().getTime();
 			$('#{{ uid(page, id) }}').attr('src', noCacheSrc);
 		}, new Date().duration('{{time|default("10i")}}'));
 	</script>
