@@ -91,6 +91,14 @@ var io = {
         return false;
       };
     }
+    
+    if (address === "") {
+      io.address = window.location.hostname;
+    }
+
+    if (port === "") {
+      io.port = window.location.port;
+    }
 
     if (address === "offline") {
       io.offline = true;
@@ -250,7 +258,7 @@ var io = {
           } else {
             var values = widget.get(items);
             if (widget.check(values)) {
-              io.callUpdateHandler(this, [values]);
+              io.callUpdateHandler(this, value.list instanceof Array ? values : [values]);
 
               // for the icon.* widgets there is a second update handler
               // that we must call. It switches the icon
@@ -412,7 +420,17 @@ var io = {
   // Open the connection and listen what fronthem sends
   // -----------------------------------------------------------------------------
   open: function() {
-    io.socket = new WebSocket('ws://' + io.address + ':' + io.port + '/');
+    var socketproto = "ws:";
+    
+    if (window.location.protocol == "https:") {
+      socketproto = 'wss:';
+    }
+
+    if (io.port == "80" || io.port == "443") {
+      io.socket = new WebSocket(socketproto + '//' + io.address + '/ws/');
+    } else {
+      io.socket = new WebSocket(socketproto + '//' + io.address + ':' + io.port + '/ws/');
+    }
 
     io.socket.onopen = function() {
       io.log(2, "socket.onopen");
