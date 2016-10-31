@@ -21,37 +21,39 @@ In this example the div is binded to the status.collapse and will be controled b
 
 		{{ status.collapse('w1', 'bath.alert.info') }}
 		<div class="hide" data-bind="w1">
-			... 
+			...
 		</div>
 
-		{% endverbatim %}{% endfilter %}</code>
+		{% endverbatim %}{% endfilter %}
 	</code>
 </div>
-	
+
 Use it with simle html, to show and hide a <b>div</b>:<br />
 <div class="html">
 	{{ basic.flip('f1', 'bath.alert.info') }}<br />
 	{{ status.collapse('w1', 'bath.alert.info') }}
-	
+
 	<div class="hide" data-bind="w1">
-		Every simple html-code could be collapsed ... with text and icons <img class="icon" src="{{ icon0 }}audio_audio.png" /> ... 
+		Every simple html-code could be collapsed ... with text and icons <img class="icon" src="{{ icon0 }}audio_audio.svg" /> ...
 	</div>
 </div>
-	
-Or use it to show and hide a <b>popup</b>:<br />	
+
+Or use it to show and hide a <b>popup</b>:<br />
 <div class="html">
 	{{ basic.flip('f2', 'bath.alert.warning') }}<br />
-	{{ status.collapse('w2', 'bath.alert.warning') }}
 
 	<div id="status-popup" class="alert" data-bind="w2" data-role="popup" data-overlay-theme="a">
 		<div data-role="header" data-theme="c"><h1>Popup</h1></div>
 		<p>... or a popup ...</p>
-	
+
 		<div class="control">
 			<span class="stamp"></span>
 			<a onClick="$('#status-popup').popup('close');" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
 		</div>
 	</div>
+
+	{{ status.collapse('w2', 'bath.alert.warning') }}
+
 </div>
 
 Or use it to show and collapsable <b>sections</b>:<br />
@@ -62,9 +64,10 @@ Or use it to show and collapsable <b>sections</b>:<br />
 	<div class="block">
 		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
-			<div data-bind="w3" data-role="collapsible">
-				<h3>Block 1</h3>
-				<p>Content 1</p>
+			<div data-bind="w3" data-role="collapsible" data-collapsed="false">
+				<h3>Block</h3>
+
+				<p>Content</p>
 			</div>
 
 		</div>

@@ -12,7 +12,7 @@
 
 {% block content %}
 
-	<h1><img class="icon" src='{{ icon0 }}scene_childs_room.png' />Johanna</h1>
+	<h1><img class="icon" src='{{ icon0 }}scene_childs_room.svg' />Johanna</h1>
 
 
 	<div class="block">
@@ -22,13 +22,13 @@
 				<h3>Licht</h3>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('JohannaDeckenlicht', 'OG.Johanna.Deckenlicht', icon1~'light_ceiling_light.png', icon0~'light_ceiling_light.png') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('JohannaDeckenlicht', 'OG.Johanna.Deckenlicht', 'light_ceiling_light.svg', 'light_ceiling_light.svg') }} </td>
 						<td>Deckenlampe</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('JohannaDeckeSchmetterlinge', 'OG.Johanna.Schmetterlinge', icon1~'light_wire_system_1.png', icon0~'light_wire_system_1.png') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('JohannaDeckeSchmetterlinge', 'OG.Johanna.Schmetterlinge', 'light_wire_system_1.svg', 'light_wire_system_1.svg') }} </td>
 						<td>Schmetterlinge</td>
 					</tr>
 				</table>
@@ -53,14 +53,14 @@
 				<table width="100%">
 					<tr>
 						<td align="left">
-							{{ basic.symbol('FensterJohanna1', 'OG.Johanna.Fenster', 'Fenster ist offen', icon1~'fts_window_1w_open.png') }}
-							{{ basic.symbol('FensterJohanna2', 'OG.Johanna.Fenster', 'Fenster ist zu', icon0~'fts_window_1w.png', 0) }}
+							{{ basic.symbol('FensterJohanna1', 'OG.Johanna.Fenster', 'Fenster ist offen', 'fts_window_1w_open.svg', '', '', 'icon0') }}
+							{{ basic.symbol('FensterJohanna2', 'OG.Johanna.Fenster', 'Fenster ist zu', 'fts_window_1w.svg', 0) }}
 						</td>
 					</tr>
 					<tr>
 						<td align="left">
-							{{ basic.symbol('TuerJohanna1', 'OG.Johanna.Tuer', 'Tür ist offen', icon1~'fts_door_open.png') }}
-							{{ basic.symbol('TuerJohanna2', 'OG.Johanna.Tuer', 'Tür ist zu', icon0~'fts_door.png', 0) }}
+							{{ basic.symbol('TuerJohanna1', 'OG.Johanna.Tuer', 'Tür ist offen', 'fts_door_open.svg', '', '', 'icon0') }}
+							{{ basic.symbol('TuerJohanna2', 'OG.Johanna.Tuer', 'Tür ist zu', 'fts_door.svg', 0) }}
 						</td>
 					</tr>
 				</table>

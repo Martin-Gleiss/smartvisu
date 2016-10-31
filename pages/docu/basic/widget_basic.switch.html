@@ -1,8 +1,8 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @author      Martin Gleiß, Martin Sinn
+* @copyright   2012 - 2016
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -14,37 +14,27 @@
 
 	<h5>Examples</h5>
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.switch('switch1', 'bath.light.switch') &#125;&#125;</code>
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			{{ basic.switch('switch1', 'bath.light.switch') }}
+			{{ basic.switch('switch2', 'bath.light.switch', '', '', '', '', '#25ea4e', '#4176a9') }}
+		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		{{ basic.switch('switch1', 'bath.light.switch') }}
+		{{ basic.switch('switch2', 'bath.light.switch', '', '', '', '', '#25ea4e', '#4176a9') }}
 	</div>
 
 	With other icons
 	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.switch('switch2', 'bath.blind.move.up', 'control_arrow_up.svg', 'control_arrow_down.svg') &#125;&#125;<br />
-		</code>
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			{{ basic.switch('switch3', 'bath.blind.move.up', 'control_arrow_up.svg', 'control_arrow_down.svg') }}
+			{{ basic.switch('switch4', 'bath.blind.move.up', 'control_arrow_up.svg', 'control_arrow_down.svg', '', '', '#25ea4e', '#4176a9') }}
+		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-		{{ basic.switch('switch2', 'bath.blind.move.up', 'control_arrow_up.svg', 'control_arrow_down.svg') }}
+		{{ basic.switch('switch3', 'bath.light.switch', 'control_arrow_up.svg', 'control_arrow_down.svg') }}
+		{{ basic.switch('switch4', 'bath.light.switch', 'control_arrow_up.svg', 'control_arrow_down.svg', '', '', '#25ea4e', '#4176a9') }}
 	</div>
-	
-
-	{% if isfile(icon0~'control_arrow_down.png') %}
-		<hr>
-		<h5>Examples with .png</h5>
-		With other icons (use 'icon0' and 'icon1' as path)
-		<div class="twig">
-			<code class="prettyprint">
-				&#123;&#123; basic.switch('switch3', 'bath.blind.move.up', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png') &#125;&#125;<br />
-			</code>
-		</div>
-		<div class="html">
-			{{ basic.switch('switch3', 'bath.blind.move.up', icon1~'control_arrow_up.png', icon0~'control_arrow_down.png') }}
-		</div>
-	{% endif %}
-
 {% endblock %}
 
 

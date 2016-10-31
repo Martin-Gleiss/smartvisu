@@ -33,37 +33,29 @@ echo "\n";
 
 echo "\n";
 
-compile("designs/cube.js");
-echo "\n";
-compile("designs/greenhornet.js");
-echo "\n";
-compile("designs/ice.js");
-echo "\n";
-compile("designs/night.js");
-echo "\n";
-compile("designs/sand.js");
+
+compile_dir("designs");
 echo "\n";
 
+compile_dir("driver");
 echo "\n";
 
-compile("driver/io_domotiga.js");
-echo "\n";
-compile("driver/io_eibd.js");
-echo "\n";
-compile("driver/io_json.js");
-echo "\n";
-compile("driver/io_linknx.js");
-echo "\n";
-compile("driver/io_offline.js");
-echo "\n";
-compile("driver/io_smarthome.py.js");
-echo "\n";
-
-
-echo "\n";
 echo str_repeat("-", 80)."\n\n";
 echo "\n</pre>";
 
+function compile_dir($dir) {
+	$dh  = opendir($dir);
+	while (false !== ($filename = readdir($dh))) {
+		if(strlen($filename) < 3 || substr($filename, -3) != '.js')
+			continue;
+		if(strlen($filename) >= 7 && substr($filename, -7) == '.min.js')
+			continue;
+		if(substr($filename, 0, 1) == '_')
+			continue;
+	  compile($dir.'/'.$filename);
+		echo "\n";
+	}
+}
 
 function compile($file)
 {

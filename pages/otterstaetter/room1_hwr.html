@@ -61,14 +61,14 @@
     	<div data-role="collapsible">
           <h3>Status Tür und Fenster</h3>
           {% import "widgets/window.html" as window %}
-          <p>
+          
             <div>
               Nebeneingangstür:&nbsp;&nbsp;&nbsp;&nbsp;
               {{ basic.symbol('tuer1', 'eg.hwr.nebeneingangstuer', 'abgeschlossen', 'secur_locked.svg', 1) }}
               {{ basic.symbol('tuer2', 'eg.hwr.nebeneingangstuer', 'nicht abgeschlossen', 'secur_open.svg', 0) }}
             </div>
             {{ window.two ('win1', 'Fenster', 'eg.hwr.fenster' ) }}
-          </p>
+          
         </div>
     </div>
     </div>

@@ -31,17 +31,17 @@
 		}
 
 		#kochen .ui-icon {
-			background: url({{ icon0 }}scene_cooking.png) 50% 50% no-repeat;
+			background: url({{ icon0 }}scene_cooking.svg) 50% 50% no-repeat;
 			background-size: 36px 36px;
 		}
 
 		#essen .ui-icon {
-			background: url({{ icon0 }}scene_dinner.png) 50% 50% no-repeat;
+			background: url({{ icon0 }}scene_dinner.svg) 50% 50% no-repeat;
 			background-size: 36px 36px;
 		}
 
 		#wohnen .ui-icon {
-			background: url({{ icon0 }}it_television.png) 50% 50% no-repeat;
+			background: url({{ icon0 }}it_television.svg) 50% 50% no-repeat;
 			background-size: 36px 36px;
 		}
 	</style>
@@ -99,7 +99,7 @@
 				<table width=100%>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('WuerfelSofaEssen', 'EG.Esszimmer.Essen_Stedo_Wuerfel_Sofa', icon1~'light_led.png', icon0~'light_led.png') }} Würfel
+							{{ basic.switch('WuerfelSofaEssen', 'EG.Esszimmer.Essen_Stedo_Wuerfel_Sofa', 'light_led.svg', 'light_led.svg') }} Würfel
 						</td>
 						<td align=left>
 							&nbsp;
@@ -107,7 +107,7 @@
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('LedFensterbankEssen', 'EG.Esszimmer.Essen_Fensterbank', icon1~'light_uplight.png', icon0~'light_uplight.png') }} Fensterbank
+							{{ basic.switch('LedFensterbankEssen', 'EG.Esszimmer.Essen_Fensterbank', 'light_uplight.svg', 'light_uplight.svg') }} Fensterbank
 						</td>
 						<td align=left>
 							&nbsp;
@@ -115,10 +115,10 @@
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('SchrankStedoEssen', 'EG.Esszimmer.Essen_Stedo_Schrank', icon1~'message_socket.png', icon0~'message_socket.png') }}  Schrank
+							{{ basic.switch('SchrankStedoEssen', 'EG.Esszimmer.Essen_Stedo_Schrank', 'message_socket.svg', 'message_socket.svg') }}  Schrank
 						</td>
 						<td align=left>
-							{{ basic.switch('FreigabeTuerMKEssen', 'EG.Esszimmer.Essen_FreigabeTuer', icon1~'secur_open.png', icon0~'secur_locked.png') }}  Licht MK
+							{{ basic.switch('FreigabeTuerMKEssen', 'EG.Esszimmer.Essen_FreigabeTuer', 'secur_open.svg', 'secur_locked.svg') }}  Licht MK
 						</td>
 					</tr>
 				</table>
@@ -202,26 +202,26 @@
 				<table width="100%">
 					<tr>
 						<td align="left">
-							{{ basic.symbol('FensterSuedEssen1', 'EG.Esszimmer.Fenster1', 'Fenster Süd ist offen', icon1~'fts_window_1w_open.png') }}
-							{{ basic.symbol('FensterSuedEssen2', 'EG.Esszimmer.Fenster1', 'Fenster Süd ist zu', icon0~'fts_window_1w.png', 0) }}
+							{{ basic.symbol('FensterSuedEssen1', 'EG.Esszimmer.Fenster1', 'Fenster Süd ist offen', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+							{{ basic.symbol('FensterSuedEssen2', 'EG.Esszimmer.Fenster1', 'Fenster Süd ist zu', 'fts_window_1w.svg', 0) }}
 						</td>
 					</tr>
 					<tr>
 						<td align="left">
-							{{ basic.symbol('FensterWestEssen1', 'EG.Esszimmer.Fenster2', 'Fenster West ist offen', icon1~'fts_window_1w_open.png') }}
-							{{ basic.symbol('FensterWestEssen2', 'EG.Esszimmer.Fenster2', 'Fenster West ist zu', icon0~'fts_window_1w.png', 0) }}
+							{{ basic.symbol('FensterWestEssen1', 'EG.Esszimmer.Fenster2', 'Fenster West ist offen', 'fts_window_1w_open.svg',1, '', 'icon1') }}
+							{{ basic.symbol('FensterWestEssen2', 'EG.Esszimmer.Fenster2', 'Fenster West ist zu', 'fts_window_1w.svg', 0) }}
 						</td>
 					</tr>
 					<tr>
 						<td align="left">
-							{{ basic.symbol('FensterKueche1', 'EG.Esszimmer.Fenster3', 'Fenster Küche zu', icon0~'fts_window_1w.png') }}
-							{{ basic.symbol('FensterKueche2', 'EG.Esszimmer.Fenster3', 'Fenster Küche auf', icon1~'fts_window_1w_open.png', 0) }}
+							{{ basic.symbol('FensterKueche1', 'EG.Esszimmer.Fenster3', 'Fenster Küche zu', 'fts_window_1w.svg') }}
+							{{ basic.symbol('FensterKueche2', 'EG.Esszimmer.Fenster3', 'Fenster Küche auf', 'fts_window_1w_open.svg', 0, '', 'icon1') }}
 						</td>
 					</tr>
 					<tr>
 						<td align="left">
-							{{ basic.symbol('TuerEssen1', 'EG.Esszimmer.Tuer', 'Tür ist zu', icon0~'fts_door.png') }}
-							{{ basic.symbol('TuerEssen2', 'EG.Esszimmer.Tuer', 'Tür ist offen', icon1~'fts_door_open.png', 0) }}
+							{{ basic.symbol('TuerEssen1', 'EG.Esszimmer.Tuer', 'Tür ist zu', 'fts_door.svg') }}
+							{{ basic.symbol('TuerEssen2', 'EG.Esszimmer.Tuer', 'Tür ist offen', 'fts_door_open.svg', 0, '', 'icon1') }}
 						</td>
 					</tr>
 				</table>

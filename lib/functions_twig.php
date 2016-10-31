@@ -72,6 +72,12 @@ function twig_deficon(Twig_Environment $env, $val, $def = '')
 	return $ret;
 }
 
+function twig_md5($val)
+{
+	return md5($val);
+}
+
+
 // -----------------------------------------------------------------------------
 // General functions for Twig
 // -----------------------------------------------------------------------------
@@ -237,14 +243,14 @@ function twig_lang($subset, $key)
 // Special functions for Twig
 // -----------------------------------------------------------------------------
 
-function twig_implode($mixed, $suffix = '')
+function twig_implode($mixed, $suffix = '', $delimiter = '.')
 {
 	$ret = '';
 
 	if (is_array($suffix))
-		$suffix = '.'.implode('.', $suffix);
+		$suffix = $delimiter.implode($delimiter, $suffix);
 	elseif ($suffix != '')
-		$suffix = '.'.$suffix;
+		$suffix = $delimiter.$suffix;
 
 	if (is_array($mixed))
 	{

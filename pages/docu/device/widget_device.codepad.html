@@ -29,11 +29,13 @@ To bind some widgets to the codepad use a div to group them. Than use the "data-
 
 		{{ device.codepad('codepad1') }}
 
-		{% endverbatim %}{% endfilter %}</code>
+		{% endverbatim %}{% endfilter %}
 	</code>
 </div>
-
-	
+	<br/>
+	<div>
+		If you want to test ist, the correct number for that codepad is: <b>{{ config_codepad_code }}</b>
+	</div>
 	<div class="codepad" data-bind='codepad1' >
 		{{ basic.switch('switch1', 'bath.light.switch') }}
 		{{ basic.button('button1', 'bath.light.switch', '1') }}

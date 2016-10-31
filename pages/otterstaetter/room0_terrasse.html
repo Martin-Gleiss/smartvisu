@@ -46,11 +46,11 @@
 
     	<div data-role="collapsible" data-collapsed="false" >
             <h3>Terrasse</h3>
-            <p>
+            
 				{{ button.flip('flip10', 'aussen.terrasse.wasser.schalten', 'Ein', 'Aus', 'Bachlauf und Quellsteine') }}
 				<p><div align="left">Füllstand der Zisterne: {{ basic.value('zisterne_wert', 'aussen.terrasse.wasser.zisterne.fuellstand.prozent', ' %') }} </div>
-				<div>{{ basic.tank('zisterne', 'aussen.terrasse.wasser.zisterne.fuellstand.prozent', 0, 100, 5, 'water') }}</div></p>
-            </p>
+				<div>{{ basic.tank('zisterne', 'aussen.terrasse.wasser.zisterne.fuellstand.prozent', 0, 100, 5, 'water') }}</div>
+            
 		</div>
     	<div data-role="collapsible">
             <h3>Details</h3>

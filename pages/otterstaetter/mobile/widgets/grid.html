@@ -214,9 +214,9 @@
              {% else %} 
                 {% if gad_window %}
                     <div class="icon {% if not info %}single{% endif %}">
-                        {{ basic.symbol(id~'icon_open', gad_window, '', icon0~'fts_window_1w_open.svg', 2, '', 'icon1') }}
-                        {{ basic.symbol(id~'icon_tilt', gad_window, '', icon0~'fts_window_1w_tilt.svg', 1, '', 'icon1') }}
-                        {{ basic.symbol(id~'icon_close', gad_window, '', icon0~'fts_window_1w.svg', 0) }}                    
+                        {{ basic.symbol(id~'icon_open', gad_window, '', 'fts_window_1w_open.svg', 2, '', 'icon1') }}
+                        {{ basic.symbol(id~'icon_tilt', gad_window, '', 'fts_window_1w_tilt.svg', 1, '', 'icon1') }}
+                        {{ basic.symbol(id~'icon_close', gad_window, '', 'fts_window_1w.svg', 0) }}                    
                     </div>
                 {% else %}
                     <img class="icon {% if not info %}single{% endif %}" src="{{ icon0 }}fts_window_1w.svg" />
@@ -230,17 +230,17 @@
         <div class="popup-info">
         {% if gad_window %}
             <div class="icon">
-                {{ basic.symbol(id~'popup-icon_open', gad_window, '', icon0~'fts_window_1w_open.svg', 2, '', 'icon1') }}
-                {{ basic.symbol(id~'popup-icon_tilt', gad_window, '', icon0~'fts_window_1w_tilt.svg', 1, '', 'icon1') }}
-                {{ basic.symbol(id~'popup-icon_close', gad_window, '', icon0~'fts_window_1w.svg', 0) }}
+                {{ basic.symbol(id~'popup-icon_open', gad_window, '', 'fts_window_1w_open.svg', 2, '', 'icon1') }}
+                {{ basic.symbol(id~'popup-icon_tilt', gad_window, '', 'fts_window_1w_tilt.svg', 1, '', 'icon1') }}
+                {{ basic.symbol(id~'popup-icon_close', gad_window, '', 'fts_window_1w.svg', 0) }}
             </div>{% endif %}
             <div class="info">{{ info|e }}</div>
         </div>
         <div data-role="controlgroup" data-type="horizontal">
-            {{ basic.button(id~'up', gad_move, '', icon0~'control_arrow_up.png', 0, 'midi') }}
-            {{ basic.button(id~'down', gad_move, '', icon0~'control_arrow_down.png', 1, 'midi') }}
-            {% if gad_stop %}{{ basic.button(id~'stop', gad_stop, '', icon0~'audio_stop.png', 1, 'midi') }}{% endif %}
-            {% if gad_shade %}{{ basic.button(id~'shade', gad_shade, '', icon0~'fts_shutter_50.png', 1, 'midi') }}{% endif %}
+            {{ basic.button(id~'up', gad_move, '', 'control_arrow_up.svg', 0, 'midi') }}
+            {{ basic.button(id~'down', gad_move, '', 'control_arrow_down.svg', 1, 'midi') }}
+            {% if gad_stop %}{{ basic.button(id~'stop', gad_stop, '', 'audio_stop.svg', 1, 'midi') }}{% endif %}
+            {% if gad_shade %}{{ basic.button(id~'shade', gad_shade, '', 'fts_shutter_50.svg', 1, 'midi') }}{% endif %}
         </div>
         {% if gad_pos %}<div class="pos">{{ basic.slider(id~'slider', gad_pos, 0 , 100 , 5 ) }}</div>{% endif %}
         <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>

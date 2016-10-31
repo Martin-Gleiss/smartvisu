@@ -69,6 +69,9 @@
 
 <script type="text/javascript">
 	io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
+{% if config_driver_autoreconnect %}
+	activateAutoReconnect();
+{% endif %}
 
 	// Do some actions before page is shown
 	$(document).on('pagebeforeshow', function () {
@@ -85,7 +88,6 @@
 		notify.display();
 		// widget.list();
 	});
-
 
 	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};
 </script>

@@ -71,12 +71,12 @@
 * @param unique id for this widget
 * @param code to be entered (optional, default in config)
 * @param a title for the pad (optional)
-* @param a duration for unlocking the widgets (optional, default  1min)
+* @param a duration for unlocking the widgets (optional, default 10 seconds)
 */
 {% macro codepad(id, code, title, duration) %}
 	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}" data-id="{{ id }}" data-widget="device.codepad" data-val="{{ code|default(config_codepad_code) }}" data-duration="{{ duration|default('1i') }}"
+	<div id="{{ uid }}" data-id="{{ id }}" data-widget="device.codepad" data-val="{{ code|default(config_codepad_code)|md5 }}" data-duration="{{ duration|default('10') }}"
 		data-role="popup" data-overlay-theme="a" class="alert" style="width: 166px;" >
 		<div data-role="header" data-theme="c"><h1>{{ title|default('Enter Code') }}</h1></div>
 
@@ -93,13 +93,17 @@
 	</div>
 
 	<script type="text/javascript">
-		$('div[data-bind="{{ id }}"]').click(function (event) {
-			if (!$(this).attr('data-access')) {
-				$('#{{ uid }}').popup('open');
-				$('#{{ uid }}-code').val('').focus();
+	$(document).on('pageshow', function (bevent, bdata) {
+		$('[data-bind="{{ id }}"]').find('*').on('click', function(event) {
+			if (!$(this).closest('[data-bind="{{ id }}"]').attr('data-access')) {
+			 	var codepad = $('#{{ uid }}')
+				codepad.popup('open');
+				codepad.find('#{{ uid }}-code').val('').focus();
+				codepad.data('originally-clicked', $(this));
 				event.stopPropagation();
 			}
 		});
+	});
 	</script>
 
 {% endmacro %}

@@ -27,20 +27,24 @@ class weather_wunderground extends weather
 	{
 		// api call 
 		$cache = new class_cache('wunderground_'.$this->location.'.json');
+			error_log($this->cache_duration_minutes);
 
-		if ($cache->hit())
+		if ($cache->hit($this->cache_duration_minutes))
+		{
 			$content = $cache->read();
+			error_log('hit');
+		}
 		else
 		{
+			error_log('nohit');
 			$url = 'http://api.wunderground.com/api/'.config_weather_key.'/conditions/forecast/lang:'.trans('wunderground', 'lang').'/q/'.$this->location.'.json';
 			$content = file_get_contents($url);
+			$cache->write($content);
 		}
 
 		$parsed_json = json_decode($content);
 		if ($parsed_json->{'forecast'})
 		{
-			// write cache
-			$cache->write($content);
 			$this->debug($parsed_json);
 
 			// today

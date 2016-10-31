@@ -71,7 +71,7 @@
 
 	{% for widget in widgetlist %}
 		<div class="box">
-			{{ attribute(icon, widget.name, [widget.name, '', 'bath.light.value'] ) }}
+			{{ attribute(icon, widget.name, [widget.name, '', 'bath.light.value', '', '', ''] ) }}
 
 			<div {% if widget.author %} title="Author: {{ widget.author }}" {% endif %}>{{ widget.command }}</div>
 		</div>
@@ -79,6 +79,37 @@
 
 	<div style="clear:left;"><br /><br /></div>
 
+
+
+	<h4>Coloring Dynamic Icons</h4>
+
+	<div class="docu">
+		Dynamic icons can be displayed in different colors. The color has to be specified as hexadecimal value. 'icon0' and 'icon1' can NOT be used!
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				{{ icon.blade2('icon3', '', 'bath.light.value', '', '', '#f9a028') }}
+				{{ icon.battery('icon4', '', 'bath.light.value', '', '', '#4176a9') }}
+				{{ icon.meter('icon5', '', 'bath.light.value', '', '', '#25ea4e') }}
+				{% endverbatim %}{% endfilter %}</code>
+		</div>
+	</div>
+	<br />
+	
+		<div class="box">
+			{{ icon.blade2('icon3', '', 'bath.light.value', '', '', '#f9a028') }}
+			<div>icon.blade2</div>
+		</div>
+		<div class="box">
+			{{ icon.battery('icon4', '', 'bath.light.value', '', '', '#4176a9') }}
+			<div>icon.battery</div>
+		</div>
+		<div class="box">
+			{{ icon.meter('icon5', '', 'bath.light.value', '', '', '#25ea4e') }}
+			<div>icon.meter</div>
+		</div>
+	<br />
+	<br />
+	<div style="clear:left;"><br /><br /></div>
 
 
 	{% set iconlist = dir(icon0, '(.*\.svg)') %}
@@ -90,12 +121,14 @@
 		</div>
 	</div>
 
+
 	<h4>Static Icons</h4>
 
 	<div class="docu">
 		A static icon may be based on .png-image or .svg-image. Use "icon0" to show the "normal" version.
 		If you like to show the "highlighted" version .png and .svg differ. The .png based images need a completed directory (located in icons) with all icons rendered in the highlighted color.
 		Highlighted .svg-images only need a style-sheet, defined in the design (located in design).
+		Using .svg-images should be preferred.
 
 		<div class="twig">
 			<h5 style="margin-top: 5px;">normal:</h5>
@@ -109,7 +142,7 @@
 			<h5>highlighted:</h5>
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-				<img class="icon icon1" src="{{ icon }}light_light.svg" />
+				<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
 				<img class="icon" src="{{ icon1 }}light_light.png" />
 				
 				{% endverbatim %}{% endfilter %}</code>
@@ -121,6 +154,7 @@
 
 	<div class="docu">
 		Icons located in "{{ icon0 }}"
+		<br/><b>Important:</b> These images are available as .svg-image only. By default smartVisu does not come with .png-images. 
 	</div>
 
 	{% set cat = 'au' %}

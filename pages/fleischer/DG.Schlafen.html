@@ -12,7 +12,7 @@
 
 {% block content %}
 
-	<h1><img class="icon" src='{{ icon0 }}scene_sleeping_alternat.png' />DG-Schlafen</h1>
+	<h1><img class="icon icon0" src='{{ icon0 }}scene_sleeping_alternat.svg' />DG-Schlafen</h1>
 
 	<div class="block">
 		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
@@ -21,19 +21,19 @@
 				<h3>Lichter</h3>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('SchDeckenspots', 'DG.Schlafen.SpotsDecke', icon1~'light_downlight.png', icon0~'light_downlight.png') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('SchDeckenspots', 'DG.Schlafen.SpotsDecke', 'light_downlight.svg', 'light_downlight.svg') }} </td>
 						<td>Deckenspots</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('WLBettlinks', 'DG.Schlafen.Bettlinks', icon1~'light_wall_3.png', icon0~'light_wall_3.png') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('WLBettlinks', 'DG.Schlafen.Bettlinks', 'light_wall_3.svg', 'light_wall_3.svg') }} </td>
 						<td>Bett Leselampe links</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('WLBettrechts', 'DG.Schlafen.Bettrechts', icon1~'light_wall_3.png', icon0~'light_wall_3.png') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.switch('WLBettrechts', 'DG.Schlafen.Bettrechts', 'light_wall_3.svg', 'light_wall_3.svg') }} </td>
 						<td>Bett Leselampe rechts</td>
 					</tr>
 				</table>
@@ -68,19 +68,20 @@
 				<table width="100%">
 					<tr>
 						<td align="left">
-							{{ basic.symbol('SchDachfensterlinks1', 'DG.Schlafen.Fensterlinks', 'Dachfenster Nord ist offen', icon1~'fts_window_roof_open_2.png') }}
-							{{ basic.symbol('SchDachfensterlinks2', 'DG.Schlafen.Fensterlinks', 'Dachfenster Nord ist zu', icon0~'fts_window_roof_shutter.png', 0) }}
+							{{ basic.symbol('SchDachfensterlinks1', 'DG.Schlafen.Fensterlinks', 'Dachfenster Nord ist offen', 'fts_window_roof_open_2.svg', 1, '', 'icon1') }}
+							{{ basic.symbol('SchDachfensterlinks2', 'DG.Schlafen.Fensterlinks', 'Dachfenster Nord ist zu', 'fts_window_roof_shutter.svg', 0) }}
 						</td>
 					</tr>
 					<tr>
 						<td align="left">
-							{{ basic.symbol('SchDachfensterrechts1', 'DG.Schlafen.HzZwang', 'Dachfenster Süd ist offen', icon1~'fts_window_roof_open_2.png') }}
-							{{ basic.symbol('SchDachfensterrechts2', 'DG.Schlafen.HzZwang', 'Dachfenster Süd ist zu', icon0~'fts_window_roof_shutter.png', 0) }}
+							{{ basic.symbol('SchDachfensterrechts1', 'DG.Schlafen.HzZwang', 'Dachfenster Süd ist offen', 'fts_window_roof_open_2.svg', 1, '', 'icon1') }}
+							{{ basic.symbol('SchDachfensterrechts2', 'DG.Schlafen.HzZwang', 'Dachfenster Süd ist zu', 'fts_window_roof_shutter.svg', 0) }}
 						</td>
 					</tr>
+					<tr>
 					<td align="left">
-						{{ basic.symbol('HeizungZwang1', 'DG.Schlafen.Fensterrechts', 'Heizung in Zwangsstellung', icon1~'sani_heating_manual.png') }}
-						{{ basic.symbol('HeizungZwang2', 'DG.Schlafen.Fensterrechts', 'Heizung normal', icon0~'sani_heating_automatic.png', 0) }}
+						{{ basic.symbol('HeizungZwang1', 'DG.Schlafen.Fensterrechts', 'Heizung in Zwangsstellung', 'sani_heating_manual.svg', 1, '', 'icon1') }}
+						{{ basic.symbol('HeizungZwang2', 'DG.Schlafen.Fensterrechts', 'Heizung normal', 'sani_heating_automatic.svg', 0) }}
 					</td>
 					</tr>
 				</table>

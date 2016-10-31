@@ -12,7 +12,7 @@
 
 {% block content %}
 
-	<h1><img class="icon" src='{{ icon0 }}control_building_outside.png' />Aussenanlage</h1>
+	<h1><img class="icon" src='{{ icon0 }}control_building_outside.svg' />Aussenanlage</h1>
 
 	<div class="block">
 		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
@@ -21,27 +21,27 @@
 				<table width=100%>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('LEDSpotsDecke', 'EG.Aussen.LEDDeckeSpots', icon1~'light_downlight.png', icon0~'light_downlight.png') }} LED-Spots
+							{{ basic.switch('LEDSpotsDecke', 'EG.Aussen.LEDDeckeSpots', 'light_downlight.svg', 'light_downlight.svg') }} LED-Spots
 						</td>
 						<td align=left>
-							{{ basic.switch('LEDPanelDecke', 'EG.Aussen.LEDDeckePanel', icon1~'light_ceiling_light.png', icon0~'light_ceiling_light.png') }}  LED-Panel
+							{{ basic.switch('LEDPanelDecke', 'EG.Aussen.LEDDeckePanel', 'light_ceiling_light.svg', 'light_ceiling_light.svg') }}  LED-Panel
 						</td>
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('LedRohreBoden', 'EG.Aussen.LEDRohre', icon1~'light_uplight.png', icon0~'light_uplight.png') }} LED-Rohre
+							{{ basic.switch('LedRohreBoden', 'EG.Aussen.LEDRohre', 'light_uplight.svg', 'light_uplight.svg') }} LED-Rohre
 						</td>
 						<td align=left width=50%>
-							{{ basic.switch('LedSpotsBoden', 'EG.Aussen.LEDSpotsBoden', icon1~'light_uplight.png', icon0~'light_uplight.png') }} LED-Spots
+							{{ basic.switch('LedSpotsBoden', 'EG.Aussen.LEDSpotsBoden', 'light_uplight.svg', 'light_uplight.svg') }} LED-Spots
 						</td>
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.symbol('BewegungAussen1', 'EG.Aussen.BM', 'Bewegung', icon1~'it_camera.png') }}
-							{{ basic.symbol('BewegungAussen2', 'EG.Aussen.BM', 'alles ruhig', icon0~'it_camera.png', 0) }}
+							{{ basic.symbol('BewegungAussen1', 'EG.Aussen.BM', 'Bewegung', 'it_camera.svg', 1, '', 'icon1') }}
+							{{ basic.symbol('BewegungAussen2', 'EG.Aussen.BM', 'alles ruhig', 'it_camera.svg', 0) }}
 						</td>
 						<td align=left>
-							{{ basic.switch('FreigabeBMAussen', 'EG.Aussen.FreigabeBMAussen', icon1~'secur_open.png', icon0~'secur_locked.png') }}  BM-Melder
+							{{ basic.switch('FreigabeBMAussen', 'EG.Aussen.FreigabeBMAussen', 'secur_open.svg', 'secur_locked.svg') }}  BM-Melder
 						</td>
 					</tr>
 				</table>

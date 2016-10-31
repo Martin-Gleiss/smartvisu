@@ -1,4 +1,6 @@
 # smartVISU  
+
+[![Join the chat at https://gitter.im/sVISU/Lobby](https://badges.gitter.im/sVISU/Lobby.svg)](https://gitter.im/sVISU/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
   
 ## DESCRIPTION
 smartVISU is a framework to create a visualisation for a knx-installation with simple html-pages.  
