@@ -245,8 +245,7 @@ $.mobile.activePage.find('a[data-widget="basic.multistate"]').on( {
 			else {
 				if (formula.indexOf('VAR1') > -1) {
 					for (var i = 0; i < response.length; i++) {
-						var myVar = 'VAR' + (i + 1);
-						formula = eval('formula.replace(/' + myVar + '/g, response[i]);');
+						formula = formula.replace(new RegExp('VAR' + (i + 1), "g"), response[i]);
 					}
 					calc = eval(formula);
 				}
