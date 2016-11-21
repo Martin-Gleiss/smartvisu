@@ -46,11 +46,12 @@ if (is_writeable(const_path.'config.php'))
 	$line .= "\n".'?'.'>';
 
 	// write config
-	if (($fp = fopen(const_path.'config.php', 'w')) !== false)
-	{
-		fwrite($fp, $line);
-		fclose($fp);
-	}
+	filewrite('config.php', $line);
+	
+	opcache_invalidate(const_path.'config.php', true);
+	
+	$ret[] = array('title' => 'Configuration', 'text' => 'Configuration changes saved.');
+	echo json_encode($ret);
 }
 else
 {

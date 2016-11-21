@@ -363,10 +363,10 @@
 				url: 'pages/base/configure.php',
 				data: $(this).serialize(),
 				success: function (data) {
-					window.setTimeout('location.reload(true);', {{ config_delay }});
+					location.reload(true);
 				}
 			})
-				.fail(notify.json);
+			.fail(notify.json);
 
 			return false;
 		});
