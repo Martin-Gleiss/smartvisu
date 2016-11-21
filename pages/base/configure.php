@@ -34,6 +34,10 @@ if (is_writeable(const_path.'config.php'))
 {
 	foreach ($request as $var => $val)
 	{
+		if($var == 'cache' && $val != 'true') {
+			delTree(const_path.'temp/pagecache');
+		}
+
 		if (defined('config_'.$var))
 		{
 			if ($val == 'true' || $val == 'false')

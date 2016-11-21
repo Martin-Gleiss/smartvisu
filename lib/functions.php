@@ -205,4 +205,20 @@ function filewrite($file, $ret)
 	return $ret;
 }
 
+/**
+ * Delete a directory recursively
+ */
+function delTree($dir) { 
+	if(is_dir($dir)) {
+		$files = array_diff(scandir($dir), array('.','..')); 
+		foreach ($files as $file) { 
+			delTree("$dir/$file"); 
+		} 
+		return rmdir($dir);
+	}
+	else if (file_exists($dir)) {
+		return unlink($dir);
+	}
+	return null;
+}
 ?>
