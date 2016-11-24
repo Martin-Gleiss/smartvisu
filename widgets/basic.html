@@ -97,19 +97,17 @@ _
 {% macro colordisc(id, item_r, item_g, item_b, min, max, step, colors) %}
 	{% set uid = uid(page, id) %}
 
-	<a id="{{ uid }}" data-widget="basic.colordisc" data-item="{{ item_r }}, {{ item_g }}, {{ item_b }}"
-		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-		class="colordisc"><span></span></a>
-
-	<div id="{{ uid }}-screen" data-widget="basic.colordisc" class="ui-popup-screen ui-overlay-a hide"></div>
-
-	<canvas id="{{ uid }}-disc" data-widget="basic.colordisc"
-		data-step="{{ step|default(8) }}" data-colors="{{ colors|default(10) }}"
-		class="colordisc hide"></canvas>
-
-	<script type="text/javascript">
-		$('#{{ uid }}-disc').trigger('init');
-	</script>
+	<span data-widget="basic.colordisc" style="display: inline-block;">
+		<a id="{{ uid }}" data-widget="basic.colordisc" data-item="{{ item_r }}, {{ item_g }}, {{ item_b }}"
+			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+			class="colordisc"><span></span></a>
+	
+		<div id="{{ uid }}-screen" data-widget="basic.colordisc" class="ui-popup-screen ui-overlay-a in hide"></div>
+	
+		<canvas id="{{ uid }}-disc" data-widget="basic.colordisc"
+			data-step="{{ step|default(8) }}" data-colors="{{ colors|default(10) }}"
+			class="colordisc hide"></canvas>
+	</span>
 
 {% endmacro %}
 
