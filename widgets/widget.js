@@ -1239,7 +1239,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 			// response is: {{ gad_trigger }}
 
 			var target = $('div[data-bind="' + $(this).attr('data-id') + '"]');
-			if (response[0] != 0) {
+			if (response[0] != $(this).attr('data-val-collapsed')) {
 				target.not('.ui-collapsible').not('.ui-popup').show();
 				target.filter('.ui-collapsible').trigger("expand");
  				target.filter('.ui-popup').popup("open");

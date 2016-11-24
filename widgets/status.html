@@ -12,11 +12,12 @@
 * Show and hide a div or popup or collapse a section.
 *
 * @param unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget
-* @param a item witch triggers the collapse
+* @param an item witch triggers the collapse
+* @param the value on which the target is collapsed (optional, default 0)
 */
-{% macro collapse(id, item_trigger) %}
+{% macro collapse(id, item_trigger, val_collapsed) %}
 
-	<span id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="status.collapse" data-item="{{ item_trigger }}"></span>
+	<span id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="status.collapse" data-item="{{ item_trigger }}" data-val-collapsed="{{ val_collapsed|default(0) }}"></span>
 
 {% endmacro %}
 
