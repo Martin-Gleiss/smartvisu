@@ -150,17 +150,22 @@ _
 * @param array of values
 * @param array of icons path and name
 * @param type: 'micro', 'mini', 'midi' (optional, default: mini)
+* @param array of colors; 'icon1' or e. g. '#f00' for red (optional)
 *
 * @author Pierre-Yves KERVIEL
 */
-{% macro multistate(id, item, val, img, type) %}
+{% macro multistate(id, item, val, img, type, color) %}
+	{% import _self as basic %}
 
-    <a id="{{ uid(page, id) }}" data-widget="basic.multistate" data-item="{{ item }}"
-        data-vals="{{ implode(val) }}"  data-img="{{ implode(img|deficon) }}" data-value="0"
-        class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
+  <a id="{{ uid(page, id) }}" data-widget="basic.multistate" data-item="{{ item }}"
+    data-vals="{{ implode(val) }}"  data-img="{{ implode(img|deficon) }}" data-value="0"
+    class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
 
-        <img class="icon" src="{{ img[0]|deficon('control_on_off.svg') }}"/>
-    </a>
+   	{{ basic._icon(img[0]|deficon('control_on_off.svg'), color[0]) }}
+		{% for pic in img[1:] %}
+    	{{ basic._icon(pic, color[loop.index], '', 'hide') }}
+    {% endfor %}
+  </a>
 
 {% endmacro %}
 

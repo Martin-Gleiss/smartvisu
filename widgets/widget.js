@@ -165,18 +165,18 @@ $(document).on('pagebeforeshow', function (bevent, bdata) {
 	});
 
 // ----- basic.multistate ------------------------------------------------------
-$.mobile.activePage.find('a[data-widget="basic.multistate"]').on( {
+$(bevent.target).find('a[data-widget="basic.multistate"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// get list of values and images
-			list_val = $(this).attr('data-vals').explode();
-			list_img = $(this).attr('data-img').explode();
+			var list_val = $(this).attr('data-vals').explode();
+			var list_img = $(this).attr('data-img').explode();
 
 			// get the index of the value received
-			idx = list_val.indexOf(response.toString());
+			var idx = list_val.indexOf(response.toString());
 
 			// update the image
-			$('#' + this.id + ' img').attr('src', list_img[idx]);
+			$(this).find('.icon, .fx-icon').hide().filter('*:eq('+idx+')').show();
 
 			// memorise the index for next use
 			$(this).attr('data-value', idx);
@@ -184,16 +184,14 @@ $.mobile.activePage.find('a[data-widget="basic.multistate"]').on( {
 
 		'click': function (event) {
 			// get the list of values
-			list_val = $(this).attr('data-vals').explode();
+			var list_val = $(this).attr('data-vals').explode();
 
 			// get the last index memorised
-			old_idx = parseInt($(this).attr('data-value'));
+			var old_idx = parseInt($(this).attr('data-value'));
 
 			//compute the next index
-			var new_idx = old_idx + 1;
-			if (new_idx >= list_val.length) {
-				new_idx = 0;
-			}
+			var new_idx = (old_idx + 1) % list_val.length;
+			
 			// send the value to driver
 			io.write($(this).attr('data-item'), list_val[new_idx]);
 
