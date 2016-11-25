@@ -112,6 +112,7 @@ define ('config_autoreload', false);
 define ('config_delay', '750');
 
 
+
 // -----------------------------------------------------------------------------
 // C O M M U N I C A T I O N
 // -----------------------------------------------------------------------------
@@ -219,11 +220,17 @@ define ('config_calendar_password', '');
  */
 define ('config_calendar_name', '');
 
+
 /**
  * The default code for all Codepads
  */
 define ('config_codepad_code', '0000');
 
+/**
+ * Source for time of clock widgets
+ * 'client' (default), 'server'
+ */
+define ('config_timesource', 'client');
 
 
 // -----------------------------------------------------------------------------

@@ -657,12 +657,42 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 // ----- c l o c k ------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
+// init servertime offset on all clocks
+	$(bevent.target).find('span[data-widget="clock.iconclock"], span[data-widget="clock.miniclock"], div.digiclock[data-widget="clock.digiclock"]').each(function() { // init
+		var localtime = (window.performance !== undefined && window.performance.timing !== undefined && window.performance.timing.responseStart !== undefined) ? window.performance.timing.responseStart : Date.now();
+		localtime = localtime + new Date().getTimezoneOffset()*60000;
+
+		var servertime = $(this).attr('data-servertime');
+		if(isNaN(servertime) || servertime == "")
+			servertime = localtime;
+		else
+			servertime = Number(servertime) * 1000;
+
+		$(this).data('offset', servertime - localtime);
+	});
+
+// ----- clock.digiclock ------------------------------------------------------
+	$(bevent.target).find('div.digiclock[data-widget="clock.digiclock"]').each(function() {
+		$(this).digiclock({ svrOffset: Number($(this).data('offset')) });
+	});
+	
+	$(bevent.target).find('div.digiweather[data-widget="clock.digiclock"]').each(function() {
+		var node = $(this);
+		$.getJSON($(this).attr("data-service-url"), function (data) {
+			node.find('img').attr('src', 'lib/weather/pics/' + data.current.icon + '.png');
+			node.find('.city').html(data.city);
+			node.find('.cond').html(data.current.conditions);
+			node.find('.temp').html(data.current.temp);
+		});
+	});
+
 // ----- clock.iconclock ------------------------------------------------------
 	$(bevent.target).find('span[data-widget="clock.iconclock"]').on( {
 		'repeat': function (event) {
 			event.stopPropagation();
 
-			var minutes = Math.floor((new Date() - new Date().setHours(0, 0, 0, 0)) / 1000 / 60);
+			var now = new Date(Date.now() - Number($(this).data('offset')));
+			var minutes = Math.floor((now - now.setHours(0, 0, 0, 0)) / 1000 / 60);
 			$(this).find('svg').trigger('update', [
 				[minutes],
 				[0]
@@ -677,11 +707,10 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		'repeat': function (event) {
 			event.stopPropagation();
 
-			var now = new Date();
-			$('.miniclock').html(now.getHours() + ':' + (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()));
+			var now = new Date(Date.now() - Number($(this).data('offset')));
+			$(this).text(now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes());
 		}
-	});
-
+	})
 
 
 // ----- d e v i c e ----------------------------------------------------------
