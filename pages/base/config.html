@@ -54,6 +54,22 @@
 						<option value="true">on</option>
 					</select>
 					{{ forms.flip_init('cache', config_cache) }}
+					
+					<button type="button" data-theme="a" data-icon="delete" data-mini="true" data-inline="true" id="clear_cache">Clear Pagecache</button>
+					<script type="text/javascript">
+						$('#clear_cache').click(function () {
+							$.ajax({
+								type: "GET",
+								url: 'pages/base/configure.php?clear_cache=true',
+								dataType: "json",
+								success: function(data) {
+									notify.info(data.title, data.text);
+								}
+							})
+							.fail(notify.json);
+							return false;
+						});
+					</script>
 				</div>
 
 				<div data-role="fieldcontain">

@@ -26,6 +26,12 @@ $line .= "  * @license     GPL [http://www.gnu.de]\n";
 $line .= "  * -----------------------------------------------------------------------------\n";
 $line .= "  */\n\n\n";
 
+if($request['clear_cache']) {
+	delTree(const_path.'temp/pagecache');
+	$ret = array('title' => 'Configuration', 'text' => 'Pagecache cleared.');
+	echo json_encode($ret);
+	die();
+}
 
 touch(const_path.'config.php');
 
@@ -54,7 +60,7 @@ if (is_writeable(const_path.'config.php'))
 	
 	opcache_invalidate(const_path.'config.php', true);
 	
-	$ret[] = array('title' => 'Configuration', 'text' => 'Configuration changes saved.');
+	$ret = array('title' => 'Configuration', 'text' => 'Configuration changes saved.');
 	echo json_encode($ret);
 }
 else
