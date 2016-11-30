@@ -15,11 +15,14 @@ require_once const_path_system.'functions_twig.php';
 // init parameters
 $request = array_merge($_GET, $_POST);
 
+// override configured pages if a corresponding request parameter is passed
+$config_pages = ($request['pages'] != '') ? $request['pages'] : config_pages;
+
 // detect page and path
 if ($request['page'] == '')
 	$request['page'] = config_index;
 
-if (is_file(const_path."pages/".config_pages."/".$request['page'].".html")
+if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 		or is_file(const_path."apps/".$request['page'].".html")
 		or is_file(const_path."pages/smarthome/".$request['page'].".html")
 		or is_file(const_path."pages/base/".$request['page'].".html")
@@ -31,14 +34,14 @@ if (is_file(const_path."pages/".config_pages."/".$request['page'].".html")
 
 	$loader = new Twig_Loader_Filesystem(const_path.'apps');
 
-	if (is_dir(const_path.'pages/'.config_pages))
-		$loader->addPath(const_path.'pages/'.config_pages);
+	if (is_dir(const_path.'pages/'.$config_pages))
+		$loader->addPath(const_path.'pages/'.$config_pages);
 
 	if (dirname($request['page']) != '.')
-		$loader->addPath(const_path.'pages/'.config_pages.'/'.dirname($request['page']));
+		$loader->addPath(const_path.'pages/'.$config_pages.'/'.dirname($request['page']));
 
 	// add dir if is not directly chosen
-	if (config_driver == 'smarthome.py' and config_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
+	if (config_driver == 'smarthome.py' and $config_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
 		$loader->addPath(const_path.'pages/smarthome');
 
 	$loader->addPath(const_path.'pages/base');
