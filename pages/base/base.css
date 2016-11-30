@@ -580,6 +580,10 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 	margin: 5px 5px 13px 3px;
 }
 
+.block .ui-collapsible-heading {
+	line-height: 16px;
+}
+
 .block .set-1 .ui-collapsible-content {
 	min-height: 227.875px;
 	padding: 10px 5px 10px 5px;
@@ -596,7 +600,8 @@ a.ui-slider-handle-semicircle .ui-btn-inner {
 }
 
 .block .ui-bar-c {
-	margin: 5px 5px 0 5px;
+	margin: 5px 5px 1px 5px;
+	line-height: 16px;
 }
 
 .block .ui-fixed {
