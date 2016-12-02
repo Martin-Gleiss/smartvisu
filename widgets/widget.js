@@ -47,8 +47,34 @@
 
 $(document).on('pagecreate', function (bevent, bdata) {
 
-	// ----- b a s i c ------------------------------------------------------------
-	// ----------------------------------------------------------------------------
+// ----- f u n c t i o n s ----------------------------------------------------
+// ----------------------------------------------------------------------------
+
+	var colorizeText = function(widget, value) {
+		var currentIndex = null, currentThreshold = null;
+		if($.isNumeric(value)) {
+			$.each($(widget).attr('data-thresholds').explode(), function(index, threshold) {
+				if(threshold == '' && currentThreshold == null) {
+					currentIndex = index;
+				}
+				else if(parseFloat(threshold) <= parseFloat(value) && (currentThreshold == null || currentThreshold <= parseFloat(threshold))) {
+					currentThreshold = parseFloat(threshold);
+					currentIndex = index;
+				}
+			});
+		}
+
+		var color = (currentIndex == null) ? '' : $(widget).attr('data-colors').explode()[currentIndex];
+		if(color == '' || color == 'icon0')
+			$(widget).removeClass('icon1').css('color','');
+		else if (color == 'icon1')
+			$(widget).addClass('icon1').css('color','');
+		else
+			$(widget).removeClass('icon1').css('color',color);
+	}
+
+// ----- b a s i c ------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 	// ----- basic.button ---------------------------------------------------------
 	$(bevent.target).find('a[data-widget="basic.button"]').on( {
@@ -234,8 +260,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-// ----- basic.multistate ------------------------------------------------------
-$(bevent.target).find('a[data-widget="basic.multistate"]').on( {
+	// ----- basic.multistate ------------------------------------------------------
+	$(bevent.target).find('a[data-widget="basic.multistate"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// get list of values and images
@@ -293,10 +319,11 @@ $(bevent.target).find('a[data-widget="basic.multistate"]').on( {
 			else {
 				$(this).html(parseFloat(response).transFloat());
 			}
-
+			colorizeText(this, response);
 		}
 	});
-// ----- basic.formula ----------------------------------------------------------
+
+	// ----- basic.formula ----------------------------------------------------------
 	$(bevent.target).find('[data-widget="basic.formula"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -343,6 +370,8 @@ $(bevent.target).find('a[data-widget="basic.multistate"]').on( {
 
 				$(this).html(parseFloat(calc).transUnit(unit));
 			}
+
+			colorizeText(this, calc);
 		}
 	});
 
@@ -381,7 +410,7 @@ $(bevent.target).find('a[data-widget="basic.multistate"]').on( {
 		}
 	});
 
-// ----- basic.shifter ---------------------------------------------------------
+	// ----- basic.shifter ---------------------------------------------------------
 	$(bevent.target).find('span[data-widget="basic.shifter"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -409,14 +438,14 @@ $(bevent.target).find('a[data-widget="basic.multistate"]').on( {
 		}
 	});
 
-$(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', function (event) {
-	if (event.type === 'mouseenter') {
-		$(this).addClass("ui-focus");
-	}
-	else {
-		$(this).removeClass("ui-focus");
-	}
-});
+	$(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', function (event) {
+		if (event.type === 'mouseenter') {
+			$(this).addClass("ui-focus");
+		}
+		else {
+			$(this).removeClass("ui-focus");
+		}
+	});
 
 	// ----- basic.shutter --------------------------------------------------------
 	$(bevent.target).find('div[data-widget="basic.shutter"]').on( {
@@ -555,8 +584,8 @@ $(document).delegate('span[data-widget="basic.shifter"] > a > img', 'hover', fun
 		}
 	});
 
-// ----- basic.switch.v1 ------------------------------------------------------
-$(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
+	// ----- basic.switch.v1 ------------------------------------------------------
+	$(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		'update': function (event, response) {
 			event.stopPropagation();
 			$(this).find('img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
@@ -581,7 +610,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- basic.symbol ---------------------------------------------------------
+	// ----- basic.symbol ---------------------------------------------------------
 	$(bevent.target).find('span[data-widget="basic.symbol"]').on({
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -635,7 +664,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- basic.value ----------------------------------------------------------
+	// ----- basic.value ----------------------------------------------------------
 	$(bevent.target).find('[data-widget="basic.value"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -644,6 +673,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 			if (unit == 'date' || unit == 'time' || unit == 'short' || unit == 'long') {
 				var date = new Date(response);
 				$(this).html(date.transUnit(unit));
+				response = Number(new Date(response));
 			}
 			else if (unit != '' && $.isNumeric(response)) {
 				$(this).html(parseFloat(response).transUnit(unit));
@@ -651,13 +681,15 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 			else {
 				$(this).html(response);
 			}
+
+			colorizeText(this, response);
 		}
 	});
 
 // ----- c l o c k ------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
-// init servertime offset on all clocks
+	// init servertime offset on all clocks
 	$(bevent.target).find('span[data-widget="clock.iconclock"], span[data-widget="clock.miniclock"], div.digiclock[data-widget="clock.digiclock"]').each(function() { // init
 		var localtime = (window.performance !== undefined && window.performance.timing !== undefined && window.performance.timing.responseStart !== undefined) ? window.performance.timing.responseStart : Date.now();
 		localtime = localtime + new Date().getTimezoneOffset()*60000;
@@ -671,7 +703,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		$(this).data('offset', servertime - localtime);
 	});
 
-// ----- clock.digiclock ------------------------------------------------------
+	// ----- clock.digiclock ------------------------------------------------------
 	$(bevent.target).find('div.digiclock[data-widget="clock.digiclock"]').each(function() {
 		$(this).digiclock({ svrOffset: Number($(this).data('offset')) });
 	});
@@ -686,7 +718,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		});
 	});
 
-// ----- clock.iconclock ------------------------------------------------------
+	// ----- clock.iconclock ------------------------------------------------------
 	$(bevent.target).find('span[data-widget="clock.iconclock"]').on( {
 		'repeat': function (event) {
 			event.stopPropagation();
@@ -1172,7 +1204,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- plot.minmaxavg ----------------------------------------------------------
+	// ----- plot.minmaxavg ----------------------------------------------------------
 	$(bevent.target).find('div[data-widget="plot.minmaxavg"]').on( {
 		'update': function (event, response) {
 			// response is: [[t1 , {{ gad.min }}], [t2 , {{ gad.max }}], [t3 , {{ gad.avg }}]]
@@ -1261,7 +1293,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 // ----- s t a t u s -----------------------------------------------------------
 // -----------------------------------------------------------------------------
 
-// ----- status.collapse -------------------------------------------------------
+	// ----- status.collapse -------------------------------------------------------
 	$(bevent.target).find('span[data-widget="status.collapse"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1281,7 +1313,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- status.log -----------------------------------------------------------
+	// ----- status.log -----------------------------------------------------------
 	$(bevent.target).find('span[data-widget="status.log"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1304,7 +1336,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- status.notify ----------------------------------------------------------
+	// ----- status.notify ----------------------------------------------------------
 	$(bevent.target).find('span[data-widget="status.notify"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1318,7 +1350,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- status.message -------------------------------------------------------
+	// ----- status.message -------------------------------------------------------
 	$(bevent.target).find('span[data-widget="status.message"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1361,7 +1393,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.arrow -----------------------------------------------------------
+	// ----- icon.arrow -----------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.arrow"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1379,7 +1411,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.battery ---------------------------------------------------------
+	// ----- icon.battery ---------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.battery"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1390,7 +1422,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.blade -----------------------------------------------------------
+	// ----- icon.blade -----------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.blade"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1408,7 +1440,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.blade2 -----------------------------------------------------------
+	// ----- icon.blade2 -----------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.blade2"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1427,7 +1459,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.blade_z ---------------------------------------------------------
+	// ----- icon.blade_z ---------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.blade_z"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1446,7 +1478,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.blade_arc -------------------------------------------------------
+	// ----- icon.blade_arc -------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.blade_arc"]').on( {
 			'update': function (event, response) {
 			event.stopPropagation();
@@ -1464,7 +1496,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.clock -----------------------------------------------------------
+	// ----- icon.clock -----------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.clock"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1479,7 +1511,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.compass ---------------------------------------------------------
+	// ----- icon.compass ---------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.compass"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1498,7 +1530,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.graph -----------------------------------------------------------
+	// ----- icon.graph -----------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.graph"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1521,7 +1553,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.light ---------------------------------------------------------
+	// ----- icon.light ---------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.light"]').on( {
 		'update': function (event, response) {
 			// response is: {{ gad_value }}, {{ gad_switch }}
@@ -1535,7 +1567,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.meter -----------------------------------------------------------
+	// ----- icon.meter -----------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.meter"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1546,7 +1578,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.shutter ---------------------------------------------------------
+	// ----- icon.shutter ---------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.shutter"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1557,7 +1589,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.ventilation -----------------------------------------------------
+	// ----- icon.ventilation -----------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.ventilation"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1568,7 +1600,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.volume ---------------------------------------------------------
+	// ----- icon.volume ---------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.volume"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1580,7 +1612,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.windmill --------------------------------------------------------
+	// ----- icon.windmill --------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.windmill"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1591,7 +1623,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.windrose --------------------------------------------------------
+	// ----- icon.windrose --------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.windrose"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1609,7 +1641,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.windsock --------------------------------------------------------
+	// ----- icon.windsock --------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.windsock"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1634,7 +1666,7 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 		}
 	});
 
-// ----- icon.zenith ----------------------------------------------------------
+	// ----- icon.zenith ----------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.zenith"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -1649,3 +1681,4 @@ $(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
 	});
 
 });
+

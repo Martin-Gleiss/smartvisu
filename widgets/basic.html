@@ -194,11 +194,15 @@ _
 * @param a item
 * @param a unit, tries to get the format for that unit from the language-file (optional)
 * @param the parent html-tag for the value (optional, default 'span')
+* @param array of thresholds; the color according to greatest reached threshold is applied. Use '' to define base color. (optional)
+* @param array of colors; 'icon1' or e. g. '#f00' for red (optional)
+*
+* @see misc/fundamentals#Array-Form
 */
-{% macro float(id, item, unit, tag) %}
+{% macro float(id, item, unit, tag, threshold, color) %}
 
 	<{{ tag|default('span') }} id="{{ uid(page, id) }}" data-widget="basic.float" data-item="{{ item }}"
-	data-unit="{{ unit }}">-.- {{ unit }}</{{ tag|default('span') }}>
+	data-unit="{{ unit }}" data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">-.- {{ unit }}</{{ tag|default('span') }}>
 
 {% endmacro %}
 
@@ -210,13 +214,16 @@ _
 * @param one or more item(s). More items in array-form: [ item1 , item2 ]
 * @param unit for displaying, if that unit is found in the language-file that formating is been used (optional)
 * @param formula to use: SUM(VAR), AVG(VAR), SUB(VAR), VAR1 + VAR2, ... "VAR" is replaced with all item(s), "VAR1", "VAR2"... is replaced with the appropriate item of the list (optional, default: SUM(VAR))
+* @param array of thresholds; the color according to greatest reached threshold is applied. Use '' to define base color. (optional)
+* @param array of colors; 'icon1' or e. g. '#f00' for red (optional)
 *
 * @see misc/fundamentals#Array-Form
 * @info inspired by Raik Alber
 */
-{% macro formula(id, item, unit, formula) %}
+{% macro formula(id, item, unit, formula, threshold, color) %}
 
-	<span id="{{ uid(page, id) }}" data-item="{{ implode(item) }}" class="text" data-widget="basic.formula" data-unit="{{ unit }}" data-formula="{{ formula }}" data-round="{{ round }}">---</span>
+	<span id="{{ uid(page, id) }}" data-item="{{ implode(item) }}" class="text" data-widget="basic.formula"
+	data-unit="{{ unit }}" data-formula="{{ formula }}" data-round="{{ round }}" data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">---</span>
 
 {% endmacro %}
 
@@ -531,11 +538,14 @@ _
 * @param a item
 * @param a unit (optional)
 * @param the parent html-tag for the value (optional, default 'span')
+* @param array of thresholds; the color according to greatest reached threshold is applied. Use '' to define base color. (optional)
+* @param array of colors; 'icon1' or e. g. '#f00' for red (optional)
+*
+* @see misc/fundamentals#Array-Form
 */
-{% macro value(id, item, unit, tag) %}
+{% macro value(id, item, unit, tag, threshold, color) %}
 
 	<{{ tag|default('span') }} id="{{ uid(page, id) }}" data-widget="basic.value" data-item="{{ item }}"
-	data-unit="{{ unit }}">--- {{ unit }}</{{ tag|default('span') }}>
+	data-unit="{{ unit }}" data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">--- {{ unit }}</{{ tag|default('span') }}>
 
 {% endmacro %}
-
