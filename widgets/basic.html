@@ -252,6 +252,31 @@ _
 
 
 /**
+* A switch with some descriptive text
+* The switch will be shown ownly if he has a defined state. Otherwise it will be hidden.
+* In addition the switch can be used to trigger an operation on the switch itself.
+*
+* @param unique id for this widget
+* @param a gad/item
+* @param text to show beside icon (optional)
+* @param the pic (optional)
+* @param the widget will only be shown if item has this value (optional, default 1)
+* @param value to send on click (optional, default 0)
+* @param the color 'icon1' or e. g. '#f00' for red (default 'icon1' of the design)
+* 
+* @author Dominik REHM
+*/
+{% macro hiddenswitch(id, item, txt, pic, val_show, val_send, color) %}
+	{% set uid = uid(page, id) %}
+	{% import _self as basic %}
+	<span id="{{ uid(page, id) }}" data-widget="basic.hiddenswitch" data-item="{{ item }}"
+	data-val-show="{{ val_show|default('1') }}" data-val-send="{{ val_send|default('0') }}">
+		<a>{{ basic._icon(pic|deficon('control_on_off.svg'), color|default('icon1'), uid) }}</a>
+		{{ txt}}
+	</span>
+{% endmacro %}
+
+/**
 * Displays a rgb-selector
 *
 * @param unique id for this widget

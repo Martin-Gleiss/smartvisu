@@ -375,6 +375,29 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
+	// ----- basic.hiddenswitch --------------------------------------------------------
+	$(bevent.target).find('span[data-widget="basic.hiddenswitch"]').on({
+		'update': function(event,response){
+			event.stopPropagation();
+			$(this).val(response);
+			$(this).trigger('draw');
+		},
+		
+		'draw': function(event) {
+			event.stopPropagation();
+			if($(this).val() == $(this).attr('data-val-show')) {
+				$(this).show();
+			}
+			else {
+				$(this).hide();
+			}
+		},
+		
+		'click': function(event){
+			io.write($(this).attr('data-item'), $(this).attr('data-val-send'));
+		}
+	});
+
 	// ----- basic.rgb ------------------------------------------------------------
 	$(bevent.target).find('a[data-widget="basic.rgb"]').on( {
 		'update': function (event, response) {
