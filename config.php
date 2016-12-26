@@ -29,5 +29,5 @@
 	define('config_calendar_service', 'offline');
 	define('config_calendar_url', 'http://www.google.com/calendar/feeds/...');
 	define('config_js', 'min.js');
-	define('snow', 'true');
+	define('config_snow', 'true');
 ?>
