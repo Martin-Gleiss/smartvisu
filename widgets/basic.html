@@ -43,23 +43,20 @@ _
 * @param the color 'icon1' or e. g. '#f00' for red (default 'icon0' of the design)
 */
 {% macro button(id, item, txt, pic, val, type, color) %}
-	{% set suffix = pic|slice(-4, 4) %}
 	{% import _self as basic %}
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.button" data-item="{{ item }}" data-val="{{ val|default('1') }}"
-		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true"
-		{% if not pic %}
-			data-iconpos="nopic">{{ txt|e }}
-		{% elseif suffix != '.svg' and suffix != '.png' and not txt %}
-			data-icon="{{ pic }}" data-iconpos="notext">
-		{% elseif suffix != '.svg' and suffix != '.png' and txt %}
-			data-icon="{{ pic }}" data-iconpos="top">{{ txt|e }}
-		{% elseif type == 'midi' and txt %}
-			>{{ basic._icon(pic|deficon, color) }}
-			<div>{{ txt|e }}</div>
-		{% else %}
-			data-iconpos="center">{{ basic._icon(pic|deficon, color) }}
-		{% endif %}
+		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline
+		{%- if pic -%}
+			{%- if '.' in pic -%} /** pic is a file url and not a css class -/
+				{{ txt ? ' ui-nodisc-icon ui-btn-icon-top' : '' }}">{{ basic._icon(pic, color) }}
+			{%- else -%}
+				{{ ' ' }}ui-nodisc-icon ui-btn-icon-{{ txt ? 'top' : 'notext' }} ui-icon-{{ pic }}">
+			{%- endif -%}
+		{%- else -%}
+		">
+		{%- endif -%}
+		{{- txt|e -}}
 	</a>
 
 {% endmacro %}
@@ -131,8 +128,7 @@ _
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.dual" data-item="{{ item }}"
 		data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
-		data-pic-on="{{ pic_on|deficon('control_on_off.svg') }}" data-pic-off="{{ pic_off|deficon('control_on_off.svg') }}"
-		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
+		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline">
 		{{ basic._icon(pic_off|deficon('control_on_off.svg'), color_off, uid ~ '-off') }}
 		{{ basic._icon(pic_on|deficon('control_on_off.svg'), color_on|default('icon1'), uid ~ '-on', 'hide') }}
 	</a>
@@ -157,8 +153,7 @@ _
 
   <a id="{{ uid(page, id) }}" data-widget="basic.multistate" data-item="{{ item }}"
     data-vals="{{ implode(val) }}"  data-img="{{ implode(img|deficon) }}" data-value="0"
-    class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true" data-iconpos="center">
-
+		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline">
    	{{ basic._icon(img[0]|deficon('control_on_off.svg'), color[0]) }}
 		{% for pic in img[1:] %}
     	{{ basic._icon(pic, color[loop.index], '', 'hide') }}
@@ -177,9 +172,16 @@ _
 * @param text for the 'off' state (optional, default 'Off')
 */
 {% macro flip(id, item, txt_on, txt_off) %}
-
+/**
+	<div class="ui-flipswitch ui-shadow-inset ui-bar-inherit">
+	  <span tabindex="1" class="ui-flipswitch-on ui-btn ui-shadow ui-btn-inherit">On</span>
+	  <span class="ui-flipswitch-off">Off</span>
+	  <input type="checkbox" data-role="flipswitch" data-enhanced="true" data-corners="false" name="flip-checkbox" class="ui-flipswitch-input">
+	</div>
+*/
+	
 	<select id="{{ uid(page, id) }}" data-widget="basic.flip" data-item="{{ item }}"
-		data-role="slider">
+		data-role="flipswitch">
 		<option value="off">{{ txt_off|default('Off') }}</option>
 		<option value="on">{{ txt_on|default('On') }}</option>
 	</select>
@@ -539,19 +541,17 @@ _
 	{% set suffix = pic|slice(-4, 4) %}
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.trigger" data-name="{{ name }}" data-val="{{ val }}"
-		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true"
-		{% if not pic %}
-		data-iconpos="nopic">{{ txt|e }}
-		{% elseif suffix != '.svg' and suffix != '.png' and not txt %}
-		data-icon="{{ pic }}" data-iconpos="notext">
-		{% elseif suffix != '.svg' and suffix != '.png' and txt %}
-		data-icon="{{ pic }}" data-iconpos="top">{{ txt|e }}
-		{% elseif type == 'midi' and txt %}
-			><img class="icon" src="{{ pic|deficon }}">
-			<div>{{ txt|e }}</div>
-		{% else %}
-			data-iconpos="center"><img class="icon" src="{{ pic|deficon }}">
-		{% endif %}
+		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline
+		{%- if pic -%}
+			{%- if '.' in pic -%} /** pic is a file url and not a css class -*/
+				{{ txt ? ' ui-nodisc-icon ui-btn-icon-top' : '' }}">{{ basic._icon(pic, color) }}
+			{%- else -%}
+				{{ ' ' }}ui-nodisc-icon ui-btn-icon-{{ txt ? 'top' : 'notext' }} ui-icon-{{ pic }}">
+			{%- endif -%}
+		{%- else -%}
+		">
+		{%- endif -%}
+		{{- txt|e -}}
 	</a>
 {% endmacro %}
 

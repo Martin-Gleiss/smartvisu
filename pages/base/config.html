@@ -19,9 +19,9 @@
 	<fieldset>
 
 	<div class="block">
-		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div class="set-2" data-role="collapsible-set" data-content-theme="a" data-mini="true">
 
-			<div data-role="collapsible" data-collapsed="false">
+			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 				<h3>Interface</h3>
 
 
@@ -39,7 +39,7 @@
 				<div data-role="fieldcontain">
 					<label for="design">Design</label>
 					<select name="design" id="design" data-native-menu="false">
-						{% for file in dir('designs', '(.+?).min.css') %}
+						{% for file in dir('designs', '(.+?).css') %}
 							<option value="{{ file.name }}">{{ file.label }}</option>
 						{% endfor %}
 					</select>
@@ -49,13 +49,13 @@
 
 				<div data-role="fieldcontain">
 					<label for="cache">Pagecache<br /></label>
-					<select name="cache" id="cache" data-role="slider" data-theme="a">
+					<select name="cache" id="cache" data-role="flipswitch">
 						<option value="false">off</option>
 						<option value="true">on</option>
 					</select>
 					{{ forms.flip_init('cache', config_cache) }}
 					
-					<button type="button" data-theme="a" data-icon="delete" data-mini="true" data-inline="true" id="clear_cache">Clear Pagecache</button>
+					<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache" class="ui-micro">Clear Pagecache</button>
 					<script type="text/javascript">
 						$('#clear_cache').click(function () {
 							$.ajax({
@@ -74,7 +74,7 @@
 
 				<div data-role="fieldcontain">
 					<label for="animation">Animation<br /></label>
-					<select name="animation" id="animation" data-role="slider" data-theme="a">
+					<select name="animation" id="animation" data-role="flipswitch">
 						<option value="false">off</option>
 						<option value="true">on</option>
 					</select>
@@ -83,7 +83,7 @@
 
 			</div>
 
-			<div data-role="collapsible" data-collapsed="true">
+			<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
 				<h3>Texts</h3>
 
 				<div data-role="fieldcontain">
@@ -125,9 +125,9 @@
 
 
 	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div class="set-1" data-role="collapsible-set" data-mini="true">
 
-			<div data-role="collapsible" data-collapsed="false">
+			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 				<h3>I/O-Connection</h3>
 
 				<div data-role="fieldcontain">
@@ -156,7 +156,7 @@
 
 				<div data-role="fieldcontain">
 					<label for="driver_realtime">Realtime</label>
-					<select name="driver_realtime" id="driver_realtime" data-role="slider" data-theme="a">
+					<select name="driver_realtime" id="driver_realtime" data-role="flipswitch">
 						<option value="false">off</option>
 						<option value="true">on</option>
 					</select>
@@ -165,7 +165,7 @@
 
 				<div data-role="fieldcontain">
 					<label for="driver_autoreconnect">Auto Reconnect<br /></label>
-					<select name="driver_autoreconnect" id="driver_autoreconnect" data-role="slider" data-theme="a">
+					<select name="driver_autoreconnect" id="driver_autoreconnect" data-role="flipswitch">
 						<option value="false">off</option>
 						<option value="true">on</option>
 					</select>
@@ -179,33 +179,33 @@
 		$('#driver').change(function () {
 			switch (this.value) {
 				case 'offline':
-					$('#driver_realtime').val('false').slider('refresh');
-					$('#driver_autoreconnect').val('false').slider('refresh');
+					$('#driver_realtime').val('false').flipswitch('refresh');
+					$('#driver_autoreconnect').val('false').flipswitch('refresh');
 					break;
 
 				case 'eibd':
-					$('#driver_autoreconnect').val('false').slider('refresh');
+					$('#driver_autoreconnect').val('false').flipswitch('refresh');
 					break;
 
 				case 'json':
-					$('#driver_autoreconnect').val('false').slider('refresh');
+					$('#driver_autoreconnect').val('false').flipswitch('refresh');
 					break;
 
 				case 'linknx':
 					$('#driver_port').val('1028');
-					$('#driver_autoreconnect').val('false').slider('refresh');
+					$('#driver_autoreconnect').val('false').flipswitch('refresh');
 					break;
 
 				case 'smarthome.py':
 					$('#driver_port').val('2424');
-					$('#driver_realtime').val('true').slider('refresh');
-					$('#driver_autoreconnect').val('true').slider('refresh');
+					$('#driver_realtime').val('true').flipswitch('refresh');
+					$('#driver_autoreconnect').val('true').flipswitch('refresh');
 					break;
 
 				case 'domotiga':
 					$('#driver_port').val('2121');
-					$('#driver_realtime').val('true').slider('refresh');
-					$('#driver_autoreconnect').val('true').slider('refresh');
+					$('#driver_realtime').val('true').flipswitch('refresh');
+					$('#driver_autoreconnect').val('true').flipswitch('refresh');
 					break;
 			}
 		});
@@ -213,9 +213,9 @@
 
 
 	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div class="set-1" data-role="collapsible-set" data-content-theme="a" data-mini="true">
 
-			<div data-role="collapsible" data-collapsed="false">
+			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 				<h3>Weather</h3>
 
 				<div data-role="fieldcontain">
@@ -248,9 +248,9 @@
 
 
 	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div class="set-1" data-role="collapsible-set" data-content-theme="a" data-mini="true">
 
-			<div data-role="collapsible" data-collapsed="false">
+			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 				<h3>Phone</h3>
 
 				<div data-role="fieldcontain">
@@ -296,9 +296,9 @@
 
 
 	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div class="set-1" data-role="collapsible-set" data-content-theme="a" data-mini="true">
 
-			<div data-role="collapsible" data-collapsed="false">
+			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 				<h3>Calendar</h3>
 
 				<div data-role="fieldcontain">
@@ -344,13 +344,13 @@
 	</div>
 
 	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div class="set-1" data-role="collapsible-set" data-content-theme="a" data-mini="true">
 
-			<div data-role="collapsible" data-collapsed="false">
+			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
 				<h3>Proxy</h3>
 				<div data-role="fieldcontain">
 					<label for="proxy">Use Proxy<br /></label>
-					<select name="proxy" id="proxy" data-role="slider" data-theme="a">
+					<select name="proxy" id="proxy" data-role="flipswitch">
 						<option value="false">off</option>
 						<option value="true">on</option>
 					</select>
@@ -400,4 +400,3 @@
 	</script>
 
 {% endblock %}
-

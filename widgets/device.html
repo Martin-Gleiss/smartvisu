@@ -158,10 +158,10 @@
 
 		{% if item_set %}
 			<div class="set">
-				<a data-role="button" data-icon="minus" data-inline="true" data-iconpos="notext" class="ui-mini"></a>
+				<a class="ui-btn ui-micro ui-btn-corner-all ui-btn-inline ui-nodisc-icon ui-btn-icon-notext ui-icon-minus" data-sign="-1"></a>
 
 				<div class="temp">{{ basic.float(id~'set', item_set, '°' ) }}</div>
-				<a data-role="button" data-icon="plus" data-inline="true" data-iconpos="notext" class="ui-mini"></a>
+				<a class="ui-btn ui-micro ui-btn-corner-all ui-btn-inline ui-nodisc-icon ui-btn-icon-notext ui-icon-plus" data-sign="+1"></a>
 			</div>
 		{% endif %}
 

@@ -300,7 +300,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	$(bevent.target).find('select[data-widget="basic.flip"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
-			$(this).val(response > 0 ? 'on' : 'off').slider('refresh');
+			$(this).val(response > 0 ? 'on' : 'off').flipswitch('refresh');
 		},
 
 		'change': function (event) {
@@ -824,17 +824,12 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	});
 
 	// ----- device.rtr -----------------------------------------------------------
-	$(bevent.target).find('div[data-widget="device.rtr"] > div > a[data-icon]').on( {
+	$(bevent.target).find('div[data-widget="device.rtr"] > div > a[data-sign]').on( {
 		'click': function (event, response) {
 			var node = $(this).parent().parent();
-			var step = node.attr('data-step') * 1;
+			var step = node.attr('data-step') * $(this).attr('data-sign');
 			var item = node.find('.temp span').attr('data-item');
 
-			if($(this).attr('data-icon') == 'minus')
-				step = -step;
-			else if($(this).attr('data-icon') != 'plus')
-				return; // return if data-icon is not minus or plus
-				
 			var temp = (Math.round((widget.get(item) * 1 + step) * 10) / 10).toFixed(1);
 			io.write(item, temp);
 		}
@@ -1325,12 +1320,12 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var target = $('div[data-bind="' + $(this).attr('data-id') + '"]');
 			if (response[0] != $(this).attr('data-val-collapsed')) {
 				target.not('.ui-collapsible').not('.ui-popup').show();
-				target.filter('.ui-collapsible').trigger("expand");
+				target.filter('.ui-collapsible').collapsible("expand");
  				target.filter('.ui-popup').popup("open");
 			}
 			else {
 				target.not('.ui-collapsible').not('.ui-popup').hide();
-				target.filter('.ui-collapsible').trigger("collapse");
+				target.filter('.ui-collapsible').collapsible("collapse");
 				target.filter('.ui-popup').popup("close");
 			}
 		}
@@ -1704,4 +1699,3 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	});
 
 });
-

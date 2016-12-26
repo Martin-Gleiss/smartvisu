@@ -23,11 +23,12 @@
 	<link rel="icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="apple-touch-icon" href="favicon.png" />
 	
-	<link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.3.2.min.css" />
+	<link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.4.5.min.css" />
 
 /** CSS assets **/
 {% set cssFiles = [
 		'designs/' ~ config_design ~ '.css', 
+		icon0 ~ 'jquery.mobile.icons.min.css', 
 		'pages/base/base.css', 
 		'pages/' ~config_pages ~ '/visu.css'
 	] %}
@@ -51,7 +52,7 @@
 <script>
 console.log = function() {};
 </script>
-	<script type="text/javascript" src="vendor/jquery/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="vendor/jquery/jquery-2.1.4.min.js"></script>
 
 {%- if config_transition != 'fade' %}
 	<script type="text/javascript">
@@ -61,7 +62,17 @@ console.log = function() {};
 	</script>
 {% endif %}
 
-	<script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.3.2.min.js"></script>
+	<script type="text/javascript">
+		// work around a bug of jQuery Mobile 1.4.5 themes
+		$(document).on("pagebeforecreate", function( event, ui ) {
+			$(this).find('div[data-role="collapsible-set"][data-theme]').each(function() {
+				$(this).find('div[data-role="collapsible"]:not([data-theme])').attr('data-theme', $(this).attr('data-theme'));
+				$(this).attr('data-theme','');
+			});
+		});
+	</script>
+
+	<script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.4.5.min.js"></script>
 	
 /** JavaScript assets **/
 {% set jsFiles = [

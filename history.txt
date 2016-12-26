@@ -10,7 +10,17 @@
 HISTORY
 --------------------------------------------------------------------------------
 v 2.9
-	-
+	- update jQuery Mobile 1.4.5 / jQuery 2.1.4
+	- new widget: basic.hiddenswitch
+	- new: Template Checker
+	- new: configurable time source (show time of server or client)
+	- new: allow pages selection by url parameter (e.g. index.php?pages=foo)
+	- improve: clear pagecache (by button and on disabling)
+	- improve: add coloring for basic.float, basic.formula and basic.value
+	- improve: performance optimizations
+	- replaced make.php by on-the-fly minification
+	- fixed: changes not visible after saving configuration
+	- some other bugs fixed
 	
 v 2.8 03.10.16
     - new widget: basic.multistate

@@ -17,7 +17,7 @@
 {% macro flip_init(id, val) %}
 	<script type="text/javascript">
 		$('#{{ page }}').on('pageinit', function (event, ui) {
-			$('#{{ id }}').val('{{ val|bit }}').slider('refresh');
+			$('#{{ id }}').val('{{ val|bit }}').flipswitch('refresh');
 		});
 	</script>
 {% endmacro %}
@@ -49,4 +49,3 @@
 		$('#{{ id }}').val('{{ val }}');
 	</script>
 {% endmacro %}
-
