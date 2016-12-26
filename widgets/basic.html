@@ -48,7 +48,7 @@ _
 	<a id="{{ uid(page, id) }}" data-widget="basic.button" data-item="{{ item }}" data-val="{{ val|default('1') }}"
 		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline
 		{%- if pic -%}
-			{%- if '.' in pic -%} /** pic is a file url and not a css class -/
+			{%- if '.' in pic -%} /** pic is a file url and not a css class -*/
 				{{ txt ? ' ui-nodisc-icon ui-btn-icon-top' : '' }}">{{ basic._icon(pic, color) }}
 			{%- else -%}
 				{{ ' ' }}ui-nodisc-icon ui-btn-icon-{{ txt ? 'top' : 'notext' }} ui-icon-{{ pic }}">
