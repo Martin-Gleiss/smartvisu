@@ -42,7 +42,9 @@
 
 	{% if config_animation %}
 		<script type="text/javascript" src="widgets/animation.{{ config_js }}"></script>{% endif %}
-
+	{% if config_snow%}
+		<script type="text/javascript" src="vendor/snow/jquery.snow.js"></script>{% endif %}
+	
 	<script type="text/javascript" src="lib/base/base.{{ config_js }}"></script>
 	<script type="text/javascript" src="lib/base/base.php"></script>
 	<script type="text/javascript" src="driver/io_{{ config_driver }}.{{ config_js }}"></script>
