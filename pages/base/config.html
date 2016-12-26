@@ -64,7 +64,15 @@
 					</select>
 					{{ forms.flip_init('animation', config_animation) }}
 				</div>
-
+				
+				<div data-role="fieldcontain">
+					<label for="snow">Snow-Effekt<br /></label>
+					<select name="snow" id="snow" data-role="slider" data-theme="a">
+						<option value="false">off</option>
+						<option value="true">on</option>
+					</select>
+					{{ forms.flip_init('snow', config_snow) }}
+				</div>
 			</div>
 
 			<div data-role="collapsible" data-collapsed="true">
