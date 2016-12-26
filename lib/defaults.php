@@ -100,6 +100,10 @@ define ('config_transition', 'fade');
  * Should some html-elements and widgets be animated?
  */
 define ('config_animation', false);
+/**
+ * Snow on Pages on/off?
+ */
+define ('config_snow', false);
 
 /**
  * Shall auto reload for websocket be enabled?
