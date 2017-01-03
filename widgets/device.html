@@ -84,11 +84,11 @@
 		
 		<div style="margin: 10px;">
 		{% for i in 1..9 %}
-			<a data-val="{{ i }}" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >{{ i }}</a>
+			<a data-val="{{ i }}" data-role="button" data-inline="true" data-iconpos="nopic" data-mini="true" >{{ i }}</a>
 		{% endfor %}
-			<a data-val="-" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >-</a>
-			<a data-val="0" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >0</a>
-			<a id="{{ uid }}-ok" data-val="ok" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >OK</a>
+			<a data-val="-" data-role="button" data-inline="true" data-iconpos="nopic" data-mini="true" >-</a>
+			<a data-val="0" data-role="button" data-inline="true" data-iconpos="nopic" data-mini="true" >0</a>
+			<a id="{{ uid }}-ok" data-val="ok" data-role="button" data-inline="true" data-iconpos="nopic" data-mini="true" >OK</a>
 		</div>
 	</div>
 
@@ -158,10 +158,10 @@
 
 		{% if item_set %}
 			<div class="set">
-				<a class="ui-btn ui-micro ui-btn-corner-all ui-btn-inline ui-nodisc-icon ui-btn-icon-notext ui-icon-minus" data-sign="-1"></a>
+				<a class="ui-btn ui-micro ui-btn-corner-all ui-btn-inline ui-shadow ui-nodisc-icon ui-btn-icon-notext ui-icon-minus" data-sign="-1"></a>
 
 				<div class="temp">{{ basic.float(id~'set', item_set, '°' ) }}</div>
-				<a class="ui-btn ui-micro ui-btn-corner-all ui-btn-inline ui-nodisc-icon ui-btn-icon-notext ui-icon-plus" data-sign="+1"></a>
+				<a class="ui-btn ui-micro ui-btn-corner-all ui-btn-inline ui-shadow ui-nodisc-icon ui-btn-icon-notext ui-icon-plus" data-sign="+1"></a>
 			</div>
 		{% endif %}
 

@@ -180,21 +180,25 @@ a:hover {
 }
 
 /* listview header */
-.ui-listview > .ui-li-has-thumb > .ui-btn, .ui-listview > .ui-li-static.ui-li-has-thumb {
-  min-height: 2.125em;
+.ui-listview > .ui-li-has-thumb > .ui-btn,
+.ui-listview > .ui-li-static.ui-li-has-thumb {
+  min-height: 2.625em;
   padding-left: 4.25em;
 }
 
-.ui-li-has-thumb .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-thumb {
-	min-height: 42px;
-	padding: 10px 15px 10px 70px;
+.ui-listview>li h1,
+.ui-listview>li h2,
+.ui-listview>li h3,
+.ui-listview>li h4,
+.ui-listview>li h5,
+.ui-listview>li h6 {
+	margin: 0.6em 0;
 }
 
-.ui-listview .ui-li-has-thumb > img:first-child, .ui-listview .ui-li-has-thumb > .ui-btn > img:first-child, .ui-listview .ui-li-has-thumb .ui-li-thumb {
+.ui-listview .ui-li-has-thumb > img:first-child,
+.ui-listview .ui-li-has-thumb > .ui-btn > img:first-child,
+.ui-listview .ui-li-has-thumb .ui-li-thumb {
   top: 8% !important;
-}
-
-.ui-btn-inner.ui-li .ui-li-thumb {
 	padding: 6px 0 0 4px;
 }
 
@@ -418,25 +422,13 @@ div.ui-slider {
 	margin: 0 0 0 10px;
 	top: 4px;
 	width: 15px;
-/*
-	position: relative;
-	overflow: visible;
-*/
 }
 
 .ui-slider-track-bottomup .ui-btn.ui-slider-handle,
 .ui-slider-track-vertical .ui-btn.ui-slider-handle {
   width: 28px;
   height: 24px;
-  margin: -7px 0 0 -7.6px;
-/*
-  position: absolute;
-  z-index: 1;
-  padding: 0;
-  outline: 0 none;
-  font-size: 14px;
-  line-height: 22px;
-*/
+  margin: -12px 0 0 -7.6px;
 }
 
 a.ui-slider-handle-vertical .ui-btn-inner, a.ui-slider-handle-bottomup .ui-btn-inner {
@@ -448,8 +440,8 @@ a.ui-slider-handle-vertical .ui-btn-inner, a.ui-slider-handle-bottomup .ui-btn-i
 
 .slider-vertical-scale, .slider-bottomup-scale {
 	position: relative;
-	top: 5px;
-	margin-right: -14px;
+	top: 3px;
+	margin-right: -10px;
 }
 
 
@@ -1126,12 +1118,12 @@ canvas.colordisc {
 	padding: 0;
 }
 
-.dimmer .ui-slider .ui-input-text {
+.dimmer .ui-slider input.ui-slider-input {
 	display: none !important;
 }
 
 .dimmer .ui-slider {
-	margin: 0 0 0 40px;
+	margin: 0 0 0 10px;
 }
 
 .codepad {
@@ -1218,7 +1210,7 @@ canvas.colordisc {
 	display: inline-block;
 }
 
-.music .ui-slider .ui-input-text {
+.music .ui-slider input.ui-slider-input {
 	display: none !important;
 }
 

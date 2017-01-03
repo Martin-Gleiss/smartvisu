@@ -30,7 +30,7 @@
 
 {% endmacro %}
 
-_
+
 /**
 * A button
 *
@@ -46,7 +46,7 @@ _
 	{% import _self as basic %}
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.button" data-item="{{ item }}" data-val="{{ val|default('1') }}"
-		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline
+		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline ui-shadow 
 		{%- if pic -%}
 			{%- if '.' in pic -%} /** pic is a file url and not a css class -*/
 				{{ txt ? ' ui-nodisc-icon ui-btn-icon-top' : '' }}">{{ basic._icon(pic, color) }}
@@ -128,7 +128,7 @@ _
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.dual" data-item="{{ item }}"
 		data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
-		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline">
+		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline ui-shadow">
 		{{ basic._icon(pic_off|deficon('control_on_off.svg'), color_off, uid ~ '-off') }}
 		{{ basic._icon(pic_on|deficon('control_on_off.svg'), color_on|default('icon1'), uid ~ '-on', 'hide') }}
 	</a>
@@ -153,7 +153,7 @@ _
 
   <a id="{{ uid(page, id) }}" data-widget="basic.multistate" data-item="{{ item }}"
     data-vals="{{ implode(val) }}"  data-img="{{ implode(img|deficon) }}" data-value="0"
-		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline">
+		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline ui-shadow">
    	{{ basic._icon(img[0]|deficon('control_on_off.svg'), color[0]) }}
 		{% for pic in img[1:] %}
     	{{ basic._icon(pic, color[loop.index], '', 'hide') }}
@@ -541,7 +541,7 @@ _
 	{% set suffix = pic|slice(-4, 4) %}
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.trigger" data-name="{{ name }}" data-val="{{ val }}"
-		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline
+		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline ui-shadow
 		{%- if pic -%}
 			{%- if '.' in pic -%} /** pic is a file url and not a css class -*/
 				{{ txt ? ' ui-nodisc-icon ui-btn-icon-top' : '' }}">{{ basic._icon(pic, color) }}
