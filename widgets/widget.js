@@ -747,7 +747,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 
 			var now = new Date(Date.now() - Number($(this).data('offset')));
-			var minutes = Math.floor((now - now.setHours(0, 0, 0, 0)) / 1000 / 60);
+			var minutes = now.getHours()*60 + now.getMinutes();
 			$(this).find('svg').trigger('update', [
 				[minutes],
 				[0]

@@ -64,6 +64,7 @@ else {
   	case 'js':
   	case 'javascript':
 			$minifier = new MatthiasMullie\Minify\JS();
+			$minifier->add('console.log = function() {};');
   		break;
 	}
 		
