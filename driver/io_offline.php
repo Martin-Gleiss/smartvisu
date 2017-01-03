@@ -53,8 +53,12 @@ class driver_offline
 		{
 			while (($line = fgets($this->fp, 4096)) !== false)
 			{
-				list($item, $val) = explode('=', $line);
-				$ret[trim($item)] = trim($val);
+				list($item, $val) = explode('=', $line, 2);
+				$val = trim($val);
+				$val_unserialized = @unserialize($val);
+				if($val_unserialized !== false || $val == serialize(false))
+          $val = $val_unserialized;
+				$ret[trim($item)] = $val;
 			}
 		}
 
@@ -66,8 +70,6 @@ class driver_offline
 	 */
 	private function filewrite($data)
 	{
-		$ret = '';
-
 		if ($this->fp)
 		{
 			fseek($this->fp, 0, SEEK_SET);
@@ -75,14 +77,14 @@ class driver_offline
 			foreach ($data as $item => $val)
 			{
 				if ($item != '')
-					$line .= $item.' = '.$val."\r\n";
+					fwrite($this->fp, $item);
+					fwrite($this->fp, ' = ');
+					fwrite($this->fp, serialize($val));
+					fwrite($this->fp, "\r\n");
 			}
 
-			fwrite($this->fp, $line, strlen($line));
 			fclose($this->fp);
 		}
-
-		return $ret;
 	}
 
 	/**
@@ -107,10 +109,7 @@ class driver_offline
 
 		foreach ($this->item as $item)
 		{
-			if (is_numeric($data[$item]))
-				$ret[$item] = (float)$data[$item];
-			else
-				$ret[$item] = $data[$item];
+			$ret[$item] = $data[$item];
 		}
 
 		return json_encode($ret);
