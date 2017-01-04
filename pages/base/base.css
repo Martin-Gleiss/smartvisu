@@ -212,10 +212,8 @@ a:hover {
 }
 
 .ui-li-aside {
-	margin: 0 !important;
 	font-size: 14px;
 	right: .6em !important;
-	top: 1.4em !important;
 }
 
 .ui-li-aside .icon {
@@ -415,7 +413,8 @@ div.ui-slider {
   margin: 1px 0 0 -15px;
 }
 
-.ui-slider-track-bottomup, .ui-slider-track-vertical {
+.ui-slider-track-bottomup,
+.ui-slider-track-vertical {
 	display: inline-block;
 	height: 180px;
 	padding: 0;
@@ -431,14 +430,8 @@ div.ui-slider {
   margin: -12px 0 0 -7.6px;
 }
 
-a.ui-slider-handle-vertical .ui-btn-inner, a.ui-slider-handle-bottomup .ui-btn-inner {
-	padding: 5px !important;
-	-moz-border-radius: 0.8em;
-	-webkit-border-radius: 0.8em;
-	border-radius: 0.8em;
-}
-
-.slider-vertical-scale, .slider-bottomup-scale {
+.slider-vertical-scale,
+.slider-bottomup-scale {
 	position: relative;
 	top: 3px;
 	margin-right: -10px;
@@ -729,18 +722,10 @@ a.ui-slider-handle-semicircle {
 	cursor: pointer;
 }
 
-/* 'hand' on onClick */
-
 .alert {
 	width: 280px;
 	padding: 0;
 }
-
-.alert .ui-title {
-	margin: 8px 20px 8px 8px;
-}
-
-/* more space for the title */
 
 .alert p {
 	min-height: 180px;
@@ -1048,28 +1033,33 @@ canvas.colordisc {
 }
 
 /**
- * --- W i d g e t s :   C A L E N D A R --------------------------------------
+ * --- W i d g e t s :   C A L E N D A R  &  P H O N E -------------------------
  */
-.calendarlist h2 {
+.calendarlist h2,
+.phonelist h2 {
 	font-size: 12pt;
 	margin-bottom: 4px;
 }
 
-.calendarlist ul {
+.calendarlist ul,
+.phonelist ul {
 	margin: 0 !important;
 }
 
-.calendarlist li {
+.calendarlist li,
+.phonelist li {
 	padding: 0 !important;
 	height: 50px;
 }
 
-.calendarlist a {
+.calendarlist a,
+.phonelist a {
 	padding: 0 10px 0 50px !important;
 	height: 50px;
 }
 
-.calendarlist .ui-listview .ui-li-has-thumb > .ui-btn > .icon {
+.calendarlist .ui-listview .ui-li-has-thumb > .ui-btn > .icon,
+.phonelist .ui-listview .ui-li-has-thumb > .ui-btn > .icon {
 	padding: 0 !important;
 	margin: 0 !important;
 	width: 48px;
@@ -1078,6 +1068,17 @@ canvas.colordisc {
 	left: 1px !important;
 }
 
+.calendarlist .ui-listview>li h3,
+.phonelist .ui-listview>li h3 {
+	margin: 6px 0 6px 0;
+}
+
+.calendarlist p,
+.phonelist p {
+	margin: -0.4em 0 !important;
+}
+
+/* Calendar only */
 .calendarlist .color {
 	width: 6px;
 	height: 48px;
@@ -1085,12 +1086,14 @@ canvas.colordisc {
 	float: left;
 }
 
-.calendarlist h3 {
-	margin: 6px 0 6px 0;
-}
-
-.calendarlist p {
-	font-size: 10pt;
+/* Phone only */
+.phonelist .dir {
+	position: absolute;
+	padding: 0 !important;
+	left: 38px;
+	top: 15px;
+	width: 24px;
+	height: 24px;
 }
 
 /**
@@ -1273,35 +1276,11 @@ canvas.colordisc {
 	display: inline-block;
 }
 
-.station a.ui-btn-inline.ui-mini .ui-btn-inner {
-	padding: 1px 1px 0 1px;
-}
-
-.station a.ui-btn-inline.ui-mini .ui-btn-text {
-	display: table-cell;
-	text-align: center;
-	vertical-align: middle;
-	height: 40px;
-	width: 40px;
-}
-
 .station a.ui-btn-inline.ui-mini .icon {
 	width: auto;
 	max-width: 39px;
 	height: auto;
 	max-height: 37px;
-}
-
-.station a.ui-btn-inline.ui-midi .ui-btn-inner {
-	padding: 2px 1px 0 1px;
-}
-
-.station a.ui-btn-inline.ui-midi .ui-btn-text {
-	display: table-cell;
-	text-align: center;
-	vertical-align: middle;
-	height: 54px;
-	width: 54px;
 }
 
 .station a.ui-btn-inline.ui-midi .icon {
@@ -1317,52 +1296,6 @@ canvas.colordisc {
 
 .slideshow img {
 	width: 100%;
-}
-
-/**
- * --- W i d g e t s :   P H O N E --------------------------------------------
- */
-.phonelist h2 {
-	font-size: 12pt;
-	margin-bottom: 4px;
-}
-
-.phonelist ul {
-	margin: 0 !important;
-}
-
-.phonelist li {
-	padding: 0 !important;
-	height: 50px;
-}
-
-.phonelist a {
-	padding: 0 10px 0 64px !important;
-	height: 50px;
-}
-
-.phonelist .icon {
-	padding: 0 !important;
-	width: 48px;
-	height: 48px;
-}
-
-.phonelist .dir {
-	position: absolute;
-	padding: 0 !important;
-	left: 38px;
-	top: 15px;
-	width: 24px;
-	height: 24px;
-}
-
-.phonelist h3 {
-	margin: 6px 0 6px 0 !important;
-}
-
-.phonelist p {
-	font-size: 10pt !important;
-	margin: -0.4em 0 !important;
 }
 
 /**
