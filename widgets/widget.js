@@ -260,7 +260,18 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-	// ----- basic.multistate ------------------------------------------------------
+	// ----- basic.maptext --------------------------------------------------------
+	$(bevent.target).find('span[data-widget="basic.maptext"]').on( {
+		'update': function (event, response) {
+			var txt_arr = widget.explode($(this).attr('data-txt'));
+			var val_arr = widget.explode($(this).attr('data-val'));
+			var index = $.inArray(String(response), val_arr);
+			var match = txt_arr[index];
+			$(this).text(match);
+		}
+	});
+
+	// ----- basic.multistate -----------------------------------------------------
 	$(bevent.target).find('a[data-widget="basic.multistate"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();

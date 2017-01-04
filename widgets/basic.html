@@ -135,6 +135,22 @@
 
 {% endmacro %}
 
+/**
+* A dynamic text picked from list depending on an item
+*
+* @param unique id for this widget
+* @param an item for the value
+* @param array of texts
+* @param array of values. The text corresponding to the item's value index will be shown.
+*
+* @author Mirko Hirsch
+*/
+{% macro maptext(id, gad, txt, val) %}
+	<span id="{{ uid(page, id) }}" data-widget="basic.maptext" data-item="{{ gad }}" 
+		data-txt ="{{ implode(txt) }}" data-val="{{ implode(val)|default('') }}"
+		class="text">
+	</span>
+{% endmacro %}
 
 /**
 * A multi states button to extend the basic.dual behavior
