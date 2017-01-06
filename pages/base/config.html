@@ -21,9 +21,12 @@
 	<div class="block">
 		<div class="set-2" data-role="collapsible-set" data-content-theme="a" data-mini="true">
 
+			<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+				<h3 class="ui-collapsible-heading">User Interface</h3>
+			</div>
+
 			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 				<h3>Interface</h3>
-
 
 				<div data-role="fieldcontain">
 					<label for="pages">Pages</label>
@@ -35,7 +38,6 @@
 					{{ forms.select_init('pages', config_pages) }}
 				</div>
 
-
 				<div data-role="fieldcontain">
 					<label for="design">Design</label>
 					<select name="design" id="design" data-native-menu="false">
@@ -45,7 +47,6 @@
 					</select>
 					{{ forms.select_init('design', config_design) }}
 				</div>
-
 
 				<div data-role="fieldcontain">
 					<label for="cache">Pagecache<br /></label>
@@ -127,6 +128,10 @@
 	<div class="block">
 		<div class="set-1" data-role="collapsible-set" data-mini="true">
 
+			<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+				<h3 class="ui-collapsible-heading">Facility Backend</h3>
+			</div>
+
 			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 				<h3>I/O-Connection</h3>
 
@@ -142,7 +147,7 @@
 
 				<div data-role="fieldcontain">
 					<label for="driver_address">Address
-						<div class="note">URL / IP</div>
+						<div class="note">Hostname / IP</div>
 					</label>
 					<input type="text" name="driver_address" id="driver_address" style="letter-spacing: 0.1em;" />
 					{{ forms.text_init('driver_address', config_driver_address|e ) }}
@@ -164,7 +169,7 @@
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="driver_autoreconnect">Auto Reconnect<br /></label>
+					<label for="driver_autoreconnect">Reconnect<br /></label>
 					<select name="driver_autoreconnect" id="driver_autoreconnect" data-role="flipswitch">
 						<option value="false">off</option>
 						<option value="true">on</option>
@@ -213,7 +218,11 @@
 
 
 	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+		<div class="set-3" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+
+			<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+				<h3 class="ui-collapsible-heading">Data Services</h3>
+			</div>
 
 			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 				<h3>Weather</h3>
@@ -243,14 +252,7 @@
 				</div>
 			</div>
 
-		</div>
-	</div>
-
-
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-content-theme="a" data-mini="true">
-
-			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
+			<div data-role="collapsible" data-theme="c" data-content-theme="a">
 				<h3>Phone</h3>
 
 				<div data-role="fieldcontain">
@@ -265,7 +267,7 @@
 
 				<div data-role="fieldcontain">
 					<label for="phone_server">Address
-						<div class="note">IP</div>
+						<div class="note">Hostname / IP</div>
 					</label>
 					<input type="text" name="phone_server" id="phone_server" style="letter-spacing: 0.1em;" />
 					{{ forms.text_init('phone_server', config_phone_server|e ) }}
@@ -291,14 +293,7 @@
 				</div>
 			</div>
 
-		</div>
-	</div>
-
-
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-content-theme="a" data-mini="true">
-
-			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
+			<div data-role="collapsible" data-theme="c" data-content-theme="a">
 				<h3>Calendar</h3>
 
 				<div data-role="fieldcontain">
@@ -345,6 +340,10 @@
 
 	<div class="block">
 		<div class="set-1" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+
+			<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+				<h3 class="ui-collapsible-heading">Internet Access (serverside)</h3>
+			</div>
 
 			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
 				<h3>Proxy</h3>

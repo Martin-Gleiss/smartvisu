@@ -644,6 +644,11 @@ a.ui-slider-handle-semicircle {
 	padding: 10px 5px 10px 5px;
 }
 
+.block .ui-collapsible-set .ui-collapsible-caption {
+	padding-bottom: 10px;
+	margin-bottom: -10px;
+}
+
 .block > .ui-bar-c.ui-li-divider {
 	margin: 5px 5px 0 3px;
 	padding: .7em;
