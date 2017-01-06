@@ -125,15 +125,21 @@ var io = {
 	 */
 	get: function (item) {
 		$.ajax({  url: "driver/io_offline.php",
-			data: ({item: item}),
+			data: {"item": item},
 			type: "GET",
 			dataType: 'json',
 			async: true,
 			cache: false
 		})
-			.done(function (response) {
-				widget.update(item, response[item]);
-			})
+		.done(function (response) {
+			var val = response[item];
+			// try to parse as JSON. Use raw value if this fails (value was likely saved before introdution of JSON.stringify in put)
+			try {
+				val = JSON.parse(response[item]);
+			}
+			catch(e) {}
+			widget.update(item, val);
+		})
 	},
 
 	/**
@@ -144,49 +150,46 @@ var io = {
 
 		io.stop();
 		$.ajax({  url: "driver/io_offline.php",
-			data: ({item: item, val: val}),
-			type: "GET",
+			data: {"item": item, "val": JSON.stringify(val)},
+			type: 'POST',
 			dataType: 'json',
 			cache: false
 		})
-			.done(function (response) {
-				widget.update(item, response[item]);
+		.done(function (response) {
+			widget.update(item, JSON.parse(response[item]));
 
-				if (timer_run) {
-					io.start();
-				}
-			})
+			if (timer_run) {
+				io.start();
+			}
+		})
 	},
 
 	/**
 	 * Reads all values from bus and refreshes the pages
 	 */
 	all: function () {
-		var items = '';
+		var items = widget.listeners().join(',');
 
 		// only if anyone listens
-		if (widget.listeners().length) {
-
-			// prepare url       
-			var item = widget.listeners();
-			for (var i = 0; i < widget.listeners().length; i++) {
-				items += item[i] + ',';
-			}
-			items = items.substr(0, items.length - 1);
-
+		if (items.length) {
 			$.ajax({  url: 'driver/io_offline.php',
-				data: ({item: items}),
-				type: 'POST',
+				data: {"item": items},
+				type: 'GET',
 				dataType: 'json',
 				async: true,
 				cache: false
 			})
-				.done(function (response) {
-					// update all items	
-					$.each(response, function (item, val) {
-						widget.update(item, val);
-					})
+			.done(function (response) {
+				// update all items	
+				$.each(response, function (item, val) {
+					// try to parse as JSON. Use raw value if this fails (value was likely saved before introdution of JSON.stringify in put)
+					try {
+						val = JSON.parse(response[item]);
+					}
+					catch(e) {}
+					widget.update(item, val);
 				})
+			})
 		}
 
 		// plots

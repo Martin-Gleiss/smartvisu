@@ -51,13 +51,10 @@ class driver_offline
 
 		if ($this->fp)
 		{
-			while (($line = fgets($this->fp, 4096)) !== false)
+			while (($line = fgets($this->fp, 10240)) !== false)
 			{
 				list($item, $val) = explode('=', $line, 2);
 				$val = trim($val);
-				$val_unserialized = @unserialize($val);
-				if($val_unserialized !== false || $val == serialize(false))
-          $val = $val_unserialized;
 				$ret[trim($item)] = $val;
 			}
 		}
@@ -79,7 +76,7 @@ class driver_offline
 				if ($item != '')
 					fwrite($this->fp, $item);
 					fwrite($this->fp, ' = ');
-					fwrite($this->fp, serialize($val));
+					fwrite($this->fp, $val);
 					fwrite($this->fp, "\r\n");
 			}
 
