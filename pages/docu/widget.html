@@ -46,7 +46,7 @@
 			<div class="param">
 				{% for param_name, param_docu in widgetlist[widget].param %}
 					<code>{{ param_name }}</code>
-					<div class="desc">{{ param_docu }}</div>
+					<div class="desc">{{ param_docu|nl2br }}</div>
 				{% endfor %}
 			</div>
 

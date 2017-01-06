@@ -158,7 +158,7 @@ function twig_docu($filename)
 	{
 		foreach ($widgets[2] as $no => $macro)
 		{
-			preg_match_all('#(.+?)\((.+?)\)#i', $macro, $desc);
+			preg_match_all('#(.+?)\((.+?)(\)|,\s+_)#i', $macro, $desc); // param scanning ends on first param name beginning with _
 			$rettmp[$no]['name'] = trim($desc[1][0]);
 			$rettmp[$no]['params'] = trim($desc[2][0]);
 		}
@@ -182,22 +182,24 @@ function twig_docu($filename)
 			$rettmp[$no]['call'] = $rettmp[$no]['command']."(".$rettmp[$no]['params'].")";
 
 			// Widget-Tags
-			preg_match_all('#.+?@(.+?)\W+(.*)#i', $docu, $tags);
+			$tags = preg_split('#[\r\n\]+[*\s]*@#', $docu);
 
 			$param = 0;
 			$params = explode(',', $rettmp[$no]['params']);
 
-			foreach ($tags[1] as $id => $tag)
+			foreach ($tags as $tag)
 			{
-				if ($tag == 'param')
-					$rettmp[$no]['param'][trim($params[$param++])] = trim($tags[2][$id]);
-				elseif ($tag == 'see')
+				preg_match('#^(.+?)\s+(.*)#is', $tag, $tag);
+				 
+				if ($tag[1] == 'param')
+					$rettmp[$no]['param'][trim($params[$param++])] = trim($tag[2]);
+				elseif ($tag[1] == 'see')
 				{
-					$see = explode('#', trim($tags[2][$id]));
+					$see = explode('#', trim($tag[2]));
 					$rettmp[$no]['see'][] = array("page" => $see[0], "anchor" => $see[1]);
 				}
 				else
-					$rettmp[$no][$tag] = trim($tags[2][$id]);
+					$rettmp[$no][$tag[1]] = trim($tag[2]);
 			}
 		}
 
