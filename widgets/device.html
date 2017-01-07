@@ -238,3 +238,46 @@
 	</div>
 
 {% endmacro %}
+
+/**
+* Widget for usage of UZSU plugin
+*
+* @param unique id for this widget
+* @param the item of the UZSU (NOT the item which is switched by UZSU)
+* @param headline of popup (optional, default: UZSU)
+* @param the pic for the 'on' state (optional)
+* @param the pic for the 'off' state (optional)
+* @param supported types are 'bool', 'num', 'list', 'text' (optional, default: bool)
+* @param valueParameterList depending on valueType (optional):
+	bool: ['text on','text off'] or ['text1:value1','text2:value2'], 
+	num: ['min max step'], 
+	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'], 
+	text: no value parameter
+* @param the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
+* @param the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
+*
+* @author Michael Würtenberger
+*/
+
+{% macro uzsuicon(id, item, headline, pic_on, pic_off, valueType, valueParameterList, color_on, color_off, _backend) %}
+	{% import "basic.html" as basic %}
+	{% set uid = uid(page, id) %}
+
+	<span 
+		id="{{ uid }}" 
+		data-widget="uzsu.uzsuicon" 
+		data-item="{{ item }}" 
+		data-headline="{{ headline|default('UZSU') }}" 
+		data-designType="{{ _backend }}"
+		data-pic-on="{{ pic_on|deficon('time_timer_switch.svg') }}" 
+		data-pic-off="{{ pic_off|deficon('time_timer_switch.svg')}}"
+		data-valueType="{{ valueType|default('bool') }}"
+		data-valueParameterList="{{ implode(valueParameterList) }}"
+		class="switch icon">
+		<a>
+			{{ basic._icon(pic_off|deficon('time_timer_switch.svg'), color_off, uid ~ '-off') }}
+			{{ basic._icon(pic_on|deficon('time_timer_switch.svg'), color_on|default('icon1'), uid ~ '-on', 'hide') }}
+		</a>
+	</span>
+	
+{% endmacro %}

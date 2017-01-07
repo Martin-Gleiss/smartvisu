@@ -27,6 +27,7 @@ var io = {
   driverVersion: "1.12",
   address: '',
   port: '',
+	uzsu_type: '2',
 
   // -----------------------------------------------------------------------------
   // Does a read-request and adds the result to the buffer

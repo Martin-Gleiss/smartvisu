@@ -137,3 +137,17 @@
 	    });
 	
 	});
+
+
+/**
+ * -----------------------------------------------------------------------------
+ * L A N G U A G E  T E X T S
+ * -----------------------------------------------------------------------------
+ */
+
+	var lang = {
+		'month': <?php echo trans('month') ?>,
+		'shortmonth': <?php echo trans('shortmonth') ?>,
+		'shortday': <?php echo trans('shortday') ?>,
+		'weekday': <?php echo trans('weekday') ?>,
+	}

@@ -1202,6 +1202,116 @@ canvas.colordisc {
 	display: none !important;
 }
 
+.uzsuPopupContent{
+	width: 100%;
+	height: 100%;
+}
+.uzsuPopupHeader{
+	font-size: 2em;
+	text-align: center;
+	margin-bottom: 1.2em;
+}
+.uzsuRow{
+	clear: both;
+	height: 3.8em;
+}
+.uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec{
+	height: 3.8em;
+	border: 1px dotted;
+	margin: 0 0.6em 1.2em 1.2em;
+}
+.uzsuRowExpHoli:after{
+	clear: both;
+	content: " ";
+	display: block;
+	height: 0;
+}
+.uzsuRowExpertText, .uzsuRowHolidayText, .uzsuRowConditionText, .uzsuRowDelayedExecText{
+	height: 0em;
+	font-size: 0.7em;
+	position: relative;
+	top: 5em;
+	left: -1.5em;
+	transform: rotate(270deg);
+	transform-origin: 0 0;
+}
+.uzsuRowFooter{
+	clear: both;
+	height: 3.8em;
+	margin-top: 1.2em;
+}
+.uzsuCell, .uzsuCellExpert{
+	float: left;
+	height: 3.1em;
+	margin: 0.2em;
+}
+.uzsuCellType1{
+	float: left;
+	height: 5em;
+	margin: 0.2em;
+}
+.uzsuCellText{
+	height: 0.8em;
+	font-size: 0.7em;
+}
+.uzsuClear:after{
+	content: "";
+	clear: both;
+	display: table;
+}
+.uzsuTimeInput, .uzsuTimeMaxMinInput, .uzsuTimeOffsetInput, .uzsuValueInput{
+	width: 6ex !important;
+	padding: 0.1em !important;
+}
+.uzsuTimeInput::-webkit-inner-spin-button,
+.uzsuTimeMaxMinInput::-webkit-inner-spin-button,
+.uzsuTimeOffsetInput::-webkit-inner-spin-button,
+.uzsuValueInput::-webkit-inner-spin-button,
+.uzsuTimeInput::-webkit-outer-spin-button,
+.uzsuTimeMaxMinInput::-webkit-outer-spin-button,
+.uzsuTimeOffsetInput::-webkit-outer-spin-button,
+.uzsuValueInput::-webkit-outer-spin-button,
+.uzsuTimeInput::-webkit-clear-button,
+.uzsuTimeMaxMinInput::-webkit-clear-button,
+.uzsuTimeOffsetInput::-webkit-clear-button,
+.uzsuValueInput::-webkit-clear-button{
+	-webkit-appearance: none;
+	display: none;
+}
+.uzsuConditionValueInput, .uzsuDelayedExecValueInput{
+	width: 70px !important;
+	padding: 0.1em !important;
+}
+.uzsuConditionDeviceStringInput, .uzsuDelayedExecDeviceStringInput{
+	width: 250px !important;
+	padding: 0.1em !important;
+}
+div.ui-input-text{
+	height: 1.9em;
+}
+div.ui-slider-switch{
+	top: 1px !important;
+}
+.uzsuCellExpert div.ui-btn{
+	top: 0.2em !important;
+}
+.ui-disable{
+	opacity: 0.7 !important;
+}
+#uzsuPopupContent .ui-select.ui-mini {
+	width: 100px;
+	margin-left: 0;
+	margin-right: 0;
+}
+.uzsuTextWideInput{
+	width: 350px !important;
+}
+@media screen and (max-width: 625px){
+	.uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec, .uzsuCellExpert{
+		display: none;
+	}
+}
+
 /**
  * --- W i d g e t s :   M U L T I M E D I A ----------------------------------
  */
