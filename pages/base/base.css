@@ -1,8 +1,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @author      Martin Gleiß, Stefan Widmer
+ * @copyright   2012 - 2016
  * @license     GPL [http://www.gnu.de]
  * ----------------------------------------------------------------------------- 
  */
@@ -736,6 +736,11 @@ a.ui-slider-handle-semicircle {
 	min-height: 180px;
 }
 
+.alert .ui-header .ui-title {
+	margin-left: 0.6em;
+	margin-right: 0.6em;
+}
+
 .alert .control {
 	margin: 5px;
 	text-align: right;
@@ -1038,7 +1043,7 @@ canvas.colordisc {
 }
 
 /**
- * --- W i d g e t s :   C A L E N D A R  &  P H O N E -------------------------
+ * --- W i d g e t s :   C A L E N D A R  &  P H O N E ------------------------
  */
 .calendarlist h2,
 .phonelist h2 {
@@ -1059,7 +1064,7 @@ canvas.colordisc {
 
 .calendarlist a,
 .phonelist a {
-	padding: 0 10px 0 50px !important;
+	padding: 0 10px 0 64px !important;
 	height: 50px;
 }
 
@@ -1075,7 +1080,7 @@ canvas.colordisc {
 
 .calendarlist .ui-listview>li h3,
 .phonelist .ui-listview>li h3 {
-	margin: 6px 0 6px 0;
+	margin: 6px 0;
 }
 
 .calendarlist p,
@@ -1085,10 +1090,11 @@ canvas.colordisc {
 
 /* Calendar only */
 .calendarlist .color {
+	position: absolute;
+	left: 50px;
+	top: 0;
 	width: 6px;
 	height: 48px;
-	margin-right: 10px;
-	float: left;
 }
 
 /* Phone only */

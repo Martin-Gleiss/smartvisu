@@ -52,7 +52,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 	var colorizeText = function(widget, value) {
 		var currentIndex = null, currentThreshold = null;
-		if($.isNumeric(value)) {
+		if(!isNaN(value)) {
 			$.each($(widget).attr('data-thresholds').explode(), function(index, threshold) {
 				if(threshold == '' && currentThreshold == null) {
 					currentIndex = index;
@@ -271,7 +271,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-	// ----- basic.multistate -----------------------------------------------------
+	// ----- basic.multistate ------------------------------------------------------
 	$(bevent.target).find('a[data-widget="basic.multistate"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
@@ -709,7 +709,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				$(this).html(date.transUnit(unit));
 				response = Number(new Date(response));
 			}
-			else if (unit != '' && $.isNumeric(response)) {
+			else if (unit != '' && !isNaN(response)) {
 				$(this).html(parseFloat(response).transUnit(unit));
 			}
 			else {
@@ -758,7 +758,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 
 			var now = new Date(Date.now() - Number($(this).data('offset')));
-			var minutes = now.getHours()*60 + now.getMinutes();
+			var minutes = Math.floor((now - now.setHours(0, 0, 0, 0)) / 1000 / 60);
 			$(this).find('svg').trigger('update', [
 				[minutes],
 				[0]

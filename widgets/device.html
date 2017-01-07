@@ -101,6 +101,7 @@
 				codepad.find('#{{ uid }}-code').val('').focus();
 				codepad.data('originally-clicked', $(this));
 				event.stopPropagation();
+				event.preventDefault();
 			}
 		});
 	});
