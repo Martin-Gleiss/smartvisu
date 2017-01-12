@@ -108,14 +108,6 @@ html body .ui-page .hide {
 	font-size: 14px;
 }
 
-.icon {
-	width: 48px;
-	height: 48px;
-}
-
-img.icon {
-	vertical-align: middle;
-}
 
 /**
  * --- j Q u e r y M o b i l e ------------------------------------------------
@@ -133,9 +125,9 @@ img.icon {
 }
 
 .ui-page > .ui-header .ui-right {
-	width: 94px;
+	max-width: 160px;
 	float: right;
-	margin: 9px 2px 0 0;
+	margin: 9px 6px 0 0;
 }
 
 /* time, date and version */
@@ -198,13 +190,7 @@ a:hover {
 .ui-listview .ui-li-has-thumb > img:first-child,
 .ui-listview .ui-li-has-thumb > .ui-btn > img:first-child,
 .ui-listview .ui-li-has-thumb .ui-li-thumb {
-  top: 8% !important;
-	padding: 6px 0 0 4px;
-}
-
-.ui-btn.ui-mini .icon {
-	width: 48px;
-	height: 48px;
+ padding: 0.5em 0 0 0.25em;
 }
 
 .ui-right .mini {
@@ -212,13 +198,13 @@ a:hover {
 }
 
 .ui-li-aside {
-	font-size: 14px;
+	font-size: 0.8em; /* 0.875em; */
 	right: .6em !important;
 }
 
 .ui-li-aside .icon {
-	width: 32px;
-	height: 32px;
+	width: 2.5em;
+	height: 2.5em;
 }
 
 .ui-li-divider > img {
@@ -294,7 +280,7 @@ a:hover {
 .ui-btn.ui-btn-inline.ui-micro {
 	min-height: 28px;
 	min-width: 28px;
-	line-height: 26px;
+	line-height: 25px;
 	padding: 0;
 	font-size: 0.8em;
 }
@@ -870,7 +856,7 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 }
 
 .docu .param .desc {
-	margin-left: 50px;
+	margin: -0.2em 0 0.2em 3.125em;
 }
 
 .docu .see {
@@ -1587,11 +1573,10 @@ svg.icon text {
 	font-weight: normal;
 }
 
-svg.fx-icon {
+svg.fx-icon, .icon {
 	vertical-align: middle;
-	width: 48px;
-	height: 48px;
-	/*margin: 1px;*/
+	width: 3em;
+	height: 3em;
 }
 
 
