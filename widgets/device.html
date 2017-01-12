@@ -127,7 +127,7 @@
 	<div class="dimmer">
 		{{ basic.switch(id~'switch', item_switch, 'light_light.svg', 'light_light.svg') }}
 		<p>{{ txt|e }}</p>
-		{{ basic.slider(id~'slider', item_value, min, max, step) }}
+		{{ basic.slider(id~'slider', item_value, min, max, step, '', 'none') }}
 	</div>
 
 {% endmacro %}

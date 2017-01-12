@@ -27,26 +27,40 @@
 		{{ basic.slider('slider2', 'bath.light.value', 0, 100, 10) }}
 	</div>
 
+	Orientation
 	<div class="twig">
 		<code class="prettyprint">
 			&#123;&#123; basic.slider('slider3', 'bath.light.value', 0, 255, 5, 'vertical') &#125;&#125;<br />
-			&#123;&#123; basic.slider('slider4', 'bath.light.value', 0, 255, 5, 'bottomup') &#125;&#125;
+			&#123;&#123; basic.slider('slider4', 'bath.light.value', 0, 255, 5, 'bottomup') &#125;&#125;<br />
+			&#123;&#123; basic.slider('slider5', 'bath.light.value', 0, 255, 5, 'semicircle') &#125;&#125;
 		</code>
 	</div>
 	<div class="html">
-		<div style="height: 180px; width: 100px; display: inline-block;">
+		<div style="height: 180px; width: auto; display: inline-block; margin-right: 2em;">
 			{{ basic.slider('slider3', 'bath.light.value', 0, 255, 5, 'vertical') }}
 		</div>
-		<div style="height: 180px; width: 100px; display: inline-block;">
+		<div style="height: 180px; width: auto; display: inline-block; margin-right: 2em;">
 			{{ basic.slider('slider4', 'bath.light.value', 0, 255, 5, 'bottomup') }}
 		</div>
+
+		<div style="height: 180px; width: auto; display: inline-block; vertical-align: top;">
+			{{ basic.slider('slider5', 'bath.light.value', 0, 255, 5, 'semicircle') }}
+		</div>
+
 	</div>
 
+	Value display types
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.slider('slider5', 'bath.light.value', 0, 255, 5, 'semicircle') &#125;&#125;</code>
+		<code class="prettyprint">
+			&#123;&#123; basic.slider('slider5', 'bath.light.value', 0, 255, 5, '', 'handle') &#125;&#125;<br>
+			&#123;&#123; basic.slider('slider5', 'bath.light.value', 0, 255, 5, '', 'none') &#125;&#125;<br>
+			&#123;&#123; basic.slider('slider5', 'bath.light.value', 0, 255, 5, '', 'both') &#125;&#125;
+		</code>
 	</div>
 	<div class="html">
-		{{ basic.slider('slider5', 'bath.light.value', 0, 255, 5, 'semicircle') }}
+		{{ basic.slider('slider6', 'bath.light.value', 0, 255, 5, '', 'handle') }}<br>
+		{{ basic.slider('slider7', 'bath.light.value', 0, 255, 5, '', 'none') }}<br>
+		{{ basic.slider('slider7', 'bath.light.value', 0, 255, 5, '', 'both') }}
 	</div>
 
 {% endblock %}

@@ -508,6 +508,26 @@ a.ui-slider-handle-semicircle {
 	background-position: inherit;
 }
 
+/* value display type */
+.ui-slider-handle-info .ui-slider-track {
+    margin: 0 15px 12px;
+}
+.ui-slider-handle-info.ui-slider-track-bottomup .ui-btn.ui-slider-handle,
+.ui-slider-handle-info.ui-slider-track-vertical .ui-btn.ui-slider-handle {
+    line-height: 22px;
+}
+
+
+input.ui-slider-input.ui-slider-no-input {
+    visibility: hidden;
+}
+input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
+    display: none;
+}
+.ui-slider-track.ui-slider-no-input {
+    margin-left: 0px;
+}
+
 /** --------- flip --------- */
 /* corection because ui-slider is now dynamic */
 .ui-slider.ui-slider-switch {
@@ -1132,12 +1152,8 @@ canvas.colordisc {
 	padding: 0;
 }
 
-.dimmer .ui-slider input.ui-slider-input {
-	display: none !important;
-}
-
 .dimmer .ui-slider {
-	margin: 0 0 0 10px;
+	margin: 0 0 0 48px;
 }
 
 .codepad {
