@@ -182,14 +182,14 @@ function twig_docu($filename)
 			$rettmp[$no]['call'] = $rettmp[$no]['command']."(".$rettmp[$no]['params'].")";
 
 			// Widget-Tags
-			$tags = preg_split('#[\r\n\]+[*\s]*@#', $docu);
+			$tags = preg_split('#[\r\n]+[*\s]*@#', $docu);
 
 			$param = 0;
 			$params = explode(',', $rettmp[$no]['params']);
 
-			foreach ($tags as $tag)
+			foreach ($tags as $tagstring)
 			{
-				preg_match('#^(.+?)\s+(.*)#is', $tag, $tag);
+				preg_match('#^(.+?)\s+(.*)$#is', $tagstring, $tag);
 				 
 				if ($tag[1] == 'param')
 					$rettmp[$no]['param'][trim($params[$param++])] = trim($tag[2]);
@@ -208,7 +208,7 @@ function twig_docu($filename)
 			$ret[$attributes['subpackage'].'.'.$attributes['name']] = $attributes;
 		}
 
-		ksort($ret);
+		//ksort($ret); // as of Version 2.9: Don't sort but use order in sourcefile
 	}
 	else
 	{

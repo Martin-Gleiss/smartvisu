@@ -76,15 +76,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 // ----- b a s i c ------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
-	// ----- basic.button ---------------------------------------------------------
-	$(bevent.target).find('a[data-widget="basic.button"]').on( {
-		'click': function (event) {
-			if ($(this).attr('data-val') != '') {
-				io.write($(this).attr('data-item'), $(this).attr('data-val'));
-			}
-		}
-	});
-
 	// ----- basic.checkbox -------------------------------------------------------
 	$(bevent.target).find('input[data-widget="basic.checkbox"]').on( {
 		'update': function (event, response) {
@@ -234,31 +225,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			ctx.fill();
 		}
 	});
-	
-	// ----- basic.dual -----------------------------------------------------------
-	$(bevent.target).find('a[data-widget="basic.dual"]').on( {
-		'update': function (event, response) {
-			event.stopPropagation();
-			$(this).val(response);
-			$(this).trigger('draw');
-		},
-
-		'draw': function(event) {
-			event.stopPropagation();
-			if($(this).val() == $(this).attr('data-val-on')) {
-				$(this).find('#' + this.id + '-off').hide();
-				$(this).find('#' + this.id + '-on').show();
-			}
-			else {
-				$(this).find('#' + this.id + '-on').hide();
-				$(this).find('#' + this.id + '-off').show();
-			}
-		},
-
-		'click': function (event) {
-			io.write($(this).attr('data-item'), ($(this).val() == $(this).attr('data-val-off') ? $(this).attr('data-val-on') : $(this).attr('data-val-off')) );
-		}
-	});
 
 	// ----- basic.maptext --------------------------------------------------------
 	$(bevent.target).find('span[data-widget="basic.maptext"]').on( {
@@ -268,42 +234,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var index = $.inArray(String(response), val_arr);
 			var match = txt_arr[index];
 			$(this).text(match);
-		}
-	});
-
-	// ----- basic.multistate ------------------------------------------------------
-	$(bevent.target).find('a[data-widget="basic.multistate"]').on( {
-		'update': function (event, response) {
-			event.stopPropagation();
-			// get list of values and images
-			var list_val = $(this).attr('data-vals').explode();
-			var list_img = $(this).attr('data-img').explode();
-
-			// get the index of the value received
-			var idx = list_val.indexOf(response.toString());
-
-			// update the image
-			$(this).find('.icon, .fx-icon').hide().filter('*:eq('+idx+')').show();
-
-			// memorise the index for next use
-			$(this).attr('data-value', idx);
-		},
-
-		'click': function (event) {
-			// get the list of values
-			var list_val = $(this).attr('data-vals').explode();
-
-			// get the last index memorised
-			var old_idx = parseInt($(this).attr('data-value'));
-
-			//compute the next index
-			var new_idx = (old_idx + 1) % list_val.length;
-			
-			// send the value to driver
-			io.write($(this).attr('data-item'), list_val[new_idx]);
-
-			// memorise the index for next use
-			$(this).attr('data-value', new_idx);
 		}
 	});
 
@@ -383,29 +313,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			}
 
 			colorizeText(this, calc);
-		}
-	});
-
-	// ----- basic.hiddenswitch --------------------------------------------------------
-	$(bevent.target).find('span[data-widget="basic.hiddenswitch"]').on({
-		'update': function(event,response){
-			event.stopPropagation();
-			$(this).val(response);
-			$(this).trigger('draw');
-		},
-		
-		'draw': function(event) {
-			event.stopPropagation();
-			if($(this).val() == $(this).attr('data-val-show')) {
-				$(this).show();
-			}
-			else {
-				$(this).hide();
-			}
-		},
-		
-		'click': function(event){
-			io.write($(this).attr('data-item'), $(this).attr('data-val-send'));
 		}
 	});
 
@@ -592,56 +499,47 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-
-	// ----- basic.switch ---------------------------------------------------------
-	$(bevent.target).find('span[data-widget="basic.switch"]').on({
+	// ----- basic.stateswitch ------------------------------------------------------
+	$(bevent.target).find('span[data-widget="basic.stateswitch"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
-			$(this).val(response);
-			$(this).trigger('draw');
-		},
-
-		'draw': function(event) {
-			event.stopPropagation();
-			if($(this).val() == $(this).attr('data-val-on')) {
-				$(this).find('#' + this.id + '-off').hide();
-				$(this).find('#' + this.id + '-on').show();
-			}
-			else {
-				$(this).find('#' + this.id + '-on').hide();
-				$(this).find('#' + this.id + '-off').show();
-			}
-		},
-
+			// get list of values
+			var list_val = $(this).attr('data-vals').explode();
+			// get received value
+			var val = response.toString().trim();
+			// hide all states and show the first corrseponding to value. If none corrseponds, the first will be shown by using .addBack(':first') and .last()
+			$(this).next('a[data-widget="basic.stateswitch"][data-index]').insertBefore($(this).children('a:eq(' + $(this).next('a[data-widget="basic.stateswitch"][data-index]').attr('data-index') + ')'));
+			$(this).after($(this).children('a[data-widget="basic.stateswitch"]').filter('[data-val="' + val + '"]:first').addBack(':first').last());
+			// memorise the value for next use
+			$(this).attr('data-value', val);
+		}
+	})
+	.children('a[data-widget="basic.stateswitch"]').on( {
 		'click': function (event) {
-			io.write($(this).attr('data-item'), ($(this).val() == $(this).attr('data-val-off') ? $(this).attr('data-val-on') : $(this).attr('data-val-off')) );
+			var widget = $(this).prev('span[data-widget="basic.stateswitch"]')
+			// get the list of values
+			var list_val = widget.attr('data-vals').explode();
+			// get the last memorised value
+			var old_val = widget.attr('data-value');
+			// get the index of the memorised value
+			var old_idx = list_val.indexOf(old_val);
+			// compute the next index
+			var new_idx = (old_idx + 1) % list_val.length;
+			// get next value
+			var new_val = list_val[new_idx];
+			// send the value to driver
+			io.write(widget.attr('data-item'), new_val);
+			// memorise the value for next use
+			widget.attr('data-value', new_val);
 		}
-	});
-
-	// ----- basic.switch.v1 ------------------------------------------------------
-	$(bevent.target).find('span[data-widget="basic.switch.v1"]').on({
-		'update': function (event, response) {
-			event.stopPropagation();
-			$(this).find('img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
-		},
-
-		'click': function (event) {
-			if ($(this).find('img').attr('src') == $(this).attr('data-pic-off')) {
-				io.write($(this).attr('data-item'), $(this).attr('data-val-on'));
-			}
-			else {
-				io.write($(this).attr('data-item'), $(this).attr('data-val-off'));
-			}
-		}
-	});
-
-	$(bevent.target).find('span[data-widget="basic.switch.v1"] > a > img', 'hover').on(function (event, response) {
-		if (event.type === 'mouseenter') {
-			$(this).addClass("ui-focus");
-		}
-		else {
-			$(this).removeClass("ui-focus");
-		}
+	})
+	// init
+	.end().each(function() {
+		// replicate ui-last-child if last sibling of tag 'a' has it
+		if($(this).children('a:last').hasClass('ui-last-child'))
+			$(this).children('a').addClass('ui-last-child');
+		// display first control as default
+		$(this).after($(this).children('a[data-widget="basic.stateswitch"]:first'));
 	});
 
 	// ----- basic.symbol ---------------------------------------------------------

@@ -16,49 +16,69 @@
 		{% set pic = pic|slice(0, 6) ~ 'ws' ~ pic|slice(8,-4) ~ '.svg' %}
 	{% endif %}
 
-	{% if (color == 'icon0') or (color is empty) %}
+	{%- if (color == 'icon0') or (color is empty) -%}
 		<img id="{{ id }}" class="icon {{ class }}" src="{{ pic|deficon }}">
-	{% elseif color == 'icon1' %}
+	{%- elseif color == 'icon1' -%}
 		<img id="{{ id }}" class="icon icon1 {{ class }}" src="{{ pic|deficon }}">
-	{% else %}
+	{%- else -%}
 		{% set presetColors = {'or': '#f9a028', 'gn': '#84c929', 'bl': '#4176a9', 'sw': '#000'} %}
-		{% if presetColors[color] is defined %}
+		{%- if presetColors[color] is defined -%}
 			{% set color = presetColors[color] %}
-		{% endif %}
+		{%- endif -%}
 		<img id="{{ id }}" class="icon icon1 {{ class }}" style="stroke:{{ color }}; fill:{{ color }};" src="{{ pic|deficon }}">
-	{% endif %}
+	{%- endif -%}
 
 {% endmacro %}
 
-
 /**
-* A button
+* A versatile button/switch 
+* (supersedes deprecated basic.button, basic.dual, basic.hiddenswitch, basic.multistate and basic.switch)
 *
-* @param unique id for this widget
-* @param a item
-* @param text printed on the button (optional)
-* @param a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search' (optional)
-* @param value send if the button is pressed (optional, default 1)
-* @param type: 'micro', 'mini', 'midi' (optional, default: mini)
-* @param the color 'icon1' or e. g. '#f00' for red (default 'icon0' of the design)
+* @param unique id for this widget (optional)
+* @param a gad/item
+* @param valid types: 'micro', 'mini', 'midi', 'icon' (optional, default: mini)
+* @param array of values (optional, default [0,1])
+* @param array of icons(optional, default: control_on_off.svg)
+	Hint: Use 'none' to display text only
+* @param array of texts (optional)
+* @param array of colors; 'icon1' or e. g. '#f00' for red or 'hidden' to not diplay (optional, default: icon0)
+*
+* @author Stefan WIDMER
+* @info Based on work of Martin GLEISS and Pierre-Yves KERVIEL
 */
-{% macro button(id, item, txt, pic, val, type, color) %}
+{% macro stateswitch(id, item, type, value, icon, text, color) %}
 	{% import _self as basic %}
 
-	<a id="{{ uid(page, id) }}" data-widget="basic.button" data-item="{{ item }}" data-val="{{ val|default('1') }}"
-		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline ui-shadow 
-		{%- if pic -%}
-			{%- if '.' in pic -%} /** pic is a file url and not a css class -*/
-				{{ txt ? ' ui-nodisc-icon ui-btn-icon-top' : '' }}">{{ basic._icon(pic, color) }}
-			{%- else -%}
-				{{ ' ' }}ui-nodisc-icon ui-btn-icon-{{ txt ? 'top' : 'notext' }} ui-icon-{{ pic }}">
+	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
+	{% set color = color|default(['','icon1']) %}
+	
+	<span id="{{ uid(page, id|default(random())) }}" data-widget="basic.stateswitch" data-item="{{ item }}" 
+		data-value="{{ value|first }}" data-vals="{{ implode(value) }}"
+		style="display: none; !important">
+	{% for val in value %}
+		{% set pic = (icon is iterable ? icon[loop.index0] : icon)|deficon('control_on_off.svg') %}
+		{% set pic = pic != 'none' ? pic %} /** set pic to empty if it is 'none' */
+		{% set col = (color is iterable ? color[loop.index0] : color)|default('') %}
+		{% set txt = (text is iterable ? text[loop.index0] : text)|default('') %}
+    <a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" {{ col == 'hidden' ? 'style="visibility: hidden;"' }} class="
+			{%- if type == 'icon' -%} /**- display as icon -*/
+				ui-link
+			{%- else -%} /**- display as button -*/
+				ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
 			{%- endif -%}
-		{%- else -%}
-		">
-		{%- endif -%}
-		{{- txt|e -}}
-	</a>
-
+				{%- if pic is empty -%}
+					">
+				{%- elseif '.' in pic -%} /**- pic is a file: show as inline img -*/
+					{{ txt ? ' ui-btn-icon-top' : '' }} ui-nodisc-icon">{{ basic._icon(pic, col) }}
+				{%- else -%} /**- pic is a css class: insert css class for background image -*/
+					{{ txt ? ' ui-btn-icon-top' : ' ui-btn-icon-notext' }} ui-nodisc-icon ui-icon-{{ pic }}">
+				{%- endif -%}
+			{{- txt|e -}}
+		</a>
+  {% endfor %}
+  <a class="ui-btn" style="display: none !important"></a> /** placeholder for last moved control */
+  </span>
+	
 {% endmacro %}
 
 
@@ -108,33 +128,6 @@
 
 {% endmacro %}
 
-
-/**
-* A switch with to states displayed as a button
-*
-* @param unique id for this widget
-* @param a item
-* @param the pic for the 'on' state (optional)
-* @param the pic for the 'off' state (optional)
-* @param value send for the 'on' state (optional, default 1)
-* @param value send for the 'off' state (optional, default 0)
-* @param type: 'micro', 'mini', 'midi' (optional, default: mini)
-* @param the color_on:  e.g. '#f00' for red (default 'icon1' of the design)
-* @param the color_off:  e.g. '#f00' for red (default 'icon0' of the design)
-*/
-{% macro dual(id, item, pic_on, pic_off, val_on, val_off, type, color_on, color_off) %}
-	{% set uid = uid(page, id) %}
-	{% import _self as basic %}
-
-	<a id="{{ uid(page, id) }}" data-widget="basic.dual" data-item="{{ item }}"
-		data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
-		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline ui-shadow">
-		{{ basic._icon(pic_off|deficon('control_on_off.svg'), color_off, uid ~ '-off') }}
-		{{ basic._icon(pic_on|deficon('control_on_off.svg'), color_on|default('icon1'), uid ~ '-on', 'hide') }}
-	</a>
-
-{% endmacro %}
-
 /**
 * A dynamic text picked from list depending on an item
 *
@@ -150,32 +143,6 @@
 		data-txt ="{{ implode(txt) }}" data-val="{{ implode(val)|default('') }}"
 		class="text">
 	</span>
-{% endmacro %}
-
-/**
-* A multi states button to extend the basic.dual behavior
-*
-* @param unique id for this widget
-* @param a item for command
-* @param array of values
-* @param array of icons path and name
-* @param type: 'micro', 'mini', 'midi' (optional, default: mini)
-* @param array of colors; 'icon1' or e. g. '#f00' for red (optional)
-*
-* @author Pierre-Yves KERVIEL
-*/
-{% macro multistate(id, item, val, img, type, color) %}
-	{% import _self as basic %}
-
-  <a id="{{ uid(page, id) }}" data-widget="basic.multistate" data-item="{{ item }}"
-    data-vals="{{ implode(val) }}"  data-img="{{ implode(img|deficon) }}" data-value="0"
-		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline ui-shadow">
-   	{{ basic._icon(img[0]|deficon('control_on_off.svg'), color[0]) }}
-		{% for pic in img[1:] %}
-    	{{ basic._icon(pic, color[loop.index], '', 'hide') }}
-    {% endfor %}
-  </a>
-
 {% endmacro %}
 
 
@@ -268,31 +235,6 @@
 	</script>
 {% endmacro %}
 
-
-/**
-* A switch with some descriptive text
-* The switch will be shown ownly if he has a defined state. Otherwise it will be hidden.
-* In addition the switch can be used to trigger an operation on the switch itself.
-*
-* @param unique id for this widget
-* @param a gad/item
-* @param text to show beside icon (optional)
-* @param the pic (optional)
-* @param the widget will only be shown if item has this value (optional, default 1)
-* @param value to send on click (optional, default 0)
-* @param the color 'icon1' or e. g. '#f00' for red (default 'icon1' of the design)
-* 
-* @author Dominik REHM
-*/
-{% macro hiddenswitch(id, item, txt, pic, val_show, val_send, color) %}
-	{% set uid = uid(page, id) %}
-	{% import _self as basic %}
-	<span id="{{ uid(page, id) }}" data-widget="basic.hiddenswitch" data-item="{{ item }}"
-	data-val-show="{{ val_show|default('1') }}" data-val-send="{{ val_send|default('0') }}">
-		<a>{{ basic._icon(pic|deficon('control_on_off.svg'), color|default('icon1'), uid) }}</a>
-		{{ txt}}
-	</span>
-{% endmacro %}
 
 /**
 * Displays a rgb-selector
@@ -431,43 +373,6 @@
 
 
 /**
-* A switch, build of two pics
-*
-* @param unique id for this widget
-* @param a item
-* @param the pic for the 'on' state (optional)
-* @param the pic for the 'off' state (optional)
-* @param value send for the 'on' state (optional, default 1)
-* @param value send for the 'off' state (optional, default 0)
-* @param the color_on 'icon1' or e. g. '#f00' for red (default 'icon1' of the design)
-* @param the color_off  e. g. '#f00' for red (default 'icon0' of the design)
-*/
-{% macro switch(id, item, pic_on, pic_off, val_on, val_off, color_on, color_off) %}
-	{% set uid = uid(page, id) %}
-	{% import _self as basic %}
-
-	{% if not pic_on or pic_on|slice(-4, 4) == '.svg' %}
-		<span id="{{ uid }}" data-widget="basic.switch" data-item="{{ item }}"
-			data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
-			data-pic-on="{{ pic_on|deficon('control_on_off.svg') }}" data-pic-off="{{ pic_off|deficon('control_on_off.svg') }}"
-			class="switch icon">
-				<a>
-					{{ basic._icon(pic_off|deficon('control_on_off.svg'), color_off, uid ~ '-off') }}
-					{{ basic._icon(pic_on|deficon('control_on_off.svg'), color_on|default('icon1'), uid ~ '-on', 'hide') }}
-				</a>
-		</span>
-	{% else %}
-		<span id="{{ uid }}" data-widget="basic.switch.v1" data-item="{{ item }}"
-			data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
-			data-pic-on="{{ pic_on|deficon('control_on_off.svg') }}" data-pic-off="{{ pic_off|deficon('control_on_off.svg') }}"
-			class="switch icon"><a><img class="icon" src="{{ pic_off|default(icon0~'control_on_off.svg') }}" /></a>
-		</span>
-	{% endif %}
-
-{% endmacro %}
-
-
-/**
 * A symbol, with no writing to knx, only displayed when the value of item is equal to val. Symbols may be used in menus.
 * If more than one item is given, they will be combined with mode ('or' / 'and').
 *
@@ -558,7 +463,7 @@
 	{% set suffix = pic|slice(-4, 4) %}
 
 	<a id="{{ uid(page, id) }}" data-widget="basic.trigger" data-name="{{ name }}" data-val="{{ val }}"
-		class="ui-btn ui-{{ type|default('mini') }} ui-btn-corner-all ui-btn-inline ui-shadow
+		class="ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline ui-shadow
 		{%- if pic -%}
 			{%- if '.' in pic -%} /** pic is a file url and not a css class -*/
 				{{ txt ? ' ui-nodisc-icon ui-btn-icon-top' : '' }}">{{ basic._icon(pic, color) }}
@@ -590,4 +495,92 @@
 	<{{ tag|default('span') }} id="{{ uid(page, id) }}" data-widget="basic.value" data-item="{{ item }}"
 	data-unit="{{ unit }}" data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">--- {{ unit }}</{{ tag|default('span') }}>
 
+{% endmacro %}
+
+
+/******************************************************************************
+ * D E P R E C A T E D  W I D G E T S
+ ******************************************************************************/ 
+
+/**
+* A button
+*
+* @deprecated as of version 2.9. Use 'basic.stateswitch' instead.
+*	
+* @param unique id for this widget
+* @param a item
+* @param text printed on the button (optional)
+* @param a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search' (optional)
+* @param value send if the button is pressed (optional, default 1)
+* @param type: 'micro', 'mini', 'midi' (optional, default: mini)
+* @param the color 'icon1' or e. g. '#f00' for red (default 'icon0' of the design)
+*/
+{% macro button(id, item, txt, pic, val, type, color) %}
+	{% import _self as basic %}
+	{{ basic.stateswitch(id, item, type|default('mini'), [val|default('1')], [pic|default('none')], [txt], [color]) }}
+	<script type="text/javascript">console.warn("Use of 'basic.button' is deprecated, use 'basic.stateswitch' instead.")</script>
+{% endmacro %}
+
+
+/**
+* A switch with two states displayed as a button
+*
+* @deprecated as of version 2.9. Use 'basic.stateswitch' instead.
+*
+* @param unique id for this widget
+* @param a item
+* @param the pic for the 'on' state (optional)
+* @param the pic for the 'off' state (optional)
+* @param value send for the 'on' state (optional, default 1)
+* @param value send for the 'off' state (optional, default 0)
+* @param type: 'micro', 'mini', 'midi' (optional, default: mini)
+* @param the color_on:  e.g. '#f00' for red (default 'icon1' of the design)
+* @param the color_off:  e.g. '#f00' for red (default 'icon0' of the design)
+*/
+{% macro dual(id, item, pic_on, pic_off, val_on, val_off, type, color_on, color_off) %}
+	{% import _self as basic %}
+	{{ basic.stateswitch(id, item, type, [val_off|default('0'), val_on|default('1')], [pic_off|deficon('control_on_off.svg'), pic_on|deficon('control_on_off.svg')], '', [color_off, color_on|default('icon1')]) }}
+	<script type="text/javascript">console.warn("Use of 'basic.switch' is deprecated, use 'basic.stateswitch' instead.")</script>
+{% endmacro %}
+
+
+/**
+* A multi states button to extend the basic.dual behavior
+*
+* @deprecated as of version 2.9. Use 'basic.stateswitch' instead.
+*
+* @param unique id for this widget
+* @param a item for command
+* @param array of values
+* @param array of icons path and name
+* @param type: 'micro', 'mini', 'midi' (optional, default: mini)
+* @param array of colors; 'icon1' or e. g. '#f00' for red (optional)
+*
+* @author Pierre-Yves KERVIEL
+*/
+{% macro multistate(id, item, val, img, type, color) %}
+	{% import _self as basic %}
+	{{ basic.stateswitch(id, item, type, val, img, '', color) }}
+	<script type="text/javascript">console.warn("Use of 'basic.multistate' is deprecated, use 'basic.stateswitch' instead.")</script>
+{% endmacro %}
+
+
+/**
+* A switch, build of two pics
+*
+* @deprecated as of version 2.9. Use 'basic.stateswitch' instead.
+*
+* @param unique id for this widget
+* @param a item
+* @param the pic for the 'on' state (optional)
+* @param the pic for the 'off' state (optional)
+* @param value send for the 'on' state (optional, default 1)
+* @param value send for the 'off' state (optional, default 0)
+* @param the color_on 'icon1' or e. g. '#f00' for red (default 'icon1' of the design)
+* @param the color_off  e. g. '#f00' for red (default 'icon0' of the design)
+*/
+{% macro switch(id, item, pic_on, pic_off, val_on, val_off, color_on, color_off) %}
+	{% import _self as basic %}
+	{{ basic.stateswitch(id, item, 'icon', [val_off|default('0'), val_on|default('1')], [pic_off|deficon('control_on_off.svg'), pic_on|deficon('control_on_off.svg')], ['',''], [color_off, color_on|default('icon1')]) }}
+	<script type="text/javascript">console.warn("Use of 'basic.switch' is deprecated, use 'basic.stateswitch' instead.")</script>
 {% endmacro %}

@@ -234,6 +234,19 @@ a:hover {
 }
 
 /** --------- button --------- */
+.ui-link.ui-btn-icon-notext:after {
+	display: inline-block;
+	vertical-align: middle;
+	width: 48px;
+	height: 48px;
+	background-size: 24px;
+	margin: 0;
+	position: static;
+}
+.ui-link.ui-btn-icon-notext.ui-nodisc-icon:after {
+	background-color: transparent;
+}
+
 .ui-btn-inline {
 	margin: 1px;
 }
@@ -244,37 +257,28 @@ a:hover {
 	margin: 0 auto;
 }
 
-.ui-btn-icon-left:after,
-.ui-btn-icon-right:after,
-.ui-btn-icon-top:after,
-.ui-btn-icon-bottom:after,
-.ui-btn-icon-notext:after {
+.ui-btn.ui-btn-icon-left:after,
+.ui-btn.ui-btn-icon-right:after,
+.ui-btn.ui-btn-icon-top:after,
+.ui-btn.ui-btn-icon-bottom:after,
+.ui-btn.ui-btn-icon-notext:after {
 	height: 18px;
 	width: 18px;
 	background-size: 10px;
 }
 
-.ui-btn-icon-notext:after,
-.ui-btn-icon-left:after,
-.ui-btn-icon-right:after {
+.ui-btn.ui-btn-icon-notext:after,
+.ui-btn.ui-btn-icon-left:after,
+.ui-btn.ui-btn-icon-right:after {
 	margin-top: -9px;
 }
 
-.ui-btn-icon-notext:after,
-.ui-btn-icon-top:after,
-.ui-btn-icon-bottom:after {
+.ui-btn.ui-btn-icon-notext:after,
+.ui-btn.ui-btn-icon-top:after,
+.ui-btn.ui-btn-icon-bottom:after {
 	margin-left: -9px;
 }
 
-/* fix of bug in theme.css line 106 */
-.ui-controlgroup-horizontal .ui-btn.ui-btn-icon-notext.ui-last-child {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.ui-controlgroup-horizontal .ui-btn.ui-btn-icon-notext.ui-first-child {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
 
 /** --------- button: micro --------- */
 .ui-btn.ui-btn-inline.ui-micro {
@@ -823,6 +827,11 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 
 .docu .macro {
 	font-size: 18px;
+}
+
+.deprecated, a.deprecated {
+	font-style: italic;
+	font-weight: normal;
 }
 
 .docu h5 {
