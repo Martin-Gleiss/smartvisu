@@ -235,18 +235,6 @@ a:hover {
 }
 
 /** --------- button --------- */
-.ui-link.ui-btn-icon-notext:after {
-	display: inline-block;
-	vertical-align: middle;
-	width: 48px;
-	height: 48px;
-	background-size: 24px;
-	margin: 0;
-	position: static;
-}
-.ui-link.ui-btn-icon-notext.ui-nodisc-icon:after {
-	background-color: transparent;
-}
 
 .ui-btn-inline {
 	margin: 1px;
@@ -897,8 +885,23 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	display: inline-block;
 }
 
-.switch.icon {
+.switch.icon,
+.switch .fx-icon {
 	vertical-align: middle;
+}
+
+.switch.ui-btn-icon-notext:after {
+	display: inline-block;
+	vertical-align: middle;
+	width: 48px;
+	height: 48px;
+	background-size: 24px;
+	margin: 0;
+	position: static;
+}
+
+.switch.ui-btn-icon-notext.ui-nodisc-icon:after {
+	background-color: transparent;
 }
 
 .switch-row {
