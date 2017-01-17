@@ -531,10 +531,6 @@
 	{% import _self as basic %}
 	{{ basic.print(id, item, unit, '', threshold, color) }}
 	<script type="text/javascript">console.warn("Use of 'basic.float' is deprecated, use 'basic.print' instead.")</script>
-/**
-	<{{ tag|default('span') }} id="{{ uid(page, id) }}" data-widget="basic.float" data-item="{{ item }}"
-	data-unit="{{ unit }}" data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">-.- {{ unit }}</{{ tag|default('span') }}>
-*/
 {% endmacro %}
 
 
@@ -557,10 +553,6 @@
 	{% import _self as basic %}
 	{{ basic.print(id, item, unit, formula, threshold, color) }}
 	<script type="text/javascript">console.warn("Use of 'basic.formula' is deprecated, use 'basic.print' instead.")</script>
-/**
-	<span id="{{ uid(page, id) }}" data-item="{{ implode(item) }}" class="text" data-widget="basic.formula"
-	data-unit="{{ unit }}" data-formula="{{ formula }}" data-round="{{ round }}" data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">---</span>
-*/
 {% endmacro %}
 
 
@@ -624,8 +616,4 @@
 	{% import _self as basic %}
 	{{ basic.print(id, item, unit, '', threshold, color) }}
 	<script type="text/javascript">console.warn("Use of 'basic.value' is deprecated, use 'basic.print' instead.")</script>
-/**
-	<{{ tag|default('span') }} id="{{ uid(page, id) }}" data-widget="basic.value" data-item="{{ item }}"
-	data-unit="{{ unit }}" data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">--- {{ unit }}</{{ tag|default('span') }}>
-*/
 {% endmacro %}

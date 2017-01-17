@@ -250,72 +250,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-	// ----- basic.float ----------------------------------------------------------
-	$(bevent.target).find('[data-widget="basic.float"]').on( {
-		'update': function (event, response) {
-			event.stopPropagation();
-			if ($(this).attr('data-unit') != '') {
-				$(this).html(parseFloat(response).transUnit($(this).attr('data-unit')));
-			}
-			else {
-				$(this).html(parseFloat(response).transFloat());
-			}
-			colorizeText(this, response);
-		}
-	});
-
-	// ----- basic.formula ----------------------------------------------------------
-	$(bevent.target).find('[data-widget="basic.formula"]').on( {
-		'update': function (event, response) {
-			event.stopPropagation();
-			var calc = 0;
-			var pos = 0;
-			var unit = $(this).attr('data-unit');
-			var mode = $(this).attr('data-formula').substring(0, 3); // functions SUM, AVG, SUB only used, if they are the first 3 chars in formula string
-			var formula = $(this).attr('data-formula');
-
-			if (unit == 'date' || unit == 'time' || unit == 'short' || unit == 'long') {
-				var date = new Date(response[0]);
-				$(this).html(date.transUnit(unit));
-			}
-			else {
-				if (formula.indexOf('VAR1') > -1) {
-					for (var i = 0; i < response.length; i++) {
-						formula = formula.replace(new RegExp('VAR' + (i + 1), "g"), response[i]);
-					}
-					calc = eval(formula);
-				}
-				else {
-					if (mode == 'SUB') {
-						calc = response[pos];
-						pos++;
-					}
-
-					for (var i = pos; i < response.length; i++) {
-						if (mode == 'SUB') {
-							calc = calc - response[i];
-						}
-						else {
-							calc = calc + response[i];
-						}
-					}
-
-					if (mode == 'AVG') {
-						calc = calc / i;
-					}
-
-					if (mode != '') {
-						calc = eval(formula.replace(/VAR/g, calc).replace(/AVG/g, '').replace(/SUM/g, '').replace(/SUB/g, ''));
-					}
-				}
-
-				$(this).html(parseFloat(calc).transUnit(unit));
-			}
-
-			colorizeText(this, calc);
-		}
-	});
-
 	// ----- basic.print ----------------------------------------------------------
 	$(bevent.target).find('[data-widget="basic.print"]').on( {
 		'update': function (event, response) {
@@ -661,27 +595,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-	// ----- basic.value ----------------------------------------------------------
-	$(bevent.target).find('[data-widget="basic.value"]').on( {
-		'update': function (event, response) {
-			event.stopPropagation();
-			var unit = $(this).attr('data-unit');
-
-			if (unit == 'date' || unit == 'time' || unit == 'short' || unit == 'long') {
-				var date = new Date(response);
-				$(this).html(date.transUnit(unit));
-				response = Number(new Date(response));
-			}
-			else if (unit != '' && !isNaN(response)) {
-				$(this).html(parseFloat(response).transUnit(unit));
-			}
-			else {
-				$(this).html(response);
-			}
-
-			colorizeText(this, response);
-		}
-	});
 
 // ----- c l o c k ------------------------------------------------------------
 // ----------------------------------------------------------------------------
