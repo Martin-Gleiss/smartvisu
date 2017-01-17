@@ -36,12 +36,13 @@
 			return this;
 		}
 		
-		var fmt = eval("formats['" + unit.toLowerCase() + "']");
-		if (fmt == undefined) {
-			return this.toString() + ' ' + unit;
-		}
-		else
+		var fmt = formats[unit.toLowerCase()];
+		if (fmt !== undefined)
 			return printf(fmt, this);
+		else if (unit.search(/(^|[^%])%(\d+\$)?([-+\'#0 ]*)(\*\d+\$|\*|\d+)?(([\.,])(\*\d+\$|\*|\d+))?([sScboxXuideEfFgG])/) >= 0)
+			return printf(unit, this);
+		else
+			return this.toString() + ' ' + unit;
 	};
 
   /**
@@ -77,13 +78,13 @@
 		}
 
 		ret = ret.replace('d', ('0' + this.getDate()).slice(-2));
-        ret = ret.replace('m', ('0' + (this.getMonth() + 1)).slice(-2));
+		ret = ret.replace('m', ('0' + (this.getMonth() + 1)).slice(-2));
 		ret = ret.replace('y', this.getFullYear().toString().substr(2, 2));
-        ret = ret.replace('Y', this.getFullYear());
+		ret = ret.replace('Y', this.getFullYear());
 
 		ret = ret.replace('H', this.getHours());
-        ret = ret.replace('i', ('0' + this.getMinutes()).slice(-2));
-        ret = ret.replace('s', ('0' + this.getSeconds()).slice(-2));
+		ret = ret.replace('i', ('0' + this.getMinutes()).slice(-2));
+		ret = ret.replace('s', ('0' + this.getSeconds()).slice(-2));
 
 		return ret;
 	};

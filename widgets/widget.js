@@ -316,6 +316,71 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
+	// ----- basic.print ----------------------------------------------------------
+	$(bevent.target).find('[data-widget="basic.print"]').on( {
+		'update': function (event, response) {
+			event.stopPropagation();
+			
+			var format = $(this).attr('data-format');
+			var formatLower = format.toLowerCase();
+			var formula = $(this).attr('data-formula');
+			
+			var type;
+			if (formatLower == 'date' || formatLower == 'time' || formatLower == 'short' || formatLower == 'long')
+				type = 'Date';
+			else if (formatLower == 'text' || formatLower == 'html')
+				type = 'String';
+			else
+				type = 'Number';
+		
+			var replacements = { SUM: 0, CONCAT: [], '\\(\\s*VAR\\s*\\)': '' }; // Key is RegEx
+			$.each(response, function(i, value) {
+				if(type == 'String') {
+					value = '"' + String(value).replace(/(\\")/, '\\$1') + '"';
+					replacements.CONCAT.push(value);
+				}
+				else if(type == 'Date')
+					value = new Date(value);
+				else
+					value = parseFloat(value);
+				
+				replacements['VAR'+(i+1)] = value;
+				
+				replacements.SUM += value;
+				if(replacements.MIN === undefined || replacements.MIN > value)
+					replacements.MIN = value;
+				if(replacements.MAX === undefined || replacements.MAX < value)
+					replacements.MAX = value;
+			});
+			
+			if(type == 'String')
+				replacements.SUM = replacements.CONCAT = replacements.CONCAT.join('+" "+');
+			else {
+				replacements.SUB = 2 * response[0] - replacements.SUM; // difference equals to two times first value minus sum, because sum contains first value
+				replacements.AVG = replacements.SUM / response.length;
+			}
+			
+			$.each(replacements, function(placeholder, value) {
+				formula = formula.replace(new RegExp(placeholder + '(\\D|$)' , 'g'), value + '$1');
+			});
+			
+			var calc = eval(formula);
+			
+			if(type == 'Date')
+				calc = new Date(calc).transUnit(format);
+			else if (type == 'Number')
+				calc = parseFloat(calc).transUnit(format);
+		
+			// print the result
+			if (formatLower == 'html')
+				$(this).html(calc);
+			else
+				$(this).text(calc);
+
+			colorizeText(this, calc);
+		}
+	});
+
 	// ----- basic.rgb ------------------------------------------------------------
 	$(bevent.target).find('a[data-widget="basic.rgb"]').on( {
 		'update': function (event, response) {

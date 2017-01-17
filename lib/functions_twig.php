@@ -152,7 +152,7 @@ function twig_docu($filename)
 	preg_match_all('#.+?@(.+?)\W+(.*)#i', substr($file, 0, strpos($file, '*/') + 2), $header);
 
 	// Body 
-	preg_match_all('#\/\*\*[\r\n](.+?)\*\/.+?\{\% macro(.+?)\%\}#is', strstr($file, '*/'), $widgets);
+	preg_match_all('#\/\*\*[\r\n]+(.+?)\*\/\s+?\{\% *macro(.+?)\%\}.*?\{\% *endmacro *\%\}#is', strstr($file, '*/'), $widgets);
 
 	if (count($widgets[2]) > 0)
 	{
@@ -182,7 +182,7 @@ function twig_docu($filename)
 			$rettmp[$no]['call'] = $rettmp[$no]['command']."(".$rettmp[$no]['params'].")";
 
 			// Widget-Tags
-			$tags = preg_split('#[\r\n]+[*\s]*@#', $docu);
+			$tags = preg_split('#[\r\n]+[\*\s]*@#', $docu);
 
 			$param = 0;
 			$params = explode(',', $rettmp[$no]['params']);
