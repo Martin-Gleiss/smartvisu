@@ -31,7 +31,7 @@
 {% endmacro %}
 
 /**
-* A versatile button/switch 
+* A versatile button/switch
 * (supersedes deprecated basic.button, basic.dual, basic.hiddenswitch, basic.multistate and basic.switch)
 *
 * @param unique id for this widget (optional)
@@ -51,8 +51,8 @@
 
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
 	{% set color = color|default(['','icon1']) %}
-	
-	<span id="{{ uid(page, id|default(random())) }}" data-widget="basic.stateswitch" data-item="{{ item }}" 
+
+	<span id="{{ uid(page, id|default(random())) }}" data-widget="basic.stateswitch" data-item="{{ item }}"
 		data-value="{{ value|first }}" data-vals="{{ implode(value) }}"
 		style="display: none; !important">
 	{% for val in value %}
@@ -62,7 +62,7 @@
 		{% set txt = (text is iterable ? text[loop.index0] : text)|default('') %}
     <a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" {{ col == 'hidden' ? 'style="visibility: hidden;"' }} class="
 			{%- if type == 'icon' -%} /**- display as icon -*/
-				ui-link
+				switch ui-link
 			{%- else -%} /**- display as button -*/
 				ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
 			{%- endif -%}
@@ -139,7 +139,7 @@
 * @author Mirko Hirsch
 */
 {% macro maptext(id, gad, txt, val) %}
-	<span id="{{ uid(page, id) }}" data-widget="basic.maptext" data-item="{{ gad }}" 
+	<span id="{{ uid(page, id) }}" data-widget="basic.maptext" data-item="{{ gad }}"
 		data-txt ="{{ implode(txt) }}" data-val="{{ implode(val)|default('') }}"
 		class="text">
 	</span>
