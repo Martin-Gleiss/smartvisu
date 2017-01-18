@@ -270,15 +270,15 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var replacements = { SUM: 0, CONCAT: [], '\\(\\s*VAR\\s*\\)': '' }; // Key is RegEx
 			$.each(response, function(i, value) {
 				if(type == 'String') {
-					value = '"' + String(value).replace(/(\\")/, '\\$1') + '"';
+					value = '"' + String(value).replace(/"/g, '\\"') + '"';
 					replacements.CONCAT.push(value);
 				}
 				else if(type == 'Date')
-					value = new Date(value);
+					value = Number(new Date(value));
 				else
 					value = parseFloat(value);
 				
-				replacements['VAR'+(i+1)] = value;
+				replacements['VAR'+(i+1)+'(\\D|$)' ] = value + '$1';
 				
 				replacements.SUM += value;
 				if(replacements.MIN === undefined || replacements.MIN > value)
@@ -294,8 +294,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				replacements.AVG = replacements.SUM / response.length;
 			}
 			
+			replacements['VAR(\\D|$)'] = replacements.SUM; // replace VAR of deprecated basic.formula by SUM
+			
 			$.each(replacements, function(placeholder, value) {
-				formula = formula.replace(new RegExp(placeholder + '(\\D|$)' , 'g'), value + '$1');
+				formula = formula.replace(new RegExp(placeholder, 'g'), value);
 			});
 			
 			var calc = eval(formula);
