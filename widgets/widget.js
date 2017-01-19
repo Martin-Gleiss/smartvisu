@@ -661,10 +661,23 @@ $(document).on('pagecreate', function (bevent, bdata) {
 // ----------------------------------------------------------------------------
 
 	// ----- device.codepad -------------------------------------------------------
-	$(bevent.target).find('div[data-widget="device.codepad"]').on( {
+	$(bevent.target).find('div[data-widget="device.codepad"]').each(function() {
+		var codepad = $(this);
+		var id = codepad.attr('data-id');
+		$('[data-bind="' + id + '"]').find('*').on('click', function(event) {
+			if (!$(this).closest('[data-bind="' + id + '"]').attr('data-access')) {
+				codepad.popup('open');
+				codepad.find('input').val('').focus();
+				codepad.data('originally-clicked', $(this));
+				event.stopPropagation();
+				event.preventDefault();
+			}
+		});
+	})
+	.on( {
 		'keyup': function (event) {
 			if (event.keyCode == 13) {
-				$(this).find('#' + this.id + '-ok').click();
+				$(this).find('[data-val="ok"]').click();
 			}
 		},
 		
@@ -674,9 +687,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				$(this).val('').focus();
 			}
 		}
-	});
-
-	$(bevent.target).find('div[data-widget="device.codepad"] > div > a').on( {
+	})
+	.find('> div > a').on( {
 		'click': function (event) {
 			var node = $(this).parent().parent();
 			var code = node.find('input');
@@ -1340,12 +1352,12 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			}
 			// Das Icon wird aktiviert, falls Status auf aktiv, ansonsten deaktiviert angezeigt. Basiert auf der Implementierung von aschwith
 			if(active === true) {
-				$('#' + this.id + '-off').hide();
-				$('#' + this.id + '-on').show();
+				$(this).find('.icon-off').hide();
+				$(this).find('.icon-on').show();
 			}
 			else {
-				$('#' + this.id + '-on').hide();
-				$('#' + this.id + '-off').show();
+				$(this).find('.icon-on').hide();
+				$(this).find('.icon-off').show();
 			}
 			// wenn keine Daten vorhanden, dann ist kein item mit den eigenschaften hinterlegt und es wird nichts gemacht
 			if (response.length === 0){

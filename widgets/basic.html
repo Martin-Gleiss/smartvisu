@@ -15,12 +15,13 @@
 		{% endif %}
 		{% set pic = pic|slice(0, 6) ~ 'ws' ~ pic|slice(8,-4) ~ '.svg' %}
 	{% endif %}
-
-	{%- if (color == 'icon0') or (color is empty) -%}
-		<img id="{{ id }}" class="icon {{ class }}" src="{{ pic|deficon }}">
-	{%- elseif color == 'icon1' -%}
-		<img id="{{ id }}" class="icon icon1 {{ class }}" src="{{ pic|deficon }}">
-	{%- else -%}
+	
+	<img {{ not id is empty ? 'id="' ~ id ~ '"' | raw }} class="icon 
+	{% if (color == 'icon0') or (color is empty) -%}
+		{{ class }}" src="{{ pic|deficon }}">
+	{% elseif color == 'icon1' -%}
+		icon1 {{ class }}" src="{{ pic|deficon }}">
+	{% else -%}
 		{% set presetColors = {'or': '#f9a028', 'gn': '#84c929', 'bl': '#4176a9', 'sw': '#000'} %}
 		{%- if presetColors[color] is defined -%}
 			{% set color = presetColors[color] %}
@@ -52,7 +53,7 @@
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
 	{% set color = color|default(['','icon1']) %}
 
-	<span id="{{ uid(page, id|default(random())) }}" data-widget="basic.stateswitch" data-item="{{ item }}"
+	<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.stateswitch" data-item="{{ item }}"
 		data-value="{{ value|first }}" data-vals="{{ implode(value) }}"
 		style="display: none; !important">
 	{% for val in value %}
@@ -78,60 +79,57 @@
   {% endfor %}
   <a class="ui-btn" style="display: none !important"></a> /** placeholder for last moved control */
   </span>
-	
+
 {% endmacro %}
 
 
 /**
 * Displays a checkbox
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item
 * @param text printed on the checkbox
 */
 {% macro checkbox(id, item, txt) %}
 
-	<label><input type="checkbox" id="{{ uid(page, id) }}" data-widget="basic.checkbox" data-item="{{ item }}" />
+	<label><input type="checkbox" {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.checkbox" data-item="{{ item }}" />
 		{{ txt }}</label>
 
 {% endmacro %}
 
 
 /**
-* Displays a colordisc-rgb-selector
+* Displays a color selector
 *
-* @param unique id for this widget
-* @param a item for the r - value (0-255)
-* @param a item for the g - value (0-255)
-* @param a item for the b - value (0-255)
-* @param the minimum value if the light is off (optional, for future use)
-* @param the maximum value if the light is full on (optional, default 255)
-* @param the granularity of the rings (optional, default 8)
-* @param the number of colored segments (optional, default 10)
+* @param unique id for this widget (optional)
+* @param an item for the red value
+* @param an item for the green value
+* @param an item for the blue value
+* @param minimum value if the light is off (optional, default 0)
+* @param maximum value if the light is full on (optional, default 255)
+* @param number of shades per color (optional, default 7)
+* @param number of colored segments (optional, default 10)
+* @param 'disc' for circular or 'rect' for rectangular view (optional, default: disc)
 *
+* @author Martin Gleiß and Stefan Widmer
 * @info inspired by Marcus Popp
 */
-{% macro colordisc(id, item_r, item_g, item_b, min, max, step, colors) %}
-	{% set uid = uid(page, id) %}
-
-	<span data-widget="basic.colordisc" style="display: inline-block;">
-		<a id="{{ uid }}" data-widget="basic.colordisc" data-item="{{ item_r }}, {{ item_g }}, {{ item_b }}"
-			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-			class="colordisc"><span></span></a>
+{% macro color(id, item_r, item_g, item_b, min, max, steps, colors, style) %}
+	{% set style = style|default('disc') %}
 	
-		<div id="{{ uid }}-screen" data-widget="basic.colordisc" class="ui-popup-screen ui-overlay-a in hide"></div>
+	<a {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.color" data-style="{{ style }}" 
+		data-item="{{ item_r }}, {{ item_g }}, {{ item_b }}"
+		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+		data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
+		class="colordisc"><span></span></a>
 	
-		<canvas id="{{ uid }}-disc" data-widget="basic.colordisc"
-			data-step="{{ step|default(8) }}" data-colors="{{ colors|default(10) }}"
-			class="colordisc hide"></canvas>
-	</span>
-
 {% endmacro %}
+
 
 /**
 * A dynamic text picked from list depending on an item
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param an item for the value
 * @param array of texts
 * @param array of values. The text corresponding to the item's value index will be shown.
@@ -139,7 +137,7 @@
 * @author Mirko Hirsch
 */
 {% macro maptext(id, gad, txt, val) %}
-	<span id="{{ uid(page, id) }}" data-widget="basic.maptext" data-item="{{ gad }}"
+	<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.maptext" data-item="{{ gad }}"
 		data-txt ="{{ implode(txt) }}" data-val="{{ implode(val)|default('') }}"
 		class="text">
 	</span>
@@ -149,21 +147,14 @@
 /**
 * Displays a flip-switch
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item
 * @param text for the 'on' state (optional, default 'On')
 * @param text for the 'off' state (optional, default 'Off')
 */
 {% macro flip(id, item, txt_on, txt_off) %}
-/**
-	<div class="ui-flipswitch ui-shadow-inset ui-bar-inherit">
-	  <span tabindex="1" class="ui-flipswitch-on ui-btn ui-shadow ui-btn-inherit">On</span>
-	  <span class="ui-flipswitch-off">Off</span>
-	  <input type="checkbox" data-role="flipswitch" data-enhanced="true" data-corners="false" name="flip-checkbox" class="ui-flipswitch-input">
-	</div>
-*/
-	
-	<select id="{{ uid(page, id) }}" data-widget="basic.flip" data-item="{{ item }}"
+
+	<select {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.flip" data-item="{{ item }}"
 		data-role="flipswitch">
 		<option value="off">{{ txt_off|default('Off') }}</option>
 		<option value="on">{{ txt_on|default('On') }}</option>
@@ -198,7 +189,7 @@
 /**
 * prints value or text (optionally calculated and/or formatted)
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param one or more item(s). Multiple items in array-form: [item1, item2]
 * @param either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
   use 'text' to display result as unformatted string or 'html' to render it as unescaped html 
@@ -218,7 +209,7 @@
 */
 {% macro print(id, item, format, formula, threshold, color) %}
 
-	<span id="{{ uid(page, id) }}" data-item="{{ implode(item) }}" class="text" data-widget="basic.print"
+	<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-item="{{ implode(item) }}" class="text" data-widget="basic.print"
 		data-format="{{ format }}" data-formula="{{ formula|default('SUM') }}"
 		data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">---</span>
 
@@ -275,7 +266,7 @@
 /**
 * A switch, build of a series of icons. The series may be a iconseries (NAME_00.svg, NAME_10.svg, NAME_20.svg...) or may be a dynamic svg-icon (icon.NAME)
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item for the switch (optional)
 * @param a item for the value
 * @param the iconseries or dynamic icon for the 'on' state
@@ -292,7 +283,7 @@
 	{% if pic_on|slice(0, 5) == 'icon.' %}
 		{{ attribute(icon, pic_on|slice(5), [id, item_switch, item_value, min, max]) }}
 	{% else %}
-		<span id="{{ uid(page, id) }}" data-widget="basic.shifter" data-item="{{ item_value }}, {{ item_switch }}"
+		<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.shifter" data-item="{{ item_value }}, {{ item_switch }}"
 			{% set pic_on = pic_on|deficon('light_light_dim_00.svg') %}
 			{% set pic_off = pic_off|deficon(pic_on) %}
 			data-pic-on="{{ pic_on }}" data-pic-off="{{ pic_off |default(pic_on) }}"
@@ -307,7 +298,7 @@
 /**
 * Displays a shutter-control
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item for the actual position of the blinds
 * @param a item for the actual angle of the blinds (optional, readonly)
 * @param the minimum value for close (optional, default 0)
@@ -320,7 +311,7 @@
 {% macro shutter(id, item_pos, item_angle, min, max, step, mode) %}
 	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}" data-widget="basic.shutter" data-item="{{ item_pos }}, {{ item_angle }}"
+	<div {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.shutter" data-item="{{ item_pos }}, {{ item_angle }}"
 		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" data-step="{{ step|default(5) }}"
 		data-mode="{{ mode|default('half') }}" class="shutter">
 
@@ -333,7 +324,7 @@
 		</div>
 
 		{% for i in 1..12 %}
-			<div class="blade-pos" id="{{ uid }}-{{ i }}"></div>
+			<div class="blade-pos"></div>
 		{% endfor %}
 
 	</div>
@@ -344,7 +335,7 @@
 /**
 * Displays a slider-control
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item
 * @param the minimum value if the slider is moved to total left (optional, default 0)
 * @param the maximum value if the slider is moved to total right (optional, default 255)
@@ -354,7 +345,7 @@
 */
 {% macro slider(id, item, min, max, step, orientation, value_display) %}
 
-	<input id="{{ uid(page, id) }}" data-widget="basic.slider" data-item="{{ item }}"
+	<input {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.slider" data-item="{{ item }}"
 		type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}"
 		orientation="{{ orientation }}" handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" data-highlight="true" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" />
 
@@ -365,8 +356,9 @@
 * A symbol, with no writing to knx, only displayed when the value of item is equal to val. Symbols may be used in menus.
 * If more than one item is given, they will be combined with mode ('or' / 'and').
 *
-* @param unique id for this widget
-* @param one or more item(s). More items in array form: [ item1 , item2 ]
+* @param unique id for this widget (optional)
+* @param zero, one or more item(s). More items in array form: [item1, item2] (optional)
+	hint: let this empty to display a static icon
 * @param the text, printed when item has value val (optional)
 * @param the pic, shown when item has value val
 * @param value (default 1)
@@ -374,20 +366,21 @@
 * @param the color 'icon1' or e. g. '#f00' for red (default 'icon0' of the design)
 */
 {% macro symbol(id, items, txt, pic, val, mode, color) %}
+	{% import _self as basic %}
 
-	<span id="{{ uid(page, id) }}" data-widget="basic.symbol" data-item="{{ implode(items) }}" data-val="{{ val|default('1') }}"
-		data-mode="{{ mode|default('or') }}" class="symbol hide">
-		{% import _self as basic %}
+	<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.symbol" {{ not items is empty ? ('data-item="' ~ implode(items) ~ '"')|raw }} data-val="{{ val|default('1') }}"
+		data-mode="{{ mode|default('or') }}" class="symbol {{ not items is empty ? 'hide' }}">
 		{{ basic._icon(pic|deficon('control_on_off.svg'), color) }}
 		{{ txt }}
 	</span>
+	
 {% endmacro %}
 
 
 /**
 * Displays a (partly) filled tank
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item for the actual position of filled tank
 * @param the minimum value for empty (optional, default 0, for future use)
 * @param the maximum value for full (optional, default 255)
@@ -397,7 +390,7 @@
 */
 {% macro tank(id, item_pos, min, max, step, mode, color) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="basic.tank" data-item="{{ item_pos }}"
+	<div {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.tank" data-item="{{ item_pos }}"
 		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="tank">
 		<div
@@ -418,7 +411,7 @@
 /**
 * A dymanic text depending on a item
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item
 * @param the text for the 'on' state (optional)
 * @param the text for the 'off' state (optional)
@@ -429,7 +422,7 @@
 */
 {% macro text(id, item, txt_on, txt_off, val_on, val_off) %}
 
-	<span id="{{ uid(page, id) }}" data-widget="basic.text" data-item="{{ item }}"
+	<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.text" data-item="{{ item }}"
 		data-txt-on="{{ txt_on }}" data-txt-off="{{ txt_off }}"
 		data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
 		class="text">
@@ -441,7 +434,7 @@
 /**
 * A widget to trigger a logic (e. g. in SmartHome.py)
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param the name of the trigger (logic)
 * @param text printed on the button (optional)
 * @param a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search' (optional)
@@ -451,7 +444,7 @@
 {% macro trigger(id, name, txt, pic, val, type) %}
 	{% set suffix = pic|slice(-4, 4) %}
 
-	<a id="{{ uid(page, id) }}" data-widget="basic.trigger" data-name="{{ name }}" data-val="{{ val }}"
+	<a {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.trigger" data-name="{{ name }}" data-val="{{ val }}"
 		class="ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline ui-shadow
 		{%- if pic -%}
 			{%- if '.' in pic -%} /** pic is a file url and not a css class -*/
@@ -469,14 +462,14 @@
 
 /******************************************************************************
  * D E P R E C A T E D  W I D G E T S
- ******************************************************************************/ 
+ ******************************************************************************/
 
 /**
 * A button
 *
 * @deprecated as of version 2.9. Use 'basic.stateswitch' instead.
-*	
-* @param unique id for this widget
+*
+* @param unique id for this widget (optional)
 * @param a item
 * @param text printed on the button (optional)
 * @param a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search' (optional)
@@ -496,7 +489,7 @@
 *
 * @deprecated as of version 2.9. Use 'basic.stateswitch' instead.
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item
 * @param the pic for the 'on' state (optional)
 * @param the pic for the 'off' state (optional)
@@ -518,7 +511,7 @@
 *
 * @deprecated as of version 2.9, use basic.print instead.
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item
 * @param a unit, tries to get the format for that unit from the language-file (optional)
 * @param the parent html-tag for the value (optional, default 'span')
@@ -539,7 +532,7 @@
 *
 * @deprecated as of version 2.9, use basic.print instead.
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param one or more item(s). More items in array-form: [ item1 , item2 ]
 * @param unit for displaying, if that unit is found in the language-file that formating is been used (optional)
 * @param formula to use: SUM(VAR), AVG(VAR), SUB(VAR), VAR1 + VAR2, ... "VAR" is replaced with all item(s), "VAR1", "VAR2"... is replaced with the appropriate item of the list (optional, default: SUM(VAR))
@@ -561,7 +554,7 @@
 *
 * @deprecated as of version 2.9. Use 'basic.stateswitch' instead.
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item for command
 * @param array of values
 * @param array of icons path and name
@@ -582,7 +575,7 @@
 *
 * @deprecated as of version 2.9. Use 'basic.stateswitch' instead.
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item
 * @param the pic for the 'on' state (optional)
 * @param the pic for the 'off' state (optional)
@@ -603,7 +596,7 @@
 *
 * @deprecated as of version 2.9, use basic.print instead.
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item
 * @param a unit (optional)
 * @param the parent html-tag for the value (optional, default 'span')
