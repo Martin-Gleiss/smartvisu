@@ -89,140 +89,184 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-	// ----- basic.colordisc ------------------------------------------------------
-	$(bevent.target).find('a[data-widget="basic.colordisc"]').on( {
+	// ----- basic.color ------------------------------------------------------
+	$(bevent.target).find('a[data-widget="basic.color"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_r }}, {{ gad_g }}, {{ gad_b }}
 
-			var max = $(this).attr('data-max');
-			$(this).find('span').css('background-color', 'rgb(' + Math.round(response[0] / max * 255) + ',' + Math.round(response[1] / max * 255) + ',' + Math.round(response[2] / max * 255) + ')');
-		},
-
-		'click': function (event) {
-			// reposition canvas
-			var offset = $(this).offset();
-			var disc = $(this).siblings('canvas');
-			var top = offset.top - (disc.height() / 2) + 15;
-			var left = offset.left - (disc.width() / 2) + 25;
-
-			disc.css('top', top.limit(5, $(window).height() + $(document).scrollTop() - disc.height() - 5, 1));
-			disc.css('left', left.limit(5, $(window).width() - disc.width() - 5, 1));
-
-			disc.show();
-			$(this).siblings('div').show();
-		}
-	});
-
-	$(bevent.target).find('div[data-widget="basic.colordisc"]').on( {
-		'click': function (event) {
-			$(this).hide();
-			$(this).siblings('canvas').hide();
-		}
-	});
-
-	$(bevent.target).find('canvas[data-widget="basic.colordisc"]').on( {
-		'click': function (event) {
-			var disc = $(this)[0];
-			var ctx = disc.getContext("2d");
-
-			var offset = $(this).offset();
-			var x = Math.round(event.pageX - offset.left);
-			var y = Math.round(event.pageY - offset.top);
-			var rgb = ctx.getImageData(x, y, 1, 1).data;
-			// DEBUG: console.log([rgb[0], rgb[1], rgb[2]]);
-
-			var max = $(this).siblings('a').attr('data-max');
-			var items = $(this).siblings('a').attr('data-item').explode();
-
-			io.write(items[0], Math.round(rgb[0] / 255 * max));
-			io.write(items[1], Math.round(rgb[1] / 255 * max));
-			io.write(items[2], Math.round(rgb[2] / 255 * max));
-
-			$(this).siblings('div').hide();
-			$(this).hide();
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			$(this).find('span').css('background-color', 'rgb(' + 
+				Math.round((response[0] - min) / (max - min) * 255) + ',' + 
+				Math.round((response[1] - min) / (max - min) * 255) + ',' + 
+				Math.round((response[2] - min) / (max - min) * 255) + ')');
 		}
 	})
-	.each(function () { // init canvas
-		var colors = parseFloat($(this).attr('data-colors'));
-		var size = 280;
-		var canvas = $(this)[0];
-		var step = 100 / ($(this).attr('data-step') / 2);
-
-		var arc = Math.PI / (colors + 2) * 2;
-		var startangle = -(Math.PI / 2) + arc;
-		var gauge = (size - 10) / 16 / ($(this).attr('data-step') / 8);
-		var share = 360 / colors;
-		var ctx;
-
-		canvas.width = size;
-		canvas.height = size;
-
-		if (canvas.getContext) {
-			var center = size / 2 - 1;
-			ctx = canvas.getContext("2d");
-
-			// draw background
-			ctx.beginPath();
-			ctx.fillStyle = '#888';
-			ctx.shadowColor = 'rgba(96,96,96,0.4)';
-			ctx.shadowOffsetX = 2;
-			ctx.shadowOffsetY = 2;
-			ctx.shadowBlur = 4;
-			ctx.arc(center, center, size / 2 - 1, 0, 2 * Math.PI, false);
-			ctx.fill();
-			ctx.beginPath();
-			ctx.shadowOffsetX = 0;
-			ctx.shadowOffsetY = 0;
-			ctx.shadowBlur = 0;
-			ctx.fillStyle = '#555';
-			ctx.arc(center, center, size / 2 - 2, 0, 2 * Math.PI, false);
-			ctx.fill();
-
-			// draw colors
-			var v, s;
-
-			for (var i = 0; i <= colors; i++) {
-				var angle = startangle + i * arc;
-				var ring = 1;
-				var h = i * share;
-				for (v = step; v <= 100; v += step) {
-					ctx.beginPath();
-					ctx.fillStyle = fx.hsv2rgb(h, 100, v);
-					ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
-					ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
-					ctx.fill();
-					ring += 1;
+	// color in rectangular display (as former basic.rgb)
+	.filter('a[data-style="rect"]').on( {
+		click: function(event) {
+			
+			var html = '<div class="rgb-popup">';
+			
+			var colors = parseInt($(this).attr('data-colors'));
+			var steps = parseInt($(this).attr('data-step'));
+			var step = Math.round(2 * 100 / (steps + 1) * 10000) / 10000;
+			var share = 360 / colors;
+			
+			for (var s = step ; s <= (100-step/2); s += step) {
+				for (var i = 0; i < colors; i++) {
+					html += '<div data-s="'+s+'" style="background-color:' + fx.hsv2rgb(i * share, s, 100) + ';"></div>';
 				}
-				for (s = (100 - step); s >= step; s -= step) {
-					ctx.beginPath();
-					ctx.fillStyle = fx.hsv2rgb(h, s, 100);
-					ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
-					ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
-					ctx.fill();
-					ring += 1;
-				}
+				html += '<div style="background-color:' + fx.hsv2rgb(0, 0, 100 - (s / step - 1) * 16.7) + ';"></div><br />';
 			}
-
-			// draw grey
-			i -= 1;
-			angle = startangle + i * arc;
-			ring = 1;
-			h = i * share;
-			for (v = step; v <= 100; v += (step / 2)) {
+			for (var v = 100 - step * ((steps + 1) % 2)/2; v >= step/2; v -= step) {
+				for (var i = 0; i < colors; i++) {
+					html += '<div data-v="'+v+'" style="background-color:' + fx.hsv2rgb(i * share, 100, v) + ';"></div>';
+				}
+				html += '<div style="background-color:' + fx.hsv2rgb(0, 0, (v / step - 1) * 16.7) + ';"></div><br />';
+			}
+			
+			html += '</div>';
+			
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			var items = $(this).attr('data-item').explode();
+			
+			$(html).popup({ theme: "a", overlayTheme: "a", positionTo: this }).popup("open")
+			.on("popupafterclose", function() { $(this).remove(); })
+			.children('div').on( {
+				'click': function (event) {
+					var rgb = $(this).css('background-color');
+					rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+					
+					io.write(items[0], Math.round(rgb[1] / 255 * (max - min)) + min);
+					io.write(items[1], Math.round(rgb[2] / 255 * (max - min)) + min);
+					io.write(items[2], Math.round(rgb[3] / 255 * (max - min)) + min);
+					
+					$(this).parent().popup('close');
+				},
+				
+				'mouseenter': function (event) {
+					$(this).addClass("ui-focus");
+				},
+				
+				'mouseleave': function (event) {
+					$(this).removeClass("ui-focus");
+				}
+			});
+		}
+	})
+	// colors on disc (as former basic.colordisc)
+	.end().filter('a[data-style="disc"]').on( {
+		'click': function (event) {
+			var canvas = $('<canvas style="border: none;">')
+			
+			var size = 280;
+			var colors = parseInt($(this).attr('data-colors'));
+			var steps = parseInt($(this).attr('data-step'));
+			var step = Math.round(2 * 100 / (steps + 1) * 10000) / 10000;
+	
+			var arc = Math.PI / (colors + 2) * 2;
+			var startangle = arc - Math.PI / 2;
+			var gauge = (size - 2) / 2 / (steps + 1);
+			var share = 360 / colors;
+			var center = size / 2;
+	
+			if (canvas[0].getContext) {
+				var ctx = canvas[0].getContext("2d");
+				ctx.canvas.width = size;
+				ctx.canvas.height = size;
+				canvas.width(size).height(size);
+	
+				// draw background
 				ctx.beginPath();
-				ctx.fillStyle = fx.hsv2rgb(h, 0, v);
-				ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + 2 * arc + 0.01, false);
-				ctx.arc(center, center, ring * gauge, angle + 2 * arc + 0.01, angle, true);
+				ctx.fillStyle = '#888';
+				ctx.shadowColor = 'rgba(96,96,96,0.4)';
+				ctx.shadowOffsetX = 2;
+				ctx.shadowOffsetY = 2;
+				ctx.shadowBlur = 4;
+				ctx.arc(center, center, size / 2 - 1, 0, 2 * Math.PI, false);
 				ctx.fill();
-				ring += 1;
+				ctx.beginPath();
+				ctx.shadowOffsetX = 0;
+				ctx.shadowOffsetY = 0;
+				ctx.shadowBlur = 0;
+				ctx.fillStyle = '#555';
+				ctx.arc(center, center, size / 2 - 2, 0, 2 * Math.PI, false);
+				ctx.fill();
+	
+				// draw colors
+				for (var i = 0; i <= colors; i++) {
+					var angle = startangle + i * arc;
+					var ring = 1;
+					var h = i * share;
+					for (var v = step; v <= 100 - step/2; v += step) {
+						ctx.beginPath();
+						ctx.fillStyle = fx.hsv2rgb(h, 100, v);
+						ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
+						ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
+						ctx.fill();
+						ring += 1;
+					}
+					for (var s = (100 - step * ((steps + 1) % 2)/2); s >= step/2; s -= step) {
+						ctx.beginPath();
+						ctx.fillStyle = fx.hsv2rgb(h, s, 100);
+						ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
+						ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
+						ctx.fill();
+						ring += 1;
+					}
+				}
+	
+				// draw grey
+				angle = startangle - 2 * arc;
+				ring = 1;
+				h = i * share;
+				for (var v = step; v <= 100; v += (step / 2)) {
+					ctx.beginPath();
+					ctx.fillStyle = fx.hsv2rgb(h, 0, v);
+					ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + 2 * arc + 0.01, false);
+					ctx.arc(center, center, ring * gauge, angle + 2 * arc + 0.01, angle, true);
+					ctx.fill();
+					ring += 1;
+				}
+	
+				// draw center
+				ctx.beginPath();
+				ctx.fillStyle = 'rgb(0,0,0)';
+				ctx.arc(center, center, gauge + 1, 0, 2 * Math.PI, false);
+				ctx.fill();
+			
 			}
+					
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			var items = $(this).attr('data-item').explode();
+			
+			// event handler on color select
+			canvas.popup({ theme: 'none', overlayTheme: 'a', shadow: false, positionTo: this }).popup("open")
+			.on( {
+				'popupafterclose': function() { $(this).remove(); },
+				'click': function (event) {
+					var offset = $(this).offset();
+					var x = Math.round(event.pageX - offset.left);
+					var y = Math.round(event.pageY - offset.top);
 
-			// draw center
-			ctx.beginPath();
-			ctx.fillStyle = 'rgb(0,0,0)';
-			ctx.arc(center, center, gauge + 1, 0, 2 * Math.PI, false);
-			ctx.fill();
+					var rgb = canvas[0].getContext("2d").getImageData(x, y, 1, 1).data;
+					// DEBUG: console.log([rgb[0], rgb[1], rgb[2], rgb[3]]);
+					
+					if(rgb[3] > 0) { // set only, if selected color is not transparent
+						io.write(items[0], Math.round(rgb[0] / 255 * (max - min)) + min);
+						io.write(items[1], Math.round(rgb[1] / 255 * (max - min)) + min);
+						io.write(items[2], Math.round(rgb[2] / 255 * (max - min)) + min);
+					}
+					
+					$(this).popup("close");
+				}
+			});
+
 		}
 	});
 
@@ -314,41 +358,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				$(this).text(calc);
 
 			colorizeText(this, calc);
-		}
-	});
-
-	// ----- basic.rgb ------------------------------------------------------------
-	$(bevent.target).find('a[data-widget="basic.rgb"]').on( {
-		'update': function (event, response) {
-			event.stopPropagation();
-			// response is: {{ gad_r }}, {{ gad_g }}, {{ gad_b }}
-
-			var max = $(this).attr('data-max');
-			$(this).find('span').css('background-color', 'rgb(' + Math.round(response[0] / max * 255) + ',' + Math.round(response[1] / max * 255) + ',' + Math.round(response[2] / max * 255) + ')');
-		}
-	});
-
-	$(bevent.target).find('div[data-widget="basic.rgb-popup"] > div').on( {
-		'click': function (event) {
-			var rgb = $(this).css('background-color');
-			rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-
-			var max = $(this).parent().attr('data-max');
-			var items = $(this).parent().attr('data-item').explode();
-
-			io.write(items[0], Math.round(rgb[1] / 255 * max));
-			io.write(items[1], Math.round(rgb[2] / 255 * max));
-			io.write(items[2], Math.round(rgb[3] / 255 * max));
-
-			$(this).parent().popup('close');
-		},
-
-		'mouseenter': function (event) {
-			$(this).addClass("ui-focus");
-		},
-
-		'mouseleave': function (event) {
-			$(this).removeClass("ui-focus");
 		}
 	});
 

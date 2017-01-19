@@ -217,53 +217,6 @@
 
 
 /**
-* Displays a rgb-selector
-*
-* @param unique id for this widget
-* @param a item for the r - value (0-255)
-* @param a item for the g - value (0-255)
-* @param a item for the b - value (0-255)
-* @param the minimum value if the light is off (optional, for future use)
-* @param the maximum value if the light is full on (optional, default 255)
-* @param step (for future use)
-* @param the number of colors (default 10)
-*/
-{% macro rgb(id, item_r, item_g, item_b, min, max, step, colors) %}
-	{% set uid = uid(page, id) %}
-
-	<a id="{{ uid }}" data-widget="basic.rgb" data-item="{{ item_r }}, {{ item_g }}, {{ item_b }}"
-		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-		class="rgb" href="#{{ uid }}-popup" data-rel="popup"><span></span></a>
-
-	<div id="{{ uid }}-popup" data-widget="basic.rgb-popup" data-item="{{ item_r }}, {{ item_g }}, {{ item_b }}"
-		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-		class="rgb-popup" data-role="popup" data-overlay-theme="a"></div>
-
-	<script type="text/javascript">
-		var html = '';
-
-		var colors = {{ colors|default(10) }};
-		var share = 360 / colors;
-
-		for (var s = 25; s <= 75; s += 25) {
-			for (var i = 0; i < colors; i++) {
-				html += '<div style="background-color:' + fx.hsv2rgb(i * share, s, 100) + ';"></div>';
-			}
-			html += '<div style="background-color:' + fx.hsv2rgb(i * share, 0, 100 - (s / 25 - 1) * 16.7) + ';"></div><br />';
-		}
-		for (var v = 100; v >= 25; v -= 25) {
-			for (var i = 0; i < colors; i++) {
-				html += '<div style="background-color:' + fx.hsv2rgb(i * share, 100, v) + ';"></div>';
-			}
-			html += '<div style="background-color:' + fx.hsv2rgb(i * share, 0, (v / 25 - 1) * 16.7) + ';"></div><br />';
-		}
-
-		$("#{{ uid }}-popup").html(html);
-	</script>
-{% endmacro %}
-
-
-/**
 * A switch, build of a series of icons. The series may be a iconseries (NAME_00.svg, NAME_10.svg, NAME_20.svg...) or may be a dynamic svg-icon (icon.NAME)
 *
 * @param unique id for this widget (optional)
@@ -507,6 +460,29 @@
 
 
 /**
+* Displays a colordisc-rgb-selector
+*
+* @deprecated as of version 2.9. Use 'basic.color' instead.
+*
+* @param unique id for this widget (optional)
+* @param a item for the r - value (0-255)
+* @param a item for the g - value (0-255)
+* @param a item for the b - value (0-255)
+* @param the minimum value if the light is off (optional, for future use)
+* @param the maximum value if the light is full on (optional, default 255)
+* @param the granularity of the rings (optional, default 8)
+* @param the number of colored segments (optional, default 10)
+*
+* @info inspired by Marcus Popp
+*/
+{% macro colordisc(id, item_r, item_g, item_b, min, max, step, colors) %}
+	{% import _self as basic %}
+	{{ basic.color(id, item_r, item_g, item_b, min, max, step|default(8), colors, 'disc') }}
+	<script type="text/javascript">console.warn("Use of 'basic.colordisc' is deprecated, use 'basic.color' instead.")</script>
+{% endmacro %}
+
+
+/**
 * Displays a value as float
 *
 * @deprecated as of version 2.9, use basic.print instead.
@@ -546,6 +522,27 @@
 	{% import _self as basic %}
 	{{ basic.print(id, item, unit, formula, threshold, color) }}
 	<script type="text/javascript">console.warn("Use of 'basic.formula' is deprecated, use 'basic.print' instead.")</script>
+{% endmacro %}
+
+
+/**
+* Displays a rgb-selector
+*
+* @deprecated as of version 2.9. Use 'basic.color' instead.
+* 
+* @param unique id for this widget (optional)
+* @param a item for the r - value (0-255)
+* @param a item for the g - value (0-255)
+* @param a item for the b - value (0-255)
+* @param the minimum value if the light is off (optional, default 0)
+* @param the maximum value if the light is full on (optional, default 255)
+* @param step (for future use)
+* @param the number of colors (default 10)
+*/
+{% macro rgb(id, item_r, item_g, item_b, min, max, step, colors) %}
+	{% import _self as basic %}
+	{{ basic.color(id, item_r, item_g, item_b, min, max, 7, colors, 'rect') }}
+	<script type="text/javascript">console.warn("Use of 'basic.rgb' is deprecated, use 'basic.color' instead.")</script>
 {% endmacro %}
 
 

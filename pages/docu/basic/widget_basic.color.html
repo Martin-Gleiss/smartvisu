@@ -1,0 +1,43 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß and Stefan Widmer
+* @copyright   2012 - 2016
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+
+	Circular view
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b') }} 
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8) }}
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', 0, 255, 15, 19) }} 
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b') }} 7 steps and 10 colors (default)
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8) }} 6 steps and 8 colors
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', 0, 255, 15, 19) }} 15 steps and 19 colors
+	</div>
+
+	Rectangular view
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'rect') }}
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8, 'rect') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'rect') }} 7 steps and 10 colors (default)
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8, 'rect') }} 6 steps and 8 colors
+	</div>
+
+{% endblock %}

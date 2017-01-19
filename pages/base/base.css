@@ -1003,7 +1003,7 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	bottom: 0;
 }
 
-.rgb span, .colordisc span {
+.colordisc span {
 	display: inline-block;
 	vertical-align: middle;
 	margin: 0 7px 0 7px;
@@ -1027,10 +1027,6 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	clear: left;
 }
 
-canvas.colordisc {
-	position: absolute;
-	z-index: 1100;
-}
 
 .tank {
 	position: relative;
