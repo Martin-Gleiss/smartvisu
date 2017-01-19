@@ -904,6 +904,10 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	background-color: transparent;
 }
 
+.switch.ui-btn-icon-top {
+	padding-top: 0;
+}
+
 .switch-row {
 	margin: auto;
 	width: 210px;

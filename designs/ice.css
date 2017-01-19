@@ -1611,3 +1611,7 @@ svg.icon1, a.ui-link:hover, a.ui-link:active {
 	stroke: #5595c6;
 	fill: #5595c6;
 }
+.switch.icon1,
+.ui-btn.icon1 {
+	color: #5595c6;
+}

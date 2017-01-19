@@ -26,14 +26,14 @@
 		{%- if presetColors[color] is defined -%}
 			{% set color = presetColors[color] %}
 		{%- endif -%}
-		<img id="{{ id }}" class="icon icon1 {{ class }}" style="stroke:{{ color }}; fill:{{ color }};" src="{{ pic|deficon }}">
+		icon1 {{ class }}" style="stroke:{{ color }}; fill:{{ color }};" src="{{ pic|deficon }}">
 	{%- endif -%}
 
 {% endmacro %}
 
 /**
 * A versatile button/switch
-* (supersedes deprecated basic.button, basic.dual, basic.hiddenswitch, basic.multistate and basic.switch)
+* (supersedes basic.button, basic.dual, basic.hiddenswitch, basic.multistate and basic.switch)
 *
 * @param unique id for this widget (optional)
 * @param a gad/item
@@ -61,7 +61,7 @@
 		{% set pic = pic != 'none' ? pic %} /** set pic to empty if it is 'none' */
 		{% set col = (color is iterable ? color[loop.index0] : color)|default('') %}
 		{% set txt = (text is iterable ? text[loop.index0] : text)|default('') %}
-    <a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" {{ col == 'hidden' ? 'style="visibility: hidden;"' }} class="
+    <a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" {{ col == 'hidden' ? 'style="visibility: hidden;"'|raw : col != 'icon1' and col != 'icon0' and not col is empty ? ('style="color: ' ~ col ~ ';"')|raw }} class="{{ col == 'icon1' ? 'icon1 ' }}
 			{%- if type == 'icon' -%} /**- display as icon -*/
 				switch ui-link
 			{%- else -%} /**- display as button -*/
