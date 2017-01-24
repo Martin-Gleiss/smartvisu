@@ -1,6 +1,36 @@
-##v 2.8
+## v 2.9
 
-### New / changed Widgets
+### New / Changed Widgets
+- New: basic.stateswitch (improves and supersedes basic.button, basic.dual, basic.multistate and basic.switch)
+- New: basic.print (improves and supersedes basic.float, basic.formula and basic.value)
+- New: basic.color (supersedes basic.colordisc and basic.rgb)
+- New: device.uzsuicon (to control UZSU in smarthome.py and FHEM)
+- basic.slider: Added parameter 'value_display'
+
+### Other New Features
+- Template Checker
+- Configurable time source (show time of server or client)
+- Allow pages selection by url parameter (e.g. index.php?pages=foo)
+- Clear pagecache (by button and on disabling)
+
+### Improvements
+- ID is now optional in most widgets
+- Replaced make.php by on-the-fly minification (needs page cache set on)
+- Some performance optimizations
+- Slight redesign of configuration page
+
+### Updated Libraries
+- jQuery Mobile to 1.4.5
+- jQuery to 2.1.4
+
+### Fixed Bugs
+- Changes were not visible immediate after saving configuration
+- Some other minor bugs fixed
+
+
+## v 2.8 03.10.16
+
+### New / Changed Widgets
 - new widget: basic.multistate
 - new widget: plot.multiaxes
 - new widget: plot.minmaxavg
@@ -12,7 +42,7 @@
 - basic.switch modified to allow color specification 'icon0' and 'icon1' for `color_on` and `color_off`
 - dynamic icons: added option to set color of icon
 
-### New / changed Icons
+### New / Changed Icons
 - New icon light_standing_light.svg
 
 ### Other New Features
@@ -31,11 +61,11 @@
 - switched many broken icons to SVG
 - a bunch of bugs fixed
 
-### Changed Libraries
+### Updated Libraries
 - highcharts updated to version 4.2.6
 
 
-##v 2.7 03.11.13
+## v 2.7 03.11.13
 
 - new: SmartHome.py Montior page
 - new: animations on/off for better performance on slow devices
@@ -54,7 +84,7 @@
   see index.php?page=design/design_icons for examples
 - update plot.highcharts 3.0.5
 
-##v 2.6 06.08.13
+## v 2.6 06.08.13
 
 - dynamic icons: svg-icons for continuous values
 - new: config splitted in lib/defaults.php and config.php (individual)
@@ -63,7 +93,7 @@
 - update vendor/jquery 2.0.3 (IE 6, 7, 8 are no longer supported)
 - update vendor/jquery.mobile 1.3.2
 
-##v 2.5 01.06.13
+## v 2.5 01.06.13
 
 - new apps: tv-movie, tv-spielfilm
 - new: rss-feed-reader (lib/feeds)
@@ -77,7 +107,7 @@
 - new model-house: fleischer by Marco Fleischer
 - new: animations :-) [beta]
 
-##v 2.4 26.04.13 Happy Birthday smartVISU!
+## v 2.4 26.04.13 Happy Birthday smartVISU!
 
 - improved widget: basic.shutter, now with dynamic symbols
 - improved design: cube v2, best viewed with solar_winds.png background                                          
@@ -93,7 +123,7 @@
 - improved drivers: only refresh if necessary
 - update vendor/jquery.mobile 1.3.1
 
-##v 2.3 04.03.13
+## v 2.3 04.03.13
 
 - device.rtr now with 3x bit-mode or 1x byte-mode
 - undeprecated: basic.glue: used to glue widgets together
@@ -113,7 +143,7 @@
 - improved speed: gzip compressed output
 - improved speed: javascript separated
 
-##v 2.2 01.02.13
+## v 2.2 01.02.13
 
 - new driver: SmartHome.py (with websocket)
 - new driver: domotiga (with websocket)
@@ -129,7 +159,7 @@
 - new smart.alert js-function for alerts and logging
 - driver linknx: with error-handling
 
-##v 2.1 09.01.12
+## v 2.1 09.01.12
 
 - new pages: otterstaetter (as model-home)
 - widget: multimedia.music for a player
@@ -143,7 +173,7 @@
 - improved design: weather and clock for small devices  
 - changed design: header now fixed on mobile devices
 
-##v 2.0 14.12.12
+## v 2.0 14.12.12
 
 - realtime polling
 - updated driver: 'linknx' for polling
@@ -154,7 +184,7 @@
 - docu for popups
 - new <?php tags in all files
 
-##v 1.9 28.11.12
+## v 1.9 28.11.12
 
 - new widget-file: widgets/calendar.html for google calendar
   use the google-calendar private xml-adress in the config dialog
@@ -166,7 +196,7 @@
 - improved design of configuration
 - fixes in phonelist
 
-##v 1.8 02.11.12
+## v 1.8 02.11.12
 
 - new widget-file: widgets/phone.html for phonelists
   A phone system is required. Supported are:
@@ -175,7 +205,7 @@
 - add: apps now support more docu
 - updated: jQuery plugins
 
-##v 1.7 06.10.12
+## v 1.7 06.10.12
 
 - new feature: Apps (an app is a complete html-page, which can be easily
   used in your project. Use lib.app('NAME OF APP') to show one on your page.
@@ -192,7 +222,7 @@
 - update lib/jQueryMobile 1.2.0
 - smartVISU moved to code.google.com 
 
-##v 1.6 25.09.12
+## v 1.6 25.09.12
 
 - weather-widget now configurable
 - weather-widget with new service: wunderground.com
@@ -205,7 +235,7 @@
 - update lib/jQuery 1.8.2
 - update lib/Twig 1.9.2
 
-##v 1.5 01.08.12
+## v 1.5 01.08.12
 
 - new basic-widget: "basic.smybol" to display a gad
 - new device-widget: "device.blind" to control blinds, with 2 new slider 
@@ -214,29 +244,29 @@
 - more docu     
 - update lib/jQueryMobile 1.1.1
 
-##v 1.4 02.07.12
+## v 1.4 02.07.12
 
 - new and official "smartVISU" - Logo 
   special thanks to Björn Bertschy
 - position fixed on MainMenu
 - smother scrolling, better responsive design
 
-##v 1.3 19.06.12
+## v 1.3 19.06.12
 
 - background picture support (17 backgrounds in 'pics/bg' included)
 - widget-documentation, with phpdoc based documentation
 - update display mechanism
 - basic language support
 
-##v 1.2 18.05.12
+## v 1.2 18.05.12
 
 - clock and weather
 
-##v 1.1 03.05.12
+## v 1.1 03.05.12
 
 - add config
 - more designs
 
-##v 1.0 26.04.12
+## v 1.0 26.04.12
 
 - first offical release
