@@ -15,21 +15,40 @@
 	<h5>Example</h5>
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-
 			{{ basic.print('', 'bath.value', 'V') }}
-			{{ basic.print('', ['bath.p1', 'bath.p2', 'bath.p3'], '%', '(AVG + VAR1) * 2') }}
+			{{ basic.print('', ['bath.p1', 'bath.p2', 'bath.p3'], '%', 'VAR1 / SUM(VAR) * 100') }}
 			{{ basic.print('', 'bath.value', 'MWh') }}
 			{{ basic.print('', 'bath.time', 'time') }}
 			{{ basic.print('', 'bath.value', '%01,1f') }}
-				
-			{% endverbatim %}{% endfilter %}</code>
+		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		a voltage: {{ basic.print('', ['bath.value'], 'V', 'VAR') }}<br />
-		some calculation: {{ basic.print('', ['bath.p1', 'bath.p2', 'bath.p3'], '%', '(AVG + VAR1) * 2') }}<br />
+		some calculation: {{ basic.print('', ['bath.p1', 'bath.p2', 'bath.p3'], '%', 'VAR1 / SUM(VAR) * 100') }}<br />
 		an unknown unit: {{ basic.print('', 'bath.value', 'MWh') }}<br />
 		a time: {{ basic.print('', 'bath.time', 'time') }}<br />
 		a custom format (one decimal place): {{ basic.print('', 'bath.value', '%01,1f') }}<br />
+	</div>
+	<br>
+	basic.print can also be used for some "hacks".<br>
+	The following examples shows how to manipulate or read other elements; but any other JavaScript/jQuery exression can be used.<br>
+	The final <code>""</code> in first example prevents basic.print from printing anything at all.<br>
+	The second example does not use the item data at all, but it is triggered by receiving an item value.
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.print('', 'bath.value', 'text', '$("#otherElement").css("padding-left", VAR1/2); "";') }}
+			{{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherElement").text() + "\'"') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			<span id="otherElement" style="color: yellow">This is another element</span>
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<span id="otherElement" style="color: yellow">This is another element</span><br>
+		{{ basic.print('', 'bath.value', 'text', '$("#otherElement").css("padding-left", VAR1/2); "";') }}
+		{{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherElement").text() + "\'"') }}
 	</div>
 
 {% endblock %}

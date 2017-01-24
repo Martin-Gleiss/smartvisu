@@ -310,45 +310,37 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				type = 'String';
 			else
 				type = 'Number';
-		
-			var replacements = { SUM: 0, CONCAT: [], '\\(\\s*VAR\\s*\\)': '' }; // Key is RegEx
-			$.each(response, function(i, value) {
-				if(type == 'String') {
-					value = '"' + String(value).replace(/"/g, '\\"') + '"';
-					replacements.CONCAT.push(value);
-				}
-				else if(type == 'Date')
-					value = Number(new Date(value));
-				else
-					value = parseFloat(value);
-				
-				replacements['VAR'+(i+1)+'(\\D|$)' ] = value + '$1';
-				
-				replacements.SUM += value;
-				if(replacements.MIN === undefined || replacements.MIN > value)
-					replacements.MIN = value;
-				if(replacements.MAX === undefined || replacements.MAX < value)
-					replacements.MAX = value;
-			});
 			
-			if(type == 'String')
-				replacements.SUM = replacements.CONCAT = replacements.CONCAT.join('+" "+');
-			else {
-				replacements.SUB = 2 * response[0] - replacements.SUM; // difference equals to two times first value minus sum, because sum contains first value
-				replacements.AVG = replacements.SUM / response.length;
-			}
-			
-			replacements['VAR(\\D|$)'] = replacements.SUM; // replace VAR of deprecated basic.formula by SUM
-			
-			$.each(replacements, function(placeholder, value) {
-				formula = formula.replace(new RegExp(placeholder, 'g'), value);
-			});
-			
+			formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
+			 
+			var VAR = response;
+			var SUM = function(val) {
+				return val.reduce(function(a, b) {
+					return a + b;
+				});
+ 			};
+			var SUB = function(val) {
+				return 2 * val[0] - SUM(val); // difference equals to two times first value minus sum, because sum contains first value
+			};
+			var AVG = function(val) {
+			 return SUM(val) / val.length;
+			};
+			var MIN = function(val) {
+				return val.reduce(function(a, b) {
+					return a < b && a !== undefined ? a : b;
+				});
+ 			};
+			var MAX = function(val) {
+				return val.reduce(function(a, b) {
+					return b < a && a !== undefined ? a : b;
+				});
+ 			};
+ 			
 			var calc = eval(formula);
 			
 			if(type == 'Date')
 				calc = new Date(calc).transUnit(format);
-			else if (type == 'Number')
+			else if (type == 'Number' && !isNaN(calc))
 				calc = parseFloat(calc).transUnit(format);
 		
 			// print the result

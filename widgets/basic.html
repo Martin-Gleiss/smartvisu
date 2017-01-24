@@ -193,16 +193,14 @@
 * @param one or more item(s). Multiple items in array-form: [item1, item2]
 * @param either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
   use 'text' to display result as unformatted string or 'html' to render it as unescaped html 
-* @param any valid JavaScript expression with additional placeholders (optional, default: SUM)
-  - SUM, AVG, SUB, MIN and MAX are replaced by aggregated item values
-  - VAR1, VAR2, ... is replaced by the appropriate item value
+* @param any valid JavaScript expression with following variables and aggregate functions (optional, default: VAR)
+  - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
+  - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
 * @param array of thresholds; the color according to greatest reached threshold is applied (optional)
   use '' to define base color, e.g. ['', 100] means first color for values below 100, second one for 100 and above
 * @param array of colors; 'icon1' or e. g. '#f00' for red (optional)
 *
 * @see misc/fundamentals#Array-Form
-* @/see misc/fundamentals#Colors
-* @/see misc/fundamentals#Format
 *
 * @author Stefan Widmer
 * @info inspired by Martin Gleiß and Raik Alber
@@ -210,7 +208,7 @@
 {% macro print(id, item, format, formula, threshold, color) %}
 
 	<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-item="{{ implode(item) }}" class="text" data-widget="basic.print"
-		data-format="{{ format }}" data-formula="{{ formula|default('SUM') }}"
+		data-format="{{ format }}" data-formula="{{ formula|default('VAR') }}"
 		data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">---</span>
 
 {% endmacro %}
@@ -511,7 +509,7 @@
 * @param unique id for this widget (optional)
 * @param one or more item(s). More items in array-form: [ item1 , item2 ]
 * @param unit for displaying, if that unit is found in the language-file that formating is been used (optional)
-* @param formula to use: SUM(VAR), AVG(VAR), SUB(VAR), VAR1 + VAR2, ... "VAR" is replaced with all item(s), "VAR1", "VAR2"... is replaced with the appropriate item of the list (optional, default: SUM(VAR))
+* @param formula to use: SUM(VAR), AVG(VAR), SUB(VAR), VAR1 + VAR2, ... "VAR" is replaced with all item(s), "VAR1", "VAR2"... is replaced with the appropriate item of the list (optional, default: VAR)
 * @param array of thresholds; the color according to greatest reached threshold is applied. Use '' to define base color. (optional)
 * @param array of colors; 'icon1' or e. g. '#f00' for red (optional)
 *
