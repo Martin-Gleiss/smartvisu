@@ -1041,11 +1041,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var uzsuRowExpHoli = element.parents('.uzsuRowExpHoli');
 			var uzsuTimeCron = uzsuRowExpHoli.prevUntil('.uzsuRowExpHoli').find('.uzsuTimeCron');
 			if (uzsuRowExpHoli.find('.uzsuSunActive').is(':checked')){
-				uzsuTimeCron.val(uzsuRowExpHoli.find('.uzsuEvent select').val()).textinput('disable');
+				uzsuTimeCron.attr('type','input').val(uzsuRowExpHoli.find('.uzsuEvent select').val()).textinput('disable');
 			}
 			else{
 				if(uzsuTimeCron.val().indexOf('sun')===0)
-					uzsuTimeCron.val('00:00');
+					uzsuTimeCron.attr('type','time').val('00:00');
 				uzsuTimeCron.textinput('enable');
 			}
 		},
