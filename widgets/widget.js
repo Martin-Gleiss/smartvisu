@@ -1810,6 +1810,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var label = $(this).attr('data-label').explode();
 			var axis = $(this).attr('data-axis').explode();
 			var count = parseInt($(this).attr('data-count'));
+			var unit = $(this).attr('data-unit');
 
 			var plots = Array();
 			plots[0] = {
@@ -1832,7 +1833,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				yAxis: { gridLineInterpolation: 'polygon', lineWidth: 0 },
 				tooltip: {
 					formatter: function () {
-						return this.x + ' - ' + this.series.name + ': <b>' + this.y.transUnit('temp') + '</b>';
+						return this.x + ' - ' + this.series.name + ': <b>' + this.y.transUnit(unit) + '</b>';
 					}
 				},
 				legend: {x: 10, layout: 'vertical'}

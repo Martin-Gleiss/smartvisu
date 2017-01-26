@@ -5,7 +5,9 @@
 - New: basic.print (improves and supersedes basic.float, basic.formula and basic.value)
 - New: basic.color (supersedes basic.colordisc and basic.rgb)
 - New: device.uzsuicon (to control UZSU in smarthome.py and FHEM)
-- basic.slider: Added parameter 'value_display'
+- Enhanced plot.period, among other things merged functionality of plot.minmaxavg and plot.multiaxis into it
+- plot.temprose: New parameters 'series_label' and 'unit'
+- basic.slider: New parameter 'value_display'
 
 ### Other New Features
 - Template Checker

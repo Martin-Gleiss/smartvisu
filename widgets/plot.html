@@ -97,21 +97,20 @@
 /**
 * A complete house temperature plot. The rose shows all rooms with there actual and set temperature in one diagramm.
 *
-* @param unique id for this widget
-* @param a item for the actual-temperature. More item/s in array form: [ item1 , item2 ]
-* @param a item for the set-temperature. More item/s in array form: [ item1 , item2 ]
-* @param label/s for each axis
+* @param unique id for this widget (optional)
+* @param an item for the actual temperature; multiple items in array form: [ item1 , item2 ]
+* @param an item for the set temperature; multiple items in array form: [ item1 , item2 ]
+* @param label for each axis
+* @param label for actual and set series in array form: [ 'label_actual', 'label_set' ] (optional, default is language dependent)
+* @param either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional, default 'temp')
 *
 * @see misc/fundamentals#Array-Form
 */
-{% macro temprose(id, item_actual, item_set, axis) %}
-
-	{% if once('highcharts-more') %}
-		<script src="vendor/plot.highcharts/highcharts-more.js"></script>
-	{% endif %}
+{% macro temprose(id, item_actual, item_set, axis, series_label, unit) %}
 
 	<div id="{{ uid(page, id) }}" data-widget="plot.temprose" data-item="{{ implode(item_actual) }}, {{ implode(item_set) }}"
-		data-count="{{ item_actual|length }}" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ implode(axis) }}"
+		data-count="{{ item_actual|length }}" data-label="{{ implode(series_label)|default(lang('plot.rtr', 'label')) }}" data-axis="{{ implode(axis) }}"
+		data-unit="{{ unit|default('temp') }}"
 		class="plot"></div>
 
 {% endmacro %}
