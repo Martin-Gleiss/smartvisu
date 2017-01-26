@@ -77,8 +77,9 @@
 /** JavaScript assets **/
 {% set jsFiles = [
 		'lib/base/jquery.mobile.slider.js', 
-		'vendor/plot.highcharts/highcharts.js', 
-		'designs/' ~ config_design ~ '.js', 
+		'vendor/plot.highcharts/highcharts.js',
+		'vendor/plot.highcharts/highcharts-more.js',
+		'designs/' ~ config_design ~ '.js',
 		'widgets/widget.js', 
 		config_animation ? 'widgets/animation.js' : null,
 		'lib/base/base.js', 

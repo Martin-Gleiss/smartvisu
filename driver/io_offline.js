@@ -208,7 +208,7 @@ var io = {
 					var ymax = [];
 					if ($(this).attr('data-ymax')) { ymax = $(this).attr('data-ymax').explode(); }
 
-					widget.update(items[i], io.demoseries(item[item.length - 3], item[item.length - 2], ymin[0], ymax[0], item[item.length - 1]));
+					widget.update(items[i], io.demoseries(item[item.length - 3], item[item.length - 2], ymin[i], ymax[i], item[item.length - 1]));
 				}
 			}
 		});
@@ -226,27 +226,38 @@ var io = {
 
 		var ret = Array();
 
-		if (!min) {
+		if (!min || isNaN(min)) {
 			min = 0;
 		}
 		if (!max) {
 			max = 255;
 		}
-
-		var val = (min * 1) + ((max - min) / 2);
-		var delta = (max - min) / 20;
+		else if (isNaN(max)) { // boolean plot
+			max = 1;
+		}
 
 		tmin = new Date().getTime() - new Date().duration(tmin);
 		tmax = new Date().getTime() - new Date().duration(tmax);
 		var step = Math.round((tmax - tmin) / cnt);
 
-		while (tmin <= tmax) {
-
-			val += Math.random() * (2 * delta) - delta;
-			ret.push([tmin, val.toFixed(2) * 1.0]);
-			tmin += step;
+		if(min == 0 && max == 1) { // boolean plot
+			var val = 0;
+			while (tmin <= tmax) {
+				val = (Math.random() < (0.2 + 0.6 * val)) ? 1 : 0; // make changes lazy
+				ret.push([tmin, val]);
+				tmin += step;
+			}
 		}
+		else {
+			var delta = (max - min) / 20;
+			var val = (min * 1) + ((max - min) / 2);
 
+			while (tmin <= tmax) {
+				val += Math.random() * (2 * delta) - delta;
+				ret.push([tmin, val.toFixed(2) * 1.0]);
+				tmin += step;
+			}
+		}
 		return ret;
 	},
 

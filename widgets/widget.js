@@ -1543,8 +1543,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-	// ----- plot.multiaxes ----------------------------------------------------------
-	$(bevent.target).find('div[data-widget="plot.multiaxis"]').on( {
+
+	// ----- plot.period ----------------------------------------------------------
+	$(bevent.target).find('div[data-widget="plot.period"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ]
@@ -1564,6 +1565,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var exposure = $(this).attr('data-exposure').explode();
 			var axis = $(this).attr('data-axis').explode();
 			var zoom = $(this).attr('data-zoom');
+			var mode = $(this).attr('data-mode');
+			var units = $(this).attr('data-unit').explode();
 
 			var assign = [];
 			if ($(this).attr('data-assign')) {
@@ -1580,121 +1583,117 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				ycolor = $(this).attr('data-ycolor').explode();
 			}
 
-			var series = [];
-			var yaxis = [];
-
-			var i = 0;
-
 			// series
-			for (i = 0; i < response.length; i++) {
-				series[i] = {
+			var series = [];
+
+			if(mode == 'minmax' || mode == 'minmaxavg') {
+				var itemCount = response.length / (mode == 'minmax' ? 2 : 3);
+
+				var minResponse = response.slice(0, itemCount);
+				var maxResponse = response.slice(itemCount, itemCount * 2);
+				response = response.slice(itemCount * 2);
+
+				for (var i = 0; i < itemCount; i++) {
+					var minValues = minResponse[i];
+					var maxValues = maxResponse[i];
+
+					var data = [];
+					for (var j = 0; j < minValues.length; j++) {
+						data.push( [ minValues[j][0], minValues[j][1], maxValues[j][1] ] );
+					}
+
+					series.push({
+						type: 'columnrange',
+						enableMouseTracking: false,
+						name: (label[i] == null ? 'Item ' + (i+1) : label[i]) + (mode == 'minmaxavg' && label[i] !== '' ? ' (min/max)' : ''),
+						showInLegend: false,
+						data: data,
+						color: (color[i] ? color[i] : Highcharts.getOptions().colors[i]),
+						yAxis: (assign[i] ? assign[i] - 1 : 0)
+					});
+				}
+			}
+
+			for (var i = 0; i < response.length; i++) {
+				series.push({
 					type: (exposure[i] != 'stair' ? exposure[i] : 'line'),
 					step: (exposure[i] == 'stair' ? 'left' : false),
-					name: label[i],
+					name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
 					data: response[i],
 					color: (color[i] ? color[i] : null),
 					yAxis: (assign[i] ? assign[i] - 1 : 0)
-				};
+				});
 			}
 
 			// y-axis
-			for (i = 0; i < axis.length - 1; i++) {
+			var numAxis = 1;
+			if(assign.length > 0)
+				numAxis = Math.max.apply(null, assign); // find highest y-axis index on assignments
+
+			var yaxis = [];
+			for (var i = 0; i < numAxis; i++) {
 				yaxis[i] = {
-					min: (ymin[i] ? ymin[i] : null),
-					max: (ymax[i] ? ymax[i] : null),
+					min: (ymin[i] ? (isNaN(ymin[i]) ? 0 : ymin[i]) : null),
+					max: (ymax[i] ? (isNaN(ymax[i]) ? 1 : ymax[i]) : null),
 					title: {text: axis[i + 1]},
 					opposite: (opposite[i] > 0),
-					minPadding: 0.05,
-					maxPadding: 0.05,
 					endOnTick: false,
-					startOnTick: false
+					startOnTick: false,
+					svUnit: units[i] || 'float'
 				};
-				if (ycolor[i]) {
+				if(ycolor[i]) {
 					yaxis[i].lineColor = ycolor[i];
 					yaxis[i].tickColor = ycolor[i];
 				}
+				if (ymin[i] && isNaN(ymin[i])) {
+					yaxis[i].categories = [ymin[i], ymax[i]];
+					yaxis[i].gridLineColor = 'transparent';
+					yaxis[i].gridLineWidth = 0;
+				}
 			}
 
 			// draw the plot
-			if (zoom) {
-				$(this).highcharts({
-					chart: {
-						zoomType: 'x'
-					},
-					series: series,
-					xAxis: {type: 'datetime', title: {text: axis[0]}, minRange: new Date().duration(zoom).valueOf()},
-					yAxis: yaxis
-				});
-			}
-			else {
-				$(this).highcharts({
-					series: series,
-					xAxis: {type: 'datetime', title: {text: axis[0]}},
-					yAxis: yaxis
-				});
-			}
+			var chartOptions = {
+				chart: {},
+				series: series,
+				xAxis: {type: 'datetime', title: {text: axis[0]}},
+				yAxis: yaxis,
+				legend: { enabled: label.length > 0 },
+				tooltip: {
+					pointFormatter: function() {
+						var unit = this.series.yAxis.userOptions.svUnit;
+						var value = (this.series.yAxis.categories) ? this.series.yAxis.categories[this.y] : parseFloat(this.y).transUnit(unit);
 
-		},
-
-		'point': function (event, response) {
-			event.stopPropagation();
-			var count = $(this).attr('data-count');
-			if (count < 1) {
-				count = 100;
-			}
-			for (var i = 0; i < response.length; i++) {
-				if (response[i]) {
-					var chart = $(this).highcharts();
-
-					// more points?
-					for (var j = 0; j < response[i].length; j++) {
-						chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= count));
+						if(mode == 'minmax' || mode == 'minmaxavg') {
+							var minmax = this.series.chart.series[this.series.index - this.series.chart.series.length / 2].data[this.index];
+							var minValue = parseFloat(minmax.low).transUnit(unit);
+							var maxValue = parseFloat(minmax.high).transUnit(unit);
+							return '<span style="color:' + this.color + '">\u25CF</span> ' + this.series.name + ' \u00D8: <b>' + value + '</b><br/>' +
+								'<span style="visibility: hidden">\u25CF</span> min: <b>' + minValue + '</b> max: <b>' + maxValue + '</b><br/>';
+						}
+						else
+							return '<span style="color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>' + value + '</b><br/>';
 					}
-					chart.redraw();
+				},
+				plotOptions: {
+					columnrange: {
+						dataLabels: {
+							enabled: true,
+							formatter: function () {
+								return parseFloat(this.y).transUnit(this.series.yAxis.userOptions.svUnit);
+							}
+						}
+					}
 				}
-			}
-		}
-	});
+			};
 
-	// ----- plot.period ----------------------------------------------------------
-	$(bevent.target).find('div[data-widget="plot.period"]').on( {
-		'update': function (event, response) {
-			event.stopPropagation();
-			// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ]
-
-			var label = $(this).attr('data-label').explode();
-			var color = $(this).attr('data-color').explode();
-			var exposure = $(this).attr('data-exposure').explode();
-			var axis = $(this).attr('data-axis').explode();
-			var zoom = $(this).attr('data-zoom');
-			var series = Array();
-
-			for (var i = 0; i < response.length; i++) {
-				series[i] = {
-					type: (exposure[i] != 'stair' ? exposure[i] : 'line'),
-					step: (exposure[i] == 'stair' ? 'left' : false),
-					name: label[i],
-					data: response[i],
-					color: (color[i] ? color[i] : null)
-				}
+			if(zoom) {
+				chartOptions.chart.zoomType = 'x';
+				chartOptions.xAxis.minRange = new Date().duration(zoom).valueOf();
 			}
 
-			// draw the plot
-			if (zoom) {
-				$(this).highcharts({
-					chart: {zoomType: 'x'},
-					series: series,
-					xAxis: {type: 'datetime', title: {text: axis[0]}, minRange: new Date().duration(zoom).valueOf()},
-					yAxis: {min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: {text: axis[1]}}
-				});
-			}
-			else {
-				$(this).highcharts({
-					series: series,
-					xAxis: {type: 'datetime', title: {text: axis[0]}},
-					yAxis: {min: $(this).attr('data-ymin'), max: $(this).attr('data-ymax'), title: {text: axis[1]}}
-				});
-			}
+			$(this).highcharts(chartOptions);
+
 		},
 
 		'point': function (event, response) {
@@ -1855,91 +1854,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-	// ----- plot.minmaxavg ----------------------------------------------------------
-	$(bevent.target).find('div[data-widget="plot.minmaxavg"]').on( {
-		'update': function (event, response) {
-			// response is: [[t1 , {{ gad.min }}], [t2 , {{ gad.max }}], [t3 , {{ gad.avg }}]]
-			event.stopPropagation();
-
-			var axis = $(this).attr('data-axis').explode();
-			var unit = $(this).attr('data-unit');
-
-			var minValues = response[0];
-			var maxValues = response[1];
-
-			var ranges = [];
-			for (var i = 0; i < minValues.length; i++) {
-				ranges[i] = [minValues[i][0], minValues[i][1], maxValues[i][1]];
-			}
-
-			// draw the plot
-			$(this).highcharts({
-				chart: {
-					type: 'columnrange',
-					inverted: false
-				},
-				series: [{
-					data: ranges,
-					enableMouseTracking: false
-				}, {
-					type: 'line',
-					data: response[2]
-				}],
-				xAxis: {
-					type: 'datetime',
-					title: { text: axis[0] }
-				},
-				yAxis: {
-					min: $(this).attr('data-ymin'),
-					max: $(this).attr('data-ymax'),
-					title: { text: axis[1] }
-				},
-				plotOptions: {
-					columnrange: {
-						dataLabels: {
-							enabled: true,
-							formatter: function () {
-								if (unit != '') {
-									return parseFloat(this.y).transUnit(unit);
-								} else {
-									return parseFloat(this.y).transFloat();
-								}
-							}
-						}
-					}
-				},
-				tooltip: {
-					pointFormatter: function() {
-						var value = this.y;
-						if (unit != '') {
-							value = parseFloat(this.y).transUnit(unit);
-						} else {
-							value = parseFloat(this.y).transFloat();
-						}
-						return '<span style="color:' + this.color + '">\u00D8</span>  <b>' + value + '</b><br/>'
-					}
-				},
-				legend: { enabled: false }
-			});
-		},
-		'point': function (event, response) {
-			event.stopPropagation();
-			var count = $(this).attr('data-count');
-			if (count < 1) {
-				count = 100;
-			}
-
-			var minValues = response[0];
-			var maxValues = response[1];
-
-			for (var i = 0; i < minValues.length; i++) {
-				var chart = $(this).highcharts();
-				chart.series[0].addPoint([minValues[i][0], minValues[i][1], maxValues[i][1]], false, (chart.series[i].data.length >= count));
-				chart.series[1].addPoint(response[2][i], false, (chart.series[i].data.length >= count));
-				chart.redraw();
-			}
-		}
-	});
 
 // ----- s t a t u s -----------------------------------------------------------
 // -----------------------------------------------------------------------------
