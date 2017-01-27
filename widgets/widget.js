@@ -509,9 +509,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var list_val = $(this).attr('data-vals').explode();
 			// get received value
 			var val = response.toString().trim();
-			// hide all states and show the first corrseponding to value. If none corrseponds, the first will be shown by using .addBack(':first') and .last()
+			// hide all states
 			$(this).next('a[data-widget="basic.stateswitch"][data-index]').insertBefore($(this).children('a:eq(' + $(this).next('a[data-widget="basic.stateswitch"][data-index]').attr('data-index') + ')'));
-			$(this).after($(this).children('a[data-widget="basic.stateswitch"]').filter('[data-val="' + val + '"]:first').addBack(':first').last());
+			// show the first corrseponding to value. If none corrseponds, the last one will be shown by using .addBack(':last') and .first()
+			$(this).after($(this).children('a[data-widget="basic.stateswitch"]').filter('[data-val="' + val + '"]:first').addBack(':last').first());
 			// memorise the value for next use
 			$(this).attr('data-value', val);
 		}
