@@ -12,8 +12,8 @@
     // get config-variables 
     require_once '../../lib/includes.php';
 
-	header('Cache-Control: public, must-revalidate');
-	header('Content-Type: text/javascript');
+	@header('Cache-Control: public, must-revalidate');
+	@header('Content-Type: text/javascript');
 ?>
 
 

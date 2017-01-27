@@ -34,17 +34,17 @@ function trans($subset, $key = '', $mode = '')
 	{
 		foreach (($lang[$subset]) as $key => $val)
 		{
-            if ($mode == 'obj') {
-                $ret .= "'".$key ."':";
-            }
+			if ($mode == 'obj') {
+				$ret .= "'".$key ."':";
+			}
 			$ret .= "'".$val."', ";
 		}
-        if ($mode == 'obj') {
-            $ret = '{'.substr($ret, 0, -2).'}';
-        } else {
-            $ret = '['.substr($ret, 0, -2).']';
-        }
 
+		if ($mode == 'obj') {
+			$ret = '{'.substr($ret, 0, -2).'}';
+		} else {
+			$ret = '['.substr($ret, 0, -2).']';
+		}
 	}
 	elseif (isset($lang[$subset][$key]))
 		$ret = $lang[$subset][$key];
@@ -194,13 +194,17 @@ function fileread($file)
  */
 function filewrite($file, $ret)
 {
-	$fp = fopen(const_path.$file, 'w');
+	// add base path if file does not already start with it
+	if(substr($file, 0, strlen(const_path)) !== const_path)
+		$file = const_path . $file;
 
-	if ($fp !== false)
-	{
-		fwrite($fp, $ret);
-		fclose($fp);
-	}
+	$dir = dirname($file);
+	if (!is_dir($dir))
+		mkdir($dir, 0777, true);
+
+	$tmpFile = tempnam($dir, basename($file));
+	file_put_contents($tmpFile, $ret);
+	rename($tmpFile, $file);
 
 	return $ret;
 }

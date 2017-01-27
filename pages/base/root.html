@@ -29,11 +29,11 @@
 {% set cssFiles = [
 		'designs/' ~ config_design ~ '.css', 
 		icon0 ~ 'jquery.mobile.icons.min.css', 
-		'pages/base/base.css', 
-		'pages/' ~config_pages ~ '/visu.css'
+		'pages/base/base.css',
+		'pages/' ~ config_pages ~ '/visu.css'
 	] %}
 {%- if config_cache %} /** only use minified and merged version if page cache is activated. otherwise use original single files. **/
-	<link rel="stylesheet" href="assets.php?type=css
+	<link rel="stylesheet" href="assets.php?pages={{ config_pages }}&amp;type=css
 	{%- for cssFile in cssFiles -%}
 		{%- if cssFile is not empty and isfile(cssFile) -%}
 			&amp;{{- 'files[]'|url_encode -}}={{- cssFile|url_encode -}}
@@ -88,7 +88,7 @@
 		'pages/' ~ config_pages ~ '/visu.js' 
 	] %}
 {%- if config_cache -%} /** only use minified and merged version if page cache is activated. otherwise use original single files. **/
-	<script type="text/javascript" src="assets.php?type=js
+	<script type="text/javascript" src="assets.php?pages={{ config_pages }}&amp;type=javascript
 	{%- for jsFile in jsFiles -%}
 		{%- if jsFile is not empty and isfile(jsFile) -%}
 			&amp;{{- 'files[]'|url_encode -}}={{- jsFile|url_encode -}}

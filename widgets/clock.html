@@ -26,7 +26,7 @@
 	{% endif %}
 
 	<div id="{{ uid }}-digiclock" data-widget="clock.digiclock" class="digiclock"
-	 {% if config_timesource == 'server' %} data-servertime="{{ now|date('U') - now|date('Z') }}" {% endif %}
+	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
 	 ></div>
 
 	{% if location %}
@@ -56,7 +56,7 @@
 	{% import "icon.html" as icon %}
 
 	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i" class="iconclock"
-	 {% if config_timesource == 'server' %} data-servertime="{{ now|date('U') - now|date('Z') }}" {% endif %}
+	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
 	 >{{ icon.clock(id) }}</span>
 
 {% endmacro %}
@@ -70,7 +70,7 @@
 {% macro miniclock(id) %}
 
 	<span id="{{ uid(page, id) }}" data-widget="clock.miniclock" data-repeat="1i" class="miniclock"
-	 {% if config_timesource == 'server' %} data-servertime="{{ now|date('U') - now|date('Z') }}" {% endif %}
+	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
 	 >{{ "now"|date('H:i') }}</span>
 
 {% endmacro %}

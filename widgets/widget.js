@@ -602,23 +602,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 // ----- c l o c k ------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
-	// init servertime offset on all clocks
-	$(bevent.target).find('span[data-widget="clock.iconclock"], span[data-widget="clock.miniclock"], div.digiclock[data-widget="clock.digiclock"]').each(function() { // init
-		var localtime = (window.performance !== undefined && window.performance.timing !== undefined && window.performance.timing.responseStart !== undefined) ? window.performance.timing.responseStart : Date.now();
-		localtime = localtime + new Date().getTimezoneOffset()*60000;
-
-		var servertime = $(this).attr('data-servertime');
-		if(isNaN(servertime) || servertime == "")
-			servertime = localtime;
-		else
-			servertime = Number(servertime) * 1000;
-
-		$(this).data('offset', servertime - localtime);
-	});
-
 	// ----- clock.digiclock ------------------------------------------------------
-	$(bevent.target).find('div.digiclock[data-widget="clock.digiclock"]').each(function() {
-		$(this).digiclock({ svrOffset: Number($(this).data('offset')) });
+	$(bevent.target).find('div.digiclock[data-widget="clock.digiclock"]').on( {
+		'init': function(event) {
+			$(this).digiclock({ svrOffset: window.servertimeoffset || 0 });
+		}
 	});
 	
 	$(bevent.target).find('div.digiweather[data-widget="clock.digiclock"]').each(function() {
@@ -636,8 +624,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		'repeat': function (event) {
 			event.stopPropagation();
 
-			var now = new Date(Date.now() - Number($(this).data('offset')));
-			var minutes = Math.floor((now - now.setHours(0, 0, 0, 0)) / 1000 / 60);
+			var now = new Date(Date.now() - (window.servertimeoffset || 0));
+			var minutes = Math.floor(now.getHours()*60 + now.getMinutes());
 			$(this).find('svg').trigger('update', [
 				[minutes],
 				[0]
@@ -652,10 +640,32 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		'repeat': function (event) {
 			event.stopPropagation();
 
-			var now = new Date(Date.now() - Number($(this).data('offset')));
+			var now = new Date(Date.now() - (window.servertimeoffset || 0));
 			$(this).text(now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes());
 		}
 	})
+
+	// init servertime offset on all clocks
+	$(bevent.target).find('[data-servertime-url]:first').each(function() { // init
+		if(window.servertimeoffset === undefined) {
+			var localtime = Date.now();
+			$.ajax({
+				url: $(this).attr("data-servertime-url"),
+				cache: false
+			}).done(function(resp) {
+				var servertime = Number(resp) * 1000;
+				// use average of start and end request timestamp and make it local time
+				localtime = localtime / 2 + Date.now() / 2;
+				window.servertimeoffset = servertime - localtime;
+				$(bevent.target).find('[data-servertime-url]').trigger('repeat').trigger('init');
+			});
+		}
+		else {
+			$(bevent.target).find('[data-servertime-url]').trigger('repeat').trigger('init');
+		}
+	});
+
+	$(bevent.target).find('span[data-widget="clock.iconclock"], span[data-widget="clock.miniclock"], div.digiclock[data-widget="clock.digiclock"]').not('[data-servertime-url]').trigger('repeat').trigger('init');
 
 
 // ----- d e v i c e ----------------------------------------------------------

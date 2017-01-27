@@ -22,6 +22,11 @@ $config_pages = ($request['pages'] != '') ? $request['pages'] : config_pages;
 if ($request['page'] == '')
 	$request['page'] = config_index;
 
+// Caching
+header('Cache-Control: must-revalidate');
+require_once 'lib/pagecache.php';
+$cache = new Pagecache(const_path . 'temp/pagecache/' . $config_pages . '/' . $request['page'] . '.html', config_cache);
+
 if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 		or is_file(const_path."apps/".$request['page'].".html")
 		or is_file(const_path."pages/smarthome/".$request['page'].".html")
@@ -50,8 +55,6 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	// init environment
 	$twig = new Twig_Environment($loader);
 
-	if (config_cache)
-		$twig->setCache(const_path.'temp/pagecache');
 
 	foreach ($request as $key => $val)
 	{
@@ -107,15 +110,10 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	try
 	{
 		$template = $twig->loadTemplate($request['page'].'.html');
-		$ret = $template->render(array());
+		$content = $template->render(array());
 
-		// try to zip the output
-		if ((strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) && (ini_get('zlib.output_compression') !== false))
-		{
-			header("Content-Encoding: gzip");
-			$ret = "\x1f\x8b\x08\x00\x00\x00\x00\x00".substr(gzcompress($ret, 9), 0, -4).pack("V", crc32($ret)).pack("V", strlen($ret));
-		}
-		echo $ret;
+		// write to cache and output
+		$cache->write($content);
 	}
 	catch (Exception $e)
 	{

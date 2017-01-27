@@ -4,95 +4,64 @@
  */
  
 $request = array_merge($_GET, $_POST);
+$type = $request['type'];
+$suffix = $type == 'javascript' ? 'js' : $type;
 
-header('Content-Type: text/' . $request['type']);
+header('Content-Type: text/' . $type);
 
 require_once 'lib/includes.php';
 
-require_once const_path.'vendor/Twig/Autoloader.php';
-Twig_Autoloader::register();
+echo '/** '.implode(' | ', $request['files']).' **/';
 
+require_once 'lib/pagecache.php';
+$key = hash('sha256', implode('|', $request['files']));
+$cache = new Pagecache(const_path . 'temp/pagecache/' . $request['pages'] . '/' . $key . '.' . $suffix, config_cache);
 
-if(config_cache === true) {
-	$cache = new Twig_Cache_Filesystem(const_path.'temp/pagecache');
-	$key = $cache->generateKey('assets.' . $request['type'], implode('|', $request['files']));
-}
+$path = 'vendor/MatthiasMullie';
+require_once $path . '/minify/src/Minify.php';
+require_once $path . '/minify/src/CSS.php';
+require_once $path . '/minify/src/JS.php';
+require_once $path . '/minify/src/Exception.php';
+require_once $path . '/path-converter/src/Converter.php';
 
-if($cache != null && ($mtime = $cache->getTimestamp($key)) > 0) { // requested file combination does exist in cache 
+if($type == 'javascript')
+	array_unshift($request['files'], 'console.log = function() {};');
 
-  $gmt_mtime = gmdate('D, d M Y H:i:s', $mtime) . ' GMT';
-  $etag = sprintf('%08x-%08x', crc32($key), $mtime);
+foreach($request['files'] as $fileName) {
 
-  header('ETag: "' . $etag . '"');
-  header('Last-Modified: ' . $gmt_mtime);
-  //header('Cache-Control: private');
-  header_remove('Expires'); // we don't send an "Expires:" header to make clients/browsers use if-modified-since and/or if-none-match
-  
-  if (@strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= strtotime($gmt_mtime)) {
-    $exploded = explode(';', $_SERVER['HTTP_IF_NONE_MATCH']); // IE fix!
-  	if(!isset($_SERVER['HTTP_IF_NONE_MATCH']) 
-			|| empty($_SERVER['HTTP_IF_NONE_MATCH'])
-		)
-	  {
-	    if(!empty($exploded[0]) && strtotime($exploded[0]) == strtotime($gmt_mtime) 
-				|| str_replace(array('\"', '"'), '', $_SERVER['HTTP_IF_NONE_MATCH']) == $etag
-				)
-	    {
-	      header('HTTP/1.1 304 Not Modified');
-	      die();
-	    }
-		}
+	// if filename ends with '.php', evaluate it and add the result
+	if(substr_compare($fileName, '.php', -4) == 0) {
+		ob_start();
+		//$wd_was = getcwd();
+    chdir(dirname(const_path.$fileName));
+	  include const_path.$fileName;
+	  //chdir($wd_was);
+    chdir(dirname($_SERVER['SCRIPT_FILENAME']));
+	  $rawcontent = ob_get_clean();
+ 	}
+ 	// otherwise just add it
+	else
+		$rawcontent = $fileName;
+
+	switch($type) {
+		case 'css':
+			$minifier = new MatthiasMullie\Minify\CSS($rawcontent);
+			break;
+		case 'js':
+		case 'javascript':
+			$minifier = new MatthiasMullie\Minify\JS($rawcontent);
+			break;
 	}
 
-//	header('Content-Encoding: gzip');
- 	echo $cache->load($key);
- 	
-}
-else {
+	$content = "\n/* ".$fileName." */\n";
 
-	$path = 'vendor/MatthiasMullie';
-	require_once $path . '/minify/src/Minify.php';
-	require_once $path . '/minify/src/CSS.php';
-	require_once $path . '/minify/src/JS.php';
-	require_once $path . '/minify/src/Exception.php';
-	require_once $path . '/path-converter/src/Converter.php';
+	// get minified content
+	$content .= $minifier->execute("assets." . $type);
 
-  switch($request['type']) {
-  	case 'css':
-			$minifier = new MatthiasMullie\Minify\CSS();
-  		break;
-  	case 'js':
-  	case 'javascript':
-			$minifier = new MatthiasMullie\Minify\JS();
-			$minifier->add('console.log = function() {};');
-  		break;
-	}
-		
-	foreach($request['files'] as $fileName) {
-		// if filename ends with '.php', evaluate it and add the result
-		if(substr_compare($fileName, '.php', -4) == 0) {
-			ob_start();
-			$wd_was = getcwd();
-	    chdir(dirname(const_path.$fileName));
-		  include const_path.$fileName;
-		  chdir($wd_was); 
-		  $content = ob_get_clean();
-			$minifier->add($content);
-	 	}
-	 	// otherwise just add it
-		else
-			$minifier->add($fileName);
-	}
+	if($type == 'javascript')
+	  $content .= ';';
 
-	// get minified content 
-	$content = $minifier->execute("assets." . $request['type']);
-//	$content = gzencode($content, 9, FORCE_GZIP);
-
-	if($cache != null)
-		$cache->write($key, preg_replace("/(<[\\?%]|[\\?%]>)/m", "<?php echo '$1'; ?".">", $content));
-
-//	header('Content-Encoding: gzip');
-	echo $content;
+	$cache->append($content);
 }
 
 ?>
