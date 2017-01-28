@@ -231,8 +231,8 @@
 * @param a item for the value
 * @param the iconseries or dynamic icon for the 'on' state
 * @param the icon for the 'off' state (optional)
-* @param the minimum value if it is off (optional, for future use)
-* @param the maximum value if it is on (optional, default 255)
+* @param the value if it is off (optional, default 0)
+* @param the value if it is on (optional, default 255)
 *
 * @see design/design_icons#Dynamic Icons and Static Icons
 */
@@ -256,24 +256,24 @@
 
 
 /**
-* Displays a shutter-control
+* Displays a shutter control
 *
 * @param unique id for this widget (optional)
-* @param a item for the actual position of the blinds
-* @param a item for the actual angle of the blinds (optional, readonly)
-* @param the minimum value for close (optional, default 0)
-* @param the maximum value for open (optional, default 255)
+* @param a item for the position of the blinds
+* @param a item for the angle of the blinds (optional)
+* @param the value for opened (optional, default 0)
+* @param the value for closed (optional, default 255)
 * @param step between two values (optional, default 5)
-* @param the mode: 'half' blade turns from -1 to +1, or 'full' blade turns from 0 to +1 (optional, default 'half')
+* @param 'half' blade turns from -1 to +1, 'full' blade turns from 0 to +1 (optional, default 'half')
+* @param background image url; optimal size is 100px x 180px (optional)
 *
 * @info inspired by Jörg Gutowski
 */
-{% macro shutter(id, item_pos, item_angle, min, max, step, mode) %}
-	{% set uid = uid(page, id) %}
+{% macro shutter(id, item_pos, item_angle, value_top, value_bottom, step, mode, background) %}
 
 	<div {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.shutter" data-item="{{ item_pos }}, {{ item_angle }}"
-		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" data-step="{{ step|default(5) }}"
-		data-mode="{{ mode|default('half') }}" class="shutter">
+		data-min="{{ value_top|default('0') }}" data-max="{{ value_bottom|default('255') }}" data-step="{{ step|default(5) }}"
+		data-mode="{{ mode|default('half') }}" class="shutter" {{ background ? ' style="background-image: url(\'' ~ background ~ '\')"'}}>
 
 		<div class="control hide">
 			<img class="icon pos" src="icons/ws/control_arrow_up_down.svg" />
@@ -345,8 +345,8 @@
 *
 * @param unique id for this widget (optional)
 * @param a item for the actual position of filled tank
-* @param the minimum value for empty (optional, default 0, for future use)
-* @param the maximum value for full (optional, default 255)
+* @param the value for empty (optional, default 0)
+* @param the value for full (optional, default 255)
 * @param step between two values (optional, default 5, for future use)
 * @param the mode: 'none', 'cylinder', 'water', 'pallets' (optional, default 'none')
 * @param the color of the filling e. g. '#f00' for red (optional, default grey)

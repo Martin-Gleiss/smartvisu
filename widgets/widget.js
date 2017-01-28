@@ -99,9 +99,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var min = parseFloat($(this).attr('data-min'));
 			
 			$(this).find('span').css('background-color', 'rgb(' + 
-				Math.round((response[0] - min) / (max - min) * 255) + ',' + 
-				Math.round((response[1] - min) / (max - min) * 255) + ',' + 
-				Math.round((response[2] - min) / (max - min) * 255) + ')');
+				Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 255) + ',' +
+				Math.round(Math.min(Math.max((response[1] - min) / (max - min), 0), 1) * 255) + ',' +
+				Math.round(Math.min(Math.max((response[2] - min) / (max - min), 0), 1) * 255) + ')');
 		}
 	})
 	// color in rectangular display (as former basic.rgb)
@@ -359,9 +359,12 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var step = Math.min((response[0] / $(this).attr('data-max') * 10 + 0.49).toFixed(0) * 10, 100);
+			var max = parseInt($(this).attr('data-max'));
+			var min = parseInt($(this).attr('data-min'));
 
-			if (response[1] != 0 && step > 0) {
+			var step = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 10 + 0.49) * 10;
+
+			if (response[1] != 0 && step > min) {
 				$(this).find('img').attr('src', $(this).attr('data-pic-on').replace('00', step));
 			}
 			else {
@@ -395,16 +398,19 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_pos }}, {{ gad_angle }}
-
+			
+			var max = parseInt($(this).attr('data-max'));
+			var min = parseInt($(this).attr('data-min'));
+			
 			var a = 13;
 			var mode = ($(this).attr('data-mode') == 'half' ? 0.5 : 1);
 			if (response[1] !== undefined) {
-				a = parseInt(13 / mode * (response[1] / $(this).attr('data-max') + mode - 1));
+				a = parseInt(13 / mode * ((response[1] - min) / (max - min) + mode - 1));
 			}
 
 			var style;
 
-			var h = parseInt(response[0] * 13 * 14 / $(this).attr('data-max'));
+			var h = parseInt(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 13 * 14);
 			$.each($(this).find('.blade-pos, .blade-neg').get().reverse(), function(i) {
 				if (h >= 14) {
 					var w = 13 - Math.abs(a);
@@ -438,14 +444,17 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		},
 
 		'click': function (event) {
+			var max = parseInt($(this).attr('data-max'));
+			var min = parseInt($(this).attr('data-min'));
+			var step = parseInt($(this).attr('data-step'));
+			
 			var offset = $(this).offset();
-			var x = Math.round(event.pageX - offset.left);
-			var y = (event.pageY - offset.top);
-			var val = Math.floor((y / 160 - 10 / 160) * $(this).attr('data-max') / $(this).attr('data-step')) * $(this).attr('data-step');
-			val = val.limit($(this).attr('data-min'), $(this).attr('data-max'), 1);
-
+			var x = event.pageX - offset.left;
+			var y = event.pageY - offset.top;
+			var val = Math.floor(y / $(this).outerHeight() * (max - min) / step) * step + min;
+			
 			var items = $(this).attr('data-item').explode();
-			if (items[1] != '' && x > 52) {
+			if (items[1] != '' && x > $(this).outerWidth() / 2) {
 				io.write(items[1], val);
 			}
 			else {
@@ -580,7 +589,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	$(bevent.target).find('div[data-widget="basic.tank"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
-			$(this).find('div').css('height', Math.round(Math.min(response / $(this).attr('data-max'), 1) * 180));
+
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+
+			$(this).find('div').css('height', Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * $(this).height()));
 		}
 	});
 
@@ -1976,7 +1989,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var ang = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 2 * Math.PI;
 
 			var pt = [];
 			pt = pt.concat([50, 50], fx.rotate([25, 50], ang, [50, 50]), fx.rotate([50, 18], ang, [50, 50]), fx.rotate([75, 50], ang, [50, 50]), [50, 50]);
@@ -1994,7 +2010,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var val = Math.floor(response[0] / $(this).attr('data-max') * 40 / 6) * 6;
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var val = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 40 / 6) * 6;
 			fx.grid(this, val, [39, 68], [61, 28]);
 		}
 	});
@@ -2005,8 +2024,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
 			// calculate angle in (0 - ~90°)
-			var ang = response[0] / $(this).attr('data-max') * 0.4 * Math.PI;
+			var ang = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 0.4 * Math.PI;
 			var pt;
 
 			for (var i = 0; i <= 3; i++) {
@@ -2023,9 +2045,12 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
 			// calculate angle in (0 - ~180°)
 			var val = response[1];
-			var ang = -1 * (response[0] / $(this).attr('data-max') * -0.7 * Math.PI + 0.35 * Math.PI);
+			var ang = -1 * (Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * -0.7 * Math.PI + 0.35 * Math.PI);
 			var pt;
 
 			for (var i = 0; i <= 3; i++) {
@@ -2042,8 +2067,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
 			// calculate angle in (0 - 90°)
-			var ang = response[0] / $(this).attr('data-max') * 0.5 * Math.PI * -1;
+			var ang = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 0.5 * Math.PI * -1;
 
 			var pt = [];
 			pt = pt.concat(fx.rotate([25, 25], ang, [50, 30]), fx.rotate([45, 25], ang, [50, 30]), fx.rotate([55, 35], ang, [50, 30]), fx.rotate([75, 35], ang, [50, 30]));
@@ -2061,8 +2089,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
 			// calculate angle in (0 - 90°)
-			var ang = response[0] / $(this).attr('data-max') * -0.7 * Math.PI + 0.35 * Math.PI;
+			var ang = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * -0.7 * Math.PI + 0.35 * Math.PI;
 			var pt;
 
 			pt = 'M ' + fx.rotate([30, 40], ang, [50, 37]) + ' Q ' + fx.rotate([50, 22], ang, [50, 30]) + ' ' + fx.rotate([70, 40], ang, [50, 37]);
@@ -2077,7 +2108,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	$(bevent.target).find('svg[data-widget="icon.clock"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
-
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
 			var ang_l = (response[0] % 60) / 60 * 2 * Math.PI;
@@ -2092,10 +2122,12 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	$(bevent.target).find('svg[data-widget="icon.compass"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
-
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var ang = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 2 * Math.PI;
 
 			var pt = [];
 			pt = pt.concat(fx.rotate([40, 50], ang, [50, 50]), fx.rotate([50, 25], ang, [50, 50]), fx.rotate([60, 50], ang, [50, 50]));
@@ -2113,7 +2145,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var val = Math.round(response[0] / $(this).attr('data-max') * 70);
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var val = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 70);
 			var graph = $(this).find('#graph').attr('d').substr(8);
 			var points = graph.split('L');
 
@@ -2134,7 +2169,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	$(bevent.target).find('svg[data-widget="icon.light"]').on( {
 		'update': function (event, response) {
 			// response is: {{ gad_value }}, {{ gad_switch }}
-			var val = Math.round(response[0] / $(this).attr('data-max') * 10);
+
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var val = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 10);
 			// Iterate over all child elements
 			var i = 1;
 			$(this).find('g#light-rays line').each(function () {
@@ -2150,7 +2189,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var ang = response[0] / $(this).attr('data-max') * 0.44 * Math.PI;
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var ang = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 0.44 * Math.PI;
 			$(this).find('#pointer').attr('points', '50,85 ' + fx.rotate([15, 48], ang, [50, 85]).toString());
 		}
 	});
@@ -2161,7 +2203,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var val = Math.round(response[0] / $(this).attr('data-max') * 38);
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var val = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 38);
 			fx.grid(this, val, [14, 30], [86, 68]);
 		}
 	});
@@ -2172,7 +2217,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var val = (1 - response[0] / $(this).attr('data-max')) * 4.5 + 0.5;
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var val = (1 - Math.min(Math.max((response[0] - min) / (max - min), 0), 1)) * 4.5 + 0.5;
 			$(this).find('#anim').attr('dur', (response[0] > 0 ? val : 0)).attr('begin', 0);
 		}
 	});
@@ -2183,7 +2231,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var val = Math.round(response[0] / $(this).attr('data-max') * 71);
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var val = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 71);
 			// fx.bar(this, val, [left, bottom], [right, top]);
 			fx.bar(this, val, [18, 68], [89, 50]);
 		}
@@ -2195,7 +2246,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var val = (1 - response[0] / $(this).attr('data-max')) * 4.5 + 0.5;
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var val = (1 - Math.min(Math.max((response[0] - min) / (max - min), 0), 1)) * 4.5 + 0.5;
 			$(this).find('#anim1').attr('dur', (response[0] > 0 ? val : 0)).attr('begin', 0);
 		}
 	});
@@ -2206,7 +2260,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var ang = response[0] / $(this).attr('data-max') * 2 * Math.PI;
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var ang = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 2 * Math.PI;
 
 			var pt = [];
 			pt = pt.concat(fx.rotate([50, 60], ang, [50, 50]), fx.rotate([37, 71], ang, [50, 50]), fx.rotate([50, 29], ang, [50, 50]));
@@ -2224,7 +2281,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var ang = response[0] / $(this).attr('data-max') * 0.45 * Math.PI;
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var ang = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 0.45 * Math.PI;
 
 			var pt = [];
 			pt = pt.concat(fx.rotate([70, 40], ang, [80, 22]), [80, 22], fx.rotate([90, 40], ang, [80, 22]));
@@ -2249,7 +2309,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_value }}, {{ gad_switch }}
 
-			var ang = response[0] / $(this).attr('data-max') * Math.PI;
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+			
+			var ang = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * Math.PI;
 			pt = fx.rotate([10, 90], ang, [50, 90]);
 
 			$(this).find('#sun').attr('x', pt[0] - 50);

@@ -1,6 +1,7 @@
 ## v 2.9
 
 ### New / Changed Widgets
+- ID is now optional in most widgets
 - New: basic.stateswitch (improves and supersedes basic.button, basic.dual, basic.multistate and basic.switch)
 - New: basic.print (improves and supersedes basic.float, basic.formula and basic.value)
 - New: basic.color (supersedes basic.colordisc and basic.rgb)
@@ -8,6 +9,11 @@
 - Enhanced plot.period, among other things merged functionality of plot.minmaxavg and plot.multiaxis into it
 - plot.temprose: New parameters 'series_label' and 'unit'
 - basic.slider: New parameter 'value_display'
+- device.blind & device.shutter: item_move is now optional
+- basic.shutter & device.shutter: min/max are renamed to value_top/bottom and value_top may be lesser than value_bottom
+- device.shutter: Value for pos1 and pos2 can be set by parameter
+- basic.tank & icon.* (dynamic icons): min is now implemented and max may be lesser than min
+- device.dimmer: New parameters to specify pic and color
 
 ### Other New Features
 - Template Checker
@@ -18,7 +24,6 @@
 - Added 50 icons of jQuery Mobile (before they were just available on buttons)
 
 ### Improvements
-- ID is now optional in most widgets
 - Replaced make.php by on-the-fly minification (needs page cache set on)
 - Replaced Twig cache by output cache (makes html files cachable)
 - Some performance optimizations

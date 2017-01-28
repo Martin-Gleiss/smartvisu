@@ -13,11 +13,11 @@
 *
 * @param unique id for this widget (optional)
 * @param name of the blind
-* @param a item for the up and down movement
+* @param a item for the up and down movement (optional, min/max will be sent to item_pos if omitted)
 * @param a item for stopping the movement (optional)
-* @param a item for the actual absolute position of the blinds
+* @param a item for the absolute position of the blinds
 * @param a item for increase and decrease of the blade (optional)
-* @param a item for the actual absolute angle of the blade (optional)
+* @param a item for the absolute angle of the blade (optional)
 * @param the minimum value for close (optional, default: 0)
 * @param the maximum value for open (optional, default: 255)
 * @param step between two values (optional, default: 5)
@@ -31,10 +31,16 @@
 		<table align="center" cellpadding="0">
 			<tr>
 				<td valign="top">
-					<div class="set">{{ basic.button('', item_move, '', 'arrow-u', 0) }}</div>
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.button('', item_pos, '', 'carat-u', value_top) }}
+						{% else %}
+							{{ basic.button('', item_move, '', 'carat-u', value_top < value_bottom ? 0 : 1 ) }}
+						{% endif %}
+					</div>
 				</td>
 				<td rowspan="3" align="left" class="pos">
-					{{ basic.slider(id~'pos', item_pos, min, max, step, 'vertical') }}</td>
+					{{ basic.slider('', item_pos, min, max, step, 'vertical') }}</td>
 				<td rowspan="2" valign="bottom" class="angle">
 					{{ txt }}<br />
 					{% if item_angle %} {{ basic.slider('', item_angle, min, max, step, 'semicircle') }} {% endif %}
@@ -47,7 +53,13 @@
 			</tr>
 			<tr>
 				<td valign="bottom">
-					<div class="set">{{ basic.button('', item_move, '', 'arrow-d', 1) }}</div>
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.button('', item_pos, '', 'carat-d', value_bottom) }}
+						{% else %}
+							{{ basic.button('', item_move, '', 'carat-d', value_top < value_bottom ? 1 : 0 ) }}
+						{% endif %}
+					</div>
 				</td>
 				<td valign="bottom">
 					{% if item_shift %}
@@ -103,14 +115,18 @@
 * @param the minimum value if the slider is moved to total left (optional, default: 0)
 * @param the maximum value if the slider is moved to total right (optional, default: 255)
 * @param step between two values (optional, default: 5)
+* @param the pic for the 'on' state (optional)
+* @param the pic for the 'off' state (optional)
+* @param the color for the 'on' state (optional)
+* @param the color for the 'off' state (optional)
 */
-{% macro dimmer(id, txt, item_switch, item_value, min, max, step) %}
+{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off) %}
 	{% import "basic.html" as basic %}
 
-	<div class="dimmer" {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }}>
-		{{ basic.switch('', item_switch, 'light_light.svg', 'light_light.svg') }}
+	<div class="dimmer"  data-widget="device.dimmer" {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-item="{{ item_switch }}, {{ item_value }}">
+		{{ basic.stateswitch('', item_switch, 'icon', '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
 		<p>{{ txt|e }}</p>
-		{{ basic.slider('', item_value, min, max, step, '', 'none') }}
+		{{ basic.slider('', item_value, min, max, step, 'horizontal', 'none') }}
 	</div>
 
 {% endmacro %}
@@ -175,47 +191,69 @@
 *
 * @param unique id for this widget (optional)
 * @param name of the shutter
-* @param a item for the up and down movement
+* @param a item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
 * @param a item for stopping the movement (optional)
-* @param a item for the actual absolute position of the blinds
+* @param a item for the absolute position of the blinds
 * @param a item for increase and decrease of the blade (optional, for future use)
-* @param a item for the actual absolute angle of the blade (optional)
+* @param a item for the absolute angle of the blade (optional)
 * @param a item for some saved positions (optional)
-* @param the minimum value for close (optional, default: 0)
-* @param the maximum value for open (optional, default: 255)
-* @param step between two values (optional, default: 5)
-* @param the mode: 'half' blade turns from -1 to +1, or 'full' blade turns from 0 to +1 (optional, default 'half')
+* @param the value for opened (optional, default 0)
+* @param the value for closed (optional, default 255)
+* @param step between two values (optional, default 5)
+* @param 'half' blade turns from -1 to +1, 'full' blade turns from 0 to +1 (optional, default 'half')
+* @param a background image url; optimal size is 100px x 180px (optional)
+* @param the value to send for position 1 (optional, default 0)
+* @param the value to send for position 2 (optional, default 1)
 *
 * @info inspired by Jörg Gutowski
 */
-{% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode) %}
+{% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2) %}
 	{% import "basic.html" as basic %}
 
 	<div class="blind" {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }}>
 		<table align="center" cellpadding="0">
 			<tr>
 				<td valign="top">
-					<div class="set">{{ basic.button('', item_move, '', 'arrow-u', 0) }}</div>
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.button('', item_pos, '', 'carat-u', value_top) }}
+						{% else %}
+							{{ basic.button('', item_move, '', 'carat-u', value_top < value_bottom ? 0 : 1 ) }}
+						{% endif %}
+					</div>
 				</td>
-				<td rowspan="3" align="center" class="pos">
-					{{ basic.shutter('', item_pos, item_angle, min, max, step, mode) }}</td>
+				<td rowspan="3" valign="center" class="pos">
+					{{ basic.shutter('', item_pos, item_angle, value_top, value_bottom, step, mode, background) }}
+				</td>
 				<td valign="top">
 					{% if item_saved %}
-						<div>{{ basic.button('', item_saved, 'Pos1', 'grid', 0) }} </div>{% endif %}</td>
+						<div>{{ basic.button('', item_saved, 'Pos1', 'grid', value_pos_1) }}</div>
+					{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td valign="center">
 					{% if item_stop %}
-						<div class="set">{{ basic.button('', item_stop, '', 'delete', 1) }}</div> {% endif %}</td>
+						<div class="set">{{ basic.button('', item_stop, '', 'delete', 1) }}</div>
+					{% endif %}
+				</td>
 				<td valign="center">{{ txt }}</td>
 			</tr>
 			<tr>
 				<td valign="bottom">
-					<div class="set">{{ basic.button('', item_move, '', 'arrow-d', 1) }}</div>
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.button('', item_pos, '', 'carat-d', value_bottom) }}
+						{% else %}
+							{{ basic.button('', item_move, '', 'carat-d', value_top < value_bottom ? 1 : 0 ) }}
+						{% endif %}
+					</div>
 				</td>
 				<td valign="bottom">
 					{% if item_saved %}
-						<div>{{ basic.button('', item_saved, 'Pos2', 'grid', 1) }} </div>{% endif %}</td>
+						<div>{{ basic.button('', item_saved, 'Pos2', 'grid', value_pos_2) }}</div>
+					{% endif %}
+				</td>
 			</tr>
 		</table>
 	</div>

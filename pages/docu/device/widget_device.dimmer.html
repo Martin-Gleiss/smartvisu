@@ -13,11 +13,19 @@
 {% block example %}
 
 	<h5>Example</h5>
+	
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; device.dimmer('dimmer1', 'Dimmer', 'bath.light.switch', 'bath.light.value') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; device.dimmer('', 'Dimmer', 'bath.light.switch', 'bath.light.value') &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ device.dimmer('dimmer1', 'Dimmer', 'bath.light.switch', 'bath.light.value') }}
+		{{ device.dimmer('', 'Dimmer', 'bath.light.switch', 'bath.light.value') }}
+	</div>
+	
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; device.dimmer('', '', 'bath.light.switch', 'bath.light.value', 20, 100, 10, 'light_light_dim_100.svg', 'light_light_dim_00.svg', 'green', '#ff0000' ) &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ device.dimmer('', '', 'bath.light.switch', 'bath.light.value', 20, 100, 10, 'light_light_dim_100.svg', 'light_light_dim_00.svg', 'green', '#ff0000' ) }}
 	</div>
 
 {% endblock %}
