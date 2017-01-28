@@ -9,32 +9,37 @@
 
 {% macro _icon(pic, color, id, class) %}
 
-	/** rewrite legacy png to svg if png file does not exist and svg file does */
-	{% if pic|slice(0, 4) != '<svg' %}
+	{% if pic|slice(0, 4) != '<svg' -%} /** pic is not a dynamic icon */
+
+		/**- rewrite legacy png to svg if png file does not exist and svg file does -*/
 		{% if (pic matches '#^icons/../.*\.png$#') and not isfile(pic) and isfile(pic|slice(0, 6) ~ 'ws' ~ pic|slice(8,-4) ~ '.svg') %}
 			{% if pic|slice(6, 2) != 'ws' %}
 				{% set color = pic|slice(6, 2) %}
 			{% endif %}
 			{% set pic = pic|slice(0, 6) ~ 'ws' ~ pic|slice(8,-4) ~ '.svg' %}
 		{% endif %}
-		/** legacy jQuery ui-icon classes */
+
+		/**- jQuery ui-icon classes -*/
 		{% if '.' not in pic and not isfile(pic) %}
 			{% set pic = 'icons/ws/jquery_' ~ pic ~ '.svg' %}
-		{% endif %}
-	{% endif %}
+		{% endif -%}
 
-	{% set color = {'or': '#f9a028', 'gn': '#84c929', 'bl': '#4176a9', 'sw': '#000'}[color]|default(color) %}
-
-	<{{ pic|slice(0, 4) == '<svg' ? 'span' : 'img'}} {{ not id is empty ? 'id="' ~ id ~ '"' | raw }} class="icon {{ class }}
-	{%- if (color == 'icon0') or (color is empty) %}"
-	{%- elseif color == 'icon1' %} icon1"
-	{%- else %} icon1" style="stroke:{{ color }}; fill:{{ color }}; color:{{ color }}"
+		<img
+	{%- else -%} /** pic is a dynamic icon */
+		<span
 	{%- endif -%}
 
-	{%- if pic|slice(0, 4) == '<svg' -%}
-    >{{ pic }}</span>
+	{%- if not id is empty %} id="{{ id }}" {%- endif %} class="icon {{ class }}
+
+	{%- set color = {'or': '#f9a028', 'gn': '#84c929', 'bl': '#4176a9', 'sw': '#000'}[color]|default(color) %}
+	{%- if (color != 'icon0') and (color is not empty) %} icon1
+		{%- if color != 'icon1' %}" style="stroke:{{ color }}; fill:{{ color }}; color:{{ color }} {%- endif -%}
+	{%- endif -%}
+
+	{%- if pic|slice(0, 4) != '<svg' -%}
+		" src="{{ pic|deficon }}">
 	{%- else -%}
-		src="{{ pic|deficon }}">
+    ">{{ pic }}</span>
 	{% endif %} 
 
 {% endmacro %}
@@ -400,19 +405,19 @@
 * @param unique id for this widget (optional)
 * @param the name of the trigger (logic)
 * @param text printed on the button (optional)
-* @param a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search' (optional)
-* @param value send if the button is pressed (optional, default 1)
+* @param icon to show on the button (optional)
+* @param value to send if the button is pressed (optional, default 1)
 * @param type: 'micro', 'mini', 'midi' (optional, default: mini)
 */
-{% macro trigger(id, name, txt, pic, val, type) %}
-	{% set suffix = pic|slice(-4, 4) %}
+{% macro trigger(id, name, txt, icon, val, type) %}
+	{% import _self as basic %}
 
 	<a {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.trigger" data-name="{{ name }}" data-val="{{ val }}"
 		class="ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline ui-shadow
-		{%- if pic is empty -%}
+		{%- if icon is empty -%}
 			">
 		{%- else -%}
-			{{ txt ? ' ui-nodisc-icon ui-btn-icon-top' : '' }}">{{ basic._icon(pic, color) }}
+			{{ txt ? ' ui-nodisc-icon ui-btn-icon-top' : '' }}">{{ basic._icon(icon, color) }}
 		{%- endif -%}
 		{{- txt|e -}}
 	</a>

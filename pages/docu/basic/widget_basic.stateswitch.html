@@ -74,6 +74,9 @@
 			&#123;&#123; basic.<span class="nocode">switch</span>('', 'bath.light.switch', 'control_arrow_up.svg', 'control_arrow_down.svg', 0, 1, '#f00', 'icon1') &#125;&#125;<br>
 			&#123;&#123; basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['icon1', '#f00']) &#125;&#125;<br>
 			<br>
+			new: <span class="nocode">jQuery icons</span><br>
+			&#123;&#123; basic.stateswitch('', 'bath.light.switch', 'icon', '', ['user', 'grid'], '', ['#f00', 'icon1']) &#125;&#125;
+			<br>
 			new: <span class="nocode">text switch</span><br>
 			&#123;&#123; basic.stateswitch('', 'bath.light.switch', 'icon', '', 'none', ['On', 'Off']) &#125;&#125;
 		</code>
@@ -81,7 +84,7 @@
 	<div class="html">
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['icon1', '#f00']) }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['grid', 'user'], '', ['icon1', '#f00']) }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', ['user', 'grid'], '', ['#f00', 'icon1']) }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', 'none', ['On', 'Off']) }}
 	</div>
 
