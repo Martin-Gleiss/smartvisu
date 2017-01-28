@@ -1603,11 +1603,11 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 
 /* smartVISU
 -----------------------------------------------------------------------------------------------------------*/
-svg.icon0, a.ui-link {
+.icon0, a.ui-link {
 	stroke: #000;
 	fill: #000;
 }
-svg.icon1, a.ui-link:hover, a.ui-link:active {
+.icon1, a.ui-link:hover, a.ui-link:active {
 	stroke: #5595c6;
 	fill: #5595c6;
 }

@@ -14,10 +14,13 @@
 - Configurable time source (show time of server or client)
 - Allow pages selection by url parameter (e.g. index.php?pages=foo)
 - Clear pagecache (by button and on disabling)
+- Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
+- Added 50 icons of jQuery Mobile (before they were just available on buttons)
 
 ### Improvements
 - ID is now optional in most widgets
 - Replaced make.php by on-the-fly minification (needs page cache set on)
+- Replaced Twig cache by output cache (makes html files cachable)
 - Some performance optimizations
 - Slight redesign of configuration page
 

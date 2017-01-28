@@ -53,6 +53,18 @@
 		{{ basic.symbol('s5', 'bath.light.switch', '', 'light_light.svg', '', '', '#fa3') }}
 	</div>
 
+	With dynamic icon
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value')) &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value'), '', '', 'icon1') &#125;&#125;
+		</code>
+	</div>
+	<div class="html">
+		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value')) }}
+		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value'), '', '', 'icon1') }}
+	</div>
+
 	Symbol is shown when 'bath.light.switch' is on <b>OR</b> 'bath.rtr.state' is on.
 	<div class="twig">
 		<code class="prettyprint">&#123;&#123; basic.symbol('s6', ['bath.light.switch', 'bath.rtr.state']) &#125;&#125;</code>
@@ -68,6 +80,7 @@
 	<div class="html">
 		{{ basic.symbol('s7', ['bath.light.switch', 'bath.rtr.state'], '', '', 1, 'and', 'icon1') }}
 	</div>
+
 
 {% endblock %}
 

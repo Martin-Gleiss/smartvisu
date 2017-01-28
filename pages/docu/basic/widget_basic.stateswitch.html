@@ -13,8 +13,20 @@
 {% block example %}
 
 	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light(), icon.light('','','bath.light.value')]) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
 
-	<h4>Replacement of deprecated widgets</h4>
+	Use dynamic icon on button or switch
+	<div class="html">
+		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light(), icon.light('','','bath.light.value')]) }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light(), icon.light('','','bath.light.value')]) }}
+	</div>
+
+	<h5>Replacement of deprecated widgets</h5>
 	basic.button	
 	<div class="twig">
 		<code class="prettyprint">
@@ -32,7 +44,6 @@
 		{{ basic.stateswitch('', 'bath.light.switch', '', 1) }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'midi', 0, 'grid', 'Off', 'icon1') }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', 1) }}
-		/** {{ basic.stateswitch('', 'bath.light.switch', 'icon', 1, 'grid') }} */
 	</div>
 
 	basic.dual	
@@ -70,6 +81,7 @@
 	<div class="html">
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['icon1', '#f00']) }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['grid', 'user'], '', ['icon1', '#f00']) }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', 'none', ['On', 'Off']) }}
 	</div>
 

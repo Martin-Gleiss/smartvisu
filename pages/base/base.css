@@ -1589,6 +1589,11 @@ svg.fx-icon, .icon {
 	height: 48px;
 }
 
+.icon1 svg.icon {
+	fill: inherit;
+	stroke: inherit;
+	color: inherit;
+}
 
 /**
  * --- T e m p l a t e :   B A S E --------------------------------------------
