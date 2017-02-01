@@ -42,15 +42,15 @@ class calendar extends service
 			$this->data[$id]['starttime'] = transdate('time', $start);
 			$this->data[$id]['endtime'] = transdate('time', $end);
 
-			if (date('H:i', $start) == '00:00' && date('H:i', $end) == '00:00') // Full day events: don't show time
+			if (date('Y-m-d', $start) == date('Y-m-d', $end)) // Start and end on same day: show day only once
+				$this->data[$id]['period'] = transdate('short', $start).' - '.transdate('time', $end);
+			else if (date('H:i', $start) == '00:00' && date('H:i', $end) == '00:00') // Full day events: don't show time
 			{
-				if(date('Y-m-d', $start) == date('Y-m-d', $end-86400)) // One day only: Show just start date
+				if($start == $end-86400) // One day only: Show just start date
 					$this->data[$id]['period'] = transdate('date', $start);
 				else // Multiple days: Show start and end date
-					$this->data[$id]['period'] = transdate('date', $start).' - '.transdate('date', $end-86400); // Show one day before end, as it ends 00:00
+					$this->data[$id]['period'] = transdate('date', $start).' - '.transdate('date', $end-86400);
 			}
-			else if (date('Y-m-d', $start) == date('Y-m-d', $end)) // Start and end on same day: show day only once
-				$this->data[$id]['period'] = transdate('short', $start).' - '.transdate('time', $end);
 			else
 				$this->data[$id]['period'] = transdate('short', $start).' - '.transdate('short', $end);
 
