@@ -22,6 +22,7 @@
 - Clear pagecache (by button and on disabling)
 - Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
 - Added 50 icons of jQuery Mobile (before they were just available on buttons)
+- Language files can be overridden, which allows regional variations and custom extensions; they are stored in clearer ini format now
 
 ### Improvements
 - Replaced make.php by on-the-fly minification (needs page cache set on)

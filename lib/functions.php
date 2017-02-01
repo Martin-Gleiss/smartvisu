@@ -13,6 +13,18 @@
 // T R A N S L A T I O N 
 // -----------------------------------------------------------------------------
 
+
+function get_lang($code = config_lang) {
+	// read ini file
+	$result = parse_ini_file(const_path.'lang/'.$code.'.ini', true);
+
+	// recursive call to read extended language file (if specified)
+	if(isset($result['extends']) && !empty($result['extends']))
+		$result = array_replace_recursive(get_lang($result['extends']), $result);
+
+	return $result;
+}
+
 /**
  * Get a language-string form the lang-file
  *
@@ -28,7 +40,7 @@ function trans($subset, $key = '', $mode = '')
 	static $lang;
 
 	if (!$lang)
-		eval(fileread('lang/lang_'.config_lang.'.txt'));
+		$lang = get_lang();
 
 	if (is_array($lang[$subset]) && $key == '')
 	{
@@ -67,7 +79,7 @@ function translate($text, $subset)
 	static $lang;
 
 	if (!$lang)
-		eval(fileread('lang/lang_'.config_lang.'.txt'));
+		$lang = get_lang();
 
 	if (is_array($lang[$subset]))
 	{
@@ -121,7 +133,7 @@ function transdate($format = '', $timestamp = null)
 	static $lang;
 
 	if (!$lang)
-		eval(fileread('lang/lang_'.config_lang.'.txt'));
+		$lang = get_lang();
 
 	if ($lang['format'][$format] != '')
 		$format = $lang['format'][$format];
