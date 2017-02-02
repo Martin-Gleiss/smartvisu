@@ -237,4 +237,53 @@ function delTree($dir) {
 	}
 	return null;
 }
+
+/**
+ * Write array to ini file
+ *
+ * based on http://stackoverflow.com/a/1268642
+ */
+function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
+
+	$tmpFile = tempnam(dirname($path), basename($path));
+
+	if (!$handle = fopen($tmpFile, 'w'))
+		return false;
+
+	$success = true;
+
+	$data = ($has_sections) ? $assoc_arr : array('' => $assoc_arr);
+
+	foreach ($data as $section=>$values) {
+
+		if($section != '')
+			$success &= false !== fwrite($handle, '['.$section.']'.PHP_EOL);
+
+		foreach($values as $key=>$elem) {
+			if(is_array($elem))
+			{
+				foreach($elem as $val)
+				{
+			    if ($val !== 'true' && $val !== 'false')
+						$val = '"'.$val.'"';
+					$success &= false !== fwrite($handle, $key.'[] = '.$val.PHP_EOL);
+				}
+			}
+			else {
+				$val = $elem;
+		    if ($val !== 'true' && $val !== 'false')
+					$val = '"'.$val.'"';
+				$success &= false !== fwrite($handle, $key.' = '.$val.PHP_EOL);
+			}
+		}
+	}
+
+	fclose($handle);
+
+	if($success)
+		$success &= rename($tmpFile, $path);
+
+	return $success;
+}
+
 ?>

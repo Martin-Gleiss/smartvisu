@@ -14,21 +14,21 @@
 - device.shutter: Value for pos1 and pos2 can be set by parameter
 - basic.tank & icon.* (dynamic icons): min is now implemented and max may be lesser than min
 - device.dimmer: New parameters to specify pic and color
+- Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
 
 ### Other New Features
-- Template Checker
-- Configurable time source (show time of server or client)
 - Allow pages selection by url parameter (e.g. index.php?pages=foo)
-- Clear pagecache (by button and on disabling)
-- Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
-- Added 50 icons of jQuery Mobile (before they were just available on buttons)
-- Language files can be overridden, which allows regional variations and custom extensions; they are stored in clearer ini format now
+- Configuration can be overridden per page and per client. Options stored in .ini now. Redesign of configuration page
+- Clear pagecache (by button and on disabling on configuration page)
+- Language files can be overridden. This allows regional variations and custom extensions. And they are stored in clearer ini format
+- Template Checker
+- Added 50 icons of jQuery Mobile - before they were just available on buttons as background (aka inline) icons
+- Configurable time source (show time of server or client)
 
 ### Improvements
 - Replaced make.php by on-the-fly minification (needs page cache set on)
 - Replaced Twig cache by output cache (makes html files cachable)
 - Some performance optimizations
-- Slight redesign of configuration page
 
 ### Updated Libraries
 - jQuery Mobile to 1.4.5

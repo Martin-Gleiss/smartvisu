@@ -12,10 +12,34 @@
 
 {% block content %}
 
+	/** related JavaScript part located in lib/base/base.js */
+
 	<h1>Configuration</h1>
 
 	{% import "forms.html" as forms %}
 	<form>
+
+	<div data-role="tabs" id="config_source">
+		<div data-role="navbar">
+			<ul>
+				<li data-source="global"><a href="#config_tab_global" data-ajax="false" class="ui-btn-active">Global</a></li>
+				<li data-source="pages"><a href="#config_tab_pages" data-ajax="false">Pages '{{ config_pages }}'</a></li>
+				<li data-source="cookie"><a href="#config_tab_cookie" data-ajax="false">Client (cookie)</a></li>
+			</ul>
+		</div>
+		<div id="config_tab_global">
+			<h2>Global options (stored in './config.ini')</h2>
+		</div>
+		<div id="config_tab_pages">
+			<h2>Options for current pages '{{ config_pages }}' (stored in './pages/{{ config_pages }}/config.ini')</h2>
+      {{ basic.symbol('','','','jquery_info.svg') }}<i>Click label to override specific option, click again to deactive overriding</i>
+		</div>
+		<div id="config_tab_cookie">
+			<h2><i>Options stored on client (as cookie)</i></h2>
+      {{ basic.symbol('','','','jquery_info.svg') }}<i>Click label to override specific option, click again to deactive overriding</i>
+		</div>
+	</div>
+
 	<fieldset>
 
 	<div class="block">
@@ -29,57 +53,68 @@
 				<h3>Interface</h3>
 
 				<div data-role="fieldcontain">
-					<label for="pages">Pages</label>
+					<label for="pages">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Pages
+							</label>
+						</fieldset>
+					</label>
 					<select name="pages" id="pages" data-native-menu="false">
 						{% for file in dir('pages', '^(?!base|apps)(.+?)') %}
 							<option value="{{ file.name }}">{{ file.label }}</option>
 						{% endfor %}
 					</select>
-					{{ forms.select_init('pages', config_pages) }}
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="design">Design</label>
+					<label for="design">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Design
+							</label>
+						</fieldset>
+					</label>
 					<select name="design" id="design" data-native-menu="false">
 						{% for file in dir('designs', '(.+?).css') %}
 							<option value="{{ file.name }}">{{ file.label }}</option>
 						{% endfor %}
 					</select>
-					{{ forms.select_init('design', config_design) }}
+					
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="cache">Pagecache<br /></label>
+					<label for="cache">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Pagecache
+							</label>
+						</fieldset>
+					</label>
 					<select name="cache" id="cache" data-role="flipswitch">
 						<option value="false">off</option>
 						<option value="true">on</option>
 					</select>
-					{{ forms.flip_init('cache', config_cache) }}
 					
 					<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache" class="ui-micro">Clear Pagecache</button>
-					<script type="text/javascript">
-						$('#clear_cache').click(function () {
-							$.ajax({
-								type: "GET",
-								url: 'pages/base/configure.php?clear_cache=true',
-								dataType: "json",
-								success: function(data) {
-									notify.info(data.title, data.text);
-								}
-							})
-							.fail(notify.json);
-							return false;
-						});
-					</script>
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="animation">Animation<br /></label>
+					<label for="animation">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Animation
+							</label>
+						</fieldset>
+					</label>
 					<select name="animation" id="animation" data-role="flipswitch">
 						<option value="false">off</option>
 						<option value="true">on</option>
 					</select>
-					{{ forms.flip_init('animation', config_animation) }}
 				</div>
 
 			</div>
@@ -88,35 +123,75 @@
 				<h3>Texts</h3>
 
 				<div data-role="fieldcontain">
-					<label for="title">Title<br /></label>
+					<label for="title">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Title
+							</label>
+						</fieldset>
+					</label>
 					<input type="text" name="title" id="title" />
-					{{ forms.text_init('title', config_title|e ) }}
+					
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="lang">Language</label>
+					<label for="lang">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Language
+							</label>
+						</fieldset>
+					</label>
 					<select name="lang" id="lang" data-native-menu="false">
-						<option value="en">English</option>
+						{% set langtext = {
+							'en': 'English (US)',
+							'en-gb': 'English (GB)',
+							'de': 'German',
+							'de-ch': 'German (Switzerland)',
+							'nl': 'Dutch',
+							'fr': 'Français'
+						} %}
+						/**
+						<option value="en">English (US)</option>
+						<option value="en-uk">English (UK)</option>
 						<option value="de">German</option>
+						<option value="de-ch">German (Switzerland)</option>
 						<option value="nl">Dutch</option>
 						<option value="fr">Fran&ccedil;ais</option>
-						{% for file in dir('lang', '^lang_(?!en|de|nl|fr)(.+?).txt') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
+						*/
+						{% for file in dir('lang', '^(.*?)\.ini$') %}
+							<option value="{{ file.name }}">{{ langtext[file.name] ?? file.name }}</option>
 						{% endfor %}
 					</select>
 
 					<div class="note">*for some widgets</div>
-					{{ forms.select_init('lang', config_lang) }}
+					
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="timesource">Time Source<br /></label>
-					<select name="timesource" id="timesource" data-native-menu="false">
-						<option value="client">Client</option>
-						<option value="server">Server</option>
-					</select>
-					<div class="note">*for clock widgets</div>
-					{{ forms.select_init('timesource', config_timesource) }}
+					<label for="timesource">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Time Source
+							</label>
+						</fieldset>
+					</label>
+					<div class="ui-help-container">
+						<a href="#popupBasic" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg"></a>
+						<div data-role="popup" id="popupBasic" data-arrow="true" data-theme="c">
+							Which time should be shown by clock widgets?<br>
+							'client' = your local time<br>
+							'server' = time of server smartVISU runs on
+						</div>
+						<select name="timesource" id="timesource" data-native-menu="false">
+							<option value="client">Client</option>
+							<option value="server">Server</option>
+						</select>
+						<div class="note">*for clock widgets</div>
+					</div>
 				</div>
 
 			</div>
@@ -136,45 +211,79 @@
 				<h3>I/O-Connection</h3>
 
 				<div data-role="fieldcontain">
-					<label for="driver">Driver</label>
+					<label for="driver">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Driver
+							</label>
+						</fieldset>
+					</label>
 					<select name="driver" id="driver" data-native-menu="false">
 						{% for file in dir('driver', '^io_(.+?).js') %}
 							<option value="{{ file.name }}">{{ file.label }}</option>
 						{% endfor %}
 					</select>
-					{{ forms.select_init('driver', config_driver) }}
+					
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="driver_address">Address
-						<div class="note">Hostname / IP</div>
+					<label for="driver_address">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Address
+							</label>
+						</fieldset>
 					</label>
 					<input type="text" name="driver_address" id="driver_address" style="letter-spacing: 0.1em;" />
-					{{ forms.text_init('driver_address', config_driver_address|e ) }}
+					<div class="note">Hostname / IP</div>
+
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="driver_port">Port</label>
+					<label for="driver_port">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Port
+							</label>
+						</fieldset>
+					</label>
 					<input type="text" name="driver_port" id="driver_port" />
-					{{ forms.text_init('driver_port', config_driver_port|e ) }}
+					
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="driver_realtime">Realtime</label>
+					<label for="driver_realtime">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Realtime
+							</label>
+						</fieldset>
+					</label>
 					<select name="driver_realtime" id="driver_realtime" data-role="flipswitch">
 						<option value="false">off</option>
 						<option value="true">on</option>
 					</select>
-					{{ forms.flip_init('driver_realtime', config_driver_realtime) }}
+					
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="driver_autoreconnect">Reconnect<br /></label>
+					<label for="driver_autoreconnect">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Reconnect
+							</label>
+						</fieldset>
+					</label>
 					<select name="driver_autoreconnect" id="driver_autoreconnect" data-role="flipswitch">
 						<option value="false">off</option>
 						<option value="true">on</option>
 					</select>
-					{{ forms.flip_init('driver_autoreconnect', config_driver_autoreconnect) }}
+					
 				</div>
 			</div>
 		</div>
@@ -228,27 +337,48 @@
 				<h3>Weather</h3>
 
 				<div data-role="fieldcontain">
-					<label for="weather_service">Service</label>
+					<label for="weather_service">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Service
+							</label>
+						</fieldset>
+					</label>
 					<select name="weather_service" id="weather_service" data-native-menu="false">
 						{% for file in dir('lib/weather/service', '(.+?).php') %}
 							<option value="{{ file.name }}">{{ file.label }}</option>
 						{% endfor %}
 					</select>
-					{{ forms.select_init('weather_service', config_weather_service) }}
+					
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="weather_location">Location<br /></label>
+					<label for="weather_location">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Location
+							</label>
+						</fieldset>
+					</label>
 					<input type="text" name="weather_location" id="weather_location" />
-					{{ forms.text_init('weather_location', config_weather_location|e ) }}
+					
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="weather_key">Key</label>
+					<label for="weather_key">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Key
+							</label>
+						</fieldset>
+					</label>
 					<input type="text" name="weather_key" id="weather_key" />
 
 					<div class="note">*if service requires one</div>
-					{{ forms.text_init('weather_key', config_weather_key|e ) }}
+					
 				</div>
 			</div>
 
@@ -256,40 +386,74 @@
 				<h3>Phone</h3>
 
 				<div data-role="fieldcontain">
-					<label for="phone_service">System</label>
+					<label for="phone_service">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								System
+							</label>
+						</fieldset>
+					</label>
 					<select name="phone_service" id="phone_service" data-native-menu="false">
 						{% for file in dir('lib/phone/service', '(.+?).php') %}
 							<option value="{{ file.name }}">{{ file.label }}</option>
 						{% endfor %}
 					</select>
-					{{ forms.select_init('phone_service', config_phone_service) }}
+					
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="phone_server">Address
-						<div class="note">Hostname / IP</div>
+					<label for="phone_server">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Address
+							</label>
+						</fieldset>
 					</label>
 					<input type="text" name="phone_server" id="phone_server" style="letter-spacing: 0.1em;" />
-					{{ forms.text_init('phone_server', config_phone_server|e ) }}
+					<div class="note">Hostname / IP</div>
+
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="phone_port">Port</label>
+					<label for="phone_port">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Port
+							</label>
+						</fieldset>
+					</label>
 					<input type="text" name="phone_port" id="phone_port" />
-					{{ forms.text_init('phone_port', config_phone_port|e ) }}
+					
 					<div class="note">*if service requires one</div>
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="phone_user">User</label>
+					<label for="phone_user">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								User
+							</label>
+						</fieldset>
+					</label>
 					<input type="text" name="phone_user" id="phone_user" />
-					{{ forms.text_init('phone_user', config_phone_user|e ) }}
+					
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="phone_pass">Password</label>
+					<label for="phone_pass">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Password
+							</label>
+						</fieldset>
+					</label>
 					<input type="password" name="phone_pass" id="phone_pass" />
-					{{ forms.text_init('phone_pass', config_phone_pass|e ) }}
+					
 				</div>
 			</div>
 
@@ -297,43 +461,78 @@
 				<h3>Calendar</h3>
 
 				<div data-role="fieldcontain">
-					<label for="calendar_service">System</label>
+					<label for="calendar_service">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								System
+							</label>
+						</fieldset>
+					</label>
 					<select name="calendar_service" id="calendar_service" data-native-menu="false">
 						{% for file in dir('lib/calendar/service', '(.+?).php') %}
 							<option value="{{ file.name }}">{{ file.label }}</option>
 						{% endfor %}
 					</select>
-					{{ forms.select_init('calendar_service', config_calendar_service) }}
+					
 				</div>
 
 				<div data-role="fieldcontain">
-					<label for="calendar_url">Url</label>
+					<label for="calendar_url">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Url
+							</label>
+						</fieldset>
+					</label>
 					<input type="text" name="calendar_url" id="calendar_url" />
-					{{ forms.text_init('calendar_url', config_calendar_url|e ) }}
+					
 					<div class="note">*not used for iCloud</div>
 				</div>
 
-                <div data-role="fieldcontain">
-                        <label for="calendar_username">Username</label>
-                        <input type="text" name="calendar_username" id="calendar_username" />
-                        {{ forms.text_init('calendar_username', config_calendar_username|e ) }}
-                        <div class="note">*if service requires one</div>
-                </div>
+				<div data-role="fieldcontain">
+					<label for="calendar_username">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Username
+							</label>
+						</fieldset>
+					</label>
+					<input type="text" name="calendar_username" id="calendar_username" />
 
-                <div data-role="fieldcontain">
-                        <label for="calendar_password">Password</label>
-                        <input type="password" name="calendar_password" id="calendar_password" />
-                        {{ forms.text_init('calendar_password', config_calendar_password|e ) }}
-                        <div class="note">*if service requires one</div>
-                </div>
+					<div class="note">*if service requires one</div>
+				</div>
 
-                <div data-role="fieldcontain">
-                        <label for="calendar_name">Calendar name</label>
-                        <input type="text" name="calendar_name" id="calendar_name" />
-                        {{ forms.text_init('calendar_name', config_calendar_name|e ) }}
-                        <div class="note">*if service requires one</div>
-                </div>
-            </div>
+				<div data-role="fieldcontain">
+					<label for="calendar_password">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Password
+							</label>
+						</fieldset>
+					</label>
+					<input type="password" name="calendar_password" id="calendar_password" />
+
+					<div class="note">*if service requires one</div>
+				</div>
+
+				<div data-role="fieldcontain">
+					<label for="calendar_name">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Calendar name
+							</label>
+						</fieldset>
+					</label>
+					<input type="text" name="calendar_name" id="calendar_name" />
+
+					<div class="note">*if service requires one</div>
+				</div>
+			</div>
 
 		</div>
 	</div>
@@ -348,27 +547,55 @@
 			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
 				<h3>Proxy</h3>
 				<div data-role="fieldcontain">
-					<label for="proxy">Use Proxy<br /></label>
+					<label for="proxy">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Use Proxy
+							</label>
+						</fieldset>
+					</label>
 					<select name="proxy" id="proxy" data-role="flipswitch">
 						<option value="false">off</option>
 						<option value="true">on</option>
 					</select>
-					{{ forms.flip_init('proxy', config_proxy) }}
+					
 				</div>
 				<div data-role="fieldcontain">
-					<label for="proxy_url">Proxy Url</label>
+					<label for="proxy_url">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Url
+							</label>
+						</fieldset>
+					</label>
 					<input type="text" name="proxy_url" id="proxy_url" />
-					{{ forms.text_init('proxy_url', config_proxy_url|e ) }}
+					
 				</div>
 				<div data-role="fieldcontain">
-					<label for="proxy_user">Proxy User</label>
+					<label for="proxy_user">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								User
+							</label>
+						</fieldset>
+					</label>
 					<input type="text" name="proxy_user" id="proxy_user" />
-					{{ forms.text_init('proxy_user', config_proxy_user|e ) }}
+					
 				</div>
 				<div data-role="fieldcontain">
-					<label for="proxy_password">Proxy Password</label>
+					<label for="proxy_password">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Password
+							</label>
+						</fieldset>
+					</label>
 					<input type="password" name="proxy_password" id="proxy_password" />
-					{{ forms.text_init('proxy_password', config_proxy_password|e ) }}
+					
 				</div>
 			</div>
 
@@ -377,25 +604,8 @@
 
 	</fieldset>
 
-	<input type="hidden" name="js" value="{{ config_js }}" />
+	<input type="hidden" id="current_pages" value="{{ config_pages }}" />
 	<button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">Save</button>
 	</form>
-
-	/** Events */
-	<script type="text/javascript">
-		$('form').submit(function () {
-			$.ajax({
-				type: "POST",
-				url: 'pages/base/configure.php',
-				data: $(this).serialize(),
-				success: function (data) {
-					location.reload(true);
-				}
-			})
-			.fail(notify.json);
-
-			return false;
-		});
-	</script>
 
 {% endblock %}

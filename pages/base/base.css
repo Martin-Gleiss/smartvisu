@@ -1793,6 +1793,32 @@ svg.fx-icon, .icon {
 	position: absolute;
 }
 
+.ui-help-container {
+}
+.ui-help-container .ui-select {
+	margin: 0 3em 0 0;
+}
+.ui-help-container .ui-help-icon {
+	float: right;
+}
+
+@media (min-width: 28em) {
+	#config .ui-field-contain > label .ui-controlgroup-controls {
+		width: 100%;
+		margin-top: -.5em;
+	}
+}
+#config .ui-field-contain > label .ui-controlgroup-controls .ui-checkbox {
+	width: 100%;
+}
+
+#config .ui-checkbox.ui-state-disabled {
+	opacity: .9;
+}
+#config .ui-checkbox.ui-state-disabled .ui-checkbox-off {
+	opacity: .3;
+}
+
 /* some corrections for smaller displays */
 @media all and (max-width: 767px) {
 	.quad .primary {
