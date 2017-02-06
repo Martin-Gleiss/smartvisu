@@ -138,7 +138,17 @@ var io = {
 	 * Opens the connection and add some handlers
 	 */
 	open: function () {
-		io.socket = new WebSocket('ws://' + io.address + ':' + io.port + '/');
+		var protocol = '';
+		if (!io.address || io.address.indexOf('://') < 0) {
+			// adopt websocket security to current protocol (https -> wss and http -> ws)
+			// if the protocol should be forced, add it to the address
+			protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
+			if (!io.address) {
+				// use url of current page if not defined
+				io.address = location.hostname;
+			}
+		}
+		io.socket = new WebSocket(protocol + io.address + ':' + io.port);
 
 		io.socket.onopen = function () {
 			io.send({'cmd': 'proto', 'ver': io.version});
