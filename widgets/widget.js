@@ -657,7 +657,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var now = new Date(Date.now() - (window.servertimeoffset || 0));
 			$(this).text(now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes());
 		}
-	})
+	});
 
 	// init servertime offset on all clocks
 	$(bevent.target).find('[data-servertime-url]:first').each(function() { // init
@@ -671,11 +671,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				// use average of start and end request timestamp and make it local time
 				localtime = localtime / 2 + Date.now() / 2;
 				window.servertimeoffset = servertime - localtime;
-				$(bevent.target).find('[data-servertime-url]').trigger('repeat').trigger('init');
+				$(bevent.target).find('[data-servertime-url]').trigger('init').trigger('repeat');
 			});
 		}
 		else {
-			$(bevent.target).find('[data-servertime-url]').trigger('repeat').trigger('init');
+			$(bevent.target).find('[data-servertime-url]').trigger('init');
 		}
 	});
 
