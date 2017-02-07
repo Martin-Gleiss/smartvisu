@@ -119,6 +119,7 @@ class driver_offline
 // -----------------------------------------------------------------------------
 
 $driver = new driver_offline(array_merge($_GET, $_POST));
+header('Content-Type: application/json');
 echo $driver->json();
 
 ?>

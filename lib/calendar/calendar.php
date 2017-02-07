@@ -18,6 +18,8 @@ require_once const_path_system.'service.php';
 class calendar extends service
 {
 	var $count = 1;
+	var $calendar_names = array('');
+  var $colormapping = array();
 
 	/**
 	 * initialization of some parameters
@@ -26,7 +28,40 @@ class calendar extends service
 	{
 		parent::init($request);
 
+		$config_calendar_names = preg_split('/[\s,]+/m', strtolower(config_calendar_name));
+
 		$this->count = $request['count'];
+		$this->calendar_names = preg_split('/[\s,]+/m', strtolower($request['calendar']));
+//		$this->calendar_names = trim($request['calendar']) != '' ? preg_split('/[\s,]+/m', strtolower($request['calendar'])) : $config_calendar_names;
+		$this->url = config_calendar_url;
+
+		// read colors, reduce array size of names and colors to the smaller of them
+		$config_calendar_colors = preg_split('/[\s,]+/m', config_calendar_color);
+    $config_calendar_colors = array_slice($config_calendar_colors, 0, count($config_calendar_names));
+    $config_calendar_names = array_slice($config_calendar_names, 0, count($config_calendar_colors));
+		$this->colormapping = array_combine($config_calendar_names, $config_calendar_colors);
+	}
+
+	protected function addData($line)
+	{
+		// set default color, if one exists and no calendarcolor is set before
+		if(empty($line['calendarcolor']) && $this->colormapping[$line['calendarname']])
+			$line['calendarcolor'] = $this->colormapping[$line['calendarname']];
+
+		// find greatest index which has a lower date
+		// (beginning on highest index because of greater chance of having a later date)
+		for($i = count($this->data)-1; $i >= 0; $i--) {
+			if($this->data[$i]['start'] < $line['start'] || $this->data[$i]['start'] == $line['start'] && $this->data[$i]['end'] < $line['end'])
+				break;
+		}
+
+		if($this->count > $i+1) {
+			// insert new line after found index
+			array_splice($this->data, $i+1, 0, array($line));
+			// reduce size to max result size
+			if(count($this->data) > $this->count)
+				array_pop($this->data);
+		}
 	}
 
 	/**
@@ -34,6 +69,9 @@ class calendar extends service
 	 */
 	public function prepare()
 	{
+		/*
+		usort($this->data, array('calendar','compare_data'));
+		$this->data = array_slice($this->data, 0, $this->count);
 		foreach ($this->data as $id => $ds)
 		{
 			$start = strtotime($ds['start']);
@@ -75,6 +113,18 @@ class calendar extends service
 					$this->data[$id][$tag] = '#'.trim($tags[2][$nr]);
 			}
 		}
+		*/
+	}
+
+	static function compare_data($a, $b)
+	{
+		$res = strtotime($a['start']) - strtotime($b['start']);
+		if($res != 0)
+			return $res > 0 ? 1 : -1;
+		$res = strtotime($a['end']) - strtotime($b['end']);
+		if($res != 0)
+			return $res > 0 ? 1 : -1;
+		return 0;
 	}
 
 }

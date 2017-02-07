@@ -14,18 +14,26 @@
 
 	<h5>Examples</h5>
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; calendar.list('calendarlist1', 'Calendar', 3) &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; calendar.list('', '', 3) &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ calendar.list('calendarlist1', 'Calendar', 3) }}
+		{{ calendar.list('', '', 3) }}
 	</div>
 
-	Calendar with individual color 'magenta':
+	Events of one calendar only:
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; calendar.list('calendarlist2', '', 3, '#993399') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; calendar.list('', 'Events in "Personal"', 3, '', '', 'Personal') &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ calendar.list('calendarlist2', '', 3, '#993399') }}
+		{{ calendar.list('', 'Events in "Personal"', 3, '', '', 'Personal') }}
+	</div>
+
+	Calendars with individual colors:
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; calendar.list('', '', 3, ['#993399','green'], '', ['Personal','Waste']) &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ calendar.list('', '', 3, ['#993399','green'], '', ['Personal','Waste']) }}
 	</div>
 
 {% endblock %}

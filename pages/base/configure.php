@@ -10,6 +10,8 @@
 
 require_once '../../lib/includes.php';
 
+header('Content-Type: application/json');
+
 // just clear pagecache
 if($_GET['clear_cache']) {
 

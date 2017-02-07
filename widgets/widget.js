@@ -679,7 +679,103 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-	$(bevent.target).find('span[data-widget="clock.iconclock"], span[data-widget="clock.miniclock"], div.digiclock[data-widget="clock.digiclock"]').not('[data-servertime-url]').trigger('repeat').trigger('init');
+// ----- c a l e n d a r ------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+	// ----- calendar.list --------------------------------------------------------
+	$(bevent.target).find('div[data-widget="calendar.list"]').on( {
+		'repeat' : function (event) {
+			var node = $(this);
+			$.getJSON('lib/calendar/service/'+node.attr('data-service')+'.php?count='+node.attr('data-count')+'&calendar='+node.attr('data-calendar'), function (data) {
+
+				var calendars = node.attr('data-calendar').explode();
+				var calcolors = {};
+				$.each(node.attr('data-color').explode(), function(i, color) {
+					calcolors[(calendars[i]||'').toLowerCase()] = color;
+				});
+
+				var ul = node.children('ul:first').empty();
+
+				$.each(data, function(index, entry) {
+					
+					// parse start and end as Date
+					if(isNaN(entry.start)) { // legacy: start in format 'y-m-d H:i:s'
+						var parts = entry.start.match(/(\d\d){1,2}-(\d{1,2})-(\d{1,2})( (\d\d):(\d\d):(\d\d))?/).slice(1);
+						entry.start = new Date(parts[0] < 100 ? 2000+Number(parts[0]) : parts[0], parts[1], parts[2], parts[4]||0, parts[5]||0, parts[6]||0);
+					}
+					else // start as timestamp
+						entry.start = new Date(entry.start*1000);
+
+					if(isNaN(entry.end)) { // legacy: start in format 'y-m-d H:i:s'
+						var parts = entry.end.match(/(\d\d){1,2}-(\d{1,2})-(\d{1,2})( (\d\d):(\d\d):(\d\d))?/).slice(1);
+						entry.end = new Date(parts[0] < 100 ? 2000+Number(parts[0]) : parts[0], parts[1], parts[2], parts[4]||0, parts[5]||0, parts[6]||0);
+					}
+					else // start as timestamp
+						entry.end = new Date(entry.end*1000);
+
+					// build period string to display
+					var period;
+					// Start and end on same day: show day only once
+					if(entry.end.toDateString() == entry.start.toDateString())
+						period = entry.start.transUnit('short') + ' - ' + entry.end.transUnit('time');
+					// Full day entrys: don't show time
+					else if (entry.start.getHours()+entry.start.getMinutes()+entry.start.getSeconds() == 0
+						&& entry.end.getHours()+entry.end.getMinutes()+entry.end.getSeconds() == 0) {
+						entry.end.setDate(entry.end.getDate()-1); // subtract one day from end
+						if(entry.end.toDateString() == entry.start.toDateString()) // One day only: Show just start date
+							period = entry.start.transUnit('date');
+						else // Multiple days: Show start and end date
+							period = entry.start.transUnit('date') + ' - ' + entry.end.transUnit('date');
+					}
+					else
+						period = entry.start.transUnit('short') + ' - ' + entry.end.transUnit('short');
+
+					// handle tags in event description
+					var tags = (entry.content||'').replace(/\\n/,'\n').match(/@(.+?)\W+(.*)/igm) || [];
+					$.each(tags, function(i, tag) {
+						// parse tag
+						tag = tag.match(/@(.+?)\W+(.*)/i);
+						// prepend # if color is hexadecimal number of 3 or 6 digits
+						if(tag[1] == 'color' && /^([0-9a-f]{3}){1,2}\W*$/i.test(tag[2]))
+							tag[2] = '#'+tag[2];
+						// apply tag to events properties
+						entry[tag[1]] = tag[2];
+					});
+
+					// amend icon path/filename
+					if(entry.icon) {
+						// add default path if icon has no path
+						if(entry.icon.indexOf('/') == -1)
+							entry.icon = 'icons/ws/'+entry.icon;
+						// add svg suffix if icon has no suffix
+						if(entry.icon.indexOf('.') == -1)
+							entry.icon = entry.icon+'.svg';
+					}
+					
+					// add entry
+					var a = $('<a>').append(
+						$('<img class="icon">').css('background', entry.color || 'transparent').attr('src', entry.icon || 'pages/base/pics/trans.png')
+					).append(
+						$('<div class="color">').css('background', calcolors[(entry.calendarname||'').toLowerCase()] || entry.calendarcolor || node.attr('data-color').explode()[0])
+					).append(
+						$('<h3>').text(entry.title)
+					).append(
+						$('<p>').text(period)
+					).appendTo(
+					 $('<li data-icon="false">').appendTo(ul)
+					);
+					if(entry.link)
+						a.attr('href', entry.link);
+					if(entry.where)
+						a.append($('<span class="ui-li-count">').text(entry.where));
+
+				});
+
+				ul.trigger('prepare').listview('refresh').trigger('redraw');
+			})
+			.error(notify.json);
+		}
+	});
 
 
 // ----- d e v i c e ----------------------------------------------------------

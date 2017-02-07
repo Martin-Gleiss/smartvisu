@@ -15,6 +15,7 @@
 - basic.tank & icon.* (dynamic icons): min is now implemented and max may be lesser than min
 - device.dimmer: New parameters to specify pic and color
 - Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
+- calendar.list: New parameters to select and colorize calendars
 
 ### Other New Features
 - Allow pages selection by url parameter (e.g. index.php?pages=foo)
@@ -24,11 +25,14 @@
 - Template Checker
 - Added 50 icons of jQuery Mobile - before they were just available on buttons as background (aka inline) icons
 - Configurable time source (show time of server or client)
+- New CalDav service
 
 ### Improvements
 - Replaced make.php by on-the-fly minification (needs page cache set on)
 - Replaced Twig cache by output cache (makes html files cachable)
 - Some performance optimizations
+- ICal service: Multiple URLs and calendar naming possible
+- Calendar coloring in configuration
 
 ### Updated Libraries
 - jQuery Mobile to 1.4.5
@@ -37,6 +41,13 @@
 ### Fixed Bugs
 - Changes were not visible immediate after saving configuration
 - Some other minor bugs fixed
+
+### Newly deprecated stuff
+- basic.button, basic.dual, basic.multistate and basic.switch
+- basic.float, basic.formula and basic.value
+- basic.colordisc and basic.rgb
+- plot.minmaxavg and plot.multiaxis
+- Calendar service GoogleV3
 
 
 ## v 2.8 03.10.16

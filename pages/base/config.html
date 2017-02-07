@@ -524,13 +524,24 @@
 						<fieldset data-role="controlgroup" data-type="horizontal">
 							<label>
 								<input type="checkbox" data-mini="true">
-								Calendar name
+								Calendar name(s)
 							</label>
 						</fieldset>
 					</label>
 					<input type="text" name="calendar_name" id="calendar_name" />
+				</div>
 
-					<div class="note">*if service requires one</div>
+				<div data-role="fieldcontain">
+					<label for="calendar_color">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<label>
+								<input type="checkbox" data-mini="true">
+								Color(s)
+							</label>
+						</fieldset>
+					</label>
+					<input type="text" name="calendar_color" id="calendar_color" />
+					<div class="note">* used as default for corresponding name in same order</div>
 				</div>
 			</div>
 
