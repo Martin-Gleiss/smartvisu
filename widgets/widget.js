@@ -842,7 +842,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							"<div class='uzsuCellText'>Weekday</div>" +
 								"<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuWeekday'>";
 								// rrule Wochentage (ist eine globale Variable von SV, Sonntag hat index 0 deshalb Modulo 7)
-                $.each([ 'MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU' ], function(index, value) {
+								$.each([ 'MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU' ], function(index, value) {
 									tt += "<label title='" + lang.weekday[(index + 1) % 7] + "'><input type='checkbox' value='" + value + "'>" + lang.shortday[(index + 1) % 7] + "</label>";
 								});
 			tt +=			"</fieldset>" +
@@ -853,15 +853,15 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			if (valueType === 'bool') {
 				// Unterscheidung Anzeige und Werte
 				if (valueParameterList[0].split(':')[1] === undefined) {
-					tt += 	"<select data-role='flipswitch' data-value='1'> " +
+					tt += "<select data-role='flipswitch'>" +
 									"<option value='0'>" + valueParameterList[1] + "</option>" +
-									"<option value='1'> "	+ valueParameterList[0] + " </option>" +
+									"<option value='1'>"	+ valueParameterList[0] + "</option>" +
 								"</select>";
 				}
 				else {
-					tt += 	"<select data-role='flipswitch' data-value='1'>" +
+					tt += "<select data-role='flipswitch'>" +
 									"<option value='" + valueParameterList[1].split(':')[1]	+ "'>" + valueParameterList[1].split(':')[0] + "</option>" +
-									"<option value='" + valueParameterList[0].split(':')[1]	+ "'> "	+ valueParameterList[0].split(':')[0] + " </option>" +
+									"<option value='" + valueParameterList[0].split(':')[1]	+ "'>" + valueParameterList[0].split(':')[0] + "</option>" +
 								"</select>";
 				}
 			}
@@ -1082,16 +1082,19 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			$('.uzsuRow').each(function(numberOfRow) {
 				var responseEntry = response.list[numberOfRow];
 				uzsuCurrentRows = $(this).nextUntil('.uzsuRow').addBack();
-				// beim Schreiben der Daten Unterscheidung, da sonst das Element falsch genutzt wird mit Flipswitch für die bool Variante
-				if (valueType === 'bool') {
-					uzsuCurrentRows.find('.uzsuValueCell select').val(responseEntry.value).flipswitch("refresh");
-				}
-				// mit int Value für die num Variante
-				else if ((valueType === 'num') || (valueType === 'text')) {
-					uzsuCurrentRows.find('.uzsuValueCell input').val(responseEntry.value);
-				}
-				else if (valueType === 'list') {
-					uzsuCurrentRows.find('.uzsuValueCell select').val(responseEntry.value).selectmenu('refresh', true);
+
+				if(responseEntry.value != null) {
+					// beim Schreiben der Daten Unterscheidung, da sonst das Element falsch genutzt wird mit Flipswitch für die bool Variante
+					if (valueType === 'bool') {
+						uzsuCurrentRows.find('.uzsuValueCell select').val(responseEntry.value).flipswitch("refresh");
+					}
+					// mit int Value für die num Variante
+					else if ((valueType === 'num') || (valueType === 'text')) {
+						uzsuCurrentRows.find('.uzsuValueCell input').val(responseEntry.value);
+					}
+					else if (valueType === 'list') {
+						uzsuCurrentRows.find('.uzsuValueCell select').val(responseEntry.value).selectmenu('refresh', true);
+					}
 				}
 				// Values in der Zeile setzen
 				uzsuCurrentRows.find('.uzsuActive').prop('checked',responseEntry.active).checkboxradio("refresh");
@@ -1153,7 +1156,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			$('.uzsuRow').each(function(numberOfRow) {
 				var responseEntry = response.list[numberOfRow];
 				uzsuCurrentRows = $(this).nextUntil('.uzsuRow').addBack();
-				responseEntry.value = uzsuCurrentRows.find('.uzsuValueCell select').val();
+				responseEntry.value = uzsuCurrentRows.find('.uzsuValueCell select, .uzsuValueCell input').val();
 				responseEntry.active = uzsuCurrentRows.find('.uzsuActive').is(':checked');
 				// hier die conditions, wenn im json angelegt
 				if(designType == '2'){
@@ -1240,7 +1243,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			// alten Zustand mal in die Liste rein. da der aktuelle Zustand ja nur im Widget selbst enthalten ist, wird er vor dem Umbau wieder in die Variable response zurückgespeichert.
 			uzsu.uzsuSaveTable(1, response, designType, valueType, valueParameterList, false);
 			// ich hänge immer an die letzte Zeile dran ! erst einmal das Array erweitern
-			response.list.push({active:false,rrule:'',time:'00:00',value:0,event:'time',timeMin:'',timeMax:'',timeCron:'00:00',timeOffset:'',condition:{deviceString:'',type:'String',value:'',active:false},delayedExec:{deviceString:'',type:'String',value:'',active:false},holiday:{workday:false,weekend:false}});
+			response.list.push({active:false,rrule:'',time:'00:00',value:null,event:'time',timeMin:'',timeMax:'',timeCron:'00:00',timeOffset:'',condition:{deviceString:'',type:'String',value:'',active:false},delayedExec:{deviceString:'',type:'String',value:'',active:false},holiday:{workday:false,weekend:false}});
 			// dann eine neue HTML Zeile genenrieren
 			tt = uzsu.uzsuBuildTableRow(designType, valueType,	valueParameterList);
 			// Zeile in die Tabelle einbauen
