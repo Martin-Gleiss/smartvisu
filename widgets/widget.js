@@ -80,12 +80,12 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	$(bevent.target).find('input[data-widget="basic.checkbox"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
-			$(this).prop('checked', response != 0).checkboxradio('refresh');
+			$(this).prop('checked', response[0] != $(this).attr('data-val-off')).checkboxradio('refresh');
 		},
 
 		'change': function (event) {
 			// DEBUG: console.log("[basic.checkbox] change '" + this.id + "':", $(this).prop("checked"));
-			io.write($(this).attr('data-item'), ($(this).prop('checked') ? 1 : 0));
+			io.write($(this).attr('data-item'), $(this).prop('checked') ? $(this).attr('data-val-on') : $(this).attr('data-val-off'));
 		}
 	});
 
@@ -285,12 +285,12 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	$(bevent.target).find('select[data-widget="basic.flip"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
-			$(this).val(response > 0 ? 'on' : 'off').flipswitch('refresh');
+			$(this).val(response[0]).flipswitch('refresh');
 		},
 
 		'change': function (event) {
 			// DEBUG: console.log("[basic.flip] change '" + this.id + "':", $(this).val());
-			io.write($(this).attr('data-item'), ($(this).val() == 'on' ? 1 : 0));
+			io.write($(this).attr('data-item'), $(this).val());
 		}
 	});
 

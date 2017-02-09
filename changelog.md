@@ -16,6 +16,7 @@
 - device.dimmer: New parameters to specify pic and color
 - Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
 - calendar.list: New parameters to select and colorize calendars
+- basic.checkbox & basic.flip: value_on and value_off can be set by parameters
 
 ### Other New Features
 - Allow pages selection by url parameter (e.g. index.php?pages=foo)
@@ -42,7 +43,7 @@
 - Changes were not visible immediate after saving configuration
 - Some other minor bugs fixed
 
-### Newly deprecated stuff
+### Now Deprecated
 - basic.button, basic.dual, basic.multistate and basic.switch
 - basic.float, basic.formula and basic.value
 - basic.colordisc and basic.rgb

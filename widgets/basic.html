@@ -101,13 +101,18 @@
 * Displays a checkbox
 *
 * @param unique id for this widget (optional)
-* @param a item
-* @param text printed on the checkbox
+* @param an item
+* @param label of the checkbox (optional)
+* @param value for the checked state (optional, default 1)
+* @param value for the unchecked state (optional, default 0)
 */
-{% macro checkbox(id, item, txt) %}
+{% macro checkbox(id, item, txt, val_on, val_off) %}
 
-	<label><input type="checkbox" {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.checkbox" data-item="{{ item }}" />
-		{{ txt }}</label>
+	<label>
+		<input type="checkbox" {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.checkbox" data-item="{{ item }}"
+			data-val-on="{{ val_on|default(1) }}" data-val-off="{{ val_off|default(0) }}" />
+		{{ txt }}
+	</label>
 
 {% endmacro %}
 
@@ -165,13 +170,15 @@
 * @param a item
 * @param text for the 'on' state (optional, default 'On')
 * @param text for the 'off' state (optional, default 'Off')
+* @param value for the 'on' state (optional, default 1)
+* @param value for the 'off' state (optional, default 0)
 */
-{% macro flip(id, item, txt_on, txt_off) %}
+{% macro flip(id, item, txt_on, txt_off, val_on, val_off) %}
 
 	<select {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.flip" data-item="{{ item }}"
 		data-role="flipswitch">
-		<option value="off">{{ txt_off|default('Off') }}</option>
-		<option value="on">{{ txt_on|default('On') }}</option>
+		<option value="{{ val_off|default(0) }}">{{ txt_off|default('Off') }}</option>
+		<option value="{{ val_on|default(1) }}">{{ txt_on|default('On') }}</option>
 	</select>
 
 {% endmacro %}
@@ -466,7 +473,7 @@
 {% macro dual(id, item, pic_on, pic_off, val_on, val_off, type, color_on, color_off) %}
 	{% import _self as basic %}
 	{{ basic.stateswitch(id, item, type, [val_off|default('0'), val_on|default('1')], [pic_off|deficon('control_on_off.svg'), pic_on|deficon('control_on_off.svg')], '', [color_off, color_on|default('icon1')]) }}
-	<script type="text/javascript">console.warn("Use of 'basic.switch' is deprecated, use 'basic.stateswitch' instead.")</script>
+	<script type="text/javascript">console.warn("Use of 'basic.dual' is deprecated, use 'basic.stateswitch' instead.")</script>
 {% endmacro %}
 
 
