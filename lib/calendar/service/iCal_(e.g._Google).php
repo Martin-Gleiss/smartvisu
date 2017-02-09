@@ -11,8 +11,6 @@
 
 require_once '../../../lib/includes.php';
 require_once const_path_system.'calendar/calendar.php';
-require_once const_path_system.'calendar/ICal/ICal.php';
-require_once const_path_system.'calendar/ICal/EventObject.php';
 
 use ICal\ICal;
 
@@ -21,7 +19,6 @@ use ICal\ICal;
  */
 class calendar_ical extends calendar
 {
-
 	public function run()
 	{
 		$i = 0;
@@ -29,29 +26,11 @@ class calendar_ical extends calendar
 		foreach(preg_split('/[\s,]+/m', $this->url) as $url) {
 			if(count($this->calendar_names) == 1 && $this->calendar_names[0] == '' || in_array($config_calendar_names[$i], $this->calendar_names)) {
 				$ical = new ICal($url);
-				$this->addFromIcs($ical, $config_calendar_names[$i]);
+				$this->addFromIcs($ical, array('calendarname' => $config_calendar_names[$i]));
 			}
 			$i++;
 		}
 	}
-
-	protected function addFromIcs($ical, $calname = '')
-	{
-		$events = $ical->eventsFromRange("today",false);
-		// output events as list
-		foreach ($events as $event) {
-			$this->addData(array(
-				'start' => $ical->iCalDateToUnixTimestamp($event->dtstart),
-				'end' => $ical->iCalDateToUnixTimestamp($event->dtend),
-				'title' => $event->summary,
-				'content' => str_replace("\\n", "\n", $event->description),
-				'where' => $event->location,
-				'calendarname' => $calname != '' ? $calname : $ical->calendarName(),
-				'calendardesc' => $ical->calendarDescription()
-				//,'link' => ''
-			));
-		}
-  }
 }
 
 

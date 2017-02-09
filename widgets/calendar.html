@@ -20,6 +20,8 @@
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
+*
+* @author Martin Gleiß, Stefan Widmer
 */
 {% macro list(id, title, count, color, repeat, calendar) %}
 
@@ -37,13 +39,13 @@
 		{% set calendar = calendar|default(confignames) %}
     {% set color = [] %}
 		{% for calendarname in (calendar is iterable ? calendar : [calendar]) %}
-			{% set color = color|merge([calendarcolors[calendarname|trim|lower]|default('#666666')]) %}
+			{% set color = color|merge([calendarcolors[calendarname|trim|lower]]) %}
 		{% endfor %}
 	{% endif %}
 
 	<div {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="calendar.list" class="calendarlist"
 		data-service="{{ config_calendar_service }}"
-		data-repeat="{{ repeat|default('1h') }}" data-count={{ count|default(25) }}
+		data-repeat="{{ repeat|default('1h') }}" data-count="{{ count|default(25) }}"
 		data-color="{{ implode(color) }}" data-calendar="{{ implode(calendar|default(confignames)) }}">
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
 		<ul data-role="listview"></ul>

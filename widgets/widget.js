@@ -684,7 +684,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 	// ----- calendar.list --------------------------------------------------------
 	$(bevent.target).find('div[data-widget="calendar.list"]').on( {
-		'repeat' : function (event) {
+		'repeat': function (event) {
 			var node = $(this);
 			$.getJSON('lib/calendar/service/'+node.attr('data-service')+'.php?count='+node.attr('data-count')+'&calendar='+node.attr('data-calendar'), function (data) {
 
@@ -756,7 +756,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					var a = $('<a>').append(
 						$('<img class="icon">').css('background', entry.color || 'transparent').attr('src', entry.icon || 'pages/base/pics/trans.png')
 					).append(
-						$('<div class="color">').css('background', calcolors[(entry.calendarname||'').toLowerCase()] || entry.calendarcolor || node.attr('data-color').explode()[0])
+						$('<div class="color">').css('background', calcolors[(entry.calendarname||'').toLowerCase()] || entry.calendarcolor || node.attr('data-color').explode()[0] || '#666666')
 					).append(
 						$('<h3>').text(entry.title)
 					).append(
