@@ -20,7 +20,7 @@
 */
 {% macro image(id, src, mode, time) %}
 
-	<img id="{{ uid(page, id) }}" data-widget="multimedia.image"
+	<img id="{{ uid(page, id) }}" data-widget="multimedia.image" alt="multimedia.image"
 		{% if mode == 'corner' %}
 			class="ui-corner-all"
 		{% elseif mode == 'corner-bottom' %}
@@ -69,7 +69,7 @@
 
 		{% if item_vol %}
 			<div class="vol">
-				<img class="slider-bottomup-scale" src="pages/base/pics/scale_buttomup.png">
+				<img class="slider-bottomup-scale" src="pages/base/pics/scale_buttomup.png" alt="scale">
 				{{ basic.slider(id~'vol', item_vol, 0, 100, 5, 'bottomup') }}
 			</div>
 		{% endif %}
@@ -128,7 +128,7 @@
 
 	<div id="{{ uid }}" class="slideshow" data-cycle-log="false" data-cycle-speed="{{ delay|default(2) * 1000 }}">
 		{% for file in dir(dir, '(.+?).(jpg|png|svg)') %}
-			<img src="{{ file.path }}" style="display: block;" title="{{ file.label }}" />
+			<img src="{{ file.path }}" style="display: block;" title="{{ file.label }}" alt="{{ file.label }}" />
 		{% endfor %}
 	</div>
 

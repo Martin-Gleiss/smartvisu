@@ -37,7 +37,7 @@
 	{%- endif -%}
 
 	{%- if pic|slice(0, 4) != '<svg' -%}
-		" src="{{ pic|deficon }}">
+		" src="{{ pic|deficon }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}">
 	{%- else -%}
     ">{{ pic }}</span>
 	{% endif %} 
@@ -260,7 +260,7 @@
 			{% set pic_off = pic_off|deficon(pic_on) %}
 			data-pic-on="{{ pic_on }}" data-pic-off="{{ pic_off |default(pic_on) }}"
 			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-			class="switch"><a><img class="icon" src="{{ pic_off |default(pic_on) }}" /></a>
+			class="switch"><a><img class="icon" src="{{ pic_off|default(pic_on) }}" alt="{{ min|default('0') }}" /></a>
     	</span>
 	{% endif %}
 
@@ -288,10 +288,10 @@
 		data-mode="{{ mode|default('half') }}" class="shutter" {{ background ? ' style="background-image: url(\'' ~ background ~ '\')"'}}>
 
 		<div class="control hide">
-			<img class="icon pos" src="icons/ws/control_arrow_up_down.svg" />
+			<img class="icon pos" src="icons/ws/control_arrow_up_down.svg" alt="up/down" />
 			{% if item_angle != '' %}
 				<div class="separator">&nbsp;</div>
-				<img class="icon angle" src="icons/ws/control_arrow_left_right.svg" />
+				<img class="icon angle" src="icons/ws/control_arrow_left_right.svg" alt="angle" />
 			{% endif %}
 		</div>
 

@@ -365,10 +365,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var step = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 10 + 0.49) * 10;
 
 			if (response[1] != 0 && step > min) {
-				$(this).find('img').attr('src', $(this).attr('data-pic-on').replace('00', step));
+				var percent = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 100);
+				$(this).find('img').attr('src', $(this).attr('data-pic-on').replace('00', step)).attr('alt', percent + '%').attr('title', percent + '%');
 			}
 			else {
-				$(this).find('img').attr('src', $(this).attr('data-pic-off'));
+				$(this).find('img').attr('src', $(this).attr('data-pic-off')).attr('alt', '0%').attr('title', '0%');
 			}
 		},
 
@@ -574,8 +575,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				bit = (response == $(this).attr('data-val'));
 			}
 
-			$(this).find('img').attr('title', new Date());
-
 			if (bit) {
 				$(this).show();
 			}
@@ -626,7 +625,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	$(bevent.target).find('div.digiweather[data-widget="clock.digiclock"]').each(function() {
 		var node = $(this);
 		$.getJSON($(this).attr("data-service-url"), function (data) {
-			node.find('img').attr('src', 'lib/weather/pics/' + data.current.icon + '.png');
+			node.find('img').attr('src', 'lib/weather/pics/' + data.current.icon + '.png').attr('alt', data.current.icon);
 			node.find('.city').html(data.city);
 			node.find('.cond').html(data.current.conditions);
 			node.find('.temp').html(data.current.temp);
@@ -2068,6 +2067,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 			if (response instanceof Array) {
 				this.setAttributeNS(null, 'class', 'icon' + (response[0] && response[1] ? ' icon1' : ' icon0'));
+
+				var max = parseFloat($(this).attr('data-max'));
+				var min = parseFloat($(this).attr('data-min'));
+        var percent = Math.round(response[1] == 0 ? 0 : Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 100);
+				$(this).attr('alt', $(this).attr('data-widget').substr(5) + ' ' + percent+'%').attr('title', percent+'%').children('title').remove().end().prepend('<title>'+percent+'%</title>');
 			}
 		},
 
@@ -2214,6 +2218,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 			var ang_s = (Math.floor(response[0] / 60) * 5) / 60 * 2 * Math.PI;
 			$(this).find('#hand_s').attr('points', '50,50 ' + fx.rotate([50, 35], ang_s, [50, 50]).toString());
+
+			var timestring = ('0' + Math.floor(response[0] / 60)).substr(-2) + ':' + ('0' + (response[0] % 60)).substr(-2);
+			$(this).attr('alt', 'clock ' + timestring).attr('title', timestring);
 		}
 	});
 

@@ -54,13 +54,13 @@
 	
 	<h2>Location</h2>
 	<div>
-		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/sun_up.png">
+		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/sun_up.png" alt="sunrise">
 		{{ basic.formula('sunrise', 'env.location.sunrise', 'time') }}
-		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/sun_down.png">
+		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/sun_down.png" alt="sunset">
 		{{ basic.formula('sunset', 'env.location.sunset', 'time') }}
-		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/moon_up.png">
+		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/moon_up.png" alt="moonrise">
 		{{ basic.formula('moonrise', 'env.location.moonrise', 'time') }}
-		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/moon_down.png">
+		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/moon_down.png" alt="moonset">
 		{{ basic.formula('moonset', 'env.location.moonset', 'time') }},
 		moonphase: {{ basic.value('moonphase', 'env.location.moonphase') }}, moonlight: {{ basic.value('moonlight', 'env.location.moonlight', '%') }}
 	</div>
