@@ -11,7 +11,7 @@
 // ----- nano parts -----------------------------------------------------------
 
 {% macro sun(id) %}
-<svg id="{{ id }}">
+<svg role="img" id="{{ id }}">
 	<g>
 		<line x1="50" y1="28" x2="50" y2="37" />
 		<line x1="50" y1="30" x2="50" y2="37" transform="rotate(45 50 50)" />
@@ -41,7 +41,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro arrow(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.arrow" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.arrow" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -67,7 +67,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro battery(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.battery" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.battery" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -95,7 +95,7 @@
 * @author Mario Zanier
 */
 {% macro blade(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.blade" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.blade" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -128,7 +128,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro blade2(id, item_shutter, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.blade2" data-item="{{ item_value }}, {{ item_shutter }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.blade2" data-item="{{ item_value }}, {{ item_shutter }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -163,7 +163,7 @@
 * @author Mario Zanier
 */
 {% macro blade_z(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.blade_z" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.blade_z" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -194,7 +194,7 @@
 * @author Mario Zanier
 */
 {% macro blade_arc(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.blade_arc" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.blade_arc" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -221,7 +221,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro clock(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.clock" {% if item_value is not empty %} data-item="{{ item_value }}, {{ item_switch }}" {% endif %}
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.clock" {% if item_value is not empty %} data-item="{{ item_value }}, {{ item_switch }}" {% endif %}
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -253,7 +253,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro compass(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.compass" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.compass" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -284,7 +284,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro graph(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.graph" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.graph" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -313,7 +313,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro light(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.light" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.light" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -353,7 +353,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro meter(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.meter" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.meter" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -384,7 +384,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro shutter(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.shutter" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.shutter" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -412,7 +412,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro ventilation(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.ventilation" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.ventilation" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -441,7 +441,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro volume(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.volume" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.volume" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -466,7 +466,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro windmill(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.windmill" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.windmill" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -497,7 +497,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro windrose(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.windrose" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.windrose" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -528,7 +528,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro windsock(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.windsock" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.windsock" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -558,7 +558,7 @@
 * @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro zenith(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.zenith" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.zenith" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}

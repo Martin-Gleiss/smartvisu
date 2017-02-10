@@ -592,7 +592,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var max = parseFloat($(this).attr('data-max'));
 			var min = parseFloat($(this).attr('data-min'));
 
-			$(this).find('div').css('height', Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * $(this).height()));
+			var factor = Math.min(Math.max((response[0] - min) / (max - min), 0), 1);
+
+			$(this).attr('title', Math.round(factor * 100) + '%')
+				.find('div').css('height', factor * $(this).height());
 		}
 	});
 

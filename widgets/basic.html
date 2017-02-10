@@ -12,16 +12,20 @@
 	{% if pic|slice(0, 4) != '<svg' -%} /** pic is not a dynamic icon */
 
 		/**- rewrite legacy png to svg if png file does not exist and svg file does -*/
-		{% if (pic matches '#^icons/../.*\.png$#') and not isfile(pic) and isfile(pic|slice(0, 6) ~ 'ws' ~ pic|slice(8,-4) ~ '.svg') %}
+		{% if pic matches '#^icons/../.*\.png$#' and not isfile(pic) and isfile('icons/ws/' ~ pic|slice(9,-4) ~ '.svg') %}
 			{% if pic|slice(6, 2) != 'ws' %}
 				{% set color = pic|slice(6, 2) %}
 			{% endif %}
-			{% set pic = pic|slice(0, 6) ~ 'ws' ~ pic|slice(8,-4) ~ '.svg' %}
+			{% set pic = 'icons/ws/' ~ pic|slice(9,-4) ~ '.svg' %}
 		{% endif %}
 
-		/**- jQuery ui-icon classes -*/
-		{% if '.' not in pic and not isfile(pic) %}
-			{% set pic = 'icons/ws/jquery_' ~ pic ~ '.svg' %}
+		/**- pic whithout path and suffix -*/
+		{% if '.' not in pic and '/' not in pic and not isfile(pic) %}
+			{% if isfile('icons/ws/jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
+				{% set pic = 'icons/ws/jquery_' ~ pic ~ '.svg' %}
+			{% elseif isfile('icons/ws/' ~ pic ~ '.svg') %}
+				{% set pic = 'icons/ws/' ~ pic ~ '.svg' %}
+			{% endif -%}
 		{% endif -%}
 
 		<img
