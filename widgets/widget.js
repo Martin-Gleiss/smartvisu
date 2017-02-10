@@ -732,6 +732,16 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					else
 						period = entry.start.transUnit('short') + ' - ' + entry.end.transUnit('short');
 
+					// handle calendar_event_format in lang.ini
+					$.each(sv_lang.calendar_event_format, function(pattern, attributes) {
+						if(entry.title.toLowerCase().indexOf(pattern.toLowerCase()) > -1) { // event title contains pattern
+							// set each defined property
+							$.each(attributes, function(prop, val) {
+								entry[prop] = val;
+							});
+						}
+					});
+
 					// handle tags in event description
 					var tags = (entry.content||'').replace(/\\n/,'\n').match(/@(.+?)\W+(.*)/igm) || [];
 					$.each(tags, function(i, tag) {
@@ -941,7 +951,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 								"<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuWeekday'>";
 								// rrule Wochentage (ist eine globale Variable von SV, Sonntag hat index 0 deshalb Modulo 7)
 								$.each([ 'MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU' ], function(index, value) {
-									tt += "<label title='" + lang.weekday[(index + 1) % 7] + "'><input type='checkbox' value='" + value + "'>" + lang.shortday[(index + 1) % 7] + "</label>";
+									tt += "<label title='" + sv_lang.weekday[Object.keys(sv_lang.weekday)[(index + 1) % 7]] + "'><input type='checkbox' value='" + value + "'>" + sv_lang.shortday[Object.keys(sv_lang.shortday)[(index + 1) % 7]] + "</label>";
 								});
 			tt +=			"</fieldset>" +
 							"</div>";
