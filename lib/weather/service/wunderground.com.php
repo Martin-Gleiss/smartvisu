@@ -146,7 +146,9 @@ class weather_wunderground extends weather
 		$icon['smoke'] = 'cloud_6';
 		$icon['dusty'] = 'cloud_6';
 		$icon['haze'] = 'cloud_6';
-		
+		$icon['sleet'] = 'cloud_11';
+		$icon['chancesleet'] = 'cloud_11';
+
 		$ret = $icon[$name];
 
 		return $ret;
