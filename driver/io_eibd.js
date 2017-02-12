@@ -192,7 +192,7 @@ var io = {
 				returnData = '8' + inputData;
 			}
 		}
-		else if (dataType = '13.xx') {
+		else if (dataType == '13.xx') {
 
 			returnData = parseInt(inputData, 16);
 		}
