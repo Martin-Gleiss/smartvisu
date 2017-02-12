@@ -39,6 +39,8 @@ echo "\n";
 
 compile_dir("driver");
 echo "\n";
+compile("driver/io_openhab.js");
+echo "\n";
 
 echo str_repeat("-", 80)."\n\n";
 echo "\n</pre>";
