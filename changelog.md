@@ -34,6 +34,7 @@
 - Some performance optimizations
 - ICal service: Multiple URLs and calendar naming possible
 - Calendar coloring in configuration
+- Date format allows more patterns: l, D, j, F, M, n, G (the meaning is same as in php date function)
 
 ### Updated Libraries
 - jQuery Mobile to 1.4.5

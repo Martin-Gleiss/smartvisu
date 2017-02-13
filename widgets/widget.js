@@ -701,17 +701,13 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				$.each(data, function(index, entry) {
 					
 					// parse start and end as Date
-					if(isNaN(entry.start)) { // legacy: start in format 'y-m-d H:i:s'
-						var parts = entry.start.match(/(\d\d){1,2}-(\d{1,2})-(\d{1,2})( (\d\d):(\d\d):(\d\d))?/).slice(1);
-						entry.start = new Date(parts[0] < 100 ? 2000+Number(parts[0]) : parts[0], parts[1], parts[2], parts[4]||0, parts[5]||0, parts[6]||0);
-					}
+					if(isNaN(entry.start)) // legacy: start in format 'y-m-d H:i:s'
+						entry.start = date.parse('20' + entry.start);
 					else // start as timestamp
 						entry.start = new Date(entry.start*1000);
 
-					if(isNaN(entry.end)) { // legacy: start in format 'y-m-d H:i:s'
-						var parts = entry.end.match(/(\d\d){1,2}-(\d{1,2})-(\d{1,2})( (\d\d):(\d\d):(\d\d))?/).slice(1);
-						entry.end = new Date(parts[0] < 100 ? 2000+Number(parts[0]) : parts[0], parts[1], parts[2], parts[4]||0, parts[5]||0, parts[6]||0);
-					}
+					if(isNaN(entry.end)) // legacy: start in format 'y-m-d H:i:s'
+						entry.end = date.parse('20' + entry.end);
 					else // start as timestamp
 						entry.end = new Date(entry.end*1000);
 
@@ -719,7 +715,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					var period;
 					// Start and end on same day: show day only once
 					if(entry.end.toDateString() == entry.start.toDateString())
-						period = entry.start.transUnit('short') + ' - ' + entry.end.transUnit('time');
+						period = entry.start.transUnit('date') + ' ' + entry.start.transUnit('time') + ' - ' + entry.end.transUnit('time');
 					// Full day entrys: don't show time
 					else if (entry.start.getHours()+entry.start.getMinutes()+entry.start.getSeconds() == 0
 						&& entry.end.getHours()+entry.end.getMinutes()+entry.end.getSeconds() == 0) {
@@ -730,7 +726,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							period = entry.start.transUnit('date') + ' - ' + entry.end.transUnit('date');
 					}
 					else
-						period = entry.start.transUnit('short') + ' - ' + entry.end.transUnit('short');
+						period = entry.start.transUnit('date') + ' ' + entry.start.transUnit('time') + ' - ' + entry.end.transUnit('date') + ' ' + entry.end.transUnit('time');
 
 					// handle calendar_event_format in lang.ini
 					$.each(sv_lang.calendar_event_format, function(pattern, attributes) {
@@ -950,8 +946,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							"<div class='uzsuCellText'>Weekday</div>" +
 								"<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuWeekday'>";
 								// rrule Wochentage (ist eine globale Variable von SV, Sonntag hat index 0 deshalb Modulo 7)
+								var daydate = new Date(0);
 								$.each([ 'MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU' ], function(index, value) {
-									tt += "<label title='" + sv_lang.weekday[Object.keys(sv_lang.weekday)[(index + 1) % 7]] + "'><input type='checkbox' value='" + value + "'>" + sv_lang.shortday[Object.keys(sv_lang.shortday)[(index + 1) % 7]] + "</label>";
+									daydate.setDate(5 + index); // Set date to one on according weekday (05.01.1970 was a monday)
+									tt += "<label title='" + daydate.transUnit('l') + "'><input type='checkbox' value='" + value + "'>" + daydate.transUnit('D') + "</label>";
 								});
 			tt +=			"</fieldset>" +
 							"</div>";
