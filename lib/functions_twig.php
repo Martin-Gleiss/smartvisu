@@ -108,6 +108,11 @@ function twig_isfile($file)
 	return is_file(const_path.$file);
 }
 
+function twig_isdir($path)
+{
+	return is_dir(const_path.$path);
+}
+
 function twig_dir($dir, $filter = '(.*)')
 {
 	$ret = array();

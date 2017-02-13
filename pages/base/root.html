@@ -32,6 +32,11 @@
 		'pages/base/base.css',
 		'pages/' ~ config_pages ~ '/visu.css'
 	] %}
+{% if isdir('pages/'~config_pages~'/css') %}
+	{% for file in dir('pages/'~config_pages~'/css', '(.*)(\\.css)') %}
+		{% set cssFiles = cssFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
 {%- if config_cache %} /** only use minified and merged version if page cache is activated. otherwise use original single files. **/
 	<link rel="stylesheet" href="assets.php?pages={{ config_pages }}&amp;type=css
 	{%- for cssFile in cssFiles -%}
@@ -87,6 +92,11 @@
 		'driver/io_' ~ config_driver ~ '.js', 
 		'pages/' ~ config_pages ~ '/visu.js' 
 	] %}
+{% if isdir('pages/'~config_pages~'/js', '\\.js') %}
+	{% for file in dir('pages/'~config_pages~'/js', '(.*)(\\.js)') %}
+		{% set jsFiles = jsFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
 {%- if config_cache -%} /** only use minified and merged version if page cache is activated. otherwise use original single files. **/
 	<script type="text/javascript" src="assets.php?pages={{ config_pages }}&amp;type=javascript
 	{%- for jsFile in jsFiles -%}

@@ -28,6 +28,7 @@
 - Added 50 icons of jQuery Mobile - before they were just available on buttons as background (aka inline) icons
 - Configurable time source (show time of server or client)
 - New CalDav service
+- Auto-loading any .js file inside subfolder 'js' and any .css file inside 'css' in current pages folder
 
 ### Improvements
 - Replaced make.php by on-the-fly minification (needs page cache set on)

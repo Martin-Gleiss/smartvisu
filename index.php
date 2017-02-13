@@ -99,6 +99,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$twig->addFunction('uid', new Twig_Function_Function('twig_uid'));
 	$twig->addFunction('once', new Twig_Function_Function('twig_once'));
 	$twig->addFunction('isfile', new Twig_Function_Function('twig_isfile'));
+	$twig->addFunction('isdir', new Twig_Function_Function('twig_isdir'));
 	$twig->addFunction('dir', new Twig_Function_Function('twig_dir'));
 	$twig->addFunction('docu', new Twig_Function_Function('twig_docu'));
 	$twig->addFunction('lang', new Twig_Function_Function('twig_lang'));
