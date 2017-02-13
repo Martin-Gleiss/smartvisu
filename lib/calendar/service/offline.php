@@ -27,8 +27,10 @@ class calendar_offline extends calendar
 		$event = array();
 		if(in_array('personal', $this->calendar_names))
 			$event += array_merge($event, array('Meeting', 'Doctor', 'Holidays', 'Trip'));
-		if(in_array('waste', $this->calendar_names))
-			$event += array_merge($event, array('Waste', 'Waste', 'Waste', 'Waste'));
+		if(in_array('waste', $this->calendar_names)) {
+			$waste = array('green bin', 'blue bin', 'yellow bin', 'black bin');
+			$event += array_merge($event, $waste);
+		}
 
 		for ($i = 1; $i <= $this->count; $i++)
 		{
@@ -36,11 +38,11 @@ class calendar_offline extends calendar
 			$colors = array('#44a', '#642', '#555', '#660');
 			$title = $event[rand(0, count($event)-1)];
 
-			if($title == 'Waste') {
+			if(isset($waste) && in_array($title, $waste)) {
 				$this->data[] = array( // single hole day event
 					'pos' => $i,
-					'start' => date('y-m-d', time() + $tag * 24 * 60 * 60).' 00:00:00',
-					'end' => date('y-m-d', time() + $tag * 24 * 60 * 60 + 86400).' 00:00:00',
+					'start' => time() + $tag * 24 * 60 * 60,
+					'end' => time() + $tag * 24 * 60 * 60 + 86400,
 					'title' => $title,
 					'where' => '',
 					'icon' => 'icons/ws/message_garbage.svg',
@@ -51,8 +53,8 @@ class calendar_offline extends calendar
 			else if($title == 'Holidays') { // multiple hole days event
 				$this->data[] = array(
 					'pos' => $i,
-					'start' => date('y-m-d', time() + $tag * 24 * 60 * 60).' 00:00:00',
-					'end' => date('y-m-d', time() + $tag * 24 * 60 * 60 + 86400 * 5).' 00:00:00',
+					'start' => time() + $tag * 24 * 60 * 60,
+					'end' => time() + $tag * 24 * 60 * 60 + 86400 * 5,
 					'title' => $title,
 					'where' => '',
 					'icon' => '',
@@ -63,8 +65,8 @@ class calendar_offline extends calendar
 			else if($title == 'Trip') { // two day event (with time)
 				$this->data[] = array(
 					'pos' => $i,
-					'start' => date('y-m-d', time() + $tag * 24 * 60 * 60).' '.rand(8, 14).':00:00',
-					'end' => date('y-m-d', time() + $tag * 24 * 60 * 60 + 86400).' '.rand(8, 14).':00:00',
+					'start' => time() + $tag * 24 * 60 * 60 + rand(8, 14) * 60 * 60,
+					'end' => time() + $tag * 24 * 60 * 60 + 86400 + rand(8, 14) * 60 * 60,
 					'title' => $title,
 					'where' => '',
 					'icon' => '',
@@ -75,8 +77,8 @@ class calendar_offline extends calendar
 			else {
 				$this->data[] = array(
 					'pos' => $i,
-					'start' => date('y-m-d', time() + $tag * 24 * 60 * 60).' '.rand(8, 14).':00:00',
-					'end' => date('y-m-d', time() + $tag * 24 * 60 * 60).' '.rand(15, 20).':00:00',
+					'start' => time() + $tag * 24 * 60 * 60 + rand(8, 14) * 60 * 60,
+					'end' => time() + $tag * 24 * 60 * 60 + rand(15, 20) * 60 * 60,
 					'title' => $title,
 					'where' => ($title == 'Doctor' ? 'Würzburg' : ''),
 					'icon' => '',

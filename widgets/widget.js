@@ -786,6 +786,81 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	});
 
 
+	$(bevent.target).find('div[data-widget="calendar.waste"]').on( {
+		'repeat': function(event) {
+			var node = $(this);
+
+			var morgen = new Date();
+			morgen.setHours(0);
+			morgen.setMinutes(0);
+			morgen.setSeconds(0);
+			morgen.setMilliseconds(0);
+			morgen.setDate(morgen.getDate() + 1);
+			var uebermorgen = new Date(morgen);
+			uebermorgen.setDate(uebermorgen.getDate() + 1);
+
+			var spalte = 0;
+			var muell_html = "";//<table class ='ui-btn-up-a' style='width:100%;text-align:center;overflow:hidden;'><tr>";
+
+			$.getJSON('lib/calendar/service/'+node.attr('data-service')+'.php?count='+node.attr('data-count')+'&calendar='+node.attr('data-calendar'), function (data) {
+
+				$.each(data, function(index, entry) {
+					// parse start as Date
+					if(isNaN(entry.start)) // legacy: start in format 'y-m-d H:i:s'
+						/*
+						var parts = entry.start.match(/(\d\d){1,2}-(\d{1,2})-(\d{1,2})( (\d\d):(\d\d):(\d\d))?/).slice(1);
+						entry.start = new Date(parts[0] < 100 ? 2000+Number(parts[0]) : parts[0], parts[1]-1, parts[2], parts[4]||0, parts[5]||0, parts[6]||0);
+						*/
+            entry.start = date.parse('20' + entry.start);
+					else // start as timestamp
+						entry.start = new Date(entry.start*1000);
+
+					// handle calendar_event_format in lang.ini
+					$.each(sv_lang.calendar_event_format, function(pattern, attributes) {
+						if(entry.title.toLowerCase().indexOf(pattern.toLowerCase()) > -1) { // event title contains pattern
+							// set each defined property
+							$.each(attributes, function(prop, val) {
+								entry[prop] = val;
+							});
+						}
+					});
+
+					// handle tags in event description
+					var tags = (entry.content||'').replace(/\\n/,'\n').match(/@(.+?)\W+(.*)/igm) || [];
+					$.each(tags, function(i, tag) {
+						// parse tag
+						tag = tag.match(/@(.+?)\W+(.*)/i);
+						// prepend # if color is hexadecimal number of 3 or 6 digits
+						if(tag[1] == 'color' && /^([0-9a-f]{3}){1,2}\W*$/i.test(tag[2]))
+							tag[2] = '#'+tag[2];
+						// apply tag to events properties
+						entry[tag[1]] = tag[2];
+					});
+
+					entry.icon = "icons/ws/message_garbage_2.svg";
+
+					muell_html += '<div style="float: left; width: ' + Math.floor(100 / Number(node.attr('data-count'))) + '%;">';
+					muell_html += '<div style="margin: 0 1px; ';
+					if (entry.start < morgen)
+						muell_html += 'border-bottom: red 8px inset; overflow: hidden;';
+					else if (entry.start < uebermorgen)
+						muell_html += 'border-bottom: orange 8px inset; overflow: hidden;';
+					muell_html += '">'
+          muell_html += '<img class="icon icon1" src="' + entry.icon + '" style="width: 100%; height: 100%; fill: ' + entry.color + '; stroke: ' + entry.color + '" />';
+					muell_html += '<div style="font-size: 0.9em;">' + entry.start.transUnit('D') + ', ' + entry.start.transUnit('day') + '</div>'
+					muell_html += '</div>';
+					muell_html += '</div>';
+
+				});
+
+				node.find('div').html(muell_html);
+				fx.init(); // load svg inline
+
+			})
+			.error(notify.json);
+		}
+	});
+
 // ----- d e v i c e ----------------------------------------------------------
 // ----------------------------------------------------------------------------
 
