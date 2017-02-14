@@ -702,25 +702,25 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					
 					// parse start and end as Date
 					if(isNaN(entry.start)) // legacy: start in format 'y-m-d H:i:s'
-						entry.start = date.parse('20' + entry.start);
+						entry.start = Date.parse('20' + entry.start);
 					else // start as timestamp
 						entry.start = new Date(entry.start*1000);
 
 					if(isNaN(entry.end)) // legacy: start in format 'y-m-d H:i:s'
-						entry.end = date.parse('20' + entry.end);
+						entry.end = Date.parse('20' + entry.end);
 					else // start as timestamp
 						entry.end = new Date(entry.end*1000);
 
 					// build period string to display
 					var period;
 					// Start and end on same day: show day only once
-					if(entry.end.toDateString() == entry.start.toDateString())
+					if(entry.end.transUnit('date') == entry.start.transUnit('date'))
 						period = entry.start.transUnit('date') + ' ' + entry.start.transUnit('time') + ' - ' + entry.end.transUnit('time');
 					// Full day entrys: don't show time
 					else if (entry.start.getHours()+entry.start.getMinutes()+entry.start.getSeconds() == 0
 						&& entry.end.getHours()+entry.end.getMinutes()+entry.end.getSeconds() == 0) {
 						entry.end.setDate(entry.end.getDate()-1); // subtract one day from end
-						if(entry.end.toDateString() == entry.start.toDateString()) // One day only: Show just start date
+						if(entry.end.transUnit('date') == entry.start.transUnit('date')) // One day only: Show just start date
 							period = entry.start.transUnit('date');
 						else // Multiple days: Show start and end date
 							period = entry.start.transUnit('date') + ' - ' + entry.end.transUnit('date');
@@ -785,7 +785,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-
+	// ----- calendar.waste -------------------------------------------------------
 	$(bevent.target).find('div[data-widget="calendar.waste"]').on( {
 		'repeat': function(event) {
 			var node = $(this);
@@ -807,11 +807,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				$.each(data, function(index, entry) {
 					// parse start as Date
 					if(isNaN(entry.start)) // legacy: start in format 'y-m-d H:i:s'
-						/*
-						var parts = entry.start.match(/(\d\d){1,2}-(\d{1,2})-(\d{1,2})( (\d\d):(\d\d):(\d\d))?/).slice(1);
-						entry.start = new Date(parts[0] < 100 ? 2000+Number(parts[0]) : parts[0], parts[1]-1, parts[2], parts[4]||0, parts[5]||0, parts[6]||0);
-						*/
-            entry.start = date.parse('20' + entry.start);
+						entry.start = Date.parse('20' + entry.start);
 					else // start as timestamp
 						entry.start = new Date(entry.start*1000);
 
