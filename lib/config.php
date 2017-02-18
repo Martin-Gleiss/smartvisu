@@ -120,10 +120,11 @@ class config {
 				$success = write_ini_file($config, const_path.'pages/'.$pages.'/config.ini', false);
 				break;
 			case 'cookie':
+				$basepath = substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, -strlen(substr($_SERVER['SCRIPT_FILENAME'], strlen(const_path))));
 				if(count($config) > 0) // some options are set
-					$success = setcookie('config', json_encode($config), time()+60*60*24*364*10); // store for 10 years
+					$success = setcookie('config', json_encode($config), time()+60*60*24*364*10, $basepath); // store for 10 years
 				else
-	      	$success = setcookie('config', '', time() - 3600); // delete cookie
+	      	$success = setcookie('config', '', time() - 3600, $basepath); // delete cookie
 				break;
 		}
 
