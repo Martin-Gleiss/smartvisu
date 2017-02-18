@@ -5,8 +5,12 @@
  * @copyright   2012 - 2016
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ * @label       SmartHome.py
+ *
+ * @default     driver_autoreconnect   true
+ * @default     driver_port            2424
+ * @hide        driver_realtime
  */
-
 
 function get_browser(){
     var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || []; 

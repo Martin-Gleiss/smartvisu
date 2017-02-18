@@ -6,6 +6,9 @@
  * @copyright   2016
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ * @label       ICS/iCal (e.g. Google)
+ * @hide        calendar_username
+ * @hide        calendar_password
  */
 
 

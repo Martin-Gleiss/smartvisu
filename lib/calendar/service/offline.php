@@ -6,6 +6,9 @@
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ * @hide        calendar_url
+ * @hide        calendar_username
+ * @hide        calendar_password
  */
 
 

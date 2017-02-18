@@ -6,6 +6,7 @@
  * @copyright   2015-2017
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ * @label       CalDav (e.g. ownCloud, Nextcloud, ...)
  */
 
 

@@ -5,6 +5,10 @@
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ * @hide        driver_address
+ * @hide        driver_port
+ * @hide        driver_realtime
+ * @hide        driver_autoreconnect
  */
 
 

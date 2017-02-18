@@ -6,6 +6,8 @@
  * @license     GPL [http://www.gnu.de]
  * @version        0.2
  * -----------------------------------------------------------------------------
+ * @label       knxd / eibd
+ * @hide        driver_autoreconnect
  */
 
 

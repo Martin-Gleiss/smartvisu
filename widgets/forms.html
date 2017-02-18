@@ -49,3 +49,107 @@
 		$('#{{ id }}').val('{{ val }}');
 	</script>
 {% endmacro %}
+
+
+{% macro config_input(source, values, id, type) %}
+	<div data-role="fieldcontain">
+		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn"{% endif %}>
+      {{ lang('configuration_page', id, 'label') }}
+		</label>
+	{% set hint = lang('configuration_page', id, 'hint') %}
+	{% if not hint is empty %}
+		<div class="ui-help-container">
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg"></a>
+			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
+				{{ hint|nl2br }}
+			</div>
+	{% endif %}
+			<input {% if type == 'wide' %}style="letter-spacing: 0.1em;" {% set type = 'text' %}{% endif %}type="{{ type|default('text') }}" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
+	{% if not hint is empty %}
+		</div>
+	{% endif %}
+	</div>
+{% endmacro %}
+
+
+{% macro config_select(source, values, id, files) %}
+	<div data-role="fieldcontain">
+		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn"{% endif %}>
+      {{ lang('configuration_page', id, 'label') }}
+		</label>
+	{% set hint = lang('configuration_page', id, 'hint') %}
+	{% if not hint is empty %}
+		<div class="ui-help-container">
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg"></a>
+			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
+				{{ hint|nl2br }}
+			</div>
+	{% endif %}
+			<select name="{{ id }}" id="{{ source }}_{{ id }}" data-native-menu="false"{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
+	      {% set metas = [] %}
+				{% for file in files %}
+					{% set meta = configmeta(file.path) %}
+					{% if meta != [] %}
+						{% set metas = metas|merge({ (file.name) : meta }) %}
+					{% endif %}
+					<option value="{{ file.name }}"{{ values[id] == file.name ? ' selected="selected"'|raw }}>{{ meta['label']|default(file.label) }}</option>
+				{% endfor %}
+			</select>
+				<script type="text/javascript">
+					$('#{{ source }}_{{ id }}').on('change init', function() {
+						var element = $(this);
+
+						if(element.data('hidden'))
+							element.data('hidden').show();
+
+						var metas = {{ metas|json_encode()|raw }};
+						var meta = metas[$(element).val()];
+
+						if(meta && meta['default']) {
+							$.each(meta['default'], function(field, val) {
+								setMobileWidgetValue(element.closest('fieldset').find('[name="'+field+'"]'), val);
+							});
+						}
+
+						if(meta && meta['hide']) {
+							var pattern = '';
+							$.each(meta['hide'], function(field, val) {
+								pattern += ',.ui-field-contain:has([name="'+field+'"])'
+							});
+							pattern = pattern.substr(1);
+							//element.data(changeDisabledState(element.closest('fieldset').find(pattern), true).hide());
+							element.data('hidden', element.closest('fieldset').find(pattern).hide());
+						}
+					});
+
+				</script>
+	{% if not hint is empty %}
+		</div>
+	{% endif %}
+	</div>
+{% endmacro %}
+
+
+{% macro config_flip(source, values, id, addition) %}
+	<div data-role="fieldcontain">
+		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn"{% endif %}>
+      {{ lang('configuration_page', id, 'label') }}
+		</label>
+	{% set hint = lang('configuration_page', id, 'hint') %}
+	{% if not hint is empty %}
+		<div class="ui-help-container">
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg"></a>
+			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
+				{{ hint|nl2br }}
+			</div>
+	{% endif %}
+			<select name="{{ id }}" id="{{ source }}_{{ id }}" data-role="flipswitch"{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
+				<option value="false"{{ not values[id] ? ' selected="selected"'|raw }}>off</option>
+				<option value="true"{{ values[id] ? ' selected="selected"'|raw }}>on</option>
+			</select>
+			{{ addition|raw }}
+	{% if not hint is empty %}
+		</div>
+	{% endif %}
+	</div>
+{% endmacro %}

@@ -6,6 +6,10 @@
  * @copyright   2012
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ * @hide        calendar_username
+ * @hide        calendar_password
+ * @hide        calendar_name
+ * @hide        calendar_color
  */
 
 // Note: for debugging purposes you can execute this script from commandline with    php -q <scriptname>

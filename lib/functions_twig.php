@@ -228,6 +228,50 @@ function twig_docu($filename)
 }
 
 /**
+ * Get metadata out of a code file
+ *
+ * @param string $filename file path and name
+ *
+ * @return associative array
+ */
+function twig_configmeta($filename)
+{
+	// read file up to end of first comment
+  $file = '';
+	$comment_end = substr($filename, -4) == '.ini' ? '#^\s*[^;]#' : '#\*/#';
+	$handle = @fopen($filename, "r");
+	if($handle) {
+    while(($buffer = fgets($handle, 4096)) !== false) {
+      $file .= $buffer;
+			if(preg_match($comment_end, $buffer) === 1)
+				break;
+		}
+	}
+
+	// parse tags
+	preg_match_all('#.+?@(.+?)\W+(.*)#i', $file, $header, PREG_SET_ORDER);
+	$ret = array('label' => null, 'hide' => array(), 'default' => array());
+	foreach($header as $tag) {
+		if(array_key_exists($tag[1], $ret)) {
+			if(is_array($ret[$tag[1]])) {
+        $data = preg_split('#\s+#', $tag[2], 2);
+				$ret[$tag[1]][$data[0]] = $data[1];
+			}
+			else
+        $ret[$tag[1]] = $tag[2];
+		}
+	}
+
+	// remove unused tags
+	foreach($ret as $key => $val) {
+		if(!isset($val) || $val == array())
+			unset($ret[$key]);
+	}
+
+	return $ret;
+}
+
+/**
  * Get a language-string from the lang-file
  *
  * @param string $subset the subset of translation keys (first array dimension)
@@ -235,16 +279,31 @@ function twig_docu($filename)
  *
  * @return string
  */
-function twig_lang($subset, $key)
+function twig_lang($subset, $key, $subkey = null)
 {
 	static $lang;
 
 	if (!$lang)
-		eval(fileread('lang/lang_'.config_lang.'.txt'));
+		$lang = get_lang();
 
-	return $lang[$subset][$key];
+	if($subkey == null)
+		return $lang[$subset][$key];
+	else
+		return $lang[$subset][$key][$subkey];
 }
 
+/**
+ * Get the configuration by source
+ *
+ * @param string $source the source for configuration (e.g. "global" or "page")
+ *
+ * @return associative array of configuration options
+ */
+function twig_read_config($source)
+{
+	$config = new config();
+	return $config->get($source);
+}
 
 // -----------------------------------------------------------------------------
 // Special functions for Twig

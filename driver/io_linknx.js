@@ -5,6 +5,8 @@
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ * @default     driver_port            1028
+ * @hide        driver_autoreconnect
  */
 
 

@@ -1,7 +1,7 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiss, Alexander Schwithal
+* @author      Martin Gleiss, Alexander Schwithal, Stefan Widmer
 * @copyright   2012 - 2016
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
@@ -10,23 +10,32 @@
 
 {% extends "system.html" %}
 
+{% import "forms.html" as forms %}
+
 {% block content %}
 
 	/** related JavaScript part located in lib/base/base.js */
 
 	<h1>Configuration</h1>
 
-	{% import "forms.html" as forms %}
-	<form>
+	{%
+	set sources = {
+		'global': lang('configuration_page', 'globaltab', 'label'),
+		'pages': lang('configuration_page', 'pagestab', 'label') ~ " '" ~ config_pages ~ "'",
+		'cookie': lang('configuration_page', 'cookietab', 'label'),
+	}
+	%}
 
 	<div data-role="tabs" id="config_source">
 		<div data-role="navbar">
 			<ul>
-				<li data-source="global"><a href="#config_tab_global" data-ajax="false" class="ui-btn-active">Global</a></li>
-				<li data-source="pages"><a href="#config_tab_pages" data-ajax="false">Pages '{{ config_pages }}'</a></li>
-				<li data-source="cookie"><a href="#config_tab_cookie" data-ajax="false">Client (cookie)</a></li>
+		    {% for source, title in sources %}
+					<li data-source="{{ source }}"><a href="#config_tab_{{ source }}" data-ajax="false"{{ loop.first ? 'class="ui-btn-active"'|raw }}>{{ title }}</a></li>
+		    {% endfor %}
 			</ul>
 		</div>
+
+/**
 		<div id="config_tab_global">
 			<h2>Global options (stored in './config.ini')</h2>
 		</div>
@@ -39,584 +48,106 @@
       {{ basic.symbol('','','','jquery_info.svg') }}<i>Click label to override specific option, click again to deactive overriding</i>
 		</div>
 	</div>
+*/
 
-	<fieldset>
+	{% for source, title in sources %}
+		{% set values = read_config(source) %}
 
-	<div class="block">
-		<div class="set-2" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+		<div id="config_tab_{{ source }}">
+			<h2>{{ lang('configuration_page', source ~ 'tab', 'hint') }}</h2>
+			<form>
+				<fieldset>
 
-			<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
-				<h3 class="ui-collapsible-heading">User Interface</h3>
-			</div>
-
-			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
-				<h3>Interface</h3>
-
-				<div data-role="fieldcontain">
-					<label for="pages">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Pages
-							</label>
-						</fieldset>
-					</label>
-					<select name="pages" id="pages" data-native-menu="false">
-						{% for file in dir('pages', '^(?!base|apps)(.+?)') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="design">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Design
-							</label>
-						</fieldset>
-					</label>
-					<select name="design" id="design" data-native-menu="false">
-						{% for file in dir('designs', '(.+?).css') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-					
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="cache">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Pagecache
-							</label>
-						</fieldset>
-					</label>
-					<select name="cache" id="cache" data-role="flipswitch">
-						<option value="false">off</option>
-						<option value="true">on</option>
-					</select>
-					
-					<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache" class="ui-micro">Clear Pagecache</button>
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="animation">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Animation
-							</label>
-						</fieldset>
-					</label>
-					<select name="animation" id="animation" data-role="flipswitch">
-						<option value="false">off</option>
-						<option value="true">on</option>
-					</select>
-				</div>
-
-			</div>
-
-			<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
-				<h3>Texts</h3>
-
-				<div data-role="fieldcontain">
-					<label for="title">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Title
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="title" id="title" />
-					
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="lang">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Language
-							</label>
-						</fieldset>
-					</label>
-					<select name="lang" id="lang" data-native-menu="false">
-						{% set langtext = {
-							'en': 'English (US)',
-							'en-gb': 'English (GB)',
-							'de': 'German',
-							'de-ch': 'German (Switzerland)',
-							'nl': 'Dutch',
-							'fr': 'Français'
-						} %}
-						/**
-						<option value="en">English (US)</option>
-						<option value="en-uk">English (UK)</option>
-						<option value="de">German</option>
-						<option value="de-ch">German (Switzerland)</option>
-						<option value="nl">Dutch</option>
-						<option value="fr">Fran&ccedil;ais</option>
-						*/
-						{% for file in dir('lang', '^(.*?)\.ini$') %}
-							<option value="{{ file.name }}">{{ langtext[file.name] ?? file.name }}</option>
-						{% endfor %}
-					</select>
-
-					<div class="note">*for some widgets</div>
-					
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="timesource">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Time Source
-							</label>
-						</fieldset>
-					</label>
-					<div class="ui-help-container">
-						<a href="#popupBasic" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg"></a>
-						<div data-role="popup" id="popupBasic" data-arrow="true" data-theme="c">
-							Which time should be shown by clock widgets?<br>
-							'client' = your local time<br>
-							'server' = time of server smartVISU runs on
+					<div class="block">
+						<div class="set-2" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'userinterface', 'label') }}</h3>
+							</div>
+							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
+								<h3>{{ lang('configuration_page', 'interface', 'label') }}</h3>
+								{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
+								{{ forms.config_select(source, values, 'design', dir('designs', '(.+?).css')) }}
+								{{ forms.config_flip(source, values, 'cache', '<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache" class="ui-micro"' ~ (not values['cache'] is defined ? ' disabled="disabled"'|raw) ~ '>' ~ lang('configuration_page', 'cache', 'clearbutton') ~'</button>') }}
+								{{ forms.config_flip(source, values, 'animation') }}
+							</div>
+							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
+								<h3>{{ lang('configuration_page', 'content', 'label') }}</h3>
+								{{ forms.config_input(source, values, 'title') }}
+								{{ forms.config_select(source, values, 'lang', dir('lang', '^(.*?)\.ini$') ) }}
+								{{ forms.config_select(source, values, 'timesource', [{"name": "client", "label": "Client"}, {"name": "server", "label": "Server"}] ) }}
+							</div>
 						</div>
-						<select name="timesource" id="timesource" data-native-menu="false">
-							<option value="client">Client</option>
-							<option value="server">Server</option>
-						</select>
-						<div class="note">*for clock widgets</div>
 					</div>
-				</div>
 
-			</div>
+					<div class="block">
+						<div class="set-1" data-role="collapsible-set" data-mini="true">
+							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'backend', 'label') }}</h3>
+							</div>
+							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
+								<h3>{{ lang('configuration_page', 'ioconnection', 'label') }}</h3>
+								{{ forms.config_select(source, values, 'driver', dir('driver', '^io_(.+?).js') ) }}
+								{{ forms.config_input(source, values, 'driver_address', 'wide') }}
+								{{ forms.config_input(source, values, 'driver_port', 'wide') }}
+								{{ forms.config_flip(source, values, 'driver_realtime') }}
+								{{ forms.config_flip(source, values, 'driver_autoreconnect') }}
+							</div>
+						</div>
+					</div>
 
+					<div class="block">
+						<div class="set-3" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'dataservices', 'label') }}</h3>
+							</div>
+							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
+								<h3>{{ lang('configuration_page', 'weather', 'label') }}</h3>
+								{{ forms.config_select(source, values, 'weather_service', dir('lib/weather/service', '(.+?).php') ) }}
+								{{ forms.config_input(source, values, 'weather_location') }}
+								{{ forms.config_input(source, values, 'weather_key') }}
+							</div>
+							<div data-role="collapsible" data-theme="c" data-content-theme="a">
+								<h3>{{ lang('configuration_page', 'phone', 'label') }}</h3>
+								{{ forms.config_select(source, values, 'phone_service', dir('lib/phone/service', '(.+?).php') ) }}
+								{{ forms.config_input(source, values, 'phone_server', 'wide') }}
+								{{ forms.config_input(source, values, 'phone_port', 'wide') }}
+								{{ forms.config_input(source, values, 'phone_user') }}
+								{{ forms.config_input(source, values, 'phone_pass', 'password') }}
+							</div>
+							<div data-role="collapsible" data-theme="c" data-content-theme="a">
+								<h3>{{ lang('configuration_page', 'calendar', 'label') }}</h3>
+								{{ forms.config_select(source, values, 'calendar_service', dir('lib/calendar/service', '(.+?).php') ) }}
+								{{ forms.config_input(source, values, 'calendar_url') }}
+								{{ forms.config_input(source, values, 'calendar_username') }}
+								{{ forms.config_input(source, values, 'calendar_password', 'password') }}
+								{{ forms.config_input(source, values, 'calendar_name') }}
+								{{ forms.config_input(source, values, 'calendar_color') }}
+							</div>
+						</div>
+					</div>
+
+					<div class="block">
+						<div class="set-1" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'internetaccess', 'label') }}</h3>
+							</div>
+							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
+								<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3>
+								{{ forms.config_flip(source, values, 'proxy') }}
+								{{ forms.config_input(source, values, 'proxy_url', 'wide') }}
+								{{ forms.config_input(source, values, 'proxy_user') }}
+								{{ forms.config_input(source, values, 'proxy_password', 'password') }}
+							</div>
+						</div>
+					</div>
+
+				</fieldset>
+
+				<input type="hidden" id="current_pages" value="{{ config_pages }}" />
+				<button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">Save</button>
+			</form>
 		</div>
-	</div>
-
-
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-mini="true">
-
-			<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
-				<h3 class="ui-collapsible-heading">Facility Backend</h3>
-			</div>
-
-			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
-				<h3>I/O-Connection</h3>
-
-				<div data-role="fieldcontain">
-					<label for="driver">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Driver
-							</label>
-						</fieldset>
-					</label>
-					<select name="driver" id="driver" data-native-menu="false">
-						{% for file in dir('driver', '^io_(.+?).js') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-					
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="driver_address">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Address
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="driver_address" id="driver_address" style="letter-spacing: 0.1em;" />
-					<div class="note">Hostname / IP</div>
-
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="driver_port">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Port
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="driver_port" id="driver_port" />
-					
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="driver_realtime">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Realtime
-							</label>
-						</fieldset>
-					</label>
-					<select name="driver_realtime" id="driver_realtime" data-role="flipswitch">
-						<option value="false">off</option>
-						<option value="true">on</option>
-					</select>
-					
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="driver_autoreconnect">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Reconnect
-							</label>
-						</fieldset>
-					</label>
-					<select name="driver_autoreconnect" id="driver_autoreconnect" data-role="flipswitch">
-						<option value="false">off</option>
-						<option value="true">on</option>
-					</select>
-					
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<script type="text/javascript">
-		$('#driver').change(function () {
-			switch (this.value) {
-				case 'offline':
-					$('#driver_realtime').val('false').flipswitch('refresh');
-					$('#driver_autoreconnect').val('false').flipswitch('refresh');
-					break;
-
-				case 'eibd':
-					$('#driver_autoreconnect').val('false').flipswitch('refresh');
-					break;
-
-				case 'json':
-					$('#driver_autoreconnect').val('false').flipswitch('refresh');
-					break;
-
-				case 'linknx':
-					$('#driver_port').val('1028');
-					$('#driver_autoreconnect').val('false').flipswitch('refresh');
-					break;
-
-				case 'smarthome.py':
-					$('#driver_port').val('2424');
-					$('#driver_realtime').val('true').flipswitch('refresh');
-					$('#driver_autoreconnect').val('true').flipswitch('refresh');
-					break;
-
-				case 'domotiga':
-					$('#driver_port').val('2121');
-					$('#driver_realtime').val('true').flipswitch('refresh');
-					$('#driver_autoreconnect').val('true').flipswitch('refresh');
-					break;
-			}
-		});
-	</script>
-
-
-	<div class="block">
-		<div class="set-3" data-role="collapsible-set" data-content-theme="a" data-mini="true">
-
-			<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
-				<h3 class="ui-collapsible-heading">Data Services</h3>
-			</div>
-
-			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
-				<h3>Weather</h3>
-
-				<div data-role="fieldcontain">
-					<label for="weather_service">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Service
-							</label>
-						</fieldset>
-					</label>
-					<select name="weather_service" id="weather_service" data-native-menu="false">
-						{% for file in dir('lib/weather/service', '(.+?).php') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-					
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="weather_location">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Location
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="weather_location" id="weather_location" />
-					
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="weather_key">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Key
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="weather_key" id="weather_key" />
-
-					<div class="note">*if service requires one</div>
-					
-				</div>
-			</div>
-
-			<div data-role="collapsible" data-theme="c" data-content-theme="a">
-				<h3>Phone</h3>
-
-				<div data-role="fieldcontain">
-					<label for="phone_service">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								System
-							</label>
-						</fieldset>
-					</label>
-					<select name="phone_service" id="phone_service" data-native-menu="false">
-						{% for file in dir('lib/phone/service', '(.+?).php') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-					
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="phone_server">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Address
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="phone_server" id="phone_server" style="letter-spacing: 0.1em;" />
-					<div class="note">Hostname / IP</div>
-
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="phone_port">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Port
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="phone_port" id="phone_port" />
-					
-					<div class="note">*if service requires one</div>
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="phone_user">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								User
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="phone_user" id="phone_user" />
-					
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="phone_pass">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Password
-							</label>
-						</fieldset>
-					</label>
-					<input type="password" name="phone_pass" id="phone_pass" />
-					
-				</div>
-			</div>
-
-			<div data-role="collapsible" data-theme="c" data-content-theme="a">
-				<h3>Calendar</h3>
-
-				<div data-role="fieldcontain">
-					<label for="calendar_service">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								System
-							</label>
-						</fieldset>
-					</label>
-					<select name="calendar_service" id="calendar_service" data-native-menu="false">
-						{% for file in dir('lib/calendar/service', '(.+?).php') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-					
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="calendar_url">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Url
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="calendar_url" id="calendar_url" />
-					
-					<div class="note">*not used for iCloud</div>
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="calendar_username">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Username
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="calendar_username" id="calendar_username" />
-
-					<div class="note">*if service requires one</div>
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="calendar_password">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Password
-							</label>
-						</fieldset>
-					</label>
-					<input type="password" name="calendar_password" id="calendar_password" />
-
-					<div class="note">*if service requires one</div>
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="calendar_name">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Calendar name(s)
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="calendar_name" id="calendar_name" />
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="calendar_color">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Color(s)
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="calendar_color" id="calendar_color" />
-					<div class="note">* used as default for corresponding name in same order</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-content-theme="a" data-mini="true">
-
-			<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
-				<h3 class="ui-collapsible-heading">Internet Access (serverside)</h3>
-			</div>
-
-			<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
-				<h3>Proxy</h3>
-				<div data-role="fieldcontain">
-					<label for="proxy">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Use Proxy
-							</label>
-						</fieldset>
-					</label>
-					<select name="proxy" id="proxy" data-role="flipswitch">
-						<option value="false">off</option>
-						<option value="true">on</option>
-					</select>
-					
-				</div>
-				<div data-role="fieldcontain">
-					<label for="proxy_url">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Url
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="proxy_url" id="proxy_url" />
-					
-				</div>
-				<div data-role="fieldcontain">
-					<label for="proxy_user">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								User
-							</label>
-						</fieldset>
-					</label>
-					<input type="text" name="proxy_user" id="proxy_user" />
-					
-				</div>
-				<div data-role="fieldcontain">
-					<label for="proxy_password">
-						<fieldset data-role="controlgroup" data-type="horizontal">
-							<label>
-								<input type="checkbox" data-mini="true">
-								Password
-							</label>
-						</fieldset>
-					</label>
-					<input type="password" name="proxy_password" id="proxy_password" />
-					
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-	</fieldset>
-
-	<input type="hidden" id="current_pages" value="{{ config_pages }}" />
-	<button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">Save</button>
-	</form>
+	{% endfor %}
+</div>
 
 {% endblock %}
