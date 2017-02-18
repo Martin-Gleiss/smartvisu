@@ -73,7 +73,7 @@
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
 	{% set color = color|default(['','icon1']) %}
 
-	<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.stateswitch" data-item="{{ item }}"
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.stateswitch" data-item="{{ item }}"
 		data-value="{{ value|first }}" data-vals="{{ implode(value) }}"
 		style="display: none; !important">
 	{% for val in value %}
@@ -113,7 +113,7 @@
 {% macro checkbox(id, item, txt, val_on, val_off) %}
 
 	<label>
-		<input type="checkbox" {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.checkbox" data-item="{{ item }}"
+		<input type="checkbox"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.checkbox" data-item="{{ item }}"
 			data-val-on="{{ val_on|default(1) }}" data-val-off="{{ val_off|default(0) }}" />
 		{{ txt }}
 	</label>
@@ -140,7 +140,7 @@
 {% macro color(id, item_r, item_g, item_b, min, max, steps, colors, style) %}
 	{% set style = style|default('disc') %}
 	
-	<a {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.color" data-style="{{ style }}" 
+	<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.color" data-style="{{ style }}" 
 		data-item="{{ item_r }}, {{ item_g }}, {{ item_b }}"
 		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
@@ -160,7 +160,7 @@
 * @author Mirko Hirsch
 */
 {% macro maptext(id, gad, txt, val) %}
-	<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.maptext" data-item="{{ gad }}"
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.maptext" data-item="{{ gad }}"
 		data-txt ="{{ implode(txt) }}" data-val="{{ implode(val)|default('') }}"
 		class="text">
 	</span>
@@ -179,7 +179,7 @@
 */
 {% macro flip(id, item, txt_on, txt_off, val_on, val_off) %}
 
-	<select {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.flip" data-item="{{ item }}"
+	<select{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.flip" data-item="{{ item }}"
 		data-role="flipswitch">
 		<option value="{{ val_off|default(0) }}">{{ txt_off|default('Off') }}</option>
 		<option value="{{ val_on|default(1) }}">{{ txt_on|default('On') }}</option>
@@ -217,12 +217,12 @@
 * @param unique id for this widget (optional)
 * @param one or more item(s). Multiple items in array-form: [item1, item2]
 * @param either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
-  use 'text' to display result as unformatted string or 'html' to render it as unescaped html 
+  Use 'text' to display result as unformatted string, 'html' to render it as unescaped html or 'script' to just execute as JavaScript w/o displaying anything.
 * @param any valid JavaScript expression with following variables and aggregate functions (optional, default: VAR)
   - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
   - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
 * @param array of thresholds; the color according to greatest reached threshold is applied (optional)
-  use '' to define base color, e.g. ['', 100] means first color for values below 100, second one for 100 and above
+  Use '' to define base color, e.g. ['', 100] means first color for values below 100, second one for 100 and above
 * @param array of colors; 'icon1' or e. g. '#f00' for red (optional)
 *
 * @see misc/fundamentals#Array-Form
@@ -232,7 +232,7 @@
 */
 {% macro print(id, item, format, formula, threshold, color) %}
 
-	<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-item="{{ implode(item) }}" class="text" data-widget="basic.print"
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-item="{{ implode(item) }}" class="text" data-widget="basic.print"
 		data-format="{{ format }}" data-formula="{{ formula|default('VAR') }}"
 		data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">---</span>
 
@@ -259,7 +259,7 @@
 	{% if pic_on|slice(0, 5) == 'icon.' %}
 		{{ attribute(icon, pic_on|slice(5), [id, item_switch, item_value, min, max]) }}
 	{% else %}
-		<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.shifter" data-item="{{ item_value }}, {{ item_switch }}"
+		<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.shifter" data-item="{{ item_value }}, {{ item_switch }}"
 			{% set pic_on = pic_on|deficon('light_light_dim_00.svg') %}
 			{% set pic_off = pic_off|deficon(pic_on) %}
 			data-pic-on="{{ pic_on }}" data-pic-off="{{ pic_off |default(pic_on) }}"
@@ -287,7 +287,7 @@
 */
 {% macro shutter(id, item_pos, item_angle, value_top, value_bottom, step, mode, background) %}
 
-	<div {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.shutter" data-item="{{ item_pos }}, {{ item_angle }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.shutter" data-item="{{ item_pos }}, {{ item_angle }}"
 		data-min="{{ value_top|default('0') }}" data-max="{{ value_bottom|default('255') }}" data-step="{{ step|default(5) }}"
 		data-mode="{{ mode|default('half') }}" class="shutter" {{ background ? ' style="background-image: url(\'' ~ background ~ '\')"'}}>
 
@@ -321,7 +321,7 @@
 */
 {% macro slider(id, item, min, max, step, orientation, value_display) %}
 
-	<input {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.slider" data-item="{{ item }}"
+	<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.slider" data-item="{{ item }}"
 		type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}"
 		orientation="{{ orientation }}" handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" data-highlight="true" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" />
 
@@ -347,7 +347,7 @@
 {% macro symbol(id, items, txt, icon, val, mode, color) %}
 	{% import _self as basic %}
 
-	<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.symbol" {{ not items is empty ? ('data-item="' ~ implode(items) ~ '"')|raw }} data-val="{{ val|default('1') }}"
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.symbol" {{ not items is empty ? ('data-item="' ~ implode(items) ~ '"')|raw }} data-val="{{ val|default('1') }}"
 		data-mode="{{ mode|default('or') }}" class="symbol {{ not items is empty ? 'hide' }}">
 		{{ basic._icon(icon|deficon('control_on_off.svg'), color) }}
 		{{ txt }}
@@ -369,7 +369,7 @@
 */
 {% macro tank(id, item_pos, min, max, step, mode, color) %}
 
-	<div {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.tank" data-item="{{ item_pos }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.tank" data-item="{{ item_pos }}"
 		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="tank">
 		<div
@@ -401,7 +401,7 @@
 */
 {% macro text(id, item, txt_on, txt_off, val_on, val_off) %}
 
-	<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.text" data-item="{{ item }}"
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.text" data-item="{{ item }}"
 		data-txt-on="{{ txt_on }}" data-txt-off="{{ txt_off }}"
 		data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
 		class="text">
@@ -423,7 +423,7 @@
 {% macro trigger(id, name, txt, icon, val, type) %}
 	{% import _self as basic %}
 
-	<a {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="basic.trigger" data-name="{{ name }}" data-val="{{ val }}"
+	<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.trigger" data-name="{{ name }}" data-val="{{ val }}"
 		class="ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline ui-shadow
 		{%- if icon is empty -%}
 			">

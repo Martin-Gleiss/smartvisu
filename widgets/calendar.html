@@ -43,7 +43,7 @@
 		{% endfor %}
 	{% endif %}
 
-	<div {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="calendar.list" class="calendarlist"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="calendar.list" class="calendarlist"
 		data-service="{{ config_calendar_service }}"
 		data-repeat="{{ repeat|default('1h') }}" data-count="{{ count|default(25) }}"
 		data-color="{{ implode(color) }}" data-calendar="{{ implode(calendar|default(confignames)) }}">
@@ -67,7 +67,7 @@
 {% macro waste(id, title, calendar, count, repeat) %}
 
 
-	<div {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="calendar.waste" class="calendarlist"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="calendar.waste" class="calendarlist"
 		data-service="{{ config_calendar_service }}"
 		data-repeat="{{ repeat|default('24h') }}" data-count="{{ count|default(5) }}"
 		data-calendar="{{ implode(calendar|default(config_calendar_name|split(','))) }}">

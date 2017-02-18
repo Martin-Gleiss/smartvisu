@@ -27,7 +27,7 @@
 {% macro blind(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step) %}
 	{% import "basic.html" as basic %}
 
-	<div class="blind" {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }}>
+	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
 		<table align="center" cellpadding="0">
 			<tr>
 				<td valign="top">
@@ -123,7 +123,7 @@
 {% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off) %}
 	{% import "basic.html" as basic %}
 
-	<div class="dimmer"  data-widget="device.dimmer" {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-item="{{ item_switch }}, {{ item_value }}">
+	<div class="dimmer" data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-item="{{ item_switch }}, {{ item_value }}">
 		{{ basic.stateswitch('', item_switch, 'icon', '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
 		<p>{{ txt|e }}</p>
 		{{ basic.slider('', item_value, min, max, step, 'horizontal', 'none') }}
@@ -149,7 +149,7 @@
 {% macro rtr(id, txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step) %}
 	{% import "basic.html" as basic %}
 
-	<div {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="device.rtr" data-step="{{ step|default(0.5) }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtr" data-step="{{ step|default(0.5) }}"
 		class="rtr">
 		<div class="actual">
 			<div class="temp">{{ basic.print('', item_actual, '°' ) }}</div>
@@ -210,7 +210,7 @@
 {% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2) %}
 	{% import "basic.html" as basic %}
 
-	<div class="blind" {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }}>
+	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
 		<table align="center" cellpadding="0">
 			<tr>
 				<td valign="top">
@@ -283,7 +283,7 @@
 {% macro uzsuicon(id, item, headline, pic_on, pic_off, valueType, valueParameterList, color_on, color_off, _backend) %}
 	{% import "basic.html" as basic %}
 
-	<span {{ not id is empty ? 'id="' ~ uid(page, id) ~ '"' | raw }} data-widget="uzsu.uzsuicon" data-item="{{ item }}" 
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="uzsu.uzsuicon" data-item="{{ item }}"
 		data-headline="{{ headline|default('UZSU') }}" data-designType="{{ _backend }}"
 		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
 		class="switch icon">

@@ -17,7 +17,7 @@
 */
 {% macro comfortchart(id, item_temp, item_humidity) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.comfortchart" data-item="{{ item_temp }}, {{ item_humidity }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.comfortchart" data-item="{{ item_temp }}, {{ item_humidity }}"
 		data-label="{{ lang('plot.comfortchart', 'label') }}" data-axis="{{ lang('plot.comfortchart', 'axis') }}"
 		class="plot"></div>
 
@@ -55,7 +55,7 @@
 	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1h') %}
 	{% set count = count|default(100) %}
-	<div id="{{ uid(page, id) }}" data-widget="plot.period" data-mode="{{ mode|default('avg') }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.period" data-mode="{{ mode|default('avg') }}"
 		{% if mode == 'minmax' %}
 			data-item="{{ implode(item, ['min', tmin, tmax, count]) }}, {{ implode(item, ['max', tmin, tmax, count]) }}"
 		{% elseif mode == 'minmaxavg' %}
@@ -87,7 +87,7 @@
 */
 {% macro rtr(id, item_actual, item_set, item_state, count) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.rtr" data-item="{{ implode([item_actual, item_set, item_state], ['avg', '1d', 'now', count|default(100)]) }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.rtr" data-item="{{ implode([item_actual, item_set, item_state], ['avg', '1d', 'now', count|default(100)]) }}"
 		data-step="50" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
 		class="plot"></div>
 
@@ -108,7 +108,7 @@
 */
 {% macro temprose(id, item_actual, item_set, axis, series_label, unit) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.temprose" data-item="{{ implode(item_actual) }}, {{ implode(item_set) }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.temprose" data-item="{{ implode(item_actual) }}, {{ implode(item_set) }}"
 		data-count="{{ item_actual|length }}" data-label="{{ implode(series_label)|default(lang('plot.rtr', 'label')) }}" data-axis="{{ implode(axis) }}"
 		data-unit="{{ unit|default('temp') }}"
 		class="plot"></div>
