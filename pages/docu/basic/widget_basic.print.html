@@ -32,11 +32,10 @@
 	<br>
 	basic.print can also be used for some "hacks".<br>
 	The following examples shows how to manipulate or read other elements; but any other JavaScript/jQuery exression can be used.<br>
-	The final <code>""</code> in first example prevents basic.print from printing anything at all.<br>
-	The second example does not use the item data at all, but it is triggered by receiving an item value.
+	The second example shows text of another element. It does not use the item data at all but it is triggered by receiving an item value.
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.print('', 'bath.value', 'text', '$("#otherElement").css("padding-left", VAR1/2); "";') }}
+			{{ basic.print('', 'bath.value', 'script', '$("#otherElement").css("padding-left", VAR1/2)') }}
 			{{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherElement").text() + "\'"') }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
@@ -47,7 +46,7 @@
 	</div>
 	<div class="html">
 		<span id="otherElement" style="color: yellow">This is another element</span><br>
-		{{ basic.print('', 'bath.value', 'text', '$("#otherElement").css("padding-left", VAR1/2); "";') }}
+		{{ basic.print('', 'bath.value', 'script', '$("#otherElement").css("padding-left", VAR1/2)') }}
 		{{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherElement").text() + "\'"') }}
 	</div>
 

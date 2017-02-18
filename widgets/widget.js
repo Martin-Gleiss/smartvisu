@@ -306,7 +306,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var type;
 			if (formatLower == 'date' || formatLower == 'time' || formatLower == 'short' || formatLower == 'long')
 				type = 'Date';
-			else if (formatLower == 'text' || formatLower == 'html')
+			else if (formatLower == 'text' || formatLower == 'html' || formatLower == 'script')
 				type = 'String';
 			else
 				type = 'Number';
@@ -342,7 +342,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				calc = new Date(calc).transUnit(format);
 			else if (type == 'Number' && !isNaN(calc))
 				calc = parseFloat(calc).transUnit(format);
-		
+			else if (formatLower == 'script') // no output for format 'script'
+				calc = '';
+
 			// print the result
 			if (formatLower == 'html')
 				$(this).html(calc);
@@ -623,7 +625,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		'init': function(event) {
 			$(this).digiclock({ svrOffset: window.servertimeoffset || 0 });
 		}
-	});
+	})
+	.trigger('init');
 	
 	$(bevent.target).find('div.digiweather[data-widget="clock.digiclock"]').each(function() {
 		var node = $(this);
@@ -642,10 +645,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 			var now = new Date(Date.now() - (window.servertimeoffset || 0));
 			var minutes = Math.floor(now.getHours()*60 + now.getMinutes());
-			$(this).find('svg').trigger('update', [
-				[minutes],
-				[0]
-			]);
+			$(this).find('svg').trigger('update', [[minutes]]);
 
 			// DEBUG: console.log("[iconclock] '" + this.id + "'", minutes);
 		}
@@ -702,13 +702,13 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					
 					// parse start and end as Date
 					if(isNaN(entry.start)) // legacy: start in format 'y-m-d H:i:s'
-						entry.start = Date.parse('20' + entry.start);
+						entry.start = new Date(Date.parse('20' + entry.start));
 					else // start as timestamp
 						entry.start = new Date(entry.start*1000);
 
-					if(isNaN(entry.end)) // legacy: start in format 'y-m-d H:i:s'
-						entry.end = Date.parse('20' + entry.end);
-					else // start as timestamp
+					if(isNaN(entry.end)) // legacy: end in format 'y-m-d H:i:s'
+						entry.end = new Date(Date.parse('20' + entry.end));
+					else // end as timestamp
 						entry.end = new Date(entry.end*1000);
 
 					// build period string to display
@@ -807,7 +807,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				$.each(data, function(index, entry) {
 					// parse start as Date
 					if(isNaN(entry.start)) // legacy: start in format 'y-m-d H:i:s'
-						entry.start = Date.parse('20' + entry.start);
+						entry.start = new Date(Date.parse('20' + entry.start));
 					else // start as timestamp
 						entry.start = new Date(entry.start*1000);
 
