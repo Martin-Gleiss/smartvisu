@@ -132,8 +132,8 @@
 								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'internetaccess', 'label') }}</h3>
 							</div>
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
-								<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3>
-								{{ forms.config_flip(source, values, 'proxy') }}
+								<h3>{{ lang('configuration_page', 'proxy', 'label') }}</h3>
+								{{ forms.config_flip(source, values, 'useproxy') }}
 								{{ forms.config_input(source, values, 'proxy_url', 'wide') }}
 								{{ forms.config_input(source, values, 'proxy_user') }}
 								{{ forms.config_input(source, values, 'proxy_password', 'password') }}
