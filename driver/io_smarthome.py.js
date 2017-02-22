@@ -226,6 +226,10 @@ var io = {
 						notify.warning('Driver: smarthome.py', 'Protocol mismatch<br />SmartHome.py is: v' + io.version + '<br /><br /> Update the system!');
 					}
 					break;
+
+				case 'url':
+					$.mobile.changePage(data.url);
+					break;					
 			}
 		};
 
