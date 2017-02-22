@@ -16,7 +16,7 @@
 
 	/** related JavaScript part located in lib/base/base.js */
 
-	<h1>Configuration</h1>
+	<h1>{{ lang('configuration_page', 'configuration', 'label') }}</h1>
 
 	{%
 	set sources = {
@@ -144,7 +144,7 @@
 				</fieldset>
 
 				<input type="hidden" id="current_pages" value="{{ config_pages }}" />
-				<button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">Save</button>
+				<button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">{{ lang('configuration_page', 'save', 'label') }}</button>
 			</form>
 		</div>
 	{% endfor %}
