@@ -5,6 +5,7 @@
 - New: basic.stateswitch (improves and supersedes basic.button, basic.dual, basic.multistate and basic.switch)
 - New: basic.print (improves and supersedes basic.float, basic.formula and basic.value)
 - New: basic.color (supersedes basic.colordisc and basic.rgb)
+- New: basic.badge (displays a notification badge)
 - New: device.uzsuicon (to control UZSU in smarthome.py and FHEM)
 - New: calendar.waste (compact view of waste collection dates)
 - Enhanced plot.period, among other things merged functionality of plot.minmaxavg and plot.multiaxis into it

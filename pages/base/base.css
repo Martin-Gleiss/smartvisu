@@ -881,6 +881,27 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 /**
  * --- W i d g e t s :   B A S I C --------------------------------------------
  */
+[data-widget="basic.badge"] {
+	position: relative;
+}
+[data-widget="basic.badge"] span {
+	position: absolute;
+	display: inline-block;
+	height:1.5rem;
+	right: 0px;
+	top: -15px;
+	min-width: 1.3rem;
+	padding: 0 .1rem;
+	white-space: nowrap;
+	overflow: visible;
+	text-align: center;
+	line-height: 1.5rem;;
+	font-size: 1rem;
+	border-radius: 50%;
+	background: red;
+	color:white;
+}
+
 .switch {
 	display: inline-block;
 }

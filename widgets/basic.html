@@ -100,6 +100,22 @@
 
 {% endmacro %}
 
+/**
+* Widget for displaying a notification badge
+*
+* @param unique id for this widget (optional)
+* @param the item providing the value to show in badge
+* @param array of upper thresholds; the color according to greatest reached threshold is applied (optional)
+* @param array of colors or 'hidden' to not diplay (optional, default red)
+the first one is the base color for values below first threshold, so pass one color more than thresholds.
+*/
+
+{% macro badge(id, item, threshold, color) %}
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.badge" data-item="{{ item }}"
+	data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color)|default('red') }}">
+		<span></span>
+	</span>
+{% endmacro %}
 
 /**
 * Displays a checkbox

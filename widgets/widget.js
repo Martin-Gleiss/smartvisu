@@ -69,6 +69,31 @@ $(document).on('pagecreate', function (bevent, bdata) {
 // ----- b a s i c ------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
+	// ----- basic.badge -------------------------------------------------------
+	$(document).delegate('span[data-widget="basic.badge"]', {
+		'update': function (event, response) {
+			$(this).children('span').text(response[0])
+
+			// coloring
+			var currentIndex = 0;
+			$.each($(this).attr('data-thresholds').explode(), function(index, threshold) {
+				if((isNaN(response[0]) || isNaN(threshold)) ? (threshold > response[0]) : (parseFloat(threshold) > parseFloat(response[0])))
+					return false;
+				currentIndex++;
+			});
+			var color = $(this).attr('data-colors').explode()[currentIndex];
+
+			if(color == 'hidden') {
+				$(this).hide();
+				$(this).children('span').css('background-color', null);
+			}
+			else {
+				$(this).show()
+				$(this).children('span').css('background-color', color);
+			}
+		}
+	});
+
 	// ----- basic.checkbox -------------------------------------------------------
 	$(bevent.target).find('input[data-widget="basic.checkbox"]').on( {
 		'update': function (event, response) {
