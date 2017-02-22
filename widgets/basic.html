@@ -221,9 +221,9 @@
 * @param any valid JavaScript expression with following variables and aggregate functions (optional, default: VAR)
   - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
   - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
-* @param array of thresholds; the color according to greatest reached threshold is applied (optional)
-  Use '' to define base color, e.g. ['', 100] means first color for values below 100, second one for 100 and above
+* @param array of upper thresholds; the color according to greatest reached threshold is applied (optional)
 * @param array of colors; 'icon1' or e. g. '#f00' for red (optional)
+the first one is the base color for values below first threshold, so pass one color more than thresholds.
 *
 * @see misc/fundamentals#Array-Form
 *

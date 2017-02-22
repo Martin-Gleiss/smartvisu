@@ -12,7 +12,7 @@
 
 {% block example %}
 
-	<h5>Example</h5>
+	<h5>Examples</h5>
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 			{{ basic.print('', 'bath.value', 'V') }}
@@ -29,7 +29,22 @@
 		a time: {{ basic.print('', 'bath.time', 'time') }}<br />
 		a custom format (one decimal place): {{ basic.print('', 'bath.value', '%01,1f') }}<br />
 	</div>
-	<br>
+
+	<h5>Colors</h5>
+  Use the slider to control the value
+	{{ basic.slider('', 'bath.light.value') }}
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			static color: {{ basic.print('', 'bath.light.value', '', '', '', '#f00') }}<br />
+			color depending on value: {{ basic.print('', 'bath.light.value', '', '', [100,200], ['green', '', 'icon1']) }}<br />
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+    {{ basic.print('', 'bath.light.value', '', '', '', '#f00') }}<br />
+		{{ basic.print('', 'bath.light.value', '', '', [100,200], ['green', '', 'icon1']) }}<br />
+	</div>
+
+	<h5>Advanced Scripting</h5>
 	basic.print can also be used for some "hacks".<br>
 	The following examples shows how to manipulate or read other elements; but any other JavaScript/jQuery exression can be used.<br>
 	The second example shows text of another element. It does not use the item data at all but it is triggered by receiving an item value.

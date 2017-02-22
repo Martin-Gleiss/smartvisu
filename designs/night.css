@@ -1611,6 +1611,7 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 	fill: #f9a028;
 }
 .switch.icon1,
-.ui-btn.icon1 {
+.ui-btn.icon1,
+[data-widget="basic.print"].icon1 {
 	color: #f9a028;
 }

@@ -51,26 +51,19 @@ $(document).on('pagecreate', function (bevent, bdata) {
 // ----------------------------------------------------------------------------
 
 	var colorizeText = function(widget, value) {
-		var currentIndex = null, currentThreshold = null;
-		if(!isNaN(value)) {
-			$.each($(widget).attr('data-thresholds').explode(), function(index, threshold) {
-				if(threshold == '' && currentThreshold == null) {
-					currentIndex = index;
-				}
-				else if(parseFloat(threshold) <= parseFloat(value) && (currentThreshold == null || currentThreshold <= parseFloat(threshold))) {
-					currentThreshold = parseFloat(threshold);
-					currentIndex = index;
-				}
-			});
-		}
-
-		var color = (currentIndex == null) ? '' : $(widget).attr('data-colors').explode()[currentIndex];
+		var currentIndex = 0;
+		$.each($(widget).attr('data-thresholds').explode(), function(index, threshold) {
+			if((isNaN(value) || isNaN(threshold)) ? (threshold > value) : (parseFloat(threshold) > parseFloat(value)))
+				return false;
+			currentIndex++;
+		});
+		var color = $(widget).attr('data-colors').explode()[currentIndex];
 		if(color == '' || color == 'icon0')
-			$(widget).removeClass('icon1').css('color','');
+			$(widget).removeClass('icon1').css('color', '');
 		else if (color == 'icon1')
-			$(widget).addClass('icon1').css('color','');
+			$(widget).addClass('icon1').css('color', '');
 		else
-			$(widget).removeClass('icon1').css('color',color);
+			$(widget).removeClass('icon1').css('color', color);
 	}
 
 // ----- b a s i c ------------------------------------------------------------
