@@ -70,9 +70,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 // ----------------------------------------------------------------------------
 
 	// ----- basic.badge -------------------------------------------------------
-	$(document).delegate('span[data-widget="basic.badge"]', {
+	$(bevent.target).find('span[data-widget="basic.badge"]').on( {
 		'update': function (event, response) {
-			$(this).children('span').text(response[0])
+			event.stopPropagation();
+			$(this).children('span').text(response[0]);
 
 			// coloring
 			var currentIndex = 0;
@@ -84,12 +85,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var color = $(this).attr('data-colors').explode()[currentIndex];
 
 			if(color == 'hidden') {
-				$(this).hide();
-				$(this).children('span').css('background-color', null);
+				$(this).children('span').hide().css('background-color', null);
 			}
 			else {
-				$(this).show()
-				$(this).children('span').css('background-color', color);
+				$(this).children('span').show().css('background-color', color);
 			}
 		}
 	});
