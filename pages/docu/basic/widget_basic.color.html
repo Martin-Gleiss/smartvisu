@@ -40,4 +40,26 @@
 		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8, 'rect') }} 6 steps and 8 colors
 	</div>
 
+	HSL and HSV color space
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.l', '', '', '', '', 'rect', 'hsl') }}
+		{{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.v', '', '', '', '', '', 'hsv') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.l', '', '', '', '', 'rect', 'hsl') }}
+		{{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.v', '', '', '', '', '', 'hsv') }}
+	</div>
+
+	Values as list in a single item
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.color('', 'bath.color.rgb') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.color('', 'bath.color.rgb') }}
+	</div>
+
 {% endblock %}

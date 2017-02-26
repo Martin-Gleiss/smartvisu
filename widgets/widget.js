@@ -114,11 +114,38 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 			var max = parseFloat($(this).attr('data-max'));
 			var min = parseFloat($(this).attr('data-min'));
-			
-			$(this).find('span').css('background-color', 'rgb(' + 
-				Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 255) + ',' +
-				Math.round(Math.min(Math.max((response[1] - min) / (max - min), 0), 1) * 255) + ',' +
-				Math.round(Math.min(Math.max((response[2] - min) / (max - min), 0), 1) * 255) + ')');
+
+			if(response.length == 1) // all values as list in one item
+				values = response[0];
+			else
+				values = response;
+
+			var rgb;
+			switch($(this).attr('data-colormodel')) {
+				case 'rgb':
+					rgb = [
+						Math.round(Math.min(Math.max((values[0] - min) / (max - min), 0), 1) * 255),
+						Math.round(Math.min(Math.max((values[1] - min) / (max - min), 0), 1) * 255),
+						Math.round(Math.min(Math.max((values[2] - min) / (max - min), 0), 1) * 255)
+					];
+					break;
+				case 'hsl':
+					rgb = fx.hsl2rgb(
+						Math.round(Math.min(Math.max((values[0] - min) / (max - min), 0), 1) * 360),
+						Math.round(Math.min(Math.max((values[1] - min) / (max - min), 0), 1) * 100),
+						Math.round(Math.min(Math.max((values[2] - min) / (max - min), 0), 1) * 100)
+					);
+					break;
+				case 'hsv':
+					rgb = fx.hsv2rgb(
+						Math.round(Math.min(Math.max((values[0] - min) / (max - min), 0), 1) * 360),
+						Math.round(Math.min(Math.max((values[1] - min) / (max - min), 0), 1) * 100),
+						Math.round(Math.min(Math.max((values[2] - min) / (max - min), 0), 1) * 100)
+					);
+					break;
+			}
+
+			$(this).find('span').css('background-color', 'rgb(' + rgb.join(',') + ')');
 		}
 	})
 	// color in rectangular display (as former basic.rgb)
@@ -134,15 +161,15 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			
 			for (var s = step ; s <= (100-step/2); s += step) {
 				for (var i = 0; i < colors; i++) {
-					html += '<div data-s="'+s+'" style="background-color:' + fx.hsv2rgb(i * share, s, 100) + ';"></div>';
+					html += '<div data-s="'+s+'" style="background-color: rgb(' + fx.hsv2rgb(i * share, s, 100).join(',') + ');"></div>';
 				}
-				html += '<div style="background-color:' + fx.hsv2rgb(0, 0, 100 - (s / step - 1) * 16.7) + ';"></div><br />';
+				html += '<div style="background-color: rgb(' + fx.hsv2rgb(0, 0, 100 - (s / step - 1) * 16.7).join(',') + ');"></div><br />';
 			}
 			for (var v = 100 - step * ((steps + 1) % 2)/2; v >= step/2; v -= step) {
 				for (var i = 0; i < colors; i++) {
-					html += '<div data-v="'+v+'" style="background-color:' + fx.hsv2rgb(i * share, 100, v) + ';"></div>';
+					html += '<div data-v="'+v+'" style="background-color: rgb(' + fx.hsv2rgb(i * share, 100, v).join(',') + ');"></div>';
 				}
-				html += '<div style="background-color:' + fx.hsv2rgb(0, 0, (v / step - 1) * 16.7) + ';"></div><br />';
+				html += '<div style="background-color: rgb(' + fx.hsv2rgb(0, 0, (v / step - 1) * 16.7).join(',') + ');"></div><br />';
 			}
 			
 			html += '</div>';
@@ -150,6 +177,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var max = parseFloat($(this).attr('data-max'));
 			var min = parseFloat($(this).attr('data-min'));
 			var items = $(this).attr('data-item').explode();
+			var colormodel = $(this).attr('data-colormodel');
 			
 			$(html).popup({ theme: "a", overlayTheme: "a", positionTo: this }).popup("open")
 			.on("popupafterclose", function() { $(this).remove(); })
@@ -157,11 +185,43 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				'click': function (event) {
 					var rgb = $(this).css('background-color');
 					rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-					
-					io.write(items[0], Math.round(rgb[1] / 255 * (max - min)) + min);
-					io.write(items[1], Math.round(rgb[2] / 255 * (max - min)) + min);
-					io.write(items[2], Math.round(rgb[3] / 255 * (max - min)) + min);
-					
+
+					var values;
+					switch(colormodel) {
+						case 'rgb':
+							values = [
+								Math.round(rgb[1] / 255 * (max - min)) + min,
+								Math.round(rgb[2] / 255 * (max - min)) + min,
+								Math.round(rgb[3] / 255 * (max - min)) + min
+							];
+							break;
+						case 'hsl':
+							values = fx.rgb2hsl(rgb[1],rgb[2],rgb[3]);
+							values = [
+								Math.round(values[0] / 360 * (max - min)) + min,
+								Math.round(values[1] / 100 * (max - min)) + min,
+								Math.round(values[2] / 100 * (max - min)) + min
+							];
+							break;
+						case 'hsv':
+							values = fx.rgb2hsv(rgb[1],rgb[2],rgb[3]);
+							values = [
+								Math.round(values[0] / 360 * (max - min)) + min,
+								Math.round(values[1] / 100 * (max - min)) + min,
+								Math.round(values[2] / 100 * (max - min)) + min
+							];
+							break;
+					}
+
+					if(items[1] == '') { // all values as list in one item
+						io.write(items[0], values);
+					}
+					else {
+						io.write(items[0], values[0]);
+						io.write(items[1], values[1]);
+						io.write(items[2], values[2]);
+					}
+
 					$(this).parent().popup('close');
 				},
 				
@@ -184,19 +244,19 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var colors = parseInt($(this).attr('data-colors'));
 			var steps = parseInt($(this).attr('data-step'));
 			var step = Math.round(2 * 100 / (steps + 1) * 10000) / 10000;
-	
+
 			var arc = Math.PI / (colors + 2) * 2;
 			var startangle = arc - Math.PI / 2;
 			var gauge = (size - 2) / 2 / (steps + 1);
 			var share = 360 / colors;
 			var center = size / 2;
-	
+
 			if (canvas[0].getContext) {
 				var ctx = canvas[0].getContext("2d");
 				ctx.canvas.width = size;
 				ctx.canvas.height = size;
 				canvas.width(size).height(size);
-	
+
 				// draw background
 				ctx.beginPath();
 				ctx.fillStyle = '#888';
@@ -213,7 +273,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				ctx.fillStyle = '#555';
 				ctx.arc(center, center, size / 2 - 2, 0, 2 * Math.PI, false);
 				ctx.fill();
-	
+
 				// draw colors
 				for (var i = 0; i <= colors; i++) {
 					var angle = startangle + i * arc;
@@ -221,7 +281,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					var h = i * share;
 					for (var v = step; v <= 100 - step/2; v += step) {
 						ctx.beginPath();
-						ctx.fillStyle = fx.hsv2rgb(h, 100, v);
+						ctx.fillStyle = 'rgb('+fx.hsv2rgb(h, 100, v).join(',')+')';
 						ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
 						ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
 						ctx.fill();
@@ -229,39 +289,40 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					}
 					for (var s = (100 - step * ((steps + 1) % 2)/2); s >= step/2; s -= step) {
 						ctx.beginPath();
-						ctx.fillStyle = fx.hsv2rgb(h, s, 100);
+						ctx.fillStyle = 'rgb('+fx.hsv2rgb(h, s, 100).join(',')+')';
 						ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
 						ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
 						ctx.fill();
 						ring += 1;
 					}
 				}
-	
+
 				// draw grey
 				angle = startangle - 2 * arc;
 				ring = 1;
 				h = i * share;
 				for (var v = step; v <= 100; v += (step / 2)) {
 					ctx.beginPath();
-					ctx.fillStyle = fx.hsv2rgb(h, 0, v);
+					ctx.fillStyle = 'rgb('+fx.hsv2rgb(h, 0, v).join(',')+')';
 					ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + 2 * arc + 0.01, false);
 					ctx.arc(center, center, ring * gauge, angle + 2 * arc + 0.01, angle, true);
 					ctx.fill();
 					ring += 1;
 				}
-	
+
 				// draw center
 				ctx.beginPath();
 				ctx.fillStyle = 'rgb(0,0,0)';
 				ctx.arc(center, center, gauge + 1, 0, 2 * Math.PI, false);
 				ctx.fill();
-			
+
 			}
-					
+
 			var max = parseFloat($(this).attr('data-max'));
 			var min = parseFloat($(this).attr('data-min'));
 			var items = $(this).attr('data-item').explode();
-			
+			var colormodel = $(this).attr('data-colormodel');
+
 			// event handler on color select
 			canvas.popup({ theme: 'none', overlayTheme: 'a', shadow: false, positionTo: this }).popup("open")
 			.on( {
@@ -273,11 +334,43 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 					var rgb = canvas[0].getContext("2d").getImageData(x, y, 1, 1).data;
 					// DEBUG: console.log([rgb[0], rgb[1], rgb[2], rgb[3]]);
-					
-					if(rgb[3] > 0) { // set only, if selected color is not transparent
-						io.write(items[0], Math.round(rgb[0] / 255 * (max - min)) + min);
-						io.write(items[1], Math.round(rgb[1] / 255 * (max - min)) + min);
-						io.write(items[2], Math.round(rgb[2] / 255 * (max - min)) + min);
+
+					if(rgb[3] > 0) { // set only if selected color is not transparent
+						var values;
+						switch(colormodel) {
+							case 'rgb':
+								values = [
+									Math.round(rgb[0] / 255 * (max - min)) + min,
+									Math.round(rgb[1] / 255 * (max - min)) + min,
+									Math.round(rgb[2] / 255 * (max - min)) + min
+								];
+								break;
+							case 'hsl':
+								values = fx.rgb2hsl(rgb[0],rgb[1],rgb[2]);
+								values = [
+									Math.round(values[0] / 360 * (max - min)) + min,
+									Math.round(values[1] / 100 * (max - min)) + min,
+									Math.round(values[2] / 100 * (max - min)) + min
+								];
+								break;
+							case 'hsv':
+								values = fx.rgb2hsv(rgb[0],rgb[1],rgb[2]);
+								values = [
+									Math.round(values[0] / 360 * (max - min)) + min,
+									Math.round(values[1] / 100 * (max - min)) + min,
+									Math.round(values[2] / 100 * (max - min)) + min
+								];
+								break;
+						}
+
+						if(items[1] == '') { // all values as list in one item
+							io.write(items[0], values);
+						}
+						else {
+							io.write(items[0], values[0]);
+							io.write(items[1], values[1]);
+							io.write(items[2], values[2]);
+						}
 					}
 					
 					$(this).popup("close");

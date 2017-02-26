@@ -4,7 +4,7 @@
 - ID is now optional in most widgets
 - New: basic.stateswitch (improves and supersedes basic.button, basic.dual, basic.multistate and basic.switch)
 - New: basic.print (improves and supersedes basic.float, basic.formula and basic.value)
-- New: basic.color (supersedes basic.colordisc and basic.rgb)
+- New: basic.color (supersedes basic.colordisc and basic.rgb) with new parameter 'colormodel' for HSV or HSL model and possibility to pass values as list in one item
 - New: basic.badge (displays a notification badge)
 - New: device.uzsuicon (to control UZSU in smarthome.py and FHEM)
 - New: calendar.waste (compact view of waste collection dates)

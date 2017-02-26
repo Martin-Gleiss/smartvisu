@@ -143,24 +143,28 @@ the first one is the base color for values below first threshold, so pass one co
 * Displays a color selector
 *
 * @param unique id for this widget (optional)
-* @param an item for the red value
-* @param an item for the green value
-* @param an item for the blue value
+* @param an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
+* @param an item for the green value in RGB model or saturation in HSL and HSV model
+(to let blank if first item contains list of all values)
+* @param an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
+(to let blank if first item contains list of all values)
 * @param minimum value if the light is off (optional, default 0)
-* @param maximum value if the light is full on (optional, default 255)
+* @param maximum value if the light is full on (optional, default 255 for rgb, 100 for hsl/hsv)
 * @param number of shades per color (optional, default 7)
 * @param number of colored segments (optional, default 10)
 * @param 'disc' for circular or 'rect' for rectangular view (optional, default: disc)
+* @param possible values: 'rgb', 'hsl' and 'hsv' (optional, default: rgb)
 *
 * @author Martin Gleiß and Stefan Widmer
 * @info inspired by Marcus Popp
 */
-{% macro color(id, item_r, item_g, item_b, min, max, steps, colors, style) %}
+{% macro color(id, item_r_h, item_g_s, item_b_l_v, min, max, steps, colors, style, colormodel) %}
 	{% set style = style|default('disc') %}
 	
-	<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.color" data-style="{{ style }}" 
-		data-item="{{ item_r }}, {{ item_g }}, {{ item_b }}"
-		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.color"
+		data-style="{{ style }}" data-colormodel="{{ colormodel|default('rgb') }}"
+		data-item="{{ item_r_h }}, {{ item_g_s }}, {{ item_b_l_v }}"
+		data-min="{{ min|default('0') }}" data-max="{{ max|default(colormodel == 'hsl' or colorspace == 'hsv' ? 100 : 255) }}"
 		data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
 		class="colordisc"><span></span></a>
 	
