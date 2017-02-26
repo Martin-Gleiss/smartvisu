@@ -145,6 +145,7 @@ var io = {
 			catch(e) {}
 			widget.update(item, val);
 		})
+		.fail(notify.json)
 	},
 
 	/**
@@ -167,6 +168,7 @@ var io = {
 				io.start();
 			}
 		})
+		.fail(notify.json)
 	},
 
 	/**
@@ -195,6 +197,7 @@ var io = {
 					widget.update(item, val);
 				})
 			})
+			.fail(notify.json)
 		}
 
 		// plots

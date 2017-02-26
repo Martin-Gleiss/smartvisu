@@ -49,14 +49,22 @@ class driver_offline
 
 		$this->fp = fopen($this->filename, 'r+');
 
-		if ($this->fp)
+		if (!$this->fp) {
+      $this->throwError("Could not open file '".$this->filename."'");
+			return;
+		}
+
+		if (!flock($this->fp, LOCK_EX)) {  // acquire an exclusive lock
+			fclose($this->fp);
+			$this->throwError("Could not aquire lock on file '".$this->filename."'");
+			return;
+		}
+
+		while (($line = fgets($this->fp, 10240)) !== false)
 		{
-			while (($line = fgets($this->fp, 10240)) !== false)
-			{
-				list($item, $val) = explode('=', $line, 2);
-				$val = trim($val);
-				$ret[trim($item)] = $val;
-			}
+			list($item, $val) = explode('=', $line, 2);
+			$val = trim($val);
+			$ret[trim($item)] = $val;
 		}
 
 		return $ret;
@@ -69,19 +77,29 @@ class driver_offline
 	{
 		if ($this->fp)
 		{
-			fseek($this->fp, 0, SEEK_SET);
+			ftruncate($this->fp, 0);      // truncate file
 
 			foreach ($data as $item => $val)
 			{
-				if ($item != '')
+				if ($item != '') {
 					fwrite($this->fp, $item);
 					fwrite($this->fp, ' = ');
 					fwrite($this->fp, $val);
 					fwrite($this->fp, "\r\n");
+				}
 			}
 
+			fflush($this->fp);            // flush output before releasing the lock
+			flock($this->fp, LOCK_UN);    // release the lock
 			fclose($this->fp);
 		}
+	}
+
+	private function throwError($text)
+	{
+		header("HTTP/1.0 600 smartVISU Error");
+		echo json_encode(array('title' => 'I/O Offline', 'text' =>$text));
+		exit;
 	}
 
 	/**
