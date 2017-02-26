@@ -87,9 +87,9 @@
 		ret = ret.replace(/./g, function(char) {
 			switch (char) {
 				case 'l':
-					return weekday[(val.getDay() + 1) % 7];
+					return weekday[val.getDay()];
 				case 'D':
-					return shortday[(val.getDay() + 1) % 7];
+					return shortday[val.getDay()];
 				case 'd':
 					return ('0' + val.getDate()).slice(-2);
 				case 'j':
