@@ -107,45 +107,71 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	});
 
 	// ----- basic.color ------------------------------------------------------
-	$(bevent.target).find('a[data-widget="basic.color"]').on( {
+	$(bevent.target).find('[data-widget="basic.color"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_r }}, {{ gad_g }}, {{ gad_b }}
 
-			var max = parseFloat($(this).attr('data-max'));
-			var min = parseFloat($(this).attr('data-min'));
+			var max = $(this).attr('data-max').explode();
+			var min = $(this).attr('data-min').explode();
+			// ensure max and min as array of 3 floats (fill by last value if array is shorter)
+			for(var i = 0; i <= 2; i++) {
+				max[i] = parseFloat(max[Math.min(i, max.length-1)])
+				min[i] = parseFloat(min[Math.min(i, min.length-1)])
+			}
 
 			if(response.length == 1) // all values as list in one item
 				values = response[0];
 			else
 				values = response;
 
-			var rgb;
+			var rgb, hsl, hsv;
 			switch($(this).attr('data-colormodel')) {
 				case 'rgb':
 					rgb = [
-						Math.round(Math.min(Math.max((values[0] - min) / (max - min), 0), 1) * 255),
-						Math.round(Math.min(Math.max((values[1] - min) / (max - min), 0), 1) * 255),
-						Math.round(Math.min(Math.max((values[2] - min) / (max - min), 0), 1) * 255)
+						Math.round(Math.min(Math.max((values[0] - min[0]) / (max[0] - min[0]), 0), 1) * 255),
+						Math.round(Math.min(Math.max((values[1] - min[1]) / (max[1] - min[1]), 0), 1) * 255),
+						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 255)
 					];
+					hsl = fx.rgb2hsl(rgb[0], rgb[1], rgb[2]);
+					hsv = fx.rgb2hsv(rgb[0], rgb[1], rgb[2]);
 					break;
 				case 'hsl':
-					rgb = fx.hsl2rgb(
-						Math.round(Math.min(Math.max((values[0] - min) / (max - min), 0), 1) * 360),
-						Math.round(Math.min(Math.max((values[1] - min) / (max - min), 0), 1) * 100),
-						Math.round(Math.min(Math.max((values[2] - min) / (max - min), 0), 1) * 100)
-					);
+					hsl = [
+						Math.round(Math.min(Math.max((values[0] - min[0]) / (max[0] - min[0]), 0), 1) * 360),
+						Math.round(Math.min(Math.max((values[1] - min[1]) / (max[1] - min[1]), 0), 1) * 100),
+						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 100)
+					];
+					rgb = fx.hsl2rgb(hsl[0], hsl[1], hsl[2]);
+					hsv = fx.hsv2hsl(hsl[0], hsl[1], hsl[2]);
 					break;
 				case 'hsv':
-					rgb = fx.hsv2rgb(
-						Math.round(Math.min(Math.max((values[0] - min) / (max - min), 0), 1) * 360),
-						Math.round(Math.min(Math.max((values[1] - min) / (max - min), 0), 1) * 100),
-						Math.round(Math.min(Math.max((values[2] - min) / (max - min), 0), 1) * 100)
-					);
+					hsv = [
+						Math.round(Math.min(Math.max((values[0] - min[0]) / (max[0] - min[0]), 0), 1) * 360),
+						Math.round(Math.min(Math.max((values[1] - min[1]) / (max[1] - min[1]), 0), 1) * 100),
+						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 100)
+					];
+					rgb = fx.hsv2rgb(hsv[0], hsv[1], hsv[2]);
+					hsl = fx.hsv2hsl(hsv[0], hsv[1], hsv[2]);
 					break;
 			}
 
-			$(this).find('span').css('background-color', 'rgb(' + rgb.join(',') + ')');
+			if($(this).attr('data-style') == 'slider') {
+				// set slider background color
+				//var brightness = hsl[2]+hsl[1]/2*(1-Math.abs(2*hsl[2]/100-1)); // value/brightness in HSV is HSL minimal saturation (also used to calculate maximal saturation and maximal lightness)
+				$(this).find('.color-hue .ui-slider-track').css('background-image', 'linear-gradient(90deg, hsl(0,'+hsl[1]+'%,'+hsl[2]+'%), hsl(60,'+hsl[1]+'%,'+hsl[2]+'%), hsl(120,'+hsl[1]+'%,'+hsl[2]+'%), hsl(180,'+hsl[1]+'%,'+hsl[2]+'%), hsl(240,'+hsl[1]+'%,'+hsl[2]+'%), hsl(300,'+hsl[1]+'%,'+hsl[2]+'%), hsl(360,'+hsl[1]+'%,'+hsl[2]+'%))');
+				$(this).find('.color-saturation .ui-slider-track').css('background-image', 'linear-gradient(90deg, hsl('+hsl[0]+',0%,'+hsv[2]+'%), hsl('+hsl[0]+',100%,'+Math.round(hsv[2]/2)+'%) )');
+				$(this).find('.color-lightness .ui-slider-track').css('background-image', 'linear-gradient(90deg, hsl('+hsl[0]+',0%,0%), hsl('+hsl[0]+',100%,'+Math.round(hsl[2]/hsv[2]*100)+'%) )');
+
+				// refresh slider position
+				$(this).attr('lock', 1);
+				$(this).find('.color-hue input').val(hsv[0]).slider('refresh').attr('mem', hsv[0]);
+				$(this).find('.color-saturation input').val(hsv[1]).slider('refresh').attr('mem', hsv[1]);
+				$(this).find('.color-lightness input').val(hsv[2]).slider('refresh').attr('mem', hsv[2]);
+			}
+			else { // 'rect' or 'circle'
+				$(this).find('span').css('background-color', 'rgb(' + rgb.join(',') + ')');
+			}
 		}
 	})
 	// color in rectangular display (as former basic.rgb)
@@ -174,41 +200,47 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			
 			html += '</div>';
 			
-			var max = parseFloat($(this).attr('data-max'));
-			var min = parseFloat($(this).attr('data-min'));
 			var items = $(this).attr('data-item').explode();
 			var colormodel = $(this).attr('data-colormodel');
-			
+			var max = $(this).attr('data-max').explode();
+			var min = $(this).attr('data-min').explode();
+			// ensure max and min as array of 3 floats (fill by last value if array is shorter)
+			for(var i = 0; i <= 2; i++) {
+				max[i] = parseFloat(max[Math.min(i, max.length-1)])
+				min[i] = parseFloat(min[Math.min(i, min.length-1)])
+			}
+
+
 			$(html).popup({ theme: "a", overlayTheme: "a", positionTo: this }).popup("open")
 			.on("popupafterclose", function() { $(this).remove(); })
 			.children('div').on( {
 				'click': function (event) {
 					var rgb = $(this).css('background-color');
-					rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+					var values = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+					values.shift(); // remove match of hole string
 
-					var values;
 					switch(colormodel) {
 						case 'rgb':
 							values = [
-								Math.round(rgb[1] / 255 * (max - min)) + min,
-								Math.round(rgb[2] / 255 * (max - min)) + min,
-								Math.round(rgb[3] / 255 * (max - min)) + min
+								Math.round(values[0] / 255 * (max[0] - min[0])) + min[0],
+								Math.round(values[1] / 255 * (max[1] - min[1])) + min[1],
+								Math.round(values[2] / 255 * (max[2] - min[2])) + min[2]
 							];
 							break;
 						case 'hsl':
-							values = fx.rgb2hsl(rgb[1],rgb[2],rgb[3]);
+							values = fx.rgb2hsl(values[0],values[1],values[2]);
 							values = [
-								Math.round(values[0] / 360 * (max - min)) + min,
-								Math.round(values[1] / 100 * (max - min)) + min,
-								Math.round(values[2] / 100 * (max - min)) + min
+								Math.round(values[0] / 360 * (max[0] - min[0])) + min[0],
+								Math.round(values[1] / 100 * (max[1] - min[1])) + min[1],
+								Math.round(values[2] / 100 * (max[2] - min[2])) + min[2]
 							];
 							break;
 						case 'hsv':
-							values = fx.rgb2hsv(rgb[1],rgb[2],rgb[3]);
+							values = fx.rgb2hsv(values[0],values[1],values[2]);
 							values = [
-								Math.round(values[0] / 360 * (max - min)) + min,
-								Math.round(values[1] / 100 * (max - min)) + min,
-								Math.round(values[2] / 100 * (max - min)) + min
+								Math.round(values[0] / 360 * (max[0] - min[0])) + min[0],
+								Math.round(values[1] / 100 * (max[1] - min[1])) + min[1],
+								Math.round(values[2] / 100 * (max[2] - min[2])) + min[2]
 							];
 							break;
 					}
@@ -318,10 +350,15 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 			}
 
-			var max = parseFloat($(this).attr('data-max'));
-			var min = parseFloat($(this).attr('data-min'));
 			var items = $(this).attr('data-item').explode();
 			var colormodel = $(this).attr('data-colormodel');
+			var max = $(this).attr('data-max').explode();
+			var min = $(this).attr('data-min').explode();
+			// ensure max and min as array of 3 floats (fill by last value if array is shorter)
+			for(var i = 0; i <= 2; i++) {
+				max[i] = parseFloat(max[Math.min(i, max.length-1)])
+				min[i] = parseFloat(min[Math.min(i, min.length-1)])
+			}
 
 			// event handler on color select
 			canvas.popup({ theme: 'none', overlayTheme: 'a', shadow: false, positionTo: this }).popup("open")
@@ -332,33 +369,32 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					var x = Math.round(event.pageX - offset.left);
 					var y = Math.round(event.pageY - offset.top);
 
-					var rgb = canvas[0].getContext("2d").getImageData(x, y, 1, 1).data;
+					var values = canvas[0].getContext("2d").getImageData(x, y, 1, 1).data;
 					// DEBUG: console.log([rgb[0], rgb[1], rgb[2], rgb[3]]);
 
-					if(rgb[3] > 0) { // set only if selected color is not transparent
-						var values;
+					if(values[3] > 0) { // set only if selected color is not transparent
 						switch(colormodel) {
 							case 'rgb':
 								values = [
-									Math.round(rgb[0] / 255 * (max - min)) + min,
-									Math.round(rgb[1] / 255 * (max - min)) + min,
-									Math.round(rgb[2] / 255 * (max - min)) + min
+									Math.round(values[0] / 255 * (max[0] - min[0])) + min[0],
+									Math.round(values[1] / 255 * (max[1] - min[1])) + min[1],
+									Math.round(values[2] / 255 * (max[2] - min[2])) + min[2]
 								];
 								break;
 							case 'hsl':
-								values = fx.rgb2hsl(rgb[0],rgb[1],rgb[2]);
+								values = fx.rgb2hsl(values[0],values[1],values[2]);
 								values = [
-									Math.round(values[0] / 360 * (max - min)) + min,
-									Math.round(values[1] / 100 * (max - min)) + min,
-									Math.round(values[2] / 100 * (max - min)) + min
+									Math.round(values[0] / 360 * (max[0] - min[0])) + min[0],
+									Math.round(values[1] / 100 * (max[1] - min[1])) + min[1],
+									Math.round(values[2] / 100 * (max[2] - min[2])) + min[2]
 								];
 								break;
 							case 'hsv':
-								values = fx.rgb2hsv(rgb[0],rgb[1],rgb[2]);
+								values = fx.rgb2hsv(values[0],values[1],values[2]);
 								values = [
-									Math.round(values[0] / 360 * (max - min)) + min,
-									Math.round(values[1] / 100 * (max - min)) + min,
-									Math.round(values[2] / 100 * (max - min)) + min
+									Math.round(values[0] / 360 * (max[0] - min[0])) + min[0],
+									Math.round(values[1] / 100 * (max[1] - min[1])) + min[1],
+									Math.round(values[2] / 100 * (max[2] - min[2])) + min[2]
 								];
 								break;
 						}
@@ -378,7 +414,82 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			});
 
 		}
+	})
+	.end().filter('div[data-style="slider"]').find('input').on( {
+		'slidestop': function (event) {
+			if ($(this).val() != $(this).attr('mem')) {
+				$(this).trigger('click');
+			}
+		},
+
+		'change': function (event) {
+			// DEBUG: console.log("[basic.slider] change '" + this.id + "': " + $(this).val() + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));
+			if (( $(this).attr('timer') === undefined || $(this).attr('timer') == 0 && $(this).attr('lock') == 0 )
+				&& ($(this).val() != $(this).attr('mem'))) {
+
+				if ($(this).attr('timer') !== undefined) {
+					$(this).trigger('click');
+				}
+
+				$(this).attr('timer', 1);
+				setTimeout(function(slider) { $(slider).attr('timer', 0); }, 400, this);
+			}
+
+			$(this).attr('lock', 0);
+		},
+
+		'click': function (event) {
+			var widget = $(this).closest('div[data-style="slider"]');
+			var colormodel = widget.attr('data-colormodel');
+			var max = widget.attr('data-max').explode();
+			var min = widget.attr('data-min').explode();
+			// ensure max and min as array of 3 floats (fill by last value if array is shorter)
+			for(var i = 0; i <= 2; i++) {
+				max[i] = parseFloat(max[Math.min(i, max.length-1)])
+				min[i] = parseFloat(min[Math.min(i, min.length-1)])
+			}
+
+			// get value of all 3 sliders
+			var values = widget.find('input').map(function(){ return $(this).val(); }).get();
+			switch(colormodel) {
+				case 'rgb':
+					values = fx.hsv2rgb(values[0],values[1],values[2]);
+					values = [
+						Math.round(values[0] / 255 * (max[0] - min[0])) + min[0],
+						Math.round(values[1] / 255 * (max[1] - min[1])) + min[1],
+						Math.round(values[2] / 255 * (max[2] - min[2])) + min[2]
+					];
+					break;
+				case 'hsl':
+					values = fx.hsv2hsl(values[0],values[1],values[2]);
+					values = [
+						Math.round(values[0] / 360 * (max[0] - min[0])) + min[0],
+						Math.round(values[1] / 100 * (max[1] - min[1])) + min[1],
+						Math.round(values[2] / 100 * (max[2] - min[2])) + min[2]
+					];
+					break;
+				case 'hsv':
+					values = [
+						Math.round(values[0] / 360 * (max[0] - min[0])) + min[0],
+						Math.round(values[1] / 100 * (max[1] - min[1])) + min[1],
+						Math.round(values[2] / 100 * (max[2] - min[2])) + min[2]
+					];
+					break;
+			}
+
+			var items = widget.attr('data-item').explode();
+			if(items[1] == '') { // all values as list in one item
+				io.write(items[0], values);
+			}
+			else {
+				io.write(items[0], values[0]);
+				io.write(items[1], values[1]);
+				io.write(items[2], values[2]);
+			}
+		}
 	});
+
+	;
 
 	// ----- basic.maptext --------------------------------------------------------
 	$(bevent.target).find('span[data-widget="basic.maptext"]').on( {
@@ -598,7 +709,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 		'slidestop': function (event) {
 			if ($(this).val() != $(this).attr('mem')) {
-				io.write($(this).attr('data-item'), $(this).val());
+				$(this).trigger('click');
 			}
 		},
 

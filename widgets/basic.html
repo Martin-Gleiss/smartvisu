@@ -148,11 +148,11 @@ the first one is the base color for values below first threshold, so pass one co
 (to let blank if first item contains list of all values)
 * @param an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
 (to let blank if first item contains list of all values)
-* @param minimum value if the light is off (optional, default 0)
-* @param maximum value if the light is full on (optional, default 255 for rgb, 100 for hsl/hsv)
+* @param minimum value if the light is off; single value or list of values for each component (optional, default 0)
+* @param maximum value if the light is full on; single value or list of values for each component (optional, default 255 for rgb, [360,100,100] for hsl & hsv)
 * @param number of shades per color (optional, default 7)
 * @param number of colored segments (optional, default 10)
-* @param 'disc' for circular or 'rect' for rectangular view (optional, default: disc)
+* @param 'disc' for circular, 'rect' for rectangular view, 'slider' for HSV sliders (optional, default: disc)
 * @param possible values: 'rgb', 'hsl' and 'hsv' (optional, default: rgb)
 *
 * @author Martin Gleiß and Stefan Widmer
@@ -161,13 +161,35 @@ the first one is the base color for values below first threshold, so pass one co
 {% macro color(id, item_r_h, item_g_s, item_b_l_v, min, max, steps, colors, style, colormodel) %}
 	{% set style = style|default('disc') %}
 	
-	<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.color"
-		data-style="{{ style }}" data-colormodel="{{ colormodel|default('rgb') }}"
-		data-item="{{ item_r_h }}, {{ item_g_s }}, {{ item_b_l_v }}"
-		data-min="{{ min|default('0') }}" data-max="{{ max|default(colormodel == 'hsl' or colorspace == 'hsv' ? 100 : 255) }}"
-		data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
-		class="colordisc"><span></span></a>
-	
+	{% if style == 'slider' %}
+		{% import _self as basic %}
+		<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.color"
+			data-style="{{ style }}" data-colormodel="{{ colormodel|default('rgb') }}"
+			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colorspace == 'hsv' ? [360,100,100] : 255)) }}"
+			data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
+			data-item="{{ item_r_h }}, {{ item_g_s }}, {{ item_b_l_v }}"
+			>
+			<div class="color-hue">
+				<input type="range" value="0" min="0" max="360" step="1"
+					orientation="horizontal" handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
+			</div>
+			<div class="color-saturation">
+				<input type="range" value="0" min="0" max="100" step="1"
+					orientation="horizontal" handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
+			</div>
+			<div class="color-lightness">
+				<input type="range" value="0" min="0" max="100" step="1"
+					orientation="horizontal" handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
+			</div>
+		</div>
+	{% else %}
+		<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.color"
+			data-style="{{ style }}" data-colormodel="{{ colormodel|default('rgb') }}"
+			data-item="{{ item_r_h }}, {{ item_g_s }}, {{ item_b_l_v }}"
+			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colorspace == 'hsv' ? [360,100,100] : 255)) }}"
+			data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
+			class="colordisc"><span></span></a>
+	{% endif %}
 {% endmacro %}
 
 

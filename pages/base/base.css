@@ -902,6 +902,10 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	color:white;
 }
 
+[data-widget="basic.color"] .ui-slider-bg {
+	display: none;
+}
+
 .switch {
 	display: inline-block;
 }
