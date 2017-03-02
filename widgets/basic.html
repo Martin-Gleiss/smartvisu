@@ -566,7 +566,7 @@ the first one is the base color for values below first threshold, so pass one co
 */
 {% macro float(id, item, unit, tag, threshold, color) %}
 	{% import _self as basic %}
-	{{ basic.print(id, item, unit, '', threshold, color) }}
+	{{ basic.print(id, item, unit|default('float'), '', threshold, color) }}
 	<script type="text/javascript">console.warn("Use of 'basic.float' is deprecated, use 'basic.print' instead.")</script>
 {% endmacro %}
 
