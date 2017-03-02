@@ -117,6 +117,28 @@
 
 {% block head %}{% endblock %}
 
+<script type="text/javascript">
+	io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
+{% if config_driver_autoreconnect %}
+	activateAutoReconnect();
+{% endif %}
+
+	// Do some actions before page is shown
+	$(document).on('pagebeforeshow', function () {
+		fx.init();
+		repeater.init();
+		widget.prepare();
+	});
+
+	// Run the io and all widgets
+	$(document).on('pageshow', function () {
+		io.run({{ config_driver_realtime }});
+		notify.display();
+	});
+
+	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};
+</script>
+
 {% import "lib.html" as lib %}
 {% import "basic.html" as basic %}
 {% import "calendar.html" as calendar %}
@@ -130,35 +152,7 @@
 {% import "weather.html" as weather %}
 </head>
 
-
 <body>
-
-<script type="text/javascript">
-	io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
-{% if config_driver_autoreconnect %}
-	activateAutoReconnect();
-{% endif %}
-
-	// Do some actions before page is shown
-	$(document).on('pagebeforeshow', function () {
-		fx.init();
-		repeater.init();
-		widget.prepare();
-		// repeater.list();
-	});
-
-	// Run the io and all widgets
-	$(document).on('pageshow', function () {
-		io.run({{ config_driver_realtime }});
-		// console.log('[io] run');       	
-		notify.display();
-		// widget.list();
-	});
-
-	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};
-</script>
-
 {% block body %}{% endblock %}
-
 </body>
 </html>
