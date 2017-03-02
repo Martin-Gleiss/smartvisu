@@ -261,7 +261,7 @@ var io = {
           } else {
             var values = widget.get(items);
             if (widget.check(values)) {
-              io.callUpdateHandler(this, value.list instanceof Array ? values : [values]);
+              io.callUpdateHandler(this, [values]);
 
               // for the icon.* widgets there is a second update handler
               // that we must call. It switches the icon
