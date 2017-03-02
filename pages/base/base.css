@@ -108,6 +108,21 @@ html body .ui-page .hide {
 	font-size: 14px;
 }
 
+.blink {
+	animation: blink 0.5s step-start 0s infinite;
+	-moz-animation: blink 0.5s step-start 0s infinite;
+	-webkit-animation: blink 0.5s step-start 0s infinite;
+}
+@keyframes blink {
+	50% {
+		opacity: 0.0;
+	}
+}
+@-webkit-keyframes blink {
+	50% {
+		opacity: 0.0;
+	}
+}
 
 /**
  * --- j Q u e r y M o b i l e ------------------------------------------------

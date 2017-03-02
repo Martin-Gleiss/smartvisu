@@ -744,6 +744,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var val = response.toString().trim();
 			// hide all states
 			$(this).next('a[data-widget="basic.stateswitch"][data-index]').insertBefore($(this).children('a:eq(' + $(this).next('a[data-widget="basic.stateswitch"][data-index]').attr('data-index') + ')'));
+			// stop activity indicator
+			$(this).children('a[data-widget="basic.stateswitch"]').trigger('stopIndicator');
 			// show the first corrseponding to value. If none corrseponds, the last one will be shown by using .addBack(':last') and .first()
 			$(this).after($(this).children('a[data-widget="basic.stateswitch"]').filter('[data-val="' + val + '"]:first').addBack(':last').first());
 			// memorise the value for next use
@@ -767,6 +769,34 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			io.write(widget.attr('data-item'), new_val);
 			// memorise the value for next use
 			widget.attr('data-value', new_val);
+			// activity indicator
+			var indicatorType = widget.attr('data-indicator-type');
+			var indicatorDuration = parseInt(widget.attr('data-indicator-duration'));
+			if(indicatorType && indicatorDuration > 0) {
+				// add one time event to stop indicator
+				$(this).one('stopIndicator',function(event) {
+					clearTimeout($(this).data('indicator-timer'));
+					event.stopPropagation();
+					var prevColor = $(this).attr('data-col');
+					if(prevColor != null) {
+						if(prevColor != 'icon1')
+							$(this).removeClass('icon1').find('svg').removeClass('icon1');
+						if(prevColor != 'blink')
+							$(this).removeClass('blink').find('svg').removeClass('blink');
+						if(prevColor == 'icon1' || prevColor == 'icon0')
+							prevColor = '';
+						$(this).css('color', prevColor).find('svg').css('fill', prevColor).css('stroke', prevColor);
+					}
+				})
+				// set timer to stop indicator after timeout
+				.data('indicator-timer', setTimeout(function() { $(this).trigger('stopIndicator') }, indicatorDuration*1000 ));
+				// start indicator
+				if(indicatorType == 'icon1' || indicatorType == 'icon0' || indicatorType == 'blink') {
+					$(this).addClass(indicatorType).find('svg').addClass(indicatorType);
+					indicatorType = '';
+				}
+				$(this).css('color', indicatorType).find('svg').css('fill', indicatorType).css('stroke', indicatorType);
+			}
 		}
 	})
 	// init

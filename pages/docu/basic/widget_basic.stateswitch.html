@@ -13,17 +13,29 @@
 {% block example %}
 
 	<h5>Example</h5>
+	Use dynamic icon
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light(), icon.light('','','bath.light.value')]) }}
-			{% endverbatim %}{% endfilter %}
-		</code>
+		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light(), icon.light('','','bath.light.value')]) }}
+		{% endverbatim %}{% endfilter %}</code>
 	</div>
-
-	Use dynamic icon on button or switch
 	<div class="html">
 		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light(), icon.light('','','bath.light.value')]) }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light(), icon.light('','','bath.light.value')]) }}
+	</div>
+
+	Activity indicator
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.stateswitch('', 'bath.light.switch', 'midi', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['green', '#f00'], 'icon1') }}
+		{{ basic.stateswitch('', 'bath.multistate', 'icon', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], ['Down', 'Left', 'Up'], ['icon0', 'icon1', '#f00'], 'green') }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'midi', 0, 'grid', 'Off', '', 'blink') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.stateswitch('', 'bath.light.switch', 'midi', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['green', '#f00'], 'icon1') }}
+		{{ basic.stateswitch('', 'bath.multistate', 'icon', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], ['Down', 'Left', 'Up'], ['icon0', 'icon1', '#f00'], 'green') }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'midi', 0, 'grid', 'Off', '', 'blink') }}
 	</div>
 
 	<h5>Replacement of deprecated widgets</h5>
@@ -42,7 +54,7 @@
 	</div>
 	<div class="html">
 		{{ basic.stateswitch('', 'bath.light.switch', '', 1) }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'midi', 0, 'grid', 'Off', 'icon1') }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'midi', 0, 'grid', 'Off', 'icon1', 'red') }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', 1) }}
 	</div>
 
@@ -83,7 +95,7 @@
 	</div>
 	<div class="html">
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['icon1', '#f00']) }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['icon1', '#f00'], 'green') }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', ['user', 'grid'], '', ['#f00', 'icon1']) }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', 'none', ['On', 'Off']) }}
 	</div>

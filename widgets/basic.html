@@ -61,27 +61,29 @@
 	Hint: Use 'none' to display text only
 * @param array of texts (optional)
 * @param array of colors; 'icon1' or e. g. '#f00' for red or 'hidden' to not diplay (optional, default: icon0)
+* @param activity indicator which is active until response (or a timeout is reached); pass either a color, 'icon1' or 'blink' (optional)
+	The maximal duration can be set in configuration, default is 3 seconds.
 *
 * @see design/design_icons#Icons
 *
 * @author Stefan Widmer
 * @info Based on work of Martin GLEISS and Pierre-Yves KERVIEL
 */
-{% macro stateswitch(id, item, type, value, icon, text, color) %}
+{% macro stateswitch(id, item, type, value, icon, text, color, indicator) %}
 	{% import _self as basic %}
 
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
 	{% set color = color|default(['','icon1']) %}
 
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.stateswitch" data-item="{{ item }}"
-		data-value="{{ value|first }}" data-vals="{{ implode(value) }}"
+		data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ config_indicator_duration|default(3) }}"
 		style="display: none; !important">
 	{% for val in value %}
 		{% set pic = (icon is iterable ? icon[loop.index0] : icon)|deficon('control_on_off.svg') %}
 		{% set pic = pic != 'none' ? pic %} /** set pic to empty if it is 'none' */
 		{% set col = (color is iterable ? color[loop.index0] : color)|default('') %}
 		{% set txt = (text is iterable ? text[loop.index0] : text)|default('') %}
-    <a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" {{ col == 'hidden' ? 'style="visibility: hidden;"'|raw : col != 'icon1' and col != 'icon0' and not col is empty ? ('style="color: ' ~ col ~ ';"')|raw }} class="{{ col == 'icon1' ? 'icon1 ' }}
+    <a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" data-col="{{ col }}" {{ col == 'hidden' ? 'style="visibility: hidden;"'|raw : col != 'icon1' and col != 'icon0' and not col is empty ? ('style="color: ' ~ col ~ ';"')|raw }} class="{{ col == 'icon1' ? 'icon1 ' }}
 			{%- if type == 'icon' -%} /**- display as icon -*/
 				switch ui-link
 			{%- else -%} /**- display as button -*/
