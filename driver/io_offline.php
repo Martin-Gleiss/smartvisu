@@ -78,6 +78,7 @@ class driver_offline
 		if ($this->fp)
 		{
 			ftruncate($this->fp, 0);      // truncate file
+      rewind($this->fp);
 
 			foreach ($data as $item => $val)
 			{
