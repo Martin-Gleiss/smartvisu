@@ -8,7 +8,13 @@
  * -----------------------------------------------------------------------------
  */
 
-// get config-variables 
+// rediret to index.php if requested as default document (prevents issue of double loading same page by different URL)
+if (basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != basename($_SERVER['SCRIPT_NAME'])) {
+  header('Location: index.php?' . parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY) , 301);
+	exit;
+}
+
+// get config-variables
 require_once 'lib/includes.php';
 require_once const_path_system.'functions_twig.php';
 
