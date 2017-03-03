@@ -121,7 +121,7 @@
 <script type="text/javascript">
 	io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
 {% if config_driver_autoreconnect %}
-	activateAutoReconnect();
+	activateAutoReconnect('{{ config_driver_address }}', '{{ config_driver_port }}');
 {% endif %}
 
 	// Do some actions before page is shown
