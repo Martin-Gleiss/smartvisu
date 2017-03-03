@@ -8,6 +8,8 @@
 - New: basic.badge (displays a notification badge)
 - New: device.uzsuicon (to control UZSU in smarthome.py and FHEM)
 - New: calendar.waste (compact view of waste collection dates)
+- New: plot.gauge
+- New: plot.pie
 - Enhanced plot.period, among other things merged functionality of plot.minmaxavg and plot.multiaxis into it
 - plot.temprose: New parameters 'series_label' and 'unit'
 - basic.slider: New parameter 'value_display'

@@ -117,6 +117,11 @@ Highcharts.theme = {
 				color: '#ccc'
 			}
 		},
+		solidgauge: {
+			dataLabels: {
+				color: '#ccc'
+			}
+		},
 		pie: {
 			borderColor: null,
 			borderWidth: 2

@@ -2171,6 +2171,717 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
+	// ----- plot.gauge solid ------------------------------------------------------
+	$(bevent.target).find('div[data-widget="plot.gauge"][data-mode^="solid"]').on( {
+		'update': function (event, response) {
+			event.stopPropagation();
+
+			//debug: console.log("[plot.gauge-solid] '" + this.id + "' update: " + response);
+
+			var stop = [];
+			if ($(this).attr('data-stop') && $(this).attr('data-color')) {
+				var datastop = $(this).attr('data-stop').explode();
+				var color = $(this).attr('data-color').explode();
+
+				if (datastop.length == color.length)
+				{
+					for (var i = 0; i < datastop.length; i++) {
+						stop[i] = [ parseFloat(datastop[i])/100, color[i]]
+					}
+				}
+			}
+
+			var unit = $(this).attr('data-unit');
+			var headline = $(this).attr('data-label') ? $(this).attr('data-label') : null;
+
+			var axis = $(this).attr('data-axis').explode();
+
+			var diff = parseFloat($(this).attr('data-min'));
+			var range = parseFloat($(this).attr('data-max')) - parseFloat($(this).attr('data-min'));
+			var percent = (((response - diff) * 100) / range);
+
+			var options = {
+				chart: {
+					type: 'solidgauge',
+					margin: [0, 15, 0, 15],
+					spacing: [0, 0, 5, 0]
+				},
+
+				title: {
+					text: headline,
+					verticalAlign: 'middle',
+					y: -20
+				},
+
+				pane: {
+					center: ['50%', '50%'],
+					//startAngle: depends on type, see below,
+					//endAngle: depends on type, see below,
+					background: [{
+						outerRadius: '100%',
+						innerRadius: '60%',
+						shape: 'arc'
+					}]
+				},
+
+				tooltip: {
+					enabled: false
+				},
+
+				// the value axis
+				yAxis: {
+					min: 0,
+					max: 100,
+					stops: stop.length > 0 ? stop : null,
+					lineWidth: 0,
+					gridLineColor: 'transparent',
+					minorTickInterval: null,
+					tickAmount: 2,
+					labels: {
+						distance: -15,
+						step: 1,
+						enabled: true,
+						formatter: function () { return (((this.value * range) / 100) + diff); }
+					}
+				},
+
+				plotOptions: {
+					solidgauge: {
+						dataLabels: {
+							borderWidth: 0,
+							useHTML: true
+						}
+					},
+					linecap: 'round',
+					stickyTracking: false,
+					rounded: true
+				},
+
+				series: [{
+					name: headline,
+					data: [percent],
+					dataLabels: {
+						formatter: function () { return (((this.y * range) / 100) + diff).transUnit(unit); }
+					}
+				}]
+			}
+
+			var marginBottom;
+      if ($(this).attr('data-mode') == 'solid-half')
+			{
+				options.pane.startAngle = -90;
+				options.pane.endAngle = 90;
+				options.yAxis.labels.y = 16;
+				options.yAxis.labels.distance = -8;
+				options.plotOptions.solidgauge.dataLabels.y = options.title.y = -25;
+				marginBottom = '-40%';
+			}
+			else if ($(this).attr('data-mode') == 'solid-cshape')
+			{
+				options.pane.startAngle = -130;
+				options.pane.endAngle = 130;
+				options.yAxis.labels.y = 20;
+				options.plotOptions.solidgauge.dataLabels.y = options.title.y = -15;
+				marginBottom = '-20%';
+			}
+			else if ($(this).attr('data-mode') == 'solid-circle')
+			{
+				options.pane.startAngle = 0;
+				options.pane.endAngle = 360;
+				options.pane.background.shape = 'circle';
+				options.yAxis.labels.y = -20;
+				options.yAxis.labels.step = 2;
+				options.plotOptions.solidgauge.dataLabels.y = options.title.y = -10;
+			}
+
+			$(this).highcharts(options);
+
+			if(marginBottom) {
+				$(this).find('.highcharts-container').css('margin-bottom', marginBottom);
+			}
+		},
+
+		'point': function (event, response) {
+			if (response)
+			{
+				var diff = parseFloat($(this).attr('data-min'));
+				var range = parseFloat($(this).attr('data-max')) - parseFloat($(this).attr('data-min'));
+				var percent = (((response - diff) * 100) / range);
+				var chart = $(this).highcharts();
+				chart.series[0].points[0].update(percent);
+				chart.redraw();
+			}
+		}
+	});
+
+	// ----- plot.gauge angular ----------------------------------------------------
+	$(bevent.target).find('div[data-widget="plot.gauge"][data-mode="speedometer"], div[data-widget="plot.gauge"][data-mode="scale"]').on( {
+		'update': function (event, response) {
+			event.stopPropagation();
+
+			var headline = $(this).attr('data-label') ? $(this).attr('data-label') : null;
+			var unit = $(this).attr('data-unit');
+			var axis = $(this).attr('data-axis').explode();
+			var mode = $(this).attr('data-mode');
+			var datastop = $(this).attr('data-stop').explode();
+			var color = $(this).attr('data-color').explode();
+
+			var diff = parseFloat($(this).attr('data-min'));
+			var range = parseFloat($(this).attr('data-max') - $(this).attr('data-min'));
+			var percent = (((response - diff) * 100) / range);
+
+			var yaxis = [];
+			var gauge = [];
+			var pane = [];
+			var series = [];
+			for (var i = 0; i < response.length; i++) {
+				if (mode == 'scale') { // type = scale
+					var bands = [{
+							outerRadius: '99%',
+							thickness: 15,
+							from: percent,
+							to: 100,
+							color: 'rgba(255, 255, 255, 0.2)'
+						}];
+					if (datastop.length > 0 && datastop.length == color.length)
+					{
+						for (var j = 0; j < datastop.length; j++) {
+							bands.push({
+								outerRadius: '99%',
+								thickness: 15,
+								from: j == 0 ? 0 : parseFloat(datastop[j-1]),
+								to: Math.min(parseFloat(datastop[j]), percent),
+								color: color[j]
+							});
+							if(parseFloat(datastop[j]) >= percent)
+								break;
+						}
+					}
+					else {
+						bands.push({
+							outerRadius: '99%',
+							thickness: 15,
+							from: 0,
+							to: percent,
+							color: color[0] ? color[0] : Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.8).get()
+						});
+					}
+
+					yaxis[i] = {
+						min: 0,
+						max: 100,
+						lineWidth: 0,
+						minorTickInterval: 1.5,
+						minorTickWidth: 2,
+						minorTickLength: 17,
+						minorTickPosition: 'inside',
+						minorTickColor: '#444',
+						tickWidth: 0,
+						labels: {
+							enabled: true,
+							distance: -25,
+							style: {'color': 'lightgrey'},
+							formatter: function () {return (((this.value * range) / 100) + diff)}
+						},
+						plotBands: bands,
+						title: {
+							text: axis[i],
+							style: {
+								color: '#bbb',
+								fontSize: '15px',
+							},
+							y: 14
+						}
+					}
+					gauge[i] = {
+						dial: {
+							radius: '100%',
+							color: '#eee',
+							backgroundColor: '#eee',
+							baseWidth: 3,
+							topWidth: 3,
+							baseLength: '90%', // of radius
+							rearLength: '-70%'
+						},
+						pivot: {
+							radius: 0
+						}
+					}
+					pane[i] = {
+						startAngle: -130,
+						endAngle: 130,
+						background: [{
+							backgroundColor: '#555',
+							borderWidth: 0,
+							outerRadius: '108%'
+						}]
+					}
+					series[i] = {
+						name: headline,
+						data: [percent],
+						yAxis: i,
+						dataLabels: {
+							borderWidth: 0,
+							formatter: function () {return (((this.y * range) / 100) + diff).transUnit(unit)},
+							style: {
+								fontSize: '30px',
+								color: 'grey',
+							},
+							y: -20
+						},
+						tooltip: {
+							enabled: false
+						}
+					}
+				}
+				else // type = speedometer
+				{
+					var bands = [];
+					if ($(this).attr('data-stop') && $(this).attr('data-color')) {
+						var datastop = $(this).attr('data-stop').explode();
+						var color = $(this).attr('data-color').explode();
+
+						if (datastop.length == color.length)
+						{
+							for (var j = 0; j < datastop.length; j++) {
+								bands.push({
+									from: j == 0 ? 0 : parseFloat(datastop[j-1]),
+									to: parseFloat(datastop[j]),
+									color: color[j]
+								});
+							}
+						}
+					}
+
+					yaxis[i] = {
+						min: 0,
+						max: 100,
+						minorTickInterval: 'auto',
+						minorTickWidth: 1,
+						minorTickLength: 10,
+						minorTickPosition: 'inside',
+						minorTickColor: '#666',
+						tickPixelInterval: 30,
+						tickWidth: 2,
+						tickPosition: 'inside',
+						tickLength: 10,
+						tickColor: '#666',
+						labels: {
+							step: 2,
+							rotation: 'auto',
+							formatter: function () {return (((this.value * range) / 100) + diff)}
+						},
+						title: {
+							text: axis[i]
+						},
+						plotBands: bands.length > 0 ? bands : null
+					}
+					gauge[i] = {
+					}
+					pane[i] = {
+						startAngle: -150,
+						endAngle: 150,
+						size: "95%",
+						background: [{
+							backgroundColor: {
+								linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+								stops: [
+									[0, '#FFF'],
+									[1, '#333']
+								]
+							},
+							borderWidth: 0,
+							outerRadius: '109%'
+						}, {
+							backgroundColor: {
+								linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+								stops: [
+									[0, '#333'],
+									[1, '#FFF']
+								]
+							},
+							borderWidth: 1,
+							outerRadius: '107%'
+						}, {
+						// default background
+						}, {
+							backgroundColor: '#DDD',
+							borderWidth: 0,
+							outerRadius: '105%',
+							innerRadius: '103%'
+						}]
+					}
+					series[i] = {
+						name: headline,
+						data: [percent],
+						yAxis: i,
+						dataLabels: {
+							color: 'grey',
+							formatter: function () {return (((this.y * range) / 100) + diff).transUnit(unit)}
+						}
+					}
+				}
+			}
+
+			$(this).highcharts({
+				chart: {
+					type: 'gauge',
+					plotBackgroundColor: null,
+					plotBackgroundImage: null,
+					plotBorderWidth: 0,
+					plotShadow: false
+				},
+
+				title: {
+					text: headline
+				},
+
+				plotOptions: {
+					 gauge: gauge[0],
+				},
+
+				pane: pane,
+
+				tooltip: {
+					enabled: false
+				},
+
+				// the value axis
+				yAxis: yaxis,
+				series: series
+			});
+		},
+
+		'point': function (event, response) {
+
+			//debug: console.log("[plot.gauge-speedometer] '" + this.id + "' point: " + response);
+
+			var diff = ($(this).attr('data-max') - ($(this).attr('data-max') - $(this).attr('data-min')));
+			var range = $(this).attr('data-max') - $(this).attr('data-min');
+			var datastop = $(this).attr('data-stop').explode();
+			var color = $(this).attr('data-color').explode();
+
+			var data = [];
+			var items = $(this).attr('data-item').explode();
+			for (i = 0; i < items.length; i++) {
+				if (response[i]) {
+					data[i] = (((+response[i] - diff) * 100) / range);
+				}
+				else
+				{
+					data[i] = (((+widget.get(items[i]) - diff) * 100) / range);
+				}
+			}
+
+			var chart = $(this).highcharts();
+
+			for (i = 0; i < data.length; i++) {
+				var percent = data[i];
+				if($(this).attr('data-mode') == 'scale')
+				{
+					chart.yAxis[i].removePlotBand();
+					chart.yAxis[i].addPlotBand({
+							outerRadius: '99%',
+							thickness: 15,
+							from: percent,
+							to: 100,
+							color: 'rgba(255, 255, 255, 0.2)'
+						});
+					if (datastop.length > 0 && datastop.length == color.length)
+					{
+						for (var j = 0; j < datastop.length; j++) {
+							chart.yAxis[i].addPlotBand({
+								outerRadius: '99%',
+								thickness: 15,
+								from: j == 0 ? 0 : parseFloat(datastop[j-1]),
+								to: Math.min(parseFloat(datastop[j]), percent),
+								color: color[j]
+							});
+							if(parseFloat(datastop[j]) >= percent)
+								break;
+						}
+					}
+					else {
+						chart.yAxis[i].addPlotBand({
+							outerRadius: '99%',
+							thickness: 15,
+							from: 0,
+							to: percent,
+							color: color[0] ? color[0] : Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.8).get()
+						});
+					}
+					chart.series[i].setData([percent], false);
+				}
+				else {
+					chart.series[i].points[0].update(percent);
+				}
+			}
+			chart.redraw();
+		}
+	});
+
+	// ----- plot.gauge-vumeter ----------------------------------------------------------
+	$(bevent.target).find('div[data-widget="plot.gauge"][data-mode="vumeter"]').on( {
+		'update': function (event, response) {
+			event.stopPropagation();
+
+			var headline = $(this).attr('data-label') ? $(this).attr('data-label') : null;
+			var chartHeight = $(this).attr('data-label') == '' ? 150 : 200;
+
+			var diff = parseFloat($(this).attr('data-min'));
+			var range = parseFloat($(this).attr('data-max')) - parseFloat($(this).attr('data-min'));
+
+			var bands = [];
+			if ($(this).attr('data-stop') && $(this).attr('data-color')) {
+				var datastop = $(this).attr('data-stop').explode();
+				var color = $(this).attr('data-color').explode();
+
+				if (datastop.length == color.length)
+				{
+					for (var j = 0; j < datastop.length; j++) {
+						bands.push({
+							from: j == 0 ? 0 : parseFloat(datastop[j-1]),
+							to: parseFloat(datastop[j]),
+							color: color[j],
+							innerRadius: '100%',
+							outerRadius: '105%'
+						});
+					}
+				}
+			}
+
+			var axis = [];
+			var pane = [];
+			var series = [];
+
+			for (i = 0; i < response.length; i++) {
+				axis[i] = {
+					min: 0,
+					max: 100,
+					minorTickPosition: 'outside',
+					tickPosition: 'outside',
+					labels: {
+						rotation: 'auto',
+						distance: 20,
+						formatter: function () {return (((this.value * range) / 100) + diff)}
+					},
+					plotBands: bands,
+					pane: i,
+					title: {
+						text: 'VU<br/><span style="font-size:8px">Channel ' + (i+1) + '</span>',
+						y: -40
+					}
+				}
+				pane[i] = {
+					startAngle: -45,
+					endAngle: 45,
+					background: null,
+          center: [(100/response.length/2*(2*i+1))+'%', '145%'],
+					size: 280
+				}
+				series[i] = {
+					name: 'Channel ' + i,
+					data: [(((response[i] - diff) * 100) / range)],
+					yAxis: i
+				}
+			}
+
+			$(this).highcharts({
+				chart: {
+					type: 'gauge',
+					plotBorderWidth: 1,
+					plotBackgroundColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+						stops: [
+							[0, '#FFF4C6'],
+							[0.3, '#FFFFFF'],
+							[1, '#FFF4C6']
+						]
+					},
+					plotBackgroundImage: null,
+					height: chartHeight
+				},
+
+				title: {
+					text: headline,
+				},
+
+				pane: pane,
+
+				tooltip: {
+					enabled: false,
+				},
+
+				// the value axis
+				yAxis: axis,
+
+				plotOptions: {
+					gauge: {
+						dataLabels: {
+							enabled: false
+						},
+						dial: {
+							radius: '100%'
+						}
+					}
+				},
+
+				series: series,
+			});
+		},
+
+		'point': function (event, response) {
+
+			//debug: console.log("[plot.gauge-vumeter] '" + this.id + "' point: " + response);
+
+			var diff = ($(this).attr('data-max') - ($(this).attr('data-max') - $(this).attr('data-min')));
+			var range = $(this).attr('data-max') - $(this).attr('data-min');
+
+			var data = [];
+			var items = $(this).attr('data-item').explode();
+			for (i = 0; i < items.length; i++) {
+				if (response[i]) {
+					data[i] = (((+response[i] - diff) * 100) / range);
+				}
+				else
+				{
+					data[i] = (((+widget.get(items[i]) - diff) * 100) / range);
+				}
+			}
+
+			var chart = $(this).highcharts();
+			for (i = 0; i < data.length; i++) {
+				chart.series[i].points[0].update(data[i]);
+			}
+			chart.redraw();
+		}
+	});
+
+	// ----- plot.pie --------------------------------------------------------------
+	$(bevent.target).find('div[data-widget="plot.pie"]').on( {
+		'update': function (event, response) {
+			event.stopPropagation();
+
+			// DEBUG: console.log("[plot.pie] '" + this.id + "': " + response + ' ' + response.length);
+
+			var isLabel = false;
+			var isLegend = false;
+			var labels = [];
+			if ($(this).attr('data-label')) {
+				labels = $(this).attr('data-label').explode();
+				isLabel = true;
+			}
+			if ($(this).attr('data-mode') == 'legend') {
+				isLegend = true;
+				isLabel = false;
+			}
+			else if ($(this).attr('data-mode') == 'none') {
+				isLabel = false;
+			}
+			var colors = [];
+			if ($(this).attr('data-color')) {
+				colors = $(this).attr('data-color').explode();
+			}
+			var val = 0;
+			for (i = 0; i < response.length; i++) {
+				val = val + response[i];
+			}
+			var data = [];
+			for (i = 0; i < response.length; i++) {
+				data[i] = {
+					name: labels[i],
+					y: response[i] * 100 / val,
+					color: (colors[i] ? colors[i] : null)
+				}
+			}
+
+			// design
+			var headline = $(this).attr('data-text');
+			var position = 'top';
+			if ($(this).attr('data-text') == '') {
+				position = 'bottom';
+			}
+
+			// draw the plot
+			$(this).highcharts({
+				chart: {
+					plotBackgroundColor: null,
+					plotBorderWidth: null,
+					plotShadow: false,
+					type: 'pie'
+
+				},
+				legend: {
+					align: 'center',
+					verticalAlign:  position,
+					x: 0,
+					y: 20
+				},
+				title: {
+					text: headline
+				},
+				tooltip: {
+					formatter: function() {
+						return this.point.name + ' <b>' + this.y.transUnit('%') + '</b>';
+					},
+				},
+				plotOptions: {
+					pie: {
+						allowPointSelect: true,
+						cursor: 'pointer',
+						dataLabels: {
+							enabled: isLabel,
+							formatter: function() {
+								return this.point.name + ' <b>' + this.y.transUnit('%') + '</b>';
+							},
+							style: {
+								color: null
+							}
+						},
+						showInLegend: isLegend
+					}
+				},
+				series: [{
+					name: headline,
+					colorByPoint: true,
+					data: data
+				}],
+			});
+		},
+		'point': function (event, response) {
+
+			// DEBUG: console.log("[plot.pie point] '" + this.id + "': " + response);
+
+			var val = 0;
+			var data = [];
+			var items = $(this).attr('data-item').explode();
+			for (i = 0; i < items.length; i++) {
+				if (response[i]) {
+					val = val +  +response[i];
+				}
+				else
+				{
+					val = val +  +widget.get(items[i]);
+				}
+			}
+			for (i = 0; i < items.length; i++) {
+				if (response[i]) {
+					data[i] = +response[i] * 100 / val;
+				}
+				else
+				{
+					data[i] = +widget.get(items[i]) * 100 / val;
+				}
+			}
+
+			var chart = $(this).highcharts();
+			for (i = 0; i < data.length; i++) {
+				chart.series[0].data[i].update(data[i]);
+			}
+			chart.redraw();
+		},
+	});
+
 	// ----- plot.rtr -------------------------------------------------------------
 	$(bevent.target).find('div[data-widget="plot.rtr"]').on( {
 		'update': function (event, response) {
