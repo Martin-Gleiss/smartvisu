@@ -82,26 +82,46 @@ class calendar_icloud extends calendar
 		}
 	
 	    $events = [];
-	    // process ICS
-		if (!empty($ics_content)) {
-			$ics_content = explode("\n", $ics_content);
-			$ics = new ICal($ics_content);
-			$events = $ics->sortEventsWithOrder($ics->events(), SORT_ASC);
-			$events = array_slice($events, 0, $this->count);
-    		// output events as list
-    		$i = 1;
-    		foreach ($events as $event) {
-    			$this->data[] = array('pos' => $i++,
-    				'start' => date('y-m-d H:i:s', $ics->iCalDateToUnixTimestamp($event->dtstart)),
-    				'end' => date('y-m-d H:i:s', $ics->iCalDateToUnixTimestamp($event->dtend)),
-    				'title' => $event->summary,
-    				'content' => '',
-    				'where' => str_replace(array("\n\r", "\n", "\r", "\\"), "<br />", $event->location),
-    				'link' => 'https://www.icloud.com/#calendar'
-    			);
-    			
-    		}
-		}
+        // process ICS
+        if (!empty($ics_content)) {
+            $ics_content = explode("\n", $ics_content);
+            $ics = new ICal($ics_content);
+            $events = $ics->sortEventsWithOrder($ics->events(), SORT_ASC);
+            // $events = array_slice($events, 0, $this->count);
+            // output events as list
+            $i = 1;
+            foreach ($events as $event) {
+            	// Prüfen ob der Termin abgelaufen ist! (gelöschter Serientermin)
+                if ($event->exdate){$IgnorEvent = 'yes';}else{$IgnorEvent = 'no';}
+
+                $datetime1 = date_create($start);
+                $datetime2 = date_create(date('y-m-d H:i:s', $ics->iCalDateToUnixTimestamp($event->dtend)));
+                $datetime3 = date_create(date('y-m-d H:i:s', $ics->iCalDateToUnixTimestamp($event->dtstart)));
+
+                $interval = date_diff($datetime1, $datetime2);
+                $EventNow = date_diff($datetime1, $datetime3);
+                $Color = '#666666';
+
+                // Aktiver Termin anzeigen
+                if($EventNow->format('%r%h') < 0) {
+                    $Color = '#008000';
+                }
+
+                if($interval->format('%r%h') < 312 and $interval->format('%r%h') >= -0 and $IgnorEvent == 'no') {
+                    $this->data[] = array('pos' => $i++,
+                        'start' => date('y-m-d H:i:s', $ics->iCalDateToUnixTimestamp($event->dtstart)),
+                        'end' => date('y-m-d H:i:s', $ics->iCalDateToUnixTimestamp($event->dtend)),
+                        'title' => $event->summary,
+                        'content' => '',
+                        'color' => $Color,
+                        'where' => str_replace(array("\n\r", "\n", "\r", "\\"), "<br />", $event->location)
+                        //'link' => $interval->format('%r%h')
+                    );
+                }
+
+                if ($i == $this->count + 1) { break; }
+            }
+        }
 	}
 
 	/**
