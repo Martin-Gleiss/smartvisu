@@ -108,14 +108,14 @@ class service
 	{
 		if ($this->debug)
 		{
-			echo "<pre>\n";
+			echo '/*'.str_repeat("*", 78)."\n";
 			if ($title)
 			{
 				echo $title."\n";
 				echo str_repeat("-", 80)."\n";
 			}
 			print_r($text);
-			echo "\n</pre>";
+			echo "\n".str_repeat("*", 78).'*/'."\n\n";
 		}
 	}
 }

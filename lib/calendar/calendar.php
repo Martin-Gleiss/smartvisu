@@ -21,6 +21,8 @@ class calendar extends service
 	var $count = 1;
 	var $calendar_names = array('');
 
+	var $url;
+
 	/**
 	 * initialization of some parameters
 	 */
@@ -30,7 +32,6 @@ class calendar extends service
 
 		$this->count = $request['count'];
 		$this->calendar_names = preg_split('/[\s,]+/m', strtolower($request['calendar']));
-//		$this->calendar_names = trim($request['calendar']) != '' ? preg_split('/[\s,]+/m', strtolower($request['calendar'])) : preg_split('/[\s,]+/m', strtolower(config_calendar_name));
 		$this->url = config_calendar_url;
 	}
 

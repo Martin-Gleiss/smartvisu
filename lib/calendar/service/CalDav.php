@@ -26,39 +26,23 @@ class calendar_caldav extends calendar
 	 */
 	private function get_caldav_data($url, $method, $xmlquery)
 	{
-/*
 		$ctxopts = array('http' =>
 			array(
 				'method' => $method,
-				'header' => "Depth: 1\r\n",
-										"Content-Type: application/xml\r\n",
+				'header' => <<<HEADER
+Depth: 1
+Content-Type: text/xml; charset='UTF-8'
+User-Agent: DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374)
+HEADER
+,
 				'content' => $xmlquery
 			)
 		);
-		if(config_calendar_username != '' && config_calendar_password != '') {
-	    $ctxopts['header'][] = "Authorization: Basic " . base64_encode(config_calendar_username.':'.config_calendar_password) . "\r\n";
+		if(config_calendar_username != '' && config_calendar_password != '')
+	    $ctxopts['http']['header'] .= "\r\nAuthorization: Basic " . base64_encode(config_calendar_username.':'.config_calendar_password);
+
 		$context = stream_context_create($ctxopts);
-
 		$content = file_get_contents($url, false, $context);
-/**/
-/**/
-		$request=curl_init($url);
-		curl_setopt($request, CURLOPT_HTTPHEADER, array("Depth: 1", "Content-Type: text/xml; charset='UTF-8'", "User-Agent: DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374)"));
-		curl_setopt($request, CURLOPT_HEADER, 0);
-		if(config_calendar_username != '' && config_calendar_password != '') {
-			curl_setopt($request, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-			curl_setopt($request, CURLOPT_USERPWD, config_calendar_username.":".config_calendar_password);
-		}
-		curl_setopt($request, CURLOPT_CUSTOMREQUEST, $method);
-		curl_setopt($request, CURLOPT_POSTFIELDS, $xmlquery);
-		curl_setopt($request, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($request, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt($request, CURLOPT_SSL_VERIFYPEER, 0);
-
-		// execute request and return answer
-		$content = curl_exec($request);
-		curl_close($request);
-/**/
 		return $content;
 	}
 
@@ -76,10 +60,10 @@ class calendar_caldav extends calendar
 		// Get user pricipal
 		$xmlquery = '<D:propfind xmlns:D="DAV:"><D:prop><D:current-user-principal/></D:prop></D:propfind>';
 		$caldavresponse = $this->get_caldav_data($davbaseurl, "PROPFIND", $xmlquery);
-		//echo($caldavresponse);
+		//$this->debug($caldavresponse);
 		$xml = simplexml_load_string($caldavresponse, null, null, 'DAV:');
 		$principle_url = $xml->response->propstat->prop->{'current-user-principal'}->href;
-//echo($principle_url);
+		$this->debug((string)$principle_url, 'principle_url');
 		// use configured url if no current-user-principal returned
 		if($principle_url == "")
 			$principle_url = $davbaseurl;
@@ -92,10 +76,10 @@ class calendar_caldav extends calendar
 		// Get home url of user's calendars
 		$xmlquery = '<D:propfind xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop><C:calendar-home-set/></D:prop></D:propfind>';
 		$caldavresponse = $this->get_caldav_data($principle_url, "PROPFIND", $xmlquery);
-//echo($caldavresponse);
+		//$this->debug($caldavresponse);
 		$xml = simplexml_load_string($caldavresponse, null, null, 'DAV:');
 		$calendar_home_url = $xml->response->propstat->prop->children('urn:ietf:params:xml:ns:caldav')->{'calendar-home-set'}->children('DAV:')->href;
-//echo($calendar_home_url);
+		$this->debug((string)$calendar_home_url, 'calendar_home_url');
 		// use configured url if no calendar-home-set returned
 		if($calendar_home_url == "")
 			$calendar_home_url = $davbaseurl;
@@ -121,7 +105,7 @@ class calendar_caldav extends calendar
 </D:propfind>
 XMLQUERY;
 		$caldavresponse = $this->get_caldav_data($calendar_home_url, 'PROPFIND', $xmlquery);
-//echo $caldavresponse;
+		//$this->debug($caldavresponse);
 		$xml = simplexml_load_string($caldavresponse, null, null, 'DAV:');
 
 		$calurls = array();
@@ -136,6 +120,7 @@ XMLQUERY;
 				continue;
 			*/
 			$displayname = strtolower($response->propstat->prop->displayname);
+			$this->debug((string)$response->href, 'calendar_url of \''.$displayname.'\'');
 			// add only requested (by URL parameter or configuration) calendars or all, if none requested
 			if(in_array($displayname, $calnames) || $calnames === array('')) {
 				$description = $response->propstat->prop->children('urn:ietf:params:xml:ns:caldav')->calendar-description;
@@ -190,10 +175,15 @@ XMLQUERY;
 	public function run()
 	{
 		/* Example URLs:
-		nextcloud: http://server.org/owncloud/remote.php/caldav/calendars/{user}/
-		iCloud: 'https://p01-caldav.icloud.com/{user}/calendars/
+		for nextcloud one of these:
+		- https://server.org/owncloud/remote.php/dav/ (DAV base URL)
+		- https://server.org//owncloud/remote.php/dav/principals/users/{user}/ (prinicipal URL)
+		- https://server.org/owncloud/remote.php/caldav/calendars/{user}/ (calendar home URL)
+		for iCloud one of these:
+		- https://p01-caldav.icloud.com/
+		- https://p01-caldav.icloud.com/{user}/calendars/
 		*/
-		$calbaseurl = str_replace('{user}', config_calendar_username, config_calendar_url);
+		$calbaseurl = str_replace('{user}', config_calendar_username, $this->url);
 		$calnames = $this->calendar_names;
 		$calurls = $this->get_calendar_urls($calbaseurl, $calnames);
 		
@@ -201,7 +191,6 @@ XMLQUERY;
 		foreach ($calurls as $calurl => $calmetadata)
 		{
 			$caldavresponse = $this->get_calendar_data($calurl);
-//echo $caldata, "\n\n";
 
 			if ($caldavresponse === false) {
 				$this->error('Calendar: CalDav', $calmetadata['calendarname'].': Calendar read request failed!');
@@ -212,6 +201,7 @@ XMLQUERY;
 			$xml = simplexml_load_string($caldavresponse, null, LIBXML_NOCDATA);
 			$xml->registerXPathNamespace('C', 'urn:ietf:params:xml:ns:caldav');
 			$caldata = $xml->xpath('//C:calendar-data');
+			$this->debug(implode("\n", $caldata), "ICS Data of '".$calurl."'");
 			foreach($caldata as $icscontent) {
 				$ical->initString($icscontent);
 			}

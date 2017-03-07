@@ -10,6 +10,7 @@
  * @hide        calendar_password
  * @hide        calendar_name
  * @hide        calendar_color
+ * @deprecated as of v3.9. Use ICS/iCal instead.
  */
 
 // Note: for debugging purposes you can execute this script from commandline with    php -q <scriptname>

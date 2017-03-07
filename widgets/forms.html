@@ -87,14 +87,23 @@
 	{% endif %}
 			<select name="{{ id }}" id="{{ source }}_{{ id }}" data-native-menu="false"{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
 	      {% set metas = [] %}
+	      {% set deprecateds = [] %}
 				{% for file in files %}
 					{% set meta = configmeta(file.path) %}
 					{% if meta != [] %}
 						{% set metas = metas|merge({ (file.name) : meta }) %}
 					{% endif %}
 					<option value="{{ file.name }}"{{ values[id] == file.name ? ' selected="selected"'|raw }}>{{ meta['label']|default(file.label) }}</option>
+          {% if meta['deprecated'] %}
+            {% set deprecateds = deprecateds|merge([loop.index0]) %}
+					{% endif %}
 				{% endfor %}
 			</select>
+				<style type="text/css">
+          {% for deprecated in deprecateds %}
+          	#{{ source }}_{{ id }}-listbox-popup li[data-option-index="{{ deprecated }}"] a { font-style: italic; }
+					{% endfor %}
+				</style>
 				<script type="text/javascript">
 					$('#{{ source }}_{{ id }}').on('change init', function() {
 						var element = $(this);
