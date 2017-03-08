@@ -576,6 +576,19 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
+	// ----- basic.select ----------------------------------------------------------
+	$(bevent.target).find('select[data-widget="basic.select"]').on( {
+		'update': function (event, response) {
+			event.stopPropagation();
+      $(this).val(response[0]).selectmenu('refresh');
+		},
+
+		'change': function (event) {
+			var item = $(this).attr('data-item');
+			io.write(item, $(this).val());
+		}
+	});
+
 	// ----- basic.shifter ---------------------------------------------------------
 	$(bevent.target).find('span[data-widget="basic.shifter"]').on( {
 		'update': function (event, response) {
@@ -801,7 +814,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	})
 	// init
 	.end().each(function() {
-		// replicate ui-last-child if last sibling of tag 'a' has it
+		// replicate ui-first-child and ui-last-child if first resp. last sibling of tag 'a' has it
+		if($(this).children('a:first').hasClass('ui-first-child'))
+			$(this).children('a').addClass('ui-first-child');
 		if($(this).children('a:last').hasClass('ui-last-child'))
 			$(this).children('a').addClass('ui-last-child');
 		// display first control as default

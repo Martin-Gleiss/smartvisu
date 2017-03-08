@@ -283,6 +283,13 @@ a:hover {
 	margin-left: -9px;
 }
 
+.ui-controlgroup-vertical .ui-controlgroup-controls {
+	display: inline-block;
+}
+.ui-controlgroup-vertical .ui-btn-inline,
+.ui-controlgroup-vertical a.switch {
+	display: block;
+}
 
 /** --------- button: micro --------- */
 .ui-btn.ui-btn-inline.ui-micro {

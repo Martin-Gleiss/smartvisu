@@ -375,6 +375,38 @@ the first one is the base color for values below first threshold, so pass one co
 
 
 /**
+* Select a specific value (e.g. a scene)
+*
+* @param unique id for this widget (optional)
+* @param a gad/item
+* @param type: 'menu', 'micro', 'mini', 'midi', 'icon' (optional, default: menu)
+* @param list of values (optional, default [0,1])
+* @param list of icons for every button (optional) - not supported for type 'menu'
+* @param list of texts for every menu entry or button (optional)
+* @param the color for the on state of the buttons (optional, default: icon1) - not supported for type 'menu'
+* @param orientation of the controlgroup: 'horizontal', 'vertical' or 'none' for seperate buttons (optional, default: 'horizontal') - not supported for type 'menu'
+*/
+{% macro select(id, item, type, value, icon, text, color_on, group) %}
+	{% import _self as basic %}
+	{% if type == 'menu' or type is empty %}
+		<select{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select" data-native-menu="false" data-item="{{ item }}">
+		<option></option>
+		{% for val in value|default([0,1]) %}
+			<option value="{{ val }}">{{ text[loop.index0]|default(val) }}</option>
+		{% endfor %}
+		</select>
+	{% else %}
+		<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select"{% if group != 'none' %} data-role="controlgroup" data-type="{{ group|default('horizontal') }}{% endif %}">
+			{% for val in value|default([0,1]) %}
+				{% set pic = icon is iterable ? icon[loop.index0]|default(icon[0]) : icon %}
+				{{basic.stateswitch('', item, type|default('mini'), [val, val], pic|default('none'), (text is iterable ? text[loop.index0]|default(text[0]) : text)|default(pic is empty ? val : ''), [color_on|default('icon1'), ''])}}
+			{% endfor %}
+		</span>
+	{% endif %}
+{% endmacro %}
+
+
+/**
 * A symbol, with no writing to knx, only displayed when the value of item is equal to val. Symbols may be used in menus.
 * If more than one item is given, they will be combined with mode ('or' / 'and').
 *

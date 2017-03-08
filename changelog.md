@@ -4,6 +4,7 @@
 - ID is now optional in most widgets
 - New: basic.stateswitch (improves and supersedes basic.button, basic.dual, basic.multistate and basic.switch)
 - New: basic.print (improves and supersedes basic.float, basic.formula and basic.value)
+- New: basic.select (select a value by menu or array of buttons)
 - New: basic.color (supersedes basic.colordisc and basic.rgb) with new parameter 'colormodel' for HSV or HSL model and possibility to pass values as list in one item
 - New: basic.badge (displays a notification badge)
 - New: device.uzsuicon (to control UZSU in smarthome.py and FHEM)
@@ -51,11 +52,11 @@
 - Some other minor bugs fixed
 
 ### Now Deprecated
-- basic.button, basic.dual, basic.multistate and basic.switch
-- basic.float, basic.formula and basic.value
-- basic.colordisc and basic.rgb
-- plot.minmaxavg and plot.multiaxis
-- Calendar service GoogleV3
+- basic.button, basic.dual, basic.multistate and basic.switch (use basic.stateswitch instead)
+- basic.float, basic.formula and basic.value (use basic.print instead)
+- basic.colordisc and basic.rgb (use basic.color instead)
+- plot.minmaxavg and plot.multiaxis (use plot.period instead)
+- Calendar service GoogleV3 (use ICS/iCal instead)
 
 
 ## v 2.8 03.10.16
