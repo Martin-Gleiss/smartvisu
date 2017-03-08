@@ -15,13 +15,13 @@
 	<h5>Example</h5>
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-					{{ basic.select('', 'bath.multistate', '', [5,6,7], '', ['Down', 'Left', 'Up']) }}
-					{{ basic.select('', 'bath.multistate', 'mini', [5,6,7]) }}
-					{{ basic.select('', 'bath.multistate', 'icon', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], ['Down', 'Left', 'Up']) }}
-					{{ basic.select('', 'bath.multistate', 'mini', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], '', 'green', 'none') }}
+				{{ basic.select('', 'bath.multistate', '', [5,6,7], '', ['Down', 'Left', 'Up']) }}
+				{{ basic.select('', 'bath.multistate', 'mini', [5,6,7]) }}
+				{{ basic.select('', 'bath.multistate', 'icon', [5,6,7], ['edit_numeric_1.svg', 'edit_numeric_2.svg', 'edit_numeric_3.svg']) }}
+				{{ basic.select('', 'bath.multistate', 'mini', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], '', 'green', 'none') }}
 
-					{{ basic.select('', 'bath.multistate', 'icon', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], ['Down', 'Left', 'Up'], 'green', 'vertical') }}
-					{{ basic.select('', 'bath.multistate', 'mini', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], '', '', 'vertical') }}
+				{{ basic.select('', 'bath.multistate', 'icon', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], ['Down', 'Left', 'Up'], 'green', 'vertical') }}
+				{{ basic.select('', 'bath.multistate', 'mini', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], '', '', 'vertical') }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 
@@ -32,7 +32,7 @@
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
 				{{ basic.select('', 'bath.multistate', '', [5,6,7], '', ['Down', 'Left', 'Up']) }}<br>
 				{{ basic.select('', 'bath.multistate', 'mini', [5,6,7]) }}<br>
-				{{ basic.select('', 'bath.multistate', 'icon', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], ['Down', 'Left', 'Up']) }}<br>
+				{{ basic.select('', 'bath.multistate', 'icon', [5,6,7], ['edit_numeric_1.svg', 'edit_numeric_2.svg', 'edit_numeric_3.svg']) }}<br>
 				{{ basic.select('', 'bath.multistate', 'mini', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], '', 'green', 'none') }}<br>
 			</div>
 		</div>
