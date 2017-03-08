@@ -10,7 +10,7 @@
 - New: calendar.waste (compact view of waste collection dates)
 - New: plot.gauge
 - New: plot.pie
-- Enhanced plot.period, among other things merged functionality of plot.minmaxavg and plot.multiaxis into it
+- Enhanced plot.period (among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale and units)
 - plot.temprose: New parameters 'series_label' and 'unit'
 - basic.slider: New parameter 'value_display'
 - device.blind & device.shutter: item_move is now optional

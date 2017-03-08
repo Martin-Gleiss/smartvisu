@@ -2022,21 +2022,19 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var zoom = $(this).attr('data-zoom');
 			var mode = $(this).attr('data-mode');
 			var units = $(this).attr('data-unit').explode();
-
 			var assign = [];
 			if ($(this).attr('data-assign')) {
 				assign = $(this).attr('data-assign').explode();
 			}
-
 			var opposite = [];
 			if ($(this).attr('data-opposite')) {
 				opposite = $(this).attr('data-opposite').explode();
 			}
-
 			var ycolor = [];
 			if ($(this).attr('data-ycolor')) {
 				ycolor = $(this).attr('data-ycolor').explode();
 			}
+			var ytype = $(this).attr('data-ytype').explode();
 
 			// series
 			var series = [];
@@ -2094,14 +2092,16 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					opposite: (opposite[i] > 0),
 					endOnTick: false,
 					startOnTick: false,
+					type: ytype[i] || 'linear',
 					svUnit: units[i] || 'float'
 				};
 				if(ycolor[i]) {
 					yaxis[i].lineColor = ycolor[i];
 					yaxis[i].tickColor = ycolor[i];
 				}
-				if (ymin[i] && isNaN(ymin[i])) {
-					yaxis[i].categories = [ymin[i], ymax[i]];
+				if(ytype[i] == 'boolean') {
+					yaxis[i].categories = [ymin[i] || 0, ymax[i] || 1];
+					yaxis[i].type = 'category';
 					yaxis[i].gridLineColor = 'transparent';
 					yaxis[i].gridLineWidth = 0;
 				}
