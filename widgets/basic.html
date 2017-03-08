@@ -92,7 +92,7 @@
 				{%- if pic is empty -%}
 					">
 				{%- else -%}
-					{{ txt ? ' ui-btn-icon-top' : '' }} ui-nodisc-icon">{{ basic._icon(pic, col) }}
+					{{ not txt is empty ? ' ui-btn-icon-top' }} ui-nodisc-icon">{{ basic._icon(pic, col) }}
 				{%- endif -%}
 			{{- txt|e -}}
 		</a>
