@@ -35,21 +35,6 @@
 			</ul>
 		</div>
 
-/**
-		<div id="config_tab_global">
-			<h2>Global options (stored in './config.ini')</h2>
-		</div>
-		<div id="config_tab_pages">
-			<h2>Options for current pages '{{ config_pages }}' (stored in './pages/{{ config_pages }}/config.ini')</h2>
-      {{ basic.symbol('','','','jquery_info.svg') }}<i>Click label to override specific option, click again to deactive overriding</i>
-		</div>
-		<div id="config_tab_cookie">
-			<h2><i>Options stored on client (as cookie)</i></h2>
-      {{ basic.symbol('','','','jquery_info.svg') }}<i>Click label to override specific option, click again to deactive overriding</i>
-		</div>
-	</div>
-*/
-
 	{% for source, title in sources %}
 		{% set values = read_config(source) %}
 

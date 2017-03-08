@@ -250,7 +250,7 @@ function twig_configmeta($filename)
 
 	// parse tags
 	preg_match_all('#.+?@(.+?)\W+(.*)#i', $file, $header, PREG_SET_ORDER);
-	$ret = array('label' => null, 'hide' => array(), 'default' => array());
+	$ret = array('label' => null, 'hide' => array(), 'default' => array(), 'deprecated' => null);
 	foreach($header as $tag) {
 		if(array_key_exists($tag[1], $ret)) {
 			if(is_array($ret[$tag[1]])) {
