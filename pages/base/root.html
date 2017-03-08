@@ -124,6 +124,17 @@
 	activateAutoReconnect('{{ config_driver_address }}', '{{ config_driver_port }}');
 {% endif %}
 
+{% if config_backtohometime > 0 %}
+// back to home page
+var homeTimeout;
+$(document).on("vmousedown pageshow", function() {
+	if(homeTimeout !== undefined)
+		window.clearTimeout(homeTimeout);
+	if($.mobile.activePage && $.mobile.activePage.attr("id") != "index" && $.mobile.activePage.attr("id") != "config")
+		homeTimeout = window.setTimeout(function() { $.mobile.changePage("index.php"); }, {{ config_backtohometime * 1000 }});
+});
+{% endif %}
+
 	// Do some actions before page is shown
 	$(document).on('pagebeforeshow', function () {
 		fx.init();

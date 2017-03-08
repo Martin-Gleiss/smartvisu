@@ -28,6 +28,7 @@
 - Clear pagecache (by button and on disabling on configuration page)
 - Language files can be overridden. This allows regional variations and custom extensions. And they are stored in clearer ini format
 - Configurable time source (show time of server or client)
+- Automatically return to home page after a configurable duration
 - Template Checker
 - Added 50 icons of jQuery Mobile - before they were just available on buttons as background (aka inline) icons
 - New CalDav calendar service
