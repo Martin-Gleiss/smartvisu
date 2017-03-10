@@ -1195,7 +1195,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		'click': function (event, response) {
 			var node = $(this).parent().parent();
 			var step = node.attr('data-step') * $(this).attr('data-sign');
-			var item = node.find('.temp span').attr('data-item');
+			var item = node.find('.set .temp span').attr('data-item');
 
 			var temp = (Math.round((widget.get(item) * 1 + step) * 10) / 10).toFixed(1);
 			io.write(item, temp);
