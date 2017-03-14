@@ -3357,7 +3357,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var max = parseFloat($(this).attr('data-max'));
 			var min = parseFloat($(this).attr('data-min'));
 			
-			var ang = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 0.44 * Math.PI;
+			var ang = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 0.48 * Math.PI;
 			$(this).find('#pointer').attr('points', '50,85 ' + fx.rotate([15, 48], ang, [50, 85]).toString());
 		}
 	});
