@@ -9,6 +9,7 @@
  * @hide        calendar_url
  * @hide        calendar_username
  * @hide        calendar_password
+ * @hide        calendar_google_refresh_token
  */
 
 

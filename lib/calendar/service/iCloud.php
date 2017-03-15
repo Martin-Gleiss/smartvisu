@@ -7,6 +7,7 @@
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide        calendar_url
+ * @hide        calendar_google_refresh_token
  */
 
 require_once './CalDav.php';
@@ -35,4 +36,3 @@ if (realpath(__FILE__) == realpath($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NA
 	echo $service->json();
 }
 ?>
-

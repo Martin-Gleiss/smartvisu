@@ -51,10 +51,33 @@
 {% endmacro %}
 
 
-{% macro config_input(source, values, id, type) %}
-	<div data-role="fieldcontain">
+{% macro config_row(source, values, id, content) %}
+	<div class="ui-field-contain">
 		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
-      {{ lang('configuration_page', id, 'label') }}
+			{{ lang('configuration_page', id, 'label') }}
+		</label>
+	{% set hint = lang('configuration_page', id, 'hint') %}
+	{% if not hint is empty %}
+		<div class="ui-help-container">
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg"></a>
+			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
+				{{ hint|nl2br }}
+			</div>
+	{% endif %}
+	{% for c in (content is iterable ? content : [content]) %}
+			{{ c|raw }}
+	{% endfor %}
+	{% if not hint is empty %}
+		</div>
+	{% endif %}
+	</div>
+{% endmacro %}
+
+
+{% macro config_input(source, values, id, type) %}
+	<div class="ui-field-contain">
+		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
+			{{ lang('configuration_page', id, 'label') }}
 		</label>
 	{% set hint = lang('configuration_page', id, 'hint') %}
 	{% if not hint is empty %}
@@ -73,9 +96,9 @@
 
 
 {% macro config_select(source, values, id, files) %}
-	<div data-role="fieldcontain">
+	<div class="ui-field-contain">
 		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
-      {{ lang('configuration_page', id, 'label') }}
+			{{ lang('configuration_page', id, 'label') }}
 		</label>
 	{% set hint = lang('configuration_page', id, 'hint') %}
 	{% if not hint is empty %}
@@ -140,9 +163,9 @@
 
 
 {% macro config_flip(source, values, id, addition) %}
-	<div data-role="fieldcontain">
+	<div class="ui-field-contain">
 		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
-      {{ lang('configuration_page', id, 'label') }}
+			{{ lang('configuration_page', id, 'label') }}
 		</label>
 	{% set hint = lang('configuration_page', id, 'hint') %}
 	{% if not hint is empty %}
@@ -161,4 +184,9 @@
 		</div>
 	{% endif %}
 	</div>
+{% endmacro %}
+
+
+{% macro config_hidden(source, values, id) %}
+			<input type="hidden" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
 {% endmacro %}

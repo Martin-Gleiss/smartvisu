@@ -7,6 +7,7 @@
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       CalDav (e.g. ownCloud, Nextcloud, ...)
+ * @hide        calendar_google_refresh_token
  */
 
 
@@ -184,8 +185,7 @@ XMLQUERY;
 		- https://p01-caldav.icloud.com/{user}/calendars/
 		*/
 		$calbaseurl = str_replace('{user}', config_calendar_username, $this->url);
-		$calnames = $this->calendar_names;
-		$calurls = $this->get_calendar_urls($calbaseurl, $calnames);
+		$calurls = $this->get_calendar_urls($calbaseurl, $this->calendar_names);
 		
 		// get plain ics
 		foreach ($calurls as $calurl => $calmetadata)
