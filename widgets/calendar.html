@@ -44,9 +44,9 @@
 	{% endif %}
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="calendar.list" class="calendarlist"
-		data-service="{{ config_calendar_service }}"
-		data-repeat="{{ repeat|default('1h') }}" data-count="{{ count|default(25) }}"
-		data-color="{{ implode(color) }}" data-calendar="{{ implode(calendar|default(confignames)) }}">
+		data-item="url:lib/calendar/service/{{ config_calendar_service }}.php?count={{ count|default(25)|url_encode }}&calendar={{ implode(calendar|default(confignames))|url_encode }}"
+		data-repeat="{{ repeat|default('1h') }}"  data-count="{{ count|default(5) }}"
+		data-calendar="{{ implode(calendar|default(confignames)) }}" data-color="{{ implode(color) }}">
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
 		<ul data-role="listview"></ul>
 	</div>
@@ -68,7 +68,7 @@
 
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="calendar.waste" class="calendarlist"
-		data-service="{{ config_calendar_service }}"
+		data-item="url:lib/calendar/service/{{ config_calendar_service }}.php?count={{ count|default(5)|url_encode }}&calendar={{ implode(calendar|default(confignames))|url_encode }}"
 		data-repeat="{{ repeat|default('24h') }}" data-count="{{ count|default(5) }}"
 		data-calendar="{{ implode(calendar|default(config_calendar_name|split(','))) }}">
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
