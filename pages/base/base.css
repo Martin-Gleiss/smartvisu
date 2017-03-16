@@ -1177,8 +1177,9 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 }
 
 .dimmer .switch {
-	padding-left: 0;
 	float: left;
+	padding-left: 0;
+	margin-right: 12px;
 }
 
 .dimmer .icon,
@@ -1193,10 +1194,7 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 }
 
 .dimmer .ui-slider {
-	margin-left: 48px;
-}
-.dimmer .ui-slider-track {
-	margin-left: 0px;
+	margin-left: 45px;
 }
 
 .codepad {
