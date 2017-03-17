@@ -172,10 +172,10 @@
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7')|raw }}
 						<ol type="a">
 							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7a')|raw }}</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7b')|raw }}</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7c')|raw }}<br>
-								<input type="text" type="hidden" name="redirect_uri" id="redirect_uri" readonly="readonly" onclick="this.select();"> <!-- filled in by JavaScript -->
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7b')|raw }}<br>
+								<input type="text" type="hidden" id="js_origin" readonly="readonly" onclick="this.select();"> <!-- filled in by JavaScript -->
 							</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7c')|raw }}</li>
 						</ol>
 					</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_8')|raw }}</li>
@@ -210,12 +210,14 @@
 				</div>
 				<div class="ui-field-contain">
 					<label for="client_id">{{ lang('configuration_page', 'calendar_googleauth', 'client_id') }}:</label>
-					<input type="text" name="client_id" id="client_id" value="401805193597-7dua95qrmsab4prd2fanfio4lljpdn59.apps.googleusercontent.com">
+					<input type="text" name="client_id" id="client_id" value="">
 				</div>
 				<div class="ui-field-contain">
 					<label for="client_secret"> {{ lang('configuration_page', 'calendar_googleauth', 'client_secret') }}:</label>
-					<input type="text" id="client_secret" value="T9rmlf7-L9nSyVGXuoCDrGK3"> <!-- no name attribute, so it is not sent by submitting form -->
+					<input type="text" id="client_secret" value=""> <!-- no name attribute, so it is not sent by submitting form -->
 				</div>
+
+	      <div id="calendar_googleauth_error" style="display: none" class="ui-bar-c">{{ lang('configuration_page','calendar_googleauth', 'error_popup')|raw }}</div>
 
 				<button type="submit" data-theme="b" data-icon="check" name="submit" value="1">{{ lang('configuration_page', 'calendar_google_refresh_token', 'button') }}</button>
 
