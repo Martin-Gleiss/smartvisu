@@ -145,12 +145,13 @@
 			</form>
 		</div>
 	{% endfor %}
+	</div>
 
 	<div id="calendar_googleauth_popup" data-role="popup" data-overlay-theme="a">
-    <div data-role="header" data-theme="c">
-	    <h1>{{ lang('configuration_page','calendar_googleauth', 'instruct_title') }}</h1>
-    </div>
-    <div role="main" class="ui-content">
+		<div data-role="header" data-theme="c">
+			<h1>{{ lang('configuration_page','calendar_googleauth', 'instruct_title') }}</h1>
+		</div>
+		<div role="main" class="ui-content">
 			<form method="get" action="https://accounts.google.com/o/oauth2/v2/auth" target="_blank" id="googleauthform">
 				<ol>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_1')|raw }}</li>
@@ -172,10 +173,10 @@
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7')|raw }}
 						<ol type="a">
 							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7a')|raw }}</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7b')|raw }}<br>
-								<input type="text" type="hidden" id="js_origin" readonly="readonly" onclick="this.select();"> <!-- filled in by JavaScript -->
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7b')|raw }}</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7c')|raw }}<br>
+								<input type="text" type="hidden" name="redirect_uri" id="redirect_uri" readonly="readonly" onclick="this.select();"> <!-- filled in by JavaScript -->
 							</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7c')|raw }}</li>
 						</ol>
 					</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_8')|raw }}</li>
@@ -217,14 +218,10 @@
 					<input type="text" id="client_secret" value=""> <!-- no name attribute, so it is not sent by submitting form -->
 				</div>
 
-	      <div id="calendar_googleauth_error" style="display: none" class="ui-bar-c">{{ lang('configuration_page','calendar_googleauth', 'error_popup')|raw }}</div>
-
 				<button type="submit" data-theme="b" data-icon="check" name="submit" value="1">{{ lang('configuration_page', 'calendar_google_refresh_token', 'button') }}</button>
 
 			</form>
 		</div>
 	</div>
-
-</div>
 
 {% endblock %}

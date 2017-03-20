@@ -1,0 +1,37 @@
+<!--
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Stefan Widmer
+* @copyright   2017
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+-->
+<html>
+<head>
+</head>
+<body onload="run()">
+Your refresh_token: <input type="text" id="code" />
+<script type="text/javascript">
+function run() {
+	var code = decodeURIComponent((location.search.match(/[\?&]code=(.*?)(&|$)/)||['',''])[1]);
+	if(code != '') {
+		// redirect if nip.io was used to mask IP address
+		if(location.host.endsWith('.nip.io')) {
+			location.href = location.href.replace('.nip.io/', '/');
+			return;
+		}
+
+		document.getElementById('code').value = code;
+		// call event in opener window
+		var event = (window.CustomEvent) ?
+			new CustomEvent('gettoken', {'detail': {'code': code}}) :
+			document.createEvent('CustomEvent').initCustomEvent('gettoken', true, true, {'code': code});
+		opener.document.getElementById('googleauthform').dispatchEvent(event);
+
+		window.close();
+	}
+}
+</script>
+
+</body>
+</html>
