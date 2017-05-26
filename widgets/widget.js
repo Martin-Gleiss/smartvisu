@@ -3055,7 +3055,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			event.stopPropagation();
 			// response is: {{ gad_trigger }}
 
-			var target = $('div[data-bind="' + $(this).attr('data-id') + '"]');
+			var target = $('[data-bind="' + $(this).attr('data-id') + '"]');
 			if (response[0] != $(this).attr('data-val-collapsed')) {
 				target.not('.ui-collapsible').not('.ui-popup').show();
 				target.filter('.ui-collapsible').collapsible("expand");
