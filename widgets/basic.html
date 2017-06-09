@@ -554,7 +554,7 @@ the first one is the base color for values below first threshold, so pass one co
 */
 {% macro dual(id, item, pic_on, pic_off, val_on, val_off, type, color_on, color_off) %}
 	{% import _self as basic %}
-	{{ basic.stateswitch(id, item, type, [val_off|default('0'), val_on|default('1')], [pic_off|deficon('control_on_off.svg'), pic_on|deficon('control_on_off.svg')], '', [color_off, color_on|default('icon1')]) }}
+	{{ basic.stateswitch(id, item, type, [val_on|default('1'), val_off|default('0')], [pic_on|deficon('control_on_off.svg'), pic_off|deficon('control_on_off.svg')], '', [color_on|default('icon1'), color_off]) }}
 	<script type="text/javascript">console.warn("Use of 'basic.dual' is deprecated, use 'basic.stateswitch' instead.")</script>
 {% endmacro %}
 
@@ -683,7 +683,7 @@ the first one is the base color for values below first threshold, so pass one co
 */
 {% macro switch(id, item, pic_on, pic_off, val_on, val_off, color_on, color_off) %}
 	{% import _self as basic %}
-	{{ basic.stateswitch(id, item, 'icon', [val_off|default('0'), val_on|default('1')], [pic_off|deficon('control_on_off.svg'), pic_on|deficon('control_on_off.svg')], ['',''], [color_off, color_on|default('icon1')]) }}
+	{{ basic.stateswitch(id, item, 'icon', [val_on|default('1'), val_off|default('0')], [pic_on|deficon('control_on_off.svg'), pic_off|deficon('control_on_off.svg')], ['',''], [color_on|default('icon1'), color_off]) }}
 	<script type="text/javascript">console.warn("Use of 'basic.switch' is deprecated, use 'basic.stateswitch' instead.")</script>
 {% endmacro %}
 
