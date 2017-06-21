@@ -61,6 +61,8 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	// init environment
 	$twig = new Twig_Environment($loader);
 
+	if (config_cache)
+		$twig->setCache(const_path.'temp/twigcache');
 
 	foreach ($request as $key => $val)
 	{
