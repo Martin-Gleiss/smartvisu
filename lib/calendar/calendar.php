@@ -55,7 +55,7 @@ class calendar extends service
 
 	protected function addFromIcs($ical, $calmetadata = array())
 	{
-		$events = $ical->eventsFromRange("today",false);
+		$events = $ical->eventsFromRange();
 		// output events as list
 		foreach ($events as $event) {
 			$this->addData(array(
