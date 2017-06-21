@@ -27,10 +27,15 @@ else if(isset($_GET['target'])) {
 	$config = new config();
 	$success = $config->save($_GET['target'], $_POST, $_GET['pages']);
 	if($success) {
-		if($_POST['cache'] != 'true')
-			delTree(const_path.'temp/pagecache');
+		$success = delTree(const_path.'temp/pagecache');
 
-		echo json_encode(array('title' => 'Configuration', 'text' => 'Configuration changes saved.'));
+		if($success)
+			echo json_encode(array('title' => 'Configuration', 'text' => 'Configuration changes saved.'));
+		else { // save fails
+			header("HTTP/1.0 600 smartVISU Config Error");
+			echo json_encode(array('title' => 'Configuration', 'text' => 'Error deleting page cache!<br />Please check the file permissions temp/pagecache'));
+		}
+
 	}
 	else { // save fails
 		header("HTTP/1.0 600 smartVISU Config Error");
