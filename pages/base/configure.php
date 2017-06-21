@@ -15,7 +15,7 @@ header('Content-Type: application/json');
 // just clear pagecache
 if($_GET['clear_cache']) {
 	$success = delTree(const_path.'temp/pagecache');
-	if($success)
+	if($success) {
 		$success = delTree(const_path.'temp/twigcache');
 		if($success)
 			echo json_encode(array('title' => 'Configuration', 'text' => 'Pagecache cleared.'));
@@ -23,6 +23,7 @@ if($_GET['clear_cache']) {
 			header("HTTP/1.0 600 smartVISU Config Error");
 			echo json_encode(array('title' => 'Configuration', 'text' => 'Error deleting Twig cache!<br />Please check the file permissions temp/twigcache'));
 		}
+	}
 	else { // save fails
 		header("HTTP/1.0 600 smartVISU Config Error");
 		echo json_encode(array('title' => 'Configuration', 'text' => 'Error deleting page cache!<br />Please check the file permissions temp/pagecache'));
