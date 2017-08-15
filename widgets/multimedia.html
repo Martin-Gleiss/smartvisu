@@ -112,10 +112,12 @@
 * @param delay between the slides in sec (optional, default: 2 sec)
 * @param item to switch to the next slide
 * @param item to switch to the previous slide
+  (if this is same as item_next: 0 triggers previous, any value greater than 0 triggers next, negative values are ignored)
 * @param item to stop the animation
 * @param item to start the animation
+  (if this is same as item_stop: 0 stops, any value greater than 0 starts, negative values are ignored)
 *
-* @author Alex
+* @author Alex ???, Stefan Widmer
 *
 * @info based on cycle2 jquery-plugin: (c) 2012 M. Alsup; Dual licensed: MIT/GPL
 * @link http://jquery.malsup.com/cycle2
@@ -123,23 +125,14 @@
 {% macro slideshow(id, dir, delay, item_next, item_prev, item_stop, item_start) %}
 	{% set uid = uid(page, id) %}
 
-	<script src="vendor/jquery.cycle2/jquery.cycle2.core.js"></script>
-	<script src="vendor/jquery.cycle2/jquery.cycle2.autoheight.js"></script>
-
-	<div id="{{ uid }}" class="slideshow" data-cycle-log="false" data-cycle-speed="{{ delay|default(2) * 1000 }}">
+	<div id="{{ uid }}" class="slideshow" data-widget="multimedia.slideshow"
+		data-cycle-log="false" data-cycle-speed="{{ delay|default(2) * 1000 }}"
+		data-item="{{ item_prev }}, {{ item_next }}, {{ item_stop }}, {{ item_start }}">
 		{% for file in dir(dir, '(.+?).(jpg|png|svg)') %}
 			<img src="{{ file.path }}" style="display: block;" title="{{ file.label }}" alt="{{ file.label }}" />
 		{% endfor %}
 	</div>
 
-	<script type="text/javascript">
-		$('#{{ page }}').on('pageinit', function (event, ui) {
-			$('#{{ uid }}').cycle();
-		});
-		$('#{{ page }}').on('pagebeforeshow', function (event, ui) {
-			$(window).triggerHandler('resize');
-		});
-	</script>
 {% endmacro %}
 
 

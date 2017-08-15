@@ -1956,6 +1956,39 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		'click': uzsu.uzsuDomClick
 	});
 
+/// ----- m u l t i m e d i a ---------------------------------------------------
+/// -----------------------------------------------------------------------------
+
+	// ----- multimedia.slideshow ----------------------------------------------------
+	$(bevent.target).find('[data-widget="multimedia.slideshow"]').cycle().on({
+		'update': function (event, response) {
+			event.stopPropagation();
+			var items = $(this).attr('data-item').explode();
+			for(var i = 0; i <= 4; i++) {
+				if(items[i] == '') // continue if item is not used
+					continue;
+				var value = response.shift();
+				if(value >= 0) {
+					// if item_prev is same as item_next, treat false as prev, any other value as next (same with item_stop and item_start)
+					if((i == 0 || i == 2) && items[i] == items[i+1] && value > 0)
+						i++;
+ 					$(this).cycle(['prev','next','pause','resume'][i]);
+					widget.set(items[i], -1);
+					break;
+				}
+			}
+			 
+		}
+	});
+
+	if($(bevent.target).has('[data-widget="multimedia.slideshow"]').length > 0) {
+		$(document).on('pagecontainerchange', function (event, ui) {
+			if(ui.prevPage != null && bevent.target == ui.prevPage[0])
+				$(bevent.target).find('[data-widget="multimedia.slideshow"]').cycle('pause');
+			if(ui.toPage != null && bevent.target == ui.toPage[0])
+				$(bevent.target).find('[data-widget="multimedia.slideshow"]').cycle('resume');
+		});
+	}
 
 /// ----- p l o t ---------------------------------------------------------------
 // -----------------------------------------------------------------------------

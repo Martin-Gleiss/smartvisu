@@ -16,7 +16,9 @@
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-			{{ multimedia.slideshow('s1', 'pics/slideshow') }}
+			{{ multimedia.slideshow('', 'pics/slideshow') }}
+			{{ multimedia.slideshow('', 'pics/slideshow', '', 'slide.next', 'slide.prev', 'slide.stop', 'slide.start') }}
+			{{ multimedia.slideshow('', 'pics/slideshow', '', 'slide.prevnext', 'slide.prevnext', 'slide.startstop', 'slide.startstop') }}
 
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
@@ -25,7 +27,7 @@
 		<div class="ui-bar-c ui-li-divider ui-corner-top">Some pictures...</div>
 		<div class="ui-fixed ui-body-a ui-corner-bottom">
 
-			{{ multimedia.slideshow('s1', 'pics/slideshow') }}
+			{{ multimedia.slideshow('', 'pics/slideshow') }}
 
 		</div>
 	</div>
