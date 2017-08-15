@@ -111,7 +111,13 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response is: {{ gad_r }}, {{ gad_g }}, {{ gad_b }}
-
+			
+			//if widget is locked: reduce lock counter and return
+			if($(this).data('lockfor') > 0) {
+				$(this).data('lockfor', $(this).data('lockfor') - 1);
+				return;
+			}
+			
 			var max = $(this).attr('data-max').explode();
 			var min = $(this).attr('data-min').explode();
 			// ensure max and min as array of 3 floats (fill by last value if array is shorter)
@@ -143,7 +149,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 100)
 					];
 					rgb = fx.hsl2rgb(hsl[0], hsl[1], hsl[2]);
-					hsv = fx.hsv2hsl(hsl[0], hsl[1], hsl[2]);
+					hsv = fx.hsl2hsv(hsl[0], hsl[1], hsl[2]);
 					break;
 				case 'hsv':
 					hsv = [
@@ -179,7 +185,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		click: function(event) {
 			
 			var html = '<div class="rgb-popup">';
-			
+			var node = $(this);
 			var colors = parseInt($(this).attr('data-colors'));
 			var steps = parseInt($(this).attr('data-step'));
 			var step = Math.round(2 * 100 / (steps + 1) * 10000) / 10000;
@@ -249,6 +255,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 						io.write(items[0], values);
 					}
 					else {
+						node.data('lockfor', 2); // lock widget to ignore next 2 updates
 						io.write(items[0], values[0]);
 						io.write(items[1], values[1]);
 						io.write(items[2], values[2]);
@@ -272,6 +279,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		'click': function (event) {
 			var canvas = $('<canvas style="border: none;">')
 			
+			var node = $(this);
 			var size = 280;
 			var colors = parseInt($(this).attr('data-colors'));
 			var steps = parseInt($(this).attr('data-step'));
@@ -403,6 +411,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							io.write(items[0], values);
 						}
 						else {
+							node.data('lockfor', 2); // lock widget to ignore next 2 updates
 							io.write(items[0], values[0]);
 							io.write(items[1], values[1]);
 							io.write(items[2], values[2]);
@@ -482,6 +491,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				io.write(items[0], values);
 			}
 			else {
+				widget.data('lockfor', 2); // lock widget to ignore next 2 updates
 				io.write(items[0], values[0]);
 				io.write(items[1], values[1]);
 				io.write(items[2], values[2]);
