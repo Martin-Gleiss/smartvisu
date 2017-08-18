@@ -54,7 +54,7 @@
 *
 * @param unique id for this widget (optional)
 * @param a gad/item
-* @param valid types: 'micro', 'mini', 'midi', 'icon' (optional, default: mini)
+* @param valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini)
 * @param array of values (optional, default [0,1])
   If the item has a value that is not part of the list, the state (icon, text, color) of the last value in the list will be shown.
 * @param array of icons (optional, default: control_on_off.svg)
@@ -81,11 +81,11 @@
 		style="display: none; !important">
 	{% for val in value %}
 		{% set pic = (icon is iterable ? icon[loop.index0] : icon)|deficon('control_on_off.svg') %}
-		{% set pic = pic != 'none' ? pic %} /** set pic to empty if it is 'none' */
+		{% set pic = (type != 'text' and pic != 'none') ? pic %} /** set pic to empty if it is 'none' */
 		{% set col = (color is iterable ? color[loop.index0] : color)|default('') %}
 		{% set txt = (text is iterable ? text[loop.index0] : text)|default('') %}
     <a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" data-col="{{ col }}" {{ col == 'hidden' ? 'style="visibility: hidden;"'|raw : col != 'icon1' and col != 'icon0' and not col is empty ? ('style="color: ' ~ col ~ ';"')|raw }} class="{{ col == 'icon1' ? 'icon1 ' }}
-			{%- if type == 'icon' -%} /**- display as icon -*/
+			{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
 				switch ui-link
 			{%- else -%} /**- display as button -*/
 				ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
