@@ -33,9 +33,9 @@
 				<td valign="top">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.button('', item_pos, '', 'carat-u', value_top) }}
+							{{ basic.button('', item_pos, '', 'carat-u', value_top|default('0')) }}
 						{% else %}
-							{{ basic.button('', item_move, '', 'carat-u', value_top < value_bottom ? 0 : 1 ) }}
+							{{ basic.button('', item_move, '', 'carat-u', value_top|default('0') < value_bottom|default('255') ? 0 : 1 ) }}
 						{% endif %}
 					</div>
 				</td>
@@ -55,9 +55,9 @@
 				<td valign="bottom">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.button('', item_pos, '', 'carat-d', value_bottom) }}
+							{{ basic.button('', item_pos, '', 'carat-d', value_bottom|default('255')) }}
 						{% else %}
-							{{ basic.button('', item_move, '', 'carat-d', value_top < value_bottom ? 1 : 0 ) }}
+							{{ basic.button('', item_move, '', 'carat-d', value_top|default('0') < value_bottom|default('255') ? 1 : 0 ) }}
 						{% endif %}
 					</div>
 				</td>
@@ -216,9 +216,9 @@
 				<td valign="top">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.button('', item_pos, '', 'carat-u', value_top) }}
+							{{ basic.button('', item_pos, '', 'carat-u', value_top|default('0')) }}
 						{% else %}
-							{{ basic.button('', item_move, '', 'carat-u', value_top < value_bottom ? 0 : 1 ) }}
+							{{ basic.button('', item_move, '', 'carat-u', value_top|default('0') < value_bottom|default('255') ? 0 : 1 ) }}
 						{% endif %}
 					</div>
 				</td>
@@ -243,9 +243,9 @@
 				<td valign="bottom">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.button('', item_pos, '', 'carat-d', value_bottom) }}
+							{{ basic.button('', item_pos, '', 'carat-d', value_bottom|default('255')) }}
 						{% else %}
-							{{ basic.button('', item_move, '', 'carat-d', value_top < value_bottom ? 1 : 0 ) }}
+							{{ basic.button('', item_move, '', 'carat-d', value_top|default('0') < value_bottom|default('255') ? 1 : 0 ) }}
 						{% endif %}
 					</div>
 				</td>
