@@ -149,26 +149,31 @@
  * -----------------------------------------------------------------------------
  */
 
-  /**
-    * Plots
-    */
-	$(function () {
-
-		Highcharts.setOptions({
-			lang: {
-				months: <?php echo trans('month') ?>,
-				shortMonths: <?php echo trans('shortmonth') ?>,
-				weekdays: <?php echo trans('weekday') ?>,
-				resetZoom: '<?php echo trans('plot', 'resetzoom') ?>',
-				resetZoomTitle: '<?php echo trans('plot', 'resetzoomtip') ?>'
-			},
-			plotOptions: {
-				series: {
-					animation: <?php echo (config_animation ? 'true' : 'false') ?>
-				}
+	Highcharts.setOptions({
+		lang: {
+			months: <?php echo trans('month') ?>,
+			shortMonths: <?php echo trans('shortmonth') ?>,
+			weekdays: <?php echo trans('weekday') ?>,
+			resetZoom: '<?php echo trans('plot', 'resetzoom') ?>',
+			resetZoomTitle: '<?php echo trans('plot', 'resetzoomtip') ?>'
+		},
+		plotOptions: {
+			series: {
+				shadow: true,
+				marker: { enabled: false },
+				animation: <?php echo (config_animation ? '{ duration: 1500 }' : 'false') ?>
 			}
-	    });
-
+		},
+		chart: {
+			animation: <?php echo (config_animation ? 'true' : 'false') ?>
+		},
+		global: {
+			useUTC: false,
+			//canvasToolsURL: 'vendor/plot.highcharts/modules/canvas-tools.js', // not shure if used with Highcharts 5
+		},
+		credits: {
+			enabled: false
+		}
 	});
 
 

@@ -1601,6 +1601,59 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 }
 
 
+/* Highcharts
+-----------------------------------------------------------------------------------------------------------*/
+.highcharts-color-0 {
+	fill: #a6f829;
+	stroke: #a6f829;
+	color: #a6f829;
+}
+.highcharts-color-1 {
+	fill: #65961a;
+	stroke: #65961a;
+	color: #65961a;
+}
+.highcharts-color-2 {
+	fill: #486c12;
+	stroke: #486c12;
+	color: #486c12;
+}
+.highcharts-color-3 {
+	fill: #91e12a;
+	stroke: #91e12a;
+	color: #91e12a;
+}
+.highcharts-color-4 {
+	fill: #a2fa2f;
+	stroke: #a2fa2f;
+	color: #a2fa2f;
+}
+.highcharts-color-5 {
+	fill: #b2ff33;
+	stroke: #b2ff33;
+	color: #b2ff33;
+}
+.highcharts-color-6 {
+	fill: #a7e530;
+	stroke: #a7e530;
+	color: #a7e530;
+}
+.highcharts-color-7 {
+	fill: #ccff3b;
+	stroke: #ccff3b;
+	color: #ccff3b;
+}
+.highcharts-color-8 {
+	fill: #fceda7;
+	stroke: #fceda7;
+	color: #fceda7;
+}
+.highcharts-color-9 {
+	fill: #fadb4e;
+	stroke: #fadb4e;
+	color: #fadb4e;
+}
+
 /* smartVISU
 -----------------------------------------------------------------------------------------------------------*/
 .icon0, a.ui-link {

@@ -2039,9 +2039,17 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 			$(this).highcharts({
 				series: plots,
+				title: { text: null },
 				xAxis: { min: 10, max: 35, title: { text: axis[0], align: 'high', margin: -2 } },
-				yAxis: { min: 0, max: 100, title: { text: axis[1], margin: 7 } },
-				plotOptions: { area: { enableMouseTracking: false } },
+				yAxis: { min: 0, max: 100, title: { text: axis[1], margin: 7, minTickInterval: 1 } },
+				legend: {
+					align: 'center',
+					verticalAlign: 'top',
+					floating: true,
+				},
+				plotOptions: {
+					area: { enableMouseTracking: false },
+				},
 				tooltip: {
 					formatter: function () {
 						return this.x.transUnit('temp') + ' / ' + this.y.transUnit('%');
@@ -2103,6 +2111,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			}
 			var ytype = $(this).attr('data-ytype').explode();
 
+			var styles = [];
+
 			// series
 			var series = [];
 
@@ -2128,7 +2138,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 						name: (label[i] == null ? 'Item ' + (i+1) : label[i]) + (mode == 'minmaxavg' && label[i] !== '' ? ' (min/max)' : ''),
 						showInLegend: false,
 						data: data,
-						color: (color[i] ? color[i] : Highcharts.getOptions().colors[i]),
 						yAxis: (assign[i] ? assign[i] - 1 : 0)
 					});
 				}
@@ -2140,7 +2149,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					step: (exposure[i] == 'stair' ? 'left' : false),
 					name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
 					data: response[i],
-					color: (color[i] ? color[i] : null),
 					yAxis: (assign[i] ? assign[i] - 1 : 0)
 				});
 			}
@@ -2160,27 +2168,29 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					endOnTick: false,
 					startOnTick: false,
 					type: ytype[i] || 'linear',
-					svUnit: units[i] || 'float'
+					svUnit: units[i] || 'float',
+					minTickInterval: 1
 				};
-				if(ycolor[i]) {
-					yaxis[i].lineColor = ycolor[i];
-					yaxis[i].tickColor = ycolor[i];
-				}
+				styles.push(Array(i+1).join(".highcharts-yaxis ~ ") + ".highcharts-yaxis .highcharts-axis-line { stroke: " + ycolor[i] + "; }");
 				if(ytype[i] == 'boolean') {
 					yaxis[i].categories = [ymin[i] || 0, ymax[i] || 1];
 					yaxis[i].type = 'category';
-					yaxis[i].gridLineColor = 'transparent';
-					yaxis[i].gridLineWidth = 0;
 				}
 			}
 
 			// draw the plot
 			var chartOptions = {
-				chart: {},
+				chart: {}, // used in code below
+				title: { text: null },
 				series: series,
-				xAxis: {type: 'datetime', title: {text: axis[0]}},
+				xAxis: { type: 'datetime', title: { text: axis[0], align: 'high' } },
 				yAxis: yaxis,
-				legend: { enabled: label.length > 0 },
+				legend: {
+					enabled: label.length > 0,
+					align: 'center',
+					verticalAlign: 'top',
+					floating: true
+				},
 				tooltip: {
 					pointFormatter: function() {
 						var unit = this.series.yAxis.userOptions.svUnit;
@@ -2190,11 +2200,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							var minmax = this.series.chart.series[this.series.index - this.series.chart.series.length / 2].data[this.index];
 							var minValue = parseFloat(minmax.low).transUnit(unit);
 							var maxValue = parseFloat(minmax.high).transUnit(unit);
-							return '<span style="color:' + this.color + '">\u25CF</span> ' + this.series.name + ' \u00D8: <b>' + value + '</b><br/>' +
+							return '<span class="highcharts-color-' + this.colorIndex + '">\u25CF</span> ' + this.series.name + ' \u00D8: <b>' + value + '</b><br/>' +
 								'<span style="visibility: hidden">\u25CF</span> min: <b>' + minValue + '</b> max: <b>' + maxValue + '</b><br/>';
 						}
 						else
-							return '<span style="color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>' + value + '</b><br/>';
+							return '<span class="highcharts-color-' + this.colorIndex + '">\u25CF</span> ' + this.series.name + ': <b>' + value + '</b><br/>';
 					}
 				},
 				plotOptions: {
@@ -2215,6 +2225,18 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			}
 
 			$(this).highcharts(chartOptions);
+
+			// set series and y-axis colors
+			if (color && color.length > 0) {
+				for (var i = 0; i < color.length; i++) {
+					styles.push(".highcharts-color-" + i + " { fill: " + color[i] + "; stroke: " + color[i] + "; color: " + color[i] + "; }");
+				}
+			}
+			if(styles.length > 0) {
+				var containerId = $(this).find('.highcharts-container')[0].id;
+				styles.unshift('<style type="text/css">');
+				$(styles.join("\n#" + containerId + " ") + "\n</style>").appendTo($(this).find('.highcharts-container'));
+			}
 
 		},
 
@@ -2270,20 +2292,16 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var options = {
 				chart: {
 					type: 'solidgauge',
-					margin: [0, 15, 0, 15],
-					spacing: [0, 0, 5, 0]
+					spacing: [0, 0, 5, 0],
+					className: 'solidgauge'
 				},
 
 				title: {
 					text: headline,
-					verticalAlign: 'middle',
-					y: -20
+					verticalAlign: 'middle'
 				},
 
 				pane: {
-					center: ['50%', '50%'],
-					//startAngle: depends on type, see below,
-					//endAngle: depends on type, see below,
 					background: [{
 						outerRadius: '100%',
 						innerRadius: '60%',
@@ -2301,8 +2319,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					max: 100,
 					stops: stop.length > 0 ? stop : null,
 					lineWidth: 0,
-					gridLineColor: 'transparent',
 					minorTickInterval: null,
+					minTickInterval: 1,
 					tickAmount: 2,
 					labels: {
 						distance: -15,
@@ -2315,13 +2333,10 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				plotOptions: {
 					solidgauge: {
 						dataLabels: {
-							borderWidth: 0,
 							useHTML: true
-						}
+						},
+						stickyTracking: false
 					},
-					linecap: 'round',
-					stickyTracking: false,
-					rounded: true
 				},
 
 				series: [{
@@ -2329,43 +2344,51 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					data: [percent],
 					dataLabels: {
 						formatter: function () { return (((this.y * range) / 100) + diff).transUnit(unit); }
-					}
+					},
+					colorIndex: 99, colorByPoint: false // Workaround for dynamic coloring in styled mode
 				}]
 			}
 
 			var marginBottom;
-      if ($(this).attr('data-mode') == 'solid-half')
+			if ($(this).attr('data-mode') == 'solid-half')
 			{
+				options.chart.margin = [-30, 15, 30, 15];
+				options.chart.height = '53%';
 				options.pane.startAngle = -90;
 				options.pane.endAngle = 90;
+				options.pane.size = '140%';
+				options.pane.center = ['50%', '100%'];
+				options.title.verticalAlign = 'bottom';
 				options.yAxis.labels.y = 16;
 				options.yAxis.labels.distance = -8;
-				options.plotOptions.solidgauge.dataLabels.y = options.title.y = -25;
-				marginBottom = '-40%';
+				options.plotOptions.solidgauge.dataLabels.y = -25;
 			}
 			else if ($(this).attr('data-mode') == 'solid-cshape')
 			{
+				options.chart.margin = [25, 15, -25, 15];
+				options.chart.height = '75%';
 				options.pane.startAngle = -130;
 				options.pane.endAngle = 130;
+				options.pane.size = '100%';
+				options.pane.center = ['50%', '50%'];
 				options.yAxis.labels.y = 20;
-				options.plotOptions.solidgauge.dataLabels.y = options.title.y = -15;
-				marginBottom = '-20%';
+				options.plotOptions.solidgauge.dataLabels.y = -15;
 			}
 			else if ($(this).attr('data-mode') == 'solid-circle')
 			{
+				options.chart.margin = [0, 15, 0, 15],
+				options.chart.height = '88%';
 				options.pane.startAngle = 0;
 				options.pane.endAngle = 360;
+				options.pane.center = ['50%', '50%'];
 				options.pane.background.shape = 'circle';
 				options.yAxis.labels.y = -20;
 				options.yAxis.labels.step = 2;
-				options.plotOptions.solidgauge.dataLabels.y = options.title.y = -10;
+				options.plotOptions.solidgauge.dataLabels.y = -10;
 			}
+			options.title.y = options.plotOptions.solidgauge.dataLabels.y + options.chart.margin[0];
 
 			$(this).highcharts(options);
-
-			if(marginBottom) {
-				$(this).find('.highcharts-container').css('margin-bottom', marginBottom);
-			}
 		},
 
 		'point': function (event, response) {
@@ -2397,6 +2420,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var range = parseFloat($(this).attr('data-max') - $(this).attr('data-min'));
 			var percent = (((response - diff) * 100) / range);
 
+			var styles = [];
+
 			var yaxis = [];
 			var gauge = [];
 			var pane = [];
@@ -2407,22 +2432,25 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							outerRadius: '99%',
 							thickness: 15,
 							from: percent,
-							to: 100,
-							color: 'rgba(255, 255, 255, 0.2)'
+							to: 100
 						}];
-					if (datastop.length > 0 && datastop.length == color.length)
+					if (datastop.length > 0 && color.length > 1)
 					{
 						for (var j = 0; j < datastop.length; j++) {
 							bands.push({
 								outerRadius: '99%',
 								thickness: 15,
 								from: j == 0 ? 0 : parseFloat(datastop[j-1]),
-								to: Math.min(parseFloat(datastop[j]), percent),
-								color: color[j]
+								to: Math.min(parseFloat(datastop[j]), percent)
 							});
 							if(parseFloat(datastop[j]) >= percent)
 								break;
 						}
+						for (var j = 0; j < color.length; j++) {
+							if(color[j] != '')
+								styles.push(".highcharts-plot-band:nth-of-type(" + (j + 2) + ") { fill: " + color[j] + "; fill-opacity: 1; }");
+						}
+
 					}
 					else {
 						bands.push({
@@ -2430,41 +2458,32 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							thickness: 15,
 							from: 0,
 							to: percent,
-							color: color[0] ? color[0] : Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.8).get()
 						});
+						if(color.length > 0)
+							styles.push(".highcharts-plot-band { fill: " + color[0] + "; fill-opacity: 1; }");
 					}
 
 					yaxis[i] = {
 						min: 0,
 						max: 100,
-						lineWidth: 0,
 						minorTickInterval: 1.5,
-						minorTickWidth: 2,
 						minorTickLength: 17,
 						minorTickPosition: 'inside',
-						minorTickColor: '#444',
-						tickWidth: 0,
+						minTickInterval: 1,
 						labels: {
 							enabled: true,
 							distance: -25,
-							style: {'color': 'lightgrey'},
 							formatter: function () {return (((this.value * range) / 100) + diff)}
 						},
 						plotBands: bands,
 						title: {
 							text: axis[i],
-							style: {
-								color: '#bbb',
-								fontSize: '15px',
-							},
 							y: 14
 						}
 					}
 					gauge[i] = {
 						dial: {
 							radius: '100%',
-							color: '#eee',
-							backgroundColor: '#eee',
 							baseWidth: 3,
 							topWidth: 3,
 							baseLength: '90%', // of radius
@@ -2478,8 +2497,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 						startAngle: -130,
 						endAngle: 130,
 						background: [{
-							backgroundColor: '#555',
-							borderWidth: 0,
 							outerRadius: '108%'
 						}]
 					}
@@ -2488,12 +2505,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 						data: [percent],
 						yAxis: i,
 						dataLabels: {
-							borderWidth: 0,
 							formatter: function () {return (((this.y * range) / 100) + diff).transUnit(unit)},
-							style: {
-								fontSize: '30px',
-								color: 'grey',
-							},
 							y: -20
 						},
 						tooltip: {
@@ -2505,18 +2517,15 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				{
 					var bands = [];
 					if ($(this).attr('data-stop') && $(this).attr('data-color')) {
-						var datastop = $(this).attr('data-stop').explode();
-						var color = $(this).attr('data-color').explode();
-
-						if (datastop.length == color.length)
-						{
-							for (var j = 0; j < datastop.length; j++) {
-								bands.push({
-									from: j == 0 ? 0 : parseFloat(datastop[j-1]),
-									to: parseFloat(datastop[j]),
-									color: color[j]
-								});
-							}
+						for (var j = 0; j < datastop.length; j++) {
+							bands.push({
+								from: j == 0 ? 0 : parseFloat(datastop[j-1]),
+								to: parseFloat(datastop[j])
+							});
+						}
+						for (var j = 0; j < color.length; j++) {
+							if(color[j] != '')
+								styles.push(".highcharts-plot-band:nth-of-type(" + (j + 1) + ") { fill: " + color[j] + "; fill-opacity: 1; }");
 						}
 					}
 
@@ -2524,15 +2533,12 @@ $(document).on('pagecreate', function (bevent, bdata) {
 						min: 0,
 						max: 100,
 						minorTickInterval: 'auto',
-						minorTickWidth: 1,
 						minorTickLength: 10,
 						minorTickPosition: 'inside',
-						minorTickColor: '#666',
+						minTickInterval: 1,
 						tickPixelInterval: 30,
-						tickWidth: 2,
 						tickPosition: 'inside',
 						tickLength: 10,
-						tickColor: '#666',
 						labels: {
 							step: 2,
 							rotation: 'auto',
@@ -2550,40 +2556,24 @@ $(document).on('pagecreate', function (bevent, bdata) {
 						endAngle: 150,
 						size: "95%",
 						background: [{
-							backgroundColor: {
-								linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-								stops: [
-									[0, '#FFF'],
-									[1, '#333']
-								]
-							},
-							borderWidth: 0,
+							className: 'outer-pane',
 							outerRadius: '109%'
 						}, {
-							backgroundColor: {
-								linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-								stops: [
-									[0, '#333'],
-									[1, '#FFF']
-								]
-							},
-							borderWidth: 1,
+							className: 'middle-pane',
 							outerRadius: '107%'
 						}, {
-						// default background
 						}, {
-							backgroundColor: '#DDD',
-							borderWidth: 0,
+							className: 'inner-pane',
 							outerRadius: '105%',
 							innerRadius: '103%'
 						}]
 					}
+
 					series[i] = {
 						name: headline,
 						data: [percent],
 						yAxis: i,
 						dataLabels: {
-							color: 'grey',
 							formatter: function () {return (((this.y * range) / 100) + diff).transUnit(unit)}
 						}
 					}
@@ -2593,30 +2583,52 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			$(this).highcharts({
 				chart: {
 					type: 'gauge',
-					plotBackgroundColor: null,
-					plotBackgroundImage: null,
-					plotBorderWidth: 0,
-					plotShadow: false
+					plotShadow: false,
+					height: '100%'
 				},
-
 				title: {
 					text: headline
 				},
-
 				plotOptions: {
 					 gauge: gauge[0],
 				},
-
 				pane: pane,
-
 				tooltip: {
 					enabled: false
 				},
-
+				defs: {
+					speedometerOuterPaneGradient: {
+						id: 'speedometerOuterPaneGradient',
+						tagName: 'linearGradient',
+						x1: 0, y1: 0, x2: 0, y2: 1,
+						children: [
+							{ tagName: 'stop', offset: 0 },
+							{ tagName: 'stop', offset: 1 },
+						]
+					},
+					speedometerMiddlePaneGradient: {
+						id: 'speedometerMiddlePaneGradient',
+						tagName: 'linearGradient',
+						x1: 0, y1: 0, x2: 0, y2: 1,
+						children: [
+							{ tagName: 'stop', offset: 0 },
+							{ tagName: 'stop', offset: 1 },
+						]
+					}
+				},
 				// the value axis
 				yAxis: yaxis,
 				series: series
 			});
+
+			styles.push('.outer-pane { fill: url(' + location.pathname + location.search + '#speedometerOuterPaneGradient) }');
+			styles.push('.middle-pane { fill: url(' + location.pathname + location.search + '#speedometerMiddlePaneGradient) }');
+
+			if(styles.length > 0) {
+				var containerId = $(this).find('.highcharts-container')[0].id;
+				styles.unshift('<style type="text/css">');
+				$(styles.join("\n#" + containerId + " ") + "\n</style>").appendTo($(this).find('.highcharts-container'));
+			}
 		},
 
 		'point': function (event, response) {
@@ -2651,18 +2663,16 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							outerRadius: '99%',
 							thickness: 15,
 							from: percent,
-							to: 100,
-							color: 'rgba(255, 255, 255, 0.2)'
+							to: 100
 						});
-					if (datastop.length > 0 && datastop.length == color.length)
+					if (datastop.length > 0 && color.length > 1)
 					{
 						for (var j = 0; j < datastop.length; j++) {
 							chart.yAxis[i].addPlotBand({
 								outerRadius: '99%',
 								thickness: 15,
 								from: j == 0 ? 0 : parseFloat(datastop[j-1]),
-								to: Math.min(parseFloat(datastop[j]), percent),
-								color: color[j]
+								to: Math.min(parseFloat(datastop[j]), percent)
 							});
 							if(parseFloat(datastop[j]) >= percent)
 								break;
@@ -2673,8 +2683,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							outerRadius: '99%',
 							thickness: 15,
 							from: 0,
-							to: percent,
-							color: color[0] ? color[0] : Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.8).get()
+							to: percent
 						});
 					}
 					chart.series[i].setData([percent], false);
@@ -2698,22 +2707,23 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var diff = parseFloat($(this).attr('data-min'));
 			var range = parseFloat($(this).attr('data-max')) - parseFloat($(this).attr('data-min'));
 
+			var styles = [];
+
 			var bands = [];
 			if ($(this).attr('data-stop') && $(this).attr('data-color')) {
 				var datastop = $(this).attr('data-stop').explode();
 				var color = $(this).attr('data-color').explode();
 
-				if (datastop.length == color.length)
-				{
-					for (var j = 0; j < datastop.length; j++) {
-						bands.push({
-							from: j == 0 ? 0 : parseFloat(datastop[j-1]),
-							to: parseFloat(datastop[j]),
-							color: color[j],
-							innerRadius: '100%',
-							outerRadius: '105%'
-						});
-					}
+				for (var j = 0; j < datastop.length; j++) {
+					bands.push({
+						from: j == 0 ? 0 : parseFloat(datastop[j-1]),
+						to: parseFloat(datastop[j]),
+						innerRadius: '100%',
+						outerRadius: '105%'
+					});
+				}
+				for (var j = 0; j < color.length; j++) {
+					styles.push(".highcharts-plot-band:nth-of-type(" + (j + 1) + ") { fill: " + (color[j] != '' ? color[j] : 'transparent') + "; fill-opacity: 1; }");
 				}
 			}
 
@@ -2743,7 +2753,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					startAngle: -45,
 					endAngle: 45,
 					background: null,
-          center: [(100/response.length/2*(2*i+1))+'%', '145%'],
+					center: [(100/response.length/2*(2*i+1))+'%', '145%'],
 					size: 280
 				}
 				series[i] = {
@@ -2756,16 +2766,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			$(this).highcharts({
 				chart: {
 					type: 'gauge',
-					plotBorderWidth: 1,
-					plotBackgroundColor: {
-						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-						stops: [
-							[0, '#FFF4C6'],
-							[0.3, '#FFFFFF'],
-							[1, '#FFF4C6']
-						]
-					},
-					plotBackgroundImage: null,
 					height: chartHeight
 				},
 
@@ -2792,9 +2792,29 @@ $(document).on('pagecreate', function (bevent, bdata) {
 						}
 					}
 				},
-
+				defs: {
+					vumeterGradient: {
+						id: 'vumeterGradient',
+						tagName: 'linearGradient',
+						x1: 0, y1: 0, x2: 0, y2: 1,
+						children: [
+							{ tagName: 'stop', offset: 0 },
+							{ tagName: 'stop', offset: 0.3 },
+							{ tagName: 'stop', offset: 1 },
+						]
+					}
+				},
 				series: series,
 			});
+
+			styles.push('.highcharts-plot-background { fill: url(' + location.pathname + location.search + '#vumeterGradient) }');
+
+			if(styles.length > 0) {
+				var containerId = $(this).find('.highcharts-container')[0].id;
+				styles.unshift('<style type="text/css">');
+				$(styles.join("\n#" + containerId + " ") + "\n</style>").appendTo($(this).find('.highcharts-container'));
+			}
+
 		},
 
 		'point': function (event, response) {
@@ -2845,9 +2865,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			else if ($(this).attr('data-mode') == 'none') {
 				isLabel = false;
 			}
-			var colors = [];
+			var color = [];
 			if ($(this).attr('data-color')) {
-				colors = $(this).attr('data-color').explode();
+				color = $(this).attr('data-color').explode();
 			}
 			var val = 0;
 			for (i = 0; i < response.length; i++) {
@@ -2857,8 +2877,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			for (i = 0; i < response.length; i++) {
 				data[i] = {
 					name: labels[i],
-					y: response[i] * 100 / val,
-					color: (colors[i] ? colors[i] : null)
+					y: response[i] * 100 / val
 				}
 			}
 
@@ -2872,15 +2891,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			// draw the plot
 			$(this).highcharts({
 				chart: {
-					plotBackgroundColor: null,
-					plotBorderWidth: null,
-					plotShadow: false,
 					type: 'pie'
-
 				},
 				legend: {
 					align: 'center',
-					verticalAlign:  position,
+					verticalAlign: position,
 					x: 0,
 					y: 20
 				},
@@ -2900,9 +2915,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							enabled: isLabel,
 							formatter: function() {
 								return this.point.name + ' <b>' + this.y.transUnit('%') + '</b>';
-							},
-							style: {
-								color: null
 							}
 						},
 						showInLegend: isLegend
@@ -2914,6 +2926,19 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					data: data
 				}],
 			});
+
+			//set custom colors
+			styles = [];
+			if (color && color.length > 0) {
+				for (var i = 0; i < color.length; i++) {
+					styles.push(".highcharts-color-" + i + " { fill: " + color[i] + "; stroke: " + color[i] + "; color: " + color[i] + "; }");
+				}
+			}
+			if(styles.length > 0) {
+				var containerId = $(this).find('.highcharts-container')[0].id;
+				styles.unshift('<style type="text/css">');
+				$(styles.join("\n#" + containerId + " ") + "\n</style>").appendTo($(this).find('.highcharts-container'));
+			}
 		},
 		'point': function (event, response) {
 
@@ -2984,7 +3009,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 						name: label[0], data: response[0], type: 'spline'
 					},
 					{
-						name: label[1], data: response[1], dashStyle: 'shortdot', step: 'left'
+						name: label[1], data: response[1], className: 'shortdot', step: 'left'
 					},
 					{
 						type: 'pie', name: '∑  On: ',
@@ -3045,7 +3070,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			var count = parseInt($(this).attr('data-count'));
 			var unit = $(this).attr('data-unit');
 
-			var plots = Array();
+			var plots = [];
 			plots[0] = {
 				name: label[0], pointPlacement: 'on',
 				data: response.slice(0, count)
@@ -3055,21 +3080,28 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				plots[1] = {
 					name: label[1], pointPlacement: 'on',
 					data: response.slice(count),
-					dashStyle: 'shortdot'
+					className: 'shortdot'
 				}
 			}
 
 			$(this).highcharts({
-				chart: {polar: true, type: 'line', marginLeft: 10 },
+				chart: {polar: true, type: 'line', marginLeft: 10, className: 'polarChart' },
+				title: { text: null },
 				series: plots,
 				xAxis: { categories: axis, tickmarkPlacement: 'on', lineWidth: 0 },
-				yAxis: { gridLineInterpolation: 'polygon', lineWidth: 0 },
+				yAxis: { gridLineInterpolation: 'polygon', lineWidth: 0, minTickInterval: 1 },
 				tooltip: {
 					formatter: function () {
 						return this.x + ' - ' + this.series.name + ': <b>' + this.y.transUnit(unit) + '</b>';
 					}
 				},
-				legend: {x: 10, layout: 'vertical'}
+				legend: {
+					x: 10,
+					layout: 'vertical',
+					align: 'center',
+					//verticalAlign: 'top',
+					floating: true,
+				}
 			});
 		},
 
@@ -3181,7 +3213,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 				var max = parseFloat($(this).attr('data-max'));
 				var min = parseFloat($(this).attr('data-min'));
-        var percent = Math.round(response[1] == 0 ? 0 : Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 100);
+				var percent = Math.round(response[1] == 0 ? 0 : Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 100);
 				$(this).attr('alt', $(this).attr('data-widget').substr(5) + ' ' + percent+'%').attr('title', percent+'%').children('title').remove().end().prepend('<title>'+percent+'%</title>');
 			}
 		},

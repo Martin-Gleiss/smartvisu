@@ -480,16 +480,6 @@ button[disabled],
 	margin-left: 1.3125em;
 }
 
-/* Smart Visu
------------------------------------------------------------------------------------------------------------*/
-svg.icon0, a.ui-link {
-	stroke: #fff;
-	fill: #fff;
-}
-svg.icon1, a.ui-link:hover, a.ui-link:active {
-	stroke: #22aadd;
-	fill: #22aadd;
-}
 
 /* ui-slider value
 -----------------------------------------------------------------------------------------------------------*/
@@ -604,4 +594,74 @@ a.ui-slider-handle-semicircle {
     background-image:     -ms-linear-gradient(left, #2F2F2F 30%, #3c3c3c 70% ); /* IE10 */
     background-image:      -o-linear-gradient(left, #2F2F2F 30%, #3c3c3c 70% ); /* Opera 11.10+ */
     background-image:         linear-gradient(to right, #2F2F2F 30%, #3c3c3c 70%);
+}
+
+
+/* Highcharts
+-----------------------------------------------------------------------------------------------------------*/
+.highcharts-color-0 {
+	fill: #22AADD;
+	stroke: #22AADD;
+	color: #22AADD;
+}
+.highcharts-color-1 {
+	fill: #4176A9;
+	stroke: #4176A9;
+	color: #4176A9;
+}
+.highcharts-color-2 {
+	fill: #6640FF;
+	stroke: #6640FF;
+	color: #6640FF;
+}
+.highcharts-color-3 {
+	fill: #00bcd4;
+	stroke: #00bcd4;
+	color: #00bcd4;
+}
+.highcharts-color-4 {
+	fill: #03a9f4;
+	stroke: #03a9f4;
+	color: #03a9f4;
+}
+.highcharts-color-5 {
+	fill: #2196f3;
+	stroke: #2196f3;
+	color: #2196f3;
+}
+.highcharts-color-6 {
+	fill: #3f51b5;
+	stroke: #3f51b5;
+	color: #3f51b5;
+}
+.highcharts-color-7 {
+	fill: #673ab7;
+	stroke: #673ab7;
+	color: #673ab7;
+}
+.highcharts-color-8 {
+	fill: #673ab7;
+	stroke: #673ab7;
+	color: #673ab7;
+}
+.highcharts-color-9 {
+	fill: #009688;
+	stroke: #009688;
+	color: #009688;
+}
+
+/* smartVISU
+-----------------------------------------------------------------------------------------------------------*/
+.icon0, a.ui-link {
+	stroke: #fff;
+	fill: #fff;
+}
+.icon1, a.ui-link:hover, a.ui-link:active {
+	stroke: #22aadd;
+	fill: #22aadd;
+}
+.switch.icon1,
+html .ui-btn.icon1,
+[data-widget="basic.print"].icon1 {
+	color: #22aadd;
 }

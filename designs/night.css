@@ -204,7 +204,7 @@ html .ui-alt-icon .ui-radio-off:after {
 	width: 8px;
 	height: 8px;
 	border-width: 5px;
-	border-style: solid; 
+	border-style: solid;
 }
 .ui-alt-icon.ui-btn.ui-radio-on:after,
 .ui-alt-icon .ui-btn.ui-radio-on:after {
@@ -271,7 +271,7 @@ html body .ui-group-theme-a a {
 html .ui-bar-a a:visited,
 html .ui-body-a a:visited,
 html body .ui-group-theme-a a:visited {
-    color: #ffffff /*{a-link-visited}*/;
+	color: #ffffff /*{a-link-visited}*/;
 }
 .ui-page-theme-a a:hover,
 html .ui-bar-a a:hover,
@@ -433,7 +433,7 @@ html body .ui-group-theme-b a {
 html .ui-bar-b a:visited,
 html .ui-body-b a:visited,
 html body .ui-group-theme-b a:visited {
-    color: #000000 /*{b-link-visited}*/;
+	color: #000000 /*{b-link-visited}*/;
 }
 .ui-page-theme-b a:hover,
 html .ui-bar-b a:hover,
@@ -597,7 +597,7 @@ html body .ui-group-theme-c a {
 html .ui-bar-c a:visited,
 html .ui-body-c a:visited,
 html body .ui-group-theme-c a:visited {
-    color: #000000 /*{c-link-visited}*/;
+	color: #000000 /*{c-link-visited}*/;
 }
 .ui-page-theme-c a:hover,
 html .ui-bar-c a:hover,
@@ -761,7 +761,7 @@ html body .ui-group-theme-d a {
 html .ui-bar-d a:visited,
 html .ui-body-d a:visited,
 html body .ui-group-theme-d a:visited {
-    color: #000000 /*{d-link-visited}*/;
+	color: #000000 /*{d-link-visited}*/;
 }
 .ui-page-theme-d a:hover,
 html .ui-bar-d a:hover,
@@ -925,7 +925,7 @@ html body .ui-group-theme-e a {
 html .ui-bar-e a:visited,
 html .ui-body-e a:visited,
 html body .ui-group-theme-e a:visited {
-    color: #000000 /*{e-link-visited}*/;
+	color: #000000 /*{e-link-visited}*/;
 }
 .ui-page-theme-e a:hover,
 html .ui-bar-e a:hover,
@@ -1075,7 +1075,7 @@ button[disabled],
 
 
 /***********************************************************************************************************
-Non-themeroller styles 
+Non-themeroller styles
 ************************************************************************************************************/
 
 /* Gradients as in jQuery Mobile 1.3.2
@@ -1598,6 +1598,60 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 	background-image:     -ms-linear-gradient( #FFA121 /*{global-active-background-start}*/, #DE841B /*{global-active-background-end}*/); /* IE10 */
 	background-image:      -o-linear-gradient( #FFA121 /*{global-active-background-start}*/, #DE841B /*{global-active-background-end}*/); /* Opera 11.10+ */
 	background-image:         linear-gradient( #FFA121 /*{global-active-background-start}*/, #DE841B /*{global-active-background-end}*/);
+}
+
+
+/* Highcharts
+-----------------------------------------------------------------------------------------------------------*/
+.highcharts-color-0 {
+	fill: #f9a028;
+	stroke: #f9a028;
+	color: #f9a028;
+}
+.highcharts-color-1 {
+	fill: #ab6e1b;
+	stroke: #ab6e1b;
+	color: #ab6e1b;
+}
+.highcharts-color-2 {
+	fill: #7c5014;
+	stroke: #7c5014;
+	color: #7c5014;
+}
+.highcharts-color-3 {
+	fill: #de841b;
+	stroke: #de841b;
+	color: #de841b;
+}
+.highcharts-color-4 {
+	fill: #fadb4e;
+	stroke: #fadb4e;
+	color: #fadb4e;
+}
+.highcharts-color-5 {
+	fill: #ffb925;
+	stroke: #ffb925;
+	color: #ffb925;
+}
+.highcharts-color-6 {
+	fill: #e5981e;
+	stroke: #e5981e;
+	color: #e5981e;
+}
+.highcharts-color-7 {
+	fill: #fceda7;
+	stroke: #fceda7;
+	color: #fceda7;
+}
+.highcharts-color-8 {
+	fill: #f7931e;
+	stroke: #f7931e;
+	color: #f7931e;
+}
+.highcharts-color-9 {
+	fill: #875010;
+	stroke: #875010;
+	color: #875010;
 }
 
 /* smartVISU

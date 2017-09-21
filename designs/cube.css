@@ -1599,6 +1599,60 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 	background-image:         linear-gradient( #FFA121 /*{global-active-background-start}*/, #DE841B /*{global-active-background-end}*/);
 }
 
+
+/* Highcharts
+-----------------------------------------------------------------------------------------------------------*/
+.highcharts-color-0 {
+	fill: #f9a028;
+	stroke: #f9a028;
+	color: #f9a028;
+}
+.highcharts-color-1 {
+	fill: #ab6e1b;
+	stroke: #ab6e1b;
+	color: #ab6e1b;
+}
+.highcharts-color-2 {
+	fill: #7c5014;
+	stroke: #7c5014;
+	color: #7c5014;
+}
+.highcharts-color-3 {
+	fill: #de841b;
+	stroke: #de841b;
+	color: #de841b;
+}
+.highcharts-color-4 {
+	fill: #fadb4e;
+	stroke: #fadb4e;
+	color: #fadb4e;
+}
+.highcharts-color-5 {
+	fill: #ffb925;
+	stroke: #ffb925;
+	color: #ffb925;
+}
+.highcharts-color-6 {
+	fill: #e5981e;
+	stroke: #e5981e;
+	color: #e5981e;
+}
+.highcharts-color-7 {
+	fill: #fceda7;
+	stroke: #fceda7;
+	color: #fceda7;
+}
+.highcharts-color-8 {
+	fill: #f7931e;
+	stroke: #f7931e;
+	color: #f7931e;
+}
+.highcharts-color-9 {
+	fill: #875010;
+	stroke: #875010;
+	color: #875010;
+}
+
 /* smartVISU
 -----------------------------------------------------------------------------------------------------------*/
 .icon0, a.ui-link {

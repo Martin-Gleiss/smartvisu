@@ -1601,6 +1601,111 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 	background-image:         linear-gradient( #5393c5 /*{global-active-background-start}*/, #6facd5 /*{global-active-background-end}*/);
 }
 
+
+/* Highcharts
+-----------------------------------------------------------------------------------------------------------*/
+.highcharts-title {
+	fill: #000;
+}
+.highcharts-subtitle {
+	fill: #666;
+}
+
+.highcharts-axis .highcharts-axis-line {
+	stroke: #333;
+}
+.highcharts-tick {
+	stroke: #333;
+}
+.highcharts-axis-labels {
+	fill: #666;
+}
+.highcharts-axis-title {
+	fill: #999;
+}
+
+.highcharts-legend-item text {
+	fill: #666;
+}
+.highcharts-legend-item:hover text {
+	fill: #333;
+}
+.highcharts-legend-item-hidden * {
+	fill: #ccc;
+	stroke: #ccc;
+}
+
+.highcharts-markers path {
+	stroke: #fff;
+}
+
+.highcharts-label text {
+	fill: #000;
+}
+.highcharts-data-labels {
+	fill: #000;
+	color: #000;
+}
+
+.highcharts-tooltip-box {
+	fill: #dcdcdc;
+}
+.highcharts-tooltip text {
+	fill: #000;
+}
+
+
+.highcharts-color-0 {
+	fill: #5595c6;
+	stroke: #5595c6;
+	color: #5595c6;
+}
+.highcharts-color-1 {
+	fill: #416f92;
+	stroke: #416f92;
+	color: #416f92;
+}
+.highcharts-color-2 {
+	fill: #2e4f68;
+	stroke: #2e4f68;
+	color: #2e4f68;
+}
+.highcharts-color-3 {
+	fill: #6facd5;
+	stroke: #6facd5;
+	color: #6facd5;
+}
+.highcharts-color-4 {
+	fill: #2489ce;
+	stroke: #2489ce;
+	color: #2489ce;
+}
+.highcharts-color-5 {
+	fill: #5393c5;
+	stroke: #5393c5;
+	color: #5393c5;
+}
+.highcharts-color-6 {
+	fill: #387bbe;
+	stroke: #387bbe;
+	color: #387bbe;
+}
+.highcharts-color-7 {
+	fill: #387bbe;
+	stroke: #387bbe;
+	color: #387bbe;
+}
+.highcharts-color-8 {
+	fill: #00bcd4;
+	stroke: #00bcd4;
+	color: #00bcd4;
+}
+.highcharts-color-9 {
+	fill: #3f51b5;
+	stroke: #3f51b5;
+	color: #3f51b5;
+}
+
 /* smartVISU
 -----------------------------------------------------------------------------------------------------------*/
 .icon0, a.ui-link {

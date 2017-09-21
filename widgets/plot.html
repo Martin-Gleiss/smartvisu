@@ -11,7 +11,7 @@
 /**
 * The diagram showing curves of relative humidity and effective temperature superimposed upon rectangular coordinates. The comfort-zones indicate when humans feel good.
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param a item for the temperature
 * @param a item for the humidity
 */
@@ -27,7 +27,7 @@
 /**
 * A gauge
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param an item for the gauge value
 * @param min value
 * @param max value
@@ -41,7 +41,7 @@
 */
 {% macro gauge(id, item, min, max, unit, label, mode, stop, color) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.gauge" data-mode="{{ mode|default('solid-half') }}" data-item="{{ implode(item) }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.gauge" data-mode="{{ mode|default('solid-half') }}" data-item="{{ implode(item) }}"
 		data-label="{{ label }}" data-stop="{{ implode(stop) }}" data-color="{{ implode(color) }}" data-min="{{ min|default(0) }}" data-max="{{ max|default(255) }}" data-unit="{{ unit }}"  data-axis="{{ lang('plot.gauge', unit) }}"
 		class="gauge"></div>
 
@@ -105,7 +105,7 @@
 /**
 * A pie diagram
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param series of item(s). More items in array form: [ item1 , item2 ]
 * @param series of label(s). More labels in array form: [ label1 , label2 ]
 * @param color for each series e. g. '#f00' for red. More color/s in array form: ['#f00','#fff'] (optional, default: sutiable for design)
@@ -116,7 +116,7 @@
 */
 {% macro pie(id, item, label, color, text, mode) %}
 
-	<div id="{{ uid(page, id) }}" data-widget="plot.pie" data-item="{{ implode(item) }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.pie" data-item="{{ implode(item) }}"
 		data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-text="{{ text|default('') }}" data-mode="{{ mode|default('legend') }}"
 		class="plot"></div>
 
@@ -126,7 +126,7 @@
 /**
 * A temperature-chart for use with an rtr. Plots actual and set temperature. If the state is given it will be shown as pie.
 *
-* @param unique id for this widget
+* @param unique id for this widget (optional)
 * @param series of a item for the actual-temperature
 * @param series of a item for the set-temperature
 * @param series of a item for the state of the actor. It is shown as percental value within the pie. (> 0 is considered as 'on')
