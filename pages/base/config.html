@@ -60,7 +60,7 @@
 								{{ forms.config_select(source, values, 'lang', dir('lang', '^(.*?)\.ini$') ) }}
 								{{ forms.config_select(source, values, 'timesource', [{"name": "client", "label": "Client"}, {"name": "server", "label": "Server"}] ) }}
 							</div>
-							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
+							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'behaviour', 'label') }}</h3>
 								{{ forms.config_flip(source, values, 'animation') }}
 								{{ forms.config_input(source, values, 'backtohometime', 'wide') }}

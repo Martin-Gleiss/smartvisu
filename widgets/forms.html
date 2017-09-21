@@ -59,7 +59,7 @@
 	{% set hint = lang('configuration_page', id, 'hint') %}
 	{% if not hint is empty %}
 		<div class="ui-help-container">
-			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg"></a>
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
 			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
 				{{ hint|nl2br }}
 			</div>
@@ -82,7 +82,7 @@
 	{% set hint = lang('configuration_page', id, 'hint') %}
 	{% if not hint is empty %}
 		<div class="ui-help-container">
-			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg"></a>
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
 			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
 				{{ hint|nl2br }}
 			</div>
@@ -103,7 +103,7 @@
 	{% set hint = lang('configuration_page', id, 'hint') %}
 	{% if not hint is empty %}
 		<div class="ui-help-container">
-			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg"></a>
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
 			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
 				{{ hint|nl2br }}
 			</div>
@@ -122,11 +122,13 @@
 					{% endif %}
 				{% endfor %}
 			</select>
+				/** display deprecated options in italic
 				<style type="text/css">
           {% for deprecated in deprecateds %}
           	#{{ source }}_{{ id }}-listbox-popup li[data-option-index="{{ deprecated }}"] a { font-style: italic; }
 					{% endfor %}
 				</style>
+				*/
 				<script type="text/javascript">
 					$('#{{ source }}_{{ id }}').on('change init', function() {
 						var element = $(this);
@@ -170,7 +172,7 @@
 	{% set hint = lang('configuration_page', id, 'hint') %}
 	{% if not hint is empty %}
 		<div class="ui-help-container">
-			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg"></a>
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
 			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
 				{{ hint|nl2br }}
 			</div>

@@ -397,12 +397,12 @@ the first one is the base color for values below first threshold, so pass one co
 		{% endfor %}
 		</select>
 	{% else %}
-		<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select"{% if group != 'none' %} data-role="controlgroup" data-type="{{ group|default('horizontal') }}{% endif %}">
+		<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select"{% if group != 'none' %} data-role="controlgroup" data-type="{{ group|default('horizontal') }}{% endif %}">
 			{% for val in value|default([0,1]) %}
 				{% set pic = icon is iterable ? icon[loop.index0]|default(icon[0]) : icon %}
 				{{basic.stateswitch('', item, type|default('mini'), [val, val], pic|default('none'), (text is iterable ? text[loop.index0]|default(text[0]) : text)|default(pic is empty ? val : ''), [color_on|default('icon1'), ''])}}
 			{% endfor %}
-		</span>
+		</div>
 	{% endif %}
 {% endmacro %}
 

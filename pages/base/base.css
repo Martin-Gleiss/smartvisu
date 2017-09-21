@@ -250,6 +250,10 @@ a:hover {
 }
 
 /** --------- button --------- */
+.ui-controlgroup {
+	display: inline-block;
+	vertical-align: middle;
+}
 
 .ui-btn-inline {
 	margin: 1px;

@@ -1,8 +1,8 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      KERVIEL Pierre-Yves
-* @copyright   2014
+* @author      WIDMER Stedan
+* @copyright   2017
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -133,14 +133,14 @@
 			&#123;&#123; basic.stateswitch('', 'bath.light.switch', 'icon', '', ['user', 'grid'], '', ['#f00', 'icon1']) &#125;&#125;
 			<br>
 			new: <span class="nocode">text switch</span><br>
-			&#123;&#123; basic.stateswitch('', 'bath.light.switch', 'icon', '', 'none', ['On', 'Off']) &#125;&#125;
+			&#123;&#123; basic.stateswitch('', 'bath.light.switch', 'text', '', '', ['On', 'Off']) &#125;&#125;
 		</code>
 	</div>
 	<div class="html">
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['icon1', '#f00'], 'green') }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', ['user', 'grid'], '', ['#f00', 'icon1']) }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', 'none', ['On', 'Off']) }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'text', '', '', ['On', 'Off']) }}
 	</div>
 
 	Multistate (replacement of deprecated <i>basic.multistate</i>)
@@ -187,4 +187,3 @@
 	</div>
 
 {% endblock %}
-

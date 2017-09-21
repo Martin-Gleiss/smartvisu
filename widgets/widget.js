@@ -255,7 +255,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 						io.write(items[0], values);
 					}
 					else {
-						node.data('lockfor', 2); // lock widget to ignore next 2 updates
+						var oldColors = node.children('span').css('background-color').match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1);
+						var diffCount = (values[0] != oldColors[0]) +(values[1] != oldColors[1]) + (values[2] != oldColors[2]) -1;
+						node.data('lockfor', diffCount); // lock widget to ignore next 2 updates
 						io.write(items[0], values[0]);
 						io.write(items[1], values[1]);
 						io.write(items[2], values[2]);
@@ -411,7 +413,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							io.write(items[0], values);
 						}
 						else {
-							node.data('lockfor', 2); // lock widget to ignore next 2 updates
+							var oldColors = node.children('span').css('background-color').match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1);
+							var diffCount = (values[0] != oldColors[0]) +(values[1] != oldColors[1]) + (values[2] != oldColors[2]) -1;
+							node.data('lockfor', diffCount); // lock widget to ignore next 2 updates
 							io.write(items[0], values[0]);
 							io.write(items[1], values[1]);
 							io.write(items[2], values[2]);
@@ -491,7 +495,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				io.write(items[0], values);
 			}
 			else {
-				widget.data('lockfor', 2); // lock widget to ignore next 2 updates
+				var oldColors = node.children('span').css('background-color').match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1);
+				var diffCount = (values[0] != oldColors[0]) +(values[1] != oldColors[1]) + (values[2] != oldColors[2]) -1;
+				node.data('lockfor', diffCount); // lock widget to ignore next 2 updates
 				io.write(items[0], values[0]);
 				io.write(items[1], values[1]);
 				io.write(items[2], values[2]);
@@ -590,7 +596,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	$(bevent.target).find('select[data-widget="basic.select"]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
-      $(this).val(response[0]).selectmenu('refresh');
+			$(this).val(response[0]).selectmenu('refresh');
 		},
 
 		'change': function (event) {
