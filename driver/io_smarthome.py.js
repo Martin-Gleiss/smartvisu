@@ -151,6 +151,10 @@ var io = {
 				// use url of current page if not defined
 				io.address = location.hostname;
 			}
+			if (!io.port) {
+				// use port of current page if not defined and needed
+				io.port = location.port;
+			}
 		}
 		io.socket = new WebSocket(protocol + io.address + ':' + io.port);
 
