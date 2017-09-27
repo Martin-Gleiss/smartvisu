@@ -153,9 +153,7 @@ var io = {
 			}
 			if (!io.port) {
 				// use port of current page if not defined and needed
-				if ( ! ((location.protocol == 'https' && location.port == '443') || (location.protocol == 'http' && location.port == '80')) ) {
-					io.port = location.port;
-				}
+				io.port = location.port;
 			}
 		}
 		io.socket = new WebSocket(protocol + io.address + ':' + io.port);
