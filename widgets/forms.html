@@ -130,7 +130,7 @@
 				</style>
 				*/
 				<script type="text/javascript">
-					$('#{{ source }}_{{ id }}').on('change init', function() {
+					$('#{{ source }}_{{ id }}').on('change init', function(event) {
 						var element = $(this);
 
 						if(element.data('hidden'))
@@ -139,7 +139,7 @@
 						var metas = {{ metas|json_encode()|raw }};
 						var meta = metas[$(element).val()];
 
-						if(meta && meta['default']) {
+						if(meta && meta['default'] && event.type != 'init') {
 							$.each(meta['default'], function(field, val) {
 								setMobileWidgetValue(element.closest('fieldset').find('[name="'+field+'"]'), val);
 							});
