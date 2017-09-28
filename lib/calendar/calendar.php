@@ -10,8 +10,8 @@
 
 
 require_once const_path_system.'service.php';
-require_once const_path_system.'calendar/ICal/EventObject.php';
 require_once const_path_system.'calendar/ICal/ICal.php';
+require_once const_path_system.'calendar/ICal/Event.php';
 
 /**
  * This class is the base class of all services
