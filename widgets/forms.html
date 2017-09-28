@@ -112,15 +112,29 @@
 	      {% set metas = [] %}
 	      {% set deprecateds = [] %}
 				{% for file in files %}
-					{% set meta = configmeta(file.path) %}
-					{% if meta != [] %}
-						{% set metas = metas|merge({ (file.name) : meta }) %}
+					{% if not file.path %}
+						{% set meta = [] %}
+					{% else %}
+						{% set meta = configmeta(file.path) %}
+						{% if meta != [] %}
+							{% set metas = metas|merge({ (file.name) : meta }) %}
+		          {% if meta['deprecated'] %}
+		            {% set deprecateds = deprecateds|merge([loop.index0]) %}
+							{% endif %}
+						{% endif %}
+					{% endif %}
+          {% if file.group and file.group != prevgroup %}
+						{% if prevgroup %}
+            	</optgroup>
+						{% endif %}
+						{% set prevgroup = file.group %}
+            <optgroup label="{{ file.group }}">
 					{% endif %}
 					<option value="{{ file.name }}"{{ values[id] == file.name ? ' selected="selected"'|raw }}>{{ meta['label']|default(file.label) }}</option>
-          {% if meta['deprecated'] %}
-            {% set deprecateds = deprecateds|merge([loop.index0]) %}
-					{% endif %}
 				{% endfor %}
+				{% if prevgroup %}
+        	</optgroup>
+				{% endif %}
 			</select>
 				/** display deprecated options in italic
 				<style type="text/css">

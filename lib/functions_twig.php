@@ -305,6 +305,24 @@ function twig_read_config($source)
 	return $config->get($source);
 }
 
+function twig_timezones() {
+  $inlist = timezone_identifiers_list();
+	$outlist = array();
+	foreach($inlist as $tz) {
+    $tzparts = explode('/', $tz, 2);
+		$outlist[] = array('name' => $tz, 'label' => $tz, 'group' => $tzparts[0]);
+	}
+	return $outlist;
+/*
+	$map = [];
+	foreach($inlist as $tz) {
+    $tzparts = explode('/', $tz, 2);
+		$map[$tzparts[0]][] = $tz;
+	}
+	return $map;
+*/
+}
+
 // -----------------------------------------------------------------------------
 // Special functions for Twig
 // -----------------------------------------------------------------------------

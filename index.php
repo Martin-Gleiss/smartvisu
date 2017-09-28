@@ -113,6 +113,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$twig->addFunction('configmeta', new Twig_Function_Function('twig_configmeta'));
 	$twig->addFunction('lang', new Twig_Function_Function('twig_lang'));
 	$twig->addFunction('read_config', new Twig_Function_Function('twig_read_config'));
+	$twig->addFunction('timezones', new Twig_Function_Function('twig_timezones'));
 	$twig->addFunction('implode', new Twig_Function_Function('twig_implode', array('is_safe' => array('html'))));
 
 	// init lexer comments                   
