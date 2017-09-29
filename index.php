@@ -125,7 +125,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 		$template = $twig->loadTemplate($request['page'].'.html');
 		if ($request['page'] == "manifest")
 		{
-			header('Content-Type: application/json');
+			header('Content-Type: application/manifest+json');
 			die($template->render(array()));
 		}
 
