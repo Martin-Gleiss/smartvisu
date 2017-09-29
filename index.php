@@ -115,7 +115,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$twig->addFunction('read_config', new Twig_Function_Function('twig_read_config'));
 	$twig->addFunction('implode', new Twig_Function_Function('twig_implode', array('is_safe' => array('html'))));
 
-	// init lexer comments                   
+	// init lexer comments
 	$lexer = new Twig_Lexer($twig, array('tag_comment' => array('/**', '*/')));
 	$twig->setLexer($lexer);
 
@@ -123,6 +123,12 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	try
 	{
 		$template = $twig->loadTemplate($request['page'].'.html');
+		if ($request['page'] == "manifest")
+		{
+			header('Content-Type: application/json');
+			die($template->render(array()));
+		}
+
 		$content = $template->render(array());
 
 		// write to cache and output
@@ -131,7 +137,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	catch (Exception $e)
 	{
 		// header("HTTP/1.0 602 smartVISU Template Error");
-		
+
 		echo "<pre>\n";
 		echo str_repeat(" ", 71)."smartVISU\n";
 		echo str_repeat(" ", 62).date('H:i, d.m').", v".config_version."\n";
