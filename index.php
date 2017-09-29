@@ -123,13 +123,13 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	try
 	{
 		$template = $twig->loadTemplate($request['page'].'.html');
+		$content = $template->render(array());
+
 		if ($request['page'] == "manifest")
 		{
 			header('Content-Type: application/manifest+json');
-			die($template->render(array()));
+			die($content);
 		}
-
-		$content = $template->render(array());
 
 		// write to cache and output
 		$cache->write($content);
