@@ -3010,6 +3010,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			// draw the plot
 			$(this).highcharts({
 				chart: {type: 'line'},
+				title: { text: null },
 				series: [
 					{
 						name: label[0], data: response[0], type: 'spline'
