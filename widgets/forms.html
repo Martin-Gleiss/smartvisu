@@ -104,11 +104,16 @@
 	{% if not hint is empty %}
 		<div class="ui-help-container">
 			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+			/**
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon icon1" data-transition="pop">
+				{{ source('message_help.svg') }}
+			</a>
+			*/
 			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
 				{{ hint|nl2br }}
 			</div>
 	{% endif %}
-			<select name="{{ id }}" id="{{ source }}_{{ id }}" data-native-menu="false"{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
+			<select name="{{ id }}" id="{{ source }}_{{ id }}"{{ files|length <= 20 ? ' data-native-menu="false"'|raw }}{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
 	      {% set metas = [] %}
 	      {% set deprecateds = [] %}
 				{% for file in files %}
