@@ -30,7 +30,7 @@
 		<div data-role="navbar">
 			<ul>
 		    {% for source, title in sources %}
-					<li data-source="{{ source }}"><a href="#config_tab_{{ source }}" data-ajax="false"{{ loop.first ? 'class="ui-btn-active"'|raw }}>{{ title }}</a></li>
+					<li data-source="{{ source }}"><a href="#config_tab_{{ source }}" data-ajax="false"{{ loop.first ? ' class="ui-btn-active"'|raw }}>{{ title }}</a></li>
 		    {% endfor %}
 			</ul>
 		</div>
@@ -153,7 +153,7 @@
 			<h1>{{ lang('configuration_page','calendar_googleauth', 'instruct_title') }}</h1>
 		</div>
 		<div role="main" class="ui-content">
-			<form method="get" action="https://accounts.google.com/o/oauth2/v2/auth" target="_blank" id="googleauthform">
+			<form id="googleauthform">
 				<ol>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_1')|raw }}</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_2')|raw }}</li>
@@ -174,10 +174,10 @@
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7')|raw }}
 						<ol type="a">
 							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7a')|raw }}</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7b')|raw }}</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7c')|raw }}<br>
-								<input type="text" type="hidden" name="redirect_uri" id="redirect_uri" readonly="readonly" onclick="this.select();"> <!-- filled in by JavaScript -->
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7b')|raw }}<br>
+								<input type="text" type="hidden" name="script_origin" id="script_origin" readonly="readonly" onclick="this.select();"> <!-- filled in by JavaScript -->
 							</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7c')|raw }}</li>
 						</ol>
 					</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_8')|raw }}</li>
@@ -198,14 +198,6 @@
 
 				<hr>
 
-				<!-- fix parameters -->
-				<input type="hidden" name="scope" value="https://www.googleapis.com/auth/calendar.readonly">
-				<input type="hidden" name="response_type" value="code">
-				<!-- <input type="hidden" name="response_type" value="token"> -->
-				<input type="hidden" name="access_type" value="offline">
-				<input type="hidden" name="prompt" value="consent">
-				<!-- <input type="hidden" name="state" id="state"> -->
-
 				<div class="ui-field-contain" style="display: none">
 					<label for="google_json_text">google_json_text</label>
 					<textarea id="google_json_text"></textarea>
@@ -219,7 +211,9 @@
 					<input type="text" id="client_secret" value=""> <!-- no name attribute, so it is not sent by submitting form -->
 				</div>
 
-				<button type="submit" data-theme="b" data-icon="check" name="submit" value="1">{{ lang('configuration_page', 'calendar_google_refresh_token', 'button') }}</button>
+				<div id="calendar_googleauth_submitcontainer" style="position: relative; overflow: hidden;">
+					<button type="submit" data-theme="b" data-icon="check" name="submit" value="1">{{ lang('configuration_page', 'calendar_google_refresh_token', 'button') }}</button>
+				</div>
 
 			</form>
 		</div>
