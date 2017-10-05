@@ -3011,6 +3011,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			$(this).highcharts({
 				chart: {type: 'line'},
 				title: { text: null },
+				legend: {
+					align: 'center',
+					verticalAlign: 'top',
+					floating: true
+				},
 				series: [
 					{
 						name: label[0], data: response[0], type: 'spline'
