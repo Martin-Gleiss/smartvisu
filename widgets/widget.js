@@ -2154,7 +2154,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					type: (exposure[i] != 'stair' ? exposure[i] : 'line'),
 					step: (exposure[i] == 'stair' ? 'left' : false),
 					name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
-					data: response[i],
+					data: response[i].slice(0), // clone
 					yAxis: (assign[i] ? assign[i] - 1 : 0)
 				});
 			}
@@ -2248,21 +2248,21 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 		'point': function (event, response) {
 			event.stopPropagation();
+
 			var count = $(this).attr('data-count');
 			if (count < 1) {
 				count = 100;
 			}
+
+			var chart = $(this).highcharts();
 			for (var i = 0; i < response.length; i++) {
 				if (response[i]) {
-					var chart = $(this).highcharts();
-
-					// more points?
 					for (var j = 0; j < response[i].length; j++) {
 						chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= count));
 					}
-					chart.redraw();
 				}
 			}
+			chart.redraw();
 		}
 	});
 
@@ -3050,9 +3050,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			if (count < 1) {
 				count = 100;
 			}
-			for (var i = 0; i < response.length; i++) {
-				var chart = $(this).highcharts();
 
+			var chart = $(this).highcharts();
+			for (var i = 0; i < response.length; i++) {
 				if (response[i] && (i == 0 || i == 1)) {
 					for (var j = 0; j < response[i].length; j++) {
 						chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= count));
@@ -3061,8 +3061,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				else if (response[i] && (i == 2)) {
 					// TODO: plot.rtr, recalc pie diagram after new point received
 				}
-				chart.redraw();
 			}
+			chart.redraw();
 		}
 	});
 
