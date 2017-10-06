@@ -41,7 +41,7 @@ HEADER
 		);
 		if(config_calendar_username != '' && config_calendar_password != '')
 	    $ctxopts['http']['header'] .= "\r\nAuthorization: Basic " . base64_encode(config_calendar_username.':'.config_calendar_password);
-print_r($ctxopts);
+
 		$context = stream_context_create($ctxopts);
 		$content = file_get_contents($url, false, $context);
 		return $content;
