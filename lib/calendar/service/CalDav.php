@@ -41,7 +41,7 @@ HEADER
 		);
 		if(config_calendar_username != '' && config_calendar_password != '')
 	    $ctxopts['http']['header'] .= "\r\nAuthorization: Basic " . base64_encode(config_calendar_username.':'.config_calendar_password);
-
+print_r($ctxopts);
 		$context = stream_context_create($ctxopts);
 		$content = file_get_contents($url, false, $context);
 		return $content;
@@ -202,9 +202,7 @@ XMLQUERY;
 			$xml->registerXPathNamespace('C', 'urn:ietf:params:xml:ns:caldav');
 			$caldata = $xml->xpath('//C:calendar-data');
 			$this->debug(implode("\n", $caldata), "ICS Data of '".$calurl."'");
-			foreach($caldata as $icscontent) {
-				$ical->initString($icscontent);
-			}
+			$ical->initString(implode("\n",$caldata));
 			$this->addFromIcs($ical, $calmetadata);
 		}
 	}
