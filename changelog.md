@@ -27,6 +27,7 @@
 - Allow pages selection by url parameter (e.g. index.php?pages=foo)
 - Configuration can be overridden per page and per client. Options stored in .ini now. Redesign of configuration page
 - Clear pagecache (by button and on disabling on configuration page)
+- New dropins folder to add custom extensions and overrides (see details in [README.md](./dropins/README.md) inside dropins/)
 - Language files can be overridden. This allows regional variations and custom extensions. And they are stored in clearer ini format
 - Timezone is configurable now (was hardcoded to 'Europe/Berlin')
 - Configurable time source (show time of server or client)

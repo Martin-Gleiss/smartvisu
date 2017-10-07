@@ -55,11 +55,15 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	if (config_driver == 'smarthome.py' and $config_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
 		$loader->addPath(const_path.'pages/smarthome');
 
+	$loader->addPath(const_path.'dropins');
 	$loader->addPath(const_path.'pages/base');
 	$loader->addPath(const_path.'widgets');
 
 	// init environment
-	$twig = new Twig_Environment($loader);
+	$twig = new Twig_Environment($loader, array('debug' => debug));
+	if (debug)
+		$twig->addExtension(new Twig_Extension_Debug());
+	$twig->addExtension(new Twig_Extension_StringLoader());
 
 	if (config_cache)
 		$twig->setCache(const_path.'temp/twigcache');

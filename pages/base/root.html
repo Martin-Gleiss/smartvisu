@@ -6,6 +6,15 @@
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
+/** handle dropins */
+{% set macrofiles = dir('dropins/widgets','(.*)\.html$') %}
+{% set dynmacro = [] %}
+{% for macrofile in macrofiles %}
+	{% set dynmacro = dynmacro|merge(['{% import "widgets/' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
+{% endfor %}
+{% extends template_from_string(dynmacro|join("\n") ~ '\n{% block root %}{% endblock %}') %}
+
+{% block root %}
 <!DOCTYPE html>
 
 <html>
@@ -33,8 +42,14 @@
 		'designs/' ~ config_design ~ '.css',
 		'pages/' ~ config_pages ~ '/visu.css'
 	] %}
+{% for file in dir('dropins/widgets', '(.*)(\.css)') %}
+	{% set cssFiles = cssFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins', '(.*)(\.css)') %}
+	{% set cssFiles = cssFiles|merge([file.path]) %}
+{% endfor %}
 {% if isdir('pages/'~config_pages~'/css') %}
-	{% for file in dir('pages/'~config_pages~'/css', '(.*)(\\.css)') %}
+	{% for file in dir('pages/'~config_pages~'/css', '(.*)(\.css)') %}
 		{% set cssFiles = cssFiles|merge([file.path]) %}
 	{% endfor %}
 {% endif %}
@@ -94,8 +109,14 @@
 		'driver/io_' ~ config_driver ~ '.js',
 		'pages/' ~ config_pages ~ '/visu.js' 
 	] %}
-{% if isdir('pages/'~config_pages~'/js', '\\.js') %}
-	{% for file in dir('pages/'~config_pages~'/js', '(.*)(\\.js)') %}
+{% for file in dir('dropins/widgets', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% if isdir('pages/'~config_pages~'/js', '\.js') %}
+	{% for file in dir('pages/'~config_pages~'/js', '(.*)(\.js)') %}
 		{% set jsFiles = jsFiles|merge([file.path]) %}
 	{% endfor %}
 {% endif %}
@@ -169,3 +190,4 @@ $(document).on("vmousedown pageshow", function() {
 {% block body %}{% endblock %}
 </body>
 </html>
+{% endblock root %}
