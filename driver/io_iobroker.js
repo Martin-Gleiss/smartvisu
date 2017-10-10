@@ -52,9 +52,9 @@ var io = {
 	 * @param		the item
 	 * @param		the value
 	 */
-	write: function (item, val) {
+	write: function (item, val, callback) {
 		if (io.checkConnected) {
-			io.socket.emit('setState', item, val);
+			io.socket.emit('setState', item, val, callback);
 		}
 	},
 
@@ -65,14 +65,14 @@ var io = {
 	 * @param		the value
 	 */
 	trigger: function (name, val) {
-		notify.warning('Driver: ioBroker', 'Trigger is not supported.');
-		/* does not work
 		if (io.checkConnected) {
-			// passing of value is not supported by ioBroker
-			io.socket.emit('runScript', name);
-			//io.socket.emit('startScript', name, false, function() { });
+			io.write('javascript.0.scriptEnabled.' + name, false, function() {
+				io.write('javascript.0.scriptEnabled.' + name, true);
+			})
+			
+			if(val && val != '')
+				notify.warning('Driver: ioBroker', 'Passing value to a script is not supported in ioBroker.');
 		}
-		*/
 	},
 
 	/**
@@ -139,16 +139,7 @@ var io = {
 	 */
 	open: function (socketIo) {
 
-		var socketForceWebSockets = false;
-		io.socket = new socketIo.connect(io.url, {
-			query: 'key=nokey',
-			'reconnection limit': 10000,
-			'max reconnection attempts': Infinity,
-			reconnection: false,
-			upgrade:	!socketForceWebSockets,
-			rememberUpgrade: socketForceWebSockets,
-			transports: socketForceWebSockets ? ['websocket'] : undefined
-		});
+		io.socket = new socketIo.connect(io.url);
 
 		io.socket.on('connect', function () {
 			io.socket.emit('name', 'smartVISU');
@@ -171,24 +162,23 @@ var io = {
 			}, 50);
 		});
 
-		io.socket.on('connect_error', function () {
-			 notify.error('Driver: ioBroker', 'connect_error');
+		io.socket.on('error', function (err) {
+			 notify.error('Driver: ioBroker', JSON.stringify(err));
+		});
+		
+		io.socket.on('connect_error', function (err) {
+			notify.error('Driver: ioBroker', 'connect_error: '+JSON.stringify(err));
 			//io.reconnect(connOptions);
+		});
+		
+		io.socket.on('permissionError', function (err) {
+			 notify.error('Driver: ioBroker', 'permissionError: '+JSON.stringify(err));
 		});
 
 		io.socket.on('disconnect', function () {
 			console.log('ioBroker: disconnected');
+			io.isConnected = false;
 			//io.reconnect(connOptions);
-		});
-
-		// after reconnect the "connect" event will be called
-		io.socket.on('reconnect', function () {
-			console.lg('ioBroker: reconnecting');
-			// anyway "on connect" is called
-		});
-
-		io.socket.on('permissionError', function (err) {
-			 notify.error('Driver: ioBroker', 'permissionError: '+JSON.stringify(err));
 		});
 
 		io.socket.on('stateChange', function (id, state) {
@@ -288,5 +278,4 @@ var io = {
 		});
 	},
 */
-	// TODO: io.socket.emit('getHistory', id, options, function (err, result, options, instance) { });
 }
