@@ -182,7 +182,7 @@ function twig_docu($filename)
 					$rettmp[$no][$headertag] = trim($header[2][$headerno]);
 			}
 
-			$rettmp[$no]['subpackage'] = substr(mb_strtolower(basename($filename), 'UTF-8'), 0, -5);
+			$rettmp[$no]['subpackage'] = substr(strtolower(utf8_decode(basename($filename))), 0, -5);
 			$rettmp[$no]['command'] = $rettmp[$no]['subpackage'].".".$rettmp[$no]['name'];
 			$rettmp[$no]['call'] = $rettmp[$no]['command']."(".$rettmp[$no]['params'].")";
 

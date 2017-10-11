@@ -53,7 +53,7 @@
 		{% set cssFiles = cssFiles|merge([file.path]) %}
 	{% endfor %}
 {% endif %}
-{%- if config_cache %} /** only use minified and merged version if page cache is activated. otherwise use original single files. **/
+{%- if config_cache and mbstring_available %} /** only use minified and merged version if page cache is activated and mbstring available. otherwise use original single files. **/
 	<link rel="stylesheet" href="assets.php?pages={{ config_pages }}&amp;type=css
 	{%- for cssFile in cssFiles -%}
 		{%- if cssFile is not empty and isfile(cssFile) -%}
@@ -120,7 +120,7 @@
 		{% set jsFiles = jsFiles|merge([file.path]) %}
 	{% endfor %}
 {% endif %}
-{%- if config_cache -%} /** only use minified and merged version if page cache is activated. otherwise use original single files. **/
+{%- if config_cache and mbstring_available -%} /** only use minified and merged version if page cache is activated and mbstring available. otherwise use original single files. **/
 	<script type="text/javascript" src="assets.php?pages={{ config_pages }}&amp;type=javascript
 	{%- for jsFile in jsFiles -%}
 		{%- if jsFile is not empty and isfile(jsFile) -%}
@@ -135,6 +135,10 @@
 	<script type="text/javascript" src="{{ jsFile }}"></script>
 		{%- endif -%}
 	{%- endfor -%}
+	{%- if config_cache and not mbstring_available %}
+
+ 	<script type="text/javascript">notify.warning('Assets','JavaScript and CSS minification needs PHP mbstring module.')</script>
+ 	{%- endif -%}
 {% endif %}
 
 

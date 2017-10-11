@@ -100,6 +100,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$twig->addGlobal('config_pages', $config_pages);
 	$twig->addGlobal('pagepath', dirname($request['page']));
 	$twig->addGlobal('const_path', const_path);
+	$twig->addGlobal('mbstring_available', function_exists('mb_get_info'));
 
 	$twig->addFilter('_', new Twig_Filter_Function('twig_concat'));
 	$twig->addFilter('bit', new Twig_Filter_Function('twig_bit'));

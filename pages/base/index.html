@@ -10,7 +10,7 @@
 
 <html>
 <head>
-	<title>[smartVISU]</title>
+	<title>[smartVISU] Welcome!</title>
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="user-scalable=no,width=device-width">
@@ -21,17 +21,13 @@
 	<link rel="icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="apple-touch-icon" href="favicon.png" />
 
-	<script type="text/javascript" src="vendor/jquery/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="vendor/jquery/jquery-2.1.4.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="pages/base/base.css" />
 </head>
 
 
-<body class="page-bg" style="font-family: Dosis; background-image: url('pics/bg/smoke_spirals.png');">
+<body class="page-bg" style="font-family: Dosis; background-color: #eee; background-image: url('pics/bg/smoke_spirals.png');">
 <style type="text/css">
-	body {
-		background-color: #eee;
-	}
-
 	.check {
 		font-size: 14px;
 	}
@@ -67,51 +63,25 @@
 		</div>
 
 		<div class="app">
-			<a id="docu" href="#">
+			<a href="index.php?pages=docu">
 				<div class="image" style="background-color: #fa0;"><img src="icons/sw/edit_copy.svg" alt="Docu"></div>
 				<div>Docu</div>
 			</a>
 		</div>
 
-		<script type="text/javascript">
-			$('#docu').click(function () {
-				$.ajax({
-					type: "POST",
-					url: 'pages/base/configure.php?pages=docu',
-					success: function (data) {
-						window.setTimeout('location.reload();', {{ config_delay }});
-					}
-				})
-			});
-		</script>
-
-
 		<div class="app">
-			<a id="house" href="#">
-				<div class="image" style="background-color: #0c0;"><img src="icons/sw/scene_summerhouse.svg" alt="Model House"></div>
-				<div>Model House</div>
+			<a href="https://github.com/Martin-Gleiss/smartvisu" target="_blank">
+				<div class="image" style="background-color: #0c0;"><img src="icons/sw/it_internet.svg" alt="Source"></div>
+				<div>Source</div>
 			</a>
 		</div>
 
-		<script type="text/javascript">
-			$('#house').click(function () {
-				$.ajax({
-					type: "POST",
-					url: 'pages/base/configure.php?pages=otterstaetter',
-					success: function (data) {
-						window.setTimeout('location.reload();', {{ config_delay }});
-					}
-				})
-			});
-		</script>
-
 		<div class="app">
-			<a href="http://code.google.com/p/smartvisu/w/list" target="_blank">
-				<div class="image" style="background-color: #07c;"><img src="icons/sw/weather_sun.svg" alt="Wiki"></div>
-				<div>Wiki</div>
+			<a href="http://knx-user-forum.de/smartvisu/" target="_blank">
+				<div class="image" style="background-color: #07c;"><img src="icons/sw/time_manual_mode.svg" alt="Support"></div>
+				<div>Support</div>
 			</a>
 		</div>
-
 
 	</div>
 
@@ -134,7 +104,7 @@
 			<img src="pages/base/pics/trans.png" alt=""><span>php version...</span></div>
 
 		<div class="check" data-check="check_php_mbstring.php">
-			<img src="pages/base/pics/trans.png" alt=""><span>php extention 'mbstring'...</span></div>
+			<img src="pages/base/pics/trans.png" alt=""><span>php extension 'mbstring'...</span></div>
 
 		<div class="check" data-check="check_update.php?local={{ config_version }}">
 			<img src="pages/base/pics/trans.png" alt=""><span>for newer version...</span></div>
