@@ -11,8 +11,8 @@
 /**
 * Displays a digital clock
 *
-* @param unique id for this widget
-* @param location as string (optional)
+* @param {id} unique id for this widget
+* @param {text=} location as string (optional)
 *
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
@@ -50,7 +50,7 @@
 /**
 * Displays a clock in icon style
 *
-* @param unique id for this widget
+* @param {id} unique id for this widget
 */
 {% macro iconclock(id) %}
 	{% import "icon.html" as icon %}
@@ -65,7 +65,7 @@
 /**
 * Displays a mini text-based clock
 *
-* @param unique id for this widget
+* @param {id} unique id for this widget
 */
 {% macro miniclock(id) %}
 
@@ -74,4 +74,3 @@
 	 >{{ "now"|date('H:i') }}</span>
 
 {% endmacro %}
-

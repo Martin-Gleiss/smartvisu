@@ -11,16 +11,16 @@
 /**
 * Standard blind
 *
-* @param unique id for this widget (optional)
-* @param name of the blind
-* @param a item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
-* @param a item for stopping the movement (optional)
-* @param a item for the absolute position of the blinds
-* @param a item for increase and decrease of the blade (optional)
-* @param a item for the absolute angle of the blade (optional)
-* @param the value for opened (optional, default 0)
-* @param the value for closed (optional, default 255)
-* @param step between two values (optional, default: 5)
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the blind
+* @param {item=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+* @param {item=} an item for stopping the movement (optional)
+* @param {item} an item for the absolute position of the blinds
+* @param {item=} an item for increase and decrease of the blade (optional)
+* @param {item=} an item for the absolute angle of the blade (optional)
+* @param {value=0} the value for opened (optional, default 0)
+* @param {value=255} the value for closed (optional, default 255)
+* @param {value=5} step between two values (optional, default: 5)
 *
 * @info inspired by Frank Berlenz
 */
@@ -79,10 +79,10 @@
 * The Codepad is used to protect some widgets. You have to enter a correct code to use the widgets for a time.
 * You may specify a global code in the config.php for all codepads.
 *
-* @param unique id for this widget
-* @param code to be entered (optional, default in config)
-* @param a title for the pad (optional)
-* @param how long should the widgets be unlocked (optional, default: 10 seconds)
+* @param {id} unique id for this widget
+* @param {value=} code to be entered (optional, default in config)
+* @param {text=} a title for the pad (optional)
+* @param {duration=10} how long should the widgets be unlocked (optional, default: 10 seconds)
 */
 {% macro codepad(id, code, title, duration) %}
 
@@ -91,7 +91,7 @@
 		<div data-role="header" data-theme="c"><h1>{{ title|default('Enter Code') }}</h1></div>
 
 		<input type="password" style="text-align: center;"/>
-		
+
 		<div style="margin: 10px;">
 		{% for i in 1..9 %}
 			<a data-val="{{ i }}" data-role="button" data-inline="true" data-iconpos="nopic" data-mini="true" >{{ i }}</a>
@@ -108,17 +108,17 @@
 /**
 * Standard dimmer with switching and dimming function
 *
-* @param unique id for this widget (optional)
-* @param name of the dimmer
-* @param a item for switching
-* @param a item for dimming
-* @param the minimum value if the slider is moved to total left (optional, default: 0)
-* @param the maximum value if the slider is moved to total right (optional, default: 255)
-* @param step between two values (optional, default: 5)
-* @param the pic for the 'on' state (optional)
-* @param the pic for the 'off' state (optional)
-* @param the color for the 'on' state (optional)
-* @param the color for the 'off' state (optional)
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the dimmer
+* @param {item} an item for switching
+* @param {item} an item for dimming
+* @param {value=0} the minimum value if the slider is moved to total left (optional, default: 0)
+* @param {value=255} the maximum value if the slider is moved to total right (optional, default: 255)
+* @param {value=5} step between two values (optional, default: 5)
+* @param {image=light_light} the pic for the 'on' state (optional)
+* @param {image=light_light} the pic for the 'off' state (optional)
+* @param {color=icon1} the color for the 'on' state (optional)
+* @param {color=icon0} the color for the 'off' state (optional)
 */
 {% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off) %}
 	{% import "basic.html" as basic %}
@@ -135,16 +135,16 @@
 /**
 * Standard RTR (Room Temperatur Regulator)
 *
-* @param unique id for this widget (optional)
-* @param name of the rtr
-* @param a item for the actual temperature
-* @param a item for the set temperature
-* @param a item for comfort / standby (3x bit or 1x byte)
-* @param a item for night (3x bit or 1x byte)
-* @param a item for frost (3x bit or 1x byte)
-* @param a item for the current state of the actor
-* @param a item for a text (some rtr have a text-display), (optional)
-* @param step for plus/minus buttons (optional, default: 0.5)
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the rtr
+* @param {item} an item for the actual temperature
+* @param {item} an item for the set temperature
+* @param {item} an item for comfort / standby (3x bit or 1x byte)
+* @param {item} an item for night (3x bit or 1x byte)
+* @param {item} an item for frost (3x bit or 1x byte)
+* @param {item} an item for the current state of the actor
+* @param {item=} an item for a text (some rtr have a text-display), (optional)
+* @param {value=0.5} step for plus/minus buttons (optional, default: 0.5)
 */
 {% macro rtr(id, txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step) %}
 	{% import "basic.html" as basic %}
@@ -189,21 +189,21 @@
 /**
 * Standard shutter
 *
-* @param unique id for this widget (optional)
-* @param name of the shutter
-* @param a item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
-* @param a item for stopping the movement (optional)
-* @param a item for the absolute position of the blinds
-* @param a item for increase and decrease of the blade (optional, for future use)
-* @param a item for the absolute angle of the blade (optional)
-* @param a item for some saved positions (optional)
-* @param the value for opened (optional, default 0)
-* @param the value for closed (optional, default 255)
-* @param step between two values (optional, default 5)
-* @param 'half' blade turns from -1 to +1, 'full' blade turns from 0 to +1 (optional, default 'half')
-* @param a background image url; optimal size is 100px x 180px (optional)
-* @param the value to send for position 1 (optional, default 0)
-* @param the value to send for position 2 (optional, default 1)
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the shutter
+* @param {item=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+* @param {item=} an item for stopping the movement (optional)
+* @param {item} an item for the absolute position of the blinds
+* @param {item=} an item for increase and decrease of the blade (optional, for future use)
+* @param {item=} an item for the absolute angle of the blade (optional)
+* @param {item=} an item for some saved positions (optional)
+* @param {value=0} the value for opened (optional, default 0)
+* @param {value=255} the value for closed (optional, default 255)
+* @param {value=5} step between two values (optional, default 5)
+* @param {text(half,full)=} 'half' blade turns from -1 to +1, 'full' blade turns from 0 to +1 (optional, default 'half')
+* @param {image=} a background image url; optimal size is 100px x 180px (optional)
+* @param {value=0} the value to send for position 1 (optional, default 0)
+* @param {value=1} the value to send for position 2 (optional, default 1)
 *
 * @info inspired by Jörg Gutowski
 */
@@ -263,19 +263,19 @@
 /**
 * Widget for usage of UZSU plugin
 *
-* @param unique id for this widget (optional)
-* @param the item of the UZSU (NOT the item which is switched by UZSU)
-* @param headline of popup (optional, default: UZSU)
-* @param the pic for the 'on' state (optional)
-* @param the pic for the 'off' state (optional)
-* @param supported types are 'bool', 'num', 'list', 'text' (optional, default: bool)
-* @param valueParameterList depending on valueType (optional):
-	bool: ['text on','text off'] or ['text1:value1','text2:value2'], 
-	num: ['min max step'], 
-	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'], 
+* @param {id=} unique id for this widget (optional)
+* @param {item} the item of the UZSU (NOT the item which is switched by UZSU)
+* @param {text=UZSU} headline of popup (optional, default: UZSU)
+* @param {image=time_timer_switch} the pic for the 'on' state (optional)
+* @param {image=time_timer_switch} the pic for the 'off' state (optional)
+* @param {text(bool,num,list,text)=bool} supported types are 'bool', 'num', 'list', 'text' (optional, default: bool)
+* @param {text[]=} valueParameterList depending on valueType (optional):
+	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
+	num: ['min max step'],
+	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'],
 	text: no value parameter
-* @param the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
-* @param the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
+* @param {color=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
+* @param {color=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
 *
 * @author Michael Würtenberger
 */
@@ -292,5 +292,5 @@
 			{{ basic._icon(pic_on|deficon('time_timer_switch.svg'), color_on|default('icon1'), '', 'icon-on hide') }}
 		</a>
 	</span>
-	
+
 {% endmacro %}

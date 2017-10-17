@@ -121,12 +121,12 @@
 		// DEBUG: console.log('[check] ' + $(this).attr('data-check') + '...');
 
 		$.getJSON('lib/base/' + $(this).attr('data-check'), function (data) {
-			$('.check').eq(index).children('img').attr('src', data.icon);
+			$('.check').eq(index).children('img').attr('src', 'icons/sw/' + data.icon);
 			$('.check').eq(index).children('span').html(data.text);
 		})
 			.error(function (jqXHR) {
 				var data = jQuery.parseJSON(jqXHR.responseText)
-				$('.check').eq(index).children('img').attr('src', data.icon);
+				$('.check').eq(index).children('img').attr('src', 'icons/sw/' + data.icon);
 				$('.check').eq(index).children('span').html(data.text);
 			});
 	});

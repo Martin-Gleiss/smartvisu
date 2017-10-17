@@ -48,7 +48,7 @@ class RequestHandler {
 					$ret = self::analyzeFile();
 					break;
 				case 'getfiles':
-					$ret = self::getFileArray('pages/' . config_pages, '.html');
+					$ret = self::getFileArray('pages/' . self::getRequestParameter('pages'), '.html');
 					break;
 				default:
 					throw new Exception('Invalid command');
@@ -66,16 +66,16 @@ class RequestHandler {
 	 * @param string $dir directory to read (relative to const_path)
 	 * @return array list of files
 	 */
-	private static function getFileArray($dir) {
+	private static function getFileArray($dir, $suffix) {
 		clearstatcache();
 
 		$ret = array();
 		$dirlist = dir(const_path . $dir);
 		while (($item = $dirlist->read()) !== false) {
-			if ($item != '.' and $item != '..' and substr($item, 0, 1) != '.') {
+			if (substr($item, 0, 1) != '.') {
 				if (is_dir(const_path . $dir . '/' . $item)) {
-					$ret = array_merge($ret, self::getFileArray($dir . '/' . $item, $filter));
-				} else {
+					$ret = array_merge($ret, self::getFileArray($dir . '/' . $item, $suffix));
+				} else if (substr($item, -strlen($suffix)) == $suffix) {
 					$id = str_replace('/', '-', $dir . '/' . $item);
 					$id = str_replace('.', '-', $id);
 					$ret[$id] = $dir . '/' . $item;

@@ -11,10 +11,12 @@
 /**
 * Displays the phonelist from a phone system
 *
-* @param unique id for this widget
-* @param a title to display
-* @param the number of displayed lines, default 10
-* @param the refresh interval for this widget (using relative time format), default 15m
+* @param {id} unique id for this widget
+* @param {text=} a title to display
+* @param {value=10} the number of displayed lines, default 10
+* @param {duration=15m} the refresh interval for this widget (using duration format), default 15m
+*
+* @see misc/fundamentals#Duration-Format
 */
 {% macro list(id, title, count, repeat) %}
 	{% set uid = uid(page, id) %}
@@ -67,10 +69,12 @@
 /**
 * Displays the phonelist (only missed phonecalls) from a phone system
 *
-* @param unique id for this widget
-* @param a title to display
-* @param the number of displayed lines, default 3
-* @param the refresh interval for this widget (using relative time format), default 15m
+* @param {id} unique id for this widget
+* @param {text=} a title to display
+* @param {value=3} the number of displayed lines, default 3
+* @param {duration=15m} the refresh interval for this widget (using duration format), default 15m
+*
+* @see misc/fundamentals#Duration-Format
 */
 {% macro missedlist(id, title, count, repeat) %}
 	{% set uid = uid(page, id) %}

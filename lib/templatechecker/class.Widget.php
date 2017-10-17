@@ -12,6 +12,14 @@ class Widget {
 	private $node;
 
 	/**
+	 * get node containing the widget
+	 * @return \DOMElement
+	 */
+	public function getNode() {
+		return $this->node;
+	}
+
+	/**
 	 * macro (whole widget string)
 	 * @var string 
 	 */
@@ -99,15 +107,13 @@ class Widget {
 	 * @return \Widget new widget object or NULL if no widget object created
 	 */
 	public static function create($node, $macro, $messages) {
-		if (!preg_match("/^[^\(]+/", $macro, $name))
-			return NULL;
+		if (!preg_match('/^(.+?\..+?)\((.*)\)/s', $macro, $parts))
+			return NULL; // not a widget
 
-		$name = trim(strtolower($name[0]));
+		$name = trim(strtolower($parts[1]));
+		$parameters = $parts[2];
 
-		if (!preg_match("/\((.*)\)/", $macro, $parameters))
-			return NULL;
-
-		if ($parameters[1]) {
+		if ($parameters) {
 			/*
 			if (!preg_match_all("/[^(,]*(?:\([^)]+\))?[^),]/", $parameters[1], $param_array)) {
 				$this->messages->addWarning('WIDGET PARAM CHECK', 'Unable to split Parameters. Check manually!', $node->getLineNo(), $macro, array('Widget' => $name, 'Parameters' => $parameters[1]));
@@ -115,13 +121,13 @@ class Widget {
 			}			
 			$paramArray = $param_array[0];
 			*/
-			$paramArray = self::splitParameters($parameters[1], $name, $node, $macro, $messages);			
+			$paramArray = self::splitParameters($parameters, $name, $node, $macro, $messages);			
 		} else {
 			// No parameters			
 			$paramArray = array();
 		}
 
-		return new Widget($node, $macro, $name, $parameters[1], $paramArray);
+		return new Widget($node, $macro, $name, $parameters, $paramArray);
 	}
 
 	private static function splitParameters($paramString, $name, $node, $macro, $messages) {

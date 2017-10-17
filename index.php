@@ -16,7 +16,6 @@ if (basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != basename($_SER
 
 // get config-variables
 require_once 'lib/includes.php';
-require_once const_path_system.'functions_twig.php';
 
 // init parameters
 $request = array_merge($_GET, $_POST);

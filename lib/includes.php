@@ -36,7 +36,7 @@ umask(0002);
  * Include main-functions
  */
 require_once const_path_system.'functions.php';
-
+require_once const_path_system.'functions_twig.php';
 
 // -----------------------------------------------------------------------------
 // L O A D  C O N F I G U R A T I O N

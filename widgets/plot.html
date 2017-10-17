@@ -11,9 +11,9 @@
 /**
 * The diagram showing curves of relative humidity and effective temperature superimposed upon rectangular coordinates. The comfort-zones indicate when humans feel good.
 *
-* @param unique id for this widget (optional)
-* @param a item for the temperature
-* @param a item for the humidity
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item for the temperature
+* @param {item} an item for the humidity
 */
 {% macro comfortchart(id, item_temp, item_humidity) %}
 
@@ -27,15 +27,15 @@
 /**
 * A gauge
 *
-* @param unique id for this widget (optional)
-* @param an item for the gauge value
-* @param min value
-* @param max value
-* @param unit for the gauge
-* @param text for label
-* @param set mode 'solid-half', 'solid-cshape', 'solid-circle', 'speedometer', 'scale' (optional, default: 'solid-half')
-* @param stop(s) for the sections in percent e.g. 50. More sections in array form: [30,60] (optional)
-* @param color(s) for the sections e.g. '#f00' for red. More sections in array form: ['#f00','#fff'] (optional)
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item for the gauge value
+* @param {value} min value
+* @param {value} max value
+* @param {format=} unit for the gauge
+* @param {text=} text for label
+* @param {text(solid-half,solid-cshape,solid-circle,speedometer,scale,vumeter)=solid-half} set mode 'solid-half', 'solid-cshape', 'solid-circle', 'speedometer', 'scale', 'vumeter' (optional, default: 'solid-half')
+* @param {value[?]=} stop(s) for the sections in percent e.g. 50. More sections in array form: [30,60] (optional)
+* @param {color[?]=} color(s) for the sections e.g. '#f00' for red. More sections in array form: ['#f00','#fff'] (optional)
 *
 * @author ramann, Stefan Widmer
 */
@@ -51,26 +51,26 @@
 /**
 * Plots a chart of time series data
 *
-* @param unique id for this widget (optional)
-* @param series of item(s); multiple items in array form: [ item1 , item2 ]
-* @param the mode: 'avg', 'sum', 'min', 'max', 'minmax' or 'minmaxavg'
-* @param the minimum time (x-axis): '1h', '2h'... (duration-format)
-* @param the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
-* @param the minimum for each y-axis; multiples in array form: [ min_y-axis1, min_y-axis2, ...] (optional)
+* @param {id=} unique id for this widget (optional)
+* @param {item[?]} series of item(s); multiple items in array form: [ item1 , item2 ]
+* @param {text(avg,sum,min,max,minmax,minmaxavg)} the mode: 'avg', 'sum', 'min', 'max', 'minmax' or 'minmaxavg'
+* @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format)
+* @param {duration=now} the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
+* @param {text[?]=} the minimum for each y-axis; multiples in array form: [ min_y-axis1, min_y-axis2, ...] (optional)
 	if the axis type is boolean the passed value will be the label of the low state (e.g. 'Off')
-* @param the maximum for each y-axis; multiples in array form: [ max_y-axis1, max_y-axis2, ...] (optional)
+* @param {text[?]=} the maximum for each y-axis; multiples in array form: [ max_y-axis1, max_y-axis2, ...] (optional)
 	if the axis type is boolean the passed value will be the label of the high state (e.g. 'On')
-* @param the number of points in the period (optional)
-* @param label for each serie; multiples in array form (optional)
-* @param color for each serie; multiples in array form (optional, default: suitable for design)
-* @param type of each serie: 'line', 'stair', 'spline', 'area', 'areaspline', 'column'; multiples in array form (optional, default 'line')
-* @param title for the x-axis and y-axes in array form: [title_x-axis, title_y-axis1, title_y-axis2, ...] (optional)
-* @param minimal time range while zooming (optional, duration-format)
-* @param assignment of the series to the y-axes; multiples in array form (optional)
-* @param y-axes setup for left '0' and right '1' hand in array form (optional)
-* @param y-axes color; multiples in array form (optional)
-* @param y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
-* @param either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
+* @param {value=100} the number of points in the period (optional)
+* @param {text[?]=} label for each serie; multiples in array form (optional)
+* @param {color[?]=} color for each serie; multiples in array form (optional, default: suitable for design)
+* @param {text[?](line,stair,spline,area,areaspline,column)=line} type of each serie: 'line', 'stair', 'spline', 'area', 'areaspline', 'column'; multiples in array form (optional, default 'line')
+* @param {text[]=} title for the x-axis and y-axes in array form: [title_x-axis, title_y-axis1, title_y-axis2, ...] (optional)
+* @param {duration=} minimal time range while zooming (optional, duration-format)
+* @param {value[]=} assignment of the series to the y-axes; multiples in array form (optional)
+* @param {value[]=} y-axes setup for left '0' and right '1' hand in array form (optional)
+* @param {color[?]=} y-axes color; multiples in array form (optional)
+* @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
+* @param {format=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
@@ -105,12 +105,12 @@
 /**
 * A pie diagram
 *
-* @param unique id for this widget (optional)
-* @param series of item(s). More items in array form: [ item1 , item2 ]
-* @param series of label(s). More labels in array form: [ label1 , label2 ]
-* @param color for each series e. g. '#f00' for red. More color/s in array form: ['#f00','#fff'] (optional, default: sutiable for design)
-* @param text for headline
-* @param set dataview mode: 'label', 'legend' or 'none' (optional, default: 'legend')
+* @param {id=} unique id for this widget (optional)
+* @param {item[?]} series of item(s). More items in array form: [ item1 , item2 ]
+* @param {text[]} series of label(s). More labels in array form: [ label1 , label2 ]
+* @param {color[]=} color for each series e. g. '#f00' for red. More color/s in array form: ['#f00','#fff'] (optional, default: sutiable for design)
+* @param {text=} text for headline
+* @param {text(label,legend,none)=legend} set dataview mode: 'label', 'legend' or 'none' (optional, default: 'legend')
 *
 * @author ramann, Stefan Widmer
 */
@@ -126,11 +126,11 @@
 /**
 * A temperature-chart for use with an rtr. Plots actual and set temperature. If the state is given it will be shown as pie.
 *
-* @param unique id for this widget (optional)
-* @param series of a item for the actual-temperature
-* @param series of a item for the set-temperature
-* @param series of a item for the state of the actor. It is shown as percental value within the pie. (> 0 is considered as 'on')
-* @param number of samples (points) (optional, default 100)
+* @param {id=} unique id for this widget (optional)
+* @param {item} series of an item for the actual-temperature
+* @param {item} series of an item for the set-temperature
+* @param {item} series of an item for the state of the actor. It is shown as percental value within the pie. (> 0 is considered as 'on')
+* @param {value=100} number of samples (points) (optional, default 100)
 */
 {% macro rtr(id, item_actual, item_set, item_state, count) %}
 
@@ -144,12 +144,12 @@
 /**
 * A complete house temperature plot. The rose shows all rooms with there actual and set temperature in one diagramm.
 *
-* @param unique id for this widget (optional)
-* @param an item for the actual temperature; multiple items in array form: [ item1 , item2 ]
-* @param an item for the set temperature; multiple items in array form: [ item1 , item2 ]
-* @param label for each axis
-* @param label for actual and set series in array form: [ 'label_actual', 'label_set' ] (optional, default is language dependent)
-* @param either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional, default 'temp')
+* @param {id=} unique id for this widget (optional)
+* @param {item[?]} an item for the actual temperature; multiple items in array form: [ item1 , item2 ]
+* @param {item[?]=} an item for the set temperature; multiple items in array form: [ item1 , item2 ]
+* @param {text[?]} label for each axis
+* @param {text[]=} label for actual and set series in array form: [ 'label_actual', 'label_set' ] (optional, default is language dependent)
+* @param {format=temp} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional, default 'temp')
 *
 * @see misc/fundamentals#Array-Form
 */

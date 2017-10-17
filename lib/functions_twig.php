@@ -124,7 +124,7 @@ function twig_dir($dir, $filter = '(.*)')
 
 	while (($item = $dirlist->read()) !== false)
 	{
-		if ($item != '.' and $item != '..' and $item != '.svn' and substr($item, 0, 1) != '_')
+		if (substr($item, 0, 1) != '.' and substr($item, 0, 1) != '_')
 		{
 			if (preg_match("#".$filter."$#i", $item, $itemparts) > 0)
 			{
@@ -146,84 +146,126 @@ function twig_dir($dir, $filter = '(.*)')
 	return $ret;
 }
 
-function twig_docu($filename)
+function twig_file_get_contents($file)
 {
+  return file_get_contents($file);
+}
+
+function twig_docu($filenames = null)
+{
+	if($filenames == null) {
+		$filenames = array_merge(twig_dir('widgets', '(.*.\.html)'), twig_dir('dropins/widgets', '(.*.\.html)'));
+	}
+	elseif(!is_array($filenames))
+		$filenames = array($filenames);
+
 	$ret = array();
-	$rettmp = array();
+	
+	foreach($filenames as $filename) {
+		if(is_array($filename))
+			$filename = const_path.$filename['path'];
+	
+		$file = file_get_contents($filename);
+	
+		// Header
+		preg_match_all('#.+?@(.+?)\W+(.*)#i', substr($file, 0, strpos($file, '*/') + 2), $header);
 
-	$file = file_get_contents($filename);
-
-	// Header
-	preg_match_all('#.+?@(.+?)\W+(.*)#i', substr($file, 0, strpos($file, '*/') + 2), $header);
-
-	// Body 
-	preg_match_all('#\/\*\*[\r\n]+(.+?)\*\/\s+?\{\% *macro(.+?)\%\}.*?\{\% *endmacro *\%\}#is', strstr($file, '*/'), $widgets);
-
-	if (count($widgets[2]) > 0)
-	{
-		foreach ($widgets[2] as $no => $macro)
+		// Body 
+		preg_match_all('#\/\*\*[\r\n]+(.+?)\*\/\s+?\{\% *macro(.+?)\%\}.*?\{\% *endmacro *\%\}#is', strstr($file, '*/'), $widgets);
+	
+		if (count($widgets[2]) > 0)
 		{
-			preg_match_all('#(.+?)\((.+?)(\)|,\s+_)#i', $macro, $desc); // param scanning ends on first param name beginning with _
-			$rettmp[$no]['name'] = trim($desc[1][0]);
-			$rettmp[$no]['params'] = trim($desc[2][0]);
+			foreach ($widgets[2] as $no => $macro)
+			{
+				$rettmp = array();
+				
+				preg_match_all('#(.+?)\((.+?)(\)|,\s+_)#i', $macro, $desc); // param scanning ends on first param name beginning with _
+				$rettmp['name'] = trim($desc[1][0]);
+				$rettmp['params'] = trim($desc[2][0]);
+				
+				$docu = $widgets[1][$no];
+	
+				$rettmp['desc'] = trim(str_replace('* ', '', substr($docu, 0, strpos($docu, '@'))));
+				
+				if (substr($rettmp['desc'], -1, 1) == '*')
+					$rettmp['desc'] = substr($rettmp['desc'], 0, -1);
+				
+				// Header-Tags 
+				foreach ($header[1] as $headerno => $headertag)
+				{
+					if (!($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß"))
+						$rettmp[$headertag] = trim($header[2][$headerno]);
+				}
+	
+				$rettmp['subpackage'] = substr(strtolower(utf8_decode(basename($filename))), 0, -5);
+				$rettmp['command'] = $rettmp['subpackage'].".".$rettmp['name'];
+				$rettmp['call'] = $rettmp['command']."(".$rettmp['params'].")";
+	
+				// Widget-Tags
+				$tags = preg_split('#[\r\n]+[\*\s]*@#', $docu);
+	
+				$param = 0;
+				$params = explode(',', $rettmp['params']);
+				$rettmp['param'] = array();
+
+				foreach ($tags as $tagstring)
+				{
+					preg_match('#^(.+?)\s+({(.+?)(\[\??\])?(\(.*?\))?(=.*?)?}\s+)?(.*)$#is', $tagstring, $tag);
+					 
+					if ($tag[1] == 'param')
+					{
+						$p = array('desc' => trim($tag[7]));
+						if(trim($tag[2]) != '') { // type in doc tag available
+							$p['type'] = trim($tag[3]);
+							if($tag[4] == '[?]')
+								$p['array_form'] = 'may';
+							elseif($tag[4] == '[]')
+								$p['array_form'] = 'must';
+							if($tag[5] != '') {
+								if($p['type'] == 'id') {
+									if(substr($tag[5],1,-1) == 'nonunique')
+									 $p['unique'] = false;
+								}
+								elseif(preg_match('#^(.*\d)\.\.(\d.*)$#is', substr($tag[5],1,-1), $range)) {
+									$p['min'] = $range[1];
+									$p['max'] = $range[2];
+								}
+								else
+									$p['valid_values'] = explode(',', substr($tag[5],1,-1));
+							}
+							$p['optional'] = $tag[6] != '';
+							if($p['optional'] && $tag[6] != '=')
+								$p['default'] = substr($tag[6],1);
+							
+							// valid_values
+							// array_form must may
+						}
+						$rettmp['param'][trim($params[$param++])] = $p;
+					}
+					elseif ($tag[1] == 'see')
+					{
+						$see = explode('#', trim($tag[7]));
+						$rettmp['see'][] = array("page" => $see[0], "anchor" => $see[1]);
+					}
+					else
+						$rettmp[$tag[1]] = trim($tag[7]);
+				}
+	
+				$ret[$rettmp['subpackage'].'.'.$rettmp['name']] = $rettmp;
+			}
+	
+			//ksort($ret); // as of Version 2.9: Don't sort but use order in sourcefile
 		}
-
-		foreach ($widgets[1] as $no => $docu)
+		else
 		{
-			$rettmp[$no]['desc'] = trim(str_replace('* ', '', substr($docu, 0, strpos($docu, '@'))));
-			
-			if (substr($rettmp[$no]['desc'], -1, 1) == '*')
-				$rettmp[$no]['desc'] = substr($rettmp[$no]['desc'], 0, -1);
-			
-			// Header-Tags 
 			foreach ($header[1] as $headerno => $headertag)
 			{
 				if (!($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß"))
-					$rettmp[$no][$headertag] = trim($header[2][$headerno]);
-			}
-
-			$rettmp[$no]['subpackage'] = substr(strtolower(utf8_decode(basename($filename))), 0, -5);
-			$rettmp[$no]['command'] = $rettmp[$no]['subpackage'].".".$rettmp[$no]['name'];
-			$rettmp[$no]['call'] = $rettmp[$no]['command']."(".$rettmp[$no]['params'].")";
-
-			// Widget-Tags
-			$tags = preg_split('#[\r\n]+[\*\s]*@#', $docu);
-
-			$param = 0;
-			$params = explode(',', $rettmp[$no]['params']);
-
-			foreach ($tags as $tagstring)
-			{
-				preg_match('#^(.+?)\s+(.*)$#is', $tagstring, $tag);
-				 
-				if ($tag[1] == 'param')
-					$rettmp[$no]['param'][trim($params[$param++])] = trim($tag[2]);
-				elseif ($tag[1] == 'see')
-				{
-					$see = explode('#', trim($tag[2]));
-					$rettmp[$no]['see'][] = array("page" => $see[0], "anchor" => $see[1]);
-				}
-				else
-					$rettmp[$no][$tag[1]] = trim($tag[2]);
+					$ret[$headertag] = trim($header[2][$headerno]);
 			}
 		}
-
-		foreach ($rettmp as $attributes)
-		{
-			$ret[$attributes['subpackage'].'.'.$attributes['name']] = $attributes;
-		}
-
-		//ksort($ret); // as of Version 2.9: Don't sort but use order in sourcefile
 	}
-	else
-	{
-		foreach ($header[1] as $headerno => $headertag)
-		{
-			if (!($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß"))
-				$ret[$headertag] = trim($header[2][$headerno]);
-		}
-	}
-
+	
 	return $ret;
 }
 
