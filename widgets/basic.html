@@ -84,6 +84,7 @@
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
 	{% set color = color|default(['','icon1']) %}
 
+	<a style="display:none"></a> /** Work around for bug in jQuery Mobile, see https://knx-user-forum.de/forum/supportforen/smartvisu/31967-neues-widget-nur-aktive-lampen-anzeigen-ausschalten-ermöglichen?p=1145001#post1145001 */
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.stateswitch" data-item="{{ item }}"
 		data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ config_indicator_duration|default(3) }}"
 		style="display: none; !important">
