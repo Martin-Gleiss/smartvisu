@@ -1210,23 +1210,22 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	background-color: rgba(120, 120, 120, 0.3);
 }
 
-.rtr .actual {
-	padding: 5px 0 5px 5px;
-	width: 200px;
-	margin: auto;
+.rtr {
+}
+
+.rtr .actual,
+.rtr .set,
+.rtr .control {
+	min-height: 48px;
+	padding: 5px 0 5px 0;
+	display: inline-block;
+	text-align: center;
 }
 
 .rtr .actual .temp {
 	margin: 5px 0 5px 0;
 	font-size: 1.4em;
 	font-weight: bold;
-}
-
-.rtr .set {
-	padding: 5px 0 5px 50px;
-	width: 200px;
-	height: 48px;
-	margin: auto;
 }
 
 .rtr .set .temp {
@@ -1238,13 +1237,6 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 
 .rtr .set .ui-btn {
 	float: left;
-}
-
-.rtr .control {
-	padding: 5px 0 5px 0;
-	width: 220px;
-	height: 48px;
-	margin: auto;
 }
 
 .rtr .control .switch {

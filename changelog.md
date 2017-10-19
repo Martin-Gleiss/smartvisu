@@ -21,6 +21,7 @@
 - device.shutter: Value for pos1 and pos2 can be set by parameter
 - basic.tank & icon.* (dynamic icons): min is now implemented and max may be lesser than min
 - device.dimmer: New parameters to specify pic and color
+- device.rtr: New parameters to specify separate offset item and additional content
 - Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
 - calendar.list: New parameters to select and colorize calendars
 - basic.checkbox & basic.flip: value_on and value_off can be set by parameters
