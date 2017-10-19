@@ -268,6 +268,35 @@ the first one is the base color for values below first threshold, so pass one co
 
 
 /**
+* Displays a button to shift offset
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item
+* @param {value=1} step between two values; use positive numbers to increase, negative ones to decrease (optional, default 1)
+* @param {image=} icon to show on the button (optional)
+* @param {text=} text printed on the button (optional)
+* @param {type=mini} valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini)
+*/
+{% macro offset(id, item, step, icon, text, type) %}
+	{% import _self as basic %}
+
+	<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.offset" data-item="{{ item }}" data-step="{{ step|default(1) }}" class="
+		{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
+			switch ui-link
+		{%- else -%} /**- display as button -*/
+			ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
+		{%- endif -%}
+			{%- if icon is empty -%}
+				">
+			{%- else -%}
+				{{ not text is empty ? ' ui-btn-icon-top' }} ui-nodisc-icon">{{ basic._icon(icon) }}
+			{%- endif -%}
+		{{- text|e -}}
+	</a>
+{% endmacro %}
+
+
+/**
 * prints value or text (optionally calculated and/or formatted)
 *
 * @param {id=} unique id for this widget (optional)
