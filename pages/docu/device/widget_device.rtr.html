@@ -22,7 +22,7 @@
 			{{ device.rtr('rtr2', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode', 'bath.rtr.mode', 'bath.rtr.state', 'bath.rtr.text') }}
 
 			{{ device.rtr('', '', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode',
-			'bath.rtr.mode', '', '', 'bath.rtr.offset', 0.2, [
+			'bath.rtr.mode', '', '', 0.2, 'bath.rtr.offset', [
 				device.uzsuicon('','uzsuitem','Presence','','','list','Present:1,Absent:2,Night:3'),
 				icon.heating('','','bath.rtr.set',0,90)
 			]) }}
@@ -51,7 +51,7 @@
 			<div class="ui-bar-c ui-li-divider ui-corner-top">RTR in "MDT-mode" (as describe in <a href="https://github.com/smarthomeNG/smarthome/wiki/Der-Glas-RTR-von-MDT-in-Smarthome.py-und-Smartvisu/" target="_blank">SmartHomeNG wiki</a>)</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
 				{{ device.rtr('', '', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode',
-				'bath.rtr.mode', '', '', 'bath.rtr.offset', 0.2, [
+				'bath.rtr.mode', '', '', 0.2, 'bath.rtr.offset', [
 					device.uzsuicon('','uzsuitem','Presence','','','list','Present:1,Absent:2,Night:3'),
 					icon.heating('','','bath.rtr.set',0,90)
 				]) }}
