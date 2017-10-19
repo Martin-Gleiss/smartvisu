@@ -30,17 +30,14 @@ class calendar_caldav extends calendar
 		$ctxopts = array('http' =>
 			array(
 				'method' => $method,
-				'header' => <<<HEADER
-Depth: 1
-Content-Type: text/xml; charset='UTF-8'
-User-Agent: DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374)
-HEADER
-,
+				'header' => "Depth: 1".
+					"\r\nContent-Type: text/xml; charset='UTF-8'".
+					"\r\nUser-Agent: DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374)",
 				'content' => $xmlquery
 			)
 		);
 		if(config_calendar_username != '' && config_calendar_password != '')
-	    $ctxopts['http']['header'] .= "\r\nAuthorization: Basic " . base64_encode(config_calendar_username.':'.config_calendar_password);
+			$ctxopts['http']['header'] .= "\r\nAuthorization: Basic " . base64_encode(config_calendar_username.':'.config_calendar_password);
 
 		$context = stream_context_create($ctxopts);
 		$content = file_get_contents($url, false, $context);
@@ -89,7 +86,6 @@ HEADER
 
 		$urlparsed = parse_url($calendar_home_url);
 		$calserver = $urlparsed['scheme'] . '://' . $urlparsed['host'] . (isset($urlparsed['port']) ? ':'.$urlparsed['port'] : '');
-
 		// Get calendars
 		// '?' masked by '\x3f' in first line to prevent confusing of syntax highlighters
 		$xmlquery = <<<XMLQUERY
