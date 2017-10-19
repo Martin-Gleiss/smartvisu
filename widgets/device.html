@@ -149,8 +149,7 @@
 {% macro rtr(id, txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step) %}
 	{% import "basic.html" as basic %}
 
-	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtr" data-step="{{ step|default(0.5) }}"
-		class="rtr">
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtr" class="rtr">
 		<div class="actual">
 			<div class="temp">{{ basic.print('', item_actual, '°' ) }}</div>
 			<div class="text">{{ txt }} {% if item_txt %} {{ basic.print('', item_txt, 'text') }} {% endif %}</div>
@@ -158,10 +157,9 @@
 
 		{% if item_set %}
 			<div class="set">
-				<a class="ui-btn ui-micro ui-btn-corner-all ui-btn-inline ui-shadow ui-nodisc-icon ui-btn-icon-notext ui-icon-minus" data-sign="-1"></a>
-
+				{{ basic.offset('', item_set, -(step|default(0.5)), 'minus', '', 'micro' ) }}
 				<div class="temp">{{ basic.print('', item_set, '°' ) }}</div>
-				<a class="ui-btn ui-micro ui-btn-corner-all ui-btn-inline ui-shadow ui-nodisc-icon ui-btn-icon-notext ui-icon-plus" data-sign="+1"></a>
+				{{ basic.offset('', item_set, step|default(0.5), 'plus', '', 'micro' ) }}
 			</div>
 		{% endif %}
 

@@ -531,6 +531,14 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
+	$(bevent.target).find('[data-widget="basic.offset"]').on( {
+		'click': function (event) {
+			var step = $(this).attr('data-step') * 1;
+			var item = $(this).attr('data-item');
+			io.write(item, widget.get(item) * 1 + step);
+		}
+	});
+
 	// ----- basic.print ----------------------------------------------------------
 	$(bevent.target).find('[data-widget="basic.print"]').on( {
 		'update': function (event, response) {
@@ -1212,18 +1220,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			else {
 				code.val(code.val() + key);
 			}
-		}
-	});
-
-	// ----- device.rtr -----------------------------------------------------------
-	$(bevent.target).find('div[data-widget="device.rtr"] > div > a[data-sign]').on( {
-		'click': function (event, response) {
-			var node = $(this).parent().parent();
-			var step = node.attr('data-step') * $(this).attr('data-sign');
-			var item = node.find('.set .temp span').attr('data-item');
-
-			var temp = (Math.round((widget.get(item) * 1 + step) * 10) / 10).toFixed(1);
-			io.write(item, temp);
 		}
 	});
 
@@ -3423,6 +3419,20 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			}
 
 			$(this).find('#graph').attr('d', graph + 'L ' + (i * 10 + 5) + ',' + (85 - val));
+		}
+	});
+
+	// ----- icon.heating ---------------------------------------------------------
+	$(bevent.target).find('svg[data-widget="icon.heating"]').on( {
+		'update': function (event, response) {
+			// response is: {{ gad_value }}, {{ gad_switch }}
+
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+
+			var val = Math.min(Math.max((response[0] - min) / (max - min), 0), 1);
+
+			$(this).find('linearGradient stop:last-of-type').attr('offset', val);
 		}
 	});
 

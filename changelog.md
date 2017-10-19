@@ -7,10 +7,12 @@
 - New: basic.select (select a value by menu or array of buttons)
 - New: basic.color (supersedes basic.colordisc and basic.rgb) with new parameter 'colormodel' for HSV or HSL model and possibility to pass values as list in one item
 - New: basic.badge (displays a notification badge)
+- New: basic.offset (button to increase or decrease a value)
 - New: device.uzsuicon (to control UZSU in smarthome.py and FHEM)
 - New: calendar.waste (compact view of waste collection dates)
 - New: plot.gauge
 - New: plot.pie
+- New: icon.heating (displays a heating colored with dynamic gradient)
 - Enhanced plot.period (among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale and units)
 - plot.temprose: New parameters 'series_label' and 'unit'
 - basic.slider: New parameter 'value_display'

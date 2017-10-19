@@ -1,0 +1,39 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+
+	<div class="html">
+		Current value: {{ basic.print('', 'bath.rtr.set', '%01,1f') }}
+	</div>
+
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; basic.offset('', 'bath.rtr.set', '', '', '+1') &#125;&#125;<br />
+		</code>
+	</div>
+	<div class="html">
+		{{ basic.offset('', 'bath.rtr.set', '', '', '+1') }}
+	</div>
+
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; basic.offset('', 'bath.rtr.set', -0.5, 'minus', '', 'micro') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ basic.offset('', 'bath.rtr.set', -0.5, 'minus', '', 'micro') }}
+	</div>
+
+{% endblock %}
+
+

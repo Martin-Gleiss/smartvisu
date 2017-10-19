@@ -1659,10 +1659,12 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 .icon0, a.ui-link {
 	stroke: #fff;
 	fill: #fff;
+	stop-color: #fff;
 }
 .icon1, a.ui-link:hover, a.ui-link:active {
 	stroke: #a6f829;
 	fill: #a6f829;
+	stop-color: #a6f829;
 }
 .switch.icon1,
 html .ui-btn.icon1,

@@ -84,7 +84,7 @@ function twig_md5($val)
 
 function twig_uid($str1, $str2 = '', $str3 = '')
 {
-	$ret = str_replace('.', '_', $str1.($str2 != '' ? '-'.$str2 : '').($str3 != '' ? '-'.$str3 : ''));
+	$ret = preg_replace('/[^a-zA-Z0-9\-_]/', '_', $str1.($str2 != '' ? '-'.$str2 : '').($str3 != '' ? '-'.$str3 : ''));
 
 	return $ret;
 }
