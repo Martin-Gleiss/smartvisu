@@ -1660,7 +1660,7 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 	fill: #fff;
 	stop-color: #fff;
 }
-a.switch {
+html body a.switch {
 	color: #fff;
 }
 .icon1, a.ui-link:hover, a.ui-link:active {
