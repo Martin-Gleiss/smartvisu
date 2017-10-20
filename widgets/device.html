@@ -33,39 +33,39 @@
 				<td valign="top">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.button('', item_pos, '', 'carat-u', value_top|default('0')) }}
+							{{ basic.stateswitch('', item_pos, '', value_top|default('0'), 'carat-u') }}
 						{% else %}
-							{{ basic.button('', item_move, '', 'carat-u', value_top|default('0') < value_bottom|default('255') ? 0 : 1 ) }}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u' ) }}
 						{% endif %}
 					</div>
 				</td>
 				<td rowspan="3" align="left" class="pos">
-					{{ basic.slider('', item_pos, value_top, value_bottom, step, 'vertical') }}</td>
+					{{ basic.slider('', item_pos, value_top|default('0'), value_bottom|default('255'), step, 'vertical') }}</td>
 				<td rowspan="2" valign="bottom" class="angle">
 					{{ txt }}<br />
-					{% if item_angle %} {{ basic.slider('', item_angle, value_top, value_bottom, step, 'semicircle') }} {% endif %}
+					{% if item_angle %} {{ basic.slider('', item_angle, value_top|default('0'), value_bottom|default('255'), step, 'semicircle') }} {% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>
 					{% if item_stop %}
-						<div class="set">{{ basic.button('', item_stop, '', 'delete', 1) }}</div> {% endif %}</td>
+						<div class="set">{{ basic.stateswitch('', item_stop, '', 1, 'delete') }}</div> {% endif %}</td>
 			</tr>
 			<tr>
 				<td valign="bottom">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.button('', item_pos, '', 'carat-d', value_bottom|default('255')) }}
+							{{ basic.stateswitch('', item_pos, '', value_bottom|default('255'), 'carat-d') }}
 						{% else %}
-							{{ basic.button('', item_move, '', 'carat-d', value_top|default('0') < value_bottom|default('255') ? 1 : 0 ) }}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d' ) }}
 						{% endif %}
 					</div>
 				</td>
 				<td valign="bottom">
 					{% if item_shift %}
 						<div class="set">
-							<span style="float: left;">{{ basic.button('', item_shift, '', 'minus', 0) }}</span>
-							<span style="float: right;">{{ basic.button('', item_shift, '', 'plus', 1) }}</span>
+							<span style="float: left;">{{ basic.stateswitch('', item_shift, '', 0, 'minus') }}</span>
+							<span style="float: right;">{{ basic.stateswitch('', item_shift, '', 1, 'plus') }}</span>
 						</div>
 					{% endif %}
 				</td>
@@ -220,25 +220,25 @@
 				<td valign="top">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.button('', item_pos, '', 'carat-u', value_top|default('0')) }}
+							{{ basic.stateswitch('', item_pos, '', value_top|default('0'), 'carat-u') }}
 						{% else %}
-							{{ basic.button('', item_move, '', 'carat-u', value_top|default('0') < value_bottom|default('255') ? 0 : 1 ) }}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u' ) }}
 						{% endif %}
 					</div>
 				</td>
 				<td rowspan="3" valign="center" class="pos">
-					{{ basic.shutter('', item_pos, item_angle, value_top, value_bottom, step, mode, background) }}
+					{{ basic.shutter('', item_pos, item_angle, value_top|default('0'), value_bottom|default('255'), step, mode, background) }}
 				</td>
 				<td valign="top">
 					{% if item_saved %}
-						<div>{{ basic.button('', item_saved, 'Pos1', 'grid', value_pos_1) }}</div>
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_1|default(0), 'grid', 'Pos1') }}</div>
 					{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td valign="center">
 					{% if item_stop %}
-						<div class="set">{{ basic.button('', item_stop, '', 'delete', 1) }}</div>
+						<div class="set">{{ basic.stateswitch('', item_stop, '', 1, 'delete') }}</div>
 					{% endif %}
 				</td>
 				<td valign="center">{{ txt }}</td>
@@ -247,15 +247,15 @@
 				<td valign="bottom">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.button('', item_pos, '', 'carat-d', value_bottom|default('255')) }}
+							{{ basic.stateswitch('', item_pos, '', value_bottom|default('255'), 'carat-d') }}
 						{% else %}
-							{{ basic.button('', item_move, '', 'carat-d', value_top|default('0') < value_bottom|default('255') ? 1 : 0 ) }}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d' ) }}
 						{% endif %}
 					</div>
 				</td>
 				<td valign="bottom">
 					{% if item_saved %}
-						<div>{{ basic.button('', item_saved, 'Pos2', 'grid', value_pos_2) }}</div>
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_2|default(1), 'grid', 'Pos2') }}</div>
 					{% endif %}
 				</td>
 			</tr>

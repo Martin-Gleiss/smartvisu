@@ -75,13 +75,13 @@
 		{% endif %}
 
 		<div class="control">
-			{% if item_mute %} {{ basic.button(id~'mute', item_mute, 'Mute', 'audio_volume_mute.svg', 1) }} {% endif %}
-			{% if item_repeat %} {{ basic.dual(id~'repeat', item_repeat, 'audio_repeat.svg', 'audio_repeat.svg') }} {% endif %}
-			{% if item_playlist %} {{ basic.button(id~'playlist', item_playlist, 'Default Playlist', 'audio_playlist.svg', 1) }} {% endif %}
+			{% if item_mute %} {{ basic.stateswitch('', item_mute, '', 1, 'audio_volume_mute.svg', 'Mute') }} {% endif %}
+			{% if item_repeat %} {{ basic.stateswitch('', item_repeat, '', '', 'audio_repeat.svg') }} {% endif %}
+			{% if item_playlist %} {{ basic.stateswitch('', item_playlist, '', 1, 'audio_playlist.svg', 'Default Playlist') }} {% endif %}
 		</div>
 
-		<div class="title">{% if item_artist %}{{ basic.value(id~'artist', item_artist) }} &nbsp; {% endif %}
-			{% if item_title %}{{ basic.value(id~'title', item_title) }}{% endif %}</div>
+		<div class="title">{% if item_artist %}{{ basic.print('', item_artist) }} &nbsp; {% endif %}
+			{% if item_title %}{{ basic.print('', item_title) }}{% endif %}</div>
 
 		<div class="set">
 			{% if item_pos %}
@@ -92,12 +92,12 @@
 			{% endif %}
 
 			<div data-role="controlgroup" data-type="horizontal">
-				{{ basic.button(id~'prev', item_next, 'back', 'control_arrow_left.svg', 0) }}
-				{% if item_ff %} {{ basic.button(id~'rew', item_ff, 'rev', 'audio_rew.svg', 0) }} {% endif %}
-				{{ basic.dual(id~'play', item_play, 'audio_pause.svg', 'audio_play.svg') }}
-				{% if item_stop %} {{ basic.button(id~'stop', item_stop, 'stop', 'audio_stop.svg', 1) }} {% endif %}
-				{% if item_ff %} {{ basic.button(id~'ff', item_ff, 'fwd', 'audio_ff.svg', 1) }} {% endif %}
-				{{ basic.button(id~'next', item_next, 'next', 'control_arrow_right.svg', 1) }}
+				{{ basic.stateswitch('', item_next, '', 0, 'control_arrow_left.svg', 'back') }}
+				{% if item_ff %} {{ basic.stateswitch('', item_ff, '', 0, 'audio_rew.svg', 'rev') }} {% endif %}
+				{{ basic.stateswitch('', item_play, '', '', ['audio_play.svg', 'audio_pause.svg']) }}
+				{% if item_stop %} {{ basic.stateswitch('', item_stop, '', 1, 'audio_stop.svg', 'stop') }} {% endif %}
+				{% if item_ff %} {{ basic.stateswitch('', item_ff, '', 1, 'audio_ff.svg', 'fwd') }} {% endif %}
+				{{ basic.stateswitch('', item_next, '', 1, 'control_arrow_right.svg', 'next') }}
 			</div>
 		</div>
 	</div>
@@ -141,7 +141,7 @@
 *
 * @param {id} unique id for this widget
 * @param {item} an item
-* @param {image} a icon (e. g. located in pics/station)
+* @param {image} an icon (e. g. located in pics/station)
 * @param {value=1} value send if the button is pressed (optional, default 1)
 * @param {type=mini} type: 'mini', 'midi' (optional, default: mini)
 */
@@ -150,6 +150,6 @@
 	{% set uid = uid(page, id) %}
 
 	<div id="{{ uid }}" class="station">
-		{{ basic.button(id, item, '', pic, val, type|default('mini')) }}
+		{{ basic.stateswitch(id, item, type|default('mini'), val, pic) }}
 	</div>
 {% endmacro %}
