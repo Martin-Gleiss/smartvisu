@@ -261,17 +261,14 @@ function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
 
 		foreach($values as $key=>$elem) {
 			if(is_array($elem))
+				$key .= '[]';
+			else
+				$elem = array($elem);
+
+			foreach($elem as $val)
 			{
-				foreach($elem as $val)
-				{
-			    if ($val !== 'true' && $val !== 'false')
-						$val = '"'.$val.'"';
-					$success &= false !== fwrite($handle, $key.'[] = '.$val.PHP_EOL);
-				}
-			}
-			else {
-				$val = $elem;
-		    if ($val !== 'true' && $val !== 'false')
+				$val = strval($val);
+				if ($val !== 'true' && $val !== 'false' && (!is_int($val) || $val !== '0' && substr($val, 0, 1) === '0'))
 					$val = '"'.$val.'"';
 				$success &= false !== fwrite($handle, $key.' = '.$val.PHP_EOL);
 			}
