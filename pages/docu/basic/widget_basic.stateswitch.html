@@ -171,19 +171,19 @@
 	<div class="twig">
 		<code class="prettyprint">
 			&#123;&#123; basic.hiddenswitch('', 'bath.light.switch') &#125;&#125;<br>
-			&#123;&#123; basic.stateswitch('', 'bath.light.switch', 'icon', '', '', '', ['hidden', 'icon1']) &#125;&#125;<br>
+			&#123;&#123; basic.stateswitch('', 'bath.light.switch', 'icon', '', '', '', ['blank', 'icon1']) &#125;&#125;<br>
 			<br>
 			&#123;&#123; basic.hiddenswitch('', 'bath.light.switch', 'text', 'light_light.svg', 0, 1, 'icon1') &#125;&#125;<br>
-			&#123;&#123; basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['', 'light_light.svg'], ['', 'text'], ['hidden', 'icon0']) &#125;&#125;<br>
+			&#123;&#123; basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['', 'light_light.svg'], ['', 'text'], ['blank', 'icon0']) &#125;&#125;<br>
 			<br>
 			new: <span class="nocode">show as button</span><br>
-			&#123;&#123; basic.stateswitch('', 'bath.light.switch', '', '', '', '', ['hidden', '']) &#125;&#125;
+			&#123;&#123; basic.stateswitch('', 'bath.light.switch', '', '', '', '', ['blank', '']) &#125;&#125;
 		</code>
 	</div>
 	<div class="html">
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', '', '', ['hidden', 'icon1']) }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['', 'light_light.svg'], ['', 'text'], ['hidden', '']) }}
-		{{ basic.stateswitch('', 'bath.light.switch', '', '', '', '', ['hidden', '']) }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', '', '', ['blank', 'icon1']) }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['', 'light_light.svg'], ['', 'text'], ['blank', '']) }}
+		{{ basic.stateswitch('', 'bath.light.switch', '', '', '', '', ['blank', '']) }}
 	</div>
 
 {% endblock %}
