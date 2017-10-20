@@ -23,10 +23,10 @@
 	
 	FHEM style and value as list (style depends on backend I/O driver)
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; device.uzsuicon('uzsu2', 'uzsuitem', 'FHEM style and value as list', '', '', 'list', 'a:0,b:1,c:2') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; device.uzsuicon('uzsu2', 'uzsuitem', 'FHEM style and value as list', '', '', 'list', ['a:0','b:1','c:2']) &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ device.uzsuicon('uzsu2', 'uzsuitem', 'FHEM style and value as list', '', '', 'list', 'a:0,b:1,c:2', '', '', '2') }}
+		{{ device.uzsuicon('uzsu2', 'uzsuitem', 'FHEM style and value as list', '', '', 'list', ['a:0','b:1','c:2'], '', '', '2') }}
 	</div>
 
 {% endblock %}

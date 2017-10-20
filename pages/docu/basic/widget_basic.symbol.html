@@ -21,67 +21,57 @@
 	</div>
 
 
-	Symbol is only shown when 'bath.light.switch' = 1
+	Symbol is only shown when 'bath.light.switch' is on
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.symbol('s1', 'bath.light.switch') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; basic.symbol('', 'bath.light.switch') &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ basic.symbol('s1', 'bath.light.switch') }}
+		{{ basic.symbol('', 'bath.light.switch') }}
 	</div>
 
-	With other pictures, in this example both val = 1 an val = 0 is shown.
+	With other picture, color or dynamic icon
 	<div class="twig">
 		<code class="prettyprint">
-			&#123;&#123; basic.symbol('s2', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', 'icon1') &#125;&#125;<br />
-			&#123;&#123; basic.symbol('s3', 'bath.light.switch', 'Light off', 'light_light.svg', 0) &#125;&#125;
-		</code>
+			&#123;&#123; basic.symbol('', 'bath.light.switch', '', 'light_light.svg') &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', 'bath.light.switch', '', '', '', '', '#0b0') &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value') ) &#125;&#125;
+ 		</code>
 	</div>
 	<div class="html">
-		{{ basic.symbol('s2', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', 'icon1') }}
-		{{ basic.symbol('s3', 'bath.light.switch', 'Light off', 'light_light.svg', 0) }}
-	</div>
-
-	With other highlight color (green, orange)
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.symbol('s4', 'bath.light.switch', '', 'light_light.svg', '', '', '#0b0') &#125;&#125;<br />
-			&#123;&#123; basic.symbol('s5', 'bath.light.switch', '', 'light_light.svg', '', '', '#fa3') &#125;&#125;
-		</code>
-	</div>
-	<div class="html">
-		{{ basic.symbol('s4', 'bath.light.switch', '', 'light_light.svg', '', '', '#0b0') }}
-		{{ basic.symbol('s5', 'bath.light.switch', '', 'light_light.svg', '', '', '#fa3') }}
-	</div>
-
-	With dynamic icon
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value')) &#125;&#125;<br />
-			&#123;&#123; basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value'), '', '', 'icon1') &#125;&#125;
-		</code>
-	</div>
-	<div class="html">
-		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value')) }}
+		{{ basic.symbol('', 'bath.light.switch', '', 'light_light.svg') }}
+		{{ basic.symbol('', 'bath.light.switch', '', 'audio_sync.svg', '', '', '#0b0') }}
 		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value'), '', '', 'icon1') }}
 	</div>
 
-	Symbol is shown when 'bath.light.switch' is on <b>OR</b> 'bath.rtr.state' is on.
+	With other or multiple values.
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.symbol('s6', ['bath.light.switch', 'bath.rtr.state']) &#125;&#125;</code>
+		<code class="prettyprint">
+			&#123;&#123; basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', 'icon1') &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', 'bath.light.switch', 'Light off', 'light_light.svg', 0) &#125;&#125;
+		</code>
 	</div>
 	<div class="html">
-		{{ basic.symbol('s6', ['bath.light.switch', 'bath.rtr.state']) }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', 'icon1') }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light off', 'light_light.svg', 0) }}
 	</div>
 
-	Symbol is shown when 'bath.light.switch' is on <b>AND</b> 'bath.rtr.state' is on.
+	Combinations with 'or', 'and' or custom formula (this one implements XOR, so the symbol is shown if one and only one flip is set on).
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.symbol('s7', ['bath.light.switch', 'bath.rtr.state'], '', '', 1, 'and', 'icon1') &#125;&#125;</code>
+		<code class="prettyprint">
+			&#123;&#123; basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'OR') &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'AND', '', 1, 'and') &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'Custom XOR', '', '', '( VAR1 && !VAR2 ) || ( !VAR1 && VAR2 )') &#125;&#125;
+		</code>
 	</div>
 	<div class="html">
-		{{ basic.symbol('s7', ['bath.light.switch', 'bath.rtr.state'], '', '', 1, 'and', 'icon1') }}
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'OR') }}
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'AND', '', '', 'and') }}
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'Custom XOR', '', '', '( VAR1 && !VAR2 ) || ( !VAR1 && VAR2 )') }}
 	</div>
 
+		{{ basic.symbol('', 'bath.light.switch', '', 'message_led.svg', '', '', 'red') }}
+		{{ basic.symbol('', 'bath.light.switch', '', 'message_led.svg', '', '', '#EAFF00') }}
+		{{ basic.symbol('', 'bath.light.switch', '', 'message_led.svg', '', '', 'green') }}
 
 {% endblock %}
-
 
