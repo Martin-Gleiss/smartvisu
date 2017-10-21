@@ -505,19 +505,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-	;
-
-	// ----- basic.maptext --------------------------------------------------------
-	$(bevent.target).find('span[data-widget="basic.maptext"]').on( {
-		'update': function (event, response) {
-			var txt_arr = widget.explode($(this).attr('data-txt'));
-			var val_arr = widget.explode($(this).attr('data-val'));
-			var index = $.inArray(String(response), val_arr);
-			var match = txt_arr[index];
-			$(this).text(match);
-		}
-	});
-
 	// ----- basic.flip -----------------------------------------------------------
 	$(bevent.target).find('select[data-widget="basic.flip"]').on( {
 		'update': function (event, response) {
@@ -852,27 +839,24 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response will be an array, if more then one item is requested
-			var bit = ($(this).attr('data-mode') == 'and');
-			if (response instanceof Array) {
-				for (var i = 0; i < response.length; i++) {
-					if ($(this).attr('data-mode') == 'and') {
-						bit = bit && (response[i] == $(this).attr('data-val'));
-					}
-					else {
-						bit = bit || (response[i] == $(this).attr('data-val'));
-					}
-				}
+			var formula = $(this).attr('data-mode');
+			var values = $(this).attr('data-val').explode();
+
+			// legacy support
+			if(formula == 'or') {
+        formula = 'VAR';
 			}
-			else {
-				bit = (response == $(this).attr('data-val'));
+			else if(formula == 'and') {
+				formula = response.join(' == VAR[0] && ') + ' == VAR[0] ? VAR[0] : null';
 			}
 
-			if (bit) {
-				$(this).show();
-			}
-			else {
-				$(this).hide();
-			}
+			formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
+			var VAR = response;
+			var val = eval(formula);
+			
+			var filter = Array.isArray(val) ? '[data-val="'+val.join('"],[data-val="')+'"]' : '[data-val="'+(typeof val === 'boolean' ? Number(val) : val)+'"]';
+
+			$(this).children('span').hide().filter(filter).first().show();
 		}
 	});
 
@@ -888,14 +872,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 			$(this).attr('title', Math.round(factor * 100) + '%')
 				.find('div').css('height', factor * $(this).height());
-		}
-	});
-
-	// ----- basic.text -----------------------------------------------------------
-	$(bevent.target).find('[data-widget="basic.text"]').on( {
-		'update': function (event, response) {
-			event.stopPropagation();
-			$(this).html((response == $(this).attr('data-val-on') ? $(this).attr('data-txt-on') : $(this).attr('data-txt-off')));
 		}
 	});
 

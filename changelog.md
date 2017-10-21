@@ -13,6 +13,7 @@
 - New: plot.gauge
 - New: plot.pie
 - New: icon.heating (displays a heating colored with dynamic gradient)
+- basic.symbol: Can also be used to show text only, mode extended to adaptable formula, and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
 - Enhanced plot.period (among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale and units)
 - plot.temprose: New parameters 'series_label' and 'unit'
 - basic.slider: New parameter 'value_display'
@@ -61,6 +62,7 @@
 
 ### Now Deprecated
 - basic.button, basic.dual, basic.multistate and basic.switch (use basic.stateswitch instead)
+- basic.text (use basic.symbol instead)
 - basic.float, basic.formula and basic.value (use basic.print instead)
 - basic.colordisc and basic.rgb (use basic.color instead)
 - plot.minmaxavg and plot.multiaxis (use plot.period instead)
