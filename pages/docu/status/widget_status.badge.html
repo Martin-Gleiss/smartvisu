@@ -8,7 +8,7 @@
 */
 
 
-{% extends "widget_basic.html" %}
+{% extends "widget_status.html" %}
 
 {% block example %}
 
@@ -21,16 +21,13 @@
 
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.symbol() }} {{ basic.badge('', 'bath.multistate') }}
-			{{ basic.symbol() }} {{ basic.badge('', 'bath.multistate', [1,4,7], ['hidden','green','orange','']) }}
+			{{ basic.symbol() }} {{ status.badge('', 'bath.multistate') }}
+			{{ basic.symbol() }} {{ status.badge('', 'bath.multistate', [1,4,7], ['hidden','green','orange','']) }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-		{{ basic.symbol() }} {{ basic.badge('', 'bath.multistate') }}
-		{{ basic.symbol() }} {{ basic.badge('', 'bath.multistate', [1,4,7], ['hidden','green','orange','']) }}
+		{{ basic.symbol() }} {{ status.badge('', 'bath.multistate') }}
+		{{ basic.symbol() }} {{ status.badge('', 'bath.multistate', [1,4,7], ['hidden','green','orange','']) }}
 	</div>
 
-
 {% endblock %}
-
-

@@ -69,30 +69,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 // ----- b a s i c ------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
-	// ----- basic.badge -------------------------------------------------------
-	$(bevent.target).find('span[data-widget="basic.badge"]').on( {
-		'update': function (event, response) {
-			event.stopPropagation();
-			$(this).children('span').text(response[0]);
-
-			// coloring
-			var currentIndex = 0;
-			$.each($(this).attr('data-thresholds').explode(), function(index, threshold) {
-				if((isNaN(response[0]) || isNaN(threshold)) ? (threshold > response[0]) : (parseFloat(threshold) > parseFloat(response[0])))
-					return false;
-				currentIndex++;
-			});
-			var color = $(this).attr('data-colors').explode()[currentIndex];
-
-			if(color == 'hidden') {
-				$(this).children('span').hide().css('background-color', null);
-			}
-			else {
-				$(this).children('span').show().css('background-color', color);
-			}
-		}
-	});
-
 	// ----- basic.checkbox -------------------------------------------------------
 	$(bevent.target).find('input[data-widget="basic.checkbox"]').on( {
 		'update': function (event, response) {
@@ -3107,6 +3083,30 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 // ----- s t a t u s -----------------------------------------------------------
 // -----------------------------------------------------------------------------
+
+	// ----- status.badge -------------------------------------------------------
+	$(bevent.target).find('span[data-widget="status.badge"]').on( {
+		'update': function (event, response) {
+			event.stopPropagation();
+			$(this).children('span').text(response[0]);
+
+			// coloring
+			var currentIndex = 0;
+			$.each($(this).attr('data-thresholds').explode(), function(index, threshold) {
+				if((isNaN(response[0]) || isNaN(threshold)) ? (threshold > response[0]) : (parseFloat(threshold) > parseFloat(response[0])))
+					return false;
+				currentIndex++;
+			});
+			var color = $(this).attr('data-colors').explode()[currentIndex];
+
+			if(color == 'hidden') {
+				$(this).children('span').hide().css('background-color', null);
+			}
+			else {
+				$(this).children('span').show().css('background-color', color);
+			}
+		}
+	});
 
 	// ----- status.collapse -------------------------------------------------------
 	$(bevent.target).find('span[data-widget="status.collapse"]').on( {

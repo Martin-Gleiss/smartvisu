@@ -113,25 +113,6 @@
 {% endmacro %}
 
 /**
-* Widget for displaying a notification badge
-*
-* @param {id=} unique id for this widget (optional)
-* @param {item} the item providing the value to show in badge
-* @param {value[]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
-* @param {color[](hidden)=[red]} array of colors or 'hidden' to not diplay (optional, default red)
-the first one is the base color for values below first threshold, so pass one color more than thresholds.
-*
-* @author Christian aka hhhc and Stefan Widmer
-*/
-
-{% macro badge(id, item, threshold, color) %}
-	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.badge" data-item="{{ item }}"
-	data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color)|default('red') }}">
-		<span style="display:none"></span>
-	</span>
-{% endmacro %}
-
-/**
 * Displays a checkbox
 *
 * @param {id=} unique id for this widget (optional)
@@ -742,6 +723,12 @@ the first one is the base color for values below first threshold, so pass one co
 	<script type="text/javascript">console.warn("Use of 'basic.value' is deprecated, use 'basic.print' instead.")</script>
 {% endmacro %}
 
+
+{% macro badge(id, item, threshold, color) %}
+	{% import 'status.html' as status %}
+	{{ status.badge(id, item, threshold, color) }}
+	<script type="text/javascript">console.error("Use of 'basic.badge' is deprecated (this was never officially released), use 'sratus.badge' instead.")</script>
+{% endmacro %}
 
 {% macro maptext(id, gad, txt, val) %}
 	{% import _self as basic %}

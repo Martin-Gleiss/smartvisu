@@ -6,7 +6,7 @@
 - New: basic.print (improves and supersedes basic.float, basic.formula and basic.value)
 - New: basic.select (select a value by menu or array of buttons)
 - New: basic.color (supersedes basic.colordisc and basic.rgb) with new parameter 'colormodel' for HSV or HSL model and possibility to pass values as list in one item
-- New: basic.badge (displays a notification badge)
+- New: status.badge (displays a notification badge)
 - New: basic.offset (button to increase or decrease a value)
 - New: device.uzsuicon (to control UZSU in smarthome.py and FHEM)
 - New: calendar.waste (compact view of waste collection dates)

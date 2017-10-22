@@ -9,6 +9,24 @@
 
 
 /**
+* Displays a notification badge
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} the item providing the value to show in badge
+* @param {value[]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
+* @param {color[](hidden)=[red]} array of colors or 'hidden' to not diplay (optional, default red)
+the first one is the base color for values below first threshold, so pass one color more than thresholds.
+*
+* @author Christian aka hhhc and Stefan Widmer
+*/
+{% macro badge(id, item, threshold, color) %}
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.badge" data-item="{{ item }}"
+	data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color)|default('red') }}">
+		<span style="display:none"></span>
+	</span>
+{% endmacro %}
+
+/**
 * Show and hide a div or popup or collapse a section.
 *
 * @param {id} unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget
