@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 321 321">
+  <defs>
+    <filter id="a" x="-.12" width="1.24" y="-.12" height="1.24" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="10.7"/>
+    </filter>
+  </defs>
+  <circle cx="180" cy="180" r="100" fill-rule="evenodd" filter="url(#a)"/>
+</svg>
