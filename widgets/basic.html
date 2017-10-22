@@ -442,7 +442,7 @@ the first one is the base color for values below first threshold, so pass one co
 			{% set col = (color is iterable ? color[loop.index0] : color)|default('') %}
 			{% set txt = (text is iterable ? text[loop.index0] : text)|default('') %}
 			<span data-val="{{ val }}"{% if not loop.first %} style="display:none"{% endif %}>
-				{{ basic._icon(pic, col) }}
+				{% if pic %}{{ basic._icon(pic, col) }}{% endif %}
 				{{ txt }}
 			</span>
 	  {% endfor %}
@@ -698,7 +698,13 @@ the first one is the base color for values below first threshold, so pass one co
 */
 {% macro text(id, item, txt_on, txt_off, val_on, val_off) %}
 	{% import _self as basic %}
-	{{ basic.symbol(id, item, [txt_on|default(''), txt_off|default('')], '', [val_on|default(1), val_off|default(0)]) }}
+	{% if txt_on and txt_off %}
+		{{ basic.symbol(id, item, [txt_on, txt_off], '', [val_on|default(1), val_off|default(0)]) }}
+	{% elseif txt_on %}
+		{{ basic.symbol(id, item, [txt_on], '', [val_on|default(1)]) }}
+	{% elseif txt_off %}
+		{{ basic.symbol(id, item, [txt_off], '', [val_off|default(0)]) }}
+	{% endif %}
 	<script type="text/javascript">console.warn("Use of 'basic.text' is deprecated, use 'basic.symbol' instead.")</script>
 {% endmacro %}
 
