@@ -59,10 +59,13 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$loader->addPath(const_path.'widgets');
 
 	// init environment
-	$twig = new Twig_Environment($loader, array('debug' => debug));
-	if (debug)
-		$twig->addExtension(new Twig_Extension_Debug());
+	$twig = new Twig_Environment($loader);
 	$twig->addExtension(new Twig_Extension_StringLoader());
+
+	if (config_debug) {
+		$twig->enableDebug();
+		$twig->addExtension(new Twig_Extension_Debug());
+	}
 
 	if (config_cache)
 		$twig->setCache(const_path.'temp/twigcache');
