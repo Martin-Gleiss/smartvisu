@@ -362,7 +362,7 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {value=255} the value for closed (optional, default 255)
 * @param {value=5} step between two values (optional, default 5)
 * @param {text(half,full)=half} 'half' blade turns from -1 to +1, 'full' blade turns from 0 to +1 (optional, default 'half')
-* @param {image=} background image url; optimal size is 100px x 180px (optional)
+* @param {image=} background image url (relative to smartVISU directory or absolute); optimal size is 100px x 180px (optional)
 *
 * @info inspired by Jörg Gutowski
 */
@@ -370,7 +370,7 @@ the first one is the base color for values below first threshold, so pass one co
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.shutter" data-item="{{ item_pos }}, {{ item_angle }}"
 		data-min="{{ value_top|default('0') }}" data-max="{{ value_bottom|default('255') }}" data-step="{{ step|default(5) }}"
-		data-mode="{{ mode|default('half') }}" class="shutter" {{ background ? ' style="background-image: url(\'' ~ background ~ '\')"'}}>
+		data-mode="{{ mode|default('half') }}" class="shutter"{{ background ? (' style="background-image: url(\'' ~ background ~ '\')"')|raw }}>
 
 		<div class="control hide">
 			<img class="icon pos" src="icons/ws/control_arrow_up_down.svg" alt="up/down" />
