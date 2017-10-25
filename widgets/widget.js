@@ -544,7 +544,12 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				});
  			};
  			
-			var calc = eval(formula);
+			try {
+				var calc = eval(formula);
+			}
+			catch(ex) {
+				notify.error("basic.print: Invalid formula", ex);
+			}
 			
 			if(type == 'Date')
 				calc = new Date(calc).transUnit(format);
@@ -828,11 +833,20 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 			formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
 			var VAR = response;
-			var val = eval(formula);
-			
+			try {
+				var val = eval(formula);
+			}
+			catch(ex) {
+				notify.error("basic.symbol: Invalid formula", ex);
+			}
+
 			var filter = Array.isArray(val) ? '[data-val="'+val.join('"],[data-val="')+'"]' : '[data-val="'+(typeof val === 'boolean' ? Number(val) : val)+'"]';
 
-			$(this).children('span').hide().filter(filter).first().show();
+			var anyShown = $(this).children('span').hide().filter(filter).first().show().length > 0;
+			if(anyShown)
+				$(this).show();
+			else
+				$(this).hide();
 		}
 	});
 
