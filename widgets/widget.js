@@ -1214,6 +1214,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	//						"timeMax"	:'',			Oberere Schranke SUN
 	//						"timeCron"	:'00:00',		Schaltzeitpunkt
 	//						"timeOffset":''				Offset für Schaltzeitpunkt
+	//						"timeOffsetType":'m'				'm' = Offset in Minuten, 'deg' Offset in Höhengrad (Altitude)
 	//						"condition"	: 	{	Ein Struct für die Verwendung mit conditions (aktuell nur FHEM), weil dort einige Option mehr angeboten werden
 	//											"deviceString"	: text	Bezeichnung des Devices oder Auswertestring
 	//											"type"			: text	Auswertetype (logische Verknüpfung oder Auswahl String)
@@ -1247,7 +1248,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							"<div class='uzsuTableMain' id='uzsuTable'>";
 			return tt;
 		},
-		uzsuBuildTableRow: function(designType, valueType, valueParameterList) {
+		uzsuBuildTableRow: function(designType, valueType, valueParameterList, numberOfRow) {
 			// Tabelleneinträge
 			var tt = "";
 
@@ -1321,7 +1322,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 						"<button class='uzsuDelTableRow' data-mini='true'>Del</button>" +
 					"</div>";
 			// Tabelle Zeile abschliessen
-			tt += "</div>";
+			tt += 	"</div>";
 			// und jetzt noch die unsichbare Expertenzeile
 			tt += 	"<div class='uzsuRowExpHoli' style='display:none;'>" +
 						"<div class='uzsuRowExpert' style='float: left;'>" +
@@ -1332,16 +1333,26 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							"</div>" +
 							"<div class='uzsuCell uzsuEvent'>" +
 								"<div class='uzsuCellText'>Event</div>" +
-								"<select data-mini='true'>" +
+								"<select data-mini='true' data-native-menu='false'>" +
 									"<option value='sunrise'>Sunrise</option>" +
 									"<option value='sunset'>Sunset</option>" +
 								"</select>" +
 							"</div>" +
 							"<div class='uzsuCell'>" +
-								"<div class='uzsuCellText'>+/- min</div>" +
-								"<input type='number' data-clear-btn='false' class='uzsuTimeOffsetInput'>" +
-							"</div>" +
-							"<div class='uzsuCell'>" +
+								"<div class='uzsuCellText'>+/-" + (designType === '0' ? '' : ' min.') +"</div>" +
+								"<input type='number' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeOffsetInput'>" +
+							"</div>";
+						// Auswahl für Offset in Grad oder Minuten (nur für SmartHomeNG)
+						if (designType === '0'){
+							tt += 	"<div class='uzsuCell'>" +
+								"<div class='uzsuCellText'></div>" +
+									"<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuTimeOffsetTypeInput'>" +
+										"<label title='Minutes'><input type='radio' name='uzsuTimeOffsetTypeInput"+numberOfRow+"' value='m' checked='checked'>m</label>" +
+										"<label title='Degrees of elevation'><input type='radio' name='uzsuTimeOffsetTypeInput"+numberOfRow+"' value=''>°</label>" +
+								"</fieldset>" +
+							"</div>";
+						}
+							tt += 	"<div class='uzsuCell'>" +
 								"<div class='uzsuCellText'>latest</div>" +
 								"<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeMax'>" +
 							"</div>" +
@@ -1352,7 +1363,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 								"</fieldset>" +
 							"</div>" +
 						"</div>";
-							// hier die Einträge für holiday weekend oder nicht
+				// hier die Einträge für holiday weekend oder nicht
 				if (designType === '2'){
 					tt += 	"<div class='uzsuRowHoliday' style='float: left;'>" +
 								"<div class='uzsuRowHolidayText'>Holiday</div>" +
@@ -1529,6 +1540,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				}
 				uzsuCurrentRows.find('.uzsuTimeMin').val(responseEntry.timeMin);
 				uzsuCurrentRows.find('.uzsuTimeOffsetInput').val(parseInt(responseEntry.timeOffset));
+				if(designType === '0') {
+					//  name='uzsuTimeOffsetTypeInput'
+					uzsuCurrentRows.find('.uzsuTimeOffsetTypeInput').find(':radio').prop('checked', false).checkboxradio("refresh")
+						.end().find('[value="'+responseEntry.timeOffsetType+'"]:radio').prop('checked', true).checkboxradio("refresh");
+				}
 				uzsuCurrentRows.find('.uzsuTimeMax').val(responseEntry.timeMax);
 				uzsuCurrentRows.find('.uzsuTimeCron').val(responseEntry.timeCron);
 				// und die pull down Menüs richtig, damit die Einträge wieder stimmen und auch der active state gesetzt wird
@@ -1589,6 +1605,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				}
 				responseEntry.timeMin = uzsuCurrentRows.find('.uzsuTimeMin').val();
 				responseEntry.timeOffset = uzsuCurrentRows.find('.uzsuTimeOffsetInput').val();
+				if(designType == '0'){
+					responseEntry.timeOffsetType = uzsuCurrentRows.find('.uzsuTimeOffsetTypeInput :radio:checked').val();
+				}
 				responseEntry.timeMax = uzsuCurrentRows.find('.uzsuTimeMax').val();
 				responseEntry.timeCron = uzsuCurrentRows.find('.uzsuTimeCron').val();
 				// event etwas komplizierter, da übergangslösung
@@ -1633,17 +1652,17 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					entry.time = entry.timeCron;
 				}
 				else{
-					// ansonsten wird er aus der bestandteilen zusammengebaut
+					// ansonsten wird er aus den Bestandteilen zusammengebaut
 					entry.time = '';
 					if(entry.timeMin.length > 0){
 						entry.time += entry.timeMin + '<';
 					}
 					entry.time += entry.event;
 					if(entry.timeOffset > 0){
-						entry.time += '+' + entry.timeOffset + 'm';
+						entry.time += '+' + entry.timeOffset + (entry.timeOffsetType == undefined ? '' : entry.timeOffsetType);
 					}
 					else if(entry.timeOffset < 0){
-						entry.time += entry.timeOffset + 'm';
+						entry.time += entry.timeOffset + (entry.timeOffsetType == undefined ? '' : entry.timeOffsetType);
 					}
 					if(entry.timeMax.length > 0){
 						entry.time += '<' + entry.timeMax;
@@ -1659,9 +1678,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			// alten Zustand mal in die Liste rein. da der aktuelle Zustand ja nur im Widget selbst enthalten ist, wird er vor dem Umbau wieder in die Variable response zurückgespeichert.
 			uzsu.uzsuSaveTable(1, response, designType, valueType, valueParameterList, false);
 			// ich hänge immer an die letzte Zeile dran ! erst einmal das Array erweitern
-			response.list.push({active:false,rrule:'',time:'00:00',value:null,event:'time',timeMin:'',timeMax:'',timeCron:'00:00',timeOffset:'',condition:{deviceString:'',type:'String',value:'',active:false},delayedExec:{deviceString:'',type:'String',value:'',active:false},holiday:{workday:false,weekend:false}});
+			response.list.push({active:false,rrule:'',time:'00:00',value:null,event:'time',timeMin:'',timeMax:'',timeCron:'00:00',timeOffset:'',timeOffsetType:'m',condition:{deviceString:'',type:'String',value:'',active:false},delayedExec:{deviceString:'',type:'String',value:'',active:false},holiday:{workday:false,weekend:false}});
 			// dann eine neue HTML Zeile genenrieren
-			tt = uzsu.uzsuBuildTableRow(designType, valueType,	valueParameterList);
+			tt = uzsu.uzsuBuildTableRow(designType, valueType, valueParameterList, response.list.length);
 			// Zeile in die Tabelle einbauen
 			$(tt).appendTo('#uzsuTable').enhanceWithin();
 			// und Daten ausfüllen. hier werden die Zeile wieder mit dem Status beschrieben. Status ist dann wieder im Widget
@@ -1723,7 +1742,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			// erst den Header, dann die Zeilen, dann den Footer
 			var tt = uzsu.uzsuBuildTableHeader(headline, designType, valueType, valueParameterList);
 			for (var numberOfRow = 0; numberOfRow < response.list.length; numberOfRow++) {
-				tt += uzsu.uzsuBuildTableRow(designType, valueType, valueParameterList);
+				tt += uzsu.uzsuBuildTableRow(designType, valueType, valueParameterList, numberOfRow);
 			}
 			tt += uzsu.uzsuBuildTableFooter(designType);
 			// dann hängen wir das an die aktuelle Seite
@@ -1878,6 +1897,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 								return false;
 							}
 						}
+						if(entry.timeOffsetType === undefined)
+							entry.timeOffsetType = 'm';
 					}
 
 					// wenn designType = '2' und damit fhem auslegung ist muss der JSON String auf die entsprechenden einträge erweitert werden (falls nichts vorhanden)
