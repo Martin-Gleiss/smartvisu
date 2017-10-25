@@ -216,6 +216,13 @@ function filewrite($file, $ret)
 
 	$tmpFile = tempnam($dir, basename($file));
 	file_put_contents($tmpFile, $ret);
+
+	if(file_exists($file)) {
+		$stat = stat($file);
+		@chmod($tmpFile, $stat['mode'] & 0777);
+		@chown($tmpFile, $stat['uid']);
+		@chgrp($tmpFile, $stat['gid']);
+	}
 	rename($tmpFile, $file);
 
 	return $ret;
@@ -277,8 +284,15 @@ function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
 
 	fclose($handle);
 
-	if($success)
+	if($success) {
+		if(file_exists($path)) {
+			$stat = stat($path);
+			@chmod($tmpFile, $stat['mode'] & 0777);
+			@chown($tmpFile, $stat['uid']);
+			@chgrp($tmpFile, $stat['gid']);
+		}
 		$success &= rename($tmpFile, $path);
+	}
 
 	return $success;
 }
