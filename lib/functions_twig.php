@@ -43,32 +43,16 @@ function twig_smartdate($val, $format = 'date')
 
 function twig_deficon(Twig_Environment $env, $val, $def = '')
 {
-	$globals = $env->getGlobals();
-	
-	if (is_array($val))
-	{
-		for ($i = 0; $i < count($val); $i++)
+	if (!is_array($val))
+		$ret = $val == '' ? $def : $val;
+	else {
+	  $ret = array();
+		foreach($val as $pic)
 		{
-			$ret[$i] = $val[$i];
-
-			if ($ret[$i] == '')
-				$ret[$i] = $def;
-
-			if (substr($ret[$i], -4, 4) == ".png" || substr($ret[$i], -4, 4) == ".svg" and strpos($ret[$i], "/") === false)
-				$ret[$i] = $globals["icon0"].$ret[$i];
+	    $ret[] = $entry == '' ? $def : $pic;
 		}
 	}
-	else
-	{
-		$ret = $val;
 
-		if ($ret == '')
-			$ret = $def;
-
-		if (substr($ret, -4, 4) == ".png" || substr($ret, -4, 4) == ".svg" and strpos($ret, "/") === false)
-			$ret = $globals["icon0"].$ret;
-	}
-	
 	return $ret;
 }
 
@@ -144,11 +128,6 @@ function twig_dir($dir, $filter = '(.*)')
 	ksort($ret);
 
 	return $ret;
-}
-
-function twig_file_get_contents($file)
-{
-  return file_get_contents($file);
 }
 
 function twig_docu($filenames = null)

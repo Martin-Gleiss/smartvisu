@@ -3222,6 +3222,54 @@ $(document).on('pagecreate', function (bevent, bdata) {
 // ----- i c o n --------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
+	$(bevent.target).find('[data-widget="basic.icon"][data-item]').on({
+		'update': function (event, response) {
+			event.stopPropagation();
+
+			var max = $(this).attr('data-max').explode();
+			var min = $(this).attr('data-min').explode();
+			// ensure max and min as array of 3 floats (fill by last value if array is shorter)
+			for(var i = 0; i <= 2; i++) {
+				max[i] = parseFloat(max[Math.min(i, max.length-1)])
+				min[i] = parseFloat(min[Math.min(i, min.length-1)])
+			}
+
+			if(response.length == 1) // all values as list in one item
+				values = response[0];
+			else
+				values = response;
+
+			var rgb;
+			switch($(this).attr('data-colormodel')) {
+				case 'rgb':
+					rgb = [
+						Math.round(Math.min(Math.max((values[0] - min[0]) / (max[0] - min[0]), 0), 1) * 255),
+						Math.round(Math.min(Math.max((values[1] - min[1]) / (max[1] - min[1]), 0), 1) * 255),
+						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 255)
+					];
+					break;
+				case 'hsl':
+					var hsl = [
+						Math.round(Math.min(Math.max((values[0] - min[0]) / (max[0] - min[0]), 0), 1) * 360),
+						Math.round(Math.min(Math.max((values[1] - min[1]) / (max[1] - min[1]), 0), 1) * 100),
+						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 100)
+					];
+					rgb = fx.hsl2rgb(hsl[0], hsl[1], hsl[2]);
+					break;
+				case 'hsv':
+					var hsv = [
+						Math.round(Math.min(Math.max((values[0] - min[0]) / (max[0] - min[0]), 0), 1) * 360),
+						Math.round(Math.min(Math.max((values[1] - min[1]) / (max[1] - min[1]), 0), 1) * 100),
+						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 100)
+					];
+					rgb = fx.hsv2rgb(hsv[0], hsv[1], hsv[2]);
+					break;
+			}
+
+			$(this).css('color', 'rgb(' + rgb.join(',') + ')').find('svg').css('fill', 'rgb(' + rgb.join(',') + ')').css('stroke', 'rgb(' + rgb.join(',') + ')');
+		}
+	});
+
 	$(bevent.target).find('svg[data-widget^="icon."]').on( {
 		'update': function (event, response) {
 			event.stopPropagation();
