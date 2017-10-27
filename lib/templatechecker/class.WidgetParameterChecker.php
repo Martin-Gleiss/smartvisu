@@ -87,17 +87,20 @@ class WidgetParameterChecker {
 	 * run actual checks
 	 */
 	private function run() {
+		$type = $this->getParamConfig('type', 'unknown');
+		if($type == 'unknown') {
+			$this->addWarning('WIDGET PARAM CHECK', 'Parameter type not defined. Check manually!', $value);
+			return;
+		}
+
 		$values = $this->getParameterValue();
 		if ($values === NULL)
 			return;
-
-		$type = $this->getParamConfig('type', 'unknown');
 		if (!is_array($values))
 			$values = array($values);
+
 		foreach ($values as $value) {
 			switch ($type) {
-				case 'unknown':
-					break;
 				case 'id':
 					$this->checkParameterTypeId($value);
 					break;

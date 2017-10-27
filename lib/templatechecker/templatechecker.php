@@ -53,6 +53,7 @@ class RequestHandler {
 				default:
 					throw new Exception('Invalid command');
 			}
+			header('Content-Type: application/json; charset=UTF-8');
 			echo json_encode($ret);
 		} catch (Exception $e) {
 			header('HTTP/1.1 500 Internal Server Error');
