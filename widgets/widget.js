@@ -1979,7 +1979,55 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		});
 	}
 
-/// ----- p l o t ---------------------------------------------------------------
+// ----- i n p u t -------------------------------------------------------------
+// -----------------------------------------------------------------------------
+
+	$(bevent.target).find('input[data-widget="basic.input"]').on( {
+		'update': function (event, response) {
+			$(this).val(response);
+			if($(this).attr('data-role') == 'datebox')
+				$(this).datebox('refresh');
+		},
+
+		'change': function (event) {
+			// DEBUG: console.log("[input.*] change '" + this.id + "':", $(this).val());
+			var newval = $(this).val();
+
+			// enforce limits and step for number input
+			if($(this).attr('type') == 'number') {
+				var min = parseFloat($(this).attr('min'));
+				var max = parseFloat($(this).attr('max'));
+				var step = parseFloat($(this).attr('step'));
+
+				if(isNaN(min)) min = null;
+				if(isNaN(max)) max = null;
+				if(isNaN(step) || step <= 0) step = 1;
+
+				//From jQuery UI slider, the following source will round to the nearest step
+				valModStep = ( newval - (min || 0) ) % step;
+				alignValue = newval - valModStep;
+
+				if ( Math.abs( valModStep ) * 2 >= step ) {
+					alignValue += ( valModStep > 0 ) ? step : ( -step );
+				}
+
+				// Since JavaScript has problems with large floats, round
+				// the final value to 5 digits after the decimal point (see jQueryUI: #4124)
+				newval = parseFloat( alignValue.toFixed( 5 ) );
+
+				if (min !== null && newval < min) {
+					newval = min;
+				}
+				if (max !== null && newval > max) {
+					newval = max;
+				}
+			}
+
+			io.write($(this).attr('data-item'), newval);
+		}
+	});
+
+// ----- p l o t ---------------------------------------------------------------
 // -----------------------------------------------------------------------------
 
 	// ----- plot.comfortchart ----------------------------------------------------

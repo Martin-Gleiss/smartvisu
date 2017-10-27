@@ -38,6 +38,7 @@
 /** CSS assets **/
 {% set cssFiles = [
 		'vendor/plot.highcharts/highcharts.css',
+		'vendor/JTSage/DateBox/css/jtsage-datebox.css',
 		'pages/base/base.css',
 		icon0 ~ 'jquery.mobile.icons.min.css',
 		'designs/' ~ config_design ~ '.css',
@@ -102,7 +103,9 @@
 		'vendor/plot.highcharts/highcharts.js',
 		'vendor/plot.highcharts/highcharts-more.js',
 		'vendor/plot.highcharts/modules/solid-gauge.js',
-    'vendor/jquery.cycle2/jquery.cycle2.js',
+		'vendor/jquery.cycle2/jquery.cycle2.js',
+		'vendor/JTSage/DateBox/js/jtsage-datebox.js',
+		'vendor/JTSage/DateBox/js/i18n/jtsage-datebox.i18n.'~lang('DateBox', 'lang')~'.utf8.js',
 		'widgets/widget.js',
 		config_animation ? 'widgets/animation.js' : null,
 		'lib/base/base.js',
@@ -152,14 +155,14 @@
 {% endif %}
 
 {% if config_backtohometime > 0 %}
-// back to home page
-var homeTimeout;
-$(document).on("vmousedown pageshow", function() {
-	if(homeTimeout !== undefined)
-		window.clearTimeout(homeTimeout);
-	if($.mobile.activePage && $.mobile.activePage.attr("id") != "index" && $.mobile.activePage.attr("id") != "config")
-		homeTimeout = window.setTimeout(function() { $.mobile.changePage("index.php"); }, {{ config_backtohometime * 1000 }});
-});
+	// back to home page
+	var homeTimeout;
+	$(document).on("vmousedown pageshow", function() {
+		if(homeTimeout !== undefined)
+			window.clearTimeout(homeTimeout);
+		if($.mobile.activePage && $.mobile.activePage.attr("id") != "index" && $.mobile.activePage.attr("id") != "config")
+			homeTimeout = window.setTimeout(function() { $.mobile.changePage("index.php"); }, {{ config_backtohometime * 1000 }});
+	});
 {% endif %}
 
 	// Do some actions before page is shown

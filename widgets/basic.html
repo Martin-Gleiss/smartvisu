@@ -192,6 +192,43 @@
 
 
 /**
+* Displays an input field
+*
+* @param unique id for this widget (optional)
+* @param an item
+* @param 'text', 'number', 'date', 'dateflip', 'datecal', 'dateslide', 'time', 'timeflip', 'duration', 'durationflip' (optional, default: text)
+* @param lowest allowed value (optional)
+date & dateflip: number of days before today
+time & timeflip: format is 24hr clock - i.e. '18:31'
+duration & durationflip: in seconds
+* @param greatest allowed value (optional)
+date & dateflip: number of days after today
+time, timeflip: format is 24hr clock - i.e. '18:31'
+duration & durationflip: in seconds
+*
+* @author Stefan Widmer
+* @info Inspired by Michael Würtenberger, date/time control uses JTSageDateBox
+*/
+{% macro input(id, item, type, max, min) %}
+	<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.input" data-item="{{ item }}"
+		{% if type|lower in ['time', 'timeflip'] %}
+			type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
+			data-min-time="{{ min|default('false') }}" data-max-time="{{ max|default('false') }}"
+		{% elseif type|lower in ['duration', 'durationflip'] %}
+			type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
+			data-min-dur="{{ min|default('false') }}" data-max-dur="{{ max|default('false') }}"
+		{% elseif type|lower in ['date', 'dateflip', 'datecal', 'dateslide'] %}
+			type="text" data-role="datebox" data-datebox-mode="{{ (type == 'date' ? type : type|slice(4))~'box' }}" data-use-focus="true"
+			data-min-days="{{ min|default('false') }}" data-max-days="{{ max|default('false') }}"
+		{% else %}
+			type="{{ type|default('text') }}"
+			min="{{ min }}" max="{{ max }}" step="{{ step }}"
+		{% endif %}
+		data-clear-btn="false" />
+{% endmacro %}
+
+
+/**
 * Displays a button to shift offset
 *
 * @param {id=} unique id for this widget (optional)

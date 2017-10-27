@@ -3,6 +3,8 @@
 ### New / Changed Widgets
 - ID is now optional in most widgets
 - New: basic.stateswitch (improves and supersedes basic.button, basic.dual, basic.multistate and basic.switch)
+- New: basic.icon (shows an icon, optionally colored statically or dynamically by item)
+- New: basic.input (displays an input field for text, number or date/time/duration)
 - New: basic.print (improves and supersedes basic.float, basic.formula and basic.value)
 - New: basic.select (select a value by menu or array of buttons)
 - New: basic.color (supersedes basic.colordisc and basic.rgb) with new parameter 'colormodel' for HSV or HSL model and possibility to pass values as list in one item
