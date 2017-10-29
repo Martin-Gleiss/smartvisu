@@ -27,13 +27,14 @@
 		{{ basic.symbol('', 'bath.light.switch') }}
 	</div>
 
-	With different picture and text, colorized, text-only or dynamic icon
+	With different picture and text, colorized, text-only, dynamic icon or used as link to open a popup
 	<div class="twig">
 		<code class="prettyprint">
 			&#123;&#123; basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg') &#125;&#125;<br />
 			&#123;&#123; basic.symbol('', 'bath.light.switch', '', '', '', '', '#0b0') &#125;&#125;<br />
 			&#123;&#123; basic.symbol('', 'bath.light.switch', 'On') &#125;&#125;<br />
 			&#123;&#123; basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value') ) &#125;&#125;
+			&#123;&#123; basic.symbol('', 'bath.light.switch', 'Open popup', '', '', '', '', '#symbol_popup', 'popup') &#123;&#123;
  		</code>
 	</div>
 	<div class="html" style="min-height: 51px">
@@ -44,6 +45,12 @@
 		{{ basic.symbol('', 'bath.light.switch', 'On') }}
 		&nbsp;
 		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value'), '', '', 'icon1') }}
+		&nbsp;
+		{{ basic.symbol('', 'bath.light.switch', 'Open popup', '', '', '', '', '#symbol_popup', 'popup') }}		
+		<div id="symbol_popup" data-role="popup" style="width:280px; height:200px;">
+			<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+			I'm a popup
+		</div>
 	</div>
 
 	Combinations with 'or', 'and' or custom formula (this one implements XOR, so the text is shown if one and only one flip is set on).
@@ -83,4 +90,3 @@
 	</div>
 
 {% endblock %}
-

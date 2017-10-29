@@ -816,7 +816,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	});
 
 	// ----- basic.symbol ---------------------------------------------------------
-	$(bevent.target).find('span[data-widget="basic.symbol"]').on({
+	$(bevent.target).find('[data-widget="basic.symbol"]').on({
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response will be an array, if more then one item is requested

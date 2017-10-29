@@ -477,17 +477,19 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {formula=or} 'or', 'and' or any JavaScript expression with following variables, result will be compared to comparative value above (default 'or')
 - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
 * @param {color=icon0} the color 'icon1' or e. g. '#f00' for red (default 'icon0' of the design)
+* @param {text=} URL to use as link (optional)
+* @param {text=} used in combination with href as data-rel attribute {e.g. to open a popup} (optional)
 *
 * @see design/design_icons#Icons
 *
 * @author Martin Gleiß and Stefan Widmer
 */
-{% macro symbol(id, items, text, icon, value, formula, color) %}
+{% macro symbol(id, items, text, icon, value, formula, color, href, rel) %}
 	{% import _self as basic %}
 	{% set value = (value|default([1]) is iterable ? value|default([1]) : [value]) %}
 	{% set color = color|default('') %}
 
-	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.symbol"
+	<{% if href is empty %}span{% else %}a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{% endif %}{% endif %}{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.symbol"
 		{% if not items is empty %}data-item="{{ implode(items) }}" {% endif %}"
 		data-val="{{ implode(value) }}"
 		data-mode="{{ formula|default('or') }}" class="symbol">
@@ -501,7 +503,7 @@ the first one is the base color for values below first threshold, so pass one co
 				{{ txt }}
 			</span>
 	  {% endfor %}
-	</span>
+	</{% if href is empty %}span{% else %}a{% endif %}>
 	
 {% endmacro %}
 
