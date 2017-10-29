@@ -128,7 +128,7 @@
 /**
 * show an icon, optionally colored statically or dynamically by item
 *
-* @param {id=} unique id for this widget (optional)
+* @param {image} icon to show
 * @param {color=icon0} the color in any CSS form (e.g. '#f00' for red) or 'icon1' (default 'icon0' of the design)
 	To use dynamic coloring by item give one of the following color models: 'rgb', 'hsl' or 'hsv'
 * @param {item[?]} either one item which sends all three color parts as array or an array of three items each sending one of the color parts.
@@ -209,7 +209,7 @@ duration & durationflip: in seconds
 * @author Stefan Widmer
 * @info Inspired by Michael Würtenberger, date/time control uses JTSageDateBox
 */
-{% macro input(id, item, type, max, min) %}
+{% macro input(id, item, type, min, max) %}
 	<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.input" data-item="{{ item }}"
 		{% if type|lower in ['time', 'timeflip'] %}
 			type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"

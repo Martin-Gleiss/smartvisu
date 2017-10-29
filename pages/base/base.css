@@ -907,10 +907,10 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 /**
  * --- W i d g e t s :   B A S I C --------------------------------------------
  */
-[data-widget="basic.badge"] {
+[data-widget="status.badge"] {
 	position: relative;
 }
-[data-widget="basic.badge"] span {
+[data-widget="status.badge"] span {
 	position: absolute;
 	display: inline-block;
 	height:1.5rem;
