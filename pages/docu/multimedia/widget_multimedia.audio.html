@@ -1,0 +1,28 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "widget_multimedia.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ multimedia.audio('', 'bath.play', 'pages/docu/multimedia/Beep-SoundBible.com-923660219.mp3') }}
+			{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<br />
+
+	<div class="html">
+		{{ multimedia.audio('', 'bath.play', 'pages/docu/multimedia/Beep-SoundBible.com-923660219.mp3') }}
+		Use this button to play the sound:
+		{{ basic.stateswitch('', 'bath.play', '', 1, 'audio_play') }}
+	</div>
+
+{% endblock %}

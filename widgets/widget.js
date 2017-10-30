@@ -1948,6 +1948,21 @@ $(document).on('pagecreate', function (bevent, bdata) {
 /// ----- m u l t i m e d i a ---------------------------------------------------
 /// -----------------------------------------------------------------------------
 
+	// ----- multimedia.audio --------------------------------------------------------
+	$(bevent.target).find('[data-widget="multimedia.audio"]').on({
+		'update': function (event, response) {
+			event.stopPropagation();
+			if (response == $(this).attr('data-value')) {
+				this.play();
+			}
+		},
+
+		'ended': function() {
+			// reset value in widget.buffer to allow playing again
+			io.write($(this).attr('data-item'), null);
+		}
+	});
+
 	// ----- multimedia.slideshow ----------------------------------------------------
 	$(bevent.target).find('[data-widget="multimedia.slideshow"]').cycle().on({
 		'update': function (event, response) {

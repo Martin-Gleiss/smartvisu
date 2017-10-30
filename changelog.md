@@ -12,6 +12,7 @@
 - New: basic.offset (button to increase or decrease a value)
 - New: device.uzsuicon (to control UZSU in smarthome.py and FHEM)
 - New: calendar.waste (compact view of waste collection dates)
+- New: multimedia.audio (plays a soundfile)
 - New: plot.gauge
 - New: plot.pie
 - New: icon.heating (displays a heating colored with dynamic gradient)

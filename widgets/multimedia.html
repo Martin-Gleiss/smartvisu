@@ -9,7 +9,27 @@
 
 
 /**
-* Displays a image witch is been reloaded after a given time
+* Plays a soundfile
+*
+* @param {id} unique id for this widget (optional)
+* @param {item} the item which triggers playing
+  Notice: The item sets the value to null after playing.
+* @param {text} the url of the soundfile
+* @param {value=1} the value which triggers playing (optional, default 1)
+* @param {text=mpeg} filetype of the soundfile (optional, default 'mpeg' for mp3)
+*
+* @author Niko Will, Stefan Widmer
+* @info Thanks to Mike Koenig for publishing the sample file under Creative Commons Attribution 3.0 on http://soundbible.com/
+*/
+{% macro audio(id, item, file, value, filetype) %}
+<audio{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.audio" data-item="{{ item }}" data-value="{{ value|default(1) }}" preload="auto">
+	<source src="{{ file }}" type="audio/{{ filetype|default('mpeg') }}">
+</audio>
+{% endmacro %}
+
+
+/**
+* Displays an image witch is been reloaded after a given time
 *
 * @param {id} unique id for this widget
 * @param {image} the path/url to the image
