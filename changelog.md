@@ -15,6 +15,7 @@
 - New: multimedia.audio (plays a soundfile)
 - New: plot.gauge
 - New: plot.pie
+- New: icon.cistern
 - New: icon.heating (displays a heating colored with dynamic gradient)
 - basic.symbol: Can also be used to show text only and to render as link, mode extended to adaptable formula, and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
 - Enhanced plot.period (among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale and units)

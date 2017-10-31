@@ -3480,6 +3480,20 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
+	// ----- icon.cistern ---------------------------------------------------------
+	$(bevent.target).find('svg[data-widget="icon.cistern"]').on( {
+		'update': function (event, response) {
+			event.stopPropagation();
+			// response is: {{ gad_value }}, {{ gad_switch }}
+
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+
+			var val = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 100;
+			$(this).find('[data-val]').hide().filter(function() { return Number($(this).attr('data-val')) <= val } ).show();
+		}
+	});
+
 	// ----- icon.clock -----------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.clock"]').on( {
 		'update': function (event, response) {
