@@ -195,16 +195,20 @@
 * Displays an input field
 *
 * @param unique id for this widget (optional)
-* @param an item
+* @param an item, sent values are:
+	- date & dateflip: Date object resp. ISO 8601 - e.g. '2017-11-29T23:00:00.000Z'
+	- time & timeflip: String with 24hr clock - e.g. '18:31:27'
+	- duration & durationflip: Number of seconds
+	- any other: Entered value
 * @param 'text', 'number', 'date', 'dateflip', 'datecal', 'dateslide', 'time', 'timeflip', 'duration', 'durationflip' (optional, default: text)
 * @param lowest allowed value (optional)
-date & dateflip: number of days before today
-time & timeflip: format is 24hr clock - i.e. '18:31'
-duration & durationflip: in seconds
+	- date & dateflip: Number of days before today
+	- time & timeflip: Format is 24hr clock - e.g. '18:31:27'
+	- duration & durationflip: in seconds
 * @param greatest allowed value (optional)
-date & dateflip: number of days after today
-time, timeflip: format is 24hr clock - i.e. '18:31'
-duration & durationflip: in seconds
+	- date & dateflip: Number of days after today
+	- time, timeflip: Format is 24hr clock - e.g. '18:31:27'
+	- duration & durationflip: in seconds
 *
 * @author Stefan Widmer
 * @info Inspired by Michael Würtenberger, date/time control uses JTSageDateBox
