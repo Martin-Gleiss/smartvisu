@@ -1999,17 +1999,30 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 	$(bevent.target).find('input[data-widget="basic.input"]').on( {
 		'update': function (event, response) {
-			$(this).val(response);
-			if($(this).attr('data-role') == 'datebox')
-				$(this).datebox('refresh');
+			if($(this).attr('data-role') == 'datebox') {
+				var mode = $(this).attr('data-datebox-mode');
+				if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
+					$(this).trigger('datebox', {'method': 'set', 'value': 0}).trigger('datebox', {'method': 'dooffset', 'type': 's', 'amount': response[0]}).trigger('datebox', {'method':'doset'});
+				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
+					$(this).datebox('setTheDate', new Date(response[0]));
+				else if(mode == 'timebox' || mode == 'timeflipbox') { // data type time
+					$(this).val(response[0]);
+					$(this).datebox('refresh');
+				}
+			}
+			else
+				$(this).val(response[0]);
 		},
 
-		'change': function (event) {
-			// DEBUG: console.log("[input.*] change '" + this.id + "':", $(this).val());
+		'change': function (event,a ,b) {
+			if($(this).attr('data-role') == 'datebox')
+				return;
+
 			var newval = $(this).val();
+			var type = $(this).attr('type');
 
 			// enforce limits and step for number input
-			if($(this).attr('type') == 'number') {
+			if(type == 'number') {
 				var min = parseFloat($(this).attr('min'));
 				var max = parseFloat($(this).attr('max'));
 				var step = parseFloat($(this).attr('step'));
@@ -2039,7 +2052,26 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			}
 
 			io.write($(this).attr('data-item'), newval);
+		},
+
+		'datebox': function (event, passed) {
+			if (passed.method === 'close' && !passed.closeCancel) {
+				var mode = $(this).attr('data-datebox-mode');
+
+				var newval;
+				if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
+					newval = $(this).datebox('getLastDur');
+				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
+					newval = $(this).datebox('getTheDate');
+				else if(mode == 'timebox' || mode == 'timeflipbox') // data type time
+					newval = $(this).datebox('callFormat', '%H:%M:%S', $(this).datebox('getTheDate'))
+				else
+					newval = $(this).val();
+
+				io.write($(this).attr('data-item'), newval);
+			}
 		}
+
 	});
 
 // ----- p l o t ---------------------------------------------------------------
