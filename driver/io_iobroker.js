@@ -153,6 +153,10 @@ var io = {
 					clearTimeout(wait);
 					if (isOk) {
 						console.log('ioBroker: Authenticated and ready.')
+						// remove socket error notification on reconnect
+						if(io.socketErrorNotification != null)
+							notify.remove(io.socketErrorNotification);
+
 						io.isConnected = true;
 						io.monitor();
 					} else {
@@ -167,7 +171,8 @@ var io = {
 		});
 		
 		io.socket.on('connect_error', function (err) {
-			notify.error('Driver: ioBroker', 'connect_error: '+JSON.stringify(err));
+			if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification))
+				io.socketErrorNotification = notify.error('Driver: ioBroker', 'connect_error: '+JSON.stringify(err));
 			//io.reconnect(connOptions);
 		});
 		

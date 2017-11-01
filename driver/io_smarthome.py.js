@@ -12,40 +12,6 @@
  * @hide        driver_realtime
  */
 
-function get_browser(){
-    var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || []; 
-    if(/trident/i.test(M[1])){
-        tem=/\brv[ :]+(\d+)/g.exec(ua) || []; 
-        return {name:'IE',version:(tem[1]||'')};
-        }   
-    if(M[1]==='Chrome'){
-        tem=ua.match(/\bOPR\/(\d+)/)
-        if(tem!=null)   {return {name:'Opera', version:tem[1]};}
-        }   
-    M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-    if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
-    return {
-      name: M[0],
-      version: M[1]
-    };
- }
- 
-
-function get_visuinfo(){
-    function reqListener () {
-      console.log(this.responseText);
-    }
-
-    var oReq = new XMLHttpRequest();
-    oReq.open("get", "driver/io_smarthome_get_visuinfo.php", false);
-    oReq.send();
-    visuinfo = JSON.parse(oReq.responseText)
-    return {
-      name: visuinfo[0],
-      version: visuinfo[1]
-    };
-}
-
 
 /**
  * Class for controlling all communication with a connected system. There are
@@ -159,10 +125,13 @@ var io = {
 		io.socket = new WebSocket(protocol + io.address + ':' + io.port);
 
 		io.socket.onopen = function () {
+			// remove socket error notification on reconnect
+			if(io.socketErrorNotification != null)
+				notify.remove(io.socketErrorNotification);
+
 			io.send({'cmd': 'proto', 'ver': io.version});
-			var visu=get_visuinfo();
-			var browser=get_browser();
-			io.send({'cmd': 'identity', 'sw': visu.name, 'ver': visu.version, 'browser': browser.name, 'bver': browser.version});
+			var browser = io.getBrowser();
+			io.send({'cmd': 'identity', 'sw': 'smartVISU', 'ver': 'v'+sv.config.version, 'browser': browser.name, 'bver': browser.version});
 			io.monitor();
 		};
 
@@ -238,7 +207,8 @@ var io = {
 		};
 
 		io.socket.onerror = function (error) {
-			notify.error('Driver: smarthome.py', 'Could not connect to smarthome.py server!<br /> Websocket error ' + error.data + '.');
+			if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification))
+				io.socketErrorNotification = notify.error('Driver: smarthome.py', 'Could not connect to smarthome.py server!<br /> Websocket error ' + error.data + '.');
 		};
 
 		io.socket.onclose = function () {
@@ -304,6 +274,24 @@ var io = {
 		}
 
 		io.socket = null;
+	},
+
+	getBrowser: function () {
+		var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+		if(/trident/i.test(M[1])) {
+			tem=/\brv[ :]+(\d+)/g.exec(ua) || [];
+			return {name:'IE',version:(tem[1]||'')};
+		}
+		if(M[1]==='Chrome') {
+			tem=ua.match(/\bOPR\/(\d+)/)
+			if(tem!=null) { return {name:'Opera', version:tem[1]}; }
+		}
+		M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+		if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
+		return {
+			name: M[0],
+			version: M[1]
+		};
 	}
 
 };

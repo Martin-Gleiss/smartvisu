@@ -6,6 +6,7 @@
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       JSON
+ * @hide        driver_autoreconnect
  */
 
 
