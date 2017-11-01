@@ -11,9 +11,9 @@
 /**
 * Displays the actual weather at location
 *
-* @param unique id for this widget
-* @param location as string (optional)
-* @param the refresh interval for this widget (using relative time format), default 15i (15 minutes)
+* @param {id} unique id for this widget
+* @param {text=} location as string (optional)
+* @param {duration=15i} the refresh interval for this widget (using relative time format), default 15i (15 minutes)
 *
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
@@ -65,10 +65,10 @@
 /**
 * Displays the forecast weather of one day at location
 *
-* @param unique id for this widget
-* @param location as string (optional)
-* @param offset: 1 for tomorrow (default), 2 the day after tomorrow ..., (optional)
-* @param the refresh interval for this widget (using relative time format), default 3h
+* @param {id} unique id for this widget
+* @param {text=} location as string (optional)
+* @param {value=} offset: 1 for tomorrow (default), 2 the day after tomorrow ..., (optional)
+* @param {duration=3h} the refresh interval for this widget (using relative time format), default 3h
 *
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
@@ -118,9 +118,9 @@
 /**
 * Displays the forecast weather of the next 4 days
 *
-* @param unique id for this widget
-* @param location as string (optional)
-* @param the refresh interval for this widget (using relative time format), default 3h
+* @param {id} unique id for this widget
+* @param {text=} location as string (optional)
+* @param {duration=3h} the refresh interval for this widget (using relative time format), default 3h
 *
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
@@ -169,9 +169,9 @@
 /**
 * A Block with a map. The type specifies the kind of map.
 *
-* @param unique id for this widget
-* @param title of the block
-* @param the mode: 'day', 'night', 'forecast', 'wind', 'europe'
+* @param {id} unique id for this widget
+* @param {text=} title of the block
+* @param {text(day,night,forecast,wind,europe)} the mode: 'day', 'night', 'forecast', 'wind', 'europe'
 *
 * @info Maps from tagesschau.de, Hessischer Rundfunk, Deutscher Wetterdienst
 * @link http://www.tagesschau.de
@@ -200,11 +200,11 @@
 
 
 /**
-* A block with a some weather-maps in a slideshow
+* A block with some weather-maps in a slideshow
 *
-* @param unique id for this widget
-* @param title of the block
-* @param delay between the slides in sec (optional, default: 2 sec)
+* @param {id} unique id for this widget
+* @param {text=} title of the block
+* @param {value=2} delay between the slides in sec (optional, default: 2 sec)
 *
 * @info based on cycle2 jquery-plugin: (c) 2012 M. Alsup; Dual licensed: MIT/GPL
 * @link http://jquery.malsup.com/cycle2

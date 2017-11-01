@@ -216,6 +216,13 @@ function filewrite($file, $ret)
 
 	$tmpFile = tempnam($dir, basename($file));
 	file_put_contents($tmpFile, $ret);
+
+	if(file_exists($file)) {
+		$stat = stat($file);
+		@chmod($tmpFile, $stat['mode'] & 0777);
+		@chown($tmpFile, $stat['uid']);
+		@chgrp($tmpFile, $stat['gid']);
+	}
 	rename($tmpFile, $file);
 
 	return $ret;
@@ -261,17 +268,14 @@ function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
 
 		foreach($values as $key=>$elem) {
 			if(is_array($elem))
+				$key .= '[]';
+			else
+				$elem = array($elem);
+
+			foreach($elem as $val)
 			{
-				foreach($elem as $val)
-				{
-			    if ($val !== 'true' && $val !== 'false')
-						$val = '"'.$val.'"';
-					$success &= false !== fwrite($handle, $key.'[] = '.$val.PHP_EOL);
-				}
-			}
-			else {
-				$val = $elem;
-		    if ($val !== 'true' && $val !== 'false')
+				$val = strval($val);
+				if ($val !== 'true' && $val !== 'false' && (!is_int($val) || $val !== '0' && substr($val, 0, 1) === '0'))
 					$val = '"'.$val.'"';
 				$success &= false !== fwrite($handle, $key.' = '.$val.PHP_EOL);
 			}
@@ -280,8 +284,15 @@ function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
 
 	fclose($handle);
 
-	if($success)
+	if($success) {
+		if(file_exists($path)) {
+			$stat = stat($path);
+			@chmod($tmpFile, $stat['mode'] & 0777);
+			@chown($tmpFile, $stat['uid']);
+			@chgrp($tmpFile, $stat['gid']);
+		}
 		$success &= rename($tmpFile, $path);
+	}
 
 	return $success;
 }

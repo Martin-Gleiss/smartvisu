@@ -9,11 +9,29 @@
 
 
 /**
+* Displays a notification badge
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} the item providing the value to show in badge
+* @param {value[]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
+* @param {color[](hidden)=[red]} array of colors or 'hidden' to not diplay (optional, default red)
+the first one is the base color for values below first threshold, so pass one color more than thresholds.
+*
+* @author Christian aka hhhc and Stefan Widmer
+*/
+{% macro badge(id, item, threshold, color) %}
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.badge" data-item="{{ item }}"
+	data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color)|default('red') }}">
+		<span style="display:none"></span>
+	</span>
+{% endmacro %}
+
+/**
 * Show and hide a div or popup or collapse a section.
 *
-* @param unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget
-* @param an item witch triggers the collapse
-* @param the value on which the target is collapsed (optional, default 0)
+* @param {id} unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget
+* @param {item} an item witch triggers the collapse
+* @param {value=0} the value on which the target is collapsed (optional, default 0)
 */
 {% macro collapse(id, item_trigger, val_collapsed) %}
 
@@ -25,9 +43,9 @@
 /**
 * Displays a list of logging-information
 *
-* @param unique id for this widget
-* @param the name of the log
-* @param maximal number of entries (1 - 50)
+* @param {id} unique id for this widget
+* @param {text} the name of the log
+* @param {value(1..50)} maximal number of entries (1 - 50)
 */
 {% macro log(id, item, count) %}
 
@@ -43,13 +61,13 @@
 /**
 * Displays a notification edge window
 *
-* @param unique id for this widget
-* @param a item witch triggers the notification
-* @param a item with the dynamic message
-* @param a word for the signal corner
-* @param a title of the messagebox
-* @param a additional static text
-* @param the mode: 'info', 'warning', 'error' (optional, default 'info')
+* @param {id} unique id for this widget
+* @param {item} an item witch triggers the notification
+* @param {item=} an item with the dynamic message
+* @param {text=INFO} a word for the signal corner (optional, default 'INFO')
+* @param {text} a title of the messagebox
+* @param {text=} a additional static text
+* @param {text(info,warning,error)=info} the mode: 'info', 'warning', 'error' (optional, default 'info')
 */
 {% macro notify(id, item_trigger, item_message, signal, title, text, mode) %}
 
@@ -64,13 +82,13 @@
 /**
 * Displays a notification popup window with a message
 *
-* @param unique id for this widget
-* @param a item witch triggers the popup: NOT 0 open it, 0 close it
-* @param a item with the dynamic message
-* @param a item with the a timestamp
-* @param a title of the messagebox
-* @param a additional static text
-* @param the mode: 'info', 'error' (optional, default 'info')
+* @param {id} unique id for this widget
+* @param {item} an item witch triggers the popup: NOT 0 open it, 0 close it
+* @param {item=} an item with the dynamic message
+* @param {item=} an item with the a timestamp
+* @param {text} a title of the messagebox
+* @param {text=} an additional static text
+* @param {text(info,error)=info} the mode: 'info', 'error' (optional, default 'info')
 */
 {% macro message(id, item_trigger, item_message, item_timestamp, title, text, mode) %}
 
@@ -87,4 +105,3 @@
 	</div>
 
 {% endmacro %}
-

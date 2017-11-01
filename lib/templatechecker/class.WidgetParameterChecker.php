@@ -33,13 +33,26 @@ class WidgetParameterChecker {
 	private $paramConfig;
 
 	/**
+	 * Available dynamic icons
+	 * @var array
+	 */
+	private $dynamicIcons;
+
+	/**
 	 * Collection of messages to add messages to
 	 * @var MessageCollection
 	 */
 	private $messages;
 
-	public static function performChecks($widget, $paramIndex, $paramConfig, $messages) {
-		$checker = new WidgetParameterChecker($widget, $paramIndex, $paramConfig, $messages);
+
+	/**
+	 * Backreference to calling template checker (to be used to check widgets which are parameter of current widget)
+	 * @var TemplateChecker
+	 */
+	private $templateCecker;
+
+	public static function performChecks($widget, $paramIndex, $paramConfig, $messages, $templateCecker) {
+		$checker = new WidgetParameterChecker($widget, $paramIndex, $paramConfig, $messages, $templateCecker);
 		$checker->run();
 	}
 
@@ -50,12 +63,14 @@ class WidgetParameterChecker {
 	 * @param array $paramConfig Config for parameter to check
 	 * @param MessageCollection $messages Collection of messages to add messages to
 	 */
-	private function __construct($widget, $paramIndex, $paramConfig, $messages) {
+	private function __construct($widget, $paramIndex, $paramConfig, $messages, $templateCecker) {
 		$this->widget = $widget;
 		$this->paramIndex = $paramIndex;
 		$this->paramConfig = $paramConfig;
 		$this->messages = $messages;
+    $this->templateCecker = $templateCecker;
 		$this->settings = Settings::getInstance();
+		$this->dynamicIcons = twig_docu(const_path . 'widgets/icon.html');
 	}
 
 	/**
@@ -72,17 +87,20 @@ class WidgetParameterChecker {
 	 * run actual checks
 	 */
 	private function run() {
+		$type = $this->getParamConfig('type', 'unknown');
+		if($type == 'unknown') {
+			$this->addWarning('WIDGET PARAM CHECK', 'Parameter type not defined. Check manually!', $value);
+			return;
+		}
+
 		$values = $this->getParameterValue();
 		if ($values === NULL)
 			return;
-
-		$type = $this->getParamConfig('type', 'unknown');
 		if (!is_array($values))
 			$values = array($values);
+
 		foreach ($values as $value) {
 			switch ($type) {
-				case 'unknown':
-					break;
 				case 'id':
 					$this->checkParameterTypeId($value);
 					break;
@@ -112,6 +130,21 @@ class WidgetParameterChecker {
 				case 'duration':
 					$this->checkParameterTypeDuration($value);
 					break;
+				case 'format':
+					// in the future there may be the possibility to validate formats.
+					// for now we perform the same tests than for type "text"
+					$this->checkParameterTypeText($value);
+					break;
+				case 'formula':
+					// in the future there may be the possibility to validate formulas.
+					// for now we perform the same tests than for type "text"
+					$this->checkParameterTypeText($value);
+					break;
+				case 'url':
+					// in the future there may be the possibility to validate urls.
+					// for now we perform the same tests than for type "text"
+					$this->checkParameterTypeText($value);
+					break;
 				default:
 					error_log('Template Checker: Unknown type ' . $type);
 					break;
@@ -133,7 +166,7 @@ class WidgetParameterChecker {
 		$value = $this->widget->getParam($this->paramIndex);
 		// parameter not given
 		if ($value == NULL || $value == '') {
-			if ($this->getParamConfig('optional', FALSE)) {
+			if ($this->getParamConfig('optional', TRUE)) {
 				// missing optional parameter, return default value
 				$value = $this->getParamConfig('default', '');
 			} else {
@@ -146,6 +179,10 @@ class WidgetParameterChecker {
 			$value = trim($value, " \t\n\r\0\x0B'");
 		}
 
+		// no check for arrayform if value is empty
+    if($value == '')
+			return $value;
+
 		$allowArray = $this->getParamConfig('array_form', 'no');
 		if (substr($value, 0, 1) == '[' && substr($value, -1) == ']') {
 			// array form
@@ -157,7 +194,7 @@ class WidgetParameterChecker {
 		} else {
 			// not array form
 			if ($allowArray != 'no' && $allowArray != 'may') {
-				$this->addError('WIDGET PARAM CHECK', 'Array form not required for parameter', $value);
+				$this->addError('WIDGET PARAM CHECK', 'Array form required for parameter', $value);
 				return NULL;
 			}
 			return $value;
@@ -187,6 +224,10 @@ class WidgetParameterChecker {
 		return FALSE;
 	}
 
+	private function checkParameterValidValues($value) {
+		return in_array($value, $this->paramConfig['valid_values'] ?: array());
+	}
+
 	/**
 	 * Check widget parameter of type "iconseries"
 	 * @param $value mixed parameter value
@@ -196,7 +237,7 @@ class WidgetParameterChecker {
 			return;
 
 		if (substr($value, 0, 5) == 'icon.') {
-			if (array_key_exists($value, Config::SmartvisuDefaultWidgets)) {
+			if (array_key_exists($value, $this->dynamicIcons)) {
 				// existing dynamic icon
 				if (Settings::SHOW_SUCCESS_TOO)
 					$this->addInfo('WIDGET ICONSERIES PARAM  CHECK', 'Existing dynamic image', $value);
@@ -245,15 +286,29 @@ class WidgetParameterChecker {
 			return;
 
 		// inline picture
-		if (in_array($value, Config::SmartvisuInlinePictures))
+		if (in_array($value, TemplateCheckerConfig::SmartvisuInlinePictures))
 			return;
 
-		$file = $value;
+		// additional widget-specific valid values
+		if ($this->checkParameterValidValues($value))
+			return;
 
-		// add color if required
-		if (strpos($file, '/') === false && substr($file, 0, 7) != 'icon0~\'' && substr($file, 0, 7) != 'icon1~\'') {
-			$file = Settings::getInstance()->getIcon0() . $file;
+		if (substr($value, 0, 5) == 'icon.') {
+      $this->templateCecker->checkWidget($this->widget->getNode(), $value);
+			/*
+			if (array_key_exists($value, $this->dynamicIcons)) {
+				// existing dynamic icon
+				if (Settings::SHOW_SUCCESS_TOO)
+					$this->addInfo('WIDGET IMAGE PARAM  CHECK', 'Existing dynamic image', $value);
+			} else {
+				// unknown dynamic icon
+				$this->addError('WIDGET IMAGE PARAM  CHECK', 'Missing dynamic image', $value);
+			}
+			*/
+			return;
 		}
+
+		$file = $value;
 
 		switch (TemplateChecker::isFileExisting($file)) {
 			case TemplateChecker::FILE_MISSING:
@@ -307,7 +362,11 @@ class WidgetParameterChecker {
 		if (!$this->checkParameterNotEmpty($value))
 			return;
 
-		if (in_array($value, Config::SmartvisuButtonTypes))
+		if (in_array($value, TemplateCheckerConfig::SmartvisuButtonTypes))
+			return;
+
+		// additional widget-specific valid values
+		if ($this->checkParameterValidValues($value))
 			return;
 
 		$this->addError('WIDGET TYPE PARAM CHECK', 'Unknown type', $value);
@@ -325,8 +384,12 @@ class WidgetParameterChecker {
 		if ($value == 'icon0' || $value == 'icon1')
 			return;
 
+		// additional widget-specific valid values
+		if ($this->checkParameterValidValues($value))
+			return;
+
 		// known html colors
-		if (array_key_exists(strtolower($value), Config::HtmlColors))
+		if (array_key_exists(strtolower($value), TemplateCheckerConfig::HtmlColors))
 			return;
 
 		// anything else needs to start with '#' and be 4 (#+3) or 7 (#+6) characters long
@@ -334,6 +397,8 @@ class WidgetParameterChecker {
 			if (ctype_xdigit(substr($value, 1)))
 				return;
 		}
+		
+		// TODO: rgb() / rgba()
 
 		$this->addError('WIDGET COLOR PARAM CHECK', 'Unknown color', $value);
 	}
@@ -351,13 +416,16 @@ class WidgetParameterChecker {
 			return;
 
 		if ($this->paramConfig['valid_values']) {
-			if (in_array($value, $this->paramConfig['valid_values'])) {
+			if ($this->checkParameterValidValues($value)) {
 				if (Settings::SHOW_SUCCESS_TOO)
 					$this->addInfo('WIDGET TEXT PARAM CHECK', 'Value is valid', $value, array('Valid Values' => $this->paramConfig['valid_values']));
+				return TRUE;
 			} else {
 				$this->addError('WIDGET TEXT PARAM CHECK', 'Value is not valid', $value, array('Valid Values' => $this->paramConfig['valid_values']));
+				return FALSE;
 			}
 		}
+
 	}
 
 	/**
@@ -368,28 +436,28 @@ class WidgetParameterChecker {
 		if (!$this->checkParameterNotEmpty($value))
 			return;
 
-		if ($value == 'now' || $value == '0')
+		if ($value == 'now' || ctype_digit($value))
 			return;
 
 		$parts = explode(' ', $value);
 		foreach ($parts as $part) {
 			// Last char: Interval
 			$interval = substr($part, -1);
-			if (!in_array($interval, Config::SmartvisuDurationIntervals)) {
-				$this->addError('WIDGET DURATION PARAM CHECK', 'Invalid duration interval identifier', $value, array('Invalid Identifier' => $interval, 'Valid Identifiers' => Config::SmartvisuDurationIntervals));
+			if (!in_array($interval, TemplateCheckerConfig::SmartvisuDurationIntervals)) {
+				$this->addError('WIDGET DURATION PARAM CHECK', 'Invalid duration interval identifier', $value, array('Invalid Identifier' => $interval, 'Valid Identifiers' => TemplateCheckerConfig::SmartvisuDurationIntervals));
 				return;
 			}
 			// everything before last char needs to be numbers only
 			$number = substr($part, 0, -1);
 			if (!ctype_digit($number)) {
-				$this->addError('WIDGET DURATION PARAM CHECK', 'Invalid duration value', $value, array('Checked Value' => $number, 'Valid Identifiers' => Config::SmartvisuDurationIntervals));
+				$this->addError('WIDGET DURATION PARAM CHECK', 'Invalid duration value', $value, array('Checked Value' => $number, 'Valid Identifiers' => TemplateCheckerConfig::SmartvisuDurationIntervals));
 				return;
 			}
 		}
 	}
 
 	/**
-	 * Check widget parameter of type "duration"
+	 * Check widget parameter of type "value"
 	 * @param $value mixed parameter value
 	 */
 	private function checkParameterTypeValue($value) {
@@ -402,11 +470,11 @@ class WidgetParameterChecker {
 		}
 
 		$numVal = $value + 0;
-		if ($this->paramConfig['min'] && $numVal < $this->paramConfig['min']) {
+		if ($this->paramConfig['min'] && $numVal < $this->paramConfig['min'] + 0) {
 			$this->addError('WIDGET VALUE PARAM CHECK', 'Value less than allowed minimum value', $value, array('Minimum Value' => $this->paramConfig['min']));
 			return;			
 		}
-		if ($this->paramConfig['max'] && $numVal > $this->paramConfig['max']) {
+		if ($this->paramConfig['max'] && $numVal > $this->paramConfig['max'] + 0) {
 			$this->addError('WIDGET VALUE PARAM CHECK', 'Value greater than allowed maximum value', $value, array('Maximum Value' => $this->paramConfig['max']));
 			return;			
 		}

@@ -16,13 +16,13 @@ class config {
 
 	var $config = array(); // holds configuration values
 	var $config_by_source = array(); // cache values of single sources
+	const INI_SCANNER = INI_SCANNER_NORMAL;
 
 	/**
 	 * constructor
 	 */
 	public function __construct()
 	{
-
 	}
 
 	/**
@@ -30,29 +30,29 @@ class config {
 	 */
 	public function get($source = 'all')
 	{
-
+		$config = $this->config_by_source[$source];
 		// only read if source was not read before
-		if($this->config_by_source[$source] == null) {
+		if($config == null) {
 
-			$this->config_by_source[$source] = array();
+			$config = array();
 
 			switch($source) {
 
 				// default system configuration
 				case 'default':
-					$this->config_by_source[$source] = parse_ini_file(const_path_system.'defaults.ini', true, INI_SCANNER_TYPED);
+					$config = parse_ini_file(const_path_system.'defaults.ini', true, self::INI_SCANNER);
 					break;
 
 				// global configuration (including default)
 				case 'global':
 					$config = $this->get('default');
-					$this->config_by_source[$source] = array_replace($config, $this->get('globalonly'));
+					$config = array_replace($config, $this->get('globalonly'));
 					break;
 
 				// global configuration (excluding default)
 				case 'globalonly':
 					if (is_file(const_path.'config.ini'))
-						$this->config_by_source[$source] = parse_ini_file(const_path.'config.ini', true, INI_SCANNER_TYPED);
+						$config = parse_ini_file(const_path.'config.ini', true, self::INI_SCANNER);
 					elseif (is_file(const_path.'config.php')) {
 						// read legacy config.php
 						$configphp = file_get_contents(const_path.'config.php');
@@ -62,28 +62,28 @@ class config {
 						foreach($matches as $match) {
 							$config[$match[1]] = eval('return '.$match[2].';');
 						}
-
-            $this->config_by_source[$source] = $config;
 					}
 					break;
 
 				// configuration per pages (config.ini in current pages folder)
 				case 'pages':
-					$config_for_pages = $this->get('global');
-					// configuration of pages in cookie
-					$config_for_pages = array_replace($config_for_pages, $this->get('cookie'));
-					// pages in request
-					if ($_REQUEST['pages'] != '')
+					if ($_REQUEST['pages'] != '') // pages in request
 						$config_for_pages['pages'] = $_REQUEST['pages'];
+					else {
+						// configuration of pages in cookie
+						$config_for_pages = $this->get('cookie');
+						if(!isset($config_for_pages['pages']) || $config_for_pages['pages'] == '')
+							$config_for_pages = $this->get('global');
+	 				}
 
 					if (is_file(const_path.'pages/'.$config_for_pages['pages'].'/config.ini'))
-						$this->config_by_source[$source] = parse_ini_file(const_path.'pages/'.$config_for_pages['pages'].'/config.ini', true, INI_SCANNER_TYPED);
+						$config = parse_ini_file(const_path.'pages/'.$config_for_pages['pages'].'/config.ini', true, self::INI_SCANNER);
 					break;
 
 				// configuration per client in cookie
 				case 'cookie':
 					if (!empty($_COOKIE['config']))
-				    $this->config_by_source[$source] = json_decode($_COOKIE['config'], true);
+						$config = json_decode($_COOKIE['config'], true);
 					break;
 
 				// actually applied (all sources merged)
@@ -91,14 +91,14 @@ class config {
 					$config = $this->get('global');
 					$config = array_replace($config, $this->get('pages'));
 					$config = array_replace($config, $this->get('cookie'));
-					$this->config_by_source[$source] = $config;
 					break;
 
 			}
-
+			
+			$this->config_by_source[$source] = $config;
 		}
 
-		return $this->config_by_source[$source];
+		return $config;
 	}
 
 	/**

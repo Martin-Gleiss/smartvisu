@@ -32,13 +32,11 @@ error_reporting(E_ALL & ~E_NOTICE);
  */
 umask(0002);
 
-date_default_timezone_set('Europe/Berlin');
-
 /**
  * Include main-functions
  */
 require_once const_path_system.'functions.php';
-
+require_once const_path_system.'functions_twig.php';
 
 // -----------------------------------------------------------------------------
 // L O A D  C O N F I G U R A T I O N
@@ -55,11 +53,9 @@ foreach ($GLOBALS['config'] as $key => $value) {
 	define('config_' . $key, $value);
 }
 
-
-// -----------------------------------------------------------------------------
-// S E T  P R O X Y
-// -----------------------------------------------------------------------------
-
+/**
+ * Set proxy according to config
+ */
 if($GLOBALS['config']['proxy'] == true) {
 	$proxy_opts = array(
 		'http'=>array(
@@ -74,5 +70,10 @@ if($GLOBALS['config']['proxy'] == true) {
 	}
 	$default = stream_context_get_default($proxy_opts);
 }
+
+/**
+ * Set timezone according to config
+ */
+date_default_timezone_set(config_timezone);
 
 ?>

@@ -10,8 +10,8 @@
 
 
 require_once const_path_system.'service.php';
-require_once const_path_system.'calendar/ICal/EventObject.php';
 require_once const_path_system.'calendar/ICal/ICal.php';
+require_once const_path_system.'calendar/ICal/Event.php';
 
 /**
  * This class is the base class of all services
@@ -22,6 +22,14 @@ class calendar extends service
 	var $calendar_names = array('');
 
 	var $url;
+	
+	public function __construct($request)
+	{
+		if(!function_exists('mb_get_info') && !($this instanceof calendar_offline))
+			$this->error('Calendar service', 'Calendar services require PHP mbstring extension.');
+
+		parent::__construct($request);
+	}
 
 	/**
 	 * initialization of some parameters

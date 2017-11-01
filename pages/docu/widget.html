@@ -50,7 +50,7 @@
 			<div class="param">
 				{% for param_name, param_docu in widgetlist[widget].param %}
 					<code>{{ param_name }}</code>
-					<div class="desc">{{ param_docu|nl2br }}</div>
+					<div class="desc">{{ param_docu.desc|nl2br }}</div>
 				{% endfor %}
 			</div>
 
@@ -101,4 +101,3 @@
 
 
 {% endblock %}
-

@@ -6,12 +6,22 @@
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
+/** handle dropins */
+{% set macrofiles = dir('dropins/widgets','(.*)\.html$') %}
+{% set dynmacro = [] %}
+{% for macrofile in macrofiles %}
+	{% set dynmacro = dynmacro|merge(['{% import "widgets/' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
+{% endfor %}
+{% extends template_from_string(dynmacro|join("\n") ~ '\n{% block root %}{% endblock %}') %}
+
+{% block root %}
 <!DOCTYPE html>
 
 <html>
 <head>
 	<title>{{ config_title }}</title>
 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta charset="utf-8" />
 	<meta http-equiv="expires" content="0" />
 
@@ -29,17 +39,24 @@
 /** CSS assets **/
 {% set cssFiles = [
 		'vendor/plot.highcharts/highcharts.css',
+		'vendor/JTSage/DateBox/css/jtsage-datebox.css',
 		'pages/base/base.css',
 		icon0 ~ 'jquery.mobile.icons.min.css',
 		'designs/' ~ config_design ~ '.css',
 		'pages/' ~ config_pages ~ '/visu.css'
 	] %}
+{% for file in dir('dropins/widgets', '(.*)(\.css)') %}
+	{% set cssFiles = cssFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins', '(.*)(\.css)') %}
+	{% set cssFiles = cssFiles|merge([file.path]) %}
+{% endfor %}
 {% if isdir('pages/'~config_pages~'/css') %}
-	{% for file in dir('pages/'~config_pages~'/css', '(.*)(\\.css)') %}
+	{% for file in dir('pages/'~config_pages~'/css', '(.*)(\.css)') %}
 		{% set cssFiles = cssFiles|merge([file.path]) %}
 	{% endfor %}
 {% endif %}
-{%- if config_cache %} /** only use minified and merged version if page cache is activated. otherwise use original single files. **/
+{%- if config_cache and mbstring_available %} /** only use minified and merged version if page cache is activated and mbstring available. otherwise use original single files. **/
 	<link rel="stylesheet" href="assets.php?pages={{ config_pages }}&amp;type=css
 	{%- for cssFile in cssFiles -%}
 		{%- if cssFile is not empty and isfile(cssFile) -%}
@@ -87,7 +104,9 @@
 		'vendor/plot.highcharts/highcharts.js',
 		'vendor/plot.highcharts/highcharts-more.js',
 		'vendor/plot.highcharts/modules/solid-gauge.js',
-    'vendor/jquery.cycle2/jquery.cycle2.js',
+		'vendor/jquery.cycle2/jquery.cycle2.js',
+		'vendor/JTSage/DateBox/js/jtsage-datebox.js',
+		'vendor/JTSage/DateBox/js/i18n/jtsage-datebox.i18n.'~lang('DateBox', 'lang')~'.utf8.js',
 		'widgets/widget.js',
 		config_animation ? 'widgets/animation.js' : null,
 		'lib/base/base.js',
@@ -95,12 +114,18 @@
 		'driver/io_' ~ config_driver ~ '.js',
 		'pages/' ~ config_pages ~ '/visu.js' 
 	] %}
-{% if isdir('pages/'~config_pages~'/js', '\\.js') %}
-	{% for file in dir('pages/'~config_pages~'/js', '(.*)(\\.js)') %}
+{% for file in dir('dropins/widgets', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% if isdir('pages/'~config_pages~'/js', '\.js') %}
+	{% for file in dir('pages/'~config_pages~'/js', '(.*)(\.js)') %}
 		{% set jsFiles = jsFiles|merge([file.path]) %}
 	{% endfor %}
 {% endif %}
-{%- if config_cache -%} /** only use minified and merged version if page cache is activated. otherwise use original single files. **/
+{%- if config_cache and mbstring_available -%} /** only use minified and merged version if page cache is activated and mbstring available. otherwise use original single files. **/
 	<script type="text/javascript" src="assets.php?pages={{ config_pages }}&amp;type=javascript
 	{%- for jsFile in jsFiles -%}
 		{%- if jsFile is not empty and isfile(jsFile) -%}
@@ -115,6 +140,10 @@
 	<script type="text/javascript" src="{{ jsFile }}"></script>
 		{%- endif -%}
 	{%- endfor -%}
+	{%- if config_cache and not mbstring_available %}
+
+ 	<script type="text/javascript">notify.warning('Assets','JavaScript and CSS minification needs PHP mbstring module.')</script>
+ 	{%- endif -%}
 {% endif %}
 
 
@@ -127,14 +156,14 @@
 {% endif %}
 
 {% if config_backtohometime > 0 %}
-// back to home page
-var homeTimeout;
-$(document).on("vmousedown pageshow", function() {
-	if(homeTimeout !== undefined)
-		window.clearTimeout(homeTimeout);
-	if($.mobile.activePage && $.mobile.activePage.attr("id") != "index" && $.mobile.activePage.attr("id") != "config")
-		homeTimeout = window.setTimeout(function() { $.mobile.changePage("index.php"); }, {{ config_backtohometime * 1000 }});
-});
+	// back to home page
+	var homeTimeout;
+	$(document).on("vmousedown pageshow", function() {
+		if(homeTimeout !== undefined)
+			window.clearTimeout(homeTimeout);
+		if($.mobile.activePage && $.mobile.activePage.attr("id") != "index" && $.mobile.activePage.attr("id") != "config")
+			homeTimeout = window.setTimeout(function() { $.mobile.changePage("index.php"); }, {{ config_backtohometime * 1000 }});
+	});
 {% endif %}
 
 	// Do some actions before page is shown
@@ -170,3 +199,4 @@ $(document).on("vmousedown pageshow", function() {
 {% block body %}{% endblock %}
 </body>
 </html>
+{% endblock root %}

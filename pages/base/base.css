@@ -907,10 +907,10 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 /**
  * --- W i d g e t s :   B A S I C --------------------------------------------
  */
-[data-widget="basic.badge"] {
+[data-widget="status.badge"] {
 	position: relative;
 }
-[data-widget="basic.badge"] span {
+[data-widget="status.badge"] span {
 	position: absolute;
 	display: inline-block;
 	height:1.5rem;
@@ -1210,23 +1210,22 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	background-color: rgba(120, 120, 120, 0.3);
 }
 
-.rtr .actual {
-	padding: 5px 0 5px 5px;
-	width: 200px;
-	margin: auto;
+.rtr {
+}
+
+.rtr .actual,
+.rtr .set,
+.rtr .control {
+	min-height: 48px;
+	padding: 5px 0 5px 0;
+	display: inline-block;
+	text-align: center;
 }
 
 .rtr .actual .temp {
 	margin: 5px 0 5px 0;
 	font-size: 1.4em;
 	font-weight: bold;
-}
-
-.rtr .set {
-	padding: 5px 0 5px 50px;
-	width: 200px;
-	height: 48px;
-	margin: auto;
 }
 
 .rtr .set .temp {
@@ -1238,13 +1237,6 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 
 .rtr .set .ui-btn {
 	float: left;
-}
-
-.rtr .control {
-	padding: 5px 0 5px 0;
-	width: 220px;
-	height: 48px;
-	margin: auto;
 }
 
 .rtr .control .switch {
@@ -1602,28 +1594,6 @@ svg.icon {
 
 svg.icon:hover {
 	cursor: pointer;
-}
-
-svg.icon line {
-	stroke-width: 3;
-}
-
-svg.icon .light {
-	stroke-width: 1;
-}
-
-svg.icon polyline {
-	stroke-width: 3;
-	stroke-linejoin: round;
-}
-
-svg.icon path {
-	stroke-width: 3;
-	fill: none;
-}
-
-svg.icon rect {
-	stroke-width: 3;
 }
 
 svg.icon text {

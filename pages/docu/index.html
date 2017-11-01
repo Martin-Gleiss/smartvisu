@@ -126,6 +126,7 @@
 						<h3>Backgrounds</h3>
 					</a>
 				</li>
+/**
 				<li data-icon="false">
 					<a href="index.php?page=design/design_buttons">
 						<img class="icon" src="{{ icon0 }}control_ok.svg" alt="Buttons" />
@@ -133,6 +134,7 @@
 						<h3>Buttons</h3>
 					</a>
 				</li>
+*/
 			</ul>
 		</div>
 
@@ -200,13 +202,13 @@
 				<span style="font-size: 1.8em;">{{ widgets }}</span><br /><span class="mini">widgets</span></div>
 		</div>
 
-		{% set designs = dir('designs', '(.+?\.min\.css)')|length %}
+		{% set designs = dir('designs', '(.+?\.css)')|length %}
 		<div class="app">
 			<div class="image" style="background-color: #fa0;">
 				<span style="font-size: 1.8em;">{{ designs }}</span><br /><span class="mini">designs</span></div>
 		</div>
 
-		{% set driver = dir('driver', '^(?!_)(.+?\.min\.js)')|length %}
+		{% set driver = dir('driver', '^(?!_)(.+?\.js)')|length %}
 		<div class="app">
 			<div class="image" style="background-color: #0c0;"><span style="font-size: 1.8em;">{{ driver }}</span><br /><span class="mini">drivers</span>
 			</div>
@@ -244,7 +246,7 @@
 	<a href="index.php?page=misc/fundamentals">Fundamentals</a>&nbsp;
 	<a href="index.php?page=misc/overview">Overview</a>&nbsp;
 	<a href="index.php?page=misc/appliances">Appliances</a>&nbsp;
-	<a href="index.php?page=misc/preview">Preview</a>&nbsp;
+	/**<a href="index.php?page=misc/preview">Preview</a>&nbsp;*/
 
 {% endblock %}
 

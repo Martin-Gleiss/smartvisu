@@ -17,7 +17,7 @@
 		<code class="prettyprint">
 			&#123;&#123; plot.period('', 'bath_plot_value', 'avg', '3h') &#125;&#125;<br /><br />
 			&#123;&#123; plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) &#125;&#125;<br /><br />
-			&#123;&#123; plot.period('', 'bath_plot_value', 'avg', '20h', 'now', 0, 100, '', '', '', '', '', '1h' ) &#125;&#125;<br /><br />
+			&#123;&#123; plot.period('', 'bath_plot_value', 'avg', '20h', 'now', 0, 100, '', '', '', '', '', '1h', '', '', '', '', '%') &#125;&#125;<br /><br />
 			&#123;&#123; plot.period('', 'bath_plot_value', 'minmaxavg', '12h', '', '', '', 25) &#125;&#125;<br /><br />
 			&#123;&#123; plot.period('', ['env.system.load','env.core.memory'],	'avg', '1d', '', '', '', '', ['system load', 'memory'], ['#a00','#070'], '', ['Time', 'CPU', 'RAM'], '', [1,2], [0,1], ['#f00','#0a0']) &#125;&#125;<br /><br />
 			&#123;&#123; plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], ['°']) &#125;&#125;<br /><br />
@@ -48,7 +48,7 @@
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false">
 					<h3>a zoomable plot with unit</h3>
-					{{ plot.period('', 'bath_plot_value', 'avg', '20h', 'now', 0, 100, '', '', '', '', '', '1h', '', '', '', '%') }}
+					{{ plot.period('', 'bath_plot_value', 'avg', '20h', 'now', 0, 100, '', '', '', '', '', '1h', '', '', '', '', '%') }}
 				</div>
 			</div>
 		</div>
@@ -82,7 +82,7 @@
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false">
 					<h3>a plot with temperature and switch axis</h3>
-					{{ plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], ['°']) }}
+					{{ plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], '°') }}
 				</div>
 			</div>
 		</div>

@@ -3,14 +3,21 @@
 ### New / Changed Widgets
 - ID is now optional in most widgets
 - New: basic.stateswitch (improves and supersedes basic.button, basic.dual, basic.multistate and basic.switch)
+- New: basic.icon (shows an icon, optionally colored statically or dynamically by item)
+- New: basic.input (displays an input field for text, number or date/time/duration)
 - New: basic.print (improves and supersedes basic.float, basic.formula and basic.value)
 - New: basic.select (select a value by menu or array of buttons)
 - New: basic.color (supersedes basic.colordisc and basic.rgb) with new parameter 'colormodel' for HSV or HSL model and possibility to pass values as list in one item
-- New: basic.badge (displays a notification badge)
+- New: status.badge (displays a notification badge)
+- New: basic.offset (button to increase or decrease a value)
 - New: device.uzsuicon (to control UZSU in smarthome.py and FHEM)
 - New: calendar.waste (compact view of waste collection dates)
+- New: multimedia.audio (plays a soundfile)
 - New: plot.gauge
 - New: plot.pie
+- New: icon.cistern
+- New: icon.heating (displays a heating colored with dynamic gradient)
+- basic.symbol: Can also be used to show text only and to render as link, mode extended to adaptable formula, and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
 - Enhanced plot.period (among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale and units)
 - plot.temprose: New parameters 'series_label' and 'unit'
 - basic.slider: New parameter 'value_display'
@@ -19,6 +26,7 @@
 - device.shutter: Value for pos1 and pos2 can be set by parameter
 - basic.tank & icon.* (dynamic icons): min is now implemented and max may be lesser than min
 - device.dimmer: New parameters to specify pic and color
+- device.rtr: New parameters to specify separate offset item and additional content
 - Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
 - calendar.list: New parameters to select and colorize calendars
 - basic.checkbox & basic.flip: value_on and value_off can be set by parameters
@@ -27,13 +35,16 @@
 - Allow pages selection by url parameter (e.g. index.php?pages=foo)
 - Configuration can be overridden per page and per client. Options stored in .ini now. Redesign of configuration page
 - Clear pagecache (by button and on disabling on configuration page)
+- New dropins folder to add custom extensions and overrides (see details in [README.md](./dropins/README.md) inside dropins/)
 - Language files can be overridden. This allows regional variations and custom extensions. And they are stored in clearer ini format
+- Timezone is configurable now (was hardcoded to 'Europe/Berlin')
 - Configurable time source (show time of server or client)
 - Automatically return to home page after a configurable duration
 - Template Checker
 - Added 50 icons of jQuery Mobile - before they were just available on buttons as background (aka inline) icons
 - New CalDav calendar service
 - Auto-loading of any .js file inside subfolder 'js' and any .css file inside 'css' in current pages folder
+- New driver for [ioBroker](http://www.iobroker.net)
 
 ### Improvements
 - Replaced make.php by on-the-fly minification (needs page cache set on)
@@ -55,6 +66,7 @@
 
 ### Now Deprecated
 - basic.button, basic.dual, basic.multistate and basic.switch (use basic.stateswitch instead)
+- basic.text (use basic.symbol instead)
 - basic.float, basic.formula and basic.value (use basic.print instead)
 - basic.colordisc and basic.rgb (use basic.color instead)
 - plot.minmaxavg and plot.multiaxis (use plot.period instead)

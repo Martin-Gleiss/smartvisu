@@ -10,3 +10,10 @@
 .severity_I .tplchk_text {
 	color: greenyellow;
 }
+
+.check img {
+	width: 24px;
+	height: 24px;
+	margin-right: 10px;
+	vertical-align: middle;
+}

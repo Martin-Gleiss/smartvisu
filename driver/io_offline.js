@@ -249,7 +249,7 @@ var io = {
 
 		if(min == 0 && max == 1) { // boolean plot
 			var val = 0;
-			while (tmin <= tmax) {
+			while (tmin < tmax) {
 				val = (Math.random() < (0.2 + 0.6 * val)) ? 1 : 0; // make changes lazy
 				ret.push([tmin, val]);
 				tmin += step;
@@ -259,7 +259,7 @@ var io = {
 			var delta = (max - min) / 20;
 			var val = (min * 1) + ((max - min) / 2);
 
-			while (tmin <= tmax) {
+			while (tmin < tmax) {
 				val += Math.random() * (2 * delta) - delta;
 				ret.push([tmin, val.toFixed(2) * 1.0]);
 				tmin += step;

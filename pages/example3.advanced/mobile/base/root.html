@@ -1,0 +1,177 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>{{ config_title }}</title>
+
+	<meta charset="utf-8" />
+	<meta http-equiv="expires" content="0" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="mobile-web-app-capable" content="yes" />
+
+	<link rel="icon" href="favicon.png" />
+	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" href="favicon.png" />
+
+	<link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.4.5.min.css" />
+
+/** CSS assets **/
+{% set cssFiles = [
+		'vendor/plot.highcharts/highcharts.css',
+		'pages/' ~ config_pages ~ '/mobile/vendor/jquery.mobile.stepper.css',
+		'pages/' ~ config_pages ~ '/mobile/base/base.css',
+		icon0 ~ 'jquery.mobile.icons.min.css',
+		'designs/' ~ config_design ~ '.css',
+		'pages/' ~ config_pages ~ '/mobile/widgets/grid.css',
+		'pages/' ~ config_pages ~ '/mobile/grid.css',
+		'pages/' ~ config_pages ~ '/visu.css'
+	] %}
+{% if isdir('pages/'~config_pages~'/css') %}
+	{% for file in dir('pages/'~config_pages~'/css', '(.*)(\\.css)') %}
+		{% set cssFiles = cssFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
+{%- if config_cache %} /** only use minified and merged version if page cache is activated. otherwise use original single files. **/
+	<link rel="stylesheet" href="assets.php?pages={{ config_pages }}&amp;type=css
+	{%- for cssFile in cssFiles -%}
+		{%- if cssFile is not empty and isfile(cssFile) -%}
+			&amp;{{- 'files[]'|url_encode -}}={{- cssFile|url_encode -}}
+		{%- endif -%}
+	{%- endfor -%}
+	" />
+{% else -%}
+	{%- for cssFile in cssFiles -%}
+		{%- if cssFile is not empty and isfile(cssFile) %}
+
+	<link rel="stylesheet" href="{{ cssFile }}" />
+		{%- endif -%}
+	{%- endfor %}
+{% endif %}
+
+	<script type="text/javascript" src="vendor/jquery/jquery-2.1.4.min.js"></script>
+
+{%- if config_transition != 'fade' %}
+	<script type="text/javascript">
+		$(document).on("mobileinit", function () {
+			$.mobile.defaultPageTransition = '{{ config_transition }}';
+		});
+	</script>
+{% endif %}
+
+	<script type="text/javascript">
+		// work around a bug of jQuery Mobile 1.4.5 themes
+		$(document).on("pagebeforecreate", function( event, ui ) {
+			$(this).find('div[data-role="collapsible-set"][data-theme]').each(function() {
+				$(this).find('div[data-role="collapsible"]:not([data-theme])').attr('data-theme', $(this).attr('data-theme'));
+				$(this).attr('data-theme','');
+			});
+			$(this).find('ul[data-role="listview"][data-dividertheme]').each(function() {
+				$(this).find('li[data-role="list-divider"]:not([data-theme])').attr('data-theme', $(this).attr('data-dividertheme'));
+			});
+		});
+	</script>
+
+	<script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.4.5.min.js"></script>
+
+/** JavaScript assets **/
+{% set jsFiles = [
+		'lib/base/jquery.mobile.slider.js',
+		'vendor/plot.highcharts/highcharts.js',
+		'vendor/plot.highcharts/highcharts-more.js',
+		'vendor/plot.highcharts/modules/solid-gauge.js',
+    'vendor/jquery.cycle2/jquery.cycle2.js',
+		'widgets/widget.js',
+		config_animation ? 'widgets/animation.js' : null,
+		'lib/base/base.js',
+		'lib/base/base.php',
+		'driver/io_' ~ config_driver ~ '.js',
+		'pages/' ~ config_pages ~ '/mobile/widgets/grid.js',
+		'pages/' ~ config_pages ~ '/mobile/grid.js',
+		'pages/' ~ config_pages ~ '/visu.js'
+	] %}
+{% if isdir('pages/'~config_pages~'/js', '\\.js') %}
+	{% for file in dir('pages/'~config_pages~'/js', '(.*)(\\.js)') %}
+		{% set jsFiles = jsFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
+{%- if config_cache -%} /** only use minified and merged version if page cache is activated. otherwise use original single files. **/
+	<script type="text/javascript" src="assets.php?pages={{ config_pages }}&amp;type=javascript
+	{%- for jsFile in jsFiles -%}
+		{%- if jsFile is not empty and isfile(jsFile) -%}
+			&amp;{{- 'files[]'|url_encode -}}={{- jsFile|url_encode -}}
+		{%- endif -%}
+	{%- endfor -%}
+	"></script>
+{%- else -%}
+	{%- for jsFile in jsFiles -%}
+		{%- if jsFile is not empty and isfile(jsFile) %}
+
+	<script type="text/javascript" src="{{ jsFile }}"></script>
+		{%- endif -%}
+	{%- endfor -%}
+{% endif %}
+
+
+{% block head %}{% endblock %}
+
+<script type="text/javascript">
+	io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
+{% if config_driver_autoreconnect %}
+	activateAutoReconnect('{{ config_driver_address }}', '{{ config_driver_port }}');
+{% endif %}
+
+{% if config_backtohometime > 0 %}
+// back to home page
+var homeTimeout;
+$(document).on("vmousedown pageshow", function() {
+	if(homeTimeout !== undefined)
+		window.clearTimeout(homeTimeout);
+	if($.mobile.activePage && $.mobile.activePage.attr("id") != "index" && $.mobile.activePage.attr("id") != "config")
+		homeTimeout = window.setTimeout(function() { $.mobile.changePage("index.php"); }, {{ config_backtohometime * 1000 }});
+});
+{% endif %}
+
+	// Do some actions before page is shown
+	$(document).on('pagebeforeshow', function () {
+		fx.init();
+		repeater.init();
+		widget.prepare();
+	});
+
+	// Run the io and all widgets
+	$(document).on('pageshow', function () {
+		io.run({{ config_driver_realtime }});
+		notify.display();
+	});
+
+	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};
+</script>
+
+{% import "lib.html" as lib %}
+{% import "basic.html" as basic %}
+{% import "calendar.html" as calendar %}
+{% import "clock.html" as clock %}
+{% import "device.html" as device %}
+{% import "icon.html" as icon %}
+{% import "multimedia.html" as multimedia %}
+{% import "phone.html" as phone %}
+{% import "plot.html" as plot %}
+{% import "status.html" as status %}
+{% import "weather.html" as weather %}
+</head>
+
+<body>
+{% block body %}{% endblock %}
+</body>
+</html>

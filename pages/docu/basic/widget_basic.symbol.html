@@ -14,74 +14,79 @@
 
 	<h5>Examples</h5>
 
-	Use this basic.flips (one for 'bath.light.switch' and the other for 'bath.rtr.state') to control the basic.symbol(s)
+	Use this flip to control the basic.symbols
 	<div class="html">
-		{{ basic.flip('f1', 'bath.light.switch') }}
-		{{ basic.flip('f2', 'bath.rtr.state') }}
+		{{ basic.flip('', 'bath.light.switch') }}
 	</div>
 
-
-	Symbol is only shown when 'bath.light.switch' = 1
+	Symbol is only shown when 'bath.light.switch' is on
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.symbol('s1', 'bath.light.switch') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; basic.symbol('', 'bath.light.switch') &#125;&#125;</code>
 	</div>
-	<div class="html">
-		{{ basic.symbol('s1', 'bath.light.switch') }}
+	<div class="html" style="min-height: 51px">
+		{{ basic.symbol('', 'bath.light.switch') }}
 	</div>
 
-	With other pictures, in this example both val = 1 an val = 0 is shown.
+	With different picture and text, colorized, text-only, dynamic icon or used as link to open a popup
 	<div class="twig">
 		<code class="prettyprint">
-			&#123;&#123; basic.symbol('s2', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', 'icon1') &#125;&#125;<br />
-			&#123;&#123; basic.symbol('s3', 'bath.light.switch', 'Light off', 'light_light.svg', 0) &#125;&#125;
-		</code>
+			&#123;&#123; basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg') &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', 'bath.light.switch', '', '', '', '', '#0b0') &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', 'bath.light.switch', 'On') &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value') ) &#125;&#125;
+			&#123;&#123; basic.symbol('', 'bath.light.switch', 'Open popup', '', '', '', '', '#symbol_popup', 'popup') &#123;&#123;
+ 		</code>
 	</div>
-	<div class="html">
-		{{ basic.symbol('s2', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', 'icon1') }}
-		{{ basic.symbol('s3', 'bath.light.switch', 'Light off', 'light_light.svg', 0) }}
-	</div>
-
-	With other highlight color (green, orange)
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.symbol('s4', 'bath.light.switch', '', 'light_light.svg', '', '', '#0b0') &#125;&#125;<br />
-			&#123;&#123; basic.symbol('s5', 'bath.light.switch', '', 'light_light.svg', '', '', '#fa3') &#125;&#125;
-		</code>
-	</div>
-	<div class="html">
-		{{ basic.symbol('s4', 'bath.light.switch', '', 'light_light.svg', '', '', '#0b0') }}
-		{{ basic.symbol('s5', 'bath.light.switch', '', 'light_light.svg', '', '', '#fa3') }}
-	</div>
-
-	With dynamic icon
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value')) &#125;&#125;<br />
-			&#123;&#123; basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value'), '', '', 'icon1') &#125;&#125;
-		</code>
-	</div>
-	<div class="html">
-		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value')) }}
+	<div class="html" style="min-height: 51px">
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg') }}
+		&nbsp;
+		{{ basic.symbol('', 'bath.light.switch', '', 'audio_sync.svg', '', '', '#0b0') }}
+		&nbsp;
+		{{ basic.symbol('', 'bath.light.switch', 'On') }}
+		&nbsp;
 		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value'), '', '', 'icon1') }}
+		&nbsp;
+		{{ basic.symbol('', 'bath.light.switch', 'Open popup', '', '', '', '', '#symbol_popup', 'popup') }}		
+		<div id="symbol_popup" data-role="popup" style="width:280px; height:200px;">
+			<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+			I'm a popup
+		</div>
 	</div>
 
-	Symbol is shown when 'bath.light.switch' is on <b>OR</b> 'bath.rtr.state' is on.
+	Combinations with 'or', 'and' or custom formula (this one implements XOR, so the text is shown if one and only one flip is set on).
+	Use both flips (one for 'bath.light.switch' and the other for 'bath.rtr.state') to control the symbols
+	<div class="html">
+		bath.light.switch: {{ basic.flip('', 'bath.light.switch') }}
+		&nbsp;
+		bath.rtr.state: {{ basic.flip('', 'bath.rtr.state') }}
+	</div>
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.symbol('s6', ['bath.light.switch', 'bath.rtr.state']) &#125;&#125;</code>
+		<code class="prettyprint">
+			&#123;&#123; basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'OR') &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'AND', '', 1, 'and') &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'Custom XOR', '', '', '( VAR1 && !VAR2 ) || ( !VAR1 && VAR2 )') &#125;&#125;
+		</code>
 	</div>
 	<div class="html">
-		{{ basic.symbol('s6', ['bath.light.switch', 'bath.rtr.state']) }}
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'OR') }}<br>
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'AND', '', '', 'and') }}<br>
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'Custom XOR', '', '', '( VAR1 && !VAR2 ) || ( !VAR1 && VAR2 )') }}
+		&nbsp;
 	</div>
 
-	Symbol is shown when 'bath.light.switch' is on <b>AND</b> 'bath.rtr.state' is on.
+	With multiple states (use the buttons to select state)
+	<div class="html">
+		{{ basic.select('', 'bath.multistate', 'mini', [1, 2, 3], '', [1, 2, 3] ) }}
+	</div>
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.symbol('s7', ['bath.light.switch', 'bath.rtr.state'], '', '', 1, 'and', 'icon1') &#125;&#125;</code>
+		<code class="prettyprint">
+			&#123;&#123; basic.symbol('', 'bath.multistate', '', 'message_led', [1,2,3], '', ['red','#EAFF00','green']) &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', 'bath.multistate', ['Light off','Light low','Light high'], ['control_1','control_2','control_3'], [1,2,3]) &#125;&#125;<br />
+		</code>
 	</div>
 	<div class="html">
-		{{ basic.symbol('s7', ['bath.light.switch', 'bath.rtr.state'], '', '', 1, 'and', 'icon1') }}
+		{{ basic.symbol('', 'bath.multistate', '', 'message_led', [1,2,3], '', ['red','#EAFF00','green']) }}
+		{{ basic.symbol('', 'bath.multistate', ['low','medium','high'], ['control_1','control_2','control_3'], [1,2,3]) }}
 	</div>
-
 
 {% endblock %}
-
-

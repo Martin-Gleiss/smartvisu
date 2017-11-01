@@ -69,30 +69,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 // ----- b a s i c ------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
-	// ----- basic.badge -------------------------------------------------------
-	$(bevent.target).find('span[data-widget="basic.badge"]').on( {
-		'update': function (event, response) {
-			event.stopPropagation();
-			$(this).children('span').text(response[0]);
-
-			// coloring
-			var currentIndex = 0;
-			$.each($(this).attr('data-thresholds').explode(), function(index, threshold) {
-				if((isNaN(response[0]) || isNaN(threshold)) ? (threshold > response[0]) : (parseFloat(threshold) > parseFloat(response[0])))
-					return false;
-				currentIndex++;
-			});
-			var color = $(this).attr('data-colors').explode()[currentIndex];
-
-			if(color == 'hidden') {
-				$(this).children('span').hide().css('background-color', null);
-			}
-			else {
-				$(this).children('span').show().css('background-color', color);
-			}
-		}
-	});
-
 	// ----- basic.checkbox -------------------------------------------------------
 	$(bevent.target).find('input[data-widget="basic.checkbox"]').on( {
 		'update': function (event, response) {
@@ -505,19 +481,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-	;
-
-	// ----- basic.maptext --------------------------------------------------------
-	$(bevent.target).find('span[data-widget="basic.maptext"]').on( {
-		'update': function (event, response) {
-			var txt_arr = widget.explode($(this).attr('data-txt'));
-			var val_arr = widget.explode($(this).attr('data-val'));
-			var index = $.inArray(String(response), val_arr);
-			var match = txt_arr[index];
-			$(this).text(match);
-		}
-	});
-
 	// ----- basic.flip -----------------------------------------------------------
 	$(bevent.target).find('select[data-widget="basic.flip"]').on( {
 		'update': function (event, response) {
@@ -528,6 +491,14 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		'change': function (event) {
 			// DEBUG: console.log("[basic.flip] change '" + this.id + "':", $(this).val());
 			io.write($(this).attr('data-item'), $(this).val());
+		}
+	});
+
+	$(bevent.target).find('[data-widget="basic.offset"]').on( {
+		'click': function (event) {
+			var step = $(this).attr('data-step') * 1;
+			var item = $(this).attr('data-item');
+			io.write(item, widget.get(item) * 1 + step);
 		}
 	});
 
@@ -573,7 +544,12 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				});
  			};
  			
-			var calc = eval(formula);
+			try {
+				var calc = eval(formula);
+			}
+			catch(ex) {
+				notify.error("basic.print: Invalid formula", ex);
+			}
 			
 			if(type == 'Date')
 				calc = new Date(calc).transUnit(format);
@@ -840,31 +816,37 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	});
 
 	// ----- basic.symbol ---------------------------------------------------------
-	$(bevent.target).find('span[data-widget="basic.symbol"]').on({
+	$(bevent.target).find('[data-widget="basic.symbol"]').on({
 		'update': function (event, response) {
 			event.stopPropagation();
 			// response will be an array, if more then one item is requested
-			var bit = ($(this).attr('data-mode') == 'and');
-			if (response instanceof Array) {
-				for (var i = 0; i < response.length; i++) {
-					if ($(this).attr('data-mode') == 'and') {
-						bit = bit && (response[i] == $(this).attr('data-val'));
-					}
-					else {
-						bit = bit || (response[i] == $(this).attr('data-val'));
-					}
-				}
+			var formula = $(this).attr('data-mode');
+			var values = $(this).attr('data-val').explode();
+
+			// legacy support
+			if(formula == 'or') {
+        formula = 'VAR';
 			}
-			else {
-				bit = (response == $(this).attr('data-val'));
+			else if(formula == 'and') {
+				formula = response.join(' == VAR[0] && ') + ' == VAR[0] ? VAR[0] : null';
 			}
 
-			if (bit) {
+			formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
+			var VAR = response;
+			try {
+				var val = eval(formula);
+			}
+			catch(ex) {
+				notify.error("basic.symbol: Invalid formula", ex);
+			}
+
+			var filter = Array.isArray(val) ? '[data-val="'+val.join('"],[data-val="')+'"]' : '[data-val="'+(typeof val === 'boolean' ? Number(val) : val)+'"]';
+
+			var anyShown = $(this).children('span').hide().filter(filter).first().show().length > 0;
+			if(anyShown)
 				$(this).show();
-			}
-			else {
+			else
 				$(this).hide();
-			}
 		}
 	});
 
@@ -880,14 +862,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 			$(this).attr('title', Math.round(factor * 100) + '%')
 				.find('div').css('height', factor * $(this).height());
-		}
-	});
-
-	// ----- basic.text -----------------------------------------------------------
-	$(bevent.target).find('[data-widget="basic.text"]').on( {
-		'update': function (event, response) {
-			event.stopPropagation();
-			$(this).html((response == $(this).attr('data-val-on') ? $(this).attr('data-txt-on') : $(this).attr('data-txt-off')));
 		}
 	});
 
@@ -1215,18 +1189,6 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
-	// ----- device.rtr -----------------------------------------------------------
-	$(bevent.target).find('div[data-widget="device.rtr"] > div > a[data-sign]').on( {
-		'click': function (event, response) {
-			var node = $(this).parent().parent();
-			var step = node.attr('data-step') * $(this).attr('data-sign');
-			var item = node.find('.set .temp span').attr('data-item');
-
-			var temp = (Math.round((widget.get(item) * 1 + step) * 10) / 10).toFixed(1);
-			io.write(item, temp);
-		}
-	});
-
 	// ----- device.uzsu -----------------------------------------------------------
 	// ----------------------------------------------------------------------------
 	//
@@ -1266,6 +1228,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 	//						"timeMax"	:'',			Oberere Schranke SUN
 	//						"timeCron"	:'00:00',		Schaltzeitpunkt
 	//						"timeOffset":''				Offset für Schaltzeitpunkt
+	//						"timeOffsetType":'m'				'm' = Offset in Minuten, 'deg' Offset in Höhengrad (Altitude)
 	//						"condition"	: 	{	Ein Struct für die Verwendung mit conditions (aktuell nur FHEM), weil dort einige Option mehr angeboten werden
 	//											"deviceString"	: text	Bezeichnung des Devices oder Auswertestring
 	//											"type"			: text	Auswertetype (logische Verknüpfung oder Auswahl String)
@@ -1299,7 +1262,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							"<div class='uzsuTableMain' id='uzsuTable'>";
 			return tt;
 		},
-		uzsuBuildTableRow: function(designType, valueType, valueParameterList) {
+		uzsuBuildTableRow: function(designType, valueType, valueParameterList, numberOfRow) {
 			// Tabelleneinträge
 			var tt = "";
 
@@ -1373,7 +1336,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 						"<button class='uzsuDelTableRow' data-mini='true'>Del</button>" +
 					"</div>";
 			// Tabelle Zeile abschliessen
-			tt += "</div>";
+			tt += 	"</div>";
 			// und jetzt noch die unsichbare Expertenzeile
 			tt += 	"<div class='uzsuRowExpHoli' style='display:none;'>" +
 						"<div class='uzsuRowExpert' style='float: left;'>" +
@@ -1384,16 +1347,26 @@ $(document).on('pagecreate', function (bevent, bdata) {
 							"</div>" +
 							"<div class='uzsuCell uzsuEvent'>" +
 								"<div class='uzsuCellText'>Event</div>" +
-								"<select data-mini='true'>" +
+								"<select data-mini='true' data-native-menu='false'>" +
 									"<option value='sunrise'>Sunrise</option>" +
 									"<option value='sunset'>Sunset</option>" +
 								"</select>" +
 							"</div>" +
 							"<div class='uzsuCell'>" +
-								"<div class='uzsuCellText'>+/- min</div>" +
-								"<input type='number' data-clear-btn='false' class='uzsuTimeOffsetInput'>" +
-							"</div>" +
-							"<div class='uzsuCell'>" +
+								"<div class='uzsuCellText'>+/-" + (designType === '0' ? '' : ' min.') +"</div>" +
+								"<input type='number' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeOffsetInput'>" +
+							"</div>";
+						// Auswahl für Offset in Grad oder Minuten (nur für SmartHomeNG)
+						if (designType === '0'){
+							tt += 	"<div class='uzsuCell'>" +
+								"<div class='uzsuCellText'></div>" +
+									"<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuTimeOffsetTypeInput'>" +
+										"<label title='Minutes'><input type='radio' name='uzsuTimeOffsetTypeInput"+numberOfRow+"' value='m' checked='checked'>m</label>" +
+										"<label title='Degrees of elevation'><input type='radio' name='uzsuTimeOffsetTypeInput"+numberOfRow+"' value=''>°</label>" +
+								"</fieldset>" +
+							"</div>";
+						}
+							tt += 	"<div class='uzsuCell'>" +
 								"<div class='uzsuCellText'>latest</div>" +
 								"<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeMax'>" +
 							"</div>" +
@@ -1404,7 +1377,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 								"</fieldset>" +
 							"</div>" +
 						"</div>";
-							// hier die Einträge für holiday weekend oder nicht
+				// hier die Einträge für holiday weekend oder nicht
 				if (designType === '2'){
 					tt += 	"<div class='uzsuRowHoliday' style='float: left;'>" +
 								"<div class='uzsuRowHolidayText'>Holiday</div>" +
@@ -1581,6 +1554,11 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				}
 				uzsuCurrentRows.find('.uzsuTimeMin').val(responseEntry.timeMin);
 				uzsuCurrentRows.find('.uzsuTimeOffsetInput').val(parseInt(responseEntry.timeOffset));
+				if(designType === '0') {
+					//  name='uzsuTimeOffsetTypeInput'
+					uzsuCurrentRows.find('.uzsuTimeOffsetTypeInput').find(':radio').prop('checked', false).checkboxradio("refresh")
+						.end().find('[value="'+responseEntry.timeOffsetType+'"]:radio').prop('checked', true).checkboxradio("refresh");
+				}
 				uzsuCurrentRows.find('.uzsuTimeMax').val(responseEntry.timeMax);
 				uzsuCurrentRows.find('.uzsuTimeCron').val(responseEntry.timeCron);
 				// und die pull down Menüs richtig, damit die Einträge wieder stimmen und auch der active state gesetzt wird
@@ -1641,6 +1619,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				}
 				responseEntry.timeMin = uzsuCurrentRows.find('.uzsuTimeMin').val();
 				responseEntry.timeOffset = uzsuCurrentRows.find('.uzsuTimeOffsetInput').val();
+				if(designType == '0'){
+					responseEntry.timeOffsetType = uzsuCurrentRows.find('.uzsuTimeOffsetTypeInput :radio:checked').val();
+				}
 				responseEntry.timeMax = uzsuCurrentRows.find('.uzsuTimeMax').val();
 				responseEntry.timeCron = uzsuCurrentRows.find('.uzsuTimeCron').val();
 				// event etwas komplizierter, da übergangslösung
@@ -1685,17 +1666,17 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					entry.time = entry.timeCron;
 				}
 				else{
-					// ansonsten wird er aus der bestandteilen zusammengebaut
+					// ansonsten wird er aus den Bestandteilen zusammengebaut
 					entry.time = '';
 					if(entry.timeMin.length > 0){
 						entry.time += entry.timeMin + '<';
 					}
 					entry.time += entry.event;
 					if(entry.timeOffset > 0){
-						entry.time += '+' + entry.timeOffset + 'm';
+						entry.time += '+' + entry.timeOffset + (entry.timeOffsetType == undefined ? '' : entry.timeOffsetType);
 					}
 					else if(entry.timeOffset < 0){
-						entry.time += entry.timeOffset + 'm';
+						entry.time += entry.timeOffset + (entry.timeOffsetType == undefined ? '' : entry.timeOffsetType);
 					}
 					if(entry.timeMax.length > 0){
 						entry.time += '<' + entry.timeMax;
@@ -1711,9 +1692,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			// alten Zustand mal in die Liste rein. da der aktuelle Zustand ja nur im Widget selbst enthalten ist, wird er vor dem Umbau wieder in die Variable response zurückgespeichert.
 			uzsu.uzsuSaveTable(1, response, designType, valueType, valueParameterList, false);
 			// ich hänge immer an die letzte Zeile dran ! erst einmal das Array erweitern
-			response.list.push({active:false,rrule:'',time:'00:00',value:null,event:'time',timeMin:'',timeMax:'',timeCron:'00:00',timeOffset:'',condition:{deviceString:'',type:'String',value:'',active:false},delayedExec:{deviceString:'',type:'String',value:'',active:false},holiday:{workday:false,weekend:false}});
+			response.list.push({active:false,rrule:'',time:'00:00',value:null,event:'time',timeMin:'',timeMax:'',timeCron:'00:00',timeOffset:'',timeOffsetType:'m',condition:{deviceString:'',type:'String',value:'',active:false},delayedExec:{deviceString:'',type:'String',value:'',active:false},holiday:{workday:false,weekend:false}});
 			// dann eine neue HTML Zeile genenrieren
-			tt = uzsu.uzsuBuildTableRow(designType, valueType,	valueParameterList);
+			tt = uzsu.uzsuBuildTableRow(designType, valueType, valueParameterList, response.list.length);
 			// Zeile in die Tabelle einbauen
 			$(tt).appendTo('#uzsuTable').enhanceWithin();
 			// und Daten ausfüllen. hier werden die Zeile wieder mit dem Status beschrieben. Status ist dann wieder im Widget
@@ -1775,7 +1756,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			// erst den Header, dann die Zeilen, dann den Footer
 			var tt = uzsu.uzsuBuildTableHeader(headline, designType, valueType, valueParameterList);
 			for (var numberOfRow = 0; numberOfRow < response.list.length; numberOfRow++) {
-				tt += uzsu.uzsuBuildTableRow(designType, valueType, valueParameterList);
+				tt += uzsu.uzsuBuildTableRow(designType, valueType, valueParameterList, numberOfRow);
 			}
 			tt += uzsu.uzsuBuildTableFooter(designType);
 			// dann hängen wir das an die aktuelle Seite
@@ -1930,6 +1911,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 								return false;
 							}
 						}
+						if(entry.timeOffsetType === undefined)
+							entry.timeOffsetType = 'm';
 					}
 
 					// wenn designType = '2' und damit fhem auslegung ist muss der JSON String auf die entsprechenden einträge erweitert werden (falls nichts vorhanden)
@@ -1965,6 +1948,21 @@ $(document).on('pagecreate', function (bevent, bdata) {
 /// ----- m u l t i m e d i a ---------------------------------------------------
 /// -----------------------------------------------------------------------------
 
+	// ----- multimedia.audio --------------------------------------------------------
+	$(bevent.target).find('[data-widget="multimedia.audio"]').on({
+		'update': function (event, response) {
+			event.stopPropagation();
+			if (response == $(this).attr('data-value')) {
+				this.play();
+			}
+		},
+
+		'ended': function() {
+			// reset value in widget.buffer to allow playing again
+			io.write($(this).attr('data-item'), null);
+		}
+	});
+
 	// ----- multimedia.slideshow ----------------------------------------------------
 	$(bevent.target).find('[data-widget="multimedia.slideshow"]').cycle().on({
 		'update': function (event, response) {
@@ -1996,7 +1994,87 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		});
 	}
 
-/// ----- p l o t ---------------------------------------------------------------
+// ----- i n p u t -------------------------------------------------------------
+// -----------------------------------------------------------------------------
+
+	$(bevent.target).find('input[data-widget="basic.input"]').on( {
+		'update': function (event, response) {
+			if($(this).attr('data-role') == 'datebox') {
+				var mode = $(this).attr('data-datebox-mode');
+				if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
+					$(this).trigger('datebox', {'method': 'set', 'value': 0}).trigger('datebox', {'method': 'dooffset', 'type': 's', 'amount': response[0]}).trigger('datebox', {'method':'doset'});
+				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
+					$(this).datebox('setTheDate', new Date(response[0]));
+				else if(mode == 'timebox' || mode == 'timeflipbox') { // data type time
+					$(this).val(response[0]);
+					$(this).datebox('refresh');
+				}
+			}
+			else
+				$(this).val(response[0]);
+		},
+
+		'change': function (event,a ,b) {
+			if($(this).attr('data-role') == 'datebox')
+				return;
+
+			var newval = $(this).val();
+			var type = $(this).attr('type');
+
+			// enforce limits and step for number input
+			if(type == 'number') {
+				var min = parseFloat($(this).attr('min'));
+				var max = parseFloat($(this).attr('max'));
+				var step = parseFloat($(this).attr('step'));
+
+				if(isNaN(min)) min = null;
+				if(isNaN(max)) max = null;
+				if(isNaN(step) || step <= 0) step = 1;
+
+				//From jQuery UI slider, the following source will round to the nearest step
+				valModStep = ( newval - (min || 0) ) % step;
+				alignValue = newval - valModStep;
+
+				if ( Math.abs( valModStep ) * 2 >= step ) {
+					alignValue += ( valModStep > 0 ) ? step : ( -step );
+				}
+
+				// Since JavaScript has problems with large floats, round
+				// the final value to 5 digits after the decimal point (see jQueryUI: #4124)
+				newval = parseFloat( alignValue.toFixed( 5 ) );
+
+				if (min !== null && newval < min) {
+					newval = min;
+				}
+				if (max !== null && newval > max) {
+					newval = max;
+				}
+			}
+
+			io.write($(this).attr('data-item'), newval);
+		},
+
+		'datebox': function (event, passed) {
+			if (passed.method === 'close' && !passed.closeCancel) {
+				var mode = $(this).attr('data-datebox-mode');
+
+				var newval;
+				if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
+					newval = $(this).datebox('getLastDur');
+				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
+					newval = $(this).datebox('getTheDate');
+				else if(mode == 'timebox' || mode == 'timeflipbox') // data type time
+					newval = $(this).datebox('callFormat', '%H:%M:%S', $(this).datebox('getTheDate'))
+				else
+					newval = $(this).val();
+
+				io.write($(this).attr('data-item'), newval);
+			}
+		}
+
+	});
+
+// ----- p l o t ---------------------------------------------------------------
 // -----------------------------------------------------------------------------
 
 	// ----- plot.comfortchart ----------------------------------------------------
@@ -2154,7 +2232,7 @@ $(document).on('pagecreate', function (bevent, bdata) {
 					type: (exposure[i] != 'stair' ? exposure[i] : 'line'),
 					step: (exposure[i] == 'stair' ? 'left' : false),
 					name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
-					data: response[i],
+					data: response[i].slice(0), // clone
 					yAxis: (assign[i] ? assign[i] - 1 : 0)
 				});
 			}
@@ -2248,21 +2326,21 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 		'point': function (event, response) {
 			event.stopPropagation();
+
 			var count = $(this).attr('data-count');
 			if (count < 1) {
 				count = 100;
 			}
+
+			var chart = $(this).highcharts();
 			for (var i = 0; i < response.length; i++) {
 				if (response[i]) {
-					var chart = $(this).highcharts();
-
-					// more points?
 					for (var j = 0; j < response[i].length; j++) {
 						chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= count));
 					}
-					chart.redraw();
 				}
 			}
+			chart.redraw();
 		}
 	});
 
@@ -3010,6 +3088,12 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			// draw the plot
 			$(this).highcharts({
 				chart: {type: 'line'},
+				title: { text: null },
+				legend: {
+					align: 'center',
+					verticalAlign: 'top',
+					floating: true
+				},
 				series: [
 					{
 						name: label[0], data: response[0], type: 'spline'
@@ -3049,9 +3133,9 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			if (count < 1) {
 				count = 100;
 			}
-			for (var i = 0; i < response.length; i++) {
-				var chart = $(this).highcharts();
 
+			var chart = $(this).highcharts();
+			for (var i = 0; i < response.length; i++) {
 				if (response[i] && (i == 0 || i == 1)) {
 					for (var j = 0; j < response[i].length; j++) {
 						chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= count));
@@ -3060,8 +3144,8 @@ $(document).on('pagecreate', function (bevent, bdata) {
 				else if (response[i] && (i == 2)) {
 					// TODO: plot.rtr, recalc pie diagram after new point received
 				}
-				chart.redraw();
 			}
+			chart.redraw();
 		}
 	});
 
@@ -3129,6 +3213,30 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 // ----- s t a t u s -----------------------------------------------------------
 // -----------------------------------------------------------------------------
+
+	// ----- status.badge -------------------------------------------------------
+	$(bevent.target).find('span[data-widget="status.badge"]').on( {
+		'update': function (event, response) {
+			event.stopPropagation();
+			$(this).children('span').text(response[0]);
+
+			// coloring
+			var currentIndex = 0;
+			$.each($(this).attr('data-thresholds').explode(), function(index, threshold) {
+				if((isNaN(response[0]) || isNaN(threshold)) ? (threshold > response[0]) : (parseFloat(threshold) > parseFloat(response[0])))
+					return false;
+				currentIndex++;
+			});
+			var color = $(this).attr('data-colors').explode()[currentIndex];
+
+			if(color == 'hidden') {
+				$(this).children('span').hide().css('background-color', null);
+			}
+			else {
+				$(this).children('span').show().css('background-color', color);
+			}
+		}
+	});
 
 	// ----- status.collapse -------------------------------------------------------
 	$(bevent.target).find('span[data-widget="status.collapse"]').on( {
@@ -3208,6 +3316,54 @@ $(document).on('pagecreate', function (bevent, bdata) {
 
 // ----- i c o n --------------------------------------------------------------
 // ----------------------------------------------------------------------------
+
+	$(bevent.target).find('[data-widget="basic.icon"][data-item]').on({
+		'update': function (event, response) {
+			event.stopPropagation();
+
+			var max = $(this).attr('data-max').explode();
+			var min = $(this).attr('data-min').explode();
+			// ensure max and min as array of 3 floats (fill by last value if array is shorter)
+			for(var i = 0; i <= 2; i++) {
+				max[i] = parseFloat(max[Math.min(i, max.length-1)])
+				min[i] = parseFloat(min[Math.min(i, min.length-1)])
+			}
+
+			if(response.length == 1) // all values as list in one item
+				values = response[0];
+			else
+				values = response;
+
+			var rgb;
+			switch($(this).attr('data-colormodel')) {
+				case 'rgb':
+					rgb = [
+						Math.round(Math.min(Math.max((values[0] - min[0]) / (max[0] - min[0]), 0), 1) * 255),
+						Math.round(Math.min(Math.max((values[1] - min[1]) / (max[1] - min[1]), 0), 1) * 255),
+						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 255)
+					];
+					break;
+				case 'hsl':
+					var hsl = [
+						Math.round(Math.min(Math.max((values[0] - min[0]) / (max[0] - min[0]), 0), 1) * 360),
+						Math.round(Math.min(Math.max((values[1] - min[1]) / (max[1] - min[1]), 0), 1) * 100),
+						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 100)
+					];
+					rgb = fx.hsl2rgb(hsl[0], hsl[1], hsl[2]);
+					break;
+				case 'hsv':
+					var hsv = [
+						Math.round(Math.min(Math.max((values[0] - min[0]) / (max[0] - min[0]), 0), 1) * 360),
+						Math.round(Math.min(Math.max((values[1] - min[1]) / (max[1] - min[1]), 0), 1) * 100),
+						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 100)
+					];
+					rgb = fx.hsv2rgb(hsv[0], hsv[1], hsv[2]);
+					break;
+			}
+
+			$(this).css('color', 'rgb(' + rgb.join(',') + ')').find('svg').css('fill', 'rgb(' + rgb.join(',') + ')').css('stroke', 'rgb(' + rgb.join(',') + ')');
+		}
+	});
 
 	$(bevent.target).find('svg[data-widget^="icon."]').on( {
 		'update': function (event, response) {
@@ -3356,6 +3512,20 @@ $(document).on('pagecreate', function (bevent, bdata) {
 		}
 	});
 
+	// ----- icon.cistern ---------------------------------------------------------
+	$(bevent.target).find('svg[data-widget="icon.cistern"]').on( {
+		'update': function (event, response) {
+			event.stopPropagation();
+			// response is: {{ gad_value }}, {{ gad_switch }}
+
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+
+			var val = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 100;
+			$(this).find('[data-val]').hide().filter(function() { return Number($(this).attr('data-val')) <= val } ).show();
+		}
+	});
+
 	// ----- icon.clock -----------------------------------------------------------
 	$(bevent.target).find('svg[data-widget="icon.clock"]').on( {
 		'update': function (event, response) {
@@ -3417,6 +3587,20 @@ $(document).on('pagecreate', function (bevent, bdata) {
 			}
 
 			$(this).find('#graph').attr('d', graph + 'L ' + (i * 10 + 5) + ',' + (85 - val));
+		}
+	});
+
+	// ----- icon.heating ---------------------------------------------------------
+	$(bevent.target).find('svg[data-widget="icon.heating"]').on( {
+		'update': function (event, response) {
+			// response is: {{ gad_value }}, {{ gad_switch }}
+
+			var max = parseFloat($(this).attr('data-max'));
+			var min = parseFloat($(this).attr('data-min'));
+
+			var val = Math.min(Math.max((response[0] - min) / (max - min), 0), 1);
+
+			$(this).find('linearGradient stop:last-of-type').attr('offset', val);
 		}
 	});
 

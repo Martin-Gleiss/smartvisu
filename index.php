@@ -16,7 +16,6 @@ if (basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != basename($_SER
 
 // get config-variables
 require_once 'lib/includes.php';
-require_once const_path_system.'functions_twig.php';
 
 // init parameters
 $request = array_merge($_GET, $_POST);
@@ -55,11 +54,18 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	if (config_driver == 'smarthome.py' and $config_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
 		$loader->addPath(const_path.'pages/smarthome');
 
+	$loader->addPath(const_path.'dropins');
 	$loader->addPath(const_path.'pages/base');
 	$loader->addPath(const_path.'widgets');
 
 	// init environment
 	$twig = new Twig_Environment($loader);
+	$twig->addExtension(new Twig_Extension_StringLoader());
+
+	if (config_debug) {
+		$twig->enableDebug();
+		$twig->addExtension(new Twig_Extension_Debug());
+	}
 
 	if (config_cache)
 		$twig->setCache(const_path.'temp/twigcache');
@@ -96,6 +102,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$twig->addGlobal('config_pages', $config_pages);
 	$twig->addGlobal('pagepath', dirname($request['page']));
 	$twig->addGlobal('const_path', const_path);
+	$twig->addGlobal('mbstring_available', function_exists('mb_get_info'));
 
 	$twig->addFilter('_', new Twig_Filter_Function('twig_concat'));
 	$twig->addFilter('bit', new Twig_Filter_Function('twig_bit'));
@@ -113,6 +120,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$twig->addFunction('configmeta', new Twig_Function_Function('twig_configmeta'));
 	$twig->addFunction('lang', new Twig_Function_Function('twig_lang'));
 	$twig->addFunction('read_config', new Twig_Function_Function('twig_read_config'));
+	$twig->addFunction('timezones', new Twig_Function_Function('twig_timezones'));
 	$twig->addFunction('implode', new Twig_Function_Function('twig_implode', array('is_safe' => array('html'))));
 
 	// init lexer comments
