@@ -30,7 +30,7 @@ if ($request['page'] == '')
 // Caching
 header('Cache-Control: must-revalidate');
 require_once 'lib/pagecache.php';
-$cache = new Pagecache(const_path . 'temp/pagecache/' . $config_pages . '/' . $request['page'] . '.html', config_cache);
+$cache = new Pagecache(const_path . 'temp/pagecache/' . config_cachefolder . '/' . $config_pages . '/' . $request['page'] . '.html', config_cache);
 
 if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 		or is_file(const_path."apps/".$request['page'].".html")

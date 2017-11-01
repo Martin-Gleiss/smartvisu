@@ -15,7 +15,7 @@ echo '/** '.implode(' | ', $request['files']).' **/';
 
 require_once 'lib/pagecache.php';
 $key = hash('sha256', implode('|', $request['files']));
-$cache = new Pagecache(const_path . 'temp/pagecache/' . $request['pages'] . '/' . $key . '.' . $suffix, config_cache);
+$cache = new Pagecache(const_path . 'temp/pagecache/' . config_cachefolder . '/' . $request['pages'] . '/' . $key . '.' . $suffix, config_cache);
 
 $path = 'vendor/MatthiasMullie';
 require_once $path . '/minify/src/Minify.php';

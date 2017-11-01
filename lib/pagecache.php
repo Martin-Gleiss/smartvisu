@@ -96,7 +96,7 @@ class Pagecache
 			  $dir = dirname($this->file);
 
 			  if (!is_dir($dir))
-			    mkdir($dir, 0777, true);
+			    mkdir($dir, 0775, true);
 
 				$this->tmpFile = tempnam($dir, basename($file));
 			}
