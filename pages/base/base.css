@@ -176,6 +176,14 @@ html body .ui-page .hide {
 	font-size: 11px !important;
 }
 
+/* more space for text on flipswitch */
+.ui-flipswitch .ui-btn.ui-flipswitch-on {
+	text-indent: -3.4em;
+}
+.ui-flipswitch .ui-flipswitch-off {
+	text-indent: 0.1em;
+}
+
 /* 'hand' on all links */
 a:hover {
 	cursor: pointer;
@@ -1216,7 +1224,6 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 .rtr .actual,
 .rtr .set,
 .rtr .control {
-	min-height: 48px;
 	padding: 5px 0 5px 0;
 	display: inline-block;
 	text-align: center;
@@ -1230,8 +1237,7 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 
 .rtr .set .temp {
 	width: 80px;
-	height: 48px;
-	padding-top: 10px;
+	padding-top: 0.4em;
 	float: left;
 }
 
