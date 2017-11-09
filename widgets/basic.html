@@ -494,7 +494,7 @@ the first one is the base color for values below first threshold, so pass one co
 	{% set color = color|default('') %}
 
 	<{% if href is empty %}span{% else %}a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{% endif %}{% endif %}{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.symbol"
-		{% if not items is empty %}data-item="{{ implode(items) }}" {% endif %}"
+		{% if not items is empty %}data-item="{{ implode(items) }}" {% endif %}
 		data-val="{{ implode(value) }}"
 		data-mode="{{ formula|default('or') }}" class="symbol">
 		{% for val in value %}

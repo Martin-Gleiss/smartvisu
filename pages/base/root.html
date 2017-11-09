@@ -107,13 +107,15 @@
 		'vendor/jquery.cycle2/jquery.cycle2.js',
 		'vendor/JTSage/DateBox/js/jtsage-datebox.js',
 		'vendor/JTSage/DateBox/js/i18n/jtsage-datebox.i18n.'~lang('DateBox', 'lang')~'.utf8.js',
-		'widgets/widget.js',
 		config_animation ? 'widgets/animation.js' : null,
 		'lib/base/base.js',
 		'lib/base/base.php',
 		'driver/io_' ~ config_driver ~ '.js',
 		'pages/' ~ config_pages ~ '/visu.js' 
 	] %}
+{% for file in dir('widgets', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
 {% for file in dir('dropins/widgets', '(.*)(\.js)') %}
 	{% set jsFiles = jsFiles|merge([file.path]) %}
 {% endfor %}
@@ -167,15 +169,15 @@
 {% endif %}
 
 	// Do some actions before page is shown
-	$(document).on('pagebeforeshow', function () {
+	$(document).on('pagecontainerbeforeshow', function () {
 		fx.init();
 		repeater.init();
 		widget.prepare();
+		io.run({{ config_driver_realtime }});
 	});
 
 	// Run the io and all widgets
-	$(document).on('pageshow', function () {
-		io.run({{ config_driver_realtime }});
+	$(document).on('pagecontainershow', function () {
 		notify.display();
 	});
 
