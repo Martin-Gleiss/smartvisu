@@ -1162,7 +1162,7 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 
 	_events: {
 		'click': function (event) {
-			io.trigger(this.options.name, this.options.val);
+			io.trigger(this.options.name, this.options.val != null ? String(this.options.val) : null);
 		}
 	}
 
