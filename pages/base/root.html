@@ -75,13 +75,14 @@
 
 	<script type="text/javascript" src="vendor/jquery/jquery-2.1.4.min.js"></script>
 
-{%- if config_transition != 'fade' %}
 	<script type="text/javascript">
 		$(document).on("mobileinit", function () {
+{%- if config_transition != 'fade' %}
 			$.mobile.defaultPageTransition = '{{ config_transition }}';
+{% endif %}
+			$.event.special.tap.emitTapOnTaphold = false;
 		});
 	</script>
-{% endif %}
 
 	<script type="text/javascript">
 		// work around a bug of jQuery Mobile 1.4.5 themes
