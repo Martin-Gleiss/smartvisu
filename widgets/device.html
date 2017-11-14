@@ -139,9 +139,9 @@
 * @param {text=} name of the rtr
 * @param {item} an item for the actual temperature
 * @param {item} an item for the set temperature
-* @param {item} an item for comfort / standby (3x bit or 1x byte)
-* @param {item} an item for night (3x bit or 1x byte)
-* @param {item} an item for frost (3x bit or 1x byte)
+* @param {item=} an item for comfort / standby (3x bit or 1x byte, optional)
+* @param {item=} an item for night (3x bit or 1x byte, optional)
+* @param {item=} an item for frost (3x bit or 1x byte, optional)
 * @param {item=} an item for the current state of the actor (optional)
 * @param {item=} an item for a text (some rtr have a text-display), (optional)
 * @param {value=0.5} step for plus/minus buttons (optional, default: 0.5)
@@ -165,27 +165,31 @@
 			</div>
 		{% endif %}
 		<br>
+		{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty or supplements is not empty %}
 		<div class="control">
-			{% if ((config_driver == 'linknx') and (item_comfort == item_night) and (item_night == item_frost)) %}
-				{{ basic.stateswitch('', item_comfort, 'icon', ['comfort', 'standby'], ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
-				{{ basic.stateswitch('', item_night, 'icon', ['night', 'standby'], ['scene_night.svg', 'scene_day.svg'], '', ['icon1', 'icon0']) }}
-				{{ basic.stateswitch('', item_frost, 'icon', ['frost', 'standby'], ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
-			{% elseif ((item_comfort == item_night) and (item_night == item_frost)) %}
-				{{ basic.stateswitch('', item_comfort, 'icon', [1, 2], ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
-				{{ basic.stateswitch('', item_night, 'icon', [3, 2], ['scene_night.svg', 'scene_day.svg'], '', ['icon1', 'icon0']) }}
-				{{ basic.stateswitch('', item_frost, 'icon', [4, 2], ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
+			{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
+				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['night', 'standby'] : [3, 2]), ['scene_night.svg', 'scene_day.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['frost', 'standby'] : [4, 2]), ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
 			{% else %}
-				{{ basic.stateswitch('', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
-				{{ basic.stateswitch('', item_night, 'icon', '', ['scene_night.svg', 'scene_day.svg']) }}
-				{{ basic.stateswitch('', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
+				{% if item_comfort is not empty %}
+					{{ basic.stateswitch('', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
+				{% endif %}
+				{% if item_night is not empty %}
+					{{ basic.stateswitch('', item_night, 'icon', '', ['scene_night.svg', 'scene_day.svg']) }}
+				{% endif %}
+				{% if item_frost is not empty %}
+					{{ basic.stateswitch('', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
+				{% endif %}
 			{% endif %}
-			{% if item_state %}
+			{% if item_state is not empty %}
 				{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
 			{% endif %}
 			{% for supplement in supplements %}
 				{{ supplement }}
 			{% endfor %}
 		</div>
+		{% endif %}
 	</div>
 {% endmacro %}
 
