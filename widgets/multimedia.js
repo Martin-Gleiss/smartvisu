@@ -9,7 +9,7 @@ $.widget("sv.multimedia_audio", $.sv.widget, {
 	
 	_update: function(response) {
 			if (response == this.options.value) {
-				this.element.play();
+				this.element[0].play();
 			}
 	},
 
@@ -45,7 +45,7 @@ $.widget("sv.multimedia_slideshow", $.sv.widget, {
 				// if item_prev is same as item_next, treat false as prev, any other value as next (same with item_stop and item_start)
 				if((i == 0 || i == 2) && items[i] == items[i+1] && value > 0)
 					i++;
-				$(this).cycle(['prev','next','pause','resume'][i]);
+				this.element.cycle(['prev','next','pause','resume'][i]);
 				widget.set(items[i], -1);
 				break;
 			}
