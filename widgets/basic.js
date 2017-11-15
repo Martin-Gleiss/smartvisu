@@ -605,43 +605,17 @@ $.widget("sv.basic_icon", $.sv.widget, {
 
 
 // ----- basic.input ----------------------------------------------------------
+// simple (w/o datebox)
 $.widget("sv.basic_input", $.sv.widget, {
 
-	initSelector: 'input[data-widget="basic.input"]',
-
-	options: {
-		role: null,
-		'datebox-mode': null
-	},
-	
-	_create() {
-		this._super();		
-	},
+	initSelector: 'input[data-widget="basic.input"][data-role!="datebox"]',
 
 	_update: function(response) {
-		if(this.options.role == 'datebox') {
-			var mode = this.options['datebox-mode'];
-			if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
-				this.element.trigger('datebox', {'method': 'set', 'value': 0}).trigger('datebox', {'method': 'dooffset', 'type': 's', 'amount': response[0]}).trigger('datebox', {'method':'doset'});
-			else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
-				this.element.datebox('setTheDate', new Date(response[0]));
-			else if(mode == 'timebox' || mode == 'timeflipbox') { // data type time
-				this.element.val(response[0]);
-				this.element.datebox('refresh');
-			}
-		}
-		else
-			this.element.val(response[0]);
-	},
-
-	_repeat: function() {
+		this.element.val(response[0]);
 	},
 
 	_events: {
 		'change': function (event) {
-			if(this.options.role == 'datebox')
-				return;
-
 			var newval = this.element.val();
 			var type = this.element.attr('type');
 
@@ -676,8 +650,34 @@ $.widget("sv.basic_input", $.sv.widget, {
 			}
 
 			this._write(newval);
-		},
+		}
+	}
 
+});
+
+// with datebox
+$.widget("sv.basic_input_datebox", $.sv.widget, {
+
+	initSelector: 'input[data-widget="basic.input"][data-role="datebox"]',
+
+	options: {
+		'datebox-mode': null,
+    'min-dur': null
+	},
+
+	_update: function(response) {
+		var mode = this.options['datebox-mode'];
+		if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
+			this.element.trigger('datebox', {'method': 'set', 'value': this.options['min-dur']*1}).trigger('datebox', {'method': 'dooffset', 'type': 's', 'amount': response[0] - this.options['min-dur']*1}).trigger('datebox', {'method':'doset'});
+		else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
+			this.element.datebox('setTheDate', new Date(response[0]));
+		else if(mode == 'timebox' || mode == 'timeflipbox') { // data type time
+			this.element.val(response[0]);
+			this.element.datebox('refresh');
+		}
+	},
+
+	_events: {
 		'datebox': function (event, passed) {
 			if (passed.method === 'close' && !passed.closeCancel) {
 				var mode = this.options['datebox-mode'];
