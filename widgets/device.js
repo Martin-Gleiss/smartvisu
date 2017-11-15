@@ -725,6 +725,8 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 		$(tt).appendTo('#uzsuTable').enhanceWithin();
 		// und Daten ausfüllen. hier werden die Zeile wieder mit dem Status beschrieben. Status ist dann wieder im Widget
 		this._uzsuFillTable(response);
+		// nach unten scrollen
+		$("#uzsuTable").scrollTop(function() { return this.scrollHeight; });
 	},
 	
 	_uzsuDelTableRow: function(response, e) {
@@ -790,7 +792,15 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 		}
 		tt += this._uzsuBuildTableFooter();
 		// dann hängen wir das an die aktuelle Seite
-		var uzsuPopup = $(tt).appendTo(this.element).enhanceWithin().popup();
+		var uzsuPopup = $(tt).appendTo(this.element).enhanceWithin().popup().on({
+			popupbeforeposition: function() {
+				var maxHeight = $(window).height() - 180;
+				$(this).find('.uzsuTableMain').css('max-height', maxHeight + 'px').css('overflow-y','auto').css('overflow-x','hidden');
+			},
+			popupafterclose: function () {
+				$(this).remove();
+			}
+		});
 		// dann speichern wir uns für cancel die ursprünglichen im DOM gespeicherten Werte in eine Variable ab
 		var responseCancel = jQuery.extend(true, {}, response);
 		// dann die Werte eintragen.
@@ -837,11 +847,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 
 		// hier wir die aktuelle Seite danach durchsucht, wo das Popup ist und im folgenden das Popup initialisiert, geöffnet und die schliessen
 		// Funktion daran gebunden. Diese entfernt wieder das Popup aus dem DOM Baum nach dem Schliessen mit remove
-		uzsuPopup.popup('open').bind({
-			popupafterclose: function () {
-				$(this).remove();
-			}
-		});
+		uzsuPopup.popup('open');
 	}
 
 });
