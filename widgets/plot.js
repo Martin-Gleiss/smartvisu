@@ -1171,13 +1171,13 @@ $.widget("sv.plot_rtr", $.sv.plot, {
 			},
 			series: [
 				{
-					name: label[0], data: response[0], type: 'spline'
+					name: label[0], data: response[0], type: 'spline',
 				},
 				{
-					name: label[1], data: response[1], className: 'shortdot', step: 'left'
+					name: label[1], data: response[1], className: 'shortdot', step: 'left',
 				},
 				{
-					type: 'pie', name: '∑  On: ',
+					type: 'pie',
 					data: [
 						{
 							name: 'On', y: percent
@@ -1189,15 +1189,22 @@ $.widget("sv.plot_rtr", $.sv.plot, {
 					center: ['95%', '90%'],
 					size: 35,
 					showInLegend: false,
-					dataLabels: {enabled: false}
+					dataLabels: {enabled: false},
+					tooltip: {
+            headerFormat: '',
+						pointFormatter: function () {
+							return '∑ '+this.name+': <b>'+this.percentage.transUnit('%')+'</b>';
+						}
+					},
 				}
 			],
 			xAxis: {type: 'datetime'},
 			yAxis: {min: this.options.min, max: this.options.max, title: {text: axis[1]}},
 			tooltip: {
-				formatter: function () {
-					return this.series.name + ' <b>' + (this.percentage ? this.y.transUnit('%') : this.y.transUnit('temp')) + '</b>';
-				}
+				pointFormatter: function () {
+					return this.series.name + ' <b>' + this.y.transUnit('temp') + '</b><br>';
+				},
+				shared: true
 			}
 		});
 	},
