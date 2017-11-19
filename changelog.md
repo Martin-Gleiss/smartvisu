@@ -20,7 +20,7 @@
 - basic.symbol: Can also be used to show text only and to render as link, mode extended to adaptable formula, and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
 - Enhanced plot.period (among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale and units)
 - plot.temprose: New parameters 'series_label' and 'unit'
-- basic.slider: New parameter 'value_display'
+- basic.slider: New parameters 'value_display', 'min_send' and 'max_send'
 - device.blind & device.shutter: item_move is now optional
 - basic.shutter & device.shutter: min/max are renamed to value_top/bottom and value_top may be lesser than value_bottom
 - device.shutter: Value for pos1 and pos2 can be set by parameter

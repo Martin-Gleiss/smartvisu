@@ -14,17 +14,16 @@
 
 	<h5>Examples</h5>
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.slider('', 'bath.light.value') &#125;&#125;</code>
+		<code class="prettyprint">
+			&#123;&#123; basic.slider('', 'bath.light.value') &#125;&#125;<br />
+      &#123;&#123; basic.slider('', 'bath.light.value', 0, 100, 10) &#125;&#125;<br />
+      &#123;&#123; basic.slider('', 'bath.light.value', 15, 25, 1, '', '', 0, 255) &#125;&#125;
+		</code>
 	</div>
 	<div class="html">
 		{{ basic.slider('', 'bath.light.value') }}
-	</div>
-
-	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.slider('', 'bath.light.value', 0, 100, 10) &#125;&#125;</code>
-	</div>
-	<div class="html">
 		{{ basic.slider('', 'bath.light.value', 0, 100, 10) }}
+		{{ basic.slider('', 'bath.light.value', 15, 25, 1, '', '', 0, 255) }}
 	</div>
 
 	Orientation

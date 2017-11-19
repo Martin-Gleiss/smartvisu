@@ -450,7 +450,7 @@ $.widget("sv.basic_color_slider", $.sv.basic_color, {
 	_events: {
 
 		'slidestop input': function (event) {
-      this._timer = false;
+			this._timer = false;
 			this._change();
 		},
 
@@ -958,23 +958,32 @@ $.widget("sv.basic_slider", $.sv.widget, {
 
 	options: {
 		min: 0,
-    max: 255,
+		max: 255,
+		'min-send': 0,
+		'max-send': 255
 	},
 
 	_mem: null,
 	_timer: false,
-  _lock: false,
+	_lock: false,
 
 	_update: function(response) {
-    this._lock = true;
-		this.element.val(response).slider('refresh');
-    this._lock = false;
+		this._lock = true;
+		var max = this.element.attr('max') * 1;
+		var min = this.element.attr('min') * 1;
+		var maxSend = this.options['max-send'];
+		var minSend = this.options['min-send'];
+		var val = response[0];
+		if(min != minSend || max != maxSend)
+			val = (val - minSend) / (maxSend - minSend) * (max - min) + min;
+		this.element.val(val).slider('refresh');
+		this._lock = false;
 		this._mem = this.element.val();
 	},
 
 	_events: {
 		'slidestop': function (event) {
-      this._timer = false;
+			this._timer = false;
 			this._change();
 		},
 
@@ -987,7 +996,14 @@ $.widget("sv.basic_slider", $.sv.widget, {
 		if (!this._timer && !this._lock && this.element.val() != this._mem) {
 			this._timer = true;
 			this._mem = this.element.val();
-			this._write(this.element.val());
+			var max = this.element.attr('max') * 1;
+			var min = this.element.attr('min') * 1;
+			var maxSend = this.options['max-send'];
+			var minSend = this.options['min-send'];
+			var val = this.element.val();
+			if(min != minSend || max != maxSend)
+				val = (val - min) / (max - min) * (maxSend - minSend) + minSend;
+			this._write(val);
 			this._delay(function() { if(this._timer) { this._timer = false; this._change(); } }, 400);
 		}
 	}
