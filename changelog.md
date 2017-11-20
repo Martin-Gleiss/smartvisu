@@ -20,12 +20,12 @@
 - basic.symbol: Can also be used to show text only and to render as link, mode extended to adaptable formula, and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
 - Enhanced plot.period (among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale and units)
 - plot.temprose: New parameters 'series_label' and 'unit'
-- basic.slider: New parameters 'value_display', 'min_send' and 'max_send'
+- basic.slider: New parameters 'value_display', 'min_display' and 'max_display'
 - device.blind & device.shutter: item_move is now optional
 - basic.shutter & device.shutter: min/max are renamed to value_top/bottom and value_top may be lesser than value_bottom
 - device.shutter: Value for pos1 and pos2 can be set by parameter
 - basic.tank & icon.* (dynamic icons): min is now implemented and max may be lesser than min
-- device.dimmer: New parameters to specify pic and color
+- device.dimmer: New parameters to specify pic and color and 'min_display' and 'max_display' like slider
 - device.rtr: New parameters to specify separate offset item and additional content
 - Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
 - calendar.list: New parameters to select and colorize calendars

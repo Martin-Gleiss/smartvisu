@@ -17,13 +17,13 @@
 		<code class="prettyprint">
 			&#123;&#123; basic.slider('', 'bath.light.value') &#125;&#125;<br />
       &#123;&#123; basic.slider('', 'bath.light.value', 0, 100, 10) &#125;&#125;<br />
-      &#123;&#123; basic.slider('', 'bath.light.value', 15, 25, 1, '', '', 0, 255) &#125;&#125;
+      &#123;&#123; basic.slider('', 'bath.light.value', 0, 255, '', '', '', 0, 100) &#125;&#125;
 		</code>
 	</div>
 	<div class="html">
 		{{ basic.slider('', 'bath.light.value') }}
 		{{ basic.slider('', 'bath.light.value', 0, 100, 10) }}
-		{{ basic.slider('', 'bath.light.value', 15, 25, 1, '', '', 0, 255) }}
+		{{ basic.slider('', 'bath.light.value', 0, 255, '', '', '', 0, 100) }}
 	</div>
 
 	Orientation
@@ -63,5 +63,3 @@
 	</div>
 
 {% endblock %}
-
-
