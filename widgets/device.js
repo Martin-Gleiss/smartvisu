@@ -287,7 +287,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 
 		tt += 	"<div class='uzsuRow'>" +
 					"<div class='uzsuCell'>" +
-						"<div class='uzsuCellText'>Weekday</div>" +
+						"<div class='uzsuCellText'>" + sv_lang.uzsu.weekday + "</div>" +
 							"<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuWeekday'>";
 							// rrule Wochentage (ist eine globale Variable von SV, Sonntag hat index 0 deshalb Modulo 7)
 							var daydate = new Date(0);
@@ -299,7 +299,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 						"</div>";
 
 		tt += 	"<div class='uzsuCell uzsuValueCell'>" +
-					"<div class='uzsuCellText'>Value</div>";
+					"<div class='uzsuCellText'>" + sv_lang.uzsu.value + "</div>";
 		if (this.options.valuetype === 'bool') {
 			// Unterscheidung Anzeige und Werte
 			if (valueParameterList[0].split(':')[1] === undefined) {
@@ -337,38 +337,40 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 		}
 		tt+=	"</div>"
 		tt+=	"<div class='uzsuCell'>" +
-					"<div class='uzsuCellText'>Time</div>" +
+					"<div class='uzsuCellText'>" + sv_lang.uzsu.time + "</div>" +
 					"<input type='time' data-clear-btn='false' class='uzsuTimeInput uzsuTimeCron'>" +
 				"</div>" +
 				"<div class='uzsuCell'>" +
 					"<div class='uzsuCellText'></div>" +
 					"<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
-						"<label><input type='checkbox' class='uzsuActive'>Act</label>" +
+						"<label><input type='checkbox' class='uzsuActive'>" + sv_lang.uzsu.act + "</label>" +
 					"</fieldset>" +
 				"</div>" +
 				"<div class='uzsuCellExpert'>" +
-					"<div class='uzsuCellText'>Expert</div>" +
+					"<div class='uzsuCellText'>" + sv_lang.uzsu.expert + "</div>" +
 					"<button data-mini='true' data-icon='arrow-d' data-iconpos='notext' class='ui-icon-shadow'></button>" +
 				"</div>" +
-				"<div class='uzsuCell ui-mini'>" +
+				"<div class='uzsuCell'>" +
 					"<div class='uzsuCellText'></div>" +
-					"<button class='uzsuDelTableRow' data-mini='true'>Del</button>" +
+					"<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
+						"<button class='uzsuDelTableRow' data-mini='true'>" + sv_lang.uzsu.del + "</button>" +
+					"</fieldset>" +
 				"</div>";
 		// Tabelle Zeile abschliessen
 		tt += 	"</div>";
 		// und jetzt noch die unsichbare Expertenzeile
 		tt += 	"<div class='uzsuRowExpHoli' style='display:none;'>" +
 					"<div class='uzsuRowExpert' style='float: left;'>" +
-						"<div class='uzsuRowExpertText'>Sun</div>" +
+						"<div class='uzsuRowExpertText'>" + sv_lang.uzsu.sun + "</div>" +
 						"<div class='uzsuCell'>" +
-							"<div class='uzsuCellText'>earliest</div>" +
+							"<div class='uzsuCellText'>" + sv_lang.uzsu.earliest + "</div>" +
 							"<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeMin'>" +
 						"</div>" +
 						"<div class='uzsuCell uzsuEvent'>" +
 							"<div class='uzsuCellText'>Event</div>" +
 							"<select data-mini='true' data-native-menu='false'>" +
-								"<option value='sunrise'>Sunrise</option>" +
-								"<option value='sunset'>Sunset</option>" +
+								"<option value='sunrise'>" + sv_lang.uzsu.sunrise + "</option>" +
+								"<option value='sunset'>" + sv_lang.uzsu.sunset + "</option>" +
 							"</select>" +
 						"</div>" +
 						"<div class='uzsuCell'>" +
@@ -386,13 +388,13 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 						"</div>";
 					}
 						tt += 	"<div class='uzsuCell'>" +
-							"<div class='uzsuCellText'>latest</div>" +
+							"<div class='uzsuCellText'>" + sv_lang.uzsu.latest + "</div>" +
 							"<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeMax'>" +
 						"</div>" +
 						"<div class='uzsuCell'>" +
 							"<div class='uzsuCellText'></div>" +
 							"<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
-								"<label><input type='checkbox' class='expertActive uzsuSunActive'>Act</label>" +
+								"<label><input type='checkbox' class='expertActive uzsuSunActive'>" + sv_lang.uzsu.act + "</label>" +
 							"</fieldset>" +
 						"</div>" +
 					"</div>";
@@ -486,20 +488,20 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 							"<div class='uzsuCell'>" +
 								"<form>" +
 									"<fieldset data-mini='true'>" +
-										"<label><input type='checkbox' id='uzsuGeneralActive'>Active</label>" +
+										"<label><input type='checkbox' id='uzsuGeneralActive'>" + sv_lang.uzsu.active + "</label>" +
 									"</fieldset>" +
 								"</form>" +
 							"</div>" +
 							"<div class='uzsuCell'>" +
 							"<div data-role='controlgroup' data-type='horizontal' data-inline='true' data-mini='true'>" +
-								"<button id='uzsuAddTableRow'>Add</button>" +
-								"<button id='uzsuSortTime'>Sort</button>" +
+								"<button id='uzsuAddTableRow'>" + sv_lang.uzsu.add + "</button>" +
+								"<button id='uzsuSortTime'>" + sv_lang.uzsu.sort + "</button>" +
 							"</div>" +
 						"</div>" +
 							"<div class='uzsuCell'>" +
 									"<div data-role='controlgroup' data-type='horizontal' data-inline='true' data-mini='true'>" +
-										"<button id='uzsuCancel'>Cancel</button>" +
-										"<button id='uzsuSaveQuit'>OK</button>" +
+										"<button id='uzsuCancel'>" + sv_lang.uzsu.cancel + "</button>" +
+										"<button id='uzsuSaveQuit'>" + sv_lang.uzsu.ok + "</button>" +
 									"</div>" +
 								"</div>" +
 							"</div>" +
