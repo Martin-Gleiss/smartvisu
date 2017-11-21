@@ -1218,9 +1218,6 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	background-color: rgba(120, 120, 120, 0.3);
 }
 
-.rtr {
-}
-
 .rtr .actual,
 .rtr .set,
 .rtr .control {
@@ -1245,7 +1242,8 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	float: left;
 }
 
-.rtr .control .switch {
+.rtr .control .switch,
+.rtr .control .symbol {
 	margin: 2px;
 	float: left;
 }
