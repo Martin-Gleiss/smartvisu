@@ -38,7 +38,7 @@ $.widget("sv.multimedia_slideshow", $.sv.widget, {
 	_update: function(response) {
 		var items = String(this.options.item).explode();
 		for(var i = 0; i <= 4; i++) {
-			if(items[i] == '') // continue if item is not used
+			if(items[i] == '' || (i % 2 == 1 && items[i] == items[i-1])) // continue if item is not used
 				continue;
 			var value = response.shift();
 			if(value >= 0) {

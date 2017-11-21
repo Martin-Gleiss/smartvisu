@@ -30,6 +30,7 @@
 - Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
 - calendar.list: New parameters to select and colorize calendars
 - basic.checkbox & basic.flip: value_on and value_off can be set by parameters
+- multimedia.slideshow: fix items, add control buttons and reverse parameter
 
 ### Other New Features
 - Allow pages selection by url parameter (e.g. index.php?pages=foo)

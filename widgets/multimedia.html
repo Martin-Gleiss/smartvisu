@@ -129,30 +129,47 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {text} a directory where the pictures are located
-* @param {value=2} delay between the slides in sec (optional, default: 2 sec)
+* @param {value=2} delay between the slides in sec (optional, default: 4 sec)
 * @param {item=} item to switch to the next slide (optional)
 * @param {item=} item to switch to the previous slide (optional)
   (if this is same as item_next: 0 triggers previous, any value greater than 0 triggers next, negative values are ignored)
 * @param {item=} item to stop the animation (optional)
 * @param {item=} item to start the animation (optional)
   (if this is same as item_stop: 0 stops, any value greater than 0 starts, negative values are ignored)
-*
+* @param {value=0} Show the pictures in reverse order; possible values are 1 or 0 (optional, default 0)
+* @param {value=0} Show controls; possible values are 1 or 0 (optional, default 0)
+	(they just take effect on the slideshow and do not send anything to backend)
 * @author Alex ???, Stefan Widmer
 *
 * @info based on cycle2 jquery-plugin: (c) 2012 M. Alsup; Dual licensed: MIT/GPL
 * @link http://jquery.malsup.com/cycle2
 */
-{% macro slideshow(id, dir, delay, item_next, item_prev, item_stop, item_start) %}
+{% macro slideshow(id, dir, delay, item_next, item_prev, item_stop, item_start, reverse, controls) %}
 	{% set uid = uid(page, id) %}
 
-	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} class="slideshow" data-widget="multimedia.slideshow"
-		data-cycle-log="false" data-cycle-speed="{{ delay|default(2) * 1000 }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} class="slideshow cycle-slideshow" data-widget="multimedia.slideshow"
+		data-cycle-log="false" data-cycle-speed="2000" data-cycle-timeout="{{ delay|default(4) * 1000 }}" data-cycle-reverse="{{ reverse|default(0) }}"
 		data-item="{{ item_prev }}, {{ item_next }}, {{ item_stop }}, {{ item_start }}">
 		{% for file in dir(dir, '(.+?).(jpg|png|svg)') %}
 			<img src="{{ file.path }}" style="display: block;" title="{{ file.label }}" alt="{{ file.label }}" />
 		{% endfor %}
 	</div>
-
+  {% if controls %}
+	<div data-role="controlgroup" data-type="horizontal">
+		<a data-cycle-cmd="prev" href="#" class="ui-btn ui-micro ui-corner-all ui-btn-inline ui-nodisc-icon">
+			<img class="icon" src="icons/ws/audio_rew.svg" alt="prev">
+		</a>
+		<a data-cycle-cmd="pause" href="#" class="ui-btn ui-micro ui-corner-all ui-btn-inline ui-nodisc-icon">
+			<img class="icon" src="icons/ws/audio_stop.svg" alt="stop">
+		</a>
+		<a data-cycle-cmd="resume" href="#" class="ui-btn ui-micro ui-corner-all ui-btn-inline ui-nodisc-icon">
+			<img class="icon" src="icons/ws/audio_play.svg" alt="resume">
+		</a>
+		<a data-cycle-cmd="next" href="#" class="ui-btn ui-micro ui-corner-all ui-btn-inline ui-nodisc-icon">
+			<img class="icon" src="icons/ws/audio_ff.svg" alt="next">
+		</a>
+	</div>
+	{% endif %}
 {% endmacro %}
 
 
