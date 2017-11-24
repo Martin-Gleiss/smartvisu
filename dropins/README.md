@@ -8,7 +8,8 @@ You may place custom Twig html templates in here and use them in any of your pag
 System templates can be overridden by creating a template with same name in here (e.g. `base.html` in dropins overrides `pages/base/base.html`).
 
 ## Widgets
-Any .html file in widgets folder gets imported as widget library. E.g. a macro `bar()` defined in `widgets/foo.html` can be called in your pages by `{{ foo.bar() }}`.
+Any valid .html file in widgets folder gets imported as widget library. E.g. a macro `bar()` defined in `widgets/foo.html` can be called in your pages by `{{ foo.bar() }}`.
+Widget filenames have to be valid Twig/PHP variable names. They must not contain any non-alphanumeric characters (except underlines) and must not start with a number.
 
 In addition any .css and .js file in this folder gets loaded. The stylesheets can contain widget specific styles, the JavaScripts are meant to implement logic of the widgets and have to contain a structure like the following:
 ```

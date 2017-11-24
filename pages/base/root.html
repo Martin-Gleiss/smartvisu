@@ -7,7 +7,7 @@
 * -----------------------------------------------------------------------------
 */
 /** handle dropins */
-{% set macrofiles = dir('dropins/widgets','(.*)\.html$') %}
+{% set macrofiles = dir('dropins/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
 {% set dynmacro = [] %}
 {% for macrofile in macrofiles %}
 	{% set dynmacro = dynmacro|merge(['{% import "widgets/' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
