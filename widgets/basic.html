@@ -175,8 +175,9 @@
 	{%- endif %}
 	class="icon
 	{%- set color = {'or': '#f9a028', 'gn': '#84c929', 'bl': '#4176a9', 'sw': '#000', 'ws': '#fff'}[color]|default(color) -%} /**- legacy smartVISU colors -*/
-	{%- if (color != 'icon0') and (color is not empty) %} icon1
+	{%- if (color != 'icon0') and (color is not empty) and (color != 'do-fx') %} icon1
 		{%- if color not in ['icon1','rgb','hsl','hsv'] %}" style="stroke:{{ color }}; fill:{{ color }}; color:{{ color }}; {%- endif -%}
+	{%- elseif color == 'do-fx' %} do-fx icon0
 	{%- endif -%}
 
 	{%- if pic|slice(0, 4) != '<svg' -%}
@@ -427,8 +428,7 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {text[?]=} array of texts (optional)
 * @param {color[](hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional, default: icon0)
 	additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
-* @param {color(blink)=} activity indicator which is active until response (or a timeout is reached); pass either a color, 'icon1' or 'blink' (optional)
-	The maximal duration can be set in configuration, default is 3 seconds.
+* @param {color(blink)=} activity indicator which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
 *
 * @see design/design_icons#Icons
 *
@@ -460,7 +460,7 @@ the first one is the base color for values below first threshold, so pass one co
 				{%- endif -%}
 			{%- endif -%}
 			">
-			{%- if not pic is empty -%}{{ basic.icon(pic, col) }}{%- endif -%}
+			{%- if not pic is empty -%}{{ basic.icon(pic, not indicator is empty and (col is empty or col == 'icon0') ? 'do-fx' : col) }}{%- endif -%}
 			{{- txt|e -}}
 		</a>
   {% endfor %}
