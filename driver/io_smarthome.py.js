@@ -119,7 +119,12 @@ var io = {
 			}
 			if (!io.port) {
 				// use port of current page if not defined and needed
-				io.port = location.port;
+				if (location.port != '') {
+					io.port = location.port;
+				} else {
+					if (location.protocol == 'http:') io.port = '80'
+					if (location.protocol == 'https:') io.port = '443'
+				}
 			}
 		}
 		io.socket = new WebSocket(protocol + io.address + ':' + io.port);
