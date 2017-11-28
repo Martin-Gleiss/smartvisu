@@ -122,8 +122,8 @@ var io = {
 				if (location.port != '') {
 					io.port = location.port;
 				} else {
-					if (location.protocol == 'http:') io.port = '80'
-					if (location.protocol == 'https:') io.port = '443'
+					if (location.protocol == 'http:') io.port = '80';
+					if (location.protocol == 'https:') io.port = '443';
 				}
 			}
 		}
