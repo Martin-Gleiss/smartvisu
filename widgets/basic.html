@@ -13,15 +13,16 @@
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item
 * @param {text=} label of the checkbox (optional)
+  checkbox gets shrinked when empty, pass a whitespace to prevent this
 * @param {value=1} value for the checked state (optional, default 1)
 * @param {value=0} value for the unchecked state (optional, default 0)
 */
 {% macro checkbox(id, item, txt, val_on, val_off) %}
 
-	<label>
+	<label{% if txt is empty %} style="padding-right: 0; width: 0;"{% endif %}>
 		<input type="checkbox"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.checkbox" data-item="{{ item }}"
 			data-val-on="{{ val_on|default(1) }}" data-val-off="{{ val_off|default(0) }}" />
-		{{ txt }}
+		{{ txt }}&nbsp;
 	</label>
 
 {% endmacro %}
