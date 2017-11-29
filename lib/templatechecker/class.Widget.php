@@ -75,6 +75,14 @@ class Widget {
 	}
 
 	/**
+	 * return all parameters
+	 * @return array
+	 */
+	public function getParamArray() {
+		return $this->paramArray;
+	}
+
+	/**
 	 * line number from node
 	 * @var integer 
 	 */

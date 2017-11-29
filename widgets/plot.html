@@ -170,7 +170,8 @@
 /**
 * A simple widget for plotting item min/max/avg chart
 *
-* @deprecated as of version 2.9, use plot.period instead.
+* @deprecated as of version 2.9, use 'plot.period' instead.
+* @replacement {{ plot.period(%1$s, %2$s, 'minmaxavg', %3$s, %4$s, %5$s, %6$s, %9$s, '', '', '', %8$s, '', '', '', '', %7$s) }}
 *
 * @param unique id for this widget
 * @param the item. Only one item supported.
@@ -186,7 +187,7 @@
 */
 {% macro minmaxavg(id, item, tmin, tmax, ymin, ymax, unit, axis, count) %}
 	{% import _self as plot %}
-	{{ plot.period( id, item, 'minmaxavg', tmin, tmax, ymin, ymax, count, '', '', '', axis, '', '', '', '', unit) }}
+	{{ plot.period(id, item, 'minmaxavg', tmin, tmax, ymin, ymax, count, '', '', '', axis, '', '', '', '', unit) }}
 	<script type="text/javascript">console.warn("Use of 'plot.minmaxavg' is deprecated, use 'plot.period' instead.")</script>
 {% endmacro %}
 
@@ -194,7 +195,8 @@
 /**
 * A simple widget for plotting charts with multiple y-axis (based on macro period)
 *
-* @deprecated as of version 2.9, use plot.period instead.
+* @deprecated as of version 2.9, use 'plot.period' instead.
+* @replacement {{ plot.period(%1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s, %9$s, %10$s, %11$s, %12$s, %13$s, %14$s, %15$s, %16$s) }}
 *
 * @param unique id for this widget (optional)
 * @param series of item/s. More item/s in array form: [ item1 , item2 ]
@@ -219,6 +221,6 @@
 
 {% macro multiaxis( id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor) %}
 	{% import _self as plot %}
-	{{ plot.period( id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor) }}
+	{{ plot.period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor) }}
 	<script type="text/javascript">console.warn("Use of 'plot.multiaxis' is deprecated, use 'plot.period' instead.")</script>
 {% endmacro %}

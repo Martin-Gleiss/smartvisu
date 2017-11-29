@@ -212,19 +212,24 @@ class TemplateChecker {
 
 		$widgetConfig = $this->getWidgetConfig($widget->getName());
 
-		if ($widgetConfig !== NULL && array_key_exists('deprecated', $widgetConfig)) {
-			$this->messages->addWarning('WIDGET DEPRECATION CHECK', 'Deprecated widget', $widget->getLineNumber(), $widget->getMacro(), $widget->getMessageData());
-		}
-
 		if ($widgetConfig === NULL || !array_key_exists('param', $widgetConfig)) {
 			$this->messages->addWarning('WIDGET PARAM CHECK', 'Unknown widget found. Check manually!', $widget->getLineNumber(), $widget->getMacro(), $widget->getMessageData());
 			return;
 		}
 
 		// check all parameters of widget
-		$paramConfig = array_values($widgetConfig['param']);
-		foreach ($paramConfig as $paramIndex => $paramConfig)
+		$paramConfigs = array_values($widgetConfig['param']);
+		foreach ($paramConfigs as $paramIndex => $paramConfig) {
 			WidgetParameterChecker::performChecks($widget, $paramIndex, $paramConfig, $this->messages, $this);
+		}
+
+		if (array_key_exists('deprecated', $widgetConfig)) {
+			$messageData = $widget->getMessageData();
+			if(array_key_exists('replacement', $widgetConfig)) {
+				$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $widget->getParamArray() + array_map(function($element) { return "'" . $element['default'] . "'"; }, $paramConfigs)));
+			}
+			$this->messages->addWarning('WIDGET DEPRECATION CHECK', 'Deprecated widget', $widget->getLineNumber(), $widget->getMacro(), $messageData);
+		}
 	}
 
 	/**

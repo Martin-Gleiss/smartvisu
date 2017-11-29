@@ -578,6 +578,7 @@ the first one is the base color for values below first threshold, so pass one co
 * A button
 *
 * @deprecated as of version 2.9. Use 'basic.stateswitch' instead.
+* @replacement {{ basic.stateswitch(%1$s, %2$s, %6$s, %5$s, %4$s, %3$s, %7$s) }}
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item
@@ -589,7 +590,7 @@ the first one is the base color for values below first threshold, so pass one co
 */
 {% macro button(id, item, txt, pic, val, type, color) %}
 	{% import _self as basic %}
-	{{ basic.stateswitch(id, item, type|default('mini'), [val|default('1')], [pic|default('none')], [txt], [color]) }}
+	{{ basic.stateswitch(id, item, type|default('mini'), [val|default('1')], [pic|default('')], [txt], [color]) }}
 	<script type="text/javascript">console.warn("Use of 'basic.button' is deprecated, use 'basic.stateswitch' instead.")</script>
 {% endmacro %}
 
@@ -598,6 +599,7 @@ the first one is the base color for values below first threshold, so pass one co
 * A switch with two states displayed as a button
 *
 * @deprecated as of version 2.9. Use 'basic.stateswitch' instead.
+* @replacement {{ basic.stateswitch(%1$s, %2$s, %7$s, [%5$s, %6$s], [%3$s, %4$s], '', [%8$s, %9$s]) }}
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item
@@ -620,6 +622,7 @@ the first one is the base color for values below first threshold, so pass one co
 * Displays a colordisc-rgb-selector
 *
 * @deprecated as of version 2.9. Use 'basic.color' instead.
+* @replacement {{ basic.color(%1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s, 'disc') }}
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item for the r - value (0-255)
@@ -642,11 +645,12 @@ the first one is the base color for values below first threshold, so pass one co
 /**
 * Displays a value as float
 *
-* @deprecated as of version 2.9, use basic.print instead.
+* @deprecated as of version 2.9, use 'basic.print' instead.
+* @replacement {{ basic.print(%1$s, %2$s, %3$s, '', %5$s, %6$s) }}
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item
-* @param {text=} a unit, tries to get the format for that unit from the language-file (optional)
+* @param {text=float} a unit, tries to get the format for that unit from the language-file (optional, default 'float')
 * @param {text=span} the parent html-tag for the value (optional, default 'span')
 * @param {value[]=} array of thresholds; the color according to greatest reached threshold is applied. Use '' to define base color. (optional)
 * @param {color[]=} array of colors; 'icon1' or e. g. '#f00' for red (optional)
@@ -663,7 +667,8 @@ the first one is the base color for values below first threshold, so pass one co
 /**
 * calculate values and display
 *
-* @deprecated as of version 2.9, use basic.print instead.
+* @deprecated as of version 2.9, use 'basic.print' instead.
+* @replacement {{ basic.print(%1$s, %2$s, %3$s, %4$s, %5$s, %6$s) }}
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item[?]} one or more item(s). More items in array-form: [ item1 , item2 ]
@@ -686,7 +691,8 @@ the first one is the base color for values below first threshold, so pass one co
 * Displays a rgb-selector
 *
 * @deprecated as of version 2.9. Use 'basic.color' instead.
-* 
+* @replacement {{ basic.color(%1$s, %2$s, %3$s, %4$s, %5$s, %6$s, 7, %8$s, 'rect') }}
+*
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item for the r - value (0-255)
 * @param {item} an item for the g - value (0-255)
@@ -707,6 +713,7 @@ the first one is the base color for values below first threshold, so pass one co
 * A multi states button to extend the basic.dual behavior
 *
 * @deprecated as of version 2.9. Use 'basic.stateswitch' instead.
+* @replacement {{ basic.stateswitch(%1$s, %2$s, %5$s, %3$s, %4$s, '', %5$s) }}
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item for command
@@ -728,6 +735,7 @@ the first one is the base color for values below first threshold, so pass one co
 * A switch, build of two pics
 *
 * @deprecated as of version 2.9. Use 'basic.stateswitch' instead.
+* @replacement {{ basic.stateswitch(%1$s, %2$s, 'icon', [%5$s, %6$s], [%3$s, %4$s], '', [%7$s, %8$s]) }}
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item
@@ -748,7 +756,8 @@ the first one is the base color for values below first threshold, so pass one co
 /**
 * A dymanic text depending on an item
 *
-* @deprecated as of version 2.9, use basic.symbol instead.
+* @deprecated as of version 2.9, use 'basic.symbol' instead.
+* @replacement {{ basic.symbol(%1$s, %2$s, [%3$s, %4$s], [%5$s, %6$s]) }}
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item
@@ -775,7 +784,8 @@ the first one is the base color for values below first threshold, so pass one co
 /**
 * display a value
 *
-* @deprecated as of version 2.9, use basic.print instead.
+* @deprecated as of version 2.9, use 'basic.print' instead.
+* @replacement {{ basic.print(%1$s, %2$s, %3$s, '', %5$s, %6$s) }}
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item
