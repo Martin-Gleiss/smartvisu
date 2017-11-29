@@ -6,10 +6,6 @@ $.widget("sv.calendar_list", $.sv.widget, {
 	options: {
 		color: ''
 	},
-	
-	_create() {
-		this._super();		
-	},
 
 	_update: function(response) {
 			var data = response[0];
@@ -125,10 +121,6 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 		count: 5
 	},
 	
-	_create() {
-		this._super();		
-	},
-
 	_update: function(response) {
 			var data = response[0];
 			var node = this.element;

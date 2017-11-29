@@ -276,7 +276,7 @@ function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
 			{
 				$val = strval($val);
 				if ($val !== 'true' && $val !== 'false' && (!is_int($val) || $val !== '0' && substr($val, 0, 1) === '0'))
-					$val = '"'.$val.'"';
+					$val = '"'.preg_replace('/["\\\\]/', '\\\\$0', $val).'"';
 				$success &= false !== fwrite($handle, $key.' = '.$val.PHP_EOL);
 			}
 		}

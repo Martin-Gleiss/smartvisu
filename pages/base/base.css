@@ -1484,6 +1484,270 @@ div.ui-slider-switch{
 	margin: 0 auto;
 }
 
+.block .ui-fixed .plot,
+.block .set-1 .plot {
+	min-height: 14.5em;
+}
+.block .set-2 .plot {
+	min-height: 12.22em;
+}
+.block .set-3 .plot {
+	min-height: 9.94em;
+}
+
+/* Highcharts */
+.highcharts-container {
+	font-family: inherit;
+}
+.highcharts-root {
+	max-height: 400px;
+}
+.highcharts-root,
+.highcharts-background,
+.highcharts-plot-background {
+	fill: none;
+}
+.highcharts-plot-border {
+	stroke-width: 0;
+}
+
+.highcharts-title {
+	font-size: 18px;
+	fill: #fff;
+}
+.highcharts-subtitle {
+	fill: #ddd;
+}
+
+.highcharts-axis .highcharts-axis-line {
+	stroke: #666;
+	stroke-width: 2px;
+}
+.highcharts-tick {
+	stroke: #666;
+	stroke-width: 1px;
+}
+.highcharts-xaxis .highcharts-tick {
+	stroke-width: 2px;
+}
+.highcharts-axis-labels {
+	fill: #999;
+	font-size: 14px;
+}
+.highcharts-axis-title {
+	fill: #aaa;
+	font-size: 13px;
+}
+.highcharts-grid .highcharts-grid-line {
+	stroke: rgba(255, 255, 255, .1);
+	stroke-width: 1px;
+}
+
+.highcharts-legend-item text {
+	fill: #ccc;
+	font-size: 12px;
+	font-weight: normal;
+}
+.highcharts-legend-item:hover text {
+	fill: #fff;
+}
+.highcharts-legend-item-hidden * {
+	fill: #333;
+	stroke: #333;
+}
+
+.highcharts-markers path {
+	stroke: #fff;
+}
+.highcharts-column-series rect.highcharts-point,
+.highcharts-markers path.highcharts-halo {
+	fill: inherit;
+}
+
+.highcharts-label-box {
+	fill: none;
+}
+.highcharts-label text {
+	fill: #ccc;
+}
+.highcharts-data-labels {
+	fill: #ccc;
+	color: #ccc;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+.highcharts-tooltip-box {
+	fill: #272727;
+	fill-opacity: 0.8;
+	stroke-width: 0;
+}
+.highcharts-tooltip text {
+	fill: #fff;
+}
+
+.highcharts-button {
+	fill: #f7f7f7;
+	stroke: #cccccc;
+	stroke-width: 1px;
+	cursor: pointer;
+}
+.highcharts-button text {
+	fill: #333333;
+}
+.highcharts-button-hover {
+	fill: #e6e6e6;
+	stroke: #333333;
+}
+.highcharts-button-pressed {
+	fill: #e6ebf5;
+	stroke: #335cad;
+}
+
+.highcharts-selection-marker {
+	fill: #335cad;
+	fill-opacity: 0.25;
+}
+
+.highcharts-pane {
+	fill: #EEE;
+	fill-opacity: 1;
+	stroke: silver;
+	stroke-width: 1px;
+}
+
+.highcharts-columnrange-series .highcharts-point,
+.highcharts-column-series .highcharts-point {
+	stroke: #fff !important;
+}
+.highcharts-gauge-series .highcharts-pivot {
+	fill: #000;
+	stroke: #000;
+}
+.highcharts-pie-series .highcharts-point {
+	stroke-width: 0;
+}
+.polarChart .highcharts-axis-line,
+.solidgauge .highcharts-axis-line,
+.solidgauge .highcharts-grid-line {
+	stroke: none;
+}
+
+[data-mode="scale"] .highcharts-pane {
+	fill: #555;
+	stroke-width: 0;
+}
+[data-mode="scale"] .highcharts-axis-line,
+[data-mode="scale"] .highcharts-grid-line,
+[data-mode="scale"] .highcharts-minor-grid-line,
+[data-mode="scale"] .highcharts-tick {
+	stroke-width: 0;
+}
+[data-mode="scale"] .highcharts-minor-tick {
+	stroke: #444;
+	stroke-width: 2px;
+}
+[data-mode="scale"] .highcharts-axis-labels {
+	fill: lightgrey;
+  font-size: 11px;
+}
+[data-mode="scale"] .highcharts-plot-band {
+	fill: #fff;
+	fill-opacity: 0.2;
+}
+[data-mode="scale"] .highcharts-dial {
+	fill: #eee
+}
+[data-mode="scale"] .highcharts-data-label text {
+	fill: grey;
+	color: grey;
+	font-size: 30px;
+  text-shadow: 0 0 6px #FFFFFF, 0 0 3px #FFFFFF;
+}
+[data-mode="scale"] .highcharts-label-box {
+	stroke-width: 0;
+}
+
+[data-mode="speedometer"] .highcharts-axis-line,
+[data-mode="speedometer"] .highcharts-grid-line,
+[data-mode="speedometer"] .highcharts-minor-grid-line {
+	stroke-width: 0;
+}
+[data-mode="speedometer"] .highcharts-tick {
+	stroke: #666;
+	stroke-width: 2px;
+}
+[data-mode="speedometer"] .highcharts-minor-tick {
+	stroke: #666;
+	stroke-width: 1px;
+}
+[data-mode="speedometer"] .highcharts-axis-labels text,
+[data-mode="speedometer"] .highcharts-data-label text {
+	fill: grey;
+	color: grey;
+  text-shadow: none;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+[data-mode="speedometer"] .outer-pane {
+	stroke-width: 0;
+}
+[data-mode="speedometer"] .middle-pane {
+	stroke-width: 1px;
+}
+[data-mode="speedometer"] .inner-pane {
+	stroke-width: 0;
+	fill: #DDD;
+}
+#speedometerOuterPaneGradient stop[offset="0"],
+#speedometerMiddlePaneGradient stop[offset="1"] {
+	stop-color: #fff;
+}
+#speedometerOuterPaneGradient stop[offset="1"],
+#speedometerMiddlePaneGradient stop[offset="0"] {
+	stop-color: #333;
+}
+
+[data-mode="vumeter"] .outer-pane {
+	stroke-width: 0;
+}
+[data-mode="vumeter"] .highcharts-grid-line,
+[data-mode="vumeter"] .highcharts-minor-grid-line,
+[data-mode="vumeter"] .highcharts-tick {
+	stroke-width: 0;
+}
+[data-mode="vumeter"] .highcharts-axis-line,
+[data-mode="vumeter"] .highcharts-minor-tick {
+	stroke: #A0A0A0;
+	stroke-width: 1px;
+}
+[data-mode="vumeter"] .highcharts-axis-title {
+	fill: grey;
+	color: grey;
+  text-shadow: none;
+  font-weight: bold;
+}
+[data-mode="vumeter"] .highcharts-axis-labels text,
+[data-mode="vumeter"] .highcharts-data-label text {
+	fill: grey;
+	color: grey;
+  text-shadow: none;
+  font-size: 11px;
+  font-weight: bold;
+}
+#vumeterGradient stop[offset="0"],
+#vumeterGradient stop[offset="1"] {
+	stop-color: #FFF4C6;
+}
+#vumeterGradient stop[offset="0.3"] {
+	stop-color: #FFF;
+}
+
+.shortdot {
+	stroke-dasharray: 2, 2;
+}
+
 /**
  * --- W i d g e t s :   S T A T U S ------------------------------------------
  */
@@ -1885,328 +2149,3 @@ svg.fx-icon, .icon {
 		float: inherit;
 	}
 }
-
-
-/**
- * --- H I G H C H A R T S ----------------------------------------------------
- */
-.highcharts-container {
-	font-family: inherit;
-}
-.highcharts-root {
-	max-height: 400px;
-}
-.highcharts-root,
-.highcharts-background,
-.highcharts-plot-background {
-	fill: none;
-}
-.highcharts-plot-border {
-	stroke-width: 0;
-}
-
-.highcharts-title {
-	font-size: 18px;
-	fill: #fff;
-}
-.highcharts-subtitle {
-	fill: #ddd;
-}
-
-.highcharts-axis .highcharts-axis-line {
-	stroke: #666;
-	stroke-width: 2px;
-}
-.highcharts-tick {
-	stroke: #666;
-	stroke-width: 1px;
-}
-.highcharts-xaxis .highcharts-tick {
-	stroke-width: 2px;
-}
-.highcharts-axis-labels {
-	fill: #999;
-	font-size: 14px;
-}
-.highcharts-axis-title {
-	fill: #aaa;
-	font-size: 13px;
-}
-.highcharts-grid .highcharts-grid-line {
-	stroke: rgba(255, 255, 255, .1);
-	stroke-width: 1px;
-}
-
-.highcharts-legend-item text {
-	fill: #ccc;
-	font-size: 12px;
-	font-weight: normal;
-}
-.highcharts-legend-item:hover text {
-	fill: #fff;
-}
-.highcharts-legend-item-hidden * {
-	fill: #333;
-	stroke: #333;
-}
-
-.highcharts-markers path {
-	stroke: #fff;
-}
-.highcharts-column-series rect.highcharts-point,
-.highcharts-markers path.highcharts-halo {
-	fill: inherit;
-}
-
-.highcharts-label-box {
-	fill: none;
-}
-.highcharts-label text {
-	fill: #ccc;
-}
-.highcharts-data-labels {
-	fill: #ccc;
-	color: #ccc;
-	font-size: 11px;
-	font-weight: normal;
-}
-
-/*
-#tooltipGradient stop[offset="0"] {
-	stop-color: #606060;
-}
-#tooltipGradient stop[offset="1"] {
-	stop-color: #101010;
-}
-*/
-.highcharts-tooltip-box {
-	/*	fill: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxsaW5lYXJHcmFkaWVudCB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSIgaWQ9ImciPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzYwNjA2MCI+PC9zdG9wPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzEwMTAxMCI+PC9zdG9wPjwvbGluZWFyR3JhZGllbnQ+PC9zdmc+#g); */
-	/*	fill: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3ClinearGradient%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%20id%3D%22g%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23606060%22%3E%3C%2Fstop%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23101010%22%3E%3C%2Fstop%3E%3C%2FlinearGradient%3E%3C%2Fsvg%3E#g); */
-	/* url(https://stwidmer.ch/sv-git/develop/designs/tg.svg#g); */
-	/*	fill: url(data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg"><linearGradient x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#606060"></stop><stop offset="1" stop-color="#101010"></stop></linearGradient></svg>); */
-	/*fill: url(#tooltipGradient);*/
-	fill: #272727;
-	fill-opacity: 0.8;
-	stroke-width: 0;
-}
-.highcharts-tooltip text {
-	fill: #fff;
-}
-
-.highcharts-button {
-	fill: #f7f7f7;
-	stroke: #cccccc;
-	stroke-width: 1px;
-	cursor: pointer;
-}
-.highcharts-button text {
-	fill: #333333;
-}
-.highcharts-button-hover {
-	fill: #e6e6e6;
-	stroke: #333333;
-}
-.highcharts-button-pressed {
-	fill: #e6ebf5;
-	stroke: #335cad;
-}
-
-.highcharts-selection-marker {
-	fill: #335cad;
-	fill-opacity: 0.25;
-}
-
-.highcharts-pane {
-	fill: #EEE;
-	fill-opacity: 1;
-	stroke: silver;
-	stroke-width: 1px;
-}
-
-.highcharts-columnrange-series .highcharts-point,
-.highcharts-column-series .highcharts-point {
-	stroke: #fff !important;
-}
-.highcharts-gauge-series .highcharts-pivot {
-	fill: #000;
-	stroke: #000;
-}
-.highcharts-pie-series .highcharts-point {
-	stroke-width: 0;
-}
-.polarChart .highcharts-axis-line,
-.solidgauge .highcharts-axis-line,
-.solidgauge .highcharts-grid-line {
-	stroke: none;
-}
-
-[data-mode="scale"] .highcharts-pane {
-	fill: #555;
-	stroke-width: 0;
-}
-[data-mode="scale"] .highcharts-axis-line,
-[data-mode="scale"] .highcharts-grid-line,
-[data-mode="scale"] .highcharts-minor-grid-line,
-[data-mode="scale"] .highcharts-tick {
-	stroke-width: 0;
-}
-[data-mode="scale"] .highcharts-minor-tick {
-	stroke: #444;
-	stroke-width: 2px;
-}
-[data-mode="scale"] .highcharts-axis-labels {
-	fill: lightgrey;
-  font-size: 11px;
-}
-[data-mode="scale"] .highcharts-plot-band {
-	fill: #fff;
-	fill-opacity: 0.2;
-}
-[data-mode="scale"] .highcharts-dial {
-	fill: #eee
-}
-[data-mode="scale"] .highcharts-data-label text {
-	fill: grey;
-	color: grey;
-	font-size: 30px;
-  text-shadow: 0 0 6px #FFFFFF, 0 0 3px #FFFFFF;
-}
-[data-mode="scale"] .highcharts-label-box {
-	stroke-width: 0;
-}
-
-[data-mode="speedometer"] .highcharts-axis-line,
-[data-mode="speedometer"] .highcharts-grid-line,
-[data-mode="speedometer"] .highcharts-minor-grid-line {
-	stroke-width: 0;
-}
-[data-mode="speedometer"] .highcharts-tick {
-	stroke: #666;
-	stroke-width: 2px;
-}
-[data-mode="speedometer"] .highcharts-minor-tick {
-	stroke: #666;
-	stroke-width: 1px;
-}
-[data-mode="speedometer"] .highcharts-axis-labels text,
-[data-mode="speedometer"] .highcharts-data-label text {
-	fill: grey;
-	color: grey;
-  text-shadow: none;
-  font-size: 11px;
-  font-weight: bold;
-}
-
-[data-mode="speedometer"] .outer-pane {
-	stroke-width: 0;
-}
-[data-mode="speedometer"] .middle-pane {
-	stroke-width: 1px;
-}
-[data-mode="speedometer"] .inner-pane {
-	stroke-width: 0;
-	fill: #DDD;
-}
-#speedometerOuterPaneGradient stop[offset="0"],
-#speedometerMiddlePaneGradient stop[offset="1"] {
-	stop-color: #fff;
-}
-#speedometerOuterPaneGradient stop[offset="1"],
-#speedometerMiddlePaneGradient stop[offset="0"] {
-	stop-color: #333;
-}
-
-[data-mode="vumeter"] .outer-pane {
-	stroke-width: 0;
-}
-[data-mode="vumeter"] .highcharts-grid-line,
-[data-mode="vumeter"] .highcharts-minor-grid-line,
-[data-mode="vumeter"] .highcharts-tick {
-	stroke-width: 0;
-}
-[data-mode="vumeter"] .highcharts-axis-line,
-[data-mode="vumeter"] .highcharts-minor-tick {
-	stroke: #A0A0A0;
-	stroke-width: 1px;
-}
-[data-mode="vumeter"] .highcharts-axis-title {
-	fill: grey;
-	color: grey;
-  text-shadow: none;
-  font-weight: bold;
-}
-[data-mode="vumeter"] .highcharts-axis-labels text,
-[data-mode="vumeter"] .highcharts-data-label text {
-	fill: grey;
-	color: grey;
-  text-shadow: none;
-  font-size: 11px;
-  font-weight: bold;
-}
-#vumeterGradient stop[offset="0"],
-#vumeterGradient stop[offset="1"] {
-	stop-color: #FFF4C6;
-}
-#vumeterGradient stop[offset="0.3"] {
-	stop-color: #FFF;
-}
-
-.shortdot {
-	stroke-dasharray: 2, 2;
-}
-
-/*
-.highcharts-color-3 - 9
-OR
-chart.colorCount = 3
-*/
-/*
-.highcharts-range-selector-buttons .highcharts-button {
-	fill: url( #rangeselectorGradient );
-	stroke: #000;
-	color: #CCC;
-	font-weight: bold;
-}
-#rangeselectorGradient stop[offset="0"] {
-	stop-color: #888;
-	//0.4
-}
-#rangeselectorGradient stop[offset="1"] {
-	stop-color: #555;
-	//0.6
-}
-
-.highcharts-range-selector-buttons .highcharts-button:hover {
-	fill: url( #rangeselectorHoverGradient );
-				color: #fff;
-}
-#rangeselectorHoverGradient stop[offset="0"] {
-	stop-color: #BBB;
-	//0.4
-}
-#rangeselectorHoverGradient stop[offset="1"] {
-	stop-color: #888;
-	//0.6
-}
-
-.highcharts-range-selector-buttons .highcharts-button:active {
-	fill: url( #rangeselectorActiveGradient );
-	color: yellow;
-}
-#rangeselectorActiveGradient stop[offset="0"] {
-	stop-color: #000;
-	//0.1
-}
-#rangeselectorActiveGradient stop[offset="1"] {
-	stop-color: #333;
-	//0.3
-}
-.highcharts-range-input text,
-input.highcharts-range-select {
-	background-color: #333;
-	color: silver;
-}
-.highcharts-range-label {
-	color: silver;
-}
-*/

@@ -8,7 +8,7 @@ $.widget("sv.device_codepad", $.sv.widget, {
 		val: '0000'
 	},
 	
-	_create() {
+	_create: function() {
 		this._super();		
 		var codepad = this.element;
 		var id = this.options.id;
@@ -130,16 +130,12 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 	initSelector: '[data-widget="uzsu.uzsuicon"]',
 
 	options: {
-  valueparameterlist: null,
+		valueparameterlist: null,
 		headline: '',
 		designtype: 0,
 		valuetype: 'bool'
 	},
 	
-	_create() {
-		this._super();		
-	},
-
 	_uzsudata: {},
 	
 	_update: function(response) {
@@ -476,7 +472,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 		}
 		return tt;
 	},
-	
+
 	_uzsuBuildTableFooter: function() {
 		var tt = "";
 		// Zeileneinträge abschliessen und damit die uzsuTableMain
@@ -795,12 +791,16 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 		tt += this._uzsuBuildTableFooter();
 		// dann hängen wir das an die aktuelle Seite
 		var uzsuPopup = $(tt).appendTo(this.element).enhanceWithin().popup().on({
-			popupbeforeposition: function() {
-				var maxHeight = $(window).height() - 180;
+			popupbeforeposition: function(ev, ui) {
+				var maxHeight = $(window).height() - 230;
 				$(this).find('.uzsuTableMain').css('max-height', maxHeight + 'px').css('overflow-y','auto').css('overflow-x','hidden');
 			},
-			popupafterclose: function () {
+			popupafteropen: function(ev, ui) {
+				$(this).popup('reposition', {y: 30})
+			},
+			popupafterclose: function(ev, ui) {
 				$(this).remove();
+				$(window).off('resize', self._onresize);
 			}
 		});
 		// dann speichern wir uns für cancel die ursprünglichen im DOM gespeicherten Werte in eine Variable ab
@@ -849,7 +849,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 
 		// hier wir die aktuelle Seite danach durchsucht, wo das Popup ist und im folgenden das Popup initialisiert, geöffnet und die schliessen
 		// Funktion daran gebunden. Diese entfernt wieder das Popup aus dem DOM Baum nach dem Schliessen mit remove
-		uzsuPopup.popup('open');
+		uzsuPopup.popup('open');//.css({ position: 'fixed', top: '30px' });
 	}
 
 });

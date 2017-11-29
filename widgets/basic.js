@@ -699,7 +699,6 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 
 });
 
-
 // ----- basic.offset -----------------------------------------------------------
 $.widget("sv.basic_offset", $.sv.widget, {
 

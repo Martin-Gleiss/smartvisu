@@ -36,6 +36,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 		or is_file(const_path."apps/".$request['page'].".html")
 		or is_file(const_path."pages/smarthome/".$request['page'].".html")
 		or is_file(const_path."pages/base/".$request['page'].".html")
+		or is_file(const_path."dropins/".$request['page'].".html")
 )
 {
 	// init template engine

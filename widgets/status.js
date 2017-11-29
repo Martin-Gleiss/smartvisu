@@ -41,10 +41,6 @@ $.widget("sv.status_collapse", $.sv.widget, {
 		'val-collapsed': 0
 	},
 	
-	_create() {
-		this._super();		
-	},
-
 	_update: function(response) {
 		// response is: {{ gad_trigger }}
 		var target = $('[data-bind="' + this.options.id + '"]');

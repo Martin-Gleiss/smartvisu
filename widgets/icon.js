@@ -8,7 +8,8 @@ $.widget("sv.dynicon", $.sv.widget, {
 
 	_update: function(response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
-    this.element.attr('class', 'icon' + (response[0] && response[1] ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
+		if(response[1] !== undefined)
+			this.element.attr('class', 'icon' + (response[0] && response[1] ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
 
 		var max = this.options.max;
 		var min = this.options.min;

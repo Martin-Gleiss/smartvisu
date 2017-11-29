@@ -30,8 +30,8 @@ $.widget("sv.multimedia_slideshow", $.sv.widget, {
 	options: {
 	},
 	
-	_create() {
-		this._super();	
+	_create: function() {
+		this._super();
 		this.element.cycle();
 	},
 
