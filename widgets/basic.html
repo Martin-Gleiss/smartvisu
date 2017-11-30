@@ -21,6 +21,7 @@
 
 	<label{% if txt is empty %} style="padding-right: 0; width: 0;"{% endif %}>
 		<input type="checkbox"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.checkbox" data-item="{{ item }}"
+			{%- if txt is empty %} data-mini="true"{% endif -%}
 			data-val-on="{{ val_on|default(1) }}" data-val-off="{{ val_off|default(0) }}" />
 		{{ txt }}&nbsp;
 	</label>
