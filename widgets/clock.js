@@ -3,9 +3,6 @@ $.widget("sv.clock_digiclock", $.sv.widget, {
 
 	initSelector: 'div.digiclock[data-widget="clock.digiclock"]',
 
-	options: {
-	},
-
 	_create: function() {
 		this._super();
 		this.element.digiclock({ svrOffset: window.servertimeoffset || 0 });		
@@ -42,9 +39,13 @@ $.widget("sv.clock_miniclock", $.sv.widget, {
 
 	initSelector: 'span[data-widget="clock.miniclock"]',
 
+	options: {
+		format: 'time'
+	},
+
 	_repeat: function() {
 			var now = new Date(Date.now() - (window.servertimeoffset || 0));
-			this.element.text(now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes());
+			this.element.text(now.transUnit(this.options.format));
 	},
 
 });

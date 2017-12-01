@@ -18,7 +18,7 @@
 - New: icon.cistern
 - New: icon.heating (displays a heating colored with dynamic gradient)
 - basic.symbol: Can also be used to show text only and to render as link, mode extended to adaptable formula, and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
-- Enhanced plot.period (among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale and units)
+- plot.period: Among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale and units
 - plot.temprose: New parameters 'series_label' and 'unit'
 - basic.slider: New parameters 'value_display', 'min_display' and 'max_display'
 - device.blind & device.shutter: item_move is now optional
@@ -29,8 +29,9 @@
 - device.rtr: New parameters to specify separate offset item and additional content
 - Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
 - calendar.list: New parameters to select and colorize calendars
-- basic.checkbox & basic.flip: value_on and value_off can be set by parameters
-- multimedia.slideshow: fix items, add control buttons and reverse parameter
+- basic.checkbox & basic.flip: Value_on and value_off can be set by parameters
+- multimedia.slideshow: Fix items, add control buttons and reverse parameter
+- clock.miniclock: New parameter 'format'
 
 ### Other New Features
 - Allow pages selection by url parameter (e.g. index.php?pages=foo)
