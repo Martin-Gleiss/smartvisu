@@ -102,9 +102,11 @@ class TemplateChecker {
 	 */
 	private function readFile($absFile) {
 		// Create DOMDocument from html, add errors for parsing issues
-		$this->domDocument = new DOMDocument();
+		$this->domDocument = new DOMDocument('1.0', 'UTF-8');
+    $content = file_get_contents($absFile);
 		libxml_use_internal_errors(true);
-		$this->domDocument->loadHTMLFile($absFile);
+		//$this->domDocument->loadHTMLFile($absFile);
+    $this->domDocument->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
 		$errors = libxml_get_errors();
 		foreach ($errors as $error) {
 			if (array_key_exists($error->code, $this->ignore_html_error_code)) {
