@@ -153,7 +153,7 @@ html body .ui-page .hide {
 
 /* min-height for scrollbars and push out url, min-width for smallest device */
 .ui-content {
-	min-height: 850px;
+/*	min-height: 850px; */
 	min-width: 290px;
 }
 
@@ -261,6 +261,7 @@ a:hover {
 .ui-controlgroup {
 	display: inline-block;
 	vertical-align: middle;
+	margin: 0;
 }
 
 .ui-btn-inline {
@@ -1277,6 +1278,14 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	clear: both;
 	height: 3.8em;
 }
+/* possible work around for firefox line break issues with scrollbars
+.uzsuRow:first-of-type::after {
+    content: '';
+    visibility: hidden;
+    width: 18px;
+    display: inline-block;
+}
+*/
 .uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec{
 	height: 3.8em;
 	border: 1px dotted;
@@ -1322,8 +1331,9 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	display: table;
 }
 .uzsuTimeInput, .uzsuTimeMaxMinInput, .uzsuTimeOffsetInput, .uzsuValueInput{
-	width: 6ex !important;
+	width: 9ex !important;
 	padding: 0.1em !important;
+	text-align: center !important;
 }
 .uzsuTimeInput::-webkit-inner-spin-button,
 .uzsuTimeMaxMinInput::-webkit-inner-spin-button,
