@@ -201,6 +201,20 @@ var io = {
 		}
 
 		// plots
+		var repeatSeries = function(item, tmin, tmax, ymin, ymax, cnt, step, startval) {
+			var series = io.demoseries(tmin, tmax, ymin, ymax, cnt, startval);
+			widget.update(item, series);
+
+			if(step == null)
+				step = Math.round((new Date().duration(tmin) - new Date().duration(tmax)) / cnt);
+			var nextTime = (new Date().duration(tmax).getTime() - step)/1000;
+			var startval = series[series.length-1][1];
+
+			setTimeout(function(){
+				repeatSeries(item, tmax, nextTime+"s", ymin, ymax, 1, step, startval);
+			}, 5000);
+		}
+
 		widget.plot().each(function (idx) {
 			var items = widget.explode($(this).attr('data-item'));
 
@@ -209,13 +223,16 @@ var io = {
 
 				if (widget.get(items[i]) == null && (widget.checkseries(items[i]))) {
 
+					var assign = ($(this).attr('data-assign') || "").explode();
+					var yAxis = (assign[i] ? assign[i] - 1 : 0)
+
 					var ymin = [];
 					if ($(this).attr('data-ymin')) { ymin = $(this).attr('data-ymin').explode(); }
 
 					var ymax = [];
 					if ($(this).attr('data-ymax')) { ymax = $(this).attr('data-ymax').explode(); }
 
-					widget.update(items[i], io.demoseries(item[item.length - 3], item[item.length - 2], ymin[i], ymax[i], item[item.length - 1]));
+					repeatSeries(items[i], item[item.length - 3], item[item.length - 2], ymin[yAxis], ymax[yAxis], item[item.length - 1]);
 				}
 			}
 		});
@@ -229,7 +246,7 @@ var io = {
 	/**
 	 * Builds a series out of random float values
 	 */
-	demoseries: function (tmin, tmax, min, max, cnt) {
+	demoseries: function (tmin, tmax, min, max, cnt, val) {
 
 		var ret = Array();
 
@@ -248,7 +265,8 @@ var io = {
 		var step = Math.round((tmax - tmin) / cnt);
 
 		if(min == 0 && max == 1) { // boolean plot
-			var val = 0;
+			if(val === undefined)
+				val = 0;
 			while (tmin < tmax) {
 				val = (Math.random() < (0.2 + 0.6 * val)) ? 1 : 0; // make changes lazy
 				ret.push([tmin, val]);
@@ -257,7 +275,8 @@ var io = {
 		}
 		else {
 			var delta = (max - min) / 20;
-			var val = (min * 1) + ((max - min) / 2);
+			if(val === undefined)
+				val = (min * 1) + ((max - min) / 2);
 
 			while (tmin < tmax) {
 				val += Math.random() * (2 * delta) - delta;
@@ -265,6 +284,7 @@ var io = {
 				tmin += step;
 			}
 		}
+
 		return ret;
 	},
 

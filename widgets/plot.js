@@ -21,10 +21,10 @@ $.widget("sv.plot", $.sv.widget, {
 		//this._point(response);
 	//}
 	point: function(item, value) {
-	var items = String(this.options.item).explode();
+		var items = String(this.options.item).explode();
 
 		if (value !== undefined) {
-		var values = new Array(items.length);
+			var values = new Array(items.length);
 			values[items.indexOf(item)] = value;
 			this._point(values);
 		}
@@ -141,6 +141,8 @@ $.widget("sv.plot_period", $.sv.plot, {
 		ytype: '',
 		count: '',
 	},
+
+	_memorized_points: { min:[], max:[] },
 
 	_update: function(response) {
 		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ]
@@ -325,9 +327,34 @@ $.widget("sv.plot_period", $.sv.plot, {
 				var minValues = minResponse[i];
 				var maxValues = maxResponse[i];
 
-				var data = [];
+				if(minValues === undefined && maxValues === undefined)
+					continue;
+
+				if(minValues === undefined) {
+					if(this._memorized_points.min[i] !== undefined) {
+						minValues = this._memorized_points.min[i];
+						this._memorized_points.min[i] = undefined;
+					}
+					else {
+						this._memorized_points.max[i] = maxValues;
+					}
+				}
+				else if(maxValues === undefined) {
+					if(this._memorized_points.max[i] !== undefined) {
+						maxValues = this._memorized_points.max[i];
+						this._memorized_points.max[i] = undefined;
+					}
+					else {
+						this._memorized_points.min[i] = minValues;
+					}
+				}
+
+				if(minValues === undefined || maxValues === undefined)
+					continue;
+
 				for (var j = 0; j < minValues.length; j++) {
-					chart.series[i].addPoint([ minValues[j][0], minValues[j][1], maxValues[j][1] ], false, (chart.series[i].data.length >= count));
+					var series = chart.series[i]
+					series.addPoint([ minValues[j][0], minValues[j][1], maxValues[j][1] ], false, (series.data.length >= count));
 				}
 			}
 		}
@@ -335,31 +362,13 @@ $.widget("sv.plot_period", $.sv.plot, {
 		for (var i = 0; i < itemCount; i++) {
 			if (response[i]) {
 				for (var j = 0; j < response[i].length; j++) {
-					var series = chart.series[(mode == 'minmaxavg' ? i+1 : i)*itemCount]
-					series.addPoint(response[i][j], false, (series >= count));
+					var series = chart.series[(mode == 'minmaxavg' ? i+itemCount : i)]
+					series.addPoint(response[i][j], false, (series.data.length >= count));
 				}
 			}
 		}
 
 		chart.redraw();
-/*
-		event.stopPropagation();
-
-		var count = this.options.count;
-		if (count < 1) {
-			count = 100;
-		}
-
-		var chart = this.element.highcharts();
-		for (var i = 0; i < response.length; i++) {
-			if (response[i]) {
-				for (var j = 0; j < response[i].length; j++) {
-					chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= count));
-				}
-			}
-		}
-		chart.redraw();
-*/
 	},
 
 });
