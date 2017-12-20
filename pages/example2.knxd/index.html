@@ -20,8 +20,8 @@
     
     <div class="center">
        {{ now|smartdate('l') }}, {{ now|smartdate() }}<br/>
-	<img src="lib/weather/pics/sun_up.png" class="sunIcon"/> {{ basic.value('sonnenaufgang', '15/1/50/10.xxx') }} <img src="lib/weather/pics/sun_down.png" class="sunIcon"//> {{ basic.value('sonnenuntergang', '15/1/51/10.xxx') }}&nbsp;&nbsp;&nbsp;&nbsp;
-	<img src="lib/weather/pics/moon_up.png" class="moonIcon" /> {{ basic.value('mondaufgang', '15/1/52/10.xxx') }} <img src="lib/weather/pics/moon_down.png" class="moonIcon"//> {{ basic.value('monduntergang', '15/1/53/10.xxx') }}<br/>
+	<img src="lib/weather/pics/sun_up.png" class="sunIcon"/> {{ basic.print('sonnenaufgang', '15/1/50/10.xxx') }} <img src="lib/weather/pics/sun_down.png" class="sunIcon"//> {{ basic.print('sonnenuntergang', '15/1/51/10.xxx') }}&nbsp;&nbsp;&nbsp;&nbsp;
+	<img src="lib/weather/pics/moon_up.png" class="moonIcon" /> {{ basic.print('mondaufgang', '15/1/52/10.xxx') }} <img src="lib/weather/pics/moon_down.png" class="moonIcon"//> {{ basic.print('monduntergang', '15/1/53/10.xxx') }}<br/>
     </div> 
     
     <hr>

@@ -31,7 +31,7 @@
             {{ device.dimmer('flurog_decke', 'Decke', '10/1/1/1.001', '10/1/5/5.xxx', 200, 5) }}
             <table width="90%">
             <tr>
-               <td align="left" width="100px">&nbsp; {{ basic.switch('dachboden', '11/1/1/1.001', 'light_light.svg', 'light_light.svg') }} </td>
+               <td align="left" width="100px">&nbsp; {{ basic.stateswitch('dachboden', '11/1/1/1.001', 'icon', ['1', '0'], ['light_light.svg', 'light_light.svg'], '', ['icon1', 'icon0']) }}
                <td>Dachboden</td>
             </tr>
             </table>

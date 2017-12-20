@@ -22,13 +22,13 @@
 				<h3>Licht</h3>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('JohannaDeckenlicht', 'OG.Johanna.Deckenlicht', 'light_ceiling_light.svg', 'light_ceiling_light.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('JohannaDeckenlicht', 'OG.Johanna.Deckenlicht', 'icon', ['1', '0'], ['light_ceiling_light.svg', 'light_ceiling_light.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>Deckenlampe</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('JohannaDeckeSchmetterlinge', 'OG.Johanna.Schmetterlinge', 'light_wire_system_1.svg', 'light_wire_system_1.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('JohannaDeckeSchmetterlinge', 'OG.Johanna.Schmetterlinge', 'icon', ['1', '0'], ['light_wire_system_1.svg', 'light_wire_system_1.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>Schmetterlinge</td>
 					</tr>
 				</table>
@@ -41,7 +41,7 @@
 
 			<div data-role="collapsible" data-collapsed="false">
 				<h3>Heizung</h3>
-				{{ device.rtrmacflei('OG.Johanna.temperature', 'OG.Johanna.temperature.stellgroesse', 'OG.Johanna.temperature', 'OG.Johanna.temperature.set', 'OG.Johanna.temperature.mode', 'OG.Johanna.temperature.night', 'OG.Philipp.temperature.frost', '', 'OG.Johanna.temperature.zwangon', 'OG.Johanna.temperature.zwangoff', '', '0.5') }}
+				{{ device.rtr('', '', 'OG.Johanna.temperature', 'OG.Johanna.temperature.set', 'OG.Johanna.temperature.mode', 'OG.Johanna.temperature.night', 'OG.Philipp.temperature.frost', 'OG.Johanna.temperature.on', '', '0.5') }}
 			</div>
 
 		</div>

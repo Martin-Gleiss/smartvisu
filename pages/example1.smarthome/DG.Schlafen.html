@@ -21,19 +21,19 @@
 				<h3>Lichter</h3>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('SchDeckenspots', 'DG.Schlafen.SpotsDecke', 'light_downlight.svg', 'light_downlight.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('SchDeckenspots', 'DG.Schlafen.SpotsDecke', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>Deckenspots</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('WLBettlinks', 'DG.Schlafen.Bettlinks', 'light_wall_3.svg', 'light_wall_3.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('WLBettlinks', 'DG.Schlafen.Bettlinks', 'icon', ['1', '0'], ['light_wall_3.svg', 'light_wall_3.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>Bett Leselampe links</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('WLBettrechts', 'DG.Schlafen.Bettrechts', 'light_wall_3.svg', 'light_wall_3.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('WLBettrechts', 'DG.Schlafen.Bettrechts', 'icon', ['1', '0'], ['light_wall_3.svg', 'light_wall_3.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>Bett Leselampe rechts</td>
 					</tr>
 				</table>
@@ -46,7 +46,7 @@
 
 			<div data-role="collapsible" data-collapsed="false">
 				<h3>Heizung</h3>
-				{{ device.rtrmacflei('DG.Schlafen.temperature', 'DG.Schlafen.temperature.stellgroesse', 'DG.Schlafen.temperature', 'DG.Schlafen.temperature.set', 'DG.Schlafen.temperature.mode', 'DG.Schlafen.temperature.night', 'DG.Schlafen.temperature.frost', '', 'DG.Schlafen.temperature.zwangon', 'DG.Schlafen.temperature.zwangoff', '', '0.5') }}
+				{{ device.rtr('', '', 'DG.Schlafen.temperature', 'DG.Schlafen.temperature.set', 'DG.Schlafen.temperature.mode', 'DG.Schlafen.temperature.night', 'DG.Schlafen.temperature.frost', 'DG.Schlafen.temperature.on', '', '0.5') }}
 			</div>
 
 		</div>

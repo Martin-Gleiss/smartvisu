@@ -21,25 +21,25 @@
 				<h3>Licht, PC, Status</h3>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('PhilippDeckenlicht', 'OG.Philipp.Deckenlicht', 'light_ceiling_light.svg', 'light_ceiling_light.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('PhilippDeckenlicht', 'OG.Philipp.Deckenlicht', 'icon', ['1', '0'], ['light_ceiling_light.svg', 'light_ceiling_light.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>Deckenlampe</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('PhilippTischleuchte', 'OG.Philipp.Tischleuchte', 'light_office_desk.svg', 'light_office_desk.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('PhilippTischleuchte', 'OG.Philipp.Tischleuchte', 'icon', ['1', '0'], ['light_office_desk.svg', 'light_office_desk.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>Tischleuchte</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('IngridPC', 'Allgemein.PCs.PCIngrid', 'it_pc.svg', 'it_pc.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('IngridPC', 'Allgemein.PCs.PCIngrid', 'icon', ['1', '0'], ['it_pc.svg', 'it_pc.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>PC - Ingrid</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', 'it_television.svg', 'it_television.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>Monitor und Drucker</td>
 					</tr>
 				</table>
@@ -52,7 +52,7 @@
 
 			<div data-role="collapsible" data-collapsed="false">
 				<h3>Heizung</h3>
-				{{ device.rtrmacflei('OG.Philipp.temperature', 'OG.Philipp.temperature.stellgroesse', 'OG.Philipp.temperature', 'OG.Philipp.temperature.set', 'OG.Philipp.temperature.mode', 'OG.Philipp.temperature.night', 'OG.Philipp.temperature.frost', '', 'OG.Philipp.temperature.zwangon', 'OG.Philipp.temperature.zwangoff', '', '0.5') }}
+				{{ device.rtr('', '', 'OG.Philipp.temperature', 'OG.Philipp.temperature.set', 'OG.Philipp.temperature.mode', 'OG.Philipp.temperature.night', 'OG.Philipp.temperature.frost', 'OG.Philipp.temperature.on', '', '0.5') }}
 			</div>
 
 		</div>

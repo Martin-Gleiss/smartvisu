@@ -71,10 +71,10 @@
 					<table width=100%>
 						<tr>
 							<td align=left width=50%>
-								{{ basic.switch('WLAN1', 'FB.WLAN', 'it_wifi.svg', 'it_wifi.svg') }} W-LAN
+								{{ basic.stateswitch('WLAN1', 'FB.WLAN', 'icon', ['1', '0'], ['it_wifi.svg', 'it_wifi.svg'], '', ['icon1', 'icon0']) }} W-LAN
 							</td>
 							<td align=left>
-								{{ basic.switch('DECT2', 'FB.DECT', 'it_wireless_dcf77.svg', 'it_wireless_dcf77.svg') }} DECT
+								{{ basic.stateswitch('DECT2', 'FB.DECT', 'icon', ['1', '0'], ['it_wireless_dcf77.svg', 'it_wireless_dcf77.svg'], '', ['icon1', 'icon0']) }} DECT
 							</td>
 						</tr>
 					</table>

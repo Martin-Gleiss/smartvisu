@@ -22,15 +22,15 @@
 
 		<div class="image">
 			{% if mode == 'day' %}
-				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tt_webL.jpg', 'fill') }}
+				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tt_webL.jpg', 'corner') }}
 			{% elseif mode == 'night' %}
-				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tn_webL.jpg', 'fill') }}
+				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tn_webL.jpg', 'corner') }}
 			{% elseif mode == 'forecast' %}
-				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-3t_webL.jpg', 'fill') }}
+				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-3t_webL.jpg', 'corner') }}
 			{% elseif mode == 'wind' %}
-				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-wi_webL.jpg', 'fill') }}
+				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-wi_webL.jpg', 'corner') }}
 			{% elseif mode == 'europe' %}
-				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/eu-vs-t_webL.jpg', 'fill') }}
+				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/eu-vs-t_webL.jpg', 'corner') }}
 			{% endif %}
 		</div>
 {% endmacro %}

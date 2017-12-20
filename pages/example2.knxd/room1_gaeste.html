@@ -30,7 +30,7 @@
             <div data-role="collapsible" data-collapsed="false">
                 <h3>Licht</h3>
                 Deckenlicht<br />
-                {{ basic.dual('arbeiten_licht', '2/1/1/1.001', 'control_on_off.svg', 'control_on_off.svg', '', '', 'midi') }}
+                {{ basic.stateswitch('arbeiten_licht', '2/1/1/1.001', 'midi', ['', ''], ['control_on_off.svg', 'control_on_off.svg'], '', ['icon1', 'icon0']) }}
             </div>
             <br/><br/>
         </div>

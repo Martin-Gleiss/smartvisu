@@ -17,16 +17,16 @@
     <table style="width:100%; text-align: left;">
         <tr>
             <th width="25%">{% if txt %} {{ txt }} {% endif %}</th>
-            <td width="15%"><div class="temp">{{ basic.float(id~'actual', gad_actual, '°C' ) }}</div></td>
+            <td width="15%"><div class="temp">{{ basic.print(id~'actual', gad_actual, '°' ) }}</div></td>
             <td width="15%">
                 {% if gad_set %}
-                    {{ basic.button(id~'minus', '', '', 'minus', '', 'micro') }}
+					{{ basic.stateswitch(id~'minus', '', 'micro', '', 'minus', '', 'icon0') }}
                 {% endif %}
             </td>
-            <td width="15%"><div class="temp">{{ basic.float(id~'set', gad_set, '°C' ) }}</div></td>
+            <td width="15%"><div class="temp">{{ basic.print(id~'set', gad_set, '°' ) }}</div></td>
             <td width="15%">
                 {% if gad_set %}
-                    {{ basic.button(id~'plus', '', '', 'plus', '', 'micro') }}
+                    {{ basic.stateswitch(id~'plus', '', 'micro', '', 'plus', '', 'icon0') }}
                 {% endif %}
             </td>
             <td width="15%">

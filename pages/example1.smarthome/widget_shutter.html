@@ -1,5 +1,6 @@
+/**
 * @param       unique id for this widget
-# @param       name of the shutter (optional)
+* @param       name of the shutter (optional)
 * @param       the knx gad (groupaddress) for the up- and down- movement
 * @param       the knx gad (groupaddress) for stopping the movement (optional)
 * @param       the knx gad (groupaddress) for the actual position of the shutters
@@ -23,10 +24,10 @@
 			<tr>
 				<td>
 			<span data-role="controlgroup" data-type="horizontal"> 
-				{{ basic.button(id|_('up'), gad_move, '', 'control_arrow_up.svg', 0, 'mini') }}
+				{{ basic.stateswitch(id|_('up'), gad_move, 'mini', 0, 'control_arrow_up.svg', '', 'icon0') }}
 			</span>
 			<span data-role="controlgroup" data-type="horizontal"> 
-				{{ basic.button(id|_('down'), gad_move, '', 'control_arrow_down.svg', 1, 'mini') }}
+				{{ basic.stateswitch(id|_('down'), gad_move, 'mini', 1, 'control_arrow_down.svg', '', 'icon0') }}
 			</span>
 
 				</td>
@@ -34,8 +35,8 @@
 			<tr>
 				<td valign="top">
 		<span data-role="controlgroup" data-type="horizontal"> 
-		  {% if gad_stop %} {{ basic.button(id|_('stop'), gad_stop, '', 'audio_stop.svg', 1, 'mini') }} {% endif %}
-			{% if gad_shade %} {{ basic.button(id|_('shade'), gad_shade, '', 'fts_shutter_50.svg', 1, 'mini') }} {% endif %}
+		  {% if gad_stop %} {{ basic.stateswitch(id|_('stop'), gad_stop, 'mini', 1, 'audio_stop.svg', '', 'icon0') }} {% endif %}
+			{% if gad_shade %} {{ basic.stateswitch(id|_('shade'), gad_shade, 'mini', 1, 'fts_shutter_50.svg', '', 'icon0') }} {% endif %}
 		</span></td>
 			</tr>
 		</table>
@@ -65,17 +66,17 @@
 			</tr>
 			<tr>
 				<td>
-        		<span data-role="controlgroup" data-type="horizontal"> 
-				{{ basic.button(id|_('up'), gad_move, '', 'control_arrow_up.svg', 0, 'mini') }}
-					{{ basic.button(id|_('down'), gad_move, '', 'control_arrow_down.svg', 1, 'mini') }}
+					<span data-role="controlgroup" data-type="horizontal">
+					{{ basic.stateswitch(id|_('up'), gad_move, 'mini', 0, 'control_arrow_up.svg', '', 'icon0') }}
+					{{ basic.stateswitch(id|_('down'), gad_move, 'mini', 1, 'control_arrow_down.svg', '', 'icon0') }}
 			</span>
 				</td>
 			</tr>
 			<tr>
 				<td valign="bottom" align="center">
 		<span data-role="controlgroup" data-type="horizontal">
-                {% if gad_stop %} {{ basic.button(id|_('stop'), gad_stop, '', 'audio_stop.svg', 1, 'mini') }} {% endif %}
-			{% if gad_shade %} {{ basic.button(id|_('shade'), gad_shade, '', 'fts_shutter_50.svg', 1, 'mini') }} {% endif %}
+			{% if gad_stop %} {{ basic.stateswitch(id|_('stop'), gad_stop, 'mini', 1, 'audio_stop.svg', '', 'icon0') }} {% endif %}
+			{% if gad_shade %} {{ basic.stateswitch(id|_('shade'), gad_shade, 'mini', 1, 'fts_shutter_50.svg', '', 'icon0') }} {% endif %}
 		</span>
 				</td>
 			</tr>
@@ -106,8 +107,8 @@
 				<td style="white-space:nowrap; -o-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg); -ie-transform: rotate(270deg); filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);">{{ txt }}</td>
 			</tr>
 			<tr>
-				<td valign="bottom">{% if gad_shade %}
-						{{ basic.button(id|_('shade'), gad_shade, 'Beschatten', 'fts_shutter_50.svg', 1, 'mini') }}{% endif %}
+				<td valign="bottom">
+					{% if gad_shade %} {{ basic.stateswitch(id|_('shade'), gad_shade, 'mini', 1, 'fts_shutter_50.svg', 'Beschatten', 'icon0') }} {% endif %}
 				</td>
 			</tr>
 		</table>

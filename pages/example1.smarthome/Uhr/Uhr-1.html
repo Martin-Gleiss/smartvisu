@@ -72,7 +72,7 @@
 					<table width=100%>
 						<tr>
 							<td align=left width=50%>
-								{{ basic.switch('RolloUeberUhr', 'Uhr.RolloAktiv', 'time_clock.svg', 'time_clock.svg') }} über Uhr aktiv
+								{{ basic.stateswitch('RolloUeberUhr', 'Uhr.RolloAktiv', 'icon', ['1', '0'], ['time_clock.svg', 'time_clock.svg'], '', ['icon1', 'icon0']) }} über Uhr aktiv
 							</td>
 						</tr>
 					</table>

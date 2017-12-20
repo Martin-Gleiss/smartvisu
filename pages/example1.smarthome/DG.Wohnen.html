@@ -30,7 +30,7 @@
 
 			<div data-role="collapsible" data-collapsed="false">
 				<h3>Heizung</h3>
-				{{ device.rtrmacflei('DG.Wohnen.temperature', 'DG.Wohnen.temperature.stellgroesse', 'DG.Wohnen.temperature', 'DG.Wohnen.temperature.set', 'DG.Wohnen.temperature.mode', 'DG.Wohnen.temperature.night', 'DG.Wohnen.temperature.frost', '', 'DG.Wohnen.temperature.zwangon', 'DG.Wohnen.temperature.zwangoff', '', '0.5') }}
+				{{ device.rtr('', '', 'DG.Wohnen.temperature', 'DG.Wohnen.temperature.set', 'DG.Wohnen.temperature.mode', 'DG.Wohnen.temperature.night', 'DG.Wohnen.temperature.frost', 'DG.Wohnen.temperature.on', '', '0.5') }}
 			</div>
 
 		</div>
@@ -42,19 +42,19 @@
 				<h3>Lichter</h3>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('DGWandLED', 'DG.Wohnen.LEDWand', 'light_wall_2.svg', 'light_wall_2.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('DGWandLED', 'DG.Wohnen.LEDWand', 'icon', ['1', '0'], ['light_wall_2.svg', 'light_wall_2.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>LED-Wandspots</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('DGBodenLED', 'DG.Wohnen.LEDBoden', 'light_uplight.svg', 'light_uplight.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('DGBodenLED', 'DG.Wohnen.LEDBoden', 'icon', ['1', '0'], ['light_uplight.svg', 'light_uplight.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>LED Bodenspots</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('DGStedoTV', 'DG.Wohnen.StedoTV', 'message_socket.svg', 'message_socket.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('DGStedoTV', 'DG.Wohnen.StedoTV', 'icon', ['1', '0'], ['message_socket.svg', 'message_socket.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>Steckdose TV</td>
 					</tr>
 				</table>

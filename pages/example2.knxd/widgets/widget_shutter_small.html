@@ -18,21 +18,21 @@
             <th width="35%">{% if txt %} {{ txt }} {% endif %}</th>
             <td width="15%">
                 {% if gad_move %}
-                    {{ basic.button(id~'up', gad_move, '', 'arrow-u', '1', 'micro') }}
+                    {{ basic.stateswitch(id~'up', gad_move, 'micro', '1', 'arrow-u', '', 'icon0') }}
                 {% endif %}
             </td>
             <td width="15%">
                 {% if gad_stop %}
-                    {{ basic.button(id~'stop', gad_stop, '', 'audio_stop.svg', '1', 'micro') }}
+                    {{ basic.stateswitch(id~'stop', gad_stop, 'micro', '1', 'audio_stop.svg', '', 'icon0') }}
                 {% endif %}
             </td>
             <td width="15%">
                 {% if gad_move %}
-                    {{ basic.button(id~'down', gad_move, '', 'arrow-d', '0', 'micro') }}
+                    {{ basic.stateswitch(id~'down', gad_move, 'micro', '0', 'arrow-d', '', 'icon0') }}
                 {% endif %}
             </td>
             <td width="20%">
-                 {{ basic.formula(id~'position', gad_position, '%', '( VAR )') }}
+                {{ basic.print(id~'position', gad_position, '%', '( VAR )') }}
             </td>
         </tr>
     </table>

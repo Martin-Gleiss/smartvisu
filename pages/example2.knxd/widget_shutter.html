@@ -26,16 +26,16 @@
         <tr>
 		<td>
 			<span data-role="controlgroup" data-type="horizontal"> 
-				{{ basic.button(id|_('up'), gad_move, '', 'control_arrow_up.svg', 0, 'mini') }}
-				{{ basic.button(id|_('down'), gad_move, '', 'control_arrow_down.svng', 1, 'mini') }}
+				{{ basic.stateswitch(id|_('up'), gad_move, 'mini', 0, 'control_arrow_up.svg', '', 'icon0') }}
+				{{ basic.stateswitch(id|_('down'), gad_move, 'mini', 1, 'control_arrow_down.svng', '', 'icon0') }}
 			</span>
 		</td> 
         </tr>
         <tr>
             <td valign="top">
 		<span data-role="controlgroup" data-type="horizontal"> 
-		  {% if gad_stop %} {{ basic.button(id|_('stop'), gad_stop, '', 'audio_stop.svg', 1, 'mini') }} {% endif %}
-                  {% if gad_shade %} {{ basic.button(id|_('shade'), gad_shade, '', 'fts_shutter_50.svg', 1, 'mini') }} {% endif %}
+		  {% if gad_stop %} {{ basic.stateswitch(id|_('stop'), gad_stop, 'mini', 1, 'audio_stop.svg', '', 'icon0') }} {% endif %}
+                  {% if gad_shade %} {{ basic.stateswitch(id|_('shade'), gad_shade, 'mini', 1, 'fts_shutter_50.svg', '', 'icon0') }} {% endif %}
 		</span></td>
         </tr>
         </table>
@@ -66,16 +66,16 @@
         <tr>
 		<td>
         		<span data-role="controlgroup" data-type="horizontal"> 
-				{{ basic.button(id|_('up'), gad_move, '', 'control_arrow_up.svg', 0, 'mini') }}
-				{{ basic.button(id|_('down'), gad_move, '', 'control_arrow_down.svg', 1, 'mini') }}
+				{{ basic.stateswitch(id|_('up'), gad_move, 'mini', 0, 'control_arrow_up.svg', '', 'icon0') }}
+				{{ basic.stateswitch(id|_('down'), gad_move, 'mini', 1, 'control_arrow_down.svg', '', 'icon0') }}
 			</span>
 		</td>  
         </tr>
         <tr>
             <td valign="bottom" align="center">
 		<span data-role="controlgroup" data-type="horizontal">
-                {% if gad_stop %} {{ basic.button(id|_('stop'), gad_stop, '', 'audio_stop.svg', 1, 'mini') }} {% endif %}
-				{% if gad_shade %} {{ basic.button(id|_('shade'), gad_shade, '', 'fts_shutter_50.svg', 1, 'mini') }} {% endif %}
+                {% if gad_stop %}  {{ basic.stateswitch(id|_('stop'), gad_stop, 'mini', 1, 'audio_stop.svg', '', 'icon0') }} {% endif %}
+				{% if gad_shade %} {{ basic.stateswitch(id|_('shade'), gad_shade, 'mini', 1, 'fts_shutter_50.svg', '', 'icon0') }} {% endif %}
 		</span>
             </td>
         </tr>
@@ -106,7 +106,7 @@
         </tr>
 	 <tr>
 	    <td valign="bottom">{% if gad_shade %}
-		 {{ basic.button(id|_('shade'), gad_shade, 'Beschatten', 'fts_shutter_50.svg', 1, 'mini') }}{% endif %}
+		 {{ basic.stateswitch(id|_('shade'), gad_shade, 'mini', 1, 'fts_shutter_50.svg', 'Beschatten', 'icon0') }}{% endif %}
 	    </td></tr>
         </table>
     </div>        

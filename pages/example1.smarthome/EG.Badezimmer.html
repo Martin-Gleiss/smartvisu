@@ -21,10 +21,10 @@
 				<table width=100%>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('Sotslinks', 'EG.Bad.Sotslinks', 'light_downlight.svg', 'light_downlight.svg') }} links
+							{{ basic.stateswitch('Sotslinks', 'EG.Bad.Sotslinks', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} links
 						</td>
 						<td align=left>
-							{{ basic.switch('Sotsrechts', 'EG.Bad.Sotsrechts', 'light_downlight.svg', 'light_downlight.svg') }} rechts
+							{{ basic.stateswitch('Sotsrechts', 'EG.Bad.Sotsrechts', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} rechts
 						</td>
 					</tr>
 					<tr>
@@ -37,10 +37,10 @@
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('Spotsgesamt', 'EG.Bad.alleSpots', 'light_downlight.svg', 'light_downlight.svg') }} alle
+							{{ basic.stateswitch('Spotsgesamt', 'EG.Bad.alleSpots', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} alle
 						</td>
 						<td align=left>
-							{{ basic.switch('WCDeckenspots', 'EG.EGWC.Spots', 'light_downlight.svg', 'light_downlight.svg') }} WC Spots
+							{{ basic.stateswitch('WCDeckenspots', 'EG.EGWC.Spots', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} WC Spots
 						</td>
 					</tr>
 				</table>

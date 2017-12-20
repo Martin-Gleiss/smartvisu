@@ -85,7 +85,7 @@
 
 			<div data-role="collapsible" data-collapsed="false">
 				<h3>Heizung</h3>
-				{{ device.rtrstell('EG.Esszimmer.temperature', 'EG.Esszimmer.temperature.stellgroesse', 'EG.Esszimmer.temperature', 'EG.Esszimmer.temperature.set', 'EG.Esszimmer.temperature.mode', 'EG.Esszimmer.temperature.night', 'EG.Esszimmer.temperature.frost', 'EG.Esszimmer.temperature.state') }}
+				{{ device.rtr('', '', 'EG.Esszimmer.temperature', 'EG.Esszimmer.temperature.set', 'EG.Esszimmer.temperature.mode', 'EG.Esszimmer.temperature.night', 'EG.Esszimmer.temperature.frost', 'EG.Esszimmer.temperature.state') }}
 
 			</div>
 
@@ -171,8 +171,8 @@
 					<tr>
 						<td align="middle" width="70%">
 			<span data-role="controlgroup" data-type="horizontal">
-                        {{ basic.button('TVLEDblau', 'EG.Esszimmer.LEDfaster', ' Speed ', 'plus', '', 'midi') }}
-				{{ basic.button('TVLEDgelb', 'EG.Esszimmer.LEDslower', ' Speed ', 'minus', '', 'midi') }}
+				{{ basic.button('TVLEDfaster', 'EG.Esszimmer.LEDfaster', ' Speed ', 'plus', '', 'midi') }}
+				{{ basic.button('TVLEDslower', 'EG.Esszimmer.LEDslower', ' Speed ', 'minus', '', 'midi') }}
 			</span>
 						</td>
 					</tr>
@@ -181,7 +181,7 @@
 					<tr>
 						<td align="middle" width="70%">
 			<span data-role="controlgroup" data-type="horizontal">
-                        {{ basic.button('TVLEDdimup', 'EG.Esszimmer.LEDdimup', ' Dimmen ', 'arrow-u', '', 'midi') }}
+				{{ basic.button('TVLEDdimup', 'EG.Esszimmer.LEDdimup', ' Dimmen ', 'arrow-u', '', 'midi') }}
 				{{ basic.button('TVLEDdimdown', 'EG.Esszimmer.LEDdimdown', ' Dimmen ' , 'arrow-d', '', 'midi') }}
 			</span>
 						</td>

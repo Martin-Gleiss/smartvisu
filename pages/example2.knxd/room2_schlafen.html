@@ -32,13 +32,13 @@
             {{ device.dimmer('light1', 'Decke', '6/1/1/1.001', '6/1/5/5.xxx') }}
             <table width="90%">
 	    <tr>
-                <td align="left" width="100px">&nbsp; {{ basic.switch('switch1', '6/1/21/1.001', 'light_light.svg', 'light_light.svg') }} </td>
+                <td align="left" width="100px">&nbsp; {{ basic.stateswitch('switch1', '6/1/21/1.001', 'icon', ['1', '0'], ['light_light.svg', 'light_light.svg'], '', ['icon1', 'icon0']) }} </td>
                 <td>Bett links</td>
             </tr>
             </table>
             <table width="90%">
             <tr>
-                <td align="left" width="100px">&nbsp; {{ basic.switch('switch2', '6/1/11/1.001', 'light_light.svg', 'light_light.svg') }} </td>
+                <td align="left" width="100px">&nbsp; {{ basic.stateswitch('switch2', '6/1/11/1.001', 'icon', ['1', '0'], ['light_light.svg', 'light_light.svg'], '', ['icon1', 'icon0']) }} </td>
                 <td>Bett rechts</td>
             </tr>
             </table>

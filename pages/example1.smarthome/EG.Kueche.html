@@ -71,19 +71,19 @@
 				<h3>Licht</h3>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('DeckenspotsKueche', 'EG.Kueche.SpotsDecke', 'light_downlight.svg', 'light_downlight.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('DeckenspotsKueche', 'EG.Kueche.SpotsDecke', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>Spots Decke</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('LedWaendeKueche', 'EG.Kueche.LedWand', 'light_led.svg', 'light_led.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('LedWaendeKueche', 'EG.Kueche.LedWand', 'icon', ['1', '0'], ['light_led.svg', 'light_led.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>LED Wände</td>
 					</tr>
 				</table>
 				<table width="90%">
 					<tr>
-						<td align="left" width="100px">&nbsp; {{ basic.switch('LedBodenKueche', 'EG.Kueche.LedBoden', 'light_uplight.svg', 'light_uplight.svg') }} </td>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('LedBodenKueche', 'EG.Kueche.LedBoden', 'icon', ['1', '0'], ['light_uplight.svg', 'light_uplight.svg'], '', ['icon1', 'icon0']) }} </td>
 						<td>LED Boden</td>
 					</tr>
 				</table>
@@ -121,7 +121,7 @@
 							Geschirrspüler:
 						</td>
 						<td align=right>
-							{{ basic.float('VerbrauchGS', 'EG.Kueche.GSVerbrauch', 'A') }}
+							{{ basic.print('VerbrauchGS', 'EG.Kueche.GSVerbrauch', 'A') }}
 						</td>
 					</tr>
 				</table>

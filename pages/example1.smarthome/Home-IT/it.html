@@ -71,31 +71,31 @@
 					<table width=100%>
 						<tr>
 							<td align=left width=50%>
-								{{ basic.switch('IngridPC', 'Allgemein.PCs.PCIngrid', 'it_server.svg', 'it_server.svg') }}  PC-Ingrid
+								{{ basic.stateswitch('IngridPC', 'Allgemein.PCs.PCIngrid', 'icon', ['1', '0'], ['it_server.svg', 'it_server.svg'], '', ['icon1', 'icon0']) }} PC-Ingrid
 							</td>
 							<td align=left>
-								{{ basic.switch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', 'it_television.svg', 'it_television.svg') }} Ingrid
+								{{ basic.stateswitch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} Ingrid
 							</td>
 						</tr>
 						<tr>
 							<td align=left width=50%>
-								{{ basic.switch('MultimediaPC', 'Allgemein.PCs.PCMultimedis', 'it_server.svg', 'it_server.svg') }} Server
+								{{ basic.stateswitch('MultimediaPC', 'Allgemein.PCs.PCMultimedis', 'icon', ['1', '0'], ['it_server.svg', 'it_server.svg'], '', ['icon1', 'icon0']) }} Server
 							</td>
 							<td align=left width=50%>
-								{{ basic.switch('KuecheMonitor', 'Allgemein.PCs.MonitorKueche', 'it_television.svg', 'it_television.svg') }} Küche
+								{{ basic.stateswitch('KuecheMonitor', 'Allgemein.PCs.MonitorKueche', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} Küche
 							</td>
 						</tr>
 						<tr>
 							<td align=left width=50%>
-								{{ basic.switch('MarcoPC', 'Allgemein.PCs.PCMarco', 'it_server.svg', 'it_server.svg') }} PC-Marco
+								{{ basic.stateswitch('MarcoPC', 'Allgemein.PCs.PCMarco', 'icon', ['1', '0'], ['it_server.svg', 'it_server.svg'], '', ['icon1', 'icon0']) }} PC-Marco
 							</td>
 							<td align=left>
-								{{ basic.switch('MarcoMonitor', 'FB.Monitor', 'it_television.svg', 'it_television.svg') }} Marco
+								{{ basic.stateswitch('MarcoMonitor', 'FB.Monitor', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} Marco
 							</td>
 						</tr>
 						<tr>
 							<td align=left width=50%>
-								{{ basic.switch('Drucker', 'Allgemein.PCs.DruckerMonitor', 'it_fax.svg', 'it_fax.svg') }} Drucker
+								{{ basic.stateswitch('Drucker', 'Allgemein.PCs.DruckerMonitor', 'icon', ['1', '0'], ['it_fax.svg', 'it_fax.svg'], '', ['icon1', 'icon0']) }} Drucker
 							</td>
 						</tr>
 					</table>

@@ -21,15 +21,15 @@
 				<table width=100%>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('SchlafenLEDBett', 'OG.Schlafen.LEDBett', 'light_uplight.svg', 'light_uplight.svg') }} LED-Bett
+							{{ basic.stateswitch('SchlafenLEDBett', 'OG.Schlafen.LEDBett', 'icon', ['1', '0'], ['light_uplight.svg', 'light_uplight.svg'], '', ['icon1', 'icon0']) }} LED-Bett
 						</td>
 						<td align=left>
-							{{ basic.switch('SchlafenTV', 'OG.Schlafen.TV', 'message_socket.svg', 'message_socket.svg') }} TV
+							{{ basic.stateswitch('SchlafenTV', 'OG.Schlafen.TV', 'icon', ['1', '0'], ['message_socket.svg', 'message_socket.svg'], '', ['icon1', 'icon0']) }} TV
 						</td>
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('SchlafenLEDWand', 'OG.Schlafen.LEDWand', 'light_wall_1.svg', 'light_wall_1.svg') }}  LED-Wand
+							{{ basic.stateswitch('SchlafenLEDWand', 'OG.Schlafen.LEDWand', 'icon', ['1', '0'], ['light_wall_1.svg', 'light_wall_1.svg'], '', ['icon1', 'icon0']) }} LED-Wand
 						</td>
 						<td align=left width=50%>
 							&nbsp;
@@ -37,10 +37,10 @@
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('IngridNachttisch', 'OG.Schlafen.NachttischIngrid', 'light_mirror.svg', 'light_mirror.svg') }} Ingrid
+							{{ basic.stateswitch('IngridNachttisch', 'OG.Schlafen.NachttischIngrid', 'icon', ['1', '0'], ['light_mirror.svg', 'light_mirror.svg'], '', ['icon1', 'icon0']) }} Ingrid
 						</td>
 						<td align=left>
-							{{ basic.switch('FreigabeBMBettSchlafen', 'OG.Schlafen.FreigabeBM', 'message_presence.svg', 'message_presence_disabled.svg') }}  Freigabe
+							{{ basic.stateswitch('FreigabeBMBettSchlafen', 'OG.Schlafen.FreigabeBM', 'icon', ['1', '0'], ['message_presence.svg', 'message_presence_disabled.svg'], '', ['icon1', 'icon0']) }} Freigabe
 						</td>
 					</tr>
 				</table>
@@ -55,7 +55,7 @@
 				<table width=100%>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('DeckeSchiene', 'OG.Ankleide.Schiene', 'light_wire_system_1.svg', 'light_wire_system_1.svg') }} Schiene
+							{{ basic.stateswitch('DeckeSchiene', 'OG.Ankleide.Schiene', 'icon', ['1', '0'], ['light_wire_system_1.svg', 'light_wire_system_1.svg'], '', ['icon1', 'icon0']) }} Schiene
 						</td>
 						<td align=left>
 							&nbsp;
@@ -81,7 +81,7 @@
 
 			<div data-role="collapsible" data-collapsed="false">
 				<h3>Schlafen Heizung</h3>
-				{{ device.rtrmacflei('OG.Schlafen.temperature', 'OG.Schlafen.temperature.stellgröesse', 'OG.Schlafen.temperature', 'OG.Schlafen.temperature.set', 'OG.Schlafen.temperature.mode', 'OG.Schlafen.temperature.night', 'OG.Schlafen.temperature.frost', '', 'OG.Schlafen.temperature.zwangon', 'OG.Schlafen.temperature.zwangoff', '', '0.5') }}
+				{{ device.rtr('', '', 'OG.Schlafen.temperature', 'OG.Schlafen.temperature.set', 'OG.Schlafen.temperature.mode', 'OG.Schlafen.temperature.night', 'OG.Schlafen.temperature.frost', 'OG.Schlafen.temperature.on', '', '0.5') }}
 			</div>
 
 		</div>
@@ -91,7 +91,7 @@
 
 			<div data-role="collapsible" data-collapsed="false">
 				<h3>Ankleide Heizung</h3>
-				{{ device.rtrmacflei('OG.Ankleide.temperature', 'OG.Ankleide.temperature.stellgroesse', 'OG.Ankleide.temperature', 'OG.Ankleide.temperature.set', 'OG.Ankleide.temperature.mode', 'OG.Ankleide.temperature.night', 'OG.Ankleide.temperature.frost', '', 'OG.Ankleide.temperature.zwangon', 'OG.Ankleide.temperature.zwangoff', '', '0.5') }}
+				{{ device.rtr('', '', 'OG.Ankleide.temperature', 'OG.Ankleide.temperature.set', 'OG.Ankleide.temperature.mode', 'OG.Ankleide.temperature.night', 'OG.Ankleide.temperature.frost', 'OG.Ankleide.temperature.on', '', '0.5') }}
 			</div>
 
 		</div>

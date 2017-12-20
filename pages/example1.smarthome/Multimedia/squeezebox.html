@@ -7,7 +7,7 @@
 * -----------------------------------------------------------------------------
 */
 
-{% extends "fullscreen.html" %}
+{% extends "full.html" %}
 
 {% block content %}
 	<div class="preblock">
@@ -16,31 +16,31 @@
 				<td align="middle" width="70%">
 					Verstärker&nbsp;&nbsp;&nbsp;
 			<span data-role="controlgroup" data-type="horizontal">
-                        {{ basic.button('ONOFFVerstaerker', 'Allgemein.Multimedia.VerstaerkerONOFF', 'ON / OFF', 'check', '', 'midi') }}
+				{{ basic.button('ONOFFVerstaerker', 'Allgemein.Multimedia.VerstaerkerONOFF', 'ON / OFF', 'check', '', 'midi') }}
 			</span>
 			<span data-role="controlgroup" data-type="horizontal">
-                        {{ basic.button('TVVerstaerker', 'Allgemein.Multimedia.VerstaerkerTV', 'TV', 'home', '', 'midi') }}
+				{{ basic.button('TVVerstaerker', 'Allgemein.Multimedia.VerstaerkerTV', 'TV', 'home', '', 'midi') }}
 				{{ basic.button('PCVerstaerker', 'Allgemein.Multimedia.VerstaerkerPC', 'Server', 'home', '', 'midi') }}
 				{{ basic.button('TunerVerstaerker', 'Allgemein.Multimedia.VerstaerkerRadio', 'Tuner', 'home', '', 'midi') }}
 				{{ basic.button('SqueezeWZVerstaerker', 'Allgemein.Multimedia.VerstaerkerSqueezeWZ', 'Squeeze', 'home', '', 'midi') }}
 			</span>
 			<span data-role="controlgroup" data-type="horizontal">
-                        {{ basic.button('ChPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChPlus', ' Chanel', 'arrow-u', '', 'midi') }}
+				{{ basic.button('ChPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChPlus', ' Chanel', 'arrow-u', '', 'midi') }}
 				{{ basic.button('ChMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChMinus', ' Chanel ', 'arrow-d', '', 'midi') }}
 			</span>
 			<span data-role="controlgroup" data-type="horizontal">
-                        {{ basic.button('VolPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolPlus', ' Volume ', 'arrow-u', '', 'midi') }}
+				{{ basic.button('VolPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolPlus', ' Volume ', 'arrow-u', '', 'midi') }}
 				{{ basic.button('MuteVerstaerker', 'Allgemein.Multimedia.VerstaerkerMute', ' MUTE ', 'delete', '', 'midi') }}
 				{{ basic.button('VolMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolMinus', ' Volume ', 'arrow-d', '', 'midi') }}
 			</span>
 			<span data-role="controlgroup" data-type="horizontal">
-                        {{ basic.button('RadioAnPlusAntenneBayern', 'Allgemein.Multimedia.RadioUndAntenneBayern', ' _Antenne Bayern_ ', 'grid', '', 'midi') }}
+				{{ basic.button('RadioAnPlusAntenneBayern', 'Allgemein.Multimedia.RadioUndAntenneBayern', ' _Antenne Bayern_ ', 'grid', '', 'midi') }}
 			</span>
 				</td>
 			</tr>
 		</table>
 	</div>
-	<div align="center"><img src="pages/fleischer/pics/sb.jpg" width="100%" height="550" name="Squezebox"></div>
+	<div align="center"><img src="pages/example1.smarthome/pics/sb.jpg" width="100%" height="550" name="Squezebox"></div>
 
 {% endblock %}
 
