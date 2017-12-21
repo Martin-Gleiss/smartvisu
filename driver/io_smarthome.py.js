@@ -252,10 +252,13 @@ var io = {
 				if (!unique[items[i]] && !widget.get(items[i]) && (pt instanceof Array) && widget.checkseries(items[i])) {
 					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 
-					if (io.version <= 3)
+					if (io.version <= 3) {
 						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2]});
-					else
-						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': pt[pt.length - 1]});
+					} else {
+						// convert to integer value if possible
+						var count = parseInt(pt[pt.length - 1], 10) || pt[pt.length - 1];
+						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': count});
+					}
 					
 					unique[items[i]] = 1;
 				}
