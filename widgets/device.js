@@ -808,31 +808,31 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 		// dann die Werte eintragen.
 		this._uzsuFillTable(response);
 		// Popup schliessen mit close rechts oben in der Box oder mit Cancel in der Leiste
-		uzsuPopup.find('#uzsuClose, #uzsuCancel').bind('tap', function(e) {
+		uzsuPopup.find('#uzsuClose, #uzsuCancel').bind('click', function(e) {
 			// wenn keine Änderungen gemacht werden sollen (cancel), dann auch im cache die alten Werte
 			uzsuPopup.popup('close');
 		});
 		
 		// speichern mit SaveQuit
-		uzsuPopup.find('#uzsuSaveQuit').bind('tap', function(e) {
+		uzsuPopup.find('#uzsuSaveQuit').bind('click', function(e) {
 			// jetzt wird die Kopie auf das Original kopiert und geschlossen
 			self._uzsuSaveTable(item, response, true);
 			uzsuPopup.popup('close');
 		});
 		// Eintrag hinzufügen mit add
-		uzsuPopup.find('#uzsuAddTableRow').bind('tap', function(e) {
+		uzsuPopup.find('#uzsuAddTableRow').bind('click', function(e) {
 			self._uzsuAddTableRow(response);
 		});
 		// Eintrag sortieren nach Zeit
-		uzsuPopup.find('#uzsuSortTime').bind('tap', function(e) {
+		uzsuPopup.find('#uzsuSortTime').bind('click', function(e) {
 			self._uzsuSortTime(response);
 		});
 		// Löschen mit del als Callback eintragen
-		uzsuPopup.delegate('.uzsuDelTableRow', 'tap', function(e) {
+		uzsuPopup.delegate('.uzsuDelTableRow', 'click', function(e) {
 			self._uzsuDelTableRow(response, e);
 		});
 		// call Expert Mode
-		uzsuPopup.delegate('.uzsuCellExpert button', 'tap', function(e) {
+		uzsuPopup.delegate('.uzsuCellExpert button', 'click', function(e) {
 			if($(this).hasClass('ui-icon-arrow-u'))
 				self._uzsuHideAllExpertLines();
 			else
