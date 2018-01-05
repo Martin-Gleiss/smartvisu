@@ -144,29 +144,33 @@ class Widget {
 		$paramArray = array();
 		$currentParam = '';
 		$lastChar = '';
+		$isArray = false;
 		foreach (str_split($paramString) as $char) {
 			if ($char == '\'' && $lastChar != '\\') {
 				$inSingleQuotes = !$inSingleQuotes;
 				$currentParam .= $char;
 			} else if ($char == '[' && !$inSingleQuotes) {
-				$squareBracketLevel ++;
-				//$currentParam .= $char;
+				$squareBracketLevel++;
+				$isArray = true;
 			} else if ($char == ']' && !$inSingleQuotes) {
-				$squareBracketLevel --;
-				//$currentParam .= $char;
-				$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
+				$squareBracketLevel--;
 			} else if ($char == ',' && !$inSingleQuotes && $squareBracketLevel == 0) {
-				if(!is_array($currentParam))
+				if($isArray)
+					$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
+				else
 					$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
 				$paramArray[] = $currentParam;
 				$currentParam = '';
+				$isArray = false;
 			} else {
 				$currentParam .= $char;
 			}
 			$lastChar = $char;
 		}
 		if ($currentParam) {
-			if(!is_array($currentParam))
+			if($isArray)
+				$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
+			else
 				$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
 			$paramArray[] = $currentParam;
 		}
