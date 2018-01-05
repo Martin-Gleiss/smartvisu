@@ -150,20 +150,26 @@ class Widget {
 				$currentParam .= $char;
 			} else if ($char == '[' && !$inSingleQuotes) {
 				$squareBracketLevel ++;
-				$currentParam .= $char;
+				//$currentParam .= $char;
 			} else if ($char == ']' && !$inSingleQuotes) {
 				$squareBracketLevel --;
-				$currentParam .= $char;
+				//$currentParam .= $char;
+				$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
 			} else if ($char == ',' && !$inSingleQuotes && $squareBracketLevel == 0) {
-				$paramArray[] = trim($currentParam);
+				if(!is_array($currentParam))
+					$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
+				$paramArray[] = $currentParam;
 				$currentParam = '';
 			} else {
 				$currentParam .= $char;
 			}
 			$lastChar = $char;
 		}
-		if ($currentParam)
-			$paramArray[] = trim($currentParam);
+		if ($currentParam) {
+			if(!is_array($currentParam))
+				$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
+			$paramArray[] = $currentParam;
+		}
 
 		if ($inSingleQuotes) {
 			$data = array('Widget' => $name, 'Parameters' => $paramString);

@@ -145,6 +145,10 @@ class WidgetParameterChecker {
 					// for now we perform the same tests than for type "text"
 					$this->checkParameterTypeText($value);
 					break;
+				case 'unspecified':
+					// this type is not validated at all
+					$this->addInfo('WIDGET UNSPECIFIED PARAM TYPE', 'Parameter can not be checked, check manually', $value);
+					break;
 				default:
 					error_log('Template Checker: Unknown type ' . $type);
 					break;
@@ -174,9 +178,6 @@ class WidgetParameterChecker {
 				$this->addError('WIDGET PARAM CHECK', 'Mandatory parameter missing', $value);
 				return NULL;
 			}
-		} else {
-			// return trimmed parameter
-			$value = trim($value, " \t\n\r\0\x0B'");
 		}
 
 		// no check for arrayform if value is empty
@@ -184,21 +185,15 @@ class WidgetParameterChecker {
 			return $value;
 
 		$allowArray = $this->getParamConfig('array_form', 'no');
-		if (substr($value, 0, 1) == '[' && substr($value, -1) == ']') {
-			// array form
-			if ($allowArray != 'must' && $allowArray != 'may') {
-				$this->addError('WIDGET PARAM CHECK', 'Array form not allowed for parameter', $value);
-				return NULL;
-			}
-			return str_getcsv(substr($value, 1, -1), '', '\'');
-		} else {
-			// not array form
-			if ($allowArray != 'no' && $allowArray != 'may') {
-				$this->addError('WIDGET PARAM CHECK', 'Array form required for parameter', $value);
-				return NULL;
-			}
-			return $value;
+		if (is_array($value) && $allowArray != 'must' && $allowArray != 'may') { // array form
+			$this->addError('WIDGET PARAM CHECK', 'Array form not allowed for parameter', $value);
+			return NULL;
+		} else if (!is_array($value) && $allowArray == 'must') { // not array form
+			$this->addError('WIDGET PARAM CHECK', 'Array form required for parameter', $value);
+			return NULL;
 		}
+
+		return $value;
 	}
 
 	/**
@@ -393,14 +388,12 @@ class WidgetParameterChecker {
 			return;
 
 		// anything else needs to start with '#' and be 4 (#+3) or 7 (#+6) characters long
-		if (substr($value, 0, 1) == '#' && (strlen($value) == 4 || strlen($value) == 7)) {
-			if (ctype_xdigit(substr($value, 1)))
-				return;
-		}
+		if (substr($value, 0, 1) == '#' && (strlen($value) == 4 || strlen($value) == 7) && ctype_xdigit(substr($value, 1)))
+			return;
 		
-		// TODO: rgb() / rgba()
+		// TODO: rgb() / rgba() / hsl()
 
-		$this->addError('WIDGET COLOR PARAM CHECK', 'Unknown color', $value);
+		$this->addError('WIDGET COLOR PARAM CHECK', 'Unknown color', $value));
 	}
 
 	/**
