@@ -393,7 +393,7 @@ class WidgetParameterChecker {
 		
 		// TODO: rgb() / rgba() / hsl()
 
-		$this->addError('WIDGET COLOR PARAM CHECK', 'Unknown color', $value));
+		$this->addError('WIDGET COLOR PARAM CHECK', 'Unknown color', $value);
 	}
 
 	/**
