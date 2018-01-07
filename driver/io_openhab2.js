@@ -317,12 +317,11 @@ var io = {
                     // For OpenHAB it seems to be required to send a date in the correct timezone
                     // as it seems to ignore the timezone offset
                     var tzoffset = (new Date()).getTimezoneOffset() * 60000;
-                    var starttime = new Date(new Date() - duration - tzoffset).toISOString().slice(0, -1);
-                    console.log(starttime);
+                    var starttime = new Date(new Date() - duration - tzoffset).toISOString().slice(0, -5);
 
-                    console.log("Updating plot for " + ohItem);
+                    var url = "http://" + io.address + ":" + io.port + "/rest/persistence/items/" + ohItem + "?starttime=" + starttime;
 
-                    var url = "http://" + io.address + ":" + io.port + "/rest/persistence/" + ohItem + "?servicename=rrd4j&starttime=" + starttime;
+                    console.log("Updating plot for " + ohItem + " from url " + url);
 
                     $.ajax({
                         url : url,
