@@ -211,6 +211,12 @@ var io = {
             else
                 val = 0;
             break;
+		case "Contact":
+            if (ohVal == "CLOSED")
+                val = 1;
+            else if (ohVal == "OPEN")
+                val = 0;
+            break;
         }
 
         return val;
