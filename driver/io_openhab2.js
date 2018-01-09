@@ -112,11 +112,11 @@ var io = {
             var event = JSON.parse(eventPayload.data);
             //console.log(event);
 
-            if (event.type === 'ItemStateEvent') {
+            if (['ItemStateEvent', 'GroupItemStateChangedEvent'].indexOf(event.type) > -1) {
                 var payload = JSON.parse(event.payload);
 
                 var ohItem = event.topic.split('/')[2];
-                console.log("ItemStateEvent for " + ohItem);
+                console.log(event.type + " for " + ohItem);
 
                 var item = io.getItemFromOHItem(ohItem);
 
