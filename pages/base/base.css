@@ -210,10 +210,26 @@ a:hover {
 	margin: 0.6em 0;
 }
 
+.ui-listview .ui-li-has-thumb > svg:first-child,
+.ui-listview .ui-li-has-thumb>.ui-btn>svg:first-child
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	max-height: 5em;
+	max-width: 5em;
+}
+
 .ui-listview .ui-li-has-thumb > img:first-child,
 .ui-listview .ui-li-has-thumb > .ui-btn > img:first-child,
-.ui-listview .ui-li-has-thumb .ui-li-thumb {
- padding: 0.5em 0 0 0.25em;
+.ui-listview .ui-li-has-thumb .ui-li-thumb,
+.ui-listview .ui-li-has-thumb > svg:first-child,
+.ui-listview .ui-li-has-thumb>.ui-btn>svg:first-child {
+	padding: 0.5em 0 0 0.25em;
+}
+
+.ui-listview>li.ui-li-divider>a.ui-btn-inline {
+	display: inline-block;
 }
 
 .ui-right .mini {
