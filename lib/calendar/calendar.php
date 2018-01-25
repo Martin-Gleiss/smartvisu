@@ -63,7 +63,7 @@ class calendar extends service
 
 	protected function addFromIcs($ical, $calmetadata = array())
 	{
-		$events = $ical->eventsFromRange();
+		$events = $ical->eventsFromInterval('+4 weeks');
 		// output events as list
 		foreach ($events as $event) {
 			$this->addData(array(
