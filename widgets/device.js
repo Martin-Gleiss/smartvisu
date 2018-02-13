@@ -271,7 +271,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 	_uzsuBuildTableRow: function(designType, numberOfRow) {
 		// default Werte setzen fuer valueParameterList
 		var valueType = this.options.valuetype;
-		var valueParameterList = widget.explode(this.options.valueparameterlist);
+		var valueParameterList = this.options.valueparameterlist.explode();
 		if(valueParameterList.length === 0){
 			if(valueType === 'bool') valueParameterList = ['On','Off'];
 			else if (valueType === 'num') valueParameterList = [''];
