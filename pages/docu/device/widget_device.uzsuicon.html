@@ -29,4 +29,12 @@
 		{{ device.uzsuicon('uzsu2', 'uzsuitem', 'FHEM style and value as list', '', '', 'list', ['a:0','b:1','c:2'], '', '', '2') }}
 	</div>
 
+	Numeric input (validation depends on browser, see also <a href="https://www.w3.org/html/wiki/Elements/input/number">https://www.w3.org/html/wiki/Elements/input/number</a>)
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; device.uzsuicon('uzsu3', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5]) &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ device.uzsuicon('uzsu3', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5]) }}
+	</div>
+
 {% endblock %}

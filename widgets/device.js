@@ -312,7 +312,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 			}
 		}
 		else if (this.options.valuetype === 'num') {
-			tt += 	"<input type='number' " + valueParameterList[0] + " data-clear-btn='false' class='uzsuValueInput' pattern='[0-9]*'>";
+			tt += 	"<input type='number' min='" + valueParameterList[0] + "' max='" + valueParameterList[1] + "' step='" + valueParameterList[2] + "' data-clear-btn='false' class='uzsuValueInput' pattern='[0-9]*'>";
 		}
 		else if (this.options.valuetype === 'text') {
 			tt += 	"<input type='text' data-clear-btn='false' class='uzsuTextInput'>";
