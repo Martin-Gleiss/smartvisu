@@ -33,7 +33,7 @@
 	<link rel="icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="apple-touch-icon" href="favicon.png" />
 	<link rel="manifest" href="index.php?page=manifest">
-	
+
 	<link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.4.5.min.css" />
 
 /** CSS assets **/
@@ -98,10 +98,10 @@
 	</script>
 
 	<script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.4.5.min.js"></script>
-	
+
 /** JavaScript assets **/
 {% set jsFiles = [
-		'lib/base/jquery.mobile.slider.js', 
+		'lib/base/jquery.mobile.slider.js',
 		'vendor/plot.highcharts/highcharts.js',
 		'vendor/plot.highcharts/highcharts-more.js',
 		'vendor/plot.highcharts/modules/solid-gauge.js',
@@ -112,7 +112,7 @@
 		'lib/base/base.js',
 		'lib/base/base.php',
 		'driver/io_' ~ config_driver ~ '.js',
-		'pages/' ~ config_pages ~ '/visu.js' 
+		'pages/' ~ config_pages ~ '/visu.js'
 	] %}
 {% for file in dir('widgets', '(.*)(\.js)') %}
 	{% set jsFiles = jsFiles|merge([file.path]) %}
@@ -184,7 +184,8 @@
 
 	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};
 </script>
-
+<link rel="stylesheet" href="pages/base/quad/visu.css" />
+<script type="text/javascript" src="pages/base/quad/visu.js"></script>
 {% import "lib.html" as lib %}
 {% import "basic.html" as basic %}
 {% import "calendar.html" as calendar %}
