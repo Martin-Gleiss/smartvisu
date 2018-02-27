@@ -1,0 +1,49 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_visu.html" %}
+
+{% block example %}
+<script>
+$( document ).ready(function() {
+		 io.write('item_short', '0' );
+		 io.write('item_long', '0' );
+	});
+
+$(document).on("pagecreate", function() {
+    $(".ui-link").on("click",function(){
+			setTimeout(function() {
+			  io.write('item_long', '0' );
+				io.write('item_short', '0' );
+			}, 1200);
+    });
+});
+</script>
+	<h5>Example</h5>
+
+	A button that changes one item or the other depending on how long you press it.
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{{ visu.longbutton('id', 'item_short', 'item_long', 'control_arrow_down.svg', 1) }}
+
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="nw_list">
+{{ visu.longbutton('id', 'item_short', 'item_long', 'control_arrow_down.svg', 1) }}
+
+	</ul></div>
+	Short tap makes left symbol visible, long tap the right one
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="nw_list">
+			{{ quad.symbol('symbols2', ['item_short','item_long'], ['on', 'on'], '', '', ['',''], '', 'placeholder', 'placeholder', 'Icons disappear on purpose after 1s', ['','']) }}
+
+	</ul></div>
+{% endblock %}

@@ -1,0 +1,20 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Mirko Hirsch
+ * @copyright   2015
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+<div id="menu" class="menu">
+	<a id="menu-home" data-ajax="false" href="index.php">
+        <img class="icon {{ page starts with 'index' or page starts with 'room' ? 'icon1' }}" src="{{icon0}}control_building_empty.svg"/></a>
+
+			<a id="menu-sound" data-ajax="false" href="index.php?page=0_sound&pages=example.quad">
+		<img class="icon {{ page == '0_sound' ? 'icon1' }}" src="{{icon0}}audio_audio.svg"/></a>
+
+	<a id="menu-system" data-ajax="false" href="index.php?page=config">
+		<img class="icon {{ page == 'config' ? 'icon1' }}" src="{{icon0}}edit_settings.svg"/></a>
+
+</div>

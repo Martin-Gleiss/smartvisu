@@ -1,0 +1,30 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_visu.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+
+When clicking on the icon, a popup with a switch and flip opens
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{{ visu.extpopup('extpopup', '', '',
+['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]],
+['flip', ['item1.flip', 'on', 'off', '0', '1']]) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="nw_list">
+{{ visu.extpopup('extpopup', '', '', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']]) }}
+	</ul></div>
+
+{% endblock %}

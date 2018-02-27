@@ -1,0 +1,43 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_visu.html" %}
+
+{% block example %}
+<script>
+$( document ).ready(function() {
+		 io.write('soundtrigger', '0' );
+	});
+
+$(document).on("pagecreate", function() {
+    $(".ui-btn").on("click",function(){
+        io.write('soundtrigger', '0' );
+    });
+});
+
+</script>
+	<h5>Example</h5>
+
+A sound widget playing mp3 file or similar and showing a notification (optional)
+	<div class="html">
+		{{ basic.stateswitch('stateswitch', 'soundtrigger', 'mini', 1, 'audio_audio') }}
+	</div>
+
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{{ visu.sound('sound', 'soundtrigger', '1', 'pages/base/quad/sounds/new_message.mp3', 80, 'Titel', 'Nachricht') }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="nw_list">
+{{ visu.sound('sound', 'soundtrigger', '1', 'pages/base/quad/sounds/new_message.mp3', 80, 'Titel', 'Nachricht') }}
+	</ul></div>
+
+{% endblock %}

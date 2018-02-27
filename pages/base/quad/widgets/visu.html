@@ -1,0 +1,244 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß and others
+* @copyright   2012 - 2018
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+/**
+* Extended Autostate widget: showing an icon depending on the state an item is in (using autoblind plugin). Popup on longpress.
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item the state should be shown for
+* @param {item=} lock state item for your item (optional)
+* @param {release=} release state item for your item. If available this state is activated when you click on the icon (optional)
+* @param {image[]} array of icons to be shown corresponding to the values stated in the next attribute
+* @param {text[]} array of values corresponding to the icons stated in the previous attribute
+* @param {text} id of the popup widget to open on longpress
+*/
+{% macro autostate(id, item, lock, release, pic, val, popup) %}
+	{% import "basic.html" as basic %}
+    <span id="{{ uid(page, id) }}" data-widget="visu.autostate" data-item="{{ item }}" lock-item="{{ lock }}" release-item="{{ release }}"
+        data-vals="{{ implode(val) }}"  data-img="{{ implode(pic|deficon) }}" data-val-on="1" data-val-off="0"
+        class="symbol {{ lock == '' ? '' : 'ui-link' }}" data-role="symbol" data-inline="true" data-iconpos="center" data-mode="{{ mode|default('or') }}" rel="{{ popup }}">
+		{{ basic.icon(pic[0]|deficon('time_automatic'), 'icon0') }}
+    </span>
+{% endmacro %}
+
+/**
+* A button changing from play to pause and vice versa to control a music/video player
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item for the play command
+* @param {item} an item for the pause command
+*
+* @author Onkel Andy
+*/
+{% macro playpause(id, item_play, item_pause) %}
+    {% import "basic.html" as basic %}
+    <span id="{{ uid(page, id) }}" data-widget="visu.playpause" data-item="{{ item_play }},{{ item_pause }}" class="icon0 ui-link switch" data-val="1"><a>
+                {{ basic.icon('audio_stop', 'icon0') }}
+                </a>
+    </span>
+{% endmacro %}
+
+/**
+* A button with longpress and shortpress functionality. Duration of longpress has to be configured in the root.html file.
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item for command triggered on short tap
+* @param {item} an item for command triggered on long tap
+* @param {image=control_arrow_up_down} an icon for the button (optional. Default is control_arrow_up_down)
+* @param {text=1} value to send. Can be a string or number (optional. Default is 1)
+*
+* @author Onkel Andy
+*/
+{% macro longbutton(id, item_short, item_long, pic, val) %}
+    {% import "basic.html" as basic %}
+    <span id="{{ uid(page, id) }}" data-widget="visu.longbutton" data-item="{{ item_short }},{{ item_long }}"
+                data-val="{{ val|default('1') }}"
+                class="switch"><a>
+                {{ basic.icon(pic|deficon('control_arrow_up_down'), 'icon0') }}
+                </a>
+    </span>
+{% endmacro %}
+
+/**
+* Print defined values or strings based on value ranges.
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item for command triggered on short tap
+* @param {value[?]} (arrays of) minimum values for given range
+* @param {value[?]} (arrays of) maximum values for given range
+* @param {text[?]} (arrays of) text to be shown depending on given ranges
+*/
+{% macro maprange(id, item_value, map_min, map_max, map_str) %}
+    <span id="{{ uid(page, id) }}" data-widget="visu.maprange" data-item="{{ item_value }}"
+        data-map-str="{{ implode(map_str) }}"
+        data-map-min="{{ implode(map_min) }}"
+        data-map-max="{{ implode(map_max) }}">
+    </span>
+
+{% endmacro %}
+
+/**
+* Showing a picture and updating it depending on a given item. Can be used to update cover image of a squeezelite instance for example.
+*
+* @param {id=} unique id for this widget (optional)
+* @param {url} absolute or relative URL to your image.
+For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
+* @param {image=cover_empty.jpg} an image to be shown in case of an error (optional. Default is cover_empty.jpg)
+* @param {item} an item that triggers an image reload. In case of a cover image this is the title item.
+*
+* @author Onkel Andy
+*/
+{% macro cover(id, cover, defCoverArtUrl, title) %}
+<img class="coverimg" id="{{ uid(page, id) }}" data-widget="visu.cover" data-item="{{ cover }}, {{ title }}" src="{{ defCoverArtUrl|default('pics/cover_empty.jpg') }}"  onerror="javascript:this.src='{{ defCoverArtUrl|default('pics/cover_empty.jpg') }}'"/>
+{% endmacro %}
+
+{% macro simple_print(id, item) %}
+    <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-item="{{ item }}" class="simple_print" data-widget="visu.simple_print">
+    </span>
+{% endmacro %}
+
+{% macro simple_text(id, text) %}
+    <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} class="simple_print" data-widget="visu.simple_text">{{ text }}
+    </span>
+{% endmacro %}
+
+/**
+* Simple text input
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item to set the value for
+* @param {text=} Label for the input field (optional)
+*/
+{% macro textinput(id, item, label) %}
+	<label style="display:inline;">{{ label|e }}</label>&nbsp;<input type="text" id="{{ uid(page, id) }}" data-widget="visu.textinput" data-item="{{ item }}">
+{% endmacro %}
+
+
+/**
+* A sound widget. Can be activated when item matches a specific value
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item that triggers the sound
+* @param {text} Value that triggers the sound
+* @param {url} absolute or relative URL to your soundfile
+* @param {value} volume to play the soundfile with
+* @param {text=} title to show on notification (optional)
+* @param {text=} message to show on notification (optional)
+*/
+{% macro sound(id, item, match, file, volume, title, message) %}
+    <audio id="{{ uid(page, id) }}" preload="auto" data-widget="visu.sound" data-item="{{ item }}" soundfile="{{ file }}"  volume="{{ volume }}"
+	   match="{{ match }}" title ="{{ title }}" message="{{ message }}">
+    <source src={{ file }} />
+    </audio>
+{% endmacro %}
+
+/**
+* Symbol showing when a given minimum value is reached or exceeded.
+*
+* @param {id=} unique id for this widget (optional)
+* @param {items[]} array of items that are evaluated
+* @param {text=} Text next to the symbol (optional)
+* @param {image=control_on_off} Icon to be shown. (optional. Default=control_on_off)
+* @param {value=1} value of the items that activate the symbol (optional. Default=1)
+* @param {formula('or', 'and')=or} 'or' as well as 'and' are possible values for comparing the items.
+* @param {color=icon1} color for the activated symbol (optional, default=icon1)
+*/
+{% macro minsymbol(id, items, text, icon, val, mode, color) %}
+	{% import "basic.html" as basic %}
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="visu.minsymbol" {{ not items is empty ? ('data-item="' ~ implode(items) ~ '"')|raw }} data-val="{{ val|default('1') }}"
+		data-mode="{{ mode|default('or') }}" class="symbol {{ not items is empty ? 'hide' }}">
+		{{ basic.icon(icon|deficon('control_on_off'), color) }}
+		{{ text|e }}
+	</span>
+{% endmacro %}
+
+
+/**
+* Extended popup: Define up to 20 lines being shown in a popup window
+*
+* @param {id=} unique id for this widget (optional)
+* @param {image=edit_favorites} the color for the icon. The color won't change as it doesn't make sense
+* @param {color=icon0} the color for the icon. The color won't change as it doesn't make sense
+* @param {unspecified[]('switch', 'select', 'flip', 'slider', 'symbol', 'print', 'linetext', 'header')} arrays including one of these widgets followed by their standard attributes in []:
+                    'switch', 'select', 'flip', 'slider', 'symbol', 'print', 'linetext', 'header'
+                    Linetext ist the text in front of the line, header is a line on its own. No attributes except the text to be shown.
+                    Example: ['switch', ['item1', 'icon', [0,1]]
+*/
+{% macro extpopup(id, icon, color, extpopup1, extpopup2, extpopup3, extpopup4, extpopup5, extpopup6, extpopup7, extpopup8, extpopup9, extpopup10, extpopup11, extpopup12, extpopup13, extpopup14, extpopup15, extpopup16, extpopup17, extpopup18, extpopup19, extpopup20) %}
+    {% import "basic.html" as basic %}
+    {% import "quad/widgets/popup.html" as popup %}
+    <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
+        {{ basic.symbol(id~'extpopupicon', '', '', icon|default('edit_favorites'), '', '', color|default('icon0')) }}
+    </a>
+        {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup1, extpopup2, extpopup3, extpopup4, extpopup5, extpopup6, extpopup7, extpopup8, extpopup9, extpopup10, extpopup11, extpopup12, extpopup13, extpopup14, extpopup15, extpopup16, extpopup17, extpopup18, extpopup19, extpopup20) }}
+{% endmacro %}
+
+/**
+* Notification style badge showing value of given item
+*
+* @param {id=} unique id for this widget (optional)
+* @param {items} item triggering the badge
+*/
+{% macro notifybadge(id, item) %}
+    <span id="{{ uid(page, id) }}" data-widget="visu.notifybadge" data-item="{{ item }}" >
+    </span>
+{% endmacro %}
+
+
+{% macro sliderExt(id, text, item_switch, item_value, pic, color, indicator, min, max, step, orientation, value_display, min_display, max_display) %}
+    {% import "basic.html" as basic %}
+    <div class="dimmer">
+    	{{ basic.stateswitch(id~'_switch', item_switch, 'icon', [0,1], pic, '', color, indicator) }}
+        <p>{{ text|e }}</p>
+        {{ basic.slider(id~'_slider', item_value, min, max, step, orientation, value_display, min_display, max_display) }}
+    </div>
+{% endmacro %}
+
+
+{% macro time_slider(id, gad_time, gad_duration, step, value_display) %}
+    <input id="{{ uid(page, id) }}" data-widget="visu.time_slider" data-item="{{ gad_time }}, {{ gad_duration }}"
+        type="range" value="0" min="0" max="1" disabled="1" step="{{ step|default(5) }}"
+        orientation="horizontal" handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" data-highlight="true" />
+{% endmacro %}
+
+{% macro plot(id, gad, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit) %}
+		{% import "quad/widgets/popup.html" as popup %}
+    {% import "basic.html" as basic %}
+    <a href="#{{ uid(page, id) }}_plotpopup" data-rel="popup" data-widget="visu.plot">
+        {{ basic.icon('measure_power_meter', 'icon0') }}
+    </a>
+    {{ popup.plot(uid(page, id)~'_plotpopup', gad, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit) }}
+{% endmacro %}
+
+{% macro symbol_plot(id, symbol_items, symbol_text, symbol_icon, symbol_value, symbol_formula, symbol_color, symbol_href, symbol_rel, gad, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit) %}
+    {% import "quad/widgets/popup.html" as popup %}
+    {% import "basic.html" as basic %}
+    <a href="#{{ uid(page, id) }}_plotpopup" data-rel="popup" data-widget="visu.symbol_plot">
+        {{ basic.symbol(id~'_symbol', symbol_items, symbol_text, symbol_icon, symbol_value, symbol_formula, symbol_color, symbol_href, symbol_rel) }}
+    </a>
+    {{ popup.plot(uid(page, id)~'_plotpopup', gad, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit) }}
+{% endmacro %}
+
+{% macro symbol_popup(id, symbol_items, symbol_text, symbol_icon, symbol_value, symbol_formula, symbol_color, symbol_href, symbol_rel, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15, line16, line17, line18, line19, line20) %}
+	{% import "basic.html" as basic %}
+    {% import "quad/widgets/popup.html" as popup %}
+    <a href="#{{ uid(page, id) }}extpopup" data-rel="popup" data-position-to="window" data-widget="visu.symbol_popup">
+    {{ basic.symbol(id~'_symbol', symbol_items, symbol_text, symbol_icon, symbol_value, symbol_formula, symbol_color, symbol_href, symbol_rel) }}
+    </a>
+    {{ popup.extpopup(uid(page, id)~'extpopup', line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15, line16, line17, line18, line19, line20) }}
+{% endmacro %}
+
+{% macro value_popup(id, print_item, print_format, print_formula, print_threshold, print_color, text, gad_switch, gad_value, pic, color, indicator, min, max, step, orientation, slider_type, min_display, max_display) %}
+	{% import "basic.html" as basic %}
+    {% import "quad/widgets/popup.html" as popup %}
+    <a href="#{{ uid(page, id) }}_value_popup" data-rel="popup" data-position-to="window" data-widget="visu.value_popup">
+    {{ basic.print(id~'_value', print_item, print_format, print_formula, print_threshold, print_color) }}
+    </a>
+    {{ popup.sliderExt(uid(page, id)~'_value_popup', text, gad_switch, gad_value, pic, [color[0]|default('icon0'), color[1]|default('icon1')], indicator, min|default('0'), max|default('255'), step, orientation|default('horizontal'), slider_type, min_display|default('0'), max_display|default('100')) }}
+{% endmacro %}
