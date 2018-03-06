@@ -8,9 +8,6 @@
  */
 {% extends "base.html" %}
 
-{% import "widgets/shutter.html" as shutter %}
-{% import "widgets/overview.html" as ov %}
-
 {% block content %}
 	<div class="html" data-title="Erdgeschoss">
 
@@ -20,7 +17,7 @@
     <div class="ui-grid-a ui-responsive">
 		<div class="overview ui-block-a">
 			<!-- Background picture -->
-			{{ ov.background ('background_eg', 'pages/otterstaetter/overview/images/eg.svg') }}
+			{{ ov.background ('background_eg', 'pages/example3.advanced/overview/images/eg.svg') }}
 
 			<!-- Kueche -->
 			{{ ov.pagelink ('pagelink_kueche', 'Details Küche', '29%', '35%', 'index.php?page=room1_kueche', 'Küche', '', 'mini') }} 
@@ -122,7 +119,6 @@
 		<div class="ui-block-b" style="margin-top: 15px;">
 			<div class="ui-bar-c ui-li-divider ui-corner-top">Lüftungsanlage</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
-				{% import "widgets/fan.html" as fan %}
 				{{ fan.slider ('fan1', 'zentral.lueftung.stufe', 'zentral.lueftung.auto', 'zentral.lueftung.schalten') }}
    			</div>	
 		</div>

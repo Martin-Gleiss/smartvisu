@@ -283,7 +283,7 @@ class TemplateChecker {
 		}
 
 		// check different locations and variants if file has no path set
-    if(strpos($file, '/') === false) {
+		if(strpos($file, '/') === false) {
 			if(is_file(const_path . 'dropins/' . $settings->getIcon0() . $file))
 				return self::FILE_EXISTING;
 			if(is_file(const_path . 'dropins/' . $settings->getIcon0() . $file . '.svg'))

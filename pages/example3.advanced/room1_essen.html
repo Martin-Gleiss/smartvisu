@@ -9,23 +9,20 @@
 
 
 {% extends "rooms.html" %}
-{% import "widgets/button.html" as button %}
 {% block content %}
 
     <!--<h1><img class="icon" src='{{ icon0 }}scene_dinner.svg'/>Esszimmer</h1>-->
   <div class="html">
-    <style>
-		.nav-custom .ui-btn .ui-btn-inner { padding-top: 40px !important; }
-		.nav-custom .ui-btn .ui-icon { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
-		#kochen .ui-icon { background:  url({{ icon0 }}scene_cooking_hob.svg) 50% 50% no-repeat; background-size: 36px 36px; }
-		#essen .ui-icon { background:  url({{ icon0 }}scene_dinner.svg) 50% 50% no-repeat; background-size: 36px 36px;  }
-		#wohnen .ui-icon { background:  url({{ icon0 }}it_television.svg) 50% 50% no-repeat;  background-size: 36px 36px; }
+	<style>
+		#kochen:after { background-image: url("{{ icon0 }}scene_cooking_hob.svg"); }
+		#essen:after { background-image: url("{{ icon0 }}scene_dinner.svg");  }
+		#wohnen:after { background-image: url("{{ icon0 }}it_television.svg"); }
 	</style>
 	<div data-role="navbar" class="nav-custom">
 		<ul>
-			<li><a href="index.php?page=room1_kueche" id="kochen" data-icon="custom" data-prefetch>Kochbereich</a></li>
-			<li><a href="index.php?page=room1_essen" class="ui-btn-active" id="essen" data-icon="custom" data-prefetch>Essbereich</a></li>
-			<li><a href="index.php?page=room1_wohnen" id="wohnen" data-icon="custom" data-prefetch>Wohnbereich</a></li>
+			<li><a href="index.php?page=room1_kueche" id="kochen" class="ui-btn-icon-top" data-prefetch>Kochbereich</a></li>
+			<li><a href="index.php?page=room1_essen" id="essen" class="ui-btn-icon-top ui-btn-active" data-prefetch>Essbereich</a></li>
+			<li><a href="index.php?page=room1_wohnen" id="wohnen" class="ui-btn-icon-top" data-prefetch>Wohnbereich</a></li>
 		</ul>
 	</div>
 
@@ -41,7 +38,6 @@
 			</span>
 		</div>
 		<div class="right">
-			{% import "widgets/smoke_detector.html" as detector %}
 			{{ detector.popup('smoke1', 'Rauchmelder Küche', 'eg.kueche.rm.vernetzung.alarm', 'eg.kueche.rm.vernetzung.testalarm', 'eg.kueche.rm.alarm_ruecksetzen', 'eg.kueche.rm.status.alarm',
 				'eg.kueche.rm.status.testalarm', 'eg.kueche.rm.status.seriennummer', 'eg.kueche.rm.status.betriebszeit', 'eg.kueche.rm.status.rauchkammerwert', 'eg.kueche.rm.status.verschmutzungsgrad',
 				'eg.kueche.rm.status.batterie_spannung', 'eg.kueche.rm.status.temperatur', 'eg.kueche.rm.status.fehlercode', 'eg.kueche.rm.status.batterie_leer', 'eg.kueche.rm.status.fehlfunktion',
@@ -83,7 +79,6 @@
 	<div data-role="collapsible">
             <h3>RGB-Beleuchtung</h3>
             <p>
-	    {% import "widgets/rgb.html" as rgb %}
 	    {{ rgb.rgb('rgb1', 'Indirekte Beleuchtung', 'eg.essen.beleuchtung.rgb.schalten', 'eg.essen.beleuchtung.rgb.rot.dimmwert', 'eg.essen.beleuchtung.rgb.gruen.dimmwert', 'eg.essen.beleuchtung.rgb.blau.dimmwert', 50, 150) }}</p>
         </div>
 
@@ -96,7 +91,6 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Rollladen</h3>
-            {% import "widgets/shutter.html" as shutter %}
             <div class="ui-grid-b ui-responsive">
 				<div class="ui-block-a">
 					{{ shutter.three ('shutter1', 'Fenster Ost', 'eg.essen.rollladen.ost.position', 'eg.essen.rollladen.ost.beschatten' ) }}
@@ -112,7 +106,6 @@
 
     	<div data-role="collapsible">
           <h3>Status Tür</h3>
-          {% import "widgets/window.html" as window %}
           <p>
             {{ window.two ('win1', 'Tür', 'eg.essen.fenster' ) }}
           </p>
@@ -144,8 +137,7 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Musik</h3>
-            {% import "multimedia.html" as multi %}
-			{{ multi.music ('music1', 'eg.kueche.musik.pause', '', 'eg.kueche.musik.vor_ruecklauf',
+			{{ multimedia.music ('music1', 'eg.kueche.musik.pause', '', 'eg.kueche.musik.vor_ruecklauf',
 			     'eg.kueche.musik.weiter_zurueck', 'eg.kueche.musik.position', 'eg.kueche.musik.lautstaerke',
 			     'eg.kueche.musik.stumm', 'eg.kueche.musik.titel', 'eg.kueche.musik.artist', 'eg.kueche.musik.repeat', '') }}
         </div>
@@ -163,14 +155,12 @@
             <h3>Luftfeuchtigkeit</h3>
          <!--   {{ device.rtr('eg.essen.rtr', 'Heizung', 'eg.essen.temperatur.luft', 'eg.essen.heizung.sollwert',
                 'eg.essen.heizung.komfort', 'eg.essen.heizung.nacht', 'eg.essen.heizung.frost', 'eg.essen.heizung.schalten') }} -->
-             {% import "plot.html" as plot %}
              {{ plot.comfortchart('comfort', 'eg.essen.temperatur.luft', 'eg.essen.luftfeuchtigkeit') }}
              Lufttemperatur:  {{ basic.value('temperatur', 'eg.essen.temperatur.luft', ' °C') }}&nbsp;&nbsp;&nbsp;&nbsp;
              relative Luftfeuchtigkeit: {{ basic.value('luftfeuchtigkeit', 'eg.essen.luftfeuchtigkeit', ' %') }}
         </div>
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Lüftungsanlage</h3>
-            {% import "widgets/fan.html" as fan %}
             {{ fan.switch ('fan1', 'zentral.lueftung.stufe', 'zentral.lueftung.auto', 'zentral.lueftung.schalten') }}
         </div>
 

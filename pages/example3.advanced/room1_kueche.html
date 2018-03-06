@@ -9,23 +9,20 @@
 
 
 {% extends "rooms.html" %}
-{% import "widgets/button.html" as button %}
 {% block content %}
 
     <!--<h1><img class="icon" src='{{ icon0 }}scene_cooking_hob.svg'/>Küche</h1>-->
 
 	<style>
-		.nav-custom .ui-btn .ui-btn-inner { padding-top: 40px !important; }
-		.nav-custom .ui-btn .ui-icon { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
-		#kochen .ui-icon { background:  url({{ icon0 }}scene_cooking_hob.svg) 50% 50% no-repeat; background-size: 36px 36px; }
-		#essen .ui-icon { background:  url({{ icon0 }}scene_dinner.svg) 50% 50% no-repeat; background-size: 36px 36px;  }
-		#wohnen .ui-icon { background:  url({{ icon0 }}it_television.svg) 50% 50% no-repeat;  background-size: 36px 36px; }
+		#kochen:after { background-image: url("{{ icon0 }}scene_cooking_hob.svg"); }
+		#essen:after { background-image: url("{{ icon0 }}scene_dinner.svg");  }
+		#wohnen:after { background-image: url("{{ icon0 }}it_television.svg"); }
 	</style>
 	<div data-role="navbar" class="nav-custom">
 		<ul>
-			<li><a href="index.php?page=room1_kueche" class="ui-btn-active" id="kochen" data-icon="custom">Kochbereich</a></li>
-			<li><a href="index.php?page=room1_essen" id="essen" data-icon="custom">Essbereich</a></li>
-			<li><a href="index.php?page=room1_wohnen" id="wohnen" data-icon="custom">Wohnbereich</a></li>
+			<li><a href="index.php?page=room1_kueche" id="kochen" class="ui-btn-icon-top ui-btn-active">Kochbereich</a></li>
+			<li><a href="index.php?page=room1_essen" id="essen" class="ui-btn-icon-top">Essbereich</a></li>
+			<li><a href="index.php?page=room1_wohnen" id="wohnen" class="ui-btn-icon-top">Wohnbereich</a></li>
 		</ul>
 	</div>
 	<div class="preblock">
@@ -40,7 +37,6 @@
 			</span>
 		</div>
 		<div class="right">
-			{% import "widgets/smoke_detector.html" as detector %}
 			{{ detector.popup('smoke1', 'Rauchmelder Küche', 'eg.kueche.rm.vernetzung.alarm', 'eg.kueche.rm.vernetzung.testalarm', 'eg.kueche.rm.alarm_ruecksetzen', 'eg.kueche.rm.status.alarm',
 				'eg.kueche.rm.status.testalarm', 'eg.kueche.rm.status.seriennummer', 'eg.kueche.rm.status.betriebszeit', 'eg.kueche.rm.status.rauchkammerwert', 'eg.kueche.rm.status.verschmutzungsgrad',
 				'eg.kueche.rm.status.batterie_spannung', 'eg.kueche.rm.status.temperatur', 'eg.kueche.rm.status.fehlercode', 'eg.kueche.rm.status.batterie_leer', 'eg.kueche.rm.status.fehlfunktion',
@@ -65,7 +61,6 @@
 	    </div>
             <div data-role="collapsible">
             <h3>RGB-Beleuchtung</h3>
-{% import "widgets/rgb.html" as rgb %}
 	    <p>{{ rgb.rgb('rgb2', 'Arbeitsplatte', 'eg.kueche.beleuchtung.rgb_ap.schalten', 'eg.kueche.beleuchtung.rgb_ap.rot.dimmwert', 'eg.kueche.beleuchtung.rgb_ap.gruen.dimmwert', 'eg.kueche.beleuchtung.rgb_ap.blau.dimmwert', 50, 150) }}</p>
             <p>{{ rgb.rgb('rgb1', 'Indirekt', 'eg.essen.beleuchtung.rgb.schalten', 'eg.essen.beleuchtung.rgb.rot.dimmwert', 'eg.essen.beleuchtung.rgb.gruen.dimmwert', 'eg.essen.beleuchtung.rgb.blau.dimmwert', 50, 150) }}</p>
 	</div>
@@ -77,13 +72,11 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Rollladen</h3>
-            {% import "widgets/shutter.html" as shutter %}
 		{{ shutter.one ('shutter1', 'Tür', 'eg.kueche.rollladen.sued.fahren', 'eg.kueche.rollladen.sued.stopp', 'eg.kueche.rollladen.sued.position', 'eg.kueche.rollladen.sued.beschatten') }}
         </div>
 
     	<div data-role="collapsible">
           <h3>Status Tür</h3>
-          {% import "widgets/window.html" as window %}
           <p>
             {{ window.two ('win1', 'Tür', 'eg.kueche.fenster' ) }}
           </p>
@@ -96,7 +89,6 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Musik</h3>
-            {% import "multimedia.html" as multimedia %}
 
 			{{ multimedia.music ('music1', 'eg.kueche.musik.pause', 'eg.kueche.musik.stopp', '', 'eg.kueche.musik.weiter_zurueck', '', 'eg.kueche.musik.lautstaerke', 'eg.kueche.musik.stumm', 'eg.kueche.musik.titel', '', '' ) }}
         </div>
