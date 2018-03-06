@@ -55,8 +55,7 @@
 		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 			<div data-role="collapsible" data-collapsed="false">
 				<h3>Umgebungsbedingungen</h3>
-				{% import "icon.html" as icon %}
-    		    <table width="90%"><tr><td align="left" width="100px">&nbsp; {{ icon.windrose('icon1', '', 'quadra.wind.richtung') }}</td><td>Windrichtung</td></tr></table>
+				<table width="90%"><tr><td align="left" width="100px">&nbsp; {{ icon.windrose('icon1', '', 'quadra.wind.richtung') }}</td><td>Windrichtung</td></tr></table>
 				{{ plot.period('temp.luft', 'aussen.nordseite.temperatur', 'avg', '24h', 0, 0, '', '', 'Temperatur', '', 'spline', ['Uhrzeit', 'Temperatur'], '1h') }}
 				{{ plot.period('temp.feuchtigkeit', 'aussen.nordseite.luftfeuchtigkeit', 'avg', '24h', 0, 0, '', '', 'Luftfeuchtigkeit', '', 'spline', ['Uhrzeit', 'Prozent'], '1h') }}
 				{{ plot.period('temp.niederschlag', 'quadra.niederschlag', 'avg', '24h', 0, 0, '', '', 'Niederschlag', '', 'spline', ['Uhrzeit', 'Niederschlag Ja/Nein'], '1h') }}

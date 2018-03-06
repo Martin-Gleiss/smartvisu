@@ -8,6 +8,10 @@
 */
 /** handle dropins */
 {% set macrofiles = dir('dropins/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
+/** additional widgets in current pages */
+{% if isdir('pages/'~config_pages~'/widgets', '^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
+	{% set macrofiles = macrofiles|merge(dir('pages/'~config_pages~'/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
+{% endif %}
 {% set dynmacro = [] %}
 {% for macrofile in macrofiles %}
 	{% set dynmacro = dynmacro|merge(['{% import "widgets/' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
@@ -51,6 +55,11 @@
 {% for file in dir('dropins', '(.*)(\.css)') %}
 	{% set cssFiles = cssFiles|merge([file.path]) %}
 {% endfor %}
+{% if isdir('pages/'~config_pages~'/widgets') %}
+	{% for file in dir('pages/'~config_pages~'/widgets', '(.*)(\.css)') %}
+		{% set cssFiles = cssFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
 {% if isdir('pages/'~config_pages~'/css') %}
 	{% for file in dir('pages/'~config_pages~'/css', '(.*)(\.css)') %}
 		{% set cssFiles = cssFiles|merge([file.path]) %}
@@ -123,6 +132,11 @@
 {% for file in dir('dropins', '(.*)(\.js)') %}
 	{% set jsFiles = jsFiles|merge([file.path]) %}
 {% endfor %}
+{% if isdir('pages/'~config_pages~'/widgets', '\.js') %}
+	{% for file in dir('pages/'~config_pages~'/widgets', '(.*)(\.js)') %}
+		{% set jsFiles = jsFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
 {% if isdir('pages/'~config_pages~'/js', '\.js') %}
 	{% for file in dir('pages/'~config_pages~'/js', '(.*)(\.js)') %}
 		{% set jsFiles = jsFiles|merge([file.path]) %}

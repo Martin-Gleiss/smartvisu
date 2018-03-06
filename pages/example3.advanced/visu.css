@@ -97,3 +97,16 @@ width: 160px;
    }
 
 }
+
+
+.nav-custom .ui-btn {
+	padding-top: 40px !important;
+}
+
+.nav-custom .ui-btn:after {
+	background-color: transparent;
+	width: 30px !important;
+	height: 30px !important;
+	margin-left: -15px !important;
+	background-size: 36px 36px;
+}

@@ -9,7 +9,6 @@
 
 
 {% extends "rooms.html" %}
-{% import "widgets/button.html" as button %}
 {% block content %}
 
     <h1><img class="icon" src='{{ icon0 }}scene_childs_room.svg'/>Kind 1 Zimmer</h1>
@@ -18,7 +17,6 @@
 		<div class="left">
 		</div>
 		<div class="right">
-			{% import "widgets/smoke_detector.html" as detector %}
 			{{ detector.popup('smoke1', 'Rauchmelder Kind 1s Zimmer', 'dg.kind1.rm.vernetzung.alarm', 'dg.kind1.rm.vernetzung.testalarm', 'dg.kind1.rm.alarm_ruecksetzen', 'dg.kind1.rm.status.alarm',
 				'dg.kind1.rm.status.testalarm', 'dg.kind1.rm.status.seriennummer', 'dg.kind1.rm.status.betriebszeit', 'dg.kind1.rm.status.rauchkammerwert', 'dg.kind1.rm.status.verschmutzungsgrad',
 				'dg.kind1.rm.status.batterie_spannung', 'dg.kind1.rm.status.temperatur', 'dg.kind1.rm.status.fehlercode', 'dg.kind1.rm.status.batterie_leer', 'dg.kind1.rm.status.fehlfunktion',
@@ -55,13 +53,11 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Rollladen</h3>
-            {% import "widgets/shutter.html" as shutter %}
 			{{ shutter.one ('shutter1', 'Fenster', 'dg.kind1.rollladen.west.fahren', 'dg.kind1.rollladen.west.stopp', 'dg.kind1.rollladen.west.position', 'dg.kind1.rollladen.west.beschatten' ) }}
         </div>
 
     	<div data-role="collapsible">
           <h3>Status Fenster</h3>
-          {% import "widgets/window.html" as window %}
           <p>
             {{ window.two ('win1', 'Fenster', 'dg.kind1.fenster' ) }}
           </p>

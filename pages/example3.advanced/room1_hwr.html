@@ -9,7 +9,6 @@
 
 
 {% extends "rooms.html" %}
-{% import "widgets/button.html" as button %}
 {% block content %}
     <h1><img class="icon" src='{{ icon0 }}sani_buffer_temp_all.svg'/>Hauswirtschaftsraum</h1>
 
@@ -17,7 +16,6 @@
 	<div class="left">
 		</div>
 		<div class="right">
-			{% import "widgets/smoke_detector.html" as detector %}
 			{{ detector.popup('smoke1', 'Rauchmelder Hauswirtschaftsraum', 'eg.hwr.rm.vernetzung.alarm', 'eg.hwr.rm.vernetzung.testalarm', 'eg.hwr.rm.alarm_ruecksetzen', 'eg.hwr.rm.status.alarm',
 				'eg.hwr.rm.status.testalarm', 'eg.hwr.rm.status.seriennummer', 'eg.hwr.rm.status.betriebszeit', 'eg.hwr.rm.status.rauchkammerwert', 'eg.hwr.rm.status.verschmutzungsgrad',
 				'eg.hwr.rm.status.batterie_spannung', 'eg.hwr.rm.status.temperatur', 'eg.hwr.rm.status.fehlercode', 'eg.hwr.rm.status.batterie_leer', 'eg.hwr.rm.status.fehlfunktion',
@@ -54,13 +52,11 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Rollladen</h3>
-            {% import "widgets/shutter.html" as shutter %}
 			{{ shutter.one ('shutter1', 'Fenster', 'eg.hwr.rollladen.nord.fahren', 'eg.hwr.rollladen.nord.stopp', 'eg.hwr.rollladen.nord.position', 'eg.hwr.rollladen.nord.beschatten' ) }}
         </div>
 
     	<div data-role="collapsible">
           <h3>Status Tür und Fenster</h3>
-          {% import "widgets/window.html" as window %}
           
             <div>
               Nebeneingangstür:&nbsp;&nbsp;&nbsp;&nbsp;

@@ -12,10 +12,8 @@
 
 {% block sidebar %}
 
-	{% import "lib.html" as lib %}
 	{{ lib.updatecheck() }}
 
-	{% import "clock.html" as clock %}
 	{{ clock.digiclock('clock') }}
 
 	<div class="center">
@@ -23,20 +21,12 @@
 	</div>
 
 	<hr>
-
-	{% import "weather.html" as weather %}
 	{{ weather.current('weather') }}
-
 	<hr>
-
 	{{ weather.forecastweek('weather_forecast') }}
-
 	<hr>
-	{% import "calendar.html" as calendar %}
 	{{ calendar.list('calendarlist', 'Kalender', 5) }}
-
 	<hr>
-	{% import "phone.html" as phone %}
 	{{ phone.list('phonelist', 'Telefonliste', 5) }}
 
 {% endblock %}
