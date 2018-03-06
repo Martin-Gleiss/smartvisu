@@ -534,11 +534,13 @@ $.widget("sv.basic_flip", $.sv.widget, {
 	},
 
 	_update: function(response) {
+		this._off( this.element, 'change' );
 		this.element.val(response[0]).flipswitch('refresh');
+		this._on( { 'change': this._events.change } );
 	},
 
 	_events: {
-    'change': function (event) {
+		'change': function (event) {
 			this._write(this.element.val());
 		}
 	}
