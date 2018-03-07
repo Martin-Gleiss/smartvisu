@@ -93,10 +93,10 @@ $.widget("sv.basic_color", $.sv.widget, {
 	options: {
 		min: "0",
 		max: "255",
-    style: '',
-    colormodel: 'rgb',
+		style: '',
+		colormodel: 'rgb',
 		step: 7,
-    colors: 10,
+		colors: 10,
 	},
 
   _mem: null,
@@ -257,7 +257,7 @@ $.widget("sv.basic_color_rect", $.sv.basic_color, {
 					}
 					else {
 						var oldColors = self._mem;//node.children('span').css('background-color').match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1);
-						var diffCount = (values[0] != oldColors[0]) + (values[1] != oldColors[1]) + (values[2] != oldColors[2]) -1;
+						var diffCount = oldColors == null ? 3 : (values[0] != oldColors[0]) + (values[1] != oldColors[1]) + (values[2] != oldColors[2]) -1;
 						self._lockfor = diffCount; // lock widget to ignore next 2 updates
 						io.write(items[0], values[0]);
 						io.write(items[1], values[1]);
@@ -423,7 +423,7 @@ $.widget("sv.basic_color_disc", $.sv.basic_color, {
 						}
 						else {
 							var oldColors = self._mem;//node.children('span').css('background-color').match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1);
-							var diffCount = (values[0] != oldColors[0]) + (values[1] != oldColors[1]) + (values[2] != oldColors[2]) -1;
+							var diffCount = oldColors == null ? 3 : (values[0] != oldColors[0]) + (values[1] != oldColors[1]) + (values[2] != oldColors[2]) -1;
 							self._lockfor = diffCount; // lock widget to ignore next 2 updates
 							io.write(items[0], values[0]);
 							io.write(items[1], values[1]);
@@ -503,7 +503,7 @@ $.widget("sv.basic_color_slider", $.sv.basic_color, {
 			}
 
 			var oldColors = this._mem;
-			var diffCount = (values[0] != oldColors[0]) + (values[1] != oldColors[1]) + (values[2] != oldColors[2]) -1;
+			var diffCount = oldColors == null ? 3 : (values[0] != oldColors[0]) + (values[1] != oldColors[1]) + (values[2] != oldColors[2]) -1;
 			this._lockfor = diffCount; // lock widget to ignore next 2 updates
 
 			if(diffCount > 0) {
@@ -967,45 +967,56 @@ $.widget("sv.basic_slider", $.sv.widget, {
 	_mem: null,
 	_timer: false,
 	_lock: false,
+	_sliding: false,
 
 	_update: function(response) {
-		this._lock = true;
+		var val = response[0];
 		var max = this.element.attr('max') * 1;
 		var min = this.element.attr('min') * 1;
 		var maxSend = this.options['max-send'];
 		var minSend = this.options['min-send'];
-		var val = response[0];
 		if(min != minSend || max != maxSend)
 			val = (val - minSend) / (maxSend - minSend) * (max - min) + min;
-		this.element.val(val).slider('refresh');
-		this._lock = false;
-		this._mem = this.element.val();
+		if(!this._sliding) {
+			this._lock = true;
+			this.element.val(val).slider('refresh');
+			this._mem = this.element.val();
+			this._lock = false;
+		}
+		else {
+			this._mem = val;
+		}
 	},
 
 	_events: {
+		'slidestart': function (event) {
+			this._sliding = true;
+		},
+
 		'slidestop': function (event) {
 			this._timer = false;
-			this._change();
+			this._sliding = false;
+			this._send();
 		},
 
 		'change': function (event) {
-			this._change();
+			this._send();
 		},
 	},
 
-	_change: function() {
-		if (!this._timer && !this._lock && this.element.val() != this._mem) {
+	_send: function() {
+		var val = this.element.val();
+		if (!this._lock && !this._timer && val != this._mem) {
 			this._timer = true;
-			this._mem = this.element.val();
+			this._mem = val;
 			var max = this.element.attr('max') * 1;
 			var min = this.element.attr('min') * 1;
 			var maxSend = this.options['max-send'];
 			var minSend = this.options['min-send'];
-			var val = this.element.val();
 			if(min != minSend || max != maxSend)
 				val = (val - min) / (max - min) * (maxSend - minSend) + minSend;
 			this._write(val);
-			this._delay(function() { if(this._timer) { this._timer = false; this._change(); } }, 400);
+			this._delay(function() { if(this._timer) { this._timer = false; this._send(); } }, 400);
 		}
 	}
 
