@@ -485,6 +485,7 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {formula=or} 'or', 'and' or any JavaScript expression with following variables, result will be compared to comparative value above (default 'or')
 - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
 * @param {color[?]=icon0} the color 'icon1' or e. g. '#f00' for red (default 'icon0' of the design)
+	this only applies to text, if no icon is set (for backward compatibility)
 * @param {text=} URL to use as link (optional)
 * @param {text=} used in combination with href as data-rel attribute {e.g. to open a popup} (optional)
 *
@@ -506,7 +507,9 @@ the first one is the base color for values below first threshold, so pass one co
 			{% if text is empty %}{% set pic = pic|deficon('control_on_off.svg') %}{% endif %}
 			{% set col = (color is iterable ? color[loop.index0] : color)|default('') %}
 			{% set txt = (text is iterable ? text[loop.index0] : text)|default('') %}
-			<span data-val="{{ val }}"{% if not loop.first %} style="display:none"{% endif %}>
+			<span data-val="{{ val }}"
+				style="{% if not loop.first %}display:none;{% endif %}{% if pic is empty and not txt is empty and not col is empty and col != 'icon1' %}color: {{ col }};{% endif %}"
+				{% if pic is empty and not txt is empty and col == 'icon1' %} class="icon1"{% endif %}>
 				{% if pic %}{{ basic.icon(pic, col) }}{% endif %}
 				{{ txt }}
 			</span>

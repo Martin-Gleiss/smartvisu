@@ -60,11 +60,13 @@
 	<div class="twig">
 		<code class="prettyprint">
 			&#123;&#123; basic.symbol('', 'bath.multistate', '', 'message_led', [1,2,3], '', ['red','#EAFF00','green']) &#125;&#125;<br />
+			&#123;&#123; basic.symbol('', 'bath.multistate', ['low','medium','high'], '', [1,2,3], '', ['red','icon1','green']) &#125;&#125;<br />
 			&#123;&#123; basic.symbol('', 'bath.multistate', ['Light off','Light low','Light high'], ['control_1','control_2','control_3'], [1,2,3]) &#125;&#125;<br />
 		</code>
 	</div>
 	<div class="html">
 		{{ basic.symbol('', 'bath.multistate', '', 'message_led', [1,2,3], '', ['red','#EAFF00','green']) }}
+		{{ basic.symbol('', 'bath.multistate', ['low','medium','high'], '', [1,2,3], '', ['red','icon1','green']) }}
 		{{ basic.symbol('', 'bath.multistate', ['low','medium','high'], ['control_1','control_2','control_3'], [1,2,3]) }}
 	</div>
 
