@@ -20,20 +20,11 @@
 {% macro digiclock(id, location) %}
 	{% set uid = uid(page, id) %}
 
-	{% if once('digiclock') %}
-		<link rel="stylesheet" type="text/css" href="lib/clock/jdigiclock.css" />
-		<script type="text/javascript" src="lib/clock/jquery.jdigiclock.js"></script>
-	{% endif %}
-
 	<div id="{{ uid }}-digiclock" data-widget="clock.digiclock" class="digiclock"
 	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
 	 ></div>
 
 	{% if location %}
-		{% if once('digiweather') %}
-			<link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
-		{% endif %}
-
 		<div class="center digiweather" data-widget="clock.digiclock" data-service-url="lib/weather/service/{{ config_weather_service|url_encode }}.php?location={{ location|default(config_weather_location)|url_encode }}&lang={{ config_lang|default(en)|url_encode }}">
 			<div id="{{ uid }}-spot" class="spot">
 				<div class="temp"></div>
