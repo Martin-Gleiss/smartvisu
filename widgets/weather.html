@@ -13,7 +13,7 @@
 *
 * @param {id} unique id for this widget
 * @param {text=} location as string (optional)
-* @param {duration=15i} the refresh interval for this widget (using relative time format), default 15i (15 minutes)
+* @param {duration=15i} the refresh interval for this widget using relative time format (optional, default 15i = 15 minutes)
 *
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
@@ -43,8 +43,8 @@
 *
 * @param {id} unique id for this widget
 * @param {text=} location as string (optional)
-* @param {value=} offset: 1 for tomorrow (default), 2 the day after tomorrow ..., (optional)
-* @param {duration=3h} the refresh interval for this widget (using relative time format), default 3h
+* @param {value=1} offset: 1 for tomorrow (default), 2 the day after tomorrow, ... (optional, default 1)
+* @param {duration=3h} the refresh interval for this widget using relative time format (optional, default 3h)
 *
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
@@ -73,12 +73,12 @@
 *
 * @param {id} unique id for this widget
 * @param {text=} location as string (optional)
-* @param {duration=3h} the refresh interval for this widget (using relative time format), default 3h
+* @param {duration=3h} the refresh interval for this widget using relative time format (optional, default 3h)
 *
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
 */
-{% macro forecastweek(id, location) %}
+{% macro forecastweek(id, location, repeat) %}
 	{% set uid = uid(page, id) %}
 
 	{% if once('digiweather') %}
