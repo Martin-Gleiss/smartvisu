@@ -21,7 +21,7 @@
 
 		<h5>Examples</h5>
 
-		A vertical popup with some switches
+		A horizontal popup with some switches
 		<div class="twig">
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}				
 				<a href="#popup1" data-rel="popup">					
@@ -30,9 +30,9 @@
 
 				<div id="popup1" data-role="popup">
 					<div>
-						{{ basic.switch('switch1', 'bath.light.switch') }}
-						{{ basic.switch('switch2', 'bath.light.switch') }}
-						{{ basic.switch('switch3', 'bath.light.switch') }}
+						{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+						{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+						{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 					</div>
 				</div>
 
@@ -46,16 +46,16 @@
 
 			<div id="popup1" data-role="popup">
 				<div>
-					{{ basic.switch('switch1', 'bath.light.switch') }}
-					{{ basic.switch('switch2', 'bath.light.switch') }}
-					{{ basic.switch('switch3', 'bath.light.switch') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 				</div>
 			</div>
 
 		</div>
 
 
-		A horizontal popup with some switches
+		A vertical popup with some switches
 		<div class="twig">
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
@@ -64,9 +64,9 @@
 				</a>
 
 				<div id="popup2" data-role="popup">
-					{{ basic.switch('switch4', 'bath.light.switch') }}
-					{{ basic.switch('switch5', 'bath.light.switch') }}
-					{{ basic.switch('switch6', 'bath.light.switch') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 				</div>
 
 				{% endverbatim %}{% endfilter %}</code>
@@ -78,9 +78,9 @@
 			</a>
 
 			<div id="popup2" data-role="popup">
-				{{ basic.switch('switch4', 'bath.light.switch') }}
-				{{ basic.switch('switch5', 'bath.light.switch') }}
-				{{ basic.switch('switch6', 'bath.light.switch') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 			</div>
 
 		</div>

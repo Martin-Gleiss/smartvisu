@@ -259,8 +259,10 @@ a:hover {
 	padding: 4px;
 }
 
-.ui-popup > span {
+.ui-popup > span,
+.ui-popup > a {
 	margin: 0;
+	display: block;
 }
 
 /* grey background for the symbol in an collapsible set */
