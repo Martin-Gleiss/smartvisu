@@ -38,26 +38,31 @@ $.widget("sv.clock_digiclock", $.sv.clock, {
 
 	initSelector: 'div.digiclock[data-widget="clock.digiclock"]',
 
+	_init: function() {
+		this._super();
+		this.element.digiclock({ svrOffset: window.servertimeoffset || 0 });
+	},
+});
+
+$.widget("sv.clock_digiclock_digiweather", $.sv.widget, {
+
+	initSelector: 'div.digiweather[data-widget="clock.digiclock"]',
+
 	options: {
 		"service-url": ""
 	},
 
-	_init: function() {
-		this._super();
-		this.element.digiclock({ svrOffset: window.servertimeoffset || 0 });
-		var that = this;
-		this.element.find('div.digiweather[data-widget="clock.digiclock"]').each(function() {
-			var node = $(this);
-			$.getJSON(that.options["service-url"], function (data) {
-				node.find('img').attr('src', 'lib/weather/pics/' + data.current.icon + '.png').attr('alt', data.current.icon);
-				node.find('.city').html(data.city);
-				node.find('.cond').html(data.current.conditions);
-				node.find('.temp').html(data.current.temp);
-			});
+	_repeat: function() {
+		var element = this.element;
+		$.getJSON(this.options["service-url"], function (data) {
+			element.css('visibility', 'visible');
+			element.find('img').attr('src', 'lib/weather/pics/' + data.current.icon + '.png').attr('alt', data.current.icon);
+			element.find('.city').html(data.city);
+			element.find('.cond').html(data.current.conditions);
+			element.find('.temp').html(data.current.temp);
 		});
 	},
 
-	//TODO: repeat
 });
 
 
