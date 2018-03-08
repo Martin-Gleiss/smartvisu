@@ -212,18 +212,19 @@
 	- date & dateflip: Number of days after today
 	- time, timeflip: Format is 24hr clock - e.g. '18:31:27'
 	- duration & durationflip: in seconds
+* @param step between two values (optional, no effect on date/time types)
 *
 * @author Stefan Widmer
 * @info Inspired by Michael Würtenberger, date/time control uses JTSageDateBox
 */
-{% macro input(id, item, type, min, max) %}
+{% macro input(id, item, type, min, max, step) %}
 	<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.input" data-item="{{ item }}"
 		{% if type|lower in ['time', 'timeflip'] %}
 			type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
 			data-min-time="{{ min|default('false') }}" data-max-time="{{ max|default('false') }}"
 		{% elseif type|lower in ['duration', 'durationflip'] %}
 			type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
-			data-min-dur="{{ min|default('false') }}" data-max-dur="{{ max|default('false') }}"
+			data-min-dur="{{ min|default('false') }}" data-max-dur="{{ max|default('false') }}" data-duration-step="{{ step }}"
 		{% elseif type|lower in ['date', 'dateflip', 'datecal', 'dateslide'] %}
 			type="text" data-role="datebox" data-datebox-mode="{{ (type == 'date' ? type : type|slice(4))~'box' }}" data-use-focus="true"
 			data-min-days="{{ min|default('false') }}" data-max-days="{{ max|default('false') }}"
