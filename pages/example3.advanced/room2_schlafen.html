@@ -9,7 +9,6 @@
 
 
 {% extends "rooms.html" %}
-{% import "widgets/button.html" as button %}
 {% block content %}
 
     <h1><img class="icon" src='{{ icon0 }}scene_sleeping_alternat.svg'/>Schlafzimmer</h1>
@@ -18,7 +17,6 @@
 			<div class="left">
 		</div>
 		<div class="right">
-			{% import "widgets/smoke_detector.html" as detector %}
 			{{ detector.popup('smoke1', 'Rauchmelder Schlafen', 'dg.schlafen.rm.vernetzung.alarm', 'dg.schlafen.rm.vernetzung.testalarm', 'dg.schlafen.rm.alarm_ruecksetzen', 'dg.schlafen.rm.status.alarm',
 				'dg.schlafen.rm.status.testalarm', 'dg.schlafen.rm.status.seriennummer', 'dg.schlafen.rm.status.betriebszeit', 'dg.schlafen.rm.status.rauchkammerwert', 'dg.schlafen.rm.status.verschmutzungsgrad',
 				'dg.schlafen.rm.status.batterie_spannung', 'dg.schlafen.rm.status.temperatur', 'dg.schlafen.rm.status.fehlercode', 'dg.schlafen.rm.status.batterie_leer', 'dg.schlafen.rm.status.fehlfunktion',
@@ -60,13 +58,11 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Rollladen</h3>
-            {% import "widgets/shutter.html" as shutter %}
 			{{ shutter.one ('shutter1', 'Tür', 'dg.schlafen.rollladen.ost.fahren', 'dg.schlafen.rollladen.ost.stopp', 'dg.schlafen.rollladen.ost.position', 'dg.schlafen.rollladen.ost.beschatten' ) }}
         </div>
 
     	<div data-role="collapsible">
           <h3>Status Tür</h3>
-          {% import "widgets/window.html" as window %}
           <p>
             {{ window.two ('win1', 'Tür', 'dg.schlafen.fenster' ) }}
           </p>

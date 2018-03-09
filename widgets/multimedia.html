@@ -33,7 +33,7 @@
 *
 * @param {id} unique id for this widget
 * @param {image} the path/url to the image
-* @param {text(none,corner,corner-bottom)=none} the mode: 'none', 'corner', 'corner-bottom' (optional, default 'none')
+* @param {text(none,corner,corner-bottom,fill)=none} the mode: 'none', 'corner', 'corner-bottom', 'fill' (optional, default 'none')
 * @param {duration=10i} the reload-time in duration-format (optional, default '10i')
 *
 * @see misc/fundamentals#Duration-Format
@@ -179,7 +179,7 @@
 * @param {id} unique id for this widget
 * @param {item} an item
 * @param {image} an icon (e. g. located in pics/station)
-* @param {value=1} value send if the button is pressed (optional, default 1)
+* @param {text=1} value to send if the button is pressed (optional, default 1)
 * @param {type=mini} type: 'mini', 'midi' (optional, default: mini)
 */
 {% macro station(id, item, pic, val, type) %}

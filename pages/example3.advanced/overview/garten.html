@@ -8,8 +8,6 @@
  */
 {% extends "base.html" %}
 
-{% import "widgets/shutter.html" as shutter %}
-{% import "widgets/overview.html" as ov %}
 {% block content %}
 	<div class="html" data-title="Außenbereich">
     <div class="preblock">
@@ -18,7 +16,7 @@
     <div class="ui-grid-a ui-responsive">
 		<div class="overview ui-block-a">
 			<!-- Background picture -->
-			{{ ov.background ('background_garten', 'pages/otterstaetter/overview/images/garten.svg') }}
+			{{ ov.background ('background_garten', 'pages/example3.advanced/overview/images/garten.svg') }}
 
 			<!-- Carport -->
 			{{ ov.pagelink ('pagelink_carport', 'Details Carport', '15.5%', '58%', 'index.php?page=room0_carport', 'Carport', '', 'mini') }} 
@@ -64,9 +62,7 @@
 		<div class="block ui-block-b">
 			<div class="ui-bar-c ui-li-divider ui-corner-top">Umgebungsbedingungen</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
-				{% import "icon.html" as icon %}
-                {% import "plot.html" as plot %}
-    		    <table width="200px" style="margin: 15px auto;"><tr><td align="left" width="100px">&nbsp; {{ icon.windrose('icon-windrose', '', 'quadra.wind.richtung') }}</td><td>Windrichtung</td></tr></table>
+				<table width="200px" style="margin: 15px auto;"><tr><td align="left" width="100px">&nbsp; {{ icon.windrose('icon-windrose', '', 'quadra.wind.richtung') }}</td><td>Windrichtung</td></tr></table>
 				{{ plot.period('temp.luft', 'aussen.nordseite.temperatur', 'avg', '24h', 0, 0, '', '', 'Temperatur', '', 'spline', ['Uhrzeit', 'Temperatur'], '1h') }}
 				{{ plot.period('temp.feuchtigkeit', 'aussen.nordseite.luftfeuchtigkeit', 'avg', '24h', 0, 0, '', '', 'Luftfeuchtigkeit', '', 'spline', ['Uhrzeit', 'Prozent'], '1h') }}
 				{{ plot.period('temp.niederschlag', 'quadra.niederschlag', 'avg', '24h', 0, 0, '', '', 'Niederschlag', '', 'spline', ['Uhrzeit', 'Niederschlag Ja/Nein'], '1h') }}

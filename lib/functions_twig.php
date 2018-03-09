@@ -133,7 +133,7 @@ function twig_dir($dir, $filter = '(.*)')
 function twig_docu($filenames = null)
 {
 	if($filenames == null) {
-		$filenames = array_merge(twig_dir('widgets', '(.*.\.html)'), twig_dir('dropins/widgets', '(.*.\.html)'));
+		$filenames = array_merge(twig_dir('widgets', '(.*.\.html)'), twig_dir('dropins/widgets', '(.*.\.html)'), twig_dir('pages/'.config_pages.'/widgets', '(.*.\.html)'));
 	}
 	elseif(!is_array($filenames))
 		$filenames = array($filenames);

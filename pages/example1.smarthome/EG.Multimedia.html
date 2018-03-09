@@ -15,42 +15,24 @@
 	<!--<h1><img class="icon" src='{{ icon0 }}scene_livingroom.png'/>Wohnzimmer</h1>-->
 
 	<style>
-		.nav-custom .ui-btn .ui-btn-inner {
-			padding-top: 40px !important;
+		#kochen:after {
+			background-image: url("{{ icon0 }}scene_cooking.svg");
 		}
 
-		.nav-custom .ui-btn .ui-icon {
-			width: 30px !important;
-			height: 30px !important;
-			margin-left: -15px !important;
-			box-shadow: none !important;
-			-moz-box-shadow: none !important;
-			-webkit-box-shadow: none !important;
-			-webkit-border-radius: 0 !important;
-			border-radius: 0 !important;
+		#essen:after {
+			background-image: url("{{ icon0 }}scene_dinner.svg");
 		}
 
-		#kochen .ui-icon {
-			background: url({{ icon0 }}scene_cooking.svg) 50% 50% no-repeat;
-			background-size: 36px 36px;
-		}
-
-		#essen .ui-icon {
-			background: url({{ icon0 }}scene_dinner.svg) 50% 50% no-repeat;
-			background-size: 36px 36px;
-		}
-
-		#wohnen .ui-icon {
-			background: url({{ icon0 }}it_television.svg) 50% 50% no-repeat;
-			background-size: 36px 36px;
+		#wohnen:after {
+			background-image: url("{{ icon0 }}it_television.svg");
 		}
 	</style>
 	<div data-role="navbar" class="nav-custom">
 		<ul>
-			<li><a href="index.php?page=EG.Kueche" id="kochen" data-icon="custom">Küche</a></li>
-			<li><a href="index.php?page=EG.Esszimmer" id="essen" data-icon="custom">Essbereich</a></li>
+			<li><a href="index.php?page=EG.Kueche" id="kochen" class="ui-btn-icon-top">Küche</a></li>
+			<li><a href="index.php?page=EG.Esszimmer" id="essen" class="ui-btn-icon-top">Essbereich</a></li>
 			<li>
-				<a href="index.php?page=EG.Multimedia" class="ui-btn-active" id="wohnen" data-icon="custom">Multimedia</a>
+				<a href="index.php?page=EG.Multimedia" class="ui-btn-icon-top ui-btn-active" id="wohnen">Multimedia</a>
 			</li>
 		</ul>
 	</div>
@@ -106,9 +88,7 @@
 
 			<div data-role="collapsible" data-collapsed="false">
 				<h3>Musik Bad</h3>
-				{% import "multimedia.html" as multi %}
-
-				{{ multi.music ('music1', 'Allgemein.Multimedia.SqueezePlayPaus', 'Allgemein.Multimedia.Squeezestop', '', 'Allgemein.Multimedia.Squeezevorzurueck', '', 'Allgemein.Multimedia.SqueezeLautst', 'Allgemein.Multimedia.SqueezeMute', 'kueche_musik_titel', '', '', '' ) }}
+				{{ multimedia.music ('music1', 'Allgemein.Multimedia.SqueezePlayPaus', 'Allgemein.Multimedia.Squeezestop', '', 'Allgemein.Multimedia.Squeezevorzurueck', '', 'Allgemein.Multimedia.SqueezeLautst', 'Allgemein.Multimedia.SqueezeMute', 'kueche_musik_titel', '', '', '' ) }}
 			</div>
 		</div>
 	</div>

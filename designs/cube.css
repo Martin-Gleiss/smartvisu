@@ -1670,7 +1670,8 @@ html body a.switch {
 }
 .switch.icon1,
 html .ui-btn.icon1,
-[data-widget="basic.print"].icon1 {
+[data-widget="basic.print"].icon1,
+[data-widget="basic.symbol"] .icon1 {
 	color: #f9a028;
 }
 

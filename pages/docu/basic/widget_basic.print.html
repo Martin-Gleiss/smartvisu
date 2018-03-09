@@ -49,15 +49,15 @@
 	The following examples shows how to manipulate or read other elements; but any other JavaScript/jQuery exression can be used.<br>
 	The second example shows text of another element. It does not use the item data at all but it is triggered by receiving an item value.
 	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}
+			<span id="otherElement" style="color: yellow">This is another element</span>
+		{% endfilter %}</code>
+	</div>
+	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 			{{ basic.print('', 'bath.value', 'script', '$("#otherElement").css("padding-left", VAR1/2)') }}
 			{{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherElement").text() + "\'"') }}
 		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}
-			&lt;span id="otherElement" style="color: yellow"&gt;This is another element&lt;/span&gt;
-		{% endfilter %}</code>
 	</div>
 	<div class="html">
 		<span id="otherElement" style="color: yellow">This is another element</span><br>
