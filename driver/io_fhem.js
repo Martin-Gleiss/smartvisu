@@ -26,7 +26,6 @@ var io = {
 	// -----------------------------------------------------------------------------
 	// P U B L I C   F U N C T I O N S
 	// -----------------------------------------------------------------------------
-	driverVersion: "1.13",
 	address: '',
 	port: '',
 	uzsu_type: '2',
@@ -257,34 +256,26 @@ var io = {
 				//   }
 				// }
 				for (i = 0; i < data.items.length; i++) {
-
-					var gad = data.items[i].gad;
-					var plotData = data.items[i].plotdata;
-					var updateMode = data.items[i].updatemode;
+					var item = data.items[i];
 
 					// FHEM charts, see https://github.com/herrmannj/smartvisu-widgets/tree/master/chart
 					var seriesdata = {
-						"gad": gad,
-						"data": plotData,
-						"updatemode": updateMode
+						"gad": item.gad,
+						"data": item.plotdata,
+						"updatemode": item.updatemode
 					}
-					widget.update(gad, seriesdata);
+					widget.update(item.gad, seriesdata);
 
 					// sV plots
 					/*
 					 * if fronthem would reflect completeGAD in items (e.g. "hcs.data.OilLevelPlot.avg.5y 6m.0") the hole block could be replaced by:
 					 * widget.update(completeGAD, plotData);
 					 */
-					$('[data-widget^="plot."][data-item*="' + gad + '"]').each(function() {
+					$('[data-widget^="plot."][data-item*="' + item.gad + '"]').each(function() {
 						var items = widget.explode($(this).attr('data-item'));
 						for (var i = 0; i < items.length; i++) {
-							// items[i]: if SV-plot: hcs.data.OilLevelPlot.avg.5y 6m.0
-							//           if chart:   hcs.data.OilLevelPlot
-							if (io.isPlot(this, items[i])) {
-								var completeGAD = items[i];
-								if (io.splitPlotGAD(items[i]).gad === gad) {
-									widget.update(items[i], plotData);
-								}
+							if (io.splitPlotGAD(items[i]).gad === item.gad) {
+								widget.update(items[i], item.plotdata);
 							}
 						}
 					});
@@ -369,48 +360,6 @@ var io = {
 		}
 	},
 
-	// -----------------------------------------------------------------------------
-	// checks, if the passed GAD is a GAD for a series
-	// -----------------------------------------------------------------------------
-	isSeries: function(item, gad) {
-		var result = false;
-		var series = $(item).attr("data-series");
-		if (series) {
-			var seriesGADs = series.split(',');
-
-			for (var i = 0; i < seriesGADs.length; i++) {
-				if (seriesGADs[i].trim() === gad) {
-					result = true;
-					break;
-				}
-			}
-
-		}
-		return result;
-	},
-
-	// -----------------------------------------------------------------------------
-	// checks, if the passed GAD is a GAD for a SV-Plot with a series
-	// -----------------------------------------------------------------------------
-	isPlot: function(item, gad) {
-		var widget = $(item).attr("data-widget");
-		return widget === "plot.period" || widget === "plot.rtr";
-	},
-
-	// -----------------------------------------------------------------------------
-	// checks, if the passed GAD is a GAD for a log
-	// -----------------------------------------------------------------------------
-	isLog: function(item, gad) {
-		var widget = $(item).attr("data-widget");
-		return widget === "status.log";
-	},
-
-	// -----------------------------------------------------------------------------
-	// checks, if the passed GAD is a GAD for a "normal" value
-	// -----------------------------------------------------------------------------
-	isValue: function(item, gad) {
-		return !io.isSeries(item, gad) && !io.isPlot(item, gad) && !io.isLog(item, gad);
-	},
 
 	// -----------------------------------------------------------------------------
 	// Split the GADs into the FHEM-part and our own part
@@ -418,25 +367,39 @@ var io = {
 	splitGADs: function() {
 		io.ownGADs = [];
 		io.fhemGADs = [];
-		var gads = Array();
-		var unique = Array();
+		io.ownLogs = [];
+		io.fhemLogs = [];
+		io.ownSeries = [];
+		io.fhemSeries = [];
 
-		io.allGADs.forEach(function(item) {
-			var items = widget.explode($(item).attr('data-item'));
-			for (var i = 0; i < items.length; i++) {
-				if (io.isValue(item, items[i])) {
-					unique[items[i]] = '';
+		// Logs
+		widget.log().each(function() {
+			var logInfo = {
+				"gad": $(this).attr('data-item'),
+				"size": $(this).attr('data-count'),
+				"interval": $(this).attr('data-interval')
+			};
+
+			if (io.offline) {
+				io.offlineLogs.push(logInfo);
+			}
+			if (io.gadFilter) {
+				var re = new RegExp(io.gadFilter);
+				if (re.test(logInfo.gad)) {
+					io.ownLogs.push(logInfo);
+				} else {
+					io.fhemLogs.push(logInfo);
 				}
+			} else {
+				io.fhemLogs.push(logInfo);
 			}
 		});
 
-		for (var item in unique) {
-			gads.push(item);
-			if (io.offline) {
-				io.offlineGADs.push(item);
-			}
+		// "normal" values
+		var gads = widget.listeners();
+		if (io.offline) {
+			io.offlineGADs = gads.slice(0);
 		}
-
 		if (io.gadFilter) {
 			var re = new RegExp(io.gadFilter);
 			for (var i = 0; i < gads.length; i++) {
@@ -451,87 +414,77 @@ var io = {
 		} else {
 			io.fhemGADs = gads;
 		}
-	},
 
-
-	// -----------------------------------------------------------------------------
-	// Split a plot.* GAD into GAD and params
-	// -----------------------------------------------------------------------------
-	splitPlotGAD: function(completeGAD) {
-		var parts = completeGAD.split('.');
-		// gad: hcs.data.OilLevelPlot.avg.5y 6m.0
-		//                             \     \    \ end
-		//                              \     \ start
-		//                               \ mode
-		var pos = 0;
-		var gad = "";
-		while (pos < parts.length - 3) {
-			gad += parts[pos] + (pos == parts.length - 4 ? "" : ".");
-			pos++;
-		}
-
-		return {
-			"gad": gad,
-			"mode": parts[parts.length - 3],
-			"start": parts[parts.length - 2],
-			"end": parts[parts.length - 1]
-		};
-
-	},
-
-	// -----------------------------------------------------------------------------
-	// Split the series into the FHEM-part and our own part
-	// -----------------------------------------------------------------------------
-	splitSeries: function() {
-		io.ownSeries = [];
-		io.fhemSeries = [];
-
-		io.allGADs.forEach(function(item) {
-			var gads = $(item).attr('data-item').split(',');
-			for (var i = 0; i < gads.length; i++) {
-				var takeThat = false;
-
-				var gad = gads[i].trim();
-				var mode = "";
-				var start = "";
-				var end = "";
-				var interval = "";
-				var minzoom = "";
-				var updatemode = "complete";
-
-				if (io.isSeries(item, gad)) {
-					var dataModes = $(item).attr('data-modes');
-					var modes = dataModes.split(',');
-					mode = modes.length > 1 ? modes[i].trim() : dataModes;
-					start = $(item).attr('data-tmin');
-					end = $(item).attr('data-tmax');
-					interval = $(item).attr('data-interval');
-					minzoom = $(item).attr('data-zoom');
-					takeThat = true;
-				} else if (io.isPlot(item, gad)) {
-					var plotGAD = io.splitPlotGAD(gad);
+		// sV Plots
+		widget.plot().each(function() {
+			var list = widget.explode($(this).attr('data-item'));
+			for (var i = 0; i < list.length; i++) {
+				if(widget.checkseries(list[i])) {
+					var plotGAD = io.splitPlotGAD(list[i]);
 					if ($.inArray(plotGAD.mode, Array('avg', 'min', 'max', 'sum', 'diff', 'rate', 'on')) >= 0) {
-						gad = plotGAD.gad;
-						mode = plotGAD.mode;
-						start = plotGAD.start;
-						end = plotGAD.end;
-						interval = "OnChange";
-						minzoom = $(item).attr('data-zoom');
-						updatemode = "additional";
+						var plotInfo = {
+							"gad": plotGAD.gad,
+							"mode": plotGAD.mode,
+							"start": plotGAD.start,
+							"end": plotGAD.end === "0" ? "now" : plotGAD.end,
+							"interval": "OnChange",
+							"minzoom": $(this).attr('data-zoom'),
+							"updatemode": "additional"
+						};
 
-						takeThat = true;
+						if (io.offline) {
+							io.offlineSeries.push(plotInfo);
+						}
+
+						if (io.gadFilter) {
+							var re = new RegExp(io.gadFilter);
+							if (re.test(plotInfo.gad)) {
+								io.ownSeries.push(plotInfo);
+							} else {
+								io.fhemSeries.push(plotInfo);
+							}
+						} else {
+							io.fhemSeries.push(plotInfo);
+						}
+					}
+				}
+			}
+		});
+
+		// FHEM charts, see https://github.com/herrmannj/smartvisu-widgets/tree/master/chart
+		$.mobile.activePage.find('[data-item][data-series]').each(function(index, item) {
+			var list = widget.explode($(item).attr('data-item'));
+			for (var i = 0; i < list.length; i++) {
+
+				var gad = list[i];
+
+				var result = false;
+				var series = $(item).attr("data-series");
+				if (series) {
+					var seriesGADs = series.split(',');
+
+					for (var i = 0; i < seriesGADs.length; i++) {
+						if (seriesGADs[i].trim() === gad) {
+							result = true;
+							break;
+						}
 					}
 				}
 
-				if (takeThat) {
+				if (result) {
+					var dataModes = $(item).attr('data-modes');
+					var modes = dataModes.split(',');
+
+					var end = $(item).attr('data-tmax');
+
 					var plotInfo = {
 						"gad": gad,
-						"mode": mode,
-						"start": start,
+						"mode": modes.length > 1 ? modes[i].trim() : dataModes,
+						"start": $(item).attr('data-tmin'),
 						"end": end === "0" ? "now" : end,
-						"interval": interval,
-						"minzoom": minzoom,
-						"updatemode": updatemode
+						"interval": $(item).attr('data-interval'),
+						"minzoom": $(item).attr('data-zoom'),
+						"updatemode": "complete"
 					};
 
 					if (io.offline) {
@@ -548,61 +501,37 @@ var io = {
 					} else {
 						io.fhemSeries.push(plotInfo);
 					}
+
 				}
+
+
 			}
 		});
-
 	},
 
 
 	// -----------------------------------------------------------------------------
-	// Split the Logs into the FHEM-part and our own part
+	// Split a plot.* GAD into GAD and params
 	// -----------------------------------------------------------------------------
-	splitLogs: function() {
-		io.ownLogs = [];
-		io.fhemLogs = [];
-
-		io.allGADs.forEach(function(item) {
-			var list = $(item).attr('data-item').split(',');
-
-			for (var i = 0; i < list.length; i++) {
-				if (io.isLog(item, list[i].trim())) {
-					var logInfo = {
-						"gad": list[i].trim(),
-						"size": $(item).attr('data-count'),
-						"interval": $(item).attr('data-interval')
-					};
-
-					if (io.offline) {
-						io.offlineLogs.push(logInfo);
-					}
-
-					if (io.gadFilter) {
-						var re = new RegExp(io.gadFilter);
-						if (re.test(logInfo.gad)) {
-							io.ownLogs.push(logInfo);
-						} else {
-							io.fhemLogs.push(logInfo);
-						}
-					} else {
-						io.fhemLogs.push(logInfo);
-					}
-				}
-			}
-		});
-
-	},
-
-	// -----------------------------------------------------------------------------
-	// Get and cache GADs
-	// -----------------------------------------------------------------------------
-	getAllGADs: function() {
-		io.allGADs = [];
-
-		// get all widgets at page
-		if ($.mobile.activePage) {
-			io.allGADs = $.mobile.activePage.find('[data-item]').toArray();
+	splitPlotGAD: function(completeGAD) {
+		var parts = completeGAD.split('.');
+		// gad: hcs.data.OilLevelPlot.avg.5y 6m.0.100	-- count
+		//														 \		 \		\ end
+		//															\		 \ start
+		//															 \ mode
+		var pos = 0;
+		var gad = "";
+		while (pos < parts.length - 4) {
+			gad += parts[pos] + (pos == parts.length - 5 ? "" : ".");
+			pos++;
 		}
+
+		return {
+			"gad": gad,
+			"mode": parts[parts.length - 4],
+			"start": parts[parts.length - 3],
+			"end": parts[parts.length - 2]
+		};
 
 	},
 
@@ -610,7 +539,6 @@ var io = {
 	// -----------------------------------------------------------------------------
 	// Monitors the items
 	// -----------------------------------------------------------------------------
-	allGADs: [],
 	fhemGADs: [],
 	ownGADs: [],
 	fhemSeries: [],
@@ -622,10 +550,7 @@ var io = {
 			// ToDo: Remove after testing
 			io.logLoadTime("Monitor");
 
-			io.getAllGADs();
 			io.splitGADs();
-			io.splitSeries();
-			io.splitLogs();
 
 			// ToDo: Remove after testing
 			io.logLoadTime("Monitor calculated");
