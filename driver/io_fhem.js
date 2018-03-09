@@ -1,7 +1,7 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU / FHEM
- * @author      HCS with adjustments by Julian Pawlowski,
+ * @author      HCS with adjustments by Julian Pawlowski and Stefan Widmer,
  *              original version by Martin Gleiß
  * @copyright   2016
  * @license     GPL [http://www.gnu.de]
@@ -26,7 +26,7 @@ var io = {
 	// -----------------------------------------------------------------------------
 	// P U B L I C   F U N C T I O N S
 	// -----------------------------------------------------------------------------
-	driverVersion: "1.12",
+	driverVersion: "1.13",
 	address: '',
 	port: '',
 	uzsu_type: '2',
@@ -65,7 +65,7 @@ var io = {
 			}
 		}
 
-		io.updateWidget(gad, val);
+		widget.update(gad, val);
 	},
 
 
@@ -210,125 +210,6 @@ var io = {
 		}
 	},
 
-	// -----------------------------------------------------------------------------
-	// Try to call the update handler of a widget
-	// -----------------------------------------------------------------------------
-	callUpdateHandler: function(item, values) {
-		var widget = $(item).attr('data-widget');
-		var gads = $(item).attr('data-item');
-		var cachedWidget = io.action[widget];
-		try {
-			if (cachedWidget) {
-				cachedWidget.handler.call(item, 'update', values);
-			} else {
-				$(item).trigger('update', values);
-			}
-		} catch (ex) {
-			io.log(0, "Widget '" + widget + "' - " + gads + ": " + values + " Error: " + ex);
-		}
-	},
-
-
-	// -----------------------------------------------------------------------------
-	// Update a widget
-	// -----------------------------------------------------------------------------
-	updateWidget: function(gad, value) {
-		// ToDo: Remove after testing
-		io.receivedGADs++;
-		var widgetType = "";
-		io.logLoadTime("GAD #" + io.receivedGADs);
-
-		// Buffer it
-		if (!(widget.buffer[gad] instanceof Array) && value !== undefined) {
-			widget.buffer[gad] = $.isNumeric(value) ? value * 1.0 : value;
-		}
-
-		$('[data-item*="' + gad + '"]').each(function(idx) {
-			widgetType = $(this).attr('data-widget');
-
-			var items = widget.explode($(this).attr('data-item'));
-			var series = $(this).attr("data-series");
-
-			for (var i = 0; i < items.length; i++) {
-				if (items[i] == gad) {
-					if (series) {
-						// This is a GAD that is part of a widget that has series and values
-						var data = {
-							"gad": gad,
-							"data": value
-						};
-						io.callUpdateHandler(this, data);
-					} else {
-						var values = widget.get(items);
-						if (widget.check(values)) {
-							io.callUpdateHandler(this, [values]);
-
-							// for the icon.* widgets there is a second update handler
-							// that we must call. It switches the icon
-							if (widgetType.lastIndexOf("icon.", 0) === 0) {
-								var cachedWidget = io.action["icon."];
-								try {
-									if (cachedWidget) {
-										cachedWidget.handler.call(this, 'update', [values]);
-									} else {
-										$(this).trigger('update', [values]);
-									}
-								} catch (ex) {
-									io.log(0, "Widget '" + widgetType + "' - " + gad + ": " + values + " Error: " + ex);
-								}
-
-							}
-
-						}
-					}
-				}
-			}
-		});
-
-		// ToDo: Remove after testing
-		io.logLoadTime("OK (" + widgetType + ")");
-		io.showLoadTime();
-	},
-
-	// -----------------------------------------------------------------------------
-	// Update a chart
-	// -----------------------------------------------------------------------------
-	updateChart: function(item, gad, series, updatemode) {
-		seriesData = {
-			"gad": gad,
-			"data": series,
-			"updatemode": updatemode
-		};
-
-		io.callUpdateHandler(item, seriesData);
-		io.log(2, "Chart updated: " + gad + " size: " + series.length);
-
-	},
-
-	// -----------------------------------------------------------------------------
-	// Update a plot
-	// -----------------------------------------------------------------------------
-	updatePlot: function(item, gad, series, updatemode) {
-		var items = widget.explode($(item).attr('data-item'));
-
-		for (var i = 0; i < items.length; i++) {
-			items[i] = io.splitPlotGAD(items[i]).gad;
-		}
-
-		widget.buffer[gad] = series;
-
-		if ($(item).attr('data-widget').substr(0, 5) == 'plot.' && $('#' + item.id).highcharts()) {
-			$(item).trigger('point', [series]);
-		} else {
-			var values = widget.get(items);
-			if (widget.check(values)) {
-				io.callUpdateHandler(item, values);
-				////io.log(2, "Plot updated: " + gad + " size: " + series.length);
-
-			}
-		}
-
-	},
 
 	// -----------------------------------------------------------------------------
 	// Handle the received data
@@ -344,11 +225,11 @@ var io = {
 			case 'item':
 				// We get:
 				// {
-				//	 "cmd": "item",
-				//	 "items": ["Temperature_LivingRoom.temperature","21"]
+				//   "cmd": "item",
+				//   "items": ["Temperature_LivingRoom.temperature","21"]
 				// }
 				for (i = 0; i < data.items.length; i = i + 2) {
-					io.updateWidget(data.items[i], data.items[i + 1]);
+					widget.update(data.items[i], data.items[i + 1]);
 				}
 				break;
 
@@ -376,24 +257,33 @@ var io = {
 				//   }
 				// }
 				for (i = 0; i < data.items.length; i++) {
+
 					var gad = data.items[i].gad;
 					var plotData = data.items[i].plotdata;
 					var updateMode = data.items[i].updatemode;
 
-					$('[data-item*="' + gad + '"]').each(function() {
+					// FHEM charts, see https://github.com/herrmannj/smartvisu-widgets/tree/master/chart
+					var seriesdata = {
+						"gad": gad,
+						"data": plotData,
+						"updatemode": updateMode
+					}
+					widget.update(gad, seriesdata);
+
+					// sV plots
+					/*
+					 * if fronthem would reflect completeGAD in items (e.g. "hcs.data.OilLevelPlot.avg.5y 6m.0") the hole block could be replaced by:
+					 * widget.update(completeGAD, plotData);
+					 */
+					$('[data-widget^="plot."][data-item*="' + gad + '"]').each(function() {
 						var items = widget.explode($(this).attr('data-item'));
 						for (var i = 0; i < items.length; i++) {
 							// items[i]: if SV-plot: hcs.data.OilLevelPlot.avg.5y 6m.0
 							//           if chart:   hcs.data.OilLevelPlot
 							if (io.isPlot(this, items[i])) {
-								items[i] = io.splitPlotGAD(items[i]).gad;
-							}
-
-							if (items[i] === gad) {
-								if (io.isPlot(this, items[i])) {
-									io.updatePlot(this, gad, plotData, updateMode);
-								} else {
-									io.updateChart(this, gad, plotData, updateMode);
+								var completeGAD = items[i];
+								if (io.splitPlotGAD(items[i]).gad === gad) {
+									widget.update(items[i], plotData);
 								}
 							}
 						}
@@ -707,28 +597,11 @@ var io = {
 	// Get and cache GADs
 	// -----------------------------------------------------------------------------
 	getAllGADs: function() {
-		io.action = {};
 		io.allGADs = [];
-
-		// get all delegate handlers
-		var handlers = ($._data($(document)[0], "events"))["update"] || {};
-
-		for (var i = 0; i < handlers.delegateCount; i++) {
-			var raw = handlers[i].selector;
-			var regEx = /.*?data-widget?.="(.+?)".*/;
-			regEx.exec(raw);
-			var widget = RegExp.$1;
-			var handler = handlers[i].handler;
-			io.action[widget] = {
-				handler: handler
-			};
-		}
 
 		// get all widgets at page
 		if ($.mobile.activePage) {
-			$('[id^="' + $.mobile.activePage.attr('id') + '-"][data-item]').each(function(idx, e) {
-				io.allGADs.push(this);
-			});
+			io.allGADs = $.mobile.activePage.find('[data-item]').toArray();
 		}
 
 	},
