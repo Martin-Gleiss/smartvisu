@@ -22,9 +22,9 @@
 		<code class="prettyprint">
 			&#123;&#123; device.shutter ('', 'Shutter 1', 'bath.blind.mov', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle', 'bath.blind.stored') &#125;&#125;
 			<br /><br />
-			&#123;&#123; device.shutter ('', 'Shutter 2', 'bath.blind.mov', '', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle', '', 0, 255, 5, 'full') &#125;&#125;
+			&#123;&#123; device.shutter ('', 'Shutter 2', '', '', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle', '', 0, 255, 5, 'full') &#125;&#125;
 			<br /><br />
-			&#123;&#123; device.shutter ('', 'Shutter 3', 'bath.blind.mov', '', 'bath.blind.pos') &#125;&#125;
+			&#123;&#123; device.shutter ('', 'Shutter 3', '', '', 'bath.blind.pos') &#125;&#125;
 		</code>
 	</div>
 
@@ -35,7 +35,7 @@
 			<div class="ui-bar-c ui-li-divider ui-corner-top">Use slider to control shutter..</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
 
-				{{ device.blind('', 'Blind', 'bath.blind.mov', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle') }}
+				{{ device.blind('', 'Blind', '', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle') }}
 
 			</div>
 		</div>
@@ -44,7 +44,7 @@
 			<div class="ui-bar-c ui-li-divider ui-corner-top">Shutter with all controls, 'half' mode</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
 
-				{{ device.shutter ('', 'Shutter 1', 'bath.blind.mov', 'bath.blind.stop', 'bath.blind.pos', '', 'bath.blind.angle', 'bath.blind.stored') }}
+				{{ device.shutter ('', 'Shutter 1', '', 'bath.blind.stop', 'bath.blind.pos', '', 'bath.blind.angle', 'bath.blind.stored') }}
 
 			</div>
 		</div>
@@ -53,7 +53,7 @@
 			<div class="ui-bar-c ui-li-divider ui-corner-top">Shutter with less controls, 'full' mode</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
 
-				{{ device.shutter ('', 'Shutter 2', 'bath.blind.mov', '', 'bath.blind.pos', '', 'bath.blind.angle', '', 0, 255, 5, 'full', 'pics/shutter/shutter_cliff.png') }}
+				{{ device.shutter ('', 'Shutter 2', '', '', 'bath.blind.pos', '', 'bath.blind.angle', '', 0, 255, 5, 'full', 'pics/shutter/shutter_cliff.png') }}
 
 			</div>
 		</div>
@@ -62,7 +62,7 @@
 			<div class="ui-bar-c ui-li-divider ui-corner-top">Shutter without blades</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
 
-				{{ device.shutter ('', 'Shutter 3', 'bath.blind.mov', '', 'bath.blind.pos') }}
+				{{ device.shutter ('', 'Shutter 3', '', '', 'bath.blind.pos') }}
 
 			</div>
 		</div>

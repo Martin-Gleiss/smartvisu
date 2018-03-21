@@ -35,7 +35,7 @@
 						{% if item_move is empty %}
 							{{ basic.stateswitch('', item_pos, '', value_top|default('0'), 'carat-u') }}
 						{% else %}
-							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u' ) }}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
 						{% endif %}
 					</div>
 				</td>
@@ -57,7 +57,7 @@
 						{% if item_move is empty %}
 							{{ basic.stateswitch('', item_pos, '', value_bottom|default('255'), 'carat-d') }}
 						{% else %}
-							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d' ) }}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
 						{% endif %}
 					</div>
 				</td>
@@ -228,7 +228,7 @@
 						{% if item_move is empty %}
 							{{ basic.stateswitch('', item_pos, '', value_top|default('0'), 'carat-u') }}
 						{% else %}
-							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u' ) }}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
 						{% endif %}
 					</div>
 				</td>
@@ -237,7 +237,7 @@
 				</td>
 				<td valign="top">
 					{% if item_saved %}
-						<div>{{ basic.stateswitch('', item_saved, '', value_pos_1|default(0), 'grid', 'Pos1') }}</div>
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_1|default(0), 'grid', 'Pos1', '', 'blink') }}</div>
 					{% endif %}
 				</td>
 			</tr>
@@ -255,13 +255,13 @@
 						{% if item_move is empty %}
 							{{ basic.stateswitch('', item_pos, '', value_bottom|default('255'), 'carat-d') }}
 						{% else %}
-							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d' ) }}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
 						{% endif %}
 					</div>
 				</td>
 				<td valign="bottom">
 					{% if item_saved %}
-						<div>{{ basic.stateswitch('', item_saved, '', value_pos_2|default(1), 'grid', 'Pos2') }}</div>
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_2|default(1), 'grid', 'Pos2', '', 'blink') }}</div>
 					{% endif %}
 				</td>
 			</tr>
