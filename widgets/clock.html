@@ -58,11 +58,12 @@
 /**
 * Displays a mini text-based clock
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget (optional)
+* @param {text=} a PHP like date/time format string (optional)
 */
 {% macro miniclock(id, format) %}
 
-	<span id="{{ uid(page, id) }}" data-widget="clock.miniclock" data-repeat="1i" class="miniclock"
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.miniclock" data-repeat="1i" class="miniclock"
 		data-format="{{ format|default('time') }}"
 		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
 		>{{ "now"|date('H:i') }}</span>

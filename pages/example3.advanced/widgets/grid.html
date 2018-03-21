@@ -1279,12 +1279,12 @@
         {% if gad_clock %}
             {% import   "icon.html" as icon %}
             {{ icon.clock(id~'-iconClock', '', gad_clock) }}
-            <div>{{ now|date(' d.m.Y ') }}</div>
+            <div>{{ clock.miniclock('', lang('format','date') ) }}</div>
         {% else %}
             <!--<img class="icon" src=" {{ icon0 }}time_calendar.svg" />-->
-            <div>{{ now|date(' d.m.Y ') }}</div>
+            <div>{{ clock.miniclock('', lang('format','date') ) }}</div>
             <!--<img class="icon" src=" {{ icon0 }}time_clock.svg" />-->
-            <div>{{ now|date(' H:i ') }}</div>
+            <div>{{ clock.miniclock('', 'l') }}</div>
         {% endif %}
         <div class="align-right">
             <div data-role="controlgroup" data-type="horizontal">

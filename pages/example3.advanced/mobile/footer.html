@@ -13,9 +13,9 @@
         {{ basic.float('float_footer_aussen', 'aussen.nordseite.temperatur', '°', 'div') }}
 
         <!--<img src="{{ icon0 }}time_calendar.svg" />-->
-        <div>{{ now|date(' d.m.Y ') }}</div>
+        <div>{{ clock.miniclock('', lang('format','date') ) }}</div>
         <!--<img src="{{ icon0 }}time_clock.svg" />-->
-        <div>{{ now|date(' H:i ') }}</div>
+        <div>{{ clock.miniclock('', 'l') }}</div>
         
         <div class="align-right">
             <div data-role="controlgroup" data-type="horizontal">

@@ -19,7 +19,7 @@
 	{{ clock.digiclock('clock') }}
 
 	<div class="center">
-		{{ now|smartdate('l') }}, {{ now|smartdate() }}
+		{{ clock.miniclock('', 'l, ' ~ lang('format','date') ) }}
 	</div>
 
 	<hr>
