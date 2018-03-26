@@ -664,6 +664,7 @@ a.ui-slider-handle-semicircle {
 }
 .switch.icon1,
 html .ui-btn.icon1,
-[data-widget="basic.print"].icon1 {
+[data-widget="basic.print"].icon1,
+[data-widget="basic.symbol"] .icon1 {
 	color: #22aadd;
 }

@@ -9,7 +9,6 @@
 
 
 {% extends "rooms.html" %}
-{% import "widgets/button.html" as button %}
 {% block content %}
 
     <h1><img class="icon" src='{{ icon0 }}scene_bathroom.svg'/>Bad Eltern</h1>
@@ -34,7 +33,6 @@
             <p>
             {{ device.dimmer('light1', 'Deckenstrahler', 'dg.bad_eltern.beleuchtung.decke.schalten', 'dg.bad_eltern.beleuchtung.decke.dimmwert', 0, 100) }}
             {{ button.flip('flip0', 'dg.bad_eltern.beleuchtung.spiegel.schalten', 'Ein', 'Aus', 'Spiegel', 'light_mirror.svg', 'light_mirror.svg') }}
-			{% import "widgets/rgb.html" as rgb %}
 			{{ rgb.rgb('rgb1', 'Indirekte Beleuchtung', 'dg.bad_eltern.beleuchtung.rgb.schalten', 'dg.bad_eltern.beleuchtung.rgb.rot.dimmwert', 'dg.bad_eltern.beleuchtung.rgb.gruen.dimmwert', 'dg.bad_eltern.beleuchtung.rgb.blau.dimmwert', 50, 150) }}
 			</p>
       	</div>
@@ -47,13 +45,11 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Rollladen</h3>
-            {% import "widgets/shutter.html" as shutter %}
 		{{ shutter.one ('shutter1', 'Tür', 'dg.bad_eltern.rollladen.ost.fahren', 'dg.bad_eltern.rollladen.ost.stopp', 'dg.bad_eltern.rollladen.ost.position', 'dg.bad_eltern.rollladen.ost.beschatten' ) }}
         </div>
 
     	<div data-role="collapsible">
           <h3>Status Tür</h3>
-          {% import "widgets/window.html" as window %}
           <p>
             {{ window.two ('win1', 'Tür', 'dg.bad_eltern.fenster' ) }}
           </p>
@@ -66,7 +62,6 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Musik</h3>
-            {% import "multimedia.html" as multimedia %}
 			{{ multimedia.music ('music1', 'dg.bad_eltern.musik.play', 'dg.bad_eltern.musik.stopp', 'dg.bad_eltern.musik.vor_ruecklauf', 'dg.bad_eltern.musik.weiter_zurueck', 'dg.bad_eltern.musik.position', 'dg.bad_eltern.musik.lautstaerke', 'dg.bad_eltern.musik.stumm', '') }}
 
         </div>

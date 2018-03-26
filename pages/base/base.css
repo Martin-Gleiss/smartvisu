@@ -259,8 +259,10 @@ a:hover {
 	padding: 4px;
 }
 
-.ui-popup > span {
+.ui-popup > span,
+.ui-popup > a {
 	margin: 0;
+	display: block;
 }
 
 /* grey background for the symbol in an collapsible set */
@@ -277,7 +279,6 @@ a:hover {
 .ui-controlgroup {
 	display: inline-block;
 	vertical-align: middle;
-	margin: 0;
 }
 
 .ui-btn-inline {
@@ -699,6 +700,10 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	margin-bottom: -10px;
 }
 
+.block .ui-collapsible-content > .ui-listview {
+	margin: -10px -5px -10px -5px;
+}
+
 .block > .ui-bar-c.ui-li-divider {
 	margin: 5px 5px 0 3px;
 	padding: .7em;
@@ -727,6 +732,8 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 .block .ui-field-contain input + .note {
 	margin-top: 3px;
 }
+
+
 
 .color.info, .signal.info {
 	background: #3ad064;

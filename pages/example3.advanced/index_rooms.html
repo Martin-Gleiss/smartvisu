@@ -12,10 +12,8 @@
 
 {% block sidebar %}
 
-    {% import "lib.html" as lib %}
     {{ lib.updatecheck() }}
 
-    {% import "clock.html" as clock %}
     {{ clock.digiclock('clock') }}
 
 	<div class="center">
@@ -24,7 +22,6 @@
 
     <hr>
 
-    {% import "weather.html" as weather %}
     {{ weather.current('weather') }}
 
     <hr>
@@ -32,8 +29,6 @@
     {{ weather.forecastweek('weather_forecast') }}
 
     <hr>
-
-     {% import "plot.html" as plot %}
 
      {{ plot.temprose('temprose_eg',
         ['eg.kueche.temperatur.luft', 'eg.essen.temperatur.luft', 'eg.wohnen.temperatur.luft', 'eg.buero.temperatur.luft', 'eg.diele.temperatur.luft', 'eg.hwr.temperatur.luft'],
@@ -47,7 +42,6 @@
 
     <hr>
 
-    {% import "phone.html" as phone %}
     {{ phone.missedlist('phonelist', 'Telefonliste', 3) }}
 
 

@@ -9,7 +9,6 @@
 
 
 {% extends "rooms.html" %}
-{% import "widgets/button.html" as button %}
 {% block content %}
 
     <h1><img class="icon" src='{{ icon0 }}scene_toilet.svg'/>Gäste WC</h1>
@@ -48,13 +47,11 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Rollladen</h3>
-            {% import "widgets/shutter.html" as shutter %}
 			{{ shutter.one ('shutter1', 'Fenster', 'eg.gaeste_wc.rollladen.nord.fahren', 'eg.gaeste_wc.rollladen.nord.stopp', 'eg.gaeste_wc.rollladen.nord.position', 'eg.gaeste_wc.rollladen.nord.beschatten' ) }}
         </div>
 
     	<div data-role="collapsible">
           <h3>Status Fenster</h3>
-          {% import "widgets/window.html" as window %}
           <p>
             {{ window.one ('win1', 'Fenster', 'eg.gaeste_wc.fenster' ) }}
           </p>

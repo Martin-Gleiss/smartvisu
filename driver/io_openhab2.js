@@ -20,13 +20,16 @@ var io = {
     // the port
     port : '',
 
+    // the debug switch
+    debug : false,
+
     // -----------------------------------------------------------------------------
     // P U B L I C F U N C T I O N S
     // -----------------------------------------------------------------------------
 
     /**
      * Does a read-request and adds the result to the buffer
-     * 
+     *
      * @param the
      *            item
      */
@@ -36,7 +39,7 @@ var io = {
 
     /**
      * Does a write-request with a value
-     * 
+     *
      * @param the
      *            item
      * @param the
@@ -48,7 +51,7 @@ var io = {
 
     /**
      * Trigger a logic
-     * 
+     *
      * @param the
      *            logic
      * @param the
@@ -60,7 +63,7 @@ var io = {
 
     /**
      * Initializion of the driver
-     * 
+     *
      * @param the
      *            ip or url to the system (optional)
      * @param the
@@ -76,11 +79,15 @@ var io = {
      * Lets the driver work
      */
     run : function(realtime) {
+        console.info("Type 'io.debug=true;' to console to see more details.");
+
         // old items
         widget.refresh();
 
-        // new items
-        io.all();
+        // Get items states. In realtime mode io.all gets called
+        // when the event listener is in place. So no events get lost.
+        if (! realtime)
+            io.all();
         io.allPlots();
 
         // run polling
@@ -99,45 +106,81 @@ var io = {
     // to fit your requirements and your connected system.
 
     plotItems: Array(),
-    
+
     /**
      * Start the real-time values. Can only be started once
      */
     start : function() {
-        var me = this;
-        var eventSource = new EventSource("http://" + io.address + ":" + io.port + "/rest/events?topics=smarthome/items/*/state");
+        if (typeof EventSource == 'function') {
+            var me = this;
+            var url = "http://" + io.address + ":" + io.port + "/rest/events?topics=smarthome/items/*/state";
+            var eventSource = new EventSource(url);
 
-        eventSource.addEventListener('message', function(eventPayload) {
+            eventSource.addEventListener('message', function(eventPayload) {
 
-            var event = JSON.parse(eventPayload.data);
-            //console.log(event);
+                var event = JSON.parse(eventPayload.data);
 
-            if (event.type === 'ItemStateEvent') {
-                var payload = JSON.parse(event.payload);
+                if (['ItemStateEvent', 'GroupItemStateChangedEvent'].indexOf(event.type) > -1) {
+                    var payload = JSON.parse(event.payload);
 
-                var ohItem = event.topic.split('/')[2];
-                console.log("ItemStateEvent for " + ohItem);
+                    var ohItem = event.topic.split('/')[2];
+                    var payloadType = payload.type;
 
-                var item = io.getItemFromOHItem(ohItem);
+                    var items = io.getItemsFromOHItem(ohItem, payloadType);
 
-                if (item)
-                    widget.update(item, io.convertFromOH(item, payload.value));
-                
-                // Check if this is a plot item
-                me.plotItems.forEach(function(plotItem) {
-                    var pt = plotItem.split('.');
-                    var ptOhItem = io.getOHItemFromItem(pt[0]);
-                    
-                    if (ptOhItem == ohItem) {
-                        console.log("Updating plot item " + plotItem);
-                        var data = [[new Date().getTime(), parseFloat(io.convertFromOH(item, payload.value))]];
-                        console.log(data);
-                        widget.update(plotItem, data);
+                    if(Array.isArray(items)) {
+                        items.forEach(function(item) {
+
+                            var valConverted = io.convertFromOH(item, payload.value);
+                            io.debug && console.info("Update widget item '" + item + "' to value '" + valConverted + "' from state '" + payload.value + "' received for ohab item '" + ohItem + "'.");
+                            widget.update(item, valConverted);
+
+                            // Check if this is a plot item
+                            me.plotItems.forEach(function(plotItem) {
+                                var pt = plotItem.split('.');
+                                if (item === pt[0]) {
+                                    var data = [[new Date().getTime(), parseFloat(valConverted)]];
+                                    io.debug && console.info("Update plot item '" + plotItem + "' by '" + data + "' from state '" + payload.value + "' received for ohab item '" + ohItem + "'.");
+                                    widget.update(plotItem, data);
+                                }
+                            });
+                        });
+
+                        io.debug && items.length === 0 && console.log("Received event for unused ohab item '" + ohItem + "': " + JSON.stringify(event));
                     }
-                });
-            }
-        });
 
+                }
+            });
+
+            eventSource.addEventListener('open', function(e) {
+                var state = "in unknown (" + this.readyState + ") state";
+
+                switch(this.readyState) {
+                    case EventSource.CONNECTING:
+                        state = "connecting";
+                        break;
+                    case EventSource.OPEN:
+                        state = "open";
+                        break;
+                    case EventSource.CLOSED:
+                        state = "closed";
+                        break;
+                }
+
+                console.info("Stream " + this.url + " is now " + state  + ".");
+
+                io.all();   // update all items to current state
+            });
+
+            eventSource.addEventListener('close', function(e) {
+                console.error("Stream " + this.url + " closed.");
+            });
+        } else {
+            var msg = "Your browser doesn't support EventSource. Cannot connect to ohab SSE API. Item states are polled only once at page load!";
+            console.error(msg);
+            notify.warning("No EventSource support", msg);
+            io.all();
+        }
     },
 
     /**
@@ -190,10 +233,16 @@ var io = {
 
         switch (type) {
         case "Switch":
-            if (val == 1)
-                ohVal = "ON";
-            else
+            if (val == 0)
                 ohVal = "OFF";
+            else
+                ohVal = "ON";
+            break;
+        case "Contact":
+            if (val == 1)
+                ohVal = "CLOSED";
+            else
+                ohVal = "OPEN";
             break;
         }
 
@@ -206,9 +255,16 @@ var io = {
 
         switch (type) {
         case "Switch":
-            if (ohVal == "ON")
+            if (ohVal == "ON"
+                || Number.parseFloat(ohVal) > 0)
                 val = 1;
             else
+                val = 0;
+            break;
+        case "Contact":
+            if (ohVal == "CLOSED")
+                val = 1;
+            else if (ohVal == "OPEN")
                 val = 0;
             break;
         }
@@ -244,35 +300,60 @@ var io = {
         return ohItem;
     },
 
-    getItemFromOHItem : function(ohItem) {
-        // console.log("Searching for oh item: " + ohItem);
+    getHashOfWidgetItems : function() {
+        var widgetItems = widget.listeners();
 
-        var items = widget.listeners();
-        for (var i = 0; i < items.length; i++) {
-            if (ohItem == io.getOHItemFromItem(items[i])) {
-                // console.log("Determined item: " + items[i]);
-                return items[i];
-            }
+        return widgetItems.reduce(function (map, value, index, arr) { map[value] = 1; return map; }, {});
+    },
+
+    getItemsFromOHItem : function(ohItem, type, hashOfWidgetItems) {
+        var posItemNames = new Array();
+
+        switch (type) {
+        case "Switch":
+            posItemNames.push("Switch:" + ohItem);
+            break;
+        case "OnOff":
+            posItemNames.push("Switch:" + ohItem);
+            break;
+        case "Contact":
+            posItemNames.push("Contact:" + ohItem);
+            break;
+        case "OpenClosed":
+            posItemNames.push("Contact:" + ohItem);
+            break;
+        case "Dimmer":
+            posItemNames.push(ohItem);
+            posItemNames.push("Switch:" + ohItem);
+            break;
+        case "Rollershutter":
+            posItemNames.push(ohItem);
+            posItemNames.push("Move:" + ohItem);
+            break;
+        case "Percent":
+            posItemNames.push(ohItem);
+            posItemNames.push("Switch:" + ohItem); // Send to widget items of type Switch too. A value > 0 is interpreted as ON, any other value as OFF. Usefull for dimmers.
+        default:
+            posItemNames.push(ohItem);
         }
 
-        return false;
+        // Now check out which of the possible item names are defined in widgets
+        if(hashOfWidgetItems == null)
+            hashOfWidgetItems = io.getHashOfWidgetItems();
+
+        var items = posItemNames.reduce(function (listOfItems, value, index, arr) { if(hashOfWidgetItems[value]) listOfItems.push(value); return listOfItems; }, []);
+
+        return items;
     },
 
     /**
      * Reads all values from bus and refreshes the pages
      */
     all : function() {
-        var items = '';
+        hashOfWidgetItems = io.getHashOfWidgetItems();
 
         // only if anyone listens
-        if (widget.listeners().length) {
-            // prepare url
-            var item = widget.listeners();
-            for (var i = 0; i < widget.listeners().length; i++) {
-                items += item[i] + ',';
-            }
-            items = items.substr(0, items.length - 1);
-
+        if (Object.keys(hashOfWidgetItems).length > 0) {
             var url = "http://" + io.address + ":" + io.port + "/rest/items";
 
             $.ajax({
@@ -283,22 +364,34 @@ var io = {
                 cache : false
             }).done(function(response) {
                 $.each(response, function(index, ohItem) {
-                    var item = io.getItemFromOHItem(ohItem.name);
+                    var type = ohItem.type;
+                    if(type == "Group")
+                        type = ohItem.groupType;
 
-                    if (item)
-                        widget.update(item, io.convertFromOH(item, ohItem.state));
+                    var widgetItems = io.getItemsFromOHItem(ohItem.name, type, hashOfWidgetItems);
+
+                    if(Array.isArray(widgetItems)) {
+                        widgetItems.forEach(function(item) {
+
+                            var valConverted = io.convertFromOH(item, ohItem.state);
+                            io.debug && console.info("Update widget item '" + item + "' to value '" + valConverted + "' from state '" + ohItem.state + "' queried for ohab item '" + ohItem.name + "'.");
+                            widget.update(item, valConverted);
+                        });
+
+                        io.debug && widgetItems.length === 0 && console.log("Queried unused ohab item '" + ohItem.name + "': " + JSON.stringify(ohItem));
+                    }
                 })
             }).error(notify.json);
         }
     },
 
     allPlots : function() {
-        console.log("Updating all plots");
-        
+        io.debug && console.info("Updating all plots");
+
         var me = this;
-        
+
         var unique = Array();
-        
+
         widget.plot().each(function(idx) {
             var items = widget.explode($(this).attr('data-item'));
             for (var i = 0; i < items.length; i++) {
@@ -307,22 +400,19 @@ var io = {
 
                 if (!unique[items[i]] && !widget.get(items[i]) && (pt instanceof Array) && widget.checkseries(items[i])) {
                     var item = items[i];
-                    console.log(item);
-                    
+
                     var ohItem = io.getOHItemFromItem(pt[0]);
-                    
+
                     var duration = new Date().duration(pt[2]);
-                    console.log(duration);
-                    
+
                     // For OpenHAB it seems to be required to send a date in the correct timezone
                     // as it seems to ignore the timezone offset
                     var tzoffset = (new Date()).getTimezoneOffset() * 60000;
-                    var starttime = new Date(new Date() - duration - tzoffset).toISOString().slice(0, -1);
-                    console.log(starttime);
+                    var starttime = new Date(new Date() - duration - tzoffset).toISOString().slice(0, -5);
 
-                    console.log("Updating plot for " + ohItem);
+                    var url = "http://" + io.address + ":" + io.port + "/rest/persistence/items/" + ohItem + "?starttime=" + starttime;
 
-                    var url = "http://" + io.address + ":" + io.port + "/rest/persistence/" + ohItem + "?servicename=rrd4j&starttime=" + starttime;
+                    io.debug && console.info("Updating plot for ohab item '" + ohItem + "' from " + url);
 
                     $.ajax({
                         url : url,
@@ -338,10 +428,11 @@ var io = {
                         })
 
                         valArray.sort(function(a, b) {
-                           return a[0] - b[0]; 
+                           return a[0] - b[0];
                         });
-                        
-                        console.log(valArray);
+
+                        io.debug && console.log(valArray);
+
                         widget.update(item, valArray);
                     }).error(notify.json);
 

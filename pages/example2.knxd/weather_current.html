@@ -17,8 +17,6 @@
 		
     </div>
    
-   {% import   "weather.html" as weather  %}
-   
    <div class="block">
    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 	  <div data-role="collapsible" data-collapsed="false">
@@ -37,13 +35,11 @@
     </div>
     </div>
 
-   {% import   "weatherJustImage.html" as weatherJustImage  %}
-
    <div class="block">
    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
           <div data-role="collapsible" data-collapsed="false">
                   <h3>Tag</h3>
-		  {{ weatherJustImage.justImage ('day', 'Tag', 'day') }}  
+		  {{ weatherJustImage.justImage ('day', 'Tag', 'day') }}
           </div>
     </div>
     </div>

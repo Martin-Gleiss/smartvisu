@@ -13,11 +13,20 @@
 {% block example %}
 
 	<h5>Examples</h5>
+
+	If no location is given, the default location from config (<b>{{ config_weather_location }}</b>) is being used.
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; weather.forecastweek('weather1', 'Germany/Bayern/Würzburg') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; weather.forecastweek('weather1') &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ weather.forecastweek('weather1', 'Germany/Bayern/Würzburg') }}
+		{{ weather.forecastweek('weather1') }}
+	</div>
+
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; weather.forecastweek('weather2', 'Germany/Bayern/Würzburg') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ weather.forecastweek('weather2', 'Germany/Bayern/Würzburg') }}
 	</div>
 
 {% endblock %}

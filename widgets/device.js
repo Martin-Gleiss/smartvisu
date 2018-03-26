@@ -132,12 +132,20 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 	options: {
 		valueparameterlist: null,
 		headline: '',
-		designtype: 0,
+		designtype: '',
 		valuetype: 'bool'
 	},
 	
 	_uzsudata: {},
 	
+	_create: function() {
+		this._super();
+		this.options.designtype = String(this.options.designtype);
+		if(this.options.designtype === undefined || this.options.designtype === '') {
+			this.options.designtype = io.uzsu_type;
+		}
+	},
+
 	_update: function(response) {
 		// Initialisierung zunächst wird festgestellt, ob Item mit Eigenschaft vorhanden. Wenn nicht: active = false
 		// ansonsten ist der Status von active gleich dem gesetzten Status
@@ -185,16 +193,13 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 			else{
 			 	// Auswertung der Übergabeparameter aus dem HTML Widget
 				var headline = this.options.headline;
-				var designType = String(this.options.designtype);
-				if(designType === undefined || designType === '') {
-					designType = io.uzsu_type;
-				}
+				var designType = this.options.designtype;
 				var valueType = this.options.valuetype;
 				// data-item ist der sh.py item, in dem alle Attribute lagern, die für die Steuerung notwendig ist ist ja vom typ dict. das item, was tatsächlich per
 				// Schaltuhr verwendet wird ist nur als attribut (child) enthalten und wird ausschliesslich vom Plugin verwendet. wird für das rückschreiben der Daten an smarthome.py benötigt
 				var item = this.options.item;
 				// jetzt kommt noch die Liste von Prüfungen, damit hinterher keine Fehler passieren, zunächst fehlerhafter designType (unbekannt)
-				if ((designType !== '0') && (designType != '2')) {
+				if ((designType != '0') && (designType != '2')) {
 					notify.error("UZSU widget", "Design type '" + designType + "' is not supported in widget " + this.id + ".");
 					popupOk = false;
 				}
@@ -268,10 +273,10 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 		return tt;
 	},
 	
-	_uzsuBuildTableRow: function(designType, numberOfRow) {
+	_uzsuBuildTableRow: function(numberOfRow) {
 		// default Werte setzen fuer valueParameterList
 		var valueType = this.options.valuetype;
-		var valueParameterList = widget.explode(this.options.valueparameterlist);
+		var valueParameterList = this.options.valueparameterlist.explode();
 		if(valueParameterList.length === 0){
 			if(valueType === 'bool') valueParameterList = ['On','Off'];
 			else if (valueType === 'num') valueParameterList = [''];
@@ -312,7 +317,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 			}
 		}
 		else if (this.options.valuetype === 'num') {
-			tt += 	"<input type='number' " + valueParameterList[0] + " data-clear-btn='false' class='uzsuValueInput' pattern='[0-9]*'>";
+			tt += 	"<input type='number' min='" + valueParameterList[0] + "' max='" + valueParameterList[1] + "' step='" + valueParameterList[2] + "' data-clear-btn='false' class='uzsuValueInput' pattern='[0-9]*'>";
 		}
 		else if (this.options.valuetype === 'text') {
 			tt += 	"<input type='text' data-clear-btn='false' class='uzsuTextInput'>";
@@ -374,7 +379,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 							"<input type='number' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeOffsetInput'>" +
 						"</div>";
 					// Auswahl für Offset in Grad oder Minuten (nur für SmartHomeNG)
-					if (this.options.designtype === '0'){
+					if (this.options.designtype == '0'){
 						tt += 	"<div class='uzsuCell'>" +
 							"<div class='uzsuCellText'></div>" +
 								"<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuTimeOffsetTypeInput'>" +
@@ -395,7 +400,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
 						"</div>" +
 					"</div>";
 			// hier die Einträge für holiday weekend oder nicht
-			if (this.options.designtype === '2'){
+			if (this.options.designtype == '2'){
 				tt += 	"<div class='uzsuRowHoliday' style='float: left;'>" +
 							"<div class='uzsuRowHolidayText'>Holiday</div>" +
 							"<div class='uzsuCell'>" +

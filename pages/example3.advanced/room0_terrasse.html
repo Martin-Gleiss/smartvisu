@@ -9,7 +9,6 @@
 
 
 {% extends "rooms.html" %}
-{% import "widgets/button.html" as button %}
 {% block content %}
 
     <h1><img class="icon" src='{{ icon0 }}scene_terrace.svg'/>Terrasse</h1>
@@ -67,8 +66,7 @@
 
     	<div data-role="collapsible" data-collapsed="false">
             <h3>Musik</h3>
-           {% import "multimedia.html" as multi %}
-			{{ multi.music ('music1', 'aussen.terrasse.musik.play', 'aussen.terrasse.musik.stopp', 'aussen.terrasse.musik.vor_ruecklauf',
+			{{ multimedia.music ('music1', 'aussen.terrasse.musik.play', 'aussen.terrasse.musik.stopp', 'aussen.terrasse.musik.vor_ruecklauf',
 			     'aussen.terrasse.musik.weiter_zurueck', 'aussen.terrasse.musik.position', 'aussen.terrasse.musik.lautstaerke',
 			     'aussen.terrasse.musik.stumm', '') }}
         </div>

@@ -8,7 +8,12 @@
 */
 
 /** Change word mobile to the name of your folder */
-{% extends "mobile/base/root.html" %}
+{% extends "root.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="pages/{{ config_pages }}/mobile/vendor/jquery.mobile.stepper.css" />
+    <script type="text/javascript" src="pages/{{ config_pages }}/mobile/vendor/jquery.mobile.stepper.js"></script>
+{% endblock %}
 
 {% block body %}
 
