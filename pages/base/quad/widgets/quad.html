@@ -26,7 +26,7 @@
  */
 {% macro mixed(id, text, div1, div2, div3, div4, div5, div6, div7, div8, div9, div10) %}
 	    <li data-icon="false" class="row_mixed">
-    <div class="nw_table row_mixed" id="row_{{id|replace('.', '_')}}">
+    <div class="quad_table row_mixed" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ text|e }}</div>
     {% for divnumber in 1..10 %}
         {% set nummer = _context['div' ~ divnumber] %}
@@ -84,7 +84,7 @@
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
     <li data-icon="false" class="row_symbol">
-    <div class="nw_table sorting row_symbol" id="row_{{id|replace('.', '_')}}_sorting">
+    <div class="quad_table sorting row_symbol" id="row_{{id|replace('.', '_')}}_sorting">
         {% if linetext %}
         	<div class="text">{{ linetext|e }}</div>
         {% endif %}
@@ -103,7 +103,7 @@
 						<a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
 							{{ basic.icon(icon_plot|deficon('measure_power_meter'), color[i][0]|default('icon0')) }}
 						</a>
-						<div class="nw_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
+						<div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
 						<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
 						{% if item_plot[i] is iterable  %}
 							{{ plot.period(id~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
@@ -125,7 +125,7 @@
 						<a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
 							{{ basic.icon(icon_plot|deficon('measure_power_meter'), color[0]|default('icon0')) }}
 						</a>
-						<div class="nw_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
+						<div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
 						<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
 						{% if item_plot is iterable  %}
 							{{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
@@ -172,7 +172,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
     <li data-icon="false" class="row_print">
-    <div class="nw_table sorting row_print" id="row_{{id|replace('.', '_')}}_sorting">
+    <div class="quad_table sorting row_print" id="row_{{id|replace('.', '_')}}_sorting">
         <div class="text">{{ linetext|e }}</div>
         {% set runs = item is iterable ? max((item|length-1),0 ) : 0 %}
         {% for i in 0..runs %}
@@ -184,7 +184,7 @@ the first one is the base color for values below first threshold, so pass one co
 					<a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
 						{{ basic.icon(icon_plot[i]|deficon('measure_power_meter'), 'icon0') }}
 					</a>
-					<div class="nw_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
+					<div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
 					<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
 					{% if item_plot[i] is iterable  %}
 						{{ plot.period(id~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
@@ -199,7 +199,7 @@ the first one is the base color for values below first threshold, so pass one co
 					<a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
 						{{ basic.icon(icon_plot|deficon('measure_power_meter'), 'icon0') }}
 					</a>
-					<div class="nw_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
+					<div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
 					<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
 					{% if item_plot is iterable  %}
 						{{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
@@ -241,7 +241,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "basic.html" as basic %}
     {% import "quad/widgets/visu.html" as visu %}
     <li data-icon="false" class="row_maptext">
-    <div class="nw_table sorting row_maptext" id="row_{{id|replace('.', '_')}}_sorting">
+    <div class="quad_table sorting row_maptext" id="row_{{id|replace('.', '_')}}_sorting">
         <div class="text">{{ linetext|e }}</div>
         {% set runs = item is iterable ? max((item|length-1),0 ) : 0 %}
         {% for i in 0..runs %}
@@ -253,7 +253,7 @@ the first one is the base color for values below first threshold, so pass one co
 					<a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
 						{{ basic.icon(icon_plot[i]|deficon('measure_power_meter'), 'icon0') }}
 					</a>
-					<div class="nw_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
+					<div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
 					<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
 					{% if item_plot[i] is iterable  %}
 						{{ plot.period(id~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
@@ -268,7 +268,7 @@ the first one is the base color for values below first threshold, so pass one co
 					<a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
 						{{ basic.icon(icon_plot|deficon('measure_power_meter'), 'icon0') }}
 					</a>
-					<div class="nw_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
+					<div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
 					<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
 					{% if item_plot is iterable  %}
 						{{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
@@ -322,7 +322,7 @@ the first one is the base color for values below first threshold, so pass one co
 		{% import "quad/widgets/popup.html" as popup %}
 
     <li data-icon="false" class="row_rtr">
-    <div class="nw_table sorting row_rtr" id="row_{{id|replace('.', '_')}}_sorting"">
+    <div class="quad_table sorting row_rtr" id="row_{{id|replace('.', '_')}}_sorting"">
         <div class="text">{{ linetext|e }}</div>
         <div class="column{{ column_order[0]|default(1) }} column_rtr_actual" data-order={{ column_order[0]|default(1) }}>
           {{ basic.print(id~'_actual_value', item_actual, '°') }}
@@ -330,7 +330,7 @@ the first one is the base color for values below first threshold, so pass one co
   					<a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
   						{{ basic.icon(icon_plot|deficon('measure_power_meter'), 'icon0') }}
   					</a>
-  					<div class="nw_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
+  					<div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
   					<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
 
   					{% if item_plot is iterable  %}
@@ -531,7 +531,7 @@ the first one is the base color for values below first threshold, so pass one co
 </div>
 */
     <li data-icon="false" class="row_dimmer">
-    <div class="nw_table row_dimmer" id="row_{{id|replace('.', '_')}}">
+    <div class="quad_table row_dimmer" id="row_{{id|replace('.', '_')}}">
 	<div class="text" data-order=0>{{ linetext|e }}
 	{% if item_auto %}&nbsp;{{ visu.simple_print(auto~'time', item_auto~'.autostate_suspend_end') }} {% endif %}
 	</div>
@@ -662,7 +662,7 @@ the first one is the base color for values below first threshold, so pass one co
 				<a href="#{{ id }}_plotpopup" data-rel="popup">
 					{{ basic.icon(icon_plot|deficon('measure_power_meter'), color[0]|default('icon0')) }}
 				</a>
-				<div class="nw_plot-popup" id="{{ id }}_plotpopup" data-role="popup">
+				<div class="quad_plot-popup" id="{{ id }}_plotpopup" data-role="popup">
 				<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup-screen").click()'></button>
 
 				{% if item_plot is iterable  %}
@@ -883,7 +883,7 @@ the first one is the base color for values below first threshold, so pass one co
 */
 
     <li data-icon="false" class="row_color">
-    <div class="nw_table row_color" id="row_{{id|replace('.', '_')}}">
+    <div class="quad_table row_color" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
     {% if item_auto %}&nbsp;{{ visu.simple_print(auto~'time', item_auto~'.autostate_suspend_end') }}{% endif %}
     </div>
@@ -1038,7 +1038,7 @@ the first one is the base color for values below first threshold, so pass one co
 				<a href="#{{ id }}_plotpopup" data-rel="popup">
 					{{ basic.icon(icon_plot|deficon('measure_power_meter'), icon_color[0]|default('icon0')) }}
 				</a>
-				<div class="nw_plot-popup" id="{{ id }}_plotpopup" data-role="popup">
+				<div class="quad_plot-popup" id="{{ id }}_plotpopup" data-role="popup">
 				<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup-screen").click()'></button>
 
 				{% if item_plot is iterable  %}
@@ -1275,7 +1275,7 @@ the first one is the base color for values below first threshold, so pass one co
 </div>
 */
     <li data-icon="false" class="row_shutter">
-    <div class="nw_table row_shutter" id="row_{{id|replace('.', '_')}}">
+    <div class="quad_table row_shutter" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
     {% if item_auto %}&nbsp;{{ visu.simple_print(item_auto~'time', item_auto~'.autostate_suspend_end') }} {% endif %}
     </div>
@@ -1454,7 +1454,7 @@ the first one is the base color for values below first threshold, so pass one co
 				<a href="#{{ id }}_plotpopup" data-rel="popup">
 					{{ basic.icon(icon_plot|deficon('measure_power_meter'), icon_color[0]|default('icon0')) }}
 				</a>
-				<div class="nw_plot-popup" id="{{ id }}_plotpopup" data-role="popup">
+				<div class="quad_plot-popup" id="{{ id }}_plotpopup" data-role="popup">
 				<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup-screen").click()'></button>
 
 				{% if item_plot is iterable  %}
@@ -1809,7 +1809,7 @@ the first one is the base color for values below first threshold, so pass one co
 */
 
     <li data-icon="false" class="row_playercontrol">
-    <div class="nw_table row_playercontrol" id="row_{{id|replace('.', '_')}}">
+    <div class="quad_table row_playercontrol" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
     {% if item_artist %}
     : {{ visu.simple_print(id~'artist', item_artist) }},&nbsp;
@@ -2043,7 +2043,7 @@ the first one is the base color for values below first threshold, so pass one co
 				<a href="#{{ id }}_plotpopup" data-rel="popup">
 					{{ basic.icon(icon_plot|deficon('measure_power_meter'), color[0]|default('icon0')) }}
 				</a>
-				<div class="nw_plot-popup" id="{{ id }}_plotpopup" data-role="popup">
+				<div class="quad_plot-popup" id="{{ id }}_plotpopup" data-role="popup">
 				<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup-screen").click()'></button>
 
 				{% if item_plot is iterable  %}
@@ -2313,7 +2313,7 @@ the first one is the base color for values below first threshold, so pass one co
 **/
 
     <li data-icon="false" class="row_stateswitch">
-    <div class="nw_table row_stateswitch" id="row_{{id|replace('.', '_')}}">
+    <div class="quad_table row_stateswitch" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
     {% if item_auto %}&nbsp;{{ visu.simple_print(id~'_suspend_end', item_auto~'.autostate_suspend_end') }}{% endif %}
     </div>
@@ -2456,7 +2456,7 @@ the first one is the base color for values below first threshold, so pass one co
 						<a href="#{{ id }}_plotpopup{{z}}{{i}}" data-rel="popup">
 							{{ basic.icon(icon_plot[i]|deficon('measure_power_meter'), icon_color[i][0]|default('icon0')) }}
 						</a>
-						<div class="nw_plot-popup" id="{{ id }}_plotpopup{{z}}{{i}}" data-role="popup">
+						<div class="quad_plot-popup" id="{{ id }}_plotpopup{{z}}{{i}}" data-role="popup">
 						<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{z}}{{i}}-screen").click()'></button>
 
 						{% if item_plot[i] is iterable  %}
@@ -2579,7 +2579,7 @@ the first one is the base color for values below first threshold, so pass one co
 						<a href="#{{ id }}_plotpopup{{z}}{{i}}" data-rel="popup">
 							{{ basic.icon(icon_plot|deficon('measure_power_meter'), icon_color[0]|default('icon0')) }}
 						</a>
-						<div class="nw_plot-popup" id="{{ id }}_plotpopup{{z}}{{i}}" data-role="popup">
+						<div class="quad_plot-popup" id="{{ id }}_plotpopup{{z}}{{i}}" data-role="popup">
 						<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{z}}{{i}}-screen").click()'></button>
 
 						{% if item_plot is iterable  %}
@@ -2644,7 +2644,7 @@ the first one is the base color for values below first threshold, so pass one co
                     <a href="#{{ id }}_plotpopup{{z}}{{i}}" data-rel="popup">
                         {{ basic.icon(icon_plot|deficon('measure_power_meter'), icon_color[0]|default('icon0')) }}
                     </a>
-                    <div class="nw_plot-popup" id="{{ id }}_plotpopup{{z}}{{i}}" data-role="popup">
+                    <div class="quad_plot-popup" id="{{ id }}_plotpopup{{z}}{{i}}" data-role="popup">
                     <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{z}}{{i}}-screen").click()'></button>
                     {% if item_plot is iterable  %}
                         {{ plot.period(id~'_plotpopup'~z~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
@@ -2722,7 +2722,7 @@ the first one is the base color for values below first threshold, so pass one co
 {% macro textinput(id, linetext, columntext, item, place1, place2, column_order) %}
     {% import "quad/widgets/visu.html" as visu %}
     <li data-icon="false" class="row_textinput">
-    <div class="nw_table sorting row_textinput" id="row_{{id|replace('.', '_')}}_sorting">
+    <div class="quad_table sorting row_textinput" id="row_{{id|replace('.', '_')}}_sorting">
         <div class="text">{{ linetext|e }} </div>
         {% set runs = item is iterable ? max((item|length-1),0 ) : 0 %}
     {% for i in 0..runs %}

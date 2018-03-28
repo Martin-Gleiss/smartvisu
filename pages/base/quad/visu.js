@@ -1,14 +1,15 @@
 
 // ---- TABS ------------------------------------------------------------------
 $(document).on("pageshow", function() {
-    $(".nw_tab-header").each(function(idx) {
+    $(".quad_tab-header").each(function(idx) {
         var height = $(this).parent().innerHeight() - $(this).outerHeight();
-        $(this).siblings(".nw_tab-content").css('height', height);
+        // $(this).siblings(".quad_tab-content").css('height', height);
+        console.log('Height '+height);
     });
 });
 
 $(document).on("pagecreate", function() {
-    $(".nw_tab-header ul li").on("click",function(){
+    $(".quad_tab-header ul li").on("click",function(){
         $(this).parent().find(".ui-btn-active").removeClass("ui-btn-active");
         $(this).addClass("ui-btn-active");
         var newSelection = $(this).children("a").attr("data-tab-class");
@@ -16,13 +17,21 @@ $(document).on("pagecreate", function() {
         $("."+prevSelection).addClass("ui-screen-hidden");
         $("."+newSelection).removeClass("ui-screen-hidden");
         $(this).parent().parent().attr("data-tab-selection", newSelection);
+
+        $("."+newSelection).find('[data-widget="plot.period"]').each(function(idx) {
+            if ($('#' + this.id).highcharts()) {
+                $('#' + this.id).highcharts().destroy();
+                var values = widget.get(widget.explode($(this).attr('data-item')));
+                if (widget.check(values))
+                    $(this).trigger('update', [values]);
+            }
+        });
+
     });
 });
 
-
 $(document).on("pagecreate", function() {
 	$('[id$="sorting"]').each(function() {
-       // Your code here
 
 	var mylist = $(this);
 	var listitems = mylist.children('div').get();
