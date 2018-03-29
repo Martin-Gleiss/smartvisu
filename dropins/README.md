@@ -65,32 +65,54 @@ Complete example (basic.select):
 ```
 
 ### Script and styles
-In addition any .css and .js file in this folder gets loaded. The stylesheets can contain widget specific styles, the JavaScripts are meant to implement logic of the widgets and have to contain a structure like the following:
-```
-$(document).on('pagecreate', function (pevent) {
-	$(pevent.target).find('[data-widget="foo.bar"]').on( {
-		'update': function (event, response) {
-			event.stopPropagation(); // important for performance reasons
-			...
-		},
-		'click': function(event) {
-			...
-		},
+In addition any .css and .js file in this folder gets loaded. The stylesheets can contain widget specific styles, the JavaScripts are meant to implement logic of the widgets. This is based on [jQuery UI Widget Factory](http://api.jqueryui.com/jQuery.widget/) and have to contain a structure like the following:
+```JavaScript
+$.widget("sv.foo_bar", $.sv.widget, {
+
+	initSelector: '[data-widget="foo.bar"]',
+
+	options: {
+		'my-first-param': ''
 		...
-	});
-}):s
+	},
+
+	_create: function() {
+		this._super();
+		...
+	},
+	
+	_update: function(response) {
+		...
+	},
+
+	_repeat: function() {
+		...
+	},
+
+	_events: {
+		'click': function(ev) {
+			...
+		}
+		...
+	},
+
+});
 ```
-Available events are:
-* `'update': function(event, response) { }`
- Triggered if an item value has been changed. Variable `response` contains value of widget's item(s).
-* `'draw': function (event) { }`
- Triggered for svg when they got loaded.
-* `'point': function(event, response) { }`
- Triggered for plots if the plot is already drawn and just a new point has been added to the series.
-* `'repeat': function(event) { }`
- Triggerd after the seconds defined in the attribute `data-repeat` on widget's html.
-* `'change'`, `'click'` ...
- Any browser or jQuery Mobile event.
+(Replace `foo` both times by your widget library name and `bar` by macro name.)
+
+Available members are:
+* `initSelector: '...'` an jQuery selector of widget's HTML node.
+* `options: { }` has to contain all parameters which are set by widget macro as data-attribute in HTML.  
+These can then be accessed in code by `this.options['my-first-param']`.  
+The HTML node itself can be accessed by `this.element`.
+* `_create: function() { }` *(optional)*  
+Is executed on first creation of the widget instance. If you override this, mind to call `this._super();` in it.
+* `_update: function(response) { }` 
+Triggered if an item value has been changed. Variable `response` contains value of widget's item(s).
+* `_repeat: function() { }` *(optional)*  
+Triggerd after the seconds defined in the attribute `data-repeat` on widget's html.
+* `_events: { }` *(optional)*  
+Collection of any browser or jQuery Mobile event to be bound on widget's HTML node.
  
 ## Icons
 You may place your black icons in `icons/sw/` and their white counterpart in `icons/ws/`.
