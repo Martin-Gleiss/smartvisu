@@ -1,49 +1,15 @@
-// base for all plots
-$.widget("sv.plot", $.sv.widget, {
-
-	_create: function() {
-		this._super();
-		this._on({
-			'point': function(event, response) {
-				this._point(response);
-				return false;
-			}
-		});
-	},
-
-	update: function() {
-		if (this.element.highcharts())
-			this.element.highcharts().destroy();
-		this._super();
-	},
-
-	//point: function(response) {
-		//this._point(response);
-	//}
-	point: function(item, value) {
-		var items = String(this.options.item).explode();
-
-		if (value !== undefined) {
-			var values = new Array(items.length);
-			values[items.indexOf(item)] = value;
-			this._point(values);
-		}
-	},
-
-});
-
 // ----- plot.comfortchart ----------------------------------------------------
-$.widget("sv.plot_comfortchart", $.sv.plot, {
+$.widget("sv.plot_comfortchart", $.sv.widget, {
 
 	initSelector: 'div[data-widget="plot.comfortchart"]',
 
 	options: {
-    label: '',
+		label: '',
 		axis: ''
 	},
 
-	_update: function(response) {
-		// response is: {{ gad_temp }}, {{ gad_humidity }}
+	_create: function() {
+		this._super();
 
 		var label = String(this.options.label).explode();
 		var axis = String(this.options.axis).explode();
@@ -76,9 +42,6 @@ $.widget("sv.plot_comfortchart", $.sv.plot, {
 
 		plots[2] = {
 			name: 'point',
-			data: [
-				[response[0] * 1.0, response[1] * 1.0]
-			],
 			marker: { enabled: true, lineWidth: 2, radius: 6, symbol: 'circle' },
 			showInLegend: false
 		};
@@ -104,24 +67,27 @@ $.widget("sv.plot_comfortchart", $.sv.plot, {
 		});
 	},
 
-	_point: function(response) {
+	_update: function(response) {
 		var chart = this.element.highcharts();
 		var point = chart.series[2].data[0];
-		if (!response[0]) {
+		if (!response[0] && point) {
 			response[0] = point.x;
 		}
-		if (!response[1]) {
+		if (!response[1] && point) {
 			response[1] = point.y;
 		}
 
-		chart.series[2].data[0].update([response[0] * 1.0, response[1] * 1.0], true);
-	},
+		if(point)
+			point.update([response[0] * 1.0, response[1] * 1.0], true);
+		else
+			chart.series[2].addPoint([response[0] * 1.0, response[1] * 1.0], true);
+	}
 
 });
 
 
 // ----- plot.period ----------------------------------------------------------
-$.widget("sv.plot_period", $.sv.plot, {
+$.widget("sv.plot_period", $.sv.widget, {
 
 	initSelector: 'div[data-widget="plot.period"]',
 
@@ -142,10 +108,12 @@ $.widget("sv.plot_period", $.sv.plot, {
 		count: '',
 	},
 
+	allowPartialUpdate: true,
+
 	_memorized_points: { min:[], max:[] },
 
-	_update: function(response) {
-		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ]
+	_create: function() {
+		this._super();
 
 		var ymin = [];
 		if (this.options.ymin) {
@@ -182,7 +150,31 @@ $.widget("sv.plot_period", $.sv.plot, {
 
 		// series
 		var series = [];
+		var itemCount = this.items.length;
+		if(mode == 'minmax' || mode == 'minmaxavg') {
+			itemCount = itemCount / (mode == 'minmax' ? 2 : 3);
+			for (var i = 0; i < itemCount; i++) {
+				series.push({
+					type: 'columnrange',
+					enableMouseTracking: false,
+					name: (label[i] == null ? 'Item ' + (i+1) : label[i]) + (mode == 'minmaxavg' && label[i] !== '' ? ' (min/max)' : ''),
+					showInLegend: false,
+					data: [],
+					yAxis: (assign[i] ? assign[i] - 1 : 0)
+				});
+			}
+		}
+		for (var i = 0; i < itemCount; i++) {
+			series.push({
+				type: (exposure[i] != 'stair' ? exposure[i] : 'line'),
+				step: (exposure[i] == 'stair' ? 'left' : false),
+				name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
+				data: [], // clone
+				yAxis: (assign[i] ? assign[i] - 1 : 0)
+			});
+		}
 
+/*
 		if(mode == 'minmax' || mode == 'minmaxavg') {
 			var itemCount = response.length / (mode == 'minmax' ? 2 : 3);
 
@@ -219,7 +211,7 @@ $.widget("sv.plot_period", $.sv.plot, {
 				yAxis: (assign[i] ? assign[i] - 1 : 0)
 			});
 		}
-
+*/
 		// y-axis
 		var numAxis = 1;
 		if(assign.length > 0)
@@ -306,7 +298,9 @@ $.widget("sv.plot_period", $.sv.plot, {
 		}
 	},
 
-	_point: function(response) {
+	_update: function(response) {
+		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ]
+
 		var count = this.options.count;
 		if (count < 1) {
 			count = 100;
@@ -352,18 +346,27 @@ $.widget("sv.plot_period", $.sv.plot, {
 				if(minValues === undefined || maxValues === undefined)
 					continue;
 
+				var series = chart.series[i]
 				for (var j = 0; j < minValues.length; j++) {
-					var series = chart.series[i]
-					series.addPoint([ minValues[j][0], minValues[j][1], maxValues[j][1] ], false, (series.data.length >= count));
+					var existingPointIndex = series.xData.indexOf(minValues[j][0]);
+					if(existingPointIndex >= 0) // if point exists on time axis
+						series.data[existingPointIndex].update([ minValues[j][0], minValues[j][1], maxValues[j][1] ], false);
+					else
+						series.addPoint([ minValues[j][0], minValues[j][1], maxValues[j][1] ], false, (series.data.length >= count));
 				}
 			}
 		}
 
 		for (var i = 0; i < itemCount; i++) {
 			if (response[i]) {
+				var series = chart.series[(mode == 'minmaxavg' ? i+itemCount : i)]
+				// alternative: series.setData();
 				for (var j = 0; j < response[i].length; j++) {
-					var series = chart.series[(mode == 'minmaxavg' ? i+itemCount : i)]
-					series.addPoint(response[i][j], false, (series.data.length >= count));
+					var existingPointIndex = series.xData.indexOf(response[i][j][0]);
+					if(existingPointIndex >= 0) // if point exists on time axis
+						series.data[existingPointIndex].update(response[i][j], false);
+					else
+						series.addPoint(response[i][j], false, (series.data.length >= count));
 				}
 			}
 		}
@@ -375,7 +378,7 @@ $.widget("sv.plot_period", $.sv.plot, {
 
 
 // ----- plot.gauge solid ------------------------------------------------------
-$.widget("sv.plot_gauge_", $.sv.plot, {
+$.widget("sv.plot_gauge_", $.sv.widget, {
 
 	initSelector: 'div[data-widget="plot.gauge"][data-mode^="solid"]',
 
@@ -390,8 +393,8 @@ $.widget("sv.plot_gauge_", $.sv.plot, {
 		mode: '',
 	},
 
-	_update: function(response) {
-		//debug: console.log("[plot.gauge-solid] '" + this.id + "' update: " + response);
+	_create: function() {
+		this._super();
 
 		var stop = [];
 		if (this.options.stop && this.options.color) {
@@ -409,11 +412,10 @@ $.widget("sv.plot_gauge_", $.sv.plot, {
 		var unit = this.options.unit;
 		var headline = this.options.label ? this.options.label : null;
 
-		var axis = String(this.options.axis).explode();
-
 		var diff = parseFloat(this.options.min);
 		var range = parseFloat(this.options.max) - parseFloat(this.options.min);
-		var percent = (((response - diff) * 100) / range);
+
+		var axis = String(this.options.axis).explode();
 
 		var options = {
 			chart: {
@@ -467,7 +469,6 @@ $.widget("sv.plot_gauge_", $.sv.plot, {
 
 			series: [{
 				name: headline,
-				data: [percent],
 				dataLabels: {
 					formatter: function () { return (((this.y * range) / 100) + diff).transUnit(unit); }
 				},
@@ -517,14 +518,16 @@ $.widget("sv.plot_gauge_", $.sv.plot, {
 		this.element.highcharts(options);
 	},
 
-	_point: function(response) {
+	_update: function(response) {
 		if (response) {
 			var diff = parseFloat(this.options.min);
 			var range = parseFloat(this.options.max) - parseFloat(this.options.min);
 			var percent = (((response - diff) * 100) / range);
 			var chart = this.element.highcharts();
-			chart.series[0].points[0].update(percent);
-			chart.redraw();
+			if(chart.series[0].points[0])
+				chart.series[0].points[0].update(percent, true);
+			else
+				chart.series[0].addPoint(percent, true);
 		}
 	},
 
@@ -532,7 +535,7 @@ $.widget("sv.plot_gauge_", $.sv.plot, {
 
 
 // ----- plot.gauge angular ----------------------------------------------------
-$.widget("sv.plot_gauge_angular", $.sv.plot, {
+$.widget("sv.plot_gauge_angular", $.sv.widget, {
 
 	initSelector: 'div[data-widget="plot.gauge"][data-mode="speedometer"], div[data-widget="plot.gauge"][data-mode="scale"]',
 
@@ -547,7 +550,9 @@ $.widget("sv.plot_gauge_angular", $.sv.plot, {
 		mode: '',
 	},
 
-	_update: function(response) {
+	_create: function() {
+		this._super();
+
 		var headline = this.options.label ? this.options.label : null;
 		var unit = this.options.unit;
 		var axis = String(this.options.axis).explode();
@@ -557,7 +562,8 @@ $.widget("sv.plot_gauge_angular", $.sv.plot, {
 
 		var diff = parseFloat(this.options.min);
 		var range = parseFloat(this.options.max - this.options.min);
-		var percent = (((response - diff) * 100) / range);
+//		var percent = (((response - diff) * 100) / range);
+		var percent = 0;
 
 		var styles = [];
 
@@ -565,7 +571,9 @@ $.widget("sv.plot_gauge_angular", $.sv.plot, {
 		var gauge = [];
 		var pane = [];
 		var series = [];
-		for (var i = 0; i < response.length; i++) {
+
+
+		for (var i = 0; i < this.items.length; i++) {
 			if (mode == 'scale') { // type = scale
 				var bands = [{
 						outerRadius: '99%',
@@ -573,6 +581,7 @@ $.widget("sv.plot_gauge_angular", $.sv.plot, {
 						from: percent,
 						to: 100
 					}];
+
 				if (datastop.length > 0 && color.length > 1)
 				{
 					for (var j = 0; j < datastop.length; j++) {
@@ -601,6 +610,7 @@ $.widget("sv.plot_gauge_angular", $.sv.plot, {
 					if(color.length > 0)
 						styles.push(".highcharts-plot-band { fill: " + color[0] + "; fill-opacity: 1; }");
 				}
+
 
 				yaxis[i] = {
 					min: 0,
@@ -641,7 +651,6 @@ $.widget("sv.plot_gauge_angular", $.sv.plot, {
 				}
 				series[i] = {
 					name: headline,
-					data: [percent],
 					yAxis: i,
 					dataLabels: {
 						formatter: function () {return (((this.y * range) / 100) + diff).transUnit(unit)},
@@ -710,7 +719,6 @@ $.widget("sv.plot_gauge_angular", $.sv.plot, {
 
 				series[i] = {
 					name: headline,
-					data: [percent],
 					yAxis: i,
 					dataLabels: {
 						formatter: function () {return (((this.y * range) / 100) + diff).transUnit(unit)}
@@ -770,7 +778,7 @@ $.widget("sv.plot_gauge_angular", $.sv.plot, {
 		}
 	},
 
-	_point: function(response) {
+	_update: function(response) {
 		//debug: console.log("[plot.gauge-speedometer] '" + this.id + "' point: " + response);
 
 		var diff = (this.options.max - (this.options.max - this.options.min));
@@ -779,7 +787,7 @@ $.widget("sv.plot_gauge_angular", $.sv.plot, {
 		var color = String(this.options.color).explode();
 
 		var data = [];
-		var items = String(this.options.item).explode();
+		var items = this.items;
 		for (i = 0; i < items.length; i++) {
 			if (response[i]) {
 				data[i] = (((+response[i] - diff) * 100) / range);
@@ -827,7 +835,10 @@ $.widget("sv.plot_gauge_angular", $.sv.plot, {
 				chart.series[i].setData([percent], false);
 			}
 			else {
-				chart.series[i].points[0].update(percent);
+				if(chart.series[0].points[0])
+					chart.series[0].points[0].update(percent, false);
+				else
+					chart.series[0].addPoint(percent, false);
 			}
 		}
 		chart.redraw();
@@ -837,7 +848,7 @@ $.widget("sv.plot_gauge_angular", $.sv.plot, {
 
 
 // ----- plot.gauge-vumeter ----------------------------------------------------------
-$.widget("sv.plot_gauge_vumeter", $.sv.plot, {
+$.widget("sv.plot_gauge_vumeter", $.sv.widget, {
 
 	initSelector: 'div[data-widget="plot.gauge"][data-mode="vumeter"]',
 
@@ -852,7 +863,9 @@ $.widget("sv.plot_gauge_vumeter", $.sv.plot, {
 		mode: '',
 	},
 
-	_update: function(response) {
+	_create: function() {
+		this._super();
+
 		var headline = this.options.label ? this.options.label : null;
 		var chartHeight = this.options.label == '' ? 150 : 200;
 
@@ -883,7 +896,9 @@ $.widget("sv.plot_gauge_vumeter", $.sv.plot, {
 		var pane = [];
 		var series = [];
 
-		for (i = 0; i < response.length; i++) {
+		var seriesCount = this.items.length;
+
+		for (i = 0; i < seriesCount; i++) {
 			axis[i] = {
 				min: 0,
 				max: 100,
@@ -905,12 +920,11 @@ $.widget("sv.plot_gauge_vumeter", $.sv.plot, {
 				startAngle: -45,
 				endAngle: 45,
 				background: null,
-				center: [(100/response.length/2*(2*i+1))+'%', '145%'],
+				center: [(100/seriesCount/2*(2*i+1))+'%', '145%'],
 				size: 280
 			}
 			series[i] = {
 				name: 'Channel ' + i,
-				data: [(((response[i] - diff) * 100) / range)],
 				yAxis: i
 			}
 		}
@@ -968,14 +982,14 @@ $.widget("sv.plot_gauge_vumeter", $.sv.plot, {
 		}
 	},
 
-	_point: function(response) {
+	_update: function(response) {
 		//debug: console.log("[plot.gauge-vumeter] '" + this.id + "' point: " + response);
 
 		var diff = (this.options.max - (this.options.max - this.options.min));
 		var range = this.options.max - this.options.min;
 
 		var data = [];
-		var items = String(this.options.item).explode();
+		var items = this.items;
 		for (i = 0; i < items.length; i++) {
 			if (response[i]) {
 				data[i] = (((+response[i] - diff) * 100) / range);
@@ -988,7 +1002,10 @@ $.widget("sv.plot_gauge_vumeter", $.sv.plot, {
 
 		var chart = this.element.highcharts();
 		for (i = 0; i < data.length; i++) {
-			chart.series[i].points[0].update(data[i]);
+			if(chart.series[i].points[0])
+				chart.series[i].points[0].update(data[i], false);
+			else
+				chart.series[i].addPoint(data[i], false);
 		}
 		chart.redraw();
 	},
@@ -997,7 +1014,7 @@ $.widget("sv.plot_gauge_vumeter", $.sv.plot, {
 
 
 // ----- plot.pie --------------------------------------------------------------
-$.widget("sv.plot_pie", $.sv.plot, {
+$.widget("sv.plot_pie", $.sv.widget, {
 
 	initSelector: 'div[data-widget="plot.pie"]',
 
@@ -1008,7 +1025,9 @@ $.widget("sv.plot_pie", $.sv.plot, {
 		text: '',
 	},
 
-	_update: function(response) {
+	_create: function() {
+		this._super();
+
 		var isLabel = false;
 		var isLegend = false;
 		var labels = [];
@@ -1026,17 +1045,6 @@ $.widget("sv.plot_pie", $.sv.plot, {
 		var color = [];
 		if (this.options.color) {
 			color = String(this.options.color).explode();
-		}
-		var val = 0;
-		for (i = 0; i < response.length; i++) {
-			val = val + response[i];
-		}
-		var data = [];
-		for (i = 0; i < response.length; i++) {
-			data[i] = {
-				name: labels[i],
-				y: response[i] * 100 / val
-			}
 		}
 
 		// design
@@ -1081,7 +1089,6 @@ $.widget("sv.plot_pie", $.sv.plot, {
 			series: [{
 				name: headline,
 				colorByPoint: true,
-				data: data
 			}],
 		});
 
@@ -1099,10 +1106,10 @@ $.widget("sv.plot_pie", $.sv.plot, {
 		}
 	},
 
-	_point: function(response) {
+	_update: function(response) {
 		var val = 0;
 		var data = [];
-		var items = String(this.options.item).explode();
+		var items = this.items;
 		for (i = 0; i < items.length; i++) {
 			if (response[i]) {
 				val = val +  +response[i];
@@ -1124,7 +1131,10 @@ $.widget("sv.plot_pie", $.sv.plot, {
 
 		var chart = this.element.highcharts();
 		for (i = 0; i < data.length; i++) {
-			chart.series[0].data[i].update(data[i]);
+			if(chart.series[0].data[i])
+				chart.series[0].data[i].update(data[i], false);
+			else
+				chart.series[0].addPoint(data[i], false);
 		}
 		chart.redraw();
 	},
@@ -1133,7 +1143,7 @@ $.widget("sv.plot_pie", $.sv.plot, {
 
 
 // ----- plot.rtr -------------------------------------------------------------
-$.widget("sv.plot_rtr", $.sv.plot, {
+$.widget("sv.plot_rtr", $.sv.widget, {
 
 	initSelector: 'div[data-widget="plot.rtr"]',
 
@@ -1145,29 +1155,13 @@ $.widget("sv.plot_rtr", $.sv.plot, {
 		count: 100,
 	},
 
-	_update: function(response) {
-		// response is: {{ gad_actual }}, {{ gad_set }}, {{ gat_state }}
+	allowPartialUpdate: true,
+
+	_create: function() {
+		this._super();
 
 		var label = String(this.options.label).explode();
 		var axis = String(this.options.axis).explode();
-
-		// calculate state: diff between timestamps in relation to duration
-		var state = response[2];
-		var stamp = state[0][0];
-		var percent = 0;
-
-		for (var i = 1; i < state.length; i++) {
-			percent += state[i - 1][1] * (state[i][0] - stamp);
-			stamp = state[i][0];
-		}
-		percent = percent / (stamp - state[0][0]);
-
-		if (percent < 1) {
-			percent = percent * 100;
-		}
-		else if (percent > 100) {
-			percent = percent / 255 * 100;
-		}
 
 		// draw the plot
 		this.element.highcharts({
@@ -1180,19 +1174,19 @@ $.widget("sv.plot_rtr", $.sv.plot, {
 			},
 			series: [
 				{
-					name: label[0], data: response[0], type: 'spline',
+					name: label[0], type: 'spline'
 				},
 				{
-					name: label[1], data: response[1], className: 'shortdot', step: 'left',
+					name: label[1], className: 'shortdot', step: 'left'
 				},
 				{
 					type: 'pie',
 					data: [
 						{
-							name: 'On', y: percent
+							name: 'On'//, y: percent
 						},
 						{
-							name: 'Off', y: (100 - percent), color: null
+							name: 'Off', color: null//, y: (100 - percent)
 						}
 					],
 					center: ['95%', '90%'],
@@ -1200,7 +1194,7 @@ $.widget("sv.plot_rtr", $.sv.plot, {
 					showInLegend: false,
 					dataLabels: {enabled: false},
 					tooltip: {
-            headerFormat: '',
+						headerFormat: '',
 						pointFormatter: function () {
 							return '∑ '+this.name+': <b>'+this.percentage.transUnit('%')+'</b>';
 						}
@@ -1218,7 +1212,9 @@ $.widget("sv.plot_rtr", $.sv.plot, {
 		});
 	},
 
-	_point: function(response) {
+	_update: function(response) {
+		// response is: {{ gad_actual }}, {{ gad_set }}, {{ gat_state }}
+
 		var count = this.options.count;
 		if (count < 1) {
 			count = 100;
@@ -1232,7 +1228,26 @@ $.widget("sv.plot_rtr", $.sv.plot, {
 				}
 			}
 			else if (response[i] && (i == 2)) {
-				// TODO: plot.rtr, recalc pie diagram after new point received
+				// calculate state: diff between timestamps in relation to duration
+
+				var state = chart.series[0].data;
+				var stamp = state[0].x;
+				var percent = 0;
+
+				for (var j = 1; j < state.length; j++) {
+					percent += state[j - 1].y * (state[j].x - stamp);
+					stamp = state[j].x;
+				}
+				percent = percent / (stamp - state[0].x);
+
+				if (percent < 1) {
+					percent = percent * 100;
+				}
+				else if (percent > 100) {
+					percent = percent / 255 * 100;
+				}
+
+				chart.series[i].setData([percent,100-percent], false, undefined, true);
 			}
 		}
 		chart.redraw();
@@ -1242,7 +1257,7 @@ $.widget("sv.plot_rtr", $.sv.plot, {
 
 
 // ----- plot.temprose --------------------------------------------------------
-$.widget("sv.plot_temprose", $.sv.plot, {
+$.widget("sv.plot_temprose", $.sv.widget, {
 
 	initSelector: 'div[data-widget="plot.temprose"]',
 
@@ -1253,8 +1268,10 @@ $.widget("sv.plot_temprose", $.sv.plot, {
 		unit: '',
 	},
 
-	_update: function(response) {
-		// response is: {{ gad_actual_1, gad_actual_2, gad_actual_3, gad_set_1, gad_set_2, gad_set_3 }}
+	allowPartialUpdate: true,
+
+	_create: function() {
+		this._super();
 
 		var label = String(this.options.label).explode();
 		var axis = String(this.options.axis).explode();
@@ -1263,14 +1280,12 @@ $.widget("sv.plot_temprose", $.sv.plot, {
 
 		var plots = [];
 		plots[0] = {
-			name: label[0], pointPlacement: 'on',
-			data: response.slice(0, count)
+			name: label[0], pointPlacement: 'on'
 		};
 
-		if (response.slice(count).length == count) {
+		if (this.items.length == 2 * count) {
 			plots[1] = {
 				name: label[1], pointPlacement: 'on',
-				data: response.slice(count),
 				className: 'shortdot'
 			}
 		}
@@ -1290,23 +1305,30 @@ $.widget("sv.plot_temprose", $.sv.plot, {
 				x: 10,
 				layout: 'vertical',
 				align: 'center',
-				//verticalAlign: 'top',
 				floating: true,
 			}
 		});
 	},
 
-	_point: function(response) {
-		var chart = this.element.highcharts();
-		var point = chart.series[2].data[0];
-		if (!response[0]) {
-			response[0] = point.x;
-		}
-		if (!response[1]) {
-			response[1] = point.y;
-		}
+	_update: function(response) {
+		// response is: {{ gad_actual_1, gad_actual_2, gad_actual_3, gad_set_1, gad_set_2, gad_set_3 }}
 
-		chart.series[2].data[0].update([response[0] * 1.0, response[1] * 1.0], true);
+		var chart = this.element.highcharts();
+		var count = parseInt(this.options.count);
+		var itemCount = this.items.length;
+
+		for(var i = 0; i < itemCount; i++) {
+			if(response[i] === undefined)
+				continue;
+
+			var point = chart.series[i < count ? 0 : 1].data[i % count];
+
+			if(point)
+					point.update(response[i] * 1.0, false);
+			else
+				chart.series[i < count ? 0 : 1].addPoint(response[i] * 1.0, false);
+		}
+		chart.redraw();
 	},
 
 });
