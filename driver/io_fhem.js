@@ -6,7 +6,7 @@
  * @copyright   2016
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
- * @label       FHEM_TEST
+ * @label       FHEM
  * @hide        driver_autoreconnect
  *
  * This driver has enhancements for using smartVISU with FHEM
