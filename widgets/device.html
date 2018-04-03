@@ -125,7 +125,7 @@
 {% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, min_display, max_display) %}
 	{% import "basic.html" as basic %}
 
-	<div class="dimmer" data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-item="{{ item_switch }}, {{ item_value }}">
+	<div class="dimmer" data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
 		{{ basic.stateswitch('', item_switch, 'icon', '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
 		<p>{{ txt|e }}</p>
 		{{ basic.slider('', item_value, min, max, step, 'horizontal', 'none', min_display, max_display) }}
