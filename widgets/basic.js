@@ -7,44 +7,6 @@
  * -----------------------------------------------------------------------------
  */
 
-/**
- * Class for controlling all widgets.
- *
- * Concept:
- * --------
- * Every item has a name. The value of the item may be of type: int, float, or
- * array. The items are stored in the widget.buffer. The drivers will fill the
- * buffer through the widget.update (and therefore widget.set). Asynchronly
- * all widgets on a page may be updated. The update is been triggerd from
- * widget.update, if a item has been changed. Updates are only made if all
- * items are in buffer needed for that update. If one is missing the update is
- * not been made. If some plots placed on the page, the update will look if it
- * is possible to add only one point (if the widget is already initialized).
- *
- * Events:
- * -------
- * Some new events are introduced to control the widgets and there visual
- * appearance.
- *
- * 'update': function(event, response) { }
- * Triggered through widget.update if a item has been changed.
- *
- * 'draw': function (event) { }
- * Triggered only for svgs, if it is loaded
- *
- * 'point': function(event, response) { }
- * Triggered only for plots through widget.update if the plot is already drawn
- * and only a new point has to be added to the series.
- *
- * 'repeat': function(event) { }
- * Triggerd after the specified time, when 'data-repeat' ist been used.
- *
- * 'change', 'click' ...
- * Standard jquery-mobile events, triggered from the framework.
- *
- */
-
-
 // ----- basic.checkbox -------------------------------------------------------
 $.widget("sv.basic_checkbox", $.sv.widget, {
 

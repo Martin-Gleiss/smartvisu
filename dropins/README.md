@@ -113,6 +113,9 @@ Triggered if an item value has been changed. Variable `response` contains value 
 Triggerd after the seconds defined in the attribute `data-repeat` on widget's html.
 * `_events: { }` *(optional)*  
 Collection of any browser or jQuery Mobile event to be bound on widget's HTML node.
+* `_allowPartialUpdate: true` *(optional)*
+If this is set, the `_update` method can receive (after first intitialisation) new points of a series separately and without checking if all other items do have a value. (This replaces the former `point` event.)
+
  
 ## Icons
 You may place your black icons in `icons/sw/` and their white counterpart in `icons/ws/`.
