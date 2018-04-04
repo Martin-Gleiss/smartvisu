@@ -1230,6 +1230,7 @@ $.widget("sv.plot_rtr", $.sv.widget, {
 		var chart = this.element.highcharts();
 		for (var i = 0; i < response.length; i++) {
 			if (response[i] && (i == 0 || i == 1)) {
+				var series = chart.series[i];
 				for (var j = 0; j < response[i].length; j++) {
 					var existingPointIndex = series.xData.indexOf(response[i][j][0]);
 					if(existingPointIndex >= 0) { // if point exists on time axis
