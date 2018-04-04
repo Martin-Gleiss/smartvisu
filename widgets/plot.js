@@ -349,8 +349,12 @@ $.widget("sv.plot_period", $.sv.widget, {
 				var series = chart.series[i]
 				for (var j = 0; j < minValues.length; j++) {
 					var existingPointIndex = series.xData.indexOf(minValues[j][0]);
-					if(existingPointIndex >= 0) // if point exists on time axis
-						series.data[existingPointIndex].update([ minValues[j][0], minValues[j][1], maxValues[j][1] ], false);
+					if(existingPointIndex >= 0) { // if point exists on time axis
+						if(series.yData[existingPointIndex][0] != minValues[j][1] || series.yData[existingPointIndex][1] != maxValues[j][1]) {
+							series.removePoint(existingPointIndex, false);
+							series.addPoint([ minValues[j][0], minValues[j][1], maxValues[j][1] ], false, (series.data.length >= count));
+						}
+					}
 					else
 						series.addPoint([ minValues[j][0], minValues[j][1], maxValues[j][1] ], false, (series.data.length >= count));
 				}
@@ -360,13 +364,16 @@ $.widget("sv.plot_period", $.sv.widget, {
 		for (var i = 0; i < itemCount; i++) {
 			if (response[i]) {
 				var series = chart.series[(mode == 'minmaxavg' ? i+itemCount : i)]
-				// alternative: series.setData();
 				for (var j = 0; j < response[i].length; j++) {
 					var existingPointIndex = series.xData.indexOf(response[i][j][0]);
-					if(existingPointIndex >= 0) // if point exists on time axis
-						series.data[existingPointIndex].update(response[i][j], false);
+					if(existingPointIndex >= 0) { // if point exists on time axis
+						if(series.yData[existingPointIndex] != response[i][j][1]) {
+							series.removePoint(existingPointIndex, false);
+							series.addPoint(response[i][j], false, (series.xData.length >= count));
+						}
+					}
 					else
-						series.addPoint(response[i][j], false, (series.data.length >= count));
+						series.addPoint(response[i][j], false, (series.xData.length >= count));
 				}
 			}
 		}
@@ -1224,7 +1231,15 @@ $.widget("sv.plot_rtr", $.sv.widget, {
 		for (var i = 0; i < response.length; i++) {
 			if (response[i] && (i == 0 || i == 1)) {
 				for (var j = 0; j < response[i].length; j++) {
-					chart.series[i].addPoint(response[i][j], false, (chart.series[i].data.length >= count));
+					var existingPointIndex = series.xData.indexOf(response[i][j][0]);
+					if(existingPointIndex >= 0) { // if point exists on time axis
+						if(series.yData[existingPointIndex] != response[i][j][1]) {
+							series.removePoint(existingPointIndex, false);
+							series.addPoint(response[i][j], false, (series.xData.length >= count));
+						}
+					}
+					else
+						series.addPoint(response[i][j], false, (series.xData.length >= count));
 				}
 			}
 			else if (response[i] && (i == 2)) {
