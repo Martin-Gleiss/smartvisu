@@ -382,7 +382,7 @@ var io = {
         for (var i = 0; i < list.length; i++) {
           if (widget.checkseries(list[i])) {
             var plotItem = io.splitPlotItem(list[i]);
-            if ($.inArray(plotItem.mode, Array('avg', 'min', 'max', 'sum', 'diff', 'rate', 'on')) >= 0) {
+            if ($.inArray(plotItem.mode, Array('raw', 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg')) >= 0) {
               var plotInfo = {
                 "item": plotItem.item,
                 "mode": plotItem.mode,
