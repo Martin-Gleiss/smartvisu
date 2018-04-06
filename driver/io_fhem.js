@@ -238,7 +238,7 @@ var io = {
             "data": dataItem.plotdata,
             "updatemode": dataItem.updatemode
           };
-          $.mobile.activePage.find('[data-item*="' + dataItem.item + '"][data-widget*=\'chart.\']').trigger('update', [seriesdata]);
+          $.mobile.activePage.find('[data-item*="' + dataItem.item + '"][data-widget^="chart."]').trigger('update', [seriesdata]);
           
           
           // sV plots (plot.)
@@ -246,6 +246,7 @@ var io = {
            * if fronthem would reflect completeItems in items (e.g. "hcs.data.OilLevelPlot.avg.5y 6m.0") the hole block could be replaced by:
            * widget.update(completeItem, plotData);
            */
+          // Check if we still need this
           $('[data-widget^="plot."][data-item*="' + dataItem.item + '"]').each(function() {
             var dataItems = widget.explode($(this).attr('data-item'));
             for (var i = 0; i < dataItems.length; i++) {
