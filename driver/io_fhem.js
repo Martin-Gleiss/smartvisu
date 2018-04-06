@@ -1,13 +1,14 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU / FHEM
- * @author      HCS with adjustments by Julian Pawlowski and Stefan Widmer,
+ * @author      HCS with adjustments by Julian Pawlowski, Stefan Widmer and raman
  *              original version by Martin Gleiß
  * @copyright   2016
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       FHEM
  * @hide        driver_autoreconnect
+ * @default     driver_port 2121
  *
  * This driver has enhancements for using smartVISU with FHEM
  */
@@ -94,7 +95,7 @@ var io = {
     }
     
     io.open();
-
+    
     try {
       io.addon = new addonDriver();
       io.addon.init(io);
@@ -197,6 +198,14 @@ var io = {
         }
         break;
       
+      case 'plot':
+        for (i = 0; i < data.items.length; i++) {
+          if(data.items[i]) {
+            widget.update(data.items[i].item, data.items[i].plotdata);
+          }
+        }
+        break;
+      
       case 'series':
         // We get:
         // {
@@ -229,16 +238,15 @@ var io = {
             "data": dataItem.plotdata,
             "updatemode": dataItem.updatemode
           };
-          $.mobile.activePage.find('[data-item*="' + dataItem.item + '"]')
-                             .filter("[data-widget*='chart.']")
-                             .trigger('update', [seriesdata]);
-
+          $.mobile.activePage.find('[data-item*="' + dataItem.item + '"][data-widget^="chart."]').trigger('update', [seriesdata]);
+          
           
           // sV plots (plot.)
           /*
            * if fronthem would reflect completeItems in items (e.g. "hcs.data.OilLevelPlot.avg.5y 6m.0") the hole block could be replaced by:
            * widget.update(completeItem, plotData);
            */
+          // Check if we still need this
           $('[data-widget^="plot."][data-item*="' + dataItem.item + '"]').each(function() {
             var dataItems = widget.explode($(this).attr('data-item'));
             for (var i = 0; i < dataItems.length; i++) {
@@ -264,6 +272,9 @@ var io = {
         break;
       
       case 'log':
+        for (i = 0; i < data.items.length; i = i + 2) {
+          widget.update(data.items[i], data.items[i + 1]);
+        }
         break;
     }
   },
@@ -336,44 +347,35 @@ var io = {
     io.ownSeries = [];
     io.fhemSeries = [];
     
-    // Logs
     if($.mobile.activePage != undefined) {
+      var re = io.addon && io.addon.itemFilter ? new RegExp(io.addon.itemFilter) : null;
+      
+      // Logs
       widget.log().each(function () {
         var logInfo = {
           "item": $(this).attr('data-item'),
           "size": $(this).attr('data-count'),
           "interval": $(this).attr('data-interval')
         };
-    
-        if (io.addon && io.addon.itemFilter) {
-          var re = new RegExp(io.addon.itemFilter);
-          if (re.test(logInfo.item)) {
-            io.ownLogs.push(logInfo);
-          } else {
-            io.fhemLogs.push(logInfo);
-          }
+        
+        if (re && re.test(logInfo.item)) {
+          io.ownLogs.push(logInfo);
         } else {
           io.fhemLogs.push(logInfo);
         }
       });
-  
+      
       // "normal" values
       var items = widget.listeners();
-      if (io.addon && io.addon.itemFilter) {
-        var re = new RegExp(io.addon.itemFilter);
-        for (var i = 0; i < items.length; i++) {
-          var item = items[i];
-          var isOwnItem = re.test(item);
-          if (isOwnItem) {
-            io.ownItems.push(item);
-          } else {
-            io.fhemItems.push(item);
-          }
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        if (re && re.test(item)) {
+          io.ownItems.push(item);
+        } else {
+          io.fhemItems.push(item);
         }
-      } else {
-        io.fhemItems = items;
       }
-  
+      
       // sV Plots
       widget.plot().each(function () {
         var list = widget.explode($(this).attr('data-item'));
@@ -386,18 +388,14 @@ var io = {
                 "mode": plotItem.mode,
                 "start": plotItem.start,
                 "end": plotItem.end === "0" ? "now" : plotItem.end,
+                "count": plotItem.count === "0" ? "100" : plotItem.count,
                 "interval": "OnChange",
                 "minzoom": $(this).attr('data-zoom'),
                 "updatemode": "additional"
               };
-          
-              if (io.addon && io.addon.itemFilter) {
-                var re = new RegExp(io.addon.itemFilter);
-                if (re.test(plotInfo.item)) {
-                  io.ownSeries.push(plotInfo);
-                } else {
-                  io.fhemSeries.push(plotInfo);
-                }
+              
+              if (re && re.test(plotInfo.item)) {
+                io.ownSeries.push(plotInfo);
               } else {
                 io.fhemSeries.push(plotInfo);
               }
@@ -405,18 +403,18 @@ var io = {
           }
         }
       });
-  
+      
       // FHEM charts
       $.mobile.activePage.find('[data-item][data-series]').each(function (index, chart) {
         var list = widget.explode($(chart).attr('data-item'));
         for (var i = 0; i < list.length; i++) {
           var item = list[i];
-      
+          
           var result = false;
           var series = $(chart).attr("data-series");
           if (series) {
             var seriesItems = series.split(',');
-        
+            
             for (var ci = 0; ci < seriesItems.length; ci++) {
               if (seriesItems[ci].trim() === item) {
                 result = true;
@@ -424,13 +422,13 @@ var io = {
               }
             }
           }
-      
+          
           if (result) {
             var dataModes = $(chart).attr('data-modes');
             var modes = dataModes.split(',');
-        
+            
             var end = $(chart).attr('data-tmax');
-        
+            
             var chartInfo = {
               "item": item,
               "mode": modes.length > 1 ? modes[i].trim() : dataModes,
@@ -440,21 +438,13 @@ var io = {
               "minzoom": $(chart).attr('data-zoom'),
               "updatemode": "complete"
             };
-        
-            if (io.addon && io.addon.itemFilter) {
-              var re = new RegExp(io.addon.itemFilter);
-              if (re.test(chartInfo.item)) {
-                io.ownSeries.push(chartInfo);
-              } else {
-                io.fhemSeries.push(chartInfo);
-              }
+            
+            if (re && re.test(chartInfo.item)) {
+              io.ownSeries.push(chartInfo);
             } else {
               io.fhemSeries.push(chartInfo);
             }
-        
           }
-      
-      
         }
       });
     }
@@ -481,7 +471,8 @@ var io = {
       "item": item,
       "mode": parts[parts.length - 4],
       "start": parts[parts.length - 3],
-      "end": parts[parts.length - 2]
+      "end": parts[parts.length - 2],
+      "count": parts[parts.length - 1]
     };
     
   },
@@ -510,7 +501,7 @@ var io = {
       
       if (io.fhemSeries.length) {
         io.send({
-          'cmd': 'series',
+          'cmd': 'plot',
           'items': io.fhemSeries
         });
       }
