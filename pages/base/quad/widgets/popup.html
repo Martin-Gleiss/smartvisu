@@ -30,11 +30,7 @@
                     {% set select_attribs = _context['line' ~ linenumber][key+key1+1] %}
                     <div class="select popup_column_{{i}}">{{ basic.select(id~'select'~key1~item~linenumber, select_attribs[0], select_attribs[1], select_attribs[2], select_attribs[3], select_attribs[4]|default(''), select_attribs[5]|default('icon1'), select_attribs[6]|default('horizontal')) }}</div>
                     {% set i = i+1 %}
-                {% elseif item == 'symbol' %}
-                    {% set symbol_attribs = _context['line' ~ linenumber][key+key1+1] %}
-                    <div class="symbol popup_column_{{i}}">{{ basic.symbol(id~'select'~key1~item~linenumber, symbol_attribs[0], symbol_attribs[1], symbol_attribs[2], symbol_attribs[3], symbol_attribs[4]|default(''), symbol_attribs[5]|default('icon1'), symbol_attribs[6], symbol_attribs[7]) }}</div>
-                    {% set i = i+1 %}
-                {% elseif item == 'icon' %}
+                {% elseif item == 'image' %}
                     {% set icon_attribs = _context['line' ~ linenumber][key+key1+1] %}
                     <div class="icon popup_column_{{i}}">{{ basic.icon(icon_attribs[0], icon_attribs[1], icon_attribs[2]) }}</div>
                     {% set i = i+1 %}
