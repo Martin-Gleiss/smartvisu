@@ -701,6 +701,18 @@
 	padding-right: 5px;
 }
 
+.quad_ext-popup .quad_table div.symbol {
+	display: inline-block;
+	border:0;
+	padding-right: 5px;
+}
+
+.quad_ext-popup .quad_table div.icon {
+	display: inline-block;
+	border:0;
+	padding-right: 5px;
+}
+
 .quad_ext-popup {
 	min-width: 150px;
 	max-width: 500px;
