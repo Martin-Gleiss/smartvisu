@@ -34,6 +34,7 @@
 - clock.miniclock: New parameter 'format'
 
 ### Other New Features
+- Inline documentation can be called directly in system menu now (i.e. w/o changing pages in configuration)
 - Allow pages selection by url parameter (e.g. index.php?pages=foo)
 - Configuration can be overridden per page and per client. Options stored in .ini now. Redesign of configuration page
 - Clear pagecache (by button and on disabling on configuration page)
