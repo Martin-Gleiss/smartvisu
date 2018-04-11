@@ -13,6 +13,7 @@ System templates can be overridden by creating a template with same name in here
 Any valid .html file in widgets folder gets imported as widget library. E.g. a macro `bar()` defined in `widgets/foo.html` can be called in your pages by `{{ foo.bar() }}`.
 Widget filenames have to be valid Twig/PHP variable names. They must not contain any non-alphanumeric characters (except underlines) and must not start with a number.
 
+#### Docstring ####
 Every widget macro should be documented by a preceding docstring comment which is used to generate documentation and contains information for Template Checker.
 This has to be right above the macro defintion and starts by `/**` and end with `*/`. Every line has to begin with a `*`.
 
@@ -72,7 +73,7 @@ $.widget("sv.foo_bar", $.sv.widget, {
 	initSelector: '[data-widget="foo.bar"]',
 
 	options: {
-		'my-first-param': ''
+		myFirstParam': ''
 		...
 	},
 
@@ -103,7 +104,7 @@ $.widget("sv.foo_bar", $.sv.widget, {
 Available members are:
 * `initSelector: '...'` an jQuery selector of widget's HTML node.
 * `options: { }` has to contain all parameters which are set by widget macro as data-attribute in HTML.  
-These can then be accessed in code by `this.options['my-first-param']`.  
+These can then be accessed in code by `this.options...`. Hyphens get replaced by camel case (e.g. `data-my-first-param="..."` in HTML turns into `this.options.myFirstParam`).  
 The HTML node itself can be accessed by `this.element`.
 * `_create: function() { }` *(optional)*  
 Is executed on first creation of the widget instance. If you override this, mind to call `this._super();` in it.
