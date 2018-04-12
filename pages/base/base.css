@@ -736,6 +736,10 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 
 
 
+.color.debug, .signal.debug {
+	background: #1af0f0;
+}
+
 .color.info, .signal.info {
 	background: #3ad064;
 }
@@ -762,7 +766,8 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 	font-weight: bold;
 	text-shadow: 0 1px 0 #666;
 	width: auto !important;
-	z-index: 10;
+	z-index: 1010;
+	position: fixed;
 	-webkit-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-o-transform: rotate(45deg);

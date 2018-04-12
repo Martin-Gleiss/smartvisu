@@ -11,17 +11,6 @@
 
 {% block body %}
 
-	<div class="alert" id="alert-popup" data-role="popup" data-theme="a" data-overlay-theme="a">
-		<div data-role="header" data-theme="c"><h1></h1></div>
-		<p></p>
-
-		<div class="control">
-			<span class="stamp"></span>
-			<a onClick="notify.remove();" data-mini="true" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
-			<a onClick="$('#alert-popup').popup('close');" data-mini="true" data-icon="delete" data-iconpos="top" data-role="button" data-inline="true">Cancel</a>
-		</div>
-	</div>
-
 	<div data-role="page" id="{{ page }}" class="base page-bg" data-theme="a">
 		<div data-role="header" data-position="fixed" data-tap-toggle="false">
 			<div class="ui-left">
@@ -34,7 +23,6 @@
 						{{ clock.miniclock('', lang('format','time') ~ ', ' ~ lang('format','day') ) }} v{{ config_version }}</div>
 				</a>
 			</div>
-			<div class="signal hide" onClick="$('#alert-popup').popup('open');"></div>
 		</div>
 
 		<div data-role="content">

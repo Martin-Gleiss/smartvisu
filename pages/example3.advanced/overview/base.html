@@ -26,19 +26,6 @@
 	<div data-role="popup" id="popupMenu" data-theme="b">
 			{% include 'menu_popup.html' %}
 	</div>					
-		
-	<div class="signal hide" onClick="$('.ui-page-active .alert').popup('open');"></div>
-	<div class="alert" data-role="popup" data-overlay-theme="a">
-		<div data-role="header" data-theme="c"><h1></h1></div>
-		<p></p>
-
-		<div class="control">
-			<span class="stamp"></span>
-			<a onClick="notify.remove();" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
-			<a onClick="$('.alert').popup('close');" class="ui-mini" class="ui-mini" data-icon="delete" data-iconpos="top" data-role="button" data-inline="true">Cancel</a>
-		</div>
-
-	</div>
 
 	<div data-role="content" class="page-bg">
 			{% block content %}{% endblock %}

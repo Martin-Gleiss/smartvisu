@@ -32,6 +32,7 @@
 - basic.checkbox & basic.flip: Value_on and value_off can be set by parameters
 - multimedia.slideshow: Fix items, add control buttons and reverse parameter
 - clock.miniclock: New parameter 'format'
+- status.notify: New items for title, signal, level and acknowledgement
 
 ### Other New Features
 - Inline documentation can be called directly in system menu now (i.e. w/o changing pages in configuration)
@@ -58,6 +59,7 @@
 - Calendar coloring in configuration
 - Google calendar authorization on configuration page
 - Date format allows more patterns: l, D, j, F, M, n, G (the meaning is same as in php date function)
+- Notification corner shows messages ordered by severity
 
 ### Updated Libraries
 - jQuery Mobile to 1.4.5

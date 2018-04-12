@@ -66,13 +66,26 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {item=} an item with the dynamic message
 * @param {text=INFO} a word for the signal corner (optional, default 'INFO')
 * @param {text} a title of the messagebox
-* @param {text=} a additional static text
-* @param {text(info,warning,error)=info} the mode: 'info', 'warning', 'error' (optional, default 'info')
+* @param {text=} an additional static text
+* @param {text(info,warning,error)=info} the level: 'info', 'warning', 'error' (optional, default 'info')
+* @param {item=} an item to send an acknowledge message to (optional)
+* @param {text} the value which will be sent when the message gets acknowledged (optional, default 0 if item_ack is equal to item_trigger, otherwise 1).
+* @param {item=} an item to set the word in the signal corner. The value overrides the parameter "signal" (optional)
+Caution: If this is set, the notification gets not shown until the item has sent a value.
+* @param {item=} an item to set the title of the message box. The value overrides the parameter "title" (optional)
+Caution: If this is set, the notification gets not shown until the item has sent a value.
+* @param {item=} an item to set the level. The value overrides the parameter "level" (optional)
+Caution: If this is set, the notification gets not shown until the item has sent a value.
+*
+* @author Martin Gleiß, Stefan Widmer
+* @info enhancements inspired by Frank Benicke
 */
-{% macro notify(id, item_trigger, item_message, signal, title, text, mode) %}
+{% macro notify(id, item_trigger, item_message, signal, title, text, level, item_ack, ack_value, item_signal, item_title, item_level) %}
 
-	<span id="{{ uid(page, id) }}" data-widget="status.notify" data-item="{{ item_trigger }}, {{ item_message }}"
-		data-signal="{{ signal|default('INFO') }}" data-mode="{{ mode|default('info') }}"
+	<span id="{{ uid(page, id) }}" data-widget="status.notify" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_signal }}, {{ item_title }}, {{ item_level }}"
+		data-signal="{{ signal|default('INFO') }}" data-level="{{ level|default('info') }}"
+		{% if item_ack %}data-item-ack="{{ item_ack }}" data-ack-value="{{ ack_value|default(item_ack == item_trigger ? 0 : 1) }}"{% endif %}
+		data-item-signal="{{ item_signal }}" data-item-title="{{ item_title }}" data-item-level="{{ item_level }}""
 		class="hide"><h1>{{ title }}</h1><p>{{ text }}</p>
 	</span>
 

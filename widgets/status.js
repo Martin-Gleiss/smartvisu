@@ -92,17 +92,43 @@ $.widget("sv.status_notify", $.sv.widget, {
 	initSelector: 'span[data-widget="status.notify"]',
 
 	options: {
-		mode: 'info',
-		signal: 'INFO'
+		level: 'info',
+		signal: 'INFO',
+		itemAck: null,
+		ackValue: 1,
+		itemSignal: null,
+		itemTitle: null,
+		itemLevel: null
 	},
 
 	_update: function(response) {
-		// response is: {{ gad_trigger }}, {{ gad_message }}
+
+		var level = this.options.level, signal = this.options.signal, title = this.element.find('h1').text();
+
 		if (response[0] != 0) {
-			notify.add(this.options.mode, this.options.signal, this.element.find('h1').html(),
-				'<b>' + response[1] + '</b><br  />' + this.element.find('p').html());
+			if (response.length > 2) {
+				if(this.options.itemSignal)
+					signal = response[2];
+				else if (this.options.itemTitle)
+					title = response[2];
+				else if(notify.messagesPerLevel.hasOwnProperty(response[2]))
+					level = response[2];
+
+				if (response.length > 3) {
+					if (this.options.itemTitle)
+						title = response[3];
+					else if(notify.messagesPerLevel.hasOwnProperty(response[3]))
+						level = response[3];
+
+					if(response[4] && notify.messagesPerLevel.hasOwnProperty(response[4]))
+						level = response[4];
+				}
+			}
+
+			notify.add(level, signal, title, '<b>' + response[1] + '</b><br  />' + this.element.find('p').html(), this.options.itemAck, this.options.ackValue);
 			notify.display();
 		}
+
 	},
 
 });
