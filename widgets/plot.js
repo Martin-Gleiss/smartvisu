@@ -174,44 +174,6 @@ $.widget("sv.plot_period", $.sv.widget, {
 			});
 		}
 
-/*
-		if(mode == 'minmax' || mode == 'minmaxavg') {
-			var itemCount = response.length / (mode == 'minmax' ? 2 : 3);
-
-			var minResponse = response.slice(0, itemCount);
-			var maxResponse = response.slice(itemCount, itemCount * 2);
-			response = response.slice(itemCount * 2);
-
-			for (var i = 0; i < itemCount; i++) {
-				var minValues = minResponse[i];
-				var maxValues = maxResponse[i];
-
-				var data = [];
-				for (var j = 0; j < minValues.length; j++) {
-					data.push( [ minValues[j][0], minValues[j][1], maxValues[j][1] ] );
-				}
-
-				series.push({
-					type: 'columnrange',
-					enableMouseTracking: false,
-					name: (label[i] == null ? 'Item ' + (i+1) : label[i]) + (mode == 'minmaxavg' && label[i] !== '' ? ' (min/max)' : ''),
-					showInLegend: false,
-					data: data,
-					yAxis: (assign[i] ? assign[i] - 1 : 0)
-				});
-			}
-		}
-
-		for (var i = 0; i < response.length; i++) {
-			series.push({
-				type: (exposure[i] != 'stair' ? exposure[i] : 'line'),
-				step: (exposure[i] == 'stair' ? 'left' : false),
-				name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
-				data: response[i].slice(0), // clone
-				yAxis: (assign[i] ? assign[i] - 1 : 0)
-			});
-		}
-*/
 		// y-axis
 		var numAxis = 1;
 		if(assign.length > 0)
@@ -346,35 +308,17 @@ $.widget("sv.plot_period", $.sv.widget, {
 				if(minValues === undefined || maxValues === undefined)
 					continue;
 
-				var series = chart.series[i]
-				for (var j = 0; j < minValues.length; j++) {
-					var existingPointIndex = series.xData.indexOf(minValues[j][0]);
-					if(existingPointIndex >= 0) { // if point exists on time axis
-						if(series.yData[existingPointIndex][0] != minValues[j][1] || series.yData[existingPointIndex][1] != maxValues[j][1]) {
-							series.removePoint(existingPointIndex, false);
-							series.addPoint([ minValues[j][0], minValues[j][1], maxValues[j][1] ], false, (series.data.length >= count));
-						}
-					}
-					else
-						series.addPoint([ minValues[j][0], minValues[j][1], maxValues[j][1] ], false, (series.data.length >= count));
-				}
+				var values = $.map(minValues, function(value, idx) {
+					return [[ value[0], value[1], maxValues[idx][1] ]];
+				});
+
+				chart.series[i].setData(values, false);
 			}
 		}
 
 		for (var i = 0; i < itemCount; i++) {
 			if (response[i]) {
-				var series = chart.series[(mode == 'minmaxavg' ? i+itemCount : i)]
-				for (var j = 0; j < response[i].length; j++) {
-					var existingPointIndex = series.xData.indexOf(response[i][j][0]);
-					if(existingPointIndex >= 0) { // if point exists on time axis
-						if(series.yData[existingPointIndex] != response[i][j][1]) {
-							series.removePoint(existingPointIndex, false);
-							series.addPoint(response[i][j], false, (series.xData.length >= count));
-						}
-					}
-					else
-						series.addPoint(response[i][j], false, (series.xData.length >= count));
-				}
+				chart.series[(mode == 'minmaxavg' ? i+itemCount : i)].setData(response[i], false);
 			}
 		}
 
@@ -1230,18 +1174,7 @@ $.widget("sv.plot_rtr", $.sv.widget, {
 		var chart = this.element.highcharts();
 		for (var i = 0; i < response.length; i++) {
 			if (response[i] && (i == 0 || i == 1)) {
-				var series = chart.series[i];
-				for (var j = 0; j < response[i].length; j++) {
-					var existingPointIndex = series.xData.indexOf(response[i][j][0]);
-					if(existingPointIndex >= 0) { // if point exists on time axis
-						if(series.yData[existingPointIndex] != response[i][j][1]) {
-							series.removePoint(existingPointIndex, false);
-							series.addPoint(response[i][j], false, (series.xData.length >= count));
-						}
-					}
-					else
-						series.addPoint(response[i][j], false, (series.xData.length >= count));
-				}
+				chart.series[i].setData(response[i], false);
 			}
 			else if (response[i] && (i == 2)) {
 				// calculate state: diff between timestamps in relation to duration
