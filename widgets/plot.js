@@ -94,6 +94,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 	options: {
 		ymin: '',
 		ymax: '',
+		tmin: '',
+		tmax: '',
 		label: '',
 		color: '',
 		exposure: '',
@@ -204,7 +206,12 @@ $.widget("sv.plot_period", $.sv.widget, {
 			chart: {}, // used in code below
 			title: { text: null },
 			series: series,
-			xAxis: { type: 'datetime', title: { text: axis[0], align: 'high' } },
+			xAxis: {
+				type: 'datetime',
+				min: new Date() - new Date().duration(this.options.tmin),
+				max: new Date() - new Date().duration(this.options.tmax),
+				title: { text: axis[0], align: 'high' }
+			},
 			yAxis: yaxis,
 			legend: {
 				enabled: label.length > 0,
@@ -269,6 +276,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 		}
 
 		var chart = this.element.highcharts();
+
+		chart.xAxis[0].setExtremes(new Date() - new Date().duration(this.options.tmin), new Date() - new Date().duration(this.options.tmax), false);
 
 		var mode = this.options.mode;
 
@@ -1103,6 +1112,8 @@ $.widget("sv.plot_rtr", $.sv.widget, {
 		axis: '',
 		min: null,
 		max: null,
+		tmin: '',
+		tmax: '',
 		count: 100,
 	},
 
@@ -1152,7 +1163,11 @@ $.widget("sv.plot_rtr", $.sv.widget, {
 					},
 				}
 			],
-			xAxis: {type: 'datetime'},
+			xAxis: {
+				type: 'datetime',
+				min: new Date() - new Date().duration(this.options.tmin),
+				max: new Date() - new Date().duration(this.options.tmax),
+			},
 			yAxis: {min: this.options.min, max: this.options.max, title: {text: axis[1]}},
 			tooltip: {
 				pointFormatter: function () {
@@ -1172,6 +1187,9 @@ $.widget("sv.plot_rtr", $.sv.widget, {
 		}
 
 		var chart = this.element.highcharts();
+
+		chart.xAxis[0].setExtremes(new Date() - new Date().duration(this.options.tmin), new Date() - new Date().duration(this.options.tmax), false);
+
 		for (var i = 0; i < response.length; i++) {
 			if (response[i] && (i == 0 || i == 1)) {
 				chart.series[i].setData(response[i], false);
