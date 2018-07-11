@@ -98,6 +98,7 @@ class service
 
 		$this->debug($ret, "data");
 
+		header('Content-Type: text/json');
 		return json_encode($ret);
 	}
 
