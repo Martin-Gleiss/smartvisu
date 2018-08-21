@@ -575,6 +575,19 @@ the first one is the base color for values below first threshold, so pass one co
 	</a>
 {% endmacro %}
 
+/*
+* A widget to display an array
+* @param {item} an item
+* @param {size=} max number values to show
+*/
+{% macro printarray(id, item, size) %}
+	<div data-role="collapsible" data-theme="a" data-content-theme="a">
+		<h3>Item history</h3>
+        	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-item="{{ implode(item) }}" class="text" data-widget="basic.array" data-size="{{ size }}">
+                	<ul></ul>
+        	</span>
+	</div>
+{% endmacro %}
 
 /******************************************************************************
  * D E P R E C A T E D  W I D G E T S

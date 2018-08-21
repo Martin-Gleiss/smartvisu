@@ -1157,3 +1157,26 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 	}
 
 });
+
+// ----- basic.array ----------------------------------------------------------
+$.widget("sv.basic_array", $.sv.widget, {
+
+        initSelector: '[data-widget="basic.array"]',
+
+        options: {
+                size: "5"
+        },
+
+        _update: function(response) {
+                var size = this.options.size;
+                var line = '';
+                if (response[0] instanceof Array) {
+                        var list = response[0];
+                        for (var i = 0; i < list.length && i < size; i++) {
+                                line += '<li>' +  list[i]+ '</li>';
+                        }
+                        this.element.html(line).trigger('prepare').listview().listview('refresh').trigger('redraw');
+                }
+        },
+});
+
