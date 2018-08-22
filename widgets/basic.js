@@ -1157,3 +1157,22 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 	}
 
 });
+
+// ----- basic.listview ----------------------------------------------------------
+$.widget("sv.basic_listview", $.sv.widget, {
+         initSelector: '[data-widget="basic.listview"]',
+         options: {
+                size: "5"
+        },
+         _update: function(response) {
+                var size = this.options.size;
+                var line = '';
+                if (response[0] instanceof Array) {
+                        var list = response[0];
+                        for (var i = 0; i < list.length && i < size; i++) {
+                                line += '<li>' +  list[i]+ '</li>';
+                        }
+                        this.element.find('ul').html(line).listview('refresh');
+                }
+        },
+});
