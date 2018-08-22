@@ -237,6 +237,25 @@
 
 
 /**
+* A widget to display a list
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item
+* @param {value=5} max number of values to show (optional, default 5)
+* @param {text=} title of the collapsible (optional)
+* @param {text=} make the widget collapsible (optional)
+*
+* @author Christian Strassburg
+*/
+{% macro listview(id, item, size, title, col) %}
+	<div {% if not col is empty %}data-role="collapsible"{% endif %} data-theme="a" data-content-theme="a"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-item="{{ item }}" class="text" data-widget="basic.listview" data-size="{{ size }}" data-collapsed="false" >
+		{% if not col is empty %}<h4>{{ title }}</h4>{% endif %}
+		<ul data-role="listview"></ul>
+	</div>
+{% endmacro %}
+
+
+/**
 * Displays a button to shift offset
 *
 * @param {id=} unique id for this widget (optional)
@@ -575,22 +594,6 @@ the first one is the base color for values below first threshold, so pass one co
 	</a>
 {% endmacro %}
 
-/*
-* A widget to display a list
-* @param {id=} unique id for this widget (optional)
-* @param {item} an item
-* @param {size=5} max number of values to show (optional, default 5)
-* @param {title=} title of the collapsible (optional)
-* @param {col=} make the widget collapsible (optional)
-*
-* @author Christian Strassburg
-*/
-{% macro listview(id, item, size, title, col) %}
-    <div {% if not col is empty %}data-role="collapsible"{% endif %} data-theme="a" data-content-theme="a"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-item="{{ item }}" class="text" data-widget="basic.listview" data-size="{{ size }}" data-collapsed="false" >
-        {% if not col is empty %}<h4>{{ title }}</h4>{% endif %}
-        <ul data-role="listview"></ul>
-    </div>
-{% endmacro %}
 
 /******************************************************************************
  * D E P R E C A T E D  W I D G E T S
