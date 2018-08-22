@@ -699,7 +699,6 @@ $.widget("sv.basic_print", $.sv.widget, {
 	},
 
 	_update: function(response) {
-	
 		var format = this.options.format;
 		var formatLower = format.toLowerCase();
 		var formula = this.options.formula;
@@ -715,7 +714,6 @@ $.widget("sv.basic_print", $.sv.widget, {
 		formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
 
 		var VAR = response;
-		console.log(response)
 		var SUM = function(val) {
 			return val.reduce(function(a, b) {
 				return a + b;
