@@ -13,7 +13,8 @@
 {% import "quad/widgets/quad.html" as quad %}
 {% import "quad/widgets/popup.html" as popup %}
 {% import "quad/widgets/visu.html" as visu %}
-	<div data-role="page" id="{{ page }}" class="base" data-theme="a">
+<div class="quad">
+	<div data-role="page" id="{{ page }}" data-theme="a">
 		<div data-role="header" data-position="fixed" data-tap-toggle="false">
             <h1>
             {% block title %}{% endblock %}
@@ -21,7 +22,7 @@
 			<div class="ui-left">
 				{% include 'menu.html' %}
 			</div>
-			<div class="ui-right">
+			<div class="ui-right quad_logo">
 
 				<div style="float:right;">
 				<a href="javascript:window.location.href=window.location.href" style="text-decoration:none;color:#fff;">
@@ -52,10 +53,10 @@
 		<div class="content-primary">
             {% block content %}
 
-            <div class="nw_quad">
+            <div class="quad_block">
                 {% block quad_main_top %}{% endblock %}
             </div>
-            <div class="nw_quad nw_min_tablet">
+            <div class="quad_block quad_min_tablet">
                 {% block quad_main_bottom %}{% endblock %}
             </div>
             {% endblock %}
@@ -63,10 +64,10 @@
 
         <div class="content-secondary">
             {% block sidebar %}
-            <div class="nw_quad">
+            <div class="quad_block">
                 {% block quad_top %}{% endblock %}
             </div>
-            <div class="nw_quad">
+            <div class="quad_block">
                 {% block quad_bottom %}{% endblock %}
             </div>
             {% endblock %}
@@ -75,12 +76,12 @@
     </div>
 		{% block footer %}
 
-</div>
+	</div>
 
 
 		{% endblock %}
 	</div>
-
+</div>
 
 
 

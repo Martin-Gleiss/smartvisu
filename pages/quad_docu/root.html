@@ -8,10 +8,6 @@
 */
 /** handle dropins */
 {% set macrofiles = dir('dropins/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
-/** additional widgets in current pages */
-{% if isdir('pages/'~config_pages~'/widgets', '^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
-	{% set macrofiles = macrofiles|merge(dir('pages/'~config_pages~'/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
-{% endif %}
 {% set dynmacro = [] %}
 {% for macrofile in macrofiles %}
 	{% set dynmacro = dynmacro|merge(['{% import "widgets/' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
@@ -32,7 +28,6 @@
 	<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1.3, minimum-scale=1" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-	<meta name="mobile-web-app-capable" content="yes" />
 
 	<link rel="icon" href="favicon.png" />
 	<link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -45,8 +40,6 @@
 {% set cssFiles = [
 		'vendor/plot.highcharts/highcharts.css',
 		'vendor/JTSage/DateBox/css/jtsage-datebox.css',
-		'lib/clock/jdigiclock.css',
-		'lib/weather/jdigiweather.css',
 		'pages/base/base.css',
 		icon0 ~ 'jquery.mobile.icons.min.css',
 		'designs/' ~ config_design ~ '.css',
@@ -58,11 +51,6 @@
 {% for file in dir('dropins', '(.*)(\.css)') %}
 	{% set cssFiles = cssFiles|merge([file.path]) %}
 {% endfor %}
-{% if isdir('pages/'~config_pages~'/widgets') %}
-	{% for file in dir('pages/'~config_pages~'/widgets', '(.*)(\.css)') %}
-		{% set cssFiles = cssFiles|merge([file.path]) %}
-	{% endfor %}
-{% endif %}
 {% if isdir('pages/'~config_pages~'/css') %}
 	{% for file in dir('pages/'~config_pages~'/css', '(.*)(\.css)') %}
 		{% set cssFiles = cssFiles|merge([file.path]) %}
@@ -119,7 +107,6 @@
 		'vendor/plot.highcharts/modules/solid-gauge.js',
 		'vendor/jquery.cycle2/jquery.cycle2.js',
 		'vendor/JTSage/DateBox/js/jtsage-datebox.js',
-		'lib/clock/jquery.jdigiclock.js',
 		'vendor/JTSage/DateBox/js/i18n/jtsage-datebox.i18n.'~lang('DateBox', 'lang')~'.utf8.js',
 		config_animation ? 'widgets/animation.js' : null,
 		'lib/base/base.js',
@@ -136,11 +123,6 @@
 {% for file in dir('dropins', '(.*)(\.js)') %}
 	{% set jsFiles = jsFiles|merge([file.path]) %}
 {% endfor %}
-{% if isdir('pages/'~config_pages~'/widgets', '\.js') %}
-	{% for file in dir('pages/'~config_pages~'/widgets', '(.*)(\.js)') %}
-		{% set jsFiles = jsFiles|merge([file.path]) %}
-	{% endfor %}
-{% endif %}
 {% if isdir('pages/'~config_pages~'/js', '\.js') %}
 	{% for file in dir('pages/'~config_pages~'/js', '(.*)(\.js)') %}
 		{% set jsFiles = jsFiles|merge([file.path]) %}
@@ -204,6 +186,7 @@
 </script>
 <link rel="stylesheet" href="pages/base/quad/visu.css" />
 <script type="text/javascript" src="pages/base/quad/visu.js"></script>
+
 {% import "lib.html" as lib %}
 {% import "basic.html" as basic %}
 {% import "calendar.html" as calendar %}
@@ -215,6 +198,7 @@
 {% import "plot.html" as plot %}
 {% import "status.html" as status %}
 {% import "weather.html" as weather %}
+
 </head>
 
 <body>
