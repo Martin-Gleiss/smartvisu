@@ -67,7 +67,7 @@ $.widget("sv.device_codepad", $.sv.widget, {
 
 });
 
-  // ----- device.uzsu -----------------------------------------------------------
+  // ----- device.uzsu ----------------------------------------------------------
   // ----------------------------------------------------------------------------
   //
   // Neugestaltetes UZSU Widget zur Bedienung UZSU Plugin
@@ -125,18 +125,7 @@ $.widget("sv.device_codepad", $.sv.widget, {
   //										}
   //					]
   //				}
-$.widget("sv.device_uzsuitem", $.sv.widget, {
-
-  initSelector: '[data-widget="uzsu.uzsuicon"]',
-
-  options: {
-    valueparameterlist: null,
-    headline: '',
-    designtype: '',
-    valuetype: 'bool'
-  },
-
-  _uzsudata: {},
+$.widget("sv.device_uzsu", $.sv.widget, {
 
   _create: function() {
     this._super();
@@ -147,133 +136,23 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
   },
 
   _update: function(response) {
-    // Initialisierung zunächst wird festgestellt, ob Item mit Eigenschaft vorhanden. Wenn nicht: active = false
-    // ansonsten ist der Status von active gleich dem gesetzten Status
-    var active;
-    // erst einmal prüfen, ob ein Objekt tasächlich vohanden ist
-    if(response.length > 0) {
-      active = response[0].active;
-    }
-    else{
-      active = false;
-    }
-    // Das Icon wird aktiviert, falls Status auf aktiv, ansonsten deaktiviert angezeigt. Basiert auf der Implementierung von aschwith
-    if(active === true) {
-      this.element.find('.icon-off').hide();
-      this.element.find('.icon-on').show();
-    }
-    else {
-      this.element.find('.icon-on').hide();
-      this.element.find('.icon-off').show();
-    }
+    // data-item ist der sh.py item, in dem alle Attribute lagern, die für die Steuerung notwendig ist ist ja vom typ dict. das item, was tatsächlich per
+    // Schaltuhr verwendet wird ist nur als attribut (child) enthalten und wird ausschliesslich vom Plugin verwendet. wird für das rückschreiben der Daten an smarthome.py benötigt
+
     // wenn keine Daten vorhanden, dann ist kein item mit den eigenschaften hinterlegt und es wird nichts gemacht
     if (response.length === 0){
       notify.error("UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.options.id + ".");
       return;
     }
+    // Initialisierung zunächst wird festgestellt, ob Item mit Eigenschaft vorhanden. Wenn nicht: active = false
+    // ansonsten ist der Status von active gleich dem gesetzten Status
     // Wenn ein Update erfolgt, dann werden die Daten erneut in die Variable uzsu geladen damit sind die UZSU objekte auch in der click Funktion verfügbar
-    if (response[0].list instanceof Array)
-      this._uzsudata = response[0];
-    else
-      this._uzsudata = {active : true, list : []	};
-  },
-
-  _events: {
-    'click': function(event) {
-      // hier werden die Parameter aus den Attributen herausgenommen und beim Öffnen mit .open(....) an das Popup Objekt übergeben
-      // und zwar mit deep copy, damit ich bei cancel die ursprünglichen werte nicht überschrieben habe
-      var response = jQuery.extend(true, {}, this._uzsudata);
-      // erst gehen wir davon aus, dass die Prüfungen positiv und ein Popup angezeigt wird
-      var popupOk = true;
-      // Fehlerbehandlung für ein nicht vorhandenes DOM Objekt. Das response Objekt ist erst da, wenn es mit update angelegt wurde. Da diese
-      // Schritte asynchron erfolgen, kann es sein, dass das Icon bereits da ist, clickbar, aber nocht keine Daten angekommen. Dann darf ich nicht auf diese Daten zugreifen wollen !
-      if(response.interpolation === undefined){
-        this.options.interpolation = false
-        console.log('UZSU interpolation not available. You have to update the plugin version');
-        //response.interpolation = {type:'none',interval:0,initage:0,initialized:false,itemtype:'none'};
-      }
-      else if(! response.interpolation.itemtype in ['num']) {
-        this.options.interpolation = false
-        console.log('UZSU interpolation not supported by itemtype');
-      }
-      else {
-        this.options.interpolation = true
-        console.log('UZSU interpolation set to ' + response.interpolation.type);
-      }
-      if(response.list === undefined){
-        notify.error("UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.id + ".");
-      }
-      else{
-         // Auswertung der Übergabeparameter aus dem HTML Widget
-        var headline = this.options.headline;
-        var designType = this.options.designtype;
-        var valueType = this.options.valuetype;
-        // data-item ist der sh.py item, in dem alle Attribute lagern, die für die Steuerung notwendig ist ist ja vom typ dict. das item, was tatsächlich per
-        // Schaltuhr verwendet wird ist nur als attribut (child) enthalten und wird ausschliesslich vom Plugin verwendet. wird für das rückschreiben der Daten an smarthome.py benötigt
-        var item = this.options.item;
-        // jetzt kommt noch die Liste von Prüfungen, damit hinterher keine Fehler passieren, zunächst fehlerhafter designType (unbekannt)
-        if ((designType != '0') && (designType != '2')) {
-          notify.error("UZSU widget", "Design type '" + designType + "' is not supported in widget " + this.id + ".");
-          popupOk = false;
-        }
-        // fehlerhafter valueType (unbekannt)
-        if ((valueType !== 'bool') && (valueType !== 'num')	&& (valueType !== 'text') && (valueType !== 'list')) {
-          notify.error("UZSU widget", "Value type '" + valueType + "' is not supported in widget " + this.id + ".");
-          popupOk = false;
-        }
-
-        //
-        // Umsetzung des time parameters in die Struktur, die wir hinterher nutzen wollen
-        //
-        $.each(response.list, function(numberOfRow, entry) {
-          // test, ob die einträge für holiday gesetzt sind
-          if (entry.event === 'time')
-            entry.timeCron = entry.time;
-          else
-            entry.timeCron = '00:00';
-
-          // bei designType '0' wird rrule nach Wochentagen umgewandelt und ein festes Format vorgegegeben hier sollte nichts versehentlich überschrieben werden
-          if (designType == '0') {
-            // test, ob die RRULE fehlerhaft ist
-            if ((entry.rrule.indexOf('FREQ=WEEKLY;BYDAY=') !== 0) && (entry.rrule.length > 0)) {
-              if (!confirm("Error: Parameter designType is '0', but saved RRULE string in UZSU '" + entry.rrule + "' does not match default format FREQ=WEEKLY;BYDAY=MO... on item " + item	+ ". Should this entry be overwritten?")) {
-                popupOk = false;
-                // direkter Abbruch bei der Entscheidung!
-                return false;
-              }
-            }
-            if(entry.timeOffsetType === undefined)
-              entry.timeOffsetType = 'm';
-          }
-
-          // wenn designType = '2' und damit fhem auslegung ist muss der JSON String auf die entsprechenden einträge erweitert werden (falls nichts vorhanden)
-          if (designType == '2') {
-            // test, ob die einträge für conditions vorhanden sind
-            if (entry.condition === undefined){
-              entry.condition = {deviceString:'',type:'String',value:'',active:false};
-            }
-            // test, ob die einträge für delayed exec vorhanden sind
-            if (entry.delayedExec === undefined){
-              entry.delayedExec = {deviceString:'',type:'String',value:'',active:false};
-            }
-            // test, ob die einträge für holiday gesetzt sind
-            if (entry.holiday === undefined){
-              entry.holiday = {workday:false, weekend:false};
-            }
-          }
-        });
-
-        if (popupOk) {
-          // Öffnen des Popups bei clicken des icons und Ausführung der Eingabefunktion
-          this._uzsuRuntimePopup(response, item);
-        }
-      }
+    this._uzsudata = response[0];
+    if (!(this._uzsudata.list instanceof Array)) {
+      this._uzsudata = { active : true, list : [] };
     }
   },
 
-  //----------------------------------------------------------------------------
-  // Funktionen für den Seitenaufbau
-  //----------------------------------------------------------------------------
   _uzsuBuildTableHeader: function() {
     // Kopf und überschrift des Popups
     var tt = "";
@@ -492,6 +371,331 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
     return tt;
   },
 
+  _uzsuFillTableRow: function(responseEntry, tableRow) {
+    var self = this;
+    // dann die Werte einer Tabellenzeile füllen
+
+    uzsuCurrentRows = $(tableRow).nextUntil('.uzsuRow').addBack();
+
+    if(responseEntry.value != null) {
+      // beim Schreiben der Daten Unterscheidung, da sonst das Element falsch genutzt wird mit Flipswitch für die bool Variante
+      if (self.options.valuetype === 'bool') {
+        uzsuCurrentRows.find('.uzsuValueCell select').val(responseEntry.value).flipswitch("refresh");
+      }
+      // mit int Value für die num Variante
+      else if ((self.options.valuetype === 'num') || (self.options.valuetype === 'text')) {
+        uzsuCurrentRows.find('.uzsuValueCell input').val(responseEntry.value);
+      }
+      else if (self.options.valuetype === 'list') {
+        uzsuCurrentRows.find('.uzsuValueCell select').val(responseEntry.value).selectmenu('refresh', true);
+      }
+    }
+    // Values in der Zeile setzen
+    uzsuCurrentRows.find('.uzsuActive').prop('checked',responseEntry.active).checkboxradio("refresh");
+    // hier die conditions, wenn sie im json angelegt worden sind und zwar pro zeile !
+    if(self.options.designtype == '2'){
+      // Condition
+      uzsuCurrentRows.find('.uzsuConditionDeviceStringInput').val(responseEntry.condition.deviceString);
+      uzsuCurrentRows.find('select.uzsuConditionType').val(responseEntry.condition.type).selectmenu('refresh', true);
+      uzsuCurrentRows.find('.uzsuConditionValueInput').val(responseEntry.condition.value);
+      uzsuCurrentRows.find('.uzsuConditionActive').prop('checked',responseEntry.condition.active).checkboxradio("refresh");
+      // Delayed Exec Zeile
+      uzsuCurrentRows.find('.uzsuDelayedExecDeviceStringInput').val(responseEntry.delayedExec.deviceString);
+      uzsuCurrentRows.find('select.uzsuDelayedExecType').val(responseEntry.delayedExec.type).selectmenu('refresh', true);
+      uzsuCurrentRows.find('.uzsuDelayedExecValueInput').val(responseEntry.delayedExec.value);
+      uzsuCurrentRows.find('.uzsuDelayedExecActive').prop('checked',responseEntry.delayedExec.active).checkboxradio("refresh");
+    }
+    uzsuCurrentRows.find('.uzsuTimeMin').val(responseEntry.timeMin);
+    uzsuCurrentRows.find('.uzsuTimeOffsetInput').val(parseInt(responseEntry.timeOffset));
+    if(self.options.designtype == '0') {
+      //  name='uzsuTimeOffsetTypeInput'
+      uzsuCurrentRows.find('.uzsuTimeOffsetTypeInput').find(':radio').prop('checked', false).checkboxradio("refresh")
+        .end().find('[value="'+responseEntry.timeOffsetType+'"]:radio').prop('checked', true).checkboxradio("refresh");
+    }
+    uzsuCurrentRows.find('.uzsuTimeMax').val(responseEntry.timeMax);
+    uzsuCurrentRows.find('.uzsuTimeCron').val(responseEntry.timeCron);
+    // und die pull down Menüs richtig, damit die Einträge wieder stimmen und auch der active state gesetzt wird
+    if(responseEntry.event === 'time'){
+      uzsuCurrentRows.find('.uzsuSunActive').prop('checked',false).checkboxradio("refresh");
+    }
+    else{
+      uzsuCurrentRows.find('.uzsuSunActive').prop('checked',true).checkboxradio("refresh");
+      uzsuCurrentRows.find('.uzsuRowExpert .uzsuEvent select').val(responseEntry.event).selectmenu('refresh', true);
+    }
+    // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button.
+    var rrule = responseEntry.rrule;
+    if (typeof rrule === "undefined") {
+      rrule = '';
+    }
+    var ind = rrule.indexOf('BYDAY');
+    // wenn der Standard drin ist
+    if (ind > 0) {
+      var days = rrule.substring(ind);
+      // Setzen der Werte
+      uzsuCurrentRows.find('.uzsuWeekday input[type="checkbox"]').each(function(numberOfDay) {
+        $(this).prop('checked', days.indexOf($(this).val()) > 0).checkboxradio("refresh");
+      });
+    }
+    // jetzt die holiday themem für fhem
+    if(self.options.designtype == '2'){
+      uzsuCurrentRows.find('.uzsuHolidayWorkday').prop('checked', responseEntry.holiday.workday).checkboxradio("refresh");
+      uzsuCurrentRows.find('.uzsuHolidayWeekend').prop('checked', responseEntry.holiday.weekend).checkboxradio("refresh");
+    }
+    // Fallunterscheidung für den Expertenmodus
+    self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEvent select'));
+    self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActive').first());
+  },
+
+  //----------------------------------------------------------------------------
+  // Funktionen für das dynamische Handling der Seiteninhalte des Popups
+  //----------------------------------------------------------------------------
+  // Setzt die Farbe des Expertenbuttons, je nach dem, ob eine der Optionen aktiv geschaltet wurde
+  _uzsuSetExpertColor: function(changedCheckbox){
+    var rows = changedCheckbox.parents('.uzsuRowExpHoli, .uzsuRowCondition, .uzsuRowDelayedExec').prevAll('.uzsuRow').first().nextUntil('.uzsuRow').addBack();
+    if (rows.find('.expertActive').is(':checked'))
+      rows.find('.uzsuCellExpert button').addClass('ui-btn-active');
+    else
+      rows.find('.uzsuCellExpert button').removeClass('ui-btn-active');
+  },
+
+  // Toggelt die eingabemöglichkeit für SUN Elemente in Abhängigkeit der Aktivschaltung
+  _uzsuSetSunActiveState: function(element){
+    // status der eingaben setzen, das brauchen wir an mehreren stellen
+    var uzsuRowExpHoli = element.parents('.uzsuRowExpHoli');
+    var uzsuTimeCron = uzsuRowExpHoli.prevUntil('.uzsuRowExpHoli').find('.uzsuTimeCron');
+    if (uzsuRowExpHoli.find('.uzsuSunActive').is(':checked')){
+      uzsuTimeCron.attr('type','input').val(uzsuRowExpHoli.find('.uzsuEvent select').val()).textinput('disable');
+    }
+    else{
+      if(uzsuTimeCron.val().indexOf('sun')===0)
+        uzsuTimeCron.attr('type','time').val('00:00');
+      uzsuTimeCron.textinput('enable');
+    }
+  },
+
+  //Expertenzeile mit Eingaben auf der Hauptzeile benutzbar machen oder sperren bzw. die Statusupdates in die Zeile eintragen
+  _uzsuShowExpertLine: function(e) {
+    // erst einmal alle verschwinden lassen
+    this._uzsuHideAllExpertLines();
+    // Tabellezeile ermitteln, wo augerufen wurde
+    var uzsuExpertButton = $(e.currentTarget);
+    var row = uzsuExpertButton.closest('.uzsuRow');
+    // Zeile anzeigen
+    row.nextUntil('.uzsuRow').show();
+    // jetzt noch den Button in der Zeile drüber auf arrow up ändern
+    uzsuExpertButton.buttonMarkup({ icon: "arrow-u" });
+  },
+  _uzsuHideAllExpertLines: function() {
+    $('.uzsuRowExpHoli, .uzsuRowCondition, .uzsuRowDelayedExec').hide();
+    $('.uzsuCellExpert button').buttonMarkup({ icon: "arrow-d" });
+  },
+
+  _uzsuSaveTableRow: function(responseEntry, tableRow) {
+    var self = this;
+
+    uzsuCurrentRows = $(tableRow).nextUntil('.uzsuRow').addBack();
+    responseEntry.value = uzsuCurrentRows.find('.uzsuValueCell select, .uzsuValueCell input').val();
+    responseEntry.active = uzsuCurrentRows.find('.uzsuActive').is(':checked');
+    // hier die conditions, wenn im json angelegt
+    if(self.options.designtype == '2'){
+      // conditions
+      responseEntry.condition.deviceString = uzsuCurrentRows.find('.uzsuConditionDeviceStringInput').val();
+      responseEntry.condition.type = uzsuCurrentRows.find('select.uzsuConditionType').val();
+      responseEntry.condition.value = uzsuCurrentRows.find('.uzsuConditionValueInput').val();
+      responseEntry.condition.active = uzsuCurrentRows.find('.uzsuConditionActive').is(':checked');
+      // deleayed exec
+      responseEntry.delayedExec.deviceString = uzsuCurrentRows.find('.uzsuDelayedExecDeviceStringInput').val();
+      responseEntry.delayedExec.type = uzsuCurrentRows.find('select.uzsuDelayedExecType').val();
+      responseEntry.delayedExec.value = uzsuCurrentRows.find('.uzsuDelayedExecValueInput').val();
+      responseEntry.delayedExec.active = uzsuCurrentRows.find('.uzsuDelayedExecActive').is(':checked');
+    }
+    responseEntry.timeMin = uzsuCurrentRows.find('.uzsuTimeMin').val();
+    responseEntry.timeOffset = uzsuCurrentRows.find('.uzsuTimeOffsetInput').val();
+    if(self.options.designtype == '0'){
+      responseEntry.timeOffsetType = uzsuCurrentRows.find('.uzsuTimeOffsetTypeInput :radio:checked').val();
+    }
+    responseEntry.timeMax = uzsuCurrentRows.find('.uzsuTimeMax').val();
+    responseEntry.timeCron = uzsuCurrentRows.find('.uzsuTimeCron').val();
+    // event etwas komplizierter, da übergangslösung
+    if(uzsuCurrentRows.find('.uzsuSunActive').is(':checked')){
+      responseEntry.event = uzsuCurrentRows.find('.uzsuEvent select').val();
+    }
+    else{
+      responseEntry.event = 'time';
+    }
+    // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button. Setzen der Werte.
+    var first = true;
+    var rrule = '';
+    uzsuCurrentRows.find('.uzsuWeekday input[type="checkbox"]').each(function(numberOfDay) {
+      if ($(this).is(':checked')) {
+        if (first) {
+          first = false;
+          rrule = 'FREQ=WEEKLY;BYDAY=' + $(this).val();
+        }
+        else {
+          rrule += ',' + $(this).val();
+        }
+      }
+    });
+    responseEntry.rrule = rrule;
+    // jetzt die holiday themem für fhem
+    if(self.options.designtype === '2'){
+      responseEntry.holiday.workday = uzsuCurrentRows.find('.uzsuHolidayWorkday').is(':checked');
+      responseEntry.holiday.weekend = uzsuCurrentRows.find('.uzsuHolidayWeekend').is(':checked');
+    }
+  },
+
+  _uzsuCollapseTimestring: function(response){
+    $.each(response.list, function(numberOfEntry, entry) {
+      // zeitstring wieder zusammenbauen, falls Event <> 'time', damit wir den richtigen Zusammenbau im zeitstring haben
+      if(entry.event === 'time'){
+        // wenn der eintrag time ist, dann kommt die zeit rein
+        entry.time = entry.timeCron;
+      }
+      else{
+        // ansonsten wird er aus den Bestandteilen zusammengebaut
+        entry.time = '';
+        if(entry.timeMin.length > 0){
+          entry.time += entry.timeMin + '<';
+        }
+        entry.time += entry.event;
+        if(entry.timeOffset > 0){
+          entry.time += '+' + entry.timeOffset + (entry.timeOffsetType == undefined ? '' : entry.timeOffsetType);
+        }
+        else if(entry.timeOffset < 0){
+          entry.time += entry.timeOffset + (entry.timeOffsetType == undefined ? '' : entry.timeOffsetType);
+        }
+        if(entry.timeMax.length > 0){
+          entry.time += '<' + entry.timeMax;
+        }
+      }
+    });
+  },
+
+});
+
+
+  // ----- device.uzsuicon ------------------------------------------------------
+  // ----------------------------------------------------------------------------
+$.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
+
+  initSelector: '[data-widget="device.uzsuicon"]',
+
+  options: {
+    valueparameterlist: null,
+    headline: '',
+    designtype: '',
+    valuetype: 'bool'
+  },
+
+  _update: function(response) {
+    this._super(response);
+
+    // Das Icon wird aktiviert, falls Status auf aktiv, ansonsten deaktiviert angezeigt. Basiert auf der Implementierung von aschwith
+    if(this._uzsudata.active === true) {
+      this.element.find('.icon-off').hide();
+      this.element.find('.icon-on').show();
+    }
+    else {
+      this.element.find('.icon-on').hide();
+      this.element.find('.icon-off').show();
+    }
+  },
+
+  _events: {
+    'click': function(event) {
+      // hier werden die Parameter aus den Attributen herausgenommen und beim Öffnen mit .open(....) an das Popup Objekt übergeben
+      // und zwar mit deep copy, damit ich bei cancel die ursprünglichen werte nicht überschrieben habe
+      var response = jQuery.extend(true, {}, this._uzsudata);
+      // erst gehen wir davon aus, dass die Prüfungen positiv und ein Popup angezeigt wird
+      var popupOk = true;
+      // Fehlerbehandlung für ein nicht vorhandenes DOM Objekt. Das response Objekt ist erst da, wenn es mit update angelegt wurde. Da diese
+      // Schritte asynchron erfolgen, kann es sein, dass das Icon bereits da ist, clickbar, aber nocht keine Daten angekommen. Dann darf ich nicht auf diese Daten zugreifen wollen !
+      if(response.interpolation === undefined){
+        this.interpolation = false
+        console.log('UZSU interpolation not available. You have to update the plugin version');
+        //response.interpolation = {type:'none',interval:0,initage:0,initialized:false,itemtype:'none'};
+      }
+      else if(! response.interpolation.itemtype in ['num']) {
+        this.interpolation = false
+        console.log('UZSU interpolation not supported by itemtype');
+      }
+      else {
+        this.interpolation = true
+        console.log('UZSU interpolation set to ' + response.interpolation.type);
+      }
+      if(response.list === undefined){
+        notify.error("UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.id + ".");
+      }
+      else{
+         // Auswertung der Übergabeparameter aus dem HTML Widget
+        var headline = this.options.headline;
+        var designType = this.options.designtype;
+        var valueType = this.options.valuetype;
+
+        // jetzt kommt noch die Liste von Prüfungen, damit hinterher keine Fehler passieren, zunächst fehlerhafter designType (unbekannt)
+        if ((designType != '0') && (designType != '2')) {
+          notify.error("UZSU widget", "Design type '" + designType + "' is not supported in widget " + this.id + ".");
+          popupOk = false;
+        }
+        // fehlerhafter valueType (unbekannt)
+        if ((valueType !== 'bool') && (valueType !== 'num')	&& (valueType !== 'text') && (valueType !== 'list')) {
+          notify.error("UZSU widget", "Value type '" + valueType + "' is not supported in widget " + this.id + ".");
+          popupOk = false;
+        }
+
+        //
+        // Umsetzung des time parameters in die Struktur, die wir hinterher nutzen wollen
+        //
+        $.each(response.list, function(numberOfRow, entry) {
+          // test, ob die einträge für holiday gesetzt sind
+          if (entry.event === 'time')
+            entry.timeCron = entry.time;
+          else
+            entry.timeCron = '00:00';
+
+          // bei designType '0' wird rrule nach Wochentagen umgewandelt und ein festes Format vorgegegeben hier sollte nichts versehentlich überschrieben werden
+          if (designType == '0') {
+            // test, ob die RRULE fehlerhaft ist
+            if (entry.rrule && (entry.rrule.length > 0) && (entry.rrule.indexOf('FREQ=WEEKLY;BYDAY=') !== 0)) {
+              if (!confirm("Error: Parameter designType is '0', but saved RRULE string in UZSU '" + entry.rrule + "' does not match default format FREQ=WEEKLY;BYDAY=MO... on item " + this.options.item	+ ". Should this entry be overwritten?")) {
+                popupOk = false;
+                // direkter Abbruch bei der Entscheidung!
+                return false;
+              }
+            }
+            if(entry.timeOffsetType === undefined)
+              entry.timeOffsetType = 'm';
+          }
+
+          // wenn designType = '2' und damit fhem auslegung ist muss der JSON String auf die entsprechenden einträge erweitert werden (falls nichts vorhanden)
+          if (designType == '2') {
+            // test, ob die einträge für conditions vorhanden sind
+            if (entry.condition === undefined){
+              entry.condition = {deviceString:'',type:'String',value:'',active:false};
+            }
+            // test, ob die einträge für delayed exec vorhanden sind
+            if (entry.delayedExec === undefined){
+              entry.delayedExec = {deviceString:'',type:'String',value:'',active:false};
+            }
+            // test, ob die einträge für holiday gesetzt sind
+            if (entry.holiday === undefined){
+              entry.holiday = {workday:false, weekend:false};
+            }
+          }
+        });
+
+        if (popupOk) {
+          // Öffnen des Popups bei clicken des icons und Ausführung der Eingabefunktion
+          this._uzsuRuntimePopup(response);
+        }
+      }
+    }
+  },
+
+  //----------------------------------------------------------------------------
+  // Funktionen für den Seitenaufbau
+  //----------------------------------------------------------------------------
   _uzsuBuildTableFooter: function() {
     var tt = "";
     // Zeileneinträge abschliessen und damit die uzsuTableMain
@@ -501,7 +705,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
           "<div class='uzsuRowFooter'>" +
             "<span style='float:right'>";
               // UZSU Interpolation
-              if(sv_lang.uzsu.interpolation && this.options.interpolation == true){
+              if(sv_lang.uzsu.interpolation && this.interpolation == true){
                 tt +=
                   "<div class='uzsuRowExpert' style='float: left'>" +
                     "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.interpolation + "</div>" +
@@ -541,7 +745,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
                 "<button id='uzsuSortTime'>" + sv_lang.uzsu.sort + "</button>" +
               "</div>" +
             "</div>" +
-              "<div class='uzsuCell' style='float: left'>" +
+              "<div class='uzsuCell' style='float: right'>" +
                   "<div data-role='controlgroup' data-type='horizontal' data-inline='true' data-mini='true'>" +
                     "<button id='uzsuCancel'>" + sv_lang.uzsu.cancel + "</button>" +
                     "<button id='uzsuSaveQuit'>" + sv_lang.uzsu.ok + "</button>" +
@@ -555,40 +759,13 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
     return tt;
   },
 
-  //----------------------------------------------------------------------------
-  // Funktionen für das dynamische Handling der Seiteninhalte des Popups
-  //----------------------------------------------------------------------------
-  // Setzt die Farbe des Expertenbuttons, je nach dem, ob eine der Optionen aktiv geschaltet wurde
-  _uzsuSetExpertColor: function(changedCheckbox){
-    var rows = changedCheckbox.parents('.uzsuRowExpHoli, .uzsuRowCondition, .uzsuRowDelayedExec').prevAll('.uzsuRow').first().nextUntil('.uzsuRow').addBack();
-    if (rows.find('.expertActive').is(':checked'))
-      rows.find('.uzsuCellExpert button').addClass('ui-btn-active');
-    else
-      rows.find('.uzsuCellExpert button').removeClass('ui-btn-active');
-  },
-
-  // Toggelt die eingabemöglichkeit für SUN Elemente in Abhängigkeit der Aktivschaltung
-  _uzsuSetSunActiveState: function(element){
-    // status der eingaben setzen, das brauchen wir an mehreren stellen
-    var uzsuRowExpHoli = element.parents('.uzsuRowExpHoli');
-    var uzsuTimeCron = uzsuRowExpHoli.prevUntil('.uzsuRowExpHoli').find('.uzsuTimeCron');
-    if (uzsuRowExpHoli.find('.uzsuSunActive').is(':checked')){
-      uzsuTimeCron.attr('type','input').val(uzsuRowExpHoli.find('.uzsuEvent select').val()).textinput('disable');
-    }
-    else{
-      if(uzsuTimeCron.val().indexOf('sun')===0)
-        uzsuTimeCron.attr('type','time').val('00:00');
-      uzsuTimeCron.textinput('enable');
-    }
-  },
-
   _uzsuFillTable: function(response) {
     var self = this;
     // Tabelle füllen. Es werden die Daten aus der Variablen response gelesen und in den Status Darstellung der Widgetblöcke zugewiesen. Der aktuelle Status in dann in der Darstellung enthalten !
     var numberOfEntries = response.list.length;
     // jetzt wird die Tabelle befüllt allgemeiner Status, bitte nicht mit attr, sondern mit prop, siehe	// https://github.com/jquery/jquery-mobile/issues/5587
     // INTERPOLATION
-    if(this.options.interpolation) {
+    if(this.interpolation) {
       $('#uzsuInterpolationType').val(response.interpolation.type).selectmenu("refresh", true);
       $('#uzsuInterpolationInterval').val(response.interpolation.interval);
       $('#uzsuInitAge').val(response.interpolation.initage);
@@ -596,179 +773,37 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
     }
     $('#uzsuGeneralActive').prop('checked', response.active).checkboxradio("refresh");
     // dann die Werte der Tabelle
-    $('.uzsuRow').each(function(numberOfRow) {
+    $('.uzsuRow').each(function(numberOfRow, tableRow) {
       var responseEntry = response.list[numberOfRow];
-      uzsuCurrentRows = $(this).nextUntil('.uzsuRow').addBack();
-
-      if(responseEntry.value != null) {
-        // beim Schreiben der Daten Unterscheidung, da sonst das Element falsch genutzt wird mit Flipswitch für die bool Variante
-        if (self.options.valuetype === 'bool') {
-          uzsuCurrentRows.find('.uzsuValueCell select').val(responseEntry.value).flipswitch("refresh");
-        }
-        // mit int Value für die num Variante
-        else if ((self.options.valuetype === 'num') || (self.options.valuetype === 'text')) {
-          uzsuCurrentRows.find('.uzsuValueCell input').val(responseEntry.value);
-        }
-        else if (self.options.valuetype === 'list') {
-          uzsuCurrentRows.find('.uzsuValueCell select').val(responseEntry.value).selectmenu('refresh', true);
-        }
-      }
-      // Values in der Zeile setzen
-      uzsuCurrentRows.find('.uzsuActive').prop('checked',responseEntry.active).checkboxradio("refresh");
-      // hier die conditions, wenn sie im json angelegt worden sind und zwar pro zeile !
-      if(self.options.designtype == '2'){
-        // Condition
-        uzsuCurrentRows.find('.uzsuConditionDeviceStringInput').val(responseEntry.condition.deviceString);
-        uzsuCurrentRows.find('select.uzsuConditionType').val(responseEntry.condition.type).selectmenu('refresh', true);
-        uzsuCurrentRows.find('.uzsuConditionValueInput').val(responseEntry.condition.value);
-        uzsuCurrentRows.find('.uzsuConditionActive').prop('checked',responseEntry.condition.active).checkboxradio("refresh");
-        // Delayed Exec Zeile
-        uzsuCurrentRows.find('.uzsuDelayedExecDeviceStringInput').val(responseEntry.delayedExec.deviceString);
-        uzsuCurrentRows.find('select.uzsuDelayedExecType').val(responseEntry.delayedExec.type).selectmenu('refresh', true);
-        uzsuCurrentRows.find('.uzsuDelayedExecValueInput').val(responseEntry.delayedExec.value);
-        uzsuCurrentRows.find('.uzsuDelayedExecActive').prop('checked',responseEntry.delayedExec.active).checkboxradio("refresh");
-      }
-      uzsuCurrentRows.find('.uzsuTimeMin').val(responseEntry.timeMin);
-      uzsuCurrentRows.find('.uzsuTimeOffsetInput').val(parseInt(responseEntry.timeOffset));
-      if(self.options.designtype == '0') {
-        //  name='uzsuTimeOffsetTypeInput'
-        uzsuCurrentRows.find('.uzsuTimeOffsetTypeInput').find(':radio').prop('checked', false).checkboxradio("refresh")
-          .end().find('[value="'+responseEntry.timeOffsetType+'"]:radio').prop('checked', true).checkboxradio("refresh");
-      }
-      uzsuCurrentRows.find('.uzsuTimeMax').val(responseEntry.timeMax);
-      uzsuCurrentRows.find('.uzsuTimeCron').val(responseEntry.timeCron);
-      // und die pull down Menüs richtig, damit die Einträge wieder stimmen und auch der active state gesetzt wird
-      if(responseEntry.event === 'time'){
-        uzsuCurrentRows.find('.uzsuSunActive').prop('checked',false).checkboxradio("refresh");
-      }
-      else{
-        uzsuCurrentRows.find('.uzsuSunActive').prop('checked',true).checkboxradio("refresh");
-        uzsuCurrentRows.find('.uzsuRowExpert .uzsuEvent select').val(responseEntry.event).selectmenu('refresh', true);
-      }
-      // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button.
-      var rrule = responseEntry.rrule;
-      if (typeof rrule === "undefined") {
-        rrule = '';
-      }
-      var ind = rrule.indexOf('BYDAY');
-      // wenn der Standard drin ist
-      if (ind > 0) {
-        var days = rrule.substring(ind);
-        // Setzen der Werte
-        uzsuCurrentRows.find('.uzsuWeekday input[type="checkbox"]').each(function(numberOfDay) {
-          $(this).prop('checked', days.indexOf($(this).val()) > 0).checkboxradio("refresh");
-        });
-      }
-      // jetzt die holiday themem für fhem
-      if(self.options.designtype == '2'){
-        uzsuCurrentRows.find('.uzsuHolidayWorkday').prop('checked', responseEntry.holiday.workday).checkboxradio("refresh");
-        uzsuCurrentRows.find('.uzsuHolidayWeekend').prop('checked', responseEntry.holiday.weekend).checkboxradio("refresh");
-      }
-      // Fallunterscheidung für den Expertenmodus
-      self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEvent select'));
-      self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActive').first());
+      self._uzsuFillTableRow(responseEntry, tableRow);
     });
   },
 
-  _uzsuSaveTable: function(item, response, saveSmarthome) {
+  _uzsuSaveTable: function(response, saveSmarthome) {
     var self = this;
     // Tabelle auslesen und speichern
     var numberOfEntries = response.list.length;
     // hier werden die Daten aus der Tabelle wieder in die items im Backend zurückgespielt bitte darauf achten, dass das zurückspielen exakt dem der Anzeige enspricht. Gesamthafte Aktivierung
     response.active = $('#uzsuGeneralActive').is(':checked');
     // Interpolation
-    if(this.options.interpolation) {
-    response.interpolation.type = $('#uzsuInterpolationType').val();
-    response.interpolation.interval = $('#uzsuInterpolationInterval').val();
-    response.interpolation.initage = $('#uzsuInitAge').val();
-    response.interpolation.initialized = $('#uzsuInitialized').is(':checked');
+    if(this.interpolation) {
+      response.interpolation.type = $('#uzsuInterpolationType').val();
+      response.interpolation.interval = $('#uzsuInterpolationInterval').val();
+      response.interpolation.initage = $('#uzsuInitAge').val();
+      response.interpolation.initialized = $('#uzsuInitialized').is(':checked');
     }
     // Einzeleinträge
-    $('.uzsuRow').each(function(numberOfRow) {
+    $('.uzsuRow').each(function(numberOfRow, tableRow) {
       var responseEntry = response.list[numberOfRow];
-      uzsuCurrentRows = $(this).nextUntil('.uzsuRow').addBack();
-      responseEntry.value = uzsuCurrentRows.find('.uzsuValueCell select, .uzsuValueCell input').val();
-      responseEntry.active = uzsuCurrentRows.find('.uzsuActive').is(':checked');
-      // hier die conditions, wenn im json angelegt
-      if(self.options.designtype == '2'){
-        // conditions
-        responseEntry.condition.deviceString = uzsuCurrentRows.find('.uzsuConditionDeviceStringInput').val();
-        responseEntry.condition.type = uzsuCurrentRows.find('select.uzsuConditionType').val();
-        responseEntry.condition.value = uzsuCurrentRows.find('.uzsuConditionValueInput').val();
-        responseEntry.condition.active = uzsuCurrentRows.find('.uzsuConditionActive').is(':checked');
-        // deleayed exec
-        responseEntry.delayedExec.deviceString = uzsuCurrentRows.find('.uzsuDelayedExecDeviceStringInput').val();
-        responseEntry.delayedExec.type = uzsuCurrentRows.find('select.uzsuDelayedExecType').val();
-        responseEntry.delayedExec.value = uzsuCurrentRows.find('.uzsuDelayedExecValueInput').val();
-        responseEntry.delayedExec.active = uzsuCurrentRows.find('.uzsuDelayedExecActive').is(':checked');
-      }
-      responseEntry.timeMin = uzsuCurrentRows.find('.uzsuTimeMin').val();
-      responseEntry.timeOffset = uzsuCurrentRows.find('.uzsuTimeOffsetInput').val();
-      if(self.options.designtype == '0'){
-        responseEntry.timeOffsetType = uzsuCurrentRows.find('.uzsuTimeOffsetTypeInput :radio:checked').val();
-      }
-      responseEntry.timeMax = uzsuCurrentRows.find('.uzsuTimeMax').val();
-      responseEntry.timeCron = uzsuCurrentRows.find('.uzsuTimeCron').val();
-      // event etwas komplizierter, da übergangslösung
-      if(uzsuCurrentRows.find('.uzsuSunActive').is(':checked')){
-        responseEntry.event = uzsuCurrentRows.find('.uzsuEvent select').val();
-      }
-      else{
-        responseEntry.event = 'time';
-      }
-      // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button. Setzen der Werte.
-      var first = true;
-      var rrule = '';
-      uzsuCurrentRows.find('.uzsuWeekday input[type="checkbox"]').each(function(numberOfDay) {
-        if ($(this).is(':checked')) {
-          if (first) {
-            first = false;
-            rrule = 'FREQ=WEEKLY;BYDAY=' + $(this).val();
-          }
-          else {
-            rrule += ',' + $(this).val();
-          }
-        }
-      });
-      responseEntry.rrule = rrule;
-      // jetzt die holiday themem für fhem
-      if(self.options.designtype === '2'){
-        responseEntry.holiday.workday = uzsuCurrentRows.find('.uzsuHolidayWorkday').is(':checked');
-        responseEntry.holiday.weekend = uzsuCurrentRows.find('.uzsuHolidayWeekend').is(':checked');
-      }
+      self._uzsuSaveTableRow(responseEntry, tableRow);
     });
     // über json Interface / Treiber herausschreiben
     if (saveSmarthome) {
       this._uzsuCollapseTimestring(response);
-      io.write(item, {active : response.active, interpolation : response.interpolation, list : response.list});
+      this._write({active : response.active, interpolation : response.interpolation, list : response.list});
     }
   },
-  _uzsuCollapseTimestring: function(response){
-    $.each(response.list, function(numberOfEntry, entry) {
-      // zeitstring wieder zusammenbauen, falls Event <> 'time', damit wir den richtigen Zusammenbau im zeitstring haben
-      if(entry.event === 'time'){
-        // wenn der eintrag time ist, dann kommt die zeit rein
-        entry.time = entry.timeCron;
-      }
-      else{
-        // ansonsten wird er aus den Bestandteilen zusammengebaut
-        entry.time = '';
-        if(entry.timeMin.length > 0){
-          entry.time += entry.timeMin + '<';
-        }
-        entry.time += entry.event;
-        if(entry.timeOffset > 0){
-          entry.time += '+' + entry.timeOffset + (entry.timeOffsetType == undefined ? '' : entry.timeOffsetType);
-        }
-        else if(entry.timeOffset < 0){
-          entry.time += entry.timeOffset + (entry.timeOffsetType == undefined ? '' : entry.timeOffsetType);
-        }
-        if(entry.timeMax.length > 0){
-          entry.time += '<' + entry.timeMax;
-        }
-      }
-    });
-  },
+
   //----------------------------------------------------------------------------
   // Funktionen für das Erweitern und Löschen der Tabelleneinträge
   //----------------------------------------------------------------------------
@@ -798,23 +833,6 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
     row.nextUntil('.uzsuRow').addBack().remove();
   },
 
-  //Expertenzeile mit Eingaben auf der Hauptzeile benutzbar machen oder sperren bzw. die Statusupdates in die Zeile eintragen
-  _uzsuShowExpertLine: function(e) {
-    // erst einmal alle verschwinden lassen
-    this._uzsuHideAllExpertLines();
-    // Tabellezeile ermitteln, wo augerufen wurde
-    var uzsuExpertButton = $(e.currentTarget);
-    var row = uzsuExpertButton.closest('.uzsuRow');
-    // Zeile anzeigen
-    row.nextUntil('.uzsuRow').show();
-    // jetzt noch den Button in der Zeile drüber auf arrow up ändern
-    uzsuExpertButton.buttonMarkup({ icon: "arrow-u" });
-  },
-  _uzsuHideAllExpertLines: function() {
-    $('.uzsuRowExpHoli, .uzsuRowCondition, .uzsuRowDelayedExec').hide();
-    $('.uzsuCellExpert button').buttonMarkup({ icon: "arrow-d" });
-  },
-
   //----------------------------------------------------------------------------
   // Funktionen für das Sortrieren der Tabelleneinträge
   //----------------------------------------------------------------------------
@@ -841,7 +859,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
   //----------------------------------------------------------------------------
   // Funktionen für den Aufbau des Popups und das Einrichten der Callbacks
   //----------------------------------------------------------------------------
-  _uzsuRuntimePopup: function(response, item) {
+  _uzsuRuntimePopup: function(response) {
     var self = this;
     // Steuerung des Popups erst einmal wird der Leeranteil angelegt
     // erst den Header, dann die Zeilen, dann den Footer
@@ -877,7 +895,7 @@ $.widget("sv.device_uzsuitem", $.sv.widget, {
     // speichern mit SaveQuit
     uzsuPopup.find('#uzsuSaveQuit').bind('click', function(e) {
       // jetzt wird die Kopie auf das Original kopiert und geschlossen
-      self._uzsuSaveTable(item, response, true);
+      self._uzsuSaveTable(response, true);
       uzsuPopup.popup('close');
     });
     // Eintrag hinzufügen mit add

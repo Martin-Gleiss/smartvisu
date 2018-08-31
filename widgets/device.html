@@ -293,7 +293,7 @@
 {% macro uzsuicon(id, item, headline, pic_on, pic_off, valueType, valueParameterList, color_on, color_off, _backend) %}
 	{% import "basic.html" as basic %}
 
-	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="uzsu.uzsuicon" data-item="{{ item }}"
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsuicon" data-item="{{ item }}"
 		data-headline="{{ headline|default('UZSU') }}" data-designType="{{ _backend }}"
 		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
 		class="switch icon">
