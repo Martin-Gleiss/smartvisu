@@ -11,6 +11,7 @@
 - New: status.badge (displays a notification badge)
 - New: basic.offset (button to increase or decrease a value)
 - New: device.uzsuicon (to control UZSU in smarthome.py and FHEM)
+- New: device.uzsugraph (to control UZSU in smarthome.py and FHEM)
 - New: calendar.waste (compact view of waste collection dates)
 - New: multimedia.audio (plays a soundfile)
 - New: plot.gauge

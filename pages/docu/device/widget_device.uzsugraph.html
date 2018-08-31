@@ -1,0 +1,28 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_device.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; device.uzsugraph('', 'uzsuitem', '', 1, 'num', [0,100,10]) &#125;&#125;<br>
+      &#123;&#123; device.uzsugraph('', 'uzsuitem2', 'Boolean', 1, 'bool', ['On:1', 'Off:0']) &#125;&#125;
+		</code>
+	</div>
+	<div class="html">
+		{{ device.uzsugraph('', 'uzsuitem', '', 1, 'num', [0,100,10]) }}
+		{{ device.uzsugraph('', 'uzsuitem2', 'Boolean', 1, 'bool', ['On:1', 'Off:0']) }}
+	</div>
+
+{% endblock %}

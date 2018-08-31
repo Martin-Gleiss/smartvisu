@@ -932,3 +932,446 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
   }
 
 });
+
+// ----- device.uzsugraph -----------------------------------------------------
+// ----------------------------------------------------------------------------
+$.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
+
+  initSelector: '[data-widget="device.uzsugraph"]',
+
+  options: {
+    valueparameterlist: null,
+    headline: '',
+    designtype: '',
+    valuetype: 'bool',
+    editable: false
+  },
+
+  rruleDays: {
+    'MO': 0,
+    'TU': 1,
+    'WE': 2,
+    'TH': 3,
+    'FR': 4,
+    'SA': 5,
+    'SU': 6
+  },
+  
+  _startTimestamp: 4*1000*60*60*24 + new Date(0).getTimezoneOffset()*1000*60,
+
+  _create: function() {
+    this._super();
+
+    var self = this;
+
+    this.options.designtype = String(this.options.designtype);
+    if(this.options.designtype === undefined || this.options.designtype === '') {
+      this.options.designtype = io.uzsu_type;
+    }
+
+    var valueParameterList = this.options.valueparameterlist.explode();
+    if(valueParameterList.length === 0){
+      if(this.options.valuetype === 'bool') valueParameterList = ['1', '0', '1'];
+      else if (this.options.valuetype === 'num') valueParameterList = [''];
+      else if (this.options.valuetype === 'list') valueParameterList = [''];
+    }
+
+    var min = null, max = null, step = 1;
+    if(this.options.valuetype === 'bool') {
+      if(valueParameterList.length === 0)
+        valueParameterList = ['0', '1'];
+      min = parseFloat(valueParameterList[1].split(':')[1] !== undefined ? valueParameterList[1].split(':')[1] : valueParameterList[1]);
+      max = parseFloat(valueParameterList[0].split(':')[1] !== undefined ? valueParameterList[0].split(':')[1] : valueParameterList[0]);
+      step = 1;
+    }
+    if(this.options.valuetype === 'num') {
+      if(valueParameterList.length === 0)
+        valueParameterList = []
+      min = parseFloat(valueParameterList[0]);
+      max = parseFloat(valueParameterList[1]);
+      step = parseFloat(valueParameterList[2]) || 1;
+    }
+
+    var timeStep = 1000*60*5; // round to 5 minutes
+
+    // draw the plot
+    var chart = this.element.highcharts({
+      title: { text: this.options.headline },
+      legend: false,
+      series: [
+        { // active
+          name: 'active'
+        },
+        { // inactive
+          name: 'inactive',
+          type: 'scatter'
+        },
+        { // sunrise & sunset
+          name: 'sun',
+          type: 'scatter',
+          tooltip: {
+            pointFormat: ''
+          },
+          marker: {
+            symbol: 'triangle'
+          },
+          draggableX: this.options.editable,
+          dragPrecisionX: timeStep,
+          draggableY: false,
+          point: {
+            events: {
+              drop: function (e) {
+                self.sunTimes[e.target.uzsuEvent] = self.element.highcharts().time.dateFormat('%H:%M', e.target.x);
+                setTimeout(function() { self.draw() }, 10); // redraw has to be deferred otherwise highcharts draggable plugin throws an exception
+              },
+              click: null
+            }
+          }
+        }
+      ],
+      xAxis: {
+        type: 'datetime',
+        min: this._startTimestamp,
+        max: 1000*60*60*24 + this._startTimestamp,
+        dateTimeLabelFormats: {
+          day: '%a'
+        }
+      },
+      yAxis: {
+        title: false,
+        endOnTick: false,
+        startOnTick: false,
+        alignTicks: true,
+        minTickInterval: 1,
+        tickInterval: this.options.valuetype === 'bool' ? 1 : null,
+        min: min,
+        max: max,
+        type: this.options.valuetype === 'bool' ? 'category' : 'linear',
+        categories: this.options.valuetype === 'bool' ? [ valueParameterList[1].split(':')[0], valueParameterList[0].split(':')[0] ] : null
+      },
+      tooltip: {
+        xDateFormat: '%a, %H:%M',
+        headerFormat: '<span style="font-size: 10px">{point.key}</span><br/>',
+        pointFormat: '<span class="highcharts-strong">{point.y}</span> ({series.name})<br/>',
+      },
+      chart: {
+        events: {
+          click: function(e) { // add point
+            if(self.justDragged) { // prevent click event after drop
+              self.justDragged = false;
+              return;
+            }
+
+            // find timestamp of first point and round it to minimal time step
+            var firstX = Math.round((e.xAxis[0].value - e.xAxis[0].axis.min) % (1000*60*60*24) / (timeStep)) * timeStep + e.xAxis[0].axis.min;
+
+            // round and limit value
+            var yValue = e.yAxis[0].value;
+            if(yValue < min)
+              yValue = min;
+            else if(yValue > max)
+              yValue = max;
+            yValue = Math.round((yValue - min) / step) * step + min;
+
+            var uzsuEntry = { active: true, event: 'time', timeCron: self.element.highcharts().time.dateFormat('%H:%M', firstX), value: yValue };
+            self._uzsuRuntimePopup(uzsuEntry);
+
+          }
+        }
+      },
+      plotOptions: {
+        series: {
+          draggableX: this.options.editable,
+          dragPrecisionX: timeStep,
+          draggableY: this.options.editable,
+          dragPrecisionY: step,
+          dragMinY: min,
+          dragMaxY: max,
+          cursor: this.options.editable ? 'move' : null,
+          marker: { enabled: true },
+          point: {
+            events: {
+              click: function (e) {
+                if(self.justDragged) { // prevent click event after drop
+                  self.justDragged = false;
+                  return;
+                }
+                self._uzsuRuntimePopup(e.point.uzsuEntry)
+              },
+              drag: function (e) {
+              },
+              drop: function (e) {
+                self.justDragged = true; // used to prevent click event after drop
+                if(e.target.uzsuEntry !== undefined) {
+                  e.target.uzsuEntry.value = e.target.y;
+                  if(e.target.uzsuEntry.event == 'time')
+                    e.target.uzsuEntry.timeCron = self.element.highcharts().time.dateFormat('%H:%M', e.target.x);
+                  else // sunrise or sunset
+                    e.target.uzsuEntry.timeOffset = Math.round(((e.target.x % (1000*60*60*24)) - (self._getSunTime(e.target.uzsuEntry.event) % (1000*60*60*24)))/1000/60);
+                  //uzsuEntry.active
+                  self._save();
+                }
+              }
+            }
+          }
+        }
+      },
+    },
+    function (chart) {
+      var buttons = [
+        { interpolationType: 'no', shape: 'square', langKey: 'nointerpolation' },
+        { interpolationType: 'cubic', shape: 'circle', langKey: 'cubic' },
+        { interpolationType: 'linear', shape: 'triangle', langKey: 'linear' },
+      ];
+
+      $.each(buttons, function(i, button) {
+        chart.renderer.button('', null, null, function(e) { self._uzsudata.interpolation.type = button.interpolationType; self._save(); }, null,  null,  null,  null, button.shape)
+          .attr({
+            align: 'right',
+            title: sv_lang.uzsu[button.langKey]
+          })
+          .addClass('highcharts-color-0')
+          .css({'fill': 'transparent'})
+          .add()
+          .align({
+            align: 'right',
+            x: -16-(buttons.length-i-1)*20,
+            y: 10
+          }, false, null);
+      });
+
+      chart.renderer.text(sv_lang.uzsu.interpolation+': ', null, null)
+        .attr({
+          align: 'right'}
+        )
+        .add(
+          chart.renderer.createElement('g').addClass('highcharts-label').add()
+        )
+        .align({
+          align: 'right',
+          x: -16-buttons.length*20,
+          y: 22
+        }, false, null);
+    });
+  },
+
+  _update: function(response) {
+    this._super(response);
+
+    if(this._uzsudata.interpolation === undefined){
+      this.interpolation = false
+      console.log('UZSU interpolation not available. You have to update the plugin version');
+    }
+    else if(!this._uzsudata.interpolation.itemtype in ['num']) {
+      this.interpolation = false
+      console.log('UZSU interpolation not supported by itemtype');
+    }
+    else {
+      this.interpolation = true
+      console.log('UZSU interpolation set to ' + this._uzsudata.interpolation.type);
+    }
+
+    this.draw();
+  },
+
+  draw: function() {
+    var self = this;
+    var response = this._uzsudata;
+    var chart = this.element.highcharts();
+
+    var hasDays = false;
+    var hasSun = false;
+    var seriesData = [{}, {}];
+    var inactiveData = {}
+    $.each(this._uzsudata.list, function(responseEntryIdx, responseEntry) {
+      // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button.
+      var x;
+      if(responseEntry.event == 'time')
+        x = self._timeToTimestamp(responseEntry.time);
+      else {
+        hasSun = true;
+        x = self._getSunTime(responseEntry.event);
+        if(responseEntry.timeOffsetType == 'm')
+          x += responseEntry.timeOffset*1000*60;
+        if(responseEntry.timeMin) {
+          var xMin = self._timeToTimestamp(responseEntry.timeMin);
+          if(x < xMin)
+            x = xMin;
+        }
+        if(responseEntry.timeMax) {
+          var xMax = self._timeToTimestamp(responseEntry.timeMax);
+          if(x > xMax)
+            x = xMax;
+        }
+      }
+
+      var rrule = responseEntry.rrule;
+      if (!rrule)
+        rrule = 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU';
+      var ind = rrule.indexOf('BYDAY=');
+      // wenn der Standard drin ist
+      if (ind > 0) {
+        var days = rrule.substring(ind+6).split(',');
+        if (days.length < 7)
+          hasDays = true;
+        $.each(days, function(dayIdx, day) {
+          xRecurring = x + self.rruleDays[day]*1000*60*60*24;
+          var point = { x: xRecurring, y: Number(responseEntry.value), className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry };
+          seriesData[responseEntry.active ? 0 : 1][xRecurring] = point;
+        });
+      }
+    });
+
+    // active points
+    var data = $.map(seriesData[0], function(val, key) { return val; });
+    data.unshift({ x: data[data.length-1].x-1000*60*60*24*7, y: data[data.length-1].y, className: data[data.length-1].className });
+    data.push({ x: data[1].x+1000*60*60*24*7, y: data[1].y, className: data[1].className });
+
+    chart.series[0].setData(data, false);
+    chart.series[0].update({
+      type: this._uzsudata.interpolation.type == 'cubic' ? 'spline' : 'line',
+      step: this._uzsudata.interpolation.type != 'cubic' && this._uzsudata.interpolation.type != 'linear' ? 'left' : false,
+    }, false);
+
+    // inactive points
+    data = $.map(seriesData[1], function(val, key) { return val; });
+    chart.series[1].setData(data, false);
+
+    plotLines = [];
+    sunData = [];
+    if(hasSun) {
+      for(dayIdx = 0; dayIdx < 7; dayIdx++) {
+        plotLines.push({
+          value: self._getSunTime('sunrise')+dayIdx*1000*60*60*24,
+          className: 'uzsu-event-sunrise',
+          label: { text: sv_lang.uzsu.sunrise }
+        });
+        plotLines.push({
+          value: self._getSunTime('sunset')+dayIdx*1000*60*60*24,
+          className: 'uzsu-event-sunset',
+          label: { text: sv_lang.uzsu.sunset }
+        });
+
+        sunData.push({ x: self._getSunTime('sunrise')+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise' });
+        sunData.push({ x: self._getSunTime('sunset')+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset' })
+      }
+    }
+
+    chart.xAxis[0].update({
+      max: 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp,
+      plotLines: plotLines
+    }, false);
+    chart.series[2].setData(sunData, false);
+
+    chart.redraw();
+  },
+
+  _save: function() {
+    this._uzsuCollapseTimestring(this._uzsudata);
+    this._write(this._uzsudata);
+  },
+
+  _timeToTimestamp: function(time) {
+    return new Date('1970-01-01T' + time + 'Z').getTime() + this._startTimestamp;
+  },
+
+  _getSunTime: function(event) {
+    if(!this.sunTimes)
+      this.sunTimes = { 'sunrise': '06:00', 'sunset': '19:30' };
+    return this._timeToTimestamp(this.sunTimes[event]);
+  },
+
+  _uzsuRuntimePopup: function(responseEntry) {
+    var self = this;
+    // Steuerung des Popups erst einmal wird der Leeranteil angelegt
+    // erst den Header, dann die Zeilen, dann den Footer
+    var tt = this._uzsuBuildTableHeader();
+    tt += this._uzsuBuildTableRow(0);
+    tt += this._uzsuBuildTableFooter();
+    // dann hängen wir das an die aktuelle Seite
+    var uzsuPopup = $(tt).appendTo(this.element).enhanceWithin().popup().on({
+      popupbeforeposition: function(ev, ui) {
+        var maxHeight = $(window).height() - 230;
+        $(this).find('.uzsuTableMain').css('max-height', maxHeight + 'px').css('overflow-y','auto').css('overflow-x','hidden');
+      },
+      popupafteropen: function(ev, ui) {
+        $(this).popup('reposition', {y: 30})
+      },
+      popupafterclose: function(ev, ui) {
+        $(this).remove();
+        $(window).off('resize', self._onresize);
+      }
+    });
+    // dann speichern wir uns für cancel die ursprünglichen im DOM gespeicherten Werte in eine Variable ab
+    var responseCancel = jQuery.extend(true, {}, responseEntry);
+    // dann die Werte eintragen.
+    var tableRow = $('.uzsuRow').first();
+    this._uzsuFillTableRow(responseEntry, tableRow);
+    // Popup schliessen mit close rechts oben in der Box oder mit Cancel in der Leiste
+    uzsuPopup.find('#uzsuClose, #uzsuCancel').bind('click', function(e) {
+      // wenn keine Änderungen gemacht werden sollen (cancel), dann auch im cache die alten Werte
+      uzsuPopup.popup('close');
+    });
+
+    // speichern mit SaveQuit
+    uzsuPopup.find('#uzsuSaveQuit').bind('click', function(e) {
+      // jetzt wird die Kopie auf das Original kopiert und geschlossen
+      self._uzsuSaveTableRow(responseEntry, tableRow);
+      // add entry if it is a new one
+      if(self._uzsudata.list.indexOf(responseEntry) == -1)
+        self._uzsudata.list.push(responseEntry);
+      self._save();
+      uzsuPopup.popup('close');
+    });
+    // Löschen mit del als Callback eintragen
+    uzsuPopup.delegate('.uzsuDelTableRow', 'click', function(e) {
+      var entryIndex = self._uzsudata.list.indexOf(responseEntry);
+      if(entryIndex != -1) { // don't remove if it was a new entry which is not in list yet
+        self._uzsudata.list.splice(entryIndex, 1);
+        self._save();
+      }
+      uzsuPopup.popup('close');
+    });
+    // call Expert Mode
+    uzsuPopup.delegate('.uzsuCellExpert button', 'click', function(e) {
+      if($(this).hasClass('ui-icon-arrow-u'))
+        self._uzsuHideAllExpertLines();
+      else
+        self._uzsuShowExpertLine(e);
+    });
+    // Handler, um den expert button Status zu setzen
+    uzsuPopup.delegate('input.expertActive', 'change', function (){
+      self._uzsuSetExpertColor($(this));
+    });
+    // Handler, um den Status anhand des Pulldowns SUN zu setzen
+    uzsuPopup.delegate('.uzsuRowExpert .uzsuEvent select, input.uzsuSunActive', 'change', function (){
+      self._uzsuSetSunActiveState($(this));
+    });
+
+    // hier wir die aktuelle Seite danach durchsucht, wo das Popup ist und im folgenden das Popup initialisiert, geöffnet und die schliessen
+    // Funktion daran gebunden. Diese entfernt wieder das Popup aus dem DOM Baum nach dem Schliessen mit remove
+    uzsuPopup.popup('open');
+  },
+
+  _uzsuBuildTableFooter: function() {
+    var tt = "";
+    // Zeileneinträge abschliessen und damit die uzsuTableMain
+    tt += "</div>";
+    // Aufbau des Footers
+      tt += "<div class='uzsuTableFooter'>" +
+          "<div class='uzsuRowFooter'>" +
+              "<div class='uzsuCell' style='float: right'>" +
+                  "<div data-role='controlgroup' data-type='horizontal' data-inline='true' data-mini='true'>" +
+                    "<button id='uzsuCancel'>" + sv_lang.uzsu.cancel + "</button>" +
+                    "<button id='uzsuSaveQuit'>" + sv_lang.uzsu.ok + "</button>" +
+                  "</div>" +
+                "</div>" +
+              "</div>" +
+            "</span>" +
+          "</div>";
+    // und der Abschluss des uzsuClear als Rahmen für den float:left und des uzsuPopup divs
+    tt += "</div></div>";
+    return tt;
+  },
+
+});

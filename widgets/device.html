@@ -304,3 +304,30 @@
 	</span>
 
 {% endmacro %}
+
+/**
+* Graphical widget for usage of UZSU plugin.
+ Drag points, add new ones by clicking on background and edit or delete them.
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} the item of the UZSU (NOT the item which is switched by UZSU)
+* @param {text=UZSU} title of graph (optional, default: UZSU)
+* @param {value=0} allow changes (optional, default: 0)
+* @param {text(bool,num)=bool} supported types are 'bool' and 'num' (optional, default: bool)
+* @param {text[]=} valueParameterList depending on valueType (optional):
+	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
+	num: [min, max, step]
+*
+* @author Stefan Widmer
+*/
+
+{% macro uzsugraph(id, item, headline, editable, valueType, valueParameterList, _backend) %}
+	{% import "basic.html" as basic %}
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsugraph" data-item="{{ item }}"
+		data-headline="{{ headline|default('UZSU') }}" data-editable="{{ editable|default(0) }}" data-designType="{{ _backend }}"
+		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
+		class="plot">
+	</div>
+
+{% endmacro %}
