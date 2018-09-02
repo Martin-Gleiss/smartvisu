@@ -1413,6 +1413,22 @@ div.ui-slider-switch{
 	}
 }
 
+.highcharts-root .uzsu-event-sunrise {
+	fill: #ffffff;
+	stroke: rgba(255, 255, 255, 0.5);
+}
+.highcharts-root .uzsu-event-sunset {
+	fill: #f44336;
+	stroke: rgba(244, 67, 54, 0.5);
+}
+
+.uzsu-inactive g.highcharts-series,
+.uzsu-inactive .highcharts-point,
+.uzsu-inactive .highcharts-markers {
+	fill: #808080;
+	stroke: #808080;
+}
+
 /**
  * --- W i d g e t s :   M U L T I M E D I A ----------------------------------
  */

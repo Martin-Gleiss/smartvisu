@@ -79,9 +79,9 @@ $.widget("sv.device_codepad", $.sv.widget, {
   //  APL 2.0 Lizenz
   //
   // Basis der Idee des dynamischen Popups übernommen von John Chacko
-  // 		jQuery Mobile runtime popup
-  // 		16. November 2012 · 0 Comments
-  // 		http://johnchacko.net/?p=44
+  //     jQuery Mobile runtime popup
+  //     16. November 2012 · 0 Comments
+  //     http://johnchacko.net/?p=44
   //
   // ----------------------------------------------------------------------------
   // Basis der Architektur: document.update und document.click baut die handler in die Seite für das Popup ein.
@@ -95,36 +95,36 @@ $.widget("sv.device_codepad", $.sv.widget, {
   // Beim verlassen des Popups werden die dynamisch angelegten DOM Elemente wieder gelöscht (remove).
   //
   // Datenmodell: Austausch über JSON Element
-  // 				{ 	"active" 	: bool,
-  //					"list" 		: 					Liste von einträgen mit schaltzeiten
-  //					[	"active"	:false,			Ist der einzelne Eintrag darin aktiv ?
-  //						"rrule"		:'',			Wochen / Tag Programmstring
-  //						"time"		:'00:00',		Uhrzeitstring des Schaltpunktes / configuration
-  //						"value"		:0,				Wert, der gesetzt wird
-  //						"event":	'time',			Zeitevent (time) oder SUN (sunrise oder sunset)
-  //						"timeMin"	:'',			Untere Schranke SUN
-  //						"timeMax"	:'',			Oberere Schranke SUN
-  //						"timeCron"	:'00:00',		Schaltzeitpunkt
-  //						"timeOffset":''				Offset für Schaltzeitpunkt
-  //						"timeOffsetType":'m'				'm' = Offset in Minuten, 'deg' Offset in Höhengrad (Altitude)
-  //						"condition"	: 	{	Ein Struct für die Verwendung mit conditions (aktuell nur FHEM), weil dort einige Option mehr angeboten werden
-  //											"deviceString"	: text	Bezeichnung des Devices oder Auswertestring
-  //											"type"			: text	Auswertetype (logische Verknüpfung oder Auswahl String)
-  //											"value"			: text	Vergleichwert
-  //											"active"		: bool	Aktiviert ja/nein
-  //										}
-  //						"delayedExec": 	{	Ein Struct für die Verwendung mit delayed exec (aktuell nur FHEM), weil dort einige Option mehr angeboten werden
-  //											"deviceString"	: text	Bezeichnung des Devices oder Auswertestring
-  //											"type"			: text	Auswertetype (logische Verknüpfung oder Auswahl String)
-  //											"value"			: text	Vergleichwert
-  //											"active"		: bool	Aktiviert ja/nein
-  //										}
-  //						"holiday":		{
-  //											"workday"	: bool	Aktiviert ja/nein
-  //											"weekend" 	: bool	Aktiviert ja/nein
-  //										}
-  //					]
-  //				}
+  //         {   "active"   : bool,
+  //          "list"     :           Liste von einträgen mit schaltzeiten
+  //          [  "active"  :false,      Ist der einzelne Eintrag darin aktiv ?
+  //            "rrule"    :'',      Wochen / Tag Programmstring
+  //            "time"    :'00:00',    Uhrzeitstring des Schaltpunktes / configuration
+  //            "value"    :0,        Wert, der gesetzt wird
+  //            "event":  'time',      Zeitevent (time) oder SUN (sunrise oder sunset)
+  //            "timeMin"  :'',      Untere Schranke SUN
+  //            "timeMax"  :'',      Oberere Schranke SUN
+  //            "timeCron"  :'00:00',    Schaltzeitpunkt
+  //            "timeOffset":''        Offset für Schaltzeitpunkt
+  //            "timeOffsetType":'m'        'm' = Offset in Minuten, 'deg' Offset in Höhengrad (Altitude)
+  //            "condition"  :   {  Ein Struct für die Verwendung mit conditions (aktuell nur FHEM), weil dort einige Option mehr angeboten werden
+  //                      "deviceString"  : text  Bezeichnung des Devices oder Auswertestring
+  //                      "type"      : text  Auswertetype (logische Verknüpfung oder Auswahl String)
+  //                      "value"      : text  Vergleichwert
+  //                      "active"    : bool  Aktiviert ja/nein
+  //                    }
+  //            "delayedExec":   {  Ein Struct für die Verwendung mit delayed exec (aktuell nur FHEM), weil dort einige Option mehr angeboten werden
+  //                      "deviceString"  : text  Bezeichnung des Devices oder Auswertestring
+  //                      "type"      : text  Auswertetype (logische Verknüpfung oder Auswahl String)
+  //                      "value"      : text  Vergleichwert
+  //                      "active"    : bool  Aktiviert ja/nein
+  //                    }
+  //            "holiday":    {
+  //                      "workday"  : bool  Aktiviert ja/nein
+  //                      "weekend"   : bool  Aktiviert ja/nein
+  //                    }
+  //          ]
+  //        }
 $.widget("sv.device_uzsu", $.sv.widget, {
 
   _create: function() {
@@ -157,7 +157,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // Kopf und überschrift des Popups
     var tt = "";
     // hier kommt der Popup Container mit der Beschreibung ein Eigenschaften
-    tt += 	"<div data-role='popup' data-overlay-theme='b' data-theme='a' class='messagePopup' id='uzsuPopupContent' data-dismissible = 'false' data-history='false' data-position-to='window'>" +
+    tt +=   "<div data-role='popup' data-overlay-theme='b' data-theme='a' class='messagePopup' id='uzsuPopupContent' data-dismissible = 'false' data-history='false' data-position-to='window'>" +
           "<button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='uzsuClose'></button>" +
           "<div class='uzsuClear'>" +
             "<div class='uzsuPopupHeader'>" + this.options.headline + "</div>" +
@@ -178,7 +178,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // Tabelleneinträge
     var tt = "";
 
-    tt += 	"<div class='uzsuRow'>" +
+    tt +=   "<div class='uzsuRow'>" +
           "<div class='uzsuCell'>" +
             "<div class='uzsuCellText'>" + sv_lang.uzsu.weekday + "</div>" +
               "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuWeekday'>";
@@ -188,48 +188,48 @@ $.widget("sv.device_uzsu", $.sv.widget, {
                 daydate.setDate(5 + index); // Set date to one on according weekday (05.01.1970 was a monday)
                 tt += "<label title='" + daydate.transUnit('l') + "'><input type='checkbox' value='" + value + "'>" + daydate.transUnit('D') + "</label>";
               });
-    tt +=			"</fieldset>" +
+    tt +=      "</fieldset>" +
             "</div>";
 
-    tt += 	"<div class='uzsuCell uzsuValueCell'>" +
+    tt +=   "<div class='uzsuCell uzsuValueCell'>" +
           "<div class='uzsuCellText'>" + sv_lang.uzsu.value + "</div>";
     if (this.options.valuetype === 'bool') {
       // Unterscheidung Anzeige und Werte
       if (valueParameterList[0].split(':')[1] === undefined) {
         tt += "<select data-role='flipswitch'>" +
                 "<option value='0'>" + valueParameterList[1] + "</option>" +
-                "<option value='1'>"	+ valueParameterList[0] + "</option>" +
+                "<option value='1'>"  + valueParameterList[0] + "</option>" +
               "</select>";
       }
       else {
         tt += "<select data-role='flipswitch'>" +
-                "<option value='" + valueParameterList[1].split(':')[1]	+ "'>" + valueParameterList[1].split(':')[0] + "</option>" +
-                "<option value='" + valueParameterList[0].split(':')[1]	+ "'>" + valueParameterList[0].split(':')[0] + "</option>" +
+                "<option value='" + valueParameterList[1].split(':')[1]  + "'>" + valueParameterList[1].split(':')[0] + "</option>" +
+                "<option value='" + valueParameterList[0].split(':')[1]  + "'>" + valueParameterList[0].split(':')[0] + "</option>" +
               "</select>";
       }
     }
     else if (this.options.valuetype === 'num') {
-      tt += 	"<input type='number' min='" + valueParameterList[0] + "' max='" + valueParameterList[1] + "' step='" + valueParameterList[2] + "' data-clear-btn='false' class='uzsuValueInput' pattern='[0-9]*'>";
+      tt +=   "<input type='number' min='" + valueParameterList[0] + "' max='" + valueParameterList[1] + "' step='" + valueParameterList[2] + "' data-clear-btn='false' class='uzsuValueInput' pattern='[0-9]*'>";
     }
     else if (this.options.valuetype === 'text') {
-      tt += 	"<input type='text' data-clear-btn='false' class='uzsuTextInput'>";
+      tt +=   "<input type='text' data-clear-btn='false' class='uzsuTextInput'>";
     }
     else if (this.options.valuetype === 'list') {
       // das Listenformat mit select ist sehr umfangreich nur einzubauen.
-      tt += 	"<select data-mini='true'>";
+      tt +=   "<select data-mini='true'>";
               for (var numberOfListEntry = 0; numberOfListEntry < valueParameterList.length; numberOfListEntry++) {
                 // Unterscheidung Anzeige und Werte
                 if (valueParameterList[0].split(':')[1] === undefined) {
-                  tt += "<option value='" + valueParameterList[numberOfListEntry].split(':')[0]	+ "'>"+ valueParameterList[numberOfListEntry].split(':')[0]	+ "</option>";
+                  tt += "<option value='" + valueParameterList[numberOfListEntry].split(':')[0]  + "'>"+ valueParameterList[numberOfListEntry].split(':')[0]  + "</option>";
                 }
                 else {
-                  tt += "<option value='" + valueParameterList[numberOfListEntry].split(':')[1]	+ "'>"+ valueParameterList[numberOfListEntry].split(':')[0]	+ "</option>";
+                  tt += "<option value='" + valueParameterList[numberOfListEntry].split(':')[1]  + "'>"+ valueParameterList[numberOfListEntry].split(':')[0]  + "</option>";
                 }
               }
-      tt += 	"</select>";
+      tt +=   "</select>";
     }
-    tt+=	"</div>"
-    tt+=	"<div class='uzsuCell'>" +
+    tt+=  "</div>"
+    tt+=  "<div class='uzsuCell'>" +
           "<div class='uzsuCellText'>" + sv_lang.uzsu.time + "</div>" +
           "<input type='time' data-clear-btn='false' class='uzsuTimeInput uzsuTimeCron'>" +
         "</div>" +
@@ -250,9 +250,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
           "</fieldset>" +
         "</div>";
     // Tabelle Zeile abschliessen
-    tt += 	"</div>";
+    tt +=   "</div>";
     // und jetzt noch die unsichbare Expertenzeile
-    tt += 	"<div class='uzsuRowExpHoli' style='display:none;'>" +
+    tt +=   "<div class='uzsuRowExpHoli' style='display:none;'>" +
           "<div class='uzsuRowExpert' style='float: left;'>" +
             "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.sun + "</div>" +
             "<div class='uzsuCell'>" +
@@ -272,7 +272,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             "</div>";
           // Auswahl für Offset in Grad oder Minuten (nur für SmartHomeNG)
           if (this.options.designtype == '0'){
-            tt += 	"<div class='uzsuCell'>" +
+            tt +=   "<div class='uzsuCell'>" +
               "<div class='uzsuCellText'></div>" +
                 "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuTimeOffsetTypeInput'>" +
                   "<label title='Minutes'><input type='radio' name='uzsuTimeOffsetTypeInput"+numberOfRow+"' value='m' checked='checked'>m</label>" +
@@ -280,7 +280,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
               "</fieldset>" +
             "</div>";
           }
-            tt += 	"<div class='uzsuCell'>" +
+            tt +=   "<div class='uzsuCell'>" +
               "<div class='uzsuCellText'>" + sv_lang.uzsu.latest + "</div>" +
               "<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeMax'>" +
             "</div>" +
@@ -293,7 +293,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
           "</div>";
       // hier die Einträge für holiday weekend oder nicht
       if (this.options.designtype == '2'){
-        tt += 	"<div class='uzsuRowHoliday' style='float: left;'>" +
+        tt +=   "<div class='uzsuRowHoliday' style='float: left;'>" +
               "<div class='uzsuRowHolidayText'>Holiday</div>" +
               "<div class='uzsuCell'>" +
                 "<div class='uzsuCellText'>Holiday</div>" +
@@ -304,11 +304,11 @@ $.widget("sv.device_uzsu", $.sv.widget, {
               "</div>" +
             "</div>";
       }
-      tt+= 	"</div>";
+      tt+=   "</div>";
 
     // und jetzt noch die unsichbare Condition und delayed Exec Zeile
     if(this.options.designtype == '2'){
-      tt += 	"<div class='uzsuRowCondition' style='display:none;'>" +
+      tt +=   "<div class='uzsuRowCondition' style='display:none;'>" +
             "<div class='uzsuRowConditionText'>Condition</div>" +
             "<div class='uzsuCell'>" +
               "<div class='uzsuCellText'>Device / String</div>" +
@@ -338,7 +338,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             "</div>" +
           "</div>";
       // delayed exec zeile
-      tt += 	"<div class='uzsuRowDelayedExec' style='display:none;'>" +
+      tt +=   "<div class='uzsuRowDelayedExec' style='display:none;'>" +
             "<div class='uzsuRowDelayedExecText'>DelayedExec</div>" +
             "<div class='uzsuCell'>" +
               "<div class='uzsuCellText'>Device / String</div>" +
@@ -639,7 +639,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
           popupOk = false;
         }
         // fehlerhafter valueType (unbekannt)
-        if ((valueType !== 'bool') && (valueType !== 'num')	&& (valueType !== 'text') && (valueType !== 'list')) {
+        if ((valueType !== 'bool') && (valueType !== 'num')  && (valueType !== 'text') && (valueType !== 'list')) {
           notify.error("UZSU widget", "Value type '" + valueType + "' is not supported in widget " + this.id + ".");
           popupOk = false;
         }
@@ -658,7 +658,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
           if (designType == '0') {
             // test, ob die RRULE fehlerhaft ist
             if (entry.rrule && (entry.rrule.length > 0) && (entry.rrule.indexOf('FREQ=WEEKLY;BYDAY=') !== 0)) {
-              if (!confirm("Error: Parameter designType is '0', but saved RRULE string in UZSU '" + entry.rrule + "' does not match default format FREQ=WEEKLY;BYDAY=MO... on item " + this.options.item	+ ". Should this entry be overwritten?")) {
+              if (!confirm("Error: Parameter designType is '0', but saved RRULE string in UZSU '" + entry.rrule + "' does not match default format FREQ=WEEKLY;BYDAY=MO... on item " + this.options.item  + ". Should this entry be overwritten?")) {
                 popupOk = false;
                 // direkter Abbruch bei der Entscheidung!
                 return false;
@@ -763,7 +763,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
     var self = this;
     // Tabelle füllen. Es werden die Daten aus der Variablen response gelesen und in den Status Darstellung der Widgetblöcke zugewiesen. Der aktuelle Status in dann in der Darstellung enthalten !
     var numberOfEntries = response.list.length;
-    // jetzt wird die Tabelle befüllt allgemeiner Status, bitte nicht mit attr, sondern mit prop, siehe	// https://github.com/jquery/jquery-mobile/issues/5587
+    // jetzt wird die Tabelle befüllt allgemeiner Status, bitte nicht mit attr, sondern mit prop, siehe  // https://github.com/jquery/jquery-mobile/issues/5587
     // INTERPOLATION
     if(this.interpolation) {
       $('#uzsuInterpolationType').val(response.interpolation.type).selectmenu("refresh", true);
@@ -810,7 +810,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
   _uzsuAddTableRow: function(response) {
     // Tabellenzeile einfügen
     // alten Zustand mal in die Liste rein. da der aktuelle Zustand ja nur im Widget selbst enthalten ist, wird er vor dem Umbau wieder in die Variable response zurückgespeichert.
-    this._uzsuSaveTable(1, response, false);
+    this._uzsuSaveTable(response, false);
     // ich hänge immer an die letzte Zeile dran ! erst einmal das Array erweitern
     response.list.push({active:false,rrule:'',time:'00:00',value:null,event:'time',timeMin:'',timeMax:'',timeCron:'00:00',timeOffset:'',timeOffsetType:'m',condition:{deviceString:'',type:'String',value:'',active:false},delayedExec:{deviceString:'',type:'String',value:'',active:false},holiday:{workday:false,weekend:false}});
     // dann eine neue HTML Zeile genenrieren
@@ -838,7 +838,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
   //----------------------------------------------------------------------------
   _uzsuSortTime: function(response, e) {
     // erst aus dem Widget zurücklesen, sonst kann nicht im Array sortiert werden (alte daten)
-    this._uzsuSaveTable(1, response, false);
+    this._uzsuSaveTable(response, false);
     // sortieren der Listeneinträge nach zeit
     response.list.sort(function(a, b) {
       // sort Funktion, wirklich vereinfacht für den speziellen Fall
@@ -1000,14 +1000,39 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       legend: false,
       series: [
         { // active
-          name: 'active'
+          name: 'active',
+          id: 'active',
+          zIndex: 9,
         },
         { // inactive
           name: 'inactive',
+          id: 'inactive',
+          zIndex: 8,
           type: 'scatter'
+        },
+        { // sun min/max
+          id: 'range',
+          zIndex: 2,
+          draggableY: false,
+          point: {
+            events: {
+              drop: function (e) {
+                self.justDragged = true; // used to prevent click event after drop
+                var time = self.element.highcharts().time.dateFormat('%H:%M', e.target.x);
+                if(e.target.className == 'uzsu-min')
+                  e.target.uzsuEntry.timeMin = time;
+                else if(e.target.className == 'uzsu-max')
+                  e.target.uzsuEntry.timeMax = time;
+                self._save();
+              },
+              click: null
+            }
+          },
         },
         { // sunrise & sunset
           name: 'sun',
+          id: 'sun',
+          zIndex: 1,
           type: 'scatter',
           tooltip: {
             pointFormat: ''
@@ -1015,14 +1040,12 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           marker: {
             symbol: 'triangle'
           },
-          draggableX: this.options.editable,
-          dragPrecisionX: timeStep,
           draggableY: false,
           point: {
             events: {
               drop: function (e) {
                 self.sunTimes[e.target.uzsuEvent] = self.element.highcharts().time.dateFormat('%H:%M', e.target.x);
-                setTimeout(function() { self.draw() }, 10); // redraw has to be deferred otherwise highcharts draggable plugin throws an exception
+                self._delay(function() { self.draw() }, 10); // redraw has to be deferred otherwise highcharts draggable plugin throws an exception
               },
               click: null
             }
@@ -1119,7 +1142,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     },
     function (chart) {
       var buttons = [
-        { interpolationType: 'no', shape: 'square', langKey: 'nointerpolation' },
+        { interpolationType: 'none', shape: 'square', langKey: 'nointerpolation' },
         { interpolationType: 'cubic', shape: 'circle', langKey: 'cubic' },
         { interpolationType: 'linear', shape: 'triangle', langKey: 'linear' },
       ];
@@ -1176,30 +1199,37 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
   draw: function() {
     var self = this;
-    var response = this._uzsudata;
     var chart = this.element.highcharts();
 
+    if(this._uzsudata.active)
+      this.element.removeClass('uzsu-inactive');
+    else
+      this.element.addClass('uzsu-inactive');
+
     var hasDays = false;
-    var hasSun = false;
-    var seriesData = [{}, {}];
-    var inactiveData = {}
+    var hasSunrise = false;
+    var hasSunset = false;
+    var seriesData = { active: {}, inactive: {}, range: [] };
     $.each(this._uzsudata.list, function(responseEntryIdx, responseEntry) {
       // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button.
-      var x;
+      var x, xMin, xMax;
       if(responseEntry.event == 'time')
         x = self._timeToTimestamp(responseEntry.time);
       else {
-        hasSun = true;
+        if(responseEntry.event == 'sunrise')
+          hasSunrise = true;
+        else if(responseEntry.event == 'sunset')
+          hasSunset = true;
         x = self._getSunTime(responseEntry.event);
         if(responseEntry.timeOffsetType == 'm')
           x += responseEntry.timeOffset*1000*60;
         if(responseEntry.timeMin) {
-          var xMin = self._timeToTimestamp(responseEntry.timeMin);
+          xMin = self._timeToTimestamp(responseEntry.timeMin);
           if(x < xMin)
             x = xMin;
         }
         if(responseEntry.timeMax) {
-          var xMax = self._timeToTimestamp(responseEntry.timeMax);
+          xMax = self._timeToTimestamp(responseEntry.timeMax);
           if(x > xMax)
             x = xMax;
         }
@@ -1215,55 +1245,76 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         if (days.length < 7)
           hasDays = true;
         $.each(days, function(dayIdx, day) {
-          xRecurring = x + self.rruleDays[day]*1000*60*60*24;
-          var point = { x: xRecurring, y: Number(responseEntry.value), className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry };
-          seriesData[responseEntry.active ? 0 : 1][xRecurring] = point;
+          var rruleOffset = self.rruleDays[day]*1000*60*60*24;
+          var xRecurring = x + rruleOffset;
+          var yValue = Number(responseEntry.value);
+          seriesData[responseEntry.active ? 'active' : 'inactive'][xRecurring] = { x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry };
+          if(xMin !== undefined || xMax !== undefined) {
+            if(xMin !== undefined)
+              seriesData.range.push({ x: xMin+rruleOffset, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-min' });
+						else
+              seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-min uzsu-hidden', marker: { enabled: false } });
+            if(xMax !== undefined)
+              seriesData.range.push({ x: xMax+rruleOffset, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-max' });
+						else
+              seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-max uzsu-hidden', marker: { enabled: false } });
+            seriesData.range.push({ x: xMax+rruleOffset+1, y: null, uzsuEntry: responseEntry });
+          }
         });
       }
     });
 
+    var xMax = 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp;
+
     // active points
-    var data = $.map(seriesData[0], function(val, key) { return val; });
+    var data = $.map(seriesData.active, function(val, key) { return val; });
     data.unshift({ x: data[data.length-1].x-1000*60*60*24*7, y: data[data.length-1].y, className: data[data.length-1].className });
     data.push({ x: data[1].x+1000*60*60*24*7, y: data[1].y, className: data[1].className });
 
-    chart.series[0].setData(data, false);
-    chart.series[0].update({
+    chart.get('active').setData(data, false);
+    chart.get('active').update({
       type: this._uzsudata.interpolation.type == 'cubic' ? 'spline' : 'line',
       step: this._uzsudata.interpolation.type != 'cubic' && this._uzsudata.interpolation.type != 'linear' ? 'left' : false,
     }, false);
 
     // inactive points
-    data = $.map(seriesData[1], function(val, key) { return val; });
-    chart.series[1].setData(data, false);
+    data = $.map(seriesData.inactive, function(val, key) { return val; });
+    chart.get('inactive').setData(data, false);
+
+    // min/max times on sun events
+    chart.get('range').setData(seriesData.range, false);
 
     plotLines = [];
     sunData = [];
-    if(hasSun) {
+    if(hasSunrise || hasSunset) {
       for(dayIdx = 0; dayIdx < 7; dayIdx++) {
-        plotLines.push({
-          value: self._getSunTime('sunrise')+dayIdx*1000*60*60*24,
-          className: 'uzsu-event-sunrise',
-          label: { text: sv_lang.uzsu.sunrise }
-        });
-        plotLines.push({
-          value: self._getSunTime('sunset')+dayIdx*1000*60*60*24,
-          className: 'uzsu-event-sunset',
-          label: { text: sv_lang.uzsu.sunset }
-        });
-
-        sunData.push({ x: self._getSunTime('sunrise')+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise' });
-        sunData.push({ x: self._getSunTime('sunset')+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset' })
+        if(hasSunrise) {
+          plotLines.push({
+            value: self._getSunTime('sunrise')+dayIdx*1000*60*60*24,
+            className: 'uzsu-event-sunrise',
+            label: { text: sv_lang.uzsu.sunrise }
+          });
+          sunData.push({ x: self._getSunTime('sunrise')+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise' });
+        }
+        if(hasSunset) {
+          plotLines.push({
+            value: self._getSunTime('sunset')+dayIdx*1000*60*60*24,
+            className: 'uzsu-event-sunset',
+            label: { text: sv_lang.uzsu.sunset }
+          });
+          sunData.push({ x: self._getSunTime('sunset')+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset' })
+        }
       }
     }
-
     chart.xAxis[0].update({
       max: 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp,
       plotLines: plotLines
     }, false);
-    chart.series[2].setData(sunData, false);
+    chart.get('sun').setData(sunData, false);
 
     chart.redraw();
+
+    self._plotNowLine();
   },
 
   _save: function() {
@@ -1279,6 +1330,26 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     if(!this.sunTimes)
       this.sunTimes = { 'sunrise': '06:00', 'sunset': '19:30' };
     return this._timeToTimestamp(this.sunTimes[event]);
+  },
+
+  _plotNowLine: function(id) {
+    if(this._nowLinePlotDelay) {
+      clearTimeout(this._nowLinePlotDelay);
+      this._nowLinePlotDelay = null;
+    }
+
+    var axis = this.element.highcharts().xAxis[0];
+    axis.removePlotLine('now');
+    axis.addPlotLine({
+      id: 'now',
+      value: (this._timeToTimestamp(new Date().getHours()+':'+new Date().getMinutes()) - this._startTimestamp + 1000*60*60*24*((new Date().getDay() + 6) % 7)) % (axis.max - this._startTimestamp) + this._startTimestamp,
+      className: 'uzsu-now highcharts-color-0',
+      label: 'now'
+    });
+
+    this._nowLinePlotDelay = this._delay(function() {
+      this._plotNowLine(this._nowLinePlotDelay);
+    }, 60000);
   },
 
   _uzsuRuntimePopup: function(responseEntry) {
