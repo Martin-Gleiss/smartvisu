@@ -1182,7 +1182,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     this._super(response);
 
     if(this._uzsudata.interpolation === undefined){
-      this.interpolation = false
+      this._uzsudata.interpolation = { type: 'none' }
       console.log('UZSU interpolation not available. You have to update the plugin version');
     }
     else if(!this._uzsudata.interpolation.itemtype in ['num']) {
@@ -1252,11 +1252,11 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           if(xMin !== undefined || xMax !== undefined) {
             if(xMin !== undefined)
               seriesData.range.push({ x: xMin+rruleOffset, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-min' });
-						else
+            else
               seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-min uzsu-hidden', marker: { enabled: false } });
             if(xMax !== undefined)
               seriesData.range.push({ x: xMax+rruleOffset, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-max' });
-						else
+            else
               seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-max uzsu-hidden', marker: { enabled: false } });
             seriesData.range.push({ x: xMax+rruleOffset+1, y: null, uzsuEntry: responseEntry });
           }
@@ -1268,8 +1268,10 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
     // active points
     var data = $.map(seriesData.active, function(val, key) { return val; });
-    data.unshift({ x: data[data.length-1].x-1000*60*60*24*7, y: data[data.length-1].y, className: data[data.length-1].className });
-    data.push({ x: data[1].x+1000*60*60*24*7, y: data[1].y, className: data[1].className });
+		if(data.length > 0) {
+      data.unshift({ x: data[data.length-1].x-1000*60*60*24*7, y: data[data.length-1].y, className: data[data.length-1].className });
+      data.push({ x: data[1].x+1000*60*60*24*7, y: data[1].y, className: data[1].className });
+		}
 
     chart.get('active').setData(data, false);
     chart.get('active').update({
@@ -1320,6 +1322,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
   _save: function() {
     this._uzsuCollapseTimestring(this._uzsudata);
     this._write(this._uzsudata);
+    this.draw();
   },
 
   _timeToTimestamp: function(time) {
