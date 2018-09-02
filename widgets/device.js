@@ -964,6 +964,9 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
     var self = this;
 
+		// init data (used if no update follows because item does not exist yet)
+		this._uzsudata = { active : true, list : [] }
+
     this.options.designtype = String(this.options.designtype);
     if(this.options.designtype === undefined || this.options.designtype === '') {
       this.options.designtype = io.uzsu_type;
