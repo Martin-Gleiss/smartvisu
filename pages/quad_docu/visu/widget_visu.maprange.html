@@ -1,0 +1,41 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_visu.html" %}
+
+{% block example %}
+<script>
+$( document ).ready(function() {
+		 io.write('rangeitem', '10' );
+	});
+
+</script>
+	<h5>Example</h5>
+
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Use to change values below</li>
+{{ basic.slider('', 'rangeitem', 0, 100, 1) }}		</ul>
+	</div>
+
+	Text based on given ranges
+
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{{ visu.maprange('map', 'rangeitem', [0,12,22], [11,21,100], ['low', 'medium', 'high']) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+{{ visu.maprange('map', 'rangeitem', [0,12,22], [11,21,100], ['low', 'medium', 'high']) }}
+
+	</ul></div>
+
+{% endblock %}

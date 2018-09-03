@@ -1,0 +1,44 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_quad.html" %}
+
+{% block example %}
+<script>
+$( document ).ready(function() {
+     io.write('item1', '3' );
+     io.write('item2', 'test' );
+  });
+
+</script>
+  <h5>Example</h5>
+
+Single Textinput
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.textinput('textinput1', 'Textinput', '', 'item1') }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.textinput('textinput1', 'Textinput', '', 'item1') }}
+  </ul></div>
+
+Multiple Textinput
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.textinput('textinput2', 'Textinput', ['Item 1', 'Item 2'], ['item1', 'item2']) }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.textinput('textinput2', 'Textinput', ['Item 1', 'Item 2'], ['item1', 'item2']) }}
+  </ul></div>
+{% endblock %}

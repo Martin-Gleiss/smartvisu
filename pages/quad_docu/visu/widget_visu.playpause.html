@@ -1,0 +1,40 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_visu.html" %}
+
+{% block example %}
+<script>
+$( document ).ready(function() {
+		 io.write('item_play', '1' );
+		 io.write('item_pause', '0' );
+	});
+
+</script>
+	<h5>Example</h5>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Use to change values below</li>
+		{{ quad.stateswitch('stateswitch2', ['item_play', 'item_pause'], ['icon', 'icon'], '', '', '', '', '', '', '', 'CHANGE PLAY/PAUSE ITEMS HERE', ['Play', 'Pause']) }}
+		</ul>
+	</div>
+
+A button that changes between stop/pause and play based on two separate items. Implement this widget for your squeezebox or other audio/video players.
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{{ visu.playpause('playpause', 'item_play', 'item_pause') }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+{{ visu.playpause('playpause', 'item_play', 'item_pause') }}
+	</ul></div>
+
+{% endblock %}
