@@ -964,8 +964,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
     var self = this;
 
-		// init data (used if no update follows because item does not exist yet)
-		this._uzsudata = { active : true, list : [] }
+    // init data (used if no update follows because item does not exist yet)
+    this._uzsudata = { active : true, list : [] }
 
     this.options.designtype = String(this.options.designtype);
     if(this.options.designtype === undefined || this.options.designtype === '') {
@@ -1006,16 +1006,19 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           name: 'active',
           id: 'active',
           zIndex: 9,
+          className: 'uzsu-active',
         },
         { // inactive
           name: 'inactive',
           id: 'inactive',
           zIndex: 8,
+          className: 'uzsu-inactive',
           type: 'scatter'
         },
         { // sun min/max
           id: 'range',
           zIndex: 2,
+          className: 'uzsu-minmax',
           draggableY: false,
           point: {
             events: {
@@ -1059,6 +1062,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         type: 'datetime',
         min: this._startTimestamp,
         max: 1000*60*60*24 + this._startTimestamp,
+        crosshair: { snap: false },
         dateTimeLabelFormats: {
           day: '%a'
         }
@@ -1068,6 +1072,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         endOnTick: false,
         startOnTick: false,
         alignTicks: true,
+        crosshair: { snap: false },
         minTickInterval: 1,
         tickInterval: this.options.valuetype === 'bool' ? 1 : null,
         min: min,
@@ -1115,6 +1120,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           dragMaxY: max,
           cursor: this.options.editable ? 'move' : null,
           marker: { enabled: true },
+          stickyTracking: false,
           point: {
             events: {
               click: function (e) {
@@ -1144,6 +1150,60 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       },
     },
     function (chart) {
+
+      // crosshair tooltip
+      self.element.mousemove(function (e) {
+        if (!chart.lab) {
+          chart.lab = chart.renderer.text('', 0, 0)
+          .attr({ zIndex: 10 })
+          .addClass('highcharts-axis-labels')
+          .add();
+        }
+
+        e = chart.pointer.normalize(e);
+        var position = {
+          x: chart.xAxis[0].toValue(e.chartX),
+          y: chart.yAxis[0].toValue(e.chartY)
+        };
+
+
+        position.x = Math.round((position.x - self._startTimestamp) % (1000*60*60*24) / (timeStep)) * timeStep + self._startTimestamp;
+        if(position.y < min)
+          position.y = min;
+        else if(position.y > max)
+          position.y = max;
+        position.y = Math.round((position.y - min) / step) * step + min;
+
+        chart.lab.attr({
+          x: e.chartX + 5,
+          y: e.chartY - 22,
+          text: self.element.highcharts().time.dateFormat('%H:%M', position.x) + '<br>' + position.y
+        });
+      });
+
+      self.element.mouseout(function () {
+        if (chart && chart.lab) {
+            chart.lab.destroy();
+            chart.lab = null;
+        }
+      });
+
+      // active/inactive button
+      chart.renderer.button(String.fromCharCode(160)+String.fromCharCode(10004)+String.fromCharCode(160), chart.plotLeft, null, function(e) { self._uzsudata.active = !self._uzsudata.active; self._save(); }, null,  null,  null,  null, 'callout')
+        .attr({
+          align: 'right',
+          title: sv_lang.uzsu.active
+        })
+        .addClass('highcharts-color-0 uzsu-active-toggler')
+        //.css({'fill': 'transparent'})
+        .add()
+        //.align({
+        //  align: 'right',
+        //  x: -16-(buttons.length-i-1)*20,
+        //  y: 10
+        //}, false, null);
+
+      // Interpolation buttons
       var buttons = [
         { interpolationType: 'none', shape: 'square', langKey: 'nointerpolation' },
         { interpolationType: 'cubic', shape: 'circle', langKey: 'cubic' },
@@ -1205,9 +1265,9 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var chart = this.element.highcharts();
 
     if(this._uzsudata.active)
-      this.element.removeClass('uzsu-inactive');
+      this.element.removeClass('uzsu-all-inactive');
     else
-      this.element.addClass('uzsu-inactive');
+      this.element.addClass('uzsu-all-inactive');
 
     var hasDays = false;
     var hasSunrise = false;
@@ -1271,10 +1331,10 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
     // active points
     var data = $.map(seriesData.active, function(val, key) { return val; });
-		if(data.length > 0) {
+    if(data.length > 0) {
       data.unshift({ x: data[data.length-1].x-1000*60*60*24*7, y: data[data.length-1].y, className: data[data.length-1].className });
       data.push({ x: data[1].x+1000*60*60*24*7, y: data[1].y, className: data[1].className });
-		}
+    }
 
     chart.get('active').setData(data, false);
     chart.get('active').update({
@@ -1325,7 +1385,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
   _save: function() {
     this._uzsuCollapseTimestring(this._uzsudata);
     this._write(this._uzsudata);
-    this.draw();
+    this._delay(function() { this.draw() }, 1); // has to be delayed to prevent exception in highcharts draggable points
   },
 
   _timeToTimestamp: function(time) {
