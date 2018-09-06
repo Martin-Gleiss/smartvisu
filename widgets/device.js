@@ -956,7 +956,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     'SA': 5,
     'SU': 6
   },
-  
+
   _startTimestamp: 4*1000*60*60*24 + new Date(0).getTimezoneOffset()*1000*60,
 
   _create: function() {
@@ -996,6 +996,46 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     }
 
     var timeStep = 1000*60*5; // round to 5 minutes
+
+    // Highcharts symbols for sunrise and sunset
+    Highcharts.SVGRenderer.prototype.symbols.sunrise = function (x, y, w, h) {
+      var wt = w/300, ht = h/300;
+      var xt = x-20*wt, yt = y-20*ht-120*ht;
+      return [
+        'M',xt+ 79*wt,yt+267*ht,'h',   -4*wt,      'c',-3*wt,0   ,-5*wt, 2*ht,-5*wt, 5*ht,    'c',0,3*ht,2*wt,5*ht,5*wt,5*ht,'h',  4*wt,       'c', 3*wt, 0   ,  5*wt, -2*ht,  5*wt, -5*ht,                                    'c',0,-3*ht,-2*wt,-5*ht,-5*wt,-5*ht,'z',
+        'M',xt+232*wt,yt+267*ht,'h',  -48*wt,      'c',-7*wt,0   ,-7*wt,10*ht, 0   ,10*ht,                                   'h', 48*wt,       'c', 7*wt, 0   ,  7*wt,-10*ht,  0   ,-10*ht,                                    'z',
+        'M',xt+ 72*wt,yt+217*ht,'l',   18*wt,19*ht,'c', 5*wt,5*ht,12*wt,-3*ht, 8*wt,-7*ht,                                   'l',-19*wt,-19*ht,'c',-5*wt,-4*ht,-12*wt,  3*ht, -7*wt,  7*ht,                                    'z',
+        'M',xt+127*wt,yt+172*ht,'v',   49*ht,      'c', 0   ,6*ht,10*wt, 6*ht,10*wt, 0*ht,                                   'v',-49*ht,       'c', 0   ,-7*ht,-10*wt, -7*ht,-10*wt,  0   ,                                    'z',
+        'M',xt+201*wt,yt+194*ht,'l',  -34*wt,35*ht,'c',-5*wt,4*ht, 2*wt,12*ht, 7*wt, 7*ht,                                   'l', 34*wt,-35*ht,'c', 5*wt,-4*ht, -2*wt,-11*ht, -7*wt, -7*ht,                                    'z',
+        'M',xt+195*wt,yt+239*ht,'l',  -14*wt, 5*ht,'c',-2*wt,1*ht,-4*wt, 4*ht,-3*wt, 7*ht,0   , 2*ht, 3*wt, 4*ht, 6*wt, 3*ht,'l', 14*wt, -6*ht,'c', 2*wt,-1*ht,  4*wt, -3*ht,  3*wt, -6*ht, 0   ,-2*ht,-3*wt,-4*ht,-6*wt,-3*ht,'z',
+        'M',xt+154*wt,yt+206*ht,'l',   -6*wt,14*ht,'c',-1*wt,3*ht, 1*wt, 6*ht, 4*wt, 6*ht,2*wt, 1*ht, 5*wt,-1*ht, 6*wt,-3*ht,'l',  5*wt,-14*ht,'c', 1*wt,-2*ht, -1*wt, -5*ht, -3*wt, -6*ht,-3*wt,-1*ht,-5*wt, 1*ht,-6*wt, 3*ht,'z',
+        'M',xt+101*wt,yt+209*ht,'l',    6*wt,14*ht,'c', 1*wt,2*ht, 3*wt, 4*ht, 6*wt, 3*ht,3*wt, 0   , 5*wt,-3*ht, 4*wt,-6*ht,'l', -6*wt,-14*ht,'c',-1*wt,-2*ht, -3*wt, -4*ht, -6*wt, -3*ht,                                    's',-5*wt,4*ht,-4*wt,6*ht,'z',
+        'M',xt+286*wt,yt+281*ht,'H',xt+75*wt,      'c',-7*wt,0   ,-7*wt,10*ht, 0   ,10*ht,                                   'h',211*wt,       'c', 7*wt, 0   ,  7*wt,-10*ht,  0*wt,-10*ht,                                    'z',
+        'M',xt+ 74*wt,yt+252*ht,'l',    8*wt, 4*ht,'c', 2*wt,1*ht, 5*wt,-1*ht, 6*wt,-4*ht,0   ,-3*ht,-1*wt,-5*ht,-4*wt,-6*ht,'l', -8*wt, -3*ht,'c',-2*wt,-1*ht, -5*wt,  1*ht, -6*wt,  3*ht,-1*wt, 3*ht, 1*wt, 5*ht, 4*wt, 6*ht,'z',
+        'M',xt+ 94*wt,yt+280*ht,'v',  -29*ht,      'c', 0   ,-11*ht,9*wt,-20*ht,20*wt,-20*ht,                                'h', 35*wt,       'c',11*wt, 0   , 20*wt,  9*ht, 20*wt, 20*ht,                                    'v',29*ht
+      ];
+    };
+    Highcharts.SVGRenderer.prototype.symbols.sunset = function (x, y, w, h) {
+      var wt = w/300, ht = h/300;
+      var xt = x-20*wt+w*1.1, yt = y-20*ht-120*ht;
+      return [
+        'M',xt+ wt-(79*wt),yt+267*ht,'h',   wt-(-4*wt),      'c',wt-(-3*wt),0   ,wt-(-5*wt), 2*ht,wt-(-5*wt), 5*ht,    'c',0,3*ht,wt-(2*wt),5*ht,wt-(5*wt),5*ht,'h',  wt-(4*wt),       'c', wt-(3*wt), 0   ,  wt-(5*wt), -2*ht,  wt-(5*wt), -5*ht,                                    'c',0,-3*ht,wt-(-2*wt),-5*ht,wt-(-5*wt),-5*ht,'z',
+        'M',xt+wt-(232*wt),yt+267*ht,'h',  wt-(-48*wt),      'c',wt-(-7*wt),0   ,wt-(-7*wt),10*ht, 0   ,10*ht,                                   'h', wt-(48*wt),       'c', wt-(7*wt), 0   ,  wt-(7*wt),-10*ht,  0   ,-10*ht,                                    'z',
+        'M',xt+ wt-(72*wt),yt+217*ht,'l',   wt-(18*wt),19*ht,'c', wt-(5*wt),5*ht,wt-(12*wt),-3*ht, wt-(8*wt),-7*ht,                                   'l',wt-(-19*wt),-19*ht,'c',wt-(-5*wt),-4*ht,wt-(-12*wt),  3*ht, wt-(-7*wt),  7*ht,                                    'z',
+        'M',xt+wt-(127*wt),yt+172*ht,'v',      (49*ht),      'c', 0   ,6*ht,wt-(10*wt), 6*ht,wt-(10*wt), 0*ht,                                   'v',(-49*ht),       'c', 0   ,-7*ht,wt-(-10*wt), -7*ht,wt-(-10*wt),  0   ,                                    'z',
+        'M',xt+wt-(201*wt),yt+194*ht,'l',  wt-(-34*wt),35*ht,'c',wt-(-5*wt),4*ht, wt-(2*wt),12*ht, wt-(7*wt), 7*ht,                                   'l', wt-(34*wt),-35*ht,'c', wt-(5*wt),-4*ht, wt-(-2*wt),-11*ht, wt-(-7*wt), -7*ht,                                    'z',
+        'M',xt+wt-(195*wt),yt+239*ht,'l',  wt-(-14*wt), 5*ht,'c',wt-(-2*wt),1*ht,wt-(-4*wt), 4*ht,wt-(-3*wt), 7*ht,0   , 2*ht, wt-(3*wt), 4*ht, wt-(6*wt), 3*ht,'l', wt-(14*wt), -6*ht,'c', wt-(2*wt),-1*ht,  wt-(4*wt), -3*ht,  wt-(3*wt), -6*ht, 0   ,-2*ht,wt-(-3*wt),-4*ht,wt-(-6*wt),-3*ht,'z',
+        'M',xt+wt-(154*wt),yt+206*ht,'l',   wt-(-6*wt),14*ht,'c',wt-(-1*wt),3*ht, wt-(1*wt), 6*ht, wt-(4*wt), 6*ht,wt-(2*wt), 1*ht, wt-(5*wt),-1*ht, wt-(6*wt),-3*ht,'l',  wt-(5*wt),-14*ht,'c', wt-(1*wt),-2*ht, wt-(-1*wt), -5*ht, wt-(-3*wt), -6*ht,wt-(-3*wt),-1*ht,wt-(-5*wt), 1*ht,wt-(-6*wt), 3*ht,'z',
+        'M',xt+wt-(101*wt),yt+209*ht,'l',    wt-(6*wt),14*ht,'c', wt-(1*wt),2*ht, wt-(3*wt), 4*ht, wt-(6*wt), 3*ht,wt-(3*wt), 0   , wt-(5*wt),-3*ht, wt-(4*wt),-6*ht,'l', wt-(-6*wt),-14*ht,'c',wt-(-1*wt),-2*ht, wt-(-3*wt), -4*ht, wt-(-6*wt), -3*ht,                                    's',wt-(-5*wt),4*ht,wt-(-4*wt),6*ht,'z',
+        'M',xt+wt-(286*wt),yt+281*ht,'H',xt+wt-(75*wt),      'c',wt-(-7*wt),0   ,wt-(-7*wt),10*ht, 0   ,10*ht,                                   'h',wt-(211*wt),       'c', wt-(7*wt), 0   ,  wt-(7*wt),-10*ht,  wt-(0*wt),-10*ht,                                    'z',
+        'M',xt+ wt-(74*wt),yt+252*ht,'l',    wt-(8*wt), 4*ht,'c', wt-(2*wt),1*ht, wt-(5*wt),-1*ht, wt-(6*wt),-4*ht,0   ,-3*ht,wt-(-1*wt),-5*ht,wt-(-4*wt),-6*ht,'l', wt-(-8*wt), -3*ht,'c',wt-(-2*wt),-1*ht, wt-(-5*wt),  1*ht, wt-(-6*wt),  3*ht,wt-(-1*wt), 3*ht, wt-(1*wt), 5*ht, wt-(4*wt), 6*ht,'z',
+        'M',xt+ wt-(94*wt),yt+280*ht,'v',     (-29*ht),      'c', 0   ,-11*ht,wt-(9*wt),-20*ht,wt-(20*wt),-20*ht,                                'h', wt-(35*wt),       'c',wt-(11*wt), 0   , wt-(20*wt),  9*ht, wt-(20*wt), 20*ht,                                    'v',29*ht
+      ];
+    };
+    if (Highcharts.VMLRenderer) {
+      Highcharts.VMLRenderer.prototype.symbols.sunrise = Highcharts.SVGRenderer.prototype.symbols.sunrise;
+      Highcharts.VMLRenderer.prototype.symbols.sunset = Highcharts.SVGRenderer.prototype.symbols.sunset;
+    }
 
     // draw the plot
     var chart = this.element.highcharts({
@@ -1044,7 +1084,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
             pointFormat: ''
           },
           marker: {
-            symbol: 'triangle'
+            radius: 16
           },
           draggableY: false,
           point: {
@@ -1359,7 +1399,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
             className: 'uzsu-event-sunrise',
             label: { text: sv_lang.uzsu.sunrise }
           });
-          sunData.push({ x: self._getSunTime('sunrise')+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise' });
+          sunData.push({ x: self._getSunTime('sunrise')+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise', marker: { symbol: 'sunrise' } });
         }
         if(hasSunset) {
           plotLines.push({
@@ -1367,7 +1407,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
             className: 'uzsu-event-sunset',
             label: { text: sv_lang.uzsu.sunset }
           });
-          sunData.push({ x: self._getSunTime('sunset')+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset' })
+          sunData.push({ x: self._getSunTime('sunset')+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset', marker: { symbol: 'sunset' } })
         }
       }
     }
@@ -1408,7 +1448,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     axis.removePlotLine('now');
     axis.addPlotLine({
       id: 'now',
-      value: (this._timeToTimestamp(new Date().getHours()+':'+new Date().getMinutes()) - this._startTimestamp + 1000*60*60*24*((new Date().getDay() + 6) % 7)) % (axis.max - this._startTimestamp) + this._startTimestamp,
+      value: (this._timeToTimestamp(String(new Date().getHours()).padStart(2,'0')+':'+String(new Date().getMinutes()).padStart(2,'0')) - this._startTimestamp + 1000*60*60*24*((new Date().getDay() + 6) % 7)) % (axis.max - this._startTimestamp) + this._startTimestamp,
       className: 'uzsu-now highcharts-color-0',
       label: 'now'
     });
