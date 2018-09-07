@@ -1,0 +1,22 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+
+{% extends "base.html" %}
+
+{% block page %}
+<div id="qlock_inner">
+    <span id="e0">●</span>
+    <span id="e1">●</span>
+    <span id="e2">‌●</span>
+    <span id="e3">‌●</span>
+    <div id="letters">
+    </div>
+    </div>​
+    <script type="text/javascript" src="pages/{{ config_pages }}/qlock.js"></script>
+{% endblock %}

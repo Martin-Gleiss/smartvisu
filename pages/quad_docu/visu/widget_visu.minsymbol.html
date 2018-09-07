@@ -1,0 +1,53 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_visu.html" %}
+
+{% block example %}
+<script>
+$( document ).ready(function() {
+		 io.write('that', '0' );
+		 io.write('this', '2' );
+		 io.write('theother', '3' );
+	});
+
+</script>
+	<h5>Example</h5>
+
+Change values of "this", "that" and "theother".
+<div class="html" id="0_status-soundswitch_div">
+	This: {{ basic.slider('this', 'this', 0, 4, 1, '', 'handle') }} <br>
+	That: {{ basic.slider('that', 'that', 0, 4, 1, '', 'handle') }} <br>
+	The other: {{ basic.slider('theother', 'theother', 0, 4, 1, '', 'handle') }}
+</div>
+
+Symbol appears as soon as one of the three items has a value of 2 or higher.
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+		{{ visu.minsymbol('minsymbol', ['this', 'that', 'theother'], '', 'secur_locked', 2, 'or', 'red') }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+			{{ visu.minsymbol('minsymbol', ['this', 'that', 'theother'], '', 'secur_locked', 2, 'or', 'red') }}
+	</ul></div>
+
+Symbol appears as soon as all items have a value of 1 or higher.
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+		{{ visu.minsymbol('minsymbol', ['this', 'that', 'theother'], '', 'secur_locked', 1, 'and', 'icon0') }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+			{{ visu.minsymbol('minsymbol', ['this', 'that', 'theother'], '', 'secur_locked', 1, 'and', 'icon0') }}
+
+	</ul></div>
+{% endblock %}
