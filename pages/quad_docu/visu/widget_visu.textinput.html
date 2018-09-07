@@ -1,0 +1,28 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_visu.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+
+Simple Text input to update items (i.e. to change time, etc.)
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{{ visu.textinput('textinput', 'item', 'Label')  }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+{{ visu.textinput('textinput', 'item', 'Label')  }}
+	</ul></div>
+
+{% endblock %}

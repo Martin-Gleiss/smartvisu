@@ -1,0 +1,50 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_quad.html" %}
+
+{% block example %}
+<script>
+$( document ).ready(function() {
+		 io.write('this', '1' );
+		 io.write('that', '1' );
+		 io.write('theother', '1' );
+	});
+
+</script>
+	<h5>Example</h5>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Use to change values below</li>
+		{{ quad.stateswitch('stateswitch2', ['this', 'that'], ['icon','icon'], [[0,1, 100, 200],[0,1,100,200]], ['', ''], [['0','1','100', '200'],[0,1,100,200]], [['',''],['','','','','']], ['blink','blink'], '', '', 'CHANGE STATUS ITEMS HERE', ['this', 'that']) }}
+		</ul>
+	</div>
+Maptext
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.maprange('mapvalue1', 'text based on range; cols reversed', ['that','this'], [[0,10,101],[0,100]], [[1,100,200],[1,200]], [['low', 'high', 'very high'],['almost empty', 'almost full']], '', '', ['that:', 'this:'], '', '', '', '', [2,1]) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.maprange('mapvalue1', 'text based on range; cols reversed', ['that','this'], [[0,10,101],[0,100]], [[1,100,200],[1,200]], [['low', 'high', 'very high'],['almost empty', 'almost full']], '', '', ['that:', 'this:'], '', '', '', '', [2,1]) }}
+	</ul></div>
+
+Maptext2
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.maprange('mapvalue2', 'with plots', ['that','this'], [[0,10,101],[0,100]], [[1,100,200],[1,200]], [['low', 'high', 'very high'],['almost empty', 'almost full']], '', '', ['that:', 'this:'], ['that.plot','this.plot'], '', '', '', [1,2]) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.maprange('mapvalue2', 'with plots', ['that','this'], [[0,10,101],[0,100]], [[1,100,200],[1,200]], [['low', 'high', 'very high'],['almost empty', 'almost full']], '', '', ['that:', 'this:'], ['that.plot','this.plot'], '', '', '', [1,2]) }}
+	</ul></div>
+{% endblock %}
