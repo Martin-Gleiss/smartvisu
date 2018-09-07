@@ -1087,6 +1087,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
             radius: 16
           },
           draggableY: false,
+          draggableX: false,
           point: {
             events: {
               drop: function (e) {
@@ -1434,7 +1435,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
   _getSunTime: function(event) {
     if(!this.sunTimes)
-      this.sunTimes = { 'sunrise': '06:00', 'sunset': '19:30' };
+      this.sunTimes = { 'sunrise': (this._uzsudata.sunrise == undefined) ? '06:00' : this._uzsudata.sunrise, 'sunset': (this._uzsudata.sunset == undefined) ? '19:30' : this._uzsudata.sunset };
     return this._timeToTimestamp(this.sunTimes[event]);
   },
 
