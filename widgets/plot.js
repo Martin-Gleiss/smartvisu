@@ -107,7 +107,7 @@ $.widget("sv.plot_period", $.sv.widget, {
 		opposite: '',
 		ycolor: '',
 		ytype: '',
-		count: '',
+		count: ''
 	},
 
 	allowPartialUpdate: true,
@@ -162,7 +162,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 					name: (label[i] == null ? 'Item ' + (i+1) : label[i]) + (mode == 'minmaxavg' && label[i] !== '' ? ' (min/max)' : ''),
 					showInLegend: false,
 					data: [],
-					yAxis: (assign[i] ? assign[i] - 1 : 0)
+					yAxis: (assign[i] ? assign[i] - 1 : 0),
+					showInNavigator: false
 				});
 			}
 		}
@@ -172,7 +173,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 				step: (exposure[i] == 'stair' ? 'left' : false),
 				name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
 				data: [], // clone
-				yAxis: (assign[i] ? assign[i] - 1 : 0)
+				yAxis: (assign[i] ? assign[i] - 1 : 0),
+				showInNavigator: true
 			});
 		}
 
@@ -184,8 +186,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 		var yaxis = [];
 		for (var i = 0; i < numAxis; i++) {
 			yaxis[i] = {
-				min: (ymin[i] ? (isNaN(ymin[i]) ? 0 : ymin[i]) : null),
-				max: (ymax[i] ? (isNaN(ymax[i]) ? 1 : ymax[i]) : null),
+				min: (ymin[i] ? (isNaN(ymin[i]) ? 0 : Number(ymin[i])) : null),
+				max: (ymax[i] ? (isNaN(ymax[i]) ? 1 : Number(ymax[i])) : null),
 				title: {text: axis[i + 1]},
 				opposite: (opposite[i] > 0),
 				endOnTick: false,
@@ -201,6 +203,40 @@ $.widget("sv.plot_period", $.sv.widget, {
 			}
 		}
 
+		// range selector buttons for highstock (advanced zoom) according to time range in chart
+		var possibleRangeSelectorButtons = [
+			{ count: 1, type: 'year', text: '1y', svDuration: '1y' },
+			{ count: 6, type: 'month', text: '6m', svDuration: '6m' },
+			{ count: 3, type: 'month', text: '3m', svDuration: '3m' },
+			{ count: 1, type: 'month', text: '1m', svDuration: '1m' },
+			{ count: 2, type: 'week', text: '2w', svDuration: '14d' },
+			{ count: 1, type: 'week', text: '1w', svDuration: '7d' },
+			{ count: 3, type: 'day', text: '3d', svDuration: '3d' },
+			{ count: 1, type: 'day', text: '1d', svDuration: '1d' },
+			{ count: 12, type: 'hour', text: '12h', svDuration: '12h' },
+			{ count: 6, type: 'hour', text: '6h', svDuration: '6h' },
+			{ count: 3, type: 'hour', text: '3h', svDuration: '3h' },
+			{ count: 1, type: 'hour', text: '1h', svDuration: '1h' },
+			{ count: 30, type: 'minute', text: '30min', svDuration: '30i' },
+			{ count: 15, type: 'minute', text: '15min', svDuration: '15i' },
+			{ count: 5, type: 'minute', text: '5min', svDuration: '5i' },
+			{ count: 1, type: 'minute', text: '1min', svDuration: '1i' },
+			{ count: 30, type: 'second', text: '30s', svDuration: '30s' },
+			{ count: 15, type: 'second', text: '15s', svDuration: '15s' },
+			{ count: 5, type: 'second', text: '5s', svDuration: '5s' },
+			{ count: 1, type: 'second', text: '1s', svDuration: '1s' },
+		];
+		var plotRangeDuration = new Date().duration(this.options.tmin) - new Date().duration(this.options.tmax);
+		var rangeSelectorButtons = [{ type: 'all', text: 'All' }];
+		$.each(possibleRangeSelectorButtons, function(idx, rangeSelectorButton) {
+			if(plotRangeDuration >= new Date().duration(rangeSelectorButton.svDuration) * 1.2)
+				rangeSelectorButtons.push({ count: rangeSelectorButton.count, type: rangeSelectorButton.type, text: rangeSelectorButton.count + Highcharts.getOptions().lang.shortDurations[rangeSelectorButton.type] });
+			if(rangeSelectorButtons.length > 5)
+				return false;
+		});
+		rangeSelectorButtons.reverse();
+
+		var that = this;
 		// draw the plot
 		var chartOptions = {
 			chart: {}, // used in code below
@@ -225,7 +261,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 					var value = (this.series.yAxis.categories) ? this.series.yAxis.categories[this.y] : parseFloat(this.y).transUnit(unit);
 
 					if(mode == 'minmax' || mode == 'minmaxavg') {
-						var minmax = this.series.chart.series[this.series.index - this.series.chart.series.length / 2].data[this.index];
+						var minmaxSeries = this.series.chart.series[this.series.index - (this.series.chart.series.length - (that.options.zoom == 'advanced' ? 1 : 0)) / 2];
+						var minmax = minmaxSeries.hasGroupedData ? minmaxSeries.groupedData[this.dataGroup.start] : minmaxSeries.data[this.index];
 						var minValue = parseFloat(minmax.low).transUnit(unit);
 						var maxValue = parseFloat(minmax.high).transUnit(unit);
 						return '<span class="highcharts-color-' + this.colorIndex + '">\u25CF</span> ' + this.series.name + ' \u00D8: <b>' + value + '</b><br/>' +
@@ -235,6 +272,7 @@ $.widget("sv.plot_period", $.sv.widget, {
 						return '<span class="highcharts-color-' + this.colorIndex + '">\u25CF</span> ' + this.series.name + ': <b>' + value + '</b><br/>';
 				}
 			},
+			rangeSelector: { buttons: rangeSelectorButtons },
 			plotOptions: {
 				columnrange: {
 					dataLabels: {
@@ -247,12 +285,17 @@ $.widget("sv.plot_period", $.sv.widget, {
 			}
 		};
 
-		if(zoom) {
+		if(zoom == 'advanced') { // use highstock
 			chartOptions.chart.zoomType = 'x';
-			chartOptions.xAxis.minRange = new Date().duration(zoom).valueOf();
+			Highcharts.stockChart(this.element[0], chartOptions);
 		}
-
-		this.element.highcharts(chartOptions);
+		else {
+			if(zoom) {
+				chartOptions.chart.zoomType = 'x';
+				chartOptions.xAxis.minRange = new Date().duration(zoom).valueOf();
+			}
+			this.element.highcharts(chartOptions);
+		}
 
 		// set series and y-axis colors
 		if (color && color.length > 0) {

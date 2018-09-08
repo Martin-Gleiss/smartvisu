@@ -1545,6 +1545,9 @@ div.ui-slider-switch{
 	min-width: 250px;
 	margin: 0 auto;
 }
+.plot.plot-highstock {
+	height: 315px;
+}
 
 .block .ui-fixed .plot,
 .block .set-1 .plot {
