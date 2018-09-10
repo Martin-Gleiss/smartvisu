@@ -246,6 +246,7 @@ $.widget("sv.plot_period", $.sv.widget, {
 				type: 'datetime',
 				min: new Date() - new Date().duration(this.options.tmin),
 				max: new Date() - new Date().duration(this.options.tmax),
+				ordinal: false,
 				title: { text: axis[0], align: 'high' }
 			},
 			yAxis: yaxis,
