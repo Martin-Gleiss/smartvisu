@@ -1087,7 +1087,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
             radius: 16
           },
           draggableY: false,
-          draggableX: false,
+          // draggableX: false,
           point: {
             events: {
               drop: function (e) {
@@ -1327,6 +1327,10 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         x = self._getSunTime(responseEntry.event);
         if(responseEntry.timeOffsetType == 'm')
           x += responseEntry.timeOffset*1000*60;
+        else if(responseEntry.timeOffsetType == '' && responseEntry.timeOffset != '')
+          x = (responseEntry.calculated == undefined) ? x : self._timeToTimestamp(responseEntry.calculated);
+          console.log('Set '+ responseEntry.event +' based entry to calculated time ' +
+          responseEntry.calculated + ' for ' + responseEntry.time);
         if(responseEntry.timeMin) {
           xMin = self._timeToTimestamp(responseEntry.timeMin);
           if(x < xMin)
