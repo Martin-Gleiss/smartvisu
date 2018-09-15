@@ -289,8 +289,15 @@ $.widget("sv.device_uzsu", $.sv.widget, {
               "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
                 "<label><input type='checkbox' class='expertActive uzsuSunActive'>" + sv_lang.uzsu.act + "</label>" +
               "</fieldset>" +
-            "</div>" +
-          "</div>";
+            "</div>";
+            // UZSU Interpolation
+            if(sv_lang.uzsu.interpolation && this.interpolation == true){
+              tt +=   "<div class='uzsuCell'>" +
+                "<div class='uzsuCellText'>" + sv_lang.uzsu.calculated + "</div>" +
+                "<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuCalculated' disabled>" +
+              "</div>";
+            }
+          tt += "</div>";
       // hier die Einträge für holiday weekend oder nicht
       if (this.options.designtype == '2'){
         tt +=   "<div class='uzsuRowHoliday' style='float: left;'>" +
@@ -414,6 +421,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     }
     uzsuCurrentRows.find('.uzsuTimeMax').val(responseEntry.timeMax);
     uzsuCurrentRows.find('.uzsuTimeCron').val(responseEntry.timeCron);
+    if(responseEntry.calculated != null) {
+      uzsuCurrentRows.find('.uzsuCalculated').val(responseEntry.calculated);
+    }
     // und die pull down Menüs richtig, damit die Einträge wieder stimmen und auch der active state gesetzt wird
     if(responseEntry.event === 'time'){
       uzsuCurrentRows.find('.uzsuSunActive').prop('checked',false).checkboxradio("refresh");
@@ -463,12 +473,13 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // status der eingaben setzen, das brauchen wir an mehreren stellen
     var uzsuRowExpHoli = element.parents('.uzsuRowExpHoli');
     var uzsuTimeCron = uzsuRowExpHoli.prevUntil('.uzsuRowExpHoli').find('.uzsuTimeCron');
+    var uzsuCalc = uzsuRowExpHoli.find('.uzsuCalculated').val();
     if (uzsuRowExpHoli.find('.uzsuSunActive').is(':checked')){
       uzsuTimeCron.attr('type','input').val(uzsuRowExpHoli.find('.uzsuEvent select').val()).textinput('disable');
     }
     else{
       if(uzsuTimeCron.val().indexOf('sun')===0)
-        uzsuTimeCron.attr('type','time').val('00:00');
+        uzsuTimeCron.attr('type','time').val((uzsuCalc == undefined || uzsuCalc == '') ? '00:00' : uzsuCalc);
       uzsuTimeCron.textinput('enable');
     }
   },
