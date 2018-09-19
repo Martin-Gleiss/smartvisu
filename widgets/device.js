@@ -1102,6 +1102,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         type: 'datetime',
         min: this._startTimestamp,
         max: 1000*60*60*24 + this._startTimestamp,
+        showLastLabel: false,
         crosshair: { snap: false },
         dateTimeLabelFormats: {
           day: '%a'

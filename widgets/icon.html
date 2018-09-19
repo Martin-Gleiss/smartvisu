@@ -352,7 +352,7 @@
 {% macro heating(id, item_switch, item_value, min, max, color) %}
 {% set gradient_id = uid(page, item_value~'-gradient', color|default('')) %}
 {% if once(gradient_id) %} /** add gradient definition only once per page */
-<svg id="{{ pid }}" data-widget="icon.heating" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" xmlns="http://www.w3.org/2000/svg" viewBox="20 20 321 321"
+<svg id="{{ pid }}" data-widget="icon.heating.gradient" data-item="{{ item_value }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" xmlns="http://www.w3.org/2000/svg"
 	style="width: 1px; height: 1px; position: absolute; visibility: hidden;">
   <defs>
     <linearGradient id="{{ gradient_id }}" x1="0" y1="71" x2="0" y2="371" gradientUnits="userSpaceOnUse">
@@ -362,7 +362,7 @@
   </defs>
 </svg>
 {% endif %}
-<img src="{{ icon0 }}sani_heating.svg" class="icon icon1" style="fill: url(#{{ gradient_id }}); stroke: url(#{{ gradient_id }});" />
+<img src="{{ icon0 }}sani_heating.svg" data-widget="icon.heating" data-item="{{ item_switch }}" class="icon icon1" style="fill: url(#{{ gradient_id }}); stroke: url(#{{ gradient_id }});" />
 {% endmacro %}
 
 

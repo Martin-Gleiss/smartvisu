@@ -254,7 +254,7 @@ $.widget("sv.plot_period", $.sv.widget, {
 				enabled: label.length > 0,
 				align: 'center',
 				verticalAlign: 'top',
-				floating: true
+				floating: true,
 			},
 			tooltip: {
 				pointFormatter: function() {
