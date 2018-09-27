@@ -289,8 +289,15 @@ $.widget("sv.device_uzsu", $.sv.widget, {
               "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
                 "<label><input type='checkbox' class='expertActive uzsuSunActive'>" + sv_lang.uzsu.act + "</label>" +
               "</fieldset>" +
-            "</div>" +
-          "</div>";
+            "</div>";
+            // UZSU Interpolation
+            if(sv_lang.uzsu.interpolation && this.interpolation == true){
+              tt +=   "<div class='uzsuCell'>" +
+                "<div class='uzsuCellText'>" + sv_lang.uzsu.calculated + "</div>" +
+                "<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuCalculated' disabled>" +
+              "</div>";
+            }
+          tt += "</div>";
       // hier die Einträge für holiday weekend oder nicht
       if (this.options.designtype == '2'){
         tt +=   "<div class='uzsuRowHoliday' style='float: left;'>" +
@@ -414,6 +421,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     }
     uzsuCurrentRows.find('.uzsuTimeMax').val(responseEntry.timeMax);
     uzsuCurrentRows.find('.uzsuTimeCron').val(responseEntry.timeCron);
+    if(responseEntry.calculated != null) {
+      uzsuCurrentRows.find('.uzsuCalculated').val(responseEntry.calculated);
+    }
     // und die pull down Menüs richtig, damit die Einträge wieder stimmen und auch der active state gesetzt wird
     if(responseEntry.event === 'time'){
       uzsuCurrentRows.find('.uzsuSunActive').prop('checked',false).checkboxradio("refresh");
@@ -463,12 +473,13 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // status der eingaben setzen, das brauchen wir an mehreren stellen
     var uzsuRowExpHoli = element.parents('.uzsuRowExpHoli');
     var uzsuTimeCron = uzsuRowExpHoli.prevUntil('.uzsuRowExpHoli').find('.uzsuTimeCron');
+    var uzsuCalc = uzsuRowExpHoli.find('.uzsuCalculated').val();
     if (uzsuRowExpHoli.find('.uzsuSunActive').is(':checked')){
       uzsuTimeCron.attr('type','input').val(uzsuRowExpHoli.find('.uzsuEvent select').val()).textinput('disable');
     }
     else{
       if(uzsuTimeCron.val().indexOf('sun')===0)
-        uzsuTimeCron.attr('type','time').val('00:00');
+        uzsuTimeCron.attr('type','time').val((uzsuCalc == undefined || uzsuCalc == '') ? '00:00' : uzsuCalc);
       uzsuTimeCron.textinput('enable');
     }
   },
@@ -1087,6 +1098,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
             radius: 16
           },
           draggableY: false,
+          // draggableX: false,
           point: {
             events: {
               drop: function (e) {
@@ -1327,6 +1339,10 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         x = self._getSunTime(responseEntry.event);
         if(responseEntry.timeOffsetType == 'm')
           x += responseEntry.timeOffset*1000*60;
+        else if(responseEntry.timeOffsetType == '' && responseEntry.timeOffset != '')
+          x = (responseEntry.calculated == undefined) ? x : self._timeToTimestamp(responseEntry.calculated);
+          console.log('Set '+ responseEntry.event +' based entry to calculated time ' +
+          responseEntry.calculated + ' for ' + responseEntry.time);
         if(responseEntry.timeMin) {
           xMin = self._timeToTimestamp(responseEntry.timeMin);
           if(x < xMin)
@@ -1435,7 +1451,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
   _getSunTime: function(event) {
     if(!this.sunTimes)
-      this.sunTimes = { 'sunrise': '06:00', 'sunset': '19:30' };
+      this.sunTimes = { 'sunrise': (this._uzsudata.sunrise == undefined) ? '06:00' : this._uzsudata.sunrise, 'sunset': (this._uzsudata.sunset == undefined) ? '19:30' : this._uzsudata.sunset };
     return this._timeToTimestamp(this.sunTimes[event]);
   },
 
