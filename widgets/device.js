@@ -1070,7 +1070,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           id: 'range',
           zIndex: 2,
           className: 'uzsu-minmax',
+          type: 'scatter',
+          lineWidth: 2,
           draggableY: false,
+          tooltip: {
+            headerFormat: '',
+            footerFormat: '<span style="font-size: 10px">{point.key}</span><br/>',
+            pointFormatter: function() { return '<span style="font-size: 10px">'+this.series.chart.time.dateFormat('%a, %H:%M', this.x)+'</span><br/>'; },
+          },
           point: {
             events: {
               drop: function (e) {
@@ -1092,13 +1099,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           zIndex: 1,
           type: 'scatter',
           tooltip: {
-            pointFormat: ''
+            headerFormat: '',
+            footerFormat: '<span style="font-size: 10px">{point.key}</span><br/>',
+            pointFormatter: function() { return '<span style="font-size: 10px">'+this.series.chart.time.dateFormat('%a, %H:%M', this.x)+'</span><br/>'; },
           },
           marker: {
             radius: 16
           },
           draggableY: false,
-          // draggableX: false,
           point: {
             events: {
               drop: function (e) {
@@ -1136,7 +1144,11 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       tooltip: {
         xDateFormat: '%a, %H:%M',
         headerFormat: '<span style="font-size: 10px">{point.key}</span><br/>',
-        pointFormat: '<span class="highcharts-strong">{point.y}</span> ({series.name})<br/>',
+        pointFormatter: function() {
+          var value = (this.series.yAxis.categories) ? this.series.yAxis.categories[this.y] : this.y;
+          return '<span class="highcharts-strong">' + value + '</span> (' + this.series.name + ')<br/>';
+        }
+
       },
       chart: {
         events: {
@@ -1174,6 +1186,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           cursor: this.options.editable ? 'move' : null,
           marker: { enabled: true },
           stickyTracking: false,
+          findNearestPointBy: 'xy',
           point: {
             events: {
               click: function (e) {
@@ -1226,6 +1239,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         else if(position.y > max)
           position.y = max;
         position.y = Math.round((position.y - min) / step) * step + min;
+        if(chart.yAxis[0].categories)
+          position.y = chart.yAxis[0].categories[position.y];
 
         chart.lab.attr({
           x: e.chartX + 5,
@@ -1325,7 +1340,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var hasDays = false;
     var hasSunrise = false;
     var hasSunset = false;
-    var seriesData = { active: {}, inactive: {}, range: [] };
+    var seriesData = { active: [], inactive: [], range: [] };
     $.each(this._uzsudata.list, function(responseEntryIdx, responseEntry) {
       // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button.
       var x, xMin, xMax;
@@ -1368,14 +1383,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           var rruleOffset = self.rruleDays[day]*1000*60*60*24;
           var xRecurring = x + rruleOffset;
           var yValue = Number(responseEntry.value);
-          seriesData[responseEntry.active ? 'active' : 'inactive'][xRecurring] = { x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry };
+          seriesData[responseEntry.active ? 'active' : 'inactive'].push({ x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
           if(xMin !== undefined || xMax !== undefined) {
             if(xMin !== undefined)
-              seriesData.range.push({ x: xMin+rruleOffset, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-min' });
+              seriesData.range.push({ x: xMin+rruleOffset, y: yValue, name: sv_lang.uzsu.earliest, uzsuEntry: responseEntry, className: 'uzsu-min' });
             else
               seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-min uzsu-hidden', marker: { enabled: false } });
             if(xMax !== undefined)
-              seriesData.range.push({ x: xMax+rruleOffset, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-max' });
+              seriesData.range.push({ x: xMax+rruleOffset, y: yValue, name: sv_lang.uzsu.latest, uzsuEntry: responseEntry, className: 'uzsu-max' });
             else
               seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-max uzsu-hidden', marker: { enabled: false } });
             seriesData.range.push({ x: xMax+rruleOffset+1, y: null, uzsuEntry: responseEntry });
@@ -1387,24 +1402,26 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var xMax = 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp;
 
     // active points
-    var data = $.map(seriesData.active, function(val, key) { return val; });
+    var data = seriesData.active;
+    data.sort(function(a,b) { return a.x - b.x });
     if(data.length > 0) {
       data.unshift({ x: data[data.length-1].x-1000*60*60*24*7, y: data[data.length-1].y, className: data[data.length-1].className });
       data.push({ x: data[1].x+1000*60*60*24*7, y: data[1].y, className: data[1].className });
     }
 
-    chart.get('active').setData(data, false);
+    chart.get('active').setData(data, false, null, false);
     chart.get('active').update({
       type: this._uzsudata.interpolation.type == 'cubic' ? 'spline' : 'line',
       step: this._uzsudata.interpolation.type != 'cubic' && this._uzsudata.interpolation.type != 'linear' ? 'left' : false,
     }, false);
 
     // inactive points
-    data = $.map(seriesData.inactive, function(val, key) { return val; });
-    chart.get('inactive').setData(data, false);
+    data = seriesData.inactive;
+    data.sort(function(a,b) { return a.x - b.x });
+    chart.get('inactive').setData(data, false, null, false);
 
     // min/max times on sun events
-    chart.get('range').setData(seriesData.range, false);
+    chart.get('range').setData(seriesData.range, false, null, false);
 
     plotLines = [];
     sunData = [];
