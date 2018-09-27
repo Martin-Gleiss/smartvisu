@@ -157,13 +157,13 @@ $.widget("sv.plot_period", $.sv.widget, {
 		for (var i = 0; i < itemCount; i++) {
 			if(mode != 'minmax') {
 				series.push({
-					type: (exposure[i] != 'stair' ? exposure[i] : 'line'),
-					step: (exposure[i] == 'stair' ? 'left' : false),
+					type: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? exposure[i].substr(0, exposure[i].length-5) : exposure[i]),
+					step: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? 'left' : false),
 					name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
 					data: [], // clone
 					yAxis: (assign[i] ? assign[i] - 1 : 0),
 					showInNavigator: true,
-					colorIndex: i*2+1
+					colorIndex: mode == 'minmaxavg' ? i*2+1 : null
 				});
 			}
 			if(mode == 'minmax' || mode == 'minmaxavg') {
@@ -366,10 +366,9 @@ $.widget("sv.plot_period", $.sv.widget, {
 
 		var xMin = new Date() - new Date().duration(this.options.tmin);
 		var xMax = new Date() - new Date().duration(this.options.tmax);
-		chart.xAxis[0].setExtremes(xMin, xMax, false);
+		chart.xAxis[0].update({ min: xMin, max: xMax }, false);
 		if(chart.navigator) {
-			//chart.navigator.xAxis.setExtremes(xMin, xMax, false); // see https://github.com/highcharts/highcharts/issues/9028
-			chart.navigator.xAxis.update({ min: xMin, max: xMax });
+			chart.navigator.xAxis.update({ min: xMin, max: xMax }, false);
 		}
 
 		var mode = this.options.mode;
