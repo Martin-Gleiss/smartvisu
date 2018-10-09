@@ -148,8 +148,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // ansonsten ist der Status von active gleich dem gesetzten Status
     // Wenn ein Update erfolgt, dann werden die Daten erneut in die Variable uzsu geladen damit sind die UZSU objekte auch in der click Funktion verfügbar
     this._uzsudata = response[0];
+    console.log(response[0].interpolation);
     if (!(this._uzsudata.list instanceof Array)) {
-      this._uzsudata = { active : true, list : [] };
+      this._uzsudata = { active : false, list : [], interpolation : response[0].interpolation };
     }
   },
 
@@ -251,7 +252,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
         "</div>";
     // Tabelle Zeile abschliessen
     tt +=   "</div>";
-    // und jetzt noch die unsichbare Expertenzeile
+    // und jetzt noch die unsichtbare Expertenzeile
     tt +=   "<div class='uzsuRowExpHoli' style='display:none;'>" +
           "<div class='uzsuRowExpert' style='float: left;'>" +
             "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.sun + "</div>" +
@@ -294,7 +295,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             if(sv_lang.uzsu.interpolation && this.interpolation == true){
               tt +=   "<div class='uzsuCell'>" +
                 "<div class='uzsuCellText'>" + sv_lang.uzsu.calculated + "</div>" +
+                "<div data-tip='" + sv_lang.uzsu.calculatedtip + "'>" +
                 "<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuCalculated' disabled>" +
+                "</div>" +
               "</div>";
             }
           tt += "</div>";
@@ -499,6 +502,22 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   _uzsuHideAllExpertLines: function() {
     $('.uzsuRowExpHoli, .uzsuRowCondition, .uzsuRowDelayedExec').hide();
     $('.uzsuCellExpert button').buttonMarkup({ icon: "arrow-d" });
+  },
+
+  //Interpolationszeile
+  _uzsuShowInterpolationLine: function(e) {
+
+    // erst einmal alle verschwinden lassen
+    // this._uzsuHideInterpolationLine();
+    // Tabellezeile ermitteln, wo augerufen wurde
+    var uzsuInterpolationButton = $(e.currentTarget);
+    $('#uzsuRowInterpolation').show();
+    // jetzt noch den Button in der Zeile drüber auf arrow up ändern
+    uzsuInterpolationButton.buttonMarkup({ icon: "arrow-u" });
+  },
+  _uzsuHideInterpolationLine: function() {
+    $('#uzsuRowInterpolation').hide();
+    $('.uzsuCellInterpolation button').buttonMarkup({ icon: "arrow-d" });
   },
 
   _uzsuSaveTableRow: function(responseEntry, tableRow) {
@@ -717,31 +736,10 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
             "<span style='float:right'>";
               // UZSU Interpolation
               if(sv_lang.uzsu.interpolation && this.interpolation == true){
-                tt +=
-                  "<div class='uzsuRowExpert' style='float: left'>" +
-                    "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.interpolation + "</div>" +
-                    "<div class='uzsuCell'>" +
-                      "<div class='uzsuCellText'>" + sv_lang.uzsu.interpolation + "</div>" +
-                      "<select data-mini='true' data-native-menu='false' id='uzsuInterpolationType'>" +
-                        "<option value='none'>" + sv_lang.uzsu.nointerpolation + "</option>" +
-                        "<option value='cubic'>" + sv_lang.uzsu.cubic + "</option>" +
-                        "<option value='linear'>" + sv_lang.uzsu.linear + "</option>" +
-                      "</select>" +
-                    "</div>" +
-                    "<div class='uzsuCell'>" +
-                      "<div class='uzsuCell'>" +
-                        "<div class='uzsuCellText'>" + sv_lang.uzsu.intervaltime + "</div>" +
-                        "<input type='number' data-clear-btn='false' id='uzsuInterpolationInterval' style='width:50px;'>" +
-                      "</div>" +
-                    "</div>" +
-                    "<div class='uzsuCell'>" +
-                      "<div class='uzsuCell'>" +
-                        "<div class='uzsuCellText'>" + sv_lang.uzsu.inittime + "</div>" +
-                        "<input type='number' data-clear-btn='false' id='uzsuInitAge' style='width:50px;'>" +
-                        "<div class='uzsuCellText' style='visibility:hidden'><label><input type='checkbox' id='uzsuInitialized'>Init</label></div>" +
-                      "</div>" +
-                    "</div>" +
-                  "</div>";
+                tt += "<div class='uzsuCellInterpolation' style='float:left;'>" +
+                  "<div class='uzsuCellText'>" + sv_lang.uzsu.interpolation + "</div>" +
+                  "<button data-mini='true' data-icon='arrow-d' data-iconpos='notext' class='ui-icon-shadow'></button>" +
+                "</div>";
               }
               tt+= "<div class='uzsuCell' style='float: left'>" +
                 "<form>" +
@@ -763,7 +761,36 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
                   "</div>" +
                 "</div>" +
               "</div>" +
-            "</span>" +
+            "</span>";
+            if(sv_lang.uzsu.interpolation && this.interpolation == true){
+              tt +=
+                "<div id='uzsuRowInterpolation' style='display: none; float: right; margin: 0 15px 5px 0;'>" +
+                  "<span style='float:left; margin-right: 12px;'>" +
+                    "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.interpolation + "</div>" +
+                    "<div class='uzsuCell'>" +
+                      "<div class='uzsuCellText'>" + sv_lang.uzsu.interpolation + "</div>" +
+                      "<select data-mini='true' data-native-menu='false' id='uzsuInterpolationType'>" +
+                        "<option value='none'>" + sv_lang.uzsu.nointerpolation + "</option>" +
+                        "<option value='cubic'>" + sv_lang.uzsu.cubic + "</option>" +
+                        "<option value='linear'>" + sv_lang.uzsu.linear + "</option>" +
+                      "</select>" +
+                    "</div>" +
+                    "<div class='uzsuCell'>" +
+                      "<div class='uzsuCellText'>" + sv_lang.uzsu.intervaltime + "</div>" +
+                      "<input type='number' data-clear-btn='false' id='uzsuInterpolationInterval' style='width:50px;'>" +
+                    "</div>" +
+                  "</span>" +
+                  "<span style='float:left; margin-left: 12px;'>" +
+                    "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.inittime + "</div>" +
+                    "<div class='uzsuCell'>" +
+                      "<div class='uzsuCellText'>" + sv_lang.uzsu.inittime_header + "</div>" +
+                      "<input type='number' data-clear-btn='false' id='uzsuInitAge' style='width:50px;'>" +
+                      "<div class='uzsuCellText' style='visibility:hidden'><label><input type='checkbox' id='uzsuInitialized'>Init</label></div>" +
+                    "</div>" +
+                  "</span>" +
+                "</div>";
+              }
+            tt +=
           "</div>";
     // und der Abschluss des uzsuClear als Rahmen für den float:left und des uzsuPopup divs
     tt += "</div></div>";
@@ -936,6 +963,13 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
     uzsuPopup.delegate('.uzsuRowExpert .uzsuEvent select, input.uzsuSunActive', 'change', function (){
       self._uzsuSetSunActiveState($(this));
     });
+    // call Interpolation Mode
+    uzsuPopup.delegate('.uzsuCellInterpolation button', 'click', function(e) {
+      if($(this).hasClass('ui-icon-arrow-u'))
+        self._uzsuHideInterpolationLine();
+      else
+        self._uzsuShowInterpolationLine(e);
+    });
 
     // hier wir die aktuelle Seite danach durchsucht, wo das Popup ist und im folgenden das Popup initialisiert, geöffnet und die schliessen
     // Funktion daran gebunden. Diese entfernt wieder das Popup aus dem DOM Baum nach dem Schliessen mit remove
@@ -1070,7 +1104,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           id: 'range',
           zIndex: 2,
           className: 'uzsu-minmax',
+          type: 'scatter',
+          lineWidth: 2,
           draggableY: false,
+          tooltip: {
+            headerFormat: '',
+            footerFormat: '<span style="font-size: 10px">{point.key}</span><br/>',
+            pointFormatter: function() { return '<span style="font-size: 10px">'+this.series.chart.time.dateFormat('%a, %H:%M', this.x)+'</span><br/>'; },
+          },
           point: {
             events: {
               drop: function (e) {
@@ -1092,13 +1133,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           zIndex: 1,
           type: 'scatter',
           tooltip: {
-            pointFormat: ''
+            headerFormat: '',
+            footerFormat: '<span style="font-size: 10px">{point.key}</span><br/>',
+            pointFormatter: function() { return '<span style="font-size: 10px">'+this.series.chart.time.dateFormat('%a, %H:%M', this.x)+'</span><br/>'; },
           },
           marker: {
             radius: 16
           },
           draggableY: false,
-          // draggableX: false,
           point: {
             events: {
               drop: function (e) {
@@ -1114,6 +1156,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         type: 'datetime',
         min: this._startTimestamp,
         max: 1000*60*60*24 + this._startTimestamp,
+        showLastLabel: false,
         crosshair: { snap: false },
         dateTimeLabelFormats: {
           day: '%a'
@@ -1135,7 +1178,11 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       tooltip: {
         xDateFormat: '%a, %H:%M',
         headerFormat: '<span style="font-size: 10px">{point.key}</span><br/>',
-        pointFormat: '<span class="highcharts-strong">{point.y}</span> ({series.name})<br/>',
+        pointFormatter: function() {
+          var value = (this.series.yAxis.categories) ? this.series.yAxis.categories[this.y] : this.y;
+          return '<span class="highcharts-strong">' + value + '</span> (' + this.series.name + ')<br/>';
+        }
+
       },
       chart: {
         events: {
@@ -1173,6 +1220,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           cursor: this.options.editable ? 'move' : null,
           marker: { enabled: true },
           stickyTracking: false,
+          findNearestPointBy: 'xy',
           point: {
             events: {
               click: function (e) {
@@ -1225,6 +1273,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         else if(position.y > max)
           position.y = max;
         position.y = Math.round((position.y - min) / step) * step + min;
+        if(chart.yAxis[0].categories)
+          position.y = chart.yAxis[0].categories[position.y];
 
         chart.lab.attr({
           x: e.chartX + 5,
@@ -1324,7 +1374,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var hasDays = false;
     var hasSunrise = false;
     var hasSunset = false;
-    var seriesData = { active: {}, inactive: {}, range: [] };
+    var seriesData = { active: [], inactive: [], range: [] };
     $.each(this._uzsudata.list, function(responseEntryIdx, responseEntry) {
       // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button.
       var x, xMin, xMax;
@@ -1367,14 +1417,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           var rruleOffset = self.rruleDays[day]*1000*60*60*24;
           var xRecurring = x + rruleOffset;
           var yValue = Number(responseEntry.value);
-          seriesData[responseEntry.active ? 'active' : 'inactive'][xRecurring] = { x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry };
+          seriesData[responseEntry.active ? 'active' : 'inactive'].push({ x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
           if(xMin !== undefined || xMax !== undefined) {
             if(xMin !== undefined)
-              seriesData.range.push({ x: xMin+rruleOffset, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-min' });
+              seriesData.range.push({ x: xMin+rruleOffset, y: yValue, name: sv_lang.uzsu.earliest, uzsuEntry: responseEntry, className: 'uzsu-min' });
             else
               seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-min uzsu-hidden', marker: { enabled: false } });
             if(xMax !== undefined)
-              seriesData.range.push({ x: xMax+rruleOffset, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-max' });
+              seriesData.range.push({ x: xMax+rruleOffset, y: yValue, name: sv_lang.uzsu.latest, uzsuEntry: responseEntry, className: 'uzsu-max' });
             else
               seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-max uzsu-hidden', marker: { enabled: false } });
             seriesData.range.push({ x: xMax+rruleOffset+1, y: null, uzsuEntry: responseEntry });
@@ -1386,24 +1436,26 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var xMax = 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp;
 
     // active points
-    var data = $.map(seriesData.active, function(val, key) { return val; });
+    var data = seriesData.active;
+    data.sort(function(a,b) { return a.x - b.x });
     if(data.length > 0) {
       data.unshift({ x: data[data.length-1].x-1000*60*60*24*7, y: data[data.length-1].y, className: data[data.length-1].className });
       data.push({ x: data[1].x+1000*60*60*24*7, y: data[1].y, className: data[1].className });
     }
 
-    chart.get('active').setData(data, false);
+    chart.get('active').setData(data, false, null, false);
     chart.get('active').update({
       type: this._uzsudata.interpolation.type == 'cubic' ? 'spline' : 'line',
       step: this._uzsudata.interpolation.type != 'cubic' && this._uzsudata.interpolation.type != 'linear' ? 'left' : false,
     }, false);
 
     // inactive points
-    data = $.map(seriesData.inactive, function(val, key) { return val; });
-    chart.get('inactive').setData(data, false);
+    data = seriesData.inactive;
+    data.sort(function(a,b) { return a.x - b.x });
+    chart.get('inactive').setData(data, false, null, false);
 
     // min/max times on sun events
-    chart.get('range').setData(seriesData.range, false);
+    chart.get('range').setData(seriesData.range, false, null, false);
 
     plotLines = [];
     sunData = [];
