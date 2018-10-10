@@ -2255,8 +2255,8 @@ svg.fx-icon, .icon {
   content:attr(data-tip);
   position:absolute;
   top:35px;
-  left:-90px;
-  padding:5px 8px;
+  left:-190px;
+  padding:2px 8px 2px 8px;
   background:#1a1a1a;
   color:#fff;
   z-index:9;

@@ -148,7 +148,6 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // ansonsten ist der Status von active gleich dem gesetzten Status
     // Wenn ein Update erfolgt, dann werden die Daten erneut in die Variable uzsu geladen damit sind die UZSU objekte auch in der click Funktion verfügbar
     this._uzsudata = response[0];
-    console.log(response[0].interpolation);
     if (!(this._uzsudata.list instanceof Array)) {
       this._uzsudata = { active : false, list : [], interpolation : response[0].interpolation };
     }
@@ -210,7 +209,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       }
     }
     else if (this.options.valuetype === 'num') {
-      tt +=   "<input type='number' min='" + valueParameterList[0] + "' max='" + valueParameterList[1] + "' step='" + valueParameterList[2] + "' data-clear-btn='false' class='uzsuValueInput' pattern='[0-9]*'>";
+      var addedclass = (parseFloat(valueParameterList[0]) < 0) ? "" : " positivenumbers";
+      tt +=   "<input type='number' min='" + parseFloat(valueParameterList[0]) + "' max='" + parseFloat(valueParameterList[1]) + "' step='" + parseFloat(valueParameterList[2]) + "' data-clear-btn='false' class='uzsuValueInput" + addedclass + "' pattern='[0-9]*'>";
     }
     else if (this.options.valuetype === 'text') {
       tt +=   "<input type='text' data-clear-btn='false' class='uzsuTextInput'>";
@@ -604,7 +604,6 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 
 });
 
-
   // ----- device.uzsuicon ------------------------------------------------------
   // ----------------------------------------------------------------------------
 $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
@@ -727,6 +726,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
   // Funktionen für den Seitenaufbau
   //----------------------------------------------------------------------------
   _uzsuBuildTableFooter: function() {
+
     var tt = "";
     // Zeileneinträge abschliessen und damit die uzsuTableMain
     tt += "</div>";
@@ -737,7 +737,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
               // UZSU Interpolation
               if(sv_lang.uzsu.interpolation && this.interpolation == true){
                 tt += "<div class='uzsuCellInterpolation' style='float:left;'>" +
-                  "<div class='uzsuCellText'>" + sv_lang.uzsu.interpolation + "</div>" +
+                  "<div class='uzsuCellText'>" + sv_lang.uzsu.options + "</div>" +
                   "<button data-mini='true' data-icon='arrow-d' data-iconpos='notext' class='ui-icon-shadow'></button>" +
                 "</div>";
               }
@@ -777,14 +777,14 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
                     "</div>" +
                     "<div class='uzsuCell'>" +
                       "<div class='uzsuCellText'>" + sv_lang.uzsu.intervaltime + "</div>" +
-                      "<input type='number' data-clear-btn='false' id='uzsuInterpolationInterval' style='width:50px;'>" +
+                      "<input type='number' data-clear-btn='false' id='uzsuInterpolationInterval' style='width:50px;' min='0' class='uzsuValueInput positivenumbers'>" +
                     "</div>" +
                   "</span>" +
                   "<span style='float:left; margin-left: 12px;'>" +
                     "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.inittime + "</div>" +
                     "<div class='uzsuCell'>" +
                       "<div class='uzsuCellText'>" + sv_lang.uzsu.inittime_header + "</div>" +
-                      "<input type='number' data-clear-btn='false' id='uzsuInitAge' style='width:50px;'>" +
+                      "<input type='number' data-clear-btn='false' id='uzsuInitAge' style='width:50px;' min='0' class='uzsuValueInput positivenumbers'>" +
                       "<div class='uzsuCellText' style='visibility:hidden'><label><input type='checkbox' id='uzsuInitialized'>Init</label></div>" +
                     "</div>" +
                   "</span>" +
@@ -814,6 +814,11 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
     $('.uzsuRow').each(function(numberOfRow, tableRow) {
       var responseEntry = response.list[numberOfRow];
       self._uzsuFillTableRow(responseEntry, tableRow);
+    });
+    // Verhindern negativer Zahleneingabe
+    $('.positivenumbers').keypress(function(evt){
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        return !(charCode > 31 && (charCode < 48 || charCode > 57));
     });
   },
 
@@ -1552,6 +1557,11 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     // dann die Werte eintragen.
     var tableRow = $('.uzsuRow').first();
     this._uzsuFillTableRow(responseEntry, tableRow);
+    // Verhindern negativer Zahleneingabe
+    $('.positivenumbers').keypress(function(evt){
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        return !(charCode > 31 && (charCode < 48 || charCode > 57));
+    });
     // Popup schliessen mit close rechts oben in der Box oder mit Cancel in der Leiste
     uzsuPopup.find('#uzsuClose, #uzsuCancel').bind('click', function(e) {
       // wenn keine Änderungen gemacht werden sollen (cancel), dann auch im cache die alten Werte
