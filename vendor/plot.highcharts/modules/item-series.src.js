@@ -1,9 +1,9 @@
 /**
- * @license  Highcharts JS v6.1.1 (2018-06-27)
+ * @license  Highcharts JS v6.2.0 (2018-10-17)
  *
  * Item series type for Highcharts
  *
- * (c) 2010-2017 Torstein Honsi
+ * (c) 2010-2018 Torstein Honsi
  *
  * License: www.highcharts.com/license
  */
@@ -11,13 +11,17 @@
 (function (factory) {
 	if (typeof module === 'object' && module.exports) {
 		module.exports = factory;
+	} else if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return factory;
+		});
 	} else {
 		factory(Highcharts);
 	}
 }(function (Highcharts) {
 	(function (H) {
 		/**
-		 * (c) 2009-2017 Torstein Honsi
+		 * (c) 2009-2018 Torstein Honsi
 		 *
 		 * Item series type for Highcharts
 		 *
@@ -48,7 +52,11 @@
 		    drawPoints: function () {
 		        var series = this,
 		            renderer = series.chart.renderer,
-		            seriesMarkerOptions = this.options.marker;
+		            seriesMarkerOptions = this.options.marker,
+		            itemPaddingTranslated = this.yAxis.transA *
+		                series.options.itemPadding,
+		            borderWidth = this.borderWidth,
+		            crisp = borderWidth % 2 ? 0.5 : 1;
 
 		        each(this.points, function (point) {
 		            var yPos,
@@ -61,8 +69,15 @@
 		                    pointMarkerOptions.symbol ||
 		                    seriesMarkerOptions.symbol
 		                ),
+		                radius = pick(
+		                    pointMarkerOptions.radius,
+		                    seriesMarkerOptions.radius
+		                ),
 		                size,
-		                yTop;
+		                yTop,
+		                isSquare = symbol !== 'rect',
+		                x,
+		                y;
 
 		            point.graphics = graphics = point.graphics || {};
 		            pointAttr = point.pointAttr ?
@@ -83,18 +98,28 @@
 		                yTop = pick(point.stackY, point.y);
 		                size = Math.min(
 		                    point.pointWidth,
-		                    (
-		                        series.yAxis.transA *
-		                        (1 - series.options.itemPadding)
-		                    )
+		                    series.yAxis.transA - itemPaddingTranslated
 		                );
 		                for (yPos = yTop; yPos > yTop - point.y; yPos--) {
 
+		                    x = point.barX + (
+		                        isSquare ?
+		                            point.pointWidth / 2 - size / 2 :
+		                            0
+		                    );
+		                    y = series.yAxis.toPixels(yPos, true) +
+		                        itemPaddingTranslated / 2;
+
+		                    if (series.options.crisp) {
+		                        x = Math.round(x) - crisp;
+		                        y = Math.round(y) + crisp;
+		                    }
 		                    attr = {
-		                        x: point.barX + point.pointWidth / 2 - size / 2,
-		                        y: series.yAxis.toPixels(yPos, true) - size / 2,
-		                        width: size,
-		                        height: size
+		                        x: x,
+		                        y: y,
+		                        width: Math.round(isSquare ? size : point.pointWidth),
+		                        height: Math.round(size),
+		                        r: radius
 		                    };
 
 		                    if (graphics[itemY]) {
@@ -120,6 +145,10 @@
 
 		    }
 		});
+
+		H.SVGRenderer.prototype.symbols.rect = function (x, y, w, h, options) {
+		    return H.SVGRenderer.prototype.symbols.callout(x, y, w, h, options);
+		};
 
 
 	}(Highcharts));

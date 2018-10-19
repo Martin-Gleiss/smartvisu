@@ -1,8 +1,8 @@
 /**
- * @license  Highcharts JS v6.1.1 (2018-06-27)
+ * @license  Highcharts JS v6.2.0 (2018-10-17)
  * Sankey diagram module
  *
- * (c) 2010-2017 Torstein Honsi
+ * (c) 2010-2018 Torstein Honsi
  *
  * License: www.highcharts.com/license
  */
@@ -10,6 +10,10 @@
 (function (factory) {
 	if (typeof module === 'object' && module.exports) {
 		module.exports = factory;
+	} else if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return factory;
+		});
 	} else {
 		factory(Highcharts);
 	}
@@ -18,7 +22,7 @@
 		/**
 		 * Sankey diagram module
 		 *
-		 * (c) 2010-2017 Torstein Honsi
+		 * (c) 2010-2018 Torstein Honsi
 		 *
 		 * License: www.highcharts.com/license
 		 */
@@ -70,7 +74,7 @@
 		        backgroundColor: 'none', // enable padding
 		        crop: false,
 		        /**
-		         * The [format string](http://www.highcharts.com/docs/chart-
+		         * The [format string](https://www.highcharts.com/docs/chart-
 		         * concepts/labels-and-string-formatting) specifying what to show
 		         * for _nodes_ in the sankey diagram. By default the
 		         * `nodeFormatter` returns `{point.name}`.
@@ -90,7 +94,7 @@
 		            return this.point.name;
 		        },
 		        /**
-		         * The [format string](http://www.highcharts.com/docs/chart-
+		         * The [format string](https://www.highcharts.com/docs/chart-
 		         * concepts/labels-and-string-formatting) specifying what to show for
 		         * _links_ in the sankey diagram. Defaults to an empty string returned
 		         * from the `formatter`, in effect disabling the labels.
@@ -149,7 +153,7 @@
         
 		        pointFormat: '{point.fromNode.name} \u2192 {point.toNode.name}: <b>{point.weight}</b><br/>',
 		        /**
-		         * The [format string](http://www.highcharts.com/docs/chart-
+		         * The [format string](https://www.highcharts.com/docs/chart-
 		         * concepts/labels-and-string-formatting) specifying what to
 		         * show for _nodes_ in tooltip
 		         * of a sankey diagram series, as opposed to links.
@@ -318,8 +322,17 @@
 		            columns[node.column].push(node);
 
 		        }, this);
+
+		        // Fill in empty columns (#8865)
+		        for (var i = 0; i < columns.length; i++) {
+		            if (columns[i] === undefined) {
+		                columns[i] = this.createNodeColumn();
+		            }
+		        }
+
 		        return columns;
 		    },
+
 
     
 
@@ -580,7 +593,14 @@
 		        H.seriesTypes.column.prototype.render.call(this);
 		        this.points = points;
 		    },
-		    animate: H.Series.prototype.animate
+		    animate: H.Series.prototype.animate,
+
+
+		    destroy: function () {
+		        // Nodes must also be destroyed (#8682)
+		        this.data = this.points.concat(this.nodes);
+		        H.Series.prototype.destroy.call(this);
+		    }
 		}, {
 		    getClassName: function () {
 		        return 'highcharts-link ' + Point.prototype.getClassName.call(this);
@@ -689,8 +709,8 @@
 		 * An array of data points for the series. For the `sankey` series type,
 		 * points can be given in the following way:
 		 *
-		 * An array of objects with named values. The objects are point
-		 * configuration objects as seen below. If the total number of data
+		 * An array of objects with named values. The following snippet shows only a
+		 * few settings, see the complete options set below. If the total number of data
 		 * points exceeds the series' [turboThreshold](#series.area.turboThreshold),
 		 * this option is not available.
 		 *

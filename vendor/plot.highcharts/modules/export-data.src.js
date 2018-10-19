@@ -1,8 +1,8 @@
 /**
- * @license Highcharts JS v6.1.1 (2018-06-27)
+ * @license Highcharts JS v6.2.0 (2018-10-17)
  * Exporting module
  *
- * (c) 2010-2017 Torstein Honsi
+ * (c) 2010-2018 Torstein Honsi
  *
  * License: www.highcharts.com/license
  */
@@ -10,6 +10,10 @@
 (function (factory) {
 	if (typeof module === 'object' && module.exports) {
 		module.exports = factory;
+	} else if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return factory;
+		});
 	} else {
 		factory(Highcharts);
 	}
@@ -110,7 +114,7 @@
 		/**
 		 * Experimental data export module for Highcharts
 		 *
-		 * (c) 2010-2017 Torstein Honsi
+		 * (c) 2010-2018 Torstein Honsi
 		 *
 		 * License: www.highcharts.com/license
 		 */
@@ -169,8 +173,15 @@
 		         * export menu and provides functions like `Chart.getCSV`,
 		         * `Chart.getTable`, `Chart.getDataRows` and `Chart.viewData`.
 		         *
+		         * The XLS converter is limited and only creates a HTML string that is
+		         * passed for download, which works but creates a warning before
+		         * opening. The workaround for this is to use a third party XLSX
+		         * converter, as demonstrated in the sample below.
+		         *
 		         * @sample  highcharts/export-data/categorized/ Categorized data
 		         * @sample  highcharts/export-data/stock-timeaxis/ Highstock time axis
+		         * @sample  highcharts/export-data/xlsx/
+		         *          Using a third party XLSX converter
 		         *
 		         * @since 6.0.0
 		         */
@@ -236,6 +247,9 @@
 		         * the chart's current data.
 		         *
 		         * @sample highcharts/export-data/showtable/ Show the table
+		         * @sample highcharts/studies/exporting-table-html
+		         *         Experiment with putting the table inside the subtitle to
+		         *         allow exporting it.
 		         * @since 6.0.0
 		         */
 		        showTable: false,

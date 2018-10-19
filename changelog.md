@@ -66,7 +66,7 @@
 ### Updated Libraries
 - jQuery Mobile to 1.4.5
 - jQuery to 2.1.4
-- Highcharts changed to Highstock (which includes Highcharts), updatet to 6.1.1 and migrated to styled mode
+- Highcharts changed to Highstock (which includes Highcharts), updatet to 6.2.0 and migrated to styled mode
 
 ### Fixed Bugs
 - Changes were not visible immediate after saving configuration

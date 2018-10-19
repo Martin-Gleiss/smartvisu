@@ -1,7 +1,7 @@
 /**
- * @license Highcharts JS v6.1.1 (2018-06-27)
+ * @license Highcharts JS v6.2.0 (2018-10-17)
  *
- * (c) 2009-2017 Torstein Honsi
+ * (c) 2009-2018 Torstein Honsi
  *
  * License: www.highcharts.com/license
  */
@@ -9,13 +9,17 @@
 (function (factory) {
 	if (typeof module === 'object' && module.exports) {
 		module.exports = factory;
+	} else if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return factory;
+		});
 	} else {
 		factory(Highcharts);
 	}
 }(function (Highcharts) {
 	(function (H) {
 		/**
-		 * (c) 2009-2017 Torstein Honsi
+		 * (c) 2009-2018 Torstein Honsi
 		 *
 		 * License: www.highcharts.com/license
 		 */
@@ -27,10 +31,10 @@
 		 * - avoid data labels, when data labels above, show series label below.
 		 * - add more options (connector, format, formatter)
 		 *
-		 * http://jsfiddle.net/highcharts/L2u9rpwr/
-		 * http://jsfiddle.net/highcharts/y5A37/
-		 * http://jsfiddle.net/highcharts/264Nm/
-		 * http://jsfiddle.net/highcharts/y5A37/
+		 * https://jsfiddle.net/highcharts/L2u9rpwr/
+		 * https://jsfiddle.net/highcharts/y5A37/
+		 * https://jsfiddle.net/highcharts/264Nm/
+		 * https://jsfiddle.net/highcharts/y5A37/
 		 */
 
 
@@ -68,7 +72,7 @@
 		             * @sample highcharts/series-label/stock-chart
 		             *         Stock chart
 		             * @since 6.0.0
-		             * @product highcharts highstock
+		             * @product highcharts highstock gantt
 		             */
 		            label: {
 		                /**

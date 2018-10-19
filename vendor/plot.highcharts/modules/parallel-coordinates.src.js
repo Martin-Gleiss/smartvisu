@@ -1,5 +1,5 @@
 /**
- * @license  Highcharts JS v6.1.1 (2018-06-27)
+ * @license  Highcharts JS v6.2.0 (2018-10-17)
  *
  * Support for parallel coordinates in Highcharts
  *
@@ -11,6 +11,10 @@
 (function (factory) {
 	if (typeof module === 'object' && module.exports) {
 		module.exports = factory;
+	} else if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return factory;
+		});
 	} else {
 		factory(Highcharts);
 	}
@@ -92,7 +96,7 @@
 		     *    offset: 0
 		     * }</pre>
 		     *
-		     * @extends {yAxis}
+		     * @extends yAxis
 		     * @excluding alternateGridColor,breaks,id,gridLineColor,gridLineDashStyle,
 		     *            gridLineWidth,minorGridLineColor,minorGridLineDashStyle,
 		     *            minorGridLineWidth,plotBands,plotLines,angle,
@@ -467,6 +471,7 @@
 		            yAxisOptions.tooltipValueFormat,
 		            yAxisOptions.labels.format
 		        );
+
 		        if (labelFormat) {
 		            formattedValue = H.format(
 		                labelFormat,
@@ -478,9 +483,9 @@
 		            );
 		        } else if (yAxis.isDatetimeAxis) {
 		            formattedValue = chart.time.dateFormat(
-		                yAxisOptions.dateTimeLabelFormats[
+		                chart.time.resolveDTLFormat(yAxisOptions.dateTimeLabelFormats[
 		                    yAxis.tickPositions.info.unitName
-		                ],
+		                ]).main,
 		                this.y
 		            );
 		        } else if (yAxisOptions.categories) {
