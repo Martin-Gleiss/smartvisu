@@ -149,7 +149,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // Wenn ein Update erfolgt, dann werden die Daten erneut in die Variable uzsu geladen damit sind die UZSU objekte auch in der click Funktion verfügbar
     this._uzsudata = response[0];
     if (!(this._uzsudata.list instanceof Array)) {
-      this._uzsudata = { active : true, list : [] };
+      this._uzsudata = { active : false, list : [], interpolation : response[0].interpolation };
     }
   },
 
@@ -209,7 +209,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       }
     }
     else if (this.options.valuetype === 'num') {
-      tt +=   "<input type='number' min='" + valueParameterList[0] + "' max='" + valueParameterList[1] + "' step='" + valueParameterList[2] + "' data-clear-btn='false' class='uzsuValueInput' pattern='[0-9]*'>";
+      var addedclass = (parseFloat(valueParameterList[0]) < 0) ? "" : " positivenumbers";
+      tt +=   "<input type='number' min='" + parseFloat(valueParameterList[0]) + "' max='" + parseFloat(valueParameterList[1]) + "' step='" + parseFloat(valueParameterList[2]) + "' data-clear-btn='false' class='uzsuValueInput" + addedclass + "' pattern='[0-9]*'>";
     }
     else if (this.options.valuetype === 'text') {
       tt +=   "<input type='text' data-clear-btn='false' class='uzsuTextInput'>";
@@ -251,7 +252,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
         "</div>";
     // Tabelle Zeile abschliessen
     tt +=   "</div>";
-    // und jetzt noch die unsichbare Expertenzeile
+    // und jetzt noch die unsichtbare Expertenzeile
     tt +=   "<div class='uzsuRowExpHoli' style='display:none;'>" +
           "<div class='uzsuRowExpert' style='float: left;'>" +
             "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.sun + "</div>" +
@@ -294,7 +295,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             if(sv_lang.uzsu.interpolation && this.interpolation == true){
               tt +=   "<div class='uzsuCell'>" +
                 "<div class='uzsuCellText'>" + sv_lang.uzsu.calculated + "</div>" +
+                "<div data-tip='" + sv_lang.uzsu.calculatedtip + "'>" +
                 "<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuCalculated' disabled>" +
+                "</div>" +
               "</div>";
             }
           tt += "</div>";
@@ -501,6 +504,22 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     $('.uzsuCellExpert button').buttonMarkup({ icon: "arrow-d" });
   },
 
+  //Interpolationszeile
+  _uzsuShowInterpolationLine: function(e) {
+
+    // erst einmal alle verschwinden lassen
+    // this._uzsuHideInterpolationLine();
+    // Tabellezeile ermitteln, wo augerufen wurde
+    var uzsuInterpolationButton = $(e.currentTarget);
+    $('#uzsuRowInterpolation').show();
+    // jetzt noch den Button in der Zeile drüber auf arrow up ändern
+    uzsuInterpolationButton.buttonMarkup({ icon: "arrow-u" });
+  },
+  _uzsuHideInterpolationLine: function() {
+    $('#uzsuRowInterpolation').hide();
+    $('.uzsuCellInterpolation button').buttonMarkup({ icon: "arrow-d" });
+  },
+
   _uzsuSaveTableRow: function(responseEntry, tableRow) {
     var self = this;
 
@@ -584,7 +603,6 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   },
 
 });
-
 
   // ----- device.uzsuicon ------------------------------------------------------
   // ----------------------------------------------------------------------------
@@ -708,6 +726,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
   // Funktionen für den Seitenaufbau
   //----------------------------------------------------------------------------
   _uzsuBuildTableFooter: function() {
+
     var tt = "";
     // Zeileneinträge abschliessen und damit die uzsuTableMain
     tt += "</div>";
@@ -717,31 +736,10 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
             "<span style='float:right'>";
               // UZSU Interpolation
               if(sv_lang.uzsu.interpolation && this.interpolation == true){
-                tt +=
-                  "<div class='uzsuRowExpert' style='float: left'>" +
-                    "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.interpolation + "</div>" +
-                    "<div class='uzsuCell'>" +
-                      "<div class='uzsuCellText'>" + sv_lang.uzsu.interpolation + "</div>" +
-                      "<select data-mini='true' data-native-menu='false' id='uzsuInterpolationType'>" +
-                        "<option value='none'>" + sv_lang.uzsu.nointerpolation + "</option>" +
-                        "<option value='cubic'>" + sv_lang.uzsu.cubic + "</option>" +
-                        "<option value='linear'>" + sv_lang.uzsu.linear + "</option>" +
-                      "</select>" +
-                    "</div>" +
-                    "<div class='uzsuCell'>" +
-                      "<div class='uzsuCell'>" +
-                        "<div class='uzsuCellText'>" + sv_lang.uzsu.intervaltime + "</div>" +
-                        "<input type='number' data-clear-btn='false' id='uzsuInterpolationInterval' style='width:50px;'>" +
-                      "</div>" +
-                    "</div>" +
-                    "<div class='uzsuCell'>" +
-                      "<div class='uzsuCell'>" +
-                        "<div class='uzsuCellText'>" + sv_lang.uzsu.inittime + "</div>" +
-                        "<input type='number' data-clear-btn='false' id='uzsuInitAge' style='width:50px;'>" +
-                        "<div class='uzsuCellText' style='visibility:hidden'><label><input type='checkbox' id='uzsuInitialized'>Init</label></div>" +
-                      "</div>" +
-                    "</div>" +
-                  "</div>";
+                tt += "<div class='uzsuCellInterpolation' style='float:left;'>" +
+                  "<div class='uzsuCellText'>" + sv_lang.uzsu.options + "</div>" +
+                  "<button data-mini='true' data-icon='arrow-d' data-iconpos='notext' class='ui-icon-shadow'></button>" +
+                "</div>";
               }
               tt+= "<div class='uzsuCell' style='float: left'>" +
                 "<form>" +
@@ -763,7 +761,36 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
                   "</div>" +
                 "</div>" +
               "</div>" +
-            "</span>" +
+            "</span>";
+            if(sv_lang.uzsu.interpolation && this.interpolation == true){
+              tt +=
+                "<div id='uzsuRowInterpolation' style='display: none; float: right; margin: 0 15px 5px 0;'>" +
+                  "<span style='float:left; margin-right: 12px;'>" +
+                    "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.interpolation + "</div>" +
+                    "<div class='uzsuCell'>" +
+                      "<div class='uzsuCellText'>" + sv_lang.uzsu.interpolation + "</div>" +
+                      "<select data-mini='true' data-native-menu='false' id='uzsuInterpolationType'>" +
+                        "<option value='none'>" + sv_lang.uzsu.nointerpolation + "</option>" +
+                        "<option value='cubic'>" + sv_lang.uzsu.cubic + "</option>" +
+                        "<option value='linear'>" + sv_lang.uzsu.linear + "</option>" +
+                      "</select>" +
+                    "</div>" +
+                    "<div class='uzsuCell'>" +
+                      "<div class='uzsuCellText'>" + sv_lang.uzsu.intervaltime + "</div>" +
+                      "<input type='number' data-clear-btn='false' id='uzsuInterpolationInterval' style='width:50px;' min='0' class='uzsuValueInput positivenumbers'>" +
+                    "</div>" +
+                  "</span>" +
+                  "<span style='float:left; margin-left: 12px;'>" +
+                    "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.inittime + "</div>" +
+                    "<div class='uzsuCell'>" +
+                      "<div class='uzsuCellText'>" + sv_lang.uzsu.inittime_header + "</div>" +
+                      "<input type='number' data-clear-btn='false' id='uzsuInitAge' style='width:50px;' min='0' class='uzsuValueInput positivenumbers'>" +
+                      "<div class='uzsuCellText' style='visibility:hidden'><label><input type='checkbox' id='uzsuInitialized'>Init</label></div>" +
+                    "</div>" +
+                  "</span>" +
+                "</div>";
+              }
+            tt +=
           "</div>";
     // und der Abschluss des uzsuClear als Rahmen für den float:left und des uzsuPopup divs
     tt += "</div></div>";
@@ -787,6 +814,11 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
     $('.uzsuRow').each(function(numberOfRow, tableRow) {
       var responseEntry = response.list[numberOfRow];
       self._uzsuFillTableRow(responseEntry, tableRow);
+    });
+    // Verhindern negativer Zahleneingabe
+    $('.positivenumbers').keypress(function(evt){
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        return !(charCode > 31 && (charCode < 48 || charCode > 57));
     });
   },
 
@@ -935,6 +967,13 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
     // Handler, um den Status anhand des Pulldowns SUN zu setzen
     uzsuPopup.delegate('.uzsuRowExpert .uzsuEvent select, input.uzsuSunActive', 'change', function (){
       self._uzsuSetSunActiveState($(this));
+    });
+    // call Interpolation Mode
+    uzsuPopup.delegate('.uzsuCellInterpolation button', 'click', function(e) {
+      if($(this).hasClass('ui-icon-arrow-u'))
+        self._uzsuHideInterpolationLine();
+      else
+        self._uzsuShowInterpolationLine(e);
     });
 
     // hier wir die aktuelle Seite danach durchsucht, wo das Popup ist und im folgenden das Popup initialisiert, geöffnet und die schliessen
@@ -1518,6 +1557,11 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     // dann die Werte eintragen.
     var tableRow = $('.uzsuRow').first();
     this._uzsuFillTableRow(responseEntry, tableRow);
+    // Verhindern negativer Zahleneingabe
+    $('.positivenumbers').keypress(function(evt){
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        return !(charCode > 31 && (charCode < 48 || charCode > 57));
+    });
     // Popup schliessen mit close rechts oben in der Box oder mit Cancel in der Leiste
     uzsuPopup.find('#uzsuClose, #uzsuCancel').bind('click', function(e) {
       // wenn keine Änderungen gemacht werden sollen (cancel), dann auch im cache die alten Werte
