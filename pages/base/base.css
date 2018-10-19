@@ -1548,6 +1548,9 @@ div.ui-slider-switch{
 .plot.plot-highstock {
   height: 315px;
 }
+.plot.plot-highstock {
+	height: 315px;
+}
 
 .block .ui-fixed .plot,
 .block .set-1 .plot {
@@ -1642,10 +1645,12 @@ div.ui-slider-switch{
   font-weight: normal;
 }
 
-.highcharts-tooltip-box {
-  fill: #272727;
-  fill-opacity: 0.8;
-  stroke-width: 0;
+
+.highcharts-tooltip-box,
+.highcharts-tooltip-box .highcharts-label-box {
+	fill: #272727;
+	fill-opacity: 0.8;
+	stroke-width: 0;
 }
 .highcharts-tooltip text {
   fill: #fff;

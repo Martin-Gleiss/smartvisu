@@ -207,12 +207,13 @@ var io = {
 
 			if(step == null)
 				step = Math.round((new Date().duration(tmin) - new Date().duration(tmax)) / cnt);
-			var nextTime = (new Date().duration(tmax).getTime() - step)/1000;
+			var nextTime = -(new Date().duration(tmax).getTime() - step)/1000;
 			var startval = series[series.length-1][1];
 
 			setTimeout(function(){
-				repeatSeries(item, tmax, nextTime+"s", ymin, ymax, 1, step, startval);
-			}, 5000);
+				//repeatSeries(item, tmax, nextTime+"s", ymin, ymax, 1, step, startval);
+				repeatSeries(item, tmax, tmax, ymin, ymax, 1, step, startval);
+			}, step);
 		}
 
 		widget.plot().each(function (idx) {
@@ -262,12 +263,14 @@ var io = {
 
 		tmin = new Date().getTime() - new Date().duration(tmin);
 		tmax = new Date().getTime() - new Date().duration(tmax);
-		var step = Math.round((tmax - tmin) / cnt);
+		var step = Math.round((tmax - tmin) / (cnt-1));
+		if(step == 0)
+			step = 1;
 
 		if(min == 0 && max == 1) { // boolean plot
 			if(val === undefined)
 				val = 0;
-			while (tmin < tmax) {
+			while (tmin <= tmax) {
 				val = (Math.random() < (0.2 + 0.6 * val)) ? 1 : 0; // make changes lazy
 				ret.push([tmin, val]);
 				tmin += step;
@@ -278,7 +281,7 @@ var io = {
 			if(val === undefined)
 				val = (min * 1) + ((max - min) / 2);
 
-			while (tmin < tmax) {
+			while (tmin <= tmax) {
 				val += Math.random() * (2 * delta) - delta;
 				ret.push([tmin, val.toFixed(2) * 1.0]);
 				tmin += step;

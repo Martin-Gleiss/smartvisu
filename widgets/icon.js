@@ -271,9 +271,26 @@ $.widget("sv.icon_graph", $.sv.dynicon, {
 
 
 // ----- icon.heating ---------------------------------------------------------
-$.widget("sv.icon_heating", $.sv.dynicon, {
-
+$.widget("sv.icon_heating", $.sv.widget, {
+	// nedded for click handling only
 	initSelector: 'svg[data-widget="icon.heating"]',
+
+	_events: {
+		'click': function (event) {
+			if (this.options.item) {
+				var items = this.options.item.explode();
+
+				if (items[0]) {
+					io.write(items[0], (widget.get(items[0]) == 0 ? 1 : 0));
+				}
+			}
+		}
+	}
+});
+
+$.widget("sv.icon_heating_gradient", $.sv.dynicon, {
+
+	initSelector: 'svg[data-widget="icon.heating.gradient"]',
 
 	_update: function(response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}

@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v6.1.1 (2018-06-27)
+ * @license Highcharts JS v6.2.0 (2018-10-17)
  * Highcharts Drilldown module
  *
  * Author: Torstein Honsi
@@ -10,6 +10,10 @@
 (function (factory) {
 	if (typeof module === 'object' && module.exports) {
 		module.exports = factory;
+	} else if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return factory;
+		});
 	} else {
 		factory(Highcharts);
 	}
@@ -68,6 +72,7 @@
 		 * ](code.highcharts.com/modules/drilldown.js).
 		 *
 		 * @type {Object}
+		 * @product highcharts highstock highmaps
 		 * @optionparent drilldown
 		 */
 		defaultOptions.drilldown = {
@@ -121,12 +126,12 @@
 		     * <dt>easing</dt>
 		     *
 		     * <dd>A string reference to an easing function set on the `Math` object.
-		     * See [the easing demo](http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/plotoptions/series-
+		     * See [the easing demo](https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/plotoptions/series-
 		     * animation-easing/).</dd>
 		     *
 		     * </dl>
 		     *
-		     * @type {Boolean|Object}
+		     * @type {Boolean|AnimationOptions}
 		     * @since 3.0.8
 		     * @product highcharts highmaps
 		     */
@@ -204,6 +209,7 @@
 
 		            /**
 		             * Horizontal alignment.
+		             * @validvalue ["left", "center", "right"]
 		             * @type {String}
 		             */
 		            align: 'right',
