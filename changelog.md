@@ -52,6 +52,7 @@
 - Auto-loading of any .js file inside subfolder 'js' and any .css file inside 'css' in current pages folder
 - New driver for [ioBroker](http://www.iobroker.net)
 - New weather service [darksky.net](https://darksky.net/)
+- New Fritz!Box phone service using TR-064
 
 ### Improvements
 - Replaced make.php by on-the-fly minification (needs page cache set on)
