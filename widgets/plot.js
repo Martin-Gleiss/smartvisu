@@ -195,7 +195,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 				startOnTick: false,
 				type: ytype[i] || 'linear',
 				svUnit: units[i] || 'float',
-				minTickInterval: 1
+				minTickInterval: 1,
+				showLastLabel: true
 			};
 			styles.push(Array(i+1).join(".highcharts-yaxis ~ ") + ".highcharts-yaxis .highcharts-axis-line { stroke: " + ycolor[i] + "; }");
 			if(ytype[i] == 'boolean') {
