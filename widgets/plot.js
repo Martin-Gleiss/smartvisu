@@ -107,7 +107,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 		opposite: '',
 		ycolor: '',
 		ytype: '',
-		count: ''
+		count: '',
+		chartOptions: null
 	},
 
 	allowPartialUpdate: true,
@@ -332,6 +333,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 				]
 			};
 
+			$.extend(true, chartOptions, this.options.chartOptions);
+
 			Highcharts.stockChart(this.element[0], chartOptions);
 		}
 		else {
@@ -339,6 +342,9 @@ $.widget("sv.plot_period", $.sv.widget, {
 				chartOptions.chart.zoomType = 'x';
 				chartOptions.xAxis.minRange = new Date().duration(zoom).valueOf();
 			}
+
+			$.extend(true, chartOptions, this.options.chartOptions);
+
 			Highcharts.chart(this.element[0], chartOptions);
 		}
 
