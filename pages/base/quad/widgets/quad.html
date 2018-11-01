@@ -363,12 +363,12 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {value=5}       	step between two values (optional, default 5)
  * @param {image[?]}       		array icon for 'on' and 'off' state, can also be dynamic
  * @param {color=}       	array colors for the 'on' and 'off' state (optional)
+ * @param {value=}    the minimum value which is displayed if the slider is moved to total left (optional, default like min)
+ * @param {value=}    the maximum value which is displayed if the slider is moved to total left (optional, default like max)
  * @param {text=}      activity indicator which is active until response (or a timeout is reached)
  * @param {text(horizontal,vertical,bottomup,semicircle,popup)=horizontal} 	if the dimmer slider should be implemented in the column directly.
  *						possible options: 'horizontal', 'vertical', 'bottomup', 'semicircle'. 'popup' or empty for popup.
  * @param {text(input,handle,both,none)=input} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'input')
- * @param {value=}    the minimum value which is displayed if the slider is moved to total left (optional, default like min)
- * @param {value=}    the maximum value which is displayed if the slider is moved to total left (optional, default like max)
  * @param {item=}      a gad/item for UZSU
  * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {text=}     value type: '%' to recalculate 0-255 values to 0-100%  (e.g. for lights) or any formula
@@ -376,26 +376,26 @@ the first one is the base color for values below first threshold, so pass one co
    - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {item=} 		"root item" which holds autostate information. show current state of autostate/autostate item. Adjust icons and states below accordingly
+ * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
-                       First entry can either be "autostate" to make the autostate plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
                        Possible elements are: header, text, slider, flip, switch, select
-                       Example: ['autostate', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](switch,value_popup,value_slider,locks,uzsu,autostate,plot,scenes,extpopup, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
-             possible elements are: 'switch', 'value_popup', 'value_slider', 'locks', 'uzsu', 'autostate', 'plot', 'scenes', 'extpopup'
+ * @param {text[](switch,value_popup,value_slider,locks,uzsu,stateengine,plot,scenes,extpopup, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'switch', 'value_popup', 'value_slider', 'locks', 'uzsu', 'stateengine', 'plot', 'scenes', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
-             Combine elements in one column by putting them in arrays. Standard is [['locks', 'switch'], 'value_popup', 'autostate', 'uzsu', 'plot']
+             Combine elements in one column by putting them in arrays. Standard is [['locks', 'switch'], 'value_popup', 'stateengine', 'uzsu', 'plot']
  *
- * @see autostate/autostate
+ * @see stateengine/stateengine
  *
  */
-{% macro dimmer(id, linetext, item_switch, item_value, min, max, step, pic, color, indicator, slider_orientation, value_display, min_display, max_display, item_uzsu, uzsu_attribs, formula, item_plot, icon_plot, item_auto, extpopup, locks, place3, place4, column_order) %}
+{% macro dimmer(id, linetext, item_switch, item_value, min, max, step, pic, color, min_display, max_display, indicator, slider_orientation, value_display, item_uzsu, uzsu_attribs, formula, item_plot, icon_plot, item_auto, extpopup, locks, place3, place4, column_order) %}
     {% import "basic.html" as basic %}
     {% import "device.html" as device %}
     {% import "plot.html" as plot %}
@@ -419,10 +419,10 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item == 'locks' and locks %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'extpopup' and extpopup and extpopup[0] != 'autostate' %}
+      {% elseif item == 'extpopup' and extpopup and extpopup[0] != 'stateengine' %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'autostate' and item_auto %}
+      {% elseif item == 'stateengine' and item_auto %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
       {% elseif item == 'plot' and item_plot %}
@@ -450,10 +450,10 @@ the first one is the base color for values below first threshold, so pass one co
         {% elseif arrayitem == 'locks' and locks %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
-        {% elseif arrayitem == 'extpopup' and extpopup and extpopup[0] != 'autostate' %}
+        {% elseif arrayitem == 'extpopup' and extpopup and extpopup[0] != 'stateengine' %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
-        {% elseif arrayitem == 'autostate' and item_auto %}
+        {% elseif arrayitem == 'stateengine' and item_auto %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
         {% elseif arrayitem == 'plot' and item_plot %}
@@ -492,15 +492,15 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item_value and 'value_popup' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('value_popup')}) %}
-      {% elseif extpopup and 'extpopup' not in elements and extpopup[0] != 'autostate' %}
+      {% elseif extpopup and 'extpopup' not in elements and extpopup[0] != 'stateengine' %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('extpopup')}) %}
       {% elseif item_plot and 'plot' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('plot')}) %}
-      {% elseif item_auto and 'autostate' not in elements %}
+      {% elseif item_auto and 'stateengine' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
-        {% set elements = elements|merge({(i+1):('autostate')}) %}
+        {% set elements = elements|merge({(i+1):('stateengine')}) %}
       {% elseif item_uzsu and 'uzsu' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('uzsu')}) %}
@@ -533,7 +533,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_dimmer">
     <div class="quad_table row_dimmer" id="row_{{id|replace('.', '_')}}">
   <div class="text" data-order=0>{{ linetext|e }}
-  {% if item_auto %}&nbsp;{{ visu.simple_print(auto~'time', item_auto~'.autostate_suspend_end') }} {% endif %}
+  {% if item_auto %}&nbsp;{{ visu.simple_print(auto~'time', item_auto~'.stateengine_suspend_end') }} {% endif %}
   </div>
 
     {% for column in elements %}
@@ -623,12 +623,12 @@ the first one is the base color for values below first threshold, so pass one co
         {% endif %}
 
 
-    {% if column == 'autostate' and item_auto %}
-            {% if extpopup[0] == 'autostate' %}
-                {{ visu.autostate(id~'_state', item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values, uid(page, id)~'list_extpopup') }}
+    {% if column == 'stateengine' and item_auto %}
+            {% if extpopup[0] == 'stateengine' %}
+                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% else %}
-                {{ visu.autostate(id~'_state', item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values) }}
+                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
       {% if elements[loop.index] == 'div' %}
@@ -713,23 +713,23 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {item=}   	a gad/item for value of fourth color / warm white
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {item=} 		"root item" which holds autostate information. show current state of autostate/autostate item. Adjust icons and states below accordingly
+ * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
-                       First entry can either be "autostate" to make the autostate plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
                        Possible elements are: header, text, slider, flip, switch, select
-                       Example: ['autostate', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral), item_seqlock (RGB sequencer lock)
  * @param {item=} 		item for RGB sequencer (logic)
  * @param {color[]=} 	array with on/off icon colors
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text('colorpicker', 'ww_popup', 'ww_slider', 'values', 'sequencer', 'locks', 'autostate', 'uzsu', 'plot')=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
-             possible elements are: 'colorpicker', 'ww_popup', 'ww_slider', 'values', 'sequencer', 'locks', 'autostate', 'uzsu', 'plot'
+ * @param {text('colorpicker', 'ww_popup', 'ww_slider', 'values', 'sequencer', 'locks', 'stateengine', 'uzsu', 'plot')=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'colorpicker', 'ww_popup', 'ww_slider', 'values', 'sequencer', 'locks', 'stateengine', 'uzsu', 'plot'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
-             Combine elements in one column by putting them in arrays. Standard is [['locks', 'sequencer', 'colorpicker'],'values', 'autostate', 'plot', 'uzsu']
+             Combine elements in one column by putting them in arrays. Standard is [['locks', 'sequencer', 'colorpicker'],'values', 'stateengine', 'plot', 'uzsu']
  */
 {% macro color(id, linetext, item_switch_r, item_value_r, item_switch_g, item_value_g, item_switch_b, item_value_b, min, max, step, colors, style, colormodel, min_display, max_display, item_uzsu, uzsu_attribs, popupcolor, item_switch_ww, item_value_ww, item_plot, icon_plot, item_auto, extpopup, locks, item_seq, icon_color, place3, place4, column_order) %}
     {% import "basic.html" as basic %}
@@ -762,10 +762,10 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item == 'locks' and locks %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'extpopup' and extpopup[0] != 'autostate' and extpopup %}
+      {% elseif item == 'extpopup' and extpopup[0] != 'stateengine' and extpopup %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'autostate' and item_auto %}
+      {% elseif item == 'stateengine' and item_auto %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
       {% elseif item == 'plot' and item_plot %}
@@ -799,10 +799,10 @@ the first one is the base color for values below first threshold, so pass one co
         {% elseif arrayitem == 'locks' and locks %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
-        {% elseif arrayitem == 'extpopup' and extpopup[0] != 'autostate' and extpopup %}
+        {% elseif arrayitem == 'extpopup' and extpopup[0] != 'stateengine' and extpopup %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
-        {% elseif arrayitem == 'autostate' and item_auto %}
+        {% elseif arrayitem == 'stateengine' and item_auto %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
         {% elseif arrayitem == 'plot' and item_plot %}
@@ -844,12 +844,12 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item_value_r and 'values' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('values')}) %}
-      {% elseif extpopup and 'extpopup' not in elements and extpopup[0] != 'autostate' %}
+      {% elseif extpopup and 'extpopup' not in elements and extpopup[0] != 'stateengine' %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('extpopup')}) %}
-      {% elseif item_auto and 'autostate' not in elements %}
+      {% elseif item_auto and 'stateengine' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
-        {% set elements = elements|merge({(i+1):('autostate')}) %}
+        {% set elements = elements|merge({(i+1):('stateengine')}) %}
       {% elseif item_plot and 'plot' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('plot')}) %}
@@ -885,7 +885,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_color">
     <div class="quad_table row_color" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
-    {% if item_auto %}&nbsp;{{ visu.simple_print(auto~'time', item_auto~'.autostate_suspend_end') }}{% endif %}
+    {% if item_auto %}&nbsp;{{ visu.simple_print(auto~'time', item_auto~'.stateengine_suspend_end') }}{% endif %}
     </div>
     {% for column in elements %}
     {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
@@ -999,12 +999,12 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% endif %}
 
-    {% if column == 'autostate' and item_auto %}
-            {% if extpopup[0] == 'autostate' %}
-                {{ visu.autostate(id~'_state', item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values, uid(page, id)~'list_extpopup') }}
+    {% if column == 'stateengine' and item_auto %}
+            {% if extpopup[0] == 'stateengine' %}
+                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% else %}
-                {{ visu.autostate(id~'_state', item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values) }}
+                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
             {% if elements[loop.index] == 'div' %}
@@ -1087,20 +1087,20 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {item=} 		"root item" which holds autostate information. show current state of autostate/autostate item. Adjust icons and states below accordingly
+ * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
-                       First entry can either be "autostate" to make the autostate plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
                        Possible elements are: header, text, slider, flip, switch, select
-                       Example: ['autostate', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,autostate,uzsu,plot, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
-             possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'autostate', 'uzsu', 'plot'
+ * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
-             Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'autostate', 'plot', 'uzsu']
+             Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
 {% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, place3, place4, column_order, blind_or_shutter, pos_attribs) %}
     {% import "basic.html" as basic %}
@@ -1140,13 +1140,13 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item == 'pos2' and value_pos_2 and item_saved and 'pos' not in elements %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'extpopup' and extpopup and extpopup[0] != 'autostate' %}
+      {% elseif item == 'extpopup' and extpopup and extpopup[0] != 'stateengine' %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
       {% elseif item == 'uzsu' and item_uzsu %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'autostate' and item_auto %}
+      {% elseif item == 'stateengine' and item_auto %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
       {% elseif item == 'plot' and item_plot %}
@@ -1184,13 +1184,13 @@ the first one is the base color for values below first threshold, so pass one co
           {% elseif arrayitem == 'pos2' and value_pos_2 and item_saved  and 'pos' not in elements %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
-                    {% elseif arrayitem == 'extpopup' and extpopup and extpopup[0] != 'autostate' %}
+                    {% elseif arrayitem == 'extpopup' and extpopup and extpopup[0] != 'stateengine' %}
                         {% set elements = elements|merge({(key):(arrayitem)}) %}
                         {% set written = 1 %}
           {% elseif arrayitem == 'uzsu' and item_uzsu %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
-          {% elseif arrayitem == 'autostate' and item_auto %}
+          {% elseif arrayitem == 'stateengine' and item_auto %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
           {% elseif arrayitem == 'plot' and item_plot %}
@@ -1237,15 +1237,15 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item_pos and blind_or_shutter == 'blind' and 'pos_popup_blind' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('pos_popup_blind')}) %}
-      {% elseif extpopup and 'extpopup' not in elements and extpopup[0] != 'autostate' %}
+      {% elseif extpopup and 'extpopup' not in elements and extpopup[0] != 'stateengine' %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('extpopup')}) %}
       {% elseif item_plot and 'plot' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('plot')}) %}
-      {% elseif item_auto and 'autostate' not in elements %}
+      {% elseif item_auto and 'stateengine' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
-        {% set elements = elements|merge({(i+1):('autostate')}) %}
+        {% set elements = elements|merge({(i+1):('stateengine')}) %}
       {% elseif item_uzsu and 'uzsu' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('uzsu')}) %}
@@ -1277,7 +1277,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_shutter">
     <div class="quad_table row_shutter" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
-    {% if item_auto %}&nbsp;{{ visu.simple_print(item_auto~'time', item_auto~'.autostate_suspend_end') }} {% endif %}
+    {% if item_auto %}&nbsp;{{ visu.simple_print(item_auto~'time', item_auto~'.stateengine_suspend_end') }} {% endif %}
     </div>
     {% for column in elements %}
     {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
@@ -1415,12 +1415,12 @@ the first one is the base color for values below first threshold, so pass one co
             {% endif %}
         {% endif %}
 
-    {% if column == 'autostate' and item_auto %}
-            {% if extpopup[0] == 'autostate' %}
-                {{ visu.autostate(id~'_state', item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values, uid(page, id)~'list_extpopup') }}
+    {% if column == 'stateengine' and item_auto %}
+            {% if extpopup[0] == 'stateengine' %}
+                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% else %}
-                {{ visu.autostate(id~'_state', item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values) }}
+                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
             {% if elements[loop.index] == 'div' %}
@@ -1498,20 +1498,20 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {item=} 		"root item" which holds autostate information. show current state of autostate/autostate item. Adjust icons and states below accordingly
+ * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
-                       First entry can either be "autostate" to make the autostate plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
                        Possible elements are: header, text, slider, flip, switch, select
-                       Example: ['autostate', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,autostate,uzsu,plot, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
-             possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'autostate', 'uzsu', 'plot'
+ * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
-             Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'autostate', 'plot', 'uzsu']
+             Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
 
 {% macro blind(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step, place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, pos_attribs, place3, place4, column_order) %}
@@ -1555,13 +1555,13 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
- * @param {item=} 			    "root item" which holds autostate information. show current state of autostate/autostate item. Adjust icons and states below accordingly
+ * @param {item=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
-                       First entry can either be "autostate" to make the autostate plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
                        Possible elements are: header, text, slider, flip, switch, select
-                       Example: ['autostate', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
@@ -1569,7 +1569,7 @@ the first one is the base color for values below first threshold, so pass one co
              possible elements are: 'previous', 'play', 'stop', 'next', 'power', 'eject', 'mute', 'volume_slider', 'cover',
             'volume_popup', 'volume_up', 'volume_down', 'song_position', 'uzsu', 'plot', 'auto', 'repeat', 'source', 'speaker', 'playpause', 'shuffle'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
-             Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'autostate', 'plot', 'uzsu']
+             Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
 {% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, place1, place2, column_order) %}
     {% import "basic.html" as basic %}
@@ -1646,7 +1646,7 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item == 'uzsu' and item_uzsu %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'autostate' and item_auto %}
+      {% elseif item == 'stateengine' and item_auto %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
       {% elseif item == 'plot' and item_plot %}
@@ -1725,7 +1725,7 @@ the first one is the base color for values below first threshold, so pass one co
           {% elseif arrayitem == 'uzsu' and item_uzsu %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
-          {% elseif arrayitem == 'autostate' and item_auto %}
+          {% elseif arrayitem == 'stateengine' and item_auto %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
           {% elseif arrayitem == 'plot' and item_plot %}
@@ -2004,12 +2004,12 @@ the first one is the base color for values below first threshold, so pass one co
             {% endif %}
         {% endif %}
 
-    {% if column == 'autostate' and item_auto %}
-            {% if extpopup[0] == 'autostate' %}
-                {{ visu.autostate(id~'_state', item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values, uid(page, id)~'list_extpopup') }}
+    {% if column == 'stateengine' and item_auto %}
+            {% if extpopup[0] == 'stateengine' %}
+                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% else %}
-                {{ visu.autostate(id~'_state', item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values) }}
+                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
             {% if elements[loop.index] == 'div' %}
@@ -2092,23 +2092,23 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
- * @param {item=} 			    "root item" which holds autostate information. show current state of autostate/autostate item. Adjust icons and states below accordingly
+ * @param {item=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
-                       First entry can either be "autostate" to make the autostate plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
                        Possible elements are: header, text, slider, flip, switch, select
-                       Example: ['autostate', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
  * @param {unspecified[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
                             You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](switch,autostate,uzsu,plot,locks,slider, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
-             possible elements are: 'switch', 'autostate', 'uzsu', 'plot', 'locks', 'slider'
+ * @param {text[](switch,stateengine,uzsu,plot,locks,slider, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'switch', 'stateengine', 'uzsu', 'plot', 'locks', 'slider'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
-             Combine elements in one column by putting them in arrays. Standard is ['locks', 'switch', 'slider', 'autostate', 'plot', 'uzsu']
+             Combine elements in one column by putting them in arrays. Standard is ['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']
              Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
  */
 {% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order, switch_or_select) %}
@@ -2143,8 +2143,8 @@ the first one is the base color for values below first threshold, so pass one co
           {% elseif (type is iterable ? item[key] == 'extpopup' : item == 'extpopup') and extpopup %}
             {% set elements_array = elements_array|merge({(key):('extpopup')}) %}
             {% set written = 1 %}
-          {% elseif (type is iterable ? item[key] == 'autostate' : item == 'autostate') and item_auto %}
-            {% set elements_array = elements_array|merge({(key):('autostate')}) %}
+          {% elseif (type is iterable ? item[key] == 'stateengine' : item == 'stateengine') and item_auto %}
+            {% set elements_array = elements_array|merge({(key):('stateengine')}) %}
             {% set written = 1 %}
           {% elseif (type is iterable ? item[key] == 'plot' : item == 'plot') and item_plot %}
             {% set elements_array = elements_array|merge({(key):('plot')}) %}
@@ -2183,8 +2183,8 @@ the first one is the base color for values below first threshold, so pass one co
         {% elseif (type is iterable ? items[key] == 'extpopup' : items == 'extpopup') and extpopup %}
           {% set elements_array = elements_array|merge({(key):('extpopup')}) %}
           {% set written = 1 %}
-        {% elseif (type is iterable ? items[key] == 'autostate' : items == 'autostate') and item_auto %}
-          {% set elements_array = elements_array|merge({(key):('autostate')}) %}
+        {% elseif (type is iterable ? items[key] == 'stateengine' : items == 'stateengine') and item_auto %}
+          {% set elements_array = elements_array|merge({(key):('stateengine')}) %}
           {% set written = 1 %}
         {% elseif (type is iterable ? items[key] == 'plot' : items == 'plot') and item_plot %}
           {% set elements_array = elements_array|merge({(key):('plot')}) %}
@@ -2241,7 +2241,7 @@ the first one is the base color for values below first threshold, so pass one co
                                 {% set multi = multi+1 %}
                             {% endif %}
                             {% set elements_array = elements_array|merge({(i):('slider')}) %}
-                        {% elseif (type is iterable ? extpopup[z] : extpopup) and ext_count == 0 and (type is iterable and item_auto is iterable ? (extpopup[z][0] != 'autostate') : (extpopup[0] != 'autostate')) and (type is iterable ? (extpopup[z][0] != 'switch') : (extpopup[0] != 'switch')) %}
+                        {% elseif (type is iterable ? extpopup[z] : extpopup) and ext_count == 0 and (type is iterable and item_auto is iterable ? (extpopup[z][0] != 'stateengine') : (extpopup[0] != 'stateengine')) and (type is iterable ? (extpopup[z][0] != 'switch') : (extpopup[0] != 'switch')) %}
                             {% if not type is iterable %}
                                 {% set elements_array = elements_array|merge({(i):('div')}) %}
                             {% else %}
@@ -2249,13 +2249,13 @@ the first one is the base color for values below first threshold, so pass one co
                             {% endif %}
                             {% set elements_array = elements_array|merge({(i):('extpopup')}) %}
                             {% set ext_count = ext_count+1 %}
-                        {% elseif (type is iterable ? item_auto[z] : item_auto) and 'autostate' not in elements_array %}
+                        {% elseif (type is iterable ? item_auto[z] : item_auto) and 'stateengine' not in elements_array %}
                             {% if not type is iterable %}
                                 {% set elements_array = elements_array|merge({(i):('div')}) %}
                             {% else %}
                                 {% set multi = multi+1 %}
                             {% endif %}
-                            {% set elements_array = elements_array|merge({(i):('autostate')}) %}
+                            {% set elements_array = elements_array|merge({(i):('stateengine')}) %}
                         {% elseif (type is iterable ? item_plot[z] : item_plot) and 'plot' not in elements_array and item_plot|length < 17 %}
                             {% if not type is iterable %}
                                 {% set elements_array = elements_array|merge({(i):('div')}) %}
@@ -2282,8 +2282,8 @@ the first one is the base color for values below first threshold, so pass one co
         {% endif %}
         {% set elements = elements|merge({(z): (elements_array)}) %}
       {% endfor %}
-            {% if item_auto and 'autostate' not in elements and type is iterable and item_auto is not iterable %}
-        {% set elements = elements|merge({10:({0:'autostate', 1:'div'})}) %}
+            {% if item_auto and 'stateengine' not in elements and type is iterable and item_auto is not iterable %}
+        {% set elements = elements|merge({10:({0:'stateengine', 1:'div'})}) %}
           {% endif %}
           {% if item_plot and 'plot' not in elements and type is iterable and (item_plot is not iterable or item_plot|length == 17) %}
         {% set elements = elements|merge({10:({0:'plot', 1:'div'})}) %}
@@ -2315,7 +2315,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_stateswitch">
     <div class="quad_table row_stateswitch" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
-    {% if item_auto %}&nbsp;{{ visu.simple_print(id~'_suspend_end', item_auto~'.autostate_suspend_end') }}{% endif %}
+    {% if item_auto %}&nbsp;{{ visu.simple_print(id~'_suspend_end', item_auto~'.stateengine_suspend_end') }}{% endif %}
     </div>
   {% for i,arrays in elements %}
     {% set columnnumber = columnnumber+1 %}
@@ -2418,12 +2418,12 @@ the first one is the base color for values below first threshold, so pass one co
                     {% endif %}
                 {% endif %}
 
-        {% if column == 'autostate' and item_auto[i] %}
-                    {% if extpopup[i][0] == 'autostate' %}
-                        {{ visu.autostate(id~'_state'~z~i, item_auto[i]~'.autostate_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_autostate_icons, config_autostate_values, uid(page, id)~'list_extpopup'~z~i) }}
+        {% if column == 'stateengine' and item_auto[i] %}
+                    {% if extpopup[i][0] == 'stateengine' %}
+                        {{ visu.stateengine(id~'_state'~z~i, item_auto[i]~'.stateengine_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                         {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
                     {% else %}
-                        {{ visu.autostate(id~'_state'~z~i, item_auto[i]~'.autostate_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_autostate_icons, config_autostate_values) }}
+                        {{ visu.stateengine(id~'_state'~z~i, item_auto[i]~'.stateengine_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values) }}
                     {% endif %}
 
           {% if arrays[loop.index] == 'div' %}
@@ -2541,12 +2541,12 @@ the first one is the base color for values below first threshold, so pass one co
 
                 {% endif %}
 
-        {% if column == 'autostate' and item_auto %}
-                    {% if extpopup[i][0] == 'autostate' or extpopup[0] == 'autostate' %}
-                        {{ visu.autostate(id~'_state'~z~i, item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values, uid(page, id)~'list_extpopup'~z~i) }}
+        {% if column == 'stateengine' and item_auto %}
+                    {% if extpopup[i][0] == 'stateengine' or extpopup[0] == 'stateengine' %}
+                        {{ visu.stateengine(id~'_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                         {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
                     {% else %}
-                        {{ visu.autostate(id~'_state'~z~i, item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values) }}
+                        {{ visu.stateengine(id~'_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
                     {% endif %}
 
           {% if arrays[loop.index] == 'div' %}
@@ -2601,18 +2601,18 @@ the first one is the base color for values below first threshold, so pass one co
         {% endif %}
       {% endif %}
 
-        {% if column == 'autostate' and item_auto and type is iterable and item_auto is not iterable %}
+        {% if column == 'stateengine' and item_auto and type is iterable and item_auto is not iterable %}
                 {% for i,ext_array in extpopup %}
-                    {% if extpopup[i][0] == 'autostate' %}{% set ext = i %}{% endif %}
+                    {% if extpopup[i][0] == 'stateengine' %}{% set ext = i %}{% endif %}
                 {% endfor %}
                 {% if ext != 'nothing' or not ext %}
-                    {{ visu.autostate(id~'_pop_state'~z~i, item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values, uid(page, id)~'list_extpopup'~z~i) }}
+                    {{ visu.stateengine(id~'_pop_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                     {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[ext][1], extpopup[ext][2], extpopup[ext][3], extpopup[ext][4], extpopup[ext][5], extpopup[ext][6], extpopup[ext][7], extpopup[ext][8], extpopup[ext][9], extpopup[ext][10], extpopup[ext][11], extpopup[ext][12], extpopup[ext][13], extpopup[ext][14], extpopup[ext][15], extpopup[ext][16], extpopup[ext][17], extpopup[ext][18], extpopup[ext][19]) }}
-                {% elseif extpopup[0] == 'autostate' %}
-                    {{ visu.autostate(id~'_pop_state'~z~i, item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values, uid(page, id)~'list_extpopup'~z~i) }}
+                {% elseif extpopup[0] == 'stateengine' %}
+                    {{ visu.stateengine(id~'_pop_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                     {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
                 {% else %}
-                   {{ visu.autostate(id~'_state'~z~i, item_auto~'.autostate_name', item_auto~'.lock', item_auto~'.release', config_autostate_icons, config_autostate_values) }}
+                   {{ visu.stateengine(id~'_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
                 {% endif %}
 
                 {% if arrays[loop.index] == 'div' %}
@@ -2683,23 +2683,23 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
- * @param {item=} 			    "root item" which holds autostate information. show current state of autostate/autostate item. Adjust icons and states below accordingly
+ * @param {item=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
-                       First entry can either be "autostate" to make the autostate plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
                        Possible elements are: header, text, slider, flip, switch, select
-                       Example: ['autostate', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
  * @param {unspecified[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
                             You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](select,autostate,uzsu,plot,locks, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
-            possible elements are: 'select', 'autostate', 'uzsu', 'plot', 'locks'
+ * @param {text[](select,stateengine,uzsu,plot,locks, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+            possible elements are: 'select', 'stateengine', 'uzsu', 'plot', 'locks'
             For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
-            Combine elements in one column by putting them in arrays. Standard is ['locks', 'select', 'autostate', 'plot', 'uzsu']
+            Combine elements in one column by putting them in arrays. Standard is ['locks', 'select', 'stateengine', 'plot', 'uzsu']
             Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
  */
 {% macro select(id, item_select, type, value, pic, text, color_on, group, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order) %}
