@@ -654,13 +654,13 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 .block {
   width: 100%;
   text-align: center;
-  min-height: 19.3em;
 }
 
 @media all and (min-width: 900px) {
   .block {
     width: 50%;
     float: left;
+    display: table; /* prevents rounding problems with 0.7em/1.3em */
   }
 }
 
