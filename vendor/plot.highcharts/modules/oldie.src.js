@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v6.1.1 (2018-06-27)
+ * @license Highcharts JS v6.2.0 (2018-10-17)
  * Old IE (v6, v7, v8) module for Highcharts v6+.
  *
  * (c) 2010-2017 Highsoft AS
@@ -11,13 +11,17 @@
 (function (factory) {
 	if (typeof module === 'object' && module.exports) {
 		module.exports = factory;
+	} else if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return factory;
+		});
 	} else {
 		factory(Highcharts);
 	}
 }(function (Highcharts) {
 	(function (H) {
 		/**
-		 * (c) 2010-2017 Torstein Honsi
+		 * (c) 2010-2018 Torstein Honsi
 		 *
 		 * Support for old IE browsers (6, 7 and 8) in Highcharts v6+.
 		 *
@@ -68,7 +72,7 @@
 		 * @since 2.3.0
 		 */
 		H.getOptions().global.VMLRadialGradientURL =
-		    'http://code.highcharts.com/6.1.1/gfx/vml-radial-gradient.png';
+		    'http://code.highcharts.com/6.2.0/gfx/vml-radial-gradient.png';
 
 
 		// Utilites
@@ -111,7 +115,10 @@
 		        var i = 0,
 		            len = this.length;
 		        for (; i < len; i++) {
-		            if (fn.call(ctx, this[i], i, this) === false) {
+		            if (
+		                this[i] !== undefined && // added check
+		                fn.call(ctx, this[i], i, this) === false
+		            ) {
 		                return i;
 		            }
 		        }
@@ -119,15 +126,16 @@
 		}
 
 		if (!Array.prototype.indexOf) {
-		    H.indexOfPolyfill = function (arr) {
-		        var len,
-		            i = 0;
+		    H.indexOfPolyfill = function (member, fromIndex) {
+		        var arr = this, // #8874
+		            len,
+		            i = fromIndex || 0; // #8346
 
 		        if (arr) {
 		            len = arr.length;
 
 		            for (; i < len; i++) {
-		                if (arr[i] === this) {
+		                if (arr[i] === member) {
 		                    return i;
 		                }
 		            }
@@ -154,15 +162,16 @@
 		}
 
 		if (!Array.prototype.some) {
-		    H.some = function (fn, ctx) { // legacy
+		    H.somePolyfill = function (fn, ctx) { // legacy
 		        var i = 0,
 		            len = this.length;
 
 		        for (; i < len; i++) {
 		            if (fn.call(ctx, this[i], i, this) === true) {
-		                return;
+		                return true;
 		            }
 		        }
+		        return false;
 		    };
 		}
 
@@ -429,7 +438,7 @@
 		            // Firefox 3.5+ on user request. FF3.5+ has support for CSS3
 		            // transform. The getBBox method also needs to be updated to
 		            // compensate for the rotation, like it currently does for SVG.
-		            // Test case: http://jsfiddle.net/highcharts/Ybt44/
+		            // Test case: https://jsfiddle.net/highcharts/Ybt44/
 
 		            var rotation = this.rotation,
 		                costheta = Math.cos(rotation * deg2rad),

@@ -432,6 +432,10 @@ class WidgetParameterChecker {
 		if ($value == 'now' || ctype_digit($value))
 			return;
 
+		// additional widget-specific valid values
+		if ($this->checkParameterValidValues($value))
+			return;
+
 		$parts = explode(' ', $value);
 		foreach ($parts as $part) {
 			// Last char: Interval

@@ -1,8 +1,8 @@
 /**
- * @license  Highcharts JS v6.1.1 (2018-06-27)
+ * @license  Highcharts JS v6.2.0 (2018-10-17)
  * Solid angular gauge module
  *
- * (c) 2010-2017 Torstein Honsi
+ * (c) 2010-2018 Torstein Honsi
  *
  * License: www.highcharts.com/license
  */
@@ -10,6 +10,10 @@
 (function (factory) {
 	if (typeof module === 'object' && module.exports) {
 		module.exports = factory;
+	} else if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return factory;
+		});
 	} else {
 		factory(Highcharts);
 	}
@@ -18,7 +22,7 @@
 		/**
 		 * Solid angular gauge module
 		 *
-		 * (c) 2010-2017 Torstein Honsi
+		 * (c) 2010-2018 Torstein Honsi
 		 *
 		 * License: www.highcharts.com/license
 		 */
@@ -351,8 +355,7 @@
 		                    shapeArgs.d = d; // animate alters it
 		                }
 		            } else {
-		                point.graphic = renderer.arc(shapeArgs)
-		                    .addClass(point.getClassName(), true)
+		                point.graphic = graphic = renderer.arc(shapeArgs)
 		                    .attr({
 		                        fill: toColor,
 		                        'sweep-flag': 0
@@ -360,6 +363,10 @@
 		                    .add(series.group);
 
                 
+		            }
+
+		            if (graphic) {
+		                graphic.addClass(point.getClassName(), true);
 		            }
 		        });
 		    },
@@ -403,8 +410,8 @@
 		 *  data: [0, 5, 3, 5]
 		 *  ```
 		 *
-		 * 2.  An array of objects with named values. The objects are point
-		 * configuration objects as seen below. If the total number of data
+		 * 2.  An array of objects with named values. The following snippet shows only a
+		 * few settings, see the complete options set below. If the total number of data
 		 * points exceeds the series' [turboThreshold](
 		 * #series.solidgauge.turboThreshold), this option is not available.
 		 *

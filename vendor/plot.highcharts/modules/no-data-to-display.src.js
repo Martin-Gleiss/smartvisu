@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v6.1.1 (2018-06-27)
+ * @license Highcharts JS v6.2.0 (2018-10-17)
  * Plugin for displaying a message when there is no data visible in chart.
  *
  * (c) 2010-2017 Highsoft AS
@@ -11,6 +11,10 @@
 (function (factory) {
 	if (typeof module === 'object' && module.exports) {
 		module.exports = factory;
+	} else if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return factory;
+		});
 	} else {
 		factory(Highcharts);
 	}
@@ -68,7 +72,7 @@
 		     *
 		     * @type {Object}
 		     * @since 3.0.8
-		     * @product highcharts highstock
+		     * @product highcharts highstock gantt
 		     * @apioption noData.attr
 		     */
 
@@ -79,7 +83,7 @@
 		     * @type {Boolean}
 		     * @default false
 		     * @since 4.1.10
-		     * @product highcharts highstock
+		     * @product highcharts highstock gantt
 		     * @apioption noData.useHTML
 		     */
 
@@ -97,7 +101,7 @@
 		         *
 		         * @type {Number}
 		         * @default 0
-		         * @product highcharts highstock
+		         * @product highcharts highstock gantt
 		         */
 		        x: 0,
 
@@ -106,7 +110,7 @@
 		         *
 		         * @type {Number}
 		         * @default 0
-		         * @product highcharts highstock
+		         * @product highcharts highstock gantt
 		         */
 		        y: 0,
 
@@ -125,7 +129,7 @@
 		         * @validvalue ["top", "middle", "bottom"]
 		         * @type {String}
 		         * @default middle
-		         * @product highcharts highstock
+		         * @product highcharts highstock gantt
 		         */
 		        verticalAlign: 'middle'
 		    }

@@ -1,5 +1,5 @@
 /**
- * @license  Highcharts JS v6.1.1 (2018-06-27)
+ * @license  Highcharts JS v6.2.0 (2018-10-17)
  *
  * Variable Pie module for Highcharts
  *
@@ -11,6 +11,10 @@
 (function (factory) {
 	if (typeof module === 'object' && module.exports) {
 		module.exports = factory;
+	} else if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return factory;
+		});
 	} else {
 		factory(Highcharts);
 	}
@@ -48,7 +52,7 @@
 		     * size (arc) of the slice relates to the Y value and the radius of pie
 		     * slice relates to the Z value. Requires `highcharts-more.js`.
 		     *
-		     * @extends {plotOptions.pie}
+		     * @extends plotOptions.pie
 		     * @product highcharts
 		     * @sample {highcharts} highcharts/demo/variable-radius-pie/
 		     *         Variable-radius pie chart
@@ -446,8 +450,8 @@
 		 *  ]
 		 *  ```
 		 *
-		 * 2.  An array of objects with named values. The objects are point
-		 * configuration objects as seen below. If the total number of data
+		 * 2.  An array of objects with named values. The following snippet shows only a
+		 * few settings, see the complete options set below. If the total number of data
 		 * points exceeds the series'
 		 * [turboThreshold](#series.variablepie.turboThreshold), this option is not
 		 * available.

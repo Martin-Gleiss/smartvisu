@@ -63,20 +63,22 @@
 * @param {value=100} the number of points in the period (optional, default 100)
 * @param {text[?]=} label for each serie; multiples in array form (optional)
 * @param {color[?]=} color for each serie; multiples in array form (optional, default: suitable for design)
-* @param {text[?](line,stair,spline,area,areaspline,column)=line} type of each serie: 'line', 'stair', 'spline', 'area', 'areaspline', 'column'; multiples in array form (optional, default 'line')
+* @param {text[?](line,stair,spline,area,areastair,areaspline,column)=line} type of each serie: 'line', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'column'; multiples in array form (optional, default 'line')
 * @param {text[?]=} title for the x-axis and y-axes in array form: [title_x-axis, title_y-axis1, title_y-axis2, ...] (optional)
-* @param {duration=} minimal time range while zooming (optional, duration-format)
+* @param {duration(advanced)=} minimal time range while zooming or 'advanced' (optional, duration-format)
+	by passing 'advanced' a seaparate range selector is shown and data grouping for large amount of data is enabled
 * @param {value[]=} assignment of the series to the y-axes; multiples in array form (optional)
 * @param {value[]=} y-axes setup for left '0' and right '1' hand in array form (optional)
 * @param {color[?]=} y-axes color; multiples in array form (optional)
 * @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
 * @param {format=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
+* @param {unchecked=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
 */
 
-{% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit) %}
+{% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions) %}
 	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1h') %}
 	{% set count = count|default(100) %}
@@ -97,8 +99,9 @@
 		{% if opposite is not empty %} data-opposite="{{ implode(opposite) }}" {% endif %}
 		{% if ycolor is not empty %} data-ycolor="{{ implode(ycolor) }}" {% endif %}
 		data-ytype="{{ implode(ytype) }}"
-    data-unit="{{ implode(unit) }}"
-		class="plot"></div>
+		data-unit="{{ implode(unit) }}"
+		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}"
+		class="plot{% if zoom == 'advanced' %} plot-highstock{% endif %}"></div>
 
 {% endmacro %}
 

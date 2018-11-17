@@ -19,7 +19,7 @@
 - New: icon.cistern
 - New: icon.heating (displays a heating colored with dynamic gradient)
 - basic.symbol: Can also be used to show text only and to render as link, mode extended to adaptable formula, and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
-- plot.period: Among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale and units
+- plot.period: Among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale, units, an advanced zoom mode as in Highstock and the possibility to set any additional chart options
 - plot.temprose: New parameters 'series_label' and 'unit'
 - basic.slider: New parameters 'value_display', 'min_display' and 'max_display'
 - device.blind & device.shutter: item_move is now optional
@@ -52,6 +52,7 @@
 - Auto-loading of any .js file inside subfolder 'js' and any .css file inside 'css' in current pages folder
 - New driver for [ioBroker](http://www.iobroker.net)
 - New weather service [darksky.net](https://darksky.net/)
+- New Fritz!Box phone service using TR-064
 
 ### Improvements
 - Replaced make.php by on-the-fly minification (needs page cache set on)
@@ -66,7 +67,7 @@
 ### Updated Libraries
 - jQuery Mobile to 1.4.5
 - jQuery to 2.1.4
-- Highcharts changed to Highstock (which includes Highcharts), updatet to 6.1.1 and migrated to styled mode
+- Highcharts changed to Highstock (which includes Highcharts), updatet to 6.2.0 and migrated to styled mode
 
 ### Fixed Bugs
 - Changes were not visible immediate after saving configuration

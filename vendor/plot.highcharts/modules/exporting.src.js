@@ -1,8 +1,8 @@
 /**
- * @license Highcharts JS v6.1.1 (2018-06-27)
+ * @license Highcharts JS v6.2.0 (2018-10-17)
  * Exporting module
  *
- * (c) 2010-2017 Torstein Honsi
+ * (c) 2010-2018 Torstein Honsi
  *
  * License: www.highcharts.com/license
  */
@@ -10,6 +10,10 @@
 (function (factory) {
 	if (typeof module === 'object' && module.exports) {
 		module.exports = factory;
+	} else if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return factory;
+		});
 	} else {
 		factory(Highcharts);
 	}
@@ -18,7 +22,7 @@
 		/**
 		 * Exporting module
 		 *
-		 * (c) 2010-2017 Torstein Honsi
+		 * (c) 2010-2018 Torstein Honsi
 		 *
 		 * License: www.highcharts.com/license
 		 */
@@ -256,7 +260,7 @@
 
 		/**
 		 * Options for the exporting module. For an overview on the matter, see
-		 * [the docs](http://www.highcharts.com/docs/export-module/export-module-overview).
+		 * [the docs](https://www.highcharts.com/docs/export-module/export-module-overview).
 		 * @type {Object}
 		 * @optionparent exporting
 		 */
@@ -526,7 +530,7 @@
 		             * the `Highcharts.Renderer.symbols` collection. The default
 		             * `exportIcon` function is part of the exporting module.
 		             *
-		             * @validvalue ["circle", "square", "diamond", "triangle", "triangle-down", "menu"]
+		             * @validvalue ["exportIcon", "circle", "square", "diamond", "triangle", "triangle-down", "menu"]
 		             * @type {String}
 		             * @sample highcharts/exporting/buttons-contextbutton-symbol/
 		             *         Use a circle for symbol
@@ -542,9 +546,19 @@
 		             * button's title tooltip. When the key is `contextButtonTitle`, it
 		             * refers to [lang.contextButtonTitle](#lang.contextButtonTitle)
 		             * that defaults to "Chart context menu".
-		             * @type {String}
+		             *
+		             * @since 6.1.4
 		             */
-		            _titleKey: 'contextButtonTitle',
+		            titleKey: 'contextButtonTitle',
+
+		            /**
+		             * This option is deprecated, use
+		             * [titleKey](#exporting.buttons.contextButton.titleKey) instead.
+		             *
+		             * @deprecated
+		             * @type      {string}
+		             * @apioption exporting.buttons.contextButton._titleKey
+		             */
 
 		            /**
 		             * A collection of strings pointing to config options for the menu
@@ -763,7 +777,6 @@
 
 		        svg = svg
 		            .replace(/zIndex="[^"]+"/g, '')
-		            .replace(/isShadow="[^"]+"/g, '')
 		            .replace(/symbolName="[^"]+"/g, '')
 		            .replace(/jQuery[0-9]+="[^"]+"/g, '')
 		            .replace(/url\(("|&quot;)(\S+)("|&quot;)\)/g, 'url($2)')
@@ -1059,33 +1072,37 @@
 		        // pull out the chart
 		        body.appendChild(container);
 
-		        // print
-		        win.focus(); // #1510
-		        win.print();
-
-		        // allow the browser to prepare before reverting
+		        // Give the browser time to draw WebGL content, an issue that randomly
+		        // appears (at least) in Chrome ~67 on the Mac (#8708).
 		        setTimeout(function () {
 
-		            // put the chart back in
-		            origParent.appendChild(container);
+		            win.focus(); // #1510
+		            win.print();
 
-		            // restore all body content
-		            each(childNodes, function (node, i) {
-		                if (node.nodeType === 1) {
-		                    node.style.display = origDisplay[i];
+		            // allow the browser to prepare before reverting
+		            setTimeout(function () {
+
+		                // put the chart back in
+		                origParent.appendChild(container);
+
+		                // restore all body content
+		                each(childNodes, function (node, i) {
+		                    if (node.nodeType === 1) {
+		                        node.style.display = origDisplay[i];
+		                    }
+		                });
+
+		                chart.isPrinting = false;
+
+		                // Reset printMaxWidth
+		                if (handleMaxWidth) {
+		                    chart.setSize.apply(chart, resetParams);
 		                }
-		            });
 
-		            chart.isPrinting = false;
+		                fireEvent(chart, 'afterPrint');
 
-		            // Reset printMaxWidth
-		            if (handleMaxWidth) {
-		                chart.setSize.apply(chart, resetParams);
-		            }
-
-		            fireEvent(chart, 'afterPrint');
-
-		        }, 1000);
+		            }, 1000);
+		        }, 1);
 
 		    },
 
@@ -1110,14 +1127,14 @@
 		            menu = chart[cacheName],
 		            menuPadding = Math.max(width, height), // for mouse leave detection
 		            innerMenu,
-		            hide,
 		            menuStyle;
 
 		        // create the menu only the first time
 		        if (!menu) {
 
 		            // create a HTML element above the SVG
-		            chart[cacheName] = menu = createElement('div', {
+		            chart.exportContextMenu = chart[cacheName] = menu =
+		            createElement('div', {
 		                className: className
 		            }, {
 		                position: 'absolute',
@@ -1136,18 +1153,19 @@
             
 
 		            // hide on mouse out
-		            hide = function () {
+		            menu.hideMenu = function () {
 		                css(menu, { display: 'none' });
 		                if (button) {
 		                    button.setState(0);
 		                }
 		                chart.openMenu = false;
+		                H.clearTimeout(menu.hideTimer);
 		            };
 
 		            // Hide the menu some time after mouse leave (#1357)
 		            chart.exportEvents.push(
 		                addEvent(menu, 'mouseleave', function () {
-		                    menu.hideTimer = setTimeout(hide, 500);
+		                    menu.hideTimer = setTimeout(menu.hideMenu, 500);
 		                }),
 		                addEvent(menu, 'mouseenter', function () {
 		                    H.clearTimeout(menu.hideTimer);
@@ -1157,13 +1175,13 @@
 		                // #2335, #2407)
 		                addEvent(doc, 'mouseup', function (e) {
 		                    if (!chart.pointer.inClass(e.target, className)) {
-		                        hide();
+		                        menu.hideMenu();
 		                    }
 		                }),
 
 		                addEvent(menu, 'click', function () {
 		                    if (chart.openMenu) {
-		                        hide();
+		                        menu.hideMenu();
 		                    }
 		                })
 		            );
@@ -1188,7 +1206,7 @@
 		                                if (e) { // IE7
 		                                    e.stopPropagation();
 		                                }
-		                                hide();
+		                                menu.hideMenu();
 		                                if (item.onclick) {
 		                                    item.onclick.apply(chart, arguments);
 		                                }
@@ -1276,12 +1294,19 @@
 
 		        if (onclick) {
 		            callback = function (e) {
-		                e.stopPropagation();
+		                if (e) {
+		                    e.stopPropagation();
+		                }
 		                onclick.call(chart, e);
 		            };
 
 		        } else if (menuItems) {
-		            callback = function () {
+		            callback = function (e) {
+		                // consistent with onclick call (#3495)
+		                if (e) {
+		                    e.stopPropagation();
+		                }
+
 		                chart.contextMenu(
 		                    button.menuClassName,
 		                    menuItems,
@@ -1312,7 +1337,12 @@
 		            .addClass(options.className)
 		            .attr({
                 
-		                title: pick(chart.options.lang[btnOptions._titleKey], '')
+		                title: pick(
+		                    chart.options.lang[
+		                        btnOptions._titleKey || btnOptions.titleKey
+		                    ],
+		                    ''
+		                )
 		            });
 		        button.menuClassName = (
 		            options.menuClassName ||

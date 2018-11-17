@@ -1091,7 +1091,7 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 
 		// legacy support
 		if(formula == 'or') {
-      formula = 'VAR';
+			formula = 'VAR';
 		}
 		else if(formula == 'and') {
 			formula = response.join(' == VAR[0] && ') + ' == VAR[0] ? VAR[0] : null';
