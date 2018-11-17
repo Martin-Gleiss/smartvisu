@@ -115,11 +115,11 @@ Number.prototype.transExByteToMegabyte = function() {
 // ----- v i s u ---------------------------------------------------------------
 // -----------------------------------------------------------------------------
 
-// ----- visu.autostateExt ------------------------------------------------------
+// ----- visu.stateengineExt ------------------------------------------------------
 
-$.widget("sv.autostate", $.sv.widget, {
+$.widget("sv.stateengine", $.sv.widget, {
 
-	initSelector: '[data-widget="visu.autostate"]',
+	initSelector: '[data-widget="visu.stateengine"]',
 
 	options: {
 

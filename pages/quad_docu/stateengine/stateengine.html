@@ -11,18 +11,18 @@
 {% block content %}
 
 	{% block headline %}
-		<h1>Autostate</h1>
+		<h1>stateengine</h1>
 	{% endblock %}
 
 	{% block intro %}
-		Information on how to implement the autoblind/autostate plugin
+		Information on how to implement the autoblind/stateengine plugin
 
 	{% endblock %}
 <div class="docu_text">
-If you use the autoblind/autostate plugin you can define icons and values in the config.ini file and show an icon based on the current state.<br>
+If you use the autoblind/stateengine plugin you can define icons and values in the config.ini file and show an icon based on the current state.<br>
 Examples:<br>
-* autostate_icons = "icons/ws/time_manual_mode.svg, icons/ws/secur_locked.svg, icons/ws/time_automatic.svg, icons/ws/fts_shutter_automatic.svg, icons/ws/weather_sun.svg, icons/ws/weather_sunset.svg, icons/ws/weather_sunrise.svg, icons/ws/weather_moonset.svg, icons/ws/scene_x-mas.svg, icons/ws/fts_shutter_automatic.svg, icons/ws/scene_sleeping.svg, icons/ws/weather_wind.svg, icons/ws/weather_snow.svg, icons/ws/weather_rain.svg, icons/ws/scene_x-mas.svg, icons/ws/scene_cinema.svg, icons/ws/it_television.svg, icons/ws/scene_sleeping.svg, icons/ws/status_away_2.svg, icons/ws/status_available.svg, icons/ws/time_manual_mode.svg, icons/ws/time_timer.svg, icons/ws/status_standby.svg, icons/ws/scene_shower.svg, icons/ws/weather_sunset.svg, icons/ws/weather_sunrise.svg, icons/ws/light_party.svg, icons/ws/scene_cleaning.svg, icons/ws/scene_drink.svg, icons/ws/scene_deckchair.svg, icons/ws/light_office.svg, icons/ws/light_office.svg, icons/ws/scene_summerhouse.svg, icons/ws/halloween.svg, icons/ws/weather_sun.svg" <br>
-* autostate_values = "Ausgesetzt, Gesperrt, Standard, Tag (statisch), Sonnenstand, Abend, Morgen, Nacht, Advent, Hinaufgefahren, Schlafen, Wind, Schnee, Regen, Advent, Kino, TV, Nacht, Abwesend, Anwesend, Manuell, Timer, Ausgeschaltet, Duschen, Abend, Morgen, Party, Putzen, Chillen, Outdoorchillen, Arbeiten, Outdoorarbeiten, Outdoorflexibel, Halloween, Mittag"
+* stateengine_icons = "icons/ws/time_manual_mode.svg, icons/ws/secur_locked.svg, icons/ws/time_automatic.svg, icons/ws/fts_shutter_automatic.svg, icons/ws/weather_sun.svg, icons/ws/weather_sunset.svg, icons/ws/weather_sunrise.svg, icons/ws/weather_moonset.svg, icons/ws/scene_x-mas.svg, icons/ws/fts_shutter_automatic.svg, icons/ws/scene_sleeping.svg, icons/ws/weather_wind.svg, icons/ws/weather_snow.svg, icons/ws/weather_rain.svg, icons/ws/scene_x-mas.svg, icons/ws/scene_cinema.svg, icons/ws/it_television.svg, icons/ws/scene_sleeping.svg, icons/ws/status_away_2.svg, icons/ws/status_available.svg, icons/ws/time_manual_mode.svg, icons/ws/time_timer.svg, icons/ws/status_standby.svg, icons/ws/scene_shower.svg, icons/ws/weather_sunset.svg, icons/ws/weather_sunrise.svg, icons/ws/light_party.svg, icons/ws/scene_cleaning.svg, icons/ws/scene_drink.svg, icons/ws/scene_deckchair.svg, icons/ws/light_office.svg, icons/ws/light_office.svg, icons/ws/scene_summerhouse.svg, icons/ws/halloween.svg, icons/ws/weather_sun.svg" <br>
+* stateengine_values = "Ausgesetzt, Gesperrt, Standard, Tag (statisch), Sonnenstand, Abend, Morgen, Nacht, Advent, Hinaufgefahren, Schlafen, Wind, Schnee, Regen, Advent, Kino, TV, Nacht, Abwesend, Anwesend, Manuell, Timer, Ausgeschaltet, Duschen, Abend, Morgen, Party, Putzen, Chillen, Outdoorchillen, Arbeiten, Outdoorarbeiten, Outdoorflexibel, Halloween, Mittag"
 </div>
 <div class="docu_text">
 If you want to create a mostly automatic popup for multiple items on a page you can copy this code to the beginning of your page.
@@ -31,8 +31,8 @@ After the "autoblind" entry you add your states that are relevant for your item.
 </div>
 <div class="twig">
 	<code class="param">{% filter trim|escape|nl2br %}{% raw %}
-{% set autostate = {} %}
-{% set autostate_items = {
+{% set stateengine = {} %}
+{% set stateengine_items = {
 'item1': ['item1.automatik.lock', 'item1.automatik.settings.suspendduration', '0', '60', '5',
 'item1.automatik.settings.sollwert', '0', '250', '5', 'item1.automatik.settings.sperren', '0', '1', 'sperren', 'autoblind',
 'standard', 'morning']
@@ -44,7 +44,7 @@ Copy this code right after it. You only have to add your own states in the "set 
 </div>
 <div class="twig">
 	<code class="param">{% filter trim|escape|nl2br %}{% raw %}
-{% for item,content in autostate_items %}
+{% for item,content in stateengine_items %}
     {% set itemname = item|replace({'.': '_'}) %}
 	{% set suspend = [['switch', 'slider'], [content[0], 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], [content[1], content[2], content[3], content[4], '', 'handle']] %}
 	{% set sollwerte = {} %}
@@ -71,7 +71,7 @@ Copy this code right after it. You only have to add your own states in the "set 
 	{% else %}
 	    {% set sollwerttext = ['header', 'Sollwerte'] %}
 	{% endif %}
-	{% set autostate = autostate|merge({(itemname): ['autostate', (suspendtext), (suspend), (sollwerttext), ('standard' in content ) ? (standard), ('morning' in content ) ? (morning),  ('halloween' in content and ('now'|date('m/d')) == ('10/31')) ? (halloween), ('advent' in content and (("now"|date('m/d') > ('12/01') and "now"|date('m/d') < ('12/31')) or ("now"|date('m/d') > ('01/01') and "now"|date('m/d') < ('01/15')))) ? (advent)]}) %}
+	{% set stateengine = stateengine|merge({(itemname): ['stateengine', (suspendtext), (suspend), (sollwerttext), ('standard' in content ) ? (standard), ('morning' in content ) ? (morning),  ('halloween' in content and ('now'|date('m/d')) == ('10/31')) ? (halloween), ('advent' in content and (("now"|date('m/d') > ('12/01') and "now"|date('m/d') < ('12/31')) or ("now"|date('m/d') > ('01/01') and "now"|date('m/d') < ('01/15')))) ? (advent)]}) %}
 {% endfor %}
 
 {% endraw %}{% endfilter %}</code>
@@ -81,7 +81,7 @@ You can implement all the code above in several list widgets that support ext_po
 </div>
 <div class="twig">
 	<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-		(autostate['item1'])
+		(stateengine['item1'])
 	{% endraw %}{% endfilter %}</code>
 	</div>
 <div class="docu_text">

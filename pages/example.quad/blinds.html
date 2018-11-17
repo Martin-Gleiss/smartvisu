@@ -18,12 +18,12 @@ Blinds
 <img class="icon" src='{{ icon0 }}fts_shutter_50.svg'/>
 {% endblock %}
 
-{% set autostate = {} %}
-{% set autostate_items = {
+{% set stateengine = {} %}
+{% set stateengine_items = {
 'item1': ['item1.automatik.lock', 'item1.automatik.settings.suspendduration', '0', '60', '5', 'item1.automatik.settings.sollwert', '0', '250', '5', 'item1.automatik.settings.sperren', '0', '1', 'sperren', 'autoblind', 'standard', 'morning']
 } %}
 
-{% for item,content in autostate_items %}
+{% for item,content in stateengine_items %}
     {% set itemname = item|replace({'.': '_'}) %}
 	{% set suspend = [['switch', 'slider'], [content[0], 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], [content[1], content[2], content[3], content[4], '', 'handle']] %}
 	{% set sollwerte = {} %}
@@ -51,7 +51,7 @@ Blinds
 	{% else %}
 	    {% set sollwerttext = ['header', 'Sollwerte'] %}
 	{% endif %}
-	{% set autostate = autostate|merge({(itemname): ['autostate', (suspendtext), (suspend), (sollwerttext), ('standard' in content ) ? (standard), ('morning' in content ) ? (morning),  ('halloween' in content and ('now'|date('m/d')) == ('10/31')) ? (halloween), ('advent' in content and (("now"|date('m/d') > ('12/01') and "now"|date('m/d') < ('12/31')) or ("now"|date('m/d') > ('01/01') and "now"|date('m/d') < ('01/15')))) ? (advent)]}) %}
+	{% set stateengine = stateengine|merge({(itemname): ['stateengine', (suspendtext), (suspend), (sollwerttext), ('standard' in content ) ? (standard), ('morning' in content ) ? (morning),  ('halloween' in content and ('now'|date('m/d')) == ('10/31')) ? (halloween), ('advent' in content and (("now"|date('m/d') > ('12/01') and "now"|date('m/d') < ('12/31')) or ("now"|date('m/d') > ('01/01') and "now"|date('m/d') < ('01/15')))) ? (advent)]}) %}
 {% endfor %}
 
 {% block content %}
@@ -61,15 +61,15 @@ $( document ).ready(function() {
 		 io.write('blind.kz', '0' );
 		 io.write('blind.hoehe', '90' );
 		 io.write('blind.lamellen', '10' );
-     io.write('blind.automatik.autostate_name', 'Standard');
+     io.write('blind.automatik.stateengine_name', 'Standard');
 		 io.write('blind.automatik.lock', '0');
 	});
 
 </script>
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
     <li data-role="list-divider">Blind</li>
-    ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'autostate'] with autostate popup
-    {{ quad.blind('blind1', 'Blind Popup. Quad-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', (autostate['item1']), '', 'place3', 'place4', ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'autostate']) }}
+    ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine'] with stateengine popup
+    {{ quad.blind('blind1', 'Blind Popup. Quad-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', (stateengine['item1']), '', 'place3', 'place4', ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine']) }}
     ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']
     {{ quad.blind('blind2', 'Blind Slider. Standard-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', 'original_uzsu', 'blind.hoehe', '', '', '', '', 'place3', 'place4', ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']) }}
 

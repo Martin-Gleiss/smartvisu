@@ -24,7 +24,7 @@ $( document ).ready(function() {
 	});
 
 $(document).on("pagecreate", function() {
-    $("#0_status-soundswitch_div").children().on("click",function(){
+    $("#status-soundswitch_div").children().on("click",function(){
         console.log("Reset Soundtrigger to 0");
         io.write('soundtrigger', '0' );
     });
@@ -44,7 +44,7 @@ $(document).on("pagecreate", function() {
 <li data-role="list-divider">visu.notifiybadge = value from "that"-item as badge {{ visu.notifybadge('badge', 'that') }}</li>
 <li data-role="list-divider">Sound: Play a sound file when item has specific value</li>
 
-	<div class="html" id="0_status-soundswitch_div">
+	<div class="html" id="status-soundswitch_div">
 		{{ basic.stateswitch('soundswitch', 'soundtrigger', 'mini', 1, 'audio_audio') }}
 	</div>
 <li data-role="list-divider">print</li>

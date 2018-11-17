@@ -588,7 +588,7 @@
 
 }
 
-.quad_list div.column_plot, div.column_autostate, div.column_uzsu, div.column_move_up, div.column_move_down, div.column_stop, div.column_mute {
+.quad_list div.column_plot, div.column_stateengine, div.column_uzsu, div.column_move_up, div.column_move_down, div.column_stop, div.column_mute {
     width: 40px;
 }
 

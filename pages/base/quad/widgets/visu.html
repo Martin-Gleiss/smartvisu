@@ -8,7 +8,7 @@
 */
 
 /**
-* Extended Autostate widget: showing an icon depending on the state an item is in (using autoblind plugin). Popup on longpress.
+* Extended stateengine widget: showing an icon depending on the state an item is in (using autoblind plugin). Popup on longpress.
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item the state should be shown for
@@ -18,9 +18,9 @@
 * @param {text[]} array of values corresponding to the icons stated in the previous attribute
 * @param {text} id of the popup widget to open on longpress
 */
-{% macro autostate(id, item, lock, release, pic, val, popup) %}
+{% macro stateengine(id, item, lock, release, pic, val, popup) %}
   {% import "basic.html" as basic %}
-    <span id="{{ uid(page, id) }}" data-widget="visu.autostate" data-item="{{ item }}" lock-item="{{ lock }}" release-item="{{ release }}"
+    <span id="{{ uid(page, id) }}" data-widget="visu.stateengine" data-item="{{ item }}" lock-item="{{ lock }}" release-item="{{ release }}"
         data-vals="{{ implode(val) }}"  data-img="{{ implode(pic|deficon) }}" data-val-on="1" data-val-off="0"
         class="symbol {{ lock == '' ? '' : 'ui-link' }}" data-role="symbol" data-inline="true" data-iconpos="center" data-mode="{{ mode|default('or') }}" rel="{{ popup }}">
     {{ basic.icon(pic[0]|deficon('time_automatic'), 'icon0') }}
