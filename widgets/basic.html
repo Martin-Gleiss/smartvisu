@@ -185,11 +185,11 @@
 	{%- if pic|slice(0, 4) != '<svg' -%}
 		" src="{{ pic|deficon }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}">
 	{%- else -%}
-    ">{{ pic }}</span>
-	{% endif %}
- {% if color in ['rgb','hsl','hsv'] -%}
-	 </span>
- {%- endif -%}
+		">{{ pic }}</span>
+	{%- endif -%}
+	{% if color in ['rgb','hsl','hsv'] -%}
+		</span>
+	{%- endif -%}
 
 {% endmacro %}
 
@@ -522,18 +522,18 @@ the first one is the base color for values below first threshold, so pass one co
 		{% if not items is empty %}data-item="{{ implode(items) }}" {% endif %}
 		data-val="{{ implode(value) }}"
 		data-mode="{{ formula|default('or') }}" class="symbol">
-		{% for val in value %}
-			{% set pic = icon is iterable ? icon[loop.index0] : icon %}
-			{% if text is empty %}{% set pic = pic|deficon('control_on_off.svg') %}{% endif %}
-			{% set col = (color is iterable ? color[loop.index0] : color)|default('') %}
-			{% set txt = (text is iterable ? text[loop.index0] : text)|default('') %}
+		{%- for val in value -%}
+			{%- set pic = icon is iterable ? icon[loop.index0] : icon -%}
+			{%- if text is empty %}{% set pic = pic|deficon('control_on_off.svg') %}{% endif -%}
+			{%- set col = (color is iterable ? color[loop.index0] : color)|default('') -%}
+			{%- set txt = (text is iterable ? text[loop.index0] : text)|default('') -%}
 			<span data-val="{{ val }}"
 				style="{% if not loop.first %}display:none;{% endif %}{% if pic is empty and not txt is empty and not col is empty and col != 'icon1' %}color: {{ col }};{% endif %}"
 				{% if pic is empty and not txt is empty and col == 'icon1' %} class="icon1"{% endif %}>
-				{% if pic %}{{ basic.icon(pic, col) }}{% endif %}
-				{{ txt }}
+				{%- if pic %}{{ basic.icon(pic, col) }}{% endif -%}
+				{{- txt -}}
 			</span>
-	  {% endfor %}
+	  {%- endfor -%}
 	</{% if href is empty %}span{% else %}a{% endif %}>
 	
 {% endmacro %}
