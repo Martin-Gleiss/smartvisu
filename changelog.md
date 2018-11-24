@@ -24,7 +24,7 @@
 - basic.slider: New parameters 'value_display', 'min_display' and 'max_display'
 - device.blind & device.shutter: item_move is now optional
 - basic.shutter & device.shutter: min/max are renamed to value_top/bottom and value_top may be lesser than value_bottom
-- device.shutter: Value for pos1 and pos2 can be set by parameter
+- device.shutter: Value and text for pos1 and pos2 can be set by parameter
 - basic.tank & icon.* (dynamic icons): min is now implemented and max may be lesser than min
 - device.dimmer: New parameters to specify pic and color and 'min_display' and 'max_display' like slider
 - device.rtr: New parameters to specify separate offset item and additional content
