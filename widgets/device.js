@@ -624,7 +624,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       // bei designType '0' wird rrule nach Wochentagen umgewandelt und ein festes Format vorgegegeben hier sollte nichts versehentlich überschrieben werden
       if (designType == '0') {
         // "time" von SmartHomeNG parsen
-        var timeParts = entry.time.match(/^((\d{1,2}:\d{1,2})<)?(sunrise|sunset)(([+-]\d+)([m°]?))?(<(\d{1,2}:\d{1,2}))?$/);
+        var timeParts = (entry.time || "").match(/^((\d{1,2}:\d{1,2})<)?(sunrise|sunset)(([+-]\d+)([m°]?))?(<(\d{1,2}:\d{1,2}))?$/);
         if(timeParts == null) { // entry.time is a plain time string
           entry.event = "time";
           entry.timeCron = entry.time;
