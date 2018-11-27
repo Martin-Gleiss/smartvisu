@@ -146,10 +146,11 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       notify.error("UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.options.id + ".");
       return;
     }
+
+    this._uzsudata = jQuery.extend(true, {}, response[0]);
+
     // Initialisierung zunächst wird festgestellt, ob Item mit Eigenschaft vorhanden. Wenn nicht: active = false
     // ansonsten ist der Status von active gleich dem gesetzten Status
-    // Wenn ein Update erfolgt, dann werden die Daten erneut in die Variable uzsu geladen damit sind die UZSU objekte auch in der click Funktion verfügbar
-    this._uzsudata = response[0];
     if (!(this._uzsudata.list instanceof Array)) {
       this._uzsudata = { active: false, list: [] };
     }
@@ -1355,24 +1356,25 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         //}, false, null);
 
       // Interpolation buttons
-      var buttons = [
+      self.interpolationButtons = [
         { interpolationType: 'none', shape: 'square', langKey: 'nointerpolation' },
         { interpolationType: 'cubic', shape: 'circle', langKey: 'cubic' },
         { interpolationType: 'linear', shape: 'triangle', langKey: 'linear' },
       ];
 
-      $.each(buttons, function(i, button) {
-        chart.renderer.button('', null, null, function(e) { self._uzsudata.interpolation.type = button.interpolationType; self._save(); }, null,  null,  null,  null, button.shape)
+      $.each(self.interpolationButtons, function(i, button) {
+        button.element = chart.renderer.button('', null, null, function(e) { self._uzsudata.interpolation.type = button.interpolationType; self._save(); }, null,  null,  null,  null, button.shape)
           .attr({
             align: 'right',
-            title: sv_lang.uzsu[button.langKey]
+            title: sv_lang.uzsu[button.langKey],
+            "data-interpolation-type": button.interpolationType
           })
-          .addClass('highcharts-color-0')
+          .addClass('icon0 interpolation-button')
           .css({'fill': 'transparent'})
           .add()
           .align({
             align: 'right',
-            x: -16-(buttons.length-i-1)*20,
+            x: -16-(self.interpolationButtons.length-i-1)*20,
             y: 10
           }, false, null);
       });
@@ -1386,7 +1388,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         )
         .align({
           align: 'right',
-          x: -16-buttons.length*20,
+          x: -16-self.interpolationButtons.length*20,
           y: 22
         }, false, null);
     });
@@ -1521,6 +1523,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       plotLines: plotLines
     }, false);
     chart.get('sun').setData(sunData, false);
+
+    //set active interpolation button
+    $.each(this.interpolationButtons, function(idx, button) {
+      if(button.interpolationType == self._uzsudata.interpolation.type)
+        button.element.addClass("icon1");
+      else
+        button.element.removeClass("icon1");
+    });
 
     chart.redraw();
 
