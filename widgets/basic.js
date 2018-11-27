@@ -880,16 +880,21 @@ $.widget("sv.basic_shutter", $.sv.widget, {
 		});
 	},
 
+	_getVal(event) {
+		var max = this.options.max;
+		var min = this.options.min;
+		var step = this.options.step;
+
+		var offset = this.element.offset();
+		var x = event.pageX - offset.left;
+		var y = event.pageY - offset.top;
+		return Math.floor(y / this.element.outerHeight() * (max - min) / step) * step + min;
+	},
+
 	_events: {
 		'click': function (event) {
-			var max = this.options.max;
-			var min = this.options.min;
-			var step = this.options.step;
-
-			var offset = this.element.offset();
-			var x = event.pageX - offset.left;
-			var y = event.pageY - offset.top;
-			var val = Math.floor(y / this.element.outerHeight() * (max - min) / step) * step + min;
+			var val = this._getVal(event);
+			var x = event.pageX - this.element.offset().left;
 
 			var items = this.options.item.explode();
 			if (items[1] != '' && x > this.element.outerWidth() / 2) {
@@ -906,7 +911,11 @@ $.widget("sv.basic_shutter", $.sv.widget, {
 
 		'mouseleave': function (event) {
 			this.element.find('.control').fadeOut(400);
-		}
+		},
+
+		'mousemove': function (event) {
+			this.element.attr('title', this._getVal(event));
+		},
 	}
 
 });
