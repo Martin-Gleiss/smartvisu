@@ -1316,15 +1316,17 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   clear: both;
   height: 3.8em;
 }
-/* possible work around for firefox line break issues with scrollbars
+/* work around for firefox line break issues with scrollbars */
 .uzsuRow:first-of-type::after {
-    content: '';
-    visibility: hidden;
-    width: 18px;
-    display: inline-block;
+  content: ".";
+  float: right;
+  width: 30px;
+  height: 1px;
+  visibility: hidden;
 }
-*/
+
 .uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec{
+  float: left;
   height: 3.8em;
   border: 1px dotted;
   margin: 0 0.6em 1.2em 1.2em;
@@ -1334,6 +1336,9 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   content: " ";
   display: block;
   height: 0;
+}
+.uzsuRowCondition, .uzsuRowDelayedExec{
+  clear: both;
 }
 .uzsuRowExpertText, .uzsuRowHolidayText, .uzsuRowConditionText, .uzsuRowDelayedExecText{
   height: 0em;
