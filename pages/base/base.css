@@ -1281,8 +1281,7 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   float: left;
 }
 
-.rtr .control .switch,
-.rtr .control .symbol {
+.rtr .control > * {
   margin: 2px;
   float: left;
 }

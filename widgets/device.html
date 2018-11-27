@@ -189,7 +189,7 @@
 				{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
 			{% endif %}
 			{% for supplement in supplements %}
-				{{ supplement }}
+				{{ supplement|raw }}
 			{% endfor %}
 		</div>
 		{% endif %}
