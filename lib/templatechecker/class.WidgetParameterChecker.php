@@ -288,39 +288,42 @@ class WidgetParameterChecker {
 		if ($this->checkParameterValidValues($value))
 			return;
 
+		//TODO: Replace by recursively checked widgets in parameters in class.Widget.php
 		if (substr($value, 0, 5) == 'icon.') {
-      $this->templateCecker->checkWidget($this->widget->getNode(), $value);
-			/*
-			if (array_key_exists($value, $this->dynamicIcons)) {
+
+			$dyniconWiget = explode('(', $value, 2);
+
+			if (array_key_exists($dyniconWiget[0], $this->dynamicIcons)) {
 				// existing dynamic icon
 				if (Settings::SHOW_SUCCESS_TOO)
-					$this->addInfo('WIDGET IMAGE PARAM  CHECK', 'Existing dynamic image', $value);
+					$this->addInfo('WIDGET IMAGE PARAM CHECK', 'Existing dynamic image', $value);
 			} else {
 				// unknown dynamic icon
-				$this->addError('WIDGET IMAGE PARAM  CHECK', 'Missing dynamic image', $value);
+				$this->addError('WIDGET IMAGE PARAM CHECK', 'Missing dynamic image', $value);
 			}
-			*/
-			return;
+
 		}
+		else {
 
-		$file = $value;
+			$file = $value;
 
-		switch (TemplateChecker::isFileExisting($file)) {
-			case TemplateChecker::FILE_MISSING:
-				$this->addError('WIDGET IMAGE PARAM CHECK', 'Image missing', $value, array('Checked File' => $file));
-				break;
-			case TemplateChecker::FILE_EXISTING:
-				if (Settings::SHOW_SUCCESS_TOO)
-					$this->addInfo('WIDGET IMAGE PARAM  CHECK', 'Image existing', $value, array('Checked File' => $file));
-				break;
-			case TemplateChecker::FILE_REMOTE:
-				if (Settings::SHOW_SUCCESS_TOO)
-					$this->addInfo('WIDGET IMAGE PARAM  CHECK', 'Image from remote location', $value, array('Checked File' => $file));
-				break;
-			case TemplateChecker::FILE_CONTAINS_PARAMS:
-				if (Settings::SHOW_SUCCESS_TOO)
-					$this->addWarning('WIDGET IMAGE PARAM  CHECK', 'Image path still contains parameters. Check manually!', $value, array('Checked File' => $file));
-				break;
+			switch (TemplateChecker::isFileExisting($file)) {
+				case TemplateChecker::FILE_MISSING:
+					$this->addError('WIDGET IMAGE PARAM CHECK', 'Image missing', $value, array('Checked File' => $file));
+					break;
+				case TemplateChecker::FILE_EXISTING:
+					if (Settings::SHOW_SUCCESS_TOO)
+						$this->addInfo('WIDGET IMAGE PARAM CHECK', 'Image existing', $value, array('Checked File' => $file));
+					break;
+				case TemplateChecker::FILE_REMOTE:
+					if (Settings::SHOW_SUCCESS_TOO)
+						$this->addInfo('WIDGET IMAGE PARAM CHECK', 'Image from remote location', $value, array('Checked File' => $file));
+					break;
+				case TemplateChecker::FILE_CONTAINS_PARAMS:
+					if (Settings::SHOW_SUCCESS_TOO)
+						$this->addWarning('WIDGET IMAGE PARAM CHECK', 'Image path still contains parameters. Check manually!', $value, array('Checked File' => $file));
+					break;
+			}
 		}
 	}
 
