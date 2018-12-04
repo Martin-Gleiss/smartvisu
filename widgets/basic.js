@@ -703,14 +703,6 @@ $.widget("sv.basic_print", $.sv.widget, {
 		var formatLower = format.toLowerCase();
 		var formula = this.options.formula;
 
-		var type;
-		if (formatLower == 'date' || formatLower == 'time' || formatLower == 'short' || formatLower == 'long')
-			type = 'Date';
-		else if (formatLower == 'text' || formatLower == 'html' || formatLower == 'script')
-			type = 'String';
-		else
-			type = 'Number';
-
 		formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
 
 		var VAR = response;
@@ -743,12 +735,22 @@ $.widget("sv.basic_print", $.sv.widget, {
 			notify.error("basic.print: Invalid formula", ex);
 		}
 
-		if(type == 'Date')
-			calc = new Date(calc).transUnit(format);
-		else if (type == 'Number' && !isNaN(calc))
-			calc = parseFloat(calc).transUnit(format);
-		else if (formatLower == 'script') // no output for format 'script'
-			calc = '';
+		var value; // value for threshold comparison
+		if (formatLower == 'date' || formatLower == 'time' || formatLower == 'short' || formatLower == 'long') { // Date
+			value = new Date(calc);
+			calc = value.transUnit(format);
+		}
+		else if (formatLower == 'script') { // Script
+			value = null;
+			calc = ''; // no output for format 'script'
+		}
+		else if (formatLower == 'text' || formatLower == 'html' || isNaN(calc)) { // String
+			value = calc;
+		}
+		else { // Number
+			value = parseFloat(calc);
+			calc = value.transUnit(format);
+		}
 
 		// print the result
 		if (formatLower == 'html')
@@ -759,7 +761,7 @@ $.widget("sv.basic_print", $.sv.widget, {
 		// colorize
 		var currentIndex = 0;
 		$.each(String(this.options.thresholds).explode(), function(index, threshold) {
-			if((isNaN(calc) || isNaN(threshold)) ? (threshold > calc) : (parseFloat(threshold) > parseFloat(calc)))
+			if((isNaN(value) || isNaN(threshold)) ? (threshold > value) : (parseFloat(threshold) > parseFloat(value)))
 				return false;
 			currentIndex++;
 		});
