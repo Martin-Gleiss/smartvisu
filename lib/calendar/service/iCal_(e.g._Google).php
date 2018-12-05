@@ -29,7 +29,7 @@ class calendar_ical extends calendar
 		$config_calendar_names = preg_split('/[\s,]+/m', strtolower(config_calendar_name));
 		foreach(preg_split('/[\s,]+/m', $this->url) as $url) {
 			if(count($this->calendar_names) == 1 && $this->calendar_names[0] == '' || in_array($config_calendar_names[$i], $this->calendar_names)) {
-				$ical = new ICal($url, array(defaultSpan => 1));
+				$ical = new ICal($url, array('defaultSpan' => 1));
 				$this->addFromIcs($ical, array('calendarname' => $config_calendar_names[$i]));
 			}
 			$i++;
