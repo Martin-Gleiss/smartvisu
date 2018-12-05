@@ -1303,16 +1303,13 @@ $.widget("sv.plot_rtr", $.sv.widget, {
 			}
 			else if (response[i] && (i == 2)) {
 				// calculate state: diff between timestamps in relation to duration
-
-				var state = chart.series[0].data;
-				var stamp = state[0].x;
+				var state = response[i];
 				var percent = 0;
 
 				for (var j = 1; j < state.length; j++) {
-					percent += state[j - 1].y * (state[j].x - stamp);
-					stamp = state[j].x;
+					percent += state[j - 1][1] * (state[j][0] - state[j - 1][0]);
 				}
-				percent = percent / (stamp - state[0].x);
+				percent = percent / (state[j - 1][0] - state[0][0]);
 
 				if (percent < 1) {
 					percent = percent * 100;
