@@ -17,6 +17,7 @@
 - New: plot.gauge
 - New: plot.pie
 - New: icon.cistern
+- New: icon.garagedoor
 - New: icon.heating (displays a heating colored with dynamic gradient)
 - basic.symbol: Can also be used to show text only and to render as link, mode extended to adaptable formula, and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
 - plot.period: Among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale, units, an advanced zoom mode as in Highstock and the possibility to set any additional chart options
