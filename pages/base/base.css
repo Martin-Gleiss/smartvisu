@@ -907,6 +907,12 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   color: #fff;
 }
 
+.docu code.twig {
+  display: block;
+  border-radius: 0;
+  line-height: 1.6;
+}
+
 .docu .html {
   margin: 5px 5px 15px 5px;
   border: 1px dotted #999;

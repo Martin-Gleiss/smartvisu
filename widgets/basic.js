@@ -1092,7 +1092,7 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 
 	options: {
 		mode: '',
-		val: ''
+		val: '',
 	},
 
 	_update: function(response) {
@@ -1105,7 +1105,15 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 			formula = 'VAR';
 		}
 		else if(formula == 'and') {
-			formula = response.join(' == VAR[0] && ') + ' == VAR[0] ? VAR[0] : null';
+			// To fulfill "and" condition, every entry in response has to have the same value.
+			// If this is true, this one value will be returned and used for selecting the proper symbol.
+			formula = 'VAR.every(function(entry, i, arr) { return entry == arr[0] }) ? VAR[0] : null';
+		}
+
+		var asThreashold = false;
+		if(formula.startsWith('>')) {
+			formula = formula.length == 1 ? 'VAR' : formula.substring(1);
+			asThreashold = true;
 		}
 
 		formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
@@ -1115,6 +1123,16 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		}
 		catch(ex) {
 			notify.error("basic.symbol: Invalid formula", ex);
+		}
+
+		if(asThreashold) {
+			var currentIndex = 0;
+			$.each(values, function(index, threshold) {
+				if(threshold === '' || ((isNaN(val) || isNaN(threshold)) ? (threshold > val) : (parseFloat(threshold) > parseFloat(val))))
+					return false;
+				currentIndex++;
+			});
+			val = values[currentIndex];
 		}
 
 		var filter = Array.isArray(val) ? '[data-val="'+val.join('"],[data-val="')+'"]' : '[data-val="'+(typeof val === 'boolean' ? Number(val) : val)+'"]';
