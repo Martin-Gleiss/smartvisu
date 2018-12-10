@@ -8,7 +8,8 @@
  */
 
 @CHARSET "UTF-8";
-*, *:before, *:after {
+
+.quad *, *:before, *:after {
     box-sizing: border-box;
 }
 
