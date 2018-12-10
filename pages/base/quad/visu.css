@@ -386,10 +386,14 @@
     border-color: #777;
 }
 
+.quad_table div.shutter {
+    box-sizing: content-box;
+}
+
 .quad_table > div.no_border {
     border:0;
 }
-.table-slider >div.ui-slider::before{
+.table-slider > div.ui-slider::before{
   display: block;
 }
 
