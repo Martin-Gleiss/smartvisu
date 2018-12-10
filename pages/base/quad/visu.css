@@ -7,7 +7,6 @@
  * -----------------------------------------------------------------------------
  */
 
-
 @CHARSET "UTF-8";
 *, *:before, *:after {
     box-sizing: border-box;
@@ -383,7 +382,7 @@
     white-space: nowrap;
     /*height: 100%;*/
     border-width: 1px;
-    border-style: outset;
+    border-style: solid;
     border-color: #777;
 }
 
@@ -613,7 +612,7 @@
 }
 
 .quad_list div.column_empty {
-    /** background-color: #fff; */
+    /** background-color: #fff;*/
 }
 
 .quad_list div.column_cover {
@@ -623,21 +622,6 @@
 
 .quad_list div.column_pos_popup_blind {
     width:40px;
-}
-
-#row_licht_og_wohnen_warm, #row_licht_og_essen_warm, #row_licht_og_lesen_warm, #row_licht_og_terrasse_screens_warm, #row_licht_treppe_regal_warm {
-    background-color: #fffaed;
-}
-
-#row_licht_og_wohnen_kalt, #row_licht_og_essen_kalt, #row_licht_og_lesen_kalt, #row_licht_og_terrasse_screens_kalt, #row_licht_treppe_regal_kalt {
-    background-color: #f4faff;
-}
-
-#row_licht_og_led_barfach, #row_licht_og_led_nische, #row_licht_og_led_vorhang, #row_licht_og_led_beamer {
-  background: -webkit-linear-gradient(left, #ffe8ee, #f2fff2, #e8f2ff); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(right, #ffe8ee, #f2fff2, #e8f2ff); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(right, #ffe8ee, #f2fff2, #e8f2ff); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(to right, #ffe8ee, #f2fff2, #e8f2ff); /* Standard syntax */
 }
 
 /** cover image itself */
@@ -752,5 +736,3 @@
     margin-top: 20px;
     margin-bottom: 10px;
 }
-
-.uzsu-inactive .uzsu-event-time { fill: red; }
