@@ -386,7 +386,7 @@
     border-color: #777;
 }
 
-.quad_table div.shutter {
+.quad_table div.shutter, .quad_table div.ui-slider-semicircle-bottom, .quad_blind-popup div.ui-slider-semicircle-bottom {
     box-sizing: content-box;
 }
 
