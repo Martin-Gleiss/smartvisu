@@ -42,7 +42,7 @@
 }
 
 .quad .icon0, .quad a.ui-link {
-    color: #000;
+    /** color: #000; */
 }
 
 .quad .ui-link {
@@ -613,7 +613,7 @@
 }
 
 .quad_list div.column_empty {
-    background-color: #fff;
+    /** background-color: #fff; */
 }
 
 .quad_list div.column_cover {
