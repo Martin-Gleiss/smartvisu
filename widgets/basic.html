@@ -140,55 +140,61 @@
 * @author Stefan Widmer
 */
 {% macro icon(pic, color, item) %}
-	{% if item and not color %}{% set color = 'rgb' %}{% endif %}
-	{% if color in ['rgb','hsl','hsv'] -%}
-		<span data-widget="basic.icon" data-colormodel="{{ color }}" data-item="{{ implode(item) }}" data-min="{{ implode(min|default([0,0,0])) }}" data-max="{{ implode(max|default(color == 'hsl' or color == 'hsv' ? [360,100,100] : [255,255,255])) }}">
-	{%- endif -%}
+	{% if pic|trim|slice(0, 1) != '<' or pic|trim|slice(0, 4) == '<svg' -%} /** pic is an icon */
 
-	{% if pic|slice(0, 4) != '<svg' -%} /** pic is not a dynamic icon */
+		{% if item and not color %}{% set color = 'rgb' %}{% endif %}
+		{% if color in ['rgb','hsl','hsv'] -%}
+			<span data-widget="basic.icon" data-colormodel="{{ color }}" data-item="{{ implode(item) }}" data-min="{{ implode(min|default([0,0,0])) }}" data-max="{{ implode(max|default(color == 'hsl' or color == 'hsv' ? [360,100,100] : [255,255,255])) }}">
+		{%- endif -%}
 
-		/**- rewrite legacy png to svg if png file does not exist and svg file does -*/
-		{% if pic matches '#^icons/../.*\.png$#' and not isfile(pic) and isfile(icon0 ~ pic|slice(9,-4) ~ '.svg') %}
-			{% if pic|slice(6, 2) != icon0|slice(-3, 2) %}
-				{% set color = pic|slice(6, 2) %}
+		{% if pic|trim|slice(0, 4) != '<svg' -%} /** pic is not a dynamic icon */
+
+			/**- rewrite legacy png to svg if png file does not exist and svg file does -*/
+			{% if pic matches '#^icons/../.*\.png$#' and not isfile(pic) and isfile(icon0 ~ pic|slice(9,-4) ~ '.svg') %}
+				{% if pic|slice(6, 2) != icon0|slice(-3, 2) %}
+					{% set color = pic|slice(6, 2) %}
+				{% endif %}
+				{% set pic = icon0 ~ pic|slice(9,-4) ~ '.svg' %}
 			{% endif %}
-			{% set pic = icon0 ~ pic|slice(9,-4) ~ '.svg' %}
-		{% endif %}
 
-		/**- pic whithout path -*/
-		{% if '/' not in pic and not isfile(pic) %}
-			{% if isfile('dropins/' ~ icon0 ~ pic) %}
-				{% set pic = 'dropins/' ~ icon0 ~ pic %}
-			{% elseif isfile('dropins/' ~ icon0 ~ pic ~ '.svg') %}
-				{% set pic = 'dropins/' ~ icon0 ~ pic ~ '.svg' %}
-			{% elseif isfile('dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
-				{% set pic = 'dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
-			{% elseif isfile(icon0 ~ pic) %}
-				{% set pic = icon0 ~ pic %}
-			{% elseif isfile(icon0 ~ pic ~ '.svg') %}
-				{% set pic = icon0 ~ pic ~ '.svg' %}
-			{% elseif isfile(icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
-				{% set pic = icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
+			/**- pic whithout path -*/
+			{% if '/' not in pic and not isfile(pic) %}
+				{% if isfile('dropins/' ~ icon0 ~ pic) %}
+					{% set pic = 'dropins/' ~ icon0 ~ pic %}
+				{% elseif isfile('dropins/' ~ icon0 ~ pic ~ '.svg') %}
+					{% set pic = 'dropins/' ~ icon0 ~ pic ~ '.svg' %}
+				{% elseif isfile('dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
+					{% set pic = 'dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
+				{% elseif isfile(icon0 ~ pic) %}
+					{% set pic = icon0 ~ pic %}
+				{% elseif isfile(icon0 ~ pic ~ '.svg') %}
+					{% set pic = icon0 ~ pic ~ '.svg' %}
+				{% elseif isfile(icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
+					{% set pic = icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
+				{% endif -%}
 			{% endif -%}
-		{% endif -%}
-		<img
-	{%- else -%} /** pic is a dynamic icon */
-		<span
-	{%- endif %}
-	class="icon
-	{%- set color = {'or': '#f9a028', 'gn': '#84c929', 'bl': '#4176a9', 'sw': '#000', 'ws': '#fff'}[color]|default(color) -%} /**- legacy smartVISU colors -*/
-	{%- if (color != 'icon0') and (color is not empty) and (color != 'do-fx') %} icon1
-		{%- if color not in ['icon1','rgb','hsl','hsv'] %}" style="stroke:{{ color }}; fill:{{ color }}; color:{{ color }}; {%- endif -%}
-	{%- elseif color == 'do-fx' %} do-fx icon0
-	{%- endif -%}
+			<img
+		{%- else -%} /** pic is a dynamic icon */
+			<span
+		{%- endif %}
+		class="icon
+		{%- set color = {'or': '#f9a028', 'gn': '#84c929', 'bl': '#4176a9', 'sw': '#000', 'ws': '#fff'}[color]|default(color) -%} /**- legacy smartVISU colors -*/
+		{%- if (color != 'icon0') and (color is not empty) and (color != 'do-fx') %} icon1
+			{%- if color not in ['icon1','rgb','hsl','hsv'] %}" style="stroke:{{ color }}; fill:{{ color }}; color:{{ color }}; {%- endif -%}
+		{%- elseif color == 'do-fx' %} do-fx icon0
+		{%- endif -%}
 
-	{%- if pic|slice(0, 4) != '<svg' -%}
-		" src="{{ pic|deficon }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}">
-	{%- else -%}
-		">{{ pic }}</span>
-	{%- endif -%}
-	{% if color in ['rgb','hsl','hsv'] -%}
-		</span>
+		{%- if pic|slice(0, 4) != '<svg' -%}
+			" src="{{ pic|deficon }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}">
+		{%- else -%}
+			">{{ pic }}</span>
+		{%- endif -%}
+		{% if color in ['rgb','hsl','hsv'] -%}
+			</span>
+		{%- endif -%}
+
+	{%- else -%} /** pic is any other widget */
+		{{ pic|raw }}
 	{%- endif -%}
 
 {% endmacro %}

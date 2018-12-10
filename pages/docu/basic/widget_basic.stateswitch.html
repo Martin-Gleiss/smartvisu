@@ -34,11 +34,26 @@
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
+	</div>
+
+	Use a basic.symbol to colorize icon independently of button value.
+	Tis one switches <i>bath.light.switch</i> but is colorized by <i>bath.multistate</i>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1, 0], basic.symbol('', 'bath.multistate', '', 'message_led', [1,2,3], '', ['red','#EAFF00','green'])) }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1, 0], basic.symbol('', 'bath.multistate', '', 'message_led', [1,2,3], '', ['red','#EAFF00','green'])) }}
+		State: {{ basic.select('', 'bath.light.switch', 'mini', [0, 1], '', ['0','1'] ) }}
+		Color: {{ basic.select('', 'bath.multistate', 'mini', [1, 2, 3], '', ['red','yellow','green'] ) }}
+
 	</div>
 
 	Grouping
@@ -111,7 +126,7 @@
 			&#123;&#123; basic.stateswitch('', 'bath.light.switch', 'midi', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['icon1', '#f00']) &#125;&#125;<br>
 			<br>
 			new: text on dual<br>
-			basic.stateswitch('', 'bath.light.switch', '', '', '', ['Off', 'On'])
+			&#123;&#123; basic.stateswitch('', 'bath.light.switch', '', '', '', ['Off', 'On']) &#125;&#125;
 		</code>
 	</div>
 	<div class="html">
