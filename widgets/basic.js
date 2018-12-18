@@ -1003,7 +1003,10 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 	options: {
 		vals: '',
 		'indicator-type': '',
-		'indicator-duration': 3
+		'indicator-duration': 3,
+		itemLongpress: '',
+		valueLongpress: null,
+		valueLongrelease: null
 	},
 
 	_current_val: null, // current value (used to determin next value to send)
@@ -1011,52 +1014,83 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 	_create: function() {
 		this._super();
 
-		this._on(this.element.find('a[data-widget="basic.stateswitch"]'), {
-			'click': function (event) {
-				// get the list of values
-				var list_val = String(this.options.vals).explode();
-				// get the index of the memorised value
-				var old_idx = list_val.indexOf(this._current_val);
-				// compute the next index
-				var new_idx = (old_idx + 1) % list_val.length;
-				// get next value
-				var new_val = list_val[new_idx];
-				// send the value to driver
-				io.write(this.options.item, new_val);
-				// memorise the value for next use
-				this._current_val = new_val;
+		var tap = function (event) {
+			// get the list of values
+			var list_val = String(this.options.vals).explode();
+			// get the index of the memorised value
+			var old_idx = list_val.indexOf(this._current_val);
+			// compute the next index
+			var new_idx = (old_idx + 1) % list_val.length;
+			// get next value
+			var new_val = list_val[new_idx];
+			// send the value to driver
+			io.write(this.options.item, new_val);
+			// memorise the value for next use
+			this._current_val = new_val;
 
-				// activity indicator
-				var target = $(event.delegateTarget);
-				var indicatorType = this.options['indicator-type'];
-				var indicatorDuration = this.options['indicator-duration'];
-				if(indicatorType && indicatorDuration > 0) {
-					// add one time event to stop indicator
-					target.one('stopIndicator',function(event) {
-						clearTimeout(target.data('indicator-timer'));
-						event.stopPropagation();
-						var prevColor = target.attr('data-col');
-						if(prevColor != null) {
-							if(prevColor != 'icon1')
-								target.removeClass('icon1').find('svg').removeClass('icon1');
-							if(prevColor != 'blink')
-								target.removeClass('blink').find('svg').removeClass('blink');
-							if(prevColor == 'icon1' || prevColor == 'icon0')
-								prevColor = '';
-							target.css('color', prevColor).find('svg').css('fill', prevColor).css('stroke', prevColor);
-						}
-					})
-					// set timer to stop indicator after timeout
-					.data('indicator-timer', setTimeout(function() { target.trigger('stopIndicator') }, indicatorDuration*1000 ));
-					// start indicator
-					if(indicatorType == 'icon1' || indicatorType == 'icon0' || indicatorType == 'blink') {
-						target.addClass(indicatorType).find('svg').addClass(indicatorType);
-						indicatorType = '';
+			// activity indicator
+			var target = $(event.delegateTarget);
+			var indicatorType = this.options['indicator-type'];
+			var indicatorDuration = this.options['indicator-duration'];
+			if(indicatorType && indicatorDuration > 0) {
+				// add one time event to stop indicator
+				target.one('stopIndicator',function(event) {
+					clearTimeout(target.data('indicator-timer'));
+					event.stopPropagation();
+					var prevColor = target.attr('data-col');
+					if(prevColor != null) {
+						if(prevColor != 'icon1')
+							target.removeClass('icon1').find('svg').removeClass('icon1');
+						if(prevColor != 'blink')
+							target.removeClass('blink').find('svg').removeClass('blink');
+						if(prevColor == 'icon1' || prevColor == 'icon0')
+							prevColor = '';
+						target.css('color', prevColor).find('svg').css('fill', prevColor).css('stroke', prevColor);
 					}
-					target.css('color', indicatorType).find('svg').css('fill', indicatorType).css('stroke', indicatorType);
+				})
+				// set timer to stop indicator after timeout
+				.data('indicator-timer', setTimeout(function() { target.trigger('stopIndicator') }, indicatorDuration*1000 ));
+				// start indicator
+				if(indicatorType == 'icon1' || indicatorType == 'icon0' || indicatorType == 'blink') {
+					target.addClass(indicatorType).find('svg').addClass(indicatorType);
+					indicatorType = '';
 				}
+				target.css('color', indicatorType).find('svg').css('fill', indicatorType).css('stroke', indicatorType);
 			}
+		}
+
+		this._on(this.element.find('a[data-widget="basic.stateswitch"]'), {
+			'tap': tap
 		});
+
+		if(this.options.itemLongpress) {
+			this._on(this.element.find('a[data-widget="basic.stateswitch"]'), {
+				'taphold': function (event) {
+					event.preventDefault();
+					event.stopPropagation();
+					if(this.options.valueLongpress != null) {
+						var value = this.options.valueLongpress;
+						if(!isNaN(this._current_val) && typeof value === 'string' && !isNaN(value) && (value.startsWith('+') || value.startsWith('-')))
+							value = Number(this._current_val) + Number(value);
+						io.write(this.options.itemLongpress, value);
+					}
+					if(this.options.valueLongrelease != null) {
+						var item = this.options.itemLongpress;
+						var value = this.options.valueLongrelease;
+						if(!isNaN(this._current_val) && typeof value === 'string' && !isNaN(value) && (value.startsWith('+') || value.startsWith('-')))
+							value = Number(this._current_val) + Number(value);
+						$(document).one('vmouseup', function(event) {
+							io.write(item, value);
+						});
+					}
+				}
+			});
+		}
+		else { // if no longpress item is passed, use shortpress event
+			this._on(this.element.find('a[data-widget="basic.stateswitch"]'), {
+				'taphold': tap
+			});
+		}
 
 		// replicate ui-first-child and ui-last-child if first resp. last sibling of tag 'a' has it
 		if(this.element.children('a:first').hasClass('ui-first-child'))

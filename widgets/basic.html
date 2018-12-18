@@ -457,13 +457,17 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {color[?](hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional, default: icon0)
 	additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
 * @param {color(blink)=} activity indicator which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
+* @param {item=} an item to which a value on longpress is sent (optional)
+* @param {text=} the value to send on longpress (optional)
+	If this starts with a + or - sign the value is treated as offset to current stateswitch value.
+* @param {text=} the value to send on releasing after a longpress (optional)
 *
 * @see design/design_icons#Icons
 *
 * @author Stefan Widmer
 * @info Based on work of Martin GLEISS and Pierre-Yves KERVIEL
 */
-{% macro stateswitch(id, item, type, value, icon, text, color, indicator) %}
+{% macro stateswitch(id, item, type, value, icon, text, color, indicator, item_longpress, value_longpress, value_longrelease) %}
 	{% import _self as basic %}
 
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
@@ -472,6 +476,7 @@ the first one is the base color for values below first threshold, so pass one co
 	<a style="display:none"></a> /** Work around for bug in jQuery Mobile, see https://knx-user-forum.de/forum/supportforen/smartvisu/31967-neues-widget-nur-aktive-lampen-anzeigen-ausschalten-ermöglichen?p=1145001#post1145001 */
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.stateswitch" data-item="{{ item }}"
 		data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ config_indicator_duration|default(3) }}"
+		data-item-longpress="{{ item_longpress }}"{% if not value_longpress is null %} data-value-longpress="{{ value_longpress }}"{% endif %}{% if not value_longrelease is null %} data-value-longrelease="{{ value_longrelease }}"{% endif %}
 		style="display: none; !important">
 	{% for val in value %}
 		{% set pic = icon is iterable ? icon[loop.index0] : icon %}
