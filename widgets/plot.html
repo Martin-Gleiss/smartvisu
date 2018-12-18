@@ -133,18 +133,23 @@
 * @param {id=} unique id for this widget (optional)
 * @param {item} series of an item for the actual-temperature
 * @param {item} series of an item for the set-temperature
-* @param {item} series of an item for the state of the actor. It is shown as percental value within the pie. (> 0 is considered as 'on')
+* @param {item=} series of an item for the state of the actor. This is shown as percental value within the pie. (optional)
 * @param {value=100} number of samples (points) (optional, default 100)
+* @param {duration=1d} the minimum time (x-axis) (duration-format, default: '1d')
+* @param {duration=now} the maximum time (x-axis) (duration-format, default: 'now')
+* @param {text=} maximum value (or type) of the item for the state of the actor (optional, default: guessed according to values)
+	Often used values are 1 for boolean items, 100 for percentages, 255 for 1-byte values.
+  Additionally you may pass 'on' to use backend's 'on' function (caution: not all backend databases do support this).
 */
-{% macro rtr(id, item_actual, item_set, item_state, count) %}
+{% macro rtr(id, item_actual, item_set, item_state, count, tmin, tmax, state_max) %}
 	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1d') %}
 	{% set count = count|default(100) %}
-
+/** 		data-item="{{ implode([item_actual, item_set, item_state], ['avg', tmin, tmax, count]) }}" */
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.rtr"
-		data-item="{{ implode([item_actual, item_set, item_state], ['avg', tmin, tmax, count]) }}"
-		data-tmin="{{ tmin }}" data-tmax="{{ tmax }}"
-		data-step="50" data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
+		data-item="{{ implode([implode([item_actual, item_set], ['avg', tmin, tmax, count]), implode([item_state], [state_max == 'on' ? 'on' : 'avg', tmin, tmax, state_max == 'on' ? 1 : count])]) }}"
+		data-tmin="{{ tmin }}" data-tmax="{{ tmax }}" data-state-max="{{ state_max == 'on' ? 1 : state_max }}"
+		data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
 		class="plot"></div>
 
 {% endmacro %}
