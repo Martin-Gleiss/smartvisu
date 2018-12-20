@@ -141,6 +141,7 @@ class Widget {
 	private static function splitParameters($paramString, $name, $node, $macro, $messages) {
 		$inSingleQuotes = FALSE;
 		$squareBracketLevel = 0;
+		$roundBracketLevel = 0;
 		$paramArray = array();
 		$currentParam = '';
 		$lastChar = '';
@@ -154,11 +155,18 @@ class Widget {
 				$isArray = true;
 			} else if ($char == ']' && !$inSingleQuotes) {
 				$squareBracketLevel--;
-			} else if ($char == ',' && !$inSingleQuotes && $squareBracketLevel == 0) {
+			} else if ($char == '(' && !$inSingleQuotes) {
+				$roundBracketLevel++;
+				$currentParam .= $char;
+			} else if ($char == ')' && !$inSingleQuotes) {
+				$roundBracketLevel--;
+				$currentParam .= $char;
+			} else if ($char == ',' && !$inSingleQuotes && $squareBracketLevel == 0 && $roundBracketLevel == 0) {
 				if($isArray)
 					$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
 				else
 					$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
+				//TODO: Recursively check widgets in parameters
 				$paramArray[] = $currentParam;
 				$currentParam = '';
 				$isArray = false;

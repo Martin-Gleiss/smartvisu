@@ -249,7 +249,7 @@ var io = {
 
 				var pt = items[i].split('.');
 
-				if (!unique[items[i]] && !widget.get(items[i]) && (pt instanceof Array) && widget.checkseries(items[i])) {
+				if (!unique[items[i]] && (pt instanceof Array) && widget.checkseries(items[i])) {
 					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 
 					if (io.version <= 3)

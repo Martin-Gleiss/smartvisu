@@ -240,6 +240,24 @@ $.widget("sv.icon_compass", $.sv.dynicon, {
 });
 
 
+// ----- icon.garagedoor ---------------------------------------------------------
+$.widget("sv.icon_garagedoor", $.sv.dynicon, {
+
+	initSelector: 'svg[data-widget="icon.garagedoor"]',
+
+	_update: function(response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+		this._super(response);
+
+		var max = parseFloat(this.options.max);
+		var min = parseFloat(this.options.min);
+
+		var val = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 43);
+		fx.grid(this.element[0], val, [19, 40], [80, 83]);
+	}
+});
+
+
 // ----- icon.graph -----------------------------------------------------------
 $.widget("sv.icon_graph", $.sv.dynicon, {
 

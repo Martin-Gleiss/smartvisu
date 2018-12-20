@@ -33,7 +33,7 @@
 /**
 * an arrow
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the height of the blades
 * @param {value=0} the minimum value for 0° (optional, default 0, for future use)
@@ -59,7 +59,7 @@
 /**
 * a battery
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the charge level
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
@@ -85,7 +85,7 @@
 /**
 * a blade (90°)
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the angle of the blades
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
@@ -120,7 +120,7 @@
 /**
 * a blade (180°)
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the angle of the blades
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
@@ -153,7 +153,7 @@
 /**
 * a blade (z profile)
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the angle of the blades
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
@@ -184,7 +184,7 @@
 /**
 * a blade (round profile)
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the angle of the blades
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
@@ -215,7 +215,7 @@
 /**
 * a cistern
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the filling level
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
@@ -252,7 +252,7 @@
 /**
 * A clock
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the angle of the blades
 * @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
@@ -282,7 +282,7 @@
 /**
 * A compass
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the angle of the pin
 * @param {value=0} the minimum value for 0° (optional, default 0, for future use)
@@ -311,9 +311,35 @@
 
 
 /**
+* a garage door
+*
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the height of the door
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255 (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+*/
+{% macro garagedoor(id, item_switch, item_value, min, max, color) %}
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.garagedoor" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	{% if color is empty %}
+		class="icon icon0"
+	{% else %}
+		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
+	{% endif %}
+	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
+	<path d="M19 40.6v42.5c0 1.9 3.2 1.9 3.2 0V40.6c0-1.9-3.1-1.9-3.1 0zm59.7 0v42.5c0 1.9 3.1 1.9 3.1 0V40.6c0-1.9-3.1-1.9-3.1 0z"/>
+	<g stroke-width="3">
+		<path xmlns="http://www.w3.org/2000/svg" fill="none" d="M83.4 36.9c0 1-1 1.5-1.9 1.5H19c-1 0-1.6-.6-1.6-1.5v-3.1c0-1 .7-2 1.6-2h62.5c2 0 1.9 1 1.9 2v3z"/>
+	</g>
+</svg>
+{% endmacro %}
+
+
+/**
 * a graph
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the height of the blades
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
@@ -342,7 +368,7 @@
 /**
 * a heating
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the value
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
@@ -369,7 +395,7 @@
 /**
 * a light bulb
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the value
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
@@ -409,7 +435,7 @@
 /**
 * a meter
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the height of the blades
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
@@ -440,7 +466,7 @@
 /**
 * a shutter
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the height of the blades
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
@@ -468,7 +494,7 @@
 /**
 * a ventilation
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the rotation speed
 * @param {value=0} the minimum value for 0,5s rotation speed (optional, default 0, for future use)
@@ -497,7 +523,7 @@
 /**
 * a volume bar
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the volume level
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
@@ -522,7 +548,7 @@
 /**
 * a windmill
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the rotation speed
 * @param {value=0} the minimum value for 0,5s rotation speed (optional, default 0, for future use)
@@ -553,7 +579,7 @@
 /**
 * a windrose
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the angle of the pin
 * @param {value=0} the minimum value for 0° (optional, default 0, for future use)
@@ -584,7 +610,7 @@
 /**
 * a windsock
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the angle of the pin
 * @param {value=0} the minimum value for 0° (optional, default 0, for future use)
@@ -614,7 +640,7 @@
 /**
 * a zenith drawing
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget
 * @param {item=} an item for switching
 * @param {item} an item for the height of the blades
 * @param {value=0} the minimum value for sunrise (optional, default 0, for future use)

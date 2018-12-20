@@ -660,7 +660,6 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   .block {
     width: 50%;
     float: left;
-    display: table; /* prevents rounding problems with 0.7em/1.3em */
   }
 }
 
@@ -678,7 +677,7 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 }
 
 .block .ui-collapsible-set {
-  margin: 5px 5px 13px 3px;
+  margin: 5px 6px 13px 3px;
 }
 
 .block .set-1 .ui-collapsible-content {
@@ -687,13 +686,13 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 }
 
 .block .set-2 .ui-collapsible-content {
-  min-height: 12.22em;
-  padding: 10px 5px 10px 5px;
+  min-height: 12em;
+  padding: 10px 5px 11px 5px;
 }
 
 .block .set-3 .ui-collapsible-content {
-  min-height: 9.94em;
-  padding: 10px 5px 10px 5px;
+  min-height: 9.5em;
+  padding: 10px 5px 12px 5px;
 }
 
 .block .ui-collapsible-set .ui-collapsible-caption {
@@ -705,15 +704,25 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   margin: -10px -5px -10px -5px;
 }
 
+.block h3.ui-collapsible-heading {
+  font-size: 1em;
+  height: 2.5em;
+}
+.block .ui-collapsible-heading .ui-collapsible-heading-toggle,
 .block > .ui-bar-c.ui-li-divider {
-  margin: 5px 5px 0 3px;
-  padding: .7em;
-  font-size: 0.82em;
-  /*text-align: left;*/
+  font-size: 0.819em;
+  padding-top: 0;
+  padding-bottom: 1px;
+  line-height: 2.9;
+}
+.block > .ui-bar-c.ui-li-divider {
+  margin: 5px 6px -1.3px 3px;
+  padding-bottom: 0;
+  height: 3em;
 }
 
 .block .ui-fixed {
-  margin: 0 5px 12px 3px;
+  margin: 0 6px 12px 3px;
   padding: 10px 5px 10px 5px;
   min-height: 14.5em;
 }
@@ -896,6 +905,12 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   background-color: #000;
   padding: 5px 10px 10px 10px;
   color: #fff;
+}
+
+.docu code.twig {
+  display: block;
+  border-radius: 0;
+  line-height: 1.6;
 }
 
 .docu .html {
@@ -1272,8 +1287,7 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   float: left;
 }
 
-.rtr .control .switch,
-.rtr .control .symbol {
+.rtr .control > * {
   margin: 2px;
   float: left;
 }
@@ -1307,15 +1321,17 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   clear: both;
   height: 3.8em;
 }
-/* possible work around for firefox line break issues with scrollbars
+/* work around for firefox line break issues with scrollbars */
 .uzsuRow:first-of-type::after {
-    content: '';
-    visibility: hidden;
-    width: 18px;
-    display: inline-block;
+  content: ".";
+  float: right;
+  width: 30px;
+  height: 1px;
+  visibility: hidden;
 }
-*/
+
 .uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec{
+  float: left;
   height: 3.8em;
   border: 1px dotted;
   margin: 0 0.6em 1.2em 1.2em;
@@ -1325,6 +1341,9 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   content: " ";
   display: block;
   height: 0;
+}
+.uzsuRowCondition, .uzsuRowDelayedExec{
+  clear: both;
 }
 .uzsuRowExpertText, .uzsuRowHolidayText, .uzsuRowConditionText, .uzsuRowDelayedExecText{
   height: 0em;

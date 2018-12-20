@@ -119,16 +119,17 @@
 * @param {image=light_light} the pic for the 'off' state (optional)
 * @param {color=icon1} the color for the 'on' state (optional)
 * @param {color=icon0} the color for the 'off' state (optional)
+* @param {text(input,handle,both,none)=none} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'none')
 * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
 * @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
 */
-{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, min_display, max_display) %}
+{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display) %}
 	{% import "basic.html" as basic %}
 
 	<div class="dimmer" data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
 		{{ basic.stateswitch('', item_switch, 'icon', '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
 		<p>{{ txt|e }}</p>
-		{{ basic.slider('', item_value, min, max, step, 'horizontal', 'none', min_display, max_display) }}
+		{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display) }}
 	</div>
 
 {% endmacro %}
@@ -188,7 +189,7 @@
 				{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
 			{% endif %}
 			{% for supplement in supplements %}
-				{{ supplement }}
+				{{ supplement|raw }}
 			{% endfor %}
 		</div>
 		{% endif %}
@@ -214,10 +215,12 @@
 * @param {image=} a background image url (relative to smartVISU directory or absolute); optimal size is 100px x 180px (optional)
 * @param {value=0} the value to send for position 1 (optional, default 0)
 * @param {value=1} the value to send for position 2 (optional, default 1)
+* @param {text=Pos1} the text printed on button for position 1 (optional, default Pos1)
+* @param {text=Pos2} the text printed on button for position 2 (optional, default Pos2)
 *
 * @info inspired by Jörg Gutowski
 */
-{% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2) %}
+{% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) %}
 	{% import "basic.html" as basic %}
 
 	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
@@ -237,7 +240,7 @@
 				</td>
 				<td valign="top">
 					{% if item_saved %}
-						<div>{{ basic.stateswitch('', item_saved, '', value_pos_1|default(0), 'grid', 'Pos1', '', 'blink') }}</div>
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_1|default(0), 'grid', text_pos_1|default('Pos1'), '', 'blink') }}</div>
 					{% endif %}
 				</td>
 			</tr>
@@ -261,7 +264,7 @@
 				</td>
 				<td valign="bottom">
 					{% if item_saved %}
-						<div>{{ basic.stateswitch('', item_saved, '', value_pos_2|default(1), 'grid', 'Pos2', '', 'blink') }}</div>
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_2|default(1), 'grid', text_pos_2|default('Pos2'), '', 'blink') }}</div>
 					{% endif %}
 				</td>
 			</tr>

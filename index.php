@@ -48,7 +48,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	if (is_dir(const_path.'pages/'.$config_pages))
 		$loader->addPath(const_path.'pages/'.$config_pages);
 
-	if (dirname($request['page']) != '.')
+	if (dirname($request['page']) != '.' && is_dir(const_path.'pages/'.$config_pages.'/'.dirname($request['page'])))
 		$loader->addPath(const_path.'pages/'.$config_pages.'/'.dirname($request['page']));
 
 	// add dir if is not directly chosen

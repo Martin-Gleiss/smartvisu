@@ -106,7 +106,7 @@ $.widget("sv.device_codepad", $.sv.widget, {
   //            "timeMax"  :'',      Oberere Schranke SUN
   //            "timeCron"  :'00:00',    Schaltzeitpunkt
   //            "timeOffset":''        Offset für Schaltzeitpunkt
-  //            "timeOffsetType":'m'        'm' = Offset in Minuten, 'deg' Offset in Höhengrad (Altitude)
+  //            "timeOffsetType":'m'        'm' = Offset in Minuten, '' Offset in Höhengrad (Altitude)
   //            "condition"  :   {  Ein Struct für die Verwendung mit conditions (aktuell nur FHEM), weil dort einige Option mehr angeboten werden
   //                      "deviceString"  : text  Bezeichnung des Devices oder Auswertestring
   //                      "type"      : text  Auswertetype (logische Verknüpfung oder Auswahl String)
@@ -125,6 +125,8 @@ $.widget("sv.device_codepad", $.sv.widget, {
   //                    }
   //          ]
   //        }
+
+// Base widget for devie_uzsuicon and device_uzsugraph
 $.widget("sv.device_uzsu", $.sv.widget, {
 
   _create: function() {
@@ -144,12 +146,13 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       notify.error("UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.options.id + ".");
       return;
     }
+
+    this._uzsudata = jQuery.extend(true, {}, response[0]);
+
     // Initialisierung zunächst wird festgestellt, ob Item mit Eigenschaft vorhanden. Wenn nicht: active = false
     // ansonsten ist der Status von active gleich dem gesetzten Status
-    // Wenn ein Update erfolgt, dann werden die Daten erneut in die Variable uzsu geladen damit sind die UZSU objekte auch in der click Funktion verfügbar
-    this._uzsudata = response[0];
     if (!(this._uzsudata.list instanceof Array)) {
-      this._uzsudata = { active : false, list : [], interpolation : response[0].interpolation };
+      this._uzsudata = { active: false, list: [] };
     }
   },
 
@@ -292,7 +295,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
               "</fieldset>" +
             "</div>";
             // UZSU Interpolation
-            if(sv_lang.uzsu.interpolation && this.interpolation == true){
+            if(sv_lang.uzsu.interpolation && this.hasInterpolation){
               tt +=   "<div class='uzsuCell'>" +
                 "<div class='uzsuCellText'>" + sv_lang.uzsu.calculated + "</div>" +
                 "<div data-tip='" + sv_lang.uzsu.calculatedtip + "'>" +
@@ -575,7 +578,109 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     }
   },
 
+  _uzsuParseAndCheckResponse: function(response) {
+    var designType = this.options.designtype;
+    var valueType = this.options.valuetype;
+
+    // Fehlerbehandlung für ein nicht vorhandenes DOM Objekt. Das response Objekt ist erst da, wenn es mit update angelegt wurde. Da diese
+    // Schritte asynchron erfolgen, kann es sein, dass das Icon bereits da ist, clickbar, aber nocht keine Daten angekommen. Dann darf ich nicht auf diese Daten zugreifen wollen !
+    if(response.list === undefined){
+      notify.error("UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.id + ".");
+      return false;
+    }
+
+    // jetzt kommt noch die Liste von Prüfungen, damit hinterher keine Fehler passieren, zunächst fehlerhafter designType (unbekannt)
+    if ((designType != '0') && (designType != '2')) {
+      notify.error("UZSU widget", "Design type '" + designType + "' is not supported in widget " + this.id + ".");
+      return false;
+    }
+    // fehlerhafter valueType (unbekannt)
+    if ((valueType !== 'bool') && (valueType !== 'num')  && (valueType !== 'text') && (valueType !== 'list')) {
+      notify.error("UZSU widget", "Value type '" + valueType + "' is not supported in widget " + this.id + ".");
+      return false;
+    }
+
+    // Interpolation für SmartHomeNG setzen
+    if(designType == '0') {
+      if(response.interpolation === undefined){
+        this.hasInterpolation = false
+        console.log('UZSU interpolation not available. You have to update the plugin version');
+        //response.interpolation = {type:'none',interval:0,initage:0,initialized:false,itemtype:'none'};
+      }
+      else if(!response.interpolation.itemtype in ['num']) {
+        this.hasInterpolation = false
+        notify.warn('UZSU interpolation not supported by itemtype');
+      }
+      else {
+        this.hasInterpolation = true
+        console.log('UZSU interpolation set to ' + response.interpolation.type);
+      }
+    }
+
+    //
+    // Umsetzung des time parameters in die Struktur, die wir hinterher nutzen wollen
+    //
+    $.each(response.list, function(numberOfRow, entry) {
+
+      // bei designType '0' wird rrule nach Wochentagen umgewandelt und ein festes Format vorgegegeben hier sollte nichts versehentlich überschrieben werden
+      if (designType == '0') {
+        // "time" von SmartHomeNG parsen
+        var timeParts = (entry.time || "").match(/^((\d{1,2}:\d{1,2})<)?(sunrise|sunset)(([+-]\d+)([m°]?))?(<(\d{1,2}:\d{1,2}))?$/);
+        if(timeParts == null) { // entry.time is a plain time string
+          entry.event = "time";
+          entry.timeCron = entry.time;
+          entry.timeMin = "";
+          entry.timeMax = "";
+          entry.timeOffset = "";
+          entry.timeOffsetType = "m";
+        }
+        else { // entry.time is a sun event
+          entry.event = timeParts[3];
+          entry.timeCron = '00:00';
+          entry.timeMin = timeParts[2];
+          entry.timeMax = timeParts[8];
+          entry.timeOffset = Number(timeParts[5]);
+          entry.timeOffsetType = timeParts[6];
+        }
+        delete entry.time;
+
+        // test, ob die RRULE fehlerhaft ist
+        if (entry.rrule && (entry.rrule.length > 0) && (entry.rrule.indexOf('FREQ=WEEKLY;BYDAY=') !== 0)) {
+          if (!confirm("Error: Parameter designType is '0', but saved RRULE string in UZSU '" + entry.rrule + "' does not match default format FREQ=WEEKLY;BYDAY=MO... on item " + this.options.item  + ". Should this entry be overwritten?")) {
+            return false;
+          }
+        }
+
+      }
+
+      // wenn designType = '2' und damit fhem auslegung ist muss der JSON String auf die entsprechenden einträge erweitert werden (falls nichts vorhanden)
+      if (designType == '2') {
+        // test, ob die einträge für conditions vorhanden sind
+        if (entry.condition === undefined){
+          entry.condition = {deviceString:'',type:'String',value:'',active:false};
+        }
+        // test, ob die einträge für delayed exec vorhanden sind
+        if (entry.delayedExec === undefined){
+          entry.delayedExec = {deviceString:'',type:'String',value:'',active:false};
+        }
+        // test, ob die einträge für holiday gesetzt sind
+        if (entry.holiday === undefined){
+          entry.holiday = {workday:false, weekend:false};
+        }
+      }
+    });
+
+    return true;
+  },
+
   _uzsuCollapseTimestring: function(response){
+    var self = this;
+
+    // Clear unused properties for FHEM
+    if (self.options.designtype == '2') {
+      delete response.interpolation;
+    }
+
     $.each(response.list, function(numberOfEntry, entry) {
       // zeitstring wieder zusammenbauen, falls Event <> 'time', damit wir den richtigen Zusammenbau im zeitstring haben
       if(entry.event === 'time'){
@@ -585,7 +690,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       else{
         // ansonsten wird er aus den Bestandteilen zusammengebaut
         entry.time = '';
-        if(entry.timeMin.length > 0){
+        if(entry.timeMin != null && entry.timeMin.length > 0){
           entry.time += entry.timeMin + '<';
         }
         entry.time += entry.event;
@@ -595,10 +700,28 @@ $.widget("sv.device_uzsu", $.sv.widget, {
         else if(entry.timeOffset < 0){
           entry.time += entry.timeOffset + (entry.timeOffsetType == undefined ? '' : entry.timeOffsetType);
         }
-        if(entry.timeMax.length > 0){
+        if(entry.timeMax != null && entry.timeMax.length > 0){
           entry.time += '<' + entry.timeMax;
         }
       }
+
+      // Clear unused properties for SmartHomeNG
+      if (self.options.designtype == '0') {
+        delete entry.event;
+        delete entry.timeCron;
+        delete entry.timeMin;
+        delete entry.timeMax;
+        delete entry.timeOffset;
+        delete entry.timeOffsetType;
+        delete entry.condition;
+        delete entry.delayedExec;
+        delete entry.holiday;
+      }
+      // Clear unused properties for FHEM
+      else if (self.options.designtype == '2') {
+        //delete entry.time; TODO: unsure if this is used in FHEM or not. if not, the code above does not needto be executed in designType=2
+      }
+
     });
   },
 
@@ -636,88 +759,10 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
       // hier werden die Parameter aus den Attributen herausgenommen und beim Öffnen mit .open(....) an das Popup Objekt übergeben
       // und zwar mit deep copy, damit ich bei cancel die ursprünglichen werte nicht überschrieben habe
       var response = jQuery.extend(true, {}, this._uzsudata);
-      // erst gehen wir davon aus, dass die Prüfungen positiv und ein Popup angezeigt wird
-      var popupOk = true;
-      // Fehlerbehandlung für ein nicht vorhandenes DOM Objekt. Das response Objekt ist erst da, wenn es mit update angelegt wurde. Da diese
-      // Schritte asynchron erfolgen, kann es sein, dass das Icon bereits da ist, clickbar, aber nocht keine Daten angekommen. Dann darf ich nicht auf diese Daten zugreifen wollen !
-      if(response.interpolation === undefined){
-        this.interpolation = false
-        console.log('UZSU interpolation not available. You have to update the plugin version');
-        //response.interpolation = {type:'none',interval:0,initage:0,initialized:false,itemtype:'none'};
-      }
-      else if(! response.interpolation.itemtype in ['num']) {
-        this.interpolation = false
-        console.log('UZSU interpolation not supported by itemtype');
-      }
-      else {
-        this.interpolation = true
-        console.log('UZSU interpolation set to ' + response.interpolation.type);
-      }
-      if(response.list === undefined){
-        notify.error("UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.id + ".");
-      }
-      else{
-         // Auswertung der Übergabeparameter aus dem HTML Widget
-        var headline = this.options.headline;
-        var designType = this.options.designtype;
-        var valueType = this.options.valuetype;
 
-        // jetzt kommt noch die Liste von Prüfungen, damit hinterher keine Fehler passieren, zunächst fehlerhafter designType (unbekannt)
-        if ((designType != '0') && (designType != '2')) {
-          notify.error("UZSU widget", "Design type '" + designType + "' is not supported in widget " + this.id + ".");
-          popupOk = false;
-        }
-        // fehlerhafter valueType (unbekannt)
-        if ((valueType !== 'bool') && (valueType !== 'num')  && (valueType !== 'text') && (valueType !== 'list')) {
-          notify.error("UZSU widget", "Value type '" + valueType + "' is not supported in widget " + this.id + ".");
-          popupOk = false;
-        }
-
-        //
-        // Umsetzung des time parameters in die Struktur, die wir hinterher nutzen wollen
-        //
-        $.each(response.list, function(numberOfRow, entry) {
-          // test, ob die einträge für holiday gesetzt sind
-          if (entry.event === 'time')
-            entry.timeCron = entry.time;
-          else
-            entry.timeCron = '00:00';
-
-          // bei designType '0' wird rrule nach Wochentagen umgewandelt und ein festes Format vorgegegeben hier sollte nichts versehentlich überschrieben werden
-          if (designType == '0') {
-            // test, ob die RRULE fehlerhaft ist
-            if (entry.rrule && (entry.rrule.length > 0) && (entry.rrule.indexOf('FREQ=WEEKLY;BYDAY=') !== 0)) {
-              if (!confirm("Error: Parameter designType is '0', but saved RRULE string in UZSU '" + entry.rrule + "' does not match default format FREQ=WEEKLY;BYDAY=MO... on item " + this.options.item  + ". Should this entry be overwritten?")) {
-                popupOk = false;
-                // direkter Abbruch bei der Entscheidung!
-                return false;
-              }
-            }
-            if(entry.timeOffsetType === undefined)
-              entry.timeOffsetType = 'm';
-          }
-
-          // wenn designType = '2' und damit fhem auslegung ist muss der JSON String auf die entsprechenden einträge erweitert werden (falls nichts vorhanden)
-          if (designType == '2') {
-            // test, ob die einträge für conditions vorhanden sind
-            if (entry.condition === undefined){
-              entry.condition = {deviceString:'',type:'String',value:'',active:false};
-            }
-            // test, ob die einträge für delayed exec vorhanden sind
-            if (entry.delayedExec === undefined){
-              entry.delayedExec = {deviceString:'',type:'String',value:'',active:false};
-            }
-            // test, ob die einträge für holiday gesetzt sind
-            if (entry.holiday === undefined){
-              entry.holiday = {workday:false, weekend:false};
-            }
-          }
-        });
-
-        if (popupOk) {
-          // Öffnen des Popups bei clicken des icons und Ausführung der Eingabefunktion
-          this._uzsuRuntimePopup(response);
-        }
+      if (this._uzsuParseAndCheckResponse(response)) {
+        // Öffnen des Popups bei clicken des icons und Ausführung der Eingabefunktion
+        this._uzsuRuntimePopup(response);
       }
     }
   },
@@ -735,7 +780,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
           "<div class='uzsuRowFooter'>" +
             "<span style='float:right'>";
               // UZSU Interpolation
-              if(sv_lang.uzsu.interpolation && this.interpolation == true){
+              if(sv_lang.uzsu.interpolation && this.hasInterpolation){
                 tt += "<div class='uzsuCellInterpolation' style='float:left;'>" +
                   "<div class='uzsuCellText'>" + sv_lang.uzsu.options + "</div>" +
                   "<button data-mini='true' data-icon='arrow-d' data-iconpos='notext' class='ui-icon-shadow'></button>" +
@@ -762,7 +807,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
                 "</div>" +
               "</div>" +
             "</span>";
-            if(sv_lang.uzsu.interpolation && this.interpolation == true){
+            if(sv_lang.uzsu.interpolation && this.hasInterpolation){
               tt +=
                 "<div id='uzsuRowInterpolation' style='display: none; float: right; margin: 0 15px 5px 0;'>" +
                   "<span style='float:left; margin-right: 12px;'>" +
@@ -803,7 +848,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
     var numberOfEntries = response.list.length;
     // jetzt wird die Tabelle befüllt allgemeiner Status, bitte nicht mit attr, sondern mit prop, siehe  // https://github.com/jquery/jquery-mobile/issues/5587
     // INTERPOLATION
-    if(this.interpolation) {
+    if(this.hasInterpolation) {
       $('#uzsuInterpolationType').val(response.interpolation.type).selectmenu("refresh", true);
       $('#uzsuInterpolationInterval').val(response.interpolation.interval);
       $('#uzsuInitAge').val(response.interpolation.initage);
@@ -829,7 +874,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
     // hier werden die Daten aus der Tabelle wieder in die items im Backend zurückgespielt bitte darauf achten, dass das zurückspielen exakt dem der Anzeige enspricht. Gesamthafte Aktivierung
     response.active = $('#uzsuGeneralActive').is(':checked');
     // Interpolation
-    if(this.interpolation) {
+    if(this.hasInterpolation) {
       response.interpolation.type = $('#uzsuInterpolationType').val();
       response.interpolation.interval = $('#uzsuInterpolationInterval').val();
       response.interpolation.initage = $('#uzsuInitAge').val();
@@ -843,7 +888,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
     // über json Interface / Treiber herausschreiben
     if (saveSmarthome) {
       this._uzsuCollapseTimestring(response);
-      this._write({active : response.active, interpolation : response.interpolation, list : response.list});
+      this._write(response);
     }
   },
 
@@ -855,7 +900,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
     // alten Zustand mal in die Liste rein. da der aktuelle Zustand ja nur im Widget selbst enthalten ist, wird er vor dem Umbau wieder in die Variable response zurückgespeichert.
     this._uzsuSaveTable(response, false);
     // ich hänge immer an die letzte Zeile dran ! erst einmal das Array erweitern
-    response.list.push({active:false,rrule:'',time:'00:00',value:null,event:'time',timeMin:'',timeMax:'',timeCron:'00:00',timeOffset:'',timeOffsetType:'m',condition:{deviceString:'',type:'String',value:'',active:false},delayedExec:{deviceString:'',type:'String',value:'',active:false},holiday:{workday:false,weekend:false}});
+    response.list.push({active:false,rrule:'',value:null,event:'time',timeMin:'',timeMax:'',timeCron:'00:00',timeOffset:'',timeOffsetType:'m',condition:{deviceString:'',type:'String',value:'',active:false},delayedExec:{deviceString:'',type:'String',value:'',active:false},holiday:{workday:false,weekend:false}});
     // dann eine neue HTML Zeile genenrieren
     tt = this._uzsuBuildTableRow(response.list.length);
     // Zeile in die Tabelle einbauen
@@ -1311,24 +1356,25 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         //}, false, null);
 
       // Interpolation buttons
-      var buttons = [
+      self.interpolationButtons = [
         { interpolationType: 'none', shape: 'square', langKey: 'nointerpolation' },
         { interpolationType: 'cubic', shape: 'circle', langKey: 'cubic' },
         { interpolationType: 'linear', shape: 'triangle', langKey: 'linear' },
       ];
 
-      $.each(buttons, function(i, button) {
-        chart.renderer.button('', null, null, function(e) { self._uzsudata.interpolation.type = button.interpolationType; self._save(); }, null,  null,  null,  null, button.shape)
+      $.each(self.interpolationButtons, function(i, button) {
+        button.element = chart.renderer.button('', null, null, function(e) { self._uzsudata.interpolation.type = button.interpolationType; self._save(); }, null,  null,  null,  null, button.shape)
           .attr({
             align: 'right',
-            title: sv_lang.uzsu[button.langKey]
+            title: sv_lang.uzsu[button.langKey],
+            "data-interpolation-type": button.interpolationType
           })
-          .addClass('highcharts-color-0')
+          .addClass('icon0 interpolation-button')
           .css({'fill': 'transparent'})
           .add()
           .align({
             align: 'right',
-            x: -16-(buttons.length-i-1)*20,
+            x: -16-(self.interpolationButtons.length-i-1)*20,
             y: 10
           }, false, null);
       });
@@ -1342,7 +1388,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         )
         .align({
           align: 'right',
-          x: -16-buttons.length*20,
+          x: -16-self.interpolationButtons.length*20,
           y: 22
         }, false, null);
     });
@@ -1351,20 +1397,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
   _update: function(response) {
     this._super(response);
 
-    if(this._uzsudata.interpolation === undefined){
-      this._uzsudata.interpolation = { type: 'none' }
-      console.log('UZSU interpolation not available. You have to update the plugin version');
-    }
-    else if(!this._uzsudata.interpolation.itemtype in ['num']) {
-      this.interpolation = false
-      console.log('UZSU interpolation not supported by itemtype');
-    }
-    else {
-      this.interpolation = true
-      console.log('UZSU interpolation set to ' + this._uzsudata.interpolation.type);
-    }
-
-    this.draw();
+    if(this._uzsuParseAndCheckResponse(this._uzsudata))
+      this.draw();
   },
 
   draw: function() {
@@ -1384,7 +1418,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button.
       var x, xMin, xMax;
       if(responseEntry.event == 'time')
-        x = self._timeToTimestamp(responseEntry.time);
+        x = self._timeToTimestamp(responseEntry.timeCron);
       else {
         if(responseEntry.event == 'sunrise')
           hasSunrise = true;
@@ -1396,7 +1430,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         else if(responseEntry.timeOffsetType == '' && responseEntry.timeOffset != '')
           x = (responseEntry.calculated == undefined) ? x : self._timeToTimestamp(responseEntry.calculated);
           console.log('Set '+ responseEntry.event +' based entry to calculated time ' +
-          responseEntry.calculated + ' for ' + responseEntry.time);
+          responseEntry.calculated + ' for ' + responseEntry.timeCron);
         if(responseEntry.timeMin) {
           xMin = self._timeToTimestamp(responseEntry.timeMin);
           if(x < xMin)
@@ -1489,6 +1523,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       plotLines: plotLines
     }, false);
     chart.get('sun').setData(sunData, false);
+
+    //set active interpolation button
+    $.each(this.interpolationButtons, function(idx, button) {
+      if(button.interpolationType == self._uzsudata.interpolation.type)
+        button.element.addClass("icon1");
+      else
+        button.element.removeClass("icon1");
+    });
 
     chart.redraw();
 

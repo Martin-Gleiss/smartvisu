@@ -17,14 +17,16 @@
 - New: plot.gauge
 - New: plot.pie
 - New: icon.cistern
+- New: icon.garagedoor
 - New: icon.heating (displays a heating colored with dynamic gradient)
-- basic.symbol: Can also be used to show text only and to render as link, mode extended to adaptable formula, and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
+- basic.symbol: Can also be used to show text only and to render as link, mode extended to adaptable formula (including thresholds), and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
 - plot.period: Among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale, units, an advanced zoom mode as in Highstock and the possibility to set any additional chart options
 - plot.temprose: New parameters 'series_label' and 'unit'
+- plot.rtr: New parameters 'tmin', 'tmax' and 'state_max' (last one is used to set datatype of state item). Additionally the algorithm for guessing dataype has been improved.
 - basic.slider: New parameters 'value_display', 'min_display' and 'max_display'
 - device.blind & device.shutter: item_move is now optional
 - basic.shutter & device.shutter: min/max are renamed to value_top/bottom and value_top may be lesser than value_bottom
-- device.shutter: Value for pos1 and pos2 can be set by parameter
+- device.shutter: Value and text for pos1 and pos2 can be set by parameter
 - basic.tank & icon.* (dynamic icons): min is now implemented and max may be lesser than min
 - device.dimmer: New parameters to specify pic and color and 'min_display' and 'max_display' like slider
 - device.rtr: New parameters to specify separate offset item and additional content

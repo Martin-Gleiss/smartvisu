@@ -703,14 +703,6 @@ $.widget("sv.basic_print", $.sv.widget, {
 		var formatLower = format.toLowerCase();
 		var formula = this.options.formula;
 
-		var type;
-		if (formatLower == 'date' || formatLower == 'time' || formatLower == 'short' || formatLower == 'long')
-			type = 'Date';
-		else if (formatLower == 'text' || formatLower == 'html' || formatLower == 'script')
-			type = 'String';
-		else
-			type = 'Number';
-
 		formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
 
 		var VAR = response;
@@ -743,12 +735,22 @@ $.widget("sv.basic_print", $.sv.widget, {
 			notify.error("basic.print: Invalid formula", ex);
 		}
 
-		if(type == 'Date')
-			calc = new Date(calc).transUnit(format);
-		else if (type == 'Number' && !isNaN(calc))
-			calc = parseFloat(calc).transUnit(format);
-		else if (formatLower == 'script') // no output for format 'script'
-			calc = '';
+		var value; // value for threshold comparison
+		if (formatLower == 'date' || formatLower == 'time' || formatLower == 'short' || formatLower == 'long') { // Date
+			value = new Date(calc);
+			calc = value.transUnit(format);
+		}
+		else if (formatLower == 'script') { // Script
+			value = null;
+			calc = ''; // no output for format 'script'
+		}
+		else if (formatLower == 'text' || formatLower == 'html' || isNaN(calc)) { // String
+			value = calc;
+		}
+		else { // Number
+			value = parseFloat(calc);
+			calc = value.transUnit(format);
+		}
 
 		// print the result
 		if (formatLower == 'html')
@@ -759,7 +761,7 @@ $.widget("sv.basic_print", $.sv.widget, {
 		// colorize
 		var currentIndex = 0;
 		$.each(String(this.options.thresholds).explode(), function(index, threshold) {
-			if((isNaN(calc) || isNaN(threshold)) ? (threshold > calc) : (parseFloat(threshold) > parseFloat(calc)))
+			if((isNaN(value) || isNaN(threshold)) ? (threshold > value) : (parseFloat(threshold) > parseFloat(value)))
 				return false;
 			currentIndex++;
 		});
@@ -880,16 +882,21 @@ $.widget("sv.basic_shutter", $.sv.widget, {
 		});
 	},
 
+	_getVal(event) {
+		var max = this.options.max;
+		var min = this.options.min;
+		var step = this.options.step;
+
+		var offset = this.element.offset();
+		var x = event.pageX - offset.left;
+		var y = event.pageY - offset.top;
+		return Math.floor(y / this.element.outerHeight() * (max - min) / step) * step + min;
+	},
+
 	_events: {
 		'click': function (event) {
-			var max = this.options.max;
-			var min = this.options.min;
-			var step = this.options.step;
-
-			var offset = this.element.offset();
-			var x = event.pageX - offset.left;
-			var y = event.pageY - offset.top;
-			var val = Math.floor(y / this.element.outerHeight() * (max - min) / step) * step + min;
+			var val = this._getVal(event);
+			var x = event.pageX - this.element.offset().left;
 
 			var items = this.options.item.explode();
 			if (items[1] != '' && x > this.element.outerWidth() / 2) {
@@ -906,7 +913,11 @@ $.widget("sv.basic_shutter", $.sv.widget, {
 
 		'mouseleave': function (event) {
 			this.element.find('.control').fadeOut(400);
-		}
+		},
+
+		'mousemove': function (event) {
+			this.element.attr('title', this._getVal(event));
+		},
 	}
 
 });
@@ -992,7 +1003,10 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 	options: {
 		vals: '',
 		'indicator-type': '',
-		'indicator-duration': 3
+		'indicator-duration': 3,
+		itemLongpress: '',
+		valueLongpress: null,
+		valueLongrelease: null
 	},
 
 	_current_val: null, // current value (used to determin next value to send)
@@ -1000,52 +1014,83 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 	_create: function() {
 		this._super();
 
-		this._on(this.element.find('a[data-widget="basic.stateswitch"]'), {
-			'click': function (event) {
-				// get the list of values
-				var list_val = String(this.options.vals).explode();
-				// get the index of the memorised value
-				var old_idx = list_val.indexOf(this._current_val);
-				// compute the next index
-				var new_idx = (old_idx + 1) % list_val.length;
-				// get next value
-				var new_val = list_val[new_idx];
-				// send the value to driver
-				io.write(this.options.item, new_val);
-				// memorise the value for next use
-				this._current_val = new_val;
+		var tap = function (event) {
+			// get the list of values
+			var list_val = String(this.options.vals).explode();
+			// get the index of the memorised value
+			var old_idx = list_val.indexOf(this._current_val);
+			// compute the next index
+			var new_idx = (old_idx + 1) % list_val.length;
+			// get next value
+			var new_val = list_val[new_idx];
+			// send the value to driver
+			io.write(this.options.item, new_val);
+			// memorise the value for next use
+			this._current_val = new_val;
 
-				// activity indicator
-				var target = $(event.delegateTarget);
-				var indicatorType = this.options['indicator-type'];
-				var indicatorDuration = this.options['indicator-duration'];
-				if(indicatorType && indicatorDuration > 0) {
-					// add one time event to stop indicator
-					target.one('stopIndicator',function(event) {
-						clearTimeout(target.data('indicator-timer'));
-						event.stopPropagation();
-						var prevColor = target.attr('data-col');
-						if(prevColor != null) {
-							if(prevColor != 'icon1')
-								target.removeClass('icon1').find('svg').removeClass('icon1');
-							if(prevColor != 'blink')
-								target.removeClass('blink').find('svg').removeClass('blink');
-							if(prevColor == 'icon1' || prevColor == 'icon0')
-								prevColor = '';
-							target.css('color', prevColor).find('svg').css('fill', prevColor).css('stroke', prevColor);
-						}
-					})
-					// set timer to stop indicator after timeout
-					.data('indicator-timer', setTimeout(function() { target.trigger('stopIndicator') }, indicatorDuration*1000 ));
-					// start indicator
-					if(indicatorType == 'icon1' || indicatorType == 'icon0' || indicatorType == 'blink') {
-						target.addClass(indicatorType).find('svg').addClass(indicatorType);
-						indicatorType = '';
+			// activity indicator
+			var target = $(event.delegateTarget);
+			var indicatorType = this.options['indicator-type'];
+			var indicatorDuration = this.options['indicator-duration'];
+			if(indicatorType && indicatorDuration > 0) {
+				// add one time event to stop indicator
+				target.one('stopIndicator',function(event) {
+					clearTimeout(target.data('indicator-timer'));
+					event.stopPropagation();
+					var prevColor = target.attr('data-col');
+					if(prevColor != null) {
+						if(prevColor != 'icon1')
+							target.removeClass('icon1').find('svg').removeClass('icon1');
+						if(prevColor != 'blink')
+							target.removeClass('blink').find('svg').removeClass('blink');
+						if(prevColor == 'icon1' || prevColor == 'icon0')
+							prevColor = '';
+						target.css('color', prevColor).find('svg').css('fill', prevColor).css('stroke', prevColor);
 					}
-					target.css('color', indicatorType).find('svg').css('fill', indicatorType).css('stroke', indicatorType);
+				})
+				// set timer to stop indicator after timeout
+				.data('indicator-timer', setTimeout(function() { target.trigger('stopIndicator') }, indicatorDuration*1000 ));
+				// start indicator
+				if(indicatorType == 'icon1' || indicatorType == 'icon0' || indicatorType == 'blink') {
+					target.addClass(indicatorType).find('svg').addClass(indicatorType);
+					indicatorType = '';
 				}
+				target.css('color', indicatorType).find('svg').css('fill', indicatorType).css('stroke', indicatorType);
 			}
+		}
+
+		this._on(this.element.find('a[data-widget="basic.stateswitch"]'), {
+			'tap': tap
 		});
+
+		if(this.options.itemLongpress) {
+			this._on(this.element.find('a[data-widget="basic.stateswitch"]'), {
+				'taphold': function (event) {
+					event.preventDefault();
+					event.stopPropagation();
+					if(this.options.valueLongpress != null) {
+						var value = this.options.valueLongpress;
+						if(!isNaN(this._current_val) && typeof value === 'string' && !isNaN(value) && (value.startsWith('+') || value.startsWith('-')))
+							value = Number(this._current_val) + Number(value);
+						io.write(this.options.itemLongpress, value);
+					}
+					if(this.options.valueLongrelease != null) {
+						var item = this.options.itemLongpress;
+						var value = this.options.valueLongrelease;
+						if(!isNaN(this._current_val) && typeof value === 'string' && !isNaN(value) && (value.startsWith('+') || value.startsWith('-')))
+							value = Number(this._current_val) + Number(value);
+						$(document).one('vmouseup', function(event) {
+							io.write(item, value);
+						});
+					}
+				}
+			});
+		}
+		else { // if no longpress item is passed, use shortpress event
+			this._on(this.element.find('a[data-widget="basic.stateswitch"]'), {
+				'taphold': tap
+			});
+		}
 
 		// replicate ui-first-child and ui-last-child if first resp. last sibling of tag 'a' has it
 		if(this.element.children('a:first').hasClass('ui-first-child'))
@@ -1081,7 +1126,7 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 
 	options: {
 		mode: '',
-		val: ''
+		val: '',
 	},
 
 	_update: function(response) {
@@ -1094,7 +1139,15 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 			formula = 'VAR';
 		}
 		else if(formula == 'and') {
-			formula = response.join(' == VAR[0] && ') + ' == VAR[0] ? VAR[0] : null';
+			// To fulfill "and" condition, every entry in response has to have the same value.
+			// If this is true, this one value will be returned and used for selecting the proper symbol.
+			formula = 'VAR.every(function(entry, i, arr) { return entry == arr[0] }) ? VAR[0] : null';
+		}
+
+		var asThreashold = false;
+		if(formula.startsWith('>')) {
+			formula = formula.length == 1 ? 'VAR' : formula.substring(1);
+			asThreashold = true;
 		}
 
 		formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
@@ -1104,6 +1157,16 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		}
 		catch(ex) {
 			notify.error("basic.symbol: Invalid formula", ex);
+		}
+
+		if(asThreashold) {
+			var currentIndex = 0;
+			$.each(values, function(index, threshold) {
+				if(threshold === '' || ((isNaN(val) || isNaN(threshold)) ? (threshold > val) : (parseFloat(threshold) > parseFloat(val))))
+					return false;
+				currentIndex++;
+			});
+			val = values[currentIndex];
 		}
 
 		var filter = Array.isArray(val) ? '[data-val="'+val.join('"],[data-val="')+'"]' : '[data-val="'+(typeof val === 'boolean' ? Number(val) : val)+'"]';
