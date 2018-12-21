@@ -87,4 +87,15 @@ Symbol with standard values
   <ul data-role="listview" data-dividertheme="c" class="quad_list">
   {{ quad.symbol('symbol_standard', 'that', '', '', '', '', '', 'placeholder', 'placeholder', 'Standard values') }}
 </ul></div>
+Two symbols with thresholds
+<div class="twig">
+  <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.symbol('maprange', ['that','this'], [['low','medium','high'], ['', '', '']], [['', '', ''], ['control_1','control_2','control_3']], [[1,100], [100,200]], ['>', '>'], '', '', '', 'with plots', ['that:', 'this:'], ['that.plot','this.plot'], '', '', '', [1,2]) }}
+    {% endraw %}{% endfilter %}</code>
+</div>
+<div class="html">
+  <ul data-role="listview" data-dividertheme="c" class="quad_list">
+  {{ quad.symbol('maprange', ['that','this'], [['low','medium','high'], ['', '', '']], [['', '', ''], ['control_1','control_2','control_3']], [[1,100], [100,200]], ['>', '>'], '', '', '', 'with plots', ['that:', 'this:'], ['that.plot','this.plot'], '', '', '', [1,2]) }}
+</ul></div>
+
 {% endblock %}

@@ -13,32 +13,32 @@
 {% block example %}
 <script>
 $( document ).ready(function() {
-     io.write('item1', '3' );
-     io.write('item2', 'test' );
+     io.write('input', 'test' );
+     io.write('input2', '12/24/2018' );
   });
 
 </script>
   <h5>Example</h5>
 
-Single Textinput
+Single input
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-    {{ quad.textinput('textinput1', 'Textinput', '', 'item1') }}
+    {{ quad.input('', 'input', '', '', '', '', '', '', 'Single Input') }}
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.textinput('textinput1', 'Textinput', '', 'item1') }}
+    {{ quad.input('', 'input', '', '', '', '', '', '', 'Single Input') }}
   </ul></div>
 
-Multiple Textinput
+Multiple input with duration and date
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-    {{ quad.textinput('textinput2', 'Textinput', ['Item 1', 'Item 2'], ['item1', 'item2']) }}
+    {{ quad.input('', ['input1', 'input2'], ['durationflip', 'date'], ['', '5'], ['', '10'], '', '', '', 'Multi Input', ['1', '2']) }}
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.textinput('textinput2', 'Textinput', ['Item 1', 'Item 2'], ['item1', 'item2']) }}
+    {{ quad.input('', ['input1', 'input2'], ['durationflip', 'date'], ['', '5'], ['', '10'], '', '', '', 'Multi Input', ['1', '2']) }}
   </ul></div>
 {% endblock %}

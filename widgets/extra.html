@@ -1,0 +1,64 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß and others
+* @copyright   2012 - 2018
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+/**
+* Showing a picture and updating it depending on a given item. Can be used to update cover image of a squeezelite instance for example.
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item holding an absolute or relative URL to your image as its value
+For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
+* @param {image=cover_empty.jpg} an image to be shown in case of an error (optional. Default is cover_empty.jpg)
+* @param {item} an item that triggers an image reload. In case of a cover image this is the title item.
+*
+* @author Onkel Andy
+*/
+{% macro cover(id, cover, defCoverArtUrl, title) %}
+<img class="coverimg" id="{{ uid(page, id) }}" data-widget="extra.cover" data-item="{{ cover }}, {{ title }}" src="{{ defCoverArtUrl|default('pics/cover_empty.jpg') }}"  onerror="javascript:this.src='{{ defCoverArtUrl|default('pics/cover_empty.jpg') }}'"/>
+{% endmacro %}
+
+/**
+* Symbol showing when a given minimum value is reached or exceeded.
+*
+* @param {id=} unique id for this widget (optional)
+* @param {items[]} array of items that are evaluated
+* @param {text=} Text next to the symbol (optional)
+* @param {image=control_on_off} Icon to be shown. (optional. Default=control_on_off)
+* @param {value=1} value of the items that activate the symbol (optional. Default=1)
+* @param {formula('or', 'and')=or} 'or' as well as 'and' are possible values for comparing the items.
+* @param {color=icon1} color for the activated symbol (optional, default=icon1)
+*/
+{% macro minsymbol(id, items, text, icon, val, mode, color) %}
+  {% import "basic.html" as basic %}
+  <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="extra.minsymbol" {{ not items is empty ? ('data-item="' ~ implode(items) ~ '"')|raw }} data-val="{{ val|default('1') }}"
+    data-mode="{{ mode|default('or') }}" class="symbol {{ not items is empty ? 'hide' }}">
+    {{ basic.icon(icon|deficon('control_on_off'), color) }}
+    {{ text|e }}
+  </span>
+{% endmacro %}
+
+
+/**
+* Extended popup: Define up to 20 lines being shown in a popup window
+*
+* @param {id=} unique id for this widget (optional)
+* @param {image=edit_favorites} the color for the icon. The color won't change as it doesn't make sense
+* @param {color=icon0} the color for the icon. The color won't change as it doesn't make sense
+* @param {unspecified[]('switch', 'select', 'flip', 'slider', 'symbol', 'print', 'linetext', 'header', 'uzsugraph')} arrays including one of these widgets followed by their standard attributes in []:
+                    'switch', 'select', 'flip', 'slider', 'symbol', 'print', 'linetext', 'header', 'uzsugraph'
+                    Linetext ist the text in front of the line, header is a line on its own. No attributes except the text to be shown.
+                    Example: ['switch', ['item1', 'icon', [0,1]]
+*/
+{% macro extpopup(id, icon, color, extpopup1, extpopup2, extpopup3, extpopup4, extpopup5, extpopup6, extpopup7, extpopup8, extpopup9, extpopup10, extpopup11, extpopup12, extpopup13, extpopup14, extpopup15, extpopup16, extpopup17, extpopup18, extpopup19, extpopup20) %}
+    {% import "basic.html" as basic %}
+    {% import "quad/widgets/popup.html" as popup %}
+    <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
+        {{ basic.symbol(id~'extpopupicon', '', '', icon|default('edit_favorites'), '', '', color|default('icon0')) }}
+    </a>
+        {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup1, extpopup2, extpopup3, extpopup4, extpopup5, extpopup6, extpopup7, extpopup8, extpopup9, extpopup10, extpopup11, extpopup12, extpopup13, extpopup14, extpopup15, extpopup16, extpopup17, extpopup18, extpopup19, extpopup20) }}
+{% endmacro %}

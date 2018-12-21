@@ -1,9 +1,3 @@
-{% macro sliderExt(id, txt, item_switch, item_value, pic, color, indicator, min, max, step, orientation, value_display, min_display, max_display) %}
-    {% import "quad/widgets/visu.html" as visu %}
-    <div id="{{ id }}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-        {{ visu.sliderExt(id~'dimmer_ext', txt, item_switch, item_value, pic, color, indicator, min, max, step, orientation, value_display, min_display, max_display) }}
-    </div>
-{% endmacro %}
 
 {% macro extpopup(id, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15, line16, line17, line18, line19, line20) %}
   {% import "basic.html" as basic %}
@@ -136,70 +130,4 @@
     </div>
     </div>
 
-{% endmacro %}
-
-
-{% macro hsv(id, item_value_r, item_value_g, item_value_b, item_switch_ww, item_value_ww, min, max, step, pic, color_on, color_off, indicator, orientation, value_display, min_display, max_display) %}
-    {% import "basic.html" as basic %}
-    {% import "icon.html" as icon %}
-    {% import "quad/widgets/visu.html" as visu %}
-  <div id="{{ id }}" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww  != ' ' ? 'quad_hsvww-popup' : 'quad_hsv-popup' }}">
-    <p>Hue, Saturation, Value</p>
-      {{ basic.color(id~'_color_popup', item_value_r, item_value_g, item_value_b, min, max, step, '10', 'slider') }}
-      {% if item_value_ww and item_value_ww  != ' ' %}
-      <div style="margin-top:-15px;">
-            {{ visu.sliderExt(id~'ww', 'warm white', item_switch_ww, item_value_ww, [icon.light(), icon.light("","",item_value_ww)], [color_off|default('icon0'), color_off|default('yellow')], indicator|default('blink'), min, max, step, orientation|default('horizontal'), value_display|default('handle'), min_display, max_display) }}
-        </div>
-      {% endif %}
-  </div>
-{% endmacro %}
-
-
-{% macro rgb(id, txt, item_switch_r, item_value_r, item_switch_g, item_value_g, item_switch_b, item_value_b, item_switch_ww, item_value_ww, min, max, step, pic, color_on, color_off, indicator, orientation, value_display, min_display, max_display) %}
-    {% import "quad/widgets/visu.html" as visu %}
-    {% import "icon.html" as icon %}
-  <div id="{{ id }}" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww  != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
-        {{ visu.sliderExt(id~'ww', txt~' red', item_switch_r, item_value_r, [icon.light(), icon.light("","",item_value_r)], [color_off|default('icon0'), 'red'], indicator|default('blink'), min, max, step, orientation|default('horizontal'), value_display|default('handle'), min_display, max_display) }}
-        {{ visu.sliderExt(id~'ww', txt~' green', item_switch_g, item_value_g, [icon.light(), icon.light("","",item_value_g)], [color_off|default('icon0'), 'green'], indicator|default('blink'), min, max, step, orientation|default('horizontal'), value_display|default('handle'), min_display, max_display) }}
-        {{ visu.sliderExt(id~'ww', txt~' blue', item_switch_b, item_value_b, [icon.light(), icon.light("","",item_value_b)], [color_off|default('icon0'), 'blue'], indicator|default('blink'), min, max, step, orientation|default('horizontal'), value_display|default('handle'), min_display, max_display) }}
-
-      {% if item_value_ww and item_value_ww  != ' ' %}
-            {{ visu.sliderExt(id~'ww', txt~' warm white', item_switch_ww, item_value_ww, [icon.light(), icon.light("","",item_value_ww)], [color_off|default('icon0'), 'yellow'], indicator|default('blink'), min, max, step, orientation|default('horizontal'), value_display|default('handle'), min_display, max_display) }}
-    {% endif %}
-  </div>
-{% endmacro %}
-
-{% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2) %}
-    {% import "device.html" as device %}
-  <div id="{{ id }}" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
-            {{ device.shutter(id~'blind', txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2) }}
-  </div>
-{% endmacro %}
-
-{% macro blind(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step, mode) %}
-    {% import "device.html" as device %}
-  <div id="{{ id }}" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
-            {{ device.blind(id~'blind', txt, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step, mode) }}
-  </div>
-{% endmacro %}
-
-{% macro rtr(id, txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator) %}
-    {% import "device.html" as device %}
-  <div id="{{ id }}" data-role="popup" data-overlay-theme="a" class="quad_rtr-popup">
-            {{ device.rtr(id~'rtr', txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator) }}
-        </div>
-{% endmacro %}
-
-{% macro plot(id, gad, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit) %}
-  {% import "plot.html" as plot %}
-        <div id="{{id}}" data-role="popup" data-overlay-theme="a" class="quad_plot-popup">
-        <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{id}}_popupClose' onClick='$("#{{ id }}-screen").click()'></button>
-            {{ plot.period(id~'plot_popup', gad, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit) }}
-        </div>
-{% endmacro %}
-
-{% macro cover(id, src, defCoverArtUrl) %}
-        <div id="{{id}}" data-role="popup" data-overlay-theme="a" class="quad_cover-popup">
-            <img class="coverbig" id="{{ uid(page, id) }}" data-widget="visu.cover" data-item="{{ src }}" src="{{ defCoverArtUrl }}"  onerror="javascript:this.src='{{ defCoverArtUrl }}'"/>
-        </div>
 {% endmacro %}

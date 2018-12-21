@@ -17,8 +17,8 @@ $( document ).ready(function() {
 		 io.write('led.R', '1' );
 		 io.write('led.G.dimmen', '100' );
 		 io.write('led.G', '1' );
-		 io.write('led.B.dimmen', '0' );
-		 io.write('led.B', '0' );
+		 io.write('led.B.dimmen', '5' );
+		 io.write('led.B', '1' );
 		 io.write('led.WW.dimmen', '255' );
 		 io.write('led.WW', '1' );
 		 io.write('h.value', '50' );
@@ -69,15 +69,15 @@ $( document ).ready(function() {
     {{ quad.color('color3', 'HSV slider, 3 columns', 'led.R', 'led.R.dimmen', 'led.G', 'led.G.dimmen', 'led.B', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', '', '', '', '', 'hsv', '', '', '', '', '', '', ['', 'bwm.sperren', '', ''], '', '', '', '', ['locks', 'colorpicker', 'values']) }}
 	</ul></div>
 
-    [['locks','colorpicker', 'ww_slider'], 'values', 'stateengine', 'plot']
+    [['locks','colorpicker', 'ww_slider'], 'values', 'autostate', 'plot']
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-    {{ quad.color('color4', 'HSV slider+WW, 3 columns', 'led.R', 'led.R.dimmen', 'led.G', 'led.G.dimmen', 'led.B', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', ''], '', '', '', '', [['locks','colorpicker', 'ww_slider'], 'values', 'stateengine', 'plot']) }}
+    {{ quad.color('color4', 'HSV slider+WW, 3 columns', 'led.R', 'led.R.dimmen', 'led.G', 'led.G.dimmen', 'led.B', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', ''], '', '', '', '', [['locks','colorpicker', 'ww_slider'], 'values', 'autostate', 'plot']) }}
 		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.color('color4', 'HSV slider+WW, 3 columns', 'led.R', 'led.R.dimmen', 'led.G', 'led.G.dimmen', 'led.B', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', ''], '', '', '', '', [['locks','colorpicker', 'ww_slider'], 'values', 'stateengine', 'plot']) }}
+    {{ quad.color('color4', 'HSV slider+WW, 3 columns', 'led.R', 'led.R.dimmen', 'led.G', 'led.G.dimmen', 'led.B', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', ''], '', '', '', '', [['locks','colorpicker', 'ww_slider'], 'values', 'autostate', 'plot']) }}
 	</ul></div>
 
     ['locks', 'colorpicker', 'values', 'plot']

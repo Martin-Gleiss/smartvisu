@@ -89,55 +89,58 @@
           <div class="text">{{ linetext|e }}</div>
         {% endif %}
         {% set runs = formula is iterable ? max((formula|length-1),0 ) : 0 %}
-
         {% for i in 0..runs %}
-      <div class="column{{ column_order[i]|default(i+1) }} {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_symbol' }}" data-order={{ column_order[i]|default(i+1) }}>
-      {% if columntext is iterable %}{{ columntext[i] }}{% else %}{{ columntext }}{% endif %}
-        {% if item is iterable and item[i] == ' ' %}
+          <div class="column{{ column_order[i]|default(i+1) }} {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_symbol' }}" data-order={{ column_order[i]|default(i+1) }}>
+          {% if columntext is iterable %}{{ columntext[i] }}{% else %}{{ columntext }}{% endif %}
+            {% if item is iterable and item[i] == ' ' %}
 
-        {% elseif runs > 0 %}
-          {% for x in 0..max((val[i]|length-1),0) %}
-            {{ basic.symbol(id~'list_symbol'~i~x, item[i], txt[i][x]|default(''), pic[i][x]|default(pic[i] ? pic[i] : 'control_on_off'), val[i][x], formula[i], color[i][x]|default(color[i] ? color[i] : 'icon0'), href[i][x], rel[i][x]) }}
-          {% endfor %}
-          {% if item_plot[i] %}
-            <a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
-              {{ basic.icon(icon_plot|deficon('measure_power_meter'), color[i][0]|default('icon0')) }}
-            </a>
-            <div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
-            <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
-            {% if item_plot[i] is iterable  %}
-              {{ plot.period(id~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
+            {% elseif runs > 0 %}
+              {% if formula[i] == '>' %}
+                {{ basic.symbol(id~'list_symbol'~i, item[i], txt[i]|default(''), pic[i]|default(pic[i] ? pic[i] : 'control_on_off'), val[i], formula[i], color[i]|default(color[i] ? color[i] : 'icon0'), href[i], rel[i]) }}
+              {% else %}
+                {% for x in 0..max((val[i]|length-1),0) %}
+                  {{ basic.symbol(id~'list_symbol'~i~x, item[i], txt[i][x]|default(''), pic[i][x]|default(pic[i] ? pic[i] : 'control_on_off'), val[i][x], formula[i], color[i][x]|default(color[i] ? color[i] : 'icon0'), href[i][x], rel[i][x]) }}
+                {% endfor %}
+              {% endif %}
+              {% if item_plot[i] %}
+                <a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
+                  {{ basic.icon(icon_plot|deficon('measure_power_meter'), color[i][0]|default('icon0')) }}
+                </a>
+                <div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
+                <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
+                {% if item_plot[i] is iterable  %}
+                  {{ plot.period(id~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
+                {% else %}
+                  {{ plot.period(id~'_plotpopup'~i, item_plot[i], 'avg', '12h', 'now', '', '', '', txt[i], '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+                {% endif %}
+                </div>
+              {% endif %}
             {% else %}
-              {{ plot.period(id~'_plotpopup'~i, item_plot[i], 'avg', '12h', 'now', '', '', '', txt[i], '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+              {% if not val %}{% set val = '1' %}{% endif %}
+              {% if val is iterable %}
+                {% for x in 0..max((val|length-1),0) %}
+                  {{ basic.symbol(id~'list_symbol'~i~x, item, txt[x]|default(''), pic[x]|default('control_on_off'), val[x], formula, color[x]|default('icon0'), href[x], rel[x]) }}
+                {% endfor %}
+              {% else %}
+                {{ basic.symbol(id~'list_symbol'~i, item, txt, pic, val, formula, color, href, rel) }}
+              {% endif %}
+              {% if item_plot %}
+                <a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
+                  {{ basic.icon(icon_plot|deficon('measure_power_meter'), color[0]|default('icon0')) }}
+                </a>
+                <div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
+                <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
+                {% if item_plot is iterable  %}
+                  {{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+                {% else %}
+                  {{ plot.period(id~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', txt, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+                {% endif %}
+                </div>
+              {% endif %}
             {% endif %}
-            </div>
-          {% endif %}
-        {% else %}
-          {% if not val %}{% set val = '1' %}{% endif %}
-          {% if val is iterable %}
-            {% for x in 0..max((val|length-1),0) %}
-              {{ basic.symbol(id~'list_symbol'~i~x, item, txt[x]|default(''), pic[x]|default('control_on_off'), val[x], formula, color[x]|default('icon0'), href[x], rel[x]) }}
-            {% endfor %}
-          {% else %}
-            {{ basic.symbol(id~'list_symbol'~i, item, txt, pic, val, formula, color, href, rel) }}
-          {% endif %}
-          {% if item_plot %}
-            <a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
-              {{ basic.icon(icon_plot|deficon('measure_power_meter'), color[0]|default('icon0')) }}
-            </a>
-            <div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
-            <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
-            {% if item_plot is iterable  %}
-              {{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
-            {% else %}
-              {{ plot.period(id~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', txt, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
-            {% endif %}
-            </div>
-          {% endif %}
-        {% endif %}
-      </div>
+          </div>
 
-    {% endfor %}
+        {% endfor %}
     </div>
     </li>
 {% endmacro %}
@@ -157,7 +160,7 @@
  * @param {value[]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
  * @param {color[?]=} array of colors; 'icon1' or e. g. '#f00' for red (optional)
 the first one is the base color for values below first threshold, so pass one color more than thresholds.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {text[?]=} 	    css class name, useful for script hacks (see documentation and example)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {text=}       description text for the whole line
  * @param {text[?]=}     description text for each column
@@ -168,118 +171,62 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {value[]=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
  *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
  */
-{% macro print(id, item, format, formula, threshold, color, place1, place2, linetext, columntext, item_plot, icon_plot, place3, place4, column_order) %}
+{% macro print(id, item, format, formula, threshold, color, classname, place2, linetext, columntext, item_plot, icon_plot, place3, place4, column_order) %}
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
     <li data-icon="false" class="row_print">
     <div class="quad_table sorting row_print" id="row_{{id|replace('.', '_')}}_sorting">
         <div class="text">{{ linetext|e }}</div>
         {% set runs = item is iterable ? max((item|length-1),0 ) : 0 %}
+        {% set scriptcolumns = 0 %}
         {% for i in 0..runs %}
-        <div class="column{{ column_order[i]|default(i+1) }} {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_print' }}" data-order={{ column_order[i]|default(i+1) }}>
-      {% if item is iterable and item[i] == ' ' %}
-      {% elseif runs > 0 %}
-        {{ columntext[i] }}&nbsp;{{ basic.print(id~'list_print'~i, item[i], format[i], formula[i], threshold[i], color[i]) }}
-        {% if item_plot[i] %}
-          <a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
-            {{ basic.icon(icon_plot[i]|deficon('measure_power_meter'), 'icon0') }}
-          </a>
-          <div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
-          <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
-          {% if item_plot[i] is iterable  %}
-            {{ plot.period(id~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
-          {% else %}
-            {{ plot.period(id~'_plotpopup'~i, item_plot[i], 'avg', '12h', 'now', '', '', '', linetext[i], '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+          {% if format[i] != 'script' %}
+            {% set column_order = column_order[i]|default(i+1) - scriptcolumns %}
+            <div class="column{{ column_order}}
+            {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_print' }}" data-order={{ column_order[i]|default(i+1) }}>
+            {% else %}
+            <div style="width: 0;">
+              {% set scriptcolumns = scriptcolumns + 1 %}
+            {% endif %}
+            {% if item is iterable and item[i] == ' ' %}
+            {% elseif runs > 0 %}
+            {{ columntext[i] }}&nbsp;
+              {% if item[i] == ''  %}
+                <span id="{{ classname[i]|e }}">{{ formula[i]|e }}</span>
+              {% else %}
+                {{ basic.print(id~'list_print'~i, item[i], format[i], formula[i], threshold[i], color[i]) }}
+              {% endif %}
+              {% if item_plot[i] %}
+                <a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
+                  {{ basic.icon(icon_plot[i]|deficon('measure_power_meter'), 'icon0') }}
+                </a>
+                <div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
+                <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
+                {% if item_plot[i] is iterable  %}
+                  {{ plot.period(id~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
+                {% else %}
+                  {{ plot.period(id~'_plotpopup'~i, item_plot[i], 'avg', '12h', 'now', '', '', '', linetext[i], '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+                {% endif %}
+                </div>
+              {% endif %}
+            {% else %}
+            {{ columntext }}&nbsp;{{ basic.print(id~'list_print', item, format, formula, threshold, color) }}
+            {% if item_plot %}
+              <a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
+                {{ basic.icon(icon_plot|deficon('measure_power_meter'), 'icon0') }}
+              </a>
+              <div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
+              <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
+              {% if item_plot is iterable  %}
+                {{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+              {% else %}
+                {{ plot.period(id~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+              {% endif %}
+              </div>
+            {% endif %}
           {% endif %}
           </div>
-        {% endif %}
-      {% else %}
-        {{ columntext }}&nbsp;{{ basic.print(id~'list_print', item, format, formula, threshold, color) }}
-        {% if item_plot %}
-          <a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
-            {{ basic.icon(icon_plot|deficon('measure_power_meter'), 'icon0') }}
-          </a>
-          <div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
-          <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
-          {% if item_plot is iterable  %}
-            {{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
-          {% else %}
-            {{ plot.period(id~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
-          {% endif %}
-          </div>
-        {% endif %}
-      {% endif %}
-    </div>
-    {% endfor %}
-
-    </div>
-    </li>
-{% endmacro %}
-
-/**
- * Map text based on value range
- *
- * @param {id=}       		unique id for this widget
- * @param {text=} 		    text for whole line
- * @param {item[?]=} 		(array of) item to get values from
- * @param {value[?]=} 		(array of) minimum boundry. For multiple columns it's an array in an array!
- * @param {value[?]=} 		(array of) maximum boundry. For multiple columns it's an array in an array!
- * @param {text[?]=} 		(array of) text being shown.
- *						First entry is shown between first values for minimum and maximum, second entry of second min/max, etc.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[?]=}    	text shown in each column
- * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
- * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {value[]=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
- *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
- */
-{% macro maprange(id, linetext, item, map_min, map_max, map_str, place1, place2, columntext, item_plot, icon_plot, place3, place4, column_order) %}
-    {% import "plot.html" as plot %}
-    {% import "basic.html" as basic %}
-    {% import "quad/widgets/visu.html" as visu %}
-    <li data-icon="false" class="row_maptext">
-    <div class="quad_table sorting row_maptext" id="row_{{id|replace('.', '_')}}_sorting">
-        <div class="text">{{ linetext|e }}</div>
-        {% set runs = item is iterable ? max((item|length-1),0 ) : 0 %}
-        {% for i in 0..runs %}
-        <div class="column{{ column_order[i]|default(i+1) }} {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_maptext' }}" data-order={{ column_order[i]|default(i+1) }}>
-      {% if item is iterable and item[i] == ' ' %}
-      {% elseif runs > 0 %}
-        {{ columntext[i] }}&nbsp;{{ visu.maprange(id~'list_map'~i, item[i], map_min[i], map_max[i], map_str[i]) }}
-        {% if item_plot[i] %}
-          <a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
-            {{ basic.icon(icon_plot[i]|deficon('measure_power_meter'), 'icon0') }}
-          </a>
-          <div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
-          <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
-          {% if item_plot[i] is iterable  %}
-            {{ plot.period(id~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
-          {% else %}
-            {{ plot.period(id~'_plotpopup'~i, item_plot[i], 'avg', '12h', 'now', '', '', '', linetext[i], '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
-          {% endif %}
-          </div>
-        {% endif %}
-      {% else %}
-        {{ columntext }}&nbsp;{{ visu.maprange(id~'list_map', item, map_min, map_max, map_str) }}
-        {% if item_plot %}
-          <a href="#{{ id }}_plotpopup{{i}}" data-rel="popup">
-            {{ basic.icon(icon_plot|deficon('measure_power_meter'), 'icon0') }}
-          </a>
-          <div class="quad_plot-popup" id="{{ id }}_plotpopup{{i}}" data-role="popup">
-          <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup{{i}}-screen").click()'></button>
-          {% if item_plot is iterable  %}
-            {{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
-          {% else %}
-            {{ plot.period(id~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
-          {% endif %}
-          </div>
-        {% endif %}
-      {% endif %}
-    </div>
-    {% endfor %}
+      {% endfor %}
 
     </div>
     </li>
@@ -319,7 +266,7 @@ the first one is the base color for values below first threshold, so pass one co
 {% macro rtr(id, linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator, item_plot, icon_plot, place3, place4, column_order) %}
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
-    {% import "quad/widgets/popup.html" as popup %}
+    {% import "device.html" as device %}
 
     <li data-icon="false" class="row_rtr">
     <div class="quad_table sorting row_rtr" id="row_{{id|replace('.', '_')}}_sorting"">
@@ -345,7 +292,9 @@ the first one is the base color for values below first threshold, so pass one co
             <a href="#{{ uid(page, id) }}list_rtr_popup" data-rel="popup" data-position-to="window">
                 {{ basic.print(id~'_set', item_set, '°') }}
             </a>
-            {{ popup.rtr(uid(page, id)~'list_rtr_popup', linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator) }}
+            <div id="{{ uid(page, id) }}list_rtr_popup" data-role="popup" data-overlay-theme="a" class="quad_rtr-popup">
+                {{ device.rtr(id~'rtr', linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator) }}
+            </div>
         </div>
     </div>
     </li>
@@ -399,8 +348,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "basic.html" as basic %}
     {% import "device.html" as device %}
     {% import "plot.html" as plot %}
-    {% import "quad/widgets/visu.html" as visu %}
-    {% import "quad/widgets/popup.html" as popup %}
+    {% import "popup.html" as popup %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
   {% set elements = {} %}
@@ -533,7 +481,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_dimmer">
     <div class="quad_table row_dimmer" id="row_{{id|replace('.', '_')}}">
   <div class="text" data-order=0>{{ linetext|e }}
-  {% if item_auto %}&nbsp;{{ visu.simple_print(auto~'time', item_auto~'.stateengine_suspend_end') }} {% endif %}
+  {% if item_auto %}&nbsp;{{ basic.print('', item_auto~'.stateengine_suspend_end', 'text') }} {% endif %}
   </div>
 
     {% for column in elements %}
@@ -607,7 +555,14 @@ the first one is the base color for values below first threshold, so pass one co
                   {{ basic.print(id~'list_dimmer_actual', item_value, 'int', formula, '', [color[0]|default('icon0'), color[1]|default('icon1')]) }}
                 {% endif %}
             </a>
-              {{ popup.sliderExt(uid(page, id)~'list_dimmer_popup', linetext, item_switch, item_value, pic, [color[0]|default('icon0'), color[1]|default('icon1')], indicator, min|default('0'), max|default('255'), step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default('100')) }}
+            <div id="{{ uid(page, id) }}list_dimmer_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+              <div class="dimmer">
+                {{ basic.stateswitch('', item_switch, 'icon', [0,1], pic, '', color, indicator) }}
+                <p>{{ linetext|e }}</p>
+                {{ basic.slider('', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
+              </div>
+            </div>
+
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -625,10 +580,10 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'stateengine' and item_auto %}
             {% if extpopup[0] == 'stateengine' %}
-                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
+                {{ stateengine.state(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% else %}
-                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                {{ stateengine.state(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
       {% if elements[loop.index] == 'div' %}
@@ -736,8 +691,8 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "plot.html" as plot %}
     {% import "icon.html" as icon %}
     {% import "device.html" as device %}
-    {% import "quad/widgets/visu.html" as visu %}
-    {% import "quad/widgets/popup.html" as popup %}
+    /** {% import "quad/widgets/visu.html" as visu %} */
+    {% import "popup.html" as popup %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
   {% set elements = {} %}
@@ -885,7 +840,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_color">
     <div class="quad_table row_color" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
-    {% if item_auto %}&nbsp;{{ visu.simple_print(auto~'time', item_auto~'.stateengine_suspend_end') }}{% endif %}
+    {% if item_auto %}&nbsp;{{ basic.print('', item_auto~'.stateengine_suspend_end', 'text') }}{% endif %}
     </div>
     {% for column in elements %}
     {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
@@ -964,7 +919,15 @@ the first one is the base color for values below first threshold, so pass one co
       {{ basic.symbol(id~'list_ww_on', item_switch_ww, '', icon.light('','',item_value_ww), 1, '', '#aaaa00') }}
       {{ basic.symbol(id~'list_ww_off', item_switch_ww, '', icon.light('','',item_value_ww), 0, '', '#888800') }}
       </a>
-      {{ popup.sliderExt(uid(page, id)~'_list_ww_popup', 'Warm White', item_switch_ww, item_value_ww, [icon.light(),icon.light('','',item_value_ww)], ['#888800','#aaaa00'], '', min|default('0'), max|default('255'), step, 'horizontal', 'handle', min_display|default('0'), max_display|default('100')) }}
+
+      <div id="{{ uid(page, id) }}list_ww_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+        <div class="dimmer">
+          {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(),icon.light('','',item_value_ww)], '', ['#888800','#aaaa00'], indicator) }}
+          <p>Warm White</p>
+          {{ basic.slider('', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
+        </div>
+      </div>
+
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -980,9 +943,45 @@ the first one is the base color for values below first threshold, so pass one co
                 {% endif %}
             </a>
             {% if popupcolor == 'hsv' %}
-              {{ popup.hsv(uid(page, id)~'list_color_popup', item_value_r, item_value_g, item_value_b, item_switch_ww, item_value_ww, min, max, step, '', icon_color[0]|default('icon1'), icon_color[1]|default('icon0'), indicator, 'horizontal', 'handle', min_display|default('0'), max_display|default('100')) }}
+                <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww  != ' ' ? 'quad_hsvww-popup' : 'quad_hsv-popup' }}">
+                  <div class="dimmer">
+                  <p>Hue, Saturation, Value</p>
+                    {{ basic.color('', item_value_r, item_value_g, item_value_b, min, max, step, '10', 'slider') }}
+                    {% if item_value_ww and item_value_ww  != ' ' %}
+                    <div class="dimmer">
+                      {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light("","",item_value_ww)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
+                      <p>{{ linetext|e }} warm white</p>
+                      {{ basic.slider('', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    </div>
+                    {% endif %}
+                </div>
+              </div>
             {% else %}
-              {{ popup.rgb(uid(page, id)~'list_color_popup', '', item_switch_r, item_value_r, item_switch_g, item_value_g, item_switch_b, item_value_b, item_switch_ww, item_value_ww, min, max, step, pic_on|default('icon.light'), icon_color[0]|default('icon1'), icon_color[1]|default('icon0'), indicator, 'horizontal', 'handle', min_display|default('0'), max_display|default('100')) }}
+
+            <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
+                  <div class="dimmer">
+                    {{ basic.stateswitch('', item_switch_r, 'icon', [0,1], [icon.light(), icon.light("","",item_value_r)], '', [color_off|default('icon0'), 'red'], indicator) }}
+                    <p>{{ linetext|e }} red</p>
+                    {{ basic.slider('', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                  </div>
+                  <div class="dimmer">
+                    {{ basic.stateswitch('', item_switch_g, 'icon', [0,1], [icon.light(), icon.light("","",item_value_g)], '', [color_off|default('icon0'), 'green'], indicator) }}
+                    <p>{{ linetext|e }} green</p>
+                    {{ basic.slider('', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                  </div>
+                  <div class="dimmer">
+                    {{ basic.stateswitch('', item_switch_b, 'icon', [0,1], [icon.light(), icon.light("","",item_value_b)], '', [color_off|default('icon0'), 'blue'], indicator) }}
+                    <p>{{ linetext|e }} blue</p>
+                    {{ basic.slider('', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                  </div>
+                {% if item_value_ww and item_value_ww  != ' ' %}
+                    <div class="dimmer">
+                      {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light("","",item_value_ww)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
+                      <p>{{ linetext|e }} warm white</p>
+                      {{ basic.slider('', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    </div>
+              {% endif %}
+            </div>
             {% endif %}
             {% if elements[loop.index] == 'div' %}
         </div>
@@ -1001,10 +1000,10 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'stateengine' and item_auto %}
             {% if extpopup[0] == 'stateengine' %}
-                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
+                {{ stateengine.state(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% else %}
-                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                {{ stateengine.state(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
             {% if elements[loop.index] == 'div' %}
@@ -1107,8 +1106,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "device.html" as device %}
     {% import "icon.html" as icon %}
     {% import "plot.html" as plot %}
-    {% import "quad/widgets/visu.html" as visu %}
-    {% import "quad/widgets/popup.html" as popup %}
+    {% import "popup.html" as popup %}
 
 /**	{# convert array with uzsu and pos items to separate items #} */
   {% if pos_attribs is iterable %}
@@ -1277,7 +1275,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_shutter">
     <div class="quad_table row_shutter" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
-    {% if item_auto %}&nbsp;{{ visu.simple_print(item_auto~'time', item_auto~'.stateengine_suspend_end') }} {% endif %}
+    {% if item_auto %}&nbsp;{{ basic.print('', item_auto~'.stateengine_suspend_end', 'text') }} {% endif %}
     </div>
     {% for column in elements %}
     {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
@@ -1304,14 +1302,14 @@ the first one is the base color for values below first threshold, so pass one co
     {% endif %}
 
     {% if column == 'move_down' and item_move %}
-      {{ visu.longbutton(id, item_stop, item_move, 'control_arrow_down', max < min ? 0 : 1) }}
+      {{ basic.stateswitch(id, item_stop, '', max < min ? 0 : 1, 'control_arrow_down', '', '', 'blink', item_move, max < min ? 0 : 1) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'move_up' and item_move %}
-      {{ visu.longbutton(id, item_stop, item_move, 'control_arrow_up', max < min ? 1 : 0) }}
+      {{ basic.stateswitch(id, item_stop, '', max < min ? 1 : 0, 'control_arrow_up', '', '', 'blink', item_move, max < min ? 1 : 0) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1328,7 +1326,10 @@ the first one is the base color for values below first threshold, so pass one co
             <a href="#{{ uid(page, id) }}list_blind_popup" data-rel="popup" data-position-to="window">
                 {{ icon.shutter(id~'list_blind_blind', '', item_pos, min, max) }}
             </a>
-        {{ popup.blind(uid(page, id)~'list_blind_popup', linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step) }}
+            <div id="{{ uid(page, id) }}list_blind_popup" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
+              {{ device.blind('', linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step) }}
+            </div>
+
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1338,7 +1339,10 @@ the first one is the base color for values below first threshold, so pass one co
             <a href="#{{ uid(page, id) }}list_shutter_popup" data-rel="popup" data-position-to="window">
                 {{ icon.shutter(id~'list_blind_shutter', '', item_pos, min, max, item_angle) }}
             </a>
-            {{ popup.shutter(uid(page, id)~'list_shutter_popup', linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2) }}
+            <div id="{{ uid(page, id) }}list_shutter_popup" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
+                {{ device.shutter('', linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2) }}
+            </div>
+
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1417,10 +1421,10 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'stateengine' and item_auto %}
             {% if extpopup[0] == 'stateengine' %}
-                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
+                {{ stateengine.state(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% else %}
-                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                {{ stateengine.state(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
             {% if elements[loop.index] == 'div' %}
@@ -1575,8 +1579,8 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
     {% import "device.html" as device %}
-    {% import "quad/widgets/visu.html" as visu %}
-    {% import "quad/widgets/popup.html" as popup %}
+    {% import "extra.html" as extra %}
+    {% import "multimedia.html" as multimedia %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
   {% set elements = {} %}
@@ -1812,11 +1816,11 @@ the first one is the base color for values below first threshold, so pass one co
     <div class="quad_table row_playercontrol" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
     {% if item_artist %}
-    : {{ visu.simple_print(id~'artist', item_artist) }},&nbsp;
+    : {{ basic.print('', item_artist, 'text') }},&nbsp;
     {% endif %}
 
     {% if item_title %}
-    {{ visu.simple_print(id~'title', item_title) }}
+    {{ basic.print('', item_title, 'text') }}
     {% endif %}
     </div>
     {% for column in elements %}
@@ -1860,9 +1864,12 @@ the first one is the base color for values below first threshold, so pass one co
             {% set coverUrl       = item_album~'.currentalbumarturl' %}
             {% set defCoverArtUrl = 'pics/cover_empty.jpg' %}
             <a href="#{{ uid(page, id) }}cover_popup" data-rel="popup" data-position-to="window">
-              {{ visu.cover(id~'cover', coverUrl, defCoverArtUrl, item_title|default(coverUrl)) }}
+              {{ extra.cover(id~'cover', coverUrl, defCoverArtUrl, item_title|default(coverUrl)) }}
             </a>
-            {{ popup.cover(uid(page, id)~'cover_popup', coverUrl, defCoverArtUrl, item_title|default(coverUrl)) }}
+            <div id="{{ uid(page, id) }}cover_popup" data-role="popup" data-overlay-theme="a" class="quad_cover-popup">
+                <img class="coverbig" id="{{ uid(page, id) }}" data-widget="extra.cover" data-item="{{ coverUrl }}" src="{{ defCoverArtUrl }}"  onerror="javascript:this.src='{{ defCoverArtUrl }}'"/>
+            </div>
+
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1896,7 +1903,7 @@ the first one is the base color for values below first threshold, so pass one co
         </div>
       {% endif %}
     {% elseif column == 'playpause' and item_pause %}
-      {{ visu.playpause(id~'_playpause', item_play, item_pause) }}
+      {{ extra.playpause(id~'_playpause', item_play, item_pause, item_stop) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1927,7 +1934,7 @@ the first one is the base color for values below first threshold, so pass one co
       {% endif %}
     {% endif %}
     {% if column == 'song_position' and item_duration %}
-      {{ visu.time_slider(id~'list_slider', item_time, item_duration, '5', 'handle') }}
+      {{ multimedia.time_slider(id~'list_slider', item_time, item_duration, '5', 'handle') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1986,10 +1993,16 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'volume_popup' and item_volume %}
       <a href="#{{ uid(page, id) }}list_volume_popup" data-rel="popup" data-position-to="window">
-              {{ basic.print(id~'_list_vol', item_volume, volume_format, 'Math.round('~volume_min_display|default('0')~'+(('~volume_max_display|default('100')~'-'~volume_min_display|default('0')~')/('~volume_max|default('100')~'-'~volume_min|default('0')~'))*Math.max(0,VAR1-'~volume_min|default('0')~'))', volume_threshold, ['icon1', '#c00']) }}
+        {{ basic.print(id~'_list_vol', item_volume, volume_format, 'Math.round('~volume_min_display|default('0')~'+(('~volume_max_display|default('100')~'-'~volume_min_display|default('0')~')/('~volume_max|default('100')~'-'~volume_min|default('0')~'))*Math.max(0,VAR1-'~volume_min|default('0')~'))', volume_threshold, ['icon1', '#c00']) }}
 
-            </a>
-            {{ popup.sliderExt(uid(page, id)~'list_volume_popup', 'Volume '~linetext, item_mute, item_volume, 'audio_volume_mute', color, indicator, volume_min, volume_max, volume_step, 'horizontal', 'handle', volume_min_display|default('0'), volume_max_display|default('100')) }}
+      </a>
+      <div id="{{ uid(page, id) }}list_volume_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+        <div class="volume">
+          {{ basic.stateswitch('', item_mute, 'icon', [0,1], 'audio_volume_mute', '', color, indicator) }}
+          <p>Volume {{ linetext|e }}</p>
+          {{ basic.slider('', item_volume, volume_min, volume_max, volume_step, 'horizontal', 'handle', volume_min_display|default('0'), volume_max_display|default('100')) }}
+        </div>
+      </div>
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2006,10 +2019,10 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'stateengine' and item_auto %}
             {% if extpopup[0] == 'stateengine' %}
-                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
+                {{ stateengine.state(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% else %}
-                {{ visu.stateengine(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                {{ stateengine.state(id~'_state', item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
             {% if elements[loop.index] == 'div' %}
@@ -2082,46 +2095,49 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {color[](hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional, default: icon0)
   additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
 * @param {color[?](blink)=} activity indicator which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {item=} an item to which a value on longpress is sent (optional)
+* @param {text=} the value to send on longpress (optional)
+  	If this starts with a + or - sign the value is treated as offset to current stateswitch value.
+* @param {text=} the value to send on releasing after a longpress (optional)
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
                        If you want to implement two state switches for one single item (e.g. on/off and timer or restart, etc.)
                        you can provide the following attributes as single statements without arrays.
 * @param {text=} text for the whole line (optional)
 * @param {text[?]=} text for each column (optional)
- * @param {item[?]=}  		    a gad/item for UZSU
- * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
- * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
- * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
- * @param {item=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
- * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+* @param {item[?]=}  		    a gad/item for UZSU
+* @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+* @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+* @param {image=measure_power_meter} 	    	    icon triggering the plot popup
+* @param {item=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+* @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
                        Possible elements are: header, text, slider, flip, switch, select
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
- * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
- * @param {unspecified[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
+* @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
+* @param {unspecified[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
                             You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](switch,stateengine,uzsu,plot,locks,slider, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {text[](switch,stateengine,uzsu,plot,locks,slider, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'switch', 'stateengine', 'uzsu', 'plot', 'locks', 'slider'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is ['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']
              Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
- */
-{% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order, switch_or_select) %}
+*/
+{% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, item_longpress, value_longpress, value_longrelease, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order, switch_or_select) %}
     {% import "basic.html" as basic %}
     {% import "device.html" as device %}
     {% import "icon.html" as icon %}
     {% import "plot.html" as plot %}
-    {% import "quad/widgets/visu.html" as visu %}
-    {% import "quad/widgets/popup.html" as popup %}
+    {% import "popup.html" as popup %}
 
+{% set elements = {} %}
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
 {% if column_order %}
-  {% set elements = {} %}
     {% for key,items in column_order %}
       {% set elements_array = {0: 'ignore'} %}
       {% if items is iterable %}
@@ -2159,8 +2175,6 @@ the first one is the base color for values below first threshold, so pass one co
             {% set elements_array = elements_array|merge({(key):('empty'~(type is iterable ? item[key] : item))}) %}
             {% set written = 1 %}
           {% endif %}
-            {% if (column_order[key2+1] starts with 'empty') or (column_order[key2+1] matches '/^[\\d\\.]+$/') or (column_order[key2+1] == ' ') %}
-                    {% endif %}
         {% endfor %}
         {% if written == 1 %}
           {% set elements_array = elements_array|merge({(elements_array|length):('div')}) %}
@@ -2213,7 +2227,6 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% endfor %}
 {% else %}
-
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
   {% if elements|length == 0 %}
       {% set elements = {} %}
@@ -2315,9 +2328,11 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_stateswitch">
     <div class="quad_table row_stateswitch" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
-    {% if item_auto %}&nbsp;{{ visu.simple_print(id~'_suspend_end', item_auto~'.stateengine_suspend_end') }}{% endif %}
+    {% if item_auto %}&nbsp;
+    {{ basic.print('', item_auto~'.stateengine_suspend_end', 'text') }}
+    {% endif %}
     </div>
-  {% for i,arrays in elements %}
+  {% for i, arrays in elements %}
     {% set columnnumber = columnnumber+1 %}
     {% set ext = 'nothing' %}
     {% for z,column in arrays %}
@@ -2350,7 +2365,7 @@ the first one is the base color for values below first threshold, so pass one co
           {% if switch_or_select[i] == 'select' or switch_or_select == 'select' %}
             {{ basic.select(id~'_select'~z~i, item_switch[i], type[i], value[i]|default(value[i][0]), pic[i]|default(pic[i][0]), text[i]|default(text[i][0]), color_on[i]|default(''), indicator[i]) }}
           {% else %}
-                {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch[i], type[i], value[i]|default(''), pic[i]|default(''), text[i]|default(''), color[i]|default(''), indicator[i]|default('')) }}
+                {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch[i], type[i], value[i]|default(''), pic[i]|default(''), text[i]|default(''), color[i]|default(''), indicator[i]|default(''), item_longpress[i]|default(''), value_longpress[i]|default(''), value_longrelease[i]|default('')) }}
           {% endif %}
           {% if arrays[loop.index] == 'div' %}
           </div>
@@ -2399,7 +2414,14 @@ the first one is the base color for values below first threshold, so pass one co
                             {{ basic.print(id~'list_slider'~z~i, slider_item, slider_format, '', '', color[i]) }}
                         {% endif %}
                     </a>
-                    {{ popup.sliderExt(uid(page, id)~'list_slider_popup'~z~i, linetext, item_switch[i], slider_item, pic[i], color[i], indicator[i], slider_min|default('0'), slider_max|default('100'), slider_step, 'horizontal', value_display) }}
+
+                    <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+                      <div class="dimmer">
+                        {{ basic.stateswitch('', item_switch[i], 'icon', value[i], pic[i], '', color[i], indicator[i]) }}
+                        <p>{{ linetext|e }}</p>
+                        {{ basic.slider('', slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
+                      </div>
+                    </div>
                     {% if arrays[loop.index] == 'div' %}
                         </div>
                     {% endif %}
@@ -2420,10 +2442,10 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% if column == 'stateengine' and item_auto[i] %}
                     {% if extpopup[i][0] == 'stateengine' %}
-                        {{ visu.stateengine(id~'_state'~z~i, item_auto[i]~'.stateengine_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                        {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.stateengine_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                         {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
                     {% else %}
-                        {{ visu.stateengine(id~'_state'~z~i, item_auto[i]~'.stateengine_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values) }}
+                        {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.stateengine_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values) }}
                     {% endif %}
 
           {% if arrays[loop.index] == 'div' %}
@@ -2476,7 +2498,7 @@ the first one is the base color for values below first threshold, so pass one co
           {% if switch_or_select == 'select' %}
             {{ basic.select(id~'_select'~z~i, item_switch, type, value|default(value[0]), pic|default(pic[0]), text|default(text[0]), color_on|default(''), indicator) }}
           {% else %}
-            {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch, type|default(''), value|default(''), pic|default(''), text|default(''), color|default(''), indicator|default('')) }}
+            {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch, type|default(''), value|default(''), pic|default(''), text|default(''), color|default(''), indicator|default(''), item_longpress|default(''), value_longpress|default(''), value_longrelease|default('')) }}
           {% endif %}
           {% if arrays[loop.index] == 'div' %}
           </div>
@@ -2525,7 +2547,15 @@ the first one is the base color for values below first threshold, so pass one co
                             {{ basic.print(id~'list_slider'~z~i, slider_item, slider_format, '', '', color) }}
                         {% endif %}
                     </a>
-                    {{ popup.sliderExt(uid(page, id)~'list_dimmer_popup'~z~i, linetext, item_switch, slider_item, pic, color, indicator, slider_min|default('0'), slider_max|default('100'), slider_step, 'horizontal', value_display) }}
+
+                    <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+                      <div class="dimmer">
+                        {{ basic.stateswitch('', item_switch, 'icon', [0,1], pic, '', color, indicator) }}
+                        <p>{{ linetext|e }}</p> single
+                        {{ basic.slider('', slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
+                      </div>
+                    </div>
+
                     {% if arrays[loop.index] == 'div' %}
                         </div>
                     {% endif %}
@@ -2543,10 +2573,10 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% if column == 'stateengine' and item_auto %}
                     {% if extpopup[i][0] == 'stateengine' or extpopup[0] == 'stateengine' %}
-                        {{ visu.stateengine(id~'_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                        {{ stateengine.state(id~'_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                         {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
                     {% else %}
-                        {{ visu.stateengine(id~'_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                        {{ stateengine.state(id~'_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
                     {% endif %}
 
           {% if arrays[loop.index] == 'div' %}
@@ -2606,13 +2636,13 @@ the first one is the base color for values below first threshold, so pass one co
                     {% if extpopup[i][0] == 'stateengine' %}{% set ext = i %}{% endif %}
                 {% endfor %}
                 {% if ext != 'nothing' or not ext %}
-                    {{ visu.stateengine(id~'_pop_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                    {{ stateengine.state(id~'_pop_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                     {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[ext][1], extpopup[ext][2], extpopup[ext][3], extpopup[ext][4], extpopup[ext][5], extpopup[ext][6], extpopup[ext][7], extpopup[ext][8], extpopup[ext][9], extpopup[ext][10], extpopup[ext][11], extpopup[ext][12], extpopup[ext][13], extpopup[ext][14], extpopup[ext][15], extpopup[ext][16], extpopup[ext][17], extpopup[ext][18], extpopup[ext][19]) }}
                 {% elseif extpopup[0] == 'stateengine' %}
-                    {{ visu.stateengine(id~'_pop_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                    {{ stateengine.state(id~'_pop_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                     {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
                 {% else %}
-                   {{ visu.stateengine(id~'_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                   {{ stateengine.state(id~'_state'~z~i, item_auto~'.stateengine_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
                 {% endif %}
 
                 {% if arrays[loop.index] == 'div' %}
@@ -2704,34 +2734,53 @@ the first one is the base color for values below first threshold, so pass one co
  */
 {% macro select(id, item_select, type, value, pic, text, color_on, group, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order) %}
   {% import _self as intern %}
-  {{ intern.stateswitch(id, item_select, type, value, pic, text, color_on, group, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order, 'select') }}
+  {{ intern.stateswitch(id, item_select, type, value, pic, text, color_on, group, place1, place1, place1, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order, 'select') }}
 {% endmacro %}
 
 /**
- * Text Input
- *
- * @param {id=}       		unique id for this widget
- * @param {text=} 		    text for whole line
- * @param {text[]=} 		    text for each column
- * @param {item[?]} 			(array of) item to change
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {value[]=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
- *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
- */
-{% macro textinput(id, linetext, columntext, item, place1, place2, column_order) %}
-    {% import "quad/widgets/visu.html" as visu %}
-    <li data-icon="false" class="row_textinput">
-    <div class="quad_table sorting row_textinput" id="row_{{id|replace('.', '_')}}_sorting">
+* Displays an input field
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item[?]} an item, sent values are:
+	- date & dateflip: Date object resp. ISO 8601 - e.g. '2017-11-29T23:00:00.000Z'
+	- time & timeflip: String with 24hr clock - e.g. '18:31:27'
+	- duration & durationflip: Number of seconds
+	- any other: Entered value
+* @param {text[?](text,number,date,dateflip,datecal,dateslide,time,timeflip,duration,durationflip)=text} 'text', 'number', 'date', 'dateflip', 'datecal', 'dateslide', 'time', 'timeflip', 'duration', 'durationflip' (optional, default: text)
+* @param {text[?]=} lowest allowed value (optional)
+	- date & dateflip: Number of days before today
+	- time & timeflip: Format is 24hr clock - e.g. '18:31:27'
+	- duration & durationflip: in seconds
+* @param {text[?]=} greatest allowed value (optional)
+	- date & dateflip: Number of days after today
+	- time, timeflip: Format is 24hr clock - e.g. '18:31:27'
+	- duration & durationflip: in seconds
+* @param {value[?]=1} step between two values (optional, no effect on date/time types)
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {text=} text for the whole line (optional)
+* @param {text[?]=} (array with) text for each column (optional)
+* @param {value[]=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
+*						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
+*
+* @author Stefan Widmer
+* @info Inspired by Michael Würtenberger, date/time control uses JTSageDateBox
+*/
+{% macro input(id, item, type, min, max, step, place1, place2, linetext, columntext, column_order) %}
+    {% import "basic.html" as basic %}
+    <li data-icon="false" class="row_input">
+    <div class="quad_table sorting row_input" id="row_{{id|replace('.', '_')}}_sorting">
         <div class="text">{{ linetext|e }} </div>
         {% set runs = item is iterable ? max((item|length-1),0 ) : 0 %}
     {% for i in 0..runs %}
-        <div class="column{{ column_order[i]|default(i+1) }} {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_textinput' }}" data-order={{ column_order[i]|default(i+1) }}>
+        <div class="column{{ column_order[i]|default(i+1) }}
+        {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_input' }}" data-order={{ column_order[i]|default(i+1) }}>
       {% if item is iterable and item[i] == ' ' %}
-      {% elseif runs > 0 %}
-        {{ visu.textinput(id~'textinput'~i, item[i], columntext[i]|e)  }}
+      {% elseif runs > 0 %}{{ columntext[i]|e }}
+        {{ basic.input('', item[i], type[i], min[i], max[i], step[i]) }}
       {% else %}
-        {{ visu.textinput(id~'textinput', item, columntext|e)  }}
+        {{ columntext|e }}
+        {{ basic.input('', item, type, min, max, step) }}
       {% endif %}
     </div>
     {% endfor %}

@@ -7,8 +7,8 @@
  * -----------------------------------------------------------------------------
  */
 
-@CHARSET "UTF-8";
 
+@CHARSET "UTF-8";
 .quad *, *:before, *:after {
     box-sizing: border-box;
 }
@@ -353,7 +353,7 @@
 .quad_table .switch.icon {
     height: 32px;
     width: 32px;
-    margin-top: -12px;
+    /**margin-top: -12px;*/
 }
 
 .quad_table .ui-slider-switch {
@@ -415,33 +415,33 @@
 
 .quad_blind-popup {
     height: 215px;
-    width: 300px;
+    min-width: 300px;
 }
 
 .quad_rtr-popup
 {
     height: 180px;
-    width: 320px;
+    min-width: 320px;
     text-align: center;
 }
 
 .quad_rgb-popup {
     height: 230px;
-    width: 232px;
+    min-width: 252px;
 }
 
 .quad_rgbww-popup {
     height: 290px;
-    width: 232px;
+    min-width: 252px;
 }
 
 .quad_hsv-popup {
     height: 140px;
-    width: 232px;
+    min-width: 252px;
 }
 .quad_hsvww-popup {
     height: 190px;
-    width: 232px;
+    min-width: 252px;
 }
 
 .quad_locks-popup {
@@ -451,7 +451,7 @@
 
 .quad_slider-popup {
     height: 90px;
-    width: 232px;
+    min-width: 252px;
 }
 
 .quad_multi-popup {
@@ -553,7 +553,6 @@
     color:white;
 }
 
-
 .quad_table .uzsu {
   padding-left:0px;
   padding-top:2px;
@@ -643,6 +642,10 @@
   border-color: gray;
   border-radius: 2px;
   border: 1px solid;
+}
+
+.quad_slider-popup p, .quad_rgbww-popup p, .quad_rgb-popup p, .quad_hsv-popup p, .quad_hsvww-popup p {
+    margin: 5px 0 8px 0;
 }
 
 .quad_list .row_ext-popup {
@@ -736,4 +739,43 @@
 .docu_text{
     margin-top: 20px;
     margin-bottom: 10px;
+}
+
+/* Examples for IDs */
+#row_licht_og_wohnen_warm, #row_licht_og_essen_warm, #row_licht_og_lesen_warm, #row_licht_og_terrasse_screens_warm, #row_licht_treppe_regal_warm {
+    background-color: #fffaed;
+}
+
+#row_licht_og_wohnen_kalt, #row_licht_og_essen_kalt, #row_licht_og_lesen_kalt, #row_licht_og_terrasse_screens_kalt, #row_licht_treppe_regal_kalt {
+    background-color: #f4faff;
+}
+
+#row_licht_og_led_barfach, #row_licht_og_led_nische, #row_licht_og_led_vorhang, #row_licht_og_led_beamer {
+  background: -webkit-linear-gradient(left, #ffe8ee, #f2fff2, #e8f2ff); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #ffe8ee, #f2fff2, #e8f2ff); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #ffe8ee, #f2fff2, #e8f2ff); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #ffe8ee, #f2fff2, #e8f2ff); /* Standard syntax */
+}
+
+#licht_kurven-warm .highcharts-background { /* background */
+  fill: rgba(50, 0, 0, 0.1);
+}
+
+#licht_kurven-kalt .highcharts-background { /* background */
+  fill: rgba(0, 0, 50, 0.1);
+}
+
+#licht_kurven-warm .highcharts-root .highcharts-series { /* graph */
+  stroke: rgba(255, 50, 54, 1);
+  stroke-width: 1px;
+}
+
+#licht_kurven-kalt .highcharts-root .highcharts-series { /* graph */
+  stroke: rgba(50, 50, 255, 1);
+  stroke-width: 1px;
+}
+
+#licht_kurven-standard .highcharts-root .highcharts-series { /* graph */
+  stroke: rgba(250, 50, 255, 1);
+  stroke-width: 1px;
 }
