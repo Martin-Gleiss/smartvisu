@@ -1,0 +1,34 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "widget_multimedia.html" %}
+
+{% block example %}
+<script>
+$( document ).ready(function() {
+     io.write('duration', '50' );
+     io.write('time', '10' );
+  });
+
+</script>
+	<h5>Examples</h5>
+	Use this slider to fake a playing media file. Let's pretend the duration is 50 seconds:<br>
+	{{ basic.slider('', 'time', '0', '50', '1', '', 'handle') }}
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ multimedia.timeslider('', 'time', 'duration', '5', 'handle') }}
+			{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<br />
+
+	<div class="html">
+		{{ multimedia.timeslider('', 'time', 'duration', '5', 'handle') }}
+	</div>
+
+{% endblock %}

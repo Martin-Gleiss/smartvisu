@@ -69,9 +69,9 @@ $(document).on('pagecontainerchange', function (event, ui) {
 
 // ----- multimedia.time_slider ----------------------------------------------------------
 // shows and controls the time code of a multimedia file
-$.widget("sv.time_slider", $.sv.widget, {
+$.widget("sv.multimedia_timeslider", $.sv.widget, {
 
-  initSelector: 'input[data-widget="multimedia.time_slider"]',
+  initSelector: 'input[data-widget="multimedia.timeslider"]',
 
   options: {
 
@@ -115,7 +115,7 @@ $.widget("sv.time_slider", $.sv.widget, {
 
 // ----- multimedia.playpause ------------------------------------------------------
 // An icon changing between play, pause and stop.
-$.widget("sv.playpause", $.sv.widget, {
+$.widget("sv.multimedia_playpause", $.sv.widget, {
 
   initSelector: '[data-widget="multimedia.playpause"]',
 

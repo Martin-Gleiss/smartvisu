@@ -200,9 +200,9 @@
 * @param {value=5} step in % between updates (optional, default 5)
 * @param {text(input,handle,both,none)=input} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'input')
 */
-{% macro time_slider(id, time, duration, step, value_display) %}
-    <input id="{{ uid(page, id) }}" data-widget="multimedia.time_slider" data-item="{{ time }}, {{ duration }}"
-        type="range" value="0" min="0" max="1" disabled="1" step="{{ step|default(5) }}"
+{% macro timeslider(id, time, duration, step, value_display) %}
+    <input id="{{ uid(page, id) }}" data-widget="multimedia.timeslider" data-item="{{ time }}, {{ duration }}"
+        type="range" value="0" min="0" max="1" disabled="1" step="{{ step|default(5) }}" timer="{{ step|default(5) }}"
         orientation="horizontal" handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" data-highlight="true" />
 {% endmacro %}
 

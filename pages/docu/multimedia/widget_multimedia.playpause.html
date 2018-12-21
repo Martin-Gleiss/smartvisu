@@ -1,0 +1,30 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "widget_multimedia.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+	Use to control the button below
+	{{ basic.flip('', 'Play', 'Play on', 'Play off') }}
+  {{ basic.flip('', 'Pause', 'Pause on', 'Pause off') }}
+	{{ basic.flip('', 'Stop', 'Stop on', 'Stop off') }}
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ multimedia.playpause('', 'Play', 'Pause', 'Stop') }}
+			{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<br />
+
+	<div class="html">
+		{{ multimedia.playpause('', 'Play', 'Pause', 'Stop') }}
+	</div>
+
+{% endblock %}
