@@ -428,7 +428,7 @@ the first one is the base color for values below first threshold, so pass one co
   {% endfor %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
-  {% if elements|length == 0 %}
+  {% if elements == {} %}
     {% set elements = { 0:'ignore' } %}
     {% set multi = 0 %}
     {% for i in 1..8 %}
@@ -784,7 +784,7 @@ the first one is the base color for values below first threshold, so pass one co
   {% endfor %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
-  {% if elements|length == 0 %}
+  {% if elements == {} %}
     {% set elements = { 0:'ignore' } %}
     {% set multi = 0 %}
     {% for i in 1..8 %}
@@ -1217,7 +1217,7 @@ the first one is the base color for values below first threshold, so pass one co
   {% endfor %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
-  {% if elements|length == 0 %}
+  {% if elements == {} %}
     {% set elements = { 0:'ignore' } %}
     {% set multi = 0 %}
     {% for i in 1..8 %}
@@ -1757,7 +1757,7 @@ the first one is the base color for values below first threshold, so pass one co
   {% endfor %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
-  {% if elements|length == 0 %}
+  {% if elements == {} %}
     {% set elements = { 0:'ignore' } %}
     {% set multi = 0 %}
     {% for i in 1..8 %}
@@ -2232,9 +2232,8 @@ the first one is the base color for values below first threshold, so pass one co
     {% endfor %}
 {% else %}
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
-  {% if elements|length == 0 %}
+  {% if elements == {} %}
       {% set elements = {} %}
-
       {% for z in (type is iterable ? 0..type|length-1 : 0..0) %}
                 {% set elements_array = {0: 'ignore'} %}
                 {% set ext_count = 0 %}
