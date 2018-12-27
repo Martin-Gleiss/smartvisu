@@ -428,7 +428,7 @@ the first one is the base color for values below first threshold, so pass one co
   {% endfor %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
-  {% if elements == {} %}
+  {% if elements is empty %}
     {% set elements = { 0:'ignore' } %}
     {% set multi = 0 %}
     {% for i in 1..8 %}
@@ -784,7 +784,7 @@ the first one is the base color for values below first threshold, so pass one co
   {% endfor %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
-  {% if elements == {} %}
+  {% if elements is empty %}
     {% set elements = { 0:'ignore' } %}
     {% set multi = 0 %}
     {% for i in 1..8 %}
@@ -1217,7 +1217,7 @@ the first one is the base color for values below first threshold, so pass one co
   {% endfor %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
-  {% if elements == {} %}
+  {% if elements is empty %}
     {% set elements = { 0:'ignore' } %}
     {% set multi = 0 %}
     {% for i in 1..8 %}
@@ -1757,7 +1757,7 @@ the first one is the base color for values below first threshold, so pass one co
   {% endfor %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
-  {% if elements == {} %}
+  {% if elements is empty %}
     {% set elements = { 0:'ignore' } %}
     {% set multi = 0 %}
     {% for i in 1..8 %}
@@ -2139,9 +2139,9 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "popup.html" as popup %}
     /** {% import "stateengine.html" as stateengine %} *
 
-{% set elements = {} %}
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
 {% if column_order %}
+    {% set elements = {} %}
     {% for key,items in column_order %}
       {% set elements_array = {0: 'ignore'} %}
       {% if items is iterable %}
@@ -2217,77 +2217,78 @@ the first one is the base color for values below first threshold, so pass one co
           {% set elements_array = elements_array|merge({(key):('empty_'~(type is iterable ? items[key] : items))}) %}
           {% set written = 1 %}
         {% endif %}
-                {% if written == 1 %}
-                    {% set elements_array = elements_array|merge({(elements_array|length):('div')}) %}
-
-                {% endif %}
+        {% if written == 1 %}
+            {% set elements_array = elements_array|merge({(elements_array|length):('div')}) %}
+        {% endif %}
       {% endif %}
-            {% if multi >= 2 %}
-                {% set elements_array = {0:'multi'}|merge(elements_array|slice(1)) %}
-            {% elseif elements_array[0] == 'ignore' %}
-                {% set elements_array = elements_array|slice(1) %}
-            {% endif %}
-            {% set elements = elements|merge({0: (elements_array)}) %}
-
+      {% if multi >= 2 %}
+          {% set elements_array = {0:'multi'}|merge(elements_array|slice(1)) %}
+      {% elseif elements_array[0] == 'ignore' %}
+          {% set elements_array = elements_array|slice(1) %}
+      {% endif %}
+      {% if elements is empty %}
+          {% set elements = {0: (elements_array)} %}
+      {% else %}
+          {% set elements = elements|merge({0: (elements_array)}) %}
+      {% endif %}
     {% endfor %}
 {% else %}
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
-  {% if elements == {} %}
-      {% set elements = {} %}
-      {% for z in (type is iterable ? 0..type|length-1 : 0..0) %}
-                {% set elements_array = {0: 'ignore'} %}
-                {% set ext_count = 0 %}
-                {% if (type is iterable ? item_switch[z] == ' ' : item_switch == ' ') %}
-                    {% set elements_array = elements_array|merge({(z):('empty')}) %}
-                    {% set written = 1 %}
-                {% else %}
-                    {% set multi = 0 %}
+    {% set elements = {} %}
+    {% for z in (type is iterable ? 0..type|length-1 : 0..0) %}
+        {% set elements_array = {0: 'ignore'} %}
+        {% set ext_count = 0 %}
+        {% if (type is iterable ? item_switch[z] == ' ' : item_switch == ' ') %}
+            {% set elements_array = elements_array|merge({(z):('empty')}) %}
+            {% set written = 1 %}
+        {% else %}
+            {% set multi = 0 %}
 
-                    {% for i in 0..8 %}
-                        {% if (type is iterable ? locks[z] : locks) and 'locks' not in elements_array %}
-                            {% set elements_array = elements_array|merge({(i):('locks')}) %}
-                            {% set multi = multi+1 %}
-                        {% elseif (type is iterable ? item_switch[z] : item_switch) and 'switch' not in elements_array %}
-                            {% set elements_array = elements_array|merge({(i):('switch')}) %}
-                            {% set multi = multi+1 %}
-                        {% elseif (type is iterable ? item_slider[z] : item_slider) and 'slider' not in elements_array %}
-                            {% if not type is iterable %}
-                                {% set elements_array = elements_array|merge({(i):('div')}) %}
-                            {% else %}
-                                {% set multi = multi+1 %}
-                            {% endif %}
-                            {% set elements_array = elements_array|merge({(i):('slider')}) %}
-                        {% elseif (type is iterable ? extpopup[z] : extpopup) and ext_count == 0 and (type is iterable and item_auto is iterable ? (extpopup[z][0] != 'stateengine') : (extpopup[0] != 'stateengine')) and (type is iterable ? (extpopup[z][0] != 'switch') : (extpopup[0] != 'switch')) %}
-                            {% if not type is iterable %}
-                                {% set elements_array = elements_array|merge({(i):('div')}) %}
-                            {% else %}
-                                {% set multi = multi+1 %}
-                            {% endif %}
-                            {% set elements_array = elements_array|merge({(i):('extpopup')}) %}
-                            {% set ext_count = ext_count+1 %}
-                        {% elseif (type is iterable ? item_auto[z] : item_auto) and 'stateengine' not in elements_array %}
-                            {% if not type is iterable %}
-                                {% set elements_array = elements_array|merge({(i):('div')}) %}
-                            {% else %}
-                                {% set multi = multi+1 %}
-                            {% endif %}
-                            {% set elements_array = elements_array|merge({(i):('stateengine')}) %}
-                        {% elseif (type is iterable ? item_plot[z] : item_plot) and 'plot' not in elements_array and item_plot|length < 17 %}
-                            {% if not type is iterable %}
-                                {% set elements_array = elements_array|merge({(i):('div')}) %}
-                            {% else %}
-                                {% set multi = multi+1 %}
-                            {% endif %}
-                            {% set elements_array = elements_array|merge({(i):('plot')}) %}
-                        {% elseif (type is iterable ? item_uzsu[z] : item_uzsu) and 'uzsu' not in elements_array %}
-                            {% if not type is iterable %}
-                                {% set elements_array = elements_array|merge({(i):('div')}) %}
-                            {% else %}
-                                {% set multi = multi+1 %}
-                            {% endif %}
-                            {% set elements_array = elements_array|merge({(i):('uzsu')}) %}
-                        {% endif %}
-                    {% endfor %}
+            {% for i in 0..8 %}
+                {% if (type is iterable ? locks[z] : locks) and 'locks' not in elements_array %}
+                    {% set elements_array = elements_array|merge({(i):('locks')}) %}
+                    {% set multi = multi+1 %}
+                {% elseif (type is iterable ? item_switch[z] : item_switch) and 'switch' not in elements_array %}
+                    {% set elements_array = elements_array|merge({(i):('switch')}) %}
+                    {% set multi = multi+1 %}
+                {% elseif (type is iterable ? item_slider[z] : item_slider) and 'slider' not in elements_array %}
+                    {% if not type is iterable %}
+                        {% set elements_array = elements_array|merge({(i):('div')}) %}
+                    {% else %}
+                        {% set multi = multi+1 %}
+                    {% endif %}
+                    {% set elements_array = elements_array|merge({(i):('slider')}) %}
+                {% elseif (type is iterable ? extpopup[z] : extpopup) and ext_count == 0 and (type is iterable and item_auto is iterable ? (extpopup[z][0] != 'stateengine') : (extpopup[0] != 'stateengine')) and (type is iterable ? (extpopup[z][0] != 'switch') : (extpopup[0] != 'switch')) %}
+                    {% if not type is iterable %}
+                        {% set elements_array = elements_array|merge({(i):('div')}) %}
+                    {% else %}
+                        {% set multi = multi+1 %}
+                    {% endif %}
+                    {% set elements_array = elements_array|merge({(i):('extpopup')}) %}
+                    {% set ext_count = ext_count+1 %}
+                {% elseif (type is iterable ? item_auto[z] : item_auto) and 'stateengine' not in elements_array %}
+                    {% if not type is iterable %}
+                        {% set elements_array = elements_array|merge({(i):('div')}) %}
+                    {% else %}
+                        {% set multi = multi+1 %}
+                    {% endif %}
+                    {% set elements_array = elements_array|merge({(i):('stateengine')}) %}
+                {% elseif (type is iterable ? item_plot[z] : item_plot) and 'plot' not in elements_array and item_plot|length < 17 %}
+                    {% if not type is iterable %}
+                        {% set elements_array = elements_array|merge({(i):('div')}) %}
+                    {% else %}
+                        {% set multi = multi+1 %}
+                    {% endif %}
+                    {% set elements_array = elements_array|merge({(i):('plot')}) %}
+                {% elseif (type is iterable ? item_uzsu[z] : item_uzsu) and 'uzsu' not in elements_array %}
+                    {% if not type is iterable %}
+                        {% set elements_array = elements_array|merge({(i):('div')}) %}
+                    {% else %}
+                        {% set multi = multi+1 %}
+                    {% endif %}
+                    {% set elements_array = elements_array|merge({(i):('uzsu')}) %}
+                {% endif %}
+            {% endfor %}
         {% endif %}
         {% set elements_array = elements_array|merge({(elements_array|length):('div')}) %}
         {% if multi >= 2 %}
@@ -2296,20 +2297,23 @@ the first one is the base color for values below first threshold, so pass one co
         {% elseif elements_array[0] == 'ignore' %}
           {% set elements_array = elements_array|slice(1) %}
         {% endif %}
-        {% set elements = elements|merge({(z): (elements_array)}) %}
-      {% endfor %}
-            {% if item_auto and 'stateengine' not in elements and type is iterable and item_auto is not iterable %}
-        {% set elements = elements|merge({10:({0:'stateengine', 1:'div'})}) %}
-          {% endif %}
-          {% if item_plot and 'plot' not in elements and type is iterable and (item_plot is not iterable or item_plot|length == 17) %}
-        {% set elements = elements|merge({10:({0:'plot', 1:'div'})}) %}
-          {% endif %}
-            {% if item_uzsu and 'uzsu' not in elements and type is iterable and item_uzsu is not iterable %}
-        {% set elements = elements|merge({10:({0:'uzsu', 1:'div'})}) %}
-          {% endif %}
-
-  {% endif %}
+        {% if elements is empty %}
+            {% set elements = {(z): (elements_array)} %}
+        {% else %}
+            {% set elements = elements|merge({(z): (elements_array)}) %}
+        {% endif %}
+    {% endfor %}
+    {% if item_auto and 'stateengine' not in elements and type is iterable and item_auto is not iterable %}
+      {% set elements = elements|merge({10:({0:'stateengine', 1:'div'})}) %}
+    {% endif %}
+    {% if item_plot and 'plot' not in elements and type is iterable and (item_plot is not iterable or item_plot|length == 17) %}
+      {% set elements = elements|merge({10:({0:'plot', 1:'div'})}) %}
+    {% endif %}
+    {% if item_uzsu and 'uzsu' not in elements and type is iterable and item_uzsu is not iterable %}
+      {% set elements = elements|merge({10:({0:'uzsu', 1:'div'})}) %}
+    {% endif %}
 {% endif %}
+
 {% set ext_elements = [] %}
 {% for id, stringsById in elements %}
   {% for id2, string in stringsById %}
@@ -2737,7 +2741,7 @@ the first one is the base color for values below first threshold, so pass one co
  */
 {% macro select(id, item_select, type, value, pic, text, color_on, group, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order) %}
   {% import _self as intern %}
-  {{ intern.stateswitch(id, item_select, type, value, pic, text, color_on, group, place1, place1, place1, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order, 'select') }}
+  {{ intern.stateswitch(id, item_select, type, value, pic, text, color_on, group, place1, place2, place3, place4, place5, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place6, place7, column_order, 'select') }}
 {% endmacro %}
 
 /**
