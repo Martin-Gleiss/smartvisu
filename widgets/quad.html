@@ -1937,7 +1937,7 @@ the first one is the base color for values below first threshold, so pass one co
       {% endif %}
     {% endif %}
     {% if column == 'song_position' and item_duration %}
-      {{ multimedia.time_slider(id~'list_slider', item_time, item_duration, '5', 'handle') }}
+      {{ multimedia.timeslider(id~'list_slider', item_time, item_duration, '5', 'handle') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
