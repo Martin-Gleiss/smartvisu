@@ -2000,7 +2000,7 @@ the first one is the base color for values below first threshold, so pass one co
 
       </a>
       <div id="{{ uid(page, id) }}list_volume_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-        <div class="volume">
+        <div class="dimmer">
           {{ basic.stateswitch('', item_mute, 'icon', [0,1], 'audio_volume_mute', '', color, indicator) }}
           <p>Volume {{ linetext|e }}</p>
           {{ basic.slider('', item_volume, volume_min, volume_max, volume_step, 'horizontal', 'handle', volume_min_display|default('0'), volume_max_display|default('100')) }}
