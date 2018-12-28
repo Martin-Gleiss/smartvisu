@@ -427,21 +427,21 @@
 
 .quad_rgb-popup {
     height: 230px;
-    min-width: 252px;
+    min-width: 282px;
 }
 
 .quad_rgbww-popup {
     height: 290px;
-    min-width: 252px;
+    min-width: 282px;
 }
 
 .quad_hsv-popup {
     height: 140px;
-    min-width: 252px;
+    min-width: 282px;
 }
 .quad_hsvww-popup {
     height: 190px;
-    min-width: 252px;
+    min-width: 282px;
 }
 
 .quad_locks-popup {
@@ -451,12 +451,12 @@
 
 .quad_slider-popup {
     height: 90px;
-    min-width: 252px;
+    min-width: 282px;
 }
 
 .quad_multi-popup {
     min-height: 70px;
-    min-width: 252px;
+    min-width: 282px;
 }
 
 .quad_tab-content {
