@@ -1014,7 +1014,7 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 	_create: function() {
 		this._super();
 
-		var tap = function (event) {
+		var shortpressEvent = function(event) {
 			// get the list of values
 			var list_val = String(this.options.vals).explode();
 			// get the index of the memorised value
@@ -1059,12 +1059,9 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 			}
 		}
 
-		this._on(this.element.find('a[data-widget="basic.stateswitch"]'), {
-			'tap': tap
-		});
-
 		if(this.options.itemLongpress) {
 			this._on(this.element.find('a[data-widget="basic.stateswitch"]'), {
+				'tap': shortpressEvent,
 				'taphold': function (event) {
 					event.preventDefault();
 					event.stopPropagation();
@@ -1086,9 +1083,9 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 				}
 			});
 		}
-		else { // if no longpress item is passed, use shortpress event
+		else { // if no longpress item is passed, use shortpress event on click
 			this._on(this.element.find('a[data-widget="basic.stateswitch"]'), {
-				'taphold': tap
+				'click': shortpressEvent
 			});
 		}
 
