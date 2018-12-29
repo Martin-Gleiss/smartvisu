@@ -1906,7 +1906,7 @@ the first one is the base color for values below first threshold, so pass one co
         </div>
       {% endif %}
     {% elseif column == 'playpause' and item_pause %}
-      {{ extra.playpause(id~'_playpause', item_play, item_pause, item_stop) }}
+      {{ multimedia.playpause(id~'_playpause', item_play, item_pause, item_stop) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
