@@ -686,7 +686,6 @@ $.widget("sv.basic_offset", $.sv.widget, {
 
 
 // ----- basic.print ----------------------------------------------------------
-//TODO: check time
 $.widget("sv.basic_print", $.sv.widget, {
 
 	initSelector: '[data-widget="basic.print"]',
@@ -766,13 +765,16 @@ $.widget("sv.basic_print", $.sv.widget, {
 			currentIndex++;
 		});
 		var color = String(this.options.colors).explode()[currentIndex];
-		if(color == '' || color == 'icon0')
-			this.element.removeClass('icon1').css('color', '');
-		else if (color == 'icon1')
-			this.element.addClass('icon1').css('color', '');
-		else
-			this.element.removeClass('icon1').css('color', color);
-	},
+		this.element.removeClass('icon1').show().css('visibility', '').css('color', ''); // clear previous color / effect
+		if (color == 'icon1')
+			this.element.addClass('icon1');
+		else if (color == 'hidden')
+			this.element.hide();
+		else if (color == 'blank')
+			this.element.css('visibility', 'hidden');
+		else if(color != '' && color != 'icon0')
+			this.element.css('color', color);
+	}
 });
 
 // ----- basic.shifter ---------------------------------------------------------

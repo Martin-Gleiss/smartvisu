@@ -302,8 +302,9 @@
   - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
   - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
 * @param {value[]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
-* @param {color[?]=} array of colors; 'icon1' or e. g. '#f00' for red (optional)
-the first one is the base color for values below first threshold, so pass one color more than thresholds.
+* @param {color[?](hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional)
+  additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
+  the first one is the base color for values below first threshold, so pass one color more than thresholds.
 *
 * @see misc/fundamentals#Array-Form
 *
