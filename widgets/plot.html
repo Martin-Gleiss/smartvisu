@@ -165,9 +165,12 @@
 	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1d') %}
 	{% set count = count|default(100) %}
-/** 		data-item="{{ implode([item_actual, item_set, item_state], ['avg', tmin, tmax, count]) }}" */
+	{% set items = [ implode(item_actual, ['avg', tmin, tmax, count]), implode(item_set, ['avg', tmin, tmax, count]) ] %}
+	{% if item_state is not empty %}
+		{% set items = items|merge([implode([item_state], [state_max == 'on' ? 'on' : 'avg', tmin, tmax, state_max == 'on' ? 1 : count])]) %}
+	{% endif %}
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.rtr"
-		data-item="{{ implode([implode([item_actual, item_set], ['avg', tmin, tmax, count]), implode([item_state], [state_max == 'on' ? 'on' : 'avg', tmin, tmax, state_max == 'on' ? 1 : count])]) }}"
+		data-item="{{ implode(items) }}"
 		data-tmin="{{ tmin }}" data-tmax="{{ tmax }}" data-state-max="{{ state_max == 'on' ? 1 : state_max }}"
 		data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
 		class="plot"></div>
