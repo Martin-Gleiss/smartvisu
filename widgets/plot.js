@@ -107,7 +107,6 @@ $.widget("sv.plot_period", $.sv.widget, {
 		opposite: '',
 		ycolor: '',
 		ytype: '',
-		count: '',
 		chartOptions: null
 	},
 
@@ -131,7 +130,7 @@ $.widget("sv.plot_period", $.sv.widget, {
 		var exposure = String(this.options.exposure).explode();
 		var axis = String(this.options.axis).explode();
 		var zoom = this.options.zoom;
-		var mode = this.options.mode;
+		var modes = String(this.options.mode).explode();
 		var units = String(this.options.unit).explode();
 		var assign = [];
 		if (this.options.assign) {
@@ -151,22 +150,10 @@ $.widget("sv.plot_period", $.sv.widget, {
 
 		// series
 		var series = [];
-		var itemCount = this.items.length;
-		if(mode == 'minmax' || mode == 'minmaxavg') {
-			itemCount = itemCount / (mode == 'minmax' ? 2 : 3);
-		}
-		for (var i = 0; i < itemCount; i++) {
-			if(mode != 'minmax') {
-				series.push({
-					type: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? exposure[i].substr(0, exposure[i].length-5) : exposure[i]),
-					step: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? 'left' : false),
-					name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
-					data: [], // clone
-					yAxis: (assign[i] ? assign[i] - 1 : 0),
-					showInNavigator: true,
-					colorIndex: mode == 'minmaxavg' ? i*2+1 : null
-				});
-			}
+		var seriesCount = modes.length;
+
+		for (var i = 0; i < seriesCount; i++) {
+			var mode = modes[i];
 			if(mode == 'minmax' || mode == 'minmaxavg') {
 				series.push({
 					type: 'columnrange',
@@ -176,6 +163,17 @@ $.widget("sv.plot_period", $.sv.widget, {
 					showInNavigator: mode == 'minmax',
 					linkedTo: mode == 'minmaxavg' ? ':previous' : null,
 					colorIndex: i*2
+				});
+			}
+			if(mode != 'minmax') {
+				series.push({
+					type: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? exposure[i].substr(0, exposure[i].length-5) : exposure[i]),
+					step: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? 'left' : false),
+					name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
+					data: [], // clone
+					yAxis: (assign[i] ? assign[i] - 1 : 0),
+					showInNavigator: true,
+					colorIndex: mode == 'minmaxavg' ? i*2+1 : null
 				});
 			}
 		}
@@ -364,11 +362,6 @@ $.widget("sv.plot_period", $.sv.widget, {
 	_update: function(response) {
 		// response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ]
 
-		var count = this.options.count;
-		if (count < 1) {
-			count = 100;
-		}
-
 		var chart = this.element.highcharts();
 
 		var xMin = new Date() - new Date().duration(this.options.tmin);
@@ -378,63 +371,56 @@ $.widget("sv.plot_period", $.sv.widget, {
 			chart.navigator.xAxis.update({ min: xMin, max: xMax }, false);
 		}
 
-		var mode = this.options.mode;
+		var modes = String(this.options.mode).explode();
+		var itemCount = response.length;
 
-		var itemCount = response.length / (mode == 'minmax' ? 2 : mode == 'minmaxavg' ? 3 : 1);
-		if(mode == 'minmax' || mode == 'minmaxavg') {
+		var seriesIndex = -1;
+		for (var i = 0; i < itemCount; i++) {
+			var mode = modes.shift();
+			seriesIndex++;
 
-			var minResponse = response.slice(0, itemCount);
-			var maxResponse = response.slice(itemCount, itemCount * 2);
-			response = response.slice(itemCount * 2);
+			if(mode == 'minmaxavg') {
+				mode = 'minmax';
+				modes.unshift('avg');
+			}
+			if(mode == 'minmax') {
 
-			if(!this._memorized_response)
-				this._memorized_response = [];
+				var minValues = response[i];
+				var maxValues = response[i+1];
+				i++;
 
-			for (var i = 0; i < itemCount; i++) {
-				var minValues = minResponse[i];
-				var maxValues = maxResponse[i];
-				var avgValues = mode == 'minmax' ? minValues : response[i];
+				if(!this._memorized_response)
+					this._memorized_response = {};
 
-				if(!this._memorized_response[i])
-					this._memorized_response[i] = { minValues: undefined, maxValues: undefined, avgValues: undefined };
+				if(!this._memorized_response[seriesIndex])
+					this._memorized_response[seriesIndex] = { minValues: undefined, maxValues: undefined };
 
 				if(minValues === undefined)
-					minValues = this._memorized_response[i].minValues;
+					minValues = this._memorized_response[seriesIndex].minValues;
 				else
-					this._memorized_response[i].minValues = minValues;
+					this._memorized_response[seriesIndex].minValues = minValues;
 
 				if(maxValues === undefined)
-					maxValues = this._memorized_response[i].maxValues;
+					maxValues = this._memorized_response[seriesIndex].maxValues;
 				else
-					this._memorized_response[i].maxValues = maxValues;
+					this._memorized_response[seriesIndex].maxValues = maxValues;
 
-				if(avgValues === undefined)
-					avgValues = this._memorized_response[i].avgValues;
-				else
-					this._memorized_response[i].avgValues = avgValues;
-
-
-				if(minValues === undefined || maxValues === undefined || avgValues === undefined)
+				if(minValues === undefined || maxValues === undefined)
 					continue;
 
-				this._memorized_response[i] = undefined;
-				var values = $.map(avgValues, function(value, idx) {
-					var minValue = minValues[idx][1], maxValue = maxValues[idx][1];
-					if(minValue > maxValue) {
-						var tmp = maxValue;
-						minValue = maxValue;
-						maxValue = tmp;
-					}
-					return [[ value[0], minValue, maxValue ]];
+				this._memorized_response[seriesIndex] = undefined;
+				var values = $.map(minValues, function(value, idx) {
+					var minValue = value[1], maxValue = maxValues[idx][1];
+					if(minValue <= maxValue)
+						return [[ value[0], minValue, maxValue ]];
+					else  // swap values if min > max
+						return [[ value[0], maxValue, minValue ]];
 				});
 
-				chart.series[(mode == 'minmaxavg' ? i*2+1 : i)].setData(values, false);
+				chart.series[seriesIndex].setData(values, false);
 			}
-		}
-
-		for (var i = 0; i < itemCount; i++) {
-			if (response[i]) {
-				chart.series[(mode == 'minmaxavg' ? i*2 : i)].setData(response[i], false);
+			else if (response[i]) {
+				chart.series[seriesIndex].setData(response[i], false);
 			}
 		}
 

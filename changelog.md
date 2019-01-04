@@ -20,7 +20,7 @@
 - New: icon.garagedoor
 - New: icon.heating (displays a heating colored with dynamic gradient)
 - basic.symbol: Can also be used to show text only and to render as link, mode extended to adaptable formula (including thresholds), and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
-- plot.period: Among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale, units, an advanced zoom mode as in Highstock and the possibility to set any additional chart options
+- plot.period: Among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale, units, an advanced zoom mode as in Highstock, individual count and mode per series and the possibility to set any additional chart options
 - plot.temprose: New parameters 'series_label' and 'unit'
 - plot.rtr: New parameters 'tmin', 'tmax' and 'state_max' (last one is used to set datatype of state item). Additionally the algorithm for guessing dataype has been improved.
 - basic.slider: New parameters 'value_display', 'min_display' and 'max_display'
