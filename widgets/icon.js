@@ -365,6 +365,31 @@ $.widget("sv.icon_meter", $.sv.dynicon, {
 });
 
 
+// ----- icon_roofwindow ------------------------------------------------------
+$.widget("sv.icon_roofwindow", $.sv.dynicon, {
+
+	initSelector: 'svg[data-widget="icon.roofwindow"]',
+
+	_update: function(response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+		this._super(response);
+
+		var max = parseFloat(this.options.max);
+		var min = parseFloat(this.options.min);
+		var x = Math.min(Math.max((response[0] - min) / (max - min), 0), 1);
+
+		var a = 6.6-6.2*x;
+		var b = 3.6-3.4*x;
+		var c = 3.0-2.8*x;
+		var d = 127.7-118.6*x;
+		var e = 245-59*x;
+
+		var casement = "M202 "+e+"c-1.7 "+b+"-6 "+a+"-9.6 "+a+"h-91c-3.6 0-5.1-"+c+"-3.4-"+a+"l59.5-"+d+"c1.7-"+b+" 6-"+a+" 9.6-"+a+"h91c3.6 0 5.1 "+c+" 3.4 "+a+"L202 "+e+"z";
+		this.element.find('#casement').attr('d', casement);
+	}
+});
+
+
 // ----- icon.shutter ---------------------------------------------------------
 $.widget("sv.icon_shutter", $.sv.dynicon, {
 

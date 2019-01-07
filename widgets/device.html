@@ -273,6 +273,85 @@
 
 {% endmacro %}
 
+
+/**
+* Roof window
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the window
+* @param {item=} an item for the open and close movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+* @param {item=} an item for stopping the movement (optional)
+* @param {item} an item for the absolute position
+* @param {item=} an item for some saved positions (optional)
+* @param {value=0} the value for closed (optional, default 0)
+* @param {value=255} the value for opened (optional, default 255)
+* @param {value=5} step between two values (optional, default 5)
+* @param {value=0} the value to send for position 1 (optional, default 0)
+* @param {value=1} the value to send for position 2 (optional, default 1)
+* @param {text=Pos1} the text printed on button for position 1 (optional, default Pos1)
+* @param {text=Pos2} the text printed on button for position 2 (optional, default Pos2)
+*
+* @author Stefan Widmer
+*/
+{% macro roofwindow(id, txt, item_move, item_stop, item_pos, item_saved, value_closed, value_opened, step, value_pos_1, value_pos_2, text_pos_1, text_pos_2) %}
+	{% import "basic.html" as basic %}
+	{% import "icon.html" as icon %}
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.roofwindow" data-item="{{ item_pos }}"
+		data-min="{{ value_closed|default('0') }}" data-max="{{ value_opened|default('255') }}" data-step="{{ step|default(5) }}"
+		class="roofwindow">
+		<table align="center" cellpadding="0">
+			<tr>
+				<td valign="top">
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.stateswitch('', item_pos, '', value_opened|default('255'), 'carat-u') }}
+						{% else %}
+							{{ basic.stateswitch('', item_move, '', value_opened|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
+						{% endif %}
+					</div>
+				</td>
+				<td rowspan="3" valign="center" class="pos">
+					<div class="control hide">
+						<img class="icon pos" src="icons/ws/control_arrow_up_down.svg" alt="up/down" />
+					</div>
+					{{ icon.roofwindow('', '', item_pos, value_closed|default('0'), value_opened|default('255')) }}
+				</td>
+				<td valign="top">
+					{% if item_saved %}
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_1|default(0), 'grid', text_pos_1|default('Pos1'), '', 'blink') }}</div>
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td valign="center">
+					{% if item_stop %}
+						<div class="set">{{ basic.stateswitch('', item_stop, '', 1, 'delete') }}</div>
+					{% endif %}
+				</td>
+				<td valign="center">{{ txt }}</td>
+			</tr>
+			<tr>
+				<td valign="bottom">
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.stateswitch('', item_pos, '', value_closed|default('0'), 'carat-d') }}
+						{% else %}
+							{{ basic.stateswitch('', item_move, '', value_opened|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
+						{% endif %}
+					</div>
+				</td>
+				<td valign="bottom">
+					{% if item_saved %}
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_2|default(1), 'grid', text_pos_2|default('Pos2'), '', 'blink') }}</div>
+					{% endif %}
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}
+
+
 /**
 * Widget for usage of UZSU plugin
 *

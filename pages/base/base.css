@@ -1034,6 +1034,25 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   vertical-align: middle;
 }
 
+.roofwindow .pos {
+	overflow: hidden;
+	position: relative;
+}
+.roofwindow svg[data-widget="icon.roofwindow"] {
+  width: 200px;
+  height: 200px;
+  margin: -30px;
+}
+.roofwindow .control .icon {
+  width: 32px;
+  height: 32px;
+}
+.roofwindow .control .pos {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 .shutter {
   position: relative;
   display: inline-block;
