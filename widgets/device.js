@@ -1455,7 +1455,6 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
     chart.get('active').setData(data, false, null, false);
     chart.get('active').update({
-      // type: this._uzsudata.interpolation.type == 'cubic' ? 'spline' : 'line',
       step: this._uzsudata.interpolation.type != 'cubic' && this._uzsudata.interpolation.type != 'linear' ? 'left' : false,
     }, false);
 
