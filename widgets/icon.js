@@ -291,7 +291,7 @@ $.widget("sv.icon_graph", $.sv.dynicon, {
 // ----- icon.heating ---------------------------------------------------------
 $.widget("sv.icon_heating", $.sv.widget, {
 	// nedded for click handling only
-	initSelector: 'svg[data-widget="icon.heating"]',
+	initSelector: '[data-widget="icon.heating"]',
 
 	_events: {
 		'click': function (event) {

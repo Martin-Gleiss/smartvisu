@@ -184,7 +184,7 @@
 		{%- elseif color == 'do-fx' %} do-fx icon0
 		{%- endif -%}
 
-		{%- if pic|slice(0, 4) != '<svg' -%}
+		{%- if pic|trim|slice(0, 4) != '<svg' -%}
 			" src="{{ pic|deficon }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}">
 		{%- else -%}
 			">{{ pic }}</span>

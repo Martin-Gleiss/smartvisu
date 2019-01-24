@@ -376,9 +376,9 @@
 * @param {color=} color at begin of gradient e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro heating(id, item_switch, item_value, min, max, color) %}
-{% set gradient_id = uid(page, item_value~'-gradient', color|default('')) %}
+{% set gradient_id = uid(page, id, item_value~'-gradient', color|default('')) %}
 {% if once(gradient_id) %} /** add gradient definition only once per page */
-<svg id="{{ pid }}" data-widget="icon.heating.gradient" data-item="{{ item_value }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" xmlns="http://www.w3.org/2000/svg"
+<svg data-widget="icon.heating.gradient" data-item="{{ item_value }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" xmlns="http://www.w3.org/2000/svg"
 	style="width: 1px; height: 1px; position: absolute; visibility: hidden;">
   <defs>
     <linearGradient id="{{ gradient_id }}" x1="0" y1="71" x2="0" y2="371" gradientUnits="userSpaceOnUse">
