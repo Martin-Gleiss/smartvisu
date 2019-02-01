@@ -238,7 +238,7 @@ var io = {
 			widget.plot().each(function (idx) {
 				var items = widget.explode($(this).attr('data-item'));
 				$.each(items, function() {
-					var item = this;
+					var item = String(this);
 					var pt = item.split('.');
 
 					if (!unique[item] && !widget.get(item) && (pt instanceof Array) && widget.checkseries(item)) {
