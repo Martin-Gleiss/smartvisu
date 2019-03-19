@@ -12,16 +12,37 @@ $.widget("sv.device_codepad", $.sv.widget, {
     this._super();
     var codepad = this.element;
     var id = this.options.id;
-    $('[data-bind="' + id + '"]').find('*').on('click', function(event) {
+
+    var clickpreventer = $('<div style="position: absolute; width: 3px; height: 3px;">')
+    .on('click', function(event) {
       if (!$(this).closest('[data-bind="' + id + '"]').data('access')) {
         codepad.popup('open');
         codepad.find('input').val('').focus();
-        codepad.data('originally-clicked', $(this));
+        codepad.data('originally-clicked', $(this).parent());
         event.stopPropagation();
+        event.stopImmediatePropagation();
         event.preventDefault();
       }
+    });
+
+    $('[data-bind="' + id + '"]')
+    .on('mouseenter', function(event) {
+      clickpreventer.appendTo(this)
+      .css({
+        left: parseInt(event.pageX - clickpreventer.offsetParent().offset().left)-1,
+        top:  parseInt(event.pageY - clickpreventer.offsetParent().offset().top)-1,
+        zIndex: Number($(this).css('zIndex'))+1
+      });
     })
-    .filter(':data("sv-widget")').widget('disable');
+    .on('mousemove', '*', function(event) {
+      clickpreventer.appendTo(this)
+      .css({
+        left: parseInt(event.pageX - clickpreventer.offsetParent().offset().left)-1,
+        top:  parseInt(event.pageY - clickpreventer.offsetParent().offset().top)-1,
+        zIndex: Number($(this).css('zIndex'))+1
+      });
+    });
+
   },
 
   _events: {
@@ -40,14 +61,11 @@ $.widget("sv.device_codepad", $.sv.widget, {
 
       if (key == "ok") {
         if (this.options.val == code.val().md5()) {
-          $('[data-bind="' + node.attr('data-id') + '"]').data('access', new Date().getTime()).removeClass('codepad')
-          .find(':data("sv-widget")').widget('enable');
+          $('[data-bind="' + node.attr('data-id') + '"]').data('access', new Date().getTime()).removeClass('codepad');
           this._delay(function () {
-            $('[data-bind="' + this.options.id + '"]').data('access', '').addClass('codepad')
-            .find(':data("sv-widget")').widget('disable');
+            $('[data-bind="' + this.options.id + '"]').data('access', '').addClass('codepad');
           }, new Date().duration(this.options.duration).valueOf());
           node.popup("close");
-          $('[data-bind="' + this.options.id + '"]').find('[data-item]');
           node.data("originally-clicked").trigger("click");
         }
         else {
