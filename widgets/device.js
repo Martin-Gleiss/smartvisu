@@ -20,7 +20,8 @@ $.widget("sv.device_codepad", $.sv.widget, {
         event.stopPropagation();
         event.preventDefault();
       }
-    });
+    })
+    .filter(':data("sv-widget")').widget('disable');
   },
 
   _events: {
@@ -39,11 +40,14 @@ $.widget("sv.device_codepad", $.sv.widget, {
 
       if (key == "ok") {
         if (this.options.val == code.val().md5()) {
-          $('[data-bind="' + node.attr('data-id') + '"]').data('access', new Date().getTime()).removeClass('codepad');
+          $('[data-bind="' + node.attr('data-id') + '"]').data('access', new Date().getTime()).removeClass('codepad')
+          .find(':data("sv-widget")').widget('enable');
           this._delay(function () {
-            $('[data-bind="' + this.options.id + '"]').data('access', '').addClass('codepad');
+            $('[data-bind="' + this.options.id + '"]').data('access', '').addClass('codepad')
+            .find(':data("sv-widget")').widget('disable');
           }, new Date().duration(this.options.duration).valueOf());
           node.popup("close");
+          $('[data-bind="' + this.options.id + '"]').find('[data-item]');
           node.data("originally-clicked").trigger("click");
         }
         else {
