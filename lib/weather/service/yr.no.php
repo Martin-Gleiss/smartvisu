@@ -28,7 +28,8 @@ class weather_yr extends weather
 		// api call 
 		$cache = new class_cache('yr.no_'.substr(strrchr($this->location, '/'), 1).'.xml');
 
-		if ($cache->hit())
+                if ($cache->hit($this->cache_duration_minutes))
+
 			$content = $cache->read();
 		else
 		{
