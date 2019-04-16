@@ -11,6 +11,7 @@
 - basic.button extended to set color for svgs
 - basic.switch modified to allow color specification 'icon0' and 'icon1' for `color_on` and `color_off`
 - dynamic icons: added option to set color of icon
+- new driver: Websocket
 
 ### New / changed Icons
 - New icon light_standing_light.svg
