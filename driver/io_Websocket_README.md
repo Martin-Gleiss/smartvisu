@@ -26,7 +26,7 @@ This driver communicates with a websocket. If you've hurry, just copy/paste the 
   <img src="https://github.com/Supergiovane/smartvisu/blob/master/driver/io_Websocket_README.png" alt="node-sonos logo" width="100%">
   <br>
 
-COPY/PASTE
+COPY/PASTE IN YOUR NODE-RED FLOW
 ```js
 [
     {
