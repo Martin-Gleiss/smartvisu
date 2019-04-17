@@ -125,7 +125,7 @@ var io = {
     open: function () {
 
         // Setup connection. Optional: put a password after the / (in this case, you need to handle it on the server)
-        io.socket = new WebSocket('ws://' + io.address + ':' + io.port + "/somesecurity");
+        io.socket = new WebSocket('ws://' + io.address + ':' + io.port + "/smartvisu");
 
 
         //io.socket = new WebSocket('ws://echo.websocket.org'); 
