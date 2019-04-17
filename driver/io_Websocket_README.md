@@ -3,7 +3,7 @@
   
 ## DESCRIPTION
 This driver communicates with a websocket. If you've hurry, just copy/paste the NODE-RED flow below to start playing with the driver.
-   
+CAUTION: communication using websocket must be used in the home LAN only, because the communication is not encrypted and can be read/hacked by everyone. Do not use the websocket out of your LAN!
 
 ## How to use it
   * Create a websocket's node endpoint, listening on node-red default IP and Port (1880) on the "/smartvisu" path (for example, 192.168.1.18:1880/smartvisu).
