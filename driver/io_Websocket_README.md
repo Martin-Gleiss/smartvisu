@@ -20,7 +20,7 @@ This driver communicates with a websocket. If you've hurry, just copy/paste the 
  <br>
   <img src="https://github.com/Supergiovane/smartvisu/blob/master/driver/io_Websocket_README.png" alt="node-sonos logo" width="100%">
   <br>
-  Here, a sample Flow in NODE-RED. This example uses the palette node-red-contrib-knxjs as well. Please copy/paste this flow in your NODE-RED flows. How it works: KNX Group Addresses updates the node "MSG Handler", by putting the group addresses value to an array in memory, then this array will serve the driver. I used a KNX node, but you can use anything you want.
+  Here, a sample Flow in NODE-RED. This example uses the palette <b>node-red-contrib-knxjs</b> as well. Please copy/paste this flow in your NODE-RED flows. How it works: KNX Group Addresses updates the node "MSG Handler", by putting the group addresses value to an array in memory, then this array will serve the driver. I used a KNX node, but you can use anything you want.
 
 COPY/PASTE IN YOUR NODE-RED FLOW
 ```js
