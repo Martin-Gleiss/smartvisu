@@ -12,15 +12,37 @@ $.widget("sv.device_codepad", $.sv.widget, {
     this._super();
     var codepad = this.element;
     var id = this.options.id;
-    $('[data-bind="' + id + '"]').find('*').on('click', function(event) {
+
+    var clickpreventer = $('<div style="position: absolute; width: 3px; height: 3px;">')
+    .on('click', function(event) {
       if (!$(this).closest('[data-bind="' + id + '"]').data('access')) {
         codepad.popup('open');
         codepad.find('input').val('').focus();
-        codepad.data('originally-clicked', $(this));
+        codepad.data('originally-clicked', $(this).parent());
         event.stopPropagation();
+        event.stopImmediatePropagation();
         event.preventDefault();
       }
     });
+
+    $('[data-bind="' + id + '"]')
+    .on('mouseenter', function(event) {
+      clickpreventer.appendTo(this)
+      .css({
+        left: parseInt(event.pageX - clickpreventer.offsetParent().offset().left)-1,
+        top:  parseInt(event.pageY - clickpreventer.offsetParent().offset().top)-1,
+        zIndex: Number($(this).css('zIndex'))+1
+      });
+    })
+    .on('mousemove', '*', function(event) {
+      clickpreventer.appendTo(this)
+      .css({
+        left: parseInt(event.pageX - clickpreventer.offsetParent().offset().left)-1,
+        top:  parseInt(event.pageY - clickpreventer.offsetParent().offset().top)-1,
+        zIndex: Number($(this).css('zIndex'))+1
+      });
+    });
+
   },
 
   _events: {
@@ -64,6 +86,48 @@ $.widget("sv.device_codepad", $.sv.widget, {
     }
 
   }
+
+});
+
+
+// ----- device.roofwindow ------------------------------------------------------
+$.widget("sv.device_roofwindow", $.sv.widget, {
+
+	initSelector: 'div[data-widget="device.roofwindow"]',
+
+	options: {
+		min: 0,
+		max: 255,
+		step: 5,
+	},
+
+	_getVal: function(event) {
+		var min = this.options.min;
+		var max = this.options.max;
+		var step = this.options.step;
+
+		var offset = $(event.currentTarget).offset();
+		var y = event.pageY - offset.top;
+		return max - Math.floor(y / $(event.currentTarget).outerHeight() * (max - min) / step) * step;
+	},
+
+	_events: {
+		'click .pos': function (event) {
+			this._write(this._getVal(event));
+		},
+
+		'mouseenter .pos': function (event) {
+			this.element.find('.control').fadeIn(400);
+		},
+
+		'mouseleave .pos': function (event) {
+			this.element.find('.control').fadeOut(400);
+		},
+
+		'mousemove .pos': function (event) {
+			$(event.currentTarget).attr('title', this._getVal(event));
+		}
+	}
 
 });
 

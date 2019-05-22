@@ -291,7 +291,7 @@ $.widget("sv.icon_graph", $.sv.dynicon, {
 // ----- icon.heating ---------------------------------------------------------
 $.widget("sv.icon_heating", $.sv.widget, {
 	// nedded for click handling only
-	initSelector: 'svg[data-widget="icon.heating"]',
+	initSelector: '[data-widget="icon.heating"]',
 
 	_events: {
 		'click': function (event) {
@@ -361,6 +361,31 @@ $.widget("sv.icon_meter", $.sv.dynicon, {
 
 		var ang = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 0.48 * Math.PI;
 		this.element.find('#pointer').attr('points', '50,85 ' + fx.rotate([15, 48], ang, [50, 85]).toString());
+	}
+});
+
+
+// ----- icon_roofwindow ------------------------------------------------------
+$.widget("sv.icon_roofwindow", $.sv.dynicon, {
+
+	initSelector: 'svg[data-widget="icon.roofwindow"]',
+
+	_update: function(response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+		this._super(response);
+
+		var max = parseFloat(this.options.max);
+		var min = parseFloat(this.options.min);
+		var x = Math.min(Math.max((response[0] - min) / (max - min), 0), 1);
+
+		var a = 6.6-6.2*x;
+		var b = 3.6-3.4*x;
+		var c = 3.0-2.8*x;
+		var d = 127.7-118.6*x;
+		var e = 245-59*x;
+
+		var casement = "M202 "+e+"c-1.7 "+b+"-6 "+a+"-9.6 "+a+"h-91c-3.6 0-5.1-"+c+"-3.4-"+a+"l59.5-"+d+"c1.7-"+b+" 6-"+a+" 9.6-"+a+"h91c3.6 0 5.1 "+c+" 3.4 "+a+"L202 "+e+"z";
+		this.element.find('#casement').attr('d', casement);
 	}
 });
 

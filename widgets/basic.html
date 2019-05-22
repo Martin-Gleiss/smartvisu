@@ -184,7 +184,7 @@
 		{%- elseif color == 'do-fx' %} do-fx icon0
 		{%- endif -%}
 
-		{%- if pic|slice(0, 4) != '<svg' -%}
+		{%- if pic|trim|slice(0, 4) != '<svg' -%}
 			" src="{{ pic|deficon }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}">
 		{%- else -%}
 			">{{ pic }}</span>
@@ -302,8 +302,9 @@
   - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
   - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
 * @param {value[]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
-* @param {color[?]=} array of colors; 'icon1' or e. g. '#f00' for red (optional)
-the first one is the base color for values below first threshold, so pass one color more than thresholds.
+* @param {color[?](hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional)
+  additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
+  the first one is the base color for values below first threshold, so pass one color more than thresholds.
 *
 * @see misc/fundamentals#Array-Form
 *
@@ -532,7 +533,7 @@ the first one is the base color for values below first threshold, so pass one co
 	{% set color = color|default('') %}
 
 	<{% if href is empty %}span{% else %}a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{% endif %}{% endif %}{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.symbol"
-		{% if not items is empty %}data-item="{{ implode(items) }}" {% endif %}
+		{% if not items is empty %}data-item="{{ implode(items) }}" style="display: none;" {% endif %}
 		data-val="{{ implode(value) }}"
 		data-mode="{{ formula|default('or') }}" class="symbol">
 		{%- for val in value -%}

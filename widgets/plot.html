@@ -53,20 +53,23 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {unchecked[?]} series of item(s); multiple items in array form: [ item1 , item2 ]
-* @param {text(avg,sum,min,max,minmax,minmaxavg,raw)} the mode: 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg' or 'raw'
+* @param {text(avg,sum,min,max,minmax,minmaxavg,raw)[?]=} the aggregation mode (optional, default 'avg')
+	May be a single mode or an array with separate mode per item.
+	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
 * @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format)
 * @param {duration=now} the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
 * @param {text[?]=} the minimum for each y-axis; multiples in array form: [ min_y-axis1, min_y-axis2, ...] (optional)
-	if the axis type is boolean the passed value will be the label of the low state (e.g. 'Off')
+	If the axis type is boolean the passed value will be the label of the low state (e.g. 'Off')
 * @param {text[?]=} the maximum for each y-axis; multiples in array form: [ max_y-axis1, max_y-axis2, ...] (optional)
-	if the axis type is boolean the passed value will be the label of the high state (e.g. 'On')
-* @param {value=100} the number of points in the period (optional, default 100)
+	If the axis type is boolean the passed value will be the label of the high state (e.g. 'On')
+* @param {value=100} the number of datapoints in the series (optional, default 100)
+	May be a single value or an array of separate counts per item.
 * @param {text[?]=} label for each serie; multiples in array form (optional)
 * @param {color[?]=} color for each serie; multiples in array form (optional, default: suitable for design)
 * @param {text[?](line,stair,spline,area,areastair,areaspline,column)=line} type of each serie: 'line', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'column'; multiples in array form (optional, default 'line')
 * @param {text[?]=} title for the x-axis and y-axes in array form: [title_x-axis, title_y-axis1, title_y-axis2, ...] (optional)
 * @param {duration(advanced)=} minimal time range while zooming or 'advanced' (optional, duration-format)
-	by passing 'advanced' a seaparate range selector is shown and data grouping for large amount of data is enabled
+	By passing 'advanced' a seaparate range selector is shown and data grouping for large amount of data is enabled
 * @param {value[]=} assignment of the series to the y-axes; multiples in array form (optional)
 * @param {value[]=} y-axes setup for left '0' and right '1' hand in array form (optional)
 * @param {color[?]=} y-axes color; multiples in array form (optional)
@@ -81,20 +84,37 @@
 {% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions) %}
 	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1h') %}
-	{% set count = count|default(100) %}
-	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.period" data-mode="{{ mode|default('avg') }}"
-		{% if mode == 'minmax' %}
-			data-item="{{ implode(item, ['min', tmin, tmax, count]) }}, {{ implode(item, ['max', tmin, tmax, count]) }}"
-		{% elseif mode == 'minmaxavg' %}
-			data-item="{{ implode(item, ['min', tmin, tmax, count]) }}, {{ implode(item, ['max', tmin, tmax, count]) }}, {{ implode(item, ['avg', tmin, tmax, count]) }}"
+
+	{% set mode = (mode is iterable ? mode : [mode|default('avg')]) %}
+	{% set count = (count is iterable ? count : [count|default(100)]) %}
+	{% set item = (item is iterable ? item : [item]) %}
+  {% set seriesitems = [] %}
+	{% for itemi in item %}
+		{% if mode|length < loop.index %}
+			{% set mode = mode|merge([mode|last]) %}
+		{% endif %}
+		{% set modei = mode[loop.index0] %}
+
+		{% if count|length < loop.index %}
+			{% set count = count|merge([count|last]) %}
+		{% endif %}
+		{% set counti = count[loop.index0] %}
+
+		{% if modei == 'minmax' %}
+			{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]) ]) %}
+		{% elseif modei == 'minmaxavg' %}
+			{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]), implode(itemi, ['avg', tmin, tmax, counti]) ]) %}
 		{% else %}
-			data-item="{{ implode(item, [mode|default('avg'), tmin, tmax, count]) }}"
-    {% endif %}
+			{% set seriesitems = seriesitems|merge([implode(itemi, [modei, tmin, tmax, counti])]) %}
+		{% endif %}
+	{% endfor %}
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.period" data-mode="{{ implode(mode) }}"
+		data-item="{{ implode(seriesitems) }}"
 		{% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
 		data-tmin="{{ tmin }}" data-tmax="{{ tmax }}"
 		data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axis) }}"
 		{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
-		{% if count is not empty %} data-count="{{ count }}" {% endif %}
 		{% if assign is not empty %} data-assign="{{ implode(assign) }}" {% endif %}
 		{% if opposite is not empty %} data-opposite="{{ implode(opposite) }}" {% endif %}
 		{% if ycolor is not empty %} data-ycolor="{{ implode(ycolor) }}" {% endif %}
@@ -145,9 +165,12 @@
 	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1d') %}
 	{% set count = count|default(100) %}
-/** 		data-item="{{ implode([item_actual, item_set, item_state], ['avg', tmin, tmax, count]) }}" */
+	{% set items = [ implode(item_actual, ['avg', tmin, tmax, count]), implode(item_set, ['avg', tmin, tmax, count]) ] %}
+	{% if item_state is not empty %}
+		{% set items = items|merge([implode([item_state], [state_max == 'on' ? 'on' : 'avg', tmin, tmax, state_max == 'on' ? 1 : count])]) %}
+	{% endif %}
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.rtr"
-		data-item="{{ implode([implode([item_actual, item_set], ['avg', tmin, tmax, count]), implode([item_state], [state_max == 'on' ? 'on' : 'avg', tmin, tmax, state_max == 'on' ? 1 : count])]) }}"
+		data-item="{{ implode(items) }}"
 		data-tmin="{{ tmin }}" data-tmax="{{ tmax }}" data-state-max="{{ state_max == 'on' ? 1 : state_max }}"
 		data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
 		class="plot"></div>
