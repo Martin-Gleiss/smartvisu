@@ -535,7 +535,8 @@ the first one is the base color for values below first threshold, so pass one co
     {% endif %}
 
     {% if column == 'switch' and item_switch %}
-      {{ basic.stateswitch(id~'list_dimmer_dynicon', item_switch, 'icon', [0,1], pic, '', [color[0]|default('icon0'), color[1]|default('icon1')], indicator) }}
+
+      {{ basic.stateswitch(id~'list_dimmer_dynicon', item_switch, 'icon', [0,1], pic|default(['light_light', 'light_light']), '', [color[0]|default('icon0'), color[1]|default('icon1')], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -558,7 +559,7 @@ the first one is the base color for values below first threshold, so pass one co
             </a>
             <div id="{{ uid(page, id) }}list_dimmer_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
               <div class="dimmer">
-                {{ basic.stateswitch('', item_switch, 'icon', [0,1], pic, '', color, indicator) }}
+                {{ basic.stateswitch('', item_switch, 'icon', [0,1], pic|default(['light_light', 'light_light']), '', color, indicator) }}
                 <p>{{ linetext|e }}</p>
                 {{ basic.slider('', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
               </div>
