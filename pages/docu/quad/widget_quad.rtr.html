@@ -13,12 +13,12 @@
 {% block example %}
 <script>
 $( document ).ready(function() {
-		 io.write('istwert', '20' );
-		 io.write('soll', '22' );
-		 io.write('komfort', '23' );
-		 io.write('nacht', '20' );
-		 io.write('frostschutz', '4' );
-		 io.write('heizen', '1' );
+		 io.write('istwert', '20.4' );
+		 io.write('soll', '22.1' );
+		 io.write('komfort', '23.5' );
+		 io.write('nacht', '20.1' );
+		 io.write('frostschutz', '4.5' );
+		 io.write('state', 'heizen' );
 	});
 
 </script>
@@ -27,18 +27,18 @@ $( document ).ready(function() {
 Standard order with plot and offset
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-    {{ quad.rtr('normal', 'Standard Order with plot and offset', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'heizen', 'Text', 5, 'offset', '', '#ff0', 'blink', 'normal.plot') }}
+    {{ quad.rtr('normal', 'Standard Order with plot and offset', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'state') }}
 		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.rtr('normal', 'Standard Order with plot and offset', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'heizen', 'Text', 5, 'offset', '', '#ff0', 'blink', 'normal.plot') }}
+    {{ quad.rtr('normal', 'Standard Order with plot and offset', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'state') }}
 	</ul></div>
 
 Reverse order
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-    {{ quad.rtr('reverse', 'Reverse Order', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'heizen', 'Text', 0.10, '', [
+    {{ quad.rtr('reverse', 'Reverse Order', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'state', 'Text', 0.10, '', [
 		device.uzsuicon('','uzsuitem','Presence','','','list','Present:1,Absent:2,Night:3'),
 		icon.heating('','','bath.rtr.set',0,90)
 		], '#ff0', 'blink', '', '', '', '', [3,2,1]) }}
