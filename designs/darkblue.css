@@ -224,7 +224,7 @@ html .ui-alt-icon .ui-radio-off:after {
 	width: 8px;
 	height: 8px;
 	border-width: 5px;
-	border-style: solid; 
+	border-style: solid;
 }
 .ui-alt-icon.ui-btn.ui-radio-on:after,
 .ui-alt-icon .ui-btn.ui-radio-on:after {
@@ -406,6 +406,7 @@ html .ui-body-a .ui-slider-track .ui-btn-active,
 html body .ui-group-theme-a .ui-slider-track .ui-btn-active,
 html body div.ui-slider-track.ui-body-a .ui-btn-active {
 	background-color: #22aadd /*{a-active-background-color}*/;
+  background: #22aadd;
 	/*border-color: #125d79;*/
 	color: #fff /*{a-active-color}*/;
 	/*text-shadow: 0 1px 0 #0088bb;*/
@@ -540,7 +541,7 @@ html .ui-slider-track-vertical.ui-shadow-inset.ui-bar-inherit.ui-corner-all .ui-
 }
 
 .ui-slider-track-semicircle.ui-btn-active {
-	background-color: #22aadd !important; 
+	background-color: #22aadd !important;
     border-color: #125d79 !important;
     color: #fff !important;
     text-shadow: 0 1px 0 #0088bb !important;
@@ -587,7 +588,7 @@ a.ui-slider-handle-semicircle {
 	border-left: 1px solid #1E1E1E;
 	border-right: 1px solid #1E1E1E;
 	border-bottom: 1px solid #1E1E1E;
-	
+
 	background-image: -webkit-gradient(linear, left, right, from( #2F2F2F ), to( #3c3c3c )); /* Saf4+, Chrome */
     background-image: -webkit-linear-gradient(left, #2F2F2F 30%, #3c3c3c 70% ); /* Chrome 10+, Saf5.1+ */
     background-image:    -moz-linear-gradient(left, #2F2F2F 30%, #3c3c3c 70% ); /* FF3.6 */
