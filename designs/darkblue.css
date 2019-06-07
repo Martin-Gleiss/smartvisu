@@ -406,7 +406,6 @@ html .ui-body-a .ui-slider-track .ui-btn-active,
 html body .ui-group-theme-a .ui-slider-track .ui-btn-active,
 html body div.ui-slider-track.ui-body-a .ui-btn-active {
 	background-color: #22aadd /*{a-active-background-color}*/;
-  background: #22aadd;
 	/*border-color: #125d79;*/
 	color: #fff /*{a-active-color}*/;
 	/*text-shadow: 0 1px 0 #0088bb;*/
