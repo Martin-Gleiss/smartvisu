@@ -540,7 +540,6 @@ html .ui-slider-track-vertical.ui-shadow-inset.ui-bar-inherit.ui-corner-all .ui-
 }
 
 .ui-slider-track-semicircle.ui-btn-active {
-	background-color: #22aadd !important;
     border-color: #125d79 !important;
     color: #fff !important;
     text-shadow: 0 1px 0 #0088bb !important;
