@@ -669,3 +669,8 @@ html .ui-btn.icon1,
 [data-widget="basic.symbol"] .icon1 {
 	color: #22aadd;
 }
+
+/* fix for uzsu problems */
+div.uzsuTableMain .ui-btn-active {
+  background: #22AADD;
+}
