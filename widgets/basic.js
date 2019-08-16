@@ -635,10 +635,8 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 			this.element.trigger('datebox', {'method': 'set', 'value': this.options['min-dur']*1}).trigger('datebox', {'method': 'dooffset', 'type': 's', 'amount': response[0] - this.options['min-dur']*1}).trigger('datebox', {'method':'doset'});
 		else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
 			this.element.datebox('setTheDate', new Date(response[0]));
-		else if(mode == 'timebox' || mode == 'timeflipbox') { // data type time
-			this.element.val(response[0]);
-			this.element.datebox('refresh');
-		}
+		else if(mode == 'timebox' || mode == 'timeflipbox') // data type time
+			this.element.datebox('setTheDate', response[0]);
 	},
 
 	_events: {
@@ -652,7 +650,7 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
 					newval = this.element.datebox('getTheDate');
 				else if(mode == 'timebox' || mode == 'timeflipbox') // data type time
-					newval = this.element.datebox('callFormat', '%H:%M:%S', this.element.datebox('getTheDate'))
+					newval = this.element.datebox('callFormat', this.element.datebox('getOption','timeOutput'), this.element.datebox('getTheDate'))
 				else
 					newval = this.element.val();
 
