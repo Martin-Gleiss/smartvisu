@@ -506,7 +506,7 @@ html .ui-slider-track-vertical.ui-shadow-inset.ui-bar-inherit.ui-corner-all {
 .ui-slider-track-bottomup .ui-btn.ui-slider-handle,
 .ui-slider-track-vertical .ui-btn.ui-slider-handle {
   height: 28px;
-  margin: -15px 0 0 -15px;
+  margin: -8.8px 0 0 -8.8px;
   outline: 0 none;
   padding: 0;
   position: absolute;
