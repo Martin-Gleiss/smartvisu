@@ -480,7 +480,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_dimmer">
     <div class="quad_table row_dimmer" id="row_{{id|replace('.', '_')}}">
   <div class="text" data-order=0>{{ linetext|e }}
-  {% if item_auto %}&nbsp;{{ basic.print('', item_auto~'.stateengine_suspend_end', 'text') }} {% endif %}
+  {% if item_auto %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }} {% endif %}
   </div>
 
     {% for column in elements %}
