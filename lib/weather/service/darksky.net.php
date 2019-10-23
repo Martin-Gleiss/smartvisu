@@ -34,7 +34,7 @@ class weather_darksky extends weather
 		}
 		else
 		{
-      $url =  'https://api.darksky.net/forecast/'.config_weather_key.'/'.$this->location.'?exclude=minutely,hourly,alerts&units=auto&lang='.trans('darksky', 'lang');
+			$url =  'https://api.darksky.net/forecast/'.config_weather_key.'/'.$this->location.'?exclude=minutely,hourly,alerts&units=auto&lang='.trans('darksky', 'lang');
 			$content = file_get_contents($url);
 			$cache->write($content);
 		}
@@ -67,7 +67,7 @@ class weather_darksky extends weather
 			$i = 0;
 			foreach ($parsed_json->{'daily'}->{'data'} as $day)
 			{
-				if((int)$day->{'time'} < time() || (int)$day->{'time'} > time()+4*24*60*60) // next 4 days only
+				if((int)$day->{'time'} < mktime(0, 0 ,0) || (int)$day->{'time'} > time()+3*24*60*60) // next 4 days only
 					continue;
 
 				$this->data['forecast'][$i]['date'] = date('Y-m-d', (int)$day->{'time'});
