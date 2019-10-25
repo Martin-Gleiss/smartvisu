@@ -882,7 +882,7 @@ $.widget("sv.basic_shutter", $.sv.widget, {
 		});
 	},
 
-	_getVal(event) {
+	_getVal: function(event) {
 		var max = this.options.max;
 		var min = this.options.min;
 		var step = this.options.step;

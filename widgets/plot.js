@@ -1347,7 +1347,7 @@ $.widget("sv.plot_temprose", $.sv.widget, {
 			name: label[0], pointPlacement: 'on'
 		};
 
-		if (this.items.length == 2 * count) {
+		if (this.items.length > count) {
 			plots[1] = {
 				name: label[1], pointPlacement: 'on',
 				className: 'shortdot'

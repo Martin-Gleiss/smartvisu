@@ -23,7 +23,7 @@ class calendar_icloud extends calendar_caldav
 	public function init($request)
 	{
 		parent::init($request);
-		$this->url = 'https://p01-caldav.icloud.com/';
+		$this->url = 'https://caldav.icloud.com/';
 	}
 }
 

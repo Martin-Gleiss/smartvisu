@@ -545,7 +545,7 @@
 				style="{% if not loop.first %}display:none;{% endif %}{% if pic is empty and not txt is empty and not col is empty and col != 'icon1' %}color: {{ col }};{% endif %}"
 				{% if pic is empty and not txt is empty and col == 'icon1' %} class="icon1"{% endif %}>
 				{%- if pic %}{{ basic.icon(pic, col) }}{% endif -%}
-				{{- txt -}}
+				{{- txt|raw -}}
 			</span>
 	  {%- endfor -%}
 	</{% if href is empty %}span{% else %}a{% endif %}>

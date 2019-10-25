@@ -181,7 +181,7 @@ class WidgetParameterChecker {
 		}
 
 		// no check for arrayform if value is empty
-    if($value == '')
+		if($value == '')
 			return $value;
 
 		$allowArray = $this->getParamConfig('array_form', 'no');

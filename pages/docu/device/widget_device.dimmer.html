@@ -21,11 +21,12 @@
 		{{ device.dimmer('', 'Dimmer', 'bath.light.switch', 'bath.light.value') }}
 	</div>
 	
+  Dimmer with a minimal value of 20 but which is displayed as 0.
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; device.dimmer('', '', 'bath.light.switch', 'bath.light.value', 20, 100, 10, 'light_light_dim_100.svg', 'light_light_dim_00.svg', 'green', '#ff0000' ) &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; device.dimmer('', '', 'bath.light.switch', 'bath.light.value', 20, 100, 10, 'light_light_dim_100.svg', 'light_light_dim_00.svg', 'green', '#ff0000', 'handle', 0 ) &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ device.dimmer('', '', 'bath.light.switch', 'bath.light.value', 20, 100, 10, 'light_light_dim_100.svg', 'light_light_dim_00.svg', 'green', '#ff0000', 'handle' ) }}
+		{{ device.dimmer('', '', 'bath.light.switch', 'bath.light.value', 20, 100, 10, 'light_light_dim_100.svg', 'light_light_dim_00.svg', 'green', '#ff0000', 'handle', 0 ) }}
 	</div>
 
 {% endblock %}

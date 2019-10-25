@@ -23,6 +23,12 @@ class phone_fritzbox_TR064 extends phone
     private $max_calls_to_fetch;
     private $challenge;
     private $call_list_url;
+    private $context_ssl = array(
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => true
+    );
+    
     public function __construct($http_vals)
     {
         parent::init($http_vals);
@@ -31,6 +37,8 @@ class phone_fritzbox_TR064 extends phone
         // use some default user if only password is set on smartvisu 
         if (strlen($this->user) == 0 && strlen($this->pass) > 0)
             $this->user = 'admin';
+        if (strlen($this->port) == 0)
+            $this->port = '49000';
     }
     /**
      * DoSOAPCall: issues a http post to the phone system on port 49000
@@ -45,9 +53,12 @@ class phone_fritzbox_TR064 extends phone
                 'method' => 'POST',
                 'header' => implode("\r\n", $header),
                 'content' => $content
-            )
+            ),
+            'ssl' => $this->context_ssl
         );
-        $url      = 'http://' . $this->server . ':49000/upnp/control/x_contact';
+        $protocol = ($this->port == '49443') ? 'https' : 'http';
+        $baseurl = strpos($this->server, '://') === FALSE ? $protocol."://".$this->server : $this->server;
+        $url      = $baseurl.":".$this->port."/upnp/control/x_contact";
         
         return (file_get_contents($url, false, stream_context_create($context)));        
     }
@@ -122,7 +133,7 @@ class phone_fritzbox_TR064 extends phone
         $url = $this->call_list_url . '&max=' . $this->max_calls_to_fetch;
         $this->debug($url, "URL for call_list");
         // download xml file and put it to xml parser
-        $GetCallListXml = file_get_contents($url);
+        $GetCallListXml = file_get_contents($url, false, stream_context_create(array('ssl' => $self->context_ssl)));
         $simplexml      = simplexml_load_string($GetCallListXml);
         $this->debug($GetCallListXml, "GetCallListXml");
         /*
