@@ -409,6 +409,7 @@ html body div.ui-slider-track.ui-body-a .ui-btn-active {
 	/*border-color: #125d79;*/
 	color: #fff /*{a-active-color}*/;
 	/*text-shadow: 0 1px 0 #0088bb;*/
+	background-image: none;
 }
 /* Active radio button icon */
 .ui-page-theme-a .ui-radio-on:after,
