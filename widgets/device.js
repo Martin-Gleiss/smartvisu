@@ -1212,6 +1212,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           id: 'inactive',
           zIndex: 8,
           className: 'uzsu-inactive',
+          lineWidth: 0,
           type: 'scatter'
         },
         { // sun min/max
@@ -1335,6 +1336,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           marker: { enabled: true },
           stickyTracking: false,
           findNearestPointBy: 'xy',
+          type: 'scatter',
+          lineWidth: 2,
           point: {
             events: {
               click: function (e) {
@@ -1478,6 +1481,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var hasSunrise = false;
     var hasSunset = false;
     var seriesData = { active: [], inactive: [], range: [] };
+    var linetype = this._uzsudata.interpolation.type == 'cubic' ? 'spline' : 'line';
+    Highcharts.seriesTypes.scatter.prototype.getPointSpline = Highcharts.seriesTypes[linetype].prototype.getPointSpline;
     $.each(this._uzsudata.list, function(responseEntryIdx, responseEntry) {
       // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button.
       var x, xMin, xMax;
@@ -1548,7 +1553,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
     chart.get('active').setData(data, false, null, false);
     chart.get('active').update({
-      type: this._uzsudata.interpolation.type == 'cubic' ? 'spline' : 'line',
+      type: 'scatter',
       step: this._uzsudata.interpolation.type != 'cubic' && this._uzsudata.interpolation.type != 'linear' ? 'left' : false,
     }, false);
 
@@ -1599,6 +1604,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     chart.redraw();
 
     self._plotNowLine();
+    Highcharts.seriesTypes.scatter.prototype.getPointSpline = Highcharts.seriesTypes.line.prototype.getPointSpline;
   },
 
   _save: function() {
