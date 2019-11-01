@@ -67,8 +67,8 @@ class calendar extends service
 		// output events as listj
 		foreach ($events as $event) {
 			$this->addData(array(
-				'start' => $ical->iCalDateToUnixTimestamp($event->dtstart),
-				'end' => $event->dtend != null ? $ical->iCalDateToUnixTimestamp($event->dtend) : $ical->iCalDateToUnixTimestamp($event->dtstart),
+				'start' => $ical->iCalDateToUnixTimestamp($event->dtstart, true),
+				'end' => $event->dtend != null ? $ical->iCalDateToUnixTimestamp($event->dtend, true) : $ical->iCalDateToUnixTimestamp($event->dtstart, true),
 				'title' => $event->summary,
 				'content' => str_replace("\\n", "\n", $event->description),
 				'where' => $event->location,
