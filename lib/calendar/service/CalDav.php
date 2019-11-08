@@ -25,7 +25,7 @@ class calendar_caldav extends calendar
 	/**
 	 * Helper function to query CalDav
 	 */
-	private function get_caldav_data($url, $method, $xmlquery, $depth = 1)
+	private function get_caldav_data($url, $method, $xmlquery, $depth = 0)
 	{
 		$ctxopts = array('http' =>
 			array(
@@ -66,7 +66,7 @@ class calendar_caldav extends calendar
 
 		// Get user pricipal
 		$xmlquery = '<D:propfind xmlns:D="DAV:"><D:prop><D:current-user-principal/></D:prop></D:propfind>';
-		$xml = $this->get_caldav_data($davbaseurl, "PROPFIND", $xmlquery, 0);
+		$xml = $this->get_caldav_data($davbaseurl, "PROPFIND", $xmlquery);
 		$principle_url = $xml->response->propstat->prop->{'current-user-principal'}->href;
 		$this->debug((string)$principle_url, 'principle_url');
 		// use configured url if no current-user-principal returned
@@ -106,7 +106,7 @@ class calendar_caldav extends calendar
 	</D:prop>
 </D:propfind>
 XMLQUERY;
-		$xml = $this->get_caldav_data($calendar_home_url, 'PROPFIND', $xmlquery);
+		$xml = $this->get_caldav_data($calendar_home_url, 'PROPFIND', $xmlquery, 1);
 
 		$calurls = array();
 		foreach($xml->response as $response) {
@@ -166,7 +166,7 @@ XMLQUERY;
 </C:calendar-query>
 XMLQUERY;
 
-		return $this->get_caldav_data($calurl, 'REPORT', $xmlquery);
+		return $this->get_caldav_data($calurl, 'REPORT', $xmlquery, 1);
 	}
 
 	/**
