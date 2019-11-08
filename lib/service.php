@@ -8,7 +8,6 @@
  * -----------------------------------------------------------------------------
  */
 
-
 /**
  * This class is the base class of all services
  */
@@ -39,6 +38,7 @@ class service
 	public function init($request)
 	{
 		$this->debug = ($request['debug'] == 1);
+		error_reporting($this->debug ? E_ALL : 0);
 
 		$this->server = $request['server'];
 		$this->port = (int)$request['port'];
