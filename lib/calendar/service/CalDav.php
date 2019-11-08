@@ -66,7 +66,7 @@ class calendar_caldav extends calendar
 
 		// Get user pricipal
 		$xmlquery = '<D:propfind xmlns:D="DAV:"><D:prop><D:current-user-principal/></D:prop></D:propfind>';
-		$xml = $this->get_caldav_data($davbaseurl, "PROPFIND", $xmlquery);
+		$xml = $this->get_caldav_data($davbaseurl, "PROPFIND", $xmlquery, 0);
 		$principle_url = $xml->response->propstat->prop->{'current-user-principal'}->href;
 		$this->debug((string)$principle_url, 'principle_url');
 		// use configured url if no current-user-principal returned
