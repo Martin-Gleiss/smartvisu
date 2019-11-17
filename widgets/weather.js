@@ -13,7 +13,7 @@ $.widget("sv.weather_current", $.sv.widget, {
 		var element = this.element;
 		var repeatMinutes = (new Date().duration(this.options.repeat) - 0) / 60000;
 		$.getJSON(this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes, function (data) {
-			element.css('background', 'url(lib/weather/pics/' + data.current.icon + '.png) 50% 0 no-repeat')
+			element.css('background-image', 'url(lib/weather/pics/' + data.current.icon + '.png)')
 			element.children('.city').html(data.city);
 			element.children('.cond').html(data.current.conditions);
 			element.children('.temp').html(data.current.temp);
@@ -43,7 +43,7 @@ $.widget("sv.weather_forecast", $.sv.widget, {
 		var day = this.options.day;
 		var repeatMinutes = (new Date().duration(this.options.repeat) - 0) / 60000;
 		$.getJSON(this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes, function (data) {
-			element.css('background', 'url(lib/weather/pics/' + data.forecast[day].icon + '.png) 50% 0 no-repeat')
+			element.css('background-image', 'url(lib/weather/pics/' + data.forecast[day].icon + '.png)')
 			element.children('.city').html(data.city);
 			element.children('.cond').html(data.forecast[day].conditions);
 			element.children('.highlow').html(data.forecast[day].temp);

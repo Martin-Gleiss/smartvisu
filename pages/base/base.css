@@ -1994,6 +1994,17 @@ svg.fx-icon, .icon {
 }
 
 /**
+ * --- W i d g e t s :   W E A T H E R ----------------------------------------
+ */
+.weather,
+.forecast {
+  background-position-y: 50%;
+  background-size: contain;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+/**
  * --- T e m p l a t e :   B A S E --------------------------------------------
  */
 .base .primary {
