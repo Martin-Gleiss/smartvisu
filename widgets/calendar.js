@@ -180,7 +180,7 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 					muell_html += 'border-bottom: orange 8px inset; overflow: hidden;';
 				muell_html += '">'
 				muell_html += '<img class="icon icon1" src="' + entry.icon + '" style="width: 100%; height: 100%; fill: ' + entry.color + '; stroke: ' + entry.color + '" />';
-				muell_html += '<div style="font-size: 0.9em;">' + entry.start.transUnit('D') + ', ' + entry.start.transUnit('day') + '</div>'
+				muell_html += '<div style="font-size: 0.9em; text-align: center;">' + entry.start.transUnit('D') + ', ' + entry.start.transUnit('day') + '</div>'
 				muell_html += '</div>';
 				muell_html += '</div>';
 
