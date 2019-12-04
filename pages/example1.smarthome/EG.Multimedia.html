@@ -56,26 +56,26 @@
 				<table width=100%>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('IngridPC', 'Allgemein.PCs.PCIngrid', 'it_pc.svg', 'it_pc.svg') }}  PC-Ingrid
+							{{ basic.stateswitch('IngridPC', 'Allgemein.PCs.PCIngrid', 'icon', ['1', '0'], ['it_pc.svg', 'it_pc.svg'], '', ['icon1', 'icon0']) }}  PC-Ingrid
 						</td>
 						<td align=left>
-							{{ basic.switch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', 'it_television.svg', 'it_television.svg') }} Ingrid
+							{{ basic.stateswitch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} Ingrid
 						</td>
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('MultimediaPC', 'Allgemein.PCs.PCMultimedis', 'it_server.svg', 'it_server.svg') }} Server
+							{{ basic.stateswitch('MultimediaPC', 'Allgemein.PCs.PCMultimedis', 'icon', ['1', '0'], ['it_server.svg', 'it_server.svg'], '',['icon1', 'icon0']) }} Server
 						</td>
 						<td align=left width=50%>
-							{{ basic.switch('KuecheMonitor', 'Allgemein.PCs.MonitorKueche', 'it_television.svg', 'it_television.svg') }} Küche
+							{{ basic.stateswitch('KuecheMonitor', 'Allgemein.PCs.MonitorKueche', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} Küche
 						</td>
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('MarcoPC', 'Allgemein.PCs.PCMarco', 'it_pc.svg', 'it_pc.svg') }} PC-Marco
+							{{ basic.stateswitch('MarcoPC', 'Allgemein.PCs.PCMarco', 'icon', ['1', '0'], ['it_pc.svg', 'it_pc.svg'], '', ['icon1', 'icon0']) }} PC-Marco
 						</td>
 						<td align=left>
-							{{ basic.switch('LedSpotsBoden', 'EG.Aussen.LEDSpotsBoden', 'audio_audio.svg', 'audio_audio.svg') }} Subwoofer
+							{{ basic.statewitch('LedSpotsBoden', 'EG.Aussen.LEDSpotsBoden', 'icon', ['1', '0'], ['audio_audio.svg', 'audio_audio.svg'], '', ['icon1', 'icon0']) }} Subwoofer
 						</td>
 					</tr>
 				</table>
@@ -120,7 +120,7 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('KIKATV', 'tv.KIKA', 'KIKA', '', '', 'midi') }}
+								{{ basic.stateswitch('KIKATV', 'tv.KIKA', 'midi', '1', '', 'KIKA') }}
 								{{ basic.button('PRO7TV', 'tv.PRO7', 'Pro7', '', '', 'midi') }}
 								{{ basic.button('SAT1TV', 'tv.SAT1', 'Sat1', '', '', 'midi') }}
 								{{ basic.button('RTLTV', 'tv.RTL', 'RTL', '', '', 'midi') }}
