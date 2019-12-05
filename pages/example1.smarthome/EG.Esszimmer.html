@@ -53,7 +53,6 @@
 				<h3>Deckenlicht</h3>
 				{{ device.dimmer('EG.Esszimmer.Deckenspots', 'Spots Decke', 'EG.Esszimmer.Deckenspots', 'EG.Esszimmer.Deckenspots.dimmen', 0, 100, 10) }}
 				{{ device.dimmer('EG.Esszimmer.Pendelleuchte', 'Esstisch', 'EG.Esszimmer.Pendelleuchte', 'EG.Esszimmer.Pendelleuchte.dimmen', 0, 100, 10) }}
-				<br />
 				<td align="middle" width="70%">
 					{{ basic.flip('EG.Esszimmer.Essen_Grundbeleuchtung', 'EG.Esszimmer.Essen_Grundbeleuchtung', 'Grundb.', 'Grundb.') }}
 				</td>
@@ -81,7 +80,7 @@
 				<table width=100%>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('WuerfelSofaEssen', 'EG.Esszimmer.Essen_Stedo_Wuerfel_Sofa', 'light_led.svg', 'light_led.svg') }} Würfel
+							{{ basic.stateswitch('WuerfelSofaEssen', 'EG.Esszimmer.Essen_Stedo_Wuerfel_Sofa', 'icon', ['1', '0'], ['light_led.svg', 'light_led.svg'], '', ['icon1', 'icon0']) }} Würfel
 						</td>
 						<td align=left>
 							&nbsp;
@@ -89,7 +88,7 @@
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('LedFensterbankEssen', 'EG.Esszimmer.Essen_Fensterbank', 'light_uplight.svg', 'light_uplight.svg') }} Fensterbank
+							{{ basic.stateswitch('LedFensterbankEssen', 'EG.Esszimmer.Essen_Fensterbank', 'icon', ['1', '0'], ['light_uplight.svg', 'light_uplight.svg'], '', ['icon1', 'icon0']) }} Fensterbank
 						</td>
 						<td align=left>
 							&nbsp;
@@ -97,10 +96,10 @@
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('SchrankStedoEssen', 'EG.Esszimmer.Essen_Stedo_Schrank', 'message_socket.svg', 'message_socket.svg') }}  Schrank
+							{{ basic.stateswitch('SchrankStedoEssen', 'EG.Esszimmer.Essen_Stedo_Schrank', 'icon', ['1', '0'], ['message_socket.svg', 'message_socket.svg'], '', ['icon1', 'icon0']) }}  Schrank
 						</td>
 						<td align=left>
-							{{ basic.switch('FreigabeTuerMKEssen', 'EG.Esszimmer.Essen_FreigabeTuer', 'secur_open.svg', 'secur_locked.svg') }}  Licht MK
+							{{ basic.stateswitch('FreigabeTuerMKEssen', 'EG.Esszimmer.Essen_FreigabeTuer', 'icon', ['1', '0'], ['secur_open.svg', 'secur_locked.svg'], '', ['icon1', 'icon0']) }}  Licht MK
 						</td>
 					</tr>
 				</table>
@@ -127,44 +126,44 @@
 				<table width="100%">
 					<tr>
 						<td align="middle" width="70%">
-			<span data-role="controlgroup" data-type="horizontal">
-                        {{ basic.button('TVLEDrot', 'EG.Esszimmer.LEDrot', 'ROT', 'delete', '', 'midi') }}
-				{{ basic.button('TVLEDgruen', 'EG.Esszimmer.LEDgruen', 'GRUEN', 'delete', '', 'midi') }}
-				{{ basic.button('TVLEDblau', 'EG.Esszimmer.LEDblau', 'BLAU', 'delete', '', 'midi') }}
-				{{ basic.button('TVLEDweiss', 'EG.Esszimmer.LEDweiss', 'WEISS', 'delete', '', 'midi') }}
-			</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVLEDrot', 'EG.Esszimmer.LEDrot', 'midi', '1', 'delete', 'ROT') }}
+								{{ basic.stateswitch('TVLEDgruen', 'EG.Esszimmer.LEDgruen', 'midi', '1', 'delete', 'GRUEN') }}
+								{{ basic.stateswitch('TVLEDblau', 'EG.Esszimmer.LEDblau', 'midi', '1', 'delete', 'BLAU') }}
+								{{ basic.stateswitch('TVLEDweiss', 'EG.Esszimmer.LEDweiss', 'midi', '1', 'delete', 'WEISS') }}
+							</span>
 						</td>
 					</tr>
 				</table>
 				<table width="100%">
 					<tr>
 						<td align="middle" width="70%">
-			<span data-role="controlgroup" data-type="horizontal">
-                        {{ basic.button('TVLEDfade7', 'EG.Esszimmer.LEDfade7', 'Fade7', 'refresh', '', 'midi') }}
-				{{ basic.button('TVLEDjump7', 'EG.Esszimmer.LEDjump7', 'Jump7', 'refresh', '', 'midi') }}
-				{{ basic.button('TVLEDfade3', 'EG.Esszimmer.LEDfade3', 'Fade3', 'refresh', '', 'midi') }}
-				{{ basic.button('TVLEDjump3', 'EG.Esszimmer.LEDjump3', 'Jump3', 'refresh', '', 'midi') }}
-			</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVLEDfade7', 'EG.Esszimmer.LEDfade7', 'midi', '1', 'refresh', 'Fade7') }}
+								{{ basic.stateswitch('TVLEDjump7', 'EG.Esszimmer.LEDjump7', 'midi', '1', 'refresh', 'Jump7') }}
+								{{ basic.stateswitch('TVLEDfade3', 'EG.Esszimmer.LEDfade3', 'midi', '1', 'refresh', 'Fade3') }}
+								{{ basic.stateswitch('TVLEDjump3', 'EG.Esszimmer.LEDjump3', 'midi', '1', 'refresh', 'Jump3') }}
+							</span>
 						</td>
 					</tr>
 				</table>
 				<table width="100%">
 					<tr>
 						<td align="middle" width="70%">
-			<span data-role="controlgroup" data-type="horizontal">
-				{{ basic.button('TVLEDfaster', 'EG.Esszimmer.LEDfaster', ' Speed ', 'plus', '', 'midi') }}
-				{{ basic.button('TVLEDslower', 'EG.Esszimmer.LEDslower', ' Speed ', 'minus', '', 'midi') }}
-			</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVLEDfaster', 'EG.Esszimmer.LEDfaster', 'midi', '1', 'plus', ' Speed ') }}
+								{{ basic.stateswitch('TVLEDslower', 'EG.Esszimmer.LEDslower', 'midi', '1', 'minus', ' Speed ') }}
+							</span>
 						</td>
 					</tr>
 				</table>
 				<table width="100%">
 					<tr>
 						<td align="middle" width="70%">
-			<span data-role="controlgroup" data-type="horizontal">
-				{{ basic.button('TVLEDdimup', 'EG.Esszimmer.LEDdimup', ' Dimmen ', 'arrow-u', '', 'midi') }}
-				{{ basic.button('TVLEDdimdown', 'EG.Esszimmer.LEDdimdown', ' Dimmen ' , 'arrow-d', '', 'midi') }}
-			</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVLEDdimup', 'EG.Esszimmer.LEDdimup', 'midi', '1', 'arrow-u', ' Dimmen ') }}
+								{{ basic.stateswitch('TVLEDdimdown', 'EG.Esszimmer.LEDdimdown', 'midi', '1', 'arrow-d', ' Dimmen ') }}
+							</span>
 						</td>
 					</tr>
 				</table>
