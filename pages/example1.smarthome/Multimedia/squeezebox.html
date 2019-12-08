@@ -15,27 +15,27 @@
 			<tr>
 				<td align="middle" width="70%">
 					Verstärker&nbsp;&nbsp;&nbsp;
-			<span data-role="controlgroup" data-type="horizontal">
-				{{ basic.button('ONOFFVerstaerker', 'Allgemein.Multimedia.VerstaerkerONOFF', 'ON / OFF', 'check', '', 'midi') }}
-			</span>
-			<span data-role="controlgroup" data-type="horizontal">
-				{{ basic.button('TVVerstaerker', 'Allgemein.Multimedia.VerstaerkerTV', 'TV', 'home', '', 'midi') }}
-				{{ basic.button('PCVerstaerker', 'Allgemein.Multimedia.VerstaerkerPC', 'Server', 'home', '', 'midi') }}
-				{{ basic.button('TunerVerstaerker', 'Allgemein.Multimedia.VerstaerkerRadio', 'Tuner', 'home', '', 'midi') }}
-				{{ basic.button('SqueezeWZVerstaerker', 'Allgemein.Multimedia.VerstaerkerSqueezeWZ', 'Squeeze', 'home', '', 'midi') }}
-			</span>
-			<span data-role="controlgroup" data-type="horizontal">
-				{{ basic.button('ChPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChPlus', ' Chanel', 'arrow-u', '', 'midi') }}
-				{{ basic.button('ChMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChMinus', ' Chanel ', 'arrow-d', '', 'midi') }}
-			</span>
-			<span data-role="controlgroup" data-type="horizontal">
-				{{ basic.button('VolPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolPlus', ' Volume ', 'arrow-u', '', 'midi') }}
-				{{ basic.button('MuteVerstaerker', 'Allgemein.Multimedia.VerstaerkerMute', ' MUTE ', 'delete', '', 'midi') }}
-				{{ basic.button('VolMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolMinus', ' Volume ', 'arrow-d', '', 'midi') }}
-			</span>
-			<span data-role="controlgroup" data-type="horizontal">
-				{{ basic.button('RadioAnPlusAntenneBayern', 'Allgemein.Multimedia.RadioUndAntenneBayern', ' _Antenne Bayern_ ', 'grid', '', 'midi') }}
-			</span>
+					<span data-role="controlgroup" data-type="horizontal">
+						{{ basic.stateswitch('ONOFFVerstaerker', 'Allgemein.Multimedia.VerstaerkerONOFF', 'midi', '1', 'check', 'ON / OFF') }}
+					</span>
+					<span data-role="controlgroup" data-type="horizontal">
+						{{ basic.stateswitch('TVVerstaerker', 'Allgemein.Multimedia.VerstaerkerTV', 'midi', '1', 'home', 'TV') }}
+						{{ basic.stateswitch('PCVerstaerker', 'Allgemein.Multimedia.VerstaerkerPC', 'midi', '1', 'home', 'Server' ) }}
+						{{ basic.stateswitch('TunerVerstaerker', 'Allgemein.Multimedia.VerstaerkerRadio', 'midi', '1', 'home', 'Tuner') }}
+						{{ basic.stateswitch('SqueezeWZVerstaerker', 'Allgemein.Multimedia.VerstaerkerSqueezeWZ', 'midi', '1', 'home', 'Squeeze') }}
+					</span>
+					<span data-role="controlgroup" data-type="horizontal">
+						{{ basic.stateswitch('ChPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChPlus', 'midi', '1', 'arrow-u', 'Channel') }}
+						{{ basic.stateswitch('ChMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChMinus', 'midi', '1', 'arrow-d', 'Channel') }}
+					</span>
+					<span data-role="controlgroup" data-type="horizontal">
+						{{ basic.stateswitch('VolPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolPlus', 'midi', '1', 'arrow-u', ' Volume ') }}
+						{{ basic.stateswitch('MuteVerstaerker', 'Allgemein.Multimedia.VerstaerkerMute', 'midi', '1', 'delete', ' MUTE ') }}
+						{{ basic.stateswitch('VolMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolMinus', 'midi', '1', 'arrow-d', ' Volume ') }}
+					</span>
+					<span data-role="controlgroup" data-type="horizontal">
+						{{ basic.stateswitch('RadioAnPlusAntenneBayern', 'Allgemein.Multimedia.RadioUndAntenneBayern', 'midi', '1', 'grid', ' _Antenne Bayern_ ') }}
+					</span>
 				</td>
 			</tr>
 		</table>
