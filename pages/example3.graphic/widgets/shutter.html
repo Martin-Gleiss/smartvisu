@@ -1,0 +1,245 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß, Wolfram v. Hülsen
+* @copyright   2012 - 2019
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+/**
+* -----------------------------------------------------------------------------
+* Small widgets for simple shutters without blade shift / angle
+* -----------------------------------------------------------------------------
+*/
+
+/** 
+* Shutter one: displays one shutter element with controls and window (basic shutter)
+*
+* @param {id=} unique id for this widget
+* @param {text=} name of the shutter (optional)
+* @param {item} move for the up- and down- movement
+* @param {item} stop for stopping the movement (optional)
+* @param {item} pos for the actual position of the shutters
+* @param {item} saved to move the shutters to the shade position (optional)
+*/
+{% macro one (id, txt, item_move, item_stop, item_pos, item_saved ) %}
+	{% import   "basic.html" as basic %}
+
+	/** Design */
+	<div class="blind">
+		<table align="center" cellpadding="0 10 0 10">
+			<tr>
+				<td>
+					{% if txt %} {{ txt }} {% endif %}</td>
+				<td rowspan="3" align="top" class="pos">
+					{{ basic.slider(id|_('pos'), item_pos, 0, 255, 5, 'vertical') }}</td>
+				<td rowspan="3" width="10%"></td>
+				<td rowspan="3" align="top">
+					{{ basic.shutter(id|_('shutter'), item_pos, '', 0, 255) }}</td>
+			</tr>
+			<tr>
+				<td>
+			<span data-role="controlgroup" data-type="horizontal"> 
+				{{ basic.stateswitch(id|_('up'), item_move, 'mini', 0, 'control_arrow_up.svg', '', 'icon0') }}
+			</span>
+			<span data-role="controlgroup" data-type="horizontal"> 
+				{{ basic.stateswitch(id|_('down'), item_move, 'mini', 1, 'control_arrow_down.svg', '', 'icon0') }}
+			</span>
+
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">
+		<span data-role="controlgroup" data-type="horizontal"> 
+			{% if item_stop %} {{ basic.stateswitch(id|_('stop'), item_stop, 'mini', 1, 'audio_stop.svg', '', 'icon0') }} {% endif %}
+			{% if item_saved %} {{ basic.stateswitch(id|_('shade'), item_saved, 'mini', 1, 'fts_shutter_50.svg', '', 'icon0') }} {% endif %}
+		</span></td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}
+
+/**
+* Shutter two: displays one simple control assembly for usage in a table of two shutters
+*
+* @param {id=} unique id for this widget
+* @param {text=} name of the shutter
+* @param {item} move for the up- and down- movement
+* @param {item} stop for stopping the movement (optional)
+* @param {item} pos for the actual position of the shutters
+* @param {item} saved to move the shutters to the shade position (optional)
+*/
+{% macro two (id, txt, item_move, item_stop, item_pos, item_saved) %}
+	{% import   "basic.html" as basic %}
+
+	/** Design */
+	<div class="blind">
+		<table align="center" cellpadding="0 5 0 5">
+			<tr>
+				<td valign="top">{{ txt }}</td>
+				<td rowspan="3" align="left" class="pos">
+					{{ basic.slider(id|_('pos'), item_pos, 0, 255, 5, 'vertical') }}</td>
+			</tr>
+			<tr>
+				<td>
+					<span data-role="controlgroup" data-type="horizontal">
+					{{ basic.stateswitch(id|_('up'), item_move, 'mini', 0, 'control_arrow_up.svg', '', 'icon0') }}
+					{{ basic.stateswitch(id|_('down'), item_move, 'mini', 1, 'control_arrow_down.svg', '', 'icon0') }}
+			</span>
+				</td>
+			</tr>
+			<tr>
+				<td valign="bottom" align="center">
+		<span data-role="controlgroup" data-type="horizontal">
+			{% if item_stop %} {{ basic.stateswitch(id|_('stop'), item_stop, 'mini', 1, 'audio_stop.svg', '', 'icon0') }} {% endif %}
+			{% if item_saved %} {{ basic.stateswitch(id|_('shade'), item_saved, 'mini', 1, 'fts_shutter_50.svg', '', 'icon0') }} {% endif %}
+		</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}
+
+/**
+* Shutter three: displays one minimalistic control assembly for usage in a table of three shutters
+*
+* @param {id=} unique id for this widget
+* @param {text=} name of the blind
+* @param {item} pos for the actual position of the shutters
+* @param {item} saved to move the shutters to the shade position (optional)
+*/
+{% macro three (id, txt, item_pos, item_saved) %}
+	{% import   "basic.html" as basic %}
+
+	/** Design */
+	<div class="blind">
+		<table align="bottom" cellpadding="0">
+			<tr>
+				<td>&nbsp;</td>
+				<td rowspan="3" class="pos">
+					{{ basic.slider(id|_('pos'), item_pos, 0, 255, 5, 'vertical') }}</td>
+			</tr>
+			<tr>
+				<td style="white-space:nowrap; -o-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg); -ie-transform: rotate(270deg); filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);">{{ txt }}</td>
+			</tr>
+			<tr>
+				<td valign="bottom">
+					{% if item_saved %} {{ basic.stateswitch(id|_('shade'), item_saved, 'mini', 1, 'fts_shutter_50.svg', 'Beschatten', 'icon0') }} {% endif %}
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}
+
+/**
+* Line: displays a simple shutter control assembly in table format
+*
+* @param 		{id=} unique id for this widget (optional)
+* @param 	    name of the shutter
+* @param 	    a gad/item for long move
+* @param        a gad/item for stopping movement
+* @param        a gad/item for the actual position
+* @param        a gad/item for the saved position
+* @param 		{type=micro} valid types: 'micro', 'mini', 'midi' (optional, default: micro)
+* @info changed by Michael Stemmer and Wolfram v. Hülsen
+*/
+{% macro line(id, txt, item_move, item_stop, item_position, item_saved, type) %}
+{% import "basic.html" as basic %}
+{% import "icon.html" as icon %}
+{% set uid = uid(page, id) %}
+
+	<div class="smallshut"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
+		<table style="width:100%; text-align: left;">
+			<tr>
+				<th width="32%">{% if txt %} {{ txt }} {% endif %}</th>
+				<td width="12%">
+					{% if item_move %}
+						{{ basic.stateswitch('',  item_move, type|default('micro'), '0', 'carat-u') }}
+					{% endif %}
+				</td>
+				<td width="12%">
+					{% if item_stop %}
+						{{ basic.stateswitch('', item_stop, type|default('micro'), 1, 'delete') }}
+					{% endif %}
+				</td>
+				<td width="12%">
+					{% if item_move %}
+						{{ basic.stateswitch('', item_move, type|default('micro'), '1', 'carat-d') }}
+					{% endif %}
+				</td>
+				<td width="12%">
+					{% if item_saved %}
+						{{ basic.stateswitch('', item_saved, type|default('micro'), '1', 'fts_shutter_50.svg') }}
+					{% endif %}
+				</td>	
+				<td width="20%">
+					{% if item_position %}
+						{{ icon.shutter(id~'position', '', item_position) }}
+					{% endif %}
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}
+
+/**
+* ---------------------------------------------------------------------------------------
+* Small widgets for simple shutters but with complete set of params (like decice.shutter) 
+* ---------------------------------------------------------------------------------------
+*/
+
+/**
+* Standard shutter in table format
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the shutter
+* @param {item=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+* @param {item=} an item for stopping the movement (optional)
+* @param {item} an item for the absolute position of the blinds
+* @param {item=} an item for increase and decrease of the blade (optional, for future use)
+* @param {item=} an item for the absolute angle of the blade (optional)
+* @param {item=} an item for some saved positions (optional)
+* @param {value=0} the value for opened (optional, default 0)
+* @param {value=255} the value for closed (optional, default 255)
+* @param {value=5} step between two values (optional, default 5)
+* @param {text(half,full)=} 'half' blade turns from -1 to +1, 'full' blade turns from 0 to +1 (optional, default 'half')
+* @param {image=} a background image url (relative to smartVISU directory or absolute); optimal size is 100px x 180px (optional)
+* @param {value=0} the value to send for position 1 (optional, default 0)
+* @param {value=1} the value to send for position 2 (optional, default 1)
+*
+* @info inspired by Jörg Gutowski
+* @info table format by "masterjost"  
+*/
+{% macro table (id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2) %}
+    {% import "basic.html" as basic %}
+    {% import "device.html" as device %}
+    {% import "icon.html" as icon %}
+    <div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
+       <table>
+            <tr>
+                <td width=80>
+                    <div class="set">{{ basic.stateswitch(id|_('down'), item_move, 'mini', '1', 'control_arrow_down.svg', '', '', '') }}</div>
+                </td>
+                <td width=80>
+                    <div class="set">{{ basic.stateswitch(id|_('up'), item_move, 'mini', '0', 'control_arrow_up.svg', '', '', '') }}</div>
+                </td>
+                <td width=80>
+                    <div class="set">{{ basic.stateswitch(id|_('saved'), item_saved, 'mini', [1,0], 'fts_shutter_50.svg', '', 'icon0', '') }}</div>
+                </td>
+                <td width=80>
+                    <div class="set">{% if item_stop %} {{ basic.stateswitch(id|_('stop'), item_stop, 'mini', [1,0], ['secur_locked.svg', 'audio_stop.svg'], '', ['icon1', 'icon0'], '') }} {% endif %}</div>
+                </td>
+                <!-- we skip uzsu in order to keep widget clean of special smarthomeNG solutions
+				<td width=80>
+                    <div class="set">{{ device.uzsuicon(id|_('uzsu'), id|_('uzsuitem'), 'Automatik', '', '', 'list',['Hoch:0','Runter:100', 'Sonnenschutz:50'], '', '', '0')}}</div>
+                </td> -->
+                <td width=80>
+                    <div class="pos">{{ icon.shutter(id|_('pos'), '', item_pos, '', 100 ) }}
+                </td>
+            </tr>
+        </table>
+    </div>
+{% endmacro %}
+
+

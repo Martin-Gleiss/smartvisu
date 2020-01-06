@@ -1,0 +1,43 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Wolfram v. Hülsen
+ * @copyright   2019
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "rooms.html" %}
+{% block content %}
+
+    <!--<h1><img class="icon" src='{{ icon0 }}scene_livingroom.svg'/>Wohnzimmer</h1>-->
+	<style>
+		#wohnen:after { background-image: url("{{ icon0 }}it_television.svg"); }
+		#lesen:after { background-image: url("{{ icon0 }}scene_dinner.svg");  }
+
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=room_example" id="wohnen" class="ui-btn-icon-top ui-btn-active">Wohnbereich</a></li>
+			<li><a href="index.php?page=room_readme" id="Anleitung" class="ui-btn-icon-top">Anleitung</a></li>
+		</ul>
+	</div>
+	
+<h1>Beispielseite</h1>
+<h2>Hinweise zur Erstellung einer vollständigen Visu:</h2>
+<ol>
+<li> Dieses Beispiel verwendet für alle Räume die Seite "room_example.html" <br/>
+     Deren Struktur - einschließlich der hier gezeigten Menüstruktur für alle Räume - <br/> 
+     entspricht der Struktur des Beispiels "example1.smarthome". <br/>
+   <br/>
+</li>
+<li> Die Dateinamen der Seiten für weitere Räume, die anhand dieses Beispiels erstellt werden,<br/> 
+	 müssen sowohl in der Menüstruktur "navigation.html" jeweils anstelle der Namen der Beispielseite <br/>
+	 eingetragen werden, als auch in den Dateien "eg.html", "dg.html" und "garten.html" im <br/>
+	 Verzeichnis "overview".
+ 
+</li>
+
+</ol>
+{% endblock %}

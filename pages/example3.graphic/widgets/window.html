@@ -1,0 +1,69 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß, Wolfram v. Hülsen
+ * @copyright   2012, 2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+/**
+* -------------------------------------------------------------------------------
+* Displays opening status of a window with text and icon
+* 0 = closed, 1 = tilt. 2 = open
+* -------------------------------------------------------------------------------
+*/
+
+/**
+ * Standard window pic
+ *
+ * @param       unique id for this widget
+ * @param       a gad/item for status
+ */
+
+{% macro pic(id, gad_status) %}
+    {% import   "basic.html" as basic %}
+
+    /** Design */
+    <span class="icon">
+      {{ basic.symbol(id|_('win1_icon'), gad_status, '',['fts_window_1w.svg','fts_window_1w_tilt.svg', 'fts_window_1w_open.svg'], [0, 1, 2], '', ['icon0', 'icon1', 'icon1']) }}
+    </span>
+{% endmacro %}
+
+
+/**
+ * Standard window one
+ *
+ * @param       unique id for this widget
+ * @param       name of the door/window
+ * @param       a gad/item for status
+ */
+
+{% macro one(id, txt, gad_status) %}
+    {% import   "basic.html" as basic %}
+
+    /** Design */
+    <div class="dimmer">
+      &nbsp;{{ txt|e }}:&nbsp;&nbsp;&nbsp;&nbsp;
+      {{ basic.symbol(id|_('win1_icon'), gad_status, ['geschlossen', 'gekippt', 'geöffnet'],['fts_window_1w.svg','fts_window_1w_tilt.svg', 'fts_window_1w_open.svg'], [0, 1, 2], '', ['icon0', 'icon1', 'icon1']) }}
+    </div>
+{% endmacro %}
+
+
+/**
+ * Standard window two
+ *
+ * @param       unique id for this widget
+ * @param       name of the door/window
+ * @param       a gad/item for status
+ */
+
+{% macro two(id, txt, gad_status) %}
+    {% import   "basic.html" as basic %}
+
+    /** Design */
+    <div>
+      &nbsp;{{ txt|e }}:&nbsp;&nbsp;&nbsp;&nbsp;
+       {{ basic.symbol(id|_('win2_icon'), gad_status, ['geschlossen', 'gekippt', 'geöffnet'],['fts_window_2w.svg','fts_window_2w_tilt.svg', 'fts_window_2w_open.svg'], [0, 1, 2], '', ['icon0', 'icon1', 'icon1']) }}
+    </div>
+{% endmacro %}
