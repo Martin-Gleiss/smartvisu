@@ -15,11 +15,11 @@
 */
 
 /**
- * Standard window pic
+ * Standard window pic w/ opening status for right wing (open / tilt / closed)
  *
- * @param       unique id for this widget
- * @param       a gad/item for status
- */
+ * @param {id=} unique id for this widget
+ * @param {item} a gad/item for status 0=closed, 1=tilt, 2=open
+*/
 
 {% macro pic(id, gad_status) %}
     {% import   "basic.html" as basic %}
@@ -32,12 +32,12 @@
 
 
 /**
- * Standard window one
+ * Window one: Displays a window (one wing) with description and opening status 
  *
- * @param       unique id for this widget
- * @param       name of the door/window
- * @param       a gad/item for status
- */
+ * @param {id=} unique id for this widget
+ * @param {text=} name of the door/window
+ * @param {item} a gad/item for status
+*/
 
 {% macro one(id, txt, gad_status) %}
     {% import   "basic.html" as basic %}
@@ -51,12 +51,12 @@
 
 
 /**
- * Standard window two
+ * Window two: Displays a window (two wings) with description and opening status
  *
- * @param       unique id for this widget
- * @param       name of the door/window
- * @param       a gad/item for status
- */
+ * @param {id=} unique id for this widget
+ * @param {text=} name of the door/window
+ * @param {item} a gad/item for status
+*/
 
 {% macro two(id, txt, gad_status) %}
     {% import   "basic.html" as basic %}
