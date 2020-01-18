@@ -7,6 +7,7 @@
  * -----------------------------------------------------------------------------
  */
 {% extends "overview/base.html" %}
+{% set page="eg" %}
 
 {% block content %}
 	<div class="html" data-title="Erdgeschoss">
@@ -45,7 +46,20 @@
 			{{ ovbasic.print ('essen_temperatur', 'eg.essen.temperatur.luft', '°C', '', '', '', 'Essbereich: Raumtemperatur', '44%', '13%', 'essen_temp_popup', 1) }}
 			{{ ov.period ('essen_temp_popup', 'Essbereich: Temperaturen', ['eg.essen.temperatur.luft', 'eg.essen.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 			
-			{{ ovbasic.scene ('essen_scene', 'eg.szenen.kueche_essen_wohnen', 'Szenen', '35%', '47%', '', ['Alles Aus', 'Kochen', 'Essen', 'Fernsehen', 'Party'], [13, 11, 10, 9, 12], 'micro') }}
+			<!-- Szenen -->
+			<a id="eg_scene-overview" href="#eg_scene-popup" title="Szenen" class="ui-micro" style="position: absolute; display: block; top: 47%; left: 35%; "
+		       data-role="button" data-inline="true" data-rel="popup" data-iconpos="nopic">Szenen
+			</a>	
+			<div data-role="popup" id="eg_scene-popup" class="ui-content" style="min-width: 250px; min-height: 50px;"> 
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
+				<span id="{{ uid }}-group" data-role="controlgroup" data-type="horizontal">
+					{{ basic.stateswitch('szene1', 'eg.kueche.szene.kochen', 'mini', ['1', '0'], ['scene_cooking_hob.svg', 'scene_cooking_hob.svg'], '', ['icon1', 'icon0']) }}
+					{{ basic.stateswitch('szene2', 'eg.essen.szene.essen', 'mini', ['1', '0'], ['scene_dinner.svg', 'scene_dinner.svg'], '', ['icon1', 'icon0']) }}
+					{{ basic.stateswitch('szene3', 'eg.wohnen.szene.fernsehen', 'mini', ['1', '0'], ['scene_livingroom.svg', 'scene_livingroom.svg'], '', ['icon1', 'icon0']) }}
+					{{ basic.stateswitch('szene4', 'eg.kueche.szene.party', 'mini', ['1', '0'], ['scene_party.svg', 'scene_party.svg'], '', ['icon1', 'icon0']) }}
+					{{ basic.stateswitch('szene5', 'eg.szenen.kueche_essen_wohnen', 'mini', '13', 'control_on_off.svg',  'Aus') }}
+				</span>
+			</div>
 
 			<!-- Wohnen -->
 			{{ ov.pagelink ('pagelink_wohnen', 'Details Wohnbereich', '63%', '35%', 'index.php?page=room_example', 'Wohnen', '', 'mini') }} 
