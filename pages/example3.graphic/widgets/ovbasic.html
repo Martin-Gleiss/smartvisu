@@ -137,27 +137,26 @@
 * @param {text=} the value to send on longpress (optional)
 	If this starts with a + or - sign the value is treated as offset to current stateswitch value.
 * @param {text=} the value to send on releasing after a longpress (optional)
-* @param popup-info of the button (optional)
-* @param icon position from left side
-* @param icon position from top side
-* @param hide on mobile displays (optional value 1)
+* @param {text=} popup-info of the button (optional)
+* @param {number} icon position from left side
+* @param {number} icon position from top side
 *
 * @see design/design_icons#Icons
 *
 * @author Stefan Widmer
 * @info Based on work of Martin GLEISS and Pierre-Yves KERVIEL
 */
-{% macro stateswitch(id, item, type, value, icon, text, color, indicator, item_longpress, value_longpress, value_longrelease, info, left, top, hide) %}
+{% macro stateswitch(id, item, type, value, icon, text, color, indicator, item_longpress, value_longpress, value_longrelease, info, left, top) %}
 	{% import _self as ovbasic %}
 	{% import "basic.html" as basic%}
 
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
 	{% set color = color|default(['','icon1']) %}
 
-	<div id="{{ uid(page, id) }}-overview" {% if info %}title="{{ info }}"{% endif %}
-	    {% if hide == 1 %}class="hide-mobile"{% endif %} 
-	    style="position: absolute; top: {{ top }}; left: {{ left }}; ">
+	<div id="{{ uid(page, id) }}-overview" {% if info %}title="{{ info }}"{% endif %} style="position: absolute; top: {{ top }}; left: {{ left }}; ">
+
 		<a style="display:none"></a> /** Work around for bug in jQuery Mobile, see https://knx-user-forum.de/forum/supportforen/smartvisu/31967-neues-widget-nur-aktive-lampen-anzeigen-ausschalten-ermöglichen?p=1145001#post1145001 */
+
 		<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.stateswitch" data-item="{{ item }}"
 			data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ config_indicator_duration|default(3) }}"
 			data-item-longpress="{{ item_longpress }}"{% if not value_longpress is null %} data-value-longpress="{{ value_longpress }}"{% endif %}{% if not value_longrelease is null %} data-value-longrelease="{{ value_longrelease }}"{% endif %}
@@ -185,6 +184,65 @@
 		</span>
 	</div>
 
+{% endmacro %}
+
+
+/**
+ * Displays window status and a simple shutter control assembly
+ *
+ * @param {id=} unique id for this widget
+ * @param {text=} title of the window (optional)
+ * @param {number} icon position from left side
+ * @param {number} icon position from top side
+ * @param {item} a gad/item for the up- and down- movement
+ * @param {item} a gad/item for stopping the movement (optional)
+ * @param {item=} a gad/item for the position of the shutters
+ * @param {item=}a gad/item to move the shutters to the shade position (optional)
+ * @param {item=} a gad/item to display the window's right wing status (optional) 
+ * @param {item=} a gad/item to display the window's left wing status (optional) 
+ * @param {type=micro} type: 'micro', 'mini', 'midi', 'icon' (optional, default: micro)
+ * @param {number=} hide on mobile displays (optional value 1)
+ */
+{% macro win_shut (id, txt, left, top, gad_move, gad_stop, gad_pos, gad_shade, gad_window_r, gad_window_l, type, hide) %}
+	{% import   "widgets/window.html" as window %}
+	{% import   "basic.html" as basic %}
+	{% import   "icon.html" as icon %}
+	{% set uid = uid(page, id) %}
+	{% set min = 0 %}
+	{% set max = 100 %}
+	
+	<style>
+	.pos .ui-slider .ui-input-text {
+		display: none !important;
+	}
+	.pos .ui-slider-track, .pos .ui-slider-switch {
+		margin: 0 15px 15px 15px !important;
+	}
+	</style>
+	<a id="{{ uid }}-button" class="{% if type == 'icon' %} icon {% else %} ui-{{ type|default('micro') }} {% endif %} {% if hide == 1 %}hide-mobile{% endif %}" {% if type != 'icon' %}data-role="button" data-inline="true" {% endif %} data-rel="popup"
+		data-iconpos="center" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %}
+		style="position: absolute; top: {{ top }}; left: {{ left }}; ">
+		{{ window.complete(uid~'-icon', gad_pos, gad_window_r, gad_window_l, min, max, color) }}
+	</a>
+	
+    <div id="{{ uid }}-popup" data-role="popup" style="min-width:200px;">
+		<div>
+			{{ window.complete(uid~'-icon', gad_pos, gad_window_r, gad_window_l, min, max, color) }}
+			{{ txt|e }}
+        </div>
+         <div data-role="controlgroup" data-type="horizontal">
+			{{ basic.stateswitch(id~'up', gad_move, 'mini', 0, 'control_arrow_up.svg') }}
+			{{ basic.stateswitch(id~'down', gad_move, 'mini', 1, 'control_arrow_down.svg') }}
+			{% if gad_stop %}{{ basic.stateswitch(id~'stop', gad_stop, 'mini', 1, 'audio_stop.svg') }}{% endif %}
+			{% if gad_shade %}{{ basic.stateswitch(id~'shade', gad_shade, 'mini', 1, 'fts_shutter_50.svg') }}{% endif %}
+		</div>
+		{% if gad_pos %}
+			<div class="pos">
+				{{ basic.slider(id~'slider', gad_pos, 0 , 100 , 5, 'horizontal', 'handle' ) }}
+			</div>
+		{% endif %}
+        <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
+    </div>
 {% endmacro %}
 
 /** 
@@ -220,6 +278,8 @@
 	</script>
 {% endmacro %}	
 
+
+
 /**
  * Displays window status and a simple shutter control assembly
  *
@@ -235,7 +295,7 @@
  * @param type: 'micro', 'mini', 'midi', 'icon' (optional, default: micro)
  * @param hide on mobile displays (optional value 1)
  */
-{% macro win_shut (id, txt, left, top, gad_move, gad_stop, gad_pos, gad_shade, gad_window, type, hide) %}
+{% macro win_shut_old (id, txt, left, top, gad_move, gad_stop, gad_pos, gad_shade, gad_window, gad_window1, type, hide) %}
 	{% import   "basic.html" as basic %}
 	{% import   "icon.html" as icon %}
 	{% import   "widgets/window.html" as window %}
