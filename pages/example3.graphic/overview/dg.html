@@ -29,7 +29,7 @@
 			{{ ovbasic.stateswitch ('bad_eltern_schrank', 'dg.bad_eltern.beleuchtung.spiegel.schalten', 'micro', ['1', '0'], ['light_mirror.svg', 'light_mirror.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Elternbad: Schrankbeleuchtung', '28.4%', '67%') }}
 
 			{{ ovbasic.print ('bad_eltern_temperatur', 'dg.bad_eltern.temperatur.luft', '°C', '', '', '', 'Elternbad: Raumtemperatur', '23%', '60.5%', 'bad_eltern_temp_popup', 1) }}
-			{{ ov.period ('bad_eltern_temp_popup', 'Elternbad: Temperaturen', ['dg.bad_eltern.temperatur.luft', 'dg.bad_eltern.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('bad_eltern_temp_popup', 'Elternbad: Temperaturen', ['dg.bad_eltern.temperatur.luft', 'dg.bad_eltern.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 
 			
 			<!-- Schlafen -->
@@ -42,7 +42,7 @@
 			{{ ovbasic.stateswitch ('schlafen_bett_rechts', 'dg.schlafen.beleuchtung.bett.rechts.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Schlafzimmer: Bett rechts', '31.8%', '17.2%') }}
 
 			{{ ovbasic.print ('schlafen_temperatur', 'dg.schlafen.temperatur.luft', '°C', '', '', '', 'Schlafzimmer: Raumtemperatur', '23%', '46%', 'schlafen_temp_popup', 1) }}
-			{{ ov.period ('schlafen_temp_popup', 'Schlafzimmer: Temperaturen', ['dg.schlafen.temperatur.luft', 'dg.schlafen.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('schlafen_temp_popup', 'Schlafzimmer: Temperaturen', ['dg.schlafen.temperatur.luft', 'dg.schlafen.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 			
 			<!-- Gast -->
 			{{ ov.pagelink ('pagelink_gast', 'Details Gast', '48%', '23%', 'index.php?page=room_example', 'Gast', '', 'mini') }} 
@@ -57,7 +57,7 @@
 			{{ ovbasic.stateswitch ('gast_pc', 'dg.gast.steckdose.computer.schalten', 'micro', ['1', '0'], ['it_pc.svg', 'it_pc.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Gast: Computer', '55.5%', '10%') }}
 
 			{{ ovbasic.print ('gast_temperatur', 'dg.gast.temperatur.luft', '°C', '', '', '', 'Gast: Raumtemperatur', '44.5%', '35%', 'gast_temp_popup', 1) }}
-			{{ ov.period ('gast_temp_popup', 'Gast: Temperaturen', ['dg.gast.temperatur.luft', 'dg.gast.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('gast_temp_popup', 'Gast: Temperaturen', ['dg.gast.temperatur.luft', 'dg.gast.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 
 			<!-- Kind 1 -->
 			{{ ov.pagelink ('pagelink_kind1', 'Details Kind 1', '70%', '35%', 'index.php?page=room_example', 'Kind 1', '', 'mini') }} 
@@ -67,7 +67,7 @@
 			{{ ovdevice.dimmer ('kind1_decke', 'Kind 1: Deckenlampe', 'dg.kind1.beleuchtung.decke.schalten', 'dg.kind1.beleuchtung.decke.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '70%', '46%', 'micro') }}
 
 			{{ ovbasic.print ('kind1_temperatur', 'dg.kind1.temperatur.luft', '°C', '', '', '', 'Kind 1: Raumtemperatur', '70%', '24.5%', 'kind1_temp_popup', 1) }}
-			{{ ov.period ('kind1_temp_popup', 'Kind 1: Temperaturen', ['dg.kind1.temperatur.luft', 'dg.kind1.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('kind1_temp_popup', 'Kind 1: Temperaturen', ['dg.kind1.temperatur.luft', 'dg.kind1.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 			
 			<!-- Kind 2 -->
 			{{ ov.pagelink ('pagelink_kind2', 'Details Kind 2', '70%', '73%', 'index.php?page=room_example', 'Kind 2', '', 'mini') }} 
@@ -79,7 +79,7 @@
 			{{ obasic.stateswitch ('kind2_steckdose_nord', 'dg.kind2.steckdose.nord.schalten', 'micro', ['1', '0'], ['audio_sound.svg', 'audio_sound.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Kind 2: Musik', '62%', '86%') }}
 
 			{{ ovbasic.print ('kind2_temperatur', 'dg.kind2.temperatur.luft', '°C', '', '', '', 'Kind 2: Raumtemperatur', '70%', '82%', 'kind2_temp_popup', 1) }}
-			{{ ov.period ('kind2_temp_popup', 'Kind 2: Temperaturen', ['dg.kind2.temperatur.luft', 'dg.kind2.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('kind2_temp_popup', 'Kind 2: Temperaturen', ['dg.kind2.temperatur.luft', 'dg.kind2.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 
 			<!-- Bad Kinder -->
 			{{ ov.pagelink ('pagelink_bad_kinder', 'Details Kinderbad', '51.5%', '84.5%', 'index.php?page=room_example', 'Kinderbad', '', 'micro') }} 
@@ -88,7 +88,7 @@
 			{{ ovbasic.stateswitch ('bad_kinder_spiegel', 'dg.bad_kinder.beleuchtung.spiegel.schalten', 'micro', ['1', '0'], ['light_mirror.svg', 'light_mirror.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Kinderbad: Spiegelbeleuchtung', '48%', '74.9%') }}
 
 			{{ ovbasic.print ('bad_kinder_temperatur', 'dg.bad_kinder.temperatur.luft', '°C', '', '', '', 'Kinderbad: Raumtemperatur', '51.5%', '68%', 'bad_kinder_temp_popup', 1) }}
-			{{ ov.period ('bad_kinder_temp_popup', 'Kinderbad: Temperaturen', ['dg.bad_kinder.temperatur.luft', 'dg.bad_kinder.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('bad_kinder_temp_popup', 'Kinderbad: Temperaturen', ['dg.bad_kinder.temperatur.luft', 'dg.bad_kinder.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 
 			<!-- Flur -->
 			{{ ov.pagelink ('pagelink_flur', 'Details Flur im DG', '48%', '53.3%', 'index.php?page=room_example', 'Flur', '', 'mini') }} 
@@ -96,7 +96,7 @@
 			{{ ovdevice.dimmer ('flur_decke', 'Flur: Deckenstrahler', 'dg.flur.beleuchtung.decke.schalten', 'dg.flur.beleuchtung.decke.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '42%', '53.3%', 'micro') }}
 
 			{{ ovbasic.print ('flur_temperatur', 'dg.flur.temperatur.luft', '°C', '', '', '', 'Flur: Raumtemperatur', '56.5%', '53.3%', 'flur_temp_popup', 1) }}
-			{{ ov.period ('flur_temp_popup', 'Flur: Temperaturen', ['dg.flur.temperatur.luft', 'dg.flur.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('flur_temp_popup', 'Flur: Temperaturen', ['dg.flur.temperatur.luft', 'dg.flur.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 		</div>
 		<div class="ui-block-b">
 			<div class="ui-bar-c ui-li-divider ui-corner-top">&nbsp;&nbsp;Rollläden</div>

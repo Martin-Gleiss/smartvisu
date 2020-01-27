@@ -28,7 +28,7 @@
 			{{ ovbasic.stateswitch ('carport_stellplatz', 'aussen.carport.beleuchtung.stellplatz.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Stellplatzbeleuchtung', '13.3%', '62.5%') }}
 
 			{{ ovbasic.print ('carport_temperatur', 'aussen.carport.temperatur.fahrrad', '°C', '', '', '', 'Carport: Raumtemperatur', '27%', '47%', 'carport_temp_popup', 1) }}
-			{{ ov.period ('carport_temp_popup', 'Carport: Temperaturen', ['aussen.nordseite.temperatur','aussen.carport.temperatur.fahrrad'], 'avg', '24h', 0, 0, '', '', ['Nordseite', 'Fahrradschuppen'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('carport_temp_popup', 'Carport: Temperaturen', ['aussen.nordseite.temperatur','aussen.carport.temperatur.fahrrad'], 'avg', '24h', 0, 0, '', '', ['Nordseite', 'Fahrradschuppen'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 
 			<!-- Garten -->
 			{{ ov.pagelink ('pagelink_garten', 'Details Garten', '56%', '21%', 'index.php?page=room_example', 'Garten', '', 'mini') }} 
@@ -48,7 +48,7 @@
 			{{ ovbasic.stateswitch ('terrasse_wasser_quellsteine', 'aussen.terrasse.wasser.quellsteine.schalten', 'micro', ['1', '0'], ['control_on_off.svg', 'control_on_off.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Quellsteine: Wasser schalten', '74%', '37.7%') }}
 
 			{{ ovbasic.print ('zisterne_fuellstand', 'aussen.terrasse.wasser.zisterne.fuellstand.prozent', ' %', '', '', '', 'Bachlaufzisterne: Füllstand', '34.8%', '40%', 'zisterne_fuellstand_popup', 1) }}
-			{{ ov.period ('zisterne_fuellstand_popup', 'Bachlaufzisterne: Füllstand', 'aussen.terrasse.wasser.zisterne.fuellstand.prozent', 'avg', '24h', 0, 0, '', '', 'Füllstand', '', 'spline', ['Uhrzeit', 'Prozent'], '1h') }}
+			{{ ovbasic.period ('zisterne_fuellstand_popup', 'Bachlaufzisterne: Füllstand', 'aussen.terrasse.wasser.zisterne.fuellstand.prozent', 'avg', '24h', 0, 0, '', '', 'Füllstand', '', 'spline', ['Uhrzeit', 'Prozent'], '1h') }}
 			
 			<!-- Eingangsbereich -->
 			{{ ovbasic.stateswitch ('eingang_haustuer', 'aussen.nordseite.beleuchtung.haustuer.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Haustür: Wandleuchten', '49.2%', '72.2%') }}

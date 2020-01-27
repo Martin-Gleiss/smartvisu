@@ -78,6 +78,89 @@
 	{% endif %}
 {% endmacro %}
 
+
+/**
+* Period: A simple popup-widget for plotting charts
+*         to use together with the print-Widget
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} title of the chart (optional)
+* @param {unchecked[?]} series of item(s); multiple items in array form: [ item1 , item2 ]
+* @param {text(avg,sum,min,max,minmax,minmaxavg,raw)[?]=} the aggregation mode (optional, default 'avg')
+	May be a single mode or an array with separate mode per item.
+	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
+* @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format)
+* @param {duration=now} the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
+* @param {text[?]=} the minimum for each y-axis; multiples in array form: [ min_y-axis1, min_y-axis2, ...] (optional)
+	If the axis type is boolean the passed value will be the label of the low state (e.g. 'Off')
+* @param {text[?]=} the maximum for each y-axis; multiples in array form: [ max_y-axis1, max_y-axis2, ...] (optional)
+	If the axis type is boolean the passed value will be the label of the high state (e.g. 'On')
+* @param {value=100} the number of datapoints in the series (optional, default 100)
+	May be a single value or an array of separate counts per item.
+* @param {text[?]=} label for each serie; multiples in array form (optional)
+* @param {color[?]=} color for each serie; multiples in array form (optional, default: suitable for design)
+* @param {text[?](line,stair,spline,area,areastair,areaspline,column)=line} type of each serie: 'line', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'column'; multiples in array form (optional, default 'line')
+* @param {text[?]=} title for the x-axis and y-axes in array form: [title_x-axis, title_y-axis1, title_y-axis2, ...] (optional)
+* @param {duration(advanced)=} minimal time range while zooming or 'advanced' (optional, duration-format)
+	By passing 'advanced' a seaparate range selector is shown and data grouping for large amount of data is enabled
+* @param {value[]=} assignment of the series to the y-axes; multiples in array form (optional)
+* @param {value[]=} y-axes setup for left '0' and right '1' hand in array form (optional)
+* @param {color[?]=} y-axes color; multiples in array form (optional)
+* @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
+* @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
+* @param {unchecked[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+*
+* @see misc/fundamentals#Array-Form
+* @see misc/fundamentals#Duration-Format
+*/
+
+{% macro period(id, txt, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions) %}
+	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
+	{% set tmin = tmin|default('1h') %}
+
+	{% set mode = (mode is iterable ? mode : [mode|default('avg')]) %}
+	{% set count = (count is iterable ? count : [count|default(100)]) %}
+	{% set item = (item is iterable ? item : [item]) %}
+  {% set seriesitems = [] %}
+	{% for itemi in item %}
+		{% if mode|length < loop.index %}
+			{% set mode = mode|merge([mode|last]) %}
+		{% endif %}
+		{% set modei = mode[loop.index0] %}
+
+		{% if count|length < loop.index %}
+			{% set count = count|merge([count|last]) %}
+		{% endif %}
+		{% set counti = count[loop.index0] %}
+
+		{% if modei == 'minmax' %}
+			{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]) ]) %}
+		{% elseif modei == 'minmaxavg' %}
+			{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]), implode(itemi, ['avg', tmin, tmax, counti]) ]) %}
+		{% else %}
+			{% set seriesitems = seriesitems|merge([implode(itemi, [modei, tmin, tmax, counti])]) %}
+		{% endif %}
+	{% endfor %}
+	<div id="{{ uid(page, id) }}" data-role="popup" class="ui-content" style="min-width: 400px; min-height: 210px; ">
+		<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
+		{% if txt %}<div> {{ txt }} </div>{% endif %}
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.period" data-mode="{{ implode(mode) }}"
+		data-item="{{ implode(seriesitems) }}"
+		{% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
+		data-tmin="{{ tmin }}" data-tmax="{{ tmax }}"
+		data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axis) }}"
+		{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
+		{% if assign is not empty %} data-assign="{{ implode(assign) }}" {% endif %}
+		{% if opposite is not empty %} data-opposite="{{ implode(opposite) }}" {% endif %}
+		{% if ycolor is not empty %} data-ycolor="{{ implode(ycolor) }}" {% endif %}
+		data-ytype="{{ implode(ytype) }}"
+		data-unit="{{ implode(unit) }}"
+		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}"
+		class="plot{% if zoom == 'advanced' %} plot-highstock{% endif %}"></div>
+</div>
+{% endmacro %}
+
+
 /**
  * prints value or text (optionally calculated and/or formatted) and provides link to a popup
  *

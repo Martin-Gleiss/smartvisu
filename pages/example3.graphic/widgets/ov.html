@@ -327,41 +327,6 @@
 {% endmacro %}	
 
 
-/**
- * Period: A simple popup-widget for plotting charts
- *         to use together with the symbol-Widget
- *
- * @param unique id for this popup-widget
- * @param title of the chart (optional)
- * @param series of item/s. More item/s in array form: [ item1 , item2 ]
- * @param the mode: 'avg', 'sum', 'min', 'max'
- * @param the minimum time (x-axis): '1h', '2h'... (duration-format)
- * @param the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
- * @param the minimum y-axis (optional)
- * @param the maximum y-axis (optional)
- * @param the step between two time-points (optional, only for 'offline'-driver)
- * @param label/s for each series (optional)
- * @param color/s for each series e. g. '#f00' for red (optional, default: sutiable for design)
- * @param type/s for each series: 'line', 'stair', 'spline', 'area', 'areaspline', 'column' (optional, default 'line')
- * @param title/s for the x-axis and y-axis
- * @param minimum time while zooming in sec (optional, duration-format)
- *
- * @see misc/fundamentals#Array-Form
- * @see misc/fundamentals#Duration-Format
-*/
-{% macro period (id, txt, gad, mode, tmin, tmax, ymin, ymax, step, label, color, exposure, axes, zoom) %}
-	<div id="{{ uid(page, id) }}" data-role="popup" class="ui-content" style="min-width: 400px; min-height: 210px; ">
-		<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
-		{% if txt %}<div> {{ txt }} </div>{% endif %}
-			<div id="{{ uid(page, id) }}-plot" data-widget="plot.period" data-item="{{ implode(gad, [mode|default('avg'), tmin|default('1h'), tmax|default('0')]) }}"
-				{% if ymin is not empty %} data-ymin="{{ ymin }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ ymax }}" {% endif %}
-				data-step="{{ step|default(20) }}" data-label="{{ implode(label) }}"
-				data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axes) }}"
-				{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
-				class="plot">
-			</div>
-	</div>
-{% endmacro %}
 
 /**
  * Camera

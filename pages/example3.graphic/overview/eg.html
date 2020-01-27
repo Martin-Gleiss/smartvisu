@@ -30,7 +30,7 @@
 			{{ ovbasic.color ('kueche_rgb', 'eg.kueche.beleuchtung.rgb_ap.rot.dimmwert', 'eg.kueche.beleuchtung.rgb_ap.gruen.dimmwert', 'eg.kueche.beleuchtung.rgb_ap.blau.dimmwert', 50, 150, 8, 10, 'disc', 'rgb', 'Küchenschrank', '19%', '47%', 'micro', 1) }}
 
 			{{ ovbasic.print ('kueche_temperatur', 'eg.kueche.temperatur.luft', '°C', '', '', '', 'Küche: Raumtemperatur', '25%', '25%', 'kueche_temp_popup', 1) }}
-			{{ ov.period ('kueche_temp_popup', 'Küche: Temperaturen', ['eg.kueche.temperatur.luft', 'eg.kueche.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('kueche_temp_popup', 'Küche: Temperaturen', ['eg.kueche.temperatur.luft', 'eg.kueche.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 			
 			<!-- Essen -->
 			{{ ov.pagelink ('pagelink_essen', 'Details Essbereich', '44%', '35%', 'index.php?page=room_example', 'Essen', '', 'mini') }} 
@@ -44,7 +44,7 @@
 			{{ ovdevice.dimmer ('essen_dimmer_decke3', 'Essbereich: Flurseite', 'eg.essen.beleuchtung.decke3.schalten', 'eg.essen.beleuchtung.decke3.dimmwert', 0, 100, 5, '', '', '', '','both', 0, 100, '50%', '47%', 'micro') }}
 
 			{{ ovbasic.print ('essen_temperatur', 'eg.essen.temperatur.luft', '°C', '', '', '', 'Essbereich: Raumtemperatur', '44%', '13%', 'essen_temp_popup', 1) }}
-			{{ ov.period ('essen_temp_popup', 'Essbereich: Temperaturen', ['eg.essen.temperatur.luft', 'eg.essen.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('essen_temp_popup', 'Essbereich: Temperaturen', ['eg.essen.temperatur.luft', 'eg.essen.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 			
 			<!-- Szenen -->
 			<a id="eg_scene-overview" href="#eg_scene-popup" title="Szenen" class="ui-micro" style="position: absolute; display: block; top: 47%; left: 35%; "
@@ -73,7 +73,7 @@
 			{{ ovbasic.color ('wohnen_rgb', 'eg.essen.beleuchtung.rgb.rot.dimmwert', 'eg.essen.beleuchtung.rgb.gruen.dimmwert', 'eg.essen.beleuchtung.rgb.blau.dimmwert', 50, 150, 8, 10, 'disc', 'rgb', 'Indirekte Beleuchtung', '60.5%', '45%', 'micro', 1) }}
 
 			{{ ovbasic.print ('wohnen_temperatur', 'eg.wohnen.temperatur.luft', '°C', '', '', '', 'Wohnbereich: Raumtemperatur', '77%', '23%', 'wohnen_temp_popup', 1) }}
-			{{ ov.period ('wohnen_temp_popup', 'Wohnbereich: Temperaturen', ['eg.wohnen.temperatur.luft', 'eg.wohnen.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('wohnen_temp_popup', 'Wohnbereich: Temperaturen', ['eg.wohnen.temperatur.luft', 'eg.wohnen.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 
 			<!-- Buero -->
 			{{ ov.pagelink ('pagelink_buero', 'Details Büro', '70%', '70%', 'index.php?page=room_example', 'Büro', '', 'mini') }} 
@@ -85,7 +85,7 @@
 			{{ ovdevice.dimmer ('buero_dimmer_schreibtisch', 'Büro: Schreibtischleuchte', 'eg.buero.beleuchtung.schreibtisch.schalten', 'eg.buero.beleuchtung.schreibtisch.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '75%', '82%', 'micro') }}
 
 			{{ ovbasic.print ('buero_temperatur', 'eg.buero.temperatur.luft', '°C', '', '', '', 'Büro: Raumtemperatur', '63%', '59%', 'buero_temp_popup', 1) }}
-			{{ ov.period ('buero_temp_popup', 'Büro: Temperaturen', ['eg.buero.temperatur.luft', 'eg.buero.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('buero_temp_popup', 'Büro: Temperaturen', ['eg.buero.temperatur.luft', 'eg.buero.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 			
 			<!-- Gaeste-WC -->
 			{{ ov.pagelink ('pagelink_wc', 'Details Gäste WC', '57.5%', '85%', 'index.php?page=room_example', 'WC', '', 'micro') }} 
@@ -103,7 +103,7 @@
 			{{ ovbasic.color ('diele_rgb', 'eg.diele.beleuchtung.rgb_treppe.rot.dimmwert', 'eg.diele.beleuchtung.rgb_treppe.gruen.dimmwert', 'eg.diele.beleuchtung.rgb_treppe.blau.dimmwert', 50, 150, 8, 10, 'disc', 'rgb', 'Treppenbeleuchtung', '42%', '85%','micro', 1) }}
 
 			{{ ovbasic.print ('diele_temperatur', 'eg.diele.temperatur.luft', '°C', '', '', '', 'Flur: Raumtemperatur', '44%', '67%', 'diele_temp_popup', 1) }}
-			{{ ov.period ('diele_temp_popup', 'Flur: Temperaturen', ['eg.diele.temperatur.luft', 'eg.diele.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('diele_temp_popup', 'Flur: Temperaturen', ['eg.diele.temperatur.luft', 'eg.diele.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 
 			{{ ov.camera ('diele_kamera', 'Kamera Haustür', '50.4%', '97.1%', 'rtsp://admin:ms1234@192.168.0.21:554/main', '1280', '720', 'micro') }}
 
@@ -115,7 +115,7 @@
 			{{ ovbasic.stateswitch ('hwr_light', 'eg.hwr.beleuchtung.decke.schalten', 'micro', ['1', '0'],['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'HWR: Deckenleuchte', '29%', '79%') }}
 
 			{{ ovbasic.print ('hwr_temperatur', 'eg.hwr.temperatur.luft', '°C', '', '', '', 'Hauswirtschaftsraum: Raumtemperatur', '35%', '67%', 'hwr_temp_popup', 1) }}
-			{{ ov.period ('hwr_temp_popup', 'Hauswirtschaftsraum: Temperaturen', ['eg.hwr.temperatur.luft', 'eg.hwr.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.period ('hwr_temp_popup', 'Hauswirtschaftsraum: Temperaturen', ['eg.hwr.temperatur.luft', 'eg.hwr.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
 
 			{{ ov.url ('hwr_wp', 'Wärmepumpe', '23%', '67%', 'http://servicewelt', '', 'sani_earth_source_heat_pump.svg', 1024, 600, 'micro', 1) }}
 
