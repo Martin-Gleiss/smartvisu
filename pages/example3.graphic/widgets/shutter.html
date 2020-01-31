@@ -33,10 +33,10 @@
 				<td>
 					{% if txt %} {{ txt }} {% endif %}</td>
 				<td rowspan="3" align="top" class="pos">
-					{{ basic.slider(id|_('pos'), item_pos, 0, 255, 5, 'vertical') }}</td>
+					{{ basic.slider(id|_('pos'), item_pos, 0, 100, 5, 'vertical') }}</td>
 				<td rowspan="3" width="10%"></td>
 				<td rowspan="3" align="top">
-					{{ basic.shutter(id|_('shutter'), item_pos, '', 0, 255) }}</td>
+					{{ basic.shutter(id|_('shutter'), item_pos, '', 0, 100) }}</td>
 			</tr>
 			<tr>
 				<td>
@@ -79,7 +79,7 @@
 			<tr>
 				<td valign="top">{{ txt }}</td>
 				<td rowspan="3" align="left" class="pos">
-					{{ basic.slider(id|_('pos'), item_pos, 0, 255, 5, 'vertical') }}</td>
+					{{ basic.slider(id|_('pos'), item_pos, 0, 100, 5, 'vertical') }}</td>
 			</tr>
 			<tr>
 				<td>
@@ -118,7 +118,7 @@
 			<tr>
 				<td>&nbsp;</td>
 				<td rowspan="3" class="pos">
-					{{ basic.slider(id|_('pos'), item_pos, 0, 255, 5, 'vertical') }}</td>
+					{{ basic.slider(id|_('pos'), item_pos, 0, 100, 5, 'vertical') }}</td>
 			</tr>
 			<tr>
 				<td style="white-space:nowrap; -o-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg); -ie-transform: rotate(270deg); filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);">{{ txt }}</td>
