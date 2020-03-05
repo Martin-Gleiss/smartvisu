@@ -56,30 +56,30 @@
 				<table width=100%>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('IngridPC', 'Allgemein.PCs.PCIngrid', 'it_pc.svg', 'it_pc.svg') }}  PC-Ingrid
+							{{ basic.stateswitch('IngridPC', 'Allgemein.PCs.PCIngrid', 'icon', ['1', '0'], ['it_pc.svg', 'it_pc.svg'], '', ['icon1', 'icon0']) }}  PC-Ingrid
 						</td>
 						<td align=left>
-							{{ basic.switch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', 'it_television.svg', 'it_television.svg') }} Ingrid
+							{{ basic.stateswitch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} Ingrid
 						</td>
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('MultimediaPC', 'Allgemein.PCs.PCMultimedis', 'it_server.svg', 'it_server.svg') }} Server
+							{{ basic.stateswitch('MultimediaPC', 'Allgemein.PCs.PCMultimedis', 'icon', ['1', '0'], ['it_server.svg', 'it_server.svg'], '',['icon1', 'icon0']) }} Server
 						</td>
-						<td align=left width=50%>
-							{{ basic.switch('KuecheMonitor', 'Allgemein.PCs.MonitorKueche', 'it_television.svg', 'it_television.svg') }} Küche
+						<td align=left>
+							{{ basic.stateswitch('KuecheMonitor', 'Allgemein.PCs.MonitorKueche', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} Küche
 						</td>
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('MarcoPC', 'Allgemein.PCs.PCMarco', 'it_pc.svg', 'it_pc.svg') }} PC-Marco
+							{{ basic.stateswitch('MarcoPC', 'Allgemein.PCs.PCMarco', 'icon', ['1', '0'], ['it_pc.svg', 'it_pc.svg'], '', ['icon1', 'icon0']) }} PC-Marco
 						</td>
 						<td align=left>
-							{{ basic.switch('LedSpotsBoden', 'EG.Aussen.LEDSpotsBoden', 'audio_audio.svg', 'audio_audio.svg') }} Subwoofer
+							{{ basic.stateswitch('LedSpotsBoden', 'EG.Aussen.LEDSpotsBoden', 'icon', ['1', '0'], ['audio_audio.svg', 'audio_audio.svg'], '', ['icon1', 'icon0']) }} Subwoofer
 						</td>
 					</tr>
 				</table>
-
+				
 			</div>
 		</div>
 	</div>
@@ -100,7 +100,7 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('SamsungTVEinAN', 'Allgemein.TVSamsung.TVonOFF', 'ON / OFF', 'check', '', 'midi') }}
+								{{ basic.stateswitch('SamsungTVEinAN', 'Allgemein.TVSamsung.TVonOFF', 'midi', '1', 'check', 'ON / OFF') }}
 							</span>
 						</td>
 					</tr>
@@ -109,9 +109,9 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('SourceTV', 'tv.Source', 'Source', 'grid', '', 'midi') }}
-								{{ basic.button('AppListTV', 'tv.AppList', 'Smart', 'home', '', 'midi') }}
-								{{ basic.button('ENTERTAINMENTTV', 'tv.ENTERTAINMENT', 'TXT', 'check', '', 'midi') }}
+								{{ basic.stateswitch('SourceTV', 'tv.Source', 'midi', '1', 'grid', 'Source') }}
+								{{ basic.stateswitch('AppListTV', 'tv.AppList', 'midi', '1', 'home','Smart') }}
+								{{ basic.stateswitch('ENTERTAINMENTTV', 'tv.ENTERTAINMENT', 'midi', '1', 'check', 'TXT') }}
 							</span>
 						</td>
 					</tr>
@@ -120,10 +120,10 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('KIKATV', 'tv.KIKA', 'KIKA', '', '', 'midi') }}
-								{{ basic.button('PRO7TV', 'tv.PRO7', 'Pro7', '', '', 'midi') }}
-								{{ basic.button('SAT1TV', 'tv.SAT1', 'Sat1', '', '', 'midi') }}
-								{{ basic.button('RTLTV', 'tv.RTL', 'RTL', '', '', 'midi') }}
+								{{ basic.stateswitch('KIKATV', 'tv.KIKA', 'midi', '1', '', 'KIKA') }}
+								{{ basic.stateswitch('PRO7TV', 'tv.PRO7', 'midi', '1', '','Pro7') }}
+								{{ basic.stateswitch('SAT1TV', 'tv.SAT1', 'midi', '1', '','Sat1') }}
+								{{ basic.stateswitch('RTLTV', 'tv.RTL', 'midi', '1', '','RTL') }}
 							</span>
 						</td>
 					</tr>
@@ -132,10 +132,10 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('ARDTV', 'tv.ARD', 'ARD', '', '', 'midi') }}
-								{{ basic.button('ZDFTV', 'tv.ZDF', 'ZDF', '', '', 'midi') }}
-								{{ basic.button('VOXTV', 'tv.VOX', 'VOX', '', '', 'midi') }}
-								{{ basic.button('KABEL1TV', 'tv.KABEL1', 'Kab1', '', '', 'midi') }}
+								{{ basic.stateswitch('ARDTV', 'tv.ARD', 'midi', '1', '', 'ARD') }}
+								{{ basic.stateswitch('ZDFTV', 'tv.ZDF', 'midi', '1', '', 'ZDF') }}
+								{{ basic.stateswitch('VOXTV', 'tv.VOX', 'midi', '1', '', 'VOX') }}
+								{{ basic.stateswitch('KABEL1TV', 'tv.KABEL1', 'midi', '1', '', 'Kab1') }}
 							</span>
 						</td>
 					</tr>
@@ -144,10 +144,10 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('SRTLTV', 'tv.SRTL', 'SRTL', '', '', 'midi') }}
-								{{ basic.button('RTL2TV', 'tv.RTL2', 'RTL2', '', '', 'midi') }}
-								{{ basic.button('HDMITV', 'tv.HDMI', 'PC', 'grid', '', 'midi') }}
-								{{ basic.button('TVTV', 'tv.TV', 'TV', 'grid', '', 'midi') }}
+								{{ basic.stateswitch('SRTLTV', 'tv.SRTL', 'midi', '1', '', 'SRTL') }}
+								{{ basic.stateswitch('RTL2TV', 'tv.RTL2', 'midi', '1', '', 'RTL2') }}
+								{{ basic.stateswitch('HDMITV', 'tv.HDMI', 'midi', '1', 'grid', 'PC') }}
+								{{ basic.stateswitch('TVTV', 'tv.TV', 'midi', '1', 'grid', 'TV') }}
 							</span>
 						</td>
 					</tr>
@@ -156,9 +156,9 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('VolUpTV', 'tv.VolUP', ' Lauter ', 'plus', '', 'midi') }}
-								{{ basic.button('MuteTV', 'tv.mute', ' Mute ', 'alert', '', 'midi') }}
-								{{ basic.button('VolDownTV', 'tv.VolDown', ' Leiser ', 'minus', '', 'midi') }}
+								{{ basic.stateswitch('VolUpTV', 'tv.VolUP', 'midi', '1', 'plus', ' Lauter ') }}
+								{{ basic.stateswitch('MuteTV', 'tv.mute', 'midi', '1', 'alert', 'Mute ') }}
+								{{ basic.stateswitch('VolDownTV', 'tv.VolDown', 'midi', '1', 'minus', ' Leiser ') }}
 							</span>
 						</td>
 					</tr>
@@ -167,8 +167,8 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('ChUpTV', 'tv.ChUP', ' Progr. ', 'arrow-u', '1', 'midi') }}
-								{{ basic.button('ChDownTV', 'tv.ChDOWN', ' Progr. ' , 'arrow-d', '1', 'midi') }}
+								{{ basic.stateswitch('ChUpTV', 'tv.ChUP', 'midi', '1', 'arrow-u', ' Progr. ') }}
+								{{ basic.stateswitch('ChDownTV', 'tv.ChDOWN', 'midi', '1', 'arrow-d', ' Progr. ' ) }}
 							</span>
 						</td>
 					</tr>
@@ -177,9 +177,9 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('ToolsTV', 'tv.TOOLS', 'Tool', 'gear', '', 'midi') }}
-								{{ basic.button('UpTV', 'tv.Up', 'rauf', 'arrow-u', '', 'midi') }}
-								{{ basic.button('TVLEDfade71', 'EG.Esszimmer.LEDfade7', 'Guide', 'search', '', 'midi') }}
+								{{ basic.stateswitch('ToolsTV', 'tv.TOOLS', 'midi', '1', 'gear', 'Tool') }}
+								{{ basic.stateswitch('UpTV', 'tv.Up', 'midi', '1', 'arrow-u', 'rauf') }}
+								{{ basic.stateswitch('TVLEDfade71', 'EG.Esszimmer.LEDfade7', 'midi', '1', 'search', 'Guide') }}
 							</span>
 						</td>
 					</tr>
@@ -188,9 +188,9 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('LeftTV', 'tv.Left', 'links', 'arrow-l', '', 'midi') }}
-								{{ basic.button('ReturnTV', 'tv.Return', 'OK', 'check', '', 'midi') }}
-								{{ basic.button('RightTV', 'tv.Right', 'rechts', 'arrow-r', '', 'midi') }}
+								{{ basic.stateswitch('LeftTV', 'tv.Left', 'midi', '1', 'arrow-l', 'links') }}
+								{{ basic.stateswitch('ReturnTV', 'tv.Return', 'midi', '1', 'check', 'OK') }}
+								{{ basic.stateswitch('RightTV', 'tv.Right', 'midi', '1', 'arrow-r','rechts') }}
 							</span>
 						</td>
 					</tr>
@@ -199,9 +199,9 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('TVLEDfade7', 'EG.Esszimmer.LEDfade7', 'Return', 'back', '', 'midi') }}
-								{{ basic.button('DownTV', 'tv.Down', 'runter', 'arrow-d', '', 'midi') }}
-								{{ basic.button('TVLEDfade73', 'EG.Esszimmer.LEDfade7', 'Exit', 'delete', '', 'midi') }}
+								{{ basic.stateswitch('TVLEDfade7', 'EG.Esszimmer.LEDfade7', 'midi', '1', 'back', 'Return') }}
+								{{ basic.stateswitch('DownTV', 'tv.Down', 'midi', '1', 'arrow-d', 'runter') }}
+								{{ basic.stateswitch('TVLEDfade73', 'EG.Esszimmer.LEDfade7', 'midi', '1', 'delete', 'Exit') }}
 							</span>
 						</td>
 					</tr>
@@ -218,7 +218,7 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('ONOFFVerstaerker', 'Allgemein.Multimedia.VerstaerkerONOFF', 'ON / OFF', 'check', '', 'midi') }}
+								{{ basic.stateswitch('ONOFFVerstaerker', 'Allgemein.Multimedia.VerstaerkerONOFF', 'midi', '1', 'check', 'ON / OFF') }}
 							</span>
 						</td>
 					</tr>
@@ -227,10 +227,10 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('TVVerstaerker', 'Allgemein.Multimedia.VerstaerkerTV', 'TV', 'home', '', 'midi') }}
-								{{ basic.button('PCVerstaerker', 'Allgemein.Multimedia.VerstaerkerPC', 'Server', 'home', '', 'midi') }}
-								{{ basic.button('TunerVerstaerker', 'Allgemein.Multimedia.VerstaerkerRadio', 'Tuner', 'home', '', 'midi') }}
-								{{ basic.button('SqueezeWZVerstaerker', 'Allgemein.Multimedia.VerstaerkerSqueezeWZ', 'Squeeze', 'home', '', 'midi') }}
+								{{ basic.stateswitch('TVVerstaerker', 'Allgemein.Multimedia.VerstaerkerTV', 'midi', '1', 'home','TV') }}
+								{{ basic.stateswitch('PCVerstaerker', 'Allgemein.Multimedia.VerstaerkerPC', 'midi', '1', 'home','Server') }}
+								{{ basic.stateswitch('TunerVerstaerker', 'Allgemein.Multimedia.VerstaerkerRadio', 'midi', '1', 'home','Tuner') }}
+								{{ basic.stateswitch('SqueezeWZVerstaerker', 'Allgemein.Multimedia.VerstaerkerSqueezeWZ', 'midi', '1', 'home','Squeeze') }}
 							</span>
 						</td>
 					</tr>
@@ -239,8 +239,8 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('ChPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChPlus', ' Chanel', 'arrow-u', '', 'midi') }}
-								{{ basic.button('ChMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChMinus', ' Chanel ', 'arrow-d', '', 'midi') }}
+								{{ basic.stateswitch('ChPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChPlus', 'midi', '1', 'arrow-u', 'Channel') }}
+								{{ basic.stateswitch('ChMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChMinus', 'midi', '1', 'arrow-d','Channel') }}
 							</span>
 						</td>
 					</tr>
@@ -249,9 +249,9 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('VolPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolPlus', ' Volume ', 'arrow-u', '', 'midi') }}
-								{{ basic.button('MuteVerstaerker', 'Allgemein.Multimedia.VerstaerkerMute', ' MUTE ', 'delete', '', 'midi') }}
-								{{ basic.button('VolMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolMinus', ' Volume ', 'arrow-d', '', 'midi') }}
+								{{ basic.stateswitch('VolPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolPlus', 'midi', '1', 'arrow-u', ' Volume ') }}
+								{{ basic.stateswitch('MuteVerstaerker', 'Allgemein.Multimedia.VerstaerkerMute', 'midi', '1', 'delete', ' MUTE ') }}
+								{{ basic.stateswitch('VolMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolMinus', 'midi', '1', 'arrow-d', ' Volume ') }}
 							</span>
 						</td>
 					</tr>
@@ -272,10 +272,10 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('1TV', 'tv.Nr1', '1', 'star', '', 'midi') }}
-								{{ basic.button('2TV', 'tv.Nr2', '2', 'star', '', 'midi') }}
-								{{ basic.button('3TV', 'tv.Nr3', '3', 'star', '', 'midi') }}
-								{{ basic.button('4TV', 'tv.Nr4', '4', 'star', '', 'midi') }}
+								{{ basic.stateswitch('1TV', 'tv.Nr1', 'midi', '1', 'star', '1') }}
+								{{ basic.stateswitch('2TV', 'tv.Nr2', 'midi', '1', 'star', '2') }}
+								{{ basic.stateswitch('3TV', 'tv.Nr3', 'midi', '1', 'star', '3') }}
+								{{ basic.stateswitch('4TV', 'tv.Nr4', 'midi', '1', 'star', '4') }}
 							</span>
 						</td>
 					</tr>
@@ -284,10 +284,10 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('5TV', 'tv.Nr5', '5', 'star', '', 'midi') }}
-								{{ basic.button('6TV', 'tv.Nr6', '6', 'star', '', 'midi') }}
-								{{ basic.button('7TV', 'tv.Nr7', '8', 'star', '', 'midi') }}
-								{{ basic.button('8TV', 'tv.Nr8', '8', 'star', '', 'midi') }}
+								{{ basic.stateswitch('5TV', 'tv.Nr5', 'midi', '1', 'star', '5') }}
+								{{ basic.stateswitch('6TV', 'tv.Nr6', 'midi', '1', 'star', '6') }}
+								{{ basic.stateswitch('7TV', 'tv.Nr7', 'midi', '1', 'star', '7') }}
+								{{ basic.stateswitch('8TV', 'tv.Nr8', 'midi', '1', 'star', '8') }}
 							</span>
 						</td>
 					</tr>
@@ -296,8 +296,8 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('9TV', 'tv.Nr9', '9', 'star', '', 'midi') }}
-								{{ basic.button('0TV', 'tv.Nr0', 'O', 'star', '', 'midi') }}
+								{{ basic.stateswitch('9TV', 'tv.Nr9', 'midi', '1', 'star', '9') }}
+								{{ basic.stateswitch('0TV', 'tv.Nr0', 'midi', '1', 'star', 'O') }}
 							</span>
 						</td>
 					</tr>
@@ -306,10 +306,10 @@
 					<tr>
 						<td align="middle" width="70%">
 							<span data-role="controlgroup" data-type="horizontal">
-								{{ basic.button('ChListTV', 'tv.ChList', 'ChList', 'info', '', 'midi') }}
-								{{ basic.button('PreChListTV', 'tv.PreCh', 'PRE-Ch', 'back', '', 'midi') }}
-								{{ basic.button('TopMEnuTV', 'tv.TopMenu', 'Menu', 'home', '', 'midi') }}
-								{{ basic.button('GuideTV', 'tv.Guide', 'Guide', 'home', '', 'midi') }}
+								{{ basic.stateswitch('ChListTV', 'tv.ChList', 'midi', '1', 'info', 'ChList') }}
+								{{ basic.stateswitch('PreChListTV', 'tv.PreCh', 'midi', '1', 'back', 'PRE-Ch') }}
+								{{ basic.stateswitch('TopMEnuTV', 'tv.TopMenu', 'midi', '1', 'home', 'Menu') }}
+								{{ basic.stateswitch('GuideTV', 'tv.Guide', 'midi', '1', 'home', 'Guide') }}
 							</span>
 						</td>
 					</tr>

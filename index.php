@@ -63,9 +63,11 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$twig = new Twig_Environment($loader);
 	$twig->addExtension(new Twig_Extension_StringLoader());
 
-	if (config_debug) {
-		$twig->enableDebug();
-		$twig->addExtension(new Twig_Extension_Debug());
+	if (defined('config_debug')) {
+		if (config_debug) {
+			$twig->enableDebug();
+			$twig->addExtension(new Twig_Extension_Debug());
+		}
 	}
 
 	if (config_cache)

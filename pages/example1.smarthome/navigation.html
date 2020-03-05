@@ -17,8 +17,8 @@
 			<h3>Energieverbrauch</h3>
 
 			<div class="ui-li-aside">
-				{{ basic.float('WirkleistungGesamt', 'Allgemein.Zaehler.LeistungGesamt', 'W') }} <br />
-				{{ basic.float('WasserTagesverbrauch', 'Allgemein.Zaehler.WasserTag', 'L') }}
+				{{ basic.print('WirkleistungGesamt', 'Allgemein.Zaehler.LeistungGesamt', 'W') }} <br />
+				{{ basic.print('WasserTagesverbrauch', 'Allgemein.Zaehler.WasserTag', 'l') }}
 
 			</div>
 
@@ -32,12 +32,12 @@
 			<h3>Esszimmer / Küche</h3>
 
 			<div class="ui-li-aside">
-				{{ basic.float('TemperaturEsszimmer', 'EG.Esszimmer.temperature', '°C') }} <br />
+				{{ basic.print('TemperaturEsszimmer', 'EG.Esszimmer.temperature', '°C') }} <br />
 				{{ basic.symbol('FensterSuedEssen', 'EG.Esszimmer.Fenster1', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('FensterWestEssen', 'EG.Esszimmer.Fenster2', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('FensterKueche', 'EG.Esszimmer.Fenster3', '', 'fts_window_1w_open.svg', 0, '', 'icon1') }}
 				{{ basic.symbol('TuerEssen', 'EG.Esszimmer.Tuer', '', 'fts_door_open.svg', 0, '', 'icon1') }}
-				{{ basic.float('heiztmitEGEssen', 'EG.Esszimmer.temperature.stellgroesse', '%') }}
+				{{ basic.print('heiztmitEGEssen', 'EG.Esszimmer.temperature.stellgroesse', '%') }}
 			</div>
 		</a>
 	</li>
@@ -55,8 +55,8 @@
 			<h3>Bad / WC</h3>
 
 			<div class="ui-li-aside">
-				{{ basic.float('TemperaturBad', 'EG.Bad.temperature', '°C') }} <br />
-				{{ basic.float('heiztmitEGBad', 'EG.Bad.temperature.stellgroesse', '%') }}
+				{{ basic.print('TemperaturBad', 'EG.Bad.temperature', '°C') }} <br />
+				{{ basic.print('heiztmitEGBad', 'EG.Bad.temperature.stellgroesse', '%') }}
 
 			</div>
 		</a>
@@ -69,10 +69,10 @@
 
 			<div class="ui-li-aside">
 				{{ basic.symbol('FlurEingangHeizen', 'EG.FlureNebenraume.Heizung1', '', 'sani_heating.svg', 1, '', 'icon1') }}
-				{{ basic.float('FlurEingangTemperatur', 'EG.FlureNebenraume.temperature1', '°C') }} <br />
+				{{ basic.print('FlurEingangTemperatur', 'EG.FlureNebenraume.temperature1', '°C') }} <br />
 				{{ basic.symbol('FlurDieleHeizen', 'EG.FlureNebenraume.Heizung2', '', 'sani_heating.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('FensterFluroffenRegen', 'Allgemein.Alarm.RegenFensterEgOg', '', 'message_attention.svg', 1, '', 'icon1') }}
-				{{ basic.float('FlurDieleTemperatur', 'EG.FlureNebenraume.temperature2', '°C') }}
+				{{ basic.print('FlurDieleTemperatur', 'EG.FlureNebenraume.temperature2', '°C') }}
 			</div>
 		</a>
 	</li>
@@ -83,7 +83,7 @@
 			<h3>Aussenanlage</h3>
 
 			<div class="ui-li-aside">
-				{{ basic.float('AussenTemperatur', 'EG.Aussen.temperature', '°C') }} <br />
+				{{ basic.print('AussenTemperatur', 'EG.Aussen.temperature', '°C') }} <br />
 				{{ basic.symbol('AussenRegen', 'EG.Aussen.Regen', '', 'weather_rain.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('HaustuerVerriegelt', 'EG.Aussen.HaustuerRiegel', '', 'status_locked.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('HaustuerOffen', 'EG.Aussen.Haustuer', '', 'fts_door_open.svg', 0, '', 'icon1') }}
@@ -99,10 +99,10 @@
 			<h3>Johanna</h3>
 
 			<div class="ui-li-aside">
-				{{ basic.float('TemperaturJohanna', 'OG.Johanna.temperature', '°C') }} <br />
+				{{ basic.print('TemperaturJohanna', 'OG.Johanna.temperature', '°C') }} <br />
 				{{ basic.symbol('FensterJohanna', 'OG.Johanna.Fenster', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('TuerJohanna', 'OG.Johanna.Tuer', '', 'fts_door_open.svg', 1, '', 'icon1') }}
-				{{ basic.float('heiztmitJohanna', 'OG.Johanna.temperature.stellgroesse', '%') }}
+				{{ basic.print('heiztmitJohanna', 'OG.Johanna.temperature.stellgroesse', '%') }}
 			</div>
 		</a>
 	</li>
@@ -113,10 +113,10 @@
 			<h3>Büro Ingrid</h3>
 
 			<div class="ui-li-aside">
-				{{ basic.float('TemperaturPhilipp', 'OG.Philipp.temperature', '°C') }} <br />
+				{{ basic.print('TemperaturPhilipp', 'OG.Philipp.temperature', '°C') }} <br />
 				{{ basic.symbol('FensterPhilipp', 'OG.Philipp.Fenster', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('TuerPhilipp', 'OG.Philipp.Tuer', '', 'fts_door_open.svg', 1, '', 'icon1') }}
-				{{ basic.float('heiztmitPhilipp', 'OG.Philipp.temperature.stellgroesse', '%') }}
+				{{ basic.print('heiztmitPhilipp', 'OG.Philipp.temperature.stellgroesse', '%') }}
 			</div>
 		</a>
 	</li>
@@ -130,9 +130,9 @@
 				{{ basic.symbol('FensterSued', 'OG.Schlafen.Fenster1', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('FensterWest', 'OG.Schlafen.Fenster2', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('TuerSchlafen', 'OG.Schlafen.Tuer', '', 'fts_door_open.svg', 1, '', 'icon1') }}
-				{{ basic.float('SchlafenTemperatur', 'OG.Schlafen.temperature', '°C') }} <br />
+				{{ basic.print('SchlafenTemperatur', 'OG.Schlafen.temperature', '°C') }} <br />
 				{{ basic.symbol('FensterAnkleide', 'OG.Ankleide.Fenster', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
-				{{ basic.float('AnkleideTemperatur', 'OG.Ankleide.temperature', '°C') }}
+				{{ basic.print('AnkleideTemperatur', 'OG.Ankleide.temperature', '°C') }}
 
 			</div>
 		</a>
@@ -145,13 +145,13 @@
 			<h3>Wohnen</h3>
 
 			<div class="ui-li-aside">
-				{{ basic.float('TemperaturDGWohnen', 'DG.Wohnen.temperature', '°C') }} <br />
+				{{ basic.print('TemperaturDGWohnen', 'DG.Wohnen.temperature', '°C') }} <br />
 				{{ basic.symbol('FensterDGNord', 'DG.Wohnen.FensterNord', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('FensterDGSuedlinks', 'DG.Wohnen.FensterSuedlinks', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('FensterDGSuedrechts', 'DG.Wohnen.FensterSuedrechts', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('TuerDG', 'DG.Wohnen.Tuer', '', 'fts_door_open.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('FensteroffenDGWohRegen', 'Allgemein.Alarm.RegenFensterDGWohnen', '', 'message_attention.svg', 1, '', 'icon1') }}
-				{{ basic.float('heiztmitDGWohnen', 'DG.Wohnen.stellgroesse', '%') }}
+				{{ basic.print('heiztmitDGWohnen', 'DG.Wohnen.stellgroesse', '%') }}
 
 			</div>
 		</a>
@@ -163,14 +163,14 @@
 			<h3>Schlafen</h3>
 
 			<div class="ui-li-aside">
-				{{ basic.float('TemperaturDgSchlafen', 'DG.Schlafen.temperature', '°C') }} <br />
+				{{ basic.print('TemperaturDgSchlafen', 'DG.Schlafen.temperature', '°C') }} <br />
 				{{ basic.symbol('Fensterlinks', 'DG.Schlafen.Fensterlinks', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('Fensterrechts', 'DG.Schlafen.Fensterrechts', '', 'fts_door_open.svg', 1, '', 'icon1') }}
 				{{ basic.symbol('FensteroffenDGSchRegen', 'Allgemein.Alarm.RegenFensterDGSchlafen', '', 'message_attention.svg', 1, '', 'icon1') }}
-				{{ basic.float('heiztmitDGSchlafen', 'DG.Schlafen.stellgroesse', '%') }}
+				{{ basic.print('heiztmitDGSchlafen', 'DG.Schlafen.stellgroesse', '%') }}
 
 			</div>
 		</a>
-
+	</li>
 </ul>	
 
