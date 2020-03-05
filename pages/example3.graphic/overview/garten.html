@@ -1,0 +1,76 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß, Wolfram v. Hülsen
+ * @copyright   2012,2019
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+{% extends "overview/base.html" %}
+
+{% block content %}
+	<div class="html" data-title="Außenbereich">
+    <div class="preblock">
+	</div>
+
+    <div class="ui-grid-a ui-responsive">
+		<div class="overview ui-block-a">
+			<!-- Background picture -->
+			{{ ov.background ('background_garten', 'pages/example3.graphic/overview/images/garten.svg') }}
+
+			<!-- Carport -->
+			{{ ov.pagelink ('pagelink_carport', 'Details Carport', '15.5%', '58%', 'index.php?page=room_example', 'Carport', '', 'mini') }} 
+
+			{{ ovbasic.stateswitch ('carport_fahrrad', 'aussen.carport.beleuchtung.fahrrad.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Fahrradschuppen: Deckenleuchte', '24.7%', '50%') }}
+			{{ ovbasic.stateswitch ('carport_werkstatt', 'aussen.carport.beleuchtung.werkstatt.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Werkstatt: Deckenleuchte', '12.3%', '50%') }}
+			{{ ovbasic.stateswitch ('carport_werkbank', 'aussen.carport.beleuchtung.werkbank.schalten', 'micro',['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Werkstatt: Leuchte über der Werkbank', '15.3%', '47%') }}
+			{{ ovbasic.stateswitch ('carport_durchgang', 'aussen.carport.beleuchtung.durchgang.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '','Durchgangsbeleuchtung', '25.3%', '62.5%') }}
+			{{ ovbasic.stateswitch ('carport_stellplatz', 'aussen.carport.beleuchtung.stellplatz.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Stellplatzbeleuchtung', '13.3%', '62.5%') }}
+
+			{{ ovbasic.print ('carport_temperatur', 'aussen.carport.temperatur.fahrrad', '°C', '', '', '', 'Carport: Raumtemperatur', '27%', '47%', 'carport_temp_popup', 1) }}
+			{{ ovbasic.period ('carport_temp_popup', 'Carport: Temperaturen', ['aussen.nordseite.temperatur','aussen.carport.temperatur.fahrrad'], 'avg', '24h', 0, 0, '', '', ['Nordseite', 'Fahrradschuppen'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+
+			<!-- Garten -->
+			{{ ov.pagelink ('pagelink_garten', 'Details Garten', '56%', '21%', 'index.php?page=room_example', 'Garten', '', 'mini') }} 
+			
+			<!-- Terrasse -->
+			{{ ov.pagelink ('pagelink_terrasse', 'Details Terrasse', '51.2%', '42.5%', 'index.php?page=room_example', 'Terrasse', '', 'mini') }} 
+
+			{{ ovbasic.stateswitch ('terrasse_dach_ost', 'aussen.terrasse.beleuchtung.dachueberstand_ost.schalten','micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Dachüberstand Küche: Strahler', '35.5%', '48.4%') }}
+			{{ ovbasic.stateswitch ('terrasse_sued', 'aussen.terrasse.beleuchtung.giebel_sued.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Friesengiebel: Wandleuchten', '49%', '45.6%') }}
+			{{ ovbasic.stateswitch ('terrasse_dach_west', 'aussen.terrasse.beleuchtung.dachueberstand_west.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Dachüberstand Wohnbereich: Strahler', '63.5%', '48.4%') }}
+			
+			{{ ovbasic.stateswitch ('terrasse_pflanzen', 'aussen.terrasse.beleuchtung.pflanzen.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Pflanzen: Beleuchtung', '72%', '43.5%') }}
+			{{ ovbasic.stateswitch ('terrasse_bachlauf', 'aussen.terrasse.beleuchtung.bachlauf.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Bachlauf: Beleuchtung', '49.6%', '37.7%') }}
+			{{ ovbasic.stateswitch ('terrasse_quellsteine', 'aussen.terrasse.beleuchtung.quellsteine.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Quellsteine: Beleuchtung', '70%', '37.7%') }}
+
+			{{ ovbasic.stateswitch ('terrasse_wasser_bachlauf', 'aussen.terrasse.wasser.bachlauf.schalten','micro', ['1', '0'], ['control_on_off.svg', 'control_on_off.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Bachlauf: Wasser schalten', '55.3%', '37.7%') }}
+			{{ ovbasic.stateswitch ('terrasse_wasser_quellsteine', 'aussen.terrasse.wasser.quellsteine.schalten', 'micro', ['1', '0'], ['control_on_off.svg', 'control_on_off.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Quellsteine: Wasser schalten', '74%', '37.7%') }}
+
+			{{ ovbasic.print ('zisterne_fuellstand', 'aussen.terrasse.wasser.zisterne.fuellstand.prozent', ' %', '', '', '', 'Bachlaufzisterne: Füllstand', '34.8%', '40%', 'zisterne_fuellstand_popup', 1) }}
+			{{ ovbasic.period ('zisterne_fuellstand_popup', 'Bachlaufzisterne: Füllstand', 'aussen.terrasse.wasser.zisterne.fuellstand.prozent', 'avg', '24h', 0, 0, '', '', 'Füllstand', '', 'spline', ['Uhrzeit', 'Prozent'], '1h') }}
+			
+			<!-- Eingangsbereich -->
+			{{ ovbasic.stateswitch ('eingang_haustuer', 'aussen.nordseite.beleuchtung.haustuer.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Haustür: Wandleuchten', '49.2%', '72.2%') }}
+			{{ ovbasic.stateswitch ('eingang_ost', 'dachueberstand.ost.beleuchtung.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Dachüberstand HWR: Strahler', '35.7%', '71%') }}
+			{{ ovbasic.stateswitch ('eingang_west', 'dachueberstand.west.beleuchtung.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Dachüberstand Büro: Strahler', '63.7%', '71%') }}
+			
+			<!-- Westseite -->
+			{{ ovbasic.stateswitch ('westseite', 'giebel.west.beleuchtung.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Westgiebel: Wandleuchten', '72%', '59%') }}
+		</div>
+		<div class="block ui-block-b">
+			<div class="ui-bar-c ui-li-divider ui-corner-top">Umgebungsbedingungen</div>
+			<div class="ui-fixed ui-body-a ui-corner-bottom">
+				<table width="200px" style="margin: 15px auto;"><tr><td align="left" width="100px">&nbsp; {{ icon.windrose('icon-windrose', '', 'quadra.wind.richtung') }}</td><td>Windrichtung</td></tr></table>
+				{{ plot.period('temp.luft', 'aussen.nordseite.temperatur', 'avg', '24h', 0, 0, '', '', 'Temperatur', '', 'spline', ['Uhrzeit', 'Temperatur'], '1h') }}
+				{{ plot.period('temp.feuchtigkeit', 'aussen.nordseite.luftfeuchtigkeit', 'avg', '24h', 0, 0, '', '', 'Luftfeuchtigkeit', '', 'spline', ['Uhrzeit', 'Prozent'], '1h') }}
+				{{ plot.period('temp.niederschlag', 'quadra.niederschlag', 'avg', '24h', 0, 0, '', '', 'Niederschlag', '', 'spline', ['Uhrzeit', 'Niederschlag Ja/Nein'], '1h') }}
+				{{ plot.period('temp.windgeschwindigkeit', 'quadra.wind.geschwindigkeit', 'avg', '24h', 0, 0, '', '', 'Windgeschwindigkeit', '', 'spline', ['Uhrzeit', 'Windgeschwindigkeit m/s'], '1h') }}
+				
+
+			 </div>	
+		</div>
+	</div>
+	</div>
+{% endblock %}
+
