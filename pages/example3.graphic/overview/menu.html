@@ -1,0 +1,26 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß, Wolfram v. Hülsen
+ * @copyright   2012, 2019
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+	<style height="50px">
+		.footer-menu#overview_garten:after { background-image: url("{{ icon0 }}scene_garden.svg"); }
+		.footer-menu#overview_eg:after { background-image: url("{{ icon0 }}control_building_s_okg_eg.svg"); }
+		.footer-menu#overview_dg:after { background-image: url("{{ icon0 }}control_building_s_okg_og.svg"); }
+	</style>
+	<div data-role="navbar" class="nav-custom" id="{{ page }}">
+		<ul>
+			<li><a href="index.php?page=overview/garten" id="overview_garten" data-prefetch="true"
+					class="footer-menu ui-btn-icon-top {{ page starts with 'garten' ? 'ui-btn-active ui-state-persist' : ''}}">Außenbereich</a></li>
+			<li><a href="index.php" id="overview_eg" data-prefetch="true"
+					class="footer-menu ui-btn-icon-top {{ page starts with 'eg' ? 'ui-btn-active ui-state-persist' : ''}}">Erdgeschoss</a></li>
+			<li><a href="index.php?page=overview/dg" id="overview_dg" data-prefetch="true"
+					class="footer-menu ui-btn-icon-top {{ page starts with 'dg' ? 'ui-btn-active ui-state-persist' : ''}}">Dachgeschoss</a></li>
+		</ul>
+	</div><!-- /navbar -->
+
+
+

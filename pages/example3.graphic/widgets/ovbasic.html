@@ -1,0 +1,496 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß, changes for SV2.9 by Wolfram v. Hülsen
+ * @copyright   2012
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+/**
+ * Displays a color selector
+ *
+ * @param {id=} unique id for this widget (optional)
+ * @param {item[?]} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
+ * @param {item=} an item for the green value in RGB model or saturation in HSL and HSV model
+  (to let blank if first item contains list of all values)
+ * @param {item=} an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
+  (to let blank if first item contains list of all values)
+ * @param {value[?]=0} minimum value if the light is off; single value or list of values for each component (optional, default 0)
+ * @param {value[?]=255} maximum value if the light is full on; single value or list of values for each component (optional, default 255 for rgb, [360,100,100] for hsl & hsv)
+ * @param {value=7} number of shades per color (optional, default 7)
+ * @param {value=10} number of colored segments (optional, default 10)
+ * @param {text(disc,rect,slider)=disc} 'disc' for circular, 'rect' for rectangular view, 'slider' for HSV sliders (optional, default: disc)
+ * @param {text(rgb,hsl,hsv)=rgb} possible values: 'rgb', 'hsl' and 'hsv' (optional, default: rgb)
+ * @param popup-info of the rgb-selector (optional)
+ * @param icon position from left side
+ * @param icon position from top side
+ * @param type: 'micro', 'mini', 'midi' (optional, default: mini)
+ * @param hide on mobile displays (optional value 1)
+ *
+ * @author Martin Gleiß and Stefan Widmer
+ * @info inspired by Marcus Popp
+*/
+{% macro color(id, item_r_h, item_g_s, item_b_l_v, min, max, steps, colors, style, colormodel, info, left, top, type, hide ) %}
+	{% set style = style|default('disc') %}
+	<div id="{{ uid(page, id) }}-overview" {% if info %}title="{{ info }}"{% endif %}
+		{% if hide == 1 %}class="hide-mobile"{% endif %} 
+		style="position: absolute; top: {{ top }}; left: {{ left }}; ">
+			
+		{% if style == 'slider' %}
+			{% import _self as basic %}
+		
+			<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.color"
+			data-style="{{ style }}" data-colormodel="{{ colormodel|default('rgb') }}"
+			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colorspace == 'hsv' ? [360,100,100] : 255)) }}"
+			data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
+			data-item="{{ item_r_h }}, {{ item_g_s }}, {{ item_b_l_v }}" >
+			
+			<div class="color-hue">
+				<input type="range" value="0" min="0" max="360" step="1"
+					orientation="horizontal" handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
+			</div>
+			<div class="color-saturation">
+				<input type="range" value="0" min="0" max="100" step="1"
+					orientation="horizontal" handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
+			</div>
+			<div class="color-lightness">
+				<input type="range" value="0" min="0" max="100" step="1"
+					orientation="horizontal" handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
+			</div>
+			</span>
+		
+	{% else %}
+		
+		<a{% if not id is empty %} id="{{ uid(page, id) }}-overview"{% endif %} data-widget="basic.color"
+			data-style="{{ style }}" data-colormodel="{{ colormodel|default('rgb') }}"
+			data-item="{{ item_r_h }}, {{ item_g_s }}, {{ item_b_l_v }}"
+			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colorspace == 'hsv' ? [360,100,100] : 255)) }}"
+			data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
+			class="colordisc"><span style="{% if type == 'micro' %}width: 28px; height: 28px;
+				{% elseif type == 'mini' %}width: 42px; height: 42px;
+				{% elseif type == 'midi' %}width: 56px; height: 56px;
+				{% else %}width: 42px; height: 42px;
+				{% endif %}"></span>
+		</a>
+	</div>
+		
+	{% endif %}
+{% endmacro %}
+
+
+/**
+* Period: A simple popup-widget for plotting charts
+*         to use together with the print-Widget
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} title of the chart (optional)
+* @param {unchecked[?]} series of item(s); multiple items in array form: [ item1 , item2 ]
+* @param {text(avg,sum,min,max,minmax,minmaxavg,raw)[?]=} the aggregation mode (optional, default 'avg')
+	May be a single mode or an array with separate mode per item.
+	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
+* @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format)
+* @param {duration=now} the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now)
+* @param {text[?]=} the minimum for each y-axis; multiples in array form: [ min_y-axis1, min_y-axis2, ...] (optional)
+	If the axis type is boolean the passed value will be the label of the low state (e.g. 'Off')
+* @param {text[?]=} the maximum for each y-axis; multiples in array form: [ max_y-axis1, max_y-axis2, ...] (optional)
+	If the axis type is boolean the passed value will be the label of the high state (e.g. 'On')
+* @param {value=100} the number of datapoints in the series (optional, default 100)
+	May be a single value or an array of separate counts per item.
+* @param {text[?]=} label for each serie; multiples in array form (optional)
+* @param {color[?]=} color for each serie; multiples in array form (optional, default: suitable for design)
+* @param {text[?](line,stair,spline,area,areastair,areaspline,column)=line} type of each serie: 'line', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'column'; multiples in array form (optional, default 'line')
+* @param {text[?]=} title for the x-axis and y-axes in array form: [title_x-axis, title_y-axis1, title_y-axis2, ...] (optional)
+* @param {duration(advanced)=} minimal time range while zooming or 'advanced' (optional, duration-format)
+	By passing 'advanced' a seaparate range selector is shown and data grouping for large amount of data is enabled
+* @param {value[]=} assignment of the series to the y-axes; multiples in array form (optional)
+* @param {value[]=} y-axes setup for left '0' and right '1' hand in array form (optional)
+* @param {color[?]=} y-axes color; multiples in array form (optional)
+* @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
+* @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
+* @param {unchecked[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+*
+* @see misc/fundamentals#Array-Form
+* @see misc/fundamentals#Duration-Format
+*/
+
+{% macro period(id, txt, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions) %}
+	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
+	{% set tmin = tmin|default('1h') %}
+
+	{% set mode = (mode is iterable ? mode : [mode|default('avg')]) %}
+	{% set count = (count is iterable ? count : [count|default(100)]) %}
+	{% set item = (item is iterable ? item : [item]) %}
+  {% set seriesitems = [] %}
+	{% for itemi in item %}
+		{% if mode|length < loop.index %}
+			{% set mode = mode|merge([mode|last]) %}
+		{% endif %}
+		{% set modei = mode[loop.index0] %}
+
+		{% if count|length < loop.index %}
+			{% set count = count|merge([count|last]) %}
+		{% endif %}
+		{% set counti = count[loop.index0] %}
+
+		{% if modei == 'minmax' %}
+			{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]) ]) %}
+		{% elseif modei == 'minmaxavg' %}
+			{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]), implode(itemi, ['avg', tmin, tmax, counti]) ]) %}
+		{% else %}
+			{% set seriesitems = seriesitems|merge([implode(itemi, [modei, tmin, tmax, counti])]) %}
+		{% endif %}
+	{% endfor %}
+	<div id="{{ uid(page, id) }}" data-role="popup" class="ui-content" style="min-width: 400px; min-height: 210px; ">
+		<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
+		{% if txt %}<div> {{ txt }} </div>{% endif %}
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.period" data-mode="{{ implode(mode) }}"
+		data-item="{{ implode(seriesitems) }}"
+		{% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
+		data-tmin="{{ tmin }}" data-tmax="{{ tmax }}"
+		data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axis) }}"
+		{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
+		{% if assign is not empty %} data-assign="{{ implode(assign) }}" {% endif %}
+		{% if opposite is not empty %} data-opposite="{{ implode(opposite) }}" {% endif %}
+		{% if ycolor is not empty %} data-ycolor="{{ implode(ycolor) }}" {% endif %}
+		data-ytype="{{ implode(ytype) }}"
+		data-unit="{{ implode(unit) }}"
+		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}"
+		class="plot{% if zoom == 'advanced' %} plot-highstock{% endif %}"></div>
+</div>
+{% endmacro %}
+
+
+/**
+ * prints value or text (optionally calculated and/or formatted) and provides link to a popup
+ *
+ * @param {id=} unique id for this widget (optional)
+ * @param {item[?]} one or more item(s). Multiple items in array-form: [item1, item2]
+ * @param {format=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
+   Use 'text' to display result as unformatted string, 'html' to render it as unescaped html or 'script' to just execute as JavaScript w/o displaying anything.
+ * @ add {format(text,html,script)=}
+ * @param {formula=VAR} any valid JavaScript expression with following variables and aggregate functions (optional, default: VAR)
+   - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
+   - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
+ * @param {value[]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
+ * @param {color[?](hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional)
+   additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
+   the first one is the base color for values below first threshold, so pass one color more than thresholds.
+ * @param popup-info of the float value (optional)
+ * @param icon position from left side
+ * @param icon position from top side
+ * @param unique id for the popup
+ * @param hide on mobile displays (optional value 1)  
+ *
+ * @see misc/fundamentals#Array-Form
+ *
+ * @author Stefan Widmer
+ * @info inspired by Martin Gleiß and Raik Alber
+*/
+{% macro print(id, item, format, formula, threshold, color, info, left, top, id_popup, hide) %}
+	{%import _self as ovbasic %}
+	{% import "basic.html" as basic %}
+	<a id="{{ uid(page, id) }}-overview" {% if info %}title="{{ info }}"{% endif %}
+	   {% if hide %}class="hide-mobile"{% endif %} 
+	   {% if id_popup %}data-rel="popup" href="#{{ uid(page, id_popup) }}" {% endif %}
+	   style="display: block; position: absolute; top: {{ top }}; left: {{ left }}; text-align: center; ">
+	  	<span{% if not id is empty %} id="{{ uid(page, id)-overview }}"{% endif %} data-item="{{ implode(item) }}" class="text" data-widget="basic.print"
+		data-format="{{ format }}" data-formula="{{ formula|default('VAR') }}"
+		data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">-.-</span>
+	</a>
+{% endmacro %}
+
+
+/**
+* A versatile button/switch
+* (supersedes .button, .dual, .hiddenswitch, .multistate and .switch)
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item
+* @param {type=mini} valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini)
+* @param {text[?]=[0,1]} array of values (optional, default [0,1])
+  If the item has a value that is not part of the list, the state (icon, text, color) of the last value in the list will be shown.
+* @param {image[?]=control_on_off} array of icons (optional, default just if text is empty: control_on_off.svg)
+	dynamic icons can be used, e.g. icon.light('', '', value_item); please note: these must not be wrapped by apostrophs (')
+* @param {text[?]=} array of texts (optional)
+* @param {color[?](hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional, default: icon0)
+	additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
+* @param {color(blink)=} activity indicator which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
+* @param {item=} an item to which a value on longpress is sent (optional)
+* @param {text=} the value to send on longpress (optional)
+	If this starts with a + or - sign the value is treated as offset to current stateswitch value.
+* @param {text=} the value to send on releasing after a longpress (optional)
+* @param {text=} popup-info of the button (optional)
+* @param {number} icon position from left side
+* @param {number} icon position from top side
+*
+* @see design/design_icons#Icons
+*
+* @author Stefan Widmer
+* @info Based on work of Martin GLEISS and Pierre-Yves KERVIEL
+*/
+{% macro stateswitch(id, item, type, value, icon, text, color, indicator, item_longpress, value_longpress, value_longrelease, info, left, top) %}
+	{% import _self as ovbasic %}
+	{% import "basic.html" as basic%}
+
+	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
+	{% set color = color|default(['','icon1']) %}
+
+	<div id="{{ uid(page, id) }}-overview" {% if info %}title="{{ info }}"{% endif %} style="position: absolute; top: {{ top }}; left: {{ left }}; ">
+
+		<a style="display:none"></a> /** Work around for bug in jQuery Mobile, see https://knx-user-forum.de/forum/supportforen/smartvisu/31967-neues-widget-nur-aktive-lampen-anzeigen-ausschalten-ermöglichen?p=1145001#post1145001 */
+
+		<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.stateswitch" data-item="{{ item }}"
+			data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ config_indicator_duration|default(3) }}"
+			data-item-longpress="{{ item_longpress }}"{% if not value_longpress is null %} data-value-longpress="{{ value_longpress }}"{% endif %}{% if not value_longrelease is null %} data-value-longrelease="{{ value_longrelease }}"{% endif %}
+			style="display: none; !important">
+			{% for val in value %}
+				{% set pic = icon is iterable ? icon[loop.index0] : icon %}
+				{% if type != 'text' and text is empty %}{% set pic = pic|deficon('control_on_off.svg') %}{% endif %}
+				{% set col = (color is iterable ? color[loop.index0] : color)|default('') %}
+				{% set txt = (text is iterable ? text[loop.index0] : text)|default('') %}
+				<a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" data-col="{{ col }}" {{ col == 'hidden' ? 'style="display: none;"'|raw : col == 'blank' ? 'style="visibility: hidden;"'|raw : col != 'icon1' and col != 'icon0' and not col is empty ? ('style="color: ' ~ col ~ '; fill: ' ~ col ~ '; stroke: ' ~ col ~ ';"')|raw }} class="{{ col == 'icon1' ? 'icon1 ' }}
+					{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
+						switch ui-link
+					{%- else -%} /**- display as button -*/
+						ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
+						{%- if not pic is empty -%}
+							{{ not txt is empty ? ' ui-btn-icon-top' }} ui-nodisc-icon
+						{%- endif -%}
+					{%- endif -%}
+					">
+					{%- if not pic is empty -%}{{ basic.icon(pic, not indicator is empty and (col is empty or col == 'icon0') ? 'do-fx' : col) }}{%- endif -%}
+					{{- txt|e -}}
+				</a>
+			{% endfor %}
+			<a class="ui-btn" style="display: none !important"></a> /** placeholder for last moved control */
+		</span>
+	</div>
+
+{% endmacro %}
+
+
+/**
+ * Displays window status and a simple shutter control assembly
+ *
+ * @param {id=} unique id for this widget
+ * @param {text=} title of the window (optional)
+ * @param {number} icon position from left side
+ * @param {number} icon position from top side
+ * @param {item} a gad/item for the up- and down- movement
+ * @param {item} a gad/item for stopping the movement (optional)
+ * @param {item=} a gad/item for the position of the shutters
+ * @param {item=}a gad/item to move the shutters to the shade position (optional)
+ * @param {item=} a gad/item to display the window's right wing status (optional) 
+ * @param {item=} a gad/item to display the window's left wing status (optional) 
+ * @param {type=micro} type: 'micro', 'mini', 'midi', 'icon' (optional, default: micro)
+ * @param {number=} hide on mobile displays (optional value 1)
+ */
+{% macro win_shut (id, txt, left, top, gad_move, gad_stop, gad_pos, gad_shade, gad_window_r, gad_window_l, type, hide) %}
+	{% import   "widgets/window.html" as window %}
+	{% import   "basic.html" as basic %}
+	{% import   "icon.html" as icon %}
+	{% set uid = uid(page, id) %}
+	{% set min = 0 %}
+	{% set max = 100 %}
+	
+	<style>
+	.pos .ui-slider .ui-input-text {
+		display: none !important;
+	}
+	.pos .ui-slider-track, .pos .ui-slider-switch {
+		margin: 0 15px 15px 15px !important;
+	}
+	</style>
+	<a id="{{ uid }}-button" class="{% if type == 'icon' %} icon {% else %} ui-{{ type|default('micro') }} {% endif %} {% if hide == 1 %}hide-mobile{% endif %}" {% if type != 'icon' %}data-role="button" data-inline="true" {% endif %} data-rel="popup"
+		data-iconpos="center" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %}
+		style="position: absolute; top: {{ top }}; left: {{ left }}; ">
+		{{ window.complete(uid~'-icon', gad_pos, gad_window_r, gad_window_l, min, max, color) }}
+	</a>
+	
+    <div id="{{ uid }}-popup" data-role="popup" style="min-width:200px;">
+		<div>
+			{{ window.complete(uid~'-icon', gad_pos, gad_window_r, gad_window_l, min, max, color) }}
+			{{ txt|e }}
+        </div>
+         <div data-role="controlgroup" data-type="horizontal">
+			{{ basic.stateswitch(id~'up', gad_move, 'mini', 0, 'control_arrow_up.svg') }}
+			{{ basic.stateswitch(id~'down', gad_move, 'mini', 1, 'control_arrow_down.svg') }}
+			{% if gad_stop %}{{ basic.stateswitch(id~'stop', gad_stop, 'mini', 1, 'audio_stop.svg') }}{% endif %}
+			{% if gad_shade %}{{ basic.stateswitch(id~'shade', gad_shade, 'mini', 1, 'fts_shutter_50.svg') }}{% endif %}
+		</div>
+		{% if gad_pos %}
+			<div class="pos">
+				{{ basic.slider(id~'slider', gad_pos, 0 , 100 , 5, 'horizontal', 'handle' ) }}
+			</div>
+		{% endif %}
+        <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
+    </div>
+{% endmacro %}
+
+/** 
+ *---------------------------------------------------------------------------------------------------
+ * deprecated. Change at a later date!
+ *---------------------------------------------------------------------------------------------------
+*/ 
+
+/**
+ * Element: Positioning an object / widget
+ *
+ * @param unique id for this widget
+ * @param title of the element (optional)
+ * @param icon position from left side
+ * @param icon position from top side
+ * @param a content
+ * @param width (optional)
+ * @param height (optional)
+ * @param hide on mobile displays (optional value 1)
+*/
+{% macro e (id, info, left, top, content, width, height, hide) %} 
+	<div id="{{ uid(page, id) }}-overview" {% if info %}title="{{ info }}"{% endif %}
+	    {% if hide == 1 %}class="hide-mobile"{% endif %} 
+	    {% if width %}width="{{ width }}"{% endif %} {% if height %}height="{{ height }}"{% endif %}
+		style="position: absolute; top: {{ top }}; left: {{ left }}; ">
+		{{ content }}
+	</div>
+	<script type="text/javascript">
+		$(document).on("pageshow",function() {
+			$("#{{ uid(page, id) }}-overview").css("margin-top", Math.round($("#{{ uid(page, id) }}-overview").height() / 2) * -1);
+			$("#{{ uid(page, id) }}-overview").css("margin-left", Math.round($("#{{ uid(page, id) }}-overview").width() / 2) * -1);
+		});
+	</script>
+{% endmacro %}	
+
+
+
+/**
+ * Displays window status and a simple shutter control assembly
+ *
+ * @param unique id for this widget
+ * @param title of the shutter (optional)
+ * @param icon position from left side
+ * @param icon position from top side
+ * @param a gad/item for the up- and down- movement
+ * @param a gad/item for stopping the movement (optional)
+ * @param a gad/item for the position of the shutters
+ * @param a gad/item to move the shutters to the shade position (optional)
+ * @param a gad/item to display the window status (optional) 
+ * @param type: 'micro', 'mini', 'midi', 'icon' (optional, default: micro)
+ * @param hide on mobile displays (optional value 1)
+ */
+{% macro win_shut_old (id, txt, left, top, gad_move, gad_stop, gad_pos, gad_shade, gad_window, gad_window1, type, hide) %}
+	{% import   "basic.html" as basic %}
+	{% import   "icon.html" as icon %}
+	{% import   "widgets/window.html" as window %}
+	{% set uid = uid(page, id) %}
+	{% set min = 0 %}
+	{% set max = 100 %}
+	
+	<style>
+	.pos .ui-slider .ui-input-text {
+		display: none !important;
+	}
+	.pos .ui-slider-track, .pos .ui-slider-switch {
+		margin: 0 15px 15px 15px !important;
+	}
+	</style>
+	<a id="{{ uid }}-overview" class="{% if type == 'icon' %} icon {% else %} ui-{{ type|default('micro') }} {% endif %} {% if hide == 1 %}hide-mobile{% endif %}" {% if type != 'icon' %}data-role="button" data-inline="true" {% endif %} data-rel="popup"
+		data-iconpos="center" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %}
+		style="position: absolute; top: {{ top }}; left: {{ left }}; ">
+		{% if gad_pos %}
+            <svg id="{{ uid }}-svg" data-widget="pic.shutter_window" data-item="{{ gad_pos }}, {{ gad_window }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+                class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
+                <g>
+                    <rect rx="1" x="15" y="25" width="70" height="4" />
+                    <rect x="18" y="28" width="64" height="45" fill="none" />
+                    <rect x="49" y="28" width="2" height="45" />
+                    <rect x="46" y="50" width="8" height="2" />
+                </g>
+                <g id="{{ uid }}-svg-close" display="inline">
+                    <rect x="50" y="50" width="4" height="2" fill="none"/>
+                </g>
+                <g id="{{ uid }}-svg-tilt" display="none">
+                    <path style="fill:none; stroke-width:3; fill-opacity: 0;" d="m 53,72 c -1,0 -2,-1 -2,-2 L 47,54 44,40 c 0,-1 1,-2 1,-2 l 27,0 c 1,0 2,1 2,2 l 6,31 c 0,1 -1,2 -1,2" />
+                    <rect x="48" y="56" width="4" height="2" />
+                </g>
+                <g id="{{ uid }}-svg-open" display="none">
+                    <path style="fill:none; stroke-width:3; fill-opacity: 0;" d="m 82,69 0,1 c 0,1 -1,2 -2,2 l -16,6 c -1,0 -2,0 -2,-1 l 0,-39 c 0,-1 1,-2 2,-2 l 16,-6 c 1,0 2,0 2,1" />
+                    <rect x="62" y="55" width="4" height="2" />
+                </g>
+            </svg>
+			<script type="text/javascript">
+				$(document).delegate('svg[data-widget="pic.shutter_window"]', {
+					'update': function (event, response) {
+						// response is: {{ gad_pos }}, {{ gad_window }}
+						var val = Math.round(response[0] / $(this).attr('data-max') * 38);
+						fx.grid(this, val, [14, 30], [86, 68]);
+						// alert($(this).attr('id') + " - response[0]: " + response[0] + ", response[1]: " + response[1] + ", response[2]: " + response[2]);	
+						switch (response[1]) {
+							case 0:
+								// Window close
+								// change visibility
+								document.getElementById($(this).attr('id')+"-close").setAttributeNS(null, 'display', 'inline');
+								document.getElementById($(this).attr('id')+"-tilt").setAttributeNS(null, 'display', 'none');
+								document.getElementById($(this).attr('id')+"-open").setAttributeNS(null, 'display', 'none');
+								
+								// change class
+								this.setAttributeNS(null, 'class', 'icon icon0');
+								break;
+								
+							 case 1:
+								// window tilt
+								// change visibility
+								document.getElementById($(this).attr('id')+"-close").setAttributeNS(null, 'display', 'none');
+								document.getElementById($(this).attr('id')+"-tilt").setAttributeNS(null, 'display', 'inline');
+								document.getElementById($(this).attr('id')+"-open").setAttributeNS(null, 'display', 'none');
+
+								// change class
+								this.setAttributeNS(null, 'class', 'icon icon1');
+								break;
+
+							case 2:
+								// window open
+								// change visibility
+								document.getElementById($(this).attr('id')+"-close").setAttributeNS(null, 'display', 'none');
+								document.getElementById($(this).attr('id')+"-tilt").setAttributeNS(null, 'display', 'none');
+								document.getElementById($(this).attr('id')+"-open").setAttributeNS(null, 'display', 'inline');
+
+								// change class								
+								this.setAttributeNS(null, 'class', 'icon icon1');
+								break;
+							}					
+					}	
+				});
+
+				$(document).on("pageshow",function() {
+					$("#{{ uid }}-overview").css("margin-top", Math.round($("#{{ uid }}-overview").height() / 2) * -1);
+					$("#{{ uid }}-overview").css("margin-left", Math.round($("#{{ uid }}-overview").width() / 2) * -1);
+				});
+			</script>
+		{% else %} 
+			{% if not gad_window is empty %}
+				{{ window.pic(id~'icon_open', gad_window) }}
+			{% else %}
+				<img class="icon" src="{{ icon0 }}fts_window_1w.svg" />
+			{% endif %}
+		{% endif %}
+	</a>
+	
+    <div id="{{ uid }}-popup" data-role="popup" style="min-width:200px;">
+		<div>
+		{% if not gad_window is empty %}
+			{{ window.pic(id~'popup-icon_open', gad_window) }}
+		{% endif %}
+			{{ txt|e }}
+        </div>
+         <div data-role="controlgroup" data-type="horizontal">
+			{{ basic.stateswitch(id~'up', gad_move, 'mini', 0, 'control_arrow_up.svg') }}
+			{{ basic.stateswitch(id~'down', gad_move, 'mini', 1, 'control_arrow_down.svg') }}
+			{% if gad_stop %}{{ basic.stateswitch(id~'stop', gad_stop, 'mini', 1, 'audio_stop.svg') }}{% endif %}
+			{% if gad_shade %}{{ basic.stateswitch(id~'shade', gad_shade, 'mini', 1, 'fts_shutter_50.svg') }}{% endif %}
+		</div>
+		{% if gad_pos %}<div class="pos">{{ basic.slider(id~'slider', gad_pos, 0 , 100 , 5, 'horizontal', 'handle' ) }}</div>{% endif %}
+        <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
+    </div>
+{% endmacro %}
+
