@@ -50,7 +50,7 @@
 */
 {% macro color(id, item_r_h, item_g_s, item_b_l_v, min, max, steps, colors, style, colormodel) %}
 	{% set style = style|default('disc') %}
-	
+
 	{% if style == 'slider' %}
 		{% import _self as basic %}
 		<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.color"
@@ -305,17 +305,20 @@
 * @param {color[?](hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional)
   additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
   the first one is the base color for values below first threshold, so pass one color more than thresholds.
+* @param {text=} URL to use as link (optional)
+* @param {text=} used in combination with href as data-rel attribute {e.g. to open a popup} (optional)
 *
 * @see misc/fundamentals#Array-Form
 *
 * @author Stefan Widmer
 * @info inspired by Martin Gleiß and Raik Alber
 */
-{% macro print(id, item, format, formula, threshold, color) %}
-
+{% macro print(id, item, format, formula, threshold, color, href, rel) %}
+{% if href is empty %}{% else %}<a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{% endif %}>{% endif %}
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-item="{{ implode(item) }}" class="text" data-widget="basic.print"
 		data-format="{{ format }}" data-formula="{{ formula|default('VAR') }}"
 		data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">---</span>
+  {% if href is empty %}{% else %}</a>{% endif %}
 
 {% endmacro %}
 
@@ -549,7 +552,7 @@
 			</span>
 	  {%- endfor -%}
 	</{% if href is empty %}span{% else %}a{% endif %}>
-	
+
 {% endmacro %}
 
 
