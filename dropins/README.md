@@ -8,7 +8,7 @@ You may place custom Twig html templates in here and use them in any of your pag
 System templates can be overridden by creating a template with same name in here (e.g. `base.html` in dropins overrides `pages/base/base.html`).
 
 ## Widgets
-The widget folder is being used by SmarthomeNG page generation plugin "visu-smartvisu". The plugin empties the folder and places plugin-specific widgets there. Widgets placed here manually will be deleted. If you are using the plugin "visu-smartvisu" you should place your own widgets in the widgets folder "pages/<yourPage>/widgets".
+The widget folder is being used by SmarthomeNG page generation plugin "visu-smartvisu". The plugin empties the folder and places plugin-specific widgets there. Widgets placed here manually will be deleted. If you are using the plugin "visu-smartvisu" you should place your own widgets in the widgets folder "pages/(yourPage)/widgets".
 
 ### Twig Macros
 Any valid .html file in widgets folder gets imported as widget library. E.g. a macro `bar()` defined in `widgets/foo.html` can be called in your pages by `{{ foo.bar() }}`.
