@@ -626,31 +626,40 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 
 	options: {
 		'datebox-mode': null,
-    'min-dur': null
+		'min-dur': null,
+		'stringformat': null
 	},
 
 	_update: function(response) {
 		var mode = this.options['datebox-mode'];
+		
 		if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
 			this.element.trigger('datebox', {'method': 'set', 'value': this.options['min-dur']*1}).trigger('datebox', {'method': 'dooffset', 'type': 's', 'amount': response[0] - this.options['min-dur']*1}).trigger('datebox', {'method':'doset'});
 		else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
 			this.element.datebox('setTheDate', new Date(response[0]));
-		else if(mode == 'timebox' || mode == 'timeflipbox') // data type time
+		else if(mode == 'timebox' || mode == 'timeflipbox') {// data type time
 			this.element.datebox('setTheDate', response[0]);
+		}
 	},
 
 	_events: {
 		'datebox': function (event, passed) {
 			if (passed.method === 'close' && !passed.closeCancel) {
 				var mode = this.options['datebox-mode'];
-
+				
 				var newval;
 				if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
 					newval = this.element.datebox('getLastDur');
-				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
-					newval = this.element.datebox('getTheDate');
-				else if(mode == 'timebox' || mode == 'timeflipbox') // data type time
-					newval = this.element.datebox('callFormat', this.element.datebox('getOption','timeOutput'), this.element.datebox('getTheDate'))
+				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox'){ // data type date
+					var widgetFormat = this.options['stringformat'];
+					if (widgetFormat == false)
+						newval = this.element.datebox('getTheDate');  // javascript datetime object
+					else
+						newval = this.element.datebox('callFormat', widgetFormat, this.element.datebox('getTheDate')); // converted to string from format option
+				}
+				else if(mode == 'timebox' || mode == 'timeflipbox'){ // data type time
+					newval = this.element.datebox('callFormat', this.element.datebox('getOption','timeOutput'), this.element.datebox('getTheDate'));
+				}
 				else
 					newval = this.element.val();
 
