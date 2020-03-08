@@ -205,8 +205,8 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item, sent values are:
-	- date & dateflip: Date object resp. ISO 8601 - e.g. '2017-11-29T23:00:00.000Z'
-	- time & timeflip: String with 24hr clock - e.g. '18:31:27'
+	- date, dateflip, datecal, dateslide: Date object resp. ISO 8601 - e.g. '2017-11-29T23:00:00.000Z' in UTC time (if no string format specified)
+	- time & timeflip: String with 24hr clock - e.g. '18:31:27' - format for time is taken from language file
 	- duration & durationflip: Number of seconds
 	- any other: Entered value
 * @param {text(text,number,date,dateflip,datecal,dateslide,time,timeflip,duration,durationflip)=text} 'text', 'number', 'date', 'dateflip', 'datecal', 'dateslide', 'time', 'timeflip', 'duration', 'durationflip' (optional, default: text)
@@ -214,16 +214,22 @@
 	- date & dateflip: Number of days before today
 	- time & timeflip: Format is 24hr clock - e.g. '18:31:27'
 	- duration & durationflip: in seconds
-* @param {text=} greatest allowed value (optional)
+* @param {text=} highest allowed value (optional)
 	- date & dateflip: Number of days after today
 	- time, timeflip: Format is 24hr clock - e.g. '18:31:27'
 	- duration & durationflip: in seconds
 * @param {value=1} step between two values (optional, no effect on date/time types)
+* @param {text=} string format for date only (optional)
+    - empty: default format for date will be standard date object (see above)
+    - with given format option, the date will be converted to a string, e.g. '%d.%m.%Y'	represents DD.MM.YYYY. 
+	  For options see https://jtsage.dev/DateBox/doc/3-3-output/
+	- to globally change time format for timeboxes, use the override method of JTSage in your visu.js: 
+	  jQuery.extend(jQuery.jtsage.datebox.prototype.options, {overrideTimeOutput: "%H:%M", overrideTimeFieldOrder: ["h","i"] })
 *
 * @author Stefan Widmer
 * @info Inspired by Michael Würtenberger, date/time control uses JTSageDateBox
 */
-{% macro input(id, item, type, min, max, step) %}
+{% macro input(id, item, type, min, max, step, format) %}
 	<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.input" data-item="{{ item }}"
 		{% if type|lower in ['time', 'timeflip'] %}
 			type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
@@ -234,6 +240,7 @@
 		{% elseif type|lower in ['date', 'dateflip', 'datecal', 'dateslide'] %}
 			type="text" data-role="datebox" data-datebox-mode="{{ (type == 'date' ? type : type|slice(4))~'box' }}" data-use-focus="true"
 			data-min-days="{{ min|default('false') }}" data-max-days="{{ max|default('false') }}"
+			data-stringformat ="{{ format|default('false') }}"
 		{% else %}
 			type="{{ type|default('text') }}"
 			min="{{ min }}" max="{{ max }}" step="{{ step }}"

@@ -20,14 +20,20 @@
       {{ basic.print('', 'bath.value', 'MWh') }}
       {{ basic.print('', 'bath.time', 'time') }}
       {{ basic.print('', 'bath.value', '%01,1f') }}
+	  {{ basic.print('', 'bath.value', 'V', '', '', '', '#print_popup', 'popup' ) }}
     {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
-    a voltage: {{ basic.print('', ['bath.value'], 'V', 'VAR') }}<br />
+    a voltage: {{ basic.print('', 'bath.value', 'V') }}<br />
     some calculation: {{ basic.print('', ['bath.p1', 'bath.p2', 'bath.p3'], '%', 'VAR1 / SUM(VAR) * 100') }}<br />
     an unknown unit: {{ basic.print('', 'bath.value', 'MWh') }}<br />
     a time: {{ basic.print('', 'bath.time', 'time') }}<br />
     a custom format (one decimal place): {{ basic.print('', 'bath.value', '%01,1f') }}<br />
+	a voltage with link to a popup: {{ basic.print('', 'bath.value', 'V', '', '', '', '#print_popup', 'popup' ) }}<br /> 
+	<div id="print_popup" data-role="popup" style="width:280px; height:200px;">
+			<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+			I'm a popup
+		</div>
   </div>
 
   <h5>Colors</h5>
@@ -66,10 +72,12 @@
 
   The following examples shows how to manipulate or read other elements; but any other JavaScript/jQuery exression can be used.<br>
   The second example shows text of another element. It does not use the item data at all but it is triggered by receiving an item value.<br>
-
+  <div class="html">
+	<div style="float:left;width: 80%; min-width: 100px; margin: 10px 0 0 0;">{{ basic.slider('', 'bath.value', 0, 100, 1, '', 'handle') }}</div>
+  </div>
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}
-      <span id="otherElement" style="color: yellow">This is another element</span>
+      <span id="otherElement" style="color: red">This is another element</span>
     {% endfilter %}</code>
   </div>
   <div class="twig">
@@ -79,7 +87,7 @@
     {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
-    <span id="otherElement" style="color: yellow">This is another element</span><br>
+    <span id="otherElement" style="color: red">This is another element</span><br>
     {{ basic.print('', 'bath.value', 'script', '$("#otherElement").css("padding-left", VAR1/2)') }}
     {{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherElement").text() + "\'"') }}
   </div>

@@ -21,7 +21,7 @@ SEE: [smartvisu.de](http://www.smartvisu.de)
 
 ## SYSTEM REQUIREMENTS
   * IP-Network, KNX-Bus
-  * [smarthomeNG.py](https://github.com/smarthomeNG), [linknx](http://sourceforge.net/projects/linknx/), [domotiga](https://domotiga.nl/projects/domotiga/wiki/Home), [ioBroker](https://github.com/ioBroker/ioBroker), [openHAB2](https://github.com/openhab), [FHEM](https://fhem.de/) or [knxd](https://github.com/knxd/knxd) (deprecated: [eibd](http://www.auto.tuwien.ac.at/~mkoegler/index.php/eibd) ) backend or JSON interface
+  * [smarthomeNG](https://github.com/smarthomeNG), [linknx](http://sourceforge.net/projects/linknx/), [domotiga](https://domotiga.nl/projects/domotiga/wiki/Home), [ioBroker](https://github.com/ioBroker/ioBroker), [openHAB2](https://github.com/openhab), [FHEM](https://fhem.de/) or [knxd](https://github.com/knxd/knxd) (deprecated: [eibd](http://www.auto.tuwien.ac.at/~mkoegler/index.php/eibd) ) backend or JSON interface
   * Webserver with PHP 5.2.4 
   * Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android Tablet
  
@@ -35,7 +35,7 @@ For your own Project do the following:
   2. Check the config.php and set the "config_pages" to "YOURPROJECT"
   3. Set the "config_driver" to your backend-environment
        * linknx: for linxknx and eibd environment
-       * smarthomeNG.py: for SmartHomeNG.py environment
+       * smarthomeNG: for SmartHomeNG environment
        * domotiga: for Domotiga environment
        * ...
        * knxd / eibd: for direct access
