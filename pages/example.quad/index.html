@@ -1,0 +1,92 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "quad_root.html" %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block quad_top %}
+{% endblock %}
+
+{% block quad_bottom %}
+{% endblock %}
+
+
+{% block content %}
+{% import "basic.html" as basic %}
+/**KACHELN*/
+<ul data-role="listview" data-dividertheme="c" class="quad_tiles">
+
+/**LICHT**************/
+    <li data-icon="false">
+    <a href="index.php?page=light">
+        {{ basic.symbol('light', '', 'Light', 'light_light.svg', '', '', 'icon0') }}
+            <div class="ui-ri-aside">
+            </div>
+    </a>
+    </li>
+/**SWITCHES***************/
+    <li data-icon="false">
+    <a href="index.php?page=switches">
+        {{ basic.symbol('switches', '', 'Switches', 'message_socket.svg', '', '', 'icon0') }}
+            <div class="ui-li-aside">
+            </div>
+    </a>
+    </li>
+/**HEIZUNG*************/
+    <li data-icon="false">
+    <a href="index.php?page=heating">
+    {{ basic.symbol('heating', '', 'Heating', 'sani_heating.svg', '', '', 'icon0') }}
+            <div class="ui-ri-aside">
+            </div>
+    </a>
+    </li>
+/**MULTIMEDIA*********/
+    <li data-icon="false">
+    <a href="index.php?page=media">
+    {{ basic.symbol('multimedia', '', 'Multimedia', 'scene_livingroom.svg', '', '', 'icon0') }}
+            <div class="ui-ri-aside">
+            </div>
+    </a>
+    </li>
+/**STATUS***************/
+    <li data-icon="false">
+    <a href="index.php?page=status">
+    {{ basic.symbol('status', '', 'Status', 'jquery_bullets.svg', '', '', 'icon0') }}
+            <div class="ui-ri-aside">
+            </div>
+    </a>
+    </li>
+/**BLINDS***************/
+    <li data-icon="false">
+    <a href="index.php?page=blinds">
+    {{ basic.symbol('blinds', '', 'Blinds', 'fts_shutter_50.svg', '', '', 'icon0') }}
+            <div class="ui-ri-aside">
+            </div>
+    </a>
+    </li>
+
+</ul>
+
+/**WETTER*/
+<div style="padding: 20px">
+    {% import "lib.html" as lib %}
+    {{ lib.updatecheck() }}
+
+    {% import "weather.html" as weather %}
+    {{ weather.forecastweek('weather_forecast') }}
+/**        <hr/>
+*        {{ weather.current('weather') }}
+*        <hr/>
+*/
+    </div>
+{% endblock %}
