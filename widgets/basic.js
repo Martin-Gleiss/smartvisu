@@ -1134,12 +1134,13 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		mode: '',
 		val: '',
 	},
-
 	_update: function(response) {
-		// response will be an array, if more then one item is requested
+		// response will be an array, if more than one item is requested
 		var formula = this.options.mode;
 		var values = String(this.options.val).explode();
-
+    var asThreshold = false;
+    var anyShown = false;
+    var bit = false;
 		// legacy support
 		if(formula == 'or') {
 			formula = 'VAR';
@@ -1149,11 +1150,49 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 			// If this is true, this one value will be returned and used for selecting the proper symbol.
 			formula = 'VAR.every(function(entry, i, arr) { return entry == arr[0] }) ? VAR[0] : null';
 		}
+    else if(formula == 'min') {
+			// To fulfill "and" condition, every entry in response has to have the same value.
+			// If this is true, this one value will be returned and used for selecting the proper symbol.
+      formula = 'VAR';
+      if (response instanceof Array) {
+          for (var i = 0; i < response.length; i++) {
+                  var comp = parseFloat(this.element.attr('data-val'));
+                  var test = false ? isNaN(comp) : response[i] >= comp;
+                  bit = bit || test;
+          }
+      }
+      else {
+          var comp = parseFloat(this.element.attr('data-val'));
+          bit = false ? isNaN(comp) : response >= comp;
+      }
+		}
+    else if(formula == 'max') {
+			// To fulfill "and" condition, every entry in response has to have the same value.
+			// If this is true, this one value will be returned and used for selecting the proper symbol.
+      formula = 'VAR';
+      if (response instanceof Array) {
+          for (var i = 0; i < response.length; i++) {
+                  var comp = parseFloat(this.element.attr('data-val'));
+                  var test = false ? isNaN(comp) : response[i] <= comp;
+                  if (test == true)
+                    bit = bit || test;
+                  else
+                  {
+                      bit = false;
+                      break;
+                  }
+          }
+      }
+      else {
+          var comp = parseFloat(this.element.attr('data-val'));
+          bit = false ? isNaN(comp) : response <= comp;
+      }
 
-		var asThreashold = false;
+		}
+
 		if(formula.startsWith('>')) {
 			formula = formula.length == 1 ? 'VAR' : formula.substring(1);
-			asThreashold = true;
+			asThreshold = true;
 		}
 
 		formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
@@ -1165,7 +1204,7 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 			notify.error("basic.symbol: Invalid formula", ex);
 		}
 
-		if(asThreashold) {
+		if(asThreshold) {
 			var currentIndex = 0;
 			$.each(values, function(index, threshold) {
 				if(threshold === '' || ((isNaN(val) || isNaN(threshold)) ? (threshold > val) : (parseFloat(threshold) > parseFloat(val))))
@@ -1176,12 +1215,16 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		}
 
 		var filter = Array.isArray(val) ? '[data-val="'+val.join('"],[data-val="')+'"]' : '[data-val="'+(typeof val === 'boolean' ? Number(val) : val)+'"]';
-
-		var anyShown = this.element.children('span').hide().filter(filter).first().show().length > 0;
-		if(anyShown)
+    if (!bit)
+      anyShown = this.element.children('span').hide().filter(filter).first().show().length > 0;
+		if(anyShown || bit)
+    {
 			this.element.show();
+    }
 		else
+    {
 			this.element.hide();
+    }
 	},
 
 });
