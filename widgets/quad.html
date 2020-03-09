@@ -347,7 +347,6 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "device.html" as device %}
     {% import "plot.html" as plot %}
     {% import "popup.html" as popup %}
-    {% import "extra.html" as extra %}
 	  {% import "stateengine.html" as stateengine %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -519,7 +518,7 @@ the first one is the base color for values below first threshold, so pass one co
 
       {% if (item_lock and item_bwmlock) or item_force %}
         <a href="#{{ uid(page, id) }}_list_locks_popup" data-rel="popup">
-        {{ extra.minsymbol(id~'list_lockpop_on', [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'or', color[1]|default('icon1')) }}
+        {{ basic.symbol(id~'list_lockpop_on', [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color[1]|default('icon1')) }}
         {{ basic.symbol(id~'list_lockpop_off', [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color[0]|default('icon0')) }}
         </a>
         {{ popup.locks(uid(page, id)~'_list_locks_popup', [item_lock|default(''), [color[0]|default('icon0'), color[1]|default('icon1')]], [item_bwmlock|default(''), [color[0]|default('icon0'), color[1]|default('icon1')]], [item_force|default(''), color[1]|default('icon1')]) }}
@@ -571,7 +570,7 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% if column == 'extpopup' and extpopup %}
             {% if extpopup[0] not in ext_elements %}
-              {{ extra.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if elements[loop.index] == 'div' %}
                 </div>
@@ -693,7 +692,6 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "icon.html" as icon %}
     {% import "device.html" as device %}
     {% import "popup.html" as popup %}
-    {% import "extra.html" as extra %}
     /** {% import "stateengine.html" as stateengine %} *
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -879,7 +877,7 @@ the first one is the base color for values below first threshold, so pass one co
             {% endif %}
       {% if (item_lock and item_bwmlock) or (item_lock and item_seqlock)  or (item_bwmlock and item_seqlock) or item_force %}
         <a href="#{{ uid(page, id) }}_list_locks_popup" data-rel="popup">
-        {{ extra.minsymbol(id~'list_lockpop_on', [item_lock, item_bwmlock, item_force, item_seqlock], '', 'secur_locked', 1, 'or', color[1]|default('icon1')) }}
+        {{ basic.symbol(id~'list_lockpop_on', [item_lock, item_bwmlock, item_force, item_seqlock], '', 'secur_locked', 1, 'min', color[1]|default('icon1')) }}
         {{ basic.symbol(id~'list_lockpop_off', [item_lock, item_bwmlock, item_force, item_seqlock], '', 'secur_open', 0, 'and', icon_color[0]|default('icon0')) }}
         </a>
         {{ popup.locks(uid(page, id)~'_list_locks_popup', [item_lock|default(''), icon_color[1]], [item_bwmlock|default(''), icon_color[1]], [item_force|default(''), icon_color[1]|default('icon1')], [item_seqlock|default(''), icon_color[1]]) }}
@@ -992,7 +990,7 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% if column == 'extpopup' and extpopup %}
             {% if extpopup[0] not in ext_elements %}
-              {{ extra.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if arrays[loop.index] == 'div' %}
                 </div>
@@ -1416,7 +1414,7 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% if column == 'extpopup' and extpopup %}
             {% if extpopup[0] not in ext_elements %}
-              {{ extra.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if elements[loop.index] == 'div' %}
                 </div>
@@ -2015,7 +2013,7 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% if column == 'extpopup' and extpopup %}
             {% if extpopup[0] not in ext_elements %}
-              {{ extra.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if elements[loop.index] == 'div' %}
                 </div>
@@ -2139,7 +2137,6 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "icon.html" as icon %}
     {% import "plot.html" as plot %}
     {% import "popup.html" as popup %}
-    {% import "extra.html" as extra %}
     {% import "stateengine.html" as stateengine %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -2392,7 +2389,7 @@ the first one is the base color for values below first threshold, so pass one co
           {% endif %}
           {% if (item_lock and item_bwmlock) or item_force %}
             <a href="#{{ uid(page, id) }}_list_locks_popup{{z}}{{i}}" data-rel="popup">
-            {{ extra.minsymbol(id~'list_lockpop_on'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'or', color[i][1]|default('icon1')) }}
+            {{ basic.symbol(id~'list_lockpop_on'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color[i][1]|default('icon1')) }}
             {{ basic.symbol(id~'list_lockpop_off'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color[i][0]|default('icon0')) }}
             </a>
             {{ popup.locks(uid(page, id)~'_list_locks_popup'~z~i, [item_lock|default(''), ['icon0', color[i][1]|default('icon1')]], [item_bwmlock|default(''), ['icon0', color[i][1]|default('icon1')]], [item_force|default(''), color[i][1]|default('icon1')]) }}
@@ -2525,7 +2522,7 @@ the first one is the base color for values below first threshold, so pass one co
           {% endif %}
           {% if (item_lock and item_bwmlock) or item_force %}
             <a href="#{{ uid(page, id) }}_list_locks_popup{{z}}{{i}}" data-rel="popup">
-            {{ extra.minsymbol(id~'list_lockpop_on'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'or', color[1]|default('icon1')) }}
+            {{ basic.symbol(id~'list_lockpop_on'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color[1]|default('icon1')) }}
             {{ basic.symbol(id~'list_lockpop_off'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color[0]|default('icon0')) }}
             </a>
             {{ popup.locks(uid(page, id)~'_list_locks_popup'~z~i, [item_lock|default(''), ['icon0', color[1]|default('icon1')]], [item_bwmlock|default(''), ['icon0', color[1]|default('icon1')]], [item_force|default(''), color[1]|default('icon1')]) }}
@@ -2573,7 +2570,7 @@ the first one is the base color for values below first threshold, so pass one co
 
                 {% if column == 'extpopup' and extpopup %}
                     {% if extpopup[0] not in ext_elements %}
-                      {{ extra.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+                      {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
                     {% endif %}
                     {% if arrays[loop.index] == 'div' %}
                         </div>
