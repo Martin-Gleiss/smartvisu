@@ -2021,13 +2021,6 @@ svg.fx-icon, .icon {
  * ---- POPUP ----------
  */
 
-
- .quad_list .row_ext-popup {
-   padding: 0;
-   line-height: 28px;
-   height: 28px;
- }
-
  .ext-popup .popup_table div.ui-slider {
    min-width: 200px;
    display: block;
@@ -2130,6 +2123,35 @@ svg.fx-icon, .icon {
      height: 42px;
      line-height: 40px;
      font-weight: normal;
+ }
+
+ .locks-popup {
+     height: 28px;
+     width: auto;
+ }
+
+ .popup_list .row_ext-popup {
+   padding: 0;
+   line-height: 42px;
+   height: 42px;
+ }
+
+ .popup_list .row_ext-popup .plot{
+   padding: 0;
+   line-height: 250px;
+   height: 250px;
+ }
+
+ .popup_list svg.icon0, .popup_list svg.icon1, .popup_list svg.fx-icon, .popup_list img.icon {
+     height: 30px;
+     width: 30px;
+     margin-top: -2px;
+ }
+
+ .popup_list .plot {
+     height: 250px;
+     line-height: 250px;
+     width: 300px;
  }
 
 /**
