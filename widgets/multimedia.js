@@ -1,3 +1,21 @@
+
+// ----- multimedia.image  ------------------------------------------------------
+$.widget("sv.multimedia_image", $.sv.widget, {
+
+  initSelector: '[data-widget="multimedia.image"]',
+
+  options: {
+
+  },
+    _update: function(response) {
+			var img = response[0]+((response[0].indexOf('?') == -1) ? '?' : '&') + '_=' + new Date().getTime();
+			console.log("Response" + response + " Update Multimedia Image: " + img);
+			this.element.attr('src', img);
+
+    }
+});
+
+
 // ----- multimedia.audio --------------------------------------------------------
 $.widget("sv.multimedia_audio", $.sv.widget, {
 
@@ -6,7 +24,7 @@ $.widget("sv.multimedia_audio", $.sv.widget, {
 	options: {
 		value: 1
 	},
-	
+
 	_update: function(response) {
 			if (response == this.options.value) {
 				this.element[0].play();
@@ -29,7 +47,7 @@ $.widget("sv.multimedia_slideshow", $.sv.widget, {
 
 	options: {
 	},
-	
+
 	_create: function() {
 		this._super();
 		this.element.cycle();
