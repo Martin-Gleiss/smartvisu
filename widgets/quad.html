@@ -347,7 +347,9 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "device.html" as device %}
     {% import "plot.html" as plot %}
     {% import "popup.html" as popup %}
-	  {% import "stateengine.html" as stateengine %}
+    {% if asset_exists('stateengine.html') %}
+      {% import "stateengine.html" as stateengine %}
+    {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
   {% set elements = {} %}
@@ -578,7 +580,7 @@ the first one is the base color for values below first threshold, so pass one co
         {% endif %}
 
 
-    {% if column == 'stateengine' and item_auto %}
+    {% if column == 'stateengine' and item_auto and stateengine is defined %}
             {% if extpopup[0] == 'stateengine' %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
@@ -692,7 +694,9 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "icon.html" as icon %}
     {% import "device.html" as device %}
     {% import "popup.html" as popup %}
-    /** {% import "stateengine.html" as stateengine %} *
+    {% if asset_exists('stateengine.html') %}
+      {% import "stateengine.html" as stateengine %}
+    {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
   {% set elements = {} %}
@@ -998,7 +1002,7 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% endif %}
 
-    {% if column == 'stateengine' and item_auto %}
+    {% if column == 'stateengine' and item_auto and stateengine is defined %}
             {% if extpopup[0] == 'stateengine' %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
@@ -1107,8 +1111,9 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "icon.html" as icon %}
     {% import "plot.html" as plot %}
     {% import "popup.html" as popup %}
-    {% import "extra.html" as extra %}
-    /** {% import "stateengine.html" as stateengine %} *
+    {% if asset_exists('stateengine.html') %}
+      {% import "stateengine.html" as stateengine %}
+    {% endif %}
 
 /**	{# convert array with uzsu and pos items to separate items #} */
   {% if pos_attribs is iterable %}
@@ -1421,7 +1426,7 @@ the first one is the base color for values below first threshold, so pass one co
             {% endif %}
         {% endif %}
 
-    {% if column == 'stateengine' and item_auto %}
+    {% if column == 'stateengine' and item_auto and stateengine is defined %}
             {% if extpopup[0] == 'stateengine' %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
@@ -1581,9 +1586,10 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
     {% import "device.html" as device %}
-    {% import "extra.html" as extra %}
     {% import "multimedia.html" as multimedia %}
-    /** {% import "stateengine.html" as stateengine %} *
+    {% if asset_exists('stateengine.html') %}
+      {% import "stateengine.html" as stateengine %}
+    {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
   {% set elements = {} %}
@@ -1865,12 +1871,14 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'cover' and item_album %}
             {% set coverUrl       = item_album~'.currentalbumarturl' %}
-            {% set defCoverArtUrl = 'pics/cover_empty.jpg' %}
+            {% set defCoverArtUrl = 'pages/base/pics/trans.png' %}
             <a href="#{{ uid(page, id) }}cover_popup" data-rel="popup" data-position-to="window">
-              {{ extra.cover(id~'cover', coverUrl, defCoverArtUrl, item_title|default(coverUrl)) }}
+              {{ multimedia.image(id~'cover', coverUrl, 'corner', 0, defCoverArtUrl, item_title|default(coverUrl)) }}
             </a>
             <div id="{{ uid(page, id) }}cover_popup" data-role="popup" data-overlay-theme="a" class="quad_cover-popup">
-                <img class="coverbig" id="{{ uid(page, id) }}" data-widget="extra.cover" data-item="{{ coverUrl }}" src="{{ defCoverArtUrl }}"  onerror="javascript:this.src='{{ defCoverArtUrl }}'"/>
+                <img class="coverbig" id="{{ uid(page, id) }}" data-widget="multimedia.image"
+                data-time="0" data-item="{{ coverUrl }}{% if item_title %}, {{ item_title }}{% endif %}"
+                src="{{ defCoverArtUrl }}"  onerror="javascript:this.src='{{ defCoverArtUrl }}'"/>
             </div>
 
       {% if elements[loop.index] == 'div' %}
@@ -2020,7 +2028,7 @@ the first one is the base color for values below first threshold, so pass one co
             {% endif %}
         {% endif %}
 
-    {% if column == 'stateengine' and item_auto %}
+    {% if column == 'stateengine' and item_auto and stateengine is defined %}
             {% if extpopup[0] == 'stateengine' %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
@@ -2137,7 +2145,9 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "icon.html" as icon %}
     {% import "plot.html" as plot %}
     {% import "popup.html" as popup %}
-    {% import "stateengine.html" as stateengine %}
+    {% if asset_exists('stateengine.html') %}
+      {% import "stateengine.html" as stateengine %}
+    {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
 {% if column_order %}
@@ -2447,7 +2457,7 @@ the first one is the base color for values below first threshold, so pass one co
                     {% endif %}
                 {% endif %}
 
-        {% if column == 'stateengine' and item_auto[i] %}
+        {% if column == 'stateengine' and item_auto[i] and stateengine is defined %}
                     {% if extpopup[i][0] == 'stateengine' %}
                         {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                         {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
@@ -2578,13 +2588,13 @@ the first one is the base color for values below first threshold, so pass one co
 
                 {% endif %}
 
-        {% if column == 'stateengine' and item_auto %}
-                    {% if extpopup[i][0] == 'stateengine' or extpopup[0] == 'stateengine' %}
-                        {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
-                        {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
-                    {% else %}
-                        {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
-                    {% endif %}
+        {% if column == 'stateengine' and item_auto and stateengine is defined %}
+          {% if extpopup[i][0] == 'stateengine' or extpopup[0] == 'stateengine' %}
+              {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+              {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+          {% else %}
+              {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+          {% endif %}
 
           {% if arrays[loop.index] == 'div' %}
             </div>
@@ -2638,7 +2648,7 @@ the first one is the base color for values below first threshold, so pass one co
         {% endif %}
       {% endif %}
 
-        {% if column == 'stateengine' and item_auto and type is iterable and item_auto is not iterable %}
+        {% if column == 'stateengine' and item_auto and type is iterable and item_auto is not iterable and stateengine is defined %}
                 {% for i,ext_array in extpopup %}
                     {% if extpopup[i][0] == 'stateengine' %}{% set ext = i %}{% endif %}
                 {% endfor %}
