@@ -1871,7 +1871,7 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'cover' and item_album %}
             {% set coverUrl       = item_album~'.currentalbumarturl' %}
-            {% set defCoverArtUrl = 'pics/cover_empty.jpg' %}
+            {% set defCoverArtUrl = 'pages/base/pics/trans.png' %}
             <a href="#{{ uid(page, id) }}cover_popup" data-rel="popup" data-position-to="window">
               {{ multimedia.image(id~'cover', coverUrl, 'corner', 0, defCoverArtUrl, item_title|default(coverUrl)) }}
             </a>
