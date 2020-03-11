@@ -205,3 +205,26 @@
         type="range" value="0" min="0" max="1" disabled="1" step="{{ step|default(5) }}" timer="{{ step|default(5) }}"
         orientation="horizontal" handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" data-highlight="true" />
 {% endmacro %}
+
+/**
+* A button changing from play to pause and vice versa to control a music/video player
+* Using the following logic:
+* current state: play. Click -> pause. Longclick -> stop
+* current state: pause. Click -> play. Longclick -> stop
+* current state: stop. Click -> play.
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item for the play command
+* @param {item} an item for the pause command
+* @param {item} an item for the stop command
+*
+* @author Onkel Andy
+*/
+{% macro playpause(id, item_play, item_pause, item_stop) %}
+    {% import "basic.html" as basic %}
+    <span id="{{ uid(page, id) }}" data-widget="multimedia.playpause" data-item="{{ item_play }},{{ item_pause }},{{ item_stop }}" class="icon0 ui-link switch" data-val="0">
+    <a>
+    {{ basic.icon('audio_stop', 'icon0') }}
+    </a>
+    </span>
+{% endmacro %}

@@ -112,3 +112,63 @@ $.widget("sv.multimedia_timeslider", $.sv.widget, {
         }
     }
 });
+
+// ----- multimedia.playpause ------------------------------------------------------
+// An icon changing between play, pause and stop.
+$.widget("sv.multimedia_playpause", $.sv.widget, {
+
+  initSelector: '[data-widget="multimedia.playpause"]',
+
+  options: {
+
+  },
+    _update: function(response){
+        var url = this.element.children().children().attr('src').split('/').slice(0, -1).join('/')+'/';
+        if (response[0] == 0 && response[1] == 0 || response[2] == 1)  {
+            this.element.children().children().attr('src', url+'audio_stop.svg');
+            console.log("Playpause: Stop .."+this.element.val());
+            this.element.attr('data-val', 0);
+            }
+        else if (response[1] == 1)  {
+            this.element.children().children().attr('src', url+'audio_pause.svg');
+            console.log("Playpause: Pause .."+this.element.val());
+            this.element.attr('data-val', 1);
+            }
+        else if (response[0] == 1 && response[1] == 0)  {
+            this.element.children().children().attr('src', url+'audio_play.svg');
+            this.element.attr('data-val', 2);
+            console.log("Playpause: Play .."+this.element.val());
+            }
+        },
+    _events: {
+        'taphold': function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            console.log("Playpause longtap .."+this.element.attr('data-val'));
+            var items = this.element.attr('data-item').explode();
+              io.write(items[0], 0);
+              io.write(items[1], 0);
+              io.write(items[2], 1);
+        },
+        'tap': function(event) {
+          console.log("Playpause .."+this.element.attr('data-val'));
+          var items = this.element.attr('data-item').explode();
+          if (this.element.attr('data-val') == 2) {
+            io.write(items[1], 1);
+            io.write(items[0], 0);
+            io.write(items[2], 0);
+          }
+          else if (this.element.attr('data-val') == 1) {
+            io.write(items[0], 1);
+            io.write(items[1], 0);
+            io.write(items[2], 0);
+          }
+          else if (this.element.attr('data-val') == 0) {
+            io.write(items[0], 1);
+            io.write(items[1], 0);
+            io.write(items[2], 0);
+          }
+        }
+    }
+
+});
