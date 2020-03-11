@@ -190,3 +190,18 @@
 		{{ basic.stateswitch(id, item, type|default('mini'), val, pic) }}
 	</div>
 {% endmacro %}
+
+/**
+* Displays a slider to show and control the current time of a media file
+*
+* @param {id} unique id for this widget
+* @param {item} an item providing the current time of a media file
+* @param {item} an item providing the duration of the same media file
+* @param {value=5} step in % between updates (optional, default 5)
+* @param {text(input,handle,both,none)=input} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'input')
+*/
+{% macro timeslider(id, time, duration, step, value_display) %}
+    <input id="{{ uid(page, id) }}" data-widget="multimedia.timeslider" data-item="{{ time }}, {{ duration }}"
+        type="range" value="0" min="0" max="1" disabled="1" step="{{ step|default(5) }}" timer="{{ step|default(5) }}"
+        orientation="horizontal" handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" data-highlight="true" />
+{% endmacro %}

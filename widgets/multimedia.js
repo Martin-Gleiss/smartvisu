@@ -6,7 +6,7 @@ $.widget("sv.multimedia_audio", $.sv.widget, {
 	options: {
 		value: 1
 	},
-	
+
 	_update: function(response) {
 			if (response == this.options.value) {
 				this.element[0].play();
@@ -29,7 +29,7 @@ $.widget("sv.multimedia_slideshow", $.sv.widget, {
 
 	options: {
 	},
-	
+
 	_create: function() {
 		this._super();
 		this.element.cycle();
@@ -65,4 +65,50 @@ $(document).on('pagecontainerchange', function (event, ui) {
 		ui.prevPage.find('[data-widget="multimedia.slideshow"]').cycle('pause');
 	if(ui.toPage != null)
 		ui.toPage.find('[data-widget="multimedia.slideshow"]').cycle('resume');
+});
+
+// ----- multimedia.time_slider ----------------------------------------------------------
+// shows and controls the time code of a multimedia file
+$.widget("sv.multimedia_timeslider", $.sv.widget, {
+
+  initSelector: 'input[data-widget="multimedia.timeslider"]',
+
+  options: {
+
+  },
+    _update: function(response) {
+        this.element.attr('lock', 1);
+        if (response[1] == 0) {
+          $('#' + this.element.attr("id")).val(0).slider('disable');
+        } else {
+          $('#' + this.element.attr("id")).attr('max',response[1]).val(response[0]).slider('enable');
+        }
+        $('#' + this.element.attr("id")).slider('refresh');
+        $('#' + this.element.attr("id")).attr('mem', this.element.val());
+    },
+    _events: {
+        'slidestop': function(event) {
+          if (this.element.val() != this.element.attr('mem')) {
+              var items = this.element.attr('data-item').explode();
+              io.write(items[0], this.element.val());
+                }
+           },
+        'change': function(event) {
+            if( (this.element.attr('timer') === undefined || this.element.attr('timer') == 0 && this.element.attr('lock') == 0 )
+                && (this.element.val() != this.element.attr('mem')) ) {
+
+                if (this.element.attr('timer') !== undefined)
+                    this.element.trigger('click');
+
+                this.element.attr('timer', 1);
+                setTimeout("$('#" + this.element.attr("id") + "').attr('timer', 0);", 400);
+            }
+
+            this.element.attr('lock', 0);
+        },
+        'click': function(event) {
+          var items = this.element.attr('data-item').explode();
+          io.write(items[0], this.element.val());
+        }
+    }
 });
