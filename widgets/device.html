@@ -378,7 +378,7 @@
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsuicon" data-item="{{ item }}"
 		data-headline="{{ headline|default('UZSU') }}" data-designType="{{ _backend }}"
 		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
-		class="switch icon">
+		class="icon">
 		<a>
 			<span class="icon-off">{{ basic.icon(pic_off|deficon('time_timer_switch.svg'), color_off) }}</span>
 			<span class="icon-on hide">{{ basic.icon(pic_on|deficon('time_timer_switch.svg'), color_on|default('icon1')) }}
