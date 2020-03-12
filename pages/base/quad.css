@@ -246,6 +246,7 @@
 
 .quad_tiles li.double img.icon {
     float: left;
+    margin-top: 5px;
 }
 
 .quad_tiles li.double svg {
