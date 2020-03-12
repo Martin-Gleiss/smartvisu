@@ -2120,8 +2120,8 @@ svg.fx-icon, .icon {
 
  .popup_list li {
      box-sizing: border-box;
-     height: 42px;
-     line-height: 40px;
+     /* height: 42px;
+     line-height: 40px; */
      font-weight: normal;
  }
 
@@ -2132,8 +2132,8 @@ svg.fx-icon, .icon {
 
  .popup_list .row_ext-popup {
    padding: 0;
-   line-height: 42px;
-   height: 42px;
+   /* line-height: 42px;
+   height: 42px; */
  }
 
  .popup_list .row_ext-popup .plot{
