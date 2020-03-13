@@ -580,11 +580,11 @@ the first one is the base color for values below first threshold, so pass one co
         {% endif %}
 
 
-    {% if column == 'stateengine' and item_auto and stateengine is defined %}
-            {% if extpopup[0] == 'stateengine' %}
+    {% if column == 'stateengine' and item_auto %}
+            {% if extpopup[0] == 'stateengine' and stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
-            {% else %}
+            {% elseif stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
@@ -1002,11 +1002,11 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% endif %}
 
-    {% if column == 'stateengine' and item_auto and stateengine is defined %}
-            {% if extpopup[0] == 'stateengine' %}
+    {% if column == 'stateengine' and item_auto %}
+            {% if extpopup[0] == 'stateengine' and stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
-            {% else %}
+            {% elseif stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
@@ -1426,11 +1426,11 @@ the first one is the base color for values below first threshold, so pass one co
             {% endif %}
         {% endif %}
 
-    {% if column == 'stateengine' and item_auto and stateengine is defined %}
-            {% if extpopup[0] == 'stateengine' %}
+    {% if column == 'stateengine' and item_auto %}
+            {% if extpopup[0] == 'stateengine' and stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
-            {% else %}
+            {% elseif stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
@@ -2028,11 +2028,11 @@ the first one is the base color for values below first threshold, so pass one co
             {% endif %}
         {% endif %}
 
-    {% if column == 'stateengine' and item_auto and stateengine is defined %}
-            {% if extpopup[0] == 'stateengine' %}
+    {% if column == 'stateengine' and item_auto %}
+            {% if extpopup[0] == 'stateengine' and stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
-            {% else %}
+            {% elseif stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
@@ -2457,11 +2457,11 @@ the first one is the base color for values below first threshold, so pass one co
                     {% endif %}
                 {% endif %}
 
-        {% if column == 'stateengine' and item_auto[i] and stateengine is defined %}
-                    {% if extpopup[i][0] == 'stateengine' %}
+        {% if column == 'stateengine' and item_auto[i] %}
+                    {% if extpopup[i][0] == 'stateengine' and stateengine is defined %}
                         {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                         {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
-                    {% else %}
+                    {% elseif stateengine is defined %}
                         {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values) }}
                     {% endif %}
 
@@ -2588,11 +2588,11 @@ the first one is the base color for values below first threshold, so pass one co
 
                 {% endif %}
 
-        {% if column == 'stateengine' and item_auto and stateengine is defined %}
-          {% if extpopup[i][0] == 'stateengine' or extpopup[0] == 'stateengine' %}
+        {% if column == 'stateengine' and item_auto %}
+          {% if (extpopup[i][0] == 'stateengine' or extpopup[0] == 'stateengine') and stateengine is defined %}
               {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
               {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
-          {% else %}
+          {% elseif stateengine is defined %}
               {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
           {% endif %}
 
