@@ -17,7 +17,8 @@ class Twig_Extension_AssetExistsExtension extends Twig_Extension
         $toCheck1 = $webRoot . '/widgets/' . $path;
         $toCheck2 = $webRoot . '/dropins/widgets/' . $path;
         $toCheck3 = $webRoot . '/pages/' . parse_ini_file($webRoot . '/config.ini')['pages'] . '/widgets/' . $path;
-        $toCheck4 = $webRoot . '/pages/' . end(explode('pages=', $_SERVER['REQUEST_URI'])) . '/widgets/' . $path;
+        $pages = explode('pages=', $_SERVER['REQUEST_URI']);
+        $toCheck4 = preg_match('/\bpages\b/', $_SERVER['REQUEST_URI']) ? $webRoot . '/pages/' . end($pages) . '/widgets/' . $path : $toCheck3;
 
         // check if the file exists
         if (!is_file($toCheck1) && !is_file($toCheck2) && !is_file($toCheck3) && !is_file($toCheck4))
