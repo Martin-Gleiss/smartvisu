@@ -371,7 +371,7 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item == 'extpopup' and extpopup and extpopup[0] != 'stateengine' %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'stateengine' and item_auto %}
+      {% elseif item == 'stateengine' and item_auto and stateengine is defined %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
       {% elseif item == 'plot' and item_plot %}
@@ -402,7 +402,7 @@ the first one is the base color for values below first threshold, so pass one co
         {% elseif arrayitem == 'extpopup' and extpopup and extpopup[0] != 'stateengine' %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
-        {% elseif arrayitem == 'stateengine' and item_auto %}
+        {% elseif arrayitem == 'stateengine' and item_auto and stateengine is defined %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
         {% elseif arrayitem == 'plot' and item_plot %}
@@ -447,7 +447,7 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item_plot and 'plot' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('plot')}) %}
-      {% elseif item_auto and 'stateengine' not in elements %}
+      {% elseif item_auto and 'stateengine' not in elements and stateengine is defined %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('stateengine')}) %}
       {% elseif item_uzsu and 'uzsu' not in elements %}
@@ -724,7 +724,7 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item == 'extpopup' and extpopup[0] != 'stateengine' and extpopup %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'stateengine' and item_auto %}
+      {% elseif item == 'stateengine' and item_auto and stateengine is defined %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
       {% elseif item == 'plot' and item_plot %}
@@ -761,7 +761,7 @@ the first one is the base color for values below first threshold, so pass one co
         {% elseif arrayitem == 'extpopup' and extpopup[0] != 'stateengine' and extpopup %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
-        {% elseif arrayitem == 'stateengine' and item_auto %}
+        {% elseif arrayitem == 'stateengine' and item_auto and stateengine is defined %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
         {% elseif arrayitem == 'plot' and item_plot %}
@@ -806,7 +806,7 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif extpopup and 'extpopup' not in elements and extpopup[0] != 'stateengine' %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('extpopup')}) %}
-      {% elseif item_auto and 'stateengine' not in elements %}
+      {% elseif item_auto and 'stateengine' not in elements and stateengine is defined %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('stateengine')}) %}
       {% elseif item_plot and 'plot' not in elements %}
@@ -1151,7 +1151,7 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item == 'uzsu' and item_uzsu %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'stateengine' and item_auto %}
+      {% elseif item == 'stateengine' and item_auto and stateengine is defined %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
       {% elseif item == 'plot' and item_plot %}
@@ -1195,7 +1195,7 @@ the first one is the base color for values below first threshold, so pass one co
           {% elseif arrayitem == 'uzsu' and item_uzsu %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
-          {% elseif arrayitem == 'stateengine' and item_auto %}
+          {% elseif arrayitem == 'stateengine' and item_auto and stateengine is defined %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
           {% elseif arrayitem == 'plot' and item_plot %}
@@ -1248,7 +1248,7 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item_plot and 'plot' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('plot')}) %}
-      {% elseif item_auto and 'stateengine' not in elements %}
+      {% elseif item_auto and 'stateengine' not in elements and stateengine is defined %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('stateengine')}) %}
       {% elseif item_uzsu and 'uzsu' not in elements %}
@@ -1659,7 +1659,7 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item == 'uzsu' and item_uzsu %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'stateengine' and item_auto %}
+      {% elseif item == 'stateengine' and item_auto and stateengine is defined %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
       {% elseif item == 'plot' and item_plot %}
@@ -1738,7 +1738,7 @@ the first one is the base color for values below first threshold, so pass one co
           {% elseif arrayitem == 'uzsu' and item_uzsu %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
-          {% elseif arrayitem == 'stateengine' and item_auto %}
+          {% elseif arrayitem == 'stateengine' and item_auto and stateengine is defined %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
           {% elseif arrayitem == 'plot' and item_plot %}
@@ -2173,7 +2173,7 @@ the first one is the base color for values below first threshold, so pass one co
           {% elseif (type is iterable ? item[key] == 'extpopup' : item == 'extpopup') and extpopup %}
             {% set elements_array = elements_array|merge({(key):('extpopup')}) %}
             {% set written = 1 %}
-          {% elseif (type is iterable ? item[key] == 'stateengine' : item == 'stateengine') and item_auto %}
+          {% elseif (type is iterable ? item[key] == 'stateengine' : item == 'stateengine') and item_auto and stateengine is defined %}
             {% set elements_array = elements_array|merge({(key):('stateengine')}) %}
             {% set written = 1 %}
           {% elseif (type is iterable ? item[key] == 'plot' : item == 'plot') and item_plot %}
@@ -2211,7 +2211,7 @@ the first one is the base color for values below first threshold, so pass one co
         {% elseif (type is iterable ? items[key] == 'extpopup' : items == 'extpopup') and extpopup %}
           {% set elements_array = elements_array|merge({(key):('extpopup')}) %}
           {% set written = 1 %}
-        {% elseif (type is iterable ? items[key] == 'stateengine' : items == 'stateengine') and item_auto %}
+        {% elseif (type is iterable ? items[key] == 'stateengine' : items == 'stateengine') and item_auto and stateengine is defined %}
           {% set elements_array = elements_array|merge({(key):('stateengine')}) %}
           {% set written = 1 %}
         {% elseif (type is iterable ? items[key] == 'plot' : items == 'plot') and item_plot %}
@@ -2268,7 +2268,7 @@ the first one is the base color for values below first threshold, so pass one co
                         {% set multi = multi+1 %}
                     {% endif %}
                     {% set elements_array = elements_array|merge({(i):('slider')}) %}
-                {% elseif (type is iterable ? extpopup[z] : extpopup) and ext_count == 0 and (type is iterable and item_auto is iterable ? (extpopup[z][0] != 'stateengine') : (extpopup[0] != 'stateengine')) and (type is iterable ? (extpopup[z][0] != 'switch') : (extpopup[0] != 'switch')) %}
+                {% elseif (type is iterable ? extpopup[z] : extpopup) and ext_count == 0 and (type is iterable and item_auto is iterable ? (extpopup[z][0] != 'stateengine') : (extpopup[0] != 'stateengine')) and (type is iterable ? (extpopup[z][0] != 'switch') : (extpopup[0] != 'switch')) and stateengine is defined %}
                     {% if not type is iterable %}
                         {% set elements_array = elements_array|merge({(i):('div')}) %}
                     {% else %}
@@ -2276,7 +2276,7 @@ the first one is the base color for values below first threshold, so pass one co
                     {% endif %}
                     {% set elements_array = elements_array|merge({(i):('extpopup')}) %}
                     {% set ext_count = ext_count+1 %}
-                {% elseif (type is iterable ? item_auto[z] : item_auto) and 'stateengine' not in elements_array %}
+                {% elseif (type is iterable ? item_auto[z] : item_auto) and 'stateengine' not in elements_array and stateengine is defined %}
                     {% if not type is iterable %}
                         {% set elements_array = elements_array|merge({(i):('div')}) %}
                     {% else %}
@@ -2313,7 +2313,7 @@ the first one is the base color for values below first threshold, so pass one co
             {% set elements = elements|merge({(z): (elements_array)}) %}
         {% endif %}
     {% endfor %}
-    {% if item_auto and 'stateengine' not in elements and type is iterable and item_auto is not iterable %}
+    {% if item_auto and 'stateengine' not in elements and type is iterable and item_auto is not iterable and stateengine is defined %}
       {% set elements = elements|merge({10:({0:'stateengine', 1:'div'})}) %}
     {% endif %}
     {% if item_plot and 'plot' not in elements and type is iterable and (item_plot is not iterable or item_plot|length == 17) %}
