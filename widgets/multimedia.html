@@ -32,13 +32,15 @@
 * Displays an image witch is been reloaded after a given time
 *
 * @param {id} unique id for this widget
-* @param {image} the path/url to the image
+* @param {image} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
 * @param {text(none,corner,corner-bottom,fill)=none} the mode: 'none', 'corner', 'corner-bottom', 'fill' (optional, default 'none')
 * @param {duration=10i} the reload-time in duration-format (optional, default '10i')
+* @param {image} the path/url to a default image that is shown on error and startup
+* @param {item} an item that triggers a reload of the image, can be used as an alternative to the time triggered reload, e.g. if you used the widget to renew a cover when song is changed.
 *
 * @see misc/fundamentals#Duration-Format
 */
-{% macro image(id, src, mode, time) %}
+{% macro image(id, src, mode, repeat, default_img, trigger_item) %}
 
 	<img id="{{ uid(page, id) }}" data-widget="multimedia.image" alt="multimedia.image"
 		{% if mode == 'corner' %}
@@ -48,17 +50,13 @@
 		{% elseif mode == 'fill' %}
 			style="width: 100%"
 		{% endif %}
-		src="pages/base/pics/trans.png" />
+    data-item="{{ src }}{% if trigger_item %}, {{ trigger_item }}{% endif %}"
+    data-trigger="{{ trigger_item|default('null') }}"
+    data-url="{{ src }}"
+    data-repeat="{{ repeat|default('10i') }}"
+		src="{{ default_img|default('pages/base/pics/trans.png') }}"
+    onerror="javascript:this.src='{{ default_img|default('pages/base/pics/trans.png') }}'" />
 
-	<script type="text/javascript">
-		var noCacheSrc ='{{ src|escape('js') }}' +  (('{{ src }}'.indexOf('?') == -1) ? '?' : '&') + '_=' + new Date().getTime();
-		$('#{{ uid(page, id) }}').attr('src', noCacheSrc);
-
-		setInterval(function () {
-			var noCacheSrc ='{{ src|escape('js') }}' +  (('{{ src }}'.indexOf('?') == -1) ? '?' : '&') + '_=' + new Date().getTime();
-			$('#{{ uid(page, id) }}').attr('src', noCacheSrc);
-		}, new Date().duration('{{time|default("10i")}}'));
-	</script>
 
 {% endmacro %}
 
