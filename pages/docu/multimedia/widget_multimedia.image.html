@@ -34,7 +34,7 @@ $( document ).ready(function() {
 	<div class="html">
 		<div class="block">
 			<div class="image" style="margin: 0px;">
-				{{ multimedia.image('a', 'cover_item', 'corner', '10s', '', 'refresh_item') }}
+				{{ multimedia.image('a', 'cover_item', 'corner', '', '', 'refresh_item') }}
 			</div>
 		</div>
 	</div>
@@ -42,7 +42,7 @@ $( document ).ready(function() {
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-			{{ multimedia.image('b', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner') }}
+			{{ multimedia.image('b', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner', '5s') }}
 
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
@@ -52,7 +52,7 @@ $( document ).ready(function() {
 	<div class="html">
 		<div class="block">
 			<div class="image" style="margin: 0px;">
-				{{ multimedia.image('b', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner') }}
+				{{ multimedia.image('b', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner', '5s') }}
 			</div>
 		</div>
 	</div>

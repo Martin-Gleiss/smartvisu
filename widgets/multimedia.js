@@ -10,9 +10,6 @@ $.widget("sv.multimedia_image", $.sv.widget, {
     _init: function() {
       this.element.attr('data-repeat-milliseconds', Number(new Date().duration(this.element.attr('data-repeat'))));
       var widget_url = this.element.attr('data-url');
-
-
-
       if (widget_url.includes("http")) {
         this._update();
       }
@@ -26,12 +23,12 @@ $.widget("sv.multimedia_image", $.sv.widget, {
 			img = img_base + '_=' + new Date().getTime();
 			console.log("Response: " + response + " Update Multimedia Image: " + img);
 			this.element.attr('src', img);
-
       var delay = Number(this.element.attr('data-repeat-milliseconds'));
       var el = this;
-      setInterval(function() {
-        console.log("Trigger");
-        el._update(response);
+      var timerId;
+      setTimeout(function() {
+        console.log("Trigger with: " + resp);
+        timerId = el._update(resp);
       }, delay);
     }
 });
