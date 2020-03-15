@@ -563,14 +563,14 @@
 
 .quad_table div.ui-slider {
   margin:0;
-  margin-top:0px;
+  margin-top: 0px;
   display:block;
 }
 
 .quad_list svg.icon0 {
-    height:30px;
-    width: 30px;
-    margin-top: -8px;
+    height:32px;
+    width: 32px;
+    margin-top: -4px;
 }
 
 .quad_list .column_symbol{
