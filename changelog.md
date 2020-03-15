@@ -30,7 +30,7 @@
 - basic.shutter & device.shutter: min/max are renamed to value_top/bottom and value_top may be less than value_bottom
 - device.shutter: Value and text for pos1 and pos2 can be set by parameter
 - basic.tank & icon.* (dynamic icons): min is now implemented and max may be less than min
-- device.dimmer: New parameters to specify pic and color and 'min_display' and 'max_display' like slider
+- device.dimmer: New parameters to specify pic, color, 'min_display', 'max_display' and position of the switch (left or right)
 - device.rtr: New parameters to specify separate offset item and additional content
 - Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
 - calendar.list: New parameters to select and colorize calendars
@@ -58,6 +58,7 @@
 - New weather service [darksky.net](https://darksky.net/)
 - New Fritz!Box phone service using TR-064
 - Updated Quad design with new features
+- Twig function 'asset_exists' checks availability of files (to be used before importing these files) 
 - New structure of updated examples 
 
 ### Improvements
