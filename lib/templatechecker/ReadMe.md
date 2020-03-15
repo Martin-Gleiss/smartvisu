@@ -22,7 +22,6 @@ In general the variable should reflect the file name, so if you e.g. import "ico
 Import own widgets to different variable names than standard widgets to avoid name conflicts with the standard widgets.
 Own widgets are normaly reported as unknown widgets. If you want to have your own widgets checked, too, add file called
 "templatechecker.customwidgets.php" containing the widget information for your custom widgets to your page directory.
-Examples of such files are contained in the example pages "alber.eibd", "alber.smarthome.py", "fleischer" and "otterstaetter".
 A description of the widget parameter configuration can be found in file [Developers.md](Developers.md) 
 
 ##Cases which could not be fully checked##
