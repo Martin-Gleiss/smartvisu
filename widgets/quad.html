@@ -1873,12 +1873,14 @@ the first one is the base color for values below first threshold, so pass one co
             {% set coverUrl       = item_album~'.currentalbumarturl' %}
             {% set defCoverArtUrl = 'pages/base/pics/trans.png' %}
             <a href="#{{ uid(page, id) }}cover_popup" data-rel="popup" data-position-to="window">
-              {{ multimedia.image(id~'cover', coverUrl, 'corner', 0, defCoverArtUrl, item_title|default(coverUrl)) }}
+              {{ multimedia.image(id~'cover', coverUrl, 'corner', item_title|default(coverUrl), defCoverArtUrl) }}
             </a>
+
             <div id="{{ uid(page, id) }}cover_popup" data-role="popup" data-overlay-theme="a" class="quad_cover-popup">
-                <img class="coverbig" id="{{ uid(page, id) }}" data-widget="multimedia.image"
-                data-time="0" data-item="{{ coverUrl }}{% if item_title %}, {{ item_title }}{% endif %}"
-                src="{{ defCoverArtUrl }}"  onerror="javascript:this.src='{{ defCoverArtUrl }}'"/>
+                <img class="coverbig" alt="multimedia.image" id="{{ uid(page, id) }}" data-widget="multimedia.image"
+                data-item="{{ coverUrl }}{% if item_title %}, {{ item_title }}{% endif %}"
+                data-url="{{ coverUrl }}"
+                src="{{ defCoverArtUrl|default('pages/base/pics/trans.png') }}"  onerror="javascript:this.src='{{ defCoverArtUrl|default('pages/base/pics/trans.png') }}'"/>
             </div>
 
       {% if elements[loop.index] == 'div' %}
