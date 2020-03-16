@@ -38,6 +38,7 @@
 - multimedia.slideshow: Fix items, add control buttons and reverse parameter
 - clock.miniclock: New parameter 'format'
 - status.notify: New items for title, signal, level and acknowledgement
+- multimedia.image: add items to define source and refresh trigger 
 
 ### Other New Features
 - Inline documentation can be called directly in system menu now (i.e. w/o changing pages in configuration)
