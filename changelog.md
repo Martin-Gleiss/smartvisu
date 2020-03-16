@@ -20,17 +20,17 @@
 - New: icon.cistern
 - New: icon.garagedoor
 - New: icon.heating (displays a heating colored with dynamic gradient)
-- New: îcon.roofwindow
+- New: icon.roofwindow
 - basic.symbol: Can also be used to show text only and to render as link, mode extended to adaptable formula (including thresholds), and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
 - plot.period: Among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale, units, an advanced zoom mode as in Highstock, individual count and mode per series and the possibility to set any additional chart options
 - plot.temprose: New parameters 'series_label' and 'unit'
 - plot.rtr: New parameters 'tmin', 'tmax' and 'state_max' (last one is used to set datatype of state item). Additionally the algorithm for guessing dataype has been improved.
 - basic.slider: New parameters 'value_display', 'min_display' and 'max_display'
 - device.blind & device.shutter: item_move is now optional
-- basic.shutter & device.shutter: min/max are renamed to value_top/bottom and value_top may be lesser than value_bottom
+- basic.shutter & device.shutter: min/max are renamed to value_top/bottom and value_top may be less than value_bottom
 - device.shutter: Value and text for pos1 and pos2 can be set by parameter
-- basic.tank & icon.* (dynamic icons): min is now implemented and max may be lesser than min
-- device.dimmer: New parameters to specify pic and color and 'min_display' and 'max_display' like slider
+- basic.tank & icon.* (dynamic icons): min is now implemented and max may be less than min
+- device.dimmer: New parameters to specify pic, color, 'min_display', 'max_display' and position of the switch (left or right)
 - device.rtr: New parameters to specify separate offset item and additional content
 - Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
 - calendar.list: New parameters to select and colorize calendars
@@ -57,6 +57,9 @@
 - New driver for [ioBroker](http://www.iobroker.net)
 - New weather service [darksky.net](https://darksky.net/)
 - New Fritz!Box phone service using TR-064
+- Updated Quad design with new features
+- Twig function 'asset_exists' checks availability of files (to be used before importing these files) 
+- New structure of updated examples 
 
 ### Improvements
 - Replaced make.php by on-the-fly minification (needs page cache set on)
@@ -74,7 +77,7 @@
 - Highcharts changed to Highstock (which includes Highcharts), updatet to 6.2.0 and migrated to styled mode
 
 ### Fixed Bugs
-- Changes were not visible immediate after saving configuration
+- Changes were not visible immediately after saving configuration
 - Some other minor bugs fixed
 
 ### Now Deprecated

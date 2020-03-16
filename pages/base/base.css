@@ -1252,10 +1252,16 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   margin: 15px 0 10px 0;
 }
 
-.dimmer .switch {
+.dimmer .ui-dimmer-left .switch {
   float: left;
   padding-left: 0;
   margin-right: 12px;
+}
+
+.dimmer .ui-dimmer-right .switch {
+  float: right;
+  padding-right: 0;
+  margin-left: 12px;
 }
 
 .dimmer .icon,
@@ -1264,13 +1270,22 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   height: 48px;
 }
 
-.dimmer p {
+.dimmer .ui-dimmer-left p {
   margin: 0;
   padding: 0;
 }
 
-.dimmer .ui-slider {
+.dimmer .ui-dimmer-right p {
+  margin: 0;
+  padding-left: 15px;
+}
+
+.dimmer .ui-dimmer-left .ui-slider {
   margin-left: 45px;
+  
+}
+.dimmer .ui-dimmer-right .ui-slider {
+  margin-right: 45px;
 }
 
 .codepad {
@@ -1994,17 +2009,6 @@ svg.fx-icon, .icon {
 }
 
 /**
- * --- W i d g e t s :   W E A T H E R ----------------------------------------
- */
-.weather,
-.forecast {
-  background-position-y: 50%;
-  background-size: contain;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-}
-
-/**
  * --- T e m p l a t e :   B A S E --------------------------------------------
  */
 .base .primary {
@@ -2026,6 +2030,144 @@ svg.fx-icon, .icon {
     width: 100%;
   }
 }
+
+
+/**
+ * ---- POPUP ----------
+ */
+
+ .ext-popup .popup_table div.ui-slider {
+   min-width: 200px;
+   display: block;
+   border: 0;
+   padding: 5px 0px 2px 3px;
+ }
+ .ext-popup .popup_table div.switch {
+   width: 35px;
+   display: inline-block;
+   border:0;
+   /** height: 32px !important; */
+ }
+
+ .ext-popup .popup_table div.text {
+   min-width: 50px;
+   display: inline-block;
+   border: 0;
+   width: initial;
+ }
+
+ .ext-popup .popup_table div.linetext {
+   min-width: 50px;
+   display: inline-block;
+   border: 0;
+   width: initial;
+ }
+
+ .ext-popup .popup_table div.select {
+   display: inline-block;
+   border:0;
+ }
+
+ .ext-popup .popup_table div.header {
+   text-align: center;
+   border:0;
+ }
+
+ .ext-popup .popup_table div.slider {
+   display: inline-block;
+   border: 0;
+   padding-bottom: 0px;
+ }
+
+ .ext-popup .popup_table div.flip {
+   display: inline-block;
+   border:0;
+   padding-right: 5px;
+ }
+
+ .ext-popup .popup_table div.symbol {
+   display: inline-block;
+   border:0;
+   padding-right: 5px;
+ }
+
+ .ext-popup .popup_table div.icon {
+   display: inline-block;
+   border:0;
+   padding-right: 5px;
+ }
+
+ .ext-popup {
+   min-width: 150px;
+   max-width: 600px;
+   padding: 5px;
+ }
+
+ .ext-popup.incl_uzsugraph {
+   min-width: 500px;
+   padding: 5px;
+ }
+
+ .ext-popup .uzsugraph {
+   min-width: 490px;
+   padding: 5px;
+ }
+
+ .popup_table {
+     width: 100%;
+     height: 100%;
+     display: table;
+     table-layout: fixed;
+ }
+
+ .popup_table > div {
+     display: table-cell;
+     /*margin-right: 1px;*/
+     text-align: center;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     white-space: nowrap;
+     /*height: 100%;*/
+     border-width: 1px;
+     border-style: solid;
+     border-color: #777;
+ }
+
+ .popup_list li {
+     box-sizing: border-box;
+     /* height: 42px;
+     line-height: 40px; */
+     font-weight: normal;
+ }
+
+ .locks-popup {
+     height: 36px;
+     width: auto;
+ }
+
+ .popup_list .row_ext-popup {
+   padding: 0;
+   /* line-height: 42px;
+   height: 42px; */
+ }
+
+ .popup_list .row_ext-popup .plot{
+   padding: 0;
+   line-height: 250px;
+   height: 250px;
+ }
+
+ .popup_list svg.icon0, .popup_list svg.icon1, .popup_list svg.fx-icon, .popup_list img.icon {
+     height: 30px;
+     width: 30px;
+     margin-top: -2px;
+ }
+
+ .popup_list .plot {
+     height: 250px;
+     line-height: 250px;
+     width: 300px;
+ }
 
 /**
  * --- T e m p l a t e :   Q U A D --------------------------------------------
