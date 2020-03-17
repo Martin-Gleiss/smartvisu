@@ -411,7 +411,7 @@
 .quad_table > div a.ui-btn-inline.ui-mini {
     min-width: 40px;
     min-height: 40px;
-    padding-top: 12px;
+    /*padding-top: 12px; */
 }
 
 .quad_blind-popup {
