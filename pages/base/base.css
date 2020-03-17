@@ -1252,16 +1252,10 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   margin: 15px 0 10px 0;
 }
 
-.dimmer .ui-dimmer-left .switch {
+.dimmer .switch {
   float: left;
   padding-left: 0;
   margin-right: 12px;
-}
-
-.dimmer .ui-dimmer-right .switch {
-  float: right;
-  padding-right: 0;
-  margin-left: 12px;
 }
 
 .dimmer .icon,
@@ -1270,22 +1264,13 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   height: 48px;
 }
 
-.dimmer .ui-dimmer-left p {
+.dimmer p {
   margin: 0;
   padding: 0;
 }
 
-.dimmer .ui-dimmer-right p {
-  margin: 0;
-  padding-left: 15px;
-}
-
-.dimmer .ui-dimmer-left .ui-slider {
+.dimmer .ui-slider {
   margin-left: 45px;
-  
-}
-.dimmer .ui-dimmer-right .ui-slider {
-  margin-right: 45px;
 }
 
 .codepad {
