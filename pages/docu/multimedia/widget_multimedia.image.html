@@ -13,7 +13,9 @@
 {% block example %}
 <script>
 $( document ).ready(function() {
-		 io.write('cover_item', 'https://domaingang.com/wp-content/uploads/2012/02/example.png'  );
+		 io.write('cover_item', 'https://domaingang.com/wp-content/uploads/2012/02/example.png');
+		 //io.write('cover_item', 'http://10.0.0.100:9002/music/current/cover.jpg?player=b8:27:eb:e9:8c:20');
+
 	});
 
 </script>
@@ -21,7 +23,7 @@ $( document ).ready(function() {
 	<h5>Examples</h5>
 	Use this switch to refresh the image based on an item:<br>
 	{{ basic.flip('', 'refresh_item') }}<br>
-	Use the browser console to see result (the number after the image name changes)
+	Use the browser console to see result - the number after the image name changes, the image itself does NOT change.
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
@@ -42,17 +44,17 @@ $( document ).ready(function() {
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-			{{ multimedia.image('', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner', '5s') }}
+			{{ multimedia.image('', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner', '15s') }}
 
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<br />
 
-	The image is being reloaded every 10 minutes so it is always actual.
+	The image is being reloaded every 15 seconds so it is always actual.
 	<div class="html">
 		<div class="block">
 			<div class="image" style="margin: 0px;">
-				{{ multimedia.image('', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner', '5s') }}
+				{{ multimedia.image('', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner', '15s') }}
 			</div>
 		</div>
 	</div>
