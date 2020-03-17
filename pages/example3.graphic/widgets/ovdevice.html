@@ -30,9 +30,10 @@
 * @param {value=} icon position from top side
 * @param type: 'micro', 'mini', 'midi', 'icon' (optional, default: micro)
 * @param hide on mobile displays (optional value 1)
+* @param {text='left'} position of the switch: left (default) or right
 */
 
-{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, left, top, type, hide) %}
+{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, left, top, type, hide, picpos) %}
 	{% import "basic.html" as basic %}
 	{% import   "icon.html" as icon %}
 	{% set uid = uid(page, id) %}
@@ -55,9 +56,11 @@
 	
     <div id="{{ uid }}-popup" data-role="popup" style="min-width: 250px; min-height: 80px;">
 		<div class="dimmer" data-widget="device.dimmer">
-			{{ basic.stateswitch('', item_switch, type, '', [ pic_off|default(icon.light(id~'-light', item_switch, item_value, min, max)), pic_on|default(icon.light(id~'-light', item_switch, item_value, min, max)) ], '', [ color_off , color_on|default('icon1') ]) }}
-			{{ txt|e }}
-			{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display) }} 
+			{% if picpos is empty or picpos=='left' %}<span class="ui-dimmer-left"> {% else %} <span class="ui-dimmer-right"> {% endif %}
+				{{ basic.stateswitch('', item_switch, type, '', [ pic_off|default(icon.light(id~'-light', item_switch, item_value, min, max)), pic_on|default(icon.light(id~'-light', item_switch, item_value, min, max)) ], '', [ color_off , color_on|default('icon1') ]) }}
+				{{ txt|e }}
+				{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display) }} 
+			</span>
 		</div>
         <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
     </div>
