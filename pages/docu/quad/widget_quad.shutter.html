@@ -11,12 +11,12 @@
 {% extends "widget_quad.html" %}
 
 {% block example %}
-{% set autostate = {} %}
-{% set autostate_items = {
+{% set stateengine = {} %}
+{% set stateengine_items = {
 'item1': ['item1.automatik.lock', 'item1.automatik.settings.suspendduration', '0', '60', '5', 'item1.automatik.settings.sollwert', '0', '250', '5', 'item1.automatik.settings.sperren', '0', '1', 'sperren', 'autoblind', 'standard', 'morning']
 } %}
 
-{% for item,content in autostate_items %}
+{% for item,content in stateengine_items %}
     {% set itemname = item|replace({'.': '_'}) %}
   {% set suspend = [['switch', 'slider'], [content[0], 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], [content[1], content[2], content[3], content[4], '', 'handle']] %}
   {% set sollwerte = {} %}
@@ -44,7 +44,7 @@
   {% else %}
       {% set sollwerttext = ['header', 'Sollwerte'] %}
   {% endif %}
-  {% set autostate = autostate|merge({(itemname): ['autostate', (suspendtext), (suspend), (sollwerttext), ('standard' in content ) ? (standard), ('morning' in content ) ? (morning),  ('halloween' in content and ('now'|date('m/d')) == ('10/31')) ? (halloween), ('advent' in content and (("now"|date('m/d') > ('12/01') and "now"|date('m/d') < ('12/31')) or ("now"|date('m/d') > ('01/01') and "now"|date('m/d') < ('01/15')))) ? (advent)]}) %}
+  {% set stateengine = stateengine|merge({(itemname): ['stateengine', (suspendtext), (suspend), (sollwerttext), ('standard' in content ) ? (standard), ('morning' in content ) ? (morning),  ('halloween' in content and ('now'|date('m/d')) == ('10/31')) ? (halloween), ('advent' in content and (("now"|date('m/d') > ('12/01') and "now"|date('m/d') < ('12/31')) or ("now"|date('m/d') > ('01/01') and "now"|date('m/d') < ('01/15')))) ? (advent)]}) %}
 {% endfor %}
 
 <script>
@@ -60,15 +60,15 @@ $( document ).ready(function() {
 
   <h5>Example</h5>
 
-  ['ext_popup', 'pos_shutter_ext']
+  ['extpopup', 'pos_shutter_ext']
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-    {{ quad.shutter('shutter1', 'Shutter with picture', 'shutter.lz', 'shutter.kz', 'shutter.hoehe', 'shutter.kz', 'shutter.lamellen', 'shutter.hoehe', 0, 100, 1, 'full', '', 50, 80, 'place1', 'place2', 'shutter.hoehe.zeitschalter', '', 'shutter.hoehe', '', 'shutter.automatik', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], 'place3', 'place4', ['ext_popup', 'pos_shutter_ext']) }}
+    {{ quad.shutter('shutter1', 'Shutter with picture', 'shutter.lz', 'shutter.kz', 'shutter.hoehe', 'shutter.kz', 'shutter.lamellen', 'shutter.hoehe', 0, 100, 1, 'full', '', 50, 80, 'place1', 'place2', 'shutter.hoehe.zeitschalter', '', 'shutter.hoehe', '', 'shutter.automatik', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], 'place3', 'place4', ['extpopup', 'pos_shutter_ext']) }}
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.shutter('shutter1', 'Shutter with picture', 'shutter.lz', 'shutter.kz', 'shutter.hoehe', 'shutter.kz', 'shutter.lamellen', 'shutter.hoehe', 0, 100, 1, 'full', '', 50, 80, 'place1', 'place2', 'shutter.hoehe.zeitschalter', '', 'shutter.hoehe', '', 'shutter.automatik', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], 'place3', 'place4', ['ext_popup', 'pos_shutter_ext']) }}
+    {{ quad.shutter('shutter1', 'Shutter with picture', 'shutter.lz', 'shutter.kz', 'shutter.hoehe', 'shutter.kz', 'shutter.lamellen', 'shutter.hoehe', 0, 100, 1, 'full', '', 50, 80, 'place1', 'place2', 'shutter.hoehe.zeitschalter', '', 'shutter.hoehe', '', 'shutter.automatik', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], 'place3', 'place4', ['extpopup', 'pos_shutter_ext']) }}
   </ul></div>
 
   no column order defined
