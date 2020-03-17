@@ -21,6 +21,7 @@ Multimedia
 {% block content %}
 <script>
 $( document ).ready(function() {
+     io.write('this.coverUrl', 'https://i.guim.co.uk/img/media/57667592031b5a64dfb27b227978f44bf1fde6e0/0_0_3301_3139/master/3301.jpg' );
 		 io.write('Volume', '70' );
 		 io.write('Time', '10' );
 		 io.write('Duration', '10' );
@@ -28,6 +29,7 @@ $( document ).ready(function() {
      io.write('play', '0' );
      io.write('pause', '0' );
      io.write('stop', '1' );
+
 
 	});
 
@@ -50,7 +52,7 @@ Player Control with ['uzsu','plot',['volume_down','volume_up','power'], 'source'
 {{ quad.playercontrol('player2', 'Source as Icons', 'Previous', 'Play', 'Pause', 'Stop', 'Next', 'Power', 'Eject', 'Repeat', 'Shuffle', ['Source', 'icon', ['10', 'edit_numeric_1.svg'], ['13', 'edit_numeric_2.svg']], 'Mute', 'Volume', 'Volume_Up', 'Volume_Down', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', 'speakerAB', 'uzsu', '', 'Plot', '', '', '', '', '', ['uzsu','plot',['volume_down','volume_up','power'], 'source']) }}
 
 Player Control with [['pause', 'stop'], ['cover', 'album'], 'shuffle', 'song_position']
-{{ quad.playercontrol('player3', 'With Album Art', 'Previous', 'Play', 'Pause', 'Stop', 'Next', 'Power', 'Eject', 'Repeat', 'Shuffle', ['Source', 'menu', ['10', '', '10'], ['13', '', '13']], 'Mute', 'Volume', 'Volume_Up', 'Volume_Down', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', '', 'Plot', '', '', '', '', '', ['playpause', ['cover', 'album'], 'shuffle', 'song_position']) }}
+{{ quad.playercontrol('player3', 'With Album Art', 'Previous', 'Play', 'Pause', 'Stop', 'Next', 'Power', 'Eject', 'Repeat', 'Shuffle', ['Source', 'menu', ['10', '', '10'], ['13', '', '13']], 'Mute', 'Volume', 'Volume_Up', 'Volume_Down', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', '', 'Plot', '', '', '', 'this.coverUrl', '', ['playpause', ['cover', 'album'], 'shuffle', 'song_position']) }}
 
 </ul>
 {% endblock %}

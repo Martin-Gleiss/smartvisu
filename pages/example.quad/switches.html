@@ -36,27 +36,23 @@ $( document ).ready(function() {
 
 </script>
 {% set stateengine = {
-'extra': ['edit_favorites.svg', [['linetext', 'select', 'switch'], 'Text', ['item.automatik.settings.sollwert', 'mini', [0,4,6]], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], [['switch', 'slider'], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']], [['slider'], ['item.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'flip'], 'Flip:', ['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']]],
-'stateengine': ['stateengine', [['switch', 'slider', 'flip'], ['licht.og.kueche.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['licht.og.kueche.automatik.settings.suspendduration', '0', '60', '5', '', 'handle'], ['licht.og.kueche.automatik.lock', 'An', 'Aus', '1', '0']], [['slider'], ['licht.og.kueche.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'select'], 'Text', ['licht.og.kueche.automatik.settings.sollwert', 'mini', [0,4,6]]]]
+'stateengine': ['stateengine', [['linetext', 'select', 'switch'], 'Text', ['item.automatik.settings.sollwert', 'mini', [0,4,6]], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], [['switch', 'slider'], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']], [['slider'], ['item.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'flip'], 'Flip:', ['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']]]
 }
  %}
-{% set ext_popup = {
-'extra': ['edit_favorites.svg', [['linetext', 'select', 'switch'], 'Text', ['item.automatik.settings.sollwert', 'mini', [0,4,6]], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], [['switch', 'slider'], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']], [['slider'], ['item.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'flip'], 'Flip:', ['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']]],
-'stateengine': ['stateengine', [['switch', 'slider', 'flip'], ['licht.og.kueche.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['licht.og.kueche.automatik.settings.suspendduration', '0', '60', '5', '', 'handle'], ['licht.og.kueche.automatik.lock', 'An', 'Aus', '1', '0']], [['slider'], ['licht.og.kueche.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'select'], 'Text', ['licht.og.kueche.automatik.settings.sollwert', 'mini', [0,4,6]]]],
-'stateengine': ['edit_favorites.svg', [['linetext', 'select', 'switch'], 'Text', ['item.automatik.settings.sollwert', 'mini', [0,4,6]], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], [['switch', 'slider'], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']], [['slider'], ['item.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'flip'], 'Flip:', ['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']]],
-'stateengine': ['stateengine', [['switch', 'slider', 'flip'], ['licht.og.kueche.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['licht.og.kueche.automatik.settings.suspendduration', '0', '60', '5', '', 'handle'], ['licht.og.kueche.automatik.lock', 'An', 'Aus', '1', '0']], [['slider'], ['licht.og.kueche.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'select'], 'Text', ['licht.og.kueche.automatik.settings.sollwert', 'mini', [0,4,6]]]]
-}
- %}
+ {% set extpopup = {
+ 'extra': ['edit_favorites.svg', [['linetext', 'select', 'switch'], 'Text', ['item.automatik.settings.sollwert', 'mini', [0,4,6]], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], [['switch', 'slider'], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']], [['slider'], ['item.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'flip'], 'Flip:', ['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']]]
+ }
+  %}
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
     <li data-role="list-divider">stateswitch</li>
 standard column_order
-{{ quad.stateswitch('stateswitch11', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', '', 'blink', '', '', '', '', '', 'one switch, standard order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (stateengine['extra']), ['this.sperren','bwm.this.sperren','this.zwangvalue']) }}
+{{ quad.stateswitch('stateswitch11', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', '', 'blink', '', '', '', '', '', 'one switch, standard order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (stateengine['stateengine']), ['this.sperren','bwm.this.sperren','this.zwangvalue']) }}
 
-[['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks'] with ext_popup on stateengine-icon
-{{ quad.stateswitch('stateswitch12', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (stateengine['stateengine']), 'this.sperren', '', '', '', [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks']) }}
+[['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks'] with extpopup on stateengine-icon
+{{ quad.stateswitch('stateswitch12', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', '', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (stateengine['stateengine']), 'this.sperren', '', '', '', [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks']) }}
 
-['switch', '10', ['plot','stateengine', 'locks'], '10', 'ext_popup']
-{{ quad.stateswitch('stateswitch13', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], ['','',''], ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (stateengine['extra']), 'this.sperren', '', '', '', ['switch', '10', ['plot','stateengine', 'locks'], '10', 'ext_popup']) }}
+['switch', '10', ['plot','stateengine', 'locks'], '10', 'extpopup']
+{{ quad.stateswitch('stateswitch13', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], ['','',''], ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', '', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['extra']), 'this.sperren', '', '', '', ['switch', '10', ['plot','stateengine', 'locks'], '10', 'extpopup']) }}
 
 don't use column_order for multiple switches.
 {{ quad.stateswitch('stateswitch14', ['this', 'that', 'theother'], ['icon','mini','midi'], [[1,0],'',[0,150]], [['edit_numeric_1.svg','edit_numeric_0.svg'],'',['edit_numeric_0.svg','edit_numeric_9.svg']], ['', ['0','1']], [['',''],'',['','']], ['blink','','blink'], '', '', '', 'place1', 'place2', 'Mixed types with one slider', ['', '', ''], ['this.uszu','','theother.uszu'], ['','',''], '', '', '', '', '', [['this.timer', 0, 10, 1, 'min', 'handle'],'','']) }}
@@ -69,19 +65,20 @@ don't use column_order for multiple switches.
 
 {{ quad.stateswitch('stateswitch18', ['this', 'that', 'theother'], ['icon','icon','icon'], [[0,1],[0,2],[0,3]], [['edit_numeric_0.svg','edit_numeric_1.svg'],['edit_numeric_0.svg','edit_numeric_2.svg'],['edit_numeric_0.svg','edit_numeric_3.svg']], [['off','on'],['0','2'],['0','3']], [['',''],['',''],['','']], ['blink','blink','blink'], '', '', '', '', '', 'Icon, Wert, 3 Spalten', ['', '', ''], ['','',''], '') }}
 
-{{ quad.stateswitch('stateswitch19', ['this', 'that', 'theother'], ['icon','icon','icon'], [[0,1],[0,1],[0,1]], [['edit_numeric_0.svg','edit_numeric_1.svg'],['edit_numeric_0.svg','edit_numeric_2.svg'],['edit_numeric_0.svg','edit_numeric_3.svg']], '', [['',''],['',''],['','']], ['blink','blink','blink'], '', '', '', '', '', '3 columns with different features', ['a', 'b', 'c'], ['this.uzsu','',''], ['','',''], ['','that.plot',''], '', ['this.stateengine','',''], ['', '', (stateengine['extra'])], ['',['that.sperren','bwm.that.sperren','that.zwangvalue'],'']) }}
+{{ quad.stateswitch('stateswitch19', ['this', 'that', 'theother'], ['icon','icon','icon'], [[0,1],[0,1],[0,1]], [['edit_numeric_0.svg','edit_numeric_1.svg'],['edit_numeric_0.svg','edit_numeric_2.svg'],['edit_numeric_0.svg','edit_numeric_3.svg']], '', [['',''],['',''],['','']], ['blink','blink','blink'], '', '', '', '', '', '3 columns with different features', ['a', 'b', 'c'], ['this.uzsu','',''], ['','',''], ['','that.plot',''], '', ['this.stateengine','',''], [(stateengine['stateengine']), '', (extpopup['extra'])], ['',['that.sperren','bwm.that.sperren','that.zwangvalue'],'']) }}
 
     <li data-role="list-divider">multiselect</li>
     id, item_select, type, value, pic, text, color_on, group, place1, place2, linetext
 {{ quad.select('select1', ['this', 'that'], ['menu', 'menu'], [[0,3],[4,5]], [['edit_numeric_0.svg','edit_numeric_3.svg'],['edit_numeric_4.svg','edit_numeric_5.svg']], [['0','3'],['4','5']], ['',''], ['',''], '', '', 'Select as menu', ['Select1', 'Select2'], ['this.uszu','theother.uzsu'], ['', ''], ['plotitem1', 'plotitem2']) }}
 
     <li data-role="list-divider">singleselect</li>
-[['uzsu','select'], '10', ['plot','stateengine', 'ext_popup'], '10', 'locks']
-{{ quad.select('select2', 'this', 'icon', [0,1,2], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg'], ['','',''], '', 'horizontal', '', '', 'Select as horizontal group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.stateengine', (ext_popup['extra']), 'this.sperren', 'this.slider', '', '', [['uzsu','select'], '10', ['plot','stateengine', 'ext_popup'], '10', 'locks']) }}
+[['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']
+{{ quad.select('select2', 'this', 'icon', [0,1,2], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg'], ['','',''], '', 'horizontal', '', '', 'Select as horizontal group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.stateengine', (extpopup['extra']), 'this.sperren', 'this.slider', '', '', [['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']) }}
 
 ['select', 'plot', 'uzsu']
-{{ quad.select('select3', 'this', 'icon', [0,1,2,3,4], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg','edit_numeric_4.svg'], ['','','','',''], '', '', '', '', 'Select as none group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.stateengine', '', 'this.sperren', ['this.timer', 0, 10, 1, 'min', 'handle'], '', '', ['select', 'plot', 'uzsu']) }}
+{{ quad.select('select3', 'this', 'icon', [0,1,2,3,4], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg','edit_numeric_4.svg'], ['','','','',''], '', '', '', '', 'Select as none group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.stateengine', (stateengine['stateengine']), 'this.sperren', ['this.timer', 0, 10, 1, 'min', 'handle'], '', '', ['select', 'plot', 'uzsu']) }}
 
+['select', 'stateengine', 'plot', 'uzsu']
 {{ quad.select('select4', 'this', 'mini', [0,1,2,3,4], '', ['0','1','2','3','4'], '', 'horizontal', '', '', 'Select standard columns', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.stateengine', '') }}
 
 

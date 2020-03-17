@@ -73,8 +73,8 @@ $( document ).ready(function() {
     ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']
     {{ quad.blind('blind2', 'Blind Slider. Standard-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', 'original_uzsu', 'blind.hoehe', '', '', '', '', 'place3', 'place4', ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']) }}
 
-    ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'ext_popup']
-    {{ quad.blind('blind3', 'Blind with position selector', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', 'original_uzsu', 'blind.hoehe', '', '', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['blind.hoehe', '50', '80', '0'], 'place3', 'place4', ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'ext_popup']) }}
+    ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']
+    {{ quad.blind('blind3', 'Blind with position selector', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', 'original_uzsu', 'blind.hoehe', '', '', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['blind.hoehe', '50', '80', '0'], 'place3', 'place4', ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']) }}
 
     [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']
     {{ quad.blind('blind4', 'Blind 2 different popups', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', '', '', 'place3', 'place4', [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']) }}
@@ -82,8 +82,8 @@ $( document ).ready(function() {
     {{ quad.blind('blind5', 'Blind Standard witz UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', 'original_uzsu') }}
     <li data-role="list-divider">Shutter</li>
 
-	['ext_popup', 'pos_shutter_ext']
-    {{ quad.shutter('shutter1', 'Shutter with picture', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 'blind.hoehe', 0, 100, 1, 'full', '', 50, 80, 'place1', 'place2', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], 'place3', 'place4', ['ext_popup', 'pos_shutter_ext']) }}
+	['extpopup', 'pos_shutter_ext']
+    {{ quad.shutter('shutter1', 'Shutter with picture', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 'blind.hoehe', 0, 100, 1, 'full', '', 50, 80, 'place1', 'place2', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], 'place3', 'place4', ['extpopup', 'pos_shutter_ext']) }}
     no column_order
     {{ quad.shutter('shutter2', 'Shutter, Standard', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 'blind.hoehe', 0, 100, 1, 'full', '', 50, 80) }}
 
