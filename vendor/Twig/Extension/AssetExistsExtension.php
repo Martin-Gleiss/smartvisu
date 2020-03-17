@@ -37,7 +37,21 @@ class Twig_Extension_AssetExistsExtension extends Twig_Extension
         $path = end($widgetpath);
         $toCheck1 = $webRoot . '/widgets/' . $path;
         $toCheck2 = $webRoot . '/dropins/widgets/' . $path;
-        $toCheck3 = $webRoot . '/pages/' . parse_ini_file($webRoot . '/config.ini')['pages'] . '/widgets/' . $path;
+        set_error_handler(function($errno, $errstr, $errfile, $errline, $errcontext) {
+            // error was suppressed with the @-operator
+            if (0 === error_reporting()) {
+                return false;
+            }
+
+            throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+        });
+        try {
+          $toCheck3 = $webRoot . '/pages/' . parse_ini_file($webRoot . '/config.ini')['pages'] . '/widgets/' . $path;
+        }
+        catch (Exception $e) {
+          $toCheck3 = NULL;
+        }
+        restore_error_handler();
         $pages = $this->get_string_between($_SERVER['REQUEST_URI'], 'pages=', '&');
         $toCheck4 = preg_match('/\bpages\b/', $_SERVER['REQUEST_URI']) ? $webRoot . '/pages/' . $pages . '/widgets/' . $path : NULL;
         $lastcheck = is_null($toCheck4) ? "." : ", " . $toCheck4 . ".";
