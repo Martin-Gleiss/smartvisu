@@ -558,7 +558,7 @@ the first one is the base color for values below first threshold, so pass one co
                 {% endif %}
             </a>
             <div id="{{ uid(page, id) }}list_dimmer_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-              <div class="dimmer">
+              <div class="dimmer ui-dimmer-left">
                 {{ basic.stateswitch('', item_switch, 'icon', [0,1], pic|default(['light_light', 'light_light']), '', color, indicator) }}
                 <p>{{ linetext|e }}</p>
                 {{ basic.slider('', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
@@ -928,7 +928,7 @@ the first one is the base color for values below first threshold, so pass one co
       </a>
 
       <div id="{{ uid(page, id) }}list_ww_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-        <div class="dimmer">
+        <div class="dimmer ui-dimmer-left">
           {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(),icon.light('','',item_value_ww)], '', ['#888800','#aaaa00'], indicator) }}
           <p>Warm White</p>
           {{ basic.slider('', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
@@ -951,11 +951,11 @@ the first one is the base color for values below first threshold, so pass one co
             </a>
             {% if popupcolor == 'hsv' %}
                 <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww  != ' ' ? 'quad_hsvww-popup' : 'quad_hsv-popup' }}">
-                  <div class="dimmer">
+                  <div class="dimmer ui-dimmer-left">
                   <p>Hue, Saturation, Value</p>
                     {{ basic.color('', item_value_r, item_value_g, item_value_b, min, max, step, '10', 'slider') }}
                     {% if item_value_ww and item_value_ww  != ' ' %}
-                    <div class="dimmer">
+                    <div class="dimmer ui-dimmer-left">
                       {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light("","",item_value_ww)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
                       {{ basic.slider('', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
@@ -966,23 +966,23 @@ the first one is the base color for values below first threshold, so pass one co
             {% else %}
 
             <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
-                  <div class="dimmer">
+                  <div class="dimmer ui-dimmer-left">
                     {{ basic.stateswitch('', item_switch_r, 'icon', [0,1], [icon.light(), icon.light("","",item_value_r)], '', [color_off|default('icon0'), 'red'], indicator) }}
                     <p>{{ linetext|e }} red</p>
                     {{ basic.slider('', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                   </div>
-                  <div class="dimmer">
+                  <div class="dimmer ui-dimmer-left">
                     {{ basic.stateswitch('', item_switch_g, 'icon', [0,1], [icon.light(), icon.light("","",item_value_g)], '', [color_off|default('icon0'), 'green'], indicator) }}
                     <p>{{ linetext|e }} green</p>
                     {{ basic.slider('', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                   </div>
-                  <div class="dimmer">
+                  <div class="dimmer ui-dimmer-left">
                     {{ basic.stateswitch('', item_switch_b, 'icon', [0,1], [icon.light(), icon.light("","",item_value_b)], '', [color_off|default('icon0'), 'blue'], indicator) }}
                     <p>{{ linetext|e }} blue</p>
                     {{ basic.slider('', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                   </div>
                 {% if item_value_ww and item_value_ww  != ' ' %}
-                    <div class="dimmer">
+                    <div class="dimmer ui-dimmer-left">
                       {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light("","",item_value_ww)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
                       {{ basic.slider('', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
@@ -2018,7 +2018,7 @@ the first one is the base color for values below first threshold, so pass one co
 
       </a>
       <div id="{{ uid(page, id) }}list_volume_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-        <div class="dimmer">
+        <div class="dimmer ui-dimmer-left">
           {{ basic.stateswitch('', item_mute, 'icon', [0,1], 'audio_volume_mute', '', color, indicator) }}
           <p>Volume {{ linetext|e }}</p>
           {{ basic.slider('', item_volume, volume_min, volume_max, volume_step, 'horizontal', 'handle', volume_min_display|default('0'), volume_max_display|default('100')) }}
@@ -2446,7 +2446,7 @@ the first one is the base color for values below first threshold, so pass one co
                     </a>
 
                     <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-                      <div class="dimmer">
+                      <div class="dimmer ui-dimmer-left">
                         {{ basic.stateswitch('', item_switch[i], 'icon', value[i], pic[i], '', color[i], indicator[i]) }}
                         <p>{{ linetext|e }}</p>
                         {{ basic.slider('', slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
@@ -2579,7 +2579,7 @@ the first one is the base color for values below first threshold, so pass one co
                     </a>
 
                     <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-                      <div class="dimmer">
+                      <div class="dimmer ui-dimmer-left">
                         {{ basic.stateswitch('', item_switch, 'icon', [0,1], pic, '', color, indicator) }}
                         <p>{{ linetext|e }}</p> single
                         {{ basic.slider('', slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
