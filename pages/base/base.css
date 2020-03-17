@@ -1,7 +1,7 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß, Stefan Widmer
+ * @author      Martin Gleiss, Stefan Widmer
  * @copyright   2012 - 2016
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
@@ -1246,12 +1246,15 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 /**
  * --- W i d g e t s :   D E V I C E ------------------------------------------
  */
-.dimmer {
+.dimmer,
+.dimmer .ui-dimmer-left,
+.dimmer .ui-dimmer-right {
   vertical-align: middle;
   height: 48px;
   margin: 15px 0 10px 0;
 }
 
+.dimmer .switch,
 .dimmer .ui-dimmer-left .switch {
   float: left;
   padding-left: 0;
@@ -1265,11 +1268,16 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 }
 
 .dimmer .icon,
-.dimmer .fx-icon {
+.dimmer .ui-dimmer-left .icon,
+.dimmer .ui-dimmer-right .icon,
+.dimmer .fx-icon,
+.dimmer .ui-dimmer-left .fx.icon,
+.dimmer .ui-dimmer-right .fx.icon {
   width: 48px;
   height: 48px;
 }
 
+.dimmer p,
 .dimmer .ui-dimmer-left p {
   margin: 0;
   padding: 0;
@@ -1280,6 +1288,7 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   padding-left: 15px;
 }
 
+.dimmer .ui-slider,
 .dimmer .ui-dimmer-left .ui-slider {
   margin-left: 45px;
   
