@@ -1583,7 +1583,7 @@ the first one is the base color for values below first threshold, so pass one co
                        Possible elements are: header, text, slider, flip, switch, select
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {undefined=} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {text[](previous,play,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,auto,repeat,source,speaker,playpause,shuffle, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'previous', 'play', 'stop', 'next', 'power', 'eject', 'mute', 'volume_slider', 'cover',
@@ -1591,7 +1591,7 @@ the first one is the base color for values below first threshold, so pass one co
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
-{% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, place1, place2, column_order) %}
+{% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, coverUrl, place2, column_order) %}
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
     {% import "device.html" as device %}
@@ -1879,17 +1879,16 @@ the first one is the base color for values below first threshold, so pass one co
     {% endif %}
 
     {% if column == 'cover' and item_album %}
-            {% set coverUrl       = item_album~'.currentalbumarturl' %}
-            {% set defCoverArtUrl = 'pages/base/pics/trans.png' %}
-            <a href="#{{ uid(page, id) }}cover_popup" data-rel="popup" data-position-to="window">
-              {{ multimedia.image(id~'cover', coverUrl, 'corner', item_title|default(coverUrl), defCoverArtUrl) }}
-            </a>
-
+            {% if not coverUrl %}
+              {% set coverUrl = item_album~'.currentalbumarturl' %}
+            {% endif %}
+            <div class="quad_cover">
+              <a href="#{{ uid(page, id) }}cover_popup" data-rel="popup" data-position-to="window">
+                {{ multimedia.image(id~'cover', coverUrl, 'corner', item_title|default(coverUrl), defCoverArtUrl) }}
+              </a>
+            </div>
             <div id="{{ uid(page, id) }}cover_popup" data-role="popup" data-overlay-theme="a" class="quad_cover-popup">
-                <img class="coverbig" alt="multimedia.image" id="{{ uid(page, id) }}" data-widget="multimedia.image"
-                data-item="{{ coverUrl }}{% if item_title %}, {{ item_title }}{% endif %}"
-                data-url="{{ coverUrl }}"
-                src="{{ defCoverArtUrl|default('pages/base/pics/trans.png') }}"  onerror="javascript:this.src='{{ defCoverArtUrl|default('pages/base/pics/trans.png') }}'"/>
+              {{ multimedia.image(uid(page, id)~'cover_popup', coverUrl, 'corner', item_title|default(coverUrl), defCoverArtUrl) }}
             </div>
 
       {% if elements[loop.index] == 'div' %}
