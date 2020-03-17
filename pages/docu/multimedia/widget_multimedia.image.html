@@ -13,7 +13,7 @@
 {% block example %}
 <script>
 $( document ).ready(function() {
-		 io.write('cover_item', 'https://domaingang.com/wp-content/uploads/2012/02/example.png');
+		 io.write('webcam_item', 'http://webcam.anw.at/bild1.jpg');
 		 //io.write('cover_item', 'http://10.0.0.100:9002/music/current/cover.jpg?player=b8:27:eb:e9:8c:20');
 
 	});
@@ -23,11 +23,11 @@ $( document ).ready(function() {
 	<h5>Examples</h5>
 	Use this switch to refresh the image based on an item:<br>
 	{{ basic.flip('', 'refresh_item') }}<br>
-	Use the browser console to see result - the number after the image name changes, the image itself does NOT change.
+	Use the browser console to see result - the number after the image name changes.
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-			{{ multimedia.image('', 'cover_item', 'corner', 'refresh_item') }}
+			{{ multimedia.image('', 'webcam_item', 'corner', 'refresh_item') }}
 
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
@@ -36,7 +36,7 @@ $( document ).ready(function() {
 	<div class="html">
 		<div class="block">
 			<div class="image" style="margin: 0px;">
-				{{ multimedia.image('', 'cover_item', 'corner', 'refresh_item') }}
+				{{ multimedia.image('', 'webcam_item', 'corner', 'refresh_item') }}
 			</div>
 		</div>
 	</div>
