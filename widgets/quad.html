@@ -482,7 +482,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_dimmer">
     <div class="quad_table row_dimmer" id="row_{{id|replace('.', '_')}}">
   <div class="text" data-order=0>{{ linetext|e }}
-  {% if item_auto %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }} {% endif %}
+  {% if item_auto and (not column_order or 'stateengine' in column_order) %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }} {% endif %}
   </div>
 
     {% for column in elements %}
@@ -558,7 +558,7 @@ the first one is the base color for values below first threshold, so pass one co
                 {% endif %}
             </a>
             <div id="{{ uid(page, id) }}list_dimmer_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-              <div class="dimmer">
+              <div class="dimmer ui-dimmer-left">
                 {{ basic.stateswitch('', item_switch, 'icon', [0,1], pic|default(['light_light', 'light_light']), '', color, indicator) }}
                 <p>{{ linetext|e }}</p>
                 {{ basic.slider('', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
@@ -572,6 +572,9 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% if column == 'extpopup' and extpopup %}
             {% if extpopup[0] not in ext_elements %}
+              <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
+                  {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+              </a>
               {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if elements[loop.index] == 'div' %}
@@ -844,7 +847,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_color">
     <div class="quad_table row_color" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
-    {% if item_auto %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }}{% endif %}
+    {% if item_auto and (not column_order or 'stateengine' in column_order) %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }}{% endif %}
     </div>
     {% for column in elements %}
     {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
@@ -925,7 +928,7 @@ the first one is the base color for values below first threshold, so pass one co
       </a>
 
       <div id="{{ uid(page, id) }}list_ww_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-        <div class="dimmer">
+        <div class="dimmer ui-dimmer-left">
           {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(),icon.light('','',item_value_ww)], '', ['#888800','#aaaa00'], indicator) }}
           <p>Warm White</p>
           {{ basic.slider('', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
@@ -948,11 +951,11 @@ the first one is the base color for values below first threshold, so pass one co
             </a>
             {% if popupcolor == 'hsv' %}
                 <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww  != ' ' ? 'quad_hsvww-popup' : 'quad_hsv-popup' }}">
-                  <div class="dimmer">
+                  <div class="dimmer ui-dimmer-left">
                   <p>Hue, Saturation, Value</p>
                     {{ basic.color('', item_value_r, item_value_g, item_value_b, min, max, step, '10', 'slider') }}
                     {% if item_value_ww and item_value_ww  != ' ' %}
-                    <div class="dimmer">
+                    <div class="dimmer ui-dimmer-left">
                       {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light("","",item_value_ww)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
                       {{ basic.slider('', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
@@ -963,23 +966,23 @@ the first one is the base color for values below first threshold, so pass one co
             {% else %}
 
             <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
-                  <div class="dimmer">
+                  <div class="dimmer ui-dimmer-left">
                     {{ basic.stateswitch('', item_switch_r, 'icon', [0,1], [icon.light(), icon.light("","",item_value_r)], '', [color_off|default('icon0'), 'red'], indicator) }}
                     <p>{{ linetext|e }} red</p>
                     {{ basic.slider('', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                   </div>
-                  <div class="dimmer">
+                  <div class="dimmer ui-dimmer-left">
                     {{ basic.stateswitch('', item_switch_g, 'icon', [0,1], [icon.light(), icon.light("","",item_value_g)], '', [color_off|default('icon0'), 'green'], indicator) }}
                     <p>{{ linetext|e }} green</p>
                     {{ basic.slider('', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                   </div>
-                  <div class="dimmer">
+                  <div class="dimmer ui-dimmer-left">
                     {{ basic.stateswitch('', item_switch_b, 'icon', [0,1], [icon.light(), icon.light("","",item_value_b)], '', [color_off|default('icon0'), 'blue'], indicator) }}
                     <p>{{ linetext|e }} blue</p>
                     {{ basic.slider('', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                   </div>
                 {% if item_value_ww and item_value_ww  != ' ' %}
-                    <div class="dimmer">
+                    <div class="dimmer ui-dimmer-left">
                       {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light("","",item_value_ww)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
                       {{ basic.slider('', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
@@ -994,6 +997,9 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% if column == 'extpopup' and extpopup %}
             {% if extpopup[0] not in ext_elements %}
+              <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
+                  {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+              </a>
               {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if arrays[loop.index] == 'div' %}
@@ -1282,7 +1288,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_shutter">
     <div class="quad_table row_shutter" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
-    {% if item_auto %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }} {% endif %}
+    {% if item_auto and (not column_order or 'stateengine' in column_order) %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }} {% endif %}
     </div>
     {% for column in elements %}
     {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
@@ -1419,6 +1425,9 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% if column == 'extpopup' and extpopup %}
             {% if extpopup[0] not in ext_elements %}
+              <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
+                  {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+              </a>
               {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if elements[loop.index] == 'div' %}
@@ -1574,7 +1583,7 @@ the first one is the base color for values below first threshold, so pass one co
                        Possible elements are: header, text, slider, flip, switch, select
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {undefined=} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {text[](previous,play,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,auto,repeat,source,speaker,playpause,shuffle, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'previous', 'play', 'stop', 'next', 'power', 'eject', 'mute', 'volume_slider', 'cover',
@@ -1582,7 +1591,7 @@ the first one is the base color for values below first threshold, so pass one co
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
-{% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, place1, place2, column_order) %}
+{% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, coverUrl, place2, column_order) %}
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
     {% import "device.html" as device %}
@@ -1870,15 +1879,16 @@ the first one is the base color for values below first threshold, so pass one co
     {% endif %}
 
     {% if column == 'cover' and item_album %}
-            {% set coverUrl       = item_album~'.currentalbumarturl' %}
-            {% set defCoverArtUrl = 'pages/base/pics/trans.png' %}
-            <a href="#{{ uid(page, id) }}cover_popup" data-rel="popup" data-position-to="window">
-              {{ multimedia.image(id~'cover', coverUrl, 'corner', 0, defCoverArtUrl, item_title|default(coverUrl)) }}
-            </a>
+            {% if not coverUrl %}
+              {% set coverUrl = item_album~'.currentalbumarturl' %}
+            {% endif %}
+            <div class="quad_cover">
+              <a href="#{{ uid(page, id) }}cover_popup" data-rel="popup" data-position-to="window">
+                {{ multimedia.image(id~'cover', coverUrl, 'corner', item_title|default(coverUrl), defCoverArtUrl) }}
+              </a>
+            </div>
             <div id="{{ uid(page, id) }}cover_popup" data-role="popup" data-overlay-theme="a" class="quad_cover-popup">
-                <img class="coverbig" id="{{ uid(page, id) }}" data-widget="multimedia.image"
-                data-time="0" data-item="{{ coverUrl }}{% if item_title %}, {{ item_title }}{% endif %}"
-                src="{{ defCoverArtUrl }}"  onerror="javascript:this.src='{{ defCoverArtUrl }}'"/>
+              {{ multimedia.image(uid(page, id)~'cover_popup', coverUrl, 'corner', item_title|default(coverUrl), defCoverArtUrl) }}
             </div>
 
       {% if elements[loop.index] == 'div' %}
@@ -2008,7 +2018,7 @@ the first one is the base color for values below first threshold, so pass one co
 
       </a>
       <div id="{{ uid(page, id) }}list_volume_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-        <div class="dimmer">
+        <div class="dimmer ui-dimmer-left">
           {{ basic.stateswitch('', item_mute, 'icon', [0,1], 'audio_volume_mute', '', color, indicator) }}
           <p>Volume {{ linetext|e }}</p>
           {{ basic.slider('', item_volume, volume_min, volume_max, volume_step, 'horizontal', 'handle', volume_min_display|default('0'), volume_max_display|default('100')) }}
@@ -2021,6 +2031,9 @@ the first one is the base color for values below first threshold, so pass one co
 
         {% if column == 'extpopup' and extpopup %}
             {% if extpopup[0] not in ext_elements %}
+              <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
+                  {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+              </a>
               {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if elements[loop.index] == 'div' %}
@@ -2268,7 +2281,7 @@ the first one is the base color for values below first threshold, so pass one co
                         {% set multi = multi+1 %}
                     {% endif %}
                     {% set elements_array = elements_array|merge({(i):('slider')}) %}
-                {% elseif (type is iterable ? extpopup[z] : extpopup) and ext_count == 0 and (type is iterable and item_auto is iterable ? (extpopup[z][0] != 'stateengine') : (extpopup[0] != 'stateengine')) and (type is iterable ? (extpopup[z][0] != 'switch') : (extpopup[0] != 'switch')) and stateengine is defined %}
+                {% elseif (type is iterable ? extpopup[z] : extpopup) and ext_count == 0 and (type is iterable and item_auto is iterable ? (extpopup[z][0] != 'stateengine') : (extpopup[0] != 'stateengine')) and (type is iterable ? (extpopup[z][0] != 'switch') : (extpopup[0] != 'switch')) %}
                     {% if not type is iterable %}
                         {% set elements_array = elements_array|merge({(i):('div')}) %}
                     {% else %}
@@ -2345,7 +2358,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_stateswitch">
     <div class="quad_table row_stateswitch" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
-    {% if item_auto %}&nbsp;
+    {% if item_auto and (not column_order or 'stateengine' in column_order) %}&nbsp;
     {{ basic.print('', item_auto~'.suspend_end', 'text') }}
     {% endif %}
     </div>
@@ -2433,7 +2446,7 @@ the first one is the base color for values below first threshold, so pass one co
                     </a>
 
                     <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-                      <div class="dimmer">
+                      <div class="dimmer ui-dimmer-left">
                         {{ basic.stateswitch('', item_switch[i], 'icon', value[i], pic[i], '', color[i], indicator[i]) }}
                         <p>{{ linetext|e }}</p>
                         {{ basic.slider('', slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
@@ -2446,9 +2459,9 @@ the first one is the base color for values below first threshold, so pass one co
 
                 {% if column == 'extpopup' and extpopup[i]  %}
                     {% if extpopup[i][0] not in ext_elements %}
-                        <a href="#{{ uid(page, id) }}list_extpopup{{z}}{{i}}" data-rel="popup" data-position-to="window">
-                            {{ basic.symbol(id~'extpopupicon'~z~i, '', '', extpopup[i][0], '', '', icon_color[i][0]|default('icon0')) }}
-                        </a>
+                            <a href="#{{ uid(page, id) }}list_extpopup{{z}}{{i}}" data-rel="popup" data-position-to="window">
+                                {{ basic.symbol(id~'extpopupicon'~z~i, '', '', extpopup[i][0], '', '', icon_color[i][0]|default('icon0')) }}
+                            </a>
                             {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
 
                     {% endif %}
@@ -2566,7 +2579,7 @@ the first one is the base color for values below first threshold, so pass one co
                     </a>
 
                     <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-                      <div class="dimmer">
+                      <div class="dimmer ui-dimmer-left">
                         {{ basic.stateswitch('', item_switch, 'icon', [0,1], pic, '', color, indicator) }}
                         <p>{{ linetext|e }}</p> single
                         {{ basic.slider('', slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
@@ -2580,6 +2593,9 @@ the first one is the base color for values below first threshold, so pass one co
 
                 {% if column == 'extpopup' and extpopup %}
                     {% if extpopup[0] not in ext_elements %}
+                      <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
+                          {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+                      </a>
                       {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
                     {% endif %}
                     {% if arrays[loop.index] == 'div' %}

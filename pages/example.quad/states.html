@@ -28,10 +28,8 @@ $( document ).ready(function() {
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
     <li data-role="list-divider">Use to change values below</li>
 {{ quad.stateswitch('stateswitch2', ['this', 'that', 'theother'], ['icon','', 'icon'], [[0,1, 100],[0,1,100,200],[1,2]], [['edit_numeric_0.svg','edit_numeric_1.svg', ''],'',['edit_numeric_1.svg','edit_numeric_2.svg']], [['','','100'],[0,1,100,200],''], [['',''],['','','','',''],''], ['blink','blink',''], '', '', '', '', '', 'CHANGE STATUS ITEMS HERE', ['this', 'that', 'theother']) }}
-<li data-role="list-divider">status.notify = value from "that"-item as badge</li>
-  <li>{{ status.badge('', 'that', [100,200], ['hidden', 'yellow', 'red']) }}
-    {{ basic.flip('flip1', 'bath.alert.info') }}
-{{ status.message('p1', 'bath.alert.info', '', '', 'Message 1', '... with some plain text ...') }}
+<li data-role="list-divider">status badge based on "that" value</li>
+  <li>{{ basic.symbol() }}{{ status.badge('', 'that', [100,200], ['hidden', 'yellow', 'red']) }}
   </li>
 
 <li data-role="list-divider">print</li>

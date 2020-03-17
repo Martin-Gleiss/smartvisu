@@ -21,6 +21,7 @@ Multimedia
 {% block content %}
 <script>
 $( document ).ready(function() {
+     io.write('coverUrl', 'https://hackernoon.com/hn-images/0*FCDlVLqqpY94s-Jf.jpg' );
 		 io.write('Volume', '70' );
 		 io.write('Time', '10' );
 		 io.write('Duration', '10' );
@@ -29,14 +30,15 @@ $( document ).ready(function() {
      io.write('pause', '0' );
      io.write('stop', '1' );
 
+
 	});
 
 </script>
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
-  <li data-role="list-divider">Use to change player values below</li>
+<li data-role="list-divider">Use to change player values below</li>
 
 {{ quad.stateswitch('', ['Play', 'Pause', 'Stop'], ['icon', 'icon', 'icon'], '', ['audio_play', 'audio_pause', 'audio_stop'], ['', '',''], ['', '',''], ['blink','blink','blink'], '', '', '', '', '', 'CHANGE STATUS ITEMS HERE', ['play', 'pause', 'stop']) }}
-
+Change Title: {{ basic.flip('', 'Title', 'Song A', 'Song B', 'Song A', 'Song B') }}<br>
 
 	<li data-role="list-divider">Volume</li>
 Volume Control with the following columns: ['uzsu','plot',['volume_up','volume_down'],'volume_slider']
@@ -50,7 +52,7 @@ Player Control with ['uzsu','plot',['volume_down','volume_up','power'], 'source'
 {{ quad.playercontrol('player2', 'Source as Icons', 'Previous', 'Play', 'Pause', 'Stop', 'Next', 'Power', 'Eject', 'Repeat', 'Shuffle', ['Source', 'icon', ['10', 'edit_numeric_1.svg'], ['13', 'edit_numeric_2.svg']], 'Mute', 'Volume', 'Volume_Up', 'Volume_Down', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', 'speakerAB', 'uzsu', '', 'Plot', '', '', '', '', '', ['uzsu','plot',['volume_down','volume_up','power'], 'source']) }}
 
 Player Control with [['pause', 'stop'], ['cover', 'album'], 'shuffle', 'song_position']
-{{ quad.playercontrol('player3', 'With Album Art', 'Previous', 'Play', 'Pause', 'Stop', 'Next', 'Power', 'Eject', 'Repeat', 'Shuffle', ['Source', 'menu', ['10', '', '10'], ['13', '', '13']], 'Mute', 'Volume', 'Volume_Up', 'Volume_Down', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', '', 'Plot', '', '', '', '', '', ['playpause', ['cover', 'album'], 'shuffle', 'song_position']) }}
+{{ quad.playercontrol('player3', 'With Album Art', 'Previous', 'Play', 'Pause', 'Stop', 'Next', 'Power', 'Eject', 'Repeat', 'Shuffle', ['Source', 'menu', ['10', '', '10'], ['13', '', '13']], 'Mute', 'Volume', 'Volume_Up', 'Volume_Down', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', '', 'Plot', '', '', '', 'coverUrl', '', ['playpause', ['cover', 'album'], 'shuffle', 'song_position']) }}
 
 </ul>
 {% endblock %}
