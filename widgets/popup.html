@@ -50,49 +50,51 @@
             {% if attribs is not iterable %}
                {% set attribs = [attribs] %}
             {% endif %}
-            {% for key1,item in attribs  %}
-                {% if item == 'switch' or item == 'stateswitch' %}
+            {% for key1,item in attribs %}
+                {% if key == 0 and (item == 'switch' or item == 'stateswitch') %}
                     {% set switch_attribs = _context['line' ~ linenumber][key+key1+1] %}
                     <div class="switch popup_column_{{i}}">{{ basic.stateswitch(id~'switch'~key1~item~linenumber, switch_attribs[0], switch_attribs[1], switch_attribs[2], switch_attribs[3], switch_attribs[4], switch_attribs[5], switch_attribs[6]) }}</div>
                     {% set i = i+1 %}
-                {% elseif item == 'select' %}
+                {% elseif key == 0 and item == 'select' %}
                     {% set select_attribs = _context['line' ~ linenumber][key+key1+1] %}
                     <div class="select popup_column_{{i}}">{{ basic.select(id~'select'~key1~item~linenumber, select_attribs[0], select_attribs[1], select_attribs[2], select_attribs[3], select_attribs[4]|default(''), select_attribs[5]|default('icon1'), select_attribs[6]|default('horizontal')) }}</div>
                     {% set i = i+1 %}
-                {% elseif item == 'image' or item == 'icon' %}
+                {% elseif key == 0 and (item == 'image' or item == 'icon') %}
                     {% set icon_attribs = _context['line' ~ linenumber][key+key1+1] %}
                     <div class="icon popup_column_{{i}}">{{ basic.icon(icon_attribs[0], icon_attribs[1], icon_attribs[2]) }}</div>
                     {% set i = i+1 %}
-                {% elseif item == 'flip' %}
+                {% elseif key == 0 and item == 'flip' %}
                     {% set flip_attribs = _context['line' ~ linenumber][key+key1+1] %}
                     <div class="flip popup_column_{{i}}">{{ basic.flip(id~'flip'~key1~item~linenumber, flip_attribs[0], flip_attribs[1], flip_attribs[2], flip_attribs[3], flip_attribs[4], flip_attribs[5]) }}</div>
                     {% set i = i+1 %}
-                {% elseif item == 'slider' %}
+                {% elseif key == 0 and item == 'slider' %}
                     {% set slider_attribs = _context['line' ~ linenumber][key+key1+1] %}
                     <div class="slider popup_column_{{i}}">{{ basic.slider(id~'slider'~key1~item~linenumber, slider_attribs[0], slider_attribs[1], slider_attribs[2], slider_attribs[3], slider_attribs[4], slider_attribs[5], slider_attribs[6], slider_attribs[7], slider_attribs[8]) }}</div>
                     {% set i = i+1 %}
-                {% elseif item == 'text' or item == 'symbol' %}
+                {% elseif key == 0 and (item == 'text' or item == 'symbol') %}
                     {% set text_attribs = _context['line' ~ linenumber][key+key1+1] %}
                     <div class="text popup_column_{{i}}">{{ basic.symbol(id~'text'~key1~item~linenumber, text_attribs[0], text_attribs[1], text_attribs[2], text_attribs[3], text_attribs[4], text_attribs[5], text_attribs[6], text_attribs[7]) }}</div>
                     {% set i = i+1 %}
-                {% elseif item == 'print' %}
+                {% elseif key == 0 and item == 'print' %}
                     {% set print_attribs = _context['line' ~ linenumber][key+key1+1] %}
                     <div class="print popup_column_{{i}}">{{ basic.print(id~'print'~key1~item~linenumber, print_attribs[0], print_attribs[1], print_attribs[2], print_attribs[3], print_attribs[4]) }}</div>
                     {% set i = i+1 %}
-                {% elseif item == 'linetext' %}
+                {% elseif key == 0 and item == 'linetext' %}
                     {% set linetext_attrib = _context['line' ~ linenumber][key+key1+1] %}
                     <div class="linetext popup_column_{{i}}">{{ linetext_attrib|e }}</div>
                     {% set i = i+1 %}
-                {% elseif item == 'uzsugraph' %}
+                {% elseif key == 0 and item == 'uzsugraph' %}
                     {% set uzsugraph_attribs = _context['line' ~ linenumber][key+key1+1] %}
                     <div class="uzsugraph popup_column_{{i}}">{{ device.uzsugraph(id~'uzsugraph'~key1~item~linenumber, uzsugraph_attribs[0], uzsugraph_attribs[1], uzsugraph_attribs[2], uzsugraph_attribs[3], uzsugraph_attribs[4], uzsugraph_attribs[5]) }}</div>
                     {% set i = i+1 %}
-                {% elseif item == 'plot' %}
+                {% elseif key == 0 and item == 'plot' %}
                     {% set plot_attribs = _context['line' ~ linenumber][key+key1+1] %}
                     <div class="plot popup_column_{{i}}">{{ plot.period(id~'plot'~key1~item~linenumber, plot_attribs[0], plot_attribs[1], plot_attribs[2], plot_attribs[3], plot_attribs[4], plot_attribs[5], plot_attribs[6], plot_attribs[7], plot_attribs[8], plot_attribs[9], plot_attribs[10], plot_attribs[11], plot_attribs[12], plot_attribs[13], plot_attribs[14], plot_attribs[15], plot_attribs[16], plot_attribs[17]) }}</div>
                     {% set i = i+1 %}
-                {% elseif item == 'header' %}
+                {% elseif key == 0 and item == 'header' %}
                     <div class="header popup_column_{{i}}">{{ _context['line' ~ linenumber][key+key1+1]|e }}</div>
+                    {% set i = i+1 %}
+                {% elseif key == 0 and item == '' %}
                     {% set i = i+1 %}
                 {% endif %}
 
