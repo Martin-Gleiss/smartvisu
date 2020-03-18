@@ -18,8 +18,8 @@
  */
 var io = {
 
-	// the adress
-	adress: '',
+	// the address
+	address: '',
 
 	// the port
 	port: '',
