@@ -1183,7 +1183,7 @@ $.widget("sv.basic_symbol", $.sv.widget, {
              val_prev = val;
   			     val = eval(formula);
 
-             console.log("run: " + c + " comparison: " + comp[c] + "; response: " + VAR + "; value: " + val + ", prev: " + val_prev);
+             // DEBUG: console.log("run: " + c + " comparison: " + comp[c] + "; response: " + VAR + "; value: " + val + ", prev: " + val_prev);
              if (val == null && this.element.attr('data-mode') == 'min')
              {
                val = val_prev;
