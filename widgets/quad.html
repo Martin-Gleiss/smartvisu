@@ -347,8 +347,8 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "device.html" as device %}
     {% import "plot.html" as plot %}
     {% import "popup.html" as popup %}
-    {% if asset_exists('widget_stateengine.html') %}
-      {% import "widgets/widget_stateengine.html" as stateengine %}
+    {% if asset_exists('stateengine.html') %}
+      {% import "widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -482,7 +482,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_dimmer">
     <div class="quad_table row_dimmer" id="row_{{id|replace('.', '_')}}">
   <div class="text" data-order=0>{{ linetext|e }}
-  {% if item_auto and (not column_order or 'stateengine' in column_order) %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }} {% endif %}
+  {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }} {% endif %}
   </div>
 
     {% for column in elements %}
@@ -697,8 +697,8 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "icon.html" as icon %}
     {% import "device.html" as device %}
     {% import "popup.html" as popup %}
-    {% if asset_exists('widget_stateengine.html') %}
-      {% import "widgets/widget_stateengine.html" as stateengine %}
+    {% if asset_exists('stateengine.html') %}
+      {% import "widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -847,7 +847,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_color">
     <div class="quad_table row_color" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
-    {% if item_auto and (not column_order or 'stateengine' in column_order) %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }}{% endif %}
+    {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }}{% endif %}
     </div>
     {% for column in elements %}
     {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
@@ -1117,8 +1117,8 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "icon.html" as icon %}
     {% import "plot.html" as plot %}
     {% import "popup.html" as popup %}
-    {% if asset_exists('widget_stateengine.html') %}
-      {% import "widgets/widget_stateengine.html" as stateengine %}
+    {% if asset_exists('stateengine.html') %}
+      {% import "widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# convert array with uzsu and pos items to separate items #} */
@@ -1288,7 +1288,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_shutter">
     <div class="quad_table row_shutter" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
-    {% if item_auto and (not column_order or 'stateengine' in column_order) %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }} {% endif %}
+    {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;{{ basic.print('', item_auto~'.suspend_end', 'text') }} {% endif %}
     </div>
     {% for column in elements %}
     {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
@@ -1596,8 +1596,8 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "plot.html" as plot %}
     {% import "device.html" as device %}
     {% import "multimedia.html" as multimedia %}
-    {% if asset_exists('widget_stateengine.html') %}
-      {% import "widgets/widget_stateengine.html" as stateengine %}
+    {% if asset_exists('stateengine.html') %}
+      {% import "widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -2158,8 +2158,8 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "icon.html" as icon %}
     {% import "plot.html" as plot %}
     {% import "popup.html" as popup %}
-    {% if asset_exists('widget_stateengine.html') %}
-      {% import "widgets/widget_stateengine.html" as stateengine %}
+    {% if asset_exists('stateengine.html') %}
+      {% import "widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -2358,7 +2358,7 @@ the first one is the base color for values below first threshold, so pass one co
     <li data-icon="false" class="row_stateswitch">
     <div class="quad_table row_stateswitch" id="row_{{id|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
-    {% if item_auto and (not column_order or 'stateengine' in column_order) %}&nbsp;
+    {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
     {{ basic.print('', item_auto~'.suspend_end', 'text') }}
     {% endif %}
     </div>
