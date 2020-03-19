@@ -18,7 +18,13 @@
 		{% set widgetlist = docu('widgets/'~pagepath~'.html') %}
 
 		{% for widget in widgetlist %}
+			{% set dir = "pages/docu/%s/widget_%s.html"|format(pagepath, widget.command) %}
+
+			{% if isfile(dir) %}
 			<a href="index.php?page={{ pagepath }}/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
+			{% elseif widget.command %}
+			<a href="index.php?page=widgets/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
+		{% endif %}
 		{% endfor %}
 	{% endif %}
 
@@ -40,11 +46,11 @@
 		{% endif %}
 
 			<p>{{ widgetlist[widget].desc }}</p>
-			
+
 			<h5>Parameters</h5>
 
 			<div class="twig">
-				<code>&#123;&#123; {{ widgetlist[widget].call }} &#125;&#125;</code>
+				<code>&#123;&#123;&nbsp;{{ widgetlist[widget].call }}&nbsp;&#125;&#125;</code>
 			</div>
 
 			<div class="param">
