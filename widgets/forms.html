@@ -87,7 +87,7 @@
 				{{ hint|nl2br }}
 			</div>
 	{% endif %}
-			<input {% if type == 'wide' %}style="letter-spacing: 0.1em;" {% set type = 'text' %}{% endif %}type="{{ type|default('text') }}" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
+			<input {% if type == 'wide' %} style="letter-spacing: 0.1em;" {% set type = 'text' %}{% endif %} type="{{ type|default('text') }}" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
 	{% if not hint is empty %}
 		</div>
 	{% endif %}

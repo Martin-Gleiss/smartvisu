@@ -221,9 +221,9 @@
 * @param {value=1} step between two values (optional, no effect on date/time types)
 * @param {text=} string format for date only (optional)
     - empty: default format for date will be standard date object (see above)
-    - with given format option, the date will be converted to a string, e.g. '%d.%m.%Y'	represents DD.MM.YYYY. 
+    - with given format option, the date will be converted to a string, e.g. '%d.%m.%Y'	represents DD.MM.YYYY.
 	  For options see https://jtsage.dev/DateBox/doc/3-3-output/
-	- to globally change time format for timeboxes, use the override method of JTSage in your visu.js: 
+	- to globally change time format for timeboxes, use the override method of JTSage in your visu.js:
 	  jQuery.extend(jQuery.jtsage.datebox.prototype.options, {overrideTimeOutput: "%H:%M", overrideTimeFieldOrder: ["h","i"] })
 *
 * @author Stefan Widmer
@@ -541,11 +541,11 @@
 	{% set value = (value|default([1]) is iterable ? value|default([1]) : [value]) %}
   {% set value = text|length > value|length or icon|length > value|length or color|length > value|length ? value|merge(['']) : value %} /** add an empty value if more icons/texts/colors as values are passed (used for threshold i.a.) */
 	{% set color = color|default('') %}
-
 	<{% if href is empty %}span{% else %}a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{% endif %}{% endif %}{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.symbol"
 		{% if not items is empty %}data-item="{{ implode(items) }}" style="display: none;" {% endif %}
 		data-val="{{ implode(value) }}"
-		data-mode="{{ formula|default('or') }}" class="symbol">
+		data-mode="{{ formula|default('or') }}"
+    class="symbol">
 		{%- for val in value -%}
 			{%- set pic = icon is iterable ? icon[loop.index0] : icon -%}
 			{%- if text is empty %}{% set pic = pic|deficon('control_on_off.svg') %}{% endif -%}

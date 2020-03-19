@@ -632,7 +632,7 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 
 	_update: function(response) {
 		var mode = this.options['datebox-mode'];
-		
+
 		if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
 			this.element.trigger('datebox', {'method': 'set', 'value': this.options['min-dur']*1}).trigger('datebox', {'method': 'dooffset', 'type': 's', 'amount': response[0] - this.options['min-dur']*1}).trigger('datebox', {'method':'doset'});
 		else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
@@ -646,7 +646,7 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 		'datebox': function (event, passed) {
 			if (passed.method === 'close' && !passed.closeCancel) {
 				var mode = this.options['datebox-mode'];
-				
+
 				var newval;
 				if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
 					newval = this.element.datebox('getLastDur');
@@ -1134,6 +1134,11 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		mode: '',
 		val: '',
 	},
+  _events: {
+    'update': function (event, response) {
+      event.stopPropagation();
+    }
+  },
 	_update: function(response) {
 		// response will be an array, if more than one item is requested
 		var formula = this.options.mode;
@@ -1153,43 +1158,14 @@ $.widget("sv.basic_symbol", $.sv.widget, {
     else if(formula == 'min') {
 			// To fulfill "and" condition, every entry in response has to have the same value.
 			// If this is true, this one value will be returned and used for selecting the proper symbol.
-      formula = 'VAR';
-      if (response instanceof Array) {
-          for (var i = 0; i < response.length; i++) {
-                  var comp = parseFloat(this.element.attr('data-val'));
-                  var test = false ? isNaN(comp) : response[i] >= comp;
-                  bit = bit || test;
-          }
-      }
-      else {
-          var comp = parseFloat(this.element.attr('data-val'));
-          bit = false ? isNaN(comp) : response >= comp;
-      }
+      formula = 'VAR.some(function(entry, i, arr) { return entry >= parseFloat(comp[c]) }) ? comp[c] : null';
 		}
     else if(formula == 'max') {
 			// To fulfill "and" condition, every entry in response has to have the same value.
 			// If this is true, this one value will be returned and used for selecting the proper symbol.
-      formula = 'VAR';
-      if (response instanceof Array) {
-          for (var i = 0; i < response.length; i++) {
-                  var comp = parseFloat(this.element.attr('data-val'));
-                  var test = false ? isNaN(comp) : response[i] <= comp;
-                  if (test == true)
-                    bit = bit || test;
-                  else
-                  {
-                      bit = false;
-                      break;
-                  }
-          }
-      }
-      else {
-          var comp = parseFloat(this.element.attr('data-val'));
-          bit = false ? isNaN(comp) : response <= comp;
-      }
-
+      formula = 'VAR.every(function(entry, i, arr) { return entry <= parseFloat(comp[c]) }) ? comp[c] : null';
 		}
-
+    this.element.attr('formula', formula);
 		if(formula.startsWith('>')) {
 			formula = formula.length == 1 ? 'VAR' : formula.substring(1);
 			asThreshold = true;
@@ -1198,7 +1174,33 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
 		var VAR = response;
 		try {
-			var val = eval(formula);
+      var val = null;
+      if (formula == 'VAR.some(function(entry, i, arr) { return entry >= parseFloat(comp[c]) }) ? comp[c] : null'
+          || formula == 'VAR.every(function(entry, i, arr) { return entry <= parseFloat(comp[c]) }) ? comp[c] : null') {
+        var val_prev = null;
+        var comp = this.element.attr('data-val').split(", ");
+        for (var c = 0; c < comp.length; c++) {
+             val_prev = val;
+  			     val = eval(formula);
+
+             // DEBUG: console.log("run: " + c + " comparison: " + comp[c] + "; response: " + VAR + "; value: " + val + ", prev: " + val_prev);
+             if (val == null && this.element.attr('data-mode') == 'min')
+             {
+               val = val_prev;
+               break;
+             }
+             else if (comp[c] == '' || (val_prev != null && val > val_prev && this.element.attr('data-mode') == 'max'))
+             {
+               val = val_prev;
+               break;
+             }
+
+        }
+      }
+      else
+      {
+        val = eval(formula);
+      }
 		}
 		catch(ex) {
 			notify.error("basic.symbol: Invalid formula", ex);
@@ -1215,9 +1217,8 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		}
 
 		var filter = Array.isArray(val) ? '[data-val="'+val.join('"],[data-val="')+'"]' : '[data-val="'+(typeof val === 'boolean' ? Number(val) : val)+'"]';
-    if (!bit)
-      anyShown = this.element.children('span').hide().filter(filter).first().show().length > 0;
-		if(anyShown || bit)
+    anyShown = this.element.children('span').hide().filter(filter).first().show().length > 0;
+		if(anyShown)
     {
 			this.element.show();
     }
