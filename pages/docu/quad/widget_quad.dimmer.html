@@ -11,12 +11,12 @@
 {% extends "widget_quad.html" %}
 
 {% block example %}
-{% set autostate = {} %}
-{% set autostate_items = {
+{% set stateengine = {} %}
+{% set stateengine_items = {
 'item1': ['item1.automatik.lock', 'item1.automatik.settings.suspendduration', '0', '60', '5', 'item1.automatik.settings.sollwert', '0', '250', '5', 'item1.automatik.settings.sperren', '0', '1', 'sperren', 'autoblind', 'standard', 'morning']
 } %}
 
-{% for item,content in autostate_items %}
+{% for item,content in stateengine_items %}
     {% set itemname = item|replace({'.': '_'}) %}
 	{% set suspend = [['switch', 'slider'], [content[0], 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], [content[1], content[2], content[3], content[4], '', 'handle']] %}
 	{% set sollwerte = {} %}
@@ -44,14 +44,14 @@
 	{% else %}
 	    {% set sollwerttext = ['header', 'Sollwerte'] %}
 	{% endif %}
-	{% set autostate = autostate|merge({(itemname): ['autostate', (suspendtext), (suspend), (sollwerttext), ('standard' in content ) ? (standard), ('morning' in content ) ? (morning),  ('halloween' in content and ('now'|date('m/d')) == ('10/31')) ? (halloween), ('advent' in content and (("now"|date('m/d') > ('12/01') and "now"|date('m/d') < ('12/31')) or ("now"|date('m/d') > ('01/01') and "now"|date('m/d') < ('01/15')))) ? (advent)]}) %}
+	{% set stateengine = stateengine|merge({(itemname): ['stateengine', (suspendtext), (suspend), (sollwerttext), ('standard' in content ) ? (standard), ('morning' in content ) ? (morning),  ('halloween' in content and ('now'|date('m/d')) == ('10/31')) ? (halloween), ('advent' in content and (("now"|date('m/d') > ('12/01') and "now"|date('m/d') < ('12/31')) or ("now"|date('m/d') > ('01/01') and "now"|date('m/d') < ('01/15')))) ? (advent)]}) %}
 {% endfor %}
 
 <script>
 $( document ).ready(function() {
 		 io.write('licht.dimmen', '10' );
 		 io.write('licht.SA', '1' );
-     io.write('licht.automatik.autostate_name', 'Standard');
+     io.write('licht.automatik.stateengine_name', 'Standard');
 		 io.write('licht.automatik.lock', '0');
      io.write('bwm.sperren', '0');
      io.write('licht.zwangvalue', '0');
@@ -59,49 +59,51 @@ $( document ).ready(function() {
 </script>
 	<h5>Example</h5>
 
-['uzsu', 'autostate', 'plot', 'value_popup', 'switch', 'locks', ' '] autostate with popup (have to long tap to open popup!)
+['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' '] stateengine with popup (have to long tap to open popup!)
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-{{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'licht.SA', 'licht.dimmen', 0, 255, 1, [icon.light(), icon.light('','','licht.dimmen')], ['icon0','icon1'], '', '100', 'blink', '', 'handle', 'licht.dimmen.zeitschalter', ['', '', 'bool'], '%', 'licht.dimmen', '', 'licht.automatik', (autostate['item1']), ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', ['uzsu', 'autostate', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
+    {{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', 'right', 'blink', '', 'licht.dimmen.zeitschalter', ['', '', 'bool'], '%', 'licht.dimmen', '', 'licht.automatik', (stateengine['item1']), ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
 		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'licht.SA', 'licht.dimmen', 0, 255, 1, [icon.light(), icon.light('','','licht.dimmen')], ['icon0','icon1'], '', '100', 'blink', '', 'handle', 'licht.dimmen.zeitschalter', ['', '', 'bool'], '%', 'licht.dimmen', '', 'licht.automatik', (autostate['item1']), ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', ['uzsu', 'autostate', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
+    {{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', 'right', 'blink', '', 'licht.dimmen.zeitschalter', ['', '', 'bool'], '%', 'licht.dimmen', '', 'licht.automatik', (stateengine['item1']), ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
 	</ul></div>
 
 ['switch', 'value_slider']
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-{{ quad.dimmer('dimmer2', 'Dimmer Example 2', 'licht.SA', 'licht.dimmen', 0, 255, 1, [icon.light(), icon.light('','','licht.dimmen')], '', '', '', '', 0, 100, '', '', '', '', '', '', '', '', '', '', ['switch', 'value_slider']) }}
+    {{ quad.dimmer('dimmer2', 'Dimmer Example 2', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', '', '', '', '', '', '', '', '', '', '', '', '', '', ['switch', 'value_slider']) }}
 		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.dimmer('dimmer2', 'Dimmer Example 2', 'licht.SA', 'licht.dimmen', 0, 255, 1, [icon.light(), icon.light('','','licht.dimmen')], '', '', '', '', 0, 100, '', '', '', '', '', '', '', '', '', '', ['switch', 'value_slider']) }}
+    {{ quad.dimmer('dimmer2', 'Dimmer Example 2', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', '', '', '', '', '', '', '', '', '', '', '', '', '', ['switch', 'value_slider']) }}
 	</ul></div>
 
 [['locks','switch'], 'value_popup', 'extpopup', 'plot']
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-{{ quad.dimmer('dimmer3', 'Dimmer Example 3', 'licht.SA', 'licht.dimmen', 0, 255, 1, [icon.light(), icon.light('','','licht.dimmen')], ['red','icon1'], '', '100', 'blink', '', 'handle', 'licht.dimmen.zeitschalter', '', '%', 'licht.dimmen', '', 'licht.automatik',
-['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ],
- ['', 'bwm.sperren', 'licht.zwangvalue'],  '', '', [['locks','switch'], 'value_popup', 'extpopup', 'plot']) }}
+    {{ quad.dimmer('dimmer3', 'Dimmer Example 3', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', 'left', 'blink', '', 'licht.dimmen.zeitschalter', '', '%', 'licht.dimmen', '', 'licht.automatik',
+    ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ],
+     ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', [['locks','switch'], 'value_popup', 'extpopup', 'plot']) }}
 		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.dimmer('dimmer3', 'Dimmer Example 3', 'licht.SA', 'licht.dimmen', 0, 255, 1, [icon.light(), icon.light('','','licht.dimmen')], ['red','icon1'], '', '100', 'blink', '', 'handle', 'licht.dimmen.zeitschalter', '', '%', 'licht.dimmen', '', 'licht.automatik', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['', 'bwm.sperren', 'licht.zwangvalue'],  '', '', [['locks','switch'], 'value_popup', 'extpopup', 'plot']) }}
+    {{ quad.dimmer('dimmer3', 'Dimmer Example 3', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', 'left', 'blink', '', 'licht.dimmen.zeitschalter', '', '%', 'licht.dimmen', '', 'licht.automatik',
+    ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ],
+     ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', [['locks','switch'], 'value_popup', 'extpopup', 'plot']) }}
 	</ul></div>
 
 Without column order
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-	{{ quad.dimmer('dimmer4', 'Standard Example 4', 'licht.SA', 'licht.dimmen', 0, 255, 1, [icon.light(), icon.light('','','licht.dimmen')]) }}
+	{{ quad.dimmer('dimmer4', 'Standard Example 4', 'licht.SA', 'licht.dimmen') }}
 		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-	{{ quad.dimmer('dimmer4', 'Standard Example 4', 'licht.SA', 'licht.dimmen', 0, 255, 1, [icon.light(), icon.light('','','licht.dimmen')]) }}
+	{{ quad.dimmer('dimmer4', 'Standard Example 4', 'licht.SA', 'licht.dimmen') }}
 	</ul></div>
 {% endblock %}

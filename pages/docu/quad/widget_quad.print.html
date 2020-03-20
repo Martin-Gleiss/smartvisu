@@ -52,12 +52,12 @@ Multiple print
 	Four different prints
 		<div class="twig">
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-	{{ quad.print('formatvalue2', ['this','that', ' ', 'theother'], ['%','°'], ['VAR*2','','',''], [[1,5],'', '',''], [['#0f0','#ff0','#f00'],['#0f0','#ff0'],'',''], '', 'placeholder', '3 values, 1 empty column', ['this','that', '', 'theother'])   }}
+	{{ quad.print('formatvalue3', ['this','that', ' ', 'theother'], ['%','°'], ['VAR*2','','',''], [[1,5],'', '',''], [['#0f0','#ff0','#f00'],['#0f0','#ff0'],'',''], '', 'placeholder', '3 values, 1 empty column', ['this','that', '', 'theother'])   }}
 			{% endraw %}{% endfilter %}</code>
 		</div>
 		<div class="html">
 			<ul data-role="listview" data-dividertheme="c" class="quad_list">
-	{{ quad.print('formatvalue2', ['this','that', ' ', 'theother'], ['%','°'], ['VAR*2','','',''], [[1,5],'', '',''], [['#0f0','#ff0','#f00'],['#0f0','#ff0'],'',''], '', 'placeholder', '3 values, 1 empty column', ['this','that', '', 'theother'])   }}
+	{{ quad.print('formatvalue3', ['this','that', ' ', 'theother'], ['%','°'], ['VAR*2','','',''], [[1,5],'', '',''], [['#0f0','#ff0','#f00'],['#0f0','#ff0'],'',''], '', 'placeholder', '3 values, 1 empty column', ['this','that', '', 'theother'])   }}
 	</ul></div>
 
 	Using Scripts to change other elements. Leave the item empty and give the column an id name
