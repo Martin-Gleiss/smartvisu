@@ -48,23 +48,23 @@ Multiple Select
 Single select Item [['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-{{ quad.select('select2', 'this', 'icon', [0,1,2,3], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg'], ['','','',''], '', 'horizontal', '', '', 'Select as horizontal group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', (extpopup['extra']), 'this.sperren', 'this.slider', '', '', [['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']) }}
+{{ quad.select('select2', 'this', 'icon', [0,1,2,3], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg'], ['','','',''], '', 'horizontal', '', '', 'Select as horizontal group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', (extpopup['extra']), ['this.sperren'], 'this.slider', '', '', [['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']) }}
 		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.select('select2', 'this', 'icon', [0,1,2,3], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg'], ['','','',''], '', 'horizontal', '', '', 'Select as horizontal group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', (extpopup['extra']), 'this.sperren', 'this.slider', '', '', [['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']) }}
+{{ quad.select('select2', 'this', 'icon', [0,1,2,3], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg'], ['','','',''], '', 'horizontal', '', '', 'Select as horizontal group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', (extpopup['extra']), ['this.sperren'], 'this.slider', '', '', [['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']) }}
 	</ul></div>
 
 Single select item
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-{{ quad.select('select3', 'this', 'icon', [0,1,2,3,4], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg','edit_numeric_4.svg'], ['','','','',''], '', '', '', '', 'Select as none group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', '', 'this.sperren', ['dies.timer', 0, 10, 1, 'min', 'handle'], '', '', ['select', 'plot', 'uzsu']) }}
+{{ quad.select('select3', 'this', 'icon', [0,1,2,3,4], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg','edit_numeric_4.svg'], ['','','','',''], '', '', '', '', 'Select as none group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', '', ['this.sperren'], ['dies.timer', 0, 10, 1, 'min', 'handle'], '', '', ['select', 'plot', 'uzsu']) }}
 		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.select('select3', 'this', 'icon', [0,1,2,3,4], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg','edit_numeric_4.svg'], ['','','','',''], '', '', '', '', 'Select as none group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', '', 'this.sperren', ['dies.timer', 0, 10, 1, 'min', 'handle'], '', '', ['select', 'plot', 'uzsu']) }}
+{{ quad.select('select3', 'this', 'icon', [0,1,2,3,4], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg','edit_numeric_4.svg'], ['','','','',''], '', '', '', '', 'Select as none group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', '', ['this.sperren'], ['dies.timer', 0, 10, 1, 'min', 'handle'], '', '', ['select', 'plot', 'uzsu']) }}
 	</ul></div>
 
 Single select item without column order
