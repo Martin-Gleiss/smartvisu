@@ -16,13 +16,13 @@ class WidgetParameterChecker {
 
 	/**
 	 * Widget
-	 * @var Widget 
+	 * @var Widget
 	 */
 	private $widget;
 
 	/**
 	 * Index of parameter to check
-	 * @var integer 
+	 * @var integer
 	 */
 	private $paramIndex;
 
@@ -51,13 +51,43 @@ class WidgetParameterChecker {
 	 */
 	private $templateCecker;
 
+	function get_arrays($string, $start, $end, $single){
+		$string = $start . str_replace(', ', ',', $string) . $end;
+		$string = str_replace("'", "", $string);
+		$string = str_replace('"', '', $string);
+		$p1 = explode($start, $string);
+
+		for($i=1; $i<count($p1); $i++){
+				$p2 = explode($end, $p1[$i]);
+				$p3 = explode(',', $p2[1]);
+				$p3 = array_filter($p3, 'strlen');
+				if ($single == 'single'){
+					$p2_0 = explode(',', $p2[0]);
+					$p[] = array_merge($p2_0, $p3);
+				}
+				else {
+					$p2_0 = explode(',', $p2[0]);
+					$p[] = array($p2_0) + $p3;
+				}
+		}
+		if (count($p) > 1)
+			array_shift($p);
+		else
+			return $p;
+		$x = array();
+		foreach($p as $key){
+			$x = array_merge($x, $key);
+		}
+		return $x;
+	}
+
 	public static function performChecks($widget, $paramIndex, $paramConfig, $messages, $templateCecker) {
 		$checker = new WidgetParameterChecker($widget, $paramIndex, $paramConfig, $messages, $templateCecker);
 		$checker->run();
 	}
 
 	/**
-	 * 
+	 *
 	 * @param Widget $widget Widget Widget
 	 * @param integer $paramIndex Index of parameter to check
 	 * @param array $paramConfig Config for parameter to check
@@ -117,7 +147,7 @@ class WidgetParameterChecker {
 					$this->checkParameterTypeColor($value);
 					break;
 				case 'item':
-					// in the future there may be the possibility to validate items. 
+					// in the future there may be the possibility to validate items.
 					// for now we perform the same tests than for type "text"
 					$this->checkParameterTypeText($value);
 					break;
@@ -158,12 +188,12 @@ class WidgetParameterChecker {
 
 	/**
 	 * Determine value of parameter
-	 * 
+	 *
 	 * Considered ParamConfig values:
 	 * optional		boolean		Flag indicating if parameter is optional. Default: FALSE
 	 * default		mixed		Default value to for optional parameter if parameter is missing. Default: Empty String
 	 * array_form	string		Indicates if array form must, may or must not be used. Values "must", "may" or "no". Default: "no"
-	 * 
+	 *
 	 * @return mixed. value, array of values (if parameter is given in array form) or NULL (if errors occured)
 	 */
 	private function getParameterValue() {
@@ -184,6 +214,13 @@ class WidgetParameterChecker {
 		if($value == '')
 			return $value;
 
+		if (!is_array($value))
+			$test = explode(',', $value);
+		if (!is_array($value) && substr( $value, 0, 1 ) === "[" && count($test) > 1)
+		{
+			$value = $this->get_arrays($value, '[', ']', 'single');
+		}
+
 		$allowArray = $this->getParamConfig('array_form', 'no');
 		if (is_array($value) && $allowArray != 'must' && $allowArray != 'may') { // array form
 			$this->addError('WIDGET PARAM CHECK', 'Array form not allowed for parameter', $value);
@@ -198,12 +235,12 @@ class WidgetParameterChecker {
 
 	/**
 	 * Check if parameter is empty and add error message if mandatory parameter is empty
-	 * 
+	 *
 	 * Considered ParamConfig values:
 	 * optional		boolean		Flag indicating if parameter is optional. Default: FALSE
-	 * 
+	 *
 	 * @param $value mixed parameter value
-	 * @return boolean Flag: Continue other checks 
+	 * @return boolean Flag: Continue other checks
 	 */
 	private function checkParameterNotEmpty($value) {
 		// parameter not empty -> checks can be continued
@@ -292,7 +329,6 @@ class WidgetParameterChecker {
 		if (substr($value, 0, 5) == 'icon.') {
 
 			$dyniconWiget = explode('(', $value, 2);
-
 			if (array_key_exists($dyniconWiget[0], $this->dynamicIcons)) {
 				// existing dynamic icon
 				if (Settings::SHOW_SUCCESS_TOO)
@@ -329,7 +365,7 @@ class WidgetParameterChecker {
 
 	/**
 	 * Check widget parameter of type "id"
-	 * 
+	 *
 	 * Considered ParamConfig values:
 	 * unique		boolean		Flag indicating if id must be unique. Default: TRUE
 
@@ -353,7 +389,7 @@ class WidgetParameterChecker {
 	}
 
 	/**
-	 * Check widget parameter of type "type"	 
+	 * Check widget parameter of type "type"
 	 * @param $value mixed parameter value
 	 */
 	private function checkParameterTypeType($value) {
@@ -393,7 +429,7 @@ class WidgetParameterChecker {
 		// anything else needs to start with '#' and be 4 (#+3) or 7 (#+6) characters long
 		if (substr($value, 0, 1) == '#' && (strlen($value) == 4 || strlen($value) == 7) && ctype_xdigit(substr($value, 1)))
 			return;
-		
+
 		// TODO: rgb() / rgba() / hsl()
 
 		$this->addError('WIDGET COLOR PARAM CHECK', 'Unknown color', $value);
@@ -401,23 +437,28 @@ class WidgetParameterChecker {
 
 	/**
 	 * Check widget parameter of type "text"
-	 * 
+	 *
 	 * Considered ParamConfig values:
 	 * valid_values	array		Array, containing valid values. If not set, all values are allowed. Default: not set
-	 * 
+	 *
 	 * @param $value mixed parameter value
 	 */
 	private function checkParameterTypeText($value) {
 		if (!$this->checkParameterNotEmpty($value))
 			return;
 
+
 		if ($this->paramConfig['valid_values']) {
 			if ($this->checkParameterValidValues($value)) {
 				if (Settings::SHOW_SUCCESS_TOO)
 					$this->addInfo('WIDGET TEXT PARAM CHECK', 'Value is valid', $value, array('Valid Values' => $this->paramConfig['valid_values']));
 				return TRUE;
+			} else if (is_numeric($value) && in_array('anynumber', $this->paramConfig['valid_values'])) {
+				if (Settings::SHOW_SUCCESS_TOO)
+					$this->addInfo('WIDGET TEXT PARAM CHECK', 'Value is valid', $value, array('Valid Values' => $this->paramConfig['valid_values']));
+				return TRUE;
 			} else {
-				$this->addError('WIDGET TEXT PARAM CHECK', 'Value is not valid', $value, array('Valid Values' => $this->paramConfig['valid_values']));
+				$this->addError('WIDGET TEXT PARAM CHECK', 'Text Value is not valid', $value, array('Valid Values' => $this->paramConfig['valid_values']));
 				return FALSE;
 			}
 		}
@@ -472,11 +513,11 @@ class WidgetParameterChecker {
 		$numVal = $value + 0;
 		if ($this->paramConfig['min'] && $numVal < $this->paramConfig['min'] + 0) {
 			$this->addError('WIDGET VALUE PARAM CHECK', 'Value less than allowed minimum value', $value, array('Minimum Value' => $this->paramConfig['min']));
-			return;			
+			return;
 		}
 		if ($this->paramConfig['max'] && $numVal > $this->paramConfig['max'] + 0) {
 			$this->addError('WIDGET VALUE PARAM CHECK', 'Value greater than allowed maximum value', $value, array('Maximum Value' => $this->paramConfig['max']));
-			return;			
+			return;
 		}
 	}
 
@@ -513,7 +554,7 @@ class WidgetParameterChecker {
 		$this->addMessage(MessageCollection::SEVERITY_INFO, $test, $message, $value, $additionalData);
 	}
 
-	/** 	 
+	/**
 	 * Add widget related message to list of messages
 	 * @param string $severity Severity
 	 * @param string $test Name of test

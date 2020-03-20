@@ -77,7 +77,7 @@
  * @param {image=measure_power_meter} icon triggering the plot popup
  * @param {unspecified=} placeholder attributes for future features, etc.
  * @param {unspecified=} placeholder attributes for future features, etc.
- * @param {value[]=} array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
+ * @param {value[](1,2,3,4,5)=} array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
              to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
  */
 {% macro symbol(id, item, txt, pic, val, formula, color, href, rel, linetext, columntext, item_plot, icon_plot, place3, place4, column_order) %}
@@ -150,11 +150,11 @@
  * Print values in specific format, including expressions
  *
  * @param {id=} unique id for this widget (optional)
- * @param {item[?]} one or more item(s). Multiple items in array-form: [item1, item2]
- * @param {format=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
+ * @param {unspecified[?]} one or more item(s). Multiple items in array-form: [item1, item2]
+ * @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
   Use 'text' to display result as unformatted string, 'html' to render it as unescaped html or 'script' to just execute as JavaScript w/o displaying anything.
  * @ add {format(text,html,script)=}
- * @param {formula=VAR} any valid JavaScript expression with following variables and aggregate functions (optional, default: VAR)
+ * @param {formula[?]=VAR} any valid JavaScript expression with following variables and aggregate functions (optional, default: VAR)
   - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
   - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
  * @param {value[]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
@@ -168,7 +168,7 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {value[]=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
+ * @param {value[](1,2,3,4,5)=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
  *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
  */
 {% macro print(id, item, format, formula, threshold, color, classname, place2, linetext, columntext, item_plot, icon_plot, place3, place4, column_order) %}
@@ -258,7 +258,7 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {value[]=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
+ * @param {value[](1,2,3,4,5)=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
  *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
  */
 {% macro rtr(id, linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator, item_plot, icon_plot, place3, place4, column_order) %}
@@ -308,14 +308,17 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {value=0}       		the minimum value if the slider is moved to total left (optional, default 0)
  * @param {value=255}       		the maximum value if the slider is moved to total right (optional, default 255)
  * @param {value=5}       	step between two values (optional, default 5)
- * @param {image[?]}       		array icon for 'on' and 'off' state, can also be dynamic
- * @param {color=}       	array colors for the 'on' and 'off' state (optional)
- * @param {value=}    the minimum value which is displayed if the slider is moved to total left (optional, default like min)
- * @param {value=}    the maximum value which is displayed if the slider is moved to total left (optional, default like max)
+ * @param {image=light_light}       		icon for 'on' state, can also be dynamic (optional, default is light_light)
+ * @param {image=light_light}       		icon for 'off' state, can also be dynamic (optional, default is light_light)
+ * @param {color=icon1}       	color for 'on' state (optional)
+ * @param {color=icon0}       	color for 'off' state (optional)
+ * @param {text(input,handle,both,none)=none} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'input')
+ * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
+ * @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
+ * @param {text='left'} position of the switch: left (default) or right
  * @param {text=}      activity indicator which is active until response (or a timeout is reached)
  * @param {text(horizontal,vertical,bottomup,semicircle,popup)=horizontal} 	if the dimmer slider should be implemented in the column directly.
  *						possible options: 'horizontal', 'vertical', 'bottomup', 'semicircle'. 'popup' or empty for popup.
- * @param {text(input,handle,both,none)=input} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'input')
  * @param {item=}      a gad/item for UZSU
  * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {text=}     value type: '%' to recalculate 0-255 values to 0-100%  (e.g. for lights) or any formula
@@ -324,7 +327,7 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
  * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
- * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+ * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
@@ -334,7 +337,7 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](switch,value_popup,value_slider,locks,uzsu,stateengine,plot,scenes,extpopup, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+ * @param {text[](switch,value_popup,value_slider,locks,uzsu,stateengine,plot,scenes,extpopup,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'switch', 'value_popup', 'value_slider', 'locks', 'uzsu', 'stateengine', 'plot', 'scenes', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['locks', 'switch'], 'value_popup', 'stateengine', 'uzsu', 'plot']
@@ -342,7 +345,7 @@ the first one is the base color for values below first threshold, so pass one co
  * @see stateengine/stateengine
  *
  */
-{% macro dimmer(id, linetext, item_switch, item_value, min, max, step, pic, color, min_display, max_display, indicator, slider_orientation, value_display, item_uzsu, uzsu_attribs, formula, item_plot, icon_plot, item_auto, extpopup, locks, place3, place4, column_order) %}
+{% macro dimmer(id, linetext, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos, indicator, slider_orientation, item_uzsu, uzsu_attribs, formula, item_plot, icon_plot, item_auto, extpopup, locks, place3, place4, column_order) %}
     {% import "basic.html" as basic %}
     {% import "device.html" as device %}
     {% import "plot.html" as plot %}
@@ -520,14 +523,14 @@ the first one is the base color for values below first threshold, so pass one co
 
       {% if (item_lock and item_bwmlock) or item_force %}
         <a href="#{{ uid(page, id) }}_list_locks_popup" data-rel="popup">
-        {{ basic.symbol(id~'list_lockpop_on', [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color[1]|default('icon1')) }}
-        {{ basic.symbol(id~'list_lockpop_off', [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color[0]|default('icon0')) }}
+        {{ basic.symbol(id~'list_lockpop_on', [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color_on|default('icon1')) }}
+        {{ basic.symbol(id~'list_lockpop_off', [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color_off|default('icon0')) }}
         </a>
-        {{ popup.locks(uid(page, id)~'_list_locks_popup', [item_lock|default(''), [color[0]|default('icon0'), color[1]|default('icon1')]], [item_bwmlock|default(''), [color[0]|default('icon0'), color[1]|default('icon1')]], [item_force|default(''), color[1]|default('icon1')]) }}
+        {{ popup.locks(uid(page, id)~'_list_locks_popup', [item_lock|default(''), [color_off|default('icon0'), color_on|default('icon1')]], [item_bwmlock|default(''), [color_off|default('icon0'), color_on|default('icon1')]], [item_force|default(''), color_on|default('icon1')]) }}
       {% elseif item_lock %}
-        {{ basic.stateswitch(id~'list_lock', item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', [color[0]|default('icon0'), color[1]|default('icon1')], indicator) }}
+        {{ basic.stateswitch(id~'list_lock', item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', [color_off|default('icon0'), color_on|default('icon1')], indicator) }}
       {% elseif item_bwmlock %}
-        {{ basic.stateswitch(id~'list_lock', item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', [color[0]|default('icon0'), color[1]|default('icon1')], indicator) }}
+        {{ basic.stateswitch(id~'list_lock', item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', [color_off|default('icon0'), color_on|default('icon1')], indicator) }}
       {% endif %}
       {% if elements[loop.index] == 'div' %}
         </div>
@@ -536,7 +539,7 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'switch' and item_switch %}
 
-      {{ basic.stateswitch(id~'list_dimmer_dynicon', item_switch, 'icon', [0,1], pic|default(['light_light', 'light_light']), '', [color[0]|default('icon0'), color[1]|default('icon1')], indicator) }}
+      {{ basic.stateswitch(id~'list_dimmer_dynicon', item_switch, 'icon', [0,1], [pic_on|default('light_light'), pic_off|default('light_light')], '', [color_on|default('icon0'), color_off|default('icon1')], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -552,16 +555,18 @@ the first one is the base color for values below first threshold, so pass one co
     {% if column == 'value_popup' and item_value %}
             <a href="#{{ uid(page, id) }}list_dimmer_popup" data-rel="popup" data-position-to="window">
                 {% if formula == '%' %}
-                  {{ basic.print(id~'list_dimmer_actual', item_value, '%', 'VAR1/255*100', '', [color[0]|default('icon0'), color[1]|default('icon1')]) }}
+                  {{ basic.print(id~'list_dimmer_actual', item_value, '%', 'VAR1/255*100', '', [color_off|default('icon0'), color_on|default('icon1')]) }}
                 {% else %}
-                  {{ basic.print(id~'list_dimmer_actual', item_value, 'int', formula, '', [color[0]|default('icon0'), color[1]|default('icon1')]) }}
+                  {{ basic.print(id~'list_dimmer_actual', item_value, 'int', formula, '', [color_off|default('icon0'), color_on|default('icon1')]) }}
                 {% endif %}
             </a>
             <div id="{{ uid(page, id) }}list_dimmer_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-              <div class="dimmer ui-dimmer-left">
-                {{ basic.stateswitch('', item_switch, 'icon', [0,1], pic|default(['light_light', 'light_light']), '', color, indicator) }}
+              <div class="dimmer">
+                {% if picpos is empty or picpos=='left' %}<span class="ui-dimmer-left"> {% else %} <span class="ui-dimmer-right"> {% endif %}
+                {{ basic.stateswitch('', item_switch, 'icon', [0,1], [pic_on|default('light_light'), pic_off|default('light_light')], '', [color_on|default('icon0'), color_off|default('icon1')], indicator) }}
                 <p>{{ linetext|e }}</p>
                 {{ basic.slider('', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
+                </span>
               </div>
             </div>
 
@@ -575,7 +580,7 @@ the first one is the base color for values below first threshold, so pass one co
               <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
                   {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
               </a>
-              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color_off|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if elements[loop.index] == 'div' %}
                 </div>
@@ -620,7 +625,7 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'plot' and item_plot %}
         <a href="#{{ id }}_plotpopup" data-rel="popup">
-          {{ basic.icon(icon_plot|deficon('measure_power_meter'), color[0]|default('icon0')) }}
+          {{ basic.icon(icon_plot|deficon('measure_power_meter'), color_off|default('icon0')) }}
         </a>
         <div class="quad_plot-popup" id="{{ id }}_plotpopup" data-role="popup">
         <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{ id }}_popupClose' onClick='$("#{{ id }}_plotpopup-screen").click()'></button>
@@ -652,7 +657,6 @@ the first one is the base color for values below first threshold, so pass one co
  * Color chooser for RGB lights. Be aware that the attributes differ from basic.color widget!
  *
 * @param {id=} unique id for this widget (optional)
-* @param {text=} text for the whole line (optional)
 * @param {item[?]} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
 * @param {item=} an item for the green value in RGB model or saturation in HSL and HSV model
 (to let blank if first item contains list of all values)
@@ -664,6 +668,10 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {value=10} number of colored segments (optional, default 10)
 * @param {text(disc,rect,slider)=disc} 'disc' for circular, 'rect' for rectangular view, 'slider' for HSV sliders (optional, default: disc)
 * @param {text(rgb,hsl,hsv)=rgb} possible values: 'rgb', 'hsl' and 'hsv' (optional, default: rgb)
+* @param {text=} text for the whole line (optional)
+* @param {item=} an item for the red switch in RGB model
+* @param {item=} an item for the green value in RGB model
+* @param {item=} an item for the blue value in RGB model
  * @param {value=}    the minimum value which is displayed if the slider is moved to total left (optional, default like min)
  * @param {value=}    the maximum value which is displayed if the slider is moved to total left (optional, default like max)
  * @param {item=}      a gad/item for UZSU
@@ -674,7 +682,7 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
  * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
- * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+ * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
@@ -686,12 +694,12 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {color[]=} 	array with on/off icon colors
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text('colorpicker', 'ww_popup', 'ww_slider', 'values', 'sequencer', 'locks', 'stateengine', 'uzsu', 'plot')=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+ * @param {text[](colorpicker,ww_popup,ww_slider,values,sequencer,locks,stateengine,uzsu,plot,anynumber)=[[locks, sequencer, colorpicker],values, stateengine, plot, uzsu]} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'colorpicker', 'ww_popup', 'ww_slider', 'values', 'sequencer', 'locks', 'stateengine', 'uzsu', 'plot'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['locks', 'sequencer', 'colorpicker'],'values', 'stateengine', 'plot', 'uzsu']
  */
-{% macro color(id, linetext, item_switch_r, item_value_r, item_switch_g, item_value_g, item_switch_b, item_value_b, min, max, step, colors, style, colormodel, min_display, max_display, item_uzsu, uzsu_attribs, popupcolor, item_switch_ww, item_value_ww, item_plot, icon_plot, item_auto, extpopup, locks, item_seq, icon_color, place3, place4, column_order) %}
+{% macro color(id, item_value_r, item_value_g, item_value_b, min, max, step, colors, style, colormodel, linetext, item_switch_r, item_switch_g, item_switch_b, min_display, max_display, item_uzsu, uzsu_attribs, popupcolor, item_switch_ww, item_value_ww, item_plot, icon_plot, item_auto, extpopup, locks, item_seq, icon_color, place3, place4, column_order) %}
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
     {% import "icon.html" as icon %}
@@ -928,10 +936,12 @@ the first one is the base color for values below first threshold, so pass one co
       </a>
 
       <div id="{{ uid(page, id) }}list_ww_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
-        <div class="dimmer ui-dimmer-left">
+        <div class="dimmer">
+          {% if picpos is empty or picpos=='left' %}<span class="ui-dimmer-left"> {% else %} <span class="ui-dimmer-right"> {% endif %}
           {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(),icon.light('','',item_value_ww)], '', ['#888800','#aaaa00'], indicator) }}
           <p>Warm White</p>
           {{ basic.slider('', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
+          </span>
         </div>
       </div>
 
@@ -955,10 +965,12 @@ the first one is the base color for values below first threshold, so pass one co
                   <p>Hue, Saturation, Value</p>
                     {{ basic.color('', item_value_r, item_value_g, item_value_b, min, max, step, '10', 'slider') }}
                     {% if item_value_ww and item_value_ww  != ' ' %}
-                    <div class="dimmer ui-dimmer-left">
+                    <div class="dimmer">
+                      {% if picpos is empty or picpos=='left' %}<span class="ui-dimmer-left"> {% else %} <span class="ui-dimmer-right"> {% endif %}
                       {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light("","",item_value_ww)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
                       {{ basic.slider('', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                      </span>
                     </div>
                     {% endif %}
                 </div>
@@ -966,26 +978,34 @@ the first one is the base color for values below first threshold, so pass one co
             {% else %}
 
             <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
-                  <div class="dimmer ui-dimmer-left">
+                  <div class="dimmer">
+                    {% if picpos is empty or picpos=='left' %}<span class="ui-dimmer-left"> {% else %} <span class="ui-dimmer-right"> {% endif %}
                     {{ basic.stateswitch('', item_switch_r, 'icon', [0,1], [icon.light(), icon.light("","",item_value_r)], '', [color_off|default('icon0'), 'red'], indicator) }}
                     <p>{{ linetext|e }} red</p>
                     {{ basic.slider('', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    </span>
                   </div>
-                  <div class="dimmer ui-dimmer-left">
+                  <div class="dimmer">
+                    {% if picpos is empty or picpos=='left' %}<span class="ui-dimmer-left"> {% else %} <span class="ui-dimmer-right"> {% endif %}
                     {{ basic.stateswitch('', item_switch_g, 'icon', [0,1], [icon.light(), icon.light("","",item_value_g)], '', [color_off|default('icon0'), 'green'], indicator) }}
                     <p>{{ linetext|e }} green</p>
                     {{ basic.slider('', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    </span>
                   </div>
-                  <div class="dimmer ui-dimmer-left">
+                  <div class="dimmer">
+                    {% if picpos is empty or picpos=='left' %}<span class="ui-dimmer-left"> {% else %} <span class="ui-dimmer-right"> {% endif %}
                     {{ basic.stateswitch('', item_switch_b, 'icon', [0,1], [icon.light(), icon.light("","",item_value_b)], '', [color_off|default('icon0'), 'blue'], indicator) }}
                     <p>{{ linetext|e }} blue</p>
                     {{ basic.slider('', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    </span>
                   </div>
                 {% if item_value_ww and item_value_ww  != ' ' %}
-                    <div class="dimmer ui-dimmer-left">
+                    <div class="dimmer">
+                      {% if picpos is empty or picpos=='left' %}<span class="ui-dimmer-left"> {% else %} <span class="ui-dimmer-right"> {% endif %}
                       {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light("","",item_value_ww)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
                       {{ basic.slider('', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                      </span>
                     </div>
               {% endif %}
             </div>
@@ -1097,7 +1117,7 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
  * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
- * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+ * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
@@ -1106,10 +1126,10 @@ the first one is the base color for values below first threshold, so pass one co
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
-             possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot'
+ * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot,extpopup, anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
-             Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
+             Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'], 'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
 {% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, place3, place4, column_order, blind_or_shutter, pos_attribs) %}
     {% import "basic.html" as basic %}
@@ -1126,6 +1146,8 @@ the first one is the base color for values below first threshold, so pass one co
   {% set item_saved = pos_attribs[0]|default(item_saved) %}
   {% set value_pos_1 = pos_attribs[1]|default(value_pos_1) %}
   {% set value_pos_2 = pos_attribs[2]|default(value_pos_2) %}
+  {% set text_pos_1 = pos_attribs[3]|default('Pos1') %}
+  {% set text_pos_2 = pos_attribs[4]|default('Pos2') %}
   {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -1353,7 +1375,7 @@ the first one is the base color for values below first threshold, so pass one co
                 {{ icon.shutter(id~'list_blind_shutter', '', item_pos, min, max, item_angle) }}
             </a>
             <div id="{{ uid(page, id) }}list_shutter_popup" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
-                {{ device.shutter('', linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2) }}
+                {{ device.shutter('', linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) }}
             </div>
 
       {% if elements[loop.index] == 'div' %}
@@ -1377,7 +1399,7 @@ the first one is the base color for values below first threshold, so pass one co
           <td valign="top">
             {% if item_saved %}
               <div style="margin-right:5px;margin-left:5px;">
-              {{ basic.stateswitch(id~'_saved1_ext', item_saved, '', value_pos_1, '', value_pos_1~' ', 'icon0', 'blink') }}
+              {{ basic.stateswitch(id~'_saved1_ext', item_saved, '', value_pos_1, '', text_pos_1, 'icon0', 'blink') }}
               &nbsp;</div>
             {% endif %}
           </td>
@@ -1386,7 +1408,7 @@ the first one is the base color for values below first threshold, so pass one co
           <td valign="bottom">
             {% if item_saved %}
               <div style="margin-right:5px;margin-left:5px;">
-              {{ basic.stateswitch(id~'_saved2_ext', item_saved, '', value_pos_2, '', value_pos_2~' ', 'icon0', 'blink') }}
+              {{ basic.stateswitch(id~'_saved2_ext', item_saved, '', value_pos_2, '', text_pos_2, 'icon0', 'blink') }}
               &nbsp;</div>
             {% endif %}
           </td>
@@ -1398,19 +1420,19 @@ the first one is the base color for values below first threshold, so pass one co
     {% endif %}
 
     {% if column == 'pos' and item_saved and value_pos_2 and value_pos_1 %}
-      {{ basic.select(id, item_saved, 'mini', [value_pos_1, value_pos_2,0], '', [value_pos_1, value_pos_2,0], 'icon1', 'horizontal') }}
+      {{ basic.select(id, item_saved, 'mini', [value_pos_1, value_pos_2, 0], '', [text_pos_1, text_pos_2, 0], 'icon1', 'horizontal') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
 
     {% elseif column == 'pos1' and item_saved and value_pos_1 and 'pos' not in elements %}
-      {{ basic.stateswitch(id~'_saved1', item_saved, '', [value_pos_1,0], '', [0, value_pos_1], 'icon0', 'blink') }}
+      {{ basic.stateswitch(id~'_saved1', item_saved, '', [value_pos_1, 0], '', [0, text_pos_1], 'icon0', 'blink') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
 
     {% elseif column == 'pos2' and item_saved and value_pos_2 and 'pos' not in elements %}
-      {{ basic.stateswitch(id~'_saved2', item_saved, '', [value_pos_2,0], '', [0, value_pos_2], 'icon0', 'blink') }}
+      {{ basic.stateswitch(id~'_saved2', item_saved, '', [value_pos_2, 0], '', [0, text_pos_2], 'icon0', 'blink') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1519,17 +1541,19 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
  * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
- * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+ * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
                        Possible elements are: header, text, slider, flip, switch, select
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
+ * @param {unspecified[]=} 	    a list with positional attributes: item_saved = an item for some saved positions, value_pos_1 =
+the value to send for position 1, value_pos_2 = the value to send for position 2, text_pos_1 = the text printed on button for position 1, text_pos_2 = the text printed on button for position 2 (optional)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
-             possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot'
+ * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot,extpopup,anynumber)=[[move_down, move_up], pos_popup_shutter, stateengine, plot, uzsu]} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
@@ -1545,14 +1569,14 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {id=}     			    unique id for this widget
  * @param {text=} 			    text for the whole line
  * @param {item=}  	    a gad/item for the previous title
- * @param {item=}   		    a gad/item for play/pause command
+ * @param {item=}   		    a gad/item for play command
+ * @param {item=}   		    a gad/item for pause command
  * @param {item=}    		    a gad/item for stopping
  * @param {item=} 			    a gad/item for the next title
  * @param {item=}  		    a gad/item for turning power on/off
  * @param {item=}  		    a gad/item to eject
  * @param {item=}    	    a gad/item to repeat. 0 = off. 1 = song. 2 = playlist
  * @param {item=}    	    a gad/item to shuffle. 0 = off. 1 = song. 2 = album
- * @param {item=}    		    a gad/item to mute on/off
  * @param {unspecified[]=}    		        array providing these information: [item to change source/playlist, select-type, [value1, icon1, text1], [value2, icon2, text2], etc.]
  * @param {item=}    	    a gad/item to set mute
  * @param {item=}    	    a gad/item to set the volume
@@ -1576,7 +1600,7 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
  * @param {item=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
- * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+ * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
@@ -1585,13 +1609,14 @@ the first one is the base color for values below first threshold, so pass one co
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {undefined=} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](previous,play,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,auto,repeat,source,speaker,playpause,shuffle, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
-             possible elements are: 'previous', 'play', 'stop', 'next', 'power', 'eject', 'mute', 'volume_slider', 'cover',
-            'volume_popup', 'volume_up', 'volume_down', 'song_position', 'uzsu', 'plot', 'auto', 'repeat', 'source', 'speaker', 'playpause', 'shuffle'
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {text[](previous,play,pause,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,stateengine,repeat,source,source_popup,speaker,playpause,shuffle,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'previous', 'play', 'pause', 'stop', 'next', 'power', 'eject', 'mute', 'volume_slider', 'cover',
+            'volume_popup', 'volume_up', 'volume_down', 'song_position', 'uzsu', 'plot', 'stateengine', 'repeat', 'source', 'speaker', 'playpause', 'shuffle', 'source_popup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
-             Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
+             Combine elements in one column by putting them in arrays.
  */
-{% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, coverUrl, place2, column_order) %}
+{% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, coverUrl, place1, place2, column_order) %}
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
     {% import "device.html" as device %}
@@ -2134,7 +2159,7 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
 * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
 * @param {item=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
-* @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+* @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
@@ -2146,7 +2171,7 @@ the first one is the base color for values below first threshold, so pass one co
                             You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
 * @param {unspecified=} 	    placeholder attributes for future features, etc.
 * @param {unspecified=} 	    placeholder attributes for future features, etc.
-* @param {text[](switch,stateengine,uzsu,plot,locks,slider, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+* @param {text[](switch,stateengine,uzsu,plot,locks,slider,anynumber)=['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'switch', 'stateengine', 'uzsu', 'plot', 'locks', 'slider'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is ['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']
@@ -2731,23 +2756,23 @@ the first one is the base color for values below first threshold, so pass one co
  * Select: lets you select a specific value (e.g. scene, etc.)
  *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item
-* @param {type(menu)=menu} type: 'menu', 'micro', 'mini', 'midi', 'icon' (optional, default: menu)
+* @param {item[?]} an (array of) item(s)
+* @param {type(menu)[?]=menu} type: 'menu', 'micro', 'mini', 'midi', 'icon' (optional, default: menu)
 * @param {text[]=[0,1]} list of values (optional, default [0,1])
-* @param {image[]=} list of icons for every button (optional) - not supported for type 'menu'
-* @param {text[]=} list of texts for every menu entry or button (optional)
-* @param {color=icon1} the color for the on state of the buttons (optional, default: icon1) - not supported for type 'menu'
-* @param {text(horizontal,vertical,none)=horizontal} orientation of the controlgroup: 'horizontal', 'vertical' or 'none' for seperate buttons (optional, default: 'horizontal') - not supported for type 'menu'
+* @param {image[?]=} list of icons for every button (optional) - not supported for type 'menu'
+* @param {text[?]=} list of texts for every menu entry or button (optional)
+* @param {color[?]=icon1} the color for the on state of the buttons (optional, default: icon1) - not supported for type 'menu'
+* @param {text(horizontal,vertical,none)[?]=horizontal} orientation of the controlgroup: 'horizontal', 'vertical' or 'none' for seperate buttons (optional, default: 'horizontal') - not supported for type 'menu'
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
 * @param {text=} text for the whole line (optional)
 * @param {text[?]=} (array with) text for each column (optional)
- * @param {item=}  		    a gad/item for UZSU
+ * @param {item[?]=}  		    a gad/item for UZSU
  * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
  * @param {item=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
- * @param {unspecified[?]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+ * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
                        followed by the attributes for each element as you would for the basic widget.
@@ -2759,8 +2784,8 @@ the first one is the base color for values below first threshold, so pass one co
                             You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](select,stateengine,uzsu,plot,locks, )=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
-            possible elements are: 'select', 'stateengine', 'uzsu', 'plot', 'locks'
+ * @param {text[](select,stateengine,uzsu,plot,locks,extpopup,anynumber)=['locks', 'select', 'stateengine', 'plot', 'uzsu']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+            possible elements are: 'select', 'stateengine', 'uzsu', 'plot', 'locks', 'extpopup'
             For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
             Combine elements in one column by putting them in arrays. Standard is ['locks', 'select', 'stateengine', 'plot', 'uzsu']
             Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
@@ -2793,7 +2818,7 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {unspecified=} 	    placeholder attributes for future features, etc.
 * @param {text=} text for the whole line (optional)
 * @param {text[?]=} (array with) text for each column (optional)
-* @param {value[]=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
+* @param {value[](1,2,3,4,5)=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
 *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
 *
 * @author Stefan Widmer
