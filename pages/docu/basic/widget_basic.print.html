@@ -60,7 +60,7 @@
   <div style="clear:both;"></div>
     <div class="twig">
       <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-        <span id="shownvalue" style="color:red;">{{ basic.print('', 'temperature') }}</span>
+        <span id="shownval" style="color:red;">{{ basic.print('', 'temperature') }}</span>
         {{ basic.print('', 'heater', 'script', '$("#shownvalue").css("color", (VAR1 == 0) ? "#FF6600" : "#00FF00")') }}
       {% endverbatim %}{% endfilter %}</code>
     </div>
@@ -77,7 +77,7 @@
   </div>
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}
-      <span id="otherElement" style="color: red">This is another element</span>
+      <span id="otherElemnt" style="color: red">This is another element</span>
     {% endfilter %}</code>
   </div>
   <div class="twig">

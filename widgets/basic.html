@@ -108,8 +108,8 @@
 * Used to glue to widgets together. Only needed if you don't use 'Realtime'!
 * If you click the 'from'-widget, the 'to'-widget will be reloaded and updated after a delay.
 *
-* @param {id(nonunique)} id of the element that is been clicked
-* @param {id(nonunique)} id of the element that contains an item that might be changed
+* @param {id} non-unique id of the element that is being clicked
+* @param {id} non-unique id of the element that contains an item that might be changed
 */
 {% macro glue(id_from, id_to) %}
 	<script type="text/javascript">
@@ -131,9 +131,9 @@
 * show an icon, optionally colored statically or dynamically by item
 *
 * @param {image} icon to show
-* @param {color=icon0} the color in any CSS form (e.g. '#f00' for red) or 'icon1' (default 'icon0' of the design)
+* @param {color(icon0, icon1, 'rgb', 'hsl', 'hsv', '#f00')=icon0} the color in any CSS form (e.g. '#f00' for red) or 'icon1' (default 'icon0' of the design)
 	To use dynamic coloring by item give one of the following color models: 'rgb', 'hsl' or 'hsv'
-* @param {item[?]} either one item which sends all three color parts as array or an array of three items each sending one of the color parts.
+* @param {item[?]=} either one item which sends all three color parts as array or an array of three items each sending one of the color parts.
 *
 * @see design/design_icons#Icons (list of available pictures)
 *
