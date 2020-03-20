@@ -37,12 +37,13 @@
   </div>
 
   <h5>Colors</h5>
-  Use the slider to control the value
+  Colors can be assigned with static values or dynamically depending on the threashold values: <br />
+  Use the slider to control the value 
   {{ basic.slider('', 'bath.light.value') }}
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-      static color: {{ basic.print('', 'bath.light.value', '', '', '', '#f00') }}<br />
-      color depending on value: {{ basic.print('', 'bath.light.value', '', '', [100,200], ['green', '', 'icon1']) }}<br />
+      {{ basic.print('', 'bath.light.value', '', '', '', '#f00') }}
+      {{ basic.print('', 'bath.light.value', '', '', [100,200], ['green', '', 'icon1']) }}
     {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
@@ -52,7 +53,7 @@
 
   <h5>Advanced Scripting</h5>
   basic.print can also be used for some "hacks".<br>
-  This example shows how to update the color of a widget text based on the value of ANOTHER item. Turn on or off the heater and change the temperature. The temperature print will turn red if the heater is off and green if it is on.<br>
+  This example shows how to update the color of a widget text based on the value of ANOTHER item. Click on the heater icon and change the temperature. The temperature print will turn red if the heater is off and green if it is on.<br>
   <div style="width:100%">
     <div style="float:left;width: 50px;">{{ basic.stateswitch('', 'heater', 'icon', '', ['sani_heating', 'sani_heating']) }}</div>
     <div style="float:left;width: 80%; min-width: 100px; margin: 10px 0 0 0;">{{ basic.slider('', 'temperature', 0, 30, 1, '', 'handle') }}</div>
@@ -60,7 +61,7 @@
   <div style="clear:both;"></div>
     <div class="twig">
       <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-        <span id="shownvalue" style="color:red;">{{ basic.print('', 'temperature') }}</span>
+        <span id="shownval" style="color:red;">{{ basic.print('', 'temperature') }}</span>
         {{ basic.print('', 'heater', 'script', '$("#shownvalue").css("color", (VAR1 == 0) ? "#FF6600" : "#00FF00")') }}
       {% endverbatim %}{% endfilter %}</code>
     </div>
@@ -70,25 +71,26 @@
     </div>
 
 
-  The following examples shows how to manipulate or read other elements; but any other JavaScript/jQuery exression can be used.<br>
-  The second example shows text of another element. It does not use the item data at all but it is triggered by receiving an item value.<br>
+  The following examples shows how to manipulate or read other elements. Any JavaScript/jQuery exression can be used. <br>
+  The first example manipulates the padding of an element in CSS. <br>
+  The second example reads a given element. It does not use the item data at all but gets triggered by receiving an item value.<br>
   <div class="html">
 	<div style="float:left;width: 80%; min-width: 100px; margin: 10px 0 0 0;">{{ basic.slider('', 'bath.value', 0, 100, 1, '', 'handle') }}</div>
   </div>
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}
-      <span id="otherElement" style="color: red">This is another element</span>
+      <span id="otherElemnt" style="color: red">This is a really cool function</span>
     {% endfilter %}</code>
   </div>
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-      {{ basic.print('', 'bath.value', 'script', '$("#otherElement").css("padding-left", VAR1/2)') }}
+      {{ basic.print('', 'bath.value', 'script', '$("#otherElement").css("padding-left", VAR1*2)') }}
       {{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherElement").text() + "\'"') }}
     {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
-    <span id="otherElement" style="color: red">This is another element</span><br>
-    {{ basic.print('', 'bath.value', 'script', '$("#otherElement").css("padding-left", VAR1/2)') }}
+    <span id="otherElement" style="color: red">This is a really cool function</span><br>
+    {{ basic.print('', 'bath.value', 'script', '$("#otherElement").css("padding-left", VAR1*2)') }}
     {{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherElement").text() + "\'"') }}
   </div>
 
