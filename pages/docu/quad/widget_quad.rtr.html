@@ -9,19 +9,21 @@
 
 
 {% extends "widget_quad.html" %}
-
-{% block example %}
-<script>
-$( document ).ready(function() {
-		 io.write('istwert', '20.4' );
-		 io.write('soll', '22.1' );
-		 io.write('komfort', '23.5' );
-		 io.write('nacht', '20.1' );
-		 io.write('frostschutz', '4.5' );
-		 io.write('state', 'heizen' );
-	});
+{% block header %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('istwert', '20.4' );
+			 io.write('soll', '22.1' );
+			 io.write('komfort', '23.5' );
+			 io.write('nacht', '20.1' );
+			 io.write('frostschutz', '4.5' );
+			 io.write('state', 'heizen' );
+		});
 
 </script>
+{% endblock %}
+{% block example %}
+
 	<h5>Example</h5>
 
 Standard order with plot and offset

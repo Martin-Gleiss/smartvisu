@@ -9,7 +9,22 @@
 
 
 {% extends "widget_quad.html" %}
+{% block header %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+  		 io.write('this', '0' );
+  		 io.write('that', '4' );
+  		 io.write('this.sperren', '0' );
+  		 io.write('this.timer', '2' );
+  		 io.write('bwm.this.sperren', '0' );
+  		 io.write('this.zwangvalue', '0' );
+  		 io.write('that.sperren', '0' );
+  		 io.write('bwm.that.sperren', '0' );
+  		 io.write('that.zwangvalue', '0' );
+  	});
 
+</script>
+{% endblock %}
 {% block example %}
 
 {% set extpopup = {
@@ -18,20 +33,6 @@
 }
  %}
 
-<script>
-$( document ).ready(function() {
-		 io.write('this', '0' );
-		 io.write('that', '4' );
-		 io.write('this.sperren', '0' );
-		 io.write('this.timer', '2' );
-		 io.write('bwm.this.sperren', '0' );
-		 io.write('this.zwangvalue', '0' );
-		 io.write('that.sperren', '0' );
-		 io.write('bwm.that.sperren', '0' );
-		 io.write('that.zwangvalue', '0' );
-	});
-
-</script>
 	<h5>Example</h5>
 
 Multiple Select

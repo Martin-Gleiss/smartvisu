@@ -9,22 +9,23 @@
 
 
 {% extends "widget_quad.html" %}
+{% block header %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+       io.write('Volume', '70' );
+       io.write('Time', '10' );
+       io.write('Duration', '10' );
+       io.write('speakerAB', '1' );
+       io.write('Album', 'Album' );
+       io.write('Artist', 'Artist' );
+       io.write('Title', 'Title' );
 
-{% block example %}
-
-<script>
-$( document ).ready(function() {
-     io.write('Volume', '70' );
-     io.write('Time', '10' );
-     io.write('Duration', '10' );
-     io.write('speakerAB', '1' );
-     io.write('Album', 'Album' );
-     io.write('Artist', 'Artist' );
-     io.write('Title', 'Title' );
-
-  });
+    });
 
 </script>
+{% endblock %}
+{% block example %}
+
   <h5>Example</h5>
 
 Volume Control with the following columns: ['uzsu','plot',['volume_up','volume_down'],'volume_slider']

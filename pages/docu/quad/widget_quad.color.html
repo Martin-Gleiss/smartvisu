@@ -9,30 +9,29 @@
 
 
 {% extends "widget_quad.html" %}
-
-{% block example %}
-<script>
-$( document ).ready(function() {
-		 io.write('led.R.dimmen', '10' );
-		 io.write('led.R', '1' );
-		 io.write('led.G.dimmen', '100' );
-		 io.write('led.G', '1' );
-		 io.write('led.B.dimmen', '5' );
-		 io.write('led.B', '1' );
-		 io.write('led.WW.dimmen', '255' );
-		 io.write('led.WW', '1' );
-		 io.write('h.value', '50' );
-		 io.write('h.switch', '1' );
-		 io.write('s.value', '250' );
-		 io.write('s.switch', '1' );
-		 io.write('v.value', '250' );
-		 io.write('v.switch', '1' );
-		 io.write('led.sequencer', '0' );
-		 io.write('licht.dimmen.zeitschalter', '{}' );
-	});
-
+{% block header %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('led.R.dimmen', '10' );
+			 io.write('led.R', '1' );
+			 io.write('led.G.dimmen', '100' );
+			 io.write('led.G', '1' );
+			 io.write('led.B.dimmen', '5' );
+			 io.write('led.B', '1' );
+			 io.write('led.WW.dimmen', '255' );
+			 io.write('led.WW', '1' );
+			 io.write('h.value', '50' );
+			 io.write('h.switch', '1' );
+			 io.write('s.value', '250' );
+			 io.write('s.switch', '1' );
+			 io.write('v.value', '250' );
+			 io.write('v.switch', '1' );
+			 io.write('led.sequencer', '0' );
+			 io.write('licht.dimmen.zeitschalter', '{}' );
+		});
 </script>
-
+{% endblock %}
+{% block example %}
 
 	<h5>Example</h5>
 

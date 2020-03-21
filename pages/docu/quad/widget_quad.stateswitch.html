@@ -9,7 +9,26 @@
 
 
 {% extends "widget_quad.html" %}
+{% block header %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+       io.write('this', '3' );
+       io.write('that', '1' );
+       io.write('theother', '0' );
+       io.write('this.sperren', '0' );
+       io.write('this.timer', '2' );
+       io.write('bwm.this.sperren', '0' );
+       io.write('this.zwangvalue', '0' );
+       io.write('that.sperren', '0' );
+       io.write('bwm.that.sperren', '0' );
+       io.write('that.zwangvalue', '0' );
+       io.write('this.uzsu', '{}');
+       io.write('that.uzsu', '{}');
+       io.write('theother.uzsu', '{}');
+    });
 
+</script>
+{% endblock %}
 {% block example %}
 
 {% set extpopup = {
@@ -18,24 +37,6 @@
 }
  %}
 
-<script>
-$( document ).ready(function() {
-     io.write('this', '3' );
-     io.write('that', '1' );
-     io.write('theother', '0' );
-     io.write('this.sperren', '0' );
-     io.write('this.timer', '2' );
-     io.write('bwm.this.sperren', '0' );
-     io.write('this.zwangvalue', '0' );
-     io.write('that.sperren', '0' );
-     io.write('bwm.that.sperren', '0' );
-     io.write('that.zwangvalue', '0' );
-     io.write('this.uzsu', '{}');
-     io.write('that.uzsu', '{}');
-     io.write('theother.uzsu', '{}');
-  });
-
-</script>
   <h5>Example</h5>
 
 Standard column order

@@ -9,15 +9,16 @@
 
 
 {% extends "widget_quad.html" %}
-
-{% block example %}
-<script>
-$( document ).ready(function() {
-     io.write('input', 'test' );
-     io.write('input2', '12/24/2018' );
-  });
-
+{% block header %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+       io.write('input', 'test' );
+       io.write('input2', '12/24/2018' );
+    });
 </script>
+{% endblock %}
+{% block example %}
+
   <h5>Example</h5>
 
 Single input
