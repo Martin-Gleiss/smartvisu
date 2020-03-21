@@ -13,14 +13,19 @@
 - New: device.roofwindow (to show and control a roof window)
 - New: device.uzsuicon (to control UZSU in smarthome.py and FHEM)
 - New: device.uzsugraph (to control UZSU in smarthome.py and FHEM)
+- New: device.smallshut (a line of small control and monitoring elements for shutters)
 - New: calendar.waste (compact view of waste collection dates)
 - New: multimedia.audio (plays a soundfile)
+- New: multimedia.timeslider (to show and control the current time of a media file)
+- New: multimedia.playpause (toggle between play and pause to control a music/video player)
 - New: plot.gauge
 - New: plot.pie
 - New: icon.cistern
 - New: icon.garagedoor
 - New: icon.heating (displays a heating colored with dynamic gradient)
 - New: icon.roofwindow
+- New: popup.extpopup (to mix widgets in one popup)
+- New: popup.locks (motion sensor and/or light priority in one popup)
 - basic.symbol: Can also be used to show text only and to render as link, mode extended to adaptable formula (including thresholds), and - most important - may have multiple states now (so eventually, no series of symbols is needed anymore to cover mutiple states)
 - plot.period: Among other things: merged functionality of plot.minmaxavg and plot.multiaxis into it, more options like logarithmic and boolean scale, units, an advanced zoom mode as in Highstock, individual count and mode per series and the possibility to set any additional chart options
 - plot.temprose: New parameters 'series_label' and 'unit'
@@ -59,7 +64,8 @@
 - New weather service [darksky.net](https://darksky.net/)
 - New Fritz!Box phone service using TR-064
 - Updated Quad design with new features
-- Twig function 'asset_exists' checks availability of files (to be used before importing these files) 
+- Twig function 'asset_exists' checks availability of files (to be used before importing these files)
+- Documentation of custom widgets will be imported from dropins/widgets
 - New structure of updated examples 
 
 ### Improvements
