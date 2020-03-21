@@ -1,7 +1,7 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß, Wolfram v. Hülsen
+ * @author      Martin Gleiß, Wolfram v. Huelsen
  * @copyright   2012, 2019
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
@@ -125,9 +125,9 @@
 		</div>
 		<div class="ui-block-b">
 			<div class="ui-bar-c ui-li-divider ui-corner-top">&nbsp;&nbsp;Rollläden</div>
-			<div class="ui-fixed ui-body-a ui-corner-bottom" style="padding: 15px;">
-				{{ shutter.line ('shutter_alle', 'Alle', 'zentral.haus.rollladen.alle.fahren', 'zentral.haus.rollladen.alle.stopp', 'zentral.haus.rollladen.alle.position', 'zentral.haus.rollladen.alle.beschatten') }}
-				{{ shutter.line ('shutter_eg', 'Erdgeschoss', 'zentral.haus.rollladen.eg.fahren', 'zentral.haus.rollladen.eg.stopp', 'zentral.haus.rollladen.eg.position', 'zentral.haus.rollladen.eg.beschatten') }}
+			<div class="ui-fixed ui-body-a ui-corner-bottom" style="padding: 15px; height:100px;">
+				{{ device.smallshut ('shutter_alle', 'Alle', 'zentral.haus.rollladen.alle.fahren', 'zentral.haus.rollladen.alle.stopp', 'zentral.haus.rollladen.alle.position', '') }} <br>
+				{{ device.smallshut ('shutter_eg', 'Erdgeschoss', 'zentral.haus.rollladen.eg.fahren', 'zentral.haus.rollladen.eg.stopp', 'zentral.haus.rollladen.eg.position', 'zentral.haus.rollladen.eg.beschatten') }} <br>
 			</div>	
 		</div>
 		<div class="ui-block-b" style="margin-top: 15px;">
