@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, Patrik Germann
- * @copyright   2020
+ * @copyright   2012 - 2020
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       openHAB2
