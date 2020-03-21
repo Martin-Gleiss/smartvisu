@@ -276,7 +276,50 @@
 
 {% endmacro %}
 
+/**
+* Line: displays a simple shutter control assembly in table format
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the shutter
+* @param {item} a gad/item for long move
+* @param {item} a gad/item for stopping movement
+* @param {item} a gad/item for the actual position
+* @param {item=} a gad/item for the saved position (optional)
+* @param {type=micro} valid types: 'micro', 'mini', 'midi' (optional, default: micro)
+*
+* @info changed by Michael Stemmer and Wolfram v. Huelsen
+* @info you might want to add a device.uzsuicon(...) in your main html after calling this widget
+*/
+{% macro smallshut(id, txt, item_move, item_stop, item_position, item_saved, item_uzsu, type) %}
+{% import "basic.html" as basic %}
+{% import "icon.html" as icon %}
+{% set uid = uid(page, id) %}
 
+	<div class="smallshut"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
+		<span class="ui-shut-txt"> 
+		{% if txt %} {{ txt }} {% endif %}
+		</span>
+		<span class="ui-shut-btn"> 
+			{{ basic.stateswitch('',  item_move, type|default('micro'), '0', 'carat-u') }}
+		</span>
+		<span class="ui-shut-btn">
+			{{ basic.stateswitch('', item_stop, type|default('micro'), 1, 'delete') }}
+		</span>
+		<span class="ui-shut-btn">
+				{{ basic.stateswitch('', item_move, type|default('micro'), '1', 'carat-d') }}
+		</span>
+		<span class="ui-shut-btn">
+			{% if item_saved %}
+				{{ basic.stateswitch('', item_saved, type|default('micro'), '1', 'fts_shutter_50.svg') }}
+			{% endif %}
+		</span>	
+		<span class="ui-shut-btn">
+			{% if item_position %}
+				{{ icon.shutter(id~'position', '', item_position) }}
+			{% endif %}
+		</span>
+	</div>
+{% endmacro %}
 /**
 * Roof window
 *
