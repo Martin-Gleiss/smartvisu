@@ -1,0 +1,59 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Onkel Andy
+* @copyright   2017 - 2020
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_multimedia.html" %}
+
+{% block example %}
+<script>
+$( document ).ready(function() {
+		 io.write('item_duration', '50');
+
+	});
+
+</script>
+	Display the current time of a song on a slider.
+
+	<h5>Example</h5>
+	Time is automatically updated every second in this example as long as play is true. The slider will jump back on stop
+	in this example but not with real data as the current value is read by the current time response of your player.
+
+	<div>Use this switch to turn on/off play: <br />
+		{{ basic.stateswitch('', 'item_play', '', '', 'audio_play') }}
+	</div>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+			{{ multimedia.timeslider('timeslider1', 'item_time', 'item_play', 'item_duration', '1') }}
+
+			{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+	<div class="block">
+
+			{{ multimedia.timeslider('timeslider1', 'item_time', 'item_play', 'item_duration', '1') }}
+	</div>
+	</div>
+	<br />
+	Slider is disabled as duration is zero.
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+			{{ multimedia.timeslider('', 'item_time2', 'item_play', 'item_duration2', '1') }}
+
+			{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+	<div class="block">
+
+			{{ multimedia.timeslider('', 'item_time2', 'item_play', 'item_duration2', '1') }}
+	</div>
+	</div>
+
+{% endblock %}

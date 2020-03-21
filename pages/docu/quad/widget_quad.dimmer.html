@@ -9,8 +9,21 @@
 
 
 {% extends "widget_quad.html" %}
+{% block header %}
 
+{% endblock %}
 {% block example %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+  		 io.write('licht.dimmen', '10' );
+  		 io.write('licht.SA', '1' );
+       io.write('licht.automatik.stateengine_name', 'Standard');
+  		 io.write('licht.automatik.lock', '0');
+       io.write('bwm.sperren', '0');
+       io.write('licht.zwangvalue', '0');
+  	});
+</script>
+
 {% set stateengine = {} %}
 {% set stateengine_items = {
 'item1': ['item1.automatik.lock', 'item1.automatik.settings.suspendduration', '0', '60', '5', 'item1.automatik.settings.sollwert', '0', '250', '5', 'item1.automatik.settings.sperren', '0', '1', 'sperren', 'autoblind', 'standard', 'morning']
@@ -44,19 +57,15 @@
 	{% else %}
 	    {% set sollwerttext = ['header', 'Sollwerte'] %}
 	{% endif %}
-	{% set stateengine = stateengine|merge({(itemname): ['stateengine', (suspendtext), (suspend), (sollwerttext), ('standard' in content ) ? (standard), ('morning' in content ) ? (morning),  ('halloween' in content and ('now'|date('m/d')) == ('10/31')) ? (halloween), ('advent' in content and (("now"|date('m/d') > ('12/01') and "now"|date('m/d') < ('12/31')) or ("now"|date('m/d') > ('01/01') and "now"|date('m/d') < ('01/15')))) ? (advent)]}) %}
+  {% set halloweendate = 'now'|date('m/d') == '10/31' %}
+  {% set advent1 = 'now'|date('m/d') > '12/01' and 'now'|date('m/d') < '12/31' %}
+  {% set advent2 = 'now'|date('m/d') > '01/01' and 'now'|date('m/d') < '01/15' %}
+
+  {% set stateengine = stateengine|merge(
+    {itemname: ['stateengine', suspendtext, suspend, sollwerttext, 'standard' in content ? standard, 'morning' in content ? morning,  'halloween' in content and halloweendate ? halloween, 'advent' in content and advent1 or advent2 ? advent]}
+    ) %}
 {% endfor %}
 
-<script>
-$( document ).ready(function() {
-		 io.write('licht.dimmen', '10' );
-		 io.write('licht.SA', '1' );
-     io.write('licht.automatik.stateengine_name', 'Standard');
-		 io.write('licht.automatik.lock', '0');
-     io.write('bwm.sperren', '0');
-     io.write('licht.zwangvalue', '0');
-	});
-</script>
 	<h5>Example</h5>
 
 ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' '] stateengine with popup (have to long tap to open popup!)

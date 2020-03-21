@@ -9,16 +9,17 @@
 
 
 {% extends "widget_quad.html" %}
+{% block header %}
 
+{% endblock %}
 {% block example %}
-<script>
-$( document ).ready(function() {
-		 io.write('this', '12/24/2018'  );
-		 io.write('that', '2' );
-	});
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('this', '12/24/2018'  );
+			 io.write('that', '2' );
+		});
 
 </script>
-
 
 	<h5>Example</h5>
 Mixed with symbol + textinput, symbol, stateswitch

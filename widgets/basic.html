@@ -55,7 +55,7 @@
 		{% import _self as basic %}
 		<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.color"
 			data-style="{{ style }}" data-colormodel="{{ colormodel|default('rgb') }}"
-			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colorspace == 'hsv' ? [360,100,100] : 255)) }}"
+			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colormodel == 'hsv' ? [360,100,100] : 255)) }}"
 			data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
 			data-item="{{ item_r_h }}, {{ item_g_s }}, {{ item_b_l_v }}"
 			>
@@ -76,7 +76,7 @@
 		<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.color"
 			data-style="{{ style }}" data-colormodel="{{ colormodel|default('rgb') }}"
 			data-item="{{ item_r_h }}, {{ item_g_s }}, {{ item_b_l_v }}"
-			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colorspace == 'hsv' ? [360,100,100] : 255)) }}"
+			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colormodel == 'hsv' ? [360,100,100] : 255)) }}"
 			data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
 			class="colordisc"><span></span></a>
 	{% endif %}

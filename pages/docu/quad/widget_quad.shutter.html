@@ -9,8 +9,20 @@
 
 
 {% extends "widget_quad.html" %}
+{% block header %}
 
+{% endblock %}
 {% block example %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+       io.write('shutter.lz', '0' );
+       io.write('shutter.kz', '0' );
+       io.write('shutter.hoehe', '90' );
+       io.write('shutter.lamellen', '10' );
+    });
+
+</script>
+
 {% set stateengine = {} %}
 {% set stateengine_items = {
 'item1': ['item1.automatik.lock', 'item1.automatik.settings.suspendduration', '0', '60', '5', 'item1.automatik.settings.sollwert', '0', '250', '5', 'item1.automatik.settings.sperren', '0', '1', 'sperren', 'autoblind', 'standard', 'morning']
@@ -44,18 +56,15 @@
   {% else %}
       {% set sollwerttext = ['header', 'Sollwerte'] %}
   {% endif %}
-  {% set stateengine = stateengine|merge({(itemname): ['stateengine', (suspendtext), (suspend), (sollwerttext), ('standard' in content ) ? (standard), ('morning' in content ) ? (morning),  ('halloween' in content and ('now'|date('m/d')) == ('10/31')) ? (halloween), ('advent' in content and (("now"|date('m/d') > ('12/01') and "now"|date('m/d') < ('12/31')) or ("now"|date('m/d') > ('01/01') and "now"|date('m/d') < ('01/15')))) ? (advent)]}) %}
+  {% set halloweendate = 'now'|date('m/d') == '10/31' %}
+  {% set advent1 = 'now'|date('m/d') > '12/01' and 'now'|date('m/d') < '12/31' %}
+  {% set advent2 = 'now'|date('m/d') > '01/01' and 'now'|date('m/d') < '01/15' %}
+
+  {% set stateengine = stateengine|merge(
+    {itemname: ['stateengine', suspendtext, suspend, sollwerttext, 'standard' in content ? standard, 'morning' in content ? morning,  'halloween' in content and halloweendate ? halloween, 'advent' in content and advent1 or advent2 ? advent]}
+    ) %}
 {% endfor %}
 
-<script>
-$( document ).ready(function() {
-     io.write('shutter.lz', '0' );
-     io.write('shutter.kz', '0' );
-     io.write('shutter.hoehe', '90' );
-     io.write('shutter.lamellen', '10' );
-  });
-
-</script>
 
 
   <h5>Example</h5>

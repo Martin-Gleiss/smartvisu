@@ -337,7 +337,7 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](switch,value_popup,value_slider,locks,uzsu,stateengine,plot,scenes,extpopup,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+ * @param {text[](switch,value_popup,value_slider,locks,uzsu,stateengine,plot,scenes,extpopup,anynumber)=[['locks', 'switch'], 'value_popup', 'stateengine', 'uzsu', 'plot']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'switch', 'value_popup', 'value_slider', 'locks', 'uzsu', 'stateengine', 'plot', 'scenes', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['locks', 'switch'], 'value_popup', 'stateengine', 'uzsu', 'plot']
@@ -2158,7 +2158,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
 * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
 * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
-* @param {item=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+* @param {item[?]=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
 * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
@@ -2171,7 +2171,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                             You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
 * @param {unspecified=} 	    placeholder attributes for future features, etc.
 * @param {unspecified=} 	    placeholder attributes for future features, etc.
-* @param {text[](switch,stateengine,uzsu,plot,locks,slider,anynumber)=['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+* @param {text[](switch,stateengine,uzsu,plot,locks,slider,extpopup,anynumber)=['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'switch', 'stateengine', 'uzsu', 'plot', 'locks', 'slider'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is ['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']
@@ -2771,7 +2771,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
- * @param {item=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {item[?]=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,

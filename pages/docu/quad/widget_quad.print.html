@@ -9,14 +9,16 @@
 
 
 {% extends "widget_quad.html" %}
+{% block header %}
 
+{% endblock %}
 {% block example %}
-<script>
-$( document ).ready(function() {
-		 io.write('this', '1' );
-		 io.write('that', '1' );
-		 io.write('theother', '1' );
-	});
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('this', '1' );
+			 io.write('that', '1' );
+			 io.write('theother', '1' );
+		});
 
 </script>
 	<h5>Example</h5>
