@@ -16,6 +16,10 @@ Blinds
 
 {% block header %}
 <img class="icon" src='{{ icon0 }}fts_shutter_50.svg'/>
+
+{% endblock %}
+
+{% block content %}
 <script>
 $( document ).ready(function() {
 		 io.write('blind.lz', '0' );
@@ -27,8 +31,6 @@ $( document ).ready(function() {
 	});
 
 </script>
-{% endblock %}
-
 {% set stateengine = {} %}
 {% set stateengine_items = {
 'item1': ['item1.automatik.lock', 'item1.automatik.settings.suspendduration', '0', '60', '5', 'item1.automatik.settings.sollwert', '0', '250', '5', 'item1.automatik.settings.sperren', '0', '1', 'sperren', 'autoblind', 'standard', 'morning']
@@ -71,7 +73,6 @@ $( document ).ready(function() {
     ) %}
 {% endfor %}
 
-{% block content %}
 
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
     <li data-role="list-divider">Blind</li>

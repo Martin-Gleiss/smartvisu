@@ -10,6 +10,9 @@
 
 {% extends "widget_quad.html" %}
 {% block header %}
+
+{% endblock %}
+{% block example %}
 <script type="text/javascript">
   $( document ).ready(function() {
        io.write('this', '1' );
@@ -17,9 +20,6 @@
        io.write('theother', '1' );
     });
 </script>
-{% endblock %}
-{% block example %}
-
   <h5>Example</h5>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">

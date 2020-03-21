@@ -10,6 +10,9 @@
 
 {% extends "widget_quad.html" %}
 {% block header %}
+
+{% endblock %}
+{% block example %}
 <script type="text/javascript">
 	$( document ).ready(function() {
 			 io.write('istwert', '20.4' );
@@ -21,9 +24,6 @@
 		});
 
 </script>
-{% endblock %}
-{% block example %}
-
 	<h5>Example</h5>
 
 Standard order with plot and offset

@@ -10,6 +10,9 @@
 
 {% extends "widget_quad.html" %}
 {% block header %}
+
+{% endblock %}
+{% block example %}
 <script type="text/javascript">
   $( document ).ready(function() {
   		 io.write('licht.dimmen', '10' );
@@ -20,8 +23,6 @@
        io.write('licht.zwangvalue', '0');
   	});
 </script>
-{% endblock %}
-{% block example %}
 
 {% set stateengine = {} %}
 {% set stateengine_items = {

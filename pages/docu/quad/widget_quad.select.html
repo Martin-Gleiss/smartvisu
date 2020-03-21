@@ -10,6 +10,9 @@
 
 {% extends "widget_quad.html" %}
 {% block header %}
+
+{% endblock %}
+{% block example %}
 <script type="text/javascript">
   $( document ).ready(function() {
   		 io.write('this', '0' );
@@ -24,9 +27,6 @@
   	});
 
 </script>
-{% endblock %}
-{% block example %}
-
 {% set extpopup = {
 'extra': ['edit_favorites.svg', [['linetext', 'select', 'switch'], 'Text', ['item.automatik.settings.sollwert', 'mini', [0,4,6]], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], [['switch', 'slider'], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']], [['slider'], ['item.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'flip'], 'Flip:', ['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']]],
 'stateengine': ['stateengine', [['switch', 'slider', 'flip'], ['licht.og.kueche.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['licht.og.kueche.automatik.settings.suspendduration', '0', '60', '5', '', 'handle'], ['licht.og.kueche.automatik.lock', 'An', 'Aus', '1', '0']], [['slider'], ['licht.og.kueche.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'select'], 'Text', ['licht.og.kueche.automatik.settings.sollwert', 'mini', [0,4,6]]]]

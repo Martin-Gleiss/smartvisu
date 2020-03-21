@@ -10,6 +10,9 @@
 
 {% extends "widget_quad.html" %}
 {% block header %}
+
+{% endblock %}
+{% block example %}
 <script type="text/javascript">
 	$( document ).ready(function() {
 			 io.write('led.R.dimmen', '10' );
@@ -30,9 +33,6 @@
 			 io.write('licht.dimmen.zeitschalter', '{}' );
 		});
 </script>
-{% endblock %}
-{% block example %}
-
 	<h5>Example</h5>
 
     [['locks','sequencer','colorpicker','ww_slider'], 'ww_popup','values']

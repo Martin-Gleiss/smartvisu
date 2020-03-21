@@ -16,6 +16,10 @@ Multimedia
 
 {% block header %}
 <img class="icon" src='{{ icon0 }}scene_livingroom.svg'/>
+
+{% endblock %}
+
+{% block content %}
 <script>
 $( document ).ready(function() {
      io.write('coverUrl', 'https://hackernoon.com/hn-images/0*FCDlVLqqpY94s-Jf.jpg' );
@@ -31,10 +35,6 @@ $( document ).ready(function() {
 	});
 
 </script>
-{% endblock %}
-
-{% block content %}
-
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
 <li data-role="list-divider">Use to change player values below</li>
 

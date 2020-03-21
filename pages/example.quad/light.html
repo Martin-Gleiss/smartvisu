@@ -16,6 +16,10 @@ Light
 
 {% block header %}
 <img class="icon" src='{{ icon0 }}light_light.svg'/>
+
+{% endblock %}
+
+{% block content %}
 <script>
 $( document ).ready(function() {
 			io.write('light.dimmen', '10' );
@@ -42,10 +46,6 @@ $( document ).ready(function() {
 	});
 
 </script>
-{% endblock %}
-
-{% block content %}
-
 {% set stateengine = {} %}
 {% set stateengine_items = {
 'item_1': ['item1.automatik.lock', 'item1.automatik.settings.suspendduration', '0', '60', '5', 'item1.automatik.settings.sollwert', '0', '250', '5', 'item1.automatik.settings.prio', '0', '1', 'sperren', 'stateengine', 'standard', 'morning'],

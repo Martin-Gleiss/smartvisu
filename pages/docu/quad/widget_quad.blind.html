@@ -10,6 +10,9 @@
 
 {% extends "widget_quad.html" %}
 {% block header %}
+
+{% endblock %}
+{% block example %}
 <script type="text/javascript">
 $( document ).ready(function() {
      io.write('blind.lz', '0' );
@@ -18,7 +21,6 @@ $( document ).ready(function() {
      io.write('blind.lamellen', '10' );
   });
 </script>
-{% endblock %}
 
 {% set stateengine = {} %}
 {% set stateengine_items = {
@@ -62,7 +64,6 @@ $( document ).ready(function() {
     ) %}
 {% endfor %}
 
-{% block example %}
 
 
   <h5>Example</h5>

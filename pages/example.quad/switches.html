@@ -16,6 +16,10 @@ Switches
 
 {% block header %}
 <img class="icon" src='{{ icon0 }}light_light.svg'/>
+
+{% endblock %}
+
+{% block content %}
 <script>
 $( document ).ready(function() {
 		 io.write('this', '0' );
@@ -32,10 +36,6 @@ $( document ).ready(function() {
 	});
 
 </script>
-{% endblock %}
-
-{% block content %}
-
 {% set stateengine = {
 'stateengine': ['stateengine', [['linetext', 'select', 'switch'], 'Text', ['item.automatik.settings.sollwert', 'mini', [0,4,6]], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], [['switch', 'slider'], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']], [['slider'], ['item.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'flip'], 'Flip:', ['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']]]
 }

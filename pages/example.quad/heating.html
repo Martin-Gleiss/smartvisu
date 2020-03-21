@@ -15,6 +15,10 @@ Heating
 
 {% block header %}
 <img class="icon" src='{{ icon0 }}sani_heating.svg'/>
+
+{% endblock %}
+
+{% block content %}
 <script>
 $( document ).ready(function() {
 		 io.write('istwert', '20' );
@@ -26,9 +30,6 @@ $( document ).ready(function() {
 	});
 
 </script>
-{% endblock %}
-
-{% block content %}
 
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
     <li data-role="list-divider">RTR</li>
