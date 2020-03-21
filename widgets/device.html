@@ -277,7 +277,7 @@
 {% endmacro %}
 
 /**
-* Line: displays a simple shutter control assembly in table format
+* Displays a simple shutter control assembly in table format
 *
 * @param {id=} unique id for this widget (optional)
 * @param {text=} name of the shutter
@@ -288,7 +288,6 @@
 * @param {type=micro} valid types: 'micro', 'mini', 'midi' (optional, default: micro)
 *
 * @author Michael Stemmer and Wolfram v. Huelsen
-* @info you might want to add a device.uzsuicon(...) in your main html after calling this widget
 */
 {% macro smallshut(id, txt, item_move, item_stop, item_position, item_saved, type) %}
 {% import "basic.html" as basic %}
@@ -313,7 +312,7 @@
 				{{ basic.stateswitch('', item_saved, type|default('micro'), '1', 'fts_shutter_50.svg') }}
 			{% endif %}
 		</span>	
-		<span class="ui-shut-btn">
+		<span class="ui-shut-pic">
 			{% if item_position %}
 				{{ icon.shutter(id~'position', '', item_position) }}
 			{% endif %}
