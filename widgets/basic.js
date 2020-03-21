@@ -523,7 +523,7 @@ $.widget("sv.basic_icon", $.sv.widget, {
 
 	_update: function(response) {
 			var max = String(this.options.max).explode();
-			var min = String(this.optionx.min).explode();
+			var min = String(this.options.min).explode();
 			// ensure max and min as array of 3 floats (fill by last value if array is shorter)
 			for(var i = 0; i <= 2; i++) {
 				max[i] = parseFloat(max[Math.min(i, max.length-1)])
