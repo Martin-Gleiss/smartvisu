@@ -1,9 +1,9 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Niko Will
- * @copyright   2013
- * @license     GPL <http://www.gnu.de>
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
 
@@ -16,9 +16,6 @@ Switches
 
 {% block header %}
 <img class="icon" src='{{ icon0 }}light_light.svg'/>
-{% endblock %}
-
-{% block content %}
 <script>
 $( document ).ready(function() {
 		 io.write('this', '0' );
@@ -35,6 +32,10 @@ $( document ).ready(function() {
 	});
 
 </script>
+{% endblock %}
+
+{% block content %}
+
 {% set stateengine = {
 'stateengine': ['stateengine', [['linetext', 'select', 'switch'], 'Text', ['item.automatik.settings.sollwert', 'mini', [0,4,6]], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], [['switch', 'slider'], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']], [['slider'], ['item.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'flip'], 'Flip:', ['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']]]
 }
@@ -49,10 +50,10 @@ standard column_order
 {{ quad.stateswitch('stateswitch11', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', '', 'blink', '', '', '', '', '', 'one switch, standard order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (stateengine['stateengine']), ['this.sperren','bwm.this.sperren','this.zwangvalue']) }}
 
 [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks'] with extpopup on stateengine-icon
-{{ quad.stateswitch('stateswitch12', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', '', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (stateengine['stateengine']), 'this.sperren', '', '', '', [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks']) }}
+{{ quad.stateswitch('stateswitch12', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', '', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (stateengine['stateengine']), ['this.sperren'], '', '', '', [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks']) }}
 
 ['switch', '10', ['plot','stateengine', 'locks'], '10', 'extpopup']
-{{ quad.stateswitch('stateswitch13', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], ['','',''], ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', '', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['extra']), 'this.sperren', '', '', '', ['switch', '10', ['plot','stateengine', 'locks'], '10', 'extpopup']) }}
+{{ quad.stateswitch('stateswitch13', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], ['','',''], ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', '', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['extra']), ['this.sperren'], '', '', '', ['switch', '10', ['plot','stateengine', 'locks'], '10', 'extpopup']) }}
 
 don't use column_order for multiple switches.
 {{ quad.stateswitch('stateswitch14', ['this', 'that', 'theother'], ['icon','mini','midi'], [[1,0],'',[0,150]], [['edit_numeric_1.svg','edit_numeric_0.svg'],'',['edit_numeric_0.svg','edit_numeric_9.svg']], ['', ['0','1']], [['',''],'',['','']], ['blink','','blink'], '', '', '', 'place1', 'place2', 'Mixed types with one slider', ['', '', ''], ['this.uszu','','theother.uszu'], ['','',''], '', '', '', '', '', [['this.timer', 0, 10, 1, 'min', 'handle'],'','']) }}
@@ -73,10 +74,10 @@ don't use column_order for multiple switches.
 
     <li data-role="list-divider">singleselect</li>
 [['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']
-{{ quad.select('select2', 'this', 'icon', [0,1,2], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg'], ['','',''], '', 'horizontal', '', '', 'Select as horizontal group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.stateengine', (extpopup['extra']), 'this.sperren', 'this.slider', '', '', [['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']) }}
+{{ quad.select('select2', 'this', 'icon', [0,1,2], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg'], ['','',''], '', 'horizontal', '', '', 'Select as horizontal group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.stateengine', (extpopup['extra']), ['this.sperren'], 'this.slider', '', '', [['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']) }}
 
 ['select', 'plot', 'uzsu']
-{{ quad.select('select3', 'this', 'icon', [0,1,2,3,4], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg','edit_numeric_4.svg'], ['','','','',''], '', '', '', '', 'Select as none group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.stateengine', (stateengine['stateengine']), 'this.sperren', ['this.timer', 0, 10, 1, 'min', 'handle'], '', '', ['select', 'plot', 'uzsu']) }}
+{{ quad.select('select3', 'this', 'icon', [0,1,2,3,4], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg','edit_numeric_4.svg'], ['','','','',''], '', '', '', '', 'Select as none group', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.stateengine', (stateengine['stateengine']), ['this.sperren'], ['this.timer', 0, 10, 1, 'min', 'handle'], '', '', ['select', 'plot', 'uzsu']) }}
 
 ['select', 'stateengine', 'plot', 'uzsu']
 {{ quad.select('select4', 'this', 'mini', [0,1,2,3,4], '', ['0','1','2','3','4'], '', 'horizontal', '', '', 'Select standard columns', '', 'this.uszu', '', 'plotitem', 'measure_power_meter.svg', 'this.stateengine', '') }}
