@@ -221,7 +221,7 @@
 * @param {text=Pos1} the text printed on button for position 1 (optional, default Pos1)
 * @param {text=Pos2} the text printed on button for position 2 (optional, default Pos2)
 *
-* @info inspired by Jörg Gutowski
+* @info inspired by Joerg Gutowski
 */
 {% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) %}
 	{% import "basic.html" as basic %}
@@ -276,6 +276,49 @@
 
 {% endmacro %}
 
+/**
+* Displays a simple shutter control assembly in table format
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the shutter
+* @param {item} a gad/item for long move
+* @param {item} a gad/item for stopping movement
+* @param {item} a gad/item for the actual position
+* @param {item=} a gad/item for the saved position (optional)
+* @param {type=micro} valid types: 'micro', 'mini', 'midi' (optional, default: micro)
+*
+* @author Michael Stemmer and Wolfram v. Huelsen
+*/
+{% macro smallshut(id, txt, item_move, item_stop, item_position, item_saved, type) %}
+{% import "basic.html" as basic %}
+{% import "icon.html" as icon %}
+{% set uid = uid(page, id) %}
+
+	<div class="smallshut"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
+		<span class="ui-shut-txt"> 
+		{% if txt %} {{ txt }} {% endif %}
+		</span>
+		<span class="ui-shut-btn"> 
+			{{ basic.stateswitch('',  item_move, type|default('micro'), '0', 'carat-u') }}
+		</span>
+		<span class="ui-shut-btn">
+			{{ basic.stateswitch('', item_stop, type|default('micro'), 1, 'delete') }}
+		</span>
+		<span class="ui-shut-btn">
+				{{ basic.stateswitch('', item_move, type|default('micro'), '1', 'carat-d') }}
+		</span>
+		<span class="ui-shut-btn">
+			{% if item_saved %}
+				{{ basic.stateswitch('', item_saved, type|default('micro'), '1', 'fts_shutter_50.svg') }}
+			{% endif %}
+		</span>	
+		<span class="ui-shut-pic">
+			{% if item_position %}
+				{{ icon.shutter(id~'position', '', item_position) }}
+			{% endif %}
+		</span>
+	</div>
+{% endmacro %}
 
 /**
 * Roof window
@@ -372,7 +415,7 @@
 * @param {color=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
 * @param {color=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
 *
-* @author Michael Würtenberger
+* @author Michael Wuertenberger
 */
 
 {% macro uzsuicon(id, item, headline, pic_on, pic_off, valueType, valueParameterList, color_on, color_off, _backend) %}

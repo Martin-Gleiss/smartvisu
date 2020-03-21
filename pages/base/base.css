@@ -1351,6 +1351,36 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   display: none !important;
 }
 
+.smallshut {
+  width: 85%;
+  float: left;  
+}
+
+.smallshut .ui-shut-txt {
+  width: 30% !important;
+  padding-right: 0.5%;
+  display: inline-block;
+  text-align: left;
+}
+
+.smallshut .ui-shut-btn,
+.ui-shut-btn {
+  width: 11% !important;
+  padding-left: 0.5%;
+  display: inline-block;
+}
+
+.smallshut .ui-shut-pic {
+  width: 11% !important;
+  padding-left:0%;
+  display: inline-block;
+}
+
+.smallshut .ui-shut-pic .icon {
+  margin-left: -5%;
+  display: inline-block;
+}
+
 .uzsuPopupContent{
   width: 100%;
   height: 100%;
