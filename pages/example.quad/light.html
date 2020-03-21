@@ -1,9 +1,9 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Niko Will
- * @copyright   2013
- * @license     GPL <http://www.gnu.de>
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
 
@@ -16,6 +16,7 @@ Light
 
 {% block header %}
 <img class="icon" src='{{ icon0 }}light_light.svg'/>
+
 {% endblock %}
 
 {% block content %}
@@ -98,36 +99,53 @@ $( document ).ready(function() {
 	{% else %}
 	    {% set sollwerttext = ['header', 'Sollwerte'] %}
 	{% endif %}
-	{% set stateengine = stateengine|merge({(itemname): ['stateengine', (suspendtext), (suspend), (sollwerttext), ('standard' in content ) ? (standard), ('morning' in content ) ? (morning),  ('halloween' in content and ('now'|date('m/d')) == ('10/31')) ? (halloween), ('advent' in content and (("now"|date('m/d') > ('12/01') and "now"|date('m/d') < ('12/31')) or ("now"|date('m/d') > ('01/01') and "now"|date('m/d') < ('01/15')))) ? (advent)]}) %}
+  {% set halloweendate = 'now'|date('m/d') == '10/31' %}
+  {% set advent1 = 'now'|date('m/d') > '12/01' and 'now'|date('m/d') < '12/31' %}
+  {% set advent2 = 'now'|date('m/d') > '01/01' and 'now'|date('m/d') < '01/15' %}
+
+  {% set stateengine = stateengine|merge(
+    {itemname: ['stateengine', suspendtext, suspend, sollwerttext, 'standard' in content ? standard, 'morning' in content ? morning,  'halloween' in content and halloweendate ? halloween, 'advent' in content and advent1 or advent2 ? advent]}
+    ) %}
 {% endfor %}
 
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
     <li data-role="list-divider">Dimmer</li>
+
     ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' '] stateengine with popup
-	{{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'light.SA', 'light.dimmen', 0, 255, 1, [icon.light(), icon.light('','','light.dimmen')], ['icon0','icon1'], '', '', 'blink', '', 'handle', 'light.dimmen.zeitschalter', '', '%', 'light.dimmen', '', 'item1.automatik', (stateengine['item_1']), ['', 'bwm.sperren', 'light.zwangvalue'], '', '', ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
+	{{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'light.SA', 'light.dimmen', 0, 255, 1, icon.light('','','light.dimmen'), icon.light(), 'icon1', 'icon0', '', '', '', '', 'blink', '', 'light.dimmen.zeitschalter', '', '%', 'light.dimmen', '', 'item1.automatik', (stateengine['item_1']), ['', 'bwm.sperren', 'light.zwangvalue'], '', '', ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
+
 	[['locks','switch'], 'value_popup', 'extpopup', 'plot']
-	{{ quad.dimmer('dimmer3', 'Dimmer Example 2', 'light.SA', 'light.dimmen', 0, 255, 1, [icon.light(), icon.light('','','light.dimmen')], ['icon0','icon1'], '', '100', 'blink', '', 'handle', 'light.dimmen.zeitschalter', '', '%', 'light.dimmen', '', 'light.automatik', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['', 'bwm.sperren', 'light.zwangvalue'],  '', '', [['locks','switch'], 'value_popup', 'extpopup', 'plot']) }}
+	{{ quad.dimmer('dimmer3', 'Dimmer Example 2', 'light.SA', 'light.dimmen', 0, 255, 1, icon.light('','','light.dimmen'), icon.light(), 'icon1', 'icon0', '', '', '', '', 'blink', '', 'light.dimmen.zeitschalter', '', '%', 'light.dimmen', '', 'light.automatik', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['', 'bwm.sperren', 'light.zwangvalue'],  '', '', [['locks','switch'], 'value_popup', 'extpopup', 'plot']) }}
+
 	['switch', 'value_slider']
-	{{ quad.dimmer('dimmer4', 'Dimmer Example 3', 'light.SA', 'light.dimmen', 0, 255, 1, [icon.light(), icon.light('','','light.dimmen')], '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ['switch', 'value_slider']) }}
+	{{ quad.dimmer('dimmer4', 'Dimmer Example 3', 'light.SA', 'light.dimmen', 0, 255, 1, icon.light('','','light.dimmen'), icon.light(), '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ['switch', 'value_slider']) }}
+
 	no column_order
-	{{ quad.dimmer('dimmer2', 'Standard Example 1', 'light.SA', 'light.dimmen', 0, 255, 1, [icon.light(), icon.light('','','light.dimmen')]) }}
+	{{ quad.dimmer('dimmer2', 'Standard Example 1', 'light.SA', 'light.dimmen', 0, 255, 1, icon.light('','','light.dimmen'), icon.light()) }}
+
     <li data-role="list-divider">RGB Color</li>
+    (id, item_value_r, item_value_g, item_value_b, min, max, step, colors, style, colormodel, linetext, item_switch_r, item_switch_g, item_switch_b, min_display, max_display, item_uzsu, uzsu_attribs, popupcolor, item_switch_ww, item_value_ww, item_plot, icon_plot, item_auto, extpopup, locks, item_seq, icon_color, place3, place4, column_order)
+
     [['locks','sequencer','colorpicker','ww_slider'], 'ww_popup','values']
-    {{ quad.color('vorhanglight1', 'Disc, WW Slider, locks, WW popup, hsv popup', 'led.R', 'led.R.dimmen', 'led.G', 'led.G.dimmen', 'led.B', 'led.B.dimmen', 0, 255, 10, 30, '', '', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', 'led.sequencer.sperren'], 'led.sequencer', '', '', '', [['locks','sequencer','colorpicker','ww_slider'], 'ww_popup','values']) }}
+    {{ quad.color('color1', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, '', '', 'Disc, WW Slider, locks, WW popup, hsv popup', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', 'led.sequencer.sperren'], 'led.sequencer', '', '', '', [['locks','sequencer','colorpicker','ww_slider'], 'ww_popup','values']) }}
+
     [['locks','sequencer','colorpicker'], 'ww_slider','values']
-    {{ quad.color('vorhanglight1_2', 'WW slider, rgb popup', 'led.R', 'led.R.dimmen', 'led.G', 'led.G.dimmen', 'led.B', 'led.B.dimmen', 0, 255, 10, 30, '', '', '', '', '', '', 'rgb', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', 'led.sequencer.sperren'], 'led.sequencer', '', '', '', [['locks','sequencer','colorpicker'], 'ww_slider','values']) }}
+    {{ quad.color('color2', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, '', '', 'WW slider, rgb popup', 'led.R', 'led.G', 'led.B', '', '', '', '', 'rgb', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', 'led.sequencer.sperren'], 'led.sequencer', '', '', '', [['locks','sequencer','colorpicker'], 'ww_slider','values']) }}
+
     ['locks', 'colorpicker', 'values']
-    {{ quad.color('vorhanglight3', 'HSV slider, 3 columns', 'led.R', 'led.R.dimmen', 'led.G', 'led.G.dimmen', 'led.B', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', '', '', '', '', 'hsv', '', '', '', '', '', '', ['', 'bwm.sperren', '', ''], '', '', '', '', ['locks', 'colorpicker', 'values']) }}
-    [['locks','colorpicker', 'ww_slider'], ['values', 'stateengine', 'plot']]
-    {{ quad.color('vorhanglight4', 'HSV slider+WW, 2 columns', 'led.R', 'led.R.dimmen', 'led.G', 'led.G.dimmen', 'led.B', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', 'led.WW.dimmen', '', 'item.stateengine', (stateengine['item_2']), ['', 'bwm.sperren', '', ''], '', '', '', '', [['locks','colorpicker', 'ww_slider'], ['values', 'stateengine', 'plot']]) }}
+    {{ quad.color('color3', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', 'HSV slider, 3 columns', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', '', '', '', '', '', '', ['', 'bwm.sperren', '', ''], '', '', '', '', ['locks', 'colorpicker', 'values']) }}
+
+    [['locks','colorpicker', 'ww_slider'], 'values']
+    {{ quad.color('color4', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', 'HSV slider+WW, 3 columns', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', ''], '', '', '', '', [['locks','colorpicker', 'ww_slider'], 'values', 'stateengine', 'plot']) }}
+
     ['locks', 'colorpicker', 'values', 'plot']
-    {{ quad.color('vorhanglight5', 'RGB Disc, separate columns', 'led.R', 'led.R.dimmen', 'led.G', 'led.G.dimmen', 'led.B', 'led.B.dimmen', 0, 255, 10, 30, '', '', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', 'led.sequencer.sperren'], 'led.sequencer', '', '', '', ['locks', 'colorpicker', 'values', 'plot']) }}
+    {{ quad.color('color5', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, '', '', 'RGB Disc, separate columns', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', 'led.WW', '', '', '', ['', 'bwm.sperren', '', 'led.sequencer.sperren'], 'led.sequencer', '', '', '', '', ['locks', 'colorpicker', 'values', 'plot']) }}
+
 	['colorpicker', '20', '40', 'uzsu']
-    {{ quad.color('demolight1', 'HSV Modell, 2 empty cols', 'h.switch', 'h.value', 's.switch', 's.value', 'v.switch', 'v.value', 0, 255, 10, 10, 'slider', '', '', '', 'light.dimmen.zeitschalter', '', 'hsv', '', '', '', '', '', '', '', '', '', '', '', ['colorpicker', '20', '40', 'uzsu']) }}
-    no column_order
-    {{ quad.color('vorhanglight2', 'RGB Disc, bwm lock item, 2 cols', 'led.R', 'led.R.dimmen', 'led.G', 'led.G.dimmen', 'led.B', 'led.B.dimmen', 0, 255, 10, 30, '', '', '', '', '', '', 'hsv', '', '', '', '', '', '', ['', 'bwm.sperren', '', '']) }}
-	no column_order
-    {{ quad.color('demolight2', 'RGB Leuchte RGB Modell', 'r.switch', 'r.value', 'g.switch', 'g.value', 'b.switch', 'b.value', 0, 255, 10, 30, 'disc', '', '', '', '', '', '', 'ww.switch', 'ww.value') }}
+    {{ quad.color('color6', 'h.value', 's.value', 'v.value', 0, 255, 10, 30, '', '', 'HSV Modell, 2 empty cols', '', '', '', '', '', 'licht.dimmen.zeitschalter', ['time_clock', 'time_clock', 'num', '', 'icon1', 'icon0'], 'hsv', '', '', '', '', '', '', '', '', '', '', '', ['colorpicker', '20', '40', 'uzsu']) }}
+
+  no column_order
+    {{ quad.color('color7', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, '', '', 'RGB Disc, bwm lock item, 2 cols', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', '', '', '', '', '', '', ['', 'bwm.sperren', '', '']) }}
 
 </ul>
 

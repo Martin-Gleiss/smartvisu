@@ -1,9 +1,9 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Mirko Hirsch
- * @copyright   2015
- * @license     GPL <http://www.gnu.de>
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
 
@@ -13,7 +13,11 @@ Status Samples
 {% endblock %}
 
 {% block header %}
-<img class="icon" src='{{ icon0 }}jquery_bullets.svg'/>
+<img class="icon" src="{{ icon0 }}jquery_bullets.svg" />
+
+{% endblock %}
+
+{% block content %}
 <script>
 $( document ).ready(function() {
          io.write('this', '0' );
@@ -21,16 +25,11 @@ $( document ).ready(function() {
          io.write('theother', '2' );
 	});
 </script>
-{% endblock %}
-
-{% block content %}
-
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
     <li data-role="list-divider">Use to change values below</li>
 {{ quad.stateswitch('stateswitch2', ['this', 'that', 'theother'], ['icon','', 'icon'], [[0,1, 100],[0,1,100,200],[1,2]], [['edit_numeric_0.svg','edit_numeric_1.svg', ''],'',['edit_numeric_1.svg','edit_numeric_2.svg']], [['','','100'],[0,1,100,200],''], [['',''],['','','','',''],''], ['blink','blink',''], '', '', '', '', '', 'CHANGE STATUS ITEMS HERE', ['this', 'that', 'theother']) }}
 <li data-role="list-divider">status badge based on "that" value</li>
-  <li>{{ basic.symbol() }}{{ status.badge('', 'that', [100,200], ['hidden', 'yellow', 'red']) }}
-  </li>
+  <li>{{ basic.symbol() }}{{ status.badge('', 'that', [100,200], ['hidden', 'yellow', 'red']) }}</li>
 
 <li data-role="list-divider">print</li>
 
@@ -58,8 +57,6 @@ $( document ).ready(function() {
 
     <li data-role="list-divider">map values as text and symbol</li>
     {{ quad.symbol('mapvalue2', ['that','this'], [['low','medium','high'], ['', '', '']], [['', '', ''], ['control_1','control_2','control_3']], [[100,200], [100,200]], ['>', '>'], '', '', '', 'with plots', ['that:', 'this:'], ['that.plot','this.plot'], '', '', '', [1,2]) }}
-    <li data-role="list-divider">activelist</li>
-{{ quad.activelist('activelist', ['this','that','theother'], ['light_light.svg', '', 'secur_locked.svg'], ['light_light.svg', '', 'secur_open.svg'], [1, 100, 2], [0,0,1], 'icon1', ['hidden','hidden','hidden'], 'place1', 'place2', 'This, that, theother (reversed)', ['This','That','other'], [3,2,1]) }}
 
 </ul>
 {% endblock %}

@@ -1,9 +1,9 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Niko Will
- * @copyright   2013
- * @license     GPL <http://www.gnu.de>
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
 
@@ -15,6 +15,7 @@ Heating
 
 {% block header %}
 <img class="icon" src='{{ icon0 }}sani_heating.svg'/>
+
 {% endblock %}
 
 {% block content %}
@@ -29,6 +30,7 @@ $( document ).ready(function() {
 	});
 
 </script>
+
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
     <li data-role="list-divider">RTR</li>
     {{ quad.rtr('normal', 'Standard Order with plot and offset', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'heizen', 'Text', 5, 'offset', '', '#ff0', 'blink', 'normal.plot') }}

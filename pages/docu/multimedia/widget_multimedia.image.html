@@ -9,12 +9,13 @@
 
 
 {% extends "widget_multimedia.html" %}
+{% block header %}
 
+{% endblock %}
 {% block example %}
 <script>
 $( document ).ready(function() {
 		 io.write('webcam_item', 'http://webcam.anw.at/bild1.jpg');
-		 //io.write('cover_item', 'http://10.0.0.100:9002/music/current/cover.jpg?player=b8:27:eb:e9:8c:20');
 
 	});
 

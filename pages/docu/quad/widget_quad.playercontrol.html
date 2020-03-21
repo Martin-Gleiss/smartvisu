@@ -9,20 +9,21 @@
 
 
 {% extends "widget_quad.html" %}
+{% block header %}
 
+{% endblock %}
 {% block example %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+       io.write('Volume', '70' );
+       io.write('Time', '10' );
+       io.write('Duration', '10' );
+       io.write('speakerAB', '1' );
+       io.write('Album', 'Album' );
+       io.write('Artist', 'Artist' );
+       io.write('Title', 'Title' );
 
-<script>
-$( document ).ready(function() {
-     io.write('Volume', '70' );
-     io.write('Time', '10' );
-     io.write('Duration', '10' );
-     io.write('speakerAB', '1' );
-     io.write('Album', 'Album' );
-     io.write('Artist', 'Artist' );
-     io.write('Title', 'Title' );
-
-  });
+    });
 
 </script>
   <h5>Example</h5>
@@ -30,25 +31,24 @@ $( document ).ready(function() {
 Volume Control with the following columns: ['uzsu','plot',['volume_up','volume_down'],'volume_slider']
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown,
-{{ quad.playercontrol('volume', 'Volume Slider, UZSU and Plot', '', '', '', '', '', '', '', '', '', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, '', '', '', '', '', 'speakerAB', 'uzsu', ['uzsu_attribs'], 'Volume.Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_up','volume_down'],'volume_slider']) }}
+{{ quad.playercontrol('volume', 'Volume Slider, UZSU and Plot', '', '', '', '', '', '', '', '', '', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, '', '', '', '', '', 'speakerAB', 'uzsu', ['', '', 'uzsu_value', '', 'icon1', 'icon0'], 'Volume.Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_up','volume_down'],'volume_slider']) }}
 
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.playercontrol('volume', 'Volume Slider, UZSU and Plot', '', '', '', '', '', '', '', '', '', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, '', '', '', '', '', 'speakerAB', 'uzsu', ['uzsu_attribs'], 'Volume.Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_up','volume_down'],'volume_slider']) }}
+{{ quad.playercontrol('volume', 'Volume Slider, UZSU and Plot', '', '', '', '', '', '', '', '', '', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, '', '', '', '', '', 'speakerAB', 'uzsu', ['', '', 'uzsu_value', '', 'icon1', 'icon0'], 'Volume.Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_up','volume_down'],'volume_slider']) }}
   </ul></div>
 
 Player Control with standard columns
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-{{ quad.playercontrol('player', 'Squeezebox', 'Previous', '', 'Pause', 'Stop', 'Next', '', 'Eject', 'Repeat', 'Shuffle', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', ['uzsu_attribs'], 'Plot') }}
+{{ quad.playercontrol('player', 'Squeezebox', 'Previous', '', 'Pause', 'Stop', 'Next', '', 'Eject', 'Repeat', 'Shuffle', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', '', 'Plot') }}
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.playercontrol('player', 'Squeezebox', 'Previous', '', 'Pause', 'Stop', 'Next', '', 'Eject', 'Repeat', 'Shuffle', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', ['uzsu_attribs'], 'Plot') }}
+{{ quad.playercontrol('player', 'Squeezebox', 'Previous', '', 'Pause', 'Stop', 'Next', '', 'Eject', 'Repeat', 'Shuffle', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', '', 'Plot') }}
   </ul></div>
 
 Player Control with ['uzsu','plot',['volume_down','volume_up','power'], 'source']
