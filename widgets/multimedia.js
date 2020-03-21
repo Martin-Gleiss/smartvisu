@@ -111,44 +111,69 @@ $(document).on('pagecontainerchange', function (event, ui) {
 // shows and controls the time code of a multimedia file
 $.widget("sv.multimedia_timeslider", $.sv.widget, {
 
-  initSelector: 'input[data-widget="multimedia.timeslider"]',
+  initSelector: '[data-widget="multimedia.timeslider"]',
 
   options: {
 
   },
+  vars: {
+      counting: false,
+      playing: false
+  },
     _update: function(response) {
-        this.element.attr('lock', 1);
-        if (response[1] == 0) {
-          $('#' + this.element.attr("id")).val(0).slider('disable');
+        if (response[2] == true)
+          this.vars.playing = true;
+        else if (response[2] == false)
+          this.vars.playing = false;
+        this.element.attr('lock', 0);
+        if (parseInt(response[1]) == 0) {
+          this.element.val(0);
+          this.element.slider('disable');
         } else {
-          $('#' + this.element.attr("id")).attr('max',response[1]).val(response[0]).slider('enable');
+          this.element.attr('max', response[1]).val(response[0]).slider('enable');
+          this.element.slider('refresh');
+          this.element.attr('mem', this.element.val());
+          this.element.attr('value', this.element.val());
+          this.element.attr('timer', '0');
         }
-        $('#' + this.element.attr("id")).slider('refresh');
-        $('#' + this.element.attr("id")).attr('mem', this.element.val());
+        if (!this.vars.counting && this.vars.playing)
+          this._counter();
+        else if (!this.vars.playing)
+          this.vars.counting = false;
+    },
+    _counter: function() {
+        var el = this;
+        if (el.element.attr('lock') == 0 && this.vars.playing){
+          el.vars.counting = true;
+          el.element.val(parseInt(el.element.val()) + 1);
+          el.element.attr('value', parseInt(el.element.val()) + 1);
+          this.element.slider('refresh');
+          setTimeout(function() {
+            el._counter();
+          }, 1000);
+        }
     },
     _events: {
         'slidestop': function(event) {
+          this.element.attr('lock', 0);
           if (this.element.val() != this.element.attr('mem')) {
               var items = this.element.attr('data-item').explode();
               io.write(items[0], this.element.val());
                 }
            },
+       'slidestart': function(event) {
+          this.element.attr('lock', 1);
+          },
         'change': function(event) {
-            if( (this.element.attr('timer') === undefined || this.element.attr('timer') == 0 && this.element.attr('lock') == 0 )
-                && (this.element.val() != this.element.attr('mem')) ) {
-
-                if (this.element.attr('timer') !== undefined)
-                    this.element.trigger('click');
-
-                this.element.attr('timer', 1);
-                setTimeout("$('#" + this.element.attr("id") + "').attr('timer', 0);", 400);
-            }
-
-            this.element.attr('lock', 0);
         },
-        'click': function(event) {
+        'focusout': function(event) {
           var items = this.element.attr('data-item').explode();
           io.write(items[0], this.element.val());
+        },
+        'keyup': function(event) {
+          if (this.element.is(":focus") && event.key === "Enter") {
+            this.element.blur();
+            }
         }
     }
 });
