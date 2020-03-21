@@ -82,7 +82,7 @@ $.widget("sv.basic_color", $.sv.widget, {
 		}
 
 		if(response.length == 1) // all values as list in one item
-			values = response[0];
+			values = response[0].toString().split(",");
 		else
 			values = response;
 
