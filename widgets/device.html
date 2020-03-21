@@ -221,7 +221,7 @@
 * @param {text=Pos1} the text printed on button for position 1 (optional, default Pos1)
 * @param {text=Pos2} the text printed on button for position 2 (optional, default Pos2)
 *
-* @info inspired by Jörg Gutowski
+* @info inspired by Joerg Gutowski
 */
 {% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) %}
 	{% import "basic.html" as basic %}
@@ -287,10 +287,10 @@
 * @param {item=} a gad/item for the saved position (optional)
 * @param {type=micro} valid types: 'micro', 'mini', 'midi' (optional, default: micro)
 *
-* @info changed by Michael Stemmer and Wolfram v. Huelsen
+* @author Michael Stemmer and Wolfram v. Huelsen
 * @info you might want to add a device.uzsuicon(...) in your main html after calling this widget
 */
-{% macro smallshut(id, txt, item_move, item_stop, item_position, item_saved, item_uzsu, type) %}
+{% macro smallshut(id, txt, item_move, item_stop, item_position, item_saved, type) %}
 {% import "basic.html" as basic %}
 {% import "icon.html" as icon %}
 {% set uid = uid(page, id) %}
@@ -320,6 +320,7 @@
 		</span>
 	</div>
 {% endmacro %}
+
 /**
 * Roof window
 *
@@ -415,7 +416,7 @@
 * @param {color=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
 * @param {color=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
 *
-* @author Michael Würtenberger
+* @author Michael Wuertenberger
 */
 
 {% macro uzsuicon(id, item, headline, pic_on, pic_off, valueType, valueParameterList, color_on, color_off, _backend) %}
