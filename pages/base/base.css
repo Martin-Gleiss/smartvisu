@@ -1352,19 +1352,32 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 }
 
 .smallshut {
-  width: 100%;
+  width: 85%;
   float: left;  
 }
 
 .smallshut .ui-shut-txt {
-  width: 24% !important;
-  padding-right: 1%;
+  width: 30% !important;
+  padding-right: 0.5%;
+  display: inline-block;
+  text-align: left;
+}
+
+.smallshut .ui-shut-btn,
+.ui-shut-btn {
+  width: 11% !important;
+  padding-left: 0.5%;
   display: inline-block;
 }
 
-.smallshut .ui-shut-btn {
-  width: 10% !important;
-  padding-right: 0.5%;
+.smallshut .ui-shut-pic {
+  width: 11% !important;
+  padding-left:0%;
+  display: inline-block;
+}
+
+.smallshut .ui-shut-pic .icon {
+  margin-left: -5%;
   display: inline-block;
 }
 
