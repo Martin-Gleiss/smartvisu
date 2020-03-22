@@ -94,7 +94,7 @@
 	</div>
 	<div class="html">
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1, 0], basic.symbol('', 'bath.multistate', '', 'message_led', [1,2,3], '', ['red','#EAFF00','green'])) }}
-		State: {{ basic.select('', 'bath.light.switch', 'mini', [0, 1], '', ['0','1'] ) }}
+		State: {{ basic.select('', 'bath.light.switch', 'mini', [0, 1], '', ['0','1'] ) }}<br>
 		Color: {{ basic.select('', 'bath.multistate', 'mini', [1, 2, 3], '', ['red','yellow','green'] ) }}
 
 	</div>
