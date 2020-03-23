@@ -124,16 +124,16 @@
 * @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
 * @param {text='left'} position of the switch: left (default) or right
 */
+
 {% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos) %}
 	{% import "basic.html" as basic %}
 
-	<div class="dimmer" data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
-		{% if picpos is empty or picpos=='left' %}<span class="ui-dimmer-left"> {% else %} <span class="ui-dimmer-right"> {% endif %}
+		{% if picpos is empty or picpos=='left' %}<div class="dimmer-left" {% else %} <div class="dimmer-right" {% endif %}
+		data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
 			{{ basic.stateswitch('', item_switch, 'icon', '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
 			<p>{{ txt|e }}</p>
 			{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display) }}
-		</span>
-	</div>
+		</div>
 
 {% endmacro %}
 
