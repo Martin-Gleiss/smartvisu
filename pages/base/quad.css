@@ -517,6 +517,11 @@
     width: 300px;
 }
 
+.quad_dimmer {
+  vertical-align: middle;
+  height: 48px;
+  margin: 15px 0 10px 0;
+}
 
 //NOTIFYBADGE
 /* make sure the element has position: relative */
