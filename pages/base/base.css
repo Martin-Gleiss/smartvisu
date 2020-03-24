@@ -1280,12 +1280,12 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 .dimmer p,
 .dimmer-left p {
   margin: 0;
-  padding: 0;
+  padding: 0 0 5px 15px;
 }
 
 .dimmer-right p {
   margin: 0;
-  padding-left: 15px;
+  padding: 0 0 5px 15px;
 }
 
 .dimmer .ui-slider,
