@@ -29,7 +29,7 @@
     an unknown unit: {{ basic.print('', 'bath.value', 'MWh') }}<br />
     a time: {{ basic.print('', 'bath.time', 'time') }}<br />
     a custom format (one decimal place): {{ basic.print('', 'bath.value', '%01,1f') }}<br />
-	a voltage with link to a popup: {{ basic.print('', 'bath.value', 'V', '', '', '', '#print_popup', 'popup' ) }}<br /> 
+	a voltage with link to a popup: {{ basic.print('', 'bath.value', 'V', '', '', '', '#print_popup', 'popup' ) }}<br />
 	<div id="print_popup" data-role="popup" style="width:280px; height:200px;">
 			<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 			I'm a popup
@@ -38,7 +38,7 @@
 
   <h5>Colors</h5>
   Colors can be assigned with static values or dynamically depending on the threashold values: <br />
-  Use the slider to control the value 
+  Use the slider to control the value
   {{ basic.slider('', 'bath.light.value') }}
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
@@ -69,13 +69,28 @@
       <span id="shownvalue" style="color:red;">{{ basic.print('', 'temperature') }}</span>
       {{ basic.print('', 'heater', 'script', '$("#shownvalue").css("color", (VAR1 == 0) ? "#FF6600" : "#00FF00")') }}
     </div>
+  Here the color of the print is changed based on a threshold of a different item.<br>
+  Change the second slider to adjust the color of the printed value and see what happens if the value goes above 200 and 300.
+  <div class="html">
+  <div style="float:left;width: 80%; min-width: 100px; margin: 10px 0 0 0;">bath.value: {{ basic.slider('', 'bath.value', 0, 100, 1, '', 'handle') }}</div>
+  <div style="float:left;width: 80%; min-width: 100px; margin: 10px 0 0 0;">bath.trigger: {{ basic.slider('', 'bath.trigger', 0, 400, 10, '', 'handle') }}</div>
+  </div>
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+      <span id="bathvalue">{{ basic.print('', 'bath.value') }}</span>
+      {{ basic.print('', 'bath.trigger', 'script', '$("#bathvalue").css("color", (VAR1 < 200) ? "#FF6600" : "#FFFFFF")') }}
+    {% endverbatim %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <span id="bathvalue">{{ basic.print('', 'bath.value') }}</span>
+    {{ basic.print('', 'bath.trigger', 'script', '$("#bathvalue").css("color", (VAR1 < 400 && VAR1 > 300) ? "#33FF33" : (VAR1 < 200) ? "#FF6600" : "#FFFFFF")') }}
+  </div>
 
-
-  The following examples shows how to manipulate or read other elements. Any JavaScript/jQuery exression can be used. <br>
+  The following examples show how to manipulate or read other elements. Any JavaScript/jQuery exression can be used. <br>
   The first example manipulates the padding of an element in CSS. <br>
   The second example reads a given element. It does not use the item data at all but gets triggered by receiving an item value.<br>
   <div class="html">
-	<div style="float:left;width: 80%; min-width: 100px; margin: 10px 0 0 0;">{{ basic.slider('', 'bath.value', 0, 100, 1, '', 'handle') }}</div>
+  <div style="float:left;width: 80%; min-width: 100px; margin: 10px 0 0 0;">{{ basic.slider('', 'bath.value', 0, 100, 1, '', 'handle') }}</div>
   </div>
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}
