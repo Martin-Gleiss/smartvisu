@@ -1,0 +1,117 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "quad_root.html" %}
+
+{% block title %}
+BWM
+{% endblock %}
+
+{% block header %}
+<img class="icon" src='{{ icon0 }}message_presence.svg'/>
+{% endblock %}
+
+{% block content %}
+<script>
+$( document ).ready(function() {
+		 io.write('bwm.eg.bad.helligkeitsschwelle', '10' );
+     io.write('bwm.eg.bad.nachlaufzeit', '20' );
+     io.write('bwm.eg.bad.reichweite', '90' );
+     io.write('wetterstation.helligkeit.osten', '90' );
+     io.write('bwm.eg.bad.helligkeitstrigger', '1' );
+     io.write('bwm.eg.gang.helligkeitsschwelle', '100' );
+     io.write('bwm.eg.gang.nachlaufzeit', '2' );
+     io.write('bwm.eg.gang.reichweite', '30' );
+     io.write('bwm.eg.gang.helligkeitswert', '120' );
+     io.write('bwm.eg.gang.helligkeitstrigger', '0' );
+     io.write('bewegung.eg.zeitstatus', '15' );
+
+	});
+
+</script>
+<div style="padding:10px;">EG | <a href="index.php?page=bwm_og">OG</a></div>
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+     <li data-role="list-divider">Bewegungswerte</li>
+
+     {{ quad.mixed('', 'EG Bewegung',
+     [basic.symbol('', '', 'Allgemein'),
+     basic.symbol('bewegung_og', 'bewegung.eg.zeitstatus', ['0', '5', '15', '30'], ['message_presence','message_presence','message_presence','message_presence'], ['0', '5', '15', '30'], 'or', ['icon0', 'icon1', 'icon1', 'icon1'], '#bewegung_eg_popup', 'popup'),
+     popup.extpopup('bewegung_eg_popup', [['plot'], ['bewegung.eg', 'max', '12h', 'now', '0', '1.5', '5000', 'EG', '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'bool']])
+     ]) }}
+
+     <li data-role="list-divider">Bad EG</li>
+{{ quad.mixed('bwm_bad1', 'BWM Bad Werte',
+[basic.symbol('', '', '', 'weather_light_meter'),
+basic.print('', 'wetterstation.helligkeit.osten')],
+basic.symbol('', 'bwm.eg.bad.helligkeitstrigger', '', ['status_light_off', 'status_light_high'], [0,1], '', ['icon0', 'icon1'])) }}
+
+{{ quad.mixed('bwm_bad2', 'BWM Bad Settings',
+[basic.symbol('', '', '', 'presence_intensity', '', '', '', '#bwm_bad_hellwert_popup', 'popup'),
+basic.print('', 'bwm.eg.bad.helligkeitsschwelle', '', '', '', '', '#bwm_bad_hellwert_popup', 'popup')],
+[basic.symbol('', '', '', 'presence_shutoffdelay', '', '', '', '#bwm_bad_nachlauf_popup', 'popup'),
+basic.print('', 'bwm.eg.bad.nachlaufzeit', '', '', '', '', '#bwm_bad_nachlauf_popup', 'popup')]) }}
+
+<div class="quad_multi-popup" id="bwm_bad_hellwert_popup" data-role="popup">
+  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+{{ basic.symbol('', '', 'Bad Helligkeitsschwelle')}}&nbsp;<br>
+{{ basic.symbol('', '', 'Nacht')}} {{ basic.slider('', 'bwm.eg.bad.automatik.settings.nacht.helligkeitsschwelle', '5000', '20000', '100', '', 'input') }}
+{{ basic.symbol('', '', 'Standard')}} {{ basic.slider('', 'bwm.eg.bad.automatik.settings.standard.helligkeitsschwelle', '5000', '20000', '100', '', 'input') }}
+</div>
+<div class="quad_multi-popup" id="bwm_bad_nachlauf_popup" data-role="popup">
+  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+{{ basic.symbol('', '', 'Bad Nachlaufzeit')}}&nbsp;<br>
+{{ basic.symbol('', '', 'Nacht')}} {{ basic.slider('', 'bwm.eg.bad.automatik.settings.nacht.nachlaufzeit', '0', '60', '1', '', 'handle') }}
+{{ basic.symbol('', '', 'Standard')}} {{ basic.slider('', 'bwm.eg.bad.automatik.settings.standard.nachlaufzeit', '0', '240', '1', '', 'handle') }}
+</div>
+
+{{ quad.mixed('bwm_bad3', 'BWM Bad Trigger', basic.stateswitch('bad_bwm_sperren', 'bwm.eg.bad.sperren', 'icon', [0,1], ['message_presence','message_presence_disabled']), basic.stateswitch('bad_bwm_master', 'bwm.eg.bad.mastertrigger', 'icon', [0,1], ['jquery_refresh','jquery_refresh']), basic.stateswitch('bad_bwm_trigger', 'bwm.eg.bad.trigger', 'icon', [0,1], ['jquery_forward','jquery_forward']), basic.stateswitch('bad_bwm_aus', 'bwm.eg.bad.austrigger', 'icon', [0,1], ['message_presence_inactive','message_presence_inactive'])) }}
+
+    <li data-role="list-divider">Gang EG</li>
+{{ quad.mixed('bwm_gang1', 'BWM Gang Werte', [basic.symbol('', '', '', 'weather_light_meter'), basic.print('', 'bwm.eg.gang.helligkeitswert')], basic.symbol('', 'bwm.eg.gang.helligkeitstrigger', '', ['status_light_off', 'status_light_high'], [0,1], '', ['icon0', 'icon1'])) }}
+
+{{ quad.mixed('bwm_gang2', 'BWM Gang Settings',
+[basic.symbol('', '', '', 'presence_intensity', '', '', '', '#bwm_gang_hellwert_popup', 'popup'),
+basic.print('', 'bwm.eg.gang.helligkeitsschwelle', '', '', '', '', '#bwm_gang_hellwert_popup', 'popup')],
+[basic.symbol('', '', '', 'presence_shutoffdelay', '', '', '', '#bwm_gang_nachlauf_popup', 'popup'),
+basic.print('', 'bwm.eg.gang.nachlaufzeit', '', '', '', '', '#bwm_gang_nachlauf_popup', 'popup')],
+[basic.symbol('', '', '', 'presence_distance', '', '', '', '#bwm_gang_reichweite_popup', 'popup'),
+basic.print('', 'bwm.eg.gang.reichweite', '', '', '', '', '#bwm_gang_reichweite_popup', 'popup')]) }}
+
+<div class="quad_multi-popup" id="bwm_gang_hellwert_popup" data-role="popup">
+  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+{{ basic.symbol('', '', 'Gang Helligkeitsschwelle')}}&nbsp;<br>
+{{ basic.slider('', 'bwm.eg.gang.helligkeitsschwelle', '0', '200', '5', '', 'handle') }}
+</div>
+<div class="quad_multi-popup" id="bwm_gang_nachlauf_popup" data-role="popup">
+  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+{{ basic.symbol('', '', 'Gang Nachlaufzeit')}}&nbsp;<br>
+{{ basic.slider('', 'bwm.eg.gang.nachlaufzeit', '0', '40', '1', '', 'handle') }}
+</div>
+<div class="quad_multi-popup" id="bwm_gang_reichweite_popup" data-role="popup">
+  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+{{ basic.symbol('', '', 'Gang Reichweite')}}&nbsp;<br>
+{{ basic.slider('', 'bwm.eg.gang.reichweite', '0', '100', '1', '', 'handle') }}
+</div>
+
+{{ quad.mixed('bwm_gang3', 'BWM Gang Trigger',
+basic.stateswitch('gang_bwm_sperren', 'bwm.eg.gang.sperren', 'icon', [0,1], ['message_presence','message_presence_disabled']),
+basic.stateswitch('gang_bwm_master', 'bwm.eg.gang.mastertrigger', 'icon', [0,1], ['jquery_refresh','jquery_refresh']),
+basic.stateswitch('gang_bwm_trigger', 'bwm.eg.gang.trigger', 'icon', [0,1], ['jquery_forward','jquery_forward']),
+basic.stateswitch('gang_bwm_dunkel', 'bwm.eg.gang.immerdunkel', 'icon', [0,1], ['light_starlit_sky','light_starlit_sky'])) }}
+</ul>
+{% endblock %}
+
+{% block quad_top %}
+{{ plot.period('bewegung', ['bewegung.eg.bad.fuenf', 'bewegung.eg.gang.fuenf'], 'raw', '24h', 'now', 0, '', '500', ['EG Bad 5m', 'EG Gang 5m'], ['#faa', '#3f3'], ['stair', 'stair'], ['Uhrzeit', 'Bewegung'],'30s', '', '', '', ['boolean', 'boolean']) }}
+
+{% endblock %}
+
+{% block quad_bottom %}
+{% endblock %}

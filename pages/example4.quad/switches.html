@@ -1,0 +1,52 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+{% extends "quad_root.html" %}
+
+{% block title %}
+Steckdosen
+{% endblock %}
+
+{% block header %}
+<img class="icon" src='{{ icon0 }}message_socket.svg'/>
+{% endblock %}
+
+{% block content %}
+<script>
+$( document ).ready(function() {
+		 io.write('steckdosen.eg.terrasse.sa.ausschalttimer.minutes', '5' );
+     io.write('steckdosen.og.terrasse.sa.ausschalttimer.minutes', '2' );
+     io.write('steckdosen.eg.bad_heizung.sa.ausschalttimer.minutes', '10' );
+	});
+
+</script>
+
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Bad</li>
+{{ quad.stateswitch('steckdosen_eg_bad_heizung', ['steckdosen.eg.bad_heizung.sa','steckdosen.eg.bad_heizung.sa.ausschalttimer'], ['icon','icon'], '', [['sani_heating','sani_heating'], ['time_timer','time_timer']], '', '', 'blink', '', '', '', '', '', 'Wandheizung Bad', '', '', '', '', '', '', '', ['steckdosen.og.essen_fluegel.sperren',''], ['', ['steckdosen.eg.bad_heizung.sa.ausschalttimer.minutes', 0, 10, 1, 'min', 'handle']]) }}
+
+    <li data-role="list-divider">Internet und Co</li>
+{{ quad.stateswitch('steckdosen_og_essen_fluegel', ['steckdosen.og.essen_fluegel.sa','steckdosen.og.essen_fluegel.restart'], ['icon','icon'], '', [['it_wifi','it_wifi'], ['control_reboot','control_reboot']], '', '', ['blink','blink'], '', '', '', '', '', 'WLAN OG', '', '', '', '', '', '', '', ['steckdosen.og.essen_fluegel.sperren','']) }}
+
+{{ quad.stateswitch('steckdosen_eg_buero_verteiler', ['steckdosen.eg.buero_verteiler.sa','steckdosen.eg.buero_verteiler.restart'], ['icon','icon'], '', [['audio_sound','audio_sound'], ['control_reboot','control_reboot']], '', '', ['blink','blink'], '', '', '', '', '', 'EG Verteiler', '', '', ['', '', 'bool'], '', '', '', '', ['steckdosen.eg.buero_verteiler.sperren','']) }}
+{{ quad.stateswitch('steckdosen_kg_technik_server', ['steckdosen.kg.technik_server.sa','steckdosen.kg.technik_server.restart'], ['icon','icon'], '', [['it_router','it_router'], ['control_reboot','control_reboot']], '', '', ['blink','blink'], '', '', '', '', '', 'Internet KG', '', '', ['', '', 'bool'], '', '', '', '', ['steckdosen.kg.technik_server.sperren','']) }}
+
+    <li data-role="list-divider">Terrasse</li>
+{{ quad.stateswitch('steckdosen_eg_terrasse', ['steckdosen.eg.terrasse.sa','steckdosen.eg.terrasse.sa.ausschalttimer'], ['icon','icon'], '', [['message_socket','message_socket'], ['time_timer','time_timer']], '', '', 'blink', '', '', '', '', '', 'Terrasse EG', '', '', ['', '', 'bool'], '', '', ['steckdosen.eg.terrasse.automatik', ''], '',  ['steckdosen.eg.terrasse.sperren',''], ['',['steckdosen.eg.terrasse.sa.ausschalttimer.minutes', 0, 30, 1, 'min', 'handle']]) }}
+
+{{ quad.stateswitch('steckdosen_og_terrasse', ['steckdosen.og.terrasse.sa','steckdosen.og.terrasse.sa.ausschalttimer'], ['icon','icon'], '', [['message_socket','message_socket'], ['time_timer','time_timer']], '', '', 'blink', '', '', '', '', '', 'Terrasse OG', '', '', ['', '', 'bool'], '', '', ['steckdosen.og.terrasse.automatik', ''], '',  ['steckdosen.og.terrasse.sperren',''], ['',['steckdosen.og.terrasse.sa.ausschalttimer.minutes', 0, 30, 1, 'min', 'handle']]) }}
+
+</ul>
+
+{% endblock %}
+
+{% block quad_top %}
+{{ plot.period('', 'steckdosen.eg.bad_heizung.sa', 'on', '24h', 'now', 0, 2, '1000', 'Heizung', '#000', 'stair', ['Uhrzeit', 'Höhe'],'30s') }}
+
+{% endblock %}

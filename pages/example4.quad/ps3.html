@@ -1,0 +1,63 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+{% extends "quad_root.html" %}
+
+
+{% block content %}
+
+<div style="text-align:center;margin-left:auto;margin-right:auto;margin-bottom:10px;margin-top:10px;">
+{{ basic.dual(id~'power', 'heimkino.PS3.Powerbefehl', 'control_standby.svg', 'control_standby.svg', 1, 0, 'midi') }}
+<span style="width:180px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+{{ basic.button(id~'eject', 'heimkino.PS3.Eject', '', 'audio_eject.svg', 1, 'midi','#000') }}
+</div>
+
+<div style="text-align:center;margin-left:auto;margin-right:auto;margin-bottom:10px;">
+{{ basic.button(id~'topmenu', 'heimkino.PS3.TopMenu', 'Top', '', 1, 'midi','#000') }}
+{{ basic.button(id~'up', 'heimkino.PS3.Up', '', 'control_arrow_up.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'popupmenu', 'heimkino.PS3.PopupMenu', 'PopUp', '', 1, 'midi','#000') }}
+<br>
+
+{{ basic.button(id~'left', 'heimkino.PS3.Left', '', 'control_arrow_left.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'enter', 'heimkino.PS3.Enter', '', 'control_ok.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'right', 'heimkino.PS3.Right', '', 'control_arrow_right.svg', 1, 'midi','#000') }}
+<br>
+{{ basic.button(id~'PS', 'heimkino.PS3.PS', 'PS', '', 1, 'midi','#000') }}
+{{ basic.button(id~'down', 'heimkino.PS3.Down', '', 'control_arrow_down.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'return', 'heimkino.PS3.Kreis', '', 'control_return.svg', 1, 'midi','#000') }}
+
+</div>
+
+<div style="text-align:center;margin-left:auto;margin-right:auto;margin-bottom:10px;">
+
+{{ basic.button(id~'rewind', 'heimkino.PS3.Rewind', '', 'audio_rew.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'play', 'heimkino.PS3.Play', '', 'audio_play.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'forward', 'heimkino.PS3.Forward', '', 'audio_ff.svg', 1, 'midi','#000') }}
+<br>
+
+{{ basic.button(id~'previous', 'heimkino.PS3.Previous', '', 'control_arrow_leftward.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'pause', 'heimkino.PS3.Pause', '', 'audio_pause.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'next', 'heimkino.PS3.Next', '', 'control_arrow_rightward.svg', 1, 'midi','#000') }}
+<br>
+{{ basic.button(id~'start', 'heimkino.PS3.Start', 'Start', '', 1, 'midi','#000') }}
+{{ basic.button(id~'stop', 'heimkino.PS3.Stop', '', 'audio_stop.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'kreuz', 'heimkino.PS3.Kreuz', '', 'control_x.svg', 1, 'midi','#000') }}
+
+</div>
+
+<div style="text-align:center;margin-left:auto;margin-right:auto;margin-bottom:0px;">
+{{ basic.button(id~'audio', 'heimkino.PS3.Audio', '', 'audio_sound.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'untertitel', 'heimkino.PS3.Untertitel', '', 'message_notice.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'ansicht', 'heimkino.PS3.Ansicht', '', 'it_camera.svg', 1, 'midi','#000') }}
+<br>
+{{ basic.button(id~'display', 'heimkino.PS3.Display', '', 'audio_playlist.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'zeit', 'heimkino.PS3.Zeit', '', 'time_clock.svg', 1, 'midi','#000') }}
+{{ basic.button(id~'dreieck', 'heimkino.PS3.Dreieck', '', 'edit_settings.svg', 1, 'midi','#000') }}
+
+</div>
+{% endblock %}
