@@ -21,7 +21,7 @@ SEE: [smartvisu.de](http://www.smartvisu.de)
 
 ## SYSTEM REQUIREMENTS
   * IP-Network, KNX-Bus
-  * [smarthomeNG](https://github.com/smarthomeNG), [linknx](http://sourceforge.net/projects/linknx/), [domotiga](https://domotiga.nl/projects/domotiga/wiki/Home), [ioBroker](https://github.com/ioBroker/ioBroker), [openHAB2](https://github.com/openhab), [FHEM](https://fhem.de/) or [knxd](https://github.com/knxd/knxd) (deprecated: [eibd](http://www.auto.tuwien.ac.at/~mkoegler/index.php/eibd) ) backend or JSON interface
+  * [smarthomeNG](https://github.com/smarthomeNG), [linknx](http://sourceforge.net/projects/linknx/), [ioBroker](https://github.com/ioBroker/ioBroker), [openHAB2](https://github.com/openhab), [FHEM](https://fhem.de/) or [knxd](https://github.com/knxd/knxd) (deprecated: [eibd](http://www.auto.tuwien.ac.at/~mkoegler/index.php/eibd) ) backend or JSON interface
   * Webserver with PHP. We highly recommend PHP 7.2 and above since older version are end of life and get no more 
     security updates. Some features in quad design explicitely require PHP 7.2+
   * Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android Tablet
@@ -37,7 +37,6 @@ For your own Project do the following:
   3. Set the "config_driver" to your backend-environment
        * linknx: for linxknx and eibd environment
        * smarthomeNG: for SmartHomeNG environment
-       * domotiga: for Domotiga environment
        * ...
        * knxd / eibd: for direct access
        * offline: only for testing, all GADs will be stored in a textfile ("temp/offline_YOURPROJECT.var")
