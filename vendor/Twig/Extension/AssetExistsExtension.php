@@ -45,16 +45,20 @@ class Twig_Extension_AssetExistsExtension extends Twig_Extension
 
             throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
         });
+        $pages = $this->get_string_between($_SERVER['REQUEST_URI'], 'pages=', '&');
+        $toCheck4 = preg_match('/\bpages\b/', $_SERVER['REQUEST_URI']) ? $webRoot . '/pages/' . $pages . '/widgets/' . $path : NULL;
+        $lastcheck = is_null($toCheck4) ? "." : ", " . $toCheck4 . ".";
         try {
-          $toCheck3 = $webRoot . '/pages/' . parse_ini_file($webRoot . '/config.ini')['pages'] . '/widgets/' . $path;
+          if (is_null($toCheck4))
+            $toCheck3 = $webRoot . '/pages/' . parse_ini_file($webRoot . '/config.ini')['pages'] . '/widgets/' . $path;
+          else
+            $toCheck3 = NULL;
         }
         catch (Exception $e) {
           $toCheck3 = NULL;
         }
         restore_error_handler();
-        $pages = $this->get_string_between($_SERVER['REQUEST_URI'], 'pages=', '&');
-        $toCheck4 = preg_match('/\bpages\b/', $_SERVER['REQUEST_URI']) ? $webRoot . '/pages/' . $pages . '/widgets/' . $path : NULL;
-        $lastcheck = is_null($toCheck4) ? "." : ", " . $toCheck4 . ".";
+
 
         // check if the file exists
         if (!is_file($toCheck1) && !is_file($toCheck2) && !is_file($toCheck3) && !is_file($toCheck4))

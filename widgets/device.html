@@ -295,10 +295,10 @@
 {% set uid = uid(page, id) %}
 
 	<div class="smallshut"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
-		<span class="ui-shut-txt"> 
+		<span class="ui-shut-txt">
 		{% if txt %} {{ txt }} {% endif %}
 		</span>
-		<span class="ui-shut-btn"> 
+		<span class="ui-shut-btn">
 			{{ basic.stateswitch('',  item_move, type|default('micro'), '0', 'carat-u') }}
 		</span>
 		<span class="ui-shut-btn">
@@ -311,7 +311,7 @@
 			{% if item_saved %}
 				{{ basic.stateswitch('', item_saved, type|default('micro'), '1', 'fts_shutter_50.svg') }}
 			{% endif %}
-		</span>	
+		</span>
 		<span class="ui-shut-pic">
 			{% if item_position %}
 				{{ icon.shutter(id~'position', '', item_position) }}
