@@ -1247,53 +1247,53 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
  * --- W i d g e t s :   D E V I C E ------------------------------------------
  */
 .dimmer,
-.dimmer .ui-dimmer-left,
-.dimmer .ui-dimmer-right {
+.dimmer-left,
+.dimmer-right {
   vertical-align: middle;
   height: 48px;
-  margin: 15px 0 10px 0;
+  margin: 15px 0 0 0;
 }
 
 .dimmer .switch,
-.dimmer .ui-dimmer-left .switch {
+.dimmer-left .switch {
   float: left;
   padding-left: 0;
   margin-right: 12px;
 }
 
-.dimmer .ui-dimmer-right .switch {
+.dimmer-right .switch {
   float: right;
   padding-right: 0;
   margin-left: 12px;
 }
 
 .dimmer .icon,
-.dimmer .ui-dimmer-left .icon,
-.dimmer .ui-dimmer-right .icon,
+.dimmer-left .icon,
+.dimmer-right .icon,
 .dimmer .fx-icon,
-.dimmer .ui-dimmer-left .fx.icon,
-.dimmer .ui-dimmer-right .fx.icon {
+.dimmer-left .fx.icon,
+.dimmer-right .fx.icon {
   width: 48px;
   height: 48px;
 }
 
 .dimmer p,
-.dimmer .ui-dimmer-left p {
+.dimmer-left p {
   margin: 0;
-  padding: 0;
+  padding: 0 0 5px 15px;
 }
 
-.dimmer .ui-dimmer-right p {
+.dimmer-right p {
   margin: 0;
-  padding-left: 15px;
+  padding: 0 0 5px 15px;
 }
 
 .dimmer .ui-slider,
-.dimmer .ui-dimmer-left .ui-slider {
+.dimmer-left .ui-slider {
   margin-left: 45px;
   
 }
-.dimmer .ui-dimmer-right .ui-slider {
+.dimmer-right .ui-slider {
   margin-right: 45px;
 }
 
