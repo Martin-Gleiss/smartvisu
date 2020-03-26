@@ -32,8 +32,10 @@
 				{{ device.smallshut('SmS1', 'Wohnzimmer', 'b.move', 'b.stop', 'b.pos', 'b.adjust') }}
 				<!-- block space till end of line, remove if uzsu wanted -->
 				<span class="ui-shut-btn" style="height: 44px;"> </span>
-				{{ device.smallshut('SmS1', 'Bad', 'b.move', 'b.stop', 'b.pos', '') }}
+				<div class="smallshut_wrapper">
+				{{ device.smallshut('SmS1', 'Bad', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', '') }}
 				{{ device.uzsuicon('uzsu1', 'uzsuitem') }}
+				</div>
 			</div>
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
