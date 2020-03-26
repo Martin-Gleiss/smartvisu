@@ -43,9 +43,12 @@
 			<div class="ui-bar-c ui-li-divider ui-corner-top">Shutter Table</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
 				{{ device.smallshut('SmS1', 'Wohnzimmer', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust') }}
-				<span class="ui-shut-btn" style="height: 44px;"> </span>  <!-- block space till end of line, remove if uzsu wanted -->
+				<!-- block space till end of line, remove if uzsu wanted -->
+				<span class="ui-shut-btn" style="height: 44px;"> </span>
+				<div class="smallshut_wrapper">
 				{{ device.smallshut('SmS1', 'Bad', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', '') }}
-				{{ device.uzsuicon('uzsu1', 'uzsuitem') }}
+				{{ device.uzsuicon('uzsu1', 'uzsuitem') }
+				</div>
 			</div>
 		</div>
 
@@ -61,7 +64,8 @@
 			<div class="ui-fixed ui-body-a ui-corner-bottom" style="text-align: left; padding-left: 5%;">
 				{{ device.smallshut('SmS2', 'Wohnzimmer', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'mini') }}
 				<span class="ui-shut-btn" style="height: 44px;"> </span>  <!-- block space till end of line, remove if uzsu wanted -->
-				{{ device.smallshut('SmS2', 'Bad', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', '', 'mini') }} {{ device.uzsuicon('uzsu1', 'uzsuitem') }}
+				{{ device.smallshut('SmS2', 'Bad', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', '', 'mini') }}
+				{{ device.uzsuicon('uzsu1', 'uzsuitem') }}
 			</div>
 		</div>
 
