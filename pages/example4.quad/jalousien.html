@@ -1,0 +1,67 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "quad_root.html" %}
+
+{% block title %}
+Jalousien
+{% endblock %}
+
+{% block header %}
+<img class="icon" src='{{ icon0 }}fts_shutter_50.svg'/>
+{% endblock %}
+
+{% block content %}
+<script>
+$( document ).ready(function() {
+		 io.write('markisen.m1.hoehe', '100' );
+     io.write('jalousien.og.westen_essen.hoehe', '20' );
+
+     var interpol = {type: 'none', interval: '', initialized: 'False', itemtype: 'num', initage: ''}
+     var liste = [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '40', 'time': '07:50'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '80', 'time': '18:55'}]
+     var markise = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol, list: liste};
+     io.write('markisen.m1.hoehe.uzsu', markise);
+
+	});
+
+</script>
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+
+  <li data-role="list-divider">Markise</li>
+    {{ quad.blind('markisen_m1', 'Markise', 'markisen.m1.lz', 'markisen.m1.kz', 'markisen.m1.hoehe', 'markisen.m1.kz', '', 0, 100, 5, '', '', 'markisen.m1.hoehe.uzsu', ['', '', 'num'], 'markisen.m1.hoehe', '', 'markisen.m1.automatik', (stateengine['markisen_m1']), '', '', '', [['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine', 'uzsu', 'plot']) }}
+
+  <li data-role="list-divider">Jalousien OG</li>
+    {{ quad.blind('jalousien_og_osten_wohnen', 'Wohnen', 'jalousien.og.osten_wohnen.lz', 'jalousien.og.osten_wohnen.kz', 'jalousien.og.osten_wohnen.hoehe', 'jalousien.og.osten_wohnen.kz', '', 0, 100, 5, '', '', 'jalousien.og.osten_wohnen.hoehe.uzsu', ['', '', 'num'], 'jalousien.og.osten_wohnen.hoehe', '', 'jalousien.og.osten_wohnen.automatik', (stateengine['jalousien_og_osten_wohnen']), '', '', '', [['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine', 'plot']) }}
+
+    {{ quad.blind('jalousien_og_sueden_schiebetuere', 'Schiebetüre', 'jalousien.og.sueden_schiebetuere.lz', 'jalousien.og.sueden_schiebetuere.kz', 'jalousien.og.sueden_schiebetuere.hoehe', 'jalousien.og.sueden_schiebetuere.kz', '', 0, 100, 5, '', '', 'jalousien.og.sueden_schiebetuere.hoehe.uzsu', ['', '', 'num'], 'jalousien.og.sueden_schiebetuere.hoehe', '', 'jalousien.og.sueden_schiebetuere.automatik', (stateengine['jalousien_og_sueden_schiebetuere']), '', '', '', [['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine', 'plot']) }}
+
+    {{ quad.blind('jalousien_og_westen_essen', 'Westen Essen', 'jalousien.og.westen_essen.lz', 'jalousien.og.westen_essen.kz', 'jalousien.og.westen_essen.hoehe', 'jalousien.og.westen_essen.kz', '', 0, 100, 5, '', '', 'jalousien.og.westen_essen.hoehe.uzsu', ['', '', 'num'], 'jalousien.og.westen_essen.hoehe', '', 'jalousien.og.westen_essen.automatik', (stateengine['jalousien_og_westen_essen']), '', '', '', [['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine', 'plot']) }}
+
+  <li data-role="list-divider">Jalousien EG</li>
+    {{ quad.blind('jalousien_eg_buero', 'Büro', 'jalousien.eg.osten_buero.lz', 'jalousien.eg.osten_buero.kz', 'jalousien.eg.osten_buero.hoehe', 'jalousien.eg.osten_buero.kz', '', 0, 100, 5, '', '', 'jalousien.eg.osten_buero.hoehe.uzsu', ['', '', 'num'], 'jalousien.eg.osten_buero.hoehe', '', 'jalousien.eg.osten_buero.automatik', (stateengine['jalousien_eg_buero']), '', '', '', [['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine', 'plot']) }}
+
+    {{ quad.blind('jalousien_eg_bad', 'Bad', 'jalousien.eg.osten_bad.lz', 'jalousien.eg.osten_bad.kz', 'jalousien.eg.osten_bad.hoehe', 'jalousien.eg.osten_bad.kz', '', 0, 100, 5, '', '', 'jalousien.eg.osten_bad.hoehe.uzsu', ['', '', 'num'], 'jalousien.eg.osten_bad.hoehe', '', 'jalousien.eg.osten_bad.automatik', (stateengine['jalousien_eg_bad']), '', '', '', [['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine', 'plot']) }}
+
+</ul>
+
+
+{% endblock %}
+
+
+{% block quad_top %}
+{{ plot.period('', ['screens.osten_s1.hoehe', 'screens.sueden_s2.hoehe', 'screens.westen_s3.hoehe', 'screens.westen_s4.hoehe', 'screens.westen_s5.hoehe'], 'max', '24h', 'now', 0, 120, '1000', ['Osten', 'Süden', 'Westen links', 'Westen Mitte', 'Westen rechts'], ['#ffa', '#3f3', '#aaf', '#faa', '#aff'], ['stair', 'stair', 'stair', 'stair', 'stair'], ['Uhrzeit', 'Höhe'],'30s') }}
+
+{% endblock %}
+
+
+{% block quad_bottom %}
+{{ plot.period('wind', 'Wetterstation.Windgeschwindigkeit.kmh', 'max', '12h', 'now', 0, 100, '1000', 'Wind', '#f00', 'line', ['Uhrzeit', 'km/h'],'3s') }}
+
+{% endblock %}

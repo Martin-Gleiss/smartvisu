@@ -1,0 +1,72 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "quad_root.html" %}
+
+{% block title %}
+Licht
+{% endblock %}
+
+{% block header %}
+<img class="icon" src='{{ icon0 }}light_light.svg'/>
+{% endblock %}
+
+{% block content %}
+<script>
+$( document ).ready(function() {
+		 io.write('licht.modus.visu', '1' );
+     io.write('bwm.eg.bad.sperren', '1' );
+     io.write('licht.eg.bad.spiegel.zwangvalue', '1' );
+     io.write('licht.eg.bad.spots.zwangvalue', '0' );
+     io.write('bwm.eg.gang.sperren', '0' );
+     io.write('licht.eg.gang.zwangvalue', '0' );
+     io.write('licht.eg.bad.spots.dimmen', '30' );
+     io.write('licht.eg.bad.spiegel.dimmen', '60' );
+     io.write('licht.eg.gang.dimmen', '0' );
+     io.write('licht.eg.bad.spots.sa', '1' );
+     io.write('licht.eg.bad.spiegel.sa', '1' );
+     io.write('licht.eg.gang.sa', '0' );
+
+	});
+
+</script>
+<div style="padding:10px;">EG | <a href="index.php?page=licht_og">OG</a> | <a href="index.php?page=bwm_eg">BWM</a>
+ | <a href="index.php?page=licht_kurven">Lichtkurven</a></div>
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Szenen</li>
+        {{ quad.select('lichtmodus_select', 'licht.modus.visu', 'menu', [0,1,2,3,4], ['time_graph', 'light_office', 'scene_livingroom', 'scene_cinema', 'scene_sleeping'], ['Lichtkurve', 'Arbeit', 'Chillen', 'Kino', 'Nacht'], '', 'none', '', '', 'Lichtmodus', '', '', '', '', '', 'licht.modus.automatik', ['stateengine', ['header', 'Suspendzeit'], ['slider', ['licht.modus.automatik.settings.suspendduration', '0', '480', '10', 'horizontal', 'handle']]], '', '', '', '', ['select', 'stateengine']) }}
+     <li data-role="list-divider">Bad</li>
+        {{ quad.dimmer('licht_eg_bad_spiegel', 'Spiegel', 'licht.eg.bad.spiegel.sa', 'licht.eg.bad.spiegel.dimmen', 0, 100, 5, icon.light('','', 'licht.eg.bad.spiegel.dimmen', 0, 100), icon.light(),  'icon1', 'icon0', 'handle', '', '', '', 'blink', 'horizontal', '', ['', '', 'num'], '', 'licht.eg.bad.spiegel.dimmen', '', 'licht.eg.bad.spiegel.automatik', ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], ['licht.eg.bad.spiegel.automatik.lock', 'icon', [0,1], ['secur_open','secur_locked']], ['licht.eg.bad.spiegel.automatik.settings.suspendduration', '0', '95', '5', '', 'handle']]], ['','bwm.eg.bad.sperren','licht.eg.bad.spiegel.zwangvalue'], '', '') }}
+
+        {{ quad.dimmer('licht_eg_bad_spots', 'Spots', 'licht.eg.bad.spots.sa', 'licht.eg.bad.spots.dimmen', 0, 100, 5, icon.light('','', 'licht.eg.bad.spots.dimmen', 0, 100), icon.light(),  'icon1', 'icon0', 'handle', '', '', '', 'blink', 'horizontal', '', ['', '', 'num'], '', 'licht.eg.bad.spots.dimmen', '', 'licht.eg.bad.spots.automatik', ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], ['licht.eg.bad.spots.automatik.lock', 'icon', [0,1], ['secur_open','secur_locked']], ['licht.eg.bad.spots.automatik.settings.suspendduration', '0', '95', '5', '', 'handle']]], ['','bwm.eg.bad.sperren','licht.eg.bad.spots.zwangvalue'], '', '') }}
+
+      <li data-role="list-divider">Gang</li>
+          {{ quad.dimmer('licht_eg_gang', 'EG Gang', 'licht.eg.gang.sa', 'licht.eg.gang.dimmen', 0, 100, 5, icon.light('','', 'licht.eg.gang.dimmen', 0, 100), icon.light(),  'icon1', 'icon0', 'handle', '', '', '', 'blink', 'horizontal', '', ['', '', 'num'], '', 'licht.eg.gang.dimmen', '', 'licht.eg.gang.automatik', ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], ['licht.eg.gang.automatik.lock', 'icon', [0,1], ['secur_open','secur_locked']], ['licht.eg.gang.automatik.settings.suspendduration', '0', '95', '5', '', 'handle']]], ['','bwm.eg.gang.sperren','licht.eg.gang.zwangvalue'], '', '') }}
+
+{{ quad.stateswitch('licht_treppe_garderobe', 'licht.treppe.garderobe.sa', 'icon', [0,1], ['light_light','light_light'], '', ['icon0', 'icon1'], 'blink', '', '', '', '', '', 'Garderobe', '', 'licht.treppe.garderobe.uzsu', ['', '', 'bool'], 'licht.treppe.garderobe.sa', '', 'licht.treppe.garderobe.automatik', ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], ['licht.treppe.garderobe.automatik.lock', 'icon', [0,1], ['secur_open','secur_locked']], ['licht.treppe.garderobe.automatik.settings.suspendduration', '0', '95', '5', '', 'handle']]], ['licht.treppe.garderobe.sperren','bwm.treppe.garderobe.sperren'], '', '', '', ['locks', 'switch', 'plot', 'stateengine']) }}
+
+      <li data-role="list-divider">Außen</li>
+{{ quad.stateswitch('licht_terrasse_eg', 'licht.eg.terrasse.spots.sa', 'icon', [0,1], ['light_light','light_light'], '', ['icon0', 'icon1'], 'blink', '', '', '', '', '', 'Terrasse Spots', '', 'licht.eg.terrasse.spots.uzsu', ['', '', 'bool'], 'licht.eg.terrasse.spots.sa', '', '', '', ['licht.eg.terrasse.spots.sperren', 'bwm.aussen.terrasse_eg.sperren', 'licht.eg.terrasse.spots.zwangvalue'], '', '', '', ['locks', 'switch', 'plot']) }}
+
+{{ quad.stateswitch('', 'licht.eg.eingang.sa', 'icon', [0,1], ['light_light','light_light'], '', ['icon0', 'icon1'], 'blink', '', '', '', '', '', 'Eingang Spots', '', 'licht.eg.eingang.uzsu', ['', '', 'bool'], 'licht.eg.eingang.sa', '', '', '', ['licht.eg.eingang.sperren', 'bwm.aussen.eingang.sperren', 'licht.eg.eingang.zwangvalue'], '', '', '', ['locks', 'switch', 'plot']) }}
+
+</ul>
+{% endblock %}
+
+{% block quad_top %}
+{{ plot.period('bad_plot', ['licht.eg.bad.spiegel.dimmen', 'licht.eg.bad.spots.dimmen', 'licht.eg.bad.wc.dimmen'], 'max', '12h', 'now', 0, '110', '1000', ['Bad Spiegel', 'Spots', 'wc'], ['#faa', '#ada', '#aaf'] , ['stair', 'stair', 'stair'], ['Uhrzeit', 'Helligkeit'],'3s') }}
+
+
+{% endblock %}
+
+{% block quad_bottom %}
+{{ plot.period('gang_plot', ['licht.eg.gang.dimmen', 'licht.treppe.garderobe.sa', 'licht.treppe.kg_gang.sa'], 'raw', '12h', 'now', 0, '110', '100', ['Gang', 'Garderobe', 'KG Gang'], ['#faa', '#ada', '#aaf'] , ['stair', 'stair', 'stair'], ['Uhrzeit', 'Helligkeit'],'3s') }}<br>
+
+{% endblock %}
