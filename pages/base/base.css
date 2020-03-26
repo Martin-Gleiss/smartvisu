@@ -1291,7 +1291,7 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 .dimmer .ui-slider,
 .dimmer-left .ui-slider {
   margin-left: 45px;
-  
+
 }
 .dimmer-right .ui-slider {
   margin-right: 45px;
@@ -1351,9 +1351,16 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   display: none !important;
 }
 
+.smallshut_wrapper {
+  width: 100%;
+  overflow: hidden;
+  display:inline-block;
+  white-space:nowrap
+}
+
 .smallshut {
   width: 85%;
-  float: left;  
+  float: left;
 }
 
 .smallshut .ui-shut-txt {
