@@ -11,7 +11,7 @@
 
 {% block example %}
 
-	The widget creates lines with shutter control elements and a dynamic status icon. Tables can be built by grouping these lines. <br><br>
+	The widget creates lines with shutter control elements (up, stop, down, saved position) and a dynamic status icon. Tables can be built by grouping these lines. <br><br>
 
 	The lines take 85% of a blocks width. So e.g. an uzsuicon can be placed inline with the other elements.<br>
 	To adapt the widget to the needs of your layout, the styles can be overridden in your custom visu.css file.<br><br>
@@ -47,7 +47,7 @@
 				<span class="ui-shut-btn" style="height: 44px;"> </span>
 				<div class="smallshut_wrapper">
 				{{ device.smallshut('SmS1', 'Bad', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', '') }}
-				{{ device.uzsuicon('uzsu1', 'uzsuitem') }
+				{{ device.uzsuicon('uzsu1', 'uzsuitem') }}
 				</div>
 			</div>
 		</div>
