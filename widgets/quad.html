@@ -1626,9 +1626,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {undefined=} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {text[](previous,play,pause,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,stateengine,repeat,source,source_popup,speaker,playpause,shuffle,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+ * @param {text[](previous,play,pause,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,stateengine,repeat,source,source_popup,speaker,playpause,playpausestop,playstop,shuffle,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'previous', 'play', 'pause', 'stop', 'next', 'power', 'eject', 'mute', 'volume_slider', 'cover',
-            'volume_popup', 'volume_up', 'volume_down', 'song_position', 'uzsu', 'plot', 'stateengine', 'repeat', 'source', 'speaker', 'playpause', 'shuffle', 'source_popup'
+            'volume_popup', 'volume_up', 'volume_down', 'song_position', 'uzsu', 'plot', 'stateengine', 'repeat', 'source', 'speaker', 'playpause', 'playstop', 'playpausestop', 'shuffle', 'source_popup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays.
  */
@@ -1655,10 +1655,13 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
       {% elseif item == 'play' and item_play %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'playstop' and item_play %}
+      {% elseif item == 'playstop' and item_play and item_stop %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == 'playpause' and item_pause %}
+      {% elseif item == 'playpause' and item_pause and item_play %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'playpausestop' and item_pause and item_play and item_stop %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
       {% elseif (item == 'play' or item == 'pause') and item_pause and 'pause' not in elements %}
@@ -1734,10 +1737,13 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% elseif arrayitem == 'play' and item_play %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
-          {% elseif arrayitem == 'playstop' and item_play %}
+          {% elseif arrayitem == 'playstop' and item_play and item_stop %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
-          {% elseif arrayitem == 'playpause' and item_pause %}
+          {% elseif arrayitem == 'playpause' and item_pause and item_play %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'playpausestop' and item_pause and item_play and item_stop %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
           {% elseif (arrayitem == 'play' or arrayitem == 'pause') and item_pause and 'pause' not in elements %}
@@ -1967,12 +1973,16 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
         </div>
       {% endif %}
     {% elseif column == 'playpause' and item_pause %}
-      {{ multimedia.playpause(id~'_playpause', item_play, item_pause, item_stop) }}
+      {{ basic.stateswitch(id~'_playpause', item_play, 'icon', ['0','1'], ['audio_play', 'audio_pause'], '', ['icon0', 'icon1'], 'blink') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% elseif column == 'playpausestop' and item_pause %}
+      {{ multimedia.playpause(id~'_playpausestop', item_play, item_pause, item_stop) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
-
     {% if column == 'stop' and item_stop %}
       {{ basic.stateswitch(id~'_stop', item_stop, 'icon', '1', 'audio_stop', '', 'icon0', '') }}
       {% if elements[loop.index] == 'div' %}
