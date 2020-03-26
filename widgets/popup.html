@@ -46,7 +46,7 @@
       {% endfor %}
   {% endfor %}
     <div id="{{ id }}" data-role="popup" data-overlay-theme="a" class="ext-popup{{ class }}">
-    <button data-rel='back' data-icon='delete' data-iconpos='notext' class='ui-btn-right' id='{{id}}_popupClose' onClick='$("#{{ id }}-screen").click()'></button>
+      <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
     <ul data-role="listview" data-dividertheme="c" class="popup_list">
     {% for linenumber in 1..20 %}
         {% set elements_array = {} %}
