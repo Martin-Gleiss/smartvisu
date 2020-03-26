@@ -12,21 +12,17 @@ $.widget("sv.multimedia_image", $.sv.widget, {
       {
         this.element.attr('data-repeat-milliseconds', Number(new Date().duration(this.element.attr('data-repeat'))));
       }
-      var widget_url = this.element.attr('data-url');
-      if (widget_url.includes("http")) {
-        this._update();
-      }
 
     },
     _update: function(response) {
       var widget_url = this.element.attr('data-url');
       var resp = Array.isArray(response) ? response[0]: response;
-      var img_base = widget_url.includes("http") ? this.element.attr('data-item') + '?' : resp+((resp.indexOf('?') == -1) ? '?' : '&')
+      var img_base = widget_url ? widget_url + '?' : resp+((resp.indexOf('?') == -1) ? '?' : '&')
 			img = img_base + '_=' + new Date().getTime();
       refreshing = this.element.attr('data-repeat') ? this.element.attr('data-repeat') : 'refresh by item';
 			console.log("Response: " + response + " Update Multimedia Image: " + img + ", repeat: " + refreshing);
 			this.element.attr('src', img);
-      if (this.element.attr('data-repeat'))
+      if (this.element.attr('data-repeat') && ! img.startsWith('_='))
       {
         var delay = Number(this.element.attr('data-repeat-milliseconds'));
         var el = this;
