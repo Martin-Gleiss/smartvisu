@@ -44,6 +44,16 @@
 /**
  * --- G E N E R A L  ---------------------------------------------------------
  */
+ body {
+	-youbkit-touch-callout: none; /* iOS Safari */
+	-youbkit-user-select: none;   /* Chrome 6.0+, Safari 3.1+, Edge & Opera 15+ */
+	-moz-user-select: none;       /* Firefox */
+	-ms-user-select: none;        /* IE 10+ and Edge */
+	user-select: none;            /* Non-prefixed version,  currently supported by Chrome and Opera */
+  -webkit-touch-callout: none;                /* iOS prevent callout to copy image, etc when tap to hold */
+  -webkit-user-select: none;                  /* iOS prevent copy paste, to allow, change 'none' to 'text' */
+}
+
 h1 {
   font-size: 16pt;
   margin: 20px 0 6px 0;
@@ -1351,15 +1361,19 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   display: none !important;
 }
 
-.smallshut_wrapper {
-  width: 100%;
-  overflow: hidden;
-  display:inline-block;
-  white-space:nowrap
-}
-
 .smallshut {
   width: 85%;
+  float: left;
+}
+
+.smallshut_wrapper {
+  width: 85%;
+  float: left;
+  overflow: hidden;
+}
+
+.smallshut .uzsu {
+  max-width: 15%;
   float: left;
 }
 
