@@ -130,7 +130,6 @@
 		</div>
 	</div>
 	<h3>Aussentemperaturverlauf</h3>
-	{{ plot.period('p10', 'EG.Aussen.temperature', 'avg', '12h', 0, 0, '', '', ['Temp. in °C']) }}
+	{{ plot.period('p10', 'EG.Aussen.temperature', 'avg', '12h', 'now', 0, '', '', ['Temp. in °C']) }}
 
 {% endblock %}
-
