@@ -72,14 +72,9 @@
 
 </ul>
 
-{{ multimedia.image('cam1', 'pics/mobotix_haustuere.jpg', 'fill', '1.5s') }}
-
-
-
 /**WETTER*/
 <div style="padding: 20px">
 
-    {% import "weather.html" as weather %}
     {{ weather.current('weather_today') }}
     {{ weather.forecastweek('weather_forecast') }}
 
