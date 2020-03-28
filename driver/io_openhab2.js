@@ -17,8 +17,8 @@ var io = {
 	// the URL
 	url: '',
 
-    // the debug switch
-    debug: false,
+	// the debug switch
+	debug: false,
 
 	// -----------------------------------------------------------------------------
 	// P U B L I C   F U N C T I O N S
@@ -42,7 +42,7 @@ var io = {
 			io.debug && console.debug("io.read: widget.update(item = " + item + ", value = " + val + ")");
             widget.update(item, val);
 			if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer * 1000) {
-				io.plot.refresh(io.plot.listeners[item]);
+				io.plot.get(io.plot.listeners[item]);
 			}
         }).error(notify.json);
 	},
@@ -58,50 +58,20 @@ var io = {
 
 		var transval = new Array();
 		switch (io.itemType[item]) {
-			case "Switch":
-				transval[0] = "OFF";
-				transval[1] = "ON";
-			break;
 			case "Contact":
 				transval[0] = "CLOSED";
 				transval[1] = "OPEN";
 			break;
 			case "Dimmer":
+			case "Switch":
 				transval[0] = "OFF";
 				transval[1] = "ON";
-				if (val > 1) {
-					transval[val] = Math.round(val / 255 * 100);
-				}
 			break;
 			case "Rollershutter":
 				transval[0] = "UP";
 				transval[1] = "STOP";
-				transval[255] = "DOWN";
-				if (val > 1 && val < 255) {
-					transval[val] = Math.round(val / 255 * 100);
-				}
+				transval[100] = "DOWN";
 			break;
-			case "Player":
-				transval[0] = "PAUSE";
-				transval[1] = "PLAY";
-				var elementID = false;
-				if ($(event.currentTarget).attr('id')) {
-					elementID = $(event.currentTarget).attr('id');
-				} else if($(event.currentTarget.parentElement).find("span:first-of-type").attr('id')) {
-					elementID = $(event.currentTarget.parentElement).find("span:first-of-type").attr('id');
-				}
-				if (elementID.slice(-4) == 'stop' || elementID.slice(-4) == 'play') {
-					transval[0] = "PAUSE";
-					transval[1] = "PLAY";
-				} else if (elementID.slice(-4) == 'prev' || elementID.slice(-4) == 'next') {
-					transval[0] = "PREVIOUS";
-					transval[1] = "NEXT";
-				} else if (elementID.slice(-3) == 'rew' || elementID.slice(-2) == 'ff') {
-					transval[0] = "REWIND";
-					transval[1] = "FASTFORWARD";
-				}
-			break;
-		default:
 		}
 
 		var state = (val in transval) ? transval[val] : val;
@@ -137,8 +107,9 @@ var io = {
 	 * @param      the port on which the connection should be made (optional)
 	 */
 	init: function (address, port) {
+		console.info("Type 'io.debug=true;' to console to see more details.");
 		io.debug && console.debug("io.init(address = " + address + ", port = " + port + ")");
-		
+
 		io.url = "http://" + address + (port ? ":" + port : '') + "/rest/";
 	},
 
@@ -146,7 +117,6 @@ var io = {
 	 * Lets the driver work
 	 */
 	run: function (realtime) {
-		console.info("Type 'io.debug=true;' to console to see more details.");
 		io.debug && console.debug("io.run(realtime = " + realtime + ")");
 		
 		if (io.eventListener.readyState == 0 || io.eventListener.readyState == 1) {
@@ -181,8 +151,8 @@ var io = {
 			if (typeof EventSource == 'function') {
 				io.eventListener = new EventSource(io.url + "events?topics=smarthome/items/*/statechanged");
 				io.eventListener.onmessage = function(message) {
-					var event = JSON.parse(message.data);
-					if (event.type === 'ItemStateChangedEvent') {
+					var event = JSON.parse(message.data);				
+					if (event.type.substr(-21) == 'ItemStateChangedEvent') {
 						var item = event.topic.split('/')[2];
 						if (widget.listeners().includes(item)) {
 							var val = io.convertState(item, JSON.parse(event.payload).value);
@@ -190,7 +160,7 @@ var io = {
 							widget.update(item, val);
 						}
 						if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer * 1000) {
-							io.plot.refresh(io.plot.listeners[item]);
+							io.plot.get(io.plot.listeners[item]);
 						}
 					}
 				}
@@ -226,17 +196,14 @@ var io = {
 		var transval = {
 			"NULL"	: 0,
 			"OFF"	: 0, "ON"			: 1,
-			"CLOSED": 0, "OPEN"			: 1,
-			"PAUSE"	: 0, "PLAY"			: 1,
-			"REWIND": 0, "FASTFORWARD"	: 1
+			"CLOSED": 0, "OPEN"			: 1
 		}
 
 		switch (io.itemType[item]) {
 			case "Color":
-				return state == "NULL" ? "0,0,0" : state;
-			case "Dimmer":
-			case "Rollershutter":
-				return Math.round((state in transval) ? transval[state] : state / 100 * 255);
+				return (state == "NULL") ? "0,0,0" : state;
+			case "String":
+				return (state == "NULL") ? "" : state;
 			default:
 				return (state in transval) ? transval[state] : state;
 		}
@@ -260,15 +227,15 @@ var io = {
 						if (pt[3] == 'now') {
 							io.plot.listeners[pt[0]] = plotItem;
 						}
-						io.plot.refresh(plotItem);
+						io.plot.get(plotItem);
 						io.plot.items[plotItem] = true;
 					}
 				}
 			});
 		},
 
-		refresh: function(plotItem) {
-			io.debug && console.debug("io.plot.refresh(plotItem = " + plotItem + ")");
+		get: function(plotItem) {
+			io.debug && console.debug("io.plot.get(plotItem = " + plotItem + ")");
 			
 			var pt = plotItem.split('.');
 			var item = pt[0];
@@ -310,7 +277,7 @@ var io = {
 					plotData.push([endtime ? Date.parse(endtime) : Date.now(), 0])
 				}
 				io.plot.items[plotItem] = Date.now();
-				io.debug && console.debug("io.plot.refresh: widget.update(plotItem = " + plotItem + ", plotData = " + plotData + ")");
+				io.debug && console.debug("io.plot.get: widget.update(plotItem = " + plotItem + ", plotData = " + plotData + ")");
 				widget.update(plotItem, plotData);
 			}).error(notify.json);
 		}
