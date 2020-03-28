@@ -302,9 +302,8 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item[?]} one or more item(s). Multiple items in array-form: [item1, item2]
-* @param {format=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
-  Use 'text' to display result as unformatted string, 'html' to render it as unescaped html or 'script' to just execute as JavaScript w/o displaying anything.
-* @ add {format(text,html,script)=}
+* @param {format(text,html,script,text2br)=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
+  Use 'text' to display result as unformatted string, 'html' to render it as unescaped html, 'text2br' to convert line endings like '\r', '\n' or '\r\n' to HTML breaks or 'script' to just execute as JavaScript w/o displaying anything.
 * @param {formula=VAR} any valid JavaScript expression with following variables and aggregate functions (optional, default: VAR)
   - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
   - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
