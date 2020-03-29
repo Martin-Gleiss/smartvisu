@@ -3,11 +3,11 @@
  * @package     smartVISU
  * @author      Radoslav Dimov, Martin Gleiß
  * @copyright   2009
- * @license     Dual licensed under the MIT and GPL  
- * ----------------------------------------------------------------------------- 
+ * @license     Dual licensed under the MIT and GPL
+ * -----------------------------------------------------------------------------
  */
 
- 
+
 .spot {
     margin: auto;
     width: 260px;
@@ -45,6 +45,8 @@
 .weather {
     margin: auto;
     width: 100%;
+    background-position: center center;
+    background: no-repeat;
 }
 
 .weather .humi {
@@ -86,7 +88,7 @@
     margin: auto;
     width: 100%;
     height: 200px;
-} 
+}
 
 .forecast .day {
     padding-top: 70px;
@@ -128,5 +130,3 @@
     width: 80px;
     height: 51px;
 }
-
-
