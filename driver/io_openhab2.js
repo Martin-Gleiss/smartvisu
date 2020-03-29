@@ -154,8 +154,10 @@ var io = {
 					var event = JSON.parse(message.data);				
 					if (event.type.substr(-21) == 'ItemStateChangedEvent') {
 						var item = event.topic.split('/')[2];
+						var val = JSON.parse(event.payload).value;
+						io.debug && console.debug("io.start.eventmessage: item = " + item + ", value = " + val + ")");
 						if (widget.listeners().includes(item)) {
-							var val = io.convertState(item, JSON.parse(event.payload).value);
+							val = io.convertState(item, val);
 							io.debug && console.debug("io.start.event: widget.update(item = " + item + ", value = " + val + ")");
 							widget.update(item, val);
 						}
@@ -202,6 +204,13 @@ var io = {
 		switch (io.itemType[item]) {
 			case "Color":
 				return (state == "NULL") ? "0,0,0" : state;
+			case "DateTime":
+				return new Date((state == "NULL") ? 0 : state.slice(0, 23));
+			case "Number":
+				if (state.indexOf('000000') > 0) {
+					state = state.slice(0, state.indexOf('000000'));
+				}
+				return parseFloat((state == "NULL") ? 0 : state);
 			case "String":
 				return (state == "NULL") ? "" : state;
 			default:
