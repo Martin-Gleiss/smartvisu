@@ -4,7 +4,7 @@
  * @author      Martin Gleiß
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
- * ----------------------------------------------------------------------------- 
+ * -----------------------------------------------------------------------------
  */
 
 @CHARSET "UTF-8";
@@ -14,6 +14,21 @@
 	.page-bg {
 		background-image: url('../../pics/bg/smoke_spirals.png');
 	}
+}
+
+@media (max-width: 768px) {
+    .ui-header {
+        height: 45px;
+    }
+
+    .ui-header img.icon, .ui-header svg.icon1 {
+        width: 32px;
+        height: 32px;
+    }
+
+    .ui-header .ui-title {
+        margin: 0 0 6px 30px;
+    }
 }
 
 #EG_Esszimmer-EG_Esszimmer_blind {

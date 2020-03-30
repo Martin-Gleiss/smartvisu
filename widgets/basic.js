@@ -750,6 +750,9 @@ $.widget("sv.basic_print", $.sv.widget, {
 			value = null;
 			calc = ''; // no output for format 'script'
 		}
+    else if (formatLower == 'text2br') { // String with \r\n, \r or \n to be converted to <br />
+            calc = response[0].replace(/(?:\r\n|\r|\n)/g, '<br />');
+    }
 		else if (formatLower == 'text' || formatLower == 'html' || isNaN(calc)) { // String
 			value = calc;
 		}
