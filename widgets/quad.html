@@ -268,9 +268,9 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
     {% import "device.html" as device %}
-    {% set id = id is empty ? item_actual : id %}
+    {% set id = id is empty ? item_actual|replace('.', '_') : id %}
     <li data-icon="false" class="row_rtr">
-    <div class="quad_table sorting row_rtr" id="row_{{uid(page, id)|replace('.', '_')}}_sorting"">
+    <div class="quad_table sorting row_rtr" id="row_{{uid(page, id)}}_sorting"">
         <div class="text">{{ linetext|e }}</div>
         <div class="column{{ column_order[0]|default(1) }} column_rtr_actual" data-order={{ column_order[0]|default(1) }}>
           {{ basic.print(uid(page, id)~'_actual_value', item_actual, '°') }}
@@ -478,7 +478,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% set ext_elements = ext_elements|merge([(string)]) %}
 {% endfor %}
 
-{% set id = id is empty ? item_switch : id %}
+{% set id = id is empty ? item_switch|replace('.', '_') : id %}
 
 /**
 <div>
@@ -489,7 +489,7 @@ the first one is the base color for values below first threshold, so pass one co
 */
     <li data-icon="false" class="row_dimmer">
 
-    <div class="quad_table row_dimmer" id="row_{{uid(page, id)|replace('.', '_')}}">
+    <div class="quad_table row_dimmer" id="row_{{uid(page, id)}}">
   <div class="text" data-order=0>{{ linetext|e }}
   {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
   {{ basic.print(uid(page, id)~'dimmerprint', item_auto~'.suspend_end', 'text') }}
@@ -570,11 +570,11 @@ the first one is the base color for values below first threshold, so pass one co
             </a>
             <div id="{{ uid(page, id) }}_list_dimmer_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
               <div class="quad_dimmer">
-                {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
+                {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                 {{ basic.stateswitch(uid(page, id)~'dimmerpopup_switch', item_switch, 'icon', [0,1], [pic_off|default('light_light'), pic_on|default('light_light')], '', [color_off, color_on], indicator) }}
                 <p>{{ linetext|e }}</p>
                 {{ basic.slider(uid(page, id)~'dimmerpopup_slider', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
-                </span>
+                </div>
               </div>
             </div>
 
@@ -852,7 +852,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% set ext_elements = ext_elements|merge([(string)]) %}
 {% endfor %}
 
-{% set id = id is empty ? item_value_r : id %}
+{% set id = id is empty ? item_value_r|replace('.', '_') : id %}
 
 /**
 <div>
@@ -863,7 +863,7 @@ the first one is the base color for values below first threshold, so pass one co
 */
 
     <li data-icon="false" class="row_color">
-    <div class="quad_table row_color" id="row_{{uid(page, id)|replace('.', '_')}}">
+    <div class="quad_table row_color" id="row_{{uid(page, id)}}">
     <div class="text">{{ linetext|e }}
     {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
     {{ basic.print(uid(page, id)~'suspend_end', item_auto~'.suspend_end', 'text') }}
@@ -949,11 +949,11 @@ the first one is the base color for values below first threshold, so pass one co
 
       <div id="{{ uid(page, id) }}_list_ww_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
         <div class="quad_dimmer">
-          {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
+          {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
           {{ basic.stateswitch(uid(page, id)~'switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(uid(page, id)~'list_ww_switch_icon_off'), icon.light(uid(page, id)~'list_ww_switch_icon_on', '', item_value_ww, min_display, max_display)], '', ['#888800','#aaaa00'], indicator) }}
           <p>Warm White</p>
           {{ basic.slider(uid(page, id)~'slider_ww', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
-          </span>
+          </div>
         </div>
       </div>
 
@@ -978,11 +978,11 @@ the first one is the base color for values below first threshold, so pass one co
                     {{ basic.color(uid(page, id)~'popup_color', item_value_r, item_value_g, item_value_b, min, max, step, '10', 'slider') }}
                     {% if item_value_ww and item_value_ww  != ' ' %}
                     <div class="quad_dimmer">
-                      {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
+                      {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                       {{ basic.stateswitch(uid(page, id)~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(uid(page, id)~'list_ww_switch_icon_off_color'), icon.light(uid(page, id)~'list_ww_switch_icon_on_color', '', item_value_ww, min_display, max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
                       {{ basic.slider(uid(page, id)~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
-                      </span>
+                      </div>
                     </div>
                     {% endif %}
                 </div>
@@ -991,33 +991,33 @@ the first one is the base color for values below first threshold, so pass one co
 
 				  <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
                   <div class="quad_dimmer">
-                    {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
+                    {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                     {{ basic.stateswitch(uid(page, id)~'popup_switch_r', item_switch_r, 'icon', [0,1], [icon.light(uid(page, id)~'list_r_switch_icon_off'), icon.light(uid(page, id)~'list_r_switch_icon_on', '', item_value_r, min_display, max_display)], '', [color_off|default('icon0'), 'red'], indicator) }}
                     <p>{{ linetext|e }} red</p>
                     {{ basic.slider(uid(page, id)~'popup_slider_r', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
-                    </span>
+                    </div>
                   </div>
                   <div class="quad_dimmer">
-                    {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
+                    {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                     {{ basic.stateswitch(uid(page, id)~'popup_switch_g', item_switch_g, 'icon', [0,1], [icon.light(uid(page, id)~'list_g_switch_icon_off'), icon.light(uid(page, id)~'list_g_switch_icon_on', '', item_value_g, min_display, max_display)], '', [color_off|default('icon0'), 'green'], indicator) }}
                     <p>{{ linetext|e }} green</p>
                     {{ basic.slider(uid(page, id)~'popup_slider_g', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
-                    </span>
+                    </div>
                   </div>
                   <div class="quad_dimmer">
-                    {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
+                    {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                     {{ basic.stateswitch(uid(page, id)~'popup_switch_b', item_switch_b, 'icon', [0,1], [icon.light(uid(page, id)~'list_b_switch_icon_off'), icon.light(uid(page, id)~'list_b_switch_icon_on', '', item_value_b, min_display, max_display)], '', [color_off|default('icon0'), 'blue'], indicator) }}
                     <p>{{ linetext|e }} blue</p>
                     {{ basic.slider(uid(page, id)~'popup_slider_b', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
-                    </span>
+                    </div>
                   </div>
                 {% if item_value_ww and item_value_ww  != ' ' %}
                     <div class="quad_dimmer">
-                      {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
+                      {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                       {{ basic.stateswitch(uid(page, id)~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(uid(page, id)~'list_ww_switch_icon_off'), icon.light(uid(page, id)~'list_ww_switch_icon_on', '', item_value_ww, min_display, max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
                       {{ basic.slider(uid(page, id)~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
-                      </span>
+                      </div>
                     </div>
               {% endif %}
             </div>
@@ -1312,7 +1312,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% set ext_elements = ext_elements|merge([(string)]) %}
 {% endfor %}
 
-{% set id = id is empty ? item_move : id %}
+{% set id = id is empty ? item_move|replace('.', '_') : id %}
 
 /**
 <div>
@@ -1322,7 +1322,7 @@ the first one is the base color for values below first threshold, so pass one co
 </div>
 */
     <li data-icon="false" class="row_shutter">
-    <div class="quad_table row_shutter" id="row_{{uid(page, id)|replace('.', '_')}}">
+    <div class="quad_table row_shutter" id="row_{{uid(page, id)}}">
     <div class="text">{{ linetext|e }}
     {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
     {{ basic.print(uid(page, id)~'suspend_end', item_auto~'.suspend_end', 'text') }}
@@ -1870,7 +1870,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     {% set ext_elements = ext_elements|merge([(string)]) %}
 {% endfor %}
 
-{% set id = id is empty ? item_play : id %}
+{% set id = id is empty ? item_play|replace('.', '_') : id %}
 
 <div>
 {% for column in elements %}
@@ -1880,7 +1880,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 */
 
     <li data-icon="false" class="row_playercontrol">
-    <div class="quad_table row_playercontrol" id="row_{{uid(page, id)|replace('.', '_')}}">
+    <div class="quad_table row_playercontrol" id="row_{{uid(page, id)}}">
     <div class="text">{{ linetext|e }}
     {% if item_artist %}
     : {{ basic.print(uid(page, id)~'artist', item_artist, 'text') }},&nbsp;
@@ -2422,9 +2422,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     {% set columnnumber = columnnumber+1 %}
     {% set ext = 'nothing' %}
     {% if item_switch is iterable %}
-      {% set id = id is empty ? item_switch[i] : id %}
+      {% set id = id is empty ? item_switch[i]|replace('.', '_') : id %}
     {% else %}
-      {% set id = id is empty ? item_switch : id %}
+      {% set id = id is empty ? item_switch|replace('.', '_') : id %}
     {% endif %}
     {% for z,column in arrays %}
       {% set ext = 'nothing' %}
@@ -2862,9 +2862,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 */
 {% macro input(id, item, type, min, max, step, place1, place2, linetext, columntext, column_order) %}
     {% import "basic.html" as basic %}
-    {% set id = id is empty ? item : id %}
+    {% set id = id is empty ? item|replace('.', '_') : id %}
     <li data-icon="false" class="row_input">
-    <div class="quad_table sorting row_input" id="row_{{uid(page, id)|replace('.', '_')}}_sorting">
+    <div class="quad_table sorting row_input" id="row_{{uid(page, id)}}_sorting">
         <div class="text">{{ linetext|e }} </div>
         {% set runs = item is iterable ? max((item|length-1),0 ) : 0 %}
     {% for i in 0..runs %}
