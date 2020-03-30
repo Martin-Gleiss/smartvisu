@@ -943,14 +943,14 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'ww_popup' and item_value_ww  %}
       <a href="#{{ uid(page, id) }}_list_ww_popup" data-rel="popup" data-position-to="window">
-      {{ basic.symbol(uid(page, id)~'list_ww_on', item_switch_ww, '', icon.light('','',item_value_ww,min_display,max_display), 1, '', '#aaaa00') }}
-      {{ basic.symbol(uid(page, id)~'list_ww_off', item_switch_ww, '', icon.light('','',item_value_ww,min_display,max_display), 0, '', '#888800') }}
+      {{ basic.symbol(uid(page, id)~'list_ww_on', item_switch_ww, '', icon.light(uid(page, id)~'list_ww_icon_on', '', item_value_ww, min_display, max_display), 1, '', '#aaaa00') }}
+      {{ basic.symbol(uid(page, id)~'list_ww_off', item_switch_ww, '', icon.light(uid(page, id)~'list_ww_icon_off', '', item_value_ww, min_display, max_display), 0, '', '#888800') }}
       </a>
 
       <div id="{{ uid(page, id) }}_list_ww_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
         <div class="quad_dimmer">
           {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-          {{ basic.stateswitch(uid(page, id)~'switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(),icon.light('','',item_value_ww,min_display,max_display)], '', ['#888800','#aaaa00'], indicator) }}
+          {{ basic.stateswitch(uid(page, id)~'switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(uid(page, id)~'list_ww_switch_icon_off'), icon.light(uid(page, id)~'list_ww_switch_icon_on', '', item_value_ww, min_display, max_display)], '', ['#888800','#aaaa00'], indicator) }}
           <p>Warm White</p>
           {{ basic.slider(uid(page, id)~'slider_ww', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
           </span>
@@ -979,7 +979,7 @@ the first one is the base color for values below first threshold, so pass one co
                     {% if item_value_ww and item_value_ww  != ' ' %}
                     <div class="quad_dimmer">
                       {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                      {{ basic.stateswitch(uid(page, id)~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light('','',item_value_ww,min_display,max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
+                      {{ basic.stateswitch(uid(page, id)~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(uid(page, id)~'list_ww_switch_icon_off_color'), icon.light(uid(page, id)~'list_ww_switch_icon_on_color', '', item_value_ww, min_display, max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
                       {{ basic.slider(uid(page, id)~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                       </span>
@@ -992,21 +992,21 @@ the first one is the base color for values below first threshold, so pass one co
 				  <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
                   <div class="quad_dimmer">
                     {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                    {{ basic.stateswitch(uid(page, id)~'popup_switch_r', item_switch_r, 'icon', [0,1], [icon.light(), icon.light("","",item_value_r,min_display,max_display)], '', [color_off|default('icon0'), 'red'], indicator) }}
+                    {{ basic.stateswitch(uid(page, id)~'popup_switch_r', item_switch_r, 'icon', [0,1], [icon.light(uid(page, id)~'list_r_switch_icon_off'), icon.light(uid(page, id)~'list_r_switch_icon_on', '', item_value_r, min_display, max_display)], '', [color_off|default('icon0'), 'red'], indicator) }}
                     <p>{{ linetext|e }} red</p>
                     {{ basic.slider(uid(page, id)~'popup_slider_r', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                     </span>
                   </div>
                   <div class="quad_dimmer">
                     {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                    {{ basic.stateswitch(uid(page, id)~'popup_switch_g', item_switch_g, 'icon', [0,1], [icon.light(), icon.light("","",item_value_g,min_display,max_display)], '', [color_off|default('icon0'), 'green'], indicator) }}
+                    {{ basic.stateswitch(uid(page, id)~'popup_switch_g', item_switch_g, 'icon', [0,1], [icon.light(uid(page, id)~'list_g_switch_icon_off'), icon.light(uid(page, id)~'list_g_switch_icon_on', '', item_value_g, min_display, max_display)], '', [color_off|default('icon0'), 'green'], indicator) }}
                     <p>{{ linetext|e }} green</p>
                     {{ basic.slider(uid(page, id)~'popup_slider_g', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                     </span>
                   </div>
                   <div class="quad_dimmer">
                     {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                    {{ basic.stateswitch(uid(page, id)~'popup_switch_b', item_switch_b, 'icon', [0,1], [icon.light(), icon.light("","",item_value_b,min_display,max_display)], '', [color_off|default('icon0'), 'blue'], indicator) }}
+                    {{ basic.stateswitch(uid(page, id)~'popup_switch_b', item_switch_b, 'icon', [0,1], [icon.light(uid(page, id)~'list_b_switch_icon_off'), icon.light(uid(page, id)~'list_b_switch_icon_on', '', item_value_b, min_display, max_display)], '', [color_off|default('icon0'), 'blue'], indicator) }}
                     <p>{{ linetext|e }} blue</p>
                     {{ basic.slider(uid(page, id)~'popup_slider_b', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                     </span>
@@ -1014,7 +1014,7 @@ the first one is the base color for values below first threshold, so pass one co
                 {% if item_value_ww and item_value_ww  != ' ' %}
                     <div class="quad_dimmer">
                       {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                      {{ basic.stateswitch(uid(page, id)~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light("","",item_value_ww,min_display,max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
+                      {{ basic.stateswitch(uid(page, id)~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(uid(page, id)~'list_ww_switch_icon_off'), icon.light(uid(page, id)~'list_ww_switch_icon_on', '', item_value_ww, min_display, max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
                       {{ basic.slider(uid(page, id)~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                       </span>
