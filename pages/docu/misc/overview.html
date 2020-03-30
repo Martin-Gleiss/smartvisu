@@ -17,25 +17,23 @@
 	<p>Here are some widgets working together. This is not a complete list!</p>
 
 	<h2>Basic</h2>
-	{{ basic.value('value1', 'bath.light.switch', 'Unit') }},
+	{{ basic.print('value1', 'bath.light.value', 'Unit', '', ['',64,128,192], ['green','','icon1','#f00']) }},&nbsp;&nbsp;
 	
-	
-	{{ basic.float('float1', 'bath.light.switch', '°') }},
+	{{ basic.print('float1', 'bath.light.value', '°', '', ['',64,128,192], ['green','','icon1','#f00']) }},&nbsp;&nbsp;
 
-	{{ basic.value('value2', 'bath.light.value', 'int') }},
-	{{ basic.value('value3', 'bath.light.value', 'float') }},
+	{{ basic.print('value2', 'bath.light.value', 'int', '', ['',64,128,192], ['green','','icon1','#f00']) }},&nbsp;&nbsp;
+	{{ basic.print('value3', 'bath.light.value', 'float', '', ['',64,128,192], ['green','','icon1','#f00']) }},&nbsp;&nbsp;
 	
-	Formula: {{ basic.formula('formula1', ['bath.p1', 'bath.p2', 'bath.p3'], 'W', '( VAR ) / 1000 * 230') }}
-	Date: {{ basic.value('time1', 'bath.time', 'long') }},
+	Formula: {{ basic.print('formula1', ['bath.p1', 'bath.p2', 'bath.p3', 'bath.light.value'], 'W', '( VAR ) / 1000 * 230', ['', 23.74, 38.46, 53.18], ['green','','icon1','#f00']) }},&nbsp;&nbsp;
+	Date: {{ basic.print('time1', 'bath.time', 'long', '', [126270000000], ['#f00']) }},
 
 	<br />
 	{{ basic.flip('flip1', 'bath.light.switch') }}
-	{{ basic.switch('switch1', 'bath.light.switch') }}
 	{{ basic.shifter('shifter2', 'bath.light.switch', 'bath.light.value') }}
-	{{ basic.button('button1', 'bath.light.switch', '1') }}
-	{{ basic.dual('dual1', 'bath.light.switch') }}
-	{{ basic.rgb('rgb1', 'bath.color.r', 'bath.color.g', 'bath.color.b') }}
-	{{ basic.colordisc('colordisc1', 'bath.color.r', 'bath.color.g', 'bath.color.b') }}
+	{{ basic.stateswitch('button1', 'bath.light.switch', '', '1') }}
+	{{ basic.stateswitch('dual1', 'bath.light.switch', '', ['0', '1']) }}
+	{{ basic.color('rgb1', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'rect') }}
+	{{ basic.color('colordisc1', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'disc') }}
 	{{ basic.symbol('symbol1', 'bath.light.switch') }}
 
 	{{ basic.checkbox('checkbox1', 'bath.light.switch', 'Checkbox') }}

@@ -1,0 +1,135 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}control_building_outside.svg' />Aussenanlage</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Licht / Freigaben</h3>
+				<table width=100%>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.stateswitch('LEDSpotsDecke', 'EG.Aussen.LEDDeckeSpots', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} LED-Spots
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('LEDPanelDecke', 'EG.Aussen.LEDDeckePanel', 'icon', ['1', '0'], ['light_ceiling_light.svg', 'light_ceiling_light.svg'], '', ['icon1', 'icon0']) }}  LED-Panel
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.stateswitch('LedRohreBoden', 'EG.Aussen.LEDRohre', 'icon', ['1', '0'], ['light_uplight.svg', 'light_uplight.svg'], '', ['icon1', 'icon0']) }} LED-Rohre
+						</td>
+						<td align=left width=50%>
+							{{ basic.stateswitch('LedSpotsBoden', 'EG.Aussen.LEDSpotsBoden', 'icon', ['1', '0'],['light_uplight.svg', 'light_uplight.svg'], '', ['icon1', 'icon0']) }} LED-Spots
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.symbol('BewegungAussen1', 'EG.Aussen.BM', 'Bewegung', 'it_camera.svg', 1, '', 'icon1') }}
+							{{ basic.symbol('BewegungAussen2', 'EG.Aussen.BM', 'alles ruhig', 'it_camera.svg', 0) }}
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('FreigabeBMAussen', 'EG.Aussen.FreigabeBMAussen', 'icon', ['1', '0'],['secur_open.svg', 'secur_locked.svg'], '', ['icon1', 'icon0']) }}  BM-Melder
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Wetterdaten</h3>
+
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Aussentemperatur:
+						</td>
+						<td align=right>
+							{{ basic.print('AussentemperaturD', 'EG.Aussen.temperature', '°C') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Niederschlag:
+						</td>
+						<td align=right>
+							{{ basic.symbol('Niederschlag', 'EG.Aussen.Regen', ['ja', 'nein'], '', [1,0]) }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Windgeschwindigkeit:
+						</td>
+						<td align=right>
+							{{ basic.print('Windgeschwindigkeit', 'EG.Aussen.Wind', 'ms') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Sonne Ost:
+						</td>
+						<td align=right>
+							{{ basic.print('SonneOstAussen', 'EG.Aussen.SonneOst', 'lux') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Sonne Süd:
+						</td>
+						<td align=right>
+							{{ basic.print('SonneSuedtAussen', 'EG.Aussen.SonneSued', 'lux') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Sonne West:
+						</td>
+						<td align=right>
+							{{ basic.print('SonneWestAussen', 'EG.Aussen.SonneWest', 'lux') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Licht:
+						</td>
+						<td align=right>
+							{{ basic.print('LichtstaerkeAusen', 'EG.Aussen.Lichtstaerke', 'lux') }}
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+	<h3>Aussentemperaturverlauf</h3>
+	{{ plot.period('p10', 'EG.Aussen.temperature', 'avg', '12h', 'now', 0, '', '', ['Temp. in °C']) }}
+
+{% endblock %}

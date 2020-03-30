@@ -43,32 +43,16 @@ function twig_smartdate($val, $format = 'date')
 
 function twig_deficon(Twig_Environment $env, $val, $def = '')
 {
-	$globals = $env->getGlobals();
-	
-	if (is_array($val))
-	{
-		for ($i = 0; $i < count($val); $i++)
+	if (!is_array($val))
+		$ret = $val == '' ? $def : $val;
+	else {
+	  $ret = array();
+		foreach($val as $pic)
 		{
-			$ret[$i] = $val[$i];
-
-			if ($ret[$i] == '')
-				$ret[$i] = $def;
-
-			if (substr($ret[$i], -4, 4) == ".png" || substr($ret[$i], -4, 4) == ".svg" and strpos($ret[$i], "/") === false)
-				$ret[$i] = $globals["icon0"].$ret[$i];
+	    $ret[] = $entry == '' ? $def : $pic;
 		}
 	}
-	else
-	{
-		$ret = $val;
 
-		if ($ret == '')
-			$ret = $def;
-
-		if (substr($ret, -4, 4) == ".png" || substr($ret, -4, 4) == ".svg" and strpos($ret, "/") === false)
-			$ret = $globals["icon0"].$ret;
-	}
-	
 	return $ret;
 }
 
@@ -84,7 +68,7 @@ function twig_md5($val)
 
 function twig_uid($str1, $str2 = '', $str3 = '')
 {
-	$ret = str_replace('.', '_', $str1.($str2 != '' ? '-'.$str2 : '').($str3 != '' ? '-'.$str3 : ''));
+	$ret = preg_replace('/[^a-zA-Z0-9\-_]/', '_', $str1.($str2 != '' ? '-'.$str2 : '').($str3 != '' ? '-'.$str3 : ''));
 
 	return $ret;
 }
@@ -108,6 +92,11 @@ function twig_isfile($file)
 	return is_file(const_path.$file);
 }
 
+function twig_isdir($path)
+{
+	return is_dir(const_path.$path);
+}
+
 function twig_dir($dir, $filter = '(.*)')
 {
 	$ret = array();
@@ -119,11 +108,12 @@ function twig_dir($dir, $filter = '(.*)')
 
 	while (($item = $dirlist->read()) !== false)
 	{
-		if ($item != '.' and $item != '..' and $item != '.svn' and substr($item, 0, 1) != '_')
+		if (substr($item, 0, 1) != '.' and substr($item, 0, 1) != '_')
 		{
 			if (preg_match("#".$filter."$#i", $item, $itemparts) > 0)
 			{
 				$name = str_replace("_", " ", $itemparts[1]);
+
 				$ret[$name] = array(
 					"path" => $dir.'/'.$itemparts[0],
 					"file" => $itemparts[0],
@@ -137,84 +127,176 @@ function twig_dir($dir, $filter = '(.*)')
 
 	// sort
 	ksort($ret);
+	return $ret;
+}
+
+function twig_docu($filenames = null)
+{
+	if($filenames == null) {
+		$filenames = array_merge(twig_dir('widgets', '(.*.\.html)'), twig_dir('dropins/widgets', '(.*.\.html)'));
+		if(twig_isdir('pages/'.config_pages.'/widgets', '(.*.\.html)'))
+			$filenames = array_merge($filenames, twig_dir('pages/'.config_pages.'/widgets', '(.*.\.html)'));
+	}
+	elseif(!is_array($filenames))
+		if(twig_isfile($filenames) == false && $filenames != const_path.'widgets/icon.html')
+			{
+				$filenames = array($filenames);
+				$filenames = array_merge(twig_dir('dropins/widgets', '(.*.\.html)'));
+			}
+		else
+			$filenames = array($filenames);
+
+
+	$ret = array();
+
+	foreach($filenames as $filename) {
+
+		if(is_array($filename))
+			$filename = const_path.$filename['path'];
+		$file = file_get_contents($filename);
+
+
+		// Header
+		preg_match_all('#.+?@(.+?)\W+(.*)#i', substr($file, 0, strpos($file, '*/') + 2), $header);
+
+		// Body
+		preg_match_all('#\/\*\*[\r\n]+(.+?)\*\/\s+?\{\% *macro(.+?)\%\}.*?\{\% *endmacro *\%\}#is', strstr($file, '*/'), $widgets);
+
+		if (count($widgets[2]) > 0)
+		{
+			foreach ($widgets[2] as $no => $macro)
+			{
+				$rettmp = array();
+
+				preg_match_all('#(.+?)\((.+?)(\)|,\s+_)#i', $macro, $desc); // param scanning ends on first param name beginning with _
+				$rettmp['name'] = trim($desc[1][0]);
+				$rettmp['params'] = trim($desc[2][0]);
+
+				$docu = $widgets[1][$no];
+
+				$rettmp['desc'] = trim(str_replace('* ', '', substr($docu, 0, strpos($docu, '@'))));
+
+				if (substr($rettmp['desc'], -1, 1) == '*')
+					$rettmp['desc'] = substr($rettmp['desc'], 0, -1);
+
+				// Header-Tags
+				foreach ($header[1] as $headerno => $headertag)
+				{
+					if (!($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß"))
+						$rettmp[$headertag] = trim($header[2][$headerno]);
+				}
+
+				$rettmp['subpackage'] = substr(strtolower(utf8_decode(basename($filename))), 0, -5);
+				$rettmp['command'] = $rettmp['subpackage'].".".$rettmp['name'];
+				$rettmp['call'] = $rettmp['command']."(".$rettmp['params'].")";
+
+				// Widget-Tags
+				$tags = preg_split('#[\r\n]+[\*\s]*@#', $docu);
+
+				$param = 0;
+				$params = explode(',', $rettmp['params']);
+				$rettmp['param'] = array();
+
+				foreach ($tags as $tagstring)
+				{
+					preg_match('#^(.+?)\s+({(.+?)(\[\??\])?(\(.*?\))?(=.*?)?}\s+)?(.*)$#is', $tagstring, $tag);
+
+					if ($tag[1] == 'param')
+					{
+						$p = array('desc' => trim($tag[7]));
+						if(trim($tag[2]) != '') { // type in doc tag available
+							$p['type'] = trim($tag[3]);
+							if($tag[4] == '[?]')
+								$p['array_form'] = 'may';
+							elseif($tag[4] == '[]')
+								$p['array_form'] = 'must';
+							if($tag[5] != '') {
+								if($p['type'] == 'id') {
+									if(substr($tag[5],1,-1) == 'nonunique')
+									 $p['unique'] = false;
+								}
+								elseif(preg_match('#^(.*\d)\.\.(\d.*)$#is', substr($tag[5],1,-1), $range)) {
+									$p['min'] = $range[1];
+									$p['max'] = $range[2];
+								}
+								else
+									$p['valid_values'] = explode(',', substr($tag[5],1,-1));
+							}
+							$p['optional'] = $tag[6] != '';
+							if($p['optional'] && $tag[6] != '=')
+								$p['default'] = substr($tag[6],1);
+
+							// valid_values
+							// array_form must may
+						}
+						$rettmp['param'][trim($params[$param++])] = $p;
+					}
+					elseif ($tag[1] == 'see')
+					{
+						$see = explode('#', trim($tag[7]));
+						$rettmp['see'][] = array("page" => $see[0], "anchor" => $see[1]);
+					}
+					else
+						$rettmp[$tag[1]] = trim($tag[7]);
+				}
+
+				$ret[$rettmp['subpackage'].'.'.$rettmp['name']] = $rettmp;
+			}
+
+			//ksort($ret); // as of Version 2.9: Don't sort but use order in sourcefile
+		}
+		else
+		{
+			foreach ($header[1] as $headerno => $headertag)
+			{
+				if (!($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß"))
+					$ret[$headertag] = trim($header[2][$headerno]);
+			}
+		}
+	}
 
 	return $ret;
 }
 
-function twig_docu($filename)
+/**
+ * Get metadata out of a code file
+ *
+ * @param string $filename file path and name
+ *
+ * @return associative array
+ */
+function twig_configmeta($filename)
 {
-	$ret = array();
-	$rettmp = array();
-
-	$file = file_get_contents($filename);
-
-	// Header
-	preg_match_all('#.+?@(.+?)\W+(.*)#i', substr($file, 0, strpos($file, '*/') + 2), $header);
-
-	// Body 
-	preg_match_all('#\/\*\*[\r\n](.+?)\*\/.+?\{\% macro(.+?)\%\}#is', strstr($file, '*/'), $widgets);
-
-	if (count($widgets[2]) > 0)
-	{
-		foreach ($widgets[2] as $no => $macro)
-		{
-			preg_match_all('#(.+?)\((.+?)\)#i', $macro, $desc);
-			$rettmp[$no]['name'] = trim($desc[1][0]);
-			$rettmp[$no]['params'] = trim($desc[2][0]);
+	// read file up to end of first comment
+  $file = '';
+	$comment_end = substr($filename, -4) == '.ini' ? '#^\s*[^;]#' : '#\*/#';
+	$handle = @fopen($filename, "r");
+	if($handle) {
+    while(($buffer = fgets($handle, 4096)) !== false) {
+      $file .= $buffer;
+			if(preg_match($comment_end, $buffer) === 1)
+				break;
 		}
-
-		foreach ($widgets[1] as $no => $docu)
-		{
-			$rettmp[$no]['desc'] = trim(str_replace('* ', '', substr($docu, 0, strpos($docu, '@'))));
-			
-			if (substr($rettmp[$no]['desc'], -1, 1) == '*')
-				$rettmp[$no]['desc'] = substr($rettmp[$no]['desc'], 0, -1);
-			
-			// Header-Tags 
-			foreach ($header[1] as $headerno => $headertag)
-			{
-				if (!($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß"))
-					$rettmp[$no][$headertag] = trim($header[2][$headerno]);
-			}
-
-			$rettmp[$no]['subpackage'] = substr(mb_strtolower(basename($filename), 'UTF-8'), 0, -5);
-			$rettmp[$no]['command'] = $rettmp[$no]['subpackage'].".".$rettmp[$no]['name'];
-			$rettmp[$no]['call'] = $rettmp[$no]['command']."(".$rettmp[$no]['params'].")";
-
-			// Widget-Tags
-			preg_match_all('#.+?@(.+?)\W+(.*)#i', $docu, $tags);
-
-			$param = 0;
-			$params = explode(',', $rettmp[$no]['params']);
-
-			foreach ($tags[1] as $id => $tag)
-			{
-				if ($tag == 'param')
-					$rettmp[$no]['param'][trim($params[$param++])] = trim($tags[2][$id]);
-				elseif ($tag == 'see')
-				{
-					$see = explode('#', trim($tags[2][$id]));
-					$rettmp[$no]['see'][] = array("page" => $see[0], "anchor" => $see[1]);
-				}
-				else
-					$rettmp[$no][$tag] = trim($tags[2][$id]);
-			}
-		}
-
-		foreach ($rettmp as $attributes)
-		{
-			$ret[$attributes['subpackage'].'.'.$attributes['name']] = $attributes;
-		}
-
-		ksort($ret);
 	}
-	else
-	{
-		foreach ($header[1] as $headerno => $headertag)
-		{
-			if (!($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß"))
-				$ret[$headertag] = trim($header[2][$headerno]);
+
+	// parse tags
+	preg_match_all('#.+?@(.+?)\W+(.*)#i', $file, $header, PREG_SET_ORDER);
+	$ret = array('label' => null, 'hide' => array(), 'default' => array(), 'deprecated' => null);
+	foreach($header as $tag) {
+		if(array_key_exists($tag[1], $ret)) {
+			if(is_array($ret[$tag[1]])) {
+        $data = preg_split('#\s+#', $tag[2], 2);
+				$ret[$tag[1]][$data[0]] = $data[1];
+			}
+			else
+        $ret[$tag[1]] = $tag[2];
 		}
+	}
+
+	// remove unused tags
+	foreach($ret as $key => $val) {
+		if(!isset($val) || $val == array())
+			unset($ret[$key]);
 	}
 
 	return $ret;
@@ -228,16 +310,49 @@ function twig_docu($filename)
  *
  * @return string
  */
-function twig_lang($subset, $key)
+function twig_lang($subset, $key, $subkey = null)
 {
 	static $lang;
 
 	if (!$lang)
-		eval(fileread('lang/lang_'.config_lang.'.txt'));
+		$lang = get_lang();
 
-	return $lang[$subset][$key];
+	if($subkey == null)
+		return $lang[$subset][$key];
+	else
+		return $lang[$subset][$key][$subkey];
 }
 
+/**
+ * Get the configuration by source
+ *
+ * @param string $source the source for configuration (e.g. "global" or "page")
+ *
+ * @return associative array of configuration options
+ */
+function twig_read_config($source)
+{
+	$config = new config();
+	return $config->get($source);
+}
+
+function twig_timezones() {
+  $inlist = timezone_identifiers_list();
+	$outlist = array();
+	foreach($inlist as $tz) {
+    $tzparts = explode('/', $tz, 2);
+		$outlist[] = array('name' => $tz, 'label' => $tz, 'group' => $tzparts[0]);
+	}
+	return $outlist;
+/*
+	$map = [];
+	foreach($inlist as $tz) {
+    $tzparts = explode('/', $tz, 2);
+		$map[$tzparts[0]][] = $tz;
+	}
+	return $map;
+*/
+}
 
 // -----------------------------------------------------------------------------
 // Special functions for Twig

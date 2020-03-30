@@ -1,0 +1,57 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "quad_root.html" %}
+
+{% block title %}
+Licht
+{% endblock %}
+
+{% block header %}
+<img class="icon" src='{{ icon0 }}light_light.svg'/>
+{% endblock %}
+
+{% block content %}
+<script>
+  var interpol = {type: 'cubic', interval: '1', initialized: 'False', itemtype: 'num', initage: ''}
+  var listewarm = [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '95', 'time': '20:26'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '10', 'time': '23:00'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '15', 'time': '05:15'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '80', 'calculated': '06:13', 'time': '06:00<sunrise<08:00'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '35', 'time': '09:40'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '35', 'time': '16:45'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '95', 'calculated': '18:12', 'time': '18:00<sunset-30m'}]
+  var kurvewarm = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol, list: listewarm};
+
+  var listekalt= [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '0', 'calculated': '05:01', 'time': 'sunrise-72m<08:00'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '98', 'time': '07:50'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '60', 'time': '10:25'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '60', 'time': '15:55'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '90', 'calculated': '18:27', 'time': 'sunset-16m<20:40'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '0', 'time': '21:15'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '0', 'time': '05:15'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '90', 'time': '18:45'}]
+  var kurvekalt = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol, list: listekalt};
+
+  var listestandard= [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '40', 'time': '07:50'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '95', 'time': '09:05'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '5', 'time': '20:10'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '45', 'time': '11:15'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '45', 'time': '17:00'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '80', 'time': '18:55'}, {'active': 'True', 'value': '5', 'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'time': '05:05'}]
+  var kurvestandard = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol, list: listestandard};
+  io.write('licht.kurve.warm.uzsu', kurvewarm);
+  io.write('licht.kurve.kalt.uzsu', kurvekalt);
+  io.write('licht.kurve.standard.uzsu', kurvestandard);
+</script>
+
+<div style="padding:10px;"><a href="index.php?page=licht_eg">EG</a> | <a href="index.php?page=licht_og">OG</a> | <a href="index.php?page=bwm_og">BWM</a> | Lichtkurven </div>
+
+<div>
+{{ device.uzsugraph('warm', 'licht.kurve.warm.uzsu', 'warmweiß', 1, 'num', [0, 100, 5]) }}
+{{ device.uzsuicon('warm_icon', 'licht.kurve.warm.uzsu', 'warmweiß', '', '', 'num', [0, 100, 1]) }}
+
+{{ device.uzsugraph('kalt', 'licht.kurve.kalt.uzsu', 'kaltweiß', 1, 'num', [0, 100, 5]) }}
+{{ device.uzsuicon('', 'licht.kurve.kalt.uzsu', 'kaltweiß', '', '', 'num', [0, 100, 1]) }}
+
+{{ device.uzsugraph('standard', 'licht.kurve.standard.uzsu', 'Standard', 1, 'num', [0, 100, 5]) }}
+{{ device.uzsuicon('', 'licht.kurve.standard.uzsu', 'Standard', '', '', 'num', [0, 100, 1]) }}
+</div>
+
+{% endblock %}
+
+{% block quad_top %}
+
+{% endblock %}
+
+{% block quad_bottom %}
+{% endblock %}

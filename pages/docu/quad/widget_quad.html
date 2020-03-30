@@ -1,0 +1,45 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget.html" %}
+{% import "quad.html" as quad %}
+
+{% block headline %}
+	<h1>Quad Design Widgets</h1>
+{% endblock %}
+
+{% block intro %}
+	<p>These are all widgets you can implement as rows in your quad design.</p>
+	<p>Actually the "mixed" widget would be the only one you need but might be a bit more complex to setup.</p>
+
+	<p>If you want to update your sites from the old "original" quad design (implemented as widget_list.html, visu.html, etc.), follow these steps:</p>
+	<p> Start with an empty folder. Copy these files from your old pages folder into the new one:<br>
+	index.html, navigation.html, rooms.html and all relevant rooms - NOT *.js, widget_*, etc.</p>
+	<p>Afterwards adjust the following:</p>
+
+<div class="twig">
+	<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{% extends "base.html" %} should be replaced by {% extends "quad_root.html" %}
+{% import "widget_visu.html" as visu %} has to be removed.
+{% import "widget_list.html" as list %}  has to be removed.
+{% endraw %}{% endfilter %}</code>
+</div>
+<p>Replace all "list.*" and "visu.*" entries by "quad.*".<br>
+	Replace all "nw_*" classes by "quad_*".
+</p><p>You might also need to change the following in your rooms.html:</p>
+<div class="twig">
+	<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{% block quad_top %} gets {% block sidebar %}
+{% endraw %}{% endfilter %}</code>
+</div>
+<p>
+After that you have to update all your former list entries based on the documentation. The order of the parameters is now the same as in the standard smartVISU and therefore different from the original 2ndSky quad version!
+ </p>
+{% endblock %}

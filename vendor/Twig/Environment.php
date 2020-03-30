@@ -114,6 +114,7 @@ class Twig_Environment
         $this->strictVariables = (bool) $options['strict_variables'];
         $this->setCache($options['cache']);
 
+        $this->addExtension(new Twig_Extension_AssetExistsExtension());
         $this->addExtension(new Twig_Extension_Core());
         $this->addExtension(new Twig_Extension_Escaper($options['autoescape']));
         $this->addExtension(new Twig_Extension_Optimizer($options['optimizations']));

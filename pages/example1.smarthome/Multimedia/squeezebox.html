@@ -1,0 +1,50 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Glei�
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "full.html" %}
+
+{% block content %}
+	<div class="preblock">
+		<table width="100%">
+			<tr>
+				<td align="middle" width="70%">
+					Verstärker&nbsp;&nbsp;&nbsp;
+					<span data-role="controlgroup" data-type="horizontal">
+						{{ basic.stateswitch('ONOFFVerstaerker', 'Allgemein.Multimedia.VerstaerkerONOFF', 'midi', '1', 'check', 'ON / OFF') }}
+					</span>
+					<span data-role="controlgroup" data-type="horizontal">
+						{{ basic.stateswitch('TVVerstaerker', 'Allgemein.Multimedia.VerstaerkerTV', 'midi', '1', 'home', 'TV') }}
+						{{ basic.stateswitch('PCVerstaerker', 'Allgemein.Multimedia.VerstaerkerPC', 'midi', '1', 'home', 'Server' ) }}
+						{{ basic.stateswitch('TunerVerstaerker', 'Allgemein.Multimedia.VerstaerkerRadio', 'midi', '1', 'home', 'Tuner') }}
+						{{ basic.stateswitch('SqueezeWZVerstaerker', 'Allgemein.Multimedia.VerstaerkerSqueezeWZ', 'midi', '1', 'home', 'Squeeze') }}
+					</span>
+					<span data-role="controlgroup" data-type="horizontal">
+						{{ basic.stateswitch('ChPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChPlus', 'midi', '1', 'arrow-u', 'Channel') }}
+						{{ basic.stateswitch('ChMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChMinus', 'midi', '1', 'arrow-d', 'Channel') }}
+					</span>
+					<span data-role="controlgroup" data-type="horizontal">
+						{{ basic.stateswitch('VolPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolPlus', 'midi', '1', 'arrow-u', ' Volume ') }}
+						{{ basic.stateswitch('MuteVerstaerker', 'Allgemein.Multimedia.VerstaerkerMute', 'midi', '1', 'delete', ' MUTE ') }}
+						{{ basic.stateswitch('VolMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolMinus', 'midi', '1', 'arrow-d', ' Volume ') }}
+					</span>
+					<span data-role="controlgroup" data-type="horizontal">
+						{{ basic.stateswitch('RadioAnPlusAntenneBayern', 'Allgemein.Multimedia.RadioUndAntenneBayern', 'midi', '1', 'grid', ' _Antenne Bayern_ ') }}
+					</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div align="center"><img src="pages/example1.smarthome/pics/sb.jpg" width="100%" height="550" name="Squezebox"></div>
+
+{% endblock %}
+
+
+
+
+

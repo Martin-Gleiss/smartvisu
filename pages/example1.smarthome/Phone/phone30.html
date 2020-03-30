@@ -1,0 +1,59 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "base.html" %}
+{% block sidebar %}
+	<ul data-role="listview" data-dividertheme="c">
+		<li data-role="list-divider">Telefonlisten</li>
+		<li data-icon="false">
+			<a href="index.php?page=Phone/phone_plus">
+				<img class="icon" src="{{ icon0 }}phone_call.svg" />
+
+				<h3>letzten 10</h3>	
+			</a>
+		</li>
+		<li data-icon="false">
+			<a href="index.php?page=Phone/phone20">
+				<img class="icon" src="{{ icon0 }}phone_call.svg" />
+
+				<h3>letzten 20</h3>
+			</a>
+		</li>
+		<li data-icon="false">
+			<a href="index.php?page=Phone/phone30">
+				<img class="icon" src="{{ icon0 }}phone_call.svg" />
+
+				<h3>letzten 30</h3>
+			</a>
+		</li>
+		<li data-icon="false">
+			<a href="index.php?page=Phone/phone.missed10">
+				<img class="icon" src="{{ icon0 }}phone_missed_out.svg" />
+
+				<h3>verpasste Anrufe</h3>
+
+				<div class="ui-li-aside">
+					{{ basic.symbol('Anrufbeantworter', 'FB.AB', '', 'phone_answersing.svg', 1, '', 'icon1') }}
+				</div>
+			</a>
+		</li>
+	</ul>
+{% endblock %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}it_telephone.svg' />Telefonliste - letzten 30 Aktivitäten</h1>
+
+	{% import "phone.html" as phone %}
+	{{ phone.list('phonelist', '', 30) }}
+
+{% endblock %}
+
+

@@ -1,0 +1,37 @@
+Anmerkungen zur Überarbeitung des Beispiels "example1.smarthome"
+
+Alle html.Seiten der Visu (Ausnahme siehe Punkt 3) wurden geprüft, ggfls. die Struktur überarbeitet und die veralteten Widgets ersetzt.
+
+Der Templatechecker meldet folgende Warnungen / Fehler:
+1. Datei TV/tvremote.html:
+   die Pictogramme für die Fernsehanstalten sind nicht vorhanden. Ich habe dunkel in Erinnerung, einmal gelesen zu haben, 
+   dass dies urheberrechtliche Gründe hat. Die Seite funktioniert aber auch ohne die Bilder.
+   Keine weiteren Maßnahmen.
+   
+2. Datei "index.html"
+   Unknown widget found: lib.updatecheck()
+   Ich bin davon ausgegangen, dass der Templatechecker dies fälschlich als Widget erkennt.
+   Keine weiteren Maßnahmen.
+   
+3. Datei "widgets/shutter"
+   Parameterfehler bei allen Widget-Aufrufen. Beispiel
+		Id already used
+			basic.stateswitch(id|_('down'), gad_move, 'mini', 1, 'control_arrow_down.svg', '', 'icon0')
+			Line 81
+			Widget: basic.stateswitch
+			Parameters: id|_('down'), gad_move, 'mini', 1, 'control_arrow_down.svg', '', 'icon0'
+			Parameter Index: 0
+			Parameter Value: id|_('down')
+	Ich bin davon ausgegangen, dass dies ebenfalls ein Problem des Templatecheckers ist.
+	Hier habe ich keine Überarbeitung der html-Struktur durchgeführt.
+	Keine weiteren Maßnahmen
+	
+Schönheitsfehler:
+	Die Boxen der device-widgets sind unterschiedlich hoch und passen an meheren Stellen nicht zu den in den html-Seiten
+	angelegten Boxen 
+		(CODE: <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">). 
+	Dadurch ergeben sich teilweise "Zeilensprünge" einzelner Boxen. Die habe ich durch Einfügen von Leerzeilen behoben
+		(CODE: <br />)
+	aber es bleiben unregelmäßige Abstände zurück.
+	
+Wolfram (github: wvhn), 08.12.19

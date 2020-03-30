@@ -9,13 +9,29 @@
 
 
 {% extends "index.html" %}
-{% import "appliance.html" as appliance %}
-
 {% block content %}
 
 	<h1>Fundamentals</h1>
 
 	<div class="docu">
+
+		<h2>Check if asset exists</h2>
+
+		SmartVisu provides a Twig function to check if an asset (image, widget HTML, etc.) exists. That is especially important for widgets that might be imported from the dropins folder.<br />
+
+		<h5>Example</h5>
+
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				{% if asset_exists('stateengine.html') %}
+				  {% import "widgets/stateengine.html" as stateengine %}
+				{% endif %}
+				{% endverbatim %}{% endfilter %}
+			</code>
+		</div>
+
+
+		<br />
 
 		<h2>Array-Form</h2>
 
@@ -48,8 +64,11 @@
 			</code>
 		</div>
 
-
+		<h2>More Information</h2>
+		
+		More information can be found on the <a href="https://github.com/Martin-Gleiss/smartvisu/wiki">wiki pages.</a><br>
+		Please contribute there if you like to share your knowledge. We'll integrate the contents into this inline documentation later.
+		
 	</div>
 
 {% endblock %}
-

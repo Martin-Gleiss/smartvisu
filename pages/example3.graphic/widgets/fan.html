@@ -1,0 +1,108 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß, Wolfram v. Hülsen
+ * @copyright   2012, 2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+
+/**
+ * Standard ventilator control with slider
+ * @param       unique id for this widget
+ * @param       item for the level
+ * @param       item for automatic (optional)
+ * @param       item for level up/down (optional)
+ */
+{% macro slider (id, item_level, item_auto, item_switch ) %}
+    {% import   "basic.html" as basic %}
+
+    /** Design */
+    <style>
+		.pos .ui-slider .ui-input-text {
+			display: none !important;
+		}
+		.pos .ui-slider-track, .pos .ui-slider-switch {
+			margin: 0 15px 15px 15px !important;
+		}
+	</style>
+    <div class="blind" style="padding: 15px;">
+        <table align="center" cellpadding="0" width="100%">
+        <tr>
+            <td align="center">
+                <div class="title" style="font-size: 2em;">{{ basic.print(id|_('value'), item_level) }}</div>
+            </td>
+            <td align="center">
+                <span data-role="controlgroup" data-type="horizontal">
+					{% if item_switch %}{{ basic.stateswitch(id|_('up'), item_switch, 'mini', 1,  'control_arrow_up.svg', 'Stufe hoch') }}
+					{{ basic.stateswitch(id|_('down'), item_switch, 'mini', 0, 'control_arrow_down.svg', 'Stufe runter') }}{% endif %}
+				</span>
+			</td>
+        </tr>
+        <tr>
+			<td align="center">
+                {{ basic.symbol(id|_('level0'), item_level, 'Ausgeschaltet', 'vent_ventilation.svg', 0) }}
+                {{ basic.symbol(id|_('level1'), item_level, 'Nachtbetrieb', 'vent_ventilation_level_1.svg', 1, '', 'icon1') }}
+                {{ basic.symbol(id|_('level2'), item_level, 'Tagbetrieb', 'vent_ventilation_level_2.svg', 2, '', 'icon1') }}
+                {{ basic.symbol(id|_('level3'), item_level, 'Partybetrieb', 'vent_ventilation_level_3.svg', 3, '', 'icon1') }}
+            </td>
+            <td align="center">
+				{% if item_auto %}{{ basic.stateswitch(id|_('auto'), item_auto, 'mini', [0,1], ['vent_ventilation_level_manual_m.svg', 'vent_ventilation_level_automatic.svg']) }}{% endif %}
+			</td>
+		</tr>
+        </table>
+        <div class="pos" style="width: 100%;">
+			{{ basic.slider(id|_('level'), item_level, 0, 3, 1) }}
+        </div>
+    </div>
+{% endmacro %}
+
+/**
+ * Standard ventilator control with switches
+ * @param       unique id for this widget
+ * @param       item for the level
+ * @param       item for automatic (optional)
+ * @param       item for level up/down (optional)
+ */
+{% macro switch (id, item_level, item_auto, item_switch ) %}
+    {% import   "basic.html" as basic %}
+
+    /** Design */
+    <div class="blind">
+        <table align="center" cellpadding="0" style="min-width: 230px;">
+        <tr>
+            <td>
+                <div class="title" style="font-size: 2em;" align="center">{{ basic.value(id|_('value'), item_level) }}</div>
+            </td>
+            <td align="right" >
+                <span data-role="controlgroup" data-type="horizontal">
+					{% if item_switch %}{{ basic.stateswitch(id|_('up'), item_switch, 'mini', 1,  'control_arrow_up.svg', '') }}
+					{{ basic.stateswitch(id|_('down'), item_switch, 'mini', 0, 'control_arrow_down.svg', '') }}{% endif %}
+				</span>
+			</td>
+        </tr>
+        <tr>
+			<td align="left" {% if not item_auto %} colspan="2" {% endif %}>
+                {{ basic.symbol(id|_('level0'), item_level, 'Ausgeschaltet', 'vent_ventilation.svg', 0) }}
+                {{ basic.symbol(id|_('level1'), item_level, 'Nachtbetrieb', 'vent_ventilation_level_1.svg', 1, '', 'icon1') }}
+                {{ basic.symbol(id|_('level2'), item_level, 'Tagbetrieb', 'vent_ventilation_level_2.svg', 2, '', 'icon1') }}
+                {{ basic.symbol(id|_('level3'), item_level, 'Partybetrieb', 'vent_ventilation_level_3.svg', 3, '', 'icon1') }}
+            </td>
+            {% if item_auto %}<td align="right">
+				{{ basic.stateswitch(id|_('auto'), item_auto, 'mini', [0,1], ['vent_ventilation_level_manual_m.svg', 'vent_ventilation_level_automatic.svg']) }}
+			</td>{% endif %}
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+                <span data-role="controlgroup" data-type="horizontal" align="center">
+					{{ basic.stateswitch(id|_('switch0'), item_level, 'midi', 0, 'vent_ventilation.svg', ' 0 ') }}
+					{{ basic.stateswitch(id|_('switch1'), item_level, 'midi', 1, 'vent_ventilation_level_1.svg', '1') }}
+					{{ basic.stateswitch(id|_('switch2'), item_level, 'midi', 2, 'vent_ventilation_level_2.svg', '2') }}
+					{{ basic.stateswitch(id|_('switch3'), item_level, 'midi', 3, 'vent_ventilation_level_3.svg', '3') }}
+				</span>
+            </td>
+		</tr>
+        </table>
+    </div>
+{% endmacro %}

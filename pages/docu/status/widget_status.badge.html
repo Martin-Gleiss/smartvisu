@@ -1,0 +1,33 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_status.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+
+	Use the slider to set the value
+	<div class="html">
+		{{ basic.slider('', 'bath.multistate', 0, 10, 1) }}
+	</div>
+
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.symbol() }} {{ status.badge('', 'bath.multistate') }}
+			{{ basic.symbol() }} {{ status.badge('', 'bath.multistate', [1,4,7], ['hidden','green','orange','']) }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.symbol() }} {{ status.badge('', 'bath.multistate') }}
+		{{ basic.symbol() }} {{ status.badge('', 'bath.multistate', [1,4,7], ['hidden','green','orange','']) }}
+	</div>
+
+{% endblock %}

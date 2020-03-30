@@ -1,0 +1,117 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß, Wolfram v. Hülsen
+ * @copyright   2012, 2019
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+{% extends "overview/base.html" %}
+
+{% block content %}
+	<div class="html" data-title="Dachgeschoss">
+	  
+	<div class="preblock">
+	</div>
+	
+    <div class="ui-grid-a ui-responsive">
+		<div class="overview ui-block-a">
+			<!-- Background picture -->
+			{{ ov.background ('background_dg', 'pages/example3.graphic/overview/images/dg.svg') }}
+
+			<!-- Bad Eltern -->
+			{{ ov.pagelink ('pagelink_bad_eltern', 'Details Elternbad', '29.6%', '75%', 'index.php?page=room_example', 'Elternbad', '', 'mini') }} 
+
+			{{ ovbasic.win_shut ('bad_eltern_shutter', 'Elternbad: Rollladen', '15.4%', '63.5%', 'dg.bad_eltern.rollladen.ost.fahren', 'dg.bad_eltern.rollladen.ost.stopp', 'dg.bad_eltern.rollladen.ost.position', 'dg.bad_eltern.rollladen.ost.beschatten', 'dg.bad_eltern.fenster.ost.r', 'dg.bad_eltern.fenster.ost.l', 'micro') }}
+
+			{{ ovdevice.dimmer ('bad_eltern_decke', 'Elternbad: Deckenstrahler', 'dg.bad_eltern.beleuchtung.decke.schalten', 'dg.bad_eltern.beleuchtung.decke.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '29.4%', '83%', 'micro') }}
+			{{ ovbasic.stateswitch ('bad_eltern_schrank', 'dg.bad_eltern.beleuchtung.spiegel.schalten', 'micro', ['1', '0'], ['light_mirror.svg', 'light_mirror.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Elternbad: Schrankbeleuchtung', '28.4%', '67%') }}
+
+			{{ ovbasic.print ('bad_eltern_temperatur', 'dg.bad_eltern.temperatur.luft', '°C', '', '', '', 'Elternbad: Raumtemperatur', '23%', '60.5%', 'bad_eltern_temp_popup', 1) }}
+			{{ ovbasic.period ('bad_eltern_temp_popup', 'Elternbad: Temperaturen', ['dg.bad_eltern.temperatur.luft', 'dg.bad_eltern.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+
+			
+			<!-- Schlafen -->
+			{{ ov.pagelink ('pagelink_schlafen', 'Details Schlafzimmer', '27.6%', '35%', 'index.php?page=room_example', 'Schlafen', '', 'mini') }} 
+
+			{{ ovbasic.win_shut ('schlafen_shutter', 'Schlafzimmer: Rollladen', '15.4%', '37%', 'dg.schlafen.rollladen.ost.fahren', 'dg.schlafen.rollladen.ost.stopp', 'dg.schlafen.rollladen.ost.position', 'dg.schlafen.rollladen.ost.beschatten', 'dg.schlafen.fenster.ost', '', 'micro') }}
+
+			{{ ovdevice.dimmer ('schlafen_decke', 'Schlafzimmer: Deckenstrahler', 'dg.schlafen.beleuchtung.decke.schalten', 'dg.schlafen.beleuchtung.decke.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '29.4%', '46%', 'micro') }}
+			{{ ovbasic.stateswitch ('schlafen_bett_links', 'dg.schlafen.beleuchtung.bett.links.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Schlafzimmer: Bett links', '23%', '17.2%') }}
+			{{ ovbasic.stateswitch ('schlafen_bett_rechts', 'dg.schlafen.beleuchtung.bett.rechts.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Schlafzimmer: Bett rechts', '31.8%', '17.2%') }}
+
+			{{ ovbasic.print ('schlafen_temperatur', 'dg.schlafen.temperatur.luft', '°C', '', '', '', 'Schlafzimmer: Raumtemperatur', '23%', '46%', 'schlafen_temp_popup', 1) }}
+			{{ ovbasic.period ('schlafen_temp_popup', 'Schlafzimmer: Temperaturen', ['dg.schlafen.temperatur.luft', 'dg.schlafen.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			
+			<!-- Gast -->
+			{{ ov.pagelink ('pagelink_gast', 'Details Gast', '48%', '23%', 'index.php?page=room_example', 'Gast', '', 'mini') }} 
+
+			{{ ovbasic.win_shut ('gast_shutter1', 'Gast: Rollladen links', '41.3%', '-0.9%', 'dg.gast.rollladen.links.fahren', 'dg.gast.rollladen.links.stopp', 'dg.gast.rollladen.links.position', 'dg.gast.rollladen.links.beschatten', 'dg.gast.fenster.links', '', 'micro') }}
+			{{ ovbasic.win_shut ('gast_shutter2', 'Gast: Rollladen mitte', '47.7%', '-0.9%', 'dg.gast.rollladen.mitte.fahren', 'dg.gast.rollladen.mitte.stopp', 'dg.gast.rollladen.mitte.position', 'dg.gast.rollladen.mitte.beschatten', 'dg.gast.fenster.mitte.r', 'dg.gast.fenster.mitte.l','micro') }}
+			{{ ovbasic.win_shut ('gast_shutter3', 'Gast: Rollladen rechts', '54.1%', '-0.9%', 'dg.gast.rollladen.rechts.fahren', 'dg.gast.rollladen.rechts.stopp', 'dg.gast.rollladen.rechts.position', 'dg.gast.rollladen.rechts.beschatten', 'dg.gast.fenster.rechts', '','micro') }}
+
+			{{ ovdevice.dimmer ('gast_decke1', 'Gast: Deckenstrahler 1', 'dg.gast.beleuchtung.decke1.schalten', 'dg.gast.beleuchtung.decke1.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '42%', '23%', 'micro') }}
+			{{ ovdevice.dimmer ('gast_decke2', 'Gast: Deckenstrahler 2', 'dg.gast.beleuchtung.decke2.schalten', 'dg.gast.beleuchtung.decke2.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '54%', '23%', 'micro') }}
+
+			{{ ovbasic.stateswitch ('gast_pc', 'dg.gast.steckdose.computer.schalten', 'micro', ['1', '0'], ['it_pc.svg', 'it_pc.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Gast: Computer', '55.5%', '10%') }}
+
+			{{ ovbasic.print ('gast_temperatur', 'dg.gast.temperatur.luft', '°C', '', '', '', 'Gast: Raumtemperatur', '44.5%', '35%', 'gast_temp_popup', 1) }}
+			{{ ovbasic.period ('gast_temp_popup', 'Gast: Temperaturen', ['dg.gast.temperatur.luft', 'dg.gast.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+
+			<!-- Kind 1 -->
+			{{ ov.pagelink ('pagelink_kind1', 'Details Kind 1', '70%', '35%', 'index.php?page=room_example', 'Kind 1', '', 'mini') }} 
+
+			{{ ovbasic.win_shut ('kind1_shutter', 'Kind 1: Rollladen', '79.8%', '36.7%', 'dg.kind1.rollladen.west.fahren', 'dg.kind1.rollladen.west.stopp', 'dg.kind1.rollladen.west.position', 'dg.kind1.rollladen.west.beschatten', 'dg.kind1.fenster.west', '', 'micro') }}
+
+			{{ ovdevice.dimmer ('kind1_decke', 'Kind 1: Deckenlampe', 'dg.kind1.beleuchtung.decke.schalten', 'dg.kind1.beleuchtung.decke.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '70%', '46%', 'micro') }}
+
+			{{ ovbasic.print ('kind1_temperatur', 'dg.kind1.temperatur.luft', '°C', '', '', '', 'Kind 1: Raumtemperatur', '70%', '24.5%', 'kind1_temp_popup', 1) }}
+			{{ ovbasic.period ('kind1_temp_popup', 'Kind 1: Temperaturen', ['dg.kind1.temperatur.luft', 'dg.kind1.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			
+			<!-- Kind 2 -->
+			{{ ov.pagelink ('pagelink_kind2', 'Details Kind 2', '70%', '73%', 'index.php?page=room_example', 'Kind 2', '', 'mini') }} 
+
+			{{ ovbasic.win_shut ('kind2_shutter', 'Kind 2: Rollladen', '79.8%', '63.3%', 'dg.kind2.rollladen.west.fahren', 'dg.kind2.rollladen.west.stopp', 'dg.kind2.rollladen.west.position', 'dg.kind2.rollladen.west.beschatten', 'dg.kind2.fenster.west', '', 'micro') }}
+
+			{{ ovdevice.dimmer ('kind2_decke', 'Kind 2: Deckenlampe', 'dg.kind2.beleuchtung.decke.schalten', 'dg.kind2.beleuchtung.decke.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '70%', '62.5%', 'micro') }}
+
+			{{ obasic.stateswitch ('kind2_steckdose_nord', 'dg.kind2.steckdose.nord.schalten', 'micro', ['1', '0'], ['audio_sound.svg', 'audio_sound.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Kind 2: Musik', '62%', '86%') }}
+
+			{{ ovbasic.print ('kind2_temperatur', 'dg.kind2.temperatur.luft', '°C', '', '', '', 'Kind 2: Raumtemperatur', '70%', '82%', 'kind2_temp_popup', 1) }}
+			{{ ovbasic.period ('kind2_temp_popup', 'Kind 2: Temperaturen', ['dg.kind2.temperatur.luft', 'dg.kind2.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+
+			<!-- Bad Kinder -->
+			{{ ov.pagelink ('pagelink_bad_kinder', 'Details Kinderbad', '51.5%', '84.5%', 'index.php?page=room_example', 'Kinderbad', '', 'micro') }} 
+
+			{{ ovdevice.dimmer ('bad_kinder_decke', 'Kinderbad: Deckenstrahler', 'dg.bad_kinder.beleuchtung.decke.schalten', 'dg.bad_kinder.beleuchtung.decke.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '52.5%', '74.9%', 'micro') }}
+			{{ ovbasic.stateswitch ('bad_kinder_spiegel', 'dg.bad_kinder.beleuchtung.spiegel.schalten', 'micro', ['1', '0'], ['light_mirror.svg', 'light_mirror.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Kinderbad: Spiegelbeleuchtung', '48%', '74.9%') }}
+
+			{{ ovbasic.print ('bad_kinder_temperatur', 'dg.bad_kinder.temperatur.luft', '°C', '', '', '', 'Kinderbad: Raumtemperatur', '51.5%', '68%', 'bad_kinder_temp_popup', 1) }}
+			{{ ovbasic.period ('bad_kinder_temp_popup', 'Kinderbad: Temperaturen', ['dg.bad_kinder.temperatur.luft', 'dg.bad_kinder.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+
+			<!-- Flur -->
+			{{ ov.pagelink ('pagelink_flur', 'Details Flur im DG', '48%', '53.3%', 'index.php?page=room_example', 'Flur', '', 'mini') }} 
+
+			{{ ovdevice.dimmer ('flur_decke', 'Flur: Deckenstrahler', 'dg.flur.beleuchtung.decke.schalten', 'dg.flur.beleuchtung.decke.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '42%', '53.3%', 'micro') }}
+
+			{{ ovbasic.print ('flur_temperatur', 'dg.flur.temperatur.luft', '°C', '', '', '', 'Flur: Raumtemperatur', '56.5%', '53.3%', 'flur_temp_popup', 1) }}
+			{{ ovbasic.period ('flur_temp_popup', 'Flur: Temperaturen', ['dg.flur.temperatur.luft', 'dg.flur.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+		</div>
+		<div class="ui-block-b">
+			<div class="ui-bar-c ui-li-divider ui-corner-top">&nbsp;&nbsp;Rollläden</div>
+			<div class="ui-fixed ui-body-a ui-corner-bottom" style="padding: 15px; height:100px;">
+				{{ device.smallshut ('shutter_alle', 'Alle', 'zentral.haus.rollladen.alle.fahren', 'zentral.haus.rollladen.alle.stopp', 'zentral.haus.rollladen.alle.position', '') }} <br>
+				{{ device.smallshut ('shutter_dg', 'Dachgeschoss', 'zentral.haus.rollladen.dg.fahren', 'zentral.haus.rollladen.dg.stopp', 'zentral.haus.rollladen.dg.position', 'zentral.haus.rollladen.dg.beschatten') }} <br>
+			</div>	
+		</div>
+		<div class="ui-block-b" style="margin-top: 15px;">
+			<div class="ui-bar-c ui-li-divider ui-corner-top">&nbsp;&nbsp;Lüftungsanlage</div>
+			<div class="ui-fixed ui-body-a ui-corner-bottom">
+				{{ fan.slider ('fan1', 'zentral.lueftung.stufe', 'zentral.lueftung.auto', 'zentral.lueftung.schalten') }}
+   			</div>	
+		</div>
+	</div>
+	</div>
+{% endblock %}
+

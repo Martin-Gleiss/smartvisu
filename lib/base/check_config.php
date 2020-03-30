@@ -15,14 +15,14 @@ require_once '../../lib/includes.php';
 // init parameters
 $request = array_merge($_GET, $_POST);
 
-if (is_writeable(const_path))
+if (is_writeable(const_path) && (!is_file(const_path.'config.ini') || is_writeable(const_path.'config.ini')))
 {
-	$ret = array('icon' => 'icons/sw/message_ok.svg', 'text' => "'config.php' file can be created");
+	$ret = array('icon' => 'message_ok.svg', 'text' => "'config.ini' file can be created");
 }
 else
 {
 	header("HTTP/1.0 600 smartVISU Config Error");
-	$ret = array('icon' => 'icons/sw/message_attention.svg', 'text' => "'config.php' file can't be created!");
+	$ret = array('icon' => 'message_attention.svg', 'text' => "'".const_path."config.ini' file can't be created!");
 }
 
 echo json_encode($ret);

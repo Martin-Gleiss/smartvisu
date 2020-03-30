@@ -17,12 +17,12 @@ $request = array_merge($_GET, $_POST);
 
 if (extension_loaded("mbstring"))
 {
-	$ret = array('icon' => 'icons/sw/message_ok.svg', 'text' => "PHP extension 'mbstring' loaded");
+	$ret = array('icon' => 'message_ok.svg', 'text' => "PHP extension 'mbstring' loaded");
 }
 else
 {
 	header("HTTP/1.0 600 smartVISU Config Error");
-	$ret = array('icon' => 'icons/sw/message_attention.svg', 'text' => "PHP extension 'mbstring' not loaded!");
+	$ret = array('icon' => 'message_attention.svg', 'text' => "PHP extension 'mbstring' not loaded!");
 }
 
 echo json_encode($ret);

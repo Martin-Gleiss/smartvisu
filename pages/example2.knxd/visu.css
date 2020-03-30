@@ -1,0 +1,39 @@
+body {
+        font-family: 'Verdana'  !important;
+        font-style: normal  !important;
+        font-weight: 500  !important;
+        text-shadow: none;
+}
+
+.setRed {
+        color: red;
+}
+.setBlue {
+        color: blue;
+}
+
+.sunIcon { border: 0px; padding: 0px; vertical-align: text-bottom; width: 35px;}
+.moonIcon { border: 0px; padding: 0px; vertical-align: text-bottom; width: 35px;}
+
+.ui-page > .ui-header {
+  text-align: center;
+  /* height: 62px; --> better use min-content with flexbox */
+  height: min-content;
+  border-bottom: 1px solid #222;
+  min-width: 320px;
+  display: flex;
+}
+
+.ui-page > .ui-header .ui-left {
+  margin: 5px 0 0 2px;
+  /* float: left; --> better use flexbox for header */
+  flex: auto;
+  text-align: left;
+}
+
+.ui-page > .ui-header .ui-right {
+  max-width: 160px;
+  /* float: right;  --> better use flexbox for header */
+  flex: auto;
+  margin: 9px 6px 0 0;
+}

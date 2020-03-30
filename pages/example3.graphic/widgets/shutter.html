@@ -1,0 +1,134 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiss
+* @copyright   2012 - 2019
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+/**
+* -----------------------------------------------------------------------------
+* Small widgets for simple shutters without blade shift / angle
+* -----------------------------------------------------------------------------
+*/
+
+/** 
+* Shutter one: displays one shutter element with controls and window (basic shutter)
+*
+* @param {id=} unique id for this widget
+* @param {text=} name of the shutter (optional)
+* @param {item} move for the up- and down- movement
+* @param {item} stop for stopping the movement (optional)
+* @param {item} pos for the actual position of the shutters
+* @param {item} saved to move the shutters to the shade position (optional)
+*/
+{% macro one (id, txt, item_move, item_stop, item_pos, item_saved ) %}
+	{% import   "basic.html" as basic %}
+
+	/** Design */
+	<div class="blind">
+		<table align="center" cellpadding="0 10 0 10">
+			<tr>
+				<td>
+					{% if txt %} {{ txt }} {% endif %}</td>
+				<td rowspan="3" align="top" class="pos">
+					{{ basic.slider(id|_('pos'), item_pos, 0, 100, 5, 'vertical') }}</td>
+				<td rowspan="3" width="10%"></td>
+				<td rowspan="3" align="top">
+					{{ basic.shutter(id|_('shutter'), item_pos, '', 0, 100) }}</td>
+			</tr>
+			<tr>
+				<td>
+			<span data-role="controlgroup" data-type="horizontal"> 
+				{{ basic.stateswitch(id|_('up'), item_move, 'mini', 0, 'control_arrow_up.svg', '', 'icon0') }}
+			</span>
+			<span data-role="controlgroup" data-type="horizontal"> 
+				{{ basic.stateswitch(id|_('down'), item_move, 'mini', 1, 'control_arrow_down.svg', '', 'icon0') }}
+			</span>
+
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">
+		<span data-role="controlgroup" data-type="horizontal"> 
+			{% if item_stop %} {{ basic.stateswitch(id|_('stop'), item_stop, 'mini', 1, 'audio_stop.svg', '', 'icon0') }} {% endif %}
+			{% if item_saved %} {{ basic.stateswitch(id|_('shade'), item_saved, 'mini', 1, 'fts_shutter_50.svg', '', 'icon0') }} {% endif %}
+		</span></td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}
+
+/**
+* Shutter two: displays one simple control assembly for usage in a table of two shutters
+*
+* @param {id=} unique id for this widget
+* @param {text=} name of the shutter
+* @param {item} move for the up- and down- movement
+* @param {item} stop for stopping the movement (optional)
+* @param {item} pos for the actual position of the shutters
+* @param {item} saved to move the shutters to the shade position (optional)
+*/
+{% macro two (id, txt, item_move, item_stop, item_pos, item_saved) %}
+	{% import   "basic.html" as basic %}
+
+	/** Design */
+	<div class="blind">
+		<table align="center" cellpadding="0 5 0 5">
+			<tr>
+				<td valign="top">{{ txt }}</td>
+				<td rowspan="3" align="left" class="pos">
+					{{ basic.slider(id|_('pos'), item_pos, 0, 100, 5, 'vertical') }}</td>
+			</tr>
+			<tr>
+				<td>
+					<span data-role="controlgroup" data-type="horizontal">
+					{{ basic.stateswitch(id|_('up'), item_move, 'mini', 0, 'control_arrow_up.svg', '', 'icon0') }}
+					{{ basic.stateswitch(id|_('down'), item_move, 'mini', 1, 'control_arrow_down.svg', '', 'icon0') }}
+			</span>
+				</td>
+			</tr>
+			<tr>
+				<td valign="bottom" align="center">
+		<span data-role="controlgroup" data-type="horizontal">
+			{% if item_stop %} {{ basic.stateswitch(id|_('stop'), item_stop, 'mini', 1, 'audio_stop.svg', '', 'icon0') }} {% endif %}
+			{% if item_saved %} {{ basic.stateswitch(id|_('shade'), item_saved, 'mini', 1, 'fts_shutter_50.svg', '', 'icon0') }} {% endif %}
+		</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}
+
+/**
+* Shutter three: displays one minimalistic control assembly for usage in a table of three shutters
+*
+* @param {id=} unique id for this widget
+* @param {text=} name of the blind
+* @param {item} pos for the actual position of the shutters
+* @param {item} saved to move the shutters to the shade position (optional)
+*/
+{% macro three (id, txt, item_pos, item_saved) %}
+	{% import   "basic.html" as basic %}
+
+	/** Design */
+	<div class="blind">
+		<table align="bottom" cellpadding="0">
+			<tr>
+				<td>&nbsp;</td>
+				<td rowspan="3" class="pos">
+					{{ basic.slider(id|_('pos'), item_pos, 0, 100, 5, 'vertical') }}</td>
+			</tr>
+			<tr>
+				<td style="white-space:nowrap; -o-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg); -ie-transform: rotate(270deg); filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);">{{ txt }}</td>
+			</tr>
+			<tr>
+				<td valign="bottom">
+					{% if item_saved %} {{ basic.stateswitch(id|_('shade'), item_saved, 'mini', 1, 'fts_shutter_50.svg', 'Pos.', 'icon0') }} {% endif %}
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}
+

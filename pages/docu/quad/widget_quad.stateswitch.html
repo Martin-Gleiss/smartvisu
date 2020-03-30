@@ -1,0 +1,88 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_quad.html" %}
+{% block header %}
+
+{% endblock %}
+{% block example %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+       io.write('this', '3' );
+       io.write('that', '1' );
+       io.write('theother', '0' );
+       io.write('this.sperren', '0' );
+       io.write('this.timer', '2' );
+       io.write('bwm.this.sperren', '0' );
+       io.write('this.zwangvalue', '0' );
+       io.write('that.sperren', '0' );
+       io.write('bwm.that.sperren', '0' );
+       io.write('that.zwangvalue', '0' );
+       io.write('this.uzsu', '{}');
+       io.write('that.uzsu', '{}');
+       io.write('theother.uzsu', '{}');
+    });
+
+</script>
+
+{% set extpopup = {
+'extra': ['edit_favorites.svg', [['linetext', 'select', 'switch'], 'Text', ['item.automatik.settings.sollwert', 'mini', [0,4,6]], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], [['switch', 'slider'], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']], [['slider'], ['item.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'flip'], 'Flip:', ['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']]],
+'stateengine': ['stateengine', [['linetext', 'select', 'switch'], 'Text', ['item.automatik.settings.sollwert', 'mini', [0,4,6]], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], [['switch', 'slider'], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']], [['slider'], ['item.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'flip'], 'Flip:', ['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']]]
+}
+ %}
+
+  <h5>Example</h5>
+
+Standard column order
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{{ quad.stateswitch('stateswitch11', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', '', 'blink', '', '', '', '', '', 'one switch, standard order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['extra']), [['this.sperren'], 'bwm.this.sperren','this.zwangvalue']) }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+{{ quad.stateswitch('stateswitch11', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', '', 'blink', '', '', '', '', '', 'one switch, standard order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['extra']), [['this.sperren'], 'bwm.this.sperren','this.zwangvalue']) }}
+  </ul></div>
+
+[['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks'] with extpopup
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{{ quad.stateswitch('stateswitch12', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], ['','',''], ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['stateengine']), ['this.sperren'], '', '', '', [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks']) }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+{{ quad.stateswitch('stateswitch12', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], ['','',''], ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['stateengine']), ['this.sperren'], '', '', '', [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks']) }}
+  </ul></div>
+
+don't use column_order for multiple switches.
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{{ quad.stateswitch('stateswitch14', ['this', 'that', 'theother'], ['icon','mini','midi'], [[1,0],'',[0,150]], [['edit_numeric_1.svg','edit_numeric_0.svg'],'',['edit_numeric_0.svg','edit_numeric_9.svg']], ['', ['0','1']], [['',''],'',['','']], ['blink','','blink'], '', '', '', 'place1', 'place2', 'Mixed types with one slider', ['', '', ''], ['this.uszu','','theother.uszu'], ['','',''], '', '', '', '', '', [['this.timer', 0, 10, 1, 'min', 'handle'],'','']) }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+{{ quad.stateswitch('stateswitch14', ['this', 'that', 'theother'], ['icon','mini','midi'], [[1,0],'',[0,150]], [['edit_numeric_1.svg','edit_numeric_0.svg'],'',['edit_numeric_0.svg','edit_numeric_9.svg']], ['', ['0','1']], [['',''],'',['','']], ['blink','','blink'], '', '', '', 'place1', 'place2', 'Mixed types with one slider', ['', '', ''], ['this.uszu','','theother.uszu'], ['','',''], '', '', '', '', '', [['this.timer', 0, 10, 1, 'min', 'handle'],'','']) }}
+  </ul></div>
+
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{{ quad.stateswitch('stateswitch19', ['this', 'that', 'theother'], ['icon','icon','icon'], [[0,1],[0,1],[0,1]], [['edit_numeric_0.svg','edit_numeric_1.svg'],['edit_numeric_0.svg','edit_numeric_2.svg'],['edit_numeric_0.svg','edit_numeric_3.svg']], '', [['',''],['',''],['','']], ['blink','blink','blink'], '', '', '', '', '', '3 columns with different features', ['a', 'b', 'c'], ['this.uzsu','',''], ['','',''], ['','that.plot',''], '', 'this.automatik', ['', '', (extpopup['extra'])], ['',['that.sperren','bwm.that.sperren','that.zwangvalue'], '']) }}
+
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+{{ quad.stateswitch('stateswitch19', ['this', 'that', 'theother'], ['icon','icon','icon'], [[0,1],[0,1],[0,1]], [['edit_numeric_0.svg','edit_numeric_1.svg'],['edit_numeric_0.svg','edit_numeric_2.svg'],['edit_numeric_0.svg','edit_numeric_3.svg']], '', [['',''],['',''],['','']], ['blink','blink','blink'], '', '', '', '', '', '3 columns with different features', ['a', 'b', 'c'], ['this.uzsu','',''], ['','',''], ['','that.plot',''], '', 'this.automatik', ['', '', (extpopup['extra'])], ['',['that.sperren','bwm.that.sperren','that.zwangvalue'], '']) }}
+
+  </ul></div>
+
+{% endblock %}

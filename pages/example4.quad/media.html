@@ -1,0 +1,73 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "quad_root.html" %}
+
+{% block title %}
+Multimedia
+{% endblock %}
+
+{% block header %}
+<img class="icon" src='{{ icon0 }}scene_livingroom.svg'/>
+{% endblock %}
+
+{% block content %}
+<script>
+$( document ).ready(function() {
+		 io.write('heimkino.beamer.power', '1' );
+     io.write('musik.og.denon.zone1.source', 'GAME' );
+     io.write('musik.og.denon.zone2.source', 'SAT/CBL' );
+     io.write('musik.og.denon.zone3.source', 'AUX1' );
+     io.write('musik.og.denon.zone1.volume', '40' );
+     io.write('musik.og.denon.zone2.volume', '95' );
+     io.write('musik.og.denon.zone3.volume', '90' );
+     io.write('musik.og.denon.zone1.display', '' );
+
+     io.write('squeezebox_og.play', 'true' );
+     io.write('squeezebox_eg.stop', 'true' );
+     io.write('squeezebox_og.title', 'Whiplash' );
+     io.write('squeezebox_eg.title', 'Angry Again' );
+     io.write('squeezebox_og.artist', 'Metallica' );
+     io.write('squeezebox_eg.artist', 'Megadeth' );
+     io.write('squeezebox_og.album', 'Kill em all' );
+     io.write('squeezebox_eg.album', 'Soundtrack' );
+     io.write('squeezebox_og.volume', '30' );
+     io.write('squeezebox_eg.volume', '90' );
+	});
+
+</script>
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+
+      <li data-role="list-divider">Verstärker</li>
+{{ quad.stateswitch('steckdosen_og_wohnen_kino', 'steckdosen.og.wohnen_kino.sa', 'icon', '', ['it_server.svg','it_server.svg'], '', '', 'blink', '', '', '', '', '', 'Steckdose Kino', '', 'steckdosen.og.wohnen_kino.uzsu', ['', '', 'bool'], 'steckdosen.og.wohnen_kino.sa', '', 'steckdosen.og.wohnen_kino.automatik') }}
+
+{{ quad.playercontrol('denon_og_zone1', 'Denon Zone 1', '', '', '', '', '', 'musik.og.denon.zone1.power', '', '', '', ['musik.og.denon.zone1.source', 'icon', ['GAME', 'audio_headphone.svg'], ['DVD', 'audio_sync.svg'], ['MPLAY', 'audio_sound.svg'], ['CD', 'audio_rec.svg']], 'musik.og.denon.zone1.mute', 'musik.og.denon.zone1.volume', 'musik.og.denon.zone1.volumeup', 'musik.og.denon.zone1.volumedown', 0, 95, 1, '0', '95', '90', '', '', 'musik.og.denon.zone1.display', '', '', '', '', '', 'musik.og.denon.zone1.power', '', '', '', '', '', '', ['power', ['mute', 'volume_popup'], 'source']) }}
+
+{{ quad.playercontrol('denon_og_zone2', 'Denon Zone 2', '', '', '', '', '', 'musik.og.denon.zone2.power', '', '', '', ['musik.og.denon.zone2.source', 'icon', ['DVD', 'audio_sync.svg'], ['AUX1', 'it_television.svg'], ['CD', 'audio_rec.svg'], ['SAT/CBL', 'it_satellite_dish.svg']], 'musik.og.denon.zone2.mute', 'musik.og.denon.zone2.volume', 'musik.og.denon.zone2.volumeup', 'musik.og.denon..zone2.volumedown', 0, 95, 1, '0', '95', '90', '', '', '', '', '', '', '', '', 'musik.og.denon.zone2.power', '', '', '', '', '', '', ['power', ['mute', 'volume_popup'], 'source']) }}
+
+{{ quad.playercontrol('denon_og_zone3', 'Denon Zone 3', '', '', '', '', '', 'musik.og.denon.zone3.power', '', '', '', ['musik.og.denon.zone3.source', 'icon', ['DVD', 'audio_sync.svg'], ['AUX1', 'it_television.svg'], ['CD', 'audio_rec.svg'], ['SAT/CBL', 'it_satellite_dish.svg']], 'musik.og.denon.zone3.mute', 'musik.og.denon.zone3.volume', 'musik.og.denon.zone3.volumeup', 'musik.og.denon.zone3.volumedown', 0, 95, 1, '0', '95', '90', '', '', '', '', '', '', '', '', 'musik.og.denon.zone3.power', '', '', '', '', '', '', ['power', ['mute', 'volume_popup'], 'source']) }}
+
+      <li data-role="list-divider">Projektion</li>
+{{ quad.stateswitch('beamer', 'heimkino.beamer.power', 'icon', '', ['scene_projector_open_on_off.svg','scene_projector_open_on_off.svg'], '', '', 'blink', '', '', '', '', '', 'Beamer', '', '', '', 'heimkino.beamer.power') }}
+
+      <li data-role="list-divider">Squeezebox</li>
+{{ quad.playercontrol('squeezebox_og', 'OG', 'squeezebox_og.playlist_backward', 'squeezebox_og.play', 'squeezebox_og.pause', 'squeezebox_og.stop', 'squeezebox_og.playlist_forward', '', '', 'squeezebox_og.repeat', 'squeezebox_og.shuffle', '', 'squeezebox_og.mute', 'squeezebox_og.volume', '', '', 0, 100, 1, '', '', 80, 'squeezebox_og.album', 'squeezebox_og.artist', 'squeezebox_og.title', 'squeezebox_og.time', 'squeezebox_og.duration', '', '', '', '', '', '', '', '', '', '', ['cover', ['previous','playpause','next'], ['repeat', 'shuffle'], 'mute', 'volume_popup']) }}
+
+{{ quad.playercontrol('squeezebox_eg', 'EG', 'squeezebox_eg.playlist_backward', 'squeezebox_eg.play', 'squeezebox_eg.pause', 'squeezebox_eg.stop', 'squeezebox_eg.playlist_forward', '', '', 'squeezebox_eg.repeat', 'squeezebox_eg.shuffle', '', 'squeezebox_eg.mute', 'squeezebox_eg.volume', '', '', 0, 100, 1, '', '', 80, 'squeezebox_eg.album', 'squeezebox_eg.artist', 'squeezebox_eg.title', 'squeezebox_eg.time', 'squeezebox_eg.duration', '', '', '', '', '', '', '', '', '', '', ['cover', ['previous','playpause','next'], ['repeat', 'shuffle'], 'mute', 'volume_popup']) }}
+
+</ul>
+{% endblock %}
+
+{% block quad_top %}
+
+{% endblock %}
+
+{% block quad_bottom %}
+{% endblock %}

@@ -1,0 +1,116 @@
+/**
+*/
+
+/**
+ * Shutter One
+ * 
+ * @param       unique id for this widget
+ * @param       name of the shutter (optional)
+ * @param       the knx gad (groupaddress) for the up- and down- movement
+ * @param       the knx gad (groupaddress) for stopping the movement (optional)
+ * @param       the knx gad (groupaddress) for the actual position of the shutters
+ * @param       the knx gad (groupaddress) to move the shutters to the shade position (optional)
+ */
+{% macro one (id, txt, gad_move, gad_stop, gad_pos, gad_shade ) %}
+    {% import   "basic.html" as basic %}
+    
+    /** Design */
+    <div class="blind">
+        <table align="center" cellpadding="0 10 0 10">
+        <tr>
+            <td>
+                {% if txt %} {{ txt }} {% endif %}</td>
+            <td rowspan="3" align="top" class="pos">
+                {{ basic.slider(id|_('pos'), gad_pos, 0, 100, 5, 'vertical') }}</td>
+	     <td rowspan="3" width="10%"></td>
+             <td rowspan="3" align="top">  
+		{{ basic.shutter(id|_('shutter'), gad_pos, '', 0, 255) }}</td>
+        </tr>
+        <tr>
+		<td>
+			<span data-role="controlgroup" data-type="horizontal"> 
+				{{ basic.stateswitch(id|_('up'), gad_move, 'mini', 0, 'control_arrow_up.svg', '', 'icon0') }}
+				{{ basic.stateswitch(id|_('down'), gad_move, 'mini', 1, 'control_arrow_down.svng', '', 'icon0') }}
+			</span>
+		</td> 
+        </tr>
+        <tr>
+            <td valign="top">
+		<span data-role="controlgroup" data-type="horizontal"> 
+		  {% if gad_stop %} {{ basic.stateswitch(id|_('stop'), gad_stop, 'mini', 1, 'audio_stop.svg', '', 'icon0') }} {% endif %}
+                  {% if gad_shade %} {{ basic.stateswitch(id|_('shade'), gad_shade, 'mini', 1, 'fts_shutter_50.svg', '', 'icon0') }} {% endif %}
+		</span></td>
+        </tr>
+        </table>
+    </div>        
+{% endmacro %}
+
+/**
+ * Shutter two
+ * 
+ * @param       unique id for this widget
+ * @param       name of the shutter
+ * @param       the knx gad (groupaddress) for the up- and down- movement
+ * @param       the knx gad (groupaddress) for stopping the movement (optional)
+ * @param       the knx gad (groupaddress) for the actual position of the shutter
+ * @param       the knx gad (groupaddress) to move the shutters to the shade position (optional)
+ */
+{% macro two (id, txt, gad_move, gad_stop, gad_pos, gad_shade) %}
+    {% import   "basic.html" as basic %}
+    
+    /** Design */
+    <div class="blind">
+        <table align="center" cellpadding="0 5 0 5">
+        <tr>
+            <td valign="top">{{ txt }}</td>
+            <td rowspan="3" align="left" class="pos">
+                {{ basic.slider(id|_('pos'), gad_pos, 0, 255, 5, 'vertical') }}</td>
+        </tr>
+        <tr>
+		<td>
+        		<span data-role="controlgroup" data-type="horizontal"> 
+				{{ basic.stateswitch(id|_('up'), gad_move, 'mini', 0, 'control_arrow_up.svg', '', 'icon0') }}
+				{{ basic.stateswitch(id|_('down'), gad_move, 'mini', 1, 'control_arrow_down.svg', '', 'icon0') }}
+			</span>
+		</td>  
+        </tr>
+        <tr>
+            <td valign="bottom" align="center">
+		<span data-role="controlgroup" data-type="horizontal">
+                {% if gad_stop %}  {{ basic.stateswitch(id|_('stop'), gad_stop, 'mini', 1, 'audio_stop.svg', '', 'icon0') }} {% endif %}
+				{% if gad_shade %} {{ basic.stateswitch(id|_('shade'), gad_shade, 'mini', 1, 'fts_shutter_50.svg', '', 'icon0') }} {% endif %}
+		</span>
+            </td>
+        </tr>
+        </table>
+    </div>        
+{% endmacro %}
+
+/**
+ * Shutter three
+ * 
+ * @param       unique id for this widget
+ * @param       name of the blind
+ * @param       the knx gad (groupaddress) for the actual position of the blinds
+ * @param       the knx gad (groupaddress) to move the shutters to the shade position (optional)
+ */
+{% macro three (id, txt, gad_pos, gad_shade) %}
+    {% import   "basic.html" as basic %}
+    
+    /** Design */
+    <div class="blind">
+        <table align="bottom" cellpadding="0">
+        <tr>
+            <td>&nbsp;</td>
+            <td rowspan="3" class="pos">
+                {{ basic.slider(id|_('pos'), gad_pos, 0, 255, 5, 'vertical') }}</td> 
+        </tr>
+        <tr><td style="white-space:nowrap; -o-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg); -ie-transform: rotate(270deg); filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);">{{ txt }}</td>
+        </tr>
+	 <tr>
+	    <td valign="bottom">{% if gad_shade %}
+		 {{ basic.stateswitch(id|_('shade'), gad_shade, 'mini', 1, 'fts_shutter_50.svg', 'Beschatten', 'icon0') }}{% endif %}
+	    </td></tr>
+        </table>
+    </div>        
+{% endmacro %}

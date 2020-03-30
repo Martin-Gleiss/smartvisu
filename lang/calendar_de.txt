@@ -1,0 +1,31 @@
+I don't have anything but the idea yet.
+
+New icons were not planned, but if you have some suitable svg with open license they could be integrated.
+
+Keyword|Icon|Color
+--|--|--
+Grüne Tonne|icons/ws/message_garbage.svg|#00FF00
+Blaue Tonne|icons/ws/message_garbage.svg|#0000FF
+Gelbe Tonne|icons/ws/message_garbage.svg|#FFFF00
+Braune Tonne|icons/ws/message_garbage.svg|#00FF00
+Graue Tonne|icons/ws/message_garbage.svg|#000000
+Schwarze Tonne|icons/ws/message_garbage.svg|#000000
+Grünabfuhr|icons/ws/message_garbage.svg|#00FF00
+Kehricht|icons/ws/message_garbage.svg|#000000
+Altpapier|icons/ws/message_mail_open.svg|
+Kino|icons/ws/message_garbage.svg
+Sport|icons/ws/message_garbage.svg|
+Fitness|icons/ws/message_garbage.svg|
+Fussball|icons/ws/message_garbage.svg|
+Ferien|icons/ws/message_garbage.svg|#00FF00
+Urlaub|icons/ws/message_garbage.svg|#00FF00
+Party|icons/ws/message_garbage.svg|#00FF00
+Geburtstag|icons/ws/message_garbage.svg|#00FF00
+Feier|icons/ws/message_garbage.svg|#00FF00
+
+
+As mentioned in first comment, currently you can use the following syntax in event description:
+```
+@icon icons/ws/message_garbage.svg
+@color #00FF00
+```

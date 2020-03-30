@@ -13,17 +13,17 @@
 {% block example %}
 
 	<h5>Examples</h5>
+
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.shutter('shutter1', 'bath.blind.pos', 'bath.blind.angle') &#125;&#125;</code>
+		<code class="prettyprint">
+			&#123;&#123; basic.shutter('', 'bath.blind.pos', 'bath.blind.angle') &#125;&#125;<br>
+			&#123;&#123; basic.shutter('', 'bath.blind.pos', 'bath.blind.angle', 99, 0, 1, '', 'pics/shutter/shutter_cliff.png') &#125;&#125;
+		</code>
 	</div>
 	<div class="html">
-		{{ basic.shutter('slider1', 'bath.blind.pos', 'bath.blind.angle') }}
+		{{ basic.shutter('', 'bath.blind.pos', 'bath.blind.angle', 0, 100) }}
+		{{ basic.shutter('', 'bath.blind.pos', 'bath.blind.angle', 99, 0, 1, '', 'pics/shutter/shutter_cliff.png') }}
 	</div>
 
-	If you want to use individual backgrounds for the shutter place them in 'pics/shutter' with size 150 x 180 as .png.
-	<br />
-	Add a line to your "visu.css" with <b>#PAGE-ID</b> (current pagename, hyphen, id of the shutter-widget).
-
 {% endblock %}
-
 

@@ -1,0 +1,142 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß, Wolfram v. Huelsen
+ * @copyright   2012, 2019
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+{% extends "overview/base.html" %}
+{% set page="eg" %}
+
+{% block content %}
+	<div class="html" data-title="Erdgeschoss">
+
+    <div class="preblock">
+	</div>
+
+    <div class="ui-grid-a ui-responsive">
+		<div class="overview ui-block-a">
+			<!-- Background picture -->
+			{{ ov.background ('background_eg', 'pages/example3.graphic/overview/images/eg.svg') }}
+
+			<!-- Kueche -->
+			{{ ov.pagelink ('pagelink_kueche', 'Details Küche', '29%', '35%', 'index.php?page=room_example', 'Küche', '', 'mini') }} 
+
+			{{ ovbasic.win_shut ('kueche_shutter', 'Küche: Rollladen', '25.2%', '11.8%', 'eg.kueche.rollladen.sued.fahren', 'eg.kueche.rollladen.sued.stopp','eg.kueche.rollladen.sued.position', 'eg.kueche.rollladen.sued.beschatten', 'eg.kueche.fenster.sued', '', 'micro') }}
+			
+			{{ ovdevice.dimmer ('kueche_dimmer_kochen', 'Küche: Kochbereich', 'eg.kueche.beleuchtung.kochen.schalten', 'eg.kueche.beleuchtung.kochen.dimmwert', 0, 100, 5,'', '', '', '', 'both', 0, 100, '25%', '47%', 'micro') }}
+			{{ ovdevice.dimmer ('kueche_dimmer_tresen', 'Küche: Tresen', 'eg.kueche.beleuchtung.tresen.schalten', 'eg.kueche.beleuchtung.tresen.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100 , '35%', '25%', 'micro') }}
+			{{ ovbasic.color ('kueche_rgb', 'eg.kueche.beleuchtung.rgb_ap.rot.dimmwert', 'eg.kueche.beleuchtung.rgb_ap.gruen.dimmwert', 'eg.kueche.beleuchtung.rgb_ap.blau.dimmwert', 50, 150, 8, 10, 'disc', 'rgb', 'Küchenschrank', '19%', '47%', 'micro', 1) }}
+
+			{{ ovbasic.print ('kueche_temperatur', 'eg.kueche.temperatur.luft', '°C', '', '', '', 'Küche: Raumtemperatur', '25%', '25%', 'kueche_temp_popup', 1) }}
+			{{ ovbasic.period ('kueche_temp_popup', 'Küche: Temperaturen', ['eg.kueche.temperatur.luft', 'eg.kueche.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			
+			<!-- Essen -->
+			{{ ov.pagelink ('pagelink_essen', 'Details Essbereich', '44%', '35%', 'index.php?page=room_example', 'Essen', '', 'mini') }} 
+
+			{{ ovbasic.win_shut ('essen_shutter1', 'Essbereich: Fenster Ost', '36.8%', '4.7%', 'eg.essen.rollladen.ost.fahren', 'eg.essen.rollladen.ost.stopp', 'eg.essen.rollladen.ost.position', 'eg.essen.rollladen.ost.beschatten', '', '', 'micro') }}
+			{{ ovbasic.win_shut ('essen_shutter2', 'Essbereich: Tür Süd', '47.7%', '-0.8%', 'eg.essen.rollladen.sued.fahren', 'eg.essen.rollladen.sued.stopp', 'eg.essen.rollladen.sued.position', 'eg.essen.rollladen.sued.beschatten', 'eg.essen.fenster.sued', '', 'micro') }}
+			{{ ovbasic.win_shut ('essen_shutter3', 'Essbereich: Fenster West', '58.3%', '4.7%', 'eg.essen.rollladen.west.fahren', 'eg.essen.rollladen.west.stopp', 'eg.essen.rollladen.west.position', 'eg.essen.rollladen.west.beschatten', '', '', 'micro') }}
+
+			{{ ovdevice.dimmer ('essen_dimmer_decke1', 'Essbereich: Fensternische', 'eg.essen.beleuchtung.decke1.schalten', 'eg.essen.beleuchtung.decke1.dimmwert', 0, 100, 5, '', '', '', '','both', 0, 100, '50%', '13%', 'micro') }}
+			{{ ovdevice.dimmer ('essen_dimmer_decke2', 'Essbereich: Mitte', 'eg.essen.beleuchtung.decke2.schalten', 'eg.essen.beleuchtung.decke2.dimmwert', 0, 100, 5, '', '', '', '','both', 0, 100, '50%', '30%', 'micro') }}
+			{{ ovdevice.dimmer ('essen_dimmer_decke3', 'Essbereich: Flurseite', 'eg.essen.beleuchtung.decke3.schalten', 'eg.essen.beleuchtung.decke3.dimmwert', 0, 100, 5, '', '', '', '','both', 0, 100, '50%', '47%', 'micro') }}
+
+			{{ ovbasic.print ('essen_temperatur', 'eg.essen.temperatur.luft', '°C', '', '', '', 'Essbereich: Raumtemperatur', '44%', '13%', 'essen_temp_popup', 1) }}
+			{{ ovbasic.period ('essen_temp_popup', 'Essbereich: Temperaturen', ['eg.essen.temperatur.luft', 'eg.essen.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			
+			<!-- Szenen -->
+			<a id="eg_scene-overview" href="#eg_scene-popup" title="Szenen" class="ui-micro" style="position: absolute; display: block; top: 47%; left: 35%; "
+		       data-role="button" data-inline="true" data-rel="popup" data-iconpos="nopic">Szenen
+			</a>	
+			<div data-role="popup" id="eg_scene-popup" class="ui-content" style="min-width: 250px; min-height: 50px;"> 
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
+				<span id="{{ uid }}-group" data-role="controlgroup" data-type="horizontal">
+					{{ basic.stateswitch('szene1', 'eg.kueche.szene.kochen', 'mini', ['1', '0'], ['scene_cooking_hob.svg', 'scene_cooking_hob.svg'], '', ['icon1', 'icon0']) }}
+					{{ basic.stateswitch('szene2', 'eg.essen.szene.essen', 'mini', ['1', '0'], ['scene_dinner.svg', 'scene_dinner.svg'], '', ['icon1', 'icon0']) }}
+					{{ basic.stateswitch('szene3', 'eg.wohnen.szene.fernsehen', 'mini', ['1', '0'], ['scene_livingroom.svg', 'scene_livingroom.svg'], '', ['icon1', 'icon0']) }}
+					{{ basic.stateswitch('szene4', 'eg.kueche.szene.party', 'mini', ['1', '0'], ['scene_party.svg', 'scene_party.svg'], '', ['icon1', 'icon0']) }}
+					{{ basic.stateswitch('szene5', 'eg.szenen.kueche_essen_wohnen', 'mini', '13', 'control_on_off.svg',  'Aus') }}
+				</span>
+			</div>
+			
+			<!-- Wohnen -->
+			{{ ov.pagelink ('pagelink_wohnen', 'Details Wohnbereich', '63%', '35%', 'index.php?page=room_example', 'Wohnen', '', 'mini') }} 
+
+			{{ ovbasic.win_shut ('wohnen_shutter1', 'Wohnbereich: Tür Süd', '71%', '11.8%', 'eg.wohnen.rollladen.sued.fahren', 'eg.wohnen.rollladen.sued.stopp', 'eg.wohnen.rollladen.sued.position', 'eg.wohnen.rollladen.sued.beschatten', 'eg.wohnen.fenster.sued.r', 'eg.wohnen.fenster.sued.l', 'micro') }}
+			{{ ovbasic.win_shut ('wohnen_shutter2', 'Wohnbereich: Tür West', '80%', '36.5%', 'eg.wohnen.rollladen.west.fahren', 'eg.wohnen.rollladen.west.stopp', 'eg.wohnen.rollladen.west.position', 'eg.wohnen.rollladen.west.beschatten', 'eg.wohnen.fenster.west', '', 'micro') }}
+
+			{{ ovdevice.dimmer ('wohnen_dimmer_decke1', 'Wohnbereich: Terrassenseite', 'eg.wohnen.beleuchtung.decke1.schalten', 'eg.wohnen.beleuchtung.decke1.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '71%', '21%', 'micro', 0) }}
+			{{ ovdevice.dimmer ('wohnen_dimmer_decke2', 'Wohnbereich: Mitte', 'eg.wohnen.beleuchtung.decke2.schalten', 'eg.wohnen.beleuchtung.decke2.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '71%', '33%', 'micro', 0) }}
+			{{ ovdevice.dimmer ('wohnen_dimmer_decke3', 'Wohnbereich: Fernseher', 'eg.wohnen.beleuchtung.decke3.schalten', 'eg.wohnen.beleuchtung.decke3.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '71%', '45%', 'micro', 0) }}
+			{{ ovbasic.color ('wohnen_rgb', 'eg.essen.beleuchtung.rgb.rot.dimmwert', 'eg.essen.beleuchtung.rgb.gruen.dimmwert', 'eg.essen.beleuchtung.rgb.blau.dimmwert', 50, 150, 8, 10, 'disc', 'rgb', 'Indirekte Beleuchtung', '60.5%', '45%', 'micro', 1) }}
+
+			{{ ovbasic.print ('wohnen_temperatur', 'eg.wohnen.temperatur.luft', '°C', '', '', '', 'Wohnbereich: Raumtemperatur', '77%', '23%', 'wohnen_temp_popup', 1) }}
+			{{ ovbasic.period ('wohnen_temp_popup', 'Wohnbereich: Temperaturen', ['eg.wohnen.temperatur.luft', 'eg.wohnen.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+
+			<!-- Buero -->
+			{{ ov.pagelink ('pagelink_buero', 'Details Büro', '70%', '70%', 'index.php?page=room_example', 'Büro', '', 'mini') }} 
+
+			{{ ovbasic.win_shut ('buero_shutter1', 'Büro: Tür', '80%', '63.1%','eg.buero.rollladen.west.fahren', 'eg.buero.rollladen.west.stopp', 'eg.buero.rollladen.west.position', 'eg.buero.rollladen.west.beschatten', 'eg.buero.fenster.west', '', 'micro') }}
+			{{ ovbasic.win_shut ('buero_shutter2', 'Büro: Fenster', '70%', '88.4%', 'eg.buero.rollladen.nord.fahren', 'eg.buero.rollladen.nord.stopp', 'eg.buero.rollladen.nord.position', 'eg.buero.rollladen.nord.beschatten', 'eg.buero.fenster.nord', '', 'micro') }}
+			
+			{{ ovdevice.dimmer ('buero_dimmer_decke', 'Büro: Deckenleuchte', 'eg.buero.beleuchtung.decke.schalten', 'eg.buero.beleuchtung.decke.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '70%', '59%', 'micro') }}
+			{{ ovdevice.dimmer ('buero_dimmer_schreibtisch', 'Büro: Schreibtischleuchte', 'eg.buero.beleuchtung.schreibtisch.schalten', 'eg.buero.beleuchtung.schreibtisch.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '75%', '82%', 'micro') }}
+
+			{{ ovbasic.print ('buero_temperatur', 'eg.buero.temperatur.luft', '°C', '', '', '', 'Büro: Raumtemperatur', '63%', '59%', 'buero_temp_popup', 1) }}
+			{{ ovbasic.period ('buero_temp_popup', 'Büro: Temperaturen', ['eg.buero.temperatur.luft', 'eg.buero.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			
+			<!-- Gaeste-WC -->
+			{{ ov.pagelink ('pagelink_wc', 'Details Gäste WC', '57.5%', '85%', 'index.php?page=room_example', 'WC', '', 'micro') }} 
+
+			{{ ovbasic.win_shut ('gaeste-wc_shutter', 'Gäste WC: Fenster', '54.2%', '94.1%', 'eg.gaeste_wc.rollladen.nord.fahren', 'eg.gaeste_wc.rollladen.nord.stopp', 'eg.gaeste_wc.rollladen.nord.position', 'eg.gaeste_wc.rollladen.nord.beschatten', 'eg.gaeste_wc.fenster.nord', '', 'micro') }}
+
+			{{ ovbasic.stateswitch ('gaeste-wc_light', 'eg.gaeste_wc.beleuchtung.schalten', 'micro', ['1', '0'], ['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Gäste WC: Spiegelleuchte', '57.5%', '76.5%') }}
+
+			<!-- Diele -->
+			{{ ov.pagelink ('pagelink_diele', 'Details Eingangsbereich', '50%', '79%', 'index.php?page=room_example', 'Flur', '', 'micro') }} 
+
+			{{ ovbasic.win_shut ('diele_shutter', 'Diele: Fenster', '42.3%', '94.1%', 'eg.diele.rollladen.nord.fahren', 'eg.diele.rollladen.nord.stopp', 'eg.diele.rollladen.nord.position', 'eg.diele.rollladen.nord.beschatten', 'eg.diele.fenster.nord', '', 'micro') }}
+
+			{{ ovdevice.dimmer ('diele_dimmer', 'Diele: Deckenleuchte', 'eg.diele.beleuchtung.decke.schalten', 'eg.diele.beleuchtung.decke.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '50%', '67%', 'micro') }}
+			{{ ovbasic.color ('diele_rgb', 'eg.diele.beleuchtung.rgb_treppe.rot.dimmwert', 'eg.diele.beleuchtung.rgb_treppe.gruen.dimmwert', 'eg.diele.beleuchtung.rgb_treppe.blau.dimmwert', 50, 150, 8, 10, 'disc', 'rgb', 'Treppenbeleuchtung', '42%', '85%','micro', 1) }}
+
+			{{ ovbasic.print ('diele_temperatur', 'eg.diele.temperatur.luft', '°C', '', '', '', 'Flur: Raumtemperatur', '44%', '67%', 'diele_temp_popup', 1) }}
+			{{ ovbasic.period ('diele_temp_popup', 'Flur: Temperaturen', ['eg.diele.temperatur.luft', 'eg.diele.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+
+			{{ ov.camera ('diele_kamera', 'Kamera Haustür', '50.4%', '97.1%', 'rtsp://admin:ms1234@192.168.0.21:554/main', '1280', '720', 'micro') }}
+
+			<!-- HWR -->
+			{{ ov.pagelink ('pagelink_hwr', 'Details Hauswirtschaftsraum', '29%', '67%', 'index.php?page=room_example', 'Hwr', '', 'mini') }} 
+
+			{{ ovbasic.win_shut ('hwr_shutter', 'HWR: Fenster', '25.3%', '88.4%', 'eg.hwr.rollladen.nord.fahren', 'eg.hwr.rollladen.nord.stopp', 'eg.hwr.rollladen.nord.position', 'eg.hwr.rollladen.nord.beschatten', 'eg.hwr.fenster.nord', '', 'micro') }}
+			
+			{{ ovbasic.stateswitch ('hwr_light', 'eg.hwr.beleuchtung.decke.schalten', 'micro', ['1', '0'],['light_light_dim_100.svg', 'light_light_dim_00.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'HWR: Deckenleuchte', '29%', '79%') }}
+
+			{{ ovbasic.print ('hwr_temperatur', 'eg.hwr.temperatur.luft', '°C', '', '', '', 'Hauswirtschaftsraum: Raumtemperatur', '35%', '67%', 'hwr_temp_popup', 1) }}
+			{{ ovbasic.period ('hwr_temp_popup', 'Hauswirtschaftsraum: Temperaturen', ['eg.hwr.temperatur.luft', 'eg.hwr.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+
+			{{ ov.url ('hwr_wp', 'Wärmepumpe', '23%', '67%', 'http://servicewelt', '', 'sani_earth_source_heat_pump.svg', 1024, 600, 'micro', 1) }}
+
+			<!-- Terrasse -->
+			{{ ovbasic.stateswitch ('terrasse_links', 'aussen.terrasse.steckdose.kueche.schalten', 'micro', ['1', '0'], ['message_socket.svg', 'message_socket.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Terrasse: Steckdose Küche', '35%', '12%') }}
+			{{ ovbasic.stateswitch ('terrasse_rechts', 'aussen.terrasse.steckdose.wohnen.schalten', 'micro', ['1', '0'], ['message_socket.svg', 'message_socket.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Terrasse: Steckdose Wohnbereich', '65%', '12%') }}
+		</div>
+		<div class="ui-block-b">
+			<div class="ui-bar-c ui-li-divider ui-corner-top">&nbsp;&nbsp;Rollläden</div>
+			<div class="ui-fixed ui-body-a ui-corner-bottom" style="padding: 15px; height:100px;">
+				{{ device.smallshut ('shutter_alle', 'Alle', 'zentral.haus.rollladen.alle.fahren', 'zentral.haus.rollladen.alle.stopp', 'zentral.haus.rollladen.alle.position', '') }} <br>
+				{{ device.smallshut ('shutter_eg', 'Erdgeschoss', 'zentral.haus.rollladen.eg.fahren', 'zentral.haus.rollladen.eg.stopp', 'zentral.haus.rollladen.eg.position', 'zentral.haus.rollladen.eg.beschatten') }} <br>
+			</div>	
+		</div>
+		<div class="ui-block-b" style="margin-top: 15px;">
+			<div class="ui-bar-c ui-li-divider ui-corner-top">&nbsp;&nbsp;Lüftungsanlage</div>
+			<div class="ui-fixed ui-body-a ui-corner-bottom">
+				{{ fan.slider ('fan1', 'zentral.lueftung.stufe', 'zentral.lueftung.auto', 'zentral.lueftung.schalten') }}
+			</div>	
+		</div>
+	</div>
+	</div>
+{% endblock %}
+

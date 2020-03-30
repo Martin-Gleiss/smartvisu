@@ -1,0 +1,112 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "base.html" %}
+{% block sidebar %}
+<ul data-role="listview" data-dividertheme="c">
+	<li data-role="list-divider">Home-IT</li>
+	<li data-icon="false">
+		<a href="index.php?page=Home-IT/it">
+			<img class="icon" src="{{ icon0 }}it_nas.svg" />
+
+			<h3>PC's und Peripherien</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.symbol('PCIngrid', 'Allgemein.PCs.PCIngrid', '', 'it_server.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('MonitorIngrid', 'Allgemein.PCs.DruckerMonitor', '', 'it_television.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('Drucker1', 'Allgemein.PCs.DruckerMonitor', '', 'it_fax.svg', 1, '', 'icon1') }}<br />
+				{{ basic.symbol('PCServer', 'Allgemein.PCs.PCMultimedis', '', 'it_server.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('MonitorServer', 'Allgemein.PCs.MonitorKueche', '', 'it_television.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('MacoPC', 'Allgemein.PCs.PCMarco', '', 'it_server.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('MacoMonitor', 'FB.Monitor', '', 'it_television.svg', 1, '', 'icon1') }}
+
+			</div>
+
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=Home-IT/mails">
+			<img class="icon" src="{{ icon0 }}message_mail_open.svg" />
+
+			<h3>E-Mails</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.symbol('Maileingang2', 'FB.Mail', '', 'message_mail.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('Maileingang3', 'FB.Mail', '', 'message_mail_open.svg', 0, '', 'icon1') }}
+
+			</div>
+		</a>
+	</li>
+	<li data-role="list-divider">weitere</li>
+	<li data-icon="false">
+		<a href="index.php?page=Home-IT/fritzbox">
+			<img class="icon" src="{{ icon0 }}it_router.svg" />
+
+			<h3>Fritz Box 7390</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.symbol('WLAN', 'FB.WLAN', '', 'it_wifi.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('DECT', 'FB.DECT', '', 'it_wireless_dcf77.svg', 1, '', 'icon1') }}
+			</div>
+		</a>
+	</li>
+
+	{% endblock %}
+
+	{% block content %}
+
+		<h1><img class="icon" src='{{ icon0 }}it_nas.svg' />PC's und Peripherien</h1>
+		<div class="block">
+			<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>PC's und Peripherie</h3>
+					<table width=100%>
+						<tr>
+							<td align=left width=50%>
+								{{ basic.stateswitch('IngridPC', 'Allgemein.PCs.PCIngrid', 'icon', ['1', '0'], ['it_server.svg', 'it_server.svg'], '', ['icon1', 'icon0']) }} PC-Ingrid
+							</td>
+							<td align=left>
+								{{ basic.stateswitch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} Ingrid
+							</td>
+						</tr>
+						<tr>
+							<td align=left width=50%>
+								{{ basic.stateswitch('MultimediaPC', 'Allgemein.PCs.PCMultimedis', 'icon', ['1', '0'], ['it_server.svg', 'it_server.svg'], '', ['icon1', 'icon0']) }} Server
+							</td>
+							<td align=left width=50%>
+								{{ basic.stateswitch('KuecheMonitor', 'Allgemein.PCs.MonitorKueche', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} Küche
+							</td>
+						</tr>
+						<tr>
+							<td align=left width=50%>
+								{{ basic.stateswitch('MarcoPC', 'Allgemein.PCs.PCMarco', 'icon', ['1', '0'], ['it_server.svg', 'it_server.svg'], '', ['icon1', 'icon0']) }} PC-Marco
+							</td>
+							<td align=left>
+								{{ basic.stateswitch('MarcoMonitor', 'FB.Monitor', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} Marco
+							</td>
+						</tr>
+						<tr>
+							<td align=left width=50%>
+								{{ basic.stateswitch('Drucker', 'Allgemein.PCs.DruckerMonitor', 'icon', ['1', '0'], ['it_fax.svg', 'it_fax.svg'], '', ['icon1', 'icon0']) }} Drucker
+							</td>
+						</tr>
+					</table>
+
+				</div>
+			</div>
+		</div>
+
+
+
+
+	{% endblock %}
+
+

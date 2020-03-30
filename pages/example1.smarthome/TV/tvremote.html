@@ -1,0 +1,237 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "full.html" %}
+
+{% import "multimedia.html" as multimedia %}
+
+{% block content %}
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Sender</h3>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+                        			{{ basic.stateswitch('SamsungTVEinAN', 'Allgemein.TVSamsung.TVonOFF', 'midi', '1', 'check', 'ON / OFF') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="100%">
+							{{ multimedia.station('CH1', 'tv.KIKA', 'pics/station/Sender/ki-ka_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH2', 'tv.PRO7', 'pics/station/Sender/pro7_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH3', 'tv.SAT1', 'pics/station/Sender/sat1_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH4', 'tv.RTL', 'pics/station/Sender/rtl.png', 1, 'midi') }}
+							{{ multimedia.station('CH5', 'tv.RTL2', 'pics/station/Sender/rtl2_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH6', 'tv.SRTL', 'pics/station/Sender/super-rtl_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH7', 'tv.KABEL1', 'pics/station/Sender/kabel1_s.png', 1, 'midi') }}							
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="100%">
+							{{ multimedia.station('CH8', 'tv.ARD','pics/station/Sender/das-erste_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH9', 'tv.ZDF','pics/station/Sender/zdf_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH10', 'tv.VOX','pics/station/Sender/vox_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH11', 'tv.VOX','pics/station/Sender/zdf-info_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH12', 'tv.VOX','pics/station/Sender/zdf-kultur_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH13', 'tv.VOX','pics/station/Sender/zdf-neo_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH14', 'tv.VOX','pics/station/Sender/tele-5_s.png', 1, 'midi') }}							
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="100%">
+							{{ multimedia.station('CH15', 'tv.KIKA','pics/station/Sender/nickelodeon_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH16', 'tv.PRO7','pics/station/Sender/ntv_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH17', 'tv.SAT1','pics/station/Sender/n24_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH18', 'tv.RTL','pics/station/Sender/phoenix_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH19', 'tv.RTL2','pics/station/Sender/3sat_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH20', 'tv.SRTL','pics/station/Sender/arte_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH21', 'tv.KABEL1','pics/station/Sender/planet_s.png', 1, 'midi') }}
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="100%">
+							{{ multimedia.station('CH22', 'tv.ARD','pics/station/Sender/sixx_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH23', 'tv.ZDF','pics/station/Sender/13th-street_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH24', 'tv.VOX','pics/station/Sender/anixe-hd_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH25', 'tv.VOX','pics/station/Sender/axn_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH26', 'tv.VOX','pics/station/Sender/dmax_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH27', 'tv.VOX','pics/station/Sender/kinowelt-tv_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH28', 'tv.VOX','pics/station/Sender/servus-tv_s.png', 1, 'midi') }}
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="100%">
+							{{ multimedia.station('CH29', 'tv.KIKA','pics/station/Sender/eins-plus_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH30', 'tv.PRO7','pics/station/Sender/eins-festival_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH31', 'tv.SAT1','pics/station/Sender/br_l.png', 1, 'midi') }}
+							{{ multimedia.station('CH32', 'tv.RTL','pics/station/Sender/br-alpha_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH33', 'tv.RTL2','pics/station/Sender/mdr_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH34', 'tv.SRTL','pics/station/Sender/ndr_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH35', 'tv.KABEL1','pics/station/Sender/wdr_s.png', 1, 'midi') }}
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="100%">
+							{{ multimedia.station('CH36', 'tv.ARD','pics/station/Sender/mtv-live-hd_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH37', 'tv.ZDF','pics/station/Sender/viva_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH38', 'tv.VOX','pics/station/Sender/deluxe-music-tv_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH39', 'tv.VOX','pics/station/Sender/sport1_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH40', 'tv.VOX','pics/station/Sender/eurosport-2_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH41', 'tv.VOX','pics/station/Sender/orf-eins_s.png', 1, 'midi') }}
+							{{ multimedia.station('CH42', 'tv.VOX','pics/station/Sender/orf-zwei_s.png', 1, 'midi') }}
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Bedienung</h3>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('VolUpTV', 'tv.VolUP', 'midi', '1', 'plus', ' Lauter ') }}
+								{{ basic.stateswitch('MuteTV', 'tv.mute', 'midi', '1', 'alert', 'Mute ') }}
+								{{ basic.stateswitch('VolDownTV', 'tv.VolDown', 'midi', '1', 'minus', ' Leiser ') }}
+                        	</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('ChUpTV', 'tv.ChUP', 'midi', '1', 'arrow-u', ' Progr. ') }}
+								{{ basic.stateswitch('ChDownTV', 'tv.ChDOWN', 'midi', '1', 'arrow-d', ' Progr. ' ) }}
+                        	</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							{{ basic.stateswitch('1TV', 'tv.Nr1', 'midi', '1', 'grid', '1') }}
+							{{ basic.stateswitch('2TV', 'tv.Nr2', 'midi', '1', 'grid', '2') }}
+							{{ basic.stateswitch('3TV', 'tv.Nr3', 'midi', '1', 'grid', '3') }}
+							{{ basic.stateswitch('4TV', 'tv.Nr4', 'midi', '1', 'grid', '4') }}
+							{{ basic.stateswitch('5TV', 'tv.Nr5', 'midi', '1', 'grid', '5') }}
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							{{ basic.stateswitch('6TV', 'tv.Nr6', 'midi', '1', 'grid', '6') }}
+							{{ basic.stateswitch('7TV', 'tv.Nr7', 'midi', '1', 'grid', '7') }}
+							{{ basic.stateswitch('8TV', 'tv.Nr8', 'midi', '1', 'grid', '8') }}
+							{{ basic.stateswitch('9TV', 'tv.Nr9', 'midi', '1', 'grid', '9') }}
+							{{ basic.stateswitch('0TV', 'tv.Nr0', 'midi', '1', 'grid', '0') }}
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('SourceTV', 'tv.Source', 'midi', '1', 'grid', 'Source') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('AppListTV', 'tv.AppList', 'midi', '1', 'home','Smart') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('ENTERTAINMENTTV', 'tv.ENTERTAINMENT', 'midi', '1', 'check', 'TXT') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('HDMITV', 'tv.HDMI', 'midi', '1', 'grid', 'PC') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVTV', 'tv.TV', 'midi', '1', 'grid', 'TV') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('ChListTV', 'tv.ChList', 'midi', '1', 'info', 'ChList') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+		                        {{ basic.stateswitch('PreChListTV', 'tv.PreCh', 'midi', '1', 'back', 'PRE-Ch') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+			                    {{ basic.stateswitch('TopMEnuTV', 'tv.TopMenu', 'midi', '1', 'home', 'Menu') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('GuideTV', 'tv.Guide', 'midi', '1', 'home', 'Guide') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('ToolsTV', 'tv.TOOLS', 'midi', '1', 'gear', 'Tool') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('UpTV', 'tv.Up', 'midi', '1', 'arrow-u', 'rauf') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVLEDfade71', 'EG.Esszimmer.LEDfade7', 'midi', '1', 'search', 'Guide') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('LeftTV', 'tv.Left', 'midi', '1', 'arrow-l', 'links') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('ReturnTV', 'tv.Return', 'midi', '1', 'check', 'OK') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('RightTV', 'tv.Right', 'midi', '1', 'arrow-r','rechts') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVLEDfade72', 'EG.Esszimmer.LEDfade7', 'midi', '1', 'back', 'Return') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('DownTV', 'tv.Down', 'midi', '1', 'arrow-d', 'runter') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVLEDfade73', 'EG.Esszimmer.LEDfade7', 'midi', '1', 'delete', 'Exit') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+
+{% endblock %}
+
+

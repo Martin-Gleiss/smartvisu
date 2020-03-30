@@ -1,7 +1,7 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiß
+* @author      Martin Gleiss
 * @copyright   2012 - 2015
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
@@ -13,11 +13,24 @@
 {% block example %}
 
 	<h5>Example</h5>
+
+	Dimmer with left or right alignment of the switch
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; device.dimmer('dimmer1', 'Dimmer', 'bath.light.switch', 'bath.light.value') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; device.dimmer('', 'Dimmer', 'bath.light.switch', 'bath.light.value') &#125;&#125; <br>
+		&#123;&#123; device.dimmer('', 'Dimmer', 'bath.light.switch', 'bath.light.value', '', '', '', '', '', '', '', '', '', '', 'right') &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ device.dimmer('dimmer1', 'Dimmer', 'bath.light.switch', 'bath.light.value') }}
+		{{ device.dimmer('', 'Dimmer', 'bath.light.switch', 'bath.light.value') }}
+		{{ device.dimmer('', 'Dimmer', 'bath.light.switch', 'bath.light.value', '', '', '', '', '', '', '', '', '', '', 'right') }}
+	</div>
+
+
+  Dimmer with a minimal value of 20 but which is displayed as 0.
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; device.dimmer('', '', 'bath.light.switch', 'bath.light.value', 20, 100, 10, icon.light('', '','bath.light.value',20,100), icon.light(), 'green', '#ff0000', 'handle', 0 ) &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ device.dimmer('', '', 'bath.light.switch', 'bath.light.value', 20, 100, 10, icon.light('', '','bath.light.value',20,100), icon.light(), 'green', '#ff0000', 'handle', 0 ) }}
 	</div>
 
 {% endblock %}

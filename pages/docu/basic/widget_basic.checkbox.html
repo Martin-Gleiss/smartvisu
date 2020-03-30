@@ -14,12 +14,17 @@
 
 	<h5>Example</h5>
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.checkbox('checkbox1', 'bath.light.switch', 'Light') &#125;&#125;</code>
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			{{ basic.checkbox('', 'bath.light.switch', 'Light') }}
+			{{ basic.checkbox('', 'bath.light.switch') }}
+			{{ basic.checkbox('', 'bath.light.switch', ' ') }}
+		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-		{{ basic.checkbox('checkbox1', 'bath.light.switch', 'Light') }}
+		{{ basic.checkbox('', 'bath.light.switch', 'Light') }}
+		{{ basic.checkbox('', 'bath.light.switch') }}
+		{{ basic.checkbox('', 'bath.light.switch', ' ') }}
 	</div>
 
 {% endblock %}
-
 

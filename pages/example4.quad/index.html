@@ -1,0 +1,94 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+{% extends "quad_root.html" %}
+{% block quad_top %}
+<div id="navbar1" class="quad_tab-header ui-min" data-role="navbar" data-tab-selection="tab1">
+    <ul>
+        <li><a href="#" data-tab-class="tab1" class="ui-btn-active">Temperatur</a></li>
+        <li><a href="#" data-tab-class="tab2">Wind</a></li>
+    </ul>
+</div>
+<div id="tab-content1" class="quad_tab-content">
+    <div class="tab1">{{ plot.period('', ['temp1', 'temp2'], 'max', '24h', 'now', 0, 120, '1000', ['Osten', 'Süden'], ['#ffa', '#3f3'], ['stair', 'stair'], ['Uhrzeit', 'Höhe'],'30s') }}</div>
+    <div class="tab2 ui-screen-hidden">{{ plot.period('', ['wind1', 'wind2'], 'max', '24h', 'now', 0, 120, '1000', ['Norden', 'Gesamt'], ['#ffa', '#3f3'], ['stair', 'stair'], ['Uhrzeit', 'Höhe'],'30s') }}</div>
+</div>
+{% endblock %}
+
+{% block quad_bottom %}
+{% endblock %}
+
+
+{% block content %}
+
+/**KACHELN*/
+<ul data-role="listview" data-dividertheme="c" class="quad_tiles">
+
+/**LICHT**************/
+    <li data-icon="false">
+    <a href="index.php?page=licht_og">
+        {{ basic.symbol('licht', '', 'Licht', 'light_light.svg', '', '', 'icon0') }}
+            <div class="ui-ri-aside">
+            </div>
+    </a>
+    </li>
+/**BWMs*************/
+    <li data-icon="false">
+    <a href="index.php?page=bwm_og">
+    {{ basic.symbol('bwm', '', 'BWM', 'message_presence.svg', '', '', 'icon0') }}
+            <div class="ui-ri-aside">
+            </div>
+    </a>
+    </li>
+/**SWITCHES***************/
+    <li data-icon="false">
+    <a href="index.php?page=switches">
+        {{ basic.symbol('switches', '', 'Switch', 'message_socket.svg', '', '', 'icon0') }}
+            <div class="ui-li-aside">
+            </div>
+    </a>
+    </li>
+
+/**MULTIMEDIA*********/
+    <li data-icon="false">
+    <a href="index.php?page=media">
+    {{ basic.symbol('multimedia', '', 'Multimedia', 'scene_livingroom.svg', '', '', 'icon0') }}
+            <div class="ui-ri-aside">
+            </div>
+    </a>
+    </li>
+/**STATUS***************/
+    <li data-icon="false">
+    <a href="index.php?page=outdoor">
+    {{ basic.symbol('outdoor', '', 'Outdoor', 'weather_sun.svg', '', '', 'icon0') }}
+            <div class="ui-ri-aside">
+            </div>
+    </a>
+    </li>
+/**BLINDS***************/
+    <li data-icon="false">
+    <a href="index.php?page=jalousien">
+    {{ basic.symbol('jalousien', '', 'Jalousien', 'fts_shutter_50.svg', '', '', 'icon0') }}
+            <div class="ui-ri-aside">
+            </div>
+    </a>
+    </li>
+
+</ul>
+
+/**WETTER*/
+<div style="padding: 20px; float: left; width: 100%;">
+
+    {{ weather.current('weather_today') }}
+    {{ weather.forecastweek('weather_forecast') }}
+
+</div>
+
+
+{% endblock %}

@@ -17,6 +17,14 @@ require_once const_path_system.'service.php';
  */
 class phone extends service
 {
+	
+	public function __construct($request)
+	{
+		if(!function_exists('mb_get_info') && !($this instanceof phone_offline))
+			$this->error('Phone service', 'Phone services require PHP mbstring extension.');
+
+		parent::__construct($request);
+	}
 
 	/**
 	 * initialization of some parameters

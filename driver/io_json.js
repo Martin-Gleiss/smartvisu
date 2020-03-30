@@ -1,10 +1,12 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß
+ * @author      Martin Gleiss
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ * @label       JSON
+ * @hide        driver_autoreconnect
  */
 
 
@@ -14,8 +16,8 @@
  */
 var io = {
 
-	// the adress
-	adress: '',
+	// the address
+	address: '',
 
 	// the port
 	port: '',

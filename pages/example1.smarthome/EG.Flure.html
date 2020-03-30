@@ -1,0 +1,250 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}scene_stairs.svg' />Flure / Nebenräume</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Keller und Heizung Flure</h3>
+				<table width=100%>
+					<tr>
+						<td align=left>
+							{{ basic.stateswitch('DeckenlichtKg', 'EG.FlureNebenraume.KgDeckenlicht', 'icon', ['1', '0'], ['light_ceiling_light.svg', 'light_ceiling_light.svg'], '', ['icon1', 'icon0']) }} Keller
+						</td>
+						<td align=left>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td align=left>
+							{{ basic.stateswitch('EgKgNische', 'EG.FlureNebenraume.NischeEGKG', 'icon', ['1', '0'], ['light_led.svg', 'light_led.svg'], '', ['icon1', 'icon0']) }} Nische
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('FlurEingangHeizen1', 'EG.FlureNebenraume.Heizung1', 'icon', ['1', '0'], ['sani_heating.svg', 'sani_heating.svg'], '', ['icon1', 'icon0']) }} Eingang
+						</td>
+					</tr>
+					<tr>
+						<td align=left>
+							{{ basic.stateswitch('KgEgTreppe', 'EG.FlureNebenraume.TreppeKGEG', 'icon', ['1', '0'], ['light_stairs.svg', 'light_stairs.svg'], '', ['icon1', 'icon0']) }} KG / EG
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('FlurDieleHeizen1', 'EG.FlureNebenraume.Heizung2', 'icon', ['1', '0'], ['sani_heating.svg', 'sani_heating.svg'], '', ['icon1', 'icon0']) }} Flur
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Freigaben BM's und MK's</h3>
+				<table width=100%>
+					<tr>
+						<td align=left>
+							{{ basic.stateswitch('FGBMEingang', 'Allgemein.Freigaben.FreigabeBMEGEingang', 'icon', ['1', '0'], ['message_presence.svg', 'message_presence_disabled.svg'], '', ['icon1', 'icon0']) }} Eingang
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('FGBMFlurEG', 'Allgemein.Freigaben.FreigabeBMEGFlur', 'icon', ['1', '0'], ['message_presence.svg', 'message_presence_disabled.svg'], '', ['icon1', 'icon0']) }}  EG Flur
+						</td>
+					</tr>
+					<tr>
+						<td align=left>
+							{{ basic.stateswitch('FGMKSpeis', 'Allgemein.Freigaben.FreigabeEGSpeis', 'icon', ['1', '0'], ['secur_open.svg', 'secur_locked.svg'], '', ['icon1', 'icon0']) }} EG Speis
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('esKlingeltLichtEinAus', 'Allgemein.Freigaben.FreigabeLichtsignal', 'icon', ['1', '0'], ['secur_open.svg', 'secur_locked.svg'], '', ['icon1', 'icon0']) }} Klingel
+						</td>
+					</tr>
+					<tr>
+						<td align=left>
+							{{ basic.stateswitch('FGBMFlurOG', 'Allgemein.Freigaben.FreigabeBMOGFlur', 'icon', ['1', '0'], ['message_presence.svg', 'message_presence_disabled.svg'], '', ['icon1', 'icon0']) }} OG-Flur
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('FGBMOGSchlafen', 'Allgemein.Freigaben.FreigabeBMOGSchlafen', 'icon', ['1', '0'], ['message_presence.svg', 'message_presence_disabled.svg'], '', ['icon1', 'icon0']) }}  SZ-Bett
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Lichter Flur Erdgeschoss</h3>
+				<table width=100%>
+					<tr>
+						<td align=left>
+							{{ basic.stateswitch('EingangEG', 'EG.FlureNebenraume.EGEingang', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} Eingang
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('FlurWandRgbGira', 'EG.FlureNebenraume.RgbGiraWand', 'icon', ['1', '0'], ['light_wall_2.svg', 'light_wall_2.svg'], '', ['icon1', 'icon0']) }}  RGB Wand
+						</td>
+					</tr>
+					<tr>
+						<td align=left>
+							{{ basic.stateswitch('FlurVouteLed', 'EG.FlureNebenraume.LedVoute', 'icon', ['1', '0'], ['light_diffused.svg', 'light_diffused.svg'], '', ['icon1', 'icon0']) }} LED Voute
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('FlurDeckeRgb', 'EG.FlureNebenraume.RGBDecke', 'icon', ['1', '0'], ['light_diffused.svg', 'light_diffused.svg'], '', ['icon1', 'icon0']) }} RGB Decke
+						</td>
+					</tr>
+					<tr>
+						<td align=left>
+							{{ basic.stateswitch('LedFensterbankEssen', 'EG.FlureNebenraume.', 'icon', ['1', '0'], ['light_uplight.svg', 'light_uplight.svg'], '', ['icon1', 'icon0']) }} EG / OG
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('FlurHeizungLed', 'EG.FlureNebenraume.LedHeizung', 'icon', ['1', '0'], ['light_diffused.svg', 'light_diffused.svg'], '', ['icon1', 'icon0']) }} LED Heizung
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>OG Flur und Nebenräume</h3>
+				<table width=100%>
+					<tr>
+						<td align=left>
+							{{ basic.stateswitch('FlurWCOG', 'EG.FlureNebenraume.OgWC', 'icon', ['1', '0'], ['light_ceiling_light.svg', 'light_ceiling_light.svg'], '', ['icon1', 'icon0']) }} OG WC
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('FlurPodestEgOg', 'EG.FlureNebenraume.LedPodest', 'icon', ['1', '0'], ['light_uplight.svg', 'light_uplight.svg'], '', ['icon1', 'icon0']) }}  Podest
+						</td>
+					</tr>
+					<tr>
+						<td align=left>
+							{{ basic.stateswitch('FlurOgZbV', 'EG.FlureNebenraume.ZbvOG', 'icon', ['1', '0'], ['light_ceiling_light.svg', 'light_ceiling_light.svg'], '', ['icon1', 'icon0']) }} OG ZBV
+						</td>
+						<td align=left width=50%>
+							{{ basic.stateswitch('FlurTreppeRGB', 'EG.FlureNebenraume.RgbTreppe', 'icon', ['1', '0'], ['light_stairs.svg', 'light_stairs.svg'], '', ['icon1', 'icon0']) }} RGB EG/OG
+						</td>
+					</tr>
+					<tr>
+						<td align=left>
+							{{ basic.stateswitch('FlurDeckeOgFlur', 'EG.FlureNebenraume.OgFlurDecke', 'icon', ['1', '0'], ['light_ceiling_light.svg', 'light_ceiling_light.svg'], '', ['icon1', 'icon0']) }} OG Flur
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('FlurOgDgTreppe', 'EG.FlureNebenraume.TreppeOgDg', 'icon', ['1', '0'], ['light_stairs.svg', 'light_stairs.svg'], '', ['icon1', 'icon0']) }} Wand OG/DG
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Status</h3>
+				<table width="100%">
+					<tr>
+						<td align="left">
+							{{ basic.symbol('verriegelHaustuer1', 'Allgemein.Haustuer.verreigeln', 'Haustür ist verriegelt', 'status_locked.svg') }}
+							{{ basic.symbol('verriegelHaustuer2', 'Allgemein.Haustuer.verreigeln', 'Haustür ist entriegelt', 'status_open.svg', 0, '', 'icon1') }}
+						</td>
+					</tr>
+					<tr>
+						<td align="left">
+							{{ basic.symbol('oeffneHaustuer1', 'Allgemein.Haustuer.oeffnen', 'Haustür ist zu', 'fts_door.svg') }}
+							{{ basic.symbol('oeffneHaustuer2', 'Allgemein.Haustuer.oeffnen', 'Haustür ist offen', 'fts_door_open.svg', 0, '', 'icon1') }}
+						</td>
+					</tr>
+					<tr>
+						<td align="left">
+							{{ basic.symbol('EingangFlurTuer1', 'EG.FlureNebenraume.TuerEingangFlur', 'Tür Flur/Diele ist offen', 'fts_door_open.svg', '', '', 'icon1') }}
+							{{ basic.symbol('EingangFlurTuer2', 'EG.FlureNebenraume.TuerEingangFlur', 'Tür Flur/Diele ist zu', 'fts_door.svg', 0) }}
+						</td>
+					</tr>
+					<tr>
+						<td align="left">
+							{{ basic.symbol('EgOgFenster1', 'EG.FlureNebenraume.FensterEgOg', 'Fenster EG / OG ist offen', 'fts_window_1w_open.svg', '', '', 'icon1') }}
+							{{ basic.symbol('EgOgFenster2', 'EG.FlureNebenraume.FensterEgOg', 'Fenster EG / OG ist zu', 'fts_window_1w.svg', 0) }}
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>RGB Steuerungen EG Flur</h3>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('RGBEGWandWechsel', 'EG.FlureNebenraume.FarbeEGWand', 'midi', '1', 'check', ' Treppe feste Farbe ') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('RGBEGWandFest', 'EG.FlureNebenraume.FarbeEGWand', 'midi', '1', 'check', ' Treppe Farbwechsel ') }}
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('RGBEGDeckeWechsel', 'EG.FlureNebenraume.FarbeEGDecke', 'midi', '1', 'check', ' Decke feste Farbe ') }}
+							</span>
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('RGBEGDeckeFest', 'EG.FlureNebenraume.FarbeEGDecke', 'midi', '1', 'check', ' Decke Farbwechsel ') }}
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('RGBEGGIRAWand', 'EG.FlureNebenraume.FarbeEGDeckeGIRA', 'midi', '1', 'check', ' Wand Farbwechsel ') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Flur Eingang</h3>
+				{{ plot.period('p49', 'EG.FlureNebenraume.temperature1', 'avg', '12h',0, 0, '', '', ['Temp. in °C']) }}
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Flur</h3>
+				{{ plot.period('p48', 'EG.FlureNebenraume.temperature2', 'avg', '12h',0, 0, '', '', ['Temp. in °C']) }}
+			</div>
+
+		</div>
+	</div>
+
+
+
+{% endblock %}
+

@@ -1,0 +1,57 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2015
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "rooms.html" %}
+     
+{% block content %}
+
+    <h1><img class="icon icon0" src='{{ icon0 }}scene_visit_guests.svg'/>Gästezimmer</h1>
+
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Heizung</h3>
+                {{ device.rtr('gaestezimmer_heizen', 'Heizung', '2/0/4/9.xxx', '2/0/3/9.xxx', '2/0/8/1.001', '2/0/6/1.001', '2/0/7/1.001', '2/0/2/1.001') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Licht</h3>
+                Deckenlicht<br />
+                {{ basic.stateswitch('arbeiten_licht', '2/1/1/1.001', 'midi', ['', ''], ['control_on_off.svg', 'control_on_off.svg'], '', ['icon1', 'icon0']) }}
+            </div>
+            <br/><br/>
+        </div>
+    </div>
+
+    <div class="block" style="width: 25%">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Rollladen Norden</h3>
+                {{ shutter.two ('gaeste_norden', 'Norden', '2/2/1/1.001', '2/2/2/1.001', '2/2/4/5.001' ) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="block" style="width: 25%">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Rollladen Osten</h3>
+                {{ shutter.two ('gaeste_osten', 'Osten', '2/2/11/1.001', '2/2/12/1.001', '2/2/14/5.001' ) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

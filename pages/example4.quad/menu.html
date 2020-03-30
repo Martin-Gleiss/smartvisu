@@ -1,0 +1,44 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+<div id="menu">
+
+	<a id="menu-rooms" href="index.php">
+     <img class="icon{{ page starts with 'index' or page starts with 'room' ? ' icon1' }}" src="{{ icon0 }}control_building_empty.svg"/></a>
+	
+	{% if page != 'config' %}
+		<a id="menu-lights" href="index.php?page=licht_og">
+			<img class="icon{{ page == 'licht_og' or page == 'licht_eg' or page == 'licht_treppe' or page == 'licht_kurven' ? ' icon1' }}" src="{{ icon0 }}light_light.svg"/></a>
+
+		<a id="menu-bwm" href="index.php?page=bwm_og">
+				<img class="icon{{ page == 'bwm_og' or page == 'bwm_eg' or page == 'bwm_treppe' or page == 'bwm_aussen' ? ' icon1' }}" src="{{ icon0 }}message_presence.svg"/></a>
+
+		<a id="menu-switch" href="index.php?page=switches">
+			<img class="icon{{ page == 'switches' ? ' icon1' }}" src="{{ icon0 }}message_socket.svg"/></a>
+
+		<a id="menu-media" href="index.php?page=media">
+			<img class="icon{{ page == 'media' ? ' icon1' }}" src="{{ icon0 }}scene_livingroom.svg"/></a>
+
+		<a id="menu-jalousien" href="index.php?page=jalousien">
+			<img class="icon{{ page == 'jalousien' ? ' icon1' }}" src="{{ icon0 }}fts_shutter_50.svg"/></a>
+
+		<a id="menu-outdoor" href="index.php?page=outdoor">
+			<img class="icon{{ page == 'outdoor' ? ' icon1' }}" src="{{ icon0 }}weather_sun.svg"/></a>
+	
+	{% else%}	
+	
+		<a id="menu-docu" data-ajax="false" href="index.php?pages=docu&page=index">
+			<img class="icon{{ pages == 'docu' ? ' icon1' }}" src="{{ icon0 }}edit_copy.svg"/></a>
+	
+	{% endif %}
+	
+	<a id="menu-system" href="index.php?page=config">
+		<img class="icon{{ page == 'config' ? ' icon1' }}" src="{{ icon0 }}edit_settings.svg"/></a>
+
+</div>

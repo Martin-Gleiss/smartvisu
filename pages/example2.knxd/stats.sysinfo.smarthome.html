@@ -1,0 +1,37 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+    {% include 'stats.navigation.html' %}
+
+{% endblock %}
+
+{% block content %}
+
+	<h1><img class="icon icon0" src='{{ icon0 }}time_graph.svg' />SmartHome</h1>
+
+	<div class="block">
+	<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Laufzeit</h3>
+			<h3><span class="setRed">{{ basic.print('sysinfo.smarthome.runtime', 'sysinfo.smarthome.runtime') }}</span></h3>
+		</div>
+
+	</div>
+    </div>
+
+
+
+{% endblock %}
+

@@ -1,0 +1,68 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß et.al., migration to SV 2.9 by Wolfram v. Hülsen
+* @copyright   2012 - 2019
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+
+/**
+* Standard dimmer with switching and dimming function
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the dimmer
+* @param {item} an item for switching
+* @param {item} an item for dimming
+* @param {value=0} the minimum value if the slider is moved to total left (optional, default: 0)
+* @param {value=255} the maximum value if the slider is moved to total right (optional, default: 255)
+* @param {value=5} step between two values (optional, default: 5)
+* @param {image=light_light} the pic for the 'on' state (optional)
+* @param {image=light_light} the pic for the 'off' state (optional)
+* @param {color=icon1} the color for the 'on' state (optional)
+* @param {color=icon0} the color for the 'off' state (optional)
+* @param {text(input,handle,both,none)=none} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'none')
+* @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
+* @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
+* @param {value=} icon position from left side
+* @param {value=} icon position from top side
+* @param type: 'micro', 'mini', 'midi', 'icon' (optional, default: micro)
+* @param hide on mobile displays (optional value 1)
+* @param {text='left'} position of the switch: left (default) or right
+*/
+
+{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, left, top, type, hide, picpos) %}
+	{% import "basic.html" as basic %}
+	{% import   "icon.html" as icon %}
+	{% set uid = uid(page, id) %}
+	<div id="{{ uid }}-overview" style="position: absolute; top: {{ top }}; left: {{ left }};"  {% if txt %}title="{{ txt }}"{% endif %}
+		<a style="display: none"> </a> 
+		<a data-rel="popup" href="#{{ uid }}-popup" {% if hide == 1 %} style="display:none" {% endif %} class="
+			{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
+				switch ui-link
+			{%- else -%} /**- display as button -*/
+				ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
+				{%- if not pic is empty -%}
+					{{ not txt is empty ? ' ui-btn-icon-top' }} ui-nodisc-icon
+				{%- endif -%}
+			{%- endif -%}
+		">
+
+        <div style="pointer-events: none; cursor: default;">{{ icon.light(id~'-light', item_switch, item_value, min, max) }}</div>
+		</a>
+	</div>
+	
+    <div id="{{ uid }}-popup" data-role="popup" style="min-width: 250px; min-height: 80px;">
+		<div class="dimmer" data-widget="device.dimmer">
+			{% if picpos is empty or picpos=='left' %}<span class="ui-dimmer-left"> {% else %} <span class="ui-dimmer-right"> {% endif %}
+				{{ basic.stateswitch('', item_switch, type, '', [ pic_off|default(icon.light(id~'-light', item_switch, item_value, min, max)), pic_on|default(icon.light(id~'-light', item_switch, item_value, min, max)) ], '', [ color_off , color_on|default('icon1') ]) }}
+				{{ txt|e }}
+				{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display) }} 
+			</span>
+		</div>
+        <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
+    </div>
+	
+{% endmacro %}

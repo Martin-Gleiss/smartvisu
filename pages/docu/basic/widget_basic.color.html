@@ -1,0 +1,152 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß and Stefan Widmer
+* @copyright   2012 - 2016
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+
+	Circular view
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b') }} 
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8) }}
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', 0, 255, 15, 19) }} 
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b') }} 7 steps and 10 colors (default)
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8) }} 6 steps and 8 colors
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', 0, 255, 15, 19) }} 15 steps and 19 colors
+	</div>
+
+	Rectangular view
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'rect') }}
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8, 'rect') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'rect') }} 7 steps and 10 colors (default)
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8, 'rect') }} 6 steps and 8 colors
+	</div>
+
+	Slider view (the sliders show hue, saturation and brightness)
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'slider') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'slider') }}
+	</div>
+
+	HSL and HSV color space
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.l', '', '', '', '', 'rect', 'hsl') }}
+		{{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.v', '', '', '', '', '', 'hsv') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.l', '', '', '', '', 'rect', 'hsl') }}
+		{{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.v', '', '', '', '', '', 'hsv') }}
+	</div>
+
+	Values as list in a single item
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.color('', 'bath.color.rgb') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.color('', 'bath.color.rgb') }}
+	</div>
+
+{% endblock %}
+
+/**
+background-image: linear-gradient(90deg, hsl(0,100%,100%), hsl(60,100%,100%), hsl(120,100%,100%), hsl(180,100%,100%), hsl(240,100%,100%), hsl(300,100%,100%), hsl(360,100%,100%));
+Saturation:
+background-image: linear-gradient(90deg, hsl(26,0%,68%), hsl(26,100%,34%)); // 0,L1   0,L1/2   L1 = L+S/2*(1-|2*L-1|)
+Lightness;
+background-image: linear-gradient(90deg, hsl(26,0%,0%), hsl(26,100%,58%)); // 0,0   100,L/L1   L1 = L+S/2*(1-|2*L-1|)
+
+
+background-image: linear-gradient(90deg, hsl(26,40%,0%), hsl(26,40%,50%));
+
+
+
+background-image: linear-gradient(90deg, rgb(0,150,150), rgb(255,150,150));
+
+
+background-image: linear-gradient(90deg, rgb(0,150,150), rgb(255,150,150));
+
+background-image: linear-gradient(90deg, rgb(150,150,150), rgb(150,150,0));
+background-image: linear-gradient(90deg, rgb(0,0,0), rgb(255,255,127.5));
+
+
+background-image: linear-gradient(90deg,
+	rgb(255, 0, 0),
+	rgb(255, 255, 0),
+	rgb(0, 255, 0),
+	rgb(0, 255, 255),
+	rgb(0, 0, 255),
+	rgb(255, 0, 255),
+	rgb(255, 0, 0)
+)
+
+
+
+TW:
+background-image: linear-gradient(90deg, rgba(255, 255, 255, 1), rgb(255, 204, 0))
+background-image: linear-gradient(90deg, rgba(204, 238, 255, 1), rgb(255, 204, 0));
+
+
+
+
+B'/(1-|2L-1|)
+(L+S/2*(1-|2L-1|))/(1-|2L-1|)
+S/2-L/(|1-2L|-1)
+
+
+1/2B'*(2-S')   B'=100
+.5*(2-S')   B'=100   S' = L+S(1-|2*L-1|)/2
+50*(2-L+S*(1-|2*L-1|)/2)
+
+
+
+
+Saturation:
+Lx = L + (S*(1-|2*L-1|))/2
+
+from:
+Sa=0, La=?
+Lsa = L + (S*(1-|2*L-1|))/2
+
+to:
+sb=1, Lb=?
+Lsb = La/2
+
+
+Lightness;
+Lx = 1/2*B*(2-S')   S' = 2(Bx-L)/Bx   Bx = Lsa
+Lx = 1/2*B*(2-2(Bx-L)/Bx)
+Lx = B*L/Bx = B*L/Lsa
+
+from
+Sla=0, Lla=0
+
+to:
+slb=1, Llb=?, Bb=1
+Llb = L/Lsa
+*/

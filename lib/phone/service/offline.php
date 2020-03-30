@@ -6,6 +6,10 @@
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ * @hide        phone_server
+ * @hide        phone_port
+ * @hide        phone_user
+ * @hide        phone_pass
  */
 
 

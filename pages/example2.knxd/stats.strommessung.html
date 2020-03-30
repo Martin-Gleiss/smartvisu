@@ -1,0 +1,34 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2015
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+    {% include 'stats.navigation.html' %}
+
+{% endblock %}
+
+{% block content %}
+
+    <h1><img class="icon icon0" src='{{ icon0 }}measure_power.svg'/>Strommessung</h1>
+    
+    <div class="preblock">
+		
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+	<div data-role="collapsible" data-collapsed="false">
+        <h3>aktueller Stromverbrauch</h3>
+        <h2>Gesamtverbrauch: {{ basic.print('verbrauchheute', '15/1/254/9.xxx', 'kWh', '( VAR )/1000') }} </h2>
+        <h2>aktueller Stromverbrauch: {{ basic.print('aktuellerverbrauch', ['15/1/0/9.xxx', '15/1/100/9.xxx', '15/2/0/9.xxx','15/2/100/9.xxx'], 'W', '( VAR ) / 1000 * 230') }} </h2>
+	</div>
+    </div>    
+    </div>
+{% endblock %}

@@ -14,10 +14,16 @@
 
 	<h5>Example</h5>
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; clock.miniclock('clock1') &#125;&#125;</code>
+		<code class="prettyprint">
+			&#123;&#123; clock.miniclock('') &#125;&#125;<br>
+			&#123;&#123; clock.miniclock('', 'd.m.Y') &#125;&#125;<br>
+			&#123;&#123; clock.miniclock('', 'l, ' ~ lang('format','date') ) &#125;&#125;
+		</code>
 	</div>
 	<div class="html">
-		{{ clock.miniclock('clock1') }}
+		{{ clock.miniclock('') }}<br>
+		{{ clock.miniclock('', 'd.m.Y') }}<br>
+		{{ clock.miniclock('', 'l, ' ~ lang('format','date') ) }}
 	</div>
 
 {% endblock %}

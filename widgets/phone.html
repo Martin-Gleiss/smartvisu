@@ -11,112 +11,40 @@
 /**
 * Displays the phonelist from a phone system
 *
-* @param unique id for this widget
-* @param a title to display
-* @param the number of displayed lines, default 10
-* @param the refresh interval for this widget (using relative time format), default 15m
+* @param {id} unique id for this widget
+* @param {text=} a title to display
+* @param {value=10} the number of displayed lines, default 10
+* @param {duration=15m} the refresh interval for this widget (using duration format), default 15m
+*
+* @see misc/fundamentals#Duration-Format
 */
 {% macro list(id, title, count, repeat) %}
 	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}-phonelist" data-widget="phone.list" class="phonelist" data-repeat="{{ repeat|default('15m') }}">
+	<div id="{{ uid }}-phonelist" data-widget="phone.list" class="phonelist" data-repeat="{{ repeat|default('15m') }}" data-count="{{ count|default(10) }}" data-service-url="lib/phone/service/{{ config_phone_service|url_encode }}.php">
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
 		<ul data-role="listview">
 		</ul>
 	</div>
-
-	<script type="text/javascript">
-		$(document).delegate('div[data-widget="phone.list"]', {
-			'init' : function (event) {
-				$.getJSON('lib/phone/service/{{ config_phone_service }}.php', function (data) {
-					var ret;
-					var line = '';
-					var sum = 1;
-
-					for (var i in data) {
-						ret = '<img class="icon" src="pics/phone/' + data[i].pic + '" />';
-						ret += '<img class="dir" src="lib/phone/pics/' + data[i].dirpic + '" />';
-						ret += '<h3>' + data[i].text + '&nbsp;</h3>';
-						ret += '<p>' + data[i].number + '&nbsp;</p>';
-						ret += '<span class="ui-li-count">' + data[i].date + '</span>';
-						ret = '<a ' + (data[i].number ? 'href="callto://' + data[i].number : '') + '">' + ret + '</a>';
-
-						line += '<li data-icon="false">' + ret + '</li>';
-						if (sum++ == {{ count|default(10) }}) {
-							break;
-						}
-					}
-
-					$('#{{ uid }}-phonelist ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
-				})
-				.error(notify.json);
-			},
-
-			'repeat': function(event) {
-				$('#{{ uid }}-phonelist').trigger('init');
-			}
-		});
-
-		$('#{{ page }}').on('pagecreate', function (event, ui) {
-			$('#{{ uid }}-phonelist').trigger('init');
-		});
-	</script>
 {% endmacro %}
 
 
 /**
 * Displays the phonelist (only missed phonecalls) from a phone system
 *
-* @param unique id for this widget
-* @param a title to display
-* @param the number of displayed lines, default 3
-* @param the refresh interval for this widget (using relative time format), default 15m
+* @param {id} unique id for this widget
+* @param {text=} a title to display
+* @param {value=3} the number of displayed lines, default 3
+* @param {duration=15m} the refresh interval for this widget (using duration format), default 15m
+*
+* @see misc/fundamentals#Duration-Format
 */
 {% macro missedlist(id, title, count, repeat) %}
 	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}-missedlist" data-widget="phone.missedlist" class="phonelist" data-repeat="{{ repeat|default('15m') }}">
+	<div id="{{ uid }}-missedlist" data-widget="phone.missedlist" class="phonelist" data-repeat="{{ repeat|default('15m') }}" data-count="{{ count|default(3) }}" data-service-url="lib/phone/service/{{ config_phone_service|url_encode }}.php">
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
 		<ul data-role="listview">
 		</ul>
 	</div>
-
-	<script type="text/javascript">
-		$(document).delegate('div[data-widget="phone.missedlist"]', {
-			'init' : function (event) {
-				$.getJSON('lib/phone/service/{{ config_phone_service }}.php', function (data) {
-					var ret;
-					var line = '';
-					var sum = 1;
-
-					for (var i in data) {
-						ret = '<img class="icon" src="pics/phone/' + data[i].pic + '" />';
-						ret += '<img class="dir" src="lib/phone/pics/' + data[i].dirpic + '"/>';
-						ret += '<h3>' + data[i].text + '&nbsp;</h3>';
-						ret += '<p>' + data[i].number + '&nbsp;</p>';
-						ret += '<span class="ui-li-count">' + data[i].date + '</span>';
-						ret = '<a ' + (data[i].number ? 'href="callto://' + data[i].number : '') + '">' + ret + '</a>';
-
-						if (data[i].dir == 0) {
-							line += '<li data-icon="false">' + ret + '</li>';
-							if (sum++ == {{ count|default(3) }}) {
-								break;
-							}
-						}
-					}
-
-					$('#{{ uid }}-missedlist ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
-				})
-				.error(notify.json);
-			},
-
-			'repeat': function(event) {
-				$('#{{ uid }}-missedlist').trigger('init');
-			}
-		});
-
-		$('#{{ page }}').on('pagecreate', function (event, ui) {
-			$('#{{ uid }}-missedlist').trigger('init');
-		});
-	</script>
 {% endmacro %}
