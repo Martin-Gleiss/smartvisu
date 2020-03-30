@@ -98,10 +98,10 @@
 
             {% elseif runs > 0 %}
               {% if formula[i] == '>' %}
-                {{ basic.symbol(id~'list_symbol'~i, item[i], txt[i]|default(''), pic[i]|default(pic[i] ? pic[i] : 'control_on_off'), val[i], formula[i], color[i]|default(color[i] ? color[i] : 'icon0'), href[i], rel[i]) }}
+                {{ basic.symbol(uid(page, id)~'list_symbol'~i, item[i], txt[i]|default(''), pic[i]|default(pic[i] ? pic[i] : 'control_on_off'), val[i], formula[i], color[i]|default(color[i] ? color[i] : 'icon0'), href[i], rel[i]) }}
               {% else %}
                 {% for x in 0..max((val[i]|length-1),0) %}
-                  {{ basic.symbol(id~'list_symbol'~i~x, item[i], txt[i][x]|default(''), pic[i][x]|default(pic[i] ? pic[i] : 'control_on_off'), val[i][x], formula[i], color[i][x]|default(color[i] ? color[i] : 'icon0'), href[i][x], rel[i][x]) }}
+                  {{ basic.symbol(uid(page, id)~'list_symbol'~i~x, item[i], txt[i][x]|default(''), pic[i][x]|default(pic[i] ? pic[i] : 'control_on_off'), val[i][x], formula[i], color[i][x]|default(color[i] ? color[i] : 'icon0'), href[i][x], rel[i][x]) }}
                 {% endfor %}
               {% endif %}
               {% if item_plot[i] %}
@@ -111,9 +111,9 @@
                 <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{i}}" data-role="popup">
                   <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                 {% if item_plot[i] is iterable  %}
-                  {{ plot.period(id~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
+                  {{ plot.period(uid(page, id)~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
                 {% else %}
-                  {{ plot.period(id~'_plotpopup'~i, item_plot[i], 'avg', '12h', 'now', '', '', '', txt[i], '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+                  {{ plot.period(uid(page, id)~'_plotpopup'~i, item_plot[i], 'avg', '12h', 'now', '', '', '', txt[i], '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
                 {% endif %}
                 </div>
               {% endif %}
@@ -121,10 +121,10 @@
               {% if not val %}{% set val = '1' %}{% endif %}
               {% if val is iterable %}
                 {% for x in 0..max((val|length-1),0) %}
-                  {{ basic.symbol(id~'list_symbol'~i~x, item, txt[x]|default(''), pic[x]|default('control_on_off'), val[x], formula, color[x]|default('icon0'), href[x], rel[x]) }}
+                  {{ basic.symbol(uid(page, id)~'list_symbol'~i~x, item, txt[x]|default(''), pic[x]|default('control_on_off'), val[x], formula, color[x]|default('icon0'), href[x], rel[x]) }}
                 {% endfor %}
               {% else %}
-                {{ basic.symbol(id~'list_symbol'~i, item, txt, pic, val, formula, color, href, rel) }}
+                {{ basic.symbol(uid(page, id)~'list_symbol'~i, item, txt, pic, val, formula, color, href, rel) }}
               {% endif %}
               {% if item_plot %}
                 <a href="#{{ uid(page, id) }}_plotpopup{{i}}" data-rel="popup">
@@ -133,9 +133,9 @@
                 <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{i}}" data-role="popup">
                   <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                 {% if item_plot is iterable  %}
-                  {{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+                  {{ plot.period(uid(page, id)~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
                 {% else %}
-                  {{ plot.period(id~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', txt, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+                  {{ plot.period(uid(page, id)~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', txt, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
                 {% endif %}
                 </div>
               {% endif %}
@@ -197,7 +197,7 @@ the first one is the base color for values below first threshold, so pass one co
               {% if item[i] == ''  %}
                 <span id="{{ classname[i]|e }}">{{ formula[i]|e }}</span>
               {% else %}
-                {{ basic.print(id~'list_print'~i, item[i], format[i], formula[i], threshold[i], color[i]) }}
+                {{ basic.print(uid(page, id)~'list_print'~i, item[i], format[i], formula[i], threshold[i], color[i]) }}
               {% endif %}
               {% if item_plot[i] %}
                 <a href="#{{ uid(page, id) }}_plotpopup{{i}}" data-rel="popup">
@@ -206,14 +206,14 @@ the first one is the base color for values below first threshold, so pass one co
                 <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{i}}" data-role="popup">
                   <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                 {% if item_plot[i] is iterable  %}
-                  {{ plot.period(id~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
+                  {{ plot.period(uid(page, id)~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
                 {% else %}
-                  {{ plot.period(id~'_plotpopup'~i, item_plot[i], 'avg', '12h', 'now', '', '', '', linetext[i], '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+                  {{ plot.period(uid(page, id)~'_plotpopup'~i, item_plot[i], 'avg', '12h', 'now', '', '', '', linetext[i], '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
                 {% endif %}
                 </div>
               {% endif %}
             {% else %}
-            {{ columntext }}&nbsp;{{ basic.print(id~'list_print', item, format, formula, threshold, color) }}
+            {{ columntext }}&nbsp;{{ basic.print(uid(page, id)~'list_print', item, format, formula, threshold, color) }}
             {% if item_plot %}
               <a href="#{{ uid(page, id) }}_plotpopup{{i}}" data-rel="popup">
                 {{ basic.icon(icon_plot|deficon('measure_power_meter'), 'icon0') }}
@@ -221,9 +221,9 @@ the first one is the base color for values below first threshold, so pass one co
               <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{i}}" data-role="popup">
                 <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
               {% if item_plot is iterable  %}
-                {{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+                {{ plot.period(uid(page, id)~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
               {% else %}
-                {{ plot.period(id~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+                {{ plot.period(uid(page, id)~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
               {% endif %}
               </div>
             {% endif %}
@@ -273,7 +273,7 @@ the first one is the base color for values below first threshold, so pass one co
     <div class="quad_table sorting row_rtr" id="row_{{uid(page, id)|replace('.', '_')}}_sorting"">
         <div class="text">{{ linetext|e }}</div>
         <div class="column{{ column_order[0]|default(1) }} column_rtr_actual" data-order={{ column_order[0]|default(1) }}>
-          {{ basic.print(id~'_actual_value', item_actual, '°') }}
+          {{ basic.print(uid(page, id)~'_actual_value', item_actual, '°') }}
           {% if item_plot %}
             <a href="#{{ uid(page, id) }}_plotpopup{{i}}" data-rel="popup">
               {{ basic.icon(icon_plot|deficon('measure_power_meter'), 'icon0') }}
@@ -282,19 +282,19 @@ the first one is the base color for values below first threshold, so pass one co
               <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
             {% if item_plot is iterable  %}
-              {{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+              {{ plot.period(uid(page, id)~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
             {% else %}
-              {{ plot.period(id~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+              {{ plot.period(uid(page, id)~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
             {% endif %}
             </div>
           {% endif %}
         </div>
         <div class="column{{ column_order[2]|default(3) }} column_rtr_popup" data-order={{ column_order[2]|default(3) }}>
             <a href="#{{ uid(page, id) }}list_rtr_popup" data-rel="popup" data-position-to="window">
-                {{ basic.print(id~'_set', item_set, '°') }}
+                {{ basic.print(uid(page, id)~'_set', item_set, '°') }}
             </a>
             <div id="{{ uid(page, id) }}list_rtr_popup" data-role="popup" data-overlay-theme="a" class="quad_rtr-popup">
-                {{ device.rtr(id~'rtr', linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator) }}
+                {{ device.rtr(uid(page, id)~'rtr', linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator) }}
             </div>
         </div>
     </div>
@@ -492,7 +492,7 @@ the first one is the base color for values below first threshold, so pass one co
     <div class="quad_table row_dimmer" id="row_{{uid(page, id)|replace('.', '_')}}">
   <div class="text" data-order=0>{{ linetext|e }}
   {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
-  {{ basic.print('', item_auto~'.suspend_end', 'text') }}
+  {{ basic.print(uid(page, id)~'dimmerprint', item_auto~'.suspend_end', 'text') }}
   {% endif %}
   </div>
 
@@ -531,14 +531,14 @@ the first one is the base color for values below first threshold, so pass one co
 
       {% if (item_lock and item_bwmlock) or item_force %}
         <a href="#{{ uid(page, id) }}_list_locks_popup" data-rel="popup">
-        {{ basic.symbol(id~'list_lockpop_on', [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color_on) }}
-        {{ basic.symbol(id~'list_lockpop_off', [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color_off) }}
+        {{ basic.symbol(uid(page, id)~'list_lockpop_on', [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color_on) }}
+        {{ basic.symbol(uid(page, id)~'list_lockpop_off', [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color_off) }}
         </a>
         {{ popup.locks(uid(page, id)~'_list_locks_popup', [item_lock|default(''), [color_off|default('icon0'), color_on|default('icon1')]], [item_bwmlock|default(''), [color_off|default('icon0'), color_on|default('icon1')]], [item_force|default(''), color_on|default('icon1')]) }}
       {% elseif item_lock %}
-        {{ basic.stateswitch(id~'list_lock', item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', [color_off, color_on], indicator) }}
+        {{ basic.stateswitch(uid(page, id)~'list_lock', item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', [color_off, color_on], indicator) }}
       {% elseif item_bwmlock %}
-        {{ basic.stateswitch(id~'list_lock', item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', [color_off, color_on], indicator) }}
+        {{ basic.stateswitch(uid(page, id)~'list_lock', item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', [color_off, color_on], indicator) }}
       {% endif %}
       {% if elements[loop.index] == 'div' %}
         </div>
@@ -547,14 +547,14 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'switch' and item_switch %}
 
-      {{ basic.stateswitch(id~'_list_dimmer_dynicon', item_switch, 'icon', [0,1], [pic_off|default('light_light'), pic_on|default('light_light')], '', [color_off, color_on], indicator) }}
+      {{ basic.stateswitch(uid(page, id)~'_list_dimmer_dynicon', item_switch, 'icon', [0,1], [pic_off|default('light_light'), pic_on|default('light_light')], '', [color_off, color_on], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'value_slider' and item_value %}
-      {{ basic.slider(id~'_slider_inline', item_value, min, max, step, slider_orientation, value_display, min_display, max_display) }}
+      {{ basic.slider(uid(page, id)~'_slider_inline', item_value, min, max, step, slider_orientation, value_display, min_display, max_display) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -563,17 +563,17 @@ the first one is the base color for values below first threshold, so pass one co
     {% if column == 'value_popup' and item_value %}
             <a href="#{{ uid(page, id) }}_list_dimmer_popup" data-rel="popup" data-position-to="window">
                 {% if formula == '%' %}
-                  {{ basic.print(id~'_list_dimmer_actual', item_value, '%', 'VAR1/255*100', '', [color_off|default('icon0'), color_on|default('icon1')]) }}
+                  {{ basic.print(uid(page, id)~'_list_dimmer_actual', item_value, '%', 'VAR1/255*100', '', [color_off|default('icon0'), color_on|default('icon1')]) }}
                 {% else %}
-                  {{ basic.print(id~'_list_dimmer_actual', item_value, 'int', formula, '', [color_off|default('icon0'), color_on|default('icon1')]) }}
+                  {{ basic.print(uid(page, id)~'_list_dimmer_actual', item_value, 'int', formula, '', [color_off|default('icon0'), color_on|default('icon1')]) }}
                 {% endif %}
             </a>
             <div id="{{ uid(page, id) }}_list_dimmer_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
               <div class="quad_dimmer">
                 {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                {{ basic.stateswitch('', item_switch, 'icon', [0,1], [pic_off|default('light_light'), pic_on|default('light_light')], '', [color_off, color_on], indicator) }}
+                {{ basic.stateswitch(uid(page, id)~'dimmerpopup_switch', item_switch, 'icon', [0,1], [pic_off|default('light_light'), pic_on|default('light_light')], '', [color_off, color_on], indicator) }}
                 <p>{{ linetext|e }}</p>
-                {{ basic.slider('', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
+                {{ basic.slider(uid(page, id)~'dimmerpopup_slider', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
                 </span>
               </div>
             </div>
@@ -586,7 +586,7 @@ the first one is the base color for values below first threshold, so pass one co
         {% if column == 'extpopup' and extpopup %}
             {% if extpopup[0] not in ext_elements %}
               <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
-                  {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+                  {{ basic.symbol(uid(page, id)~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
               </a>
               {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color_off|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
@@ -598,10 +598,10 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'stateengine' and item_auto %}
             {% if extpopup[0] == 'stateengine' and stateengine is defined %}
-                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
+                {{ stateengine.state(uid(page, id)~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% elseif stateengine is defined %}
-                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                {{ stateengine.state(uid(page, id)~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
       {% if elements[loop.index] == 'div' %}
@@ -625,7 +625,7 @@ the first one is the base color for values below first threshold, so pass one co
                 {% set uzsu_coloron = uzsu_attribs[4]|default('') %}
                 {% set uzsu_coloroff = uzsu_attribs[5]|default('') %}
             {% endif %}
-          {{ device.uzsuicon(id~'list_uzsu', item_uzsu, linetext, uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+          {{ device.uzsuicon(uid(page, id)~'list_uzsu', item_uzsu, linetext, uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -639,9 +639,9 @@ the first one is the base color for values below first threshold, so pass one co
           <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
         {% if item_plot is iterable  %}
-          {{ plot.period(id~'_plotpopup', item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+          {{ plot.period(uid(page, id)~'_plotpopup', item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
         {% else %}
-          {{ plot.period(id~'_plotpopup', item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
+          {{ plot.period(uid(page, id)~'_plotpopup', item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
         {% endif %}
         </div>
       {% if elements[loop.index] == 'div' %}
@@ -866,7 +866,7 @@ the first one is the base color for values below first threshold, so pass one co
     <div class="quad_table row_color" id="row_{{uid(page, id)|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
     {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
-    {{ basic.print('', item_auto~'.suspend_end', 'text') }}
+    {{ basic.print(uid(page, id)~'suspend_end', item_auto~'.suspend_end', 'text') }}
     {% endif %}
     </div>
     {% for column in elements %}
@@ -904,16 +904,16 @@ the first one is the base color for values below first threshold, so pass one co
             {% endif %}
       {% if (item_lock and item_bwmlock) or (item_lock and item_seqlock)  or (item_bwmlock and item_seqlock) or item_force %}
         <a href="#{{ uid(page, id) }}_list_locks_popup" data-rel="popup">
-        {{ basic.symbol(id~'list_lockpop_on', [item_lock, item_bwmlock, item_force, item_seqlock], '', 'secur_locked', 1, 'min', color[1]|default('icon1')) }}
-        {{ basic.symbol(id~'list_lockpop_off', [item_lock, item_bwmlock, item_force, item_seqlock], '', 'secur_open', 0, 'and', icon_color[0]|default('icon0')) }}
+        {{ basic.symbol(uid(page, id)~'list_lockpop_on', [item_lock, item_bwmlock, item_force, item_seqlock], '', 'secur_locked', 1, 'min', color[1]|default('icon1')) }}
+        {{ basic.symbol(uid(page, id)~'list_lockpop_off', [item_lock, item_bwmlock, item_force, item_seqlock], '', 'secur_open', 0, 'and', icon_color[0]|default('icon0')) }}
         </a>
         {{ popup.locks(uid(page, id)~'_list_locks_popup', [item_lock|default(''), icon_color[1]], [item_bwmlock|default(''), icon_color[1]], [item_force|default(''), icon_color[1]|default('icon1')], [item_seqlock|default(''), icon_color[1]]) }}
       {% elseif item_lock %}
-        {{ basic.stateswitch(id~'list_lock', item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', icon_color, indicator) }}
+        {{ basic.stateswitch(uid(page, id)~'list_lock', item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', icon_color, indicator) }}
       {% elseif item_bwmlock %}
-        {{ basic.stateswitch(id~'list_lock', item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', icon_color, indicator) }}
+        {{ basic.stateswitch(uid(page, id)~'list_lock', item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', icon_color, indicator) }}
       {% elseif item_seqlock %}
-        {{ basic.stateswitch(id~'list_lock', item_seqlock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', icon_color, indicator) }}
+        {{ basic.stateswitch(uid(page, id)~'list_lock', item_seqlock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', icon_color, indicator) }}
       {% endif %}
       {% if elements[loop.index] == 'div' %}
         </div>
@@ -921,21 +921,21 @@ the first one is the base color for values below first threshold, so pass one co
     {% endif %}
 
     {% if column == 'sequencer' and item_seq %}
-      {{ basic.stateswitch(id~'list_seq', item_seq, 'icon', [0,1], ['audio_shuffle', 'audio_shuffle'], '', icon_color, indicator) }}
+      {{ basic.stateswitch(uid(page, id)~'list_seq', item_seq, 'icon', [0,1], ['audio_shuffle', 'audio_shuffle'], '', icon_color, indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'colorpicker' %}
-      {{ basic.color(id~'list_color', item_value_r, item_value_g, item_value_b, min, max, step, colors, style, colormodel) }}
+      {{ basic.color(uid(page, id)~'list_color', item_value_r, item_value_g, item_value_b, min, max, step, colors, style, colormodel) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'ww_slider' and item_value_ww %}
-      {{ basic.slider(id~'list_slider', item_value_ww, min, max, step, 'horizontal', 'handle', min_display, max_display) }}
+      {{ basic.slider(uid(page, id)~'list_slider', item_value_ww, min, max, step, 'horizontal', 'handle', min_display, max_display) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -943,16 +943,16 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'ww_popup' and item_value_ww  %}
       <a href="#{{ uid(page, id) }}_list_ww_popup" data-rel="popup" data-position-to="window">
-      {{ basic.symbol(id~'list_ww_on', item_switch_ww, '', icon.light('','',item_value_ww,min_display,max_display), 1, '', '#aaaa00') }}
-      {{ basic.symbol(id~'list_ww_off', item_switch_ww, '', icon.light('','',item_value_ww,min_display,max_display), 0, '', '#888800') }}
+      {{ basic.symbol(uid(page, id)~'list_ww_on', item_switch_ww, '', icon.light('','',item_value_ww,min_display,max_display), 1, '', '#aaaa00') }}
+      {{ basic.symbol(uid(page, id)~'list_ww_off', item_switch_ww, '', icon.light('','',item_value_ww,min_display,max_display), 0, '', '#888800') }}
       </a>
 
       <div id="{{ uid(page, id) }}_list_ww_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
         <div class="quad_dimmer">
           {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-          {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(),icon.light('','',item_value_ww,min_display,max_display)], '', ['#888800','#aaaa00'], indicator) }}
+          {{ basic.stateswitch(uid(page, id)~'switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(),icon.light('','',item_value_ww,min_display,max_display)], '', ['#888800','#aaaa00'], indicator) }}
           <p>Warm White</p>
-          {{ basic.slider('', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
+          {{ basic.slider(uid(page, id)~'slider_ww', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
           </span>
         </div>
       </div>
@@ -964,24 +964,24 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'values' and item_value_r  %}
             <a href="#{{ uid(page, id) }}list_color_popup" data-rel="popup" data-position-to="window" style="font-size: 0.6em;">
-                {{ basic.print(id~'list_rgb_r_actual', item_value_r, '', '', '', icon_color) }};
-                {{ basic.print(id~'list_rgb_g_actual', item_value_g, '', '', '', icon_color) }};
-                {{ basic.print(id~'list_rgb_b_actual', item_value_b, '', '', '', icon_color) }}
+                {{ basic.print(uid(page, id)~'list_rgb_r_actual', item_value_r, '', '', '', icon_color) }};
+                {{ basic.print(uid(page, id)~'list_rgb_g_actual', item_value_g, '', '', '', icon_color) }};
+                {{ basic.print(uid(page, id)~'list_rgb_b_actual', item_value_b, '', '', '', icon_color) }}
                 {% if item_switch_ww and item_value_ww  != ' ' %}
-                 - {{ basic.print(id~'list_rgb_ww_actual', item_value_ww, '', '', '', icon_color) }}
+                 - {{ basic.print(uid(page, id)~'list_rgb_ww_actual', item_value_ww, '', '', '', icon_color) }}
                 {% endif %}
             </a>
             {% if popupcolor == 'hsv' %}
                 <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww  != ' ' ? 'quad_hsvww-popup' : 'quad_hsv-popup' }}">
                   <div class="quad_dimmer">
                   <p>Hue, Saturation, Value</p>
-                    {{ basic.color('', item_value_r, item_value_g, item_value_b, min, max, step, '10', 'slider') }}
+                    {{ basic.color(uid(page, id)~'popup_color', item_value_r, item_value_g, item_value_b, min, max, step, '10', 'slider') }}
                     {% if item_value_ww and item_value_ww  != ' ' %}
                     <div class="quad_dimmer">
                       {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                      {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light('','',item_value_ww,min_display,max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
+                      {{ basic.stateswitch(uid(page, id)~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light('','',item_value_ww,min_display,max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
-                      {{ basic.slider('', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                      {{ basic.slider(uid(page, id)~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                       </span>
                     </div>
                     {% endif %}
@@ -989,34 +989,34 @@ the first one is the base color for values below first threshold, so pass one co
               </div>
             {% else %}
 
-            <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
+				  <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
                   <div class="quad_dimmer">
                     {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                    {{ basic.stateswitch('', item_switch_r, 'icon', [0,1], [icon.light(), icon.light("","",item_value_r,min_display,max_display)], '', [color_off|default('icon0'), 'red'], indicator) }}
+                    {{ basic.stateswitch(uid(page, id)~'popup_switch_r', item_switch_r, 'icon', [0,1], [icon.light(), icon.light("","",item_value_r,min_display,max_display)], '', [color_off|default('icon0'), 'red'], indicator) }}
                     <p>{{ linetext|e }} red</p>
-                    {{ basic.slider('', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    {{ basic.slider(uid(page, id)~'popup_slider_r', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                     </span>
                   </div>
                   <div class="quad_dimmer">
                     {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                    {{ basic.stateswitch('', item_switch_g, 'icon', [0,1], [icon.light(), icon.light("","",item_value_g,min_display,max_display)], '', [color_off|default('icon0'), 'green'], indicator) }}
+                    {{ basic.stateswitch(uid(page, id)~'popup_switch_g', item_switch_g, 'icon', [0,1], [icon.light(), icon.light("","",item_value_g,min_display,max_display)], '', [color_off|default('icon0'), 'green'], indicator) }}
                     <p>{{ linetext|e }} green</p>
-                    {{ basic.slider('', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    {{ basic.slider(uid(page, id)~'popup_slider_g', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                     </span>
                   </div>
                   <div class="quad_dimmer">
                     {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                    {{ basic.stateswitch('', item_switch_b, 'icon', [0,1], [icon.light(), icon.light("","",item_value_b,min_display,max_display)], '', [color_off|default('icon0'), 'blue'], indicator) }}
+                    {{ basic.stateswitch(uid(page, id)~'popup_switch_b', item_switch_b, 'icon', [0,1], [icon.light(), icon.light("","",item_value_b,min_display,max_display)], '', [color_off|default('icon0'), 'blue'], indicator) }}
                     <p>{{ linetext|e }} blue</p>
-                    {{ basic.slider('', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    {{ basic.slider(uid(page, id)~'popup_slider_b', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                     </span>
                   </div>
                 {% if item_value_ww and item_value_ww  != ' ' %}
                     <div class="quad_dimmer">
                       {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                      {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light("","",item_value_ww,min_display,max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
+                      {{ basic.stateswitch(uid(page, id)~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light("","",item_value_ww,min_display,max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
-                      {{ basic.slider('', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                      {{ basic.slider(uid(page, id)~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
                       </span>
                     </div>
               {% endif %}
@@ -1030,7 +1030,7 @@ the first one is the base color for values below first threshold, so pass one co
         {% if column == 'extpopup' and extpopup %}
             {% if extpopup[0] not in ext_elements %}
               <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
-                  {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+                  {{ basic.symbol(uid(page, id)~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
               </a>
               {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
@@ -1042,10 +1042,10 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'stateengine' and item_auto %}
             {% if extpopup[0] == 'stateengine' and stateengine is defined %}
-                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
+                {{ stateengine.state(uid(page, id)~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% elseif stateengine is defined %}
-                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                {{ stateengine.state(uid(page, id)~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
             {% if elements[loop.index] == 'div' %}
@@ -1069,7 +1069,7 @@ the first one is the base color for values below first threshold, so pass one co
                 {% set uzsu_coloron = uzsu_attribs[4]|default('') %}
                 {% set uzsu_coloroff = uzsu_attribs[5]|default('') %}
             {% endif %}
-          {{ device.uzsuicon(id~'list_uzsu', item_uzsu, linetext, uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+          {{ device.uzsuicon(uid(page, id)~'list_uzsu', item_uzsu, linetext, uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1083,9 +1083,9 @@ the first one is the base color for values below first threshold, so pass one co
           <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
         {% if item_plot is iterable  %}
-          {{ plot.period(id~'_plotpopup', item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+          {{ plot.period(uid(page, id)~'_plotpopup', item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
         {% else %}
-          {{ plot.period(id~'_plotpopup', item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
+          {{ plot.period(uid(page, id)~'_plotpopup', item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
         {% endif %}
         </div>
       {% if elements[loop.index] == 'div' %}
@@ -1325,7 +1325,7 @@ the first one is the base color for values below first threshold, so pass one co
     <div class="quad_table row_shutter" id="row_{{uid(page, id)|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
     {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
-    {{ basic.print('', item_auto~'.suspend_end', 'text') }}
+    {{ basic.print(uid(page, id)~'suspend_end', item_auto~'.suspend_end', 'text') }}
     {% endif %}
     </div>
     {% for column in elements %}
@@ -1353,21 +1353,21 @@ the first one is the base color for values below first threshold, so pass one co
     {% endif %}
 
     {% if column == 'move_down' and item_move %}
-      {{ basic.stateswitch(id, item_stop, '', max < min ? 0 : 1, 'control_arrow_down', '', '', 'blink', item_move, max < min ? 0 : 1) }}
+      {{ basic.stateswitch(uid(page, id)~'_down', item_stop, '', max < min ? 0 : 1, 'control_arrow_down', '', '', 'blink', item_move, max < min ? 0 : 1) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'move_up' and item_move %}
-      {{ basic.stateswitch(id, item_stop, '', max < min ? 1 : 0, 'control_arrow_up', '', '', 'blink', item_move, max < min ? 1 : 0) }}
+      {{ basic.stateswitch(uid(page, id)~'_up', item_stop, '', max < min ? 1 : 0, 'control_arrow_up', '', '', 'blink', item_move, max < min ? 1 : 0) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'stop' and item_stop %}
-      {{ basic.stateswitch(id~'_stop', item_stop, 'icon', '', 'control_cancel', '', 'icon0', 'blink') }}
+      {{ basic.stateswitch(uid(page, id)~'_stop', item_stop, 'icon', '', 'control_cancel', '', 'icon0', 'blink') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1375,10 +1375,10 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'pos_popup_blind' and item_pos %}
             <a href="#{{ uid(page, id) }}list_blind_popup" data-rel="popup" data-position-to="window">
-                {{ icon.shutter(id~'list_blind_blind', '', item_pos, min, max) }}
+                {{ icon.shutter(uid(page, id)~'list_blind_blind', '', item_pos, min, max) }}
             </a>
             <div id="{{ uid(page, id) }}list_blind_popup" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
-              {{ device.blind('', linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step) }}
+              {{ device.blind(uid(page, id)~'blinddevice', linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step) }}
             </div>
 
       {% if elements[loop.index] == 'div' %}
@@ -1388,10 +1388,10 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'pos_popup_shutter' and item_pos %}
             <a href="#{{ uid(page, id) }}list_shutter_popup" data-rel="popup" data-position-to="window">
-                {{ icon.shutter(id~'list_blind_shutter', '', item_pos, min, max, item_angle) }}
+                {{ icon.shutter(uid(page, id)~'list_blind_shutter', '', item_pos, min, max, item_angle) }}
             </a>
             <div id="{{ uid(page, id) }}list_shutter_popup" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
-                {{ device.shutter('', linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) }}
+                {{ device.shutter(uid(page, id)~'shutterdevice', linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) }}
             </div>
 
       {% if elements[loop.index] == 'div' %}
@@ -1400,7 +1400,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% endif %}
 
     {% if column == 'pos_shutter' and item_pos %}
-            {{ basic.shutter('', item_pos, item_angle, min, max, step, mode, background) }}
+            {{ basic.shutter(uid(page, id)~'shutterbasic', item_pos, item_angle, min, max, step, mode, background) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1410,12 +1410,12 @@ the first one is the base color for values below first threshold, so pass one co
       <table align="center" cellpadding="0">
         <tr>
           <td rowspan="3" valign="center" class="pos">
-            {{ basic.shutter('', item_pos, item_angle, min, max, step, mode, background) }}
+            {{ basic.shutter(uid(page, id)~'shutterext', item_pos, item_angle, min, max, step, mode, background) }}
           </td>
           <td valign="top">
             {% if item_saved %}
               <div style="margin-right:5px;margin-left:5px;">
-              {{ basic.stateswitch(id~'_saved1_ext', item_saved, '', value_pos_1, '', text_pos_1, 'icon0', 'blink') }}
+              {{ basic.stateswitch(uid(page, id)~'_saved1_ext', item_saved, '', value_pos_1, '', text_pos_1, 'icon0', 'blink') }}
               &nbsp;</div>
             {% endif %}
           </td>
@@ -1424,7 +1424,7 @@ the first one is the base color for values below first threshold, so pass one co
           <td valign="bottom">
             {% if item_saved %}
               <div style="margin-right:5px;margin-left:5px;">
-              {{ basic.stateswitch(id~'_saved2_ext', item_saved, '', value_pos_2, '', text_pos_2, 'icon0', 'blink') }}
+              {{ basic.stateswitch(uid(page, id)~'_saved2_ext', item_saved, '', value_pos_2, '', text_pos_2, 'icon0', 'blink') }}
               &nbsp;</div>
             {% endif %}
           </td>
@@ -1436,26 +1436,26 @@ the first one is the base color for values below first threshold, so pass one co
     {% endif %}
 
     {% if column == 'pos' and item_saved and value_pos_2 and value_pos_1 %}
-      {{ basic.select(id, item_saved, 'mini', [value_pos_1, value_pos_2, 0], '', [text_pos_1, text_pos_2, 0], 'icon1', 'horizontal') }}
+      {{ basic.select(uid(page, id)~'pos', item_saved, 'mini', [value_pos_1, value_pos_2, 0], '', [text_pos_1, text_pos_2, 0], 'icon1', 'horizontal') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
 
     {% elseif column == 'pos1' and item_saved and value_pos_1 and 'pos' not in elements %}
-      {{ basic.stateswitch(id~'_saved1', item_saved, '', [value_pos_1, 0], '', [0, text_pos_1], 'icon0', 'blink') }}
+      {{ basic.stateswitch(uid(page, id)~'_saved1', item_saved, '', [value_pos_1, 0], '', [0, text_pos_1], 'icon0', 'blink') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
 
     {% elseif column == 'pos2' and item_saved and value_pos_2 and 'pos' not in elements %}
-      {{ basic.stateswitch(id~'_saved2', item_saved, '', [value_pos_2, 0], '', [0, text_pos_2], 'icon0', 'blink') }}
+      {{ basic.stateswitch(uid(page, id)~'_saved2', item_saved, '', [value_pos_2, 0], '', [0, text_pos_2], 'icon0', 'blink') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'pos_slider' and item_pos %}
-      {{ basic.slider(id~'list_slider', item_pos, min, max, step, 'horizontal', 'handle', min_display, max_display) }}
+      {{ basic.slider(uid(page, id)~'list_slider', item_pos, min, max, step, 'horizontal', 'handle', min_display, max_display) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1464,7 +1464,7 @@ the first one is the base color for values below first threshold, so pass one co
         {% if column == 'extpopup' and extpopup %}
             {% if extpopup[0] not in ext_elements %}
               <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
-                  {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+                  {{ basic.symbol(uid(page, id)~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
               </a>
               {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
@@ -1475,10 +1475,10 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'stateengine' and item_auto %}
             {% if extpopup[0] == 'stateengine' and stateengine is defined %}
-                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
+                {{ stateengine.state(uid(page, id)~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% elseif stateengine is defined %}
-                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                {{ stateengine.state(uid(page, id)~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
             {% if elements[loop.index] == 'div' %}
@@ -1502,7 +1502,7 @@ the first one is the base color for values below first threshold, so pass one co
                 {% set uzsu_coloron = uzsu_attribs[4]|default('') %}
                 {% set uzsu_coloroff = uzsu_attribs[5]|default('') %}
             {% endif %}
-          {{ device.uzsuicon(id~'list_uzsu', item_uzsu, linetext, uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+          {{ device.uzsuicon(uid(page, id)~'list_uzsu', item_uzsu, linetext, uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1516,9 +1516,9 @@ the first one is the base color for values below first threshold, so pass one co
           <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
         {% if item_plot is iterable  %}
-          {{ plot.period(id~'_plotpopup', item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+          {{ plot.period(uid(page, id)~'_plotpopup', item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
         {% else %}
-          {{ plot.period(id~'_plotpopup', item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
+          {{ plot.period(uid(page, id)~'_plotpopup', item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
         {% endif %}
         </div>
       {% if elements[loop.index] == 'div' %}
@@ -1883,11 +1883,11 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     <div class="quad_table row_playercontrol" id="row_{{uid(page, id)|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
     {% if item_artist %}
-    : {{ basic.print('', item_artist, 'text') }},&nbsp;
+    : {{ basic.print(uid(page, id)~'artist', item_artist, 'text') }},&nbsp;
     {% endif %}
 
     {% if item_title %}
-    {{ basic.print('', item_title, 'text') }}
+    {{ basic.print(uid(page, id)~'title', item_title, 'text') }}
     {% endif %}
     </div>
     {% for column in elements %}
@@ -1914,14 +1914,14 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
       <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}">
     {% endif %}
     {% if column == 'power' and item_power %}
-      {{ basic.stateswitch(id~'_power', item_power, 'icon', [0,1], '', '', ['icon0','icon1'], 'blink') }}
+      {{ basic.stateswitch(uid(page, id)~'_power', item_power, 'icon', [0,1], '', '', ['icon0','icon1'], 'blink') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'eject' and item_eject %}
-      {{ basic.stateswitch(id~'_eject', item_eject, 'icon', '1', 'audio_eject', '', 'icon0', '') }}
+      {{ basic.stateswitch(uid(page, id)~'_eject', item_eject, 'icon', '1', 'audio_eject', '', 'icon0', '') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1933,7 +1933,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
             {% endif %}
             <div class="quad_cover">
               <a href="#{{ uid(page, id) }}cover_popup" data-rel="popup" data-position-to="window">
-                {{ multimedia.image(id~'cover', coverUrl, 'corner', item_title|default(coverUrl), defCoverArtUrl) }}
+                {{ multimedia.image(uid(page, id)~'cover', coverUrl, 'corner', item_title|default(coverUrl), defCoverArtUrl) }}
               </a>
             </div>
             <div id="{{ uid(page, id) }}cover_popup" data-role="popup" data-overlay-theme="a" class="quad_cover-popup">
@@ -1946,69 +1946,69 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     {% endif %}
 
     {% if column == 'previous' and item_previous %}
-      {{ basic.stateswitch(id~'_prev', item_previous, 'icon', '1', 'audio_previous', '', 'icon0', '') }}
+      {{ basic.stateswitch(uid(page, id)~'_prev', item_previous, 'icon', '1', 'audio_previous', '', 'icon0', '') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'next' and item_next %}
-      {{ basic.stateswitch(id~'_prev', item_next, 'icon', '1', 'audio_next', '', 'icon0', '') }}
+      {{ basic.stateswitch(uid(page, id)~'_prev', item_next, 'icon', '1', 'audio_next', '', 'icon0', '') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'play' and item_play %}
-      {{ basic.stateswitch(id~'_play', item_play, 'icon', '1', 'audio_play', '', 'icon1', '') }}
+      {{ basic.stateswitch(uid(page, id)~'_play', item_play, 'icon', '1', 'audio_play', '', 'icon1', '') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% elseif column == 'pause' and item_pause %}
-      {{ basic.stateswitch(id~'_pause', item_pause, 'icon', '1', 'audio_pause', '', 'icon1', 'blink') }}
+      {{ basic.stateswitch(uid(page, id)~'_pause', item_pause, 'icon', '1', 'audio_pause', '', 'icon1', 'blink') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% elseif column == 'playstop' and item_play %}
-      {{ basic.stateswitch(id~'_playstop', item_play, 'icon', ['0','1'], ['audio_play', 'audio_stop'], '', ['icon0', 'icon1'], 'blink') }}
+      {{ basic.stateswitch(uid(page, id)~'_playstop', item_play, 'icon', ['0','1'], ['audio_play', 'audio_stop'], '', ['icon0', 'icon1'], 'blink') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% elseif column == 'playpause' and item_pause %}
-      {{ basic.stateswitch(id~'_playpause', item_play, 'icon', ['0','1'], ['audio_play', 'audio_pause'], '', ['icon0', 'icon1'], 'blink') }}
+      {{ basic.stateswitch(uid(page, id)~'_playpause', item_play, 'icon', ['0','1'], ['audio_play', 'audio_pause'], '', ['icon0', 'icon1'], 'blink') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% elseif column == 'playpausestop' and item_pause %}
-      {{ multimedia.playpause(id~'_playpausestop', item_play, item_pause, item_stop) }}
+      {{ multimedia.playpause(uid(page, id)~'_playpausestop', item_play, item_pause, item_stop) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'stop' and item_stop %}
-      {{ basic.stateswitch(id~'_stop', item_stop, 'icon', '1', 'audio_stop', '', 'icon0', '') }}
+      {{ basic.stateswitch(uid(page, id)~'_stop', item_stop, 'icon', '1', 'audio_stop', '', 'icon0', '') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'mute' and item_mute %}
-      {{ basic.stateswitch(id~'_mute', item_mute, 'icon', [0,1], 'audio_volume_mute', '', '', '') }}
+      {{ basic.stateswitch(uid(page, id)~'_mute', item_mute, 'icon', [0,1], 'audio_volume_mute', '', '', '') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
         {% if column == 'volume_up' and item_volumeup %}
-      {{ basic.stateswitch(id~'_volup', item_volumeup, 'icon', '1', 'audio_volume_high', '', 'icon0', '') }}
+      {{ basic.stateswitch(uid(page, id)~'_volup', item_volumeup, 'icon', '1', 'audio_volume_high', '', 'icon0', '') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'volume_down' and item_volumedown %}
-      {{ basic.stateswitch(id~'_voldown', item_volumedown, 'icon', '1', 'audio_volume_low', '', 'icon0', '') }}
+      {{ basic.stateswitch(uid(page, id)~'_voldown', item_volumedown, 'icon', '1', 'audio_volume_low', '', 'icon0', '') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'song_position' and item_duration %}
-      {{ multimedia.timeslider(id~'list_slider', item_time, item_duration, '5', 'handle') }}
+      {{ multimedia.timeslider(uid(page, id)~'list_slider', item_time, item_duration, '5', 'handle') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2030,15 +2030,15 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               {% set text_source = text_source|merge([item[2]|default('')]) %}
           {% endif %}
       {% endfor %}
-      {{ basic.select(id~'_select', item_source, type_source, value_source, pic_source, text_source, 'icon1') }}
+      {{ basic.select(uid(page, id)~'_select', item_source, type_source, value_source, pic_source, text_source, 'icon1') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'speaker' and item_speaker %}
-      {{ basic.stateswitch(id~'_speaker1', item_speaker[0], 'mini', [1,0], '', 'A', ['icon1', 'icon0'], '') }}
-      {{ basic.stateswitch(id~'_speaker1', item_speaker[1], 'mini', [1,0], '', 'B', ['icon1', 'icon0'], '') }}
+      {{ basic.stateswitch(uid(page, id)~'_speaker1', item_speaker[0], 'mini', [1,0], '', 'A', ['icon1', 'icon0'], '') }}
+      {{ basic.stateswitch(uid(page, id)~'_speaker1', item_speaker[1], 'mini', [1,0], '', 'B', ['icon1', 'icon0'], '') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2046,20 +2046,20 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 
 
     {% if column == 'repeat' and item_repeat %}
-      {{ basic.stateswitch(id~'_repeat', item_repeat, 'icon', [0,1,2], ['audio_repeat_song','audio_repeat_song','audio_repeat'], '', ['icon0','icon1','icon1'], '') }}
+      {{ basic.stateswitch(uid(page, id)~'_repeat', item_repeat, 'icon', [0,1,2], ['audio_repeat_song','audio_repeat_song','audio_repeat'], '', ['icon0','icon1','icon1'], '') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'shuffle' and item_shuffle %}
-      {{ basic.stateswitch(id~'_shuffle', item_shuffle, 'icon', [0,1,2], ['audio_shuffle','audio_shuffle','audio_shuffle_album'], '', ['icon0','icon1','icon1'], '') }}
+      {{ basic.stateswitch(uid(page, id)~'_shuffle', item_shuffle, 'icon', [0,1,2], ['audio_shuffle','audio_shuffle','audio_shuffle_album'], '', ['icon0','icon1','icon1'], '') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'volume_slider' and item_volume %}
-      {{ basic.slider(id~'list_volume', item_volume, min, max, step, 'horizontal', 'handle', volume_min_display, volume_max_display) }}
+      {{ basic.slider(uid(page, id)~'list_volume', item_volume, min, max, step, 'horizontal', 'handle', volume_min_display, volume_max_display) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2067,14 +2067,14 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 
     {% if column == 'volume_popup' and item_volume %}
       <a href="#{{ uid(page, id) }}_list_volume_popup" data-rel="popup" data-position-to="window">
-        {{ basic.print(id~'_list_vol', item_volume, volume_format, 'Math.round('~volume_min_display|default('0')~'+(('~volume_max_display|default('100')~'-'~volume_min_display|default('0')~')/('~volume_max|default('100')~'-'~volume_min|default('0')~'))*Math.max(0,VAR1-'~volume_min|default('0')~'))', volume_threshold, ['icon1', '#c00']) }}
+        {{ basic.print(uid(page, id)~'list_vol_popup_print', item_volume, volume_format, 'Math.round('~volume_min_display|default('0')~'+(('~volume_max_display|default('100')~'-'~volume_min_display|default('0')~')/('~volume_max|default('100')~'-'~volume_min|default('0')~'))*Math.max(0,VAR1-'~volume_min|default('0')~'))', volume_threshold, ['icon1', '#c00']) }}
 
       </a>
       <div id="{{ uid(page, id) }}_list_volume_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
         <div class="dimmer dimmer-left">
-          {{ basic.stateswitch('', item_mute, 'icon', [0,1], 'audio_volume_mute', '', color, indicator) }}
+          {{ basic.stateswitch(uid(page, id)~'list_vol_popup_mute', item_mute, 'icon', [0,1], 'audio_volume_mute', '', color, indicator) }}
           <p>Volume {{ linetext|e }}</p>
-          {{ basic.slider('', item_volume, volume_min, volume_max, volume_step, 'horizontal', 'handle', volume_min_display|default('0'), volume_max_display|default('100')) }}
+          {{ basic.slider(uid(page, id)~'list_vol_popup_slider', item_volume, volume_min, volume_max, volume_step, 'horizontal', 'handle', volume_min_display|default('0'), volume_max_display|default('100')) }}
         </div>
       </div>
       {% if elements[loop.index] == 'div' %}
@@ -2085,7 +2085,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
         {% if column == 'extpopup' and extpopup %}
             {% if extpopup[0] not in ext_elements %}
               <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
-                  {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+                  {{ basic.symbol(uid(page, id)~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
               </a>
               {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
@@ -2096,10 +2096,10 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 
     {% if column == 'stateengine' and item_auto %}
             {% if extpopup[0] == 'stateengine' and stateengine is defined %}
-                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
+                {{ stateengine.state(uid(page, id)~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% elseif stateengine is defined %}
-                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                {{ stateengine.state(uid(page, id)~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
             {% if elements[loop.index] == 'div' %}
@@ -2123,7 +2123,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                 {% set uzsu_coloron = uzsu_attribs[4]|default('') %}
                 {% set uzsu_coloroff = uzsu_attribs[5]|default('') %}
             {% endif %}
-          {{ device.uzsuicon(id~'list_uzsu', item_uzsu, txt, uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+          {{ device.uzsuicon(uid(page, id)~'list_uzsu', item_uzsu, txt, uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2137,9 +2137,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
         {% if item_plot is iterable  %}
-          {{ plot.period(id~'_plotpopup', item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+          {{ plot.period(uid(page, id)~'_plotpopup', item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
         {% else %}
-          {{ plot.period(id~'_plotpopup', item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
+          {{ plot.period(uid(page, id)~'_plotpopup', item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
         {% endif %}
         </div>
       {% if elements[loop.index] == 'div' %}
@@ -2415,7 +2415,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
       {% if item_auto is iterable %}
         {% set se = item_auto[0] != '' ? item_auto[0]~'.suspend_end' : item_auto[1] != '' ? item_auto[1]~'.suspend_end' : '' %}
       {% endif %}
-    {{ basic.print('', se, 'text') }}
+    {{ basic.print(uid(page, id)~'suspend_end', se, 'text') }}
     {% endif %}
     </div>
   {% for i, arrays in elements %}
@@ -2454,9 +2454,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% if column == 'switch' and item_switch[i] %}
             {% if columntext[i] %}{{ columntext[i]|e }}{% endif %}
             {% if switch_or_select[i] == 'select' or switch_or_select == 'select' %}
-              {{ basic.select(id~'_select'~z~i, item_switch[i], type[i], value[i]|default(value[i][0]), pic[i]|default(pic[i][0]), text[i]|default(text[i][0]), color_on[i]|default(''), indicator[i]) }}
+              {{ basic.select(uid(page, id)~'_select'~z~i, item_switch[i], type[i], value[i]|default(value[i][0]), pic[i]|default(pic[i][0]), text[i]|default(text[i][0]), color_on[i]|default(''), indicator[i]) }}
             {% else %}
-                  {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch[i], type[i], value[i]|default(''), pic[i]|default(''), text[i]|default(''), color[i]|default(''), indicator[i]|default(''), item_longpress[i]|default(''), value_longpress[i]|default(''), value_longrelease[i]|default('')) }}
+                  {{ basic.stateswitch(uid(page, id)~'_stateswitch'~z~i, item_switch[i], type[i], value[i]|default(''), pic[i]|default(''), text[i]|default(''), color[i]|default(''), indicator[i]|default(''), item_longpress[i]|default(''), value_longpress[i]|default(''), value_longrelease[i]|default('')) }}
             {% endif %}
             {% if arrays[loop.index] == 'div' %}
             </div>
@@ -2473,14 +2473,14 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
             {% endif %}
             {% if (item_lock and item_bwmlock) or item_force %}
               <a href="#{{ uid(page, id) }}_list_locks_popup{{z}}{{i}}" data-rel="popup">
-              {{ basic.symbol(id~'list_lockpop_on'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color[i][1]|default('icon1')) }}
-              {{ basic.symbol(id~'list_lockpop_off'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color[i][0]|default('icon0')) }}
+              {{ basic.symbol(uid(page, id)~'list_lockpop_on'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color[i][1]|default('icon1')) }}
+              {{ basic.symbol(uid(page, id)~'list_lockpop_off'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color[i][0]|default('icon0')) }}
               </a>
               {{ popup.locks(uid(page, id)~'_list_locks_popup'~z~i, [item_lock|default(''), ['icon0', color[i][1]|default('icon1')]], [item_bwmlock|default(''), ['icon0', color[i][1]|default('icon1')]], [item_force|default(''), color[i][1]|default('icon1')]) }}
             {% elseif item_lock %}
-              {{ basic.stateswitch(id~'list_lock'~z~i, item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', color[i], indicator[i]) }}
+              {{ basic.stateswitch(uid(page, id)~'list_lock'~z~i, item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', color[i], indicator[i]) }}
             {% elseif item_bwmlock %}
-              {{ basic.stateswitch(id~'list_lock'~z~i, item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', color[i], indicator[i]) }}
+              {{ basic.stateswitch(uid(page, id)~'list_lock'~z~i, item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', color[i], indicator[i]) }}
             {% endif %}
             {% if arrays[loop.index] == 'div' %}
               </div>
@@ -2500,17 +2500,17 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               {% endif %}
               <a href="#{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-rel="popup" data-position-to="window">
                   {% if slider_format == '%' %}
-                      {{ basic.print(id~'list_slider'~z~i, slider_item, '%', 'VAR1/255*100', '', color[i]) }}
+                      {{ basic.print(uid(page, id)~'list_slider'~z~i, slider_item, '%', 'VAR1/255*100', '', color[i]) }}
                   {% else %}
-                      {{ basic.print(id~'list_slider'~z~i, slider_item, slider_format, '', '', color[i]) }}
+                      {{ basic.print(uid(page, id)~'list_slider'~z~i, slider_item, slider_format, '', '', color[i]) }}
                   {% endif %}
               </a>
 
               <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
                 <div class="dimmer dimmer-left">
-                  {{ basic.stateswitch('', item_switch[i], 'icon', value[i], pic[i], '', color[i], indicator[i]) }}
+                  {{ basic.stateswitch(uid(page, id)~'list_slider_popup_switch'~z~i, item_switch[i], 'icon', value[i], pic[i], '', color[i], indicator[i]) }}
                   <p>{{ linetext|e }}</p>
-                  {{ basic.slider('', slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
+                  {{ basic.slider(uid(page, id)~'list_slider_popup_slider'~z~i, slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
                 </div>
               </div>
               {% if arrays[loop.index] == 'div' %}
@@ -2521,7 +2521,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% if column == 'extpopup' and extpopup[i]  %}
               {% if extpopup[i][0] not in ext_elements %}
                       <a href="#{{ uid(page, id) }}list_extpopup{{z}}{{i}}" data-rel="popup" data-position-to="window">
-                          {{ basic.symbol(id~'extpopupicon'~z~i, '', '', extpopup[i][0], '', '', icon_color[i][0]|default('icon0')) }}
+                          {{ basic.symbol(uid(page, id)~'extpopupicon'~z~i, '', '', extpopup[i][0], '', '', icon_color[i][0]|default('icon0')) }}
                       </a>
                       {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
 
@@ -2533,10 +2533,10 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 
           {% if column == 'stateengine' and item_auto[i] %}
             {% if extpopup[i][0] == 'stateengine' and stateengine is defined %}
-                {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                {{ stateengine.state(uid(page, id)~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
             {% elseif stateengine is defined %}
-                {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values) }}
+                {{ stateengine.state(uid(page, id)~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
             {% if arrays[loop.index] == 'div' %}
@@ -2560,7 +2560,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               {% set uzsu_coloron = uzsu_attribs[i][4]|default('') %}
               {% set uzsu_coloroff = uzsu_attribs[i][5]|default('') %}
             {% endif %}
-              {{ device.uzsuicon(id~'list_uzsu'~z~i, item_uzsu[i], columntext[i]|default(linetext), uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+              {{ device.uzsuicon(uid(page, id)~'list_uzsu'~z~i, item_uzsu[i], columntext[i]|default(linetext), uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
             {% if arrays[loop.index] == 'div' %}
               </div>
             {% endif %}
@@ -2573,9 +2573,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                 <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
               {% if item_plot[i] is iterable  %}
-                {{ plot.period(id~'_plotpopup'~z~i, item_plot[i][0], item_plot[i][1]|default('on'), item_plot[i][2]|default('12h'), item_plot[i][3]|default('now'), item_plot[i][4]|default('0'), item_plot[i][5]|default('1.2'), item_plot[i][6]|default('1000'), item_plot[i][7]|default(linetext), item_plot[i][8], item_plot[i][9]|default('stair'), item_plot[i][10]|default('["Uhrzeit", "Wert"]'), item_plot[i][11]|default('3s'), item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]|default('bool')) }}
+                {{ plot.period(uid(page, id)~'_plotpopup'~z~i, item_plot[i][0], item_plot[i][1]|default('on'), item_plot[i][2]|default('12h'), item_plot[i][3]|default('now'), item_plot[i][4]|default('0'), item_plot[i][5]|default('1.2'), item_plot[i][6]|default('1000'), item_plot[i][7]|default(linetext), item_plot[i][8], item_plot[i][9]|default('stair'), item_plot[i][10]|default('["Uhrzeit", "Wert"]'), item_plot[i][11]|default('3s'), item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]|default('bool')) }}
               {% else %}
-                {{ plot.period(id~'_plotpopup'~z~i, item_plot[i], 'on', '12h', 'now', '0', '1.2', '1000', columntext[i]|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[i][1]|default('bool')) }}
+                {{ plot.period(uid(page, id)~'_plotpopup'~z~i, item_plot[i], 'on', '12h', 'now', '0', '1.2', '1000', columntext[i]|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[i][1]|default('bool')) }}
               {% endif %}
               </div>
             {% if arrays[loop.index] == 'div' %}
@@ -2587,9 +2587,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% if column == 'switch' and item_switch %}
             {% if columntext %}{{ columntext|e }}{% endif %}
             {% if switch_or_select == 'select' %}
-              {{ basic.select(id~'_select'~z~i, item_switch, type, value|default(value[0]), pic|default(pic[0]), text|default(text[0]), color_on|default(''), indicator) }}
+              {{ basic.select(uid(page, id)~'_select'~z~i, item_switch, type, value|default(value[0]), pic|default(pic[0]), text|default(text[0]), color_on|default(''), indicator) }}
             {% else %}
-              {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch, type|default(''), value|default(''), pic|default(''), text|default(''), color|default(''), indicator|default(''), item_longpress|default(''), value_longpress|default(''), value_longrelease|default('')) }}
+              {{ basic.stateswitch(uid(page, id)~'_stateswitch'~z~i, item_switch, type|default(''), value|default(''), pic|default(''), text|default(''), color|default(''), indicator|default(''), item_longpress|default(''), value_longpress|default(''), value_longrelease|default('')) }}
             {% endif %}
             {% if arrays[loop.index] == 'div' %}
             </div>
@@ -2606,14 +2606,14 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
             {% endif %}
             {% if (item_lock and item_bwmlock) or item_force %}
               <a href="#{{ uid(page, id) }}_list_locks_popup{{z}}{{i}}" data-rel="popup">
-              {{ basic.symbol(id~'list_lockpop_on'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color[1]|default('icon1')) }}
-              {{ basic.symbol(id~'list_lockpop_off'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color[0]|default('icon0')) }}
+              {{ basic.symbol(uid(page, id)~'list_lockpop_on'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color[1]|default('icon1')) }}
+              {{ basic.symbol(uid(page, id)~'list_lockpop_off'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color[0]|default('icon0')) }}
               </a>
               {{ popup.locks(uid(page, id)~'_list_locks_popup'~z~i, [item_lock|default(''), ['icon0', color[1]|default('icon1')]], [item_bwmlock|default(''), ['icon0', color[1]|default('icon1')]], [item_force|default(''), color[1]|default('icon1')]) }}
             {% elseif item_lock %}
-              {{ basic.stateswitch(id~'list_lock'~z~i, item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', color, indicator) }}
+              {{ basic.stateswitch(uid(page, id)~'list_lock'~z~i, item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', color, indicator) }}
             {% elseif item_bwmlock %}
-              {{ basic.stateswitch(id~'list_lock'~z~i, item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', color, indicator) }}
+              {{ basic.stateswitch(uid(page, id)~'list_lock'~z~i, item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', color, indicator) }}
             {% endif %}
             {% if arrays[loop.index] == 'div' %}
               </div>
@@ -2633,17 +2633,17 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               {% endif %}
               <a href="#{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-rel="popup" data-position-to="window">
                   {% if slider_format == '%' %}
-                      {{ basic.print(id~'list_slider'~z~i, slider_item, '%', 'VAR1/255*100', '', color) }}
+                      {{ basic.print(uid(page, id)~'list_slider'~z~i, slider_item, '%', 'VAR1/255*100', '', color) }}
                   {% else %}
-                      {{ basic.print(id~'list_slider'~z~i, slider_item, slider_format, '', '', color) }}
+                      {{ basic.print(uid(page, id)~'list_slider'~z~i, slider_item, slider_format, '', '', color) }}
                   {% endif %}
               </a>
 
               <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
                 <div class="dimmer dimmer-left">
-                  {{ basic.stateswitch('', item_switch, 'icon', [0,1], pic, '', color, indicator) }}
+                  {{ basic.stateswitch(uid(page, id)~'list_slider_popup_switch'~z~i, item_switch, 'icon', [0,1], pic, '', color, indicator) }}
                   <p>{{ linetext|e }}</p> single
-                  {{ basic.slider('', slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
+                  {{ basic.slider(uid(page, id)~'list_slider_popup_slider'~z~i, slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
                 </div>
               </div>
 
@@ -2655,7 +2655,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% if column == 'extpopup' and extpopup %}
               {% if extpopup[0] not in ext_elements %}
                 <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
-                    {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+                    {{ basic.symbol(uid(page, id)~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
                 </a>
                 {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
               {% endif %}
@@ -2667,10 +2667,10 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 
           {% if column == 'stateengine' and item_auto %}
             {% if (extpopup[i][0] == 'stateengine' or extpopup[0] == 'stateengine') and stateengine is defined %}
-                {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                {{ stateengine.state(uid(page, id)~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% elseif stateengine is defined %}
-                {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                {{ stateengine.state(uid(page, id)~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
             {% if arrays[loop.index] == 'div' %}
@@ -2694,7 +2694,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               {% set uzsu_coloron = uzsu_attribs[4]|default('') %}
               {% set uzsu_coloroff = uzsu_attribs[5]|default('') %}
             {% endif %}
-              {{ device.uzsuicon(id~'list_uzsu'~z, item_uzsu, columntext|default(linetext), uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+              {{ device.uzsuicon(uid(page, id)~'list_uzsu'~z, item_uzsu, columntext|default(linetext), uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
             {% if arrays[loop.index] == 'div' %}
               </div>
             {% endif %}
@@ -2707,9 +2707,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                 <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
               {% if item_plot is iterable  %}
-                  {{ plot.period(id~'_plotpopup'~z~i, item_plot[0], item_plot[1]|default('on'), item_plot[2]|default('12h'), item_plot[3]|default('now'), item_plot[4]|default('0'), item_plot[5]|default('1.2'), item_plot[6]|default('1000'), item_plot[7]|default(linetext), item_plot[8], item_plot[9]|default('stair'), item_plot[10]|default('["Uhrzeit", "Wert"]'), item_plot[11]|default('3s'), item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]|default('bool')) }}
+                  {{ plot.period(uid(page, id)~'_plotpopup'~z~i, item_plot[0], item_plot[1]|default('on'), item_plot[2]|default('12h'), item_plot[3]|default('now'), item_plot[4]|default('0'), item_plot[5]|default('1.2'), item_plot[6]|default('1000'), item_plot[7]|default(linetext), item_plot[8], item_plot[9]|default('stair'), item_plot[10]|default('["Uhrzeit", "Wert"]'), item_plot[11]|default('3s'), item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]|default('bool')) }}
               {% else %}
-                {{ plot.period(id~'_plotpopup'~z~i, item_plot, 'on', '12h', 'now', '0', '1.2', '1000', columntext|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('bool')) }}
+                {{ plot.period(uid(page, id)~'_plotpopup'~z~i, item_plot, 'on', '12h', 'now', '0', '1.2', '1000', columntext|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('bool')) }}
               {% endif %}
               </div>
             {% if arrays[loop.index] == 'div' %}
@@ -2730,13 +2730,13 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                       {% if extpopup[i][0] == 'stateengine' %}{% set ext = i %}{% endif %}
                   {% endfor %}
                   {% if ext != 'nothing' or not ext %}
-                      {{ stateengine.state(id~'_pop_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                      {{ stateengine.state(uid(page, id)~'_pop_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                       {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[ext][1], extpopup[ext][2], extpopup[ext][3], extpopup[ext][4], extpopup[ext][5], extpopup[ext][6], extpopup[ext][7], extpopup[ext][8], extpopup[ext][9], extpopup[ext][10], extpopup[ext][11], extpopup[ext][12], extpopup[ext][13], extpopup[ext][14], extpopup[ext][15], extpopup[ext][16], extpopup[ext][17], extpopup[ext][18], extpopup[ext][19]) }}
                   {% elseif extpopup[0] == 'stateengine' %}
-                      {{ stateengine.state(id~'_pop_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                      {{ stateengine.state(uid(page, id)~'_pop_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                       {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
                   {% else %}
-                     {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                     {{ stateengine.state(uid(page, id)~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
                   {% endif %}
 
                   {% if arrays[loop.index] == 'div' %}
@@ -2759,7 +2759,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                       {% set uzsu_coloron = uzsu_attribs[4]|default('') %}
                       {% set uzsu_coloroff = uzsu_attribs[5]|default('') %}
                   {% endif %}
-                      {{ device.uzsuicon(id~'list_uzsu'~z~i, item_uzsu, columntext|default(linetext), uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+                      {{ device.uzsuicon(uid(page, id)~'list_uzsu'~z~i, item_uzsu, columntext|default(linetext), uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
                   {% if arrays[loop.index] == 'div' %}
                       </div>
                   {% endif %}
@@ -2771,9 +2771,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                       <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{z}}{{i}}" data-role="popup">
                         <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                       {% if item_plot is iterable  %}
-                          {{ plot.period(id~'_plotpopup'~z~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+                          {{ plot.period(uid(page, id)~'_plotpopup'~z~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
                       {% else %}
-                          {{ plot.period(id~'_plotpopup'~z~i, item_plot, 'avg', '12h', 'now', '', '', '', columntext|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
+                          {{ plot.period(uid(page, id)~'_plotpopup'~z~i, item_plot, 'avg', '12h', 'now', '', '', '', columntext|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
                       {% endif %}
                       </div>
                   {% if arrays[loop.index] == 'div' %}
@@ -2872,10 +2872,10 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
         {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_input' }}" data-order={{ column_order[i]|default(i+1) }}>
       {% if item is iterable and item[i] == ' ' %}
       {% elseif runs > 0 %}{{ columntext[i]|e }}
-        {{ basic.input('', item[i], type[i], min[i], max[i], step[i]) }}
+        {{ basic.input(uid(page, id)~'list_input'~i, item[i], type[i], min[i], max[i], step[i]) }}
       {% else %}
         {{ columntext|e }}
-        {{ basic.input('', item, type, min, max, step) }}
+        {{ basic.input(uid(page, id)~'list_input', item, type, min, max, step) }}
       {% endif %}
     </div>
     {% endfor %}
