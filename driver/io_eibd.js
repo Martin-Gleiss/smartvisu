@@ -138,9 +138,9 @@ var io = {
 	convertData: function (inputData, dataType, direction) {
 
 		var returnData = inputData;
-		if (dataType == '9.xxx') {
+		if (dataType === '9.xxx') {
 
-			if (direction == 'from') {
+			if (direction === 'from') {
 
 				data = parseInt(inputData, 16).toString(10);
 				wert = (data & 0x07ff);
@@ -188,26 +188,26 @@ var io = {
 
 			}
 		}
-		else if (dataType == '1.001') {
-			if (direction == 'to') {
+		else if (dataType === '1.001') {
+			if (direction === 'to') {
 
 				returnData = '8' + inputData;
 			}
 		}
-		else if (dataType = '13.xx') {
+		else if (dataType === '13.xxx') {
 
 			returnData = parseInt(inputData, 16);
 		}
-		else if (dataType == '5.001') {
+		else if (dataType === '5.001') {
 
-			if (direction == 'from') {
+			if (direction === 'from') {
 
 				returnData = inputData;
 				//returnData = Math.round(parseInt(inputData, 10) / 2.55);
 
 
 			}
-			else if (direction == 'to') {
+			else if (direction === 'to') {
 
 				returnData = inputData;
 				returnData = Math.round(inputData * 2.55) + 0x8000;
