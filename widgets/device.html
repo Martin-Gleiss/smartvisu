@@ -86,7 +86,7 @@
 */
 {% macro codepad(id, code, title, duration) %}
 
-	<div id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="device.codepad" data-val="{{ code|default(config_codepad_code)|md5 }}" data-duration="{{ duration|default('10') }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-id="{{ id }}" data-widget="device.codepad" data-val="{{ code|default(config_codepad_code)|md5 }}" data-duration="{{ duration|default('10') }}"
 		data-role="popup" data-overlay-theme="a" class="alert" style="width: 166px;" >
 		<div data-role="header" data-theme="c"><h1>{{ title|default('Enter Code') }}</h1></div>
 

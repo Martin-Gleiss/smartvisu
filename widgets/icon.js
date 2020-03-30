@@ -14,6 +14,7 @@ $.widget("sv.dynicon", $.sv.widget, {
 		var max = this.options.max;
 		var min = this.options.min;
 		var percent = Math.round(response[1] == 0 ? 0 : Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 100);
+		var percent = Number.isNaN(percent) ? 0 : percent;
 		this.element.attr('alt', this.options.widget.substr(5) + ' ' + percent+'%').attr('title', percent+'%').children('title').remove().end().prepend('<title>'+percent+'%</title>');
 	},
 

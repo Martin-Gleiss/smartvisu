@@ -45,7 +45,7 @@
         {% endif %}
       {% endfor %}
   {% endfor %}
-    <div id="{{ id }}" data-role="popup" data-overlay-theme="a" class="ext-popup{{ class }}">
+    <div {% if not id is empty %} id="{{ id }}"{% endif %} data-role="popup" data-overlay-theme="a" class="ext-popup{{ class }}">
       <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
     <ul data-role="listview" data-dividertheme="c" class="popup_list">
     {% for linenumber in 1..20 %}
@@ -130,7 +130,7 @@
   */
 {% macro locks(id, lock, bwm_lock, force, seq_lock) %}
     {% import "basic.html" as basic %}
-  <div id="{{id}}" data-role="popup" data-overlay-theme="a" class="locks-popup" style="text-align:center;">
+  <div {% if not id is empty %} id="{{ id }}"{% endif %} data-role="popup" data-overlay-theme="a" class="locks-popup" style="text-align:center;">
   <div style="margin:auto;text-align:center;display:inline-block;">
     {% if (lock is not iterable and lock != '') or (lock is iterable and lock[0] != '') %}
     <div style="float:left;" class="popup_list">

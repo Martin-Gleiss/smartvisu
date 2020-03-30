@@ -2089,6 +2089,10 @@ svg.fx-icon, .icon {
   .base .primary {
     width: 100%;
   }
+
+  .base .secondary {
+    width: 100%;
+  }
 }
 
 

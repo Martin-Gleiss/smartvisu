@@ -41,7 +41,7 @@
 */
 {% macro image(id, src, mode, refresh, default_img) %}
 
-	<img id="{{ uid(page, id) }}" data-widget="multimedia.image" alt="multimedia.image"
+	<img {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.image" alt="multimedia.image"
 		{% if mode == 'corner' %}
 			class="ui-corner-all"
 		{% elseif mode == 'corner-bottom' %}
@@ -81,7 +81,7 @@
 	{% import "basic.html" as basic %}
 	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}" class="music">
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} class="music">
 
 		{% if item_vol %}
 			<div class="vol">
@@ -182,7 +182,7 @@
 	{% import "basic.html" as basic %}
 	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}" class="station">
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} class="station">
 		{{ basic.stateswitch(id, item, type|default('mini'), val, pic) }}
 	</div>
 {% endmacro %}
@@ -198,7 +198,7 @@
 * @param {text(input,handle,both,none)=input} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'input')
 */
 {% macro timeslider(id, time, play, duration, step, value_display) %}
-    <input id="{{ uid(page, id) }}" data-widget="multimedia.timeslider" data-item="{{ time }}, {{ duration }}, {{ play }}"
+    <input {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.timeslider" data-item="{{ time }}, {{ duration }}, {{ play }}"
         type="range" value="0" min="0" max="1" disabled="1" step="{{ step|default(5) }}" timer="{{ step|default(5) }}"
         orientation="horizontal" handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" data-highlight="true" />
 {% endmacro %}
@@ -219,7 +219,7 @@
 */
 {% macro playpause(id, item_play, item_pause, item_stop) %}
     {% import "basic.html" as basic %}
-    <span id="{{ uid(page, id) }}" data-widget="multimedia.playpause" data-item="{{ item_play }},{{ item_pause }},{{ item_stop }}" class="icon0 ui-link switch" data-val="0">
+    <span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.playpause" data-item="{{ item_play }},{{ item_pause }},{{ item_stop }}" class="icon0 ui-link switch" data-val="0">
     <a>
     {{ basic.icon('audio_stop', 'icon0') }}
     </a>

@@ -268,9 +268,9 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
     {% import "device.html" as device %}
-    {% set id = id is empty ? item_actual : id %}
+    {% set id = id is empty ? item_actual|replace('.', '_') : id %}
     <li data-icon="false" class="row_rtr">
-    <div class="quad_table sorting row_rtr" id="row_{{uid(page, id)|replace('.', '_')}}_sorting"">
+    <div class="quad_table sorting row_rtr" id="row_{{uid(page, id)}}_sorting"">
         <div class="text">{{ linetext|e }}</div>
         <div class="column{{ column_order[0]|default(1) }} column_rtr_actual" data-order={{ column_order[0]|default(1) }}>
           {{ basic.print(id~'_actual_value', item_actual, '°') }}
@@ -294,6 +294,7 @@ the first one is the base color for values below first threshold, so pass one co
                 {{ basic.print(id~'_set', item_set, '°') }}
             </a>
             <div id="{{ uid(page, id) }}list_rtr_popup" data-role="popup" data-overlay-theme="a" class="quad_rtr-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                 {{ device.rtr(id~'rtr', linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator) }}
             </div>
         </div>
@@ -478,7 +479,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% set ext_elements = ext_elements|merge([(string)]) %}
 {% endfor %}
 
-{% set id = id is empty ? item_switch : id %}
+{% set id = id is empty ? item_switch|replace('.', '_') : id %}
 
 /**
 <div>
@@ -489,10 +490,10 @@ the first one is the base color for values below first threshold, so pass one co
 */
     <li data-icon="false" class="row_dimmer">
 
-    <div class="quad_table row_dimmer" id="row_{{uid(page, id)|replace('.', '_')}}">
+    <div class="quad_table row_dimmer" id="row_{{uid(page, id)}}">
   <div class="text" data-order=0>{{ linetext|e }}
   {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
-  {{ basic.print('', item_auto~'.suspend_end', 'text') }}
+  {{ basic.print(id~'dimmerprint', item_auto~'.suspend_end', 'text') }}
   {% endif %}
   </div>
 
@@ -569,12 +570,13 @@ the first one is the base color for values below first threshold, so pass one co
                 {% endif %}
             </a>
             <div id="{{ uid(page, id) }}_list_dimmer_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+			  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
               <div class="quad_dimmer">
-                {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                {{ basic.stateswitch('', item_switch, 'icon', [0,1], [pic_off|default('light_light'), pic_on|default('light_light')], '', [color_off, color_on], indicator) }}
+                {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+                {{ basic.stateswitch(id~'dimmerpopup_switch', item_switch, 'icon', [0,1], [pic_off|default('light_light'), pic_on|default('light_light')], '', [color_off, color_on], indicator) }}
                 <p>{{ linetext|e }}</p>
-                {{ basic.slider('', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
-                </span>
+                {{ basic.slider(id~'dimmerpopup_slider', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
+                </div>
               </div>
             </div>
 
@@ -852,7 +854,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% set ext_elements = ext_elements|merge([(string)]) %}
 {% endfor %}
 
-{% set id = id is empty ? item_value_r : id %}
+{% set id = id is empty ? item_value_r|replace('.', '_') : id %}
 
 /**
 <div>
@@ -863,10 +865,10 @@ the first one is the base color for values below first threshold, so pass one co
 */
 
     <li data-icon="false" class="row_color">
-    <div class="quad_table row_color" id="row_{{uid(page, id)|replace('.', '_')}}">
+    <div class="quad_table row_color" id="row_{{uid(page, id)}}">
     <div class="text">{{ linetext|e }}
     {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
-    {{ basic.print('', item_auto~'.suspend_end', 'text') }}
+    {{ basic.print(id~'suspend_end', item_auto~'.suspend_end', 'text') }}
     {% endif %}
     </div>
     {% for column in elements %}
@@ -943,17 +945,18 @@ the first one is the base color for values below first threshold, so pass one co
 
     {% if column == 'ww_popup' and item_value_ww  %}
       <a href="#{{ uid(page, id) }}_list_ww_popup" data-rel="popup" data-position-to="window">
-      {{ basic.symbol(id~'list_ww_on', item_switch_ww, '', icon.light('','',item_value_ww,min_display,max_display), 1, '', '#aaaa00') }}
-      {{ basic.symbol(id~'list_ww_off', item_switch_ww, '', icon.light('','',item_value_ww,min_display,max_display), 0, '', '#888800') }}
+      {{ basic.symbol(id~'list_ww_on', item_switch_ww, '', icon.light(id~'list_ww_icon_on', '', item_value_ww, min_display, max_display), 1, '', '#aaaa00') }}
+      {{ basic.symbol(id~'list_ww_off', item_switch_ww, '', icon.light(id~'list_ww_icon_off', '', item_value_ww, min_display, max_display), 0, '', '#888800') }}
       </a>
 
       <div id="{{ uid(page, id) }}_list_ww_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+	    <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
         <div class="quad_dimmer">
-          {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-          {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(),icon.light('','',item_value_ww,min_display,max_display)], '', ['#888800','#aaaa00'], indicator) }}
+          {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+          {{ basic.stateswitch(id~'switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(id~'list_ww_switch_icon_off'), icon.light(id~'list_ww_switch_icon_on', '', item_value_ww, min_display, max_display)], '', ['#888800','#aaaa00'], indicator) }}
           <p>Warm White</p>
-          {{ basic.slider('', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
-          </span>
+          {{ basic.slider(id~'slider_ww', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
+          </div>
         </div>
       </div>
 
@@ -973,51 +976,53 @@ the first one is the base color for values below first threshold, so pass one co
             </a>
             {% if popupcolor == 'hsv' %}
                 <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww  != ' ' ? 'quad_hsvww-popup' : 'quad_hsv-popup' }}">
+				  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                   <div class="quad_dimmer">
                   <p>Hue, Saturation, Value</p>
-                    {{ basic.color('', item_value_r, item_value_g, item_value_b, min, max, step, '10', 'slider') }}
+                    {{ basic.color(id~'popup_color', item_value_r, item_value_g, item_value_b, min, max, step, '10', 'slider') }}
                     {% if item_value_ww and item_value_ww  != ' ' %}
                     <div class="quad_dimmer">
-                      {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                      {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light('','',item_value_ww,min_display,max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
+                      {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+                      {{ basic.stateswitch(id~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(id~'list_ww_switch_icon_off_color'), icon.light(id~'list_ww_switch_icon_on_color', '', item_value_ww, min_display, max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
-                      {{ basic.slider('', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
-                      </span>
+                      {{ basic.slider(id~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                      </div>
                     </div>
                     {% endif %}
                 </div>
               </div>
             {% else %}
 
-            <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
+				  <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
+				  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                   <div class="quad_dimmer">
-                    {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                    {{ basic.stateswitch('', item_switch_r, 'icon', [0,1], [icon.light(), icon.light("","",item_value_r,min_display,max_display)], '', [color_off|default('icon0'), 'red'], indicator) }}
+                    {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+                    {{ basic.stateswitch(id~'popup_switch_r', item_switch_r, 'icon', [0,1], [icon.light(id~'list_r_switch_icon_off'), icon.light(id~'list_r_switch_icon_on', '', item_value_r, min_display, max_display)], '', [color_off|default('icon0'), 'red'], indicator) }}
                     <p>{{ linetext|e }} red</p>
-                    {{ basic.slider('', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
-                    </span>
+                    {{ basic.slider(id~'popup_slider_r', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    </div>
                   </div>
                   <div class="quad_dimmer">
-                    {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                    {{ basic.stateswitch('', item_switch_g, 'icon', [0,1], [icon.light(), icon.light("","",item_value_g,min_display,max_display)], '', [color_off|default('icon0'), 'green'], indicator) }}
+                    {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+                    {{ basic.stateswitch(id~'popup_switch_g', item_switch_g, 'icon', [0,1], [icon.light(id~'list_g_switch_icon_off'), icon.light(id~'list_g_switch_icon_on', '', item_value_g, min_display, max_display)], '', [color_off|default('icon0'), 'green'], indicator) }}
                     <p>{{ linetext|e }} green</p>
-                    {{ basic.slider('', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
-                    </span>
+                    {{ basic.slider(id~'popup_slider_g', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    </div>
                   </div>
                   <div class="quad_dimmer">
-                    {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                    {{ basic.stateswitch('', item_switch_b, 'icon', [0,1], [icon.light(), icon.light("","",item_value_b,min_display,max_display)], '', [color_off|default('icon0'), 'blue'], indicator) }}
+                    {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+                    {{ basic.stateswitch(id~'popup_switch_b', item_switch_b, 'icon', [0,1], [icon.light(id~'list_b_switch_icon_off'), icon.light(id~'list_b_switch_icon_on', '', item_value_b, min_display, max_display)], '', [color_off|default('icon0'), 'blue'], indicator) }}
                     <p>{{ linetext|e }} blue</p>
-                    {{ basic.slider('', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
-                    </span>
+                    {{ basic.slider(id~'popup_slider_b', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    </div>
                   </div>
                 {% if item_value_ww and item_value_ww  != ' ' %}
                     <div class="quad_dimmer">
-                      {% if picpos is empty or picpos=='left' %}<span class="dimmer-left"> {% else %} <span class="dimmer-right"> {% endif %}
-                      {{ basic.stateswitch('', item_switch_ww, 'icon', [0,1], [icon.light(), icon.light("","",item_value_ww,min_display,max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
+                      {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+                      {{ basic.stateswitch(id~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(id~'list_ww_switch_icon_off'), icon.light(id~'list_ww_switch_icon_on', '', item_value_ww, min_display, max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
-                      {{ basic.slider('', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
-                      </span>
+                      {{ basic.slider(id~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                      </div>
                     </div>
               {% endif %}
             </div>
@@ -1312,7 +1317,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% set ext_elements = ext_elements|merge([(string)]) %}
 {% endfor %}
 
-{% set id = id is empty ? item_move : id %}
+{% set id = id is empty ? item_move|replace('.', '_') : id %}
 
 /**
 <div>
@@ -1322,10 +1327,10 @@ the first one is the base color for values below first threshold, so pass one co
 </div>
 */
     <li data-icon="false" class="row_shutter">
-    <div class="quad_table row_shutter" id="row_{{uid(page, id)|replace('.', '_')}}">
+    <div class="quad_table row_shutter" id="row_{{uid(page, id)}}">
     <div class="text">{{ linetext|e }}
     {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
-    {{ basic.print('', item_auto~'.suspend_end', 'text') }}
+    {{ basic.print(id~'suspend_end', item_auto~'.suspend_end', 'text') }}
     {% endif %}
     </div>
     {% for column in elements %}
@@ -1353,14 +1358,14 @@ the first one is the base color for values below first threshold, so pass one co
     {% endif %}
 
     {% if column == 'move_down' and item_move %}
-      {{ basic.stateswitch(id, item_stop, '', max < min ? 0 : 1, 'control_arrow_down', '', '', 'blink', item_move, max < min ? 0 : 1) }}
+      {{ basic.stateswitch(id~'_down', item_stop, '', max < min ? 0 : 1, 'control_arrow_down', '', '', 'blink', item_move, max < min ? 0 : 1) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'move_up' and item_move %}
-      {{ basic.stateswitch(id, item_stop, '', max < min ? 1 : 0, 'control_arrow_up', '', '', 'blink', item_move, max < min ? 1 : 0) }}
+      {{ basic.stateswitch(id~'_up', item_stop, '', max < min ? 1 : 0, 'control_arrow_up', '', '', 'blink', item_move, max < min ? 1 : 0) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1378,7 +1383,8 @@ the first one is the base color for values below first threshold, so pass one co
                 {{ icon.shutter(id~'list_blind_blind', '', item_pos, min, max) }}
             </a>
             <div id="{{ uid(page, id) }}list_blind_popup" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
-              {{ device.blind('', linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step) }}
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+              {{ device.blind(id~'blinddevice', linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step) }}
             </div>
 
       {% if elements[loop.index] == 'div' %}
@@ -1391,7 +1397,8 @@ the first one is the base color for values below first threshold, so pass one co
                 {{ icon.shutter(id~'list_blind_shutter', '', item_pos, min, max, item_angle) }}
             </a>
             <div id="{{ uid(page, id) }}list_shutter_popup" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
-                {{ device.shutter('', linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) }}
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                {{ device.shutter(id~'shutterdevice', linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) }}
             </div>
 
       {% if elements[loop.index] == 'div' %}
@@ -1400,7 +1407,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% endif %}
 
     {% if column == 'pos_shutter' and item_pos %}
-            {{ basic.shutter('', item_pos, item_angle, min, max, step, mode, background) }}
+            {{ basic.shutter(id~'shutterbasic', item_pos, item_angle, min, max, step, mode, background) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1410,7 +1417,7 @@ the first one is the base color for values below first threshold, so pass one co
       <table align="center" cellpadding="0">
         <tr>
           <td rowspan="3" valign="center" class="pos">
-            {{ basic.shutter('', item_pos, item_angle, min, max, step, mode, background) }}
+            {{ basic.shutter(id~'shutterext', item_pos, item_angle, min, max, step, mode, background) }}
           </td>
           <td valign="top">
             {% if item_saved %}
@@ -1436,7 +1443,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% endif %}
 
     {% if column == 'pos' and item_saved and value_pos_2 and value_pos_1 %}
-      {{ basic.select(id, item_saved, 'mini', [value_pos_1, value_pos_2, 0], '', [text_pos_1, text_pos_2, 0], 'icon1', 'horizontal') }}
+      {{ basic.select(id~'pos', item_saved, 'mini', [value_pos_1, value_pos_2, 0], '', [text_pos_1, text_pos_2, 0], 'icon1', 'horizontal') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1870,7 +1877,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     {% set ext_elements = ext_elements|merge([(string)]) %}
 {% endfor %}
 
-{% set id = id is empty ? item_play : id %}
+{% set id = id is empty ? item_play|replace('.', '_') : id %}
 
 <div>
 {% for column in elements %}
@@ -1880,14 +1887,14 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 */
 
     <li data-icon="false" class="row_playercontrol">
-    <div class="quad_table row_playercontrol" id="row_{{uid(page, id)|replace('.', '_')}}">
+    <div class="quad_table row_playercontrol" id="row_{{uid(page, id)}}">
     <div class="text">{{ linetext|e }}
     {% if item_artist %}
-    : {{ basic.print('', item_artist, 'text') }},&nbsp;
+    : {{ basic.print(id~'artist', item_artist, 'text') }},&nbsp;
     {% endif %}
 
     {% if item_title %}
-    {{ basic.print('', item_title, 'text') }}
+    {{ basic.print(id~'title', item_title, 'text') }}
     {% endif %}
     </div>
     {% for column in elements %}
@@ -1937,7 +1944,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               </a>
             </div>
             <div id="{{ uid(page, id) }}cover_popup" data-role="popup" data-overlay-theme="a" class="quad_cover-popup">
-              {{ multimedia.image(uid(page, id)~'cover_popup', coverUrl, 'corner', item_title|default(coverUrl), defCoverArtUrl) }}
+              {{ multimedia.image(id~'cover_popup', coverUrl, 'corner', item_title|default(coverUrl), defCoverArtUrl) }}
             </div>
 
       {% if elements[loop.index] == 'div' %}
@@ -2067,14 +2074,15 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 
     {% if column == 'volume_popup' and item_volume %}
       <a href="#{{ uid(page, id) }}_list_volume_popup" data-rel="popup" data-position-to="window">
-        {{ basic.print(id~'_list_vol', item_volume, volume_format, 'Math.round('~volume_min_display|default('0')~'+(('~volume_max_display|default('100')~'-'~volume_min_display|default('0')~')/('~volume_max|default('100')~'-'~volume_min|default('0')~'))*Math.max(0,VAR1-'~volume_min|default('0')~'))', volume_threshold, ['icon1', '#c00']) }}
+        {{ basic.print(id~'list_vol_popup_print', item_volume, volume_format, 'Math.round('~volume_min_display|default('0')~'+(('~volume_max_display|default('100')~'-'~volume_min_display|default('0')~')/('~volume_max|default('100')~'-'~volume_min|default('0')~'))*Math.max(0,VAR1-'~volume_min|default('0')~'))', volume_threshold, ['icon1', '#c00']) }}
 
       </a>
       <div id="{{ uid(page, id) }}_list_volume_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+		<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
         <div class="dimmer dimmer-left">
-          {{ basic.stateswitch('', item_mute, 'icon', [0,1], 'audio_volume_mute', '', color, indicator) }}
+          {{ basic.stateswitch(id~'list_vol_popup_mute', item_mute, 'icon', [0,1], 'audio_volume_mute', '', color, indicator) }}
           <p>Volume {{ linetext|e }}</p>
-          {{ basic.slider('', item_volume, volume_min, volume_max, volume_step, 'horizontal', 'handle', volume_min_display|default('0'), volume_max_display|default('100')) }}
+          {{ basic.slider(id~'list_vol_popup_slider', item_volume, volume_min, volume_max, volume_step, 'horizontal', 'handle', volume_min_display|default('0'), volume_max_display|default('100')) }}
         </div>
       </div>
       {% if elements[loop.index] == 'div' %}
@@ -2415,16 +2423,16 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
       {% if item_auto is iterable %}
         {% set se = item_auto[0] != '' ? item_auto[0]~'.suspend_end' : item_auto[1] != '' ? item_auto[1]~'.suspend_end' : '' %}
       {% endif %}
-    {{ basic.print('', se, 'text') }}
+    {{ basic.print(id~'suspend_end', se, 'text') }}
     {% endif %}
     </div>
   {% for i, arrays in elements %}
     {% set columnnumber = columnnumber+1 %}
     {% set ext = 'nothing' %}
     {% if item_switch is iterable %}
-      {% set id = id is empty ? item_switch[i] : id %}
+      {% set id = id is empty ? item_switch[i]|replace('.', '_') : id %}
     {% else %}
-      {% set id = id is empty ? item_switch : id %}
+      {% set id = id is empty ? item_switch|replace('.', '_') : id %}
     {% endif %}
     {% for z,column in arrays %}
       {% set ext = 'nothing' %}
@@ -2507,10 +2515,11 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               </a>
 
               <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                 <div class="dimmer dimmer-left">
-                  {{ basic.stateswitch('', item_switch[i], 'icon', value[i], pic[i], '', color[i], indicator[i]) }}
+                  {{ basic.stateswitch(id~'list_slider_popup_switch'~z~i, item_switch[i], 'icon', value[i], pic[i], '', color[i], indicator[i]) }}
                   <p>{{ linetext|e }}</p>
-                  {{ basic.slider('', slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
+                  {{ basic.slider(id~'list_slider_popup_slider'~z~i, slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
                 </div>
               </div>
               {% if arrays[loop.index] == 'div' %}
@@ -2573,7 +2582,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                 <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
               {% if item_plot[i] is iterable  %}
-                {{ plot.period(id~'_plotpopup'~z~i, item_plot[i][0], item_plot[i][1]|default('on'), item_plot[i][2]|default('12h'), item_plot[i][3]|default('now'), item_plot[i][4]|default('0'), item_plot[i][5]|default('1.2'), item_plot[i][6]|default('1000'), item_plot[i][7]|default(linetext), item_plot[i][8], item_plot[i][9]|default('stair'), item_plot[i][10]|default('["Uhrzeit", "Wert"]'), item_plot[i][11]|default('3s'), item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]|default('bool')) }}
+                {{ plot.period(id~'_plotpopup'~z~i, item_plot[i][0], item_plot[i][1]|default('on'), item_plot[i][2]|default('12h'), item_plot[i][3]|default('now'), item_plot[i][4]|default('0'), item_plot[i][5]|default('1.2'), item_plot[i][6]|default('1000'), item_plot[i][7]|default(linetext), item_plot[i][8], item_plot[i][9]|default('stair'), item_plot[i][10]|default(['Uhrzeit', 'Wert']), item_plot[i][11]|default('3s'), item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]|default('bool')) }}
               {% else %}
                 {{ plot.period(id~'_plotpopup'~z~i, item_plot[i], 'on', '12h', 'now', '0', '1.2', '1000', columntext[i]|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[i][1]|default('bool')) }}
               {% endif %}
@@ -2640,10 +2649,11 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               </a>
 
               <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                 <div class="dimmer dimmer-left">
-                  {{ basic.stateswitch('', item_switch, 'icon', [0,1], pic, '', color, indicator) }}
+                  {{ basic.stateswitch(id~'list_slider_popup_switch'~z~i, item_switch, 'icon', [0,1], pic, '', color, indicator) }}
                   <p>{{ linetext|e }}</p> single
-                  {{ basic.slider('', slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
+                  {{ basic.slider(id~'list_slider_popup_slider'~z~i, slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
                 </div>
               </div>
 
@@ -2707,7 +2717,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                 <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
               {% if item_plot is iterable  %}
-                  {{ plot.period(id~'_plotpopup'~z~i, item_plot[0], item_plot[1]|default('on'), item_plot[2]|default('12h'), item_plot[3]|default('now'), item_plot[4]|default('0'), item_plot[5]|default('1.2'), item_plot[6]|default('1000'), item_plot[7]|default(linetext), item_plot[8], item_plot[9]|default('stair'), item_plot[10]|default('["Uhrzeit", "Wert"]'), item_plot[11]|default('3s'), item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]|default('bool')) }}
+                  {{ plot.period(id~'_plotpopup'~z~i, item_plot[0], item_plot[1]|default('on'), item_plot[2]|default('12h'), item_plot[3]|default('now'), item_plot[4]|default('0'), item_plot[5]|default('1.2'), item_plot[6]|default('1000'), item_plot[7]|default(linetext), item_plot[8], item_plot[9]|default('stair'), item_plot[10]|default(['Uhrzeit', 'Wert']), item_plot[11]|default('3s'), item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]|default('bool')) }}
               {% else %}
                 {{ plot.period(id~'_plotpopup'~z~i, item_plot, 'on', '12h', 'now', '0', '1.2', '1000', columntext|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('bool')) }}
               {% endif %}
@@ -2862,9 +2872,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 */
 {% macro input(id, item, type, min, max, step, place1, place2, linetext, columntext, column_order) %}
     {% import "basic.html" as basic %}
-    {% set id = id is empty ? item : id %}
+    {% set id = id is empty ? item|replace('.', '_') : id %}
     <li data-icon="false" class="row_input">
-    <div class="quad_table sorting row_input" id="row_{{uid(page, id)|replace('.', '_')}}_sorting">
+    <div class="quad_table sorting row_input" id="row_{{uid(page, id)}}_sorting">
         <div class="text">{{ linetext|e }} </div>
         {% set runs = item is iterable ? max((item|length-1),0 ) : 0 %}
     {% for i in 0..runs %}
@@ -2872,10 +2882,10 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
         {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_input' }}" data-order={{ column_order[i]|default(i+1) }}>
       {% if item is iterable and item[i] == ' ' %}
       {% elseif runs > 0 %}{{ columntext[i]|e }}
-        {{ basic.input('', item[i], type[i], min[i], max[i], step[i]) }}
+        {{ basic.input(id~'list_input'~i, item[i], type[i], min[i], max[i], step[i]) }}
       {% else %}
         {{ columntext|e }}
-        {{ basic.input('', item, type, min, max, step) }}
+        {{ basic.input(id~'list_input', item, type, min, max, step) }}
       {% endif %}
     </div>
     {% endfor %}
