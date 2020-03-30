@@ -2573,7 +2573,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                 <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
               {% if item_plot[i] is iterable  %}
-                {{ plot.period(uid(page, id)~'_plotpopup'~z~i, item_plot[i][0], item_plot[i][1]|default('on'), item_plot[i][2]|default('12h'), item_plot[i][3]|default('now'), item_plot[i][4]|default('0'), item_plot[i][5]|default('1.2'), item_plot[i][6]|default('1000'), item_plot[i][7]|default(linetext), item_plot[i][8], item_plot[i][9]|default('stair'), item_plot[i][10]|default('["Uhrzeit", "Wert"]'), item_plot[i][11]|default('3s'), item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]|default('bool')) }}
+                {{ plot.period(uid(page, id)~'_plotpopup'~z~i, item_plot[i][0], item_plot[i][1]|default('on'), item_plot[i][2]|default('12h'), item_plot[i][3]|default('now'), item_plot[i][4]|default('0'), item_plot[i][5]|default('1.2'), item_plot[i][6]|default('1000'), item_plot[i][7]|default(linetext), item_plot[i][8], item_plot[i][9]|default('stair'), item_plot[i][10]|default(['Uhrzeit', 'Wert']), item_plot[i][11]|default('3s'), item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]|default('bool')) }}
               {% else %}
                 {{ plot.period(uid(page, id)~'_plotpopup'~z~i, item_plot[i], 'on', '12h', 'now', '0', '1.2', '1000', columntext[i]|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[i][1]|default('bool')) }}
               {% endif %}
@@ -2707,7 +2707,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                 <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
               {% if item_plot is iterable  %}
-                  {{ plot.period(uid(page, id)~'_plotpopup'~z~i, item_plot[0], item_plot[1]|default('on'), item_plot[2]|default('12h'), item_plot[3]|default('now'), item_plot[4]|default('0'), item_plot[5]|default('1.2'), item_plot[6]|default('1000'), item_plot[7]|default(linetext), item_plot[8], item_plot[9]|default('stair'), item_plot[10]|default('["Uhrzeit", "Wert"]'), item_plot[11]|default('3s'), item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]|default('bool')) }}
+                  {{ plot.period(uid(page, id)~'_plotpopup'~z~i, item_plot[0], item_plot[1]|default('on'), item_plot[2]|default('12h'), item_plot[3]|default('now'), item_plot[4]|default('0'), item_plot[5]|default('1.2'), item_plot[6]|default('1000'), item_plot[7]|default(linetext), item_plot[8], item_plot[9]|default('stair'), item_plot[10]|default(['Uhrzeit', 'Wert']), item_plot[11]|default('3s'), item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]|default('bool')) }}
               {% else %}
                 {{ plot.period(uid(page, id)~'_plotpopup'~z~i, item_plot, 'on', '12h', 'now', '0', '1.2', '1000', columntext|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('bool')) }}
               {% endif %}
