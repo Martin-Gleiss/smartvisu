@@ -2090,9 +2090,10 @@ svg.fx-icon, .icon {
     width: 100%;
   }
 
+/* uncomment if menu shall be displayed below the room pages
   .base .secondary {
     width: 100%;
-  }
+  }  */
 }
 
 
