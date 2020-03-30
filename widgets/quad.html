@@ -294,6 +294,7 @@ the first one is the base color for values below first threshold, so pass one co
                 {{ basic.print(id~'_set', item_set, '°') }}
             </a>
             <div id="{{ uid(page, id) }}list_rtr_popup" data-role="popup" data-overlay-theme="a" class="quad_rtr-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                 {{ device.rtr(id~'rtr', linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator) }}
             </div>
         </div>
@@ -534,7 +535,7 @@ the first one is the base color for values below first threshold, so pass one co
         {{ basic.symbol(id~'list_lockpop_on', [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color_on) }}
         {{ basic.symbol(id~'list_lockpop_off', [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color_off) }}
         </a>
-        {{ popup.locks(id~'_list_locks_popup', [item_lock|default(''), [color_off|default('icon0'), color_on|default('icon1')]], [item_bwmlock|default(''), [color_off|default('icon0'), color_on|default('icon1')]], [item_force|default(''), color_on|default('icon1')]) }}
+        {{ popup.locks(uid(page, id)~'_list_locks_popup', [item_lock|default(''), [color_off|default('icon0'), color_on|default('icon1')]], [item_bwmlock|default(''), [color_off|default('icon0'), color_on|default('icon1')]], [item_force|default(''), color_on|default('icon1')]) }}
       {% elseif item_lock %}
         {{ basic.stateswitch(id~'list_lock', item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', [color_off, color_on], indicator) }}
       {% elseif item_bwmlock %}
@@ -569,6 +570,7 @@ the first one is the base color for values below first threshold, so pass one co
                 {% endif %}
             </a>
             <div id="{{ uid(page, id) }}_list_dimmer_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+			  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
               <div class="quad_dimmer">
                 {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                 {{ basic.stateswitch(id~'dimmerpopup_switch', item_switch, 'icon', [0,1], [pic_off|default('light_light'), pic_on|default('light_light')], '', [color_off, color_on], indicator) }}
@@ -588,7 +590,7 @@ the first one is the base color for values below first threshold, so pass one co
               <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
                   {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
               </a>
-              {{ popup.extpopup(id~'list_extpopup', extpopup[0], color_off|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color_off|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if elements[loop.index] == 'div' %}
                 </div>
@@ -599,7 +601,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% if column == 'stateengine' and item_auto %}
             {% if extpopup[0] == 'stateengine' and stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
-                {{ popup.extpopup(id~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% elseif stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
@@ -907,7 +909,7 @@ the first one is the base color for values below first threshold, so pass one co
         {{ basic.symbol(id~'list_lockpop_on', [item_lock, item_bwmlock, item_force, item_seqlock], '', 'secur_locked', 1, 'min', color[1]|default('icon1')) }}
         {{ basic.symbol(id~'list_lockpop_off', [item_lock, item_bwmlock, item_force, item_seqlock], '', 'secur_open', 0, 'and', icon_color[0]|default('icon0')) }}
         </a>
-        {{ popup.locks(id~'_list_locks_popup', [item_lock|default(''), icon_color[1]], [item_bwmlock|default(''), icon_color[1]], [item_force|default(''), icon_color[1]|default('icon1')], [item_seqlock|default(''), icon_color[1]]) }}
+        {{ popup.locks(uid(page, id)~'_list_locks_popup', [item_lock|default(''), icon_color[1]], [item_bwmlock|default(''), icon_color[1]], [item_force|default(''), icon_color[1]|default('icon1')], [item_seqlock|default(''), icon_color[1]]) }}
       {% elseif item_lock %}
         {{ basic.stateswitch(id~'list_lock', item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', icon_color, indicator) }}
       {% elseif item_bwmlock %}
@@ -948,6 +950,7 @@ the first one is the base color for values below first threshold, so pass one co
       </a>
 
       <div id="{{ uid(page, id) }}_list_ww_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+	    <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
         <div class="quad_dimmer">
           {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
           {{ basic.stateswitch(id~'switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(id~'list_ww_switch_icon_off'), icon.light(id~'list_ww_switch_icon_on', '', item_value_ww, min_display, max_display)], '', ['#888800','#aaaa00'], indicator) }}
@@ -973,6 +976,7 @@ the first one is the base color for values below first threshold, so pass one co
             </a>
             {% if popupcolor == 'hsv' %}
                 <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww  != ' ' ? 'quad_hsvww-popup' : 'quad_hsv-popup' }}">
+				  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                   <div class="quad_dimmer">
                   <p>Hue, Saturation, Value</p>
                     {{ basic.color(id~'popup_color', item_value_r, item_value_g, item_value_b, min, max, step, '10', 'slider') }}
@@ -990,6 +994,7 @@ the first one is the base color for values below first threshold, so pass one co
             {% else %}
 
 				  <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
+				  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                   <div class="quad_dimmer">
                     {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                     {{ basic.stateswitch(id~'popup_switch_r', item_switch_r, 'icon', [0,1], [icon.light(id~'list_r_switch_icon_off'), icon.light(id~'list_r_switch_icon_on', '', item_value_r, min_display, max_display)], '', [color_off|default('icon0'), 'red'], indicator) }}
@@ -1032,7 +1037,7 @@ the first one is the base color for values below first threshold, so pass one co
               <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
                   {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
               </a>
-              {{ popup.extpopup(id~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if arrays[loop.index] == 'div' %}
                 </div>
@@ -1043,7 +1048,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% if column == 'stateengine' and item_auto %}
             {% if extpopup[0] == 'stateengine' and stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
-                {{ popup.extpopup(id~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% elseif stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
@@ -1378,6 +1383,7 @@ the first one is the base color for values below first threshold, so pass one co
                 {{ icon.shutter(id~'list_blind_blind', '', item_pos, min, max) }}
             </a>
             <div id="{{ uid(page, id) }}list_blind_popup" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
               {{ device.blind(id~'blinddevice', linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step) }}
             </div>
 
@@ -1391,6 +1397,7 @@ the first one is the base color for values below first threshold, so pass one co
                 {{ icon.shutter(id~'list_blind_shutter', '', item_pos, min, max, item_angle) }}
             </a>
             <div id="{{ uid(page, id) }}list_shutter_popup" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                 {{ device.shutter(id~'shutterdevice', linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) }}
             </div>
 
@@ -1466,7 +1473,7 @@ the first one is the base color for values below first threshold, so pass one co
               <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
                   {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
               </a>
-              {{ popup.extpopup(id~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if elements[loop.index] == 'div' %}
                 </div>
@@ -1476,7 +1483,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% if column == 'stateengine' and item_auto %}
             {% if extpopup[0] == 'stateengine' and stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
-                {{ popup.extpopup(id~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% elseif stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
@@ -2071,6 +2078,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 
       </a>
       <div id="{{ uid(page, id) }}_list_volume_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+		<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
         <div class="dimmer dimmer-left">
           {{ basic.stateswitch(id~'list_vol_popup_mute', item_mute, 'icon', [0,1], 'audio_volume_mute', '', color, indicator) }}
           <p>Volume {{ linetext|e }}</p>
@@ -2087,7 +2095,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
                   {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
               </a>
-              {{ popup.extpopup(id~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% endif %}
             {% if elements[loop.index] == 'div' %}
                 </div>
@@ -2097,7 +2105,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     {% if column == 'stateengine' and item_auto %}
             {% if extpopup[0] == 'stateengine' and stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
-                {{ popup.extpopup(id~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% elseif stateengine is defined %}
                 {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
@@ -2476,7 +2484,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               {{ basic.symbol(id~'list_lockpop_on'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color[i][1]|default('icon1')) }}
               {{ basic.symbol(id~'list_lockpop_off'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color[i][0]|default('icon0')) }}
               </a>
-              {{ popup.locks(id~'_list_locks_popup'~z~i, [item_lock|default(''), ['icon0', color[i][1]|default('icon1')]], [item_bwmlock|default(''), ['icon0', color[i][1]|default('icon1')]], [item_force|default(''), color[i][1]|default('icon1')]) }}
+              {{ popup.locks(uid(page, id)~'_list_locks_popup'~z~i, [item_lock|default(''), ['icon0', color[i][1]|default('icon1')]], [item_bwmlock|default(''), ['icon0', color[i][1]|default('icon1')]], [item_force|default(''), color[i][1]|default('icon1')]) }}
             {% elseif item_lock %}
               {{ basic.stateswitch(id~'list_lock'~z~i, item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', color[i], indicator[i]) }}
             {% elseif item_bwmlock %}
@@ -2507,6 +2515,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               </a>
 
               <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                 <div class="dimmer dimmer-left">
                   {{ basic.stateswitch(id~'list_slider_popup_switch'~z~i, item_switch[i], 'icon', value[i], pic[i], '', color[i], indicator[i]) }}
                   <p>{{ linetext|e }}</p>
@@ -2523,7 +2532,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                       <a href="#{{ uid(page, id) }}list_extpopup{{z}}{{i}}" data-rel="popup" data-position-to="window">
                           {{ basic.symbol(id~'extpopupicon'~z~i, '', '', extpopup[i][0], '', '', icon_color[i][0]|default('icon0')) }}
                       </a>
-                      {{ popup.extpopup(id~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
+                      {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
 
               {% endif %}
               {% if arrays[loop.index] == 'div' %}
@@ -2534,7 +2543,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% if column == 'stateengine' and item_auto[i] %}
             {% if extpopup[i][0] == 'stateengine' and stateengine is defined %}
                 {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
-                {{ popup.extpopup(id~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
             {% elseif stateengine is defined %}
                 {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
@@ -2609,7 +2618,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               {{ basic.symbol(id~'list_lockpop_on'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color[1]|default('icon1')) }}
               {{ basic.symbol(id~'list_lockpop_off'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color[0]|default('icon0')) }}
               </a>
-              {{ popup.locks(id~'_list_locks_popup'~z~i, [item_lock|default(''), ['icon0', color[1]|default('icon1')]], [item_bwmlock|default(''), ['icon0', color[1]|default('icon1')]], [item_force|default(''), color[1]|default('icon1')]) }}
+              {{ popup.locks(uid(page, id)~'_list_locks_popup'~z~i, [item_lock|default(''), ['icon0', color[1]|default('icon1')]], [item_bwmlock|default(''), ['icon0', color[1]|default('icon1')]], [item_force|default(''), color[1]|default('icon1')]) }}
             {% elseif item_lock %}
               {{ basic.stateswitch(id~'list_lock'~z~i, item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', color, indicator) }}
             {% elseif item_bwmlock %}
@@ -2640,6 +2649,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               </a>
 
               <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
                 <div class="dimmer dimmer-left">
                   {{ basic.stateswitch(id~'list_slider_popup_switch'~z~i, item_switch, 'icon', [0,1], pic, '', color, indicator) }}
                   <p>{{ linetext|e }}</p> single
@@ -2657,7 +2667,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                 <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
                     {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
                 </a>
-                {{ popup.extpopup(id~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
               {% endif %}
               {% if arrays[loop.index] == 'div' %}
                   </div>
@@ -2668,7 +2678,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% if column == 'stateengine' and item_auto %}
             {% if (extpopup[i][0] == 'stateengine' or extpopup[0] == 'stateengine') and stateengine is defined %}
                 {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
-                {{ popup.extpopup(id~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
             {% elseif stateengine is defined %}
                 {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
@@ -2731,10 +2741,10 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                   {% endfor %}
                   {% if ext != 'nothing' or not ext %}
                       {{ stateengine.state(id~'_pop_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
-                      {{ popup.extpopup(id~'list_extpopup'~z~i, extpopup[ext][1], extpopup[ext][2], extpopup[ext][3], extpopup[ext][4], extpopup[ext][5], extpopup[ext][6], extpopup[ext][7], extpopup[ext][8], extpopup[ext][9], extpopup[ext][10], extpopup[ext][11], extpopup[ext][12], extpopup[ext][13], extpopup[ext][14], extpopup[ext][15], extpopup[ext][16], extpopup[ext][17], extpopup[ext][18], extpopup[ext][19]) }}
+                      {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[ext][1], extpopup[ext][2], extpopup[ext][3], extpopup[ext][4], extpopup[ext][5], extpopup[ext][6], extpopup[ext][7], extpopup[ext][8], extpopup[ext][9], extpopup[ext][10], extpopup[ext][11], extpopup[ext][12], extpopup[ext][13], extpopup[ext][14], extpopup[ext][15], extpopup[ext][16], extpopup[ext][17], extpopup[ext][18], extpopup[ext][19]) }}
                   {% elseif extpopup[0] == 'stateengine' %}
                       {{ stateengine.state(id~'_pop_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
-                      {{ popup.extpopup(id~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+                      {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
                   {% else %}
                      {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
                   {% endif %}
