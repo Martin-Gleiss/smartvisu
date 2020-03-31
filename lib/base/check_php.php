@@ -16,9 +16,9 @@ require_once '../../lib/includes.php';
 $request = array_merge($_GET, $_POST);
 
 // specify required PHP version
-$reqver = '7.3.1';
+$reqver = '7.3.2';
 
-if (version_compare(PHP_VERSION, $reqver))
+if (version_compare(PHP_VERSION, $reqver, '>='))
 {
 	$ret = array('icon' => 'message_ok.svg', 'text' => 'PHP v'.phpversion().' is ok');
 }
