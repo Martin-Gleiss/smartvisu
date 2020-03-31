@@ -1,0 +1,36 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+/**
+* A Block with just a map image. The type specifies the kind of map.
+*
+* @param       unique id for this widget
+* @param       title of the block
+* @param       the mode: 'day', 'night', 'forecast', 'wind', 'europe'
+*
+* @info        Maps from tagesschau.de, Hessischer Rundfunk, Deutscher Wetterdienst
+* @link        http://www.tagesschau.de
+*/
+{% macro justImage(id, title, mode) %}
+	{% import "multimedia.html" as multimedia %}
+
+		<div class="image">
+			{% if mode == 'day' %}
+				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tt_webL.jpg', 'corner') }}
+			{% elseif mode == 'night' %}
+				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tn_webL.jpg', 'corner') }}
+			{% elseif mode == 'forecast' %}
+				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-3t_webL.jpg', 'corner') }}
+			{% elseif mode == 'wind' %}
+				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-wi_webL.jpg', 'corner') }}
+			{% elseif mode == 'europe' %}
+				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/eu-vs-t_webL.jpg', 'corner') }}
+			{% endif %}
+		</div>
+{% endmacro %}

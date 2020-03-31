@@ -1,46 +1,16 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß, Martin Sinn
+ * @author      Martin Gleiss, Martin Sinn
  * @copyright   2012 - 2016
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ * @label       SmartHomeNG
+ *
+ * @default     driver_autoreconnect   true
+ * @default     driver_port            2424
+ * @hide        driver_realtime
  */
-
-
-function get_browser(){
-    var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || []; 
-    if(/trident/i.test(M[1])){
-        tem=/\brv[ :]+(\d+)/g.exec(ua) || []; 
-        return {name:'IE',version:(tem[1]||'')};
-        }   
-    if(M[1]==='Chrome'){
-        tem=ua.match(/\bOPR\/(\d+)/)
-        if(tem!=null)   {return {name:'Opera', version:tem[1]};}
-        }   
-    M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-    if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
-    return {
-      name: M[0],
-      version: M[1]
-    };
- }
- 
-
-function get_visuinfo(){
-    function reqListener () {
-      console.log(this.responseText);
-    }
-
-    var oReq = new XMLHttpRequest();
-    oReq.open("get", "driver/io_smarthome_get_visuinfo.php", false);
-    oReq.send();
-    visuinfo = JSON.parse(oReq.responseText)
-    return {
-      name: visuinfo[0],
-      version: visuinfo[1]
-    };
-}
 
 
 /**
@@ -49,12 +19,13 @@ function get_visuinfo(){
  */
 var io = {
 
-	// the adress
-	adress: '',
+	// the address
+	address: '',
 
 	// the port
 	port: '',
 
+	uzsu_type: '0',
 
 	// -----------------------------------------------------------------------------
 	// P U B L I C   F U N C T I O N S
@@ -137,13 +108,35 @@ var io = {
 	 * Opens the connection and add some handlers
 	 */
 	open: function () {
-		io.socket = new WebSocket('ws://' + io.address + ':' + io.port + '/');
+		var protocol = '';
+		if (!io.address || io.address.indexOf('://') < 0) {
+			// adopt websocket security to current protocol (https -> wss and http -> ws)
+			// if the protocol should be forced, add it to the address
+			protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
+			if (!io.address) {
+				// use url of current page if not defined
+				io.address = location.hostname;
+			}
+			if (!io.port) {
+				// use port of current page if not defined and needed
+				if (location.port != '') {
+					io.port = location.port;
+				} else {
+					if (location.protocol == 'http:') io.port = '80';
+					if (location.protocol == 'https:') io.port = '443';
+				}
+			}
+		}
+		io.socket = new WebSocket(protocol + io.address + ':' + io.port);
 
 		io.socket.onopen = function () {
+			// remove socket error notification on reconnect
+			if(io.socketErrorNotification != null)
+				notify.remove(io.socketErrorNotification);
+
 			io.send({'cmd': 'proto', 'ver': io.version});
-			var visu=get_visuinfo();
-			var browser=get_browser();
-			io.send({'cmd': 'identity', 'sw': visu.name, 'ver': visu.version, 'browser': browser.name, 'bver': browser.version});
+			var browser = io.getBrowser();
+			io.send({'cmd': 'identity', 'sw': 'smartVISU', 'ver': 'v'+sv.config.version, 'browser': browser.name, 'bver': browser.version});
 			io.monitor();
 		};
 
@@ -211,11 +204,16 @@ var io = {
 						notify.warning('Driver: smarthome.py', 'Protocol mismatch<br />SmartHome.py is: v' + io.version + '<br /><br /> Update the system!');
 					}
 					break;
+
+				case 'url':
+					$.mobile.changePage(data.url);
+					break;					
 			}
 		};
 
 		io.socket.onerror = function (error) {
-			notify.error('Driver: smarthome.py', 'Could not connect to smarthome.py server!<br /> Websocket error ' + error.data + '.');
+			if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification))
+				io.socketErrorNotification = notify.error('Driver: smarthome.py', 'Could not connect to smarthome.py server!<br /> Websocket error ' + error.data + '.');
 		};
 
 		io.socket.onclose = function () {
@@ -251,7 +249,7 @@ var io = {
 
 				var pt = items[i].split('.');
 
-				if (!unique[items[i]] && !widget.get(items[i]) && (pt instanceof Array) && widget.checkseries(items[i])) {
+				if (!unique[items[i]] && (pt instanceof Array) && widget.checkseries(items[i])) {
 					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 
 					if (io.version <= 3)
@@ -281,6 +279,24 @@ var io = {
 		}
 
 		io.socket = null;
+	},
+
+	getBrowser: function () {
+		var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+		if(/trident/i.test(M[1])) {
+			tem=/\brv[ :]+(\d+)/g.exec(ua) || [];
+			return {name:'IE',version:(tem[1]||'')};
+		}
+		if(M[1]==='Chrome') {
+			tem=ua.match(/\bOPR\/(\d+)/)
+			if(tem!=null) { return {name:'Opera', version:tem[1]}; }
+		}
+		M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+		if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
+		return {
+			name: M[0],
+			version: M[1]
+		};
 	}
 
 };

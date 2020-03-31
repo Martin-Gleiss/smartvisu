@@ -9,30 +9,69 @@
 
 
 {% extends "index.html" %}
-
+{% import "popup.html" as popup %}
 {% block content %}
+<script>
+$( document ).ready(function() {
+		 io.write('item_lock', '0'  );
+		 io.write('item_bwmlock', '1' );
+		 io.write('item_force', '2' );
+	});
+
+</script>
 
 	<h1>Popups</h1>
 
-
 	<div class="docu">
+
+		There are two popup widgets you can use for easier implementation of specific widgets.
+
+		Motion sensor/light locks Popup
+			<div class="twig">
+				<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+					{{ basic.symbol('', ['item_lock', 'item_bwmlock', 'item_force'], '', 'secur_locked', 1, 'min', '', '#locks_popup', 'popup') }}
+					{{ basic.symbol('', ['item_lock', 'item_bwmlock', 'item_force'], '', 'secur_open', 0, 'and', '', '#locks_popup', 'popup') }}
+					{{ popup.locks('locks_popup', ['item_lock', ['green', 'red']], ['item_bwmlock', ['green', 'red']], ['item_force', 'red']) }}
+				{% endraw %}{% endfilter %}</code>
+			</div>
+			<div class="html">
+				{{ basic.symbol('', ['item_lock', 'item_bwmlock', 'item_force'], '', 'secur_locked', 1, 'min', '', '#locks_popup', 'popup') }}
+				{{ basic.symbol('', ['item_lock', 'item_bwmlock', 'item_force'], '', 'secur_open', 0, 'and', '', '#locks_popup', 'popup') }}
+				{{ popup.locks('locks_popup', ['item_lock', ['green', 'red']], ['item_bwmlock', ['green', 'red']], ['item_force', 'red']) }}
+			</div>
+
+			Any simple widget in popup
+				<div class="twig">
+					<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+						<a href="#ext_popup" data-rel="popup">
+							Extended Popup
+						</a>
+						{{ popup.extpopup('ext_popup', ['header', 'Suspendzeit'], ['plot', [['env.system.load','env.core.memory'],'avg', '1d', '', '', '', '',['system load', 'memory'],['#a00','#070'], '',['Time', 'CPU', 'Memory'],'', [1,2], [0,1],['#f00','#0a0']]], [['linetext', 'slider'], 'Slider', ['licht.modus.automatik.settings.suspendduration', '0', '100', '10', 'horizontal', 'handle']], [['symbol', 'slider'], ['item_lock', '', 'secur_locked', '1'], ['licht.modus.automatik.settings.suspendduration', '0', '100', '10', 'horizontal', 'handle']]) }}
+					{% endraw %}{% endfilter %}</code>
+				</div>
+				<div class="html">
+					<a href="#ext_popup" data-rel="popup">
+						Extended Popup
+					</a>
+					{{ popup.extpopup('ext_popup', ['header', 'Suspendzeit'], ['plot', [['env.system.load','env.core.memory'],'avg', '1d', '', '', '', '',['system load', 'memory'],['#a00','#070'], '',['Time', 'CPU', 'Memory'],'', [1,2], [0,1],['#f00','#0a0']]], [['linetext', 'slider'], 'Slider', ['licht.modus.automatik.settings.suspendduration', '0', '100', '10', 'horizontal', 'handle']], [['symbol', 'slider'], ['item_lock', '', 'secur_locked', '1'], ['licht.modus.automatik.settings.suspendduration', '0', '100', '10', 'horizontal', 'handle']]) }}
+				</div>
 
 		Here are some examples to show how popups are used.
 
 		<h5>Examples</h5>
 
-		A vertical popup with some switches
+		A horizontal popup with some switches
 		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}				
-				<a href="#popup1" data-rel="popup">					
-					<img class="icon icon1" style = "fill:icon1; stroke:icon1;" src="{{ icon0 }}light_light.svg" />	
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				<a href="#popup1" data-rel="popup">
+					<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
 				</a>
 
 				<div id="popup1" data-role="popup">
 					<div>
-						{{ basic.switch('switch1', 'bath.light.switch') }}
-						{{ basic.switch('switch2', 'bath.light.switch') }}
-						{{ basic.switch('switch3', 'bath.light.switch') }}
+						{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+						{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+						{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 					</div>
 				</div>
 
@@ -41,32 +80,32 @@
 		<div class="html">
 
 			<a href="#popup1" data-rel="popup">
-				<img class="icon icon1" style = "fill:icon1; stroke:icon1;" src="{{ icon0 }}light_light.svg" />				
+				<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
 			</a>
 
 			<div id="popup1" data-role="popup">
 				<div>
-					{{ basic.switch('switch1', 'bath.light.switch') }}
-					{{ basic.switch('switch2', 'bath.light.switch') }}
-					{{ basic.switch('switch3', 'bath.light.switch') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 				</div>
 			</div>
 
 		</div>
 
 
-		A horizontal popup with some switches
+		A vertical popup with some switches
 		<div class="twig">
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
 				<a href="#popup2" data-rel="popup">
-					<img class="icon icon1" style = "fill:icon1; stroke:icon1;" src="{{ icon0 }}light_light.svg" />	
+					<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
 				</a>
 
 				<div id="popup2" data-role="popup">
-					{{ basic.switch('switch4', 'bath.light.switch') }}
-					{{ basic.switch('switch5', 'bath.light.switch') }}
-					{{ basic.switch('switch6', 'bath.light.switch') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 				</div>
 
 				{% endverbatim %}{% endfilter %}</code>
@@ -74,13 +113,13 @@
 		<div class="html">
 
 			<a href="#popup2" data-rel="popup">
-				<img class="icon icon1" style = "fill:icon1; stroke:icon1;" src="{{ icon0 }}light_light.svg" />	
+				<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
 			</a>
 
 			<div id="popup2" data-role="popup">
-				{{ basic.switch('switch4', 'bath.light.switch') }}
-				{{ basic.switch('switch5', 'bath.light.switch') }}
-				{{ basic.switch('switch6', 'bath.light.switch') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 			</div>
 
 		</div>
@@ -91,7 +130,7 @@
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
 				<a href="#popup3" data-rel="popup">
-					<img class="icon icon1" style = "fill:icon1; stroke:icon1;" src="{{ icon0 }}light_light.svg" />	
+					<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
 				</a>
 
 				<div id="popup3" data-role="popup" style="width:280px; height:200px;">
@@ -104,7 +143,7 @@
 		<div class="html">
 
 			<a href="#popup3" data-rel="popup">
-				<img class="icon icon1" style = "fill:icon1; stroke:icon1;" src="{{ icon0 }}light_light.svg" />	
+				<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
 			</a>
 
 			<div id="popup3" data-role="popup" style="width:280px; height:200px;">
@@ -118,4 +157,3 @@
 
 
 {% endblock %}
-

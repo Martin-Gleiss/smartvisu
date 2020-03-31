@@ -9,59 +9,70 @@
 
 
 /**
-* Displays the calendarlist
+* Displays a calendarlist
 *
-* @param unique id for this widget
-* @param a title to display
-* @param the number of displayed calendar-entries, default 25
-* @param a color for this calendar, default grey
-* @param the refresh interval for this widget (using relative time format), default 1h
+* @param {id=} unique id for this widget (optional)
+* @param {text=} a title to display (optional)
+* @param {value=25} the number of displayed calendar entries (optional, default 25)
+* @param {color[?]=grey} one color for all or a list of colors for each calendar (optional, grey or as defined in configuration)
+* @param {duration=1h} the refresh interval for this widget (optional, default 1h)
+* @param {text[?]=} name of calendars to show, multiples in array form (optional, default: as defined in configuration)
+*
+* @see misc/fundamentals#Array-Form
+* @see misc/fundamentals#Duration-Format
+*
+* @author Martin Gleiß, Stefan Widmer
 */
-{% macro list(id, title, count, color, repeat) %}
-	{% set uid = uid(page, id) %}
+{% macro list(id, title, count, color, repeat, calendar) %}
 
-	<div id="{{ uid }}" data-widget="calendar.list" class="calendarlist" data-repeat="{{ repeat|default('1h') }}">
+	/** handle default colors from config */
+	{% set configcolors = config_calendar_color|split(',') %}
+	{% set confignames = config_calendar_name|split(',') %}
+
+	{% if color is empty %}
+		/** build associative array of calendar name and according color */
+    {% set calendarcolors = [] %}
+		{% for configname in confignames %}
+			{% set calendarcolors = calendarcolors|merge({ (configname|trim|lower): configcolors[loop.index0]|trim }) %}
+		{% endfor %}
+		/** find color for calendars */
+		{% set calendar = calendar|default(confignames) %}
+    {% set color = [] %}
+		{% for calendarname in (calendar is iterable ? calendar : [calendar]) %}
+			{% set color = color|merge([calendarcolors[calendarname|trim|lower]]) %}
+		{% endfor %}
+	{% endif %}
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="calendar.list" class="calendarlist"
+		data-item="url:lib/calendar/service/{{ config_calendar_service }}.php?count={{ count|default(25)|url_encode }}&calendar={{ implode(calendar|default(confignames))|url_encode }}"
+		data-repeat="{{ repeat|default('1h') }}"  data-count="{{ count|default(5) }}"
+		data-calendar="{{ implode(calendar|default(confignames)) }}" data-color="{{ implode(color) }}">
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
-		<ul data-role="listview">
-		</ul>
+		<ul data-role="listview"></ul>
 	</div>
 
-
-	<script type="text/javascript">
-
-		$('#{{ page }}').on('pagecreate', function (event, ui) {
-			$('#{{ uid }}').on( {
-				'init' : function (event) {
-					var uid = this.id;
-	
-					$.getJSON('lib/calendar/service/{{ config_calendar_service }}.php?url={{ config_calendar_url|url_encode() }}&count={{ count|default(25) }}', function (data) {
-						var ret;
-						var line = '';
-	
-						for (var i in data) {
-							ret = '<img style="background: ' + data[i].color + ';" class="icon" src="' + data[i].icon + '" />';
-							ret += '<div class="color" style="background: {{ color|default('#666666') }};"></div>';
-							ret += '<h3>' + data[i].title + '</h3>';
-							ret += '<p>' + data[i].weekday + ',&nbsp;' + data[i].period + '&nbsp;</p>';
-	
-							if (data[i].where) {
-								ret += '<span class="ui-li-count">' + data[i].where + '</span>';
-							}
-	
-							ret = '<a href="' + (data[i].link ? data[i].link : '#') + '">' + ret + '</a>';
-							line += '<li data-icon="false">' + ret + '</li>';
-						}
-	
-						$('#' + uid + ' ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
-					})
-						.error(notify.json);
-				},
-	
-				'repeat': function(event) {
-					$('#{{ uid }}').trigger('init');
-				}
-			});
-		});
-	</script>
 {% endmacro %}
 
+/**
+* Displays a tiny trash list
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} a title to display (optional)
+* @param {text[?]=} name of calendars to show, multiples in array form (optional, default: as defined in configuration)
+* @param {value=5} the number of displayed columns (optional, default 5)
+* @param {duration=24h} the refresh interval for this widget (using relative time format) (optional, default 24h)
+*
+* @author René Jahncke, Stefan Widmer
+*/
+{% macro waste(id, title, calendar, count, repeat) %}
+
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="calendar.waste" class="calendarlist"
+		data-item="url:lib/calendar/service/{{ config_calendar_service }}.php?count={{ count|default(5)|url_encode }}&calendar={{ implode(calendar|default(confignames))|url_encode }}"
+		data-repeat="{{ repeat|default('24h') }}" data-count="{{ count|default(5) }}"
+		data-calendar="{{ implode(calendar|default(config_calendar_name|split(','))) }}">
+		{% if title %} <h2>{{ title }}</h2> {% endif %}
+		<div style='width:100%; align:center; overflow:hidden;'></div>
+	</div>
+
+{% endmacro %}

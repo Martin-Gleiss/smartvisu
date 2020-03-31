@@ -1,0 +1,27 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Christian Strassburg
+* @copyright   2018
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; basic.listview('text1', 'bath.light.list', 3, 'Title', '1') &#125;&#125;</code>
+	</div>
+
+	
+
+	<div class="html">
+		{{ basic.listview('listview1', 'bath.light.list', 3, 'Title' , '1') }}
+	</div>
+
+{% endblock %}
+

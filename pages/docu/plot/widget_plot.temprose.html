@@ -16,10 +16,14 @@
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-			{{ plot.temprose('p1',
-			['sleep.rtr.act', 'office.rtr.act', 'kid.rtr.act', 'bath.rtr.act', 'floor.rtr.act'],
-			['sleep.rtr.set', 'office.rtr.set', 'kid.rtr.set', 'bath.rtr.set', 'floor.rtr.set'],
-			['Sleeping', 'Office', 'Kid', 'Bath', 'Floor']) }}
+			{{ plot.temprose('',
+				['sleep.rtr.act', 'office.rtr.act', 'kid.rtr.act', 'bath.rtr.act', 'floor.rtr.act'],
+				['sleep.rtr.set', 'office.rtr.set', 'kid.rtr.set', 'bath.rtr.set', 'floor.rtr.set'],
+				['Sleeping', 'Office', 'Kid', 'Bath', 'Floor']) }}
+
+			{{ plot.temprose('',
+				['bath.p1', 'bath.p2', 'bath.p3'], '',
+				['South', 'East', 'West'], 'Brightness', 'lx') }}
 
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
@@ -27,17 +31,24 @@
 
 		<div class="block">
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
 				<div data-role="collapsible" data-collapsed="false">
 					<h3>house temperature plot</h3>
-
-					{{ plot.temprose('p1',
+					{{ plot.temprose('',
 					['sleep.rtr.act', 'office.rtr.act', 'kid.rtr.act', 'bath.rtr.act', 'floor.rtr.act'],
 					['sleep.rtr.set', 'office.rtr.set', 'kid.rtr.set', 'bath.rtr.set', 'floor.rtr.set'],
 					['Sleeping', 'Office', 'Kid', 'Bath', 'Floor']) }}
-
 				</div>
+			</div>
+		</div>
 
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>brightness in cardinal directions</h3>
+					{{ plot.temprose('',
+					['bath.p1', 'bath.p2', 'bath.p3'], '',
+					['South', 'East', 'West'], ['Brightness'], 'lx') }}
+				</div>
 			</div>
 		</div>
 

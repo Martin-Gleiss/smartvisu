@@ -1,0 +1,325 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<!--<h1><img class="icon" src='{{ icon0 }}scene_livingroom.png'/>Wohnzimmer</h1>-->
+
+	<style>
+		#kochen:after {
+			background-image: url("{{ icon0 }}scene_cooking.svg");
+		}
+
+		#essen:after {
+			background-image: url("{{ icon0 }}scene_dinner.svg");
+		}
+
+		#wohnen:after {
+			background-image: url("{{ icon0 }}it_television.svg");
+		}
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=EG.Kueche" id="kochen" class="ui-btn-icon-top">Küche</a></li>
+			<li><a href="index.php?page=EG.Esszimmer" id="essen" class="ui-btn-icon-top">Essbereich</a></li>
+			<li>
+				<a href="index.php?page=EG.Multimedia" class="ui-btn-icon-top ui-btn-active" id="wohnen">Multimedia</a>
+			</li>
+		</ul>
+	</div>
+
+	<div class="preblock">
+		<table width="100%">
+			<tr>
+				<td align="middle" width="70%">
+					Multimedia
+				</td>
+			</tr>
+		</table>
+
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>PC's und Peripherie</h3>
+				<table width=100%>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.stateswitch('IngridPC', 'Allgemein.PCs.PCIngrid', 'icon', ['1', '0'], ['it_pc.svg', 'it_pc.svg'], '', ['icon1', 'icon0']) }}  PC-Ingrid
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} Ingrid
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.stateswitch('MultimediaPC', 'Allgemein.PCs.PCMultimedis', 'icon', ['1', '0'], ['it_server.svg', 'it_server.svg'], '',['icon1', 'icon0']) }} Server
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('KuecheMonitor', 'Allgemein.PCs.MonitorKueche', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} Küche
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.stateswitch('MarcoPC', 'Allgemein.PCs.PCMarco', 'icon', ['1', '0'], ['it_pc.svg', 'it_pc.svg'], '', ['icon1', 'icon0']) }} PC-Marco
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('LedSpotsBoden', 'EG.Aussen.LEDSpotsBoden', 'icon', ['1', '0'], ['audio_audio.svg', 'audio_audio.svg'], '', ['icon1', 'icon0']) }} Subwoofer
+						</td>
+					</tr>
+				</table>
+				
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Musik Bad</h3>
+				{{ multimedia.music ('music1', 'Allgemein.Multimedia.SqueezePlayPaus', 'Allgemein.Multimedia.Squeezestop', '', 'Allgemein.Multimedia.Squeezevorzurueck', '', 'Allgemein.Multimedia.SqueezeLautst', 'Allgemein.Multimedia.SqueezeMute', 'kueche_musik_titel', '', '', '' ) }}
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Samsung TV</h3>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('SamsungTVEinAN', 'Allgemein.TVSamsung.TVonOFF', 'midi', '1', 'check', 'ON / OFF') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('SourceTV', 'tv.Source', 'midi', '1', 'grid', 'Source') }}
+								{{ basic.stateswitch('AppListTV', 'tv.AppList', 'midi', '1', 'home','Smart') }}
+								{{ basic.stateswitch('ENTERTAINMENTTV', 'tv.ENTERTAINMENT', 'midi', '1', 'check', 'TXT') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('KIKATV', 'tv.KIKA', 'midi', '1', '', 'KIKA') }}
+								{{ basic.stateswitch('PRO7TV', 'tv.PRO7', 'midi', '1', '','Pro7') }}
+								{{ basic.stateswitch('SAT1TV', 'tv.SAT1', 'midi', '1', '','Sat1') }}
+								{{ basic.stateswitch('RTLTV', 'tv.RTL', 'midi', '1', '','RTL') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('ARDTV', 'tv.ARD', 'midi', '1', '', 'ARD') }}
+								{{ basic.stateswitch('ZDFTV', 'tv.ZDF', 'midi', '1', '', 'ZDF') }}
+								{{ basic.stateswitch('VOXTV', 'tv.VOX', 'midi', '1', '', 'VOX') }}
+								{{ basic.stateswitch('KABEL1TV', 'tv.KABEL1', 'midi', '1', '', 'Kab1') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('SRTLTV', 'tv.SRTL', 'midi', '1', '', 'SRTL') }}
+								{{ basic.stateswitch('RTL2TV', 'tv.RTL2', 'midi', '1', '', 'RTL2') }}
+								{{ basic.stateswitch('HDMITV', 'tv.HDMI', 'midi', '1', 'grid', 'PC') }}
+								{{ basic.stateswitch('TVTV', 'tv.TV', 'midi', '1', 'grid', 'TV') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('VolUpTV', 'tv.VolUP', 'midi', '1', 'plus', ' Lauter ') }}
+								{{ basic.stateswitch('MuteTV', 'tv.mute', 'midi', '1', 'alert', 'Mute ') }}
+								{{ basic.stateswitch('VolDownTV', 'tv.VolDown', 'midi', '1', 'minus', ' Leiser ') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('ChUpTV', 'tv.ChUP', 'midi', '1', 'arrow-u', ' Progr. ') }}
+								{{ basic.stateswitch('ChDownTV', 'tv.ChDOWN', 'midi', '1', 'arrow-d', ' Progr. ' ) }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('ToolsTV', 'tv.TOOLS', 'midi', '1', 'gear', 'Tool') }}
+								{{ basic.stateswitch('UpTV', 'tv.Up', 'midi', '1', 'arrow-u', 'rauf') }}
+								{{ basic.stateswitch('TVLEDfade71', 'EG.Esszimmer.LEDfade7', 'midi', '1', 'search', 'Guide') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('LeftTV', 'tv.Left', 'midi', '1', 'arrow-l', 'links') }}
+								{{ basic.stateswitch('ReturnTV', 'tv.Return', 'midi', '1', 'check', 'OK') }}
+								{{ basic.stateswitch('RightTV', 'tv.Right', 'midi', '1', 'arrow-r','rechts') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVLEDfade7', 'EG.Esszimmer.LEDfade7', 'midi', '1', 'back', 'Return') }}
+								{{ basic.stateswitch('DownTV', 'tv.Down', 'midi', '1', 'arrow-d', 'runter') }}
+								{{ basic.stateswitch('TVLEDfade73', 'EG.Esszimmer.LEDfade7', 'midi', '1', 'delete', 'Exit') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Verstärker</h3>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('ONOFFVerstaerker', 'Allgemein.Multimedia.VerstaerkerONOFF', 'midi', '1', 'check', 'ON / OFF') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVVerstaerker', 'Allgemein.Multimedia.VerstaerkerTV', 'midi', '1', 'home','TV') }}
+								{{ basic.stateswitch('PCVerstaerker', 'Allgemein.Multimedia.VerstaerkerPC', 'midi', '1', 'home','Server') }}
+								{{ basic.stateswitch('TunerVerstaerker', 'Allgemein.Multimedia.VerstaerkerRadio', 'midi', '1', 'home','Tuner') }}
+								{{ basic.stateswitch('SqueezeWZVerstaerker', 'Allgemein.Multimedia.VerstaerkerSqueezeWZ', 'midi', '1', 'home','Squeeze') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('ChPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChPlus', 'midi', '1', 'arrow-u', 'Channel') }}
+								{{ basic.stateswitch('ChMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerChMinus', 'midi', '1', 'arrow-d','Channel') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('VolPlusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolPlus', 'midi', '1', 'arrow-u', ' Volume ') }}
+								{{ basic.stateswitch('MuteVerstaerker', 'Allgemein.Multimedia.VerstaerkerMute', 'midi', '1', 'delete', ' MUTE ') }}
+								{{ basic.stateswitch('VolMinusVerstaerker', 'Allgemein.Multimedia.VerstaerkerVolMinus', 'midi', '1', 'arrow-d', ' Volume ') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+
+				<td align="middle" width="70%">
+					{{ basic.flip('RadioAnPlusAntenneBayern', 'Allgemein.Multimedia.RadioUndAntenneBayern', 'Ant Bay', 'Ant Bay') }}
+				</td>
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Samsung TV</h3>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('1TV', 'tv.Nr1', 'midi', '1', 'star', '1') }}
+								{{ basic.stateswitch('2TV', 'tv.Nr2', 'midi', '1', 'star', '2') }}
+								{{ basic.stateswitch('3TV', 'tv.Nr3', 'midi', '1', 'star', '3') }}
+								{{ basic.stateswitch('4TV', 'tv.Nr4', 'midi', '1', 'star', '4') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('5TV', 'tv.Nr5', 'midi', '1', 'star', '5') }}
+								{{ basic.stateswitch('6TV', 'tv.Nr6', 'midi', '1', 'star', '6') }}
+								{{ basic.stateswitch('7TV', 'tv.Nr7', 'midi', '1', 'star', '7') }}
+								{{ basic.stateswitch('8TV', 'tv.Nr8', 'midi', '1', 'star', '8') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('9TV', 'tv.Nr9', 'midi', '1', 'star', '9') }}
+								{{ basic.stateswitch('0TV', 'tv.Nr0', 'midi', '1', 'star', 'O') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('ChListTV', 'tv.ChList', 'midi', '1', 'info', 'ChList') }}
+								{{ basic.stateswitch('PreChListTV', 'tv.PreCh', 'midi', '1', 'back', 'PRE-Ch') }}
+								{{ basic.stateswitch('TopMEnuTV', 'tv.TopMenu', 'midi', '1', 'home', 'Menu') }}
+								{{ basic.stateswitch('GuideTV', 'tv.Guide', 'midi', '1', 'home', 'Guide') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+
+
+{% endblock %}
+

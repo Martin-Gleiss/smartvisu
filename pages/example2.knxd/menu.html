@@ -1,0 +1,32 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiss
+ * @copyright   2012 - 2015
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+
+<div id="menu" class="menu">
+
+    <a id="menu-rooms" data-ajax="false" href="index.php">
+        <img class="icon{% if page == 'index' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}control_building_empty.svg"/></a>
+		
+	{% if page != 'config' %}
+		<a id="menu-weather" data-ajax="false" href="index.php?page=weather_current">
+			<img class="icon{% if page == 'weather_current' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}weather_cloudy.svg"/></a>
+			
+		<a id="menu-wp" data-ajax="false" href="index.php?page=stats.temperaturen">
+			<img class="icon{% if page == 'stats_temperaturen' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}temp_temperature.svg"/></a>
+	{% else%}	
+	
+		<a id="menu-docu" data-ajax="false" href="index.php?pages=docu&page=index">
+			<img class="icon{{ pages == 'docu' ? ' icon1' }}" src="{{ icon0 }}edit_copy.svg"/></a>
+	
+	{% endif %}
+			
+		<a id="menu-system" data-ajax="false" href="index.php?page=config">
+			<img class="icon{% if page == 'config' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}message_service.svg"/></a>        
+
+</div>

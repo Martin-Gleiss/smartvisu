@@ -1,0 +1,42 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Onkel Andy
+* @copyright   2020
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "widget.html" %}
+
+{% block headline %}
+	<h1>Custom Widgets</h1>
+{% endblock %}
+
+{% block intro %}
+	Some widgets that are not included in the standard smartvisu release. <br />
+	Files in dropins/widgets are listed here. <br />
+	Please add this to the top of your widget and example HTML file:
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+	/**
+	* -----------------------------------------------------------------------------
+	* @package     smartVISU
+	* @author      AUTHORNAME
+	* @copyright   YEAR
+	* @license     GPL [http://www.gnu.de]
+	* -----------------------------------------------------------------------------
+	*/
+	{% endverbatim %}{% endfilter %}</code>
+	</div><br />
+	Put this part into your example file that should be called widget_&lt;widgetgroup&gt;.&lt;widget&gt;.html
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{% extends "custom/widget_custom.html" %}
+		{% block example %}
+				your example content
+		{% endblock %}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+
+{% endblock %}

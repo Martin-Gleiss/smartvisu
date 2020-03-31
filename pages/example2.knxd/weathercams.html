@@ -1,0 +1,53 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2015
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+{% extends "weather1.html" %}
+
+
+{% block content %}
+    <h1><img class="icon icon0" src='{{ icon0 }}it_camera.svg'/>Webcams</h1>
+   
+    <div class="block" style="width: 50%">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Elbstrand Wittenbergen</h3>
+		<div class="image">
+                    <img class="" src="http://92.224.50.75/record/current.jpg?counter={{ random(10000000) }}">
+                </div>
+                <div class="mini">© by <a href="http://www.grassau.com/" target="_blank">http://www.grassau.com/</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="block" style="width: 50%">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Hamburg Rathausmarkt</h3>
+                <div class="image">
+                    <img class="" src="http://www.hamburger-rathausmarkt.de/rathausmarkt.jpg?counter={{ random(10000000) }}">
+                </div>
+                <div class="mini">© by <a href="http://www.hamburger-rathausmarkt.de/" target="_blank">http://www.hamburger-rathausmarkt.de/</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="block" style="width: 100%">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>West Vancouver, Canada</h3>
+                <div class="image">
+                    <img class="" src="http://webcam.brainywebsites.net/images/west-vancouver-webcam-2.jpg?counter={{ random(10000000) }}">
+                </div>
+                <div class="mini">© by <a href="http://www.brainywebsites.com/west-vancouver-webcam.html" target="_blank">http://www.brainywebsites.com/west-vancouver-webcam.html</a></div>
+            </div>
+        </div>	
+    </div>
+{% endblock %}
+
+

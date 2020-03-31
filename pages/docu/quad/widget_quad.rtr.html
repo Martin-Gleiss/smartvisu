@@ -1,0 +1,53 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_quad.html" %}
+{% block header %}
+
+{% endblock %}
+{% block example %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('istwert', '20.4' );
+			 io.write('soll', '22.1' );
+			 io.write('komfort', '23.5' );
+			 io.write('nacht', '20.1' );
+			 io.write('frostschutz', '4.5' );
+			 io.write('state', 'heizen' );
+		});
+
+</script>
+	<h5>Example</h5>
+
+Standard order with plot and offset
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.rtr('normal', 'Standard Order with plot and offset', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'state') }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.rtr('normal', 'Standard Order with plot and offset', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'state') }}
+	</ul></div>
+
+Reverse order
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.rtr('reverse', 'Reverse Order', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'state', 'Text', 0.10, '', [
+		device.uzsuicon('','uzsuitem','Presence','','','list','Present:1,Absent:2,Night:3'),
+		icon.heating('','','bath.rtr.set',0,90)
+		], '#ff0', 'blink', '', '', '', '', [3,2,1]) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.rtr('reverse', 'Reverse Order', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'heizen', 'Text', 0.10, '', [device.uzsuicon('','uzsuitem','Presence','','','list','Present:1,Absent:2,Night:3'),icon.heating('','','istwert',0,23)], '#ff0', 'blink', '', '', '', '', [3,2,1]) }}
+	</ul></div>
+{% endblock %}

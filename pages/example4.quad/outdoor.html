@@ -1,0 +1,232 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+{% extends "quad_root.html" %}
+
+{% block title %}
+Outdoor
+{% endblock %}
+
+{% block header %}
+<img class="icon" src='{{ icon0 }}weather_sun.svg'/>
+{% endblock %}
+
+{% block content %}
+
+{% set stateengine = {} %}
+
+{% set stateengine_items = {
+'garten_ventile_ventil_1': ['garten.ventile.ventil_1.automatik.lock', 'garten.ventile.ventil_1.automatik.settings.suspendduration', '0', '120', '5', 'garten.ventile.ventil_1.automatik.settings.dauer', '0', '180', '1', 'garten.ventile.ventil_1.automatik.settings.pause', '0', '168', '1', 'garten.ventile.ventil_1.automatik.settings.maxdauer_24h', '0', '180', '1', 'garten.ventile.ventil_1.automatik.settings.maxdauer_1w', '0', '360', '1'],
+'garten_ventile_ventil_2': ['garten.ventile.ventil_2.automatik.lock', 'garten.ventile.ventil_2.automatik.settings.suspendduration', '0', '120', '5', 'garten.ventile.ventil_2.automatik.settings.dauer', '0', '180', '1', 'garten.ventile.ventil_2.automatik.settings.pause', '0', '168', '1', 'garten.ventile.ventil_2.automatik.settings.maxdauer_24h', '0', '180', '1', 'garten.ventile.ventil_2.automatik.settings.maxdauer_1w', '0', '360', '1'],
+'garten_ventile_ventil_3': ['garten.ventile.ventil_3.automatik.lock', 'garten.ventile.ventil_3.automatik.settings.suspendduration', '0', '120', '5', 'garten.ventile.ventil_3.automatik.settings.dauer', '0', '180', '1', 'garten.ventile.ventil_3.automatik.settings.pause', '0', '168', '1', 'garten.ventile.ventil_3.automatik.settings.maxdauer_24h', '0', '180', '1', 'garten.ventile.ventil_3.automatik.settings.maxdauer_1w', '0', '360', '1'],
+'garten_ventile_ventil_4': ['garten.ventile.ventil_4.automatik.lock', 'garten.ventile.ventil_4.automatik.settings.suspendduration', '0', '120', '5', 'garten.ventile.ventil_4.automatik.settings.dauer', '0', '180', '1', 'garten.ventile.ventil_4.automatik.settings.pause', '0', '168', '1', 'garten.ventile.ventil_4.automatik.settings.maxdauer_24h', '0', '180', '1', 'garten.ventile.ventil_4.automatik.settings.maxdauer_1w', '0', '360', '1'],
+'garten_ventile_ventil_5': ['garten.ventile.ventil_5.automatik.lock', 'garten.ventile.ventil_5.automatik.settings.suspendduration', '0', '120', '5', 'garten.ventile.ventil_5.automatik.settings.dauer', '0', '180', '1', 'garten.ventile.ventil_5.automatik.settings.pause', '0', '168', '1', 'garten.ventile.ventil_5.automatik.settings.maxdauer_24h', '0', '180', '1', 'garten.ventile.ventil_5.automatik.settings.maxdauer_1w', '0', '360', '1'],
+'garten_ventile_ventil_6': ['garten.ventile.ventil_6.automatik.lock', 'garten.ventile.ventil_6.automatik.settings.suspendduration', '0', '120', '5', 'garten.ventile.ventil_6.automatik.settings.dauer', '0', '180', '1', 'garten.ventile.ventil_6.automatik.settings.pause', '0', '168', '1', 'garten.ventile.ventil_6.automatik.settings.maxdauer_24h', '0', '180', '1', 'garten.ventile.ventil_6.automatik.settings.maxdauer_1w', '0', '360', '1'],
+'garten_ventile_ventil_7': ['garten.ventile.ventil_7.automatik.lock', 'garten.ventile.ventil_7.automatik.settings.suspendduration', '0', '120', '5', 'garten.ventile.ventil_7.automatik.settings.dauer', '0', '180', '1', 'garten.ventile.ventil_7.automatik.settings.pause', '0', '168', '1', 'garten.ventile.ventil_7.automatik.settings.maxdauer_24h', '0', '180', '1', 'garten.ventile.ventil_7.automatik.settings.maxdauer_1w', '0', '360', '1'],
+'garten_ventile_ventil_8': ['garten.ventile.ventil_8.automatik.lock', 'garten.ventile.ventil_8.automatik.settings.suspendduration', '0', '120', '5', 'garten.ventile.ventil_8.automatik.settings.dauer', '0', '180', '1', 'garten.ventile.ventil_8.automatik.settings.pause', '0', '168', '1', 'garten.ventile.ventil_8.automatik.settings.maxdauer_24h', '0', '180', '1', 'garten.ventile.ventil_8.automatik.settings.maxdauer_1w', '0', '360', '1']
+} %}
+
+{% for item,content in stateengine_items %}
+  {% set itemname = item|replace({'.': '_'}) %}
+  {% set suspend = [['switch', 'slider'], [content[0], 'icon', [0,1], ['secur_open','secur_locked']], [content[1], content[2], content[3], content[4], '', 'handle']] %}
+  {% set dauer = [['image','slider'], ['audio_play', 'icon0'], [content[5], content[6], content[7], content[8], '', 'both']] %}
+  {% set pause = [['image','slider'], ['audio_pause', 'icon0'], [content[9], content[10], content[11], content[12], '', 'both']] %}
+  {% set max_24h = [['image','slider'], ['time_timer', 'icon0'], [content[13], content[14], content[15], content[16], '', 'both']] %}
+  {% set max_1w = [['image','slider'], ['time_calendar', 'icon0'], [content[17], content[18], content[19], content[20], '', 'both']] %}
+
+  {% set suspendtext = ['header', 'Suspendzeit (min)'] %}
+  {% set dauertext = ['header', 'Bewässerungsdauer (min)'] %}
+  {% set pausetext = ['header', 'Mindestpause (h)'] %}
+  {% set max_24h_text = ['header', 'Maximalbewässerung innerhalb 24 Stunden (min)'] %}
+  {% set max_1w_text = ['header', 'Maximalbewässerung innerhalb 1 Woche (min)'] %}
+  {% set stateengine = stateengine|merge({(itemname): ['stateengine', (suspendtext), (suspend), (dauertext), (dauer), (pausetext), (pause), (max_24h_text), (max_24h), (max_1w_text), (max_1w)]}) %}
+{% endfor %}
+
+
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Bewässerung Steuerung</li>
+{{ quad.stateswitch('lock', 'garten.stateengine.automatik_lock', 'icon', '', ['secur_open','secur_locked'], '', '', 'blink', '', '', '', '', '', 'Stateengine Sperre') }}
+
+{{ quad.stateswitch('ventil_1', ['garten.ventile.ventil_1.sa', 'garten.ventile.ventil_1.automatik.settings.aktiv'], ['icon', 'icon'], '', [['sani_irrigation','sani_irrigation'], ['message_ok','message_ok']], '', '', ['blink','blink'], '', '', '', '', '', 'Ventil 1: Tropf Sträucher Süden', '', '', '', 'garten.ventile.ventil_1.sa', '', 'garten.ventile.ventil_1.automatik', (stateengine['garten_ventile_ventil_1']), ['garten.ventile.ventil_1.sperren','']) }}
+
+{{ quad.stateswitch('ventil_2', ['garten.ventile.ventil_2.sa', 'garten.ventile.ventil_2.automatik.settings.aktiv'], ['icon', 'icon'], '', [['sani_irrigation','sani_irrigation'], ['message_ok','message_ok']], '', '', ['blink','blink'], '', '', '', '', '', 'Ventil 2: Sprinkler Südwest', '', '', '', 'garten.ventile.ventil_2.sa', '', 'garten.ventile.ventil_2.automatik', (stateengine['garten_ventile_ventil_2']),['garten.ventile.ventil_2.sperren','']) }}
+
+{{ quad.stateswitch('ventil_3', ['garten.ventile.ventil_3.sa', 'garten.ventile.ventil_3.automatik.settings.aktiv'], ['icon', 'icon'], '', [['sani_irrigation','sani_irrigation'], ['message_ok','message_ok']], '', '', ['blink','blink'], '', '', '', '', '', 'Ventil 3: Sprinkler Südost', '', '', '', 'garten.ventile.ventil_3.sa', '', 'garten.ventile.ventil_3.automatik', (stateengine['garten_ventile_ventil_3']), ['garten.ventile.ventil_3.sperren','']) }}
+
+{{ quad.stateswitch('ventil_4', ['garten.ventile.ventil_4.sa', 'garten.ventile.ventil_4.automatik.settings.aktiv'], ['icon', 'icon'], '', [['sani_irrigation','sani_irrigation'], ['message_ok','message_ok']], '', '', ['blink','blink'], '', '', '', '', '', 'Ventil 4: Sprinkler Süd Mitte', '', '', '', 'garten.ventile.ventil_4.sa', '', 'garten.ventile.ventil_4.automatik', (stateengine['garten_ventile_ventil_4']), ['garten.ventile.ventil_4.sperren','']) }}
+
+{{ quad.stateswitch('ventil_5', ['garten.ventile.ventil_5.sa', 'garten.ventile.ventil_5.automatik.settings.aktiv'], ['icon', 'icon'], '', [['sani_irrigation','sani_irrigation'], ['message_ok','message_ok']], '', '', ['blink','blink'], '', '', '', '', '', 'Ventil 5: Sprinkler Nord Mitte', '', '', '', 'garten.ventile.ventil_5.sa', '', 'garten.ventile.ventil_5.automatik', (stateengine['garten_ventile_ventil_5']), ['garten.ventile.ventil_5.sperren','']) }}
+
+{{ quad.stateswitch('ventil_6', ['garten.ventile.ventil_6.sa', 'garten.ventile.ventil_6.automatik.settings.aktiv'], ['icon', 'icon'], '', [['sani_irrigation','sani_irrigation'], ['message_ok','message_ok']], '', '', ['blink','blink'], '', '', '', '', '', 'Ventil 6: Tropf Sträucher Norden', '', '', '', 'garten.ventile.ventil_6.sa', '', 'garten.ventile.ventil_6.automatik', (stateengine['garten_ventile_ventil_6']), ['garten.ventile.ventil_6.sperren','']) }}
+
+{{ quad.stateswitch('ventil_7', ['garten.ventile.ventil_7.sa', 'garten.ventile.ventil_7.automatik.settings.aktiv'], ['icon', 'icon'], '', [['sani_irrigation','sani_irrigation'], ['message_ok','message_ok']], '', '', ['blink','blink'], '', '', '', '', '', 'Ventil 7: Tropf Hochbeet', '', '', '', 'garten.ventile.ventil_7.sa', '', 'garten.ventile.ventil_7.automatik', (stateengine['garten_ventile_ventil_7']), ['garten.ventile.ventil_7.sperren','']) }}
+
+{{ quad.stateswitch('ventil_8', ['garten.ventile.ventil_8.sa', 'garten.ventile.ventil_8.automatik.settings.aktiv'], ['icon', 'icon'], '', [['sani_irrigation','sani_irrigation'], ['message_ok','message_ok']], '', '', ['blink','blink'], '', '', '', '', '', 'Ventil 8: Tropf Sträucher Osten', '', '', '', 'garten.ventile.ventil_8.sa', '', 'garten.ventile.ventil_8.automatik', (stateengine['garten_ventile_ventil_8']), ['garten.ventile.ventil_8.sperren','']) }}
+</ul>
+
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Sprinkler Einstellung</li>
+
+{{ quad.mixed('', 'Wetterwerte',
+[
+basic.symbol('', '', '', 'temp_temperature_max', '', '', '', '#sprinkler_maxtemp_popup', 'popup'),
+basic.print('sprinkler_maxtemp', 'garten.stateengine.settings.sprinkler.max_temperatur', 'temp', '', '', '', '#sprinkler_maxtemp_popup', 'popup'),
+popup.extpopup('sprinkler_maxtemp_popup', ['slider', ['garten.stateengine.settings.sprinkler.max_temperatur', 20, 35, 1, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'weather_light_meter', '', '', '', '#sprinkler_maxhell_popup', 'popup'),
+basic.print('sprinkler_maxhell', 'garten.stateengine.settings.sprinkler.max_helligkeit', 'float', '', '', '', '#sprinkler_maxhell_popup', 'popup'),
+popup.extpopup('sprinkler_maxhell_popup', ['slider', ['garten.stateengine.settings.sprinkler.max_helligkeit', 40000, 80000, 1000, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'weather_wind_speed', '', '', '', '#sprinkler_maxwind_popup', 'popup'),
+basic.print('sprinkler_maxwind', 'garten.stateengine.settings.sprinkler.max_windgeschwindigkeit', 'speed', '', '', '', '#sprinkler_maxwind_popup', 'popup'),
+popup.extpopup('sprinkler_maxwind_popup', ['slider', ['garten.stateengine.settings.sprinkler.max_windgeschwindigkeit', 0, 50, 1, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'weather_humidity_soil', '', '', '', '#sprinkler_feuchte_popup', 'popup'),
+basic.print('sprinkler_feuchte', 'garten.stateengine.settings.sprinkler.mindestfeuchte', 'int', '', '', '', '#sprinkler_feuchte_popup', 'popup'),
+popup.extpopup('sprinkler_feuchte_popup', ['slider', ['garten.stateengine.settings.sprinkler.mindestfeuchte', 0, 1000, 10, '', 'handle']])
+]
+) }}
+
+{{ quad.mixed('', 'Wetterwerte Mindestalter',
+[
+basic.symbol('', '', '', 'temp_temperature_max', '', '', '', '#sprinkler_tempage_popup', 'popup'),
+basic.print('sprinkler_tempage', 'garten.stateengine.settings.sprinkler.min_temperatur_age', 'm', '', '', '', '#sprinkler_tempage_popup', 'popup'),
+popup.extpopup('sprinkler_tempage_popup', ['slider', ['garten.stateengine.settings.sprinkler.min_temperatur_age', 0, 60, 1, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'weather_light_meter', '', '', '', '#sprinkler_hellage_popup', 'popup'),
+basic.print('sprinkler_hellage', 'garten.stateengine.settings.sprinkler.min_sonne_age', 'm', '', '', '', '#sprinkler_hellage_popup', 'popup'),
+popup.extpopup('sprinkler_hellage_popup', ['slider', ['garten.stateengine.settings.sprinkler.min_sonne_age', 0, 60, 1, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'weather_wind_speed', '', '', '', '#sprinkler_windage_popup', 'popup'),
+basic.print('sprinkler_windage', 'garten.stateengine.settings.sprinkler.min_wind_age', 'm', '', '', '', '#sprinkler_windage_popup', 'popup'),
+popup.extpopup('sprinkler_windage_popup', ['slider', ['garten.stateengine.settings.sprinkler.min_wind_age', 0, 60, 1, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'weather_humidity_soil', '', '', '', '#sprinkler_trockenage_popup', 'popup'),
+basic.print('sprinkler_trockenage', 'garten.stateengine.settings.sprinkler.min_trocken_age', 'm', '', '', '', '#sprinkler_trockenage_popup', 'popup'),
+popup.extpopup('sprinkler_trockenage_popup', ['slider', ['garten.stateengine.settings.sprinkler.min_trocken_age', 0, 60, 1, '', 'handle']])
+]
+) }}
+
+{{ quad.mixed('', 'Maximalanzahl',
+[
+basic.symbol('', '', '', 'sani_irrigation_pop_up_on', '', '', '', '#sprinkler_maxsprinkler_popup', 'popup'),
+basic.print('sprinkler_maxsprinkler', 'garten.stateengine.settings.sprinkler.max_sprinkler', 'int', '', '', '', '#sprinkler_maxsprinkler_popup', 'popup'),
+popup.extpopup('sprinkler_maxsprinkler_popup', ['slider', ['garten.stateengine.settings.sprinkler.max_sprinkler', 0, 4, 1, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'sani_irrigation', '', '', '', '#sprinkler_maxstropfer_popup', 'popup'),
+basic.print('sprinkler_maxstropfer', 'garten.stateengine.settings.sprinkler.max_tropfer', 'int', '', '', '', '#sprinkler_maxstropfer_popup', 'popup'),
+popup.extpopup('sprinkler_maxstropfer_popup', ['slider', ['garten.stateengine.settings.sprinkler.max_tropfer', 0, 4, 1, '', 'handle']])
+]
+) }}
+
+</ul>
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Tropfer Einstellung</li>
+
+{{ quad.mixed('', 'Wetterwerte',
+[
+basic.symbol('', '', '', 'temp_temperature_max', '', '', '', '#tropfer_maxtemp_popup', 'popup'),
+basic.print('tropfer_maxtemp', 'garten.stateengine.settings.sprinkler.max_temperatur', 'temp', '', '', '', '#tropfer_maxtemp_popup', 'popup'),
+popup.extpopup('tropfer_maxtemp_popup', ['slider', ['garten.stateengine.settings.sprinkler.max_temperatur', 20, 35, 1, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'weather_light_meter', '', '', '', '#tropfer_maxhell_popup', 'popup'),
+basic.print('tropfer_maxhell', 'garten.stateengine.settings.sprinkler.max_helligkeit', 'float', '', '', '', '#tropfer_maxhell_popup', 'popup'),
+popup.extpopup('tropfer_maxhell_popup', ['slider', ['garten.stateengine.settings.sprinkler.max_helligkeit', 40000, 80000, 1000, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'weather_humidity_soil', '', '', '', '#tropfer_feuchte_popup', 'popup'),
+basic.print('tropfer_feuchte', 'garten.stateengine.settings.sprinkler.mindestfeuchte', 'int', '', '', '', '#tropfer_feuchte_popup', 'popup'),
+popup.extpopup('tropfer_feuchte_popup', ['slider', ['garten.stateengine.settings.tropfer.mindestfeuchte', 0, 1000, 10, '', 'handle']])
+]
+) }}
+
+{{ quad.mixed('', 'Wetterwerte Mindestalter',
+[
+basic.symbol('', '', '', 'temp_temperature_max', '', '', '', '#tropfer_tempage_popup', 'popup'),
+basic.print('tropfer_tempage', 'garten.stateengine.settings.tropfer.min_temperatur_age', 'm', '', '', '', '#tropfer_tempage_popup', 'popup'),
+popup.extpopup('tropfer_tempage_popup', ['slider', ['garten.stateengine.settings.tropfer.min_temperatur_age', 0, 60, 1, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'weather_light_meter', '', '', '', '#tropfer_hellage_popup', 'popup'),
+basic.print('tropfer_hellage', 'garten.stateengine.settings.tropfer.min_sonne_age', 'm', '', '', '', '#tropfer_hellage_popup', 'popup'),
+popup.extpopup('tropfer_hellage_popup', ['slider', ['garten.stateengine.settings.tropfer.min_sonne_age', 0, 60, 1, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'weather_humidity_soil', '', '', '', '#tropfer_trockenage_popup', 'popup'),
+basic.print('tropfer_trockenage', 'garten.stateengine.settings.tropfer.min_trocken_age', 'm', '', '', '', '#tropfer_trockenage_popup', 'popup'),
+popup.extpopup('tropfer_trockenage_popup', ['slider', ['garten.stateengine.settings.tropfer.min_trocken_age', 0, 60, 1, '', 'handle']])
+]
+) }}
+
+{{ quad.mixed('', 'Maximalanzahl',
+[
+basic.symbol('', '', '', 'sani_irrigation_pop_up_on', '', '', '', '#tropfer_maxsprinkler_popup', 'popup'),
+basic.print('tropfer_maxsprinkler', 'garten.stateengine.settings.tropfer.max_sprinkler', 'int', '', '', '', '#tropfer_maxsprinkler_popup', 'popup'),
+popup.extpopup('tropfer_maxsprinkler_popup', ['slider', ['garten.stateengine.settings.tropfer.max_sprinkler', 0, 4, 1, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'sani_irrigation', '', '', '', '#tropfer_maxstropfer_popup', 'popup'),
+basic.print('tropfer_maxstropfer', 'garten.stateengine.settings.tropfer.max_tropfer', 'int', '', '', '', '#tropfer_maxstropfer_popup', 'popup'),
+popup.extpopup('tropfer_maxstropfer_popup', ['slider', ['garten.stateengine.settings.tropfer.max_tropfer', 0, 4, 1, '', 'handle']])
+]
+) }}
+
+</ul>
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Bewässerung generelle Einstellungen</li>
+{{ quad.mixed('', 'Wetter Regenalter, Mindesttemperatur',
+[
+basic.symbol('', '', '', 'weather_rain', '', '', '', '#regenage_popup', 'popup'),
+basic.print('regenage', 'garten.stateengine.settings.min_regen_age', 'm', '', '', '', '#regenage_popup', 'popup'),
+popup.extpopup('regenage_popup', ['slider', ['garten.stateengine.settings.min_regen_age', 0, 300, 10, '', 'handle']])
+],
+[
+basic.symbol('', '', '', 'temp_temperature_min', '', '', '', '#mintemp_popup', 'popup'),
+basic.print('mintemp', 'garten.stateengine.settings.min_temperatur', 'temp', '', '', '', '#mintemp_popup', 'popup'),
+popup.extpopup('mintemp_popup', ['slider', ['garten.stateengine.settings.tropfer.min_temperatur', 0, 20, 1, '', 'handle']])
+]
+) }}
+</ul>
+
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Stati</li>
+{{ quad.print('', ['garten.stateengine.status.sprinkler.bool_wind','garten.stateengine.status.sprinkler.bool_sonne', 'garten.stateengine.status.sprinkler.bool_trocken', 'garten.stateengine.status.sprinkler.bool_temperatur_ok'], '', '', [[1], [1], [1], [1]], [['#2f2', '#f00'], ['#2f2', '#f00'], ['#f00', '#2f2'], ['#f00', '#2f2']], 'placeholder', 'placeholder', 'Sprinkler', ['Wind:','Sonne:', 'Trocken:', 'Temperatur:']) }}
+
+{{ quad.print('', ['garten.stateengine.status.tropfer.bool_wind','garten.stateengine.status.tropfer.bool_sonne', 'garten.stateengine.status.tropfer.bool_trocken', 'garten.stateengine.status.tropfer.bool_temperatur_ok'], '', '', [[1], [1], [1], [1]], [['#2f2', '#f00'], ['#2f2', '#f00'], ['#f00', '#2f2'], ['#f00', '#2f2']], 'placeholder', 'placeholder', 'Tropfer', ['Wind:','Sonne:', 'Trocken:', 'Temperatur:']) }}
+
+{{ quad.print('', ['garten.bodensensor.bodenfeuchte','garten.bodensensor.widerstand', 'garten.bodensensor.wasserspannung', 'garten.bodensensor.unter_grenze'], '', '', [[0,300,600],[20000,30000,50000], '', [1]], [['#f00','#fc0','#aa0','#0f0'],['#f00','#fc0','#aa0','#0f0'], '', ['#2f2', '#f00']], 'placeholder', 'placeholder', 'Sensorwerte', ['Feuchte:','Widerstand:', 'Spannung:', 'Untergrenze:']) }}
+</ul>
+
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Wetter</li>
+{{ quad.print('', ['wetterstation.helligkeit.osten','wetterstation.helligkeit.sueden', 'wetterstation.helligkeit.westen', 'wetterstation.helligkeit.maximal'], '', '', [[250,20000,100000],[250,20000,100000], [250,20000,100000], [250,20000,100000]], [['#fff','#fc0','#f50','#f00'],['#fff','#fc0','#f50','#f00'], ['#fff','#fc0','#f50','#f00'], ['#fff','#fc0','#f50','#f00']], 'placeholder', 'placeholder', 'Helligkeit', ['O:','S:', 'W:', 'Max:']) }}
+
+{{ quad.print('', ['wetterstation.temperaturdach','wetterstation.windgeschwindigkeit.kmh', 'wetterstation.regenmelder', 'wetterstation.temperatursensorstatus'], '', '', [[-10,0,20,30],[10,25,40], [1], [1]], [['#00f','#02c','#fff','#f50','#f00'],['#fff','#fff','#f50','#f00'], ['#2f2', '#f00'], ['#2f2', '#f00']], 'placeholder', 'placeholder', 'Sonstiges', ['Temp:','Wind:', 'Regen:', 'Status:']) }}
+
+</ul>
+
+{% endblock %}
+
+
+{% block quad_top %}
+{{ plot.period('', ['garten.ventile.ventil_1.sa', 'garten.ventile.ventil_2.sa', 'garten.ventile.ventil_3.sa', 'garten.ventile.ventil_4.sa', 'garten.ventile.ventil_5.sa', 'garten.ventile.ventil_6.sa', 'garten.ventile.ventil_7.sa', 'garten.ventile.ventil_8.sa'], 'raw', '168h', 'now', 0, 2, '1000', ['1', '2', '3', '4', '5', '6', '7', '8'], ['#ffa', '#3f3', '#aaf', '#faa', '#aff', '#abb', '#bba', '#cdb'], ['stair', 'stair', 'stair', 'stair', 'stair', 'stair', 'stair', 'stair'], ['Uhrzeit', 'Aktiv'],'30s') }}
+
+{% endblock %}
+
+{% block quad_bottom %}
+
+{% endblock %}

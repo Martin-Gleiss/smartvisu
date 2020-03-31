@@ -1,0 +1,217 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<!--<h1><img class="icon" src='{{ icon0 }}scene_dinner.png'/>Esszimmer</h1>-->
+
+	<style>
+		#kochen:after {
+			background-image: url("{{ icon0 }}scene_cooking.svg");
+		}
+
+		#essen:after {
+			background-image: url("{{ icon0 }}scene_dinner.svg");
+		}
+
+		#wohnen:after {
+			background-image: url("{{ icon0 }}it_television.svg");
+		}
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=EG.Kueche" id="kochen" class="ui-btn-icon-top">Küche</a></li>
+			<li><a href="index.php?page=EG.Esszimmer" class="ui-btn-active ui-btn-icon-top" id="essen">Essbereich</a>
+			</li>
+			<li><a href="index.php?page=EG.Multimedia" id="wohnen" class="ui-btn-icon-top">Multimedia</a></li>
+		</ul>
+	</div>
+
+	<div class="preblock">
+		<table width="100%">
+			<tr>
+				<td align="middle" width="70%">
+					Essbereich
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Deckenlicht</h3>
+				{{ device.dimmer('EG.Esszimmer.Deckenspots', 'Spots Decke', 'EG.Esszimmer.Deckenspots', 'EG.Esszimmer.Deckenspots.dimmen', 0, 100, 10) }}
+				{{ device.dimmer('EG.Esszimmer.Pendelleuchte', 'Esstisch', 'EG.Esszimmer.Pendelleuchte', 'EG.Esszimmer.Pendelleuchte.dimmen', 0, 100, 10) }}
+				<td align="middle" width="70%">
+					{{ basic.flip('EG.Esszimmer.Essen_Grundbeleuchtung', 'EG.Esszimmer.Essen_Grundbeleuchtung', 'Grundb.', 'Grundb.') }}
+				</td>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Heizung</h3>
+				{{ device.rtr('', '', 'EG.Esszimmer.temperature', 'EG.Esszimmer.temperature.set', 'EG.Esszimmer.temperature.mode', 'EG.Esszimmer.temperature.night', 'EG.Esszimmer.temperature.frost', 'EG.Esszimmer.temperature.state') }}
+
+			</div>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Licht / Freigaben</h3>
+				<table width=100%>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.stateswitch('WuerfelSofaEssen', 'EG.Esszimmer.Essen_Stedo_Wuerfel_Sofa', 'icon', ['1', '0'], ['light_led.svg', 'light_led.svg'], '', ['icon1', 'icon0']) }} Würfel
+						</td>
+						<td align=left>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.stateswitch('LedFensterbankEssen', 'EG.Esszimmer.Essen_Fensterbank', 'icon', ['1', '0'], ['light_uplight.svg', 'light_uplight.svg'], '', ['icon1', 'icon0']) }} Fensterbank
+						</td>
+						<td align=left>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.stateswitch('SchrankStedoEssen', 'EG.Esszimmer.Essen_Stedo_Schrank', 'icon', ['1', '0'], ['message_socket.svg', 'message_socket.svg'], '', ['icon1', 'icon0']) }}  Schrank
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('FreigabeTuerMKEssen', 'EG.Esszimmer.Essen_FreigabeTuer', 'icon', ['1', '0'], ['secur_open.svg', 'secur_locked.svg'], '', ['icon1', 'icon0']) }}  Licht MK
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Rollo</h3>
+				{{ shutter.one ('EG.Esszimmer.blind', 'West', 'EG.Esszimmer.blind.move', 'EG.Esszimmer.blind.stop', 'EG.Esszimmer.blind.pos', EG.Esszimmer.blind.tilt) }}
+			</div>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>LED TV</h3>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVLEDrot', 'EG.Esszimmer.LEDrot', 'midi', '1', 'delete', 'ROT') }}
+								{{ basic.stateswitch('TVLEDgruen', 'EG.Esszimmer.LEDgruen', 'midi', '1', 'delete', 'GRUEN') }}
+								{{ basic.stateswitch('TVLEDblau', 'EG.Esszimmer.LEDblau', 'midi', '1', 'delete', 'BLAU') }}
+								{{ basic.stateswitch('TVLEDweiss', 'EG.Esszimmer.LEDweiss', 'midi', '1', 'delete', 'WEISS') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVLEDfade7', 'EG.Esszimmer.LEDfade7', 'midi', '1', 'refresh', 'Fade7') }}
+								{{ basic.stateswitch('TVLEDjump7', 'EG.Esszimmer.LEDjump7', 'midi', '1', 'refresh', 'Jump7') }}
+								{{ basic.stateswitch('TVLEDfade3', 'EG.Esszimmer.LEDfade3', 'midi', '1', 'refresh', 'Fade3') }}
+								{{ basic.stateswitch('TVLEDjump3', 'EG.Esszimmer.LEDjump3', 'midi', '1', 'refresh', 'Jump3') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVLEDfaster', 'EG.Esszimmer.LEDfaster', 'midi', '1', 'plus', ' Speed ') }}
+								{{ basic.stateswitch('TVLEDslower', 'EG.Esszimmer.LEDslower', 'midi', '1', 'minus', ' Speed ') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
+					<tr>
+						<td align="middle" width="70%">
+							<span data-role="controlgroup" data-type="horizontal">
+								{{ basic.stateswitch('TVLEDdimup', 'EG.Esszimmer.LEDdimup', 'midi', '1', 'arrow-u', ' Dimmen ') }}
+								{{ basic.stateswitch('TVLEDdimdown', 'EG.Esszimmer.LEDdimdown', 'midi', '1', 'arrow-d', ' Dimmen ') }}
+							</span>
+						</td>
+					</tr>
+				</table>
+
+				<td align="middle" width="70%">
+					{{ basic.flip('TVLEDOnOff', 'EG.Esszimmer.LEDPower', 'LED Ein', 'LED Aus') }}
+				</td>
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Status</h3>
+				<table width="100%">
+					<tr>
+						<td align="left">
+							{{ basic.symbol('FensterSuedEssen1', 'EG.Esszimmer.Fenster1', 'Fenster Süd ist offen', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+							{{ basic.symbol('FensterSuedEssen2', 'EG.Esszimmer.Fenster1', 'Fenster Süd ist zu', 'fts_window_1w.svg', 0) }}
+						</td>
+					</tr>
+					<tr>
+						<td align="left">
+							{{ basic.symbol('FensterWestEssen1', 'EG.Esszimmer.Fenster2', 'Fenster West ist offen', 'fts_window_1w_open.svg',1, '', 'icon1') }}
+							{{ basic.symbol('FensterWestEssen2', 'EG.Esszimmer.Fenster2', 'Fenster West ist zu', 'fts_window_1w.svg', 0) }}
+						</td>
+					</tr>
+					<tr>
+						<td align="left">
+							{{ basic.symbol('FensterKueche1', 'EG.Esszimmer.Fenster3', 'Fenster Küche zu', 'fts_window_1w.svg') }}
+							{{ basic.symbol('FensterKueche2', 'EG.Esszimmer.Fenster3', 'Fenster Küche auf', 'fts_window_1w_open.svg', 0, '', 'icon1') }}
+						</td>
+					</tr>
+					<tr>
+						<td align="left">
+							{{ basic.symbol('TuerEssen1', 'EG.Esszimmer.Tuer', 'Tür ist zu', 'fts_door.svg') }}
+							{{ basic.symbol('TuerEssen2', 'EG.Esszimmer.Tuer', 'Tür ist offen', 'fts_door_open.svg', 0, '', 'icon1') }}
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+
+
+
+{% endblock %}
+

@@ -1,0 +1,51 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2015
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <h1><img class="icon icon0" src='{{ icon0 }}scene_toilet.svg'/>Gäste WC</h1>
+
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Heizung</h3>
+                {{ device.rtr('gaestewc_heizen', 'Heizung', '3/0/4/9.xxx', '3/0/3/9.xxx', '3/0/8/1.001', '3/0/6/1.001', '3/0/7/1.001', '3/0/2/1.001') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Licht</h3>
+		{{ device.dimmer('gaestewc_licht1', 'Spiegel', '3/1/1/1.001', '3/1/5/5.xxx') }}
+		{{ device.dimmer('gaestewc_licht3', 'Dusche', '3/1/21/1.001', '3/1/25/5.xxx') }}
+            </div>
+            <br/><br/>
+        </div>
+    </div>
+
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Rollladen</h3>
+		{{ shutter.two ('gaestewc_rollladen', 'Rollladen', '3/2/1/1.001',  '3/2/2/1.001', '3/2/4/5.001' ) }}
+            </div>
+
+        </div>
+    </div>
+    
+{% endblock %}
+

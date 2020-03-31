@@ -1,0 +1,56 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+
+	Simple static icon
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.icon('light_light') }}
+ 		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.icon('light_light.svg') }}
+	</div>
+
+	Colored icon
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.icon('light_light', '#0b0') }}
+			{{ basic.icon(icon.light('','','bath.light.value'), 'icon1') }}
+ 		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.icon('light_light', '#0b0') }}
+		{{ basic.icon(icon.light('','','bath.light.value'), 'icon1') }}
+	</div>
+
+	Dynamically colored icon
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.icon('light_light', 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b']) }}
+			{{ basic.icon(icon.light('','','bath.light.value'), 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b']) }}
+ 		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	Use this color selector to change icon color.
+	<div class="html">
+  	{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b') }}
+	</div>
+	<div class="html">
+		{{ basic.icon('light_light', 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b']) }}
+		{{ basic.icon(icon.light('','','bath.light.value'), 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b']) }}
+	</div>
+
+{% endblock %}
+

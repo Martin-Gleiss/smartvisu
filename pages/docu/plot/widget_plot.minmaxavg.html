@@ -12,24 +12,9 @@
 
 {% block example %}
 
-	<h5>Simple Example</h5>
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; plot.minmaxavg('p1', bath_plot_value, '12h') &#125;&#125;<br /><br />
-		</code>
-	</div>
 	<div class="html">
-		{{ plot.minmaxavg('p1', bath_plot1, '12h') }}
-	</div>
-
-	<h5>Example - less counts</h5>
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; plot.minmaxavg('p2', bath_plot2, '12h', '', '', '', '', '', 25) &#125;&#125;<br /><br />
-		</code>
-	</div>
-	<div class="html">
-		{{ plot.minmaxavg('p2', bath_plot2, '12h', '', '', '', '', '', 25) }}
+		This widget is deprecated and may be removed in later versions.<br />
+		Please look into plot.period for replacement and further information.
 	</div>
 
 {% endblock %}

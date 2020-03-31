@@ -6,93 +6,221 @@
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
+/** handle dropins */
+{% set macrofiles = dir('dropins/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
+/** additional widgets in current pages */
+{% if isdir('pages/'~config_pages~'/widgets', '^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
+	{% set macrofiles = macrofiles|merge(dir('pages/'~config_pages~'/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
+{% endif %}
+{% set dynmacro = [] %}
+{% for macrofile in macrofiles %}
+	{% set dynmacro = dynmacro|merge(['{% import "widgets/' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
+{% endfor %}
+{% extends template_from_string(dynmacro|join("\n") ~ '\n{% block root %}{% endblock %}') %}
+
+{% block root %}
 <!DOCTYPE html>
 
 <html>
 <head>
 	<title>{{ config_title }}</title>
 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta charset="utf-8" />
+	<meta http-equiv="expires" content="0" />
+
 	<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1.3, minimum-scale=1" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-	<meta http-equiv="expires" content="0" />
+	<meta name="mobile-web-app-capable" content="yes" />
 
 	<link rel="icon" href="favicon.png" />
 	<link rel="icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="apple-touch-icon" href="favicon.png" />
+	<link rel="manifest" href="index.php?page=manifest">
 
-	<link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.3.2.min.css" />
-	<script type="text/javascript" src="vendor/jquery/jquery-2.0.3.min.js"></script>
+	<link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.4.5.min.css" />
 
-	{% if config_transition != 'fade' %}
-		<script type="text/javascript">
-			$(document).on("mobileinit", function () {
-				$.mobile.defaultPageTransition = '{{ config_transition }}';
+/** CSS assets **/
+{% set cssFiles = [
+		'vendor/plot.highcharts/highcharts.css',
+		'vendor/JTSage/DateBox/css/jtsage-datebox.css',
+		'lib/clock/jdigiclock.css',
+		'lib/weather/jdigiweather.css',
+		'pages/base/base.css',
+		icon0 ~ 'jquery.mobile.icons.min.css',
+		'designs/' ~ config_design ~ '.css',
+		'pages/' ~ config_pages ~ '/visu.css'
+	] %}
+{% for file in dir('dropins/widgets', '(.*)(\.css)') %}
+	{% set cssFiles = cssFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins', '(.*)(\.css)') %}
+	{% set cssFiles = cssFiles|merge([file.path]) %}
+{% endfor %}
+{% if isdir('pages/'~config_pages~'/widgets') %}
+	{% for file in dir('pages/'~config_pages~'/widgets', '(.*)(\.css)') %}
+		{% set cssFiles = cssFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
+{% if isdir('pages/'~config_pages~'/css') %}
+	{% for file in dir('pages/'~config_pages~'/css', '(.*)(\.css)') %}
+		{% set cssFiles = cssFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
+{%- if config_cache and mbstring_available %} /** only use minified and merged version if page cache is activated and mbstring available. otherwise use original single files. **/
+	<link rel="stylesheet" href="assets.php?pages={{ config_pages }}&amp;type=css
+	{%- for cssFile in cssFiles -%}
+		{%- if cssFile is not empty and isfile(cssFile) -%}
+			&amp;{{- 'files[]'|url_encode -}}={{- cssFile|url_encode -}}
+		{%- endif -%}
+	{%- endfor -%}
+	" />
+{% else -%}
+	{%- for cssFile in cssFiles -%}
+		{%- if cssFile is not empty and isfile(cssFile) %}
+
+	<link rel="stylesheet" href="{{ cssFile }}" />
+		{%- endif -%}
+	{%- endfor %}
+{% endif %}
+
+	<script type="text/javascript" src="vendor/jquery/jquery-2.1.4.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).on("mobileinit", function () {
+{%- if config_transition != 'fade' %}
+			$.mobile.defaultPageTransition = '{{ config_transition }}';
+{% endif %}
+			$.event.special.tap.emitTapOnTaphold = false;
+		});
+	</script>
+
+	<script type="text/javascript">
+		// work around a bug of jQuery Mobile 1.4.5 themes
+		$(document).on("pagebeforecreate", function( event, ui ) {
+			$(this).find('div[data-role="collapsible-set"][data-theme]').each(function() {
+				$(this).find('div[data-role="collapsible"]:not([data-theme])').attr('data-theme', $(this).attr('data-theme'));
+				$(this).attr('data-theme','');
 			});
-		</script>
-	{% endif %}
+			$(this).find('ul[data-role="listview"][data-dividertheme]').each(function() {
+				$(this).find('li[data-role="list-divider"]:not([data-theme])').attr('data-theme', $(this).attr('data-dividertheme'));
+			});
+		});
+	</script>
 
-	<script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.3.2.min.js"></script>
-	<script type="text/javascript" src="lib/base/jquery.mobile.slider.{{ config_js }}"></script>
+	<script type="text/javascript" src="vendor/jquery.mobile/jquery.mobile-1.4.5.min.js"></script>
 
-	<script type="text/javascript" src="vendor/plot.highcharts/highcharts.js"></script>
-	<script type="text/javascript" src="designs/{{ config_design }}.{{ config_js }}"></script>
-	<script type="text/javascript" src="widgets/widget.{{ config_js }}"></script>
+/** JavaScript assets **/
+{% set jsFiles = [
+		'lib/base/jquery.mobile.slider.js',
+		'vendor/plot.highcharts/highstock.js',
+		'vendor/plot.highcharts/highcharts-more.js',
+		'vendor/plot.highcharts/draggable-points.js',
+		'vendor/plot.highcharts/modules/solid-gauge.js',
+		'vendor/jquery.cycle2/jquery.cycle2.js',
+		'vendor/JTSage/DateBox/js/jtsage-datebox.js',
+		'lib/clock/jquery.jdigiclock.js',
+		'vendor/JTSage/DateBox/js/i18n/jtsage-datebox.i18n.'~lang('DateBox', 'lang')~'.utf8.js',
+		config_animation ? 'widgets/animation.js' : null,
+		'lib/base/base.js',
+		'lib/base/base.php',
+		'driver/io_' ~ config_driver ~ '.js',
+		'pages/' ~ config_pages ~ '/visu.js'
+	] %}
+{% for file in dir('widgets', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins/widgets', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% if isdir('pages/'~config_pages~'/widgets', '\.js') %}
+	{% for file in dir('pages/'~config_pages~'/widgets', '(.*)(\.js)') %}
+		{% set jsFiles = jsFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
+{% if isdir('pages/'~config_pages~'/js', '\.js') %}
+	{% for file in dir('pages/'~config_pages~'/js', '(.*)(\.js)') %}
+		{% set jsFiles = jsFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
+{%- if config_cache and mbstring_available -%} /** only use minified and merged version if page cache is activated and mbstring available. otherwise use original single files. **/
+	<script type="text/javascript" src="assets.php?pages={{ config_pages }}&amp;type=javascript
+	{%- for jsFile in jsFiles -%}
+		{%- if jsFile is not empty and isfile(jsFile) -%}
+			&amp;{{- 'files[]'|url_encode -}}={{- jsFile|url_encode -}}
+		{%- endif -%}
+	{%- endfor -%}
+	"></script>
+{%- else -%}
+	{%- for jsFile in jsFiles -%}
+		{%- if jsFile is not empty and isfile(jsFile) %}
 
-	{% if config_animation %}
-		<script type="text/javascript" src="widgets/animation.{{ config_js }}"></script>{% endif %}
+	<script type="text/javascript" src="{{ jsFile }}"></script>
+		{%- endif -%}
+	{%- endfor -%}
+	{%- if config_cache and not mbstring_available %}
 
-	<script type="text/javascript" src="lib/base/base.{{ config_js }}"></script>
-	<script type="text/javascript" src="lib/base/base.php"></script>
-	<script type="text/javascript" src="driver/io_{{ config_driver }}.{{ config_js }}"></script>
-
-	<link rel="stylesheet" type="text/css" href="designs/{{ config_design }}.min.css" />
-	<link rel="stylesheet" type="text/css" href="pages/base/base.css" />
-
-	{% if isfile('pages/'~config_pages~'/visu.js') %}
-		<script type="text/javascript" src="pages/{{ config_pages }}/visu.js"></script>{% endif %}
-
-	{% if isfile('pages/'~config_pages~'/visu.css') %}
-		<link rel="stylesheet" type="text/css" href="pages/{{ config_pages }}/visu.css" />{% endif %}
-
-	{% block head %}{% endblock %}
-
-	{% import "lib.html" as lib %}
-	{% import "basic.html" as basic %}
-	{% import "device.html" as device %}
-	{% import "plot.html" as plot %}
-</head>
+ 	<script type="text/javascript">notify.warning('Assets','JavaScript and CSS minification needs PHP mbstring module.')</script>
+ 	{%- endif -%}
+{% endif %}
 
 
-<body>
+{% block head %}{% endblock %}
 
 <script type="text/javascript">
 	io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
 {% if config_driver_autoreconnect %}
-	activateAutoReconnect();
+	activateAutoReconnect('{{ config_driver_address }}', '{{ config_driver_port }}');
+{% endif %}
+
+{% if config_backtohometime > 0 %}
+	// back to home page
+	var homeTimeout;
+	$(document).on("vmousedown pageshow", function() {
+		if(homeTimeout !== undefined)
+			window.clearTimeout(homeTimeout);
+		if($.mobile.activePage && $.mobile.activePage.attr("id") != "index" && $.mobile.activePage.attr("id") != "config")
+			homeTimeout = window.setTimeout(function() { $.mobile.changePage("index.php"); }, {{ config_backtohometime * 1000 }});
+	});
 {% endif %}
 
 	// Do some actions before page is shown
-	$(document).on('pagebeforeshow', function () {
+	$(document).on('pagecontainerbeforeshow', function () {
 		fx.init();
 		repeater.init();
 		widget.prepare();
-		// repeater.list();
+		io.run({{ config_driver_realtime }});
 	});
 
 	// Run the io and all widgets
-	$(document).on('pageshow', function () {
-		io.run({{ config_driver_realtime }});
-		// console.log('[io] run');       	
+	$(document).on('pagecontainershow', function () {
 		notify.display();
-		// widget.list();
 	});
 
 	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};
 </script>
+<link rel="stylesheet" href="pages/base/quad.css" />
+<script type="text/javascript" src="widgets/quad.js"></script>
+{% import "lib.html" as lib %}
+{% import "basic.html" as basic %}
+{% import "calendar.html" as calendar %}
+{% import "clock.html" as clock %}
+{% import "device.html" as device %}
+{% import "icon.html" as icon %}
+{% import "multimedia.html" as multimedia %}
+{% import "phone.html" as phone %}
+{% import "plot.html" as plot %}
+{% import "popup.html" as popup %}
+{% import "status.html" as status %}
+{% import "weather.html" as weather %}
+</head>
 
+<body>
 {% block body %}{% endblock %}
-
 </body>
 </html>
+{% endblock root %}

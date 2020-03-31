@@ -1,0 +1,73 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2015
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "rooms.html" %}
+
+{% block content %}
+    
+    <h1><img class="icon icon0" src='{{ icon0 }}scene_sleeping.svg'/>Schlafzimmer</h1>
+
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Heizung</h3>
+                {{ device.rtr('schlafzimmer_heizen', 'Heizung', '6/0/4/9.xxx', '6/0/3/9.xxx', '6/0/8/1.001', '6/0/6/1.001', '6/0/7/1.001', '6/0/2/1.001') }}
+            </div>
+        </div>
+    </div>            
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Licht</h3>
+            {{ device.dimmer('light1', 'Decke', '6/1/1/1.001', '6/1/5/5.xxx') }}
+            <table width="90%">
+	    <tr>
+                <td align="left" width="100px">&nbsp; {{ basic.stateswitch('switch1', '6/1/21/1.001', 'icon', ['1', '0'], ['light_light.svg', 'light_light.svg'], '', ['icon1', 'icon0']) }} </td>
+                <td>Bett links</td>
+            </tr>
+            </table>
+            <table width="90%">
+            <tr>
+                <td align="left" width="100px">&nbsp; {{ basic.stateswitch('switch2', '6/1/11/1.001', 'icon', ['1', '0'], ['light_light.svg', 'light_light.svg'], '', ['icon1', 'icon0']) }} </td>
+                <td>Bett rechts</td>
+            </tr>
+            </table>
+      	</div>
+    <br/><br/>
+    </div>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Rollladen</h3>
+	    {{ shutter.two ('schlafen_sueden', 'Sueden', '6/2/1/1.001',  '6/2/2/1.001',  '6/2/4/5.001' ) }}
+        </div>
+
+    </div>    
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+        <div data-role="collapsible" data-collapsed="false">
+            <h3>Rollladen</h3>
+            {{ shutter.two ('schlafen_westen', 'Westen', '6/2/11/1.001', '6/2/12/1.001', '6/2/14/5.001', '' ) }}
+        </div>
+
+    </div>
+    </div>
+          
+{% endblock %}
+

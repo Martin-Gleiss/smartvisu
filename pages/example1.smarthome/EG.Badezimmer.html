@@ -1,0 +1,65 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}scene_bathroom.svg' />Badezimmer / WC</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Deckenspots</h3>
+				<table width=100%>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.stateswitch('Sotslinks', 'EG.Bad.Sotslinks', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} links
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('Sotsrechts', 'EG.Bad.Sotsrechts', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} rechts
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							&nbsp;
+						</td>
+						<td align=left>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td align=left width=50%>
+							{{ basic.stateswitch('Spotsgesamt', 'EG.Bad.alleSpots', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} alle
+						</td>
+						<td align=left>
+							{{ basic.stateswitch('WCDeckenspots', 'EG.EGWC.Spots', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} WC Spots
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Heizung</h3>
+				{{ device.rtr('EG.Bad.temperature', 'TemperaturBad', 'EG.Bad.temperature', 'EG.Bad.temperature.set', 'EG.Bad.temperature.mode', 'EG.Bad.temperature.night', 'EG.Bad.temperature.frost', 'EG.Bad.temperature.state') }}
+			</div>
+
+		</div>
+	</div>
+	<h3>Temperaturverlauf</h3>
+	{{ plot.period('p21', 'EG.Bad.temperature', 'avg', '12h') }}
+
+{% endblock %}
+

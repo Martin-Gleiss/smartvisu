@@ -12,19 +12,11 @@
 
 {% block example %}
 
-	<h5>Examples</h5>
+		<div class="html">
+		This widget is deprecated and may be removed in later versions.<br>
+		Please look into basic.color for replacement and further information.
+	</div>
 
-	Choose your color! After selection the RGB values will be sent.
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.colordisc('c1', 'bath.color.r', 'bath.color.g', 'bath.color.b') &#125;&#125;<br />
-			&#123;&#123; basic.colordisc('c2', 'bath.color.r', 'bath.color.g', 'bath.color.b', 0, 255, 16, 20) &#125;&#125;
-		</code>
-	</div>
-	<div class="html">
-		{{ basic.colordisc('c1', 'bath.color.r', 'bath.color.g', 'bath.color.b') }} 10 colors
-		{{ basic.colordisc('c2', 'bath.color.r', 'bath.color.g', 'bath.color.b', 0, 255, 16, 20) }} 16 steps and 20 colors
-	</div>
 
 {% endblock %}
 

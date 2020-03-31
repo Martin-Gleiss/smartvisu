@@ -1,0 +1,45 @@
+/**
+* -----------------------------------------------------------------------------
+* @package		 smartVISU
+* @author			Martin Gleiß
+* @copyright	 2012 - 2015
+* @license		 GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_plot.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+					{{ plot.pie('', ['bath.p1','bath.p2','bath.p3'], ['Pie 1','Pie 2','Pie 3']) }}
+					{{ plot.pie('', ['bath.p1','bath.p2','bath.p3'], ['Pie1','Pie2','Pie3'], ['#FF0000','#FFFFFF','#000000']) }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+
+	<div class="html">
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>a simple plot</h3>
+					{{ plot.pie('', ['bath.p1','bath.p2','bath.p3'], ['Pie 1','Pie 2','Pie 3']) }}
+				</div>
+			</div>
+		</div>
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>Custon names and colors</h3>
+					{{ plot.pie('', ['bath.p1','bath.p2','bath.p3'], ['Pie 1','Pie 2','Pie 3'], ['#FF0000','#FFFFFF','#000000']) }}
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}

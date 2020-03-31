@@ -1,0 +1,21 @@
+/**
+*/
+
+/**
+* calculate values and display 
+*
+* @param       id , unique id for this widget
+* @param       txt , text to display 
+* @param       gad , gad/item to use, can be a single gad or an array of gads
+* @param       mode , mode to use ('sum', 'avg', 'sub') 
+* @param       unit , unit for displaying
+* @param       calcstart , additional calculating, use in front of the calcualting like '23 + ('
+* @param       calcend , additional calculating, use at the end of the calcuating like ') /1000'
+* @param       round , to 'round' digits
+*/
+{% macro calculate(id, txt, gad, mode, unit, calcstart, calcend, round) %}
+
+    {% if txt %} {{ txt }} {% endif %}
+    <span id="{{ uid(page, id) }}" data-item="{{ implode(gad) }}" data-mode="{{ mode|default('sum') }}" class="text" data-widget="calc.calculate" data-unit="{{ unit }}" data-calcstart="{{ calcstart }}" data-calcend="{{ calcend }}" data-round="{{ round }}"></span>
+
+{% endmacro %}

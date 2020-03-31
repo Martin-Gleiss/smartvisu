@@ -32,7 +32,7 @@ bath.radio.play = 1
 bath.alert.info = 0
 bath.alert.warning = 0
 bath.alert.error = 0
-bath.alert.text = heating to hot!
+bath.alert.text = heating too hot!
 bath.plot.temp = 20
 bath.plot.humidity = 52
 bath.value = 230.4672
@@ -50,5 +50,5 @@ floor.rtr.act = 22.7
 floor.rtr.set = 17
 docu.multistate = 5
 bath.light.value2 = 51
-baht.light = 175
 bath.light = 1
+uzsuitem = {"active":true,"list":[{"condition":{"type":null,"deviceString":"","active":false,"value":""},"delayedExec":{"type":null,"deviceString":"","active":false,"value":""},"rrule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR","event":"sunrise","holiday":{"workday":true,"weekend":false},"active":true,"timeCron":"","value":"0","timeMin":"01:00","timeOffset":"30","timeMax":"23:59","time":"01:00<sunrise+30m<23:59"},{"active":true,"rrule":"","time":"01:00","value":"1","event":"time","timeMin":"","timeMax":"","timeCron":"01:00","timeOffset":"","condition":{"deviceString":"foo","type":"eq","value":"bar","active":true},"delayedExec":{"deviceString":"","type":null,"value":"","active":false},"holiday":{"workday":false,"weekend":true}},{"active":false,"rrule":"","time":"","value":"2","event":"time","timeMin":"","timeMax":"","timeCron":"","timeOffset":"","condition":{"deviceString":"","type":"String","value":"","active":false},"delayedExec":{"deviceString":"","type":"String","value":"","active":false},"holiday":{"workday":false,"weekend":false}}]}

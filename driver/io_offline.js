@@ -1,10 +1,13 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß
+ * @author      Martin Gleiss
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ * @hide        driver_address
+ * @hide        driver_port
+ * @hide        driver_autoreconnect
  */
 
 
@@ -14,12 +17,13 @@
  */
 var io = {
 
-	// the adress
-	adress: '',
+	// the address
+	address: '',
 
 	// the port
 	port: '',
 
+	uzsu_type: '0',
 
 	// -----------------------------------------------------------------------------
 	// P U B L I C   F U N C T I O N S
@@ -98,7 +102,7 @@ var io = {
 	 */
 	loop: function () {
 		if (widget.listeners().length) {
-			io.timer = setTimeout('io.loop(); io.all();', 1000);
+			io.timer = setTimeout('io.loop(); io.all();', 5000);
 		}
 	},
 
@@ -125,15 +129,22 @@ var io = {
 	 */
 	get: function (item) {
 		$.ajax({  url: "driver/io_offline.php",
-			data: ({item: item}),
+			data: {"item": item},
 			type: "GET",
 			dataType: 'json',
 			async: true,
 			cache: false
 		})
-			.done(function (response) {
-				widget.update(item, response[item]);
-			})
+		.done(function (response) {
+			var val = response[item];
+			// try to parse as JSON. Use raw value if this fails (value was likely saved before introdution of JSON.stringify in put)
+			try {
+				val = JSON.parse(response[item]);
+			}
+			catch(e) {}
+			widget.update(item, val);
+		})
+		.fail(notify.json)
 	},
 
 	/**
@@ -144,52 +155,66 @@ var io = {
 
 		io.stop();
 		$.ajax({  url: "driver/io_offline.php",
-			data: ({item: item, val: val}),
-			type: "GET",
+			data: {"item": item, "val": JSON.stringify(val)},
+			type: 'POST',
 			dataType: 'json',
 			cache: false
 		})
-			.done(function (response) {
-				widget.update(item, response[item]);
+		.done(function (response) {
+			widget.update(item, JSON.parse(response[item]));
 
-				if (timer_run) {
-					io.start();
-				}
-			})
+			if (timer_run) {
+				io.start();
+			}
+		})
+		.fail(notify.json)
 	},
 
 	/**
 	 * Reads all values from bus and refreshes the pages
 	 */
 	all: function () {
-		var items = '';
+		var items = widget.listeners().join(',');
 
 		// only if anyone listens
-		if (widget.listeners().length) {
-
-			// prepare url       
-			var item = widget.listeners();
-			for (var i = 0; i < widget.listeners().length; i++) {
-				items += item[i] + ',';
-			}
-			items = items.substr(0, items.length - 1);
-
+		if (items.length) {
 			$.ajax({  url: 'driver/io_offline.php',
-				data: ({item: items}),
-				type: 'POST',
+				data: {"item": items},
+				type: 'GET',
 				dataType: 'json',
 				async: true,
 				cache: false
 			})
-				.done(function (response) {
-					// update all items	
-					$.each(response, function (item, val) {
-						widget.update(item, val);
-					})
+			.done(function (response) {
+				// update all items	
+				$.each(response, function (item, val) {
+					// try to parse as JSON. Use raw value if this fails (value was likely saved before introdution of JSON.stringify in put)
+					try {
+						val = JSON.parse(response[item]);
+					}
+					catch(e) {}
+					widget.update(item, val);
 				})
+			})
+			.fail(notify.json)
 		}
 
 		// plots
+		var repeatSeries = function(item, tmin, tmax, ymin, ymax, cnt, step, startval) {
+			var series = io.demoseries(tmin, tmax, ymin, ymax, cnt, startval);
+			widget.update(item, series);
+
+			if(step == null)
+				step = Math.round((new Date().duration(tmin) - new Date().duration(tmax)) / cnt);
+			var nextTime = -(new Date().duration(tmax).getTime() - step)/1000;
+			var startval = series[series.length-1][1];
+
+			setTimeout(function(){
+				//repeatSeries(item, tmax, nextTime+"s", ymin, ymax, 1, step, startval);
+				repeatSeries(item, tmax, tmax, ymin, ymax, 1, step, startval);
+			}, step);
+		}
+
 		widget.plot().each(function (idx) {
 			var items = widget.explode($(this).attr('data-item'));
 
@@ -198,13 +223,16 @@ var io = {
 
 				if (widget.get(items[i]) == null && (widget.checkseries(items[i]))) {
 
+					var assign = ($(this).attr('data-assign') || "").explode();
+					var yAxis = (assign[i] ? assign[i] - 1 : 0)
+
 					var ymin = [];
 					if ($(this).attr('data-ymin')) { ymin = $(this).attr('data-ymin').explode(); }
 
 					var ymax = [];
 					if ($(this).attr('data-ymax')) { ymax = $(this).attr('data-ymax').explode(); }
 
-					widget.update(items[i], io.demoseries(item[item.length - 3], item[item.length - 2], ymin[0], ymax[0], item[item.length - 1]));
+					repeatSeries(items[i], item[item.length - 3], item[item.length - 2], ymin[yAxis], ymax[yAxis], item[item.length - 1]);
 				}
 			}
 		});
@@ -218,29 +246,45 @@ var io = {
 	/**
 	 * Builds a series out of random float values
 	 */
-	demoseries: function (tmin, tmax, min, max, cnt) {
+	demoseries: function (tmin, tmax, min, max, cnt, val) {
 
 		var ret = Array();
 
-		if (!min) {
+		if (!min || isNaN(min)) {
 			min = 0;
 		}
 		if (!max) {
 			max = 255;
 		}
-
-		var val = (min * 1) + ((max - min) / 2);
-		var delta = (max - min) / 20;
+		else if (isNaN(max)) { // boolean plot
+			max = 1;
+		}
 
 		tmin = new Date().getTime() - new Date().duration(tmin);
 		tmax = new Date().getTime() - new Date().duration(tmax);
-		var step = Math.round((tmax - tmin) / cnt);
+		var step = Math.round((tmax - tmin) / (cnt-1));
+		if(step == 0)
+			step = 1;
 
-		while (tmin <= tmax) {
+		if(min == 0 && max == 1) { // boolean plot
+			if(val === undefined)
+				val = 0;
+			while (tmin <= tmax) {
+				val = (Math.random() < (0.2 + 0.6 * val)) ? 1 : 0; // make changes lazy
+				ret.push([tmin, val]);
+				tmin += step;
+			}
+		}
+		else {
+			var delta = (max - min) / 20;
+			if(val === undefined)
+				val = (min * 1) + ((max - min) / 2);
 
-			val += Math.random() * (2 * delta) - delta;
-			ret.push([tmin, val.toFixed(2) * 1.0]);
-			tmin += step;
+			while (tmin <= tmax) {
+				val += Math.random() * (2 * delta) - delta;
+				ret.push([tmin, val.toFixed(2) * 1.0]);
+				tmin += step;
+			}
 		}
 
 		return ret;

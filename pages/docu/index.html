@@ -15,79 +15,86 @@
 	{% import "lib.html" as lib %}
 	{{ lib.updatecheck() }}
 
-	<div data-role="collapsible-set" style="margin-top: -15px;" data-inset="false" data-mini="true" data-theme="c">
+	<div data-role="collapsible-set" style="margin-top: -15px;" data-inset="false" data-mini="true" data-content-theme="a">
 
-		<div data-role="collapsible" data-collapsed="false">
+		<div data-role="collapsible"{{ pagepath not in ['design','misc'] ? ' data-collapsed="false"' }} data-theme="c" data-content-theme="a">
 			<h3>Widgets</h3>
 
-			<ul data-role="listview" data-dividertheme="c">
+			<ul data-role="listview">
 				<li data-icon="false">
 					<a href="index.php?page=basic/widget_basic">
-						<img class="icon" src="{{ icon0 }}light_dinner_table.svg" />
+						<img class="icon" src="{{ icon0 }}light_dinner_table.svg" alt="Basic" />
 
 						<h3>Basic</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=calendar/widget_calendar">
-						<img class="icon" src="{{ icon0 }}time_calendar.svg" />
+						<img class="icon" src="{{ icon0 }}time_calendar.svg" alt="Calendar" />
 
 						<h3>Calendar</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=device/widget_device">
-						<img class="icon" src="{{ icon0 }}temp_control.svg" />
+						<img class="icon" src="{{ icon0 }}temp_control.svg" alt="Device" />
 
 						<h3>Device</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=multimedia/widget_multimedia">
-						<img class="icon" src="{{ icon0 }}it_television.svg" />
+						<img class="icon" src="{{ icon0 }}it_television.svg" alt="Multimedia" />
 
 						<h3>Multimedia</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=phone/widget_phone">
-						<img class="icon" src="{{ icon0 }}it_telephone.svg" />
+						<img class="icon" src="{{ icon0 }}it_telephone.svg" alt="Phone" />
 
 						<h3>Phone</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=plot/widget_plot">
-						<img class="icon" src="{{ icon0 }}time_graph.svg" />
+						<img class="icon" src="{{ icon0 }}time_graph.svg" alt="Plots" />
 
 						<h3>Plots</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=status/widget_status">
-						<img class="icon" src="{{ icon0 }}status_automatic.svg" />
+						<img class="icon" src="{{ icon0 }}status_automatic.svg" alt="Status" />
 
 						<h3>Status</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=clock/widget_clock">
-						<img class="icon" src="{{ icon0 }}time_clock.svg" />
+						<img class="icon" src="{{ icon0 }}time_clock.svg" alt="Clock" />
 
 						<h3>Time/Clock</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=weather/widget_weather">
-						<img class="icon" src="{{ icon0 }}weather_summer.svg" />
+						<img class="icon" src="{{ icon0 }}weather_summer.svg" alt="Weather" />
 
 						<h3>Weather</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=custom/widget_custom">
+						<img class="icon" src="{{ icon0 }}edit_settings.svg" alt="Custom" />
+
+						<h3>Custom</h3>
 					</a>
 				</li>
 			</ul>
 		</div>
 
-		<div data-role="collapsible">
+		<div data-role="collapsible"{{ pagepath == 'design' ? ' data-collapsed="false"' }} data-theme="c" data-content-theme="a">
 			<h3>Design</h3>
 
 			<ul data-role="listview" data-dividertheme="c">
@@ -99,7 +106,14 @@
 					</a>
 				</li>
 				<li data-icon="false">
-					<a href="index.php?page=design/design_quad">
+					<a href="index.php?page=design/design_buttons">
+						<img class="icon" src="{{ icon0 }}control_all_on_off.svg" />
+
+						<h3>Buttons</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=quad/widget_quad">
 						<img class="icon" src="{{ icon0 }}control_outside_on_off.svg" />
 
 						<h3>Quad</h3>
@@ -121,52 +135,47 @@
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=design/design_bg">
-						<img class="icon" src="{{ icon0 }}time_statistic.svg" />
+						<img class="icon" src="{{ icon0 }}time_statistic.svg" alt="Backgrounds" />
 
 						<h3>Backgrounds</h3>
-					</a>
-				</li>
-				<li data-icon="false">
-					<a href="index.php?page=design/design_buttons">
-						<img class="icon" src="{{ icon0 }}control_ok.svg" />
-
-						<h3>Buttons</h3>
 					</a>
 				</li>
 			</ul>
 		</div>
 
-		<div data-role="collapsible">
+		<div data-role="collapsible"{{ pagepath == 'misc' ? ' data-collapsed="false"' }} data-theme="c" data-content-theme="a">
 			<h3>Misc</h3>
 			<ul data-role="listview" data-dividertheme="c">
 				<li data-icon="false">
 					<a href="index.php?page=misc/fundamentals">
-						<img class="icon" src="{{ icon0 }}control_on_off.svg" />
+						<img class="icon" src="{{ icon0 }}control_on_off.svg" alt="Fundamentals" />
 
 						<h3>Fundamentals</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=misc/overview">
-						<img class="icon" src="{{ icon0 }}control_all_on_off.svg" />
+						<img class="icon" src="{{ icon0 }}control_all_on_off.svg" alt="Overview" />
 
 						<h3>Overview</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=misc/appliances">
-						<img class="icon" src="{{ icon0 }}it_server.svg" />
+						<img class="icon" src="{{ icon0 }}it_server.svg" alt="Appliances" />
 
 						<h3>Appliances</h3>
 					</a>
 				</li>
+/**
 				<li data-icon="false">
 					<a href="index.php?page=misc/preview">
-						<img class="icon" src="{{ icon0 }}message_info.svg" />
+						<img class="icon" src="{{ icon0 }}message_info.svg" alt="Preview" />
 
 						<h3>Preview</h3>
 					</a>
 				</li>
+*/
 			</ul>
 		</div>
 
@@ -198,13 +207,13 @@
 				<span style="font-size: 1.8em;">{{ widgets }}</span><br /><span class="mini">widgets</span></div>
 		</div>
 
-		{% set designs = dir('designs', '(.+?\.min\.css)')|length %}
+		{% set designs = dir('designs', '(.+?\.css)')|length %}
 		<div class="app">
 			<div class="image" style="background-color: #fa0;">
 				<span style="font-size: 1.8em;">{{ designs }}</span><br /><span class="mini">designs</span></div>
 		</div>
 
-		{% set driver = dir('driver', '^(?!_)(.+?\.min\.js)')|length %}
+		{% set driver = dir('driver', '^(?!_)(.+?\.js)')|length %}
 		<div class="app">
 			<div class="image" style="background-color: #0c0;"><span style="font-size: 1.8em;">{{ driver }}</span><br /><span class="mini">drivers</span>
 			</div>
@@ -230,10 +239,11 @@
 	<a href="index.php?page=status/widget_status">Status</a>&nbsp;
 	<a href="index.php?page=clock/widget_clock">Time/Clock</a>&nbsp;
 	<a href="index.php?page=weather/widget_weather">Weather</a>&nbsp;
+	<a href="index.php?page=custom/widget_custom">Custom</a>&nbsp;
 
 	<h2>Design</h2>
 	<a href="index.php?page=design/design_block">Blocks</a>&nbsp;
-	<a href="index.php?page=design/design_quad">Quad</a>&nbsp;
+	<a href="index.php?page=quad/widget_quad">Quad</a>&nbsp;
 	<a href="index.php?page=design/design_popup">Popups</a>&nbsp;
 	<a href="index.php?page=design/design_icons">Icons</a>&nbsp;
 	<a href="index.php?page=design/design_bg">Backgrounds</a>&nbsp;
@@ -242,7 +252,7 @@
 	<a href="index.php?page=misc/fundamentals">Fundamentals</a>&nbsp;
 	<a href="index.php?page=misc/overview">Overview</a>&nbsp;
 	<a href="index.php?page=misc/appliances">Appliances</a>&nbsp;
-	<a href="index.php?page=misc/preview">Preview</a>&nbsp;
+	/**<a href="index.php?page=misc/preview">Preview</a>&nbsp;*/
 
 {% endblock %}
 
@@ -251,7 +261,7 @@
 	<link href="vendor/google.prettify/styles/sunburst.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript" src="vendor/google.prettify/src/prettify.js"></script>
 {% endblock %}
-    
+
 {% block footer %}
 	<script type="text/javascript">
 		$('#{{ page }}').on('pageinit', function (event) {
@@ -259,4 +269,3 @@
 		});
 	</script>
 {% endblock %}
-

@@ -17,7 +17,7 @@
 {% macro flip_init(id, val) %}
 	<script type="text/javascript">
 		$('#{{ page }}').on('pageinit', function (event, ui) {
-			$('#{{ id }}').val('{{ val|bit }}').slider('refresh');
+			$('#{{ id }}').val('{{ val|bit }}').flipswitch('refresh');
 		});
 	</script>
 {% endmacro %}
@@ -50,3 +50,164 @@
 	</script>
 {% endmacro %}
 
+
+{% macro config_row(source, values, id, content) %}
+	<div class="ui-field-contain">
+		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
+			{{ lang('configuration_page', id, 'label') }}
+		</label>
+	{% set hint = lang('configuration_page', id, 'hint') %}
+	{% if not hint is empty %}
+		<div class="ui-help-container">
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
+				{{ hint|nl2br }}
+			</div>
+	{% endif %}
+	{% for c in (content is iterable ? content : [content]) %}
+			{{ c|raw }}
+	{% endfor %}
+	{% if not hint is empty %}
+		</div>
+	{% endif %}
+	</div>
+{% endmacro %}
+
+
+{% macro config_input(source, values, id, type) %}
+	<div class="ui-field-contain">
+		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
+			{{ lang('configuration_page', id, 'label') }}
+		</label>
+	{% set hint = lang('configuration_page', id, 'hint') %}
+	{% if not hint is empty %}
+		<div class="ui-help-container">
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
+				{{ hint|nl2br }}
+			</div>
+	{% endif %}
+			<input {% if type == 'wide' %} style="letter-spacing: 0.1em;" {% set type = 'text' %}{% endif %} type="{{ type|default('text') }}" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
+	{% if not hint is empty %}
+		</div>
+	{% endif %}
+	</div>
+{% endmacro %}
+
+
+{% macro config_select(source, values, id, files) %}
+	<div class="ui-field-contain">
+		<label for="{{ source }}_{{ id }}"{% if source != 'global' and source != 'tplchk' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
+			{{ lang('configuration_page', id, 'label') }}
+		</label>
+	{% set hint = lang('configuration_page', id, 'hint') %}
+	{% if not hint is empty %}
+		<div class="ui-help-container">
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+			/**
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon icon1" data-transition="pop">
+				{{ source('message_help.svg') }}
+			</a>
+			*/
+			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
+				{{ hint|nl2br }}
+			</div>
+	{% endif %}
+			<select name="{{ id }}" id="{{ source }}_{{ id }}"{{ files|length <= 20 ? ' data-native-menu="false"'|raw }}{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
+	      {% set metas = [] %}
+	      {% set deprecateds = [] %}
+				{% for file in files %}
+					{% if not file.path %}
+						{% set meta = [] %}
+					{% else %}
+						{% set meta = configmeta(file.path) %}
+						{% if meta != [] %}
+							{% set metas = metas|merge({ (file.name) : meta }) %}
+		          {% if meta['deprecated'] %}
+		            {% set deprecateds = deprecateds|merge([loop.index0]) %}
+							{% endif %}
+						{% endif %}
+					{% endif %}
+          {% if file.group and file.group != prevgroup %}
+						{% if prevgroup %}
+            	</optgroup>
+						{% endif %}
+						{% set prevgroup = file.group %}
+            <optgroup label="{{ file.group }}">
+					{% endif %}
+					<option value="{{ file.name }}"{{ values[id] == file.name ? ' selected="selected"'|raw }}>{{ meta['label']|default(file.label) }}</option>
+				{% endfor %}
+				{% if prevgroup %}
+        	</optgroup>
+				{% endif %}
+			</select>
+				/** display deprecated options in italic
+				<style type="text/css">
+          {% for deprecated in deprecateds %}
+          	#{{ source }}_{{ id }}-listbox-popup li[data-option-index="{{ deprecated }}"] a { font-style: italic; }
+					{% endfor %}
+				</style>
+				*/
+				<script type="text/javascript">
+					$('#{{ source }}_{{ id }}').on('change init', function(event) {
+						var element = $(this);
+
+						if(element.data('hidden'))
+							element.data('hidden').show();
+
+						var metas = {{ metas|json_encode()|raw }};
+						var meta = metas[$(element).val()];
+
+						if(meta && meta['default'] && event.type != 'init') {
+							$.each(meta['default'], function(field, val) {
+								setMobileWidgetValue(element.closest('fieldset').find('[name="'+field+'"]'), val);
+							});
+						}
+
+						if(meta && meta['hide']) {
+							var pattern = '';
+							$.each(meta['hide'], function(field, val) {
+								pattern += ',.ui-field-contain:has([name="'+field+'"])'
+							});
+							pattern = pattern.substr(1);
+							//element.data(changeDisabledState(element.closest('fieldset').find(pattern), true).hide());
+							element.data('hidden', element.closest('fieldset').find(pattern).hide());
+						}
+					});
+
+				</script>
+	{% if not hint is empty %}
+		</div>
+	{% endif %}
+	</div>
+{% endmacro %}
+
+
+{% macro config_flip(source, values, id, addition) %}
+	<div class="ui-field-contain">
+		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
+			{{ lang('configuration_page', id, 'label') }}
+		</label>
+	{% set hint = lang('configuration_page', id, 'hint') %}
+	{% if not hint is empty %}
+		<div class="ui-help-container">
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
+				{{ hint|nl2br }}
+			</div>
+	{% endif %}
+			<select name="{{ id }}" id="{{ source }}_{{ id }}" data-role="flipswitch"{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
+				<option value="false"{{ not values[id] ? ' selected="selected"'|raw }}>off</option>
+				<option value="true"{{ values[id] ? ' selected="selected"'|raw }}>on</option>
+			</select>
+			{{ addition|raw }}
+	{% if not hint is empty %}
+		</div>
+	{% endif %}
+	</div>
+{% endmacro %}
+
+
+{% macro config_hidden(source, values, id) %}
+			<input type="hidden" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
+{% endmacro %}

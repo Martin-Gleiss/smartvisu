@@ -1,0 +1,70 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2015
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+    {% include 'stats.navigation.html' %}
+
+{% endblock %} 
+
+{% block content %}
+
+    <h1><img class="icon icon0" src='{{ icon0 }}sani_floor_heating.svg'/>Temperaturen Fußbodenheizung</h1>
+    
+    <div class="preblock">
+		
+    </div>
+
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Erdgeschoss</h3>
+                <table width="100%" style="text-align: left;">
+                <tr>
+                    <td width="20%"></td>
+                    <td width="10%">Ist</td>
+                    <td width="10%"></td>
+                    <td width="10%">Soll</td>
+                    <td width="10%"></td>
+                    <td width="10%">Heizen</td>
+                </tr>
+                </table>
+                {{ smallrtr.one ('srtr_kueche', 'Küche', '1/0/4/9.xxx', '1/0/3/9.xxx', '1/0/2/1.001') }}
+                {{ smallrtr.one ('srtr_wz',     'Wohnen',   '0/0/4/9.xxx', '0/0/3/9.xxx', '0/0/2/1.001') }}
+                {{ smallrtr.one ('srtr_gz',     'Gäste',  '2/0/4/9.xxx', '2/0/3/9.xxx', '2/0/1/5.001') }}
+                {{ smallrtr.one ('srtr_gwc',    'WC',     '3/0/4/9.xxx', '3/0/3/9.xxx', '3/0/2/1.001') }}
+                {{ smallrtr.one ('srtr_dieg',   'Diele EG',     '4/0/4/9.xxx', '4/0/3/9.xxx', '4/0/2/1.001') }}
+            </div>
+        </div>
+    </div> 
+ 
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Dachgeschoss</h3>
+                <table width="100%" style="text-align: left;">
+                    <tr>
+                        <td width="20%"></td>
+                        <td width="10%">Ist</td>
+                        <td width="10%"></td>
+                        <td width="10%">Soll</td>
+                        <td width="10%"></td>
+                        <td width="10%">Heizen</td>
+                    </tr>
+                </table>
+                {{ smallrtr.one ('srtr_badog',  'Bad',       '9/0/4/9.xxx', '9/0/3/9.xxx', '9/0/2/1.001') }}
+                {{ smallrtr.one ('srtr_sz',     'Schlafen', '6/0/4/9.xxx', '6/0/3/9.xxx', '6/0/2/1.001') }}
+                {{ smallrtr.one ('srtr_kz',     'Kind', '7/0/4/9.xxx', '7/0/3/9.xxx', '7/0/2/1.001') }}
+                {{ smallrtr.one ('srtr_az',     'Arbeiten','8/0/4/9.xxx', '8/0/3/9.xxx', '8/0/2/1.001') }}
+                {{ smallrtr.one ('srtr_diog',   'Diele OG',     '10/0/4/9.xxx','10/0/3/9.xxx','10/0/2/1.001') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

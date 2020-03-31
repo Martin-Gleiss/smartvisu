@@ -1,0 +1,89 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<h1><img class="icon" src='{{ icon0 }}it_pc.svg' />Büro Ingrid</h1>
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Licht, PC, Status</h3>
+				<table width="90%">
+					<tr>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('PhilippDeckenlicht', 'OG.Philipp.Deckenlicht', 'icon', ['1', '0'], ['light_ceiling_light.svg', 'light_ceiling_light.svg'], '', ['icon1', 'icon0']) }} </td>
+						<td>Deckenlampe</td>
+					</tr>
+					<tr>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('PhilippTischleuchte', 'OG.Philipp.Tischleuchte', 'icon', ['1', '0'], ['light_office_desk.svg', 'light_office_desk.svg'], '', ['icon1', 'icon0']) }} </td>
+						<td>Tischleuchte</td>
+					</tr>
+					<tr>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('IngridPC', 'Allgemein.PCs.PCIngrid', 'icon', ['1', '0'], ['it_pc.svg', 'it_pc.svg'], '', ['icon1', 'icon0']) }} </td>
+						<td>PC - Ingrid</td>
+					</tr>
+					<tr>
+						<td align="left" width="100px">&nbsp; {{ basic.stateswitch('IngridDruckerMonitor', 'Allgemein.PCs.DruckerMonitor', 'icon', ['1', '0'], ['it_television.svg', 'it_television.svg'], '', ['icon1', 'icon0']) }} </td>
+						<td>Monitor und Drucker</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Heizung</h3>
+				{{ device.rtr('', '', 'OG.Philipp.temperature', 'OG.Philipp.temperature.set', 'OG.Philipp.temperature.mode', 'OG.Philipp.temperature.night', 'OG.Philipp.temperature.frost', 'OG.Philipp.temperature.on', '', '0.5') }}
+			</div>
+
+		</div>
+	        <br />
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Temperaturverlauf</h3>
+				{{ plot.rtr('p46', 'OG.Philipp.temperature', 'OG.Philipp.temperature.set', 'OG.Philipp.temperature.state') }}
+			</div>
+
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Status</h3>
+				<table width="100%">
+					<tr>
+						<td align="left">
+							{{ basic.symbol('FensterPhilipp1', 'OG.Philipp.Fenster', 'Fenster ist offen', 'fts_window_1w_open.svg', '', '', 'icon1') }}
+							{{ basic.symbol('FensterPhilipp2', 'OG.Philipp.Fenster', 'Fenster ist zu', 'fts_window_1w.svg', 0) }}
+						</td>
+					</tr>
+					<tr>
+						<td align="left">
+							{{ basic.symbol('TuerPhilipp1', 'OG.Philipp.Tuer', 'Tür ist offen', 'fts_door_open.svg', '', '', 'icon1') }}
+							{{ basic.symbol('TuerPhilipp2', 'OG.Philipp.Tuer', 'Tür ist zu', 'fts_door.svg', 0) }}
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}
+

@@ -1,9 +1,9 @@
 /**
 * -----------------------------------------------------------------------------
-* @package     smartVISU
-* @author      Martin Gleiß
-* @copyright   2012 - 2015
-* @license     GPL [http://www.gnu.de]
+* @package		 smartVISU
+* @author			Martin Gleiß
+* @copyright	 2012 - 2015
+* @license		 GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
 
@@ -12,48 +12,89 @@
 
 {% block example %}
 
+	<h5>Please note</h5>
+	<p>This plot uses historical data series. Available modes depend on backends/drivers and not all of them do support series at all.</p>
+
 	<h5>Example</h5>
 	<div class="twig">
 		<code class="prettyprint">
-			&#123;&#123; plot.period('p1', 'bath_plot_value', 'avg', '3h') &#125;&#125;<br /><br />
-			&#123;&#123; plot.period('p2', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) &#125;&#125;<br /><br />
-			&#123;&#123; plot.period('p3', 'bath_plot_value', 'avg', '20h', 'now', 0, 100, '', '', '', '', '', '1h' ) &#125;&#125;<br />
+			&#123;&#123; plot.period('', 'bath_plot_value', 'avg', '3h') &#125;&#125;<br /><br />
+			&#123;&#123; plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) &#125;&#125;<br /><br />
+			&#123;&#123; plot.period('', 'bath_plot_value', 'avg', '20h', 'now', 0, 100, '', '', '', '', '', '1h', '', '', '', '', '%') &#125;&#125;<br /><br />
+			&#123;&#123; plot.period('', 'bath_plot_value', 'minmaxavg', '12h', '', '', '', 25) &#125;&#125;<br /><br />
+			&#123;&#123; plot.period('', ['env.system.load','env.core.memory'],	'avg', '1d', '', '', '', '', ['system load', 'memory'], ['#a00','#070'], '', ['Time', 'CPU', 'RAM'], '', [1,2], [0,1], ['#f00','#0a0']) &#125;&#125;<br /><br />
+			&#123;&#123; plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], ['°'], { yAxis: [ { tickInterval: 0.5 } ], legend: { verticalAlign: 'bottom', y: -30 } }) &#125;&#125;<br /><br />
+			&#123;&#123; plot.period('', 'bath_plot_value', 'avg', '1y', 'now', '', '', 36500, '', '', '', '', 'advanced') &#125;&#125;<br /><br />
 		</code>
 	</div>
+
 	<div class="html">
 
-
 		<div class="block">
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
 				<div data-role="collapsible" data-collapsed="false">
-					<h3>p1: a simple plot</h3>
-					{{ plot.period('p1', 'bath_plot_value', 'avg', '3h') }}
+					<h3>a simple plot</h3>
+					{{ plot.period('', 'bath_plot_value', 'avg', '3h') }}
 				</div>
-
-			</div>
-		</div>
-
-
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>p2: a plot with 3 series</h3>
-					{{ plot.period('p2', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) }}
-				</div>
-
 			</div>
 		</div>
 
 		<div class="block">
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
 				<div data-role="collapsible" data-collapsed="false">
-					<h3>p3: a zoomable plot</h3>
-					{{ plot.period('p3', 'bath_plot_value', 'avg', '20h', 'now', 0, 100, '', '', '', '', '', '1h' ) }}
+					<h3>a plot of 3 series</h3>
+					{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) }}
 				</div>
+			</div>
+		</div>
 
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>a zoomable plot with unit</h3>
+					{{ plot.period('', 'bath_plot_value', 'avg', '20h', 'now', 0, 100, '', '', '', '', '', '1h', '', '', '', '', '%') }}
+				</div>
+			</div>
+		</div>
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>a minmaxavg plot</h3>
+					{{ plot.period('', 'bath_plot_value', 'minmaxavg', '12h', '', '', '', 25) }}
+				</div>
+			</div>
+		</div>
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>a plot with two y-axes</h3>
+					{{ plot.period('',
+						['env.system.load','env.core.memory'],
+						'avg', '1d', '', '', '', '',
+						['system load', 'memory'],
+						['#a00','#070'], '',
+						['Time', 'CPU', 'Memory'],
+						'', [1,2], [0,1],
+						['#f00','#0a0']) }}
+				</div>
+			</div>
+		</div>
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>a plot with secondary switch axis and additional chart options</h3>
+					{{ plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], '°', { yAxis: [ { tickInterval: 0.5 } ], legend: { verticalAlign: 'bottom', y: -30 } }) }}
+				</div>
+			</div>
+		</div>
+
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true" style="clear: both;">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>a plot with advanced zooming</h3>
+				{{ plot.period('', 'bath_plot_value', 'avg', '1y', 'now', '', '', 36500, '', '', '', '', 'advanced') }}
 			</div>
 		</div>
 

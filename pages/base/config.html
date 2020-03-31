@@ -1,7 +1,7 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiss, Alexander Schwithal
+* @author      Martin Gleiss, Alexander Schwithal, Stefan Widmer
 * @copyright   2012 - 2016
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
@@ -10,367 +10,217 @@
 
 {% extends "system.html" %}
 
+{% import "forms.html" as forms %}
+
 {% block content %}
 
-	<h1>Configuration</h1>
+	/** related JavaScript part located in lib/base/base.js */
 
-	{% import "forms.html" as forms %}
-	<form>
-	<fieldset>
+	<h1>{{ lang('configuration_page', 'configuration', 'label') }}</h1>
 
-	<div class="block">
-		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+	{%
+	set sources = {
+		'global': lang('configuration_page', 'globaltab', 'label'),
+		'pages': lang('configuration_page', 'pagestab', 'label') ~ " '" ~ config_pages ~ "'",
+		'cookie': lang('configuration_page', 'cookietab', 'label'),
+	}
+	%}
 
-			<div data-role="collapsible" data-collapsed="false">
-				<h3>Interface</h3>
-
-
-				<div data-role="fieldcontain">
-					<label for="pages">Pages</label>
-					<select name="pages" id="pages" data-native-menu="false">
-						{% for file in dir('pages', '^(?!base|apps)(.+?)') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-					{{ forms.select_init('pages', config_pages) }}
-				</div>
-
-
-				<div data-role="fieldcontain">
-					<label for="design">Design</label>
-					<select name="design" id="design" data-native-menu="false">
-						{% for file in dir('designs', '(.+?).min.css') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-					{{ forms.select_init('design', config_design) }}
-				</div>
-
-
-				<div data-role="fieldcontain">
-					<label for="cache">Pagecache<br /></label>
-					<select name="cache" id="cache" data-role="slider" data-theme="a">
-						<option value="false">off</option>
-						<option value="true">on</option>
-					</select>
-					{{ forms.flip_init('cache', config_cache) }}
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="animation">Animation<br /></label>
-					<select name="animation" id="animation" data-role="slider" data-theme="a">
-						<option value="false">off</option>
-						<option value="true">on</option>
-					</select>
-					{{ forms.flip_init('animation', config_animation) }}
-				</div>
-
-			</div>
-
-			<div data-role="collapsible" data-collapsed="true">
-				<h3>Texts</h3>
-
-				<div data-role="fieldcontain">
-					<label for="title">Title<br /></label>
-					<input type="text" name="title" id="title" />
-					{{ forms.text_init('title', config_title|e ) }}
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="lang">Language</label>
-					<select name="lang" id="lang" data-native-menu="false">
-						<option value="en">English</option>
-						<option value="de">German</option>
-						<option value="nl">Dutch</option>
-						<option value="fr">Fran&ccedil;ais</option>
-						{% for file in dir('lang', '^lang_(?!en|de|nl|fr)(.+?).txt') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-
-					<div class="note">*for some widgets</div>
-					{{ forms.select_init('lang', config_lang) }}
-				</div>
-			</div>
-
+	<div data-role="tabs" id="config_source">
+		<div data-role="navbar">
+			<ul>
+		    {% for source, title in sources %}
+					<li data-source="{{ source }}"><a href="#config_tab_{{ source }}" data-ajax="false"{{ loop.first ? ' class="ui-btn-active"'|raw }}>{{ title }}</a></li>
+		    {% endfor %}
+			</ul>
 		</div>
+
+	{% for source, title in sources %}
+		{% set values = read_config(source) %}
+		{% set id = (source != "global") ? '_' ~ source : '' %}
+		<div id="config_tab_{{ source }}">
+			<h2>{{ lang('configuration_page', source ~ 'tab', 'hint') }}</h2>
+			<form class="configform">
+				<fieldset>
+
+					<div class="block">
+						<div class="set-3" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'userinterface', 'label') }}</h3>
+							</div>
+							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
+								<h3>{{ lang('configuration_page', 'interface', 'label') }}</h3>
+								{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
+								{{ forms.config_select(source, values, 'design', dir('designs', '(.+?).css')) }}
+								{{ forms.config_flip(source, values, 'cache', '<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache' ~ id ~ '" class="ui-micro"' ~ (not values['cache'] is defined ? ' disabled="disabled"'|raw) ~ '>' ~ lang('configuration_page', 'cache', 'clearbutton') ~'</button>') }}
+							</div>
+							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
+								<h3>{{ lang('configuration_page', 'content', 'label') }}</h3>
+								{{ forms.config_input(source, values, 'title') }}
+								{{ forms.config_select(source, values, 'lang', dir('lang', '^(.*?)\.ini$') ) }}
+								{{ forms.config_select(source, values, 'timezone', timezones()) }}
+							</div>
+							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a">
+								<h3>{{ lang('configuration_page', 'behaviour', 'label') }}</h3>
+								{{ forms.config_flip(source, values, 'animation') }}
+								{{ forms.config_input(source, values, 'backtohometime', 'wide') }}
+								{{ forms.config_select(source, values, 'timesource', [{"name": "client", "label": "Client"}, {"name": "server", "label": "Server"}] ) }}
+							</div>
+						</div>
+					</div>
+
+					<div class="block">
+						<div class="set-1" data-role="collapsible-set" data-mini="true">
+							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'backend', 'label') }}</h3>
+							</div>
+							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
+								<h3>{{ lang('configuration_page', 'ioconnection', 'label') }}</h3>
+								{{ forms.config_select(source, values, 'driver', dir('driver', '^io_(.+?).js') ) }}
+								{{ forms.config_input(source, values, 'driver_address', 'wide') }}
+								{{ forms.config_input(source, values, 'driver_port', 'wide') }}
+								{{ forms.config_flip(source, values, 'driver_realtime') }}
+								{{ forms.config_flip(source, values, 'driver_autoreconnect') }}
+							</div>
+						</div>
+					</div>
+
+					<div class="block">
+						<div class="set-3" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'dataservices', 'label') }}</h3>
+							</div>
+							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
+								<h3>{{ lang('configuration_page', 'weather', 'label') }}</h3>
+								{{ forms.config_select(source, values, 'weather_service', dir('lib/weather/service', '(.+?).php') ) }}
+								{{ forms.config_input(source, values, 'weather_location') }}
+								{{ forms.config_input(source, values, 'weather_key') }}
+							</div>
+							<div data-role="collapsible" data-theme="c" data-content-theme="a">
+								<h3>{{ lang('configuration_page', 'phone', 'label') }}</h3>
+								{{ forms.config_select(source, values, 'phone_service', dir('lib/phone/service', '(.+?).php') ) }}
+								{{ forms.config_input(source, values, 'phone_server', 'wide') }}
+								{{ forms.config_input(source, values, 'phone_port', 'wide') }}
+								{{ forms.config_input(source, values, 'phone_user') }}
+								{{ forms.config_input(source, values, 'phone_pass', 'password') }}
+							</div>
+							<div data-role="collapsible" data-theme="c" data-content-theme="a">
+								<h3>{{ lang('configuration_page', 'calendar', 'label') }}</h3>
+								{{ forms.config_select(source, values, 'calendar_service', dir('lib/calendar/service', '(.+?).php') ) }}
+								{{ forms.config_input(source, values, 'calendar_url') }}
+								{{ forms.config_input(source, values, 'calendar_username') }}
+								{{ forms.config_input(source, values, 'calendar_password', 'password') }}
+								{{ forms.config_input(source, values, 'calendar_name') }}
+								{{ forms.config_input(source, values, 'calendar_color') }}
+								{{ forms.config_row(source, values, 'calendar_google_refresh_token',
+									[
+										'<a href="#calendar_googleauth_popup" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-icon-left ui-icon-action ui-micro' ~ (not values['calendar_google_refresh_token'] is defined ? ' ui-btn-active') ~ ' " data-icon="delete" data-inline="true" id="' ~ source ~ '_calendar_googleauth_button">' ~ lang('configuration_page', 'calendar_google_refresh_token', 'button') ~ '</a>'
+										,forms.config_hidden(source, values, 'calendar_google_client_id')
+										,forms.config_hidden(source, values, 'calendar_google_client_secret')
+										,forms.config_hidden(source, values, 'calendar_google_refresh_token')
+									]
+								) }}
+							</div>
+						</div>
+					</div>
+
+					<div class="block">
+						<div class="set-2" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'internetaccess', 'label') }}</h3>
+							</div>
+							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
+								<h3>{{ lang('configuration_page', 'updatecheck', 'label') }}</h3>
+								{{ forms.config_flip(source, values, 'updatecheck') }}
+							</div>
+							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
+								<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3>
+								{{ forms.config_flip(source, values, 'proxy') }}
+								{{ forms.config_input(source, values, 'proxy_url', 'wide') }}
+								{{ forms.config_input(source, values, 'proxy_user') }}
+								{{ forms.config_input(source, values, 'proxy_password', 'password') }}
+							</div>
+						</div>
+					</div>
+
+				</fieldset>
+
+				<input type="hidden" id="current_pages{{ id }}" value="{{ config_pages }}" />
+				<button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">{{ lang('configuration_page', 'save', 'label') }}</button>
+			</form>
+		</div>
+	{% endfor %}
 	</div>
 
+	<div id="calendar_googleauth_popup" data-role="popup" data-overlay-theme="a">
+		<div data-role="header" data-theme="c">
+			<h1>{{ lang('configuration_page','calendar_googleauth', 'instruct_title') }}</h1>
+		</div>
+		<div role="main" class="ui-content">
+			<form id="googleauthform">
+				<ol>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_1')|raw }}</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_2')|raw }}</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_3')|raw }}
+						<ul>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_3a')|raw }}</li>
+						</ul>
+					</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_4')|raw }}</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_5')|raw }}</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_6')|raw }}
+						<ol type="a">
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_6a')|raw }}</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_6b')|raw }}</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_6c')|raw }}</li>
+						</ol>
+					</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7')|raw }}
+						<ol type="a">
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7a')|raw }}</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7b')|raw }}<br>
+								<input type="text" type="hidden" name="script_origin" id="script_origin" readonly="readonly" onclick="this.select();"> <!-- filled in by JavaScript -->
+							</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7c')|raw }}</li>
+						</ol>
+					</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_8')|raw }}</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_9')|raw }}</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_10')|raw }}</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_11')|raw }}
+						<input type="file" id="google_json_file">
+						 {{ lang('configuration_page','calendar_googleauth', 'instruct_11_hint')|raw }}
+					</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_12')|raw }}</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_13')|raw }}
+						<ul>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_13a')|raw }}</li>
+						</ul>
+					</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_14')|raw }}</li>
+				</ol>
 
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<hr>
 
-			<div data-role="collapsible" data-collapsed="false">
-				<h3>I/O-Connection</h3>
-
-				<div data-role="fieldcontain">
-					<label for="driver">Driver</label>
-					<select name="driver" id="driver" data-native-menu="false">
-						{% for file in dir('driver', '^io_(.+?).min.js') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-					{{ forms.select_init('driver', config_driver) }}
+				<div class="ui-field-contain" style="display: none">
+					<label for="google_json_text">google_json_text</label>
+					<textarea id="google_json_text"></textarea>
+				</div>
+				<div class="ui-field-contain">
+					<label for="client_id">{{ lang('configuration_page', 'calendar_googleauth', 'client_id') }}:</label>
+					<input type="text" name="client_id" id="client_id" value="">
+				</div>
+				<div class="ui-field-contain">
+					<label for="client_secret"> {{ lang('configuration_page', 'calendar_googleauth', 'client_secret') }}:</label>
+					<input type="text" id="client_secret" value=""> <!-- no name attribute, so it is not sent by submitting form -->
 				</div>
 
-				<div data-role="fieldcontain">
-					<label for="driver_address">Address
-						<div class="note">URL / IP</div>
-					</label>
-					<input type="text" name="driver_address" id="driver_address" style="letter-spacing: 0.1em;" />
-					{{ forms.text_init('driver_address', config_driver_address|e ) }}
+				<div id="calendar_googleauth_submitcontainer" style="position: relative; overflow: hidden;">
+					<button type="submit" data-theme="b" data-icon="check" name="submit" value="1">{{ lang('configuration_page', 'calendar_google_refresh_token', 'button') }}</button>
 				</div>
 
-				<div data-role="fieldcontain">
-					<label for="driver_port">Port</label>
-					<input type="text" name="driver_port" id="driver_port" />
-					{{ forms.text_init('driver_port', config_driver_port|e ) }}
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="driver_realtime">Realtime</label>
-					<select name="driver_realtime" id="driver_realtime" data-role="slider" data-theme="a">
-						<option value="false">off</option>
-						<option value="true">on</option>
-					</select>
-					{{ forms.flip_init('driver_realtime', config_driver_realtime) }}
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="driver_autoreconnect">Auto Reconnect<br /></label>
-					<select name="driver_autoreconnect" id="driver_autoreconnect" data-role="slider" data-theme="a">
-						<option value="false">off</option>
-						<option value="true">on</option>
-					</select>
-					{{ forms.flip_init('driver_autoreconnect', config_driver_autoreconnect) }}
-				</div>
-			</div>
+			</form>
 		</div>
 	</div>
-
-	<script type="text/javascript">
-		$('#driver').change(function () {
-			switch (this.value) {
-				case 'offline':
-					$('#driver_realtime').val('false').slider('refresh');
-					$('#driver_autoreconnect').val('false').slider('refresh');
-					break;
-
-				case 'eibd':
-					$('#driver_autoreconnect').val('false').slider('refresh');
-					break;
-
-				case 'json':
-					$('#driver_autoreconnect').val('false').slider('refresh');
-					break;
-
-				case 'linknx':
-					$('#driver_port').val('1028');
-					$('#driver_autoreconnect').val('false').slider('refresh');
-					break;
-
-				case 'smarthome.py':
-					$('#driver_port').val('2424');
-					$('#driver_realtime').val('true').slider('refresh');
-					$('#driver_autoreconnect').val('true').slider('refresh');
-					break;
-
-				case 'domotiga':
-					$('#driver_port').val('2121');
-					$('#driver_realtime').val('true').slider('refresh');
-					$('#driver_autoreconnect').val('true').slider('refresh');
-					break;
-			}
-		});
-	</script>
-
-
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-			<div data-role="collapsible" data-collapsed="false">
-				<h3>Weather</h3>
-
-				<div data-role="fieldcontain">
-					<label for="weather_service">Service</label>
-					<select name="weather_service" id="weather_service" data-native-menu="false">
-						{% for file in dir('lib/weather/service', '(.+?).php') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-					{{ forms.select_init('weather_service', config_weather_service) }}
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="weather_location">Location<br /></label>
-					<input type="text" name="weather_location" id="weather_location" />
-					{{ forms.text_init('weather_location', config_weather_location|e ) }}
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="weather_key">Key</label>
-					<input type="text" name="weather_key" id="weather_key" />
-
-					<div class="note">*if service requires one</div>
-					{{ forms.text_init('weather_key', config_weather_key|e ) }}
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-			<div data-role="collapsible" data-collapsed="false">
-				<h3>Phone</h3>
-
-				<div data-role="fieldcontain">
-					<label for="phone_service">System</label>
-					<select name="phone_service" id="phone_service" data-native-menu="false">
-						{% for file in dir('lib/phone/service', '(.+?).php') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-					{{ forms.select_init('phone_service', config_phone_service) }}
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="phone_server">Address
-						<div class="note">IP</div>
-					</label>
-					<input type="text" name="phone_server" id="phone_server" style="letter-spacing: 0.1em;" />
-					{{ forms.text_init('phone_server', config_phone_server|e ) }}
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="phone_port">Port</label>
-					<input type="text" name="phone_port" id="phone_port" />
-					{{ forms.text_init('phone_port', config_phone_port|e ) }}
-					<div class="note">*if service requires one</div>
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="phone_user">User</label>
-					<input type="text" name="phone_user" id="phone_user" />
-					{{ forms.text_init('phone_user', config_phone_user|e ) }}
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="phone_pass">Password</label>
-					<input type="password" name="phone_pass" id="phone_pass" />
-					{{ forms.text_init('phone_pass', config_phone_pass|e ) }}
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-			<div data-role="collapsible" data-collapsed="false">
-				<h3>Calendar</h3>
-
-				<div data-role="fieldcontain">
-					<label for="calendar_service">System</label>
-					<select name="calendar_service" id="calendar_service" data-native-menu="false">
-						{% for file in dir('lib/calendar/service', '(.+?).php') %}
-							<option value="{{ file.name }}">{{ file.label }}</option>
-						{% endfor %}
-					</select>
-					{{ forms.select_init('calendar_service', config_calendar_service) }}
-				</div>
-
-				<div data-role="fieldcontain">
-					<label for="calendar_url">Url</label>
-					<input type="text" name="calendar_url" id="calendar_url" />
-					{{ forms.text_init('calendar_url', config_calendar_url|e ) }}
-					<div class="note">*not used for iCloud</div>
-				</div>
-
-                <div data-role="fieldcontain">
-                        <label for="calendar_username">Username</label>
-                        <input type="text" name="calendar_username" id="calendar_username" />
-                        {{ forms.text_init('calendar_username', config_calendar_username|e ) }}
-                        <div class="note">*if service requires one</div>
-                </div>
-
-                <div data-role="fieldcontain">
-                        <label for="calendar_password">Password</label>
-                        <input type="password" name="calendar_password" id="calendar_password" />
-                        {{ forms.text_init('calendar_password', config_calendar_password|e ) }}
-                        <div class="note">*if service requires one</div>
-                </div>
-
-                <div data-role="fieldcontain">
-                        <label for="calendar_name">Calendar name</label>
-                        <input type="text" name="calendar_name" id="calendar_name" />
-                        {{ forms.text_init('calendar_name', config_calendar_name|e ) }}
-                        <div class="note">*if service requires one</div>
-                </div>
-            </div>
-
-		</div>
-	</div>
-
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-			<div data-role="collapsible" data-collapsed="false">
-				<h3>Proxy</h3>
-				<div data-role="fieldcontain">
-					<label for="proxy">Use Proxy<br /></label>
-					<select name="proxy" id="proxy" data-role="slider" data-theme="a">
-						<option value="false">off</option>
-						<option value="true">on</option>
-					</select>
-					{{ forms.flip_init('proxy', config_proxy) }}
-				</div>
-				<div data-role="fieldcontain">
-					<label for="proxy_url">Proxy Url</label>
-					<input type="text" name="proxy_url" id="proxy_url" />
-					{{ forms.text_init('proxy_url', config_proxy_url|e ) }}
-				</div>
-				<div data-role="fieldcontain">
-					<label for="proxy_user">Proxy User</label>
-					<input type="text" name="proxy_user" id="proxy_user" />
-					{{ forms.text_init('proxy_user', config_proxy_user|e ) }}
-				</div>
-				<div data-role="fieldcontain">
-					<label for="proxy_password">Proxy Password</label>
-					<input type="password" name="proxy_password" id="proxy_password" />
-					{{ forms.text_init('proxy_password', config_proxy_password|e ) }}
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-	</fieldset>
-
-	<input type="hidden" name="js" value="{{ config_js }}" />
-	<button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">Save</button>
-	</form>
-
-	/** Events */
-	<script type="text/javascript">
-		$('form').submit(function () {
-			$.ajax({
-				type: "POST",
-				url: 'pages/base/configure.php',
-				data: $(this).serialize(),
-				success: function (data) {
-					window.setTimeout('location.reload(true);', {{ config_delay }});
-				}
-			})
-				.fail(notify.json);
-
-			return false;
-		});
-	</script>
 
 {% endblock %}
-

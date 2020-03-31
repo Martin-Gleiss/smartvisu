@@ -1,0 +1,79 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_quad.html" %}
+{% block header %}
+
+{% endblock %}
+{% block example %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('this', '1' );
+			 io.write('that', '1' );
+			 io.write('theother', '1' );
+		});
+
+</script>
+	<h5>Example</h5>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Use to change values below</li>
+		{{ quad.stateswitch('stateswitch2', ['this', 'that', 'theother'], ['icon','', 'icon'], [[0,1, 100, 200],[0,1,100,200],[1,2]], [['edit_numeric_0.svg','edit_numeric_1.svg', '', ''],'',['edit_numeric_1.svg','edit_numeric_2.svg']], [['','','100', '200'],[0,1,100,200],''], [['',''],['','','','',''],''], ['blink','blink',''], '', '', '', '', '', 'CHANGE STATUS ITEMS HERE', ['this', 'that', 'theother']) }}
+		</ul>
+	</div>
+
+Single Print
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{{ quad.print('formatvalue', 'that', '%', '', [10,150], ['#0f0','#ff0','#f00'], '', 'placeholder', 'one % value with thresholds', 'that')   }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+{{ quad.print('formatvalue', 'that', '%', '', [10,150], ['#0f0','#ff0','#f00'], '', 'placeholder', 'one % value with thresholds', 'that')   }}
+	</ul></div>
+
+Multiple print
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+{{ quad.print('formatvalue2', ['this','that'], ['%','°'], ['','VAR*2'], [0,[15,300]], [['#0f0','#ff0'],['#0f0','#ff0','#f00']], '', 'place', 'two values, with 2* formula', ['this','that'], ['this.plot', 'that.plot'])   }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+	{{ quad.print('formatvalue2', ['this','that'], ['%','°'], ['','VAR*2'], [0,[15,300]], [['#0f0','#ff0'],['#0f0','#ff0','#f00']], '', 'place', 'two values, with 2* formula', ['this','that'], ['this.plot', 'that.plot'])   }}
+	</ul></div>
+
+	Four different prints
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+	{{ quad.print('formatvalue3', ['this','that', ' ', 'theother'], ['%','°'], ['VAR*2','','',''], [[1,5],'', '',''], [['#0f0','#ff0','#f00'],['#0f0','#ff0'],'',''], '', 'placeholder', '3 values, 1 empty column', ['this','that', '', 'theother'])   }}
+			{% endraw %}{% endfilter %}</code>
+		</div>
+		<div class="html">
+			<ul data-role="listview" data-dividertheme="c" class="quad_list">
+	{{ quad.print('formatvalue3', ['this','that', ' ', 'theother'], ['%','°'], ['VAR*2','','',''], [[1,5],'', '',''], [['#0f0','#ff0','#f00'],['#0f0','#ff0'],'',''], '', 'placeholder', '3 values, 1 empty column', ['this','that', '', 'theother'])   }}
+	</ul></div>
+
+	Using Scripts to change other elements. Leave the item empty and give the column an id name
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+	{{ quad.print('', ['', 'that','that'], ['text', 'script', 'text'], ['orange if that < 10', '$("#otherElement").css("color", (VAR1 < 10) ? "#FF6600" : "#00FF00")', '"Color: \'" + $("#otherElement").css("color") + "\'"'], ['', '', ''], ['', '', ''], ['otherElement', 'column_empty', ''], 'placeholder', 'left text color changed based on that')   }}
+			{% endraw %}{% endfilter %}</code>
+		</div>
+		<div class="html">
+			<ul data-role="listview" data-dividertheme="c" class="quad_list">
+	{{ quad.print('', ['', 'that','that'], ['text', 'script', 'text'], ['orange if that < 10', '$("#otherElement").css("color", (VAR1 < 10) ? "#FF6600" : "#00FF00")', '"Color: \'" + $("#otherElement").css("color") + "\'"'], ['', '', ''], ['', '', ''], ['otherElement', 'column_empty', ''], 'placeholder', 'left text color changed based on that')   }}
+	</ul></div>
+
+
+
+
+{% endblock %}

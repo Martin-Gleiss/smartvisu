@@ -11,8 +11,8 @@
 // ----- nano parts -----------------------------------------------------------
 
 {% macro sun(id) %}
-<svg id="{{ id }}">
-	<g>
+<svg role="img" id="{{ id }}">
+	<g stroke-width="3">
 		<line x1="50" y1="28" x2="50" y2="37" />
 		<line x1="50" y1="30" x2="50" y2="37" transform="rotate(45 50 50)" />
 		<line x1="50" y1="28" x2="50" y2="37" transform="rotate(90 50 50)" />
@@ -31,24 +31,24 @@
 
 
 /**
-* a arrow
+* an arrow
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the height of the blades
-* @param the minimum value for 0° (optional, default 0, for future use)
-* @param the maximum value for 360° (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the height of the blades
+* @param {value=0} the minimum value for 0° (optional, default 0, for future use)
+* @param {value=255} the maximum value for 360° (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro arrow(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.arrow" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.arrow" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3" stroke-linejoin="round">
 		<polyline id="line0" points="50,50, 25,50, 50,18, 75,50, 50,50" fill="none" />
 		<polyline id="line1" points="32,50, 32,60, 68,60, 68,50" fill="none" />
 	</g>
@@ -59,22 +59,22 @@
 /**
 * a battery
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the angle of the pin
-* @param the minimum value for 0 (optional, default 0, for future use)
-* @param the maximum value for 255 (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the charge level
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255 (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro battery(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.battery" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.battery" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<rect x="44" y="21" width="12" height="3" />
 		<rect rx="3" x="35" y="25" width="30" height="43" fill="none" />
 	</g>
@@ -85,24 +85,24 @@
 /**
 * a blade (90°)
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the angle of the blades
-* @param the minimum value for 0 (optional, default 0, for future use)
-* @param the maximum value for 255  (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the angle of the blades
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255  (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 *
 * @author Mario Zanier
 */
 {% macro blade(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.blade" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.blade" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<line class="light" x1="50" y1="10" x2="50" y2="15" />
 		<line class="light" x1="50" y1="25" x2="50" y2="35" />
 		<line class="light" x1="50" y1="45" x2="50" y2="55" />
@@ -120,22 +120,22 @@
 /**
 * a blade (180°)
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the angle of the blades
-* @param the minimum value for 0 (optional, default 0, for future use)
-* @param the maximum value for 255  (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the angle of the blades
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255  (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro blade2(id, item_shutter, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.blade2" data-item="{{ item_value }}, {{ item_shutter }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.blade2" data-item="{{ item_value }}, {{ item_shutter }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<line class="light" x1="50" y1="10" x2="50" y2="15" />
 		<line class="light" x1="50" y1="25" x2="50" y2="35" />
 		<line class="light" x1="50" y1="45" x2="50" y2="55" />
@@ -153,24 +153,24 @@
 /**
 * a blade (z profile)
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the angle of the blades
-* @param the minimum value for 0 (optional, default 0, for future use)
-* @param the maximum value for 255 (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the angle of the blades
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255 (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 *
 * @author Mario Zanier
 */
 {% macro blade_z(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.blade_z" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.blade_z" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<line class="light" x1="50" y1="10" x2="50" y2="20" />
 		<line class="light" x1="50" y1="40" x2="50" y2="60" />
 		<line class="light" x1="50" y1="80" x2="50" y2="90" />
@@ -184,29 +184,66 @@
 /**
 * a blade (round profile)
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the angle of the blades
-* @param the minimum value for 0 (optional, default 0, for future use)
-* @param the maximum value for 255 (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the angle of the blades
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255 (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 *
 * @author Mario Zanier
 */
 {% macro blade_arc(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.blade_arc" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.blade_arc" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<line class="light" x1="50" y1="10" x2="50" y2="20" />
 		<line class="light" x1="50" y1="40" x2="50" y2="60" />
 		<line class="light" x1="50" y1="80" x2="50" y2="90" />
-		<path id="blade0" d="M 30,37 Q 50,22 70,37" />
-		<path id="blade1" d="M 30,77 Q 50,62 70,77" />
+		<path id="blade0" d="M 30,37 Q 50,22 70,37" stroke-width="3" fill="none" />
+		<path id="blade1" d="M 30,77 Q 50,62 70,77" stroke-width="3" fill="none" />
+	</g>
+</svg>
+{% endmacro %}
+
+
+/**
+* a cistern
+*
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the filling level
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255 (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+*/
+{% macro cistern(id, item_switch, item_value, min, max, color) %}
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.cistern" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	{% if color is empty  %}
+		class="icon icon0"
+	{% else %}
+		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
+	{% endif %}
+	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 361 361">
+  <path d="M115.23 292.1h26.5c6.45 0 6.45-10 0-10h-26.5c-6.45 0-6.45 10 0 10zm106 0h26.18c6.5 0 6.5-10 0-10h-26.1c-6.43 0-6.43 10 0 10zm-53 0h26.5c6.45 0 6.45-10 0-10h-26.5c-6.45 0-6.45 10 0 10z"/>
+  <path fill="none" stroke-width="10" d="M178.15 98.1v-17c0-3.3 2.68-6 6-6h40.5c3.3 0 6 2.7 6 6v17"/>
+  <path d="M251.5 93.1c-20.75 1-41.8 0-62.57 0h-77.95c-4.72 0-8.18 1.37-11.67 4.84-5.7 5.67-8.6 14.2-10.9 21.7-8.1 25.93-9.2 54.6-8.4 81.53.74 23.68 2.96 49.67 13.2 71.4 2.9 6.08 8.16 14.04 15.68 14.04H240.5c6 0 13.48 1.2 18.6-2.5 10.74-7.83 14.23-24.52 16.82-36.65 4.8-22.5 5.86-45.93 5.16-68.87-.6-20.16-2.74-40.94-8.83-60.26-3.03-9.6-8.64-24.66-20.73-25.12-6.45-.23-6.43 9.77 0 10 1.06.05 2.42 1.1 3.9 2.77 2.38 2.7 3.95 6.35 5.27 9.6 4.2 10.5 6.3 21.9 7.9 33.08 4.2 29.12 3.82 59.83-1 88.84-1.7 10.26-4 20.9-8.5 30.34-1.3 2.8-2.9 5.46-5.1 7.6-1.15 1.1-1.8 1.28-2.8 1.28H110c-3.87 0-6.27-5.3-7.8-8.22-4.7-9.08-6.8-19.7-8.6-29.68-5.2-28.8-5.1-59.12-1.48-88.08 1.43-11.47 3.75-23 7.72-33.86 1.1-2.97 4.92-13.66 9.2-13.66h120.28c7.36 0 14.82.37 22.18 0 6.42-.3 6.45-10.3 0-10zm-77.3-13.43h60.4c6.45 0 6.45-10 0-10h-60.4c-6.46 0-6.46 10 0 10z"/>
+  <g stroke="none">
+		<path data-val="6"  style="display: none" d="M113.1 274.17h136c9.7 0 9.78-15 .1-15H113.22c-9.67 0-9.76 15-.1 15z"/>
+		<path data-val="16" style="display: none" d="M106.1 257.06h150c9.7 0 9.78-15 .1-15H106.22c-9.67 0-9.76 15-.1 15z"/>
+		<path data-val="26" style="display: none" d="M103.1 239.95h156c9.7 0 9.78-15 .1-15H103.22c-9.67 0-9.76 15-.1 15z"/>
+		<path data-val="36" style="display: none" d="M101.1 222.84h160c9.7 0 9.78-15 .1-15H101.22c-9.67 0-9.76 15-.1 15z"/>
+		<path data-val="46" style="display: none" d="M100.1 205.72h162c9.7 0 9.78-15 .1-15H100.22c-9.67 0-9.76 15-.1 15z"/>
+		<path data-val="56" style="display: none" d="M100.1 188.6h162c9.7 0 9.78-15 .1-15H100.22c-9.67 0-9.76 15-.1 15z"/>
+		<path data-val="66" style="display: none" d="M101.1 171.5h160c9.7 0 9.78-15 .1-15H101.22c-9.67 0-9.76 15-.1 15z"/>
+		<path data-val="76" style="display: none" d="M103.1 154.4h156c9.7 0 9.78-15 .1-15H103.22c-9.67 0-9.76 15-.1 15z"/>
+		<path data-val="86" style="display: none" d="M106.1 137.28h150c9.7 0 9.78-15 .1-15H106.22c-9.67 0-9.76 15-.1 15z"/>
+		<path data-val="96" style="display: none" d="M113.1 120.17h136c9.7 0 9.78-15 .1-15H113.22c-9.67 0-9.76 15-.1 15z"/>
 	</g>
 </svg>
 {% endmacro %}
@@ -215,20 +252,20 @@
 /**
 * A clock
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the angle of the blades
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the angle of the blades
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
-{% macro clock(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.clock" {% if item_value is not empty %} data-item="{{ item_value }}, {{ item_switch }}" {% endif %}
+{% macro clock(id, item_switch, item_value, color) %}
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.clock" {% if item_value is not empty %} data-item="{{ item_value }}, {{ item_switch }}" {% endif %}
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<rect rx="3" x="15" y="15" width="70" height="70" fill="none" />
 		<line x1="50" y1="15" x2="50" y2="25" />
 		<line x1="15" y1="50" x2="25" y2="50" />
@@ -245,22 +282,22 @@
 /**
 * A compass
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the angle of the pin
-* @param the minimum value for 0° (optional, default 0, for future use)
-* @param the maximum value for 360° (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the angle of the pin
+* @param {value=0} the minimum value for 0° (optional, default 0, for future use)
+* @param {value=255} the maximum value for 360° (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro compass(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.compass" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.compass" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<line x1="50" y1="1" x2="50" y2="12" />
 		<line x1="50" y1="88" x2="50" y2="99" />
 		<line x1="1" y1="50" x2="12" y2="50" />
@@ -274,59 +311,112 @@
 
 
 /**
-* a graph
+* a garage door
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the height of the blades
-* @param the minimum value for 0 (optional, default 0, for future use)
-* @param the maximum value for 255 (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the height of the door
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255 (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
-{% macro graph(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.graph" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-	{% if color is empty  %}
-		class="icon icon0" 
+{% macro garagedoor(id, item_switch, item_value, min, max, color) %}
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.garagedoor" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	{% if color is empty %}
+		class="icon icon0"
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
-		<polyline points="7,20, 15,20" fill="none" />
-		<polyline points="15,15, 15,93" fill="none" />
-		<polyline points="7,85, 85,85" fill="none" />
-		<polyline points="80,85, 80,93" fill="none" />
-		<path id="graph" d="M 15,85" />
+	<path d="M19 40.6v42.5c0 1.9 3.2 1.9 3.2 0V40.6c0-1.9-3.1-1.9-3.1 0zm59.7 0v42.5c0 1.9 3.1 1.9 3.1 0V40.6c0-1.9-3.1-1.9-3.1 0z"/>
+	<g stroke-width="3">
+		<path xmlns="http://www.w3.org/2000/svg" fill="none" d="M83.4 36.9c0 1-1 1.5-1.9 1.5H19c-1 0-1.6-.6-1.6-1.5v-3.1c0-1 .7-2 1.6-2h62.5c2 0 1.9 1 1.9 2v3z"/>
 	</g>
 </svg>
 {% endmacro %}
 
 
 /**
-* a light bulb
+* a graph
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the value
-* @param the minimum value for 0 (optional, default 0, for future use)
-* @param the maximum value for 255 (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the height of the blades
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255 (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
-{% macro light(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.light" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+{% macro graph(id, item_switch, item_value, min, max, color) %}
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.graph" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
+		<polyline points="7,20, 15,20" fill="none" />
+		<polyline points="15,15, 15,93" fill="none" />
+		<polyline points="7,85, 85,85" fill="none" />
+		<polyline points="80,85, 80,93" fill="none" />
+		<path id="graph" d="M 15,85" fill="none" />
+	</g>
+</svg>
+{% endmacro %}
+
+
+/**
+* a heating
+*
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the value
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255 (optional, default 255)
+* @param {color=} color at begin of gradient e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+*/
+{% macro heating(id, item_switch, item_value, min, max, color) %}
+{% set gradient_id = uid(page, id, item_value~'-gradient', color|default('')) %}
+{% if once(gradient_id) %} /** add gradient definition only once per page */
+<svg data-widget="icon.heating.gradient" data-item="{{ item_value }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" xmlns="http://www.w3.org/2000/svg"
+	style="width: 1px; height: 1px; position: absolute; visibility: hidden;">
+  <defs>
+    <linearGradient id="{{ gradient_id }}" x1="0" y1="71" x2="0" y2="371" gradientUnits="userSpaceOnUse">
+      <stop offset="0" class="icon1" {% if color is not empty %}style="stop-color:{{ color }};"{% endif %}/>
+      <stop offset="1" class="icon0"/>
+    </linearGradient>
+  </defs>
+</svg>
+{% endif %}
+<img src="{{ icon0 }}sani_heating.svg" data-widget="icon.heating" data-item="{{ item_switch }}" class="icon icon1" style="fill: url(#{{ gradient_id }}); stroke: url(#{{ gradient_id }});" />
+{% endmacro %}
+
+
+/**
+* a light bulb
+*
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the value
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255 (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+*/
+{% macro light(id, item_switch, item_value, min, max, color) %}
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.light" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	{% if color is empty  %}
+		class="icon icon0" 
+	{% else %}
+		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
+	{% endif %}
+	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
+	<g stroke-width="3">
 		<rect width="19" height="32" rx="5" ry="5" x="40" y="33" fill="none" />
 		<line x1="44" y1="70" x2="56" y2="72" />
 		<line x1="44" y1="76" x2="56" y2="78" />
 		<line x1="46" y1="82" x2="53" y2="83" />
 	</g>
-	<g id="light-rays">
+	<g id="light-rays" stroke-width="3">
 		<line x1="21" y1="61" x2="31" y2="61" style="visibility: hidden;" />
 		<line x1="21" y1="49" x2="31" y2="49" style="visibility: hidden;" />
 		<line x1="21" y1="36" x2="31" y2="36" style="visibility: hidden;" />
@@ -345,28 +435,28 @@
 /**
 * a meter
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the height of the blades
-* @param the minimum value for 0 (optional, default 0, for future use)
-* @param the maximum value for 255 (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the height of the blades
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255 (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro meter(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.meter" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.meter" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<line x1="10" y1="40" x2="3" y2="32" />
 		<line x1="30" y1="30" x2="26" y2="22" />
 		<line x1="50" y1="24" x2="50" y2="13" />
 		<line x1="70" y1="30" x2="74" y2="22" />
 		<line x1="90" y1="40" x2="97" y2="32" />
-		<path d="M 10,40 Q 50,10 90,40" />
+		<path d="M 10,40 Q 50,10 90,40" fill="none" />
 		<polyline id="pointer" points="50,85, 15,48" />
 	</g>
 </svg>
@@ -374,24 +464,50 @@
 
 
 /**
+* a roof window
+*
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the opening
+* @param {value=0} the value for closed (optional, default 0)
+* @param {value=255} the value for fully open (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+*/
+{% macro roofwindow(id, item_switch, item_value, min, max, color) %}
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.roofwindow" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	{% if color is empty  %}
+		class="icon icon0"
+	{% else %}
+		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
+	{% endif %}
+	xmlns="http://www.w3.org/2000/svg" viewBox="20 20 321 321">
+  <path fill="none" stroke-width="10" d="M207.7 264.1c-2 4.5-7.4 8.2-11.8 8.2h-116c-4.4 0-6.3-3.7-4.3-8.1l78-167.1c2-4.5 7.4-8.1 11.8-8.1h116c4.4 0 6.3 3.6 4.3 8l-78 167.1z"/>
+  <path d="M278 104.3H150.3l8.8-17.3h127.5zM76.4 262.6h127.4v6.4H76.4z"/>
+  <path id="casement" fill-opacity=".4" stroke-width="10" d="M202 246.2c-1.7 3.6-6 6.6-9.6 6.6h-91c-3.6 0-5.1-3.0-3.4-6.6l59.5-127.7c1.7-3.6 6-6.6 9.6-6.6h91c3.6 0 5.1 3.0 3.4 6.6L202 246.2z"/>
+</svg>
+
+{% endmacro %}
+
+
+/**
 * a shutter
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the height of the blades
-* @param the minimum value for 0 (optional, default 0, for future use)
-* @param the maximum value for 255 (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the height of the blades
+* @param {value=0} the value for top (optional, default 0)
+* @param {value=255} the value for bottom (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro shutter(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.shutter" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.shutter" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<rect rx="1" x="15" y="25" width="70" height="4" />
 		<rect x="18" y="28" width="64" height="45" fill="none" />
 		<rect x="49" y="28" width="2" height="45" />
@@ -404,22 +520,22 @@
 /**
 * a ventilation
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the rotation speed
-* @param the minimum value for 0,5s rotation speed (optional, default 0, for future use)
-* @param the maximum value for 5s rotation speed (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the rotation speed
+* @param {value=0} the minimum value for 0,5s rotation speed (optional, default 0, for future use)
+* @param {value=255} the maximum value for 5s rotation speed (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro ventilation(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.ventilation" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.ventilation" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<polyline points="54,43, 72,25, 82,36, 64,54, 54,43" fill="none" />
 		<polyline points="53,57, 60,82, 45,86, 38,61, 53,57" fill="none" />
 		<polyline points="42,49, 17,42, 22,27, 47,34, 42,49" fill="none" />
@@ -433,22 +549,22 @@
 /**
 * a volume bar
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the height of the blades
-* @param the minimum value for 0 (optional, default 0, for future use)
-* @param the maximum value for 255 (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the volume level
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255 (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro volume(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.volume" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.volume" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<polyline points="12,67, 12,72, 90,72, 90,26, 12,67" fill="none" />
 	</g>
 </svg>
@@ -458,22 +574,22 @@
 /**
 * a windmill
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the rotation speed
-* @param the minimum value for 0,5s rotation speed (optional, default 0, for future use)
-* @param the maximum value for 5s rotation speed (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the rotation speed
+* @param {value=0} the minimum value for 0,5s rotation speed (optional, default 0, for future use)
+* @param {value=255} the maximum value for 5s rotation speed (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro windmill(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.windmill" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.windmill" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<polyline points="47,35, 50,2, 53,35" />
 		<polyline points="54,40, 83,59, 52,45" />
 		<polyline points="48,45, 17,59, 45,40" />
@@ -489,27 +605,27 @@
 /**
 * a windrose
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the angle of the pin
-* @param the minimum value for 0° (optional, default 0, for future use)
-* @param the maximum value for 360° (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the angle of the pin
+* @param {value=0} the minimum value for 0° (optional, default 0, for future use)
+* @param {value=255} the maximum value for 360° (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro windrose(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.windrose" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.windrose" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke="3">
 		<line x1="50" y1="1" x2="50" y2="12" />
 		<line x1="50" y1="88" x2="50" y2="99" />
 		<line x1="1" y1="50" x2="12" y2="50" />
 		<line x1="88" y1="50" x2="99" y2="50" />
-		<text x="25" y="20">N</text>
+		<text x="25" y="20" stroke="none">N</text>
 		<polyline id="pin0" points="50,60, 37,71, 50,29" />
 		<polyline id="pin1" points="50,60, 63,71, 50,29" fill="none" />
 	</g>
@@ -520,22 +636,22 @@
 /**
 * a windsock
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the angle of the pin
-* @param the minimum value for 0° (optional, default 0, for future use)
-* @param the maximum value for ~90° (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the angle of the pin
+* @param {value=0} the minimum value for 0° (optional, default 0, for future use)
+* @param {value=255} the maximum value for ~90° (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro windsock(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.windsock" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.windsock" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
 		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
 	{% endif %}
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-	<g>
+	<g stroke-width="3">
 		<line x1="80" y1="22" x2="80" y2="95" />
 		<polyline id="top" points="70,40, 80,22, 90,40" />
 		<polyline id="part0" points="71,50, 89,50, 88,54, 72,54" />
@@ -550,15 +666,15 @@
 /**
 * a zenith drawing
 *
-* @param unique id for this widget
-* @param a item for switching
-* @param a item for the height of the blades
-* @param the minimum value for sunrise (optional, default 0, for future use)
-* @param the maximum value for sunset (optional, default 255)
-* @param color  e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the height of the blades
+* @param {value=0} the minimum value for sunrise (optional, default 0, for future use)
+* @param {value=255} the maximum value for sunset (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro zenith(id, item_switch, item_value, min, max, color) %}
-<svg id="{{ uid(page, id) }}" data-widget="icon.zenith" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.zenith" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
@@ -567,10 +683,9 @@
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<circle cx="10" cy="90" r="4" />
 	<circle cx="90" cy="90" r="4" />
-	<path d="M 10,90 A30,30 0 1,1 90,90" fill="none" stroke-dashoffset="1" stroke-dasharray="1,5" />
+	<path d="M 10,90 A30,30 0 1,1 90,90" fill="none" stroke-dashoffset="1" stroke-dasharray="1,5" stroke-width="3" />
 	{{ _self.sun('sun') }}
 </svg>
 {% endmacro %}
-
 
 

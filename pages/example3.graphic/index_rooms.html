@@ -1,0 +1,56 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+    {{ lib.updatecheck() }}
+
+    {{ clock.digiclock('clock') }}
+
+	  <div class="center">
+        {{ clock.miniclock('', 'l, ' ~ lang('format','date') ) }}
+    </div>
+
+    <hr>
+
+    {{ weather.current('weather') }}
+
+    <hr>
+
+    {{ weather.forecastweek('weather_forecast') }}
+
+    <hr>
+
+     {{ plot.temprose('temprose_eg',
+        ['eg.kueche.temperatur.luft', 'eg.essen.temperatur.luft', 'eg.wohnen.temperatur.luft', 'eg.buero.temperatur.luft', 'eg.diele.temperatur.luft', 'eg.hwr.temperatur.luft'],
+        ['eg.kueche.temperatur.boden', 'eg.essen.temperatur.boden', 'eg.wohnen.temperatur.boden', 'eg.buero.temperatur.boden', 'eg.diele.temperatur.boden', 'eg.hwr.temperatur.boden'],
+        ['Küche', 'Essen', 'Wohen', 'Büro', 'Diele', 'Hauswirtschaftsraum' ]) }}
+
+     {{ plot.temprose('temprose_dg',
+        ['dg.bad_eltern.temperatur.luft', 'dg.schlafen.temperatur.luft', 'dg.gast.temperatur.luft', 'dg.kind1.temperatur.luft', 'dg.kind2.temperatur.luft', 'dg.bad_kinder.temperatur.luft', 'dg.flur.temperatur.luft'],
+        ['dg.bad_eltern.temperatur.boden', 'dg.schlafen.temperatur.boden', 'dg.gast.temperatur.boden', 'dg.kind1.temperatur.boden', 'dg.kind2.temperatur.boden', 'dg.bad_kinder.temperatur.boden', 'dg.flur.temperatur.boden'],
+        ['Bad Eltern', 'Schlafen', 'Büro', 'Kind 1', 'Kind 2', 'Bad Kinder' , 'Flur']) }}
+
+    <hr>
+
+    {{ phone.missedlist('phonelist', 'Telefonliste', 3) }}
+
+
+{% endblock %}
+
+
+{% block content %}
+
+    {% include 'navigation.html' %}
+
+{% endblock %}
+

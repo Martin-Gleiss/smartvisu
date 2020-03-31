@@ -1,0 +1,29 @@
+#licht_kurven-warm .highcharts-root .g.highcharts-series { /* graph */
+  stroke: rgba(255, 50, 54, 1);
+  stroke-width: 1px;
+}
+
+#licht_kurven-kalt .highcharts-root .g.highcharts-series { /* graph */
+  stroke: rgba(50, 50, 255, 1);
+  stroke-width: 1px;
+}
+
+#licht_kurven-standard .highcharts-root .g.highcharts-series { /* graph */
+  stroke: rgba(250, 50, 255, 1);
+  stroke-width: 1px;
+}
+
+#row_licht_og-licht_og_wohnen_warm, #row_licht_og-licht_og_essen_warm, #row_licht_og-licht_og_lesen_warm, #row_licht_og-licht_og_terrasse_screens_warm, #row_licht_treppe-licht_treppe_regal_rechts_warm_sa {
+    background-color: #DEB887;
+}
+
+#row_licht_og-licht_og_wohnen_kalt, #row_licht_og-licht_og_essen_kalt, #row_licht_og-licht_og_lesen_kalt, #row_licht_og-licht_og_terrasse_screens_kalt, #row_licht_treppe-licht_treppe_regal_rechts_kalt_sa {
+    background-color: #6495ED;
+}
+
+#row_licht_og-licht_og_led_barfach, #row_licht_og-licht_og_led_nische, #row_licht_og-licht_og_led_vorhang, #row_licht_og-licht_og_led_beamer {
+  background: -webkit-linear-gradient(left, #bb98aa, #a2aaa2, #a8b2bb); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #bb98aa, #a2aaa2, #a8b2bb); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #bb98aa, #a2aaa2, #a8b2bb); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #bb98aa, #a2aaa2, #a8b2bb); /* Standard syntax */
+}

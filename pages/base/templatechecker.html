@@ -1,0 +1,48 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Thomas Ernst
+* @copyright   2016
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "system.html" %}
+
+{% import "forms.html" as forms %}
+
+{% block content %}
+<link rel="stylesheet" href="lib/templatechecker/templatechecker.css">
+<script src="lib/templatechecker/templatechecker.js" type="text/javascript"></script>
+
+<h1>Template Checker</h1>
+<form>
+	{{ forms.config_select('tplchk', { 'pages': config_pages }, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
+	<label><input name="checkbox-0 " type="checkbox" id="tplchk_chk_errors_only">Show warnings/errors only</label>
+
+	<input type="button" value="Run all tests" id="tplchk_btn_run" data-theme="b"/>
+	<input type="button" value="Reset result" id="tplchk_btn_reset" data-theme="b"/>
+</form>
+
+<h2>System checks:</h2>
+<div>
+		<div class="check" data-check="check_config.php">
+			<img src="pages/base/pics/trans.png" alt=""><span>'config.ini' file</span></div>
+
+		<div class="check" data-check="check_temp.php">
+			<img src="pages/base/pics/trans.png" alt=""><span>'temp' directory</span></div>
+
+		<div class="check" data-check="check_php.php">
+			<img src="pages/base/pics/trans.png" alt=""><span>php version</span></div>
+
+		<div class="check" data-check="check_php_mbstring.php">
+			<img src="pages/base/pics/trans.png" alt=""><span>php extension 'mbstring'</span></div>
+
+		<div class="check" data-check="check_update.php">
+			<img src="pages/base/pics/trans.png" alt=""><span>newer version</span></div>
+</div>
+
+<h2>Files in template directory:</h2>
+<div data-role="collapsible" data-theme="a" data-content-theme="a" class="tplchk_file_list"></div>
+{% endblock %}

@@ -15,7 +15,7 @@
 	<h5>Example</h5>
 
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; device.blind('blind1', 'Blind', 'bath.blind.mov', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; device.blind('', 'Blind', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle') &#125;&#125;</code>
 	</div>
 	<div class="html">
 
@@ -23,7 +23,7 @@
 			<div class="ui-bar-c ui-li-divider ui-corner-top">Blind</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
 
-				{{ device.blind('blind1', 'Blind', 'bath.blind.mov', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle') }}
+				{{ device.blind('', 'Blind', '', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle') }}
 
 			</div>
 		</div>
@@ -32,7 +32,7 @@
 
 	A blind without a blade
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; device.blind('blind2', '', 'bath.blind.mov', 'bath.blind.stop', 'bath.blind.pos') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; device.blind('', '', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos') &#125;&#125;</code>
 	</div>
 	<div class="html">
 
@@ -40,7 +40,7 @@
 			<div class="ui-bar-c ui-li-divider ui-corner-top">Blind without blade</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
 
-				{{ device.blind('blind2', '', 'bath.blind.mov', 'bath.blind.stop', 'bath.blind.pos') }}
+				{{ device.blind('', '', '', 'bath.blind.stop', 'bath.blind.pos') }}
 
 			</div>
 		</div>

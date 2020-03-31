@@ -1,0 +1,45 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiss
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+<div id="menu" class="menu">
+	<a id="menu-rooms" data-ajax="false" href="index.php">
+      <img class="icon{{ page starts with 'index' or page starts with 'room' ? ' icon1' }}" src="{{ icon0 }}control_building_empty.svg"/></a>
+		
+	{% if page != 'config' %}
+		<a id="menu-squeezebox" data-ajax="false" href="index.php?page=Multimedia/squeezebox">
+			<img class="icon{{ page == 'squeezebox' ? ' icon1' }}" src="{{ icon0 }}audio_audio.svg"/></a>
+
+		<a id="menu-tvremote" data-ajax="false" href="index.php?page=TV/tvremote">
+			<img class="icon{{ page == 'tvremote' ? ' icon1' }}" src="{{ icon0 }}it_television.svg"/></a>
+
+		<a id="menu-phone_plus" data-ajax="false" href="index.php?page=Phone/phone_plus">
+			<img class="icon{{ page == 'phone_plus' ? ' icon1' }}" src="{{ icon0 }}it_telephone.svg"/></a>
+
+<!-- icons removed to limit space needed in menu for mobile devices / could be done by css as well		
+    <a id="menu-it" data-ajax="false" href="index.php?page=Home-IT/it">
+			<img class="icon {{ page == 'it' ? ' icon1' }}" src="{{ icon0 }}it_pc.svg"/></a>
+
+		<a id="menu-category" data-ajax="false" href="index.php?page=Uhr/Uhr-1">
+			<img class="icon {{ page == 'Uhr-1' ? ' icon1' }}" src="{{ icon0 }}time_clock.svg"/></a> -->
+
+		<a id="menu-special" data-ajax="false" href="index.php?page=apps">
+			<img class="icon{{ page == 'apps' ? ' icon1' }}" src="{{ icon0 }}it_net.svg"/></a>
+			
+	{% else%}	
+	
+		<a id="menu-docu" data-ajax="false" href="index.php?pages=docu&page=index">
+			<img class="icon{{ pages == 'docu' ? ' icon1' }}" src="{{ icon0 }}edit_copy.svg"/></a>
+	
+	{% endif %}			
+
+	<a id="menu-system" data-ajax="false" href="index.php?page=config">
+		<img class="icon{{ page == 'config' ? ' icon1' }}" src="{{ icon0 }}edit_settings.svg"/></a>
+
+</div>

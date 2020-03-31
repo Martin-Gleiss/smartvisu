@@ -1,0 +1,101 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_quad.html" %}
+{% block header %}
+
+{% endblock %}
+{% block example %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+       io.write('this', '1' );
+       io.write('that', '1' );
+       io.write('theother', '1' );
+    });
+</script>
+  <h5>Example</h5>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Use to change values below</li>
+    {{ quad.stateswitch('stateswitch2', ['this', 'that', 'theother'], ['icon','', 'icon'], [[0,1, 100],[0,1,100,200],[1,2]], [['edit_numeric_0.svg','edit_numeric_1.svg', ''],'',['edit_numeric_1.svg','edit_numeric_2.svg']], [['','','100'],[0,1,100,200],''], [['',''],['','','','',''],''], ['blink','blink',''], '', '', '', '', '', 'CHANGE STATUS ITEMS HERE', ['this', 'that', 'theother']) }}
+    </ul>
+  </div>
+Symbol this and that/empty/theother with plot popups
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.symbol('symbols0', [['this','that'], ' ', 'theother'], '', [icon.light('','','that'), '', ''], [[1,10,100,200],'', [1,2]], ['and','',''], ['','', ['icon0', 'icon1']], 'placeholder', 'placeholder', 'thisandthat = 1 | 100; the other = 1 | 2', ['thisandthat','','theother'], ['item_plot1','','item_plot3'], '', 'placeholder', 'placeholder',  [1,2,3]) }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.symbol('symbols0', [['this','that'], ' ', 'theother'], '', [icon.light('','','that'), '', ''], [[1,10,100,200],'', [1,2]], ['and','',''], ['','', ['icon0', 'icon1']], 'placeholder', 'placeholder', 'thisandthat = 1 | 100; the other = 1 | 2', ['thisandthat','','theother'], ['item_plot1','','item_plot3'], '', 'placeholder', 'placeholder',  [1,2,3]) }}
+  </ul></div>
+Symbol this and that, switched order
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+      {{ quad.symbol('symbols2', ['this','that'], ['on', 'on'], [icon.light('','','this'),icon.light('','','that')], [[0,1,100,200],[0,1,100,200]], ['',''], [['icon0','icon1','icon1','icon1'],['icon0','icon1','icon1','icon1']], 'placeholder', 'placeholder', '2 Symbols (order switched)', ['this','that'], '', '', 'placeholder', 'placeholder', [2,1]) }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+      {{ quad.symbol('symbols2', ['this','that'], ['on', 'on'], [icon.light('','','this'),icon.light('','','that')], [[0,1,100,200],[0,1,100,200]], ['',''], [['icon0','icon1','icon1','icon1'],['icon0','icon1','icon1','icon1']], 'placeholder', 'placeholder', '2 Symbols (order switched)', ['this','that'], '', '', 'placeholder', 'placeholder', [2,1]) }}
+  </ul></div>
+Symbol this AND that
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+      {{ quad.symbol('combosymbol0', ['this','that'], '', ['secur_open.svg','secur_locked.svg','secur_locked.svg','secur_locked.svg'], [0,1], 'and', ['icon0','icon1'], 'placeholder', 'placeholder', 'this & that = 0 / 1') }}
+      {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+  {{ quad.symbol('combosymbol0', ['this','that'], '', ['secur_open.svg','secur_locked.svg','secur_locked.svg','secur_locked.svg'], [0,1], 'and', ['icon0','icon1'], 'placeholder', 'placeholder', 'this & that = 0 / 1') }}
+  </ul></div>
+Symbol this OR that
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+      {{ quad.symbol('combosymbol1', ['this','that'], '', 'secur_locked.svg', 1, 'or', 'icon1', 'placeholder', 'placeholder', 'this or that = 1') }}
+      {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.symbol('combosymbol1', ['this','that'], '', 'secur_locked.svg', 1, 'or', 'icon1', 'placeholder', 'placeholder', 'this or that = 1') }}
+  </ul></div>
+Symbol that: icons stay fixed
+<div class="twig">
+  <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.symbol('symbol1', 'that', ['off', 'on', 'more on', 'most on'], [icon.light(),icon.light('','','that'),icon.light('','','that'),icon.light('','','that')], [0,1,100,200], '', ['icon0','icon1','icon1','icon1'], 'placeholder', 'placeholder', 'fixed Symbol (that)', '', 'item_plot') }}
+    {% endraw %}{% endfilter %}</code>
+</div>
+<div class="html">
+  <ul data-role="listview" data-dividertheme="c" class="quad_list">
+  {{ quad.symbol('symbol1', 'that', ['off', 'on', 'more on', 'most on'], [icon.light(),icon.light('','','that'),icon.light('','','that'),icon.light('','','that')], [0,1,100,200], '', ['icon0','icon1','icon1','icon1'], 'placeholder', 'placeholder', 'fixed Symbol (that)', '', 'item_plot') }}
+</ul></div>
+Symbol with standard values
+<div class="twig">
+  <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.symbol('symbol_standard', 'that', '', '', '', '', '', 'placeholder', 'placeholder', 'Standard values') }}
+    {% endraw %}{% endfilter %}</code>
+</div>
+<div class="html">
+  <ul data-role="listview" data-dividertheme="c" class="quad_list">
+  {{ quad.symbol('symbol_standard', 'that', '', '', '', '', '', 'placeholder', 'placeholder', 'Standard values') }}
+</ul></div>
+Two symbols with thresholds
+<div class="twig">
+  <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.symbol('maprange', ['that','this'], [['low','medium','high'], ['', '', '']], [['', '', ''], ['control_1','control_2','control_3']], [[1,100], [100,200]], ['>', '>'], '', '', '', 'with plots', ['that:', 'this:'], ['that.plot','this.plot'], '', '', '', [1,2]) }}
+    {% endraw %}{% endfilter %}</code>
+</div>
+<div class="html">
+  <ul data-role="listview" data-dividertheme="c" class="quad_list">
+  {{ quad.symbol('maprange', ['that','this'], [['low','medium','high'], ['', '', '']], [['', '', ''], ['control_1','control_2','control_3']], [[1,100], [100,200]], ['>', '>'], '', '', '', 'with plots', ['that:', 'this:'], ['that.plot','this.plot'], '', '', '', [1,2]) }}
+</ul></div>
+
+{% endblock %}

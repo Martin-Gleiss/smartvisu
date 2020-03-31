@@ -1,0 +1,114 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+	<!--<h1><img class="icon" src='{{ icon0 }}sani_buffer_temp_down.png'/>Technik</h1>-->
+
+	<style>
+		#technik:after {
+			background-image: url("{{ icon0 }}sani_pump.svg");
+		}
+
+		#strom:after {
+			background-image: url("{{ icon0 }}measure_power_meter.svg");
+		}
+
+		#solar:after,
+		#heizung:after,
+		#wasser:after {
+			background-image: url("{{ icon0 }}time_graph.svg");
+		}
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=KG.Keller" id="technik" class="ui-btn-icon-top">Übersicht</a></li>
+			<li><a href="index.php?page=PlotStrom" id="strom" class="ui-btn-icon-top">Strom</a></li>
+			<li><a href="index.php?page=PlotSolar" id="solar" class="ui-btn-icon-top">Solar</a></li>
+			<li><a href="index.php?page=PlotHeizung" id="heizung" class="ui-btn-icon-top">Heizung</a></li>
+			<li><a href="index.php?page=PlotWasser" class="ui-btn-icon-top ui-btn-active" id="wasser">Wasser</a></li>
+		</ul>
+	</div>
+
+
+	<div class="preblock">
+		<table width="100%">
+			<tr>
+				<td align="middle" width="70%">
+					Wasser
+				</td>
+			</tr>
+		</table>
+	</div>
+	<h3>Wasserrbrauch</h3>
+	{{ plot.period('p7', 'Allgemein.Zaehler.Wasseralle15min', 'avg', '12h', 0, 0, '', '', 'Verbrauch', '#00a', 'column', ['', 'Liter']) }}
+
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Verbrauchsdaten von heute:</h3>
+
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Verbrauch heute:
+						</td>
+						<td align=right>
+							{{ basic.print('WasserHeuteVerbrauch2', 'Allgemein.Zaehler.WasserVerbHeute', 'l') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Kosten heute:
+						</td>
+						<td align=right>
+							{{ basic.print('WasserHeuteKosten2', 'Allgemein.Zaehler.WasserKoHeute', '€') }}
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Verbrauchsdaten von gestern:</h3>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Verbrauch gestern:
+						</td>
+						<td align=right>
+							{{ basic.print('WasserGesternVerbrauch2', 'Allgemein.Zaehler.WasserVerbGestern', 'l') }}
+						</td>
+					</tr>
+				</table>
+				<table width=100%>
+					<tr>
+						<td align=left style="padding-left: 10px;">
+							Kosten gestern:
+						</td>
+						<td align=right>
+							{{ basic.print('WasserGesternKosten2', 'Allgemein.Zaehler.WasserKoGestern', '€') }}
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}
+

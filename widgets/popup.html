@@ -1,0 +1,180 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Niko Will, Onkel Andy
+ * @copyright   2013 - 2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+/**
+ * Mix your widgets in one popup
+ *
+ * @param {id=} unique id for this widge
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
+  */
+{% macro extpopup(id, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15, line16, line17, line18, line19, line20) %}
+  {% import "basic.html" as basic %}
+  {% import "device.html" as device %}
+  {% import "plot.html" as plot %}
+  {% set elements = {} %}
+  {% set class = '' %}
+  {% for linenumber in 1..20 %}
+      {% for key,type in _context['line' ~ linenumber]  %}
+        {% if type == 'uzsugraph' %}
+          {% set class = ' incl_uzsugraph' %}
+        {% endif %}
+      {% endfor %}
+  {% endfor %}
+    <div {% if not id is empty %} id="{{ id }}"{% endif %} data-role="popup" data-overlay-theme="a" class="ext-popup{{ class }}">
+      <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    <ul data-role="listview" data-dividertheme="c" class="popup_list">
+    {% for linenumber in 1..20 %}
+        {% set elements_array = {} %}
+        {% set i = 1 %}
+        {% if _context['line' ~ linenumber] %}
+                {% set attr = _context['line' ~ linenumber][0] is not iterable ? _context['line' ~ linenumber][0] : 'multi' %}
+                <li class="{{ attr }} popup_table row_ext-popup line{{ linenumber }}">
+        {% endif %}
+        {% for key,attribs in _context['line' ~ linenumber]  %}
+            {% if attribs is not iterable %}
+               {% set attribs = [attribs] %}
+            {% endif %}
+            {% for key1,item in attribs %}
+                {% if key == 0 and (item == 'switch' or item == 'stateswitch') %}
+                    {% set switch_attribs = _context['line' ~ linenumber][key+key1+1] %}
+                    <div class="switch popup_column_{{i}}">{{ basic.stateswitch(id~'switch'~key1~item~linenumber, switch_attribs[0], switch_attribs[1], switch_attribs[2], switch_attribs[3], switch_attribs[4], switch_attribs[5], switch_attribs[6]) }}</div>
+                    {% set i = i+1 %}
+                {% elseif key == 0 and item == 'select' %}
+                    {% set select_attribs = _context['line' ~ linenumber][key+key1+1] %}
+                    <div class="select popup_column_{{i}}">{{ basic.select(id~'select'~key1~item~linenumber, select_attribs[0], select_attribs[1], select_attribs[2], select_attribs[3], select_attribs[4]|default(''), select_attribs[5]|default('icon1'), select_attribs[6]|default('horizontal')) }}</div>
+                    {% set i = i+1 %}
+                {% elseif key == 0 and (item == 'image' or item == 'icon') %}
+                    {% set icon_attribs = _context['line' ~ linenumber][key+key1+1] %}
+                    <div class="icon popup_column_{{i}}">{{ basic.icon(icon_attribs[0], icon_attribs[1], icon_attribs[2]) }}</div>
+                    {% set i = i+1 %}
+                {% elseif key == 0 and item == 'flip' %}
+                    {% set flip_attribs = _context['line' ~ linenumber][key+key1+1] %}
+                    <div class="flip popup_column_{{i}}">{{ basic.flip(id~'flip'~key1~item~linenumber, flip_attribs[0], flip_attribs[1], flip_attribs[2], flip_attribs[3], flip_attribs[4], flip_attribs[5]) }}</div>
+                    {% set i = i+1 %}
+                {% elseif key == 0 and item == 'slider' %}
+                    {% set slider_attribs = _context['line' ~ linenumber][key+key1+1] %}
+                    <div class="slider popup_column_{{i}}">{{ basic.slider(id~'slider'~key1~item~linenumber, slider_attribs[0], slider_attribs[1], slider_attribs[2], slider_attribs[3], slider_attribs[4], slider_attribs[5], slider_attribs[6], slider_attribs[7], slider_attribs[8]) }}</div>
+                    {% set i = i+1 %}
+                {% elseif key == 0 and (item == 'text' or item == 'symbol') %}
+                    {% set text_attribs = _context['line' ~ linenumber][key+key1+1] %}
+                    <div class="text popup_column_{{i}}">{{ basic.symbol(id~'text'~key1~item~linenumber, text_attribs[0], text_attribs[1], text_attribs[2], text_attribs[3], text_attribs[4], text_attribs[5], text_attribs[6], text_attribs[7]) }}</div>
+                    {% set i = i+1 %}
+                {% elseif key == 0 and item == 'print' %}
+                    {% set print_attribs = _context['line' ~ linenumber][key+key1+1] %}
+                    <div class="print popup_column_{{i}}">{{ basic.print(id~'print'~key1~item~linenumber, print_attribs[0], print_attribs[1], print_attribs[2], print_attribs[3], print_attribs[4]) }}</div>
+                    {% set i = i+1 %}
+                {% elseif key == 0 and item == 'linetext' %}
+                    {% set linetext_attrib = _context['line' ~ linenumber][key+key1+1] %}
+                    <div class="linetext popup_column_{{i}}">{{ linetext_attrib|e }}</div>
+                    {% set i = i+1 %}
+                {% elseif key == 0 and item == 'uzsugraph' %}
+                    {% set uzsugraph_attribs = _context['line' ~ linenumber][key+key1+1] %}
+                    <div class="uzsugraph popup_column_{{i}}">{{ device.uzsugraph(id~'uzsugraph'~key1~item~linenumber, uzsugraph_attribs[0], uzsugraph_attribs[1], uzsugraph_attribs[2], uzsugraph_attribs[3], uzsugraph_attribs[4], uzsugraph_attribs[5]) }}</div>
+                    {% set i = i+1 %}
+                {% elseif key == 0 and item == 'plot' %}
+                    {% set plot_attribs = _context['line' ~ linenumber][key+key1+1] %}
+                    <div class="plot popup_column_{{i}}">{{ plot.period(id~'plot'~key1~item~linenumber, plot_attribs[0], plot_attribs[1], plot_attribs[2], plot_attribs[3], plot_attribs[4], plot_attribs[5], plot_attribs[6], plot_attribs[7], plot_attribs[8], plot_attribs[9], plot_attribs[10], plot_attribs[11], plot_attribs[12], plot_attribs[13], plot_attribs[14], plot_attribs[15], plot_attribs[16], plot_attribs[17]) }}</div>
+                    {% set i = i+1 %}
+                {% elseif key == 0 and item == 'header' %}
+                    <div class="header popup_column_{{i}}">{{ _context['line' ~ linenumber][key+key1+1]|e }}</div>
+                    {% set i = i+1 %}
+                {% elseif key == 0 and item == '' %}
+                    {% set i = i+1 %}
+                {% endif %}
+
+            {% endfor %}
+
+        {% endfor %}
+         {% if _context['line' ~ linenumber] %}
+             </li>
+        {% endif %}
+    {% endfor %}
+
+    </ul>
+    </div>
+{% endmacro %}
+
+/**
+ * Lock motion sensor and/or light priority in one popup
+ *
+ * @param {id=} unique id for this widge
+ * @param {item[?]=} simple on/off lock item for light
+ * @param {item[?]=} simple on/off lock item for motion sensor
+ * @param {item[?]=} knx force item, expected values are 0, 1 or 2
+ * @param {item[?]=} on/off lock item for RGB LED sequencer
+  */
+{% macro locks(id, lock, bwm_lock, force, seq_lock) %}
+    {% import "basic.html" as basic %}
+  <div {% if not id is empty %} id="{{ id }}"{% endif %} data-role="popup" data-overlay-theme="a" class="locks-popup" style="text-align:center;">
+  <div style="margin:auto;text-align:center;display:inline-block;">
+    {% if (lock is not iterable and lock != '') or (lock is iterable and lock[0] != '') %}
+    <div style="float:left;" class="popup_list">
+      {% if lock is iterable  %}
+        {{ basic.stateswitch(id~'_lock', lock[0], 'icon', [0,1], ['secur_open','secur_locked'], '', lock[1]) }}
+      {% else %}
+        {{ basic.stateswitch(id~'_lock', lock, 'icon', [0,1], ['secur_open','secur_locked']) }}
+      {% endif %}
+        </div>
+        {% endif %}
+    {% if (bwm_lock is not iterable and bwm_lock != '') or (bwm_lock is iterable and bwm_lock[0] != '') %}
+    <div style="float:left;" class="popup_list">
+      {% if bwm_lock is iterable %}
+        {{ basic.stateswitch(id~'_bwmlock', bwm_lock[0], 'icon', [0,1], ['message_presence','message_presence_disabled'], '', bwm_lock[1]) }}
+      {% elseif bwm_lock != '' %}
+        {{ basic.stateswitch(id~'_bwmlock', bwm_lock, 'icon', [0,1], ['message_presence','message_presence_disabled']) }}
+      {% endif %}
+        </div>
+        {% endif %}
+    {% if (force is not iterable and force != '') or (force is iterable and force[0] != '') %}
+    <div style="float:left;margin-top:-10px;padding-top:3px;" class="popup_list">
+      {% if force is iterable  %}
+          {% if force[1] is iterable  %}
+              {% set color = force[1][1] %}
+          {% else %}
+            {% set color = force[1] %}
+          {% endif %}
+        {{ basic.select(id~'_force', force[0], 'icon', [0,2,3], ['control_minus','light_light_dim_00','light_light_dim_90'], '', color, 'horizontal') }}
+      {% else %}
+        {{ basic.select(id~'_force', force, 'icon', [0,2,3], ['control_minus','light_light_dim_00','light_light_dim_90']) }}
+      {% endif %}
+        </div>
+        {% endif %}
+    {% if (seq_lock is not iterable and seq_lock != '') or (seq_lock is iterable and seq_lock[0] != '') %}
+    <div style="float:left;" class="popup_list">
+      {% if seq_lock is iterable  %}
+        {{ basic.stateswitch(id~'_seq_lock', seq_lock[0], 'icon', [0,1], ['audio_shuffle', 'audio_shuffle'], '', seq_lock[1]) }}
+      {% else %}
+        {{ basic.stateswitch(id~'_seq_lock', seq_lock, 'icon', [0,1], ['audio_shuffle', 'audio_shuffle']) }}
+      {% endif %}
+        </div>
+        {% endif %}
+
+    </div>
+    </div>
+
+{% endmacro %}

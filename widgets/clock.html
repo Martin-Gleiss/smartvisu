@@ -11,29 +11,23 @@
 /**
 * Displays a digital clock
 *
-* @param unique id for this widget
-* @param location as string (optional)
+* @param {id} unique id for this widget
+* @param {text=} location for weather data (optional, no weather shown if omitted)
+* @param {duration=15i} the refresh interval for weather data (using relative time format), default 15i (15 minutes)
 *
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
 */
-{% macro digiclock(id, location) %}
+{% macro digiclock(id, location, repeat) %}
 	{% set uid = uid(page, id) %}
 
-	{% if once('digiclock') %}
-		<link rel="stylesheet" type="text/css" href="lib/clock/jdigiclock.css" />
-		<script type="text/javascript" src="lib/clock/jquery.jdigiclock.js"></script>
-	{% endif %}
+	<div id="{{ uid }}-digiclock" data-widget="clock.digiclock" class="digiclock"
+	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+	 ></div>
 
-	<div id="{{ uid }}-digiclock" data-widget="clock.digiclock"
-		class="digiclock"></div>
-
-	{% if location %}
-		{% if once('digiweather') %}
-			<link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
-		{% endif %}
-
-		<div class="center">
+	{% if not location is empty %}
+		<div class="center digiweather" style="visibility: hidden;" data-widget="clock.digiclock" data-repeat="{{ repeat|default('15i') }}"
+			data-service-url="lib/weather/service/{{ config_weather_service|url_encode }}.php?location={{ location|default(config_weather_location)|url_encode }}">
 			<div id="{{ uid }}-spot" class="spot">
 				<div class="temp"></div>
 				<div class="city"></div>
@@ -43,33 +37,20 @@
 		</div>
 	{% endif %}
 
-	<script type="text/javascript">
-		$('#{{ page }}').on('pagecreate', function (event, ui) {
-			$('#{{ uid }}-digiclock').digiclock();
-
-			{% if location %}
-			$.getJSON('lib/weather/service/{{ config_weather_service }}.php?location={{ location|default(config_weather_location) }}&lang={{ config_lang|default(en) }}', function (data) {
-				$('#{{ uid }}-spot img').attr('src', 'lib/weather/pics/' + data.current.icon + '.png');
-				$('#{{ uid }}-spot .city').html(data.city);
-				$('#{{ uid }}-spot .cond').html(data.current.conditions);
-				$('#{{ uid }}-spot .temp').html(data.current.temp);
-			});
-			{% endif %}
-		});
-	</script>
 {% endmacro %}
 
 
 /**
 * Displays a clock in icon style
 *
-* @param unique id for this widget
+* @param {id} unique id for this widget
 */
 {% macro iconclock(id) %}
 	{% import "icon.html" as icon %}
 
-	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i"
-		class="iconclock">{{ icon.clock(id) }}</span>
+	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i" class="iconclock"
+	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+	 >{{ icon.clock(id) }}</span>
 
 {% endmacro %}
 
@@ -77,12 +58,14 @@
 /**
 * Displays a mini text-based clock
 *
-* @param unique id for this widget
+* @param {id=} unique id for this widget (optional)
+* @param {text=} a PHP like date/time format string (optional)
 */
-{% macro miniclock(id) %}
+{% macro miniclock(id, format) %}
 
-	<span id="{{ uid(page, id) }}" data-widget="clock.miniclock" data-repeat="1i"
-		class="miniclock">{{ now|date('H:i') }}</span>
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.miniclock" data-repeat="1i" class="miniclock"
+		data-format="{{ format|default('time') }}"
+		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+		>{{ "now"|date('H:i') }}</span>
 
 {% endmacro %}
-

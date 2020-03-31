@@ -11,9 +11,9 @@
 /**
 * enertex KNXnet/IP-Router
 *
-* @param unique id for this widget
-* @param the ip of the KNXnet/IP-Router
-* @param the password of the KNXnet/IP-Router
+* @param {id} unique id for this widget
+* @param {text=} the ip of the KNXnet/IP-Router
+* @param {text=} the password of the KNXnet/IP-Router
 *
 * @info works with firmware 1.025, 1.029
 */
@@ -31,14 +31,14 @@
 	<script type="text/javascript">
 		$('#{{ page }}').on('pagecreate', function (event, ui) {
 			$.getJSON('lib/appliance/enertex.iprouter.php?server={{ server }}&pass={{ password }}', function (data) {
-				$('#{{ uid }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png">');
-				$('#{{ uid }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png">');
+				$('#{{ uid }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png" alt="from">');
+				$('#{{ uid }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png" alt="to">');
 	
 				var ret = '';
 				for (var i in data.tunnels) {
 	
-					ret += '<div class="traffic">' + data.tunnels[i].tx_tun_req + ' t<img src="lib/appliance/pics/dir_in.png">';
-					ret += '<br />' + data.tunnels[i].rx_tun_req + ' t<img src="lib/appliance/pics/dir_out.png"></div>';
+					ret += '<div class="traffic">' + data.tunnels[i].tx_tun_req + ' t<img src="lib/appliance/pics/dir_in.png" alt="in">';
+					ret += '<br />' + data.tunnels[i].rx_tun_req + ' t<img src="lib/appliance/pics/dir_out.png" alt="out"></div>';
 					ret += '<div class="tunnel">T ' + i + '</div>';
 					ret += '<div class="address">knx: ' + data.tunnels[i].knx_address + '<br />ip: ' + (data.tunnels[i].ip_control ? data.tunnels[i].ip_control : data.tunnels[i].hpai_control) + '</div>';
 				}

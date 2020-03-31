@@ -12,16 +12,12 @@
 
 {% block example %}
 
-	<h5>Example</h5>
-	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.multistate('id', 'item', ['5', '6', '7'], ['image_0', 'image_3', 'image_2'], 'mini') &#125;&#125;</code>
+	
+	<div class="html">
+		This widget is deprecated and may be removed in later versions.<br>
+		Please look into basic.stateswitch for replacement and further information.
 	</div>
 
-	Click on the button to change the inside image ...
-	<div class="html">
-		{{ basic.multistate('multi_id', 'bath.multistate', ['5', '6', '7'], ['audio_shuffle.svg', 'audio_shuffle_album.svg', 'audio_repeat.svg'], 'midi') }}
-		Sent value : {{ basic.value('value_id', 'bath.multistate') }}
-	</div>
 
 {% endblock %}
 
