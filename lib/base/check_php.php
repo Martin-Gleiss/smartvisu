@@ -2,7 +2,7 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß
+ * @author      Martin Gleiss
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
@@ -15,7 +15,7 @@ require_once '../../lib/includes.php';
 // init parameters
 $request = array_merge($_GET, $_POST);
 
-if (version_compare(PHP_VERSION, '5.2.4'))
+if (version_compare(PHP_VERSION, '7.3.2'))
 {
 	$ret = array('icon' => 'message_ok.svg', 'text' => 'PHP v'.phpversion().' is ok');
 }
