@@ -21,7 +21,14 @@
   		 io.write('licht.automatik.lock', '0');
        io.write('bwm.sperren', '0');
        io.write('licht.zwangvalue', '0');
-  	});
+
+       $( "#widget_quad_dimmer-dimmer1dimmerpopup_slider, #widget_quad_dimmer-dimmer2_slider_inline, #widget_quad_dimmer-dimmer3dimmerpopup_slider" ).change(function(){
+          if (this.value > 0)
+            io.write('licht.SA', '1' );
+          else
+            io.write('licht.SA', '0' );
+       });
+  });
 </script>
 
 {% set stateengine = {} %}
