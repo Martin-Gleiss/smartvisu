@@ -71,12 +71,12 @@
 ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' '] stateengine with popup (have to long tap to open popup!)
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-    {{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', 'right', 'blink', '', 'licht.dimmen.zeitschalter', ['', '', 'bool'], '%', 'licht.dimmen', '', 'licht.automatik', (stateengine['item1']), ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
+    {{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen','','','blue'), icon.light('','','licht.dimmen'), 'blue', 'icon0', '', '', '100', 'right', 'blink', '', 'licht.dimmen.zeitschalter', ['', '', 'bool'], '%', 'licht.dimmen', '', 'licht.automatik', (stateengine['item1']), ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
 		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', 'right', 'blink', '', 'licht.dimmen.zeitschalter', ['', '', 'bool'], '%', 'licht.dimmen', '', 'licht.automatik', (stateengine['item1']), ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
+    {{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen','','','blue'), icon.light('','','licht.dimmen'), 'blue', 'icon0', '', '', '100', 'right', 'blink', '', 'licht.dimmen.zeitschalter', ['', '', 'bool'], '%', 'licht.dimmen', '', 'licht.automatik', (stateengine['item1']), ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
 	</ul></div>
 
 ['switch', 'value_slider']
