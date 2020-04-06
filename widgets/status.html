@@ -39,7 +39,7 @@ the first one is the base color for values below first threshold, so pass one co
 
 {% endmacro %}
 
-	
+
 /**
 * Displays a list of logging-information
 *
@@ -91,14 +91,14 @@ Caution: If this is set, the notification gets not shown until the item has sent
 
 {% endmacro %}
 
-	
+
 /**
 * Displays a notification popup window with a message
 *
 * @param {id} unique id for this widget
 * @param {item} an item witch triggers the popup: NOT 0 open it, 0 close it
 * @param {item=} an item with the dynamic message
-* @param {item=} an item with the a timestamp
+* @param {item=} an item with a timestamp (day.month.year hour:minute)
 * @param {text} a title of the messagebox
 * @param {text=} an additional static text
 * @param {text(info,error)=info} the mode: 'info', 'error' (optional, default 'info')
@@ -110,7 +110,7 @@ Caution: If this is set, the notification gets not shown until the item has sent
 	<div id="{{ uid(page, id) }}-message" class="alert" data-role="popup" data-overlay-theme="a" {% if mode == 'error' %} data-dismissible="false" {% endif %}>
 		<div data-role="header" data-theme="c"><h1>{{ title }}</h1></div>
 		<p><span></span>{{ text }}</p>
-	
+
 		<div class="control">
 			<span class="stamp"></span>
 				<a onClick="$('#{{ uid(page, id) }}-message').popup('close');" data-mini="true" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
