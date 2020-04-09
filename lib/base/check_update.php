@@ -2,7 +2,7 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß
+ * @author      Martin Gleiss
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
@@ -16,7 +16,7 @@ require_once '../../lib/includes.php';
 $request = array_merge($_GET, $_POST);
 
 // get contents
-$url = "https://smartvisu.de/download/check.php?local=".(isset($request["local"]) ? $request["local"] : config_version);
+$url = "https://smartvisu.de/download/check.php?local=".(isset($request["local"]) ? $request["local"] : config_version_full);
 
 $data = json_decode(file_get_contents($url, false));
 
