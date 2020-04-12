@@ -15,7 +15,7 @@ require_once '../../lib/includes.php';
 // init parameters
 $request = array_merge($_GET, $_POST);
 
-if (is_writeable(const_path) && (!is_file(const_path.'config.ini') || is_writeable(const_path.'config.ini')))
+if ((!is_file(const_path.'config.ini') && is_writeable(const_path)) || (is_file(const_path.'config.ini') && is_writeable(const_path.'config.ini')))
 {
 	$ret = array('icon' => 'message_ok.svg', 'text' => "'config.ini' file can be created");
 }
