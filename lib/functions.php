@@ -223,7 +223,8 @@ function filewrite($file, $ret)
 		@chown($tmpFile, $stat['uid']);
 		@chgrp($tmpFile, $stat['gid']);
 	}
-	rename($tmpFile, $file);
+	copy($tmpFile, $file);
+	unlink($tmpFile);
 
 	return $ret;
 }
@@ -291,7 +292,8 @@ function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
 			@chown($tmpFile, $stat['uid']);
 			@chgrp($tmpFile, $stat['gid']);
 		}
-		$success &= rename($tmpFile, $path);
+		$success &= copy($tmpFile, $path);
+		unlink($tmpFile);
 	}
 
 	return $success;
