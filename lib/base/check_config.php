@@ -22,7 +22,7 @@ if ((!is_file(const_path.'config.ini') && is_writeable(const_path)) || (is_file(
 else
 {
 	header("HTTP/1.0 600 smartVISU Config Error");
-	$ret = array('icon' => 'message_attention.svg', 'text' => "'".const_path."config.ini' file can't be created!");
+	$ret = array('icon' => 'message_attention.svg', 'text' => "'".const_path."config.ini' file isn't writable or can't be created!");
 }
 
 echo json_encode($ret);
