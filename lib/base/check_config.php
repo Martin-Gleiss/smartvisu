@@ -17,7 +17,7 @@ $request = array_merge($_GET, $_POST);
 
 if ((!is_file(const_path.'config.ini') && is_writeable(const_path)) || (is_file(const_path.'config.ini') && is_writeable(const_path.'config.ini')))
 {
-	$ret = array('icon' => 'message_ok.svg', 'text' => "'config.ini' file can be created");
+	$ret = array('icon' => 'message_ok.svg', 'text' => "'config.ini' file is writable or can be created");
 }
 else
 {
