@@ -1,3 +1,19 @@
+## next
+
+### New / Changed Widgets
+- deprecated widgets from v2.9 have been deleted
+
+### Other New Features
+
+### Improvements
+- new versioning (major.minor.revision). Update checker fetches remote version from github master
+
+### Updated Libraries
+
+### Fixed Bugs
+- writing config file was not reliable under windows.
+
+
 ## v 2.9
 
 ### New / Changed Widgets
