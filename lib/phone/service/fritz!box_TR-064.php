@@ -13,7 +13,7 @@ require_once '../../../lib/includes.php';
 require_once const_path_system . 'phone/phone.php';
 /**
  * This class reads the phonelist of an fritz!box phonesystem via TR-064 protocol
- * This can only work if you enable "Zugriff für Anwendungen zulassen".
+ * This can only work if you enable "Zugriff fÃ¼r Anwendungen zulassen".
  * you can found this config switch inside the web console -> Home network -> Network -> Network Settings
  * It is required that "Extented View" of the web console is enabled - that this checkbox is shown.
  * 
@@ -28,6 +28,7 @@ class phone_fritzbox_TR064 extends phone
         'verify_peer_name' => false,
         'allow_self_signed' => true
     );
+    
     public function __construct($http_vals)
     {
         parent::init($http_vals);
