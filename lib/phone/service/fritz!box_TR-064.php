@@ -23,11 +23,11 @@ class phone_fritzbox_TR064 extends phone
     private $max_calls_to_fetch;
     private $challenge;
     private $call_list_url;
-	private $context_ssl = array(
-	'verify_peer' => false,
-	'verify_peer_name' => false,
-	'allow_self_signed' => true);
-	
+    private $context_ssl = array(
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => true
+    );
     public function __construct($http_vals)
     {
         parent::init($http_vals);
@@ -36,7 +36,7 @@ class phone_fritzbox_TR064 extends phone
         // use some default user if only password is set on smartvisu 
         if (strlen($this->user) == 0 && strlen($this->pass) > 0)
             $this->user = 'admin';
-		if (strlen($this->port) == 0)
+        if (strlen($this->port) == 0)
             $this->port = '49000';
     }
     /**
