@@ -8,6 +8,7 @@ You don't need to know javascript.
 SEE: [smartvisu.de](http://www.smartvisu.de)
 
 
+
 ## FEATURES
   * Pretty: Responsive design, auto adjustment to smartphones and tablets
   * Strict: One template for all devices
