@@ -1,7 +1,7 @@
 ## next
 
 ### New / Changed Widgets
-- deprecated widgets from v2.9 have been deleted
+- deprecated widgets from v2.9 have not yet been deleted
 
 ### Other New Features
 
