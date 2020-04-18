@@ -36,7 +36,7 @@
 				$.getJSON('lib/base/check_update.php?local={{ config_version_full }}', function (data) {
 					if (data.update) {
 						notify.update(data.text, 'Your local version is: <b>' + data.local + '</b><br>' +
-							'New remote version is: <b>' + data.remote + '</b><br><br>' +
+							'Latest stable release is: <b>' + data.remote + '</b><br><br>' +
 							'Please visit <a target="_blank" href="http://smartvisu.de">smartVISU.de</a> or <a target="_blank" href="http://github.com/martin-gleiss/smartvisu">github</a> to download the latest version!<br />');
 					}
 				})

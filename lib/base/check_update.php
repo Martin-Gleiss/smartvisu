@@ -37,7 +37,7 @@ if (config_version_revision >= "a")
 {
 	$ret["update"] = true;
 	$ret["icon"] = 'message_attention.svg';
-	$ret["text"] = 'You are using a develop version';
+	$ret["text"] = 'This version from develop branch <br> might be unstable';
 }
 else
 {
