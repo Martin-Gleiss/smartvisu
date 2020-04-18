@@ -7,6 +7,8 @@
 
 ### Improvements
 - new versioning (major.minor.revision). Update checker fetches remote version from github master
+- update check is paused for 7 days after every execution (by cookie "updchk")
+- system page for SmartHomeNG has been updated. SmartHomeNG icons added to icons folder
 
 ### Updated Libraries
 
