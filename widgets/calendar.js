@@ -77,7 +77,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				//fals kein icon angegeben
 				if(!entry.icon){
 					//falls kein default angegeben
-					if (!sv_lang.calendar_event_format.default_img_list){
+					if (typeof(sv_lang.calendar_event_format.default_img_list) === undefined){
 						entry.icon = "pages/base/pics/trans.png";
 						entry.color = 'transparent';
 					}else{
@@ -180,13 +180,18 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 					entry[tag[1]] = tag[2];
 				});
 				
-				
+				console.log(entry)
 				//get only the garbade icon, when no or the garbade keyword is used
 				if (entry.icon === "message_garbage"){
 					entry.icon = "message_garbage_2";
 				}else if(!entry.icon){
-					entry.icon = sv_lang.calendar_event_format.default_img_waste.icon;
-					entry.color = sv_lang.calendar_event_format.default_img_waste.color;
+					if (typeof(sv_lang.calendar_event_format.default_img_waste) !== undefined){
+						entry.icon = "pages/base/pics/trans.png";
+						entry.color = 'transparent';
+					}else{
+						entry.icon = sv_lang.calendar_event_format.default_img_waste.icon;
+						entry.color = sv_lang.calendar_event_format.default_img_waste.color;
+					}
 				}
 				
 				//von Calenderlist übernommen
@@ -207,7 +212,7 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 					muell_html += 'border-bottom: orange 8px inset; overflow: hidden;';
 				muell_html += '">'
 				muell_html += '<img class="icon icon1" src="' + entry.icon + '" style="width: 6em; height: 6em; fill: ' + entry.color + '; stroke: ' + entry.color + '" />';
-				muell_html += '<div style="font-size: 0.9em;">' + entry.start.transUnit('D') + ', ' + entry.start.transUnit('day') + '</div>'
+				muell_html += '<div style="font-size: 0.9em;text-align: center;">' + entry.start.transUnit('D') + ', ' + entry.start.transUnit('day') + '</div>'
 				muell_html += '</div>';
 				muell_html += '</div>';
 
