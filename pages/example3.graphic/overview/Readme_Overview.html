@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Readme Overview-Layout</h1>
+<h2>Hinweise zur Erstellung einer "Übersichtsseite" im Overview-Layout:</h2>
+<ol>
+	<li> Benötigt werden folgende Dateien im Verzeichnis pages/&#60;eigeneVisu>/overview:
+		<ul>
+			<li> widgets/: die für overview spezifischen widgets in html und js</li>
+			<li>images/: mindestens ein Hintergrundbild vorzugshalber als svg-Grafik oder ein jpg-Foto</li>
+			<li>Als Grundlage für eigene Seiten bietet sich eine der vorhandenen Seiten an: eg.html, dg.html, garten.html</li>
+			<li>visu.css </li>
+		</ul><br/>
+		Wenn es nicht als Block, d.h. als "normales" Widget in einer vorhandenen Seite verwendet werden soll, sondern wie auf den Beispielseiten, 
+		dann werden noch zusätzlich diese Dateien benötigt:
+		<ul>
+			<li> base.html		 	&rarr; hier die Seitentitel anpassen</li>
+			<li> menu.html		 	&rarr; das Menü im Fußbereich (footer)</li>
+			<li> menu_popup.html	 	&rarr; der Inhalt des Pop-up Menüs rechts oben</li>
+		</ul><br/>
+	</li>
+	<li>Aufbau von eigenen Seiten
+		<ul>
+		<li> Mindestens folgende Zeilen werden bei einer Block-Dartstellung benötigt:<br/><br/>
+			<div class="twig">
+				<code class="prettyprint">
+					&#123;% block content %&#125;<br/>
+					<br/>
+					&#60;div class="html"><br/>
+					&nbsp;&nbsp;	&#60;style><br/>		
+					&nbsp;&nbsp;&nbsp;&nbsp;	/* Overview */<br/>
+					&nbsp;&nbsp;&nbsp;&nbsp;	.overview { <br/>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	position: relative;<br/> 
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	margin: 0px;<br/>
+					&nbsp;&nbsp;&nbsp;&nbsp;	}<br/>
+					&nbsp;&nbsp;	&#60;/style><br/>
+					<br/>
+					&nbsp;&nbsp;	&#60;div class="ui-grid-solo"><br/>
+					&nbsp;&nbsp;&nbsp;&nbsp;	&#60;div class="ui-bar-c ui-li-divider ui-corner-top">Titel&#60;/div><br/>
+					&nbsp;&nbsp;&nbsp;&nbsp;	&#60;div class="ui-fixed ui-body-a ui-corner-bottom"><br/>
+					&nbsp;&nbsp;&nbsp;&nbsp;	&#60;div class="overview"><br/>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#60;!-- Background picture --><br/>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#123;&#123; ov.background ('background_eg', 'pages/eigeneSeite/images/background.svg') &#125;&#125;<br/>
+					<br/>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;           Hier kommen die einzelnen Widgets hin...<br/>
+					&nbsp;&nbsp;&nbsp;&nbsp;	&#60;/div><br/>
+					&nbsp;&nbsp;	&#60;/div><br/>
+					&#60;/div>
+				</code><br/>
+			</div>
+			<br/>Für die Einbindung als zentrales Element, wie in den Beispielseiten, kann der benötigte Code den oben genannten Dateien entnommen werden.<br/><br/>
+		</li>
+	</li>
+	<li>Welche Widgets gibt es?<br/>
+		Viele Basic-Widgets stehen zur Verfügung. Sie wurden aus smartVISU 2.9 übernommen und um die overview.spezifischen Parameter ergänzt. <br/>
+		Eine Übersicht der Widgets und deren Parameter gibt die Datei widget_overview.html (in einem Texteditor öffnen).
+		<br/><br/>
+	</li>
+	<li>Besonderheiten:
+		<ul>
+			<li>Alle ov-Widgets benötigen mindestens einen left und top Parameter, 
+				d.h. eine Angabe in Prozent für den Abstand vom linken Rand und 
+				vom oberen Rand der Grafik. Der Abstand bezieht sich immer auf 
+				den Mittelpunkt eines Objekts.
+			</li>
+			<li>Zusätzlich gibt es einen optionalen Parameter "hide", 
+				wenn dieser Parameter auf 1 gesetzt ist, dann wird das Widget bei kleinen Bildschirmen ausgeblendet.
+			</li>
+			<li>Häufig wird auch ein Parameter "type" verwendet, dieser bestimmt die Größe eines Buttons 
+				wie auch bei den normalen Basic-Widgets, aber zusätzlich mit einem 
+				vierten Wert "icon", dann wird nur das Symbol ohne Button angezeigt.
+			</li>
+			<li>Ein weiterer zusätzlicher Parameter ist "title, info oder text" und entspricht normalerweise 
+				dem Text der erscheint wenn die Maus über einem Button länger 
+				verweilt.<br/><br/>
+			</li>
+		</ul>
+	</li>
+	<li>Wie bekomme ich den Prozentwert für die left- und top-Parameter heraus?<br/>
+		Z.B. mit folgenden Vorgehen:<br/>
+		<ul>
+			<li>Benötigt wird ein Grafikprogramm wie z.B. GIMP (im Folgenden verwendet)</li>
+			<li>Ein Hintergrundbild z.B. mit Inkscape erstellen und als svg-Grafik speichern.</li>
+			<li>Anschließend das Bild mit GIMP öffnen und es erscheint ein kleines Popup-Fenster "Skalierbare Vektorgrafik rendern"</li>
+			<li>Dort folgende Werte eintragen, unabhängig von der tatsächlichen Größe:
+				<ol>
+					<li>Die Beschränkung der Seitengröße aufheben (Kettensymbol neben dem X- und Y-Anteil)</li>
+					<li>Breite: 1000 Pixel</li>
+					<li>Höhe: 1000 Pixel</li>
+					<li>mit OK übernehmen</li>
+				</ol>
+			<li>Ein rechteckiges Bild wird verzerrt angezeigt und wenn jetzt die Maus über das Bild bewegt wird, dann steht links unten die aktuelle Position.</li>
+			<li>Der linke Wert ist der Abstand von links und der rechte Wert der Abstand von oben.</li>
+			<li>Diese Werte bei den left und top Parametern mit einer Kommastelle (Punkt) und Prozent eingeben,<br/>
+				z.B. bei Gimp wird an der Zielposition "386, 96" angezeigt, dann ist: <br/>
+				left="38.6%" und top="9.6%"</li>
+			<li>Wenn alles richtig ist, dann sollte das gewünschte Widget an der richtigen Position angezeigt werden.</li>
+		</ul>
+	</li><br/>
+	   
+	<li>Nachteile/Probleme
+		<ul>
+			<li>Die Hintergrundgrafik darf in der Größe später nicht mehr verändert werden, 
+				ansonsten müssen alle left- und/oder top-Parameter angepasst werden.</li>
+		</ul><br/>
+	</li>
+	<li>Ausblick/Anregungen
+	<ul>
+	   <li>Bei einem Grundriss könnten auch imageMaps verwendet werden, um einen ganzen Raum als Klick/Touch-Fläche für einen Aufruf der Detailseite zu verwenden.</li>
+	   <li>Die Buttons nicht zu dicht anordnen um ein zu starkes Überlappen bei kleinen Bildschirmen zu vermeiden.</li>
+	   <li>Bei weniger wichtigen Buttons/Informationen den "hide" Parameter auf 1 setzen um ein "überfüllen" z. B. auf einem Smartphone zu vermeiden.</li>
+	</ul>
+	</li>
+</ol>
+{% endblock %}

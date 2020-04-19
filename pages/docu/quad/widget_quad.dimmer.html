@@ -1,0 +1,125 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_quad.html" %}
+{% block header %}
+
+{% endblock %}
+{% block example %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+  		 io.write('licht.dimmen', '10' );
+  		 io.write('licht.SA', '1' );
+       io.write('licht.automatik.stateengine_name', 'Standard');
+  		 io.write('licht.automatik.lock', '0');
+       io.write('bwm.sperren', '0');
+       io.write('licht.zwangvalue', '0');
+
+       $( "#widget_quad_dimmer-dimmer1dimmerpopup_slider, #widget_quad_dimmer-dimmer2_slider_inline, #widget_quad_dimmer-dimmer3dimmerpopup_slider" ).change(function(){
+          if (this.value > 0)
+            io.write('licht.SA', '1' );
+          else
+            io.write('licht.SA', '0' );
+       });
+  });
+</script>
+
+{% set stateengine = {} %}
+{% set stateengine_items = {
+'item1': ['item1.automatik.lock', 'item1.automatik.settings.suspendduration', '0', '60', '5', 'item1.automatik.settings.sollwert', '0', '250', '5', 'item1.automatik.settings.sperren', '0', '1', 'sperren', 'autoblind', 'standard', 'morning']
+} %}
+
+{% for item,content in stateengine_items %}
+    {% set itemname = item|replace({'.': '_'}) %}
+	{% set suspend = [['switch', 'slider'], [content[0], 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], [content[1], content[2], content[3], content[4], '', 'handle']] %}
+	{% set sollwerte = {} %}
+	    {% set sollwerte = sollwerte|merge({'standard': content[5]~'.standard'}) %}
+	    {% set sollwerte = sollwerte|merge({'morning': content[5]~'.morning'}) %}
+	{% set sperrwerte = {} %}
+	    {% set sperrwerte = sperrwerte|merge({'standard': content[9]~'.standard'}) %}
+	    {% set sperrwerte = sperrwerte|merge({'morning': content[9]~'.morning'}) %}
+
+	{% if 'standard' in content %}
+	    {% set standard = [['switch', (content[8] == '0') ? 'flip', (not content[8] == '0' and not content[8] == '') ? 'slider', (content[12] == 'sperren') ? 'switch', (content[12] == 'prio') ? 'select'], ['item1.automatik.settings.standard.active', 'icon', [0,1], ['time_automatic.svg','time_automatic.svg']], (content[8] == '0') ? ([sollwerte.standard, '', '', content[6], content[7]]), (not content[8] == '0' and not content[8] == '') ? ([sollwerte.standard, content[6], content[7], content[8], '', 'handle']), (content[12] == 'sperren') ? ([sperrwerte.standard, 'icon', [content[10]|default(0),content[11]|default(1)], ['secur_open.svg','secur_locked.svg']]), (content[12] == 'prio') ? ([sperrwerte.standard, 'icon', [0,2,3], ['control_minus.svg','light_light_dim_00.svg','light_light_dim_90.svg']]) ] %}
+	{% endif %}
+	{% if 'morning' in content %}
+	    {% set morning = [['switch', (content[8] == '0') ? 'flip', (not content[8] == '0' and not content[8] == '') ? 'slider', (content[12] == 'sperren') ? 'switch', (content[12] == 'prio') ? 'select'], ['item1.automatik.settings.morning.active', 'icon', [0,1], ['weather_sunrise.svg','weather_sunrise.svg']], (content[8] == '0') ? ([sollwerte.morning, '', '', content[6], content[7]]), (not content[8] == '0' and not content[8] == '') ? ([sollwerte.morning, content[6], content[7], content[8], '', 'handle']), (content[12] == 'sperren') ? ([sperrwerte.morning, 'icon', [content[10]|default(0),content[11]|default(1)], ['secur_open.svg','secur_locked.svg']]), (content[12] == 'prio') ? ([sperrwerte.morning, 'icon', [0,2,3], ['control_minus.svg','light_light_dim_00.svg','light_light_dim_90.svg']]) ] %}
+	{% endif %}
+
+
+	{% set suspendtext = ['header', 'Suspendzeit'] %}
+	{% if content[12] == 'sperren' %}
+	    {% set sollwerttext = ['header', 'Sperr- und Sollwerte'] %}
+	{% elseif content[12] == 'prio' and not content[8] == '' %}
+	    {% set sollwerttext = ['header', 'Soll- und Priowerte'] %}
+	{% elseif content[12] == 'prio' and (content[8] == '' or content[8] == '0')%}
+	    {% set sollwerttext = ['header', 'Priowerte'] %}
+	{% else %}
+	    {% set sollwerttext = ['header', 'Sollwerte'] %}
+	{% endif %}
+  {% set halloweendate = 'now'|date('m/d') == '10/31' %}
+  {% set advent1 = 'now'|date('m/d') > '12/01' and 'now'|date('m/d') < '12/31' %}
+  {% set advent2 = 'now'|date('m/d') > '01/01' and 'now'|date('m/d') < '01/15' %}
+
+  {% set stateengine = stateengine|merge(
+    {itemname: ['stateengine', suspendtext, suspend, sollwerttext, 'standard' in content ? standard, 'morning' in content ? morning,  'halloween' in content and halloweendate ? halloween, 'advent' in content and advent1 or advent2 ? advent]}
+    ) %}
+{% endfor %}
+
+	<h5>Example</h5>
+
+['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' '] stateengine with popup (have to long tap to open popup!)
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen','','','blue'), icon.light('','','licht.dimmen'), 'blue', 'icon0', '', '', '100', 'right', 'blink', '', 'licht.dimmen.zeitschalter', ['', '', 'bool'], '%', 'licht.dimmen', '', 'licht.automatik', (stateengine['item1']), ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen','','','blue'), icon.light('','','licht.dimmen'), 'blue', 'icon0', '', '', '100', 'right', 'blink', '', 'licht.dimmen.zeitschalter', ['', '', 'bool'], '%', 'licht.dimmen', '', 'licht.automatik', (stateengine['item1']), ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
+	</ul></div>
+
+['switch', 'value_slider']
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.dimmer('dimmer2', 'Dimmer Example 2', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', '', '', '', '', '', '', '', '', '', '', '', '', '', ['switch', 'value_slider']) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.dimmer('dimmer2', 'Dimmer Example 2', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', '', '', '', '', '', '', '', '', '', '', '', '', '', ['switch', 'value_slider']) }}
+	</ul></div>
+
+[['locks','switch'], 'value_popup', 'extpopup', 'plot']
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.dimmer('dimmer3', 'Dimmer Example 3', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', 'left', 'blink', '', 'licht.dimmen.zeitschalter', '', '%', 'licht.dimmen', '', 'licht.automatik',
+    ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ],
+     ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', [['locks','switch'], 'value_popup', 'extpopup', 'plot']) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.dimmer('dimmer3', 'Dimmer Example 3', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', 'left', 'blink', '', 'licht.dimmen.zeitschalter', '', '%', 'licht.dimmen', '', 'licht.automatik',
+    ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ],
+     ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', [['locks','switch'], 'value_popup', 'extpopup', 'plot']) }}
+	</ul></div>
+
+Without column order
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+	{{ quad.dimmer('dimmer4', 'Standard Example 4', 'licht.SA', 'licht.dimmen') }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+	{{ quad.dimmer('dimmer4', 'Standard Example 4', 'licht.SA', 'licht.dimmen') }}
+	</ul></div>
+{% endblock %}

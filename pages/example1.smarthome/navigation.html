@@ -1,0 +1,176 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+<ul data-role="listview" data-dividertheme="c">
+	<li data-role="list-divider">Verbrauchsdaten</li>
+	<li data-icon="false">
+		<a href="index.php?page=KG.Keller">
+			<img class="icon" src="{{ icon0 }}sani_pump.svg" />
+
+			<h3>Energieverbrauch</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.print('WirkleistungGesamt', 'Allgemein.Zaehler.LeistungGesamt', 'W') }} <br />
+				{{ basic.print('WasserTagesverbrauch', 'Allgemein.Zaehler.WasserTag', 'l') }}
+
+			</div>
+
+		</a>
+	</li>
+	<li data-role="list-divider">Erdgeschoss</li>
+	<li data-icon="false">
+		<a href="index.php?page=EG.Esszimmer">
+			<img class="icon" src="{{ icon0 }}scene_dinner.svg" />
+
+			<h3>Esszimmer / Küche</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.print('TemperaturEsszimmer', 'EG.Esszimmer.temperature', '°C') }} <br />
+				{{ basic.symbol('FensterSuedEssen', 'EG.Esszimmer.Fenster1', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('FensterWestEssen', 'EG.Esszimmer.Fenster2', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('FensterKueche', 'EG.Esszimmer.Fenster3', '', 'fts_window_1w_open.svg', 0, '', 'icon1') }}
+				{{ basic.symbol('TuerEssen', 'EG.Esszimmer.Tuer', '', 'fts_door_open.svg', 0, '', 'icon1') }}
+				{{ basic.print('heiztmitEGEssen', 'EG.Esszimmer.temperature.stellgroesse', '%') }}
+			</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=EG.Marco">
+			<img class="icon" src="{{ icon0 }}it_pc.svg" />
+
+			<h3>Büro Marco</h3>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=EG.Badezimmer">
+			<img class="icon" src="{{ icon0 }}scene_bathroom.svg" />
+
+			<h3>Bad / WC</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.print('TemperaturBad', 'EG.Bad.temperature', '°C') }} <br />
+				{{ basic.print('heiztmitEGBad', 'EG.Bad.temperature.stellgroesse', '%') }}
+
+			</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=EG.Flure">
+			<img class="icon" src="{{ icon0 }}scene_stairs.svg" />
+
+			<h3>Flure / Nebenräume</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.symbol('FlurEingangHeizen', 'EG.FlureNebenraume.Heizung1', '', 'sani_heating.svg', 1, '', 'icon1') }}
+				{{ basic.print('FlurEingangTemperatur', 'EG.FlureNebenraume.temperature1', '°C') }} <br />
+				{{ basic.symbol('FlurDieleHeizen', 'EG.FlureNebenraume.Heizung2', '', 'sani_heating.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('FensterFluroffenRegen', 'Allgemein.Alarm.RegenFensterEgOg', '', 'message_attention.svg', 1, '', 'icon1') }}
+				{{ basic.print('FlurDieleTemperatur', 'EG.FlureNebenraume.temperature2', '°C') }}
+			</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=EG.Aussen">
+			<img class="icon" src="{{ icon0 }}control_building_outside.svg" />
+
+			<h3>Aussenanlage</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.print('AussenTemperatur', 'EG.Aussen.temperature', '°C') }} <br />
+				{{ basic.symbol('AussenRegen', 'EG.Aussen.Regen', '', 'weather_rain.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('HaustuerVerriegelt', 'EG.Aussen.HaustuerRiegel', '', 'status_locked.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('HaustuerOffen', 'EG.Aussen.Haustuer', '', 'fts_door_open.svg', 0, '', 'icon1') }}
+
+			</div>
+		</a>
+	</li>
+	<li data-role="list-divider">Obergeschoss</li>
+	<li data-icon="false">
+		<a href="index.php?page=OG.Johanna">
+			<img class="icon" src="{{ icon0 }}scene_childs_room.svg" />
+
+			<h3>Johanna</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.print('TemperaturJohanna', 'OG.Johanna.temperature', '°C') }} <br />
+				{{ basic.symbol('FensterJohanna', 'OG.Johanna.Fenster', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('TuerJohanna', 'OG.Johanna.Tuer', '', 'fts_door_open.svg', 1, '', 'icon1') }}
+				{{ basic.print('heiztmitJohanna', 'OG.Johanna.temperature.stellgroesse', '%') }}
+			</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=OG.BueroIngrid">
+			<img class="icon" src="{{ icon0 }}it_pc.svg" />
+
+			<h3>Büro Ingrid</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.print('TemperaturPhilipp', 'OG.Philipp.temperature', '°C') }} <br />
+				{{ basic.symbol('FensterPhilipp', 'OG.Philipp.Fenster', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('TuerPhilipp', 'OG.Philipp.Tuer', '', 'fts_door_open.svg', 1, '', 'icon1') }}
+				{{ basic.print('heiztmitPhilipp', 'OG.Philipp.temperature.stellgroesse', '%') }}
+			</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=OG.SchlafenAnkleide">
+			<img class="icon" src="{{ icon0 }}scene_sleeping_alternat.svg" />
+
+			<h3>Schlafen / Ankleide</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.symbol('FensterSued', 'OG.Schlafen.Fenster1', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('FensterWest', 'OG.Schlafen.Fenster2', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('TuerSchlafen', 'OG.Schlafen.Tuer', '', 'fts_door_open.svg', 1, '', 'icon1') }}
+				{{ basic.print('SchlafenTemperatur', 'OG.Schlafen.temperature', '°C') }} <br />
+				{{ basic.symbol('FensterAnkleide', 'OG.Ankleide.Fenster', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+				{{ basic.print('AnkleideTemperatur', 'OG.Ankleide.temperature', '°C') }}
+
+			</div>
+		</a>
+	</li>
+	<li data-role="list-divider">Dachgeschoss</li>
+	<li data-icon="false">
+		<a href="index.php?page=DG.Wohnen">
+			<img class="icon" src="{{ icon0 }}scene_livingroom.svg" />
+
+			<h3>Wohnen</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.print('TemperaturDGWohnen', 'DG.Wohnen.temperature', '°C') }} <br />
+				{{ basic.symbol('FensterDGNord', 'DG.Wohnen.FensterNord', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('FensterDGSuedlinks', 'DG.Wohnen.FensterSuedlinks', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('FensterDGSuedrechts', 'DG.Wohnen.FensterSuedrechts', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('TuerDG', 'DG.Wohnen.Tuer', '', 'fts_door_open.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('FensteroffenDGWohRegen', 'Allgemein.Alarm.RegenFensterDGWohnen', '', 'message_attention.svg', 1, '', 'icon1') }}
+				{{ basic.print('heiztmitDGWohnen', 'DG.Wohnen.stellgroesse', '%') }}
+
+			</div>
+		</a>
+	</li>
+	<li data-icon="false">
+		<a href="index.php?page=DG.Schlafen">
+			<img class="icon" src="{{ icon0 }}scene_sleeping_alternat.svg" />
+
+			<h3>Schlafen</h3>
+
+			<div class="ui-li-aside">
+				{{ basic.print('TemperaturDgSchlafen', 'DG.Schlafen.temperature', '°C') }} <br />
+				{{ basic.symbol('Fensterlinks', 'DG.Schlafen.Fensterlinks', '', 'fts_window_1w_open.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('Fensterrechts', 'DG.Schlafen.Fensterrechts', '', 'fts_door_open.svg', 1, '', 'icon1') }}
+				{{ basic.symbol('FensteroffenDGSchRegen', 'Allgemein.Alarm.RegenFensterDGSchlafen', '', 'message_attention.svg', 1, '', 'icon1') }}
+				{{ basic.print('heiztmitDGSchlafen', 'DG.Schlafen.stellgroesse', '%') }}
+
+			</div>
+		</a>
+	</li>
+</ul>	
+

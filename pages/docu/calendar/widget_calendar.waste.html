@@ -1,0 +1,31 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_calendar.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; calendar.waste('', 'Litter Service', 'Waste') &#125;&#125;
+		</code>
+	</div>
+
+	<div class="html">
+		<div class="block">
+			<div class="ui-bar-c ui-li-divider ui-corner-top">Block 1</div>
+			<div class="ui-fixed ui-body-a ui-corner-bottom">
+				{{ calendar.waste('', 'Litter Service', 'Waste') }}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

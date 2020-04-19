@@ -15,11 +15,10 @@
 	{% import "lib.html" as lib %}
 	{{ lib.updatecheck() }}
 
-	{% import "clock.html" as clock %}
 	{{ clock.digiclock('clock') }}
 
 	<div class="center">
-		{{ now|smartdate('l') }}, {{ now|smartdate('d.m.Y') }}
+		 {{ clock.miniclock('', 'l, ' ~ lang('format','date') ) }}
 	</div>
 
 	<hr>
@@ -38,4 +37,3 @@
 {% block content %}
 	{% include 'rooms_menu.html' %}
 {% endblock %}
-

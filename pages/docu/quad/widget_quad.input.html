@@ -1,0 +1,45 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_quad.html" %}
+{% block header %}
+
+{% endblock %}
+{% block example %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+       io.write('input', 'test' );
+       io.write('input2', '12/24/2018' );
+    });
+</script>
+  <h5>Example</h5>
+
+Single input
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.input('', 'input', '', '', '', '', '', '', 'Single Input') }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.input('', 'input', '', '', '', '', '', '', 'Single Input') }}
+  </ul></div>
+
+Multiple input with duration and date
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.input('', ['input1', 'input2'], ['durationflip', 'date'], ['', '5'], ['', '10'], '', '', '', 'Multi Input', ['1', '2']) }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.input('', ['input1', 'input2'], ['durationflip', 'date'], ['', '5'], ['', '10'], '', '', '', 'Multi Input', ['1', '2']) }}
+  </ul></div>
+{% endblock %}

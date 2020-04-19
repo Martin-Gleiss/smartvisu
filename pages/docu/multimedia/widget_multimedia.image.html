@@ -9,24 +9,53 @@
 
 
 {% extends "widget_multimedia.html" %}
+{% block header %}
 
+{% endblock %}
 {% block example %}
+<script>
+$( document ).ready(function() {
+		 io.write('webcam_item', 'http://webcam.anw.at/bild1.jpg');
+
+	});
+
+</script>
 
 	<h5>Examples</h5>
+	Use this switch to refresh the image based on an item:<br>
+	{{ basic.flip('', 'refresh_item') }}<br>
+	Use the browser console to see result - the number after the image name changes.
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-			{{ multimedia.image('image1', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner') }}
+			{{ multimedia.image('', 'webcam_item', 'corner', 'refresh_item') }}
 
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<br />
 
-	The image is been reloaded every 10 minutes so it is always actual.
 	<div class="html">
 		<div class="block">
 			<div class="image" style="margin: 0px;">
-				{{ multimedia.image('image1', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner') }}
+				{{ multimedia.image('', 'webcam_item', 'corner', 'refresh_item') }}
+			</div>
+		</div>
+	</div>
+
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+			{{ multimedia.image('', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner', '15s') }}
+
+			{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<br />
+
+	The image is being reloaded every 15 seconds so it is always actual.
+	<div class="html">
+		<div class="block">
+			<div class="image" style="margin: 0px;">
+				{{ multimedia.image('', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner', '15s') }}
 			</div>
 		</div>
 	</div>

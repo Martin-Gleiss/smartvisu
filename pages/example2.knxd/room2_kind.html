@@ -1,0 +1,60 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2015
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+ 
+
+{% extends "rooms.html" %}
+
+{% block content %}
+
+    <h1><img class="icon icon0" src='{{ icon0 }}scene_childs_room.svg'/>Kinderzimmer</h1>
+ 
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Heizung</h3>
+                {{ device.rtr('kinderzimmer_heizen', 'Heizung', '7/0/4/9.xxx', '7/0/3/9.xxx', '7/0/8/1.001', '7/0/6/1.001', '7/0/7/1.001', '7/0/2/1.001') }}
+            </div>
+        </div>
+    </div>
+ 
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Licht</h3>
+            {{ device.dimmer('kind_decke', 'Decke', '7/1/1/1.001', '7/1/5/5.xxx') }}
+            {{ device.dimmer('kind_wand',  'Wand',  '7/1/11/1.001', '7/1/15/5.xxx') }}
+      	</div>
+    <br/><br/>    	
+    </div>    
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Rollladen Sueden</h3>
+	    {{ shutter.two ('kind_sueden', 'Sueden', '7/2/1/1.001', '7/2/2/1.001', '7/2/4/5.001', '' ) }}
+        </div>
+    </div>    
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+        <div data-role="collapsible" data-collapsed="false">
+            <h3>Rollladen Osten</h3>
+            {{ shutter.two ('kind_osten', 'Osten', '7/2/11/1.001', '7/2/12/1.001', '7/2/14/5.001', '' ) }}
+        </div>
+    </div>
+    </div>
+          
+{% endblock %}
+

@@ -9,28 +9,47 @@
 
 
 /**
+* Displays a notification badge
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} the item providing the value to show in badge
+* @param {value[?]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
+* @param {color[?](hidden)=red} array of colors or 'hidden' to not diplay (optional, default red)
+the first one is the base color for values below first threshold, so pass one color more than thresholds.
+*
+* @author Christian aka hhhc and Stefan Widmer
+*/
+{% macro badge(id, item, threshold, color) %}
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.badge" data-item="{{ item }}"
+	data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color)|default('red') }}">
+		<span style="display:none"></span>
+	</span>
+{% endmacro %}
+
+/**
 * Show and hide a div or popup or collapse a section.
 *
-* @param unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget
-* @param a item witch triggers the collapse
+* @param {id} unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget
+* @param {item} an item witch triggers the collapse
+* @param {value=0} the value on which the target is collapsed (optional, default 0)
 */
-{% macro collapse(id, item_trigger) %}
+{% macro collapse(id, item_trigger, val_collapsed) %}
 
-	<span id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="status.collapse" data-item="{{ item_trigger }}"></span>
+	<span id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="status.collapse" data-item="{{ item_trigger }}" data-val-collapsed="{{ val_collapsed|default(0) }}"></span>
 
 {% endmacro %}
 
-	
+
 /**
 * Displays a list of logging-information
 *
-* @param unique id for this widget
-* @param the name of the log
-* @param maximal number of entries (1 - 50)
+* @param {id} unique id for this widget
+* @param {text} the name of the log
+* @param {value(1..50)} maximal number of entries (1 - 50)
 */
 {% macro log(id, item, count) %}
 
-	<span id="{{ uid(page, id) }}" data-widget="status.log" data-item="{{ item }}" data-count="{{ count }}"
+	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.log" data-item="{{ item }}" data-count="{{ count }}"
 		class="log">
 		<ul data-role="listview">
 		</ul>
@@ -42,48 +61,60 @@
 /**
 * Displays a notification edge window
 *
-* @param unique id for this widget
-* @param a item witch triggers the notification
-* @param a item with the dynamic message
-* @param a word for the signal corner
-* @param a title of the messagebox
-* @param a additional static text
-* @param the mode: 'info', 'warning', 'error' (optional, default 'info')
+* @param {id} unique id for this widget
+* @param {item} an item witch triggers the notification
+* @param {item=} an item with the dynamic message
+* @param {text=INFO} a word for the signal corner (optional, default 'INFO')
+* @param {text} a title of the messagebox
+* @param {text=} an additional static text
+* @param {text(info,warning,error)=info} the level: 'info', 'warning', 'error' (optional, default 'info')
+* @param {item=} an item to send an acknowledge message to (optional)
+* @param {text=} the value which will be sent when the message gets acknowledged (optional, default 0 if item_ack is equal to item_trigger, otherwise 1).
+* @param {item=} an item to set the word in the signal corner. The value overrides the parameter "signal" (optional)
+Caution: If this is set, the notification gets not shown until the item has sent a value.
+* @param {item=} an item to set the title of the message box. The value overrides the parameter "title" (optional)
+Caution: If this is set, the notification gets not shown until the item has sent a value.
+* @param {item=} an item to set the level. The value overrides the parameter "level" (optional)
+Caution: If this is set, the notification gets not shown until the item has sent a value.
+*
+* @author Martin Gleiss, Stefan Widmer
+* @info enhancements inspired by Frank Benicke
 */
-{% macro notify(id, item_trigger, item_message, signal, title, text, mode) %}
+{% macro notify(id, item_trigger, item_message, signal, title, text, level, item_ack, ack_value, item_signal, item_title, item_level) %}
 
-	<span id="{{ uid(page, id) }}" data-widget="status.notify" data-item="{{ item_trigger }}, {{ item_message }}"
-		data-signal="{{ signal|default('INFO') }}" data-mode="{{ mode|default('info') }}"
+	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.notify" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_signal }}, {{ item_title }}, {{ item_level }}"
+		data-signal="{{ signal|default('INFO') }}" data-level="{{ level|default('info') }}"
+		{% if item_ack %}data-item-ack="{{ item_ack }}" data-ack-value="{{ ack_value|default(item_ack == item_trigger ? 0 : 1) }}"{% endif %}
+		data-item-signal="{{ item_signal }}" data-item-title="{{ item_title }}" data-item-level="{{ item_level }}""
 		class="hide"><h1>{{ title }}</h1><p>{{ text }}</p>
 	</span>
 
 {% endmacro %}
 
-	
+
 /**
 * Displays a notification popup window with a message
 *
-* @param unique id for this widget
-* @param a item witch triggers the popup: NOT 0 open it, 0 close it
-* @param a item with the dynamic message
-* @param a item with the a timestamp
-* @param a title of the messagebox
-* @param a additional static text
-* @param the mode: 'info', 'error' (optional, default 'info')
+* @param {id} unique id for this widget
+* @param {item} an item witch triggers the popup: NOT 0 open it, 0 close it
+* @param {item=} an item with the dynamic message
+* @param {item=} an item with a timestamp (e.g. 1974-01-01T12:00:00.000000+01:00 or 01.01.20 12:01)
+* @param {text} a title of the messagebox
+* @param {text=} an additional static text
+* @param {text(info,error)=info} the mode: 'info', 'error' (optional, default 'info')
 */
 {% macro message(id, item_trigger, item_message, item_timestamp, title, text, mode) %}
 
-	<span id="{{ uid(page, id) }}" data-widget="status.message" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_timestamp }}"></span>
+	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.message" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_timestamp }}"></span>
 
 	<div id="{{ uid(page, id) }}-message" class="alert" data-role="popup" data-overlay-theme="a" {% if mode == 'error' %} data-dismissible="false" {% endif %}>
 		<div data-role="header" data-theme="c"><h1>{{ title }}</h1></div>
 		<p><span></span>{{ text }}</p>
-	
+
 		<div class="control">
 			<span class="stamp"></span>
-				<a onClick="$('#{{ uid(page, id) }}-message').popup('close');" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
+				<a onClick="$('#{{ uid(page, id) }}-message').popup('close');" data-mini="true" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
 		</div>
 	</div>
 
 {% endmacro %}
-

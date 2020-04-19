@@ -1,0 +1,124 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_quad.html" %}
+{% block header %}
+
+{% endblock %}
+{% block example %}
+<script type="text/javascript">
+$( document ).ready(function() {
+     io.write('blind.lz', '0' );
+     io.write('blind.kz', '0' );
+     io.write('blind.hoehe', '90' );
+     io.write('blind.lamellen', '10' );
+  });
+</script>
+
+{% set stateengine = {} %}
+{% set stateengine_items = {
+'item1': ['item1.automatik.lock', 'item1.automatik.settings.suspendduration', '0', '60', '5', 'item1.automatik.settings.sollwert', '0', '250', '5', 'item1.automatik.settings.sperren', '0', '1', 'sperren', 'autoblind', 'standard', 'morning']
+} %}
+
+{% for item,content in stateengine_items %}
+    {% set itemname = item|replace({'.': '_'}) %}
+  {% set suspend = [['switch', 'slider'], [content[0], 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], [content[1], content[2], content[3], content[4], '', 'handle']] %}
+  {% set sollwerte = {} %}
+      {% set sollwerte = sollwerte|merge({'standard': content[5]~'.standard'}) %}
+      {% set sollwerte = sollwerte|merge({'morning': content[5]~'.morning'}) %}
+  {% set sperrwerte = {} %}
+      {% set sperrwerte = sperrwerte|merge({'standard': content[9]~'.standard'}) %}
+      {% set sperrwerte = sperrwerte|merge({'morning': content[9]~'.morning'}) %}
+
+  {% if 'standard' in content %}
+      {% set standard = [['switch', (content[8] == '0') ? 'flip', (not content[8] == '0' and not content[8] == '') ? 'slider', (content[12] == 'sperren') ? 'switch', (content[12] == 'prio') ? 'select'], ['item1.automatik.settings.standard.active', 'icon', [0,1], ['time_automatic.svg','time_automatic.svg']], (content[8] == '0') ? ([sollwerte.standard, '', '', content[6], content[7]]), (not content[8] == '0' and not content[8] == '') ? ([sollwerte.standard, content[6], content[7], content[8], '', 'handle']), (content[12] == 'sperren') ? ([sperrwerte.standard, 'icon', [content[10]|default(0),content[11]|default(1)], ['secur_open.svg','secur_locked.svg']]), (content[12] == 'prio') ? ([sperrwerte.standard, 'icon', [0,2,3], ['control_minus.svg','light_light_dim_00.svg','light_light_dim_90.svg']]) ] %}
+  {% endif %}
+  {% if 'morning' in content %}
+      {% set morning = [['switch', (content[8] == '0') ? 'flip', (not content[8] == '0' and not content[8] == '') ? 'slider', (content[12] == 'sperren') ? 'switch', (content[12] == 'prio') ? 'select'], ['item1.automatik.settings.morning.active', 'icon', [0,1], ['weather_sunrise.svg','weather_sunrise.svg']], (content[8] == '0') ? ([sollwerte.morning, '', '', content[6], content[7]]), (not content[8] == '0' and not content[8] == '') ? ([sollwerte.morning, content[6], content[7], content[8], '', 'handle']), (content[12] == 'sperren') ? ([sperrwerte.morning, 'icon', [content[10]|default(0),content[11]|default(1)], ['secur_open.svg','secur_locked.svg']]), (content[12] == 'prio') ? ([sperrwerte.morning, 'icon', [0,2,3], ['control_minus.svg','light_light_dim_00.svg','light_light_dim_90.svg']]) ] %}
+  {% endif %}
+
+
+  {% set suspendtext = ['header', 'Suspendzeit'] %}
+  {% if content[12] == 'sperren' %}
+      {% set sollwerttext = ['header', 'Sperrwerte'] %}
+  {% elseif content[12] == 'prio' and not content[8] == '' %}
+      {% set sollwerttext = ['header', 'Soll- und Priowerte'] %}
+  {% elseif content[12] == 'prio' and (content[8] == '' or content[8] == '0')%}
+      {% set sollwerttext = ['header', 'Priowerte'] %}
+  {% else %}
+      {% set sollwerttext = ['header', 'Sollwerte'] %}
+  {% endif %}
+  {% set halloweendate = 'now'|date('m/d') == '10/31' %}
+  {% set advent1 = 'now'|date('m/d') > '12/01' and 'now'|date('m/d') < '12/31' %}
+  {% set advent2 = 'now'|date('m/d') > '01/01' and 'now'|date('m/d') < '01/15' %}
+
+  {% set stateengine = stateengine|merge(
+    {itemname: ['stateengine', suspendtext, suspend, sollwerttext, 'standard' in content ? standard, 'morning' in content ? morning,  'halloween' in content and halloweendate ? halloween, 'advent' in content and advent1 or advent2 ? advent]}
+    ) %}
+{% endfor %}
+
+
+
+  <h5>Example</h5>
+    ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine'] with stateengine popup
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.blind('blind1', 'Blind Popup. Quad-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', (stateengine['item1']), '', 'place3', 'place4', ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine']) }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.blind('blind1', 'Blind Popup. Quad-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', (stateengine['item1']), '', 'place3', 'place4', ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine']) }}
+  </ul></div>
+
+    ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.blind('blind2', 'Blind Slider. Standard-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['pic_on', 'pic_off', 'valueType', 'valueParameterList', 'color_on', 'color_off'], 'blind.hoehe', '', '', '', '', 'place3', 'place4', ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']) }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.blind('blind2', 'Blind Slider. Standard-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', '', '', 'place3', 'place4', ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']) }}
+  </ul></div>
+
+    ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.blind('blind3', 'Blind with position selector', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['blind.hoehe', '50', '80', '0'], 'place3', 'place4', ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']) }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.blind('blind3', 'Blind with position selector', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['blind.hoehe', '50', '80', '0'], 'place3', 'place4', ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']) }}
+  </ul></div>
+
+    [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.blind('blind4', 'Blind 2 different popups', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['time_automatic', 'time_automatic', 'num', [0,255,10], 'icon1', 'icon0'], 'blind.hoehe', '', '', '', '', 'place3', 'place4', [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']) }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.blind('blind4', 'Blind 2 different popups', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['time_automatic', 'time_automatic', 'num', [0,255,10], 'icon1', 'icon0'], 'blind.hoehe', '', '', '', '', 'place3', 'place4', [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']) }}
+  </ul></div>
+
+  no column_order
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.blind('blind5', 'Blind Standard witz UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter') }}
+    {% endraw %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.blind('blind5', 'Blind Standard witz UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter') }}
+  </ul></div>
+{% endblock %}

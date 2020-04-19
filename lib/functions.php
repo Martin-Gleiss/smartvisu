@@ -13,6 +13,18 @@
 // T R A N S L A T I O N 
 // -----------------------------------------------------------------------------
 
+
+function get_lang($code = config_lang) {
+	// read ini file
+	$result = parse_ini_file(const_path.'lang/'.$code.'.ini', true);
+
+	// recursive call to read extended language file (if specified)
+	if(isset($result['extends']) && !empty($result['extends']))
+		$result = array_replace_recursive(get_lang($result['extends']), $result);
+
+	return $result;
+}
+
 /**
  * Get a language-string form the lang-file
  *
@@ -28,23 +40,23 @@ function trans($subset, $key = '', $mode = '')
 	static $lang;
 
 	if (!$lang)
-		eval(fileread('lang/lang_'.config_lang.'.txt'));
+		$lang = get_lang();
 
 	if (is_array($lang[$subset]) && $key == '')
 	{
 		foreach (($lang[$subset]) as $key => $val)
 		{
-            if ($mode == 'obj') {
-                $ret .= "'".$key ."':";
-            }
+			if ($mode == 'obj') {
+				$ret .= "'".$key ."':";
+			}
 			$ret .= "'".$val."', ";
 		}
-        if ($mode == 'obj') {
-            $ret = '{'.substr($ret, 0, -2).'}';
-        } else {
-            $ret = '['.substr($ret, 0, -2).']';
-        }
 
+		if ($mode == 'obj') {
+			$ret = '{'.substr($ret, 0, -2).'}';
+		} else {
+			$ret = '['.substr($ret, 0, -2).']';
+		}
 	}
 	elseif (isset($lang[$subset][$key]))
 		$ret = $lang[$subset][$key];
@@ -67,7 +79,7 @@ function translate($text, $subset)
 	static $lang;
 
 	if (!$lang)
-		eval(fileread('lang/lang_'.config_lang.'.txt'));
+		$lang = get_lang();
 
 	if (is_array($lang[$subset]))
 	{
@@ -121,7 +133,7 @@ function transdate($format = '', $timestamp = null)
 	static $lang;
 
 	if (!$lang)
-		eval(fileread('lang/lang_'.config_lang.'.txt'));
+		$lang = get_lang();
 
 	if ($lang['format'][$format] != '')
 		$format = $lang['format'][$format];
@@ -194,15 +206,95 @@ function fileread($file)
  */
 function filewrite($file, $ret)
 {
-	$fp = fopen(const_path.$file, 'w');
+	// add base path if file does not already start with it
+	if(substr($file, 0, strlen(const_path)) !== const_path)
+		$file = const_path . $file;
 
-	if ($fp !== false)
-	{
-		fwrite($fp, $ret);
-		fclose($fp);
+	$dir = dirname($file);
+	if (!is_dir($dir))
+		mkdir($dir, 0777, true);
+
+	$tmpFile = tempnam($dir, basename($file));
+	file_put_contents($tmpFile, $ret);
+
+	if(file_exists($file)) {
+		$stat = stat($file);
+		@chmod($tmpFile, $stat['mode'] & 0777);
+		@chown($tmpFile, $stat['uid']);
+		@chgrp($tmpFile, $stat['gid']);
 	}
+	rename($tmpFile, $file);
 
 	return $ret;
+}
+
+/**
+ * Delete a directory recursively
+ */
+function delTree($dir) { 
+	if(is_dir($dir)) {
+		$files = array_diff(scandir($dir), array('.','..')); 
+		foreach ($files as $file) { 
+			delTree("$dir/$file"); 
+		} 
+		return rmdir($dir);
+	}
+	else if (file_exists($dir)) {
+		return unlink($dir);
+	}
+	return null;
+}
+
+/**
+ * Write array to ini file
+ *
+ * based on http://stackoverflow.com/a/1268642
+ */
+function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
+
+	$tmpFile = tempnam(dirname($path), basename($path));
+
+	if (!$handle = fopen($tmpFile, 'w'))
+		return false;
+
+	$success = true;
+
+	$data = ($has_sections) ? $assoc_arr : array('' => $assoc_arr);
+
+	foreach ($data as $section=>$values) {
+
+		if($section != '')
+			$success &= false !== fwrite($handle, '['.$section.']'.PHP_EOL);
+
+		foreach($values as $key=>$elem) {
+			if(is_array($elem))
+				$key .= '[]';
+			else
+				$elem = array($elem);
+
+			foreach($elem as $val)
+			{
+				$val = strval($val);
+				if ($val !== 'true' && $val !== 'false' && (!is_int($val) || $val !== '0' && substr($val, 0, 1) === '0'))
+					$val = '"'.preg_replace('/["\\\\]/', '\\\\$0', $val).'"';
+				$success &= false !== fwrite($handle, $key.' = '.$val.PHP_EOL);
+			}
+		}
+	}
+
+	fclose($handle);
+
+	if($success) {
+		if(file_exists($path)) {
+			$stat = stat($path);
+			@chmod($tmpFile, $stat['mode'] & 0777);
+			@chown($tmpFile, $stat['uid']);
+			@chgrp($tmpFile, $stat['gid']);
+		}
+		$success &= rename($tmpFile, $path);
+	}
+
+	return $success;
 }
 
 ?>

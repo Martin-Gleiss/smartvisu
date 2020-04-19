@@ -14,61 +14,132 @@
 
 	<h5>Examples</h5>
 
-	Use this basic.flips (one for 'bath.light.switch' and the other for 'bath.rtr.state') to control the basic.symbol(s)
+	Use this flip to control the basic.symbols
 	<div class="html">
-		{{ basic.flip('f1', 'bath.light.switch') }}
-		{{ basic.flip('f2', 'bath.rtr.state') }}
+		{{ basic.flip('', 'bath.light.switch') }}
 	</div>
 
+	Symbol is only shown when 'bath.light.switch' is on
+	<code class="twig prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.symbol('', 'bath.light.switch') }}
+	{% endverbatim %}{% endfilter %}</code>
+	<div class="html" style="min-height: 51px">
+		{{ basic.symbol('', 'bath.light.switch') }}
+	</div>
 
-	Symbol is only shown when 'bath.light.switch' = 1
+	With different picture and text, colorized, text-only, dynamic icon or used as link to open a popup
+	<code class="twig prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg') }}
+		{{ basic.symbol('', 'bath.light.switch', '', '', '', '', '#0b0') }}
+		{{ basic.symbol('', 'bath.light.switch', 'On') }}
+		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value') ) }}
+		{{ basic.symbol('', 'bath.light.switch', 'Open popup', '', '', '', '', '#symbol_popup', 'popup') }}
+	{% endverbatim %}{% endfilter %}</code>
+	<div class="html" style="min-height: 51px">
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg') }}
+		&nbsp;
+		{{ basic.symbol('', 'bath.light.switch', '', 'audio_sync.svg', '', '', '#0b0') }}
+		&nbsp;
+		{{ basic.symbol('', 'bath.light.switch', 'On') }}
+		&nbsp;
+		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value'), '', '', 'icon1') }}
+		&nbsp;
+		{{ basic.symbol('', 'bath.light.switch', 'Open popup', '', '', '', '', '#symbol_popup', 'popup') }}
+		<div id="symbol_popup" data-role="popup" style="width:280px; height:200px;">
+			<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+			I'm a popup
+		</div>
+	</div>
+
+	With multiple states and min/max mode (use the buttons to select state)
+	<div class="html">
+		First:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ basic.select('', 'first.multistate', 'mini', [0, 1, 2, 3, 4], '', [0, 1, 2, 3, 4] ) }}<br>
+		Second: {{ basic.select('', 'second.multistate', 'mini', [0, 1, 2, 3, 4], '', [0, 1, 2, 3, 4] ) }}
+	</div>
+
+	Standard Icon if both values are 0<br />
+	Sound icon if at least one is <=1 and one > 0<br />
+	no icon when one of the values is 2<br />
+	lock icon if one of the value is >= 3<br />
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.symbol('s1', 'bath.light.switch') &#125;&#125;</code>
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			{{ basic.symbol('', ['first.multistate', 'second.multistate'], '', 'secur_locked', 3, 'min') }}
+			{{ basic.symbol('', ['first.multistate', 'second.multistate'], '', ['', 'audio_sound'], [0,1], 'max') }}
+		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-		{{ basic.symbol('s1', 'bath.light.switch') }}
+		{{ basic.symbol('', ['first.multistate', 'second.multistate'], '', 'secur_locked', 3, 'min') }}
+		{{ basic.symbol('', ['first.multistate', 'second.multistate'], '', ['', 'audio_sound'], [0,1], 'max') }}
 	</div>
 
-	With other pictures, in this example both val = 1 an val = 0 is shown.
+	No icon if both values are below 2, standard icon if one >=2
 	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.symbol('s2', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', 'icon1') &#125;&#125;<br />
-			&#123;&#123; basic.symbol('s3', 'bath.light.switch', 'Light off', 'light_light.svg', 0) &#125;&#125;
-		</code>
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			{{ basic.symbol('', ['first.multistate', 'second.multistate'], '', '', 2, 'min') }}
+		{% endraw %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-		{{ basic.symbol('s2', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', 'icon1') }}
-		{{ basic.symbol('s3', 'bath.light.switch', 'Light off', 'light_light.svg', 0) }}
+		{{ basic.symbol('', ['first.multistate', 'second.multistate'], '', '', 2, 'min') }}
 	</div>
 
-	With other highlight color (green, orange)
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.symbol('s4', 'bath.light.switch', '', 'light_light.svg', '', '', '#0b0') &#125;&#125;<br />
-			&#123;&#123; basic.symbol('s5', 'bath.light.switch', '', 'light_light.svg', '', '', '#fa3') &#125;&#125;
-		</code>
-	</div>
+
+	With multiple states (use the buttons to select state)
 	<div class="html">
-		{{ basic.symbol('s4', 'bath.light.switch', '', 'light_light.svg', '', '', '#0b0') }}
-		{{ basic.symbol('s5', 'bath.light.switch', '', 'light_light.svg', '', '', '#fa3') }}
+		{{ basic.select('', 'bath.multistate', 'mini', [1, 2, 3], '', [1, 2, 3] ) }}
+	</div>
+	<code class="twig prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.symbol('', 'bath.multistate', '', 'message_led', [1,2,3], '', ['red','#EAFF00','green']) }}
+		{{ basic.symbol('', 'bath.multistate', ['low','medium','high'], '', [1,2,3], '', ['red','icon1','green']) }}
+		{{ basic.symbol('', 'bath.multistate', ['Light off','Light low','Light high'], ['control_1','control_2','control_3'], [1,2,3]) }}
+	{% endverbatim %}{% endfilter %}</code>
+	<div class="html">
+		{{ basic.symbol('', 'bath.multistate', '', 'message_led', [1,2,3], '', ['red','#EAFF00','green']) }}
+		{{ basic.symbol('', 'bath.multistate', ['low','medium','high'], '', [1,2,3], '', ['red','icon1','green']) }}
+		{{ basic.symbol('', 'bath.multistate', ['low','medium','high'], ['control_1','control_2','control_3'], [1,2,3]) }}
 	</div>
 
-	Symbol is shown when 'bath.light.switch' is on <b>OR</b> 'bath.rtr.state' is on.
-	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.symbol('s6', ['bath.light.switch', 'bath.rtr.state']) &#125;&#125;</code>
-	</div>
+	Combinations with 'or', 'and' or custom formula (this one implements XOR, so the text is shown if one and only one flip is set on).
+	Use both flips (one for 'bath.light.switch' and the other for 'bath.rtr.state') to control the symbols
 	<div class="html">
-		{{ basic.symbol('s6', ['bath.light.switch', 'bath.rtr.state']) }}
+		bath.light.switch: {{ basic.flip('', 'bath.light.switch') }}
+		&nbsp;
+		bath.rtr.state: {{ basic.flip('', 'bath.rtr.state') }}
+	</div>
+	<code class="twig prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'OR') }}
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'AND', '', 1, 'and') }}
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'Custom XOR', '', '', '( VAR1 && !VAR2 ) || ( !VAR1 && VAR2 )') }}
+	{% endverbatim %}{% endfilter %}</code>
+	<div class="html">
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'OR') }}
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'AND', '', '', 'and') }}
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], 'Custom XOR', '', '', '( VAR1 && !VAR2 ) || ( !VAR1 && VAR2 )') }}
+		&nbsp;
+	</div>
+	If you combine multiple items with <i>or</i> and on/off (1/0) states you have to put 1 as first value and 0 as sescond.<br>
+	Explanation: By using <i>or</i> the first match of any item with a value will be evaluated. So if you set 0 in front, this condition will be met if <b>any</b> of the items has value 0. But most likely you want to show off state only if <b>all</b> values are 0.
+	<code class="twig prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], '', '', [1,0], 'or', ['green','red']) }}
+	{% endverbatim %}{% endfilter %}</code>
+	<div class="html">
+		{{ basic.symbol('', ['bath.light.switch', 'bath.rtr.state'], '', '', [1,0], 'or', ['green','red']) }}
+		&nbsp;
 	</div>
 
-	Symbol is shown when 'bath.light.switch' is on <b>AND</b> 'bath.rtr.state' is on.
-	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.symbol('s7', ['bath.light.switch', 'bath.rtr.state'], '', '', 1, 'and', 'icon1') &#125;&#125;</code>
-	</div>
+	Using threshold (use the slider to change value)
 	<div class="html">
-		{{ basic.symbol('s7', ['bath.light.switch', 'bath.rtr.state'], '', '', 1, 'and', 'icon1') }}
+		{{ basic.slider('', 'bath.light.value') }}
 	</div>
+	<code class="twig prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.symbol('', 'bath.light.value', '', 'message_led', [85,170], '>', ['red','#EAFF00','green']) }}
+		{{ basic.symbol('', 'bath.light.value', ['low','medium','high'], '', [85,170], '>', ['red','icon1','green']) }}
+		{{ basic.symbol('', 'bath.light.value', ['low','medium','high'], ['control_1','control_2','control_3'], [85,170], '>') }}
+	{% endverbatim %}{% endfilter %}</code>
+	<div class="html">
+		{{ basic.symbol('', 'bath.light.value', '', 'message_led', [85,170], '>', ['red','#EAFF00','green']) }}
+		{{ basic.symbol('', 'bath.light.value', ['low','medium','high'], '', [85,170], '>', ['red','icon1','green']) }}
+		{{ basic.symbol('', 'bath.light.value', ['low','medium','high'], ['control_1','control_2','control_3'], [85,170], '>') }}
+	</div>
+
 
 {% endblock %}
-
-

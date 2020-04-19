@@ -2,63 +2,67 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @author      Stefan Widmer
+ * @copyright   2016
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
 
-
-// get config-variables 
 require_once '../../lib/includes.php';
 
-// init parameters
-$request = array_merge($_GET, $_POST);
+header('Content-Type: application/json');
 
-
-$line = "<?php\n";
-$line .= "/**\n";
-$line .= "  * -----------------------------------------------------------------------------\n";
-$line .= "  * @package     smartVISU\n";
-$line .= "  * @author      Martin Gleiß\n";
-$line .= "  * @copyright   2012 - 2015\n";
-$line .= "  * @license     GPL [http://www.gnu.de]\n";
-$line .= "  * -----------------------------------------------------------------------------\n";
-$line .= "  */\n\n\n";
-
-
-touch(const_path.'config.php');
-
-// is it writeable?
-if (is_writeable(const_path.'config.php'))
-{
-	foreach ($request as $var => $val)
-	{
-		if (defined('config_'.$var))
-		{
-			if ($val == 'true' || $val == 'false')
-				$line .= "\tdefine('config_".$var."', ".$val.");\n";
-			else
-				$line .= "\tdefine('config_".$var."', '".$val."');\n";
+// just clear pagecache
+if($_GET['clear_cache']) {
+	$success = delTree(const_path.'temp/pagecache') || ! is_dir(const_path.'temp/pagecache');
+	if($success) {
+		$success = delTree(const_path.'temp/twigcache') || ! is_dir(const_path.'temp/pagecache');
+		if($success)
+			echo json_encode(array('title' => 'Configuration', 'text' => 'Pagecache cleared.'));
+		else { // save fails
+			header("HTTP/1.0 600 smartVISU Config Error");
+			echo json_encode(array('title' => 'Configuration', 'text' => 'Error deleting Twig cache!<br />Please check the file permissions temp/twigcache'));
 		}
 	}
-
-	$line .= "\n".'?'.'>';
-
-	// write config
-	if (($fp = fopen(const_path.'config.php', 'w')) !== false)
-	{
-		fwrite($fp, $line);
-		fclose($fp);
+	else { // save fails
+		header("HTTP/1.0 600 smartVISU Config Error");
+		echo json_encode(array('title' => 'Configuration', 'text' => 'Error deleting page cache!<br />Please check the file permissions temp/pagecache'));
 	}
 }
-else
-{
-	header("HTTP/1.0 600 smartVISU Config Error");
+// save configuration
+else if(isset($_GET['target'])) {
+	$config = new config();
+	$success = $config->save($_GET['target'], $_POST, $_GET['pages']);
+	if($success) {
+		$success = delTree(const_path.'temp/pagecache') || ! is_dir(const_path.'temp/pagecache');
+		if($success)
+			echo json_encode(array('title' => 'Configuration', 'text' => 'Configuration changes saved.'));
+		else { // save fails
+			header("HTTP/1.0 600 smartVISU Config Error");
+			echo json_encode(array('title' => 'Configuration', 'text' => 'Error saving config or deleting the cache.<br />Please check the file permissions "config.ini" (it must be writeable)!'));
+		}
 
-	$ret[] = array('title' => 'Configuration',
-		'text' => 'Error saving configuration!<br />Please check the file permissions on "config.php" (it must be writeable)!');
+	}
+	else { // save fails
+		header("HTTP/1.0 600 smartVISU Config Error");
+		echo json_encode(array('title' => 'Configuration', 'text' => 'Error saving configuration!<br />Please check the file permissions on "config.ini" (it must be writeable)!'));
+	}
+}
+// read configuration
+else {
+	$config = new config();
 
-	echo json_encode($ret);
+	$sources = array('all');
+	if(isset($_GET['source']))
+		$sources = $_GET['source'];
+	if(!is_array($sources)) $sources = array($sources);
+
+	$result = array();
+	foreach($sources as $source) {
+		if($source != null && $source != '')
+			$result[$source] = $config->get($source);
+	}
+
+	echo(json_encode($result));
 }
 ?>

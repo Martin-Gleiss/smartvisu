@@ -20,20 +20,8 @@
 			<div class="ui-right">
 				<a href="javascript:window.location.href=window.location.href" style="text-decoration:none;color:#fff;">
 					{{ lib.smartvisu() }}
-					<div class="mini">
-						<span id="miniclock" class="miniclock" data-widget="clock.miniclock" data-repeat="1i">{{ now|date('H:i') }}</span>, {{ now|date('d.m,') }} v{{ config_version }}</div>
+					<div class="mini">{{ clock.miniclock('', lang('format','time') ~ ', ' ~ lang('format','day') ) }} v{{ config_version }}</div>
 				</a>
-			</div>
-			<div class="signal hide" onClick="$('.ui-page-active .alert').popup('open');"></div>
-			<div class="alert" data-role="popup" data-overlay-theme="a">
-				<div data-role="header" data-theme="c"><h1></h1></div>
-				<p></p>
-
-				<div class="control">
-					<span class="stamp"></span>
-					<a onClick="notify.remove();" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
-					<a onClick="$('.alert').popup('close');" class="ui-mini" class="ui-mini" data-icon="delete" data-iconpos="top" data-role="button" data-inline="true">Cancel</a>
-				</div>
 			</div>
 		</div>
 		<div>

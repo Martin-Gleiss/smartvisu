@@ -12,38 +12,9 @@
 
 {% block example %}
 
-    <h5>Examples</h5>
-    
-    <h5>Examples</h5>
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; plot.multiaxis('p1',  	<br />
-			&nbsp;	&nbsp;	['env.system.load','env.core.memory'], 	<br />
-			&nbsp;	&nbsp;	'avg', '1d', '', '', '', '', <br />
-			&nbsp;	&nbsp;	['system load', 'memory'], <br />
-			&nbsp;	&nbsp;	['#a00','#070'], '', <br />
-			&nbsp;	&nbsp;	['Zeit', 'Auslastung', 'Speicher'], <br /> 
-			&nbsp;	&nbsp;	'5i', [1,2], [0,1], <br />
-			&nbsp;	&nbsp;	['#f00','#0a0']) &#125;&#125;<br /><br />
-		</code>
-	</div>
-	<br />
 	<div class="html">
-    
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-			<div data-role="collapsible" data-collapsed="false">
-				<h3>multiaxes</h3>
-            	   {{ plot.multiaxis('p1', 
-						['env.system.load','env.core.memory'], 
-						'avg', '1d', '', '', '', '', 
-						['system load', 'memory'], 
-						['#a00','#070'], '', 
-						['Zeit', 'Auslastung', 'Speicher'], 
-						'5i', [1,2], [0,1], 
-						['#f00','#0a0']) }}
-			</div>
-		</div>
+		This widget is deprecated and may be removed in later versions.<br />
+		Please look into plot.period for replacement and further information.
 	</div>
 	    
 {% endblock %}

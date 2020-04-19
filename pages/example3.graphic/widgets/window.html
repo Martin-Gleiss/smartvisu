@@ -1,0 +1,102 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß, Wolfram v. Hülsen
+ * @copyright   2012, 2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+/**
+* -------------------------------------------------------------------------------
+* Displays opening status of a window with text and/or icon
+* 0 = closed, 1 = tilt. 2 = open
+* -------------------------------------------------------------------------------
+*/
+
+/**
+ * Standard window pic w/ opening status for right wing (open / tilt / closed)
+ *
+ * @param {id=} unique id for this widget
+ * @param {item} a gad/item for status 
+*/
+
+{% macro pic(id, gad_status) %}
+    {% import   "basic.html" as basic %}
+	<span class="icon">
+      {{ basic.symbol(id|_('win2_icon'), gad_status, '',['fts_window_2w.svg','fts_window_2w_tilt.svg', 'fts_window_2w_open.svg'], [0, 1, 2], '', ['icon0', 'icon1', 'icon1']) }}
+    </span>
+{% endmacro %}
+
+
+/**
+ * Window one: Displays a window (one wing) with description and opening status
+ *
+ * @param {id=} unique id for this widget
+ * @param {text=} name of the door/window
+ * @param {item} a gad/item for status
+*/
+
+{% macro one(id, txt, gad_status) %}
+    {% import   "basic.html" as basic %}
+	<div class="dimmer">
+      &nbsp;{{ txt|e }}:&nbsp;&nbsp;&nbsp;&nbsp;
+      {{ basic.symbol(id|_('win1_icon'), gad_status, ['geschlossen', 'gekippt', 'geöffnet'],['fts_window_1w.svg','fts_window_1w_tilt.svg', 'fts_window_1w_open.svg'], [0, 1, 2], '', ['icon0', 'icon1', 'icon1']) }}
+    </div>
+{% endmacro %}
+
+
+/**
+ * Window two: Displays a window (two wings) with description and opening status on right wing
+ * 
+ * @param {id=} unique id for this widget
+ * @param {text=} name of the door/window
+ * @param {item} a gad/item for status 
+*/
+
+{% macro two(id, txt, gad_status) %}
+    {% import   "basic.html" as basic %}
+    <div>
+      &nbsp;{{ txt|e }}:&nbsp;&nbsp;&nbsp;&nbsp;
+       {{ basic.symbol(id|_('win2_icon'), gad_status, ['geschlossen', 'gekippt', 'geöffnet'],['fts_window_2w.svg','fts_window_2w_tilt.svg', 'fts_window_2w_open.svg'], [0, 1, 2], '', ['icon0', 'icon1', 'icon1']) }}
+    </div>
+{% endmacro %}
+
+
+/**
+* a window with open/tilt/clos status and shutter
+*
+* @param {id=} unique id for this widget
+* @param {item} an item for the height of the blades
+* @param {item=} an item for the window right wing status
+* @param {item=} an item for the window left wing status
+* @param {value=0} the value for top (optional, default 0)
+* @param {value=255} the value for bottom (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+*/
+{% macro complete(id, item_value, item_window_r, item_window_l, min, max, color) %}
+<svg role="img" id="{{ uid(page, id) }}" data-widget="window.complete" data-item="{{ item_value }}, {{ item_window_r }}, {{ item_window_l }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	{% if color is empty  %}
+		class="icon icon0" 
+	{% else %}
+		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
+	{% endif %}
+	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
+	<!-- window frame -->
+	<rect stroke-width="3" rx="1" x="15" y="25" width="70" height="4" />
+	<rect stroke-width="3" rx="1" x="18" y="28" width="64" height="45" fill="none" />
+	<rect stroke-width="1" rx="1" x="49" y="28" width="2" height="45" />
+	
+	<!-- window wings with place holders for transormation -->
+	<rect id="wing_l" stroke-width="3" opacity="1" rx="1" x="18" y="28" width="32" height="45" fill="none" transform="translate(0,0) skewY(0) scale(1, 1)"/>
+	<rect id="handle_l" stroke-width="3" rx="1" x="46" y="50" width="3" height="2" transform="translate(0,0) skewY(0) scale(1, 1)" />
+	<rect id="wing_r" stroke-width="3" opacity="1" rx="1" x="50" y="28" width="32" height="45" fill="none" transform="translate(0, 0) skewY(0) scale(1, 1)"/>
+	<rect id="handle_r" stroke-width="3" rx="1" x="51" y="50" width="3" height="2" transform="translate(0, 0) skewY(0) scale(1, 1)" />
+	
+	<!-- place holder for grid function representing the shutter (.js widget adds lines here) -->
+	<g stroke-width ="2.5" opacity=".8">
+	</g>
+</svg>
+
+{% endmacro %}
+

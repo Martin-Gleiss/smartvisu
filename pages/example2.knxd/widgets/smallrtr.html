@@ -1,0 +1,61 @@
+/**
+*/
+
+/**
+* Small RTR (Room Temperatur Regulator)
+*
+* @param       unique id for this widget
+* @param       name of the rtr
+* @param       a gad/item for the actual temperature
+* @param       a gad/item for the set temperature
+* @param       a gad/item for the current state of the actor
+* @param       step for plus/minus buttons (optional, default 0.5°)
+*/
+{% macro one(id, txt, gad_actual, gad_set, gad_state, step) %}
+{% import "basic.html" as basic %}
+{% set uid = uid(page, id) %}
+
+/** Design */
+<div id="{{ uid }}" class="rtr">
+    <table style="width:100%; text-align: left;">
+        <tr>
+            <th width="25%">{% if txt %} {{ txt }} {% endif %}</th>
+            <td width="15%"><div class="temp">{{ basic.print(id~'actual', gad_actual, '°' ) }}</div></td>
+            <td width="15%">
+                {% if gad_set %}
+					{{ basic.stateswitch(id~'minus', '', 'micro', '', 'minus', '', 'icon0') }}
+                {% endif %}
+            </td>
+            <td width="15%"><div class="temp">{{ basic.print(id~'set', gad_set, '°' ) }}</div></td>
+            <td width="15%">
+                {% if gad_set %}
+                    {{ basic.stateswitch(id~'plus', '', 'micro', '', 'plus', '', 'icon0') }}
+                {% endif %}
+            </td>
+            <td width="15%">
+                {{ basic.symbol(id~'stateon', gad_state, '', 'sani_floor_heating.svg', 1, '', 'icon0') }}
+                {{ basic.symbol(id~'stateoff', gad_state, '', 'sani_floor_heating.svg', 0) }}
+            </td>
+        </tr>
+
+    </table>
+
+    {% if gad_set %}
+
+        /** Events */
+        <script type="text/javascript">
+            // plus / minus
+            $("#{{ uid~'minus' }}").unbind('click').bind('click', function(){
+                var temp = (Math.round((parseFloat($("#{{ uid~'set' }}").html().replace(',','.')) - {{ step|default(0.5) }}) * 10) / 10).toFixed(1);
+            $("#{{ uid~'set' }}").html(temp + ' °C');
+            io.write("{{ gad_set }}", temp);
+            });
+            $("#{{ uid~'plus' }}").unbind('click').bind('click', function(){
+                var temp = (Math.round((parseFloat($("#{{ uid~'set' }}").html().replace(',','.')) + {{ step|default(0.5) }}) * 10) / 10).toFixed(1);
+            $("#{{ uid~'set' }}").html(temp + ' °C');
+            io.write("{{ gad_set }}", temp);
+            });
+        </script>
+    {% endif %}
+</div>
+{% endmacro %}

@@ -1,11 +1,13 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Raik Alber and Martin Gleiß
+ * @author      Raik Alber and Martin Gleiss
  * @copyright   2013
  * @license     GPL [http://www.gnu.de]
  * @version        0.2
  * -----------------------------------------------------------------------------
+ * @label       knxd / eibd
+ * @hide        driver_autoreconnect
  */
 
 
@@ -15,8 +17,8 @@
  */
 var io = {
 
-	// the adress
-	adress: '',
+	// the address
+	address: '',
 
 	// the port
 	port: '',

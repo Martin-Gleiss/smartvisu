@@ -1,0 +1,76 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Wolfram v. Huelsen
+* @copyright   2020
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "widget_device.html" %}
+
+{% block example %}
+
+	The widget creates lines with shutter control elements (up, stop, down, saved position) and a dynamic status icon. Tables can be built by grouping these lines. <br><br>
+
+	The lines take 85% of a blocks width. So e.g. an uzsuicon can be placed inline with the other elements.<br>
+	To adapt the widget to the needs of your layout, the styles can be overridden in your custom visu.css file.<br><br>
+	Styles are: <br>
+	- <code>.smallshut</code> for the widget properties<br>
+	- <code>.smallshut .ui-shut-btn</code> for the buttons<br>
+	- <code>.smallshut .ui-shut-pic</code> for the dynamic icon (with a <code>.icon</code> section to control the icons position)<br>
+	<br />
+
+	<h5>Example</h5>
+
+	Hint: click into the shutter to see the status icon changing
+	Hint: to improve readability in the code area, "b.xxx" represents "bath.blind.xxx"
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			<div class="ui-bar-c ui-li-divider ui-corner-top">Shutter Table</div>
+			<div class="ui-fixed ui-body-a ui-corner-bottom">
+				{{ device.smallshut('SmS1', 'Wohnzimmer', 'b.move', 'b.stop', 'b.pos', 'b.adjust') }}
+				<!-- block space till end of line, remove if uzsu wanted -->
+				<span class="ui-shut-btn" style="height: 44px;"> </span>
+				<div class="smallshut_wrapper">
+				{{ device.smallshut('SmS2', 'Bad', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', '') }}
+				{{ device.uzsuicon('uzsu1', 'uzsuitem') }}
+				</div>
+			</div>
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+
+    <div class="html">
+		<div class="block">
+			<div class="ui-bar-c ui-li-divider ui-corner-top">Shutter Table</div>
+			<div class="ui-fixed ui-body-a ui-corner-bottom">
+				{{ device.smallshut('SmS1', 'Wohnzimmer', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust') }}
+				<!-- block space till end of line, remove if uzsu wanted -->
+				<span class="ui-shut-btn" style="height: 44px;"> </span>
+				<div class="smallshut_wrapper">
+				{{ device.smallshut('SmS2', 'Bad', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', '') }}
+				{{ device.uzsuicon('uzsu1', 'uzsuitem') }}
+				</div>
+			</div>
+		</div>
+
+		<div class="block">
+			<div class="ui-bar-c ui-li-divider ui-corner-top">Click into the picture to control shutter</div>
+			<div class="ui-fixed ui-body-a ui-corner-bottom">
+				{{ device.shutter ('', 'Shutter 1', '', '', 'bath.blind.pos') }}
+			</div>
+		</div>
+
+		<div class="block" style="width: 100%">
+			<div class="ui-bar-c ui-li-divider ui-corner-top">Shutter Table with type = midi</div>
+			<div class="ui-fixed ui-body-a ui-corner-bottom" style="text-align: left; padding-left: 5%;">
+				{{ device.smallshut('SmS3', 'Wohnzimmer', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'mini') }}
+				<span class="ui-shut-btn" style="height: 44px;"> </span>  <!-- block space till end of line, remove if uzsu wanted -->
+				{{ device.smallshut('SmS4', 'Bad', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', '', 'mini') }}
+				{{ device.uzsuicon('uzsu2', 'uzsuitem') }}
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}

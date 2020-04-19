@@ -1,7 +1,7 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiß
+* @author      Martin Gleiss
 * @copyright   2012 - 2015
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
@@ -9,12 +9,12 @@
 
 
 <div id="menu" class="menu">
+			
+	<a id="menu-docu" data-ajax="false" href="index.php?pages=docu" alt="Docu">
+		<img class="icon {{ pages == 'docu' ? ' icon1' }}" src="{{ icon0 }}edit_copy.svg" alt="Docu" /></a>
 
-	<a id="menu-rooms" class="icon1" href="index.php">
-		<img class="icon" src="{{ icon0 }}edit_copy.svg" /></a>
-
-	<a id="menu-system" class="icon1" href="index.php?page=config">
-		<img class="icon" src="{{ icon0 }}edit_settings.svg" /></a>
+	<a id="menu-system" data-ajax="false" href="index.php?page=config" alt="Config">
+		<img class="icon {{ page == 'config' ? ' icon1' }}" src="{{ icon0 }}edit_settings.svg" /></a>
 
 </div>
     

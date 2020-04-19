@@ -12,46 +12,75 @@
 
 {% block sidebar %}
 
-	<ul data-role="listview" data-dividertheme="c">
+	<ul data-role="listview" data-divider-theme="c">
 
 		<li data-role="list-divider">System</li>
+		
 		<li data-icon="false">
 			<a href="index.php?page=config">
-				<img class="icon" src="{{ icon0 }}message_service.svg" />
-
+				<img class="icon" src="{{ icon0 }}message_service.svg" alt="Config" />
 				<h3>Configuration</h3>
+			</a>
+		</li>
+		
+		<li data-icon="false">
+			<a href="index.php?page=templatechecker">
+				<img class="icon" src="{{ icon0 }}control_clear.svg" alt="Template checker" />
+				<h3>Template checker</h3>
 			</a>
 		</li>
 		
 		{% if config_driver == 'smarthome.py' %}
 		<li data-icon="false">
 			<a href="index.php?page=smarthome.py">
-				<img class="icon" src="{{ icon0 }}it_television.svg" />
-
-				<h3>SmartHome.py</h3>
+				<img class="icon" src="{{ icon0 }}it_television.svg" alt="SmartHomeNG" />
+				<h3>SmartHomeNG</h3>
 			</a>
 		</li>
 		{% endif %}
 
+		<li data-role="list-divider">Help</li>
+		
+		<li data-icon="false">
+			<a href="index.php?pages=docu&page=index" target="_blank">
+				<img class="icon" src="{{ icon0 }}message_help.svg" alt="Documentation" />
+				<h3>Documentation</h3>
+			</a>
+		</li>
+
+		<li data-icon="false">
+			<a href="http://knx-user-forum.de/smartvisu/" target="_blank">
+				<img class="icon" src="{{ icon0 }}time_manual_mode.svg" alt="Support" />
+				<h3>Support on knx-user-forum</h3>
+			</a>
+		</li>
+
+		<li data-icon="false">
+			<a href="https://github.com/Martin-Gleiss/smartvisu" target="_blank">
+				<img class="icon" src="{{ icon0 }}GitHub.png" alt="GitHub" />
+				<h3>Source &amp; Issues on GitHub</h3>
+			</a>
+		</li>
+
 		<li data-role="list-divider">Info</li>
+
 		<li data-icon="false">
 			<a href="index.php?page=team">
-				<img class="icon" src="{{ icon0 }}weather_sun.svg" />
-
+				<img class="icon" src="{{ icon0 }}weather_sun.svg" alt="Team" />
 				<h3>Team</h3>
 			</a>
 		</li>
+		
 		<li data-icon="false">
 			<a href="index.php?page=credits">
-				<img class="icon" src="{{ icon0 }}time_note.svg" />
-
+				<img class="icon" src="{{ icon0 }}time_note.svg" alt="Credits" />
 				<h3>Credits</h3>
 			</a>
 		</li>
+		
 		<li data-icon="false">
 			<a href="index.php?page=copyright">
-				<img class="icon" src="{{ icon0 }}message_attention.svg" />
-
+				<img class="icon" src="{{ icon0 }}message_attention.svg" alt="Copyright" />
 				<h3>Copyright</h3>
 			</a>
 		</li>
@@ -64,4 +93,3 @@
 {% block content %}
 
 {% endblock %}
-

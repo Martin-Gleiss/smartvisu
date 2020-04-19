@@ -22,11 +22,14 @@
 
 	With other on/off-text
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.flip('flip2', 'bath.light.switch', '1', '0') &#125;&#125;</code>
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.flip('flip2', 'bath.light.switch', '1', '0') }}
+		text beside the flip
+		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		{{ basic.flip('flip2', 'bath.light.switch', '1', '0') }}
-		Some text beside the flip
+		text beside the flip
 	</div>
 
 {% endblock %}

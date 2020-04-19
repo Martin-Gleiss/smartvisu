@@ -1,13 +1,22 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß
+ * @author      Martin Gleiss
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * ----------------------------------------------------------------------------- 
  */
 
 @CHARSET "UTF-8";
+
+/* enable selecting text in docu pages only */
+html body {
+  -webkit-touch-callout: none!important;
+  -webkit-user-select: text!important;
+  -moz-user-select: text!important;
+  -ms-user-select: text!important;
+  user-select: text!important;
+}
 
 /* display background only on larger displays */
 @media all and (min-width: 600px) {

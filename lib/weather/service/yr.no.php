@@ -28,63 +28,59 @@ class weather_yr extends weather
 		// api call 
 		$cache = new class_cache('yr.no_'.substr(strrchr($this->location, '/'), 1).'.xml');
 
-		if ($cache->hit())
+		if ($cache->hit($this->cache_duration_minutes))
 			$content = $cache->read();
 		else
 		{
 			$url = 'http://www.yr.no/place/'.rawurlencode($this->location).'/forecast.xml';
 			$content = file_get_contents($url);
-		}
-		
-		if (substr($content, 0, 5) == '<?xml')
-		{
-			// write cache
-			$cache->write($content);
-			$xml = simplexml_load_string($content);
-			$this->debug($xml);
-
-			// today 
-			$this->data['city'] = (string)$xml->location->name;
-
-			// forecast
-			$i = 0;
-			foreach ($xml->forecast->tabular->time as $day)
-			{
-				if (config_lang == 'de')
-					$windspeed = ' mit '.round(((string)$day->windSpeed->attributes()->mps * 3.6), 1).' km/h';
-				elseif (config_lang == 'nl')
-					$windspeed = ' met '.round(((string)$day->windSpeed->attributes()->mps * 3.6), 1).' km/u';
-				elseif (config_lang == 'fr')
-                                        $windspeed = ' à '.round(((string)$day->windSpeed->attributes()->mps * 3.6), 1).' km/h';
-				else
-					$windspeed = ' at '.round(((string)$day->windSpeed->attributes()->mps * 2.24), 1).' MPH';
-
-				if ($i == 0)
-				{
-					$this->data['current']['date'] = (string)$day->attributes()->from;
-					$this->data['current']['conditions'] = translate((string)$day->symbol->attributes()->name, 'yr.no');
-					$this->data['current']['wind'] = translate((string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code, 'yr.no').$windspeed;
-					$this->data['current']['icon'] = $this->icon((string)$day->symbol->attributes()->number, $this->icon_sm);
-					$this->data['current']['temp'] = (float)$day->temperature->attributes()->value.'&deg;C';
-					$this->data['current']['more'] = (int)$day->pressure->attributes()->value.' hPa';
-					$i++;
-				}
-
-				if ($i < 5 and $day->attributes()->period == 2)
-				{
-
-					$this->data['forecast'][$i]['date'] = (string)$day->attributes()->from;
-					$this->data['forecast'][$i]['conditions'] = translate((string)$day->symbol->attributes()->name, 'yr.no');
-					$this->data['forecast'][$i]['wind'] = translate((string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code, 'yr.no').$windspeed;
-					$this->data['forecast'][$i]['icon'] = $this->icon((string)$day->symbol->attributes()->number);
-					$this->data['forecast'][$i]['temp'] = (float)$day->temperature->attributes()->value.'&deg;C';
-					$this->data['forecast'][$i]['more'] = (int)$day->pressure->attributes()->value.' hPa';
-					$i++;
-				}
+			if (substr($content, 0, 5) == '<?xml')
+				$cache->write($content);
+			else {
+				$this->error('Weather: yr.no', 'Read request failed!');
+				return;
 			}
 		}
-		else
-			$this->error('Weather: yr.no', 'Read request failed!');
+		
+		$xml = simplexml_load_string($content);
+		$this->debug($xml);
+
+		// today 
+		$this->data['city'] = (string)$xml->location->name;
+
+		// forecast
+		$i = 0;
+		foreach ($xml->forecast->tabular->time as $day)
+		{
+			if (config_lang == 'de')
+				$windspeed = ' mit '.round(((string)$day->windSpeed->attributes()->mps * 3.6), 1).' km/h';
+			elseif (config_lang == 'nl')
+				$windspeed = ' met '.round(((string)$day->windSpeed->attributes()->mps * 3.6), 1).' km/u';
+			else
+				$windspeed = ' at '.round(((string)$day->windSpeed->attributes()->mps * 2.24), 1).' MPH';
+
+			if ($i == 0)
+			{
+				$this->data['current']['date'] = (string)$day->attributes()->from;
+				$this->data['current']['conditions'] = translate((string)$day->symbol->attributes()->name, 'yr.no');
+				$this->data['current']['wind'] = translate((string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code, 'yr.no').$windspeed;
+				$this->data['current']['icon'] = $this->icon((string)$day->symbol->attributes()->number, $this->icon_sm);
+				$this->data['current']['temp'] = (float)$day->temperature->attributes()->value.'&deg;C';
+				$this->data['current']['more'] = (int)$day->pressure->attributes()->value.' hPa';
+			}
+			
+			if ($i < 4 and $day->attributes()->period == 2)
+			{
+				$this->data['forecast'][$i]['date'] = (string)$day->attributes()->from;
+				$this->data['forecast'][$i]['conditions'] = translate((string)$day->symbol->attributes()->name, 'yr.no');
+				$this->data['forecast'][$i]['wind'] = translate((string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code, 'yr.no').$windspeed;
+				$this->data['forecast'][$i]['icon'] = $this->icon((string)$day->symbol->attributes()->number);
+				$this->data['forecast'][$i]['temp'] = (float)$day->temperature->attributes()->value.'&deg;C';
+				$this->data['forecast'][$i]['more'] = (int)$day->pressure->attributes()->value.' hPa';
+				$i++;
+			}
+
+		}
 
 	}
 

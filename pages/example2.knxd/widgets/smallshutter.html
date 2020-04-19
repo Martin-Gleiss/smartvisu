@@ -1,0 +1,43 @@
+/**
+*/
+
+/**
+* Small Shutter
+*
+* @param       unique id for this widget
+* @param       name of the shutter
+* @param       a gad/item for long move 
+* @param       a gad/item for short move
+* @param       a gad/item for the actual position 
+*/
+{% macro smallshut(id, txt, gad_move, gad_stop, gad_position) %}
+{% import "basic.html" as basic %}
+{% set uid = uid(page, id) %}
+
+/** Design */
+<div id="{{ uid }}" class="smallshut">
+    <table style="width:100%; text-align: left;">
+        <tr>
+            <th width="35%">{% if txt %} {{ txt }} {% endif %}</th>
+            <td width="15%">
+                {% if gad_move %}
+                    {{ basic.stateswitch(id~'up', gad_move, 'micro', '1', 'arrow-u', '', 'icon0') }}
+                {% endif %}
+            </td>
+            <td width="15%">
+                {% if gad_stop %}
+                    {{ basic.stateswitch(id~'stop', gad_stop, 'micro', '1', 'audio_stop.svg', '', 'icon0') }}
+                {% endif %}
+            </td>
+            <td width="15%">
+                {% if gad_move %}
+                    {{ basic.stateswitch(id~'down', gad_move, 'micro', '0', 'arrow-d', '', 'icon0') }}
+                {% endif %}
+            </td>
+            <td width="20%">
+                {{ basic.print(id~'position', gad_position, '%', '( VAR )') }}
+            </td>
+        </tr>
+    </table>
+</div>
+{% endmacro %}

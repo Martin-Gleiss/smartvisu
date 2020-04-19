@@ -1,0 +1,85 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+{% extends "root.html" %}
+
+{% block body %}
+{% import "quad.html" as quad %}
+  <div data-role="page" id="{{ page }}_page" class="base quad page-bg" data-theme="a">
+    <div data-role="header" data-position="fixed" data-tap-toggle="false">
+            <h1>
+            {% block title %}{% endblock %}
+            </h1>
+      <div class="quad ui-left">
+        {% include 'menu.html' %}
+      </div>
+      <div class="quad ui-right">
+
+        <div style="float:right;">
+        <a href="javascript:window.location.href=window.location.href" style="text-decoration:none;color:#fff;">
+          {{ lib.smartvisu() }}
+          <div class="mini">
+            {{ clock.miniclock('miniclock', lang('format','time') ~ ', ' ~ lang('format','day') ) }} v{{ config_version }}</div>
+        </a>
+        </div>
+        <div style="float:right;">
+        {% block header %}{% endblock %}
+        </div>
+      </div>
+      <div class="signal hide" onClick="$('.ui-page-active .alert').popup('open');"></div>
+      <div class="alert" data-role="popup" data-overlay-theme="a">
+        <div data-role="header" data-theme="c"><h1></h1></div>
+        <p></p>
+
+        <div class="control">
+          <span class="stamp"></span>
+          <a onClick="notify.remove();" data-mini="true" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
+          <a onClick="$('.alert').popup('close');" data-mini="true" data-icon="delete" data-iconpos="top" data-role="button" data-inline="true">Cancel</a>
+        </div>
+      </div>
+    </div>
+
+    <div data-role="content" class="page-bg">
+        {% block content_all %}
+    <div class="content-primary">
+            {% block content %}
+
+            <div class="quad_block">
+                {% block quad_main_top %}{% endblock %}
+            </div>
+            <div class="quad_block quad_min_tablet">
+                {% block quad_main_bottom %}{% endblock %}
+            </div>
+            {% endblock %}
+        </div>
+
+        <div class="content-secondary">
+            {% block sidebar %}
+            <div class="quad_block">
+                {% block quad_top %}{% endblock %}
+            </div>
+            <div class="quad_block">
+                {% block quad_bottom %}{% endblock %}
+            </div>
+            {% endblock %}
+        </div>
+        {% endblock %}
+    </div>
+    {% block footer %}
+
+</div>
+
+
+    {% endblock %}
+  </div>
+
+
+
+
+{% endblock %}

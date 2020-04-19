@@ -1,0 +1,96 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "quad_root.html" %}
+
+{% block title %}
+Licht
+{% endblock %}
+
+{% block header %}
+<img class="icon" src='{{ icon0 }}light_light.svg'/>
+{% endblock %}
+
+{% block content %}
+<script>
+$( document ).ready(function() {
+		 io.write('licht.modus.visu', '1' );
+     io.write('licht.og.led_effekt.r.dimmen', '100' );
+     io.write('licht.og.led_effekt.g.dimmen', '20' );
+     io.write('licht.og.led_effekt.b.dimmen', '50' );
+     io.write('licht.og.led_effekt.ww.dimmen', '10' );
+     io.write('licht.og.led_effekt.r.sa', '1' );
+     io.write('licht.og.led_effekt.g.sa', '1' );
+     io.write('licht.og.led_effekt.b.sa', '1' );
+     io.write('licht.og.led_effekt.ww.sa', '1' );
+     io.write('licht.og.essen.warm.dimmen', '20' );
+     io.write('licht.og.essen.warm.sa', '1' );
+     io.write('licht.og.essen.kalt.dimmen', '0' );
+     io.write('licht.og.essen.kalt.sa', '0' );
+     io.write('licht.og.wohnen.warm.dimmen', '60' );
+     io.write('licht.og.wohnen.warm.sa', '1' );
+     io.write('licht.og.wohnen.kalt.dimmen', '50' );
+     io.write('licht.og.wohnen.kalt.sa', '1' );
+     io.write('bwm.og.essen.sperren', '1' );
+     io.write('licht.og.kueche.sperren', '1' );
+     io.write('bwm.og.kueche.sperren', '0' );
+     io.write('licht.og.essen.warm.zwangvalue', '0' );
+     io.write('licht.og.essen.kalt.zwangvalue', '0' );
+     io.write('licht.og.wohnen.warm.zwangvalue', '0' );
+     io.write('licht.og.wohnen.kalt.zwangvalue', '0' );
+     io.write('bwm.og.terrasse.sperren', '0' );
+     io.write('licht.og.terrasse.decke.zwangvalue', '3' );
+     io.write('licht.og.terrasse.wand.sperren', '0' );
+     io.write('bwm.og.terrasse.sperren', '0' );
+
+     io.write('licht.og.led_effekt.sequencer.sperren', '1' );
+     io.write('licht.og.terrasse.decke.dimmen', '50' );
+
+	});
+
+</script>
+<div style="padding:10px;"><a href="index.php?page=licht_eg">EG</a> | OG | <a href="index.php?page=bwm_og">BWM</a>
+ | <a href="index.php?page=licht_kurven">Lichtkurven</a></div>
+
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    <li data-role="list-divider">Szenen</li>
+
+{{ quad.select('lichtmodus_select', 'licht.modus.visu', 'menu', [0,1,2,3,4], ['time_graph', 'light_office', 'scene_livingroom', 'scene_cinema', 'scene_sleeping'], ['Lichtkurve', 'Arbeit', 'Chillen', 'Kino', 'Nacht'], '', 'none', '', '', 'Lichtmodus', '', '', '', '', '', 'licht.modus.automatik', ['stateengine', ['header', 'Suspendzeit'], ['slider', ['licht.modus.automatik.settings.suspendduration', '0', '480', '10', 'horizontal', 'handle']]], '', '', '', '', ['select', 'stateengine']) }}
+    <li data-role="list-divider">Küche</li>
+    {{ quad.stateswitch('licht_og_kueche', 'licht.og.kueche.sa', 'icon', [0,1], ['light_light','light_light'], '', ['icon0', 'icon1'], 'blink', '', '', '', '', '', 'Küchenlicht', '', 'licht.og.kueche.uzsu', ['', '', 'bool'], ['licht.og.kueche.sa', 'max', '', '', '0', '1', '3000'], '', '', '', ['licht.og.kueche.sperren','bwm.og.kueche.sperren'], '', '', '', ['locks', 'switch', 'plot']) }}
+
+    {{ quad.color('licht_og_led_effekt', 'licht.og.led_effekt.r.dimmen', 'licht.og.led_effekt.g.dimmen', 'licht.og.led_effekt.b.dimmen', 0, 100, 8, 15, '', '', 'Küche Effekt RGB', 'licht.og.led_effekt.r', 'licht.og.led_effekt.g', 'licht.og.led_effekt.b', 0, 100, '', '', 'hsv', 'licht.og.led_effekt.ww.sa', 'licht.og.led_effekt.ww.dimmen', '', '', '', '', ['', 'bwm.og.essen.sperren', '', 'licht.og.led_effekt.sequencer.sperren'], 'licht.og.led_effekt.sequencer', '', '', '', [['locks','sequencer','colorpicker'], 'ww_popup','values']) }}
+
+    <li data-role="list-divider">Essen</li>
+    {{ quad.dimmer('licht_og_essen_warm', 'Essen Warmweiss', 'licht.og.essen.warm.sa', 'licht.og.essen.warm.dimmen', 0, 100, 5, icon.light('','', 'licht.og.essen.warm.dimmen', 0, 100), icon.light(),  '#F76D19', 'icon0', 'handle', '', '', '', 'blink', 'horizontal', '', ['', '', 'num'], '', 'licht.og.essen.warm.dimmen', '', 'licht.og.essen.automatik', ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], ['licht.og.essen.automatik.lock', 'icon', [0,1], ['secur_open','secur_locked']], ['licht.og.essen.automatik.settings.suspendduration', '0', '95', '5', '', 'handle']]], ['','bwm.og.essen.sperren','licht.og.essen.warm.zwangvalue'], '', '') }}
+
+    {{ quad.dimmer('licht_og_essen_kalt', 'Essen Kaltweiss', 'licht.og.essen.kalt.sa', 'licht.og.essen.kalt.dimmen', 0, 100, 5, icon.light('','', 'licht.og.essen.kalt.dimmen', 0, 100), icon.light(),  '#9CFFFD', 'icon0', 'handle', '', '', '', 'blink', 'horizontal', '', ['', '', 'num'], '', 'licht.og.essen.kalt.dimmen', '', 'licht.og.essen.automatik', ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], ['licht.og.essen.automatik.lock', 'icon', [0,1], ['secur_open','secur_locked']], ['licht.og.essen.automatik.settings.suspendduration', '0', '95', '5', '', 'handle']]],  ['','bwm.og.essen.sperren','licht.og.essen.kalt.zwangvalue'], '', '') }}
+     <li data-role="list-divider">Wohnen</li>
+    {{ quad.dimmer('licht_og_wohnen_warm', 'Wohnen Warmweiss', 'licht.og.wohnen.warm.sa', 'licht.og.wohnen.warm.dimmen', 0, 100, 5, icon.light('','', 'licht.og.wohnen.warm.dimmen', 0, 100), icon.light(),  '#F76D19', 'icon0', 'handle', '', '', '', 'blink', 'horizontal', '', ['', '', 'num'], '', 'licht.og.wohnen.warm.dimmen', '', 'licht.og.wohnen.automatik', ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], ['licht.og.wohnen.automatik.lock', 'icon', [0,1], ['secur_open','secur_locked']], ['licht.og.wohnen.automatik.settings.suspendduration', '0', '95', '5', '', 'handle']]], ['','','licht.og.wohnen.warm.zwangvalue'], '', '') }}
+
+    {{ quad.dimmer('licht_og_wohnen_kalt', 'Wohnen Kaltweiss', 'licht.og.wohnen.kalt.sa', 'licht.og.wohnen.kalt.dimmen', 0, 100, 5, icon.light('','', 'licht.og.wohnen.kalt.dimmen', 0, 100), icon.light(),  '#9CFFFD', 'icon0', 'handle', '', '', '', 'blink', 'horizontal', '', ['', '', 'num'], '', 'licht.og.wohnen.kalt.dimmen', '', 'licht.og.wohnen.automatik', ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], ['licht.og.wohnen.automatik.lock', 'icon', [0,1], ['secur_open','secur_locked']], ['licht.og.wohnen.automatik.settings.suspendduration', '0', '95', '5', '', 'handle']]],  ['','','licht.og.wohnen.kalt.zwangvalue'], '', '') }}
+
+     <li data-role="list-divider">Terrasse</li>
+
+    {{ quad.dimmer('licht_og_terrasse_decke', 'Decke', 'licht.og.terrasse.decke.sa', 'licht.og.terrasse.decke.dimmen', 0, 100, 5, icon.light('','', 'licht.og.terrasse.decke.dimmen', 0, 100), icon.light(),  'icon1', 'icon0', 'handle', '', '', '', 'blink', 'horizontal', '', ['', '', 'num'], '', 'licht.og.terrasse.decke.dimmen', '', 'licht.og.terrasse.decke.automatik', ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], ['licht.og.terrasse.decke.automatik.lock', 'icon', [0,1], ['secur_open','secur_locked']], ['licht.og.terrasse.decke.automatik.settings.suspendduration', '0', '95', '5', '', 'handle']]],  ['','bwm.og.terrasse.sperren','licht.og.terrasse.decke.zwangvalue']) }}
+
+    {{ quad.stateswitch('licht_og_terrasse_wand', 'licht.og.terrasse.wand.sa', 'icon', [0,1], ['light_light','light_light'], '', ['icon0', 'icon1'], 'blink', '', '', '', '', '', 'Wand', '', 'licht.og.terrasse.wand.uzsu', ['', '', 'bool'], 'licht.og.terrasse.wand.sa', '', '', '', ['licht.og.terrasse.wand.sperren','bwm.og.terrasse.sperren'], '', '', '', ['locks', 'switch', 'plot']) }}
+
+</ul>
+{% endblock %}
+
+{% block quad_top %}
+{{ plot.period('', ['licht.og.essen.warm.dimmen', 'licht.og.essen.kalt.dimmen'], 'max', '1w', 'now', '0', '110', '1000', ['Essen warm', 'Essen kalt'], ['#daa', '#aad'], ['stair', 'stair'], ['Uhrzeit', 'Helligkeit'], 'advanced', '', '', '', '', '', { yAxis: [ { tickInterval: 50 } ], legend: {align: 'right', verticalAlign: 'top', y: 40, layout: 'vertical'}, chart: { marginRight: 110} }) }}
+
+{% endblock %}
+
+{% block quad_bottom %}
+{{ plot.period('', ['licht.og.terrasse.screens.warm.dimmen', 'licht.og.terrasse.screens.kalt.dimmen', 'licht.og.terrasse.decke.dimmen'], 'max', '1w', 'now', '0', '110', '1000', ['Screens warm', 'Screens kalt', 'Decke'], ['#daa', '#aad', '#955'], ['stair', 'stair', 'stair'], ['Uhrzeit', 'Helligkeit'], 'advanced', '', '', '', '', '', { yAxis: [ { tickInterval: 40 } ], legend: {align: 'right', verticalAlign: 'top', y: 50, layout: 'vertical'}, chart: { marginRight: 110} }) }}
+{% endblock %}

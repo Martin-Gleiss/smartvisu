@@ -11,26 +11,27 @@
 {% extends "widget_status.html" %}
 
 {% block example %}
-
+<script>
+	io.write('bath.alert.text', 'This is text from an item');
+	io.write('bath.time', '01.01.2020 10:56:20');
+</script>
 	<h5>Examples</h5>
 
 	If you flip the switch to 'on' the alert is been triggerd and the notification will be shown.
 	<div class="twig">
 		<code class="prettyprint">
-			&#123;&#123; status.notify('n1', 'bath.alert.info', 'bath.alert.text', 'INFO', 'Information', 'The heating ist to hot!', 'info') &#125;&#125;
+			&#123;&#123; status.notify('n1', 'bath.alert.info', 'bath.alert.text', 'INFO', 'Information', 'The heating is too hot!', 'info') &#125;&#125;
 		</code>
 	</div>
 	<div class="html">
 		{{ basic.flip('f1', 'bath.alert.info') }} Info <br />
-		{{ status.notify('n1', 'bath.alert.info', 'bath.alert.text', 'INFO', 'Information', 'The heating ist to hot!', 'info') }}
+		{{ status.notify('n1', 'bath.alert.info', 'bath.alert.text', 'INFO', 'Information', 'The heating is too hot!', 'info') }}
 
 		{{ basic.flip('f2', 'bath.alert.warning') }} Warning <br />
-		{{ status.notify('n2', 'bath.alert.warning', 'bath.alert.text', 'WARN', 'Warning', 'The heating ist to hot! Please switch it off!', 'warning') }}
+		{{ status.notify('n2', 'bath.alert.warning', 'bath.alert.text', 'WARN', 'Warning', 'The heating is too hot! Please switch it off!', 'warning') }}
 
 		{{ basic.flip('f3', 'bath.alert.error') }} Error <br />
-		{{ status.notify('n3', 'bath.alert.error', 'bath.alert.text', 'ERROR', 'Error', 'The heating ist to hot! It will burn now!', 'error') }}
+		{{ status.notify('n3', 'bath.alert.error', 'bath.alert.text', 'ERROR', 'Error', 'The heating is too hot! It will burn now!', 'error') }}
 	</div>
 
 {% endblock %}
-
-

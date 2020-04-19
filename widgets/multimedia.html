@@ -9,18 +9,39 @@
 
 
 /**
-* Displays a image witch is been reloaded after a given time
+* Plays a soundfile
 *
-* @param unique id for this widget
-* @param the path/url to the image
-* @param the mode: 'none', 'corner', 'corner-bottom' (optional, default 'none')
-* @param the reload-time in duration-format (optional, default '10i')
+* @param {id=} unique id for this widget (optional)
+* @param {item} the item which triggers playing
+  Notice: The item sets the value to null after playing.
+* @param {text} the url of the soundfile
+* @param {value=1} the value which triggers playing (optional, default 1)
+* @param {text=mpeg} filetype of the soundfile (optional, default 'mpeg' for mp3)
+*
+* @author Niko Will, Stefan Widmer
+* @info Thanks to Mike Koenig for publishing the sample file under Creative Commons Attribution 3.0 on http://soundbible.com/
+*/
+{% macro audio(id, item, file, value, filetype) %}
+<audio{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.audio" data-item="{{ item }}" data-value="{{ value|default(1) }}" preload="auto">
+	<source src="{{ file }}" type="audio/{{ filetype|default('mpeg') }}">
+</audio>
+{% endmacro %}
+
+
+/**
+* Displays an image witch is been reloaded after a given time
+*
+* @param {id=} unique id for this widget
+* @param {undefined} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
+* @param {text(none,corner,corner-bottom,fill)=none} the mode: 'none', 'corner', 'corner-bottom', 'fill' (optional, default 'none') (optional)
+* @param {undefined=10i} the reload-time in duration-format or defined as an item that retriggers a refresh (optional, default '10i')
+* @param {image=} the path/url to a default image that is shown on error and startup
 *
 * @see misc/fundamentals#Duration-Format
 */
-{% macro image(id, src, mode, time) %}
+{% macro image(id, src, mode, refresh, default_img) %}
 
-	<img id="{{ uid(page, id) }}" data-widget="multimedia.image"
+	<img {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.image" alt="multimedia.image"
 		{% if mode == 'corner' %}
 			class="ui-corner-all"
 		{% elseif mode == 'corner-bottom' %}
@@ -28,17 +49,12 @@
 		{% elseif mode == 'fill' %}
 			style="width: 100%"
 		{% endif %}
-		src="pages/base/pics/trans.png" />
+    data-item="{% if '/' not in src and '\\' not in src %}{{ src }}{% endif %}{% if refresh|first not in ['0','1','2','3','4','5','6','7','8','9'] and refresh %}, {{ refresh }}{% endif %}"
+    data-url="{% if '/' in src or '\\' in src %}{{ src }}{% endif %}"
+    {% if refresh|first in ['0','1','2','3','4','5','6','7','8','9'] or not refresh %}data-repeat="{{ refresh|default('10i') }}"{% endif %}
+		src="{{ default_img|default('pages/base/pics/trans.png') }}"
+    onerror="javascript:this.src='{{ default_img|default('pages/base/pics/trans.png') }}'" />
 
-	<script type="text/javascript">
-		var noCacheSrc ='{{ src }}' +  (('{{ src }}'.indexOf('?') == -1) ? '?' : '&') + '_=' + new Date().getTime();
-		$('#{{ uid(page, id) }}').attr('src', noCacheSrc);
-
-		setInterval(function () {
-			var noCacheSrc ='{{ src }}' +  (('{{ src }}'.indexOf('?') == -1) ? '?' : '&') + '_=' + new Date().getTime();
-			$('#{{ uid(page, id) }}').attr('src', noCacheSrc);
-		}, new Date().duration('{{time|default("10i")}}'));
-	</script>
 
 {% endmacro %}
 
@@ -46,18 +62,18 @@
 /**
 * Standard Multimedia Player
 *
-* @param unique id for this widget
-* @param the item for play/pause
-* @param the item for stopping the music (optional)
-* @param the item for fast forward and rewind (optional)
-* @param the item for next an previous playlist title
-* @param the item for the position (optional)
-* @param the item for the volume (optional)
-* @param the item to mute the music (optional)
-* @param the item for the song title (optional)
-* @param the item for the song artist (optional)
-* @param the item for repeat (optional)
-* @param the item to load the default playlist (optional)
+* @param {id} unique id for this widget
+* @param {item} the item for play/pause
+* @param {item=} the item for stopping the music (optional)
+* @param {item=} the item for fast forward and rewind (optional)
+* @param {item} the item for next an previous playlist title
+* @param {item=} the item for the position (optional)
+* @param {item=} the item for the volume (optional)
+* @param {item=} the item to mute the music (optional)
+* @param {item=} the item for the song title (optional)
+* @param {item=} the item for the song artist (optional)
+* @param {item=} the item for repeat (optional)
+* @param {item=} the item to load the default playlist (optional)
 *
 * @author Axel Otterstätter
 */
@@ -65,23 +81,23 @@
 	{% import "basic.html" as basic %}
 	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}" class="music">
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} class="music">
 
 		{% if item_vol %}
 			<div class="vol">
-				<img class="slider-bottomup-scale" src="pages/base/pics/scale_buttomup.png">
+				<img class="slider-bottomup-scale" src="pages/base/pics/scale_buttomup.png" alt="scale">
 				{{ basic.slider(id~'vol', item_vol, 0, 100, 5, 'bottomup') }}
 			</div>
 		{% endif %}
 
 		<div class="control">
-			{% if item_mute %} {{ basic.button(id~'mute', item_mute, 'Mute', 'audio_volume_mute.svg', 1) }} {% endif %}
-			{% if item_repeat %} {{ basic.dual(id~'repeat', item_repeat, 'audio_repeat.svg', 'audio_repeat.svg') }} {% endif %}
-			{% if item_playlist %} {{ basic.button(id~'playlist', item_playlist, 'Default Playlist', 'audio_playlist.svg', 1) }} {% endif %}
+			{% if item_mute %} {{ basic.stateswitch('', item_mute, '', 1, 'audio_volume_mute.svg', 'Mute') }} {% endif %}
+			{% if item_repeat %} {{ basic.stateswitch('', item_repeat, '', '', 'audio_repeat.svg') }} {% endif %}
+			{% if item_playlist %} {{ basic.stateswitch('', item_playlist, '', 1, 'audio_playlist.svg', 'Default Playlist') }} {% endif %}
 		</div>
 
-		<div class="title">{% if item_artist %}{{ basic.value(id~'artist', item_artist) }} &nbsp; {% endif %}
-			{% if item_title %}{{ basic.value(id~'title', item_title) }}{% endif %}</div>
+		<div class="title">{% if item_artist %}{{ basic.print('', item_artist) }} &nbsp; {% endif %}
+			{% if item_title %}{{ basic.print('', item_title) }}{% endif %}</div>
 
 		<div class="set">
 			{% if item_pos %}
@@ -92,12 +108,12 @@
 			{% endif %}
 
 			<div data-role="controlgroup" data-type="horizontal">
-				{{ basic.button(id~'prev', item_next, 'back', 'control_arrow_left.svg', 0) }}
-				{% if item_ff %} {{ basic.button(id~'rew', item_ff, 'rev', 'audio_rew.svg', 0) }} {% endif %}
-				{{ basic.dual(id~'play', item_play, 'audio_pause.svg', 'audio_play.svg') }}
-				{% if item_stop %} {{ basic.button(id~'stop', item_stop, 'stop', 'audio_stop.svg', 1) }} {% endif %}
-				{% if item_ff %} {{ basic.button(id~'ff', item_ff, 'fwd', 'audio_ff.svg', 1) }} {% endif %}
-				{{ basic.button(id~'next', item_next, 'next', 'control_arrow_right.svg', 1) }}
+				{{ basic.stateswitch('', item_next, '', 0, 'control_arrow_left.svg', 'back') }}
+				{% if item_ff %} {{ basic.stateswitch('', item_ff, '', 0, 'audio_rew.svg', 'rev') }} {% endif %}
+				{{ basic.stateswitch('', item_play, '', '', ['audio_play.svg', 'audio_pause.svg']) }}
+				{% if item_stop %} {{ basic.stateswitch('', item_stop, '', 1, 'audio_stop.svg', 'stop') }} {% endif %}
+				{% if item_ff %} {{ basic.stateswitch('', item_ff, '', 1, 'audio_ff.svg', 'fwd') }} {% endif %}
+				{{ basic.stateswitch('', item_next, '', 1, 'control_arrow_right.svg', 'next') }}
 			</div>
 		</div>
 	</div>
@@ -107,56 +123,105 @@
 /**
 * A widget to display a slideshow, controlled by items/items
 *
-* @param unique id for this widget
-* @param a directory where the pictures are located
-* @param delay between the slides in sec (optional, default: 2 sec)
-* @param item to switch to the next slide
-* @param item to switch to the previous slide
-* @param item to stop the animation
-* @param item to start the animation
-*
-* @author Alex
+* @param {id=} unique id for this widget (optional)
+* @param {text} a directory where the pictures are located
+* @param {value=2} delay between the slides in sec (optional, default: 4 sec)
+* @param {item=} item to switch to the next slide (optional)
+* @param {item=} item to switch to the previous slide (optional)
+  (if this is same as item_next: 0 triggers previous, any value greater than 0 triggers next, negative values are ignored)
+* @param {item=} item to stop the animation (optional)
+* @param {item=} item to start the animation (optional)
+  (if this is same as item_stop: 0 stops, any value greater than 0 starts, negative values are ignored)
+* @param {value=0} Show the pictures in reverse order; possible values are 1 or 0 (optional, default 0)
+* @param {value=0} Show controls; possible values are 1 or 0 (optional, default 0)
+	(they just take effect on the slideshow and do not send anything to backend)
+* @author Alex ???, Stefan Widmer
 *
 * @info based on cycle2 jquery-plugin: (c) 2012 M. Alsup; Dual licensed: MIT/GPL
 * @link http://jquery.malsup.com/cycle2
 */
-{% macro slideshow(id, dir, delay, item_next, item_prev, item_stop, item_start) %}
+{% macro slideshow(id, dir, delay, item_next, item_prev, item_stop, item_start, reverse, controls) %}
 	{% set uid = uid(page, id) %}
 
-	<script src="vendor/jquery.cycle2/jquery.cycle2.core.js"></script>
-	<script src="vendor/jquery.cycle2/jquery.cycle2.autoheight.js"></script>
-
-	<div id="{{ uid }}" class="slideshow" data-cycle-log="false" data-cycle-speed="{{ delay|default(2) * 1000 }}">
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} class="slideshow cycle-slideshow" data-widget="multimedia.slideshow"
+		data-cycle-log="false" data-cycle-speed="2000" data-cycle-timeout="{{ delay|default(4) * 1000 }}" data-cycle-reverse="{{ reverse|default(0) }}"
+		data-item="{{ item_prev }}, {{ item_next }}, {{ item_stop }}, {{ item_start }}">
 		{% for file in dir(dir, '(.+?).(jpg|png|svg)') %}
-			<img src="{{ file.path }}" style="display: block;" title="{{ file.label }}" />
+			<img src="{{ file.path }}" style="display: block;" title="{{ file.label }}" alt="{{ file.label }}" />
 		{% endfor %}
 	</div>
-
-	<script type="text/javascript">
-		$('#{{ page }}').on('pageinit', function (event, ui) {
-			$('#{{ uid }}').cycle();
-		});
-		$('#{{ page }}').on('pagebeforeshow', function (event, ui) {
-			$(window).triggerHandler('resize');
-		});
-	</script>
+  {% if controls %}
+	<div data-role="controlgroup" data-type="horizontal">
+		<a data-cycle-cmd="prev" href="#" class="ui-btn ui-micro ui-corner-all ui-btn-inline ui-nodisc-icon">
+			<img class="icon" src="icons/ws/audio_rew.svg" alt="prev">
+		</a>
+		<a data-cycle-cmd="pause" href="#" class="ui-btn ui-micro ui-corner-all ui-btn-inline ui-nodisc-icon">
+			<img class="icon" src="icons/ws/audio_stop.svg" alt="stop">
+		</a>
+		<a data-cycle-cmd="resume" href="#" class="ui-btn ui-micro ui-corner-all ui-btn-inline ui-nodisc-icon">
+			<img class="icon" src="icons/ws/audio_play.svg" alt="resume">
+		</a>
+		<a data-cycle-cmd="next" href="#" class="ui-btn ui-micro ui-corner-all ui-btn-inline ui-nodisc-icon">
+			<img class="icon" src="icons/ws/audio_ff.svg" alt="next">
+		</a>
+	</div>
+	{% endif %}
 {% endmacro %}
 
 
 /**
 * Displays a tv- or radio- station button
 *
-* @param unique id for this widget
-* @param a item
-* @param a icon (e. g. located in pics/station)
-* @param value send if the button is pressed (optional, default 1)
-* @param type: 'mini', 'midi' (optional, default: mini)
+* @param {id} unique id for this widget
+* @param {item} an item
+* @param {image} an icon (e. g. located in pics/station)
+* @param {text=1} value to send if the button is pressed (optional, default 1)
+* @param {type=mini} type: 'mini', 'midi' (optional, default: mini)
 */
 {% macro station(id, item, pic, val, type) %}
 	{% import "basic.html" as basic %}
 	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}" class="station">
-		{{ basic.button(id, item, '', pic, val, type|default('mini')) }}
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} class="station">
+		{{ basic.stateswitch(id, item, type|default('mini'), val, pic) }}
 	</div>
+{% endmacro %}
+
+/**
+* Displays a slider to show and control the current time of a media file. Slider continues to run every second even if time value is not updated by item
+*
+* @param {id=} unique id for this widget
+* @param {item} an item providing the current time of a media file
+* @param {item} an item providing info whether song is playing or not (value has to be true or false)
+* @param {item} an item providing the duration of the same media file
+* @param {value=5} step in % between updates (optional, default 5)
+* @param {text(input,handle,both,none)=input} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'input')
+*/
+{% macro timeslider(id, time, play, duration, step, value_display) %}
+    <input {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.timeslider" data-item="{{ time }}, {{ duration }}, {{ play }}"
+        type="range" value="0" min="0" max="1" disabled="1" step="{{ step|default(5) }}" timer="{{ step|default(5) }}"
+        orientation="horizontal" handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" data-highlight="true" />
+{% endmacro %}
+
+/**
+* A button changing from play to pause and vice versa to control a music/video player
+* Using the following logic:
+* current state: play. Click -> pause. Longclick -> stop
+* current state: pause. Click -> play. Longclick -> stop
+* current state: stop. Click -> play.
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item for the play command
+* @param {item} an item for the pause command
+* @param {item} an item for the stop command
+*
+* @author Onkel Andy
+*/
+{% macro playpause(id, item_play, item_pause, item_stop) %}
+    {% import "basic.html" as basic %}
+    <span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.playpause" data-item="{{ item_play }},{{ item_pause }},{{ item_stop }}" class="icon0 ui-link switch" data-val="0">
+    <a>
+    {{ basic.icon('audio_stop', 'icon0') }}
+    </a>
+    </span>
 {% endmacro %}

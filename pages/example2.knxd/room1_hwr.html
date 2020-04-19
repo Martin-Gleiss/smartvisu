@@ -1,0 +1,54 @@
+/**
+ *-----------------------------------------------------------------------------
+ * @packame     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2015
+ * @license     GPL <http://www.gnu.de>
+ * ----------------------------------------------------------------------------- 
+ */
+
+{% extends "rooms.html" %}
+
+{% block content %}
+    <h1><img class="icon icon0" src='{{ icon0 }}sani_boiler_temp.svg'/>Hauswirtschaftsraum</h1>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Licht</h3>
+            Decke  {{ basic.stateswitch('switch1', '5/1/1/1.001', 'icon', ['1', '0'], ['light_light.svg', 'light_light.svg'], '', ['icon1', 'icon0']) }}
+      	</div>
+
+    </div>    
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+        <div data-role="collapsible" data-collapsed="false" >
+            <h3>Aussenbeleuchtung</h3>
+            Aussen Norden {{ basic.stateswitch('licht_norden', '12/1/101/1.001', 'icon', ['1', '0'], ['light_light.svg', 'light_light.svg'], '', ['icon1', 'icon0']) }}<br/>
+            Aussen Osten&nbsp;&nbsp;  {{ basic.stateswitch('licht_osten', '12/1/111/1.001', 'icon', ['1', '0'], ['light_light.svg', 'light_light.svg'], '', ['icon1', 'icon0']) }}<br/>
+            Aussen Sueden {{ basic.stateswitch('licht_sueden', '12/1/121/1.001', 'icon', ['1', '0'], ['light_light.svg', 'light_light.svg'], '', ['icon1', 'icon0']) }}<br/>
+            Aussen Westen {{ basic.stateswitch('licht_westen', '12/1/131/1.001', 'icon', ['1', '0'], ['light_light.svg', 'light_light.svg'], '', ['icon1', 'icon0']) }}
+        </div>
+
+    </div>
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+        <div data-role="collapsible" data-collapsed="false" >
+            <h3>Aussensteckdosen</h3>
+            Aussen Norden {{ basic.stateswitch('steckdosen_norden', '', 'icon', ['1', '0'], ['message_socket.svg', 'message_socket.svg'], '', ['icon1', 'icon0']) }}<br/>
+            Aussen Osten&nbsp;&nbsp;  {{ basic.stateswitch('steckdosen_osten', '', 'icon', ['1', '0'], ['message_socket.svg', 'message_socket.svg'], '', ['icon1', 'icon0']) }}<br/>
+            Aussen Sueden {{ basic.stateswitch('steckdosen_sueden', '', 'icon', ['1', '0'], ['message_socket.svg', 'message_socket.svg'], '', ['icon1', 'icon0']) }}<br/>
+            Aussen Westen {{ basic.stateswitch('steckdosen_westen', '', 'icon', ['1', '0'], ['message_socket.svg', 'message_socket.svg'], '', ['icon1', 'icon0']) }}
+        </div>
+
+    </div>
+    </div>
+{% endblock %}
+

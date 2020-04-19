@@ -1,7 +1,7 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiß
+* @author      Martin Gleiss
 * @copyright   2012 - 2015
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
@@ -11,15 +11,21 @@
 <div id="menu" class="menu">
 
 	<a id="menu-rooms" class="icon1" href="index.php">
-		<img class="icon" src="{{ icon0 }}control_building_empty.svg" /></a>
+		<img class="icon" src="{{ icon0 }}control_building_empty.svg" alt="home" /></a>
+		
+	{% if page != 'config' %}
+		<a id="menu-category" class="icon1" href="index.php?page=category">
+			<img class="icon" src="{{ icon0 }}time_manual_mode.svg" alt="category" /></a>
 
-	<a id="menu-category" class="icon1" href="index.php?page=category">
-		<img class="icon" src="{{ icon0 }}time_manual_mode.svg" /></a>
-
-	<a id="menu-apps" class="icon1" href="index.php?page=apps">
-		<img class="icon" src="{{ icon0 }}it_net.svg" /></a>
-
-	<a id="menu-system" class="icon1" href="index.php?page=config">
-		<img class="icon" src="{{ icon0 }}edit_settings.svg" /></a>
+		<a id="menu-apps" class="icon1" href="index.php?page=apps">
+			<img class="icon" src="{{ icon0 }}it_net.svg" alt="apps" /></a>
+			
+	{% else%}	
+		<a id="menu-docu" data-ajax="false" href="index.php?pages=docu&page=index">
+			<img class="icon {{ pages == 'docu' ? ' icon1' }}" src="{{ icon0 }}edit_copy.svg"/></a>
+	
+	{% endif %}
+		<a id="menu-system" class="icon1" href="index.php?page=config">
+			<img class="icon" src="{{ icon0 }}edit_settings.svg" alt="config" /></a>
 
 </div>

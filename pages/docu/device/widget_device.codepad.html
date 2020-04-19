@@ -23,7 +23,7 @@ To bind some widgets to the codepad use a div to group them. Than use the "data-
 
 		<div class="codepad" data-bind='codepad1' >
 			...
-			{{ basic.switch('switch1', 'bath.light.switch') }}
+			{{ basic.stateswitch('', 'bath.light.switch') }}
 			...
 		</div>
 
@@ -37,10 +37,10 @@ To bind some widgets to the codepad use a div to group them. Than use the "data-
 		If you want to test ist, the correct number for that codepad is: <b>{{ config_codepad_code }}</b>
 	</div>
 	<div class="codepad" data-bind='codepad1' >
-		{{ basic.switch('switch1', 'bath.light.switch') }}
-		{{ basic.button('button1', 'bath.light.switch', '1') }}
-		{{ basic.dual('dual1', 'bath.light.switch') }}
-		{{ basic.colordisc('colordisc1', 'bath.color.r', 'bath.color.g', 'bath.color.b') }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
+		{{ basic.stateswitch('', 'bath.light.switch', '', 0, '', '1') }}
+		{{ basic.stateswitch('', 'bath.light.switch') }}
+		{{ basic.color('colordisc1', 'bath.color.r', 'bath.color.g', 'bath.color.b') }}
 	</div>
 
 	{{ device.codepad('codepad1') }}

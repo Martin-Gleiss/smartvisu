@@ -1,7 +1,7 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiß
+* @author      Martin Gleiss
 * @copyright   2012 - 2015
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
@@ -11,50 +11,61 @@
 /**
 * Standard blind
 *
-* @param unique id for this widget
-* @param name of the blind
-* @param a item for the up- and down- movement
-* @param a item for stopping the movement (optional)
-* @param a item for the actual absolute position of the blinds
-* @param a item for increase- and decreace- of the blade (optional)
-* @param a item for the actual absolute angle of the blade (optional)
-* @param the minimum value for close (optional, default 0)
-* @param the maximum value for open (optional, default 255)
-* @param step between two values (optional, default 5)
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the blind
+* @param {item=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+* @param {item=} an item for stopping the movement (optional)
+* @param {item} an item for the absolute position of the blinds
+* @param {item=} an item for increase and decrease of the blade (optional)
+* @param {item=} an item for the absolute angle of the blade (optional)
+* @param {value=0} the value for opened (optional, default 0)
+* @param {value=255} the value for closed (optional, default 255)
+* @param {value=5} step between two values (optional, default: 5)
 *
 * @info inspired by Frank Berlenz
 */
-{% macro blind(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step) %}
+{% macro blind(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, value_top, value_bottom, step) %}
 	{% import "basic.html" as basic %}
-	{% set uid = uid(page, id) %}
 
-	<div class="blind">
+	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
 		<table align="center" cellpadding="0">
 			<tr>
 				<td valign="top">
-					<div class="set">{{ basic.button(id~'up', item_move, '', 'arrow-u', 0) }}</div>
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.stateswitch('', item_pos, '', value_top|default('0'), 'carat-u') }}
+						{% else %}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
+						{% endif %}
+					</div>
 				</td>
 				<td rowspan="3" align="left" class="pos">
-					{{ basic.slider(id~'pos', item_pos, min, max, step, 'vertical') }}</td>
+					{{ basic.slider('', item_pos, value_top|default('0'), value_bottom|default('255'), step, 'vertical') }}</td>
 				<td rowspan="2" valign="bottom" class="angle">
 					{{ txt }}<br />
-					{% if item_angle %} {{ basic.slider(id~'angle', item_angle, min, max, step, 'semicircle') }} {% endif %}
+					{% if item_angle %} {{ basic.slider('', item_angle, value_top|default('0'), value_bottom|default('255'), step, 'semicircle') }} {% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>
 					{% if item_stop %}
-						<div class="set">{{ basic.button(id~'stop', item_stop, '', 'delete', 1) }}</div> {% endif %}</td>
+						<div class="set">{{ basic.stateswitch('', item_stop, '', 1, 'delete') }}</div> {% endif %}</td>
 			</tr>
 			<tr>
 				<td valign="bottom">
-					<div class="set">{{ basic.button(id~'down', item_move, '', 'arrow-d', 1) }}</div>
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.stateswitch('', item_pos, '', value_bottom|default('255'), 'carat-d') }}
+						{% else %}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
+						{% endif %}
+					</div>
 				</td>
 				<td valign="bottom">
 					{% if item_shift %}
 						<div class="set">
-							<span style="float: left;">{{ basic.button(id~'minus', item_shift, '', 'minus', 0) }}</span>
-							<span style="float: right;">{{ basic.button(id~'plus', item_shift, '', 'plus', 1) }}</span>
+							<span style="float: left;">{{ basic.stateswitch('', item_shift, '', 0, 'minus') }}</span>
+							<span style="float: right;">{{ basic.stateswitch('', item_shift, '', 1, 'plus') }}</span>
 						</div>
 					{% endif %}
 				</td>
@@ -66,45 +77,30 @@
 
 /**
 * The Codepad is used to protect some widgets. You have to enter a correct code to use the widgets for a time.
-* You may specify a global code in the connfig.php for all codepads.
+* You may specify a global code in the config.php for all codepads.
 *
-* @param unique id for this widget
-* @param code to be entered (optional, default in config)
-* @param a title for the pad (optional)
-* @param a duration for unlocking the widgets (optional, default 10 seconds)
+* @param {id} unique id for this widget
+* @param {value=} code to be entered (optional, default in config)
+* @param {text=} a title for the pad (optional)
+* @param {duration=10} how long should the widgets be unlocked (optional, default: 10 seconds)
 */
 {% macro codepad(id, code, title, duration) %}
-	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}" data-id="{{ id }}" data-widget="device.codepad" data-val="{{ code|default(config_codepad_code)|md5 }}" data-duration="{{ duration|default('10') }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-id="{{ id }}" data-widget="device.codepad" data-val="{{ code|default(config_codepad_code)|md5 }}" data-duration="{{ duration|default('10') }}"
 		data-role="popup" data-overlay-theme="a" class="alert" style="width: 166px;" >
 		<div data-role="header" data-theme="c"><h1>{{ title|default('Enter Code') }}</h1></div>
 
-		<input id="{{ uid }}-code" type="password" style="text-align: center;"/>
-		
+		<input type="password" style="text-align: center;"/>
+
 		<div style="margin: 10px;">
 		{% for i in 1..9 %}
-			<a data-val="{{ i }}" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >{{ i }}</a>
+			<a data-val="{{ i }}" data-role="button" data-inline="true" data-iconpos="nopic" data-mini="true" >{{ i }}</a>
 		{% endfor %}
-			<a data-val="-" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >-</a>
-			<a data-val="0" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >0</a>
-			<a id="{{ uid }}-ok" data-val="ok" data-role="button" data-inline="true" data-iconpos="nopic" class="ui-mini" >OK</a>
+			<a data-val="-" data-role="button" data-inline="true" data-iconpos="nopic" data-mini="true" >-</a>
+			<a data-val="0" data-role="button" data-inline="true" data-iconpos="nopic" data-mini="true" >0</a>
+			<a data-val="ok" data-role="button" data-inline="true" data-iconpos="nopic" data-mini="true" >OK</a>
 		</div>
 	</div>
-
-	<script type="text/javascript">
-	$(document).on('pageshow', function (bevent, bdata) {
-		$('[data-bind="{{ id }}"]').find('*').on('click', function(event) {
-			if (!$(this).closest('[data-bind="{{ id }}"]').attr('data-access')) {
-			 	var codepad = $('#{{ uid }}')
-				codepad.popup('open');
-				codepad.find('#{{ uid }}-code').val('').focus();
-				codepad.data('originally-clicked', $(this));
-				event.stopPropagation();
-			}
-		});
-	});
-	</script>
 
 {% endmacro %}
 
@@ -112,22 +108,32 @@
 /**
 * Standard dimmer with switching and dimming function
 *
-* @param unique id for this widget
-* @param name of the dimmer
-* @param a item for switching
-* @param a item for dimming
-* @param the minimum value if the slider is moved to total left (optional, default 0)
-* @param the maximum value if the slider is moved to total right (optional, default 255)
-* @param step between two values (optional, default 5)
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the dimmer
+* @param {item} an item for switching
+* @param {item} an item for dimming
+* @param {value=0} the minimum value if the slider is moved to total left (optional, default: 0)
+* @param {value=255} the maximum value if the slider is moved to total right (optional, default: 255)
+* @param {value=5} step between two values (optional, default: 5)
+* @param {image=light_light} the pic for the 'on' state (optional)
+* @param {image=light_light} the pic for the 'off' state (optional)
+* @param {color=icon1} the color for the 'on' state (optional)
+* @param {color=icon0} the color for the 'off' state (optional)
+* @param {text(input,handle,both,none)=none} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'none')
+* @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
+* @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
+* @param {text='left'} position of the switch: left (default) or right
 */
-{% macro dimmer(id, txt, item_switch, item_value, min, max, step) %}
+
+{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos) %}
 	{% import "basic.html" as basic %}
 
-	<div class="dimmer">
-		{{ basic.switch(id~'switch', item_switch, 'light_light.svg', 'light_light.svg') }}
-		<p>{{ txt|e }}</p>
-		{{ basic.slider(id~'slider', item_value, min, max, step) }}
-	</div>
+		{% if picpos is empty or picpos=='left' %}<div class="dimmer-left" {% else %} <div class="dimmer-right" {% endif %}
+		data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
+			{{ basic.stateswitch('', item_switch, 'icon', '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
+			<p>{{ txt|e }}</p>
+			{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display) }}
+		</div>
 
 {% endmacro %}
 
@@ -135,53 +141,61 @@
 /**
 * Standard RTR (Room Temperatur Regulator)
 *
-* @param unique id for this widget
-* @param name of the rtr
-* @param a item for the actual temperature
-* @param a item for the set temperature
-* @param a item for comfort / standby (3x bit or 1x byte)
-* @param a item for night (3x bit or 1x byte)
-* @param a item for frost (3x bit or 1x byte)
-* @param a item for the current state of the actor
-* @param a item for a text (some rtr have a text-display), (optional)
-* @param step for plus/minus buttons (optional, default 0.5)
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the rtr
+* @param {item} an item for the actual temperature
+* @param {item} an item for the set temperature
+* @param {item=} an item for comfort / standby (3x bit or 1x byte, optional)
+* @param {item=} an item for night (3x bit or 1x byte, optional)
+* @param {item=} an item for frost (3x bit or 1x byte, optional)
+* @param {item=} an item for the current state of the actor (optional)
+* @param {item=} an item for a text (some rtr have a text-display), (optional)
+* @param {value=0.5} step for plus/minus buttons (optional, default: 0.5)
+* @param {item=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
+* @param {text[]=} list of additional widgets / content to display
 */
-{% macro rtr(id, txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step) %}
+{% macro rtr(id, txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements) %}
 	{% import "basic.html" as basic %}
 
-	<div id="{{ uid(page, id) }}" data-widget="device.rtr" data-step="{{ step|default(0.5) }}"
-		class="rtr">
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtr" class="rtr">
 		<div class="actual">
-			<div class="temp">{{ basic.float(id~'actual', item_actual, '°' ) }}</div>
-			<div class="text">{{ txt }} {% if item_txt %} {{ basic.value(id~'txt', item_txt) }} {% endif %}</div>
+			<div class="temp">{{ basic.print('', item_actual, '°' ) }}</div>
+			<div class="text">{{ txt }} {% if item_txt %} {{ basic.print('', item_txt, 'text') }} {% endif %}</div>
 		</div>
-
+		<br>
 		{% if item_set %}
 			<div class="set">
-				<a data-role="button" data-icon="minus" data-inline="true" data-iconpos="notext" class="ui-mini"></a>
-
-				<div class="temp">{{ basic.float(id~'set', item_set, '°' ) }}</div>
-				<a data-role="button" data-icon="plus" data-inline="true" data-iconpos="notext" class="ui-mini"></a>
+				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.5)), 'minus', '', 'micro' ) }}
+				<div class="temp">{{ basic.print('', item_set, '°' ) }}</div>
+				{{ basic.offset('', item_offset|default(item_set), step|default(0.5), 'plus', '', 'micro' ) }}
 			</div>
 		{% endif %}
-
+		<br>
+		{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty or supplements is not empty %}
 		<div class="control">
-			{% if ((config_driver == 'linknx') and (item_comfort == item_night) and (item_night == item_frost)) %}
-				{{ basic.switch(id~'mode', item_comfort, 'user_available.svg', 'user_away.svg', 'comfort', 'standby') }}
-				{{ basic.switch(id~'night', item_night, 'scene_night.svg', 'scene_day.svg', 'night', 'standby') }}
-				{{ basic.switch(id~'frost', item_frost, 'weather_frost.svg', 'weather_frost.svg', 'frost', 'standby') }}
-			{% elseif ((item_comfort == item_night) and (item_night == item_frost)) %}
-				{{ basic.switch(id~'mode', item_comfort, 'user_available.svg', 'user_away.svg', '1', '2') }}
-				{{ basic.switch(id~'night', item_night, 'scene_night.svg', 'scene_day.svg', '3', '2') }}
-				{{ basic.switch(id~'frost', item_frost, 'weather_frost.svg', 'weather_frost.svg', '4', '2') }}
+			{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
+				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['night', 'standby'] : [3, 2]), ['scene_night.svg', 'scene_day.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['frost', 'standby'] : [4, 2]), ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
 			{% else %}
-				{{ basic.switch(id~'mode', item_comfort, 'user_available.svg', 'user_away.svg') }}
-				{{ basic.switch(id~'night', item_night, 'scene_night.svg', 'scene_day.svg') }}
-				{{ basic.switch(id~'frost', item_frost, 'weather_frost.svg', 'weather_frost.svg') }}
+				{% if item_comfort is not empty %}
+					{{ basic.stateswitch('', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
+				{% endif %}
+				{% if item_night is not empty %}
+					{{ basic.stateswitch('', item_night, 'icon', '', ['scene_night.svg', 'scene_day.svg']) }}
+				{% endif %}
+				{% if item_frost is not empty %}
+					{{ basic.stateswitch('', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
+				{% endif %}
 			{% endif %}
-			<div style="float:left; width: 3px; height: 50px;"></div>
-			{{ basic.switch(id~'state', item_state, 'sani_heating.svg', 'sani_heating.svg') }}
+			{% if item_state is not empty %}
+				{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
+			{% endif %}
+			{% for supplement in supplements %}
+				{{ supplement|raw }}
+			{% endfor %}
 		</div>
+		{% endif %}
 	</div>
 {% endmacro %}
 
@@ -189,52 +203,259 @@
 /**
 * Standard shutter
 *
-* @param unique id for this widget
-* @param name of the shutter
-* @param a item for the up- and down- movement
-* @param a item for stopping the movement (optional)
-* @param a item for the actual absolute position of the blinds
-* @param a item for increase- and decreace- of the blade (optional, for future use)
-* @param a item for the actual absolute angle of the blade (optional)
-* @param a item for some saved positions (optional)
-* @param the minimum value for close (optional, default 0)
-* @param the maximum value for open (optional, default 255)
-* @param step between two values (optional, default 5)
-* @param the mode: 'half' blade turns from -1 to +1, or 'full' blade turns from 0 to +1 (optional, default 'half')
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the shutter
+* @param {item=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+* @param {item=} an item for stopping the movement (optional)
+* @param {item} an item for the absolute position of the blinds
+* @param {item=} an item for increase and decrease of the blade (optional, for future use)
+* @param {item=} an item for the absolute angle of the blade (optional)
+* @param {item=} an item for some saved positions (optional)
+* @param {value=0} the value for opened (optional, default 0)
+* @param {value=255} the value for closed (optional, default 255)
+* @param {value=5} step between two values (optional, default 5)
+* @param {text(half,full)=} 'half' blade turns from -1 to +1, 'full' blade turns from 0 to +1 (optional, default 'half')
+* @param {image=} a background image url (relative to smartVISU directory or absolute); optimal size is 100px x 180px (optional)
+* @param {value=0} the value to send for position 1 (optional, default 0)
+* @param {value=1} the value to send for position 2 (optional, default 1)
+* @param {text=Pos1} the text printed on button for position 1 (optional, default Pos1)
+* @param {text=Pos2} the text printed on button for position 2 (optional, default Pos2)
 *
-* @info inspired by Jörg Gutowski
+* @info inspired by Joerg Gutowski
 */
-{% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode) %}
+{% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) %}
 	{% import "basic.html" as basic %}
-	{% set uid = uid(page, id) %}
 
-	<div class="blind">
+	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
 		<table align="center" cellpadding="0">
 			<tr>
 				<td valign="top">
-					<div class="set">{{ basic.button(id~'up', item_move, '', 'arrow-u', 0) }}</div>
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.stateswitch('', item_pos, '', value_top|default('0'), 'carat-u') }}
+						{% else %}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
+						{% endif %}
+					</div>
 				</td>
-				<td rowspan="3" align="center" class="pos">
-					{{ basic.shutter(id, item_pos, item_angle, min, max, step, mode) }}</td>
+				<td rowspan="3" valign="center" class="pos">
+					{{ basic.shutter('', item_pos, item_angle, value_top|default('0'), value_bottom|default('255'), step, mode, background) }}
+				</td>
 				<td valign="top">
 					{% if item_saved %}
-						<div>{{ basic.button(id~'saved1', item_saved, 'Pos1', 'grid', 0) }} </div>{% endif %}</td>
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_1|default(0), 'grid', text_pos_1|default('Pos1'), '', 'blink') }}</div>
+					{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td valign="center">
 					{% if item_stop %}
-						<div class="set">{{ basic.button(id~'stop', item_stop, '', 'delete', 1) }}</div> {% endif %}</td>
+						<div class="set">{{ basic.stateswitch('', item_stop, '', 1, 'delete') }}</div>
+					{% endif %}
+				</td>
 				<td valign="center">{{ txt }}</td>
 			</tr>
 			<tr>
 				<td valign="bottom">
-					<div class="set">{{ basic.button(id~'down', item_move, '', 'arrow-d', 1) }}</div>
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.stateswitch('', item_pos, '', value_bottom|default('255'), 'carat-d') }}
+						{% else %}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
+						{% endif %}
+					</div>
 				</td>
 				<td valign="bottom">
 					{% if item_saved %}
-						<div>{{ basic.button(id~'saved2', item_saved, 'Pos2', 'grid', 1) }} </div>{% endif %}</td>
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_2|default(1), 'grid', text_pos_2|default('Pos2'), '', 'blink') }}</div>
+					{% endif %}
+				</td>
 			</tr>
 		</table>
+	</div>
+
+{% endmacro %}
+
+/**
+* Displays a simple shutter control assembly in table format
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the shutter
+* @param {item} a gad/item for long move
+* @param {item} a gad/item for stopping movement
+* @param {item} a gad/item for the actual position
+* @param {item=} a gad/item for the saved position (optional)
+* @param {type=micro} valid types: 'micro', 'mini', 'midi' (optional, default: micro)
+*
+* @author Michael Stemmer and Wolfram v. Huelsen
+*/
+{% macro smallshut(id, txt, item_move, item_stop, item_position, item_saved, type) %}
+{% import "basic.html" as basic %}
+{% import "icon.html" as icon %}
+{% set uid = uid(page, id) %}
+
+	<div class="smallshut"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
+		<span class="ui-shut-txt">
+		{% if txt %} {{ txt }} {% endif %}
+		</span>
+		<span class="ui-shut-btn">
+			{{ basic.stateswitch('',  item_move, type|default('micro'), '0', 'carat-u') }}
+		</span>
+		<span class="ui-shut-btn">
+			{{ basic.stateswitch('', item_stop, type|default('micro'), 1, 'delete') }}
+		</span>
+		<span class="ui-shut-btn">
+				{{ basic.stateswitch('', item_move, type|default('micro'), '1', 'carat-d') }}
+		</span>
+		<span class="ui-shut-btn">
+			{% if item_saved %}
+				{{ basic.stateswitch('', item_saved, type|default('micro'), '1', 'fts_shutter_50.svg') }}
+			{% endif %}
+		</span>
+		<span class="ui-shut-pic">
+			{% if item_position %}
+				{{ icon.shutter(id~'position', '', item_position) }}
+			{% endif %}
+		</span>
+	</div>
+{% endmacro %}
+
+/**
+* Roof window
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the window
+* @param {item=} an item for the open and close movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+* @param {item=} an item for stopping the movement (optional)
+* @param {item} an item for the absolute position
+* @param {item=} an item for some saved positions (optional)
+* @param {value=0} the value for closed (optional, default 0)
+* @param {value=255} the value for opened (optional, default 255)
+* @param {value=5} step between two values (optional, default 5)
+* @param {value=0} the value to send for position 1 (optional, default 0)
+* @param {value=1} the value to send for position 2 (optional, default 1)
+* @param {text=Pos1} the text printed on button for position 1 (optional, default Pos1)
+* @param {text=Pos2} the text printed on button for position 2 (optional, default Pos2)
+*
+* @author Stefan Widmer
+*/
+{% macro roofwindow(id, txt, item_move, item_stop, item_pos, item_saved, value_closed, value_opened, step, value_pos_1, value_pos_2, text_pos_1, text_pos_2) %}
+	{% import "basic.html" as basic %}
+	{% import "icon.html" as icon %}
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.roofwindow" data-item="{{ item_pos }}"
+		data-min="{{ value_closed|default('0') }}" data-max="{{ value_opened|default('255') }}" data-step="{{ step|default(5) }}"
+		class="roofwindow">
+		<table align="center" cellpadding="0">
+			<tr>
+				<td valign="top">
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.stateswitch('', item_pos, '', value_opened|default('255'), 'carat-u') }}
+						{% else %}
+							{{ basic.stateswitch('', item_move, '', value_opened|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
+						{% endif %}
+					</div>
+				</td>
+				<td rowspan="3" valign="center" class="pos">
+					<div class="control hide">
+						<img class="icon pos" src="icons/ws/control_arrow_up_down.svg" alt="up/down" />
+					</div>
+					{{ icon.roofwindow('', '', item_pos, value_closed|default('0'), value_opened|default('255')) }}
+				</td>
+				<td valign="top">
+					{% if item_saved %}
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_1|default(0), 'grid', text_pos_1|default('Pos1'), '', 'blink') }}</div>
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td valign="center">
+					{% if item_stop %}
+						<div class="set">{{ basic.stateswitch('', item_stop, '', 1, 'delete') }}</div>
+					{% endif %}
+				</td>
+				<td valign="center">{{ txt }}</td>
+			</tr>
+			<tr>
+				<td valign="bottom">
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.stateswitch('', item_pos, '', value_closed|default('0'), 'carat-d') }}
+						{% else %}
+							{{ basic.stateswitch('', item_move, '', value_opened|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
+						{% endif %}
+					</div>
+				</td>
+				<td valign="bottom">
+					{% if item_saved %}
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_2|default(1), 'grid', text_pos_2|default('Pos2'), '', 'blink') }}</div>
+					{% endif %}
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}
+
+
+/**
+* Widget for usage of UZSU plugin
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} the item of the UZSU (NOT the item which is switched by UZSU)
+* @param {text=UZSU} headline of popup (optional, default: UZSU)
+* @param {image=time_timer_switch} the pic for the 'on' state (optional)
+* @param {image=time_timer_switch} the pic for the 'off' state (optional)
+* @param {text(bool,num,list,text)=bool} supported types are 'bool', 'num', 'list', 'text' (optional, default: bool)
+* @param {text[]=} valueParameterList depending on valueType (optional):
+	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
+	num: [min, max, step],
+	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'],
+	text: no value parameter
+* @param {color=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
+* @param {color=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
+*
+* @author Michael Wuertenberger
+*/
+
+{% macro uzsuicon(id, item, headline, pic_on, pic_off, valueType, valueParameterList, color_on, color_off, _backend) %}
+	{% import "basic.html" as basic %}
+
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsuicon" data-item="{{ item }}"
+		data-headline="{{ headline|default('UZSU') }}" data-designType="{{ _backend }}"
+		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
+		class="icon">
+		<a>
+			<span class="icon-off">{{ basic.icon(pic_off|deficon('time_timer_switch.svg'), color_off) }}</span>
+			<span class="icon-on hide">{{ basic.icon(pic_on|deficon('time_timer_switch.svg'), color_on|default('icon1')) }}</span>
+		</a>
+	</span>
+
+{% endmacro %}
+
+/**
+* Graphical widget for usage of UZSU plugin.
+ Drag points, add new ones by clicking on background and edit or delete them.
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} the item of the UZSU (NOT the item which is switched by UZSU)
+* @param {text=UZSU} title of graph (optional, default: UZSU)
+* @param {value=0} allow changes (optional, default: 0)
+* @param {text(bool,num)=bool} supported types are 'bool' and 'num' (optional, default: bool)
+* @param {text[]=} valueParameterList depending on valueType (optional):
+	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
+	num: [min, max, step]
+*
+* @author Stefan Widmer
+*/
+
+{% macro uzsugraph(id, item, headline, editable, valueType, valueParameterList, _backend) %}
+	{% import "basic.html" as basic %}
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsugraph" data-item="{{ item }}"
+		data-headline="{{ headline|default('UZSU') }}" data-editable="{{ editable|default(0) }}" data-designType="{{ _backend }}"
+		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
+		class="plot">
 	</div>
 
 {% endmacro %}

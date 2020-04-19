@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--
+This file is needed to work around google's restriction of private IP numbers as origins.
+It is called by adding '.nip.io' to the hostname, which actually is an IP number (see http://nip.io/)
+-->
+<script src="//apis.google.com/js/api.js"></script>
+<style type="text/css">
+	html, body {
+		width: 100%;
+		height: 100%;
+		background-color: transparent;
+		overflow: hidden;
+		cursor: pointer;
+	}
+</style>
+<script type="text/javascript">
+	gapi.load('auth2', function() {
+		try {
+			gapi.auth2.authorize(
+				// Workaround for possible bug in gapi.auth2.authorize with IE11 and Edge
+				{
+					client_id: ' ',
+					scope: 'https://www.googleapis.com/auth/calendar.readonly',
+					prompt: 'none'
+				},
+				function() { }
+			);
+		}
+		catch(ex) { }
+	});
+
+	var params;
+
+	window.addEventListener("message", function(e) {
+		if(e.data.subject != 'googleauth')
+			return;
+
+		if(e.origin != location.origin.replace('.nip.io', ''))
+			throw "Invalid origin";
+
+		params = { clientId: e.data.clientId, origin: e.origin, window: e.source };
+	}, false);
+
+	function grantOfflineAccess() {
+		try {
+			gapi.auth2.authorize(
+				{
+					client_id: params.clientId,
+					scope: 'https://www.googleapis.com/auth/calendar.readonly',
+					prompt: 'consent',
+					response_type: 'code'
+				},
+				function(resp) {
+					if (resp.error)
+						// possible errors: idpiframe_initialization_failed (with subtype), popup_closed_by_user, popup_blocked_by_browser, access_denied, immediate_failed
+						params.window.postMessage({ subject: 'googleauth', error: { code: resp.error, message: resp.error_subtype } }, params.origin);
+					else
+						params.window.postMessage({ subject: 'googleauth', code: resp.code }, params.origin);
+				}
+			);
+		}
+		catch(ex) {
+			params.window.postMessage({ subject: 'googleauth', error: { code: 'Exception', message: ex.toString() } }, params.origin);
+			throw ex;
+		}
+	}
+</script>
+</head>
+<body onclick="grantOfflineAccess()">
+</body>
+</html>

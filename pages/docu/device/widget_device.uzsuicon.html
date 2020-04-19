@@ -1,0 +1,46 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_device.html" %}
+
+{% block example %}
+<script>
+  var interpol1 = {type: 'cubic', interval: '1', initialized: 'False', itemtype: 'num', initage: ''}
+  var liste1 = [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '95', 'time': '20:26'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '10', 'time': '23:00'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '15', 'time': '05:15'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '80', 'calculated': '06:13', 'time': '06:00<sunrise<08:00'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '35', 'time': '09:40'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '35', 'time': '16:45'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '95', 'calculated': '18:12', 'time': '18:00<sunset-30m'}]
+  var kurve1 = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol1, list: liste1};
+
+  io.write('uzsuitem', kurve1);
+</script>
+	<h5>Example</h5>
+
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; device.uzsuicon('uzsu1', 'uzsuitem') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ device.uzsuicon('uzsu1', 'uzsuitem') }}
+	</div>
+
+	FHEM style and value as list (style depends on backend I/O driver)
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; device.uzsuicon('uzsu2', 'uzsuitem', 'FHEM style and value as list', '', '', 'list', ['a:0','b:1','c:2']) &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ device.uzsuicon('uzsu2', 'uzsuitem', 'FHEM style and value as list', '', '', 'list', ['a:0','b:1','c:2'], '', '', '2') }}
+	</div>
+
+	Numeric input (validation depends on browser, see also <a href="https://www.w3.org/html/wiki/Elements/input/number">https://www.w3.org/html/wiki/Elements/input/number</a>)
+	<div class="twig">
+		<code class="prettyprint">&#123;&#123; device.uzsuicon('uzsu3', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5]) &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ device.uzsuicon('uzsu3', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5]) }}
+	</div>
+
+{% endblock %}

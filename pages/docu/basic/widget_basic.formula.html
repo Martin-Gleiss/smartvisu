@@ -12,23 +12,12 @@
 
 {% block example %}
 
-	<h5>Example</h5>
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-
-			{{ basic.formula('formula1', ['bath.value'], 'V') }}<br />
-			{{ basic.formula('formula2', ['bath.p1', 'bath.p2', 'bath.p3'], 'W', 'SUM( VAR )') }}<br />
-			{{ basic.formula('formula3', ['bath.p1', 'bath.p2', 'bath.p3'], 'W', 'AVG( VAR ) * 3 / 100') }}<br />
-			{{ basic.formula('formula4', 'bath.value', 'Mwh') }}<br />
-				
-			{% endverbatim %}{% endfilter %}</code>
-	</div>
+	
 	<div class="html">
-		a voltage: {{ basic.formula('formula1', ['bath.value'], 'V') }}<br />
-		actual power: {{ basic.formula('formula2', ['bath.p1', 'bath.p2', 'bath.p3'], 'W', 'SUM( VAR )') }}<br />
-		some calc: {{ basic.formula('formula3', ['bath.p1', 'bath.p2', 'bath.p3'], 'W', 'AVG( VAR ) * 3 / 100') }}<br />
-		a unknown unit: {{ basic.formula('formula4', 'bath.value', 'Mwh') }}<br />
+		This widget is deprecated and may be removed in later versions.<br>
+		Please look into basic.print for replacement and further information.
 	</div>
+
 
 {% endblock %}
 
