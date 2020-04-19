@@ -19,7 +19,6 @@ $.widget("sv.calendar_list", $.sv.widget, {
 			});
 
 			var ul = node.children('ul:first').empty();
-
 			$.each(data, function(index, entry) {
 				// "pseudo clone" entry to not mute original object in widget.buffer
 				entry = Object.create(entry);
@@ -72,7 +71,20 @@ $.widget("sv.calendar_list", $.sv.widget, {
 						tag[2] = '#'+tag[2];
 					// apply tag to events properties
 					entry[tag[1]] = tag[2];
+				
 				});
+				
+				//fals kein icon angegeben
+				if(!entry.icon){
+					//falls kein default angegeben
+					if (typeof(sv_lang.calendar_event_format.default_img_list) === undefined){
+						entry.icon = "pages/base/pics/trans.png";
+						entry.color = 'transparent';
+					}else{
+						entry.icon = sv_lang.calendar_event_format.default_img_list.icon;
+						entry.color = sv_lang.calendar_event_format.default_img_list.color;
+					}
+				}
 
 				// amend icon path/filename
 				if(entry.icon) {
@@ -86,7 +98,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				
 				// add entry
 				var a = $('<a>').append(
-					$('<img class="icon">').css('background', entry.color || 'transparent').attr('src', entry.icon || 'pages/base/pics/trans.png')
+					$('<img class="icon">').css('background', entry.color ).attr('src', entry.icon)
 				).append(
 					$('<div class="color">').css('background', calcolors[(entry.calendarname||'').toLowerCase()] || entry.calendarcolor || String(self.options.color).explode()[0] || '#666666')
 				).append(
@@ -125,7 +137,6 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 			var data = response[0];
 			var node = this.element;
 			var self = this;
-
 			var morgen = new Date();
 			morgen.setHours(0);
 			morgen.setMinutes(0);
@@ -137,17 +148,16 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 
 			var spalte = 0;
 			var muell_html = "";//<table class ='ui-btn-up-a' style='width:100%;text-align:center;overflow:hidden;'><tr>";
-
+			
 			$.each(data, function(index, entry) {
 				// "pseudo clone" entry to not mute original object in widget.buffer
 				entry = Object.create(entry);
-
 				// parse start as Date
 				if(isNaN(entry.start)) // legacy: start in format 'y-m-d H:i:s'
 					entry.start = new Date(Date.parse('20' + entry.start));
 				else // start as timestamp
 					entry.start = new Date(entry.start*1000);
-
+				
 				// handle calendar_event_format in lang.ini
 				$.each(sv_lang.calendar_event_format, function(pattern, attributes) {
 					if(entry.title.toLowerCase().indexOf(pattern.toLowerCase()) > -1) { // event title contains pattern
@@ -157,7 +167,7 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 						});
 					}
 				});
-
+				
 				// handle tags in event description
 				var tags = (entry.content||'').replace(/\\n/,'\n').match(/@(.+?)\W+(.*)/igm) || [];
 				$.each(tags, function(i, tag) {
@@ -169,9 +179,31 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 					// apply tag to events properties
 					entry[tag[1]] = tag[2];
 				});
-
-				entry.icon = "icons/ws/message_garbage_2.svg";
-
+				
+				console.log(entry)
+				//get only the garbade icon, when no or the garbade keyword is used
+				if (entry.icon === "message_garbage"){
+					entry.icon = "message_garbage_2";
+				}else if(!entry.icon){
+					if (typeof(sv_lang.calendar_event_format.default_img_waste) !== undefined){
+						entry.icon = "pages/base/pics/trans.png";
+						entry.color = 'transparent';
+					}else{
+						entry.icon = sv_lang.calendar_event_format.default_img_waste.icon;
+						entry.color = sv_lang.calendar_event_format.default_img_waste.color;
+					}
+				}
+				
+				//von Calenderlist übernommen
+				if(entry.icon) {
+					// add default path if icon has no path
+					if(entry.icon.indexOf('/') == -1)
+						entry.icon = 'icons/ws/'+entry.icon;
+					// add svg suffix if icon has no suffix
+					if(entry.icon.indexOf('.') == -1)
+						entry.icon = entry.icon+'.svg';
+				}
+				
 				muell_html += '<div style="float: left; width: ' + Math.floor(100 / self.options.count) + '%;">';
 				muell_html += '<div style="margin: 0 1px; ';
 				if (entry.start < morgen)
@@ -179,8 +211,8 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 				else if (entry.start < uebermorgen)
 					muell_html += 'border-bottom: orange 8px inset; overflow: hidden;';
 				muell_html += '">'
-				muell_html += '<img class="icon icon1" src="' + entry.icon + '" style="width: 100%; height: 100%; fill: ' + entry.color + '; stroke: ' + entry.color + '" />';
-				muell_html += '<div style="font-size: 0.9em; text-align: center;">' + entry.start.transUnit('D') + ', ' + entry.start.transUnit('day') + '</div>'
+				muell_html += '<img class="icon icon1" src="' + entry.icon + '" style="width: 6em; height: 6em; fill: ' + entry.color + '; stroke: ' + entry.color + '" />';
+				muell_html += '<div style="font-size: 0.9em;text-align: center;">' + entry.start.transUnit('D') + ', ' + entry.start.transUnit('day') + '</div>'
 				muell_html += '</div>';
 				muell_html += '</div>';
 
