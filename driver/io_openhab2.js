@@ -205,7 +205,17 @@ var io = {
 			case "Color":
 				return (state == "NULL") ? "0,0,0" : state;
 			case "DateTime":
-				return new Date((state == "NULL") ? 0 : state.slice(0, 23));
+				if (state.slice(0, 9) == '1970-01-0') {
+					state = new Date(Date.now()).toISOString().slice(0,10) + state.slice(10, 23);
+				}
+				var yyyy = parseInt(state.slice(0, 4));
+				var mi = parseInt(state.slice(5, 7)) - 1;
+				var dd = parseInt(state.slice(8, 10));
+				var hh = parseInt(state.slice(11, 13));
+				var mm = parseInt(state.slice(14, 16));
+				var ss = parseInt(state.slice(17, 19));
+				var ms = parseInt(state.slice(20, 23));
+				return (state == "NULL") ? 0 : new Date(yyyy, mi, dd, hh, mm, ss, ms);
 			case "Number":
 				if (state.indexOf('000000') > 0) {
 					state = state.slice(0, state.indexOf('000000'));
