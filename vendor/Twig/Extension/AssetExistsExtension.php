@@ -20,9 +20,6 @@ class Twig_Extension_AssetExistsExtension extends Twig_Extension
     }
 
     function debug_to_console($data) {
-        // Buffering to solve problems frameworks, like header() in this and not a solid return.
-        ob_start();
-
         $data = 'PHP: ' . $data;
         $output = 'console.log(' . json_encode($data) . ');';
         $output = sprintf('<script>%s</script>', $output);
