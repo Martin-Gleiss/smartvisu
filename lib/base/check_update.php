@@ -14,7 +14,12 @@ require_once '../../lib/includes.php';
 
 if (empty($_COOKIE['updchk'])) 
 {	
-	// get contents of remote version-info.php on githut master branch
+	// get contents from smartvisu.de (main version only)
+	$request = array_merge($_GET, $_POST);
+	$url_sv = "https://smartvisu.de/download/check.php?local=".(isset($request["local"]) ? $request["local"] : config_version);
+	$data_sv = json_decode(file_get_contents($url_sv, false));
+
+	// get contents of remote version-info.php on github master branch (main version plus revision)
 	$url = "https://raw.githubusercontent.com/martin-gleiss/smartvisu/master/";
 	$VersionBuffer = file($url.'version-info.php');
 
@@ -32,9 +37,14 @@ if (empty($_COOKIE['updchk']))
 		$VersionRevision = "0";
 	}
 
+	$extension = "";
+	if ((!$data_sv->update) && ($VersionRevision > config_version_revision)) {
+		$extension = ' (github only)';
+	}
+	
 	$ret["local"] = config_version_full; // config_version;
-	$ret["remote"] = $VersionMajor.".".$VersionMinor.".".$VersionRevision;
-
+	$ret["remote"] = $VersionMajor.".".$VersionMinor.".".$VersionRevision.$extension;
+		
 	if (config_version_revision >= "a") 
 	{
 		$ret["update"] = true;
