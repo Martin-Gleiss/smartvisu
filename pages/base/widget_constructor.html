@@ -7,7 +7,10 @@
 * -----------------------------------------------------------------------------
 */
 
-{% extends "system.html" %}
+
+
+    {% extends "system.html" %}
+
 
 {% block content %}
 
@@ -26,7 +29,7 @@
 	        }
 	        .CodeMirror {
 	        background-color: #f2f2f2;
-			font-family: Arial, monospace;
+			font-family: Monospace;
 			font-size: 12px;
 			text-shadow: none;
 			}
@@ -45,7 +48,7 @@
 			
 			}
 			.CodeMirror-linenumber{
-            left: -15px !important
+            left: -12px !important
 			
 			}
 			.CodeMirror-gutter-wrapper{
@@ -87,6 +90,16 @@
         <!-- Here is the place for all the widgets   -->
     </div>
 
+
+
+    <div id="twig_path" data-myWidgetList="{{ app.request.pathInfo }}">
+        <!-- Here is the place for all the widgets   -->
+    </div>
+
+    <div>
+        <!-- for tests -->
+    </div>
+        <!-- Here is the place for all the widgets   -->
 		<div id="Assistant_div" class="block" style="width:100%; min-height:400px">
 			<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false" id="myCollapse">
@@ -108,7 +121,9 @@
                                 <td>
                                     <img id ="icons_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Icons loaded
                                 </td>
-
+                                <td>
+                                    <img id ="colors_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Colors loaded
+                                </td>
                                 <td>
                                 	<label style="font-size: 1.0em;"><input name="render_2_Window" id="render_2_Window" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbsp render to new Window</label>
                                 </td>
@@ -161,6 +176,9 @@ var widgetCodeMirror = CodeMirror.fromTextArea($("#txt_widget")[0], {
         "Ctrl-4": function(cm) {
             ChangeDict(cm,4)
         },
+        "Ctrl-5": function(cm) {
+            ChangeDict(cm,5)
+        },
         "Alt-F": "findPersistent",
         "Tab": function(cm) {
 			var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
@@ -185,6 +203,7 @@ widgetCodeMirror.on('cursorActivity', function (cm, event)
  {
     TooltipChecker(cm);
     });
+
 
 
 
