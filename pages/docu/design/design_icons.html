@@ -52,10 +52,19 @@
 		</div>
 	</div>
 
-	<h4>Dynamic Icons</h4>
+	<h2>1. <u>Dynamic Icons</u></h2>
 
 	<div class="docu">
-		Dynamic icons are based on svg-images. They are directly rendered in the browser and are the fastest way to show dynamic changes.
+		Dynamic icons are based on svg-images. They are directly rendered in the browser and are the fastest way to show dynamic changes.<br>
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				{{ icon.arrow('id', 'item_switch', 'item_value') }}
+			{% endverbatim %}{% endfilter %}</code>
+		</div>
+		Their properties change with two items:<br> 
+		- item_value controls the dynamic behavior of the icons<br> 
+		- item_switch overrides the default color (icon0 / icon1). It should be left empty since clicking on the icon will toggle the related item<br><br>
+		
 		Use the slider to see how the dynamic icon changes.
 		<div class="twig">
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
@@ -146,7 +155,7 @@
 	</div>
 
 
-	<h4>Static Icons</h4>
+	<h2>2. <u>Static Icons</u></h2>
 
 	<div class="docu">
 		A static icon may be based on .png-image or .svg-image. Use "icon0" to show the "normal" version.
