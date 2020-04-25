@@ -348,7 +348,7 @@
 		<select{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select" data-native-menu="false" data-item="{{ item }}">
 		<option></option>
 		{% for val in value|default([0,1]) %}
-			<option value="{{ val }}">{{ text[loop.index0]|default(val) }}</option>
+			<option value="{{ val|replace({', ': ','}) }}">{{ text[loop.index0]|default(val) }}</option>
 		{% endfor %}
 		</select>
 	{% else %}
