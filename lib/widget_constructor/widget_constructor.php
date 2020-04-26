@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Andre Kohler
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
 
 // ************************************************
 // function to get all the icons
@@ -31,7 +38,7 @@ function render_inline ($value)
 	$myFile = file_get_contents('tmpl_construct_2.html');
 	$myFile = str_replace("%widget%",$widget, $myFile);
 	file_put_contents('../../pages/base/construct.html', $myFile);
-    return $myFile;
+    return 'OK';
 }
 
 // ************************************************************************
@@ -44,13 +51,13 @@ function render_outline ($value)
 	$myFile = file_get_contents('tmpl_construct_1.html');
 	$myFile = str_replace("%widget%",$widget, $myFile);
 	file_put_contents('../../pages/base/construct.html', $myFile);
-    return $myFile;
+    return 'OK';
 }
 
 // ************************************************
-// function to render the Template for the preview
+// function to get the items
 // ************************************************
-function load_widgets ($value)
+function load_items ($value)
 {
 	$myFile = file_get_contents('masteritem.json');
     return $myFile;
@@ -79,8 +86,8 @@ switch ($command)
     case 'render_outline':
         $ret = render_outline($_GET);
         break;
-    case 'load_widgets':
-        $ret = load_widgets($_GET);
+    case 'load_items':
+        $ret = load_items($_GET);
         break;
     case 'load_icons':
         $ret = get_icons($_GET);

@@ -110,32 +110,38 @@
                     <div id="overlay" style="display: none">
                       <div id="overlaytext" style="text-align: left; font-size: 0.85em">ToolTip-Text</div>
                     </div>
+                        <button onclick="getPreview()">Render ME</button>
                         <table style="width: 100%;font-size: 0.6em;">
                             <tr>
-                                <td>
+                                <td style="text-align: left;">
                                     <img id ="items_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Items loaded
                                 </td>
-                                <td>
+                                <td style="text-align: left;">
                                     <img id ="widgets_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Widgets loaded
                                 </td>
-                                <td>
-                                    <img id ="icons_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Icons loaded
-                                </td>
-                                <td>
-                                    <img id ="colors_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Colors loaded
-                                </td>
-                                <td>
+
+                                <td rowspan="2">
                                 	<label style="font-size: 1.0em;"><input name="render_2_Window" id="render_2_Window" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbsp render to new Window</label>
                                 </td>
-                                <td>
+                                <td rowspan="2">
+                                	<label id="Wildcard_label" style="font-size: 1.0em;"><input name="Wildcard_search" id="Wildcard_search" type="checkbox">&nbsp&nbsp&nbsp&nbsp Wildcard search</label>
+                                </td>
+                                <td rowspan="2">
                                     act. Dict : 
                                 </td>
-                                <td style="width: 80px">
+                                <td style="width: 80px" rowspan="2">
                                      <div id="selected_dict"> <strong>ALL</strong> </div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td style="text-align: left;">
+                                    <img id ="icons_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Icons loaded
+                                </td>
+                                <td style="text-align: left;">
+                                    <img id ="colors_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Colors loaded
+                                </td>
+                            </tr>
                         </table>
-                        <button onclick="getPreview()">Render ME</button>
 				</div>
 			</div>
 		</div>
@@ -178,6 +184,13 @@ var widgetCodeMirror = CodeMirror.fromTextArea($("#txt_widget")[0], {
         },
         "Ctrl-5": function(cm) {
             ChangeDict(cm,5)
+        },
+        "Ctrl-9": function(cm) {
+            ChangeSearch()
+        },
+        "Ctrl-Space": function(cm) {
+            searchtype = 2;
+            CodeMirror.showHint(cm, CodeMirror.hint.autocompleteHint)
         },
         "Alt-F": "findPersistent",
         "Tab": function(cm) {
