@@ -1,0 +1,113 @@
+<style>
+h1 {color:whitesmoke}
+h2 {color:whitesmoke}
+h3 {color:whitesmoke}
+h4 {color:whitesmoke}
+p {color:whitesmoke}
+li {color:whitesmoke}
+a {color:whitesmoke}
+table {
+	border-collapse: collapse;
+      }
+table,th,td {
+	color:whitesmoke;
+	border: 1px solid whitesmoke;
+	text-align: left;
+	padding: 4px;
+}
+
+* {
+    font-family: Dosis, Helvetica, Arial, sans-serif;
+  }
+</style>
+<h1 id="smartvisu-widget-constructor">smartvisu - Widget Constructor</h1>
+<h2 id="table-of-content">Table of Content</h2>
+<ol>
+<li><a href="#howitworks">How it works</a></li>
+<li><a href="#ChangeLog">ChangeLog</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
+<li><a href="#hotkeys">Hot-Keys</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
+<li><a href="#issues">Known issues</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
+</ol>
+<p><a name="howitworks"/></a></p>
+<h2 id="How it works">How it works</h2>
+<p>This tool should help you to create widgets for your smartvisu-Web-Interface.
+It will assist you with autocompletes for widgets, items, icons, and colors.
+After you have selected a widget (like basic.symbol...) you will get a tooltip for this kind of widget. The acutal parameter is highlighted in red and all the available details will be shown in the tooltip-window.
+For icons and colors you will see a preview in the tooltip-window.
+After completing the wiget you can render it in a new window. The widget in the rendered window is fully working, except there is an error in the created widget, you will get a TWIG-Error.
+The final widget including the brackets &quot;{{&quot; + &quot;}}&quot; will be stored on rendering to the clipboard.
+You can paste the widget-code directly to you html-file.</p>
+<p><a name="ChangeLog"/></a></p>
+<h2 id="change-log">Change-Log</h2>
+<h4 id="2020-05-01-version-1-0-0">2020.05.01 - Version 1.0.0</h4>
+<ul>
+<li>added support for nested widgets like <pre><code>{{ basic.symbol(&#39;&#39;, &#39;bath.light.switch&#39;, &#39;&#39;, icon.light(&#39;&#39;,&#39;&#39;,&#39;bath.light.value&#39;) ) }}
+</code></pre></li>
+<li>added bracket-matching</li>
+<li>added autoswitch to dict depending on parameter -&gt; type / you can switch to a dict using the Hot-Keys</li>
+<li>removed deprecated widgets from widget generator</li>
+</ul>
+<h4 id="2020-04-26-version-1-0-0">2020.04.26 - Version 1.0.0</h4>
+<ul>
+<li>added search in autocompletes with wildcard (a word with 3 chars will match all entries in the acitve dict like <code>*your_chars*</code></li>
+<li>added Hot-Key &#39;CTRL+Space&#39; to activate the autocomplete-hint without entering a search key</li>
+<li>added preview in tooltip for colors and icons</li>
+</ul>
+<h4 id="2020-04-25-launch-of-version-1-0-0">2020.04.25 - launch of Version 1.0.0</h4>
+<ul>
+<li>Beta Version for tests distributed</li>
+</ul>
+<h2 id="requirements">Requirements</h2>
+<p>actual smartvisu-Version - you can find it here</p>
+<p><a name="hotkeys"/></a></p>
+<h2 id="hot-keys">Hot-Keys</h2>
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STRG+1</td>
+<td>only Items in autocomplete-Dict</td>
+</tr>
+<tr>
+<td>STRG+2</td>
+<td>only Widgets in autocomplete-Dict</td>
+</tr>
+<tr>
+<td>STRG+3</td>
+<td>only Icons in autocomplete-Dict</td>
+</tr>
+<tr>
+<td>STRG+4</td>
+<td>all in autocomplete-Dict</td>
+</tr>
+<tr>
+<td>STRG+5</td>
+<td>only Colors in autocomplete-Dict</td>
+</tr>
+<tr>
+<td>STRG+6</td>
+<td>autocomplete-Dict is OFF</td>
+</tr>
+<tr>
+<td>STRG+9</td>
+<td>switch ON/OFF Wildcard search in autocomplete dict</td>
+</tr>
+<tr>
+<td>STRG+Space</td>
+<td>opens the actual autocomplete-Dict</td>
+</tr>
+</tbody>
+</table>
+<p><a name="issues"/></a></p>
+<h2 id="known-issues">Known Issues</h2>
+<p>It is possible to render the new widget into the iframe on the actual page.
+But this will destroy the loaded index.php. You will get in trouble when you want
+to use the navigation of smartvisu again.
+No solution right now.  You can reload the page with bypassing the cache,
+then everthing is working again. (STRG+F5 / CTRL + Shift + R)</p>
+

@@ -110,7 +110,7 @@
                     <div id="overlay" style="display: none">
                       <div id="overlaytext" style="text-align: left; font-size: 0.85em">ToolTip-Text</div>
                     </div>
-                        <button onclick="getPreview()">Render ME</button>
+                        <button onclick="getPreview()">Render ME & copy final Widget to Clipboard</button>
                         <table style="width: 100%;font-size: 0.6em;">
                             <tr>
                                 <td style="text-align: left;">
@@ -151,7 +151,7 @@
 				<div data-role="collapsible" data-collapsed="false" id="myCollapse">
 					<h3>Widget-Preview</h3>
                         <div id="Ausgabe" style="min-height: 250px;">
-                            <iframe id="render_frame" src="" style="min-height: inherit;width: 100%; ">
+                            <iframe id="render_frame" src="lib/widget_constructor/README.html" style="min-height: inherit;width: 100%; ">
                             </iframe>
                         </div>
 				</div>
@@ -171,20 +171,23 @@ var widgetCodeMirror = CodeMirror.fromTextArea($("#txt_widget")[0], {
 
     extraKeys: {
         "Ctrl-1": function(cm) {
-            ChangeDict(cm,1)
+            ChangeDict(1)
         },
         "Ctrl-2": function(cm) {
-            ChangeDict(cm,2)
+            ChangeDict(2)
         },
         "Ctrl-3": function(cm) {
-            ChangeDict(cm,3)
+            ChangeDict(3)
         },
         "Ctrl-4": function(cm) {
-            ChangeDict(cm,4)
+            ChangeDict(4)
         },
         "Ctrl-5": function(cm) {
-            ChangeDict(cm,5)
+            ChangeDict(5)
         },
+        "Ctrl-6": function(cm) {
+            ChangeDict(6)
+        },        
         "Ctrl-9": function(cm) {
             ChangeSearch()
         },
@@ -207,6 +210,7 @@ var widgetCodeMirror = CodeMirror.fromTextArea($("#txt_widget")[0], {
     lineWrapping: true,
     indentWithTabs: false,
     foldGutter: true,
+    matchBrackets: true,
     gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 });
 
