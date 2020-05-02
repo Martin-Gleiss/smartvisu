@@ -19,7 +19,10 @@ $dirlist = dir('../../icons/ws/');
 $myArray = [];
 while (($item = $dirlist->read()) !== false)
 {
-	array_push($myArray,$item);
+	if (preg_match("/svg/",$item))
+	{
+	  array_push($myArray,$item);
+	}
 }
 
 $dirlist->close();

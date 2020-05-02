@@ -20,6 +20,7 @@ table,th,td {
     font-family: Dosis, Helvetica, Arial, sans-serif;
   }
 </style>
+
 <h1 id="smartvisu-widget-constructor">smartvisu - Widget Constructor</h1>
 <h2 id="table-of-content">Table of Content</h2>
 <ol>
@@ -29,7 +30,7 @@ table,th,td {
 <li><a href="#issues">Known issues</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
 </ol>
 <p><a name="howitworks"/></a></p>
-<h2 id="How it works">How it works</h2>
+<h2 id="how-it-works">How it works</h2>
 <p>This tool should help you to create widgets for your smartvisu-Web-Interface.
 It will assist you with autocompletes for widgets, items, icons, and colors.
 After you have selected a widget (like basic.symbol...) you will get a tooltip for this kind of widget. The acutal parameter is highlighted in red and all the available details will be shown in the tooltip-window.
@@ -39,6 +40,11 @@ The final widget including the brackets &quot;{{&quot; + &quot;}}&quot; will be 
 You can paste the widget-code directly to you html-file.</p>
 <p><a name="ChangeLog"/></a></p>
 <h2 id="change-log">Change-Log</h2>
+<h4 id="2020-05-02-version-1-0-0">2020.05.02 - Version 1.0.0</h4>
+<ul>
+<li>set filter to *svg while collectin icons in /icon/ws/ ( There is a stylesheet in the folder)</li>
+<li>when the entered chars less than three set Dict to all </li>
+</ul>
 <h4 id="2020-05-01-version-1-0-0">2020.05.01 - Version 1.0.0</h4>
 <ul>
 <li>added support for nested widgets like <pre><code>{{ basic.symbol(&#39;&#39;, &#39;bath.light.switch&#39;, &#39;&#39;, icon.light(&#39;&#39;,&#39;&#39;,&#39;bath.light.value&#39;) ) }}

@@ -21,6 +21,10 @@ You can paste the widget-code directly to you html-file.
 <a name="ChangeLog"/></a>
 ## Change-Log
 
+#### 2020.05.02 - Version 1.0.0
+- set filter to *svg while collectin icons in /icon/ws/ ( There is a stylesheet in the folder)
+- when the entered chars less than three set Dict to all 
+
 #### 2020.05.01 - Version 1.0.0
 - added support for nested widgets like <pre><code>{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value') ) }}
 </code></pre>
