@@ -24,65 +24,64 @@
 
 
 <style>
-	        .CodeMirror-gutters	{
-		        background-color: #f2f2f2;
-	        }
-	        .CodeMirror {
-	        background-color: #f2f2f2;
-			font-family: Monospace;
-			font-size: 12px;
-			text-shadow: none;
-			}
-			.CodeMirror-line{
-			text-align: left;
-            padding-left: 20px;!important
-			}
-            .CodeMirror pre {
-              padding-left: 20px; !important
-            }
-			.CodeMirror-wrap pre{
-			
-			}
-			.CodeMirror-gutter-elt
-			{
-			
-			}
-			.CodeMirror-linenumber{
-            left: -12px !important
-			
-			}
-			.CodeMirror-gutter-wrapper{
-			
-			}
-			.CodeMirror-foldgutter{
-			width: 1.0em
-			}
+.CodeMirror-gutters	{
+        background-color: #f2f2f2;
+}
+.CodeMirror {
+	background-color: #f2f2f2;
+	font-family: Monospace;
+	font-size: 12px;
+	text-shadow: none;
+	}
+.CodeMirror-line{
+	text-align: left;
+	padding-left: 20px;!important
+	}
+.CodeMirror pre {
+	padding-left: 30px; !important
+	}
+.CodeMirror-wrap pre {
 
-            #overlay {
-              position: fixed;
-              display: none;
-              width: 50%;
-              height: 40%;
-              top: 480px;
-              left: 520px;
-              right: 0;
-              bottom: 0;
-              background-color: rgba(0,0,0,0.9);
-              z-index: 2;
-              border-radius: 6px;
-              cursor: pointer;
-              padding: 10px; 
-            }
+}
+.CodeMirror-gutter-elt
+{
 
-            #text{
-              position: absolute;
-              top: 20px;
-              left: 20px;
-              font-size: 50px;
-              color: white;
-              transform: translate(-50%,-50%);
-              -ms-transform: translate(-50%,-50%);
-            }
+}
+.CodeMirror-linenumber{
+	left: -12px !important
+	}
+	
+.CodeMirror-gutter-wrapper{
+	}
+.CodeMirror-foldgutter{
+	width: 1.0em
+	}
+
+#overlay {
+	position: fixed;
+	display: none;
+	width: 50%;
+	height: 40%;
+	top: 480px;
+	left: 520px;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0,0,0,0.9);
+	z-index: 2;
+	border-radius: 6px;
+	cursor: pointer;
+	padding: 10px; 
+}
+
+#text{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	font-size: 50px;
+	color: white;
+	transform: translate(-50%,-50%);
+	-ms-transform: translate(-50%,-50%);
+}
 
 </style>
     {% set widgetlist = docu() %}
@@ -212,6 +211,12 @@ var widgetCodeMirror = CodeMirror.fromTextArea($("#txt_widget")[0], {
     indentWithTabs: false,
     foldGutter: true,
     matchBrackets: true,
+    autoCloseBrackets: {
+	pairs: "\"\"**<>//__()[]{}''``",
+	triples: "",
+	explode: "[]{}",
+	override: true
+	},
     gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 });
 

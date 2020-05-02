@@ -24,7 +24,8 @@ You can paste the widget-code directly to you html-file.
 #### 2020.05.02 - Version 1.0.0
 - set filter to *svg while collectin icons in /icon/ws/ ( There is a stylesheet in the folder)
 - until no widget is selected the Widget-only dict is acive
-- added Close-Button to the Tooltip-Window 
+- added Close-Button to the Tooltip-Window
+- added closeBrackets feature for CodeMirror and solved problem with CSS 
 
 #### 2020.05.01 - Version 1.0.0
 - added support for nested widgets like <pre><code>{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value') ) }}
