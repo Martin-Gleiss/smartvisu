@@ -12,18 +12,6 @@
  * 30.04.20 : fixed overflow issue to next month
  */
 
-/*
-Readme: 
-1. copy this file to smartVISU/lib/weather/service (smartVISU2.8)
-2. edit your language file according to the following 4 lines (smartVISU/lang/lang_de_txt)
-// ----- openweathermap.org ------------------------------------------------------
-$lang['openweathermap']['lang']			= 'de';
-$lang['openweathermap']['humidity']		= 'Luftfeuchte';
-$lang['openweathermap']['wind']			= 'Wind';
-3. register at openweathermap.org to get a key and choose openweather in SmartVISU config page 
-
-*/
-
 require_once '../../../lib/includes.php';
 require_once const_path_system.'weather/weather.php';
 require_once const_path_system.'class_cache.php';
