@@ -12,12 +12,15 @@
 - update check is paused for 7 days after every execution (by cookie "updchk")
 - system page for SmartHomeNG has been updated. SmartHomeNG icons added to icons folder
 - added timezone handling for different OS in OpenHAB 2 driver
+- improved docu pages e.g. for dynamic icons and status widget
 
 ### Updated Libraries
 
 ### Fixed Bugs
 - writing config file was not reliable under windows.
 - cache execution failed when more than one device was used 
+- Twig didn't report lib.updatecheck to the template checker
+- ovdevice.dimmer: stateswitch fired twice if item_switch was used in dynamic icon
 
 ## v 2.9
 
