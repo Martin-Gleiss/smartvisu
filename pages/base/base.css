@@ -339,7 +339,10 @@ a:hover {
   padding: 0;
   font-size: 0.8em;
 }
-
+.ui-btn.ui-btn-inline.ui-micro.absolutepos {
+	margin-top: -14px;
+	margin-left: -14px;	
+} 
 .ui-btn.ui-btn-inline.ui-btn-icon-left.ui-micro {
   padding: 0 .5em 0 2em;
 }
@@ -361,7 +364,10 @@ a:hover {
   padding: 0;
   font-size: 0.8em;
 }
-
+.ui-btn.ui-btn-inline.ui-mini.absolutepos {
+	margin-top: -21px;
+	margin-left: -21px;	
+} 
 .ui-btn.ui-btn-inline.ui-btn-icon-left.ui-mini {
   padding: 0 .5em 0 2em;
 }
@@ -404,7 +410,10 @@ a:hover {
   line-height: 52px;
   padding: 0;
 }
-
+.ui-btn.ui-btn-inline.ui-midi.absolutepos {
+	margin-top: -28px;
+	margin-left: -28px;	
+} 
 .ui-btn.ui-btn-inline.ui-btn-icon-left.ui-midi {
   padding: 0 .5em 0 2em;
 }
@@ -998,7 +1007,10 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 .switch {
   display: inline-block;
 }
-
+.switch.absolutepos {
+	margin-top: -24px;
+	margin-left: -24px;
+}
 .switch.icon,
 .switch .fx-icon {
   vertical-align: middle;
