@@ -2,7 +2,7 @@
 
 ##Installation
 1. register at openweathermap.org to get an api key
-3. in SmartVISU config page 1. choose openweather.org, 2. enter your location (i.e. Köln) 3. enter your api key  
+2. in SmartVISU config page 1. choose openweather.org, 2. enter your location (i.e. Köln) 3. enter your api key  
 
 
 ##Troubleshooting/Debug:
