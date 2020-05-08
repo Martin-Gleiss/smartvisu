@@ -768,7 +768,7 @@ $.widget("sv.basic_print", $.sv.widget, {
 		}
 
 		// print the result
-		if (formatLower == 'html')
+		if (formatLower == 'html' || formatLower == 'text2br')
 			this.element.html(calc);
 		else
 			this.element.text(calc);
