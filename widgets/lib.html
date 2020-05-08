@@ -29,15 +29,16 @@
 /**
 * Check for new updates of smartVISU
 */
-{% macro updatecheck() %}
+{% macro updatecheck( ) %}
 	{% if config_updatecheck %}
 		<script type="text/javascript">
 			$('#index').on('pagecreate', function (event, ui) {
-				$.getJSON('lib/base/check_update.php?local={{ config_version }}', function (data) {
+				$.getJSON('lib/base/check_update.php?local={{ config_version_full }}', function (data) {
 					if (data.update) {
-						notify.update('smartVISU update available!', 'Your local version is: <b>' + data.local + '</b><br>' +
-							'New remote version is: <b>' + data.remote + '</b><br><br>' +
-							'Please visit <a target="_blank" href="http://smartvisu.de">smartVISU.de</a> to download the latest version!<br />');
+						notify.update(data.text, 'Your local version is: <b>' + data.local + '</b><br>' +
+							'Latest stable release is: <b>' + data.remote + '</b><br><br>' +
+							'Please visit <a target="_blank" href="http://smartvisu.de">smartVISU.de</a> or <a target="_blank" href="http://github.com/martin-gleiss/smartvisu">github</a> to download the latest version!<br><br>'+
+							'Update check will run again in 7 days from now. <br />');
 					}
 				})
 				.error(notify.json);

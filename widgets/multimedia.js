@@ -17,7 +17,14 @@ $.widget("sv.multimedia_image", $.sv.widget, {
     _update: function(response) {
       var widget_url = this.element.attr('data-url');
       var resp = Array.isArray(response) ? response[0]: response;
-      var img_base = widget_url ? widget_url + '?' : resp+((resp.indexOf('?') == -1) ? '?' : '&')
+      if (widget_url)
+      {
+        var img_base = widget_url + ((widget_url.indexOf('?') == -1) ? '?' : '&');
+      }
+      else
+      {
+        var img_base = resp + ((resp.indexOf('?') == -1) ? '?' : '&');
+      }
 			img = img_base + '_=' + new Date().getTime();
       refreshing = this.element.attr('data-repeat') ? this.element.attr('data-repeat') : 'refresh by item';
 			console.log("Response: " + response + " Update Multimedia Image: " + img + ", repeat: " + refreshing);
