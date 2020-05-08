@@ -11,7 +11,10 @@
 {% extends "widget_status.html" %}
 
 {% block example %}
-
+<script>
+	io.write('bath.alert.text', 'This is text from an item');
+	io.write('bath.time', '01.01.2020 10:56:20');
+</script>
 	<h5>Examples</h5>
 
 	If you flip the switch to 'on' the alert is been triggerd and the notification will be shown.
@@ -32,5 +35,3 @@
 	</div>
 
 {% endblock %}
-
-
