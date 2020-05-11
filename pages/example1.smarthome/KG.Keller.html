@@ -61,7 +61,7 @@
 							Zählerstand:
 						</td>
 						<td align=right>
-							{{ basic.float('StandELTzaehler', 'Allgemein.Zaehler.ELTzaehler', 'kWh') }}
+							{{ basic.print('StandELTzaehler', 'Allgemein.Zaehler.ELTzaehler', 'kWh') }}
 						</td>
 					</tr>
 				</table>
@@ -71,7 +71,7 @@
 							Wirkleistung Gesamt:
 						</td>
 						<td align=right>
-							{{ basic.float('LesitungGesamt', 'Allgemein.Zaehler.Pgesamt', 'W') }}
+							{{ basic.print('LeistungGesamt', 'Allgemein.Zaehler.Pgesamt', 'W') }}
 						</td>
 					</tr>
 				</table>
@@ -81,7 +81,7 @@
 							Wirkleistung L1:
 						</td>
 						<td align=right>
-							{{ basic.float('WirkleistungL1', 'Allgemein.Zaehler.PL1', 'W') }}
+							{{ basic.print('WirkleistungL1', 'Allgemein.Zaehler.PL1', 'W') }}
 						</td>
 					</tr>
 				</table>
@@ -91,7 +91,7 @@
 							Wirkleistung L2:
 						</td>
 						<td align=right>
-							{{ basic.float('WirkleistungL2', 'Allgemein.Zaehler.PL2', 'W') }}
+							{{ basic.print('WirkleistungL2', 'Allgemein.Zaehler.PL2', 'W') }}
 						</td>
 					</tr>
 				</table>
@@ -101,7 +101,7 @@
 							Wirkleistung L3:
 						</td>
 						<td align=right>
-							{{ basic.float('WirkleistungL3', 'Allgemein.Zaehler.PL3', 'W') }}
+							{{ basic.print('WirkleistungL3', 'Allgemein.Zaehler.PL3', 'W') }}
 						</td>
 					</tr>
 				</table>
@@ -111,7 +111,7 @@
 							Verbrauch heute:
 						</td>
 						<td align=right>
-							{{ basic.float('ELTverbrauchHEUTE', 'Allgemein.Zaehler.ELTVerHeute', 'kWh') }}
+							{{ basic.print('ELTverbrauchHEUTE', 'Allgemein.Zaehler.ELTVerHeute', 'kWh') }}
 						</td>
 					</tr>
 				</table>
@@ -121,7 +121,7 @@
 							Kosten heute:
 						</td>
 						<td align=right>
-							{{ basic.float('ELTkostenheute', 'Allgemein.Zaehler.ELTKoHeute', '€') }}
+							{{ basic.print('ELTkostenheute', 'Allgemein.Zaehler.ELTKoHeute', '€') }}
 						</td>
 					</tr>
 				</table>
@@ -131,7 +131,7 @@
 							Verbrauch gestern:
 						</td>
 						<td align=right>
-							{{ basic.float('ELTverbrauchGESTERN', 'Allgemein.Zaehler.ELTVerGester', 'kWh') }}
+							{{ basic.print('ELTverbrauchGESTERN', 'Allgemein.Zaehler.ELTVerGester', 'kWh') }}
 						</td>
 					</tr>
 				</table>
@@ -141,7 +141,7 @@
 							Kosten gestern:
 						</td>
 						<td align=right>
-							{{ basic.float('ELTkostenGESTERN', 'Allgemein.Zaehler.ELTKoGester', '€') }}
+							{{ basic.print('ELTkostenGESTERN', 'Allgemein.Zaehler.ELTKoGester', '€') }}
 						</td>
 					</tr>
 				</table>
@@ -160,7 +160,7 @@
 							Jahresverbrauch:
 						</td>
 						<td align=right>
-							{{ basic.float('WasserJahrVerbrauch', 'Allgemein.Zaehler.WasserVerbJahr', 'l') }}
+							{{ basic.print('WasserJahrVerbrauch', 'Allgemein.Zaehler.WasserVerbJahr', 'l') }}
 						</td>
 					</tr>
 				</table>
@@ -170,7 +170,7 @@
 							Jahreskosen:
 						</td>
 						<td align=right>
-							{{ basic.float('WasserJahrKosten', 'Allgemein.Zaehler.WasserKoJahr', '€') }}
+							{{ basic.print('WasserJahrKosten', 'Allgemein.Zaehler.WasserKoJahr', '€') }}
 						</td>
 					</tr>
 				</table>
@@ -180,7 +180,7 @@
 							Verbrauch heute:
 						</td>
 						<td align=right>
-							{{ basic.float('WasserHeuteVerbrauch', 'Allgemein.Zaehler.WasserVerbHeute', 'l') }}
+							{{ basic.print('WasserHeuteVerbrauch', 'Allgemein.Zaehler.WasserVerbHeute', 'l') }}
 						</td>
 					</tr>
 				</table>
@@ -190,7 +190,7 @@
 							Kosten heute:
 						</td>
 						<td align=right>
-							{{ basic.float('WasserHeuteKosten', 'Allgemein.Zaehler.WasserKoHeute', '€') }}
+							{{ basic.print('WasserHeuteKosten', 'Allgemein.Zaehler.WasserKoHeute', '€') }}
 						</td>
 					</tr>
 				</table>
@@ -200,7 +200,7 @@
 							Verbrauch gestern:
 						</td>
 						<td align=right>
-							{{ basic.float('WasserGesternVerbrauch', 'Allgemein.Zaehler.WasserVerbGestern', 'l') }}
+							{{ basic.print('WasserGesternVerbrauch', 'Allgemein.Zaehler.WasserVerbGestern', 'l') }}
 						</td>
 					</tr>
 				</table>
@@ -210,7 +210,7 @@
 							Kosten gestern:
 						</td>
 						<td align=right>
-							{{ basic.float('WasserGesternKosten', 'Allgemein.Zaehler.WasserKoGestern', '€') }}
+							{{ basic.print('WasserGesternKosten', 'Allgemein.Zaehler.WasserKoGestern', '€') }}
 						</td>
 					</tr>
 				</table>
@@ -220,7 +220,7 @@
 							Verbrauch 7 Tage:
 						</td>
 						<td align=right>
-							{{ basic.float('Wasser7TageVerbrauch', 'Allgemein.Zaehler.WasserVerb7Tage', 'l') }}
+							{{ basic.print('Wasser7TageVerbrauch', 'Allgemein.Zaehler.WasserVerb7Tage', 'l') }}
 						</td>
 					</tr>
 				</table>
@@ -230,7 +230,7 @@
 							Kosten 7 Tage:
 						</td>
 						<td align=right>
-							{{ basic.float('Wasser7TageKosten', 'Allgemein.Zaehler.WasserKo7Tage', '€') }}
+							{{ basic.print('Wasser7TageKosten', 'Allgemein.Zaehler.WasserKo7Tage', '€') }}
 						</td>
 					</tr>
 				</table>
@@ -258,7 +258,7 @@
 							Heizung Vorlauftemperatur:
 						</td>
 						<td align=right>
-							{{ basic.float('TempVorlaufHeizung', 'Allgemein.Zaehler.VorlaufHZ', '°C') }}
+							{{ basic.print('TempVorlaufHeizung', 'Allgemein.Zaehler.VorlaufHZ', '°C') }}
 						</td>
 					</tr>
 				</table>
@@ -268,7 +268,7 @@
 							Heizung Rücklauftemperatur:
 						</td>
 						<td align=right>
-							{{ basic.float('TempRuecklaufHeizung', 'Allgemein.Zaehler.RuecklaufHZ', '°C') }}
+							{{ basic.print('TempRuecklaufHeizung', 'Allgemein.Zaehler.RuecklaufHZ', '°C') }}
 						</td>
 					</tr>
 				</table>
@@ -278,7 +278,7 @@
 							Heizung Speichertemperatur:
 						</td>
 						<td align=right>
-							{{ basic.float('TempKesselHeizung', 'Allgemein.Zaehler.KesselHZ', '°C') }}
+							{{ basic.print('TempKesselHeizung', 'Allgemein.Zaehler.KesselHZ', '°C') }}
 						</td>
 					</tr>
 				</table>
@@ -288,7 +288,7 @@
 							Solar Vorlauftemperatur:
 						</td>
 						<td align=right>
-							{{ basic.float('TempVorlaufSolar', 'Allgemein.Zaehler.VorlaufSol', '°C') }}
+							{{ basic.print('TempVorlaufSolar', 'Allgemein.Zaehler.VorlaufSol', '°C') }}
 						</td>
 					</tr>
 				</table>
@@ -298,7 +298,7 @@
 							Solar Rücklauftemperatur:
 						</td>
 						<td align=right>
-							{{ basic.float('TempRuecklaufSolar', 'Allgemein.Zaehler.RuecklaufSol', '°C') }}
+							{{ basic.print('TempRuecklaufSolar', 'Allgemein.Zaehler.RuecklaufSol', '°C') }}
 						</td>
 					</tr>
 				</table>
@@ -308,7 +308,7 @@
 							Solar Speichertemperatur:
 						</td>
 						<td align=right>
-							{{ basic.float('TempKesselSolar', 'Allgemein.Zaehler.KesselSol', '°C') }}
+							{{ basic.print('TempKesselSolar', 'Allgemein.Zaehler.KesselSol', '°C') }}
 						</td>
 					</tr>
 				</table>
@@ -318,7 +318,7 @@
 							Pumpe Hz-Vorlauf:
 						</td>
 						<td align=right>
-							{{ basic.text('PumpeVorlauf', 'Allgemein.Zaehler.PumpeVL', 'läuft', 'läuft nicht') }}
+							{{ basic.symbol('PumpeVorlauf', 'Allgemein.Zaehler.PumpeVL', ['läuft', 'läuft nicht'], '', [1,0]) }}
 						</td>
 					</tr>
 				</table>
@@ -328,7 +328,7 @@
 							Pumpe Hz-Kessel:
 						</td>
 						<td align=right>
-							{{ basic.text('PumpeKessel', 'Allgemein.Zaehler.PumpeKE', 'läuft', 'läuft nicht') }}
+							{{ basic.symbol('PumpeKessel', 'Allgemein.Zaehler.PumpeKE', ['läuft', 'läuft nicht'], '', [1,0]) }}
 						</td>
 					</tr>
 				</table>
@@ -338,7 +338,7 @@
 							Pumpe Hz-Speicher:
 						</td>
 						<td align=right>
-							{{ basic.text('PumpeSpeicher', 'Allgemein.Zaehler.PumpeSP', 'läuft', 'läuft nicht') }}
+							{{ basic.symbol('PumpeSpeicher', 'Allgemein.Zaehler.PumpeSP', ['läuft', 'läuft nicht'], '', [1,0]) }}
 						</td>
 					</tr>
 				</table>
@@ -348,7 +348,7 @@
 							Pumpe Solar:
 						</td>
 						<td align=right>
-							{{ basic.text('PumpeSolar', 'Allgemein.Zaehler.PumpeSOL', 'läuft', 'läuft nicht') }}
+							{{ basic.symbol('PumpeSolar', 'Allgemein.Zaehler.PumpeSOL', ['läuft', 'läuft nicht'], '', [1,0]) }}
 						</td>
 					</tr>
 				</table>

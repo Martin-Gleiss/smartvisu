@@ -1,7 +1,7 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß, Stefan Widmer
+ * @author      Martin Gleiss, Stefan Widmer
  * @copyright   2012 - 2016
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
@@ -44,6 +44,16 @@
 /**
  * --- G E N E R A L  ---------------------------------------------------------
  */
+ body {
+	-youbkit-touch-callout: none; /* iOS Safari */
+	-youbkit-user-select: none;   /* Chrome 6.0+, Safari 3.1+, Edge & Opera 15+ */
+	-moz-user-select: none;       /* Firefox */
+	-ms-user-select: none;        /* IE 10+ and Edge */
+	user-select: none;            /* Non-prefixed version,  currently supported by Chrome and Opera */
+  -webkit-touch-callout: none;                /* iOS prevent callout to copy image, etc when tap to hold */
+  -webkit-user-select: none;                  /* iOS prevent copy paste, to allow, change 'none' to 'text' */
+}
+
 h1 {
   font-size: 16pt;
   margin: 20px 0 6px 0;
@@ -329,7 +339,10 @@ a:hover {
   padding: 0;
   font-size: 0.8em;
 }
-
+.ui-btn.ui-btn-inline.ui-micro.absolutepos {
+	margin-top: -14px;
+	margin-left: -14px;	
+} 
 .ui-btn.ui-btn-inline.ui-btn-icon-left.ui-micro {
   padding: 0 .5em 0 2em;
 }
@@ -351,7 +364,10 @@ a:hover {
   padding: 0;
   font-size: 0.8em;
 }
-
+.ui-btn.ui-btn-inline.ui-mini.absolutepos {
+	margin-top: -21px;
+	margin-left: -21px;	
+} 
 .ui-btn.ui-btn-inline.ui-btn-icon-left.ui-mini {
   padding: 0 .5em 0 2em;
 }
@@ -394,7 +410,10 @@ a:hover {
   line-height: 52px;
   padding: 0;
 }
-
+.ui-btn.ui-btn-inline.ui-midi.absolutepos {
+	margin-top: -28px;
+	margin-left: -28px;	
+} 
 .ui-btn.ui-btn-inline.ui-btn-icon-left.ui-midi {
   padding: 0 .5em 0 2em;
 }
@@ -988,7 +1007,10 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 .switch {
   display: inline-block;
 }
-
+.switch.absolutepos {
+	margin-top: -24px;
+	margin-left: -24px;
+}
 .switch.icon,
 .switch .fx-icon {
   vertical-align: middle;
@@ -1246,31 +1268,55 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 /**
  * --- W i d g e t s :   D E V I C E ------------------------------------------
  */
-.dimmer {
+.dimmer,
+.dimmer-left,
+.dimmer-right {
   vertical-align: middle;
   height: 48px;
-  margin: 15px 0 10px 0;
+  margin: 15px 0 0 0;
 }
 
-.dimmer .switch {
+.dimmer .switch,
+.dimmer-left .switch {
   float: left;
   padding-left: 0;
   margin-right: 12px;
 }
 
+.dimmer-right .switch {
+  float: right;
+  padding-right: 0;
+  margin-left: 12px;
+}
+
 .dimmer .icon,
-.dimmer .fx-icon {
+.dimmer-left .icon,
+.dimmer-right .icon,
+.dimmer .fx-icon,
+.dimmer-left .fx.icon,
+.dimmer-right .fx.icon {
   width: 48px;
   height: 48px;
 }
 
-.dimmer p {
+.dimmer p,
+.dimmer-left p {
   margin: 0;
-  padding: 0;
+  padding: 0 0 5px 15px;
 }
 
-.dimmer .ui-slider {
+.dimmer-right p {
+  margin: 0;
+  padding: 0 0 5px 15px;
+}
+
+.dimmer .ui-slider,
+.dimmer-left .ui-slider {
   margin-left: 45px;
+
+}
+.dimmer-right .ui-slider {
+  margin-right: 45px;
 }
 
 .codepad {
@@ -1325,6 +1371,47 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 
 .blind .angle .ui-slider .ui-slider-input {
   display: none !important;
+}
+
+.smallshut {
+  width: 85%;
+  float: left;
+}
+
+.smallshut_wrapper {
+  width: 85%;
+  float: left;
+  overflow: hidden;
+}
+
+.smallshut .uzsu {
+  max-width: 15%;
+  float: left;
+}
+
+.smallshut .ui-shut-txt {
+  width: 30% !important;
+  padding-right: 0.5%;
+  display: inline-block;
+  text-align: left;
+}
+
+.smallshut .ui-shut-btn,
+.ui-shut-btn {
+  width: 11% !important;
+  padding-left: 0.5%;
+  display: inline-block;
+}
+
+.smallshut .ui-shut-pic {
+  width: 11% !important;
+  padding-left:0%;
+  display: inline-block;
+}
+
+.smallshut .ui-shut-pic .icon {
+  margin-left: -5%;
+  display: inline-block;
 }
 
 .uzsuPopupContent{
@@ -1994,17 +2081,6 @@ svg.fx-icon, .icon {
 }
 
 /**
- * --- W i d g e t s :   W E A T H E R ----------------------------------------
- */
-.weather,
-.forecast {
-  background-position-y: 50%;
-  background-size: contain;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-}
-
-/**
  * --- T e m p l a t e :   B A S E --------------------------------------------
  */
 .base .primary {
@@ -2025,7 +2101,150 @@ svg.fx-icon, .icon {
   .base .primary {
     width: 100%;
   }
+
+/* uncomment if menu shall be displayed below the room pages
+  .base .secondary {
+    width: 100%;
+  }  */
 }
+
+
+/**
+ * ---- POPUP ----------
+ */
+
+ .ext-popup .popup_table div.ui-slider {
+   min-width: 200px;
+   display: block;
+   border: 0;
+   padding: 5px 0px 2px 3px;
+ }
+ .ext-popup .popup_table div.switch {
+   width: 35px;
+   display: inline-block;
+   border:0;
+   /** height: 32px !important; */
+ }
+
+ .ext-popup .popup_table div.text {
+   min-width: 50px;
+   display: inline-block;
+   border: 0;
+   width: initial;
+ }
+
+ .ext-popup .popup_table div.linetext {
+   min-width: 50px;
+   display: inline-block;
+   border: 0;
+   width: initial;
+ }
+
+ .ext-popup .popup_table div.select {
+   display: inline-block;
+   border:0;
+ }
+
+ .ext-popup .popup_table div.header {
+   text-align: center;
+   border:0;
+ }
+
+ .ext-popup .popup_table div.slider {
+   display: inline-block;
+   border: 0;
+   padding-bottom: 0px;
+ }
+
+ .ext-popup .popup_table div.flip {
+   display: inline-block;
+   border:0;
+   padding-right: 5px;
+ }
+
+ .ext-popup .popup_table div.symbol {
+   display: inline-block;
+   border:0;
+   padding-right: 5px;
+ }
+
+ .ext-popup .popup_table div.icon {
+   display: inline-block;
+   border:0;
+   padding-right: 5px;
+ }
+
+ .ext-popup {
+   min-width: 150px;
+   max-width: 600px;
+   padding: 5px;
+ }
+
+ .ext-popup.incl_uzsugraph {
+   min-width: 500px;
+   padding: 5px;
+ }
+
+ .ext-popup .uzsugraph {
+   min-width: 490px;
+   padding: 5px;
+ }
+
+ .popup_table {
+     width: 100%;
+     height: 100%;
+     display: table;
+     table-layout: fixed;
+ }
+
+ .popup_table > div {
+     display: table-cell;
+     /*margin-right: 1px;*/
+     text-align: center;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     white-space: nowrap;
+     /*height: 100%;*/
+     border-width: 1px;
+     border-style: solid;
+     border-color: #777;
+ }
+
+ .popup_list li {
+     box-sizing: border-box;
+     /* height: 42px;
+     line-height: 40px; */
+     font-weight: normal;
+ }
+
+ .locks-popup {
+     height: 36px;
+     width: auto;
+ }
+
+ .popup_list .row_ext-popup {
+   padding: 0;
+   /* line-height: 42px;
+   height: 42px; */
+ }
+
+ .popup_list .row_ext-popup .plot{
+   padding: 0;
+   line-height: 250px;
+   height: 250px;
+ }
+
+ .popup_list svg.icon0, .popup_list svg.icon1, .popup_list svg.fx-icon, .popup_list img.icon {
+     height: 30px;
+     width: 30px;
+     margin-top: -2px;
+ }
+
+ .popup_list .plot {
+     height: 250px;
+     line-height: 250px;
+     width: 300px;
+ }
 
 /**
  * --- T e m p l a t e :   Q U A D --------------------------------------------

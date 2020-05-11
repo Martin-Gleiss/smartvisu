@@ -21,18 +21,18 @@
 				<table width=100%>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('LEDSpotsDecke', 'EG.Aussen.LEDDeckeSpots', 'light_downlight.svg', 'light_downlight.svg') }} LED-Spots
+							{{ basic.stateswitch('LEDSpotsDecke', 'EG.Aussen.LEDDeckeSpots', 'icon', ['1', '0'], ['light_downlight.svg', 'light_downlight.svg'], '', ['icon1', 'icon0']) }} LED-Spots
 						</td>
 						<td align=left>
-							{{ basic.switch('LEDPanelDecke', 'EG.Aussen.LEDDeckePanel', 'light_ceiling_light.svg', 'light_ceiling_light.svg') }}  LED-Panel
+							{{ basic.stateswitch('LEDPanelDecke', 'EG.Aussen.LEDDeckePanel', 'icon', ['1', '0'], ['light_ceiling_light.svg', 'light_ceiling_light.svg'], '', ['icon1', 'icon0']) }}  LED-Panel
 						</td>
 					</tr>
 					<tr>
 						<td align=left width=50%>
-							{{ basic.switch('LedRohreBoden', 'EG.Aussen.LEDRohre', 'light_uplight.svg', 'light_uplight.svg') }} LED-Rohre
+							{{ basic.stateswitch('LedRohreBoden', 'EG.Aussen.LEDRohre', 'icon', ['1', '0'], ['light_uplight.svg', 'light_uplight.svg'], '', ['icon1', 'icon0']) }} LED-Rohre
 						</td>
 						<td align=left width=50%>
-							{{ basic.switch('LedSpotsBoden', 'EG.Aussen.LEDSpotsBoden', 'light_uplight.svg', 'light_uplight.svg') }} LED-Spots
+							{{ basic.stateswitch('LedSpotsBoden', 'EG.Aussen.LEDSpotsBoden', 'icon', ['1', '0'],['light_uplight.svg', 'light_uplight.svg'], '', ['icon1', 'icon0']) }} LED-Spots
 						</td>
 					</tr>
 					<tr>
@@ -41,7 +41,7 @@
 							{{ basic.symbol('BewegungAussen2', 'EG.Aussen.BM', 'alles ruhig', 'it_camera.svg', 0) }}
 						</td>
 						<td align=left>
-							{{ basic.switch('FreigabeBMAussen', 'EG.Aussen.FreigabeBMAussen', 'secur_open.svg', 'secur_locked.svg') }}  BM-Melder
+							{{ basic.stateswitch('FreigabeBMAussen', 'EG.Aussen.FreigabeBMAussen', 'icon', ['1', '0'],['secur_open.svg', 'secur_locked.svg'], '', ['icon1', 'icon0']) }}  BM-Melder
 						</td>
 					</tr>
 				</table>
@@ -61,7 +61,7 @@
 							Aussentemperatur:
 						</td>
 						<td align=right>
-							{{ basic.float('AussentemperaturD', 'EG.Aussen.temperature', '°C') }}
+							{{ basic.print('AussentemperaturD', 'EG.Aussen.temperature', '°C') }}
 						</td>
 					</tr>
 				</table>
@@ -71,7 +71,7 @@
 							Niederschlag:
 						</td>
 						<td align=right>
-							{{ basic.text('Niederschlag', 'EG.Aussen.Regen', 'ja', 'nein') }}
+							{{ basic.symbol('Niederschlag', 'EG.Aussen.Regen', ['ja', 'nein'], '', [1,0]) }}
 						</td>
 					</tr>
 				</table>
@@ -81,7 +81,7 @@
 							Windgeschwindigkeit:
 						</td>
 						<td align=right>
-							{{ basic.float('Windgeschwindigkeit', 'EG.Aussen.Wind', 'ms') }}
+							{{ basic.print('Windgeschwindigkeit', 'EG.Aussen.Wind', 'ms') }}
 						</td>
 					</tr>
 				</table>
@@ -91,7 +91,7 @@
 							Sonne Ost:
 						</td>
 						<td align=right>
-							{{ basic.float('SonneOstAussen', 'EG.Aussen.SonneOst', 'lux') }}
+							{{ basic.print('SonneOstAussen', 'EG.Aussen.SonneOst', 'lux') }}
 						</td>
 					</tr>
 				</table>
@@ -101,7 +101,7 @@
 							Sonne Süd:
 						</td>
 						<td align=right>
-							{{ basic.float('SonneSuedtAussen', 'EG.Aussen.SonneSued', 'lux') }}
+							{{ basic.print('SonneSuedtAussen', 'EG.Aussen.SonneSued', 'lux') }}
 						</td>
 					</tr>
 				</table>
@@ -111,7 +111,7 @@
 							Sonne West:
 						</td>
 						<td align=right>
-							{{ basic.float('SonneWestAussen', 'EG.Aussen.SonneWest', 'lux') }}
+							{{ basic.print('SonneWestAussen', 'EG.Aussen.SonneWest', 'lux') }}
 						</td>
 					</tr>
 				</table>
@@ -121,7 +121,7 @@
 							Licht:
 						</td>
 						<td align=right>
-							{{ basic.float('LichtstaerkeAusen', 'EG.Aussen.Lichtstaerke', 'lux') }}
+							{{ basic.print('LichtstaerkeAusen', 'EG.Aussen.Lichtstaerke', 'lux') }}
 						</td>
 					</tr>
 				</table>
@@ -130,7 +130,6 @@
 		</div>
 	</div>
 	<h3>Aussentemperaturverlauf</h3>
-	{{ plot.period('p10', 'EG.Aussen.temperature', 'avg', '12h', 0, 0, '', '', ['Temp. in °C']) }}
+	{{ plot.period('p10', 'EG.Aussen.temperature', 'avg', '12h', 'now', 0, '', '', ['Temp. in °C']) }}
 
 {% endblock %}
-

@@ -20,7 +20,7 @@
 				<a href="javascript:window.location.href=window.location.href" style="text-decoration:none;color:#fff;">
 					{{ lib.smartvisu() }}
 					<div class="mini">
-						{{ clock.miniclock('', lang('format','time') ~ ', ' ~ lang('format','day') ) }} v{{ config_version }}</div>
+						{{ clock.miniclock('', lang('format','time') ~ ', ' ~ lang('format','day') ) }} v{{ config_version_full }}</div>
 				</a>
 			</div>
 		</div>
@@ -29,7 +29,7 @@
 			<div class="primary" style="background-image: none;">
 				{% block content %}{% endblock %}
 			</div>
-			<div class="secondary minimum-tablet">
+			<div class="secondary minimum-tablet">  <!-- change to minimum-phone if menu shall be displayed below the room pages -->
 				{% block sidebar %}{% endblock %}
 			</div>
 		</div>
@@ -37,4 +37,3 @@
 	</div>
 
 {% endblock %}
-

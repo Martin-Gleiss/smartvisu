@@ -1,0 +1,147 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Onkel Andy
+ * @copyright   2020
+ * @license     GPL [http://www.gnu.de]
+ * -----------------------------------------------------------------------------
+ */
+
+
+{% extends "quad_root.html" %}
+
+{% block title %}
+BWM
+{% endblock %}
+
+{% block header %}
+<img class="icon" src='{{ icon0 }}message_presence.svg'/>
+{% endblock %}
+
+{% block content %}
+<script>
+$( document ).ready(function() {
+		 io.write('bwm.og.kueche.helligkeitsschwelle', '10' );
+     io.write('bwm.og.kueche.nachlaufzeit', '20' );
+     io.write('bwm.og.kueche.reichweite', '90' );
+     io.write('bwm.og.helligkeitswert', '90' );
+     io.write('bwm.og.kueche.helligkeitstrigger', '1' );
+     io.write('bwm.og.essen.helligkeitsschwelle', '100' );
+     io.write('bwm.og.essen.nachlaufzeit', '2' );
+     io.write('bwm.og.essen.reichweite', '30' );
+     io.write('bwm.og.helligkeitswert', '120' );
+     io.write('bwm.og.essen.helligkeitstrigger', '0' );
+     io.write('bewegung.og.zeitstatus', '15' );
+
+	});
+
+</script>
+<div style="padding:10px;"><a href="index.php?page=bwm_eg">EG</a> | OG</div>
+
+<ul data-role="listview" data-dividertheme="c" class="quad_list">
+     <li data-role="list-divider">Bewegungswerte</li>
+     {{ quad.mixed('', 'OG Bewegung',
+     [basic.symbol('', '', 'Allgemein'),
+     basic.symbol('bewegung_og', 'bewegung.og.zeitstatus', ['0', '5', '15', '30'], ['message_presence','message_presence','message_presence','message_presence'], ['0', '5', '15', '30'], 'or', ['icon0', 'icon1', 'icon1', 'icon1'], '#bewegung_og_popup', 'popup'),
+     popup.extpopup('bewegung_og_popup', [['plot'], ['bewegung.og', 'max', '12h', 'now', '0', '1.5', '5000', 'OG', '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'bool']])
+     ]) }}
+
+    <li data-role="list-divider">Küche</li>
+{{ quad.mixed('bwm_kueche1', 'BWM Küche Werte', [basic.symbol('', '', '', 'weather_light_meter'), basic.print('', 'bwm.og.helligkeitswert')], basic.symbol('', 'bwm.og.kueche.helligkeitstrigger', '', ['status_light_off', 'status_light_high'], [0,1], '', ['icon0', 'icon1'])) }}
+
+{{ quad.mixed('', 'BWM Küche Settings',
+[basic.symbol('', '', '', 'presence_intensity', '', '', '', '#bwm_kueche_hellwert_popup', 'popup'),
+basic.print('', 'bwm.og.kueche.helligkeitsschwelle', '', '', '', '', '#bwm_kueche_hellwert_popup', 'popup')],
+[basic.symbol('', '', '', 'presence_shutoffdelay', '', '', '', '#bwm_kueche_nachlauf_popup', 'popup'),
+basic.print('', 'bwm.og.kueche.nachlaufzeit', '', '', '', '', '#bwm_kueche_nachlauf_popup', 'popup')],
+[basic.symbol('', '', '', 'presence_distance', '', '', '', '#bwm_kueche_reichweite_popup', 'popup'),
+basic.print('', 'bwm.og.kueche.reichweite', '%', 'VAR1/255*100', '', '', '#bwm_kueche_reichweite_popup', 'popup')]) }}
+
+<div class="quad_multi-popup" id="bwm_kueche_hellwert_popup" data-role="popup">
+  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+{{ basic.symbol('', '', 'Küche Helligkeitsschwelle')}}&nbsp;<br>
+{{ basic.symbol('', '', 'Nacht')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.nacht.helligkeitsschwelle', '0', '900', '5', '', 'handle') }}
+{{ basic.symbol('', '', 'Kino')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.kino.helligkeitsschwelle', '0', '900', '5', '', 'handle') }}
+{{ basic.symbol('', '', 'TV')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.tv.helligkeitsschwelle', '0', '900', '5', '', 'handle') }}
+{{ basic.symbol('', '', 'Arbeiten')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.arbeiten.helligkeitsschwelle', '0', '900', '5', '', 'handle') }}
+{{ basic.symbol('', '', 'Chillen')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.chillen.helligkeitsschwelle', '0', '900', '5', '', 'handle') }}
+{{ basic.symbol('', '', 'Standard')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.standard.helligkeitsschwelle', '0', '900', '5', '', 'handle') }}
+</div>
+<div class="quad_multi-popup" id="bwm_kueche_nachlauf_popup" data-role="popup">
+  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+{{ basic.symbol('', '', 'Küche Nachlaufzeit')}}&nbsp;<br>
+{{ basic.symbol('', '', 'Nacht')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.nacht.nachlaufzeit', '0', '60', '1', '', 'handle') }}
+{{ basic.symbol('', '', 'Kino')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.kino.nachlaufzeit', '0', '20', '1', '', 'handle') }}
+{{ basic.symbol('', '', 'TV')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.tv.nachlaufzeit', '0', '20', '1', '', 'handle') }}
+{{ basic.symbol('', '', 'Arbeiten')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.arbeiten.nachlaufzeit', '0', '240', '1', '', 'handle') }}
+{{ basic.symbol('', '', 'Chillen')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.chillen.nachlaufzeit', '0', '240', '1', '', 'handle') }}
+{{ basic.symbol('', '', 'Standard')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.standard.nachlaufzeit', '0', '240', '1', '', 'handle') }}
+</div>
+<div class="quad_multi-popup" id="bwm_kueche_reichweite_popup" data-role="popup">
+  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+{{ basic.symbol('', '', 'Küche Reichweite')}}&nbsp;<br>
+{{ basic.symbol('', '', 'Nacht')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.nacht.reichweite', '0', '255', '1', '', 'handle', '0', '100') }}
+{{ basic.symbol('', '', 'Kino')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.kino.reichweite', '0', '255', '1', '', 'handle', '0', '100') }}
+{{ basic.symbol('', '', 'TV')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.tv.reichweite', '0', '255', '1', '', 'handle', '0', '100') }}
+{{ basic.symbol('', '', 'Arbeiten')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.arbeiten.reichweite', '0', '255', '1', '', 'handle', '0', '100') }}
+{{ basic.symbol('', '', 'Chillen')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.chillen.reichweite', '0', '255', '1', '', 'handle', '0', '100') }}
+{{ basic.symbol('', '', 'Standard')}} {{ basic.slider('', 'bwm.og.kueche.automatik.settings.standard.reichweite', '0', '255', '1', '', 'handle', '0', '100') }}
+</div>
+
+{{ quad.mixed('bwm_kueche3', 'BWM Küche Trigger', basic.stateswitch('kueche_bwm_sperren', 'bwm.og.kueche.sperren', 'icon', [0,1], ['message_presence','message_presence_disabled']), basic.stateswitch('kueche_bwm_master', 'bwm.og.kueche.mastertrigger', 'icon', [0,1], ['jquery_refresh','jquery_refresh']), basic.stateswitch('kueche_bwm_trigger', 'bwm.og.kueche.trigger', 'icon', [0,1], ['jquery_forward','jquery_forward']), basic.stateswitch('kueche_bwm_dunkel', 'bwm.og.kueche.immerdunkel', 'icon', [0,1], ['light_starlit_sky','light_starlit_sky'])) }}
+
+    <li data-role="list-divider">Essen</li>
+{{ quad.mixed('bwm_essen1', 'BWM Essen Werte', [basic.symbol('', '', '', 'weather_light_meter'), basic.print('', 'bwm.og.helligkeitswert')], basic.symbol('', 'bwm.og.essen.helligkeitstrigger', '', ['status_light_off', 'status_light_high'], [0,1], '', ['icon0', 'icon1'])) }}
+
+{{ quad.mixed('', 'BWM Essen Settings',
+[basic.symbol('', '', '', 'presence_intensity', '', '', '', '#bwm_essen_hellwert_popup', 'popup'),
+basic.print('', 'bwm.og.essen.helligkeitsschwelle', '', '', '', '', '#bwm_essen_hellwert_popup', 'popup')],
+[basic.symbol('', '', '', 'presence_shutoffdelay', '', '', '', '#bwm_essen_nachlauf_popup', 'popup'),
+basic.print('', 'bwm.og.essen.nachlaufzeit', '', '', '', '', '#bwm_essen_nachlauf_popup', 'popup')],
+[basic.symbol('', '', '', 'presence_distance', '', '', '', '#bwm_essen_reichweite_popup', 'popup'),
+basic.print('', 'bwm.og.essen.reichweite', '%', 'VAR1/255*100', '', '', '#bwm_essen_reichweite_popup', 'popup')]) }}
+
+<div class="quad_multi-popup" id="bwm_essen_hellwert_popup" data-role="popup">
+  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+{{ basic.symbol('', '', 'Essen Helligkeitsschwelle')}}&nbsp;<br>
+{{ basic.symbol('', '', 'Nacht')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.nacht.helligkeitsschwelle', '0', '900', '5', '', 'handle') }}
+{{ basic.symbol('', '', 'Kino')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.kino.helligkeitsschwelle', '0', '900', '5', '', 'handle') }}
+{{ basic.symbol('', '', 'TV')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.tv.helligkeitsschwelle', '0', '900', '5', '', 'handle') }}
+{{ basic.symbol('', '', 'Arbeiten')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.arbeiten.helligkeitsschwelle', '0', '900', '5', '', 'handle') }}
+{{ basic.symbol('', '', 'Chillen')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.chillen.helligkeitsschwelle', '0', '900', '5', '', 'handle') }}
+{{ basic.symbol('', '', 'Standard')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.standard.helligkeitsschwelle', '0', '900', '5', '', 'handle') }}
+</div>
+<div class="quad_multi-popup" id="bwm_essen_nachlauf_popup" data-role="popup">
+  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+{{ basic.symbol('', '', 'Essen Nachlaufzeit')}}&nbsp;<br>
+{{ basic.symbol('', '', 'Nacht')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.nacht.nachlaufzeit', '0', '60', '1', '', 'handle') }}
+{{ basic.symbol('', '', 'Kino')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.kino.nachlaufzeit', '0', '20', '1', '', 'handle') }}
+{{ basic.symbol('', '', 'TV')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.tv.nachlaufzeit', '0', '20', '1', '', 'handle') }}
+{{ basic.symbol('', '', 'Arbeiten')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.arbeiten.nachlaufzeit', '0', '240', '1', '', 'handle') }}
+{{ basic.symbol('', '', 'Chillen')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.chillen.nachlaufzeit', '0', '240', '1', '', 'handle') }}
+{{ basic.symbol('', '', 'Standard')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.standard.nachlaufzeit', '0', '240', '1', '', 'handle') }}
+</div>
+<div class="quad_multi-popup" id="bwm_essen_reichweite_popup" data-role="popup">
+  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+{{ basic.symbol('', '', 'Essen Reichweite')}}&nbsp;<br>
+{{ basic.symbol('', '', 'Nacht')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.nacht.reichweite', '0', '255', '1', '', 'handle', '0', '100') }}
+{{ basic.symbol('', '', 'Kino')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.kino.reichweite', '0', '255', '1', '', 'handle', '0', '100') }}
+{{ basic.symbol('', '', 'TV')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.tv.reichweite', '0', '255', '1', '', 'handle', '0', '100') }}
+{{ basic.symbol('', '', 'Arbeiten')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.arbeiten.reichweite', '0', '255', '1', '', 'handle', '0', '100') }}
+{{ basic.symbol('', '', 'Chillen')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.chillen.reichweite', '0', '255', '1', '', 'handle', '0', '100') }}
+{{ basic.symbol('', '', 'Standard')}} {{ basic.slider('', 'bwm.og.essen.automatik.settings.standard.reichweite', '0', '255', '1', '', 'handle', '0', '100') }}
+</div>
+
+{{ quad.mixed('bwm_essen3', 'BWM Essen Trigger', basic.stateswitch('essen_bwm_sperren', 'bwm.og.essen.sperren', 'icon', [0,1], ['message_presence','message_presence_disabled']), basic.stateswitch('essen_bwm_master', 'bwm.og.essen.mastertrigger', 'icon', [0,1], ['jquery_refresh','jquery_refresh']), basic.stateswitch('essen_bwm_trigger', 'bwm.og.essen.trigger', 'icon', [0,1], ['jquery_forward','jquery_forward']), basic.stateswitch('essen_bwm_dunkel', 'bwm.og.essen.immerdunkel', 'icon', [0,1], ['light_starlit_sky','light_starlit_sky'])) }}
+
+</ul>
+
+{% endblock %}
+
+{% block quad_top %}
+{{ plot.period('bewegung', ['bewegung.og.abgang.fuenf', 'bewegung.og.abgang'], 'max', '48h', 'now', 0, '', '500', ['OG Abgang 5m', 'OG Abgang'], ['#faa', '#3f3'], ['stair', 'stair'], ['Uhrzeit', 'Bewegung'], 'advanced', '', '', '', '', '', { yAxis: [ { tickInterval: 40 } ], legend: {align: 'right', verticalAlign: 'top', y: 50, x: 15, layout: 'vertical'}, chart: { marginRight: 110} }) }}
+
+{% endblock %}
+
+{% block quad_bottom %}
+{% endblock %}

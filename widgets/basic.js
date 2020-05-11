@@ -36,7 +36,13 @@ $.widget("sv.basic_select", $.sv.widget, {
 	initSelector: 'select[data-widget="basic.select"]',
 
 	_update: function(response) {
-		this.element.val(response[0]).selectmenu('refresh');
+    // remove space after , in response (relevant for lists)
+    var respval = response.toString().trim().replace(/, /gi, ",");
+    // is response is an array or a string containing a [] it should be handled as a list
+    var respArray = response[0] instanceof Array;
+    respval = respval.includes("[") || ! respArray ? respval : "[" + respval + "]";
+
+		this.element.val(respval).selectmenu('refresh');
 	},
 
 	_events: {
@@ -82,7 +88,7 @@ $.widget("sv.basic_color", $.sv.widget, {
 		}
 
 		if(response.length == 1) // all values as list in one item
-			values = response[0];
+			values = response[0].toString().split(",");
 		else
 			values = response;
 
@@ -523,7 +529,7 @@ $.widget("sv.basic_icon", $.sv.widget, {
 
 	_update: function(response) {
 			var max = String(this.options.max).explode();
-			var min = String(this.optionx.min).explode();
+			var min = String(this.options.min).explode();
 			// ensure max and min as array of 3 floats (fill by last value if array is shorter)
 			for(var i = 0; i <= 2; i++) {
 				max[i] = parseFloat(max[Math.min(i, max.length-1)])
@@ -626,17 +632,20 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 
 	options: {
 		'datebox-mode': null,
-    'min-dur': null
+		'min-dur': null,
+		'stringformat': null
 	},
 
 	_update: function(response) {
 		var mode = this.options['datebox-mode'];
+
 		if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
 			this.element.trigger('datebox', {'method': 'set', 'value': this.options['min-dur']*1}).trigger('datebox', {'method': 'dooffset', 'type': 's', 'amount': response[0] - this.options['min-dur']*1}).trigger('datebox', {'method':'doset'});
 		else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
 			this.element.datebox('setTheDate', new Date(response[0]));
-		else if(mode == 'timebox' || mode == 'timeflipbox') // data type time
+		else if(mode == 'timebox' || mode == 'timeflipbox') {// data type time
 			this.element.datebox('setTheDate', response[0]);
+		}
 	},
 
 	_events: {
@@ -647,10 +656,16 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 				var newval;
 				if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
 					newval = this.element.datebox('getLastDur');
-				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox') // data type date
-					newval = this.element.datebox('getTheDate');
-				else if(mode == 'timebox' || mode == 'timeflipbox') // data type time
-					newval = this.element.datebox('callFormat', this.element.datebox('getOption','timeOutput'), this.element.datebox('getTheDate'))
+				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox'){ // data type date
+					var widgetFormat = this.options['stringformat'];
+					if (widgetFormat == false)
+						newval = this.element.datebox('getTheDate');  // javascript datetime object
+					else
+						newval = this.element.datebox('callFormat', widgetFormat, this.element.datebox('getTheDate')); // converted to string from format option
+				}
+				else if(mode == 'timebox' || mode == 'timeflipbox'){ // data type time
+					newval = this.element.datebox('callFormat', this.element.datebox('getOption','timeOutput'), this.element.datebox('getTheDate'));
+				}
 				else
 					newval = this.element.val();
 
@@ -741,6 +756,9 @@ $.widget("sv.basic_print", $.sv.widget, {
 			value = null;
 			calc = ''; // no output for format 'script'
 		}
+    else if (formatLower == 'text2br') { // String with \r\n, \r or \n to be converted to <br />
+            calc = response[0].replace(/(?:\r\n|\r|\n)/g, '<br />');
+    }
 		else if (formatLower == 'text' || formatLower == 'html' || isNaN(calc)) { // String
 			value = calc;
 		}
@@ -750,7 +768,7 @@ $.widget("sv.basic_print", $.sv.widget, {
 		}
 
 		// print the result
-		if (formatLower == 'html')
+		if (formatLower == 'html' || formatLower == 'text2br')
 			this.element.html(calc);
 		else
 			this.element.text(calc);
@@ -1017,6 +1035,39 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 		var shortpressEvent = function(event) {
 			// get the list of values
 			var list_val = String(this.options.vals).explode();
+
+      // this function is used to revive list entries
+      var combined = [];
+      var temp = '';
+      var start_combine = 2;
+      list_val.forEach(arrayConvert);
+      function arrayConvert(part, index) {
+        if(part.startsWith("[") && ! part.endsWith("]") && start_combine == 2)
+          start_combine = 1;
+        else if (start_combine == 2)
+          combined.push(part);
+
+        if(start_combine == 1) {
+            if(part.endsWith("]"))
+            {
+              start_combine = 0;
+              temp += ', ' + part;
+            }
+            else if (part.startsWith("["))
+              temp += part;
+            else
+              temp += ', ' + part;
+        }
+
+        if (start_combine == 0)
+          {
+          combined.push(temp);
+          temp = '';
+          list_val = combined;
+          start_combine = 2;
+        }
+      }
+
 			// get the index of the memorised value
 			var old_idx = list_val.indexOf(this._current_val);
 			// compute the next index
@@ -1099,10 +1150,16 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 	},
 
 	_update: function(response) {
-		// get list of values
-		var list_val = String(this.options.vals).explode();
-		// get received value
-		var val = response.toString().trim();
+		// remove space after , in response (relevant for lists)
+    var val = response.toString().trim().replace(/, /gi, ",");
+    // is response is an array or a string containing a [] it should be handled as a list
+    var respArray = response[0] instanceof Array;
+    val = val.includes("[") || ! respArray ? val : "[" + val + "]";
+
+    // remove space after , in widget data-val entries
+    this.element.children('a[data-widget="basic.stateswitch"]').attr('data-val', function(index, src) {
+        return src.replace(/, /gi, ",")
+    })
 		// hide all states
 		this.element.next('a[data-widget="basic.stateswitch"][data-index]').insertBefore(this.element.children('a:eq(' + this.element.next('a[data-widget="basic.stateswitch"][data-index]').attr('data-index') + ')'));
 		// stop activity indicator
@@ -1125,12 +1182,18 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		mode: '',
 		val: '',
 	},
-
+  _events: {
+    'update': function (event, response) {
+      event.stopPropagation();
+    }
+  },
 	_update: function(response) {
-		// response will be an array, if more then one item is requested
+		// response will be an array, if more than one item is requested
 		var formula = this.options.mode;
 		var values = String(this.options.val).explode();
-
+    var asThreshold = false;
+    var anyShown = false;
+    var bit = false;
 		// legacy support
 		if(formula == 'or') {
 			formula = 'VAR';
@@ -1140,23 +1203,58 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 			// If this is true, this one value will be returned and used for selecting the proper symbol.
 			formula = 'VAR.every(function(entry, i, arr) { return entry == arr[0] }) ? VAR[0] : null';
 		}
-
-		var asThreashold = false;
+    else if(formula == 'min') {
+			// To fulfill "and" condition, every entry in response has to have the same value.
+			// If this is true, this one value will be returned and used for selecting the proper symbol.
+      formula = 'VAR.some(function(entry, i, arr) { return entry >= parseFloat(comp[c]) }) ? comp[c] : null';
+		}
+    else if(formula == 'max') {
+			// To fulfill "and" condition, every entry in response has to have the same value.
+			// If this is true, this one value will be returned and used for selecting the proper symbol.
+      formula = 'VAR.every(function(entry, i, arr) { return entry <= parseFloat(comp[c]) }) ? comp[c] : null';
+		}
+    this.element.attr('formula', formula);
 		if(formula.startsWith('>')) {
 			formula = formula.length == 1 ? 'VAR' : formula.substring(1);
-			asThreashold = true;
+			asThreshold = true;
 		}
 
 		formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
 		var VAR = response;
 		try {
-			var val = eval(formula);
+      var val = null;
+      if (formula == 'VAR.some(function(entry, i, arr) { return entry >= parseFloat(comp[c]) }) ? comp[c] : null'
+          || formula == 'VAR.every(function(entry, i, arr) { return entry <= parseFloat(comp[c]) }) ? comp[c] : null') {
+        var val_prev = null;
+        var comp = this.element.attr('data-val').split(", ");
+        for (var c = 0; c < comp.length; c++) {
+             val_prev = val;
+  			     val = eval(formula);
+
+             // DEBUG: console.log("run: " + c + " comparison: " + comp[c] + "; response: " + VAR + "; value: " + val + ", prev: " + val_prev);
+             if (val == null && this.element.attr('data-mode') == 'min')
+             {
+               val = val_prev;
+               break;
+             }
+             else if (comp[c] == '' || (val_prev != null && val > val_prev && this.element.attr('data-mode') == 'max'))
+             {
+               val = val_prev;
+               break;
+             }
+
+        }
+      }
+      else
+      {
+        val = eval(formula);
+      }
 		}
 		catch(ex) {
 			notify.error("basic.symbol: Invalid formula", ex);
 		}
 
-		if(asThreashold) {
+		if(asThreshold) {
 			var currentIndex = 0;
 			$.each(values, function(index, threshold) {
 				if(threshold === '' || ((isNaN(val) || isNaN(threshold)) ? (threshold > val) : (parseFloat(threshold) > parseFloat(val))))
@@ -1167,12 +1265,15 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		}
 
 		var filter = Array.isArray(val) ? '[data-val="'+val.join('"],[data-val="')+'"]' : '[data-val="'+(typeof val === 'boolean' ? Number(val) : val)+'"]';
-
-		var anyShown = this.element.children('span').hide().filter(filter).first().show().length > 0;
+    anyShown = this.element.children('span').hide().filter(filter).first().show().length > 0;
 		if(anyShown)
+    {
 			this.element.show();
+    }
 		else
+    {
 			this.element.hide();
+    }
 	},
 
 });

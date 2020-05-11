@@ -1,2 +1,13 @@
 config.ini
 /config.php
+.DS_Store
+
+# ignore directories below /pages exept listed exceptions
+/pages
+!/pages/_template
+!/pages/base
+!/pages/docu
+!/pages/example1.smarthome
+!/pages/example2.knxd
+!/pages/example3.graphic
+!/pages/example4.quad

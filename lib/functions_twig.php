@@ -113,6 +113,7 @@ function twig_dir($dir, $filter = '(.*)')
 			if (preg_match("#".$filter."$#i", $item, $itemparts) > 0)
 			{
 				$name = str_replace("_", " ", $itemparts[1]);
+
 				$ret[$name] = array(
 					"path" => $dir.'/'.$itemparts[0],
 					"file" => $itemparts[0],
@@ -126,7 +127,6 @@ function twig_dir($dir, $filter = '(.*)')
 
 	// sort
 	ksort($ret);
-
 	return $ret;
 }
 
@@ -138,53 +138,61 @@ function twig_docu($filenames = null)
 			$filenames = array_merge($filenames, twig_dir('pages/'.config_pages.'/widgets', '(.*.\.html)'));
 	}
 	elseif(!is_array($filenames))
-		$filenames = array($filenames);
+		if(twig_isfile($filenames) == false && $filenames != const_path.'widgets/icon.html')
+			{
+				$filenames = array($filenames);
+				$filenames = array_merge(twig_dir('dropins/widgets', '(.*.\.html)'));
+			}
+		else
+			$filenames = array($filenames);
+
 
 	$ret = array();
-	
+
 	foreach($filenames as $filename) {
+
 		if(is_array($filename))
 			$filename = const_path.$filename['path'];
-	
 		$file = file_get_contents($filename);
-	
+
+
 		// Header
 		preg_match_all('#.+?@(.+?)\W+(.*)#i', substr($file, 0, strpos($file, '*/') + 2), $header);
 
-		// Body 
+		// Body
 		preg_match_all('#\/\*\*[\r\n]+(.+?)\*\/\s+?\{\% *macro(.+?)\%\}.*?\{\% *endmacro *\%\}#is', strstr($file, '*/'), $widgets);
-	
+
 		if (count($widgets[2]) > 0)
 		{
 			foreach ($widgets[2] as $no => $macro)
 			{
 				$rettmp = array();
-				
+
 				preg_match_all('#(.+?)\((.+?)(\)|,\s+_)#i', $macro, $desc); // param scanning ends on first param name beginning with _
 				$rettmp['name'] = trim($desc[1][0]);
 				$rettmp['params'] = trim($desc[2][0]);
-				
+
 				$docu = $widgets[1][$no];
-	
+
 				$rettmp['desc'] = trim(str_replace('* ', '', substr($docu, 0, strpos($docu, '@'))));
-				
+
 				if (substr($rettmp['desc'], -1, 1) == '*')
 					$rettmp['desc'] = substr($rettmp['desc'], 0, -1);
-				
-				// Header-Tags 
+
+				// Header-Tags
 				foreach ($header[1] as $headerno => $headertag)
 				{
 					if (!($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß"))
 						$rettmp[$headertag] = trim($header[2][$headerno]);
 				}
-	
+
 				$rettmp['subpackage'] = substr(strtolower(utf8_decode(basename($filename))), 0, -5);
 				$rettmp['command'] = $rettmp['subpackage'].".".$rettmp['name'];
 				$rettmp['call'] = $rettmp['command']."(".$rettmp['params'].")";
-	
+
 				// Widget-Tags
 				$tags = preg_split('#[\r\n]+[\*\s]*@#', $docu);
-	
+
 				$param = 0;
 				$params = explode(',', $rettmp['params']);
 				$rettmp['param'] = array();
@@ -192,7 +200,7 @@ function twig_docu($filenames = null)
 				foreach ($tags as $tagstring)
 				{
 					preg_match('#^(.+?)\s+({(.+?)(\[\??\])?(\(.*?\))?(=.*?)?}\s+)?(.*)$#is', $tagstring, $tag);
-					 
+
 					if ($tag[1] == 'param')
 					{
 						$p = array('desc' => trim($tag[7]));
@@ -217,7 +225,7 @@ function twig_docu($filenames = null)
 							$p['optional'] = $tag[6] != '';
 							if($p['optional'] && $tag[6] != '=')
 								$p['default'] = substr($tag[6],1);
-							
+
 							// valid_values
 							// array_form must may
 						}
@@ -231,10 +239,10 @@ function twig_docu($filenames = null)
 					else
 						$rettmp[$tag[1]] = trim($tag[7]);
 				}
-	
+
 				$ret[$rettmp['subpackage'].'.'.$rettmp['name']] = $rettmp;
 			}
-	
+
 			//ksort($ret); // as of Version 2.9: Don't sort but use order in sourcefile
 		}
 		else
@@ -246,7 +254,7 @@ function twig_docu($filenames = null)
 			}
 		}
 	}
-	
+
 	return $ret;
 }
 

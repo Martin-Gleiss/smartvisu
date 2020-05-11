@@ -71,7 +71,6 @@ class weather_yr extends weather
 			
 			if ($i < 4 and $day->attributes()->period == 2)
 			{
-
 				$this->data['forecast'][$i]['date'] = (string)$day->attributes()->from;
 				$this->data['forecast'][$i]['conditions'] = translate((string)$day->symbol->attributes()->name, 'yr.no');
 				$this->data['forecast'][$i]['wind'] = translate((string)$day->windSpeed->attributes()->name.' from '.(string)$day->windDirection->attributes()->code, 'yr.no').$windspeed;

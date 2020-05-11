@@ -116,12 +116,12 @@ $.widget("sv.plot_period", $.sv.widget, {
 		this._super();
 
 		var ymin = [];
-		if (this.options.ymin) {
+		if (this.options.ymin != undefined) {
 			ymin = String(this.options.ymin).explode();
 		}
 
 		var ymax = [];
-		if (this.options.ymax) {
+		if (this.options.ymax != undefined) {
 			ymax = String(this.options.ymax).explode();
 		}
 

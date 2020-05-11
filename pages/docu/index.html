@@ -84,6 +84,13 @@
 						<h3>Weather</h3>
 					</a>
 				</li>
+				<li data-icon="false">
+					<a href="index.php?page=custom/widget_custom">
+						<img class="icon" src="{{ icon0 }}edit_settings.svg" alt="Custom" />
+
+						<h3>Custom</h3>
+					</a>
+				</li>
 			</ul>
 		</div>
 
@@ -99,7 +106,14 @@
 					</a>
 				</li>
 				<li data-icon="false">
-					<a href="index.php?page=design/design_quad">
+					<a href="index.php?page=design/design_buttons">
+						<img class="icon" src="{{ icon0 }}control_all_on_off.svg" />
+
+						<h3>Buttons</h3>
+					</a>
+				</li>
+				<li data-icon="false">
+					<a href="index.php?page=quad/widget_quad">
 						<img class="icon" src="{{ icon0 }}control_outside_on_off.svg" />
 
 						<h3>Quad</h3>
@@ -126,15 +140,6 @@
 						<h3>Backgrounds</h3>
 					</a>
 				</li>
-/**
-				<li data-icon="false">
-					<a href="index.php?page=design/design_buttons">
-						<img class="icon" src="{{ icon0 }}control_ok.svg" alt="Buttons" />
-
-						<h3>Buttons</h3>
-					</a>
-				</li>
-*/
 			</ul>
 		</div>
 
@@ -234,10 +239,11 @@
 	<a href="index.php?page=status/widget_status">Status</a>&nbsp;
 	<a href="index.php?page=clock/widget_clock">Time/Clock</a>&nbsp;
 	<a href="index.php?page=weather/widget_weather">Weather</a>&nbsp;
+	<a href="index.php?page=custom/widget_custom">Custom</a>&nbsp;
 
 	<h2>Design</h2>
 	<a href="index.php?page=design/design_block">Blocks</a>&nbsp;
-	<a href="index.php?page=design/design_quad">Quad</a>&nbsp;
+	<a href="index.php?page=quad/widget_quad">Quad</a>&nbsp;
 	<a href="index.php?page=design/design_popup">Popups</a>&nbsp;
 	<a href="index.php?page=design/design_icons">Icons</a>&nbsp;
 	<a href="index.php?page=design/design_bg">Backgrounds</a>&nbsp;
@@ -255,7 +261,7 @@
 	<link href="vendor/google.prettify/styles/sunburst.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript" src="vendor/google.prettify/src/prettify.js"></script>
 {% endblock %}
-    
+
 {% block footer %}
 	<script type="text/javascript">
 		$('#{{ page }}').on('pageinit', function (event) {

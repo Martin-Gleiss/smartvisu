@@ -2,7 +2,7 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß
+ * @author      Martin Gleiss
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
@@ -47,6 +47,9 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 
 	if (is_dir(const_path.'pages/'.$config_pages))
 		$loader->addPath(const_path.'pages/'.$config_pages);
+	
+	if (is_dir(const_path.'pages/'.$config_pages.'/widgets'))
+		$loader->addPath(const_path.'pages/'.$config_pages.'/widgets');
 
 	if (dirname($request['page']) != '.' && is_dir(const_path.'pages/'.$config_pages.'/'.dirname($request['page'])))
 		$loader->addPath(const_path.'pages/'.$config_pages.'/'.dirname($request['page']));
@@ -63,9 +66,11 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$twig = new Twig_Environment($loader);
 	$twig->addExtension(new Twig_Extension_StringLoader());
 
-	if (config_debug) {
-		$twig->enableDebug();
-		$twig->addExtension(new Twig_Extension_Debug());
+	if (defined('config_debug')) {
+		if (config_debug) {
+			$twig->enableDebug();
+			$twig->addExtension(new Twig_Extension_Debug());
+		}
 	}
 
 	if (config_cache)
@@ -149,7 +154,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 
 		echo "<pre>\n";
 		echo str_repeat(" ", 71)."smartVISU\n";
-		echo str_repeat(" ", 62).date('H:i, d.m').", v".config_version."\n";
+		echo str_repeat(" ", 60).date('H:i, d.m').", v".config_version_full."\n";
 		echo str_repeat("-", 80)."\n\n";
 		echo "Error occurred in twig-template engine!\n\n";
 		echo "error: <b>".$e->getRawMessage()."</b>\n";
@@ -165,7 +170,7 @@ else
 
 	echo "<pre>\n";
 	echo str_repeat(" ", 71)."smartVISU\n";
-	echo str_repeat(" ", 62).date('H:i, d.m').", v".config_version."\n";
+	echo str_repeat(" ", 60).date('H:i, d.m').", v".config_version_full."\n";
 	echo str_repeat("-", 80)."\n\n";
 	echo "Error loading Page '<b>".$request['page']."</b>' !\n\n";
 	echo "Check config.php -> 'config_pages' for correct Pages/Project configuration\n";

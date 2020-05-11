@@ -52,6 +52,7 @@ $GLOBALS['config'] = $config->get();
 foreach ($GLOBALS['config'] as $key => $value) {
 	define('config_' . $key, $value);
 }
+define ('config_version_full', config_version_major.".".config_version_minor.".".config_version_revision);
 
 /**
  * Set proxy according to config

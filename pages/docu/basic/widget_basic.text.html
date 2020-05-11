@@ -11,16 +11,10 @@
 {% extends "widget_basic.html" %}
 
 {% block example %}
-
-	<h5>Example</h5>
-	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.text('text1', 'bath.light.switch', 'Text for the on-state', 'It is off now') &#125;&#125;</code>
-	</div>
-
-	Use the switch to change the state: {{ basic.switch('switch1', 'bath.light.switch') }}
-
+	
 	<div class="html">
-		{{ basic.text('text1', 'bath.light.switch', 'Text for the on-state', 'It is off now') }}
+		This widget is deprecated and may be removed in later versions.<br>
+		Please look into basic.symbol for replacement and further information.
 	</div>
 
 {% endblock %}

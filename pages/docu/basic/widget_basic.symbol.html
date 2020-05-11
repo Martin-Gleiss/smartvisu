@@ -33,7 +33,7 @@
 		{{ basic.symbol('', 'bath.light.switch', '', '', '', '', '#0b0') }}
 		{{ basic.symbol('', 'bath.light.switch', 'On') }}
 		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value') ) }}
-		{{ basic.symbol('', 'bath.light.switch', 'Open popup', '', '', '', '', '#symbol_popup', 'popup') {{
+		{{ basic.symbol('', 'bath.light.switch', 'Open popup', '', '', '', '', '#symbol_popup', 'popup') }}
 	{% endverbatim %}{% endfilter %}</code>
 	<div class="html" style="min-height: 51px">
 		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg') }}
@@ -44,12 +44,44 @@
 		&nbsp;
 		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value'), '', '', 'icon1') }}
 		&nbsp;
-		{{ basic.symbol('', 'bath.light.switch', 'Open popup', '', '', '', '', '#symbol_popup', 'popup') }}		
+		{{ basic.symbol('', 'bath.light.switch', 'Open popup', '', '', '', '', '#symbol_popup', 'popup') }}
 		<div id="symbol_popup" data-role="popup" style="width:280px; height:200px;">
 			<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 			I'm a popup
 		</div>
 	</div>
+
+	With multiple states and min/max mode (use the buttons to select state)
+	<div class="html">
+		First:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ basic.select('', 'first.multistate', 'mini', [0, 1, 2, 3, 4], '', [0, 1, 2, 3, 4] ) }}<br>
+		Second: {{ basic.select('', 'second.multistate', 'mini', [0, 1, 2, 3, 4], '', [0, 1, 2, 3, 4] ) }}
+	</div>
+
+	Standard Icon if both values are 0<br />
+	Sound icon if at least one is <=1 and one > 0<br />
+	no icon when one of the values is 2<br />
+	lock icon if one of the value is >= 3<br />
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			{{ basic.symbol('', ['first.multistate', 'second.multistate'], '', 'secur_locked', 3, 'min') }}
+			{{ basic.symbol('', ['first.multistate', 'second.multistate'], '', ['', 'audio_sound'], [0,1], 'max') }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.symbol('', ['first.multistate', 'second.multistate'], '', 'secur_locked', 3, 'min') }}
+		{{ basic.symbol('', ['first.multistate', 'second.multistate'], '', ['', 'audio_sound'], [0,1], 'max') }}
+	</div>
+
+	No icon if both values are below 2, standard icon if one >=2
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			{{ basic.symbol('', ['first.multistate', 'second.multistate'], '', '', 2, 'min') }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.symbol('', ['first.multistate', 'second.multistate'], '', '', 2, 'min') }}
+	</div>
+
 
 	With multiple states (use the buttons to select state)
 	<div class="html">

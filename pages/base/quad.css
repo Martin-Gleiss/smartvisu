@@ -1,0 +1,686 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+
+@CHARSET "UTF-8";
+.quad *, *:before, *:after {
+    box-sizing: border-box;
+}
+
+.quad a, .quad img {
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -khtml-user-select: none !important;
+    -ms-user-select: none !important;
+    -moz-user-select: none !important;
+    -user-select: none !important;
+}
+
+.quad > .ui-header .ui-title {
+    display: inline-block;
+    margin: 10px 0 6px 0;
+    font-weight: bold;
+}
+
+.quad > .ui-header {
+    display: inline-block;
+    margin: 2px 0 6px 0;
+}
+
+.quad .ui-content .ui-listview {
+    margin: 0;
+}
+
+.quad.ui-right {
+    margin: 1px 5px 2px 0!important;
+}
+
+.quad .icon0, .quad a.ui-link {
+    /** color: #000; */
+}
+
+.quad .ui-link {
+    cursor: pointer;
+}
+
+.quad .ui-content {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.quad .content-primary {
+    width: 50%;
+    margin: 0;
+    overflow: auto;
+}
+
+.quad .content-secondary {
+    width: 50%;
+    position: fixed;
+    top: 64px;
+    right: 0;
+    bottom: 0;
+}
+
+@media (min-width: 670px) and (max-width: 1024px) {
+    .quad .content-primary {
+        top: 47px;
+    }
+
+    .quad .content-secondary {
+        top: 47px;
+    }
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+}
+
+@media (min-width: 670px) and (max-width: 767px) {
+}
+
+@media (min-width: 670px) {
+    .quad_tiles li {
+        width: 33.33%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .quad > .ui-header {
+        height: 45px;
+    }
+
+    .quad .content-primary, .quad .content-secondary {
+        top: 47px;
+    }
+
+    .quad .ui-header img.icon, .quad .ui-header svg.icon1 {
+        width: 32px;
+        height: 32px;
+    }
+
+    .quad > .ui-header .ui-title {
+        margin: 0 0 6px 30px;
+    }
+}
+
+@media (max-width: 930px) {
+    .quad_block {
+        height: 100%;
+    }
+    .quad_min_tablet {
+        display: none;
+    }
+
+    .quad .content-primary {
+        width: 100%;
+    }
+
+    .quad .content-secondary {
+        display: none;
+    }
+
+}
+
+/* Portrait phones to Landscape */
+@media (min-width: 321px) and (max-width: 670px) {
+    .quad_tiles li {
+        width: 33.33%;
+    }
+}
+
+/* Portrait phones and down */
+@media (max-width: 410px) {
+    .quad_table > div.landscape {
+        display: none;
+    }
+    .quad_table > div.column5 {
+        display: none;
+    }
+    .quad.ui-right, .quad > .ui-header .ui-title {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .quad.ui-right {
+        display: none;
+    }
+}
+
+.quad_block {
+    overflow:auto;
+    box-sizing: border-box;
+    width: 100%;
+    height: 50%;
+    position: relative;
+}
+
+.quad_block .plot {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    border-width: 1px;
+    border-style: outset;
+    border-color: #777;
+}
+
+.quad_tiles li {
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: outset;
+    border-color: #777;
+    display: block;
+    float: left;
+    height: 70px;
+    width: 50%;
+    padding: 0 0 0 0;
+    float: left;
+    margin: 0px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.quad_tiles li.double {
+    height: 140px;
+    padding: 0;
+}
+
+.quad_tiles li.double .table {
+    height: 100%;
+    width: 100%;
+    display: table;
+}
+
+.quad_tiles li.double .table .row {
+    display: table-row;
+    height: 1px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.quad_tiles li.double .table .row .single {
+    display: table-cell;
+    text-align: right;
+    padding: 0 10px 10px 0;
+    font-size: 1.5em;
+}
+
+.quad_tiles li.double table {
+    width: 100%;
+}
+
+.quad_tiles li.double table td {
+    font-size: 0.7em;
+    font-weight: lighter;
+    padding: 0 10px;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.quad_tiles li.double table td.right {
+    text-align: right;
+}
+
+.quad_tiles li.double .table .expand {
+    display: table-row;
+    height: auto;
+    overflow: hidden;
+}
+
+.quad_tiles li.double .table .expand h3 {
+    font-weight: normal;
+    margin-left: 60px;
+}
+
+.quad_tiles li.double img.icon {
+    float: left;
+    margin-top: 5px;
+}
+
+.quad_tiles li.double svg {
+    float: left;
+    margin: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.quad_tiles .ui-li-has-thumb .ui-btn-inner a.ui-link-inherit {
+    padding: 0 0 0 60px;
+    height: 65px;
+}
+
+.quad_tiles .ui-ri-aside img.icon {
+    height: 24px;
+    width: 24px;
+
+}
+
+.quad_tiles .ui-btn {
+    height: 70px;
+}
+
+.quad_tiles .ui-ri-aside {
+    text-align: right;
+    font-size: 10px;
+    line-height: 25px;
+    height: 25px;
+    bottom: 5px;
+    left: 7px;
+    right: 0px;
+    position: absolute;
+}
+
+.quad_tiles .ui-li-aside {
+    top: 0 !important;
+}
+
+.quad_list a {
+    text-decoration: none;
+    -webkit-user-select: none !important;
+}
+
+.quad_list .ui-li-static {
+  display: table-row;
+
+}
+
+.quad_list li {
+    box-sizing: border-box;
+    height: 42px;
+    line-height: 40px;
+    font-weight: normal;
+}
+
+.quad_list .ui-li-divider {
+    padding: 0 0 0 10px;
+}
+.quad_list .ui-li-static.ui-li {
+    padding: 0;
+}
+.quad_list li:nth-child(odd) {
+    /**background-color: #1d1d1d;*/
+}
+.quad_list li:nth-child(even) {
+    /**background-color: #212121;*/
+}
+.quad_list img.icon {
+    height: 32px;
+    width: 32px;
+    margin-top: -4px;
+}
+
+.quad_list svg.icon {
+    height: 32px;
+    width: 32px;
+    margin-top: -4px;
+}
+
+.quad_list svg.fx-icon {
+    height: 32px;
+    width: 32px;
+    margin-top: -4px;
+}
+
+.quad_list .ui-btn-up-a {
+    border: 0;
+}
+
+.quad_list .rgb span, .quad_list .colordisc span {
+    width: 24px;
+    height: 24px;
+    margin-top: -7px;
+}
+
+.quad_table {
+    width: 100%;
+    height: 100%;
+    display: table;
+    table-layout: fixed;
+}
+
+.quad_table .switch.icon {
+    height: 32px;
+    width: 32px;
+    /**margin-top: -12px;*/
+}
+
+.quad_table .ui-slider-switch {
+    vertical-align: top;
+}
+
+.quad_table .ui-flipswitch {
+    vertical-align: top;
+  margin: 0;
+  margin-top: 2px;
+}
+
+.quad_table .table-slider {
+    vertical-align: top;
+}
+
+.quad_table .table-slider .ui-slider {
+    margin-top: 4px;
+}
+
+.quad_table > div {
+    display: table-cell;
+    /*margin-right: 1px;*/
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    /*height: 100%;*/
+    border-width: 1px;
+    border-style: solid;
+    border-color: #777;
+}
+
+.quad_table div.shutter, .quad_table div.ui-slider-semicircle-bottom, .quad_blind-popup div.ui-slider-semicircle-bottom {
+    box-sizing: content-box;
+}
+
+.quad_table > div.no_border {
+    border:0;
+}
+.table-slider > div.ui-slider::before{
+  display: block;
+}
+
+.quad_table > div.text {
+    text-align: left;
+    padding-left: 10px;
+    width: 40%;
+}
+
+.quad_table > div .ui-btn-inner {
+    border: 0;
+}
+
+.quad_table > div a.ui-btn-inline.ui-mini {
+    min-width: 40px;
+    min-height: 40px;
+    /*padding-top: 12px; */
+}
+
+.quad_blind-popup {
+    height: 215px;
+    min-width: 300px;
+}
+
+.quad_rtr-popup
+{
+    height: 180px;
+    min-width: 320px;
+    text-align: center;
+}
+
+.quad_rgb-popup {
+    height: 230px;
+    min-width: 282px;
+}
+
+.quad_rgbww-popup {
+    height: 290px;
+    min-width: 282px;
+}
+
+.quad_hsv-popup {
+    height: 140px;
+    min-width: 282px;
+}
+.quad_hsvww-popup {
+    height: 230px;
+    min-width: 282px;
+}
+
+.quad_slider-popup {
+    height: 90px;
+    min-width: 282px;
+}
+
+.quad_multi-popup {
+    min-height: 70px;
+    min-width: 282px;
+}
+
+.quad_tab-content {
+    box-sizing: border-box;
+    padding-top: 5px;
+}
+
+.quad_tab-content > div {
+    height: 100%;
+}
+
+.quad_tab-content .plot {
+    height: 100%;
+}
+.quad_tab-header {
+}
+
+.quad_tab-header a {
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    -webkit-user-select: none !important;
+}
+
+.quad_tab-header ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.quad_tab-header li {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    height: 35px;
+    line-height: 33px;
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: outset;
+    border-color: #777;
+}
+
+.quad_tab-header li .ui-btn {
+    padding: 7px;
+    height: 100%;
+    font-size:11pt;
+    margin: 0;
+}
+.quad_tab-header li .ui-btn .ui-btn-inner {
+    padding: 0;
+    margin: 0;
+}
+.quad_tab-header .ui-grid-a>:nth-child(n) {
+    margin: 0;
+}
+.quad_tab-header .ui-btn-up-a, .quad_tab-header .ui-btn-hover-a {
+    border: 0;
+}
+
+.quad_plot-popup {
+    height: auto;
+    width: 300px;
+}
+
+.quad_dimmer {
+  vertical-align: middle;
+  height: 48px;
+  margin: 15px 0 10px 0;
+}
+
+//NOTIFYBADGE
+/* make sure the element has position: relative */
+[data-notifications] {
+  position: relative;
+}
+
+/* append the notification badge after it */
+[data-notifications]:after {
+
+    /* the burger */
+    content: attr(data-notifications);
+
+    /* the fries */
+    position: relative;
+    display: inline-block;
+    height:1.5rem;
+    left: 15px;
+//    top: 15px;
+    width:1.5rem;
+    text-align: center;
+    line-height: 1.5rem;;
+    font-size: 1rem;
+    border-radius: 50%;
+
+    /* the menu */
+    /* TODO: make it customizable */
+    border:1px solid red;
+    background: red;
+    color:white;
+}
+
+.quad_table .uzsu {
+  padding-left:0px;
+  padding-top:2px;
+}
+
+.quad_table .switch {
+  display: inline-block;
+  float:none;
+  margin:0;
+  /** height: 22px !important; */
+}
+
+.quad_table div.ui-slider {
+  margin:0;
+  margin-top: 0px;
+  display:block;
+}
+
+.quad_list svg.icon0 {
+    height:32px;
+    width: 32px;
+    margin-top: -4px;
+}
+
+.quad_list .column_symbol{
+  height: 37px !important;
+
+}
+
+.quad_list .column_pos{
+  width: 130px !important;
+
+}
+
+.quad_list div.column_plot, div.column_stateengine, div.column_uzsu, div.column_move_up, div.column_move_down, div.column_stop, div.column_mute {
+    width: 40px;
+}
+
+.row_color div.column_values {
+    width: 80px;
+}
+
+.row_color div.column_ww_popup {
+    width: 40px;
+}
+
+.row_playercontrol div.column_volume_popup {
+    width: 50px;
+}
+
+.row_playercontrol div.column_source {
+    width:150px;
+}
+
+.quad_list div.column_multi {
+    min-width:100px;
+}
+
+.quad_list div.column_empty {
+    /** background-color: #fff;*/
+}
+
+.quad_list div.column_cover {
+    width:40px;
+    padding-top: 2px;
+}
+
+.quad_list div.column_pos_popup_blind {
+    width:40px;
+}
+
+/** cover image itself */
+div.quad_cover img {
+  width: 32px;
+  height: 32px;
+  background: none repeat scroll 0 0;
+  border-color: gray;
+  border-radius: 2px;
+  border: 1px solid;
+  margin-bottom: -11px;
+}
+
+div.quad_cover-popup img {
+  width: 300px;
+  height: 300px;
+  background: none repeat scroll 0 0;
+  border-color: gray;
+  border-radius: 2px;
+  border: 1px solid;
+}
+
+.quad_slider-popup p, .quad_rgbww-popup p, .quad_rgb-popup p, .quad_hsv-popup p, .quad_hsvww-popup p {
+    margin: 5px 0 8px 0;
+}
+
+
+.column_value_slider, .column_pos_slider, .column_song_position, .column_volume_slider
+{
+    vertical-align: middle;
+}
+
+.docu_text{
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Examples for IDs */
+
+#licht_kurven-warm .highcharts-background { /* background */
+  fill: rgba(50, 0, 0, 0.1);
+}
+
+#licht_kurven-kalt .highcharts-background { /* background */
+  fill: rgba(0, 0, 50, 0.1);
+}
+
+#licht_kurven-warm .highcharts-root .highcharts-series { /* graph */
+  stroke: rgba(255, 50, 54, 1);
+  stroke-width: 1px;
+}
+
+#licht_kurven-kalt .highcharts-root .highcharts-series { /* graph */
+  stroke: rgba(50, 50, 255, 1);
+  stroke-width: 1px;
+}
+
+#licht_kurven-standard .highcharts-root .highcharts-series { /* graph */
+  stroke: rgba(250, 50, 255, 1);
+  stroke-width: 1px;
+}

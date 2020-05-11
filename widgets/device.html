@@ -1,7 +1,7 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiß
+* @author      Martin Gleiss
 * @copyright   2012 - 2015
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
@@ -86,7 +86,7 @@
 */
 {% macro codepad(id, code, title, duration) %}
 
-	<div id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="device.codepad" data-val="{{ code|default(config_codepad_code)|md5 }}" data-duration="{{ duration|default('10') }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-id="{{ id }}" data-widget="device.codepad" data-val="{{ code|default(config_codepad_code)|md5 }}" data-duration="{{ duration|default('10') }}"
 		data-role="popup" data-overlay-theme="a" class="alert" style="width: 166px;" >
 		<div data-role="header" data-theme="c"><h1>{{ title|default('Enter Code') }}</h1></div>
 
@@ -122,15 +122,18 @@
 * @param {text(input,handle,both,none)=none} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'none')
 * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
 * @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
+* @param {text='left'} position of the switch: left (default) or right
 */
-{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display) %}
+
+{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos) %}
 	{% import "basic.html" as basic %}
 
-	<div class="dimmer" data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
-		{{ basic.stateswitch('', item_switch, 'icon', '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
-		<p>{{ txt|e }}</p>
-		{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display) }}
-	</div>
+		{% if picpos is empty or picpos=='left' %}<div class="dimmer-left" {% else %} <div class="dimmer-right" {% endif %}
+		data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
+			{{ basic.stateswitch('', item_switch, 'icon', '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
+			<p>{{ txt|e }}</p>
+			{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display) }}
+		</div>
 
 {% endmacro %}
 
@@ -218,7 +221,7 @@
 * @param {text=Pos1} the text printed on button for position 1 (optional, default Pos1)
 * @param {text=Pos2} the text printed on button for position 2 (optional, default Pos2)
 *
-* @info inspired by Jörg Gutowski
+* @info inspired by Joerg Gutowski
 */
 {% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) %}
 	{% import "basic.html" as basic %}
@@ -273,6 +276,49 @@
 
 {% endmacro %}
 
+/**
+* Displays a simple shutter control assembly in table format
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the shutter
+* @param {item} a gad/item for long move
+* @param {item} a gad/item for stopping movement
+* @param {item} a gad/item for the actual position
+* @param {item=} a gad/item for the saved position (optional)
+* @param {type=micro} valid types: 'micro', 'mini', 'midi' (optional, default: micro)
+*
+* @author Michael Stemmer and Wolfram v. Huelsen
+*/
+{% macro smallshut(id, txt, item_move, item_stop, item_position, item_saved, type) %}
+{% import "basic.html" as basic %}
+{% import "icon.html" as icon %}
+{% set uid = uid(page, id) %}
+
+	<div class="smallshut"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
+		<span class="ui-shut-txt">
+		{% if txt %} {{ txt }} {% endif %}
+		</span>
+		<span class="ui-shut-btn">
+			{{ basic.stateswitch('',  item_move, type|default('micro'), '0', 'carat-u') }}
+		</span>
+		<span class="ui-shut-btn">
+			{{ basic.stateswitch('', item_stop, type|default('micro'), 1, 'delete') }}
+		</span>
+		<span class="ui-shut-btn">
+				{{ basic.stateswitch('', item_move, type|default('micro'), '1', 'carat-d') }}
+		</span>
+		<span class="ui-shut-btn">
+			{% if item_saved %}
+				{{ basic.stateswitch('', item_saved, type|default('micro'), '1', 'fts_shutter_50.svg') }}
+			{% endif %}
+		</span>
+		<span class="ui-shut-pic">
+			{% if item_position %}
+				{{ icon.shutter(id~'position', '', item_position) }}
+			{% endif %}
+		</span>
+	</div>
+{% endmacro %}
 
 /**
 * Roof window
@@ -369,7 +415,7 @@
 * @param {color=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
 * @param {color=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
 *
-* @author Michael Würtenberger
+* @author Michael Wuertenberger
 */
 
 {% macro uzsuicon(id, item, headline, pic_on, pic_off, valueType, valueParameterList, color_on, color_off, _backend) %}
@@ -378,10 +424,10 @@
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsuicon" data-item="{{ item }}"
 		data-headline="{{ headline|default('UZSU') }}" data-designType="{{ _backend }}"
 		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
-		class="switch icon">
+		class="icon">
 		<a>
 			<span class="icon-off">{{ basic.icon(pic_off|deficon('time_timer_switch.svg'), color_off) }}</span>
-			<span class="icon-on hide">{{ basic.icon(pic_on|deficon('time_timer_switch.svg'), color_on|default('icon1')) }}
+			<span class="icon-on hide">{{ basic.icon(pic_on|deficon('time_timer_switch.svg'), color_on|default('icon1')) }}</span>
 		</a>
 	</span>
 

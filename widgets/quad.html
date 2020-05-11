@@ -1,0 +1,2895 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Niko Will, Onkel Andy
+ * @copyright   2013
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+/**
+ * Mix your widgets in columns however you want. This would actually be the only quad widget you need ;)
+ *
+ * @param {id=} unique id for this widget
+ * @param {text=} text in left column
+ * @param {unspecified[?]} Any widget function that is implemented in your pages like basic.print(..), device.shutter(..), etc.
+  You can use arrays to put multiple widgets in one column. Don't put the function call in quotes!
+ * @param {unspecified[?]=} Any widget function. In total you can add 10 columns max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 10 columns max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 10 columns max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 10 columns max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 10 columns max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 10 columns max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 10 columns max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 10 columns max.
+ * @param {unspecified[?]=} Any widget function. In total you can add 10 columns max.
+ */
+{% macro mixed(id, text, div1, div2, div3, div4, div5, div6, div7, div8, div9, div10) %}
+    {% set id = id is empty ? text|replace(' ', '_') : id %}
+      <li data-icon="false" class="row_mixed">
+    <div class="quad_table row_mixed" id="row_{{uid(page, id)|replace('.', '_')}}">
+    <div class="text">{{ text|e }}</div>
+    {% for divnumber in 1..10 %}
+        {% set nummer = _context['div' ~ divnumber] %}
+        {% if _context['div' ~ divnumber] %}
+            {% if nummer is iterable %}
+                {% set col = 'multi' %}
+                  <div class="column{{divnumber}} column_{{col}}" data-order="{{divnumber}}">
+                  {% for div in nummer %}
+                    {{ div }}
+                  {% endfor %}
+                </div>
+            {% else %}
+                {% set col = _context['div' ~ divnumber]|split('data-widget="').1|split('"').0|replace({'.': '_'}) %}
+                <div class="column{{divnumber}} column_{{col}}" data-order="{{divnumber}}">
+                  {{ _context['div' ~ divnumber] }}
+                </div>
+            {% endif %}
+
+        {% endif %}
+        {% if _context['line' ~ linenumber] %}
+          </div>
+        {% endif %}
+    {% endfor %}
+
+    </div>
+    </li>
+
+{% endmacro %}
+
+/**
+ * Show a symbol based on item values (including and/or logic).
+ *
+ * @param {id=} unique id for this widget
+ * @param {item[?]=} zero, one or more item(s). More items in array form: [item1, item2] (optional)
+                          hint: let this empty to display a static icon
+ * @param {text[?]=} the text, printed when item has value val (optional)
+ * @param {image[?]=control_on_off} the icon shown when item has value val (optional, default 'control_on_off' if text is empty)
+  dynamic icons can be used, e.g. icon.light('', '', value_item, min_display, max_display); please note: these must not be wrapped by apostrophs (')
+ * @param {val[?]=1} either one value (icon disappears when value not true) or array with two or more values, e.g. [0,1] (icon stays) (default 1).
+ * @param {formula[?]=or} 'or', 'and' or any JavaScript expression with following variables, result will be compared to comparative value above (default 'or')
+ - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
+ * @param {color[?]=icon0} the color 'icon1' or e. g. '#f00' for red (default 'icon0' of the design)
+ * @param {text=} URL to use as link (optional)
+ * @param {text=} used in combination with href as data-rel attribute {e.g. to open a popup} (optional)
+ * @param {text=} description text for the whole line
+ * @param {text[?]=} description text for the column. Can be array.
+ * @param {unspecified[?]=} array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {image=measure_power_meter} icon triggering the plot popup
+ * @param {unspecified=} placeholder attributes for future features, etc.
+ * @param {unspecified=} placeholder attributes for future features, etc.
+ * @param {value[](1,2,3,4,5)=} array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
+             to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
+ */
+{% macro symbol(id, item, txt, pic, val, formula, color, href, rel, linetext, columntext, item_plot, icon_plot, place3, place4, column_order) %}
+    {% import "basic.html" as basic %}
+    {% import "plot.html" as plot %}
+    {% set id = id is empty ? item : id %}
+    <li data-icon="false" class="row_symbol">
+    <div class="quad_table sorting row_symbol" id="row_{{uid(page, id)|replace('.', '_')}}_sorting">
+        {% if linetext %}
+          <div class="text">{{ linetext|e }}</div>
+        {% endif %}
+        {% set runs = formula is iterable ? max((formula|length-1),0 ) : 0 %}
+        {% for i in 0..runs %}
+          <div class="column{{ column_order[i]|default(i+1) }} {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_symbol' }}" data-order={{ column_order[i]|default(i+1) }}>
+          {% if columntext is iterable %}{{ columntext[i] }}{% else %}{{ columntext }}{% endif %}
+            {% if item is iterable and item[i] == ' ' %}
+
+            {% elseif runs > 0 %}
+              {% if formula[i] == '>' %}
+                {{ basic.symbol(id~'list_symbol'~i, item[i], txt[i]|default(''), pic[i]|default(pic[i] ? pic[i] : 'control_on_off'), val[i], formula[i], color[i]|default(color[i] ? color[i] : 'icon0'), href[i], rel[i]) }}
+              {% else %}
+                {% for x in 0..max((val[i]|length-1),0) %}
+                  {{ basic.symbol(id~'list_symbol'~i~x, item[i], txt[i][x]|default(''), pic[i][x]|default(pic[i] ? pic[i] : 'control_on_off'), val[i][x], formula[i], color[i][x]|default(color[i] ? color[i] : 'icon0'), href[i][x], rel[i][x]) }}
+                {% endfor %}
+              {% endif %}
+              {% if item_plot[i] %}
+                <a href="#{{ uid(page, id) }}_plotpopup{{i}}" data-rel="popup">
+                  {{ basic.icon(icon_plot|deficon('measure_power_meter'), color[i][0]|default('icon0')) }}
+                </a>
+                <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{i}}" data-role="popup">
+                  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                {% if item_plot[i] is iterable  %}
+                  {{ plot.period(id~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
+                {% else %}
+                  {{ plot.period(id~'_plotpopup'~i, item_plot[i], 'avg', '12h', 'now', '', '', '', txt[i], '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+                {% endif %}
+                </div>
+              {% endif %}
+            {% else %}
+              {% if not val %}{% set val = '1' %}{% endif %}
+              {% if val is iterable %}
+                {% for x in 0..max((val|length-1),0) %}
+                  {{ basic.symbol(id~'list_symbol'~i~x, item, txt[x]|default(''), pic[x]|default('control_on_off'), val[x], formula, color[x]|default('icon0'), href[x], rel[x]) }}
+                {% endfor %}
+              {% else %}
+                {{ basic.symbol(id~'list_symbol'~i, item, txt, pic, val, formula, color, href, rel) }}
+              {% endif %}
+              {% if item_plot %}
+                <a href="#{{ uid(page, id) }}_plotpopup{{i}}" data-rel="popup">
+                  {{ basic.icon(icon_plot|deficon('measure_power_meter'), color[0]|default('icon0')) }}
+                </a>
+                <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{i}}" data-role="popup">
+                  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                {% if item_plot is iterable  %}
+                  {{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+                {% else %}
+                  {{ plot.period(id~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', txt, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+                {% endif %}
+                </div>
+              {% endif %}
+            {% endif %}
+          </div>
+
+        {% endfor %}
+    </div>
+    </li>
+{% endmacro %}
+
+
+/**
+ * Print values in specific format, including expressions
+ *
+ * @param {id=} unique id for this widget (optional)
+ * @param {unspecified[?]} one or more item(s). Multiple items in array-form: [item1, item2]
+ * @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
+  Use 'text' to display result as unformatted string, 'html' to render it as unescaped html or 'script' to just execute as JavaScript w/o displaying anything.
+ * @ add {format(text,html,script)=}
+ * @param {formula[?]=VAR} any valid JavaScript expression with following variables and aggregate functions (optional, default: VAR)
+  - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
+  - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
+ * @param {value[]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
+ * @param {color[?]=} array of colors; 'icon1' or e. g. '#f00' for red (optional)
+the first one is the base color for values below first threshold, so pass one color more than thresholds.
+ * @param {text[?]=} 	    css class name, useful for script hacks (see documentation and example)
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {text=}       description text for the whole line
+ * @param {text[?]=}     description text for each column
+ * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {image=measure_power_meter} 	    icon triggering the plot popup
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {value[](1,2,3,4,5)=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
+ *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
+ */
+{% macro print(id, item, format, formula, threshold, color, classname, place2, linetext, columntext, item_plot, icon_plot, place3, place4, column_order) %}
+    {% import "basic.html" as basic %}
+    {% import "plot.html" as plot %}
+    {% set id = id is empty ? item : id %}
+    <li data-icon="false" class="row_print">
+    <div class="quad_table sorting row_print" id="row_{{uid(page, id)|replace('.', '_')}}_sorting">
+        <div class="text">{{ linetext|e }}</div>
+        {% set runs = item is iterable ? max((item|length-1),0 ) : 0 %}
+        {% set scriptcolumns = 0 %}
+        {% for i in 0..runs %}
+          {% if format[i] != 'script' %}
+            {% set column_order = column_order[i]|default(i+1) - scriptcolumns %}
+            <div class="column{{ column_order}}
+            {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_print' }}" data-order={{ column_order[i]|default(i+1) }}>
+            {% else %}
+            <div style="width: 0;">
+              {% set scriptcolumns = scriptcolumns + 1 %}
+            {% endif %}
+            {% if item is iterable and item[i] == ' ' %}
+            {% elseif runs > 0 %}
+            {{ columntext[i] }}&nbsp;
+              {% if item[i] == ''  %}
+                <span id="{{ classname[i]|e }}">{{ formula[i]|e }}</span>
+              {% else %}
+                {{ basic.print(id~'list_print'~i, item[i], format[i], formula[i], threshold[i], color[i]) }}
+              {% endif %}
+              {% if item_plot[i] %}
+                <a href="#{{ uid(page, id) }}_plotpopup{{i}}" data-rel="popup">
+                  {{ basic.icon(icon_plot[i]|deficon('measure_power_meter'), 'icon0') }}
+                </a>
+                <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{i}}" data-role="popup">
+                  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                {% if item_plot[i] is iterable  %}
+                  {{ plot.period(id~'_plotpopup'~i, item_plot[i][0], item_plot[i][1], item_plot[i][2], item_plot[i][3], item_plot[i][4], item_plot[i][5], item_plot[i][6], item_plot[i][7], item_plot[i][8], item_plot[i][9], item_plot[i][10], item_plot[i][11], item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]) }}
+                {% else %}
+                  {{ plot.period(id~'_plotpopup'~i, item_plot[i], 'avg', '12h', 'now', '', '', '', linetext[i], '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+                {% endif %}
+                </div>
+              {% endif %}
+            {% else %}
+            {{ columntext }}&nbsp;{{ basic.print(id~'list_print', item, format, formula, threshold, color) }}
+            {% if item_plot %}
+              <a href="#{{ uid(page, id) }}_plotpopup{{i}}" data-rel="popup">
+                {{ basic.icon(icon_plot|deficon('measure_power_meter'), 'icon0') }}
+              </a>
+              <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{i}}" data-role="popup">
+                <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+              {% if item_plot is iterable  %}
+                {{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+              {% else %}
+                {{ plot.period(id~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+              {% endif %}
+              </div>
+            {% endif %}
+          {% endif %}
+          </div>
+      {% endfor %}
+
+    </div>
+    </li>
+{% endmacro %}
+
+{% macro map(id, linetext, item, map_min, map_max, map_str, place1, place2, columntext, item_plot, icon_plot, place3, place4, column_order) %}
+  {% import _self as newwidget %}
+  {{ newwidget.maprange(id, linetext, item, map_min, map_max, map_str, place1, place2, columntext, item_plot, icon_plot, place3, place4, column_order)}}
+{% endmacro %}
+
+/**
+ * RTR to control heating. This widget only shows two values: the actual temperature and the set temperature. Clicking on the latter opens a popup.
+ *
+ * @param {id=}       		unique id for this widget
+ * @param {text=}       		name of the rtr
+ * @param {item}    	an item for the actual temperature
+ * @param {item}  an item for the temperature to set
+ * @param {item=}    an item for comfort / standby (3x bit or 1x byte)
+ * @param {item=}    	an item for night (3x bit or 1x byte)
+ * @param {item=}    	an item for frost (3x bit or 1x byte)
+ * @param {item=}    	an item for the current state of the actor
+ * @param {item=}    	an item for a text (some rtr have a text-display), (optional)
+ * @param {value=0.5}    		step for plus/minus buttons (optional, default: 0.5)
+ * @param {item=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
+ * @param {text[]=} list of additional widgets / content to display
+ * @param {color=}    		color for the popup icon
+ * @param {text=}    	activity indicator for the plot icon which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
+ * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {image=measure_power_meter} 	    icon triggering the plot popup
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {value[](1,2,3,4,5)=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
+ *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
+ */
+{% macro rtr(id, linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator, item_plot, icon_plot, place3, place4, column_order) %}
+    {% import "basic.html" as basic %}
+    {% import "plot.html" as plot %}
+    {% import "device.html" as device %}
+    {% set id = id is empty ? item_actual|replace('.', '_') : id %}
+    <li data-icon="false" class="row_rtr">
+    <div class="quad_table sorting row_rtr" id="row_{{uid(page, id)}}_sorting"">
+        <div class="text">{{ linetext|e }}</div>
+        <div class="column{{ column_order[0]|default(1) }} column_rtr_actual" data-order={{ column_order[0]|default(1) }}>
+          {{ basic.print(id~'_actual_value', item_actual, '°') }}
+          {% if item_plot %}
+            <a href="#{{ uid(page, id) }}_plotpopup{{i}}" data-rel="popup">
+              {{ basic.icon(icon_plot|deficon('measure_power_meter'), 'icon0') }}
+            </a>
+            <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{i}}" data-role="popup">
+              <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+            {% if item_plot is iterable  %}
+              {{ plot.period(id~'_plotpopup'~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+            {% else %}
+              {{ plot.period(id~'_plotpopup'~i, item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'int') }}
+            {% endif %}
+            </div>
+          {% endif %}
+        </div>
+        <div class="column{{ column_order[2]|default(3) }} column_rtr_popup" data-order={{ column_order[2]|default(3) }}>
+            <a href="#{{ uid(page, id) }}list_rtr_popup" data-rel="popup" data-position-to="window">
+                {{ basic.print(id~'_set', item_set, '°') }}
+            </a>
+            <div id="{{ uid(page, id) }}list_rtr_popup" data-role="popup" data-overlay-theme="a" class="quad_rtr-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                {{ device.rtr(id~'rtr', linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator) }}
+            </div>
+        </div>
+    </div>
+    </li>
+{% endmacro %}
+
+/**
+ * Dimmer with switching and dimming function. Be aware that the attributes differ from the basic dimmer widget!
+ *
+ * @param {id=}        		unique id for this widget
+ * @param {text=} 		    text for the whole line
+ * @param {item}       	a gad/item for switching
+ * @param {item}       	a gad/item for dimming
+ * @param {value=0}       		the minimum value if the slider is moved to total left (optional, default 0)
+ * @param {value=255}       		the maximum value if the slider is moved to total right (optional, default 255)
+ * @param {value=5}       	step between two values (optional, default 5)
+ * @param {image=light_light}       		icon for 'on' state, can also be dynamic (optional, default is light_light)
+ * @param {image=light_light}       		icon for 'off' state, can also be dynamic (optional, default is light_light)
+ * @param {color=icon1}       	color for 'on' state (optional)
+ * @param {color=icon0}       	color for 'off' state (optional)
+ * @param {text(input,handle,both,none)=none} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'input')
+ * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
+ * @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
+ * @param {text='left'} position of the switch: left (default) or right
+ * @param {text=}      activity indicator which is active until response (or a timeout is reached)
+ * @param {text(horizontal,vertical,bottomup,semicircle,popup)=horizontal} 	if the dimmer slider should be implemented in the column directly.
+ *						possible options: 'horizontal', 'vertical', 'bottomup', 'semicircle'. 'popup' or empty for popup.
+ * @param {item=}      a gad/item for UZSU
+ * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+ * @param {text=}     value type: '%' to recalculate 0-255 values to 0-100%  (e.g. for lights) or any formula
+   - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
+   - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
+ * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {image=measure_power_meter} 	    icon triggering the plot popup
+ * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
+                       followed by the attributes for each element as you would for the basic widget.
+                       Possible elements are: header, text, slider, flip, switch, select
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
+ * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {text[](switch,value_popup,value_slider,locks,uzsu,stateengine,plot,scenes,extpopup,anynumber)=[['locks', 'switch'], 'value_popup', 'stateengine', 'uzsu', 'plot']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'switch', 'value_popup', 'value_slider', 'locks', 'uzsu', 'stateengine', 'plot', 'scenes', 'extpopup'
+             For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
+             Combine elements in one column by putting them in arrays. Standard is [['locks', 'switch'], 'value_popup', 'stateengine', 'uzsu', 'plot']
+ *
+ * @see stateengine/stateengine
+ *
+ */
+{% macro dimmer(id, linetext, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos, indicator, slider_orientation, item_uzsu, uzsu_attribs, formula, item_plot, icon_plot, item_auto, extpopup, locks, place3, place4, column_order) %}
+    {% import "basic.html" as basic %}
+    {% import "device.html" as device %}
+    {% import "plot.html" as plot %}
+    {% import "popup.html" as popup %}
+    {% if asset_exists('stateengine.html') %}
+      {% import "widgets/stateengine.html" as stateengine %}
+    {% endif %}
+
+/**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
+  {% set elements = {} %}
+  {% for key,item in column_order %}
+    {% set written = 0 %}
+    {% if item is not iterable %}
+      {% if item == 'switch' and item_switch %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif (item == 'value_popup' or item == 'value_slider') and item_value %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'uzsu' and item_uzsu %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'locks' and locks %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'extpopup' and extpopup and extpopup[0] != 'stateengine' %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'stateengine' and item_auto and stateengine is defined %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'plot' and item_plot %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == '' or item == ' ' %}
+        {% set elements = elements|merge({(key):('empty')}) %}
+        {% set written = 1 %}
+      {% elseif item matches '/^[\\d\\.]+$/' %}
+        {% set elements = elements|merge({(key):('empty_'~item)}) %}
+        {% set written = 1 %}
+      {% endif %}
+    {% else %}
+      {% set elements = elements|merge({(key):('multi')}) %}
+      {% for key,arrayitem in item %}
+        {% if arrayitem == 'switch' and item_switch %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif (arrayitem == 'value_popup' or arrayitem == 'value_slider') and item_value %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == 'uzsu' and item_uzsu %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == 'locks' and locks %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == 'extpopup' and extpopup and extpopup[0] != 'stateengine' %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == 'stateengine' and item_auto and stateengine is defined %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == 'plot' and item_plot %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == '' or arrayitem == ' ' %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+        {% if column_order[key+1] is iterable %}
+            {% if (column_order[key+1][0] starts with 'empty') or (column_order[key+1][0] matches '/^[\\d\\.]+$/') or (column_order[key+1][0] == ' ') %}
+            {% elseif written == 1 %}
+                {% set elements = elements|merge({(key):('div')}) %}
+            {% endif %}
+        {% else %}
+            {% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
+            {% elseif written == 1 %}
+                {% set elements = elements|merge({(key):('div')}) %}
+            {% endif %}
+        {% endif %}
+  {% endfor %}
+
+/**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
+  {% if elements is empty %}
+    {% set elements = { 0:'ignore' } %}
+    {% set multi = 0 %}
+    {% for i in 1..8 %}
+      {% if locks and 'locks' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('locks')}) %}
+      {% elseif item_switch and 'switch' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('switch')}) %}
+      {% elseif item_value and 'value_popup' not in elements %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('value_popup')}) %}
+      {% elseif extpopup and 'extpopup' not in elements and extpopup[0] != 'stateengine' %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('extpopup')}) %}
+      {% elseif item_plot and 'plot' not in elements %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('plot')}) %}
+      {% elseif item_auto and 'stateengine' not in elements and stateengine is defined %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('stateengine')}) %}
+      {% elseif item_uzsu and 'uzsu' not in elements %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('uzsu')}) %}
+
+      {% endif %}
+    {% endfor %}
+    {% set elements = elements|merge({(elements|length):('div')}) %}
+    {% if multi >= 2 %}
+      {% set elements = {0:'multi'}|merge(elements|slice(1)) %}
+      {% set multi = 0 %}
+    {% endif %}
+  {% endif %}
+  {% if elements[0] == 'ignore' %}
+    {% set elements = elements|slice(1) %}
+  {% endif %}
+  {% set columnnumber = {} %}
+
+{% set ext_elements = [] %}
+{% for id, string in elements %}
+    {% set ext_elements = ext_elements|merge([(string)]) %}
+{% endfor %}
+
+{% set id = id is empty ? item_switch|replace('.', '_') : id %}
+
+/**
+<div>
+{% for column in elements %}
+  {{ column }},
+{% endfor %}
+</div>
+*/
+    <li data-icon="false" class="row_dimmer">
+
+    <div class="quad_table row_dimmer" id="row_{{uid(page, id)}}">
+  <div class="text" data-order=0>{{ linetext|e }}
+  {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
+  {{ basic.print(id~'dimmerprint', item_auto~'.suspend_end', 'text') }}
+  {% endif %}
+  </div>
+
+    {% for column in elements %}
+    {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
+      {% if loop.first %}
+        {% if column == 'empty' %}
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}">
+        {% else %}
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" style="width: {{ column|slice(6) }}px !important;">
+        {% endif %}
+      {% elseif column == 'empty' %}
+        {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
+        </div>
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}">
+      {% elseif column starts with 'empty' %}
+        {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
+        </div>
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" style="width: {{ column|slice(6) }}px !important;">
+      {% elseif column == 'div' %}
+        {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
+        <div class="column{{ columnnumber|length+1 }} column_{{ elements[loop.index] }}" data-order="{{ columnnumber|length+1 }}">
+      {% endif %}
+    {% elseif loop.first %}
+      <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}">
+    {% endif %}
+
+    {% if column == 'locks' %}
+      {% if locks is not iterable %}
+                {% set item_lock = locks|default('') %}
+            {% else %}
+                {% set item_lock = locks[0]|default('') %}
+                {% set item_bwmlock = locks[1]|default('') %}
+                {% set item_force = locks[2]|default('') %}
+            {% endif %}
+
+      {% if (item_lock and item_bwmlock) or item_force %}
+        <a href="#{{ uid(page, id) }}_list_locks_popup" data-rel="popup">
+        {{ basic.symbol(id~'list_lockpop_on', [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color_on) }}
+        {{ basic.symbol(id~'list_lockpop_off', [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color_off) }}
+        </a>
+        {{ popup.locks(uid(page, id)~'_list_locks_popup', [item_lock|default(''), [color_off|default('icon0'), color_on|default('icon1')]], [item_bwmlock|default(''), [color_off|default('icon0'), color_on|default('icon1')]], [item_force|default(''), color_on|default('icon1')]) }}
+      {% elseif item_lock %}
+        {{ basic.stateswitch(id~'list_lock', item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', [color_off, color_on], indicator) }}
+      {% elseif item_bwmlock %}
+        {{ basic.stateswitch(id~'list_lock', item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', [color_off, color_on], indicator) }}
+      {% endif %}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'switch' and item_switch %}
+
+      {{ basic.stateswitch(id~'_list_dimmer_dynicon', item_switch, 'icon', [0,1], [pic_off|default('light_light'), pic_on|default('light_light')], '', [color_off, color_on], indicator) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'value_slider' and item_value %}
+      {{ basic.slider(id~'_slider_inline', item_value, min, max, step, slider_orientation, value_display, min_display, max_display) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'value_popup' and item_value %}
+            <a href="#{{ uid(page, id) }}_list_dimmer_popup" data-rel="popup" data-position-to="window">
+                {% if formula == '%' %}
+                  {{ basic.print(id~'_list_dimmer_actual', item_value, '%', 'VAR1/255*100', '', [color_off|default('icon0'), color_on|default('icon1')]) }}
+                {% else %}
+                  {{ basic.print(id~'_list_dimmer_actual', item_value, 'int', formula, '', [color_off|default('icon0'), color_on|default('icon1')]) }}
+                {% endif %}
+            </a>
+            <div id="{{ uid(page, id) }}_list_dimmer_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+			  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+              <div class="quad_dimmer">
+                {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+                {{ basic.stateswitch(id~'dimmerpopup_switch', item_switch, 'icon', [0,1], [pic_off|default('light_light'), pic_on|default('light_light')], '', [color_off, color_on], indicator) }}
+                <p>{{ linetext|e }}</p>
+                {{ basic.slider(id~'dimmerpopup_slider', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
+                </div>
+              </div>
+            </div>
+
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+        {% if column == 'extpopup' and extpopup %}
+            {% if extpopup[0] not in ext_elements %}
+              <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
+                  {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+              </a>
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color_off|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+            {% endif %}
+            {% if elements[loop.index] == 'div' %}
+                </div>
+            {% endif %}
+        {% endif %}
+
+
+    {% if column == 'stateengine' and item_auto %}
+            {% if extpopup[0] == 'stateengine' and stateengine is defined %}
+                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+            {% elseif stateengine is defined %}
+                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+            {% endif %}
+
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'uzsu' and item_uzsu %}
+      {% if uzsu_attribs is not iterable %}
+                {% set uzsu_value = '' %}
+                {% set uzsu_coloron = '' %}
+                {% set uzsu_coloroff = '' %}
+                {% set uzsu_params = '' %}
+                {% set uzsu_picon = '' %}
+                {% set uzsu_picoff = '' %}
+            {% else %}
+                {% set uzsu_picon = uzsu_attribs[0]|default('') %}
+                {% set uzsu_picoff = uzsu_attribs[1]|default('') %}
+                {% set uzsu_value = uzsu_attribs[2]|default('') %}
+                {% set uzsu_params = uzsu_attribs[3]|default('') %}
+                {% set uzsu_coloron = uzsu_attribs[4]|default('') %}
+                {% set uzsu_coloroff = uzsu_attribs[5]|default('') %}
+            {% endif %}
+          {{ device.uzsuicon(id~'list_uzsu', item_uzsu, linetext, uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'plot' and item_plot %}
+        <a href="#{{ uid(page, id) }}_plotpopup" data-rel="popup">
+          {{ basic.icon(icon_plot|deficon('measure_power_meter'), color_off|default('icon0')) }}
+        </a>
+        <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup" data-role="popup">
+          <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+        {% if item_plot is iterable  %}
+          {{ plot.period(id~'_plotpopup', item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+        {% else %}
+          {{ plot.period(id~'_plotpopup', item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
+        {% endif %}
+        </div>
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column starts with 'empty' %}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+        {% endif %}
+
+  {% endfor %}
+    </div>
+    </li>
+{% endmacro %}
+
+
+/**
+ * Color chooser for RGB lights. Be aware that the attributes differ from basic.color widget!
+ *
+* @param {id=} unique id for this widget (optional)
+* @param {item[?]} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
+* @param {item=} an item for the green value in RGB model or saturation in HSL and HSV model
+(to let blank if first item contains list of all values)
+* @param {item=} an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
+(to let blank if first item contains list of all values)
+* @param {value[?]=0} minimum value if the light is off; single value or list of values for each component (optional, default 0)
+* @param {value[?]=255} maximum value if the light is full on; single value or list of values for each component (optional, default 255 for rgb, [360,100,100] for hsl & hsv)
+* @param {value=7} number of shades per color (optional, default 7)
+* @param {value=10} number of colored segments (optional, default 10)
+* @param {text(disc,rect,slider)=disc} 'disc' for circular, 'rect' for rectangular view, 'slider' for HSV sliders (optional, default: disc)
+* @param {text(rgb,hsl,hsv)=rgb} possible values: 'rgb', 'hsl' and 'hsv' (optional, default: rgb)
+* @param {text=} text for the whole line (optional)
+* @param {item=} an item for the red switch in RGB model
+* @param {item=} an item for the green value in RGB model
+* @param {item=} an item for the blue value in RGB model
+ * @param {value=}    the minimum value which is displayed if the slider is moved to total left (optional, default like min)
+ * @param {value=}    the maximum value which is displayed if the slider is moved to total left (optional, default like max)
+ * @param {item=}      a gad/item for UZSU
+ * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+ * @param {text(rgb,hsv)=}   	colormodel for popup (rgb or hsv)
+ * @param {item=}   	a gad/item to switch on/off fourth color / warm white
+ * @param {item=}   	a gad/item for value of fourth color / warm white
+ * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {image=measure_power_meter} 	    icon triggering the plot popup
+ * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
+                       followed by the attributes for each element as you would for the basic widget.
+                       Possible elements are: header, text, slider, flip, switch, select
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
+ * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral), item_seqlock (RGB sequencer lock)
+ * @param {item=} 		item for RGB sequencer (logic)
+ * @param {color[]=} 	array with on/off icon colors
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {text[](colorpicker,ww_popup,ww_slider,values,sequencer,locks,stateengine,uzsu,plot,anynumber)=[[locks, sequencer, colorpicker],values, stateengine, plot, uzsu]} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'colorpicker', 'ww_popup', 'ww_slider', 'values', 'sequencer', 'locks', 'stateengine', 'uzsu', 'plot'
+             For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
+             Combine elements in one column by putting them in arrays. Standard is [['locks', 'sequencer', 'colorpicker'],'values', 'stateengine', 'plot', 'uzsu']
+ */
+{% macro color(id, item_value_r, item_value_g, item_value_b, min, max, step, colors, style, colormodel, linetext, item_switch_r, item_switch_g, item_switch_b, min_display, max_display, item_uzsu, uzsu_attribs, popupcolor, item_switch_ww, item_value_ww, item_plot, icon_plot, item_auto, extpopup, locks, item_seq, icon_color, place3, place4, column_order) %}
+    {% import "basic.html" as basic %}
+    {% import "plot.html" as plot %}
+    {% import "icon.html" as icon %}
+    {% import "device.html" as device %}
+    {% import "popup.html" as popup %}
+    {% if asset_exists('stateengine.html') %}
+      {% import "widgets/stateengine.html" as stateengine %}
+    {% endif %}
+
+/**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
+  {% set elements = {} %}
+  {% for key,item in column_order %}
+    {% set written = 0 %}
+    {% if item is not iterable %}
+      {% if item == 'colorpicker' and item_value_r %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif (item == 'ww_popup' or item == 'ww_slider') and item_value_ww %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'values' and item_value_r %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'sequencer' and item_seq %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'uzsu' and item_uzsu %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'locks' and locks %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'extpopup' and extpopup[0] != 'stateengine' and extpopup %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'stateengine' and item_auto and stateengine is defined %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'plot' and item_plot %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == '' or item == ' ' %}
+        {% set elements = elements|merge({(key):('empty')}) %}
+        {% set written = 1 %}
+      {% elseif item matches '/^[\\d\\.]+$/' %}
+        {% set elements = elements|merge({(key):('empty_'~item)}) %}
+        {% set written = 1 %}
+      {% endif %}
+    {% else %}
+      {% set elements = elements|merge({(key):('multi')}) %}
+      {% for key,arrayitem in item %}
+        {% if arrayitem == 'colorpicker' and item_value_r %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif (arrayitem == 'ww_popup' or arrayitem == 'ww_slider') and item_value_ww %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == 'values' and item_value_r %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == 'sequencer' and item_seq %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == 'uzsu' and item_uzsu %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == 'locks' and locks %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == 'extpopup' and extpopup[0] != 'stateengine' and extpopup %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == 'stateengine' and item_auto and stateengine is defined %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == 'plot' and item_plot %}
+          {% set elements = elements|merge({(key):(arrayitem)}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem == '' or arrayitem == ' ' %}
+          {% set elements = elements|merge({(key):('empty')}) %}
+          {% set written = 1 %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+        {% if column_order[key+1] is iterable %}
+            {% if (column_order[key+1][0] starts with 'empty') or (column_order[key+1][0] matches '/^[\\d\\.]+$/') or (column_order[key+1][0] == ' ') %}
+            {% elseif written == 1 %}
+                {% set elements = elements|merge({(key):('div')}) %}
+            {% endif %}
+        {% else %}
+            {% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
+            {% elseif written == 1 %}
+                {% set elements = elements|merge({(key):('div')}) %}
+            {% endif %}
+        {% endif %}
+  {% endfor %}
+
+/**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
+  {% if elements is empty %}
+    {% set elements = { 0:'ignore' } %}
+    {% set multi = 0 %}
+    {% for i in 1..8 %}
+      {% if locks and 'locks' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('locks')}) %}
+      {% elseif item_seq and 'sequencer' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('sequencer')}) %}
+      {% elseif item_switch_r and 'colorpicker' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('colorpicker')}) %}
+      {% elseif item_value_r and 'values' not in elements %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('values')}) %}
+      {% elseif extpopup and 'extpopup' not in elements and extpopup[0] != 'stateengine' %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('extpopup')}) %}
+      {% elseif item_auto and 'stateengine' not in elements and stateengine is defined %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('stateengine')}) %}
+      {% elseif item_plot and 'plot' not in elements %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('plot')}) %}
+      {% elseif item_uzsu and 'uzsu' not in elements %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('uzsu')}) %}
+      {% endif %}
+    {% endfor %}
+    {% set elements = elements|merge({(elements|length):('div')}) %}
+    {% if multi >= 2 %}
+      {% set elements = {0:'multi'}|merge(elements|slice(1)) %}
+      {% set multi = 0 %}
+    {% endif %}
+  {% endif %}
+  {% if elements[0] == 'ignore' %}
+    {% set elements = elements|slice(1) %}
+  {% endif %}
+  {% set columnnumber = {} %}
+
+{% set ext_elements = [] %}
+{% for id, string in elements %}
+    {% set ext_elements = ext_elements|merge([(string)]) %}
+{% endfor %}
+
+{% set id = id is empty ? item_value_r|replace('.', '_') : id %}
+
+/**
+<div>
+{% for column in elements %}
+  {{ column }},
+{% endfor %}
+</div>
+*/
+
+    <li data-icon="false" class="row_color">
+    <div class="quad_table row_color" id="row_{{uid(page, id)}}">
+    <div class="text">{{ linetext|e }}
+    {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
+    {{ basic.print(id~'suspend_end', item_auto~'.suspend_end', 'text') }}
+    {% endif %}
+    </div>
+    {% for column in elements %}
+    {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
+      {% if loop.first %}
+        {% if column == 'empty' %}
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}">
+        {% else %}
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" style="width: {{ column|slice(6) }}px !important;">
+        {% endif %}
+      {% elseif column == 'empty' %}
+        {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
+        </div>
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}">
+      {% elseif column starts with 'empty' %}
+        {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
+        </div>
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" style="width: {{ column|slice(6) }}px !important;">
+      {% elseif column == 'div' %}
+        {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
+        <div class="column{{ columnnumber|length+1 }} column_{{ elements[loop.index] }}" data-order="{{ columnnumber|length+1 }}">
+      {% endif %}
+    {% elseif loop.first %}
+      <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}">
+    {% endif %}
+
+    {% if column == 'locks' %}
+      {% if locks is not iterable %}
+                {% set item_lock = locks|default('') %}
+            {% else %}
+                {% set item_lock = locks[0]|default('') %}
+                {% set item_bwmlock = locks[1]|default('') %}
+                {% set item_force = locks[2]|default('') %}
+                {% set item_seqlock = locks[3]|default('') %}
+            {% endif %}
+      {% if (item_lock and item_bwmlock) or (item_lock and item_seqlock)  or (item_bwmlock and item_seqlock) or item_force %}
+        <a href="#{{ uid(page, id) }}_list_locks_popup" data-rel="popup">
+        {{ basic.symbol(id~'list_lockpop_on', [item_lock, item_bwmlock, item_force, item_seqlock], '', 'secur_locked', 1, 'min', color[1]|default('icon1')) }}
+        {{ basic.symbol(id~'list_lockpop_off', [item_lock, item_bwmlock, item_force, item_seqlock], '', 'secur_open', 0, 'and', icon_color[0]|default('icon0')) }}
+        </a>
+        {{ popup.locks(uid(page, id)~'_list_locks_popup', [item_lock|default(''), icon_color[1]], [item_bwmlock|default(''), icon_color[1]], [item_force|default(''), icon_color[1]|default('icon1')], [item_seqlock|default(''), icon_color[1]]) }}
+      {% elseif item_lock %}
+        {{ basic.stateswitch(id~'list_lock', item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', icon_color, indicator) }}
+      {% elseif item_bwmlock %}
+        {{ basic.stateswitch(id~'list_lock', item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', icon_color, indicator) }}
+      {% elseif item_seqlock %}
+        {{ basic.stateswitch(id~'list_lock', item_seqlock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', icon_color, indicator) }}
+      {% endif %}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'sequencer' and item_seq %}
+      {{ basic.stateswitch(id~'list_seq', item_seq, 'icon', [0,1], ['audio_shuffle', 'audio_shuffle'], '', icon_color, indicator) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'colorpicker' %}
+      {{ basic.color(id~'list_color', item_value_r, item_value_g, item_value_b, min, max, step, colors, style, colormodel) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'ww_slider' and item_value_ww %}
+      {{ basic.slider(id~'list_slider', item_value_ww, min, max, step, 'horizontal', 'handle', min_display, max_display) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'ww_popup' and item_value_ww  %}
+      <a href="#{{ uid(page, id) }}_list_ww_popup" data-rel="popup" data-position-to="window">
+      {{ basic.symbol(id~'list_ww_on', item_switch_ww, '', icon.light(id~'list_ww_icon_on', '', item_value_ww, min_display, max_display), 1, '', '#aaaa00') }}
+      {{ basic.symbol(id~'list_ww_off', item_switch_ww, '', icon.light(id~'list_ww_icon_off', '', item_value_ww, min_display, max_display), 0, '', '#888800') }}
+      </a>
+
+      <div id="{{ uid(page, id) }}_list_ww_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+	    <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+        <div class="quad_dimmer">
+          {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+          {{ basic.stateswitch(id~'switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(id~'list_ww_switch_icon_off'), icon.light(id~'list_ww_switch_icon_on', '', item_value_ww, min_display, max_display)], '', ['#888800','#aaaa00'], indicator) }}
+          <p>Warm White</p>
+          {{ basic.slider(id~'slider_ww', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
+          </div>
+        </div>
+      </div>
+
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'values' and item_value_r  %}
+            <a href="#{{ uid(page, id) }}list_color_popup" data-rel="popup" data-position-to="window" style="font-size: 0.6em;">
+                {{ basic.print(id~'list_rgb_r_actual', item_value_r, '', '', '', icon_color) }};
+                {{ basic.print(id~'list_rgb_g_actual', item_value_g, '', '', '', icon_color) }};
+                {{ basic.print(id~'list_rgb_b_actual', item_value_b, '', '', '', icon_color) }}
+                {% if item_switch_ww and item_value_ww  != ' ' %}
+                 - {{ basic.print(id~'list_rgb_ww_actual', item_value_ww, '', '', '', icon_color) }}
+                {% endif %}
+            </a>
+            {% if popupcolor == 'hsv' %}
+                <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww  != ' ' ? 'quad_hsvww-popup' : 'quad_hsv-popup' }}">
+				  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                  <div class="quad_dimmer">
+                  <p>Hue, Saturation, Value</p>
+                    {{ basic.color(id~'popup_color', item_value_r, item_value_g, item_value_b, min, max, step, '10', 'slider') }}
+                    {% if item_value_ww and item_value_ww  != ' ' %}
+                    <div class="quad_dimmer">
+                      {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+                      {{ basic.stateswitch(id~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(id~'list_ww_switch_icon_off_color'), icon.light(id~'list_ww_switch_icon_on_color', '', item_value_ww, min_display, max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
+                      <p>{{ linetext|e }} warm white</p>
+                      {{ basic.slider(id~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                      </div>
+                    </div>
+                    {% endif %}
+                </div>
+              </div>
+            {% else %}
+
+				  <div id="{{ uid(page, id) }}list_color_popup" data-role="popup" data-overlay-theme="a" class="{{ item_value_ww and item_value_ww != ' ' ? 'quad_rgbww-popup' : 'quad_rgb-popup' }}">
+				  <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                  <div class="quad_dimmer">
+                    {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+                    {{ basic.stateswitch(id~'popup_switch_r', item_switch_r, 'icon', [0,1], [icon.light(id~'list_r_switch_icon_off'), icon.light(id~'list_r_switch_icon_on', '', item_value_r, min_display, max_display)], '', [color_off|default('icon0'), 'red'], indicator) }}
+                    <p>{{ linetext|e }} red</p>
+                    {{ basic.slider(id~'popup_slider_r', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    </div>
+                  </div>
+                  <div class="quad_dimmer">
+                    {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+                    {{ basic.stateswitch(id~'popup_switch_g', item_switch_g, 'icon', [0,1], [icon.light(id~'list_g_switch_icon_off'), icon.light(id~'list_g_switch_icon_on', '', item_value_g, min_display, max_display)], '', [color_off|default('icon0'), 'green'], indicator) }}
+                    <p>{{ linetext|e }} green</p>
+                    {{ basic.slider(id~'popup_slider_g', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    </div>
+                  </div>
+                  <div class="quad_dimmer">
+                    {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+                    {{ basic.stateswitch(id~'popup_switch_b', item_switch_b, 'icon', [0,1], [icon.light(id~'list_b_switch_icon_off'), icon.light(id~'list_b_switch_icon_on', '', item_value_b, min_display, max_display)], '', [color_off|default('icon0'), 'blue'], indicator) }}
+                    <p>{{ linetext|e }} blue</p>
+                    {{ basic.slider(id~'popup_slider_b', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    </div>
+                  </div>
+                {% if item_value_ww and item_value_ww  != ' ' %}
+                    <div class="quad_dimmer">
+                      {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
+                      {{ basic.stateswitch(id~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(id~'list_ww_switch_icon_off'), icon.light(id~'list_ww_switch_icon_on', '', item_value_ww, min_display, max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
+                      <p>{{ linetext|e }} warm white</p>
+                      {{ basic.slider(id~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                      </div>
+                    </div>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+        {% if column == 'extpopup' and extpopup %}
+            {% if extpopup[0] not in ext_elements %}
+              <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
+                  {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+              </a>
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+            {% endif %}
+            {% if arrays[loop.index] == 'div' %}
+                </div>
+            {% endif %}
+
+        {% endif %}
+
+    {% if column == 'stateengine' and item_auto %}
+            {% if extpopup[0] == 'stateengine' and stateengine is defined %}
+                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+            {% elseif stateengine is defined %}
+                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+            {% endif %}
+
+            {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'uzsu' and item_uzsu %}
+      {% if uzsu_attribs is not iterable %}
+                {% set uzsu_value = '' %}
+                {% set uzsu_coloron = '' %}
+                {% set uzsu_coloroff = '' %}
+                {% set uzsu_params = '' %}
+                {% set uzsu_picon = '' %}
+                {% set uzsu_picoff = '' %}
+            {% else %}
+                {% set uzsu_picon = uzsu_attribs[0]|default('') %}
+                {% set uzsu_picoff = uzsu_attribs[1]|default('') %}
+                {% set uzsu_value = uzsu_attribs[2]|default('') %}
+                {% set uzsu_params = uzsu_attribs[3]|default('') %}
+                {% set uzsu_coloron = uzsu_attribs[4]|default('') %}
+                {% set uzsu_coloroff = uzsu_attribs[5]|default('') %}
+            {% endif %}
+          {{ device.uzsuicon(id~'list_uzsu', item_uzsu, linetext, uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'plot' and item_plot %}
+        <a href="#{{ uid(page, id) }}_plotpopup" data-rel="popup">
+          {{ basic.icon(icon_plot|deficon('measure_power_meter'), icon_color[0]|default('icon0')) }}
+        </a>
+        <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup" data-role="popup">
+          <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+        {% if item_plot is iterable  %}
+          {{ plot.period(id~'_plotpopup', item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+        {% else %}
+          {{ plot.period(id~'_plotpopup', item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
+        {% endif %}
+        </div>
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column starts with 'empty' %}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+        {% endif %}
+
+  {% endfor %}
+    </div>
+    </li>
+{% endmacro %}
+
+/**
+ * Device shutter
+ *
+ * @param {id=}     		unique id for this widget
+* @param {text=} text for the whole line
+* @param {item=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+* @param {item=} an item for stopping the movement (optional)
+* @param {item} an item for the absolute position of the blinds
+* @param {item=} an item for increase and decrease of the blade (optional, for future use)
+* @param {item=} an item for the absolute angle of the blade (optional)
+* @param {item=} an item for some saved positions (optional)
+* @param {value=0} the value for opened (optional, default 0)
+* @param {value=255} the value for closed (optional, default 255)
+* @param {value=5} step between two values (optional, default 5)
+* @param {text(half,full)=} 'half' blade turns from -1 to +1, 'full' blade turns from 0 to +1 (optional, default 'half')
+* @param {image=} a background image url (relative to smartVISU directory or absolute); optimal size is 100px x 180px (optional)
+* @param {value=0} the value to send for position 1 (optional, default 0)
+* @param {value=1} the value to send for position 2 (optional, default 1)
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {item=}      a gad/item for UZSU
+ * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+ * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {image=measure_power_meter} 	    icon triggering the plot popup
+ * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
+                       followed by the attributes for each element as you would for the basic widget.
+                       Possible elements are: header, text, slider, flip, switch, select
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot,extpopup, anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot', 'extpopup'
+             For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
+             Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'], 'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
+ */
+{% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, place3, place4, column_order, blind_or_shutter, pos_attribs) %}
+    {% import "basic.html" as basic %}
+    {% import "device.html" as device %}
+    {% import "icon.html" as icon %}
+    {% import "plot.html" as plot %}
+    {% import "popup.html" as popup %}
+    {% if asset_exists('stateengine.html') %}
+      {% import "widgets/stateengine.html" as stateengine %}
+    {% endif %}
+
+/**	{# convert array with uzsu and pos items to separate items #} */
+  {% if pos_attribs is iterable %}
+  {% set item_saved = pos_attribs[0]|default(item_saved) %}
+  {% set value_pos_1 = pos_attribs[1]|default(value_pos_1) %}
+  {% set value_pos_2 = pos_attribs[2]|default(value_pos_2) %}
+  {% set text_pos_1 = pos_attribs[3]|default('Pos1') %}
+  {% set text_pos_2 = pos_attribs[4]|default('Pos2') %}
+  {% endif %}
+
+/**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
+  {% set elements = {} %}
+  {% for key,item in column_order %}
+    {% set written = 0 %}
+    {% if item is not iterable %}
+      {% if item == 'move_down' and item_move %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'move_up' and item_move %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif (item == 'pos_popup_shutter' or item == 'pos_popup_blind' or item == 'pos_slider' or item == 'pos_shutter'  or item == 'pos_shutter_ext') and item_pos %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'stop' and item_stop %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'pos1' and value_pos_1 and item_saved and 'pos' not in elements %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'pos2' and value_pos_2 and item_saved and 'pos' not in elements %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'extpopup' and extpopup and extpopup[0] != 'stateengine' %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'uzsu' and item_uzsu %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'stateengine' and item_auto and stateengine is defined %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'plot' and item_plot %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == '' or item == ' ' %}
+        {% set elements = elements|merge({(key):('empty')}) %}
+        {% set written = 1 %}
+      {% elseif item matches '/^[\\d\\.]+$/' %}
+        {% set elements = elements|merge({(key):('empty_'~item)}) %}
+        {% set written = 1 %}
+      {% endif %}
+    {% else %}
+      {% for key,arrayitem in item %}
+        {% if (arrayitem == 'pos2' and value_pos_2 and value_pos_1 and item_saved and 'pos' not in elements) or (arrayitem == 'pos1' and value_pos_2 and value_pos_1 and item_saved and 'pos' not in elements) %}
+          {% set elements = elements|merge({(key):('pos')}) %}
+          {% set written = 1 %}
+        {% elseif arrayitem != 'pos1' and arrayitem != 'pos2' %}
+          {% set elements = elements|merge({(key):('multi')}) %}
+          {% if arrayitem == 'move_down' and item_move %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'move_up' and item_move %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif (arrayitem == 'pos_popup_shutter' or arrayitem == 'pos_popup_blind' or arrayitem == 'pos_slider' or arrayitem == 'pos_shutter' or arrayitem == 'pos_shutter_ext') and item_pos %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'stop' and item_stop %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'pos1' and value_pos_1 and item_saved and 'pos' not in elements %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'pos2' and value_pos_2 and item_saved  and 'pos' not in elements %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+                    {% elseif arrayitem == 'extpopup' and extpopup and extpopup[0] != 'stateengine' %}
+                        {% set elements = elements|merge({(key):(arrayitem)}) %}
+                        {% set written = 1 %}
+          {% elseif arrayitem == 'uzsu' and item_uzsu %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'stateengine' and item_auto and stateengine is defined %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'plot' and item_plot %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == '' or arrayitem == ' ' %}
+            {% set elements = elements|merge({(key):('empty')}) %}
+            {% set written = 1 %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+        {% if column_order[key+1] is iterable %}
+            {% if (column_order[key+1][0] starts with 'empty') or (column_order[key+1][0] matches '/^[\\d\\.]+$/') or (column_order[key+1][0] == ' ') %}
+            {% elseif written == 1 %}
+                {% set elements = elements|merge({(key):('div')}) %}
+            {% endif %}
+        {% else %}
+            {% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
+            {% elseif written == 1 %}
+                {% set elements = elements|merge({(key):('div')}) %}
+            {% endif %}
+        {% endif %}
+  {% endfor %}
+
+/**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
+  {% if elements is empty %}
+    {% set elements = { 0:'ignore' } %}
+    {% set multi = 0 %}
+    {% for i in 1..8 %}
+      {% if item_move and 'move_down' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('move_down')}) %}
+      {% elseif item_move and 'move_up' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('move_up')}) %}
+      {% elseif item_pos and 'pos_popup_shutter' not in elements and not blind_or_shutter %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% if blind_or_shutter == 'blind' %}
+          {% set elements = elements|merge({(i+1):('pos_popup_blind')}) %}
+        {% else %}
+          {% set elements = elements|merge({(i+1):('pos_popup_shutter')}) %}
+        {% endif %}
+      {% elseif item_pos and blind_or_shutter == 'blind' and 'pos_popup_blind' not in elements %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('pos_popup_blind')}) %}
+      {% elseif extpopup and 'extpopup' not in elements and extpopup[0] != 'stateengine' %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('extpopup')}) %}
+      {% elseif item_plot and 'plot' not in elements %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('plot')}) %}
+      {% elseif item_auto and 'stateengine' not in elements and stateengine is defined %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('stateengine')}) %}
+      {% elseif item_uzsu and 'uzsu' not in elements %}
+        {% set elements = elements|merge({(i):('div')}) %}
+        {% set elements = elements|merge({(i+1):('uzsu')}) %}
+      {% endif %}
+    {% endfor %}
+    {% set elements = elements|merge({(elements|length):('div')}) %}
+    {% if multi >= 2 %}
+      {% set elements = {0:'multi'}|merge(elements|slice(1)) %}
+      {% set multi = 0 %}
+    {% endif %}
+  {% endif %}
+  {% if elements[0] == 'ignore' %}
+    {% set elements = elements|slice(1) %}
+  {% endif %}
+  {% set columnnumber = {} %}
+
+{% set ext_elements = [] %}
+{% for id, string in elements %}
+    {% set ext_elements = ext_elements|merge([(string)]) %}
+{% endfor %}
+
+{% set id = id is empty ? item_move|replace('.', '_') : id %}
+
+/**
+<div>
+{% for column in elements %}
+  {{ column }},
+{% endfor %}
+</div>
+*/
+    <li data-icon="false" class="row_shutter">
+    <div class="quad_table row_shutter" id="row_{{uid(page, id)}}">
+    <div class="text">{{ linetext|e }}
+    {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
+    {{ basic.print(id~'suspend_end', item_auto~'.suspend_end', 'text') }}
+    {% endif %}
+    </div>
+    {% for column in elements %}
+    {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
+      {% if loop.first %}
+        {% if column == 'empty' %}
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}">
+        {% else %}
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" style="width: {{ column|slice(6) }}px !important;">
+        {% endif %}
+      {% elseif column == 'empty' %}
+        {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
+        </div>
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}">
+      {% elseif column starts with 'empty' %}
+        {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
+        </div>
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" style="width: {{ column|slice(6) }}px !important;">
+      {% elseif column == 'div' %}
+        {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
+        <div class="column{{ columnnumber|length+1 }} column_{{ elements[loop.index] }}" data-order="{{ columnnumber|length+1 }}">
+      {% endif %}
+    {% elseif loop.first %}
+      <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}">
+    {% endif %}
+
+    {% if column == 'move_down' and item_move %}
+      {{ basic.stateswitch(id~'_down', item_stop, '', max < min ? 0 : 1, 'control_arrow_down', '', '', 'blink', item_move, max < min ? 0 : 1) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'move_up' and item_move %}
+      {{ basic.stateswitch(id~'_up', item_stop, '', max < min ? 1 : 0, 'control_arrow_up', '', '', 'blink', item_move, max < min ? 1 : 0) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'stop' and item_stop %}
+      {{ basic.stateswitch(id~'_stop', item_stop, 'icon', '', 'control_cancel', '', 'icon0', 'blink') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'pos_popup_blind' and item_pos %}
+            <a href="#{{ uid(page, id) }}list_blind_popup" data-rel="popup" data-position-to="window">
+                {{ icon.shutter(id~'list_blind_blind', '', item_pos, min, max) }}
+            </a>
+            <div id="{{ uid(page, id) }}list_blind_popup" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+              {{ device.blind(id~'blinddevice', linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step) }}
+            </div>
+
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'pos_popup_shutter' and item_pos %}
+            <a href="#{{ uid(page, id) }}list_shutter_popup" data-rel="popup" data-position-to="window">
+                {{ icon.shutter(id~'list_blind_shutter', '', item_pos, min, max, item_angle) }}
+            </a>
+            <div id="{{ uid(page, id) }}list_shutter_popup" data-role="popup" data-overlay-theme="a" class="quad_blind-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                {{ device.shutter(id~'shutterdevice', linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) }}
+            </div>
+
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'pos_shutter' and item_pos %}
+            {{ basic.shutter(id~'shutterbasic', item_pos, item_angle, min, max, step, mode, background) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'pos_shutter_ext' and item_pos %}
+      <table align="center" cellpadding="0">
+        <tr>
+          <td rowspan="3" valign="center" class="pos">
+            {{ basic.shutter(id~'shutterext', item_pos, item_angle, min, max, step, mode, background) }}
+          </td>
+          <td valign="top">
+            {% if item_saved %}
+              <div style="margin-right:5px;margin-left:5px;">
+              {{ basic.stateswitch(id~'_saved1_ext', item_saved, '', value_pos_1, '', text_pos_1, 'icon0', 'blink') }}
+              &nbsp;</div>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td valign="bottom">
+            {% if item_saved %}
+              <div style="margin-right:5px;margin-left:5px;">
+              {{ basic.stateswitch(id~'_saved2_ext', item_saved, '', value_pos_2, '', text_pos_2, 'icon0', 'blink') }}
+              &nbsp;</div>
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'pos' and item_saved and value_pos_2 and value_pos_1 %}
+      {{ basic.select(id~'pos', item_saved, 'mini', [value_pos_1, value_pos_2, 0], '', [text_pos_1, text_pos_2, 0], 'icon1', 'horizontal') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+
+    {% elseif column == 'pos1' and item_saved and value_pos_1 and 'pos' not in elements %}
+      {{ basic.stateswitch(id~'_saved1', item_saved, '', [value_pos_1, 0], '', [0, text_pos_1], 'icon0', 'blink') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+
+    {% elseif column == 'pos2' and item_saved and value_pos_2 and 'pos' not in elements %}
+      {{ basic.stateswitch(id~'_saved2', item_saved, '', [value_pos_2, 0], '', [0, text_pos_2], 'icon0', 'blink') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'pos_slider' and item_pos %}
+      {{ basic.slider(id~'list_slider', item_pos, min, max, step, 'horizontal', 'handle', min_display, max_display) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+        {% if column == 'extpopup' and extpopup %}
+            {% if extpopup[0] not in ext_elements %}
+              <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
+                  {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+              </a>
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+            {% endif %}
+            {% if elements[loop.index] == 'div' %}
+                </div>
+            {% endif %}
+        {% endif %}
+
+    {% if column == 'stateengine' and item_auto %}
+            {% if extpopup[0] == 'stateengine' and stateengine is defined %}
+                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+            {% elseif stateengine is defined %}
+                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+            {% endif %}
+
+            {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'uzsu' and item_uzsu %}
+      {% if uzsu_attribs is not iterable %}
+                {% set uzsu_value = '' %}
+                {% set uzsu_coloron = '' %}
+                {% set uzsu_coloroff = '' %}
+                {% set uzsu_params = '' %}
+                {% set uzsu_picon = '' %}
+                {% set uzsu_picoff = '' %}
+            {% else %}
+                {% set uzsu_picon = uzsu_attribs[0]|default('') %}
+                {% set uzsu_picoff = uzsu_attribs[1]|default('') %}
+                {% set uzsu_value = uzsu_attribs[2]|default('') %}
+                {% set uzsu_params = uzsu_attribs[3]|default('') %}
+                {% set uzsu_coloron = uzsu_attribs[4]|default('') %}
+                {% set uzsu_coloroff = uzsu_attribs[5]|default('') %}
+            {% endif %}
+          {{ device.uzsuicon(id~'list_uzsu', item_uzsu, linetext, uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'plot' and item_plot %}
+        <a href="#{{ uid(page, id) }}_plotpopup" data-rel="popup">
+          {{ basic.icon(icon_plot|deficon('measure_power_meter'), icon_color[0]|default('icon0')) }}
+        </a>
+        <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup" data-role="popup">
+          <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+        {% if item_plot is iterable  %}
+          {{ plot.period(id~'_plotpopup', item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+        {% else %}
+          {{ plot.period(id~'_plotpopup', item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
+        {% endif %}
+        </div>
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column starts with 'empty' %}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+        {% endif %}
+  {% endfor %}
+    </div>
+    </li>
+{% endmacro %}
+
+
+/**
+ * Blinds. Actually you can use it the same way as the shutter widget.
+ *
+ * @param {id=}     		unique id for this widget
+ * @param {text=}    		text for the whole line
+ * @param {item}   		a gad/item for the up- and down- movement
+ * @param {item=}    		a gad/item for stopping the movement (optional)
+ * @param {item}      an item for the absolute position of the blinds
+ * @param {item=}     an item for increase and decrease of the blade (optional, for future use)
+ * @param {item=}     an item for the absolute angle of the blade (optional)
+ * @param {value=0}    		the minimum value for close (optional, default 0)
+ * @param {value=255}    		the maximum value for open (optional, default 255)
+ * @param {value=5}   		step between two values (optional, default 5)
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {item=}      a gad/item for UZSU
+ * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+ * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {image=measure_power_meter} 	    icon triggering the plot popup
+ * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
+                       followed by the attributes for each element as you would for the basic widget.
+                       Possible elements are: header, text, slider, flip, switch, select
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
+ * @param {unspecified[]=} 	    a list with positional attributes: item_saved = an item for some saved positions, value_pos_1 =
+the value to send for position 1, value_pos_2 = the value to send for position 2, text_pos_1 = the text printed on button for position 1, text_pos_2 = the text printed on button for position 2 (optional)
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot,extpopup,anynumber)=[[move_down, move_up], pos_popup_shutter, stateengine, plot, uzsu]} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot', 'extpopup'
+             For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
+             Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
+ */
+
+{% macro blind(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step, place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, pos_attribs, place3, place4, column_order) %}
+  {% import _self as newwidget %}
+  {{ newwidget.shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, '', min, max, step, '', '', '', '', place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, place3, place4, column_order, 'blind', pos_attribs) }}
+{% endmacro %}
+
+/**
+ * Player Control and Status Info, for Squeezebox, Infrared control, etc.
+ *
+ * @param {id=}     			    unique id for this widget
+ * @param {text=} 			    text for the whole line
+ * @param {item=}  	    a gad/item for the previous title
+ * @param {item=}   		    a gad/item for play command
+ * @param {item=}   		    a gad/item for pause command
+ * @param {item=}    		    a gad/item for stopping
+ * @param {item=} 			    a gad/item for the next title
+ * @param {item=}  		    a gad/item for turning power on/off
+ * @param {item=}  		    a gad/item to eject
+ * @param {item=}    	    a gad/item to repeat. 0 = off. 1 = song. 2 = playlist
+ * @param {item=}    	    a gad/item to shuffle. 0 = off. 1 = song. 2 = album
+ * @param {unspecified[]=}    		        array providing these information: [item to change source/playlist, select-type, [value1, icon1, text1], [value2, icon2, text2], etc.]
+ * @param {item=}    	    a gad/item to set mute
+ * @param {item=}    	    a gad/item to set the volume
+ * @param {item=}    	    a gad/item to increase volume
+ * @param {item=}   	    a gad/item to decrease volume
+ * @param {value=}   		    minimum value for volume
+ * @param {value=}   		    maximum value for volume
+ * @param {value=}   		    step for volume slider
+ * @param {value=}     minimum value shown on slider
+ * @param {value=}     maximum value shown on slider
+ * @param {value=}       change volume color to red when above threshold
+ * @param {item=} 		    a gad/item for current album. To show album art, add a subitem called currentalbumarturl
+                               for squeezebox put this in the item: value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
+ * @param {item=} 		    a gad/item for current artist
+ * @param {item=} 		    a gad/item for current title
+ * @param {item=} 			    a gad/item for current time
+ * @param {item=} 		    a gad/item for duration of current title
+ * @param {item[?]=} 		    (array of) gad/item for setting speakers A/B
+ * @param {item=}  		    a gad/item for UZSU
+ * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+ * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
+ * @param {item=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
+                       followed by the attributes for each element as you would for the basic widget.
+                       Possible elements are: header, text, slider, flip, switch, select
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
+ * @param {undefined=} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {text[](previous,play,pause,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,stateengine,repeat,source,source_popup,speaker,playpause,playpausestop,playstop,shuffle,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'previous', 'play', 'pause', 'stop', 'next', 'power', 'eject', 'mute', 'volume_slider', 'cover',
+            'volume_popup', 'volume_up', 'volume_down', 'song_position', 'uzsu', 'plot', 'stateengine', 'repeat', 'source', 'speaker', 'playpause', 'playstop', 'playpausestop', 'shuffle', 'source_popup'
+             For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
+             Combine elements in one column by putting them in arrays.
+ */
+{% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, coverUrl, place1, place2, column_order) %}
+    {% import "basic.html" as basic %}
+    {% import "plot.html" as plot %}
+    {% import "device.html" as device %}
+    {% import "multimedia.html" as multimedia %}
+    {% if asset_exists('stateengine.html') %}
+      {% import "widgets/stateengine.html" as stateengine %}
+    {% endif %}
+
+/**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
+  {% set elements = {} %}
+  {% for key,item in column_order %}
+    {% set written = 0 %}
+    {% if item is not iterable %}
+      {% if item == 'previous' and item_previous %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'next' and item_next %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'play' and item_play %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'playstop' and item_play and item_stop %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'playpause' and item_pause and item_play %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'playpausestop' and item_pause and item_play and item_stop %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif (item == 'play' or item == 'pause') and item_pause and 'pause' not in elements %}
+        {% set elements = elements|merge({(key):('pause')}) %}
+        {% set written = 1 %}
+      {% elseif item == 'repeat' and item_repeat %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'shuffle' and item_shuffle %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'stop' and item_stop %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'power' and item_power %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'eject' and item_eject %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'source' and source %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'source_popup' and source %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'mute' and item_mute %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'volume_up' and item_volumeup %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'volume_down' and item_volumedown %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif (item == 'volume_popup' or item == 'volume_slider') and item_volume %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'song_position' and item_duration %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'speaker' and item_speaker %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'cover' and item_album %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'uzsu' and item_uzsu %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'stateengine' and item_auto and stateengine is defined %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == 'plot' and item_plot %}
+        {% set elements = elements|merge({(key):(item)}) %}
+        {% set written = 1 %}
+      {% elseif item == ' ' %}
+        {% set elements = elements|merge({(key):('empty')}) %}
+        {% set written = 1 %}
+      {% elseif item matches '/^[\\d\\.]+$/' %}
+        {% set elements = elements|merge({(key):('empty_'~item)}) %}
+        {% set written = 1 %}
+      {% endif %}
+    {% else %}
+      {% set elements = elements|merge({(key):('multi')}) %}
+      {% for key,arrayitem in item %}
+          {% if arrayitem == 'previous' and item_previous %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'next' and item_next %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'play' and item_play %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'playstop' and item_play and item_stop %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'playpause' and item_pause and item_play %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'playpausestop' and item_pause and item_play and item_stop %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif (arrayitem == 'play' or arrayitem == 'pause') and item_pause and 'pause' not in elements %}
+            {% set elements = elements|merge({(key):('pause')}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'stop' and item_stop %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'power' and item_power %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'eject' and item_eject %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'repeat' and item_repeat %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'shuffle' and item_shuffle %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'cover' and item_album %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'source' and source %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+                    {% elseif arrayitem == 'source_popup' and source %}
+                        {% set elements = elements|merge({(key):(arrayitem)}) %}
+                        {% set written = 1 %}
+          {% elseif arrayitem == 'mute' and item_mute %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'volume_up' and item_volumeup %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'volume_down' and item_volumedown %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif (arrayitem == 'volume_popup' or arrayitem == 'volume_slider') and item_volume %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'song_position' and item_duration %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'speaker' and item_speaker %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'uzsu' and item_uzsu %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'stateengine' and item_auto and stateengine is defined %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == 'plot' and item_plot %}
+            {% set elements = elements|merge({(key):(arrayitem)}) %}
+            {% set written = 1 %}
+          {% elseif arrayitem == ' ' %}
+            {% set elements = elements|merge({(key):('empty')}) %}
+          {% endif %}
+      {% endfor %}
+        {% endif %}
+        {% if column_order[key+1] is iterable %}
+            {% if (column_order[key+1][0] starts with 'empty') or (column_order[key+1][0] matches '/^[\\d\\.]+$/') or (column_order[key+1][0] == ' ') %}
+            {% elseif written == 1 %}
+                {% set elements = elements|merge({(key):('div')}) %}
+            {% endif %}
+        {% else %}
+            {% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
+            {% elseif written == 1 %}
+                {% set elements = elements|merge({(key):('div')}) %}
+            {% endif %}
+        {% endif %}
+  {% endfor %}
+
+/**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
+  {% if elements is empty %}
+    {% set elements = { 0:'ignore' } %}
+    {% set multi = 0 %}
+    {% for i in 1..8 %}
+      {% if item_power and 'power' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('power')}) %}
+      {% elseif item_previous and 'previous' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('previous')}) %}
+      {% elseif item_play and 'play' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('play')}) %}
+      {% elseif item_pause and 'pause' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('pause')}) %}
+      {% elseif item_stop and 'stop' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('stop')}) %}
+      {% elseif item_next and 'next' not in elements %}
+        {% set multi = multi+1 %}
+        {% set elements = elements|merge({(i):('next')}) %}
+      {% elseif item_mute and 'mute' not in elements %}
+        {% if elements|length > 1 %}
+          {% set elements = elements|merge({(i):('div')}) %}
+        {% endif %}
+        {% set elements = elements|merge({(i+1):('mute')}) %}
+      {% elseif item_volume and 'volume_popup' not in elements %}
+        {% if elements|length > 1 %}
+          {% set elements = elements|merge({(i):('div')}) %}
+        {% endif %}
+        {% set elements = elements|merge({(i+1):('volume_popup')}) %}
+      {% endif %}
+    {% endfor %}
+    {% set elements = elements|merge({(elements|length):('div')}) %}
+    {% if multi >= 2 %}
+      {% set elements = {0:'multi'}|merge(elements|slice(1)) %}
+      {% set multi = 0 %}
+    {% endif %}
+  {% endif %}
+  {% if elements[0] == 'ignore' %}
+    {% set elements = elements|slice(1) %}
+  {% endif %}
+  {% set columnnumber = {} %}
+/**
+
+{% set ext_elements = [] %}
+{% for id, string in elements %}
+    {% set ext_elements = ext_elements|merge([(string)]) %}
+{% endfor %}
+
+{% set id = id is empty ? item_play|replace('.', '_') : id %}
+
+<div>
+{% for column in elements %}
+  {{ column }},
+{% endfor %}
+</div>
+*/
+
+    <li data-icon="false" class="row_playercontrol">
+    <div class="quad_table row_playercontrol" id="row_{{uid(page, id)}}">
+    <div class="text">{{ linetext|e }}
+    {% if item_artist %}
+    : {{ basic.print(id~'artist', item_artist, 'text') }},&nbsp;
+    {% endif %}
+
+    {% if item_title %}
+    {{ basic.print(id~'title', item_title, 'text') }}
+    {% endif %}
+    </div>
+    {% for column in elements %}
+    {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
+      {% if loop.first %}
+        {% if column == 'empty' %}
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}">
+        {% else %}
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" style="width: {{ column|slice(6) }}px !important;">
+        {% endif %}
+      {% elseif column == 'empty' %}
+        {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
+        </div>
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}">
+      {% elseif column starts with 'empty' %}
+        {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
+        </div>
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" style="width: {{ column|slice(6) }}px !important;">
+      {% elseif column == 'div' %}
+        {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
+        <div class="column{{ columnnumber|length+1 }} column_{{ elements[loop.index] }}" data-order="{{ columnnumber|length+1 }}">
+      {% endif %}
+    {% elseif loop.first %}
+      <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}">
+    {% endif %}
+    {% if column == 'power' and item_power %}
+      {{ basic.stateswitch(id~'_power', item_power, 'icon', [0,1], '', '', ['icon0','icon1'], 'blink') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'eject' and item_eject %}
+      {{ basic.stateswitch(id~'_eject', item_eject, 'icon', '1', 'audio_eject', '', 'icon0', '') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'cover' and item_album %}
+            {% if not coverUrl %}
+              {% set coverUrl = item_album~'.currentalbumarturl' %}
+            {% endif %}
+            <div class="quad_cover">
+              <a href="#{{ uid(page, id) }}cover_popup" data-rel="popup" data-position-to="window">
+                {{ multimedia.image(id~'cover', coverUrl, 'corner', item_title|default(coverUrl), defCoverArtUrl) }}
+              </a>
+            </div>
+            <div id="{{ uid(page, id) }}cover_popup" data-role="popup" data-overlay-theme="a" class="quad_cover-popup">
+              {{ multimedia.image(id~'cover_popup', coverUrl, 'corner', item_title|default(coverUrl), defCoverArtUrl) }}
+            </div>
+
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'previous' and item_previous %}
+      {{ basic.stateswitch(id~'_prev', item_previous, 'icon', '1', 'audio_previous', '', 'icon0', '') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+    {% if column == 'next' and item_next %}
+      {{ basic.stateswitch(id~'_prev', item_next, 'icon', '1', 'audio_next', '', 'icon0', '') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+    {% if column == 'play' and item_play %}
+      {{ basic.stateswitch(id~'_play', item_play, 'icon', '1', 'audio_play', '', 'icon1', '') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% elseif column == 'pause' and item_pause %}
+      {{ basic.stateswitch(id~'_pause', item_pause, 'icon', '1', 'audio_pause', '', 'icon1', 'blink') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% elseif column == 'playstop' and item_play %}
+      {{ basic.stateswitch(id~'_playstop', item_play, 'icon', ['0','1'], ['audio_play', 'audio_stop'], '', ['icon0', 'icon1'], 'blink') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% elseif column == 'playpause' and item_pause %}
+      {{ basic.stateswitch(id~'_playpause', item_play, 'icon', ['0','1'], ['audio_play', 'audio_pause'], '', ['icon0', 'icon1'], 'blink') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% elseif column == 'playpausestop' and item_pause %}
+      {{ multimedia.playpause(id~'_playpausestop', item_play, item_pause, item_stop) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+    {% if column == 'stop' and item_stop %}
+      {{ basic.stateswitch(id~'_stop', item_stop, 'icon', '1', 'audio_stop', '', 'icon0', '') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+    {% if column == 'mute' and item_mute %}
+      {{ basic.stateswitch(id~'_mute', item_mute, 'icon', [0,1], 'audio_volume_mute', '', '', '') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+        {% if column == 'volume_up' and item_volumeup %}
+      {{ basic.stateswitch(id~'_volup', item_volumeup, 'icon', '1', 'audio_volume_high', '', 'icon0', '') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+    {% if column == 'volume_down' and item_volumedown %}
+      {{ basic.stateswitch(id~'_voldown', item_volumedown, 'icon', '1', 'audio_volume_low', '', 'icon0', '') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+    {% if column == 'song_position' and item_duration %}
+      {{ multimedia.timeslider(id~'list_slider', item_time, item_duration, '5', 'handle') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+    {% if column == 'source' and source %}
+      {% set value_source = [] %}
+      {% set pic_source = [] %}
+      {% set text_source = [] %}
+      {% set type_source = 'icon' %}
+      {% set item_source = '' %}
+      {% for key,item in source %}
+          {% if key == 0 %}
+              {% set item_source = item %}
+          {% elseif key == 1 %}
+              {% set type_source = item %}
+          {% else %}
+              {% set value_source = value_source|merge([item[0]]) %}
+              {% set pic_source = pic_source|merge([item[1]]) %}
+              {% set text_source = text_source|merge([item[2]|default('')]) %}
+          {% endif %}
+      {% endfor %}
+      {{ basic.select(id~'_select', item_source, type_source, value_source, pic_source, text_source, 'icon1') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'speaker' and item_speaker %}
+      {{ basic.stateswitch(id~'_speaker1', item_speaker[0], 'mini', [1,0], '', 'A', ['icon1', 'icon0'], '') }}
+      {{ basic.stateswitch(id~'_speaker1', item_speaker[1], 'mini', [1,0], '', 'B', ['icon1', 'icon0'], '') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+
+    {% if column == 'repeat' and item_repeat %}
+      {{ basic.stateswitch(id~'_repeat', item_repeat, 'icon', [0,1,2], ['audio_repeat_song','audio_repeat_song','audio_repeat'], '', ['icon0','icon1','icon1'], '') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+    {% if column == 'shuffle' and item_shuffle %}
+      {{ basic.stateswitch(id~'_shuffle', item_shuffle, 'icon', [0,1,2], ['audio_shuffle','audio_shuffle','audio_shuffle_album'], '', ['icon0','icon1','icon1'], '') }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'volume_slider' and item_volume %}
+      {{ basic.slider(id~'list_volume', item_volume, min, max, step, 'horizontal', 'handle', volume_min_display, volume_max_display) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'volume_popup' and item_volume %}
+      <a href="#{{ uid(page, id) }}_list_volume_popup" data-rel="popup" data-position-to="window">
+        {{ basic.print(id~'list_vol_popup_print', item_volume, volume_format, 'Math.round('~volume_min_display|default('0')~'+(('~volume_max_display|default('100')~'-'~volume_min_display|default('0')~')/('~volume_max|default('100')~'-'~volume_min|default('0')~'))*Math.max(0,VAR1-'~volume_min|default('0')~'))', volume_threshold, ['icon1', '#c00']) }}
+
+      </a>
+      <div id="{{ uid(page, id) }}_list_volume_popup" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+		<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+        <div class="dimmer dimmer-left">
+          {{ basic.stateswitch(id~'list_vol_popup_mute', item_mute, 'icon', [0,1], 'audio_volume_mute', '', color, indicator) }}
+          <p>Volume {{ linetext|e }}</p>
+          {{ basic.slider(id~'list_vol_popup_slider', item_volume, volume_min, volume_max, volume_step, 'horizontal', 'handle', volume_min_display|default('0'), volume_max_display|default('100')) }}
+        </div>
+      </div>
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+        {% if column == 'extpopup' and extpopup %}
+            {% if extpopup[0] not in ext_elements %}
+              <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
+                  {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+              </a>
+              {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+            {% endif %}
+            {% if elements[loop.index] == 'div' %}
+                </div>
+            {% endif %}
+        {% endif %}
+
+    {% if column == 'stateengine' and item_auto %}
+            {% if extpopup[0] == 'stateengine' and stateengine is defined %}
+                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup') }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+            {% elseif stateengine is defined %}
+                {{ stateengine.state(id~'_state', item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+            {% endif %}
+
+            {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'uzsu' and item_uzsu %}
+      {% if uzsu_attribs is not iterable %}
+                {% set uzsu_value = '' %}
+                {% set uzsu_coloron = '' %}
+                {% set uzsu_coloroff = '' %}
+                {% set uzsu_params = '' %}
+                {% set uzsu_picon = '' %}
+                {% set uzsu_picoff = '' %}
+            {% else %}
+                {% set uzsu_picon = uzsu_attribs[0]|default('') %}
+                {% set uzsu_picoff = uzsu_attribs[1]|default('') %}
+                {% set uzsu_value = uzsu_attribs[2]|default('') %}
+                {% set uzsu_params = uzsu_attribs[3]|default('') %}
+                {% set uzsu_coloron = uzsu_attribs[4]|default('') %}
+                {% set uzsu_coloroff = uzsu_attribs[5]|default('') %}
+            {% endif %}
+          {{ device.uzsuicon(id~'list_uzsu', item_uzsu, txt, uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column == 'plot' and item_plot %}
+        <a href="#{{ uid(page, id) }}_plotpopup" data-rel="popup">
+          {{ basic.icon(icon_plot|deficon('measure_power_meter'), color[0]|default('icon0')) }}
+        </a>
+        <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup" data-role="popup">
+          <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+        {% if item_plot is iterable  %}
+          {{ plot.period(id~'_plotpopup', item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+        {% else %}
+          {{ plot.period(id~'_plotpopup', item_plot, 'avg', '12h', 'now', '', '', '', linetext, '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
+        {% endif %}
+        </div>
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if column starts with 'empty' %}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+        {% endif %}
+  {% endfor %}
+    </div>
+    </li>
+
+{% endmacro %}
+
+/**
+ * Stateswitch
+ *
+* @param {id=} unique id for this widget (optional)
+* @param {item[?]=} an (array of) item(s)
+* @param {type[?]=mini} valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini)
+* @param {text[?]=[0,1]} array of values (optional, default [0,1])
+  If the item has a value that is not part of the list, the state (icon, text, color) of the last value in the list will be shown.
+* @param {image[?]=control_on_off} array of icons (optional, default just if text is empty: control_on_off)
+  dynamic icons can be used, e.g. icon.light('', '', value_item, min_display, max_display); please note: these must not be wrapped by apostrophs (')
+* @param {text[]=} array of texts (optional)
+* @param {color[](hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional, default: icon0)
+  additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
+* @param {color[?](blink)=} activity indicator which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
+* @param {item=} an item to which a value on longpress is sent (optional)
+* @param {text=} the value to send on longpress (optional)
+  	If this starts with a + or - sign the value is treated as offset to current stateswitch value.
+* @param {text=} the value to send on releasing after a longpress (optional)
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+                       If you want to implement two state switches for one single item (e.g. on/off and timer or restart, etc.)
+                       you can provide the following attributes as single statements without arrays.
+* @param {text=} text for the whole line (optional)
+* @param {text[?]=} text for each column (optional)
+* @param {item[?]=}  		    a gad/item for UZSU
+* @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+* @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+* @param {image=measure_power_meter} 	    	    icon triggering the plot popup
+* @param {item[?]=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+* @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
+                       followed by the attributes for each element as you would for the basic widget.
+                       Possible elements are: header, text, slider, flip, switch, select
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
+* @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
+* @param {unspecified[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
+                            You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {text[](switch,stateengine,uzsu,plot,locks,slider,extpopup,anynumber)=['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+             possible elements are: 'switch', 'stateengine', 'uzsu', 'plot', 'locks', 'slider'
+             For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
+             Combine elements in one column by putting them in arrays. Standard is ['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']
+             Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
+*/
+{% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, item_longpress, value_longpress, value_longrelease, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order, switch_or_select) %}
+    {% import "basic.html" as basic %}
+    {% import "device.html" as device %}
+    {% import "icon.html" as icon %}
+    {% import "plot.html" as plot %}
+    {% import "popup.html" as popup %}
+    {% if asset_exists('stateengine.html') %}
+      {% import "widgets/stateengine.html" as stateengine %}
+    {% endif %}
+
+/**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
+{% if column_order %}
+    {% set elements = {} %}
+    {% for key,items in column_order %}
+      {% set elements_array = {0: 'ignore'} %}
+      {% if items is iterable %}
+        {% set elements_array = {0:'multi'}|merge(elements_array|slice(1)) %}
+        {% set written = 0 %}
+        {% for key2,item in items %}
+          {% if (type is iterable ? item[key] == 'switch' : item == 'switch') and item_switch %}
+            {% set elements_array = elements_array|merge({(key):('switch')}) %}
+            {% set written = 1 %}
+          {% elseif (type is iterable ? item[key] == 'select' : item == 'select') and item_switch %}
+            {% set elements_array = elements_array|merge({(key):('switch')}) %}
+            {% set written = 1 %}
+          {% elseif (type is iterable ? item[key] == 'uzsu' : item == 'uzsu') and item_uzsu %}
+            {% set elements_array = elements_array|merge({(key):('uzsu')}) %}
+            {% set written = 1 %}
+          {% elseif (type is iterable ? item[key] == 'locks' : item == 'locks') and locks %}
+            {% set elements_array = elements_array|merge({(key):('locks')}) %}
+            {% set written = 1 %}
+          {% elseif (type is iterable ? item[key] == 'extpopup' : item == 'extpopup') and extpopup %}
+            {% set elements_array = elements_array|merge({(key):('extpopup')}) %}
+            {% set written = 1 %}
+          {% elseif (type is iterable ? item[key] == 'stateengine' : item == 'stateengine') and item_auto and stateengine is defined %}
+            {% set elements_array = elements_array|merge({(key):('stateengine')}) %}
+            {% set written = 1 %}
+          {% elseif (type is iterable ? item[key] == 'plot' : item == 'plot') and item_plot %}
+            {% set elements_array = elements_array|merge({(key):('plot')}) %}
+            {% set written = 1 %}
+          {% elseif (type is iterable ? item[key] == 'slider' : item == 'slider') and item_slider %}
+            {% set elements_array = elements_array|merge({(key):('slider')}) %}
+            {% set written = 1 %}
+          {% elseif (type is iterable ? item[key] == ' ' : item == ' ') %}
+            {% set elements_array = elements_array|merge({(key):('empty')}) %}
+            {% set written = 1 %}
+          {% elseif (type is iterable ? item[key] matches '/^[\\d\\.]+$/' : item matches '/^[\\d\\.]+$/') %}
+            {% set elements_array = elements_array|merge({(key):('empty'~(type is iterable ? item[key] : item))}) %}
+            {% set written = 1 %}
+          {% endif %}
+        {% endfor %}
+        {% if written == 1 %}
+          {% set elements_array = elements_array|merge({(elements_array|length):('div')}) %}
+          {% set written = 0 %}
+        {% endif %}
+      {% else %}
+        {% set written = 0 %}
+        {% if (type is iterable ? items[key] == 'switch' : items == 'switch') and item_switch %}
+          {% set elements_array = elements_array|merge({(key):('switch')}) %}
+          {% set written = 1 %}
+        {% elseif (type is iterable ? items[key] == 'select' : items == 'select') and item_switch %}
+          {% set elements_array = elements_array|merge({(key):('switch')}) %}
+          {% set written = 1 %}
+        {% elseif (type is iterable ? items[key] == 'uzsu' : items == 'uzsu') and item_uzsu %}
+          {% set elements_array = elements_array|merge({(key):('uzsu')}) %}
+          {% set written = 1 %}
+        {% elseif (type is iterable ? items[key] == 'locks' : items == 'locks') and locks %}
+          {% set elements_array = elements_array|merge({(key):('locks')}) %}
+          {% set written = 1 %}
+        {% elseif (type is iterable ? items[key] == 'extpopup' : items == 'extpopup') and extpopup %}
+          {% set elements_array = elements_array|merge({(key):('extpopup')}) %}
+          {% set written = 1 %}
+        {% elseif (type is iterable ? items[key] == 'stateengine' : items == 'stateengine') and item_auto and stateengine is defined %}
+          {% set elements_array = elements_array|merge({(key):('stateengine')}) %}
+          {% set written = 1 %}
+        {% elseif (type is iterable ? items[key] == 'plot' : items == 'plot') and item_plot %}
+          {% set elements_array = elements_array|merge({(key):('plot')}) %}
+          {% set written = 1 %}
+        {% elseif (type is iterable ? items[key] == 'slider' : items == 'slider') and item_slider %}
+          {% set elements_array = elements_array|merge({(key):('slider')}) %}
+          {% set written = 1 %}
+        {% elseif (type is iterable ? items[key] == ' ' : items == ' ') %}
+          {% set elements_array = elements_array|merge({(key):('empty')}) %}
+          {% set written = 1 %}
+        {% elseif (type is iterable ? items[key] matches '/^[\\d\\.]+$/' : items matches '/^[\\d\\.]+$/') %}
+          {% set elements_array = elements_array|merge({(key):('empty_'~(type is iterable ? items[key] : items))}) %}
+          {% set written = 1 %}
+        {% endif %}
+        {% if written == 1 %}
+            {% set elements_array = elements_array|merge({(elements_array|length):('div')}) %}
+        {% endif %}
+      {% endif %}
+      {% if multi >= 2 %}
+          {% set elements_array = {0:'multi'}|merge(elements_array|slice(1)) %}
+      {% elseif elements_array[0] == 'ignore' %}
+          {% set elements_array = elements_array|slice(1) %}
+      {% endif %}
+      {% if elements is empty %}
+          {% set elements = {0: (elements_array)} %}
+      {% else %}
+          {% set elements = elements|merge({0: (elements_array)}) %}
+      {% endif %}
+    {% endfor %}
+{% else %}
+/**	{# most of the following code provides some dummy proofing concerning the column_order. Standard elements are only shown when relevant items exist #} */
+    {% set elements = {} %}
+    {% for z in (type is iterable ? 0..type|length-1 : 0..0) %}
+        {% set elements_array = {0: 'ignore'} %}
+        {% set ext_count = 0 %}
+        {% if (type is iterable ? item_switch[z] == ' ' : item_switch == ' ') %}
+            {% set elements_array = elements_array|merge({(z):('empty')}) %}
+            {% set written = 1 %}
+        {% else %}
+            {% set multi = 0 %}
+
+            {% for i in 0..8 %}
+                {% if (type is iterable ? locks[z] : locks) and 'locks' not in elements_array %}
+                    {% set elements_array = elements_array|merge({(i):('locks')}) %}
+                    {% set multi = multi+1 %}
+                {% elseif (type is iterable ? item_switch[z] : item_switch) and 'switch' not in elements_array %}
+                    {% set elements_array = elements_array|merge({(i):('switch')}) %}
+                    {% set multi = multi+1 %}
+                {% elseif (type is iterable ? item_slider[z] : item_slider) and 'slider' not in elements_array %}
+                    {% if not type is iterable %}
+                        {% set elements_array = elements_array|merge({(i):('div')}) %}
+                    {% else %}
+                        {% set multi = multi+1 %}
+                    {% endif %}
+                    {% set elements_array = elements_array|merge({(i):('slider')}) %}
+                {% elseif (type is iterable ? extpopup[z] : extpopup) and ext_count == 0 and (type is iterable and item_auto is iterable ? (extpopup[z][0] != 'stateengine') : (extpopup[0] != 'stateengine')) and (type is iterable ? (extpopup[z][0] != 'switch') : (extpopup[0] != 'switch')) %}
+                    {% if not type is iterable %}
+                        {% set elements_array = elements_array|merge({(i):('div')}) %}
+                    {% else %}
+                        {% set multi = multi+1 %}
+                    {% endif %}
+                    {% set elements_array = elements_array|merge({(i):('extpopup')}) %}
+                    {% set ext_count = ext_count+1 %}
+                {% elseif (type is iterable ? item_auto[z] : item_auto) and 'stateengine' not in elements_array and stateengine is defined %}
+                    {% if not type is iterable %}
+                        {% set elements_array = elements_array|merge({(i):('div')}) %}
+                    {% else %}
+                        {% set multi = multi+1 %}
+                    {% endif %}
+                    {% set elements_array = elements_array|merge({(i):('stateengine')}) %}
+                {% elseif (type is iterable ? item_plot[z] : item_plot) and 'plot' not in elements_array and item_plot|length < 17 %}
+                    {% if not type is iterable %}
+                        {% set elements_array = elements_array|merge({(i):('div')}) %}
+                    {% else %}
+                        {% set multi = multi+1 %}
+                    {% endif %}
+                    {% set elements_array = elements_array|merge({(i):('plot')}) %}
+                {% elseif (type is iterable ? item_uzsu[z] : item_uzsu) and 'uzsu' not in elements_array %}
+                    {% if not type is iterable %}
+                        {% set elements_array = elements_array|merge({(i):('div')}) %}
+                    {% else %}
+                        {% set multi = multi+1 %}
+                    {% endif %}
+                    {% set elements_array = elements_array|merge({(i):('uzsu')}) %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% set elements_array = elements_array|merge({(elements_array|length):('div')}) %}
+        {% if multi >= 2 %}
+          {% set elements_array = {0:'multi'}|merge(elements_array|slice(1)) %}
+          {% set multi = 0 %}
+        {% elseif elements_array[0] == 'ignore' %}
+          {% set elements_array = elements_array|slice(1) %}
+        {% endif %}
+        {% if elements is empty %}
+            {% set elements = {(z): (elements_array)} %}
+        {% else %}
+            {% set elements = elements|merge({(z): (elements_array)}) %}
+        {% endif %}
+    {% endfor %}
+    {% if item_auto and 'stateengine' not in elements and type is iterable and item_auto is not iterable and stateengine is defined %}
+      {% set elements = elements|merge({10:({0:'stateengine', 1:'div'})}) %}
+    {% endif %}
+    {% if item_plot and 'plot' not in elements and type is iterable and (item_plot is not iterable or item_plot|length == 17) %}
+      {% set elements = elements|merge({10:({0:'plot', 1:'div'})}) %}
+    {% endif %}
+    {% if item_uzsu and 'uzsu' not in elements and type is iterable and item_uzsu is not iterable %}
+      {% set elements = elements|merge({10:({0:'uzsu', 1:'div'})}) %}
+    {% endif %}
+{% endif %}
+
+{% set ext_elements = [] %}
+{% for id, stringsById in elements %}
+  {% for id2, string in stringsById %}
+    {% set ext_elements = ext_elements|merge([(string)]) %}
+  {% endfor %}
+{% endfor %}
+
+/**
+<div>
+{% for id, stringsById in elements %}
+  id {{ id }}-{{stringsById}}
+  {% for id2, string in stringsById %}
+   {{ id2 }}-{{ string }},
+  {% endfor %}
+{% endfor %}
+</div>
+**/
+
+    <li data-icon="false" class="row_stateswitch">
+    <div class="quad_table row_stateswitch" id="row_{{uid(page, id)|replace('.', '_')}}">
+    <div class="text">{{ linetext|e }}
+    {% if item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
+      {% if item_auto is iterable %}
+        {% set se = item_auto[0] != '' ? item_auto[0]~'.suspend_end' : item_auto[1] != '' ? item_auto[1]~'.suspend_end' : '' %}
+      {% endif %}
+    {{ basic.print(id~'suspend_end', se, 'text') }}
+    {% endif %}
+    </div>
+  {% for i, arrays in elements %}
+    {% set columnnumber = columnnumber+1 %}
+    {% set ext = 'nothing' %}
+    {% if item_switch is iterable %}
+      {% set id = id is empty ? item_switch[i]|replace('.', '_') : id %}
+    {% else %}
+      {% set id = id is empty ? item_switch|replace('.', '_') : id %}
+    {% endif %}
+    {% for z,column in arrays %}
+      {% set ext = 'nothing' %}
+        {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
+          {% if loop.first %}
+            {% if column == 'empty' %}
+              <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}">
+            {% else %}
+              <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}" style="width: {{ column|slice(6) }}px !important;">
+            {% endif %}
+          {% elseif column == 'empty' %}
+            {% set columnnumber = columnnumber+1 %}
+            </div>
+            <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}">
+          {% elseif column starts with 'empty' %}
+            {% set columnnumber = columnnumber+1 %}
+            </div>
+            <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}" style="width: {{ column|slice(6) }}px !important;">
+          {% elseif column == 'div' %}
+            {% set columnnumber = columnnumber+1 %}
+            <div class="column{{ columnnumber }} column_{{ (arrays[loop.index] == 'switch' and switch_or_select == 'select' ? 'select' : arrays[loop.index])  }}" data-order="{{ columnnumber }}">
+          {% endif %}
+        {% elseif loop.first %}
+          <div class="column{{ columnnumber }} column_{{ (column == 'switch' and switch_or_select == 'select' ? 'select' : column)  }}" data-order="{{ columnnumber }}">
+        {% endif %}
+        {% if type is iterable %}
+          {% if column == 'switch' and item_switch[i] %}
+            {% if columntext[i] %}{{ columntext[i]|e }}{% endif %}
+            {% if switch_or_select[i] == 'select' or switch_or_select == 'select' %}
+              {{ basic.select(id~'_select'~z~i, item_switch[i], type[i], value[i]|default(value[i][0]), pic[i]|default(pic[i][0]), text[i]|default(text[i][0]), color_on[i]|default(''), indicator[i]) }}
+            {% else %}
+                  {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch[i], type[i], value[i]|default(''), pic[i]|default(''), text[i]|default(''), color[i]|default(''), indicator[i]|default(''), item_longpress[i]|default(''), value_longpress[i]|default(''), value_longrelease[i]|default('')) }}
+            {% endif %}
+            {% if arrays[loop.index] == 'div' %}
+            </div>
+            {% endif %}
+          {% endif %}
+
+          {% if column == 'locks' and locks[i] %}
+            {% if locks[i] is not iterable %}
+              {% set item_lock = locks[i]|default('') %}
+            {% else %}
+              {% set item_lock = locks[i][0]|default('') %}
+              {% set item_bwmlock = locks[i][1]|default('') %}
+              {% set item_force = locks[i][2]|default('') %}
+            {% endif %}
+            {% if (item_lock and item_bwmlock) or item_force %}
+              <a href="#{{ uid(page, id) }}_list_locks_popup{{z}}{{i}}" data-rel="popup">
+              {{ basic.symbol(id~'list_lockpop_on'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color[i][1]|default('icon1')) }}
+              {{ basic.symbol(id~'list_lockpop_off'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color[i][0]|default('icon0')) }}
+              </a>
+              {{ popup.locks(uid(page, id)~'_list_locks_popup'~z~i, [item_lock|default(''), ['icon0', color[i][1]|default('icon1')]], [item_bwmlock|default(''), ['icon0', color[i][1]|default('icon1')]], [item_force|default(''), color[i][1]|default('icon1')]) }}
+            {% elseif item_lock %}
+              {{ basic.stateswitch(id~'list_lock'~z~i, item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', color[i], indicator[i]) }}
+            {% elseif item_bwmlock %}
+              {{ basic.stateswitch(id~'list_lock'~z~i, item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', color[i], indicator[i]) }}
+            {% endif %}
+            {% if arrays[loop.index] == 'div' %}
+              </div>
+            {% endif %}
+          {% endif %}
+
+          {% if column == 'slider' and item_slider[i] %}
+              {% if item_slider[i] is not iterable %}
+                  {% set slider_item = item_slider[i]|default('') %}
+              {% else %}
+                  {% set slider_item = item_slider[i][0]|default('') %}
+                  {% set slider_min = item_slider[i][1]|default('0') %}
+                  {% set slider_max = item_slider[i][2]|default('60') %}
+                  {% set slider_step = item_slider[i][3]|default('1') %}
+                  {% set slider_format = item_slider[i][4]|default('min') %}
+                  {% set value_display = item_slider[i][5]|default('handle') %}
+              {% endif %}
+              <a href="#{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-rel="popup" data-position-to="window">
+                  {% if slider_format == '%' %}
+                      {{ basic.print(id~'list_slider'~z~i, slider_item, '%', 'VAR1/255*100', '', color[i]) }}
+                  {% else %}
+                      {{ basic.print(id~'list_slider'~z~i, slider_item, slider_format, '', '', color[i]) }}
+                  {% endif %}
+              </a>
+
+              <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                <div class="dimmer dimmer-left">
+                  {{ basic.stateswitch(id~'list_slider_popup_switch'~z~i, item_switch[i], 'icon', value[i], pic[i], '', color[i], indicator[i]) }}
+                  <p>{{ linetext|e }}</p>
+                  {{ basic.slider(id~'list_slider_popup_slider'~z~i, slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
+                </div>
+              </div>
+              {% if arrays[loop.index] == 'div' %}
+                  </div>
+              {% endif %}
+          {% endif %}
+
+          {% if column == 'extpopup' and extpopup[i]  %}
+              {% if extpopup[i][0] not in ext_elements %}
+                      <a href="#{{ uid(page, id) }}list_extpopup{{z}}{{i}}" data-rel="popup" data-position-to="window">
+                          {{ basic.symbol(id~'extpopupicon'~z~i, '', '', extpopup[i][0], '', '', icon_color[i][0]|default('icon0')) }}
+                      </a>
+                      {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
+
+              {% endif %}
+              {% if arrays[loop.index] == 'div' %}
+                  </div>
+              {% endif %}
+          {% endif %}
+
+          {% if column == 'stateengine' and item_auto[i] %}
+            {% if extpopup[i][0] == 'stateengine' and stateengine is defined %}
+                {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
+            {% elseif stateengine is defined %}
+                {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values) }}
+            {% endif %}
+
+            {% if arrays[loop.index] == 'div' %}
+              </div>
+            {% endif %}
+          {% endif %}
+
+          {% if column == 'uzsu' and item_uzsu[i] %}
+            {% if uzsu_attribs[i] is not iterable %}
+              {% set uzsu_value = '' %}
+              {% set uzsu_coloron = '' %}
+              {% set uzsu_coloroff = '' %}
+              {% set uzsu_params = '' %}
+              {% set uzsu_picon = '' %}
+              {% set uzsu_picoff = '' %}
+            {% else %}
+              {% set uzsu_picon = uzsu_attribs[i][0]|default('') %}
+              {% set uzsu_picoff = uzsu_attribs[i][1]|default('') %}
+              {% set uzsu_value = uzsu_attribs[i][2]|default('') %}
+              {% set uzsu_params = uzsu_attribs[i][3]|default('') %}
+              {% set uzsu_coloron = uzsu_attribs[i][4]|default('') %}
+              {% set uzsu_coloroff = uzsu_attribs[i][5]|default('') %}
+            {% endif %}
+              {{ device.uzsuicon(id~'list_uzsu'~z~i, item_uzsu[i], columntext[i]|default(linetext), uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+            {% if arrays[loop.index] == 'div' %}
+              </div>
+            {% endif %}
+          {% endif %}
+          {% if column == 'plot' and item_plot[i] %}
+              <a href="#{{ uid(page, id) }}_plotpopup{{z}}{{i}}" data-rel="popup">
+                {{ basic.icon(icon_plot[i]|deficon('measure_power_meter'), icon_color[i][0]|default('icon0')) }}
+              </a>
+              <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{z}}{{i}}" data-role="popup">
+                <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+              {% if item_plot[i] is iterable  %}
+                {{ plot.period(id~'_plotpopup'~z~i, item_plot[i][0], item_plot[i][1]|default('on'), item_plot[i][2]|default('12h'), item_plot[i][3]|default('now'), item_plot[i][4]|default('0'), item_plot[i][5]|default('1.2'), item_plot[i][6]|default('1000'), item_plot[i][7]|default(linetext), item_plot[i][8], item_plot[i][9]|default('stair'), item_plot[i][10]|default(['Uhrzeit', 'Wert']), item_plot[i][11]|default('3s'), item_plot[i][12], item_plot[i][13], item_plot[i][14], item_plot[i][15], item_plot[i][16], item_plot[i][17]|default('bool')) }}
+              {% else %}
+                {{ plot.period(id~'_plotpopup'~z~i, item_plot[i], 'on', '12h', 'now', '0', '1.2', '1000', columntext[i]|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[i][1]|default('bool')) }}
+              {% endif %}
+              </div>
+            {% if arrays[loop.index] == 'div' %}
+              </div>
+            {% endif %}
+          {% endif %}
+
+        {% else %}
+          {% if column == 'switch' and item_switch %}
+            {% if columntext %}{{ columntext|e }}{% endif %}
+            {% if switch_or_select == 'select' %}
+              {{ basic.select(id~'_select'~z~i, item_switch, type, value|default(value[0]), pic|default(pic[0]), text|default(text[0]), color_on|default(''), indicator) }}
+            {% else %}
+              {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch, type|default(''), value|default(''), pic|default(''), text|default(''), color|default(''), indicator|default(''), item_longpress|default(''), value_longpress|default(''), value_longrelease|default('')) }}
+            {% endif %}
+            {% if arrays[loop.index] == 'div' %}
+            </div>
+            {% endif %}
+          {% endif %}
+
+          {% if column == 'locks' and locks %}
+            {% if locks is not iterable %}
+              {% set item_lock = locks|default('') %}
+            {% else %}
+              {% set item_lock = locks[0]|default('') %}
+              {% set item_bwmlock = locks[1]|default('') %}
+              {% set item_force = locks[2]|default('') %}
+            {% endif %}
+            {% if (item_lock and item_bwmlock) or item_force %}
+              <a href="#{{ uid(page, id) }}_list_locks_popup{{z}}{{i}}" data-rel="popup">
+              {{ basic.symbol(id~'list_lockpop_on'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_locked', 1, 'min', color[1]|default('icon1')) }}
+              {{ basic.symbol(id~'list_lockpop_off'~z~i, [item_lock, item_bwmlock, item_force], '', 'secur_open', 0, 'and', color[0]|default('icon0')) }}
+              </a>
+              {{ popup.locks(uid(page, id)~'_list_locks_popup'~z~i, [item_lock|default(''), ['icon0', color[1]|default('icon1')]], [item_bwmlock|default(''), ['icon0', color[1]|default('icon1')]], [item_force|default(''), color[1]|default('icon1')]) }}
+            {% elseif item_lock %}
+              {{ basic.stateswitch(id~'list_lock'~z~i, item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', color, indicator) }}
+            {% elseif item_bwmlock %}
+              {{ basic.stateswitch(id~'list_lock'~z~i, item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', color, indicator) }}
+            {% endif %}
+            {% if arrays[loop.index] == 'div' %}
+              </div>
+            {% endif %}
+          {% endif %}
+
+          {% if column == 'slider' and item_slider %}
+              {% if item_slider is not iterable %}
+                  {% set slider_item = item_slider|default('') %}
+              {% else %}
+                  {% set slider_item = item_slider[0]|default('') %}
+                  {% set slider_min = item_slider[1]|default('0') %}
+                  {% set slider_max = item_slider[2]|default('60') %}
+                  {% set slider_step = item_slider[3]|default('1') %}
+                  {% set slider_format = item_slider[4]|default('min') %}
+                  {% set value_display = item_slider[5]|default('handle') %}
+              {% endif %}
+              <a href="#{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-rel="popup" data-position-to="window">
+                  {% if slider_format == '%' %}
+                      {{ basic.print(id~'list_slider'~z~i, slider_item, '%', 'VAR1/255*100', '', color) }}
+                  {% else %}
+                      {{ basic.print(id~'list_slider'~z~i, slider_item, slider_format, '', '', color) }}
+                  {% endif %}
+              </a>
+
+              <div id="{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-role="popup" data-overlay-theme="a" class="quad_slider-popup">
+				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                <div class="dimmer dimmer-left">
+                  {{ basic.stateswitch(id~'list_slider_popup_switch'~z~i, item_switch, 'icon', [0,1], pic, '', color, indicator) }}
+                  <p>{{ linetext|e }}</p> single
+                  {{ basic.slider(id~'list_slider_popup_slider'~z~i, slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
+                </div>
+              </div>
+
+              {% if arrays[loop.index] == 'div' %}
+                  </div>
+              {% endif %}
+          {% endif %}
+
+          {% if column == 'extpopup' and extpopup %}
+              {% if extpopup[0] not in ext_elements %}
+                <a href="#{{ uid(page, id) }}list_extpopup" data-rel="popup" data-position-to="window">
+                    {{ basic.symbol(id~'extpopupicon', '', '', extpopup[0], '', '', icon_color[0]|default('icon0')) }}
+                </a>
+                {{ popup.extpopup(uid(page, id)~'list_extpopup', extpopup[0], color[0]|default('icon0'), extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+              {% endif %}
+              {% if arrays[loop.index] == 'div' %}
+                  </div>
+              {% endif %}
+
+          {% endif %}
+
+          {% if column == 'stateengine' and item_auto %}
+            {% if (extpopup[i][0] == 'stateengine' or extpopup[0] == 'stateengine') and stateengine is defined %}
+                {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+            {% elseif stateengine is defined %}
+                {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+            {% endif %}
+
+            {% if arrays[loop.index] == 'div' %}
+              </div>
+            {% endif %}
+          {% endif %}
+
+          {% if column == 'uzsu' and item_uzsu %}
+            {% if uzsu_attribs is not iterable %}
+              {% set uzsu_value = '' %}
+              {% set uzsu_coloron = '' %}
+              {% set uzsu_coloroff = '' %}
+              {% set uzsu_params = '' %}
+              {% set uzsu_picon = '' %}
+              {% set uzsu_picoff = '' %}
+            {% else %}
+              {% set uzsu_picon = uzsu_attribs[0]|default('') %}
+              {% set uzsu_picoff = uzsu_attribs[1]|default('') %}
+              {% set uzsu_value = uzsu_attribs[2]|default('') %}
+              {% set uzsu_params = uzsu_attribs[3]|default('') %}
+              {% set uzsu_coloron = uzsu_attribs[4]|default('') %}
+              {% set uzsu_coloroff = uzsu_attribs[5]|default('') %}
+            {% endif %}
+              {{ device.uzsuicon(id~'list_uzsu'~z, item_uzsu, columntext|default(linetext), uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+            {% if arrays[loop.index] == 'div' %}
+              </div>
+            {% endif %}
+          {% endif %}
+          {% if column == 'plot' and item_plot %}
+              <a href="#{{ uid(page, id) }}_plotpopup{{z}}{{i}}" data-rel="popup">
+                {{ basic.icon(icon_plot|deficon('measure_power_meter'), icon_color[0]|default('icon0')) }}
+              </a>
+              <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{z}}{{i}}" data-role="popup">
+                <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+              {% if item_plot is iterable  %}
+                  {{ plot.period(id~'_plotpopup'~z~i, item_plot[0], item_plot[1]|default('on'), item_plot[2]|default('12h'), item_plot[3]|default('now'), item_plot[4]|default('0'), item_plot[5]|default('1.2'), item_plot[6]|default('1000'), item_plot[7]|default(linetext), item_plot[8], item_plot[9]|default('stair'), item_plot[10]|default(['Uhrzeit', 'Wert']), item_plot[11]|default('3s'), item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]|default('bool')) }}
+              {% else %}
+                {{ plot.period(id~'_plotpopup'~z~i, item_plot, 'on', '12h', 'now', '0', '1.2', '1000', columntext|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('bool')) }}
+              {% endif %}
+              </div>
+            {% if arrays[loop.index] == 'div' %}
+              </div>
+            {% endif %}
+          {% endif %}
+
+        {% endif %}
+
+        {% if column starts with 'empty' %}
+          {% if arrays[loop.index] == 'div' %}
+            </div>
+          {% endif %}
+        {% endif %}
+
+          {% if column == 'stateengine' and item_auto and type is iterable and item_auto is not iterable and stateengine is defined %}
+                  {% for i,ext_array in extpopup %}
+                      {% if extpopup[i][0] == 'stateengine' %}{% set ext = i %}{% endif %}
+                  {% endfor %}
+                  {% if ext != 'nothing' or not ext %}
+                      {{ stateengine.state(id~'_pop_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                      {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[ext][1], extpopup[ext][2], extpopup[ext][3], extpopup[ext][4], extpopup[ext][5], extpopup[ext][6], extpopup[ext][7], extpopup[ext][8], extpopup[ext][9], extpopup[ext][10], extpopup[ext][11], extpopup[ext][12], extpopup[ext][13], extpopup[ext][14], extpopup[ext][15], extpopup[ext][16], extpopup[ext][17], extpopup[ext][18], extpopup[ext][19]) }}
+                  {% elseif extpopup[0] == 'stateengine' %}
+                      {{ stateengine.state(id~'_pop_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                      {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[1], extpopup[2], extpopup[3], extpopup[4], extpopup[5], extpopup[6], extpopup[7], extpopup[8], extpopup[9], extpopup[10], extpopup[11], extpopup[12], extpopup[13], extpopup[14], extpopup[15], extpopup[16], extpopup[17], extpopup[18], extpopup[19], extpopup[20]) }}
+                  {% else %}
+                     {{ stateengine.state(id~'_state'~z~i, item_auto~'.state_name', item_auto~'.lock', item_auto~'.release', config_stateengine_icons, config_stateengine_values) }}
+                  {% endif %}
+
+                  {% if arrays[loop.index] == 'div' %}
+                      </div>
+                  {% endif %}
+              {% endif %}
+              {% if column == 'uzsu' and item_uzsu and type is iterable and item_uzsu is not iterable %}
+                  {% if uzsu_attribs is not iterable %}
+                      {% set uzsu_value = '' %}
+                      {% set uzsu_coloron = '' %}
+                      {% set uzsu_coloroff = '' %}
+                      {% set uzsu_params = '' %}
+                      {% set uzsu_picon = '' %}
+                      {% set uzsu_picoff = '' %}
+                  {% else %}
+                      {% set uzsu_picon = uzsu_attribs[0]|default('') %}
+                      {% set uzsu_picoff = uzsu_attribs[1]|default('') %}
+                      {% set uzsu_value = uzsu_attribs[2]|default('') %}
+                      {% set uzsu_params = uzsu_attribs[3]|default('') %}
+                      {% set uzsu_coloron = uzsu_attribs[4]|default('') %}
+                      {% set uzsu_coloroff = uzsu_attribs[5]|default('') %}
+                  {% endif %}
+                      {{ device.uzsuicon(id~'list_uzsu'~z~i, item_uzsu, columntext|default(linetext), uzsu_picon, uzsu_picoff, uzsu_value == 'percent' ? 'num' : uzsu_value, uzsu_params, uzsu_coloron, uzsu_coloroff) }}
+                  {% if arrays[loop.index] == 'div' %}
+                      </div>
+                  {% endif %}
+              {% endif %}
+              {% if column == 'plot' and item_plot and type is iterable and (item_plot is not iterable or item_plot|length == 17) %}
+                      <a href="#{{ uid(page, id) }}_plotpopup{{z}}{{i}}" data-rel="popup">
+                          {{ basic.icon(icon_plot|deficon('measure_power_meter'), icon_color[0]|default('icon0')) }}
+                      </a>
+                      <div class="quad_plot-popup" id="{{ uid(page, id) }}_plotpopup{{z}}{{i}}" data-role="popup">
+                        <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+                      {% if item_plot is iterable  %}
+                          {{ plot.period(id~'_plotpopup'~z~i, item_plot[0], item_plot[1], item_plot[2], item_plot[3], item_plot[4], item_plot[5], item_plot[6], item_plot[7], item_plot[8], item_plot[9], item_plot[10], item_plot[11], item_plot[12], item_plot[13], item_plot[14], item_plot[15], item_plot[16], item_plot[17]) }}
+                      {% else %}
+                          {{ plot.period(id~'_plotpopup'~z~i, item_plot, 'avg', '12h', 'now', '', '', '', columntext|default(linetext), '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', uzsu_attribs[1]|default('int')) }}
+                      {% endif %}
+                      </div>
+                  {% if arrays[loop.index] == 'div' %}
+                      </div>
+                  {% endif %}
+              {% endif %}
+
+    {% endfor %}
+
+  {% endfor %}
+  </div>
+  </li>
+{% endmacro %}
+
+/**
+ * Select: lets you select a specific value (e.g. scene, etc.)
+ *
+* @param {id=} unique id for this widget (optional)
+* @param {item[?]} an (array of) item(s)
+* @param {type(menu)[?]=menu} type: 'menu', 'micro', 'mini', 'midi', 'icon' (optional, default: menu)
+* @param {text[]=[0,1]} list of values (optional, default [0,1])
+* @param {image[?]=} list of icons for every button (optional) - not supported for type 'menu'
+* @param {text[?]=} list of texts for every menu entry or button (optional)
+* @param {color[?]=icon1} the color for the on state of the buttons (optional, default: icon1) - not supported for type 'menu'
+* @param {text(horizontal,vertical,none)[?]=horizontal} orientation of the controlgroup: 'horizontal', 'vertical' or 'none' for seperate buttons (optional, default: 'horizontal') - not supported for type 'menu'
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {text=} text for the whole line (optional)
+* @param {text[?]=} (array with) text for each column (optional)
+ * @param {item[?]=}  		    a gad/item for UZSU
+ * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+ * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
+ * @param {item[?]=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
+                       First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
+                       After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
+                       followed by the attributes for each element as you would for the basic widget.
+                       Possible elements are: header, text, slider, flip, switch, select
+                       Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
+                       [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
+ * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
+ * @param {unspecified[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
+                            You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {text[](select,stateengine,uzsu,plot,locks,extpopup,anynumber)=['locks', 'select', 'stateengine', 'plot', 'uzsu']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+            possible elements are: 'select', 'stateengine', 'uzsu', 'plot', 'locks', 'extpopup'
+            For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
+            Combine elements in one column by putting them in arrays. Standard is ['locks', 'select', 'stateengine', 'plot', 'uzsu']
+            Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
+ */
+{% macro select(id, item_select, type, value, pic, text, color_on, group, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order) %}
+  {% import _self as intern %}
+  {{ intern.stateswitch(id, item_select, type, value, pic, text, color_on, place0, place1, place2, place3, place4, place5, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place6, place7, column_order, 'select') }}
+{% endmacro %}
+
+/**
+* Displays an input field
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item[?]} an item, sent values are:
+	- date & dateflip: Date object resp. ISO 8601 - e.g. '2017-11-29T23:00:00.000Z'
+	- time & timeflip: String with 24hr clock - e.g. '18:31:27'
+	- duration & durationflip: Number of seconds
+	- any other: Entered value
+* @param {text[?](text,number,date,dateflip,datecal,dateslide,time,timeflip,duration,durationflip)=text} 'text', 'number', 'date', 'dateflip', 'datecal', 'dateslide', 'time', 'timeflip', 'duration', 'durationflip' (optional, default: text)
+* @param {text[?]=} lowest allowed value (optional)
+	- date & dateflip: Number of days before today
+	- time & timeflip: Format is 24hr clock - e.g. '18:31:27'
+	- duration & durationflip: in seconds
+* @param {text[?]=} greatest allowed value (optional)
+	- date & dateflip: Number of days after today
+	- time, timeflip: Format is 24hr clock - e.g. '18:31:27'
+	- duration & durationflip: in seconds
+* @param {value[?]=1} step between two values (optional, no effect on date/time types)
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {unspecified=} 	    placeholder attributes for future features, etc.
+* @param {text=} text for the whole line (optional)
+* @param {text[?]=} (array with) text for each column (optional)
+* @param {value[](1,2,3,4,5)=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
+*						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
+*
+* @author Stefan Widmer
+* @info Inspired by Michael Würtenberger, date/time control uses JTSageDateBox
+*/
+{% macro input(id, item, type, min, max, step, place1, place2, linetext, columntext, column_order) %}
+    {% import "basic.html" as basic %}
+    {% set id = id is empty ? item|replace('.', '_') : id %}
+    <li data-icon="false" class="row_input">
+    <div class="quad_table sorting row_input" id="row_{{uid(page, id)}}_sorting">
+        <div class="text">{{ linetext|e }} </div>
+        {% set runs = item is iterable ? max((item|length-1),0 ) : 0 %}
+    {% for i in 0..runs %}
+        <div class="column{{ column_order[i]|default(i+1) }}
+        {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_input' }}" data-order={{ column_order[i]|default(i+1) }}>
+      {% if item is iterable and item[i] == ' ' %}
+      {% elseif runs > 0 %}{{ columntext[i]|e }}
+        {{ basic.input(id~'list_input'~i, item[i], type[i], min[i], max[i], step[i]) }}
+      {% else %}
+        {{ columntext|e }}
+        {{ basic.input(id~'list_input', item, type, min, max, step) }}
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    </div>
+    </li>
+{% endmacro %}

@@ -1,7 +1,7 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß, Martin Sinn
+ * @author      Martin Gleiss, Martin Sinn
  * @copyright   2012 - 2016
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
@@ -19,8 +19,8 @@
  */
 var io = {
 
-	// the adress
-	adress: '',
+	// the address
+	address: '',
 
 	// the port
 	port: '',

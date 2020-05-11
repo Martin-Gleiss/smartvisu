@@ -1,7 +1,7 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      WIDMER Stedan
+* @author      WIDMER Stefan
 * @copyright   2017
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
@@ -12,11 +12,26 @@
 
 {% block example %}
 
-	<h5>Example</h5>
+	<h5>Examples</h5>
 
-	<h5>Advanced use</h5>
+    <h5>Standard usage</h5>
+	
+	These two examples show the usage as a simple button and a switch with two states ("dual") <br />
+	
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.stateswitch('', 'bath.light.switch', 'midi', '', 'control_arrow_down.svg') }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg']) }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.stateswitch('', 'bath.light.switch', 'midi', '', 'control_arrow_down.svg') }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg']) }}
+	</div>
 
-	Activity indicator
+	<h5>Advanced usage</h5>
+
+	Use cases with activity indicator and / or multiple states
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 		{{ basic.stateswitch('', 'bath.light.switch', 'midi', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['green', '#f00'], 'icon1') }}
@@ -30,10 +45,11 @@
 		{{ basic.stateswitch('', 'bath.light.switch', 'midi', 0, 'grid', 'Off', '', 'blink') }}
 	</div>
 
-	<h6>Long press</h6>
-	KNX-like scene buttons.<br>
-  1st example: A short press actives scene 1 (by sending 0), a longpress saves it by sending 128.<br>
-  2nd example: A short press toggles between scene 1 (by sending 0) or 2 (by sending 1), a longpress saves current selected scene by adding 128.
+	<h5>Long press</h5>
+	
+	This option brings KNX-like scene buttons to life which change functions according to the press duration of a button.<br>
+    1st example: A short press activates scene 1 (by sending 0), a longpress saves it by sending 128.<br>
+    2nd example: A short press toggles between scene 1 (by sending 0) or 2 (by sending 1), a longpress saves current selected scene by adding 128.
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
     {{ basic.stateswitch('', 'bath.light.scene', '', 0, 'status_available', '', '', '', 'bath.light.scene', 128) }}
@@ -45,7 +61,7 @@
     {{ basic.stateswitch('', 'bath.light.scene', '', [0,1], ['status_available','status_away_1'], '', 'icon0', '', 'bath.light.scene', '+128') }}
 	</div>
 
-  A short click toggles <code>bath.light.switch</code>, a long press sends 6 or 7 - depending on current state - to <code>bath.multistate</code> and releasing after a longpress sends 5 to <code>bath.multistate</code> (watch the second button above)
+    A short click toggles <code>bath.light.switch</code>, a long press sends 6 or 7 - depending on current state - to <code>bath.multistate</code> and releasing after a longpress sends 5 to <code>bath.multistate</code> (watch the second button in the "Advanced usage" section further above)
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 		{{ basic.stateswitch('', 'bath.light.switch', '', '', '', '', ['green', '#f00'], '', 'bath.multistate', '+6', 5) }}
@@ -55,7 +71,9 @@
 		{{ basic.stateswitch('', 'bath.light.switch', '', '', '', '', ['green', '#f00'], '', 'bath.multistate', '+6', 5) }}
 	</div>
 
-	Use dynamic icon
+	<h5>Styling</h5>
+	
+	Dynamic icons can be used by calling the icon.* widgets in the icon parameters:
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
@@ -67,8 +85,8 @@
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
 	</div>
 
-	Use a basic.symbol to colorize icon independently of button value.
-	Tis one switches <i>bath.light.switch</i> but is colorized by <i>bath.multistate</i>
+	Use a basic.symbol to colorize an icon independently of the buttons value.
+	This one switches <i>bath.light.switch</i> but is colorized by <i>bath.multistate</i>
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1, 0], basic.symbol('', 'bath.multistate', '', 'message_led', [1,2,3], '', ['red','#EAFF00','green'])) }}
@@ -76,12 +94,14 @@
 	</div>
 	<div class="html">
 		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1, 0], basic.symbol('', 'bath.multistate', '', 'message_led', [1,2,3], '', ['red','#EAFF00','green'])) }}
-		State: {{ basic.select('', 'bath.light.switch', 'mini', [0, 1], '', ['0','1'] ) }}
+		State: {{ basic.select('', 'bath.light.switch', 'mini', [0, 1], '', ['0','1'] ) }}<br>
 		Color: {{ basic.select('', 'bath.multistate', 'mini', [1, 2, 3], '', ['red','yellow','green'] ) }}
 
 	</div>
 
-	Grouping
+	<h5>Grouping</h5>
+	
+	Buttons can be grouped horizontally or vertically by putting them in a control group. See that the shapes are different from those of the single buttons.
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
     <div data-role="controlgroup" data-type="horizontal">

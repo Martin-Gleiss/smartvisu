@@ -1,0 +1,115 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_quad.html" %}
+{% block header %}
+
+{% endblock %}
+{% block example %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('led.R.dimmen', '10' );
+			 io.write('led.R', '1' );
+			 io.write('led.G.dimmen', '100' );
+			 io.write('led.G', '1' );
+			 io.write('led.B.dimmen', '5' );
+			 io.write('led.B', '1' );
+			 io.write('led.WW.dimmen', '255' );
+			 io.write('led.WW', '1' );
+			 io.write('h.value', '50' );
+			 io.write('h.switch', '1' );
+			 io.write('s.value', '250' );
+			 io.write('s.switch', '1' );
+			 io.write('v.value', '250' );
+			 io.write('v.switch', '1' );
+			 io.write('led.sequencer', '0' );
+			 io.write('licht.dimmen.zeitschalter', '{}' );
+		});
+</script>
+	<h5>Example</h5>
+
+    [['locks','sequencer','colorpicker','ww_slider'], 'ww_popup','values']
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.color('color1', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, '', '', 'Disc, WW Slider, locks, WW popup, hsv popup', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', 'led.sequencer.sperren'], 'led.sequencer', '', '', '', [['locks','sequencer','colorpicker','ww_slider'], 'ww_popup','values']) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.color('color1', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, '', '', 'Disc, WW Slider, locks, WW popup, hsv popup', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', 'led.sequencer.sperren'], 'led.sequencer', '', '', '', [['locks','sequencer','colorpicker','ww_slider'], 'ww_popup','values']) }}
+	</ul></div>
+
+    [['locks','sequencer','colorpicker'], 'ww_slider','values']
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.color('color2', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, '', '', 'WW slider, rgb popup', 'led.R', 'led.G', 'led.B', '', '', '', '', 'rgb', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', 'led.sequencer.sperren'], 'led.sequencer', '', '', '', [['locks','sequencer','colorpicker'], 'ww_slider','values']) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.color('color2', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, '', '', 'WW slider, rgb popup', 'led.R', 'led.G', 'led.B', '', '', '', '', 'rgb', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', 'led.sequencer.sperren'], 'led.sequencer', '', '', '', [['locks','sequencer','colorpicker'], 'ww_slider','values']) }}
+	</ul></div>
+
+    ['locks', 'colorpicker', 'values']
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.color('color3', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', 'HSV slider, 3 columns', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', '', '', '', '', '', '', ['', 'bwm.sperren', '', ''], '', '', '', '', ['locks', 'colorpicker', 'values']) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.color('color3', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', 'HSV slider, 3 columns', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', '', '', '', '', '', '', ['', 'bwm.sperren', '', ''], '', '', '', '', ['locks', 'colorpicker', 'values']) }}
+	</ul></div>
+
+    [['locks','colorpicker', 'ww_slider'], 'values']
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.color('color4', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', 'HSV slider+WW, 3 columns', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', ''], '', '', '', '', [['locks','colorpicker', 'ww_slider'], 'values', 'stateengine', 'plot']) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.color('color4', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, 'slider', '', 'HSV slider+WW, 3 columns', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', '', '', '', '', ['', 'bwm.sperren', '', ''], '', '', '', '', [['locks','colorpicker', 'ww_slider'], 'values', 'stateengine', 'plot']) }}
+	</ul></div>
+
+    ['locks', 'colorpicker', 'values', 'plot']
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.color('color5', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, '', '', 'RGB Disc, separate columns', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', 'led.WW', '', '', '', ['', 'bwm.sperren', '', 'led.sequencer.sperren'], 'led.sequencer', '', '', '', '', ['locks', 'colorpicker', 'values', 'plot']) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.color('color5', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, '', '', 'RGB Disc, separate columns', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', 'led.WW', 'led.WW.dimmen', 'led.WW', '', '', '', ['', 'bwm.sperren', '', 'led.sequencer.sperren'], 'led.sequencer', '', '', '', '', ['locks', 'colorpicker', 'values', 'plot']) }}
+	</ul></div>
+
+	['colorpicker', '20', '40', 'uzsu']
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.color('color6', 'h.value', 's.value', 'v.value', 0, 255, 10, 30, '', '', 'HSV Modell, 2 empty cols', '', '', '', '', '', 'licht.dimmen.zeitschalter', ['time_clock', 'time_clock', 'num', '', 'icon1', 'icon0'], 'hsv', '', '', '', '', '', '', '', '', '', '', '', ['colorpicker', '20', '40', 'uzsu']) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.color('color6', 'h.value', 's.value', 'v.value', 0, 255, 10, 30, '', '', 'HSV Modell, 2 empty cols', '', '', '', '', '', 'licht.dimmen.zeitschalter', ['time_clock', 'time_clock', 'num', '', 'icon1', 'icon0'], 'hsv', '', '', '', '', '', '', '', '', '', '', '', ['colorpicker', '20', '40', 'uzsu']) }}
+	</ul></div>
+
+	no colomn order defined
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    {{ quad.color('color7', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, '', '', 'RGB Disc, bwm lock item, 2 cols', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', '', '', '', '', '', '', ['', 'bwm.sperren', '', '']) }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+    {{ quad.color('color7', 'led.R.dimmen', 'led.G.dimmen', 'led.B.dimmen', 0, 255, 10, 30, '', '', 'RGB Disc, bwm lock item, 2 cols', 'led.R', 'led.G', 'led.B', '', '', '', '', 'hsv', '', '', '', '', '', '', ['', 'bwm.sperren', '', '']) }}
+	</ul></div>
+
+{% endblock %}
