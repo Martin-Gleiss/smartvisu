@@ -41,9 +41,9 @@
 		<a style="display: none"> </a> 
 		<a data-rel="popup" href="#{{ uid }}-popup" {% if hide == 1 %} style="display:none" {% endif %} class="
 			{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
-				switch ui-link
+				switch ui-link absolutepos
 			{%- else -%} /**- display as button -*/
-				ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
+				ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline absolutepos
 				{%- if not pic is empty -%}
 					{{ not txt is empty ? ' ui-btn-icon-top' }} ui-nodisc-icon
 				{%- endif -%}
@@ -57,7 +57,7 @@
     <div id="{{ uid }}-popup" data-role="popup" style="min-width: 250px; min-height: 80px;">
 		<div class="dimmer" data-widget="device.dimmer">
 			{% if picpos is empty or picpos=='left' %}<span class="ui-dimmer-left"> {% else %} <span class="ui-dimmer-right"> {% endif %}
-				{{ basic.stateswitch('', item_switch, type, '', [ pic_off|default(icon.light(id~'-light', item_switch, item_value, min, max)), pic_on|default(icon.light(id~'-light', item_switch, item_value, min, max)) ], '', [ color_off , color_on|default('icon1') ]) }}
+				{{ basic.stateswitch('', item_switch, type, '', [ pic_off|default('light_light'), pic_on|default('light_light') ], '', [ color_off , color_on|default('icon1') ]) }}
 				{{ txt|e }}
 				{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display) }} 
 			</span>

@@ -67,10 +67,10 @@
 			data-item="{{ item_r_h }}, {{ item_g_s }}, {{ item_b_l_v }}"
 			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colorspace == 'hsv' ? [360,100,100] : 255)) }}"
 			data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
-			class="colordisc"><span style="{% if type == 'micro' %}width: 28px; height: 28px;
-				{% elseif type == 'mini' %}width: 42px; height: 42px;
-				{% elseif type == 'midi' %}width: 56px; height: 56px;
-				{% else %}width: 42px; height: 42px;
+			class="colordisc"><span style="
+				{% if type == 'micro' %}width: 28px; height: 28px; margin-top: -14px; margin-left: -7px;
+				{% elseif type == 'midi' %}width: 56px; height: 56px; margin-top: -28px; margin-left: -21px;
+				{% else %}width: 42px; height: 42px; margin-top: -21px; margin-left: -14px;
 				{% endif %}"></span>
 		</a>
 	</div>
@@ -251,9 +251,9 @@
 				{% set txt = (text is iterable ? text[loop.index0] : text)|default('') %}
 				<a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" data-col="{{ col }}" {{ col == 'hidden' ? 'style="display: none;"'|raw : col == 'blank' ? 'style="visibility: hidden;"'|raw : col != 'icon1' and col != 'icon0' and not col is empty ? ('style="color: ' ~ col ~ '; fill: ' ~ col ~ '; stroke: ' ~ col ~ ';"')|raw }} class="{{ col == 'icon1' ? 'icon1 ' }}
 					{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
-						switch ui-link
+						switch ui-link absolutepos
 					{%- else -%} /**- display as button -*/
-						ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
+						ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline absolutepos
 						{%- if not pic is empty -%}
 							{{ not txt is empty ? ' ui-btn-icon-top' }} ui-nodisc-icon
 						{%- endif -%}
@@ -302,12 +302,20 @@
 		margin: 0 15px 15px 15px !important;
 	}
 	</style>
-	<a id="{{ uid }}-button" class="{% if type == 'icon' %} icon {% else %} ui-{{ type|default('micro') }} {% endif %} {% if hide == 1 %}hide-mobile{% endif %}" {% if type != 'icon' %}data-role="button" data-inline="true" {% endif %} data-rel="popup"
-		data-iconpos="center" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %}
-		style="position: absolute; top: {{ top }}; left: {{ left }}; ">
+	<a id="{{ uid }}-button" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %} style="position: absolute; top: {{ top }}; left: {{ left }};"
+		{% if hide == 1 %}style="display: none;"{% endif %} data-rel="popup"
+		class=" {%- if type == 'icon' -%} /**- display as icon -*/
+						switch ui-link absolutepos
+					{%- else -%} /**- display as button -*/
+						ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline absolutepos
+						{%- if not pic is empty -%}
+							{{ not txt is empty ? ' ui-btn-icon-top' }} ui-nodisc-icon
+						{%- endif -%}
+					{%- endif -%}"
+		>
 		{{ window.complete(uid~'-icon', gad_pos, gad_window_r, gad_window_l, min, max, color) }}
 	</a>
-	
+		
     <div id="{{ uid }}-popup" data-role="popup" style="min-width:200px;">
 		<div>
 			{{ window.complete(uid~'-icon', gad_pos, gad_window_r, gad_window_l, min, max, color) }}
@@ -361,136 +369,4 @@
 	</script>
 {% endmacro %}	
 
-
-
-/**
- * Displays window status and a simple shutter control assembly
- *
- * @param unique id for this widget
- * @param title of the shutter (optional)
- * @param icon position from left side
- * @param icon position from top side
- * @param a gad/item for the up- and down- movement
- * @param a gad/item for stopping the movement (optional)
- * @param a gad/item for the position of the shutters
- * @param a gad/item to move the shutters to the shade position (optional)
- * @param a gad/item to display the window status (optional) 
- * @param type: 'micro', 'mini', 'midi', 'icon' (optional, default: micro)
- * @param hide on mobile displays (optional value 1)
- */
-{% macro win_shut_old (id, txt, left, top, gad_move, gad_stop, gad_pos, gad_shade, gad_window, gad_window1, type, hide) %}
-	{% import   "basic.html" as basic %}
-	{% import   "icon.html" as icon %}
-	{% import   "widgets/window.html" as window %}
-	{% set uid = uid(page, id) %}
-	{% set min = 0 %}
-	{% set max = 100 %}
-	
-	<style>
-	.pos .ui-slider .ui-input-text {
-		display: none !important;
-	}
-	.pos .ui-slider-track, .pos .ui-slider-switch {
-		margin: 0 15px 15px 15px !important;
-	}
-	</style>
-	<a id="{{ uid }}-overview" class="{% if type == 'icon' %} icon {% else %} ui-{{ type|default('micro') }} {% endif %} {% if hide == 1 %}hide-mobile{% endif %}" {% if type != 'icon' %}data-role="button" data-inline="true" {% endif %} data-rel="popup"
-		data-iconpos="center" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %}
-		style="position: absolute; top: {{ top }}; left: {{ left }}; ">
-		{% if gad_pos %}
-            <svg id="{{ uid }}-svg" data-widget="pic.shutter_window" data-item="{{ gad_pos }}, {{ gad_window }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-                class="icon icon0" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-                <g>
-                    <rect rx="1" x="15" y="25" width="70" height="4" />
-                    <rect x="18" y="28" width="64" height="45" fill="none" />
-                    <rect x="49" y="28" width="2" height="45" />
-                    <rect x="46" y="50" width="8" height="2" />
-                </g>
-                <g id="{{ uid }}-svg-close" display="inline">
-                    <rect x="50" y="50" width="4" height="2" fill="none"/>
-                </g>
-                <g id="{{ uid }}-svg-tilt" display="none">
-                    <path style="fill:none; stroke-width:3; fill-opacity: 0;" d="m 53,72 c -1,0 -2,-1 -2,-2 L 47,54 44,40 c 0,-1 1,-2 1,-2 l 27,0 c 1,0 2,1 2,2 l 6,31 c 0,1 -1,2 -1,2" />
-                    <rect x="48" y="56" width="4" height="2" />
-                </g>
-                <g id="{{ uid }}-svg-open" display="none">
-                    <path style="fill:none; stroke-width:3; fill-opacity: 0;" d="m 82,69 0,1 c 0,1 -1,2 -2,2 l -16,6 c -1,0 -2,0 -2,-1 l 0,-39 c 0,-1 1,-2 2,-2 l 16,-6 c 1,0 2,0 2,1" />
-                    <rect x="62" y="55" width="4" height="2" />
-                </g>
-            </svg>
-			<script type="text/javascript">
-				$(document).delegate('svg[data-widget="pic.shutter_window"]', {
-					'update': function (event, response) {
-						// response is: {{ gad_pos }}, {{ gad_window }}
-						var val = Math.round(response[0] / $(this).attr('data-max') * 38);
-						fx.grid(this, val, [14, 30], [86, 68]);
-						// alert($(this).attr('id') + " - response[0]: " + response[0] + ", response[1]: " + response[1] + ", response[2]: " + response[2]);	
-						switch (response[1]) {
-							case 0:
-								// Window close
-								// change visibility
-								document.getElementById($(this).attr('id')+"-close").setAttributeNS(null, 'display', 'inline');
-								document.getElementById($(this).attr('id')+"-tilt").setAttributeNS(null, 'display', 'none');
-								document.getElementById($(this).attr('id')+"-open").setAttributeNS(null, 'display', 'none');
-								
-								// change class
-								this.setAttributeNS(null, 'class', 'icon icon0');
-								break;
-								
-							 case 1:
-								// window tilt
-								// change visibility
-								document.getElementById($(this).attr('id')+"-close").setAttributeNS(null, 'display', 'none');
-								document.getElementById($(this).attr('id')+"-tilt").setAttributeNS(null, 'display', 'inline');
-								document.getElementById($(this).attr('id')+"-open").setAttributeNS(null, 'display', 'none');
-
-								// change class
-								this.setAttributeNS(null, 'class', 'icon icon1');
-								break;
-
-							case 2:
-								// window open
-								// change visibility
-								document.getElementById($(this).attr('id')+"-close").setAttributeNS(null, 'display', 'none');
-								document.getElementById($(this).attr('id')+"-tilt").setAttributeNS(null, 'display', 'none');
-								document.getElementById($(this).attr('id')+"-open").setAttributeNS(null, 'display', 'inline');
-
-								// change class								
-								this.setAttributeNS(null, 'class', 'icon icon1');
-								break;
-							}					
-					}	
-				});
-
-				$(document).on("pageshow",function() {
-					$("#{{ uid }}-overview").css("margin-top", Math.round($("#{{ uid }}-overview").height() / 2) * -1);
-					$("#{{ uid }}-overview").css("margin-left", Math.round($("#{{ uid }}-overview").width() / 2) * -1);
-				});
-			</script>
-		{% else %} 
-			{% if not gad_window is empty %}
-				{{ window.pic(id~'icon_open', gad_window) }}
-			{% else %}
-				<img class="icon" src="{{ icon0 }}fts_window_1w.svg" />
-			{% endif %}
-		{% endif %}
-	</a>
-	
-    <div id="{{ uid }}-popup" data-role="popup" style="min-width:200px;">
-		<div>
-		{% if not gad_window is empty %}
-			{{ window.pic(id~'popup-icon_open', gad_window) }}
-		{% endif %}
-			{{ txt|e }}
-        </div>
-         <div data-role="controlgroup" data-type="horizontal">
-			{{ basic.stateswitch(id~'up', gad_move, 'mini', 0, 'control_arrow_up.svg') }}
-			{{ basic.stateswitch(id~'down', gad_move, 'mini', 1, 'control_arrow_down.svg') }}
-			{% if gad_stop %}{{ basic.stateswitch(id~'stop', gad_stop, 'mini', 1, 'audio_stop.svg') }}{% endif %}
-			{% if gad_shade %}{{ basic.stateswitch(id~'shade', gad_shade, 'mini', 1, 'fts_shutter_50.svg') }}{% endif %}
-		</div>
-		{% if gad_pos %}<div class="pos">{{ basic.slider(id~'slider', gad_pos, 0 , 100 , 5, 'horizontal', 'handle' ) }}</div>{% endif %}
-        <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
-    </div>
-{% endmacro %}
 

@@ -36,7 +36,13 @@ $.widget("sv.basic_select", $.sv.widget, {
 	initSelector: 'select[data-widget="basic.select"]',
 
 	_update: function(response) {
-		this.element.val(response[0]).selectmenu('refresh');
+    // remove space after , in response (relevant for lists)
+    var respval = response.toString().trim().replace(/, /gi, ",");
+    // is response is an array or a string containing a [] it should be handled as a list
+    var respArray = response[0] instanceof Array;
+    respval = respval.includes("[") || ! respArray ? respval : "[" + respval + "]";
+
+		this.element.val(respval).selectmenu('refresh');
 	},
 
 	_events: {
@@ -762,7 +768,7 @@ $.widget("sv.basic_print", $.sv.widget, {
 		}
 
 		// print the result
-		if (formatLower == 'html')
+		if (formatLower == 'html' || formatLower == 'text2br')
 			this.element.html(calc);
 		else
 			this.element.text(calc);
@@ -1029,6 +1035,39 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 		var shortpressEvent = function(event) {
 			// get the list of values
 			var list_val = String(this.options.vals).explode();
+
+      // this function is used to revive list entries
+      var combined = [];
+      var temp = '';
+      var start_combine = 2;
+      list_val.forEach(arrayConvert);
+      function arrayConvert(part, index) {
+        if(part.startsWith("[") && ! part.endsWith("]") && start_combine == 2)
+          start_combine = 1;
+        else if (start_combine == 2)
+          combined.push(part);
+
+        if(start_combine == 1) {
+            if(part.endsWith("]"))
+            {
+              start_combine = 0;
+              temp += ', ' + part;
+            }
+            else if (part.startsWith("["))
+              temp += part;
+            else
+              temp += ', ' + part;
+        }
+
+        if (start_combine == 0)
+          {
+          combined.push(temp);
+          temp = '';
+          list_val = combined;
+          start_combine = 2;
+        }
+      }
+
 			// get the index of the memorised value
 			var old_idx = list_val.indexOf(this._current_val);
 			// compute the next index
@@ -1111,10 +1150,16 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 	},
 
 	_update: function(response) {
-		// get list of values
-		var list_val = String(this.options.vals).explode();
-		// get received value
-		var val = response.toString().trim();
+		// remove space after , in response (relevant for lists)
+    var val = response.toString().trim().replace(/, /gi, ",");
+    // is response is an array or a string containing a [] it should be handled as a list
+    var respArray = response[0] instanceof Array;
+    val = val.includes("[") || ! respArray ? val : "[" + val + "]";
+
+    // remove space after , in widget data-val entries
+    this.element.children('a[data-widget="basic.stateswitch"]').attr('data-val', function(index, src) {
+        return src.replace(/, /gi, ",")
+    })
 		// hide all states
 		this.element.next('a[data-widget="basic.stateswitch"][data-index]').insertBefore(this.element.children('a:eq(' + this.element.next('a[data-widget="basic.stateswitch"][data-index]').attr('data-index') + ')'));
 		// stop activity indicator

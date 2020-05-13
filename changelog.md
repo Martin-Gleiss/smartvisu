@@ -1,3 +1,32 @@
+## 2.9.2
+
+### New / Changed Widgets
+- basic.stateswitch accepts items of type 'list'
+- default icon can be defined for calendar / waste calendar, improved icon definition.
+
+### Other New Features
+- new weather service openweathermap
+
+### Improvements
+- new versioning (major.minor.revision). Update checker looks for remote version on smartvisu.de AND github master
+- update check is paused for 7 days after every execution (by cookie "updchk")
+- system page for SmartHomeNG has been updated. SmartHomeNG icons added to icons folder
+- added timezone handling for different OS in OpenHAB 2 driver
+- improved docu pages e.g. for dynamic icons and status widget
+- cookie security adapted to recent standards ("samesite" option) for config and update check
+- added custom pages folders to .gitignore
+
+### Updated Libraries
+
+### Fixed Bugs
+- writing config file was not reliable under windows.
+- cache execution failed in quad design if more than one device was used 
+- Twig didn't report lib.updatecheck to the template checker
+- ovdevice.dimmer (example3.graphic): stateswitch fired twice if item_switch was used in dynamic icon
+- text2br option for basic.print didn't display correctly
+- example3.graphic: centering of icons was missing in absolute positioning of visu elements
+- mixed spelling of "adress" / "address" in eibd driver 
+
 ## v 2.9
 
 ### New / Changed Widgets
