@@ -124,8 +124,10 @@ class config {
 				// generate unique cache folder for cookie (combination of remote IP, forwarded IP and time should be unique)
 				if(!isset($config['cachefolder']) || $config['cachefolder'] == 'global')
 					$config['cachefolder'] = md5($_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_CLIENT_IP'] ?: $_SERVER['HTTP_X_FORWARDED_FOR'] ?: $_SERVER['HTTP_X_FORWARDED'] ?: $_SERVER['HTTP_FORWARDED_FOR'] ?: $_SERVER['HTTP_FORWARDED']) . time());
-				if(count($config) > 0) // some options are set
-					$success = setcookie('config', json_encode($config), time()+60*60*24*364*10, $basepath); // store for 10 years
+				if(count($config) > 0){ // some options are set
+					$confexpire = time()+3600*24*364*10;  // expires after 10 years
+					$success = setcookie('config', json_encode($config), ['expires' => $confexpire, 'path' => $basepath, 'samesite' => 'Lax']); 
+				}
 				else
 	      	$success = setcookie('config', '', time() - 3600, $basepath); // delete cookie
 				break;
