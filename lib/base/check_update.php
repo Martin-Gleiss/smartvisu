@@ -67,7 +67,8 @@ if (empty($_COOKIE['updchk']))
 		}
 	}
 	$basepath = substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, -strlen(substr($_SERVER['SCRIPT_FILENAME'], strlen(const_path))));
-	setcookie('updchk', 'version checked', time()+60*60*24*7, $basepath);   //1 week until next version check
+	$exptime = time()+3600*24*7; // 1 week until next version check
+	setcookie('updchk', 'version checked', ['expires' => $exptime, 'path' => $basepath, 'samesite' => 'Lax']);   
 }
 else
 {
