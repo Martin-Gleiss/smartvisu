@@ -58,7 +58,7 @@
 		Dynamic icons are based on svg-images. They are directly rendered in the browser and are the fastest way to show dynamic changes.<br>
 		<div class="twig">
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-				{{ icon.arrow('id', 'item_switch', 'item_value') }}
+				{{ icon.arrow('id', 'item_switch', 'item_value', 'min', 'max', 'color') }}
 			{% endverbatim %}{% endfilter %}</code>
 		</div>
 		Their properties change with two items:<br> 
