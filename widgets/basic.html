@@ -11,7 +11,7 @@
 * Displays a checkbox
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item
+* @param {item(bool)=} an item
 * @param {text=} label of the checkbox (optional)
   checkbox gets shrinked when empty, pass a whitespace to prevent this
 * @param {text=1} value for the checked state (optional, default 1)
@@ -33,10 +33,10 @@
 * Displays a color selector
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item[?]} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
-* @param {item=} an item for the green value in RGB model or saturation in HSL and HSV model
+* @param {item[?](num,list)} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
+* @param {item(num)=} an item for the green value in RGB model or saturation in HSL and HSV model
 (to let blank if first item contains list of all values)
-* @param {item=} an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
+* @param {item(num)} an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
 (to let blank if first item contains list of all values)
 * @param {value[?]=0} minimum value if the light is off; single value or list of values for each component (optional, default 0)
 * @param {value[?]=255} maximum value if the light is full on; single value or list of values for each component (optional, default 255 for rgb, [360,100,100] for hsl & hsv)
@@ -87,7 +87,7 @@
 * Displays a flip-switch
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item
+* @param {item(bool)} an item
 * @param {text=On} text for the 'on' state (optional, default 'On')
 * @param {text=Off} text for the 'off' state (optional, default 'Off')
 * @param {text=1} value for the 'on' state (optional, default 1)
@@ -133,7 +133,7 @@
 * @param {image} icon to show
 * @param {color(icon0,icon1,rgb,hsl,hsv,#f00)=icon0} the color in any CSS form (e.g. '#f00' for red) or 'icon1' (default 'icon0' of the design)
 	To use dynamic coloring by item give one of the following color models: 'rgb', 'hsl' or 'hsv'
-* @param {item[?]=} either one item which sends all three color parts as array or an array of three items each sending one of the color parts.
+* @param {item[?](num,list)=} either one item which sends all three color parts as array or an array of three items each sending one of the color parts.
 *
 * @see design/design_icons#Icons (list of available pictures)
 *
@@ -253,7 +253,7 @@
 * A widget to display a list
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item
+* @param {item(list)} an item
 * @param {value=5} max number of values to show (optional, default 5)
 * @param {text=} title of the collapsible (optional)
 * @param {text=} make the widget collapsible (optional)
@@ -272,7 +272,7 @@
 * Displays a button to shift offset
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item
+* @param {item(num)} an item
 * @param {value=1} step between two values; use positive numbers to increase, negative ones to decrease (optional, default 1)
 * @param {image=} icon to show on the button (optional)
 * @param {text=} text printed on the button (optional)
@@ -301,7 +301,7 @@
 * prints value or text (optionally calculated and/or formatted)
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item[?]} one or more item(s). Multiple items in array-form: [item1, item2]
+* @param {item[?](num,list)} one or more item(s). Multiple items in array-form: [item1, item2]
 * @param {format=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
   Use 'text' to display result as unformatted string, 'html' to render it as unescaped html, 'text2br' to convert line endings like '\r', '\n' or '\r\n' to HTML breaks or 'script' to just execute as JavaScript w/o displaying anything.
 * @ add {format(text,html,script,text2br)=}
@@ -334,7 +334,7 @@
 * Select a specific value (e.g. a scene)
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item
+* @param {item(num,list)} an item
 * @param {type(menu)=menu} type: 'menu', 'micro', 'mini', 'midi', 'icon' (optional, default: menu)
 * @param {text[]=[0,1]} list of values (optional, default [0,1])
 * @param {image[]=} list of icons for every button (optional) - not supported for type 'menu'
@@ -366,8 +366,8 @@
 * A switch, build of a series of icons. The series may be a iconseries (NAME_00.svg, NAME_10.svg, NAME_20.svg...) or may be a dynamic svg-icon (icon.NAME)
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item=} an item for the switch (optional)
-* @param {item} an item for the value
+* @param {item(bool)=} an item for the switch (optional)
+* @param {item}(num,list) an item for the value
 * @param {iconseries=light_light_dim_00.svg} the iconseries or dynamic icon for the 'on' state
 * @param {image=} the icon for the 'off' state (optional)
 * @param {value=0} the value if it is off (optional, default 0)
@@ -398,8 +398,8 @@
 * Displays a shutter control
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item for the position of the blinds
-* @param {item=} an item for the angle of the blinds (optional)
+* @param {item(num)} an item for the position of the blinds
+* @param {item(num)} an item for the angle of the blinds (optional)
 * @param {value=0} the value for opened (optional, default 0)
 * @param {value=255} the value for closed (optional, default 255)
 * @param {value=5} step between two values (optional, default 5)
@@ -435,7 +435,7 @@
 * Displays a slider-control
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item
+* @param {item(num)} an item
 * @param {value=0} the minimum value if the slider is moved to total left (optional, default 0)
 * @param {value=255} the maximum value if the slider is moved to total right (optional, default 255)
 * @param {value=5} step between two values (optional, default 5)
@@ -458,7 +458,7 @@
 * (supercedes basic.button, basic.dual, basic.hiddenswitch, basic.multistate and basic.switch)
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item
+* @param {item(bool)} an item
 * @param {type=mini} valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini)
 * @param {text[?]=[0,1]} array of values (optional, default [0,1])
   If the item has a value that is not part of the list, the state (icon, text, color) of the last value in the list will be shown.
@@ -519,7 +519,7 @@
 * If more than one item is given, they will be combined with formula.
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item[?]=} zero, one or more item(s). More items in array form: [item1, item2] (optional)
+* @param {item[?](num,list)=} zero, one or more item(s). More items in array form: [item1, item2] (optional)
 * @param {text[?]=} the text, printed when item has value val (optional)
 * @param {image[?]=control_on_off} the icon shown when item has value val (optional, default 'control_on_off' if text is empty)
 	dynamic icons can be used, e.g. icon.light('', '', value_item); please note: these must not be wrapped by apostrophs (')
@@ -567,7 +567,7 @@
 * Displays a (partly) filled tank
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item for the actual position of filled tank
+* @param {item(num)} an item for the actual position of filled tank
 * @param {value=0} the value for empty (optional, default 0)
 * @param {value=255} the value for full (optional, default 255)
 * @param {value=5} step between two values (optional, default 5, for future use)

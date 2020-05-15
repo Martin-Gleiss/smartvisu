@@ -8,6 +8,9 @@
  * -----------------------------------------------------------------------------
  */
 
+
+require_once '../../lib/includes.php';
+
 // ************************************************
 // function to get all the icons
 // ************************************************
@@ -40,7 +43,7 @@ function render_inline ($value)
 	$widget = $value["widget"];
 	$myFile = file_get_contents('tmpl_construct_2.html');
 	$myFile = str_replace("%widget%",$widget, $myFile);
-	file_put_contents('../../pages/base/construct.html', $myFile);
+	file_put_contents(const_path.'pages/'.config_pages.'/construct.html', $myFile);
     return 'OK';
 }
 
@@ -53,7 +56,7 @@ function render_outline ($value)
 	$widget = $value["widget"];
 	$myFile = file_get_contents('tmpl_construct_1.html');
 	$myFile = str_replace("%widget%",$widget, $myFile);
-	file_put_contents('../../pages/base/construct.html', $myFile);
+	file_put_contents('../../pages/'.config_pages.'/construct.html', $myFile);
     return 'OK';
 }
 
@@ -62,7 +65,7 @@ function render_outline ($value)
 // ************************************************
 function load_items ($value)
 {
-	$myFile = file_get_contents('masteritem.json');
+	$myFile = file_get_contents(const_path.'pages/'.config_pages.'/masteritem.json');
     return $myFile;
 }
 
@@ -71,7 +74,7 @@ function load_items ($value)
 // ************************************************
 function get_time_stamp ($value)
 {
-    $ret = filemtime('../../pages/base/construct.html');
+    $ret = filemtime(const_path.'pages/'.config_pages.'/construct.html');
     return $ret;
 }
 

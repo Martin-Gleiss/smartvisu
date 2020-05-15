@@ -18,7 +18,23 @@ table,th,td {
 
 * {
     font-family: Dosis, Helvetica, Arial, sans-serif;
+    color:whitesmoke;
   }
+.blinkklasse {
+ 
+  animation: blink 1s linear infinite;
+
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 0;
+  }
+  50.01%, 100% {
+    opacity: 1;
+  }
+}
+
 </style>
 
 <h1 id="smartvisu-widget-constructor">smartvisu - Widget Constructor</h1>
@@ -28,18 +44,28 @@ table,th,td {
 <li><a href="#ChangeLog">ChangeLog</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
 <li><a href="#hotkeys">Hot-Keys</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
 <li><a href="#issues">Known issues</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
+<li><a href="#logic_shng">Logics to create masteritem.json</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
 </ol>
 <p><a name="howitworks"/></a></p>
 <h2 id="how-it-works">How it works</h2>
 <p>This tool should help you to create widgets for your smartvisu-Web-Interface.
 It will assist you with autocompletes for widgets, items, icons, and colors.
-After you have selected a widget (like basic.symbol...) you will get a tooltip for this kind of widget. The acutal parameter is highlighted in red and all the available details will be shown in the tooltip-window.
+After you have selected a widget (like basic.symbol...) you will get a tooltip for this kind of widget. The actual parameter is highlighted in red and all the available details will be shown in the tooltip-window.
 For icons and colors you will see a preview in the tooltip-window.
 After completing the wiget you can render it in a new window. The widget in the rendered window is fully working, except there is an error in the created widget, you will get a TWIG-Error.
 The final widget including the brackets &quot;{{&quot; + &quot;}}&quot; will be stored on rendering to the clipboard.
-You can paste the widget-code directly to you html-file.</p>
+You can paste the widget-code directly to your html-file.</p>
+<p>Please keep in mind you can only render one widget, right now multi widgets are not supported</p>
 <p><a name="ChangeLog"/></a></p>
 <h2 id="change-log">Change-Log</h2>
+<h4 id="2020-05-15-version-1-0-0">2020.05.15 - Version 1.0.0</h4>
+<ul>
+<li>added switching for autoclose quotes</li>
+<li>added filter for item-autocomplete based on item data-type</li>
+<li>added checkbox to open agiain new window for the preview</li>
+<li>added data-types to items in basic-widgets (basic.html)</li>
+<li>added alert when receiving &quot;strange&quot; widget-informations (most based on README.html-Files in /dropins/widgets-folder)</li>
+</ul>
 <h4 id="2020-05-03-version-1-0-0">2020.05.03 - Version 1.0.0</h4>
 <ul>
 <li>added autocomplete dict for parameters with the following names &quot;type&quot;, &quot;mode&quot;,  &quot;style&quot;, &quot;colormodel&quot;, &quot;orientation&quot;, &quot;valueType&quot; </li>
@@ -107,6 +133,10 @@ You can paste the widget-code directly to you html-file.</p>
 <td>autocomplete-Dict is OFF</td>
 </tr>
 <tr>
+<td>STRG+7</td>
+<td>switch ON/OFF autocomplete for Ouotes<sup><span style="color:red"> <strong>(1)</strong></span></sup> - take some time to build the autocomplete</td>
+</tr>
+<tr>
 <td>STRG+9</td>
 <td>switch ON/OFF Wildcard search in autocomplete dict</td>
 </tr>
@@ -116,6 +146,8 @@ You can paste the widget-code directly to you html-file.</p>
 </tr>
 </tbody>
 </table>
+<p>(1) when autocomplete for quotes is on - the autocomplete dict will return all values <strong>without</strong> quotes<br>
+    when autocomplete for quotes is off - the autocomplete dictionary will return all values <strong>with</strong> quotes</p>
 <p><a name="issues"/></a></p>
 <h2 id="known-issues">Known Issues</h2>
 <p>It is possible to render the new widget into the iframe on the actual page.
@@ -123,4 +155,20 @@ But this will destroy the loaded index.php. You will get in trouble when you wan
 to use the navigation of smartvisu again.
 No solution right now.  You can reload the page with bypassing the cache,
 then everthing is working again. (STRG+F5 / CTRL + Shift + R)</p>
+<p><a name="logic_shng"/></a></p>
+<h2 id="logic-to-create-masteritem-json-from-shng">Logic to create masteritem.json from shNG</h2>
+<pre><code>
+#!/usr/bin/env python3
+# create_master_item.py
+import json
+from lib.item import Items
+items = Items.get_instance()
+items_sorted = sorted(items.return_items(), key=lambda k: str.lower(k['_path']), reverse=False)
+item_list = []
+for item in items_sorted:
+    item_list.append(item._path + "|" + item._type )
+f = open("/var/www/html/smartvisu/pages/<YOUR_PAGES>/masteritem.json", "w")
+f.write(json.dumps(item_list))
+f.close()
+</code></pre>
 
