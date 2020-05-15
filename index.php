@@ -40,10 +40,9 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 )
 {
 	// init template engine
-	require_once const_path.'vendor/Twig/Autoloader.php';
-	Twig_Autoloader::register();
-
-	$loader = new Twig_Loader_Filesystem(const_path.'apps');
+	require_once const_path.'vendor/autoload.php';
+	
+	$loader = new \Twig\Loader\FilesystemLoader(const_path.'apps');
 
 	if (is_dir(const_path.'pages/'.$config_pages))
 		$loader->addPath(const_path.'pages/'.$config_pages);
@@ -63,13 +62,14 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$loader->addPath(const_path.'widgets');
 
 	// init environment
-	$twig = new Twig_Environment($loader);
-	$twig->addExtension(new Twig_Extension_StringLoader());
+	$twig = new \Twig\Environment($loader);
+	$twig->addExtension(new \Twig\Extension\StringLoaderExtension());
+	$twig->addExtension(new \Twig\Extension\AssetExistsExtension());
 
 	if (defined('config_debug')) {
 		if (config_debug) {
 			$twig->enableDebug();
-			$twig->addExtension(new Twig_Extension_Debug());
+			$twig->addExtension(new \Twig\Extension\DebugExtension());
 		}
 	}
 
@@ -110,27 +110,27 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$twig->addGlobal('const_path', const_path);
 	$twig->addGlobal('mbstring_available', function_exists('mb_get_info'));
 
-	$twig->addFilter('_', new Twig_Filter_Function('twig_concat'));
-	$twig->addFilter('bit', new Twig_Filter_Function('twig_bit'));
-	$twig->addFilter('substr', new Twig_Filter_Function('twig_substr'));
-	$twig->addFilter('smartdate', new Twig_Filter_Function('twig_smartdate'));
-	$twig->addFilter('deficon', new Twig_Filter_Function('twig_deficon', array('needs_environment' => true)));
-	$twig->addFilter('md5', new Twig_Filter_Function('twig_md5'));
+	$twig->addFilter( new \Twig\TwigFilter('_', 'twig_concat'));
+	$twig->addFilter( new \Twig\TwigFilter('bit', 'twig_bit'));
+	$twig->addFilter( new \Twig\TwigFilter('substr', 'twig_substr'));
+	$twig->addFilter( new \Twig\TwigFilter('smartdate', 'twig_smartdate'));
+	$twig->addFilter( new \Twig\TwigFilter('deficon', 'twig_deficon', array('needs_environment' => true)));
+	$twig->addFilter( new \Twig\TwigFilter('md5', 'twig_md5'));
 
-	$twig->addFunction('uid', new Twig_Function_Function('twig_uid'));
-	$twig->addFunction('once', new Twig_Function_Function('twig_once'));
-	$twig->addFunction('isfile', new Twig_Function_Function('twig_isfile'));
-	$twig->addFunction('isdir', new Twig_Function_Function('twig_isdir'));
-	$twig->addFunction('dir', new Twig_Function_Function('twig_dir'));
-	$twig->addFunction('docu', new Twig_Function_Function('twig_docu'));
-	$twig->addFunction('configmeta', new Twig_Function_Function('twig_configmeta'));
-	$twig->addFunction('lang', new Twig_Function_Function('twig_lang'));
-	$twig->addFunction('read_config', new Twig_Function_Function('twig_read_config'));
-	$twig->addFunction('timezones', new Twig_Function_Function('twig_timezones'));
-	$twig->addFunction('implode', new Twig_Function_Function('twig_implode', array('is_safe' => array('html'))));
+	$twig->addFunction( new \Twig\TwigFunction('uid', 'twig_uid'));
+	$twig->addFunction( new \Twig\TwigFunction('once', 'twig_once'));
+	$twig->addFunction( new \Twig\TwigFunction('isfile', 'twig_isfile'));
+	$twig->addFunction( new \Twig\TwigFunction('isdir', 'twig_isdir'));
+	$twig->addFunction( new \Twig\TwigFunction('dir', 'twig_dir'));
+	$twig->addFunction( new \Twig\TwigFunction('docu', 'twig_docu'));
+	$twig->addFunction( new \Twig\TwigFunction('configmeta', 'twig_configmeta'));
+	$twig->addFunction( new \Twig\TwigFunction('lang', 'twig_lang'));
+	$twig->addFunction( new \Twig\TwigFunction('read_config', 'twig_read_config'));
+	$twig->addFunction( new \Twig\TwigFunction('timezones', 'twig_timezones'));
+	$twig->addFunction( new \Twig\TwigFunction('implode', 'twig_implode', array('is_safe' => array('html'))));
 
 	// init lexer comments
-	$lexer = new Twig_Lexer($twig, array('tag_comment' => array('/**', '*/')));
+	$lexer = new \Twig\Lexer($twig, array('tag_comment' => array('/**', '*/')));
 	$twig->setLexer($lexer);
 
 	// load template

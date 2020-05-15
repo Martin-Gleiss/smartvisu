@@ -1,3 +1,21 @@
+## next version
+
+### New / Changed Widgets
+- new widget constructor as assistant to parametrize widgets
+- darsky weather service shows verbal wind directions instead of angle values
+- deprecated widgets from v2.8 and earlier have been deleted
+
+### Other New Features
+
+### Improvements
+
+### Updated Libraries
+- updated Twig to v1.42.5
+
+### Fixed Bugs
+
+
+
 ## 2.9.2
 
 ### New / Changed Widgets
