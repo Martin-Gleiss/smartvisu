@@ -85,20 +85,17 @@
 
 </style>
     {% set widgetlist = docu() %}
+    {% set actPage = config_pages %}
     <div id="widget_list" data-myWidgetList="{{ widgetlist|json_encode() }}">
         <!-- Here is the place for all the widgets   -->
     </div>
 
-
-
-    <div id="twig_path" data-myWidgetList="{{ app.request.pathInfo }}">
-        <!-- Here is the place for all the widgets   -->
+    <div id="actual_page" data-actPage="{{ actPage }}">
+        <!-- Here is the place for actual_page   -->
     </div>
-
     <div>
         <!-- for tests -->
     </div>
-        <!-- Here is the place for all the widgets   -->
 		<div id="Assistant_div" class="block" style="width:100%; min-height:400px">
 			<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false" id="myCollapse">
@@ -107,11 +104,19 @@
     	                <textarea autocomplete="off" id="txt_widget" name="txt_widget"></textarea>
 
                     <div id="overlay" style="display: none">
-                      <div id="overlaytext" style="text-align: left; font-size: 0.85em">ToolTip-Text</div>
+                      <div id="overlaytext" style="text-align: left; font-size: 0.9em">ToolTip-Text</div>
                       <a onclick="closeTooltip()" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-link ui-btn ui-icon-delete ui-btn-icon-notext ui-shadow ui-corner-all" role="button">Close</a>
                     </div>
-                        <button onclick="getPreview()">Render ME & copy final Widget to Clipboard</button>
-                        <table style="width: 100%;font-size: 0.6em;">
+		   <div>
+		   <table style="width:100%"> 
+		   <tr>
+		   <td style="width:60%">
+                        <button onclick="getPreview()">Preview widget & copy final Widget to Clipboard</button>
+      		   </td>
+		   </tr>
+		   </table> 
+		   </div> 
+                        <table style="width: 100%;font-size: 0.65em;">
                             <tr>
                                 <td style="text-align: left;">
                                     <img id ="items_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Items loaded
@@ -120,17 +125,14 @@
                                     <img id ="widgets_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Widgets loaded
                                 </td>
 
-                                <td rowspan="2">
-                                	<label style="font-size: 1.0em;"><input name="render_2_Window" id="render_2_Window" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbsp render to new Window</label>
+                                <td rowspan="1">
+                                	<label style="font-size: 1.0em;"><input name="render_2_Window" id="render_2_Window" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbsp Preview in new window</label>
                                 </td>
-                                <td rowspan="2">
+                                <td rowspan="1">
                                 	<label id="Wildcard_label" style="font-size: 1.0em;"><input name="Wildcard_search" id="Wildcard_search" type="checkbox">&nbsp&nbsp&nbsp&nbsp Wildcard search</label>
                                 </td>
-                                <td rowspan="2">
-                                    act. Dict : 
-                                </td>
-                                <td style="width: 80px" rowspan="2">
-                                     <div id="selected_dict"> <strong>Widgets</strong> </div>
+                                <td rowspan="1">
+                                    autocomplete : 
                                 </td>
                             </tr>
                             <tr>
@@ -140,7 +142,17 @@
                                 <td style="text-align: left;">
                                     <img id ="colors_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Colors loaded
                                 </td>
+                                <td style="text-align: left;">
+                                	<label id="switch_quotes_label" style="font-size: 1.0em;"><input onclick="changeCloseBrackets()" name="switch_quotes" id="switch_quotes" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbsp auto Close Quotes</label>
+                                </td>
+                                   <td style="text-align: left;">
+	  		<label id="open_new_Window_label" style="font-size: 1.0em;"><input name="open_new_Window" id="open_new_Window" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbspopen new Window</label>
+                                </td>
+                                <td id="td_selected_dict" style="width: 80px;border-radius: 8px;" rowspan="1">
+                                     <div id="selected_dict"> <strong>Widgets</strong> </div>
+                                </td>
                             </tr>
+
                         </table>
 				</div>
 			</div>
@@ -171,26 +183,36 @@ var widgetCodeMirror = CodeMirror.fromTextArea($("#txt_widget")[0], {
 
     extraKeys: {
         "Ctrl-1": function(cm) {
+	    actDictMode = 2
             ChangeDict(1)
         },
         "Ctrl-2": function(cm) {
+       	    actDictMode = 2
             ChangeDict(2)
         },
         "Ctrl-3": function(cm) {
+	    actDictMode = 2        
             ChangeDict(3)
         },
         "Ctrl-4": function(cm) {
+	    actDictMode = 2        
             ChangeDict(4)
         },
         "Ctrl-5": function(cm) {
+	    actDictMode = 2        
             ChangeDict(5)
         },
         "Ctrl-6": function(cm) {
+       	    actDictMode = 2
             ChangeDict(6)
         },        
+        "Ctrl-7": function(cm) {
+	    changeCloseBrackets()
+        },
         "Ctrl-9": function(cm) {
             ChangeSearch()
         },
+
         "Ctrl-Space": function(cm) {
             searchtype = 2;
             CodeMirror.showHint(cm, CodeMirror.hint.autocompleteHint)
