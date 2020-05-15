@@ -1,3 +1,7 @@
+# Warning ! The current version in this develop branch is experimental and should not be used in productive environment!
+Use the version v2.9.2 from master branch instead.
+
+
 # smartVISU  
 
 [![Join the chat at https://gitter.im/sVISU/Lobby](https://badges.gitter.im/sVISU/Lobby.svg)](https://gitter.im/sVISU/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
