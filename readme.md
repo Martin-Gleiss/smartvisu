@@ -1,5 +1,5 @@
-# Warning ! The current version in this develop branch is experimental and should not be used in productive environment!
-Use the version v2.9.2 from master branch instead.
+# Warning ! The current version in this develop branch is experimental and should not be used in productive environments!
+Use version v2.9.2 from the master branch instead.
 
 
 # smartVISU  
