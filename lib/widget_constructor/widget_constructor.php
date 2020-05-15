@@ -8,6 +8,7 @@
  * -----------------------------------------------------------------------------
  */
 
+
 require_once '../../lib/includes.php';
 
 // ************************************************
@@ -17,7 +18,7 @@ require_once '../../lib/includes.php';
 function get_icons ($value)
 {
 
-$dirlist = dir(const_path.'icons/ws/');
+$dirlist = dir('../../icons/ws/');
 $myArray = [];
 while (($item = $dirlist->read()) !== false)
 {
@@ -55,7 +56,7 @@ function render_outline ($value)
 	$widget = $value["widget"];
 	$myFile = file_get_contents('tmpl_construct_1.html');
 	$myFile = str_replace("%widget%",$widget, $myFile);
-	file_put_contents(const_path.'pages/'.config_pages.'/construct.html', $myFile);
+	file_put_contents('../../pages/'.config_pages.'/construct.html', $myFile);
     return 'OK';
 }
 
@@ -73,7 +74,7 @@ function load_items ($value)
 // ************************************************
 function get_time_stamp ($value)
 {
-    $ret = filemtime(const_path.'pages/'.config_pages.'construct.html');
+    $ret = filemtime(const_path.'pages/'.config_pages.'/construct.html');
     return $ret;
 }
 
