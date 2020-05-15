@@ -1,0 +1,260 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Andre Kohler
+* @copyright   2020
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+
+    {% extends "system.html" %}
+
+
+{% block content %}
+
+
+<link rel="stylesheet" href="vendor/codemirror/lib/codemirror.css">
+<link rel="stylesheet" href="vendor/codemirror/addon/display/fullscreen.css">
+<link rel="stylesheet" href="vendor/codemirror/addon/hint/show-hint.css">
+<link rel="stylesheet" href="vendor/codemirror/addon/dialog/dialog.css">
+<link rel="stylesheet" href="vendor/codemirror/addon/search/matchesonscrollbar.css">
+<link rel="stylesheet" href="vendor/codemirror/addon/fold/foldgutter.css" />
+
+
+<style>
+.CodeMirror-gutters	{
+        background-color: #f2f2f2;
+}
+.CodeMirror {
+	background-color: #f2f2f2;
+	font-family: Monospace;
+	font-size: 12px;
+	text-shadow: none;
+	}
+.CodeMirror-line{
+	text-align: left;
+	padding-left: 20px;!important
+	}
+.CodeMirror pre {
+	padding-left: 30px; !important
+	}
+.CodeMirror-wrap pre {
+
+}
+.CodeMirror-gutter-elt
+{
+
+}
+.CodeMirror-linenumber{
+	left: -12px !important
+	}
+	
+.CodeMirror-gutter-wrapper{
+	}
+.CodeMirror-foldgutter{
+	width: 1.0em
+	}
+
+#overlay {
+	position: fixed;
+	display: none;
+	width: 50%;
+	height: 40%;
+	top: 480px;
+	left: 520px;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0,0,0,0.9);
+	z-index: 2;
+	border-radius: 6px;
+	cursor: pointer;
+	padding: 10px; 
+}
+
+#text{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	font-size: 50px;
+	color: white;
+	transform: translate(-50%,-50%);
+	-ms-transform: translate(-50%,-50%);
+}
+
+</style>
+    {% set widgetlist = docu() %}
+    <div id="widget_list" data-myWidgetList="{{ widgetlist|json_encode() }}">
+        <!-- Here is the place for all the widgets   -->
+    </div>
+
+
+
+    <div id="twig_path" data-myWidgetList="{{ app.request.pathInfo }}">
+        <!-- Here is the place for all the widgets   -->
+    </div>
+
+    <div>
+        <!-- for tests -->
+    </div>
+        <!-- Here is the place for all the widgets   -->
+		<div id="Assistant_div" class="block" style="width:100%; min-height:400px">
+			<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false" id="myCollapse">
+					<h3>Widget - Constructor</h3>
+
+    	                <textarea autocomplete="off" id="txt_widget" name="txt_widget"></textarea>
+
+                    <div id="overlay" style="display: none">
+                      <div id="overlaytext" style="text-align: left; font-size: 0.85em">ToolTip-Text</div>
+                      <a onclick="closeTooltip()" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-link ui-btn ui-icon-delete ui-btn-icon-notext ui-shadow ui-corner-all" role="button">Close</a>
+                    </div>
+                        <button onclick="getPreview()">Render ME & copy final Widget to Clipboard</button>
+                        <table style="width: 100%;font-size: 0.6em;">
+                            <tr>
+                                <td style="text-align: left;">
+                                    <img id ="items_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Items loaded
+                                </td>
+                                <td style="text-align: left;">
+                                    <img id ="widgets_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Widgets loaded
+                                </td>
+
+                                <td rowspan="2">
+                                	<label style="font-size: 1.0em;"><input name="render_2_Window" id="render_2_Window" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbsp render to new Window</label>
+                                </td>
+                                <td rowspan="2">
+                                	<label id="Wildcard_label" style="font-size: 1.0em;"><input name="Wildcard_search" id="Wildcard_search" type="checkbox">&nbsp&nbsp&nbsp&nbsp Wildcard search</label>
+                                </td>
+                                <td rowspan="2">
+                                    act. Dict : 
+                                </td>
+                                <td style="width: 80px" rowspan="2">
+                                     <div id="selected_dict"> <strong>Widgets</strong> </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">
+                                    <img id ="icons_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Icons loaded
+                                </td>
+                                <td style="text-align: left;">
+                                    <img id ="colors_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Colors loaded
+                                </td>
+                            </tr>
+                        </table>
+				</div>
+			</div>
+		</div>
+
+		<div id="Assistant_div" class="block" style="width:100%; min-height:600px">
+			<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false" id="myCollapse">
+					<h3>Widget-Preview</h3>
+                        <div id="Ausgabe" style="min-height: 250px;">
+                            <iframe id="render_frame" src="lib/widget_constructor/README.html" style="min-height: inherit;width: 100%; ">
+                            </iframe>
+                        </div>
+				</div>
+			</div>
+		</div>
+
+
+<script>
+var rulers = [];
+for (var i = 1; i <= 20; i++) {
+	rulers.push({color: '#eee', column: i * 4, lineStyle: "dashed"});
+}
+
+
+var widgetCodeMirror = CodeMirror.fromTextArea($("#txt_widget")[0], {
+    lineNumbers: true,
+
+    extraKeys: {
+        "Ctrl-1": function(cm) {
+            ChangeDict(1)
+        },
+        "Ctrl-2": function(cm) {
+            ChangeDict(2)
+        },
+        "Ctrl-3": function(cm) {
+            ChangeDict(3)
+        },
+        "Ctrl-4": function(cm) {
+            ChangeDict(4)
+        },
+        "Ctrl-5": function(cm) {
+            ChangeDict(5)
+        },
+        "Ctrl-6": function(cm) {
+            ChangeDict(6)
+        },        
+        "Ctrl-9": function(cm) {
+            ChangeSearch()
+        },
+        "Ctrl-Space": function(cm) {
+            searchtype = 2;
+            CodeMirror.showHint(cm, CodeMirror.hint.autocompleteHint)
+        },
+        "Alt-F": "findPersistent",
+        "Tab": function(cm) {
+			var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+			cm.replaceSelection(spaces, "end", "+input");
+		}
+
+    },
+    mode: "python",
+    readOnly: false,
+    lineSeparator: '\n',
+    indentUnit: 4,
+    rulers: rulers,
+    lineWrapping: true,
+    indentWithTabs: false,
+    foldGutter: true,
+    matchBrackets: true,
+    autoCloseBrackets: {
+	pairs: "\"\"**<>//__()[]{}''``",
+	triples: "",
+	explode: "[]{}",
+	override: true
+	},
+    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+});
+
+
+
+widgetCodeMirror.on('cursorActivity', function (cm, event)
+ {
+    TooltipChecker(cm);
+    });
+
+
+
+
+widgetCodeMirror.on("keyup", function (cm, event)
+ {
+    
+    TooltipChecker(cm);
+ 	if (!cm.state.completionActive && /*Enables keyboard navigation in autocomplete list*/
+		(event.keyCode != 8 &&
+		event.keyCode != 9 &&
+		event.keyCode != 13 &&
+		event.keyCode != 27 &&
+		event.keyCode != 37 &&
+		event.keyCode != 38 &&
+		event.keyCode != 39 &&
+		event.keyCode != 40 &&
+		event.keyCode != 46))
+     {
+		CodeMirror.commands.autocomplete_items(cm, null, {completeSingle: false});
+	 };
+
+    });
+
+
+</script>
+
+
+<script src="lib/widget_constructor/widget_constructor.js" type="text/javascript"></script>
+
+
+{% endblock %}
