@@ -143,7 +143,7 @@
                                     <img id ="colors_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Colors loaded
                                 </td>
                                 <td style="text-align: left;">
-                                	<label id="switch_quotes_label" style="font-size: 1.0em;"><input onclick="changeCloseBrackets()" name="switch_quotes" id="switch_quotes" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbsp auto Close Quotes</label>
+                                	<label id="switch_quotes_label" style="font-size: 1.0em;"><input onclick="changeCloseBrackets()" name="switch_quotes" id="switch_quotes" type="checkbox" >&nbsp&nbsp&nbsp&nbsp auto Close Quotes</label>
                                 </td>
                                    <td style="text-align: left;">
 	  		<label id="open_new_Window_label" style="font-size: 1.0em;"><input name="open_new_Window" id="open_new_Window" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbspopen new Window</label>
@@ -207,7 +207,7 @@ var widgetCodeMirror = CodeMirror.fromTextArea($("#txt_widget")[0], {
             ChangeDict(6)
         },        
         "Ctrl-7": function(cm) {
-	    changeCloseBrackets()
+	    changeCloseBrackets(true)
         },
         "Ctrl-9": function(cm) {
             ChangeSearch()
@@ -234,7 +234,7 @@ var widgetCodeMirror = CodeMirror.fromTextArea($("#txt_widget")[0], {
     foldGutter: true,
     matchBrackets: true,
     autoCloseBrackets: {
-	pairs: "\"\"**<>//__()[]{}''``",
+	pairs: "\"\"**<>//__()[]{}``",
 	triples: "",
 	explode: "[]{}",
 	override: true
