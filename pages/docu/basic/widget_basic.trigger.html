@@ -12,6 +12,9 @@
 
 {% block example %}
 
+	This widget triggers a logic on the backend given by the parameter 'name'. The default function will show a button for manual triggering. <br />
+	NEW: with the parameter 'event' set to 'page', the logic is being triggered automatically during page create (button is hidden) while 'both' enables both triggenring methods. 
+	
 	<h5>Examples</h5>
 	<div class="twig">
 		<code class="prettyprint">&#123;&#123; basic.trigger('trigger1', 'Dev', '', 'check') &#125;&#125;</code>
