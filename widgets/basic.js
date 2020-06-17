@@ -1308,14 +1308,24 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 
 	options: {
 		name: null,
-		val: ''
+		val: '',
+		triggerevent: 'button'
 	},
+	
+	_create: function () {
+		this._super ();
+		alert (this.options.triggerevent);
+		if (this.options.triggerevent == 'page' || this.options.triggerevent == 'both') {
+			io.trigger(this.options.name, this.options.val != null ? String(this.options.val) : null);
+		}
+	},	
 
 	_events: {
 		'click': function (event) {
 			io.trigger(this.options.name, this.options.val != null ? String(this.options.val) : null);
+			
 		}
-	}
+	},
 
 });
 
