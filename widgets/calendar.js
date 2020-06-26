@@ -77,7 +77,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				//fals kein icon angegeben
 				if(!entry.icon){
 					//falls kein default angegeben
-					if (typeof(sv_lang.calendar_event_format.default_img_list) === undefined){
+					if (typeof(sv_lang.calendar_event_format.default_img_list) === undefined || sv_lang.calendar_event_format.default_img_list.icon == "" ){
 						entry.icon = "pages/base/pics/trans.png";
 						entry.color = 'transparent';
 					}else{
@@ -185,7 +185,7 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 				if (entry.icon === "message_garbage"){
 					entry.icon = "message_garbage_2";
 				}else if(!entry.icon){
-					if (typeof(sv_lang.calendar_event_format.default_img_waste) !== undefined){
+					if (typeof(sv_lang.calendar_event_format.default_img_waste) !== undefined || sv_lang.calendar_event_format.default_img_waste.icon ==""){
 						entry.icon = "pages/base/pics/trans.png";
 						entry.color = 'transparent';
 					}else{
