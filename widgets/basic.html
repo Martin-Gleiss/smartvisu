@@ -604,11 +604,14 @@
 * @param {image=} icon to show on the button (optional)
 * @param {text=1} value to send if the button is pressed (optional, default 1)
 * @param {type=mini} type: 'micro', 'mini', 'midi' (optional, default: mini)
+* @param {text=button} trigger event: 'button', 'page', 'both' (optional, default: button)
 */
-{% macro trigger(id, name, txt, icon, val, type) %}
+{% macro trigger(id, name, txt, icon, val, type, event) %}
 	{% import _self as basic %}
 
 	<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.trigger" data-name="{{ name }}" data-val="{{ val }}"
+		data-triggerevent="{{ event }}"
+		{% if event == 'page' %} style="display: none;" {% endif %}
 		class="ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline ui-shadow
 		{%- if icon is empty -%}
 			">
