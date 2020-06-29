@@ -8,6 +8,7 @@
  * -----------------------------------------------------------------------------
  * @label       knxd / eibd
  * @hide        driver_autoreconnect
+ * @hide		reverseproxy
  */
 
 

@@ -4,17 +4,21 @@
 - new widget constructor as assistant to parametrize widgets
 - darsky weather service shows verbal wind directions instead of angle values
 - deprecated widgets from v2.8 and earlier have been deleted
+- basic.trigger can trigger logics on page create (new) and / or by button
 
 ### Other New Features
+- bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'
+- new option "Reverse Proxy" in backend driver section on config page clears IP address and port (yet activated for shNG only)
 
 ### Improvements
+- function Date().duration changed to accept negative values (for plots reaching into the future)
 
 ### Updated Libraries
 - updated Twig to v1.42.5
 
 ### Fixed Bugs
-
-
+- error thrown if default icons in language files were missing
+- language files distinguish between temperature and angular degrees (°C/°F vs. °)
 
 ## 2.9.2
 
