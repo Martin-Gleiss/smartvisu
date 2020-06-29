@@ -211,3 +211,22 @@
 {% macro config_hidden(source, values, id) %}
 			<input type="hidden" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
 {% endmacro %}
+
+
+{% macro config_reverseproxy(source, values, id) %}
+	<script type="text/javascript">
+		$('#{{ source }}_{{ id }}').on('change init', function(event) {
+			var element = $(this);
+			if({{ source }}_{{ id }}.value == "true") {
+				setMobileWidgetValue(element.closest("fieldset").find('[name="driver_address"]'), "");
+				setMobileWidgetValue(element.closest("fieldset").find('[name="driver_port"]'), "");
+				element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_address"])').hide());
+				element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_port"])').hide());
+			}
+			else {
+			    element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_address"])').show());
+				element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_port"])').show());
+			};
+		})
+	</script>
+{% endmacro %}

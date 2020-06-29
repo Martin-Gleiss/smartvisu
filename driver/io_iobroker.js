@@ -10,6 +10,7 @@
  * @default     driver_autoreconnect   true
  * @default     driver_port            8084
  * @hide        driver_realtime
+ * @hide		reverseproxy
  */
 
 /**

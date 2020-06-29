@@ -9,6 +9,7 @@
  *
  * @default     driver_autoreconnect   true
  * @default     driver_port            2424
+ * @default     reverseproxy           false
  * @hide        driver_realtime
  */
 
