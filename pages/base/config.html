@@ -53,6 +53,7 @@
 								{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
 								{{ forms.config_select(source, values, 'design', dir('designs', '(.+?).css')) }}
 								{{ forms.config_flip(source, values, 'cache', '<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache' ~ id ~ '" class="ui-micro"' ~ (not values['cache'] is defined ? ' disabled="disabled"'|raw) ~ '>' ~ lang('configuration_page', 'cache', 'clearbutton') ~'</button>') }}
+								{{ forms.check_cache ( source, values, 'cache') }}
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
 								<h3>{{ lang('configuration_page', 'content', 'label') }}</h3>
