@@ -253,16 +253,17 @@
 	<script type="text/javascript">
 		var writeable = false;
 		$.getJSON('lib/base/check_temp.php', function(data) {
-			writeable = (data.icon == 'message_ok.svg' ? true : false);
-			$('#{{ source }}_{{ id }}').each(function(idx) {
-				var element = $(this);
-				if(!writeable) {
+			console.log('{{ source }}_{{ id }}'+': Cache directory is writeable');
+			})
+			.error(function (jqXHR) {
+				var data = jQuery.parseJSON(jqXHR.responseText)
+				$('#{{ source }}_{{ id }}').each(function(idx) {
+					var element = $(this);
 					console.log('{{ source }}_{{ id }}'+': Cache directory is not writeable');
 					setMobileWidgetValue(element.closest("fieldset").find('[name="cache"]'), 0);
 					element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="cache"])').hide());
-					$('.check').find('span').html('Cache disabled: '+data.text);
-				};
-			});	
-		})
+					$('.check').find('span').html('Cache disabled: '+data.text);				
+				});	
+			})
 	</script>
 {% endmacro %}
