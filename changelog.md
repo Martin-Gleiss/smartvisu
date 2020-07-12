@@ -9,6 +9,8 @@
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'
 - new option "Reverse Proxy" in backend driver section on config page clears IP address and port (yet activated for shNG only)
+- config page disables cache activation in case cache directory is not writeable
+- support for smarthomeNG feature "series_cancel" to stop subscription of series data
 
 ### Improvements
 - function Date().duration changed to accept negative values (for plots reaching into the future)
@@ -17,7 +19,7 @@
 - updated Twig to v1.42.5
 
 ### Fixed Bugs
-- error thrown if default icons in language files were missing
+- error thrown if default calender icons in language files were missing
 - language files distinguish between temperature and angular degrees (°C/°F vs. °)
 
 ## 2.9.2

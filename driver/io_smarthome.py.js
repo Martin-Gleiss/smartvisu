@@ -9,7 +9,7 @@
  *
  * @default     driver_autoreconnect   true
  * @default     driver_port            2424
- * @default     reverseproxy           false
+ * @default	    reverseproxy           false
  * @hide        driver_realtime
  */
 
@@ -238,11 +238,36 @@ var io = {
 	 */
 	monitor: function () {
 		if (widget.listeners().length) {
-			// items
+			// subscribe all items used on the page
 			io.send({'cmd': 'monitor', 'items': widget.listeners()});
 		}
 
-		// plot (avg, min, max, on)
+		// subscribe all plots defined for the page 
+		// types: avg, min, max, on
+		io.startseries ();
+		
+		// log
+		widget.log().each(function (idx) {
+			io.send({'cmd': 'log', 'name': $(this).attr('data-item'), 'max': $(this).attr('data-count')});
+		});
+	},
+	
+	/**
+	 * (re-)start all subscribed series
+	 */
+	startseries: function () {
+		io.plotcontrol('series');
+	},
+	
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		io.plotcontrol('series_cancel');
+	},
+	
+	// identify all subscribed series and execute given command
+	plotcontrol: function(seriescmd) {
 		var unique = Array();
 		widget.plot().each(function (idx) {
 			var items = widget.explode($(this).attr('data-item'));
@@ -254,21 +279,17 @@ var io = {
 					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 
 					if (io.version <= 3)
-						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2]});
+						io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2]});
 					else
-						io.send({'cmd': 'series', 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': pt[pt.length - 1]});
+						io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': pt[pt.length - 1]});
 					
 					unique[items[i]] = 1;
 				}
 			}
 		});
-
-		// log
-		widget.log().each(function (idx) {
-			io.send({'cmd': 'log', 'name': $(this).attr('data-item'), 'max': $(this).attr('data-count')});
-		});
 	},
 
+		
 	/**
 	 * Closes the connection
 	 */
