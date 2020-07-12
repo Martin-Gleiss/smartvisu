@@ -1,0 +1,64 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Andre Kohler
+* @copyright   2020
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+{% extends "device/widget_device.html" %}
+
+
+{% block example %}
+<script>
+var kurve1 = {"sunset":"21:30","active":true,"interpolation":{"interval":"","initage":"","itemtype":"bool","initialized":false,"type":"none"},"sunrise":"04:52","list":[{"rrule":"FREQ=WEEKLY;BYDAY=SA","value":"1","active":true,"time":"19:30"},{"active":true,"rrule":"FREQ=WEEKLY;BYDAY=FR,SA","value":"0","time":"22:30"},{"active":false,"rrule":"FREQ=WEEKLY;BYDAY=MO,TU","value":"1","time":"10:00"},{"active":false,"rrule":"FREQ=WEEKLY;BYDAY=MO,TU","value":"0","time":"13:00"},{"active":true,"rrule":"FREQ=WEEKLY;BYDAY=WE","value":"1","time":"22:00"},{"active":true,"rrule":"FREQ=WEEKLY;BYDAY=MO,TH","value":"0","time":"08:03"},{"active":true,"rrule":"FREQ=WEEKLY;BYDAY=FR","value":"1","calculated":"04:07","time":"sunrise-6"},{"active":false,"rrule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU","value":"1","time":"00:00"}],"lastvalue":null}
+var kurve2 = {"sunset":"21:30","active":true,"interpolation":{"interval":"","initage":"","itemtype":"bool","initialized":false,"type":"none"},"sunrise":"04:52","list":[{"rrule":"FREQ=WEEKLY;BYDAY=SA","value":"1","active":true,"time":"19:30"},{"active":true,"rrule":"FREQ=WEEKLY;BYDAY=FR,SA","value":"0","time":"22:30"},{"active":false,"rrule":"FREQ=WEEKLY;BYDAY=MO,TU","value":"1","time":"10:00"},{"active":false,"rrule":"FREQ=WEEKLY;BYDAY=MO,TU","value":"0","time":"13:00"},{"active":true,"rrule":"FREQ=WEEKLY;BYDAY=WE","value":"1","time":"22:00"},{"active":true,"rrule":"FREQ=WEEKLY;BYDAY=MO,TH","value":"0","time":"08:03"},{"active":true,"rrule":"FREQ=WEEKLY;BYDAY=FR","value":"1","calculated":"04:07","time":"sunrise-6"},{"active":false,"rrule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU","value":"1","time":"00:00"}],"lastvalue":null}
+var kurve3 = {"sunset":"21:30","active":false,"interpolation":{"interval":"","initage":"","itemtype":"bool","initialized":false,"type":"none"},"sunrise":"04:52","list":[{"rrule":"FREQ=WEEKLY;BYDAY=SA","value":"1","active":true,"time":"19:30"},{"active":true,"rrule":"FREQ=WEEKLY;BYDAY=FR,SA","value":"0","time":"22:30"},{"active":false,"rrule":"FREQ=WEEKLY;BYDAY=MO,TU","value":"1","time":"10:00"},{"active":false,"rrule":"FREQ=WEEKLY;BYDAY=MO,TU","value":"0","time":"13:00"},{"active":true,"rrule":"FREQ=WEEKLY;BYDAY=WE","value":"1","time":"22:00"},{"active":true,"rrule":"FREQ=WEEKLY;BYDAY=MO,TH","value":"0","time":"08:03"},{"active":true,"rrule":"FREQ=WEEKLY;BYDAY=FR","value":"1","calculated":"04:07","time":"sunrise-6"},{"active":false,"rrule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU","value":"1","time":"00:00"}],"lastvalue":null}
+  io.write('uzsuitem1', kurve1);
+  io.write('uzsuitem2', kurve2);
+  io.write('uzsuitem3', kurve3);
+</script>
+  <p>You can change the state of the UZSU from active to inactive by tapping the hook / cross on the left top position</p>
+
+  <p>
+  By tapping any other area on the widget the popup for editing the times will be opened
+  </p>
+
+
+
+  <p>Example with border solid:</p>
+  <div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+      {{ device.uzsutable('','uzsuitem1','Schaltuhr Flur EG','1','0','limegreen','red','','',true,'10m','solid',true,true,true,true,2,'','','') }}
+		{% endverbatim %}{% endfilter %}</code>
+ </div>
+ <div>
+   <div class="html">
+	{{ device.uzsutable('','uzsuitem1','Schaltuhr Spots Flur','1','0','limegreen','red','','',true,'10m','solid',true,true,true,true,2,'','','') }}
+   </div>
+   
+   <p>Example with border horzintal:</p>
+   <div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+      {{ device.uzsutable('','uzsuitem2','Switchting Time Heating','1','0','limegreen','red','','','true','1h','horizontal',false,true,false,true,1,'','','') }}
+		{% endverbatim %}{% endfilter %}</code>
+   </div>
+
+   <div class="html">
+	{{ device.uzsutable('','uzsuitem2','Switchting Time Heating','1','0','red','blue','','','true','1h','horizontal','false','true','false','true',1,'','','') }}
+   </div>
+
+    <p>Example with border none and FHEM-style:<p>
+    <div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+      {{ device.uzsutable('','uzsuitem3','Switchting Time Heating','1','0','limegreen','red','','','false','30m','horizontal',false,true,false,true,1,'','','2') }}
+		{% endverbatim %}{% endfilter %}</code>
+    </div>
+
+   <div class="html">
+	{{ device.uzsutable('','uzsuitem3','Solar Pump','1','0','yellow','blue','','','false','30m','none','false','true','false','true',3,'','','2') }}
+   </div>
+</div>
+
+{% endblock %}
+
