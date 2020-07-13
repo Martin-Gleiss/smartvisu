@@ -32,11 +32,10 @@ class AssetExistsExtension extends AbstractExtension
 
     public function asset_exists($path)
     {
-        $webRoot = realpath(dirname(dirname(dirname(__DIR__))));
         $widgetpath = explode('widgets/', $path);
         $path = end($widgetpath);
-        $toCheck1 = $webRoot . '/widgets/' . $path;
-        $toCheck2 = $webRoot . '/dropins/widgets/' . $path;
+        $toCheck1 = const_path . 'widgets/' . $path;
+        $toCheck2 = const_path . 'dropins/widgets/' . $path;
         set_error_handler(function($errno, $errstr, $errfile, $errline, $errcontext) {
             // error was suppressed with the @-operator
             if (0 === error_reporting()) {
@@ -50,7 +49,7 @@ class AssetExistsExtension extends AbstractExtension
         $lastcheck = is_null($toCheck4) ? "." : ", " . $toCheck4 . ".";
         try {
           if (is_null($toCheck4))
-            $toCheck3 = $webRoot . '/pages/' . parse_ini_file($webRoot . '/config.ini')['pages'] . '/widgets/' . $path;
+            $toCheck3 = const_path . 'pages/' . config_pages . '/widgets/' . $path;
           else
             $toCheck3 = NULL;
         }
@@ -68,7 +67,7 @@ class AssetExistsExtension extends AbstractExtension
         }
 
         // check if file is well contained in web/ directory (prevents ../ in paths)
-        if (strncmp($webRoot, $toCheck1, strlen($webRoot)) !== 0 && strncmp($webRoot, $toCheck2, strlen($webRoot)) !== 0 && strncmp($webRoot, $toCheck3, strlen($webRoot)) !== 0 && strncmp($webRoot, $toCheck4, strlen($webRoot)) !== 0)
+        if (strncmp(const_path, $toCheck1, strlen(const_path)) !== 0 && strncmp(const_path, $toCheck2, strlen(const_path)) !== 0 && strncmp(const_path, $toCheck3, strlen(const_path)) !== 0 && strncmp(const_path, $toCheck4, strlen(const_path)) !== 0)
         {
             $this->debug_to_console($path . " does not exist. Looked for: " . $toCheck1 . ", " . $toCheck2 . ", " . $toCheck3 . $lastcheck);
             return false;
