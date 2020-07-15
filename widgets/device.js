@@ -1,5 +1,4 @@
 // ----- device.codepad -------------------------------------------------------
-
 $.widget("sv.device_codepad", $.sv.widget, {
 
   initSelector: 'div[data-widget="device.codepad"]',
@@ -306,6 +305,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
           "<div class='uzsuCellText'></div>" +
           "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
             "<label><input type='checkbox' class='uzsuActive'>" + sv_lang.uzsu.act + "</label>" +
+          "</fieldset>" +
         "</div>" +
         "<div class='uzsuCellExpert'>" +
           "<div class='uzsuCellText'>" + sv_lang.uzsu.expert + "</div>" +
