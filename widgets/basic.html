@@ -341,15 +341,19 @@
 * @param {text[]=} list of texts for every menu entry or button (optional)
 * @param {color=icon1} the color for the on state of the buttons (optional, default: icon1) - not supported for type 'menu'
 * @param {text(horizontal,vertical,none)=horizontal} orientation of the controlgroup: 'horizontal', 'vertical' or 'none' for seperate buttons (optional, default: 'horizontal') - not supported for type 'menu'
+* @param {item(list)=} an item containing all selectable values (optional) - overrides existing value definitions
+* @param {item(list)=} an item containing the texts corresponding to the selectable values (optional even if itemvals is specified)
 */
-{% macro select(id, item, type, value, icon, text, color_on, group) %}
+{% macro select(id, item, type, value, icon, text, color_on, group, itemvals, itemtxts) %}
 	{% import _self as basic %}
 	{% if type == 'menu' or type is empty %}
-		<select{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select" data-native-menu="false" data-item="{{ item }}">
+		<select{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select" data-native-menu="false" data-item="{{ item }}, {{ itemvals }}, {{ itemtxts }}">
 		<option></option>
-		{% for val in value|default([0,1]) %}
-			<option value="{{ val|replace({', ': ','}) }}">{{ text[loop.index0]|default(val) }}</option>
-		{% endfor %}
+		{% if itemvals == '' or itemvals is empty %}
+			{% for val in value|default([0,1]) %}
+				<option value="{{ val|replace({', ': ','}) }}">{{ text[loop.index0]|default(val) }}</option>
+			{% endfor %}
+		{% endif %}	
 		</select>
 	{% else %}
 		<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select"{% if group != 'none' %} data-role="controlgroup" data-type="{{ group|default('horizontal') }}{% endif %}">

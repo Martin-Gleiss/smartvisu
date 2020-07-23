@@ -36,12 +36,28 @@ $.widget("sv.basic_select", $.sv.widget, {
 	initSelector: 'select[data-widget="basic.select"]',
 
 	_update: function(response) {
-    // remove space after , in response (relevant for lists)
-    var respval = response.toString().trim().replace(/, /gi, ",");
-    // is response is an array or a string containing a [] it should be handled as a list
-    var respArray = response[0] instanceof Array;
-    respval = respval.includes("[") || ! respArray ? respval : "[" + respval + "]";
-
+		// remove space after kommas in response[0] (relevant for lists)
+		var respval = response[0].toString().trim().replace(/, /gi, ",");
+		// if response is an array or a string containing a [] it should be handled as a list
+		var respArray = response[0] instanceof Array;
+		respval = respval.includes("[") || ! respArray ? respval : "[" + respval + "]";
+		
+		if (response [1] == undefined)
+			this.element.val(respval).selectmenu('refresh');
+		else {
+			// response [1] is item to set and listitem (array) with available values
+			var optionlist = "";
+			this.element.find('option[value]').remove();
+			var respopts = response[1].toString();
+			var resptxts = [];
+			if (response[2] != undefined)
+				resptxts = response[2].toString().split(",");
+	  	  
+			$.each(respopts.split(","), function(index, value) {
+				optionlist += "<option value=\"" + value + "\">" + (resptxts[index] != undefined ? resptxts[index] : value) + "</option>";
+			});
+			this.element.append(optionlist);
+		};
 		this.element.val(respval).selectmenu('refresh');
 	},
 
@@ -1314,10 +1330,8 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 	
 	_create: function () {
 		this._super ();
-		alert (this.options.triggerevent);
-		if (this.options.triggerevent == 'page' || this.options.triggerevent == 'both') {
+		if (this.options.triggerevent == 'page' || this.options.triggerevent == 'both') 
 			io.trigger(this.options.name, this.options.val != null ? String(this.options.val) : null);
-		}
 	},	
 
 	_events: {

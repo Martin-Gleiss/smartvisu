@@ -5,6 +5,7 @@
 - darsky weather service shows verbal wind directions instead of angle values
 - deprecated widgets from v2.8 and earlier have been deleted
 - basic.trigger can trigger logics on page create (new) and / or by button
+- basic.select "menu"-type accepts dynamic option lists and texts via items (list type)
 
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'
