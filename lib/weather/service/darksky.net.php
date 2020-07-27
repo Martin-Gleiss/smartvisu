@@ -138,6 +138,7 @@ class weather_darksky extends weather
 		} elseif ($degree > 304 and $degree <= 326) {
 			$direction = translate('dir_nw', 'darksky');
 		} elseif ($degree > 326 and $degree <= 348) {
+
 			$direction = translate('dir_nnw', 'darksky');
 		}
 
