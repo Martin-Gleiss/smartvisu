@@ -109,35 +109,36 @@ class weather_darksky extends weather
 
 		if ($degree > 348 or $degree <= 11) {
 			$direction = translate('dir_n', 'darksky');
-		} elseif ($degree > 11 or $degree <= 34) {
+		} elseif ($degree > 11 and $degree <= 34) {
 			$direction = translate('dir_nne', 'darksky');
-		} elseif ($degree > 34 or $degree <= 56) {
+		} elseif ($degree > 34 and $degree <= 56) {
 			$direction = translate('dir_ne', 'darksky');
-		} elseif ($degree > 56 or $degree <= 79) {
+		} elseif ($degree > 56 and $degree <= 79) {
 			$direction = translate('dir_ene', 'darksky');
-		} elseif ($degree > 79 or $degree <= 101) {
+		} elseif ($degree > 79 and $degree <= 101) {
 			$direction = translate('dir_e', 'darksky');
-		} elseif ($degree > 101 or $degree <= 123) {
+		} elseif ($degree > 101 and $degree <= 123) {
 			$direction = translate('dir_ese', 'darksky');
-		} elseif ($degree > 123 or $degree <= 146) {
+		} elseif ($degree > 123 and $degree <= 146) {
 			$direction = translate('dir_se', 'darksky');
-		} elseif ($degree > 146 or $degree <= 169) {
+		} elseif ($degree > 146 and $degree <= 169) {
 			$direction = translate('dir_sse', 'darksky');
-		} elseif ($degree > 169 or $degree <= 191) {
+		} elseif ($degree > 169 and $degree <= 191) {
 			$direction = translate('dir_s', 'darksky');
-		} elseif ($degree > 191 or $degree <= 214) {
+		} elseif ($degree > 191 and $degree <= 214) {
 			$direction = translate('dir_ssw', 'darksky');
-		} elseif ($degree > 214 or $degree <= 236) {
+		} elseif ($degree > 214 and $degree <= 236) {
 			$direction = translate('dir_sw', 'darksky');
-		} elseif ($degree > 236 or $degree <= 259) {
+		} elseif ($degree > 236 and $degree <= 259) {
 			$direction = translate('dir_wsw', 'darksky');
-		} elseif ($degree > 259 or $degree <= 281) {
+		} elseif ($degree > 259 and $degree <= 281) {
 			$direction = translate('dir_w', 'darksky');
-		} elseif ($degree > 281 or $degree <= 304) {
+		} elseif ($degree > 281 and $degree <= 304) {
 			$direction = translate('dir_wnw', 'darksky');
-		} elseif ($degree > 304 or $degree <= 326) {
+		} elseif ($degree > 304 and $degree <= 326) {
 			$direction = translate('dir_nw', 'darksky');
-		} elseif ($degree > 326 or $degree <= 348) {
+		} elseif ($degree > 326 and $degree <= 348) {
+
 			$direction = translate('dir_nnw', 'darksky');
 		}
 

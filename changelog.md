@@ -22,6 +22,8 @@
 ### Fixed Bugs
 - error thrown if default calender icons in language files were missing
 - language files distinguish between temperature and angular degrees (°C/°F vs. °)
+- obsolete parameters in service.php caused faulty error messages init function
+
 
 ## 2.9.2
 
