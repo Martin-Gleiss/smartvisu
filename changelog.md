@@ -12,6 +12,7 @@
 - new option "Reverse Proxy" in backend driver section on config page clears IP address and port (yet activated for shNG only)
 - config page disables cache activation in case cache directory is not writeable
 - support for smarthomeNG feature "series_cancel" to stop subscription of series data
+- widget constructor can be deactivated in config page in order to save ressources
 
 ### Improvements
 - function Date().duration changed to accept negative values (for plots reaching into the future)
@@ -22,7 +23,7 @@
 ### Fixed Bugs
 - error thrown if default calender icons in language files were missing
 - language files distinguish between temperature and angular degrees (°C/°F vs. °)
-- obsolete parameters in service.php caused faulty error messages init function
+- obsolete parameters in init functions of service.php and calendar.php caused faulty error messages 
 
 
 ## 2.9.2
