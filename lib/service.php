@@ -39,12 +39,16 @@ class service
 	{
 		$this->debug = ($request['debug'] == 1);
 		error_reporting($this->debug ? E_ALL : 0);
+		
+		// the following section has been deactivated by wvhn 
+		// all services bring their own init functions which define the needed communication parameters
+		// (most services threw misleading errors here, because $request was empty)
 
-		$this->server = $request['server'];
-		$this->port = (int)$request['port'];
-		$this->url = $request['url'];
-		$this->user = $request['user'];
-		$this->pass = $request['pass'];
+		//$this->server = $request['server'];
+		//$this->port = (int)$request['port'];
+		//$this->url = $request['url'];
+		//$this->user = $request['user'];
+		//$this->pass = $request['pass'];
 	}
 
 	/**
@@ -83,7 +87,7 @@ class service
 		$ret = "";
 
 		if (count($this->error) == 0)
-			$this->run();
+			$this->run(); 
 
 		if (count($this->error) == 0)
 		{
