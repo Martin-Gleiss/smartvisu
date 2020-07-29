@@ -6,6 +6,7 @@
 - deprecated widgets from v2.8 and earlier have been deleted
 - basic.trigger can trigger logics on page create (new) and / or by button
 - basic.select "menu"-type accepts dynamic option lists and texts via items (list type)
+- new dynamic icon.battery2 
 
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'
@@ -23,7 +24,8 @@
 ### Fixed Bugs
 - error thrown if default calender icons in language files were missing
 - language files distinguish between temperature and angular degrees (°C/°F vs. °)
-- obsolete parameters in init functions of service.php and calendar.php caused faulty error messages 
+- obsolete parameters in init functions of service.php and calendar.php caused faulty error messages
+- fixed debug feature in php services 
 
 
 ## 2.9.2

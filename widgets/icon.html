@@ -81,6 +81,38 @@
 </svg>
 {% endmacro %}
 
+/**
+* another battery
+*
+* @param {id=} unique id for this widget
+* @param {item=} an item for switching
+* @param {item} an item for the charge level
+* @param {value=0} the minimum value for 0 (optional, default 0, for future use)
+* @param {value=255} the maximum value for 255 (optional, default 255)
+* @param {color=} color e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
+*/
+{% macro battery2(id, item_switch, item_value, min, max, color) %}
+<svg role="img" id="{{ uid(page, id) }}" data-widget="icon.battery2" data-item="{{ item_value }}, {{ item_switch }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+	{% if color is empty  %}
+		class="icon icon0" 
+	{% else %}
+		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
+	{% endif %}
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 321 321">
+	<g>
+		<g fill="none" stroke-width="10">
+			<path d="m236.141,280.167c0,3.313-2.688,6-6,6h-95.5c-3.313,0-6-2.687-6-6v-180c0-3.313 2.687-6 6-6h95.5c3.313,0 6,2.687 6,6v180z"/>
+			<path d="m163.64,94.667v-14c0-3.313 2.687-6 6-6h25.5c3.313,0 6,2.687 6,6v14"/>
+		</g>
+		<g stroke-width="3">
+			<path data-val="25"  style="display: none" d="m221.141,266.334c0,3.313-2.688,6-6,6h-65.5c-3.313,0-6-2.688-6-6v-6c0-3.314 2.687-6 6-6l65.5-20c3.313,0 6,2.686 6,6v26z"/>
+			<path data-val="50"  style="display: none" d="m221.141,213.667c0,3.313-2.688,6-6,6l-65.5,20c-3.313,0-6-2.687-6-6v-20c0-3.313 2.687-6 6-6l65.5-20c3.313,0 6,2.687 6,6v20z"/>
+			<path data-val="75"  style="display: none" d="m221.141,166.667c0,3.313-2.688,6-6,6l-65.5,20c-3.313,0-6-2.687-6-6v-20c0-3.313 2.687-6 6-6l65.5-20c3.313,0 6,2.687 6,6v20z"/>
+			<path data-val="100"  style="display: none" d="m221.141,120c0,3.313-2.688,6-6,6l-65.5,20c-3.313,0-6-2.687-6-6v-26c0-3.313 2.687-6 6-6h65.5c3.313,0 6,2.687 6,6v6z"/>
+		</g>
+	</g>
+</svg>
+{% endmacro %}
 
 /**
 * a blade (90°)
