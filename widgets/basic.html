@@ -367,38 +367,6 @@
 
 
 /**
-* A switch, build of a series of icons. The series may be a iconseries (NAME_00.svg, NAME_10.svg, NAME_20.svg...) or may be a dynamic svg-icon (icon.NAME)
-*
-* @param {id=} unique id for this widget (optional)
-* @param {item(bool)=} an item for the switch (optional)
-* @param {item}(num,list) an item for the value
-* @param {iconseries=light_light_dim_00.svg} the iconseries or dynamic icon for the 'on' state
-* @param {image=} the icon for the 'off' state (optional)
-* @param {value=0} the value if it is off (optional, default 0)
-* @param {value=255} the value if it is on (optional, default 255)
-*
-* @see design/design_icons#Dynamic Icons and Static Icons
-*/
-{% macro shifter(id, item_switch, item_value, pic_on, pic_off, min, max) %}
-
-	{% import "icon.html" as icon %}
-
-	{% if pic_on|slice(0, 5) == 'icon.' %}
-		{{ attribute(icon, pic_on|slice(5), [id, item_switch, item_value, min, max]) }}
-	{% else %}
-		<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.shifter" data-item="{{ item_value }}, {{ item_switch }}"
-			{% set pic_on = pic_on|deficon('light_light_dim_00.svg') %}
-			{% set pic_off = pic_off|deficon(pic_on) %}
-			data-pic-on="{{ icon0 ~ pic_on }}" data-pic-off="{{ icon0 ~ pic_off|default(pic_on) }}"
-			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-			class="switch"><a><img class="icon" src="{{ icon0 ~ pic_off|default(pic_on) }}" alt="{{ min|default('0') }}" /></a>
-    	</span>
-	{% endif %}
-
-{% endmacro %}
-
-
-/**
 * Displays a shutter control
 *
 * @param {id=} unique id for this widget (optional)
@@ -531,7 +499,8 @@
 * @param {text[?]=1} comparative value(s) (default 1)
 * @param {formula=or} 'or', 'and' or any JavaScript expression with following variables, result will be compared to comparative value above. Additionally you can use 'min' and 'max' to test if any of the defined items has a value >= or <= comparative value (default 'or')
 	VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
-	If the formula starts with a greater than symbol '>' the value will be treat as threshold. The symbol (text, icon and color) according to greatest reached threshold will be shown. The first symbol is the base for values below first threshold, so pass one symbol more than values.
+	If the formula starts with a greater than symbol '>' the value will be treated as threshold. The symbol (text, icon and color) according to greatest reached threshold will be shown. The first symbol is the base for values below first threshold, so pass one symbol more than values.
+	If '>' is not used, symbols will only be shown if the item value matches exactly one of the given value parameters
 * @param {color[?]=icon0} the color 'icon1' or e. g. '#f00' for red (default 'icon0' of the design)
 	this only applies to text, if no icon is set (for backward compatibility)
 * @param {text=} URL to use as link (optional)
@@ -626,3 +595,38 @@
 	</a>
 {% endmacro %}
 
+
+
+/******************************************************************************
+ * D E P R E C A T E D  W I D G E T S
+ ******************************************************************************/
+
+/**
+* Has been a switch, build of a series of icons. The series may now be a dynamic svg-icon (icon.NAME), only.
+*
+* @deprecated as of version 2.9.b, use the icon widget or basic.symbol instead.
+* @replacement {{ icon.%4$s(%1$s, %2$s, %3$s, %6$s, %7$s) }}
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item(bool)=} an item for the switch (optional)
+* @param {item}(num,list) an item for the value
+* @param {image} dynamic icon from ./widget/icon.html
+* @param {dummy=} not used any more
+* @param {value=0} the minimum value for the item (optional, default 0)
+* @param {value=255} the minimum value for the item (optional, default 255)
+*
+* @see design/design_icons#Dynamic Icons and Static Icons
+*/
+{% macro shifter(id, item_switch, item_value, pic_on, dummy, min, max) %}
+
+	{% import "icon.html" as icon %}
+
+	{% if pic_on|slice(0, 5) == 'icon.' %}
+		{{ attribute(icon, pic_on|slice(5), [id, item_switch, item_value, min, max]) }}
+	{% else %}
+		<span> 
+			You can still use basic.shifter but please pass the dynamic icons in ./widget/icon.html as a parameter
+    	</span>
+	{% endif %}
+
+{% endmacro %}
