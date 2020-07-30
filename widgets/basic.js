@@ -809,55 +809,6 @@ $.widget("sv.basic_print", $.sv.widget, {
 	}
 });
 
-// ----- basic.shifter ---------------------------------------------------------
-$.widget("sv.basic_shifter", $.sv.widget, {
-
-	initSelector: 'span[data-widget="basic.shifter"]',
-
-	options: {
-		min: 0,
-    max: 255,
-    'pic-on': '',
-    'pic-off': ''
-	},
-
-	_update: function(response) {
-		var max = this.options.max;
-		var min = this.options.min;
-
-		var step = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 10 + 0.49) * 10;
-
-		if (response[1] != 0 && step > min) {
-			var percent = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 100);
-			this.element.find('img').attr('src', this.options['pic-on'].replace('00', step)).attr('alt', percent + '%').attr('title', percent + '%');
-		}
-		else {
-			this.element.find('img').attr('src', this.options['pic-off']).attr('alt', '0%').attr('title', '0%');
-		}
-	},
-
-	_events: {
-		'click': function (event) {
-			var items = this.options.item.explode();
-
-			if (this.element.find('img').attr('src') == this.options['pic-off']) {
-				io.write(items[1], 1);
-			}
-			else {
-				io.write(items[1], 0);
-			}
-		},
-
-		'hover > a > img': function (event) {
-			if (event.type === 'mouseenter') {
-				$(this).addClass("ui-focus");
-			}
-			else {
-				$(this).removeClass("ui-focus");
-			}
-		}
-	}
-});
 
 // ----- basic.shutter --------------------------------------------------------
 $.widget("sv.basic_shutter", $.sv.widget, {
