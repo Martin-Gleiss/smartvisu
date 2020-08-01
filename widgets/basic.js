@@ -809,7 +809,6 @@ $.widget("sv.basic_print", $.sv.widget, {
 	}
 });
 
-
 // ----- basic.shutter --------------------------------------------------------
 $.widget("sv.basic_shutter", $.sv.widget, {
 
@@ -1281,17 +1280,23 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 	
 	_create: function () {
 		this._super ();
-		if (this.options.triggerevent == 'page' || this.options.triggerevent == 'both') 
-			io.trigger(this.options.name, this.options.val != null ? String(this.options.val) : null);
+		var identifyer = this.element.attr('id');
+		
+		$(document).on('pagebeforeshow', function(event) {
+			$(":mobile-pagecontainer").pagecontainer( "getActivePage" ).find('[data-triggerevent]').each(function(){ 
+			if ($(this).attr('id') == identifyer && ($(this).attr('data-triggerevent') == 'page' || $(this).attr('data-triggerevent') == 'both'))
+				io.trigger($(this).attr('data-name'), $(this).attr('data-val') != null ? String($(this).attr('data-val')) : null);
+			})
+		});
 	},	
 
 	_events: {
 		'click': function (event) {
 			io.trigger(this.options.name, this.options.val != null ? String(this.options.val) : null);
 			
-		}
+		},
 	},
-
+	
 });
 
 // ----- basic.listview ----------------------------------------------------------
