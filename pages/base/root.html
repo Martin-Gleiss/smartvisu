@@ -190,6 +190,7 @@
 {% endif %}
 
 	// Do some actions before page is shown
+	// and run the io  with all widgets
 	$(document).on('pagecontainerbeforeshow', function () {
 		fx.init();
 		repeater.init();
@@ -197,12 +198,17 @@
 		io.run({{ config_driver_realtime }});
 	});
 
-	// Run the io and all widgets
+	// Activate the info field in top right corner
 	$(document).on('pagecontainershow', function () {
 		notify.display();
 	});
 
 	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};
+	
+	// stop series subscription before new page is being loaded 
+	$(document).on('pagebeforeload', function() {
+		io.stopseries ();
+	});
 	
 </script>
 /** activate codemirror only if widget constructor is activated */
