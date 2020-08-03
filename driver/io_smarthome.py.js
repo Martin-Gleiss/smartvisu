@@ -82,6 +82,7 @@ var io = {
 
 		// new items
 		io.monitor();
+		
 	},
 
 
@@ -104,7 +105,9 @@ var io = {
 	 * This driver uses a websocket
 	 */
 	socket: false,
-
+	
+	triggerqueue: [],
+	
 	/**
 	 * Opens the connection and add some handlers
 	 */
@@ -138,6 +141,9 @@ var io = {
 			io.send({'cmd': 'proto', 'ver': io.version});
 			var browser = io.getBrowser();
 			io.send({'cmd': 'identity', 'sw': 'smartVISU', 'ver': 'v'+sv.config.version, 'browser': browser.name, 'bver': browser.version});
+			// send commands queued when socket was not ready
+			io.sendqueue();
+			// start monitoring the items pepared for the current page
 			io.monitor();
 		};
 
@@ -231,6 +237,11 @@ var io = {
 			// DEBUG: 
 			console.log('[io.smarthome.py] sending data: ', JSON.stringify(data));
 		}
+		else {
+			// DEBUG:
+			console.log('[io.smarthome.py] web socket not ready: ', JSON.stringify(data));
+			if (data.cmd == 'logic') io.triggerqueue.push(JSON.stringify(data));
+		};
 	},
 
 	/**
@@ -249,7 +260,19 @@ var io = {
 		// log
 		widget.log().each(function (idx) {
 			io.send({'cmd': 'log', 'name': $(this).attr('data-item'), 'max': $(this).attr('data-count')});
+		
 		});
+	},
+
+	/**
+	 * Sends trigger commands buffered when websocket was not ready
+	 */	
+	sendqueue: function () {
+		while (io.triggerqueue.length > 0) {
+			// DEBUG:
+			console.log('[io.smarthome.py] send from queue: ', io.triggerqueue[0]);
+			io.socket.send(io.triggerqueue.shift());
+		}
 	},
 	
 	/**
