@@ -203,13 +203,7 @@
 		notify.display();
 	});
 
-	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};
-	
-	// stop series subscription before new page is being loaded 
-	$(document).on('pagebeforeload', function() {
-		io.stopseries ();
-	});
-	
+	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};	
 </script>
 /** activate codemirror only if widget constructor is activated */
 {% if config_widgetconst %}  
