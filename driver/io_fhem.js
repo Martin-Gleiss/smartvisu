@@ -531,7 +531,14 @@ var io = {
       io.log(1, "socket closed");
     }
     
-  }
+  },
+  
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		// TODO
+	},
   
   
 };

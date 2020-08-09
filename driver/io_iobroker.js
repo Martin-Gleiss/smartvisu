@@ -272,6 +272,14 @@ var io = {
 		var val = state.val;
 		widget.update(item, val);
 	},
+	
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		// TODO
+	}
+	
 /*
 	logout: function() {
 		if (!io.isConnected) {
