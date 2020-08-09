@@ -192,6 +192,13 @@ var io = {
 				})
 				.error(notify.json);
 		}
+	},
+	
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		// TODO
 	}
 
 };

@@ -301,5 +301,12 @@ var io = {
 				widget.update(plotItem, plotData);
 			}).error(notify.json);
 		}
+	},
+	
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		// TODO
 	}
 }

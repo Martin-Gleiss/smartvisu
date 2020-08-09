@@ -312,6 +312,13 @@ var io = {
 		}
 
 		return ret;
+	},
+	
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		
 	}
 
 };

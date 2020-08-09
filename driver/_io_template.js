@@ -72,7 +72,7 @@ var io = {
 	 */
 	run: function (realtime) {
 		// TODO   
-	}
+	},
 
 
 	// -----------------------------------------------------------------------------
@@ -84,4 +84,10 @@ var io = {
 
 	// TODO
 
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		// TODO
+	}
 }

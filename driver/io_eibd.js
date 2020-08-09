@@ -355,6 +355,13 @@ var io = {
 		requestItem = itemArray[0] + '/' + itemArray[1] + '/' + itemArray[2];
 
 		return requestItem;
+	},
+	
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		// TODO
 	}
 
 };
