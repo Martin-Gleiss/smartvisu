@@ -15,13 +15,17 @@
 * @param {text=} location for weather data (optional, no weather shown if omitted)
 * @param {duration=15i} the refresh interval for weather data (using relative time format), default 15i (15 minutes)
 *
+* stopitem will be set to "true" when new page is loaded in order to stop the clock from loading digits till eternity ;)
+* data-item="" is needed to trigger the update method on page refresh
+*
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
 */
 {% macro digiclock(id, location, repeat) %}
 	{% set uid = uid(page, id) %}
-
-	<div id="{{ uid }}-digiclock" data-widget="clock.digiclock" class="digiclock"
+	
+	/** use data-item="" in order to trigger update when page is loaded from cache */
+	<div id="{{ uid }}-digiclock" data-widget="clock.digiclock" class="digiclock" stoptimer="false" data-item=""
 	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
 	 ></div>
 

@@ -20,6 +20,7 @@
 ### Improvements
 - function Date().duration changed to accept negative values (for plots reaching into the future)
 - new function 'sendqueue' in io.smarthome.py.js sends 'logic'-commands queued as long as websocket is not ready
+- endless timer for digiclock is stopped during page change. This avoids useless loading of multiple pics every minute
 
 ### Updated Libraries
 - updated Twig to v1.42.5
