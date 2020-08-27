@@ -70,4 +70,12 @@
 	</div>
 {% endmacro %}
 
-
+/**
+* Widget to show websocket connection
+*/
+{% macro connection() %}
+	io connection:&nbsp;&nbsp;<span id="connection"></span>
+	<script type="text/javascript">
+		$('#connection').html(io.socket.url);
+	</script>
+{% endmacro %}
