@@ -7,6 +7,7 @@
 - basic.trigger can trigger logics on page create (new) and / or by button
 - basic.select "menu"-type accepts dynamic option lists and texts via items (list type)
 - new dynamic icon.battery2 
+- new widget lib.connection to display the URL of the shNG websocket 
 
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'
@@ -15,15 +16,17 @@
 - support for smarthomeNG feature "series_cancel" to stop subscription of series data
 - series subscriptions will be cancelled on 'pagebeforeload' when next page is about to load
 - widget constructor can be deactivated in config page in order to save ressources
+- new version number format (e.g. v2.9.2) is standard in communication w/ io-drivers, old format is deprecated 
 
 
 ### Improvements
 - function Date().duration changed to accept negative values (for plots reaching into the future)
-- new function 'sendqueue' in io.smarthome.py.js sends 'logic'-commands queued as long as websocket is not ready
+- new function 'sendqueue' in io.smarthome.py.js sends 'logic'-commands queued while websocket is not ready
 - endless timer for digiclock is stopped during page change. This avoids useless loading of multiple pics every minute
 
 ### Updated Libraries
 - updated Twig to v1.42.5
+- a few additional icons
 
 ### Fixed Bugs
 - error thrown if default calender icons in language files were missing
