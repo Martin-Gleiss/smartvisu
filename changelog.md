@@ -24,7 +24,7 @@
 - new function 'sendqueue' in io.smarthome.py.js sends 'logic'-commands queued while websocket is not ready
 - endless timer for digiclock is stopped during page change. This avoids useless loading of multiple pics every minute
 - index.html shows phone list and calendar by default, unless "service_disabled" is selected in config page
-
+- html escaping function for status.log
 
 ### Updated Libraries
 - updated Twig to v1.42.5
