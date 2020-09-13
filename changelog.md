@@ -14,7 +14,7 @@
 - new option "Reverse Proxy" in backend driver section on config page clears IP address and port (yet activated for shNG only)
 - config page disables cache activation in case cache directory is not writeable
 - support for smarthomeNG feature "series_cancel" to stop subscription of series data
-- series subscriptions will be cancelled on 'pagebeforeload' when next page is about to load
+- series subscriptions will be cancelled when next page is about to load
 - widget constructor can be deactivated in config page in order to save ressources
 - new version number format (e.g. v2.9.2) is standard in communication w/ io-drivers, old format is deprecated 
 
@@ -23,6 +23,8 @@
 - function Date().duration changed to accept negative values (for plots reaching into the future)
 - new function 'sendqueue' in io.smarthome.py.js sends 'logic'-commands queued while websocket is not ready
 - endless timer for digiclock is stopped during page change. This avoids useless loading of multiple pics every minute
+- index.html shows phone list and calendar by default, unless "service_disabled" is selected in config page
+- html escaping function for status.log
 
 ### Updated Libraries
 - updated Twig to v1.42.5

@@ -77,7 +77,7 @@ $.widget("sv.status_log", $.sv.widget, {
 			for (var i = 0; i < list.length; i++) {
 				ret = '<div class="color ' + list[i].level.toLowerCase() + '"></div>';
 				ret += '<h3>' + new Date(list[i].time).transLong() + '</h3>';
-				ret += '<p>' + list[i].message + '</p>';
+				ret += '<p>' + list[i].message.htmlescape() + '</p>';
 				line += '<li data-icon="false">' + ret + '</li>';
 			}
 			this.element.find('ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
