@@ -1,7 +1,7 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Onkel Andy
+* @author      Onkel Andy, Wolfram v. Hülsen
 * @copyright   2020
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
@@ -14,9 +14,13 @@
 {% endblock %}
 
 {% block intro %}
-	Some widgets that are not included in the standard smartvisu release. <br />
-	Files in dropins/widgets are listed here. <br />
-	Please add this to the top of your widget and example HTML file:
+	Here we display docu pages for custom widgets that are either written by the user or provided with a backend plugin. <br />
+	The widget files are stored in ./dropins (user written) and ./dropins/widgets (plugins). <br />
+	In order to show a docu page for a custom widget, the docu page needs to be created according to the following rules:
+	<ul>
+		<li> Name the docu file "widget_&lt;widgetgroup&gt;.&lt;widget&gt;.html", e.g. widget_mywidgets.myfunction.html</li>
+		<li> Place the docu file in the same directory where the widget files are located </li>
+		<li> Add the following head to the top of your widget file and also your docu file:
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 	/**
@@ -29,14 +33,20 @@
 	*/
 	{% endverbatim %}{% endfilter %}</code>
 	</div><br />
-	Put this part into your example file that should be called widget_&lt;widgetgroup&gt;.&lt;widget&gt;.html
+	</li>
+	<li> Put the following code into your docu file right after the head area: 
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 		{% extends "custom/widget_custom.html" %}
 		{% block example %}
-				your example content
+
+		Here comes your docu or example content
+
 		{% endblock %}
 		{% endverbatim %}{% endfilter %}</code>
-	</div>
+	</div></li>
+	</ul> <br /> 
+	
+	<h2>Important: The links in the top section of this page have been created out of the available custom widget files. For widgets listed with no active link, the corresponding docu pages have not been found. 
 
 {% endblock %}
