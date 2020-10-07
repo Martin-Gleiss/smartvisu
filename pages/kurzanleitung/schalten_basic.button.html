@@ -1,0 +1,93 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "schalten.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}light_light.svg' />Schalten & Status - basic.button
+{% endblock %}
+
+{% block docu %}
+	<div class="preblock">
+		<span data-role="controlgroup" data-type="horizontal"> 
+			Szenen<br />
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 0, 'scene_party.svg') }}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 1, 'scene_dinner.svg') }}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 2, 'scene_livingroom.svg') }}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 3, 'scene_cubby.svg') }}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 4, 'status_away_1.svg') }}
+		</span>
+	</div>
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3">
+Wohnzimmer:
+    Szenen:
+        type: num
+        visu_acl: rw
+        enforce_updates: yes
+        knx_dpt: 5
+        knx_listen: 7/2/0
+        knx_send: 7/2/0
+</textarea>
+<br><br>
+Das Widget für z.B. eine hinterlegte Szene "Party" sieht wie folgt aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 0, 'scene_party.svg') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+Das Widget für z.B. eine hinterlegte Szene "Essen" sieht wie folgt aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 1, 'scene_dinner.svg') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+Das Widget für z.B. eine hinterlegte Szene "Wohnen" sieht wie folgt aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 2, 'scene_livingroom.svg') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+Das Widget für z.B. eine hinterlegte Szene "Reinigen" sieht wie folgt aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 3, 'scene_cubby.svg') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+Das Widget für z.B. eine hinterlegte Szene "außer Haus" sieht wie folgt aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 4, 'status_away_1.svg') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br><br>
+Der dazugehörige html-Code in Block-Typ 2 sieht so aus:<br>
+<textarea cols="50" rows="3">{% raw %}
+	<div class="preblock">
+		<span data-role="controlgroup" data-type="horizontal"> 
+			Szenen<br />
+			{{ basic.button('szene1', 'Wohnzimmer.Szenen', '', icon0~'scene_party.svg', 0, 'midi') }}
+			{{ basic.button('szene2', 'Wohnzimmer.Szenen', '', icon0~'scene_dinner.svg', 1, 'midi') }}
+			{{ basic.button('szene3', 'Wohnzimmer.Szenen', '', icon0~'scene_livingroom.svg', 2, 'midi') }}
+			{{ basic.button('szene4', 'Wohnzimmer.Szenen', '', icon0~'scene_cubby.svg', 3, 'midi') }}
+			{{ basic.button('szene5', 'Wohnzimmer.Szenen', '', icon0~'status_away_1.svg', 4, 'midi') }}
+		</span>
+	</div>
+{% endraw %}
+</textarea>
+<br><br>
+Weiterführende Infos zu dem Widget gibt es in der Inline Dokumentation.
+
+{% endblock %}
+

@@ -1,0 +1,79 @@
+
+
+{% extends "plot_1.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}measure_power.svg' />Plots / Graphen - plot.period
+{% endblock %}
+
+{% block docu %}
+
+Das Widget plot.period bietet zusätzlich zum "normalen Anzeigen" von Daten oder Werten noch die Möglichkeit diese Daten oder Werte für einen frei wählbaren Zeitraum genauer anzuzeigen (zoomable).<br>
+Hier wird zuerst gezeigt, wie man den Plot ohne die Zusatzfunktion "zoomable" verwendet.<br><br>
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Leistung L1 - L3</h3>             
+            {{ plot.period('', ['Verbrauchsdaten.Elt_Leistung.PL1', 'Verbrauchsdaten.Elt_Leistung.PL2', 'Verbrauchsdaten.Elt_Leistung.PL3'], 'avg', '12h', 0, 0, '', '', ['Phase L1', 'Phase L2', 'Phase L3']) }}
+        </div>
+    </div>
+    </div>
+<br clear="all">
+
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3">
+Verbrauchsdaten:
+    Elt_Leistung:
+        PL1:
+            type: num
+            visu_acl: rw
+            database: yes
+            knx_dpt: 14
+            knx_listen: 5/2/2
+
+        PL2:
+            type: num
+            visu_acl: rw
+            database: yes
+            knx_dpt: 14
+            knx_listen: 5/2/3
+
+        PL3:
+            type: num
+            visu_acl: rw
+            database: yes
+            knx_dpt: 14
+            knx_listen: 5/2/4
+</textarea>
+<br><br>
+Das Widget für den Plot, welchen wir verwenden, sieht so aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ plot.period('', ['Verbrauchsdaten.Elt_Leistung.PL1', 'Verbrauchsdaten.Elt_Leistung.PL2', 'Verbrauchsdaten.Elt_Leistung.PL3'], 'avg', '12h', 0, 0, '', '', ['Phase L1', 'Phase L2', 'Phase L3']) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br><br>
+Der dazugehörige html-Code in Block-Typ 2 sieht so aus:<br>
+<textarea cols="50" rows="3">{% raw %}
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>ELT-Lesitung</h3>
+                {{ plot.period('', ['Verbrauchsdaten.Elt_Leistung.PL1', 'Verbrauchsdaten.Elt_Leistung.PL2', 'Verbrauchsdaten.Elt_Leistung.PL3'], 'avg', '12h', 0, 0, '', '', ['Phase L1', 'Phase L2', 'Phase L3']) }}
+            </div>
+        </div>
+    </div>
+{% endraw %}
+</textarea>
+<br>
+Die Farbvorgaben der Verläufe sind Standart-html (z.B. <a href="http://html-color-codes.info/webfarben_hexcodes/)" target="_blank">Info</a>. Man kann z. b. statt: #e0e0e0 nur #eee schreiben.<br>
+<br><br>
+<font color="#FF0000">WICHTIG:</font><br>
+Es ist zu beachten, dass die Daten erst angezeigt werden, sobald alle 3 Daten einmal gesendet wurden. Also erst, wenn alle 3 GAs einmal einen Wert gesendet haben, ist etwas zu sehen.<br>
+
+<br><br>
+Weiterführende Infos zu dem Widget gibt es in der Inline Dokumentation.
+
+{% endblock %}
+

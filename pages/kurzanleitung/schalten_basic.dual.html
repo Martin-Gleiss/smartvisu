@@ -1,0 +1,65 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "schalten.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}light_light.svg' />Schalten & Status - basic.dual
+{% endblock %}
+
+{% block docu %}
+Hier ein einfaches Beispiel, um einen Umschaltbutton mit integrierter Statusanzeige zu erzeugen.
+<br>
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+          <h3>Freigaben</h3>
+            {{ basic.stateswitch('', 'Wohnzimmer.Freigabe.BewegungsmelderOG', 'midi', [1,0], ['message_presence.svg', 'message_presence_disabled.svg'], '', ['icon1', '#f00']) }} Bewegungsmelder OG
+      </div>
+    </div>
+    </div>
+<br clear="all">
+<br>
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3">
+Wohnzimmer:
+    Freigabe:
+        BewegungsmelderOG:
+            type: bool
+            visu_acl: rw
+            knx_dpt: 1
+            knx_cache: 7/5/5
+            knx_send: 7/5/5
+</textarea>
+<br>
+Das Widget sieht wie folgt aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch('', 'Wohnzimmer.Freigabe.BewegungsmelderOG', 'midi', [1,0], ['message_presence.svg', 'message_presence_disabled.svg'], '', ['icon1', '#f00']) }} Bewegungsmelder OG
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br><br>
+Der dazugehörige html-Code in Block-Typ 2 sieht so aus:<br>
+<textarea cols="50" rows="3">{% raw %}
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+          <h3>Freigaben</h3>
+            {{ basic.stateswitch('', 'Wohnzimmer.Freigabe.BewegungsmelderOG', 'midi', [1,0], ['message_presence.svg', 'message_presence_disabled.svg'], '', ['icon1', '#f00']) }} Bewegungsmelder OG
+      </div>
+    </div>
+    </div>
+{% endraw %}
+</textarea>
+<br><br>
+
+Weiterführende Infos zu dem Widget gibt es in der Inline Dokumentation.
+
+{% endblock %}

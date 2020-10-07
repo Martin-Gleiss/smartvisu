@@ -1,0 +1,79 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "main.html" %}
+
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}light_light.svg' />Schalten & Status
+{% endblock %}
+
+
+{% block submenu %}
+	<style>
+		.nav-custom .ui-btn .ui-btn-inner {
+			padding-top: 40px !important;
+		}
+
+		.nav-custom .ui-btn .ui-icon {
+			width: 30px !important;
+			height: 30px !important;
+			margin-left: -15px !important;
+			box-shadow: none !important;
+			-moz-box-shadow: none !important;
+			-webkit-box-shadow: none !important;
+			-webkit-border-radius: 0 !important;
+			border-radius: 0 !important;
+		}
+
+		#basicswitch .ui-icon {
+			background: url({{ icon0 }}time_note.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#basicbutton .ui-icon {
+			background: url({{ icon0 }}time_note.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#basicdual .ui-icon {
+			background: url({{ icon0 }}time_note.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#basicsymbol .ui-icon {
+			background: url({{ icon0 }}time_note.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=schalten_basic.switch" id="basicswitch" data-icon="custom">Schalter</a></li>
+			<li><a href="index.php?page=schalten_basic.button" id="basicbutton" data-icon="custom">Taster / Szenen</a></li>
+			<li><a href="index.php?page=schalten_basic.dual" id="basicdual" data-icon="custom">Umschalter</a></li>
+			<li><a href="index.php?page=schalten_basic.symbol" id="basicsymbol" data-icon="custom">Anzeige</a></li>
+		</ul>
+	</div>
+<br>
+{% endblock %}
+
+
+{% block docu %}
+	Die hier verwendeten Widgets sind: 
+	
+	<ul>
+		<li>basic.stateswitch</li>
+		<li>basic.symbol</li>
+
+	</ul>
+	Weitere Einzelheiten und vertiefende Beispiele sind in der Inline-Doku enthalten.
+{% endblock %}
+
+

@@ -1,0 +1,130 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "smarthome.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}message_mail.svg' />SmartHomeNG - Mail
+{% endblock %}
+
+{% block docu %}
+Das Mail-Plugin ist insofern recht nützlich, da man die verschiedensten Informationen (Alarm-, Statusmeldungen etc.) je nach Bedarf versenden kann.
+Hier nun 2 Beispiel für die Verwendung des Mail-Plugins.<br>
+Im ersten Beispiel lassen wir uns täglich den Tagesstromverbrauch und die damit verbundenen Kosten schicken (s.Verbrauchsdatenermittlung). Im zweiten Beispiel soll eine Aktion ausgelöst werden, sofern eine Mail mit einem ganz bestimmten Betreff eingeht.
+Los gehts.<br><br>
+
+<h2><u>1. Mail über täglichen Energieverbrauch</u></h2>
+Grundlage für beide Besipiele ist die Einrichtung des Mail-Plugins.<br>
+Wie wir mittlerweile wissen, erfolgt die Eibindung von Plugins in der 
+	<div class="linux">
+		<code>/usr/smarthome/etc/plugin.yaml</code>
+	</div>
+<br>
+Laut Doku von SmartHomeNG schreiben wir z.B. für einen gmail.com-Account folgendes in die plugin.yaml
+<textarea cols="50" rows="3">
+mail:
+    plugin_name: mailsend
+    host: smtp.googlemail.com
+    mail_from: xxxx@gmail.com
+    tls: True
+    username: xxxx@gmail.com
+    password: xxxxx
+</textarea>
+Die Daten für den Mailaccount sind natürlich entsprechend anzupassen.<br>
+<br> 
+Als Werte lassen wir uns nun täglich um 23:59 Uhr die Werte aus dem Beispiel der Energieverbrauchsermittlung zusenden.<br>
+Hiezu brauchen wir jetzt 2 Dinge. Erstens ein Item, was den Mailversand täglich zur gleichen Zeit auslöst und zweitens eine Logik, in der die Ausgabe der Mail definiert ist.
+Das Erste erreichen wir einfach mit crontab. 
+<textarea cols="50" rows="3">
+energieverbrauchsmail:
+    senden:
+        type: bool
+        visu_acl: rw
+        enforce_updates: yes
+        crontab: 59 23 * * = 1
+</textarea>
+Hier wird jetzt das Item "<b>energieverbrauchsmail.senden</b>" täglich um 23:59 auf TRUE oder 1 gesetzt.<br><br>
+Als nächstes folgt die Logik für die Mail und dessen Inhalt. Hierzu erstellen wir eine Logikdatei mit dem Namen verbrauchsmail.py in
+	<div class="linux">
+		<code>{% filter nl2br %}
+/usr/smarthome/logics/
+			{% endfilter %}
+		</code>
+	</div>
+Der Inhalt dieser verbrauchsmail.py sieht beispielsweise wie folgt aus
+	<div class="linux">
+		<code>{% filter nl2br %}
+textverbrauch = 'gestriger Stromverbrauch: {} kWh'.format(sh.EZaehler.variable3.Tagesverbrauch())
+textkosten = 'gestriger Kosten: {} Euro'.format(sh.Kosten.Gestern())
+text = textverbrauch + "\n" + textkosten + "\n"
+sh.mail('mailadresse@empfaenger.de', 'gestriger Stromverbrauch', text.encode('utf-8'))
+			{% endfilter %}
+		</code>
+	</div>
+<br>
+Als letztes müssen wir nur noch die Logik mit dem Item zur Auslösung der Mail "verbinden". Dies erfolgt, indem wir in der  
+	<div class="linux">
+		<code>{% filter nl2br %}
+/usr/smarthome/etc/logic.yaml
+			{% endfilter %}
+		</code>
+	</div>
+folgenden Eintrag hinzufügen.
+<textarea cols="50" rows="3">
+Mail_Stromverbrauch:
+    filename: verbrauchsmail.py
+    watch_item: energieverbrauchsmail.senden
+</textarea>
+In der Betreff-Zeile der eingehenden Mail steht dann: <b><i>gestriger Stromverbrauch</i></b><br>
+Der Inhalt der empfangenen Mail sieht hierbei dann beispielsweise wie folgt aus: <br>
+<i>gestriger Stromverbrauch: 11.0 kWh</i><br>
+<i>gestriger Kosten: 2.97 Euro</i><br><br>
+
+	<h2><u>2. Aktion auslösen bei Maileingang</u></h2>
+In diesem Beispiel wollen wir beim Eingang einer Mail mit einem ganz bestimmten Betreff (Betreff = TagesEnergieverbrauchszahlen) die obige Logik auslösen, welche uns dann die aktuellen Verbrauchsdaten aus dem obigen Beispiel zurück mailt.
+Hier ist auch als erstes die Pluginfunktion einzubinden.
+Laut Doku von SmartHomeNG schreiben wir z.B. für einen gmail.com-Account folgendes in die plugin.yaml
+<textarea cols="50" rows="3">
+imap:
+    plugin_name: mailrcv
+    host: imap.gmail.com
+    username: yyyy@gmail.com
+    password: yyyyyyy
+    tls: True
+    port: 993
+    #cycle: 300
+</textarea>
+Die Daten für den Mailaccount sind natürlich entsprechend anzupassen.<br>
+Hinweis: Wer eine anderes Abfrageintervall beim Imap-Server benötig als den Standart, kann das # vor cycle entfernen und einen eigenen Wert vorgeben (Wert in Sekunden).<br><br>
+Nun brauchen wir wieder eine Logik, die dafür sorgt, dass beim Eingang der entsprechenden Mail unser oben genanntes Item "<b>energieverbrauchsmail.senden</b>" die Logik zum Mailversand triggert.
+Hierzu erstellen wir eine neue Datei mit dem Namen inmail.py in
+	<div class="linux">
+		<code>{% filter nl2br %}
+/usr/smarthome/logics/
+			{% endfilter %}
+		</code>
+	</div>
+Der Inhalt dieser inmail.py sieht beispielsweise wie folgt aus
+<textarea cols="50" rows="3">
+sh.energieverbrauchsmail.senden(True)
+</textarea>
+<br>
+Als letztes müssen wir nur noch die logic.yaml um folgenden Eintrag erweitern
+<textarea cols="50" rows="3">
+inmail:
+    filename: inmail.py
+    mail_suject: TagesEnergieverbrauchszahlen
+</textarea>
+Da wir im oberen ersten Beispiel den Mailversand für die Tagesverbrauchsdaten bereits eingerichtet haben, erfolgt nun der Versand der Mail bei entsprechenden Maileingang mit der vorgegebenen Betreff-Zeile.
+<br><br><br><br>
+
+Weitere Infos zum Mail-Plugin gibt es in der Dokumentation zu SmartHomeNG
+
+{% endblock %}
+

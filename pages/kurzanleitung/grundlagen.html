@@ -1,0 +1,182 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "main.html" %}
+
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}edit_paste.svg' />Willkommen - Vorwort
+{% endblock %}
+
+
+{% block submenu %}
+	<style>
+		.nav-custom .ui-btn .ui-btn-inner {
+			padding-top: 40px !important;
+		}
+
+		.nav-custom .ui-btn .ui-icon {
+			width: 30px !important;
+			height: 30px !important;
+			margin-left: -15px !important;
+			box-shadow: none !important;
+			-moz-box-shadow: none !important;
+			-webkit-box-shadow: none !important;
+			-webkit-border-radius: 0 !important;
+			border-radius: 0 !important;
+		}
+
+		#Thema1 .ui-icon {
+			background: url({{ icon0 }}edit_paste.svg) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#Thema2 .ui-icon {
+			background: url({{ icon0 }}edit_paste.svg) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#Thema3 .ui-icon {
+			background: url({{ icon0 }}edit_settings.svg) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#Thema4 .ui-icon {
+			background: url({{ icon0 }}time_note.svg) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#Thema5 .ui-icon {
+			background: url({{ icon0 }}time_note.svg) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=grundlagen_einfuehrung" id="Thema1" data-icon="custom">Einführung</a></li>
+			<li><a href="index.php?page=grundlagen_schnittstelle" id="Thema2" data-icon="custom">Schnittstelle</a></li>
+			<li><a href="index.php?page=grundlagen_configseite" id="Thema3" data-icon="custom">Config-Seite</a></li>
+			<li><a href="index.php?page=grundlagen_item" id="Thema4" data-icon="custom">Items</a></li>
+			<li><a href="index.php?page=grundlagen_widget" id="Thema5" data-icon="custom">Widgets</a></li>
+		</ul>
+	</div>
+{% endblock %}
+
+
+{% block docu %}
+	v2.1 - Oktober 2020<br>
+
+	<h4>Herzlich Willkommen!</h4>
+
+	Diese Anleitung für smartVISU ist dafür gedacht, anhand einiger Beispiele dem Nutzer die Möglichkeit zu geben <em>wichtige</em> Zusammenhänge
+	zu erkennen, um auch ohne tiefgreifende Linux- oder Html-Kenntnisse den Einstieg zu ermöglichen.
+	Gewisse Basics sollte jedoch schon vorhanden sein.<br>
+	Diese Anleitung bezieht sich vorrangig auf das fertige Image von SmartHomeNG für Raspberry PI.
+
+	Es wird hier also die Erstellung <em>von Hand</em> beschrieben, mit der man auch am Weitesten kommt.<br><br>
+	Diese Anleitung wird stetig erweitert und jeder einzelne kann dabei mitwirken.<br>
+	Ideen, Vorschläge, Codes, Textpassagen und ggf. Screenshots können im KNX User Forum im Projektforum SmartVISU gepostet werden, via github oder gitter.im geteilt werden.
+	<br>
+	<br>
+	Nun viel Spaß beim Lesen dieser Kurzanleitung. Los gehts mit dem oberen Button "Einführung".<br>
+	Ihr / Euer<br>
+	smartVISU -Team*<br><br>
+	<small>*Autoren dieser Anleitung</small><br>
+	<small>Marco Fleischer</small><br>
+	<small>Bernd Meiners</small><br>
+	<small>Wolfram v. Hülsen</small><br>
+<br>
+<br>
+<br>
+
+<div class="block"style="width:100%">
+  <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+  	<div data-role="collapsible" data-collapsed="true" >
+			<h3>History  (hier klicken)</h3>
+			<table width=100%>
+			   <td align=left>
+					<small>v2.1 - letzte Änderung: 7. Oktober 2020</small><br>
+					<ul>
+						<li>Komplettüberarbeitung Beispielseiten mit Offline-Daten</li>
+						<li>smartControl entfernt</li>
+						<li>Updatehinweise</li>
+					</ul>
+			   </td>
+			</table>
+			<hr>
+			<table width=100%>
+			   <td align=left>
+					<small>v2.0 - letzte Änderung: August 2020</small><br>
+					<ul>
+						<li>Anpassung auf SmartVISU 2.9</li>
+					</ul>
+			   </td>
+			</table>
+			<hr>
+     	<table width=100%>
+     		<td align=left>
+					<small>v1.11 - letzte Änderung: 04.01.2015</small><br>
+					<ul>
+						<li><small>Erweiterung - </small><a href="index.php?page=smarthome_wetter" target="_self"><small>Wetter Wunderground</small></a></li>
+					</ul>
+       	</td>
+     	</table>
+			<hr>
+     	<table width=100%>
+     		<td align=left>
+					<small>v1.10 - letzte Änderung: 01.01.2015</small><br>
+					<ul>
+						<li><small>Erweiterung - </small><a href="index.php?page=installation" target="_self"><small>Neue Sektion - Rund um Installationen</small></a></li>
+						<li><small>Änderung - </small><a href="index.php?page=grundlagen_widget" target="_self"><small>Anpasung Beschreibung Grundlagen Widgets</small></a></li>
+					</ul>
+       	</td>
+   		</table>
+			<hr>
+     	<table width=100%>
+     		<td align=left>
+					<small>v1.9 - letzte Änderung: 22.12.2014</small><br>
+					<ul>
+						<li><small>Erweiterung - </small><a href="index.php?page=download_multiplot_bmx" target="_self"><small>Widget Multiplot</small></a></li>
+						<li><small>Erweiterung - </small><a href="index.php?page=download_samsung" target="_self"><small>Icons Samsung-Plugin</small></a></li>
+					</ul>
+       	</td>
+     	</table>
+			<hr>
+   		<table width=100%>
+     		<td align=left>
+					<small>v1.8 - letzte Änderung: 21.12.2014</small><br>
+					<ul>
+						<li><small>Erweiterung - </small><a href="index.php?page=sample_sv_cam" target="_self"><small>Einbindung Cam</small></a></li>
+						<li><small>Erweiterung - </small><a href="index.php?page=sample_sv_self_widgets" target="_self"><small>Widgets erstellen</small></a></li>
+					</ul>
+       	</td>
+     	</table>
+			<hr>
+     	<table width=100%>
+     		<td align=left>
+					<small>v1.7 - letzte Änderung: 05.12.2014</small><br>
+					<ul>
+						<li><small>Erweiterung - </small><a href="index.php?page=download_icons" target="_self"><small>Icon-Pack</small></a></li>
+					</ul>
+       	</td>
+     	</table>
+			<hr>
+     	<table width=100%>
+     		<td align=left>
+					<small>v1.0 bis 1.6 - letzte Änderung: bis 11.2014</small><br>
+					<ul>
+						<li><small>Erstellung / Erweiterung / Anpassung</small></li>
+					</ul>
+       	</td>
+     	</table>
+		</div>
+  </div>
+</div>
+{% endblock %}

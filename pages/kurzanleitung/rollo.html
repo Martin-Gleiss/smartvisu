@@ -1,0 +1,66 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "main.html" %}
+
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}fts_shutter_40.svg' />Rollo / Jalousie
+{% endblock %}
+
+
+{% block submenu %}
+	<style>
+		.nav-custom .ui-btn .ui-btn-inner {
+			padding-top: 40px !important;
+		}
+
+		.nav-custom .ui-btn .ui-icon {
+			width: 30px !important;
+			height: 30px !important;
+			margin-left: -15px !important;
+			box-shadow: none !important;
+			-moz-box-shadow: none !important;
+			-webkit-box-shadow: none !important;
+			-webkit-border-radius: 0 !important;
+			border-radius: 0 !important;
+		}
+
+		#deviceblind .ui-icon {
+			background: url({{ icon0 }}time_note.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#devicesgutter .ui-icon {
+			background: url({{ icon0 }}time_note.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=rollo_device.blind" id="deviceblind" data-icon="custom">Rollo Bedienelemente</a></li>
+			<li><a href="index.php?page=rollo_device.shutter" id="deviceshutter" data-icon="custom">Rollo mit Animation</a></li>
+		</ul>
+	</div>
+{% endblock %}
+
+
+{% block docu %}
+	Die verwendeten Widgets sind: 
+	
+	<ul>
+		<li>device.blind</li>
+		<li>device.shutter</li>
+		<li>device.smallshut ermöglicht zudem eine tabellarische Ansicht mehrerer Rollos mit einfachen Bedienelementen</li> 
+	</ul>
+	Weitere Einzelheiten und vertiefende Beispiele sind in der Inline-Doku enthalten.
+{% endblock %}
+
+

@@ -1,0 +1,75 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "main.html" %}
+
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}edit_save.svg' />Rund um Installationen
+{% endblock %}
+
+
+{% block submenu %}
+	<style>
+		.nav-custom .ui-btn .ui-btn-inner {
+			padding-top: 40px !important;
+		}
+
+		.nav-custom .ui-btn .ui-icon {
+			width: 30px !important;
+			height: 30px !important;
+			margin-left: -15px !important;
+			box-shadow: none !important;
+			-moz-box-shadow: none !important;
+			-webkit-box-shadow: none !important;
+			-webkit-border-radius: 0 !important;
+			border-radius: 0 !important;
+		}
+
+		#image .ui-icon {
+			background: url({{ icon0 }}edit_save.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#nonimage .ui-icon {
+			background: url({{ icon0 }}edit_save.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#basicdual .ui-icon {
+			background: url({{ icon0 }}edit_save.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#folgt .ui-icon {
+			background: url({{ icon0 }}secur_locked.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=installation.image" id="image" data-icon="custom">Image</a></li>
+			<li><a href="index.php?page=installation.nonimage" id="nonimage" data-icon="custom">non Image</a></li>
+		</ul>
+	</div>
+<br>
+{% endblock %}
+
+
+{% block docu %}
+	Hier folgen Beschreibungen für folgende Sektionen: 
+	
+	<ul>
+		<li>Image - wie bringt man das Image für den Raspberry Pi auf die SD-Card</li>
+		<li>non Image - Installation ohne Image -- Komplettbeschreibung für sV, SmartHomeNG, 1-Wire und knxd</li>
+	</ul>
+{% endblock %}
+
+

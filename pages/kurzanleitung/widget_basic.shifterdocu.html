@@ -1,0 +1,30 @@
+/**
+* A switch, build of a series of icons. The series may be a .png-iconseries (NAME_00.png, NAME_10.png, NAME_20.png...) or may be a dynamic svg-icon (icon.NAME)
+*
+* @param unique id for this widget
+* @param a gad/item for the switch (optional)
+* @param a gad/item for the value
+* @param the iconseries or dynamic icon for the 'on' state
+* @param the icon for the 'off' state (optional)
+* @param the minimum value if it is off (optional, for future use)
+* @param the maximum value if it is on (optional, default 255)
+
+*
+* @see design/design_icons#Dynamic Icons and Static Icons
+*/
+{% macro shifterdocu(id, gad_switch, gad_value, pic_on, pic_off, min, max) %}
+
+	{% import "icon.html" as icon %}
+
+	{% if pic_on|slice(0, 5) == 'icon.' %}
+		{{ attribute(icon, pic_on|slice(5), [id, gad_switch, gad_value]) }}
+	{% else %}
+		<span id="{{ uid(page, id) }}" data-widget="basic.shifterdocu" data-item="{{ gad_value }}, {{ gad_switch }}"
+			{% set pic_on = pic_on|default(icon1~'message_presence.svg') %}
+			data-pic-on="{{ pic_on }}" data-pic-off="{{ pic_off |default(icon0~pic_on|slice(icon1|length)) }}"
+			data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+			class="switch"><a><img class="icon" src="{{ pic_off|default(icon0~'message_presence_disabled.svg') }}" /></a>
+    	</span>
+	{% endif %}
+
+{% endmacro %}

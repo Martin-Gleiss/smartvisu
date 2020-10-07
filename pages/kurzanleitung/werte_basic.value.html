@@ -1,0 +1,203 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "werte.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}measure_power_meter.svg' />Werte & Zustände - basic.print
+{% endblock %}
+
+{% block docu %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('SB.PlayerName', 'Omas Jukebox' );
+			 io.write('SB.IP', '08 . 15 . 47 . 11' );
+			 io.write('SB.Artist', 'Deep Purple' );
+			 io.write('SB.Song', 'Smoke on the Water' );
+			 io.write('SB.Album', 'Machine Head' );
+		});
+</script>
+Dieses Widget kann zusätzlich zu den numerischen (num) auch String-Ausgabe (str) anzeigen. Dies können u.a. IPs, Namen, etc. sein.<br>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Beispiel</h3>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Player-Name: 
+                    </td>
+                    <td align=right>
+                        {{ basic.print('value1', 'SB.PlayerName') }}
+                    </td>
+                </tr>
+            </table>            
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        IP - Squeezebox: 
+                    </td>
+                    <td align=right>
+                        {{ basic.print('value2', 'SB.IP') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Künstler:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('value3', 'SB.Artist') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Songtitel:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('value4', 'SB.Song') }}
+                    </td>
+                </tr>
+            </table>
+           <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Album:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('value5', 'SB.Album') }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>    
+    </div>
+<br clear="all">
+<br>
+
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3">
+SB:
+    PlayerName:
+        type: str
+        visu_acl: rw
+        knx_dpt: 16
+        knx_send: 6/0/1
+
+    IP:
+        type: str
+        visu_acl: rw
+        knx_dpt: 16
+        knx_send: 6/0/2
+
+    Artist:
+        type: str
+        visu_acl: rw
+        knx_dpt: 16
+        knx_send: 6/0/3
+
+    Song:
+        type: str
+        visu_acl: rw
+        knx_dpt: 14
+        knx_send: 6/0/4
+
+    Album:
+        type: str
+        visu_acl: rw
+        knx_dpt: 16
+        knx_send: 6/0/5
+</textarea>
+<br><br>
+Die Widgets, welche wir verwenden, sehen so aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.print('', 'SB.PlayerName') }}		
+			{{ basic.print('', 'SB.IP') }}
+			{{ basic.print('', 'SB.Artist') }}
+			{{ basic.print('', 'SB.Song') }}
+			{{ basic.print('', 'SB.Album') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+
+<br><br>
+Der dazugehörige html-Code in Block-Typ 2 sieht so aus:<br>
+<textarea cols="50" rows="3">{% raw %}
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Beispiel</h3>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Player-Name: 
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'SB.PlayerName') }}
+                    </td>
+                </tr>
+            </table>            
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        IP - Squeezebox: 
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'SB.IP') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Künstle:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'SB.Artist') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Songtitel:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('', 'SB.Song') }}
+                    </td>
+                </tr>
+            </table>
+           <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Album:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('', 'SB.Album') }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>    
+    </div>
+{% endraw %}
+</textarea>
+<br>
+<br><br><br>
+
+Weiterführende Infos zu dem Widget gibt es in der Inline Dokumentation.
+
+{% endblock %}

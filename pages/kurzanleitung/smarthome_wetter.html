@@ -1,0 +1,412 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "smarthome.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}weather_station.svg' />SmartHomeNG - Wetter Wunderground
+{% endblock %}
+
+{% block docu %}
+	<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>{{ basic.value('', 'Wetter.LastUpdate') }}</h3>
+			
+            <table width=100%>
+                <tr>
+                    <td align=center">
+						{% import "icon.html" as icon %}
+						{{ icon.windrose('', '', 'Wetter.Windrichtung', '0', '360') }} <br> --------------------------- <br>
+						Wind aus: <span style="color:#FE9A2E">{{ basic.value('', 'Wetter.WindrichtungNWOS') }}</span> mit: <span style="color:#FE9A2E">{{ basic.print('', 'Wetter.Windgeschwindigkeit.Web', 'km/h') }}</span><br> --------------------------- <br>
+                    </td>
+                </tr>
+            </table>
+           <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Temperatur:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('', 'Wetter.Temperatur.Web', '°') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Luftdruck:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'Wetter.Luftdruck', 'hPa') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        relative Luftfeuchte:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'Wetter.relative_luftfeuchte_perc', '%') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Taupunkt:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'Wetter.Taupunkt', '°') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Windkühle:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('', 'Wetter.Windchill', '°') }}
+                    </td>
+                </tr>
+            </table>
+           <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Solarstrahlung:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('', 'Wetter.Solarstrahlung', 'w/m²') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Niederschlag Heute:
+                    </td>
+                    <td align=right>
+						{{ basic.print('', 'Wetter.Niederschlag_Heute', 'cm') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Niederschlag last 1h:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'Wetter.Niederschlag_letzte_stunde', 'cm') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Station:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('web13', 'Wetter.Station') }}
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>    
+    </div>
+
+	<br clear="all">
+	Als erstes möchte ich hier Hendrik Friedel danken, der die Logik auf der diese Beschreibung basiert, entwickelt bzw. geschrieben hat.<br />
+	Hier nun ein Beispiel, wie man die Wetterdaten einer Wetterstation aus der eigenen näheren Umgebung einbinden kann und die Werte bei Bedarf auf den Bus bekommt.<br />
+	Hierfür verwenden wir die API von Wunderground.com und lesen diese aus.<br />
+	Als ersten sucht man sich eine Wetterstation seiner Wahl. In diesem Beispiel wollen wir die Daten einer Wetterstation aus Rostock auslesen. <br />
+	Dazu geht man auf http://www.wunderground.com/ und gibt bei "Search Stations" den Suchbegriff Rostock ein. Nun wartet man bis die Seite vollständig geladen ist und kann dann bei Bedarf über "Change Station" eine Station seiner Wahl ausssuchen.<br />
+	Für dieses Beispiel entscheiden wir uns für die Station:
+	<div class="linux">
+		<code>{% filter nl2br %}
+			Germany Mecklenburg Vorpommern, Rostock, MECKLENBURG-VORPOMMERN (IMECKLEN47)
+			{% endfilter %}
+		</code>
+	</div>	
+	Jetzt überprüft man, ob und was in der API verfügbar ist. Dazu nimmt man die obenere, in Klammer stehende Bezeichnung der Station (IMECKLEN47) und fügt sie in einen Web-Aufruf wie folgt ein:
+	<div class="html">
+		<code>http://api.wunderground.com/weatherstation/WXCurrentObXML.asp?ID=IMECKLEN47</code>
+	</div>
+	Diese URL rufen wir nun im Browser auf und sehen, nachdem das XML-File im Browser geladen wurde, welche Informationen zur Verfügung stehen.<br /><br />
+	Im nächsten Schritt erstellt man eine Datei mit dem Namen <span style="color:#F4FA58"> wunderground.py </span> im Verzeichnis
+	<div class="linux">
+		<code>{% filter nl2br %}
+			/usr/smarthome/etc/logic.yaml
+			{% endfilter %}
+		</code>
+	</div>	
+	und fügt dort <a href="/kurzanleitung/pages/kurzanleitung/download/wunderground.py" target="_blank">diesen</a> Inhalt ein. Danach die Datei speichern.
+	<br /><br />
+	Jetzt gibt man noch vor, wann die Logik getriggert werden soll. Dies macht man in der 
+	<div class="linux">
+		<code>{% filter nl2br %}
+			/usr/smarthome/etc/logic.yaml
+			{% endfilter %}
+		</code>
+	</div>	
+	und gibt dort z.B. folgendes ein.
+<textarea cols="50" rows="3">
+Wunderground:
+    filename: wunderground.py
+    visu_acl: rw
+    crontab: init
+    cycle: 60
+</textarea>	
+	Über <span style="color:#F4FA58">cycle: 60 </span> wurde hier z.B. festgelegt, das die Logik alle 60 Sekunden getriggert wird und somit die Daten aus der XML ausliest.<br />
+	Über <span style="color:#F4FA58">crontab: init </span> wurde hier z.B. festgelegt, das die Logik bei einem Neustart von SmartHomeNG getriggert wird und somit die Daten aus der XML ausliest
+	
+	<br /><br />
+		
+	Nun zu den Items. Hierzu erstellt man als erstes eine Datei mit dem Namen <span style="color:#F4FA58"> wetter_wounderground.yaml </span> im Verzeichnis
+	<div class="linux">
+		<code>{% filter nl2br %}
+			/usr/smarthome/items/
+			{% endfilter %}
+		</code>
+	</div>	
+	In den Items legt man auch gleich fest, ob man den ausgelesenen Wert auf den Bus senden und/oder den Wert in der Datenbank speichern möchte.
+	Weiterhin gibt man im Item die URL zur XML mit an.<br />
+	Anbei ein kleines Item-Beispiel für einen mumerische-(z.B. Temperatur) und einen string-Wert (z.B. Stationsname).
+	<textarea cols="50" rows="3">
+Wetter:
+    wunderground_url:
+        type: str
+        value: http://api.wunderground.com/weatherstation/WXCurrentObXML.asp?ID=IMECKLEN47
+
+    Temperatur:
+        type: num
+        visu_acl: rw
+        xmlstring: temp_c
+        knx_dpt: 5
+        knx_send: 0/4/38
+        database: init
+
+    Station:
+        type: str
+        xmlstring: city
+	</textarea>
+	Über <span style="color:#F4FA58">xmlstring = .....</span> im Item legt man fest, welchen Wert man aus der XML auslesen möchte.<br>
+	Über die eval-Funktion ist es nun auch möglich, Umrechnungen von abgefragten Werten vorzunehmen. Beispielsweise die Umrechnung von mph in km/h. <br>
+	Dazu fügt man folgende Zeilen in das Item am Ende ein. 
+
+	<textarea cols="50" rows="3">	
+Windgeschwindigkeit:
+    wind_mph:
+        type: num
+        xmlstring: wind_mph
+
+    wind_kmh:
+        type: num
+        knx_dpt: 9
+        knx_send: 0/4/39
+        database: init
+        eval: sh.Wetter.Windgeschwindigkeit.wind_mph()/0.44704
+        eval_trigger: sh.Wetter.Windgeschwindigkeit.wind_mph
+	</textarea>
+	In diesem Beispiel wird der Wert der Wingeschwindigkeit wieder auf eine GA gesendet und gleichzeitig für die Darstellung in einem Plot in der Datenbank gespeichert.<br />
+	Das Item zu dem oberen Block-Beispiel könnte so ausehen.
+	<textarea cols="50" rows="3">	
+Wetter:
+    wunderground_url:
+        type: str
+        value: http://api.wunderground.com/weatherstation/WXCurrentObXML.asp?ID=IMECKLEN47
+
+    LastUpdate:
+        type: str
+        xmlstring: observation_time
+
+    WindrichtungNWOS:
+        type: str
+        xmlstring: wind_dir
+
+    Windrichtung:
+        type: str
+        xmlstring: wind_degrees
+
+    Windgeschwindigkeit:
+
+        wind_mph:
+            type: num
+            xmlstring: wind_mph
+
+        wind_kmh:
+            type: num
+            knx_dpt: 9
+            knx_send: 0/4/39
+            database: init
+            eval: sh.Wetter.Windgeschwindigkeit.wind_mph()/0.44704
+            eval_trigger: Wetter.Windgeschwindigkeit.wind_mph
+
+    Temperatur:
+        type: num
+        visu_acl: rw
+        xmlstring: temp_c
+        knx_dpt: 5
+        knx_send: 0/4/38
+        database: init
+
+    Luftdruck:
+        type: num
+        xmlstring: pressure_mb
+
+    relative_luftfeuchte_perc:
+        type: num
+        xmlstring: relative_humidity
+
+    Taupunkt:
+        type: num
+        xmlstring: dewpoint_c
+
+    Windchill:
+        type: num
+        xmlstring: windchill_c
+
+    Solarstrahlung:
+        type: num
+        xmlstring: solar_radiation
+
+    Niederschlag_Heute:
+        type: num
+        xmlstring: precip_today_metric
+
+    Niederschlag_letzte_stunde:
+        type: num
+        xmlstring: precip_1hr_metric
+
+    Station:
+        type: str
+        xmlstring: city
+	</textarea>	
+	
+	
+ <br /><br />		
+	Fehlt letztlich noch der html-Teil. Dieser stellt sich recht simpel dar, da wir in diesem Beispiel nur 3 Widgets verwenden.<br />
+	Der Code für das obere Block-Beispiel könnte so ausehen<br />
+	<textarea cols="50" rows="3">{% raw %}
+	<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>{{ basic.print('', 'Wetter.LastUpdate') }}</h3>
+			
+            <table width=100%>
+                <tr>
+                    <td align=center">
+						{% import "icon.html" as icon %}
+						{{ icon.windrose('web2', '', 'Wetter.Windrichtung', '0', '360') }} <br> --------------------------- <br>
+						Wind aus: <span style="color:#FE9A2E">{{ basic.print('', 'Wetter.WindrichtungNWOS') }}</span> mit: <span style="color:#FE9A2E">{{ basic.print('web4', 'Wetter.Windgeschwindigkeit.wind_kmh', 'km/h') }}</span><br> --------------------------- <br>
+                    </td>
+                </tr>
+            </table>
+           <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Temperatur:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('', 'Wetter.Temperatur', '°') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Luftdruck:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'Wetter.Luftdruck', 'hPa') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        relative Luftfeuchte:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'Wetter.relative_luftfeuchte_perc', '%') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Taupunkt:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('web8', 'Wetter.Taupunkt', '°') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Windkühle:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('web9', 'Wetter.Windchill', '°') }}
+                    </td>
+                </tr>
+            </table>
+           <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Solarstrahlung:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('web10', 'Wetter.Solarstrahlung', 'w/m²') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Niederschlag Heute:
+                    </td>
+                    <td align=right>
+						{{ basic.print('web11', 'Wetter.Niederschlag_Heute', 'cm') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Niederschlag last 1h:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('web12', 'Wetter.Niederschlag_letzte_stunde', 'cm') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Station:
+                    </td>
+                    <td align=right>
+                        {{ basic.prints('web13', 'Wetter.Station') }}
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>    
+    </div>	
+	{% endraw %}
+	</textarea>
+
+
+{% endblock %}
+

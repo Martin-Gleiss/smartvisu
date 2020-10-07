@@ -1,0 +1,41 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "smarthome.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}measure_power_meter.svg' />SmartHomeNG - Verbrauchsdaten
+{% endblock %}
+
+{% block docu %}
+	<div class="preblock">
+		<span data-role="controlgroup" data-type="horizontal"> 
+			NOCH IN BEARBEITUNG <br />
+
+		</span>
+	</div>
+Hier nun eine kurze Beschreibung um z.B. einen Verbrauchsdatenberechnung zu realisieren<br>
+Dies können wir entweder über eine Logik lösen oder wir verwenden die eval-Funktion.
+Hier habe ich mich mal für die Lösung über eval entschieden, da man direkt in den Items arbeiten kann.<br>
+Der E-Zähler liefert einen 4 Byte Zählerstandswert, den wir zusätzlich in der Datenbank speichern.<br>
+<br>
+Das Item sieht wie folgt aus:
+<textarea cols="50" rows="3">
+EZaehler:
+    Verbrauch:
+        type: num
+        visu_acl: rw
+        database: init
+        knx_dpt: 12
+        knx_reply: 5/5/15
+        knx_cache: 5/5/15
+</textarea>
+<br>
+
+{% endblock %}

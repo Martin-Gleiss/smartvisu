@@ -1,0 +1,123 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "smarthome.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}time_clock.svg' />SmartHomeNG - UZSU
+{% endblock %}
+
+{% block docu %}
+<script>
+  var interpol1 = {type: 'cubic', interval: '1', initialized: 'False', itemtype: 'num', initage: ''}
+  var liste1 = [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '0', 'time': '20:26'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '1', 'time': '05:15'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '1', 'calculated': '06:13', 'time': '06:00<sunrise<08:00'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '0', 'calculated': '18:12', 'time': '18:00<sunset-30m'}]
+  var RolloSued = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol1, list: liste1};
+  var liste2 = [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '18', 'time': '22:00'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '22', 'time': '05:00'}]
+  var Betriebsart = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol1, list: liste2};
+
+  io.write('Erdgeschoss.Office.RolloSued.fahren.uzsu', RolloSued);
+  io.write('Erdgeschoss.Office.Heizung.Betriebsart.uzsu', Betriebsart);
+
+</script>
+	Hier nun ein Besipiel um eine Schaltuhr zu integrieren.<br>
+	
+	<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Uhr 1bit</h3>
+			{{ device.uzsuicon('', 'Erdgeschoss.Office.RolloSued.fahren.uzsu', 'EG Büro - Rollo Süd', '', '', 'bool', ['Ab', 'Auf']) }}
+        </div>
+	</div>
+	</div> 	
+	<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Uhr 1byte</h3>
+			{{ device.uzsuicon('', 'Erdgeschoss.Office.Heizung.Betriebsart.uzsu', 'EG Büro - Heizung', '', '', 'num') }}
+        </div>
+	</div>
+	</div> 
+<br><br>
+Um die Zeitschaltuhr so wie im Beispiel zu nutzen benötigen wir also das Plugin und ein Widget.<br><br>
+Das Plugin kann bequem über das Admin Interface konfiguriert werden im Menü Plugins --> Konfiguration wird das UZSU Plugin ausgewählt.
+
+Hierzu die zwei Beispiele. Unser Item sieht wie folgt aus.<br>
+
+	<textarea cols="50" rows="3">	
+Erdgeschoss:
+
+    Office:
+
+        RolloSued:
+
+            fahren:
+                type: bool
+                visu_acl: rw
+                knx_dpt: 1
+                enforce_updates: yes
+                knx_send: 0/2/35
+
+                uzsu:
+                    type: dict
+                    uzsu_item: Erdgeschoss.Office.RolloSued.fahren
+                    cache: 'True'
+                    visu_acl: rw
+
+        Heizung:
+
+            Betriebsart:
+                type: num
+                visu_acl: rw
+                database: yes
+                knx_dpt: 9
+                knx_send: 2/2/8
+                knx_listen: 2/1/8
+
+                uzsu:
+                    type: dict
+                    uzsu_item: Erdgeschoss.Office.Heizung.Betriebsart
+                    cache: 'True'
+                    visu_acl: rw
+
+	</textarea>
+<br>	
+
+Der fertige Widget-Code für den oberen linken Block (1bit) sieht so aus:
+<textarea cols="50" rows="3">{% raw %}
+<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Uhr 1bit</h3>
+			{{ device.uzsuicon('', 'Erdgeschoss.Office.RolloSued.fahren.uzsu', 'EG Büro - Rollo Süd', '', '', '', 'bool', 'Ab', 'Auf') }}
+        </div>
+	</div>
+	</div> 	
+{% endraw %}
+</textarea>
+
+<br>
+Der fertige Widget-Code für den oberen rechten Block (1byte) sieht so aus:
+<textarea cols="50" rows="3">{% raw %}	
+<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Uhr 1byte</h3>
+			{{ device.uzsuicon('uzsu2', 'Erdgeschoss.Office.Heizung.Betriebsart.uzsu', 'EG Büro - Heizung', '2', '', '', 'num', '', '') }}
+        </div>
+	</div>
+	</div> 
+{% endraw %}
+</textarea>
+<br>
+<br>
+<br>
+Weitere Infos zum hier genannten Widget findet man <a href="https://www.smarthomeng.de/user/plugins/uzsu/user_doc.html" target="_blank">dort</a>
+
+{% endblock %}
+

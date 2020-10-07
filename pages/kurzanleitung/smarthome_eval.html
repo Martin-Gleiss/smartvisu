@@ -1,0 +1,134 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "smarthome.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}time_note.svg' />SmartHomeNG - eval
+{% endblock %}
+
+{% block docu %}
+	Das eval - Attribut ist für kleine Auswertungen oder Korrekturen gedacht bzw. nützlich. Genauere Infos zu eval findet man <a href="https://www.smarthomeng.de/user/konfiguration/items/standard_attribute/eval.html" target="_blank">hier</a>.<br> 
+	Im Folgenden wird ein mögliches eval-Beispiel aufgeführt.<br><br>
+	Ziel / Vorgabe:<br>
+	Bewegungsmelder im Haus werden über ein Freigabeobjekt aktiviert und deaktiviert ( 1 = aktiv, 0 = gesperrt).<br>
+	Wenn draußen die Lichtstärke unter 750 Lux fällt (Daten kommen von einer Wetterstation), sollen die Bewegungsmelder aktiviert werden.<br><br>
+		
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+                  <h3>Bewegungsmelder Flur EG</h3>
+	<table style=";width:100%;">
+		<tbody>
+			<tr align="center">
+				<td style="vertical-align:top"><br />
+					</td>
+			</tr>
+			<tr align="center">
+				<td style="vertical-align:top">{{ basic.float('float1', 'Slider.BM.WT1', 'lux') }}<br />
+					</td>
+			</tr>			
+			<tr>
+				<td style="vertical-align:top"><br />
+					</td>
+			</tr>
+			<tr align="center">
+				<td style="vertical-align:top"><br />
+					</td>
+			</tr>
+			<tr align="center">
+				<td style="vertical-align:top">{{ basic.symbol('BM1', 'BM1.status', '', icon1~'message_presence.svg', 1) }}<br />
+					</td>
+			</tr>
+		</tbody>
+	</table>					
+          </div>
+    </div>
+    </div>
+	
+	
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+                  <h3>Bewegungsmelder Flur EG</h3>
+	<table style=";width:100%;">
+		<tbody>
+			<tr align="center">
+				<td style="vertical-align:top"><br />
+					</td>
+			</tr>
+			<tr align="center">
+				<td style="vertical-align:top">{{ basic.float('float2', 'Slider.BM.WT2', 'lux') }}<br />
+					</td>
+			</tr>			
+			<tr>
+				<td style="vertical-align:top"><br />
+					</td>
+			</tr>
+			<tr align="center">
+				<td style="vertical-align:top"><br />
+					</td>
+			</tr>
+			<tr align="center">
+				<td style="vertical-align:top">{{ basic.symbol('BM2', 'BM11.status', '', icon1~'message_presence.svg', 1) }} {{ basic.symbol('BM21', 'BM11.status', '', icon0~'message_presence_disabled.svg', 0) }}<br />
+					</td>
+			</tr>
+		</tbody>
+	</table>
+          </div>
+    </div>
+    </div>	
+	
+	
+	Lösungsweg: <br>
+	Wir haben einmal ein Item für das Freigabeobjekt der Bewegungsmelder (FreigabeBM.Eingang) und ein Item für die Außen-Lichtstärke (Aussen.Lichtstaerke).<br>
+	Ein möglicher Lösungsweg könnte so aussehen:<br>
+	<textarea cols="50" rows="3">
+Aussen:
+    Lichtstaerke:
+        type: num
+        knx_dpt: 9
+        visu_acl: rw
+        knx_cache: 5/0/7
+
+FreigabeBM:
+    Eingang:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_send: 0/4/38
+        knx_cache: 0/4/38
+        eval: sh.Aussen.Lichtstaerke()<750
+        eval_trigger: Aussen.Lichtstaerke
+
+	</textarea>
+<br>
+
+	<span style="color:#FF0000">eval</span> ist die Bedingung, die erfüllt oder nicht erfüllt sein soll <br>
+	<span style="color:#FF0000">eval_trigger</span> definiert die Items, die bei Änderung, die Evaluierung von eval anstoßen.<br>
+	Der Ausdruck bei diesem eval-Beispiel liefert immer ein bool zurück. Also wenn die Bedingung erfüllt ist True, ansonsten False.<br><br>
+	
+	Der letzte Satz ist nicht unwichtig.<br>
+	Somit ist es natürlich auch möglich, entgegen unserem oben genannten Ziel/Vorgabe, Freigabeobjekte, die bei einer 0 die Freigabe geben, mit diesem eval Attribut zu realisieren.<br>
+	Hier müssten wir also nur die Bedingung ändern. Also wenn der Lux-Wert größer 750 ist, sende 1. Ansonsten (Wert kleiner 750) sende 0.<br>
+	Im konkreten Fall würde der eval und eval_trigger Zweig so aussehen:
+	<textarea cols="50" rows="3">
+FreigabeBM:
+    Eingang:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_send: 0/4/38
+        knx_cache: 0/4/38
+        eval: sh.Aussen.Lichtstaerke()>750
+        eval_trigger: Aussen.Lichtstaerke
+	</textarea>	
+
+{% endblock %}
+

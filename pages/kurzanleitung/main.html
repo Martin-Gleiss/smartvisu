@@ -1,0 +1,40 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+	{% include 'main_menu.html' %}
+{% endblock %}
+
+{% block content %}
+	<h1>{% block headline %}{% endblock %}</h1>
+
+	<div style="margin-bottom: 20px;">
+		{% block submenu %}{% endblock %}
+	</div>
+
+	<div class="docu">
+		{% block docu %}{% endblock %}
+	</div>
+{% endblock %}
+
+{% block head %}
+	<link href="vendor/google.prettify/styles/sunburst.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="vendor/google.prettify/src/prettify.js"></script>
+{% endblock %}
+    
+{% block footer %}
+	<script type="text/javascript">
+		$('#{{ page }}').on('pageinit', function (event) {
+			prettyPrint();
+		});
+	</script>
+{% endblock %}

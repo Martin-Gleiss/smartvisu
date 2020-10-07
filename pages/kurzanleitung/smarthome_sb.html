@@ -1,0 +1,699 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "smarthome.html" %}
+
+{% block headline %}
+<img class="icon" src='{{ icon0 }}audio_audio.svg' />SmartHomeNG - Plugin Squeezebox
+{% endblock %}
+
+{% block docu %}
+<script>
+  io.write('Squeezebox_Player1.Name', 'Omas Jukebox');
+  io.write('Squeezebox_Player1.IP', '08 . 15 . 47 . 11');
+  io.write('Squeezebox_Player1.Signal_Strength', '92');
+
+</script>
+<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" >
+            <h3>{{ basic.print('Name1', 'Squeezebox_Player1.Name') }}-{{ basic.print('IP1', 'Squeezebox_Player1.IP') }}-{{ basic.print('Signal1', 'Squeezebox_Player1.Signal_Strength', '%') }}</h3>
+            {% import "widget_squeezebox.html" as squeezebox %}
+             {{ squeezebox.control('music2', 'Squeezebox_Player1.Power', 'Squeezebox_Player1.Play', 'Squeezebox_Player1.Pause', 'Squeezebox_Player1Stop', 'Squeezebox_Player1.Playlist_Forward', 'Squeezebox_Player1.Playlist_Backward', 'Squeezebox_Player1.TimePlus', 'Squeezebox_Player1.TimeMinus', 'Squeezebox_Player1.Volume', 'Squeezebox_Player1.Mute', 'Squeezebox_Player1.Title', 'Squeezebox_Player1.Artist', 'Squeezebox_Player1.Repeat', 'Squeezebox_Player1.Repeat_Playlist', '', 'Squeezebox_Player1.Duration', '') }}    
+        </div>
+    </div>
+</div>  
+<br clear="all">
+Hier ein Beispiel wie man den Squeezebox-Server und Squeezebox-Player in die Visu einbinden kann und diesen über die Visu und somit auch z.B. über Tastsensoren steuern kann.
+Für die Darstellung des Players in der Visu nutzen wir ein "eigenes" Widget, welches Robert Budde aus dem KNX-Userforum auf Basis 
+des "multimedia.musik"-Widget von Axel Oberstätter erstellt hat. Vielen Dank dafür.<br>
+<h4>1. Plugin einbinden:</h4>
+Zu Beginn binden wir den SB(Squeezebox)-Server ein.
+Das benötigte Plugin liefert SmartHomeNG und wir müssen es nur noch in die plugin.yaml einfügen. Diese finden wir unter
+<div class="linux">
+    <code>/usr/smarthome/etc/plugin.yaml</code>
+</div>	
+Hier fügen wir nun folgendes ein:
+<textarea cols="50" rows="3">
+squeezebox:
+    plugin_name: squeezebox
+    host: 192.168.1.110
+    port: 9090
+</textarea>
+	hierbei bedarf es nun 2 Anpassungen:
+	<ul>
+	<li><i>host</i> - Die IP unter welcher der SB-Server zu erreichen ist</li>
+	<li><i>port</i> - Der Port unter welcher der SB-Server zu erreichen ist (Standart = 9090)</li>
+	</ul>
+	Dann die plugin.yaml speichern.
+	<br>
+	<h4>2. Items erstellen:</h4>
+	Als nächstes erstellen wir die Items. Dazu erstellen wir im Item-Verzeichnis via WinSCP eine Datei und nennen diese der Einfachheit halber squeezebox.yaml<br>
+	In diese Datei fügen wir nun folgenden kompletten Inhalt und speichern diese anschließend. <b>!!!</b> Die im Code aufgeführte Mac-Adresse (squeezebox_playerid) ist anzupassen <b>!!!</b><br>
+   <div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="true">
+                  <h3>squeezebox.yaml</h3>
+	<table style=";width:100%;">
+		<tbody>
+			<tr align="left">
+				<td style="vertical-align:top">
+<pre>
+Squeezebox_Player1:
+    squeezebox_playerid: 00:04:20:2a:87:b7
+
+    Name:
+        type: str
+        visu_acl: rw
+        squeezebox_send: '<playerid> name {}'
+        squeezebox_recv: '<playerid> name'
+
+    IP:
+        type: str
+        visu_acl: rw
+        squeezebox_recv: player ip <playerid>
+
+    Signal_Strength:
+        type: num
+        visu_acl: rw
+        squeezebox_recv: '<playerid> signalstrength'
+
+    Power:
+        type: bool
+        visu_acl: rw
+        squeezebox_send: '<playerid> power {}'
+        squeezebox_recv: '<playerid> prefset server power'
+        squeezebox_init: '<playerid> power'
+
+    Mute:
+        type: bool
+        visu_acl: rw
+        squeezebox_send: '<playerid> mixer muting {}'
+        squeezebox_recv: '<playerid> prefset server mute'
+        squeezebox_init: '<playerid> mixer muting'
+
+    Volume:
+        type: num
+        visu_acl: rw
+        squeezebox_send: '<playerid> mixer volume {}'
+        squeezebox_recv: '<playerid> prefset server volume'
+        squeezebox_init: '<playerid> mixer volume'
+
+    Volume_Up:
+        type: bool
+        enforce_updates: 'true'
+        visu_acl: rw
+        squeezebox_send: '<playerid> button volup'
+
+    Volume_Down:
+        type: bool
+        enforce_updates: 'true'
+        visu_acl: rw
+        squeezebox_send: '<playerid> button voldown'
+
+    Play:
+        type: bool
+        visu_acl: rw
+        squeezebox_send: '<playerid> play'
+        squeezebox_recv: '<playerid> play'
+        squeezebox_init: '<playerid> mode'
+
+    Stop:
+        type: bool
+        visu_acl: rw
+        squeezebox_send: '<playerid> stop'
+        squeezebox_recv: '<playerid> stop'
+        squeezebox_init: '<playerid> mode'
+
+    Pause:
+        type: bool
+        visu_acl: rw
+        squeezebox_send: '<playerid> pause {}'
+        squeezebox_recv: '<playerid> pause'
+        squeezebox_init: '<playerid> mode'
+
+    Repeat:
+        type: num
+        visu_acl: rw
+        enforce_updates: yes
+        squeezebox_send: '<playerid> playlist repeat {}'
+        squeezebox_recv: '<playerid> playlist repeat'
+
+    Repeat_Song:
+        type: bool
+        visu_acl: rw
+        enforce_updates: yes
+        squeezebox_send: '<playerid> playlist repeat 1'
+
+    Repeat_Playlist:
+        type: bool
+        visu_acl: rw
+        enforce_updates: yes
+        squeezebox_send: '<playerid> playlist repeat 2'
+
+    Repeat_None:
+        type: bool
+        visu_acl: rw
+        enforce_updates: yes
+        squeezebox_send: '<playerid> playlist repeat 0'
+
+    Current_Title:
+        type: str
+        visu_acl: rw
+        squeezebox_recv: '<playerid> playlist newsong'
+        squeezebox_init: '<playerid> current_title'
+
+    Genre:
+        type: str
+        visu_acl: rw
+        squeezebox_recv: '<playerid> genre'
+
+    Artist:
+        type: str
+        visu_acl: rw
+        squeezebox_recv: '<playerid> artist'
+
+    Album:
+        type: str
+        visu_acl: rw
+        squeezebox_recv: '<playerid> album'
+
+    Title:
+        type: str
+        visu_acl: rw
+        squeezebox_recv: '<playerid> title'
+
+    Duration:
+        type: num
+        visu_acl: rw
+        squeezebox_recv: '<playerid> duration'
+
+    Time:
+        type: num
+        visu_acl: rw
+        squeezebox_recv: '<playerid> playlist time'
+
+    TimePlus:
+        type: num
+        visu_acl: rw
+        enforce_updates: 'true'
+        squeezebox_recv: '<playerid> time'
+        squeezebox_send: '<playerid> time +10'
+
+    TimeMinus:
+        type: num
+        visu_acl: rw
+        enforce_updates: 'true'
+        squeezebox_recv: '<playerid> time'
+        squeezebox_send: '<playerid> time -10'
+
+    Playlist_Index:
+        type: num
+        visu_acl: rw
+        squeezebox_send: '<playerid> playlist index {}'
+        squeezebox_recv: '<playerid> playlist index'
+
+    Playlist_Forward:
+        type: bool
+        enforce_updates: 'true'
+        visu_acl: rw
+        squeezebox_send: '<playerid> playlist index +1'
+
+    Playlist_Backward:
+        type: bool
+        enforce_updates: 'true'
+        visu_acl: rw
+        squeezebox_send: '<playerid> playlist index -1'
+
+    Playlist_Name:
+        type: str
+        visu_acl: rw
+        squeezebox_send: '<playerid> playlist name {}'
+        squeezebox_recv: '<playerid> playlist name'
+
+    Playlist_Save:
+        type: str
+        visu_acl: rw
+        squeezebox_send: '<playerid> playlist save {}'
+
+    Playlist_Load:
+        type: str
+        enforce_updates: 'true'
+        visu_acl: rw
+        squeezebox_send: '<playerid> playlist play {}'
+</pre>
+					</td>
+			</tr>
+		</tbody>
+	</table>
+        </div>
+    </div>
+</div>
+
+	<br><br>
+	<h4>3. Widget einbinden:</h4>	
+	Wie oben bereits erwähnt nutzen wir hier mal nicht ein Standart-Widget sondern ein angepasstes Widgets.
+	Dazu erstellen wir uns in unserem Pages-Verzeichnis zwei neue Dateien mit den Namen <i>widget_squeezebox.html</i> und <i>widget_my.html</i>.
+	<br><br>
+	In die <i>widget_squeezebox.html</i> fügen wir folgendes ein:
+	<div class="block" style="width:100%">
+	<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="true">
+                  <h3>widget_squeezebox.html</h3>
+	<table style=";width:100%;">{% raw %}
+		<tbody>
+			<tr align="left">
+				<td style="vertical-align:top">
+<pre>
+/** 
+* ----------------------------------------------------------------------------- 
+* @package     smartVISU 
+* @author      Martin Gleiß 
+* @copyright   2012 
+* @license     GPL <http://www.gnu.de> 
+* ----------------------------------------------------------------------------- 
+*/ 
+ 
+/** 
+* Squeezebox Multimedia Player 
+*  
+* @param       unique id for this widget 
+* @param       the gad/item for play 
+* @param       the gad/item for pause 
+* @param       the gad/item for stop (optional) 
+* @param       the gad/item for playlist forward 
+* @param       the gad/item for playlist backward 
+* @param       the gad/item for playlist fastforward (opuional) 
+* @param       the gad/item for playlist fastbackward (opuional) 
+* @param       the gad/item for the volume (optional) 
+* @param       the gad/item to mute the music (optional) 
+* @param       the gad/item for the song title (optional) 
+* @param       the gad/item for the song artist (optional) 
+* @param       the gad/item for repeat (optional) 
+* @param       the gad/item to repeat all (optional) 
+* @param       the gad/item for the duration (optional) 
+* @param       the gad/item for the time/position (optional) 
+* @param       the gad/item for the playlist index (optional) 
+* @param       the gad/item for the playlist total (optional) 
+* 
+* @author      Robert Budde 
+* derived from "multimedia" by Axel Otterstätter - thanks! 
+*/ 
+{% macro control(id, gad_power, gad_play, gad_pause, gad_stop, gad_playlistforward, gad_playlistbackward, gad_playlistfastforward, gad_playlistfastbackward, gad_vol, gad_mute, gad_title, gad_artist, gad_repeat, gad_repeatall, gad_defaultplaylist, gad_duration, gad_time) %} 
+   {% import "basic.html" as basic %} 
+   {% import "widget_my.html" as my %} 
+   {% set uid = uid(page, id) %} 
+ 
+   <div id="{{ uid }}" class="music"> 
+        
+       {% if gad_vol %} 
+       <div class="vol"> 
+           <img class="slider-bottomup-scale" src="pages/base/pics/scale_buttomup.png"> 
+           {{ basic.slider(id~'vol', gad_vol, 0, 100, 5, 'bottomup') }} 
+       </div> 
+       {% endif %} 
+ 
+ 
+       <div class="control"> 
+       {% if gad_power %} {{ basic.dual(id~'power', gad_power, icon1~'control_standby.svg', icon0~'control_standby.svg') }} {% endif %} 
+       {% if gad_mute %} {{ basic.dual(id~'mute', gad_mute, icon1~'audio_volume_mute.svg', icon0~'audio_volume_mute.svg', 1, 0) }} {% endif %} 
+       {% if gad_repeat %} {{ basic.dual(id~'repeat', gad_repeat, icon1~'control_return.svg', icon0~'control_return.svg', 1, 0) }} {% endif %} 
+       {% if gad_repeatall %} {{ basic.dual(id~'repeatall', gad_repeatall, icon1~'audio_repeat.svg', icon0~'audio_repeat.svg') }} {% endif %} 
+       {% if gad_defaultplaylist %} {{ basic.button(id~'defaultplaylist', gad_defaultplaylist, 'Default Playlist', icon0~'audio_playlist.svg', 1) }} {% endif %} 
+       </div> 
+ 
+       <div class="title"> 
+         {% if gad_artist %} 
+         {{ basic.value(id~'artist', gad_artist) }} 
+         <br /> 
+         {% endif %} 
+         {% if gad_title %} 
+         {{ basic.value(id~'title', gad_title) }} 
+         {% endif %} 
+         <br /> 
+         {% if gad_playlistist %} 
+         {% if gad_playlisttotal %} 
+         {{ basic.value(id~'playlistist', gad_playlistist) }} von {{ basic.value(id~'playlisttotal', gad_playlisttotal) }} 
+         {% endif %} 
+         {% endif %} 
+       </div> 
+ 
+       <div class="set"> 
+           {% if gad_duration %} 
+           {% if gad_time %} 
+           <div class="pos"> 
+               <div class="scale">&amp;nbsp;</div> 
+               {{ my.time_slider(id~'time', gad_time, gad_duration, 1) }} 
+           </div> 
+           {% endif %} 
+           {% endif %} 
+ 
+           <div data-role="controlgroup" data-type="horizontal"> 
+               {{ basic.dual(id~'play', gad_play, icon1~'audio_play.svg', icon0~'audio_play.svg', 1, 1) }} 
+               {{ basic.dual(id~'pause', gad_pause, icon1~'audio_pause.svg', icon0~'audio_pause.svg') }} 
+               {% if gad_stop %} {{ basic.dual(id~'stop', gad_stop, icon1~'audio_stop.svg', icon0~'audio_stop.svg', 1, 1) }} {% endif %} 
+          </div> 
+           <div data-role="controlgroup" data-type="horizontal"> 
+               {{ basic.button(id~'playlistbackward', gad_playlistbackward, 'backward', icon0~'control_arrow_left.svg', 1) }} 
+               {% if gad_playlistfastbackward %} {{ basic.button(id~'gad_playlistfastbackward', gad_playlistfastbackward, 'fastbackward', icon0~'control_arrow_leftward.svg', 1) }} {% endif %} 
+               {% if gad_playlistfastforward %} {{ basic.button(id~'playlistfastforward', gad_playlistfastforward, 'fastforward', icon0~'control_arrow_rightward.svg', 1) }} {% endif %} 
+               {{ basic.button(id~'playlistforward', gad_playlistforward, 'forward', icon0~'control_arrow_right.svg', 1) }} 
+          </div> 
+      </div> 
+   </div> 
+{% endmacro %}
+</ pre>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+          </div>
+    </div>
+    </div>	
+{% endraw %}
+	<br>
+	In die <i>widget_my.html</i> fügen wir folgendes ein:
+	<div class="block" style="width:100%">
+	<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="true">
+                  <h3>widget_my.html</h3>
+	<table style=";width:100%;">{% raw %}
+		<tbody>
+			<tr align="left">
+				<td style="vertical-align:top">
+/**
+ * A list with selectable item
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item for the list 
+ * @param       a gad/item for the selected item 
+ * @param       the text to be displayed on top of the list
+ */
+{% macro list(id, gad_list, gad_item, txt ) %}
+  <ul id="{{ uid(page, id) }}" data-widget="basic.list" data-item="{{ gad_list }}, {{ gad_item }}"
+      data-role="listview" data-dividertheme="c">  
+              <li data-icon="false"><a href="#">View details</a></li>
+              <li data-icon="false"><a href="#">Edit</a></li>
+              <li data-icon="false"><a href="#">Disable</a></li>
+              <li data-icon="false"><a href="#">Delete</a></li>
+          </ul>   
+{% endmacro %}
+
+
+/**
+ * Displays a slider-control
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item current time (progress) 
+ * @param       a gad/item total duration (maximum) 
+ * @param       seconds between two values (optional, default 5s) 
+ * @param       the orientation ('none', 'vertical', 'bottomup', 'semicircle')
+ */
+{% macro time_slider(id, gad_time, gad_duration, step, mode) %}
+
+    <input id="{{ uid(page, id) }}" data-widget="my.time_slider" data-item="{{ gad_time }}, {{ gad_duration }}" 
+        type="range" value="0" min="0" max="1" disabled="1" step="{{ step|default(5) }}"
+        orientation="{{ mode }}" data-highlight="true" />
+
+{% endmacro %}
+					</td>
+			</tr>
+		</tbody>
+	</table>				  
+          </div>
+    </div>
+    </div>	
+{% endraw %}
+	<br>
+	
+	Nun binden wir das "eigene" Widget in unseren html-Seite ein. Dazu müssen wir in der html-Seite sagen, wo sich das Widget befindet. Das erfolgt mit einer zusätzlichen Zeile
+		<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{% import "widget_squeezebox.html" as squeezebox %}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+	In Klatext heißt das, dass unser komletter Widget-Code für dieses Beispiel wie folgt aussieht
+		<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{% import "widget_squeezebox.html" as squeezebox %}
+            {{ squeezebox.control('music1', 'Squeezebox_Player1.Power', 'Squeezebox_Player1.Play', 'Squeezebox_Player1.Pause', 'Squeezebox_Player1.Stop', 'Squeezebox_Player1.Playlist_Forward', 'Squeezebox_Player1.Playlist_Backward', 'Squeezebox_Player1.TimePlus', 'Squeezebox_Player1.TimeMinus', 'Squeezebox_Player1.Volume', 'Squeezebox_Player1.Mute', 'Squeezebox_Player1.Title', 'Squeezebox_Player1.Artist', 'Squeezebox_Player1.Repeat', 'Squeezebox_Player1.Repeat_Playlist', '', 'Squeezebox_Player1.Duration', '') }}    
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+
+	
+<hr />
+<h3>Playlists</h3>	
+<br>
+	Wer mag, kann sich beispielsweise mit GIMP eigene Icons für Cover oder Radiosender erzeugen. In diesem Beispiel wurden diese als *.png gespeichert und unter folgendem Verzeichnis abgelegt.
+	<div class="linux">
+		<code>/web/smartvisu/pics/station/Playlists/</code>
+	</div>
+	<br>
+	Weiterhin benötigen wir wieder unsere Items. Ein Beispielitem mit Pfad zur hinterlegten Playlist könnte so aussehen:
+<textarea cols="50" rows="3">
+Squeezebox_Player1:
+
+    Playlist_Load_AntenneBayern:
+        type: bool
+        enforce_updates: 'true'
+        visu_acl: rw
+        squeezebox_send: <playerid> playlist play /volume1/music/01_Playlists/AntenneBayern.m3u
+</textarea>
+<br>
+
+Das verwendete Widgets ist "multimedia.station". Beispiel:
+<div class="linux">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+    {{ multimedia.station('Playlist1', 'Squeezebox_Player1.Playlist_Load_AntenneBayern','pics/station/playlists/antennebayern.png', 1, 'midi') }}
+    {% endverbatim %}{% endfilter %}
+    </code>
+</div>	
+<br>
+
+Hier gilt auch wieder, das wir auf das Widget referenzieren müssen. Dies macht man z.B. mit:
+<div class="linux">
+	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+	{% import "multimedia.html" as multimedia %}
+	{% endverbatim %}{% endfilter %}
+	</code>
+</div>
+<br>
+
+Nun haben wir verschiedene Möglichkeiten, wo wir die Playlist aufrufen können. Hier mal 2 Beispiele. Einmal als eigenständiger Block und einmal zusammen mit dem Player in einem Block Typ 3.
+Beginnen wir mit dem eigenständigen Block.
+<br>
+
+<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" >	
+        <h3>Playlisten</h3>
+        ------ Radio ------
+        {% import "multimedia.html" as multimedia %}
+        <table width="100%">
+            <tr>
+            <td align="middle" width="100%">
+                    {{ multimedia.station('Playlist1', 'Squeezebox_Player1.Playlist_Load_AntenneBayern', 'pics/station/radio/antennebayern.png', 1, 'midi') }}
+                    {{ multimedia.station('Playlist2', 'Squeezebox_Player1.Playlist_Load_Bayern1', 'pics/station/radio/s24854q.png', 1, 'midi') }}
+                    {{ multimedia.station('Playlist3', 'Squeezebox_Player1.Playlist_Load_Bayern3', 'pics/station/radio/bayern3.png', 1, 'midi') }}
+                    {{ multimedia.station('Playlist4', 'Squeezebox_Player1.Playlist_Load_antennemv', 'pics/station/radio/antennemv.png', 1, 'midi') }}
+            </td>
+            </tr>
+        </table><br>
+        ----- Alben -----
+        <table width="100%">
+            <tr>
+            <td align="middle" width="100%">
+                     {{ multimedia.station('Playlist5', 'Squeezebox_Player1.Playlist_Load_pogues','pics/station/playlists/pogues12.png', 1, 'midi') }}
+                     {{ multimedia.station('Playlist6', 'Squeezebox_Player1.Playlist_Load_manowar','pics/station/playlists/manowar.png', 1, 'midi') }}
+                     {{ multimedia.station('Playlist7', 'Squeezebox_Player1.Playlist_Load_freedomcall','pics/station/playlists/freedomcall.png', 1, 'midi') }}
+                     {{ multimedia.station('Playlist8', 'Squeezebox_Player1.Playlist_Load_edguy','pics/station/playlists/edguy.png', 1, 'midi') }}
+            </td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+            <td align="middle" width="100%">
+                     {{ multimedia.station('Playlist9', 'Squeezebox_Player1.Playlist_Load_helloween','pics/station/playlists/helloween.png', 1, 'midi') }}
+                     {{ multimedia.station('Playlist10', 'Squeezebox_Player1.Playlist_Load_eav','pics/station/playlists/eav.png', 1, 'midi') }}
+                     {{ multimedia.station('Playlist11', 'Squeezebox_Player1.Playlist_Load_ami','pics/station/playlists/ami1.png', 1, 'midi') }}
+                     {{ multimedia.station('Playlist12', 'Squeezebox_Player1.Playlist_Load_Bocelli','pics/station/playlists/bocelli.png', 1, 'midi') }}
+            </td>
+            </tr>
+        </table>
+		</div>
+    </div>
+</div>		
+<br clear="all">
+
+
+hier jetzt das dazugehörige html-Beispiel:
+
+<div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="true">
+          <h3>Beispiel html (Klick mich)</h3>	
+<textarea cols="50" rows="3">{% raw %}
+<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" >    
+        <h3>Playlisten</h3>
+        ------ Radio ------
+        {% import "multimedia.html" as multimedia %}
+        <table width="100%">
+            <tr>
+            <td align="middle" width="100%">
+                    {{ multimedia.station('Playlist1', 'Squeezebox_Player1.Playlist_Load_AntenneBayern', 'pics/station/radio/antennebayern.png', 1, 'midi') }}
+                    {{ multimedia.station('Playlist2', 'Squeezebox_Player1.Playlist_Load_Bayern1', 'pics/station/radio/s24854q.png', 1, 'midi') }}
+                    {{ multimedia.station('Playlist3', 'Squeezebox_Player1.Playlist_Load_Bayern3', 'pics/station/radio/bayern3.png', 1, 'midi') }}
+                    {{ multimedia.station('Playlist4', 'Squeezebox_Player1.Playlist_Load_antennemv', 'pics/station/radio/antennemv.png', 1, 'midi') }}
+            </td>
+            </tr>
+        </table><br>
+        ----- Alben -----
+        <table width="100%">
+            <tr>
+            <td align="middle" width="100%">
+                     {{ multimedia.station('Playlist5', 'Squeezebox_Player1.Playlist_Load_pogues','pics/station/playlists/pogues12.png', 1, 'midi') }}
+                     {{ multimedia.station('Playlist6', 'Squeezebox_Player1.Playlist_Load_manowar','pics/station/playlists/manowar.png', 1, 'midi') }}
+                     {{ multimedia.station('Playlist7', 'Squeezebox_Player1.Playlist_Load_freedomcall','pics/station/playlists/freedomcall.png', 1, 'midi') }}
+                     {{ multimedia.station('Playlist8', 'Squeezebox_Player1.Playlist_Load_edguy','pics/station/playlists/edguy.png', 1, 'midi') }}
+            </td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+            <td align="middle" width="100%">
+                     {{ multimedia.station('Playlist9', 'Squeezebox_Player1.Playlist_Load_helloween','pics/station/playlists/helloween.png', 1, 'midi') }}
+                     {{ multimedia.station('Playlist10', 'Squeezebox_Player1.Playlist_Load_eav','pics/station/playlists/eav.png', 1, 'midi') }}
+                     {{ multimedia.station('Playlist11', 'Squeezebox_Player1.Playlist_Load_ami','pics/station/playlists/ami1.png', 1, 'midi') }}
+                     {{ multimedia.station('Playlist12', 'Squeezebox_Player1.Playlist_Load_Bocelli','pics/station/playlists/bocelli.png', 1, 'midi') }}
+            </td>
+            </tr>
+        </table>
+        </div>
+    </div>
+</div>
+{% endraw %}
+</textarea>
+    </div>
+    </div>
+    </div>
+<br>
+<br>
+    
+    
+Und hier noch das Beispiel in Verbindung mit dem Player in einem Block Typ 3</br>
+
+<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" >
+            <h3>{{ basic.value('Name11', 'Squeezebox_Player2.Name') }}-{{ basic.value('IP11', 'Squeezebox_Player2.IP') }}-{{ basic.value('Signal11', 'Squeezebox_Player2.Signal_Strength', '%') }}</h3>
+            {% import "widget_squeezebox.html" as squeezebox %}
+             {{ squeezebox.control('music3', 'Squeezebox_Player2.Power', 'Squeezebox_Player2.Play', 'Squeezebox_Player2.Pause', 'Squeezebox_Player2Stop', 'Squeezebox_Player2.Playlist_Forward', 'Squeezebox_Player2.Playlist_Backward', 'Squeezebox_Player2.TimePlus', 'Squeezebox_Player2.TimeMinus', 'Squeezebox_Player2.Volume', 'Squeezebox_Player2.Mute', 'Squeezebox_Player2.Title', 'Squeezebox_Player2.Artist', 'Squeezebox_Player2.Repeat', 'Squeezebox_Player2.Repeat_Playlist', '', 'Squeezebox_Player2.Duration', '') }}    	
+        </div>    
+        <div data-role="collapsible">
+        <h3>Playlisten</h3>
+        ------ Radio ------
+        {% import "multimedia.html" as multimedia %}
+        <table width="100%">
+            <tr>
+                <td align="middle" width="100%">
+                        {{ multimedia.station('List1', 'Squeezebox_Player1.Playlist_Load_AntenneBayern', 'pics/station/radio/antennebayern.png', 1, 'midi') }}
+                        {{ multimedia.station('List', 'Squeezebox_Player1.Playlist_Load_Bayern1', 'pics/station/radio/s24854q.png', 1, 'midi') }}
+                        {{ multimedia.station('List3', 'Squeezebox_Player1.Playlist_Load_Bayern3', 'pics/station/radio/bayern3.png', 1, 'midi') }}
+                        {{ multimedia.station('List4', 'Squeezebox_Player1.Playlist_Load_antennemv', 'pics/station/radio/antennemv.png', 1, 'midi') }}
+                </td>
+            </tr>
+        </table><br>
+        ----- Alben -----
+        <table width="100%">
+            <tr>
+            <td align="middle" width="100%">
+                     {{ multimedia.station('List5', 'Squeezebox_Player1.Playlist_Load_pogues','pics/station/playlists/pogues12.png', 1, 'midi') }}
+                     {{ multimedia.station('List6', 'Squeezebox_Player1.Playlist_Load_manowar','pics/station/playlists/manowar.png', 1, 'midi') }}
+                     {{ multimedia.station('List7', 'Squeezebox_Player1.Playlist_Load_freedomcall','pics/station/playlists/freedomcall.png', 1, 'midi') }}
+                     {{ multimedia.station('List8', 'Squeezebox_Player1.Playlist_Load_edguy','pics/station/playlists/edguy.png', 1, 'midi') }}
+            </td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+            <td align="middle" width="100%">
+                     {{ multimedia.station('List9', 'Squeezebox_Player1.Playlist_Load_helloween','pics/station/playlists/helloween.png', 1, 'midi') }}
+                     {{ multimedia.station('List10', 'Squeezebox_Player1.Playlist_Load_eav','pics/station/playlists/eav.png', 1, 'midi') }}
+                     {{ multimedia.station('List11', 'Squeezebox_Player1.Playlist_Load_ami','pics/station/playlists/ami1.png', 1, 'midi') }}
+                     {{ multimedia.station('List12', 'Squeezebox_Player1.Playlist_Load_Bocelli','pics/station/playlists/bocelli.png', 1, 'midi') }}
+            </td>
+            </tr>
+        </table>
+        </div>
+    </div>
+</div>
+<br clear="all">
+
+hier jetzt das dazugehörige html-Beispiel:</ br>
+<div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="true">
+                  <h3>Beispiel html (Klick mich)</h3>
+<textarea cols="50" rows="3">{% raw %}
+<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" >
+            <h3>{{ basic.value('Name11', 'Squeezebox_Player2.Name') }}-{{ basic.value('IP11', 'Squeezebox_Player2.IP') }}-{{ basic.value('Signal11', 'Squeezebox_Player2.Signal_Strength', '%') }}</h3>
+            {% import "widget_squeezebox.html" as squeezebox %}
+             {{ squeezebox.control('music3', 'Squeezebox_Player2.Power', 'Squeezebox_Player2.Play', 'Squeezebox_Player2.Pause', 'Squeezebox_Player2Stop', 'Squeezebox_Player2.Playlist_Forward', 'Squeezebox_Player2.Playlist_Backward', 'Squeezebox_Player2.TimePlus', 'Squeezebox_Player2.TimeMinus', 'Squeezebox_Player2.Volume', 'Squeezebox_Player2.Mute', 'Squeezebox_Player2.Title', 'Squeezebox_Player2.Artist', 'Squeezebox_Player2.Repeat', 'Squeezebox_Player2.Repeat_Playlist', '', 'Squeezebox_Player2.Duration', '') }}    	
+        </div>    
+        <div data-role="collapsible">
+        <h3>Playlisten</h3>
+        ------ Radio ------
+        {% import "multimedia.html" as multimedia %}
+        <table width="100%">
+            <tr>
+                <td align="middle" width="100%">
+                        {{ multimedia.station('List1', 'Squeezebox_Player1.Playlist_Load_AntenneBayern', 'pics/station/radio/antennebayern.png', 1, 'midi') }}
+                        {{ multimedia.station('List', 'Squeezebox_Player1.Playlist_Load_Bayern1', 'pics/station/radio/s24854q.png', 1, 'midi') }}
+                        {{ multimedia.station('List3', 'Squeezebox_Player1.Playlist_Load_Bayern3', 'pics/station/radio/bayern3.png', 1, 'midi') }}
+                        {{ multimedia.station('List4', 'Squeezebox_Player1.Playlist_Load_antennemv', 'pics/station/radio/antennemv.png', 1, 'midi') }}
+                </td>
+            </tr>
+        </table><br>
+        ----- Alben -----
+        <table width="100%">
+            <tr>
+            <td align="middle" width="100%">
+                     {{ multimedia.station('List5', 'Squeezebox_Player1.Playlist_Load_pogues','pics/station/playlists/pogues12.png', 1, 'midi') }}
+                     {{ multimedia.station('List6', 'Squeezebox_Player1.Playlist_Load_manowar','pics/station/playlists/manowar.png', 1, 'midi') }}
+                     {{ multimedia.station('List7', 'Squeezebox_Player1.Playlist_Load_freedomcall','pics/station/playlists/freedomcall.png', 1, 'midi') }}
+                     {{ multimedia.station('List8', 'Squeezebox_Player1.Playlist_Load_edguy','pics/station/playlists/edguy.png', 1, 'midi') }}
+            </td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+            <td align="middle" width="100%">
+                     {{ multimedia.station('List9', 'Squeezebox_Player1.Playlist_Load_helloween','pics/station/playlists/helloween.png', 1, 'midi') }}
+                     {{ multimedia.station('List10', 'Squeezebox_Player1.Playlist_Load_eav','pics/station/playlists/eav.png', 1, 'midi') }}
+                     {{ multimedia.station('List11', 'Squeezebox_Player1.Playlist_Load_ami','pics/station/playlists/ami1.png', 1, 'midi') }}
+                     {{ multimedia.station('List12', 'Squeezebox_Player1.Playlist_Load_Bocelli','pics/station/playlists/bocelli.png', 1, 'midi') }}
+            </td>
+            </tr>
+        </table>
+        </div>
+    </div>
+</div>{% endraw %}</textarea>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

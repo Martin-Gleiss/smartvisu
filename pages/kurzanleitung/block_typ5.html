@@ -1,0 +1,49 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "block.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}audio_playlist.svg' />Block - Typ 5
+{% endblock %}
+
+{% block docu %}
+
+
+   <div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+                  <h3>Typ 5</h3>
+                  <font color="#C9C5C5"><p>Widget-Code</p></font>
+          </div>
+    </div>
+    </div>
+<br clear="all">
+
+<br><br>
+Hier nun der html-Codes für die Typ 5
+<br>{% raw %}
+<textarea cols="50" rows="3">
+   <div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+                  <h3>Typ 5</h3>
+                  {{Widget-Code}}
+          </div>
+    </div>
+    </div>
+{% endraw %}
+</textarea>
+
+
+
+
+{% endblock %}
+
+

@@ -1,0 +1,95 @@
+{% extends "main.html" %}
+
+{% block docu %}
+	<h1><img class="icon" src='{{ icon0 }}message_error.svg' />Fehlererkennung</h1>
+
+
+	Hier folgen einige Tips zur Erkennung bzw. Analyse von Fehlern.<br>
+
+
+	<h2>1. Template Checker</h2>
+	Über die Config-Seite --> Template Checker ist ein Tool zu finden, das auf allen Visu-Seiten die formale Richtigkeit der Einbindung der Widgets und deren Parametrierung abprüft. Fehler werden lokalisiert und dargestellt.<br>
+	Zudem ist mit dem Widget Constructor ein Assistent in Entwicklung, der die Parametrierung der Widgets vereinfacht und eine einfache Testmöglicheit bereit stellt. <br />
+	<h2>2. SmartHomeNG Monitor</h2>	
+	In SmartVISU ist ein Log-System von SmartHomeNG eingebunden. Der sogenannte "SmartHomeNG Monitor".<br>
+	Zu finden ist dieses über die Config-Seite --> SmartHomeNG <br>
+	Im SmartHomeNG Monitor findet man neben einem Log-System unter anderem auch nützliche Infos wie Systemstart, Version von SmartHomeNG, Systemauslastung etc.<br>
+	Eine mögliche Anzeige könnte so aussehen.<br>
+	<h3>Log</h3>
+	<span class="log">
+		<ul data-role="listview">
+			<li data-icon="false">
+				<div class="color error"></div>
+				<h3>16.08.2020 19:12:10</h3>
+				<p>Error: KNX connection could not be established</p>
+			</li>
+			<li data-icon="false">
+				<div class="color warning"></div>
+				<h3>16.08.2020 19:11:37</h3>
+				<p>KeyError: Client 192.168.2.99:55102 requested to monitor item EG.Aussen.Temperature which can not be found</p>
+			</li>
+			<li data-icon="false">
+				<div class="color info"></div>
+				<h3>16.08.2020 09:18:12</h3>
+				<p>Info: aber sonst ist heute wieder alles klar - auf der Andrea Doria :)</p>
+			</li>
+		</ul>
+	</span>
+	<br>
+	Hierbei ist die Wertigkeit der Log-Einträge zusätzlich farblich markiert.
+	<br>
+	Die roten Einträge sind Fehler-Meldungen (Error) und können dementsprechend <em>problematisch</em> sein. Daher empfiehlt es sich diese Errors als erstes zu beheben. <br>
+	Im oben genannten Beispiel verweist die Fehlermeldung darauf, dass keine KNX-Verbindung hergestellt werden kann.
+    Hierbei könnte eine möglich Ursache sehr wahrscheinlich ein falsche Eintrag in der knxd.conf/knxd.ini oder plugin.yaml sein.
+	<br><br>
+	Die gelben Einträge sind Warnungen (Warning). <br>
+	Sie weisen auf verschieden <em>Unstimmigkeiten</em> beim Zusammenspiel von SmartVISU und dem Backend hin. In dem hier aufgezeigten Fall stimmt das verwendete Item nicht.
+	Dies kann im Item-Code selber der Fall sein (z.B. Klammer- oder Tippfehler) es kann aber auch in einem Widget falsch (Tippfehler) eingetragen sein.<br>
+	Ein Beispiel:<br>
+	Das Item in der *.yaml sieht wie folgt aus:<br>
+<textarea cols="50" rows="3">
+EG:
+    Aussen:
+        Temperatur:
+            type: num
+            visu_acl: rw
+            knx_dpt: 9
+            knx_cache: 6/6/4
+</textarea>
+<br>
+Das Item, was wir in einem Widget (z.B. basic.prinnt) verwenden, sieht wie folgt aus:
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.print('', 'EG.Aussen.Temperature', '°') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br>
+Da hier ein 'EG.Aussen.Temperatur<span style="color:#FF0000">e</span>' statt einem 'EG.Aussen.Temperatur' verwendet wurde, findet SmartVISU logischerweise das korrekte Item nicht und es kommt zu oben aufgeführter Warnung.	
+
+<hr />
+
+<h2>3. Konsole (z.B.Putty)</h2>
+
+Generell speichert SmartHomeNG alle Fehler- u. Warnhinweise in Log Dateien. Diese sind zu finden unter:
+<div class="linux">
+    <code>/usr/smarthome/var/log/</code>
+</div>
+Über eine Konfigurationsdatei läßt sich sehr fein einstellen, welcher Programmteil etwas loggen soll und ab welcher Wichtigkeit dieser Logeintrag aufgezeichnet wird.
+<hr />
+
+<h2>4. Internetverbindung oder RTC Modul beim Raspberry Pi</h2>	
+Damit SmartHomeNG richtig startet, braucht es eine richtige Systemzeit.
+Kein Raspberry Pi [1..4] verfügt von Haus aus über eine <a href="https://de.wikipedia.org/wiki/Echtzeituhr">Real Time Clock</a>. Sofern kein Zusatzmodul eingebaut wurde um die Zeit zu speichern, 
+holt sich der Raspberry Pi die aktuelle Zeit aus dem Internet von einem <a href="https://de.wikipedia.org/wiki/Zeitserver">Zeitserver</a>. <br>
+Ist der Zeitserver nicht erreichbar, gibt es keine korrekte Systemzeit und SmartHomeNG startet nicht.
+Wer also SmartHomeNG ohne Internet betreiben oder in Betrieb nehmen möchte, muss als erstes Datum und Zeit von Hand einstellen oder ein Zusatzmodul einbauen und konfigurieren.
+Google liefert dazu mehr als genügend Anleitungen.
+<hr />
+
+<h2>5. Abschluss</h2>	
+Die größte Ursache von Fehlern sind Anwenderfehler. Viele mögliche Fehlerursachen wurden bereits in den Support-Foren
+für <a href="https://knx-user-forum.de/forum/supportforen/smarthome-py">SmartHomeNG</a> und 
+<a href="https://knx-user-forum.de/forum/supportforen/smartvisu">SmartVISU</a> behandelt. Es empfiehlt sich die dortige Suchfunktion zu nutzen.
+
+{% endblock %}

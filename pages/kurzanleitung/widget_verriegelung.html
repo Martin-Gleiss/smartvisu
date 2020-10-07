@@ -1,0 +1,42 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+
+/**
+* A button with lock
+*
+* @param unique id for this widget
+* @param a gad/item for switching
+* @param a gad/item for locking the switch
+* @param text printed on the button (optional)
+* @param a icon or a inline pic: 'arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search' (optional)
+* @param value send if the button is pressed (optional, default 1)
+* @param type: 'micro', 'mini', 'midi' (optional, default: mini)
+*/
+{% macro locker(id, gad_switch, gad_lock, txt, pic, val, type) %}
+
+	<a id="{{ uid(page, id) }}" data-widget="basic.locker" data-item="{{ gad_switch }}, {{ gad_lock }}" data-val="{{ val|default('1') }}"
+		class="ui-{{ type|default('mini') }}" data-role="button" data-inline="true"
+		{% if not pic %}
+		data-iconpos="nopic">{{ txt|e }}
+		{% elseif pic|slice(-4, 4) != '.png' and not txt %}
+			data-icon="{{ pic }}" data-iconpos="notext">
+		{% elseif pic|slice(-4, 4) != '.png' and txt %}
+			data-icon="{{ pic }}" data-iconpos="top">{{ txt|e }}
+		{% elseif type == 'midi' and txt %}
+			><img class="icon" src="{{ pic }}">
+			<div>{{ txt|e }}</div>
+		{% else %}
+			data-iconpos="center"><img class="icon" src="{{ pic }}">
+		{% endif %}
+	</a>
+
+{% endmacro %}
+

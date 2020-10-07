@@ -1,0 +1,232 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "sample_sv.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}edit_input_numeric.svg' />Beispiel - Einbindung eines Code-Pads
+{% endblock %}
+
+{% block docu %}
+	<div class="preblock">
+		<span data-role="controlgroup" data-type="horizontal"> 
+			Code = 9876<br />
+				{% import "widget_authbutton.html" as lola %}
+				{{ lola.auth_switch('auth1', 'Wohnzimmer.Stehlampe', icon1~'sani_domestic_waterworks.svg', icon0~'sani_domestic_waterworks.svg', '1', '0', '9876' ) }}
+		</span>
+	</div>
+<br />	
+
+Hier nun ein Besipiel um ein Code-Pad zum Freigeben von Schaltaktionen (1bit) einzubinden.<br>
+Das dazugehörige Widget(erstellt von Alexander Schwithal), ist mit Stand 10.2014 noch nicht released. Daher folgt hier die Beschreibung wie es manuelle einbringt.<br><br>
+Wir beginnen mit dem Java-Part.<br>
+Hierzu fügen wir den unten aufgeführten Code in die <span style="color:#D7DF01">visu.js</span> in unserem Pages-Verzeichnis und speichern diese.<br>
+	<textarea cols="50" rows="3">	
+// ----- basic.auth_switch ---------------------------------------------------------
+
+$(document).delegate('span[data-widget="basic.auth_switch"]', {
+	'update': function (event, response) {
+		$('#' + this.id + ' img').attr('src', (response == $(this).attr('data-val-on') ? $(this).attr('data-pic-on') : $(this).attr('data-pic-off')));
+	},
+	'click': function (event) {
+    		//var item = $(this).attr('data-item');
+    
+    		// öffnen des popups bei clicken des icons und ausführung der eingabefunktion
+    		//alert('Click big');
+		$('#' + this.id + '-popup').popup( "open" );
+	}
+
+});
+
+
+$(document).delegate('span[data-widget="basic.auth_switch"] > a > img', 'hover', function (event) {
+	if (event.type === 'mouseenter') {
+		$(this).addClass("ui-focus");
+	}
+	else {
+		$(this).removeClass("ui-focus");
+	}
+});
+	</textarea>
+
+<br><br>	
+Als nächstes erstellen wir in unserem Pages-Verzeichnis eine Datei Namens <span style="color:#D7DF01">widget_codepad.html</span><br>
+Hier fügen wir nun den folgenden Code ein.<br>
+   <div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="true">
+                  <h3>widget_codepad.html (klik mich)</h3>
+	<table style=";width:100%;">{% raw %}
+		<tbody>
+			<tr align="left">
+				<td style="vertical-align:top">/**<br />
+					* A switch, build of two pics, but with necessary authentication<br />
+					*<br />
+					* @param unique id for this widget<br />
+					* @param a gad/item<br />
+					* @param the pic for the 'on' state (optional)<br />
+					* @param the pic for the 'off' state (optional)<br />
+					* @param value send for the 'on' state (optional, default 1)<br />
+					* @param value send for the 'off' state (optional, default 0)<br />
+					* @param value for the passwort, for example 1234<br />
+					*/<br />
+					{% macro auth_switch(id, gad, pic_on, pic_off, val_on, val_off, refpwd ) %}<br />
+					{% set uid = uid(page, id) %}&nbsp;&nbsp;&nbsp; <br />
+					&lt;div><br />
+					&nbsp;&nbsp;&nbsp; &lt;span id="{{ uid }}-switch" data-widget="basic.auth_switch" data-item="{{ gad }}" <br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; data-pic-on="{{ pic_on|default(icon1~'control_on_off.svg') }}" data-pic-off="{{ pic_off|default(icon0~'control_on_off.svg') }}"><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;a>&lt;img id="{{ uid }}-image" class="icon" src="{{ pic_off|default(icon0~'control_on_off.svg') }}" />&lt;/a><br />
+					&nbsp;&nbsp;&nbsp; &lt;/span><br />
+					&nbsp;&nbsp;&nbsp; &lt;div id="{{ uid }}-switch-popup" data-role="popup" class="messagePopup" style="width:180px; height:300px;" data-overlay-theme="c" data-theme="a" data-dismissible="false"><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close&lt;/a><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;form name="formkey"><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Code eingeben:<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;input type="password" name="pwd" id="{{ uid }}-account" autocomplete="off" maxlength="4" size="2" data-tip="Please enter a password" autofocus="autofocus"><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;script type="text/javascript"><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (!('autofocus' in document.createElement('input')))<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; document.getElementById('{{ uid }}-account').focus();<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; function appendValue(in_value, field_id)<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; var textLength = document.getElementById(field_id).value.length;<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if(document.getElementById(field_id).type == 'text')<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; document.getElementById(field_id).value = in_value;<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; document.getElementById(field_id).type = 'password';<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; else<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if(textLength &lt; 4)<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; document.getElementById(field_id).value = document.getElementById(field_id).value + in_value;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />
+					<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; function resetValue(field_id)<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; document.getElementById(field_id).value = '';<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; document.getElementById(field_id).type = 'password';<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; function checkPw(field_id, switch_id, image_id, popup_id, pwd)<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; var code = document.getElementById(field_id).value;<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if ( code == pwd ) {<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; document.getElementById(field_id).value = '';<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (document.getElementById(image_id).getAttribute('src') == document.getElementById(switch_id).getAttribute('data-pic-off') )<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; io.write(document.getElementById(switch_id).getAttribute('data-item'), document.getElementById(switch_id).getAttribute('data-val-on'));<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; else<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; io.write(document.getElementById(switch_id).getAttribute('data-item'), document.getElementById(switch_id).getAttribute('data-val-off'));<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //$.mobile.activePage.find('.messagePopup').popup('close');<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; $.mobile.activePage.find(popup_id).popup('close');<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; else {<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; document.getElementById(field_id).value = 'Falscher Code';<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; document.getElementById(field_id).type = 'text';<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />
+					<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/script><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;table width=100%><br />
+					&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;tr><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;td align=center>&lt;a onclick="appendValue(1,'{{ uid }}-account');" id="{{ uid }}-button1" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">1 &lt;/a>&lt;/td><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;td align=center>&lt;a onclick="appendValue(2,'{{ uid }}-account');" id="{{ uid }}-button2" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">2 &lt;/a>&lt;/td><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;td align=center>&lt;a onclick="appendValue(3,'{{ uid }}-account');" id="{{ uid }}-button3" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">3 &lt;/a>&lt;/td><br />
+					&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/tr><br />
+					&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;tr><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;table width=100%><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;td align=center>&lt;a onclick="appendValue(4,'{{ uid }}-account');" id="{{ uid }}-button4" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">4 &lt;/a>&lt;/td><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;td align=center>&lt;a onclick="appendValue(5,'{{ uid }}-account');" id="{{ uid }}-button5" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">5 &lt;/a>&lt;/td><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;td align=center>&lt;a onclick="appendValue(6,'{{ uid }}-account');" id="{{ uid }}-button6" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">6 &lt;/a>&lt;/td><br />
+					&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/tr><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;tr><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;table width=100%><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;td align=center>&lt;a onclick="appendValue(7,'{{ uid }}-account');" id="{{ uid }}-button7" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">7 &lt;/a>&lt;/td><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;td align=center>&lt;a onclick="appendValue(8,'{{ uid }}-account');" id="{{ uid }}-button8" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">8 &lt;/a>&lt;/td><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;td align=center>&lt;a onclick="appendValue(9,'{{ uid }}-account');" id="{{ uid }}-button9" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">9 &lt;/a>&lt;/td><br />
+					&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/tr><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;tr><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;table width=100%><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;td align=center>&lt;a onclick="resetValue('{{ uid }}-account');"&nbsp;&nbsp;&nbsp; id="{{ uid }}-buttonR"&nbsp; class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">R&lt;/a>&lt;/td><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;td align=center>&lt;a onclick="appendValue(0,'{{ uid }}-account');" id="{{ uid }}-button0"&nbsp; class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">0&lt;/a>&lt;/td><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;td align=center>&lt;a onclick="checkPw('{{ uid }}-account', '{{ uid }}-switch', '{{ uid }}-image', '[id={{ uid }}-switch-popup]', {{ refpwd }} );" id="{{ uid }}-buttonOK" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">OK&lt;/a>&lt;/td><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/tr><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/table><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/form> <br />
+					&nbsp;&nbsp;&nbsp; &lt;/div> <br />
+					<br />
+					&lt;/div><br />
+					<br />
+					<br />
+					{% endmacro %}<br />
+					</td>
+			</tr>
+		</tbody>
+	</table>
+          </div>
+    </div>
+    </div>	
+
+	{% endraw %}
+	
+	<br>
+	<br>
+	<br>
+	<br>
+	Als letztes binden wir das Widget und den "Freischaltcode" auf unsere html-Seite ein. <br>
+	Die Einbindung könnte wie folgt aussehen:<br>
+		<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				{% import "widget_codepad.html" as codepad %}
+				{{ cpdepad.auth_switch('auth1', 'Keller.Pumpe', icon1~'sani_domestic_waterworks.svg', icon0~'sani_domestic_waterworks.svg', '1', '0', '9876' ) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+	<br>
+<br>
+Laut Doku im oben genannten Widget-Code, setzt sich dieses wie folgt zusammen:<br>
+	<ul>
+		<li><i>auth1</i> = die ID</li>
+		<li><i>Keller.Pumpe</i> = das anzusprechende Item</li>
+		<li><i>icon1~</i> = das Icon für Zustand On/1/Ein</li>
+		<li><i>icon0~</i> = das Icon für Zustand Off/0/Aus</li>
+		<li><i>1</i> = zu sendender Wert (optional - default=1)</li>
+		<li><i>0</i> = zu sendender Wert (optional - default=0)</li>
+		<li><i>9876</i> = der Freischaltcode</li>
+	</ul>
+	<br>
+	
+	Für einem Block könnte es dann z.B. so aussehen:<br>
+	<textarea cols="50" rows="3">{% raw %}
+	<div class="block">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Codepad</h3>
+					{% import "widget_codepad.html" as codepad %}
+					{{ cpdepad.auth_switch('auth1', 'Keller.Pumpe', icon1~'sani_domestic_waterworks.svg', icon0~'sani_domestic_waterworks.svg', '1', '0', '9876' ) }}
+			</div>
+		</div>
+	</div>
+
+{% endraw %}
+</textarea>
+	
+	
+	
+{% endblock %}
+

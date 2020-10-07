@@ -1,0 +1,66 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "smarthome.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}time_clock.svg' />SmartHomeNG - Schaltuhr via crontab
+{% endblock %}
+
+{% block docu %}
+<h4>Zeitschaltuhr:</h4>
+Hier muß im entsprechenden Item auch nur eine Zeile hinzugefügt werden.<br>
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3">
+Wohnen:
+    StedoTannenbaum:
+        type = bool
+        visu_acl = rw
+        crontab:
+          - 15 16 * * = 1
+          - 30 22 * * = 0
+        knx_dpt = 1
+        knx_listen = 0/1/13
+        knx_send = 0/0/13
+        knx_init = 0/1/13
+</textarea>
+<br>
+Die Zeile <pre style="color:#FF0000">
+crontab:
+  - 15 16 * * = 1
+  - 30 22 * * = 0</pre> im Item bewirkt, dass das Item Wohnen.StedoTannenbaum oder die Gruppenadresse 0/0/13 täglich um 16:15 Uhr 
+eingeschaltet und um 22:30 Uhr ausgeschaltet wird.<br><br>
+Kurzerklärung:<br>
+<ul>
+	<li><i>crontab</i> = Aufruf/Befehl</li>
+	<li><i>15</i> = Minuten</li>
+	<li><i>16</i> = Stunden</li>
+	<li><i>*</i> = Tag</li>
+	<li><i>*</i> = Wochentag </li>
+	<li><i>1</i> = Wert der zu senden ist</li>
+</ul>
+Ein weiteres schönes Beispiel ist crontab in Verbindung mit sunrise und sunset.<br>
+Der folgende Code könnte beispielsweise genutzt werden, um das Rollo 10min vor Sonnenuntergang herunterzufahren und 10min nach Sonnenaufgang wieder hochzufahren<br>
+<textarea cols="50" rows="3">
+Wohnzimmer:
+    Rollo:
+        Fahren:
+            type: num
+            enforce_updates: yes
+            visu_acl: rw
+            crontab: sunset-10m = 1 | sunrise+10m = 0
+            knx_dpt: 1
+            knx_send: 4/0/0
+</textarea>
+<br><br>
+Um zu verstehen was wo und wie nach crontab gesetzt werden muss, empfehle ich die Doku dazu.<br>
+Diese findet man <a href="https://www.smarthomeng.de/user/konfiguration/items/standard_attribute/crontab.html" target="_blank">hier</a>.
+
+{% endblock %}
+

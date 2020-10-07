@@ -16,7 +16,8 @@
 - support for smarthomeNG feature "series_cancel" to stop subscription of series data
 - series subscriptions will be cancelled when next page is about to load
 - widget constructor can be deactivated in config page in order to save ressources
-- new version number format (e.g. v2.9.2) is standard in communication w/ io-drivers, old format is deprecated 
+- new version number format (e.g. v2.9.2) is standard in communication w/ io-drivers, old format is deprecated
+- updated German "Kurzanleitung" integrated into standard package 
 
 
 ### Improvements
@@ -25,8 +26,8 @@
 - endless timer for digiclock is stopped during page change. This avoids useless loading of multiple pics every minute
 - index.html shows phone list and calendar by default, unless "service_disabled" is selected in config page
 - html escaping function for status.log
-- improved integration of custom widgets in docu
-- improved docu page for examples of blocks
+- improved integration of custom widgets in docu - show only title but no link if docu page doesn't exist
+- improved docu page for examples of blocks - explain code for collapsibles and show variation of width
 
 ### Updated Libraries
 - updated Twig to v1.42.5

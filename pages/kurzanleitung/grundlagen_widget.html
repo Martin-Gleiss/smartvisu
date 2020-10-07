@@ -1,0 +1,151 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "grundlagen.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}time_note.svg' />Grundlagen - Widgets
+{% endblock %}
+
+{% block docu %}
+<h4>Was ist ein Widget?</h4>
+Widgets könnte man "laienhaft" als vorgefertigte Bausteine mit oftmals zusätzlichen Einstellungsmöglichkeiten beschreiben.
+Es gibt verschiedene Widgets für die verschiedenen Anwendungen (Licht, Heizung, Rollo, Multimedia etc.), die das Gestalten der Visu erleichtern. In den Widgets werden u.a. die Items eingefügt.<br>
+Derzeit werden mit dem aktuellen Image über 40 Widgets mitgeliefert.Eigene Widgets können selber geschrieben werden. Alle Widgets sind im /pages/Docu in englischer Sprache dokumentiert.<br>
+   <div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="true">
+                  <h3>Liste verfügbarer Widgets (hier klicken)</h3>
+				  	<table style=";width:100%;">
+		<tbody>
+			<tr align="left">
+				<td style="vertical-align:top">
+					<ul>
+						<li><i>basic.checkbox</i> - Chekbox mit Text</li>
+						<li><i>basic.color</i> - erweiterte RGB-Steuerung</li>
+						<li><i>basic.flip</i> - Flip-Schalter</li>
+						<li><i>basic.glue</i> - Verbindungswidget</li>
+						<li><i>basic.icon</i> - Stellt Icons dar</li>
+						<li><i>basic.input</i> - Eingabe von Texten, Zahlen und Datumseinstellungen</li>
+						<li><i>basic.offset</i> - Einstellen von Offsetwerten</li>
+						<li><i>basic.print</i> - Ausgabe von Texten, Zahlenwerten, Formeln etc.</li>
+						<li><i>basic.shifter</i> - Schieberegler mit Wert</li>
+						<li><i>basic.shutter</i> - Rollo/ Jalousiesteuerung</li>
+						<li><i>basic.slider</i> - Schieberegler</li>
+						<li><i>basic.stateswitch</i> - Schalter mit Mehrfachfunktionen</li>
+						<li><i>basic.symbol</i> - Status über Symbol</li>
+						<li><i>basic.tank</i> - Füllstandsanzeige</li>
+						<li><i>basic.trigger</i> - Triggert Logiken</li>
+						<br>
+						<li><i>calendar.list</i> - Kalendeliste</li>
+						<li><i>clock.digiclock</i> - Uhr (mit Symbol)</li>
+						<li><i>clock.iconclock</i> - kleine Iconuhr</li>
+						<li><i>clock.miniclock</i> - Uhr</li> 
+						<br>
+						<li><i>device.blind</i> - Rollo/ Jalousiesteuerung</li>
+						<li><i>device.dimmer</i> - Dimmer</li>
+						<li><i>device.rtr</i> - Temperaturregler</li>
+						<li><i>device.shutter</i> - Jalousiesteuerung</li> 
+						<li><i>device.smallshut</i> - Mehrere Jalousiesteuerungen in Tabellenform </li> 
+						<li><i>device.uzsuicon</i> - Einstellen der universellen Zeitschaltuhr</li>
+						<li><i>device.uzsugraph</i> - Grafisches Einstellen der universellen Zeitschaltuhr</li>
+						<br>
+						<li><i>multimedia.image</i> - Bilder, Cams einbinden</li>
+						<li><i>multimedia.music</i> - Musikplayer</li>
+						<li><i>multimedia.slideshow</i> - Diashow</li>
+						<li><i>multimedia.station</i> - Fernbedienungen</li>
+						<br>
+						<li><i>phone.list</i> - Telefonliste</li>
+						<li><i>phone.missedlist</i> - verpasste Anrufe</li>
+						<br>
+						<li><i>plot.comfortchart</i> - Komfort-Diagramm</li>
+						<li><i>plot.period</i> - Diagramm</li>
+						<li><i>plot.rtr plot.temprose</i> - Temperatur-Diagramm</li>
+						<br>
+						<li><i>status.log</i> - Status loggen</li>
+						<li><i>status.notify</i> - Meldungen (Warnung, Hinweis, Fehler)</li>
+						<br>
+						<li><i>weather.current</i> - Wetter</li>
+						<li><i>weather.forecast</i> - Wettervorschau</li>
+						<li><i>weather.forecastweek</i> - Wettervorschau Woche</li>
+						<li><i>weather.map</i> - Wetterkarte</li>
+						<li><i>weather.mapslides</i> - Wetterkarte Diashow</li>
+					</ul>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+          </div>
+    </div>
+    </div>	
+<br><br>
+Ein Widget besteht aus dem Namen des Widgets (Funktion), einer eindeutigen ID, dem Item und meist zusätzlichen Einstellungsparametern.
+<br>
+Ein Beispiel: <br>
+Das Widget basic.stateswitch setzt sich wie folgt zusammen.<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch(id, item, style, [val_on, val_off], [pic_on, pic_off], ...) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br>
+Hierbei ist folgendes definiert:
+<ul>
+	<li><i>basic.stateswitch</i> = Name des Widgets (Funktion)</li>
+	<li><i>id</i> = ID des Widgets (Der Name der ID kann beliebieg vergeben werden, darf auf einer html-Seite aber nur einmalig vorhanden sein)</li>
+	<li><i>item</i> = das Item,das angesprochen werden soll</li>
+	<li><i>style</i> = die Darstellung des switches als Icon oder Button (micro, mini, midi)</li>
+	<li><i>val_on</i> = zu sendender Wert für Zustand 1/An</li>
+	<li><i>val_off</i> = zu sendender Wert für Zustand 0/Aus</li>
+	<li><i>pic_on</i> = Icon für Zustand 1/An</li>
+	<li><i>pic_off</i> = Icon für Zustand 0/Aus</li>
+</ul>
+Bei "style", "val_on", "val_off", "pic_on", "pic_off" sind im dazugehörigen Code bereits standartmäßig Werte und Bilder hinterlegt. Diese sind im einzelnen:<br>
+style = mini<br>
+pic_on = control_on_off.png <br>
+pic_off = control_on_off.png<br>
+val_on = 1<br>
+val_off = 0<br>
+<br><br>
+Ein normaler "Schalter" für Das Deckenlicht könnte dann wie folgt aussehen<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch('S1', 'EG.Wohnzimmer.Deckenlicht.schalten') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+{{ basic.stateswitch('S1', 'EG.Wohnzimmer.Deckenlicht.schalten') }}<br>
+Somit haben wir einen "Schalter" auf der VISU der das vorher definierte Item Ein- und Ausschaltet.
+<br>
+
+Wollte man den "Schalter" nun etwas anpassen (z.B. ein anderes Icon für EIN und AUS), müßte man den Code etwas erweitern<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+{{ basic.stateswitch('S2', 'EG.Wohnzimmer.Deckenlicht.schalten', 'icon','',['light_light.svg', 'light_light.svg']) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+Das Ergebnis sieht somit wie folgt aus:<br>
+{{ basic.stateswitch('S2', 'EG.Wohnzimmer.Deckenlicht.schalten', 'icon','', ['light_light.svg', 'light_light.svg']) }}
+<br>
+Benötigt man einen negierten Schaltwert, gibt man diesen einfach über die val_on - und val_off -Attribute vor.<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+{{ basic.stateswitch('S3', 'EG.Wohnzimmer.Deckenlicht.schalten','micro',[0,1],['light_light.svg','light_light.svg']) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+Das Ergebnis sieht somit wie folgt aus:<br>
+{{ basic.stateswitch('S3', 'EG.Wohnzimmer.Deckenlicht.schalten','micro',[0,1],['light_light.svg','light_light.svg']) }}
+<br><br>
+Im weiteren Verlauf dieser Anleitung wird näher auf einige grundlegende Widgets eingegangen.
+{% endblock %}
+

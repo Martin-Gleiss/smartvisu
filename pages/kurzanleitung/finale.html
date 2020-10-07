@@ -1,0 +1,442 @@
+{% extends "main.html" %}
+
+{% block docu %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('Wohnzimmer.Heizung.temperatur', '20' );
+			 io.write('Wohnzimmer.Heizung.set', '22' );
+		});
+</script>
+<h1><img class="icon" src='{{ icon0 }}scene_livingroom.svg' />Wohnzimmer</h1>
+
+    <div class="preblock">
+        <span data-role="controlgroup" data-type="horizontal"> 
+            Szenen<br />
+            {{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 0, 'scene_party.svg') }}
+            {{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 1, 'scene_dinner.svg') }}
+            {{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 2, 'scene_livingroom.svg') }}
+            {{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 3, 'scene_cubby.svg') }}
+            {{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 4, 'status_away_1.svg') }}
+        </span>
+    </div>
+
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+                  <h3>Dimmen</h3>
+                  {{ device.dimmer('', 'Spots 1', 'Wohnzimmer.Spot1Schalten', 'Wohnzimmer.Spot1Schalten.Spot1Dimmen', 0, 100, 10) }}
+                  {{ device.dimmer('', 'Spots 2', 'Wohnzimmer.Spot2Schalten', 'Wohnzimmer.Spot2Schalten.Spot2Dimmen', 0, 100, 10) }}
+          </div>
+    </div>
+    </div>
+
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+          <h3>Schalten</h3>
+             <table width=100%>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.Stehlampe', 'icon', [1,0], ['light_floor_lamp.svg', 'light_floor_lamp.svg']) }} Stehlampe
+                 </td>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.Stehlampe', 'icon', [1,0], ['message_socket.svg', 'message_socket.svg']) }} Stedo TV
+                 </td>
+               </tr>
+             </table> 
+      </div>
+    </div>
+    </div>
+
+   <div class="block">
+      <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+              <h3>Heizung</h3>
+              {{ device.rtr('', 'Heizung', 'Wohnzimmer.Heizung.temperatur', 'Wohnzimmer.Heizung.set', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.state', '') }}
+          </div>
+      </div>
+   </div>
+
+   <div class="block">
+      <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+              <h3>Rollos</h3>
+        <table width="100%">
+                  <tr>
+            <td width="50%"> {{ device.blind('', 'Süd', 'Wohnzimmer.Fenster.Sued.move', 'Wohnzimmer.Fenster.Sued.stop', 'Wohnzimmer.Fenster.Sued.pos') }} </td>
+            <td width="50%"> {{ device.blind('', 'West', 'Wohnzimmer.Fenster.West.move', 'Wohnzimmer.Fenster.West.stop', 'Wohnzimmer.Fenster.West.pos') }} </td>                	
+                  </tr>
+              </table>
+          </div>
+      </div>
+   </div>
+
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+         <h3>Status Fenster / Türen</h3>
+         <table width=100%>
+           <tr>
+             <td align=left>
+               {{ basic.symbol('', 'Wohnzimmer.FensterSued', 'Fenster Süd ist auf', 'fts_window_1w_open.svg', 1) }}
+               {{ basic.symbol('', 'Wohnzimmer.FensterSued', 'Fenster Süd ist zu', 'fts_window_1w.svg', 0) }}
+             </td>
+           </tr>
+           <tr>
+             <td align=left>
+               {{ basic.symbol('', 'Wohnzimmer.FensterWest', 'Fenster West ist auf', 'fts_window_1w_open.svg', 1) }}
+               {{ basic.symbol('', 'Wohnzimmer.FensterWest', 'Fenster West ist zu', 'fts_window_1w.svg', 0) }}
+             </td>
+           </tr>
+           <tr>
+             <td align=left>
+               {{ basic.symbol('', 'Wohnzimmer.TerrasseTuer', 'Terrassentür ist auf', 'fts_door_open.svg', 1) }}
+               {{ basic.symbol('', 'Wohnzimmer.TerrasseTuer', 'Terrassentür ist zu', 'fts_door.svg', 0) }}
+             </td>
+           </tr>
+         </table> 
+      </div>
+    </div>
+    </div>
+
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+          <h3>Status setzen für Fenster und Tür</h3>
+             <table width=100%>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.FensterSued', 'icon') }} Fenster Sued
+                 </td>
+               </tr>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.FensterWest', 'icon') }} Fenster West
+                 </td>
+               </tr>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.TerrasseTuer', 'icon') }} Terassentür
+                 </td>
+               </tr>
+             </table> 
+      </div>
+    </div>
+</div>
+
+    <div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" >
+            <h3>Verlauf Raumtemperatur</h3>
+        {{ plot.rtr('', 'Wohnzimmer.Heizung.temperatur', 'Wohnzimmer.Heizung.set', 'Wohnzimmer.Heizung.state') }}
+        </div>
+    </div>
+    </div>
+
+   <div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="true">
+                  <h3>komplettes Beispiel-Item für diese Seite (klick mich)</h3>
+    <table style=";width:100%;">
+        <tbody>
+            <tr align="left">
+                <td style="vertical-align:top">
+<pre>
+Wohnzimmer:
+
+    Szenen:
+        type: scene
+        visu_acl: rw
+        enforce_updates: yes
+        knx_dpt: 5
+        knx_listen: 7/2/0
+        knx_send: 7/2/0
+
+    Spot1Schalten:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 0/1/1
+        knx_send: 0/0/1
+
+        Spot1Dimmen:
+            type: num
+            visu_acl: rw
+            knx_dpt: 5001
+            knx_cache: 0/4/1
+            knx_send: 0/3/1
+
+    Spot2Schalten:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 0/1/2
+        knx_send: 0/0/2
+
+        Spot2Dimmen:
+            type: num
+            visu_acl: rw
+            knx_dpt: 5001
+            knx_cache: 0/4/2
+            knx_send: 0/3/2
+
+    Stehlampe:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 6/1/3
+        knx_send: 6/0/3
+
+    Steckdose_TV:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 6/1/4
+        knx_send: 6/0/4
+
+    Heizung:
+
+        temperatur:
+            type: num
+            visu_acl: rw
+            database: yes
+            knx_dpt: 9
+            knx_cache: 6/1/0
+
+        set:
+            type: num
+            visu_acl: rw
+            database: yes
+            knx_dpt: 9
+            knx_send: 6/2/0
+            knx_listen: 6/3/0
+
+        mode:
+            type: num<br>
+            visu_acl: rw
+            knx_dpt: 5
+            knx_listen: 6/4/0
+            knx_send: 6/4/0
+
+        state:
+            type: bool
+            visu_acl: rw
+            database: yes
+            knx_dpt: 1
+            knx_listen: 6/5/0
+            knx_init: 6/5/0
+
+    RolloSued:
+
+        Fahren:
+            type: bool
+            enforce_updates: yes
+            visu_acl: rw
+            knx_dpt: 1
+            knx_send: 4/0/0
+
+        Stop:
+            type: bool
+            visu_acl: rw
+            enforce_updates: yes
+            knx_dpt: 1
+            knx_send: 4/1/0
+
+        Position:
+            type: num
+            visu_acl: rw
+            knx_dpt: 5
+            knx_cache: 4/4/0
+            knx_send: 4/2/0
+
+    RolloWest:
+
+        Fahren:
+            type: bool
+            enforce_updates: yes
+            visu_acl: rw
+            knx_dpt: 1
+            knx_send: 4/0/1
+
+        Stop:
+            type: bool
+            visu_acl: rw
+            enforce_updates: yes
+            knx_dpt: 1
+            knx_send: 4/1/1
+
+        Position:
+            type: num
+            visu_acl: rw
+            knx_dpt: 5
+            knx_cache: 4/4/1
+            knx_send: 4/2/1
+
+    FensterSued:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 6/6/3
+
+    FensterWest:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 6/6/4
+
+    FensterNord:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 6/6/5
+
+    TerrasseTuer:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 6/6/6
+</pre>
+                    </td>
+            </tr>
+        </tbody>
+    </table>
+          </div>
+    </div>
+    </div>
+
+<div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div data-role="collapsible" data-collapsed="true">
+            <h3>kompletter Beispiel-Widgetcode für diese Seite (klick mich)</h3>
+<textarea cols="50" rows="3">{% raw %}
+<h1><img class="icon" src='{{ icon0 }}scene_livingroom.svg' />Wohnzimmer</h1>
+
+    <div class="preblock">
+        <span data-role="controlgroup" data-type="horizontal"> 
+            Szenen<br />
+            {{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 0, 'scene_party.svg') }}
+            {{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 1, 'scene_dinner.svg') }}
+            {{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 2, 'scene_livingroom.svg') }}
+            {{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 3, 'scene_cubby.svg') }}
+            {{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 4, 'status_away_1.svg') }}
+        </span>
+    </div>
+
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+                  <h3>Dimmen</h3>
+                  {{ device.dimmer('', 'Spots 1', 'Wohnzimmer.Spot1Schalten', 'Wohnzimmer.Spot1Schalten.Spot1Dimmen', 0, 100, 10) }}
+                  {{ device.dimmer('', 'Spots 2', 'Wohnzimmer.Spot2Schalten', 'Wohnzimmer.Spot2Schalten.Spot2Dimmen', 0, 100, 10) }}
+          </div>
+    </div>
+    </div>
+
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+          <h3>Schalten</h3>
+             <table width=100%>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.Stehlampe', 'icon', [1,0], ['light_floor_lamp.svg', 'light_floor_lamp.svg']) }} Stehlampe
+                 </td>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.Stehlampe', 'icon', [1,0], ['message_socket.svg', 'message_socket.svg']) }} Stedo TV
+                 </td>
+               </tr>
+             </table> 
+      </div>
+    </div>
+    </div>
+
+   <div class="block">
+      <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+              <h3>Heizung</h3>
+              {{ device.rtr('', 'Heizung', 'Wohnzimmer.Heizung.temperatur', 'Wohnzimmer.Heizung.set', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.state', '') }}
+          </div>
+      </div>
+   </div>
+
+   <div class="block">
+      <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+              <h3>Rollos</h3>
+        <table width="100%">
+                  <tr>
+            <td width="50%"> {{ device.blind('', 'Süd', 'Wohnzimmer.Fenster.Sued.move', 'Wohnzimmer.Fenster.Sued.stop', 'Wohnzimmer.Fenster.Sued.pos') }} </td>
+            <td width="50%"> {{ device.blind('', 'West', 'Wohnzimmer.Fenster.West.move', 'Wohnzimmer.Fenster.West.stop', 'Wohnzimmer.Fenster.West.pos') }} </td>                	
+                  </tr>
+              </table>
+          </div>
+      </div>
+   </div>
+
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+         <h3>Status Fenster / Türen</h3>
+         <table width=100%>
+           <tr>
+             <td align=left>
+               {{ basic.symbol('', 'Wohnzimmer.FensterSued', 'Fenster Süd ist auf', 'fts_window_1w_open.svg', 1) }}
+               {{ basic.symbol('', 'Wohnzimmer.FensterSued', 'Fenster Süd ist zu', 'fts_window_1w.svg', 0) }}
+             </td>
+           </tr>
+           <tr>
+             <td align=left>
+               {{ basic.symbol('', 'Wohnzimmer.FensterWest', 'Fenster West ist auf', 'fts_window_1w_open.svg', 1) }}
+               {{ basic.symbol('', 'Wohnzimmer.FensterWest', 'Fenster West ist zu', 'fts_window_1w.svg', 0) }}
+             </td>
+           </tr>
+           <tr>
+             <td align=left>
+               {{ basic.symbol('', 'Wohnzimmer.TerrasseTuer', 'Terrassentür ist auf', 'fts_door_open.svg', 1) }}
+               {{ basic.symbol('', 'Wohnzimmer.TerrasseTuer', 'Terrassentür ist zu', 'fts_door.svg', 0) }}
+             </td>
+           </tr>
+         </table> 
+      </div>
+    </div>
+    </div>
+
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+          <h3>Status setzen für Fenster und Tür</h3>
+             <table width=100%>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.FensterSued', 'icon') }} Fenster Sued
+                 </td>
+               </tr>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.FensterWest', 'icon') }} Fenster West
+                 </td>
+               </tr>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.TerrasseTuer', 'icon') }} Terassentür
+                 </td>
+               </tr>
+             </table> 
+      </div>
+    </div>
+</div>
+
+    <div class="block"  style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" >
+            <h3>Verlauf Raumtemperatur</h3>
+        {{ plot.rtr('', 'Wohnzimmer.Heizung.temperatur', 'Wohnzimmer.Heizung.set', 'Wohnzimmer.Heizung.state') }}
+        </div>
+    </div>
+    </div>
+{% endraw %}</textarea>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
