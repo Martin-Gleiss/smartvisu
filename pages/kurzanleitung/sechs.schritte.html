@@ -1,0 +1,89 @@
+{% extends "main.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}message_ok.svg' />erster Erfolg in 6 Schritten
+{% endblock %}
+
+{% block docu %}
+<h4>Wie fängt man an?</h4>
+Als erstes richtet man die Schnittstelle wie in Grundlagen-Schnittstelle beschrieben ein.<br>
+In smartVISU wird ein Template mitgeliefert, auf welches man aufbauen kann.<br>
+Hier mal kurz beschrieben, wie man anhand des Templates vorgehen kann.<br>
+<br>
+
+<h4>Schritt 1: Template kopieren</h4>
+Man erstellt im Pagesverzeichnis über WinSCP ein eigenes Verzeichnis, also einen Ordner und benennt ihn wie man mag. So wie man diesen Ordner benannt hat, findet man ihn auch später im Auswahlmenu auf der Config-Seite (Pages).<br>
+Nun kopiert man alle Files aus dem Verzeichnis <b>/var/www/smartvisu/pages/_template/</b> in das <b>/var/www/smartvisu/pages/mein_Verzeichnis/</b>.
+
+<h4>Schritt 2: Das eigene Pages zum "Aktuellen" machen</h4>
+Man geht nun auf die Config-Seite (oben im Menu der Visu --> Zahnräder) und stellt bei Pages den Namen des von einem selber benannten Ordner ein (s.Grundlagen-Config-Seite).<br>
+Gleichzeitig kann man gleich noch den Text und die Sprache dort einstellen. Also ...z.B. Meine Visu und Deutsch<br>
+Speichern und das Browserfenster mit der VISU schließen.
+
+<h4>Schritt 3: Items erstellen (Für Nutzer von SmartHomeNG)</h4>
+Nun erstellt man erst einmal einige Items. Dazu geht man mit WinSCP in das Verzeichnis <b>/usr/smarthome/items/</b><br>
+Dort legen wir eine Datei an (rechte Maustaste --> NEU --> Datei). Diese Datei nennen wir mal <b>eg.yaml</b><br>
+Wir fangen mal mit einem Dimmer an. Man kopiert sich das 
+<a href="#popup1" data-rel="popup" data-position-to="window">hier</a>
+
+<div id="popup1" data-role="popup" style="width:280px; height:450px;">
+<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+<h4>Beispiel-Item</h4>
+<textarea cols="50" rows="3">
+Wohnzimmer:
+
+    Spot1Schalten:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_listen: 0/1/1
+        knx_send: 0/0/1
+        knx_init: 0/1/1
+
+        Spot1Dimmen:
+            type: num
+            visu_acl: rw
+            knx_dpt: 5001
+            knx_listen: 0/4/1
+            knx_send: 0/3/1
+            knx_init: 0/4/1
+</textarea>
+</div>
+ beschriebene Item heraus und passt es an seinen Gegebenheiten an.<br>
+Nachdem der Code in der eg.yaml eingetragen ist speichern wir diese.
+
+<h5>Alternative Admin Interface von SmartHomeNG</h5>
+Es gibt auch die Möglichkeit im Admin Interface unter Menüpunkt Items --> Items Konfiguration eine neue Datei anlegen zu lassen und den
+obigen Text über die Zwischenablage dort einzufügen.
+
+
+<h4>Schritt 4: Widget in html einbinden</h4>
+Via WinSCP öffnen wir die room_sleeping.html und löschen dort den Beispieltext (also nur das <i>Sleeping</i>).<br>
+Den Widget-Code (inkl. Block) den wir statt dessen dort einfügen, nehmen wir uns aus dem in Dimmen-device.dimmer beschriebenen Beispiel. Alternativ 
+<a href="#popup2" data-rel="popup" data-position-to="window">hier</a>
+
+<div id="popup2" data-role="popup" style="width:680px; height:350px;">
+<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+<h4>Beispiel-Code</h4>
+<textarea cols="50" rows="3">{% raw %}
+   <div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+                  <h3>Dimmer</h3>
+                  {{ device.dimmer('', 'Spots 1', 'Wohnzimmer.LichterDimmen.Spot1Schalten', 'Wohnzimmer.LichterDimmen.Spot1Schalten.Spot2Dimmen', 0, 100, 10) }}
+          </div>
+    </div>
+    </div>
+{% endraw %}
+</textarea>
+</div>
+
+<h4>Schritt 5: SmartHomeNG neu starten (Für Nutzer von SmartHomeNG)</h4>
+Am einfachsten geht das über das Admin Interface von SmartHomeNG über den Menüpunkt Dienste --> Core neu starten<br>
+Es dauert einige Sekunden bis dieser Vorgang abgeschlossen ist.<br>
+
+<h4>Schritt 6: Visu aufrufen</h4>
+Visu aufrufen und den Dimmer testen.
+
+{% endblock %}
+

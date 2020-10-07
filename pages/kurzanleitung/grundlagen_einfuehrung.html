@@ -1,0 +1,89 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "grundlagen.html" %}
+
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}edit_paste.svg' />Grundlagen - Einführung
+{% endblock %}
+
+
+{% block docu %}
+
+	<h4>Was brauchen wir:</h4>
+	Empfohlen werden die freien Programme Putty und WinSCP für die Bearbeitung. Wobei in WINSCP noch unter
+	Einstellungen --> Einstellungen --> Editoren > bei Standartkodierung auf UTF-8 umgestellt werden muß.
+
+	<h4>Die wichtigsten Verzeichnisse:</h4>
+	Das smartVISU-Verzeichnis heißt in der Regel
+	<div class="linux">
+		<code>/var/www/html/smartvisu</code>
+	</div>
+	Statt "smartvisu" können beliebige andere Namen vergeben werden.<br> 
+	<br>
+	Im folgendem Verzeichnis liegen die Seiten der VISU
+	<div class="linux">
+		<code>/var/www/html/smartvisu/pages/</code>
+	</div>
+
+	Im folgendem Verzeichnis liegen die Items von smrthomeNG
+	<div class="linux">
+		<code>/usr/local/smarthome/items/</code>
+	</div>
+
+	Dort findet man die plugin.yaml zum Einbinden von Plugins
+	<div class="linux">
+		<code>/usr/local/smarthome/etc/plugin.yaml</code>
+	</div>
+
+	Dort findet man die logic.yaml zum Einbinden von Logiken
+	<div class="linux">
+		<code>/usr/local/smarthome/logics/logic.yaml</code>
+	</div>
+
+	<hr />
+
+	<h2>smartVISU Welcome</h2>
+	Beim ersten Start einer noch nicht konfigurierten VISU wird die Willkommensseite angezeigt.<br>
+	Dort werden zunächst verschiedene Bedingungen abgeprüft, wie die Beschreibbarkeit von Ordnern,<br>
+	die PHP-Version und benötigte Erweiterungen. Auch die Aktualität der smartVISU Version wird geprüft.<br>
+	<br>
+	Wenn hier Fehler angezeigt werden, müssen zuerst die Ursachen behoben werden. Sind Ordner nicht <br>
+	beschreibbar, liegt das meist an den Berechtigungen. Um dies zu korrigieren, wechselt man in das <br>
+	smartvisu-Verzeichnis und gibt dort den folgenden Befehl ein:
+	<div class="linux">
+		<code>sudo bash setpermissions</code>
+	</div>
+	Wenn alle Bedingungen erfüllt sind, können folgende Aktionen ausgewählt werden:<br>
+	<ul>
+		<li>smartVISU konfigurieren</li>
+		<li>Inline-Dokumentation aufrufen</li>
+		<li>Quellcode auf github aufrufen</li>
+		<li>Support-Forum aufrufen</li>
+	</ul>
+
+	Screenshot:
+	<p><img src="pages/kurzanleitung/pics/smartVISU_Welcome.png" width="300" height="450" alt="Screenshot"></p>
+	
+	<br /><br />
+	<span style="color:#FF0000">!! wichtiger Hinweis !!</span> <br />
+	SmartVISU prüft regelmäßig, ob die Version aktuell ist. Wenn nicht, können aktuelle Versionen entweder auf smartvisu.de 
+	oder auf github heruntergeladen werden. Bei kleineren Updates (Wechsel in der 3. Stelle der Versionsnummer) kann die Version im 
+	vorhandenen smartVISU-Verzeichnis aktualisiert werden. Wurde die vorhandene Version schon per git installiert, wechselt man
+	ins smartVISU-Verzeichnis und startet die Aktualisierung mit  
+	<div class="linux">
+		<code>git pull</code>
+	</div>
+	Anderenfalls kann ein ZIP-Archiv herunter geladen werden und die Dateien ins smartVISU-Verzeichnis entpackt werden. <br> 
+	Bei größeren Versionsänderungen wird empfohlen, mit einem neuen Verzeichnis zu starten und die smartVISU-Dateien sowie die eigenen 
+	Seiten dorthin zu kopieren.<br>
+	Die beste Komplettanleitung für die Installation gibt es auf smarthomeNG.de. 
+{% endblock %}

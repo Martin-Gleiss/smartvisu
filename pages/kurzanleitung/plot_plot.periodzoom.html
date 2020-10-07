@@ -1,0 +1,89 @@
+
+
+{% extends "plot_1.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}measure_power.svg' />Plots / Graphen - plot.period (zoomable)
+{% endblock %}
+
+{% block docu %}
+
+Hier wir nun ein Besipiel aufgeführt, wie plot.period "zoomable" erstellt werden kann. Man muss lediglich einige Parameter mehr im Widget angeben. In diesem Beispiel wurden auch die Farben der Verlaufsdaten exemplarisch definiert.
+<br>
+Um den zoom sichtbar zu machen, einfach im Plot an irgendeiner Stelle die linke Maustaste gedrückt halten. Dann entsprechend nach links oder rechts ziehen und dann die linke Maustase loslassen.
+<br><br>
+    <div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false" >
+            <h3>Verlauf Heizung</h3>             
+            {{ plot.period('', ['Aussen.Temperatur', 'Verbrauchsdaten.Heizung.PL1', 'Verbrauchsdaten.HeizungPL2', 'Verbrauchsdaten.Heizung.PL3'], 'avg', '48h', '', '', '', '', ['Außen', 'Vorlauf', 'Rücklauf', 'Kessel'], ['#f0f', '#f00', '#00f', '#ff0'], '', '', '1h') }}
+        </div>
+    </div>
+    </div>
+<br clear="all">
+<br>
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3">
+Aussen:
+    Temperatur:
+        type: num
+        visu_acl: rw
+        database: yes
+        knx_dpt: 9
+        knx_listen: 5/6/7
+
+Verbrauchsdaten:
+    Heizung:
+        Vorlauf:
+            type: num
+            visu_acl: rw
+            database: yes
+            knx_dpt: 9
+            knx_listen: 5/2/5
+
+        Ruecklauf:
+            type: num
+            visu_acl: rw
+            database: yes
+            knx_dpt: 9
+            knx_listen: 5/2/6
+
+        Kessel:
+            type: num
+            visu_acl: rw
+            database: yes
+            knx_dpt: 9
+            knx_listen: 5/2/7
+</textarea>
+<br><br>
+Das Widget für den Plot welchen wir verwenden sieht so aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ plot.period('', ['Aussen.Temperatur', 'Verbrauchsdaten.Heizung.PL1', 'Verbrauchsdaten.HeizungPL2', 'Verbrauchsdaten.Heizung.PL3'], 'avg', '48h', '', '', '', '', ['Außen', 'Vorlauf', 'Rücklauf', 'Kessel'], ['#f0f', '#f00', '#00f', '#ff0'], '', '', '1h') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br><br>
+Der dazugehörige html-Code in Block-Typ 5 sieht so aus:<br>
+<textarea cols="50" rows="3">{% raw %}
+    <div class="block" style="width:100%">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Verlauf Heizung</h3>
+                {{ plot.period('', ['Aussen.Temperatur', 'Verbrauchsdaten.Heizung.PL1', 'Verbrauchsdaten.HeizungPL2', 'Verbrauchsdaten.Heizung.PL3'], 'avg', '48h', '', '', '', '', ['Außen', 'Vorlauf', 'Rücklauf', 'Kessel'], ['#f0f', '#f00', '#00f', '#ff0'], '', '', '1h') }}
+            </div>
+        </div>
+    </div>
+{% endraw %}
+</textarea>
+<br>
+Die Farbvorgaben der Verläufe sind Standart-html (z.B. <a href="http://html-color-codes.info/webfarben_hexcodes/)" target="_blank">Info</a>. Man kann z. b. statt: #e0e0e0 nur #eee schreiben.<br>
+<br><br>
+<font color="#FF0000">WICHTIG:</font><br>
+Es ist zu beachten, dass die Daten erst angezeigt werden, sobald alle 3 Daten einmal gesendet wurden. Also erst, wenn alle 3 GAs einmal einen Wert gesendet haben, ist etwas zu sehen.<br>
+
+<br><br>
+Weiterführende Infos zu dem Widget gibt es in der Inline Dokumentation.
+
+{% endblock %}
+

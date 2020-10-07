@@ -1,0 +1,159 @@
+
+
+{% extends "download.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}it_remote.svg' />Downloads - Icons Plugin Samsung TV
+{% endblock %}
+
+{% block docu %}
+
+Auf Wunsch .... die Icons für die Senderlogos und Steuerung aus der Beschreibung des Samsung TV - Plugins (Download ganz unten).<br><br>
+
+	<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+	<div data-role="collapsible" data-collapsed="false">
+			<center><p>Senderauswahl</p></center>
+		{% import "multimedia.html" as multimedia %}
+	<table width="100%">
+		<tr>
+		<td align="middle" width="70%">
+				{{ multimedia.station('CH102', 'tv.PowerON', 'pics/station/sender/lon.png', 1, 'midi') }}
+				{{ multimedia.station('CH101', 'tv.PowerOff', 'pics/station/sender/loff.png', 1, 'midi') }}
+		</td>
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+		<td align="middle" width="100%">
+                {{ multimedia.station('CH1', 'tv.KIKA', 'pics/station/sender/ki-ka_s.png', 1, 'midi') }}
+                {{ multimedia.station('CH2', 'tv.PRO7', 'pics/station/sender/pro7_s.png', 1, 'midi') }}
+                {{ multimedia.station('CH3', 'tv.SAT1', 'pics/station/sender/sat1_s.png', 1, 'midi') }}
+                {{ multimedia.station('CH4', 'tv.RTL', 'pics/station/sender/rtl.png', 1, 'midi') }}
+                {{ multimedia.station('CH5', 'tv.RTL2', 'pics/station/sender/rtl2_s.png', 1, 'midi') }}
+                {{ multimedia.station('CH6', 'tv.SRTL', 'pics/station/sender/super-rtl_s.png', 1, 'midi') }}
+                {{ multimedia.station('CH7', 'tv.KABEL1', 'pics/station/sender/kabel1_s.png', 1, 'midi') }}
+				{{ multimedia.station('CH8', 'tv.ARD','pics/station/sender/das-erste_s.png', 1, 'midi') }}
+		</td>
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+		<td align="middle" width="100%">
+                 {{ multimedia.station('CH9', 'tv.ZDF','pics/station/sender/zdf_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH10', 'tv.VOX','pics/station/sender/vox_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH11', 'tv.ZDFinfo','pics/station/sender/zdf-info_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH12', 'tv.ZDFKultur','pics/station/sender/zdf-kultur_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH13', 'tv.ZDFneo','pics/station/sender/zdf-neo_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH14', 'tv.TELE5','pics/station/sender/tele-5_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH15', 'tv.nicelodeon','pics/station/sender/nickelodeon_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH16', 'tv.NTV','pics/station/sender/ntv_s.png', 1, 'midi') }}				 
+		</td>
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+		<td align="middle" width="100%">
+                 {{ multimedia.station('CH17', 'tv.N24','pics/station/sender/n24_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH18', 'tv.Phoenix','pics/station/sender/phoenix_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH19', 'tv.3Sat','pics/station/sender/3sat_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH20', 'tv.Arte','pics/station/sender/arte_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH21', 'tv.Planet','pics/station/sender/planet_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH22', 'tv.SIXX','pics/station/sender/sixx_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH23', 'tv.13th','pics/station/sender/13th-street_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH24', 'tv.Anixe','pics/station/sender/anixe-hd_s.png', 1, 'midi') }}				 
+		</td>
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+		<td align="middle" width="100%">
+                 {{ multimedia.station('CH25', 'tv.AXN','pics/station/sender/axn_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH26', 'tv.Dmax','pics/station/sender/dmax_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH27', 'tv.Kinowelt','pics/station/sender/kinowelt-tv_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH28', 'tv.Servus','pics/station/sender/servus-tv_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH29', 'tv.1Plus','pics/station/sender/eins-plus_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH30', 'tv.1Festival','pics/station/sender/eins-festival_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH31', 'tv.BR1','pics/station/sender/br_l.png', 1, 'midi') }}
+                 {{ multimedia.station('CH32', 'tv.BRalpha','pics/station/sender/br-alpha_s.png', 1, 'midi') }}				 
+		</td>
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+		<td align="middle" width="100%">
+                 {{ multimedia.station('CH33', 'tv.MDR','pics/station/sender/mdr_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH34', 'tv.NDR','pics/station/sender/ndr_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH35', 'tv.WDR','pics/station/sender/wdr_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH36', 'tv.PRO7maxx','pics/station/sender/prosieben_maxx.png', 1, 'midi') }}
+                 {{ multimedia.station('CH37', 'tv.VIVA','pics/station/sender/viva_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH38', 'tv.Delux','pics/station/sender/deluxe-music-tv_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH39', 'tv.Sport1','pics/station/sender/sport1_s.png', 1, 'midi') }}
+                 {{ multimedia.station('CH40', 'tv.SAT1gold','pics/station/sender/sat1gold.png', 1, 'midi') }}				 
+		</td>
+		</tr>
+	</table>
+	
+	
+	</div>
+
+    </div>
+    </div>
+	
+<br clear="all">	
+
+	<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+	<div data-role="collapsible" data-collapsed="false">
+            <h3>Steuerung I</h3>
+{% import "multimedia.html" as multimedia %}
+	<table width="100%">
+                {{ multimedia.station('ST1', 'tv.Source', 'pics/station/steuerung/source.png', 1, 'midi') }}
+                {{ multimedia.station('ST2', 'tv.Up', 'pics/station/steuerung/pfeil_hoch.png', 1, 'midi') }}
+                {{ multimedia.station('ST3', 'tv.TTX_MIX', 'pics/station/steuerung/text.png', 1, 'midi') }}
+	</table>
+	<table width="100%">
+                {{ multimedia.station('ST4', 'tv.Left', 'pics/station/steuerung/pfeil_links.png', 1, 'midi') }}
+                {{ multimedia.station('ST5', 'tv.Enter', 'pics/station/steuerung/ok_sign.png', 1, 'midi') }}
+                {{ multimedia.station('ST6', 'tv.Right', 'pics/station/steuerung/pfeil_rechts.png', 1, 'midi') }}
+	</table>
+	<table width="100%">
+                {{ multimedia.station('ST7', 'tv.Return', 'pics/station/steuerung/return.png', 1, 'midi') }}
+                {{ multimedia.station('ST8', 'tv.Down', 'pics/station/steuerung/pfeil_runter.png', 1, 'midi') }}
+                {{ multimedia.station('ST9', 'tv.Exit', 'pics/station/steuerung/exit.png', 1, 'midi') }}
+	</table>
+	</div>
+
+    </div>
+    </div>
+	
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+	<div data-role="collapsible" data-collapsed="false">
+            <h3>Steuerung II</h3>
+{% import "multimedia.html" as multimedia %}
+	<table width="100%">
+                {{ multimedia.station('ST10', 'tv.VolDown', 'pics/station/steuerung/volume_down.png', 1, 'midi') }}
+                {{ multimedia.station('ST11', 'tv.mute', 'pics/station/steuerung/mute.png', 1, 'midi') }}
+                {{ multimedia.station('ST12', 'tv.VolUP', 'pics/station/steuerung/volume_up.png', 1, 'midi') }}
+	</table>
+	<table width="100%">
+                {{ multimedia.station('ST13', 'tv.ChDOWN', 'pics/station/steuerung/chanel_down.png', 1, 'midi') }}
+                {{ multimedia.station('ST14', 'tv.INFO', 'pics/station/steuerung/info.png', 1, 'midi') }}
+                {{ multimedia.station('ST15', 'tv.ChUP', 'pics/station/steuerung/chanel_up.png', 1, 'midi') }}
+	</table>
+	<table width="100%">
+                {{ multimedia.station('ST17', 'tv.Internet', 'pics/station/steuerung/home.png', 1, 'midi') }}
+	</table>
+	</div>
+
+    </div>
+    </div>	
+	
+<br>
+	<hr>
+<br>
+<a href="http://kurzanleitung.smartvisu.de/download/Samsung.rar" target="_blank">Downloadlink</a>
+
+{% endblock %}
+

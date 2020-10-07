@@ -1,0 +1,63 @@
+
+
+{% extends "plot_1.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}measure_power.svg' />Plots / Graphen - plot.temprose
+{% endblock %}
+
+{% block docu %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('EG.Raum1.temperature', '18' );  io.write('EG.Raum2.temperature', '20' );	 io.write('EG.Raum3.temperature', '23' );
+			 io.write('EG.Raum4.temperature', '19' );  io.write('EG.Raum5.temperature', '21' );  io.write('OG.Raum6.temperature', '21' );
+			 io.write('OG.Raum7.temperature', '20' );  io.write('OG.Raum8.temperature', '19' );	 io.write('OG.Raum9.temperature', '22' );
+			 io.write('DG.Raum10.temperature', '21' );
+			 io.write('EG.Raum1.temperature.set', '19' );  io.write('EG.Raum2.temperature.set', '22' );	 io.write('EG.Raum3.temperature.set', '20' );
+			 io.write('EG.Raum4.temperature.set', '20' );  io.write('EG.Raum5.temperature.set', '23' );  io.write('OG.Raum6.temperature.set', '19' );
+			 io.write('OG.Raum7.temperature.set', '21' );  io.write('OG.Raum8.temperature.set', '21' );	 io.write('OG.Raum9.temperature.set', '20' );
+			 io.write('DG.Raum10.temperature.set', '23' );
+		});
+</script>
+Mit plot.temprose ist es beispielweise möglich, Temperaturwerte (Soll und Ist) aus verschiedenen Räume übersichtlich in einem einzigen Plot darzustellen.<br>
+Mehrere Items werden hierbei jeweils in Arrays ['item_1', 'item_2', 'item_3', ..... , item_xy] zusammengefasst.<br>
+Auf ein Beispiel-Item wird hier verzichtet. Der Widget-Code sollte selbsterklärend sein.<br>
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+           <h3>Temperaturen</h3>
+                    {{ plot.temprose('p1', ['EG.Raum1.temperature', 'EG.Raum2.temperature', 'EG.Raum3.temperature', 'EG.Raum4.temperature', 'EG.Raum5.temperature', 'OG.Raum6.temperature', 'OG.Raum7.temperature', 'OG.Raum8.temperature', 'OG.Raum9.temperature', 'DG.Raum10.temperature'], ['EG.Raum1.temperature.set', 'EG.Raum2.temperature.set', 'EG.Raum3.temperature.set', 'EG.Raum4.temperature.set', 'EG.Raum5.temperature.set', 'OG.Raum6.temperature.set', 'OG.Raum7.temperature.set', 'OG.Raum8.temperature.set', 'OG.Raum9.temperature.set', 'DG.Raum10.temperature.set'], ['Essen', 'Küche', 'Wohnen', 'Diele', 'Flur', 'Bad', 'Büro', 'Kind1', 'Kind2', 'Gast']) }}
+        </div>
+    </div>    
+    </div>
+<br clear="all">
+<br>
+Das Widget für den Plot könnte so aussehen:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ plot.temprose('p1', ['EG.Raum1.temperature', 'EG.Raum2.temperature', 'EG.Raum3.temperature', 'EG.Raum4.temperature', 'EG.Raum5.temperature', 'OG.Raum6.temperature', 'OG.Raum7.temperature', 'OG.Raum8.temperature', 'OG.Raum9.temperature', 'DG.Raum10.temperature'], ['EG.Raum1.temperature.set', 'EG.Raum2.temperature.set', 'EG.Raum3.temperature.set', 'EG.Raum4.temperature.set', 'EG.Raum5.temperature.set', 'OG.Raum6.temperature.set', 'OG.Raum7.temperature.set', 'OG.Raum8.temperature.set', 'OG.Raum9.temperature.set', 'DG.Raum10.temperature.set'], ['Essen', 'Küche', 'Wohnen', 'Diele', 'Flur', 'Bad', 'Büro', 'Kind1', 'Kind2', 'Gast']) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br><br>
+Der dazugehörige html-Code in Block-Typ 2 sieht so aus:<br>
+<textarea cols="50" rows="3">{% raw %}
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+           <h3>Temperaturen</h3>
+                    {{ plot.temprose('p1', ['EG.Raum1.temperature', 'EG.Raum2.temperature', 'EG.Raum3.temperature', 'EG.Raum4.temperature', 'EG.Raum5.temperature', 'OG.Raum6.temperature', 'OG.Raum7.temperature', 'OG.Raum8.temperature', 'OG.Raum9.temperature', 'DG.Raum10.temperature'], ['EG.Raum1.temperature.set', 'EG.Raum2.temperature.set', 'EG.Raum3.temperature.set', 'EG.Raum4.temperature.set', 'EG.Raum5.temperature.set', 'OG.Raum6.temperature.set', 'OG.Raum7.temperature.set', 'OG.Raum8.temperature.set', 'OG.Raum9.temperature.set', 'DG.Raum10.temperature.set'], ['Essen', 'Küche', 'Wohnen', 'Diele', 'Flur', 'Bad', 'Büro', 'Kind1', 'Kind2', 'Gast']) }}
+        </div>
+    </div>    
+    </div>
+{% endraw %}
+</textarea>
+<br><br>
+
+<font color="#FF0000">WICHTIG:</font><br>
+Es ist zu beachten, dass die Daten erst angezeigt werden, sobald alle 3 Daten einmal gesendet wurden. Also erst, wenn alle 3 GAs einmal einen Wert gesendet haben, ist etwas zu sehen.<br>
+<br><br>
+Weiterführende Infos zu dem Widget gibt es in der Inline Dokumentation.
+
+{% endblock %}
+

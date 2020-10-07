@@ -1,0 +1,22 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL [http://www.gnu.de]
+ * ----------------------------------------------------------------------------- 
+ */
+
+/**
+ * This file is for your own stylesheets.
+ */
+
+@CHARSET "UTF-8";
+
+/* display background only on larger displays */
+@media all and (min-width: 600px) {
+	.page-bg {
+		background-image: url('../../pics/bg/rising_smoke_column.png');
+	}
+}
+

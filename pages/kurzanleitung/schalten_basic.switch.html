@@ -1,0 +1,100 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "schalten.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}light_light.svg' />Schalten & Status - basic.switch
+{% endblock %}
+
+{% block docu %}
+Anbei ein Beispiel um einen Schalter in einem Block-Typ 2 anzuzeigen:<br>
+
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+          <h3>Wohnzimmer</h3>
+             <table width=100%>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.Stehlampe', 'icon', [1,0], ['light_floor_lamp.svg', 'light_floor_lamp.svg']) }} Stehlampe
+                 </td>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.Stehlampe', 'icon', [1,0], ['message_socket.svg', 'message_socket.svg']) }} Stedo TV
+                 </td>
+               </tr>
+             </table> 
+      </div>
+    </div>
+    </div>
+
+<br clear="all">
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3">
+%YAML 1.1
+---
+
+Wohnzimmer:
+
+    Stehlampe:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 6/1/3
+        knx_send: 6/0/3
+
+    Steckdose_TV:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 6/1/4
+        knx_send: 6/0/4
+</textarea>
+<br>
+Das Widget für die Stehlampe sieht wie folgt aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch('', 'Wohnzimmer.Stehlampe', 'icon', [1,0], ['light_floor_lamp.svg', 'light_floor_lamp.svg']) }} Stehlampe
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br>
+Das Widget für die Steckdose TV sieht wie folgt aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch('', 'Wohnzimmer.Stehlampe', 'icon', [1,0], ['message_socket.svg', 'message_socket.svg']) }} Stedo TV
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br>
+Der dazugehörige html-Code in Block-Typ 2 sieht so aus:<br>
+<textarea cols="50" rows="3">{% raw %}
+   <div class="block">
+      <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+         <div data-role="collapsible" data-collapsed="false">
+            <h3>Wohnzimmer</h3>
+            <table width=100%>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.Stehlampe', 'icon', [1,0], ['light_floor_lamp.svg', 'light_floor_lamp.svg']) }} Stehlampe
+                 </td>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.Stehlampe', 'icon', [1,0], ['message_socket.svg', 'message_socket.svg']) }} Stedo TV
+                 </td>
+               </tr>
+            </table> 
+          </div>
+       </div>
+    </div>
+{% endraw %}
+</textarea>
+Weiterführende Infos zu dem Widget gibt es in der Inline Dokumentation.
+
+{% endblock %}
+

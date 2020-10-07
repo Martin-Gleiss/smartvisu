@@ -1,0 +1,107 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "smarthome.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}time_automatic.svg' />SmartHomeNG - Szenen
+{% endblock %}
+
+{% block docu %}
+	<div class="preblock">
+		<span data-role="controlgroup" data-type="horizontal"> 
+			Szenen<br />
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 0, 'scene_party.svg') }}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 1, 'scene_dinner.svg') }}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 2, 'scene_livingroom.svg') }}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 3, 'scene_cubby.svg') }}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 4, 'status_away_1.svg') }}
+		</span>
+	</div>
+
+<h1><a href="https://www.smarthomeng.de/user/konfiguration/konfigurationsdateien/scenes.html"> >>> To Do Szenen <<< </a></h1>
+Der Bereich der Szenen hat sich von der Konfiguratione komplett geändert und muß überarbeitet werden!
+
+<h3>Alter Text hier</h3>
+Hier nun eine kurze Beschreibung, um Szenen einzubinden. Szenen werden in SmartHomeNG im folgenden Verzeichnis abgelegt<br>
+	<div class="linux">
+		<code>/usr/local/smarthome/scenes/</code>
+	</div>
+
+    
+Hier erstellen wir eine Datei mit beliebigen Namen und der Dateiendung yaml. In diesem Beispiel verwenden wir <span style="color:#D7DF01">wohnen.yaml</span> als Bezeichnung.<br>
+In dieser Datei schreiben wir von 0 (null) beginnend unsere Items mit dem entsprechenden Wert hinein. Basis ist mal das Besipiel-Item aus <br>
+	<textarea cols="50" rows="3">	
+0 Wohnzimmer.Spot1Schalten.Spot1Dimmen 120
+0 Wohnzimmer.Spot2Schalten.Spot2Dimmen 100
+0 Wohnzimmer.Rollo.Position 150
+0 Wohnzimmer.RolloWest.Position 200
+0 Wohnzimmer.Stehlampe 1
+0 Wohnzimmer.Heizung.set 1
+1 Wohnzimmer.Spot1Schalten.Spot1Dimmen 130
+1 Wohnzimmer.Stehlampe 1
+1 Wohnzimmer.Rollo.Position 200
+1 Wohnzimmer.RolloWest.Position 200
+2 Wohnzimmer.Steckdose_TV 1
+2 Wohnzimmer.Spot2Schalten.Spot2Dimmen 100
+2 Wohnzimmer.Rollo.Position 200
+2 Wohnzimmer.RolloWest.Position 200
+3 Wohnzimmer.Spot1Schalten 1
+3 Wohnzimmer.Spot2Schalten 1
+3 Wohnzimmer.Stehlampe 1
+4 Wohnzimmer.Spot1Schalten 0
+4 Wohnzimmer.Spot2Schalten 0
+4 Wohnzimmer.Stehlampe 0
+4 Wohnzimmer.Steckdose_TV 0
+4 Wohnzimmer.RolloSued.Fahren 1
+4 Wohnzimmer.RolloWest.Fahren 1
+4 Wohnzimmer.Heizung.set 3
+	</textarea>
+<br>
+Kurzerklärung für die erste Zeile:<br>
+<ul>
+	<li><i>0</i> = Szenennummer</li>
+	<li><i>Wohnzimmer.Spot1Schalten.Spot1Dimmen</i> = Item innerhalb der Szenennummer</li>
+	<li><i>120</i> = Wert für das Item</li>
+</ul>
+<br>
+Das Item, welches wir verwenden, sieht wie folgt aus:<br>
+<textarea cols="50" rows="3">
+wohnen:
+
+    Szenen:
+        type: scene
+        visu_acl: rw
+        enforce_updates: yes
+        knx_dpt: 5
+        knx_listen: 7/2/0
+</textarea>
+<br>
+Da wir hier innerhalb des Items auch eine GA verwenden, ist es somit auch möglich z.B. von einem Tastsensor die Szenen aufzurufen.
+Je nachdem welchen Wert (hier von 0-4) man nun auf das Item bzw. die GA sendet, werden die entsprechenden Szenen aufgerufen. <br>
+<textarea cols="50" rows="3">{% raw %}
+	<div class="preblock">
+		<span data-role="controlgroup" data-type="horizontal"> 
+			Szenen<br />
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 0, 'scene_party.svg') }}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 1, 'scene_dinner.svg') }}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 2, 'scene_livingroom.svg') }}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 3, 'scene_cubby.svg') }}
+			{{ basic.stateswitch('', 'Wohnzimmer.Szenen', 'midi', 4, 'status_away_1.svg') }}
+		</span>
+	</div>
+{% endraw %}
+</textarea>
+
+Es ist auch möglich Szenen zeitgesteuert aufzurufen. Entweder über crontab oder über die UZSU.<br>
+Weiterhin ist es möglich Logiken innerhalb einer Szene einzubinden.<br>
+
+
+Mehr dazu findet man <a href="https://www.smarthomeng.de/user/konfiguration/szenen.html" target="_blank">dort</a>.
+{% endblock %}

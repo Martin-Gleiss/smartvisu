@@ -1,0 +1,98 @@
+{% extends "main.html" %}
+
+{% block headline %}
+    <img class="icon" src='{{ icon0 }}sani_heating_automatic.svg' />Heizung - device.rtr
+{% endblock %}
+
+{% block docu %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('Wohnzimmer.Heizung.temperatur', '20' );
+			 io.write('Wohnzimmer.Heizung.set', '22' );
+		});
+</script>
+
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Heizung</h3>
+                {{ device.rtr('', 'Heizung', 'Wohnzimmer.Heizung.temperatur', 'Wohnzimmer.Heizung.set', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.state', '') }}
+            </div>
+        </div>
+    </div>
+<br clear="all">
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3">
+Wohnzimmer:
+    Heizung:
+        temperatur:
+            type: num
+            visu_acl: rw
+            database: yes
+            knx_dpt: 9
+            knx_listen: 6/1/0
+            knx_init: 6/1/0
+
+        set:
+            type: num
+            visu_acl: rw
+            database: yes
+            knx_dpt: 9
+            knx_send: 6/2/0
+            knx_listen: 6/3/0
+
+        mode:
+            type: num
+            visu_acl: rw
+            knx_dpt: 5
+            knx_listen: 6/4/0
+            knx_send: 6/4/0
+
+        state:
+            type: bool
+            visu_acl: rw
+            database: yes
+            knx_dpt: 1
+            knx_listen: 6/5/0
+            knx_init: 6/5/0
+
+</textarea>
+<br>
+Das Widget für die Heizung sieht wie folgt aus:<br>
+    <div class="linux">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        {{ device.rtr('', 'Heizung', 'Wohnzimmer.Heizung.temperatur', 'Wohnzimmer.Heizung.set', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.state', '') }}
+        {% endverbatim %}{% endfilter %}
+        </code>
+    </div>
+<br>
+Der dazugehörige html-Code in Block-Typ 2 sieht so aus:<br>
+<textarea cols="50" rows="3">{% raw %}
+    <div class="block">
+        <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Heizung</h3>
+                {{ device.rtr('', 'Heizung', 'Wohnzimmer.Heizung.temperatur', 'Wohnzimmer.Heizung.set', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.state', '') }}
+            </div>
+        </div>
+    </div>
+{% endraw %}
+</textarea>
+<br>
+Anmerkung:<br>
+Bei SmartHomeNG wird mit database = yes im Item festgelegt, dass für dieses Item Werte in die Datenbank geschrieben werden schreiben können (z.B. für Plots).<br>
+Das aufgezeigte Beispiel schaltet die Betriebsart über eine 1 Byte Gruppenadresse und gibt die Rückmeldung als 1 Bit aus.<br>
+Da die RTR's mit unterschiedlichen Arten der Betriebumschaltung arbeiten, kann es ggf. nötig sein, seinen RTR über das Item oder das Widget entsprechend angepasst einzubinden.<br>
+Eine weitere Möglichkeit der Betriebsartumschaltung ist die, dass man separate Gruppenadressen für Komfort/Standy, Nacht und Frostschutz hat. 
+In diesem Fall muß das Item entsprechend angepasst werden und ein möglicher Widget-Code könnte so aussehen.<br>
+    <div class="linux">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        {{ device.rtr('', 'Heizung', 'Wohnzimmer.Heizung.temperatur', 'Wohnzimmer.Heizung.set', 'Wohnzimmer.Heizung.mode', 'Wohnzimmer.Heizung.nacht', 'Wohnzimmer.Heizung.frost', 'Wohnzimmer.Heizung.state', '') }}
+        {% endverbatim %}{% endfilter %}
+        </code>
+    </div>
+<br><br>
+Weiterführende Infos zu dem Widget gibt es in der Inline Dokumentation.
+
+{% endblock %}
+

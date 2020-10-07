@@ -1,0 +1,94 @@
+{% extends "dimmen.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}light_light_dim_50.svg' />Dimmen - device.dimmer
+{% endblock %}
+
+{% block docu %}
+Anbei Beispiele um 2 Dimmer in einem Block-Typ 5 anzuzeigen:<br>
+
+<div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+                  <h3>Wohnzimmer</h3>
+                  {{ device.dimmer('', 'Spots 1', 'Wohnzimmer.Spot1Schalten', 'Wohnzimmer.Spot1Schalten.Spot1Dimmen', 0, 100, 10) }}
+                  {{ device.dimmer('', 'Spots 2', 'Wohnzimmer.Spot2Schalten', 'Wohnzimmer.Spot2Schalten.Spot2Dimmen', 0, 100, 10) }}
+          </div>
+    </div>
+</div>
+
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3">
+%YAML 1.1
+---
+
+Wohnzimmer:
+
+    Spot1Schalten:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_listen: 0/1/1
+        knx_send: 0/0/1
+        knx_init: 0/1/1
+
+        Spot1Dimmen:
+            type: num
+            visu_acl: rw
+            knx_dpt: 5001
+            knx_listen: 0/4/1
+            knx_send: 0/3/1
+            knx_init: 0/4/1
+
+    Spot2Schalten:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_listen: 0/1/2
+        knx_send: 0/0/2
+        knx_init: 0/1/2
+
+        Spot2Dimmen:
+            type: num
+            visu_acl: rw
+            knx_dpt: 5001
+            knx_listen: 0/4/2
+            knx_send: 0/3/2
+            knx_init: 0/4/2
+</textarea>
+<br><br>
+Das Widget für Spot 1 welches wir verwenden sieht so aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ device.dimmer('', 'Spots 1', 'Wohnzimmer.Spot1Schalten', 'Wohnzimmer.Spot1Schalten.Spot1Dimmen', 0, 100, 10) }}
+		{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br><br>
+Das Widget für Spot 2 welches wir verwenden sieht so aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ device.dimmer('', 'Spots 2', 'Wohnzimmer.Spot2Schalten', 'Wohnzimmer.Spot2Schalten.Spot2Dimmen', 0, 100, 10) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br><br>
+Der dazugehörige html-Code in Block-Typ 5 sieht so aus:<br>
+<textarea cols="50" rows="3">{% raw %}
+   <div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+                  <h3>Wohnzimmer</h3>
+                  {{ device.dimmer('', 'Spots 1', 'Wohnzimmer.Spot1Schalten', 'Wohnzimmer.Spot1Schalten.Spot1Dimmen', 0, 100, 10) }}
+                  {{ device.dimmer('', 'Spots 2', 'Wohnzimmer.Spot2Schalten', 'Wohnzimmer.Spot2Schalten.Spot2Dimmen', 0, 100, 10) }}
+          </div>
+    </div>
+    </div>
+{% endraw %}
+</textarea>
+<br><br>
+Weiterführende Infos zu dem Widget gibt es in der Inline Dokumentation.
+
+{% endblock %}
+
+

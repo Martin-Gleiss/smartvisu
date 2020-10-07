@@ -1,0 +1,77 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "main.html" %}
+
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}measure_power.svg' />Plots / Graphen
+{% endblock %}
+
+
+{% block submenu %}
+	<style>
+		.nav-custom .ui-btn .ui-btn-inner {
+			padding-top: 40px !important;
+		}
+
+		.nav-custom .ui-btn .ui-icon {
+			width: 30px !important;
+			height: 30px !important;
+			margin-left: -15px !important;
+			box-shadow: none !important;
+			-moz-box-shadow: none !important;
+			-webkit-box-shadow: none !important;
+			-webkit-border-radius: 0 !important;
+			border-radius: 0 !important;
+		}
+
+		#plotperiod .ui-icon {
+			background: url({{ icon0 }}time_note.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#plotperiodzoom .ui-icon {
+			background: url({{ icon0 }}time_note.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#plotrtr .ui-icon {
+			background: url({{ icon0 }}time_note.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#plottemprose .ui-icon {
+			background: url({{ icon0 }}time_note.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=plot_plot.period" id="plotperiod" data-icon="custom">plot.period</a></li>
+			<li><a href="index.php?page=plot_plot.periodzoom" id="plotperiodzoom" data-icon="custom">plot.period (zoom)</a></li>
+			<li><a href="index.php?page=plot_plot.rtr" id="plotrtr" data-icon="custom">plot.rtr</a></li>
+			<li><a href="index.php?page=plot_plot.temprose" id="plottemprose" data-icon="custom">plot.temprose</a></li>			
+		</ul>
+	</div>
+{% endblock %}
+
+
+{% block docu %}
+	Hier einige Besipiel für die die Widgets: 
+	
+	<ul>
+		<li>plot.period (+ zoom-Erweiterung)</li>
+		<li>plot.rtr</li>
+		<li>plot.temprose</li>
+	</ul>
+{% endblock %}
+
+

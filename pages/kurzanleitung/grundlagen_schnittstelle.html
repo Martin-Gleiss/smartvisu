@@ -1,0 +1,162 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß, Bernd Meiners
+* @copyright   2012, 2020
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "grundlagen.html" %}
+
+
+{% block headline %}
+    <img class="icon" src='{{ icon0 }}edit_paste.svg' />Grundlagen - Schnittstelle
+{% endblock %}
+
+
+{% block docu %}
+    Im folgenden wird vorausgesetzt, das die SmartVISU zusammen mit SmartHomeNG als Backend betrieben wird und ein aktuelles Raspbian Betriebssystem auf Basis von Debian Buster genutzt wird.
+    Die (ausführlichere) Installation ist auch auf der Seite <a href="https://www.smarthomeng.de/user/installation/komplettanleitung/05_knxd.html">Komplettanleitung knxd</a> beschrieben.
+    Daher hier in aller Kürze:<br>
+    <br>
+    Der knxd wird installiert mit:
+
+    <div class="linux">
+        <code>{% filter nl2br %}
+            sudo apt-get update
+            sudo apt-get install knxd knxd-tools
+            {% endfilter %}
+        </code>
+    </div>
+
+    Dann muß die Konfigurationsdatei angepasst werden:
+
+    <div class="linux">
+        <code>sudo nano /etc/knxd.conf</code>
+    </div>
+
+    In der folgenden Tabelle ist der KNXD_OPTS Eintrag für die entsprechende Schnittstelle enthalten:
+
+    <table style="margin-top: 1em; margin-bottom: 1em; width: 100%; border: solid 1px;">
+        <tr><th>Schnittstelle</th><th>Parameter</th></tr>
+        <tr>
+            <td>IP-Schnittstelle</td>
+            <td>
+                <div class="linux">
+                    <code>{% filter nl2br %}
+                        KNXD_OPTS="-e 0.0.1 -E 0.0.2:8 -c -b ipt:<IP der knx Schnittstelle>"
+                        {% endfilter %}
+                    </code>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Router</td>
+            <td>
+                <div class="linux">
+                    <code>{% filter nl2br %}
+                        KNXD_OPTS="-e 0.0.1 -E 0.0.2:8 -c -b ip:"
+                        {% endfilter %}
+                    </code>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    Da die weitere Unterstützung von USB und FT1.2 Schnittstellen ungeklärt ist, werden sie hier nicht weiter berücksichtigt.
+
+    Um die Konfigurationsänderung wirksam werden zu lassen, muß der knxd neu gestartet werden.<br>
+    Der knxd hat zwei Einträge, zum einen knxd.socket der die normalerweise die Kommunikation über der Port 6720 übernimmt und der knxd.service der die restlichen Aufgaben übernimmt.<br>
+    <br>
+    Zunächst beenden des knxd:<br>
+    <div class="linux">
+        <code>{% filter nl2br %}
+            sudo systemctl stop knxd.socket
+            sudo systemctl stop knxd.service
+            {% endfilter %}
+        </code>
+    </div>
+    Die Reihenfolge ist wichtig: beenden wir erst den knxd, kann ein Prozess genau dann einen Socket öffnen und der systemd startet ihn sofort wieder.<br>
+    Um sicher zu gehen, das der knxd mit dem Systemstart auch gestartet wird muß dem systemd mitgeteilt werden das diese beiden Einträge auch eingeschaltet also <em>enabled</em> sind.
+    <div class="linux">
+        <code>{% filter nl2br %}
+            sudo systemctl enable knxd.service
+            sudo systemctl enable knxd.socket
+            {% endfilter %}
+        </code>
+    </div>
+
+    Jetzt können wir den knxd starten mit
+    <div class="linux">
+        <code>{% filter nl2br %}
+            sudo systemctl start knxd.socket
+            sudo systemctl start knxd.service
+            {% endfilter %}
+        </code>
+    </div>
+
+    Auch hier ist die Reihenfolge wichtig: Starten wir erst den Service, werden dem knxd die Sockets nicht vom systemd übergeben.<br>
+    <br>
+    Mit den folgenden Kommandos kann geprüft werden, ob die beiden Einträge ordnungsgemäßt funktionieren:<br>
+    <div class="linux">
+        <code>{% filter nl2br %}
+            sudo systemctl status knxd.socket
+            sudo systemctl status knxd.service
+            {% endfilter %}
+        </code>
+    </div>
+    Wenn alles ok ist, dann sieht das etwa so aus:
+    <div class="linux">
+        <code>{% filter nl2br %}
+            $ sudo systemctl status knxd.socket
+            ● knxd.socket - KNX Daemon (socket)
+            Loaded: loaded (/lib/systemd/system/knxd.socket; enabled; vendor preset: enabled)
+            Active: active (running) since Sun 2019-03-31 19:07:49 CEST; 1 weeks 6 days ago
+            Listen: /var/run/knx (Stream)
+                    [::]:6720 (Stream)
+
+            ● knxd.service - KNX Daemon
+            Loaded: loaded (/lib/systemd/system/knxd.service; enabled; vendor preset: enabled)
+            Active: active (running) since Sun 2019-03-31 19:08:10 CEST; 1 weeks 6 days ago
+            Main PID: 865 (knxd)
+            Tasks: 1 (limit: 4915)
+            CGroup: /system.slice/knxd.service
+                    └─865 /usr/bin/knxd -e 0.0.1 -E 0.0.2:8 -c -b ipt:192.168.x.y
+            {% endfilter %}
+        </code>
+    </div>
+
+    Ob das erfolgreich war und man Verbindung zum Bus hat, kann man testen, indem man entweder am Bus auf Telegramme lauscht
+    <div class="linux">
+        <code>{% filter nl2br %}
+            knxtool groupsocketlisten local:
+            {% endfilter %}
+        </code>
+    </div>
+
+    oder auf eine Gruppenadresse (hier zum Beispiel 0/0/67) Werte schreibt:
+    <div class="linux">
+        <code>{% filter nl2br %}
+            knxtool groupswrite ip:localhost 0/0/67 1
+            knxtool groupswrite ip:localhost 0/0/67 0
+            {% endfilter %}
+        </code>
+    </div>
+
+    Sollte sich jetzt nichts tun, dann gibt es irgendwo einen Fehler und alles muß noch einmal geprüft werden.
+    Vielleicht ist der Neustart des knxd vergessen oder ein Build-Fehler übersehen worden.
+    <br>
+    <br>
+    <b>Anmerkung(1):</b><br>
+    Es zeigte sich das einige Schnittstellen (z.B. Weinzierl IP Interface 730 oder eibmarkt EIB KNX IP Schnittstelle PoE [#N000401] zu langsam für den <strong>knxd</strong> sind.
+    Sollte jemand Probleme mit den oben genannten Schnittstellen haben,
+    kann unter Umständen folgendes in der <strong>/etc/knxd.conf</strong> helfen
+    <div class="linux">
+        <code>--no-tunnel-client-queuing</code>
+    </div>
+    <br>
+    <b>Anmerkung(2):</b><br>
+    Sollte man eine bereits bestehende knxd-Instanz (z.B.Wiregate) nutzen wollen, ist es nicht notwendig die hier beschrieben Schritte auszuführen.
+{% endblock %}

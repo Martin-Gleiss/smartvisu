@@ -1,0 +1,35 @@
+/**
+ * A list with selectable item
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item for the list 
+ * @param       a gad/item for the selected item 
+ * @param       the text to be displayed on top of the list
+ */
+{% macro list(id, gad_list, gad_item, txt ) %}
+  <ul id="{{ uid(page, id) }}" data-widget="basic.list" data-item="{{ gad_list }}, {{ gad_item }}"
+      data-role="listview" data-dividertheme="c">  
+              <li data-icon="false"><a href="#">View details</a></li>
+              <li data-icon="false"><a href="#">Edit</a></li>
+              <li data-icon="false"><a href="#">Disable</a></li>
+              <li data-icon="false"><a href="#">Delete</a></li>
+          </ul>   
+{% endmacro %}
+
+
+/**
+ * Displays a slider-control
+ * 
+ * @param       unique id for this widget
+ * @param       a gad/item current time (progress) 
+ * @param       a gad/item total duration (maximum) 
+ * @param       seconds between two values (optional, default 5s) 
+ * @param       the orientation ('none', 'vertical', 'bottomup', 'semicircle')
+ */
+{% macro time_slider(id, gad_time, gad_duration, step, mode) %}
+
+    <input id="{{ uid(page, id) }}" data-widget="my.time_slider" data-item="{{ gad_time }}, {{ gad_duration }}" 
+        type="range" value="0" min="0" max="1" disabled="1" step="{{ step|default(5) }}"
+        orientation="{{ mode }}" data-highlight="true" />
+
+{% endmacro %}

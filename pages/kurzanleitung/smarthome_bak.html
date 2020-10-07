@@ -1,0 +1,426 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "smarthome.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}measure_power_meter.svg' />SmartHomeNG - Verbrauchsdaten
+{% endblock %}
+
+{% block docu %}
+	<div class="preblock">
+		<span data-role="controlgroup" data-type="horizontal"> 
+			NOCH IN BEARBEITUNG <br />
+
+		</span>
+	</div>
+Hier nun eine kurze Beschreibung um z.B. einen Verbrauchsdatenberechnung zu realisieren<br>
+Dies können wir entweder über eine Logik lösen oder wir verwenden die eval-Funktion.
+Hier habe ich mich mal für die Lösung über eval entschieden, da man direkt in den Items arbeiten kann.<br>
+Der E-Zähler liefert einen 4byte Zählerstandswert, den wir zusätzlich in database speichern.<br>
+<br>
+Das Item sieht wie folgt aus:
+<textarea cols="50" rows="3">
+ELT:
+    Zaehlerstand:
+        type: num
+        visu_acl: rw
+        database: yes
+        knx_dpt: 12
+        knx_cache: 5/2/0
+
+        gestern:
+            type: num
+            cache: on
+            database: yes
+            knx_send: 5/5/15
+            knx_cache: 5/5/15
+            crontab: 0 0 * * = 1
+            eval: sh.ELT.Zaehlerstand() - sh.ELT.Zaehlerstand.db('max', '1d', '1d')
+
+        stuendlich_:
+            type: num
+            cache: on
+            database: yes
+            crontab: 0 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 * * = 1
+            eval: sh.ELT.Zaehlerstand() - sh.ELT.Zaehlerstand.db('max', '1h', '1h')
+
+        zweiTage:
+            type: num
+            cache: on
+            database: yes
+            crontab: 0 0 * * = 1
+            eval: sh.ELT.Zaehlerstand() - sh.ELT.Zaehlerstand.db('max', '2d', '2d')
+
+LeistungGesamt:
+    type: num
+    visu_acl: rw
+    database: yes
+    datalog:
+      - default
+      - custom
+    knx_dpt: 14
+    knx_cache: 5/2/1
+
+    stuendlich_:
+        type: num
+        cache: on
+        database: yes
+        crontab: 0 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 * * = 1
+        eval: round(sh.LeistungGesamt.db('avg', '1h'), 2)
+
+</textarea>
+
+
+<!-- 	<div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Strom - Tagesbedarf letzte Woche </h3>		
+			{{ plot.period('p5', 'ELT.Zaehlerstand.gestern', 'avg', '1w', '0', '0', '', '', 'Tagesbedarf', '#F26', 'column', ['', 'kWh'], '1h') }}
+        </div>
+	</div>
+	</div>
+	
+	<div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Strom - Tagesbedarf stündlich </h3>		
+			{{ plot.period('p88', 'ELT.Zaehlerstand.stuendlich_', 'avg', '24h', '0', '0', '', '', 'Bedarf stündlich', '#FEA', 'column', ['', 'kWh'], '1h') }}
+        </div>
+	</div>
+	</div>
+ 
+	<div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Strom - stündlicher Durchschnittsverbrauch </h3>		
+			{{ plot.period('p811', 'LeistungGesamt.stuendlich_', 'avg', '24h', '0', '0', '', '', 'h-Durchschnitt', '#AFA', 'column', ['', 'W'], '1h') }}
+        </div>
+	</div>
+	</div>
+	
+	<div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Strom - Leistung gesamt 24h </h3>		
+			{{ plot.period('p8', 'LeistungGesamt', 'avg', '24h', '0', '0', '', '', 'Tagesbedarf', '#006', 'line', ['', 'W'], '1h') }}
+        </div>
+	</div>
+	</div>-->
+
+	<div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Strom - Tagesbedarf letzte Woche </h3>		
+			{{ plot.period('', 'ELT.Zaehlerstand.gestern', 'avg', '1w', '0', '0', '', '', 'Tagesbedarf', '#F26', 'column', ['', 'kWh'], '1h') }}
+        </div>
+	</div>
+	</div>
+	
+	<div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Strom - Tagesbedarf stündlich </h3>		
+			{{ plot.period('', 'ELT.Zaehlerstand.stuendlich_', 'avg', '24h', '0', '0', '', '', 'Bedarf stündlich', '#FEA', 'column', ['', 'kWh'], '1h') }}
+        </div>
+	</div>
+	</div>
+ 
+	<div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Strom - stündlicher Durchschnittsverbrauch </h3>		
+			{{ plot.period('', 'LeistungGesamt.stuendlich_', 'avg', '24h', '0', '0', '', '', 'h-Durchschnitt', '#AFA', 'column', ['', 'W'], '1h') }}
+        </div>
+	</div>
+	</div>
+	
+	<div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Strom - Leistung gesamt 24h </h3>		
+			{{ plot.period('', 'LeistungGesamt', 'avg', '24h', '0', '0', '', '', 'Tagesbedarf', '#006', 'line', ['', 'W'], '1h') }}
+        </div>
+	</div>
+	</div>
+ 
+
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<!--<textarea cols="50" rows="3">
+ehz:
+
+    haus:
+        type: num
+        cache: on
+        database: yes
+        nw: yes
+
+        leistung_aktuell:
+            type: num
+            cache: on
+            nw: yes
+
+        verbrauch:
+
+            aktuell:
+                type: num
+                cache: on
+                eval: sh.ehz.haus() - sh.ehz.haus.db('max', '1d', sh.minute.since.midnight.dbstr())
+                eval_trigger: ehz.haus
+
+            gestern:
+                type: num
+                cache: on
+                database: yes
+                crontab: 0 0 * * = 1
+                eval: sh.ehz.haus() - sh.ehz.haus.db('max', '1d', '1d')
+
+                weekly_avg:
+                    type: num
+                    cache: on
+                    database: yes
+                    eval: round(sh.ehz.haus.verbrauch.gestern.db('avg', '1w'), 2)
+                    eval_trigger: ehz.kosten.gestern
+
+            stuendlich:
+                type: num
+                cache: on
+                database: yes
+                crontab: 0 * * * = 1
+                eval: sh.ehz.haus() - sh.ehz.haus.db('max', '1h','1h')
+
+            monat:
+                type: num
+                cache: on
+                database: yes
+                crontab: 0 0 0 * = 1
+                eval: sh.ehz.haus() - sh.ehz.haus.db('max', '1m', '1m')
+
+        kosten:
+
+            heute:
+                type: num
+                cache: on
+                database: yes
+                eval: round((sh.ehz.haus.verbrauch.aktuell())*0.2549 + (54.86/365),2)
+                eval_trigger: ehz.haus.verbrauch.aktuell
+
+            gestern:
+                type: num
+                cache: on
+                database: yes
+                eval: round((sh.ehz.haus.verbrauch.gestern())*0.2549 + (54.86/365),2)
+                eval_trigger: ehz.haus.verbrauch.gestern
+
+                weekly_avg:
+                    type: num
+                    cache: on
+                    database: yes
+                    eval: round(sh.ehz.haus.kosten.gestern.db('avg', '1w'), 2)
+                    eval_trigger: ehz.haus.kosten.gestern
+
+            monat:
+                type: num
+                cache: on
+                database: yes
+                eval: round((sh.ehz.haus.verbrauch.monat())*0.2549 + (54.86/365),2)
+                eval_trigger: ehz.haus.verbrauch.monat
+
+    wp:
+
+        tag:
+            type: num
+            cache: on
+            database: yes
+            nw: yes
+
+            verbrauch:
+
+                aktuell:
+                    type: num
+                    cache: on
+                    eval: sh.ehz.wp.tag() - sh.ehz.wp.tag.db('max', '1d', sh.minute.since.midnight.dbstr())
+                    eval_trigger: ehz.wp.tag
+
+                gestern:
+                    type: num
+                    cache: on
+                    database: yes
+                    crontab: 0 0 * * = 1
+                    eval: sh.ehz.wp.tag() - sh.ehz.wp.tag.db('max', '1d', '1d')
+
+                monat:
+                    type: num
+                    cache: on
+                    database: yes
+                    crontab: 0 0 0 * = 1
+                    eval: sh.ehz.wp.tag() - sh.ehz.wp.tag.db('max', '1m', '1m')
+
+            kosten:
+
+                heute:
+                    type: num
+                    cache: on
+                    eval: round((sh.ehz.wp.tag.verbrauch.aktuell()*0.2279) + (55.37/2/365),2)
+                    eval_trigger: ehz.wp.tag.verbrauch.aktuell
+
+                gestern:
+                    type: num
+                    cache: on
+                    database: yes
+                    eval: round((sh.ehz.wp.tag.verbrauch.gestern()*0.2279) + (55.37/2/365),2)
+                    eval_trigger: ehz.wp.tag.verbrauch.gestern
+
+                monat:
+                    type: num
+                    cache: on
+                    database: yes
+                    eval: round((sh.ehz.wp.tag.verbrauch.monat()*0.2279) + (55.37/2/365),2)
+                    eval_trigger: ehz.wp.tag.verbrauch.monat
+
+        nacht:
+            type: num
+            cache: on
+            database: yes
+            nw: yes
+
+            verbrauch:
+
+                aktuell:
+                    type: num
+                    cache: on
+                    eval: sh.ehz.wp.nacht() - sh.ehz.wp.nacht.db('max', '1d', sh.minute.since.midnight.dbstr())
+                    eval_trigger: ehz.wp.nacht
+
+                gestern:
+                    type: num
+                    cache: on
+                    database: yes
+                    crontab: 0 0 * * = 1
+                    eval: sh.ehz.wp.nacht() - sh.ehz.wp.nacht.db('max', '1d', '1d')
+
+                monat:
+                    type: num
+                    cache: on
+                    database: yes
+                    crontab: 0 0 0 * = 1
+                    eval: sh.ehz.wp.nacht() - sh.ehz.wp.nacht.db('max', '1m', '1m')
+
+            kosten:
+
+                heute:
+                    type: num
+                    cache: on
+                    eval: round((sh.ehz.wp.nacht.verbrauch.aktuell()*0.1942) + (55.37/2/365),2)
+                    eval_trigger: ehz.wp.nacht.verbrauch.aktuell
+
+                gestern:
+                    type: num
+                    cache: on
+                    database: yes
+                    eval: round((sh.ehz.wp.nacht.verbrauch.gestern()*0.1942) + (55.37/2/365),2)
+                    eval_trigger: ehz.wp.nacht.verbrauch.gestern
+
+                monat:
+                    type: num
+                    cache: on
+                    database: yes
+                    eval: round((sh.ehz.wp.nacht.verbrauch.monat()*0.2279) + (55.37/2/365),2)
+                    eval_trigger: ehz.wp.nacht.verbrauch.monat
+
+        gesamt:
+            type: num
+            cache: on
+            database: yes
+            eval: sh.ehz.wp.tag() + sh.ehz.wp.nacht()
+            eval_trigger:
+              - ehz.wp.tag
+              - ehz.wp.nacht
+
+            leistung_aktuell:
+                type: num
+                cache: on
+                nw: yes
+
+            verbrauch:
+
+                aktuell:
+                    type: num
+                    cache: on
+                    eval: sh.ehz.wp.gesamt() - sh.ehz.wp.gesamt.db('max', '1d', sh.minute.since.midnight.dbstr())
+                    eval_trigger: ehz.wp.gesamt
+
+                gestern:
+                    type: num
+                    cache: on
+                    database: yes
+                    eval: sh.ehz.wp.tag.verbrauch.gestern() + sh.ehz.wp.nacht.verbrauch.gestern()
+                    eval_trigger:
+                      - ehz.wp.tag.verbrauch.gestern
+                      - ehz.wp.nacht.verbrauch.gestern
+
+                stuendlich:
+                    type: num
+                    cache: on
+                    database: yes
+                    crontab: 0 * * * = 1
+                    eval: sh.ehz.wp.gesamt() - sh.ehz.wp.gesamt.db('max', '1h', '1h')
+
+            kosten:
+
+                heute:
+                    type: num
+                    cache: on
+                    eval: sh.ehz.wp.tag.kosten.heute() + sh.ehz.wp.nacht.kosten.heute()
+                    eval_trigger:
+                      - ehz.wp.tag.kosten.heute
+                      - ehz.wp.nacht.kosten.heute
+
+                gestern:
+                    type: num
+                    cache: on
+                    database: yes
+                    eval: sh.ehz.wp.tag.kosten.gestern() + sh.ehz.wp.nacht.kosten.gestern()
+                    eval_trigger:
+                      - ehz.wp.tag.kosten.gestern
+                      - sh.ehz.wp.nacht.kosten.gestern
+
+        jahresarbeitszahl:
+            type: num
+            cache: on
+            database: yes
+            eval: round(sh.Waermepumpe.WMZ_Total.db('max', '1y') / sh.ehz.wp.gesamt.db('max', '1y'), 1)
+            eval_trigger:
+              - ehz.wp.gesamt
+              - Waermepumpe.WMZ_Total
+
+    kosten:
+
+        gestern:
+            type: num
+            cache: on
+            database: yes
+            eval: round(sh.ehz.haus.kosten.gestern() + sh.ehz.wp.gesamt.kosten.gestern(), 2)
+            eval_trigger:
+              - ehz.haus.kosten.gestern
+              - ehz.wp.gesamt.kosten.gestern
+
+            weekly_avg:
+                type: num
+                cache: on
+                database: yes
+                eval: round(sh.ehz.kosten.gestern.db('avg', '1w'), 2)
+                eval_trigger: ehz.kosten.gestern
+</textarea>
+<br> -->
+
+{% endblock %}

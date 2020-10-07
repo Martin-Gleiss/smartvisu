@@ -1,0 +1,109 @@
+/**
+* A switch, build of two pics, but with necessary authentication
+*
+* @param unique id for this widget
+* @param a gad/item
+* @param the pic for the 'on' state (optional)
+* @param the pic for the 'off' state (optional)
+* @param value send for the 'on' state (optional, default 1)
+* @param value send for the 'off' state (optional, default 0)
+* @param value for the passwort, for example 1234
+*/
+{% macro auth_switch(id, gad, pic_on, pic_off, val_on, val_off, refpwd ) %}
+{% set uid = uid(page, id) %}	
+<div>
+	<span id="{{ uid }}-switch" data-widget="basic.auth_switch" data-item="{{ gad }}" 
+			data-val-on="{{ val_on|default('1') }}" data-val-off="{{ val_off|default('0') }}"
+			data-pic-on="{{ pic_on|default(icon1~'control_on_off.svg') }}" data-pic-off="{{ pic_off|default(icon0~'control_on_off.svg') }}">
+			<a><img id="{{ uid }}-image" class="icon" src="{{ pic_off|default(icon0~'control_on_off.svg') }}" /></a>
+	</span>
+	<div id="{{ uid }}-switch-popup" data-role="popup" class="messagePopup" style="width:180px; height:300px;" data-overlay-theme="c" data-theme="a" data-dismissible="false">
+		<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
+		<form name="formkey">
+		Code eingeben:
+		<input type="password" name="pwd" id="{{ uid }}-account" autocomplete="off" maxlength="4" size="2" data-tip="Please enter a password" autofocus="autofocus">
+		<script type="text/javascript">
+						
+			if (!('autofocus' in document.createElement('input')))
+			{
+				document.getElementById('{{ uid }}-account').focus();
+			}
+			
+			function appendValue(in_value, field_id)
+			{
+				var textLength = document.getElementById(field_id).value.length;
+				
+				if(document.getElementById(field_id).type == 'text')
+				{
+					document.getElementById(field_id).value = in_value;
+					document.getElementById(field_id).type = 'password';
+				}
+				else
+				{
+					if(textLength < 4)
+						document.getElementById(field_id).value = document.getElementById(field_id).value + in_value;              
+				}
+			}
+
+			function resetValue(field_id)
+			{
+				document.getElementById(field_id).value = '';
+				document.getElementById(field_id).type = 'password';
+			}
+			
+			function checkPw(field_id, switch_id, image_id, popup_id, pwd)
+			{
+				var code = document.getElementById(field_id).value;
+				if ( code == pwd ) {
+					document.getElementById(field_id).value = '';
+					
+					if (document.getElementById(image_id).getAttribute('src') == document.getElementById(switch_id).getAttribute('data-pic-off') )
+					{
+						io.write(document.getElementById(switch_id).getAttribute('data-item'), document.getElementById(switch_id).getAttribute('data-val-on'));
+					}
+					else
+					{
+						io.write(document.getElementById(switch_id).getAttribute('data-item'), document.getElementById(switch_id).getAttribute('data-val-off'));
+					}
+					//$.mobile.activePage.find('.messagePopup').popup('close');
+					$.mobile.activePage.find(popup_id).popup('close');
+				}
+				else {
+					document.getElementById(field_id).value = 'Falscher Code';
+					document.getElementById(field_id).type = 'text';
+				}
+
+			}
+		</script>
+		<table width=100%>
+ 			<tr>
+			<td align=center><a onclick="appendValue(1,'{{ uid }}-account');" id="{{ uid }}-button1" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">1 </a></td>
+			<td align=center><a onclick="appendValue(2,'{{ uid }}-account');" id="{{ uid }}-button2" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">2 </a></td>
+			<td align=center><a onclick="appendValue(3,'{{ uid }}-account');" id="{{ uid }}-button3" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">3 </a></td>
+  			</tr>
+  			<tr>
+		<table width=100%>
+			<td align=center><a onclick="appendValue(4,'{{ uid }}-account');" id="{{ uid }}-button4" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">4 </a></td>
+			<td align=center><a onclick="appendValue(5,'{{ uid }}-account');" id="{{ uid }}-button5" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">5 </a></td>
+			<td align=center><a onclick="appendValue(6,'{{ uid }}-account');" id="{{ uid }}-button6" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">6 </a></td>
+  			</tr>
+			<tr>
+		<table width=100%>
+			<td align=center><a onclick="appendValue(7,'{{ uid }}-account');" id="{{ uid }}-button7" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">7 </a></td>
+			<td align=center><a onclick="appendValue(8,'{{ uid }}-account');" id="{{ uid }}-button8" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">8 </a></td>
+			<td align=center><a onclick="appendValue(9,'{{ uid }}-account');" id="{{ uid }}-button9" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">9 </a></td>
+  			</tr>
+			<tr>
+		<table width=100%>
+			<td align=center><a onclick="resetValue('{{ uid }}-account');"    id="{{ uid }}-buttonR"  class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">R</a></td>
+			<td align=center><a onclick="appendValue(0,'{{ uid }}-account');" id="{{ uid }}-button0"  class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">0</a></td>
+			<td align=center><a onclick="checkPw('{{ uid }}-account', '{{ uid }}-switch', '{{ uid }}-image', '[id={{ uid }}-switch-popup]', {{ refpwd }} );" id="{{ uid }}-buttonOK" class="ui-mini" data-role="button" data-inline="true" data-iconpos="nopic">OK</a></td>
+			</tr>
+		</table>
+		</form> 
+	</div> 
+
+</div>
+
+
+{% endmacro %}

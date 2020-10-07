@@ -1,0 +1,65 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "main.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}control_arrow_downward.svg' />Downloads
+{% endblock %}
+
+{% block submenu %}
+	<style>
+		.nav-custom .ui-btn .ui-btn-inner {
+			padding-top: 40px !important;
+		}
+
+		.nav-custom .ui-btn .ui-icon {
+			width: 30px !important;
+			height: 30px !important;
+			margin-left: -15px !important;
+			box-shadow: none !important;
+			-moz-box-shadow: none !important;
+			-webkit-box-shadow: none !important;
+			-webkit-border-radius: 0 !important;
+			border-radius: 0 !important;
+		}
+
+		#dlicon .ui-icon {
+			background: url({{ icon0 }}control_clear.svg) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#dliconsamsung .ui-icon {
+			background: url({{ icon0 }}it_remote.svg) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#dl3 .ui-icon {
+			background: url({{ icon0 }}secur_locked.svg) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=download_icons" id="dlicon" data-icon="custom">Icons</a></li>
+			<li><a href="index.php?page=download_samsung" id="dliconsamsung" data-icon="custom">Icons-Samsung</a></li>
+			<li><a href="index.php?page=download_d33" id="dl3" data-icon="custom">Folgt</a></li>
+		</ul>
+	</div>
+{% endblock %}
+
+
+{% block docu %}
+	Hier folgen Downloads von diversen Dingen: 
+	
+	<ul>
+		<li>Erweiterung Icons</li>
+		<li>Icons Plugin Samsung-TV</li>
+	</ul>
+{% endblock %}

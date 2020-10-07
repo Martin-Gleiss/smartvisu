@@ -1,0 +1,164 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "main.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}time_note.svg' />SmartHomeNG
+{% endblock %}
+
+{% block submenu %}
+	<style>
+		.nav-custom .ui-btn .ui-btn-inner {
+			padding-top: 40px !important;
+		}
+
+		.nav-custom .ui-btn .ui-icon {
+			width: 30px !important;
+			height: 30px !important;
+			margin-left: -15px !important;
+			box-shadow: none !important;
+			-moz-box-shadow: none !important;
+			-webkit-box-shadow: none !important;
+			-webkit-border-radius: 0 !important;
+			border-radius: 0 !important;
+		}
+
+		#eval .ui-icon {
+			background: url({{ icon0 }}time_note.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#autotimer .ui-icon {
+			background: url({{ icon0 }}time_timer.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#crontab .ui-icon {
+			background: url({{ icon0 }}time_clock.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#smarttv .ui-icon {
+			background: url({{ icon0 }}it_television.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#squeezebox .ui-icon {
+			background: url({{ icon0 }}audio_audio.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#minmax .ui-icon {
+			background: url({{ icon0 }}temp_control.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#fritzbox .ui-icon {
+			background: url({{ icon0 }}it_router.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#scene .ui-icon {
+			background: url({{ icon0 }}time_automatic.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#wol .ui-icon {
+			background: url({{ icon0 }}it_nas.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#mail .ui-icon {
+			background: url({{ icon0 }}message_mail.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#simulation .ui-icon {
+			background: url({{ icon0 }}message_presence_active.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#uzsu .ui-icon {
+			background: url({{ icon0 }}time_clock.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#verbrauch .ui-icon {
+			background: url({{ icon0 }}measure_power_meter.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#wetter .ui-icon {
+			background: url({{ icon0 }}weather_station.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#soon5 .ui-icon {
+			background: url({{ icon0 }}secur_locked.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}		
+		
+	</style>
+
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=smarthome_eval" id="eval" data-icon="custom">Eval</a></li>		
+			<li><a href="index.php?page=smarthome_autotimer" id="autotimer" data-icon="custom">Autotimer</a></li>
+			<li><a href="index.php?page=smarthome_crontab" id="crontab" data-icon="custom">Crontab</a></li>
+			<li><a href="index.php?page=smarthome_scene" id="scene" data-icon="custom">Szene</a></li>
+			<li><a href="index.php?page=smarthome_minmaxtemp" id="minmax" data-icon="custom">min.-max.</a></li>
+		</ul>
+	</div>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=smarthome_verbrauch" id="verbrauch" data-icon="custom">Verbrauch</a></li>
+			<li><a href="index.php?page=smarthome_simulation" id="simulation" data-icon="custom">Simulation</a></li>
+			<li><a href="index.php?page=smarthome_tv" id="smarttv" data-icon="custom">Samsung TV</a></li>
+			<li><a href="index.php?page=smarthome_sb" id="squeezebox" data-icon="custom">Squeezebox</a></li>	
+			<li><a href="index.php?page=smarthome_mail" id="mail" data-icon="custom">Mail</a></li>			
+		</ul>
+	</div>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=smarthome_wol" id="wol" data-icon="custom">WOL+Shutdown</a></li>
+			<li><a href="index.php?page=smarthome_uzsu" id="uzsu" data-icon="custom">UZSU</a></li>
+			<li><a href="index.php?page=smarthome_fritzbox" id="fritzbox" data-icon="custom">FritzBox</a></li>			
+			<li><a href="index.php?page=smarthome_wetter" id="wetter" data-icon="custom">Wunderground</a></li>	
+			<li><a href="index.php?page=smarthome_soon5_edit" id="soon5" data-icon="custom">Folgt</a></li>			
+		</ul>
+	</div>	
+<br>
+{% endblock %}
+
+{% block docu %}
+Abschließend noch ein Wort bzw. Beispiele zu SmartHomeNG.<br>
+Wie schon erwähnt ist SmartHomeNG ein verfügbares Backend für smartVISU. SmartHomeNG ist ein mächtiges Werkzeug und wird hier nur minimal beschrieben.<br>
+Es stellt verschiedenen Plugins für die verschiedensten Anwendungen zur Verfügung. So gibt es beispielsweise Plugins um Samsung-TV's über die VISU zu steuern und die Befehle auf den KNX zu bringen. 
+Momentan gibt es über 100 Plugins. Eine Auswahl der aktuell verfügbaren Plugins mit Doku findet man <a href="https://www.smarthomeng.de/user/plugins_all.html" target="_blank">hier</a>.<br><br>
+Weiterhin besteht die Möglichkeit über SmartHomeNG z.B. eigene Logiken einzubringen.<br>
+Im Folgenden wird mit Beispielen kurz auf folgende Punkte eingegangen.
+<ul>
+	<li>Funktion: eval</li>
+	<li>Funktion: Autotimer</li>
+	<li>Funktion: Crontab</li>
+	<li>Funktion: Szenen</li>
+	<li>Anwendung: min- und max-Temperaturwert</li>
+	<li>Anwendung: Verbrauch - Verbrauchsdatenermittlung (in Bearbeitung)</li>
+	<li>Anwendung: Simmulltion (in Bearbeitung)</li>
+	<li>Plugin: Smart TV</li>
+	<li>Plugin: Squeezebox</li>
+	<li>Plugin: Mail</li>
+	<li>Plugin: WOL (& Shutdown)</li>
+	<li>Plugin: UZSU - Universelle Zeitschaltuhr</li>
+	<li>Plugin: FritzBox (in Bearbeitung)</li>
+	<li>Logik: Wunderground - Wetterdaten von Wunderground auslesen</li>
+</u>	
+
+{% endblock %}

@@ -1,0 +1,214 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß, Wolfram v. Hülsen
+* @copyright   2012, 2020
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "grundlagen.html" %}
+{% import "forms.html" as forms %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}edit_settings.svg' />Grundlagen - Config-Seite
+{% endblock %}
+
+{% block docu %}
+	Über den letzten Button (Zahnräder) im horizontalen Menu von smartVISU gelangt man auf die Config-Seite.
+	Diese Seite stellt zentral alle Einstellungsmöglichkeiten zur Verfügung.<br><br>
+	Das Menü verfügt über 3 Reiter: 'Global', 'Seite' und 'Gerät'. Die Einstelloptionen sind immer gleich, werden aber unterschiedlich abgespeichert:<br>
+	<li><i>global:</i> config.ini im Root-Verzeichnis der Smartvisu</li>
+	<li><i>Seite:</i> config.ini im Root-Verzeichnis der eingestellten Seiten.</li>
+	<li><i>Gerät:</i> Cookie auf dem jeweiligen Gerät.</li>
+	<br>
+	Die Menüs sind in verschiedene Sprachen übersetzt und verfügen über Hilfetexte zu den einzelnen Einstellungen.
+	
+	
+	<h2>Interface / Benutzeroberfläche:</h2>
+	Ist zuständig für die "Optik" der Visu. Es kann neben den einzelnen Pages auch das Design gewählt werden.<br>
+<ul>	
+	<li><i>Seiten</i> = Auswahlmöglichkeit für die individuelle Visu im 'pages'-Verzeichnis</li>
+	<li><i>Design</i> = Auswahlmöglichkeit für die verschiedenen Design-Stile der Visu</li>
+	<li><i>Cache</i> = Einschalten des Seitenspeichers, um kürzere Ladezeiten zu erreichen. (empfohlen = on)<br>
+	Die Option wird nur dann angezeigt, wenn das Cache-Verzeichnis schreibbar ist. 
+	Während der Entwicklung neuer Seiten sollte der Cache ausgeschaltet sein, da sonst die Änderungen nicht angezeigt werden.</li>
+	<li><i>Leeren</i> = der Cache wird gelöscht. Bestätigung über eine grüne Meldung in er oberen rechten Ecke.
+</ul>	
+{% set source = 'global' %}
+{% set values = read_config(source) %}
+{% set id = (source != "global") ? '_' ~ source : '' %}
+<div id="config_tab_{{ source }}">
+	<form class="configform">
+		<fieldset>
+			<div class="block">
+				<div class="set-3" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+					<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+						<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'userinterface', 'label') }}</h3>
+					</div>
+					<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
+						<h3>{{ lang('configuration_page', 'interface', 'label') }}</h3>
+						{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
+						{{ forms.config_select(source, values, 'design', dir('designs', '(.+?).css')) }}
+						{{ forms.config_flip(source, values, 'cache', '<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache' ~ id ~ '" class="ui-micro"' ~ (not values['cache'] is defined ? ' disabled="disabled"'|raw) ~ '>' ~ lang('configuration_page', 'cache', 'clearbutton') ~'</button>') }}
+					</div>
+					<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
+						<h3>{{ lang('configuration_page', 'content', 'label') }}</h3>
+						{{ forms.config_input(source, values, 'title') }}
+						{{ forms.config_select(source, values, 'lang', dir('lang', '^(.*?)\.ini$') ) }}
+						{{ forms.config_select(source, values, 'timezone', timezones()) }}
+					</div>
+					<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a">
+						<h3>{{ lang('configuration_page', 'behaviour', 'label') }}</h3>
+						{{ forms.config_flip(source, values, 'animation') }}
+						{{ forms.config_input(source, values, 'backtohometime', 'wide') }}
+						{{ forms.config_select(source, values, 'timesource', [{"name": "client", "label": "Client"}, {"name": "server", "label": "Server"}] ) }}
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>
+<br clear="all">	
+	Unter "Inhalt" kann man als "Titel" einen individuellen Namen vergeben, der dann u.a. in der Browserleiste angezeigt wird.
+	Weiterhin werden dort die Sprache und die Zeitzone eingestellt.<br>
+	Unter "Verhalten" gibt es folgende Einstellmöglichkeiten:
+<ul>
+	<li><i>Animation</i> = Auswahlmöglichkeit um einige Elemente wie z.B. das Einblenden der Telefonliste animiert darzustellen (empfohlen = on)</li>
+	<li><i>auto. Rückkehr</i> = Hier kann die Zeit eingestellt werden, nach der die Anzeige zur Startseite zurückkehrt.</li>
+	<li><i>Zeitquelle</i> = Auswahlmöglichkeit, ob die Uhrzeit vom Server oder vom Anzeigegerät (client) verwendet wird.</li>
+</ul>
+	<hr />
+	<h2>SmartHome / IoT-Datenquelle</h2>
+	Hier legt man die Schnittstelle zum Backend fest. Die Standardeinstellungen für die Backends werden aus den jeweiligen io-Treibern entnommen und müssen - außer bei der IP-Adresse - in der Regel nicht angepasst werden.
+	Bei <i>Host/IP</i> wird die IP-Adresse des Smarthome-Systems eingetragen. Im Fall eines Raspberry PI mit SmartHomeNG ist das die IP-Adresse des Raspberry Pi. eingetragen werden.<br>
+<ul>	
+	<li><i>System</i> = SmartHome System am Backend	(empfohlen = SmartHomeNG)</li>
+	<li><i>Host/IP </i> =  Verbindung zum Backend (empfohlen = IP des Raspberry Pi)  </li>
+	<li><i>Port</i> = Port zur Verbindung mit Backend (empfohlen = Standard Port von SmartHomeNG = 2424)</li>
+	<li><i>Realtime</i> = Echtzeit (empfohlen = on)</li>
+	<li><i>Reconnect</i> = Verbindungen zum Backend automatisch wiederherstellen, z.B. wenn Browser Tab im Hintergrund war (empfohlen = on)</li>
+	<li><i>Reverse Proxy</i> = Löscht IP-Adresse und Port, wenn der Server als Reverse Proxy betrieben wird.</li>
+</ul>
+<div id="config_tab_{{ source }}_2">
+	<form class="configform">
+		<fieldset>
+			<div class="block">
+				<div class="set-2" data-role="collapsible-set" data-mini="true">
+					<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+						<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'backend', 'label') }}</h3>
+					</div>
+					<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
+						<h3>{{ lang('configuration_page', 'ioconnection', 'label') }}</h3>
+						{{ forms.config_select(source, values, 'driver', dir('driver', '^io_(.+?).js') ) }}
+						{{ forms.config_input(source, values, 'driver_address', 'wide') }}
+						{{ forms.config_input(source, values, 'driver_port', 'wide') }}
+						{{ forms.config_flip(source, values, 'driver_realtime') }}
+						{{ forms.config_flip(source, values, 'driver_autoreconnect') }}
+						{{ forms.config_flip(source, values, 'reverseproxy') }}
+					</div>
+					<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
+						<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3>
+						{{ forms.config_flip(source, values, 'proxy') }}
+						{{ forms.config_input(source, values, 'proxy_url', 'wide') }}
+						{{ forms.config_input(source, values, 'proxy_user') }}
+						{{ forms.config_input(source, values, 'proxy_password', 'password') }}
+					</div>
+				</div>
+			</div>	
+		</fieldset>
+	</form>
+</div>
+<br clear="all">
+	Unter "Proxy-Server" werden die Adresse und die Zugangsdaten eines Proxy-Servers eingetragen. 	
+	<hr />
+	<h2>Andere Datenquellen:</h2>
+	Hier kann man verschiedene Online-Wetterdienste auslesen. In der Regel wird ein "API-Key" benötigt, für den man sich beim Anbieter registrieren muss. Lediglich Yr.no benötigt keinen API-Key.<br>
+<ul>	
+	<li><i>Anbieter</i> = Internet Wetterservice</li>
+	<li><i>Location</i> = Ort, für den das Wetter abfragt werden soll (empfohlen = Wohnort)</li>
+	<li><i>Key</i> = Anmeldekey für den Service (kann bei Yr.no leer bleiben)</li>
+</ul>	
+<div id="config_tab_{{ source }}_3">
+	<form class="configform">
+		<fieldset>
+			<div class="block">
+				<div class="set-3" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+					<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+						<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'dataservices', 'label') }}</h3>
+					</div>
+					<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
+						<h3>{{ lang('configuration_page', 'weather', 'label') }}</h3>
+						{{ forms.config_select(source, values, 'weather_service', dir('lib/weather/service', '(.+?).php') ) }}
+						{{ forms.config_input(source, values, 'weather_location') }}
+						{{ forms.config_input(source, values, 'weather_key') }}
+					</div>
+					<div data-role="collapsible" data-theme="c" data-content-theme="a">
+						<h3>{{ lang('configuration_page', 'phone', 'label') }}</h3>
+						{{ forms.config_select(source, values, 'phone_service', dir('lib/phone/service', '(.+?).php') ) }}
+						{{ forms.config_input(source, values, 'phone_server', 'wide') }}
+						{{ forms.config_input(source, values, 'phone_port', 'wide') }}
+						{{ forms.config_input(source, values, 'phone_user') }}
+						{{ forms.config_input(source, values, 'phone_pass', 'password') }}
+					</div>
+					<div data-role="collapsible" data-theme="c" data-content-theme="a">
+						<h3>{{ lang('configuration_page', 'calendar', 'label') }}</h3>
+						{{ forms.config_select(source, values, 'calendar_service', dir('lib/calendar/service', '(.+?).php') ) }}
+						{{ forms.config_input(source, values, 'calendar_url') }}
+						{{ forms.config_input(source, values, 'calendar_username') }}
+						{{ forms.config_input(source, values, 'calendar_password', 'password') }}
+						{{ forms.config_input(source, values, 'calendar_name') }}
+						{{ forms.config_input(source, values, 'calendar_color') }}
+						{{ forms.config_row(source, values, 'calendar_google_refresh_token',
+							[
+								'<a href="#calendar_googleauth_popup" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-icon-left ui-icon-action ui-micro' ~ (not values['calendar_google_refresh_token'] is defined ? ' ui-btn-active') ~ ' " data-icon="delete" data-inline="true" id="' ~ source ~ '_calendar_googleauth_button">' ~ lang('configuration_page', 'calendar_google_refresh_token', 'button') ~ '</a>'
+								,forms.config_hidden(source, values, 'calendar_google_client_id')
+								,forms.config_hidden(source, values, 'calendar_google_client_secret')
+								,forms.config_hidden(source, values, 'calendar_google_refresh_token')
+							]
+						) }}
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>
+<br clear="all">	
+Unter "Telefon" können Services für unterschiedliche Telefonanlagen ausgewählt werden, um Anruflisten anzeigen zu lassen. Hierzu werden IP-Adresse und ggfls. Port der Anlage benötigt, sowie die Zugangsdaten (Username und Passwort). Erfordert eine Anlage keine Zugangsdaten, so sind diese Felder leer zu lassen.<br><br />
+Unter "Kalender" können Kalenderdienste zur Anzeige von Ereignissen konfiguriert werden. Dies können Internet-Dienste sein, oder CLoud-Lösungen z.B. auf einem eigenen NAS. Je nach Service werden die Internet-Adresse (URL) und die Zugangsdaten (Username und Passwort) benötigt. Im Feld <i>Kalender</i> kann man einzelne Kalendernamen spezifizieren (mit Komma getrennt). Bleibt das Feld leer, werden alle im Service verfügbaren Kalender ausgelesen.<br>
+Den benannten Kalendern können Farben zugewiesen werden. Diese sind ebenfalls durch Komma zu trennen. 
+<hr />
+<h2>Optionen:</h2>
+Hier werden zusätzliche Optionen ausgwählt:
+<ul>
+	<li><i>Widget Constructor:</i> ein Assistent zum Parametrieren der Widgets für die Visu. Es wird empfohlen, ihn beim Erstellen neuer Seiten einzuschalten. Im produktiven Betrieb sollte er ausgeschaltet werden, um Ressourcen zu sparen.</li>
+	<li><i>Updateprüfung:</i> wenn dies aktiviert ist, sucht smartVISU regelmäßig nach Updates und meldet dies im Mitteilungsbereich oben rechts (empfohlen = on).
+</ul>
+<div id="config_tab_{{ source }}_3">
+	<form class="configform">
+		<fieldset>
+			<div class="block">
+				<div class="set-2" data-role="collapsible-set" data-content-theme="a" data-mini="true">
+					<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
+						<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'options', 'label') }}</h3>
+					</div>
+					<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
+						<h3>{{ lang('configuration_page', 'widgetconstructor', 'label') }}</h3>
+						{{ forms.config_flip(source, values, 'widgetconst') }}
+					</div>
+					<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
+						<h3>{{ lang('configuration_page', 'updatecheck', 'label') }}</h3>
+						{{ forms.config_flip(source, values, 'updatecheck') }}
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>
+<br clear="all">
+<hr />
+<h2>Speichern:</h2>
+Die Einstellungen müssen durch Klick auf die "Speichern"-Taste gesichert werden. Der Erfolg des Vorgangs wird durch ein grünes Dreieck oben rechts im Mitteilungsbereich rückgemeldet. Zudem lädt smartVISU die aktuelle Seite neu.
+Bitte nach Änderungen nicht vergessen, den Seiten-Cache zu löschem (siehe oben)!
+{% endblock %}

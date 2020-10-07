@@ -1,0 +1,88 @@
+z/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "sample_sv.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}it_camera.svg' />Beispiel - Einbindung einer Cam
+{% endblock %}
+
+{% block docu %}
+
+
+	<div class="block">
+		<div class="ui-bar-c ui-li-divider ui-corner-top">Cam - Würzburg</div>
+		<div class="image">
+			{% import "multimedia.html" as multimedia %}
+			{{ multimedia.image('image1', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner-bottom') }}
+		</div>
+	</div>
+	
+<br clear="all">
+
+
+Das Einbinden einer Cam können wir relativ leicht mit dem Widget "multimedia.image" realisiseren.<br>
+Hieru brauchen wir lediglich den Pafd zur Bilddatei.<br>
+
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{% import "multimedia.html" as multimedia %}
+			{{ multimedia.image('image1', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br><br>
+Der oben gezeigte Code in Verbindung mit einem Block-Typ5 könnte beispielsweise so aussehen:<br>
+<textarea cols="50" rows="3">{% raw %}
+	<div class="block">
+		<div class="ui-bar-c ui-li-divider ui-corner-top">Cam - Würzburg</div>
+		<div class="image">
+			{% import "multimedia.html" as multimedia %}
+			{{ multimedia.image('image1', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner-bottom') }}
+		</div>
+	</div>
+{% endraw %}
+</textarea><br><br>
+	<div class="preblock">
+		<span data-role="controlgroup" data-type="horizontal"> 
+
+			<a href="#popup3" data-rel="popup" data-position-to="window">
+			<img class="icon" src="{{ icon1~'../../icons/rt/it_camera.png' }}">
+			</a>
+
+			<div id="popup3" data-role="popup" data-overlay-theme='b' data-theme='a' style="width:450px; height:380px;">
+            		<h4>Cam - Außen</h4>
+			{% import "multimedia.html" as multimedia %}
+			{{ multimedia.image('image2', 'pics/station/cam/cam.png', 'corner-button') }}
+			<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+			</div> 			
+			
+			
+		</span>
+	</div>
+Um das ganze in ein PopUp einzubinden, gehen wir beispielsweise wie folgt vor:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			<a href="#popup3" data-rel="popup" data-position-to="window">
+			<img class="icon" src="{{ icon1~'../../icons/rt/it_camera.png' }}"></a>
+
+			<div id="popup3" data-role="popup" data-overlay-theme='b' data-theme='a' style="width:450px; height:380px;">
+            		<h4>Cam - Außen</h4>
+			{% import "multimedia.html" as multimedia %}
+			{{ multimedia.image('image2', 'http://Pfad/zu/unserem/Bild', 'corner-button') }}
+			<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+			</div>
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br><br>
+
+
+{% endblock %}
+

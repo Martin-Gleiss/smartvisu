@@ -1,0 +1,472 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "smarthome.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}it_nas.svg' />SmartHomeNG - WOL & Shutdown
+{% endblock %}
+
+{% block docu %}
+<script>
+  var interpol1 = {type: 'cubic', interval: '1', initialized: 'False', itemtype: 'num', initage: ''}
+  var liste1 = [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '1', 'time': '08:00'}]
+  var RolloSued = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol1, list: liste1};
+  var liste2 = [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '1', 'time': '22:00'}]
+  var Betriebsart = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol1, list: liste2};
+
+  io.write('pc.buero.wol.uzsu', RolloSued);
+  io.write('pc.buero.shutdown.uzsu', Betriebsart);
+
+</script>
+	Hier nun ein Besipiel um einen Windows-PC über KNX hoch- und runterfahren zu lassen (getestet mit XP, Vista, Win7).<br><br>
+	Ziel / Vorgabe:<br>
+	Ein Windows-PC mit der IP-Adresse 192.168.1.172 und der MAC-Adresse 01:02:03:04:05:06 soll über die VISU, Tastsensor und zeitliche Vorgabe 
+	hoch- und runtergefahren werden. Bei der Bedienung über die Visu soll zusätzlich sichergestellt sein, das man nicht "aus Versehen" die zuständigen Buttons drücken kann. 
+	Den Status ob der PC wirklich an oder aus ist soll uns dabei via Ping geliefert werden.
+	<br>
+	<br>
+<h2>Lösungsweg: PC hochfahren</h2>
+	In der ETS haben wir eine GA 5/5/1 mit Typ 1-bit angelegt und diese mit einem Tastsensor verknüpft. Dieser Sensor sendet bei Betätigung immer eine 1 (EIN). <br>
+	Das Hochfahren des PC`s wird über das bekannte WOL erreicht. SmartHomeNG liefert hierfür ein Plugin, welches wir entsprechend in der plugin.yaml einbinden.<br>
+	Diese finden wir unter:
+	<div class="linux">
+		<code>/usr/smarthome/etc/plugin.yaml</code>
+	</div>	
+	Hier fügen wir nun folgendes ein:
+<textarea cols="50" rows="3">
+wol:
+	class_name: WOL
+	class_path: plugins.wol
+</textarea>
+		Dann die plugin.yaml speichern.<br>
+		Nun brauchen wir nur noch unser Item zu erstellen. Zum hochfahren über Zeitvorgabe binden wir gleich crontab mit ein.
+<br>
+	<textarea cols="50" rows="3">	
+pc:
+    buero:
+        wol:
+            type: bool
+            visu_acl: rw
+            enforce_updates: yes
+            knx_dpt: 1
+            knx_listen: 5/5/1
+            wol_mac: 01:02:03:04:05:06
+            crontab: 15 7 * * = 1
+	</textarea>
+<br>
+	Mit diesem Item kann man nun den PC via Tastsensor hochfahren. Gleichfalls fährt der PC täglich um 07:15 Uhr hoch.<br>
+	
+	<hr />
+	
+<h2>Lösungsweg: PC runterfahren</h2>
+	Für das Runterfahren (Shutdown) benötigt man generell ein kleines Hilfsmittel.
+	Dieses Hilfsmittel nennt sich Remote Shutdown und kann <a href="http://www.rfkd.de/?page_id=7#RemoteShutdown" target="_blank">hier</a> runtergeladen werden.<br>
+	Es ist zu empfehlen das Tool in den Autostart des zu steuernden Windows-PC zu legen.<br>
+   <div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="true">
+                  <h3>Beschreibung Remote Shutdown (klick mich)</h3>
+	<table style=";width:100%;">
+		<tbody>
+			<tr align="left">
+				<td style="vertical-align:top">	
+				Zitat von Entwickler-Homepage:<br>
+				Remote Shutdown ist ein kleines Programm, welches im Systemtray sitzt und auf UDP-Port 1982 lauscht. Sobald dort ein magisches Paket eintrifft, fährt das Programm die entsprechende Aktion 
+				(Herunterfahren, Ruhezustand oder Standby) aus. Im magischen Paket wird auch ein Passwort mitgesendet. Als Client kann beispielsweise GNU Netcat eingesetzt werden, welches auf vielen Plattformen verfügbar ist. 
+			</tr>
+		</tbody>
+	</table><br />
+          </div>
+    </div>
+    </div>
+	<br>
+	<br>
+	Weiter gehts. In der ETS haben wir eine GA 5/7/2 mit Typ 1-bit angelegt und diese mit einem Tastsensor verknüpft. Dieser Sensor sendet bei Betätigung immer eine 1 (EIN). <br>
+	Nun erweitern wir unser Item von oben.<br>
+	<textarea cols="50" rows="3">		
+pc:
+    buero:
+        wol:
+            type: bool
+            visu_acl: rw
+            enforce_updates: yes
+            knx_dpt: 1
+            knx_listen: 5/5/1
+            wol_mac: 01:02:03:04:05:06
+            crontab: 15 7 * * = 1
+
+        shutdown:
+            type: bool
+            visu_acl: rw
+            enforce_updates: yes
+            knx_dpt: 1
+            knx_listen: 5/5/2
+            crontab: 30 17 * * = 1
+	</textarea>
+<br>
+	Wie man an dem crontab-Eintrag sieht, fährt der PC dann täglich um 17:30 Uhr wieder runter.<br>
+	Nun erstellen wir eine Logik, die den erforderlichen Hex-Code, binär umgewandelt an den Zielrechner bzw. an das auf dem Rechner vorhandene Tool sendet. 
+	Dazu erstellen wir eine neue Datei, welche wir sinnvollerweise shutdown.py nennen. Die Datei erstellen wir im Logik-Verzeichnis, welche sich dort befindet:
+	<div class="linux">
+		<code>/usr/smarthome/logics/</code>
+	</div>	
+	Der Inhalt der shutdown.py sieht wie folgt aus (!!! IP-Adresse anpassen !!!)
+	<textarea cols="50" rows="3">		
+import socket
+
+payload = bytearray.fromhex("EFBEADDE00")
+host = '192.168.1.172'
+port = 1982
+
+try:
+    family, type, proto, canonname, sockaddr = socket.getaddrinfo(host, port)[0]
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.sendto(payload, (sockaddr[0], sockaddr[1]))
+    sock.close()
+    del(sock)
+except Exception as e:
+    logger.warning("UDP: Problem sending data to {}:{}: {}".format(host, port, e))
+    pass
+else:
+    logger.debug("UDP: Sending data to {}:{}: {}".format(host, port, payload))
+	</textarea>
+<br>		
+	Nachdem wir die Datei erstellt, haben brauchen wir noch den Bezug zu der Logik, bzw. etwas was die Logik anspricht.
+    Dazu hinterlegen wir in der logic.yaml, welche sich dort befindet 
+	<div class="linux">
+		<code>/usr/smarthome/etc/logic.yaml</code>
+	</div>
+	den folgenden Eintrag
+<textarea cols="50" rows="3">
+shutdown:
+	filename: shutdown.py
+	visu_acl: rw
+	watch_item: shutdown.office
+</textarea>
+	<span style="color:#FF0000"><i>shutdown.office</i></span> ist hierbei das Item, auf welches "gehört" wird. <br>	
+	Somit haben wir 2 der 3 Vorgaben erfüllt. Kommen wir somit zur letzten.<br>	<br>	
+	
+				
+	<hr />
+	
+<h2>Lösungsweg: Verriegelung der Button</h2>
+	Hierfür müssen wir uns ein eigenes Widget erstellen. Dazu erstellen wir uns eine html-Datei in unserem Pages-Verzeichnis und nennen diese z.B. widget_verriegelnung.html<br>
+	In diese widget_verriegelnung.html fügen wir nun folgendes ein
+	<div class="block" style="width:100%">
+	<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="true">
+                  <h3>widget_verriegelnung.html</h3>
+	<table style=";width:100%;">{% raw %}
+		<tbody>
+			<tr align="left">
+				<td style="vertical-align:top">/**<br />
+					&nbsp;* A list with selectable item<br />
+					&nbsp;* <br />
+					&nbsp;* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; unique id for this widget<br />
+					&nbsp;* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a gad/item for the list <br />
+					&nbsp;* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a gad/item for the selected item <br />
+					&nbsp;* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the text to be displayed on top of the list<br />
+					&nbsp;*/<br />
+					{% macro list(id, gad_list, gad_item, txt ) %}<br />
+					&nbsp; &lt;ul id="{{ uid(page, id) }}" data-widget="basic.list" data-item="{{ gad_list }}, {{ gad_item }}"<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; data-role="listview" data-dividertheme="c">&nbsp; <br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;li data-icon="false">&lt;a href="#">View details&lt;/a>&lt;/li><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;li data-icon="false">&lt;a href="#">Edit&lt;/a>&lt;/li><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;li data-icon="false">&lt;a href="#">Disable&lt;/a>&lt;/li><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;li data-icon="false">&lt;a href="#">Delete&lt;/a>&lt;/li><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/ul>&nbsp;&nbsp; <br />
+					{% endmacro %}<br />
+					<br />
+					<br />
+					/**<br />
+					&nbsp;* Displays a slider-control<br />
+					&nbsp;* <br />
+					&nbsp;* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; unique id for this widget<br />
+					&nbsp;* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a gad/item current time (progress) <br />
+					&nbsp;* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a gad/item total duration (maximum) <br />
+					&nbsp;* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; seconds between two values (optional, default 5s) <br />
+					&nbsp;* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the orientation ('none', 'vertical', 'bottomup', 'semicircle')<br />
+					&nbsp;*/<br />
+					{% macro time_slider(id, gad_time, gad_duration, step, mode) %}<br />
+					<br />
+					&nbsp;&nbsp;&nbsp; &lt;input id="{{ uid(page, id) }}" data-widget="my.time_slider" data-item="{{ gad_time }}, {{ gad_duration }}" <br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; type="range" value="0" min="0" max="1" disabled="1" step="{{ step|default(5) }}"<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orientation="{{ mode }}" data-highlight="true" /><br />
+					<br />
+					{% endmacro %}<br />
+					</td>
+			</tr>
+		</tbody>
+	</table>				  
+          </div>
+    </div>
+    </div>	
+{% endraw %}
+	<br>
+	
+Als nächstes müssen wir noch den benötigten Java-Script-Code einbringen. Dies machen wir, indem wir folgenden Code in die visu.js in unserem Pages-Verzeichnis einfügen: 	<br>
+	<textarea cols="50" rows="3">	
+// ----- basic.locker ---------------------------------------------------------
+$(document).delegate('a[data-widget="basic.locker"]', {
+	'update': function (event, response) {
+		// response is: {{ gad_switch }}, {{ gad_lock }}
+		
+		if (response[1])
+			$(this).removeClass("ui-disabled");
+		else
+			$(this).addClass("ui-disabled");
+	},
+
+	'click': function (event) {
+		var items = $(this).attr('data-item').explode();
+		
+		if ($(this).attr('data-val') != '') {
+			io.write(items[0], $(this).attr('data-val'));
+		}
+	}
+});
+	</textarea>
+	<br>
+	Nun erweitern wir unser Item um die Freigabe. Wir verwenden im Freigabe-Item den autotimer, damit sich das Item nach gesetzter Freigabe = Ein, automatisch nach 5 Sekunden wieder auf 0 setzt. Das gesamte Item sieht dann wie folgt aus:<br>
+	<textarea cols="50" rows="3">		
+pc:
+    buero:
+        freigabe:
+            type: bool
+            visu_acl: rw
+            autotimer: 5 = 0
+
+        wol:
+            type: bool
+            visu_acl: rw
+            enforce_updates: yes
+            knx_dpt: 1
+            knx_listen: 5/5/1
+            wol_mac: 01:02:03:04:05:06
+            crontab: 15 7 * * = 1
+
+        shutdown:
+            type: bool
+            visu_acl: rw
+            enforce_updates: yes
+            knx_dpt: 1
+            knx_listen: 5/5/2
+            crontab: 30 17 * * = 1
+
+	</textarea>
+<br>
+	Im nächsten Schritt können wir nun den Block und die dazugehörigen Widgets einbringen.<br>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>PC</h3>
+           <table width=100%>
+                <tr>
+                    <td align=midle>				
+					{% import "widget_verriegelung.html" as locker %}
+					Freigabe<br />
+					{{ basic.flip('flip', 'PC.FreigabeDummy', 'Ein', 'Aus') }}
+				<br /><br />
+					WOL - Shutdown<br />
+					{{ locker.locker('locker10', 'PC.onoff', 'PC.FreigabeDummy', 'ON', 'alert') }}
+					{{ locker.locker('locker20', 'PC.onoff', 'PC.FreigabeDummy', 'OFF', 'alert', 0) }}	
+                    </td>
+                </tr>				
+            </table>			
+        </div>
+    </div>    
+    </div>
+<br clear="all">
+Der dazugehörige Wiget-Code für einen Block 2 sieht so aus:
+<textarea cols="50" rows="3">{% raw %}
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>PC</h3>
+           <table width=100%>
+                <tr>
+                    <td align=midle>				
+					{% import "widget_verriegelung.html" as locher %}
+					Freigabe<br />
+					{{ basic.flip('flip1', 'pc.buero.freigabe', 'Ein', 'Aus') }}
+				<br /><br />
+					WOL - Shutdown<br />
+					{{ locker.locker('locker1', 'pc.buero.wol', 'pc.buero.freigabe', 'ON', 'alert') }}
+					{{ locker.locker('locker2', 'pc.buero.shutdown', 'pc.buero.freigabe', 'OFF', 'alert') }}	
+                    </td>
+                </tr>				
+            </table>			
+        </div>
+    </div>    
+    </div>
+{% endraw %}
+</textarea>
+<br>
+Jetzt wäre es natürlich noch schön, wenn wir eine Rückmeldung erhalten, ob der PC auch wirklich on- oder offline ist. Dies können wir ganz einfach via Ping umsetzen.<br>
+Dazu müssen wir nur unser Item erneut erweitern und diesem sagen, in welchem Zyklus der Zielrechner angeping werden soll. In dem unteren Beispiel (pc.buero.ping) wird der Rechner mit der IP 192.168.1.172 alle 60 Sekunden angepingt.<br>
+	<textarea cols="50" rows="3">		
+pc:
+    buero:
+        freigabe:
+            type: bool
+            visu_acl: rw
+            autotimer: 5 = 0
+
+        wol:
+            type: bool
+            visu_acl: rw
+            enforce_updates: yes
+            knx_dpt: 1
+            knx_listen: 5/5/1
+            wol_mac: 01:02:03:04:05:06
+            crontab: 15 7 * * = 1
+
+        shutdown:
+            type: bool
+            visu_acl: rw
+            enforce_updates: yes
+            knx_dpt: 1
+            knx_listen: 5/5/2
+            crontab: 30 17 * * = 1
+
+        ping:
+            type: bool
+            cycle: 60 = 1
+            eval: sh.tools.ping('192.168.1.172')
+
+	</textarea>
+	<br>
+Wenn wir dies haben, können wir unseren Block2 um die basic.symbol-Einträge erweitern.<br>
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>PC</h3>
+           <table width=100%>
+                <tr>
+                    <td align=midle>
+					{{ basic.symbol('online', 'PC.onoff', 'online', icon1~'../../icons/gn/it_nas.png') }}
+					{{ basic.symbol('offline', 'PC.onoff', 'offline', icon0~'it_nas.svg', 0) }}
+                    </td>
+                </tr>				
+            </table>
+           <table width=100%>
+                <tr>
+                    <td align=midle>				
+					{% import "widget_verriegelung.html" as locker %}
+					Freigabe<br />
+					{{ basic.flip('flip1', 'PC.FreigabeDummy', 'Ein', 'Aus') }}
+				<br /><br />
+					WOL - Shutdown<br />
+					{{ locker.locker('locker100', 'PC.onoff', 'PC.FreigabeDummy', 'ON', 'alert') }}
+					{{ locker.locker('locker200', 'PC.onoff', 'PC.FreigabeDummy', 'OFF', 'alert', 0) }}	
+                    </td>
+                </tr>				
+            </table>			
+        </div>
+    </div>    
+    </div>
+<br clear="all">
+Der dazugehörige Wiget-Code für einen Block 2 sieht nun so aus:
+<textarea cols="50" rows="3">{% raw %}
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>PC</h3>
+           <table width=100%>
+                <tr>
+                    <td align=midle>
+					{{ basic.symbol('online', 'pc.buero.ping', 'online', icon1~'../../icons/gn/it_nas.png') }}
+					{{ basic.symbol('offline', 'pc.buero.ping', 'offline', icon0~'it_nas.png', 0) }}
+                    </td>
+                </tr>				
+            </table>
+           <table width=100%>
+                <tr>
+                    <td align=midle>				
+					{% import "widget_verriegelung.html" as locker %}
+					Freigabe<br />
+					{{ basic.flip('flip1', 'pc.buero.freigabe', 'Ein', 'Aus') }}
+				<br /><br />
+					WOL - Shutdown<br />
+					{{ locker.locker('locker1', 'pc.buero.wol', 'pc.buero.freigabe', 'ON', 'alert') }}
+					{{ locker.locker('locker2', 'pc.buero.shutdown', 'pc.buero.freigabe', 'OFF', 'alert') }}	
+                    </td>
+                </tr>				
+            </table>			
+        </div>
+    </div>    
+    </div>
+{% endraw %}
+</textarea>	
+<br><br><br><br>	
+Abschließend noch 2 Beispiele für weitere Anwendungsmöglichkeiten.<br>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>PC & Hardware</h3>
+           <table width=100%>
+                <tr>
+                    <td align=midle>
+					{{ basic.stateswitch('Monitor1', 'PC.Monitor', '', '', ['it_television.svg', 'it_television.svg']) }}
+					{{ basic.stateswitch('Drucker1', 'PC.Drucker', '', '', ['it_fax.svg', 'it_fax.svg']) }}					
+					{{ basic.symbol('pingon', 'PC.onoff', 'online', icon1~'../../icons/gn/it_nas.png') }}
+					{{ basic.symbol('pingoff', 'PC.onoff', 'offline', icon0~'it_nas.svg', 0) }}
+                    </td>
+                </tr>				
+            </table>
+           <table width=100%>
+                <tr>
+                    <td align=midle>				
+					{% import "widget_verriegelung.html" as locker %}
+					Freigabe<br />
+					{{ basic.flip('flip11', 'PC.FreigabeDummy', 'Ein', 'Aus') }}
+				<br /><br />
+					WOL - Shutdown<br />
+					{{ locker.locker('locker12', 'PC.onoff', 'PC.FreigabeDummy', 'ON', 'alert') }}
+					{{ locker.locker('locker23', 'PC.onoff', 'PC.FreigabeDummy', 'OFF', 'alert', 0) }}	
+                    </td>
+                </tr>				
+            </table>			
+        </div>
+    </div>    
+    </div>
+
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>PC - 192.168.1.172 ist {{ basic.text('text1', 'PC.onoff', 'online', 'offline') }} </h3>
+           <table width=100%>
+                <tr>
+                    <td align=midle>
+					{{ device.uzsuicon('uzsu1', 'pc.buero.wol.uzsu', 'PC hochfahren', '', '', '', 'bool', 'On', '') }}
+					{{ device.uzsuicon('uzsu2', 'pc.buero.shutdown.uzsu', 'PC runterfahren', '', '', '', 'bool', 'On', '') }}
+                    </td>
+                </tr>				
+            </table>
+           <table width=100%>
+                <tr>
+                    <td align=midle>				
+					{% import "widget_verriegelung.html" as locker %}
+					Freigabe<br />
+					{{ basic.flip('flip11', 'PC.FreigabeDummy', 'Ein', 'Aus') }}
+				<br /><br />
+					WOL - Shutdown<br />
+					{{ locker.locker('locker12', 'PC.onoff', 'PC.FreigabeDummy', 'ON', 'alert') }}
+					{{ locker.locker('locker23', 'PC.onoff', 'PC.FreigabeDummy', 'OFF', 'alert', 0) }}	
+                    </td>
+                </tr>				
+            </table>			
+        </div>
+    </div>    
+    </div>
+
+{% endblock %}

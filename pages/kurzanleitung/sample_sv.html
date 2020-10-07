@@ -1,0 +1,80 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "main.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}message_info.svg' />weitere Beispiele
+{% endblock %}
+
+{% block submenu %}
+	<style>
+		.nav-custom .ui-btn .ui-btn-inner {
+			padding-top: 40px !important;
+		}
+
+		.nav-custom .ui-btn .ui-icon {
+			width: 30px !important;
+			height: 30px !important;
+			margin-left: -15px !important;
+			box-shadow: none !important;
+			-moz-box-shadow: none !important;
+			-webkit-box-shadow: none !important;
+			-webkit-border-radius: 0 !important;
+			border-radius: 0 !important;
+		}
+		
+		#selfwidgets .ui-icon {
+			background: url({{ icon0 }}edit_copy.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+		
+		#cam .ui-icon {
+			background: url({{ icon0 }}it_camera.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#codepad .ui-icon {
+			background: url({{ icon0 }}edit_input_numeric.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+		#statusnotify .ui-icon {
+			background: url({{ icon0 }}secur_alarm.png) 50% 50% no-repeat;
+			background-size: 36px 36px;
+		}
+
+
+	</style>
+
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=sample_sv_self_widgets" id="selfwidgets" data-icon="custom">eigene oder angepasste Widgets erstellen</a></li>		
+		</ul>
+	</div>	
+	
+<br>
+{% endblock %}
+
+{% block docu %}
+Die Kurzanleitung beschreibt die für den Anfang mit einer Hausautomation wesentlichen Elemente. Weitere Widgets sind verfügbar, die hier nicht beschrieben sind. Dazu gehören:
+<ul>
+	<li>Widgets für Multimedia-Anwendungen</li>
+	<li>Triggern von Logiken im Backend</li>
+	<li>Statusmeldungen, ausgelöst von bestimmten Ereignissen</li>
+	<li>Codepad für die Eingabe von Zahlencodes</li>
+	<li>Dynamische Icons, die sich mit item-Werten verändern</li>
+	<li>und vieles mehr ...</li>
+</ul>	
+Eine vollständige Beschreibung aller Möglichkeiten befindet sich in der Inline-Doku. Der Aufruf erfolgt von der Config-Seite aus im Seitenmenu.
+Zudem können in der Config-Seite verschiedene Beispiel-Installationen aufgerufen werden, die gute Vorlagen für eigene Aktivitäten bilden.<br>
+<br>
+Ebenfalls im Seitenmenu befindet sich der "Template Checker", der die selbst erstellten Seiten auf formale Richtigkeit prüft. In Entwicklung befindet sich der "Widget Constructor", ein Assistent zur Parametrierung der Widgets.<br><br />
+Wer tiefer einsteigen und auch eigene Widgets erstellen möchte, findet oben den Link zu weiteren Informationen.
+{% endblock %}

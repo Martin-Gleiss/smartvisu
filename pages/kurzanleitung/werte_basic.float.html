@@ -1,0 +1,258 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "werte.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}measure_power_meter.svg' />Werte & Zustände - basic.print
+{% endblock %}
+
+{% block docu %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('Verbrauch.Zaehler.Gesamt', '50' );
+			 io.write('Verbrauch.Zaehler.L1', '12' );
+			 io.write('Verbrauch.Zaehler.L2', '26' );
+			 io.write('Verbrauch.Zaehler.L3', '12' );
+		});
+</script>
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Verbrauchsdaten</h3>
+            
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Leistung Gesamt: 
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'Verbrauch.Zaehler.Gesamt', 'w') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Leistung L1:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'Verbrauch.Zaehler.L1', 'w') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Leistung L2:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('', 'Verbrauch.Zaehler.L2', 'w') }}
+                    </td>
+                </tr>
+            </table>
+           <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Leistung L3:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('', 'Verbrauch.Zaehler.L3', 'w') }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>    
+    </div>
+<br clear="all">
+<br>
+
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3">
+Verbrauch:
+    Zaehler:
+        PhaseL1:
+            type: num
+            visu_acl: rw
+            knx_dpt: 14
+            knx_listen: 5/2/5
+
+        PhaseL2:
+            type: num
+            visu_acl: rw
+            knx_dpt: 14
+            knx_listen: 5/2/6
+
+        PhaseL3:
+            type: num
+            visu_acl: rw
+            knx_dpt: 14
+            knx_listen: 5/2/7
+
+        Gesamt:
+            type: num
+            visu_acl: rw
+            knx_dpt: 14
+            knx_listen: 5/2/8
+</textarea>
+<br><br>
+Die Widgets, welche wir verwenden, sehen so aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.print('', 'Verbrauch.Zaehler.Gesamt', 'w') }}
+			{{ basic.print('', 'Verbrauch.Zaehler.PhaseL1', 'w') }}
+			{{ basic.print('', 'Verbrauch.Zaehler.PhaseL2', 'w') }}
+			{{ basic.print('', 'Verbrauch.Zaehler.PhaseL3', 'w') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+
+<br><br>
+Der dazugehörige html-Code in Block-Typ 2 sieht so aus:<br>
+<textarea cols="50" rows="3">{% raw %}
+    <div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Verbrauchsdaten</h3>
+            
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Leistung Gesamt: 
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'Verbrauch.Zaehler.Gesamt', 'w') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Leistung L1:
+                    </td>
+                    <td align=right>
+                        {{ basic.print('', 'Verbrauch.Zaehler.PhaseL1', 'w') }}
+                    </td>
+                </tr>
+            </table>
+            <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Leistung L2:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('', 'Verbrauch.Zaehler.PhaseL2', 'w') }}
+                    </td>
+                </tr>
+            </table>
+           <table width=100%>
+                <tr>
+                    <td align=left style="padding-left: 10px;">
+                        Leistung L3:
+                    </td>
+                    <td  align=right>
+                        {{ basic.print('', 'Verbrauch.Zaehler.PhaseL3', 'w') }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>    
+    </div>
+{% endraw %}
+</textarea>
+<br>
+
+<u>Nachkommastellen und Maßangaben:</u><br>
+Prinzipiell können eigene Maßeinheiten verwendet werden.<br>
+Für einige Maßeinheiten sind bereits Nachkommastellen und Maßeiheiten vordefiniert.<br>
+In unserem Beispiel verwenden wir somit ein kleines w für die Maßeinheit W und eine Anzeige mit 2 Stellen nach dem Komma.<br>
+Für folgende Werte sind bereits festen Nachkommastellen und die damit angezeigten Maßeinheiten hinterlegt:
+	<div class="block" style="width:100%">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Auflistung</h3>
+	<table style=";width:100%;">
+		<tbody>
+			<tr>
+				<td align="left" style="border:black 1px solid;vertical-align:top">Eingabe</td>
+				<td align="left" style="border:black 1px solid;vertical-align:top">Wert gerundet auf</td>
+				<td align="left" style="border:black 1px solid;vertical-align:top">angezeigt Maßeinheit</td>
+			</tr>
+			<tr>
+				<td align="left" style="border:black 1px solid;vertical-align:top">&nbsp;'int'&nbsp;&nbsp;&nbsp;&nbsp; <br />
+					&nbsp;'float'&nbsp;&nbsp; &nbsp;<br />
+					&nbsp;'temp' &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;'°'<br />
+					&nbsp;'%'<br />
+					&nbsp;'€'&nbsp;&nbsp; &nbsp;<br />
+					&nbsp;'speed' &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;'km/h' &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;'v'&nbsp;&nbsp; &nbsp;<br />
+					&nbsp;'a'&nbsp;&nbsp; &nbsp;<br />
+					&nbsp;'w'&nbsp;&nbsp; &nbsp;<br />
+					&nbsp;'kwh'&nbsp;&nbsp; &nbsp;<br />
+					</td>
+				<td align="left" style="border:black 1px solid;vertical-align:top">&nbsp;Ganzzahl &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;2 Nachkommastellen &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;1 Nachkommastelle &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;1 Nachkommastelle &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;1 Nachkommastelle &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;2 Nachkommastellen &nbsp;&nbsp; &nbsp;<br />
+					&nbsp; Ganzzahl &nbsp;&nbsp; &nbsp;<br />
+					&nbsp; Ganzzahl &nbsp;&nbsp; &nbsp;<br />
+					&nbsp; Ganzzahl &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;2 Nachkommastellen &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;2 Nachkommastellen &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;2 Nachkommastellen &nbsp;&nbsp; &nbsp;<br />
+					</td>
+				<td align="left" style="border:black 1px solid;vertical-align:top">&nbsp;keine &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;keine &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;°C &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;°C &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;% &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;€ &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;km/h &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;km/h &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;V &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;A &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;W &nbsp;&nbsp; &nbsp;<br />
+					&nbsp;kWh &nbsp;&nbsp; &nbsp;<br />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+			</div>
+
+		</div>
+	</div>
+<br>
+<br>
+Wer seine eigene Maßeinheit inkl. Nachkommastelle festlegen will, kann dies entweder direkt in der Sprachdatei, z.B. ./lang/de.ini machen. 
+Um bei späteren Updates ein Überschreiben der Änderungen zu vermeiden, kann man alternativ eine eigene Sprachdatei anlegen und diese in der 
+Konfiguration auswählen. Wichtig ist dann, dass die Datei auf die eigentliche Sprachdatei verweist.
+Ein möglicher Eintrag könnte so aussehen.
+<textarea cols="50" rows="3">{% raw %}
+;@author      wvhn
+;@label Deutsch (mein Slang)
+
+extends = "de"
+
+[format]
+kg = "%01,0f kg"
+{% endraw %}
+</textarea>
+Hierbei wird bei Eingabe von 'kg' der Wert in kg als Ganzzahl angezeigt.
+<br><br><br>
+Weiterführende Infos zu dem Widget gibt es in der Inline Dokumentation.
+
+{% endblock %}
+
