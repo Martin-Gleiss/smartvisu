@@ -1,2 +1,0 @@
-# kurzanleitung
-SmartVISU Kurzanleitung
