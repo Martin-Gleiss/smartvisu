@@ -17,7 +17,7 @@
 - series subscriptions will be cancelled when next page is about to load
 - widget constructor can be deactivated in config page in order to save ressources
 - new version number format (e.g. v2.9.2) is standard in communication w/ io-drivers, old format is deprecated
-- updated German "Kurzanleitung" integrated into standard package 
+- menu button for German "Kurzanleitung" (separately available on github.com/smartvisu-newstuff/kurzanleitung) integrated in system menu
 
 
 ### Improvements
