@@ -84,21 +84,9 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 		$twig->addGlobal($key, $val);
 	}
   
-	if (config_design == 'ice')
-	{
-		$twig->addGlobal('icon1', 'icons/bl/');
-		$twig->addGlobal('icon0', 'icons/sw/');
-	}
-	elseif (config_design == 'greenhornet')
-	{
-		$twig->addGlobal('icon1', 'icons/gn/');
-		$twig->addGlobal('icon0', 'icons/ws/');
-	}
-	else
-	{
-		$twig->addGlobal('icon1', 'icons/or/');
-		$twig->addGlobal('icon0', 'icons/ws/');
-	}
+	$twig->addGlobal('icon1', config_design_icon1);
+	$twig->addGlobal('icon0', config_design_icon0);
+	
 
 	foreach (get_defined_constants() as $key => $val)
 	{
