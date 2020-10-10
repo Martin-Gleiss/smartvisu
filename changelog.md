@@ -17,7 +17,7 @@
 - series subscriptions will be cancelled when next page is about to load
 - widget constructor can be deactivated in config page in order to save ressources
 - new version number format (e.g. v2.9.2) is standard in communication w/ io-drivers, old format is deprecated
-- updated German "Kurzanleitung" integrated into standard package 
+- menu button for German "Kurzanleitung" (separately available on github.com/smartvisu-newstuff/kurzanleitung) integrated in system menu
 
 
 ### Improvements
@@ -28,6 +28,7 @@
 - html escaping function for status.log
 - improved integration of custom widgets in docu - show only title but no link if docu page doesn't exist
 - improved docu page for examples of blocks - explain code for collapsibles and show variation of width
+- changed smartVISU and Miniclock appearance in top-right corner - now in CSS defined colors but without page-reload link
 
 ### Updated Libraries
 - updated Twig to v1.42.5
