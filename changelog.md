@@ -39,6 +39,7 @@
 - language files distinguish between temperature and angular degrees (°C/°F vs. °)
 - obsolete parameters in init functions of service.php and calendar.php caused faulty error messages
 - fixed debug feature in php services 
+- fixed device.rtr misleading night / day icons 
 
 
 ## 2.9.2
