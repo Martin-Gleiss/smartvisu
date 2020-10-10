@@ -28,6 +28,7 @@
 - html escaping function for status.log
 - improved integration of custom widgets in docu - show only title but no link if docu page doesn't exist
 - improved docu page for examples of blocks - explain code for collapsibles and show variation of width
+- changed smartVISU and Miniclock appearance in top-right corner - now in CSS defined colors but without page-reload link
 
 ### Updated Libraries
 - updated Twig to v1.42.5
