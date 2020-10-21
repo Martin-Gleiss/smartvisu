@@ -259,12 +259,12 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {text=}    	activity indicator for the plot icon which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {item=} 	    an item for the current setpoint (e.g. valve 0..100%)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {value[](1,2,3,4,5)=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
  *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
  */
-{% macro rtr(id, linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator, item_plot, icon_plot, place3, place4, column_order) %}
+{% macro rtr(id, linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator, item_plot, icon_plot, item_setpoint, place4, column_order) %}
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
     {% import "device.html" as device %}
@@ -298,6 +298,13 @@ the first one is the base color for values below first threshold, so pass one co
                 {{ device.rtr(id~'rtr', linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator) }}
             </div>
         </div>
+																	    
+	{% if item_setpoint != '' %}
+        <div class="column{{ column_order[1]|default(2) }} column_setpoint" data-order={{ column_order[1]|default(2) }}>
+          {{ basic.print(id~'_setpoint', item_setpoint, '%') }}
+        </div>
+        {% endif %}	
+									   
     </div>
     </li>
 {% endmacro %}
