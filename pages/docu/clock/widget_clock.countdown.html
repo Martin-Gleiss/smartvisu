@@ -1,0 +1,43 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_clock.html" %}
+
+{% block example %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+		var now = +new Date();	
+		io.write('bath.light.timestamp', now );
+	});
+
+</script>
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ clock.countdown('', 'bath.light.switch', 'bath.light.timestamp', 'bath.light.timer', '1s') }}
+		{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+	<br />
+	Press F5 or ctrl-F5 to re-start the timer with page reload. You can change duration during runtime or switch the item. 
+	Timer will stop if the item is changed while the timestamp remains unchanged.
+	<br><br />
+	<div class="html">
+		{{ basic.flip ('', 'bath.light.switch') }} Item to switch.&nbsp; &nbsp; &nbsp;  
+		Timestamp for "now" is:  {{ basic.print ('', 'bath.light.timestamp') }} <br /><br />
+		Enter timer duration in standard duration format e.g. &quot;1h 45i 30s&quot;:
+		<div data-role="fieldcontain" class="ui-field-contain" style="width: 60%;">
+			<label>Duration  </label> {{ basic.input ('', 'bath.light.timer', 'text')}} <br />
+		</div>
+		<h3><u>Countdown Timer:</u> &nbsp;&nbsp;{{ clock.countdown('', 'bath.light.switch', 'bath.light.timestamp', 'bath.light.timer', '1s') }}</h3>
+
+	</div>
+
+{% endblock %}
