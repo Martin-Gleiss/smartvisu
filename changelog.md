@@ -7,7 +7,9 @@
 - basic.trigger can trigger logics on page create (new) and / or by button
 - basic.select "menu"-type accepts dynamic option lists and texts via items (list type)
 - new dynamic icon.battery2 
-- new widget lib.connection to display the URL of the shNG websocket 
+- new widget lib.connection to display the URL of the shNG websocket
+- added setpoint item to quad.rtr 
+- new widget clock.countdown to visualize timers in backend
 
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'

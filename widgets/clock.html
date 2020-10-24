@@ -73,3 +73,21 @@
 		>{{ "now"|date('H:i') }}</span>
 
 {% endmacro %}
+
+
+/**
+* Displays a countdown
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text} an item being switched
+* @param {text} an item containing the start time of the countdown (timestamp) 
+* @param {text} an item containing the duration of the countdown (h,i,s format) 
+* @param {text=} the countdown interval in seconds, e.g. '60s' (default: '10s')  
+*/
+{% macro countdown(id, item, starttime, duration, interval ) %}
+
+	{% if interval is empty %} {% set interval = "10s" %} {% endif %}
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.countdown" data-interval="{{ interval }}" class="miniclock"
+		data-item="{{ item }}, {{ starttime }}, {{ duration }}">--:--:--</span>
+
+{% endmacro %}

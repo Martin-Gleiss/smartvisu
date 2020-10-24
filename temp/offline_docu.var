@@ -1,6 +1,10 @@
 bath.time = 1974-01-01T12:00:00.000000+01:00
 bath.light.value = 87
+bath.light.value2 = 51
+bath.light.timestamp = 1603444536542
+bath.light = 1
 bath.light.switch = 1
+bath.light.timer = 60i
 bath.rtr.state = 0
 bath.rtr.comfort = 1
 bath.rtr.set = 22.5
@@ -49,6 +53,4 @@ kid.rtr.set = 21
 floor.rtr.act = 22.7
 floor.rtr.set = 17
 docu.multistate = 5
-bath.light.value2 = 51
-bath.light = 1
 uzsuitem = {"active":true,"list":[{"condition":{"type":null,"deviceString":"","active":false,"value":""},"delayedExec":{"type":null,"deviceString":"","active":false,"value":""},"rrule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR","event":"sunrise","holiday":{"workday":true,"weekend":false},"active":true,"timeCron":"","value":"0","timeMin":"01:00","timeOffset":"30","timeMax":"23:59","time":"01:00<sunrise+30m<23:59"},{"active":true,"rrule":"","time":"01:00","value":"1","event":"time","timeMin":"","timeMax":"","timeCron":"01:00","timeOffset":"","condition":{"deviceString":"foo","type":"eq","value":"bar","active":true},"delayedExec":{"deviceString":"","type":null,"value":"","active":false},"holiday":{"workday":false,"weekend":true}},{"active":false,"rrule":"","time":"","value":"2","event":"time","timeMin":"","timeMax":"","timeCron":"","timeOffset":"","condition":{"deviceString":"","type":"String","value":"","active":false},"delayedExec":{"deviceString":"","type":"String","value":"","active":false},"holiday":{"workday":false,"weekend":false}}]}
