@@ -346,7 +346,7 @@ the first one is the base color for values below first threshold, so pass one co
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
- * @param {unspecified=} 	    Widget to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas!
+ * @param {unspecified[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {text[](switch,value_popup,value_slider,locks,uzsu,stateengine,plot,scenes,extpopup,anynumber)=[['locks', 'switch'], 'value_popup', 'stateengine', 'uzsu', 'plot']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'switch', 'value_popup', 'value_slider', 'locks', 'uzsu', 'stateengine', 'plot', 'scenes', 'extpopup'
@@ -501,7 +501,13 @@ the first one is the base color for values below first threshold, so pass one co
     <div class="quad_table row_dimmer" id="row_{{uid(page, id)}}">
   <div class="text" data-order=0>{{ linetext|e }}
   {% if linetext_widget != '' %}&nbsp;
-  {{ _context['linetext_widget'] }}
+    {% if linetext_widget is iterable %}
+      {% for widget in linetext_widget %}
+          {{ widget }}
+      {% endfor %}
+    {% else %}
+      {{ _context['linetext_widget'] }}
+    {% endif %}
   {% elseif item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
   {{ clock.countdown('', item_auto~'.suspend', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1', '') }}
   /**
@@ -715,7 +721,7 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral), item_seqlock (RGB sequencer lock)
  * @param {item=} 		item for RGB sequencer (logic)
  * @param {color[]=} 	array with on/off icon colors
- * @param {unspecified=} 	    Widget to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas!
+ * @param {unspecified[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {text[](colorpicker,ww_popup,ww_slider,values,sequencer,locks,stateengine,uzsu,plot,anynumber)=[[locks, sequencer, colorpicker],values, stateengine, plot, uzsu]} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'colorpicker', 'ww_popup', 'ww_slider', 'values', 'sequencer', 'locks', 'stateengine', 'uzsu', 'plot'
@@ -882,7 +888,13 @@ the first one is the base color for values below first threshold, so pass one co
     <div class="quad_table row_color" id="row_{{uid(page, id)}}">
     <div class="text">{{ linetext|e }}
       {% if linetext_widget != '' %}&nbsp;
-      {{ _context['linetext_widget'] }}
+        {% if linetext_widget is iterable %}
+          {% for widget in linetext_widget %}
+              {{ widget }}
+          {% endfor %}
+        {% else %}
+          {{ _context['linetext_widget'] }}
+        {% endif %}
       {% elseif item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
       {{ clock.countdown('', item_auto~'.suspend', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1', '') }}
       /**
@@ -1160,7 +1172,7 @@ the first one is the base color for values below first threshold, so pass one co
                        Possible elements are: header, text, slider, flip, switch, select
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
- * @param {unspecified=} 	    Widget to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas!
+ * @param {unspecified[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot,extpopup, anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot', 'extpopup'
@@ -1350,7 +1362,13 @@ the first one is the base color for values below first threshold, so pass one co
     <div class="quad_table row_shutter" id="row_{{uid(page, id)}}">
     <div class="text">{{ linetext|e }}
       {% if linetext_widget != '' %}&nbsp;
-      {{ _context['linetext_widget'] }}
+        {% if linetext_widget is iterable %}
+          {% for widget in linetext_widget %}
+              {{ widget }}
+          {% endfor %}
+        {% else %}
+          {{ _context['linetext_widget'] }}
+        {% endif %}
       {% elseif item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
       {{ clock.countdown('', item_auto~'.suspend', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1', '') }}
       /**
@@ -2230,7 +2248,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
 * @param {unspecified[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
                             You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
- * @param {unspecified=} 	    Widget to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas!
+ * @param {unspecified[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
 * @param {unspecified=} 	    placeholder attributes for future features, etc.
 * @param {text[](switch,stateengine,uzsu,plot,locks,slider,extpopup,anynumber)=['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'switch', 'stateengine', 'uzsu', 'plot', 'locks', 'slider'
@@ -2446,13 +2464,24 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     <div class="quad_table row_stateswitch" id="row_{{uid(page, id)|replace('.', '_')}}">
     <div class="text">{{ linetext|e }}
       {% if linetext_widget != '' %}&nbsp;
-      {{ _context['linetext_widget'] }}
+        {% if linetext_widget is iterable %}
+          {% for widget in linetext_widget %}
+              {{ widget }}
+          {% endfor %}
+        {% else %}
+          {{ _context['linetext_widget'] }}
+        {% endif %}
       {% elseif item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
       {% if item_auto is iterable %}
         {% set se = item_auto[0] != '' ? item_auto[0]~'.suspend_end' : item_auto[1] != '' ? item_auto[1]~'.suspend_end' : '' %}
         {% set sc_0 = item_auto[0] != '' ? item_auto[0]~'.suspend' : item_auto[1] != '' ? item_auto[1]~'.suspend' : '' %}
         {% set sc_1 = item_auto[0] != '' ? item_auto[0]~'.suspend_start.unix_timestamp' : item_auto[1] != '' ? item_auto[1]~'.suspend_start.unix_timestamp' : '' %}
         {% set sc_2 = item_auto[0] != '' ? item_auto[0]~'.settings.suspendduration.duration_format' : item_auto[1] != '' ? item_auto[1]~'.settings.suspendduration.duration_format' : '' %}
+      {% else %}
+        {% set se = item_auto~'.suspend_end' %}
+        {% set sc_0 = item_auto~'.suspend' %}
+        {% set sc_1 = item_auto~'.suspend_start.unix_timestamp' %}
+        {% set sc_2 = item_auto~'.settings.suspendduration.duration_format' %}
       {% endif %}
       {{ clock.countdown('', sc_0, sc_1, sc_2, '1', '') }}
       /**
