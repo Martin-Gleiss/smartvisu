@@ -83,11 +83,15 @@
 * @param {text} an item containing the start time of the countdown (timestamp) 
 * @param {text} an item containing the duration of the countdown (h,i,s format) 
 * @param {text=} the countdown interval in seconds, e.g. '60s' (default: '10s')  
+* @param {text='item'} the mode of stopping the timer 'item' (default): countdown runs until item is changed; 'zero' = countdown stops at 00:00:00
+* @param {text='--:--:--'} the text displayed when countdown is inactive (default '--:--:--')
 */
-{% macro countdown(id, item, starttime, duration, interval ) %}
+{% macro countdown(id, item, starttime, duration, interval, stopmode, idletxt ) %}
 
 	{% if interval is empty %} {% set interval = "10s" %} {% endif %}
-	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.countdown" data-interval="{{ interval }}" class="miniclock"
-		data-item="{{ item }}, {{ starttime }}, {{ duration }}">--:--:--</span>
-
+	{% if stopmode != "zero" %} {% set stopmode = "item" %} {% endif %}
+	{% if idletxt is empty %} {% set idletxt = "--:--:--" %} {% endif %}
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.countdown" data-interval="{{ interval }}" data-stopmode="{{ stopmode }}" 
+		data-idletxt="{{ idletxt }}" class="miniclock" data-item="{{ item }}, {{ starttime }}, {{ duration }}">{{ idletxt }}
+	</span>
 {% endmacro %}
