@@ -1616,7 +1616,7 @@ the first one is the base color for values below first threshold, so pass one co
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {unspecified[]=} 	    a list with positional attributes: item_saved = an item for some saved positions, value_pos_1 =
 the value to send for position 1, value_pos_2 = the value to send for position 2, text_pos_1 = the text printed on button for position 1, text_pos_2 = the text printed on button for position 2 (optional)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {unspecified[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot,extpopup,anynumber)=[[move_down, move_up], pos_popup_shutter, stateengine, plot, uzsu]} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot', 'extpopup'
@@ -1624,9 +1624,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
 
-{% macro blind(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step, place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, pos_attribs, place3, place4, column_order) %}
+{% macro blind(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step, place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, pos_attribs, linetext_widget, place4, column_order) %}
   {% import _self as newwidget %}
-  {{ newwidget.shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, '', min, max, step, '', '', '', '', place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, place3, place4, column_order, 'blind', pos_attribs) }}
+  {{ newwidget.shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, '', min, max, step, '', '', '', '', place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, 'blind', pos_attribs) }}
 {% endmacro %}
 
 /**
