@@ -77,8 +77,8 @@
   </div>
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-      <span id="bathvalue">{{ basic.print('', 'bath.value') }}</span>
-      {{ basic.print('', 'bath.trigger', 'script', '$("#bathvalue").css("color", (VAR1 < 200) ? "#FF6600" : "#FFFFFF")') }}
+      <span id="bathval">{{ basic.print('', 'bath.value') }}</span>
+      {{ basic.print('', 'bath.trigger', 'script', '$("#bathval").css("color", (VAR1 < 200) ? "#FF6600" : "#FFFFFF")') }}
     {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
