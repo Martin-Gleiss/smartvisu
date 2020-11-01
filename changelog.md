@@ -1,7 +1,8 @@
 ## next version
 
 ### New / Changed Widgets
-- new widget constructor as assistant to parametrize widgets
+- new widget constructor as assistant to parametrize widgets (thanks to Andre Kohler)
+- template checker checks for items and item types with masteritem file form backend (thanks to Andre Kohler)
 - darsky weather service shows verbal wind directions instead of angle values
 - deprecated widgets from v2.8 and earlier have been deleted
 - basic.trigger can trigger logics on page create (new) and / or by button
@@ -10,6 +11,7 @@
 - new widget lib.connection to display the URL of the shNG websocket
 - added setpoint item to quad.rtr 
 - new widget clock.countdown to visualize timers in backend
+- new widget lib.timestamp to write a timestamp of "now" to an item (used for countdown doc page)
 
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'
@@ -20,7 +22,6 @@
 - widget constructor can be deactivated in config page in order to save ressources
 - new version number format (e.g. v2.9.2) is standard in communication w/ io-drivers, old format is deprecated
 - menu button for German "Kurzanleitung" (separately available on github.com/smartvisu-newstuff/kurzanleitung) integrated in system menu
-
 
 ### Improvements
 - function Date().duration changed to accept negative values (for plots reaching into the future)
