@@ -14,7 +14,7 @@ class TemplateChecker {
 	private $messages;
 
 	/**
-	 * Array containing parameter information for custom widgeds
+	 * Array containing parameter information for custom widgets
 	 * @var array
 	 */
 	private $widgets = array();
@@ -38,13 +38,18 @@ class TemplateChecker {
 	private $domDocument;
 
 	/**
+	 * Object for the Icons
+	 */
+	private $items;
+
+	/**
 	 * Perform template checks for single file
 	 * @param string $fileName name of file to check
 	 * @param MessageCollection $messages MessageCollection to which messages should be added
 	 * @return \TemplateChecker
 	 */
-	public static function run($fileName, MessageCollection $messages) {
-		$checker = new TemplateChecker($fileName, $messages);
+	public static function run($fileName, MessageCollection $messages, $checkItems) {
+		$checker = new TemplateChecker($fileName, $messages,$checkItems);
 		$checker->performTests();
 		return $checker;
 	}
@@ -54,10 +59,13 @@ class TemplateChecker {
 	 * @param string $fileName file to test
 	 * @param MessageCollection $messages MessageCollection to add messages to
 	 */
-	public function __construct($fileName, MessageCollection $messages) {
+	public function __construct($fileName, MessageCollection $messages, $checkItems) {
 		$this->messages = $messages;
 		$this->fileName = $fileName;
 		$this->widgets = twig_docu();
+		$this->items = new Items(pathinfo($fileName)["dirname"]); //new
+		if ($checkItems == "false")
+			{ $this->items->setState(FALSE);}
 	}
 
 	/**
@@ -222,7 +230,7 @@ class TemplateChecker {
 		// check all parameters of widget
 		$paramConfigs = array_values($widgetConfig['param']);
 		foreach ($paramConfigs as $paramIndex => $paramConfig) {
-			WidgetParameterChecker::performChecks($widget, $paramIndex, $paramConfig, $this->messages, $this);
+			WidgetParameterChecker::performChecks($widget, $paramIndex, $paramConfig, $this->messages,$this->items, $this); //new: items
 		}
 
 		if (array_key_exists('deprecated', $widgetConfig)) {
