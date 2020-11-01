@@ -83,12 +83,11 @@
 /**
 * Button to send a timestamp to an item (for countdown docu page)
 *
-* @param {text} unique id for the widget. Mandatory in order to identify the button in a page with more than one button 
-* @param {text} the item 
+* @param {id} unique id for the widget. Mandatory in order to identify the button in a page with more than one button 
+* @param {item(num)} the item 
 *
 * @Author: Wolfram v. Hülsen
 */
-
 {% macro timestamp (id, item) %}
 	<button type="button" data-theme="a" data-inline="true" id="send_timestamp_{{ uid(page, id) }}" class="ui-midi">Trigger</button> Click to start
 	<script type="text/javascript">
