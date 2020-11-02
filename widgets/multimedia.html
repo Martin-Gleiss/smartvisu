@@ -12,7 +12,7 @@
 * Plays a soundfile
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} the item which triggers playing
+* @param {item(bool,num)} the item which triggers playing
   Notice: The item sets the value to null after playing.
 * @param {text} the url of the soundfile
 * @param {value=1} the value which triggers playing (optional, default 1)
@@ -63,17 +63,17 @@
 * Standard Multimedia Player
 *
 * @param {id} unique id for this widget
-* @param {item} the item for play/pause
-* @param {item=} the item for stopping the music (optional)
-* @param {item=} the item for fast forward and rewind (optional)
-* @param {item} the item for next an previous playlist title
-* @param {item=} the item for the position (optional)
-* @param {item=} the item for the volume (optional)
-* @param {item=} the item to mute the music (optional)
-* @param {item=} the item for the song title (optional)
-* @param {item=} the item for the song artist (optional)
-* @param {item=} the item for repeat (optional)
-* @param {item=} the item to load the default playlist (optional)
+* @param {item(bool,num)} the item for play/pause
+* @param {item(bool,num)=} the item for stopping the music (optional)
+* @param {item(bool,num)=} the item for fast forward and rewind (optional)
+* @param {item(bool,num)} the item for next an previous playlist title
+* @param {item(num)=} the item for the position (optional)
+* @param {item(num)=} the item for the volume (optional)
+* @param {item(bool,num)=} the item to mute the music (optional)
+* @param {item(str)=} the item for the song title (optional)
+* @param {item(str)=} the item for the song artist (optional)
+* @param {item(bool,num)=} the item for repeat (optional)
+* @param {item(bool,num)=} the item to load the default playlist (optional)
 *
 * @author Axel Otterstätter
 */
@@ -126,11 +126,11 @@
 * @param {id=} unique id for this widget (optional)
 * @param {text} a directory where the pictures are located
 * @param {value=2} delay between the slides in sec (optional, default: 4 sec)
-* @param {item=} item to switch to the next slide (optional)
-* @param {item=} item to switch to the previous slide (optional)
+* @param {item(bool,num)=} item to switch to the next slide (optional)
+* @param {item(bool,num)=} item to switch to the previous slide (optional)
   (if this is same as item_next: 0 triggers previous, any value greater than 0 triggers next, negative values are ignored)
-* @param {item=} item to stop the animation (optional)
-* @param {item=} item to start the animation (optional)
+* @param {item(bool,num)=} item to stop the animation (optional)
+* @param {item(bool,num)=} item to start the animation (optional)
   (if this is same as item_stop: 0 stops, any value greater than 0 starts, negative values are ignored)
 * @param {value=0} Show the pictures in reverse order; possible values are 1 or 0 (optional, default 0)
 * @param {value=0} Show controls; possible values are 1 or 0 (optional, default 0)
@@ -173,7 +173,7 @@
 * Displays a tv- or radio- station button
 *
 * @param {id} unique id for this widget
-* @param {item} an item
+* @param {item(bool,num,str)} an item
 * @param {image} an icon (e. g. located in pics/station)
 * @param {text=1} value to send if the button is pressed (optional, default 1)
 * @param {type=mini} type: 'mini', 'midi' (optional, default: mini)
@@ -191,9 +191,9 @@
 * Displays a slider to show and control the current time of a media file. Slider continues to run every second even if time value is not updated by item
 *
 * @param {id=} unique id for this widget
-* @param {item} an item providing the current time of a media file
-* @param {item} an item providing info whether song is playing or not (value has to be true or false)
-* @param {item} an item providing the duration of the same media file
+* @param {item(num)} an item providing the current time of a media file
+* @param {item(bool)} an item providing info whether song is playing or not (value has to be true or false)
+* @param {item(num)} an item providing the duration of the same media file
 * @param {value=5} step in % between updates (optional, default 5)
 * @param {text(input,handle,both,none)=input} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'input')
 */
@@ -211,9 +211,9 @@
 * current state: stop. Click -> play.
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item for the play command
-* @param {item} an item for the pause command
-* @param {item} an item for the stop command
+* @param {item(bool,num)} an item for the play command
+* @param {item(bool,num)} an item for the pause command
+* @param {item(bool,num)} an item for the stop command
 *
 * @author Onkel Andy
 */
