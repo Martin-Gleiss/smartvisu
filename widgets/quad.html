@@ -504,7 +504,7 @@ the first one is the base color for values below first threshold, so pass one co
       {{ _context['linetext_widget'] }}
     {% endif %}
   {% elseif item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
-  {{ clock.countdown('', item_auto~'.suspend', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1', '') }}
+  {{ clock.countdown('', item_auto~'.suspend', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1', '', ' ') }}
   /**
   {{ basic.print(id~'dimmerprint', item_auto~'.suspend_end', 'text') }}
   */
@@ -891,7 +891,7 @@ the first one is the base color for values below first threshold, so pass one co
           {{ _context['linetext_widget'] }}
         {% endif %}
       {% elseif item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
-      {{ clock.countdown('', item_auto~'.suspend', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1', '') }}
+      {{ clock.countdown('', item_auto~'.suspend', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1', '', ' ') }}
       /**
       {{ basic.print(id~'dimmerprint', item_auto~'.suspend_end', 'text') }}
       */
@@ -1366,7 +1366,7 @@ the first one is the base color for values below first threshold, so pass one co
           {{ _context['linetext_widget'] }}
         {% endif %}
       {% elseif item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
-      {{ clock.countdown('', item_auto~'.suspend', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1', '') }}
+      {{ clock.countdown('', item_auto~'.suspend', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1', '', ' ') }}
       /**
       {{ basic.print(id~'dimmerprint', item_auto~'.suspend_end', 'text') }}
       */
@@ -2479,7 +2479,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
         {% set sc_1 = item_auto~'.suspend_start.unix_timestamp' %}
         {% set sc_2 = item_auto~'.settings.suspendduration.duration_format' %}
       {% endif %}
-      {{ clock.countdown('', sc_0, sc_1, sc_2, '1', '') }}
+      {{ clock.countdown('', sc_0, sc_1, sc_2, '1', '', ' ') }}
       /**
       {{ basic.print(id~'sw_widget', se, 'text') }}
       */
