@@ -61,7 +61,7 @@
  * Show a symbol based on item values (including and/or logic).
  *
  * @param {id=} unique id for this widget
- * @param {item[?]=} zero, one or more item(s). More items in array form: [item1, item2] (optional)
+ * @param {item[?](bool,num,list)=} zero, one or more item(s). More items in array form: [item1, item2] (optional)
                           hint: let this empty to display a static icon
  * @param {text[?]=} the text, printed when item has value val (optional)
  * @param {image[?]=control_on_off} the icon shown when item has value val (optional, default 'control_on_off' if text is empty)
@@ -152,7 +152,7 @@
  * Print values in specific format, including expressions
  *
  * @param {id=} unique id for this widget (optional)
- * @param {unspecified[?]} one or more item(s). Multiple items in array-form: [item1, item2]
+ * @param {item[?](bool,num,list)} one or more item(s). Multiple items in array-form: [item1, item2]
  * @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
   Use 'text' to display result as unformatted string, 'html' to render it as unescaped html or 'script' to just execute as JavaScript w/o displaying anything.
  * @ add {format(text,html,script)=}
@@ -235,31 +235,26 @@ the first one is the base color for values below first threshold, so pass one co
     </li>
 {% endmacro %}
 
-{% macro map(id, linetext, item, map_min, map_max, map_str, place1, place2, columntext, item_plot, icon_plot, place3, place4, column_order) %}
-  {% import _self as newwidget %}
-  {{ newwidget.maprange(id, linetext, item, map_min, map_max, map_str, place1, place2, columntext, item_plot, icon_plot, place3, place4, column_order)}}
-{% endmacro %}
-
 /**
  * RTR to control heating. This widget only shows two values: the actual temperature and the set temperature. Clicking on the latter opens a popup.
  *
  * @param {id=}       		unique id for this widget
  * @param {text=}       		name of the rtr
- * @param {item}    	an item for the actual temperature
- * @param {item}  an item for the temperature to set
- * @param {item=}    an item for comfort / standby (3x bit or 1x byte)
- * @param {item=}    	an item for night (3x bit or 1x byte)
- * @param {item=}    	an item for frost (3x bit or 1x byte)
- * @param {item=}    	an item for the current state of the actor
- * @param {item=}    	an item for a text (some rtr have a text-display), (optional)
+ * @param {item(num)} an item for the actual temperature
+ * @param {item(num)} an item for the set temperature
+ * @param {item(bool,num)=} an item for comfort / standby (3x bit or 1x byte, optional)
+ * @param {item(bool,num)=} an item for night (3x bit or 1x byte, optional)
+ * @param {item(bool,num)=} an item for frost (3x bit or 1x byte, optional)
+ * @param {item(bool,num)=} an item for the current state of the actor (optional)
+ * @param {item(str)=} an item for a text (some rtr have a text-display), (optional)
  * @param {value=0.5}    		step for plus/minus buttons (optional, default: 0.5)
- * @param {item=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
+ * @param {item(num)=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
  * @param {text[]=} list of additional widgets / content to display
  * @param {color=}    		color for the popup icon
  * @param {text=}    	activity indicator for the plot icon which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {item=} 	    an item for the current setpoint (e.g. valve 0..100%)
+ * @param {item(num)=} 	    an item for the current setpoint (e.g. valve 0..100%)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {value[](1,2,3,4,5)=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
  *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
@@ -314,8 +309,8 @@ the first one is the base color for values below first threshold, so pass one co
  *
  * @param {id=}        		unique id for this widget
  * @param {text=} 		    text for the whole line
- * @param {item}       	a gad/item for switching
- * @param {item}       	a gad/item for dimming
+ * @param {item(bool,num)} an item for switching
+ * @param {item(num)} an item for dimming
  * @param {value=0}       		the minimum value if the slider is moved to total left (optional, default 0)
  * @param {value=255}       		the maximum value if the slider is moved to total right (optional, default 255)
  * @param {value=5}       	step between two values (optional, default 5)
@@ -330,14 +325,14 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {text=}      activity indicator which is active until response (or a timeout is reached)
  * @param {text(horizontal,vertical,bottomup,semicircle,popup)=horizontal} 	if the dimmer slider should be implemented in the column directly.
  *						possible options: 'horizontal', 'vertical', 'bottomup', 'semicircle'. 'popup' or empty for popup.
- * @param {item=}      a gad/item for UZSU
+ * @param {item(dict)=}      a gad/item for UZSU
  * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {text=}     value type: '%' to recalculate 0-255 values to 0-100%  (e.g. for lights) or any formula
    - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
    - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {item(foo)=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
@@ -345,7 +340,7 @@ the first one is the base color for values below first threshold, so pass one co
                        Possible elements are: header, text, slider, flip, switch, select
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
- * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
+ * @param {item[](bool,num)=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
  * @param {unspecified[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {text[](switch,value_popup,value_slider,locks,uzsu,stateengine,plot,scenes,extpopup,anynumber)=[['locks', 'switch'], 'value_popup', 'stateengine', 'uzsu', 'plot']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
@@ -686,10 +681,10 @@ the first one is the base color for values below first threshold, so pass one co
  * Color chooser for RGB lights. Be aware that the attributes differ from basic.color widget!
  *
 * @param {id=} unique id for this widget (optional)
-* @param {item[?]} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
-* @param {item=} an item for the green value in RGB model or saturation in HSL and HSV model
+* @param {item[?](num,list)} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
+* @param {item(num)=} an item for the green value in RGB model or saturation in HSL and HSV model
 (to let blank if first item contains list of all values)
-* @param {item=} an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
+* @param {item(num)=} an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
 (to let blank if first item contains list of all values)
 * @param {value[?]=0} minimum value if the light is off; single value or list of values for each component (optional, default 0)
 * @param {value[?]=255} maximum value if the light is full on; single value or list of values for each component (optional, default 255 for rgb, [360,100,100] for hsl & hsv)
@@ -698,19 +693,19 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {text(disc,rect,slider)=disc} 'disc' for circular, 'rect' for rectangular view, 'slider' for HSV sliders (optional, default: disc)
 * @param {text(rgb,hsl,hsv)=rgb} possible values: 'rgb', 'hsl' and 'hsv' (optional, default: rgb)
 * @param {text=} text for the whole line (optional)
-* @param {item=} an item for the red switch in RGB model
-* @param {item=} an item for the green value in RGB model
-* @param {item=} an item for the blue value in RGB model
+* @param {item(bool)=} an item for the red switch in RGB model
+* @param {item(bool)=} an item for the green value in RGB model
+* @param {item(bool)=} an item for the blue value in RGB model
  * @param {value=}    the minimum value which is displayed if the slider is moved to total left (optional, default like min)
  * @param {value=}    the maximum value which is displayed if the slider is moved to total left (optional, default like max)
- * @param {item=}      a gad/item for UZSU
+ * @param {item(dict)=}      a gad/item for UZSU
  * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {text(rgb,hsv)=}   	colormodel for popup (rgb or hsv)
- * @param {item=}   	a gad/item to switch on/off fourth color / warm white
- * @param {item=}   	a gad/item for value of fourth color / warm white
+ * @param {item(bool)=}   	a gad/item to switch on/off fourth color / warm white
+ * @param {item(num)=}   	a gad/item for value of fourth color / warm white
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {item(foo)=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
@@ -718,8 +713,8 @@ the first one is the base color for values below first threshold, so pass one co
                        Possible elements are: header, text, slider, flip, switch, select
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
- * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral), item_seqlock (RGB sequencer lock)
- * @param {item=} 		item for RGB sequencer (logic)
+ * @param {item[](bool,num)=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral), item_seqlock (RGB sequencer lock)
+ * @param {item(bool)=} 		item for RGB sequencer (logic)
  * @param {color[]=} 	array with on/off icon colors
  * @param {unspecified[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
@@ -1145,12 +1140,12 @@ the first one is the base color for values below first threshold, so pass one co
  *
  * @param {id=}     		unique id for this widget
 * @param {text=} text for the whole line
-* @param {item=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
-* @param {item=} an item for stopping the movement (optional)
-* @param {item} an item for the absolute position of the blinds
-* @param {item=} an item for increase and decrease of the blade (optional, for future use)
-* @param {item=} an item for the absolute angle of the blade (optional)
-* @param {item=} an item for some saved positions (optional)
+* @param {item(bool,num)=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+* @param {item(bool,num)=} an item for stopping the movement (optional)
+* @param {item(num)} an item for the absolute position of the blinds
+* @param {item(bool,num)=} an item for increase and decrease of the blade (optional, for future use)
+* @param {item(num)=} an item for the absolute angle of the blade (optional)
+* @param {item(num)=} an item for some saved positions (optional)
 * @param {value=0} the value for opened (optional, default 0)
 * @param {value=255} the value for closed (optional, default 255)
 * @param {value=5} step between two values (optional, default 5)
@@ -1160,11 +1155,11 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {value=1} the value to send for position 2 (optional, default 1)
 * @param {unspecified=} 	    placeholder attributes for future features, etc.
 * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {item=}      a gad/item for UZSU
+ * @param {item(dict)=}      a gad/item for UZSU
  * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {item(foo)=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
@@ -1172,6 +1167,7 @@ the first one is the base color for values below first threshold, so pass one co
                        Possible elements are: header, text, slider, flip, switch, select
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
+
  * @param {unspecified[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot,extpopup, anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
@@ -1592,21 +1588,21 @@ the first one is the base color for values below first threshold, so pass one co
  *
  * @param {id=}     		unique id for this widget
  * @param {text=}    		text for the whole line
- * @param {item}   		a gad/item for the up- and down- movement
- * @param {item=}    		a gad/item for stopping the movement (optional)
- * @param {item}      an item for the absolute position of the blinds
- * @param {item=}     an item for increase and decrease of the blade (optional, for future use)
- * @param {item=}     an item for the absolute angle of the blade (optional)
+ * @param {item(bool,num)=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+ * @param {item(bool,num)=} an item for stopping the movement (optional)
+ * @param {item(num)} an item for the absolute position of the blinds
+ * @param {item(bool,num)=} an item for increase and decrease of the blade (optional)
+ * @param {item(num)=} an item for the absolute angle of the blade (optional)
  * @param {value=0}    		the minimum value for close (optional, default 0)
  * @param {value=255}    		the maximum value for open (optional, default 255)
  * @param {value=5}   		step between two values (optional, default 5)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {item=}      a gad/item for UZSU
+ * @param {item(dict)=}      a gad/item for UZSU
  * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {item=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {item(foo)=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
@@ -1634,38 +1630,38 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  *
  * @param {id=}     			    unique id for this widget
  * @param {text=} 			    text for the whole line
- * @param {item=}  	    a gad/item for the previous title
- * @param {item=}   		    a gad/item for play command
- * @param {item=}   		    a gad/item for pause command
- * @param {item=}    		    a gad/item for stopping
- * @param {item=} 			    a gad/item for the next title
- * @param {item=}  		    a gad/item for turning power on/off
- * @param {item=}  		    a gad/item to eject
- * @param {item=}    	    a gad/item to repeat. 0 = off. 1 = song. 2 = playlist
- * @param {item=}    	    a gad/item to shuffle. 0 = off. 1 = song. 2 = album
+ * @param {item(bool,num)=}  	    a gad/item for the previous title
+ * @param {item(bool,num)=}   		    a gad/item for play command
+ * @param {item(bool,num)=}   		    a gad/item for pause command
+ * @param {item(bool,num)=}    		    a gad/item for stopping
+ * @param {item(bool,num)=} 			    a gad/item for the next title
+ * @param {item(bool,num)=}  		    a gad/item for turning power on/off
+ * @param {item(bool,num)=}  		    a gad/item to eject
+ * @param {item(num,bool)=}    	    a gad/item to repeat. 0 = off. 1 = song. 2 = playlist
+ * @param {item(num,bool)=}    	    a gad/item to shuffle. 0 = off. 1 = song. 2 = album
  * @param {unspecified[]=}    		        array providing these information: [item to change source/playlist, select-type, [value1, icon1, text1], [value2, icon2, text2], etc.]
- * @param {item=}    	    a gad/item to set mute
- * @param {item=}    	    a gad/item to set the volume
- * @param {item=}    	    a gad/item to increase volume
- * @param {item=}   	    a gad/item to decrease volume
+ * @param {item(bool,num)=}    	    a gad/item to set mute
+ * @param {item(num)=}    	    a gad/item to set the volume
+ * @param {item(bool,num)=}    	    a gad/item to increase volume
+ * @param {item(bool,num)=}   	    a gad/item to decrease volume
  * @param {value=}   		    minimum value for volume
  * @param {value=}   		    maximum value for volume
  * @param {value=}   		    step for volume slider
  * @param {value=}     minimum value shown on slider
  * @param {value=}     maximum value shown on slider
  * @param {value=}       change volume color to red when above threshold
- * @param {item=} 		    a gad/item for current album. To show album art, add a subitem called currentalbumarturl
+ * @param {item(str)=} 		    a gad/item for current album. To show album art, add a subitem called currentalbumarturl
                                for squeezebox put this in the item: value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
- * @param {item=} 		    a gad/item for current artist
- * @param {item=} 		    a gad/item for current title
- * @param {item=} 			    a gad/item for current time
- * @param {item=} 		    a gad/item for duration of current title
- * @param {item[?]=} 		    (array of) gad/item for setting speakers A/B
- * @param {item=}  		    a gad/item for UZSU
+ * @param {item(str)=} 		    a gad/item for current artist
+ * @param {item(str)=} 		    a gad/item for current title
+ * @param {item(num)=} 			    a gad/item for current time
+ * @param {item(num)=} 		    a gad/item for duration of current title
+ * @param {item[?](num,bool)=} 		    (array of) gad/item for setting speakers A/B
+ * @param {item(dict)=}  		    a gad/item for UZSU
  * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
- * @param {item=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {item(foo)=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
@@ -2213,7 +2209,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * Stateswitch
  *
 * @param {id=} unique id for this widget (optional)
-* @param {item[?]=} an (array of) item(s)
+* @param {item[?](bool,num,list)} an item
 * @param {type[?]=mini} valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini)
 * @param {text[?]=[0,1]} array of values (optional, default [0,1])
   If the item has a value that is not part of the list, the state (icon, text, color) of the last value in the list will be shown.
@@ -2223,7 +2219,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 * @param {color[](hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional, default: icon0)
   additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
 * @param {color[?](blink)=} activity indicator which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
-* @param {item=} an item to which a value on longpress is sent (optional)
+* @param {item(bool,num,list,str)=} an item to which a value on longpress is sent (optional)
 * @param {text=} the value to send on longpress (optional)
   	If this starts with a + or - sign the value is treated as offset to current stateswitch value.
 * @param {text=} the value to send on releasing after a longpress (optional)
@@ -2233,11 +2229,11 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                        you can provide the following attributes as single statements without arrays.
 * @param {text=} text for the whole line (optional)
 * @param {text[?]=} text for each column (optional)
-* @param {item[?]=}  		    a gad/item for UZSU
+* @param {item[?](dict)=}  		    a gad/item for UZSU
 * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
 * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
 * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
-* @param {item[?]=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+* @param {item[?](foo)=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
 * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
@@ -2245,7 +2241,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                        Possible elements are: header, text, slider, flip, switch, select
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
-* @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
+* @param {item[](bool,num)=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
 * @param {unspecified[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
                             You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
  * @param {unspecified[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
@@ -2865,7 +2861,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * Select: lets you select a specific value (e.g. scene, etc.)
  *
 * @param {id=} unique id for this widget (optional)
-* @param {item[?]} an (array of) item(s)
+* @param {item[?](num,list)} an (array of) item(s)
 * @param {type(menu)[?]=menu} type: 'menu', 'micro', 'mini', 'midi', 'icon' (optional, default: menu)
 * @param {text[]=[0,1]} list of values (optional, default [0,1])
 * @param {image[?]=} list of icons for every button (optional) - not supported for type 'menu'
@@ -2876,11 +2872,11 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
 * @param {text=} text for the whole line (optional)
 * @param {text[?]=} (array with) text for each column (optional)
- * @param {item[?]=}  		    a gad/item for UZSU
+ * @param {item[?](dict)=}  		    a gad/item for UZSU
  * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
- * @param {item[?]=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
+ * @param {item[?](foo)=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
                        First entry can either be "stateengine" to make the stateengine plugin icon the trigger for the popup or an icon (e.g. time_automatic).
                        After that you have to create an array for each line of the popup. In this array you first define the elements like switch, text, etc.,
