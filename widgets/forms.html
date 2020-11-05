@@ -11,8 +11,8 @@
 /**
 * Init of a flip-form-element
 *
-* @param id of the form-element
-* @param init-value
+* @param {id} of the form-element
+* @param {init-value}
 */
 {% macro flip_init(id, val) %}
 	<script type="text/javascript">
@@ -26,8 +26,8 @@
 /**
 * Init of a select-form-element
 *
-* @param id of the form-element
-* @param init-value
+* @param {id} of the form-element
+* @param {init-value}
 */
 {% macro select_init(id, val) %}
 	<script type="text/javascript">
@@ -41,8 +41,8 @@
 /**
 * Init of a text-form-element
 *
-* @param id of the form-element
-* @param init-value
+* @param {id} of the form-element
+* @param {init-value}
 */
 {% macro text_init(id, val) %}
 	<script type="text/javascript">
@@ -50,7 +50,14 @@
 	</script>
 {% endmacro %}
 
-
+/**
+* dispays a row of multiple input elements
+*
+* @param {text} source of the settings (global, pages, device, tplchk)
+* @param {text} values being available from source
+* @param {text} name of the parameter to enter
+* @param {text[?]} array of input elements  
+*/
 {% macro config_row(source, values, id, content) %}
 	<div class="ui-field-contain">
 		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
@@ -74,6 +81,14 @@
 {% endmacro %}
 
 
+/**
+* dispays an input field pre-filled by defaults
+*
+* @param {text} source of the settings (global, pages, device, tplchk)
+* @param {text} values being available from source
+* @param {text} name of the parameter to enter
+* @param {text} type of the value to enter (text, wide) 
+*/
 {% macro config_input(source, values, id, type) %}
 	<div class="ui-field-contain">
 		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
@@ -94,7 +109,14 @@
 	</div>
 {% endmacro %}
 
-
+/**
+* dispays a select element filled by contents of a given file directory
+*
+* @param {text} source of the settings (global, pages, device, tplchk)
+* @param {text} values being available from source
+* @param {text} name of the parameter to select
+* @param {text} directory of files to select from 
+*/
 {% macro config_select(source, values, id, files) %}
 	<div class="ui-field-contain">
 		<label for="{{ source }}_{{ id }}"{% if source != 'global' and source != 'tplchk' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
@@ -104,11 +126,6 @@
 	{% if not hint is empty %}
 		<div class="ui-help-container">
 			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
-			/**
-			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon icon1" data-transition="pop">
-				{{ source('message_help.svg') }}
-			</a>
-			*/
 			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
 				{{ hint|nl2br }}
 			</div>
@@ -141,13 +158,13 @@
         	</optgroup>
 				{% endif %}
 			</select>
-				/** display deprecated options in italic
+			/** display deprecated options in italic
 				<style type="text/css">
-          {% for deprecated in deprecateds %}
-          	#{{ source }}_{{ id }}-listbox-popup li[data-option-index="{{ deprecated }}"] a { font-style: italic; }
+					{% for deprecated in deprecateds %}
+						#{{ source }}_{{ id }}-listbox-popup li[data-option-index="{{ deprecated }}"] a { font-style: italic; }
 					{% endfor %}
 				</style>
-				*/
+			*/
 				<script type="text/javascript">
 					$('#{{ source }}_{{ id }}').on('change init', function(event) {
 						var element = $(this);
@@ -183,6 +200,14 @@
 {% endmacro %}
 
 
+/**
+* dispays a flipswitch providing ability to execute flexible code
+*
+* @param {text} source of the settings (global, pages, device, tplchk)
+* @param {text} values being available from source
+* @param {text} name of the option to activate
+* @param {text} executable html code as addition  
+*/
 {% macro config_flip(source, values, id, addition) %}
 	<div class="ui-field-contain">
 		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
@@ -208,6 +233,13 @@
 {% endmacro %}
 
 
+/**
+* fill configuration options without displaying anything 
+*
+* @param {text} source of the settings (global, pages, device, tplchk)
+* @param {text} values being available from source
+* @param {text} name of the parameter to configure
+*/
 {% macro config_hidden(source, values, id) %}
 			<input type="hidden" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
 {% endmacro %}
@@ -215,11 +247,14 @@
 
 /**
 * disables input of IP address and port if reverse proxy is configured
-* macro will be called in the "addition" parameter of config_flip for the reverse proxy option only 
+macro will be called in the "addition" parameter of config_flip for the reverse proxy option only 
 *
-* Author: Wolfram v. Hülsen
+* @param {text} source of the settings (global, pages, device, tplchk)
+* @param {text} values being available from source
+* @param {text} name of the parameter to configure
+*
+* @author: Wolfram v. Hülsen
 */
-
 {% macro config_reverseproxy(source, values, id) %}
 	<script type="text/javascript">
 		$('#{{ source }}_{{ id }}').on('change init', function(event) {
@@ -242,7 +277,11 @@
 /**
 * checks whether temp directory is writeable and disables cache activation if not writeable
 *
-* Author: Wolfram v. Hülsen
+* @param {text} source of the settings (global, pages, device, tplchk)
+* @param {text} values being available from source
+* @param {text} name of the parameter to configure
+*
+* @author: Wolfram v. Hülsen
 */
 {% macro check_cache(source, values, id) %}
 

@@ -28,16 +28,15 @@ Valid values for `'[additional setting]'` depend on `'[type]'`. They are describ
 If you want an widget not to be reported as unknown, but not to be checked either, just assign an empty array to `'[variable].[widget]'`.
 
 # Widget Parameter Configuration
-
+  
 * `'type' => '[type]'`  
-Type of parameter. See below for valid values.
+  type of parameter: see below for valid values.
 
-## General settings, applicable for all types ofparameters
+## General settings, applicable for all types of parameters
 * `'optional' => [TRUE|FALSE]`  
 Optional, Default: FALSE  
 Set to TRUE if parameter is optional.  
 If unset or FALSE, parameter is considered to be mandatory and will cause an error if parameter is missing or empty.
-
 
 * `'default' => [value]`  
 Optional.  
@@ -60,6 +59,7 @@ Valid values are:
 * smartVISU inline pictures ('arrow-l', 'arrow-r', 'arrow-u', 'arrow-d', 'delete', 'plus', 'minus', 'check', 'gear', 'refresh', 'forward', 'back', 'grid', 'star', 'alert', 'info', 'home', 'search')
 * Remote images ("http://...", "https://...")
 * Local images (paths "icon0" and "icon1" are respected,  icons without path are looked up in the "icon0" directory)
+* dynamic icons (icon.xyz widgets) and basic.symbol are also valid "images"
 
 **Additional settings:**  
 
@@ -104,12 +104,25 @@ Valid values are:
 
 ##Parameter type 'item'
 Parameter indicates an item.  
-In the future there may be the possibility to validate items.  
-Currently the same checks as for type "text" are being performed.
+Checks of items and item types are performend based on a file 'masteritem.json' which needs to be provided
+either automatically by tha backend or manually by the user. The check vaidates whether the used items are available
+and their types are matching the variable types of the widget.
 
+Format of the masteritem file:
+["eg|foo", "eg.entrance|foo", "eg.entrance.door|bool", "eg.entrance.light|foo", "eg.entrance.light.ceiling|num"]
+
+Valid values are
+* foo
+* bool
+* num
+* str
+* list
+* dict
+  
 **Additional settings:**  
 
 * None
+
 
 ##Parameter type 'iconseries'
 Parameter defines an iconseries.  
