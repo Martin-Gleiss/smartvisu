@@ -52,9 +52,9 @@
 								<h3>{{ lang('configuration_page', 'interface', 'label') }}</h3>
 								{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
 								{{ forms.config_select(source, values, 'design', dir('designs', '(.+?).css')) }}
-								/** get icon colors out of design.css meta data but don't show input fields */
-								<span style="display: none;">{{ forms.config_input(source, values, 'design_icon0', 'wide') }} </span>
-								<span style="display: none;">{{ forms.config_input(source, values, 'design_icon1', 'wide') }} </span>
+								/** get icon colors out of design.css meta data */
+								{{ forms.config_hidden(source, values, 'design_icon0') }}
+								{{ forms.config_hidden(source, values, 'design_icon1') }}
 								{{ forms.config_flip(source, values, 'cache', '<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache' ~ id ~ '" class="ui-micro"' ~ (not values['cache'] is defined ? ' disabled="disabled"'|raw) ~ '>' ~ lang('configuration_page', 'cache', 'clearbutton') ~'</button>') }}
 								{{ forms.check_cache ( source, values, 'cache') }}
 							</div>
