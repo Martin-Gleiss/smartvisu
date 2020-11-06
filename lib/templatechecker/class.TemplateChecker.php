@@ -62,7 +62,7 @@ class TemplateChecker {
 	public function __construct($fileName, MessageCollection $messages, $checkItems) {
 		$this->messages = $messages;
 		$this->fileName = $fileName;
-		$this->widgets = twig_docu();
+		$this->widgets = array_merge( twig_docu(), OldWidgets::getRemoved());
 		$this->items = new Items(pathinfo($fileName)["dirname"]); //new
 		if ($checkItems == "false")
 			{ $this->items->setState(FALSE);}
@@ -222,23 +222,42 @@ class TemplateChecker {
 
 		$widgetConfig = $this->getWidgetConfig($widget->getName());
 
-		if ($widgetConfig === NULL || !array_key_exists('param', $widgetConfig)) {
+		if ($widgetConfig === NULL || (!array_key_exists('param', $widgetConfig) && !array_key_exists('removed', $widgetConfig)) ) {
 			$this->messages->addWarning('WIDGET PARAM CHECK', 'Unknown widget found. Check manually!', $widget->getLineNumber(), $widget->getMacro(), $widget->getMessageData());
+			// var_dump ($this); //will show the whole widget array within a list item with "unknown widget" error
 			return;
-		}
-
-		// check all parameters of widget
-		$paramConfigs = array_values($widgetConfig['param']);
-		foreach ($paramConfigs as $paramIndex => $paramConfig) {
-			WidgetParameterChecker::performChecks($widget, $paramIndex, $paramConfig, $this->messages,$this->items, $this); //new: items
-		}
-
-		if (array_key_exists('deprecated', $widgetConfig)) {
-			$messageData = $widget->getMessageData();
-			if(array_key_exists('replacement', $widgetConfig)) {
-				$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $widget->getParamArray() + array_map(function($element) { return "'" . $element['default'] . "'"; }, $paramConfigs)));
 			}
+		if (array_key_exists('removed', $widgetConfig)) {
+			$paramConfigs = explode (',', $widgetConfig['params']);  // Parameters of widget macro
+			$paramConfigLen = count($paramConfigs);
+			$messageData = $widget->getMessageData();
+			$messageParams = explode(',', $messageData['Parameters']); // Parameters in widget call
+			$messageParamsLen = count($messageParams);
+			// fill missing parameters w/ empty quotes
+			if ($paramConfigLen > $messageParamsLen){
+				do {
+					$messageParams[$messageParamsLen] = "''";
+					$messageParamsLen++;
+				} while ($messageParamsLen < $paramConfigLen);
+			}
+			
+			if(array_key_exists('replacement', $widgetConfig)) {
+				$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $messageParams));
+			}
+			$this->messages->addError('WIDGET DEPRECATION CHECK', 'Removed widget', $widget->getLineNumber(), $widget->getMacro(), $messageData);
+		} else {
+			// check all parameters of widget
+			$paramConfigs = array_values($widgetConfig['param']);
+			foreach ($paramConfigs as $paramIndex => $paramConfig) {
+				WidgetParameterChecker::performChecks($widget, $paramIndex, $paramConfig, $this->messages,$this->items, $this); //new: items
+			}
+			if (array_key_exists('deprecated', $widgetConfig)) {
+				$messageData = $widget->getMessageData();
+				if(array_key_exists('replacement', $widgetConfig)) {
+					$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $widget->getParamArray() + array_map(function($element) { return "'" . $element['default'] . "'"; }, $paramConfigs)));
+				}
 			$this->messages->addWarning('WIDGET DEPRECATION CHECK', 'Deprecated widget', $widget->getLineNumber(), $widget->getMacro(), $messageData);
+			}
 		}
 	}
 
