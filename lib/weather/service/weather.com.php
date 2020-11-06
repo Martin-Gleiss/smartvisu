@@ -77,7 +77,7 @@ class weather_weather extends weather
 		else
 		{
 			$add = $parsed_json->{'response'}->{'error'}->{'description'};
-			$this->error('Weather: wounderground.com', 'Current read request failed'.($add ? ': '.$add : '').'!');
+			$this->error('Weather: weather.com', 'Current read request failed'.($add ? ': '.$add : '').'!');
 		}
 		
 		// parse forecast
@@ -106,7 +106,7 @@ class weather_weather extends weather
 		else
 		{
 			$add = $parsed_json->{'response'}->{'error'}->{'description'};
-			$this->error('Weather: wounderground.com', 'Forecast read request failed'.($add ? ': '.$add : '').'!');
+			$this->error('Weather: weather.com', 'Forecast read request failed'.($add ? ': '.$add : '').'!');
 		}
 
 	}
