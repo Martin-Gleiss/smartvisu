@@ -17,6 +17,7 @@ require_once 'class.Widget.php';
 require_once 'class.WidgetParameterChecker.php';
 require_once 'class.TemplateChecker.php';
 require_once 'class.Items.php';
+require_once 'class.OldWidgets.php';
 
 RequestHandler::run();
 
