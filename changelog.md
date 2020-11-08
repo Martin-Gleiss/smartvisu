@@ -1,9 +1,10 @@
 ## next version
 
 ### New / Changed Widgets
-- new widget constructor as assistant to parametrize widgets (thanks to Andre Kohler)
+- new assistant "widget constructor" to parametrize widgets (thanks to Andre Kohler)
 - template checker checks for items and item types with masteritem file form backend (thanks to Andre Kohler)
-- darsky weather service shows verbal wind directions instead of angle values
+- template checker provides replacement proposals for older widgets which have been removed already in the current version
+- darksky weather service shows verbal wind directions instead of angle values
 - deprecated widgets from v2.8 and earlier have been deleted
 - basic.trigger can trigger logics on page create (new) and / or by button
 - basic.select "menu"-type accepts dynamic option lists and texts via items (list type)
@@ -12,6 +13,7 @@
 - added setpoint item to quad.rtr 
 - new widget clock.countdown to visualize timers in backend
 - new widget lib.timestamp to write a timestamp of "now" to an item (used for countdown doc page)
+- new widget device.uzsutable to display a timer in a table format of 24 hours / 7 days
 
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'

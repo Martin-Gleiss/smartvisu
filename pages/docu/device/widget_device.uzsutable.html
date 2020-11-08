@@ -37,18 +37,18 @@ var kurve3 = {"sunset":"21:30","active":false,"interpolation":{"interval":"","in
 	{{ device.uzsutable('','uzsuitem1','Schaltuhr Spots Flur','1','0','limegreen','red','','',true,'10m','solid',true,true,true,true,2,'','','') }}
    </div>
    
-   <p>Example with border horzintal:</p>
+   <p>Example with border as list:</p>
    <div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-      {{ device.uzsutable('','uzsuitem2','Switchting Time Heating','1','0','limegreen','red','','','true','1h','horizontal',false,true,false,true,1,'','','') }}
+      {{ device.uzsutable('','uzsuitem2','Switchting Time Heating','1','0','limegreen','red','','','true','1h',['5m:solid','10m:hourly','15m:hourly','30m:horizontal','1h:horizontal'],true,true,false,true,1,'','','') }}
 		{% endverbatim %}{% endfilter %}</code>
    </div>
 
    <div class="html">
-	{{ device.uzsutable('','uzsuitem2','Switchting Time Heating','1','0','red','blue','','','true','1h','horizontal','false','true','false','true',1,'','','') }}
+	{{ device.uzsutable('','uzsuitem2','Switchting Time Heating','1','0','red','blue','','','true','1h',['5m:solid','10m:hourly','15m:hourly','30m:horizontal','1h:horizontal'],'true','true','false','true',1,'','','') }}
    </div>
 
-    <p>Example with border none and FHEM-style:<p>
+    <p>Example with border horizontal and FHEM-style:<p>
     <div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
       {{ device.uzsutable('','uzsuitem3','Switchting Time Heating','1','0','limegreen','red','','','false','30m','horizontal',false,true,false,true,1,'','','2') }}
@@ -56,7 +56,7 @@ var kurve3 = {"sunset":"21:30","active":false,"interpolation":{"interval":"","in
     </div>
 
    <div class="html">
-	{{ device.uzsutable('','uzsuitem3','Solar Pump','1','0','yellow','blue','','','false','30m','none','false','true','false','true',3,'','','2') }}
+	{{ device.uzsutable('','uzsuitem3','Solar Pump','1','0','yellow','blue','','','false','30m','horizontal','false','true','false','true',3,'','','2') }}
    </div>
 </div>
 
