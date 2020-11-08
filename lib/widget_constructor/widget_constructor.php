@@ -41,9 +41,16 @@ return json_encode($myArray);
 function render_inline ($value)
 {
 	$widget = $value["widget"];
+	$myData = explode("<br>",$widget);
+	$myNewWidgets = "";
+	foreach ($myData as $entry) 
+	{
+	 $myNewWidgets = $myNewWidgets ."{{" . $entry . "}}<br>\n";
+ 	 $myNewWidgets = $myNewWidgets ."===================================================================<br>\n";
+	}
 	$myFile = file_get_contents('tmpl_construct_2.html');
-	$myFile = str_replace("%widget%",$widget, $myFile);
-	file_put_contents(const_path.'pages/'.config_pages.'/construct.html', $myFile);
+	$myFile = str_replace("{{ %widget% }}",$myNewWidgets, $myFile);
+	file_put_contents('../../pages/'.config_pages.'/construct.html', $myFile);
     return 'OK';
 }
 
@@ -54,8 +61,15 @@ function render_inline ($value)
 function render_outline ($value)
 {
 	$widget = $value["widget"];
+	$myData = explode("<br>",$widget);
+	$myNewWidgets = "";
+	foreach ($myData as $entry) 
+	{
+	 $myNewWidgets = $myNewWidgets ."{{" . $entry . "}}<br>\n";
+ 	 $myNewWidgets = $myNewWidgets ."===================================================================<br>\n";
+	}
 	$myFile = file_get_contents('tmpl_construct_1.html');
-	$myFile = str_replace("%widget%",$widget, $myFile);
+	$myFile = str_replace("{{ %widget% }}",$myNewWidgets, $myFile);
 	file_put_contents('../../pages/'.config_pages.'/construct.html', $myFile);
     return 'OK';
 }

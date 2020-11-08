@@ -18,11 +18,29 @@ After completing the wiget you can render it in a new window. The widget in the 
 The final widget including the brackets "{{" + "}}" will be stored on rendering to the clipboard.
 You can paste the widget-code directly to your html-file.
 
-Please keep in mind you can only render one widget, right now multi widgets are not supported
+Right now you can render multiple widgets, you have to separate the different widgets
+by a <strong><code>\<br\></code></strong>-TAG
+
+###Example :
+
+<code>
+plot.period('', ['licht.og.terrasse.screens.warm.dimmen', 'licht.og.terrasse.screens.kalt.dimmen', 'licht.og.terrasse.decke.dimmen'], 'max', '1w', 'now', '0', '110', '1000', ['Screens warm', 'Screens kalt', 'Decke'], ['#daa', '#aad', '#955'], ['stair', 'stair', 'stair'], ['Uhrzeit', 'Helligkeit'], 'advanced', '', '', '', '', '', { yAxis: [ { tickInterval: 40 } ], legend: {align: 'right', verticalAlign: 'top', y: 50, layout: 'vertical'}, chart: { marginRight: 110} })<br>
+<strong>&lt;br&gt;</strong><br>
+basic.stateswitch('','OG.Bad.Licht','midi','','light_ceiling_light','Licht Bad','','','','','')<br>
+<strong>&lt;br&gt;</strong><br>
+quad.dimmer('Lueftungsstufe1', 'Lüftungsstufe', 'Haustechnik.Lueftung', 'Haustechnik.Lueftung.stufe', 0, 100, 5, icon.ventilation(), icon.ventilation('','','Haustechnik.Lueftung.stufe'), '', '', '',                          0, 100,'','','','','','','','','','','','','', ['switch', 'value_popup']) 
+</code>
+
 
 
 <a name="ChangeLog"/></a>
 ## Change-Log
+
+#### 2020.11.08 - Version 1.0.0
+- added support for multi-widget creation (widgets have to be separated by <strong><code>\<br\></code></strong>-TAG)
+- fixed problem for "nasty", "nested" widgets
+- added check for all brackets closed before rendering
+
 
 #### 2020.05.15 - Version 1.0.0
 - added switching for autoclose quotes
@@ -105,7 +123,8 @@ items_sorted = sorted(items.return_items(), key=lambda k: str.lower(k['_path']),
 item_list = []
 for item in items_sorted:
     item_list.append(item._path + "|" + item._type )
-f = open("/var/www/html/smartvisu/pages/<YOUR_PAGES>/masteritem.json", "w")
+f = open("/var/www/html/smartvisu/pages/<strong>YOUR_PAGES</strong>/masteritem.json", "w")
 f.write(json.dumps(item_list))
 f.close()
 </code></pre>
+
