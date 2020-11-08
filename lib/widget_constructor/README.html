@@ -35,6 +35,22 @@ table,th,td {
   }
 }
 
+pre {
+  /* background: #f4f4f4; */
+  border: 1px solid #ddd;
+  border-left: 3px solid #f2334c;
+  color: #666;
+  page-break-inside: avoid;
+  font-family: monospace;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 1.6em;
+  max-width: 100%;
+  overflow: auto;
+  padding: 1em 1.5em;
+  display: block;
+  word-wrap: break-word;
+}
 </style>
 
 <h1 id="smartvisu-widget-constructor">smartvisu - Widget Constructor</h1>
@@ -55,9 +71,24 @@ For icons and colors you will see a preview in the tooltip-window.
 After completing the wiget you can render it in a new window. The widget in the rendered window is fully working, except there is an error in the created widget, you will get a TWIG-Error.
 The final widget including the brackets &quot;{{&quot; + &quot;}}&quot; will be stored on rendering to the clipboard.
 You can paste the widget-code directly to your html-file.</p>
-<p>Please keep in mind you can only render one widget, right now multi widgets are not supported</p>
+<p>Right now you can render multiple widgets, you have to separate the different widgets
+by a <strong>&lt;br&gt;</strong>-TAG</p>
+<h2>Example :</h2>
+<pre><code>
+plot.period(&#39;&#39;, [&#39;licht.og.terrasse.screens.warm.dimmen&#39;, &#39;licht.og.terrasse.screens.kalt.dimmen&#39;, &#39;licht.og.terrasse.decke.dimmen&#39;], &#39;max&#39;, &#39;1w&#39;, &#39;now&#39;, &#39;0&#39;, &#39;110&#39;, &#39;1000&#39;, [&#39;Screens warm&#39;, &#39;Screens kalt&#39;, &#39;Decke&#39;], [&#39;#daa&#39;, &#39;#aad&#39;, &#39;#955&#39;], [&#39;stair&#39;, &#39;stair&#39;, &#39;stair&#39;], [&#39;Uhrzeit&#39;, &#39;Helligkeit&#39;], &#39;advanced&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, { yAxis: [ { tickInterval: 40 } ], legend: {align: &#39;right&#39;, verticalAlign: &#39;top&#39;, y: 50, layout: &#39;vertical&#39;}, chart: { marginRight: 110} })
+<strong>&lt;br&gt;</strong>
+basic.stateswitch(&#39;&#39;,&#39;OG.Bad.Licht&#39;,&#39;midi&#39;,&#39;&#39;,&#39;light_ceiling_light&#39;,&#39;Licht Bad&#39;,&#39;&#39;,&#39;&#39;,&#39;&#39;,&#39;&#39;,&#39;&#39;)
+<strong>&lt;br&gt;</strong>
+quad.dimmer(&#39;Lueftungsstufe1&#39;, &#39;Lüftungsstufe&#39;, &#39;Haustechnik.Lueftung&#39;, &#39;Haustechnik.Lueftung.stufe&#39;, 0, 100, 5, icon.ventilation(), icon.ventilation(&#39;&#39;,&#39;&#39;,&#39;Haustechnik.Lueftung.stufe&#39;), &#39;&#39;, &#39;&#39;, &#39;&#39;, 0, 100, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;,   &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, [&#39;switch&#39;, &#39;value_popup&#39;]) 
+</code></pre>
 <p><a name="ChangeLog"/></a></p>
 <h2 id="change-log">Change-Log</h2>
+<h4 id="2020-11-08-version-1-0-0">2020.11.08 - Version 1.0.0</h4>
+<ul>
+<li>added support for multi-widget creation (widgets have to be separated by <strong><code>\<br\></code></strong>-TAG)</li>
+<li>fixed problem for &quot;nasty&quot;, &quot;nested&quot; widgets</li>
+<li>added check for all brackets closed before rendering</li>
+</ul>
 <h4 id="2020-05-15-version-1-0-0">2020.05.15 - Version 1.0.0</h4>
 <ul>
 <li>added switching for autoclose quotes</li>
@@ -167,7 +198,7 @@ items_sorted = sorted(items.return_items(), key=lambda k: str.lower(k['_path']),
 item_list = []
 for item in items_sorted:
     item_list.append(item._path + "|" + item._type )
-f = open("/var/www/html/smartvisu/pages/<YOUR_PAGES>/masteritem.json", "w")
+f = open("/var/www/html/smartvisu/pages/<strong>YOUR_PAGES</strong>/masteritem.json", "w")
 f.write(json.dumps(item_list))
 f.close()
 </code></pre>
