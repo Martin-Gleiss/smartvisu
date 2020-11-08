@@ -498,12 +498,12 @@
 		data-val-on="{{ value_on|default(1) }}" data-val-off="{{ value_off|default(0) }}" data-granularity="{{ granularity|default('1h') }}"
 		data-color-on="{{ color_on|default('green') }}" data-color-off="{{ color_off|default('red') }}"
 		data-color-on-disabled="{{ color_on_disabled|default('lightgrey') }}" data-color-off-disabled="{{ color_off_disabled|default('grey') }}"
-		data-fill="{{ fill|default('true') }}" data-borderstyle="{{ borderstyle|default('solid') }}"
+		data-fill="{{ fill|default('true') }}" data-borderstyle="{{ implode(borderstyle)|default('solid') }}"
 		data-showtooltip="{{ showtooltip|default('true') }}" data-showsun="{{ showsun|default('true') }}" data-showactualtime="{{ showactualtime|default('true') }}"
 		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueparameterlist)|default(implode(['on:1','off:0'])) }}"
 		data-showzoombutton="{{ showzoombutton|default('true') }}" data-inactivestyle="{{ inactivestyle|default('1') }}">
 		
-		<svg id="{{ uid(page, item) }}" width="100%" viewbox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" version="1.1"> 
+		<svg id="{{ uid(page, item) }}" class="highcharts-root" width="100%" viewbox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" version="1.1"> 
 		</svg>
 
 
