@@ -28,11 +28,11 @@ $( document ).ready(function() {
 
 		Motion sensor/light locks Popup
 			<div class="twig">
-				<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+				<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 					{{ basic.symbol('', ['item_lock', 'item_bwmlock', 'item_force'], '', 'secur_locked', 1, 'min', '', '#locks_popup', 'popup') }}
 					{{ basic.symbol('', ['item_lock', 'item_bwmlock', 'item_force'], '', 'secur_open', 0, 'and', '', '#locks_popup', 'popup') }}
 					{{ popup.locks('locks_popup', ['item_lock', ['green', 'red']], ['item_bwmlock', ['green', 'red']], ['item_force', 'red']) }}
-				{% endraw %}{% endfilter %}</code>
+				{% endverbatim %}{% endfilter %}</code>
 			</div>
 			<div class="html">
 				{{ basic.symbol('', ['item_lock', 'item_bwmlock', 'item_force'], '', 'secur_locked', 1, 'min', '', '#locks_popup', 'popup') }}
@@ -42,12 +42,12 @@ $( document ).ready(function() {
 
 			Any simple widget in popup
 				<div class="twig">
-					<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+					<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 						<a href="#ext_popup" data-rel="popup">
 							Extended Popup
 						</a>
 						{{ popup.extpopup('ext_popup', ['header', 'Suspendzeit'], ['plot', [['env.system.load','env.core.memory'],'avg', '1d', '', '', '', '',['system load', 'memory'],['#a00','#070'], '',['Time', 'CPU', 'Memory'],'', [1,2], [0,1],['#f00','#0a0']]], [['linetext', 'slider'], 'Slider', ['licht.modus.automatik.settings.suspendduration', '0', '100', '10', 'horizontal', 'handle']], [['symbol', 'slider'], ['item_lock', '', 'secur_locked', '1'], ['licht.modus.automatik.settings.suspendduration', '0', '100', '10', 'horizontal', 'handle']]) }}
-					{% endraw %}{% endfilter %}</code>
+					{% endverbatim %}{% endfilter %}</code>
 				</div>
 				<div class="html">
 					<a href="#ext_popup" data-rel="popup">
@@ -79,11 +79,11 @@ $( document ).ready(function() {
 		</div>
 		<div class="html">
 
-			<a href="#popup1" data-rel="popup">
+			<a href="#popup_1" data-rel="popup">
 				<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
 			</a>
 
-			<div id="popup1" data-role="popup">
+			<div id="popup_1" data-role="popup">
 				<div>
 					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
@@ -112,11 +112,11 @@ $( document ).ready(function() {
 		</div>
 		<div class="html">
 
-			<a href="#popup2" data-rel="popup">
+			<a href="#popup_2" data-rel="popup">
 				<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
 			</a>
 
-			<div id="popup2" data-role="popup">
+			<div id="popup_2" data-role="popup">
 					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
 					{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
@@ -142,11 +142,11 @@ $( document ).ready(function() {
 		</div>
 		<div class="html">
 
-			<a href="#popup3" data-rel="popup">
+			<a href="#popup_3" data-rel="popup">
 				<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
 			</a>
 
-			<div id="popup3" data-role="popup" style="width:280px; height:200px;">
+			<div id="popup_3" data-role="popup" style="width:280px; height:200px;">
 				<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 				Content
 			</div>

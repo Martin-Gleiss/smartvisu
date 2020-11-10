@@ -29,7 +29,7 @@
 
 		A simple button: only pic, only text, pic and text, big icon (and text as hover) in 'mini' and 'midi'
 		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
 				{{ basic.stateswitch('single1', '...', '', '', 'grid') }}
 				{{ basic.stateswitch('single2', '...', '', '', '','Up') }}
@@ -41,7 +41,7 @@
 				{{ basic.stateswitch('single7', '...', 'midi', '', 'grid', 'Up') }}
 				{{ basic.stateswitch('single8', '...', 'midi', 0, 'control_arrow_down.svg', 'Down') }}
 
-				{% endraw %}{% endfilter %}</code>
+				{% endverbatim %}{% endfilter %}</code>
 		</div>
 		<div class="html">
 			{{ basic.stateswitch('single1', 'bath.light.switch', '', '', 'grid') }}
@@ -58,12 +58,12 @@
 
 		A switch with two pics 'mini' and 'midi'
 		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
 				{{ basic.stateswitch('dual0', '...', '', '', ['control_arrow_up.svg','control_arrow_down.svg']) }}
 				{{ basic.stateswitch('dual1', '...', 'midi', '', ['control_arrow_up.svg', 'control_arrow_down.svg']) }}
 
-				{% endraw %}{% endfilter %}</code>
+				{% endverbatim %}{% endfilter %}</code>
 		</div>
 		<div class="html">
 			{{ basic.stateswitch('dual0', 'bath.light.switch', '', '', ['control_arrow_up.svg','control_arrow_down.svg']) }}
@@ -73,7 +73,9 @@
 	<h5>Examples</h5>
 
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.stateswitch('b1', 'bath.light.switch', ...) &#125;&#125;</code>
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			basic.stateswitch('b1', 'bath.light.switch', ...) 
+			{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
 		<div class="ui-grid-c" style="border-bottom: 1px dotted #888;">
