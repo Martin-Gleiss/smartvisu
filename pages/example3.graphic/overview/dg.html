@@ -76,7 +76,7 @@
 
 			{{ ovdevice.dimmer ('kind2_decke', 'Kind 2: Deckenlampe', 'dg.kind2.beleuchtung.decke.schalten', 'dg.kind2.beleuchtung.decke.dimmwert', 0, 100, 5, '', '', '', '', 'both', 0, 100, '70%', '62.5%', 'micro') }}
 
-			{{ obasic.stateswitch ('kind2_steckdose_nord', 'dg.kind2.steckdose.nord.schalten', 'micro', ['1', '0'], ['audio_sound.svg', 'audio_sound.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Kind 2: Musik', '62%', '86%') }}
+			{{ ovbasic.stateswitch ('kind2_steckdose_nord', 'dg.kind2.steckdose.nord.schalten', 'micro', ['1', '0'], ['audio_sound.svg', 'audio_sound.svg'], '', ['icon1', 'icon0'], '', '', '', '', 'Kind 2: Musik', '62%', '86%') }}
 
 			{{ ovbasic.print ('kind2_temperatur', 'dg.kind2.temperatur.luft', '°C', '', '', '', 'Kind 2: Raumtemperatur', '70%', '82%', 'kind2_temp_popup', 1) }}
 			{{ ovbasic.period ('kind2_temp_popup', 'Kind 2: Temperaturen', ['dg.kind2.temperatur.luft', 'dg.kind2.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}

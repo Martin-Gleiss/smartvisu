@@ -1,14 +1,20 @@
 /**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiss and others
+* @copyright   2012 - 2016
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
 */
 
 /**
 * Small Shutter
 *
-* @param       unique id for this widget
-* @param       name of the shutter
-* @param       a gad/item for long move 
-* @param       a gad/item for short move
-* @param       a gad/item for the actual position 
+* @param {id=}  unique id for this widget
+* @param {text=}      name of the shutter
+* @param {item(bool,num)=} a gad/item for long move (optional)
+* @param {item(bool,num)=} a gad/item for short move (optional)
+* @param {item(num)}      a gad/item for the actual position 
 */
 {% macro smallshut(id, txt, gad_move, gad_stop, gad_position) %}
 {% import "basic.html" as basic %}

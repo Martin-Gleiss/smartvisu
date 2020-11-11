@@ -1,15 +1,21 @@
 /**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiss and others
+* @copyright   2012 - 2016
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
 */
 
 /**
 * Small RTR (Room Temperatur Regulator)
 *
-* @param       unique id for this widget
-* @param       name of the rtr
-* @param       a gad/item for the actual temperature
-* @param       a gad/item for the set temperature
-* @param       a gad/item for the current state of the actor
-* @param       step for plus/minus buttons (optional, default 0.5°)
+* @param {id=} unique id for this widget
+* @param {text=}     name of the rtr
+* @param {item(num)} a gad/item for the actual temperature
+* @param {item(num)} a gad/item for the set temperature
+* @param {item(bool)} a gad/item for the current state of the actor
+* @param {value=0.5} step for plus/minus buttons (optional, default 0.5°)
 */
 {% macro one(id, txt, gad_actual, gad_set, gad_state, step) %}
 {% import "basic.html" as basic %}
@@ -23,13 +29,13 @@
             <td width="15%"><div class="temp">{{ basic.print(id~'actual', gad_actual, '°' ) }}</div></td>
             <td width="15%">
                 {% if gad_set %}
-					{{ basic.stateswitch(id~'minus', '', 'micro', '', 'minus', '', 'icon0') }}
-                {% endif %}
+					{{ basic.offset(id~'minus', 'gad_set', -(step|default(0.5)), 'minus', '', 'micro') }}
+				{% endif %}
             </td>
             <td width="15%"><div class="temp">{{ basic.print(id~'set', gad_set, '°' ) }}</div></td>
             <td width="15%">
                 {% if gad_set %}
-                    {{ basic.stateswitch(id~'plus', '', 'micro', '', 'plus', '', 'icon0') }}
+                    {{ basic.offset(id~'minus', 'gad_set', (step|default(0.5)), 'plus', '', 'micro') }}
                 {% endif %}
             </td>
             <td width="15%">

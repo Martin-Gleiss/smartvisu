@@ -7,15 +7,13 @@
 * -----------------------------------------------------------------------------
 */
 
-
-
 /**
 * Standard dimmer with switching and dimming function
 *
 * @param {id=} unique id for this widget (optional)
 * @param {text=} name of the dimmer
-* @param {item} an item for switching
-* @param {item} an item for dimming
+* @param {item(bool,num)} an item for switching
+* @param {item(num)} an item for dimming
 * @param {value=0} the minimum value if the slider is moved to total left (optional, default: 0)
 * @param {value=255} the maximum value if the slider is moved to total right (optional, default: 255)
 * @param {value=5} step between two values (optional, default: 5)
@@ -26,13 +24,12 @@
 * @param {text(input,handle,both,none)=none} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'none')
 * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
 * @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
-* @param {value=} icon position from left side
-* @param {value=} icon position from top side
-* @param type: 'micro', 'mini', 'midi', 'icon' (optional, default: micro)
-* @param hide on mobile displays (optional value 1)
-* @param {text='left'} position of the switch: left (default) or right
+* @param {percent} icon position from left side
+* @param {percent} icon position from top side
+* @param {type(micro,mini,midi,icon)=micro} type: 'micro', 'mini', 'midi', 'icon' (optional, default: micro)
+* @param {value=0} hide on mobile displays (optional value 1)
+* @param {text=left} position of the switch: left (default) or right
 */
-
 {% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, left, top, type, hide, picpos) %}
 	{% import "basic.html" as basic %}
 	{% import   "icon.html" as icon %}
