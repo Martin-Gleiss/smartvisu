@@ -1,45 +1,43 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß, Wolfram v. Hülsen
- * @copyright   2012, 2020
+ * @author      Martin Gleiss
+ * @copyright   2012 - 2020
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
 
 /**
- * Popup Widget
- * Gira Smoke detector with freebus/selfbus module
- * @param       unique id for this widget
- * @param		the title for the popup
- * @param       the knx gad (groupaddress) for networking alarm
- * @param       the knx gad (groupaddress) for networking test alarm
- * @param       the knx gad (groupaddress) for alarm reset
- * @param       the knx gad (groupaddress) for alarm status
- * @param       the knx gad (groupaddress) for test alarm status
- * @param       the knx gad (groupaddress) for serialnumber (optional)
- * @param       the knx gad (groupaddress) for operating time (optional)
- * @param       the knx gad (groupaddress) for smoke box value (optional)
- * @param       the knx gad (groupaddress) for pollution degree (optional)
- * @param       the knx gad (groupaddress) for battery voltage (optional)
- * @param       the knx gad (groupaddress) for temperature (optional)
- * @param       the knx gad (groupaddress) for errorcode (optional)
- * @param       the knx gad (groupaddress) for battery empty (optional)
- * @param       the knx gad (groupaddress) for error (optional)
- * @param       the knx gad (groupaddress) for count smoke alarm (optional)
- * @param       the knx gad (groupaddress) for count temperature alarm (optional)
- * @param       the knx gad (groupaddress) for count test alarm (optional)
- * @param       the knx gad (groupaddress) for count wire alarm (optional)
- * @param       the knx gad (groupaddress) for count bus alarm (optional)
- * @param       the knx gad (groupaddress) for count wire test alarm (optional)
- * @param       the knx gad (groupaddress) for count bus test alarm (optional)
+ * Popup Widget for Gira Smoke detector with freebus/selfbus module
+ *
+ * @param {id=} unique id for this widget
+ * @param {text=} the title for the popup
+ * @param {item(bool)} the knx gad (groupaddress) for networking alarm
+ * @param {item(bool)} the knx gad (groupaddress) for networking test alarm
+ * @param {item(bool)} the knx gad (groupaddress) for alarm reset
+ * @param {item(bool)} the knx gad (groupaddress) for alarm status
+ * @param {item(bool)} the knx gad (groupaddress) for test alarm status
+ * @param {item(num=)} the knx gad (groupaddress) for serialnumber (optional)
+ * @param {item(num=)} the knx gad (groupaddress) for operating time (optional)
+ * @param {item(num=)} the knx gad (groupaddress) for smoke box value (optional)
+ * @param {item(num=)} the knx gad (groupaddress) for pollution degree (optional)
+ * @param {item(num)} the knx gad (groupaddress) for battery voltage (optional)
+ * @param {item(num=)} the knx gad (groupaddress) for temperature (optional)
+ * @param {item(num=)} the knx gad (groupaddress) for errorcode (optional)
+ * @param {item(bool=)} the knx gad (groupaddress) for battery empty (optional)
+ * @param {item(bool=)} the knx gad (groupaddress) for error (optional)
+ * @param {item(num)=} the knx gad (groupaddress) for count smoke alarm (optional)
+ * @param {item(num)=} the knx gad (groupaddress) for count temperature alarm (optional)
+ * @param {item(num)=} the knx gad (groupaddress) for count test alarm (optional)
+ * @param {item(num)=} the knx gad (groupaddress) for count wire alarm (optional)
+ * @param {item(num)=} the knx gad (groupaddress) for count bus alarm (optional)
+ * @param {item(num)=} the knx gad (groupaddress) for count wire test alarm (optional)
+ * @param {item(num)=} the knx gad (groupaddress) for count bus test alarm (optional)
 */
-
 {% macro popup (id, title, gad_w_alarm, gad_w_testalarm, gad_reset, gad_status_alarm, gad_status_testalarm, gad_serial, gad_time, gad_smokebox, gad_pollution, gad_voltage, gad_temp,
 				gad_errorcode, gad_battery, gad_error, gad_c_smoke, gad_c_temp, gad_c_test, gad_c_wire, gad_c_bus, gad_c_wiretest, gad_c_bustest ) %}
     {% import   "basic.html" as basic %}
 
-    /** Design */
     <style>
 		.custom-symbol .ui-controlgroup-controls {
 			width: 99% !important;

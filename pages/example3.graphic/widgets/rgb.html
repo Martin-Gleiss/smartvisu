@@ -12,14 +12,14 @@
 /**
  * Standard rgb-controller with switching
  *
- * @param       unique id for this widget
- * @param       name of the rgb-controller
- * @param       a gad/item for switching
- * @param       a gad/item for rgb red
- * @param       a gad/item for rgb green
- * @param       a gad/item for rgb blue
- * @param       a gad/item for min value
- * @param       a gad/item for max value
+ * @param {id=} unique id for this widget
+ * @param {text=} name of the rgb-controller
+ * @param {item(bool,num)} a gad/item for switching
+ * @param {item(num)} a gad/item for rgb red
+ * @param {item(num)} a gad/item for rgb green
+ * @param {item(num)} a gad/item for rgb blue
+ * @param {item(num)} a gad/item for min value
+ * @param {item(num)} a gad/item for max value
  */
 
 {% macro rgb(id, txt, gad_switch, gad_r, gad_g, gad_b, gad_min, gad_max) %}

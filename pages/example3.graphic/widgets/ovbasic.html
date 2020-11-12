@@ -11,10 +11,10 @@
  * Displays a color selector
  *
  * @param {id=} unique id for this widget (optional)
- * @param {item[?]} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
- * @param {item=} an item for the green value in RGB model or saturation in HSL and HSV model
+ * @param {item(num)[?]} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
+ * @param {item(num)=} an item for the green value in RGB model or saturation in HSL and HSV model
   (to let blank if first item contains list of all values)
- * @param {item=} an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
+ * @param {item(num)=} an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
   (to let blank if first item contains list of all values)
  * @param {value[?]=0} minimum value if the light is off; single value or list of values for each component (optional, default 0)
  * @param {value[?]=255} maximum value if the light is full on; single value or list of values for each component (optional, default 255 for rgb, [360,100,100] for hsl & hsv)
@@ -22,11 +22,11 @@
  * @param {value=10} number of colored segments (optional, default 10)
  * @param {text(disc,rect,slider)=disc} 'disc' for circular, 'rect' for rectangular view, 'slider' for HSV sliders (optional, default: disc)
  * @param {text(rgb,hsl,hsv)=rgb} possible values: 'rgb', 'hsl' and 'hsv' (optional, default: rgb)
- * @param popup-info of the rgb-selector (optional)
- * @param icon position from left side
- * @param icon position from top side
- * @param type: 'micro', 'mini', 'midi' (optional, default: mini)
- * @param hide on mobile displays (optional value 1)
+ * @param {text=} popup-info of the rgb-selector (optional)
+ * @param {percent} icon position from left side
+ * @param {percent} icon position from top side
+ * @param {type=mini} type: 'micro', 'mini', 'midi' (optional, default: mini)
+ * @param {value=0} hide on mobile displays (optional value 1)
  *
  * @author Martin Gleiß and Stefan Widmer
  * @info inspired by Marcus Popp
@@ -85,7 +85,7 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {text=} title of the chart (optional)
-* @param {unchecked[?]} series of item(s); multiple items in array form: [ item1 , item2 ]
+* @param {item(bool,num)[?]} series of item(s); multiple items in array form: [ item1 , item2 ]
 * @param {text(avg,sum,min,max,minmax,minmaxavg,raw)[?]=} the aggregation mode (optional, default 'avg')
 	May be a single mode or an array with separate mode per item.
 	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
@@ -113,7 +113,6 @@
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
 */
-
 {% macro period(id, txt, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions) %}
 	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1h') %}
@@ -176,11 +175,11 @@
  * @param {color[?](hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional)
    additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
    the first one is the base color for values below first threshold, so pass one color more than thresholds.
- * @param popup-info of the float value (optional)
- * @param icon position from left side
- * @param icon position from top side
- * @param unique id for the popup
- * @param hide on mobile displays (optional value 1)  
+ * @param {text=} popup-info of the float value (optional)
+ * @param {percent} icon position from left side
+ * @param {percent} icon position from top side
+ * @param {text} unique id for the popup
+ * @param {value=0} hide on mobile displays (optional value 1)  
  *
  * @see misc/fundamentals#Array-Form
  *
@@ -206,7 +205,7 @@
 * (supersedes .button, .dual, .hiddenswitch, .multistate and .switch)
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item
+* @param {item(bool,num,list,scene)} an item
 * @param {type=mini} valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini)
 * @param {text[?]=[0,1]} array of values (optional, default [0,1])
   If the item has a value that is not part of the list, the state (icon, text, color) of the last value in the list will be shown.
@@ -216,13 +215,13 @@
 * @param {color[?](hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional, default: icon0)
 	additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
 * @param {color(blink)=} activity indicator which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
-* @param {item=} an item to which a value on longpress is sent (optional)
+* @param {item(bool,num,list,scene)=} an item to which a value on longpress is sent (optional)
 * @param {text=} the value to send on longpress (optional)
 	If this starts with a + or - sign the value is treated as offset to current stateswitch value.
 * @param {text=} the value to send on releasing after a longpress (optional)
 * @param {text=} popup-info of the button (optional)
-* @param {number} icon position from left side
-* @param {number} icon position from top side
+* @param {percent} icon position from left side
+* @param {percent} icon position from top side
 *
 * @see design/design_icons#Icons
 *
@@ -275,16 +274,16 @@
  *
  * @param {id=} unique id for this widget
  * @param {text=} title of the window (optional)
- * @param {number} icon position from left side
- * @param {number} icon position from top side
- * @param {item} a gad/item for the up- and down- movement
- * @param {item} a gad/item for stopping the movement (optional)
- * @param {item=} a gad/item for the position of the shutters
- * @param {item=}a gad/item to move the shutters to the shade position (optional)
- * @param {item=} a gad/item to display the window's right wing status (optional) 
- * @param {item=} a gad/item to display the window's left wing status (optional) 
+ * @param {percent} icon position from left side
+ * @param {percent} icon position from top side
+ * @param {item(bool,num)} a gad/item for the up- and down- movement
+ * @param {item(bool,num)} a gad/item for stopping the movement (optional)
+ * @param {item(num)=} a gad/item for the position of the shutters
+ * @param {item(num)=} a gad/item to move the shutters to the shade position (optional)
+ * @param {item(num)=} a gad/item to display the window's right wing status (optional) 
+ * @param {item(num)=} a gad/item to display the window's left wing status (optional) 
  * @param {type=micro} type: 'micro', 'mini', 'midi', 'icon' (optional, default: micro)
- * @param {number=} hide on mobile displays (optional value 1)
+ * @param {value=0} hide on mobile displays (optional value 1)
  */
 {% macro win_shut (id, txt, left, top, gad_move, gad_stop, gad_pos, gad_shade, gad_window_r, gad_window_l, type, hide) %}
 	{% import   "widgets/window.html" as window %}
