@@ -14,6 +14,7 @@
 - new widget clock.countdown to visualize timers in backend
 - new widget lib.timestamp to write a timestamp of "now" to an item (used for countdown doc page)
 - new widget device.uzsutable to display a timer in a table format of 24 hours / 7 days
+- new widget ovbasic.symbol in example3.graphic - same features as basic.symbol but with absolute positioning
 
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'
@@ -45,6 +46,7 @@
 - obsolete parameters in init functions of service.php and calendar.php caused faulty error messages
 - fixed debug feature in php services 
 - fixed device.rtr misleading night / day icons 
+- all examples and docu checked and optimized with template checker
 
 
 ## 2.9.2

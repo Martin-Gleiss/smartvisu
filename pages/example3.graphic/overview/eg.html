@@ -31,6 +31,7 @@
 
 			{{ ovbasic.print ('kueche_temperatur', 'eg.kueche.temperatur.luft', '°C', '', '', '', 'Küche: Raumtemperatur', '25%', '25%', 'kueche_temp_popup', 1) }}
 			{{ ovbasic.period ('kueche_temp_popup', 'Küche: Temperaturen', ['eg.kueche.temperatur.luft', 'eg.kueche.temperatur.boden'], 'avg', '24h', 0, 0, '', '', ['Luft', 'Fußboden'], '', ['spline', 'spline'], ['Uhrzeit', 'Temperatur'], '1h') }}
+			{{ ovbasic.symbol('kueche_temp_sym', '24%', '27%', 'eg.kueche.temperatur.luft', '', 'temp_temperature', [20,23], '>', ['blue', 'lightgreen', 'red'], 'kueche_temp_popup', 'popup') }}
 			
 			<!-- Essen -->
 			{{ ov.pagelink ('pagelink_essen', 'Details Essbereich', '44%', '35%', 'index.php?page=room_example', 'Essen', '', 'mini') }} 
