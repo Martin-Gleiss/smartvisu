@@ -42,7 +42,7 @@
 		&nbsp;
 		{{ basic.symbol('', 'bath.light.switch', 'On') }}
 		&nbsp;
-		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value'), '', '', 'icon1') }}
+		{{ basic.symbol('', 'bath.light.switch', '', icon.light('','','bath.light.value'), '', '', 'icon1','','','micro') }}
 		&nbsp;
 		{{ basic.symbol('', 'bath.light.switch', 'Open popup', '', '', '', '', '#symbol_popup', 'popup') }}
 		<div id="symbol_popup" data-role="popup" style="width:280px; height:200px;">
@@ -141,5 +141,20 @@
 		{{ basic.symbol('', 'bath.light.value', ['low','medium','high'], ['control_1','control_2','control_3'], [85,170], '>') }}
 	</div>
 
-
+	New in v3.0: size of symbols may be altered (flip the switch to "on" )
+	<div class="html">
+		{{ basic.flip('', 'bath.light.switch') }}
+	</div>
+	<code class="twig prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', '', '', '', 'micro') }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', '', '', '', 'mini') }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', '', '', '', 'icon') }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', '', '', '', 'midi') }}
+	{% endverbatim %}{% endfilter %}</code>
+	<div class="html">
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg','','','','','','micro') }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg','','','','','','mini') }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg','','','','','','icon') }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg','','','','','','midi') }}
+	</div>
 {% endblock %}

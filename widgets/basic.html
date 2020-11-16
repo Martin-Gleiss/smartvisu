@@ -134,12 +134,18 @@
 * @param {color(icon0,icon1,rgb,hsl,hsv,#f00)=icon0} the color in any CSS form (e.g. '#f00' for red) or 'icon1' (default 'icon0' of the design)
 	To use dynamic coloring by item give one of the following color models: 'rgb', 'hsl' or 'hsv'
 * @param {item[?](num,list)=} either one item which sends all three color parts as array or an array of three items each sending one of the color parts.
+* @param {type=icon} icon type / size. valid types: 'micro','mini','midi','icon' (optional, default = 'icon')
 *
 * @see design/design_icons#Icons (list of available pictures)
 *
 * @author Stefan Widmer
 */
-{% macro icon(pic, color, item) %}
+{% macro icon(pic, color, item, type) %}
+	{% if type not in ['micro','mini','midi'] %}
+		{% set type = '' %}
+	{% else %}
+		{% set uitype = 'ui-'~type %}
+	{% endif %}
 	{% if pic|trim|slice(0, 1) != '<' or pic|trim|slice(0, 4) == '<svg' -%} /** pic is an icon */
 
 		{% if item and not color %}{% set color = 'rgb' %}{% endif %}
@@ -173,11 +179,11 @@
 					{% set pic = icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
 				{% endif -%}
 			{% endif -%}
-			<img
+			<img class="icon {{ type }}
 		{%- else -%} /** pic is a dynamic icon */
-			<span
+			<span class="ui-icn ui-btn-inline {{ uitype }}
 		{%- endif %}
-		class="icon
+		
 		{%- set color = {'or': '#f9a028', 'gn': '#84c929', 'bl': '#4176a9', 'sw': '#000', 'ws': '#fff'}[color]|default(color) -%} /**- legacy smartVISU colors -*/
 		{%- if (color != 'icon0') and (color is not empty) and (color != 'do-fx') %} icon1
 			{%- if color not in ['icon1','rgb','hsl','hsv'] %}" style="stroke:{{ color }}; fill:{{ color }}; color:{{ color }}; {%- endif -%}
@@ -505,13 +511,15 @@
 	this only applies to text, if no icon is set (for backward compatibility)
 * @param {text=} URL to use as link (optional)
 * @param {text=} used in combination with href as data-rel attribute {e.g. to open a popup} (optional)
+* @param {type=icon} icon type / size. valid types: 'micro','mini','midi','icon' (optional, default = 'icon')
 *
 * @see design/design_icons#Icons
 *
 * @author Martin Gleiß and Stefan Widmer
 */
-{% macro symbol(id, items, text, icon, value, formula, color, href, rel) %}
+{% macro symbol(id, items, text, icon, value, formula, color, href, rel, type) %}
 	{% import _self as basic %}
+	{% if type not in ['micro','mini','midi'] %}{% set type = '' %}{% endif %}
 	{% set value = (value|default([1]) is iterable ? value|default([1]) : [value]) %}
   {% set value = text|length > value|length or icon|length > value|length or color|length > value|length ? value|merge(['']) : value %} /** add an empty value if more icons/texts/colors as values are passed (used for threshold i.a.) */
 	{% set color = color|default('') %}
@@ -528,7 +536,7 @@
 			<span data-val="{{ val }}"
 				style="{% if not loop.first %}display:none;{% endif %}{% if pic is empty and not txt is empty and not col is empty and col != 'icon1' %}color: {{ col }};{% endif %}"
 				{% if pic is empty and not txt is empty and col == 'icon1' %} class="icon1"{% endif %}>
-				{%- if pic %}{{ basic.icon(pic, col) }}{% endif -%}
+				{%- if pic %}{{ basic.icon(pic, col,'',type) }}{% endif -%}
 				{{- txt|raw -}}
 			</span>
 	  {%- endfor -%}

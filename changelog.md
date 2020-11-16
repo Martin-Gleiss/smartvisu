@@ -8,13 +8,14 @@
 - deprecated widgets from v2.8 and earlier have been deleted
 - basic.trigger can trigger logics on page create (new) and / or by button
 - basic.select "menu"-type accepts dynamic option lists and texts via items (list type)
-- new dynamic icon.battery2 
+- new dynamic icon "icon.battery2"
 - new widget lib.connection to display the URL of the shNG websocket
 - added setpoint item to quad.rtr 
 - new widget clock.countdown to visualize timers in backend
 - new widget lib.timestamp to write a timestamp of "now" to an item (used for countdown doc page)
 - new widget device.uzsutable to display a timer in a table format of 24 hours / 7 days
 - new widget ovbasic.symbol in example3.graphic - same features as basic.symbol but with absolute positioning
+- icon sizes can be changed by parameters in basic.symbol and basic.icon 
 
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'
@@ -35,6 +36,7 @@
 - improved integration of custom widgets in docu - show only title but no link if docu page doesn't exist
 - improved docu page for examples of blocks - explain code for collapsibles and show variation of width
 - changed smartVISU and Miniclock appearance in top-right corner - now in CSS defined colors but without page-reload link
+- default colors are now declared in the head area of the design CSS files - not hard-coded any more in index.php
 
 ### Updated Libraries
 - updated Twig to v1.42.5

@@ -349,7 +349,6 @@ a:hover {
 .ui-btn.ui-btn-inline.ui-btn-icon-right.ui-micro {
   padding: 0 2em 0 .5em;
 }
-
 .ui-btn.ui-btn-inline.ui-micro .icon,
 .ui-btn.ui-btn-inline.ui-micro .fx-icon {
   width: 28px;
@@ -428,7 +427,6 @@ a:hover {
   line-height: 1;
   font-size: 0.8em;
 }
-
 .ui-btn.ui-btn-inline.ui-midi .icon,
 .ui-btn.ui-btn-inline.ui-midi .fx-icon {
   width: 40px;
@@ -1007,7 +1005,8 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
 .switch {
   display: inline-block;
 }
-.switch.absolutepos {
+.absolutepos .switch,
+.switch.absolutepos{
 	margin-top: -24px;
 	margin-left: -24px;
 }
@@ -2052,6 +2051,19 @@ div.ui-slider-switch{
 /**
  * --- W i d g e t s :   I C O N ----------------------------------------------
  */
+ 
+/** ------- icons: basic data for scalable icons --- wvhn 2020 ---*/
+.ui-icn {
+	margin: 1px;
+	padding: 0;
+	display: inline-block;
+	position: relative;
+	text-align: center;
+	overflow: hidden;
+	white-space: nowrap;
+}
+/** ----------------------------------------------------------------*/
+
 svg.icon {
   vertical-align: middle;
   width: 48px;
@@ -2078,6 +2090,52 @@ svg.fx-icon, .icon {
   fill: inherit;
   stroke: inherit;
   color: inherit;
+}
+
+/** ------- icons: scalable icons --- wvhn 2020 ---*/
+.ui-icn.ui-btn-inline.ui-micro .icon,
+svg.icon.micro,
+svg.fx-icon.micro,
+.icon.micro {
+  width: 28px;
+  height: 28px;
+}
+
+.absolutepos svg.icon.micro,
+.absolutepos svg.fx-icon.micro,
+.absolutepos .icon.micro {
+  margin-top: -14px;
+  margin-left: -14px;
+}
+  
+.ui-icn.ui-btn-inline.ui-mini .icon,
+svg.icon.mini,
+svg.fx-icon.mini,
+.icon.mini {
+  width: 42px;
+  height: 42px;	
+}
+
+.absolutepos svg.icon.mini,
+.absolutepos svg.fx-icon.mini,
+.absolutepos .icon.mini {
+  margin-top: -21px;
+  margin-left: -21px;
+}
+
+.ui-icn.ui-btn-inline.ui-midi .icon,
+svg.icon.midi,
+svg.fx-icon.midi,
+.icon.midi {
+  width: 56px;
+  height: 56px;
+}
+
+.absolutepos svg.icon.midi,
+.absolutepos svg.fx-icon.midi,
+.absolutepos .icon.midi {
+  margin-top: -28px;
+  margin-left: -28px;
 }
 
 /**
