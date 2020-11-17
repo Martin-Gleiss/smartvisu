@@ -7,6 +7,7 @@
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide        weather_key
+ * @hide		weather_postal
  */
 
 

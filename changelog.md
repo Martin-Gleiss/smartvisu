@@ -5,6 +5,7 @@
 - template checker checks for items and item types with masteritem file form backend (thanks to Andre Kohler)
 - template checker provides replacement proposals for older widgets which have been removed already in the current version
 - darksky weather service shows verbal wind directions instead of angle values
+- new weather service weather.com as replacement for Wunderground
 - deprecated widgets from v2.8 and earlier have been deleted
 - basic.trigger can trigger logics on page create (new) and / or by button
 - basic.select "menu"-type accepts dynamic option lists and texts via items (list type)
@@ -41,6 +42,9 @@
 ### Updated Libraries
 - updated Twig to v1.42.5
 - a few additional icons
+
+### Deprecated
+- widget basic.shifter replaced by dynamic icons (basic.icon)
 
 ### Fixed Bugs
 - error thrown if default calender icons in language files were missing
