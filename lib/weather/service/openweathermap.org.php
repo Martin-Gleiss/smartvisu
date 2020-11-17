@@ -6,10 +6,14 @@
  * @copyright   30.04.2020
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
- *
+ * @hide		weather_postal
+ */
+ 
+ /**
  * Releasenotes:
  * 13.04.20 : Initial Version
  * 30.04.20 : fixed overflow issue to next month
+ * 17.11.20 : Metadata for config page added by wvhn
  */
 
 require_once '../../../lib/includes.php';
@@ -61,6 +65,7 @@ class weather_openweathermap extends weather
 			// forecast
 			// openweathermap provides forecast infos for 5days in 3h slots (free account)
 			$i = -1;
+			$add = '';
 			$tempMin = 100;
 			$tempMax = -100;
 			$nextday = (date('w', (int)$parsed_json->{'today'}->{'dt'})+1) %7;
