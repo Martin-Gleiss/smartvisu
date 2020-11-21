@@ -17,6 +17,7 @@
 - new widget device.uzsutable to display a timer in a table format of 24 hours / 7 days
 - new widget ovbasic.symbol in example3.graphic - same features as basic.symbol but with absolute positioning
 - icon sizes can be changed by parameters in basic.symbol and basic.icon 
+- widget weather.current takes weather values from backend item alternativly to online weather informaion
 
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'

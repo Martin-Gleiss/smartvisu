@@ -37,7 +37,7 @@ quad.dimmer('Lueftungsstufe1', 'Lüftungsstufe', 'Haustechnik.Lueftung', 'Hauste
 ## Change-Log
 
 #### 2020.11.08 - Version 1.0.0
-- added support for multi-widget creation (widgets have to be separated by <strong><code>\<br\></code></strong>-TAG)
+- added support for multi-widget creation (widgets have to be separated by <strong>&lt;br&gt;</strong>-TAG)
 - fixed problem for "nasty", "nested" widgets
 - added check for all brackets closed before rendering
 

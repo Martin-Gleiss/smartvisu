@@ -53,12 +53,14 @@
     -o-background-size: contain;
 }
 
-.weather .humi {
+.weather .wind {
     padding-top: 10px;
     text-align: right;
 }
 
-.weather .wind {
+.weather .misc,
+.weather .misc1,
+.weather .humi {
     text-align: right;
 }
 
