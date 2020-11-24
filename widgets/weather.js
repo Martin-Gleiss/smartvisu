@@ -32,7 +32,10 @@ $.widget("sv.weather_current", $.sv.widget, {
 				j++;
 			};
 		};
-
+		
+		var margintop = 15;
+		var marginbottom = 15;
+		
 		var itemtemp = values[0];
 		if (itemtemp !== undefined) {
 			this._temp = 1;
@@ -54,11 +57,17 @@ $.widget("sv.weather_current", $.sv.widget, {
 		var itemmisc = values [3];
 		if (itemmisc !== undefined) {
 			this.element.children('.misc').html(this.options.misctxt + itemmisc.transUnit(this.options.miscfmt));
+			margintop = -5;
+			marginbottom = 10;
 		};
 		var itemmisc1 = values [4];
 		if (itemmisc1 !== undefined) {
 			this.element.children('.misc1').html(this.options.misc1txt + itemmisc1.transUnit(this.options.misc1fmt));
+			margintop = -25;
+			marginbottom = 5;
 		};
+		
+		this.element.children('.temp').attr('style', 'margin-top: '+margintop+'px; margin-bottom: '+marginbottom+'px;');
 	},
 	
 	_repeat: function() {
