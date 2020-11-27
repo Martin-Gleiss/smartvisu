@@ -47,10 +47,10 @@
     width: 100%;
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: contain;
-    -webkit-background-size: contain;
-    -moz-background-size: contain;
-    -o-background-size: contain;
+    background-size: 60%;
+    -webkit-background-size: 60%;
+    -moz-background-size: 60%;
+    -o-background-size: 60%;
 }
 
 .weather .wind {
@@ -65,7 +65,7 @@
 }
 
 .weather .temp {
-    padding-top: 30px;
+   	padding-top: 10px;
     font-size: 25pt;
     text-align: left;
 }
