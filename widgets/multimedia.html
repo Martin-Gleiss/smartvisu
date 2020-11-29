@@ -37,6 +37,8 @@
 * @param {undefined=10i} the reload-time in duration-format or defined as an item that retriggers a refresh (optional, default '10i')
 * @param {image=} the path/url to a default image that is shown on error and startup
 *
+* stopitem will be set to "true" when new page is loaded in order to stop the image from refreshing till eternity ;)
+*
 * @see misc/fundamentals#Duration-Format
 */
 {% macro image(id, src, mode, refresh, default_img) %}
@@ -52,6 +54,8 @@
     data-item="{% if '/' not in src and '\\' not in src %}{{ src }}{% endif %}{% if refresh|first not in ['0','1','2','3','4','5','6','7','8','9'] and refresh %}, {{ refresh }}{% endif %}"
     data-url="{% if '/' in src or '\\' in src %}{{ src }}{% endif %}"
     {% if refresh|first in ['0','1','2','3','4','5','6','7','8','9'] or not refresh %}data-repeat="{{ refresh|default('10i') }}"{% endif %}
+    stopTimer="false"
+    class="multimediaimage"
 		src="{{ default_img|default('pages/base/pics/trans.png') }}"
     onerror="javascript:this.src='{{ default_img|default('pages/base/pics/trans.png') }}'" />
 
