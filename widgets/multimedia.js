@@ -7,16 +7,18 @@ $.widget("sv.multimedia_image", $.sv.widget, {
   options: {
 
   },
+    _ticker: null,
     _init: function() {
       if (this.element.attr('data-repeat'))
       {
         this.element.attr('data-repeat-milliseconds', Number(new Date().duration(this.element.attr('data-repeat'))));
       }
-
+      this.element.attr('stopTimer', 'false');
     },
     _update: function(response) {
       var widget_url = this.element.attr('data-url');
       var resp = Array.isArray(response) ? response[0]: response;
+
       if (widget_url)
       {
         var img_base = widget_url + ((widget_url.indexOf('?') == -1) ? '?' : '&');
@@ -29,14 +31,20 @@ $.widget("sv.multimedia_image", $.sv.widget, {
       refreshing = this.element.attr('data-repeat') ? this.element.attr('data-repeat') : 'refresh by item';
 			console.log("Response: " + response + " Update Multimedia Image: " + img + ", repeat: " + refreshing);
 			this.element.attr('src', img);
-      if (this.element.attr('data-repeat') && ! img.startsWith('_='))
+      if (this.element.attr('stopTimer') == 'true' && this._ticker != null)
+      {
+        clearTimeout(this._ticker);
+        console.log("Clear timer " + this._ticker);
+        this._ticker = null;
+      }
+      else if (this.element.attr('data-repeat') && ! img.startsWith('_='))
       {
         var delay = Number(this.element.attr('data-repeat-milliseconds'));
         var el = this;
-        setTimeout(function() {
-          el._update(undefined);
-        }, delay);
+        this._ticker = setTimeout(function() {el._update("timer");}, delay);
+        console.log("Start timer " + this._ticker + " with " + delay + "s");
       }
+      this.element.attr('stopTimer', 'false');
     }
 });
 
