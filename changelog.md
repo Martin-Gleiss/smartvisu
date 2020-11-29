@@ -40,6 +40,7 @@
 - improved docu page for examples of blocks - explain code for collapsibles and show variation of width
 - changed smartVISU and Miniclock appearance in top-right corner - now in CSS defined colors but without page-reload link
 - default colors are now declared in the head area of the design CSS files - not hard-coded any more in index.php
+- multimedia.image stops loading images after page has been left (via exit event)
 
 ### Updated Libraries
 - updated Twig to v1.42.5
