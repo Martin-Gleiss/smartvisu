@@ -49,6 +49,10 @@ $.widget("sv.clock_digiclock", $.sv.clock, {
 		this.element.attr("stoptimer", "false");
 		this.element.digiclock({ svrOffset: window.servertimeoffset || 0});
 	},
+	
+	_exit: function() {
+		this.element.attr("stoptimer", "true");
+	},
 });
 
 $.widget("sv.clock_digiclock_digiweather", $.sv.widget, {
