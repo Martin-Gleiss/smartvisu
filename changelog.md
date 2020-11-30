@@ -49,6 +49,10 @@
 ### Deprecated
 - widget basic.shifter replaced by dynamic icons (basic.icon)
 
+### Removed Features
+- deprecated widgets from v2.8 and earlier have been deleted
+- removed protocol versions <= 3 in smarthome.py driver
+
 ### Fixed Bugs
 - error thrown if default calender icons in language files were missing
 - language files distinguish between temperature and angular degrees (°C/°F vs. °)
