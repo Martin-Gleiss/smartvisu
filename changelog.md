@@ -60,6 +60,7 @@
 - fixed debug feature in php services 
 - fixed device.rtr misleading night / day icons 
 - all examples and docu checked and optimized with template checker
+- calendar.waste entries got overruled by smaller snippets (e.g. "green bin" by "bin" ) if snippet was not listed first 
 
 
 ## 2.9.2
