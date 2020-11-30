@@ -49,6 +49,10 @@
 ### Deprecated
 - widget basic.shifter replaced by dynamic icons (basic.icon)
 
+### Removed Features
+- deprecated widgets from v2.8 and earlier have been deleted
+- removed protocol versions <= 3 in smarthome.py driver
+
 ### Fixed Bugs
 - error thrown if default calender icons in language files were missing
 - language files distinguish between temperature and angular degrees (°C/°F vs. °)
@@ -56,6 +60,7 @@
 - fixed debug feature in php services 
 - fixed device.rtr misleading night / day icons 
 - all examples and docu checked and optimized with template checker
+- calendar.waste entries got overruled by smaller snippets (e.g. "green bin" by "bin" ) if snippet was not listed first 
 
 
 ## 2.9.2

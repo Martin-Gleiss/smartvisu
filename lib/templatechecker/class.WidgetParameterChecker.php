@@ -553,8 +553,12 @@ class WidgetParameterChecker {
 				$this->addError('WIDGET DURATION PARAM CHECK', 'Invalid duration interval identifier', $value, array('Invalid Identifier' => $interval, 'Valid Identifiers' => TemplateCheckerConfig::SmartvisuDurationIntervals));
 				return;
 			}
+			$numstart = 0;
+			if (substr($part,0,1) == '-') {
+				$numstart = 1;
+			}
 			// everything before last char needs to be numbers only
-			$number = substr($part, 0, -1);
+			$number = substr($part, $numstart, -1);
 			if (!ctype_digit($number)) {
 				$this->addError('WIDGET DURATION PARAM CHECK', 'Invalid duration value', $value, array('Checked Value' => $number, 'Valid Identifiers' => TemplateCheckerConfig::SmartvisuDurationIntervals));
 				return;

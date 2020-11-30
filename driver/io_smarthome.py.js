@@ -176,8 +176,8 @@ var io = {
 					break;
 
 				case 'series':
-					if (io.version <= 3)
-						data.sid = data.sid + '.100';
+					//if (io.version <= 3)
+					//	data.sid = data.sid + '.100';
 					
 					widget.update(data.sid.replace(/\|/g, '\.'), data.series);
 					break;
@@ -206,10 +206,10 @@ var io = {
 					break;
 
 				case 'proto':
-					io.version = parseInt(data.ver);
-					if (io.version < 3) {
-						notify.warning('Driver: smarthome.py', 'Protocol mismatch<br />SmartHome.py is: v' + io.version + '<br /><br /> Update the system!');
-					}
+				//	io.version = parseInt(data.ver);
+				//	if (io.version < 3) {
+				//		notify.warning('Driver: smarthome.py', 'Protocol mismatch<br />SmartHome.py is: v' + io.version + '<br /><br /> Update the system!');
+				//	}
 					break;
 
 				case 'url':
@@ -301,9 +301,9 @@ var io = {
 				if (!unique[items[i]] && (pt instanceof Array) && widget.checkseries(items[i])) {
 					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 
-					if (io.version <= 3)
-						io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2]});
-					else
+					//if (io.version <= 3)
+					//	io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2]});
+					//else
 						io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': pt[pt.length - 1]});
 					
 					unique[items[i]] = 1;
