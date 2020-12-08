@@ -44,7 +44,7 @@
 
 ### Updated Libraries
 - updated Twig to v1.42.5
-- a few additional icons
+- a bunch of new icons (thanks to @mfd)
 
 ### Deprecated
 - widget basic.shifter replaced by dynamic icons (basic.icon)
