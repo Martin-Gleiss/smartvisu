@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 321 321">
-<g fill="#000">
-	<circle fill="none" stroke="#000" stroke-width="3" stroke-miterlimit="10" cx="180.984" cy="179.941" r="55.721"/>
+<g fill="#fff">
+	<circle fill="none" stroke="#fff" stroke-width="3" stroke-miterlimit="10" cx="180.984" cy="179.941" r="55.721"/>
 	<path d="M198.667,83c0,2.761-2.239,5-5,5h-26.333c-2.761,0-5-2.239-5-5v-8.333c0-2.761,2.239-5,5-5h26.333 c2.761,0,5,2.239,5,5V83z"/>
 	<path d="M180.983,125.22c2.019,0,4.009,0.113,5.972,0.322c0.955-1.258,1.528-2.823,1.528-4.524V109 c0-2.218-0.969-4.206-2.5-5.579V75.996h-10v27.426c-1.531,1.374-2.5,3.361-2.5,5.579v12.017c0,1.702,0.573,3.266,1.529,4.524 C176.975,125.333,178.965,125.22,180.983,125.22z"/>
-	<g fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
+	<g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
 		<polygon points="138.031,202.223 129.896,202.223 129.53,193.556 138.031,193.556"/>
 		<rect x="138.031" y="193.556" width="8.667" height="8.667"/>
 		<rect x="146.698" y="193.556" width="8.667" height="8.667"/>
@@ -55,7 +55,7 @@
 		<rect x="130.303" y="158.888" width="8.667" height="8.667"/>
 		<rect x="138.97" y="158.888" width="8.667" height="8.667"/>
 		<rect x="147.637" y="158.888" width="8.667" height="8.667"/>
-		<rect x="156.636" y="158.888" fill="#000" width="8.667" height="8.667"/>
+		<rect x="156.636" y="158.888" fill="#fff" width="8.667" height="8.667"/>
 		<rect x="165.303" y="158.888" width="8.667" height="8.667"/>
 		<rect x="173.97" y="158.888" width="8.667" height="8.667"/>
 		<rect x="182.637" y="158.888" width="8.668" height="8.667"/>
@@ -65,7 +65,7 @@
 		<rect x="217.305" y="158.888" width="8.668" height="8.667"/>
 		<polygon  points="234.639,167.555 225.973,167.555 225.973,158.888 232.59,158.888"/>
 	</g>
-	<g fill="none" stroke="#000" stroke-width="2.8008" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
+	<g fill="none" stroke="#fff" stroke-width="2.8008" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
 		<rect x="133.875" y="151.333" width="8.667" height="7.554"/>
 		<rect x="142.542" y="151.333" width="8.667" height="7.554"/>
 		<rect x="151.208" y="151.333" width="8.667" height="7.554"/>
@@ -73,13 +73,13 @@
 		<rect x="168.875" y="151.333" width="8.667" height="7.554"/>
 		<rect x="177.542" y="151.333" width="8.667" height="7.554"/>
 		<rect x="186.209" y="151.333" width="8.666" height="7.554"/>
-		<rect x="194.875" y="151.333" fill="#000" width="8.668" height="7.554"/>
+		<rect x="194.875" y="151.333" fill="#fff" width="8.668" height="7.554"/>
 		<rect x="203.543" y="151.333" width="8.666" height="7.554"/>
 		<rect x="212.209" y="151.333" width="8.668" height="7.554"/>
 		<polygon points="230.041,158.888 220.877,158.888 220.877,151.333 228.811,151.333"/>
 		<polygon points="133.554,176.222 125.623,176.222 126.644,167.555 133.554,167.555"/>
 	</g>
-	<g fill="none" stroke="#000" stroke-width="2.6637" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
+	<g fill="none" stroke="#fff" stroke-width="2.6637" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
 		<rect x="139.136" y="144.5" width="8.667" height="6.833"/>
 		<rect x="147.803" y="144.5" width="8.667" height="6.833"/>
 		<rect x="156.802" y="144.5" width="8.667" height="6.833"/>
@@ -91,12 +91,12 @@
 		<rect x="208.805" y="144.5" width="8.666" height="6.833"/>
 		<polygon points="228.811,151.333 217.471,151.333 217.471,144.5 223.983,144.5"/>
 	</g>
-	<g fill="none" stroke="#000" stroke-width="2.3898" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
+	<g fill="none" stroke="#fff" stroke-width="2.3898" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
 		<rect x="143.636" y="139" width="8.667" height="5.5"/>
 		<rect x="152.303" y="139" width="8.667" height="5.5"/>
 		<rect x="161.302" y="139" width="8.667" height="5.5"/>
 		<rect x="169.969" y="139" width="8.667" height="5.5"/>
-		<rect x="178.636" y="139" fill="#000" width="8.667" height="5.5"/>
+		<rect x="178.636" y="139" fill="#fff" width="8.667" height="5.5"/>
 		<rect x="187.303" y="139" width="8.667" height="5.5"/>
 		<rect x="195.97" y="139" width="8.667" height="5.5"/>
 		<rect x="204.637" y="139" width="8.667" height="5.5"/>
@@ -109,7 +109,7 @@
 		<rect x="191.803" y="133.5" width="8.666" height="5.5"/>
 		<rect x="200.469" y="133.5" width="8.668" height="5.5"/>
 	</g>
-	<g fill="none" stroke="#000" stroke-width="2.0381" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">	
+	<g fill="none" stroke="#fff" stroke-width="2.0381" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">	
 		<polygon points="161.302,133.5 152.635,133.5 156.802,129.5 161.302,129.5"/>
 		<rect x="161.302" y="129.5" width="8.667" height="4"/>
 		<rect x="170.301" y="129.5" width="8.667" height="4"/>
