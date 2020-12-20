@@ -144,9 +144,9 @@
     {% if (bwm_lock is not iterable and bwm_lock != '') or (bwm_lock is iterable and bwm_lock[0] != '') %}
     <div style="float:left;" class="popup_list">
       {% if bwm_lock is iterable %}
-        {{ basic.stateswitch(id~'_bwmlock', bwm_lock[0], 'icon', [0,1], ['message_presence','message_presence_disabled'], '', bwm_lock[1]) }}
+        {{ basic.stateswitch(id~'_bwmlock', bwm_lock[0], 'icon', [0,1], ['presence_unlocked','presence_locked'], '', bwm_lock[1]) }}
       {% elseif bwm_lock != '' %}
-        {{ basic.stateswitch(id~'_bwmlock', bwm_lock, 'icon', [0,1], ['message_presence','message_presence_disabled']) }}
+        {{ basic.stateswitch(id~'_bwmlock', bwm_lock, 'icon', [0,1], ['presence_unlocked','presence_locked']) }}
       {% endif %}
         </div>
         {% endif %}
