@@ -1324,9 +1324,9 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 	initSelector: 'div[data-widget="basic.roundslider"]',
 
 	options: {
-		radius : 80,
-		startangle : 315,
-		handlesize:20,
+		radius: 80,
+		startangle: 315,
+		handlesize: 30,
 		step: 5,
 		scale_interval: 10, 
 		scale_min: 0, 
@@ -1349,11 +1349,12 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		
 		this.options.handlesize = this.options.width +15;
 		
-		//get scaling options
-		var unit = this.element.attr('data-values').explode()[0];
-		var pre_value = this.element.attr('data-values').explode()[1];
-		var to_value = this.element.attr('data-values').explode()[2];
-		var scale = this.element.attr('data-values').explode()[3];
+		//get decoration options
+		var decoration = this.element.attr('data-values').explode();
+		var unit = decoration[0];
+		var pre_value = decoration[1];
+		var to_value = decoration[2];
+		var scale = decoration[3];
 		var scale_interval = this.options.scale_interval;
 		
 		//get colours from css theme
@@ -1363,50 +1364,6 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		var path_color = $(".ui-bar-a").css('background-color');
 		var border_color = $(".ui-bar-b").css('border-bottom-color');
 		var handle_color = $(".ui-page-theme-a.ui-btn").css('background-image');
-		
-		// generate scale-numbers
-		if (scale == "true"){
-			//scale odd ticks (long)
-			$.fn.roundSlider.prototype.defaults.create = function() {
-			  var o = this.options;
-			  for (var i = o.min; i <= o.max; i += scale_interval) {
-				var angle = this._valueToAngle(i);
-				var numberTag = this._addSeperator(angle, "rs-custom");
-				var number = numberTag.children();
-				number.clone().css({
-				  "width": o.width + this._border(),
-				  "margin-top": this._border(true) / -2,
-				  "margin-right": '10px',
-				}).appendTo(numberTag);
-				number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
-				$(".rs-number").css("color",font_color); 
-				$(".rs-seperator").css("border-color",border_color );
-				$(".rs-seperator").css("border-width","2px");
-				$(".rs-seperator").css("width","10px");
-				$(".rs-seperator").css("margin-left","-10px"); 
-				
-			  };
-			  //scale even ticks (short)
-			  var interval = scale_interval/2;
-			  for (var i = o.min; i <= o.max; i += interval) {
-				var angle = this._valueToAngle(i);
-				var numberTag = this._addSeperator(angle, "rs-custom_1");
-				numberTag.addClass( "rs-seperator_1" );
-				$("rs-seperator_1").css("border-color",border_color );
-				$("rs-seperator_1").css("border-width","2px");
-				$("rs-seperator_1").css("width","5px");
-				$("rs-seperator_1").css("height","1px");
-				$("rs-seperator_1").css("margin-left","-10px"); 
-				
-			  };
-			};
-		};
-		
-		$(".rs-handle").css('box-shadow', '0px 0px 15px #875009');
-		$(".rs-handle").css('box-shadow', handle_color );
-		$(".rs-handle").css('background-image', handle_color );
-		$(".rs-range").css('background-image', track_color )
-
 		
 		//call roundslider plugin
 		$("div#"+id).roundSlider({
@@ -1425,8 +1382,6 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 			lineCap: "round",
 			startAngle: this.options.startangle,
 			svgMode: true,
-			
-			beforeCreate: "handleColor",
 
 			tooltipFormat: function (args) {
 				var val = args.value;
@@ -1452,9 +1407,47 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 			borderColor: function (args) {
 				return border_color;
 			},
-			handleColor: function (args) {
-				return handle_color;
-			},
+			create: function(args){
+				$("#"+id+" .rs-handle").css('box-shadow', '0px 0px 15px #875009');
+				$("#"+id+" .rs-handle").css('box-shadow', handle_color );
+				$("#"+id+" .rs-handle").css('background-image', handle_color );
+				$("#"+id+" .rs-range").css('background-image', track_color );
+				
+				if (scale == 'true') {
+					//scale odd ticks (long w/ numbers)
+					var o = this.options;
+					for (var i = o.min; i <= o.max; i += scale_interval) {
+						var angle = this._valueToAngle(i);
+						var numberTag = this._addSeperator(angle, "rs-custom");
+						var number = numberTag.children();
+						number.clone().css({
+						  "width": o.width + this._border(),
+						  "margin-top": this._border(true) / -2,
+						  "margin-right": '10px',
+						}).appendTo(numberTag);
+						number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
+						$("#"+id+" .rs-number").css("color",font_color); 
+						$("#"+id+" .rs-seperator").css("border-color",border_color );
+						$("#"+id+" .rs-seperator").css("border-width","2px");
+						$("#"+id+" .rs-seperator").css("width","10px");
+						$("#"+id+" .rs-seperator").css("margin-left","-10px"); 
+
+					};
+					//scale even ticks (short)
+					var interval = scale_interval/2;
+					for (var i = o.min; i <= o.max; i += interval) {
+						var angle = this._valueToAngle(i);
+						var numberTag = this._addSeperator(angle, "rs-custom_1");
+						numberTag.addClass( "rs-seperator_1" );
+						$("rs-seperator_1").css("border-color",border_color );
+						$("rs-seperator_1").css("border-width","2px");
+						$("rs-seperator_1").css("width","5px");
+						$("rs-seperator_1").css("height","1px");
+						$("rs-seperator_1").css("margin-left","-10px");
+					};
+				};
+			}
+			
 		});
 	},
 	
