@@ -19,6 +19,7 @@
 - icon sizes can be changed by parameters in basic.symbol and basic.icon 
 - widget weather.current takes weather values from backend item alternativly to online weather informaion
 - new widget event "exit" allows stopping of functions before page change (e.g. deleting timers)
+- new widget basic.roundslider with flexible design options
 
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'

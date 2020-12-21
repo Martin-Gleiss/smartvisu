@@ -1,0 +1,37 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+		var now = +new Date();	
+		io.write('bath.blind.pos', 100 );
+		io.write('bath.light.text', "20,70" );
+	});
+</script>
+	
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.roundslider('sl1', 'bath.light.value') }}
+		{{ basic.roundslider('sl2', 'bath.light.value', 0, 255, 10, 'Rollo', 'Höhe', 'cm') }}
+		{{ basic.roundslider('sl3', 'bath.light.value', 0, 255, 10, '', '', '', 'true', '', 'light_light' ) }} 
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+	<table width=100%><tr>
+		<td>{{ basic.roundslider('slider1', 'bath.light.value', 0, 100, 5) }} </td>
+		<td>{{ basic.roundslider('slider2', 'bath.blind.pos', 0, 255, 10, 'Rollo', 'Höhe', 'cm') }} </td>
+		<td>{{ basic.roundslider('slider3', 'bath.light.value2', 0, 255, 10, '', '', '', 'true', '', 'light_light' ) }} </td>
+	</tr></table>
+	</div>
+
+{% endblock %}

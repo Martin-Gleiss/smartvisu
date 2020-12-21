@@ -430,6 +430,59 @@
 
 {% endmacro %}
 
+/**
+* Displays a round slider
+* @param {id=} unique id for this widget (optional)  
+* @param {item(num,list)} an item (list type can be used if slider type is "range")
+* @param {value=0} the minimum value if the slider is moved to total left (optional, default: 0)  
+* @param {value=255} the maximum value if the slider is moved to total right (optional, default: 255)  
+* @param {value=5} step between two values (optional, default: 5)  
+* @param {text=} pretext of the center text/value 
+* @param {text=} text after center text/ value
+* @param {text=} unit of the center value
+* @param {bool=false} display a scale with values along the slider (optional, default='false')
+* @param {value=20} scale-integer, the scale-divider for the scale
+* @param {text=} icon to be displayed in the center (optional)
+* @param {text=} circleshape slider style (like pie, quarter-top-left, quarter-top-right, quarter-bottom-left, quarter-bottom-right, half-top, half-bottom, half-left, half-right, custom-half, custom-quarter)
+* @param {text=} slidertype (default, min-range,range ) (optional, default = min-range)
+* @param {value=120} radius of the slider (optional, default: 90)  
+* @param {value=20} handlesize, size of the handle knob  (optional, default: 20)
+* @param {value=15} width of the slide line
+* @param {value=0.1} thickness of the slide line
+*
+* @author Bonze, Wolfram v. Hülsen
+**/
+
+{% macro roundslider(id, item, min, max, step, pre_value, to_value, unit, scale, scale_interval, pic,  circleshape, slidertype, radius, handlesize,  width, thickness) %}
+
+	/**- pic whithout path -*/
+	{% if '/' not in pic and not isfile(pic) %}
+		{% if isfile('dropins/' ~ icon0 ~ pic) %}
+			{% set pic = 'dropins/' ~ icon0 ~ pic %}
+		{% elseif isfile('dropins/' ~ icon0 ~ pic ~ '.svg') %}
+			{% set pic = 'dropins/' ~ icon0 ~ pic ~ '.svg' %}
+		{% elseif isfile('dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
+			{% set pic = 'dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
+		{% elseif isfile(icon0 ~ pic) %}
+			{% set pic = icon0 ~ pic %}
+		{% elseif isfile(icon0 ~ pic ~ '.svg') %}
+			{% set pic = icon0 ~ pic ~ '.svg' %}
+		{% elseif isfile(icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
+			{% set pic = icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
+		{% endif -%}
+	{% endif -%}
+
+	/** pseudo divs, to get styles 	**/
+	<div class="ui-bar-a" style="display:none;"> </div>
+	<div class="ui-bar-b" style="display:none;"> </div>
+	<div class="ui-page-theme-a ui-btn" style="display:none;"> </div>
+		
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.roundslider" data-item="{{item}}" data-values=" {{unit}}, {{pre_value| default('')}}, {{ to_value| default('') }}, {{ scale| default('false')}}" 
+		data-radius="{{radius | default('80')}}" data-scale_min="{{min | default('0')}}" data-scale_max="{{max| default('255')}}" data-step="{{step | default('5')}}" data-handlesize="{{handlesize | default('20')}}" data-scale_interval="{{scale_interval | default('20')}}"
+		data-width="{{width | default('15')}}" data-thickness="{{thickness | default('0.1')}}" data-circleshape="{{circleshape | default('pie')}}" data-slidertype="{{slidertype | default('min-range')}}" data-icon="{{pic}}"
+		style="margin:auto; margin-top:30px;"> 
+	</div>
+{% endmacro %}
 
 /**
 * A versatile button/switch

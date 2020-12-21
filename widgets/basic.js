@@ -1317,3 +1317,147 @@ $.widget("sv.basic_listview", $.sv.widget, {
                 }
         },
 });
+
+// ----- basic.roundslider-------------------------------------------------------
+$.widget("sv.basic_roundslider", $.sv.widget, {
+
+	initSelector: 'div[data-widget="basic.roundslider"]',
+
+	options: {
+		radius : 80,
+		startangle : 315,
+		handlesize:20,
+		step: 5,
+		scale_interval: 10, 
+		scale_min: 0, 
+		scale_max: 255, 
+		width: 15, 
+		thickness: 0.1,
+		circleshape:"pie", 
+		slidertype:"min-range",
+		icon:"",
+	},
+
+	_create: function() {
+		this._super();
+	},
+	
+	_update: function(response) {
+		var id = this.element.attr('id');
+		var user_value = response[0];
+		var user_value_item = this.options.item;
+		
+		this.options.handlesize = this.options.width +15;
+		
+		//get scaling options
+		var unit = this.element.attr('data-values').explode()[0];
+		var pre_value = this.element.attr('data-values').explode()[1];
+		var to_value = this.element.attr('data-values').explode()[2];
+		var scale = this.element.attr('data-values').explode()[3];
+		var scale_interval = this.options.scale_interval;
+		
+		//get colours from css theme
+		var bg_color = $('.ui-bar-b').css('background-color');
+		var font_color = $('.ui-content').css('color');
+		var track_color = $('.ui-bar-a').css('background-image');
+		var path_color = $(".ui-bar-a").css('background-color');
+		var border_color = $(".ui-bar-b").css('border-bottom-color');
+		var handle_color = $(".ui-page-theme-a.ui-btn").css('background-image');
+		
+		// generate scale-numbers
+		if (scale == "true"){
+			//scale odd ticks (long)
+			$.fn.roundSlider.prototype.defaults.create = function() {
+			  var o = this.options;
+			  for (var i = o.min; i <= o.max; i += scale_interval) {
+				var angle = this._valueToAngle(i);
+				var numberTag = this._addSeperator(angle, "rs-custom");
+				var number = numberTag.children();
+				number.clone().css({
+				  "width": o.width + this._border(),
+				  "margin-top": this._border(true) / -2,
+				  "margin-right": '10px',
+				}).appendTo(numberTag);
+				number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
+				$(".rs-number").css("color",font_color); 
+				$(".rs-seperator").css("border-color",border_color );
+				$(".rs-seperator").css("border-width","2px");
+				$(".rs-seperator").css("width","10px");
+				$(".rs-seperator").css("margin-left","-10px"); 
+				
+			  };
+			  //scale even ticks (short)
+			  var interval = scale_interval/2;
+			  for (var i = o.min; i <= o.max; i += interval) {
+				var angle = this._valueToAngle(i);
+				var numberTag = this._addSeperator(angle, "rs-custom_1");
+				numberTag.addClass( "rs-seperator_1" );
+				$("rs-seperator_1").css("border-color",border_color );
+				$("rs-seperator_1").css("border-width","2px");
+				$("rs-seperator_1").css("width","5px");
+				$("rs-seperator_1").css("height","1px");
+				$("rs-seperator_1").css("margin-left","-10px"); 
+				
+			  };
+			};
+		};
+		
+		$(".rs-handle").css('box-shadow', '0px 0px 15px #875009');
+		$(".rs-handle").css('box-shadow', handle_color );
+		$(".rs-handle").css('background-image', handle_color );
+		$(".rs-range").css('background-image', track_color )
+
+		
+		//call roundslider plugin
+		$("div#"+id).roundSlider({
+			circleShape: this.options.circleshape,
+			sliderType: this.options.slidertype,
+			editableTooltip: false,
+			showTooltip: true,
+			handleSize: this.options.handlesize,
+			radius: this.options.radius,
+			width: this.options.width,
+			thickness: this.options.thickness,
+			min: this.options.scale_min,
+			max: this.options.scale_max,
+			step: this.options.step,
+			value: user_value,
+			lineCap: "round",
+			startAngle: this.options.startangle,
+			svgMode: true,
+			
+			beforeCreate: "handleColor",
+
+			tooltipFormat: function (args) {
+				var val = args.value;
+				var icon = $("div#"+id).attr('data-icon');
+				if (icon != ''){
+					return "<img src="+icon +" style='width:1em; margin:auto; margin-bottom: 0em; margin-top:-1em; clip-path: circle(); display:block !important;'><div id='value' style='font-weight:bold;font-size:.4em;'>" + args.value + " "+ unit +"</div>";
+				}else{
+					return "<div id='rs_value_pre' style='font-size:0.2em; '>"+ pre_value +"</div><div id='value' style='font-weight:bold;font-size:0.4em;'>" + args.value + " " + unit +"</div><div id='rs_value_to' style='font-size:0.2em;'>"+to_value+"</div>";
+				}
+			},
+			update: function (args) {
+				io.write(user_value_item, args.value);		
+			},
+			tooltipColor: function (args) {
+				return font_color;
+			},
+			rangeColor: function (args) {
+				return bg_color;
+			},
+			pathColor: function (args) {
+				return path_color;
+			},
+			borderColor: function (args) {
+				return border_color;
+			},
+			handleColor: function (args) {
+				return handle_color;
+			},
+		});
+	},
+	
+	_events: {
+	}
+});
