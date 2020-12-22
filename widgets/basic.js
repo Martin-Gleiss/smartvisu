@@ -1347,7 +1347,11 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		var user_value = response[0];
 		var user_value_item = this.options.item;
 		
-		this.options.handlesize = this.options.width +15;
+		this.options.handlesize = this.options.width +15; 
+		
+		//use default start angles from plugin unless shape is pie
+		if (this.options.circleshape != "pie")
+			this.options.startangle = null;
 		
 		//get decoration options
 		var decoration = this.element.attr('data-values').explode();
@@ -1393,7 +1397,7 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 				}
 			},
 			update: function (args) {
-				io.write(user_value_item, args.value);		
+				io.write(user_value_item, args.value);
 			},
 			tooltipColor: function (args) {
 				return font_color;

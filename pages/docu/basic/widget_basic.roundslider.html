@@ -7,6 +7,7 @@
 * -----------------------------------------------------------------------------
 */
 
+
 {% extends "widget_basic.html" %}
 
 {% block example %}
@@ -21,17 +22,45 @@
 	<h5>Examples</h5>
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ basic.roundslider('sl1', 'bath.light.value') }}
+		{{ basic.roundslider('sl1', 'bath.light.value', 0, 100, 5) }}
 		{{ basic.roundslider('sl2', 'bath.light.value', 0, 255, 10, 'Rollo', 'Höhe', 'cm') }}
 		{{ basic.roundslider('sl3', 'bath.light.value', 0, 255, 10, '', '', '', 'true', '', 'light_light' ) }} 
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-	<table width=100%><tr>
-		<td>{{ basic.roundslider('slider1', 'bath.light.value', 0, 100, 5) }} </td>
-		<td>{{ basic.roundslider('slider2', 'bath.blind.pos', 0, 255, 10, 'Rollo', 'Höhe', 'cm') }} </td>
-		<td>{{ basic.roundslider('slider3', 'bath.light.value2', 0, 255, 10, '', '', '', 'true', '', 'light_light' ) }} </td>
-	</tr></table>
+		<table width=100%><tr>
+			<td>{{ basic.roundslider('slider1', 'bath.light.value', 0, 100, 5) }} </td>
+			<td>{{ basic.roundslider('slider2', 'bath.blind.pos', 0, 255, 10, 'Rollo', 'Höhe', 'cm') }} </td>
+			<td>{{ basic.roundslider('slider3', 'bath.light.value2', 0, 255, 10, '', '', '', 'true', '', 'light_light' ) }} </td>
+		</tr></table>
 	</div>
+
+	<h5>Different Shapes</h5> 	
+	Slider shapes can be chosen from the list in the docstring. Default start angles will be used (0, 90, 180, 270 degrees). <br>
+	Icons should be avoided due to space constraints.
+	
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.roundslider('sl4', 'bath.light.value', 0, 100, 5, '', '', '', '', '', '', 'quarter-top-left') }}
+		{{ basic.roundslider('sl5', 'bath.light.value', 0, 255, 10, 'Rollo', 'Höhe', 'cm', '', '', '','half-top') }}
+		{{ basic.roundslider('sl6', 'bath.light.value', 0, 255, 10, '', '', '', 'true', '50', '', 'quarter-top-right' ) }} 
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<table width=100%><tr>
+			<td>{{ basic.roundslider('slider4', 'bath.light.value', 0, 100, 5, '', '', '', 'true', '', '', 'quarter-top-left' ) }} </td>
+			<td>{{ basic.roundslider('slider5', 'bath.blind.pos', 0, 255, 10, 'Rollo', 'Höhe', 'cm', '', '', '','half-top') }} </td>
+			<td>{{ basic.roundslider('slider6', 'bath.light.value2', 0, 255, 10, '', '', '', 'true', '50', '', 'quarter-top-right' ) }} </td>
+		</tr></table>
+	</div>
+	
+	
+	
+	<h5>Range Slider (experimental)</h5>
+	The range slider transmits a pair of values (min/max) which can be written to an item of text or list type.
+	{{ basic.roundslider('slider7', 'bath.light.text', 0, 100, 5,'','','','true','','','','range') }}
+	
+	<br><br>
+	Documentation for the slider can be found here: <a href="https://roundsliderui.com/document.html">https://roundsliderui.com/document.html</a>
 
 {% endblock %}

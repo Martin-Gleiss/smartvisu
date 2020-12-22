@@ -443,7 +443,7 @@
 * @param {bool=false} display a scale with values along the slider (optional, default='false')
 * @param {value=20} scale-integer, the scale-divider for the scale
 * @param {text=} icon to be displayed in the center (optional)
-* @param {text=} circleshape slider style (like pie, quarter-top-left, quarter-top-right, quarter-bottom-left, quarter-bottom-right, half-top, half-bottom, half-left, half-right, custom-half, custom-quarter)
+* @param {text=pie} circleshape slider style (like pie, quarter-top-left, quarter-top-right, quarter-bottom-left, quarter-bottom-right, half-top, half-bottom, half-left, half-right, custom-half, custom-quarter)
 * @param {text=} slidertype (default, min-range,range ) (optional, default = min-range)
 * @param {value=120} radius of the slider (optional, default: 90)  
 * @param {value=15} width of the slide line
@@ -454,6 +454,7 @@
 
 {% macro roundslider(id, item, min, max, step, pre_value, to_value, unit, scale, scale_interval, pic, circleshape, slidertype, radius, width, thickness) %}
 
+	{% if circleshape not in ['', 'pie', 'quarter-top-left', 'quarter-top-right', 'quarter-bottom-left', 'quarter-bottom-right', 'half-top', 'half-bottom', 'half-left', 'half-right'] %} {% set circleshape = '' %} {% endif %}
 	/**- pic whithout path -*/
 	{% if '/' not in pic and not isfile(pic) %}
 		{% if isfile('dropins/' ~ icon0 ~ pic) %}
