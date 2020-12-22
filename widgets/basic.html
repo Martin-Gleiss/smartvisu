@@ -480,7 +480,7 @@
 	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.roundslider" data-item="{{item}}" data-values=" {{unit}}, {{pre_value| default('')}}, {{ to_value| default('') }}, {{ scale| default('false')}}" 
 		data-radius="{{radius | default('80')}}" data-scale_min="{{min | default('0')}}" data-scale_max="{{max| default('255')}}" data-step="{{step | default('5')}}" data-scale_interval="{{scale_interval | default('20')}}"
 		data-width="{{width | default('15')}}" data-thickness="{{thickness | default('0.1')}}" data-circleshape="{{circleshape | default('pie')}}" data-slidertype="{{slidertype | default('min-range')}}" data-icon="{{pic}}"
-		style="margin:auto; margin-top:30px;"> 
+		style="margin:auto; margin-top:30px; margin-bottom:30px;"> 
 	</div>
 {% endmacro %}
 

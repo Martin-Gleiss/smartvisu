@@ -1333,8 +1333,9 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		scale_max: 255, 
 		width: 15, 
 		thickness: 0.1,
-		circleshape:"pie", 
-		slidertype:"min-range",
+		circleshape: "pie", 
+		slidertype: "min-range",
+		lineCap: "butt",
 		icon:"",
 	},
 
@@ -1349,9 +1350,12 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		
 		this.options.handlesize = this.options.width +15; 
 		
-		//use default start angles from plugin unless shape is pie
+		//use default start angles from plugin and lineCap="butt" unless shape is pie
 		if (this.options.circleshape != "pie")
 			this.options.startangle = null;
+		else
+			this.options.lineCap="round";	// workaround for faulty alignment of slider / labels in some types
+											// issue: https://github.com/soundar24/roundSlider/issues/107
 		
 		//get decoration options
 		var decoration = this.element.attr('data-values').explode();
@@ -1383,7 +1387,7 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 			max: this.options.scale_max,
 			step: this.options.step,
 			value: user_value,
-			lineCap: "round",
+			lineCap: this.options.lineCap,
 			startAngle: this.options.startangle,
 			svgMode: true,
 
