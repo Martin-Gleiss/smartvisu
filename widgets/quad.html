@@ -553,7 +553,7 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item_lock %}
         {{ basic.stateswitch(id~'list_lock', item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', [color_off, color_on], indicator) }}
       {% elseif item_bwmlock %}
-        {{ basic.stateswitch(id~'list_lock', item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', [color_off, color_on], indicator) }}
+        {{ basic.stateswitch(id~'list_lock', item_bwmlock, 'icon', [0,1], ['presence_unlocked', 'presence_locked'], '', [color_off, color_on], indicator) }}
       {% endif %}
       {% if elements[loop.index] == 'div' %}
         </div>
@@ -939,7 +939,7 @@ the first one is the base color for values below first threshold, so pass one co
       {% elseif item_lock %}
         {{ basic.stateswitch(id~'list_lock', item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', icon_color, indicator) }}
       {% elseif item_bwmlock %}
-        {{ basic.stateswitch(id~'list_lock', item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', icon_color, indicator) }}
+        {{ basic.stateswitch(id~'list_lock', item_bwmlock, 'icon', [0,1], ['presence_unlocked', 'presence_locked'], '', icon_color, indicator) }}
       {% elseif item_seqlock %}
         {{ basic.stateswitch(id~'list_lock', item_seqlock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', icon_color, indicator) }}
       {% endif %}
@@ -2547,7 +2547,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
             {% elseif item_lock %}
               {{ basic.stateswitch(id~'list_lock'~z~i, item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', color[i], indicator[i]) }}
             {% elseif item_bwmlock %}
-              {{ basic.stateswitch(id~'list_lock'~z~i, item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', color[i], indicator[i]) }}
+              {{ basic.stateswitch(id~'list_lock'~z~i, item_bwmlock, 'icon', [0,1], ['presence_unlocked', 'presence_locked'], '', color[i], indicator[i]) }}
             {% endif %}
             {% if arrays[loop.index] == 'div' %}
               </div>
@@ -2681,7 +2681,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
             {% elseif item_lock %}
               {{ basic.stateswitch(id~'list_lock'~z~i, item_lock, 'icon', [0,1], ['secur_open', 'secur_locked'], '', color, indicator) }}
             {% elseif item_bwmlock %}
-              {{ basic.stateswitch(id~'list_lock'~z~i, item_bwmlock, 'icon', [0,1], ['message_presence', 'message_presence_disabled'], '', color, indicator) }}
+              {{ basic.stateswitch(id~'list_lock'~z~i, item_bwmlock, 'icon', [0,1], ['presence_unlocked', 'presence_locked'], '', color, indicator) }}
             {% endif %}
             {% if arrays[loop.index] == 'div' %}
               </div>
