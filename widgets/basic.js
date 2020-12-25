@@ -1335,7 +1335,7 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		thickness: 0.1,
 		circleshape: "pie", 
 		slidertype: "min-range",
-		lineCap: "butt",
+		lineCap: "round",
 		icon:"",
 	},
 
@@ -1350,12 +1350,8 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		
 		this.options.handlesize = this.options.width +15; 
 		
-		//use default start angles from plugin and lineCap="butt" unless shape is pie
-		if (this.options.circleshape != "pie")
-			this.options.startangle = null;
-		else
-			this.options.lineCap="round";	// workaround for faulty alignment of slider / labels in some types
-											// issue: https://github.com/soundar24/roundSlider/issues/107
+		//use default start angles from plugin unless shape is pie
+		if (this.options.circleshape != "pie") this.options.startangle = null;
 		
 		//get decoration options
 		var decoration = this.element.attr('data-values').explode();
@@ -1420,10 +1416,19 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 				$("#"+id+" .rs-handle").css('box-shadow', handle_color );
 				$("#"+id+" .rs-handle").css('background-image', handle_color );
 				$("#"+id+" .rs-range").css('background-image', track_color );
-				
+						
 				if (scale == 'true') {
-					//scale odd ticks (long w/ numbers)
 					var o = this.options;
+					var extraSize = 0, 
+					  sizeCorrect = false,
+					  circleShape = o.circleShape;
+					var isFullCircle = (circleShape == "full" || circleShape == "pie" || circleShape.indexOf("custom") === 0);
+					if (o.svgMode && !isFullCircle && o.lineCap != "none") {
+						extraSize = (o.lineCap === "butt") ? (o.borderWidth / 2) : ((o.width / 2) + o.borderWidth);
+						sizeCorrect = true;
+					};
+						
+					//scale odd ticks (long w/ numbers)
 					for (var i = o.min; i <= o.max; i += scale_interval) {
 						var angle = this._valueToAngle(i);
 						var numberTag = this._addSeperator(angle, "rs-custom");
@@ -1439,8 +1444,12 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 						$("#"+id+" .rs-seperator").css("border-width","2px");
 						$("#"+id+" .rs-seperator").css("width","10px");
 						$("#"+id+" .rs-seperator").css("margin-left","-10px"); 
-
+						if (sizeCorrect && circleShape.indexOf("bottom") != -1) 
+							  numberTag.css("margin-top", extraSize + 'px');
+						if (sizeCorrect && circleShape.indexOf("right") != -1)
+							  numberTag.css("margin-right", -extraSize + 'px');
 					};
+
 					//scale even ticks (short)
 					var interval = scale_interval/2;
 					for (var i = o.min; i <= o.max; i += interval) {
@@ -1452,6 +1461,10 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 						$("rs-seperator_1").css("width","5px");
 						$("rs-seperator_1").css("height","1px");
 						$("rs-seperator_1").css("margin-left","-10px");
+						if (sizeCorrect && circleShape.indexOf("bottom") != -1) 
+							numberTag.css("margin-top", extraSize + 'px');
+						if (sizeCorrect && circleShape.indexOf("right") != -1)
+							numberTag.css("margin-right", -extraSize + 'px');
 					};
 				};
 			}
