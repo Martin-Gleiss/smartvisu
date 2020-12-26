@@ -199,6 +199,78 @@
 	</div>
 {% endmacro %}
 
+/**
+* Displays a round slider for RTR
+* @param {id} unique id for this widget (mandatory)
+* @param {item(num)} an item for the actual temperature
+* @param {item(num)} an item for the set temperature
+* @param {item(bool,num)=} an item for comfort / standby (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for night (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for frost (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for the current state of the actor (optional)
+* @param {value=0} the minimum value if the slider is moved to total left (optional, default: 18)  
+* @param {value=255} the maximum value if the slider is moved to total right (optional, default: 28)  
+* @param {value=.1} step between two values (optional, default: .1)  
+* @param {bool=false} display a scale with values along the slider (optional, default='true')
+* @param {value=1} scale-integer, the scale-divider for the scale
+*
+* @author Bonze, Wolfram v. Hülsen
+**/
+{% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval) %}
+
+{% import "basic.html" as basic %}
+
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{item_actual}},{{item_set}}"  
+		data-scale_min="{{min | default('18')}}" data_scale_max="{{max| default('25')}}" data-step="{{step | default('.1')}}"  
+		data-scale_interval="{{scale_interval | default('1')}}" style="margin:auto; position:relative;"> 
+		
+		/**
+		* pseudo divs, to get styles 
+		**/
+		<div class="ui-bar-a" style="display:none"> </div>
+		<div class="ui-bar-b" style="display:none"> </div>
+		<div class="ui-page-theme-a ui-btn" style="display:none"> </div>
+		
+		<div id="container" style="position:relative; margin:auto; margin-top:30px; margin-bottom:-190px">
+			<div class="outerslider" id ="{{ uid(page, id) }}" style="position:relative;margin:auto; "> </div>
+			<div class="innerslider" id ="{{ uid(page, id) }}" style="margin:auto; top:-134px;"> </div>
+			
+			/** copy from device.rtr **/
+			{% if item_set %}
+				<div class="set" style="position:relative; top: -190px;">
+					<div class="temp" style="margin-bottom:15px;">Soll: {{ basic.print('', item_set, '°C' ) }}</div>
+					<div>
+						{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro' ) }}
+						{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro' ) }}
+					</div>
+				</div>
+			{% endif %}
+
+			{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty %}
+				<div class="control" style="position:relative; top: -190px;">
+					{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
+						{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
+						{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['night', 'standby'] : [3, 2]), ['scene_night.svg', 'scene_night.svg'], '', ['icon1', 'icon0']) }}
+						{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['frost', 'standby'] : [4, 2]), ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
+					{% else %}
+						{% if item_comfort is not empty %}
+							{{ basic.stateswitch('', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
+						{% endif %}
+						{% if item_night is not empty %}
+							{{ basic.stateswitch('', item_night, 'icon', '', ['scene_night.svg', 'scene_day.svg']) }}
+						{% endif %}
+						{% if item_frost is not empty %}
+							{{ basic.stateswitch('', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
+						{% endif %}
+					{% endif %}
+					{% if item_state is not empty %}
+						{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
+					{% endif %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endmacro %}
 
 /**
 * Standard shutter

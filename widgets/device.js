@@ -131,6 +131,162 @@ $.widget("sv.device_roofwindow", $.sv.widget, {
 
 });
 
+
+// ----- device.rtrslider-------------------------------------------------------
+$.widget("sv.device_rtrslider", $.sv.widget, {
+
+	initSelector: 'div[data-widget="device.rtrslider"]',
+	options: {
+		step: 0.1,
+		scale_interval: 1, 
+		scale_min: 18, 
+		scale_max: 28, 
+	},
+
+	_create: function() {
+		this._super();
+	},
+	
+	_update: function(response) {
+		var item_names = this.options.item.explode();
+		var actualValue = response[0];
+		var setValue = response[1];
+		var id = this.element.attr('id');
+		var scale_min = this.options.scale_min;  //18;
+		var scale_max = this.options.scale_max;  //28;
+		var step = this.options.step;   //0.1;
+		var unit = "°C";
+		var scale_interval = this.options.scale_interval;
+						
+		//get colors
+		var bg_color = $('.ui-bar-b').css('background-color');
+		var font_color = $('.ui-content').css('color');
+		var track_color = $('.ui-bar-a').css('background-image');
+		var path_color = $(".ui-bar-a").css('background-color');
+		var border_color = $(".ui-bar-b").css('border-bottom-color');
+		var handle_color = $(".ui-page-theme-a.ui-btn").css('background-image');
+					
+		
+	// slider for actual value
+	$("div#"+id+".outerslider").roundSlider({
+		value: actualValue,
+		min: scale_min,
+		max: scale_max,
+		step: step,
+		sliderType: "min-range",
+		radius: 70,
+		showTooltip: true,
+		editableTooltip: false,
+		circleShape: "full",
+		startAngle: "315",
+		endAngle: "225",
+		handleShape: "round",
+		handleSize: "0",
+		lineCap: "none",
+		width: "8",
+		svgMode: true,
+		
+		update: function(args) {},
+		
+		create: function(args) {
+		  var o = this.options;
+		  for (var i = o.min; i <= o.max; i += scale_interval) {
+			var angle = this._valueToAngle(i);
+			var numberTag = this._addSeperator(angle, "rs-custom");
+			var number = numberTag.children();
+			number.clone().css({
+			  "width": o.width + this._border(),
+			  "margin-top": this._border(true) / -2,
+			  "margin-right": '10px',
+			}).appendTo(numberTag);
+			number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
+			$("#"+id+".outerslider .rs-number").css("left", "-25px");
+			$("#"+id+".outerslider .rs-number").css("color",font_color); 
+			$("#"+id+".outerslider .rs-seperator").css("border-color",border_color );
+			$("#"+id+".outerslider .rs-seperator").css("border-width","2px");
+			$("#"+id+".outerslider .rs-seperator").css("width","6px");
+			//$("#"+id+".outerslider.rs-seperator_1").css("height","1px");
+			$("#"+id+".outerslider .rs-seperator").css("margin-left","-6px"); 
+			
+		  };
+		 //scala gerade striche (kurz)
+		  var interval = scale_interval/2;
+		  for (var i = o.min; i <= o.max; i += interval) {
+			var angle = this._valueToAngle(i);
+			var numberTag = this._addSeperator(angle, "rs-custom_1");
+			numberTag.addClass( "rs-seperator_1" );
+			$("#"+id+".outerslider .rs-seperator_1 .rs-seperator").css("border-color",border_color );
+			$("#"+id+".outerslider .rs-seperator_1 .rs-seperator").css("border-width","1px");
+			$("#"+id+".outerslider .rs-seperator_1 .rs-seperator").css("width","4px");
+			$("#"+id+".outerslider .rs-seperator_1 .rs-seperator").css("height","1px");
+			$("#"+id+".outerslider .rs-custom_1 .rs-seperator").css("left","-10px");  
+			
+		  };
+		},
+
+		tooltipFormat:function (args){
+			return"<span style='position: relative;top:-2.2em;font-size:0.2em;color:"+font_color+"; '>Ist: </span></br><span style='position: relative;top:-2.7em;font-weight:bold;font-size:0.45em;color:"+font_color+";'>" + args.value + unit +"</span>";
+		},
+		rangeColor: function (args) {
+			return border_color;
+		},
+		pathColor: function (args) {
+			return path_color;
+		},
+		borderColor: function (args) {
+			return border_color;
+		}
+	});
+		
+	// slider for set value
+	$("#"+id+".innerslider").roundSlider({
+		value: setValue,
+		min: scale_min,
+		max: scale_max,
+		step: step, 
+		width: 12,
+		sliderType: "min-range",
+		radius: 62,
+		showTooltip: false,
+		circleShape: "full",
+		startAngle: "315",
+		endAngle: "225",
+		handleShape: "round",
+		handleSize: "25",
+		lineCap: "none",
+		editableTooltip: false,
+		svgMode: true,
+		update: function (args) {
+			io.write(item_names[1], args.value);	
+		},
+	
+		tooltipColor: function (args) {
+			return font_color;
+		},
+		rangeColor: function (args) {
+			return bg_color;
+		},
+		pathColor: function (args) {
+			return path_color;
+		},
+		borderColor: function (args) {
+			return border_color;
+		},
+			
+		create: function() {
+			 $("#"+id).find(".inner-handle").css({
+				 'position': 'absolute',
+					'left': '-35px'}
+				 );
+		  }
+		});
+	},
+	
+	_events: {
+	}
+});
+
+
   // ----- device.uzsu ----------------------------------------------------------
   // ----------------------------------------------------------------------------
   //
