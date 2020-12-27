@@ -13,7 +13,6 @@
 {% block example %}
 <script type="text/javascript">
 	$( document ).ready(function() {
-		var now = +new Date();	
 		io.write('bath.blind.pos', 100 );
 		io.write('bath.light.text', "20,70" );
 	});
@@ -47,18 +46,27 @@
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-		<table width=100%><tr>
-			<td>{{ basic.roundslider('slider4', 'bath.light.value', 0, 100, 5, '', '', '', 'true', '', '', 'quarter-top-left' ) }} </td>
-			<td>{{ basic.roundslider('slider5', 'bath.blind.pos', 0, 255, 10, 'Rollo', 'Höhe', 'cm', '', '', '','half-top') }} </td>
-			<td>{{ basic.roundslider('slider6', 'bath.light.value2', 0, 255, 10, '', '', '', 'true', '50', '', 'quarter-top-right' ) }} </td>
-		</tr></table>
+		<table border width=100%> 
+			<tr>
+				<td>{{ basic.roundslider('slider4', 'bath.light.value', 0, 100, 5, '', '', '', 'true', '', '', 'quarter-top-left' ) }} </td>
+				<td>{{ basic.roundslider('slider5', 'bath.blind.pos', 0, 100, 5, 'Rollo', 'Höhe', 'cm', 'true', '', '','half-top') }} </td>
+				<td>{{ basic.roundslider('slider6', 'bath.light.value2', 0, 100, 5, '', '', '', 'true', '20', '', 'quarter-top-right' ) }} </td>
+			</tr>
+			<tr>
+				<td>{{ basic.roundslider('slider7', 'bath.light.value', 0, 100, 5, '', '', '', 'true', '', '', 'quarter-bottom-left' ) }} </td>
+				<td>{{ basic.roundslider('slider8', 'bath.blind.pos', 0, 100, 5, 'Rollo', 'Höhe', 'cm', 'true', '', '','half-bottom') }} </td>
+				<td>{{ basic.roundslider('slider9', 'bath.light.value2', 0, 100, 5, '', '', '', 'true', '20', '', 'quarter-bottom-right' ) }} </td>
+			</tr>
+			<tr>
+				<td>{{ basic.roundslider('slider10', 'bath.light.value', 0, 100, 5, '', '', '', 'true', '', '', 'half-left' ) }} </td>
+				<td>{{ basic.roundslider('slider11', 'bath.blind.pos', 0, 100, 5, 'Rollo', 'Höhe', 'cm', 'true', '', '','half-right') }} </td>
+			</tr>
+		</table>
 	</div>
-	
-	
-	
+		
 	<h5>Range Slider (experimental)</h5>
 	The range slider transmits a pair of values (min/max) which can be written to an item of text or list type.
-	{{ basic.roundslider('slider7', 'bath.light.text', 0, 100, 5,'','','','true','','','','range') }}
+	{{ basic.roundslider('slider12', 'bath.light.text', 0, 100, 5,'','','','true','','','','range') }}
 	
 	<br><br>
 	Documentation for the slider can be found here: <a href="https://roundsliderui.com/document.html">https://roundsliderui.com/document.html</a>
