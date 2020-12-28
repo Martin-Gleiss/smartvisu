@@ -15,6 +15,12 @@
 
 
 function get_lang($code = config_lang) {
+	
+	// does configured language file exist? config.ini could have been copied 
+	if (!is_file(const_path.'lang/'.$code.'.ini')) {
+		$code = 'en';
+	};
+	
 	// read ini file
 	$result = parse_ini_file(const_path.'lang/'.$code.'.ini', true);
 
@@ -135,7 +141,8 @@ function transdate($format = '', $timestamp = null)
 	if (!$lang)
 		$lang = get_lang();
 
-	if ($lang['format'][$format] != '')
+	//if ($lang['format'][$format] != '')  // throws php notices if array key is not existing
+	if (array_key_exists($format, $lang['format']))
 		$format = $lang['format'][$format];
 
 	if ($timestamp == '')
