@@ -15,6 +15,7 @@
 	$( document ).ready(function() {
 		io.write('bath.blind.pos', 100 );
 		io.write('bath.light.text', "20,70" );
+		io.write('bath.light.value2', 50 );
 	});
 </script>
 	
@@ -46,7 +47,7 @@
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-		<table border width=100%> 
+		<table width=100%> 
 			<tr>
 				<td>{{ basic.roundslider('slider4', 'bath.light.value', 0, 100, 5, '', '', '', 'true', '', '', 'quarter-top-left' ) }} </td>
 				<td>{{ basic.roundslider('slider5', 'bath.blind.pos', 0, 100, 5, 'Rollo', 'Höhe', 'cm', 'true', '', '','half-top') }} </td>
