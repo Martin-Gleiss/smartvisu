@@ -11,6 +11,12 @@
 {% extends "widget_device.html" %}
 
 {% block example %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+		io.write('bath.rtr.act', 22 );
+		io.write('bath.rtr.set', 21.5 );
+	});
+</script>
 
 	This widget can replace an RTR display (device.rtr) with almost the same functionality. <br>
 	If you want to use knx dpt '20.102' use the item_mode 3 times for 'item_comfort', 'item_night' and 'item_frost'.

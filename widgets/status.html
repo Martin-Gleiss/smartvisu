@@ -118,3 +118,43 @@ Caution: If this is set, the notification gets not shown until the item has sent
 	</div>
 
 {% endmacro %}
+
+/**
+* Displays a notification toast
+* 
+* @param {id=} unique id for this widget(optional)
+* @param {item(bool)} a trigger item (true to open, false to close)
+* @param {item(str)=} an item containing the title(optional)
+* @param {item(str)=} an item containing content (optional)
+* @param {item(str)=} an item  containing an icon (optional)
+* @param {text=} title (optional)
+* @param {text=} plain text or html code (optional, default = '')
+* @param {text=} defined icon which  can used (info, warning, success, error), also all smartvisu icons can also used (optional, default = '')
+* @param {value=} a defined template which can be used (success, error, warning, info) (optional, default = '')
+* @param {item(bool, num, str, list)=} an item to send a value on button-press (optional, default = '')
+* @param {text=} button text (optional, default = 'OK')
+* @param {text=} value to be sent when the button is pressed (optional, default = 'false')
+* @param {value=} an option to close the toast manually (true, false) (optional, default = 'true')
+* @param {text=} time in miliseconds until toast will hide (optional, default = '5000'). '' makes it sticky
+* @param {text=} fade-in effect to show the toast (plain, fade, slide) (optional, default = 'slide')
+* @param {text=} option to display a bargraph loader (true, false) (optional, default = 'true')
+* @param {color=} font color, not to be defined if a template is used (optional, default = '#9EC600')
+* @param {color=} background color, not to be defined if a template is used (optional, default = 'gray')
+* @param {value=} number of stacked toasts. 'false' to show one stack at a time / count showing the number of stacked toasts (optional, default = '5')
+* @param {text=} Alignment of text in the toast i.e. left, right, center (optional, default = 'left')
+* @param {text=} Toast position on display (optional, bottom-left, bottom-right, top-left, top-right....) (optional, default = 'bottom-left')
+* 
+* @author bonze 
+*/
+{% macro toast(id, item_trigger, item_title, item_content, item_icon, text_title, text_content, text_icon, param_template, item_button, text_button, value_button, param_allowclose, param_hideafter, param_showhide, param_showloader, param_color, param_bgColor, param_stack, param_align, param_position ) %}
+
+	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.toast" 
+		data-item="{{ item_trigger }}, {{ item_title }}, {{ item_content }}, {{ item_icon  }}"
+		data-text="{{ text_title }}, {{text_content|default('')}}, {{text_icon|default('') }}" 
+		data-button="{{text_button|default('OK') }}, {{item_button|default('') }}, {{value_button|default('false') }}"
+		data-template="{{param_template | default('')}}" 
+		data-style="{{param_bgColor | default('gray')}}, {{param_color | default('#9EC600')}},{{param_loaderbg | default('#eee')}},{{param_align | default('left')}},{{param_position | default('bottom-left')}},{{param_stack | default('5')}},{{param_showloader | default('true')}},{{param_hideafter | default('5000')}},{{param_allowclose | default('true')}},{{param_showhide | default('slide')}}" 
+		>
+	
+	</span>
+{% endmacro %}
