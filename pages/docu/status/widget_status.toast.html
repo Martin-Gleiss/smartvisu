@@ -11,7 +11,9 @@
 
 {% block example %}
 <script type="text/javascript">
-	io.write('bath.light.switch', 0);
+        io.write('bath.light.switch', 0);
+        console.log('stopping io.loop after 5 seconds');
+        var toasttimeout = setTimeout('io.stop();', 5000);
 </script>
 	<h5>Examples</h5>
 	<br>
@@ -21,7 +23,7 @@
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 			{{ status.toast('toast0', 'bath.light.switch', '','', '','', 'Test with own icon', 	'scene_livingroom',	'', '', '', '', 'true', 'false') }}
-			{{ status.toast('toast1', 'bath.light.switch', '','', '', 'Movement dtected',	'This ist the &quot;success&quot; template', '', 'success') }}
+			{{ status.toast('toast1', 'bath.light.switch', '','', '', 'Movement detected',	'This ist the &quot;success&quot; template', '', 'success') }}
 			{{ status.toast('toast2', 'bath.light.switch', '','', '', 'Test info', 'This is the &quot;info&quot; template', '', 'info') }}
 			{{ status.toast('toast3', 'bath.light.switch', '','','', 'WARNING!', 'This is the &quot;warning&quot; template', '', 'warning') }}
 			{{ status.toast('toast4', 'bath.light.switch', '','','', 'E R R O R !', 'This is the &quot;error&quot; template', '', 'error') }}
@@ -29,7 +31,7 @@
 	</div>
 
 	{{ status.toast('toast0', 'bath.light.switch', '','', '','', 'Test with own icon', 	'scene_livingroom',	'', '', '', '', 'true', 'false') }}
-	{{ status.toast('toast1', 'bath.light.switch', '','', '', 'Movement dtected',	'This ist the &quot;success&quot; template', '', 'success') }}
+	{{ status.toast('toast1', 'bath.light.switch', '','', '', 'Movement detected',	'This ist the &quot;success&quot; template', '', 'success') }}
 	{{ status.toast('toast2', 'bath.light.switch', '','', '', 'Test info', 'This is the &quot;info&quot; template', '', 'info') }}
 	{{ status.toast('toast3', 'bath.light.switch', '','','', 'WARNING!', 'This is the &quot;warning&quot; template', '', 'warning') }}
 	{{ status.toast('toast4', 'bath.light.switch', '','','', 'E R R O R !', 'This is the &quot;error&quot; template', '', 'error') }}
