@@ -38,7 +38,7 @@
 	Toggle the flipswitch in order to trigger the toast message <br>
 	{{ basic.flip('','bath.light.switch')}} 
 	<br> The first example shows how to send a value to an item by the toast. Dim the light using the dimmer and then watch the light while closing the topmost toast via the "Quit" button <br>
-	{{ device.dimmer('', '', '', 'bath.light.value', 0, 100, '', icon.light('', '','bath.light.value', 0, 100), icon.light('', '','bath.light.value', 0, 100) )}}
+	{{ device.dimmer('', '', 'bath.light.switch', 'bath.light.value', 0, 100, '', icon.light('', '','bath.light.value', 0, 100), icon.light('', '','bath.light.value', 0, 100) )}}
 	<br><br />
 	An item containing content, e.g. the video stream of a door station, can be dsiplayed inside a toast.  
 	<div class="twig">
