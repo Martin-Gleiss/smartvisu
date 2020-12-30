@@ -128,16 +128,16 @@ Caution: If this is set, the notification gets not shown until the item has sent
 * @param {item(str)=} an item containing content (optional)
 * @param {item(str)=} an item  containing an icon (optional)
 * @param {text=} title (optional)
-* @param {text=} plain text or html code (optional, default = '')
-* @param {text=} defined icon which  can used (info, warning, success, error), also all smartvisu icons can also used (optional, default = '')
-* @param {value=} a defined template which can be used (success, error, warning, info) (optional, default = '')
+* @param {text=} plain text or html code as content (optional, default = '')
+* @param {text=} smartvisu icon to be used instead of the standard icons (info, warning, success, error). (optional, default = '')
+* @param {text=} standard template to be used (success, error, warning, info) (optional, default = '')
 * @param {item(bool, num, str, list)=} an item to send a value on button-press (optional, default = '')
-* @param {text=} button text (optional, default = 'OK')
-* @param {text=} value to be sent when the button is pressed (optional, default = 'false')
-* @param {value=} an option to close the toast manually (true, false) (optional, default = 'true')
-* @param {text=} time in miliseconds until toast will hide (optional, default = '5000'). '' makes it sticky
+* @param {text=} button text (optional, default = '') button will show only if text is specified
+* @param {text=} value to be sent when the button is pressed (optional, default = '0')
+* @param {bool=} an option to close the toast manually (true, false) (optional, default = 'true')
+* @param {text=} time in miliseconds until toast will hide (optional, default = '5000'). 'false' makes it sticky
 * @param {text=} fade-in effect to show the toast (plain, fade, slide) (optional, default = 'slide')
-* @param {text=} option to display a bargraph loader (true, false) (optional, default = 'true')
+* @param {bool=} option to display a bargraph loader (true, false) (optional, default = 'true')
 * @param {color=} font color, not to be defined if a template is used (optional, default = '#9EC600')
 * @param {color=} background color, not to be defined if a template is used (optional, default = 'gray')
 * @param {value=} number of stacked toasts. 'false' to show one stack at a time / count showing the number of stacked toasts (optional, default = '5')
@@ -150,8 +150,8 @@ Caution: If this is set, the notification gets not shown until the item has sent
 
 	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.toast" 
 		data-item="{{ item_trigger }}, {{ item_title }}, {{ item_content }}, {{ item_icon  }}"
-		data-text="{{ text_title }}, {{text_content|default('')}}, {{text_icon|default('') }}" 
-		data-button="{{text_button|default('OK') }}, {{item_button|default('') }}, {{value_button|default('false') }}"
+		data-textopts="{{ text_title }}, {{ text_content | default('')}}, {{ text_icon | default('') }}" 
+		data-buttonopts="{{ text_button |  default('') }}, {{ item_button | default('') }}, {{ value_button | default('0') }}"
 		data-template="{{param_template | default('')}}" 
 		data-style="{{param_bgColor | default('gray')}}, {{param_color | default('#9EC600')}},{{param_loaderbg | default('#eee')}},{{param_align | default('left')}},{{param_position | default('bottom-left')}},{{param_stack | default('5')}},{{param_showloader | default('true')}},{{param_hideafter | default('5000')}},{{param_allowclose | default('true')}},{{param_showhide | default('slide')}}" 
 		>

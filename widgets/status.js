@@ -165,6 +165,9 @@ $.widget("sv.status_toast", $.sv.widget, {
 		template: null,
 		hideAfter:null,
 		showHide: null, 
+		style: '',
+		buttonopts: '',
+		textopts: '',
 	},
 
 	_create: function() {
@@ -185,25 +188,28 @@ $.widget("sv.status_toast", $.sv.widget, {
 		}
 
 		//Style values
-		var bgColor = this.element.attr('data-style').explode()[0];
-		var color = this.element.attr('data-style').explode()[1];
-		var loaderBg = this.element.attr('data-style').explode()[2];
-		var textAlign = this.element.attr('data-style').explode()[3];
-		var showPosition = this.element.attr('data-style').explode()[4];
-		var stack = this.element.attr('data-style').explode()[5];
-		var showLoader = this.element.attr('data-style').explode()[6];
-		var hideAfter = this.element.attr('data-style').explode()[7];
-		var allowClose = this.element.attr('data-style').explode()[8];
-		var showHide = this.element.attr('data-style').explode()[9];
-		//Button
-		var sendButton = this.element.attr('data-button').explode()[0];
-		var sendItem = this.element.attr('data-button').explode()[1];
-		var sendVal = this.element.attr('data-button').explode()[2] || false;
+		var params = this.options.style.explode();
+		var bgColor = params[0];
+		var color = params[1];
+		var loaderBg = params[2];
+		var textAlign = params[3];
+		var showPosition = params[4];
+		var stack = params[5];
+		var showLoader = (params[6] == 'true' ? true : false);
+		var hideAfter = params[7];
+		var allowClose = (params[8] == 'true' ? true : false);
+		var showHide = params[9];
 		
+		//Button
+		var buttonOpts = this.options.buttonopts.explode();
+		var sendButton = buttonOpts[0];
+		var sendItem = buttonOpts[1];
+		var sendVal = buttonOpts[2];
+				
 		//Title, Text, Icon check if text or item
 		var itemsStr = this.options.item.explode();
 		var items = [];
-		var text = this.element.attr('data-text').explode();
+		var textOpts = this.options.textopts.explode();
 		
 		var i2 =0;
 		items.push(response[0]);
@@ -212,8 +218,8 @@ $.widget("sv.status_toast", $.sv.widget, {
 				items.push(response[i-i2]);
 				i2= 0;
 			}else{
-				if(text[i-1]){
-					items.push(text[i-1]);
+				if(textOpts[i-1]){
+					items.push(textOpts[i-1]);
 					i2++;
 				}else{
 					items.push('');
@@ -227,24 +233,20 @@ $.widget("sv.status_toast", $.sv.widget, {
 		var showIcon = items[3];
 		
 		//Template 
-		var template = this.element.attr('template');
 		if(this.options.template == 'info'){
 			showIcon = 'info';
-			hideAfter = 2000;
+			hideAfter = 5000;
 			bgColor = '#81BEF7';
 			allowClose = true;
-			hideAfter= true;
 			color = '#eee';
 		}else if(this.options.template == 'success'){
 			showIcon = 'success';
-			hideAfter = 2000;
+			hideAfter = 5000;
 			bgColor = '#1ad600';
 			allowClose = true;
-			hideAfter= true;
 			color = '#000';
 		}else if (this.options.template == 'warning'){
 			showIcon = 'warning';
-			hideAfter = 2000;
 			bgColor = '#ff6609';
 			allowClose = true;
 			hideAfter= false;
@@ -255,10 +257,12 @@ $.widget("sv.status_toast", $.sv.widget, {
 			bgColor = '#e03d3d';
 			allowClose = false;
 			color = '#FFF';
-			showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ='+random+' type="button" value="'+this.element.attr('data-button').explode()[0]+'" />';
+			if (sendButton =='') sendButton ='OK';
+			showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ="#'+id+'" type="button" value="'+sendButton+'" data-senditem="'+sendItem+'" data-sendvalue="'+sendVal+'" />';
 		}else{
 			this.options.template = "free";
-			showIcon = response[3] || this.element.attr('data-text').explode()[2];
+			showIcon = response[3] || textOpts[2];
+			if (sendButton != '') showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ="#'+id+'" type="button" value="'+sendButton+'" data-senditem="'+sendItem+'" data-sendvalue="'+sendVal+'" />';
 		};
 		
 		if (response[0]){
@@ -283,9 +287,9 @@ $.widget("sv.status_toast", $.sv.widget, {
 			$('#' + id).append(toast);//add toast to widget
 		
 		
-			//eigenes icon nutzen
-			if (this.element.attr('data-text').explode()[2]){ 
-				var pic = this.element.attr('data-text').explode()[2];
+			//use smartVISU icon
+			if (textOpts[2]){ 
+				var pic = textOpts[2];
 
 				// add default path if icon has no path
 				if(pic.indexOf('.') == -1){
@@ -310,14 +314,17 @@ $.widget("sv.status_toast", $.sv.widget, {
 		
 		//Close by button click
 		$(".button").click(function() {
-			var button_id = $(this).attr('id'); //button id holen
-			if (sendItem == undefined || sendItem == ''|| sendItem.indexOf(".") == -1){
-				console.log("INFO: TOAST Button pressed, but NO Item or a string? given ");
-			}else{
-				io.write(sendItem, sendVal);
-			};
-			$(this).closest('div').remove();
-		});
+			var button_id = $(this).attr('id'); 
+			var sendItem = $(this).attr('data-senditem');
+			var sendVal= $(this).attr('data-sendvalue'); 
+			if (sendItem == undefined || sendItem == '') {
+                console.log("INFO: TOAST Button pressed, but NO item given ");
+            }else{
+               // console.log("INFO-Button: ", button_id, ' ', sendItem, ' ', sendVal);
+                io.write(sendItem, sendVal);
+            };
+            $(this).closest('div').remove();
+        });
 	},
 	
 	_events: {
