@@ -247,10 +247,24 @@ function twig_docu($filenames = null)
 		}
 		else
 		{
-			foreach ($header[1] as $headerno => $headertag)
-			{
-				if (!($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß"))
-					$ret[$headertag] = trim($header[2][$headerno]);
+			//file from ./dropins or subfolder could be a docu page
+			//otherwise return header
+			$endheader= strpos($file, '*/') + 2;
+			$dropins = strpos($filename,'dropins');
+			$docupage = strpos(str_replace(' ', '', substr($file, $endheader, 40)),'{%extends"widget_');
+			
+			debug_to_console('File with missing parameters: '.$filename. ' pos: '.$dropins);
+			if ($docupage !== false) 
+				debug_to_console('Docu page recognized on pos: '.$docupage);
+			else
+				debug_to_console('No docu page recognized');
+			
+			if ($dropins == false or ($dropins !== false and $docupage == false)) {
+				foreach ($header[1] as $headerno => $headertag)
+				{
+					if (!($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß"))
+						$ret[$headertag] = trim($header[2][$headerno]);
+				}
 			}
 		}
 	}
