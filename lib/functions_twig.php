@@ -251,6 +251,7 @@ function twig_docu($filenames = null)
 			//otherwise return header
 			$endheader= strpos($file, '*/') + 2;
 			$dropins = strpos($filename,'dropins');
+			$dropins = $dropins + strpos($filename,'pages/'.config_pages.'/widgets');
 			$docupage = strpos(str_replace(' ', '', substr($file, $endheader, 40)),'{%extends"widget_');
 			
 			debug_to_console('File with missing parameters: '.$filename. ' pos: '.$dropins);
