@@ -397,4 +397,28 @@ function twig_implode($mixed, $suffix = '', $delimiter = '.')
 	return $ret;
 }
 
+
+//
+// get items from file masteritem.json
+//
+function twig_items () {
+	if (is_file(const_path.'pages/'.config_pages.'/masteritem.json')) {
+		@$myFile = file_get_contents(const_path.'pages/'.config_pages.'/masteritem.json');
+		$Items1 = str_replace('[','',$myFile);
+		$Items1 = str_replace(']','',$Items1);
+		$Items1 = str_replace("\"",'',$Items1);
+		$Items2 = explode(",",$Items1);
+		$itemlist ='';
+		
+		foreach ($Items2 as $key) { 
+			$itemlist = $itemlist.trim(explode('|',$key)[0]).', ';
+		}
+		$itemlist =substr($itemlist,0,-2);
+	}
+	else
+		$itemlist = 'masteritem file not found';
+	
+	return $itemlist;
+}
+
 ?>
