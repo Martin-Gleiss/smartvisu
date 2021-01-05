@@ -116,6 +116,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$twig->addFunction( new \Twig\TwigFunction('read_config', 'twig_read_config'));
 	$twig->addFunction( new \Twig\TwigFunction('timezones', 'twig_timezones'));
 	$twig->addFunction( new \Twig\TwigFunction('implode', 'twig_implode', array('is_safe' => array('html'))));
+	$twig->addFunction( new \Twig\TwigFunction('items', 'twig_items'));
 
 	// init lexer comments
 	$lexer = new \Twig\Lexer($twig, array('tag_comment' => array('/**', '*/')));

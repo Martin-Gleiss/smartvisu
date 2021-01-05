@@ -306,4 +306,16 @@ function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
 	return $success;
 }
 
+// -----------------------------------------------------------------------------
+// A U X I L I A R Y
+// -----------------------------------------------------------------------------
+
+function debug_to_console($data) {
+    $data = '[PHP debug]: ' . $data;
+    $output = 'console.log(' . json_encode($data) . ');';
+    $output = sprintf('<script>%s</script>', $output);
+    echo $output;
+    }
+
+
 ?>
