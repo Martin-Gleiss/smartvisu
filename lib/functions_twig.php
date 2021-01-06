@@ -408,15 +408,16 @@ function twig_items () {
 		$Items1 = str_replace(']','',$Items1);
 		$Items1 = str_replace("\"",'',$Items1);
 		$Items2 = explode(",",$Items1);
-		$itemlist ='';
+		$itemlist = array();
+		$i = 0;
 		
 		foreach ($Items2 as $key) { 
-			$itemlist = $itemlist.trim(explode('|',$key)[0]).', ';
+			$itemlist[$i] = trim(explode('|',$key)[0]);
+			$i = $i+1;
 		}
-		$itemlist =substr($itemlist,0,-2);
 	}
 	else
-		$itemlist = 'masteritem file not found';
+		$itemlist[0] = 'masteritem file not found';
 	
 	return $itemlist;
 }
