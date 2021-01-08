@@ -57,6 +57,8 @@
 ### Removed Features
 - deprecated widgets from v2.8 and earlier have been deleted
 - removed protocol versions <= 3 in smarthome.py driver
+- support for older widgets (non jQuery mobile types) has been terminated 
+  (in case of urgency re-activateable in ./lib/base/base.js by uncommenting widget.update, widget.prepare, widget.refresh)
 
 ### Fixed Bugs
 - error thrown if default calender icons in language files were missing
@@ -66,6 +68,7 @@
 - fixed device.rtr misleading night / day icons 
 - all examples and docu checked and optimized with template checker
 - calendar.waste entries got overruled by smaller snippets (e.g. "green bin" by "bin" ) if snippet was not listed first 
+- widget.explode() was sorting purely numeric item names, so occationally items were swapped
 
 
 ## 2.9.2
