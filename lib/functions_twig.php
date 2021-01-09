@@ -399,7 +399,7 @@ function twig_implode($mixed, $suffix = '', $delimiter = '.')
 
 
 //
-// get items from file masteritem.json
+// get items from file masteritem.json (just the names) into an array
 //
 function twig_items () {
 	if (is_file(const_path.'pages/'.config_pages.'/masteritem.json')) {
@@ -420,6 +420,30 @@ function twig_items () {
 		$itemlist[0] = 'masteritem file not found';
 	
 	return $itemlist;
+}
+
+//
+// check if file exists in the path
+//
+function twig_asset_exists($file) {
+	$fileExists = 0;
+	$requestpages = ($_REQUEST['pages'] != '') ? $_REQUEST['pages'] : config_pages;
+	if(strpos($file, '/') === false) {
+		if(is_file(const_path . 'widgets/'. $file)) $fileExists = 1;
+		if(is_file(const_path . 'dropins/'. $file)) $fileExists = 1;
+		if(is_file(const_path . 'dropins/widgets/' . $file )) $fileExists = 1;
+		if(is_file(const_path . 'pages/' . $requestpages .'/widgets/'. $file )) $fileExists = 1;
+		$searchpath = 'in ./widgets, ./dropins, ./dropins/widgets and ./pages/'. $requestpages .'/widgets/';
+	} else 	{	
+		// add const_path if $file is relative
+		if (substr($file, 0, 1) != '/') 
+			if(is_file(const_path.$file)) 
+				$fileExists = 1; 	
+		$searchpath = 'for '. $file;
+	}
+	if ($fileExists == 0) debug_to_console($file.' not found. Looked '.$searchpath);
+	
+	return $fileExists;
 }
 
 ?>
