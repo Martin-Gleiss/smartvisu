@@ -247,10 +247,25 @@ function twig_docu($filenames = null)
 		}
 		else
 		{
-			foreach ($header[1] as $headerno => $headertag)
-			{
-				if (!($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß"))
-					$ret[$headertag] = trim($header[2][$headerno]);
+			//file from ./dropins or subfolder could be a docu page
+			//otherwise return header
+			$endheader= strpos($file, '*/') + 2;
+			$dropins = strpos($filename,'dropins');
+			$dropins = $dropins + strpos($filename,'pages/'.config_pages.'/widgets');
+			$docupage = strpos(str_replace(' ', '', substr($file, $endheader, 40)),'{%extends"widget_');
+			
+			debug_to_console('File with missing parameters: '.$filename. ' pos: '.$dropins);
+			if ($docupage !== false) 
+				debug_to_console('Docu page recognized on pos: '.$docupage);
+			else
+				debug_to_console('No docu page recognized');
+			
+			if ($dropins == false or ($dropins !== false and $docupage == false)) {
+				foreach ($header[1] as $headerno => $headertag)
+				{
+					if (!($headertag == "author" and trim($header[2][$headerno]) == "Martin Gleiß"))
+						$ret[$headertag] = trim($header[2][$headerno]);
+				}
 			}
 		}
 	}
@@ -380,6 +395,31 @@ function twig_implode($mixed, $suffix = '', $delimiter = '.')
 		$ret = $mixed.$suffix;
 
 	return $ret;
+}
+
+
+//
+// get items from file masteritem.json
+//
+function twig_items () {
+	if (is_file(const_path.'pages/'.config_pages.'/masteritem.json')) {
+		@$myFile = file_get_contents(const_path.'pages/'.config_pages.'/masteritem.json');
+		$Items1 = str_replace('[','',$myFile);
+		$Items1 = str_replace(']','',$Items1);
+		$Items1 = str_replace("\"",'',$Items1);
+		$Items2 = explode(",",$Items1);
+		$itemlist = array();
+		$i = 0;
+		
+		foreach ($Items2 as $key) { 
+			$itemlist[$i] = trim(explode('|',$key)[0]);
+			$i = $i+1;
+		}
+	}
+	else
+		$itemlist[0] = 'masteritem file not found';
+	
+	return $itemlist;
 }
 
 ?>

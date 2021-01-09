@@ -76,6 +76,7 @@ $.widget("sv.weather_current", $.sv.widget, {
 		var repeatMinutes = (new Date().duration(this.options.repeat) - 0) / 60000;
 		$.getJSON(this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes, function (data) {
 			element.css('background-image', 'url(lib/weather/pics/' + data.current.icon + '.png)')
+			element.css('background-size', 'contain')
 			element.children('.city').html(data.city);
 			element.children('.cond').html(data.current.conditions);
 			if (that._temp == 0) element.children('.temp').html(data.current.temp);

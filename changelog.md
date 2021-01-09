@@ -20,6 +20,8 @@
 - widget weather.current takes weather values from backend item alternativly to online weather informaion
 - new widget event "exit" allows stopping of functions before page change (e.g. deleting timers)
 - new widget basic.roundslider with flexible design options
+- new widget device.rtrslider for slider control of set temperature and functionality of device.rtr 
+- new widget status.toast to display notifications 
 
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'
@@ -30,6 +32,8 @@
 - widget constructor can be deactivated in config page in order to save ressources
 - new version number format (e.g. v2.9.2) is standard in communication w/ io-drivers, old format is deprecated
 - menu button for German "Kurzanleitung" (separately available on github.com/smartvisu-newstuff/kurzanleitung) integrated in system menu
+- language is switched to "en" by default if configured language file does not exist any more
+- new twig function 'twig_items()' provides a list of all items from 'masteritem.json'
 
 ### Improvements
 - function Date().duration changed to accept negative values (for plots reaching into the future)
@@ -53,6 +57,8 @@
 ### Removed Features
 - deprecated widgets from v2.8 and earlier have been deleted
 - removed protocol versions <= 3 in smarthome.py driver
+- support for older widgets (non jQuery mobile types) has been terminated 
+  (in case of urgency re-activateable in ./lib/base/base.js by uncommenting widget.update, widget.prepare, widget.refresh)
 
 ### Fixed Bugs
 - error thrown if default calender icons in language files were missing
@@ -62,6 +68,7 @@
 - fixed device.rtr misleading night / day icons 
 - all examples and docu checked and optimized with template checker
 - calendar.waste entries got overruled by smaller snippets (e.g. "green bin" by "bin" ) if snippet was not listed first 
+- widget.explode() was sorting purely numeric item names, so occationally items were swapped
 
 
 ## 2.9.2
