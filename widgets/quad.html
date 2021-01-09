@@ -2601,10 +2601,10 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 
           {% if column == 'stateengine' and item_auto[i] %}
             {% if extpopup[i][0] == 'stateengine' and stateengine is defined %}
-                {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
+                {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.release', config_stateengine_icons, config_stateengine_values, uid(page, id)~'list_extpopup'~z~i) }}
                 {{ popup.extpopup(uid(page, id)~'list_extpopup'~z~i, extpopup[i][1], extpopup[i][2], extpopup[i][3], extpopup[i][4], extpopup[i][5], extpopup[i][6], extpopup[i][7], extpopup[i][8], extpopup[i][9], extpopup[i][10], extpopup[i][11], extpopup[i][12], extpopup[i][13], extpopup[i][14], extpopup[i][15], extpopup[i][16], extpopup[i][17], extpopup[i][18], extpopup[i][19]) }}
             {% elseif stateengine is defined %}
-                {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.suspend', config_stateengine_icons, config_stateengine_values) }}
+                {{ stateengine.state(id~'_state'~z~i, item_auto[i]~'.state_name', item_auto[i]~'.lock', item_auto[i]~'.release', config_stateengine_icons, config_stateengine_values) }}
             {% endif %}
 
             {% if arrays[loop.index] == 'div' %}
