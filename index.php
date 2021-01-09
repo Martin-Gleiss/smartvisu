@@ -58,13 +58,14 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 		$loader->addPath(const_path.'pages/smarthome');
 
 	$loader->addPath(const_path.'dropins');
+	$loader->addPath(const_path.'dropins/widgets');
 	$loader->addPath(const_path.'pages/base');
 	$loader->addPath(const_path.'widgets');
 
 	// init environment
 	$twig = new \Twig\Environment($loader);
 	$twig->addExtension(new \Twig\Extension\StringLoaderExtension());
-	$twig->addExtension(new \Twig\Extension\AssetExistsExtension());
+	//$twig->addExtension(new \Twig\Extension\AssetExistsExtension());
 
 	if (defined('config_debug')) {
 		if (config_debug) {
@@ -117,6 +118,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$twig->addFunction( new \Twig\TwigFunction('timezones', 'twig_timezones'));
 	$twig->addFunction( new \Twig\TwigFunction('implode', 'twig_implode', array('is_safe' => array('html'))));
 	$twig->addFunction( new \Twig\TwigFunction('items', 'twig_items'));
+	$twig->addFunction( new \Twig\TwigFunction('asset_exists', 'twig_asset_exists'));
 
 	// init lexer comments
 	$lexer = new \Twig\Lexer($twig, array('tag_comment' => array('/**', '*/')));

@@ -34,6 +34,8 @@
 - menu button for German "Kurzanleitung" (separately available on github.com/smartvisu-newstuff/kurzanleitung) integrated in system menu
 - language is switched to "en" by default if configured language file does not exist any more
 - new twig function 'twig_items()' provides a list of all items from 'masteritem.json'
+- new twig function 'asset_exists()' replaces former AssetExistExtension 
+- simplified import of widgets by extended twig loader path 
 
 ### Improvements
 - function Date().duration changed to accept negative values (for plots reaching into the future)
