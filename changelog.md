@@ -51,7 +51,7 @@
 - multimedia.image stops loading images after page has been left (via exit event)
 
 ### Updated Libraries
-- updated Twig to v1.42.5
+- updated Twig to v1.44.2 (2021/01/05)
 - a bunch of new icons (thanks to @mfd)
 
 ### Deprecated
