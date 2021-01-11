@@ -16,8 +16,8 @@ removed:
      - basic.badge
      - basic.maptext
      - basic._icon
+     - plot.minmaxavg
+     - plot.multiaxis
 
 deprecated:
      - basic.shifter
-     - plot.minmaxavg
-     - plot.multiaxis
