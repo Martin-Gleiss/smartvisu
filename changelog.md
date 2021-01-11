@@ -10,7 +10,7 @@
 - basic.trigger can trigger logics on page create (new) and / or by button
 - basic.select "menu"-type accepts dynamic option lists and texts via items (list type)
 - new dynamic icon "icon.battery2"
-- new widget lib.connection to display the URL of the shNG websocket
+- new widget lib.connection to display the URL of the websocket plus shNG websocket server (module / plugin) and start time
 - added setpoint item to quad.rtr 
 - new widget clock.countdown to visualize timers in backend
 - new widget lib.timestamp to write a timestamp of "now" to an item (used for countdown doc page)
@@ -36,6 +36,7 @@
 - new twig function 'twig_items()' provides a list of all items from 'masteritem.json'
 - new twig function 'asset_exists()' replaces former AssetExistExtension 
 - simplified import of widgets by extended twig loader path 
+- new event 'ioAlive' on $(document) is triggered when websocket server has started communicating 
 
 ### Improvements
 - function Date().duration changed to accept negative values (for plots reaching into the future)
@@ -50,7 +51,7 @@
 - multimedia.image stops loading images after page has been left (via exit event)
 
 ### Updated Libraries
-- updated Twig to v1.42.5
+- updated Twig to v1.44.2 (2021/01/05)
 - a bunch of new icons (thanks to @mfd)
 
 ### Deprecated

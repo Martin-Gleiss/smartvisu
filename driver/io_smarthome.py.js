@@ -1,8 +1,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiss, Martin Sinn
- * @copyright   2012 - 2016
+ * @author      Martin Gleiß, Martin Sinn, Wolfram v. Hülsen
+ * @copyright   2012 - 2021
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       SmartHomeNG
@@ -100,6 +100,12 @@ var io = {
 	 * This is the protocol version
 	 */
 	version: 4,
+	
+	/**
+	 * This is the websocket module / plugin and the websocket opening time
+	 */
+	server: '', 
+	opentime: null,
 
 	/**
 	 * This driver uses a websocket
@@ -210,6 +216,11 @@ var io = {
 				//	if (io.version < 3) {
 				//		notify.warning('Driver: smarthome.py', 'Protocol mismatch<br />SmartHome.py is: v' + io.version + '<br /><br /> Update the system!');
 				//	}
+					if (data.server != undefined){ 
+						io.server = data.server;
+						io.opentime = new Date(data.time);
+					}
+					$(document).trigger('ioAlive');
 					break;
 
 				case 'url':

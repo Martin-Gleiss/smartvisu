@@ -67,6 +67,18 @@ class OldWidgets {
 				"removed" => true,
 				"replacement" => "basic.print(%1\$s, %2\$s, %3\$s, '', %5\$s, %6\$s)",
 				),
+			"plot.minmaxavg" => array (
+				"name" => "minmaxavg",
+				"params" => "id, item, tmin, tmax, ymin, ymax, unit, axis, count",
+				"removed" => true,
+				"replacement" => "plot.period(%1\$s, %2\$s, 'minmaxavg', %3\$s, %4\$s, %5\$s, %6\$s, %9\$s, '', '', '', %8\$s, '', '', '', '', %7\$s)",
+				),
+			"plot.multiaxis" => array (
+				"name" => "multiaxis",
+				"params" => "id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor",
+				"removed" => true,
+				"replacement" => "plot.period(%1\$s, %2\$s, %3\$s, %4\$s, %5\$s, %6\$s, %7\$s, %8\$s, %9\$s, %10\$s, %11\$s, %12\$s, %13\$s, %14\$s, %15\$s, %16\$s)",
+				),
 		);
 	}
 }
