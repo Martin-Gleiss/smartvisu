@@ -238,7 +238,7 @@
 			/** copy from device.rtr **/
 			{% if item_set %}
 				<div class="set" style="position:relative; top: -190px;">
-					<div class="temp" style="margin-bottom:15px;">Soll: {{ basic.print('', item_set, '°C' ) }}</div>
+					<div class="temp" style="margin-bottom:15px;">Soll: {{ basic.print('', item_set, 'temp' ) }}</div>
 					<div>
 						{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro' ) }}
 						{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro' ) }}
