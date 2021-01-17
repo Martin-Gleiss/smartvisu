@@ -19,6 +19,9 @@ require_once 'class.TemplateChecker.php';
 require_once 'class.Items.php';
 require_once 'class.OldWidgets.php';
 
+// avoid fatal timeout errors on older devices while checking pages with plenty of widgets
+set_time_limit (120);
+
 RequestHandler::run();
 
 class RequestHandler {
