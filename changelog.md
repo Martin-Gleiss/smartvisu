@@ -22,6 +22,7 @@
 - new widget basic.roundslider with flexible design options
 - new widget device.rtrslider for slider control of set temperature and functionality of device.rtr 
 - new widget status.toast to display notifications 
+- phone list shows called number on outgoing call if available from backend
 
 ### Other New Features
 - bash script "setpermissions" added for setting file permissions during initial setup. To be called by 'sudo bash setpermissions'
@@ -74,6 +75,7 @@
 - all examples and docu checked and optimized with template checker
 - calendar.waste entries got overruled by smaller snippets (e.g. "green bin" by "bin" ) if snippet was not listed first 
 - widget.explode() was sorting purely numeric item names, so occationally items were swapped
+- fritz!box_TR-064 driver threw warnings disturbing the data stream in certain environments
 
 
 ## 2.9.2

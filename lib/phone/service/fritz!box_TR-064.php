@@ -12,9 +12,9 @@
 require_once '../../../lib/includes.php';
 require_once const_path_system . 'phone/phone.php';
 /**
- * This class reads the phonelist of an fritz!box phonesystem via TR-064 protocol
+ * This class reads the phonelist of a fritz!box phonesystem via TR-064 protocol
  * This can only work if you enable "Zugriff für Anwendungen zulassen".
- * you can found this config switch inside the web console -> Home network -> Network -> Network Settings
+ * you can find this config switch inside the web console -> Home network -> Network -> Network Settings
  * It is required that "Extented View" of the web console is enabled - that this checkbox is shown.
  * 
  */
@@ -133,7 +133,7 @@ class phone_fritzbox_TR064 extends phone
         $url = $this->call_list_url . '&max=' . $this->max_calls_to_fetch;
         $this->debug($url, "URL for call_list");
         // download xml file and put it to xml parser
-        $GetCallListXml = file_get_contents($url, false, stream_context_create(array('ssl' => $self->context_ssl)));
+        $GetCallListXml = file_get_contents($url, false, stream_context_create(array('http://' => array('ssl' => $self->context_ssl))));
         $simplexml      = simplexml_load_string($GetCallListXml);
         $this->debug($GetCallListXml, "GetCallListXml");
         /*
@@ -148,7 +148,7 @@ class phone_fritzbox_TR064 extends phone
         [Date] => 08.02.14 12:43
         [Duration] => 0:32
         */
-        // map fritz box xml values to the smartvisu standart        
+        // map fritz box xml values to the smartvisu standard        
         foreach ($simplexml->xpath('//Call') as $call) {
             // check if we got german date format and translate to ISO date 
             //(smartvisu is using strtotime later on)
