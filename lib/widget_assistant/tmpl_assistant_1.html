@@ -30,7 +30,7 @@
 				{{ %widget% }} 
 		</div>
         <div id="last_updated">
-   			<h3>last updatet at : 15:00:00 </h3>
+   			<h3>Here you will see the last update time of the rendered widgets</h3>
         </div>
 
 	
@@ -41,9 +41,8 @@
     function CheckUpdate()
 
     {
-//         newTimeStamp = 0
 	     $.ajax({
-		       url: "lib/widget_constructor/widget_constructor.php",
+		       url: "lib/widget_assistant/widget_assistant.php",
 		       method: "GET",
 		       dataType: "text",
 		       data: {
@@ -56,9 +55,9 @@
                         {
                          lastTimeStamp = newTimeStamp
                          date_Obj = new Date(newTimeStamp)
-             	         console.log("got timestamp :" + newTimeStamp)
+             	           console.log("got timestamp :" + newTimeStamp)
                          newText = date_Obj.toString()
-              		     document.getElementById("last_updated").innerHTML = 'last updatet at :'+newText
+              		       document.getElementById("last_updated").innerHTML = 'last updatet at :'+newText
                         }
 
                     if (newTimeStamp > lastTimeStamp)
@@ -66,9 +65,9 @@
                          lastTimeStamp = newTimeStamp
                          location.reload(); 
                          date_Obj = new Date(newTimeStamp)
-             	         console.log("got timestamp :" + newTimeStamp)
+             	           console.log("got timestamp :" + newTimeStamp)
                          newText = date_Obj.toGMTString()
-              		     document.getElementById("last_updated").innerHTML = 'last updatet at :'+newText
+              		       document.getElementById("last_updated").innerHTML = 'last updatet at :'+newText
                         }
 
 		       },

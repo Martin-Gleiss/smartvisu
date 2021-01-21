@@ -36,6 +36,11 @@ quad.dimmer('Lueftungsstufe1', 'Lüftungsstufe', 'Haustechnik.Lueftung', 'Hauste
 <a name="ChangeLog"/></a>
 ## Change-Log
 
+#### 2021.01.18 - Version 1.1.0
+- changed handling for "render in new window" - if there is no Window a new one will be opened, else the opened window would be refreshed, also if there is a twig error
+- more fixings for "nasty", "nested" widgets
+- changed Hot-Keys
+
 #### 2020.11.08 - Version 1.0.0
 - added support for multi-widget creation (widgets have to be separated by <strong>&lt;br&gt;</strong>-TAG)
 - fixed problem for "nasty", "nested" widgets
@@ -87,15 +92,19 @@ actual smartvisu-Version - you can find it here
 ## Hot-Keys
 | Shortcut  |function   |
 |---|---|
-| STRG+1  | only Items in autocomplete-Dict  |
+| STRG+0  | switch OFF autocomplete-Dict  |
+| STRG+1  | switch ON autocomplete-Dict  |
 | STRG+2  | only Widgets in autocomplete-Dict  |
 | STRG+3 |  only Icons in autocomplete-Dict  |
 | STRG+4 |  all in autocomplete-Dict  |
 | STRG+5 |  only Colors in autocomplete-Dict  |
 | STRG+6 |  autocomplete-Dict is OFF |
 | STRG+7 |  switch ON/OFF autocomplete for Ouotes<sup><span style="color:red"> **(1)**</span></sup> - take some time to build the autocomplete |
+| STRG+8  | only Items in autocomplete-Dict  |
 | STRG+9 |  switch ON/OFF Wildcard search in autocomplete dict  |
 | STRG+Space |  opens the actual autocomplete-Dict  |
+| STRG+F |  find value in widgets  |
+| STRG+SHIFT+R |  replace value in widgets - use ENTER to go to replacement-value  |
 
 (1) when autocomplete for quotes is on - the autocomplete dict will return all values <strong>without</strong> quotes<br>
     when autocomplete for quotes is off - the autocomplete dictionary will return all values <strong>with</strong> quotes
