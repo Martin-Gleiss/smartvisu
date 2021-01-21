@@ -1,7 +1,7 @@
 <?php
 /**
  * -----------------------------------------------------------------------------
- * @package     smartVISU
+ * @package     Widget - Assistant
  * @author      Andre Kohler
  * @copyright   2020
  * @license     GPL [http://www.gnu.de]
@@ -48,9 +48,9 @@ function render_inline ($value)
 	 $myNewWidgets = $myNewWidgets ."{{" . $entry . "}}<br>\n";
  	 $myNewWidgets = $myNewWidgets ."===================================================================<br>\n";
 	}
-	$myFile = file_get_contents('tmpl_construct_2.html');
+	$myFile = file_get_contents('tmpl_assistant_2.html');
 	$myFile = str_replace("{{ %widget% }}",$myNewWidgets, $myFile);
-	file_put_contents('../../pages/'.config_pages.'/construct.html', $myFile);
+	file_put_contents('../../pages/'.config_pages.'/assistant.html', $myFile);
     return 'OK';
 }
 
@@ -68,9 +68,9 @@ function render_outline ($value)
 	 $myNewWidgets = $myNewWidgets ."{{" . $entry . "}}<br>\n";
  	 $myNewWidgets = $myNewWidgets ."===================================================================<br>\n";
 	}
-	$myFile = file_get_contents('tmpl_construct_1.html');
+	$myFile = file_get_contents('tmpl_assistant_1.html');
 	$myFile = str_replace("{{ %widget% }}",$myNewWidgets, $myFile);
-	file_put_contents('../../pages/'.config_pages.'/construct.html', $myFile);
+	file_put_contents('../../pages/'.config_pages.'/assistant.html', $myFile);
     return 'OK';
 }
 
@@ -88,7 +88,7 @@ function load_items ($value)
 // ************************************************
 function get_time_stamp ($value)
 {
-    $ret = filemtime(const_path.'pages/'.config_pages.'/construct.html');
+    $ret = filemtime(const_path.'pages/'.config_pages.'/assistant.html');
     return $ret;
 }
 
