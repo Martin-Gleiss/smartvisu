@@ -247,18 +247,13 @@ function twig_docu($filenames = null)
 		}
 		else
 		{
-			//file from ./dropins or subfolder could be a docu page
+			//here we go with files where no widgets have been found - possibly normal visu pages or docu pages
+			//file from ./dropins or subfolder could be a docu page, file from pages/config_pages/widgets,too.
 			//otherwise return header
 			$endheader= strpos($file, '*/') + 2;
 			$dropins = strpos($filename,'dropins');
 			$dropins = $dropins + strpos($filename,'pages/'.config_pages.'/widgets');
 			$docupage = strpos(str_replace(' ', '', substr($file, $endheader, 40)),'{%extends"widget_');
-			
-			debug_to_console('File with missing parameters: '.$filename. ' pos: '.$dropins);
-			if ($docupage !== false) 
-				debug_to_console('Docu page recognized on pos: '.$docupage);
-			else
-				debug_to_console('No docu page recognized');
 			
 			if ($dropins == false or ($dropins !== false and $docupage == false)) {
 				foreach ($header[1] as $headerno => $headertag)

@@ -23,7 +23,7 @@ $request = array_merge($_GET, $_POST);
 // override configured pages if a corresponding request parameter is passed
 $config_pages = ($request['pages'] != '') ? $request['pages'] : config_pages;
 
-// detect page and path
+// if page is not in $request use default index page defined in defaults.ini
 if ($request['page'] == '')
 	$request['page'] = config_index;
 
@@ -53,7 +53,8 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	if (dirname($request['page']) != '.' && is_dir(const_path.'pages/'.$config_pages.'/'.dirname($request['page'])))
 		$loader->addPath(const_path.'pages/'.$config_pages.'/'.dirname($request['page']));
 
-	// add dir if is not directly chosen
+	// add smarthome dir if it is not directly chosen. 
+	// allows combination of custom pages with auto-generated pages from smarthomeNG
 	if (config_driver == 'smarthome.py' and $config_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
 		$loader->addPath(const_path.'pages/smarthome');
 
@@ -65,8 +66,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	// init environment
 	$twig = new \Twig\Environment($loader);
 	$twig->addExtension(new \Twig\Extension\StringLoaderExtension());
-	//$twig->addExtension(new \Twig\Extension\AssetExistsExtension());
-
+	
 	if (defined('config_debug')) {
 		if (config_debug) {
 			$twig->enableDebug();
