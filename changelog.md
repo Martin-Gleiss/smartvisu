@@ -1,4 +1,4 @@
-## next version
+## 3.0
 
 ### New / Changed Widgets
 - new "widget assistant" tool to parametrize and test widgets (thanks to Andre Kohler)
@@ -77,6 +77,9 @@
 - widget.explode() was sorting purely numeric item names, so occationally items were swapped
 - fritz!box_TR-064 driver threw warnings disturbing the data stream in certain environments
 
+### Known Bugs
+- when leaving a page via the "back" button, widgets exit method and cancellation of plot data subscriptions won't work.
+  (root cause documented in base.js line 1804)
 
 ## 2.9.2
 

@@ -253,8 +253,8 @@ function twig_docu($filenames = null)
 			$endheader= strpos($file, '*/') + 2;
 			$dropins = strpos($filename,'dropins');
 			$dropins = $dropins + strpos($filename,'pages/'.config_pages.'/widgets');
-			$docupage = strpos(str_replace(' ', '', substr($file, $endheader, 40)),'{%extends"widget_');
-			
+			$docupage = strpos(str_replace(' ', '', substr($file, $endheader, 40)),'{%extends"custom/widget_');
+						
 			if ($dropins == false or ($dropins !== false and $docupage == false)) {
 				foreach ($header[1] as $headerno => $headertag)
 				{
