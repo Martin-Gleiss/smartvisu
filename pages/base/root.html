@@ -45,9 +45,12 @@
 {% set cssFiles = [
 		'vendor/plot.highcharts/highcharts.css',
 		'vendor/JTSage/DateBox/css/jtsage-datebox.css',
+		'vendor/jquery.roundslider/roundslider.css',
+		'vendor/jquery.toast/toast.css',
 		'lib/clock/jdigiclock.css',
 		'lib/weather/jdigiweather.css',
 		'pages/base/base.css',
+		'pages/base/quad.css',
 		icon0 ~ 'jquery.mobile.icons.min.css',
 		'designs/' ~ config_design ~ '.css',
 		'pages/' ~ config_pages ~ '/visu.css'
@@ -119,6 +122,8 @@
 		'vendor/plot.highcharts/draggable-points.js',
 		'vendor/plot.highcharts/modules/solid-gauge.js',
 		'vendor/jquery.cycle2/jquery.cycle2.js',
+		'vendor/jquery.roundslider/jquery-1.61.roundslider.js',
+		'vendor/jquery.toast/jquery.toast.js',
 		'vendor/JTSage/DateBox/js/jtsage-datebox.js',
 		'lib/clock/jquery.jdigiclock.js',
 		'vendor/JTSage/DateBox/js/i18n/jtsage-datebox.i18n.'~lang('DateBox', 'lang')~'.utf8.js',
@@ -189,6 +194,7 @@
 {% endif %}
 
 	// Do some actions before page is shown
+	// and run the io  with all widgets
 	$(document).on('pagecontainerbeforeshow', function () {
 		fx.init();
 		repeater.init();
@@ -196,15 +202,16 @@
 		io.run({{ config_driver_realtime }});
 	});
 
-	// Run the io and all widgets
+	// Activate the info field in top right corner
 	$(document).on('pagecontainershow', function () {
 		notify.display();
 	});
 
-	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};
-
+	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};	
 </script>
-    <script src="vendor/codemirror/lib/codemirror.js"></script>
+/** activate codemirror only if widget assistant is activated */
+{% if config_widgetassist %}  
+	<script src="vendor/codemirror/lib/codemirror.js"></script>
     <script src="vendor/codemirror/mode/python/python.js"></script>
     <script src="vendor/codemirror/mode/yaml/yaml.js"></script>
     <script src="vendor/codemirror/mode/xml/xml.js"></script>
@@ -226,9 +233,8 @@
     <script src="vendor/codemirror/addon/search/jump-to-line.js"></script>
     <script src="vendor/codemirror/addon/edit/matchbrackets.js"></script>
     <script src="vendor/codemirror/addon/edit/closebrackets.js"></script>
-
-<link rel="stylesheet" href="pages/base/quad.css" />
-<script type="text/javascript" src="widgets/quad.js"></script>
+{% endif %}	
+	
 {% import "lib.html" as lib %}
 {% import "basic.html" as basic %}
 {% import "calendar.html" as calendar %}
