@@ -22,6 +22,7 @@
 - new widget basic.roundslider with flexible design options
 - new widget device.rtrslider for slider control of set temperature and functionality of device.rtr 
 - new widget status.toast to display notifications 
+- new widget basic.window shows opening status of windows and sutter position 
 - phone list shows called number on outgoing call if available from backend
 
 ### Other New Features
