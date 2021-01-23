@@ -596,3 +596,66 @@
 	</div>
 
 {% endmacro %}
+
+/**
+ * Displays window status and a simple shutter control assembly in a popup
+ *
+ * @param {id=} unique id for this widget
+ * @param {text=} title of the window (optional)
+ * @param {item(bool,num)} item for the up- and down- movement of the shutter
+ * @param {item(bool,num)} item for stopping the movement of the shutter (optional)
+ * @param {item(num)=} item for the position of the shutter (optional)
+ * @param {item(num)=} item to move the shutters to the shade position (optional)
+ * @param {item(num)=} item to display the window's right wing status (optional) 
+ * @param {item(num)=} item to display the window's left wing status (optional) 
+ * @param {type=micro} type: 'micro', 'mini', 'midi', 'icon' (optional, default: mini)
+ * @param {value=0} the value for opened (optional, default 0)
+ * @param {value=255} the value for closed (optional, default 255)
+ * @param {value=5} step between two values (optional, default 5)
+ * @param {color=} color e.g. '#f00' for red (constant, 'icon0' and 'icon1' can NOT be used) (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
+ */
+{% macro window (id, txt, item_move, item_stop, item_pos, item_shade, item_window_r, item_window_l, type, min, max, step, color ) %}
+	{% import   "basic.html" as basic %}
+	{% set uid = uid(page, id) %}
+		
+	<style>
+	.pos .ui-slider .ui-input-text {
+		display: none !important;
+	}
+	.pos .ui-slider-track, .pos .ui-slider-switch {
+		margin: 0 15px 15px 15px !important;
+	}
+	</style>
+	
+	<a id="{{ uid }}-button" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %} data-rel="popup"
+		class=" {%- if type == 'icon' -%} /**- display as icon -*/
+						switch ui-link absolutepos
+					{%- else -%} /**- display as button -*/
+						ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline absolutepos
+						{%- if not pic is empty -%}
+							{{ not txt is empty ? ' ui-btn-icon-top' }} ui-nodisc-icon
+						{%- endif -%}
+					{%- endif -%}"
+		>
+		{{ basic.window (uid~'-icon', item_pos, item_window_r, item_window_l, min, max, color) }}
+	</a>
+		
+    <div id="{{ uid }}-popup" data-role="popup" style="min-width:200px;">
+		<div>
+			{{ basic.window(uid~'-icon', item_pos, item_window_r, item_window_l, min, max, '') }}
+			{{ txt|e }}
+        </div>
+         <div data-role="controlgroup" data-type="horizontal">
+			{{ basic.stateswitch(id~'up', item_move, 'mini', 0, 'control_arrow_up.svg') }}
+			{{ basic.stateswitch(id~'down', item_move, 'mini', 1, 'control_arrow_down.svg') }}
+			{% if item_stop %}{{ basic.stateswitch(id~'stop', item_stop, 'mini', 1, 'audio_stop.svg') }}{% endif %}
+			{% if item_shade %}{{ basic.stateswitch(id~'shade', item_shade, 'mini', 1, 'fts_shutter_50.svg') }}{% endif %}
+		</div>
+		{% if item_pos %}
+			<div class="pos">
+				{{ basic.slider(id~'slider', item_pos, min , max , step, 'horizontal', 'handle' ) }}
+			</div>
+		{% endif %}
+        <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
+    </div>
+{% endmacro %}
