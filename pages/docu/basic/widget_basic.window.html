@@ -1,0 +1,47 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Wolfram v. Hülsen
+* @copyright   2021
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_basic.html" %}
+
+{% block example %}
+
+	<h5>Examples</h5>
+
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.window ('', 'shutter', 'window.right', 'window.left') }}
+			{{ basic.window ('', 'shutter', '', 'window.left', '', '', '#f00') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+
+ 	Use slider to control the shutter and switches to simulate window status
+	
+	<div class="html">
+		
+		{{ basic.slider('','bath.light.value') }}
+		Left window:
+		<div data-role="controlgroup" data-type="horizontal"> 
+			{{ basic.stateswitch('', 'bath.light.switch', '', 0, '', '0') }}
+			{{ basic.stateswitch('', 'bath.light.switch', '', 1, '', '1') }}
+			{{ basic.stateswitch('', 'bath.light.switch', '', 2, '', '2') }}
+		</div> &nbsp;&nbsp;
+		Right window:
+		<div data-role="controlgroup" data-type="horizontal">
+			{{ basic.stateswitch('', 'bath.light.multistate', '', 0, '', '0') }}
+			{{ basic.stateswitch('', 'bath.light.multistate', '', 1, '', '1') }}
+			{{ basic.stateswitch('', 'bath.light.multistate', '', 2, '', '2') }}
+		</div>
+		<br>
+		Default: class icon0 / icon1 colors: &nbsp;{{ basic.window ('', 'bath.light.value', 'bath.light.multistate', 'bath.light.switch') }} <br>
+		Usage of constant custom color: &nbsp;&nbsp;&nbsp; {{ basic.window ('', 'bath.light.value', '', 'bath.light.multistate', '', '', '#f00') }}
+	</div>
+
+
+{% endblock %}

@@ -60,6 +60,9 @@
 	./pages/_template folder to your new folder and start editing your pages. The examples and the inline docu
     will help you along. You find access to them in the sytem menu (click the gear icon in the header menu).<br><br>
 	Don't forget to select your newly created pages in the "user interface" pull-down menu on the configuration page.
-	Finally you should de-activate the "generate_pages" option for the smartvisu plugin in smarthomeNG plugin.yaml.
+	Finally you should de-activate the "generate_pages" option for the smartvisu plugin in smarthomeNG plugin.yaml.<br><br>
+	A combination of auto-generated and custom-designed pages is feasible, as well. Just move files you'd like to freeze to your own 
+	folder in ./pages and set configuration to this folder. smartVISU will load the pages from there first and look for missing pages 
+	in the ./pages/smarthome folder. ONLY in this case, duplicate filenames are allowed !
 	
 {% endblock %}
