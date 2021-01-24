@@ -781,7 +781,7 @@ $.widget("sv.basic_print", $.sv.widget, {
 		else { // Number
 			value = parseFloat(calc);
 			calc = value.transUnit(format);
-			console.log('print: '+ value +' with format '+ format + ' is ' + calc);
+			//console.log('print: '+ value +' with format '+ format + ' is ' + calc);
 		}
 
 		// print the result

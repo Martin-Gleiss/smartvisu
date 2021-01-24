@@ -24,6 +24,7 @@
 - new widget status.toast to display notifications 
 - new widget basic.window shows opening status of windows and sutter position 
 - new widget device.window shows window status and opens popup to control the shutter
+- new widget plot.heatingcurve shows actual outside and feed temperatures on the heating curve 
 - phone list shows called number on outgoing call if available from backend
 
 ### Other New Features
@@ -39,7 +40,8 @@
 - new twig function 'twig_items()' provides a list of all items from 'masteritem.json'
 - new twig function 'asset_exists()' replaces former AssetExistExtension 
 - simplified import of widgets by extended twig loader path 
-- new event 'ioAlive' on $(document) is triggered when websocket server has started communicating 
+- new event 'ioAlive' on $(document) is triggered when websocket server has started communicating
+- new welcome page in pages/smarthome for users who configure "smarthome" without having started page auto-generation in shNG
 
 ### Improvements
 - function Date().duration changed to accept negative values (for plots reaching into the future)
