@@ -86,6 +86,84 @@ $.widget("sv.plot_comfortchart", $.sv.widget, {
 });
 
 
+// ----- plot.heatingcurve ----------------------------------------------------
+$.widget("sv.plot_heatingcurve", $.sv.widget, {
+
+    initSelector: 'div[data-widget="plot.heatingcurve"]',
+
+    options: {
+        chartOptions: null
+    },
+
+    _create: function() {
+        this._super();
+
+        var plots = Array();
+        var userOptions = this.options.chartOptions;
+
+        plots[0] = {
+            type: 'spline',
+            name: 'Vorlauftemperatur',
+            lineWidth: 1
+        };
+
+        plots[1] = {
+            name: 'point',
+            marker: { enabled: true, radius: 10, symbol: 'diamond', fillColor: 'rgb(255,255,0)', lineColor: 'rgb(255,255,0)' },
+            showInLegend: false
+        };
+
+        var allOptions = {
+            series: plots,
+            chart: { className: 'heatingcurve' },
+            title: { text: 'Heizkurve', y: 70 },
+            xAxis: { min: -30, max: 20, minTickInterval: 5, title: { text: 'AT', align: 'high', margin: -2, x: -5, y: -40 } },
+            yAxis: { min:  22, max: 33, minTickInterval: 5, title: { text: 'VL', align: 'high', rotation: 00, x: 60, y: 20 } },
+            legend: {
+                align: 'center',
+                verticalAlign: 'top',
+                floating: true,
+                y: 70
+            },
+            plotOptions: {
+                area: { enableMouseTracking: false },
+            },
+            tooltip: {
+                formatter: function () {
+                    return this.x.transUnit('temp') + ' / ' + this.y.transUnit('temp');
+                }
+            }
+        };
+
+        $.extend(true, allOptions, userOptions);
+        this.element.highcharts(allOptions);
+
+    },
+
+    _update: function(response) {
+
+        var chart = this.element.highcharts();
+
+        chart.series[0].setData(JSON.parse(response[0]));
+
+        var point = chart.series[1].data[0];
+        if (!response[1] && point) {
+            response[1] = point.x;
+        }
+        if (!response[2] && point) {
+            response[2] = point.y;
+        }
+        if(point)
+            point.update([response[1] * 1.0, response[2] * 1.0], true);
+        else
+            chart.series[1].addPoint([response[1] * 1.0, response[2] * 1.0], true);
+
+        // chart.redraw();
+    }
+
+});
+
+
 // ----- plot.period ----------------------------------------------------------
 $.widget("sv.plot_period", $.sv.widget, {
 
