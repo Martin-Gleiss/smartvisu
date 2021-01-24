@@ -629,9 +629,9 @@
 	
 	<a id="{{ uid }}-button" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %} data-rel="popup"
 		class=" {%- if type == 'icon' -%} /**- display as icon -*/
-						switch ui-link absolutepos
+						switch ui-link
 					{%- else -%} /**- display as button -*/
-						ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline absolutepos
+						ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
 						{%- if not pic is empty -%}
 							{{ not txt is empty ? ' ui-btn-icon-top' }} ui-nodisc-icon
 						{%- endif -%}
