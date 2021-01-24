@@ -58,8 +58,11 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	if (config_driver == 'smarthome.py' and $config_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
 		$loader->addPath(const_path.'pages/smarthome');
 
-	$loader->addPath(const_path.'dropins');
-	$loader->addPath(const_path.'dropins/widgets');
+   // make sure SV doesn't load stuff from dropins unless pages are configured
+	if ($config_pages != '') {
+			$loader->addPath(const_path.'dropins');
+			$loader->addPath(const_path.'dropins/widgets');
+	}
 	$loader->addPath(const_path.'pages/base');
 	$loader->addPath(const_path.'widgets');
 
