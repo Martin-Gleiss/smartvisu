@@ -7,7 +7,6 @@
 * -----------------------------------------------------------------------------
 */
 
-
 /**
 * The diagram showing curves of relative humidity and effective temperature superimposed upon rectangular coordinates. The comfort-zones indicate when humans feel good.
 *
@@ -44,6 +43,27 @@
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.gauge" data-mode="{{ mode|default('solid-half') }}" data-item="{{ implode(item) }}"
 		data-label="{{ label }}" data-stop="{{ implode(stop) }}" data-color="{{ implode(color) }}" data-min="{{ min|default(0) }}" data-max="{{ max|default(255) }}" data-unit="{{ unit }}"  data-axis="{{ lang('plot.gauge', unit) }}"
 		class="gauge"></div>
+
+{% endmacro %}
+
+
+/**
+* Displays a heating curve (outside temperature compared to heating flow temperature) with current datapoint
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item[](list)} an item containing the pairs of temperatures
+*        Sorted array in format: [[outside1, heating_temp], [outside2, heating_temp] ...]
+* @param {item(num)} an item for the current outside temperature
+* @param {item(num)} an item for the current heating flow temperature
+* @param {unchecked[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+*/
+{% macro heatingcurve(id, item_datapoints, item_current_outsidetemp, item_current_flowtemp, chartoptions) %}
+
+    <div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}
+        data-widget="plot.heatingcurve"
+        data-item="{{ item_datapoints }}, {{ item_current_outsidetemp }}, {{ item_current_flowtemp }}"
+        data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}">
+    </div>
 
 {% endmacro %}
 
