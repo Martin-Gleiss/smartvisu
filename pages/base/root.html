@@ -7,14 +7,15 @@
 * -----------------------------------------------------------------------------
 */
 /** handle dropins */
-{% set macrofiles = dir('dropins/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
+{% set macrofiles = dir('dropins/shwidgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
+{% set macrofiles = macrofiles|merge(dir('dropins/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
 /** additional widgets in current pages */
 {% if isdir('pages/'~config_pages~'/widgets', '^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
 	{% set macrofiles = macrofiles|merge(dir('pages/'~config_pages~'/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
 {% endif %}
 {% set dynmacro = [] %}
 {% for macrofile in macrofiles %}
-	{% set dynmacro = dynmacro|merge(['{% import "widgets/' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
+	{% set dynmacro = dynmacro|merge(['{% import "' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
 {% endfor %}
 {% extends template_from_string(dynmacro|join("\n") ~ '\n{% block root %}{% endblock %}') %}
 
@@ -55,6 +56,9 @@
 		'designs/' ~ config_design ~ '.css',
 		'pages/' ~ config_pages ~ '/visu.css'
 	] %}
+{% for file in dir('dropins/shwidgets', '(.*)(\.css)') %}
+	{% set cssFiles = cssFiles|merge([file.path]) %}
+{% endfor %}
 {% for file in dir('dropins/widgets', '(.*)(\.css)') %}
 	{% set cssFiles = cssFiles|merge([file.path]) %}
 {% endfor %}
@@ -134,6 +138,9 @@
 		'pages/' ~ config_pages ~ '/visu.js'
 	] %}
 {% for file in dir('widgets', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins/shwidgets', '(.*)(\.js)') %}
 	{% set jsFiles = jsFiles|merge([file.path]) %}
 {% endfor %}
 {% for file in dir('dropins/widgets', '(.*)(\.js)') %}
