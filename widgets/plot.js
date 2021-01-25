@@ -103,7 +103,7 @@ $.widget("sv.plot_heatingcurve", $.sv.widget, {
 
         plots[0] = {
             type: 'spline',
-            name: 'Vorlauftemperatur',
+            name: 'SOLL-Vorlauftemperatur',
             lineWidth: 1
         };
 
