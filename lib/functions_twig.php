@@ -133,7 +133,7 @@ function twig_dir($dir, $filter = '(.*)')
 function twig_docu($filenames = null)
 {	
 	if($filenames == null) {
-		$filenames = array_merge(twig_dir('widgets', '(.*.\.html)'), twig_dir('dropins', '(.*.\.html)'), twig_dir('dropins/widgets', '(.*.\.html)'));
+		$filenames = array_merge(twig_dir('widgets', '(.*.\.html)'), twig_dir('dropins', '(.*.\.html)'), twig_dir('dropins/widgets', '(.*.\.html)'), twig_dir('dropins/shwidgets', '(.*.\.html)'));
 		if(twig_isdir('pages/'.config_pages.'/widgets', '(.*.\.html)'))
 			$filenames = array_merge($filenames, twig_dir('pages/'.config_pages.'/widgets', '(.*.\.html)'));
 	}
@@ -141,7 +141,7 @@ function twig_docu($filenames = null)
 		if(twig_isfile($filenames) == false && $filenames != const_path.'widgets/icon.html' && $filenames != const_path.'widgets/basic.html') // basic.html needed for template-checker
 			{
 				$filenames = array($filenames);
-				$filenames = array_merge(twig_dir('dropins', '(.*.\.html)'), twig_dir('dropins/widgets', '(.*.\.html)'));
+				$filenames = array_merge(twig_dir('dropins', '(.*.\.html)'), twig_dir('dropins/widgets', '(.*.\.html)'), twig_dir('dropins/shwidgets', '(.*.\.html)'));
 			}
 		else
 			$filenames = array($filenames);
