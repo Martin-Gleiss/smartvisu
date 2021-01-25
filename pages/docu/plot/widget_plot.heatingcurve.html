@@ -21,7 +21,7 @@
 	<h5>Example</h5>
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ plot.heatingcurve('p1', 'heatingcurve', 'outside_temp', 'feed_temp') }}
+			{{ plot.heatingcurve('p1', 'heatingcurve', 'outdoor_temp', 'flow_temp') }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
@@ -44,18 +44,10 @@
 			</div>
 		</div>
 	</div>
-	The widget offers styling options which will be transferred directly to Highcharts. These options override the standard options given by the widget. 
-	To keep some of the widgets own options, include them again in the options statement. <br>
-	Standards are:
+	The widget offers styling options which will be transferred directly to Highcharts. You can even override existing plot options defined by the widget: 
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			title: { text: 'Heizkurve', y: 70 },
-			xAxis: { min: -30, max: 20, minTickInterval: 5, title: { text: 'AT', align: 'high', margin: -2, x: -5, y: -40 } },
-			yAxis: { min:  22, max: 33, minTickInterval: 5, title: { text: 'VL', align: 'high', rotation: 00, x: 60, y: 20 } },
-			legend: { align: 'center', verticalAlign: 'top', floating: true, y: 70 }
-
-			Example:
-			{{ plot.heatingcurve('p2', 'heatingcurve', 'outside_temp', 'feed_temp', { yAxis: { min:  20, max: 36, tickInterval: 2, title: { text: 'VL', align: 'high', rotation: 00, x: 60, y: 20 }}, legend: { verticalAlign: 'bottom', y: -50 }} ) }}
+			{{ plot.heatingcurve('p2', 'heatingcurve', 'outdoor_temp', 'flow_temp', { yAxis: { min:  20, max: 36, tickInterval: 2}, legend: { verticalAlign: 'bottom', y: -50 }}, legend: { verticalAlign: 'bottom', y: -50 }} ) }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
@@ -64,7 +56,7 @@
 				<div data-role="collapsible" data-collapsed="false">
 					<h3>heating curve plot - with chart options</h3>
 
-					{{ plot.heatingcurve('px2', 'bath.heatingcurve', 'bath.plot.temp', 'bath.plot.humidity', { yAxis: { min:  20, max: 36, tickInterval: 2, title: { text: 'VL', align: 'high', rotation: 00, x: 60, y: 20 }}, legend: { verticalAlign: 'bottom', y: -50 }} ) }}
+					{{ plot.heatingcurve('px2', 'bath.heatingcurve', 'bath.plot.temp', 'bath.plot.humidity', { yAxis: { min:  20, max: 36, tickInterval: 2}, legend: { verticalAlign: 'bottom', y: -50 }} ) }}
 				</div>
 
 			</div>
