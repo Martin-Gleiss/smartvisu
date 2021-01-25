@@ -14,14 +14,14 @@
 <script type="text/javascript">
 	$( document ).ready(function() {
 		io.write('bath.heatingcurve', '[[-30.00,32.00],[-21.50,32.00],[-21.00,31.92],[-19.00,31.45],[-17.00,30.99],[-15.00,30.52],[-13.00,30.05],[-11.00,29.58],[-9.00,29.12],[-7.00,28.65],[-5.00,28.18],[-3.00,27.71],[-1.00,27.25],[0.00,27.01],[1.00,26.78],[3.00,26.31],[5.00,25.84],[7.00,25.38],[9.00,24.91],[11.00,24.44],[13.00,24.00],[20.00,24.00]]' );
+		io.write('bath.plot.temp', 0);
+		io.write('bath.plot.humidity', 27);
 	});
 </script>
 	<h5>Example</h5>
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 			{{ plot.heatingcurve('p1', 'heatingcurve', 'outside_temp', 'feed_temp') }}
-			
-			{{ plot.heatingcurve('p2', 'heatingcurve', 'outside_temp', 'feed_temp', { yAxis: [ { tickInterval: 0.5 } ], legend: { verticalAlign: 'bottom', x: -60, y: -50 }} ) }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
@@ -33,22 +33,38 @@
 
 		<br />
 
-		<div class="block">
+		<div class="block" style="width:100%">
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false">
-					<h3>heatcurve plot</h3>
+					<h3>heating curve plot</h3>
 
 					{{ plot.heatingcurve('px1', 'bath.heatingcurve', 'bath.plot.temp', 'bath.plot.humidity') }}
 				</div>
 
 			</div>
 		</div>
-				<div class="block">
+	</div>
+	The widget offers styling options which will be transferred directly to Highcharts. These options override the standard options given by the widget. 
+	To keep some of the widgets own options, include them again in the options statement. <br>
+	Standards are:
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			title: { text: 'Heizkurve', y: 70 },
+			xAxis: { min: -30, max: 20, minTickInterval: 5, title: { text: 'AT', align: 'high', margin: -2, x: -5, y: -40 } },
+			yAxis: { min:  22, max: 33, minTickInterval: 5, title: { text: 'VL', align: 'high', rotation: 00, x: 60, y: 20 } },
+			legend: { align: 'center', verticalAlign: 'top', floating: true, y: 70 }
+
+			Example:
+			{{ plot.heatingcurve('p2', 'heatingcurve', 'outside_temp', 'feed_temp', { yAxis: { min:  20, max: 36, tickInterval: 2, title: { text: 'VL', align: 'high', rotation: 00, x: 60, y: 20 }}, legend: { verticalAlign: 'bottom', y: -50 }} ) }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<div class="block" style="width:100%">
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false">
-					<h3>heatcurve plot  with chart options</h3>
+					<h3>heating curve plot - with chart options</h3>
 
-					{{ plot.heatingcurve('px2', 'bath.heatingcurve', 'bath.plot.temp', 'bath.plot.humidity', { yAxis: [ { tickInterval: 0.5 } ], legend: { verticalAlign: 'bottom', x: -60, y: -50 } } ) }}
+					{{ plot.heatingcurve('px2', 'bath.heatingcurve', 'bath.plot.temp', 'bath.plot.humidity', { yAxis: { min:  20, max: 36, tickInterval: 2, title: { text: 'VL', align: 'high', rotation: 00, x: 60, y: 20 }}, legend: { verticalAlign: 'bottom', y: -50 }} ) }}
 				</div>
 
 			</div>
