@@ -99,7 +99,6 @@ $.widget("sv.plot_heatingcurve", $.sv.widget, {
         this._super();
 
         var plots = Array();
-        var userOptions = this.options.chartOptions;
 
         plots[0] = {
             type: 'spline',
@@ -113,7 +112,7 @@ $.widget("sv.plot_heatingcurve", $.sv.widget, {
             showInLegend: false
         };
 
-        var allOptions = {
+        var defaultOptions = {
             series: plots,
             chart: { className: 'heatingcurve' },
             title: { text: 'Heizkurve', y: 70 },
@@ -135,7 +134,10 @@ $.widget("sv.plot_heatingcurve", $.sv.widget, {
             }
         };
 
-        $.extend(true, allOptions, userOptions);
+        var userOptions = this.options.chartOptions;
+        var allOptions = {};
+	$.extend(true, allOptions, defaultOptions, userOptions);
+
         this.element.highcharts(allOptions);
 
     },
