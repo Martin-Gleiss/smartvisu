@@ -19,9 +19,9 @@
 - icon sizes can be changed by parameters in basic.symbol and basic.icon 
 - widget weather.current takes weather values from backend item alternativly to online weather informaion
 - new widget event "exit" allows stopping of functions before page change (e.g. deleting timers)
-- new widget basic.roundslider with flexible design options
-- new widget device.rtrslider for slider control of set temperature and functionality of device.rtr 
-- new widget status.toast to display notifications 
+- new widget basic.roundslider with flexible design options (thanks to Bonze)
+- new widget device.rtrslider for slider control of set temperature and functionality of device.rtr (thanks to Bonze)
+- new widget status.toast to display notifications (thanks to Bonze)
 - new widget basic.window shows opening status of windows and sutter position 
 - new widget device.window shows window status and opens popup to control the shutter
 - new widget plot.heatingcurve shows actual outside and feed temperatures on the heating curve 
