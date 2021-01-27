@@ -1,4 +1,4 @@
-# smartvisu - Widget Constructor
+# smartvisu - Widget Assistant
 
 ## Table of Content
 1. [How it works](#howitworks)
@@ -21,14 +21,15 @@ You can paste the widget-code directly to your html-file.
 Right now you can render multiple widgets, you have to separate the different widgets
 by a <strong><code>\<br\></code></strong>-TAG
 
-###Example :
+### Example :
 
 <code>
-plot.period('', ['licht.og.terrasse.screens.warm.dimmen', 'licht.og.terrasse.screens.kalt.dimmen', 'licht.og.terrasse.decke.dimmen'], 'max', '1w', 'now', '0', '110', '1000', ['Screens warm', 'Screens kalt', 'Decke'], ['#daa', '#aad', '#955'], ['stair', 'stair', 'stair'], ['Uhrzeit', 'Helligkeit'], 'advanced', '', '', '', '', '', { yAxis: [ { tickInterval: 40 } ], legend: {align: 'right', verticalAlign: 'top', y: 50, layout: 'vertical'}, chart: { marginRight: 110} })<br>
-<strong>&lt;br&gt;</strong><br>
-basic.stateswitch('','OG.Bad.Licht','midi','','light_ceiling_light','Licht Bad','','','','','')<br>
-<strong>&lt;br&gt;</strong><br>
-quad.dimmer('Lueftungsstufe1', 'Lüftungsstufe', 'Haustechnik.Lueftung', 'Haustechnik.Lueftung.stufe', 0, 100, 5, icon.ventilation(), icon.ventilation('','','Haustechnik.Lueftung.stufe'), '', '', '',                          0, 100,'','','','','','','','','','','','','', ['switch', 'value_popup']) 
+<p>plot.period('', ['licht.og.terrasse.screens.warm.dimmen', 'licht.og.terrasse.screens.kalt.dimmen', 'licht.og.terrasse.decke.dimmen'], 'max', '1w', 'now', '0', '110', '1000', ['Screens warm', 'Screens kalt', 'Decke'], ['#daa', '#aad', '#955'], ['stair', 'stair', 'stair'], ['Uhrzeit', 'Helligkeit'], 'advanced', '', '', '', '', '', { yAxis: [ { tickInterval: 40 } ], legend: {align: 'right', verticalAlign: 'top', y: 50, layout: 'vertical'}, chart: { marginRight: 110} })<p>
+<strong>&lt;br&gt;</strong>
+<p>basic.stateswitch('','OG.Bad.Licht','midi','','light_ceiling_light','Licht Bad','','','','','')</p>
+<strong>&lt;br&gt;</strong>
+<p>quad.dimmer('Lueftungsstufe1', 'Lüftungsstufe', 'Haustechnik.Lueftung', 'Haustechnik.Lueftung.stufe', 0, 100, 5, icon.ventilation(), icon.ventilation('','','Haustechnik.Lueftung.stufe'), '', '', '',                          0, 100,'','','','','','','','','','','','','', ['switch', 'value_popup']) 
+</p>
 </code>
 
 
@@ -38,8 +39,8 @@ quad.dimmer('Lueftungsstufe1', 'Lüftungsstufe', 'Haustechnik.Lueftung', 'Hauste
 
 #### 2021.01.18 - Version 1.1.0
 - changed handling for "render in new window" - if there is no Window a new one will be opened, else the opened window would be refreshed, also if there is a twig error
-- more fixings for "nasty", "nested" widgets
-- changed Hot-Keys
+- more fixes for "nasty", "nested" widgets
+- some optical changes
 
 #### 2020.11.08 - Version 1.0.0
 - added support for multi-widget creation (widgets have to be separated by <strong>&lt;br&gt;</strong>-TAG)
