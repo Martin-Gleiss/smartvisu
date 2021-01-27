@@ -201,6 +201,6 @@
  */
 	var sv = {
 		config: {
-			version: <?php echo config_version ?>
+			version: '<?php echo config_version_full ?>'
 		}
 	};

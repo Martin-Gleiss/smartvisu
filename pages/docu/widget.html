@@ -16,15 +16,26 @@
 
 	{% if pagepath != '' %}
 		{% set widgetlist = docu('widgets/'~pagepath~'.html') %}
+		/** {% set widgetlist = widgetlist|merge(docu('shwidgets/'~pagepath~'.html')) %} **/
 
 		{% for widget in widgetlist %}
 			{% set dir = "pages/docu/%s/widget_%s.html"|format(pagepath, widget.command) %}
-
+			{% set dir_b = "dropins/widget_%s.html"|format(widget.command) %}
+			{% set dir_c = "dropins/widgets/widget_%s.html"|format(widget.command) %}
+			{% set dir_d = "dropins/shwidgets/widget_%s.html"|format(widget.command) %}
+			
 			{% if isfile(dir) %}
-			<a href="index.php?page={{ pagepath }}/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
+				<a href="index.php?page={{ pagepath }}/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
+			{% elseif isfile(dir_b) %}
+				<a href="index.php?page=widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
+			{% elseif isfile(dir_c) %}
+				<a href="index.php?page=widgets/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
+			{% elseif isfile(dir_d) %}
+				<a href="index.php?page=shwidgets/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>	
 			{% elseif widget.command %}
-			<a href="index.php?page=widgets/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
-		{% endif %}
+				<a{{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
+			{% endif %}
+
 		{% endfor %}
 	{% endif %}
 

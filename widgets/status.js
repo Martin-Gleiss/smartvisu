@@ -77,7 +77,7 @@ $.widget("sv.status_log", $.sv.widget, {
 			for (var i = 0; i < list.length; i++) {
 				ret = '<div class="color ' + list[i].level.toLowerCase() + '"></div>';
 				ret += '<h3>' + new Date(list[i].time).transLong() + '</h3>';
-				ret += '<p>' + list[i].message + '</p>';
+				ret += '<p>' + list[i].message.htmlescape() + '</p>';
 				line += '<li data-icon="false">' + ret + '</li>';
 			}
 			this.element.find('ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
@@ -155,3 +155,179 @@ $.widget("sv.status_message", $.sv.widget, {
 	},
 
 });
+
+// ----- status.toast -------------------------------------------------------
+$.widget("sv.status_toast", $.sv.widget, {
+
+	initSelector: 'span[data-widget="status.toast"]',
+
+	options: {
+		template: null,
+		hideAfter:null,
+		showHide: null, 
+		style: '',
+		buttonopts: '',
+		textopts: '',
+	},
+
+	_create: function() {
+		this._super();
+	},
+	
+	_update: function(response) {
+		var id = this.element.attr('id');
+		var date = new Date;
+		var timestamp = Date.now();
+		var heute = date.getHours() +":" + date.getMinutes()+":" + date.getSeconds()+" " +date.getDate()+ "."+ (date.getMonth()+ 1)+"." + date.getFullYear()+" <br>";
+		var random = timestamp + getRandomInt(1,25);
+		
+		function getRandomInt(min, max) {
+		  min = Math.ceil(min);
+		  max = Math.floor(max);
+		  return Math.floor(Math.random() * (max - min)) + min;
+		}
+
+		//Style values
+		var params = this.options.style.explode();
+		var bgColor = params[0];
+		var color = params[1];
+		var loaderBg = params[2];
+		var textAlign = params[3];
+		var showPosition = params[4];
+		var stack = params[5];
+		var showLoader = (params[6] == 'true' ? true : false);
+		var hideAfter = params[7];
+		var allowClose = (params[8] == 'true' ? true : false);
+		var showHide = params[9];
+		
+		//Button
+		var buttonOpts = this.options.buttonopts.explode();
+		var sendButton = buttonOpts[0];
+		var sendItem = buttonOpts[1];
+		var sendVal = buttonOpts[2];
+				
+		//Title, Text, Icon check if text or item
+		var itemsStr = this.options.item.explode();
+		var items = [];
+		var textOpts = this.options.textopts.explode();
+		
+		var i2 =0;
+		items.push(response[0]);
+		for (var i = 1; i < itemsStr.length; i++) {
+			if(itemsStr[i]!= ''){
+				items.push(response[i-i2]);
+				i2= 0;
+			}else{
+				if(textOpts[i-1]){
+					items.push(textOpts[i-1]);
+					i2++;
+				}else{
+					items.push('');
+				}
+			}
+		}
+		
+		var showTrigger = items[0];//items[0];
+		var showTitle = items[1];
+		var showText = items[2];
+		var showIcon = items[3];
+		
+		//Template 
+		if(this.options.template == 'info'){
+			showIcon = 'info';
+			hideAfter = 5000;
+			bgColor = '#81BEF7';
+			allowClose = true;
+			color = '#eee';
+		}else if(this.options.template == 'success'){
+			showIcon = 'success';
+			hideAfter = 5000;
+			bgColor = '#1ad600';
+			allowClose = true;
+			color = '#000';
+		}else if (this.options.template == 'warning'){
+			showIcon = 'warning';
+			bgColor = '#ff6609';
+			allowClose = true;
+			hideAfter= false;
+			color = '#000000';
+		}else if (this.options.template == 'error'){
+			showIcon = 'error';
+			hideAfter= false;
+			bgColor = '#e03d3d';
+			allowClose = false;
+			color = '#FFF';
+			if (sendButton =='') sendButton ='OK';
+			showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ="#'+id+'" type="button" value="'+sendButton+'" data-senditem="'+sendItem+'" data-sendvalue="'+sendVal+'" />';
+		}else{
+			this.options.template = "free";
+			showIcon = response[3] || textOpts[2];
+			if (sendButton != '') showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ="#'+id+'" type="button" value="'+sendButton+'" data-senditem="'+sendItem+'" data-sendvalue="'+sendVal+'" />';
+		};
+		
+		if (response[0]){
+			
+			var toast = $.toast({
+				text: showText, // Text that is to be shown in the toast
+				heading: showTitle, // Optional heading to be shown on the toast
+				icon: showIcon, // Type of toast icon
+				showHideTransition: showHide, // fade, slide or plain
+				allowToastClose: allowClose, // Boolean value true or false
+				hideAfter: hideAfter, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+				stack: 99, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+				position: showPosition, // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+				textAlign: textAlign,  // Text alignment i.e. left, right or center
+				loader: showLoader,  // Whether to show loader or not. True by default
+				loaderBg: loaderBg,  // Background color of the toast loader
+				bgColor: bgColor,
+				textColor: color
+				
+			});
+			
+			$('#' + id).append(toast);//add toast to widget
+		
+		
+			//use smartVISU icon
+			if (textOpts[2]){ 
+				var pic = textOpts[2];
+
+				// add default path if icon has no path
+				if(pic.indexOf('.') == -1){
+					pic = pic+'.svg';
+				};
+				if(pic.indexOf('/') == -1){
+					pic = 'icons/ws/'+pic;
+				}else{
+					pic = pic;	
+				};
+				
+				$("div.jq-toast-single").last().addClass('jq-has-icon');
+				$("div.jq-has-icon").last().css({'background-position-x': '5px','background-size': '3.5em' }); //fetch button id
+				$("div.jq-toast-single").last().css({'background-image':'url('+pic+')'}); //fetch button id
+			};
+
+		}else{ 
+			if (allowClose = true){
+				$("div.jq-toast-single").last().remove();
+			};
+		}
+		
+		//Close by button click
+		$(".button").click(function() {
+			var button_id = $(this).attr('id'); 
+			var sendItem = $(this).attr('data-senditem');
+			var sendVal= $(this).attr('data-sendvalue'); 
+			if (sendItem == undefined || sendItem == '') {
+                console.log("INFO: TOAST Button pressed, but NO item given ");
+            }else{
+               // console.log("INFO-Button: ", button_id, ' ', sendItem, ' ', sendVal);
+                io.write(sendItem, sendVal);
+            };
+            $(this).closest('div').remove();
+        });
+	},
+	
+	_events: {
+	}
+});
+

@@ -85,6 +85,8 @@ class phone extends service
 				{
 					$ds['dirpic'] = 'dir_outgoing.png';
 					$ds['diralt'] = trans('phone', 'outgoing');
+					if ($ds['called'] !='')
+						$ds['number'] = $ds['called'];
 				}
 
 				$ret[] = $ds;

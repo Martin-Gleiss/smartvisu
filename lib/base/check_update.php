@@ -49,7 +49,7 @@ if (empty($_COOKIE['updchk']))
 	{
 		$ret["update"] = true;
 		$ret["icon"] = 'message_attention.svg';
-		$ret["text"] = 'This version from develop branch <br> might be unstable';
+		$ret["text"] = 'This version from develop branch might be unstable';
 	}
 	else
 	{

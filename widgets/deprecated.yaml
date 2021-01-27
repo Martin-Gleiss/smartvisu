@@ -1,0 +1,23 @@
+# smartVISU
+# List of widgets deprecated after v2.9.2
+# to be evaluated by smarthomeNG visu_smartvisu plugin 
+
+removed:
+     - basic.button
+     - basic.colordisc
+     - basic.dual
+     - basic.float
+     - basic.formula
+     - basic.multistate
+     - basic.rgb
+     - basic.switch
+     - basic.text
+     - basic.value
+     - basic.badge
+     - basic.maptext
+     - basic._icon
+     - plot.minmaxavg
+     - plot.multiaxis
+
+deprecated:
+     - basic.shifter

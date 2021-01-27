@@ -12,7 +12,7 @@
 * Displays a notification badge
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} the item providing the value to show in badge
+* @param {item(num)} the item providing the value to show in badge
 * @param {value[?]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
 * @param {color[?](hidden)=red} array of colors or 'hidden' to not diplay (optional, default red)
 the first one is the base color for values below first threshold, so pass one color more than thresholds.
@@ -30,7 +30,7 @@ the first one is the base color for values below first threshold, so pass one co
 * Show and hide a div or popup or collapse a section.
 *
 * @param {id} unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget
-* @param {item} an item witch triggers the collapse
+* @param {item(bool,num)} an item witch triggers the collapse
 * @param {value=0} the value on which the target is collapsed (optional, default 0)
 */
 {% macro collapse(id, item_trigger, val_collapsed) %}
@@ -62,19 +62,19 @@ the first one is the base color for values below first threshold, so pass one co
 * Displays a notification edge window
 *
 * @param {id} unique id for this widget
-* @param {item} an item witch triggers the notification
-* @param {item=} an item with the dynamic message
+* @param {item(bool,num)} an item witch triggers the notification
+* @param {item(str)=} an item with the dynamic message
 * @param {text=INFO} a word for the signal corner (optional, default 'INFO')
 * @param {text} a title of the messagebox
 * @param {text=} an additional static text
 * @param {text(info,warning,error)=info} the level: 'info', 'warning', 'error' (optional, default 'info')
-* @param {item=} an item to send an acknowledge message to (optional)
+* @param {item(bool,num,str)=} an item to send an acknowledge message to (optional)
 * @param {text=} the value which will be sent when the message gets acknowledged (optional, default 0 if item_ack is equal to item_trigger, otherwise 1).
-* @param {item=} an item to set the word in the signal corner. The value overrides the parameter "signal" (optional)
+* @param {item(str)=} an item to set the word in the signal corner. The value overrides the parameter "signal" (optional)
 Caution: If this is set, the notification gets not shown until the item has sent a value.
-* @param {item=} an item to set the title of the message box. The value overrides the parameter "title" (optional)
+* @param {item(str)=} an item to set the title of the message box. The value overrides the parameter "title" (optional)
 Caution: If this is set, the notification gets not shown until the item has sent a value.
-* @param {item=} an item to set the level. The value overrides the parameter "level" (optional)
+* @param {item(str)=} an item to set the level. The value overrides the parameter "level" (optional)
 Caution: If this is set, the notification gets not shown until the item has sent a value.
 *
 * @author Martin Gleiss, Stefan Widmer
@@ -96,9 +96,9 @@ Caution: If this is set, the notification gets not shown until the item has sent
 * Displays a notification popup window with a message
 *
 * @param {id} unique id for this widget
-* @param {item} an item witch triggers the popup: NOT 0 open it, 0 close it
-* @param {item=} an item with the dynamic message
-* @param {item=} an item with a timestamp (e.g. 1974-01-01T12:00:00.000000+01:00 or 01.01.20 12:01)
+* @param {item(bool,num)} an item witch triggers the popup: NOT 0 open it, 0 close it
+* @param {item(str)=} an item with the dynamic message
+* @param {item(num,str)=} an item with a timestamp (e.g. 1974-01-01T12:00:00.000000+01:00 or 01.01.20 12:01)
 * @param {text} a title of the messagebox
 * @param {text=} an additional static text
 * @param {text(info,error)=info} the mode: 'info', 'error' (optional, default 'info')
@@ -117,4 +117,44 @@ Caution: If this is set, the notification gets not shown until the item has sent
 		</div>
 	</div>
 
+{% endmacro %}
+
+/**
+* Displays a notification toast
+* 
+* @param {id=} unique id for this widget(optional)
+* @param {item(bool)} a trigger item (true to open, false to close)
+* @param {item(str)=} an item containing the title(optional)
+* @param {item(str)=} an item containing content (optional)
+* @param {item(str)=} an item  containing an icon (optional)
+* @param {text=} title (optional)
+* @param {text=} plain text or html code as content (optional, default = '')
+* @param {text=} smartvisu icon to be used instead of the standard icons (info, warning, success, error). (optional, default = '')
+* @param {text=} standard template to be used (success, error, warning, info) (optional, default = '')
+* @param {item(bool, num, str, list)=} an item to send a value on button-press (optional, default = '')
+* @param {text=} button text (optional, default = '') button will show only if text is specified
+* @param {text=} value to be sent when the button is pressed (optional, default = '0')
+* @param {bool=} an option to close the toast manually (true, false) (optional, default = 'true')
+* @param {text=} time in miliseconds until toast will hide (optional, default = '5000'). 'false' makes it sticky
+* @param {text=} fade-in effect to show the toast (plain, fade, slide) (optional, default = 'slide')
+* @param {bool=} option to display a bargraph loader (true, false) (optional, default = 'true')
+* @param {color=} font color, not to be defined if a template is used (optional, default = '#9EC600')
+* @param {color=} background color, not to be defined if a template is used (optional, default = 'gray')
+* @param {value=} number of stacked toasts. 'false' to show one stack at a time / count showing the number of stacked toasts (optional, default = '5')
+* @param {text=} Alignment of text in the toast i.e. left, right, center (optional, default = 'left')
+* @param {text=} Toast position on display (optional, bottom-left, bottom-right, top-left, top-right....) (optional, default = 'bottom-left')
+* 
+* @author bonze 
+*/
+{% macro toast(id, item_trigger, item_title, item_content, item_icon, text_title, text_content, text_icon, param_template, item_button, text_button, value_button, param_allowclose, param_hideafter, param_showhide, param_showloader, param_color, param_bgColor, param_stack, param_align, param_position ) %}
+
+	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.toast" 
+		data-item="{{ item_trigger }}, {{ item_title }}, {{ item_content }}, {{ item_icon  }}"
+		data-textopts="{{ text_title }}, {{ text_content | default('')}}, {{ text_icon | default('') }}" 
+		data-buttonopts="{{ text_button |  default('') }}, {{ item_button | default('') }}, {{ value_button | default('0') }}"
+		data-template="{{param_template | default('')}}" 
+		data-style="{{param_bgColor | default('gray')}}, {{param_color | default('#9EC600')}},{{param_loaderbg | default('#eee')}},{{param_align | default('left')}},{{param_position | default('bottom-left')}},{{param_stack | default('5')}},{{param_showloader | default('true')}},{{param_hideafter | default('5000')}},{{param_allowclose | default('true')}},{{param_showhide | default('slide')}}" 
+		>
+	
+	</span>
 {% endmacro %}

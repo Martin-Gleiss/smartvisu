@@ -1,8 +1,8 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiss, Alexander Schwithal, Stefan Widmer
-* @copyright   2012 - 2016
+* @author      Martin Gleiß, Alexander Schwithal, Stefan Widmer, Wolfram v. Hülsen
+* @copyright   2012 - 2020
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -52,7 +52,11 @@
 								<h3>{{ lang('configuration_page', 'interface', 'label') }}</h3>
 								{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
 								{{ forms.config_select(source, values, 'design', dir('designs', '(.+?).css')) }}
+								/** get icon colors out of design.css meta data */
+								{{ forms.config_hidden(source, values, 'design_icon0') }}
+								{{ forms.config_hidden(source, values, 'design_icon1') }}
 								{{ forms.config_flip(source, values, 'cache', '<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache' ~ id ~ '" class="ui-micro"' ~ (not values['cache'] is defined ? ' disabled="disabled"'|raw) ~ '>' ~ lang('configuration_page', 'cache', 'clearbutton') ~'</button>') }}
+								{{ forms.check_cache ( source, values, 'cache') }}
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
 								<h3>{{ lang('configuration_page', 'content', 'label') }}</h3>
@@ -70,7 +74,7 @@
 					</div>
 
 					<div class="block">
-						<div class="set-1" data-role="collapsible-set" data-mini="true">
+						<div class="set-2" data-role="collapsible-set" data-mini="true">
 							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
 								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'backend', 'label') }}</h3>
 							</div>
@@ -81,6 +85,15 @@
 								{{ forms.config_input(source, values, 'driver_port', 'wide') }}
 								{{ forms.config_flip(source, values, 'driver_realtime') }}
 								{{ forms.config_flip(source, values, 'driver_autoreconnect') }}
+								{{ forms.config_flip(source, values, 'reverseproxy', forms.config_reverseproxy (source, values, 'reverseproxy') ) }}
+								
+							</div>
+							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
+								<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3>
+								{{ forms.config_flip(source, values, 'proxy') }}
+								{{ forms.config_input(source, values, 'proxy_url', 'wide') }}
+								{{ forms.config_input(source, values, 'proxy_user') }}
+								{{ forms.config_input(source, values, 'proxy_password', 'password') }}
 							</div>
 						</div>
 					</div>
@@ -95,6 +108,7 @@
 								{{ forms.config_select(source, values, 'weather_service', dir('lib/weather/service', '(.+?).php') ) }}
 								{{ forms.config_input(source, values, 'weather_location') }}
 								{{ forms.config_input(source, values, 'weather_key') }}
+								{{ forms.config_input(source, values, 'weather_postal') }}
 							</div>
 							<div data-role="collapsible" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'phone', 'label') }}</h3>
@@ -127,18 +141,15 @@
 					<div class="block">
 						<div class="set-2" data-role="collapsible-set" data-content-theme="a" data-mini="true">
 							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
-								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'internetaccess', 'label') }}</h3>
+								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'options', 'label') }}</h3>
 							</div>
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
-								<h3>{{ lang('configuration_page', 'updatecheck', 'label') }}</h3>
-								{{ forms.config_flip(source, values, 'updatecheck') }}
+								<h3>{{ lang('configuration_page', 'widgetassistant', 'label') }}</h3>
+								{{ forms.config_flip(source, values, 'widgetassi') }}
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
-								<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3>
-								{{ forms.config_flip(source, values, 'proxy') }}
-								{{ forms.config_input(source, values, 'proxy_url', 'wide') }}
-								{{ forms.config_input(source, values, 'proxy_user') }}
-								{{ forms.config_input(source, values, 'proxy_password', 'password') }}
+								<h3>{{ lang('configuration_page', 'updatecheck', 'label') }}</h3>
+								{{ forms.config_flip(source, values, 'updatecheck') }}
 							</div>
 						</div>
 					</div>

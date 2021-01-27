@@ -89,18 +89,8 @@ class Settings {
 	 */
 	private function __construct() {
 		$this->clearUsedWidgetIds();
-
-		// Taken from index.php, adapted
-		if (config_design == 'ice') {
-			$this->icon1 = 'icons/bl/';
-			$this->icon0 = 'icons/sw/';
-		} elseif (config_design == 'greenhornet') {
-			$this->icon1 = 'icons/gn/';
-			$this->icon0 = 'icons/ws/';
-		} else {
-			$this->icon1 = 'icons/or/';
-			$this->icon0 = 'icons/ws/';
-		}
+		$this->icon1 = config_design_icon1;
+		$this->icon0 = config_design_icon0;
 	}
 
 }

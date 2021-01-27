@@ -22,7 +22,7 @@
 	<g>
 		<line fill="none" stroke="#fff" stroke-width="5" x1="221.6" y1="100.3" x2="280.4" y2="183"/>
 		<g>
-			<polygon points="265.6,188 299.5,209.6 290,170.8"/>
+			<polygon fill="#fff" points="265.6,188 299.5,209.6 290,170.8"/>
 		</g>
 	</g>
 </g>

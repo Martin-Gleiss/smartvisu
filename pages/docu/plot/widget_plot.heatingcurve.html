@@ -1,0 +1,66 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Wolfram v. Hülsen
+* @copyright   2012 - 2021
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_plot.html" %}
+
+{% block example %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+		io.write('bath.heatingcurve', '[[-30.00,32.00],[-21.50,32.00],[-21.00,31.92],[-19.00,31.45],[-17.00,30.99],[-15.00,30.52],[-13.00,30.05],[-11.00,29.58],[-9.00,29.12],[-7.00,28.65],[-5.00,28.18],[-3.00,27.71],[-1.00,27.25],[0.00,27.01],[1.00,26.78],[3.00,26.31],[5.00,25.84],[7.00,25.38],[9.00,24.91],[11.00,24.44],[13.00,24.00],[20.00,24.00]]' );
+		io.write('bath.plot.temp', 0);
+		io.write('bath.plot.humidity', 27);
+	});
+</script>
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ plot.heatingcurve('p1', 'heatingcurve', 'outdoor_temp', 'flow_temp') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		Use the slider to control the outdoor temperature setting
+		{{ basic.slider('s1', 'bath.plot.temp', -30, 20, 1) }}
+
+		Use the slider to control the flow temperature setting
+		{{ basic.slider('s2', 'bath.plot.humidity', 24, 32, 1) }}
+
+		<br />
+
+		<div class="block" style="width:100%">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>heating curve plot</h3>
+
+					{{ plot.heatingcurve('px1', 'bath.heatingcurve', 'bath.plot.temp', 'bath.plot.humidity') }}
+				</div>
+
+			</div>
+		</div>
+	</div>
+	The widget offers styling options which will be transferred directly to Highcharts. You can even override existing plot options defined by the widget: 
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ plot.heatingcurve('p2', 'heatingcurve', 'outdoor_temp', 'flow_temp', { yAxis: { min:  20, max: 36, tickInterval: 2}, legend: { verticalAlign: 'bottom', y: -50 }}, legend: { verticalAlign: 'bottom', y: -50 }} ) }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<div class="block" style="width:100%">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>heating curve plot - with chart options</h3>
+
+					{{ plot.heatingcurve('px2', 'bath.heatingcurve', 'bath.plot.temp', 'bath.plot.humidity', { yAxis: { min:  20, max: 36, tickInterval: 2}, legend: { verticalAlign: 'bottom', y: -50 }} ) }}
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

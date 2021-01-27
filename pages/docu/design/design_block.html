@@ -13,70 +13,119 @@
 {% block content %}
 
 	<h1>Blocks</h1>
+	
+	<div class="docu">
 
-	<div class="block">
-		<div class="ui-bar-c ui-li-divider ui-corner-top">Block 1</div>
-		<div class="ui-fixed ui-body-a ui-corner-bottom">
+		Here are some examples to show blocks available in {{ lib.smartVISU }} <br />
 
-			<p>Content 1</p>
+		<h4>Examples</h4>
 
+		A static block 
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			<div class="block">
+			    <div class="ui-bar-c ui-li-divider ui-corner-top">Block 1</div>
+			    <div class="ui-fixed ui-body-a ui-corner-bottom">
+
+					<p>This is a static block</p>
+
+				</div>
+			</div>
+			{% endverbatim %}{% endfilter %}</code>
+		</div>		
+		<div class="html">
+			<div class="block">
+				<div class="ui-bar-c ui-li-divider ui-corner-top">Block 1</div>
+				<div class="ui-fixed ui-body-a ui-corner-bottom">
+
+					<p>This is a static block</p>
+
+				</div>
+			</div>
+		</div> <br />
+		A variable set of blocks which are collapsible. Use 'set-1', 'set-2', 'set-3' to define the number of sections in a block.<br>
+		Set the attribute 'data-collapsed=&quot;false&quot;' for the open section (only one) and omit the attribute for the others.<br>
+		You can also define the width of the block by adding a width statement to the first div (see last example).
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			<div class="block">
+				<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+					<div data-role="collapsible" data-collapsed="false">
+						<h3>Section 1</h3>
+
+						<p>Set of two collapsible blocks with one being collapsed</p>
+					</div>
+
+					<div data-role="collapsible">
+						<h3>Section 2</h3>
+
+						<p>Collapsed by default if 'data-collapsed=&quot;false&quot;' is omitted</p>
+					</div>
+
+				</div>
+			</div>
+			{% endverbatim %}{% endfilter %}</code>
+		</div>
+		<div class="html">
+			<div class="block">
+				<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+					<div data-role="collapsible" data-collapsed="false">
+						<h3>Block 2</h3>
+
+						<p>This is a collapsible block</p>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="block">
+				<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+					<div data-role="collapsible" data-collapsed="false">
+						<h3>Section 1</h3>
+
+						<p>Set of two blocks with one being collapsible</p>
+					</div>
+
+					<div data-role="collapsible">
+						<h3>Section 2</h3>
+
+						<p>Collapsed by default if 'data-collapsed=&quot;false&quot;&nbsp;' is omitted</p>
+					</div>
+
+				</div>
+			</div>
+
+
+			<div class="block" style="width:100%">
+				<div class="set-3" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+					<div data-role="collapsible" data-collapsed="false">
+						<h3>Section 1</h3>
+
+						<p>A set of 3 collapsible blocks <br><br>
+						   The description 'style=&quot;width:100%&quot;&nbsp;' has been added to the &lt;div class=&quot;block&quot;&gt; statement 
+						   in order to make the block use the whole available width of the screen.
+						</p>
+					</div>
+
+					<div data-role="collapsible">
+						<h3>Section 2</h3>
+
+						<p>Content 2</p>
+					</div>
+
+					<div data-role="collapsible">
+						<h3>Section 3</h3>
+
+						<p>Content 3</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-			<div data-role="collapsible" data-collapsed="false">
-				<h3>Block 2</h3>
-
-				<p>Content 2</p>
-			</div>
-
-		</div>
-	</div>
-
-	<div class="block">
-		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-			<div data-role="collapsible" data-collapsed="false">
-				<h3>Title 1</h3>
-
-				<p>Content 1</p>
-			</div>
-
-			<div data-role="collapsible">
-				<h3>Title 2</h3>
-
-				<p>Content 2</p>
-			</div>
-
-		</div>
-	</div>
-
-
-	<div class="block">
-		<div class="set-3" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
-			<div data-role="collapsible" data-collapsed="false">
-				<h3>Title 1</h3>
-
-				<p>Content 1</p>
-			</div>
-
-			<div data-role="collapsible">
-				<h3>Title 2</h3>
-
-				<p>Content 2</p>
-			</div>
-
-			<div data-role="collapsible">
-				<h3>Title 3</h3>
-
-				<p>Content 3</p>
-			</div>
-		</div>
-	</div>
-
 
 {% endblock %}
 

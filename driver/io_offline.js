@@ -8,6 +8,7 @@
  * @hide        driver_address
  * @hide        driver_port
  * @hide        driver_autoreconnect
+ * @hide		reverseproxy
  */
 
 
@@ -311,6 +312,13 @@ var io = {
 		}
 
 		return ret;
+	},
+	
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		
 	}
 
 };

@@ -77,7 +77,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				//fals kein icon angegeben
 				if(!entry.icon){
 					//falls kein default angegeben
-					if (typeof(sv_lang.calendar_event_format.default_img_list) === undefined){
+					if (typeof(sv_lang.calendar_event_format.default_img_list) === undefined || sv_lang.calendar_event_format.default_img_list.icon == "" ){
 						entry.icon = "pages/base/pics/trans.png";
 						entry.color = 'transparent';
 					}else{
@@ -160,7 +160,7 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 				
 				// handle calendar_event_format in lang.ini
 				$.each(sv_lang.calendar_event_format, function(pattern, attributes) {
-					if(entry.title.toLowerCase().indexOf(pattern.toLowerCase()) > -1) { // event title contains pattern
+					if(entry.title.toLowerCase() == pattern.toLowerCase()) { // event title equals pattern
 						// set each defined property
 						$.each(attributes, function(prop, val) {
 							entry[prop] = val;
@@ -181,11 +181,11 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 				});
 				
 				console.log(entry)
-				//get only the garbade icon, when no or the garbade keyword is used
+				//get only the garbage icon, when no or the garbage keyword is used
 				if (entry.icon === "message_garbage"){
 					entry.icon = "message_garbage_2";
 				}else if(!entry.icon){
-					if (typeof(sv_lang.calendar_event_format.default_img_waste) !== undefined){
+					if (typeof(sv_lang.calendar_event_format.default_img_waste) !== undefined || sv_lang.calendar_event_format.default_img_waste.icon ==""){
 						entry.icon = "pages/base/pics/trans.png";
 						entry.color = 'transparent';
 					}else{
