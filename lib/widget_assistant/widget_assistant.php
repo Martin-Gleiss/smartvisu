@@ -45,8 +45,7 @@ function render_inline ($value)
 	$myNewWidgets = "";
 	foreach ($myData as $entry) 
 	{
-	 $myNewWidgets = $myNewWidgets ."{{" . $entry . "}}<br>\n";
- 	 $myNewWidgets = $myNewWidgets ."===================================================================<br>\n";
+	 $myNewWidgets = $myNewWidgets ."" . $entry . "<br><br>\n";
 	}
 	$myFile = file_get_contents('tmpl_assistant_2.html');
 	$myFile = str_replace("{{ %widget% }}",$myNewWidgets, $myFile);
@@ -65,8 +64,7 @@ function render_outline ($value)
 	$myNewWidgets = "";
 	foreach ($myData as $entry) 
 	{
-	 $myNewWidgets = $myNewWidgets ."{{" . $entry . "}}<br>\n";
- 	 $myNewWidgets = $myNewWidgets ."===================================================================<br>\n";
+	 $myNewWidgets = $myNewWidgets ."" . $entry . "<br><br>\n";
 	}
 	$myFile = file_get_contents('tmpl_assistant_1.html');
 	$myFile = str_replace("{{ %widget% }}",$myNewWidgets, $myFile);

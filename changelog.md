@@ -86,6 +86,8 @@
 ### Known Bugs
 - when leaving a page via the "back" button, widgets exit method and cancellation of plot data subscriptions won't work.
   (root cause documented in base.js line 1804)
+- On Apple devices with Safari browser, the widget assistant does not open a new window for rendering. 
+  Deactivate "Preview in new Window" option to view the result in the box below the option panel.
 
 ## 2.9.2
 

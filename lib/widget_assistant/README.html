@@ -53,7 +53,7 @@ pre {
 }
 </style>
 
-<h1 id="smartvisu-widget-constructor">smartvisu - Widget Constructor</h1>
+<h1 id="smartvisu-widget-assistant">smartvisu - Widget Assistant</h1>
 <h2 id="table-of-content">Table of Content</h2>
 <ol>
 <li><a href="#howitworks">How it works</a></li>
@@ -72,7 +72,7 @@ After completing the wiget you can render it in a new window. The widget in the 
 The final widget including the brackets &quot;{{&quot; + &quot;}}&quot; will be stored on rendering to the clipboard.
 You can paste the widget-code directly to your html-file.</p>
 <p>Right now you can render multiple widgets, you have to separate the different widgets
-by a <strong>&lt;br&gt;</strong>-TAG</p>
+by a <strong><code>&lt;br&gt;</code></strong>-TAG</p>
 <h2>Example :</h2>
 <pre><code>
 plot.period(&#39;&#39;, [&#39;licht.og.terrasse.screens.warm.dimmen&#39;, &#39;licht.og.terrasse.screens.kalt.dimmen&#39;, &#39;licht.og.terrasse.decke.dimmen&#39;], &#39;max&#39;, &#39;1w&#39;, &#39;now&#39;, &#39;0&#39;, &#39;110&#39;, &#39;1000&#39;, [&#39;Screens warm&#39;, &#39;Screens kalt&#39;, &#39;Decke&#39;], [&#39;#daa&#39;, &#39;#aad&#39;, &#39;#955&#39;], [&#39;stair&#39;, &#39;stair&#39;, &#39;stair&#39;], [&#39;Uhrzeit&#39;, &#39;Helligkeit&#39;], &#39;advanced&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, { yAxis: [ { tickInterval: 40 } ], legend: {align: &#39;right&#39;, verticalAlign: &#39;top&#39;, y: 50, layout: &#39;vertical&#39;}, chart: { marginRight: 110} })
@@ -83,9 +83,15 @@ quad.dimmer(&#39;Lueftungsstufe1&#39;, &#39;Lüftungsstufe&#39;, &#39;Haustechni
 </code></pre>
 <p><a name="ChangeLog"/></a></p>
 <h2 id="change-log">Change-Log</h2>
+<h4 id="2021-01-18-version-1-1-0">2021.01.18 - Version 1.1.0</h4>
+<ul>
+<li>changed handling for &quot;render in new window&quot; - if there is no Window a new one will be opened, else the opened window would be refreshed, also if there is a twig error</li>
+<li>more fixes for &quot;nasty&quot;, &quot;nested&quot; widgets</li>
+<li>some optical changes</li>
+</ul>
 <h4 id="2020-11-08-version-1-0-0">2020.11.08 - Version 1.0.0</h4>
 <ul>
-<li>added support for multi-widget creation (widgets have to be separated by <code><strong>&lt;br&gt;</strong></code>-TAG)</li>
+<li>added support for multi-widget creation (widgets have to be separated by <strong>&lt;br&gt;</strong>-TAG)</li>
 <li>fixed problem for &quot;nasty&quot;, &quot;nested&quot; widgets</li>
 <li>added check for all brackets closed before rendering</li>
 </ul>
@@ -140,8 +146,12 @@ quad.dimmer(&#39;Lueftungsstufe1&#39;, &#39;Lüftungsstufe&#39;, &#39;Haustechni
 </thead>
 <tbody>
 <tr>
+<td>STRG+0</td>
+<td>switch OFF autocomplete-Dict</td>
+</tr>
+<tr>
 <td>STRG+1</td>
-<td>only Items in autocomplete-Dict</td>
+<td>switch ON autocomplete-Dict</td>
 </tr>
 <tr>
 <td>STRG+2</td>
@@ -168,12 +178,24 @@ quad.dimmer(&#39;Lueftungsstufe1&#39;, &#39;Lüftungsstufe&#39;, &#39;Haustechni
 <td>switch ON/OFF autocomplete for Ouotes<sup><span style="color:red"> <strong>(1)</strong></span></sup> - take some time to build the autocomplete</td>
 </tr>
 <tr>
+<td>STRG+8</td>
+<td>only Items in autocomplete-Dict</td>
+</tr>
+<tr>
 <td>STRG+9</td>
 <td>switch ON/OFF Wildcard search in autocomplete dict</td>
 </tr>
 <tr>
 <td>STRG+Space</td>
 <td>opens the actual autocomplete-Dict</td>
+</tr>
+<tr>
+<td>STRG+F</td>
+<td>find value in widgets</td>
+</tr>
+<tr>
+<td>STRG+SHIFT+R</td>
+<td>replace value in widgets - use ENTER to go to replacement-value</td>
 </tr>
 </tbody>
 </table>
@@ -202,4 +224,5 @@ f = open("/var/www/html/smartvisu/pages/<strong>YOUR_PAGES</strong>/masteritem.j
 f.write(json.dumps(item_list))
 f.close()
 </code></pre>
+
 
