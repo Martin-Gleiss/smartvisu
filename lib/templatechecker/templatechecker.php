@@ -16,6 +16,11 @@ require_once 'class.Settings.php';
 require_once 'class.Widget.php';
 require_once 'class.WidgetParameterChecker.php';
 require_once 'class.TemplateChecker.php';
+require_once 'class.Items.php';
+require_once 'class.OldWidgets.php';
+
+// avoid fatal timeout errors on older devices while checking pages with plenty of widgets
+set_time_limit (120);
 
 RequestHandler::run();
 
@@ -48,7 +53,7 @@ class RequestHandler {
 					$ret = self::analyzeFile();
 					break;
 				case 'getfiles':
-					$ret = self::getFileArray('pages/' . self::getRequestParameter('pages'), '.html');
+					$ret = self::getFileArray('pages/' . self::getRequestParameter('pages'), '.html',self::getRequestParameter('subfolders'));
 					break;
 				default:
 					throw new Exception('Invalid command');
@@ -67,15 +72,15 @@ class RequestHandler {
 	 * @param string $dir directory to read (relative to const_path)
 	 * @return array list of files
 	 */
-	private static function getFileArray($dir, $suffix) {
+	private static function getFileArray($dir, $suffix, $subfolders) {
 		clearstatcache();
 
 		$ret = array();
 		$dirlist = dir(const_path . $dir);
 		while (($item = $dirlist->read()) !== false) {
 			if (substr($item, 0, 1) != '.') {
-				if (is_dir(const_path . $dir . '/' . $item)) {
-					$ret = array_merge($ret, self::getFileArray($dir . '/' . $item, $suffix));
+				if (is_dir(const_path . $dir . '/' . $item) && $subfolders == "true") {
+					$ret = array_merge($ret, self::getFileArray($dir . '/' . $item, $suffix, $subfolders));
 				} else if (substr($item, -strlen($suffix)) == $suffix) {
 					$id = str_replace('/', '-', $dir . '/' . $item);
 					$id = str_replace('.', '-', $id);
@@ -84,7 +89,7 @@ class RequestHandler {
 			}			
 		}
 		$dirlist->close();
-		ksort($ret);
+		//ksort($ret);
 		return $ret;
 	}
 
@@ -96,7 +101,9 @@ class RequestHandler {
 		$file = self::getRequestParameter('file');
 		$fileid = self::getRequestParameter('fileid');
 		$messages = new MessageCollection();
-		TemplateChecker::run($file, $messages);
+		$checkItems = self::getRequestParameter('checkItems');
+		
+		TemplateChecker::run($file, $messages,$checkItems);
 		return array(
 			'file' => $file,
 			'resultid' => 'r' . substr($fileid, 1),

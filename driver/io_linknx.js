@@ -7,6 +7,7 @@
  * -----------------------------------------------------------------------------
  * @default     driver_port            1028
  * @hide        driver_autoreconnect
+ * @hide		reverseproxy
  */
 
 
@@ -191,6 +192,13 @@ var io = {
 				})
 				.error(notify.json);
 		}
+	},
+	
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		// TODO
 	}
 
 };

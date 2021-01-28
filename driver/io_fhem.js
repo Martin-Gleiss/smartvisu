@@ -8,6 +8,7 @@
  * -----------------------------------------------------------------------------
  * @label       FHEM
  * @hide        driver_autoreconnect
+ * @hide		reverseproxy
  * @default     driver_port 2121
  *
  * This driver has enhancements for using smartVISU with FHEM
@@ -530,7 +531,14 @@ var io = {
       io.log(1, "socket closed");
     }
     
-  }
+  },
+  
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		// TODO
+	},
   
   
 };

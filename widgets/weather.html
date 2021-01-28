@@ -14,22 +14,39 @@
 * @param {id} unique id for this widget
 * @param {text=} location as string (optional)
 * @param {duration=15i} the refresh interval for this widget using relative time format (optional, default 15i = 15 minutes)
+* @param {item(num)=} item for temperature from backend (optional) will be displayed as value with unit 'temp'
+* @param {item(num,str)=} item for wind speed from backend (optional) either as value or as text from backend
+* @param {text=value} format for wind: 'value' = value with unit 'speed' or 'text' = text item from backend (optional, default='value')
+* @param {item(num)=} item for an additional feature (e.g. humidity, rain or air pressure)
+* @param {text=} leading text for additional feature  
+* @param {text=} format or unit for additional feature (e.g. '%','l/m²' or 'hPa') (optional)
+* @param {item(num)=} item for a second additional feature (e.g. humidity, rain or air pressure)
+* @param {text=} leading text for second additional feature  
+* @param {text=} format or unit for second additional feature (e.g. '%','l/m²' or 'hPa') (optional)
+* @param {item(num)=} item for a third additional feature (e.g. humidity, rain or air pressure)
+* @param {text=} leading text for third additional feature  
+* @param {text=} format or unit for third additional feature (e.g. '%', 'l/m²' or 'hPa') (optional)
 *
 * @info based on jDigiClock by Radoslav Dimov
 * @link http://www.radoslavdimov.com
 */
-{% macro current(id, location, repeat) %}
+{% macro current(id, location, repeat, itemtemp, itemwind, windfmt, itemhumi, humitxt, humifmt, itemmisc, misctxt, miscfmt, itemmisc1, misc1txt, misc1fmt) %}
 	{% set uid = uid(page, id) %}
+	
 
 	{% if once('digiweather') %}
 		<link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
 	{% endif %}
 
 	<div class="center">
-		<div id="{{ uid }}-weather" class="weather" data-widget="weather.current" data-repeat="{{ repeat|default('15i') }}"
+		<div id="{{ uid }}-weather" class="weather" data-widget="weather.current" data-item="{{ itemtemp }}, {{ itemwind }}, {{ itemhumi }}, {{ itemmisc }}, {{ itemmisc1 }} " 
+			data-windfmt="{{ windfmt|default('value') }}" data-humitxt="{{ humitxt }}" data-humifmt="{{ humifmt }}" data-misctxt="{{ misctxt }}" data-miscfmt="{{ miscfmt }}"
+			data-misc1txt="{{ misc1txt }}" data-misc1fmt="{{ misc1fmt }}" data-repeat="{{ repeat|default('15i') }}"
 			data-service-url="lib/weather/service/{{ config_weather_service|url_encode }}.php" data-location="{{ location|default(config_weather_location)|url_encode }}">
-			<div class="humi"></div>
 			<div class="wind"></div>
+			<div class="humi"></div>
+			<div class="misc"></div>
+			<div class="misc1"></div>
 			<div class="temp"></div>
 			<div class="city"></div>
 			<div class="cond"></div>

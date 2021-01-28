@@ -72,13 +72,13 @@
   Here the color of the print is changed based on a threshold of a different item.<br>
   Change the second slider to adjust the color of the printed value and see what happens if the value goes above 200 and 300.
   <div class="html">
-  <div style="float:left;width: 80%; min-width: 100px; margin: 10px 0 0 0;">bath.value: {{ basic.slider('', 'bath.value', 0, 100, 1, '', 'handle') }}</div>
-  <div style="float:left;width: 80%; min-width: 100px; margin: 10px 0 0 0;">bath.trigger: {{ basic.slider('', 'bath.trigger', 0, 400, 10, '', 'handle') }}</div>
+	<div style="float:left;width: 80%; min-width: 100px; margin: 10px 0 0 0;">bath.value: {{ basic.slider('', 'bath.value', 0, 100, 1, '', 'handle') }}</div>
+	<div style="float:left;width: 80%; min-width: 100px; margin: 10px 0 0 0;">bath.trigger: {{ basic.slider('', 'bath.trigger', 0, 400, 10, '', 'handle') }}</div>
   </div>
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-      <span id="bathvalue">{{ basic.print('', 'bath.value') }}</span>
-      {{ basic.print('', 'bath.trigger', 'script', '$("#bathvalue").css("color", (VAR1 < 200) ? "#FF6600" : "#FFFFFF")') }}
+      <span id="bathval">{{ basic.print('', 'bath.value') }}</span>
+      {{ basic.print('', 'bath.trigger', 'script', '$("#bathval").css("color", (VAR1 < 400 && VAR1 > 300) ? "#33FF33" : (VAR1 < 200) ? "#FF6600" : "#FFFFFF")') }}
     {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
@@ -93,20 +93,16 @@
   <div style="float:left;width: 80%; min-width: 100px; margin: 10px 0 0 0;">{{ basic.slider('', 'bath.value', 0, 100, 1, '', 'handle') }}</div>
   </div>
   <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}
-      <span id="otherElemnt" style="color: red">This is a really cool function</span>
-    {% endfilter %}</code>
-  </div>
-  <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-      {{ basic.print('', 'bath.value', 'script', '$("#otherElement").css("padding-left", VAR1*2)') }}
-      {{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherElement").text() + "\'"') }}
+		<span id="otherElement" style="color: red">This is a really cool function</span>
+		{{ basic.print('', 'bath.value', 'script', '$("#otherElement").css("padding-left", VAR1*2)') }}
+		{{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherElement").text() + "\'"') }}
     {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
-    <span id="otherElement" style="color: red">This is a really cool function</span><br>
-    {{ basic.print('', 'bath.value', 'script', '$("#otherElement").css("padding-left", VAR1*2)') }}
-    {{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherElement").text() + "\'"') }}
+    <span id="otherEl" style="color: red">This is a really cool function</span><br>
+    {{ basic.print('', 'bath.value', 'script', '$("#otherEl").css("padding-left", VAR1*2)') }}
+    {{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherEl").text() + "\'"') }}
   </div>
 
 

@@ -33,23 +33,25 @@ For your own Project do the following:
   1. Create a new directory in "pages", for example "pages/YOURPROJECT".  
      This is your individual project-directory where you may work.  
      Copy all files from "pages/_template" to your project-directory
-  2. Check the config.php and set the "config_pages" to "YOURPROJECT"
-  3. Set the "config_driver" to your backend-environment
+  2. Call smartVISU in your browser (http://localhost/smartVISU) and proceed to the configuration page. 
+     Select "YOURPROJECT" in the user interface section.
+  3. Select your smart home backend in the "smarthome/IoT data source" section
        * linknx: for linxknx and eibd environment
        * smarthomeNG: for SmartHomeNG environment
        * ...
        * knxd / eibd: for direct access
        * offline: only for testing, all GADs will be stored in a textfile ("temp/offline_YOURPROJECT.var")
-  4. Create a new page in your project-directory, for example "mypage.html"  
-       Note: Do not use "base.html, basic.html, device.html", these are system pages
-  5. Fill the page with your preferred content and widgets (see the pages/example*.* sections)
-  6. If you need to change the design, use a "visu.css" - stylesheet file in your project-directory.  
-       If you want to develop your own widgets, also place them in your directory.   
-       Name the javascript-file (if you need one) to "visu.js" and it will be included automatically.   
-       Name the file with the widgets e.g. "custom.html". Avoid names which are already used in the 
-       "smartvisu/widgets" directory.
+  4. Create a new page in your project-directory, for example "mypage.html". 
+     Note: Do not use "base.html, basic.html, device.html" nor any other reserved name of the system pages.
+  5. Fill the page with your preferred content and widgets (see the pages/example*.* sections). 
+     The widget constructor in the system menu will help you to parametrize the widgets correctly.
+  6. If you need to change the design, select a design in the user interface section.  
+     If you want to develop your own widgets, place them in ./pages/YOURPROJECT/widgets or ./dropins.   
+     Provide a mywidget.html and a mywidget.js (if you need one). You'll need to import the html
+     file in your pages while javascript will be included automatically.   
+     Avoid names which are already used in the "smartvisu/widgets" directory or other sytem file names.
   7. Test your page with: http://localhost/smartVISU/index.php?page=mypage  
-       Note: replace "localhost" with the hostname from your server      
-  8. Create all pages you need
-  9. At the end of your project set "config_cache" to "true" to speed up your smartVISU
+     Note: replace "localhost" with the hostname from your server      
+  8. Create all pages you need. The template checker will check the formal correctness of the completed set of pages.
+  9. At the end of your project set "cache" to "on" in the user interface area to speed up your smartVISU
   10. Enjoy smartVISU!

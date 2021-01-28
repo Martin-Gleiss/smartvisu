@@ -20,7 +20,11 @@
 <form>
 	{{ forms.config_select('tplchk', { 'pages': config_pages }, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
 	<label><input name="checkbox-0 " type="checkbox" id="tplchk_chk_errors_only">Show warnings/errors only</label>
-
+	<label><input name="checkbox-0 " type="checkbox" id="tplchk_chk_subfolders">Don´t check files in subfolders</label>
+	<div id="chk_items" style="visibility: hidden;">
+		<label><input name="checkbox-0 " type="checkbox" id="tplchk_chk_items">Don´t check items / item parameter types - to increase performance</label>
+	</div>
+	
 	<input type="button" value="Run all tests" id="tplchk_btn_run" data-theme="b"/>
 	<input type="button" value="Reset result" id="tplchk_btn_reset" data-theme="b"/>
 </form>
@@ -41,6 +45,10 @@
 
 		<div class="check" data-check="check_update.php">
 			<img src="pages/base/pics/trans.png" alt=""><span>newer version</span></div>
+
+		<div class="check" id="check_masteritem" data-check="check_masteritem.php">
+			<img src="pages/base/pics/trans.png" alt=""><span>Masteritem file</span></div>			
+
 </div>
 
 <h2>Files in template directory:</h2>

@@ -51,6 +51,26 @@
 		{{ basic.icon('light_light', 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b']) }}
 		{{ basic.icon(icon.light('','','bath.light.value'), 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b']) }}
 	</div>
+	
+	New in v3.0: icon sizes may be altered
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ basic.icon('light_light', 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b'], 'micro') }}
+		{{ basic.icon('light_light', 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b'], 'mini') }}
+		{{ basic.icon('light_light', 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b'], 'midi') }}
+		{{ basic.icon('light_light', 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b'], 'icon') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.icon('light_light', 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b'], 'micro') }}
+		{{ basic.icon('light_light', 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b'], 'mini') }}
+		{{ basic.icon('light_light', 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b'], 'icon') }}
+		{{ basic.icon('light_light', 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b'], 'midi') }}
+		{{ basic.icon(icon.light('','','bath.light.value'), 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b'], 'micro') }}
+		{{ basic.icon(icon.light('','','bath.light.value'), 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b'], 'mini') }}
+		{{ basic.icon(icon.light('','','bath.light.value'), 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b'], 'icon') }}
+		{{ basic.icon(icon.light('','','bath.light.value'), 'rgb', ['bath.color.r', 'bath.color.g', 'bath.color.b'], 'midi') }}
+	</div>
 
 {% endblock %}
 

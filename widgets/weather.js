@@ -6,19 +6,82 @@ $.widget("sv.weather_current", $.sv.widget, {
 	options: {
 		"service-url": '',
 		location: '',
-		repeat: '15i'
+		repeat: '15i',
+		windfmt: 'value',
+		humitxt: '',
+		humifmt: '',
+		misctxt: '',
+		miscfmt: '',
+		misc1txt: '',
+		misc1fmt: ''
 	},
 
+	_humi: 0,
+	_wind: 0,
+	_temp: 0,
+		
+	_update: function(response){
+		
+		// make sure that items are correlated correctly even if optional items are omitted
+		var items = this.options.item.explode();
+		var values = new Array(this.items.length);
+		var j=0;
+		for (var i = 0; i < items.length; i++) {
+			if (items[i] != '') {
+				values[i] = response[j];
+				j++;
+			};
+		};
+		
+		var margintop = 15;
+		var marginbottom = 15;
+		
+		var itemtemp = values[0];
+		if (itemtemp !== undefined) {
+			this._temp = 1;
+			this.element.children('.temp').html(itemtemp.transUnit('temp'));
+		};
+		var itemwind = values[1];
+		if (itemwind !== undefined) {
+			this._wind = 1;
+			if (this.options.windfmt == 'value') 
+				this.element.children('.wind').html(itemwind.transUnit('speed'));
+			else
+				this.element.children('.wind').html(itemwind);
+		};
+		var itemhumi = values [2];
+		if (itemhumi !== undefined) {
+			this._humi = 1;
+			this.element.children('.humi').html(this.options.humitxt + itemhumi.transUnit(this.options.humifmt));
+		};
+		var itemmisc = values [3];
+		if (itemmisc !== undefined) {
+			this.element.children('.misc').html(this.options.misctxt + itemmisc.transUnit(this.options.miscfmt));
+			margintop = -5;
+			marginbottom = 10;
+		};
+		var itemmisc1 = values [4];
+		if (itemmisc1 !== undefined) {
+			this.element.children('.misc1').html(this.options.misc1txt + itemmisc1.transUnit(this.options.misc1fmt));
+			margintop = -25;
+			marginbottom = 5;
+		};
+		
+		this.element.children('.temp').attr('style', 'margin-top: '+margintop+'px; margin-bottom: '+marginbottom+'px;');
+	},
+	
 	_repeat: function() {
 		var element = this.element;
+		var that = this; 
 		var repeatMinutes = (new Date().duration(this.options.repeat) - 0) / 60000;
 		$.getJSON(this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes, function (data) {
 			element.css('background-image', 'url(lib/weather/pics/' + data.current.icon + '.png)')
+			element.css('background-size', 'contain')
 			element.children('.city').html(data.city);
 			element.children('.cond').html(data.current.conditions);
-			element.children('.temp').html(data.current.temp);
-			element.children('.humi').html(data.current.more);
-			element.children('.wind').html(data.current.wind);
+			if (that._temp == 0) element.children('.temp').html(data.current.temp);
+			if (that._humi == 0) element.children('.humi').html(data.current.more);
+			if (that._wind == 0) element.children('.wind').html(data.current.wind);
 		})
 		.error(notify.json);
 	}

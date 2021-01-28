@@ -11,7 +11,21 @@
 {% extends "widget_plot.html" %}
 
 {% block example %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+		io.write('sleep.rtr.act', 18 );
+		io.write('office.rtr.act', 21 );
+		io.write('kid.rtr.act', 22 );
+		io.write('bath.rtr.act', 23 );
+		io.write('floor.rtr.act', 19 );
+		io.write('sleep.rtr.set', 17 );
+		io.write('office.rtr.set', 22 );
+		io.write('kid.rtr.set', 21 );
+		io.write('bath.rtr.set', 23 );
+		io.write('floor.rtr.set', 20 );
+		});
 
+</script>
 	<h5>Example</h5>
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
@@ -46,7 +60,7 @@
 				<div data-role="collapsible" data-collapsed="false">
 					<h3>brightness in cardinal directions</h3>
 					{{ plot.temprose('',
-					['bath.p1', 'bath.p2', 'bath.p3'], '',
+					['sleep.rtr.act', 'office.rtr.act', 'kid.rtr.act'], '',
 					['South', 'East', 'West'], ['Brightness'], 'lx') }}
 				</div>
 			</div>

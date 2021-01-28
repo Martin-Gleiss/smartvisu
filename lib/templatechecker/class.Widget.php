@@ -142,6 +142,7 @@ class Widget {
 		$inSingleQuotes = FALSE;
 		$squareBracketLevel = 0;
 		$roundBracketLevel = 0;
+		$curlyBracketLevel = 0;
 		$paramArray = array();
 		$currentParam = '';
 		$lastChar = '';
@@ -161,8 +162,14 @@ class Widget {
 			} else if ($char == ')' && !$inSingleQuotes) {
 				$roundBracketLevel--;
 				$currentParam .= $char;
-			} else if ($char == ',' && !$inSingleQuotes && $squareBracketLevel == 0 && $roundBracketLevel == 0) {
-				if($isArray)
+			} else if ($char == '{' && !$inSingleQuotes) {
+				$curlyBracketLevel++;
+				$currentParam .= $char;
+			} else if ($char == '}' && !$inSingleQuotes) {
+				$curlyBracketLevel--;
+				$currentParam .= $char;
+			} else if ($char == ',' && !$inSingleQuotes && $squareBracketLevel == 0 && $roundBracketLevel == 0 && $curlyBracketLevel==0) {
+				if($isArray && $squareBracketLevel == 0 && $curlyBracketLevel == 0)
 					$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
 				else
 					$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
@@ -176,7 +183,7 @@ class Widget {
 			$lastChar = $char;
 		}
 		if ($currentParam) {
-			if($isArray)
+			if($isArray && $curlyBracketLevel == 0)
 				$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
 			else
 				$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
@@ -197,9 +204,16 @@ class Widget {
 				$data['Parameter ' . $i++] = $param;
 			$messages->addWarning('WIDGET PARAM SPLIT', 'Square Brackets not matching!', $node->getLineNo(), $macro, $data);
 		}
+		if ($curlyBracketLevel != 0) {
+			$data = array('Widget' => $name, 'Parameters' => $paramString);
+			$i=0;
+			foreach($paramArray as $param) 
+				$data['Parameter ' . $i++] = $param;
+			$messages->addWarning('WIDGET PARAM SPLIT', 'Curly Brackets not matching!', $node->getLineNo(), $macro, $data);
+		}
 		return $paramArray;
 	}
-
+	
 	/**
 	 * constructor
 	 * @param \DOMElement $node node containing the widget

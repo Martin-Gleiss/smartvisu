@@ -8,6 +8,7 @@
  * -----------------------------------------------------------------------------
  * @label       knxd / eibd
  * @hide        driver_autoreconnect
+ * @hide		reverseproxy
  */
 
 
@@ -63,8 +64,8 @@ var io = {
 	 * @param      the ip or url to the system (optional)
 	 * @param      the port on which the connection should be made (optional)
 	 */
-	init: function (adress, port) {
-		io.adress = adress;
+	init: function (address, port) {
+		io.address = address;
 		io.port = port;
 		io.stop();
 	},
@@ -223,7 +224,7 @@ var io = {
 	 */
 	get: function (item) {
 
-		$.ajax({ url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/r?' + getForUrl,
+		$.ajax({ url: 'http://' + io.address + ':' + io.port + '/cgi-bin/r?' + getForUrl,
 			type: "GET",
 			dataType: 'json',
 			async: true,
@@ -243,7 +244,7 @@ var io = {
 
 		io.stop();
 
-		$.ajax({ url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/w',
+		$.ajax({ url: 'http://' + io.address + ':' + io.port + '/cgi-bin/w',
 			data: ({a: io.getItemFromItem(item), v: io.convertData(val, io.getDataTypeFromItem(item), 'to'), ts: $.now()}),
 			type: "GET",
 			dataType: 'json',
@@ -290,7 +291,7 @@ var io = {
 
 			getForUrl = getForUrl + '&i=' + io.actualIndexNumber;
 
-			io.actualRequest = $.ajax({ url: 'http://' + io.adress + ':' + io.port + '/cgi-bin/r?' + getForUrl,
+			io.actualRequest = $.ajax({ url: 'http://' + io.address + ':' + io.port + '/cgi-bin/r?' + getForUrl,
 				type: 'GET',
 				dataType: 'json',
 				async: true,
@@ -354,6 +355,13 @@ var io = {
 		requestItem = itemArray[0] + '/' + itemArray[1] + '/' + itemArray[2];
 
 		return requestItem;
+	},
+	
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		// TODO
 	}
 
 };

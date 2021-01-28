@@ -15,6 +15,12 @@
 
 
 function get_lang($code = config_lang) {
+	
+	// does configured language file exist? config.ini could have been copied 
+	if (!is_file(const_path.'lang/'.$code.'.ini')) {
+		$code = 'en';
+	};
+	
 	// read ini file
 	$result = parse_ini_file(const_path.'lang/'.$code.'.ini', true);
 
@@ -135,7 +141,8 @@ function transdate($format = '', $timestamp = null)
 	if (!$lang)
 		$lang = get_lang();
 
-	if ($lang['format'][$format] != '')
+	//if ($lang['format'][$format] != '')  // throws php notices if array key is not existing
+	if (array_key_exists($format, $lang['format']))
 		$format = $lang['format'][$format];
 
 	if ($timestamp == '')
@@ -223,7 +230,8 @@ function filewrite($file, $ret)
 		@chown($tmpFile, $stat['uid']);
 		@chgrp($tmpFile, $stat['gid']);
 	}
-	rename($tmpFile, $file);
+	copy($tmpFile, $file);
+	unlink($tmpFile);
 
 	return $ret;
 }
@@ -291,10 +299,23 @@ function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
 			@chown($tmpFile, $stat['uid']);
 			@chgrp($tmpFile, $stat['gid']);
 		}
-		$success &= rename($tmpFile, $path);
+		$success &= copy($tmpFile, $path);
+		unlink($tmpFile);
 	}
 
 	return $success;
 }
+
+// -----------------------------------------------------------------------------
+// A U X I L I A R Y
+// -----------------------------------------------------------------------------
+
+function debug_to_console($data) {
+    $data = '[PHP debug]: ' . $data;
+    $output = 'console.log(' . json_encode($data) . ');';
+    $output = sprintf('<script>%s</script>', $output);
+    echo $output;
+    }
+
 
 ?>

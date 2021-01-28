@@ -7,13 +7,12 @@
  * -----------------------------------------------------------------------------
  */
 
-
 /**
  * Standard ventilator control with slider
- * @param       unique id for this widget
- * @param       item for the level
- * @param       item for automatic (optional)
- * @param       item for level up/down (optional)
+ * @param {id=} unique id for this widget
+ * @param {item(num)} item for the level
+ * @param {item(bool,num)} item for automatic (optional)
+ * @param {item(bool,num)} item for level up/down (optional)
  */
 {% macro slider (id, item_level, item_auto, item_switch ) %}
     {% import   "basic.html" as basic %}
@@ -60,10 +59,10 @@
 
 /**
  * Standard ventilator control with switches
- * @param       unique id for this widget
- * @param       item for the level
- * @param       item for automatic (optional)
- * @param       item for level up/down (optional)
+ * @param {id=} unique id for this widget
+ * @param  {item(num)} item for the level
+ * @param {item(bool,num)} item for automatic (optional)
+ * @param {item(bool,num)} item for level up/down (optional)
  */
 {% macro switch (id, item_level, item_auto, item_switch ) %}
     {% import   "basic.html" as basic %}

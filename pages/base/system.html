@@ -29,11 +29,19 @@
 				<h3>Template checker</h3>
 			</a>
 		</li>
+		{% if config_widgetassi %}
+			<li data-icon="false">
+				<a href="index.php?page=widget_assistant">
+					<img class="icon" src="{{ icon0 }}jquery_gear.svg" alt="Widget Assistant" />
+					<h3>Widget Assistant</h3>
+				</a>
+			</li>
+		{% endif %}
 		
 		{% if config_driver == 'smarthome.py' %}
 		<li data-icon="false">
-			<a href="index.php?page=smarthome.py">
-				<img class="icon" src="{{ icon0 }}it_television.svg" alt="SmartHomeNG" />
+			<a href="index.php?page=smarthomeNG">
+				<img class="icon" src="{{ icon0 }}logo_smarthomeNG.svg" alt="SmartHomeNG" />
 				<h3>SmartHomeNG</h3>
 			</a>
 		</li>
@@ -42,11 +50,20 @@
 		<li data-role="list-divider">Help</li>
 		
 		<li data-icon="false">
-			<a href="index.php?pages=docu&page=index" target="_blank">
-				<img class="icon" src="{{ icon0 }}message_help.svg" alt="Documentation" />
+			<a href="index.php?pages=docu&amp;page=index" target="_blank">
+				<img class="icon" src="{{ icon0 }}edit_copy.svg" alt="Documentation" />
 				<h3>Documentation</h3>
 			</a>
 		</li>
+		
+		{% if isdir('pages/kurzanleitung') %}
+			<li data-icon="false">
+				<a href="index.php?pages=kurzanleitung&amp;page=index" target="_blank">
+					<img class="icon" src="{{ icon0 }}message_help.svg" alt="Documentation" />
+					<h3>Kurzanleitung (German)</h3>
+				</a>
+			</li>
+		{% endif %}
 
 		<li data-icon="false">
 			<a href="http://knx-user-forum.de/smartvisu/" target="_blank">

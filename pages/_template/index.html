@@ -31,6 +31,15 @@
 	{{ weather.forecastweek('weather_forecast') }}
 
 	<hr>
+	
+	{% if config_calendar_service != "service_disabled" %} 
+		{{ calendar.list('calendarlist', lang('calendar','calendarlist'), 5) }}
+		<hr>
+	{% endif %}
+		
+	{% if config_phone_service != "service_disabled" %} 
+		{{ phone.list('phonelist', lang('phone','phonelist'), 5) }}
+	{% endif %}
 
 {% endblock %}
 

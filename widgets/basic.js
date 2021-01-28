@@ -36,7 +36,29 @@ $.widget("sv.basic_select", $.sv.widget, {
 	initSelector: 'select[data-widget="basic.select"]',
 
 	_update: function(response) {
-		this.element.val(response[0]).selectmenu('refresh');
+		// remove space after kommas in response[0] (relevant for lists)
+		var respval = response[0].toString().trim().replace(/, /gi, ",");
+		// if response is an array or a string containing a [] it should be handled as a list
+		var respArray = response[0] instanceof Array;
+		respval = respval.includes("[") || ! respArray ? respval : "[" + respval + "]";
+		
+		if (response [1] == undefined)
+			this.element.val(respval).selectmenu('refresh');
+		else {
+			// response [1] is item to set and listitem (array) with available values
+			var optionlist = "";
+			this.element.find('option[value]').remove();
+			var respopts = response[1].toString();
+			var resptxts = [];
+			if (response[2] != undefined)
+				resptxts = response[2].toString().split(",");
+	  	  
+			$.each(respopts.split(","), function(index, value) {
+				optionlist += "<option value=\"" + value + "\">" + (resptxts[index] != undefined ? resptxts[index] : value) + "</option>";
+			});
+			this.element.append(optionlist);
+		};
+		this.element.val(respval).selectmenu('refresh');
 	},
 
 	_events: {
@@ -759,10 +781,11 @@ $.widget("sv.basic_print", $.sv.widget, {
 		else { // Number
 			value = parseFloat(calc);
 			calc = value.transUnit(format);
+			//console.log('print: '+ value +' with format '+ format + ' is ' + calc);
 		}
 
 		// print the result
-		if (formatLower == 'html')
+		if (formatLower == 'html' || formatLower == 'text2br')
 			this.element.html(calc);
 		else
 			this.element.text(calc);
@@ -784,56 +807,6 @@ $.widget("sv.basic_print", $.sv.widget, {
 			this.element.css('visibility', 'hidden');
 		else if(color != '' && color != 'icon0')
 			this.element.css('color', color);
-	}
-});
-
-// ----- basic.shifter ---------------------------------------------------------
-$.widget("sv.basic_shifter", $.sv.widget, {
-
-	initSelector: 'span[data-widget="basic.shifter"]',
-
-	options: {
-		min: 0,
-    max: 255,
-    'pic-on': '',
-    'pic-off': ''
-	},
-
-	_update: function(response) {
-		var max = this.options.max;
-		var min = this.options.min;
-
-		var step = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 10 + 0.49) * 10;
-
-		if (response[1] != 0 && step > min) {
-			var percent = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 100);
-			this.element.find('img').attr('src', this.options['pic-on'].replace('00', step)).attr('alt', percent + '%').attr('title', percent + '%');
-		}
-		else {
-			this.element.find('img').attr('src', this.options['pic-off']).attr('alt', '0%').attr('title', '0%');
-		}
-	},
-
-	_events: {
-		'click': function (event) {
-			var items = this.options.item.explode();
-
-			if (this.element.find('img').attr('src') == this.options['pic-off']) {
-				io.write(items[1], 1);
-			}
-			else {
-				io.write(items[1], 0);
-			}
-		},
-
-		'hover > a > img': function (event) {
-			if (event.type === 'mouseenter') {
-				$(this).addClass("ui-focus");
-			}
-			else {
-				$(this).removeClass("ui-focus");
-			}
-		}
 	}
 });
 
@@ -1029,6 +1002,39 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 		var shortpressEvent = function(event) {
 			// get the list of values
 			var list_val = String(this.options.vals).explode();
+
+      // this function is used to revive list entries
+      var combined = [];
+      var temp = '';
+      var start_combine = 2;
+      list_val.forEach(arrayConvert);
+      function arrayConvert(part, index) {
+        if(part.startsWith("[") && ! part.endsWith("]") && start_combine == 2)
+          start_combine = 1;
+        else if (start_combine == 2)
+          combined.push(part);
+
+        if(start_combine == 1) {
+            if(part.endsWith("]"))
+            {
+              start_combine = 0;
+              temp += ', ' + part;
+            }
+            else if (part.startsWith("["))
+              temp += part;
+            else
+              temp += ', ' + part;
+        }
+
+        if (start_combine == 0)
+          {
+          combined.push(temp);
+          temp = '';
+          list_val = combined;
+          start_combine = 2;
+        }
+      }
+
 			// get the index of the memorised value
 			var old_idx = list_val.indexOf(this._current_val);
 			// compute the next index
@@ -1111,10 +1117,16 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 	},
 
 	_update: function(response) {
-		// get list of values
-		var list_val = String(this.options.vals).explode();
-		// get received value
-		var val = response.toString().trim();
+		// remove space after , in response (relevant for lists)
+    var val = response.toString().trim().replace(/, /gi, ",");
+    // is response is an array or a string containing a [] it should be handled as a list
+    var respArray = response[0] instanceof Array;
+    val = val.includes("[") || ! respArray ? val : "[" + val + "]";
+
+    // remove space after , in widget data-val entries
+    this.element.children('a[data-widget="basic.stateswitch"]').attr('data-val', function(index, src) {
+        return src.replace(/, /gi, ",")
+    })
 		// hide all states
 		this.element.next('a[data-widget="basic.stateswitch"][data-index]').insertBefore(this.element.children('a:eq(' + this.element.next('a[data-widget="basic.stateswitch"][data-index]').attr('data-index') + ')'));
 		// stop activity indicator
@@ -1263,15 +1275,29 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 
 	options: {
 		name: null,
-		val: ''
+		val: '',
+		triggerevent: 'button'
 	},
+	
+	_create: function () {
+		this._super ();
+		var identifyer = this.element.attr('id');
+		
+		$(document).on('pagebeforeshow', function(event) {
+			$(":mobile-pagecontainer").pagecontainer( "getActivePage" ).find('[data-triggerevent]').each(function(){ 
+			if ($(this).attr('id') == identifyer && ($(this).attr('data-triggerevent') == 'page' || $(this).attr('data-triggerevent') == 'both'))
+				io.trigger($(this).attr('data-name'), $(this).attr('data-val') != null ? String($(this).attr('data-val')) : null);
+			})
+		});
+	},	
 
 	_events: {
 		'click': function (event) {
 			io.trigger(this.options.name, this.options.val != null ? String(this.options.val) : null);
-		}
-	}
-
+			
+		},
+	},
+	
 });
 
 // ----- basic.listview ----------------------------------------------------------
@@ -1292,3 +1318,238 @@ $.widget("sv.basic_listview", $.sv.widget, {
                 }
         },
 });
+
+// ----- basic.roundslider-------------------------------------------------------
+$.widget("sv.basic_roundslider", $.sv.widget, {
+
+	initSelector: 'div[data-widget="basic.roundslider"]',
+
+	options: {
+		radius: 80,
+		startangle: 315,
+		handlesize: 30,
+		step: 5,
+		scale_interval: 10, 
+		scale_min: 0, 
+		scale_max: 255, 
+		width: 15, 
+		thickness: 0.1,
+		circleshape: "pie", 
+		slidertype: "min-range",
+		lineCap: "round",
+		icon:"",
+	},
+
+	_create: function() {
+		this._super();
+	},
+	
+	_update: function(response) {
+		var id = this.element.attr('id');
+		var user_value = response[0];
+		var user_value_item = this.options.item;
+		
+		this.options.handlesize = this.options.width +15; 
+		
+		//use default start angles from plugin unless shape is pie
+		if (this.options.circleshape != "pie") this.options.startangle = null;
+		
+		//get decoration options
+		var decoration = this.element.attr('data-values').explode();
+		var unit = decoration[0];
+		var pre_value = decoration[1];
+		var to_value = decoration[2];
+		var scale = decoration[3];
+		var scale_interval = this.options.scale_interval;
+		
+		//get colours from css theme
+		var bg_color = $('.ui-bar-b').css('background-color');
+		var font_color = $('.ui-content').css('color');
+		var track_color = $('.ui-bar-a').css('background-image');
+		var path_color = $(".ui-bar-a").css('background-color');
+		var border_color = $(".ui-bar-b").css('border-bottom-color');
+		var handle_color = $(".ui-page-theme-a.ui-btn").css('background-image');
+		
+		//call roundslider plugin
+		$("div#"+id).roundSlider({
+			circleShape: this.options.circleshape,
+			sliderType: this.options.slidertype,
+			editableTooltip: false,
+			showTooltip: true,
+			handleSize: this.options.handlesize,
+			radius: this.options.radius,
+			width: this.options.width,
+			thickness: this.options.thickness,
+			min: this.options.scale_min,
+			max: this.options.scale_max,
+			step: this.options.step,
+			value: user_value,
+			lineCap: this.options.lineCap,
+			startAngle: this.options.startangle,
+			svgMode: true,
+
+			tooltipFormat: function (args) {
+				var val = args.value;
+				var icon = $("div#"+id).attr('data-icon');
+				if (icon != ''){
+					return "<img src="+icon +" style='width:1em; margin:auto; margin-bottom: 0em; margin-top:-1em; clip-path: circle(); display:block !important;'><div id='value' style='font-weight:bold;font-size:.4em;'>" + args.value + " "+ unit +"</div>";
+				}else{
+					return "<div id='rs_value_pre' style='font-size:0.2em; '>"+ pre_value +"</div><div id='value' style='font-weight:bold;font-size:0.4em;'>" + args.value + " " + unit +"</div><div id='rs_value_to' style='font-size:0.2em;'>"+to_value+"</div>";
+				}
+			},
+			update: function (args) {
+				io.write(user_value_item, args.value);
+			},
+			tooltipColor: function (args) {
+				return font_color;
+			},
+			rangeColor: function (args) {
+				return bg_color;
+			},
+			pathColor: function (args) {
+				return path_color;
+			},
+			borderColor: function (args) {
+				return border_color;
+			},
+			create: function(args){
+				$("#"+id+" .rs-handle").css('box-shadow', '0px 0px 15px #875009');
+				$("#"+id+" .rs-handle").css('box-shadow', handle_color );
+				$("#"+id+" .rs-handle").css('background-image', handle_color );
+				$("#"+id+" .rs-range").css('background-image', track_color );
+						
+				if (scale == 'true') {
+					var o = this.options;
+					var extraSize = 0, 
+					  sizeCorrect = false,
+					  circleShape = o.circleShape;
+					var isFullCircle = (circleShape == "full" || circleShape == "pie" || circleShape.indexOf("custom") === 0);
+					if (o.svgMode && !isFullCircle && o.lineCap != "none") {
+						extraSize = (o.lineCap === "butt") ? (o.borderWidth / 2) : ((o.width / 2) + o.borderWidth);
+						sizeCorrect = true;
+					};
+						
+					//scale odd ticks (long w/ numbers)
+					for (var i = o.min; i <= o.max; i += scale_interval) {
+						var angle = this._valueToAngle(i);
+						var numberTag = this._addSeperator(angle, "rs-custom");
+						var number = numberTag.children();
+						number.clone().css({
+						  "width": o.width + this._border(),
+						  "margin-top": this._border(true) / -2,
+						  "margin-right": '10px',
+						}).appendTo(numberTag);
+						number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
+						$("#"+id+" .rs-number").css("color",font_color); 
+						$("#"+id+" .rs-seperator").css("border-color",border_color );
+						$("#"+id+" .rs-seperator").css("border-width","2px");
+						$("#"+id+" .rs-seperator").css("width","10px");
+						$("#"+id+" .rs-seperator").css("margin-left","-10px"); 
+						if (sizeCorrect && circleShape.indexOf("bottom") != -1) 
+							  numberTag.css("margin-top", extraSize + 'px');
+						if (sizeCorrect && circleShape.indexOf("right") != -1)
+							  numberTag.css("margin-right", -extraSize + 'px');
+					};
+
+					//scale even ticks (short)
+					var interval = scale_interval/2;
+					for (var i = o.min; i <= o.max; i += interval) {
+						var angle = this._valueToAngle(i);
+						var numberTag = this._addSeperator(angle, "rs-custom_1");
+						numberTag.addClass( "rs-seperator_1" );
+						$("rs-seperator_1").css("border-color",border_color );
+						$("rs-seperator_1").css("border-width","2px");
+						$("rs-seperator_1").css("width","5px");
+						$("rs-seperator_1").css("height","1px");
+						$("rs-seperator_1").css("margin-left","-10px");
+						if (sizeCorrect && circleShape.indexOf("bottom") != -1) 
+							numberTag.css("margin-top", extraSize + 'px');
+						if (sizeCorrect && circleShape.indexOf("right") != -1)
+							numberTag.css("margin-right", -extraSize + 'px');
+					};
+				};
+			}
+			
+		});
+	},
+	
+	_events: {
+	}
+});
+
+// ----- basic.window ---------------------------------------------------------
+$.widget("sv.basic_window", $.sv.widget, {
+
+	initSelector: 'svg[data-widget="basic.window"]',
+	options: {
+		min: 0,
+		max: 255
+	},
+	
+	_update: function(response) {
+		// response is: {{ gad_value }}, {{ gad_window_r}}, {{ gad_window_l}}
+		this._super(response);
+
+		this.element.attr('class', 'icon' + (response[1] || response[2] ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
+		
+		var max = parseFloat(this.options.max);
+		var min = parseFloat(this.options.min);
+		
+		if(response[2] !== undefined) {
+			var window_l = response[2];
+		} else { 
+		    window_l = 0; 
+		}
+		if(response[1] !== undefined) {
+			var window_r = response[1];
+		} else { 
+			window_r = 0; 
+		}
+
+		switch (window_r) {
+			case 0:
+				var rightwing = "translate(0,0) skewY(0) scale(1, 1)";
+				this.element.find('#wing_r').attr('transform', rightwing);
+				var righthandle ="translate(0,0) skewY(0) scale(1, 1)";
+				this.element.find('#handle_r').attr('transform', righthandle);
+				break;
+			case 1:
+				var rightwing = "translate(-9.8, 14.5) skewX(12) scale(0.97, 0.8)";
+				this.element.find('#wing_r').attr('transform', rightwing);
+				var righthandle = "translate(-10, 14.5) skewX(12) scale(0.97, 0.8)";
+				this.element.find('#handle_r').attr('transform', righthandle);
+				break;
+			case 2:
+				var rightwing = "translate(25, 22) skewY(-20) scale(0.7, 0.975)";
+				this.element.find('#wing_r').attr('transform', rightwing);
+				var righthandle = "translate(25, 21.2) skewY(-20) scale(0.7, 1)";
+				this.element.find('#handle_r').attr('transform', righthandle);
+				break;
+		}
+			switch (window_l) {
+			case 0:
+				var leftwing = "translate(0,0) skewY(0) scale(1, 1)";
+				this.element.find('#wing_l').attr('transform', leftwing);
+				var lefthandle ="translate(0,0) skewY(0) scale(1, 1)";
+				this.element.find('#handle_l').attr('transform', lefthandle);
+				break;
+			case 1:
+				var leftwing = "translate(-11.5, 14.5) skewX(12) scale(0.97, 0.8)";
+				this.element.find('#wing_l').attr('transform', leftwing);
+				var lefthandle = "translate(-11.3, 14.5) skewX(12) scale(0.97, 0.8)";
+				this.element.find('#handle_l').attr('transform', lefthandle);
+				break;
+			case 2:
+				var leftwing = "translate(5, -3.5) skewY(20) scale(0.7, 0.975)";
+				this.element.find('#wing_l').attr('transform', leftwing);
+				var lefthandle = "translate(5, -4.4) skewY(20) scale(0.7, 0.975)";
+				this.element.find('#handle_l').attr('transform', lefthandle);
+				break;
+		}
+
+		var val = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 38);
+		
+		fx.grid(this.element[0], val, [14, 30], [86, 68]);
+	}
+});
+
