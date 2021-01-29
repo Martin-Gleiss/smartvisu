@@ -6,18 +6,20 @@
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
-/** handle dropins */
-{% set macrofiles = dir('dropins/shwidgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
-{% set macrofiles = macrofiles|merge(dir('dropins/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
-/** additional widgets in current pages */
-{% if isdir('pages/'~config_pages~'/widgets', '^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
-	{% set macrofiles = macrofiles|merge(dir('pages/'~config_pages~'/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
+/** handle dropins - only if page configuration is completed */
+{% if config_pages != "" %}
+	{% set macrofiles = dir('dropins/shwidgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
+	{% set macrofiles = macrofiles|merge(dir('dropins/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
+	/** additional widgets in current pages */
+	{% if isdir('pages/'~config_pages~'/widgets', '^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
+		{% set macrofiles = macrofiles|merge(dir('pages/'~config_pages~'/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
+	{% endif %}
+	{% set dynmacro = [] %}
+	{% for macrofile in macrofiles %}
+		{% set dynmacro = dynmacro|merge(['{% import "' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
+	{% endfor %}
+	{% extends template_from_string(dynmacro|join("\n") ~ '\n{% block root %}{% endblock %}') %}
 {% endif %}
-{% set dynmacro = [] %}
-{% for macrofile in macrofiles %}
-	{% set dynmacro = dynmacro|merge(['{% import "' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
-{% endfor %}
-{% extends template_from_string(dynmacro|join("\n") ~ '\n{% block root %}{% endblock %}') %}
 
 {% block root %}
 <!DOCTYPE html>
@@ -215,7 +217,7 @@
 
 	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};	
 </script>
-/** activate codemirror only if widget constructor is activated */
+/** activate codemirror only if widget assistant is activated */
 {% if config_widgetassi %}  
 	<script src="vendor/codemirror/lib/codemirror.js"></script>
     <script src="vendor/codemirror/mode/python/python.js"></script>
