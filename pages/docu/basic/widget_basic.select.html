@@ -43,10 +43,21 @@
 				{{ basic.select('', 'bath.multistate', 'icon', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], ['Down', 'Left', 'Up'], 'green', 'vertical') }}
 				&nbsp;&nbsp; &nbsp;&nbsp;
 				{{ basic.select('', 'bath.multistate', 'midi', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], '', '', 'vertical') }}
+				<br><br><br><br><br />
+				
 			</div>
-		</div>
-
+		</div> <br><br><br><br/>
+		
+		<h5>New</h5>
+		List items can be used as dynamic option lists for the menu type. If a list item "itemvals" is given it overrides the other value parameters given in the macro call. 
+		Optional texts can be defined by a second item "itemtxts". If this is not defined the option values will be used as texts.
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				{{ basic.select('', 'bath.multistate', '', '', '', '', '', '', 'bath.list1', 'bath.list2') }}
+			{% endverbatim %}{% endfilter %}</code>
+		</div>	
 	</div>
+	
 
 {% endblock %}
 

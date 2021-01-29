@@ -35,7 +35,9 @@ class class_cache
 
 		if ($infos["mtime"] + $duration * 60 > time())
 			$ret = true;
-
+		else
+			$ret = false;
+		
 		return $ret;
 	}
 

@@ -5,6 +5,7 @@
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ * @hide        define meta parameters for config page here
  */
 
 
@@ -71,7 +72,7 @@ var io = {
 	 */
 	run: function (realtime) {
 		// TODO   
-	}
+	},
 
 
 	// -----------------------------------------------------------------------------
@@ -83,4 +84,10 @@ var io = {
 
 	// TODO
 
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		// TODO
+	}
 }

@@ -123,10 +123,10 @@
  * Lock motion sensor and/or light priority in one popup
  *
  * @param {id=} unique id for this widge
- * @param {item[?]=} simple on/off lock item for light
- * @param {item[?]=} simple on/off lock item for motion sensor
- * @param {item[?]=} knx force item, expected values are 0, 1 or 2
- * @param {item[?]=} on/off lock item for RGB LED sequencer
+ * @param {item[?](bool)=} simple on/off lock item for light
+ * @param {item[?](bool)=} simple on/off lock item for motion sensor
+ * @param {item[?](num)=} knx force item, expected values are 0, 1 or 2
+ * @param {item[?](bool)=} on/off lock item for RGB LED sequencer
   */
 {% macro locks(id, lock, bwm_lock, force, seq_lock) %}
     {% import "basic.html" as basic %}
@@ -144,9 +144,9 @@
     {% if (bwm_lock is not iterable and bwm_lock != '') or (bwm_lock is iterable and bwm_lock[0] != '') %}
     <div style="float:left;" class="popup_list">
       {% if bwm_lock is iterable %}
-        {{ basic.stateswitch(id~'_bwmlock', bwm_lock[0], 'icon', [0,1], ['message_presence','message_presence_disabled'], '', bwm_lock[1]) }}
+        {{ basic.stateswitch(id~'_bwmlock', bwm_lock[0], 'icon', [0,1], ['presence_unlocked','presence_locked'], '', bwm_lock[1]) }}
       {% elseif bwm_lock != '' %}
-        {{ basic.stateswitch(id~'_bwmlock', bwm_lock, 'icon', [0,1], ['message_presence','message_presence_disabled']) }}
+        {{ basic.stateswitch(id~'_bwmlock', bwm_lock, 'icon', [0,1], ['presence_unlocked','presence_locked']) }}
       {% endif %}
         </div>
         {% endif %}

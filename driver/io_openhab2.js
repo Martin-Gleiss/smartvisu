@@ -6,6 +6,7 @@
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       openHAB2
+ * @hide		reverseproxy
  */
 
 /**
@@ -300,5 +301,12 @@ var io = {
 				widget.update(plotItem, plotData);
 			}).error(notify.json);
 		}
+	},
+	
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		// TODO
 	}
 }

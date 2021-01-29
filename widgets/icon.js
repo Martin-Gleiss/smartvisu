@@ -74,6 +74,22 @@ $.widget("sv.icon_battery", $.sv.dynicon, {
 	}
 });
 
+	// ----- icon.battery2 ---------------------------------------------------------
+$.widget("sv.icon_battery2", $.sv.dynicon, {
+
+	initSelector: 'svg[data-widget="icon.battery2"]',
+
+	_update: function(response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+		this._super(response);
+
+		var max = parseFloat(this.options.max);
+		var min = parseFloat(this.options.min);
+
+		var val = Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 100;
+		this.element.find('[data-val]').hide().filter(function() { return Number($(this).attr('data-val')) <= val } ).show();
+	}
+});
 
 // ----- icon.blade -----------------------------------------------------------
 $.widget("sv.icon_blade", $.sv.dynicon, {

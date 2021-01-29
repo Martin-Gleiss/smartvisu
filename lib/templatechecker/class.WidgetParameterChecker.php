@@ -39,17 +39,30 @@ class WidgetParameterChecker {
 	private $dynamicIcons;
 
 	/**
+	 * Available dynamic icons
+	 * @var array
+	 */
+	private $dynamicSymbols;
+
+	/**
 	 * Collection of messages to add messages to
 	 * @var MessageCollection
 	 */
 	private $messages;
 
+	/** 
+	 * Collection of messages to add messages to
+	 * @var array
+	 */
+	private $items;
 
 	/**
 	 * Backreference to calling template checker (to be used to check widgets which are parameter of current widget)
 	 * @var TemplateChecker
 	 */
 	private $templateCecker;
+
+	
 
 	function get_arrays($string, $start, $end, $single){
 		$string = $start . str_replace(', ', ',', $string) . $end;
@@ -80,9 +93,9 @@ class WidgetParameterChecker {
 		}
 		return $x;
 	}
-
-	public static function performChecks($widget, $paramIndex, $paramConfig, $messages, $templateCecker) {
-		$checker = new WidgetParameterChecker($widget, $paramIndex, $paramConfig, $messages, $templateCecker);
+	
+	public static function performChecks($widget, $paramIndex, $paramConfig, $messages, $items, $templateCecker) {  //new: items
+		$checker = new WidgetParameterChecker($widget, $paramIndex, $paramConfig, $messages, $items, $templateCecker);
 		$checker->run();
 	}
 
@@ -93,14 +106,21 @@ class WidgetParameterChecker {
 	 * @param array $paramConfig Config for parameter to check
 	 * @param MessageCollection $messages Collection of messages to add messages to
 	 */
-	private function __construct($widget, $paramIndex, $paramConfig, $messages, $templateCecker) {
+	private function __construct($widget, $paramIndex, $paramConfig, $messages,$items, $templateCecker) {
 		$this->widget = $widget;
 		$this->paramIndex = $paramIndex;
 		$this->paramConfig = $paramConfig;
 		$this->messages = $messages;
-    $this->templateCecker = $templateCecker;
+    	$this->templateCecker = $templateCecker;
 		$this->settings = Settings::getInstance();
 		$this->dynamicIcons = twig_docu(const_path . 'widgets/icon.html');
+		$this->dynamicSymbols = twig_docu(const_path .'widgets/basic.html'); 
+		
+		$this->dynamicIcons['basic.symbol'] = $this->dynamicSymbols['basic.symbol'];
+		$this->items = $items;
+		
+		
+		
 	}
 
 	/**
@@ -147,9 +167,7 @@ class WidgetParameterChecker {
 					$this->checkParameterTypeColor($value);
 					break;
 				case 'item':
-					// in the future there may be the possibility to validate items.
-					// for now we perform the same tests than for type "text"
-					$this->checkParameterTypeText($value);
+					$this->checkParameterTypeItem($value);	//new
 					break;
 				case 'iconseries':
 					$this->checkParameterTypeIconseries($value);
@@ -339,6 +357,18 @@ class WidgetParameterChecker {
 			}
 
 		}
+		else if (substr($value, 0, 12) == 'basic.symbol') {
+			$dyniconWiget = explode('(', $value, 2);
+			if (array_key_exists($dyniconWiget[0], $this->dynamicIcons)) {
+				// existing dynamic icon
+				if (Settings::SHOW_SUCCESS_TOO)
+					$this->addInfo('WIDGET IMAGE PARAM CHECK', 'Existing dynamic image', $value);
+			} else {
+				// unknown dynamic icon
+				$this->addError('WIDGET IMAGE PARAM CHECK', 'Missing dynamic image', $value);
+			}
+
+		}
 		else {
 
 			$file = $value;
@@ -434,6 +464,41 @@ class WidgetParameterChecker {
 
 		$this->addError('WIDGET COLOR PARAM CHECK', 'Unknown color', $value);
 	}
+	/**
+	 * Check widget parameter of type "item" (new)
+	 *
+	 * Considered ParamConfig values:
+	 * valid_values	array		Array, containing valid values. If not set, all values are allowed. Default: not set
+	 *
+	 * @param $value mixed parameter value
+	 */
+	private function checkParameterTypeItem($value) {
+		if ($value == "" || $this->items->getState() == FALSE)
+			return;
+
+		if ($this->items->ItemExists($value)) {
+		if (Settings::SHOW_SUCCESS_TOO)
+				$this->addInfo('ITEM-EXISTING CHECK', 'Item is valid', $value, array());
+		} else {
+			$this->addError('ITEM-EXISTING CHECK', 'Item is not valid - not found in MasterItem-File', $value, array());
+			return FALSE;
+		}
+
+
+		if ($this->paramConfig['valid_values']) {
+			if ($this->items->getItemType($value)) {
+				if (in_array($this->items->getItemType($value), $this->paramConfig['valid_values'])) {
+					if (Settings::SHOW_SUCCESS_TOO)
+						$this->addInfo('ITEM-TYPE CHECK', 'Type is valid', $this->items->getItemType($value), array('Valid Values' => $this->paramConfig['valid_values']));
+					return TRUE;
+				} else {
+					$this->addError('ITEM-TYPE CHECK', 'Type of Item is not valid', $this->items->getItemType($value), array('Valid Values' => $this->paramConfig['valid_values']));
+					return FALSE;
+				}
+			}
+		}
+
+	}
 
 	/**
 	 * Check widget parameter of type "text"
@@ -488,8 +553,12 @@ class WidgetParameterChecker {
 				$this->addError('WIDGET DURATION PARAM CHECK', 'Invalid duration interval identifier', $value, array('Invalid Identifier' => $interval, 'Valid Identifiers' => TemplateCheckerConfig::SmartvisuDurationIntervals));
 				return;
 			}
+			$numstart = 0;
+			if (substr($part,0,1) == '-') {
+				$numstart = 1;
+			}
 			// everything before last char needs to be numbers only
-			$number = substr($part, 0, -1);
+			$number = substr($part, $numstart, -1);
 			if (!ctype_digit($number)) {
 				$this->addError('WIDGET DURATION PARAM CHECK', 'Invalid duration value', $value, array('Checked Value' => $number, 'Valid Identifiers' => TemplateCheckerConfig::SmartvisuDurationIntervals));
 				return;

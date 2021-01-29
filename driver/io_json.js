@@ -7,6 +7,7 @@
  * -----------------------------------------------------------------------------
  * @label       JSON
  * @hide        driver_autoreconnect
+ * @hide		reverseproxy
  */
 
 
@@ -192,6 +193,13 @@ var io = {
 				})
 				.error(notify.json);
 		}
+	},
+	
+	/**
+	 * stop all subscribed series
+	 */
+	stopseries: function () {
+		// TODO
 	}
 
 };

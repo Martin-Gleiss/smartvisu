@@ -2,7 +2,7 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß
+ * @author      Martin Gleiss
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
@@ -23,7 +23,7 @@ $request = array_merge($_GET, $_POST);
 // override configured pages if a corresponding request parameter is passed
 $config_pages = ($request['pages'] != '') ? $request['pages'] : config_pages;
 
-// detect page and path
+// if page is not in $request use default index page defined in defaults.ini
 if ($request['page'] == '')
 	$request['page'] = config_index;
 
@@ -40,33 +40,41 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 )
 {
 	// init template engine
-	require_once const_path.'vendor/Twig/Autoloader.php';
-	Twig_Autoloader::register();
-
-	$loader = new Twig_Loader_Filesystem(const_path.'apps');
+	require_once const_path.'vendor/autoload.php';
+	
+	$loader = new \Twig\Loader\FilesystemLoader(const_path.'apps');
 
 	if (is_dir(const_path.'pages/'.$config_pages))
 		$loader->addPath(const_path.'pages/'.$config_pages);
+	
+	if (is_dir(const_path.'pages/'.$config_pages.'/widgets'))
+		$loader->addPath(const_path.'pages/'.$config_pages.'/widgets');
 
 	if (dirname($request['page']) != '.' && is_dir(const_path.'pages/'.$config_pages.'/'.dirname($request['page'])))
 		$loader->addPath(const_path.'pages/'.$config_pages.'/'.dirname($request['page']));
 
-	// add dir if is not directly chosen
+	// add smarthome dir if it is not directly chosen. 
+	// allows combination of custom pages with auto-generated pages from smarthomeNG
 	if (config_driver == 'smarthome.py' and $config_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
 		$loader->addPath(const_path.'pages/smarthome');
 
-	$loader->addPath(const_path.'dropins');
+   // make sure SV doesn't load stuff from dropins unless pages are configured
+	if ($config_pages != '') {
+			$loader->addPath(const_path.'dropins');
+			$loader->addPath(const_path.'dropins/widgets');
+			$loader->addPath(const_path.'dropins/shwidgets');
+	}
 	$loader->addPath(const_path.'pages/base');
 	$loader->addPath(const_path.'widgets');
 
 	// init environment
-	$twig = new Twig_Environment($loader);
-	$twig->addExtension(new Twig_Extension_StringLoader());
-
+	$twig = new \Twig\Environment($loader);
+	$twig->addExtension(new \Twig\Extension\StringLoaderExtension());
+	
 	if (defined('config_debug')) {
 		if (config_debug) {
 			$twig->enableDebug();
-			$twig->addExtension(new Twig_Extension_Debug());
+			$twig->addExtension(new \Twig\Extension\DebugExtension());
 		}
 	}
 
@@ -81,21 +89,9 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 		$twig->addGlobal($key, $val);
 	}
   
-	if (config_design == 'ice')
-	{
-		$twig->addGlobal('icon1', 'icons/bl/');
-		$twig->addGlobal('icon0', 'icons/sw/');
-	}
-	elseif (config_design == 'greenhornet')
-	{
-		$twig->addGlobal('icon1', 'icons/gn/');
-		$twig->addGlobal('icon0', 'icons/ws/');
-	}
-	else
-	{
-		$twig->addGlobal('icon1', 'icons/or/');
-		$twig->addGlobal('icon0', 'icons/ws/');
-	}
+	$twig->addGlobal('icon1', config_design_icon1);
+	$twig->addGlobal('icon0', config_design_icon0);
+	
 
 	foreach (get_defined_constants() as $key => $val)
 	{
@@ -107,27 +103,29 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	$twig->addGlobal('const_path', const_path);
 	$twig->addGlobal('mbstring_available', function_exists('mb_get_info'));
 
-	$twig->addFilter('_', new Twig_Filter_Function('twig_concat'));
-	$twig->addFilter('bit', new Twig_Filter_Function('twig_bit'));
-	$twig->addFilter('substr', new Twig_Filter_Function('twig_substr'));
-	$twig->addFilter('smartdate', new Twig_Filter_Function('twig_smartdate'));
-	$twig->addFilter('deficon', new Twig_Filter_Function('twig_deficon', array('needs_environment' => true)));
-	$twig->addFilter('md5', new Twig_Filter_Function('twig_md5'));
+	$twig->addFilter( new \Twig\TwigFilter('_', 'twig_concat'));
+	$twig->addFilter( new \Twig\TwigFilter('bit', 'twig_bit'));
+	$twig->addFilter( new \Twig\TwigFilter('substr', 'twig_substr'));
+	$twig->addFilter( new \Twig\TwigFilter('smartdate', 'twig_smartdate'));
+	$twig->addFilter( new \Twig\TwigFilter('deficon', 'twig_deficon', array('needs_environment' => true)));
+	$twig->addFilter( new \Twig\TwigFilter('md5', 'twig_md5'));
 
-	$twig->addFunction('uid', new Twig_Function_Function('twig_uid'));
-	$twig->addFunction('once', new Twig_Function_Function('twig_once'));
-	$twig->addFunction('isfile', new Twig_Function_Function('twig_isfile'));
-	$twig->addFunction('isdir', new Twig_Function_Function('twig_isdir'));
-	$twig->addFunction('dir', new Twig_Function_Function('twig_dir'));
-	$twig->addFunction('docu', new Twig_Function_Function('twig_docu'));
-	$twig->addFunction('configmeta', new Twig_Function_Function('twig_configmeta'));
-	$twig->addFunction('lang', new Twig_Function_Function('twig_lang'));
-	$twig->addFunction('read_config', new Twig_Function_Function('twig_read_config'));
-	$twig->addFunction('timezones', new Twig_Function_Function('twig_timezones'));
-	$twig->addFunction('implode', new Twig_Function_Function('twig_implode', array('is_safe' => array('html'))));
+	$twig->addFunction( new \Twig\TwigFunction('uid', 'twig_uid'));
+	$twig->addFunction( new \Twig\TwigFunction('once', 'twig_once'));
+	$twig->addFunction( new \Twig\TwigFunction('isfile', 'twig_isfile'));
+	$twig->addFunction( new \Twig\TwigFunction('isdir', 'twig_isdir'));
+	$twig->addFunction( new \Twig\TwigFunction('dir', 'twig_dir'));
+	$twig->addFunction( new \Twig\TwigFunction('docu', 'twig_docu'));
+	$twig->addFunction( new \Twig\TwigFunction('configmeta', 'twig_configmeta'));
+	$twig->addFunction( new \Twig\TwigFunction('lang', 'twig_lang'));
+	$twig->addFunction( new \Twig\TwigFunction('read_config', 'twig_read_config'));
+	$twig->addFunction( new \Twig\TwigFunction('timezones', 'twig_timezones'));
+	$twig->addFunction( new \Twig\TwigFunction('implode', 'twig_implode', array('is_safe' => array('html'))));
+	$twig->addFunction( new \Twig\TwigFunction('items', 'twig_items'));
+	$twig->addFunction( new \Twig\TwigFunction('asset_exists', 'twig_asset_exists'));
 
 	// init lexer comments
-	$lexer = new Twig_Lexer($twig, array('tag_comment' => array('/**', '*/')));
+	$lexer = new \Twig\Lexer($twig, array('tag_comment' => array('/**', '*/')));
 	$twig->setLexer($lexer);
 
 	// load template
@@ -151,7 +149,7 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 
 		echo "<pre>\n";
 		echo str_repeat(" ", 71)."smartVISU\n";
-		echo str_repeat(" ", 62).date('H:i, d.m').", v".config_version."\n";
+		echo str_repeat(" ", 60).date('H:i, d.m').", v".config_version_full."\n";
 		echo str_repeat("-", 80)."\n\n";
 		echo "Error occurred in twig-template engine!\n\n";
 		echo "error: <b>".$e->getRawMessage()."</b>\n";
@@ -167,7 +165,7 @@ else
 
 	echo "<pre>\n";
 	echo str_repeat(" ", 71)."smartVISU\n";
-	echo str_repeat(" ", 62).date('H:i, d.m').", v".config_version."\n";
+	echo str_repeat(" ", 60).date('H:i, d.m').", v".config_version_full."\n";
 	echo str_repeat("-", 80)."\n\n";
 	echo "Error loading Page '<b>".$request['page']."</b>' !\n\n";
 	echo "Check config.php -> 'config_pages' for correct Pages/Project configuration\n";

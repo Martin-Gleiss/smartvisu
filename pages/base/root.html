@@ -6,17 +6,20 @@
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
-/** handle dropins */
-{% set macrofiles = dir('dropins/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
-/** additional widgets in current pages */
-{% if isdir('pages/'~config_pages~'/widgets', '^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
-	{% set macrofiles = macrofiles|merge(dir('pages/'~config_pages~'/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
+/** handle dropins - only if page configuration is completed */
+{% if config_pages != "" %}
+	{% set macrofiles = dir('dropins/shwidgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
+	{% set macrofiles = macrofiles|merge(dir('dropins/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
+	/** additional widgets in current pages */
+	{% if isdir('pages/'~config_pages~'/widgets', '^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
+		{% set macrofiles = macrofiles|merge(dir('pages/'~config_pages~'/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
+	{% endif %}
+	{% set dynmacro = [] %}
+	{% for macrofile in macrofiles %}
+		{% set dynmacro = dynmacro|merge(['{% import "' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
+	{% endfor %}
+	{% extends template_from_string(dynmacro|join("\n") ~ '\n{% block root %}{% endblock %}') %}
 {% endif %}
-{% set dynmacro = [] %}
-{% for macrofile in macrofiles %}
-	{% set dynmacro = dynmacro|merge(['{% import "widgets/' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
-{% endfor %}
-{% extends template_from_string(dynmacro|join("\n") ~ '\n{% block root %}{% endblock %}') %}
 
 {% block root %}
 <!DOCTYPE html>
@@ -45,13 +48,19 @@
 {% set cssFiles = [
 		'vendor/plot.highcharts/highcharts.css',
 		'vendor/JTSage/DateBox/css/jtsage-datebox.css',
+		'vendor/jquery.roundslider/roundslider.css',
+		'vendor/jquery.toast/toast.css',
 		'lib/clock/jdigiclock.css',
 		'lib/weather/jdigiweather.css',
 		'pages/base/base.css',
+		'pages/base/quad.css',
 		icon0 ~ 'jquery.mobile.icons.min.css',
 		'designs/' ~ config_design ~ '.css',
 		'pages/' ~ config_pages ~ '/visu.css'
 	] %}
+{% for file in dir('dropins/shwidgets', '(.*)(\.css)') %}
+	{% set cssFiles = cssFiles|merge([file.path]) %}
+{% endfor %}
 {% for file in dir('dropins/widgets', '(.*)(\.css)') %}
 	{% set cssFiles = cssFiles|merge([file.path]) %}
 {% endfor %}
@@ -119,6 +128,8 @@
 		'vendor/plot.highcharts/draggable-points.js',
 		'vendor/plot.highcharts/modules/solid-gauge.js',
 		'vendor/jquery.cycle2/jquery.cycle2.js',
+		'vendor/jquery.roundslider/jquery-1.61.roundslider.js',
+		'vendor/jquery.toast/jquery.toast.js',
 		'vendor/JTSage/DateBox/js/jtsage-datebox.js',
 		'lib/clock/jquery.jdigiclock.js',
 		'vendor/JTSage/DateBox/js/i18n/jtsage-datebox.i18n.'~lang('DateBox', 'lang')~'.utf8.js',
@@ -129,6 +140,9 @@
 		'pages/' ~ config_pages ~ '/visu.js'
 	] %}
 {% for file in dir('widgets', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins/shwidgets', '(.*)(\.js)') %}
 	{% set jsFiles = jsFiles|merge([file.path]) %}
 {% endfor %}
 {% for file in dir('dropins/widgets', '(.*)(\.js)') %}
@@ -189,6 +203,7 @@
 {% endif %}
 
 	// Do some actions before page is shown
+	// and run the io  with all widgets
 	$(document).on('pagecontainerbeforeshow', function () {
 		fx.init();
 		repeater.init();
@@ -196,15 +211,39 @@
 		io.run({{ config_driver_realtime }});
 	});
 
-	// Run the io and all widgets
+	// Activate the info field in top right corner
 	$(document).on('pagecontainershow', function () {
 		notify.display();
 	});
 
-	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};
+	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};	
 </script>
-<link rel="stylesheet" href="pages/base/quad.css" />
-<script type="text/javascript" src="widgets/quad.js"></script>
+/** activate codemirror only if widget assistant is activated */
+{% if config_widgetassi %}  
+	<script src="vendor/codemirror/lib/codemirror.js"></script>
+    <script src="vendor/codemirror/mode/python/python.js"></script>
+    <script src="vendor/codemirror/mode/yaml/yaml.js"></script>
+    <script src="vendor/codemirror/mode/xml/xml.js"></script>
+    <script src="vendor/codemirror/addon/fold/foldcode.js"></script>
+    <script src="vendor/codemirror/addon/fold/foldgutter.js"></script>
+    <script src="vendor/codemirror/addon/fold/comment-fold.js"></script>
+    <script src="vendor/codemirror/addon/fold/brace-fold.js"></script>
+    <script src="vendor/codemirror/addon/fold/xml-fold.js"></script>
+    <script src="vendor/codemirror/addon/fold/indent-fold.js"></script>
+    <script src="vendor/codemirror/addon/display/fullscreen.js"></script>
+    <script src="vendor/codemirror/addon/display/rulers.js"></script>
+    <script src="vendor/codemirror/addon/hint/show-hint.js"></script>
+    <script src="vendor/codemirror/addon/hint/anyword-hint.js"></script>
+    <script src="vendor/codemirror/addon/dialog/dialog.js"></script>
+    <script src="vendor/codemirror/addon/search/searchcursor.js"></script>
+    <script src="vendor/codemirror/addon/search/search.js"></script>
+    <script src="vendor/codemirror/addon/scroll/annotatescrollbar.js"></script>
+    <script src="vendor/codemirror/addon/search/matchesonscrollbar.js"></script>
+    <script src="vendor/codemirror/addon/search/jump-to-line.js"></script>
+    <script src="vendor/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src="vendor/codemirror/addon/edit/closebrackets.js"></script>
+{% endif %}	
+	
 {% import "lib.html" as lib %}
 {% import "basic.html" as basic %}
 {% import "calendar.html" as calendar %}

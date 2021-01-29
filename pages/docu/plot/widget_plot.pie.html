@@ -11,7 +11,14 @@
 {% extends "widget_plot.html" %}
 
 {% block example %}
+<script type="text/javascript">
+	$( document ).ready(function() {
+			 io.write('bath.p1', 23 );
+			 io.write('bath.p2', 37 );
+			 io.write('bath.p3', 44 );
+		});
 
+</script>
 	<h5>Example</h5>
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
