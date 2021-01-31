@@ -3,6 +3,7 @@
 
 ### Other New Features
 - Template Checker allows copying to clipboard
+- new design "holo-inspired"
 
 ### Improvements
 - improved readability in template checker (new global config variable sv.config.icon0 / .icon1 for symbols, improved colors )
