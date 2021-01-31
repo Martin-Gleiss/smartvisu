@@ -123,6 +123,8 @@ then everthing is working again. (STRG+F5 / CTRL + Shift + R)
 <a name="logic_shng"/></a>
 ## Logic to create masteritem.json from shNG
 
+Only needed for smarthomeNG <= v1.7.2. As of v1.8 the smartvisu plugin writes the file as default.
+
 <pre><code>
 #!/usr/bin/env python3
 # create_master_item.py

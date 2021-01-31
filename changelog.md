@@ -1,3 +1,17 @@
+## 3.0.1
+### New / Changed Widgets
+
+### Other New Features
+- Template Checker allows copying to clipboard
+
+### Improvements
+- improved readability in template checker (new global config variable sv.config.icon0 / .icon1 for symbols, improved colors )
+
+### Fixed Bugs
+- faulty page navigation if files had been in ./dropins or ./dropins/widgets before configuration was completed
+- template checker didn't run on certain systems which took a '?>' too serious in a class definition 
+
+
 ## 3.0
 
 ### New / Changed Widgets
