@@ -12,7 +12,7 @@
 - faulty page navigation if files had been in ./dropins or ./dropins/widgets before configuration was completed
 - template checker didn't run on certain systems which took a '?>' too serious in a class definition 
 - widget assistant did not show rendered widgets while page cache was enabled
-
+- scalable icons caused a problem in stateswitch button with text
 
 ## 3.0
 
