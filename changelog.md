@@ -7,6 +7,7 @@
 
 ### Improvements
 - improved readability in template checker (new global config variable sv.config.icon0 / .icon1 for symbols, improved colors )
+- page reload link in top right corner has been re-activated
 
 ### Fixed Bugs
 - faulty page navigation if files had been in ./dropins or ./dropins/widgets before configuration was completed
