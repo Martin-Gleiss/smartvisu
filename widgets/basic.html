@@ -181,7 +181,8 @@
 			{% endif -%}
 			<img class="icon {{ type }}
 		{%- else -%} /** pic is a dynamic icon */
-			<span class="ui-icn ui-btn-inline {{ uitype }}
+			/** uitype is empty if icon is called from e.g. stateswitch **/
+			<span class="{{ ( uitype == '' ? 'icon' : 'ui-icn ui-btn-inline') }} {{ uitype }}
 		{%- endif %}
 		
 		{%- set color = {'or': '#f9a028', 'gn': '#84c929', 'bl': '#4176a9', 'sw': '#000', 'ws': '#fff'}[color]|default(color) -%} /**- legacy smartVISU colors -*/
