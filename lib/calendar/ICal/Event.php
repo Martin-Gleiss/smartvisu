@@ -194,7 +194,7 @@ class Event extends ICal
     protected static function snakeCase($input, $glue = '_', $separator = '-')
     {
         $input = preg_split('/(?<=[a-z])(?=[A-Z])/x', $input);
-        $input = join($input, $glue);
+        $input = join($glue, $input);
         $input = str_replace($separator, $glue, $input);
 
         return strtolower($input);
