@@ -8,12 +8,16 @@
 ### Improvements
 - improved readability in template checker (new global config variable sv.config.icon0 / .icon1 for symbols, improved colors )
 - page reload link in top right corner has been re-activated
+- new warning message in template checker if optional masteritem file is not available
 
 ### Fixed Bugs
 - faulty page navigation if files had been in ./dropins or ./dropins/widgets before configuration was completed
-- template checker didn't run on certain systems which took a '?>' too serious in a class definition 
+- template checker didn't run on certain systems which took a '?> ' before EOF too serious in a class definition 
 - widget assistant did not show rendered widgets while page cache was enabled
 - scalable icons caused a problem in stateswitch button with text
+- fixed search string in calendar.waste and improved icon scalability
+- php errors thrown in calendar service due to usage of deprecated join() statement
+
 
 ## 3.0
 

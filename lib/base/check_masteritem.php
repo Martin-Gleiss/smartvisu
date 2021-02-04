@@ -58,7 +58,7 @@ if (count($items)>1)
 else
 {
 	header("HTTP/1.0 600 smartVISU Config Error");
-	$ret = array('icon' => 'message_attention.svg', 'text' => "Masteritem file is missing - could not check item names and item types");
+	$ret = array('icon' => 'message_attention.svg', 'text' => "Optional masteritem file is not available - check of item names and types deactivated");
 }
 
 echo json_encode($ret);
