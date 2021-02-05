@@ -1,29 +1,26 @@
 <style>
-h1 {color:whitesmoke}
-h2 {color:whitesmoke}
-h3 {color:whitesmoke}
-h4 {color:whitesmoke}
-p {color:whitesmoke}
-li {color:whitesmoke}
-a {color:whitesmoke}
+
+body
+{
+  color :whitesmoke
+}
+a {color:green}
 table {
 	border-collapse: collapse;
       }
 table,th,td {
-	color:whitesmoke;
-	border: 1px solid whitesmoke;
+	border: 1px solid;
 	text-align: left;
 	padding: 4px;
 }
 
 * {
     font-family: Dosis, Helvetica, Arial, sans-serif;
-    color:whitesmoke;
   }
-.blinkklasse {
- 
-  animation: blink 1s linear infinite;
 
+.blinkklasse {
+
+  animation: blink 1s linear infinite;
 }
 
 @keyframes blink {
@@ -210,7 +207,6 @@ No solution right now.  You can reload the page with bypassing the cache,
 then everthing is working again. (STRG+F5 / CTRL + Shift + R)</p>
 <p><a name="logic_shng"/></a></p>
 <h2 id="logic-to-create-masteritem-json-from-shng">Logic to create masteritem.json from shNG</h2>
-Only needed for smarthomeNG <= v1.7.2. As of v1.8 the smartvisu plugin writes the file as default.
 <pre><code>
 #!/usr/bin/env python3
 # create_master_item.py
