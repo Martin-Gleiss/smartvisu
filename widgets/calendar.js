@@ -160,7 +160,7 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 				
 				// handle calendar_event_format in lang.ini
 				$.each(sv_lang.calendar_event_format, function(pattern, attributes) {
-					if(entry.title.toLowerCase() == pattern.toLowerCase()) { // event title equals pattern
+					if(entry.title.toLowerCase().trim() == pattern.toLowerCase().trim()) { // event title equals pattern
 						// set each defined property
 						$.each(attributes, function(prop, val) {
 							entry[prop] = val;
@@ -179,8 +179,8 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 					// apply tag to events properties
 					entry[tag[1]] = tag[2];
 				});
+				//console.log(entry)
 				
-				console.log(entry)
 				//get only the garbage icon, when no or the garbage keyword is used
 				if (entry.icon === "message_garbage"){
 					entry.icon = "message_garbage_2";
@@ -211,7 +211,7 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 				else if (entry.start < uebermorgen)
 					muell_html += 'border-bottom: orange 8px inset; overflow: hidden;';
 				muell_html += '">'
-				muell_html += '<img class="icon icon1" src="' + entry.icon + '" style="width: 6em; height: 6em; fill: ' + entry.color + '; stroke: ' + entry.color + '" />';
+				muell_html += '<img class="icon icon1" src="' + entry.icon + '" style="width: 100%; height: 120%; fill: ' + entry.color + '; stroke: ' + entry.color + '" />';
 				muell_html += '<div style="font-size: 0.9em;text-align: center;">' + entry.start.transUnit('D') + ', ' + entry.start.transUnit('day') + '</div>'
 				muell_html += '</div>';
 				muell_html += '</div>';

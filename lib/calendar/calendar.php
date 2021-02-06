@@ -68,6 +68,8 @@ class calendar extends service
 		$events = $ical->eventsFromRange(false, '+1 year');
 		// output events as listj
 		foreach ($events as $event) {
+			if (!isset($calmetadata['calendardesc'])) $calmetadata['calendardesc'] = "";
+			if (!isset($calmetadata['calendarcolor'])) $calmetadata['calendarcolor'] = "";
 			$this->addData(array(
 				'start' => $ical->iCalDateToUnixTimestamp($event->dtstart, true),
 				'end' => $event->dtend != null ? $ical->iCalDateToUnixTimestamp($event->dtend, true) : $ical->iCalDateToUnixTimestamp($event->dtstart, true),
