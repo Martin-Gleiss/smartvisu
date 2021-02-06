@@ -17,6 +17,7 @@
 - scalable icons caused a problem in stateswitch button with text
 - fixed search string in calendar.waste and improved icon scalability
 - php errors thrown in calendar service due to usage of deprecated join() statement
+- outline render page for widget assistant has been fixed, also for Apple devices
 
 
 ## 3.0
