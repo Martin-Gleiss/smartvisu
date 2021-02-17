@@ -487,17 +487,25 @@
 	text: no value parameter
 * @param {color=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
 * @param {color=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
+* @param {value=0} identifier for the backend: 0=smarthomeNG style, 2= fhem style (optional, default = 0)
+* @param {type=icon}  button sized 'micro', 'mini' or 'midi' or icon (optional, default = 'icon')
 *
 * @author Michael Wuertenberger
 */
 
-{% macro uzsuicon(id, item, headline, pic_on, pic_off, valueType, valueParameterList, color_on, color_off, _backend) %}
+{% macro uzsuicon(id, item, headline, pic_on, pic_off, valueType, valueParameterList, color_on, color_off, backend, type) %}
 	{% import "basic.html" as basic %}
+	
+	{% if type not in ['micro','mini','midi'] %}
+		{% set type = 'icon' %}
+	{% else %}
+		{% set uitype = 'ui-'~type %}
+	{% endif %}
 
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsuicon" data-item="{{ item }}"
-		data-headline="{{ headline|default('UZSU') }}" data-designType="{{ _backend }}"
+		data-headline="{{ headline|default('UZSU') }}" data-designType="{{ backend }}"
 		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
-		class="icon">
+		{% if type == 'icon' %} class="icon" {% else %} class="ui-btn {{ uitype }} ui-corner-all ui-btn-inline ui-shadow" {% endif %} >
 		<a>
 			<span class="icon-off">{{ basic.icon(pic_off|deficon('time_timer_switch.svg'), color_off) }}</span>
 			<span class="icon-on hide">{{ basic.icon(pic_on|deficon('time_timer_switch.svg'), color_on|default('icon1')) }}</span>
