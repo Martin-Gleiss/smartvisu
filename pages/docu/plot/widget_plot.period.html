@@ -87,13 +87,17 @@
 	<h5>Special functions</h5>
 	<br>
 	Not all features of Highcharts are accessible via widget parameters. To make charts even more flexible, the parameter 'chartoptions' is able to 
-	write additional options directly to Highcharts. The first example changes the scale on the y-axis and places the legend below the graph.<br><br>
+	write additional options directly to Highcharts. The first example changes the scale on the first y-axis, disables lables on the second y-axis and 
+	places the legend below the graph. y-axis can be individually adressed by writing them in array-format.<br><br>
 	The second example shows the 'advanced' zoom option and sets the default zoom level via 'chartoptions'. The level correlates with the sequence
 	of the range selector buttons, starting from the left with '0'.	
 	<br>
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], ['°'], { yAxis: [ { tickInterval: 0.5 } ], legend: { verticalAlign: 'bottom', y: -30 } }) }}
+			// Array format for e.g. yaxis:
+			// {yaxis: [{options for axis 0},{options for axis 1}]}
+			
+			{{ plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], '°C', { yAxis: [ { tickInterval: 0.5 },{labels: {enabled: false}} ], legend: { verticalAlign: 'bottom', y: -30 } }) }}
 			
 			{{ plot.period('', 'bath_plot_value', 'avg', '1y', 'now', '', '', 36500, '', '', '', '', 'advanced', '', '', '', '', '', { rangeSelector: {selected: '2'}}) }}
 		{% endverbatim %}{% endfilter %}</code>
@@ -104,7 +108,7 @@
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false">
 					<h3>a plot with secondary switch axis and additional chart options</h3>
-					{{ plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], '°', { yAxis: [ { tickInterval: 0.5 } ], legend: { verticalAlign: 'bottom', y: -30 } }) }}
+					{{ plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], '°C', { yAxis: [ { tickInterval: 0.5 },{labels: {enabled: false}} ], legend: { verticalAlign: 'bottom', y: -30 } }) }}
 				</div>
 			</div>
 		</div>
