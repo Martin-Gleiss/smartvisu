@@ -1,3 +1,27 @@
+## 3.0.a
+### New / Changed Widgets
+- device.uzsuicon can be displayed as button with additional "type" parameter (micro, mini or midi)
+- basic.symbol provides button design as additional options btn-micro, btn-mini or btn-midi with additional text on icon
+
+### Other New Features
+
+### Improvements
+
+### Updated Libraries
+- Highcharts updated to v8.2
+
+### Deprecated
+
+### Removed Features
+
+### Fixed Bugs
+- plot.pie did not show series titles as labels / legend
+
+### Known Bugs
+- when leaving a page via the "back" button, widgets exit method and cancellation of plot data subscriptions won't work.
+  (root cause documented in base.js line 1804)
+  
+
 ## 3.0.1
 ### New / Changed Widgets
 
@@ -18,6 +42,10 @@
 - fixed search string in calendar.waste and improved icon scalability
 - php errors thrown in calendar service due to usage of deprecated join() statement
 - outline render page for widget assistant has been fixed, also for Apple devices
+
+### Known Bugs
+- when leaving a page via the "back" button, widgets exit method and cancellation of plot data subscriptions won't work.
+  (root cause documented in base.js line 1804)
 
 
 ## 3.0

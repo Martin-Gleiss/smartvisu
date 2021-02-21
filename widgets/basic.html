@@ -87,7 +87,7 @@
 * Displays a flip-switch
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item(bool)} an item
+* @param {item(bool,num,str)} an item
 * @param {text=On} text for the 'on' state (optional, default 'On')
 * @param {text=Off} text for the 'off' state (optional, default 'Off')
 * @param {text=1} value for the 'on' state (optional, default 1)
@@ -565,18 +565,20 @@
 	this only applies to text, if no icon is set (for backward compatibility)
 * @param {text=} URL to use as link (optional)
 * @param {text=} used in combination with href as data-rel attribute {e.g. to open a popup} (optional)
-* @param {type=icon} icon type / size. valid types: 'micro','mini','midi','icon' (optional, default = 'icon')
+* @param {type=icon} icon type with or without button. valid types: 'micro','mini','midi','icon', 'btn-micro', 'btn-mini', 'btn-midi' (optional, default = 'icon')
+* @param {text=} text to show inside button if button type selcted (optional)
 *
 * @see design/design_icons#Icons
 *
 * @author Martin Gleiß and Stefan Widmer
 */
-{% macro symbol(id, items, text, icon, value, formula, color, href, rel, type) %}
+{% macro symbol(id, items, text, icon, value, formula, color, href, rel, type, btntxt) %}
 	{% import _self as basic %}
-	{% if type not in ['micro','mini','midi'] %}{% set type = '' %}{% endif %}
+	{% if type not in ['micro','mini','midi', 'btn-micro', 'btn-mini', 'btn-midi'] %}{% set type = '' %}{% endif %}
 	{% set value = (value|default([1]) is iterable ? value|default([1]) : [value]) %}
   {% set value = text|length > value|length or icon|length > value|length or color|length > value|length ? value|merge(['']) : value %} /** add an empty value if more icons/texts/colors as values are passed (used for threshold i.a.) */
 	{% set color = color|default('') %}
+	{% set uitype ='' %}
 	<{% if href is empty %}span{% else %}a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{% endif %}{% endif %}{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.symbol"
 		{% if not items is empty %}data-item="{{ implode(items) }}" style="display: none;" {% endif %}
 		data-val="{{ implode(value) }}"
@@ -590,7 +592,17 @@
 			<span data-val="{{ val }}"
 				style="{% if not loop.first %}display:none;{% endif %}{% if pic is empty and not txt is empty and not col is empty and col != 'icon1' %}color: {{ col }};{% endif %}"
 				{% if pic is empty and not txt is empty and col == 'icon1' %} class="icon1"{% endif %}>
-				{%- if pic %}{{ basic.icon(pic, col,'',type) }}{% endif -%}
+				{%- if pic %}
+					{% if type in ['btn-micro', 'btn-mini', 'btn-midi'] %} 
+						{% set uitype = 'ui-'~type|slice(4) %}
+						<span class="ui-btn {{ uitype }} ui-btn-inline ui-corner-all {{ not btntxt is empty ? ' ui-btn-icon-top' }} ui-nodisc-icon"> 
+							{{ basic.icon(pic, col,'','') }}
+							{{- btntxt|e -}}
+						</span>
+					{% else %}		
+						{{ basic.icon(pic, col,'',type) }}
+					{% endif %}
+				{% endif -%}
 				{{- txt|raw -}}
 			</span>
 	  {%- endfor -%}

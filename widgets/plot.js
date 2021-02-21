@@ -1268,11 +1268,17 @@ $.widget("sv.plot_pie", $.sv.widget, {
         }
 
         var chart = this.element.highcharts();
+		var labels = [];
+        if (this.options.label) {
+            labels = String(this.options.label).explode();
+        }
         for (i = 0; i < data.length; i++) {
             if(chart.series[0].data[i])
                 chart.series[0].data[i].update(data[i], false);
-            else
+            else {
                 chart.series[0].addPoint(data[i], false);
+				chart.series[0].data[i].name = labels[i];
+			}
         }
         chart.redraw();
     },
