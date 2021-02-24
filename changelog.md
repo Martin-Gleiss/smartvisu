@@ -1,9 +1,12 @@
 ## 3.0.a
 ### New / Changed Widgets
+- new weather service API met.no for deprecated yr.no
 - device.uzsuicon can be displayed as button with additional "type" parameter (micro, mini or midi)
 - basic.symbol provides button design as additional options btn-micro, btn-mini or btn-midi with additional text on icon
 
 ### Other New Features
+- new public functions in weather.php plus new language category [weather] to centrally determine verbal wind direction and strength
+- weather services use humidity and air pressure as additional data (has been max. one out of both)
 
 ### Improvements
 
@@ -11,16 +14,20 @@
 - Highcharts updated to v8.2
 
 ### Deprecated
+- weather service yr.no (use met.no as replacement)
+- weather service wunderground (use weather.com as replacement) 
 
 ### Removed Features
+- support for older widgets (non jQuery mobile types) has been finally removed 
 
 ### Fixed Bugs
 - plot.pie did not show series titles as labels / legend
+- some weather services did not use correct language if user defined language extension file was used
+- some weather services did not use the units specified in the language file
 
 ### Known Bugs
 - when leaving a page via the "back" button, widgets exit method and cancellation of plot data subscriptions won't work.
   (root cause documented in base.js line 1804)
-  
 
 ## 3.0.1
 ### New / Changed Widgets

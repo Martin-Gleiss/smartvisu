@@ -44,8 +44,8 @@ class weather_openweathermap extends weather
 		else
 		{
 			//error_log('nohit');
-			$url_current = 'http://api.openweathermap.org/data/2.5/weather?q='.$this->location.'&lang='.trans('openweathermap', 'lang').'&units=metric&appid='.config_weather_key;
-			$url_forecast = 'http://api.openweathermap.org/data/2.5/forecast?q='.$this->location.'&lang='.trans('openweathermap', 'lang').'&units=metric&appid='.config_weather_key;
+			$url_current = 'http://api.openweathermap.org/data/2.5/weather?q='.$this->location.'&lang='.trans('openweathermap', 'lang').'&units='.trans('openweathermap','units').'&appid='.config_weather_key;
+			$url_forecast = 'http://api.openweathermap.org/data/2.5/forecast?q='.$this->location.'&lang='.trans('openweathermap', 'lang').'&units='.trans('openweathermap','units').'&appid='.config_weather_key;
 			$content = '{"today":'.file_get_contents($url_current).', "forecast":'.file_get_contents($url_forecast).'}';
 			$cache->write($content);
 		}
@@ -59,8 +59,12 @@ class weather_openweathermap extends weather
 			$this->data['current']['temp'] = transunit('temp', (float)$parsed_json->{'today'}->{'main'}->{'temp'});
 			$this->data['current']['icon'] = $this->icon(substr((string)$parsed_json->{'today'}->{'weather'}[0]->{'icon'}, 0, -1), $this->icon_sm);
 			$this->data['current']['conditions'] = (string)$parsed_json->{'today'}->{'weather'}[0]->{'description'};
-			$this->data['current']['wind'] = translate('wind', 'openweathermap').' '.transunit('speed', (float)$parsed_json->{'today'}->{'wind'}->{'speed'});
-			$this->data['current']['more'] = translate('humidity', 'openweathermap').' '.(float)$parsed_json->{'today'}->{'main'}->{'humidity'}.'%, '.(float)$parsed_json->{'today'}->{'main'}->{'pressure'}.' hPa';		
+			$wind_speed = transunit('speed', (float)$parsed_json->{'today'}->{'wind'}->{'speed'});
+			$wind_dir = weather::getDirection((float)$parsed_json->{'today'}->{'wind'}->{'deg'});
+			$wind_desc = weather::getWindDescription ($wind_speed);
+			$this->data['current']['wind'] = $wind_desc.' '.translate('from', 'weather').' '.$wind_dir.' '.translate('at', 'weather').' '.$wind_speed;
+			$this->data['current']['more'] = translate('humidity', 'weather').' '.(float)$parsed_json->{'today'}->{'main'}->{'humidity'}.'%';
+			$this->data['current']['misc'] = translate('air pressure', 'weather').' '.(float)$parsed_json->{'today'}->{'main'}->{'pressure'}.' hPa';		
 
 			// forecast
 			// openweathermap provides forecast infos for 5days in 3h slots (free account)
@@ -77,7 +81,7 @@ class weather_openweathermap extends weather
 					if($i >= 0)
 					{
 						$init = false;
-						$this->data['forecast'][$i]['temp'] = round($tempMax, 0).'&deg;/'.round($tempMin, 0).'&deg;';
+						$this->data['forecast'][$i]['temp'] = transunit('weathertemp', round($tempMax, 0)).'/'.transunit('weathertemp', round($tempMin, 0));
 						$add = $add." ID:".$i.$this->data['forecast'][$i]['temp'];
 					}
 					$nextday = ($fday+1) % 7;
