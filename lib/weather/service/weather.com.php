@@ -24,8 +24,10 @@ class weather_weather extends weather
 	 */
 	public function run()
 	{
-		$units = 'm';
+		$units = trans('weather.com', 'units');
 		$data_node = 'metric';
+		if ($units == "e") 	$data_node = 'imperial';
+		if ($units == "h") 	$data_node = 'uk_hybrid';
 
 		// api call 
 		$cache = new class_cache('weather_'.$this->location.'_current.json');
@@ -47,7 +49,7 @@ class weather_weather extends weather
 		}
 		else
 		{
-			$url_forecast = 'https://api.weather.com/v3/wx/forecast/daily/5day?postalKey='.config_weather_postal.'&units=m&language='.config_lang.'&format=json&apiKey='.config_weather_key;
+			$url_forecast = 'https://api.weather.com/v3/wx/forecast/daily/5day?postalKey='.config_weather_postal.'&units='.$units.'&language='.trans('weather', 'lang').'&format=json&apiKey='.config_weather_key;
 			$content_forecast = file_get_contents($url_forecast);
 			$cache_forecast->write($content_forecast);
 		}
@@ -66,13 +68,14 @@ class weather_weather extends weather
 
 			$wind_speed = transunit('speed', (float)$parsed_json->{'observations'}[0]->{$data_node}->{'windSpeed'});
 			$wind_gust = transunit('speed', (float)$parsed_json->{'observations'}[0]->{$data_node}->{'windGust'});
-			$wind_direction = $this->getDirection((float)$parsed_json->{'observations'}[0]->{'winddir'});
-
-			$this->data['current']['wind'] = translate('wind', 'wunderground')." ".$from." ".$wind_direction.", ".translate('wind_speed', 'wunderground')." ".$wind_speed;
+			$wind_dir = weather::getDirection((float)$parsed_json->{'observations'}[0]->{'winddir'});
+			$wind_desc = weather::getWindDescription($wind_speed);
+			$this->data['current']['wind'] = $wind_desc." ".translate('from', 'weather'). ' '. $wind_dir." ".translate('at', 'weather')." ".$wind_speed;
 			if ($wind_gust > 0)
 				$this->data['current']['wind'] .= ", ".translate('wind_gust', 'wunderground')." ".$wind_gust;
 
-			$this->data['current']['more'] = translate('humidity', 'wunderground')." ".(string)$parsed_json->{'observations'}[0]->{'humidity'}." %";
+			$this->data['current']['more'] = translate('humidity', 'weather')." ".(string)$parsed_json->{'observations'}[0]->{'humidity'}." %";
+			$this->data['current']['misc'] = translate('air pressure', 'weather')." ".(string)$parsed_json->{'observations'}[0]->{$data_node}->{'pressure'}." hPa";
 		}
 		else
 		{
@@ -100,7 +103,7 @@ class weather_weather extends weather
 				$this->data['forecast'][$i]['date'] = (string)$parsed_json_forecast->{'daypart'}[0]->{'daypartName'}[$i];
 				$this->data['forecast'][$i]['conditions'] = (string)$parsed_json_forecast->{'daypart'}[0]->{'wxPhraseLong'}[$i];
 				$this->data['forecast'][$i]['icon'] = $this->icon((int)$parsed_json_forecast->{'daypart'}[0]->{'iconCode'}[$i]);
-				$this->data['forecast'][$i]['temp'] = (float)$parsed_json_forecast->{'daypart'}[0]->{'temperature'}[$i].'&deg;';
+				$this->data['forecast'][$i]['temp'] = transunit('weathertemp',(float)$parsed_json_forecast->{'daypart'}[0]->{'temperature'}[$i]);
 			}
 		}
 		else
@@ -110,12 +113,6 @@ class weather_weather extends weather
 		}
 
 	}
-
-	function getDirection($b)
-	{ 
-		$dirs = array('NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW', 'N'); 
-		return $dirs[round(abs(($b - 11.25) % 360)/ 22.5)];
-	} 
 
 	/*
 	* Icon-Mapper

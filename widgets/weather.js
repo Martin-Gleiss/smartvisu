@@ -19,6 +19,7 @@ $.widget("sv.weather_current", $.sv.widget, {
 	_humi: 0,
 	_wind: 0,
 	_temp: 0,
+	_misc: 0,
 		
 	_update: function(response){
 		
@@ -56,6 +57,7 @@ $.widget("sv.weather_current", $.sv.widget, {
 		};
 		var itemmisc = values [3];
 		if (itemmisc !== undefined) {
+			this._misc = 1;
 			this.element.children('.misc').html(this.options.misctxt + itemmisc.transUnit(this.options.miscfmt));
 			margintop = -5;
 			marginbottom = 10;
@@ -82,6 +84,11 @@ $.widget("sv.weather_current", $.sv.widget, {
 			if (that._temp == 0) element.children('.temp').html(data.current.temp);
 			if (that._humi == 0) element.children('.humi').html(data.current.more);
 			if (that._wind == 0) element.children('.wind').html(data.current.wind);
+			if (data.current.misc != undefined && that._misc == 0) {
+				element.children('.misc').html(data.current.misc);
+				margintop = -5;
+				marginbottom = 10;
+			} 
 		})
 		.error(notify.json);
 	}
