@@ -11,6 +11,7 @@
 
 ##Troubleshooting/Debug:
 1. check for files smartVISU/temp/weather_YOURSTATION_current.json andn weather_YOURSTATION_forecast.json.
-	These are the api responses from weather.com. View them with a json viewer (i.e. addon to chrome)
+	These are the api responses from weather.com after you have called the service once. 
+	View them with a json viewer (i.e. addon to chrome)
 2. debug the service by calling YOURSERVER/smartVISU/lib/weather/service/weather.com.php?debug=1
 2. check for 'weather.com' entries in var/log/nginx/error.log (or /var/log/apache2/)
