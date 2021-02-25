@@ -5,7 +5,8 @@
 2. [ChangeLog](#ChangeLog) <sup><span style="color:red"> **new**</span></sup>
 3. [Hot-Keys](#hotkeys) <sup><span style="color:red"> **new**</span></sup>
 4. [Known issues](#issues) <sup><span style="color:red"> **new**</span></sup>
-5. [Logics to create masteritem.json](#logic_shng) <sup><span style="color:red"> **new**</span></sup>
+5. [Logics to create masteritem.json from shNG](#logic_shng) <sup><span style="color:red"> **new**</span></sup>
+6. [Script to create masteritem.json for FHEM](#script_fronthem) <sup><span style="color:red"> **new**</span></sup>
 
 <a name="howitworks"/></a>
 ## How it works
@@ -139,4 +140,10 @@ f = open("/var/www/html/smartvisu/pages/<strong>YOUR_PAGES</strong>/masteritem.j
 f.write(json.dumps(item_list))
 f.close()
 </code></pre>
+
+<a name="script_fronthem"/></a>
+## Script to create masteritem.json for FHEM
+
+A script can be found in the fronthem / smartVISU Forum<br>
+https://forum.fhem.de/index.php/topic,118508.msg1135044.html#msg1135044
 
