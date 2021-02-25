@@ -147,11 +147,12 @@ class weather_met extends weather
 		$icon['fair'] 						= $sm.'2';
 		$icon['partlycloudy'] 				= $sm.'3';
 		$icon['cloudy'] 					= $sm.'5';
+		$icon['lightrainshowers'] 			= $sm.'7';
 		$icon['rainshowers'] 				= $sm.'7';
 		$icon['heavyrainshowers'] 			= $sm.'8';
 		$icon['lightrainshowersandthunder'] = $sm.'9';
 		$icon['rainshowersandthunder'] 		= $sm.'9';
-		$icon['heavyrainshowersandthunder'] = $sm.'9';
+		$icon['heavyrainshowersandthunder'] = $sm.'10';
 		$icon['lightsleetshowersandthunder']= $sm.'10';
 		$icon['sleetshowersandthunder'] 	= $sm.'10';
 		$icon['heavysleetshowersandthunder']= $sm.'10';

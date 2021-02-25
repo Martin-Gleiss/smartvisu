@@ -7,5 +7,6 @@
 
 ##Troubleshooting/Debug:
 1. check for file smartVISU/temp/openweathermap_YOURCITY.json
-	this is the api response from openweathermap.org. View it with a json viewer (i.e. addon to chrome)
+	this is the api response from openweathermap.org after you have called the service once. 
+	View it with a json viewer (i.e. addon to chrome)
 2. check for 'openweathermaps' entries in Logs/nginx/error.log (or Logs/apache2/)
