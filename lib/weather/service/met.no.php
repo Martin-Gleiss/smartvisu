@@ -52,11 +52,13 @@ class weather_met extends weather
 		// night or day symbol of today 
 		$actualconditions = $parsed_json->{'properties'}->{'timeseries'}['0']->{'data'}->{'next_1_hours'}->{'summary'}->{'symbol_code'};
 		$actualTimeSymbol = substr(strrchr($actualconditions, '_'),1);
-		if ($actualTimeSymbol != '') $actualconditions = substr($actualconditions, 0, strpos($actualconditions, '_'));
-		$actualTimeSymbol = ($actualTimeSymbol == 'night') ? 'moon_' : 'sun_';
-		// modify actualTimesymbol if actualconditions is "cloudy" since day/night info is missing
-		// if($actualconditions == 'cloudy' and Zeit größer Sunset + 2h o.ä. ) $actualTimeSymbol = 'moon_';
-		
+		if ($actualTimeSymbol != '') {
+			$actualconditions = substr($actualconditions, 0, strpos($actualconditions, '_'));
+			$actualTimeSymbol = ($actualTimeSymbol == 'night') ? 'moon_' : 'sun_';
+		}
+		else
+			$actualTimeSymbol = ($this->icon_sm != '') ? $this->icon_sm : 'sun_';
+				
 		$actualdata = $parsed_json->{'properties'}->{'timeseries'}['0']->{'data'}->{'instant'}->{'details'};
 		$wind_dir = weather::getDirection((float)$actualdata->{'wind_from_direction'});
 		$wind_speed = transunit('speed',round(3.6*(float)$actualdata->{'wind_speed'}, 1));
@@ -95,14 +97,14 @@ class weather_met extends weather
 				$temps = (float)$dataset->{'data'}->{'instant'}->{'details'}->{'air_temperature'};
 				if($temps >  $maxtemp) $maxtemp = $temps;
 				if($temps <  $mintemp) $mintemp = $temps;
-				if ($actualTime == 12) 
+				if ($actualTime == 12)
 					$forecastCondition = $dataset->{'data'}->{'next_1_hours'}->{'summary'}->{'symbol_code'};
 				if ($actualTime == 23 ) {
 					$dayready = 1;
 					$nextday = $day;
 				}
 			}
-			
+
 			$searchTimes = array (0, 6, 12, 18);
 			if ($day == $nextday && $dayready == 0) {
 				if (in_array ($actualTime, $searchTimes)) {
@@ -118,7 +120,8 @@ class weather_met extends weather
 			}	
 
 			if ($dayready == 1) {
-				$forecastCondition = substr($forecastCondition, 0, strpos($forecastCondition, '_'));
+				if (strpos ($forecastCondition,'_') > 0)
+					$forecastCondition = substr($forecastCondition, 0, strpos($forecastCondition, '_'));
 				$this->data['forecast'][$i]['date'] = date('Y-m-d', strtotime($dataset->{'time'})-$timezone*3600);
 				$this->data['forecast'][$i]['conditions'] = translate($forecastCondition, 'met.no');
 				$this->data['forecast'][$i]['icon'] = $this->icon($forecastCondition);
