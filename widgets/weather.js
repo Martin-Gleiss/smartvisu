@@ -34,9 +34,6 @@ $.widget("sv.weather_current", $.sv.widget, {
 			};
 		};
 		
-		var margintop = 15;
-		var marginbottom = 15;
-		
 		var itemtemp = values[0];
 		if (itemtemp !== undefined) {
 			this._temp = 1;
@@ -59,8 +56,6 @@ $.widget("sv.weather_current", $.sv.widget, {
 		if (itemmisc !== undefined) {
 			this._misc = 1;
 			this.element.children('.misc').html(this.options.misctxt + itemmisc.transUnit(this.options.miscfmt));
-			margintop = -5;
-			marginbottom = 10;
 		};
 		var itemmisc1 = values [4];
 		if (itemmisc1 !== undefined) {
@@ -68,8 +63,6 @@ $.widget("sv.weather_current", $.sv.widget, {
 			margintop = -25;
 			marginbottom = 5;
 		};
-		
-		this.element.children('.temp').attr('style', 'margin-top: '+margintop+'px; margin-bottom: '+marginbottom+'px;');
 	},
 	
 	_repeat: function() {
@@ -78,17 +71,12 @@ $.widget("sv.weather_current", $.sv.widget, {
 		var repeatMinutes = (new Date().duration(this.options.repeat) - 0) / 60000;
 		$.getJSON(this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes, function (data) {
 			element.css('background-image', 'url(lib/weather/pics/' + data.current.icon + '.png)')
-			element.css('background-size', 'contain')
 			element.children('.city').html(data.city);
 			element.children('.cond').html(data.current.conditions);
 			if (that._temp == 0) element.children('.temp').html(data.current.temp);
 			if (that._humi == 0) element.children('.humi').html(data.current.more);
 			if (that._wind == 0) element.children('.wind').html(data.current.wind);
-			if (data.current.misc != undefined && that._misc == 0) {
-				element.children('.misc').html(data.current.misc);
-				margintop = -5;
-				marginbottom = 10;
-			} 
+			if (data.current.misc != undefined && that._misc == 0) element.children('.misc').html(data.current.misc);
 		})
 		.error(notify.json);
 	}

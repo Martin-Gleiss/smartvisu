@@ -45,17 +45,21 @@
 .weather {
     margin: auto;
     width: 100%;
+	min-height: 190px;
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: 60%;
-    -webkit-background-size: 60%;
-    -moz-background-size: 60%;
-    -o-background-size: 60%;
+    background-size: 250px 160px;
+    -webkit-background-size: 250px 160px;
+    -moz-background-size: 250px 160px;
+    -o-background-size: 250px 160px;
 }
 
 .weather .wind {
-    padding-top: 10px;
+    padding-top: 0;
     text-align: right;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .weather .misc,
@@ -65,7 +69,8 @@
 }
 
 .weather .temp {
-   	padding-top: 10px;
+   	padding-top: 0;
+	margin-top: -10px;
     font-size: 25pt;
     text-align: left;
 }
