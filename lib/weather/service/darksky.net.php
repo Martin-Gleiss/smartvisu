@@ -59,6 +59,7 @@ class weather_darksky extends weather
 				$this->data['current']['wind'] .= ", " . translate('wind_gust', 'weather') . " " . $wind_gust;
 
 			$this->data['current']['more'] = translate('humidity', 'weather') . " " . transunit('%', 100 * (float)$parsed_json->{'currently'}->{'humidity'});
+			$this->data['current']['misc'] = translate('air pressure', 'weather') . " " . $parsed_json->{'currently'}->{'pressure'}.' hPa';
 
 			// forecast
 			$i = 0;
