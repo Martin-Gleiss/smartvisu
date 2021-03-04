@@ -3,6 +3,7 @@
 - new weather service API met.no for deprecated yr.no
 - device.uzsuicon can be displayed as button with additional "type" parameter (micro, mini or midi)
 - basic.symbol provides button design as additional options btn-micro, btn-mini or btn-midi with additional text on icon
+- basic.slider provides a new silent mode. Live mode (default) sends changed values constantly, silent mode only if change is completed.
 
 ### Other New Features
 - new public functions in weather.php plus new language category [weather] to centrally determine verbal wind direction and strength
