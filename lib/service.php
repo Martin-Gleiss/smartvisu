@@ -24,7 +24,6 @@ class service
 	var $data = array();
 	var $error = array();
 	var $errorMessage = '';
-	var $errorFile = '';
 
 	/**
 	 * constructor
