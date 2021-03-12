@@ -37,9 +37,13 @@ class weather_weather extends weather
 		}
 		else
 		{
+			$loadError_current = '';
 			$url = 'https://api.weather.com/v2/pws/observations/current?stationId='.$this->location.'&format=json&units='.$units.'&apiKey='.config_weather_key;
 			$content = file_get_contents($url);
-			$cache->write($content);
+			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
+				$cache->write($content);
+			else
+				$loadError_current = substr(strrchr($this->errorMessage, ':'), 2);
 		}
 
 		$cache_forecast = new class_cache('weather_'.$this->location.'_forecast.json');
@@ -49,9 +53,13 @@ class weather_weather extends weather
 		}
 		else
 		{
+			$loadError_forecast = '';
 			$url_forecast = 'https://api.weather.com/v3/wx/forecast/daily/5day?postalKey='.config_weather_postal.'&units='.$units.'&language='.trans('weather', 'lang').'&format=json&apiKey='.config_weather_key;
 			$content_forecast = file_get_contents($url_forecast);
-			$cache_forecast->write($content_forecast);
+			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
+				$cache_forecast->write($content_forecast);
+			else
+				$loadError_forecast = substr(strrchr($this->errorMessage, ':'), 2);
 		}
 
 		// parse current
@@ -79,8 +87,11 @@ class weather_weather extends weather
 		}
 		else
 		{
-			$add = $parsed_json->{'response'}->{'error'}->{'description'};
-			$this->error('Weather: weather.com', 'Current read request failed'.($add ? ': '.$add : '').'!');
+			if ($loadError_current != '')
+				$add = $loadError_current;
+			else
+				$add = $parsed_json->{'response'}->{'error'}->{'description'};
+			$this->error('Weather: weather.com', 'Current read request failed'.($add ? ' with message: <br>'.$add : '!'));
 		}
 		
 		// parse forecast
@@ -108,10 +119,12 @@ class weather_weather extends weather
 		}
 		else
 		{
-			$add = $parsed_json->{'response'}->{'error'}->{'description'};
-			$this->error('Weather: weather.com', 'Forecast read request failed'.($add ? ': '.$add : '').'!');
+			if ($loadError_forecast != '')
+				$add = $loadError_forecast;
+			else
+				$add = $parsed_json->{'response'}->{'error'}->{'description'};
+			$this->error('Weather: weather.com', 'Forecast read request failed'.($add ? ' with message: <br>'.$add : '!'));
 		}
-
 	}
 
 	/*

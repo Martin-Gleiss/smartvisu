@@ -43,11 +43,15 @@ class weather_openweathermap extends weather
 		}
 		else
 		{
+			$loadError = '';
 			//error_log('nohit');
 			$url_current = 'http://api.openweathermap.org/data/2.5/weather?q='.$this->location.'&lang='.trans('openweathermap', 'lang').'&units='.trans('openweathermap','units').'&appid='.config_weather_key;
 			$url_forecast = 'http://api.openweathermap.org/data/2.5/forecast?q='.$this->location.'&lang='.trans('openweathermap', 'lang').'&units='.trans('openweathermap','units').'&appid='.config_weather_key;
 			$content = '{"today":'.file_get_contents($url_current).', "forecast":'.file_get_contents($url_forecast).'}';
-			$cache->write($content);
+			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
+				$cache->write($content);
+			else
+				$loadError = substr(strrchr($this->errorMessage, ':'), 2);
 		}
 
 		$parsed_json = json_decode($content);
@@ -107,8 +111,12 @@ class weather_openweathermap extends weather
 		}
 		else
 		{
-			$add = $parsed_json->{'response'}->{'error'}->{'description'};
-			$this->error('Weather: openweathermap.org', 'Read request failed'.($add ? ': '.$add : '').'!');
+			if ($loadError != '')
+				$add = $loadError;
+			else
+				$add = $parsed_json->{'response'}->{'error'}->{'description'};
+							
+			$this->error('Weather: openweathermap.org', 'Read request failed'.($add ? ' with message: <br>'.$add : '!'));
 		}	
 	}
 
