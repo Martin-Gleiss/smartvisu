@@ -32,9 +32,13 @@ class weather_darksky extends weather
 		if ($cache->hit($this->cache_duration_minutes)) {
 			$content = $cache->read();
 		} else {
+			$loadError = '';
 			$url = 'https://api.darksky.net/forecast/' . config_weather_key . '/' . $this->location . '?exclude=minutely,hourly,alerts&units=auto&lang=' . trans('darksky', 'lang');
 			$content = file_get_contents($url);
-			$cache->write($content);
+			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
+				$cache->write($content);
+			else
+				$loadError = substr(strrchr($this->errorMessage, ':'), 2);
 		}
 
 		$parsed_json = json_decode($content);
@@ -76,8 +80,11 @@ class weather_darksky extends weather
 				$i++;
 			}
 		} else {
-			$add = $parsed_json->{'flags'}->{'darksky-unavailable'};
-			$this->error('Weather: darksky.net', 'Read request failed' . ($add ? ': ' . $add : '') . '!');
+			if ($loadError != '')
+				$add = $loadError;
+			else
+				$add = $parsed_json->{'flags'}->{'darksky-unavailable'};
+			$this->error('Weather: darksky.net', 'Read request failed'.($add ? ' with message: <br>'.$add : '!'));
 		}
 	}
 

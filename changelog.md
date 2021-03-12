@@ -10,6 +10,7 @@
 - weather services use humidity and air pressure as additional data (has been max. one out of both)
 
 ### Improvements
+- error reporting for weather services shows answers from remote
 
 ### Updated Libraries
 - Highcharts updated to v8.2

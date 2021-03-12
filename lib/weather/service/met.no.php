@@ -34,6 +34,7 @@ class weather_met extends weather
 			$content = $cache->read();
 		else
 		{
+			$loadError = '';
 			$opts = array(
 				'http'=>array(
 				'method'=>"GET",
@@ -43,100 +44,112 @@ class weather_met extends weather
 			$context = stream_context_create($opts);
 			$url = 'https://api.met.no/weatherapi/locationforecast/2.0/complete?'.$this->location;
 			$content = file_get_contents($url, false, $context);
-			$cache->write($content);
+			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
+				$cache->write($content);
+			else
+				$loadError = substr(strrchr($this->errorMessage, ':'), 2);
 		}
 		
 		$parsed_json = json_decode($content);
 		$this->debug($parsed_json);
-			
-		// night or day symbol of today 
-		$actualconditions = $parsed_json->{'properties'}->{'timeseries'}['0']->{'data'}->{'next_1_hours'}->{'summary'}->{'symbol_code'};
-		$actualTimeSymbol = substr(strrchr($actualconditions, '_'),1);
-		if ($actualTimeSymbol != '') {
-			$actualconditions = substr($actualconditions, 0, strpos($actualconditions, '_'));
-			$actualTimeSymbol = ($actualTimeSymbol == 'night') ? 'moon_' : 'sun_';
-		}
-		else
-			$actualTimeSymbol = ($this->icon_sm != '') ? $this->icon_sm : 'sun_';
-				
-		$actualdata = $parsed_json->{'properties'}->{'timeseries'}['0']->{'data'}->{'instant'}->{'details'};
-		$wind_dir = weather::getDirection((float)$actualdata->{'wind_from_direction'});
-		$wind_speed = transunit('speed',round(3.6*(float)$actualdata->{'wind_speed'}, 1));
-		if (substr($wind_speed,-3) =='mph') 
-			$wind_speed = transunit('speed',round(2.24*(float)$actualdata->{'wind_speed'}, 1));
-		$wind_desc = weather::getWindDescription($wind_speed);
-		
-		$this->data['current']['temp'] = transunit('temp', (float)$actualdata->{'air_temperature'});
-		$this->data['current']['wind'] = $wind_desc.' '.translate('from', 'weather').' '.$wind_dir.' '.translate('at', 'weather').' '.$wind_speed;
-		$this->data['current']['more'] = translate('humidity', 'weather')." ".transunit('%', (float)$actualdata->{'relative_humidity'});
-		$this->data['current']['misc'] = translate('air pressure', 'weather')." ".(float)$actualdata->{'air_pressure_at_sea_level'}.' hPa';
-		$this->data['current']['conditions'] = translate($actualconditions, 'met.no');
-		$this->data['current']['icon'] = $this->icon($actualconditions, $actualTimeSymbol);    
-		
-		// forecast
-			// met.no times are UTC based. We need to correct local time in order to fit to the data raster.
-			// next_12_hours tag contains a conditions summary for 12 hours -> we use the forecast of 06.00 for the day
-			// next_6_hours tag contains values for min and max temperatures  
-			// -> we use all data from 00.00, 06.00, 12.00 and 18.00 to compute min/max temperature 
-			// if actual time is before 13.00 we use the rest of the day as forecast, and conditions from 12.00
-		 
-		$timezone = date('Z')/3600;
-		$i = 0;
-		$dayready = 0;
-		$nextday = (int)(date('w', strtotime($parsed_json->{'properties'}->{'timeseries'}[0]->{'time'})- $timezone * 3600)+1) %7;
-		$startTime = (int)date('G', strtotime($parsed_json->{'properties'}->{'timeseries'}[0]->{'time'}))- $timezone;
-		$maxtemp = -100;
-		$mintemp = 100;
-		
-		foreach ($parsed_json->{'properties'}->{'timeseries'} as $dataset) {
-			$day = (int)date('w', strtotime($dataset->{'time'})- $timezone * 3600);
-			$actualTime = (24 +(int)date('G', strtotime($dataset->{'time'})) - $timezone) % 24;
-			
-			// first day if requested before 12:00
-			if ($startTime <= 12 && $i == 0 && $actualTime <= 23 ) {
-				$temps = (float)$dataset->{'data'}->{'instant'}->{'details'}->{'air_temperature'};
-				if($temps >  $maxtemp) $maxtemp = $temps;
-				if($temps <  $mintemp) $mintemp = $temps;
-				if ($actualTime == 12)
-					$forecastCondition = $dataset->{'data'}->{'next_1_hours'}->{'summary'}->{'symbol_code'};
-				if ($actualTime == 23 ) {
-					$dayready = 1;
-					$nextday = $day;
-				}
+		if ($parsed_json->{'properties'}->{'timeseries'}['0']) {	
+			// night or day symbol of today 
+			$actualconditions = $parsed_json->{'properties'}->{'timeseries'}['0']->{'data'}->{'next_1_hours'}->{'summary'}->{'symbol_code'};
+			$actualTimeSymbol = substr(strrchr($actualconditions, '_'),1);
+			if ($actualTimeSymbol != '') {
+				$actualconditions = substr($actualconditions, 0, strpos($actualconditions, '_'));
+				$actualTimeSymbol = ($actualTimeSymbol == 'night') ? 'moon_' : 'sun_';
 			}
-
-			$searchTimes = array (0, 6, 12, 18);
-			if ($day == $nextday && $dayready == 0) {
-				if (in_array ($actualTime, $searchTimes)) {
-					$mintemp_6h = (float)$dataset->{'data'}->{'next_6_hours'}->{'details'}->{'air_temperature_min'};
-					$maxtemp_6h = (float)$dataset->{'data'}->{'next_6_hours'}->{'details'}->{'air_temperature_max'};
-					if($maxtemp_6h >  $maxtemp) $maxtemp = $maxtemp_6h;
-					if($mintemp_6h <  $mintemp) $mintemp = $mintemp_6h;
-					if ($actualTime == 6) 
-						$forecastCondition = $dataset->{'data'}->{'next_12_hours'}->{'summary'}->{'symbol_code'};
-					if ($actualTime == 18)
+			else
+				$actualTimeSymbol = ($this->icon_sm != '') ? $this->icon_sm : 'sun_';
+					
+			$actualdata = $parsed_json->{'properties'}->{'timeseries'}['0']->{'data'}->{'instant'}->{'details'};
+			$wind_dir = weather::getDirection((float)$actualdata->{'wind_from_direction'});
+			$wind_speed = transunit('speed',round(3.6*(float)$actualdata->{'wind_speed'}, 1));
+			if (substr($wind_speed,-3) =='mph') 
+				$wind_speed = transunit('speed',round(2.24*(float)$actualdata->{'wind_speed'}, 1));
+			$wind_desc = weather::getWindDescription($wind_speed);
+			
+			$this->data['current']['temp'] = transunit('temp', (float)$actualdata->{'air_temperature'});
+			$this->data['current']['wind'] = $wind_desc.' '.translate('from', 'weather').' '.$wind_dir.' '.translate('at', 'weather').' '.$wind_speed;
+			$this->data['current']['more'] = translate('humidity', 'weather')." ".transunit('%', (float)$actualdata->{'relative_humidity'});
+			$this->data['current']['misc'] = translate('air pressure', 'weather')." ".(float)$actualdata->{'air_pressure_at_sea_level'}.' hPa';
+			$this->data['current']['conditions'] = translate($actualconditions, 'met.no');
+			$this->data['current']['icon'] = $this->icon($actualconditions, $actualTimeSymbol);    
+			
+			// forecast
+				// met.no times are UTC based. We need to correct local time in order to fit to the data raster.
+				// next_12_hours tag contains a conditions summary for 12 hours -> we use the forecast of 06.00 for the day
+				// next_6_hours tag contains values for min and max temperatures  
+				// -> we use all data from 00.00, 06.00, 12.00 and 18.00 to compute min/max temperature 
+				// if actual time is before 13.00 we use the rest of the day as forecast, and conditions from 12.00
+			 
+			$timezone = date('Z')/3600;
+			$i = 0;
+			$dayready = 0;
+			$nextday = (int)(date('w', strtotime($parsed_json->{'properties'}->{'timeseries'}[0]->{'time'})- $timezone * 3600)+1) %7;
+			$startTime = (int)date('G', strtotime($parsed_json->{'properties'}->{'timeseries'}[0]->{'time'}))- $timezone;
+			$maxtemp = -100;
+			$mintemp = 100;
+			
+			foreach ($parsed_json->{'properties'}->{'timeseries'} as $dataset) {
+				$day = (int)date('w', strtotime($dataset->{'time'})- $timezone * 3600);
+				$actualTime = (24 +(int)date('G', strtotime($dataset->{'time'})) - $timezone) % 24;
+				
+				// first day if requested before 12:00
+				if ($startTime <= 12 && $i == 0 && $actualTime <= 23 ) {
+					$temps = (float)$dataset->{'data'}->{'instant'}->{'details'}->{'air_temperature'};
+					if($temps >  $maxtemp) $maxtemp = $temps;
+					if($temps <  $mintemp) $mintemp = $temps;
+					if ($actualTime == 12)
+						$forecastCondition = $dataset->{'data'}->{'next_1_hours'}->{'summary'}->{'symbol_code'};
+					if ($actualTime == 23 ) {
 						$dayready = 1;
+						$nextday = $day;
+					}
 				}
-			}	
 
-			if ($dayready == 1) {
-				if (strpos ($forecastCondition,'_') > 0)
-					$forecastCondition = substr($forecastCondition, 0, strpos($forecastCondition, '_'));
-				$this->data['forecast'][$i]['date'] = date('Y-m-d', strtotime($dataset->{'time'})-$timezone*3600);
-				$this->data['forecast'][$i]['conditions'] = translate($forecastCondition, 'met.no');
-				$this->data['forecast'][$i]['icon'] = $this->icon($forecastCondition);
-				$this->data['forecast'][$i]['temp'] = round($maxtemp, 0).'&deg;C'.'/'.round($mintemp, 0).'&deg;C';
-				$maxtemp = -100;
-				$mintemp = 100;
-				$dayready = 0;
-				$nextday = ($nextday + 1) %7;
-				
-				$i++;
-				if ($i == 4) break;
+				$searchTimes = array (0, 6, 12, 18);
+				if ($day == $nextday && $dayready == 0) {
+					if (in_array ($actualTime, $searchTimes)) {
+						$mintemp_6h = (float)$dataset->{'data'}->{'next_6_hours'}->{'details'}->{'air_temperature_min'};
+						$maxtemp_6h = (float)$dataset->{'data'}->{'next_6_hours'}->{'details'}->{'air_temperature_max'};
+						if($maxtemp_6h >  $maxtemp) $maxtemp = $maxtemp_6h;
+						if($mintemp_6h <  $mintemp) $mintemp = $mintemp_6h;
+						if ($actualTime == 6) 
+							$forecastCondition = $dataset->{'data'}->{'next_12_hours'}->{'summary'}->{'symbol_code'};
+						if ($actualTime == 18)
+							$dayready = 1;
+					}
+				}	
+
+				if ($dayready == 1) {
+					if (strpos ($forecastCondition,'_') > 0)
+						$forecastCondition = substr($forecastCondition, 0, strpos($forecastCondition, '_'));
+					$this->data['forecast'][$i]['date'] = date('Y-m-d', strtotime($dataset->{'time'})-$timezone*3600);
+					$this->data['forecast'][$i]['conditions'] = translate($forecastCondition, 'met.no');
+					$this->data['forecast'][$i]['icon'] = $this->icon($forecastCondition);
+					$this->data['forecast'][$i]['temp'] = round($maxtemp, 0).'&deg;C'.'/'.round($mintemp, 0).'&deg;C';
+					$maxtemp = -100;
+					$mintemp = 100;
+					$dayready = 0;
+					$nextday = ($nextday + 1) %7;
+					
+					$i++;
+					if ($i == 4) break;
+				}
+
 			}
-
-		}
-
+		} 
+		else
+		{
+			if ($loadError != '')
+				$add = ' with message: <br>'.$loadError;
+			else
+				$add = ': <br>'.$this->errorMessage;
+							
+			$this->error('Weather: met.no', 'Read request failed'.$add );
+		}	
 	}
 
 	/*
