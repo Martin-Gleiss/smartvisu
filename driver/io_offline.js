@@ -261,8 +261,15 @@ var io = {
 			max = 1;
 		}
 
-		tmin = new Date().getTime() - new Date().duration(tmin);
-		tmax = new Date().getTime() - new Date().duration(tmax);
+		//tmin = new Date().getTime() - new Date().duration(tmin);
+		//tmax = new Date().getTime() - new Date().duration(tmax);
+		
+		//synchronize timestamps for demoseries to the minute in order to allow stacked plots
+		var actualTime = new Date()
+		var actualMinute = Math.round(actualTime/60000) * 60000; 
+		tmin = new Date (actualMinute) - new Date().duration(tmin);
+		tmax = new Date (actualMinute) - new Date().duration(tmax);
+		
 		var step = Math.round((tmax - tmin) / (cnt-1));
 		if(step == 0)
 			step = 1;

@@ -188,7 +188,9 @@ $.widget("sv.plot_period", $.sv.widget, {
         opposite: '',
         ycolor: '',
         ytype: '',
-        chartOptions: null
+        chartOptions: null,
+		stacking: '',
+		stacks: ''
     },
 
     allowPartialUpdate: true,
@@ -226,6 +228,10 @@ $.widget("sv.plot_period", $.sv.widget, {
             ycolor = String(this.options.ycolor).explode();
         }
         var ytype = String(this.options.ytype).explode();
+		var stacks = [];
+		if (this.options.stacks) {
+			stacks = String(this.options.stacks).explode();
+		}
 
         var styles = [];
 
@@ -248,13 +254,15 @@ $.widget("sv.plot_period", $.sv.widget, {
             }
             if(mode != 'minmax') {
                 series.push({
-                    type: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? exposure[i].substr(0, exposure[i].length-5) : exposure[i]),
+                    type: (exposure[i] != null && (exposure[i].toLowerCase().endsWith('stair') || exposure[i].toLowerCase().endsWith('stack')) ? exposure[i].substr(0, exposure[i].length-5) : exposure[i]),
                     step: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? 'left' : false),
                     name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
                     data: [], // clone
                     yAxis: (assign[i] ? assign[i] - 1 : 0),
                     showInNavigator: true,
-                    colorIndex: mode == 'minmaxavg' ? i*2+1 : null
+                    colorIndex: mode == 'minmaxavg' ? i*2+1 : null,
+					stacking: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? this.options.stacking : null),
+					stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stacks[i] : null)
                 });
             }
         }
@@ -413,7 +421,7 @@ $.widget("sv.plot_period", $.sv.widget, {
             };
 
             $.extend(true, chartOptions, this.options.chartOptions);
-
+			
             Highcharts.stockChart(this.element[0], chartOptions);
         }
         else {
@@ -423,6 +431,8 @@ $.widget("sv.plot_period", $.sv.widget, {
             }
 
             $.extend(true, chartOptions, this.options.chartOptions);
+			
+			console.log(chartOptions);
 
             Highcharts.chart(this.element[0], chartOptions);
         }

@@ -82,11 +82,11 @@
 	If the axis type is boolean the passed value will be the label of the low state (e.g. 'Off')
 * @param {text[?]=} the maximum for each y-axis; multiples in array form: [ max_y-axis1, max_y-axis2, ...] (optional)
 	If the axis type is boolean the passed value will be the label of the high state (e.g. 'On')
-* @param {value=100} the number of datapoints in the series (optional, default 100)
+* @param {value[?]=100} the number of datapoints in the series (optional, default 100)
 	May be a single value or an array of separate counts per item.
-* @param {text[?]=} label for each serie; multiples in array form (optional)
-* @param {color[?]=} color for each serie; multiples in array form (optional, default: suitable for design)
-* @param {text[?](line,stair,spline,area,areastair,areaspline,column)=line} type of each serie: 'line', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'column'; multiples in array form (optional, default 'line')
+* @param {text[?]=} label for each series; multiples in array form (optional)
+* @param {color[?]=} color for each series; multiples in array form (optional, default: suitable for design)
+* @param {text[?](line,linestack,stair,spline,area,areastair,areaspline,areastack,column,columnstack)=line} type of each serie: 'line', 'linestack', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'areastacked','column', 'columnstacked'; multiples in array form (optional, default 'line')
 * @param {text[?]=} title for the x-axis and y-axes in array form: [title_x-axis, title_y-axis1, title_y-axis2, ...] (optional)
 * @param {duration(advanced)=} minimal time range while zooming or 'advanced' (optional, duration-format)
 	By passing 'advanced' a seaparate range selector is shown and data grouping for large amount of data is enabled
@@ -96,12 +96,21 @@
 * @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
 * @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
 * @param {unchecked[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+* @param {text(normal,percent)='normal' } uniform stacking of all stacked series selected in 'exposure' parameter: 'normal', 'percent' (optional, default=normal)
+* @param {text[]=} assign stacked series to different stacks, e.g. '0', '1, '2' or ''. Sequence must be same as item sequence (optional, default='')
+* @param {value=0} control for the export of plot data: 0 = none, 1 = images, 2 = images and data (e.g.csv) (optional)
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
 */
 
-{% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions) %}
+{% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export) %}
+	{% if (not export is empty) and export > 0 %}
+		<script src="vendor/plot.highcharts/modules/exporting.js"></script>
+		{% if export == 2 %}
+			<script src="vendor/plot.highcharts/modules/export-data.js"></script>
+		{% endif %}
+	{% endif %}
 	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1h') %}
 
@@ -138,8 +147,8 @@
 		{% if assign is not empty %} data-assign="{{ implode(assign) }}" {% endif %}
 		{% if opposite is not empty %} data-opposite="{{ implode(opposite) }}" {% endif %}
 		{% if ycolor is not empty %} data-ycolor="{{ implode(ycolor) }}" {% endif %}
-		data-ytype="{{ implode(ytype) }}"
-		data-unit="{{ implode(unit) }}"
+		{% if stacks is not empty %} data-stacks="{{ implode(stacks) }}" {% endif %}
+		data-ytype="{{ implode(ytype) }}" data-unit="{{ implode(unit) }}" data-stacking="{{ stacking|default('normal') }}" data-export="{{ export|default(0) }}
 		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}"
 		class="plot{% if zoom == 'advanced' %} plot-highstock{% endif %}"></div>
 
