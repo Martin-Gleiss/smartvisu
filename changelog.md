@@ -8,9 +8,10 @@
 ### Other New Features
 - new public functions in weather.php plus new language category [weather] to centrally determine verbal wind direction and strength
 - weather services use humidity and air pressure as additional data (has been max. one out of both)
+- demoseries in offline driver have been synchronized to the minute in order to enable stacking of demoseries
 
 ### Improvements
-- error reporting for weather services shows answers from remote
+- error reporting for weather services and CalDav / iCloud candendars shows answers from remote
 
 ### Updated Libraries
 - Highcharts updated to v8.2
@@ -20,7 +21,7 @@
 - weather service wunderground (use weather.com as replacement) 
 
 ### Removed Features
-- support for older widgets (non jQuery mobile types) has been finally removed 
+- support for older widgets (non jQuery mobile types) has been finally removed
 
 ### Fixed Bugs
 - plot.pie did not show series titles as labels / legend
