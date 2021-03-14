@@ -84,6 +84,38 @@
 		</div>
 	</div>	
 	<br>
+	<h5>Stacking</h5>
+	<br>
+	Line, area and column graphs may be stacked by selecting the stacked 'exposure' type. Stacking mode is 'normal' (stack of actual values) or 
+	'percent' (share of the sum of all values in %). The 'stack' parameter allows grouping in different stacks. Note that series will be stacked
+	only if time values on x-axis are synchronized for the stacked series.
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', '', '', '', ['areastack', 'areastack', 'areastack'],'','','','','','','','','normal') }}
+			
+			{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', 10, '', ['#aa0', '#a00', '#00a'], ['columnstack', 'columnstack', 'column'],'','','','','','','','','normal',['0','0','1']) }}
+			
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>a plot of 3 stacked area series</h3>
+					{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', '', '', '', ['areastack', 'areastack', 'areastack'],'','','','','','','','','normal') }}
+				</div>
+			</div>
+		</div>
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>a plot of 2 stacked and a single column series</h3>
+					{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', 10, '', ['#aa0', '#a00', '#00a'], ['columnstack', 'columnstack', 'column'],'','','','','','','','','normal',['0','0','1']) }}
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
 	<h5>Special functions</h5>
 	<br>
 	Not all features of Highcharts are accessible via widget parameters. To make charts even more flexible, the parameter 'chartoptions' is able to 
