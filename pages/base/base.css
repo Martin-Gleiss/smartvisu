@@ -684,6 +684,7 @@ input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
   margin: 0 5px 13px 5px;
 }
 
+.ui-popup-container .image img,
 .block .image img {
   width: 100%;
 }
