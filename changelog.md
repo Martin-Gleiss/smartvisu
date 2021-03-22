@@ -6,6 +6,7 @@
 - basic.slider provides a new silent mode. Live mode (default) sends changed values constantly, silent mode only if change is completed.
 - plot.period provides stacked plots for line, area and column
 - plot / data exporting as experimental feature in plot.period (still needs some styling for the menu)
+- status.collapse supports a list of multiple values for control of collapsing / hiding
 
 ### Other New Features
 - new public functions in weather.php plus new language category [weather] to centrally determine verbal wind direction and strength

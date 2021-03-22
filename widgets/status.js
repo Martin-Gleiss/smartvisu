@@ -38,13 +38,15 @@ $.widget("sv.status_collapse", $.sv.widget, {
 
 	options: {
 		id: null,
-		'val-collapsed': 0
+		val: ''
 	},
 	
 	_update: function(response) {
-		// response is: {{ gad_trigger }}
+		// response is: {{ item_trigger }}
 		var target = $('[data-bind="' + this.options.id + '"]');
-		if (response[0] != this.options['val-collapsed']) {
+		var comp = String(this.options.val).explode(); 
+
+		if (comp.indexOf(String(response[0])) == -1) {
 			target.not('.ui-collapsible').not('.ui-popup').show();
 			target.filter('.ui-collapsible').collapsible("expand");
 			target.filter('.ui-popup').popup("open");
