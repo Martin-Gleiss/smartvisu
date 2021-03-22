@@ -57,6 +57,22 @@
 	width: 1.0em
 	}
 
+#filteroverlay {
+	position: fixed;
+	display: none;
+	width: 20%;
+	height: 8%;
+	right: 5%;
+	top: 40%;
+
+  background-color: rgba(0,0,0,0.9);
+	z-index: 10;
+	border-radius: 6px;
+	cursor: pointer;
+	padding: 10px; 
+}
+
+
 #overlay {
 	position: fixed;
 	display: none;
@@ -110,16 +126,20 @@
                       <div id="overlaytext" style="text-align: left; font-size: 0.9em">ToolTip-Text</div>
                       <a onclick="closeTooltip()" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-link ui-btn ui-icon-delete ui-btn-icon-notext ui-shadow ui-corner-all" role="button">Close</a>
                     </div>
+                    <div id="filteroverlay" style="display: block">
+                      <div id="filteroverlaytext" style="text-align: center; font-size: 0.9em">auto-complete filtered by : <br>widgets</div>                    
+                      <a onclick="closeFilterTip()" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-link ui-btn ui-icon-delete ui-btn-icon-notext ui-shadow ui-corner-all" role="button">Close</a>
+                    </div>                    
 		   <div>
 		   <table style="width:100%"> 
-		   <tr>
-		   <td style="width:60%">
-                        <button class="ui-btn ui-input-btn ui-btn-b ui-corner-all ui-shadow" onclick="getPreview()">Preview widget & copy final Widget to Clipboard</button>
-      		   </td>
-		   </tr>
+  		   <tr>
+		       <td style="width:60%">
+              <button class="ui-btn ui-input-btn ui-btn-b ui-corner-all ui-shadow" onclick="getPreview()">Preview widget & copy final Widget to Clipboard</button>
+     		   </td>
+  		   </tr>
 		   </table> 
 		   </div> 
-                        <table style="width: 100%;font-size: 0.65em;">
+                        <table style="width: 100%;font-size: 0.9em;">
                             <tr>
                                 <td style="text-align: left;">
                                     <img id ="items_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Items loaded
@@ -134,9 +154,11 @@
                                 <td rowspan="1">
                                 	<label id="Wildcard_label" style="font-size: 1.0em;"><input name="Wildcard_search" id="Wildcard_search" type="checkbox">&nbsp&nbsp&nbsp&nbsp Wildcard search</label>
                                 </td>
+<!--
                                 <td rowspan="1">
                                     autocomplete : 
                                 </td>
+-->                                
                             </tr>
                             <tr>
                                 <td style="text-align: left;">
@@ -148,14 +170,23 @@
                                 <td style="text-align: left;">
                                 	<label id="switch_quotes_label" style="font-size: 1.0em;"><input onclick="changeCloseBrackets()" name="switch_quotes" id="switch_quotes" type="checkbox" >&nbsp&nbsp&nbsp&nbsp auto Close Quotes</label>
                                 </td>
-                                   <td style="text-align: left;">
-<!--
-	  		<label id="open_new_Window_label" style="font-size: 1.0em;"><input name="open_new_Window" id="open_new_Window" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbspopen new Window</label>
--->	  		
+                                <td style="text-align: left;">
+                                  <div class="ui-field-contain">
+                                      <select id="select_autocomplete" name="select_autocomplete" data-native-menu="false" onchange="ChangeDictbyMouse(event)">
+                                              <option value="1">Items</option>                                            
+                                              <option value="2" selected="selected">Widgets</option>
+                                              <option value="3">Icons</option>                                            
+                                              <option value="4">All</option>
+                                              <option value="5">Colors</option>
+                                              <option value="6">Autocomplete OFF</option>                                            
+                                      </select>
+                                  </div>                     		
                                 </td>
+<!--                                
                                 <td id="td_selected_dict" style="width: 80px;border-radius: 8px;" rowspan="1">
                                      <div id="selected_dict"> <strong>Widgets</strong> </div>
                                 </td>
+-->                                
                             </tr>
 
                         </table>
