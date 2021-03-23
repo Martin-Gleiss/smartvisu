@@ -154,9 +154,17 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		var id = this.element.attr('id');
 		var scale_min = this.options.scale_min;  //18;
 		var scale_max = this.options.scale_max;  //28;
-		var step = this.options.step;   //0.1;
+		var step = this.options.step * 1;   //0.1;
+		var decs = step.decimals();
 		var unit = "°C";
 		var scale_interval = this.options.scale_interval;
+		
+		console.log(item_names);
+		// some RTR use a different item for temperature offset, eg. MDT
+		if (item_names[2] != "")	{
+			  var set_old = response[1];
+			  var offset_old = response[2];
+		}
 						
 		//get colors
 		var bg_color = $('.ui-bar-b').css('background-color');
@@ -260,7 +268,12 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		editableTooltip: false,
 		svgMode: true,
 		update: function (args) {
-			io.write(item_names[1], args.value);	
+			if (item_names[2] != "") { 
+				var delta = args.value - set_old;
+				io.write(item_names[2], (offset_old + delta).toFixed(decs));
+			}
+			else
+				io.write(item_names[1], args.value);	
 		},
 	
 		tooltipColor: function (args) {
@@ -277,10 +290,10 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		},
 			
 		create: function() {
-			 $("#"+id).find(".inner-handle").css({
-				 'position': 'absolute',
-					'left': '-35px'}
-				 );
+			$("#"+id).find(".inner-handle").css({
+				'position': 'absolute',
+				'left': '-35px'}
+				);
 		  }
 		});
 	},
