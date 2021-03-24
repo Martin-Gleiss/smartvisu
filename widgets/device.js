@@ -159,7 +159,6 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		var unit = "°C";
 		var scale_interval = this.options.scale_interval;
 		
-		console.log(item_names);
 		// some RTR use a different item for temperature offset, eg. MDT
 		if (item_names[2] != "")	{
 			  var set_old = response[1];
