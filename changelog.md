@@ -18,6 +18,9 @@
 
 ### Improvements
 - error reporting for weather services and CalDav / iCloud calendars shows answers from remote
+- error reporting for phone service improved
+- error notification avoids duplicate messages (weather and phone services)
+- error notification is cleared if service is running again (weather and phone services)
 
 ### Updated Libraries
 - Highcharts updated to v8.2
@@ -33,6 +36,7 @@
 - plot.pie did not show series titles as labels / legend
 - some weather services did not use correct language if user defined language extension file was used
 - some weather services did not use the units specified in the language file
+- default repeat interval for phone services was 15 months. Corrected to 15 minutes.
 
 ### Known Bugs
 - when leaving a page via the "back" button, widgets exit method and cancellation of plot data subscriptions won't work.

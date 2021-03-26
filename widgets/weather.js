@@ -16,6 +16,7 @@ $.widget("sv.weather_current", $.sv.widget, {
 		misc1fmt: ''
 	},
 
+	_currentErrorNotification: 0,
 	_humi: 0,
 	_wind: 0,
 	_temp: 0,
@@ -67,18 +68,31 @@ $.widget("sv.weather_current", $.sv.widget, {
 	
 	_repeat: function() {
 		var element = this.element;
-		var that = this; 
 		var repeatMinutes = (new Date().duration(this.options.repeat) - 0) / 60000;
-		$.getJSON(this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes, function (data) {
-			element.css('background-image', 'url(lib/weather/pics/' + data.current.icon + '.png)')
-			element.children('.city').html(data.city);
-			element.children('.cond').html(data.current.conditions);
-			if (that._temp == 0) element.children('.temp').html(data.current.temp);
-			if (that._humi == 0) element.children('.humi').html(data.current.more);
-			if (that._wind == 0) element.children('.wind').html(data.current.wind);
-			if (data.current.misc != undefined && that._misc == 0) element.children('.misc').html(data.current.misc);
+		
+		$.ajax({
+			dataType: "json",
+			url: this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes,
+			context: this,
+			success: function(data) {
+				element.css('background-image', 'url(lib/weather/pics/' + data.current.icon + '.png)')
+				element.children('.city').html(data.city);
+				element.children('.cond').html(data.current.conditions);
+				if (this._temp == 0) element.children('.temp').html(data.current.temp);
+				if (this._humi == 0) element.children('.humi').html(data.current.more);
+				if (this._wind == 0) element.children('.wind').html(data.current.wind);
+				if (data.current.misc != undefined && this._misc == 0) element.children('.misc').html(data.current.misc);
+			
+				if (this._currentErrorNotification != 0){
+					notify.remove(this._currentErrorNotification);
+					this._currentErrorNotification = 0;
+				}
+			}
 		})
-		.error(notify.json);
+		.fail(function(jqXHR, status, errorthrown){
+			if (this._currentErrorNotification == 0 || !notify.exists(this._currentErrorNotification) )
+				this._currentErrorNotification = notify.json(jqXHR, status, errorthrown);
+		});
 	}
 
 });
@@ -95,20 +109,35 @@ $.widget("sv.weather_forecast", $.sv.widget, {
 		repeat: '3h',
 		day: 1
 	},
+	
+	_forecastErrorNotification: 0,
 
 	_repeat: function() {
 		var element = this.element;
 		var day = this.options.day;
 		var repeatMinutes = (new Date().duration(this.options.repeat) - 0) / 60000;
-		$.getJSON(this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes, function (data) {
-			element.css('background-image', 'url(lib/weather/pics/' + data.forecast[day].icon + '.png)')
-			element.children('.city').html(data.city);
-			element.children('.cond').html(data.forecast[day].conditions);
-			element.children('.highlow').html(data.forecast[day].temp);
-			element.children('.day').html(data.forecast[day].date);
-
+		
+		$.ajax({
+			dataType: "json",
+			url: this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes, 
+			context: this,
+			success: function (data) {
+				element.css('background-image', 'url(lib/weather/pics/' + data.forecast[day].icon + '.png)')
+				element.children('.city').html(data.city);
+				element.children('.cond').html(data.forecast[day].conditions);
+				element.children('.highlow').html(data.forecast[day].temp);
+				element.children('.day').html(data.forecast[day].date);
+				
+				if (this._forecastErrorNotification != 0){
+					notify.remove(this._forecastErrorNotification);
+					this._forecastErrorNotification = 0;
+				}
+			}
 		})
-		.error(notify.json);
+		.fail(function(jqXHR, status, errorthrown){
+			if(this._forecastErrorNotification == 0 || !notify.exists(this._forecastErrorNotification) )
+				this._forecastErrorNotification = notify.json(jqXHR, status, errorthrown);
+		});
 	}
 
 });
@@ -124,22 +153,37 @@ $.widget("sv.weather_forecastweek", $.sv.widget, {
 		location: '',
 		repeat: '15i'
 	},
+	
+	_forecastErrorNotification: 0,
 
 	_repeat: function() {
 		var element = this.element;
 		var repeatMinutes = (new Date().duration(this.options.repeat) - 0) / 60000;
-		$.getJSON(this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes, function (data) {
-			var forecast = '';
-			for (var i in data.forecast) {
-				forecast += '<div class="day">'
-				forecast += '<div>' + data.forecast[i].date + '</div>';
-				forecast += '<img src="lib/weather/pics/' + data.forecast[i].icon + '.png" alt="' + data.forecast[i].conditions + '" title="' + data.forecast[i].conditions + '" />';
-				forecast += '<div>' + data.forecast[i].temp + '</div>';
-				forecast += '</div>';
+		$.ajax({
+			dataType: "json",
+			url: this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes,
+			context: this,
+			success: function (data) {
+				var forecast = '';
+				for (var i in data.forecast) {
+					forecast += '<div class="day">'
+					forecast += '<div>' + data.forecast[i].date + '</div>';
+					forecast += '<img src="lib/weather/pics/' + data.forecast[i].icon + '.png" alt="' + data.forecast[i].conditions + '" title="' + data.forecast[i].conditions + '" />';
+					forecast += '<div>' + data.forecast[i].temp + '</div>';
+					forecast += '</div>';
+				}
+				element.html(forecast);
+				
+				if (this._forecastErrorNotification != 0){
+					notify.remove(this._forecastErrorNotification);
+					this._forecastErrorNotification = 0;
+				}
 			}
-			element.html(forecast);
 		})
-		.error(notify.json);
+		.fail(function(jqXHR, status, errorthrown){
+			if(this._forecastErrorNotification == 0 || !notify.exists(this._forecastErrorNotification) )
+				this._forecastErrorNotification = notify.json(jqXHR, status, errorthrown);
+		});
 	}
 
 });
