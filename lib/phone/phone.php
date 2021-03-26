@@ -31,7 +31,7 @@ class phone extends service
 	 */
 	public function init($request)
 	{
-		$this->debug = ($request['debug'] == 1);
+		parent::init($request);
 
 		$this->server = config_phone_server;
 		$this->port = config_phone_port;
