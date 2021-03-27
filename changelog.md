@@ -7,14 +7,20 @@
 - plot.period provides stacked plots for line, area and column
 - plot / data exporting as experimental feature in plot.period (still needs some styling for the menu)
 - status.collapse supports a list of multiple values for control of collapsing / hiding
+- device.rtrslider supports offset temperature for MDT RTR and supplements (like device.rtr)
+- basic.offset rounds result to the count of decimals given by "step" attribute
 
 ### Other New Features
 - new public functions in weather.php plus new language category [weather] to centrally determine verbal wind direction and strength
 - weather services use humidity and air pressure as additional data (has been max. one out of both)
 - demoseries in offline driver have been synchronized to the minute in order to enable stacking of demoseries
+- new function Number.prototype.decimals() to determine count of decimals of a number
 
 ### Improvements
-- error reporting for weather services and CalDav / iCloud candendars shows answers from remote
+- error reporting for weather services and CalDav / iCloud calendars shows answers from remote
+- error reporting for phone service improved
+- error notification avoids duplicate messages (weather and phone services)
+- error notification is cleared if service is running again (weather and phone services)
 
 ### Updated Libraries
 - Highcharts updated to v8.2
@@ -30,6 +36,8 @@
 - plot.pie did not show series titles as labels / legend
 - some weather services did not use correct language if user defined language extension file was used
 - some weather services did not use the units specified in the language file
+- default repeat interval for phone services was 15 months. Corrected to 15 minutes.
+- design colors where not defined in 'pages' and 'device' options of the config page
 
 ### Known Bugs
 - when leaving a page via the "back" button, widgets exit method and cancellation of plot data subscriptions won't work.

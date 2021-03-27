@@ -707,7 +707,9 @@ $.widget("sv.basic_offset", $.sv.widget, {
 	_events: {
     'click': function (event) {
 			var step = this.options.step * 1;
-			this._write(widget.get(this.options.item) * 1 + step);
+			var decs = step.decimals();
+			var newval = (widget.get(this.options.item) * 1 + step).toFixed(decs);
+			this._write(newval);
 		}
 	}
 

@@ -213,14 +213,16 @@
 * @param {value=.1} step between two values (optional, default: .1)  
 * @param {bool=false} display a scale with values along the slider (optional, default='true')
 * @param {value=1} scale-integer, the scale-divider for the scale
+* @param {item(num)=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
+* @param {text[]=} list of additional widgets / content to display
 *
 * @author Bonze, Wolfram v. Hülsen
 **/
-{% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval) %}
+{% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval, item_offset, supplements) %}
 
 {% import "basic.html" as basic %}
 
-	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{item_actual}},{{item_set}}"  
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{item_actual}},{{item_set}},{{item_offset}}"  
 		data-scale_min="{{min | default('18')}}" data-scale_max="{{max| default('28')}}" data-step="{{step | default('.1')}}"  
 		data-scale_interval="{{scale_interval | default('1')}}" style="margin:auto; position:relative;"> 
 		
@@ -240,7 +242,7 @@
 	</div>
 	/** elements copied from device.rtr **/
 	{% if item_set %}
-		<div class="set" style="position:relative; ">
+		<div class="set" style="position:relative; z-index: 3;">
 			<div>
 				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro' ) }}
 				{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro' ) }}
@@ -248,7 +250,7 @@
 		</div>
 	{% endif %}
 
-	{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty %}
+	{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty or supplements is not empty %}
 		<div class="control" style="position:relative;">
 			{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
 				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
@@ -268,6 +270,9 @@
 			{% if item_state is not empty %}
 				{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
 			{% endif %}
+			{% for supplement in supplements %}
+				{{ supplement|raw }}
+			{% endfor %}
 		</div>
 	{% endif %}
 		

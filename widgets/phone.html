@@ -14,14 +14,14 @@
 * @param {id} unique id for this widget
 * @param {text=} a title to display
 * @param {value=10} the number of displayed lines, default 10
-* @param {duration=15m} the refresh interval for this widget (using duration format), default 15m
+* @param {duration=15i} the refresh interval for this widget (using duration format), default 15i (15 minutes)
 *
 * @see misc/fundamentals#Duration-Format
 */
 {% macro list(id, title, count, repeat) %}
 	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}-phonelist" data-widget="phone.list" class="phonelist" data-repeat="{{ repeat|default('15m') }}" data-count="{{ count|default(10) }}" data-service-url="lib/phone/service/{{ config_phone_service|url_encode }}.php">
+	<div id="{{ uid }}-phonelist" data-widget="phone.list" class="phonelist" data-repeat="{{ repeat|default('15i') }}" data-count="{{ count|default(10) }}" data-service-url="lib/phone/service/{{ config_phone_service|url_encode }}.php">
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
 		<ul data-role="listview">
 		</ul>
@@ -35,14 +35,14 @@
 * @param {id} unique id for this widget
 * @param {text=} a title to display
 * @param {value=3} the number of displayed lines, default 3
-* @param {duration=15m} the refresh interval for this widget (using duration format), default 15m
+* @param {duration=15i} the refresh interval for this widget (using duration format), default 15i (15 minutes)
 *
 * @see misc/fundamentals#Duration-Format
 */
 {% macro missedlist(id, title, count, repeat) %}
 	{% set uid = uid(page, id) %}
 
-	<div id="{{ uid }}-missedlist" data-widget="phone.missedlist" class="phonelist" data-repeat="{{ repeat|default('15m') }}" data-count="{{ count|default(3) }}" data-service-url="lib/phone/service/{{ config_phone_service|url_encode }}.php">
+	<div id="{{ uid }}-missedlist" data-widget="phone.missedlist" class="phonelist" data-repeat="{{ repeat|default('15i') }}" data-count="{{ count|default(3) }}" data-service-url="lib/phone/service/{{ config_phone_service|url_encode }}.php">
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
 		<ul data-role="listview">
 		</ul>

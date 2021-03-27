@@ -116,19 +116,23 @@
 * @param {text} values being available from source
 * @param {text} name of the parameter to select
 * @param {text[?]} directory of files to select from 
+* @param {text=} set to 'true' if select is part of a row widget (optional, default = '')
 */
-{% macro config_select(source, values, id, files) %}
-	<div class="ui-field-contain">
-		<label for="{{ source }}_{{ id }}"{% if source != 'global' and source != 'tplchk' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
-			{{ lang('configuration_page', id, 'label') }}
-		</label>
-	{% set hint = lang('configuration_page', id, 'hint') %}
-	{% if not hint is empty %}
-		<div class="ui-help-container">
-			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
-			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
-				{{ hint|nl2br }}
-			</div>
+{% macro config_select(source, values, id, files, rowcontent) %}
+	
+	{% if rowcontent is empty %}
+		<div class="ui-field-contain">
+			<label for="{{ source }}_{{ id }}"{% if source != 'global' and source != 'tplchk' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
+				{{ lang('configuration_page', id, 'label') }}
+			</label>
+		{% set hint = lang('configuration_page', id, 'hint') %}
+		{% if not hint is empty %}
+			<div class="ui-help-container">
+				<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+				<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
+					{{ hint|nl2br }}
+				</div>
+		{% endif %}
 	{% endif %}
 			<select name="{{ id }}" id="{{ source }}_{{ id }}"{{ files|length <= 20 ? ' data-native-menu="false"'|raw }}{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
 	      {% set metas = [] %}
@@ -193,10 +197,12 @@
 					});
 
 				</script>
-	{% if not hint is empty %}
+	{% if rowcontent is empty %}
+		{% if not hint is empty %}
+			</div>
+		{% endif %}
 		</div>
 	{% endif %}
-	</div>
 {% endmacro %}
 
 
