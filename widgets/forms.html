@@ -300,7 +300,7 @@ macro will be called in the "addition" parameter of config_flip for the reverse 
 		$.getJSON('lib/base/check_temp.php', function(data) {
 			console.log('{{ source }}_{{ id }}'+': Cache directory is writeable');
 			})
-			.error(function (jqXHR) {
+			.fail(function (jqXHR) {
 				var data = jQuery.parseJSON(jqXHR.responseText)
 				$('#{{ source }}_{{ id }}').each(function(idx) {
 					var element = $(this);

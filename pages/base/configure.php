@@ -34,7 +34,7 @@ else if(isset($_GET['target'])) {
 	$config = new config();
 	$success = $config->save($_GET['target'], $_POST, $_GET['pages']);
 	if($success) {
-		$success = delTree(const_path.'temp/pagecache') || ! is_dir(const_path.'temp/pagecache');
+		$success = delTree(const_path.'temp/pagecache/'.config_cachefolder) || ! is_dir(const_path.'temp/pagecache/'.config_cachefolder);
 		if($success)
 			echo json_encode(array('title' => 'Configuration', 'text' => 'Configuration changes saved.'));
 		else { // save fails
