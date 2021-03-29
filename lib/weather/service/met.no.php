@@ -26,7 +26,6 @@ class weather_met extends weather
 	 */
 	public function run()
 	{
-
 		// api call 
 		$cache = new class_cache('met.no_'.preg_replace(array('/=/','/&/'),'',$this->location).'.json');
 		
@@ -52,6 +51,7 @@ class weather_met extends weather
 		
 		$parsed_json = json_decode($content);
 		$this->debug($parsed_json);
+		
 		if ($parsed_json->{'properties'}->{'timeseries'}['0']) {	
 			// night or day symbol of today 
 			$actualconditions = $parsed_json->{'properties'}->{'timeseries'}['0']->{'data'}->{'next_1_hours'}->{'summary'}->{'symbol_code'};
@@ -78,21 +78,24 @@ class weather_met extends weather
 			$this->data['current']['icon'] = $this->icon($actualconditions, $actualTimeSymbol);    
 			
 			// forecast
-				// met.no times are UTC based. We need to correct local time in order to fit to the data raster.
+				// met.no times are UTC based. We need to sustract timezone from local time in order to fit to the UTC data raster.
 				// next_12_hours tag contains a conditions summary for 12 hours -> we use the forecast of 06.00 for the day
 				// next_6_hours tag contains values for min and max temperatures  
 				// -> we use all data from 00.00, 06.00, 12.00 and 18.00 to compute min/max temperature 
 				// if actual time is before 13.00 we use the rest of the day as forecast, and conditions from 12.00
 			 
-			$timezone = date('Z')/3600;
+			$forecastCondition = 'NA';
+			$timezone = (int)date('Z', strtotime($parsed_json->{'properties'}->{'timeseries'}[0]->{'time'}))/3600;
 			$i = 0;
 			$dayready = 0;
-			$nextday = (int)(date('w', strtotime($parsed_json->{'properties'}->{'timeseries'}[0]->{'time'})- $timezone * 3600)+1) %7;
-			$startTime = (int)date('G', strtotime($parsed_json->{'properties'}->{'timeseries'}[0]->{'time'}))- $timezone;
+			$nextday = (int)(date('w', strtotime($parsed_json->{'properties'}->{'timeseries'}[0]->{'time'}) - $timezone * 3600)+1) %7;
+			$startTime = (24+ (int)date('G', strtotime($parsed_json->{'properties'}->{'timeseries'}[0]->{'time'})) - $timezone) %24;
 			$maxtemp = -100;
 			$mintemp = 100;
 			
+			
 			foreach ($parsed_json->{'properties'}->{'timeseries'} as $dataset) {
+				$timezone = (int)date('Z', strtotime($dataset->{'time'}))/3600;
 				$day = (int)date('w', strtotime($dataset->{'time'})- $timezone * 3600);
 				$actualTime = (24 +(int)date('G', strtotime($dataset->{'time'})) - $timezone) % 24;
 				
@@ -130,6 +133,7 @@ class weather_met extends weather
 					$this->data['forecast'][$i]['conditions'] = translate($forecastCondition, 'met.no');
 					$this->data['forecast'][$i]['icon'] = $this->icon($forecastCondition);
 					$this->data['forecast'][$i]['temp'] = round($maxtemp, 0).'&deg;C'.'/'.round($mintemp, 0).'&deg;C';
+					
 					$maxtemp = -100;
 					$mintemp = 100;
 					$dayready = 0;
@@ -200,7 +204,7 @@ class weather_met extends weather
 		$icon['lightsleetandthunder']		= 'cloud_17';
 		$icon['sleetandthunder'] 			= 'cloud_17';
 		$icon['heavysleetandthunder']		= 'cloud_17';
-
+		$icon['NA']							= 'na';
 		$ret = $icon[$name];
 
 		return $ret;
