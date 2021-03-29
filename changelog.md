@@ -42,10 +42,11 @@
 - config options selectable with flip switches where not stored properly in "device" tab (cookie mode) 
 - cache folders where deleted completely regardless of source (global / cookie)
 - met.no weather service showed no icon if started directly after midnight and had problems with chages to summer time
+- when leaving a page via the "back" button, widgets exit method and cancellation of plot data subscriptions didn't work.
+- conflicts between exit method and older versions of back-to-home functions 
 
 ### Known Bugs
-- when leaving a page via the "back" button, widgets exit method and cancellation of plot data subscriptions won't work.
-  (root cause documented in base.js line 1804)
+
 
 ## 3.0.1
 ### New / Changed Widgets
