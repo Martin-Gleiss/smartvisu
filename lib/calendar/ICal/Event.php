@@ -2,110 +2,126 @@
 
 namespace ICal;
 
-class Event extends ICal
+class Event
 {
+    // phpcs:disable Generic.Arrays.DisallowLongArraySyntax
+
     const HTML_TEMPLATE = '<p>%s: %s</p>';
 
     /**
-     * http://www.kanzaki.com/docs/ical/summary.html
+     * https://www.kanzaki.com/docs/ical/summary.html
      *
      * @var $summary
      */
     public $summary;
 
     /**
-     * http://www.kanzaki.com/docs/ical/dtstart.html
+     * https://www.kanzaki.com/docs/ical/dtstart.html
      *
      * @var $dtstart
      */
     public $dtstart;
 
     /**
-     * http://www.kanzaki.com/docs/ical/dtend.html
+     * https://www.kanzaki.com/docs/ical/dtend.html
      *
      * @var $dtend
      */
     public $dtend;
 
     /**
-     * http://www.kanzaki.com/docs/ical/duration.html
+     * https://www.kanzaki.com/docs/ical/duration.html
      *
      * @var $duration
      */
     public $duration;
 
     /**
-     * http://www.kanzaki.com/docs/ical/dtstamp.html
+     * https://www.kanzaki.com/docs/ical/dtstamp.html
      *
      * @var $dtstamp
      */
     public $dtstamp;
 
     /**
-     * http://www.kanzaki.com/docs/ical/uid.html
+     * When the event starts, represented as a timezone-adjusted string
+     *
+     * @var $dtstart_tz
+     */
+    public $dtstart_tz;
+
+    /**
+     * When the event ends, represented as a timezone-adjusted string
+     *
+     * @var $dtend_tz
+     */
+    public $dtend_tz;
+
+    /**
+     * https://www.kanzaki.com/docs/ical/uid.html
      *
      * @var $uid
      */
     public $uid;
 
     /**
-     * http://www.kanzaki.com/docs/ical/created.html
+     * https://www.kanzaki.com/docs/ical/created.html
      *
      * @var $created
      */
     public $created;
 
     /**
-     * http://www.kanzaki.com/docs/ical/lastModified.html
+     * https://www.kanzaki.com/docs/ical/lastModified.html
      *
      * @var $lastmodified
      */
     public $lastmodified;
 
     /**
-     * http://www.kanzaki.com/docs/ical/description.html
+     * https://www.kanzaki.com/docs/ical/description.html
      *
      * @var $description
      */
     public $description;
 
     /**
-     * http://www.kanzaki.com/docs/ical/location.html
+     * https://www.kanzaki.com/docs/ical/location.html
      *
      * @var $location
      */
     public $location;
 
     /**
-     * http://www.kanzaki.com/docs/ical/sequence.html
+     * https://www.kanzaki.com/docs/ical/sequence.html
      *
      * @var $sequence
      */
     public $sequence;
 
     /**
-     * http://www.kanzaki.com/docs/ical/status.html
+     * https://www.kanzaki.com/docs/ical/status.html
      *
      * @var $status
      */
     public $status;
 
     /**
-     * http://www.kanzaki.com/docs/ical/transp.html
+     * https://www.kanzaki.com/docs/ical/transp.html
      *
      * @var $transp
      */
     public $transp;
 
     /**
-     * http://www.kanzaki.com/docs/ical/organizer.html
+     * https://www.kanzaki.com/docs/ical/organizer.html
      *
      * @var $organizer
      */
     public $organizer;
 
     /**
-     * http://www.kanzaki.com/docs/ical/attendee.html
+     * https://www.kanzaki.com/docs/ical/attendee.html
      *
      * @var $attendee
      */
@@ -119,11 +135,9 @@ class Event extends ICal
      */
     public function __construct(array $data = array())
     {
-        if (!empty($data)) {
-            foreach ($data as $key => $value) {
-                $variable = self::snakeCase($key);
-                $this->{$variable} = self::prepareData($value);
-            }
+        foreach ($data as $key => $value) {
+            $variable = self::snakeCase($key);
+            $this->{$variable} = self::prepareData($value);
         }
     }
 
@@ -173,7 +187,9 @@ class Event extends ICal
             'ATTENDEE(S)'   => $this->attendee,
         );
 
-        $data   = array_filter($data); // Remove any blank values
+        // Remove any blank values
+        $data = array_filter($data);
+
         $output = '';
 
         foreach ($data as $key => $value) {
@@ -194,7 +210,7 @@ class Event extends ICal
     protected static function snakeCase($input, $glue = '_', $separator = '-')
     {
         $input = preg_split('/(?<=[a-z])(?=[A-Z])/x', $input);
-        $input = join($glue, $input);
+        $input = implode($glue, $input);
         $input = str_replace($separator, $glue, $input);
 
         return strtolower($input);

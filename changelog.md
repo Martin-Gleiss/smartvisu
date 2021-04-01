@@ -24,6 +24,7 @@
 
 ### Updated Libraries
 - Highcharts updated to v8.2
+- ICal ICS Parser updated to v2.2.2
 
 ### Deprecated
 - weather service yr.no (use met.no as replacement)
