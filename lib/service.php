@@ -44,10 +44,10 @@ class service
 		set_error_handler(
 			function($errno, $errstr, $errfile, $errline)
 			{
-				if ($this->debug == 1) 
+			$this->errorMessage = $errstr;
+			if ($this->debug == 1) 				
 				return false;	// hand over to standard error reporting
 			else
-				$this->errorMessage = $errstr;
 				return true;
 			}
 		,E_ALL);

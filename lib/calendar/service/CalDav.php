@@ -27,6 +27,7 @@ class calendar_caldav extends calendar
 	 */
 	private function get_caldav_data($url, $method, $xmlquery, $depth = 0)
 	{
+		$loadError = '';
 		$ctxopts = array('http' =>
 			array(
 				'method' => $method,
@@ -43,8 +44,13 @@ class calendar_caldav extends calendar
 		$caldavresponse = file_get_contents($url, false, $context);
 
 		if ($caldavresponse === false) {
-			$this->error('Calendar: CalDav', 'Read request to "'.$url.'" failed with message "'.$http_response_header[0].'"');
-			$this->debug(implode("\n", $http_response_header));
+			if (substr($this->errorMessage, 0, 17) == 'file_get_contents')
+				$loadError = substr(strrchr($this->errorMessage, ':'), 2);
+			elseif (!empty($http_response_header)) 
+				$loadError = $http_response_header[0];
+			$this->error('Calendar: CalDav', 'Read request to "'.$url.'" failed with message "'.$loadError.'"');
+			if (!empty($http_response_header))
+				$this->debug(implode("\n", $http_response_header));
 			echo $this->json();
 			exit;
 		}
