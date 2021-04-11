@@ -38,7 +38,8 @@ class service
 	 */
 	public function init($request)
 	{
-		$this->debug = ($request['debug'] == 1);
+		if (isset($request['debug']))
+			$this->debug =($request['debug'] == 1);
 		error_reporting(E_ALL);
 		
 		set_error_handler(

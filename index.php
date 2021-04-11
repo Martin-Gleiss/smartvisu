@@ -21,10 +21,10 @@ require_once 'lib/includes.php';
 $request = array_merge($_GET, $_POST);
 
 // override configured pages if a corresponding request parameter is passed
-$config_pages = ($request['pages'] != '') ? $request['pages'] : config_pages;
+$config_pages = (isset($request['pages']) && $request['pages'] != '') ? $request['pages'] : config_pages;
 
 // if page is not in $request use default index page defined in defaults.ini
-if ($request['page'] == '')
+if (!isset($request['page']) || $request['page'] == '')
 	$request['page'] = config_index;
 
 // Caching

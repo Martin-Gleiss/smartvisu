@@ -30,7 +30,7 @@ class config {
 	 */
 	public function get($source = 'all')
 	{
-		$config = $this->config_by_source[$source];
+		$config = (isset($this->config_by_source[$source]) ? $this->config_by_source[$source] : null);
 		// only read if source was not read before
 		if($config == null) {
 
@@ -70,7 +70,7 @@ class config {
 
 				// configuration per pages (config.ini in current pages folder)
 				case 'pages':
-					if ($_REQUEST['pages'] != '') // pages in request
+					if (isset($_REQUEST['pages']) && $_REQUEST['pages'] != '') // pages in request
 						$config_for_pages['pages'] = $_REQUEST['pages'];
 					else {
 						// configuration of pages in cookie
