@@ -66,7 +66,7 @@ class phone extends service
 					$ds['text'] = trans('phone', 'unknown');
 
 				// combine the infos, if type is present
-				if ($ds['type'] != '')
+				if (isset($ds['type']) && $ds['type'] != '')
 					$ds['text'] = $ds['name'].' ('.$ds['type'].')';
 
 				// dir == 0 missed
