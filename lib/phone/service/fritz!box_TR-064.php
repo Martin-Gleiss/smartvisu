@@ -133,41 +133,48 @@ class phone_fritzbox_TR064 extends phone
         $url = $this->call_list_url . '&max=' . $this->max_calls_to_fetch;
         $this->debug($url, "URL for call_list");
         // download xml file and put it to xml parser
-        $GetCallListXml = file_get_contents($url, false, stream_context_create(array('http://' => array('ssl' => $self->context_ssl))));
-        $simplexml      = simplexml_load_string($GetCallListXml);
-        $this->debug($GetCallListXml, "GetCallListXml");
-        /*
-        [Id] => 1767
-        [Type] => 1
-        [Caller] => 0175000000
-        [Called] => Amt ISDN 123456789
-        [Name] => Mustermann, Max
-        [Numbertype] => isdn
-        [Device] => Wohnzimmer
-        [Port] => 10
-        [Date] => 08.02.14 12:43
-        [Duration] => 0:32
-        */
-        // map fritz box xml values to the smartvisu standard        
-        foreach ($simplexml->xpath('//Call') as $call) {
-            // check if we got german date format and translate to ISO date 
-            //(smartvisu is using strtotime later on)
-            if (preg_match("/[0-3]\d\.[0-1]\d\.\d{2}\s([0-1][0-9]|[2][0-3]):([0-5][0-9])/", $call->Date)) {
-                $date       = DateTime::createFromFormat('d.m.y H:i', $call->Date);
-                $call->Date = $date->format('Y-m-d H:i');
-            }
-            // bulid data array for smartvisu
-            $this->data[] = array(
-                'pos' =>      (string) $call->Id,
-                'dir' =>      (string) ($call->Type == 1 ? 1 : ($call->Type == 2 ? 0 : -1)),
-                'date' =>     (string) $call->Date,
-                'number' =>   (string) $call->Caller,
-                'name' =>     (string) $call->Name,
-                'called' =>   (string) $call->Called,
-                'duration' => (string) $call->Duration
-            );
-            $call = '';
-        }
+		$loadError = '';
+        $GetCallListXml = file_get_contents($url, false, stream_context_create(array('http://' => array('ssl' => $this->context_ssl))));
+        if (substr($this->errorMessage, 0, 17) == 'file_get_contents') {
+			$loadError = substr(strrchr($this->errorMessage, ':'), 2);
+			$this->error('Phone: fritz!box_TR-064', 'Read request failed with message: '.$loadError);
+		}
+		else {
+			$simplexml      = simplexml_load_string($GetCallListXml);
+			$this->debug($GetCallListXml, "GetCallListXml");
+			/*
+			[Id] => 1767
+			[Type] => 1
+			[Caller] => 0175000000
+			[Called] => Amt ISDN 123456789
+			[Name] => Mustermann, Max
+			[Numbertype] => isdn
+			[Device] => Wohnzimmer
+			[Port] => 10
+			[Date] => 08.02.14 12:43
+			[Duration] => 0:32
+			*/
+			// map fritz box xml values to the smartvisu standard        
+			foreach ($simplexml->xpath('//Call') as $call) {
+				// check if we got german date format and translate to ISO date 
+				//(smartvisu is using strtotime later on)
+				if (preg_match("/[0-3]\d\.[0-1]\d\.\d{2}\s([0-1][0-9]|[2][0-3]):([0-5][0-9])/", $call->Date)) {
+					$date       = DateTime::createFromFormat('d.m.y H:i', $call->Date);
+					$call->Date = $date->format('Y-m-d H:i');
+				}
+				// bulid data array for smartvisu
+				$this->data[] = array(
+					'pos' =>      (string) $call->Id,
+					'dir' =>      (string) ($call->Type == 1 ? 1 : ($call->Type == 2 ? 0 : -1)),
+					'date' =>     (string) $call->Date,
+					'number' =>   (string) $call->Caller,
+					'name' =>     (string) $call->Name,
+					'called' =>   (string) $call->Called,
+					'duration' => (string) $call->Duration
+				);
+				$call = '';
+			}
+		}
     }
     public function run()
     {
