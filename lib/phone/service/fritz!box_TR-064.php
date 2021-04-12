@@ -133,7 +133,7 @@ class phone_fritzbox_TR064 extends phone
         $url = $this->call_list_url . '&max=' . $this->max_calls_to_fetch;
         $this->debug($url, "URL for call_list");
         // download xml file and put it to xml parser
-        $GetCallListXml = file_get_contents($url, false, stream_context_create(array('http://' => array('ssl' => $self->context_ssl))));
+        $GetCallListXml = file_get_contents($url, false, stream_context_create(array('http://' => array('ssl' => $this->context_ssl))));
         $simplexml      = simplexml_load_string($GetCallListXml);
         $this->debug($GetCallListXml, "GetCallListXml");
         /*
