@@ -77,4 +77,18 @@ if($GLOBALS['config']['proxy'] == true) {
  */
 date_default_timezone_set(config_timezone);
 
+/**
+* Set Handling of PHP WARNINGS
+* TO DO: make a concept for integrating php error messages into SV notifications
+*/
+set_error_handler(
+	function($errno, $errstr, $errfile, $errline)
+	{
+		if (defined('config_debug') && config_debug == 1)				
+			return false;	// hand over to standard error reporting
+		else
+			return true;	// ignore warnings
+	}
+	,E_WARNING);
+
 ?>
