@@ -53,7 +53,7 @@ class TemplateCheckerConfig {
 	 * Array containing known button types
 	 * @var array 
 	 */
-	const SmartvisuButtonTypes = array('micro', 'mini', 'midi', 'icon', 'text');
+	const SmartvisuButtonTypes = array('micro', 'mini', 'midi', 'icon', 'text', 'btn-micro', 'btn-mini', 'btn-midi');
 
 	/**
 	 * Array containing valid interval values for duration format
