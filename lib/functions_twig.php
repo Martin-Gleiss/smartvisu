@@ -229,7 +229,8 @@ function twig_docu($filenames = null)
 							// valid_values
 							// array_form must may
 						}
-						$rettmp['param'][trim($params[$param++])] = $p;
+						if (isset($params[$param])) 			//wvhn@v3.1: hidden parameter starting with "_" must be omitted
+							$rettmp['param'][trim($params[$param++])] = $p;
 					}
 					elseif ($tag[1] == 'see')
 					{

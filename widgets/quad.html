@@ -324,7 +324,7 @@ the first one is the base color for values below first threshold, so pass one co
  * @param {text='left'} position of the switch: left (default) or right
  * @param {text=}      activity indicator which is active until response (or a timeout is reached)
  * @param {text(horizontal,vertical,bottomup,semicircle,popup)=horizontal} 	if the dimmer slider should be implemented in the column directly.
- *						possible options: 'horizontal', 'vertical', 'bottomup', 'semicircle'. 'popup' or empty for popup.
+ 						possible options: 'horizontal', 'vertical', 'bottomup', 'semicircle'. 'popup' or empty for popup.
  * @param {item(dict)=}      a gad/item for UZSU
  * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {text=}     value type: '%' to recalculate 0-255 values to 0-100%  (e.g. for lights) or any formula
@@ -348,7 +348,7 @@ the first one is the base color for values below first threshold, so pass one co
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['locks', 'switch'], 'value_popup', 'stateengine', 'uzsu', 'plot']
  *
- * @see stateengine/stateengine
+ * @see stateengine#stateengine
  *
  */
 {% macro dimmer(id, linetext, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos, indicator, slider_orientation, item_uzsu, uzsu_attribs, formula, item_plot, icon_plot, item_auto, extpopup, locks, linetext_widget, place4, column_order) %}
