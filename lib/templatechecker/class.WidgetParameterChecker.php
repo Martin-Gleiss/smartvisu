@@ -69,10 +69,9 @@ class WidgetParameterChecker {
 		$string = str_replace("'", "", $string);
 		$string = str_replace('"', '', $string);
 		$p1 = explode($start, $string);
-
 		for($i=1; $i<count($p1); $i++){
 				$p2 = explode($end, $p1[$i]);
-				$p3 = explode(',', $p2[1]);
+				$p3 = (isset($p2[1])) ? explode(',', $p2[1]) : array();
 				$p3 = array_filter($p3, 'strlen');
 				if ($single == 'single'){
 					$p2_0 = explode(',', $p2[0]);
@@ -139,7 +138,7 @@ class WidgetParameterChecker {
 	private function run() {
 		$type = $this->getParamConfig('type', 'unknown');
 		if($type == 'unknown') {
-			$this->addWarning('WIDGET PARAM CHECK', 'Parameter type not defined. Check manually!', $value);
+			$this->addWarning('WIDGET PARAM CHECK', 'Parameter type not defined. Check manually!', null);
 			return;
 		}
 
@@ -216,6 +215,7 @@ class WidgetParameterChecker {
 	 */
 	private function getParameterValue() {
 		$value = $this->widget->getParam($this->paramIndex);
+
 		// parameter not given
 		if ($value == NULL || $value == '') {
 			if ($this->getParamConfig('optional', TRUE)) {
@@ -275,7 +275,7 @@ class WidgetParameterChecker {
 	}
 
 	private function checkParameterValidValues($value) {
-		return in_array($value, $this->paramConfig['valid_values'] ?: array());
+		return in_array($value, $this->paramConfig['valid_values'] ?? array());
 	}
 
 	/**
@@ -513,7 +513,7 @@ class WidgetParameterChecker {
 			return;
 
 
-		if ($this->paramConfig['valid_values']) {
+		if (isset($this->paramConfig['valid_values'])) {
 			if ($this->checkParameterValidValues($value)) {
 				if (Settings::SHOW_SUCCESS_TOO)
 					$this->addInfo('WIDGET TEXT PARAM CHECK', 'Value is valid', $value, array('Valid Values' => $this->paramConfig['valid_values']));
@@ -580,11 +580,11 @@ class WidgetParameterChecker {
 		}
 
 		$numVal = $value + 0;
-		if ($this->paramConfig['min'] && $numVal < $this->paramConfig['min'] + 0) {
+		if (isset($this->paramConfig['min']) && $numVal < $this->paramConfig['min'] + 0) {
 			$this->addError('WIDGET VALUE PARAM CHECK', 'Value less than allowed minimum value', $value, array('Minimum Value' => $this->paramConfig['min']));
 			return;
 		}
-		if ($this->paramConfig['max'] && $numVal > $this->paramConfig['max'] + 0) {
+		if (isset($this->paramConfig['max']) && $numVal > $this->paramConfig['max'] + 0) {
 			$this->addError('WIDGET VALUE PARAM CHECK', 'Value greater than allowed maximum value', $value, array('Maximum Value' => $this->paramConfig['max']));
 			return;
 		}

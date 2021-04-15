@@ -13,7 +13,7 @@ require_once '../../lib/includes.php';
 header('Content-Type: application/json');
 
 // just clear pagecache
-if($_GET['clear_cache']) {
+if(isset($_GET['clear_cache']) && $_GET['clear_cache']) {
 	$success = delTree(const_path.'temp/pagecache') || ! is_dir(const_path.'temp/pagecache');
 	if($success) {
 		$success = delTree(const_path.'temp/twigcache') || ! is_dir(const_path.'temp/pagecache');

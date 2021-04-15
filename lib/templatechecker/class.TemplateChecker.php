@@ -120,9 +120,9 @@ class TemplateChecker {
 			if (array_key_exists($error->code, $this->ignore_html_error_code)) {
 				$conditions = $this->ignore_html_error_code[$error->code];
 				$ignore = true;
-				if ($conditions['maxline'] && $error->line > $conditions['maxline'])
+				if (isset($conditions['maxline']) && $error->line > $conditions['maxline'])
 					$ignore = false;
-				if ($conditions['minline'] && $error->line < $conditions['minline'])
+				if (isset($conditions['minline']) && $error->line < $conditions['minline'])
 					$ignore = false;
 				if ($ignore)
 					continue;
@@ -254,7 +254,7 @@ class TemplateChecker {
 			if (array_key_exists('deprecated', $widgetConfig)) {
 				$messageData = $widget->getMessageData();
 				if(array_key_exists('replacement', $widgetConfig)) {
-					$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $widget->getParamArray() + array_map(function($element) { return "'" . $element['default'] . "'"; }, $paramConfigs)));
+					$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $widget->getParamArray() + array_map(function($element) { return isset($element['default']) ? "'" . $element['default']. "'" : null; }, $paramConfigs)));
 				}
 			$this->messages->addWarning('WIDGET DEPRECATION CHECK', 'Deprecated widget', $widget->getLineNumber(), $widget->getMacro(), $messageData);
 			}

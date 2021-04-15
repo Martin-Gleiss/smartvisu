@@ -71,7 +71,7 @@ class Widget {
 	 * @return mixed, NULL if no parameter with give index is available
 	 */
 	public function getParam($index) {
-		return $this->paramCount >= $index ? $this->paramArray[$index] : NULL;
+		return ($this->paramCount >= $index && isset($this->paramArray[$index]))? $this->paramArray[$index] : NULL;
 	}
 
 	/**

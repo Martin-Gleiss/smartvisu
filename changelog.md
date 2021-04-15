@@ -12,6 +12,7 @@
 
 ### Other New Features
 - php8 compatibility (mainly solved by new management of warnings and 'nullsafe' programming)
+- parameter ' debug = "1" ' in config.ini enables error reporting for php warnings
 - new public functions in weather.php plus new language category [weather] to centrally determine verbal wind direction and strength
 - weather services use humidity and air pressure as additional data (has been max. one out of both)
 - demoseries in offline driver have been synchronized to the minute in order to enable stacking of demoseries
