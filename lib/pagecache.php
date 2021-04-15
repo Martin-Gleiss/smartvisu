@@ -98,7 +98,7 @@ class Pagecache
 			  if (!is_dir($dir))
 			    mkdir($dir, 0775, true);
 
-				$this->tmpFile = tempnam($dir, basename($file));
+				$this->tmpFile = tempnam($dir, basename($this->file));
 			}
 
 		  file_put_contents($this->tmpFile, $content, FILE_APPEND);
