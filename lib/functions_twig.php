@@ -423,7 +423,7 @@ function twig_items () {
 //
 function twig_asset_exists($file) {
 	$fileExists = 0;
-	$requestpages = ($_REQUEST['pages'] != '') ? $_REQUEST['pages'] : config_pages;
+	$requestpages = (isset($_REQUEST['pages']) && $_REQUEST['pages'] != '') ? $_REQUEST['pages'] : config_pages;
 	if(strpos($file, '/') === false) {
 		if(is_file(const_path . 'widgets/'. $file)) $fileExists = 1;
 		if(is_file(const_path . 'dropins/'. $file)) $fileExists = 1;

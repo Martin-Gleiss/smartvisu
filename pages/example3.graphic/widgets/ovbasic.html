@@ -33,7 +33,7 @@
 */
 {% macro color(id, item_r_h, item_g_s, item_b_l_v, min, max, steps, colors, style, colormodel, info, left, top, type, hide ) %}
 	{% set style = style|default('disc') %}
-	<div id="{{ uid(page, id) }}-overview" {% if info %}title="{{ info }}"{% endif %}
+	<div id="{{ uid(page, id, overview) }}" {% if info %}title="{{ info }}"{% endif %}
 		{% if hide == 1 %}class="hide-mobile"{% endif %} 
 		style="position: absolute; top: {{ top }}; left: {{ left }}; ">
 			
@@ -62,7 +62,7 @@
 		
 	{% else %}
 		
-		<a{% if not id is empty %} id="{{ uid(page, id) }}-overview"{% endif %} data-widget="basic.color"
+		<a{% if not id is empty %} id="{{ uid(page, id, overview) }}"{% endif %} data-widget="basic.color"
 			data-style="{{ style }}" data-colormodel="{{ colormodel|default('rgb') }}"
 			data-item="{{ item_r_h }}, {{ item_g_s }}, {{ item_b_l_v }}"
 			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colorspace == 'hsv' ? [360,100,100] : 255)) }}"
@@ -165,9 +165,9 @@
  *
  * @param {id=} unique id for this widget (optional)
  * @param {item[?]} one or more item(s). Multiple items in array-form: [item1, item2]
- * @param {format=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
+ * @param {format(text,html,script)=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
    Use 'text' to display result as unformatted string, 'html' to render it as unescaped html or 'script' to just execute as JavaScript w/o displaying anything.
- * @ add {format(text,html,script)=}
+ 
  * @param {formula=VAR} any valid JavaScript expression with following variables and aggregate functions (optional, default: VAR)
    - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
    - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
@@ -187,13 +187,13 @@
  * @info inspired by Martin Gleiß and Raik Alber
 */
 {% macro print(id, item, format, formula, threshold, color, info, left, top, id_popup, hide) %}
-	{%import _self as ovbasic %}
+	{% import _self as ovbasic %}
 	{% import "basic.html" as basic %}
-	<a id="{{ uid(page, id) }}-overview" {% if info %}title="{{ info }}"{% endif %}
-	   {% if hide %}class="hide-mobile"{% endif %} 
-	   {% if id_popup %}data-rel="popup" href="#{{ uid(page, id_popup) }}" {% endif %}
+	<a id="{{ uid(page, id, overview) }}" {% if not info is empty %}title="{{ info }}"{% endif %}
+	   {% if not hide is empty %}class="hide-mobile"{% endif %} 
+	   {% if not id_popup is empty %}data-rel="popup" href="#{{ uid(page, id_popup) }}" {% endif %}
 	   style="display: block; position: absolute; top: {{ top }}; left: {{ left }}; text-align: center; ">
-	  	<span{% if not id is empty %} id="{{ uid(page, id)-overview }}"{% endif %} data-item="{{ implode(item) }}" class="text" data-widget="basic.print"
+	  	<span{% if not id is empty %} id="{{ uid(page, id, overview) }}"{% endif %} data-item="{{ implode(item) }}" class="text" data-widget="basic.print"
 		data-format="{{ format }}" data-formula="{{ formula|default('VAR') }}"
 		data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">-.-</span>
 	</a>
@@ -235,7 +235,7 @@
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
 	{% set color = color|default(['','icon1']) %}
 
-	<div id="{{ uid(page, id) }}-overview" {% if info %}title="{{ info }}"{% endif %} style="position: absolute; top: {{ top }}; left: {{ left }}; ">
+	<div id="{{ uid(page, id, overview) }}" {% if info %}title="{{ info }}"{% endif %} style="position: absolute; top: {{ top }}; left: {{ left }}; ">
 
 		<a style="display:none"></a> /** Work around for bug in jQuery Mobile, see https://knx-user-forum.de/forum/supportforen/smartvisu/31967-neues-widget-nur-aktive-lampen-anzeigen-ausschalten-ermöglichen?p=1145001#post1145001 */
 

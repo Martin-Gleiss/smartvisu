@@ -33,7 +33,7 @@ class driver_offline
 	public function __construct($request)
 	{
 		$this->item = explode(",", $request['item']);
-		$this->val = $request['val'];
+		$this->val = (isset($request['val'])) ? $request['val'] : '';
 		$this->filename = const_path.'temp/offline_'.config_pages.'.var';
 	}
 
@@ -113,7 +113,7 @@ class driver_offline
 		$data = $this->fileread();
 
 		// write if a value is given
-		if ($this->val != '' or $this->writeall)
+		if ((isset($this->val) && $this->val != '') or $this->writeall)
 		{
 			foreach ($this->item as $item)
 			{
@@ -125,7 +125,7 @@ class driver_offline
 
 		foreach ($this->item as $item)
 		{
-			$ret[$item] = $data[$item];
+			$ret[$item] = isset($data[$item]) ? $data[$item] : null;
 		}
 
 		return json_encode($ret);
