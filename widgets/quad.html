@@ -84,7 +84,11 @@
 {% macro symbol(id, item, txt, pic, val, formula, color, href, rel, linetext, columntext, item_plot, icon_plot, place3, place4, column_order) %}
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
-    {% set id = id is empty ? item : id %}
+    {% if item is iterable %}
+      {% set id = id is empty ? item[0]|replace('.', '_') : id %}
+    {% else %}
+      {% set id = id is empty ? item|replace('.', '_') : id %}
+    {% endif %}
     <li data-icon="false" class="row_symbol">
     <div class="quad_table sorting row_symbol" id="row_{{uid(page, id)|replace('.', '_')}}_sorting">
         {% if linetext %}
@@ -176,7 +180,11 @@ the first one is the base color for values below first threshold, so pass one co
 {% macro print(id, item, format, formula, threshold, color, classname, place2, linetext, columntext, item_plot, icon_plot, place3, place4, column_order) %}
     {% import "basic.html" as basic %}
     {% import "plot.html" as plot %}
-    {% set id = id is empty ? item : id %}
+    {% if item is iterable %}
+      {% set id = id is empty ? item[0]|replace('.', '_') : id %}
+    {% else %}
+      {% set id = id is empty ? item|replace('.', '_') : id %}
+    {% endif %}
     <li data-icon="false" class="row_print">
     <div class="quad_table sorting row_print" id="row_{{uid(page, id)|replace('.', '_')}}_sorting">
         <div class="text">{{ linetext|e }}</div>
@@ -2931,7 +2939,11 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 */
 {% macro input(id, item, type, min, max, step, place1, place2, linetext, columntext, column_order) %}
     {% import "basic.html" as basic %}
-    {% set id = id is empty ? item|replace('.', '_') : id %}
+    {% if item is iterable %}
+      {% set id = id is empty ? item[0]|replace('.', '_') : id %}
+    {% else %}
+      {% set id = id is empty ? item|replace('.', '_') : id %}
+    {% endif %}
     <li data-icon="false" class="row_input">
     <div class="quad_table sorting row_input" id="row_{{uid(page, id)}}_sorting">
         <div class="text">{{ linetext|e }} </div>
