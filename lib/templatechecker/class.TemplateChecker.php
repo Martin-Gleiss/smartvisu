@@ -62,7 +62,15 @@ class TemplateChecker {
 	public function __construct($fileName, MessageCollection $messages, $checkItems) {
 		$this->messages = $messages;
 		$this->fileName = $fileName;
-		$this->widgets = array_merge( twig_docu(), OldWidgets::getRemoved());
+		$fileFolder = strstr(pathinfo($fileName)["dirname"], 'pages');
+		$widgetFolder = ((strrpos($fileFolder, '/') == 5 ) ? $fileFolder : substr($fileFolder, 0, strrpos($fileFolder, '/'))).'/widgets';
+		if(twig_isdir($widgetFolder, '(.*.\.html)')) {
+			$widgetFiles = twig_dir($widgetFolder, '(.*.\.html)');
+			$this->widgets = array_merge( twig_docu(), twig_docu($widgetFiles), OldWidgets::getRemoved());
+		}
+		else {
+			$this->widgets = array_merge( twig_docu(), OldWidgets::getRemoved());
+		}
 		$this->items = new Items(pathinfo($fileName)["dirname"]); //new
 		if ($checkItems == "false")
 			{ $this->items->setState(FALSE);}
