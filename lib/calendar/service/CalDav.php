@@ -68,26 +68,26 @@ class calendar_caldav extends calendar
 	private function get_calendar_urls($davbaseurl, $calnames = array('')) {
 		// extract server root url
 		$urlparsed = parse_url($davbaseurl);
-		$calserver = (isset($urlparsed['scheme']) ? $urlparsed['scheme'] : 'https') . '://' . $urlparsed['host'] . (isset($urlparsed['port']) ? ':'.$urlparsed['port'] : '');
+		$calserver = (isset($urlparsed['scheme']) ? $urlparsed['scheme'] : 'https') . '://' . (isset($urlparsed['host']) ? $urlparsed['host'] : '') . (isset($urlparsed['port']) ? ':'.$urlparsed['port'] : '');
 
-		// Get user pricipal
+		// Get user principal
 		$xmlquery = '<D:propfind xmlns:D="DAV:"><D:prop><D:current-user-principal/></D:prop></D:propfind>';
 		$xml = $this->get_caldav_data($davbaseurl, "PROPFIND", $xmlquery);
-		$principle_url = $xml->response->propstat->prop->{'current-user-principal'}->href;
-		$this->debug((string)$principle_url, 'principle_url');
+		$principal_url = (!$xml ? "" : $xml->response->propstat->prop->{'current-user-principal'}->href);
+		$this->debug((string)$principal_url, 'principal_url');
 		// use configured url if no current-user-principal returned
-		if($principle_url == "")
-			$principle_url = $davbaseurl;
-		else if(strpos($principle_url, '://') === false)
-			$principle_url = $calserver . $principle_url;
+		if($principal_url == "")
+			$principal_url = $davbaseurl;
+		else if(strpos($principal_url, '://') === false)
+			$principal_url = $calserver . $principal_url;
 
-		$urlparsed = parse_url($principle_url);
-		$calserver = $urlparsed['scheme'] . '://' . $urlparsed['host'] . (isset($urlparsed['port']) ? ':'.$urlparsed['port'] : '');
+		$urlparsed = parse_url($principal_url);
+		$calserver = (isset($urlparsed['scheme']) ? $urlparsed['scheme'] : 'https') . '://' . (isset($urlparsed['host']) ? $urlparsed['host'] : '') . (isset($urlparsed['port']) ? ':'.$urlparsed['port'] : '');
 
 		// Get home url of user's calendars
 		$xmlquery = '<D:propfind xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop><C:calendar-home-set/></D:prop></D:propfind>';
-		$xml = $this->get_caldav_data($principle_url, "PROPFIND", $xmlquery);
-		$calendar_home_url = $xml->response->propstat->prop->children('urn:ietf:params:xml:ns:caldav')->{'calendar-home-set'}->children('DAV:')->href;
+		$xml = $this->get_caldav_data($principal_url, "PROPFIND", $xmlquery);
+		$calendar_home_url = (!$xml ? "" : $xml->response->propstat->prop->children('urn:ietf:params:xml:ns:caldav')->{'calendar-home-set'}->children('DAV:')->href);
 		$this->debug((string)$calendar_home_url, 'calendar_home_url');
 		// use configured url if no calendar-home-set returned
 		if($calendar_home_url == "")
@@ -96,7 +96,7 @@ class calendar_caldav extends calendar
 			$calendar_home_url = $calserver . $calendar_home_url;
 
 		$urlparsed = parse_url($calendar_home_url);
-		$calserver = $urlparsed['scheme'] . '://' . $urlparsed['host'] . (isset($urlparsed['port']) ? ':'.$urlparsed['port'] : '');
+		$calserver = (isset($urlparsed['scheme']) ? $urlparsed['scheme'] : 'https') . '://' . (isset($urlparsed['host']) ? $urlparsed['host'] : '') . (isset($urlparsed['port']) ? ':'.$urlparsed['port'] : '');
 		// Get calendars
 		// '?' masked by '\x3f' in first line to prevent confusing of syntax highlighters
 		$xmlquery = <<<XMLQUERY
@@ -115,33 +115,39 @@ XMLQUERY;
 		$xml = $this->get_caldav_data($calendar_home_url, 'PROPFIND', $xmlquery, 1);
 
 		$calurls = array();
-		foreach($xml->response as $response) {
-			// check if response is a calendar
-			if(!isset($response->propstat->prop->resourcetype->children('urn:ietf:params:xml:ns:caldav')->calendar))
-				continue;
-			/*
-			// check if response may have VEVENT components
-			//response sample: c:supported-calendar-component-set><c:comp name="VEVENT" /><c:comp name="VTODO" /></c:supported-calendar-component-set>
-			if(!isset($response->propstat[0]->prop[0]->children('urn:ietf:params:xml:ns:caldav')->{'supported-calendar-component-set'})
-				continue;
-			*/
-			$displayname = strtolower($response->propstat->prop->displayname);
-			$this->debug((string)$response->href, 'calendar_url of \''.$displayname.'\'');
-			// add only requested (by URL parameter or configuration) calendars or all, if none requested
-			if(in_array($displayname, $calnames) || $calnames === array('')) {
-				$description = $response->propstat->prop->children('urn:ietf:params:xml:ns:caldav')->{'calendar-description'};
-				$color = $response->propstat->prop->children('http://apple.com/ns/ical/')->{'calendar-color'};
-				$calendar_url = $response->href;
-				if(strpos($calendar_url, '://') === false)
-					$calendar_url = $calserver . $calendar_url;
-				$calurls[$calendar_url] = array(
-					'calendarname' => $displayname,
-					'calendarcolor' => $color != false ? (string)$color : null,
-					'calendardesc' => $description != false ? (string)$description : null
-				);
+		if ($xml != false){ 
+			foreach($xml->response as $response) {
+				// check if response is a calendar
+				if(!isset($response->propstat->prop->resourcetype->children('urn:ietf:params:xml:ns:caldav')->calendar))
+					continue;
+
+				/*
+				// check if response may have VEVENT components
+				//response sample: c:supported-calendar-component-set><c:comp name="VEVENT" /><c:comp name="VTODO" /></c:supported-calendar-component-set>
+				if(!isset($response->propstat[0]->prop[0]->children('urn:ietf:params:xml:ns:caldav')->{'supported-calendar-component-set'})
+					continue;
+				*/
+				$displayname = strtolower($response->propstat->prop->displayname);
+				$this->debug((string)$response->href, 'calendar_url of \''.$displayname.'\'');
+				// add only requested (by URL parameter or configuration) calendars or all, if none requested
+				if(in_array($displayname, $calnames) || $calnames === array('')) {
+					$description = $response->propstat->prop->children('urn:ietf:params:xml:ns:caldav')->{'calendar-description'};
+					$color = $response->propstat->prop->children('http://apple.com/ns/ical/')->{'calendar-color'};
+					$calendar_url = $response->href;
+					if(strpos($calendar_url, '://') === false)
+						$calendar_url = $calserver . $calendar_url;
+					$calurls[$calendar_url] = array(
+						'calendarname' => $displayname,
+						'calendarcolor' => $color != false ? (string)$color : null,
+						'calendardesc' => $description != false ? (string)$description : null
+					);
+				}
 			}
 		}
-
+		if (!$xml || empty($calurls)) {
+			$calError = $this->errorMessage.'<br><br>Calendar URLs could not be identified in remote answer.<br><br>Try using ICS calendar service';
+			$this->error('Calendar: CalDav', 'Read request failed with message'.$calError );
+		}
 		return $calurls;
 	}
 
