@@ -28,7 +28,7 @@ function twig_bit($val)
 
 function twig_substr($val, $start, $end = null)
 {
-	if ($end)
+	if (isset($end))
 		$ret = substr($val, $start, $end);
 	else
 		$ret = substr($val, $start);
@@ -328,10 +328,11 @@ function twig_lang($subset, $key, $subkey = null)
 	if (!$lang)
 		$lang = get_lang();
 
-	if($subkey == null)
+	if(!isset($subkey)) 
 		return $lang[$subset][$key];
-	else
-		return $lang[$subset][$key][$subkey];
+	else 
+		if (isset($lang[$subset][$key][$subkey]))
+			return $lang[$subset][$key][$subkey]; 
 }
 
 /**
