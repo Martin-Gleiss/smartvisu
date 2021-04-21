@@ -1258,7 +1258,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
 
     // hier wir die aktuelle Seite danach durchsucht, wo das Popup ist und im folgenden das Popup initialisiert, geöffnet und die schliessen
     // Funktion daran gebunden. Diese entfernt wieder das Popup aus dem DOM Baum nach dem Schliessen mit remove
-    uzsuPopup.popup('open');//.css({ position: 'fixed', top: '30px' });
+    uzsuPopup.popup('open'); //.css({ position: 'fixed', top: '30px' });
   }
 
 });
@@ -1369,6 +1369,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
     // draw the plot
     var chart = this.element.highcharts({
+	  chart: { styledMode: true },
       title: { text: this.options.headline },
       legend: false,
       series: [
@@ -1497,12 +1498,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       },
       plotOptions: {
         series: {
-          draggableX: this.options.editable,
-          dragPrecisionX: timeStep,
-          draggableY: this.options.editable,
-          dragPrecisionY: step,
-          dragMinY: min,
-          dragMaxY: max,
+			dragDrop : {
+				draggableX: this.options.editable,
+				dragPrecisionX: timeStep,
+				draggableY: this.options.editable,
+				dragPrecisionY: step,
+				dragMinY: min,
+				dragMaxY: max
+		  },
           cursor: this.options.editable ? 'move' : null,
           marker: { enabled: true },
           stickyTracking: false,

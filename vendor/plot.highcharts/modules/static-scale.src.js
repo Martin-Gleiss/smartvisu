@@ -1,9 +1,9 @@
 /**
- * @license Highcharts Gantt JS v8.2.2 (2020-10-22)
+ * @license Highcharts Gantt JS v9.0.1 (2021-02-15)
  *
  * StaticScale
  *
- * (c) 2016-2019 Torstein Honsi, Lars A. V. Cabrera
+ * (c) 2016-2021 Torstein Honsi, Lars A. V. Cabrera
  *
  * License: www.highcharts.com/license
  */
@@ -31,7 +31,7 @@
     _registerModule(_modules, 'Extensions/StaticScale.js', [_modules['Core/Axis/Axis.js'], _modules['Core/Chart/Chart.js'], _modules['Core/Utilities.js']], function (Axis, Chart, U) {
         /* *
          *
-         *  (c) 2016-2020 Torstein Honsi, Lars Cabrera
+         *  (c) 2016-2021 Torstein Honsi, Lars Cabrera
          *
          *  License: www.highcharts.com/license
          *
