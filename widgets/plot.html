@@ -35,13 +35,14 @@
 * @param {text(solid-half,solid-cshape,solid-circle,speedometer,scale,vumeter)=solid-half} set mode 'solid-half', 'solid-cshape', 'solid-circle', 'speedometer', 'scale', 'vumeter' (optional, default: 'solid-half')
 * @param {value[?]=} stop(s) for the sections in percent e.g. 50. More sections in array form: [30,60] (optional)
 * @param {color[?]=} color(s) for the sections e.g. '#f00' for red. More sections in array form: ['#f00','#fff'] (optional)
+* @param {text=}  actually unused (puts additional label inside speedometer )
 *
 * @author ramann, Stefan Widmer
 */
-{% macro gauge(id, item, min, max, unit, label, mode, stop, color) %}
+{% macro gauge(id, item, min, max, unit, label, mode, stop, color, axis) %}
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.gauge" data-mode="{{ mode|default('solid-half') }}" data-item="{{ implode(item) }}"
-		data-label="{{ label }}" data-stop="{{ implode(stop) }}" data-color="{{ implode(color) }}" data-min="{{ min|default(0) }}" data-max="{{ max|default(255) }}" data-unit="{{ unit }}"  data-axis="{{ lang('plot.gauge', unit) }}"
+		data-label="{{ label }}" data-stop="{{ implode(stop) }}" data-color="{{ implode(color) }}" data-min="{{ min|default(0) }}" data-max="{{ max|default(255) }}" data-unit="{{ unit }}"  data-axis="{{ implode(axis) }}"
 		class="gauge"></div>
 
 {% endmacro %}
@@ -72,8 +73,8 @@
 * Plots a chart of time series data
 *
 * @param {id=} unique id for this widget (optional)
-* @param {unchecked[?]} series of item(s); multiple items in array form: [ item1 , item2 ]
-* @param {text(avg,sum,min,max,minmax,minmaxavg,raw)[?]=} the aggregation mode (optional, default 'avg')
+* @param {item[?](bool,num)} series of item(s); multiple items in array form: [ item1 , item2 ]
+* @param {text[?](avg,sum,min,max,minmax,minmaxavg,raw)=avg} the aggregation mode (optional, default 'avg')
 	May be a single mode or an array with separate mode per item.
 	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
 * @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format)
@@ -96,7 +97,7 @@
 * @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
 * @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
 * @param {unchecked[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
-* @param {text(normal,percent)='normal' } uniform stacking of all stacked series selected in 'exposure' parameter: 'normal', 'percent' (optional, default=normal)
+* @param {text(normal,percent)=normal} uniform stacking of all stacked series selected in 'exposure' parameter: 'normal', 'percent' (optional, default=normal)
 * @param {text[]=} assign stacked series to different stacks, e.g. '0', '1, '2' or ''. Sequence must be same as item sequence (optional, default='')
 * @param {value=0} control for the export of plot data: 0 = none, 1 = images, 2 = images and data (e.g.csv) (optional)
 *

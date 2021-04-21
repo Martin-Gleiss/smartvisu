@@ -48,6 +48,7 @@
 - when leaving a page via the "back" button, widgets exit method and cancellation of plot data subscriptions didn't work.
 - conflicts between exit method and older versions of back-to-home functions 
 - templatechecker did not consider widgets in the pages subfolder
+- plot.gauge threw warnings due to faulty "data-axis" parameter. 
 
 ### Known Bugs
 

@@ -27,10 +27,13 @@ class enertex_iprouter extends service
 	 */
 	public function init($request)
 	{
-		$this->debug = ($request['debug'] == 1);
-
-		$this->server = (trim($request['server']) != "" ? trim($request['server']) : config_appliance_iprouter_server);
-		$this->pass = (trim($request['pass']) != "" ? trim($request['pass']) : config_appliance_iprouter_pass);
+		$this->debug = (isset($request['debug']) && $request['debug'] == 1);
+		
+		$defaultServer = defined('config_appliance_iprouter_server') ? config_appliance_iprouter_server : null;
+		$defaultPass =  defined('config_appliance_iprouter_pass') ? config_appliance_iprouter_pass : null;
+		
+		$this->server = (isset($request['server']) && trim($request['server']) != "") ? trim($request['server']) : $defaultServer;
+		$this->pass = (isset($request['pass']) && trim($request['pass']) != "") ? trim($request['pass']) : $defaultPass;
 	}
 	
 	/**
