@@ -15,12 +15,12 @@
 	<h5>Example</h5>
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-					{{ plot.gauge('', 'bath.plot.temp', 10, 30, '°', 'Temperatur', 'solid-half', [30,50,70,90], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
-					{{ plot.gauge('', 'bath.plot.temp', 10, 30, '°', 'Temperatur', 'solid-cshape', [30,50,70,90], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
-					{{ plot.gauge('', 'bath.plot.temp', 10, 30, '°', 'Temperatur', 'solid-circle', [30,50,70,90], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
+					{{ plot.gauge('', 'bath.plot.temp', 10, 30, 'temp', 'Temperature', 'solid-half', [30,50,70,90], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
+					{{ plot.gauge('', 'bath.plot.temp', 10, 30, 'temp', 'Temperature', 'solid-cshape', [30,50,70,90], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
+					{{ plot.gauge('', 'bath.plot.temp', 10, 30, 'temp', 'Temperature', 'solid-circle', [30,50,70,90], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
 
-					{{ plot.gauge('', 'bath.plot.temp', 10, 30, '°', '', 'speedometer', [40,60,80,100], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
-					{{ plot.gauge('', 'bath.plot.temp', 10, 30, '°', '', 'scale', [40,60,80,100], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
+					{{ plot.gauge('', 'bath.plot.temp', 10, 30, 'temp', 'Temperature', 'speedometer', [40,60,80,100], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
+					{{ plot.gauge('', 'bath.plot.temp', 10, 30, 'temp', 'Temperature', 'scale', [40,60,80,100], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
 					{{ plot.gauge('', 'bath.plot.temp', 10, 30, '', '', 'vumeter', [70,100], ['','#C02316']) }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
@@ -34,9 +34,9 @@
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false">
 					<h3>solid</h3>
-					{{ plot.gauge('', 'bath.plot.temp', 10, 30, '°', 'Temperature', 'solid-half', [30,50,70,90], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
-					{{ plot.gauge('', 'bath.plot.temp', 10, 30, '°', 'Temperature', 'solid-cshape', [30,50,70,90], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
-					{{ plot.gauge('', 'bath.plot.temp', 10, 30, '°', 'Temperature', 'solid-circle', [30,50,70,90], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
+					{{ plot.gauge('', 'bath.plot.temp', 10, 30, 'temp', 'Temperature', 'solid-half', [30,50,70,90], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
+					{{ plot.gauge('', 'bath.plot.temp', 10, 30, 'temp', 'Temperature', 'solid-cshape', [30,50,70,90], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
+					{{ plot.gauge('', 'bath.plot.temp', 10, 30, 'temp', 'Temperature', 'solid-circle', [30,50,70,90], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
 				</div>
 			</div>
 		</div>
@@ -45,8 +45,8 @@
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false">
 					<h3>needle</h3>
-					{{ plot.gauge('', 'bath.plot.temp', 10, 30, '°', '', 'speedometer', [40,60,80,100], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
-					{{ plot.gauge('', 'bath.plot.temp', 10, 30, '°', '', 'scale', [40,60,80,100], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
+					{{ plot.gauge('', 'bath.plot.temp', 10, 30, 'temp', 'Temperature', 'speedometer', [40,60,80,100], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
+					{{ plot.gauge('', 'bath.plot.temp', 10, 30, 'temp', 'Temperature', 'scale', [40,60,80,100], ['#0DE0EC','#55BF3B','#DDDF0D','#DF5353']) }}
 					{{ plot.gauge('', 'bath.plot.temp', 10, 30, '', '', 'vumeter', [70,100], ['','#C02316']) }}
 				</div>
 			</div>
