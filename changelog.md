@@ -25,7 +25,7 @@
 - error notification is cleared if service is running again (weather and phone services)
 
 ### Updated Libraries
-- Highcharts updated to v8.2
+- Highcharts updated to v9.0.1
 - ICal ICS Parser updated to v2.2.2
 
 ### Deprecated

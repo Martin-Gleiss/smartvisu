@@ -1,75 +1,14 @@
 /**
- * @license Highcharts JS v8.2.2 (2020-10-22)
+ * @license Highcharts JS v9.0.1 (2021-02-15)
  *
  * Boost module
  *
- * (c) 2010-2019 Highsoft AS
+ * (c) 2010-2021 Highsoft AS
  * Author: Torstein Honsi
  *
  * License: www.highcharts.com/license
  *
- * This is a Highcharts module that draws long data series on a canvas in order
- * to increase performance of the initial load time and tooltip responsiveness.
- *
- * Compatible with WebGL compatible browsers (not IE < 11).
- *
- * If this module is taken in as part of the core
- * - All the loading logic should be merged with core. Update styles in the
- *   core.
- * - Most of the method wraps should probably be added directly in parent
- *   methods.
- *
- * Notes for boost mode
- * - Area lines are not drawn
- * - Lines are not drawn on scatter charts
- * - Zones and negativeColor don't work
- * - Dash styles are not rendered on lines.
- * - Columns are always one pixel wide. Don't set the threshold too low.
- * - Disable animations
- * - Marker shapes are not supported: markers will always be circles, except
- *   heatmap series, where markers are always rectangles.
- *
- * Optimizing tips for users
- * - Set extremes (min, max) explicitly on the axes in order for Highcharts to
- *   avoid computing extremes.
- * - Set enableMouseTracking to false on the series to improve total rendering
- *      time.
- * - The default threshold is set based on one series. If you have multiple,
- *   dense series, the combined number of points drawn gets higher, and you may
- *   want to set the threshold lower in order to use optimizations.
- * - If drawing large scatter charts, it's beneficial to set the marker radius
- *   to a value less than 1. This is to add additional spacing to make the chart
- *   more readable.
- * - If the value increments on both the X and Y axis aren't small, consider
- *   setting useGPUTranslations to true on the boost settings object. If you do
- *   this and the increments are small (e.g. datetime axis with small time
- *   increments) it may cause rendering issues due to floating point rounding
- *   errors, so your millage may vary.
- *
- * Settings
- *    There are two ways of setting the boost threshold:
- *    - Per series: boost based on number of points in individual series
- *    - Per chart: boost based on the number of series
- *
- *  To set the series boost threshold, set seriesBoostThreshold on the chart
- *  object.
- *  To set the series-specific threshold, set boostThreshold on the series
- *  object.
- *
- *  In addition, the following can be set in the boost object:
- *  {
- *      //Wether or not to use alpha blending
- *      useAlpha: boolean - default: true
- *      //Set to true to perform translations on the GPU.
- *      //Much faster, but may cause rendering issues
- *      //when using values far from 0 due to floating point
- *      //rounding issues
- *      useGPUTranslations: boolean - default: false
- *      //Use pre-allocated buffers, much faster,
- *      //but may cause rendering issues with some data sets
- *      usePreallocated: boolean - default: false
- *  }
- */
+ * */
 'use strict';
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
@@ -94,7 +33,7 @@
     _registerModule(_modules, 'Extensions/Boost/Boostables.js', [], function () {
         /* *
          *
-         *  Copyright (c) 2019-2020 Highsoft AS
+         *  Copyright (c) 2019-2021 Highsoft AS
          *
          *  Boost module: stripped-down renderer for higher performance
          *
@@ -122,7 +61,7 @@
     _registerModule(_modules, 'Extensions/Boost/BoostableMap.js', [_modules['Extensions/Boost/Boostables.js']], function (boostables) {
         /* *
          *
-         *  Copyright (c) 2019-2020 Highsoft AS
+         *  Copyright (c) 2019-2021 Highsoft AS
          *
          *  Boost module: stripped-down renderer for higher performance
          *
@@ -142,7 +81,7 @@
     _registerModule(_modules, 'Extensions/Boost/WGLShader.js', [_modules['Core/Utilities.js']], function (U) {
         /* *
          *
-         *  Copyright (c) 2019-2020 Highsoft AS
+         *  Copyright (c) 2019-2021 Highsoft AS
          *
          *  Boost module: stripped-down renderer for higher performance
          *
@@ -617,7 +556,7 @@
     _registerModule(_modules, 'Extensions/Boost/WGLVBuffer.js', [], function () {
         /* *
          *
-         *  Copyright (c) 2019-2020 Highsoft AS
+         *  Copyright (c) 2019-2021 Highsoft AS
          *
          *  Boost module: stripped-down renderer for higher performance
          *
@@ -776,7 +715,7 @@
     _registerModule(_modules, 'Extensions/Boost/WGLRenderer.js', [_modules['Core/Color/Color.js'], _modules['Extensions/Boost/WGLShader.js'], _modules['Extensions/Boost/WGLVBuffer.js'], _modules['Core/Globals.js'], _modules['Core/Utilities.js']], function (Color, GLShader, GLVertexBuffer, H, U) {
         /* *
          *
-         *  Copyright (c) 2019-2020 Highsoft AS
+         *  Copyright (c) 2019-2021 Highsoft AS
          *
          *  Boost module: stripped-down renderer for higher performance
          *
@@ -812,7 +751,8 @@
             //  // Shader
             var shader = false, 
                 // Vertex buffers - keyed on shader attribute name
-                vbuffer = false, 
+                vbuffer = false,
+                vlen = 0, 
                 // Opengl context
                 gl = false, 
                 // Width of our viewport in pixels
@@ -1033,6 +973,7 @@
                     pushColor(color);
                     if (settings.usePreallocated) {
                         vbuffer.push(x, y, checkTreshold ? 1 : 0, pointSize || 1);
+                        vlen += 4;
                     }
                     else {
                         data.push(x);
@@ -1046,7 +987,7 @@
                  */
                 function closeSegment() {
                     if (inst.segments.length) {
-                        inst.segments[inst.segments.length - 1].to = data.length;
+                        inst.segments[inst.segments.length - 1].to = data.length || vlen;
                     }
                 }
                 /**
@@ -1059,12 +1000,12 @@
                     // When adding a segment, if one exists from before, it should
                     // set the previous segment's end
                     if (inst.segments.length &&
-                        inst.segments[inst.segments.length - 1].from === data.length) {
+                        inst.segments[inst.segments.length - 1].from === (data.length || vlen)) {
                         return;
                     }
                     closeSegment();
                     inst.segments.push({
-                        from: data.length
+                        from: data.length || vlen
                     });
                 }
                 /**
@@ -1338,27 +1279,6 @@
                             // x = plotWidth;
                         }
                     }
-                    if (drawAsBar) {
-                        // maxVal = y;
-                        minVal = low;
-                        if (low === false || typeof low === 'undefined') {
-                            if (y < 0) {
-                                minVal = y;
-                            }
-                            else {
-                                minVal = 0;
-                            }
-                        }
-                        if (!isRange && !isStacked) {
-                            minVal = Math.max(threshold === null ? yMin : threshold, // #5268
-                            yMin); // #8731
-                        }
-                        if (!settings.useGPUTranslations) {
-                            minVal = yAxis.toPixels(minVal, true);
-                        }
-                        // Need to add an extra point here
-                        vertice(x, minVal, 0, 0, pcolor);
-                    }
                     // No markers on out of bounds things.
                     // Out of bound things are shown if and only if the next
                     // or previous point is inside the rect.
@@ -1388,6 +1308,27 @@
                             ++skipped;
                         }
                         continue;
+                    }
+                    if (drawAsBar) {
+                        // maxVal = y;
+                        minVal = low;
+                        if (low === false || typeof low === 'undefined') {
+                            if (y < 0) {
+                                minVal = y;
+                            }
+                            else {
+                                minVal = 0;
+                            }
+                        }
+                        if (!isRange && !isStacked) {
+                            minVal = Math.max(threshold === null ? yMin : threshold, // #5268
+                            yMin); // #8731
+                        }
+                        if (!settings.useGPUTranslations) {
+                            minVal = yAxis.toPixels(minVal, true);
+                        }
+                        // Need to add an extra point here
+                        vertice(x, minVal, 0, 0, pcolor);
                     }
                     // Do step line if enabled.
                     // Draws an additional point at the old Y at the new X.
@@ -1626,7 +1567,9 @@
                     }
                     else {
                         fillColor =
-                            (s.series.pointAttribs && s.series.pointAttribs().fill) ||
+                            (s.drawMode === 'points' && // #14260
+                                s.series.pointAttribs &&
+                                s.series.pointAttribs().fill) ||
                                 s.series.color;
                         if (options.colorByPoint) {
                             fillColor = s.series.chart.options.colors[si];
@@ -1950,7 +1893,7 @@
     _registerModule(_modules, 'Extensions/Boost/BoostAttach.js', [_modules['Core/Chart/Chart.js'], _modules['Extensions/Boost/WGLRenderer.js'], _modules['Core/Globals.js'], _modules['Core/Utilities.js']], function (Chart, GLRenderer, H, U) {
         /* *
          *
-         *  Copyright (c) 2019-2020 Highsoft AS
+         *  Copyright (c) 2019-2021 Highsoft AS
          *
          *  Boost module: stripped-down renderer for higher performance
          *
@@ -1961,7 +1904,7 @@
          * */
         var doc = H.doc;
         var error = U.error;
-        var mainCanvas = doc.createElement('canvas');
+        var mainCanvas;
         /**
          * Create a canvas + context and attach it to the target
          *
@@ -1991,6 +1934,9 @@
             // As such, we force the Image fallback for now, but leaving the
             // actual Canvas path in-place in case this changes in the future.
             foSupported = false;
+            if (!mainCanvas) {
+                mainCanvas = doc.createElement('canvas');
+            }
             if (!target.renderTarget) {
                 target.canvas = mainCanvas;
                 // Fall back to image tag if foreignObject isn't supported,
@@ -2095,7 +2041,7 @@
     _registerModule(_modules, 'Extensions/Boost/BoostUtils.js', [_modules['Core/Globals.js'], _modules['Extensions/Boost/BoostableMap.js'], _modules['Extensions/Boost/BoostAttach.js'], _modules['Core/Utilities.js']], function (H, boostableMap, createAndAttachRenderer, U) {
         /* *
          *
-         *  Copyright (c) 2019-2020 Highsoft AS
+         *  Copyright (c) 2019-2021 Highsoft AS
          *
          *  Boost module: stripped-down renderer for higher performance
          *
@@ -2358,10 +2304,10 @@
 
         return funs;
     });
-    _registerModule(_modules, 'Extensions/Boost/BoostInit.js', [_modules['Core/Chart/Chart.js'], _modules['Core/Globals.js'], _modules['Core/Utilities.js'], _modules['Extensions/Boost/BoostUtils.js'], _modules['Extensions/Boost/BoostAttach.js']], function (Chart, H, U, butils, createAndAttachRenderer) {
+    _registerModule(_modules, 'Extensions/Boost/BoostInit.js', [_modules['Core/Chart/Chart.js'], _modules['Core/Globals.js'], _modules['Core/Series/Series.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js'], _modules['Extensions/Boost/BoostUtils.js'], _modules['Extensions/Boost/BoostAttach.js']], function (Chart, H, Series, SeriesRegistry, U, butils, createAndAttachRenderer) {
         /* *
          *
-         *  Copyright (c) 2019-2020 Highsoft AS
+         *  Copyright (c) 2019-2021 Highsoft AS
          *
          *  Boost module: stripped-down renderer for higher performance
          *
@@ -2370,14 +2316,13 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
+        var noop = H.noop;
+        var seriesTypes = SeriesRegistry.seriesTypes;
         var addEvent = U.addEvent,
             extend = U.extend,
             fireEvent = U.fireEvent,
             wrap = U.wrap;
-        var Series = H.Series,
-            seriesTypes = H.seriesTypes,
-            noop = function () { },
-            eachAsync = butils.eachAsync,
+        var eachAsync = butils.eachAsync,
             pointDrawHandler = butils.pointDrawHandler,
             allocateIfNotSeriesBoosting = butils.allocateIfNotSeriesBoosting,
             renderIfNotSeriesBoosting = butils.renderIfNotSeriesBoosting,
@@ -2612,6 +2557,7 @@
                 fill: true,
                 sampling: true
             });
+            Chart.prototype.propsRequireUpdateSeries.push('boost');
             // Take care of the canvas blitting
             Chart.prototype.callbacks.push(function (chart) {
                 /**
@@ -2665,7 +2611,7 @@
 
         return init;
     });
-    _registerModule(_modules, 'Extensions/BoostCanvas.js', [_modules['Core/Chart/Chart.js'], _modules['Core/Color/Color.js'], _modules['Core/Globals.js'], _modules['Series/LineSeries.js'], _modules['Core/Series/Series.js'], _modules['Core/Utilities.js']], function (Chart, Color, H, LineSeries, Series, U) {
+    _registerModule(_modules, 'Extensions/BoostCanvas.js', [_modules['Core/Chart/Chart.js'], _modules['Core/Color/Color.js'], _modules['Core/Globals.js'], _modules['Core/Color/Palette.js'], _modules['Core/Series/Series.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js']], function (Chart, Color, H, palette, Series, SeriesRegistry, U) {
         /* *
          *
          *  License: www.highcharts.com/license
@@ -2683,6 +2629,7 @@
         var color = Color.parse;
         var doc = H.doc,
             noop = H.noop;
+        var seriesTypes = SeriesRegistry.seriesTypes;
         var addEvent = U.addEvent,
             extend = U.extend,
             fireEvent = U.fireEvent,
@@ -2690,8 +2637,7 @@
             merge = U.merge,
             pick = U.pick,
             wrap = U.wrap;
-        var seriesTypes = Series.seriesTypes,
-            CHUNK_SIZE = 50000,
+        var CHUNK_SIZE = 50000,
             destroyLoadingDiv;
         /* eslint-disable no-invalid-this, valid-jsdoc */
         /**
@@ -2745,7 +2691,7 @@
                     }
                 });
             }
-            extend(LineSeries.prototype, {
+            extend(Series.prototype, {
                 /**
                  * Create a hidden canvas to draw the graph on. The contents is later
                  * copied over to an SVG image element.
@@ -2987,7 +2933,7 @@
                     if (rawData.length > 99999) {
                         chart.options.loading = merge(loadingOptions, {
                             labelStyle: {
-                                backgroundColor: color('#ffffff').setOpacity(0.75).get(),
+                                backgroundColor: color(palette.backgroundColor).setOpacity(0.75).get(),
                                 padding: '1em',
                                 borderRadius: '0.5em'
                             },
@@ -3214,10 +3160,10 @@
 
         return initCanvasBoost;
     });
-    _registerModule(_modules, 'Extensions/Boost/BoostOverrides.js', [_modules['Core/Chart/Chart.js'], _modules['Core/Globals.js'], _modules['Core/Series/Point.js'], _modules['Core/Utilities.js'], _modules['Extensions/Boost/BoostUtils.js'], _modules['Extensions/Boost/Boostables.js'], _modules['Extensions/Boost/BoostableMap.js']], function (Chart, H, Point, U, butils, boostable, boostableMap) {
+    _registerModule(_modules, 'Extensions/Boost/BoostOverrides.js', [_modules['Core/Chart/Chart.js'], _modules['Core/Series/Point.js'], _modules['Core/Series/Series.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js'], _modules['Extensions/Boost/BoostUtils.js'], _modules['Extensions/Boost/Boostables.js'], _modules['Extensions/Boost/BoostableMap.js']], function (Chart, Point, Series, SeriesRegistry, U, butils, boostable, boostableMap) {
         /* *
          *
-         *  Copyright (c) 2019-2020 Highsoft AS
+         *  Copyright (c) 2019-2021 Highsoft AS
          *
          *  Boost module: stripped-down renderer for higher performance
          *
@@ -3226,6 +3172,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
+        var seriesTypes = SeriesRegistry.seriesTypes;
         var addEvent = U.addEvent,
             error = U.error,
             getOptions = U.getOptions,
@@ -3235,8 +3182,6 @@
             wrap = U.wrap;
         var boostEnabled = butils.boostEnabled,
             shouldForceChartSeriesBoosting = butils.shouldForceChartSeriesBoosting,
-            Series = H.Series,
-            seriesTypes = H.seriesTypes,
             plotOptions = getOptions().plotOptions;
         /**
          * Returns true if the chart is in series boost mode.
@@ -3277,10 +3222,15 @@
                     height: this.plotHeight
                 };
             if (target === this) {
-                this.yAxis.forEach(function (yAxis) {
-                    clipBox.y = Math.min(yAxis.pos, clipBox.y);
-                    clipBox.height = Math.max(yAxis.pos - this.plotTop + yAxis.len, clipBox.height);
-                }, this);
+                var verticalAxes = this.inverted ? this.xAxis : this.yAxis; // #14444
+                    if (verticalAxes.length <= 1) {
+                        clipBox.y = Math.min(verticalAxes[0].pos,
+                    clipBox.y);
+                    clipBox.height = verticalAxes[0].pos - this.plotTop + verticalAxes[0].len;
+                }
+                else {
+                    clipBox.height = this.plotHeight;
+                }
             }
             return clipBox;
         };
@@ -3579,6 +3529,7 @@
          * @function Highcharts.Series#destroyGraphics
          */
         Series.prototype.destroyGraphics = function () {
+            var _this = this;
             var series = this,
                 points = this.points,
                 point,
@@ -3596,6 +3547,15 @@
                     series[prop] = series[prop].destroy();
                 }
             });
+            if (this.getZonesGraphs) {
+                var props = this.getZonesGraphs([['graph', 'highcharts-graph']]);
+                props.forEach(function (prop) {
+                    var zoneGraph = _this[prop[0]];
+                    if (zoneGraph) {
+                        _this[prop[0]] = zoneGraph.destroy();
+                    }
+                });
+            }
         };
         // Set default options
         boostable.forEach(function (type) {
@@ -3610,7 +3570,7 @@
     _registerModule(_modules, 'Extensions/Boost/NamedColors.js', [_modules['Core/Color/Color.js']], function (Color) {
         /* *
          *
-         *  Copyright (c) 2019-2020 Highsoft AS
+         *  Copyright (c) 2019-2021 Highsoft AS
          *
          *  Boost module: stripped-down renderer for higher performance
          *
@@ -3773,7 +3733,7 @@
     _registerModule(_modules, 'Extensions/Boost/Boost.js', [_modules['Extensions/Boost/BoostUtils.js'], _modules['Extensions/Boost/BoostInit.js'], _modules['Extensions/BoostCanvas.js'], _modules['Core/Utilities.js']], function (butils, init, initCanvasBoost, U) {
         /* *
          *
-         *  Copyright (c) 2019-2020 Highsoft AS
+         *  Copyright (c) 2019-2021 Highsoft AS
          *
          *  Boost module: stripped-down renderer for higher performance
          *
@@ -3802,51 +3762,6 @@
     });
     _registerModule(_modules, 'masters/modules/boost.src.js', [], function () {
 
-
-        /* *
-         * Options for the Boost module. The Boost module allows certain series types
-         * to be rendered by WebGL instead of the default SVG. This allows hundreds of
-         * thousands of data points to be rendered in milliseconds. In addition to the
-         * WebGL rendering it saves time by skipping processing and inspection of the
-         * data wherever possible. This introduces some limitations to what features are
-         * available in boost mode. See [the docs](
-         * https://www.highcharts.com/docs/advanced-chart-features/boost-module) for
-         * details.
-         *
-         * In addition to the global `boost` option, each series has a
-         * [boostThreshold](#plotOptions.series.boostThreshold) that defines when the
-         * boost should kick in.
-         *
-         * Requires the `modules/boost.js` module.
-         *
-         * @sample {highstock} highcharts/boost/line-series-heavy-stock
-         *         Stock chart
-         * @sample {highstock} highcharts/boost/line-series-heavy-dynamic
-         *         Dynamic stock chart
-         * @sample highcharts/boost/line
-         *         Line chart
-         * @sample highcharts/boost/line-series-heavy
-         *         Line chart with hundreds of series
-         * @sample highcharts/boost/scatter
-         *         Scatter chart
-         * @sample highcharts/boost/area
-         *         Area chart
-         * @sample highcharts/boost/arearange
-         *         Area range chart
-         * @sample highcharts/boost/column
-         *         Column chart
-         * @sample highcharts/boost/columnrange
-         *         Column range chart
-         * @sample highcharts/boost/bubble
-         *         Bubble chart
-         * @sample highcharts/boost/heatmap
-         *         Heat map
-         * @sample highcharts/boost/treemap
-         *         Tree map
-         *
-         * @product   highcharts highstock
-         * @apioption boost
-         * */
 
 
     });
