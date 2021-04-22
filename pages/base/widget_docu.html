@@ -1,0 +1,40 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiss
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "full.html" %}
+
+{% block content %}
+	
+	<h1>Dokumentation der Widgets</h1>
+
+	{% set widgetlist = docu() %}
+	{% for widget in widgetlist %}
+		{% set paramlist = widget.param %}
+		<h2>{{ widget.command }} </h2>
+		<table border="1" width="100%">
+			<tr style="font-weight: bold">
+				<td width= "7%">Parameter</td><td width = "40%">Description</td><td width="10%">Type</td><td width = 20%>Valid Values</td><td width= "7%">Array</td><td width= "7%">Optional</td><td width= "7%">Default</td>
+			</td>
+			<tr>
+			{% for param in paramlist %}
+				<td>{{paramlist|keys[loop.index0]}}</td>
+				<td>{{ param.desc}} </td>
+				<td>{{ param.type}} </td>
+				<td>{{ implode(param.valid_values)}} </td>
+				<td>{{ param.array_form}} </td>
+				<td>{{ param.optional}} </td>
+				<td>{{ param.default}} </td>
+			</tr>
+			{% endfor %}
+		</table>
+	{% endfor %}
+
+/**	raw data: {{ dump (widgetlist) }}  */
+
+{% endblock %}

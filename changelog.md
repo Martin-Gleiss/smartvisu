@@ -12,17 +12,19 @@
 
 ### Other New Features
 - php8 compatibility (mainly solved by new management of warnings and 'nullsafe' programming)
-- parameter ' debug = "1" ' in config.ini enables error reporting for php warnings
+- parameter [debug = "1"] in config.ini enables error reporting for php warnings
 - new public functions in weather.php plus new language category [weather] to centrally determine verbal wind direction and strength
 - weather services use humidity and air pressure as additional data (has been max. one out of both)
 - demoseries in offline driver have been synchronized to the minute in order to enable stacking of demoseries
 - new function Number.prototype.decimals() to determine count of decimals of a number
+- new page ./pages/base/widget_docu.html displays parameter info for all widgets (tool to optimize custom widgets docstrings)
 
 ### Improvements
 - error reporting for weather services and CalDav / iCloud calendars shows answers from remote
 - error reporting for phone service improved
 - error notification avoids duplicate messages (weather and phone services)
 - error notification is cleared if service is running again (weather and phone services)
+- complete review of all parameter definitions in order to improve results in template checker
 
 ### Updated Libraries
 - Highcharts updated to v9.0.1
