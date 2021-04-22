@@ -432,8 +432,6 @@ $.widget("sv.plot_period", $.sv.widget, {
 
             $.extend(true, chartOptions, this.options.chartOptions);
 			
-			console.log(chartOptions);
-
             Highcharts.chart(this.element[0], chartOptions);
         }
 
