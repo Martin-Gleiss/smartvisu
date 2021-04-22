@@ -56,7 +56,7 @@
 *        Sorted array in format: [[outside1, heating_temp], [outside2, heating_temp] ...]
 * @param {item(num)} an item for the current outside temperature
 * @param {item(num)} an item for the current heating flow temperature
-* @param {unchecked[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+* @param {text[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
 */
 {% macro heatingcurve(id, item_datapoints, item_current_outsidetemp, item_current_flowtemp, chartoptions) %}
 
@@ -96,7 +96,7 @@
 * @param {color[?]=} y-axes color; multiples in array form (optional)
 * @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
 * @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
-* @param {unchecked[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+* @param {text[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
 * @param {text(normal,percent)=normal} uniform stacking of all stacked series selected in 'exposure' parameter: 'normal', 'percent' (optional, default=normal)
 * @param {text[]=} assign stacked series to different stacks, e.g. '0', '1, '2' or ''. Sequence must be same as item sequence (optional, default='')
 * @param {value=0} control for the export of plot data: 0 = none, 1 = images, 2 = images and data (e.g.csv) (optional)

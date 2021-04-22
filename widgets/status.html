@@ -133,15 +133,15 @@ Caution: If this is set, the notification gets not shown until the item has sent
 * @param {text=} standard template to be used (success, error, warning, info) (optional, default = '')
 * @param {item(bool, num, str, list)=} an item to send a value on button-press (optional, default = '')
 * @param {text=} button text (optional, default = '') button will show only if text is specified
-* @param {text=} value to be sent when the button is pressed (optional, default = '0')
-* @param {bool=} an option to close the toast manually (true, false) (optional, default = 'true')
-* @param {text=} time in miliseconds until toast will hide (optional, default = '5000'). 'false' makes it sticky
-* @param {text=} fade-in effect to show the toast (plain, fade, slide) (optional, default = 'slide')
-* @param {bool=} option to display a bargraph loader (true, false) (optional, default = 'true')
-* @param {color=} font color, not to be defined if a template is used (optional, default = '#9EC600')
-* @param {color=} background color, not to be defined if a template is used (optional, default = 'gray')
-* @param {value=} number of stacked toasts. 'false' to show one stack at a time / count showing the number of stacked toasts (optional, default = '5')
-* @param {text=} Alignment of text in the toast i.e. left, right, center (optional, default = 'left')
+* @param {text=0} value to be sent when the button is pressed (optional, default = '0')
+* @param {text(false,true)=true} an option to close the toast manually (true, false) (optional, default = 'true')
+* @param {text=5000} time in miliseconds until toast will hide (optional, default = '5000'). 'false' makes it sticky
+* @param {text(plain,fade,slide)=slide} fade-in effect to show the toast (plain, fade, slide) (optional, default = 'slide')
+* @param {text(false,true)=true} option to display a bargraph loader (true, false) (optional, default = 'true')
+* @param {color=#9EC600} font color, not to be defined if a template is used (optional, default = '')
+* @param {color=gray} background color, not to be defined if a template is used (optional, default = 'gray')
+* @param {text=5} number of stacked toasts. 'false' to show one stack at a time / count showing the number of stacked toasts (optional, default = '5')
+* @param {text(left,center,right)=left} Alignment of text in the toast i.e. left, right, center (optional, default = 'left')
 * @param {text=} Toast position on display (optional, bottom-left, bottom-right, top-left, top-right....) (optional, default = 'bottom-left')
 * 
 * @author bonze 
