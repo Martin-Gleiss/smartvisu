@@ -5,7 +5,7 @@
 - basic.symbol provides button design as additional options btn-micro, btn-mini or btn-midi with additional text on icon
 - basic.slider provides a new silent mode. Live mode (default) sends changed values constantly, silent mode only if change is completed.
 - plot.period provides stacked plots for line, area and column
-- plot / data exporting as experimental feature in plot.period (still needs some styling for the menu)
+- image / data exporting in plot.period 
 - status.collapse supports a list of multiple values for control of collapsing / hiding
 - device.rtrslider supports offset temperature for MDT RTR and supplements (like device.rtr)
 - basic.offset rounds result to the count of decimals given by "step" attribute

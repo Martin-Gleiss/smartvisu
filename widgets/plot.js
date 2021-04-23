@@ -190,7 +190,8 @@ $.widget("sv.plot_period", $.sv.widget, {
         ytype: '',
         chartOptions: null,
 		stacking: '',
-		stacks: ''
+		stacks: '',
+		exportmenu: 0
     },
 
     allowPartialUpdate: true,
@@ -228,12 +229,16 @@ $.widget("sv.plot_period", $.sv.widget, {
             ycolor = String(this.options.ycolor).explode();
         }
         var ytype = String(this.options.ytype).explode();
+		var stacking = [];
+		if (this.options.stacking != undefined) {
+			stacking = String(this.options.stacking).explode();
+		}
 		var stacks = [];
-		if (this.options.stacks) {
+		if (this.options.stacks != undefined) {
 			stacks = String(this.options.stacks).explode();
 		}
-
-        var styles = [];
+		var exportmenu = (this.options.exportmenu >= 1);
+		var styles = [];
 
         // series
         var series = [];
@@ -241,6 +246,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 
         for (var i = 0; i < seriesCount; i++) {
             var mode = modes[i];
+			var stack = (stacks.length-1 >= i ? stacks[i]: stacks[stacks.length-1]);
+			var stackingMode = (stacking[stack] ? stacking[stack] : stacking[0]);
             if(mode == 'minmax' || mode == 'minmaxavg') {
                 series.push({
                     type: 'columnrange',
@@ -261,8 +268,8 @@ $.widget("sv.plot_period", $.sv.widget, {
                     yAxis: (assign[i] ? assign[i] - 1 : 0),
                     showInNavigator: true,
                     colorIndex: mode == 'minmaxavg' ? i*2+1 : null,
-					stacking: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? this.options.stacking : null),
-					stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stacks[i] : null)
+					stacking: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stackingMode : null),
+					stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stack : null)
                 });
             }
         }
@@ -364,6 +371,18 @@ $.widget("sv.plot_period", $.sv.widget, {
                     return '<span class="highcharts-color-' + this.colorIndex + '">\u25CF</span> ' + this.series.name + ': <b>' + value + '</b><br/>';
                 }
             },
+		    navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: exportmenu
+				}
+			},
+			exporting: {
+				buttons: {
+					contextButton: {
+						menuItems: (this.options.exportmenu == 2 ? ['downloadPNG', 'downloadPDF', 'downloadCSV', 'downloadXLS'] : ['downloadPNG', 'downloadPDF']) // TODO: add 'viewFullscreen' when styling is improved
+					}
+				}
+			},
             rangeSelector: { buttons: rangeSelectorButtons },
             plotOptions: {
                 columnrange: {
