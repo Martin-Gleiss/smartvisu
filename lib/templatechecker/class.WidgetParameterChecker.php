@@ -426,8 +426,9 @@ class WidgetParameterChecker {
 		if (!$this->checkParameterNotEmpty($value))
 			return;
 
-		if (in_array($value, TemplateCheckerConfig::SmartvisuButtonTypes))
-			return;
+		// moved to function twig_docu @v3.1
+		//if (in_array($value, TemplateCheckerConfig::SmartvisuButtonTypes))
+		//	return;
 
 		// additional widget-specific valid values
 		if ($this->checkParameterValidValues($value))

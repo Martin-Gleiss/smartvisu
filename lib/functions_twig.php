@@ -8,6 +8,7 @@
  * -----------------------------------------------------------------------------
  */
 
+const SmartvisuButtonTypes = array('micro', 'mini', 'midi', 'icon');
 
 // -----------------------------------------------------------------------------
 // Filters for Twig
@@ -221,7 +222,13 @@ function twig_docu($filenames = null)
 								}
 								else
 									$p['valid_values'] = explode(',', substr($tag[5],1,-1));
+								
+								if ($p['type'] == 'type')
+									$p['valid_values'] = array_merge(SmartvisuButtonTypes, $p['valid_values']);
 							}
+							elseif ($p['type'] == 'type')
+								$p['valid_values'] = SmartvisuButtonTypes;
+							
 							$p['optional'] = $tag[6] != '';
 							if($p['optional'] && $tag[6] != '=')
 								$p['default'] = substr($tag[6],1);
