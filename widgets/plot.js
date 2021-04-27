@@ -57,6 +57,11 @@ $.widget("sv.plot_comfortchart", $.sv.widget, {
                 verticalAlign: 'top',
                 floating: true,
             },
+			navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: false
+				}
+			},
             plotOptions: {
                 area: { enableMouseTracking: false },
             },
@@ -125,7 +130,12 @@ $.widget("sv.plot_heatingcurve", $.sv.widget, {
                 floating: true,
                 y: 70
             },
-            plotOptions: {
+            navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: false
+				}
+			},
+			plotOptions: {
                 area: { enableMouseTracking: false },
             },
             tooltip: {
@@ -619,7 +629,13 @@ $.widget("sv.plot_gauge_", $.sv.widget, {
                     formatter: function () { return (((this.value * range) / 100) + diff); }
                 }
             },
-
+			
+			navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: false
+				}
+			},
+			
             plotOptions: {
                 solidgauge: {
                     dataLabels: {
@@ -1238,7 +1254,12 @@ $.widget("sv.plot_pie", $.sv.widget, {
                     return this.point.name + ' <b>' + this.y.transUnit('%') + '</b>';
                 },
             },
-            plotOptions: {
+            navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: false
+				}
+			},
+			plotOptions: {
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
@@ -1381,7 +1402,12 @@ $.widget("sv.plot_rtr", $.sv.widget, {
                 max: new Date() - new Date().duration(this.options.tmax),
             },
             yAxis: {min: this.options.min, max: this.options.max, title: {text: axis[1]}},
-            tooltip: {
+            navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: false
+				}
+			},
+			tooltip: {
                 pointFormatter: function () {
                     return this.series.name + ' <b>' + this.y.transUnit('temp') + '</b><br>';
                 },
@@ -1483,7 +1509,12 @@ $.widget("sv.plot_temprose", $.sv.widget, {
                     return this.x + ' - ' + this.series.name + ': <b>' + this.y.transUnit(unit) + '</b>';
                 }
             },
-            legend: {
+            navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: false
+				}
+			},
+			legend: {
                 x: 10,
                 layout: 'vertical',
                 align: 'center',
