@@ -1,6 +1,7 @@
 ## 3.0.a
 ### New / Changed Widgets
 - new weather service API met.no for deprecated yr.no
+- new widget status.activelist to display json messages as active listview
 - device.uzsuicon can be displayed as button with additional "type" parameter (micro, mini or midi)
 - basic.symbol provides button design as additional options btn-micro, btn-mini or btn-midi with additional text on icon
 - basic.slider provides a new silent mode. Live mode (default) sends changed values constantly, silent mode only if change is completed.

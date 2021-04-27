@@ -158,3 +158,28 @@ Caution: If this is set, the notification gets not shown until the item has sent
 	
 	</span>
 {% endmacro %}
+
+
+/**
+* A widget to display messages received in json format
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item(dict))} an item contaning messages in json Format 
+* @param {text=title} a parameter name for the title (optional, default ='title')
+* @param {text=subtitle} a parameter name for the subtitle (optional, default ='subtitle')
+* @param {text=content} a parameter name for the message (optional, default ='content')
+* @param {text=level} a parameter name for the severity level (optional, default ='level') - corresponds to an icon and color to be defined in the language file
+*
+* @author Wolfram v. Hülsen based on a widget from Bonze
+**/
+
+{% macro activelist(id, item_messages, title, subtitle, content, level) %}
+	 
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.activelist" data-item="{{ item_messages }}"
+		data-title="{{ title }}" data-subtitle="{{ subtitle }}" data-content="{{ content }}" data-level="{{ level }}">
+		<ul data-role="listview" class="ui-listview activelist-container" style="margin-top: 0px;margin-bottom: 0em; margin-right:0px;">
+		</ul>
+	</div>
+
+{% endmacro %}
+
