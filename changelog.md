@@ -9,6 +9,7 @@
 - image / data exporting in plot.period 
 - status.collapse supports a list of multiple values for control of collapsing / hiding
 - device.rtrslider supports offset temperature for MDT RTR and supplements (like device.rtr)
+- multimedia.slideshow now refreshes available images in a defineable time
 - basic.offset rounds result to the count of decimals given by "step" attribute
 
 ### Other New Features
