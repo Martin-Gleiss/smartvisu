@@ -8,6 +8,7 @@ $.widget("sv.multimedia_image", $.sv.widget, {
 
   },
     _ticker: null,
+	
     _init: function() {
       if (this.element.attr('data-repeat'))
       {
@@ -15,6 +16,7 @@ $.widget("sv.multimedia_image", $.sv.widget, {
       }
       this.element.attr('stopTimer', 'false');
     },
+	
     _update:
       function(response) {
       var widget_url = this.element.attr('data-url');
@@ -28,10 +30,10 @@ $.widget("sv.multimedia_image", $.sv.widget, {
       {
         var img_base = resp + ((resp.indexOf('?') == -1) ? '?' : '&');
       }
-			img = img_base + '_=' + new Date().getTime();
-      refreshing = this.element.attr('data-repeat') ? this.element.attr('data-repeat') : 'refresh by item';
-			// console.log("Response: " + response + " Update Multimedia Image: " + img + ", repeat: " + refreshing);
-			this.element.attr('src', img);
+		img = img_base + '_=' + new Date().getTime();
+		refreshing = this.element.attr('data-repeat') ? this.element.attr('data-repeat') : 'refresh by item';
+		// console.log("Response: " + response + " Update Multimedia Image: " + img + ", repeat: " + refreshing);
+		this.element.attr('src', img);
       if (this.element.attr('data-repeat') && ! img.startsWith('_='))
       {
         var delay = Number(this.element.attr('data-repeat-milliseconds'));
@@ -41,7 +43,8 @@ $.widget("sv.multimedia_image", $.sv.widget, {
       }
       this.element.attr('stopTimer', 'false');
     },
-    _exit: function(){
+    
+	_exit: function(){
         clearTimeout(this._ticker);
         console.log("Clear multimediaimage timer " + this._ticker);
         this._ticker = null;
@@ -79,7 +82,10 @@ $.widget("sv.multimedia_slideshow", $.sv.widget, {
 	initSelector: '[data-widget="multimedia.slideshow"]',
 
 	options: {
+		directory: ''
 	},
+	
+	_currentErrorNotification: 0,
 
 	_create: function() {
 		this._super();
@@ -104,6 +110,55 @@ $.widget("sv.multimedia_slideshow", $.sv.widget, {
 	},
 
 	_repeat: function() {
+		var element = this.element;
+		var repeatMinutes = (new Date().duration(this.options.repeat) - 0) / 60000;
+		var filter = '(.%2B?).(jpg|png|svg)'; //need to escape the '+' sign with %2B
+		var currentSet = [];
+		var dataByFile = [];
+		var setChanged = false;
+		
+		$.ajax({
+			dataType: "json",
+			url: 'lib/getdir.php' + '?directory=' + this.options.directory + '&filter=' + filter,
+			context: this,
+			success: function(data) {
+				dataKeys = Object.keys(data);
+				var i;
+				for (i = 0; i < dataKeys.length; i++) {
+					dataByFile[i] = data[dataKeys[i]]['path'];
+				}
+				// check for deleted files and remove them from html
+				i = 0;
+				$.each(element.find('img'), function(index){
+					currentSet[i] = $(this).attr('src'); 
+					if (!dataByFile.includes(currentSet[i]))
+					$(this).remove();
+					setChanged = true; 	
+					i++;
+				});
+				// check for new files and append them to html
+				for (i = 0; i < dataKeys.length; i++) {
+					if (!currentSet.includes(data[dataKeys[i]]['path'])){
+						var newSlide = '<img src="'+data[dataKeys[i]]['path']+'" style="display: block;" title="'+data[dataKeys[i]]['label']+'" alt="'+data[dataKeys[i]]['label']+'" />';
+						element.cycle('add', newSlide);
+					}
+				}
+				
+				if (setChanged){
+					element.cycle('reinit');
+					setChanged = false;
+				}
+		
+				if (this._currentErrorNotification != 0){
+					notify.remove(this._currentErrorNotification);
+					this._currentErrorNotification = 0;
+				}
+			}
+		})
+		.fail(function(jqXHR, status, errorthrown){
+			if (this._currentErrorNotification == 0 || !notify.exists(this._currentErrorNotification))
+				this._currentErrorNotification = notify.json(jqXHR, status, errorthrown);
+		});
 	},
 
 	_events: {
