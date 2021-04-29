@@ -35,6 +35,7 @@
 ### Deprecated
 - weather service yr.no (use met.no as replacement)
 - weather service wunderground (use weather.com as replacement) 
+- fritz!box services other than TR-064
 
 ### Removed Features
 - support for older widgets (non jQuery mobile types) has been finally removed
