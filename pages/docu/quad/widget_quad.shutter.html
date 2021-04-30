@@ -13,7 +13,7 @@
 
 {% endblock %}
 {% block example %}
-<script type="text/javascript">
+<script>
   $( document ).ready(function() {
        io.write('shutter.lz', '0' );
        io.write('shutter.kz', '0' );
@@ -69,7 +69,7 @@
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-		{{ quad.shutter('shutter1', 'Shutter with picture', 'shutter.lz', 'shutter.kz', 'shutter.hoehe', 'shutter.kz', 'shutter.lamellen', 'shutter.hoehe', 0, 100, 1, 'full', '', 50, 80, 'place1', 'place2', 'shutter.hoehe.zeitschalter', '', 'shutter.hoehe', '', 'shutter.automatik', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], 'place3', 'place4', ['extpopup', 'pos_shutter_ext']) }}
+		{{ quad.shutter('shutter01', 'Shutter with picture', 'shutter.lz', 'shutter.kz', 'shutter.hoehe', 'shutter.kz', 'shutter.lamellen', 'shutter.hoehe', 0, 100, 1, 'full', '', 50, 80, 'place1', 'place2', 'shutter.hoehe.zeitschalter', '', 'shutter.hoehe', '', 'shutter.automatik', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], 'place3', 'place4', ['extpopup', 'pos_shutter_ext']) }}
 	</ul>
   </div>
 
@@ -81,7 +81,7 @@
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-      {{ quad.shutter('shutter2', 'Shutter, Standard', 'shutter.lz', 'shutter.kz', 'shutter.hoehe', 'shutter.kz', 'shutter.lamellen', 'shutter.hoehe', 0, 100, 1, 'full', '', 50, 80) }}
+      {{ quad.shutter('shutter02', 'Shutter, Standard', 'shutter.lz', 'shutter.kz', 'shutter.hoehe', 'shutter.kz', 'shutter.lamellen', 'shutter.hoehe', 0, 100, 1, 'full', '', 50, 80) }}
     </ul>
   </div>
 

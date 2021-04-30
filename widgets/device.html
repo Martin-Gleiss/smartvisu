@@ -627,20 +627,13 @@
  * @param {value=255} the value for closed (optional, default 255)
  * @param {value=5} step between two values (optional, default 5)
  * @param {color=icon1} color for 'open' state, e.g. '#f00' for red (constant, 'icon0' and 'icon1' can NOT be used) (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
+ *
+ * @author Wolfram v. Hülsen
  */
 {% macro window (id, txt, item_move, item_stop, item_pos, item_shade, item_window_r, item_window_l, type, min, max, step, color ) %}
 	{% import   "basic.html" as basic %}
 	{% set uid = uid(page, id) %}
 		
-	<style>
-	.pos .ui-slider .ui-input-text {
-		display: none !important;
-	}
-	.pos .ui-slider-track, .pos .ui-slider-switch {
-		margin: 0 15px 15px 15px !important;
-	}
-	</style>
-	
 	<a id="{{ uid }}-button" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %} data-rel="popup"
 		class=" {%- if type == 'icon' -%} /**- display as icon -*/
 						switch ui-link

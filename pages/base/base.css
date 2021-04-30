@@ -569,7 +569,7 @@ a.ui-slider-handle-semicircle {
 input.ui-slider-input.ui-slider-no-input {
     visibility: hidden;
 }
-input.ui-slider-input.ui-slider-no-input[orientation='semicircle'] {
+input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
     display: none;
 }
 .ui-slider-track.ui-slider-no-input {

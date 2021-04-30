@@ -45,18 +45,17 @@
 
 	<img {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.image" alt="multimedia.image"
 		{% if mode == 'corner' %}
-			class="ui-corner-all"
+			class="ui-corner-all multimediaimage"
 		{% elseif mode == 'corner-bottom' %}
-			class="ui-corner-bottom"
+			class="ui-corner-bottom multimediaimage"
 		{% elseif mode == 'fill' %}
-			style="width: 100%"
+			style="width: 100%" class="multimediaimage"
 		{% endif %}
     data-item="{% if '/' not in src and '\\' not in src %}{{ src }}{% endif %}{% if refresh|first not in ['0','1','2','3','4','5','6','7','8','9'] and refresh %}, {{ refresh }}{% endif %}"
     data-url="{% if '/' in src or '\\' in src %}{{ src }}{% endif %}"
     {% if refresh|first in ['0','1','2','3','4','5','6','7','8','9'] or not refresh %}data-repeat="{{ refresh|default('10i') }}"{% endif %}
     stopTimer="false"
-    class="multimediaimage"
-		src="{{ default_img|default('pages/base/pics/trans.png') }}"
+    src="{{ default_img|default('pages/base/pics/trans.png') }}"
     onerror="javascript:this.src='{{ default_img|default('pages/base/pics/trans.png') }}'" />
 
 
@@ -205,7 +204,7 @@
 {% macro timeslider(id, time, play, duration, step, value_display) %}
     <input {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.timeslider" data-item="{{ time }}, {{ duration }}, {{ play }}"
         type="range" value="0" min="0" max="1" disabled="1" step="{{ step|default(5) }}" timer="{{ step|default(5) }}"
-        orientation="horizontal" handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" data-highlight="true" />
+        data-orientation="horizontal" data-handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" data-highlight="true" />
 {% endmacro %}
 
 /**

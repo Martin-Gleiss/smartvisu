@@ -13,7 +13,7 @@
 
 {% endblock %}
 {% block example %}
-<script type="text/javascript">
+<script>
   $( document ).ready(function() {
   		 io.write('licht.dimmen', '10' );
   		 io.write('licht.SA', '1' );
@@ -83,7 +83,7 @@
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.dimmer('dimmer1', 'Dimmer Example 1', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen','','','blue'), icon.light('','','licht.dimmen'), 'blue', 'icon0', '', '', '100', 'right', 'blink', '', 'licht.dimmen.zeitschalter', ['', '', 'bool'], '%', 'licht.dimmen', '', 'licht.automatik', (stateengine['item1']), ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
+    {{ quad.dimmer('dimmer01', 'Dimmer Example 1', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen','','','blue'), icon.light('','','licht.dimmen'), 'blue', 'icon0', '', '', '100', 'right', 'blink', '', 'licht.dimmen.zeitschalter', ['', '', 'bool'], '%', 'licht.dimmen', '', 'licht.automatik', (stateengine['item1']), ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', ['uzsu', 'stateengine', 'plot', 'value_popup', 'switch', 'locks', ' ']) }}
 	</ul></div>
 
 ['switch', 'value_slider']
@@ -94,7 +94,7 @@
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.dimmer('dimmer2', 'Dimmer Example 2', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', '', '', '', '', '', '', '', '', '', '', '', '', '', ['switch', 'value_slider']) }}
+    {{ quad.dimmer('dimmer02', 'Dimmer Example 2', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', '', '', '', '', '', '', '', '', '', '', '', '', '', ['switch', 'value_slider']) }}
 	</ul></div>
 
 [['locks','switch'], 'value_popup', 'extpopup', 'plot']
@@ -107,7 +107,7 @@
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.dimmer('dimmer3', 'Dimmer Example 3', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', 'left', 'blink', '', 'licht.dimmen.zeitschalter', '', '%', 'licht.dimmen', '', 'licht.automatik',
+    {{ quad.dimmer('dimmer03', 'Dimmer Example 3', 'licht.SA', 'licht.dimmen', 0, 255, 1, icon.light('','','licht.dimmen'), icon.light('','','licht.dimmen'), 'icon1', 'icon0', '', '', '100', 'left', 'blink', '', 'licht.dimmen.zeitschalter', '', '%', 'licht.dimmen', '', 'licht.automatik',
     ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ],
      ['', 'bwm.sperren', 'licht.zwangvalue'], '', '', [['locks','switch'], 'value_popup', 'extpopup', 'plot']) }}
 	</ul></div>
@@ -120,6 +120,6 @@ Without column order
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-	{{ quad.dimmer('dimmer4', 'Standard Example 4', 'licht.SA', 'licht.dimmen') }}
+	{{ quad.dimmer('dimmer04', 'Standard Example 4', 'licht.SA', 'licht.dimmen') }}
 	</ul></div>
 {% endblock %}

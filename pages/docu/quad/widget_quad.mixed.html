@@ -13,12 +13,11 @@
 
 {% endblock %}
 {% block example %}
-<script type="text/javascript">
+<script>
 	$( document ).ready(function() {
 			 io.write('this', '12/24/2018'  );
 			 io.write('that', '2' );
 		});
-
 </script>
 
 	<h5>Example</h5>
@@ -33,7 +32,7 @@ basic.stateswitch('', 'that', '', [0,2], '', ['0','2'])) }}
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.mixed('mixed', 'Mixed line', [basic.symbol('', '', '', 'weather_light_meter.svg'), basic.input('', 'this', 'date')], basic.symbol('', 'that', '', ['status_light_off.svg', 'status_light_high.svg'], [0,2], '', ['icon0', 'icon1']),
+{{ quad.mixed('mixed1', 'Mixed line', [basic.symbol('', '', '', 'weather_light_meter.svg'), basic.input('', 'this', 'date')], basic.symbol('', 'that', '', ['status_light_off.svg', 'status_light_high.svg'], [0,2], '', ['icon0', 'icon1']),
 basic.stateswitch('', 'that', '', [0,2], '', ['0','2'])) }}
 	</ul></div>
 

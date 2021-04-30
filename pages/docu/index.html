@@ -100,35 +100,35 @@
 			<ul data-role="listview" data-dividertheme="c">
 				<li data-icon="false">
 					<a href="index.php?page=design/design_block">
-						<img class="icon" src="{{ icon0 }}audio_playlist.svg" />
+						<img class="icon" src="{{ icon0 }}audio_playlist.svg" alt="Blocks" />
 
 						<h3>Blocks</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=design/design_buttons">
-						<img class="icon" src="{{ icon0 }}control_all_on_off.svg" />
+						<img class="icon" src="{{ icon0 }}control_all_on_off.svg" alt="Buttons" />
 
 						<h3>Buttons</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=quad/widget_quad">
-						<img class="icon" src="{{ icon0 }}control_outside_on_off.svg" />
+						<img class="icon" src="{{ icon0 }}control_outside_on_off.svg" alt="Quad" />
 
 						<h3>Quad</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=design/design_popup">
-						<img class="icon" src="{{ icon0 }}audio_stop.svg" />
+						<img class="icon" src="{{ icon0 }}audio_stop.svg" alt="Popups" />
 
 						<h3>Popups</h3>
 					</a>
 				</li>
 				<li data-icon="false">
 					<a href="index.php?page=design/design_icons">
-						<img class="icon" src="{{ icon0 }}weather_winter.svg" />
+						<img class="icon" src="{{ icon0 }}weather_winter.svg" alt="Icons" />
 
 						<h3>Icons</h3>
 					</a>
@@ -259,11 +259,11 @@
 
 {% block head %}
 	<link href="vendor/google.prettify/styles/sunburst.css" type="text/css" rel="stylesheet" />
-	<script type="text/javascript" src="vendor/google.prettify/src/prettify.js"></script>
+	<script src="vendor/google.prettify/src/prettify.js"></script>
 {% endblock %}
 
 {% block footer %}
-	<script type="text/javascript">
+	<script>
 		$('#{{ page }}').on('pageinit', function (event) {
 			prettyPrint();
 		});

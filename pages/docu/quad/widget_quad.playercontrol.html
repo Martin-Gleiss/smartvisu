@@ -13,7 +13,7 @@
 
 {% endblock %}
 {% block example %}
-<script type="text/javascript">
+<script>
   $( document ).ready(function() {
        io.write('Volume', '70' );
        io.write('Time', '10' );
@@ -22,9 +22,7 @@
        io.write('Album', 'Album' );
        io.write('Artist', 'Artist' );
        io.write('Title', 'Title' );
-
     });
-
 </script>
   <h5>Example</h5>
 
@@ -37,7 +35,7 @@ Volume Control with the following columns: ['uzsu','plot',['volume_up','volume_d
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.playercontrol('volume', 'Volume Slider, UZSU and Plot', '', '', '', '', '', '', '', '', '', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, '', '', '', '', '', 'speakerAB', 'uzsu', ['', '', 'uzsu_value', '', 'icon1', 'icon0'], 'Volume.Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_up','volume_down'],'volume_slider']) }}
+{{ quad.playercontrol('volume1', 'Volume Slider, UZSU and Plot', '', '', '', '', '', '', '', '', '', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, '', '', '', '', '', 'speakerAB', 'uzsu', ['', '', 'uzsu_value', '', 'icon1', 'icon0'], 'Volume.Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_up','volume_down'],'volume_slider']) }}
   </ul></div>
 
 Player Control with standard columns
@@ -48,7 +46,7 @@ Player Control with standard columns
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.playercontrol('player', 'Squeezebox', 'Previous', '', 'Pause', 'Stop', 'Next', '', 'Eject', 'Repeat', 'Shuffle', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', '', 'Plot') }}
+{{ quad.playercontrol('player1', 'Squeezebox', 'Previous', '', 'Pause', 'Stop', 'Next', '', 'Eject', 'Repeat', 'Shuffle', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', '', 'Plot') }}
   </ul></div>
 
 Player Control with ['uzsu','plot',['volume_down','volume_up','power'], 'source']
@@ -59,7 +57,7 @@ Player Control with ['uzsu','plot',['volume_down','volume_up','power'], 'source'
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.playercontrol('player2', 'Source as Icons', 'Previous', 'Play', 'Pause', 'Stop', 'Next', 'Power', 'Eject', 'Repeat', 'Shuffle', ['Source', 'icon', ['10', 'edit_numeric_1.svg'], ['13', 'edit_numeric_2.svg']], 'Mute', 'Volume', 'Volume_Up', 'Volume_Down', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', 'speakerAB', 'uzsu', '', 'Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_down','volume_up','power'], 'source']) }}
+{{ quad.playercontrol('player02', 'Source as Icons', 'Previous', 'Play', 'Pause', 'Stop', 'Next', 'Power', 'Eject', 'Repeat', 'Shuffle', ['Source', 'icon', ['10', 'edit_numeric_1.svg'], ['13', 'edit_numeric_2.svg']], 'Mute', 'Volume', 'Volume_Up', 'Volume_Down', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', 'speakerAB', 'uzsu', '', 'Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_down','volume_up','power'], 'source']) }}
   </ul></div>
 
 Player Control with [['pause', 'stop'], ['cover', 'album'], 'shuffle', 'song_position']
@@ -70,7 +68,7 @@ Player Control with [['pause', 'stop'], ['cover', 'album'], 'shuffle', 'song_pos
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.playercontrol('player3', 'With Album Art', 'Previous', 'Play', 'Pause', 'Stop', 'Next', 'Power', 'Eject', 'Repeat', 'Shuffle', ['Source', 'menu', ['10', '', '10'], ['13', '', '13']], 'Mute', 'Volume', 'Volume_Up', 'Volume_Down', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', '', 'Plot', '', '', '', '', '', '', [['pause', 'stop'], 'cover', 'shuffle', 'song_position']) }}
+{{ quad.playercontrol('player03', 'With Album Art', 'Previous', 'Play', 'Pause', 'Stop', 'Next', 'Power', 'Eject', 'Repeat', 'Shuffle', ['Source', 'menu', ['10', '', '10'], ['13', '', '13']], 'Mute', 'Volume', 'Volume_Up', 'Volume_Down', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', '', 'Plot', '', '', '', '', '', '', [['pause', 'stop'], 'cover', 'shuffle', 'song_position']) }}
 
   </ul></div>
 

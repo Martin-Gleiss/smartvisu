@@ -61,15 +61,15 @@
 			>
 			<div class="color-hue">
 				<input type="range" value="0" min="0" max="360" step="1"
-					orientation="horizontal" handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
+					data-orientation="horizontal" data-handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
 			</div>
 			<div class="color-saturation">
 				<input type="range" value="0" min="0" max="100" step="1"
-					orientation="horizontal" handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
+					data-orientation="horizontal" data-handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
 			</div>
 			<div class="color-lightness">
 				<input type="range" value="0" min="0" max="100" step="1"
-					orientation="horizontal" handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
+					data-orientation="horizontal" data-handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
 			</div>
 		</div>
 	{% else %}
@@ -112,7 +112,7 @@
 * @param {id(nonunique)} id of the element that contains an item that will be changed (to)
 */
 {% macro glue(id_from, id_to) %}
-	<script type="text/javascript">
+	<script>
 		$('#{{ page }}').on('pageinit', function (event, ui) {
 			$('#{{ uid(page, id_from) }}').on('click', function () {
 				window.setTimeout(function () {
@@ -362,7 +362,7 @@
 		{% endif %}
 		</select>
 	{% else %}
-		<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select"{% if group != 'none' %} data-role="controlgroup" data-type="{{ group|default('horizontal') }}{% endif %}">
+		<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select"{% if group != 'none' %} data-role="controlgroup" data-type="{{ group|default('horizontal') }}"{% endif %}>
 			{% for val in value|default([0,1]) %}
 				{% set pic = icon is iterable ? icon[loop.index0]|default(icon[0]) : icon %}
 				{{basic.stateswitch('', item, type|default('mini'), [val, val], pic, (text is iterable ? text[loop.index0]|default(text[0]) : text)|default(pic is empty ? val : ''), [color_on|default('icon1'), ''])}}
@@ -427,7 +427,7 @@
 
 	<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.slider" data-item="{{ item }}"
 		type="range" value="0" min="{{ min_display|default(min)|default(0) }}" max="{{ max_display|default(max)|default(255) }}" step="{{ step|default(5) }}" data-min-send="{{ min|default(0) }}" data-max-send="{{ max|default(255) }}" data-live="{{ live|default(1) }}"
-		orientation="{{ orientation }}" handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" data-highlight="true" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" />
+		data-orientation="{{ orientation|default('horizontal') }}" data-handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" data-highlight="true" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" />
 
 {% endmacro %}
 
@@ -684,7 +684,7 @@
 * @author: Wolfram v. Hülsen
 */
 {% macro window(id, item_value, item_window_r, item_window_l, min, max, color) %}
-<svg role="img" id="{{ uid(page, id) }}" data-widget="basic.window" data-item="{{ item_value }}, {{ item_window_r }}, {{ item_window_l }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+<svg role="img" {% if id is not empty %}id="{{ uid(page, id) }}"{% endif %} data-widget="basic.window" data-item="{{ item_value }}, {{ item_window_r }}, {{ item_window_l }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 	{% if color is empty  %}
 		class="icon icon0" 
 	{% else %}
