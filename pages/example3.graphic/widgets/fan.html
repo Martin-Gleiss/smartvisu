@@ -17,15 +17,7 @@
 {% macro slider (id, item_level, item_auto, item_switch ) %}
     {% import   "basic.html" as basic %}
 
-    /** Design */
-    <style>
-		.pos .ui-slider .ui-input-text {
-			display: none !important;
-		}
-		.pos .ui-slider-track, .pos .ui-slider-switch {
-			margin: 0 15px 15px 15px !important;
-		}
-	</style>
+
     <div class="blind" style="padding: 15px;"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
         <table align="center" cellpadding="0" width="100%">
         <tr>

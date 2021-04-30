@@ -34,7 +34,7 @@
 	{% import "basic.html" as basic %}
 	{% import   "icon.html" as icon %}
 	{% set uid = uid(page, id) %}
-	<div id="{{ uid }}-overview" style="position: absolute; top: {{ top }}; left: {{ left }};"  {% if txt %}title="{{ txt }}"{% endif %}
+	<div id="{{ uid }}-overview" style="position: absolute; top: {{ top }}; left: {{ left }};"  {% if txt %}title="{{ txt }}"{% endif %}>
 		<a style="display: none"> </a> 
 		<a data-rel="popup" href="#{{ uid }}-popup" {% if hide == 1 %} style="display:none" {% endif %} class="
 			{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/

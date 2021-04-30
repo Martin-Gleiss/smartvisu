@@ -48,15 +48,15 @@
 			
 			<div class="color-hue">
 				<input type="range" value="0" min="0" max="360" step="1"
-					orientation="horizontal" handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
+					data-orientation="horizontal" data-handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
 			</div>
 			<div class="color-saturation">
 				<input type="range" value="0" min="0" max="100" step="1"
-					orientation="horizontal" handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
+					data-orientation="horizontal" data-handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
 			</div>
 			<div class="color-lightness">
 				<input type="range" value="0" min="0" max="100" step="1"
-					orientation="horizontal" handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
+					data-orientation="horizontal" data-handleinfo="false" data-highlight="true" class="ui-slider-no-input" />
 			</div>
 			</span>
 		
@@ -349,14 +349,7 @@
 	{% set min = 0 %}
 	{% set max = 100 %}
 	
-	<style>
-	.pos .ui-slider .ui-input-text {
-		display: none !important;
-	}
-	.pos .ui-slider-track, .pos .ui-slider-switch {
-		margin: 0 15px 15px 15px !important;
-	}
-	</style>
+
 	<a id="{{ uid }}-button" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %} style="position: absolute; top: {{ top }}; left: {{ left }};"
 		{% if hide == 1 %}style="display: none;"{% endif %} data-rel="popup"
 		class=" {%- if type == 'icon' -%} /**- display as icon -*/
@@ -416,7 +409,7 @@
 		style="position: absolute; top: {{ top }}; left: {{ left }}; ">
 		{{ content }}
 	</div>
-	<script type="text/javascript">
+	<script>
 		$(document).on("pageshow",function() {
 			$("#{{ uid(page, id) }}-overview").css("margin-top", Math.round($("#{{ uid(page, id) }}-overview").height() / 2) * -1);
 			$("#{{ uid(page, id) }}-overview").css("margin-left", Math.round($("#{{ uid(page, id) }}-overview").width() / 2) * -1);

@@ -41,6 +41,7 @@
 ### Removed Features
 - support for older widgets (non jQuery mobile types) has been finally removed
 - unsued Google Closure compiler has been removed
+- deprecated ov.colordisc and ov.rgb removed from example3.graphics. Use ovbasic.color instead
 
 ### Fixed Bugs
 - plot.pie did not show series titles as labels / legend
