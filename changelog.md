@@ -29,13 +29,14 @@
 - complete review of all parameter definitions in order to improve results in template checker
 
 ### Updated Libraries
-- Highcharts updated to v9.0.1
+- Highcharts updated to v9.0.1 (with patch for draggable-points module)
 - ICal ICS Parser updated to v2.2.2
 
 ### Deprecated
 - weather service yr.no (use met.no as replacement)
 - weather service wunderground (use weather.com as replacement) 
 - fritz!box services other than TR-064
+- custom widgets using sliders ( <input type="range" ... >) must use attributes "data-orientation" and "data-handleinfo" instead of "orientation" and "handleinfo"
 
 ### Removed Features
 - support for older widgets (non jQuery mobile types) has been finally removed
@@ -54,6 +55,7 @@
 - conflicts between exit method and older versions of back-to-home functions 
 - templatechecker did not consider widgets in the pages subfolder
 - plot.gauge threw warnings due to faulty "data-axis" parameter. 
+- 100% check of docu pages and widgets with W3C validator revealed some issues - fixed. 
 
 ### Known Bugs
 

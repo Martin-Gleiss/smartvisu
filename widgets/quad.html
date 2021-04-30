@@ -273,7 +273,7 @@ the first one is the base color for values below first threshold, so pass one co
     {% import "device.html" as device %}
     {% set id = id is empty ? item_actual|replace('.', '_') : id %}
     <li data-icon="false" class="row_rtr">
-    <div class="quad_table sorting row_rtr" id="row_{{uid(page, id)}}_sorting"">
+    <div class="quad_table sorting row_rtr" id="row_{{uid(page, id)}}_sorting">
         <div class="text">{{ linetext|e }}</div>
         <div class="column{{ column_order[0]|default(1) }} column_rtr_actual" data-order={{ column_order[0]|default(1) }}>
           {{ basic.print(id~'_actual_value', item_actual, '°') }}

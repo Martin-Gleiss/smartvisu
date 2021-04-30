@@ -11,7 +11,7 @@
 {% extends "widget_plot.html" %}
 
 {% block example %}
-<script type="text/javascript">
+<script>
 	$( document ).ready(function() {
 		io.write('sleep.rtr.act', 18 );
 		io.write('office.rtr.act', 21 );
@@ -23,8 +23,7 @@
 		io.write('kid.rtr.set', 21 );
 		io.write('bath.rtr.set', 23 );
 		io.write('floor.rtr.set', 20 );
-		});
-
+	});
 </script>
 	<h5>Example</h5>
 	<div class="twig">

@@ -10,7 +10,7 @@
 {% extends "widget_status.html" %}
 
 {% block example %}
-<script type="text/javascript">
+<script>
         io.write('bath.light.switch', 0);
 		io.write('bath.light.value', 50);
         // console.log('stopping io.loop after 5 seconds');
@@ -47,7 +47,7 @@
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	The result will look like this:
-	<div class="image"><img src="pages/docu/status/toast_content.png"></div>
+	<div class="image"><img src="pages/docu/status/toast_content.png" alt="Content"></div>
 	<br>
 	Documentation for the jquery toast plugin: <a href="https://kamranahmed.info/toast">https://kamranahmed.info/toast</a>
 

@@ -85,7 +85,7 @@ Caution: If this is set, the notification gets not shown until the item has sent
 	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.notify" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_signal }}, {{ item_title }}, {{ item_level }}"
 		data-signal="{{ signal|default('INFO') }}" data-level="{{ level|default('info') }}"
 		{% if item_ack %}data-item-ack="{{ item_ack }}" data-ack-value="{{ ack_value|default(item_ack == item_trigger ? 0 : 1) }}"{% endif %}
-		data-item-signal="{{ item_signal }}" data-item-title="{{ item_title }}" data-item-level="{{ item_level }}""
+		data-item-signal="{{ item_signal }}" data-item-title="{{ item_title }}" data-item-level="{{ item_level }}"
 		class="hide"><h1>{{ title }}</h1><p>{{ text }}</p>
 	</span>
 

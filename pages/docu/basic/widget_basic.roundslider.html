@@ -11,7 +11,7 @@
 {% extends "widget_basic.html" %}
 
 {% block example %}
-<script type="text/javascript">
+<script>
 	$( document ).ready(function() {
 		io.write('bath.blind.pos', 100 );
 		io.write('bath.light.text', "20,70" );
@@ -61,6 +61,7 @@
 			<tr>
 				<td>{{ basic.roundslider('slider10', 'bath.light.value', 0, 100, 5, '', '', '', 'true', '', '', 'half-left' ) }} </td>
 				<td>{{ basic.roundslider('slider11', 'bath.blind.pos', 0, 100, 5, 'Rollo', 'Höhe', 'cm', 'true', '', '','half-right') }} </td>
+				<td></td>
 			</tr>
 		</table>
 	</div>

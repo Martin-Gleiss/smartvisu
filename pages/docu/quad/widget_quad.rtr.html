@@ -13,7 +13,7 @@
 
 {% endblock %}
 {% block example %}
-<script type="text/javascript">
+<script>
 	$( document ).ready(function() {
 			 io.write('istwert', '20.4' );
 			 io.write('soll', '22.1' );
@@ -22,7 +22,6 @@
 			 io.write('frostschutz', '4.5' );
 			 io.write('state', 'heizen' );
 		});
-
 </script>
 	<h5>Example</h5>
 
@@ -34,7 +33,7 @@ Standard order with plot and offset
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.rtr('normal', 'Standard Order with plot and offset', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'state') }}
+    {{ quad.rtr('normal1', 'Standard Order with plot and offset', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'state') }}
 	</ul></div>
 
 Reverse order
@@ -48,6 +47,6 @@ Reverse order
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.rtr('reverse', 'Reverse Order', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'heizen', 'Text', 0.10, '', [device.uzsuicon('','uzsuitem','Presence','','','list','Present:1,Absent:2,Night:3'),icon.heating('','','istwert',0,23)], '#ff0', 'blink', '', '', '', '', [3,2,1]) }}
+    {{ quad.rtr('reverse1', 'Reverse Order', 'istwert', 'soll', 'komfort', 'nacht', 'frostschutz', 'heizen', 'Text', 0.10, '', [device.uzsuicon('','uzsuitem','Presence','','','list','Present:1,Absent:2,Night:3'),icon.heating('','','istwert',0,23)], '#ff0', 'blink', '', '', '', '', [3,2,1]) }}
 	</ul></div>
 {% endblock %}

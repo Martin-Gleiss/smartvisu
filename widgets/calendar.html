@@ -72,7 +72,7 @@
 		data-repeat="{{ repeat|default('24h') }}" data-count="{{ count|default(5) }}"
 		data-calendar="{{ implode(calendar|default(config_calendar_name|split(','))) }}">
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
-		<div style='width:100%; align:center; overflow:hidden;'></div>
+		<div style='width:100%; text-align:center; overflow:hidden;'></div>
 	</div>
 
 {% endmacro %}

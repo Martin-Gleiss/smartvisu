@@ -13,7 +13,7 @@
 
 {% endblock %}
 {% block example %}
-<script type="text/javascript">
+<script>
   $( document ).ready(function() {
        io.write('this', '3' );
        io.write('that', '1' );
@@ -29,7 +29,6 @@
        io.write('that.uzsu', '{}');
        io.write('theother.uzsu', '{}');
     });
-
 </script>
 
 {% set extpopup = {
@@ -48,7 +47,7 @@ Standard column order
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.stateswitch('stateswitch11', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', '', 'blink', '', '', '', '', '', 'one switch, standard order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['extra']), [['this.sperren'], 'bwm.this.sperren','this.zwangvalue']) }}
+{{ quad.stateswitch('stateswitch011', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', '', 'blink', '', '', '', '', '', 'one switch, standard order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['extra']), [['this.sperren'], 'bwm.this.sperren','this.zwangvalue']) }}
   </ul></div>
 
 [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks'] with extpopup
@@ -59,7 +58,7 @@ Standard column order
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.stateswitch('stateswitch12', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], ['','',''], ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['stateengine']), ['this.sperren'], '', '', '', [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks']) }}
+{{ quad.stateswitch('stateswitch012', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], ['','',''], ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['stateengine']), ['this.sperren'], '', '', '', [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks']) }}
   </ul></div>
 
 don't use column_order for multiple switches.
@@ -70,7 +69,7 @@ don't use column_order for multiple switches.
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.stateswitch('stateswitch14', ['this', 'that', 'theother'], ['icon','mini','midi'], [[1,0],'',[0,150]], [['edit_numeric_1.svg','edit_numeric_0.svg'],'',['edit_numeric_0.svg','edit_numeric_9.svg']], ['', ['0','1']], [['',''],'',['','']], ['blink','','blink'], '', '', '', 'place1', 'place2', 'Mixed types with one slider', ['', '', ''], ['this.uszu','','theother.uszu'], ['','',''], '', '', '', '', '', [['this.timer', 0, 10, 1, 'min', 'handle'],'','']) }}
+{{ quad.stateswitch('stateswitch014', ['this', 'that', 'theother'], ['icon','mini','midi'], [[1,0],'',[0,150]], [['edit_numeric_1.svg','edit_numeric_0.svg'],'',['edit_numeric_0.svg','edit_numeric_9.svg']], ['', ['0','1']], [['',''],'',['','']], ['blink','','blink'], '', '', '', 'place1', 'place2', 'Mixed types with one slider', ['', '', ''], ['this.uszu','','theother.uszu'], ['','',''], '', '', '', '', '', [['this.timer', 0, 10, 1, 'min', 'handle'],'','']) }}
   </ul></div>
 
   <div class="twig">
@@ -81,7 +80,7 @@ don't use column_order for multiple switches.
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.stateswitch('stateswitch19', ['this', 'that', 'theother'], ['icon','icon','icon'], [[0,1],[0,1],[0,1]], [['edit_numeric_0.svg','edit_numeric_1.svg'],['edit_numeric_0.svg','edit_numeric_2.svg'],['edit_numeric_0.svg','edit_numeric_3.svg']], '', [['',''],['',''],['','']], ['blink','blink','blink'], '', '', '', '', '', '3 columns with different features', ['a', 'b', 'c'], ['this.uzsu','',''], ['','',''], ['','that.plot',''], '', 'this.automatik', ['', '', (extpopup['extra'])], ['',['that.sperren','bwm.that.sperren','that.zwangvalue'], '']) }}
+{{ quad.stateswitch('stateswitch019', ['this', 'that', 'theother'], ['icon','icon','icon'], [[0,1],[0,1],[0,1]], [['edit_numeric_0.svg','edit_numeric_1.svg'],['edit_numeric_0.svg','edit_numeric_2.svg'],['edit_numeric_0.svg','edit_numeric_3.svg']], '', [['',''],['',''],['','']], ['blink','blink','blink'], '', '', '', '', '', '3 columns with different features', ['a', 'b', 'c'], ['this.uzsu','',''], ['','',''], ['','that.plot',''], '', 'this.automatik', ['', '', (extpopup['extra'])], ['',['that.sperren','bwm.that.sperren','that.zwangvalue'], '']) }}
 
   </ul></div>
 
