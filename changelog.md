@@ -27,6 +27,7 @@
 - error notification avoids duplicate messages (weather and phone services)
 - error notification is cleared if service is running again (weather and phone services)
 - complete review of all parameter definitions in order to improve results in template checker
+- improved autocomplete lists and styling in widget assistent
 
 ### Updated Libraries
 - Highcharts updated to v9.0.1 (with patch for draggable-points module)
@@ -57,6 +58,7 @@
 - templatechecker did not consider widgets in the pages subfolder
 - plot.gauge threw warnings due to faulty "data-axis" parameter. 
 - 100% check of docu pages and widgets with W3C validator revealed some issues - fixed. 
+- widget assistant threw errors with nested curly brackets (e.g. in plot options)
 
 ### Known Bugs
 
