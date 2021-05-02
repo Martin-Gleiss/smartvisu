@@ -251,6 +251,7 @@ class TemplateChecker {
 			
 			if(array_key_exists('replacement', $widgetConfig)) {
 				$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $messageParams));
+				$messageData['Replacement'] = str_replace ("['', '']", "''", $messageData['Replacement']);
 			}
 			$this->messages->addError('WIDGET DEPRECATION CHECK', 'Removed widget', $widget->getLineNumber(), $widget->getMacro(), $messageData);
 		} else {

@@ -2,9 +2,9 @@
 
 ## Table of Content
 1. [How it works](#howitworks)
-2. [ChangeLog](#ChangeLog) <sup><span style="color:red"> **new**</span></sup>
-3. [Hot-Keys](#hotkeys) <sup><span style="color:red"> **new**</span></sup>
-4. [Known issues](#issues) <sup><span style="color:red"> **new**</span></sup>
+2. [ChangeLog](#ChangeLog) <sup><span style="color:red"> **Update**</span></sup>
+3. [Hot-Keys](#hotkeys) <sup><span style="color:red"> </span></sup>
+4. [Known issues](#issues) <sup><span style="color:red"> </span></sup>
 5. [Logics to create masteritem.json from shNG](#logic_shng) <sup><span style="color:red"> **new**</span></sup>
 6. [Script to create masteritem.json for FHEM](#script_fronthem) <sup><span style="color:red"> **new**</span></sup>
 
@@ -37,6 +37,12 @@ by a <strong><code>\<br\></code></strong>-TAG
 
 <a name="ChangeLog"/></a>
 ## Change-Log
+
+#### 2021.05.01 - Version 1.2.0
+
+- added support for all valid values of widget-types from twig-docu
+- some optical changes
+- added widget specific colours to autocomplete dict for colors (for example 'hidden','blank' for basic.print)
 
 #### 2021.01.18 - Version 1.1.0
 - changed handling for "render in new window" - if there is no Window a new one will be opened, else the opened window would be refreshed, also if there is a twig error
