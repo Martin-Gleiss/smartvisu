@@ -11,7 +11,7 @@
  * Displays a color selector
  *
  * @param {id=} unique id for this widget (optional)
- * @param {item(num)[?]} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
+ * @param {item[?](num)} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
  * @param {item(num)=} an item for the green value in RGB model or saturation in HSL and HSV model
   (to let blank if first item contains list of all values)
  * @param {item(num)=} an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
@@ -85,8 +85,8 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {text=} title of the chart (optional)
-* @param {item(bool,num)[?]} series of item(s); multiple items in array form: [ item1 , item2 ]
-* @param {text(avg,sum,min,max,minmax,minmaxavg,raw,on)[?]=} the aggregation mode (optional, default 'avg')
+* @param {item[?](bool,num)} series of item(s); multiple items in array form: [ item1 , item2 ]
+* @param {text[?](avg,sum,min,max,minmax,minmaxavg,raw,on)=} the aggregation mode (optional, default 'avg')
 	May be a single mode or an array with separate mode per item.
 	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
 * @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format)
@@ -108,7 +108,7 @@
 * @param {color[?]=} y-axes color; multiples in array form (optional)
 * @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
 * @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
-* @param {unchecked[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+* @param {unspecified[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
@@ -275,7 +275,7 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {percent} icon position from left side
-* @param {percent} icon position from top side* @param {item[?](bool,num,list,scene)=} zero, one or more item(s). More items in array form: [item1, item2] (optional)
+* @param {percent} icon position from top side
 * @param {item[?](bool,num,list,scene)=} zero, one or more item(s). More items in array form: [item1, item2] (optional)
 * @param {text[?]=} the text, printed when item has value val (optional)
 * @param {image[?]=control_on_off} the icon shown when item has value val (optional, default 'control_on_off' if text is empty)
