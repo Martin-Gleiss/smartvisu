@@ -12,7 +12,7 @@
 // get config-variables 
 require_once '../../lib/includes.php';
 
-if (empty($_COOKIE['updchk'])) 
+if (empty($_COOKIE['updchk']) && config_updatecheck) 
 {	
 	// get contents from smartvisu.de (main version only)
 	$request = array_merge($_GET, $_POST);
