@@ -446,8 +446,9 @@ class WidgetParameterChecker {
 			return;
 
 		// these are defined based on the smartvisu layout
-		if ($value == 'icon0' || $value == 'icon1')
-			return;
+		//wvhn @v3.1 move icon0 / icon1 in valid values of the individual widgets since not all widgets accept them
+		//	if ($value == 'icon0' || $value == 'icon1')
+		//		return;
 
 		// additional widget-specific valid values
 		if ($this->checkParameterValidValues($value))
