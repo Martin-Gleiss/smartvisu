@@ -159,14 +159,14 @@
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtr" class="rtr">
 		<div class="actual">
-			<div class="temp">{{ basic.print('', item_actual, '°' ) }}</div>
+			<div class="temp">{{ basic.print('', item_actual, 'temp' ) }}</div>
 			<div class="text">{{ txt }} {% if item_txt %} {{ basic.print('', item_txt, 'text') }} {% endif %}</div>
 		</div>
 		<br>
 		{% if item_set %}
 			<div class="set">
 				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.5)), 'minus', '', 'micro' ) }}
-				<div class="temp">{{ basic.print('', item_set, '°' ) }}</div>
+				<div class="temp">{{ basic.print('', item_set, 'temp' ) }}</div>
 				{{ basic.offset('', item_offset|default(item_set), step|default(0.5), 'plus', '', 'micro' ) }}
 			</div>
 		{% endif %}
