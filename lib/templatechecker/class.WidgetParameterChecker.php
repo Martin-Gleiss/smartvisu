@@ -192,6 +192,9 @@ class WidgetParameterChecker {
 					// for now we perform the same tests than for type "text"
 					$this->checkParameterTypeText($value);
 					break;
+				case 'percent':
+					$this->checkParameterTypePercent($value);	//new
+					break;
 				case 'unspecified':
 					// this type is not validated at all
 					$this->addInfo('WIDGET UNSPECIFIED PARAM TYPE', 'Parameter can not be checked, check manually', $value);
@@ -588,6 +591,20 @@ class WidgetParameterChecker {
 		}
 		if (isset($this->paramConfig['max']) && $numVal > $this->paramConfig['max'] + 0) {
 			$this->addError('WIDGET VALUE PARAM CHECK', 'Value greater than allowed maximum value', $value, array('Maximum Value' => $this->paramConfig['max']));
+			return;
+		}
+	}
+	
+		/**
+	 * Check widget parameter of type "value"
+	 * @param $value mixed parameter value
+	 */
+	private function checkParameterTypePercent($value) {
+		if (!$this->checkParameterNotEmpty($value))
+			return;
+		$testPos = strpos($value, '%');
+		if ($testPos === false || !is_numeric(substr($value, 0, $testPos)) || strlen($value) != $testPos + 1) {
+			$this->addError('WIDGET VALUE PARAM CHECK', 'Percent value required', $value);
 			return;
 		}
 	}
