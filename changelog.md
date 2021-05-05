@@ -6,7 +6,7 @@
 - basic.symbol provides button design as additional options btn-micro, btn-mini or btn-midi with additional text on icon
 - basic.slider provides a new silent mode. Live mode (default) sends changed values constantly, silent mode only if change is completed.
 - plot.period provides stacked plots for line, area and column
-- image / data exporting in plot.period 
+- image / data exporting via context menu in plot.period 
 - status.collapse supports a list of multiple values for control of collapsing / hiding
 - device.rtrslider supports offset temperature for MDT RTR and supplements (like device.rtr)
 - multimedia.slideshow now refreshes available images in a defineable time
@@ -30,7 +30,7 @@
 - improved autocomplete lists and styling in widget assistent
 
 ### Updated Libraries
-- Highcharts updated to v9.0.1 (with patch for draggable-points module)
+- Highcharts updated to v9.1
 - ICal ICS Parser updated to v2.2.2
 
 ### Deprecated

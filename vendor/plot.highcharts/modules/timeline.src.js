@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v9.0.1 (2021-02-15)
+ * @license Highcharts JS v9.1.0 (2021-05-03)
  *
  * Timeline series
  *
@@ -629,7 +629,7 @@
                     /**
                      * @type    {Highcharts.TimelineDataLabelsFormatterCallbackFunction}
                      * @default function () {
-                     *   var format;
+                     *   let format;
                      *
                      *   if (!this.series.chart.styledMode) {
                      *       format = '<span style="color:' + this.point.color +

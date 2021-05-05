@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v9.0.1 (2021-02-15)
+ * @license Highcharts JS v9.1.0 (2021-05-03)
  *
  * Data module
  *
@@ -1327,7 +1327,7 @@
                         options.dateFormat = deduceDateFormat(columns[0]);
                     }
                     // lines.forEach(function (line, rowNo) {
-                    //    var trimmed = self.trim(line),
+                    //    let trimmed = self.trim(line),
                     //        isComment = trimmed.indexOf('#') === 0,
                     //        isBlank = trimmed === '',
                     //        items;
