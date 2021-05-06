@@ -43,10 +43,14 @@ class weather_openweathermap extends weather
 		}
 		else
 		{
+			//no cache hit
 			$loadError = '';
-			//error_log('nohit');
-			$url_current = 'http://api.openweathermap.org/data/2.5/weather?q='.$this->location.'&lang='.trans('openweathermap', 'lang').'&units='.trans('openweathermap','units').'&appid='.config_weather_key;
-			$url_forecast = 'http://api.openweathermap.org/data/2.5/forecast?q='.$this->location.'&lang='.trans('openweathermap', 'lang').'&units='.trans('openweathermap','units').'&appid='.config_weather_key;
+			//if location is given by id=..., lat=...&lon= or zip=... (postal code), a '=' is in the string
+			//otherwise consider it to be the city name
+			if (strpos($this->location,'=') === false)
+				$this->location = 'q='.$this->location;
+			$url_current = 'http://api.openweathermap.org/data/2.5/weather?'.$this->location.'&lang='.trans('openweathermap', 'lang').'&units='.trans('openweathermap','units').'&appid='.config_weather_key;
+			$url_forecast = 'http://api.openweathermap.org/data/2.5/forecast?'.$this->location.'&lang='.trans('openweathermap', 'lang').'&units='.trans('openweathermap','units').'&appid='.config_weather_key;
 			$content = '{"today":'.file_get_contents($url_current).', "forecast":'.file_get_contents($url_forecast).'}';
 			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
 				$cache->write($content);

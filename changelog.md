@@ -11,6 +11,7 @@
 - device.rtrslider supports offset temperature for MDT RTR and supplements (like device.rtr)
 - multimedia.slideshow now refreshes available images in a defineable time
 - basic.offset rounds result to the count of decimals given by "step" attribute
+- weather service openweathermap.org accepts location by ID (id=...), postal code (zip=...) or latidude&longitude (lat=...&lon=...) in adddition to city name
 
 ### Other New Features
 - php8 compatibility (mainly solved by new management of warnings and 'nullsafe' programming)
