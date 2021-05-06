@@ -1,8 +1,8 @@
-#SmartVISU Template Checker
+# SmartVISU Template Checker
 
 Check SmartVISU template files
 
-##Functionality##
+## Functionality
 Currently the following checks are performed:
 
 * __Basic html checks:__ Issues found while parsing the html file are reported
@@ -11,7 +11,7 @@ Currently the following checks are performed:
 * __Widget deprecation check:__ report deprecated widgets and propose a replacement
 * __Item check:__ check items and item types according to a masteritem file provided by the backend 
 
-##Requirements for successful usage##
+## Requirements for successful usage
 For a successful usage of the template checker, there are some requirements regarding your templates:
 
 * __When using {% import "\[file\]" as \[variable\] %}, name the variable always as in the documentation:__  
@@ -23,6 +23,7 @@ In general the variable should reflect the file name, so if you e.g. import "ico
 * __When using own widgets:__  
 Import own widgets to different variable names than standard widgets to avoid name conflicts with the standard widgets.
 Use a standard head in your widget code:
+```
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
@@ -31,11 +32,12 @@ Use a standard head in your widget code:
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
+```
 A docstring declaring the parameters is also necessary for a correct evaluation.
 Widgets are checked in the ./widget directory as well as ./dropins, ./dropins/widgets and &gt;yourpages&lt;/widgets. 
 A description of the widget parameter configuration can be found in file [Developers.md](Developers.md) 
 
-##Cases which could not be fully checked##
+## Cases which could not be fully checked
 There are some cases in which a template file can not be successfully checked, even if it does not contain any issues.
 This is due to the fact that a template files is NOT a "standard HTML" file but an Twig template file.
 
