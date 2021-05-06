@@ -23,6 +23,7 @@ In general the variable should reflect the file name, so if you e.g. import "ico
 * __When using own widgets:__  
 Import own widgets to different variable names than standard widgets to avoid name conflicts with the standard widgets.
 Use a standard head in your widget code:
+```
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
@@ -31,6 +32,7 @@ Use a standard head in your widget code:
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
+```
 A docstring declaring the parameters is also necessary for a correct evaluation.
 Widgets are checked in the ./widget directory as well as ./dropins, ./dropins/widgets and &gt;yourpages&lt;/widgets. 
 A description of the widget parameter configuration can be found in file [Developers.md](Developers.md) 
