@@ -27,8 +27,8 @@ are collected from the widgets docstring. See description in the subsequent sect
 
 # Widget Parameter Configuration
   
-* The docstring of a widget must contain descriptions for each individual parameter starting with the identifier `@param`. The parameter 
-name is defined in the arguments list of the macro call. The sequence of argunents and parameter decriptions must correspond.
+* The docstring of a widget must contain descriptions for each individual parameter - starting with the identifier `@param`. The parameter 
+name is defined in the arguments list of the macro call. The sequence of arguments and parameter descriptions must correspond.
 
 ```
 /**
@@ -44,11 +44,18 @@ name is defined in the arguments list of the macro call. The sequence of argunen
 ```  
 
 * The parameter description is composed as follows: 
-`* @param {type[array form](valid values)<optional><default>}`, e.g. `* @param {text[?](text1,text2)=text1}`
+`* @param {type[array form](valid values)<optional><default>}`, e.g. 
+
+`* @param {text[?](text1,text2)=text1}`
+
   `type`: parameter type is described in the subsequent section
+  
   `array form`: `[]` = parameter must be given as array / `[?]` parameter may be given as single value or as array
+  
   `valid values`: a sequence of valid parameter values in brackets (in some cases additional to predefined values - see below).
+  
   `optional`: a `=` indicates whether a parameter is optional. If missing, it is mandatory.
+  
   `default`: a default value can be defined for optional parameters
 
 
