@@ -22,8 +22,8 @@ which are defined in the loader path for smartVISU.
 
 `[parameter index]` is a zero based numeric value: 0 means the first parameter, 1 the second, 2 the third, ...
 
-`'[type]'` indicates the type of the parameter. Supported types are described in the next section. Parameter types and all aother settings 
-are collected from the widgtes docstring. See description in the subsequent sections.
+`'[type]'` indicates the type of the parameter. Supported types are described in the next section. Parameter types and all other settings 
+are collected from the widgets docstring. See description in the subsequent sections.
 
 # Widget Parameter Configuration
   
