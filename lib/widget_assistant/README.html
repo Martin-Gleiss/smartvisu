@@ -54,10 +54,11 @@ pre {
 <h2 id="table-of-content">Table of Content</h2>
 <ol>
 <li><a href="#howitworks">How it works</a></li>
-<li><a href="#ChangeLog">ChangeLog</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
-<li><a href="#hotkeys">Hot-Keys</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
-<li><a href="#issues">Known issues</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
-<li><a href="#logic_shng">Logics to create masteritem.json</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
+<li><a href="#ChangeLog">ChangeLog</a> <sup><span style="color:red"> <strong>Update</strong></span></sup></li>
+<li><a href="#hotkeys">Hot-Keys</a> <sup><span style="color:red"> <strong></strong></span></sup></li>
+<li><a href="#issues">Known issues</a> <sup><span style="color:red"> <strong></strong></span></sup></li>
+<li><a href="#logic_shng">Logics to create masteritem.json from shNG</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
+<li><a href="#script_fronthem">Script to create masteritem.json for FHEM</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
 </ol>
 <p><a name="howitworks"/></a></p>
 <h2 id="how-it-works">How it works</h2>
@@ -80,6 +81,12 @@ quad.dimmer(&#39;Lueftungsstufe1&#39;, &#39;Lüftungsstufe&#39;, &#39;Haustechni
 </code></pre>
 <p><a name="ChangeLog"/></a></p>
 <h2 id="change-log">Change-Log</h2>
+<h4 id="2021-05-01-version-1-2-0">2021.05.01 - Version 1.2.0</h4>
+<ul>
+<li>added support for all valid values of widget-types from twig-docu</li>
+<li>some optical changes</li>
+<li>added widget specific colours to autocomplete dict for colors (for example 'hidden','blank' for basic.print)</li>
+</ul>
 <h4 id="2021-01-18-version-1-1-0">2021.01.18 - Version 1.1.0</h4>
 <ul>
 <li>changed handling for &quot;render in new window&quot; - if there is no Window a new one will be opened, else the opened window would be refreshed, also if there is a twig error</li>
@@ -207,6 +214,7 @@ No solution right now.  You can reload the page with bypassing the cache,
 then everthing is working again. (STRG+F5 / CTRL + Shift + R)</p>
 <p><a name="logic_shng"/></a></p>
 <h2 id="logic-to-create-masteritem-json-from-shng">Logic to create masteritem.json from shNG</h2>
+<p>Only needed for smarthomeNG <= v1.7.2. As of v1.8 the smartvisu plugin writes the file as default.</p>
 <pre><code>
 #!/usr/bin/env python3
 # create_master_item.py
@@ -221,5 +229,8 @@ f = open("/var/www/html/smartvisu/pages/<strong>YOUR_PAGES</strong>/masteritem.j
 f.write(json.dumps(item_list))
 f.close()
 </code></pre>
-
+<p><a name="script_fronthem"/></a></p>
+<h2 id="script-to-create-masteritem-json-for-fhem">Script to create masteritem.json for FHEM</h2>
+<p>A script can be found in the fronthem / smartVISU Forum<br>
+<a href="https://forum.fhem.de/index.php/topic,118508.msg1135044.html#msg1135044">https://forum.fhem.de/index.php/topic,118508.msg1135044.html#msg1135044</a></p>
 

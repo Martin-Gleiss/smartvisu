@@ -29,13 +29,13 @@ the first one is the base color for values below first threshold, so pass one co
 /**
 * Show and hide a div or popup or collapse a section.
 *
-* @param {id} unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget
-* @param {item(bool,num)} an item witch triggers the collapse
-* @param {value=0} the value on which the target is collapsed (optional, default 0)
+* @param {id} unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget (mandatory)
+* @param {item[?](bool,num)} one or more items which trigger the collapse (minimum one, more will be evaluated in formula only)
+* @param {value[?]=0} the values on which the target will be collapsed (optional, default 0)
 */
-{% macro collapse(id, item_trigger, val_collapsed) %}
-
-	<span id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="status.collapse" data-item="{{ item_trigger }}" data-val-collapsed="{{ val_collapsed|default(0) }}"></span>
+{% macro collapse(id, item_trigger, value) %}
+	{% set value = (value|default([0]) is iterable ? value|default([0]) : [value]) %}	
+	<span id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="status.collapse" data-item="{{ item_trigger }}" data-val="{{ implode(value) }}"></span>
 
 {% endmacro %}
 
@@ -85,7 +85,7 @@ Caution: If this is set, the notification gets not shown until the item has sent
 	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.notify" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_signal }}, {{ item_title }}, {{ item_level }}"
 		data-signal="{{ signal|default('INFO') }}" data-level="{{ level|default('info') }}"
 		{% if item_ack %}data-item-ack="{{ item_ack }}" data-ack-value="{{ ack_value|default(item_ack == item_trigger ? 0 : 1) }}"{% endif %}
-		data-item-signal="{{ item_signal }}" data-item-title="{{ item_title }}" data-item-level="{{ item_level }}""
+		data-item-signal="{{ item_signal }}" data-item-title="{{ item_title }}" data-item-level="{{ item_level }}"
 		class="hide"><h1>{{ title }}</h1><p>{{ text }}</p>
 	</span>
 
@@ -133,15 +133,15 @@ Caution: If this is set, the notification gets not shown until the item has sent
 * @param {text=} standard template to be used (success, error, warning, info) (optional, default = '')
 * @param {item(bool, num, str, list)=} an item to send a value on button-press (optional, default = '')
 * @param {text=} button text (optional, default = '') button will show only if text is specified
-* @param {text=} value to be sent when the button is pressed (optional, default = '0')
-* @param {bool=} an option to close the toast manually (true, false) (optional, default = 'true')
-* @param {text=} time in miliseconds until toast will hide (optional, default = '5000'). 'false' makes it sticky
-* @param {text=} fade-in effect to show the toast (plain, fade, slide) (optional, default = 'slide')
-* @param {bool=} option to display a bargraph loader (true, false) (optional, default = 'true')
-* @param {color=} font color, not to be defined if a template is used (optional, default = '#9EC600')
-* @param {color=} background color, not to be defined if a template is used (optional, default = 'gray')
-* @param {value=} number of stacked toasts. 'false' to show one stack at a time / count showing the number of stacked toasts (optional, default = '5')
-* @param {text=} Alignment of text in the toast i.e. left, right, center (optional, default = 'left')
+* @param {text=0} value to be sent when the button is pressed (optional, default = '0')
+* @param {text(false,true)=true} an option to close the toast manually (true, false) (optional, default = 'true')
+* @param {text=5000} time in miliseconds until toast will hide (optional, default = '5000'). 'false' makes it sticky
+* @param {text(plain,fade,slide)=slide} fade-in effect to show the toast (plain, fade, slide) (optional, default = 'slide')
+* @param {text(false,true)=true} option to display a bargraph loader (true, false) (optional, default = 'true')
+* @param {color=#9EC600} font color, not to be defined if a template is used (optional, default = '')
+* @param {color=gray} background color, not to be defined if a template is used (optional, default = 'gray')
+* @param {text=5} number of stacked toasts. 'false' to show one stack at a time / count showing the number of stacked toasts (optional, default = '5')
+* @param {text(left,center,right)=left} Alignment of text in the toast i.e. left, right, center (optional, default = 'left')
 * @param {text=} Toast position on display (optional, bottom-left, bottom-right, top-left, top-right....) (optional, default = 'bottom-left')
 * 
 * @author bonze 
@@ -158,3 +158,28 @@ Caution: If this is set, the notification gets not shown until the item has sent
 	
 	</span>
 {% endmacro %}
+
+
+/**
+* A widget to display messages received in json format
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item(dict,list))} an item contaning messages in json Format 
+* @param {text=title} a parameter name for the title (optional, default ='title')
+* @param {text=subtitle} a parameter name for the subtitle (optional, default ='subtitle')
+* @param {text=content} a parameter name for the message (optional, default ='content')
+* @param {text=level} a parameter name for the severity level (optional, default ='level') - corresponds to an icon and color to be defined in the language file
+*
+* @author Wolfram v. Hülsen based on a widget from Bonze
+**/
+
+{% macro activelist(id, item_messages, title, subtitle, content, level) %}
+	 
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.activelist" data-item="{{ item_messages }}"
+		data-title="{{ title }}" data-subtitle="{{ subtitle }}" data-content="{{ content }}" data-level="{{ level }}">
+		<ul data-role="listview" class="ui-listview activelist-container" style="margin-top: 0px;margin-bottom: 0em; margin-right:0px;">
+		</ul>
+	</div>
+
+{% endmacro %}
+

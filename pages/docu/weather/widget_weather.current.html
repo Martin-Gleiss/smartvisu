@@ -11,7 +11,7 @@
 {% extends "widget_weather.html" %}
 
 {% block example %}
-<script type="text/javascript">
+<script>
 $( document ).ready(function() {
      io.write('weather.temp', '15' );
      io.write('weather.wind', 'fart from neighbours garden at 0.03 m/s' );
@@ -23,24 +23,22 @@ $( document ).ready(function() {
 
 	<h5>Examples</h5>
 
-	If no location is given, the default location from config (<b>{{ config_weather_location }}</b>) is being used.
+	If no location is given, the default location from config (in your case <b>{{ config_weather_location }}</b>) is being used.
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ weather.weather('weather1') }}
+			{{ weather.current('weather1') }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
-	<div class="html">
-		{{ weather.current('weather1') }}
-	</div>
+	
 	If the location is specified as parameter, the location format must match the format required by the configured online service. 
 	Otherwise the read request will fail.
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ weather.weather('weather2', 'Germany/Bayern/Würzburg') }}
+			{{ weather.current('weather2', 'lat=45&lon=7') }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-		{{ weather.current('weather2', 'Germany/Bayern/Würzburg') }}
+		{{ weather.current('weather2', 'lat=45&lon=7') }}
 	</div>
 	
 	<h5>New in v3.0: Weather data from backend</h5>

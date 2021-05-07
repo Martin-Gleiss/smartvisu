@@ -69,10 +69,9 @@ class WidgetParameterChecker {
 		$string = str_replace("'", "", $string);
 		$string = str_replace('"', '', $string);
 		$p1 = explode($start, $string);
-
 		for($i=1; $i<count($p1); $i++){
 				$p2 = explode($end, $p1[$i]);
-				$p3 = explode(',', $p2[1]);
+				$p3 = (isset($p2[1])) ? explode(',', $p2[1]) : array();
 				$p3 = array_filter($p3, 'strlen');
 				if ($single == 'single'){
 					$p2_0 = explode(',', $p2[0]);
@@ -139,7 +138,7 @@ class WidgetParameterChecker {
 	private function run() {
 		$type = $this->getParamConfig('type', 'unknown');
 		if($type == 'unknown') {
-			$this->addWarning('WIDGET PARAM CHECK', 'Parameter type not defined. Check manually!', $value);
+			$this->addWarning('WIDGET PARAM CHECK', 'Parameter type not defined. Check manually!', null);
 			return;
 		}
 
@@ -193,6 +192,9 @@ class WidgetParameterChecker {
 					// for now we perform the same tests than for type "text"
 					$this->checkParameterTypeText($value);
 					break;
+				case 'percent':
+					$this->checkParameterTypePercent($value);	//new
+					break;
 				case 'unspecified':
 					// this type is not validated at all
 					$this->addInfo('WIDGET UNSPECIFIED PARAM TYPE', 'Parameter can not be checked, check manually', $value);
@@ -216,6 +218,7 @@ class WidgetParameterChecker {
 	 */
 	private function getParameterValue() {
 		$value = $this->widget->getParam($this->paramIndex);
+
 		// parameter not given
 		if ($value == NULL || $value == '') {
 			if ($this->getParamConfig('optional', TRUE)) {
@@ -275,7 +278,7 @@ class WidgetParameterChecker {
 	}
 
 	private function checkParameterValidValues($value) {
-		return in_array($value, $this->paramConfig['valid_values'] ?: array());
+		return in_array($value, $this->paramConfig['valid_values'] ?? array());
 	}
 
 	/**
@@ -426,8 +429,9 @@ class WidgetParameterChecker {
 		if (!$this->checkParameterNotEmpty($value))
 			return;
 
-		if (in_array($value, TemplateCheckerConfig::SmartvisuButtonTypes))
-			return;
+		// moved to function twig_docu @v3.1
+		//if (in_array($value, TemplateCheckerConfig::SmartvisuButtonTypes))
+		//	return;
 
 		// additional widget-specific valid values
 		if ($this->checkParameterValidValues($value))
@@ -445,8 +449,9 @@ class WidgetParameterChecker {
 			return;
 
 		// these are defined based on the smartvisu layout
-		if ($value == 'icon0' || $value == 'icon1')
-			return;
+		//wvhn @v3.1 move icon0 / icon1 in valid values of the individual widgets since not all widgets accept them
+		//	if ($value == 'icon0' || $value == 'icon1')
+		//		return;
 
 		// additional widget-specific valid values
 		if ($this->checkParameterValidValues($value))
@@ -513,7 +518,7 @@ class WidgetParameterChecker {
 			return;
 
 
-		if ($this->paramConfig['valid_values']) {
+		if (isset($this->paramConfig['valid_values'])) {
 			if ($this->checkParameterValidValues($value)) {
 				if (Settings::SHOW_SUCCESS_TOO)
 					$this->addInfo('WIDGET TEXT PARAM CHECK', 'Value is valid', $value, array('Valid Values' => $this->paramConfig['valid_values']));
@@ -580,12 +585,26 @@ class WidgetParameterChecker {
 		}
 
 		$numVal = $value + 0;
-		if ($this->paramConfig['min'] && $numVal < $this->paramConfig['min'] + 0) {
+		if (isset($this->paramConfig['min']) && $numVal < $this->paramConfig['min'] + 0) {
 			$this->addError('WIDGET VALUE PARAM CHECK', 'Value less than allowed minimum value', $value, array('Minimum Value' => $this->paramConfig['min']));
 			return;
 		}
-		if ($this->paramConfig['max'] && $numVal > $this->paramConfig['max'] + 0) {
+		if (isset($this->paramConfig['max']) && $numVal > $this->paramConfig['max'] + 0) {
 			$this->addError('WIDGET VALUE PARAM CHECK', 'Value greater than allowed maximum value', $value, array('Maximum Value' => $this->paramConfig['max']));
+			return;
+		}
+	}
+	
+		/**
+	 * Check widget parameter of type "value"
+	 * @param $value mixed parameter value
+	 */
+	private function checkParameterTypePercent($value) {
+		if (!$this->checkParameterNotEmpty($value))
+			return;
+		$testPos = strpos($value, '%');
+		if ($testPos === false || !is_numeric(substr($value, 0, $testPos)) || strlen($value) != $testPos + 1) {
+			$this->addError('WIDGET VALUE PARAM CHECK', 'Percent value required', $value);
 			return;
 		}
 	}

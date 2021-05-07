@@ -32,9 +32,13 @@ class weather_darksky extends weather
 		if ($cache->hit($this->cache_duration_minutes)) {
 			$content = $cache->read();
 		} else {
+			$loadError = '';
 			$url = 'https://api.darksky.net/forecast/' . config_weather_key . '/' . $this->location . '?exclude=minutely,hourly,alerts&units=auto&lang=' . trans('darksky', 'lang');
 			$content = file_get_contents($url);
-			$cache->write($content);
+			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
+				$cache->write($content);
+			else
+				$loadError = substr(strrchr($this->errorMessage, ':'), 2);
 		}
 
 		$parsed_json = json_decode($content);
@@ -49,16 +53,17 @@ class weather_darksky extends weather
 
 			$wind_speed = transunit('speed', (float)$parsed_json->{'currently'}->{'windSpeed'});
 			$wind_gust = transunit('speed', (float)$parsed_json->{'currently'}->{'windGust'});
-			$wind_direction = $this->getDirection((int)$parsed_json->{'currently'}->{'windBearing'});
+			$wind_dir = weather::getDirection((int)$parsed_json->{'currently'}->{'windBearing'});
 
-			$this->data['current']['wind'] = translate('wind', 'darksky') . " " . $wind_speed;
+			$this->data['current']['wind'] = translate('wind', 'weather') . " " . $wind_speed;
 			// when there is no wind, direction is blank
 			if ($parsed_json->{'currently'}->{'windSpeed'} != 0)
-				$this->data['current']['wind'] .= " " . translate('from', 'darksky') . " " . $wind_direction;
+				$this->data['current']['wind'] .= " " . translate('from', 'weather') . " " . $wind_dir;
 			if ($wind_gust > 0)
-				$this->data['current']['wind'] .= ", " . translate('wind_gust', 'darksky') . " " . $wind_gust;
+				$this->data['current']['wind'] .= ", " . translate('wind_gust', 'weather') . " " . $wind_gust;
 
-			$this->data['current']['more'] = translate('humidity', 'darksky') . " " . transunit('%', 100 * (float)$parsed_json->{'currently'}->{'humidity'});
+			$this->data['current']['more'] = translate('humidity', 'weather') . " " . transunit('%', 100 * (float)$parsed_json->{'currently'}->{'humidity'});
+			$this->data['current']['misc'] = translate('air pressure', 'weather') . " " . $parsed_json->{'currently'}->{'pressure'}.' hPa';
 
 			// forecast
 			$i = 0;
@@ -75,8 +80,11 @@ class weather_darksky extends weather
 				$i++;
 			}
 		} else {
-			$add = $parsed_json->{'flags'}->{'darksky-unavailable'};
-			$this->error('Weather: darksky.net', 'Read request failed' . ($add ? ': ' . $add : '') . '!');
+			if ($loadError != '')
+				$add = $loadError;
+			else
+				$add = $parsed_json->{'flags'}->{'darksky-unavailable'};
+			$this->error('Weather: darksky.net', 'Read request failed'.($add ? ' with message: <br>'.$add : '!'));
 		}
 	}
 
@@ -104,47 +112,6 @@ class weather_darksky extends weather
 		return $ret;
 	}
 
-	function getDirection($degree)
-	{
-		$direction = '';
-
-		if ($degree > 348 or $degree <= 11) {
-			$direction = translate('dir_n', 'darksky');
-		} elseif ($degree > 11 and $degree <= 34) {
-			$direction = translate('dir_nne', 'darksky');
-		} elseif ($degree > 34 and $degree <= 56) {
-			$direction = translate('dir_ne', 'darksky');
-		} elseif ($degree > 56 and $degree <= 79) {
-			$direction = translate('dir_ene', 'darksky');
-		} elseif ($degree > 79 and $degree <= 101) {
-			$direction = translate('dir_e', 'darksky');
-		} elseif ($degree > 101 and $degree <= 123) {
-			$direction = translate('dir_ese', 'darksky');
-		} elseif ($degree > 123 and $degree <= 146) {
-			$direction = translate('dir_se', 'darksky');
-		} elseif ($degree > 146 and $degree <= 169) {
-			$direction = translate('dir_sse', 'darksky');
-		} elseif ($degree > 169 and $degree <= 191) {
-			$direction = translate('dir_s', 'darksky');
-		} elseif ($degree > 191 and $degree <= 214) {
-			$direction = translate('dir_ssw', 'darksky');
-		} elseif ($degree > 214 and $degree <= 236) {
-			$direction = translate('dir_sw', 'darksky');
-		} elseif ($degree > 236 and $degree <= 259) {
-			$direction = translate('dir_wsw', 'darksky');
-		} elseif ($degree > 259 and $degree <= 281) {
-			$direction = translate('dir_w', 'darksky');
-		} elseif ($degree > 281 and $degree <= 304) {
-			$direction = translate('dir_wnw', 'darksky');
-		} elseif ($degree > 304 and $degree <= 326) {
-			$direction = translate('dir_nw', 'darksky');
-		} elseif ($degree > 326 and $degree <= 348) {
-
-			$direction = translate('dir_nnw', 'darksky');
-		}
-
-		return $direction;
-	}
 }
 
 

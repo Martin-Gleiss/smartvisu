@@ -13,13 +13,12 @@
 
 {% endblock %}
 {% block example %}
-<script type="text/javascript">
+<script>
 	$( document ).ready(function() {
 			 io.write('this', '1' );
 			 io.write('that', '1' );
 			 io.write('theother', '1' );
 		});
-
 </script>
 	<h5>Example</h5>
 	<div class="html">
@@ -37,7 +36,7 @@ Single Print
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.print('formatvalue', 'that', '%', '', [10,150], ['#0f0','#ff0','#f00'], '', 'placeholder', 'one % value with thresholds', 'that')   }}
+{{ quad.print('formatvalue1', 'that', '%', '', [10,150], ['#0f0','#ff0','#f00'], '', 'placeholder', 'one % value with thresholds', 'that')   }}
 	</ul></div>
 
 Multiple print
@@ -48,7 +47,7 @@ Multiple print
 	</div>
 	<div class="html">
 		<ul data-role="listview" data-dividertheme="c" class="quad_list">
-	{{ quad.print('formatvalue2', ['this','that'], ['%','°'], ['','VAR*2'], [0,[15,300]], [['#0f0','#ff0'],['#0f0','#ff0','#f00']], '', 'place', 'two values, with 2* formula', ['this','that'], ['this.plot', 'that.plot'])   }}
+	{{ quad.print('formatvalue02', ['this','that'], ['%','°'], ['','VAR*2'], [0,[15,300]], [['#0f0','#ff0'],['#0f0','#ff0','#f00']], '', 'place', 'two values, with 2* formula', ['this','that'], ['this.plot', 'that.plot'])   }}
 	</ul></div>
 
 	Four different prints
@@ -59,7 +58,7 @@ Multiple print
 		</div>
 		<div class="html">
 			<ul data-role="listview" data-dividertheme="c" class="quad_list">
-	{{ quad.print('formatvalue3', ['this','that', ' ', 'theother'], ['%','°'], ['VAR*2','','',''], [[1,5],'', '',''], [['#0f0','#ff0','#f00'],['#0f0','#ff0'],'',''], '', 'placeholder', '3 values, 1 empty column', ['this','that', '', 'theother'])   }}
+	{{ quad.print('formatvalue03', ['this','that', ' ', 'theother'], ['%','°'], ['VAR*2','','',''], [[1,5],'', '',''], [['#0f0','#ff0','#f00'],['#0f0','#ff0'],'',''], '', 'placeholder', '3 values, 1 empty column', ['this','that', '', 'theother'])   }}
 	</ul></div>
 
 	Using Scripts to change other elements. Leave the item empty and give the column an id name

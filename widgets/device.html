@@ -117,12 +117,12 @@
 * @param {value=5} step between two values (optional, default: 5)
 * @param {image=light_light} the pic for the 'on' state (optional)
 * @param {image=light_light} the pic for the 'off' state (optional)
-* @param {color=icon1} the color for the 'on' state (optional)
-* @param {color=icon0} the color for the 'off' state (optional)
+* @param {color(icon0,icon1)=icon1} the color for the 'on' state (optional)
+* @param {color(icon0,icon1)=icon0} the color for the 'off' state (optional)
 * @param {text(input,handle,both,none)=none} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'none')
 * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
 * @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
-* @param {text='left'} position of the switch: left (default) or right
+* @param {text(left,right)=left} position of the switch: left (default) or right
 */
 
 {% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos) %}
@@ -159,14 +159,14 @@
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtr" class="rtr">
 		<div class="actual">
-			<div class="temp">{{ basic.print('', item_actual, '°' ) }}</div>
+			<div class="temp">{{ basic.print('', item_actual, 'temp' ) }}</div>
 			<div class="text">{{ txt }} {% if item_txt %} {{ basic.print('', item_txt, 'text') }} {% endif %}</div>
 		</div>
 		<br>
 		{% if item_set %}
 			<div class="set">
 				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.5)), 'minus', '', 'micro' ) }}
-				<div class="temp">{{ basic.print('', item_set, '°' ) }}</div>
+				<div class="temp">{{ basic.print('', item_set, 'temp' ) }}</div>
 				{{ basic.offset('', item_offset|default(item_set), step|default(0.5), 'plus', '', 'micro' ) }}
 			</div>
 		{% endif %}
@@ -208,19 +208,21 @@
 * @param {item(bool,num)=} an item for night (3x bit or 1x byte, optional)
 * @param {item(bool,num)=} an item for frost (3x bit or 1x byte, optional)
 * @param {item(bool,num)=} an item for the current state of the actor (optional)
-* @param {value=0} the minimum value if the slider is moved to total left (optional, default: 18)  
-* @param {value=255} the maximum value if the slider is moved to total right (optional, default: 28)  
+* @param {value=18} the minimum value if the slider is moved to total left (optional, default: 18)  
+* @param {value=28} the maximum value if the slider is moved to total right (optional, default: 28)  
 * @param {value=.1} step between two values (optional, default: .1)  
-* @param {bool=false} display a scale with values along the slider (optional, default='true')
+* @param {text(false,true)=false} display a scale with values along the slider (optional, default='true')
 * @param {value=1} scale-integer, the scale-divider for the scale
+* @param {item(num)=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
+* @param {text[]=} list of additional widgets / content to display
 *
 * @author Bonze, Wolfram v. Hülsen
 **/
-{% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval) %}
+{% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval, item_offset, supplements) %}
 
 {% import "basic.html" as basic %}
 
-	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{item_actual}},{{item_set}}"  
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{item_actual}},{{item_set}},{{item_offset}}"  
 		data-scale_min="{{min | default('18')}}" data-scale_max="{{max| default('28')}}" data-step="{{step | default('.1')}}"  
 		data-scale_interval="{{scale_interval | default('1')}}" style="margin:auto; position:relative;"> 
 		
@@ -240,7 +242,7 @@
 	</div>
 	/** elements copied from device.rtr **/
 	{% if item_set %}
-		<div class="set" style="position:relative; ">
+		<div class="set" style="position:relative; z-index: 3;">
 			<div>
 				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro' ) }}
 				{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro' ) }}
@@ -248,7 +250,7 @@
 		</div>
 	{% endif %}
 
-	{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty %}
+	{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty or supplements is not empty %}
 		<div class="control" style="position:relative;">
 			{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
 				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
@@ -268,6 +270,9 @@
 			{% if item_state is not empty %}
 				{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
 			{% endif %}
+			{% for supplement in supplements %}
+				{{ supplement|raw }}
+			{% endfor %}
 		</div>
 	{% endif %}
 		
@@ -485,19 +490,27 @@
 	num: [min, max, step],
 	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'],
 	text: no value parameter
-* @param {color=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
-* @param {color=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
+* @param {color(icon0,icon1)=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
+* @param {color(icon0,icon1)=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
+* @param {type=icon}  button sized 'micro', 'mini' or 'midi' or icon (optional, default = 'icon')
+* @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
 *
 * @author Michael Wuertenberger
 */
 
-{% macro uzsuicon(id, item, headline, pic_on, pic_off, valueType, valueParameterList, color_on, color_off, _backend) %}
+{% macro uzsuicon(id, item, headline, pic_on, pic_off, valueType, valueParameterList, color_on, color_off, type, _backend) %}
 	{% import "basic.html" as basic %}
+	
+	{% if type not in ['micro','mini','midi'] %}
+		{% set type = 'icon' %}
+	{% else %}
+		{% set uitype = 'ui-'~type %}
+	{% endif %}
 
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsuicon" data-item="{{ item }}"
-		data-headline="{{ headline|default('UZSU') }}" data-designType="{{ _backend }}"
+		data-headline="{{ headline|default('UZSU') }}" data-designType="{{ backend }}"
 		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
-		class="icon">
+		{% if type == 'icon' %} class="icon" {% else %} class="ui-btn {{ uitype }} ui-corner-all ui-btn-inline ui-shadow" {% endif %} >
 		<a>
 			<span class="icon-off">{{ basic.icon(pic_off|deficon('time_timer_switch.svg'), color_off) }}</span>
 			<span class="icon-on hide">{{ basic.icon(pic_on|deficon('time_timer_switch.svg'), color_on|default('icon1')) }}</span>
@@ -513,11 +526,12 @@
 * @param {id=} unique id for this widget (optional)
 * @param {item(dict)} the item of the UZSU (NOT the item which is switched by UZSU)
 * @param {text=UZSU} title of graph (optional, default: UZSU)
-* @param {value=0} allow changes (optional, default: 0)
+* @param {value(0,1)=0} set to '1' in order to allow changes by dragging points (optional, default: 0)
 * @param {text(bool,num)=bool} supported types are 'bool' and 'num' (optional, default: bool)
 * @param {text[]=} valueParameterList depending on valueType (optional):
 	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
 	num: [min, max, step]
+* @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
 *
 * @author Stefan Widmer
 */
@@ -538,35 +552,35 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item(dict)} the item of the UZSU (NOT the item which is switched by UZSU)
-* @param {headline(text)=''} headline of Table (optional, default: empty)
-* @param {value_on='1'} value for 'on' state (optional)
-* @param {value_off='0'} value for 'off' state (optional)
-* @param {color_on(colour)='green'} the color for the 'on' state, e.g. '#f00' for red (default 'green' of the design)
-* @param {color_off(colour)='red'} the color for the 'off' state, e.g. '#f00' for red (default 'red' of the design)
-* @param {color_on_disabled(colour)='lightgrey'} the color for the 'off' state for disabled entries, e.g. '#f00' for red (default 'lightgrey' of the design)
-* @param {color_off_disabled(colour)='grey'} the color for the 'off' state for disabled entries, e.g. '#f00' for red (default 'grey' of the design)
-* @param {fill(bool)='true'} fill the times from ON to OFF with ON-color (default 'true' )
-* @param {granularity(text)='1h'} granularity of the timetable, valid values '5m', '10m','15m','30m','1h' (default '1h' )
-* @param {borderstyle[?](text)='solid,horizontal,none'} style of the cell border, valid valus solid,horizontal,hourly, none (default 'solid' )
-	list:  ['5m:solid','10m:hourly','15m:hourly','30m:horizontal','1h:horizontal']
-* @param {showzoombutton(bool)='true'} show the zoom button for different granularity (default 'true' )
-* @param {showtooltip(bool)='true'} show the switching times in a tooltip (default 'true' )
-* @param {showsun(bool)='true'} show the sunrise/sunset-times as line on the table (default 'true' )
-* @param {showactualtime(bool)='true'} show the actual time as line on the table (default 'true' )
-* @param {inactivestyle(num)=1} style of inactive-mode 1=opacity 50% /  2=Text "Inactive" you can combine 1+2=3 (default '1' )
-* @param {valueType(bool,num,list,text)=bool} supported types are 'bool', 'num', 'list', 'text' (optional, default: bool)
-* @param {valueparameterlist(text[])=}  depending on valueType (optional):
+* @param {text=} headline of Table (optional, default: empty)
+* @param {value=1} value for 'on' state (optional)
+* @param {value=0} value for 'off' state (optional)
+* @param {color=green} the color for the 'on' state, e.g. '#f00' for red (default 'green' of the design)
+* @param {color=red} the color for the 'off' state, e.g. '#f00' for red (default 'red' of the design)
+* @param {color=lightgrey} the color for the 'off' state for disabled entries, e.g. '#f00' for red (default 'lightgrey' of the design)
+* @param {color=grey} the color for the 'off' state for disabled entries, e.g. '#f00' for red (default 'grey' of the design)
+* @param {text(false,true)=true} fill the times from ON to OFF with ON-color (default 'true' )
+* @param {duration=1h} granularity of the timetable, valid values '5m', '10m','15m','30m','1h' (default '1h' )
+* @param {text[?]=solid} style of the cell border, valid values solid,horizontal,hourly, none (default 'solid' )
+	also valid: combination with granularity as a list: ['5m:solid','10m:hourly','15m:hourly','30m:horizontal','1h:horizontal']
+* @param {text(false,true)=true} show the zoom button for different granularity (default 'true' )
+* @param {text(false,true)=true} show the switching times in a tooltip (default 'true' )
+* @param {text(false,true)=true} show the sunrise/sunset-times as line on the table (default 'true' )
+* @param {text(false,true)=true} show the actual time as line on the table (default 'true' )
+* @param {value(1,2,3)=1} style of inactive-mode 1=opacity 50% /  2=Text "Inactive". You can combine 1+2=3 (default '1' )
+* @param {text(bool,num,list,text)=bool} supported types are 'bool', 'num', 'list', 'text' (optional, default: bool)
+* @param {text[]=}  depending on valueType (optional):
 	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
 	num: [min, max, step],
 	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'],
 	text: no value parameter
-* @param {_backend(num)=''} 2="FHEM" (optional)
+* @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
 *
 * @author      Andre Kohler
 */
 
 
-{% macro uzsutable(id, item, headline, value_on, value_off, color_on,color_off, color_on_disabled, color_off_disabled, fill, granularity, borderstyle, showzoombutton, showtooltip, showsun, showactualtime, inactivestyle, valueType, valueParameterList, _backend) %}
+{% macro uzsutable(id, item, headline, value_on, value_off, color_on, color_off, color_on_disabled, color_off_disabled, fill, granularity, borderstyle, showzoombutton, showtooltip, showsun, showactualtime, inactivestyle, valueType, valueParameterList, _backend) %}
 	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsutable" data-item="{{ item }}"
 		data-headline="{{ headline|default('') }}" data-designType="{{ _backend|default('') }}"
 		data-val-on="{{ value_on|default(1) }}" data-val-off="{{ value_off|default(0) }}" data-granularity="{{ granularity|default('1h') }}"
@@ -612,21 +626,14 @@
  * @param {value=0} the value for opened (optional, default 0)
  * @param {value=255} the value for closed (optional, default 255)
  * @param {value=5} step between two values (optional, default 5)
- * @param {color=} color e.g. '#f00' for red (constant, 'icon0' and 'icon1' can NOT be used) (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
+ * @param {color(icon0,icon1)=icon1} color for 'open' state, e.g. '#f00' for red (constant, 'icon0' and 'icon1' can NOT be used) (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
+ *
+ * @author Wolfram v. Hülsen
  */
 {% macro window (id, txt, item_move, item_stop, item_pos, item_shade, item_window_r, item_window_l, type, min, max, step, color ) %}
 	{% import   "basic.html" as basic %}
 	{% set uid = uid(page, id) %}
 		
-	<style>
-	.pos .ui-slider .ui-input-text {
-		display: none !important;
-	}
-	.pos .ui-slider-track, .pos .ui-slider-switch {
-		margin: 0 15px 15px 15px !important;
-	}
-	</style>
-	
 	<a id="{{ uid }}-button" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %} data-rel="popup"
 		class=" {%- if type == 'icon' -%} /**- display as icon -*/
 						switch ui-link

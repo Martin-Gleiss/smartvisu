@@ -24,10 +24,10 @@
 
 	Forecast for today
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; weather.forecast('weather2', 'Germany/Bayern/Würzburg', 0) &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; weather.forecast('weather2', 'lat=45&lon=7', 0) &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ weather.forecast('weather2', 'Germany/Bayern/Würzburg', 0) }}
+		{{ weather.forecast('weather2', 'lat=45&lon=7', 0) }}
 	</div>
 
 {% endblock %}

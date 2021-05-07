@@ -31,7 +31,7 @@
 */
 {% macro updatecheck( ) %}
 	{% if config_updatecheck %}
-		<script type="text/javascript">
+		<script>
 			$('#index').on('pagecreate', function (event, ui) {
 				$.getJSON('lib/base/check_update.php?local={{ config_version_full }}', function (data) {
 					if (data.update) {
@@ -64,7 +64,7 @@
 
 	<div class="app">
 		<a href="index.php?page={{ name }}">
-			<div class="image" style="background-color: #{{ app.color }};"><img src="{{ app.icon }}"></div>
+			<div class="image" style="background-color: #{{ app.color }};"><img src="{{ app.icon }}" alt="{{ app.name }}></div>
 			<div>{{ title|default(app.title|e) }}</div>
 		</a>
 	</div>
@@ -72,11 +72,12 @@
 
 /**
 * Widget to show websocket connection
+*
 */
-{% macro connection() %}
+{% macro connection( ) %}
 {% import "basic.html" as basic %}
 	io connection:&nbsp;&nbsp;<span id="connection"></span>
-	<script type="text/javascript">
+	<script>
 		$('#connection').html(io.socket.url);
 		if (io.server != undefined) { 
 			if (io.server != '') {						// if io.server already set write it directly
@@ -104,7 +105,7 @@
 */
 {% macro timestamp (id, item) %}
 	<button type="button" data-theme="a" data-inline="true" id="send_timestamp_{{ uid(page, id) }}" class="ui-midi">Trigger</button> Click to start
-	<script type="text/javascript">
+	<script>
 		$('#send_timestamp_{{ uid(page, id) }} ').click(function() {
 			var now = +new Date();	
 			io.write('{{ item }}', now );

@@ -154,9 +154,16 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		var id = this.element.attr('id');
 		var scale_min = this.options.scale_min;  //18;
 		var scale_max = this.options.scale_max;  //28;
-		var step = this.options.step;   //0.1;
+		var step = this.options.step * 1;   //0.1;
+		var decs = step.decimals();
 		var unit = "°C";
 		var scale_interval = this.options.scale_interval;
+		
+		// some RTR use a different item for temperature offset, eg. MDT
+		if (item_names[2] != "")	{
+			  var set_old = response[1];
+			  var offset_old = response[2];
+		}
 						
 		//get colors
 		var bg_color = $('.ui-bar-b').css('background-color');
@@ -260,7 +267,12 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		editableTooltip: false,
 		svgMode: true,
 		update: function (args) {
-			io.write(item_names[1], args.value);	
+			if (item_names[2] != "") { 
+				var delta = args.value - set_old;
+				io.write(item_names[2], (offset_old + delta).toFixed(decs));
+			}
+			else
+				io.write(item_names[1], args.value);	
 		},
 	
 		tooltipColor: function (args) {
@@ -277,10 +289,10 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		},
 			
 		create: function() {
-			 $("#"+id).find(".inner-handle").css({
-				 'position': 'absolute',
-					'left': '-35px'}
-				 );
+			$("#"+id).find(".inner-handle").css({
+				'position': 'absolute',
+				'left': '-35px'}
+				);
 		  }
 		});
 	},
@@ -1246,7 +1258,7 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
 
     // hier wir die aktuelle Seite danach durchsucht, wo das Popup ist und im folgenden das Popup initialisiert, geöffnet und die schliessen
     // Funktion daran gebunden. Diese entfernt wieder das Popup aus dem DOM Baum nach dem Schliessen mit remove
-    uzsuPopup.popup('open');//.css({ position: 'fixed', top: '30px' });
+    uzsuPopup.popup('open'); //.css({ position: 'fixed', top: '30px' });
   }
 
 });
@@ -1357,6 +1369,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
     // draw the plot
     var chart = this.element.highcharts({
+	  chart: { styledMode: true },
       title: { text: this.options.headline },
       legend: false,
       series: [
@@ -1485,12 +1498,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       },
       plotOptions: {
         series: {
-          draggableX: this.options.editable,
-          dragPrecisionX: timeStep,
-          draggableY: this.options.editable,
-          dragPrecisionY: step,
-          dragMinY: min,
-          dragMaxY: max,
+			dragDrop : {
+				draggableX: this.options.editable,
+				dragPrecisionX: timeStep,
+				draggableY: this.options.editable,
+				dragPrecisionY: step,
+				dragMinY: min,
+				dragMaxY: max
+		  },
           cursor: this.options.editable ? 'move' : null,
           marker: { enabled: true },
           stickyTracking: false,

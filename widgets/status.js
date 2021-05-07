@@ -38,13 +38,15 @@ $.widget("sv.status_collapse", $.sv.widget, {
 
 	options: {
 		id: null,
-		'val-collapsed': 0
+		val: ''
 	},
 	
 	_update: function(response) {
-		// response is: {{ gad_trigger }}
+		// response is: {{ item_trigger }}
 		var target = $('[data-bind="' + this.options.id + '"]');
-		if (response[0] != this.options['val-collapsed']) {
+		var comp = String(this.options.val).explode(); 
+
+		if (comp.indexOf(String(response[0])) == -1) {
 			target.not('.ui-collapsible').not('.ui-popup').show();
 			target.filter('.ui-collapsible').collapsible("expand");
 			target.filter('.ui-popup').popup("open");
@@ -329,5 +331,102 @@ $.widget("sv.status_toast", $.sv.widget, {
 	
 	_events: {
 	}
+});
+
+// ----- status.activelist ----------------------------------------------------
+$.widget("sv.status_activelist", $.sv.widget, {
+
+	initSelector: '[data-widget="status.activelist"]',
+
+	options: {
+		level: '',
+		title: '',
+		subtitle: '',
+		content: ''
+	},
+	
+
+	_update: function(response) {
+		var node = $(".activelist-container");
+		node.empty();
+		var data = response[0]; 
+		var level = this.options.level;
+		var title = this.options.title;
+		var subtitle = this.options.subtitle;
+		var content = this.options.content;
+		
+		for (var i = 0; i < data.length; i++) { 
+			showMessage(data[i]);
+		};
+		
+		
+		function showMessage(messages) {
+					
+			// handle status_event_format in lang.ini
+				$.each(sv_lang.status_event_format, function(pattern, attributes) {
+					if(messages[level] != null && messages[level].toLowerCase().indexOf(pattern.toLowerCase()) > -1) { // message level contains pattern
+						// set each defined property
+						$.each(attributes, function(prop, val) {
+							messages[prop] = val;
+						});
+					}
+				});
+
+							
+				//if no icon provided
+				if(!messages.icon){
+					//if no default provided
+					if (typeof(sv_lang.status_event_format.default_img_status) === undefined || sv_lang.status_event_format.default_img_status.icon == "" ){
+						messages.icon = "pages/base/pics/trans.png";
+						messages.color = 'transparent';
+					}else{
+						messages.icon = sv_lang.status_event_format.default_img_status.icon;
+						messages.color = sv_lang.status_event_format.default_img_status.color;
+					}
+				}
+
+				// amend icon path/filename
+				if(messages.icon) {
+					// add default path if icon has no path
+					if(messages.icon.indexOf('/') == -1)
+						messages.icon = 'icons/ws/'+messages.icon;
+					// add svg suffix if icon has no suffix
+					if(messages.icon.indexOf('.') == -1)
+						messages.icon = messages.icon+'.svg';
+
+				};
+				
+				var a =  $('<li  data-id= "entry'+i+'" data-icon="false" style="margin-top:1px;margin-bottom:1px; margin-left:1em;  padding:0px; display:block; padding-right:0px;  ">').append(
+						$('<a class="ui-btn" style="padding:0px; width: 100%; max-height:50px;" >'
+					).append(
+						$('<img class="icon" style=" float:left;">').css('background', messages.color ).attr('src', messages.icon)
+					).append(
+						$('<div class="color1" style="float:left; left: 50px; width:6px; height:48px; margin-right:6px;">').css('background', '#666666')
+					).append(
+						$('<h3 style=" overflow: visible; white-space: nowrap;">').text(messages[title])
+					).append(
+						$('<p style="margin-top: -0.5em;">').text(messages[subtitle])
+					));
+			$(".activelist-container").append(a);
+			
+			var contentfield = '<div class="content" style=" display: none; margin-left:1em; margin-bottom:2em; height:100%; text-align:left;"> '+messages[content]+'</div>';
+			$(".activelist-container").append(contentfield);
+			
+			//node.trigger('prepare').listview('refresh').trigger('redraw');
+		};
+			
+		
+		//add Description Text to entry
+		$("li").click(function() {
+			if ($(".content").css("display").length == 0){
+				$(".content").css("display","none");
+			}else{
+			//	var id = $(this).attr('data-id');
+				$(this).next('.content').slideToggle('slow');
+			}
+		});
+	},
+	
+
 });
 

@@ -58,7 +58,7 @@
 	</div>
 
 	Standard Icon if both values are 0<br />
-	Sound icon if at least one is <=1 and one > 0<br />
+	Sound icon if at least one is &lt;=1 and one &gt; 0<br />
 	no icon when one of the values is 2<br />
 	lock icon if one of the value is >= 3<br />
 	<div class="twig">
@@ -141,20 +141,26 @@
 		{{ basic.symbol('', 'bath.light.value', ['low','medium','high'], ['control_1','control_2','control_3'], [85,170], '>') }}
 	</div>
 
-	New in v3.0: size of symbols may be altered (flip the switch to "on" )
+	New in v3.0: size of symbols may be altered. As from v3.1 buttons are also provided and an additional text can be displayed on the 
+	button(flip the switch to "on" )
 	<div class="html">
 		{{ basic.flip('', 'bath.light.switch') }}
 	</div>
 	<code class="twig prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', '', '', '', 'micro') }}
-		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', '', '', '', 'mini') }}
-		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', '', '', '', 'icon') }}
-		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', '', '', '', 'midi') }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', '', '', '', 'micro') }}   // or 'mini', 'icon', 'midi'
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', '', '', '', 'btn-micro') }} // or 'btn-mini', 'btn-midi'
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', '', '', '', 'btn-mini', 'bath') }} // or 'btn-micro', 'btn-midi'
 	{% endverbatim %}{% endfilter %}</code>
 	<div class="html">
 		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg','','','','','','micro') }}
 		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg','','','','','','mini') }}
 		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg','','','','','','icon') }}
-		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg','','','','','','midi') }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg','','','','','','midi') }} <br />
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg','','','','','','btn-micro') }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg','','','','','','btn-mini') }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg','','','','','','btn-midi') }}
+		{{ basic.symbol('', 'bath.light.switch', 'Light on', 'light_light.svg', '', '', '', '', '', 'btn-mini', 'bath') }}
+		
+			
 	</div>
 {% endblock %}

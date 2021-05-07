@@ -707,7 +707,9 @@ $.widget("sv.basic_offset", $.sv.widget, {
 	_events: {
     'click': function (event) {
 			var step = this.options.step * 1;
-			this._write(widget.get(this.options.item) * 1 + step);
+			var decs = step.decimals();
+			var newval = (widget.get(this.options.item) * 1 + step).toFixed(decs);
+			this._write(newval);
 		}
 	}
 
@@ -919,13 +921,17 @@ $.widget("sv.basic_slider", $.sv.widget, {
 		min: 0,
 		max: 255,
 		'min-send': 0,
-		'max-send': 255
+		'max-send': 255,
+		'live': 1
 	},
 
 	_mem: null,
 	_timer: false,
 	_lock: false,
 	_sliding: false,
+	_inputactive: false,
+	_changeactive: false,
+
 
 	_update: function(response) {
 		var val = response[0];
@@ -948,7 +954,9 @@ $.widget("sv.basic_slider", $.sv.widget, {
 
 	_events: {
 		'slidestart': function (event) {
+			console.log('io slidestart');
 			this._sliding = true;
+			this._inputactive = false;
 		},
 
 		'slidestop': function (event) {
@@ -958,12 +966,22 @@ $.widget("sv.basic_slider", $.sv.widget, {
 		},
 
 		'change': function (event) {
-			this._send();
+			if (this.options['live'] == 1 || this._inputactive ) 
+				this._send();
+			else 
+				this._changeactive = true;
+		},
+		
+		'click': function (event) {
+			this._inputactive = true;
+			if (this._changeactive) this._send();
 		},
 	},
 
 	_send: function() {
 		var val = this.element.val();
+		this._inputactive = false;
+		this._changeactive = false;
 		if (!this._lock && !this._timer && val != this._mem) {
 			this._timer = true;
 			this._mem = val;

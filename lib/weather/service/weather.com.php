@@ -24,8 +24,10 @@ class weather_weather extends weather
 	 */
 	public function run()
 	{
-		$units = 'm';
+		$units = trans('weather.com', 'units');
 		$data_node = 'metric';
+		if ($units == "e") 	$data_node = 'imperial';
+		if ($units == "h") 	$data_node = 'uk_hybrid';
 
 		// api call 
 		$cache = new class_cache('weather_'.$this->location.'_current.json');
@@ -35,9 +37,13 @@ class weather_weather extends weather
 		}
 		else
 		{
+			$loadError_current = '';
 			$url = 'https://api.weather.com/v2/pws/observations/current?stationId='.$this->location.'&format=json&units='.$units.'&apiKey='.config_weather_key;
 			$content = file_get_contents($url);
-			$cache->write($content);
+			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
+				$cache->write($content);
+			else
+				$loadError_current = substr(strrchr($this->errorMessage, ':'), 2);
 		}
 
 		$cache_forecast = new class_cache('weather_'.$this->location.'_forecast.json');
@@ -47,9 +53,13 @@ class weather_weather extends weather
 		}
 		else
 		{
-			$url_forecast = 'https://api.weather.com/v3/wx/forecast/daily/5day?postalKey='.config_weather_postal.'&units=m&language='.config_lang.'&format=json&apiKey='.config_weather_key;
+			$loadError_forecast = '';
+			$url_forecast = 'https://api.weather.com/v3/wx/forecast/daily/5day?postalKey='.config_weather_postal.'&units='.$units.'&language='.trans('weather', 'lang').'&format=json&apiKey='.config_weather_key;
 			$content_forecast = file_get_contents($url_forecast);
-			$cache_forecast->write($content_forecast);
+			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
+				$cache_forecast->write($content_forecast);
+			else
+				$loadError_forecast = substr(strrchr($this->errorMessage, ':'), 2);
 		}
 
 		// parse current
@@ -66,18 +76,22 @@ class weather_weather extends weather
 
 			$wind_speed = transunit('speed', (float)$parsed_json->{'observations'}[0]->{$data_node}->{'windSpeed'});
 			$wind_gust = transunit('speed', (float)$parsed_json->{'observations'}[0]->{$data_node}->{'windGust'});
-			$wind_direction = $this->getDirection((float)$parsed_json->{'observations'}[0]->{'winddir'});
-
-			$this->data['current']['wind'] = translate('wind', 'wunderground')." ".$from." ".$wind_direction.", ".translate('wind_speed', 'wunderground')." ".$wind_speed;
+			$wind_dir = weather::getDirection((float)$parsed_json->{'observations'}[0]->{'winddir'});
+			$wind_desc = weather::getWindDescription($wind_speed);
+			$this->data['current']['wind'] = $wind_desc." ".translate('from', 'weather'). ' '. $wind_dir." ".translate('at', 'weather')." ".$wind_speed;
 			if ($wind_gust > 0)
 				$this->data['current']['wind'] .= ", ".translate('wind_gust', 'wunderground')." ".$wind_gust;
 
-			$this->data['current']['more'] = translate('humidity', 'wunderground')." ".(string)$parsed_json->{'observations'}[0]->{'humidity'}." %";
+			$this->data['current']['more'] = translate('humidity', 'weather')." ".(string)$parsed_json->{'observations'}[0]->{'humidity'}." %";
+			$this->data['current']['misc'] = translate('air pressure', 'weather')." ".(string)$parsed_json->{'observations'}[0]->{$data_node}->{'pressure'}." hPa";
 		}
 		else
 		{
-			$add = $parsed_json->{'response'}->{'error'}->{'description'};
-			$this->error('Weather: weather.com', 'Current read request failed'.($add ? ': '.$add : '').'!');
+			if ($loadError_current != '')
+				$add = $loadError_current;
+			else
+				$add = $parsed_json->{'response'}->{'error'}->{'description'};
+			$this->error('Weather: weather.com', 'Current read request failed'.($add ? ' with message: <br>'.$add : '!'));
 		}
 		
 		// parse forecast
@@ -100,22 +114,18 @@ class weather_weather extends weather
 				$this->data['forecast'][$i]['date'] = (string)$parsed_json_forecast->{'daypart'}[0]->{'daypartName'}[$i];
 				$this->data['forecast'][$i]['conditions'] = (string)$parsed_json_forecast->{'daypart'}[0]->{'wxPhraseLong'}[$i];
 				$this->data['forecast'][$i]['icon'] = $this->icon((int)$parsed_json_forecast->{'daypart'}[0]->{'iconCode'}[$i]);
-				$this->data['forecast'][$i]['temp'] = (float)$parsed_json_forecast->{'daypart'}[0]->{'temperature'}[$i].'&deg;';
+				$this->data['forecast'][$i]['temp'] = transunit('weathertemp',(float)$parsed_json_forecast->{'daypart'}[0]->{'temperature'}[$i]);
 			}
 		}
 		else
 		{
-			$add = $parsed_json->{'response'}->{'error'}->{'description'};
-			$this->error('Weather: weather.com', 'Forecast read request failed'.($add ? ': '.$add : '').'!');
+			if ($loadError_forecast != '')
+				$add = $loadError_forecast;
+			else
+				$add = $parsed_json->{'response'}->{'error'}->{'description'};
+			$this->error('Weather: weather.com', 'Forecast read request failed'.($add ? ' with message: <br>'.$add : '!'));
 		}
-
 	}
-
-	function getDirection($b)
-	{ 
-		$dirs = array('NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW', 'N'); 
-		return $dirs[round(abs(($b - 11.25) % 360)/ 22.5)];
-	} 
 
 	/*
 	* Icon-Mapper

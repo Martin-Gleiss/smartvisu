@@ -62,7 +62,15 @@ class TemplateChecker {
 	public function __construct($fileName, MessageCollection $messages, $checkItems) {
 		$this->messages = $messages;
 		$this->fileName = $fileName;
-		$this->widgets = array_merge( twig_docu(), OldWidgets::getRemoved());
+		$fileFolder = strstr(pathinfo($fileName)["dirname"], 'pages');
+		$widgetFolder = ((strrpos($fileFolder, '/') == 5 ) ? $fileFolder : substr($fileFolder, 0, strrpos($fileFolder, '/'))).'/widgets';
+		if(twig_isdir($widgetFolder, '(.*.\.html)')) {
+			$widgetFiles = twig_dir($widgetFolder, '(.*.\.html)');
+			$this->widgets = array_merge( twig_docu(), twig_docu($widgetFiles), OldWidgets::getRemoved());
+		}
+		else {
+			$this->widgets = array_merge( twig_docu(), OldWidgets::getRemoved());
+		}
 		$this->items = new Items(pathinfo($fileName)["dirname"]); //new
 		if ($checkItems == "false")
 			{ $this->items->setState(FALSE);}
@@ -120,9 +128,9 @@ class TemplateChecker {
 			if (array_key_exists($error->code, $this->ignore_html_error_code)) {
 				$conditions = $this->ignore_html_error_code[$error->code];
 				$ignore = true;
-				if ($conditions['maxline'] && $error->line > $conditions['maxline'])
+				if (isset($conditions['maxline']) && $error->line > $conditions['maxline'])
 					$ignore = false;
-				if ($conditions['minline'] && $error->line < $conditions['minline'])
+				if (isset($conditions['minline']) && $error->line < $conditions['minline'])
 					$ignore = false;
 				if ($ignore)
 					continue;
@@ -243,6 +251,7 @@ class TemplateChecker {
 			
 			if(array_key_exists('replacement', $widgetConfig)) {
 				$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $messageParams));
+				$messageData['Replacement'] = str_replace ("['', '']", "''", $messageData['Replacement']);
 			}
 			$this->messages->addError('WIDGET DEPRECATION CHECK', 'Removed widget', $widget->getLineNumber(), $widget->getMacro(), $messageData);
 		} else {
@@ -254,7 +263,7 @@ class TemplateChecker {
 			if (array_key_exists('deprecated', $widgetConfig)) {
 				$messageData = $widget->getMessageData();
 				if(array_key_exists('replacement', $widgetConfig)) {
-					$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $widget->getParamArray() + array_map(function($element) { return "'" . $element['default'] . "'"; }, $paramConfigs)));
+					$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $widget->getParamArray() + array_map(function($element) { return isset($element['default']) ? "'" . $element['default']. "'" : null; }, $paramConfigs)));
 				}
 			$this->messages->addWarning('WIDGET DEPRECATION CHECK', 'Deprecated widget', $widget->getLineNumber(), $widget->getMacro(), $messageData);
 			}

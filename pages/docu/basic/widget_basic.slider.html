@@ -13,17 +13,24 @@
 {% block example %}
 
 	<h5>Examples</h5>
+	See the various scaling options in the following examples.<br><br>
+	
+	Silent mode (new in v3.1)<br>
+	Per default, sliders send their values constantly during operation. There is also a silent mode
+	which limits value output to the end of the sliding phase. See the difference by moving different sliders.
+	The bottom slider is switched to silent mode while the others send their values live.
+	
 	<div class="twig">
 		<code class="prettyprint">
 			&#123;&#123; basic.slider('', 'bath.light.value') &#125;&#125;<br />
       &#123;&#123; basic.slider('', 'bath.light.value', 0, 100, 10) &#125;&#125;<br />
-      &#123;&#123; basic.slider('', 'bath.light.value', 0, 255, '', '', '', 0, 100) &#125;&#125;
+      &#123;&#123; basic.slider('', 'bath.light.value', 0, 255, '', '', '', 0, 100, 0) &#125;&#125;
 		</code>
 	</div>
 	<div class="html">
 		{{ basic.slider('', 'bath.light.value') }}
 		{{ basic.slider('', 'bath.light.value', 0, 100, 10) }}
-		{{ basic.slider('', 'bath.light.value', 0, 255, '', '', '', 0, 100) }}
+		{{ basic.slider('', 'bath.light.value', 0, 255, '', '', '', 0, 100, 0) }}
 	</div>
 
 	Orientation

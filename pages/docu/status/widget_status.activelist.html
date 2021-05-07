@@ -1,0 +1,37 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "widget_status.html" %}
+
+{% block example %}
+<script type="text/javascript">
+	var message = [{"alm_sn":"XXX","alert_id":"c01262d5-04fd-459f-8e7c-a7064af21fa9","headline":"Maeher benoetigt Hilfe.","date":"2016-07-27T10:03:15.377Z","message":"Ihr Indego hat sich festgefahren. Bitte stellen Sie den Maeher auf eine ebene Rasenflaeche und folgen Sie den Anweisungen im Display des Maehers.","read_status":"unread","flag":"warning"},{"alm_sn":"XXXX","alert_id":"5d5b5efc-7974-4f46-827b-50c3e42fb129","headline":"Maeher benoetigt Hilfe.","date":"2016-07-26T07:36:04.509Z","message":"Ihr Indego hat sich festgefahren. Bitte stellen Sie den Maeher auf eine ebene Rasenflaeche und folgen Sie den Anweisungen im Display des Maehers.","read_status":"unread","flag":"warning"}];
+	io.write('bath.list', message)
+</script>
+
+	<h5>Examples</h5>
+	
+	Map the display items to the json field names by using the title, subtitle, content and level parameters.
+
+	<div class="twig">
+		<code class="prettyprint">
+		json data: <br>
+		{"alm_sn":"XXX","alert_id":"c01262d5-04fd-459f-8e7c-a7064af21fa9","headline":"Maeher benoetigt Hilfe.","date":"2016-07-27T10:03:15.377Z","message":"Ihr Indego hat sich festgefahren. Bitte stellen Sie den Maeher auf eine ebene Rasenflaeche und folgen Sie den Anweisungen im Display des Maehers.","read_status":"unread","flag":"warning"},{"alm_sn":"XXXX","alert_id":"5d5b5efc-7974-4f46-827b-50c3e42fb129","headline":"Maeher benoetigt Hilfe.","date":"2016-07-26T07:36:04.509Z","message":"Ihr Indego hat sich festgefahren. Bitte stellen Sie den Maeher auf eine ebene Rasenflaeche und folgen Sie den Anweisungen im Display des Maehers.","read_status":"unread","flag":"warning"}
+		<br><br>
+		Widget call:<br>
+			&#123;&#123; status.activelist('', 'bath.list', 'headline', 'date', 'message', 'flag') &#125;&#125;
+		</code>
+	</div>
+	<div class="html">
+		{{ status.activelist('', 'bath.list', 'headline', 'date', 'message', 'flag') }}
+	</div>
+
+{% endblock %}
+
+

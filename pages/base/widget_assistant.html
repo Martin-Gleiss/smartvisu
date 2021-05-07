@@ -2,10 +2,12 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Andre Kohler
-* @copyright   2020
+* @copyright   2021
+* @version     template for version 1.2.0
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
+
 
 {% extends "system.html" %}
 
@@ -75,21 +77,17 @@
 
 #overlaytext{
 	color: white;
-/*	position: absolute;
-	top: 20px;
-	left: 20px;
-	font-size: 50px;
-	transform: translate(-50%,-50%);
-	-ms-transform: translate(-50%,-50%);
-*/
 }
 
 </style>
     {% set widgetlist = docu() %}
+
+    
     {% set actPage = config_pages %}
     <div id="widget_list" data-myWidgetList="{{ widgetlist|json_encode() }}">
         <!-- Here is the place for all the widgets   -->
     </div>
+    
 
     <div id="actual_page" data-actPage="{{ actPage }}">
         <!-- Here is the place for actual_page   -->
@@ -110,53 +108,64 @@
                       <div id="overlaytext" style="text-align: left; font-size: 0.9em">ToolTip-Text</div>
                       <a onclick="closeTooltip()" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-link ui-btn ui-icon-delete ui-btn-icon-notext ui-shadow ui-corner-all" role="button">Close</a>
                     </div>
+                    <div id="filteroverlay" style="display: none">
+                      <div id="filteroverlaytext" style="text-align: center; font-size: 0.9em">auto-complete filtered by : <br>widgets</div>                    
+                      <a onclick="closeFilterTip()" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-link ui-btn ui-icon-delete ui-btn-icon-notext ui-shadow ui-corner-all" role="button">Close</a>
+                    </div>                    
 		   <div>
 		   <table style="width:100%"> 
-		   <tr>
-		   <td style="width:60%">
-                        <button class="ui-btn ui-input-btn ui-btn-b ui-corner-all ui-shadow" onclick="getPreview()">Preview widget & copy final Widget to Clipboard</button>
-      		   </td>
-		   </tr>
+  		   <tr>
+		       <td style="width:60%">
+              <button class="ui-btn ui-input-btn ui-btn-b ui-corner-all ui-shadow" onclick="getPreview()">Preview widget & copy final Widget to Clipboard</button>
+     		   </td>
+  		   </tr>
 		   </table> 
 		   </div> 
-                        <table style="width: 100%;font-size: 0.65em;">
+                        <table style="width: 100%;font-size: 0.9em;">
                             <tr>
-                                <td style="text-align: left;">
+                                <td style="text-align: left; width:25%" rowspan=2>
                                     <img id ="items_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Items loaded
-                                </td>
-                                <td style="text-align: left;">
+                                    <br>
+                                    <span>
+                                    <img id ="colors_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" >Colors loaded
+                                    </span>
+                                    <br>
+                                    <img id ="icons_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Icons loaded
+                                    <br>
                                     <img id ="widgets_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Widgets loaded
                                 </td>
-
-                                <td rowspan="1">
+                                <td style="text-align: left; width:25%">
                                 	<label style="font-size: 1.0em;"><input name="render_2_Window" id="render_2_Window" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbsp Preview in new window</label>
                                 </td>
-                                <td rowspan="1">
-                                	<label id="Wildcard_label" style="font-size: 1.0em;"><input name="Wildcard_search" id="Wildcard_search" type="checkbox">&nbsp&nbsp&nbsp&nbsp Wildcard search</label>
+                                <td style="text-align: left; width:25%">
+                                	<label id="Wildcard_label" style="font-size: 1.0em;"><input name="Wildcard_search" id="Wildcard_search" type="checkbox">&nbsp&nbsp&nbsp&nbsp Wildcard search</label>                                
                                 </td>
-                                <td rowspan="1">
-                                    autocomplete : 
+                                <td style="text-align: left; width:25%">
+                                  <div class="ui-field-contain">
+                                      <select id="select_autocomplete" name="select_autocomplete" data-native-menu="false" onchange="ChangeDictbyMouse(event)">
+                                              <option value="1">Items</option>                                            
+                                              <option value="2" selected="selected">Widgets</option>
+                                              <option value="3">Icons</option>                                            
+                                              <option value="4">All</option>
+                                              <option value="5">Colors</option>
+                                              <option value="6">Autocomplete OFF</option>                                            
+                                      </select>
+                                  </div>                     		
                                 </td>
+                               
                             </tr>
-                            <tr>
+                            <tr style="height:58px">
                                 <td style="text-align: left;">
-                                    <img id ="icons_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Icons loaded
+
                                 </td>
-                                <td style="text-align: left;">
-                                    <img id ="colors_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Colors loaded
+                                <td id="td_selected_dict" style="width: 80px;border-radius: 8px;" colspan=2>
+                                     <div id="selected_dict"> </div>
                                 </td>
-                                <td style="text-align: left;">
-                                	<label id="switch_quotes_label" style="font-size: 1.0em;"><input onclick="changeCloseBrackets()" name="switch_quotes" id="switch_quotes" type="checkbox" >&nbsp&nbsp&nbsp&nbsp auto Close Quotes</label>
-                                </td>
-                                   <td style="text-align: left;">
-<!--
-	  		<label id="open_new_Window_label" style="font-size: 1.0em;"><input name="open_new_Window" id="open_new_Window" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbspopen new Window</label>
--->	  		
-                                </td>
-                                <td id="td_selected_dict" style="width: 80px;border-radius: 8px;" rowspan="1">
-                                     <div id="selected_dict"> <strong>Widgets</strong> </div>
-                                </td>
+
+
+
                             </tr>
+
 
                         </table>
 				</div>

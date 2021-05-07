@@ -32,9 +32,9 @@
 * Displays an image witch is been reloaded after a given time
 *
 * @param {id=} unique id for this widget
-* @param {undefined} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
+* @param {text} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
 * @param {text(none,corner,corner-bottom,fill)=none} the mode: 'none', 'corner', 'corner-bottom', 'fill' (optional, default 'none') (optional)
-* @param {undefined=10i} the reload-time in duration-format or defined as an item that retriggers a refresh (optional, default '10i')
+* @param {unspecified=10i} the reload-time in duration-format or defined as an item that retriggers a refresh (optional, default '10i')
 * @param {image=} the path/url to a default image that is shown on error and startup
 *
 * stopitem will be set to "true" when new page is loaded in order to stop the image from refreshing till eternity ;)
@@ -45,18 +45,17 @@
 
 	<img {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.image" alt="multimedia.image"
 		{% if mode == 'corner' %}
-			class="ui-corner-all"
+			class="ui-corner-all multimediaimage"
 		{% elseif mode == 'corner-bottom' %}
-			class="ui-corner-bottom"
+			class="ui-corner-bottom multimediaimage"
 		{% elseif mode == 'fill' %}
-			style="width: 100%"
+			style="width: 100%" class="multimediaimage"
 		{% endif %}
     data-item="{% if '/' not in src and '\\' not in src %}{{ src }}{% endif %}{% if refresh|first not in ['0','1','2','3','4','5','6','7','8','9'] and refresh %}, {{ refresh }}{% endif %}"
     data-url="{% if '/' in src or '\\' in src %}{{ src }}{% endif %}"
     {% if refresh|first in ['0','1','2','3','4','5','6','7','8','9'] or not refresh %}data-repeat="{{ refresh|default('10i') }}"{% endif %}
     stopTimer="false"
-    class="multimediaimage"
-		src="{{ default_img|default('pages/base/pics/trans.png') }}"
+    src="{{ default_img|default('pages/base/pics/trans.png') }}"
     onerror="javascript:this.src='{{ default_img|default('pages/base/pics/trans.png') }}'" />
 
 
@@ -129,7 +128,7 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {text} a directory where the pictures are located
-* @param {value=2} delay between the slides in sec (optional, default: 4 sec)
+* @param {value=4} delay between the slides in sec (optional, default: 4 sec)
 * @param {item(bool,num)=} item to switch to the next slide (optional)
 * @param {item(bool,num)=} item to switch to the previous slide (optional)
   (if this is same as item_next: 0 triggers previous, any value greater than 0 triggers next, negative values are ignored)
@@ -139,34 +138,35 @@
 * @param {value=0} Show the pictures in reverse order; possible values are 1 or 0 (optional, default 0)
 * @param {value=0} Show controls; possible values are 1 or 0 (optional, default 0)
 	(they just take effect on the slideshow and do not send anything to backend)
-* @author Alex ???, Stefan Widmer
+* @param {duration=1d} duration until directory content is refreshed in standard duration format (optional, default='1d')
+*
+* @author Alex ???, Stefan Widmer, Wolfram v. Hülsen
 *
 * @info based on cycle2 jquery-plugin: (c) 2012 M. Alsup; Dual licensed: MIT/GPL
 * @link http://jquery.malsup.com/cycle2
 */
-{% macro slideshow(id, dir, delay, item_next, item_prev, item_stop, item_start, reverse, controls) %}
+{% macro slideshow(id, dir, delay, item_next, item_prev, item_stop, item_start, reverse, controls, refresh) %}
 	{% set uid = uid(page, id) %}
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} class="slideshow cycle-slideshow" data-widget="multimedia.slideshow"
 		data-cycle-log="false" data-cycle-speed="2000" data-cycle-timeout="{{ delay|default(4) * 1000 }}" data-cycle-reverse="{{ reverse|default(0) }}"
+		data-repeat ="{{ refresh|default('1d') }}" data-directory = "{{ dir }}" 
 		data-item="{{ item_prev }}, {{ item_next }}, {{ item_stop }}, {{ item_start }}">
-		{% for file in dir(dir, '(.+?).(jpg|png|svg)') %}
-			<img src="{{ file.path }}" style="display: block;" title="{{ file.label }}" alt="{{ file.label }}" />
-		{% endfor %}
+
 	</div>
   {% if controls %}
 	<div data-role="controlgroup" data-type="horizontal">
 		<a data-cycle-cmd="prev" href="#" class="ui-btn ui-micro ui-corner-all ui-btn-inline ui-nodisc-icon">
-			<img class="icon" src="icons/ws/audio_rew.svg" alt="prev">
+			<img class="icon" src="{{ icon0 }}audio_rew.svg" alt="prev">
 		</a>
 		<a data-cycle-cmd="pause" href="#" class="ui-btn ui-micro ui-corner-all ui-btn-inline ui-nodisc-icon">
-			<img class="icon" src="icons/ws/audio_stop.svg" alt="stop">
+			<img class="icon" src="{{ icon0 }}audio_stop.svg" alt="stop">
 		</a>
 		<a data-cycle-cmd="resume" href="#" class="ui-btn ui-micro ui-corner-all ui-btn-inline ui-nodisc-icon">
-			<img class="icon" src="icons/ws/audio_play.svg" alt="resume">
+			<img class="icon" src="{{ icon0 }}audio_play.svg" alt="resume">
 		</a>
 		<a data-cycle-cmd="next" href="#" class="ui-btn ui-micro ui-corner-all ui-btn-inline ui-nodisc-icon">
-			<img class="icon" src="icons/ws/audio_ff.svg" alt="next">
+			<img class="icon" src="{{ icon0 }}audio_ff.svg" alt="next">
 		</a>
 	</div>
 	{% endif %}
@@ -204,7 +204,7 @@
 {% macro timeslider(id, time, play, duration, step, value_display) %}
     <input {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.timeslider" data-item="{{ time }}, {{ duration }}, {{ play }}"
         type="range" value="0" min="0" max="1" disabled="1" step="{{ step|default(5) }}" timer="{{ step|default(5) }}"
-        orientation="horizontal" handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" data-highlight="true" />
+        data-orientation="horizontal" data-handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" data-highlight="true" />
 {% endmacro %}
 
 /**

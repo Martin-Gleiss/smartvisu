@@ -8,12 +8,6 @@
  */
 
 /**
- * -----------------------------------------------------------------------------
- * most widgets are deprecated. Change at a later date
- * -----------------------------------------------------------------------------
-*/ 
-
-/**
  * Element: Positioning a Object/Widget
  *
  * @param {id=} unique id for this widget
@@ -32,7 +26,7 @@
 		style="position: absolute; top: {{ top }}; left: {{ left }}; ">
 		{{ content }}
 	</div>
-	<script type="text/javascript">
+	<script>
 		$(document).on("pageshow",function() {
 			$("#{{ uid(page, id) }}-overview").css("margin-top", Math.round($("#{{ uid(page, id) }}-overview").height() / 2) * -1);
 			$("#{{ uid(page, id) }}-overview").css("margin-left", Math.round($("#{{ uid(page, id) }}-overview").width() / 2) * -1);
@@ -48,7 +42,7 @@
  * 
 */
 {% macro background (id, picture) %}
-	<img src="{{ picture }}" style="display: block; clear:both; position: relativ; margin: 0; height: 100%; width: 100%;" />
+	<img src="{{ picture }}" alt="Background" style="display: block; clear:both; position: relative; margin: 0; height: 100%; width: 100%;" />
 {% endmacro %}
 
 /**
@@ -76,252 +70,17 @@
 		   {% elseif pic|slice(-4, 4) != '.svg' and txt %}
 				data-icon="{{ pic }}" data-iconpos="top">{{ txt|e }}
 		   {% elseif type == 'midi' and txt %}>
-				<img class="icon" src="{{ pic }}">
+				<img class="icon" src="{{ pic }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}">
 				<div>{{ txt|e }}</div>
 		   {% else %}
 				data-iconpos="center">
-				<img class="icon" src="{{ pic }}">
+				<img class="icon" src="{{ pic }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}">
 		   {% endif %}
 	</a>		
-	<script type="text/javascript">
+	<script>
 		$(document).on("pageshow",function(){
 			$("#{{ uid(page, id) }}-overview").css("margin-top", Math.round($("#{{ uid(page, id) }}-overview").height() / 2) * -1);
 			$("#{{ uid(page, id) }}-overview").css("margin-left", Math.round($("#{{ uid(page, id) }}-overview").width() / 2) * -1);
-		});
-	</script>
-{% endmacro %}	
-
-
- 
-/**
- * Displays a rgb-selector
- *
- * @param {id} unique id for this widget
- * @param {text=} popup-info of the rgb-selector (optional)
- * @param {percent} icon position from left side
- * @param {percent} icon position from top side
- * @param {item(bool,num)} a gad/item for on/off switching
- * @param {text=On} text for the 'on' state (optional, default 'On')
- * @param {text=Off} text for the 'off' state (optional, default 'Off')
- * @param {item(num)} a gad/item for the r - value (0-255)
- * @param {item(num)} a gad/item for the g - value (0-255)
- * @param {item(num)} a gad/item for the b - value (0-255)
- * @param {value=} the minimum value if the light is off (optional, for future use)
- * @param {value=255} the maximum value if the light is full on (optional, default 255)
- * @param {value=8} the granularity of the rings (optional, default 8)
- * @param {value=10} the number of colored segments (optional, default 10)
- * @param {type=mini} type: 'micro', 'mini', 'midi' (optional, default: mini)
- * @param {value=0} hide on mobile displays (optional value 1)
-*/
-{% macro rgb (id, info, left, top, gad, txt_on, txt_off, gad_r, gad_g, gad_b, min, max, step, colors, type, hide) %}
-	{% set uid = uid(page, id) %}
-	{% import   "basic.html" as basic %}
-	
-	<a id="{{ uid }}" {% if info %}title="{{ info }}"{% endif %}
-	     class="rgb {% if hide == 1 %}hide-mobile{% endif %}"  
-	     style="position: absolute; top: {{ top }}; left: {{ left }};" 
-		 data-widget="basic.rgb" data-item="{{ gad_r }}, {{ gad_g }}, {{ gad_b }}"
-		 data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-		 href="#{{ uid }}-popup" data-rel="popup">
-		 <span style="{% if type == 'micro' %}width: 28px; height: 28px;
-				{% elseif type == 'mini' %}width: 42px; height: 42px;
-				{% elseif type == 'midi' %}width: 56px; height: 56px;
-				{% else %}width: 42px; height: 42px;
-				{% endif %}"></span></a>
-	
-	<div id="{{ uid }}-popup" data-widget="basic.rgb-popup" data-item="{{ gad_r }}, {{ gad_g }}, {{ gad_b }}"
-		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-		 data-role="popup" data-overlay-theme="a">
-		<div>
-			<span>{{ basic.flip("{{ id }}-flip", gad, txt_on, txt_off) }}</span>{% if info %}<span> {{ info }} </span>{% endif %}
-		</div>
-		<div>&nbsp;</div>
-		<div id="{{ uid }}-chooser" class="rgb-popup" style="width: 100%;"></div>
-		<script type="text/javascript">
-			var html = '';
-
-			var colors = {{ colors|default(10) }};
-			var share = 360 / colors;
-
-			for (var s = 25; s <= 75; s += 25) {
-				for (var i = 0; i < colors; i++) {
-					html += '<div style="background-color:' + fx.hsv2rgb(i * share, s, 100) + ';"></div>';
-				}
-				html += '<div style="background-color:' + fx.hsv2rgb(i * share, 0, 100 - (s / 25 - 1) * 16.7) + ';"></div><br />';
-			}
-			for (var v = 100; v >= 25; v -= 25) {
-				for (var i = 0; i < colors; i++) {
-					html += '<div style="background-color:' + fx.hsv2rgb(i * share, 100, v) + ';"></div>';
-				}
-				html += '<div style="background-color:' + fx.hsv2rgb(i * share, 0, (v / 25 - 1) * 16.7) + ';"></div><br />';
-			}
-
-			$("#{{ uid }}-chooser").html(html);
-			
-			$(document).on("pageshow",function() {
-				$("#{{ uid }}").css("margin-top", Math.round($("#{{ uid }}").height() / 2) * -1);
-				$("#{{ uid }}").css("margin-left", Math.round($("#{{ uid }}").width() / 2) * -1);
-			});
-		</script>
-		<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
-	</div>
-{% endmacro %}	
-
-/**
- * Displays a colordisc-rgb-selector
- *
- * @param {id} unique id for this widget
- * @param {text=} popup-info of the colordisc (optional)
- * @param {percent} icon position from left side
- * @param {percent} icon position from top side
- * @param {item(bool,num)} a gad/item for on/off switching
- * @param {text=On} text for the 'on' state (optional, default 'On')
- * @param {text=Off} text for the 'off' state (optional, default 'Off')
- * @param {item(num)} a gad/item for the r - value (0-255)
- * @param {item(num)} a gad/item for the g - value (0-255)
- * @param {item(num)} a gad/item for the b - value (0-255)
- * @param {value=} the minimum value if the light is off (optional, for future use)
- * @param {value=255} the maximum value if the light is full on (optional, default 255)
- * @param {value=8} the granularity of the rings (optional, default 8)
- * @param {value=10} the number of colored segments (optional, default 10)
- * @param {type=mini} type: 'micro', 'mini', 'midi' (optional, default: mini)
- * @param {value=0} hide on mobile displays (optional value 1)
-*/
-{% macro colordisc (id, info, left, top, gad, txt_on, txt_off, gad_r, gad_g, gad_b, min, max, step, colors, type, hide) %}
-	{% set uid = uid(page, id) %}
-	{% import   "basic.html" as basic %}
-	<a id="{{ uid }}" {% if info %}title="{{ info }}"{% endif %}
-	     class="colordisc {% if hide == 1 %}hide-mobile{% endif %}"  
-	     style="position: absolute; top: {{ top }}; left: {{ left }}; " data-widget="basic.colordisc" data-item="{{ gad_r }}, {{ gad_g }}, {{ gad_b }}"
-		 data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-		 href="#{{ uid }}-popup" data-rel="popup"><span style="{% if type == 'micro' %}width: 28px; height: 28px;
-				{% elseif type == 'mini' %}width: 42px; height: 42px;
-				{% elseif type == 'midi' %}width: 56px; height: 56px;
-				{% else %}width: 42px; height: 42px;
-				{% endif %}"></span></a>
-		
-	<div id="{{ uid }}-popup" data-role="popup" class="ui-content"  style="min-width: 280px; min-height: 280px;">
-		<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
-		<div>
-			<span>{{ basic.flip("{{ id }}-flip", gad, txt_on, txt_off) }}</span>{% if info %}<span> {{ info }} </span>{% endif %}
-		</div>
-
-		<canvas id="{{ uid }}-disc" data-widget="basic.colordisc-popup"
-			data-step="{{ step|default(8) }}" data-colors="{{ colors|default(10) }}">
-		</canvas>
-		
-	</div>
-	
-	<script type="text/javascript">
-		var colors = parseFloat($('#{{ uid }}-disc').attr('data-colors'));
-		var size = 280;
-		var canvas = $('#{{ uid }}-disc')[0];
-		var step = 100 / ($('#{{ uid }}-disc').attr('data-step') / 2);
-
-		var arc = Math.PI / (colors + 2) * 2;
-		var startangle = -(Math.PI / 2) + arc;
-		var gauge = (size - 10) / 16 / ($('#{{ uid }}-disc').attr('data-step') / 8);
-		var share = 360 / colors;
-		var ctx;
-
-		canvas.width = size;
-		canvas.height = size;
-
-		if (canvas.getContext) {
-			var center = size / 2 - 1;
-			ctx = canvas.getContext("2d");
-
-			// draw background
-			ctx.beginPath();
-			ctx.fillStyle = '#888';
-			ctx.shadowColor = 'rgba(96,96,96,0.4)';
-			ctx.shadowOffsetX = 2;
-			ctx.shadowOffsetY = 2;
-			ctx.shadowBlur = 4;
-			ctx.arc(center, center, size / 2 - 1, 0, 2 * Math.PI, false);
-			ctx.fill();
-			ctx.beginPath();
-			ctx.shadowOffsetX = 0;
-			ctx.shadowOffsetY = 0;
-			ctx.shadowBlur = 0;
-			ctx.fillStyle = '#555';
-			ctx.arc(center, center, size / 2 - 2, 0, 2 * Math.PI, false);
-			ctx.fill();
-
-			// draw colors
-			var v, s;
-
-			for (var i = 0; i <= colors; i++) {
-				var angle = startangle + i * arc;
-				var ring = 1;
-				var h = i * share;
-				for (v = step; v <= 100; v += step) {
-					ctx.beginPath();
-					ctx.fillStyle = fx.hsv2rgb(h, 100, v);
-					ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
-					ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
-					ctx.fill();
-					ring += 1;
-				}
-				for (s = (100 - step); s >= step; s -= step) {
-					ctx.beginPath();
-					ctx.fillStyle = fx.hsv2rgb(h, s, 100);
-					ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + arc + 0.01, false);
-					ctx.arc(center, center, ring * gauge, angle + arc + 0.01, angle, true);
-					ctx.fill();
-					ring += 1;
-				}
-			}
-
-			// draw grey
-			i -= 1;
-			angle = startangle + i * arc;
-			ring = 1;
-			h = i * share;
-			for (v = step; v <= 100; v += (step / 2)) {
-				ctx.beginPath();
-				ctx.fillStyle = fx.hsv2rgb(h, 0, v);
-				ctx.arc(center, center, ring * gauge + gauge + 1, angle, angle + 2 * arc + 0.01, false);
-				ctx.arc(center, center, ring * gauge, angle + 2 * arc + 0.01, angle, true);
-				ctx.fill();
-				ring += 1;
-			}
-
-			// draw center
-			ctx.beginPath();
-			ctx.fillStyle = 'rgb(0,0,0)';
-			ctx.arc(center, center, gauge + 1, 0, 2 * Math.PI, false);
-			ctx.fill();
-		}
-
-	$(document).delegate('canvas[data-widget="basic.colordisc-popup"]', {
-			'click': function (event) {
-				var uid = this.id.substr(0, this.id.length - 5);
-				var disc = $(this)[0];
-				var ctx = disc.getContext("2d");
-
-				var offset = $(this).offset();
-				var x = Math.round(event.pageX - offset.left);
-				var y = Math.round(event.pageY - offset.top);
-				var rgb = ctx.getImageData(x, y, 1, 1).data;
-				// DEBUG: console.log([rgb[0], rgb[1], rgb[2]]);
-
-				var max = $('#' + uid).attr('data-max');
-				var items = $('#' + uid).attr('data-item').explode();
-
-				io.write(items[0], Math.round(rgb[0] / 255 * max));
-				io.write(items[1], Math.round(rgb[1] / 255 * max));
-				io.write(items[2], Math.round(rgb[2] / 255 * max));
-
-				// $(this).hide();
-
-				//$('#' + uid + '-screen').removeClass('in').addClass('hide');
-			}
-		});
-
-		$(document).on("pageshow",function() {
-			$("#{{ uid }}").css("margin-top", Math.round($("#{{ uid }}").height() / 2) * -1);
-			$("#{{ uid }}").css("margin-left", Math.round($("#{{ uid }}").width() / 2) * -1);
 		});
 	</script>
 {% endmacro %}	
@@ -350,18 +109,18 @@
 		{% if txt %}title="{{ txt }}"{% endif %}
 		{% if hide == 1 %}class="hide-mobile"{% endif %}
 		style="position: absolute; top: {{ top }}; left: {{ left }}; ">
-		<img class="icon" src="{{ icon0 }}it_camera.svg" />
+		<img class="icon" src="{{ icon0 }}it_camera.svg" alt="camera"/>
 	</a>
 
     <div id="{{ uid }}-popup" data-role="popup" class="ui-content" style="min-width: 50px; min-height: 30px;">
         <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
 		{% if txt %}<div> {{ txt }} </div>{% endif %}
 		<embed id="{{ uid }}-vlc" {% if txt %}title="{{ txt }}"{% endif %} type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" 
-			   autoplay="yes" loop="no" controls="no" branding="no" style="width: {{ width }}; height: {{ height }};"
-			   target="{{ stream }}" text="{{ txt }}" {% if txt %}title="{{ txt }}"{% endif %}>
+			   autoplay="yes" loop="no" controls="no" branding="no" style="width: {{ width }}pt; height: {{ height }}pt;"
+			   target="{{ stream }}" text="{{ txt }}">
 		</embed>
     </div>    
-	<script type="text/javascript">
+	<script>
 		$(document).on("pageshow",function() {
 			$("#{{ uid }}-overview").css("margin-top", Math.round($("#{{ uid }}-overview").height() / 2) * -1);
 			$("#{{ uid }}-overview").css("margin-left", Math.round($("#{{ uid }}-overview").width() / 2) * -1);
@@ -418,11 +177,11 @@
 		   {% elseif pic|slice(-4, 4) != '.svg' and txt %}
 				data-icon="{{ pic }}" data-iconpos="top">{{ txt|e }}
 		   {% elseif type == 'midi' and txt %}>
-				<img class="icon" src="{{ icon0 }}{{ pic }}">
+				<img class="icon" src="{{ icon0 }}{{ pic }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}">
 				<div>{{ txt|e }}</div>
 		   {% else %}
 				data-iconpos="center">
-				<img class="icon" src="{{ icon0 }}{{ pic }}">
+				<img class="icon" src="{{ icon0 }}{{ pic }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}">
 		   {% endif %}
 	</a>	
 
@@ -432,7 +191,7 @@
 		<iframe src="{{ url }}" width="{{ width }}" height="{{ height }}" seamless></iframe>
 	</div>
 		
-	<script type="text/javascript">
+	<script>
 		$(document).on("pageshow",function(){
 			$("#{{ uid }}-overview").css("margin-top", Math.round($("#{{ uid }}-overview").height() / 2) * -1);
 			$("#{{ uid }}-overview").css("margin-left", Math.round($("#{{ uid }}-overview").width() / 2) * -1);

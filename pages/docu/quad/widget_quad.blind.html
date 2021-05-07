@@ -13,7 +13,7 @@
 
 {% endblock %}
 {% block example %}
-<script type="text/javascript">
+<script>
 $( document ).ready(function() {
      io.write('blind.lz', '0' );
      io.write('blind.kz', '0' );
@@ -23,9 +23,7 @@ $( document ).ready(function() {
 </script>
 
 {% set stateengine = {} %}
-{% set stateengine_items = {
-'item1': ['item1.automatik.lock', 'item1.automatik.settings.suspendduration', '0', '60', '5', 'item1.automatik.settings.sollwert', '0', '250', '5', 'item1.automatik.settings.sperren', '0', '1', 'sperren', 'autoblind', 'standard', 'morning']
-} %}
+{% set stateengine_items = {'item1': ['item1.automatik.lock', 'item1.automatik.settings.suspendduration', '0', '60', '5', 'item1.automatik.settings.sollwert', '0', '250', '5', 'item1.automatik.settings.sperren', '0', '1', 'sperren', 'autoblind', 'standard', 'morning']} %}
 
 {% for item,content in stateengine_items %}
     {% set itemname = item|replace({'.': '_'}) %}
@@ -57,14 +55,10 @@ $( document ).ready(function() {
   {% endif %}
   {% set halloweendate = 'now'|date('m/d') == '10/31' %}
   {% set advent1 = 'now'|date('m/d') > '12/01' and 'now'|date('m/d') < '12/31' %}
-  {% set advent2 = 'now'|date('m/d') > '01/01' and 'now'|date('m/d') < '01/15' %}
+  {% set advent2 = 'now'|date('m/d') < '01/15' and 'now'|date('m/d') > '01/01' %}
 
-  {% set stateengine = stateengine|merge(
-    {itemname: ['stateengine', suspendtext, suspend, sollwerttext, 'standard' in content ? standard, 'morning' in content ? morning,  'halloween' in content and halloweendate ? halloween, 'advent' in content and advent1 or advent2 ? advent]}
-    ) %}
+  {% set stateengine = stateengine|merge({itemname: ['stateengine', suspendtext, suspend, sollwerttext, 'standard' in content ? standard, 'morning' in content ? morning,  'halloween' in content and halloweendate ? halloween, 'advent' in content and advent1 or advent2 ? advent]}) %}
 {% endfor %}
-
-
 
   <h5>Example</h5>
     ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine'] with stateengine popup
@@ -75,7 +69,7 @@ $( document ).ready(function() {
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.blind('blind1', 'Blind Popup. Quad-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', (stateengine['item1']), '', 'place3', 'place4', ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine']) }}
+    {{ quad.blind('blind01', 'Blind Popup. Quad-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', (stateengine['item1']), '', 'place3', 'place4', ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine']) }}
   </ul></div>
 
     ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']
@@ -86,7 +80,7 @@ $( document ).ready(function() {
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.blind('blind2', 'Blind Slider. Standard-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', '', '', 'place3', 'place4', ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']) }}
+    {{ quad.blind('blind02', 'Blind Slider. Standard-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', '', '', 'place3', 'place4', ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']) }}
   </ul></div>
 
     ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']
@@ -97,7 +91,7 @@ $( document ).ready(function() {
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.blind('blind3', 'Blind with position selector', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['blind.hoehe', '50', '80', '0'], 'place3', 'place4', ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']) }}
+    {{ quad.blind('blind03', 'Blind with position selector', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['blind.hoehe', '50', '80', '0'], 'place3', 'place4', ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']) }}
   </ul></div>
 
     [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']
@@ -108,7 +102,7 @@ $( document ).ready(function() {
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.blind('blind4', 'Blind 2 different popups', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['time_automatic', 'time_automatic', 'num', [0,255,10], 'icon1', 'icon0'], 'blind.hoehe', '', '', '', '', 'place3', 'place4', [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']) }}
+    {{ quad.blind('blind04', 'Blind 2 different popups', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['time_automatic', 'time_automatic', 'num', [0,255,10], 'icon1', 'icon0'], 'blind.hoehe', '', '', '', '', 'place3', 'place4', [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']) }}
   </ul></div>
 
   no column_order
@@ -119,6 +113,6 @@ $( document ).ready(function() {
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.blind('blind5', 'Blind Standard witz UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter') }}
+    {{ quad.blind('blind05', 'Blind Standard witz UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter') }}
   </ul></div>
 {% endblock %}

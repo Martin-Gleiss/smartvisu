@@ -1,3 +1,69 @@
+## 3.0.a
+### New / Changed Widgets
+- new weather service API met.no for deprecated yr.no
+- new widget status.activelist to display json messages as active listview
+- device.uzsuicon can be displayed as button with additional "type" parameter (micro, mini or midi)
+- basic.symbol provides button design as additional options btn-micro, btn-mini or btn-midi with additional text on icon
+- basic.slider provides a new silent mode. Live mode (default) sends changed values constantly, silent mode only if change is completed.
+- plot.period provides stacked plots for line, area and column
+- image / data exporting via context menu in plot.period 
+- status.collapse supports a list of multiple values for control of collapsing / hiding
+- device.rtrslider supports offset temperature for MDT RTR and supplements (like device.rtr)
+- multimedia.slideshow now refreshes available images in a defineable time
+- basic.offset rounds result to the count of decimals given by "step" attribute
+- weather service openweathermap.org accepts location by ID (id=...), postal code (zip=...) or latidude&longitude (lat=...&lon=...) in adddition to city name
+
+### Other New Features
+- php8 compatibility (mainly solved by new management of warnings and 'nullsafe' programming)
+- parameter [debug = "1"] in config.ini enables error reporting for php warnings
+- new public functions in weather.php plus new language category [weather] to centrally determine verbal wind direction and strength
+- weather services use humidity and air pressure as additional data (has been max. one out of both)
+- demoseries in offline driver have been synchronized to the minute in order to enable stacking of demoseries
+- new function Number.prototype.decimals() to determine count of decimals of a number
+- new page ./pages/base/widget_docu.html displays parameter info for all widgets (tool to optimize custom widgets docstrings)
+
+### Improvements
+- error reporting for weather services and CalDav / iCloud calendars shows answers from remote
+- error reporting for phone service improved
+- error notification avoids duplicate messages (weather and phone services)
+- error notification is cleared if service is running again (weather and phone services)
+- complete review of all parameter definitions in order to improve results in template checker
+- improved autocomplete lists and styling in widget assistent
+
+### Updated Libraries
+- Highcharts updated to v9.1
+- ICal ICS Parser updated to v2.2.2
+
+### Deprecated
+- weather service yr.no (use met.no as replacement)
+- weather service wunderground (use weather.com as replacement) 
+- fritz!box services other than TR-064
+- custom widgets using sliders ( <input type="range" ... >) must use attributes "data-orientation" and "data-handleinfo" instead of "orientation" and "handleinfo"
+
+### Removed Features
+- support for older widgets (non jQuery mobile types) has been finally removed
+- unsued Google Closure compiler has been removed
+- deprecated ov.colordisc and ov.rgb removed from example3.graphics. Use ovbasic.color instead
+
+### Fixed Bugs
+- plot.pie did not show series titles as labels / legend
+- some weather services did not use correct language if user defined language extension file was used
+- some weather services did not use the units specified in the language file
+- default repeat interval for phone services was 15 months. Corrected to 15 minutes.
+- design colors where not defined in 'pages' and 'device' options of the config page
+- config options selectable with flip switches where not stored properly in "device" tab (cookie mode) 
+- cache folders where deleted completely regardless of source (global / cookie)
+- met.no weather service showed no icon if started directly after midnight and had problems with chages to summer time
+- when leaving a page via the "back" button, widgets exit method and cancellation of plot data subscriptions didn't work.
+- conflicts between exit method and older versions of back-to-home functions 
+- templatechecker did not consider widgets in the pages subfolder
+- plot.gauge threw warnings due to faulty "data-axis" parameter. 
+- 100% check of docu pages and widgets with W3C validator revealed some issues - fixed. 
+- widget assistant threw errors with nested curly brackets (e.g. in plot options)
+
+### Known Bugs
+
+
 ## 3.0.1
 ### New / Changed Widgets
 
@@ -18,6 +84,10 @@
 - fixed search string in calendar.waste and improved icon scalability
 - php errors thrown in calendar service due to usage of deprecated join() statement
 - outline render page for widget assistant has been fixed, also for Apple devices
+
+### Known Bugs
+- when leaving a page via the "back" button, widgets exit method and cancellation of plot data subscriptions won't work.
+  (root cause documented in base.js line 1804)
 
 
 ## 3.0

@@ -30,7 +30,7 @@ class config {
 	 */
 	public function get($source = 'all')
 	{
-		$config = $this->config_by_source[$source];
+		$config = (isset($this->config_by_source[$source]) ? $this->config_by_source[$source] : null);
 		// only read if source was not read before
 		if($config == null) {
 
@@ -53,21 +53,24 @@ class config {
 				case 'globalonly':
 					if (is_file(const_path.'config.ini'))
 						$config = parse_ini_file(const_path.'config.ini', true, self::INI_SCANNER);
-					elseif (is_file(const_path.'config.php')) {
+					
+					//drop support for legacy config.php as of v3.1
+					//
+					//elseif (is_file(const_path.'config.php')) {
 						// read legacy config.php
-						$configphp = file_get_contents(const_path.'config.php');
-						preg_match_all("/define\s*\s*\('config_(.*?)'\s*,\s*(.*)\s*\)\s*;\s*[\r\n]+/", $configphp, $matches, PREG_SET_ORDER);
+					//	$configphp = file_get_contents(const_path.'config.php');
+					//	preg_match_all("/define\s*\s*\('config_(.*?)'\s*,\s*(.*)\s*\)\s*;\s*[\r\n]+/", $configphp, $matches, PREG_SET_ORDER);
 
-						$config = array();
-						foreach($matches as $match) {
-							$config[$match[1]] = eval('return '.$match[2].';');
-						}
-					}
+					//	$config = array();
+					//	foreach($matches as $match) {
+					//		$config[$match[1]] = eval('return '.$match[2].';');
+					//	}
+					//}
 					break;
 
 				// configuration per pages (config.ini in current pages folder)
 				case 'pages':
-					if ($_REQUEST['pages'] != '') // pages in request
+					if (isset($_REQUEST['pages']) && $_REQUEST['pages'] != '') // pages in request
 						$config_for_pages['pages'] = $_REQUEST['pages'];
 					else {
 						// configuration of pages in cookie
@@ -121,21 +124,29 @@ class config {
 				break;
 			case 'cookie':
 				$basepath = substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, -strlen(substr($_SERVER['SCRIPT_FILENAME'], strlen(const_path))));
-				// generate unique cache folder for cookie (combination of remote IP, forwarded IP and time should be unique)
-				if(!isset($config['cachefolder']) || $config['cachefolder'] == 'global')
-					$config['cachefolder'] = md5($_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_CLIENT_IP'] ?: $_SERVER['HTTP_X_FORWARDED_FOR'] ?: $_SERVER['HTTP_X_FORWARDED'] ?: $_SERVER['HTTP_FORWARDED_FOR'] ?: $_SERVER['HTTP_FORWARDED']) . time());
+				if (isset($config['cache'])) {
+					// generate unique cache folder for cookie (combination of remote IP, forwarded IP and time should be unique)
+					if(!isset($config['cachefolder']) || $config['cachefolder'] == 'global')
+						$config['cachefolder'] = md5($_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_CLIENT_IP'] ?: $_SERVER['HTTP_X_FORWARDED_FOR'] ?: $_SERVER['HTTP_X_FORWARDED'] ?: $_SERVER['HTTP_FORWARDED_FOR'] ?: $_SERVER['HTTP_FORWARDED']) . time());
+				} else
+					unset($config['cachefolder']);
+				
 				if(count($config) > 0){ // some options are set
+					foreach ($config as $key=>&$val) {
+						$val = ($val == "true") ? "1" : $val;
+						$val = ($val == "false") ? "" : $val;
+					}
 					$confexpire = time()+3600*24*364*10;  // expires after 10 years
 					$success = setcookie('config', json_encode($config), ['expires' => $confexpire, 'path' => $basepath, 'samesite' => 'Lax']); 
 				}
 				else
-	      	$success = setcookie('config', '', time() - 3600, $basepath); // delete cookie
+					$success = setcookie('config', '', time() - 3600, $basepath); // delete cookie
 				break;
 		}
 
 		if($success)
 			$this->config_by_source[$target] = $config;
-
+			
 		return $success;
 	}
 

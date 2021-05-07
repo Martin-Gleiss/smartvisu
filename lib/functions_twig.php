@@ -8,6 +8,7 @@
  * -----------------------------------------------------------------------------
  */
 
+const SmartvisuButtonTypes = array('micro', 'mini', 'midi', 'icon');
 
 // -----------------------------------------------------------------------------
 // Filters for Twig
@@ -28,7 +29,7 @@ function twig_bit($val)
 
 function twig_substr($val, $start, $end = null)
 {
-	if ($end)
+	if (isset($end))
 		$ret = substr($val, $start, $end);
 	else
 		$ret = substr($val, $start);
@@ -221,7 +222,13 @@ function twig_docu($filenames = null)
 								}
 								else
 									$p['valid_values'] = explode(',', substr($tag[5],1,-1));
+								
+								if ($p['type'] == 'type')
+									$p['valid_values'] = array_merge(SmartvisuButtonTypes, $p['valid_values']);
 							}
+							elseif ($p['type'] == 'type')
+								$p['valid_values'] = SmartvisuButtonTypes;
+							
 							$p['optional'] = $tag[6] != '';
 							if($p['optional'] && $tag[6] != '=')
 								$p['default'] = substr($tag[6],1);
@@ -229,7 +236,8 @@ function twig_docu($filenames = null)
 							// valid_values
 							// array_form must may
 						}
-						$rettmp['param'][trim($params[$param++])] = $p;
+						if (isset($params[$param])) 			//wvhn@v3.1: hidden parameter starting with "_" must be omitted
+							$rettmp['param'][trim($params[$param++])] = $p;
 					}
 					elseif ($tag[1] == 'see')
 					{
@@ -327,10 +335,11 @@ function twig_lang($subset, $key, $subkey = null)
 	if (!$lang)
 		$lang = get_lang();
 
-	if($subkey == null)
+	if(!isset($subkey)) 
 		return $lang[$subset][$key];
-	else
-		return $lang[$subset][$key][$subkey];
+	else 
+		if (isset($lang[$subset][$key][$subkey]))
+			return $lang[$subset][$key][$subkey]; 
 }
 
 /**
@@ -422,7 +431,7 @@ function twig_items () {
 //
 function twig_asset_exists($file) {
 	$fileExists = 0;
-	$requestpages = ($_REQUEST['pages'] != '') ? $_REQUEST['pages'] : config_pages;
+	$requestpages = (isset($_REQUEST['pages']) && $_REQUEST['pages'] != '') ? $_REQUEST['pages'] : config_pages;
 	if(strpos($file, '/') === false) {
 		if(is_file(const_path . 'widgets/'. $file)) $fileExists = 1;
 		if(is_file(const_path . 'dropins/'. $file)) $fileExists = 1;

@@ -11,7 +11,7 @@
 {% extends "widget_device.html" %}
 
 {% block example %}
-<script type="text/javascript">
+<script>
 	$( document ).ready(function() {
 		io.write('bath.rtr.act', 22 );
 		io.write('bath.rtr.set', 21.5 );
@@ -33,7 +33,7 @@
 		<div class="block">
 			<div class="ui-bar-c ui-li-divider ui-corner-top">Classic RTR in 1x byte-mode</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
-				{{ device.rtr('rtr2', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode',
+				{{ device.rtr('rtr', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode',
 				'bath.rtr.mode', 'bath.rtr.state', 'bath.rtr.text') }}
 			</div>
 		</div> 
@@ -41,11 +41,12 @@
 		<div class="block">
 			<div class="ui-bar-c ui-li-divider ui-corner-top">RTR slider in 1x byte-mode</div>
 			<div class="ui-fixed ui-body-a ui-corner-bottom">
-				{{ device.rtrslider('sl1', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode', 'bath.rtr.mode', 'bath.rtr.state') }}
+				{{ device.rtrslider('sl', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode', 'bath.rtr.mode', 'bath.rtr.state') }}
 			</div>
 		</div> 
-		
-		
 	</div>
+	<br>
+	<b>New in v3.1:</b> for MDT and similar devices, manual temperature adjustment can be sent to item_offset. The supplements have also been implemented.
+	See device.rtr documentation for more info.
 
 {% endblock %}

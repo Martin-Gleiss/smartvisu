@@ -11,7 +11,7 @@
 {% extends "widget_clock.html" %}
 
 {% block example %}
-<script type="text/javascript">
+<script>
 	$( document ).ready(function() {
 		var now = +new Date();	
 		io.write('bath.light.timestamp', 0 );
