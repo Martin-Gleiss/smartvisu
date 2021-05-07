@@ -45,7 +45,7 @@
 				$('#{{ uid }} .tunnels').html(ret);
 				$('#{{ uid }} .version').html(data.date + ', up: ' + data.uptime + ', v ' + data.firmware_version);
 			})
-				.error(notify.json);
+				.fail(notify.json);
 		});
 	</script>
 {% endmacro %}

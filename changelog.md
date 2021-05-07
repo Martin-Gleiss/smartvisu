@@ -1,3 +1,21 @@
+## 3.1.a
+### New / Changed Widgets
+
+### Other New Features
+
+### Improvements
+
+### Updated Libraries
+
+### Deprecated
+
+### Removed Features
+
+### Fixed Bugs
+
+### Known Bugs
+
+
 ## 3.1
 ### New / Changed Widgets
 - new weather service API met.no for deprecated yr.no

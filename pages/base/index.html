@@ -125,7 +125,7 @@
 			$('.check').eq(index).children('img').attr('src', 'icons/sw/' + data.icon);
 			$('.check').eq(index).children('span').html(data.text);
 		})
-			.error(function (jqXHR) {
+			.fail(function (jqXHR) {
 				var data = jQuery.parseJSON(jqXHR.responseText)
 				$('.check').eq(index).children('img').attr('src', 'icons/sw/' + data.icon);
 				$('.check').eq(index).children('span').html(data.text);
