@@ -954,7 +954,6 @@ $.widget("sv.basic_slider", $.sv.widget, {
 
 	_events: {
 		'slidestart': function (event) {
-			console.log('io slidestart');
 			this._sliding = true;
 			this._inputactive = false;
 		},
