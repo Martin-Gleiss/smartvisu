@@ -1,5 +1,6 @@
 ## 3.1.a
 ### New / Changed Widgets
+- basic.window provides an additional color mode: icon0 if closed / custom color if open
 
 ### Other New Features
 
@@ -10,6 +11,7 @@
 ### Deprecated
 
 ### Removed Features
+- replaced several deprecated jQuery / jQuery mobile functions & attributes
 
 ### Fixed Bugs
 
