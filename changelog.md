@@ -1,6 +1,6 @@
 ## 3.1.a
 ### New / Changed Widgets
-- basic.window provides an additional color mode: icon0 if closed / custom color if open
+- basic.window and device.window provide an additional color mode: icon0 if closed / custom color if open
 
 ### Other New Features
 
