@@ -20,12 +20,13 @@
 		{{ clock.digiclock('clock1') }}
 	</div>
 
-	Clock and weather combination
+	Clock and weather combination: <br>
+	(see weather widgets docu page for location formats of the supported weather services)
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; clock.digiclock('clock2', 'Germany/Bayern/Würzburg') &#125;&#125;<br /></code>
+		<code class="prettyprint">&#123;&#123; clock.digiclock('clock2', 'your location') &#125;&#125;<br /></code>
 	</div>
 	<div class="html">
-		<br />{{ clock.digiclock('clock2', 'Germany/Bayern/Würzburg') }}<br />
+		<br />{{ clock.digiclock('clock2', 'lat=45&lon=7') }}<br />
 	</div>
 
 {% endblock %}
