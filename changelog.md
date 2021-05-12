@@ -1,3 +1,23 @@
+## 3.1.a
+### New / Changed Widgets
+- basic.window and device.window provide an additional color mode: icon0 if closed / custom color if open
+
+### Other New Features
+
+### Improvements
+
+### Updated Libraries
+
+### Deprecated
+
+### Removed Features
+- replaced several deprecated jQuery / jQuery mobile functions & attributes
+
+### Fixed Bugs
+
+### Known Bugs
+
+
 ## 3.1
 ### New / Changed Widgets
 - new weather service API met.no for deprecated yr.no

@@ -626,7 +626,7 @@
  * @param {value=0} the value for opened (optional, default 0)
  * @param {value=255} the value for closed (optional, default 255)
  * @param {value=5} step between two values (optional, default 5)
- * @param {color(icon0,icon1)=icon1} color for 'open' state, e.g. '#f00' for red (constant, 'icon0' and 'icon1' can NOT be used) (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
+ * @param {color(icon0,icon1,!)=icon1} color for 'open' state e.g. '#f00' for red. Prepend a '!' to make the color constant ('!#f00'). 'icon0' and 'icon1' can NOT be used. (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
  *
  * @author Wolfram v. Hülsen
  */

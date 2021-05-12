@@ -461,6 +461,11 @@ class WidgetParameterChecker {
 		if (array_key_exists(strtolower($value), TemplateCheckerConfig::HtmlColors))
 			return;
 
+		// basic.window and device.window and maybe other dynamic icons in future have a special color mode (variable / constant)
+		// constant mode needs to start with '!#' and be 5 (!#+3) or 8 (!#+6) characters long
+		if ($this->checkParameterValidValues('!') && substr($value, 0, 2) == '!#' && (strlen($value) == 5 || strlen($value) == 8) && ctype_xdigit(substr($value, 2)))
+			return;
+		
 		// anything else needs to start with '#' and be 4 (#+3) or 7 (#+6) characters long
 		if (substr($value, 0, 1) == '#' && (strlen($value) == 4 || strlen($value) == 7) && ctype_xdigit(substr($value, 1)))
 			return;

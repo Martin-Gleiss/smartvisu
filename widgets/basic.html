@@ -679,17 +679,13 @@
 * @param {item(num)=} an item for the window left wing status (0=closed, 1=tilt, 2=open) (optional, default = 0)
 * @param {value=0} the value for shutter on top end (optional, default 0)
 * @param {value=255} the value for shutter at bottom end (optional, default 255)
-* @param {color(icon1)=icon1} color for 'open' state e.g. '#f00' for red (constant, 'icon0' and 'icon1' can NOT be used) (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
+* @param {color(icon1,!)=icon1} color for 'open' state e.g. '#f00' for red. Prepend a '!' to make the color constant ('!#f00'). 'icon0' and 'icon1' can NOT be used. (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
 *
 * @author: Wolfram v. Hülsen
 */
 {% macro window(id, item_value, item_window_r, item_window_l, min, max, color) %}
 <svg role="img" {% if id is not empty %}id="{{ uid(page, id) }}"{% endif %} data-widget="basic.window" data-item="{{ item_value }}, {{ item_window_r }}, {{ item_window_l }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-	{% if color is empty  %}
-		class="icon icon0" 
-	{% else %}
-		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
-	{% endif %}
+	 data-color="{{ color }}" class="icon icon0" 
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<!-- window frame -->
 	<rect stroke-width="3" rx="1" x="15" y="25" width="70" height="4" />

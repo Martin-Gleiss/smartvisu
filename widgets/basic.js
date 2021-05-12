@@ -954,7 +954,6 @@ $.widget("sv.basic_slider", $.sv.widget, {
 
 	_events: {
 		'slidestart': function (event) {
-			console.log('io slidestart');
 			this._sliding = true;
 			this._inputactive = false;
 		},
@@ -1508,7 +1507,18 @@ $.widget("sv.basic_window", $.sv.widget, {
 		// response is: {{ gad_value }}, {{ gad_window_r}}, {{ gad_window_l}}
 		this._super(response);
 
+		var color = this.element.attr('data-color');
+		if (color.indexOf('!') > -1){
+			color = color.substr(1);
+			this.element.attr('style', 'stroke: '+ color+'; fill: '+color+';');
+		}
+		else
+			this.element.attr('style', '');
+		
 		this.element.attr('class', 'icon' + (response[1] || response[2] ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
+		if (color != '' && this.element.attr('class') == "icon icon1") {
+			this.element.attr('style', 'stroke: '+ color+'; fill: '+color+';');
+		}
 		
 		var max = parseFloat(this.options.max);
 		var min = parseFloat(this.options.min);
