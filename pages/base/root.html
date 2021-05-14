@@ -93,7 +93,7 @@
 	{%- endfor %}
 {% endif %}
 
-	<script src="vendor/jquery/jquery-2.1.4.min.js"></script>
+	<script src="vendor/jquery/jquery-2.2.4.min.js"></script>
 
 	<script>
 		$(document).on("mobileinit", function () {
@@ -117,7 +117,7 @@
 		});
 	</script>
 
-	<script src="vendor/jquery.mobile/jquery.mobile-1.4.5.min.js"></script>
+	<script src="vendor/jquery.mobile/jquery.mobile-1.4.5-patch.min.js"></script>
 
 /** JavaScript assets **/
 {% set jsFiles = [
@@ -193,7 +193,7 @@
 {% if config_backtohometime > 0 %}
 	// back to home page
 	var homeTimeout;
-	$(document).on("vmousedown pageshow", function() {
+	$(document).on("vmousedown pagecontainershow", function() {
 		if(homeTimeout !== undefined)
 			window.clearTimeout(homeTimeout);
 		if($.mobile.activePage && $.mobile.activePage.attr("id") != "index" && $.mobile.activePage.attr("id") != "config")
