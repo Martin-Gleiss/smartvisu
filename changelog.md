@@ -7,6 +7,7 @@
 ### Improvements
 
 ### Updated Libraries
+- jQuery v2.2.4 with patch in jQuery mobile v1.4.5
 
 ### Deprecated
 
