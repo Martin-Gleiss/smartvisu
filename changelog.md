@@ -1,6 +1,7 @@
 ## 3.1.a
 ### New / Changed Widgets
 - basic.window and device.window provide an additional color mode: icon0 if closed / custom color if open
+- weather service met.no displays city name retrieved from geonames.org with geo coordinates (new service getLocation.php)
 
 ### Other New Features
 

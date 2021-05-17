@@ -13,6 +13,8 @@
 require_once '../../../lib/includes.php';
 require_once const_path_system.'weather/weather.php';
 require_once const_path_system.'class_cache.php';
+require_once const_path_system.'getLocation.php';
+
 
 
 /**
@@ -142,8 +144,10 @@ class weather_met extends weather
 					$i++;
 					if ($i == 4) break;
 				}
-
 			}
+			parse_str($this->location, $location);
+						
+			$this->data['city'] = getLocation($location['lat'],$location['lon']);
 		} 
 		else
 		{
