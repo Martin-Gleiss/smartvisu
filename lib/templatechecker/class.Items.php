@@ -50,7 +50,17 @@ class Items {
 	 * ItemExists
 	 */
 	public function ItemExists($name) {
-		return !$this->items[$name] == null;
+		if (strpos($name, 'property') === false)
+			return !$this->items[$name] == null;
+		else {
+			$pos = strpos($name, 'property');
+			$itemname = substr($name, 0, $pos -1);
+			$propertyname = substr($name, $pos + 9); 
+			if (!$this->items[$itemname] == null && itemProperties::propertyExists($propertyname)) 
+				$this->items[$name] = itemProperties::getPropertyType($propertyname);
+			
+			return !$this->items[$name] == null;
+		}
 	}
 
 	/**
