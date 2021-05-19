@@ -4,6 +4,7 @@
 - weather service met.no displays city name retrieved from geonames.org with geo coordinates (new service getLocation.php)
 
 ### Other New Features
+- template checker now checks smarthomeNG item properties (valid properties and types)
 
 ### Improvements
 
