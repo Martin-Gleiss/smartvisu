@@ -152,10 +152,7 @@ var io = {
       io.log(1, "Reconnect timer started");
       io.rcTimer = setInterval(function() {
         io.log(1, "Reconnect timer fired");
-        notify.add("ConnectionLost",
-          "connection",
-          "Driver: fhem",
-          "Connection to the fhem server lost!");
+        notify.error("Driver: fhem", "Connection to the fhem server lost!");
         notify.display();
         if (!io.socket) {
           io.open();
