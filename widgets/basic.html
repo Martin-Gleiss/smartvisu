@@ -92,11 +92,12 @@
 * @param {text=Off} text for the 'off' state (optional, default 'Off')
 * @param {text=1} value for the 'on' state (optional, default 1)
 * @param {text=0} value for the 'off' state (optional, default 0)
+* @param {color=} alternative color (e.g. '#777') for active switch (optional)
 */
-{% macro flip(id, item, txt_on, txt_off, val_on, val_off) %}
+{% macro flip(id, item, txt_on, txt_off, val_on, val_off, background) %}
 
 	<select{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.flip" data-item="{{ item }}"
-		data-role="flipswitch">
+		data-role="flipswitch" data-background="{{ background }}">
 		<option value="{{ val_off|default(0) }}">{{ txt_off|default('Off') }}</option>
 		<option value="{{ val_on|default(1) }}">{{ txt_on|default('On') }}</option>
 	</select>
@@ -284,11 +285,13 @@
 * @param {image=} icon to show on the button (optional)
 * @param {text=} text printed on the button (optional)
 * @param {type(text)=mini} valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini)
+* @param {text=} lowest allowed value (optional, default: no limit)
+* @param {text=} highest allowed value (optional, default: no limit)
 */
-{% macro offset(id, item, step, icon, text, type) %}
+{% macro offset(id, item, step, icon, text, type, min, max) %}
 	{% import _self as basic %}
 
-	<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.offset" data-item="{{ item }}" data-step="{{ step|default(1) }}" class="
+	<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.offset" data-item="{{ item }}" data-min ="{{ min }}" data-max ="{{ max }}" data-step="{{ step|default(1) }}" class="
 		{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
 			switch ui-link
 		{%- else -%} /**- display as button -*/

@@ -215,10 +215,11 @@
 * @param {value=1} scale-integer, the scale-divider for the scale
 * @param {item(num)=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
 * @param {text[]=} list of additional widgets / content to display
+* @param {value=0} tolerance by which values entered with +/- buttons are allowed to exeed min/max values (optional, default: limiting to min/max)
 *
 * @author Bonze, Wolfram v. Hülsen
 **/
-{% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval, item_offset, supplements) %}
+{% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval, item_offset, supplements, tolerance) %}
 
 {% import "basic.html" as basic %}
 
@@ -242,10 +243,13 @@
 	</div>
 	/** elements copied from device.rtr **/
 	{% if item_set %}
+		{% if tolerance is empty %} {% set tolerance = '0' %} {% endif %}
+		{% set min = min | default('18') - tolerance %}
+		{% set max = max | default('28') + tolerance %}
 		<div class="set" style="position:relative; z-index: 3;">
 			<div>
-				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro' ) }}
-				{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro' ) }}
+				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro', min, max) }}
+				{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro', min, max) }}
 			</div>
 		</div>
 	{% endif %}

@@ -2,6 +2,9 @@
 ### New / Changed Widgets
 - basic.window and device.window provide an additional color mode: icon0 if closed / custom color if open
 - weather service met.no displays city name retrieved from geonames.org with geo coordinates (new service getLocation.php)
+- basic.offset accepts min / max limits as parameters
+- device.rtrslider offset buttons are limited to min / max but accept a symmetric "tolerance" for backward compatibility
+- basic flip slider track can be styled with any valid color
 
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
