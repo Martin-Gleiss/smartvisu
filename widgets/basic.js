@@ -515,12 +515,20 @@ $.widget("sv.basic_flip", $.sv.widget, {
 	initSelector: 'select[data-widget="basic.flip"]',
 
 	options: {
+		background: null
 	},
 
 	_update: function(response) {
 		this._off( this.element, 'change' );
 		this.element.val(response[0]).flipswitch('refresh');
 		this._on( { 'change': this._events.change } );
+		if (this.options.background != ''){
+			var node = this.element[0].parentElement;
+			if ($(node).hasClass('ui-flipswitch-active'))
+				$(node).css('background-image', 'linear-gradient('+this.options.background+','+this.options.background+')');
+			else
+				$(node).css('background-image', '');
+		}
 	},
 
 	_events: {
@@ -698,6 +706,8 @@ $.widget("sv.basic_offset", $.sv.widget, {
 	initSelector: '[data-widget="basic.offset"]',
 
 	options: {
+		min: null,
+		max: null,
 		step: null
 	},
 
@@ -709,6 +719,10 @@ $.widget("sv.basic_offset", $.sv.widget, {
 			var step = this.options.step * 1;
 			var decs = step.decimals();
 			var newval = (widget.get(this.options.item) * 1 + step).toFixed(decs);
+	    	if (this.options.min !== '')
+				newval = (newval < this.options.min * 1 ? this.options.min : newval);
+	  		if (this.options.max !== '')
+				newval = (newval > this.options.max * 1 ? this.options.max * 1 : newval);
 			this._write(newval);
 		}
 	}
