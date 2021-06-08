@@ -352,7 +352,7 @@ html .ui-body-a .ui-slider-track .ui-btn-active,
 html body .ui-group-theme-a .ui-slider-track .ui-btn-active,
 html body div.ui-slider-track.ui-body-a .ui-btn-active {
 	background-color: #f7931e /*{a-active-background-color}*/;
-	border-color: #f7931e /*{a-active-border}*/;
+	border-color: #000000 /*{a-active-border}*/;
 	color: #ffffff /*{a-active-color}*/;
 	text-shadow: 0 /*{a-active-shadow-x}*/ 1px /*{a-active-shadow-y}*/ 1px /*{a-active-shadow-radius}*/ #005594444449 /*{a-active-shadow-color}*/;
 }
