@@ -1,7 +1,7 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU / FHEM
- * @author      HCS with adjustments by Julian Pawlowski, Stefan Widmer and raman
+ * @author      HCS with adjustments by Julian Pawlowski, Stefan Widmer, raman an wvhn
  *              original version by Martin Gleiß
  * @copyright   2016
  * @license     GPL [http://www.gnu.de]
@@ -119,13 +119,12 @@ var io = {
       io.addon.run();
     }
     
-    if (io.socket.readyState > 1) {
+    if (io.socket == null || io.socket.readyState > 1) 
       io.open();
-    } else {
+    
       // new items
       widget.refresh();
       io.monitor();
-    }
     
   },
   
@@ -136,6 +135,7 @@ var io = {
   socket: null,
   rcTimer: null,
   addon: null,
+  socketErrorNotification: null,
   
   log: function(level, text) {
     if (io.logLevel >= level) {
@@ -145,16 +145,14 @@ var io = {
   
   
   // -----------------------------------------------------------------------------
-  // Start timer
+  // Start timer - started when the websocket is closed by the backend (onclose event)
   // -----------------------------------------------------------------------------
   startReconnectTimer: function() {
     if (!io.rcTimer) {
       io.log(1, "Reconnect timer started");
       io.rcTimer = setInterval(function() {
         io.log(1, "Reconnect timer fired");
-        notify.error("Driver: fhem", "Connection to the fhem server lost!");
-        notify.display();
-        if (!io.socket) {
+        if (io.socket == null) {
           io.open();
         }
       }, 60000);
@@ -163,10 +161,10 @@ var io = {
   
   
   // -----------------------------------------------------------------------------
-  // Stop timer
+  // Stop timer - called when the websocket opened again (onopen event)
   // -----------------------------------------------------------------------------
   stopReconnectTimer: function() {
-    if (io.rcTimer) {
+    if (io.rcTimer != null) {
       clearInterval(io.rcTimer);
       io.rcTimer = null;
       io.log(1, "Reconnect timer stopped");
@@ -301,9 +299,8 @@ var io = {
         'ver': io.protocolVersion
       });
       io.monitor();
-      if (notify.exists()) {
-        notify.remove();
-      }
+      if(io.socketErrorNotification != null)
+		notify.remove(io.socketErrorNotification);
     };
     
     io.socket.onmessage = function(event) {
@@ -312,12 +309,18 @@ var io = {
     };
     
     io.socket.onerror = function(error) {
-      io.log(1, "socket.onerror: " + error);
+      io.log(1, "socket.onerror: " + error.data);
+	  if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification))
+		io.socketErrorNotification = notify.error('Driver: fhem', 'Could not connect to fronthem server!<br /> Websocket error ' + error.data + '.');
     };
     
     io.socket.onclose = function() {
       io.log(1, "socket.onclose");
       io.close();
+	  if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification)) {
+		io.socketErrorNotification = notify.error("Driver: fhem", "Connection to the fhem server lost!");
+		notify.display();
+	  }
       io.startReconnectTimer();
     };
   },
