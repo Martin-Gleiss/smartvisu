@@ -39,6 +39,18 @@ Use it with simple html, to show and hide a <b>div</b>:<br />
 </div>
 
 Or use it to show and hide a <b>popup</b>:<br />
+<div class="twig">
+	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+	<div id="status-popup" class="alert" data-bind="w2" data-role="popup" data-overlay-theme="a">
+		.... code for the popup
+	</div>
+
+	{{ status.collapse('w2', 'bath.alert.warning') }}
+
+		{% endverbatim %}{% endfilter %}
+	</code>
+</div>
 <div class="html">
 	{{ basic.flip('f2', 'bath.alert.warning') }}<br />
 
@@ -57,6 +69,25 @@ Or use it to show and hide a <b>popup</b>:<br />
 </div>
 
 Or use it to show and hide collapsible <b>sections</b>:<br />
+<div class="twig">
+	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+	{{ status.collapse('w3', 'bath.alert.error') }}
+
+	<div class="block">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-bind="w3" data-role="collapsible" data-collapsed="false">
+				<h3>Block</h3>
+
+				<p>Content</p>
+			</div>
+
+		</div>
+	</div>
+
+		{% endverbatim %}{% endfilter %}
+	</code>
+</div>
 <div class="html">
 	{{ basic.flip('f3', 'bath.alert.error') }}<br />
 	{{ status.collapse('w3', 'bath.alert.error') }}
