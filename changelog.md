@@ -20,6 +20,8 @@
 - replaced several deprecated jQuery / jQuery mobile functions & attributes
 
 ### Fixed Bugs
+- Sliders for HSV color model did not send updated values if only one slider was changed
+- plot data lost their ascending sequence occationally which resulted in lines across the plots
 
 ### Known Bugs
 

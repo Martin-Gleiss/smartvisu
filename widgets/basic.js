@@ -487,8 +487,8 @@ $.widget("sv.basic_color_slider", $.sv.basic_color, {
 			}
 
 			var oldColors = this._mem;
-			var diffCount = oldColors == null ? 3 : (values[0] != oldColors[0]) + (values[1] != oldColors[1]) + (values[2] != oldColors[2]) -1;
-			this._lockfor = diffCount; // lock widget to ignore next 2 updates
+			var diffCount = oldColors == null ? 3 : (values[0] != oldColors[0]) + (values[1] != oldColors[1]) + (values[2] != oldColors[2]) ;
+			this._lockfor = (colormodel == 'hsv' ? 0 : diffCount -1); // lock widget to ignore next 2 updates
 
 			if(diffCount > 0) {
 				var items = String(this.options.item).explode();
