@@ -5,6 +5,7 @@
 - basic.offset accepts min / max limits as parameters
 - device.rtrslider offset buttons are limited to min / max but accept a symmetric "tolerance" for backward compatibility
 - basic flip slider track can be styled with any valid color
+- basic.stateswitch can be configured to open any named popup on a long-press (mobile: tap-hold) event 
 
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
