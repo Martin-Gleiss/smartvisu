@@ -1114,20 +1114,25 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 				'taphold': function (event) {
 					event.preventDefault();
 					event.stopPropagation();
-					if(this.options.valueLongpress != null) {
-						var value = this.options.valueLongpress;
-						if(!isNaN(this._current_val) && typeof value === 'string' && !isNaN(value) && (value.startsWith('+') || value.startsWith('-')))
-							value = Number(this._current_val) + Number(value);
-						io.write(this.options.itemLongpress, value);
-					}
-					if(this.options.valueLongrelease != null) {
-						var item = this.options.itemLongpress;
-						var value = this.options.valueLongrelease;
-						if(!isNaN(this._current_val) && typeof value === 'string' && !isNaN(value) && (value.startsWith('+') || value.startsWith('-')))
-							value = Number(this._current_val) + Number(value);
-						$(document).one('vmouseup', function(event) {
-							io.write(item, value);
-						});
+					if (this.options.itemLongpress.indexOf('#') == -1){
+						if(this.options.valueLongpress != null) {
+							var value = this.options.valueLongpress;
+							if(!isNaN(this._current_val) && typeof value === 'string' && !isNaN(value) && (value.startsWith('+') || value.startsWith('-')))
+								value = Number(this._current_val) + Number(value);
+							io.write(this.options.itemLongpress, value);
+						}
+						if(this.options.valueLongrelease != null) {
+							var item = this.options.itemLongpress;
+							var value = this.options.valueLongrelease;
+							if(!isNaN(this._current_val) && typeof value === 'string' && !isNaN(value) && (value.startsWith('+') || value.startsWith('-')))
+								value = Number(this._current_val) + Number(value);
+							$(document).one('vmouseup', function(event) {
+								io.write(item, value);
+							});
+						}
+					} else {
+						var target = $(this.options.itemLongpress);
+						target.filter('.ui-popup').popup("open");
 					}
 				}
 			});
