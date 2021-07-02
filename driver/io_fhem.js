@@ -9,6 +9,8 @@
  * @label       FHEM
  * @hide        driver_autoreconnect
  * @hide		reverseproxy
+ * @hide		driver_username
+ * @hide		driver_password
  * @default     driver_port 2121
  *
  * This driver has enhancements for using smartVISU with FHEM
@@ -75,7 +77,7 @@ var io = {
   // -----------------------------------------------------------------------------
   // Initialization of the driver
   // -----------------------------------------------------------------------------
-  init: function(address, port) {
+  init: function (address, port, ssl, username, password) {
     io.log(0, "init (address=" + address + " port=" + port + ")");
     io.address = address;
     io.port = port;
