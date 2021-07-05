@@ -9,6 +9,7 @@
 
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
+- OpenHAB3 driver from Patrik Goll (thanks!) supports SSL and basic authentication
 
 ### Improvements
 
@@ -16,6 +17,7 @@
 - jQuery v2.2.4 with patch in jQuery mobile v1.4.5
 
 ### Deprecated
+- OpenHAB2 driver
 
 ### Removed Features
 - replaced several deprecated jQuery / jQuery mobile functions & attributes

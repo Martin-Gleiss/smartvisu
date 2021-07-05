@@ -11,6 +11,7 @@
  * @default     driver_port            2424
  * @default	    reverseproxy           false
  * @hide        driver_realtime
+ * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
  */
