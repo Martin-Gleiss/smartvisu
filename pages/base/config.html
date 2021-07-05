@@ -92,6 +92,12 @@
 								
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
+								<h3>{{ lang('configuration_page', 'auth-security', 'label') }}</h3>
+								{{ forms.config_flip(source, values, 'driver_ssl') }}
+								{{ forms.config_input(source, values, 'driver_username', 'wide') }}
+								{{ forms.config_input(source, values, 'driver_password', 'wide') }}
+							</div>
+							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
 								<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3>
 								{{ forms.config_flip(source, values, 'proxy') }}
 								{{ forms.config_input(source, values, 'proxy_url', 'wide') }}

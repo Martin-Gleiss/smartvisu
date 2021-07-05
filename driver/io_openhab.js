@@ -5,15 +5,13 @@
  * @copyright   2012 - 2020
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
- * @label       openHAB2 (deprecated)
+ * @label       openHAB
  *
  * @default     driver_port				8080
  * @default     driver_realtime			true
  * @default     driver_autoreconnect	true
- * @default		driver_ssl				false
+ *
  * @hide		reverseproxy
- * @hide		driver_username
- * @hide		driver_password
  */
 
 /**
@@ -41,10 +39,11 @@ var io = {
 		io.debug && console.debug("io.read(item = " + item + ")");
 		
 		$.ajax({
-            url : io.url + 'items/' + item + '/state',
-            type : "GET",
-            async : true,
-            cache : false
+            url		: io.url + 'items/' + item + '/state',
+            headers	: (io.auth !== false ? io.auth : {}),
+            type	: "GET",
+            async	: true,
+            cache	: false
 		}).done(function(state) {
 			var val = io.convertState(item, state);
 			io.debug && console.debug("io.read: widget.update(item = " + item + ", value = " + val + ")");
@@ -86,6 +85,7 @@ var io = {
 
 		$.ajax({
             url			: io.url + 'items/' + item,
+            headers		: (io.auth !== false ? io.auth : {}),
             data		: state.toString(),
             method		: "POST",
             contentType	: "text/plain",
@@ -116,9 +116,16 @@ var io = {
 	 */
 	init: function (address, port, ssl, username, password) {
 		console.info("Type 'io.debug=true;' to console to see more details.");
-		io.debug && console.debug("io.init(address = " + address + ", port = " + port + ")");
+		io.debug && console.debug("io.init(address = " + address + ", port = " + port + ", ssl = " + ssl + ", username = " + username + ", password = " + password + ")");
 
-		io.url = "http://" + address + (port ? ":" + port : '') + "/rest/";
+		io.url = (ssl == true ? "https" : "http") + "://" + address + (port ? ":" + port : '') + "/rest/";
+		io.debug && console.debug("url = " + io.url);
+		
+		if (username.length > 0) {
+			io.auth = {"Authorization": "Basic " + btoa(username + ':' + password)};
+		}
+		io.debug && console.debug("io.init(auth = " + io.auth + ")");
+
 	},
 
 	/**
@@ -126,7 +133,7 @@ var io = {
 	 */
 	run: function (realtime) {
 		io.debug && console.debug("io.run(realtime = " + realtime + ")");
-		
+
 		if (io.eventListener.readyState == 0 || io.eventListener.readyState == 1) {
 			io.eventListener.close();
 		}
@@ -140,6 +147,7 @@ var io = {
             for (var i = 0; i < widget.listeners().length; i++) {
 				$.ajax({
 					url		: io.url + 'items/' + items[i],
+					headers : (io.auth !== false ? io.auth : {}),
 					type	: "GET",
 					async	: true,
 					cache	: false
@@ -156,7 +164,7 @@ var io = {
         io.plot.init();
 
 		if (realtime) {
-			if (typeof EventSource == 'function') {
+			if (typeof EventSource == 'function' && io.auth === false) {
 				io.eventListener = new EventSource(io.url + "events?topics=smarthome/items/*/statechanged");
 				io.eventListener.onmessage = function(message) {
 					var event = JSON.parse(message.data);				
@@ -195,6 +203,7 @@ var io = {
 	// only be called from the public functions above. You may add or delete some
 	// to fit your requirements and your connected system.
 
+	auth: false,
 	itemType: new Array(),
 	eventListener: false,
 	refreshIntervall: false,
@@ -279,11 +288,12 @@ var io = {
 			}
 
 			$.ajax({
-				url : url,
-				type : 'GET',
-				dataType : 'json',
-				async : false,
-				cache : false
+				url		: url,
+				headers : (io.auth !== false ? io.auth : {}),
+				type	: 'GET',
+				dataType: 'json',
+				async	: false,
+				cache	: false
 			}).done(function(persistence) {
 				var plotData = new Array();
 				if (persistence.data.length > 0) {
