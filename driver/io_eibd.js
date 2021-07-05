@@ -9,6 +9,7 @@
  * @label       knxd / eibd
  * @hide        driver_autoreconnect
  * @hide		reverseproxy
+ * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
  */

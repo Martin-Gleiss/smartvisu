@@ -8,6 +8,7 @@
  * @default     driver_port            1028
  * @hide        driver_autoreconnect
  * @hide		reverseproxy
+ * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
  */

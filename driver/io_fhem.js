@@ -9,6 +9,7 @@
  * @label       FHEM
  * @hide        driver_autoreconnect
  * @hide		reverseproxy
+ * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
  * @default     driver_port 2121

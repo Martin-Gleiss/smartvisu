@@ -11,6 +11,7 @@
  * @default     driver_port            8084
  * @hide        driver_realtime
  * @hide		reverseproxy
+ * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
  */
