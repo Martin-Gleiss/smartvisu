@@ -8,6 +8,8 @@
  * @default     driver_port            1028
  * @hide        driver_autoreconnect
  * @hide		reverseproxy
+ * @hide		driver_username
+ * @hide		driver_password
  */
 
 
@@ -63,7 +65,7 @@ var io = {
 	 * @param      the ip or url to the system (optional)
 	 * @param      the port on which the connection should be made (optional)
 	 */
-	init: function (address, port) {
+	init: function (address, port, ssl, username, password) {
 		io.address = address;
 		io.port = port;
 		io.stop();
