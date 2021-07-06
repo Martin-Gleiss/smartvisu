@@ -24,7 +24,7 @@ var io = {
 	url: '',
 
 	// the debug switch
-	debug: true,
+	debug: false,
 
 	// -----------------------------------------------------------------------------
 	// P U B L I C   F U N C T I O N S
@@ -115,7 +115,7 @@ var io = {
 	 * @param      the port on which the connection should be made (optional)
 	 */
 	init: function (address, port, ssl, username, password) {
-		console.info("Type 'io.debug=true;' to console to see more details.");
+		!io.debug && console.info("Type 'io.debug=true;' to console to see more details.");
 		io.debug && console.debug("io.init(address = " + address + ", port = " + port + ", ssl = " + ssl + ", username = " + username + ", password = " + password + ")");
 
 		io.url = (ssl == true ? "https" : "http") + "://" + address + (port ? ":" + port : '') + "/rest/";
