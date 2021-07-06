@@ -24,7 +24,7 @@ var io = {
 	url: '',
 
 	// the debug switch
-	debug: false,
+	debug: true,
 
 	// -----------------------------------------------------------------------------
 	// P U B L I C   F U N C T I O N S
@@ -164,17 +164,25 @@ var io = {
         io.plot.init();
 
 		if (realtime) {
+
 			if (typeof EventSource == 'function' && io.auth === false) {
-				io.eventListener = new EventSource(io.url + "events?topics=smarthome/items/*/statechanged");
+				var OHnamespace = "openhab";
+				if (io.getOHversion() < 3) {
+					OHnamespace = "smarthome";
+				}
+				var eventurl = io.url + "events?topics=" + OHnamespace + "/items/*/statechanged";
+				io.debug && console.debug("io.run: eventListener(" + eventurl + ")");
+				io.eventListener = new EventSource(eventurl);
 				io.eventListener.onmessage = function(message) {
-					var event = JSON.parse(message.data);				
+					var event = JSON.parse(message.data);
+					io.debug && console.debug("io.run: eventListener.message(" + event.type + " = " + event.topic +")");
 					if (event.type.substr(-21) == 'ItemStateChangedEvent') {
 						var item = event.topic.split('/')[2];
 						var val = JSON.parse(event.payload).value;
-						io.debug && console.debug("io.start.eventmessage: item = " + item + ", value = " + val + ")");
+						io.debug && console.debug("io.run: eventmessage(item = " + item + ", value = " + val + ")");
 						if (widget.listeners().includes(item)) {
 							val = io.convertState(item, val);
-							io.debug && console.debug("io.start.event: widget.update(item = " + item + ", value = " + val + ")");
+							io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
 							widget.update(item, val);
 						}
 						if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer * 1000) {
@@ -209,6 +217,23 @@ var io = {
 	refreshIntervall: false,
 	timer: 1,
 
+	getOHversion: function () {
+		var val = false;
+		
+		$.ajax({
+            url		: io.url,
+            headers	: (io.auth !== false ? io.auth : {}),
+            type	: "GET",
+            async	: false,
+            cache	: false
+		}).done(function(info) {
+			val = info.runtimeInfo.version.substr(0,1);
+		}).error(notify.json);
+		
+		io.debug && console.debug("io.getOHversion(" + val + ")");
+		return val;
+	},
+	
 	convertState: function (item, state) {
 		io.debug && console.debug("io.convertState(item = " + item + ", state = " + state + ")");
 		
