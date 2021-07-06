@@ -166,11 +166,7 @@ var io = {
 		if (realtime) {
 
 			if (typeof EventSource == 'function' && io.auth === false) {
-				var OHnamespace = "openhab";
-				if (io.getOHversion() < 3) {
-					OHnamespace = "smarthome";
-				}
-				var eventurl = io.url + "events?topics=" + OHnamespace + "/items/*/statechanged";
+				var eventurl = io.url + "events?topics=" + (io.getOHversion() < 3 ? "smarthome" : "openhab") + "/items/*/statechanged";
 				io.debug && console.debug("io.run: eventListener(" + eventurl + ")");
 				io.eventListener = new EventSource(eventurl);
 				io.eventListener.onmessage = function(message) {
