@@ -1,0 +1,43 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "index.html" %}
+{% block content %}
+
+	<h1>Widget Assistant</h1>
+
+	<div class="docu">
+
+		<h2>Activating the Assistant</h2>
+
+		Go to the configuration page and activate the widget assistant in the "options" section. After saving the settings, the widget 
+		assistant will show up in the system menu on the left. We recommend to de-activate it in stable productive environments since 
+		its libraries consume significant ressources and extend loading time. 
+		<br />
+		
+		<h2>Using the Assistant</h2>
+
+		Select Widget Assistant from the menu and start typing a widget name into the white editor window. Autocomplete select lists will appear where you can select your widget.
+		As soon as you have entered a widget name and clicked inside the parentheses, a tooltip window opens and gives you instructions for 
+		each parameter.
+		<br />
+		<div class="html">
+			<img src="lib/widget_assistant/WA_Screenshot.png" style="padding:1%; width:96%;"> </img>
+		</div>
+
+		<h2>Result</h2>
+
+		After Editing the widget press "Preview Widget & copy final Widget to Clipboard".
+		A new window opens displaying the visu element defined by the widget. It can be tested in live mode like a normal visu page. <br>
+		The code is already available on the clipboard and can be pasted into a html page you want to medit.
+				
+	</div>
+
+{% endblock %}
