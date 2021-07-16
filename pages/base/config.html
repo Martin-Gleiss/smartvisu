@@ -86,13 +86,14 @@
 								{{ forms.config_select(source, values, 'driver', dir('driver', '^io_(.+?).js') ) }}
 								{{ forms.config_input(source, values, 'driver_address', 'wide') }}
 								{{ forms.config_input(source, values, 'driver_port', 'wide') }}
+								{{ forms.config_input(source, values, 'driver_tlsport', 'wide') }}
 								{{ forms.config_flip(source, values, 'driver_realtime') }}
 								{{ forms.config_flip(source, values, 'driver_autoreconnect') }}
 								{{ forms.config_flip(source, values, 'reverseproxy', forms.config_reverseproxy (source, values, 'reverseproxy') ) }}
 								
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
-								<h3>{{ lang('configuration_page', 'auth-security', 'label') }}</h3>
+								<h3>{{ lang('configuration_page', 'auth-security', 'title') }}</h3>
 								{{ forms.config_flip(source, values, 'driver_ssl') }}
 								{{ forms.config_input(source, values, 'driver_username', 'wide') }}
 								{{ forms.config_input(source, values, 'driver_password', 'wide') }}

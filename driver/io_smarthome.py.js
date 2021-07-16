@@ -9,6 +9,7 @@
  *
  * @default     driver_autoreconnect   true
  * @default     driver_port            2424
+ * @default     driver_tlsport         2425
  * @default	    reverseproxy           false
  * @hide        driver_realtime
  * @hide		driver_ssl
@@ -66,13 +67,10 @@ var io = {
 
 	/**
 	 * Initializion of the driver
-	 *
-	 * @param      the ip or url to the system (optional)
-	 * @param      the port on which the connection should be made (optional)
+	 * Driver config parameters are globally available as from v3.2
 	 */
-	init: function (address, port, ssl, username, password) {
-		io.address = address;
-		io.port = port;
+	init: function () {
+		io.address = sv.config.driver.address;
 		io.open();
 	},
 
@@ -122,14 +120,20 @@ var io = {
 	 */
 	open: function () {
 		var protocol = '';
+		var ports = [];
+		ports['ws://'] = sv.config.driver.port;
+		ports['wss://'] = sv.config.driver.tlsport;
+
 		if (!io.address || io.address.indexOf('://') < 0) {
 			// adopt websocket security to current protocol (https -> wss and http -> ws)
-			// if the protocol should be forced, add it to the address
+			// if the protocol shall be forced, put it as prefix to the address in the config page
 			protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
 			if (!io.address) {
 				// use url of current page if not defined
 				io.address = location.hostname;
 			}
+			io.port = ports[protocol];
+
 			if (!io.port) {
 				// use port of current page if not defined and needed
 				if (location.port != '') {
@@ -140,8 +144,14 @@ var io = {
 				}
 			}
 		}
+		else {
+			// forced protocol (identified in address)
+			io.port = ports[io.address.substr(0, io.address.indexOf(':'))+'://'];
+		}
+		// DEBUG:
+		console.log("[io.smarthome.py] opening websocket on "+ protocol + io.address + ':' + io.port);
 		io.socket = new WebSocket(protocol + io.address + ':' + io.port);
-
+		
 		io.socket.onopen = function () {
 			// remove socket error notification on reconnect
 			if(io.socketErrorNotification != null)

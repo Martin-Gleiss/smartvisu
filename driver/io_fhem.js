@@ -7,6 +7,7 @@
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       FHEM
+ * @hide        driver_tlsport
  * @hide        driver_autoreconnect
  * @hide		reverseproxy
  * @hide		driver_ssl
@@ -78,10 +79,10 @@ var io = {
   // -----------------------------------------------------------------------------
   // Initialization of the driver
   // -----------------------------------------------------------------------------
-  init: function (address, port, ssl, username, password) {
-    io.log(0, "init (address=" + address + " port=" + port + ")");
-    io.address = address;
-    io.port = port;
+  init: function () {
+    io.log(0, "init (address=" + sv.config.driver.address + " port=" + sv.config.driver.port + ")");
+    io.address = sv.config.driver.address;
+    io.port = sv.config.driver.port;
     
     if (io.alertExceptions) {
       window.onerror = function(message, url, line) {

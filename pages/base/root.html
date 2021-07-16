@@ -185,9 +185,9 @@
 {% block head %}{% endblock %}
 
 <script>
-	io.init('{{ config_driver_address }}', '{{ config_driver_port }}', '{{ config_driver_ssl }}', '{{ config_driver_username }}', '{{ config_driver_password }}');
+	io.init();
 {% if config_driver_autoreconnect %}
-	activateAutoReconnect('{{ config_driver_address }}', '{{ config_driver_port }}', '{{ config_driver_ssl }}', '{{ config_driver_username }}', '{{ config_driver_password }}');
+	activateAutoReconnect();
 {% endif %}
 
 {% if config_backtohometime > 0 %}
