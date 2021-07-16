@@ -11,6 +11,7 @@
  * @default     driver_realtime			true
  * @default     driver_autoreconnect	true
  *
+ * @hide		driver_tlsport
  * @hide		reverseproxy
  */
 
@@ -111,10 +112,15 @@ var io = {
 	/**
 	 * Initializion of the driver
 	 *
-	 * @param      the ip or url to the system (optional)
-	 * @param      the port on which the connection should be made (optional)
+	 * Driver config parameters are globally available as from v3.2
 	 */
-	init: function (address, port, ssl, username, password) {
+	init: function () {
+		var address = sv.config.driver.address;
+		var port = sv.config.driver.port;
+		var ssl = sv.config.driver.ssl;
+		var username = sv.config.driver.username;
+		var password = sv.config.driver.password;
+		
 		!io.debug && console.info("Type 'io.debug=true;' to console to see more details.");
 		io.debug && console.debug("io.init(address = " + address + ", port = " + port + ", ssl = " + ssl + ", username = " + username + ", password = " + password + ")");
 

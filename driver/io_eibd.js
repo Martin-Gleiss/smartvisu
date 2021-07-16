@@ -7,6 +7,7 @@
  * @version        0.2
  * -----------------------------------------------------------------------------
  * @label       knxd / eibd
+ * @hide		driver_tlsport
  * @hide        driver_autoreconnect
  * @hide		reverseproxy
  * @hide		driver_ssl
@@ -64,12 +65,11 @@ var io = {
 	/**
 	 * Initializion of the driver
 	 *
-	 * @param      the ip or url to the system (optional)
-	 * @param      the port on which the connection should be made (optional)
+	 * Driver config parameters are globally available as from v3.2
 	 */
-	init: function (address, port, ssl, username, password) {
-		io.address = address;
-		io.port = port;
+	init: function () {
+		io.address = sv.config.driver.address;
+		io.port = sv.config.driver.port;
 		io.stop();
 	},
 

@@ -10,8 +10,10 @@
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
 - OpenHAB3 driver from Patrik Goll (thanks!) supports SSL and basic authentication
+- smarthome.py driver accepts a second port for TLS communication. Port & protocol will be switched according to host protocol (http / https) 
 
 ### Improvements
+- Driver config data are globally availble now in the sv.config.driver{} array
 
 ### Updated Libraries
 - jQuery v2.2.4 with patch in jQuery mobile v1.4.5
