@@ -14,6 +14,7 @@
 
 ### Improvements
 - Driver config data are globally availble now in the sv.config.driver{} array
+- Config page layout adapted to new options, popup for driver security / authorization
 
 ### Updated Libraries
 - jQuery v2.2.4 with patch in jQuery mobile v1.4.5
