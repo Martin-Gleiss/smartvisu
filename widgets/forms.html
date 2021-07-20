@@ -88,9 +88,8 @@
 * @param {text} values being available from source
 * @param {text} name of the parameter to enter
 * @param {text=} type of the value to enter (text, wide)
-* @param {text=} specifies a caller in order to avoid duplicate ids (empty when called from config page, 'popup' when called from a popup) 
 */
-{% macro config_input(source, values, id, type, caller) %}
+{% macro config_input(source, values, id, type) %}
 	<div class="ui-field-contain">
 		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
 			{{ lang('configuration_page', id, 'label') }}
@@ -103,7 +102,7 @@
 				{{ hint|nl2br }}
 			</div>
 	{% endif %}
-			<input {% if type == 'wide' %} style="letter-spacing: 0.1em;" {% set type = 'text' %}{% endif %} type="{{ type|default('text') }}" name="{{ id }}" id="{{ source }}_{{ id }}_{{ caller }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
+			<input {% if type == 'wide' %} style="letter-spacing: 0.1em;" {% set type = 'text' %}{% endif %} type="{{ type|default('text') }}" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
 	{% if not hint is empty %}
 		</div>
 	{% endif %}
@@ -214,9 +213,8 @@
 * @param {text} values being available from source
 * @param {text} name of the option to activate
 * @param {text=} executable html code as addition
-* @param {text=} specifies a caller in order to avoid duplicate ids (empty when called from config page, 'popup' when called from a popup)   
 */
-{% macro config_flip(source, values, id, addition, caller) %}
+{% macro config_flip(source, values, id, addition) %}
 	<div class="ui-field-contain">
 		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
 			{{ lang('configuration_page', id, 'label') }}
@@ -229,7 +227,7 @@
 				{{ hint|nl2br }}
 			</div>
 	{% endif %}
-			<select name="{{ id }}" id="{{ source }}_{{ id }}_{{ caller }}" data-role="flipswitch"{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
+			<select name="{{ id }}" id="{{ source }}_{{ id }}" data-role="flipswitch"{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
 				<option value="false"{{ not values[id] ? ' selected="selected"'|raw }}>off</option>
 				<option value="true"{{ values[id] ? ' selected="selected"'|raw }}>on</option>
 			</select>
