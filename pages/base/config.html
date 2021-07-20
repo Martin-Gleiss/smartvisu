@@ -15,7 +15,8 @@
 {% block content %}
 
 	/** related JavaScript part located in lib/base/base.js */
-
+	<script src="lib/base/config.js"></script>
+	
 	<h1>{{ lang('configuration_page', 'configuration', 'label') }}</h1>
 
 	{%
@@ -179,9 +180,9 @@
 			</div>
 			<div class="ui-content">
 				<form id="{{ source }}_securityform">
-					{{ forms.config_flip(source, values, 'driver_ssl') }}
-					{{ forms.config_input(source, values, 'driver_username', 'wide') }}
-					{{ forms.config_input(source, values, 'driver_password', 'wide') }}
+					{{ forms.config_flip(source, values, 'driver_ssl', '', 'popup') }}
+					{{ forms.config_input(source, values, 'driver_username', 'wide', 'popup') }}
+					{{ forms.config_input(source, values, 'driver_password', 'wide', 'popup') }}
 					<div id="security_submitcontainer" style="position: relative; overflow: hidden;">
 						<button type="submit" data-theme="b" data-icon="check" name="submit" value="1">{{ lang('configuration_page', 'auth-security', 'button') }}</button>
 					</div>
