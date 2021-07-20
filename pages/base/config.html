@@ -51,7 +51,7 @@
 							</div>
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'interface', 'label') }}</h3>
-								<div style="height:245px">
+								<div style="min-height:245px">
 									{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
 									{{ forms.config_row(source, values, 'design',
 										[
@@ -83,26 +83,26 @@
 							</div>
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'ioconnection', 'label') }}</h3>
-								<div style="height:245px">
+								<div style="min-height:245px">
 									{{ forms.config_select(source, values, 'driver', dir('driver', '^io_(.+?).js') ) }}
 									{{ forms.config_input(source, values, 'driver_address', 'wide') }}
 									{{ forms.config_input(source, values, 'driver_port', 'wide') }}
 									{{ forms.config_input(source, values, 'driver_tlsport', 'wide') }}
-									{{ forms.config_row(source, values, 'auth-security',
-										[
-											'<a href="#'~ source~'_driver_authenticate_popup" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-icon-left ui-icon-action ui-micro' ~ (not values['calendar_google_refresh_token'] is defined ? ' ui-btn-active') ~ ' " data-icon="delete" data-inline="true" id="' ~ source ~ '_auth-security_button">' ~ lang('configuration_page', 'auth-security', 'button') ~ '</a>'
-											,forms.config_hidden(source, values, 'driver_ssl')
-											,forms.config_hidden(source, values, 'driver_username')
-											,forms.config_hidden(source, values, 'driver_password')
-										]
-									) }}
 									{{ forms.config_flip(source, values, 'driver_realtime') }}
 									{{ forms.config_flip(source, values, 'driver_autoreconnect') }}
 									{{ forms.config_flip(source, values, 'reverseproxy', forms.config_reverseproxy (source, values, 'reverseproxy') ) }}
 								</div>
 							</div>
+							<div class="ui-field-contain" style="margin:0;" data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
+								<h3>{{ lang('configuration_page', 'auth-security', 'title') }}</h3><br />
+								<div style="min-height:184px;">
+									{{ forms.config_flip(source, values, 'driver_ssl') }}
+									{{ forms.config_input(source, values, 'driver_username', 'wide') }}
+									{{ forms.config_input(source, values, 'driver_password', 'wide') }} 
+								</div>
+							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
-								<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3>
+								<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3><br />
 								{{ forms.config_flip(source, values, 'proxy') }}
 								{{ forms.config_input(source, values, 'proxy_url', 'wide') }}
 								{{ forms.config_input(source, values, 'proxy_user') }}
@@ -173,23 +173,6 @@
 				<button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">{{ lang('configuration_page', 'save', 'label') }}</button>
 			</form>
 		</div>
-	
-		<div id="{{source}}_driver_authenticate_popup" data-role="popup" data-overlay-theme="a">
-			<div data-role="header" data-theme="c">
-				<h1 style="margin-right: 10%;margin-left: 10%;">{{ lang('configuration_page','auth-security', 'title') }}</h1>
-			</div>
-			<div class="ui-content">
-				<form id="{{ source }}_securityform">
-					{{ forms.config_flip(source, values, 'driver_ssl', '', 'popup') }}
-					{{ forms.config_input(source, values, 'driver_username', 'wide', 'popup') }}
-					{{ forms.config_input(source, values, 'driver_password', 'wide', 'popup') }}
-					<div id="security_submitcontainer" style="position: relative; overflow: hidden;">
-						<button type="submit" data-theme="b" data-icon="check" name="submit" value="1">{{ lang('configuration_page', 'auth-security', 'button') }}</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	
 	{% endfor %}
 	</div>
 	
