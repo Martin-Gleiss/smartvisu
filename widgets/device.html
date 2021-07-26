@@ -223,6 +223,11 @@
 
 {% import "basic.html" as basic %}
 
+	/** set displayed decimals to decimals of step parameter */
+	{% set setformat = lang ('format', 'temp') %}
+	{% set stepparts = step|split('.') %}
+	{% set decs = (stepparts[1] >0 ? stepparts[1]|length : 0) %} {% set setformat = setformat|replace(',1f', ','~decs~'f') %}
+	
 	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{item_actual}},{{item_set}},{{item_offset}}"  
 		data-scale_min="{{min | default('18')}}" data-scale_max="{{max| default('28')}}" data-step="{{step | default('.1')}}"  
 		data-scale_interval="{{scale_interval | default('1')}}" style="margin:auto; position:relative;"> 
@@ -236,8 +241,8 @@
 		<div id="container" style="display: inline-flex; align-content: center; position:relative; height: 140px; width:140px; margin: 30px 30px -30px 30px;">
 			<div class="outerslider" id ="{{ uid(page, id) }}" style="position:absolute; top:0px; margin:auto; z-index: 0;"> </div>
 			<div class="innerslider" id ="{{ uid(page, id) }}" style="position:absolute; margin:auto; top:8px; left:8px;z-index: 2;"> </div>
-			<div class="set" style="position:absolute; top:80px; left: 34px; z-index: 1;">
-				<div class="temp" style="margin-bottom:15px;">Soll: {{ basic.print('', item_set, 'temp' ) }}</div>
+			<div class="set" style="position:absolute; top:80px; left: 32px; min-width:76px; z-index: 1;">
+				<div class="temp" style="margin-bottom:15px;">Soll: {{ basic.print('', item_set, setformat ) }}</div>
 			</div>		
 		</div>		
 	</div>

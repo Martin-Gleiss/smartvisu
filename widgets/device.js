@@ -232,7 +232,7 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		},
 
 		tooltipFormat:function (args){
-			return"<span style='position: relative;top:-2.2em;font-size:0.2em;color:"+font_color+"; '>Ist: </span></br><span id ='val' style='position: relative;top:-2.7em;font-weight:bold;font-size:0.45em;color:"+font_color+";'>" + args.value + unit +"</span>";
+			return"<span style='position: relative;top:-2.2em;font-size:0.2em;color:"+font_color+"; '>Ist: </span></br><span id ='val' style='position: relative;top:-2.7em;font-weight:bold;font-size:0.45em;color:"+font_color+";'>" + args.value.toFixed(decs) + unit +"</span>";
 		},
 		rangeColor: function (args) {
 			return border_color;
@@ -245,7 +245,7 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		}
 	});
 
-	var actualString = (actualValue < 10 ) ? '0'+String(actualValue)+unit : String(actualValue)+unit;
+	var actualString = (actualValue < 10 ? '0' : '') + actualValue.toFixed(decs)+unit;
 	$("div#"+id+".outerslider .rs-tooltip #val").html(actualString);
 
 	// slider for set value
