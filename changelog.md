@@ -16,6 +16,7 @@
 - Driver config data are globally availble now in the sv.config.driver{} array
 - Config page layout adapted to new options, popup for driver security / authorization
 - Scripts for config page stored in separate js-file (to save some ressources/time on normal visu pages)
+- device.rtrslider sets the display formats according to the decimals of the parameter 'step'
 
 ### Updated Libraries
 - jQuery v2.2.4 with patch in jQuery mobile v1.4.5
