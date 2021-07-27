@@ -30,6 +30,7 @@
 ### Fixed Bugs
 - Sliders for HSV color model did not send updated values if only one slider was changed
 - plot data lost their ascending sequence occationally which resulted in lines across the plots
+- Page navigation away from widget assistant often failed and / or threw errors in console
 
 ### Known Bugs
 

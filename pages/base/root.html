@@ -216,7 +216,7 @@
 
 	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};	
 </script>
-/** activate codemirror only if widget assistant is activated */
+/** activate codemirror only if widget assistant is activated - moved to widget_assistant.html
 {% if config_widgetassi %}  
 	<script src="vendor/codemirror/lib/codemirror.js"></script>
     <script src="vendor/codemirror/mode/python/python.js"></script>
@@ -240,7 +240,7 @@
     <script src="vendor/codemirror/addon/search/jump-to-line.js"></script>
     <script src="vendor/codemirror/addon/edit/matchbrackets.js"></script>
     <script src="vendor/codemirror/addon/edit/closebrackets.js"></script>
-{% endif %}	
+{% endif %}	*/
 	
 {% import "lib.html" as lib %}
 {% import "basic.html" as basic %}
