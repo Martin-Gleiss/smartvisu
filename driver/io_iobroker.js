@@ -76,7 +76,7 @@ var io = {
 			})
 			
 			if(val && val != '')
-				notify.warning('Driver: ioBroker', 'Passing value to a script is not supported in ioBroker.');
+				notify.message('warning', 'Driver: ioBroker', 'Passing value to a script is not supported in ioBroker.');
 		}
 	},
 
@@ -150,7 +150,7 @@ var io = {
 			console.log("ioBroker: Connected to '" + io.url + "', authenticating...");
 			setTimeout(function () {
 				var wait = setTimeout(function() {
-					notify.error('Driver: ioBroker', 'No answer from server.');
+					notify.message('error', 'Driver: ioBroker', 'No answer from server.');
 				}, 3000);
 
 				io.socket.emit('authenticate', function (isOk, isSecure) {
@@ -164,24 +164,24 @@ var io = {
 						io.isConnected = true;
 						io.monitor();
 					} else {
-						 notify.error('Driver: ioBroker', 'Authentication failed.');
+						 notify.message('error', 'Driver: ioBroker', 'Authentication failed.');
 					}
 				});
 			}, 50);
 		});
 
 		io.socket.on('error', function (err) {
-			 notify.error('Driver: ioBroker', JSON.stringify(err));
+			 notify.message('error', 'Driver: ioBroker', JSON.stringify(err));
 		});
 		
 		io.socket.on('connect_error', function (err) {
 			if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification))
-				io.socketErrorNotification = notify.error('Driver: ioBroker', 'connect_error: '+JSON.stringify(err));
+				io.socketErrorNotification = notify.message('error', 'Driver: ioBroker', 'connect_error: '+JSON.stringify(err));
 			//io.reconnect(connOptions);
 		});
 		
 		io.socket.on('permissionError', function (err) {
-			 notify.error('Driver: ioBroker', 'permissionError: '+JSON.stringify(err));
+			 notify.message('error', 'Driver: ioBroker', 'permissionError: '+JSON.stringify(err));
 		});
 
 		io.socket.on('disconnect', function () {

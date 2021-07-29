@@ -117,7 +117,10 @@ var io = {
   // Called after each page change
   // -----------------------------------------------------------------------------
   run: function(realtime) {
-    io.log(1, "run (readyState=" + io.socket.readyState + ")");
+    if (io.socket != undefined)
+		io.log(1, "run (readyState=" + io.socket.readyState + ")");
+	else
+		io.log(1, "run: websocket not available");
     
     if (io.addon) {
       io.addon.run();
@@ -260,13 +263,13 @@ var io = {
         break;
       
       case 'dialog':
-        notify.info(data.header, data.content);
+        notify.message('info', data.header, data.content);
         break;
       
       case 'proto':
         var proto = data.ver;
         if (proto != io.protocolVersion) {
-          notify.info('Driver: fhem',
+          notify.message('error', 'Driver: fhem',
             'Protocol mismatch<br />Driver is at version v' + io.protocolVersion + '<br />fhem is at version v' + proto);
         }
         break;
@@ -315,15 +318,14 @@ var io = {
     io.socket.onerror = function(error) {
       io.log(1, "socket.onerror: " + error.data);
 	  if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification))
-		io.socketErrorNotification = notify.error('Driver: fhem', 'Could not connect to fronthem server!<br /> Websocket error ' + error.data + '.');
+		io.socketErrorNotification = notify.message('error', 'Driver: fhem', 'Could not connect to fronthem server!<br /> Websocket error ' + error.data + '.');
     };
     
     io.socket.onclose = function() {
       io.log(1, "socket.onclose");
       io.close();
 	  if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification)) {
-		io.socketErrorNotification = notify.error("Driver: fhem", "Connection to the fhem server lost!");
-		notify.display();
+		io.socketErrorNotification = notify.message("error", "Driver: fhem", "Connection to the fhem server lost!");
 	  }
       io.startReconnectTimer();
     };
@@ -542,6 +544,7 @@ var io = {
 	 */
 	stopseries: function () {
 		// TODO
+		io.log(2, "series cancelling not yet implemented");
 	},
   
   

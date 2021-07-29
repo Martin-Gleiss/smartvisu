@@ -177,7 +177,7 @@
 	{%- endfor -%}
 	{%- if config_cache and not mbstring_available %}
 
- 	<script>notify.warning('Assets','JavaScript and CSS minification needs PHP mbstring module.')</script>
+ 	<script>notify.message('warning', 'Assets','JavaScript and CSS minification needs PHP mbstring module.')</script>
  	{%- endif -%}
 {% endif %}
 

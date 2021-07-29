@@ -17,12 +17,14 @@
 - Config page layout adapted to new options, popup for driver security / authorization
 - Scripts for config page stored in separate js-file (to save some ressources/time on normal visu pages)
 - device.rtrslider sets the display formats according to the decimals of the parameter 'step'
+- improved error notifications with basis for language specific message texts
 
 ### Updated Libraries
 - jQuery v2.2.4 with patch in jQuery mobile v1.4.5
 
 ### Deprecated
 - OpenHAB2 driver
+- notify.info/warning/error(title, text): use notify.message("info" / "warning" / "error", title, text) instead
 
 ### Removed Features
 - replaced several deprecated jQuery / jQuery mobile functions & attributes

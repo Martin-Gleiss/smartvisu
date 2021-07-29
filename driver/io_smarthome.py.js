@@ -202,7 +202,7 @@ var io = {
 					break;
 
 				case 'dialog':
-					notify.info(data.header, data.content);
+					notify.message('info', data.header, data.content);
 					break;
 
 				case 'log':
@@ -225,10 +225,6 @@ var io = {
 					break;
 
 				case 'proto':
-				//	io.version = parseInt(data.ver);
-				//	if (io.version < 3) {
-				//		notify.warning('Driver: smarthome.py', 'Protocol mismatch<br />SmartHome.py is: v' + io.version + '<br /><br /> Update the system!');
-				//	}
 					if (data.server != undefined){ 
 						io.server = data.server;
 						io.opentime = new Date(data.time);
@@ -244,11 +240,11 @@ var io = {
 
 		io.socket.onerror = function (error) {
 			if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification))
-				io.socketErrorNotification = notify.error('Driver: smarthome.py', 'Could not connect to smarthome.py server!<br /> Websocket error ' + error.data + '.');
+				io.socketErrorNotification = notify.message('error', 'Driver: smarthome.py', 'Could not connect to smarthome.py server!<br /> Websocket error ' + error.data + '.');
 		};
 
 		io.socket.onclose = function () {
-			notify.debug('Driver: smarthome.py', 'Connection closed to smarthome.py server!');
+			console.log('[io_smarthome.py]: Connection closed to smarthome.py server!');
 		};
 	},
 
@@ -325,10 +321,7 @@ var io = {
 				if (!unique[items[i]] && (pt instanceof Array) && widget.checkseries(items[i])) {
 					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 
-					//if (io.version <= 3)
-					//	io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2]});
-					//else
-						io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': pt[pt.length - 1]});
+					io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': pt[pt.length - 1]});
 					
 					unique[items[i]] = 1;
 				}
