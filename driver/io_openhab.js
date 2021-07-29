@@ -2,17 +2,18 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, Patrik Germann
- * @copyright   2012 - 2020
+ * @copyright   2012 - 2021
  * @license     GPL [http://www.gnu.de]
+ * @version     2.3.5
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
- * @default     driver_port				8080
- * @default     driver_realtime			true
- * @default     driver_autoreconnect	true
+ * @default     driver_port             8080
+ * @default     driver_tlsport          8443
+ * @default     driver_realtime         true
+ * @default     driver_autoreconnect    true
  *
- * @hide		driver_tlsport
- * @hide		reverseproxy
+ * @hide        reverseproxy
  */
 
 /**
@@ -21,11 +22,14 @@
  */
 var io = {
 
-	// the URL
-	url: '',
+	//  debug switch
+	debug   : false,
 
-	// the debug switch
-	debug: false,
+	// refreshtimer in seconds
+	timer   : 1,
+
+	// servertimeout in seconds
+	timeout : 5,
 
 	// -----------------------------------------------------------------------------
 	// P U B L I C   F U N C T I O N S
@@ -37,22 +41,23 @@ var io = {
 	 * @param      the item
 	 */
 	read: function (item) {
-		io.debug && console.debug("io.read(item = " + item + ")");
-		
+		io.debug && console.log("io.read(item = " + item + ")");
+
 		$.ajax({
-            url		: io.url + 'items/' + item + '/state',
-            headers	: (io.auth !== false ? io.auth : {}),
-            type	: "GET",
-            async	: true,
-            cache	: false
+			url     : io.url + 'items/' + item + '/state',
+			headers : (io.auth !== false ? io.auth : {}),
+			type    : 'GET',
+			timeout : io.timeout,
+			async   : true,
+			cache   : false
 		}).done(function(state) {
 			var val = io.convertState(item, state);
-			io.debug && console.debug("io.read: widget.update(item = " + item + ", value = " + val + ")");
-            widget.update(item, val);
+			io.debug && console.log("io.read: widget.update(item = " + item + ", value = " + val + ")");
+			widget.update(item, val);
 			if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer * 1000) {
 				io.plot.get(io.plot.listeners[item]);
 			}
-        }).error(notify.json);
+		}).fail(notify.json);
 	},
 
 	/**
@@ -62,7 +67,7 @@ var io = {
 	 * @param      the value
 	 */
 	write: function (item, val) {
-		io.debug && console.debug("io.write(item = " + item + ", val = " + val + ")");
+		io.debug && console.log("io.write(item = " + item + ", val = " + val + ")");
 
 		var transval = new Array();
 		switch (io.itemType[item]) {
@@ -83,19 +88,20 @@ var io = {
 		}
 
 		var state = (val in transval) ? transval[val] : val;
-
+		io.debug && console.debug("io.write(item = " + item + ", val = " + state + ")");
 		$.ajax({
-            url			: io.url + 'items/' + item,
-            headers		: (io.auth !== false ? io.auth : {}),
-            data		: state.toString(),
-            method		: "POST",
-            contentType	: "text/plain",
-            cache		: false
+			url         : io.url + 'items/' + item,
+			headers     : (io.auth !== false ? io.auth : {}),
+			data        : state.toString(),
+			method      : 'POST',
+			contentType : 'text/plain',
+			timeout     : io.timeout,
+			cache       : false
 		}).success(function() {
 			if (io.refreshIntervall) {
 				widget.update(item, val);
 			}
-		}).error(notify.json);
+		}).fail(notify.json);
 
 	},
 
@@ -106,7 +112,7 @@ var io = {
 	 * @param      the value
 	 */
 	trigger: function (name, val) {
-		io.debug && console.debug("io.trigger(name = " + name + ", val = " + val + ")");
+		io.debug && console.log("io.trigger(name = " + name + ", val = " + val + ")");
 	},
 
 	/**
@@ -115,94 +121,127 @@ var io = {
 	 * Driver config parameters are globally available as from v3.2
 	 */
 	init: function () {
-		var address = sv.config.driver.address;
-		var port = sv.config.driver.port;
-		var ssl = sv.config.driver.ssl;
-		var username = sv.config.driver.username;
-		var password = sv.config.driver.password;
-		
 		!io.debug && console.info("Type 'io.debug=true;' to console to see more details.");
-		io.debug && console.debug("io.init(address = " + address + ", port = " + port + ", ssl = " + ssl + ", username = " + username + ", password = " + password + ")");
+		io.debug && console.log("io.init()");
 
-		io.url = (ssl == true ? "https" : "http") + "://" + address + (port ? ":" + port : '') + "/rest/";
+		if (!sv.config.driver) { //kompatibiliät zu smartVISU < 3.2
+			sv.config['driver'] = {
+				address : arguments[0],
+				port    : arguments[1]
+			};
+		}
+
+		io.debug && console.debug("io.init(address = " + sv.config.driver.address + ", port = " + sv.config.driver.port + ", ssl = " + sv.config.driver.ssl + ", username = " + sv.config.driver.username + ", password = " + sv.config.driver.password + ")");
+
+		if (sv.config.driver.ssl == true) {
+			io.url = 'https://' + sv.config.driver.address + (sv.config.driver.tlsport ? ":" + sv.config.driver.tlsport : '') + "/rest/";
+		} else {
+			io.url = 'http://' + sv.config.driver.address + (sv.config.driver.port ? ":" + sv.config.driver.port : '') + "/rest/";
+		}
 		io.debug && console.debug("url = " + io.url);
-		
-		if (username.length > 0) {
-			io.auth = {"Authorization": "Basic " + btoa(username + ':' + password)};
+
+		if (sv.config.driver.username) {
+			io.auth = {"Authorization": "Basic " + btoa(sv.config.driver.username + ':' + sv.config.driver.password)};
 		}
 		io.debug && console.debug("io.init(auth = " + io.auth + ")");
 
+		if(io.socket != null && io.socket.readyState == 3) {
+			io.run();
+		}
+
+		io.timeout *= 1000;
+
+		$.ajax({
+			url      : io.url,
+			headers  : (io.auth !== false ? io.auth : {}),
+			type     : 'GET',
+			timeout  : io.timeout,
+			async    : false,
+			cache    : true
+		}).fail(function(jqXHR, status, errorthrown) {
+			if (status == 'error' && jqXHR.statusText.indexOf('NetworkError') === 0) {
+				notify.error(sv_lang.status_event_format.error.timeout, sv_lang.status_event_format.error.servererror);
+			} else {
+				notify.json(jqXHR, status, errorthrown);
+			}
+		});
 	},
 
 	/**
 	 * Lets the driver work
+	 *
+	 * @param      realtime switch
 	 */
 	run: function (realtime) {
-		io.debug && console.debug("io.run(realtime = " + realtime + ")");
+		io.debug && console.log("io.run(realtime = " + realtime + ")");
 
-		if (io.eventListener.readyState == 0 || io.eventListener.readyState == 1) {
-			io.eventListener.close();
-		}
-		if (io.refreshIntervall) {
-			clearTimeout(io.refreshIntervall);
-			io.refreshIntervall = false;
-		}
-
-        if (widget.listeners().length) {
-            var items = widget.listeners();
-            for (var i = 0; i < widget.listeners().length; i++) {
+		if (widget.listeners().length) {
+			var items = widget.listeners();
+			for (var i = 0; i < items.length; i++) {
 				$.ajax({
-					url		: io.url + 'items/' + items[i],
-					headers : (io.auth !== false ? io.auth : {}),
-					type	: "GET",
-					async	: true,
-					cache	: false
+					url      : io.url + 'items/' + items[i],
+					headers  : (io.auth !== false ? io.auth : {}),
+					type     : 'GET',
+					dataType : 'json',
+					timeout  : io.timeout,
+					async    : true,
+					cache    : false
 				}).done(function(ohItem) {
 					var item = ohItem.name;
 					io.itemType[item] = ohItem.type;
-					var val = io.convertState(item, ohItem.state);
-					io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
-					widget.update(item, val);
-				}).error(notify.json);
-            }
-        }
-		
-        io.plot.init();
+					if (!realtime) {
+						var val = io.convertState(item, ohItem.state);
+						io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
+						widget.update(item, val);
+					}
+				}).fail(notify.json);
+			}
 
-		if (realtime) {
-
-			if (typeof EventSource == 'function' && io.auth === false) {
-				var eventurl = io.url + "events?topics=" + (io.getOHversion() < 3 ? "smarthome" : "openhab") + "/items/*/statechanged";
-				io.debug && console.debug("io.run: eventListener(" + eventurl + ")");
-				io.eventListener = new EventSource(eventurl);
-				io.eventListener.onmessage = function(message) {
-					var event = JSON.parse(message.data);
-					io.debug && console.debug("io.run: eventListener.message(" + event.type + " = " + event.topic +")");
-					if (event.type.substr(-21) == 'ItemStateChangedEvent') {
-						var item = event.topic.split('/')[2];
-						var val = JSON.parse(event.payload).value;
-						io.debug && console.debug("io.run: eventmessage(item = " + item + ", value = " + val + ")");
-						if (widget.listeners().includes(item)) {
+			if (realtime) {
+				if (typeof EventSource == 'function') {
+					io.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 60000, headers: (io.auth !== false ? io.auth : {})});
+					io.socket.addEventListener('ready', function(message) {
+						$.ajax({
+							url         : io.url + '/events/states/' + message.data,
+							headers     : (io.auth !== false ? io.auth : {}),
+							data        : JSON.stringify(items),
+							method      : 'POST',
+							contentType : 'application/json',
+							timeout     : io.timeout,
+							async       : true,
+							cache       : false
+						}).success(
+							io.debug && console.debug('io.socket.addEventListener = ' + message.data)
+						).fail(notify.json);
+					});
+					io.socket.onmessage = function(message) {
+						var states = JSON.parse(message.data);
+						Object.keys(states).forEach((item) => {
+							var val = states[item].state;
+							io.debug && console.debug("io.run: eventmessage(item = " + item + ", value = " + val + ")");
 							val = io.convertState(item, val);
 							io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
 							widget.update(item, val);
-						}
-						if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer * 1000) {
-							io.plot.get(io.plot.listeners[item]);
-						}
+							if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer * 1000) {
+								io.plot.get(io.plot.listeners[item]);
+							}
+						});
 					}
+				} else {
+					for (var i = 0; i < items.length; i++) {
+						io.read(items[i]);
+					}
+					io.refreshIntervall = setInterval(function() {
+						var items = widget.listeners();
+						for (var i = 0; i < widget.listeners().length; i++) {
+							io.read(items[i]);
+						}
+					}, io.timer * 1000);
 				}
-				io.timer = 10;
-			}
-			if (!io.refreshIntervall && widget.listeners().length) {
-				io.refreshIntervall = setInterval(function() {
-					var item = widget.listeners();
-					for (var i = 0; i < widget.listeners().length; i++) {
-						io.read(item[i]);
-					}
-				}, io.timer * 1000);
 			}
 		}
+
+		io.plot.init();
 	},
 
 
@@ -213,36 +252,25 @@ var io = {
 	// only be called from the public functions above. You may add or delete some
 	// to fit your requirements and your connected system.
 
-	auth: false,
-	itemType: new Array(),
-	eventListener: false,
-	refreshIntervall: false,
-	timer: 1,
+	url              : '',
+	socket           : null,
+	auth             : false,
+	itemType         : new Array(),
+	refreshIntervall : false,
 
-	getOHversion: function () {
-		var val = false;
-		
-		$.ajax({
-            url		: io.url,
-            headers	: (io.auth !== false ? io.auth : {}),
-            type	: "GET",
-            async	: false,
-            cache	: false
-		}).done(function(info) {
-			val = info.runtimeInfo.version.substr(0,1);
-		}).error(notify.json);
-		
-		io.debug && console.debug("io.getOHversion(" + val + ")");
-		return val;
-	},
-	
+	/**
+	 * convert states from openHAB
+	 *
+	 * @param      item
+	 * @param      state
+	 */
 	convertState: function (item, state) {
 		io.debug && console.debug("io.convertState(item = " + item + ", state = " + state + ")");
-		
+
 		var transval = {
-			"NULL"	: 0,
-			"OFF"	: 0, "ON"			: 1,
-			"CLOSED": 0, "OPEN"			: 1
+			"NULL"   : 0,
+			"OFF"    : 0, "ON"   : 1,
+			"CLOSED" : 0, "OPEN" : 1
 		}
 
 		switch (io.itemType[item]) {
@@ -276,10 +304,13 @@ var io = {
 		items: new Array(),
 		listeners: new Array(),
 		timer: 10,
-		
+
+		/**
+		 * Initializion of plots
+		 */
 		init: function() {
-			io.debug && console.debug("io.plot.init()");
-			
+			io.debug && console.log("io.plot.init()");
+
 			io.plot.listeners = new Array();
 			widget.plot().each(function(idx) {
 				var items = widget.explode($(this).attr('data-item'));
@@ -297,17 +328,22 @@ var io = {
 			});
 		},
 
+		/**
+		 * read plotdata
+		 *
+		 * @param      plotItem
+		 */
 		get: function(plotItem) {
-			io.debug && console.debug("io.plot.get(plotItem = " + plotItem + ")");
-			
+			io.debug && console.log("io.plot.get(plotItem = " + plotItem + ")");
+
 			var pt = plotItem.split('.');
 			var item = pt[0];
 			var tmin = new Date().duration(pt[2]);
 			var tmax = pt[3];
-		
+
 			var starttime = new Date(Date.now() - tmin);
 			var url = io.url + "persistence/items/" + item + "?starttime=" + starttime.toISOString();
-			
+
 			if (tmax != 'now') {
 				tmax = new Date().duration(pt[3]);
 				var endtime = new Date(new Date() - tmax);
@@ -315,12 +351,13 @@ var io = {
 			}
 
 			$.ajax({
-				url		: url,
-				headers : (io.auth !== false ? io.auth : {}),
-				type	: 'GET',
-				dataType: 'json',
-				async	: false,
-				cache	: false
+				url      : url,
+				headers  : (io.auth !== false ? io.auth : {}),
+				type     : 'GET',
+				dataType : 'json',
+				timeout  : io.timeout,
+				async    : false,
+				cache    : false
 			}).done(function(persistence) {
 				var plotData = new Array();
 				if (persistence.data.length > 0) {
@@ -332,7 +369,7 @@ var io = {
 							val = parseFloat(val).toFixed(2);
 						}
 						plotData.push([data.time, parseFloat(val)]);
-					})
+					});
 					plotData.sort(function(a, b) {
 						return a[0] - b[0];
 					});
@@ -343,14 +380,23 @@ var io = {
 				io.plot.items[plotItem] = Date.now();
 				io.debug && console.debug("io.plot.get: widget.update(plotItem = " + plotItem + ", plotData = " + plotData + ")");
 				widget.update(plotItem, plotData);
-			}).error(notify.json);
+			}).fail(notify.json);
 		}
 	},
-	
+
 	/**
 	 * stop all subscribed series
 	 */
 	stopseries: function () {
-		// TODO
+		io.debug && console.log("io.stopseries()");
+		if (io.socket) {
+			io.debug && console.debug("io.socket.close()");
+			io.socket.close();
+		}
+
+		if (io.refreshIntervall) {
+			clearTimeout(io.refreshIntervall);
+			io.refreshIntervall = false;
+		}
 	}
 }
