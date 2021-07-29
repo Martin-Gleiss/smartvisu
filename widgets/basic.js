@@ -776,7 +776,7 @@ $.widget("sv.basic_print", $.sv.widget, {
 			var calc = eval(formula);
 		}
 		catch(ex) {
-			notify.error("basic.print: Invalid formula", ex);
+			notify.message("error", "basic.print: Invalid formula", ex);
 		}
 
 		var value; // value for threshold comparison
@@ -1254,7 +1254,7 @@ $.widget("sv.basic_symbol", $.sv.widget, {
       }
 		}
 		catch(ex) {
-			notify.error("basic.symbol: Invalid formula", ex);
+			notify.message("error", "basic.symbol: Invalid formula", ex);
 		}
 
 		if(asThreshold) {

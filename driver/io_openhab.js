@@ -52,7 +52,7 @@ var io = {
 			if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer * 1000) {
 				io.plot.get(io.plot.listeners[item]);
 			}
-        }).error(notify.json);
+        }).fail(notify.json);
 	},
 
 	/**
@@ -95,7 +95,7 @@ var io = {
 			if (io.refreshIntervall) {
 				widget.update(item, val);
 			}
-		}).error(notify.json);
+		}).fail(notify.json);
 
 	},
 
@@ -163,7 +163,7 @@ var io = {
 					var val = io.convertState(item, ohItem.state);
 					io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
 					widget.update(item, val);
-				}).error(notify.json);
+				}).fail(notify.json);
             }
         }
 		
@@ -230,7 +230,7 @@ var io = {
             cache	: false
 		}).done(function(info) {
 			val = info.runtimeInfo.version.substr(0,1);
-		}).error(notify.json);
+		}).fail(notify.json);
 		
 		io.debug && console.debug("io.getOHversion(" + val + ")");
 		return val;
@@ -343,7 +343,7 @@ var io = {
 				io.plot.items[plotItem] = Date.now();
 				io.debug && console.debug("io.plot.get: widget.update(plotItem = " + plotItem + ", plotData = " + plotData + ")");
 				widget.update(plotItem, plotData);
-			}).error(notify.json);
+			}).fail(notify.json);
 		}
 	},
 	

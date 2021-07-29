@@ -378,7 +378,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 
     // wenn keine Daten vorhanden, dann ist kein item mit den eigenschaften hinterlegt und es wird nichts gemacht
     if (response.length === 0){
-      notify.error("UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.options.id + ".");
+      notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.options.id + ".");
       return;
     }
 
@@ -820,18 +820,18 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // Fehlerbehandlung für ein nicht vorhandenes DOM Objekt. Das response Objekt ist erst da, wenn es mit update angelegt wurde. Da diese
     // Schritte asynchron erfolgen, kann es sein, dass das Icon bereits da ist, clickbar, aber nocht keine Daten angekommen. Dann darf ich nicht auf diese Daten zugreifen wollen !
     if(response.list === undefined){
-      notify.error("UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.id + ".");
+      notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.id + ".");
       return false;
     }
 
     // jetzt kommt noch die Liste von Prüfungen, damit hinterher keine Fehler passieren, zunächst fehlerhafter designType (unbekannt)
     if ((designType != '0') && (designType != '2')) {
-      notify.error("UZSU widget", "Design type '" + designType + "' is not supported in widget " + this.id + ".");
+      notify.message("error", "UZSU widget", "Design type '" + designType + "' is not supported in widget " + this.id + ".");
       return false;
     }
     // fehlerhafter valueType (unbekannt)
     if ((valueType !== 'bool') && (valueType !== 'num')  && (valueType !== 'text') && (valueType !== 'list')) {
-      notify.error("UZSU widget", "Value type '" + valueType + "' is not supported in widget " + this.id + ".");
+      notify.message("error", "UZSU widget", "Value type '" + valueType + "' is not supported in widget " + this.id + ".");
       return false;
     }
 
@@ -844,7 +844,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       }
       else if(!response.interpolation.itemtype in ['num']) {
         this.hasInterpolation = false
-        notify.warn('UZSU interpolation not supported by itemtype');
+        notify.message("warning", 'UZSU interpolation not supported by itemtype');
       }
       else {
         this.hasInterpolation = true
@@ -3036,18 +3036,18 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
     // Fehlerbehandlung für ein nicht vorhandenes DOM Objekt. Das response Objekt ist erst da, wenn es mit update angelegt wurde. Da diese
     // Schritte asynchron erfolgen, kann es sein, dass das Icon bereits da ist, clickbar, aber nocht keine Daten angekommen. Dann darf ich nicht auf diese Daten zugreifen wollen !
     if(response.list === undefined){
-      notify.error("UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.id + ".");
+      notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.id + ".");
       return false;
     }
 
     // jetzt kommt noch die Liste von Prüfungen, damit hinterher keine Fehler passieren, zunächst fehlerhafter designType (unbekannt)
     if ((designType != '0') && (designType != '2')) {
-      notify.error("UZSU widget", "Design type '" + designType + "' is not supported in widget " + this.id + ".");
+      notify.message("error", "UZSU widget", "Design type '" + designType + "' is not supported in widget " + this.id + ".");
       return false;
     }
     // fehlerhafter valueType (unbekannt)
     if ((valueType !== 'bool') && (valueType !== 'num')  && (valueType !== 'text') && (valueType !== 'list')) {
-      notify.error("UZSU widget", "Value type '" + valueType + "' is not supported in widget " + this.id + ".");
+      notify.message("error", "UZSU widget", "Value type '" + valueType + "' is not supported in widget " + this.id + ".");
       return false;
     }
 
@@ -3060,7 +3060,7 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
       }
       else if(!response.interpolation.itemtype in ['num']) {
         this.hasInterpolation = false
-        notify.warn('UZSU interpolation not supported by itemtype');
+        notify.message('warning', 'UZSU interpolation not supported by itemtype');
       }
       else {
         this.hasInterpolation = true

@@ -236,7 +236,7 @@ var io = {
 			.done(function (response) {
 				widget.update(item, response[item]);
 			})
-			.error(notify.error('Driver: eibd', "Error reading item!"));
+			.fail(notify.message('error', 'Driver: eibd', "Error reading item!"));
 	},
 
 	/**
@@ -260,7 +260,7 @@ var io = {
 					io.start();
 				}
 			})
-			.error(notify.error('Driver: eibd', "Error writing item!"));
+			.fail(notify.message('error', 'Driver: eibd', "Error writing item!"));
 	},
 
 	/**
@@ -324,7 +324,7 @@ var io = {
 						io.all();
 					}
 					else {
-						notify.error('Driver: eibd', response);
+						notify.message('error', 'Driver: eibd', response);
 					}
 				})
 		}
