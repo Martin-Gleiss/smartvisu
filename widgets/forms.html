@@ -295,7 +295,7 @@ macro will be called in the "addition" parameter of config_flip for the reverse 
 */
 {% macro check_cache(source, values, id) %}
 
-	<div class="check">
+	<div class="checkcache">
 		<span></span>
 	</div>
 	
@@ -311,7 +311,7 @@ macro will be called in the "addition" parameter of config_flip for the reverse 
 					console.log('{{ source }}_{{ id }}'+': Cache directory is not writeable');
 					setMobileWidgetValue(element.closest("fieldset").find('[name="cache"]'), 0);
 					element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="cache"])').hide());
-					$('.check').find('span').html('Cache disabled: '+data.text);				
+					$('.checkcache').find('span').html('Cache disabled: '+data.text);				
 				});	
 			})
 	</script>
