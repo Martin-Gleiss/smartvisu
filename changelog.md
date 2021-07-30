@@ -18,6 +18,7 @@
 - Scripts for config page stored in separate js-file (to save some ressources/time on normal visu pages)
 - device.rtrslider sets the display formats according to the decimals of the parameter 'step'
 - improved error notifications with basis for language specific message texts
+- fritz!box TR-064 phone service shows blocked calls as missed instead of outgoing (no specific icon available yet)
 
 ### Updated Libraries
 - jQuery v2.2.4 with patch in jQuery mobile v1.4.5

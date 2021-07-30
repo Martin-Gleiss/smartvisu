@@ -165,7 +165,7 @@ class phone_fritzbox_TR064 extends phone
 				// bulid data array for smartvisu
 				$this->data[] = array(
 					'pos' =>      (string) $call->Id,
-					'dir' =>      (string) ($call->Type == 1 ? 1 : ($call->Type == 2 ? 0 : -1)),
+					'dir' =>      (string) ($call->Type == 1 ? 1 : ($call->Type == 2 || $call->Type == 10 ? 0 : -1)),
 					'date' =>     (string) $call->Date,
 					'number' =>   (string) $call->Caller,
 					'name' =>     (string) $call->Name,
