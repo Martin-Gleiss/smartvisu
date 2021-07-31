@@ -138,6 +138,11 @@
 		'driver/io_' ~ config_driver ~ '.js',
 		'pages/' ~ config_pages ~ '/visu.js'
 	] %}
+{% if isdir('driver/'~config_driver, '\.js') %}
+	{% for file in dir('driver/'~config_driver, '(.*)(\.js)') %}
+		{% set jsFiles = jsFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
 {% for file in dir('widgets', '(.*)(\.js)') %}
 	{% set jsFiles = jsFiles|merge([file.path]) %}
 {% endfor %}
