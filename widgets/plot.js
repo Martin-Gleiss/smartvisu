@@ -342,10 +342,16 @@ $.widget("sv.plot_period", $.sv.widget, {
                 return false;
         });
         rangeSelectorButtons.reverse();
-
-        var xMin = new Date() - new Date().duration(this.options.tmin);
+		
+		var xMin = new Date() - new Date().duration(this.options.tmin);
         var xMax = new Date() - new Date().duration(this.options.tmax);
-
+		var dayDuration = 24*3600*1000;
+		if (zoom == "day"){
+			xMin = new Date() - new Date() % dayDuration + new Date().getTimezoneOffset()*60000;
+			xMax = xMin + dayDuration;
+			zoom = '';
+		}
+		
         var that = this;
         // draw the plot
         var chartOptions = {
@@ -484,6 +490,13 @@ $.widget("sv.plot_period", $.sv.widget, {
 
         var xMin = new Date() - new Date().duration(this.options.tmin);
         var xMax = new Date() - new Date().duration(this.options.tmax);
+		var dayDuration = 24*3600*1000;
+		
+		if (this.options.zoom == "day"){
+			xMin = new Date() - new Date()% dayDuration + new Date().getTimezoneOffset()*60000;
+			xMax = xMin + dayDuration;
+		}
+		
         chart.xAxis[0].update({ min: xMin, max: xMax }, false);
         if(chart.navigator) {
             chart.navigator.xAxis.update({ min: xMin, max: xMax }, false);
@@ -535,10 +548,10 @@ $.widget("sv.plot_period", $.sv.widget, {
                         return [[ value[0], maxValue, minValue ]];
                 });
 
-                chart.series[seriesIndex].setData(values, false);
+                chart.series[seriesIndex].setData(values, true, true, false);
             }
             else if (response[i]) {
-                chart.series[seriesIndex].setData(response[i], false);
+                chart.series[seriesIndex].setData(response[i], true, true, false);
             }
         }
 

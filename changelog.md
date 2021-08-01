@@ -6,6 +6,7 @@
 - device.rtrslider offset buttons are limited to min / max but accept a symmetric "tolerance" for backward compatibility
 - basic flip slider track can be styled with any valid color
 - basic.stateswitch can be configured to open any named popup on a long-press (mobile: tap-hold) event 
+- plot.period shows data for the running day from 0:00 to 24:00 if zomm parameter ist set to 'day'
 
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
@@ -19,6 +20,7 @@
 - device.rtrslider sets the display formats according to the decimals of the parameter 'step'
 - improved error notifications with basis for language specific message texts
 - fritz!box TR-064 phone service shows blocked calls as missed instead of outgoing (no specific icon available yet)
+- additional js-scripts can be loaded with a backend driver if put into a folder with the drivers name
 
 ### Updated Libraries
 - jQuery v2.2.4 with patch in jQuery mobile v1.4.5
@@ -36,6 +38,7 @@
 - Page navigation away from widget assistant often failed and / or threw errors in console
 
 ### Known Bugs
+- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
 ## 3.1
