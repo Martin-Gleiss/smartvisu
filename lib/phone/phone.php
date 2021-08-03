@@ -72,12 +72,19 @@ class phone extends service
 				// dir == 0 missed
 				$ds['dirpic'] = 'dir.png';
 				$ds['diralt'] = trans('phone', 'missed');
-
-				// dir > 0 incomming
+				
+				// dir > 0 incoming 
 				if ($ds['dir'] > 0)
 				{
 					$ds['dirpic'] = 'dir_incoming.png';
 					$ds['diralt'] = trans('phone', 'incoming');
+				}
+				
+				//dir = 10 rejected
+				if($ds['dir'] == 10)
+				{
+					$ds['dirpic'] = 'dir_rejected.png';
+					$ds['diralt'] = trans('phone', 'rejected');	
 				}
 
 				// dir < 0 outgoing
