@@ -19,8 +19,8 @@
 - Scripts for config page stored in separate js-file (to save some ressources/time on normal visu pages)
 - device.rtrslider sets the display formats according to the decimals of the parameter 'step'
 - improved error notifications with basis for language specific message texts
-- fritz!box TR-064 phone service shows blocked calls as missed instead of outgoing (no specific icon available yet)
-- additional js-scripts can be loaded with a backend driver if put into a folder with the drivers name
+- fritz!box TR-064 phone service shows blocked calls as "rejected" instead of outgoing (w/ new icon)
+- additional js-scripts can be loaded with a backend driver if stored in a folder with the drivers name
 
 ### Updated Libraries
 - jQuery v2.2.4 with patch in jQuery mobile v1.4.5
@@ -31,6 +31,7 @@
 
 ### Removed Features
 - replaced several deprecated jQuery / jQuery mobile functions & attributes
+- deprecated Fritz!Box drivers. See derprecation notice in ./lib/phone/service
 
 ### Fixed Bugs
 - Sliders for HSV color model did not send updated values if only one slider was changed
