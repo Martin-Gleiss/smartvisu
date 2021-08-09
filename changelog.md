@@ -37,6 +37,7 @@
 - Sliders for HSV color model did not send updated values if only one slider was changed
 - plot data lost their ascending sequence occationally which resulted in lines across the plots
 - Page navigation away from widget assistant often failed and / or threw errors in console
+- status.activelist expanded all contents when unser returned to the page (now all are collapsed)
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
