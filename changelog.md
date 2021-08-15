@@ -12,6 +12,7 @@
 - template checker now checks smarthomeNG item properties (valid properties and types)
 - openHAB driver from Patrik Germann (thanks!) supports SSL and authentication
 - smarthome.py driver accepts a second port for TLS communication. Port & protocol will be switched according to host protocol (http / https) 
+- refactored php service for enertex IP Router connects to current firmware version and provides more data 
 
 ### Improvements
 - Driver config data are globally availble now in the sv.config.driver{} array
