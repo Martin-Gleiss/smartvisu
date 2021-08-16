@@ -35,7 +35,7 @@ define ('EOR',  chr(25));
 class enertex_iprouter extends service
 {
 	// A delay between a write and a read in microseconds
-	var $delay = 10000;
+	var $delay = 150000;
 	
 	var $timeout = 10; //connection timeout in seconds
 	
@@ -90,7 +90,7 @@ class enertex_iprouter extends service
 	{
 		$this->socket = @fsockopen($this->server, '23', $errno, $errstr, $this->timeout);
 
-		if ($this->socket === false)
+		if ($this->socket === false) 
 			$this->error('enertex IP-Router', $errstr.' ('.$errno.')');
 		else
 		{
@@ -178,10 +178,47 @@ class enertex_iprouter extends service
 			$free = $this->readTo($this->prompt);
 			$this->debug($free);
 			
-
 			$this->data = $this->str2array($version.$stats.$dateutc.$ifconfig.$tpconfig.$free);
-			//$this->data["uptime"] = substr($this->data["uptime"], 0, -6);
 
+			//lcconfig
+			usleep($this->delay);
+			$this->write("lcconfig");
+			usleep($this->delay);
+			$lcconfig = $this->readTo($this->prompt);
+			$this->debug($lcconfig);
+			$lcparts = explode(' -> ', str_replace(array('IP', 'KNX'), array('',''), $lcconfig));
+			$this->data += $this->str2array($lcparts[0]);
+			$this->data['knx_ip'] = $this->str2array($lcparts[1]);
+			$this->data['ip_knx'] = $this->str2array($lcparts[2]);
+			
+
+			// tpratemax
+			usleep($this->delay);
+			$this->write("tpratemax");
+			usleep($this->delay);
+			$tpratemax = $this->readTo($this->prompt);
+			$tpratemax = substr($tpratemax, 0, strpos($tpratemax, 'Usage')-3);
+			$this->debug($tpratemax);
+			$this->data['send_to_tp'] = substr($tpratemax,12);
+			
+			// apdu
+			usleep($this->delay);
+			$this->write("apdu");
+			usleep($this->delay);
+			$apdu = $this->readTo($this->prompt);
+			$this->debug($apdu);
+			$apdu = substr($apdu, 0, strpos($apdu, 'Usage')-3);
+			$this->data['knx_max_telegr_length'] = substr(strrchr($apdu, 'telegram '),9);
+			
+			//tunneltime
+			usleep($this->delay);
+			$this->write("tunneltime");
+			usleep($this->delay);
+			$tunneltime = $this->readTo($this->prompt);
+			$this->debug($tunneltime);
+			$tunneltime = substr($tunneltime, 0, strpos($tunneltime, 'Usage')-5);
+			$this->data['tun_udp_exp_max_time'] = substr(strrchr($tunneltime, 'tunnelling '),11);
+			
 			// tunnel
 			usleep($this->delay);
 			$this->write("tunnel");
@@ -208,10 +245,11 @@ class enertex_iprouter extends service
 	 */
 	public function close()
 	{
-		if ($this->socket)
+		if ($this->socket !== false)
 		{
 			usleep($this->delay);
 			$this->write('logout');
+			usleep($this->delay);
 			fclose($this->socket);
 			$this->socket = false;
 		}
@@ -370,7 +408,7 @@ Array
 	[used_stack_memory] => 7 % 
 	[allocated_memory] => 81 % 
 	[unused_memory] => 18 % 
-	tp_tx_buffer] => 0 % 
+	[tp_tx_buffer] => 0 % 
 	[tp_tx_buffer_max] => 0 % 
 	[tp_rx_buffer_max] => 0 %
 	[tunnels] => Array 
@@ -379,12 +417,17 @@ Array
 		( 
 			[tunnel_1] => open (CCID 97)
 			[knx_address] => 15.15.011
-			[ip_control] => 192.168.45.10:3672
+			[hpai_control] => 192.168.45.10:3672
+			[hpai_data] => 192.168.45.10:3672
+			[connect_type] => TUNNEL_CONNECTION
+			[communication] => UDP CONNECTION
 			[tx_tun_req] => 2422
-			[tx_tun_re_req] => 0
+			[tx_tun_rereq] => 0
 			[rx_tun_req] => 141
-			[rx_tun_re_req_identified] => 0
+			[rx_tun_rereq_identified] => 0
 			[rx_tun_req_wrong_seq] => 0
+			[current_tunnel_buffer] => 0%
+			[connected_since_UTC] => 16:26:16 29012019
 		)
 		[2] => Array 
 		( 
