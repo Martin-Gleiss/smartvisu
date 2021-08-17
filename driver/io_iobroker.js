@@ -7,14 +7,9 @@
  * -----------------------------------------------------------------------------
  * @label       ioBroker
  *
- * @default     driver_autoreconnect   true
- * @default     driver_port            8084
- * @hide		driver_tlsport 
- * @hide        driver_realtime
- * @hide		reverseproxy
- * @hide		driver_ssl
- * @hide		driver_username
- * @hide		driver_password
+ * @config      address           backend          input
+ * @config      port              backend          input       8084
+ * @config      autoreconnect     backend          flip        true
  */
 
 /**
@@ -113,7 +108,7 @@ var io = {
 	/**
 	 * Let the driver work
 	 */
-	run: function (realtime) {
+	run: function () {
 		// old items
 		widget.refresh();
 

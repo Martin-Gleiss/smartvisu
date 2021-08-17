@@ -4,15 +4,19 @@
  * @author      Martin Gleiß, Patrik Germann
  * @copyright   2012 - 2021
  * @license     GPL [http://www.gnu.de]
- * @version     2.4
+ * @version     2.3.6
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
- * @default     driver_port             8080
- * @default     driver_tlsport          8443
- * @default     driver_realtime         true
- * @default     driver_autoreconnect    true
- * @default     driver_reverseproxy     false
+ * @config      address           backend          input
+ * @config      port              backend          input       8080
+ * @config      realtime          backend          flip        true
+ * @config      autoreconnect     backend          flip        true
+ * @config      ssl               auth-security    flip
+ * @config      tlsport           auth-security    input       8443
+ * @config      authentication    auth-security    flip
+ * @config      username          auth-security    input
+ * @config      password          auth-security    password
  */
 
 /**
@@ -173,6 +177,7 @@ var io = {
 			} else {
 				notify.json(jqXHR, status, errorthrown);
 			}
+			sv.config.driver.realtime = false;
 		});
 	},
 
@@ -204,14 +209,13 @@ var io = {
 				}).fail(notify.json);
 			}
 
-//			if (sv.config.driver.realtime) {
-				if (!sv.config.driver.reverseproxy && io.auth && typeof EventSourcePolyfill == 'function') {
-					io.debug && console.debug('io.socket = EventsourcePolyfill');
+			if (sv.config.driver.realtime) {
+				if (io.auth && typeof EventSourcePolyfill == 'function') {
 					io.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 60000, headers: (io.auth !== false ? io.auth : {})});
 				} else if (typeof EventSource == 'function') {
-					io.debug && console.debug('io.socket = Eventsource');
-					io.socket = new EventSource(io.url + 'events/states');
+					io.socket = new EventSource(io.url + 'events/states')
 				}
+console.debug(io.socket);
 				if (io.socket != null) {
 					io.socket.addEventListener('ready', function(message) {
 						$.ajax({

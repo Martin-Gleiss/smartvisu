@@ -206,11 +206,11 @@
 			icon1: '<?php echo config_design_icon1 ?>',
 			driver: {
 <?php
-	foreach ($GLOBALS['config'] as $key => $value) {
-		if (strpos($key, 'driver_') === 0) {
-			echo substr($key, 7) . ": '$value',\r\n";
-		}
-	}
+				foreach ($GLOBALS['config'] as $key => $value) {
+					if (strpos($key, 'driver_') === 0) {
+						echo substr($key, 7) . ": '$value',\r\n";
+					}
+				}
 ?>
 			}
 		}

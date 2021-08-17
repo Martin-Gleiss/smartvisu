@@ -32,7 +32,7 @@ if(isset($_GET['clear_cache']) && $_GET['clear_cache']) {
 // save configuration
 else if(isset($_GET['target'])) {
 	$config = new config();
-	$success = $config->save($_GET['target'], $_POST, $_GET['pages']);
+	$success = $config->save($_GET['target'], $_POST);
 	if($success) {
 		$success = delTree(const_path.'temp/pagecache/'.config_cachefolder) || ! is_dir(const_path.'temp/pagecache/'.config_cachefolder);
 		if($success)

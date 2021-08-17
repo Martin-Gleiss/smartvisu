@@ -7,13 +7,10 @@
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       FHEM
- * @hide        driver_tlsport
- * @hide        driver_autoreconnect
- * @hide		reverseproxy
- * @hide		driver_ssl
- * @hide		driver_username
- * @hide		driver_password
- * @default     driver_port 2121
+ *
+ * @config      address          backend    input
+ * @config      port             backend    input    2121
+ * @config      autoreconnect    backend    flip     true
  *
  * This driver has enhancements for using smartVISU with FHEM
  */
@@ -116,7 +113,7 @@ var io = {
   // -----------------------------------------------------------------------------
   // Called after each page change
   // -----------------------------------------------------------------------------
-  run: function(realtime) {
+  run: function() {
     if (io.socket != undefined)
 		io.log(1, "run (readyState=" + io.socket.readyState + ")");
 	else
