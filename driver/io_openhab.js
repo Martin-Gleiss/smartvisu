@@ -4,16 +4,19 @@
  * @author      Martin Gleiß, Patrik Germann
  * @copyright   2012 - 2021
  * @license     GPL [http://www.gnu.de]
- * @version     2.3.5
+ * @version     2.3.6
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
- * @default     driver_port             8080
- * @default     driver_tlsport          8443
- * @default     driver_realtime         true
- * @default     driver_autoreconnect    true
- *
- * @hide        reverseproxy
+ * @config      address           backend          input
+ * @config      port              backend          input       8080
+ * @config      realtime          backend          flip        true
+ * @config      autoreconnect     backend          flip        true
+ * @config      ssl               auth-security    flip
+ * @config      tlsport           auth-security    input       8443
+ * @config      authentication    auth-security    flip
+ * @config      username          auth-security    input
+ * @config      password          auth-security    password
  */
 
 /**
@@ -168,16 +171,15 @@ var io = {
 			} else {
 				notify.json(jqXHR, status, errorthrown);
 			}
+			sv.config.driver.realtime = false;
 		});
 	},
 
 	/**
 	 * Lets the driver work
-	 *
-	 * @param      realtime switch
 	 */
-	run: function (realtime) {
-		io.debug && console.log("io.run(realtime = " + realtime + ")");
+	run: function () {
+		io.debug && console.log("io.run(realtime = " + sv.config.driver.realtime + ")");
 
 		if (widget.listeners().length) {
 			var items = widget.listeners();
@@ -193,7 +195,7 @@ var io = {
 				}).done(function(ohItem) {
 					var item = ohItem.name;
 					io.itemType[item] = ohItem.type;
-					if (!realtime) {
+					if (!sv.config.driver.realtime) {
 						var val = io.convertState(item, ohItem.state);
 						io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
 						widget.update(item, val);
@@ -201,12 +203,13 @@ var io = {
 				}).fail(notify.json);
 			}
 
-			if (realtime) {
+			if (sv.config.driver.realtime) {
 				if (io.auth && typeof EventSourcePolyfill == 'function') {
 					io.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 60000, headers: (io.auth !== false ? io.auth : {})});
 				} else if (typeof EventSource == 'function') {
-					io.socket = new EventSource(io.url + 'events/states');
+					io.socket = new EventSource(io.url + 'events/states')
 				}
+console.debug(io.socket);
 				if (io.socket != null) {
 					io.socket.addEventListener('ready', function(message) {
 						$.ajax({

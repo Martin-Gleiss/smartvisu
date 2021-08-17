@@ -205,12 +205,13 @@
 			icon0: '<?php echo config_design_icon0 ?>',
 			icon1: '<?php echo config_design_icon1 ?>',
 			driver: {
-				address: '<?php echo config_driver_address ?>',
-				port: '<?php echo config_driver_port ?>',
-				tlsport: '<?php echo config_driver_tlsport ?>',
-				ssl: '<?php echo config_driver_ssl ?>',
-				username: '<?php echo config_driver_username ?>',
-				password: '<?php echo config_driver_password ?>'
+<?php
+				foreach ($GLOBALS['config'] as $key => $value) {
+					if (strpos($key, 'driver_') === 0) {
+						echo substr($key, 7) . ": '$value',\r\n";
+					}
+				}
+?>
 			}
 		}
 	};

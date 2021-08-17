@@ -53,12 +53,13 @@
 /**
 * dispays a row of multiple input elements
 *
-* @param {text} source of the settings (global, pages, device, tplchk)
-* @param {text} values being available from source
 * @param {text} name of the parameter to enter
+* @param {array} values being available from source
+* @param {array} values as default if not available from source
+* @param {text} source of the settings (global, pages, device, tplchk)
 * @param {text[?]} array of input elements  
 */
-{% macro config_row(source, values, id, content) %}
+{% macro config_row(id, values, defaults, source, content) %}
 	<div class="ui-field-contain">
 		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
 			{{ lang('configuration_page', id, 'label') }}
@@ -84,12 +85,13 @@
 /**
 * dispays an input field pre-filled by defaults
 *
-* @param {text} source of the settings (global, pages, device, tplchk)
-* @param {text} values being available from source
 * @param {text} name of the parameter to enter
+* @param {array} values being available from source
+* @param {array} values as default if not available from source
+* @param {text} source of the settings (global, pages, device, tplchk)
 * @param {text=} type of the value to enter (text, wide)
 */
-{% macro config_input(source, values, id, type) %}
+{% macro config_input(id, values, defaults, source, type, defaults) %}
 	<div class="ui-field-contain">
 		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
 			{{ lang('configuration_page', id, 'label') }}
@@ -102,7 +104,7 @@
 				{{ hint|nl2br }}
 			</div>
 	{% endif %}
-			<input {% if type == 'wide' %} style="letter-spacing: 0.1em;" {% set type = 'text' %}{% endif %} type="{{ type|default('text') }}" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
+			<input {% if type == 'wide' %} style="letter-spacing: 0.1em;" {% set type = 'text' %}{% endif %} type="{{ type|default('text') }}" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] ? values[id] : defaults[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
 	{% if not hint is empty %}
 		</div>
 	{% endif %}
@@ -112,13 +114,14 @@
 /**
 * dispays a select element filled by contents of a given file directory
 *
+* @param {text} name of the parameter to enter
+* @param {array} values being available from source
+* @param {array} values as default if not available from source
 * @param {text} source of the settings (global, pages, device, tplchk)
-* @param {text} values being available from source
-* @param {text} name of the parameter to select
 * @param {text[?]} directory of files to select from 
 * @param {text=} set to 'true' if select is part of a row widget (optional, default = '')
 */
-{% macro config_select(source, values, id, files, rowcontent) %}
+{% macro config_select(id, values, defaults, source, options, rowcontent) %}
 	
 	{% if rowcontent is empty %}
 		<div class="ui-field-contain">
@@ -134,69 +137,40 @@
 				</div>
 		{% endif %}
 	{% endif %}
-			<select name="{{ id }}" id="{{ source }}_{{ id }}"{{ files|length <= 20 ? ' data-native-menu="false"'|raw }}{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
-	      {% set metas = [] %}
-	      {% set deprecateds = [] %}
-				{% for file in files %}
-					{% if not file.path %}
+			<select name="{{ id }}" id="{{ source }}_{{ id }}"{{ options|length <= 20 ? ' data-native-menu="false"'|raw }}{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
+				{% set metas = [] %}
+				{% set deprecateds = [] %}
+				{% for option in options %}
+					{% if not option.path %}
 						{% set meta = [] %}
 					{% else %}
-						{% set meta = configmeta(file.path) %}
+						{% set meta = configmeta(option.path) %}
 						{% if meta != [] %}
-							{% set metas = metas|merge({ (file.name) : meta }) %}
-		          {% if meta['deprecated'] %}
-		            {% set deprecateds = deprecateds|merge([loop.index0]) %}
+							{% set metas = metas|merge({ (option.name) : meta }) %}
+							{% if meta['deprecated'] %}
+								{% set deprecateds = deprecateds|merge([loop.index0]) %}
 							{% endif %}
 						{% endif %}
 					{% endif %}
-          {% if file.group and file.group != prevgroup %}
+					{% if option.group and option.group != prevgroup %}
 						{% if prevgroup %}
-            	</optgroup>
+							</optgroup>
 						{% endif %}
-						{% set prevgroup = file.group %}
-            <optgroup label="{{ file.group }}">
+						{% set prevgroup = option.group %}
+						<optgroup label="{{ option.group }}">
 					{% endif %}
-					<option value="{{ file.name }}"{{ values[id] == file.name ? ' selected="selected"'|raw }}>{{ meta['label']|default(file.label) }}</option>
+					<option value="{{ option.name }}"{{ (values[id] is defined and values[id] == option.name) or (values[id] is not defined and defaults[id] == option.name) ? ' selected="selected"'|raw }}>{{ meta.label|default(option.label) }}{{ meta.deprecated ? ' (deprecated)' }}</option>
 				{% endfor %}
 				{% if prevgroup %}
-        	</optgroup>
+					</optgroup>
 				{% endif %}
 			</select>
-			/** display deprecated options in italic
-				<style type="text/css">
-					{% for deprecated in deprecateds %}
-						#{{ source }}_{{ id }}-listbox-popup li[data-option-index="{{ deprecated }}"] a { font-style: italic; }
-					{% endfor %}
-				</style>
-			*/
-				<script type="text/javascript">
-					$('#{{ source }}_{{ id }}').on('change init', function(event) {
-						var element = $(this);
-
-						if(element.data('hidden'))
-							element.data('hidden').show();
-
-						var metas = {{ metas|json_encode()|raw }};
-						var meta = metas[$(element).val()];
-
-						if(meta && meta['default'] && event.type != 'init') {
-							$.each(meta['default'], function(field, val) {
-								setMobileWidgetValue(element.closest('fieldset').find('[name="'+field+'"]'), val);
-							});
-						}
-
-						if(meta && meta['hide']) {
-							var pattern = '';
-							$.each(meta['hide'], function(field, val) {
-								pattern += ',.ui-field-contain:has([name="'+field+'"])'
-							});
-							pattern = pattern.substr(1);
-							//element.data(changeDisabledState(element.closest('fieldset').find(pattern), true).hide());
-							element.data('hidden', element.closest('fieldset').find(pattern).hide());
-						}
-					});
-
-				</script>
+			/** display deprecated options in italic */
+			<style type="text/css">
+				{% for deprecated in deprecateds %}
+					#{{ source }}_{{ id }}-listbox-popup li[data-option-index="{{ deprecated }}"] a { font-style: italic; }
+				{% endfor %}
+			</style>
 	{% if rowcontent is empty %}
 		{% if not hint is empty %}
 			</div>
@@ -209,12 +183,12 @@
 /**
 * dispays a flipswitch providing ability to execute flexible code
 *
+* @param {text} name of the parameter to enter
+* @param {array} values being available from source
+* @param {array} values as default if not available from source
 * @param {text} source of the settings (global, pages, device, tplchk)
-* @param {text} values being available from source
-* @param {text} name of the option to activate
-* @param {text=} executable html code as addition
 */
-{% macro config_flip(source, values, id, addition) %}
+{% macro config_flip(id, values, defaults, source) %}
 	<div class="ui-field-contain">
 		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
 			{{ lang('configuration_page', id, 'label') }}
@@ -228,10 +202,9 @@
 			</div>
 	{% endif %}
 			<select name="{{ id }}" id="{{ source }}_{{ id }}" data-role="flipswitch"{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
-				<option value="false"{{ not values[id] ? ' selected="selected"'|raw }}>off</option>
-				<option value="true"{{ values[id] ? ' selected="selected"'|raw }}>on</option>
+				<option value="false"{{ (values[id] is defined and not values[id]) or (values[id] is not defined and not defaults[id]) ? ' selected="selected"'|raw }}>off</option>
+				<option value="true"{{ (values[id] is defined and values[id]) or (values[id] is not defined and defaults[id]) ? ' selected="selected"'|raw }}>on</option>
 			</select>
-			{{ addition|raw }}
 	{% if not hint is empty %}
 		</div>
 	{% endif %}
@@ -242,77 +215,48 @@
 /**
 * fill configuration options without displaying anything 
 *
+* @param {text} name of the parameter to enter
+* @param {array} values being available from source
+* @param {array} values as default if not available from source
 * @param {text} source of the settings (global, pages, device, tplchk)
-* @param {text} values being available from source
-* @param {text} name of the parameter to configure
 */
-{% macro config_hidden(source, values, id) %}
-			<input type="hidden" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
-{% endmacro %}
-
-
-/**
-* disables input of IP address and port if reverse proxy is configured
-macro will be called in the "addition" parameter of config_flip for the reverse proxy option only 
-*
-* @param {text} source of the settings (global, pages, device, tplchk)
-* @param {text} values being available from source
-* @param {text} name of the parameter to configure
-*
-* @author: Wolfram v. Hülsen
-*/
-{% macro config_reverseproxy(source, values, id) %}
-	<script type="text/javascript">
-		$('#{{ source }}_{{ id }}').on('change init', function(event) {
-			var element = $(this);
-			if({{ source }}_{{ id }}.value == "true") {
-				setMobileWidgetValue(element.closest("fieldset").find('[name="driver_address"]'), "");
-				setMobileWidgetValue(element.closest("fieldset").find('[name="driver_port"]'), "");
-				setMobileWidgetValue(element.closest("fieldset").find('[name="driver_tlsport"]'), "");
-				element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_address"])').hide());
-				element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_port"])').hide());
-				element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_tlsport"])').hide());
-			}
-			else {
-			    element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_address"])').show());
-				element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_port"])').show());
-				if ($('#global_driver').data("hidden").selector.indexOf('driver_tlsport') == -1)
-					element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_tlsport"])').show());
-			};
-		})
-	</script>
+{% macro config_hidden(id, values, defaults, source) %}
+			<input type="hidden" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] ? values[id] : defaults[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
 {% endmacro %}
 
 
 /**
 * checks whether temp directory is writeable and disables cache activation if not writeable
 *
+* @param {text} name of the parameter to enter
+* @param {array} values being available from source
+* @param {array} values as default if not available from source
 * @param {text} source of the settings (global, pages, device, tplchk)
-* @param {text} values being available from source
-* @param {text} name of the parameter to configure
-*
-* @author: Wolfram v. Hülsen
 */
-{% macro check_cache(source, values, id) %}
+{% macro config_cache(id, values, defaults, source) %}
 
-	<div class="checkcache">
-		<span></span>
+	<div class="ui-field-contain">
+		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
+			{{ lang('configuration_page', id, 'label') }}
+		</label>
+	{% set hint = lang('configuration_page', id, 'hint') %}
+	{% if not hint is empty %}
+		<div class="ui-help-container">
+			<a href="#{{ source }}_{{ id }}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+			<div data-role="popup" id="{{ source }}_{{ id }}_hint" data-arrow="true" data-theme="c">
+				{{ hint|nl2br }}
+			</div>
+	{% endif %}
+			<select name="{{ id }}" id="{{ source }}_{{ id }}" data-role="flipswitch"{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
+				<option value="false"{{ (values[id] is defined and not values[id]) or (values[id] is not defined and not defaults[id]) ? ' selected="selected"'|raw }}>off</option>
+				<option value="true"{{ (values[id] is defined and values[id]) or (values[id] is not defined and defaults[id]) ? ' selected="selected"'|raw }}>on</option>
+			</select>
+			&nbsp;
+			<button type="button" name="{{ id }}_clear" id="{{ source }}_{{ id }}_clear" data-theme="a" data-icon="delete" data-inline="true"  class="ui-micro"{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>{{ lang('configuration_page', 'cache', 'clearbutton') }}</button>
+			<span name="{{ id }}_text" style="font-style: italic;"></span>
+	{% if not hint is empty %}
+		</div>
+	{% endif %}
 	</div>
-	
-	<script type="text/javascript">
-		var writeable = false;
-		$.getJSON('lib/base/check_temp.php', function(data) {
-			console.log('{{ source }}_{{ id }}'+': Cache directory is writeable');
-			})
-			.fail(function (jqXHR) {
-				var data = jQuery.parseJSON(jqXHR.responseText)
-				$('#{{ source }}_{{ id }}').each(function(idx) {
-					var element = $(this);
-					console.log('{{ source }}_{{ id }}'+': Cache directory is not writeable');
-					setMobileWidgetValue(element.closest("fieldset").find('[name="cache"]'), 0);
-					element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="cache"])').hide());
-					$('.checkcache').find('span').html('Cache disabled: '+data.text);				
-				});	
-			})
-	</script>
+
 {% endmacro %}

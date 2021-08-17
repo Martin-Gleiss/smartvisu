@@ -31,19 +31,23 @@
 		<div data-role="navbar">
 			<ul>
 		    {% for source, title in sources %}
-					<li data-source="{{ source }}"><a href="#config_tab_{{ source }}" data-ajax="false"{{ loop.first ? ' class="ui-btn-active"'|raw }}>{{ title }}</a></li>
+					<li data-source="{{ source }}"><a href="#config_tab_{{ source }}" data-ajax="false"{{ (configtarget is not defined and loop.first) or (configtarget is defined and configtarget == source) ? ' class="ui-btn-active"'|raw }}>{{ title }}</a></li>
 		    {% endfor %}
 			</ul>
 		</div>
 
 	{% for source, title in sources %}
 		{% set values = read_config(source) %}
-		{% set id = (source != "global") ? '_' ~ source : '' %}
+		{% set defaults = read_config( source=='global' ? 'default' : 'global') %}
 		<div id="config_tab_{{ source }}">
 			<h2>{{ lang('configuration_page', source ~ 'tab', 'hint') }}</h2>
-			<form class="configform">
-				<fieldset>
 
+			<form id="{{ source }}_configform" class="configform">
+				<fieldset>
+					{% if (configpages is defined) and (configpages != values.pages) %}
+						{% set values = values|merge({'pages':configpages}) %}
+						{% set values = values|merge({'index':defaults.index}) %}
+					{% endif %}
 					<div class="block">
 						<div class="set-3" data-role="collapsible-set" data-content-theme="a" data-mini="true">
 							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
@@ -52,61 +56,91 @@
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'interface', 'label') }}</h3>
 								<div style="min-height:245px">
-									{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
-									{{ forms.config_row(source, values, 'design',
+									{{ forms.config_input('title', values, defaults, source) }}
+									{{ forms.config_select('pages', values, defaults, source, dir('pages', '^(?!base|apps)(.+?)') ) }}
+									{{ forms.config_select('index', values, defaults, source, dir('pages/'~values.pages, '^(.*?)\.html$') ) }}
+									{{ forms.config_row('design', values, defaults, source,
 										[
-										forms.config_select(source, values, 'design', dir('designs', '(.+?).css'), 'true')
-										,forms.config_hidden(source, values, 'design_icon0')
-										,forms.config_hidden(source, values, 'design_icon1')
+										forms.config_select('design', values, defaults, source, dir('designs', '(.+?).css'), 'true')
+										,forms.config_hidden('design_icon0', values, defaults, source)
+										,forms.config_hidden('design_icon1', values, defaults, source)
 										] 
 									) }}
-									{{ forms.config_input(source, values, 'title') }}
-									{{ forms.config_select(source, values, 'lang', dir('lang', '^(.*?)\.ini$') ) }}
-									{{ forms.config_flip(source, values, 'cache', '<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache' ~ id ~ '" class="ui-micro"' ~ (not values['cache'] is defined ? ' disabled="disabled"'|raw) ~ '>' ~ lang('configuration_page', 'cache', 'clearbutton') ~'</button>') }}
-									{{ forms.check_cache ( source, values, 'cache') }}
+									{{ forms.config_select('lang', values, defaults, source, dir('lang', '^(.*?)\.ini$') ) }}
+									{{ forms.config_cache('cache', values, defaults, source) }}
 								</div>
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'behaviour', 'label') }}</h3>
-								{{ forms.config_flip(source, values, 'animation') }}
-								{{ forms.config_input(source, values, 'backtohometime', 'wide') }}
-								{{ forms.config_select(source, values, 'timesource', [{"name": "client", "label": "Client"}, {"name": "server", "label": "Server"}] ) }}
-								{{ forms.config_select(source, values, 'timezone', timezones()) }}
+								{{ forms.config_flip('animation', values, defaults, source) }}
+								{{ forms.config_input('backtohometime', values, defaults, source, 'wide') }}
+								{{ forms.config_select('timesource', values, defaults, source, [{"name": "client", "label": "Client"}, {"name": "server", "label": "Server"}]) }}
+								{{ forms.config_select('timezone', values, defaults, source, timezones()) }}
 							</div>
 						</div>
 					</div>
-
+					{% if (configdriver is defined) and (configdriver != values.driver) %}
+						{% for key,val in values %}
+							{% if 'driver_' in key %}
+								/** saves old value in 'olddriver_key' (actually unnecessary, for further use) and set value to 'unset' */
+								{% set values = values|merge({(values.driver~'_'~key):val}) %}
+								{% set values = values|merge({(''~key):'unset'}) %}
+							{% endif %}
+						{% endfor %}
+						/** set defaults from new driver */
+						{% set values = values|merge({'driver':configdriver}) %}
+					{% endif %}
+					{% if isfile('driver/'~values.driver~'/config.js') %}
+						<script src="{{ 'driver/'~values.driver~'/config.js' }}"></script>
+					{% endif %}
 					<div class="block">
-						<div class="set-2" data-role="collapsible-set" data-mini="true">
+						<div class="set-3" data-role="collapsible-set" data-mini="true">
 							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
 								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'backend', 'label') }}</h3>
 							</div>
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'ioconnection', 'label') }}</h3>
-								<div style="min-height:245px">
-									{{ forms.config_select(source, values, 'driver', dir('driver', '^io_(.+?).js') ) }}
-									{{ forms.config_input(source, values, 'driver_address', 'wide') }}
-									{{ forms.config_input(source, values, 'driver_port', 'wide') }}
-									{{ forms.config_input(source, values, 'driver_tlsport', 'wide') }}
-									{{ forms.config_flip(source, values, 'driver_realtime') }}
-									{{ forms.config_flip(source, values, 'driver_autoreconnect') }}
-									{{ forms.config_flip(source, values, 'reverseproxy', forms.config_reverseproxy (source, values, 'reverseproxy') ) }}
+								<div style="min-height:180px">
+									{{ forms.config_select('driver', values, defaults, source, dir('driver', '^io_(.+?).js') ) }}
+
+									{% set drivermeta = configmeta('driver/io_'~values['driver']~'.js') %}
+									{% if drivermeta != [] %}
+										{% for name,field in drivermeta.config %}
+											
+											{% if prevgroup is defined and prevgroup != field.group %}
 								</div>
 							</div>
-							<div class="ui-field-contain" style="margin:0;" data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
-								<h3>{{ lang('configuration_page', 'auth-security', 'title') }}</h3><br />
+							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
+								<h3>{{ lang('configuration_page', field.group, 'title') != '' ? lang('configuration_page', field.group, 'title') : field.group }}</h3>
 								<div style="min-height:184px;">
-									{{ forms.config_flip(source, values, 'driver_ssl') }}
-									{{ forms.config_input(source, values, 'driver_username', 'wide') }}
-									{{ forms.config_input(source, values, 'driver_password', 'wide') }} 
+											{% endif %}
+											
+											{% if (values['driver_'~name] is not defined) or (values['driver_'~name] == 'unset') %}
+												{% set values = values|merge({('driver_'~name):field.default}) %}
+											{% endif %}
+											{% if field.type == 'input' %}
+												{{ forms.config_input('driver_'~name, values, defaults, source, 'wide') }}
+											{% elseif field.type == 'flip' %}
+												{{ forms.config_flip('driver_'~name, values, defaults, source) }}
+											{% elseif field.type == 'password' %}
+												{{ forms.config_input('driver_'~name, values, defaults, source, 'password') }}
+											{% elseif field.type == 'hidden' %}
+												{{ forms.config_hidden('driver_'~name, values, defaults, source) }}
+											{% elseif field.type == 'select' %}
+												{{ forms.config_select('driver_'~name, values, defaults, source, field.default) }}
+											{% endif %}
+											
+											{% set prevgroup = field.group %}
+										{% endfor %}
+									{% endif %}
 								</div>
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
 								<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3><br />
-								{{ forms.config_flip(source, values, 'proxy') }}
-								{{ forms.config_input(source, values, 'proxy_url', 'wide') }}
-								{{ forms.config_input(source, values, 'proxy_user') }}
-								{{ forms.config_input(source, values, 'proxy_password', 'password') }}
+								{{ forms.config_flip('proxy', values, defaults, source) }}
+								{{ forms.config_input('proxy_url', values, defaults, source, 'wide') }}
+								{{ forms.config_input('proxy_user', values, defaults, source) }}
+								{{ forms.config_input('proxy_password', values, defaults, source, 'password') }}
 							</div>
 						</div>
 					</div>
@@ -118,33 +152,33 @@
 							</div>
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'weather', 'label') }}</h3>
-								{{ forms.config_select(source, values, 'weather_service', dir('lib/weather/service', '(.+?).php') ) }}
-								{{ forms.config_input(source, values, 'weather_location') }}
-								{{ forms.config_input(source, values, 'weather_key') }}
-								{{ forms.config_input(source, values, 'weather_postal') }}
+								{{ forms.config_select('weather_service', values, defaults, source, dir('lib/weather/service', '(.+?).php') ) }}
+								{{ forms.config_input('weather_location', values, defaults, source) }}
+								{{ forms.config_input('weather_key', values, defaults, source) }}
+								{{ forms.config_input('weather_postal', values, defaults, source) }}
 							</div>
 							<div data-role="collapsible" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'phone', 'label') }}</h3>
-								{{ forms.config_select(source, values, 'phone_service', dir('lib/phone/service', '(.+?).php') ) }}
-								{{ forms.config_input(source, values, 'phone_server', 'wide') }}
-								{{ forms.config_input(source, values, 'phone_port', 'wide') }}
-								{{ forms.config_input(source, values, 'phone_user') }}
-								{{ forms.config_input(source, values, 'phone_pass', 'password') }}
+								{{ forms.config_select('phone_service', values, defaults, source, dir('lib/phone/service', '(.+?).php') ) }}
+								{{ forms.config_input('phone_server', values, defaults, source, 'wide') }}
+								{{ forms.config_input('phone_port', values, defaults, source, 'wide') }}
+								{{ forms.config_input('phone_user', values, defaults, source) }}
+								{{ forms.config_input('phone_pass', values, defaults, source, 'password') }}
 							</div>
 							<div data-role="collapsible" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'calendar', 'label') }}</h3>
-								{{ forms.config_select(source, values, 'calendar_service', dir('lib/calendar/service', '(.+?).php') ) }}
-								{{ forms.config_input(source, values, 'calendar_url') }}
-								{{ forms.config_input(source, values, 'calendar_username') }}
-								{{ forms.config_input(source, values, 'calendar_password', 'password') }}
-								{{ forms.config_input(source, values, 'calendar_name') }}
-								{{ forms.config_input(source, values, 'calendar_color') }}
-								{{ forms.config_row(source, values, 'calendar_google_refresh_token',
+								{{ forms.config_select('calendar_service', values, defaults, source, dir('lib/calendar/service', '(.+?).php') ) }}
+								{{ forms.config_input('calendar_url', values, defaults, source) }}
+								{{ forms.config_input('calendar_username', values, defaults, source) }}
+								{{ forms.config_input('calendar_password', values, defaults, source, 'password') }}
+								{{ forms.config_input('calendar_name', values, defaults, source) }}
+								{{ forms.config_input('calendar_color', values, defaults, source) }}
+								{{ forms.config_row('calendar_google_refresh_token', values, defaults, source,
 									[
 										'<a href="#calendar_googleauth_popup" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-icon-left ui-icon-action ui-micro' ~ (not values['calendar_google_refresh_token'] is defined ? ' ui-btn-active') ~ ' " data-icon="delete" data-inline="true" id="' ~ source ~ '_calendar_googleauth_button">' ~ lang('configuration_page', 'calendar_google_refresh_token', 'button') ~ '</a>'
-										,forms.config_hidden(source, values, 'calendar_google_client_id')
-										,forms.config_hidden(source, values, 'calendar_google_client_secret')
-										,forms.config_hidden(source, values, 'calendar_google_refresh_token')
+										,forms.config_hidden('calendar_google_client_id', values, defaults, source)
+										,forms.config_hidden('calendar_google_client_secret', values, defaults, source)
+										,forms.config_hidden('calendar_google_refresh_token', values, defaults, source)
 									]
 								) }}
 							</div>
@@ -158,19 +192,18 @@
 							</div>
 /**							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
 								<h3>{{ lang('configuration_page', 'widgetassistant', 'label') }}</h3>
-								{{ forms.config_flip(source, values, 'widgetassi') }}
+								{{ forms.config_flip('widgetassi', values, defaults, source) }}
 							</div>
 */							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
 								<h3>{{ lang('configuration_page', 'updatecheck', 'label') }}</h3>
-								{{ forms.config_flip(source, values, 'updatecheck') }}
+								{{ forms.config_flip('updatecheck', values, defaults, source) }}
 							</div>
 						</div>
 					</div>
 
 				</fieldset>
 
-				<input type="hidden" id="current_pages{{ id }}" value="{{ config_pages }}" />
-				<button type="submit" data-theme="b" data-icon="grid" name="submit" value="1">{{ lang('configuration_page', 'save', 'label') }}</button>
+				<button type="submit" id="{{ source}}_save" data-theme="b" data-icon="grid" name="submit" value="1">{{ lang('configuration_page', 'save', 'label') }}</button>
 			</form>
 		</div>
 	{% endfor %}

@@ -5,7 +5,12 @@
  * @copyright   2012 - 2015
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
- * @hide        define meta parameters for config page here
+ * @label       Drivername
+ *
+ * Define here neccessary configuration fields, they are available as global variable like sv.config.driver.fieldname
+ * @config      address     backend    input
+ * @config      port        backend    input
+ * @config      realtime    backend    flip     true
  */
 
 
@@ -14,12 +19,6 @@
  * simple I/O functions, and complex functions for real-time values.
  */
 var io = {
-
-	// the address
-	address: '',
-
-	// the port
-	port: '',
 
 	// -----------------------------------------------------------------------------
 	// P U B L I C   F U N C T I O N S
@@ -60,16 +59,13 @@ var io = {
  	 * Driver config parameters are globally available as from v3.2
 	 */
 	init: function () {
-		io.address = sv.config.driver.address;
-		io.port = sv.config.driver.port;
-
 		// TODO
 	},
 
 	/**
 	 * Lets the driver work
 	 */
-	run: function (realtime) {
+	run: function () {
 		// TODO   
 	},
 
