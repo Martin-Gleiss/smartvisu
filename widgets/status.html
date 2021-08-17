@@ -177,8 +177,8 @@ Caution: If this is set, the notification gets not shown until the item has sent
 	 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.activelist" data-item="{{ item_messages }}"
 		data-title="{{ title }}" data-subtitle="{{ subtitle }}" data-content="{{ content }}" data-level="{{ level }}">
-		<ul data-role="listview" class="ui-listview activelist-container" style="margin-top: 0px;margin-bottom: 0em; margin-right:0px;">
-		</ul>
+		<dl data-role="listview" class="ui-listview activelist-container" style="margin-top: 0px;margin-bottom: 0em; margin-right:0px;">
+		</dl>
 	</div>
 
 {% endmacro %}

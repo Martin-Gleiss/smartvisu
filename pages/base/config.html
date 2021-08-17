@@ -106,7 +106,6 @@
 									{% set drivermeta = configmeta('driver/io_'~values['driver']~'.js') %}
 									{% if drivermeta != [] %}
 										{% for name,field in drivermeta.config %}
-											
 											{% if prevgroup is defined and prevgroup != field.group %}
 								</div>
 							</div>

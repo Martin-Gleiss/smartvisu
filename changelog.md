@@ -12,6 +12,7 @@
 - template checker now checks smarthomeNG item properties (valid properties and types)
 - openHAB driver from Patrik Germann (thanks!) supports SSL and authentication
 - smarthome.py driver accepts a second port for TLS communication. Port & protocol will be switched according to host protocol (http / https) 
+- refactored php service for enertex IP Router connects to current firmware version and provides more data 
 
 ### Improvements
 - Driver config data are globally availble now in the sv.config.driver{} array
@@ -37,6 +38,7 @@
 - Sliders for HSV color model did not send updated values if only one slider was changed
 - plot data lost their ascending sequence occationally which resulted in lines across the plots
 - Page navigation away from widget assistant often failed and / or threw errors in console
+- status.activelist expanded all contents when unser returned to the page (now all are collapsed)
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
