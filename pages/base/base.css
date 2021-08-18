@@ -2000,7 +2000,7 @@ div.ui-slider-switch{
 
 .iprouter .tunnels {
   margin: auto;
-  width: 260px;
+  width: 280px;
   margin-top: 5px;
 }
 
@@ -2009,7 +2009,7 @@ div.ui-slider-switch{
 }
 
 .iprouter .tunnels .traffic {
-  width: 70px;
+  width: 80px;
   height: 38px;
   text-align: right;
   font-size: 0.9em
@@ -2046,7 +2046,11 @@ div.ui-slider-switch{
   bottom: 0;
   text-align: right;
   font-size: 0.8em;
-  color: #666;
+  
+}
+
+.iprouter .version img {
+	width: 0.8em;
 }
 
 /**

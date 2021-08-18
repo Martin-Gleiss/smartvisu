@@ -287,17 +287,19 @@ function twig_configmeta($filename) {
 	$pathinfo = pathinfo($filename);
 	$tags = array(
 		'label'      => '',//$pathinfo['filename'],
-		'config'     => array(),
-		'deprecated' => false
+		'hide'       => array(),
+		'default'    => array(),
+		'deprecated' => false,
+		'config'     => array()
 	);
 
 	// read file up to end of first comment
-	$comment_end = $pathinfo['extension'] == 'ini' ? '#^\s*[^;]#' : '#\*/#';
+	$comment_end = isset($pathinfo['extension']) && $pathinfo['extension'] == 'ini' ? '#^\s*[^;]#' : '#\*/#';
 	if($file = @fopen($filename, 'r')) {
-		
+
 		while(($line = fgets($file, 4096)) !== false && preg_match($comment_end, $line) !== 1) {
 			if (preg_match('#.+?@(.+?)\W+(.*)#', $line, $tag)) {
-				                 
+
 				// parse tags
 				if(array_key_exists($tag[1], $tags)) {
 					if($tag[1] == 'config') {
@@ -309,19 +311,23 @@ function twig_configmeta($filename) {
 							";
 						$tags['config'][$data[0]] = parse_ini_string($ini);
 					} else {
-						$tags[$tag[1]] = trim($tag[2]);
+						if (is_array($tags[$tag[1]])) {
+							$tags[$tag[1]][] = trim($tag[2]);
+						} else {
+							$tags[$tag[1]] = trim($tag[2]);
+						}
 					}
 				}
 			}
 		}
 	}
-/*
+
 	// remove unused tags
 	foreach($tags as $key => $val) {
 		if(!isset($val) || $val == array())
 			unset($tags[$key]);
 	}
-*/
+
 	return $tags;
 }
 

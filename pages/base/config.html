@@ -16,7 +16,10 @@
 
 	/** related JavaScript part located in lib/base/base.js */
 	<script src="lib/base/config.js"></script>
-	
+	<script type="text/javascript">
+		var metas = [];
+	</script>
+
 	<h1>{{ lang('configuration_page', 'configuration', 'label') }}</h1>
 
 	{%
@@ -55,10 +58,10 @@
 							</div>
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'interface', 'label') }}</h3>
-								<div style="min-height:245px">
+								<div style="min-height:250px">
 									{{ forms.config_input('title', values, defaults, source) }}
 									{{ forms.config_select('pages', values, defaults, source, dir('pages', '^(?!base|apps)(.+?)') ) }}
-									{{ forms.config_select('index', values, defaults, source, dir('pages/'~values.pages, '^(.*?)\.html$') ) }}
+									/**{{ forms.config_select('index', values, defaults, source, dir('pages/'~values.pages, '^(.*?)\.html$') ) }}*/
 									{{ forms.config_row('design', values, defaults, source,
 										[
 										forms.config_select('design', values, defaults, source, dir('designs', '(.+?).css'), 'true')
@@ -100,7 +103,7 @@
 							</div>
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'ioconnection', 'label') }}</h3>
-								<div style="min-height:180px">
+								<div style="min-height:250px">
 									{{ forms.config_select('driver', values, defaults, source, dir('driver', '^io_(.+?).js') ) }}
 
 									{% set drivermeta = configmeta('driver/io_'~values['driver']~'.js') %}

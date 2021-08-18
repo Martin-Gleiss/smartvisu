@@ -215,7 +215,7 @@ var io = {
 				} else if (typeof EventSource == 'function') {
 					io.socket = new EventSource(io.url + 'events/states')
 				}
-console.debug(io.socket);
+
 				if (io.socket != null) {
 					io.socket.addEventListener('ready', function(message) {
 						$.ajax({
@@ -229,7 +229,6 @@ console.debug(io.socket);
 							cache       : false
 						}).done(function(data) {
 							io.debug && console.debug('io.socket.addEventListener(' + message.data + ') = ' + items);
-console.debug(data);
 						}
 						).fail(notify.json);
 					});
