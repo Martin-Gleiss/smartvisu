@@ -321,13 +321,13 @@ function twig_configmeta($filename) {
 			}
 		}
 	}
-/*
+
 	// remove unused tags
 	foreach($tags as $key => $val) {
 		if(!isset($val) || $val == array())
 			unset($tags[$key]);
 	}
-*/
+
 	return $tags;
 }
 

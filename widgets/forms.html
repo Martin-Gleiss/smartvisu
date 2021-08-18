@@ -159,7 +159,7 @@
 						{% set prevgroup = option.group %}
 						<optgroup label="{{ option.group }}">
 					{% endif %}
-					<option value="{{ option.name }}"{{ (values[id] is defined and values[id] == option.name) or (values[id] is not defined and defaults[id] == option.name) ? ' selected="selected"'|raw }}>{{ meta.label|default(option.label) }}{{ meta.deprecated ? ' (deprecated)' }}</option>
+					<option value="{{ option.name }}"{{ (values[id] is defined and values[id] == option.name) or (values[id] is not defined and defaults[id] == option.name) ? ' selected="selected"'|raw }}>{{ meta.label|default(option.label) }}{{ meta.deprecated ? ' ('~lang('default', 'deprecated')~')' }}</option>
 				{% endfor %}
 				{% if prevgroup %}
 					</optgroup>
