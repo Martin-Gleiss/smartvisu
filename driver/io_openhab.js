@@ -26,10 +26,10 @@
 var io = {
 
 	//  debug switch
-	debug   : true,
+	debug   : false,
 
 	// refreshtimer in seconds
-	timer   : 60,
+	timer   : 1,
 
 	// servertimeout in seconds
 	timeout : 5,
@@ -100,7 +100,7 @@ var io = {
 			contentType : 'text/plain',
 			timeout     : io.timeout,
 			cache       : false
-		}).done(function() {
+		}).success(function() {
 			if (!sv.config.driver.realtime || io.refreshIntervall) {
 				io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
 				widget.update(item, val);
@@ -136,28 +136,22 @@ var io = {
 
 		io.debug && console.debug("io.init(address = " + sv.config.driver.address + ", port = " + sv.config.driver.port + ", ssl = " + sv.config.driver.ssl + ", username = " + sv.config.driver.username + ", password = " + sv.config.driver.password + ")");
 
-		if (sv.config.driver.reverseproxy) {
-			io.url = 'driver/io_openhab.php?url=';
+		if (sv.config.driver.ssl == true) {
+			io.url = 'https://' + sv.config.driver.address + (sv.config.driver.tlsport ? ":" + sv.config.driver.tlsport : '') + "/rest/";
 		} else {
-			if (sv.config.driver.ssl == true) {
-				io.url = 'https://' + sv.config.driver.address + (sv.config.driver.tlsport ? ":" + sv.config.driver.tlsport : '') + "/rest/";
-			} else {
-				io.url = 'http://' + sv.config.driver.address + (sv.config.driver.port ? ":" + sv.config.driver.port : '') + "/rest/";
-			}
-
-			if (sv.config.driver.username) {
-				io.auth = {"Authorization": "Basic " + btoa(sv.config.driver.username + ':' + sv.config.driver.password)};
-			}
+			io.url = 'http://' + sv.config.driver.address + (sv.config.driver.port ? ":" + sv.config.driver.port : '') + "/rest/";
 		}
 		io.debug && console.debug("url = " + io.url);
+
+		if (sv.config.driver.username) {
+			io.auth = {"Authorization": "Basic " + btoa(sv.config.driver.username + ':' + sv.config.driver.password)};
+		}
 		io.debug && console.debug("io.init(auth = " + io.auth + ")");
 
 		if(io.socket != null && io.socket.readyState == 3) {
 			io.run();
 		}
 
-		io.timer *= 1000;
-		io.plot.timer *= io.timer;
 		io.timeout *= 1000;
 
 		$.ajax({
@@ -213,9 +207,8 @@ var io = {
 				if (io.auth && typeof EventSourcePolyfill == 'function') {
 					io.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 60000, headers: (io.auth !== false ? io.auth : {})});
 				} else if (typeof EventSource == 'function') {
-					io.socket = new EventSource(io.url + 'events/states')
+					io.socket = new EventSource(io.url + 'events/states');
 				}
-
 				if (io.socket != null) {
 					io.socket.addEventListener('ready', function(message) {
 						$.ajax({
@@ -227,9 +220,8 @@ var io = {
 							timeout     : io.timeout,
 							async       : true,
 							cache       : false
-						}).done(function(data) {
-							io.debug && console.debug('io.socket.addEventListener(' + message.data + ') = ' + items);
-						}
+						}).success(
+							io.debug && console.debug('io.socket.addEventListener = ' + message.data)
 						).fail(notify.json);
 					});
 					io.socket.onmessage = function(message) {
@@ -245,7 +237,7 @@ var io = {
 							}
 						});
 					}
-//				} else {
+				} else {
 					for (var i = 0; i < items.length; i++) {
 						io.read(items[i]);
 					}
@@ -254,8 +246,8 @@ var io = {
 						for (var i = 0; i < widget.listeners().length; i++) {
 							io.read(items[i]);
 						}
-					}, io.timer );
-//				}
+					}, io.timer * 1000);
+				}
 			}
 		}
 
