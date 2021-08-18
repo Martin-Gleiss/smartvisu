@@ -4,16 +4,19 @@
  * @author      Martin Gleiß, Patrik Germann
  * @copyright   2012 - 2021
  * @license     GPL [http://www.gnu.de]
- * @version     2.3.5
+ * @version     2.3.6
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
- * @default     driver_port             8080
- * @default     driver_tlsport          8443
- * @default     driver_realtime         true
- * @default     driver_autoreconnect    true
- *
- * @hide        reverseproxy
+ * @config      address           backend          input
+ * @config      port              backend          input       8080
+ * @config      realtime          backend          flip        true
+ * @config      autoreconnect     backend          flip        true
+ * @config      ssl               auth-security    flip
+ * @config      tlsport           auth-security    input       8443
+ * @config      authentication    auth-security    flip
+ * @config      username          auth-security    input
+ * @config      password          auth-security    password
  */
 
 /**
@@ -23,10 +26,10 @@
 var io = {
 
 	//  debug switch
-	debug   : false,
+	debug   : true,
 
 	// refreshtimer in seconds
-	timer   : 1,
+	timer   : 60,
 
 	// servertimeout in seconds
 	timeout : 5,
@@ -97,12 +100,12 @@ var io = {
 			contentType : 'text/plain',
 			timeout     : io.timeout,
 			cache       : false
-		}).success(function() {
-			if (io.refreshIntervall) {
+		}).done(function() {
+			if (!sv.config.driver.realtime || io.refreshIntervall) {
+				io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
 				widget.update(item, val);
 			}
 		}).fail(notify.json);
-
 	},
 
 	/**
@@ -133,22 +136,28 @@ var io = {
 
 		io.debug && console.debug("io.init(address = " + sv.config.driver.address + ", port = " + sv.config.driver.port + ", ssl = " + sv.config.driver.ssl + ", username = " + sv.config.driver.username + ", password = " + sv.config.driver.password + ")");
 
-		if (sv.config.driver.ssl == true) {
-			io.url = 'https://' + sv.config.driver.address + (sv.config.driver.tlsport ? ":" + sv.config.driver.tlsport : '') + "/rest/";
+		if (sv.config.driver.reverseproxy) {
+			io.url = 'driver/io_openhab.php?url=';
 		} else {
-			io.url = 'http://' + sv.config.driver.address + (sv.config.driver.port ? ":" + sv.config.driver.port : '') + "/rest/";
+			if (sv.config.driver.ssl == true) {
+				io.url = 'https://' + sv.config.driver.address + (sv.config.driver.tlsport ? ":" + sv.config.driver.tlsport : '') + "/rest/";
+			} else {
+				io.url = 'http://' + sv.config.driver.address + (sv.config.driver.port ? ":" + sv.config.driver.port : '') + "/rest/";
+			}
+
+			if (sv.config.driver.username) {
+				io.auth = {"Authorization": "Basic " + btoa(sv.config.driver.username + ':' + sv.config.driver.password)};
+			}
 		}
 		io.debug && console.debug("url = " + io.url);
-
-		if (sv.config.driver.username) {
-			io.auth = {"Authorization": "Basic " + btoa(sv.config.driver.username + ':' + sv.config.driver.password)};
-		}
 		io.debug && console.debug("io.init(auth = " + io.auth + ")");
 
 		if(io.socket != null && io.socket.readyState == 3) {
 			io.run();
 		}
 
+		io.timer *= 1000;
+		io.plot.timer *= io.timer;
 		io.timeout *= 1000;
 
 		$.ajax({
@@ -168,16 +177,15 @@ var io = {
 			} else {
 				notify.json(jqXHR, status, errorthrown);
 			}
+			sv.config.driver.realtime = false;
 		});
 	},
 
 	/**
 	 * Lets the driver work
-	 *
-	 * @param      realtime switch
 	 */
-	run: function (realtime) {
-		io.debug && console.log("io.run(realtime = " + realtime + ")");
+	run: function () {
+		io.debug && console.log("io.run(realtime = " + sv.config.driver.realtime + ")");
 
 		if (widget.listeners().length) {
 			var items = widget.listeners();
@@ -193,7 +201,7 @@ var io = {
 				}).done(function(ohItem) {
 					var item = ohItem.name;
 					io.itemType[item] = ohItem.type;
-					if (!realtime) {
+					if (!sv.config.driver.realtime) {
 						var val = io.convertState(item, ohItem.state);
 						io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
 						widget.update(item, val);
@@ -201,16 +209,17 @@ var io = {
 				}).fail(notify.json);
 			}
 
-			if (realtime) {
+			if (sv.config.driver.realtime) {
 				if (io.auth && typeof EventSourcePolyfill == 'function') {
 					io.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 60000, headers: (io.auth !== false ? io.auth : {})});
 				} else if (typeof EventSource == 'function') {
-					io.socket = new EventSource(io.url + 'events/states');
+					io.socket = new EventSource(io.url + 'events/states')
 				}
+
 				if (io.socket != null) {
 					io.socket.addEventListener('ready', function(message) {
 						$.ajax({
-							url         : io.url + '/events/states/' + message.data,
+							url         : io.url + 'events/states/' + message.data,
 							headers     : (io.auth !== false ? io.auth : {}),
 							data        : JSON.stringify(items),
 							method      : 'POST',
@@ -218,8 +227,9 @@ var io = {
 							timeout     : io.timeout,
 							async       : true,
 							cache       : false
-						}).success(
-							io.debug && console.debug('io.socket.addEventListener = ' + message.data)
+						}).done(function(data) {
+							io.debug && console.debug('io.socket.addEventListener(' + message.data + ') = ' + items);
+						}
 						).fail(notify.json);
 					});
 					io.socket.onmessage = function(message) {
@@ -235,7 +245,7 @@ var io = {
 							}
 						});
 					}
-				} else {
+//				} else {
 					for (var i = 0; i < items.length; i++) {
 						io.read(items[i]);
 					}
@@ -244,8 +254,8 @@ var io = {
 						for (var i = 0; i < widget.listeners().length; i++) {
 							io.read(items[i]);
 						}
-					}, io.timer * 1000);
-				}
+					}, io.timer );
+//				}
 			}
 		}
 

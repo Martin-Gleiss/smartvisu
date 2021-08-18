@@ -7,12 +7,13 @@
 - basic flip slider track can be styled with any valid color
 - basic.stateswitch can be configured to open any named popup on a long-press (mobile: tap-hold) event 
 - plot.period shows data for the running day from 0:00 to 24:00 if zomm parameter ist set to 'day'
+- new widget appliance.iprouter_v2 displays data from refactored enertex ip router service
 
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
 - openHAB driver from Patrik Germann (thanks!) supports SSL and authentication
 - smarthome.py driver accepts a second port for TLS communication. Port & protocol will be switched according to host protocol (http / https) 
-- refactored php service for enertex IP Router connects to current firmware version and provides more data 
+- refactored php service (enerter.iprouter-v2.php) for enertex IP Router connects to current firmware version and provides more data 
 
 ### Improvements
 - Driver config data are globally availble now in the sv.config.driver{} array

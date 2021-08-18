@@ -170,7 +170,10 @@ class enertex_iprouter extends service
 			usleep($this->delay);
 			$tpconfig = $this->readTo($this->prompt);
 			$this->debug($tpconfig);
-			
+			$tpconfig = str_replace('Device'.chr(13).chr(10),'Dev ', $tpconfig);
+			$tpconfig = preg_replace('/Serial number/', 'IP Dev Ser Num', $tpconfig, 1);
+			$tpconfig = preg_replace('/Serial number/', 'App Dev Ser Num', $tpconfig, 1);
+
 			//free
 			usleep($this->delay);
 			$this->write("free");
@@ -188,8 +191,8 @@ class enertex_iprouter extends service
 			$this->debug($lcconfig);
 			$lcparts = explode(' -> ', str_replace(array('IP', 'KNX'), array('',''), $lcconfig));
 			$this->data += $this->str2array($lcparts[0]);
-			$this->data['knx_ip'] = $this->str2array($lcparts[1]);
-			$this->data['ip_knx'] = $this->str2array($lcparts[2]);
+			$this->data['knx_to_ip'] = $this->str2array($lcparts[1]);
+			$this->data['ip_to_knx'] = $this->str2array($lcparts[2]);
 			
 
 			// tpratemax
@@ -403,14 +406,38 @@ Array
 	[rt_multicast] => 224.0.23.12 
 	[hardware_addr] => 70:b3:d5:dc:87:79 
 	[knx_bus_state] => up 
-	[knx_address] => 15.15.255 
-	[serial_number] => 00-a6-25-80-02-ce 
+	[ip_dev_knx_address] => 15.15.000 
+	[ip_dev_ser_num] => 00-a6-13-00-02-ce 
+	[app_dev_knx_address] => 15.15.255 
+	[app_dev_ser_num] => 00-a6-25-80-02-ce 
 	[used_stack_memory] => 7 % 
 	[allocated_memory] => 81 % 
 	[unused_memory] => 18 % 
 	[tp_tx_buffer] => 0 % 
 	[tp_tx_buffer_max] => 0 % 
 	[tp_rx_buffer_max] => 0 %
+	[coupler_type] => line coupler 
+	[knx_to_ip] => Array 
+	(
+		[ga__0_13] => route 
+		[ga_14_15] => filter 
+		[ga_16_31] => block 
+		[ind_addr] => filter 
+		[broadcast] => route 
+	) 
+	[ip_to_knx] => Array 
+	( 
+		[ga__0_13] => route 
+		[ga_14_15] => filter 
+		[ga_16_31] => block 
+		[indaddr] => filter 
+		[broadcast] => route 
+		[check_ia_rout] => disabled 
+		[indaddrtlg] => individually addressed telegrams are 3 times repeated 
+	) 
+	[send_to_tp] => no limit, sending with maximum performance to TP 
+	[knx_max_telegr_length] => 248 
+	[tun_udp_exp_max_time] => 1.0 s 
 	[tunnels] => Array 
 	( 
 		[1] => Array 
@@ -443,8 +470,6 @@ Array
 			[knx_address] => 15.15.017 
 		)
 	)
-	
-	
 )
 */
 
