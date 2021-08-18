@@ -7,7 +7,6 @@
 * -----------------------------------------------------------------------------
 */
 
-
 /**
 * enertex KNXnet/IP-Router
 *
@@ -44,6 +43,57 @@
 				}
 				$('#{{ uid }} .tunnels').html(ret);
 				$('#{{ uid }} .version').html(data.date + ', up: ' + data.uptime + ', v ' + data.firmware_version);
+			})
+				.fail(notify.json);
+		});
+	</script>
+{% endmacro %}
+
+/**
+* enertex KNXnet/IP-Router
+*
+* @param {id} unique id for this widget
+* @param {text=} the ip of the KNXnet/IP-Router
+* @param {text=} the password of the KNXnet/IP-Router
+*
+* @info works with firmware 1.062
+*/
+{% macro iprouter_v2(id, server, password) %}
+	{% set uid = uid(page, id) %}
+	
+	<div class="block" style="min-height: 400px">
+		<div class="ui-bar-c ui-li-divider ui-corner-top">
+			<img src="lib/appliance/pics/logo_enertex.png" alt="enertex">enertex KNXnet/IP Router 
+		</div>
+		<div class="ui-fixed ui-body-a ui-corner-bottom">
+				<div id="{{ uid }}" class="iprouter" style="height: 400px;">
+				<div class="from"></div>
+				<div class="to"></div>
+			
+				<div class="tunnels"></div>
+				<div class="version"></div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
+			$.getJSON('lib/appliance/enertex.iprouter-v2.php?server={{ server }}&pass={{ password }}', function (data) {
+			//$.getJSON('temp/enertex.json', function (data) {  // use this to test with an existing data set instead of a physical device
+				$('#{{ uid }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png" alt="from">');
+				$('#{{ uid }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png" alt="to">');
+	
+				var ret = '';
+				for (var i in data.tunnels) {
+					var tunnelOpen = data.tunnels[i]['tunnel_'+i].indexOf('open') >= 0;
+					ret += '<div class="traffic"' + (tunnelOpen ? '>' + data.tunnels[i].tx_tun_req + ' t<img src="lib/appliance/pics/dir_in.png" alt="in">' : ' style="margin-top: 10px; height: 28px">closed');
+					ret += (tunnelOpen ? '<br />' + data.tunnels[i].rx_tun_req + ' t<img src="lib/appliance/pics/dir_out.png" alt="out">' : '') + '</div>';
+					ret += '<div class="tunnel">T ' + i + '</div>';
+					ret += '<div class="address">knx: ' + data.tunnels[i].knx_address + '<br />ip: ' + (data.tunnels[i].ip_control ? data.tunnels[i].ip_control : data.tunnels[i].hpai_control) + '</div>';
+				}
+				$('#{{ uid }} .tunnels').html(ret);
+				$('#{{ uid }} .version').html('KNX: '+ data.ip_dev_knx_address +  ' <img src="pics/led/' + (data.knx_bus_state == 'up' ? 'lamp_green.png" alt="green">' : 'lamp_red.png" alt="red">') + '&nbsp;&nbsp; IP: '+data.ip+' / ' + data.ip_mode +'<br>'
+					+ data.date + ', up: ' + data.uptime + ', v ' + data.firmware_version);
 			})
 				.fail(notify.json);
 		});
