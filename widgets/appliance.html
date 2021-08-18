@@ -62,8 +62,8 @@
 	{% set uid = uid(page, id) %}
 	
 	<div class="block" style="min-height: 400px">
-		<div class="ui-bar-c ui-li-divider ui-corner-top">
-			<img src="lib/appliance/pics/logo_enertex.png" alt="enertex">enertex KNXnet/IP Router 
+		<div class="ui-bar-c ui-li-divider ui-corner-top" id="{{ uid }}-title">
+			<img src="lib/appliance/pics/logo_enertex.png" alt="enertex">Enertex&#174; KNX Secure IP <span class="device">Interface</span>
 		</div>
 		<div class="ui-fixed ui-body-a ui-corner-bottom">
 				<div id="{{ uid }}" class="iprouter" style="height: 400px;">
@@ -80,6 +80,7 @@
 		$('#{{ page }}').on('pagecreate', function (event, ui) {
 			$.getJSON('lib/appliance/enertex.iprouter-v2.php?server={{ server }}&pass={{ password }}', function (data) {
 			//$.getJSON('temp/enertex.json', function (data) {  // use this to test with an existing data set instead of a physical device
+				$('#{{ uid }}-title .device').html(data.devicetype);
 				$('#{{ uid }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png" alt="from">');
 				$('#{{ uid }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png" alt="to">');
 	
