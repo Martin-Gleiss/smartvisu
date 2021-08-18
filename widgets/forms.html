@@ -171,6 +171,11 @@
 					#{{ source }}_{{ id }}-listbox-popup li[data-option-index="{{ deprecated }}"] a { font-style: italic; }
 				{% endfor %}
 			</style>
+			{% if metas != [] %}
+			<script type="text/javascript">
+				metas['{{ id }}'] = {{ metas|json_encode()|raw }};
+			</script>
+			{% endif %}
 	{% if rowcontent is empty %}
 		{% if not hint is empty %}
 			</div>
