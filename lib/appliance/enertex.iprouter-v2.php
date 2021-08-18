@@ -35,7 +35,7 @@ define ('EOR',  chr(25));
 class enertex_iprouter extends service
 {
 	// A delay between a write and a read in microseconds
-	var $delay = 150000;
+	var $delay = 10000;
 	
 	var $timeout = 10; //connection timeout in seconds
 	
@@ -95,7 +95,7 @@ class enertex_iprouter extends service
 		else
 		{
 			$this->debug($this->socket, 'Received file pointer');
-			usleep($this->delay);	
+			usleep(10 * $this->delay);	
 			// start negotiation of TELNET options
 			$this->write(IAC.WONT.NAWS . IAC.WONT.SGA . IAC.DONT.SGA . IAC.DONT.ECH0);
 		}
@@ -110,14 +110,11 @@ class enertex_iprouter extends service
 
 		if ($this->socket !== false)
 		{
-			usleep($this->delay);
 			$this->prompt = "";
 			
 			// login procedure with password
 			if (strpos($this->readTo($this->prompt), 'Password:') !== false) { 
-				usleep($this->delay);
 				$this->write($this->pass);
-				usleep($this->delay);
 				if (strpos($this->readTo($this->prompt), 'Wrong password') !== false) {
 					$this->error('enertex IP-Router', 'Connection closed, wrong password!');
 					$this->close();
@@ -137,37 +134,27 @@ class enertex_iprouter extends service
 			$this->prompt = "#";
 
 			// version
-			usleep($this->delay);
 			$this->write("version");
-			usleep($this->delay);
 			$version = $this->readTo($this->prompt);
 			$this->debug($version, 'enertex KNXnet/IP-Router');
 
 			// stats
-			usleep($this->delay);
 			$this->write("stats");
-			usleep($this->delay);
 			$stats = $this->readTo($this->prompt);
 			$this->debug($stats);
 
 			// date
-			usleep($this->delay);
 			$this->write("date");
-			usleep($this->delay);
 			$dateutc = str_replace("date\r\n", "\r\ndate:", $this->readTo($this->prompt));
 			$this->debug($dateutc);
 			
 			//ifconfig
-			usleep($this->delay);
 			$this->write("ifconfig");
-			usleep($this->delay);
 			$ifconfig = $this->readTo($this->prompt);
 			$this->debug($ifconfig);
 			
 			//tpconfig
-			usleep($this->delay);
 			$this->write("tpconfig");
-			usleep($this->delay);
 			$tpconfig = $this->readTo($this->prompt);
 			$this->debug($tpconfig);
 			$tpconfig = str_replace('Device'.chr(13).chr(10),'Dev ', $tpconfig);
@@ -175,18 +162,14 @@ class enertex_iprouter extends service
 			$tpconfig = preg_replace('/Serial number/', 'App Dev Ser Num', $tpconfig, 1);
 
 			//free
-			usleep($this->delay);
 			$this->write("free");
-			usleep($this->delay);
 			$free = $this->readTo($this->prompt);
 			$this->debug($free);
 			
 			$this->data = $this->str2array($version.$stats.$dateutc.$ifconfig.$tpconfig.$free);
 
 			//lcconfig
-			usleep($this->delay);
 			$this->write("lcconfig");
-			usleep($this->delay);
 			$lcconfig = $this->readTo($this->prompt);
 			$this->debug($lcconfig);
 			$lcparts = explode(' -> ', str_replace(array('IP', 'KNX'), array('',''), $lcconfig));
@@ -196,36 +179,28 @@ class enertex_iprouter extends service
 			
 
 			// tpratemax
-			usleep($this->delay);
 			$this->write("tpratemax");
-			usleep($this->delay);
 			$tpratemax = $this->readTo($this->prompt);
 			$tpratemax = substr($tpratemax, 0, strpos($tpratemax, 'Usage')-3);
 			$this->debug($tpratemax);
 			$this->data['send_to_tp'] = substr($tpratemax,12);
 			
 			// apdu
-			usleep($this->delay);
 			$this->write("apdu");
-			usleep($this->delay);
 			$apdu = $this->readTo($this->prompt);
 			$this->debug($apdu);
 			$apdu = substr($apdu, 0, strpos($apdu, 'Usage')-3);
 			$this->data['knx_max_telegr_length'] = substr(strrchr($apdu, 'telegram '),9);
 			
 			//tunneltime
-			usleep($this->delay);
 			$this->write("tunneltime");
-			usleep($this->delay);
 			$tunneltime = $this->readTo($this->prompt);
 			$this->debug($tunneltime);
 			$tunneltime = substr($tunneltime, 0, strpos($tunneltime, 'Usage')-5);
 			$this->data['tun_udp_exp_max_time'] = substr(strrchr($tunneltime, 'tunnelling '),11);
 			
 			// tunnel
-			usleep($this->delay);
 			$this->write("tunnel");
-			usleep($this->delay);
 			$tunnels = $this->readTo($this->prompt);
 			$this->debug($tunnels);
 
@@ -233,13 +208,12 @@ class enertex_iprouter extends service
 			{
 				if($tunnelid =='tunnels_open')
 					continue;
-				usleep($this->delay);
 				$this->write("tunnel ".$tunnelid);
-				usleep($this->delay);
 				$this->data['tunnels'][$tunnelid] = $this->str2array($this->readTo($this->prompt));
 			}
 			
 			$this->close();
+			$this->data['devicetype'] = explode('-',$this->data['hardware_type'])[3] == '13' ? 'Router' : 'Interface';
 		}
 	}
 
@@ -250,9 +224,8 @@ class enertex_iprouter extends service
 	{
 		if ($this->socket !== false)
 		{
-			usleep($this->delay);
 			$this->write('logout');
-			usleep($this->delay);
+			usleep(15 * $this->delay);  // wait 150 ms before closing the socket
 			fclose($this->socket);
 			$this->socket = false;
 		}
@@ -279,6 +252,7 @@ class enertex_iprouter extends service
 	 */
 	protected function readTo($prompt) {
 		
+		usleep (2 * $this -> delay);	// wait 20 ms before reading
 		// clear the buffer
 		$this->buffer = '';
 
@@ -329,6 +303,8 @@ class enertex_iprouter extends service
 	 * @return boolean
 	 */
 	protected function write($buffer, $add_newline = TRUE) {
+		
+		usleep ($this -> delay);	// wait 10 ms before writing
 		
 		// clear buffer from last command
 		$this->buffer = '';
@@ -470,6 +446,7 @@ Array
 			[knx_address] => 15.15.017 
 		)
 	)
+	[devicetype] => Router
 )
 */
 
