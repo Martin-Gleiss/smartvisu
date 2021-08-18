@@ -294,7 +294,7 @@ function twig_configmeta($filename) {
 	);
 
 	// read file up to end of first comment
-	$comment_end = $pathinfo['extension'] == 'ini' ? '#^\s*[^;]#' : '#\*/#';
+	$comment_end = isset($pathinfo['extension']) && $pathinfo['extension'] == 'ini' ? '#^\s*[^;]#' : '#\*/#';
 	if($file = @fopen($filename, 'r')) {
 
 		while(($line = fgets($file, 4096)) !== false && preg_match($comment_end, $line) !== 1) {
