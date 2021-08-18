@@ -18,7 +18,7 @@ if (empty($_COOKIE['updchk']) && config_updatecheck)
 	set_error_handler(
 			function($errno, $errstr, $errfile, $errline)
 			{
-			if (config_debug == 1) 				
+			if (defined('config_debug') && config_debug == 1)
 				return false;	// hand over to standard error reporting
 			else
 				return true;

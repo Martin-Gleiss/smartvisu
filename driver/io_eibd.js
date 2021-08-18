@@ -4,15 +4,13 @@
  * @author      Raik Alber and Martin Gleiss
  * @copyright   2013
  * @license     GPL [http://www.gnu.de]
- * @version        0.2
+ * @version     0.2
  * -----------------------------------------------------------------------------
  * @label       knxd / eibd
- * @hide		driver_tlsport
- * @hide        driver_autoreconnect
- * @hide		reverseproxy
- * @hide		driver_ssl
- * @hide		driver_username
- * @hide		driver_password
+ *
+ * @config      address     backend    input
+ * @config      port        backend    input
+ * @config      realtime    backend    flip     true
  */
 
 
@@ -76,7 +74,7 @@ var io = {
 	/**
 	 * Lets the driver work
 	 */
-	run: function (realtime) {
+	run: function () {
 		// old items
 		widget.refresh();
 
@@ -84,7 +82,7 @@ var io = {
 		io.all(true);
 
 		// run polling
-		if (realtime) {
+		if (sv.config.driver.realtime) {
 			io.start();
 		}
 	},

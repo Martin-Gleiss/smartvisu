@@ -48,6 +48,11 @@ require_once const_path_system.'config.php';
 $config = new config();
 $GLOBALS['config'] = $config->get();
 
+clearstatcache(true, const_path.'temp');
+if (isset($GLOBALS['config']['cache']) && $GLOBALS['config']['cache'] && !is_writeable(const_path.'temp')) {
+	$GLOBALS['config']['cache'] = false;
+}
+
 // define constant for all config values (for backward compatibility)
 foreach ($GLOBALS['config'] as $key => $value) {
 	define('config_' . $key, $value);
