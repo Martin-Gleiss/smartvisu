@@ -141,9 +141,7 @@
 				{% set metas = [] %}
 				{% set deprecateds = [] %}
 				{% for option in options %}
-					{% if not option.path %}
-						{% set meta = [] %}
-					{% else %}
+					{% if option.path and isfile(option.path)%}
 						{% set meta = configmeta(option.path) %}
 						{% if meta != [] %}
 							{% set metas = metas|merge({ (option.name) : meta }) %}

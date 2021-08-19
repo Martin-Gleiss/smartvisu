@@ -47,10 +47,10 @@
 
 			<form id="{{ source }}_configform" class="configform">
 				<fieldset>
-					{% if (configpages is defined) and (configpages != values.pages) %}
+					/**{% if (configpages is defined) and (configpages != values.pages) %}
 						{% set values = values|merge({'pages':configpages}) %}
 						{% set values = values|merge({'index':defaults.index}) %}
-					{% endif %}
+					{% endif %}*/
 					<div class="block">
 						<div class="set-3" data-role="collapsible-set" data-content-theme="a" data-mini="true">
 							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
