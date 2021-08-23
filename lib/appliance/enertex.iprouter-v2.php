@@ -430,7 +430,7 @@ Array
 			[rx_tun_rereq_identified] => 0
 			[rx_tun_req_wrong_seq] => 0
 			[current_tunnel_buffer] => 0%
-			[connected_since_UTC] => 16:26:16 29012019
+			[connected_since_utc] => 16:26:16 29012019
 		)
 		[2] => Array 
 		( 

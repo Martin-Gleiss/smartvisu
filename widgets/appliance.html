@@ -75,11 +75,20 @@
 			</div>
 		</div>
 	</div>
+	<div id="{{ uid }}-tunnel-popup" data-role = "popup" data-overlay-theme="b" style="min-width: 300px; ">
+		<a href="#" data-rel="back" data-role="button" data-theme="b" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+		<h3><div class="P1" style="display: inline-block; width: 45%;"></div><div class="P2" style="display: inline-block; width: 55%; text-align: right;"></div></h3>
+		<div style="display: inline-block; width: 50%;">Connect Type: </div><div class="P3" style="display: inline-block; width: 50%; text-align: right;"></div><br>
+		<div style="display: inline-block; width: 50%;">Communication: </div><div class="P4" style="display: inline-block; width: 50%; text-align: right;"></div><br>
+		<div style="display: inline-block; width: 50%;">Open since: </div><div class="P5" style="display: inline-block; width: 50%; text-align: right;"></div><br>
+	</div>
 	
 	<script type="text/javascript">
 		$('#{{ page }}').on('pagecreate', function (event, ui) {
-			$.getJSON('lib/appliance/enertex.iprouter-v2.php?server={{ server }}&pass={{ password }}', function (data) {
-			//$.getJSON('temp/enertex.json', function (data) {  // use this to test with an existing data set instead of a physical device
+			var device = { data: {}}; // global object for all data read from Enertex deveice
+
+			//$.getJSON('lib/appliance/enertex.iprouter-v2.php?server={{ server }}&pass={{ password }}', function (data) {
+			$.getJSON('temp/enertex.json', function (data) {  // use this to test with an existing data set instead of a physical device
 				$('#{{ uid }}-title .device').html(data.devicetype);
 				$('#{{ uid }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png" alt="from">');
 				$('#{{ uid }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png" alt="to">');
@@ -89,14 +98,27 @@
 					var tunnelOpen = data.tunnels[i]['tunnel_'+i].indexOf('open') >= 0;
 					ret += '<div class="traffic"' + (tunnelOpen ? '>' + data.tunnels[i].tx_tun_req + ' t<img src="lib/appliance/pics/dir_in.png" alt="in">' : ' style="margin-top: 10px; height: 28px">closed');
 					ret += (tunnelOpen ? '<br />' + data.tunnels[i].rx_tun_req + ' t<img src="lib/appliance/pics/dir_out.png" alt="out">' : '') + '</div>';
-					ret += '<div class="tunnel">T ' + i + '</div>';
+					ret += '<div class="tunnel">' + (tunnelOpen ? '<a href="#{{ uid }}-tunnel-popup" data-rel="popup" data-tunnel="'+i.toString()+'" style="text-decoration: none;">T ' + i + '</a></div>' : 'T ' + i + '</div>') ;
 					ret += '<div class="address">knx: ' + data.tunnels[i].knx_address + '<br />ip: ' + (data.tunnels[i].ip_control ? data.tunnels[i].ip_control : data.tunnels[i].hpai_control) + '</div>';
 				}
 				$('#{{ uid }} .tunnels').html(ret);
 				$('#{{ uid }} .version').html('KNX: '+ data.ip_dev_knx_address +  ' <img src="pics/led/' + (data.knx_bus_state == 'up' ? 'lamp_green.png" alt="green">' : 'lamp_red.png" alt="red">') + '&nbsp;&nbsp; IP: '+data.ip+' / ' + data.ip_mode +'<br>'
 					+ data.date + ', up: ' + data.uptime + ', v ' + data.firmware_version);
+				device.data = data
 			})
 				.fail(notify.json);
+				
+			$('#{{ uid }} .tunnels').on('click', function(event) {
+				var tunnel = event.target.attributes['data-tunnel'].value;
+				var tunnelData = device.data.tunnels[tunnel];
+				$('#{{ uid }}-tunnel-popup .P1').html('Tunnel '+tunnel.toString());
+				$('#{{ uid }}-tunnel-popup .P2').html(tunnelData['tunnel_'+tunnel]);
+				$('#{{ uid }}-tunnel-popup .P3').html(tunnelData['connect_type']);
+				$('#{{ uid }}-tunnel-popup .P4').html(tunnelData['communication']);
+				$('#{{ uid }}-tunnel-popup .P5').html(tunnelData['connected_since_utc']);
+			});
+			
 		});
+		
 	</script>
 {% endmacro %}
