@@ -205,8 +205,10 @@
 	$(document).on("vmousedown pagecontainershow", function() {
 		if(homeTimeout !== undefined)
 			window.clearTimeout(homeTimeout);
-		if($.mobile.activePage && $.mobile.activePage.attr("id") != "index" && $.mobile.activePage.attr("id") != "config")
-			homeTimeout = window.setTimeout(function() { $.mobile.changePage("index.php"); }, {{ config_backtohometime * 1000 }});
+		if($.mobile.activePage && $.mobile.activePage.attr("id").substring($.mobile.activePage.attr("id").length -5) != "index" && $.mobile.activePage.attr("id").substring($.mobile.activePage.attr("id").length -6) != "config") {
+			var params = new URLSearchParams(window.location.search);
+			homeTimeout = window.setTimeout(function() { $.mobile.changePage(window.location.pathname + (params.get('pages') ? '?pages='+params.get('pages') : '')); }, {{ config_backtohometime * 1000 }});
+		}
 	});
 {% endif %}
 
