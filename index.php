@@ -18,7 +18,9 @@ if (basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != basename($_SER
 require_once 'lib/includes.php';
 
 // init parameters
-$request = array_merge($_GET, $_POST);
+session_start();
+$request = array_merge($_GET, $_POST, $_SESSION);
+session_destroy();
 
 // override configured pages if a corresponding request parameter is passed
 $config_pages = (isset($request['pages']) && $request['pages'] != '') ? $request['pages'] : config_pages;
