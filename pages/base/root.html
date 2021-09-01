@@ -137,7 +137,7 @@
 		'lib/base/base.php',
 		'pages/' ~ config_pages ~ '/visu.js'
 	] %}
-{% if config_pages != 'docu' %}
+{% if config_pages != 'docu' and config_pages[:7] != 'example' %}
 	{% set jsFiles = jsFiles|merge(['driver/io_' ~ config_driver ~ '.js']) %}
 	{% if isdir('driver/'~config_driver, '\.js') %}
 		{% for file in dir('driver/'~config_driver, '(?!config)(.*)(\.js)') %}

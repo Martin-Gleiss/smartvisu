@@ -34,7 +34,7 @@ class driver_offline
 	{
 		$this->item = explode(",", $request['item']);
 		$this->val = (isset($request['val'])) ? $request['val'] : '';
-		$this->filename = const_path.'temp/offline_' . (isset($request['pages']) && $request['pages']=='docu') ? 'docu' : config_pages . '.var';
+		$this->filename = const_path.'temp/offline_' . ((isset($request['pages']) && $request['pages']=='docu') ? 'docu' : config_pages) . '.var';
 	}
 
 	/**
