@@ -14,43 +14,38 @@
 
 {% block content %}
 
-	/** related JavaScript part located in lib/base/base.js */
-	<script src="lib/base/config.js"></script>
 	<script type="text/javascript">
 		var metas = [];
 	</script>
 
 	<h1>{{ lang('configuration_page', 'configuration', 'label') }}</h1>
 
-	{%
+{%
 	set sources = {
 		'global': lang('configuration_page', 'globaltab', 'label'),
 		'pages': lang('configuration_page', 'pagestab', 'label') ~ " '" ~ config_pages ~ "'",
 		'cookie': lang('configuration_page', 'cookietab', 'label'),
 	}
-	%}
+%}
 
 	<div data-role="tabs" id="config_source">
 		<div data-role="navbar">
 			<ul>
-		    {% for source, title in sources %}
-					<li data-source="{{ source }}"><a href="#config_tab_{{ source }}" data-ajax="false"{{ (configtarget is not defined and loop.first) or (configtarget is defined and configtarget == source) ? ' class="ui-btn-active"'|raw }}>{{ title }}</a></li>
-		    {% endfor %}
+{% for source, title in sources %}
+					<li data-source="{{ source }}"><a href="#config_tab_{{ source }}" data-ajax="false"{{ loop.first ? ' class="ui-btn-active"'|raw }}>{{ title }}</a></li>
+{% endfor %}
 			</ul>
 		</div>
 
-	{% for source, title in sources %}
-		{% set values = read_config(source) %}
-		{% set defaults = read_config( source=='global' ? 'default' : 'global') %}
+{% for source, title in sources %}
+	{% set values = read_config(source) %}
+	{% set defaults = read_config( source=='global' ? 'default' : 'global') %}
 		<div id="config_tab_{{ source }}">
-			<h2>{{ lang('configuration_page', source ~ 'tab', 'hint') }}</h2>
+			<h2>{{ lang('configuration_page', source ~ 'tab', 'hint')|replace({'%pages%': config_pages}) }}</h2>
 
 			<form id="{{ source }}_configform" class="configform">
 				<fieldset>
-					/**{% if (configpages is defined) and (configpages != values.pages) %}
-						{% set values = values|merge({'pages':configpages}) %}
-						{% set values = values|merge({'index':defaults.index}) %}
-					{% endif %}*/
+
 					<div class="block">
 						<div class="set-3" data-role="collapsible-set" data-content-theme="a" data-mini="true">
 							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
@@ -64,9 +59,9 @@
 									/**{{ forms.config_select('index', values, defaults, source, dir('pages/'~values.pages, '^(.*?)\.html$') ) }}*/
 									{{ forms.config_row('design', values, defaults, source,
 										[
-										forms.config_select('design', values, defaults, source, dir('designs', '(.+?).css'), 'true')
-										,forms.config_hidden('design_icon0', values, defaults, source)
-										,forms.config_hidden('design_icon1', values, defaults, source)
+											forms.config_select('design', values, defaults, source, dir('designs', '(.+?).css'), 'true'),
+											forms.config_hidden('design_icon0', values, defaults, source),
+											forms.config_hidden('design_icon1', values, defaults, source)
 										] 
 									) }}
 									{{ forms.config_select('lang', values, defaults, source, dir('lang', '^(.*?)\.ini$') ) }}
@@ -82,20 +77,21 @@
 							</div>
 						</div>
 					</div>
-					{% if (configdriver is defined) and (configdriver != values.driver) %}
-						{% for key,val in values %}
-							{% if 'driver_' in key %}
-								/** saves old value in 'olddriver_key' (actually unnecessary, for further use) and set value to 'unset' */
-								{% set values = values|merge({(values.driver~'_'~key):val}) %}
-								{% set values = values|merge({(''~key):'unset'}) %}
-							{% endif %}
-						{% endfor %}
-						/** set defaults from new driver */
-						{% set values = values|merge({'driver':configdriver}) %}
-					{% endif %}
-					{% if isfile('driver/'~values.driver~'/config.js') %}
+	{% if changedriver is defined and changedriver != 'unset' and changedriver != values.driver %}
+		{% for key,val in values %}
+			{% if 'driver_' in key %}
+				/** saves old value in 'olddriver_key' (actually unnecessary, for further use) and set value to 'unset' */
+				{% set values = values|merge({(values.driver~'_'~key):val}) %}
+				{% set values = values|merge({(''~key):'unset'}) %}
+			{% endif %}
+		{% endfor %}
+		/** set defaults from new driver */
+		{% set values = values|merge({'driver':changedriver}) %}
+		{% set changedriver = 'unset' %}
+	{% endif %}
+	{% if isfile('driver/'~values.driver~'/config.js') %}
 						<script src="{{ 'driver/'~values.driver~'/config.js' }}"></script>
-					{% endif %}
+	{% endif %}
 					<div class="block">
 						<div class="set-3" data-role="collapsible-set" data-mini="true">
 							<div class="ui-bar-c ui-corner-top ui-collapsible-caption">
@@ -106,35 +102,35 @@
 								<div style="min-height:250px">
 									{{ forms.config_select('driver', values, defaults, source, dir('driver', '^io_(.+?).js') ) }}
 
-									{% set drivermeta = configmeta('driver/io_'~values['driver']~'.js') %}
-									{% if drivermeta != [] %}
-										{% for name,field in drivermeta.config %}
-											{% if prevgroup is defined and prevgroup != field.group %}
+	{% set drivermeta = configmeta('driver/io_'~values['driver']~'.js') %}
+	{% if drivermeta != [] %}
+		{% for name,field in drivermeta.config %}
+			{% if prevgroup is defined and prevgroup != field.group %}
 								</div>
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
 								<h3>{{ lang('configuration_page', field.group, 'title') != '' ? lang('configuration_page', field.group, 'title') : field.group }}</h3>
 								<div style="min-height:184px;">
-											{% endif %}
-											
-											{% if (values['driver_'~name] is not defined) or (values['driver_'~name] == 'unset') %}
-												{% set values = values|merge({('driver_'~name):field.default}) %}
-											{% endif %}
-											{% if field.type == 'input' %}
-												{{ forms.config_input('driver_'~name, values, defaults, source, 'wide') }}
-											{% elseif field.type == 'flip' %}
-												{{ forms.config_flip('driver_'~name, values, defaults, source) }}
-											{% elseif field.type == 'password' %}
-												{{ forms.config_input('driver_'~name, values, defaults, source, 'password') }}
-											{% elseif field.type == 'hidden' %}
-												{{ forms.config_hidden('driver_'~name, values, defaults, source) }}
-											{% elseif field.type == 'select' %}
-												{{ forms.config_select('driver_'~name, values, defaults, source, field.default) }}
-											{% endif %}
-											
-											{% set prevgroup = field.group %}
-										{% endfor %}
-									{% endif %}
+			{% endif %}
+
+			{% if (values['driver_'~name] is not defined) or (values['driver_'~name] == 'unset') %}
+				{% set values = values|merge({('driver_'~name):field.default}) %}
+			{% endif %}
+			{% if field.type == 'input' %}
+									{{ forms.config_input('driver_'~name, values, defaults, source, 'wide') }}
+			{% elseif field.type == 'flip' %}
+									{{ forms.config_flip('driver_'~name, values, defaults, source) }}
+			{% elseif field.type == 'password' %}
+									{{ forms.config_input('driver_'~name, values, defaults, source, 'password') }}
+			{% elseif field.type == 'hidden' %}
+									{{ forms.config_hidden('driver_'~name, values, defaults, source) }}
+			{% elseif field.type == 'select' %}
+									{{ forms.config_select('driver_'~name, values, defaults, source, field.default) }}
+			{% endif %}
+
+			{% set prevgroup = field.group %}
+		{% endfor %}
+	{% endif %}
 								</div>
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
@@ -177,10 +173,10 @@
 								{{ forms.config_input('calendar_color', values, defaults, source) }}
 								{{ forms.config_row('calendar_google_refresh_token', values, defaults, source,
 									[
-										'<a href="#calendar_googleauth_popup" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-icon-left ui-icon-action ui-micro' ~ (not values['calendar_google_refresh_token'] is defined ? ' ui-btn-active') ~ ' " data-icon="delete" data-inline="true" id="' ~ source ~ '_calendar_googleauth_button">' ~ lang('configuration_page', 'calendar_google_refresh_token', 'button') ~ '</a>'
-										,forms.config_hidden('calendar_google_client_id', values, defaults, source)
-										,forms.config_hidden('calendar_google_client_secret', values, defaults, source)
-										,forms.config_hidden('calendar_google_refresh_token', values, defaults, source)
+										'<a href="#calendar_googleauth_popup" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-icon-left ui-icon-action ui-micro' ~ (not values['calendar_google_refresh_token'] is defined ? ' ui-btn-active') ~ ' " data-icon="delete" data-inline="true" id="' ~ source ~ '_calendar_googleauth_button">' ~ lang('configuration_page', 'calendar_google_refresh_token', 'button') ~ '</a>',
+										forms.config_hidden('calendar_google_client_id', values, defaults, source),
+										forms.config_hidden('calendar_google_client_secret', values, defaults, source),
+										forms.config_hidden('calendar_google_refresh_token', values, defaults, source)
 									]
 								) }}
 							</div>
@@ -208,7 +204,7 @@
 				<button type="submit" id="{{ source}}_save" data-theme="b" data-icon="grid" name="submit" value="1">{{ lang('configuration_page', 'save', 'label') }}</button>
 			</form>
 		</div>
-	{% endfor %}
+{% endfor %}
 	</div>
 	
 	<div id="calendar_googleauth_popup" data-role="popup" data-overlay-theme="a">
@@ -281,5 +277,8 @@
 			</form>
 		</div>
 	</div>
+
+	/** related JavaScript part located in lib/base/config.js */
+	<script src="lib/base/config.js"></script>
 
 {% endblock %}
