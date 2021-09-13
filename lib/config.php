@@ -97,7 +97,7 @@ class config {
 					break;
 
 			}
-			
+
 			$this->config_by_source[$source] = $config;
 		}
 
@@ -107,9 +107,16 @@ class config {
 	/**
 	 * write config to file
 	 */
-	public function save($target, $options, $pages) {
+	public function save($target, $options) {
 
 		$config = $target == 'global' ? $this->get('globalonly') : array();
+		if ($options['driver'] != $config['driver']) {
+			foreach ($config as $key => $val) {
+				if (strpos($key, 'driver') === 0) {
+					unset($config[$key]);
+				}
+			}
+		}
 		$config = array_replace($config, $options);
 		ksort($config);
 
@@ -120,7 +127,13 @@ class config {
 				$success = write_ini_file($config, const_path.'config.ini', false);
 				break;
 			case 'pages':
-				$success = write_ini_file($config, const_path.'pages/'.$pages.'/config.ini', false);
+				if (isset($options['pages']) && $options['pages'] != '') {
+					$pages = $options['pages'];
+				} else {
+					$config_for_pages = $this->get('global');
+					$pages = $config_for_pages['pages'];
+				}
+				$success = write_ini_file($config, const_path . "pages/$pages/config.ini", false);
 				break;
 			case 'cookie':
 				$basepath = substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, -strlen(substr($_SERVER['SCRIPT_FILENAME'], strlen(const_path))));

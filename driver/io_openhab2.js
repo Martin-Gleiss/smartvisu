@@ -5,16 +5,12 @@
  * @copyright   2012 - 2020
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
- * @label       openHAB2 (deprecated)
+ * @label         openHAB2
+ * @deprecated    true
  *
- * @default     driver_port				8080
- * @default     driver_realtime			true
- * @default     driver_autoreconnect	true
- * @default		driver_ssl				false
- * @hide		driver_tlsport
- * @hide		reverseproxy
- * @hide		driver_username
- * @hide		driver_password
+ * @config        address     backend    input
+ * @config        port        backend    input    8080
+ * @config        realtime    backend    flip     true
  */
 
 /**
@@ -127,8 +123,8 @@ var io = {
 	/**
 	 * Lets the driver work
 	 */
-	run: function (realtime) {
-		io.debug && console.debug("io.run(realtime = " + realtime + ")");
+	run: function () {
+		io.debug && console.debug("io.run(realtime = " + sv.config.driver.realtime + ")");
 		
 		if (io.eventListener.readyState == 0 || io.eventListener.readyState == 1) {
 			io.eventListener.close();
@@ -158,7 +154,7 @@ var io = {
 		
         io.plot.init();
 
-		if (realtime) {
+		if (sv.config.driver.realtime) {
 			if (typeof EventSource == 'function') {
 				io.eventListener = new EventSource(io.url + "events?topics=smarthome/items/*/statechanged");
 				io.eventListener.onmessage = function(message) {

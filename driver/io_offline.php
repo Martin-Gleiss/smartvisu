@@ -34,7 +34,7 @@ class driver_offline
 	{
 		$this->item = explode(",", $request['item']);
 		$this->val = (isset($request['val'])) ? $request['val'] : '';
-		$this->filename = const_path.'temp/offline_'.config_pages.'.var';
+		$this->filename = const_path.'temp/offline_' . ((isset($request['pages']) && $request['pages']=='docu') ? 'docu' : config_pages) . '.var';
 	}
 
 	/**
@@ -50,7 +50,7 @@ class driver_offline
 		$this->fp = fopen($this->filename, 'r+');
 
 		if (!$this->fp) {
-      $this->throwError("Could not open file '".$this->filename."'");
+			$this->throwError("Could not open file '".$this->filename."'");
 			return;
 		}
 
@@ -78,7 +78,7 @@ class driver_offline
 		if ($this->fp)
 		{
 			ftruncate($this->fp, 0);      // truncate file
-      rewind($this->fp);
+			rewind($this->fp);
 
 			foreach ($data as $item => $val)
 			{

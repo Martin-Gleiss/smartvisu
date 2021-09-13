@@ -6,12 +6,10 @@
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       JSON
- * @hide		driver_tlsport
- * @hide        driver_autoreconnect
- * @hide		reverseproxy
- * @hide		driver_ssl
- * @hide		driver_username
- * @hide		driver_password
+ *
+ * @config      address     backend    input
+ * @config      port        backend    input
+ * @config      realtime    backend    flip     true
  */
 
 
@@ -75,7 +73,7 @@ var io = {
 	/**
 	 * Let the driver work
 	 */
-	run: function (realtime) {
+	run: function () {
 		// old items
 		widget.refresh();
 
@@ -83,7 +81,7 @@ var io = {
 		io.all();
 
 		// run polling
-		if (realtime) {
+		if (sv.config.driver.realtime) {
 			io.start();
 		}
 	},

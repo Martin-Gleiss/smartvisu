@@ -7,14 +7,11 @@
  * -----------------------------------------------------------------------------
  * @label       SmartHomeNG
  *
- * @default     driver_autoreconnect   true
- * @default     driver_port            2424
- * @default     driver_tlsport         2425
- * @default	    reverseproxy           false
- * @hide        driver_realtime
- * @hide		driver_ssl
- * @hide		driver_username
- * @hide		driver_password
+ * @config      address           backend    input
+ * @config      port              backend    input    2424
+ * @config      tlsport           backend    input    2425
+ * @config      autoreconnect     backend    flip     true
+ * @config      reverseproxy      backend    flip
  */
 
 
@@ -77,7 +74,7 @@ var io = {
 	/**
 	 * Lets the driver work
 	 */
-	run: function (realtime) {
+	run: function () {
 		// old items
 		widget.refresh();
 

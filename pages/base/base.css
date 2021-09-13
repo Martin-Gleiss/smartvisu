@@ -2000,7 +2000,7 @@ div.ui-slider-switch{
 
 .iprouter .tunnels {
   margin: auto;
-  width: 260px;
+  width: 280px;
   margin-top: 5px;
 }
 
@@ -2009,7 +2009,7 @@ div.ui-slider-switch{
 }
 
 .iprouter .tunnels .traffic {
-  width: 70px;
+  width: 80px;
   height: 38px;
   text-align: right;
   font-size: 0.9em
@@ -2046,7 +2046,11 @@ div.ui-slider-switch{
   bottom: 0;
   text-align: right;
   font-size: 0.8em;
-  color: #666;
+  
+}
+
+.iprouter .version img {
+	width: 0.8em;
 }
 
 /**
@@ -2498,41 +2502,41 @@ svg.fx-icon.midi,
 }
 
 @media (min-width: 28em) {
-  #config .ui-field-contain > label .ui-controlgroup-controls {
+  [id$="config"] .ui-field-contain > label .ui-controlgroup-controls {
     width: 100%;
     margin-top: -.5em;
   }
 }
-#config .block .ui-collapsible-content {
+[id$="config"] .block .ui-collapsible-content {
   padding-top: 0;
   padding-bottom: 0;
 }
-#config .block .ui-field-contain {
+[id$="config"] .block .ui-field-contain {
   margin: .2em 0;
 }
-#config .ui-field-contain .ui-flipswitch {
+[id$="config"] .ui-field-contain .ui-flipswitch {
   margin: 0;
 }
 /*
-#config .ui-field-contain > label .ui-controlgroup-controls .ui-checkbox {
+[id$="config"] .ui-field-contain > label .ui-controlgroup-controls .ui-checkbox {
   width: 100%;
 }
 */
-#config .ui-field-contain > label {
+[id$="config"] .ui-field-contain > label {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   font-weight: normal;
 }
-#config .ui-field-contain > label.ui-btn {
+[id$="config"] .ui-field-contain > label.ui-btn {
   margin: 0;
   padding-left: 0;
   padding-right: 0;
 }
-#config .ui-checkbox.ui-state-disabled {
+[id$="config"] .ui-checkbox.ui-state-disabled {
   opacity: .9;
 }
-#config .ui-checkbox.ui-state-disabled .ui-checkbox-off {
+[id$="config"] .ui-checkbox.ui-state-disabled .ui-checkbox-off {
   opacity: .3;
 }
 
