@@ -7,6 +7,7 @@
 - basic flip slider track can be styled with any valid color
 - basic.stateswitch can be configured to open any named popup on a long-press (mobile: tap-hold) event 
 - plot.period shows data for the running day from 0:00 to 24:00 if zomm parameter ist set to 'day'
+- plot widgets interpret duration values without units as timestamps (same behaviour as smarthomeNG)
 - new widget appliance.iprouter_v2 displays data from refactored enertex ip router service
 
 ### Other New Features
@@ -33,7 +34,7 @@
 
 ### Removed Features
 - replaced several deprecated jQuery / jQuery mobile functions & attributes
-- deprecated Fritz!Box drivers. See derprecation notice in ./lib/phone/service
+- deprecated Fritz!Box drivers. See deprecation notice in ./lib/phone/service
 
 ### Fixed Bugs
 - Sliders for HSV color model did not send updated values if only one slider was changed
