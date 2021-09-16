@@ -1,0 +1,37 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Wolfram v. Hülsen
+* @copyright   2021
+* @license     GPL [http://www.gnu.de]
+*
+* displays digital clock, weather and - if configured - calendar and phonelist
+* to be used in index.html, systempage.html and infopage.html
+* -----------------------------------------------------------------------------
+*/
+
+	{% import "clock.html" as clock %}
+	{{ clock.digiclock('clock') }}
+
+	<div class="center">
+		{{ clock.miniclock('', 'l, ' ~ lang('format','date') ) }}
+	</div>
+
+	<hr>
+	{% import "weather.html" as weather %}
+	{{ weather.current('weather') }}
+
+	<hr>
+	{{ weather.forecastweek('weather_forecast') }}
+
+	<hr>
+	{% if config_calendar_service != "service_disabled" %} 
+		{{ calendar.list('calendarlist', lang('calendar','calendarlist'), 5) }}
+		<hr>
+	{% endif %}
+
+	{% if config_phone_service != "service_disabled" %} 
+		{{ phone.list('phonelist', lang('phone','phonelist'), 5) }}
+	{% endif %}	
+
+

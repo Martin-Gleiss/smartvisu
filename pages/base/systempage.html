@@ -1,0 +1,21 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Wolfram v. Hülsen
+* @copyright   2021
+* @license     GPL [http://www.gnu.de]
+*
+* new concept for system menu with infoblock on left side
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+	{% include 'infoblock.html' %}
+{% endblock %}
+
+{% block content %}
+	{% include 'system_menu.html' %}
+{% endblock %}
