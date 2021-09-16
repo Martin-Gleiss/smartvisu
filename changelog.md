@@ -7,6 +7,7 @@
 - basic flip slider track can be styled with any valid color
 - basic.stateswitch can be configured to open any named popup on a long-press (mobile: tap-hold) event 
 - plot.period shows data for the running day from 0:00 to 24:00 if zomm parameter ist set to 'day'
+- plot widgets interpret duration values without units as timestamps (same behaviour as smarthomeNG)
 - new widget appliance.iprouter_v2 displays data from refactored enertex ip router service
 
 ### Other New Features
@@ -23,6 +24,7 @@
 - improved error notifications with basis for language specific message texts
 - fritz!box TR-064 phone service shows blocked calls as "rejected" instead of outgoing (w/ new icon)
 - additional js-scripts can be loaded with a backend driver if stored in a folder with the drivers name
+- new system menu in navigation on primary side (right hand side) saves ressources. Config page must be called as menu item. 
 
 ### Updated Libraries
 - jQuery v2.2.4 with patch in jQuery mobile v1.4.5
@@ -33,13 +35,14 @@
 
 ### Removed Features
 - replaced several deprecated jQuery / jQuery mobile functions & attributes
-- deprecated Fritz!Box drivers. See derprecation notice in ./lib/phone/service
+- deprecated Fritz!Box drivers. See deprecation notice in ./lib/phone/service
 
 ### Fixed Bugs
 - Sliders for HSV color model did not send updated values if only one slider was changed
 - plot data lost their ascending sequence occationally which resulted in lines across the plots
 - Page navigation away from widget assistant often failed and / or threw errors in console
 - status.activelist expanded all contents when unser returned to the page (now all are collapsed)
+- digiclock disappeared or showed wrong times if more than one page with clock was in the DOM
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text

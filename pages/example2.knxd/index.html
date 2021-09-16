@@ -13,31 +13,8 @@
 {% block sidebar %}
 
     {{ lib.updatecheck() }}
-                    
-    {{ clock.digiclock('clock') }}    
-    
-    <div class="center">
-       {{ clock.miniclock('', 'l, ' ~ lang('format','date') ) }}<br/>
-	<img src="lib/weather/pics/sun_up.png" class="sunIcon"/> {{ basic.print('sonnenaufgang', '15/1/50/10.xxx') }} <img src="lib/weather/pics/sun_down.png" class="sunIcon"//> {{ basic.print('sonnenuntergang', '15/1/51/10.xxx') }}&nbsp;&nbsp;&nbsp;&nbsp;
-	<img src="lib/weather/pics/moon_up.png" class="moonIcon" /> {{ basic.print('mondaufgang', '15/1/52/10.xxx') }} <img src="lib/weather/pics/moon_down.png" class="moonIcon"//> {{ basic.print('monduntergang', '15/1/53/10.xxx') }}<br/>
-    </div> 
-    
-    <hr>
-    
-    {{ weather.current('weather') }}    
-    
-    <hr>
-    
-    {{ weather.forecastweek('weather_forecast') }}    
-    
-    <hr>
-    
-    {{ phone.list('phonelist', 'Telefonliste', 5) }}
-    
-    <hr>
-    
-    {{ calendar.list('calendarlist', 'Kalender', 5) }}    
-    
+
+	{% include 'infoblock.html' %}
    
 {% endblock %}
 
