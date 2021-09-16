@@ -14,20 +14,7 @@
 
 	{{ lib.updatecheck() }}
 
-	{{ clock.digiclock('clock') }}
-
-	<div class="center">
-		{{ clock.miniclock('', 'l, ' ~ lang('format','date') ) }}
-	</div>
-
-	<hr>
-	{{ weather.current('weather') }}
-	<hr>
-	{{ weather.forecastweek('weather_forecast') }}
-	<hr>
-	{{ calendar.list('calendarlist', 'Kalender', 5) }}
-	<hr>
-	{{ phone.list('phonelist', 'Telefonliste', 5) }}
+	{% include 'infoblock.html' %}
 
 {% endblock %}
 

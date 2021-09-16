@@ -10,23 +10,26 @@
 
 <div id="menu" class="menu">
 
-    <a id="menu-rooms" data-ajax="false" href="index.php">
+    <a id="menu-rooms" href="index.php">
         <img class="icon{% if page == 'index' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}control_building_empty.svg"/></a>
 		
 	{% if page != 'config' %}
-		<a id="menu-weather" data-ajax="false" href="index.php?page=weather_current">
+		<a id="menu-category" href="index.php?page=category">
+			<img class="icon{% if page starts with 'category' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}time_manual_mode.svg" alt="category" /></a>
+			
+		<a id="menu-weather" href="index.php?page=weather_current">
 			<img class="icon{% if page == 'weather_current' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}weather_cloudy.svg"/></a>
 			
-		<a id="menu-wp" data-ajax="false" href="index.php?page=stats.temperaturen">
+		<a id="menu-wp" href="index.php?page=stats.temperaturen">
 			<img class="icon{% if page == 'stats_temperaturen' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}temp_temperature.svg"/></a>
 	{% else%}	
 	
-		<a id="menu-docu" data-ajax="false" href="index.php?pages=docu&amp;page=index">
+		<a id="menu-docu" href="index.php?pages=docu&amp;page=index">
 			<img class="icon{{ pages == 'docu' ? ' icon1' }}" src="{{ icon0 }}edit_copy.svg"/></a>
 	
 	{% endif %}
 			
-		<a id="menu-system" data-ajax="false" href="index.php?page=config">
-			<img class="icon{% if page == 'config' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}message_service.svg"/></a>        
+		<a id="menu-system" href="index.php?page=systempage">
+			<img class="icon{% if page == 'systempage' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}edit_settings.svg"/></a>        
 
 </div>
