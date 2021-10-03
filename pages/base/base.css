@@ -526,7 +526,7 @@ a.ui-slider-handle-semicircle {
 .ui-slider-semicircle-inner {
   position: absolute;
   width: 118px;
-  height: 59px;
+  height: 60px;
   margin: 15px 15px 0;
   border: 1px solid #000;
   border-bottom: none;
@@ -537,7 +537,7 @@ a.ui-slider-handle-semicircle {
 
 .ui-slider-semicircle-bottom {
   width: 15px;
-  height: 10px;
+  height: 8px;
   margin: 0 0 0 -1px;
   position: absolute;
   top: 100%;
