@@ -11,22 +11,22 @@
 
 {% block body %}
 {% import "quad.html" as quad %}
+
   <div data-role="page" id="{{ config_pages~'_'~page }}" class="base quad page-bg" data-theme="a">
     <div data-role="header" data-position="fixed" data-tap-toggle="false">
-            <h1>
-            {% block title %}{% endblock %}
-            </h1>
+      <h1>
+      {% block title %}{% endblock %}
+      </h1>
       <div class="quad ui-left">
         {% include 'menu.html' %}
       </div>
       <div class="quad ui-right">
-
         <div style="float:right;">
-        <a href="javascript:location.reload()" style="text-decoration:none;color: {{ (config_design_icon0 == 'icons/sw/' ? '#000' : '#fff') }} ;">
-          {{ lib.smartvisu() }}
-          <div class="mini">
-            {{ clock.miniclock('miniclock', lang('format','time') ~ ', ' ~ lang('format','day') ) }} v{{ config_version_full }}</div>
-        </a>
+          <a href="javascript:location.reload()" style="text-decoration:none;color: {{ (config_design_icon0 == 'icons/sw/' ? '#000' : '#fff') }} ;">
+            {{ lib.smartvisu() }}
+            <div class="mini">
+              {{ clock.miniclock('miniclock', lang('format','time') ~ ', ' ~ lang('format','day') ) }} v{{ config_version_full }}</div>
+          </a>
         </div>
         <div style="float:right;">
         {% block header %}{% endblock %}
@@ -35,40 +35,29 @@
     </div>
 
     <div data-role="content" class="page-bg">
-        {% block content_all %}
-    <div class="content-primary">
-            {% block content %}
-
-            <div class="quad_block">
-                {% block quad_main_top %}{% endblock %}
-            </div>
-            <div class="quad_block quad_min_tablet">
-                {% block quad_main_bottom %}{% endblock %}
-            </div>
-            {% endblock %}
+      {% block content_all %}
+      <div class="content-primary">
+        {% block content %}
+        <div class="quad_block">
+            {% block quad_main_top %}{% endblock %}
         </div>
-
-        <div class="content-secondary">
-            {% block sidebar %}
-            <div class="quad_block">
-                {% block quad_top %}{% endblock %}
-            </div>
-            <div class="quad_block">
-                {% block quad_bottom %}{% endblock %}
-            </div>
-            {% endblock %}
+        <div class="quad_block quad_min_tablet">
+            {% block quad_main_bottom %}{% endblock %}
         </div>
         {% endblock %}
+      </div>
+      <div class="content-secondary">
+        {% block sidebar %}
+        <div class="quad_block">
+          {% block quad_top %}{% endblock %}
+        </div>
+        <div class="quad_block">
+          {% block quad_bottom %}{% endblock %}
+        </div>
+        {% endblock %}
+      </div>
+      {% endblock %}
     </div>
-    {% block footer %}
-
+    {% block footer %}{% endblock %}
 </div>
-
-
-    {% endblock %}
-  </div>
-
-
-
-
 {% endblock %}
