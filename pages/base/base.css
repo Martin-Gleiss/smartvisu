@@ -1448,6 +1448,31 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   display: block;
   height: 0;
 }
+
+.uzsuRowSerie{
+  float: left;
+  height: 3.8em;
+  border: 1px dotted;
+  margin: 0 0.6em 1.2em 30%;
+}
+.uzsuRowSeries:after{
+  clear: both;
+  content: " ";
+  display: block;
+  height: 0;
+}
+.uzsuCellSerie{
+  float: left;
+  height: 3.1em;
+  margin: 0.2em;
+}
+
+@media screen and (max-width: 625px){
+  .uzsuRowSerie{
+    display: none;
+  }
+}
+
 .uzsuRowCondition, .uzsuRowDelayedExec{
   clear: both;
 }
