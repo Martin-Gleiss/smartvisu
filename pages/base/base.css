@@ -2071,7 +2071,11 @@ div.ui-slider-switch{
   bottom: 0;
   text-align: right;
   font-size: 0.8em;
-  color: #666;
+
+}
+
+.iprouter .version img {
+	width: 0.8em;
 }
 
 /**
