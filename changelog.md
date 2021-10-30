@@ -6,7 +6,7 @@
 - device.rtrslider offset buttons are limited to min / max but accept a symmetric "tolerance" for backward compatibility
 - basic flip slider track can be styled with any valid color
 - basic.stateswitch can be configured to open any named popup on a long-press (mobile: tap-hold) event 
-- plot.period shows data for the running day from 0:00 to 24:00 if zomm parameter ist set to 'day'
+- plot.period shows data for the running day from 0:00 to 24:00 if zoom parameter ist set to 'day'
 - plot widgets interpret duration values without units as timestamps (same behaviour as smarthomeNG)
 - new widget appliance.iprouter_v2 displays data from refactored enertex ip router service
 
@@ -14,11 +14,12 @@
 - template checker now checks smarthomeNG item properties (valid properties and types)
 - openHAB driver from Patrik Germann (thanks!) supports SSL and authentication
 - smarthome.py driver accepts a second port for TLS communication. Port & protocol will be switched according to host protocol (http / https) 
-- refactored php service (enerter.iprouter-v2.php) for enertex IP Router connects to current firmware version and provides more data 
+- refactored php service (enertex.iprouter-v2.php) for enertex IP Router connects to current firmware version and provides more data 
+- anchor links can now be used, e.g. href="index.php?page=myPage&anchor=myAnchor" 
 
 ### Improvements
 - Driver config data are globally availble now in the sv.config.driver{} array
-- Config page layout adapted to new options, popup for driver security / authorization
+- Config page layout adapted to new options
 - Scripts for config page stored in separate js-file (to save some ressources/time on normal visu pages)
 - device.rtrslider sets the display formats according to the decimals of the parameter 'step'
 - improved error notifications with basis for language specific message texts
