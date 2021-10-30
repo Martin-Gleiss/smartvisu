@@ -15,25 +15,7 @@
 
 	<div class="docu">
 
-		<h2>Check if asset exists</h2>
-
-		SmartVisu provides a Twig function to check if an asset (image, widget HTML, etc.) exists. That is especially important for widgets that might be imported from the dropins folder.<br />
-
-		<h5>Example</h5>
-
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-				{% if asset_exists('stateengine.html') %}
-				  {% import "widgets/stateengine.html" as stateengine %}
-				{% endif %}
-				{% endverbatim %}{% endfilter %}
-			</code>
-		</div>
-
-
-		<br />
-
-		<h2>Array-Form</h2>
+		<h2>Array Form</h2>
 
 		Some widgets may have an array as a parameter. Use [ ... , ... ] to define it. An array is only needed if you have more than one object.<br />
 
@@ -49,7 +31,7 @@
 
 		<br />
 
-		<h2>Duration-Format</h2>
+		<h2>Duration Format</h2>
 
 		Some widgets require a parameter for duration or period. This is specified with the following letters:<br />
 		<b>s</b> (second), <b>i</b> (minute), <b>h</b> (hour), <b>d</b> (day), <b>w</b> (week),
@@ -63,6 +45,48 @@
 				... '2w' ... -> 2 weeks<br />
 			</code>
 		</div>
+		
+		<br />
+		
+		<h2>Anchor Links in html Code</h2>
+
+		Links with normal html anchors will not work in smartVISU. Therefore, an alternative anchor representation is provided. Just append "&anchor=myAnchor" to the page URI in 
+		a link instead of "#myAnchor". This can be used with link and target on the same page as well as across pages.<br />
+
+		<h5>Example</h5>
+
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			// the link to a target 
+			<a href="index.php?page=targetPage&anchor=targetDiv">Link</a>
+			...
+			...
+			// the target
+			<div id="targetDiv">
+			    ...
+			</div>
+				
+			{% endverbatim %}{% endfilter %} </code>
+		</div>
+
+
+		<br />
+		<h2>Check if Asset exists</h2>
+
+		SmartVISU provides a Twig function to check if an asset (image, widget HTML, etc.) exists. That is especially important for widgets that might be imported from the dropins folder.<br />
+
+		<h5>Example</h5>
+
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				{% if asset_exists('stateengine.html') %}
+				  {% import "widgets/stateengine.html" as stateengine %}
+				{% endif %}
+				{% endverbatim %}{% endfilter %}
+			</code>
+		</div>
+
+		<br />
 
 		<h2>More Information</h2>
 		
