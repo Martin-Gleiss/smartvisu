@@ -216,8 +216,16 @@
 
 	// Activate the info field in top right corner
 	$(document).on('pagecontainershow', function () {
-		notify.display();
+		notify.display();	
 	});
+	
+	// scroll to anchor after page is called w/ anchor link e.g  href="index.php?page=myPage&anchor=myAnchor" 
+	$(document).on('pagecontainerchange', function () {
+		var searchAnchor = location.search.indexOf('anchor');
+		if (searchAnchor > 0) {
+			$.mobile.silentScroll($('#'+location.search.substring(searchAnchor+7)).offset().top);
+		}
+	});	
 
 	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};	
 </script>
