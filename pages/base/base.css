@@ -1414,6 +1414,9 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   display: inline-block;
 }
 
+/**
+ * ---------- UZSU Popup ------------------------------------------------
+ */
 .uzsuPopupContent{
   width: 100%;
   height: 100%;
@@ -1428,7 +1431,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   height: 3.8em;
 }
 /* work around for firefox line break issues with scrollbars */
-.uzsuRow:first-of-type::after {
+.uzsuRow:first-of-type::after{
   content: ".";
   float: right;
   width: 30px;
@@ -1449,7 +1452,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   height: 0;
 }
 
-.uzsuRowSerie{
+.uzsuRowSeriesLine{
   float: left;
   height: 3.8em;
   border: 1px dotted;
@@ -1461,16 +1464,10 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   display: block;
   height: 0;
 }
-.uzsuCellSerie{
+.uzsuCellSeries{
   float: left;
   height: 3.1em;
   margin: 0.2em;
-}
-
-@media screen and (max-width: 625px){
-  .uzsuRowSerie{
-    display: none;
-  }
 }
 
 .uzsuRowCondition, .uzsuRowDelayedExec{
@@ -1490,7 +1487,8 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   height: 3.8em;
   margin-top: 1.2em;
 }
-.uzsuCell, .uzsuCellExpert{
+.uzsuCell, .uzsuCellExpert,
+.uzsuCellExpertSeries {
   float: left;
   height: 3.1em;
   margin: 0.2em;
@@ -1543,7 +1541,8 @@ div.ui-input-text{
 div.ui-slider-switch{
   top: 1px !important;
 }
-.uzsuCellExpert div.ui-btn{
+.uzsuCellExpert div.ui-btn,
+.uzsuCellExpertSeries div.ui-btn{
   top: 0.2em !important;
 }
 .ui-disable{
@@ -1558,7 +1557,7 @@ div.ui-slider-switch{
   width: 350px !important;
 }
 @media screen and (max-width: 625px){
-  .uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec, .uzsuCellExpert{
+  .uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec, .uzsuCellExpert, .uzsuRowSeriesLine{
     display: none;
   }
 }

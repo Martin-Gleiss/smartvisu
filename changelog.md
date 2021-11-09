@@ -9,6 +9,7 @@
 - plot.period shows data for the running day from 0:00 to 24:00 if zoom parameter ist set to 'day'
 - plot widgets interpret duration values without units as timestamps (same behaviour as smarthomeNG)
 - new widget appliance.iprouter_v2 displays data from refactored enertex ip router service
+- uzsu widgets support the time series mode provided by the new smarthomeNG UZSU plugin.
 
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
