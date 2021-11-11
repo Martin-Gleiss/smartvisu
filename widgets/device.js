@@ -867,7 +867,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     var uzsuCalc = uzsuRowExpHoli.find('.uzsuCalculated'+caller).val();
 	if (uzsuRowExpHoli.find('.uzsuSunActive'+caller).is(':checked')){
 	  if (caller == 'seriesend'){
-	    uzsuRowExpHoli.prevUntil(searchLine).find('.uzsuSeriesEndTypeInput').find(':radio').prop('checked', false).checkboxradio("refresh")
+	    uzsuRowExpHoli.prevUntil(searchLine).find('.uzsuSeriesEndTypeInput').last().find(':radio').prop('checked', false).checkboxradio("refresh")
 		  .end().find('[value="t"]:radio').prop('checked', true).checkboxradio("refresh");
 	  }
       uzsuTimeCron.attr('type','input').val(uzsuRowExpHoli.find('.uzsuEvent'+caller+' select').val()).textinput('disable');
