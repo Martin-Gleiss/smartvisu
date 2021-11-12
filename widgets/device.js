@@ -488,7 +488,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
            "<div class='uzsuCellText'>" + sv_lang.uzsu.expert + "</div>" +
            "<button data-mini='true' data-icon='arrow-d' data-iconpos='notext' class='ui-icon-shadow'></button>" +
          "</div>" 
-	if (this.options.designtype == '0'){	 
+	if (this.options.designtype == '0' && this.hasSeries){	 
       tt+= "<div class='uzsuCellSeries'>" +
            "<div class='uzsuCellText'>" + sv_lang.uzsu.series + "</div>" +
            "<button data-mini='true' data-icon='arrow-r' data-iconpos='notext' class='ui-icon-shadow'></button>" +
@@ -508,7 +508,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 	tt += this._uzsuSetExpertLines(numberOfRow);
 	
     // unsichtbare Time-Serieszeile mit Expertenzeilen für Start/Ende
-    if (this.options.designtype == '0'){
+    if (this.options.designtype == '0' && this.hasSeries){
 		tt +=   "<div class='uzsuRowSeries' style='display:none;'>" +
 		"<div class='uzsuCellText'></div>" +
 		"<div class='uzsuRowSeriesLine' style='float: left;'>" +
@@ -524,8 +524,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 		  "<div class='uzsuCell'>" +
               "<div class='uzsuCellText'></div>" +
               "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuSeriesEndTypeInput'>" +
-                  "<label title='time'><input type='radio' name='uzsuSeriesEndTypeInput"+numberOfRow+"' value='t' checked='checked'>t</label>" +
-                  "<label title='number of cycles'><input type='radio' name='uzsuSeriesEndTypeInput"+numberOfRow+"' value=''>#</label>" +
+                  "<label title='"+sv_lang.uzsu.seriesend+"'><input type='radio' name='uzsuSeriesEndTypeInput"+numberOfRow+"' value='t' checked='checked'>t</label>" +
+                  "<label title='"+sv_lang.uzsu.seriescount+"'><input type='radio' name='uzsuSeriesEndTypeInput"+numberOfRow+"' value=''>#</label>" +
               "</fieldset>" +
           "</div>" +
 		  "<div class='uzsuCell'>" +
@@ -577,8 +577,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             tt +=   "<div class='uzsuCell'>" +
               "<div class='uzsuCellText'></div>" +
                 "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuTimeOffsetTypeInput"+caller+"'>" +
-                  "<label title='Minutes'><input type='radio' name='uzsuTimeOffsetTypeInput"+caller+numberOfRow+"' value='m' checked='checked'>m</label>" +
-                  "<label title='Degrees of elevation'><input type='radio' name='uzsuTimeOffsetTypeInput"+caller+numberOfRow+"' value=''>°</label>" +
+                  "<label title='"+sv_lang.uzsu.minutes+"'><input type='radio' name='uzsuTimeOffsetTypeInput"+caller+numberOfRow+"' value='m' checked='checked'>m</label>" +
+                  "<label title='"+sv_lang.uzsu.degrees+"'><input type='radio' name='uzsuTimeOffsetTypeInput"+caller+numberOfRow+"' value=''>°</label>" +
                 "</fieldset>" +
               "</div>";
           }
@@ -732,7 +732,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       uzsuCurrentRows.find('.uzsuCalculated').val(responseEntry.calculated);
     }
 	// fill time series
-	if(self.options.designtype == '0') {
+	if(self.options.designtype == '0' && this.hasSeries) {
     	if (responseEntry.hasOwnProperty("series"))
     		{
     		uzsuCurrentRows.find('.uzsuSeriesActive').prop('checked',responseEntry.series.active).checkboxradio("refresh");
@@ -825,7 +825,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // Fallunterscheidung für den Expertenmodus
     self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEvent select'));
     self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActive').first());
-	if(self.options.designtype == '0'){
+	if(self.options.designtype == '0' && this.hasSeries){
 		self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesstart select'), 'seriesstart');
 		self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActiveseriesstart').first());
 		self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesend select'), 'seriesend');
@@ -955,8 +955,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     $('[class*="uzsuCellExpert"] button').buttonMarkup({ icon: "arrow-d" });
   },
   _uzsuHideAllSeriesLines: function() {
-    $('.uzsuRowSeries').hide();
+    $('.uzsuRowSeries, .Series').hide();
     $('.uzsuCellSeries button').buttonMarkup({ icon: "arrow-r" });
+	$('.uzsuCellExpertSeries button').buttonMarkup({ icon: "arrow-d" });
   },
 
   //Interpolationszeile
@@ -1030,7 +1031,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     }
 	
 	// Serienzeiten
-    if(self.options.designtype === '0'){
+    if(self.options.designtype === '0' && this.hasSeries){
     	if (uzsuCurrentRows.find('.uzsuCellSeries button').hasClass("ui-btn-active") == true)
     		{
 	    	responseEntry.series = {};
@@ -1391,7 +1392,7 @@ console.log(responseEntry);
     if(designType == '0') {
       if(response.interpolation === undefined){
         this.hasInterpolation = false
-        console.log('UZSU interpolation not available. You have to update the plugin version');
+        console.log('UZSU interpolation not available. Update the smarthomeNG UZSU plugin to enable interpolation.');
         //response.interpolation = {type:'none',interval:0,initage:0,initialized:false,itemtype:'none'};
       }
       else if(!response.interpolation.itemtype in ['num']) {
@@ -1402,6 +1403,14 @@ console.log(responseEntry);
         this.hasInterpolation = true
         console.log('UZSU interpolation set to ' + response.interpolation.type);
       }
+	  //plugin version in dict has been introduced with the series functionality - no explicit version check necessary
+	  if (response.plugin_version === undefined){
+        this.hasSeries = false
+        console.log('UZSU series not available. Update the smarthomeNG UZSU plugin to enable series.');
+	  }
+	  else {
+		  this.hasSeries = true;
+	  }
     }
 
     //
@@ -1432,6 +1441,7 @@ console.log(responseEntry);
 		
 		if(entry.timeCron == 'series')
 		{
+			this.hasSeries = true;		
 			entry.series.start = {};
 			var timeParts = (entry.series.timeSeriesMin || "").match(/^((\d{1,2}:\d{1,2})<)?(sunrise|sunset)(([+-]\d+)([m°]?))?(<(\d{1,2}:\d{1,2}))?$/);
 			if(timeParts == null) { // entry.series.timeSeriesMin is a plain time string
@@ -1479,7 +1489,7 @@ console.log(responseEntry);
             return false;
           }
         }
-
+		
       }
 
       // wenn designType = '2' und damit fhem auslegung ist muss der JSON String auf die entsprechenden einträge erweitert werden (falls nichts vorhanden)
@@ -1498,7 +1508,8 @@ console.log(responseEntry);
         }
       }
     });
-
+	if (designType = "0")
+		delete response.plugin_version;
     return true;
   },
 
@@ -1676,17 +1687,18 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
   _startTimestamp: 4*1000*60*60*24 + new Date(0).getTimezoneOffset()*1000*60,
 
   _create: function() {
-    this._super();
+    this._super();  //call _create method of prototype widget sv.device_uzsu
 
     var self = this;
 
     // init data (used if no update follows because item does not exist yet)
     this._uzsudata = { active : true, list : [] }
 
-    this.options.designtype = String(this.options.designtype);
-    if(this.options.designtype === undefined || this.options.designtype === '') {
-      this.options.designtype = io.uzsu_type;
-    }
+// already called in _create of prototype widget
+//    this.options.designtype = String(this.options.designtype);
+//    if(this.options.designtype === undefined || this.options.designtype === '') {
+//      this.options.designtype = io.uzsu_type;
+//    }
 
     var valueParameterList = this.options.valueparameterlist.explode();
     if(valueParameterList.length === 0){
@@ -2399,7 +2411,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
 	   'showtooltip'	: null,
 	   'showsun'		: null,
 	   'showactualtime'	: null,
-     'designtype'		: null,
+       'designtype'		: '',
 	   'valuetype'		: 'bool',
      'valueparameterlist'	: null,
      'headline'		: '',
@@ -2410,13 +2422,14 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
 	 },
  	_create: function()
  	 {
-	  this._super();
+	  this._super();  //call _create method of prototype widget sv.device_uzsu
 
-          this.options.designtype = String(this.options.designtype);
-    	  if(this.options.designtype === undefined || this.options.designtype === '')
-    	   {
-	     this.options.designtype = io.uzsu_type;
-	   }
+// already called in _create of prototype widget
+//          this.options.designtype = String(this.options.designtype);
+//    	  if(this.options.designtype === undefined || this.options.designtype === '')
+//    	   {
+//	     this.options.designtype = io.uzsu_type;
+//	   }
 	 },
 	_update : function(response)
 	{
