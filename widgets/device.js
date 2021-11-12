@@ -347,6 +347,7 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
   //					  "active": true, 
   //					  "timeSeriesMin": "16:00<sunset+20m<20:00"   Startzeit der Serie 
   // 					  "timeSeriesMax": "04:00"					  Endzeit der Serie 
+  //					  "timeSeriesCount": 4						  Anzahl Zyklen (alternativ zu timeSeriesMax)
   // 					  "timeSeriesIntervall": "01:00"}			  Intervall für die Serie
   //            "condition"  :   {  Ein Struct für die Verwendung mit conditions (aktuell nur FHEM), weil dort einige Option mehr angeboten werden
   //                      "deviceString"  : text  Bezeichnung des Devices oder Auswertestring
@@ -367,7 +368,7 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
   //          ]
   //        }
 
-// Base widget for devie_uzsuicon and device_uzsugraph
+// Base widget for device_uzsuicon, device_uzsugraph and device_uzsutable
 $.widget("sv.device_uzsu", $.sv.widget, {
 
   _create: function() {
@@ -687,7 +688,6 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     
 	var self = this;
     // dann die Werte einer Tabellenzeile füllen
-//console.log(responseEntry);
     uzsuCurrentRows = $(tableRow).nextUntil('.uzsuRow').addBack();
 	
     if(responseEntry.value != null) {
@@ -722,7 +722,6 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 	uzsuCurrentRows.find('.uzsuTimeMin').val(responseEntry.timeMin);
     uzsuCurrentRows.find('.uzsuTimeOffsetInput').val(parseInt(responseEntry.timeOffset));
     if(self.options.designtype == '0') {
-      //  name='uzsuTimeOffsetTypeInput'
       uzsuCurrentRows.find('.uzsuTimeOffsetTypeInput').find(':radio').prop('checked', false).checkboxradio("refresh")
         .end().find('[value="'+responseEntry.timeOffsetType+'"]:radio').prop('checked', true).checkboxradio("refresh");
     }
@@ -838,11 +837,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   //----------------------------------------------------------------------------
   // Setzt die Farbe des Expertenbuttons, je nach dem, ob eine der Optionen aktiv geschaltet wurde
   _uzsuSetExpertColor: function(changedCheckbox){
-//console.log(changedCheckbox); 
- var sourceRow = changedCheckbox.parents('.uzsuRowExpHoli, .uzsuRowCondition, .uzsuRowDelayedExec'); //.prev('.uzsuRow, .uzsuRowSeries').first().nextUntil('.uzsuRow').addBack();
-//console.log(sourceRow);
- var targetRow = sourceRow.prevAll('.uzsuRow, .uzsuRowSeries').first();
-//console.log(targetRow);
+    var sourceRow = changedCheckbox.parents('.uzsuRowExpHoli, .uzsuRowCondition, .uzsuRowDelayedExec'); //.prev('.uzsuRow, .uzsuRowSeries').first().nextUntil('.uzsuRow').addBack();
+    var targetRow = sourceRow.prevAll('.uzsuRow, .uzsuRowSeries').first();
     if (sourceRow.find('[class*="expertActive"]').is(':checked'))
       {
     	targetRow.find('[class*="uzsuCellExpert"] button').addClass('ui-btn-active');
@@ -855,15 +851,10 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   // Toggelt die eingabemöglichkeit für SUN Elemente in Abhängigkeit der Aktivschaltung
   _uzsuSetSunActiveState: function(element, caller=''){
     // status der eingaben setzen, das brauchen wir an mehreren stellen
-//console.log(element);
     var uzsuRowExpHoli = element.parents('.uzsuRowExpHoli');
-//console.log(uzsuRowExpHoli);
 	var searchClass = '.uzsuTimeCron'+caller;
-//console.log(searchClass);
 	var searchLine = (caller == '' ? '.uzsuRowExpHoli' : '.uzsuRowSeriesLine')
-//console.log(searchLine);
     var uzsuTimeCron = uzsuRowExpHoli.prevUntil(searchLine).find(searchClass).last();
-//console.log(uzsuTimeCron);
     var uzsuCalc = uzsuRowExpHoli.find('.uzsuCalculated'+caller).val();
 	if (uzsuRowExpHoli.find('.uzsuSunActive'+caller).is(':checked')){
 	  if (caller == 'seriesend'){
@@ -900,6 +891,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       uzsuTimeCron.textinput('enable');
     }
   },
+
   // Setzt die Farbe des Seriesbuttons, wenn aktiv geschaltet
   _uzsuSetSeriesColor: function(changedCheckbox){
     var rows = changedCheckbox.parents('.uzsuRowSeries, .uzsuRowCondition, .uzsuRowDelayedExec').prevAll('.uzsuRow').first().nextUntil('.uzsuRow').addBack();
@@ -909,9 +901,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     	rows.find('[class*="uzsuCellExpert"] button').removeClass('ui-btn-active');
     	}
     else
-      {
     	rows.find('.uzsuCellSeries button').removeClass('ui-btn-active');
-      }
   },  
   
   // switch input format for series end time / number of cycles
@@ -1080,7 +1070,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     		catch (e)
     		 {}
     		}
-console.log(responseEntry);
+
     };
   },
   
@@ -1369,6 +1359,7 @@ console.log(responseEntry);
   _uzsuParseAndCheckResponse: function(response) {
     var designType = this.options.designtype;
     var valueType = this.options.valuetype;
+	var self = this;
 
     // Fehlerbehandlung für ein nicht vorhandenes DOM Objekt. Das response Objekt ist erst da, wenn es mit update angelegt wurde. Da diese
     // Schritte asynchron erfolgen, kann es sein, dass das Icon bereits da ist, clickbar, aber nocht keine Daten angekommen. Dann darf ich nicht auf diese Daten zugreifen wollen !
@@ -1441,7 +1432,7 @@ console.log(responseEntry);
 		
 		if(entry.timeCron == 'series')
 		{
-			this.hasSeries = true;		
+			self.hasSeries = true;
 			entry.series.start = {};
 			var timeParts = (entry.series.timeSeriesMin || "").match(/^((\d{1,2}:\d{1,2})<)?(sunrise|sunset)(([+-]\d+)([m°]?))?(<(\d{1,2}:\d{1,2}))?$/);
 			if(timeParts == null) { // entry.series.timeSeriesMin is a plain time string
@@ -1986,13 +1977,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           title: sv_lang.uzsu.active
         })
         .addClass('highcharts-color-0 uzsu-active-toggler')
-        //.css({'fill': 'transparent'})
         .add()
-        //.align({
-        //  align: 'right',
-        //  x: -16-(buttons.length-i-1)*20,
-        //  y: 10
-        //}, false, null);
 
       // Interpolation buttons
       self.interpolationButtons = [
