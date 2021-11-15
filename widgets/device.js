@@ -2378,986 +2378,1032 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 //
 // license GPL [http://www.gnu.de]
 //
-
 $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
 
-	initSelector : 'div[data-widget="device.uzsutable"]',
-	options :
-	 {
-	   'val-on'    		: null,
-	   'val-off'   		: null,
-	   'color-on'  		: null,
-	   'color-off' 		: null,
-	   'fill'      		: null,	   
-	   'color-on-disabled'	: null,
- 	   'color-off-disabled'	: null,
-	   'borderstyle' 	: null,
-	   'granularity'	: null,
-	   'showtooltip'	: null,
-	   'showsun'		: null,
-	   'showactualtime'	: null,
-       'designtype'		: '',
-	   'valuetype'		: 'bool',
-     'valueparameterlist'	: null,
-     'headline'		: '',
-     'showzoombutton'	: '',
-     'inactivestyle'	: 1,
-	   'mySvgWidth'		: 0
+    initSelector: 'div[data-widget="device.uzsutable"]',
+    options: {
+        'val-on': null,
+        'val-off': null,
+        'color-on': null,
+        'color-off': null,
+        'fill': null,
+        'color-on-disabled': null,
+        'color-off-disabled': null,
+        'borderstyle': null,
+        'granularity': null,
+        'showtooltip': null,
+        'showsun': null,
+        'showactualtime': null,
+        'designtype': null,
+        'valuetype': 'bool',
+        'valueparameterlist': null,
+        'headline': '',
+        'showzoombutton': '',
+        'inactivestyle': 1,
+        'mySvgWidth': 0
 
-	 },
- 	_create: function()
- 	 {
-	  this._super();  //call _create method of prototype widget sv.device_uzsu
+    },
+    _create: function() {
+        this._super();
 
-// already called in _create of prototype widget
-//          this.options.designtype = String(this.options.designtype);
-//    	  if(this.options.designtype === undefined || this.options.designtype === '')
-//    	   {
-//	     this.options.designtype = io.uzsu_type;
-//	   }
-	 },
-	_update : function(response)
-	{
- 	 console.log("got update of Item")
-	 this._super(response);
-	 this._uzsudata = jQuery.extend(true, {}, response[0]);
-	 this._DrawTimeTable(this.uuid,this.options,this._uzsudata)
-	 // Function to keep Data actual
-	 this._CalcTimeLine(this)
+        this.options.designtype = String(this.options.designtype);
+        if (this.options.designtype === undefined || this.options.designtype === '') {
+            this.options.designtype = io.uzsu_type;
+        }
+    },
+    _update: function(response) {
+        this._super(response);
+        this._uzsudata = jQuery.extend(true, {}, response[0]);
+        this._DrawTimeTable(this.uuid, this.options, this._uzsudata)
+        // Function to keep Data of TimeLine actual
+        this._CalcTimeLine(this)
 
 
 
-	},
-	_events: {
-	'click': function (event) {
-		//console.log("Click Event")
-		myTarget = event.target.id
-		if (myTarget == "")
-		 { myTarget = event.target.closest("svg").id }
-		switch (myTarget)
-		 {
-		 case  '5m' : {	this.options.granularity = "5m";this._DrawTimeTable(this.uuid,this.options,this._uzsudata);break }
-		 case '10m' : {	this.options.granularity = "10m";this._DrawTimeTable(this.uuid,this.options,this._uzsudata);break }
- 		 case '15m' : {	this.options.granularity = "15m";this._DrawTimeTable(this.uuid,this.options,this._uzsudata);break }
- 		 case '30m' : {	this.options.granularity = "30m";this._DrawTimeTable(this.uuid,this.options,this._uzsudata);break } 		 
- 		 case '1h' : {	this.options.granularity = "1h";this._DrawTimeTable(this.uuid,this.options,this._uzsudata);break }
-  		 case 'btnActive' :
-  		 		{
-				if (event.bubbles === true)
-  		 		{
-  		 		this._uzsudata.active = !this._uzsudata.active
-  		 		this._write(this._uzsudata)
-				event.bubbles = false
-				break;
-				}
-  		 		}
-  		 default : {
-			      // Öffnen des Popups bei clicken des icons und Ausführung
-					// der Eingabefunktion
-			      var response = jQuery.extend(true, {}, this._uzsudata);
-			      if (this._uzsuParseAndCheckResponse(response)) {
-				this._uzsuRuntimePopup(response);
+    },
+    _events: {
+        'click': function(event) {
+            myTarget = event.target.id
+            if (myTarget == "") {
+                myTarget = event.target.closest("svg").id
+            }
+            switch (myTarget) {
+                case '5m': {
+                    this.options.granularity = "5m";
+                    this._DrawTimeTable(this.uuid, this.options, this._uzsudata);
+                    break
+                }
+                case '10m': {
+                    this.options.granularity = "10m";
+                    this._DrawTimeTable(this.uuid, this.options, this._uzsudata);
+                    break
+                }
+                case '15m': {
+                    this.options.granularity = "15m";
+                    this._DrawTimeTable(this.uuid, this.options, this._uzsudata);
+                    break
+                }
+                case '30m': {
+                    this.options.granularity = "30m";
+                    this._DrawTimeTable(this.uuid, this.options, this._uzsudata);
+                    break
+                }
+                case '1h': {
+                    this.options.granularity = "1h";
+                    this._DrawTimeTable(this.uuid, this.options, this._uzsudata);
+                    break
+                }
+                case 'btnActive': {
+                    if (event.bubbles === true) {
+                        this._uzsudata.active = !this._uzsudata.active
+                        this._write(this._uzsudata)
+                        event.bubbles = false
+                        break;
+                    }
+                }
+                default: {
+                    // open UZSU-Popup on Click and Show Edit possibilities
+                    var response = jQuery.extend(true, {}, this._uzsudata);
+                    if (this._uzsuParseAndCheckResponse(response)) {
+                        this._uzsuRuntimePopup(response);
+                    }
+                }
+            }
+        }
+    },
 
-			      }
+    // *****************************************************
+    // function for drawing the time-table
+    // *****************************************************
+    _DrawTimeTable: function(TableName, options, myDict) {
 
-		  	   }
-		 }
+        myOptions = $.extend(true, [], options);
 
-		
-	 }
-	},
+        var vals_on = String(myOptions['val-on']).explode()
+        var vals_off = String(myOptions['val-off']).explode()
+        var vals_on_color = String(myOptions['color-on']).explode()
+        var vals_off_color = String(myOptions['color-off']).explode()
+        var asortValues = {}
+        KeyValuePair = String(myOptions.valueparameterlist).explode()
 
-	// *****************************************************
-	// function for drawing the time-table
-	// *****************************************************
-	_DrawTimeTable: function (TableName,options, myDict) {
-		var	myJson = {}
-		var myBorderStyle = ''
-		myOptions = $.extend(true, [], options);
-		if (myOptions.borderstyle.explode().length == 1)
-		{
-			myJson[myOptions['granularity']] = myOptions.borderstyle.explode()[0]
-		}
-		else 
-		{
-			for (key in myOptions.borderstyle.explode())
-			{  myJson[myOptions.borderstyle.explode()[key].split(":")[0]]=myOptions.borderstyle.explode()[key].split(":")[1]}
-			if (myJson[myOptions['granularity']] != undefined)
-				{
-					myBorderStyle = myJson[myOptions['granularity']]
-				}
-			else
-				{
-					myBorderStyle = 'solid'
-				}
-			
-		}
+        KeyValuePair.forEach(function(element) {
+            asortValues[element.split(":")[1]] = element.split(":")[0]
+        });
 
-		switch (myBorderStyle)
-		{
-		 case 'hourly':
-		 {
-		   myBorder = 0.0
-		   overlayFill = 0.2
-		   break;
-		 }
-		 case 'solid':
-		 {
-		   myBorder = 0.2
-		   overlayFill = 0
-		   break;
-		 }
-		 case 'horizontal':
-		 {
-	   	   myBorder = 0
-		   overlayFill = 0.2	   	   
-		   break;	   
-		 }	
-		 case 'none':
-		 {
-		   myBorder = 0	   
-		   overlayFill = 0		   
-		   break;	   
-		 }	 
-		 default :
-		 {
-		   myBorder = 0.2
-		   overlayFill = 0		   	   
-	   	   break;
-		 }
-		}
-		switch (myOptions['granularity'])
-		{
-		case '5m':
-		{
-			round = 2.5
-			nextValue = 5
-			myColSpan = 12
-			break;
-		}
-		case '10m':
-		{
-			round = 5
-			nextValue = 10
-			myColSpan = 6
-			break;
-		}
-		case '15m':
-		{
-			round = 7.5
-			nextValue = 15
-			myColSpan = 4		
-			break;
-		}
-		case '30m':
-		{
-			round = 15
-			nextValue = 30
-			myColSpan = 2
-			break;
-		}
-		case '1h':
-		{
-			round = 30
-			nextValue = 60
-			myColSpan = 1		
-			break;
-		}
-		default :
-		{
-			round = 30
-			nextValue = 60
-			myColSpan = 1		
-			break;	
-		}
-		}
+        // Ensure same length for ON/OFF values and colors - if missing colors use last color of list
+        while (vals_on.length > vals_on_color.length) {
+            vals_on_color.push(vals_on_color[vals_on_color.length - 1])
+        }
+        while (vals_off.length > vals_off_color.length) {
+            vals_off_color.push(vals_off_color[vals_off_color.length - 1])
+        }
 
-		if (sv_lang.uzsu.th = 'Do')		// Check language
-		  {
-  		   var myDays = [ "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" ]
-  		   txtActive='inaktiv'
-		  }
-		else
-		  {
-				 var myDays = [ "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su" ]
-				 txtActive = 'Inactive'
-		  }
-		var preFix = TableName
-		var HeadlineHeight = 40
-		// get sunrise and sunset
-		sunrise = myDict.sunrise
-		sunset  = myDict.sunset
-		weekDays = {'MO' : "0" ,'TU' : "1" ,'WE' : "2" ,'TH' : "3",'FR' : "4",'SA' : "5" ,'SU' : "6" }
+        // Draw the empty Grid
+        var HeadlineHeight = this._DrawGrid(myOptions, TableName, myDict)
 
-		d = 0
+        // Keep Instance of ME because forEach will change "this" !
+        myInstance = this
 
-		// Clear the SVG
-		tbl2Delete=[]
-		this.element.find("svg")[0].childNodes.forEach(function(element){tbl2Delete.push(element)})
-		while (tbl2Delete.length>0) 
-		{
-		 myEntry = tbl2Delete.pop()
-		 myEntry.remove()
-		}
-		
+        // now get the entries
+        for (myItem in myDict.list) {
+            myActItem = myDict.list[myItem]
+            myDays = []
+            myTimeDict = []
+            try {
+                myDays = myActItem.rrule.split(";")[1].split("=")[1].split(",")
+            } catch (e) {}
 
-		this.options.mySvgWidth=400
-		this.element.find("svg")[0].width.baseVal.value = this.options.mySvgWidth
-		offset = this.options.mySvgWidth/25
+            //// for Series
+            if (myActItem.hasOwnProperty("series")) {
+                if (myActItem.hasOwnProperty("seriesCalculated")) {
+                    for (serie in myActItem.seriesCalculated) {
+                        myTimeDict = myInstance._CreateSerieEntriesWithSun(myActItem)
+                        d = weekDays[myActItem.seriesCalculated[serie].seriesDay]
+                        myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues);
+                    }
+                } else {
+                    myTimeDict = myInstance._CreateSerieEntriesWithOutSun(myActItem)
+                    myTimeDict1 = myTimeDict[0]
+                    myTimeDict2 = myTimeDict[1]
+                    myDays.forEach(function(element) {
+                        d1 = weekDays[element]
+                        d1 != 6 ? d2 = d1 + 1 : d2 = 0
+                        myInstance._fillCells(TableName, myTimeDict1, myActItem, d1, vals_on, vals_off, vals_on_color, vals_off_color, asortValues);
+                        myInstance._fillCells(TableName, myTimeDict2, myActItem, d2, vals_on, vals_off, vals_on_color, vals_off_color, asortValues);
+                    });
+                }
 
-		// Set the viewbox
-		this.element.find("svg")[0].viewBox.baseVal.width = this.options.mySvgWidth+2 // viewWidth
-		this.element.find("svg")[0].setAttribute('width','100%')
+            }
+            //// for Standard-Entries
+            else {
+                myDays.forEach(function(element) {
+                    d = weekDays[element]
+                    myTimeDict = []
+                    if (myActItem.time.search("sunrise") == -1 && myActItem.time.search("sunset") == -1 && !(myActItem.hasOwnProperty("series"))) {
+                        myTimeDict.push(myInstance._GetTimeEntryDict(myActItem.time))
+                    } else if (myActItem.time.search("sunrise") != -1 || myActItem.time.search("sunset") != -1) {
+                        if (myActItem.hasOwnProperty("calculated")) {
+                            myTimeDict.push(myInstance._GetTimeEntryDict(myActItem.calculated))
+                        } else {
+                            if (myActItem.time.search("sunrise") >= 0) {
+                                myTimeDict.push(myInstance._GetTimeEntryDict(myActItem.sunrise))
+                            }
+                            if (myActItem.time.search("sunset") >= 0) {
+                                myTimeDict.push(myInstance._GetTimeEntryDict(myActItem.sunset))
+                            }
+                        }
+                    }
+                    myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues);
+                })
+            }
+        }
 
-		// add the Headline to Svg
+        // Create the Button to activate / deactivate the UZSU
+        this._CreateActiveButton(myDict.active)
+        this._addBackgroundframe()
 
-		if (this.options.headline != '')
-		 { 
-		   var tblHeadline = document.createElementNS("http://www.w3.org/2000/svg", 'text'); // Create
-																								// a
-																								// text
-																								// in
-																								// SVG's
-																								// namespace
-		   tblHeadline.setAttribute("style", 'text-anchor:middle; font-size:14px')
-		   tblHeadline.setAttributeNS(null, 'x', this.options.mySvgWidth/2);
-		   tblHeadline.setAttributeNS(null, 'y', 29);  
-		   tblHeadline.setAttribute("id", "tblHeadline");        		
-		   tblHeadline.setAttributeNS(null, 'width',this.options.mySvgWidth-40 );    
-		   tblHeadline.classList.add("highcharts-title")
-		   tblHeadline.innerHTML=this.options.headline
-		   this.element.find("svg")[0].appendChild(tblHeadline)
-		 }
-		 
-		tblHeader=[]
-		h = 0
-		while (h <= 23) {
-			tblHeader[h]=this._CreateSvgBox1("0.5")
-			tblHeader[h].setAttributeNS(null, 'x', offset+offset*h);
-			tblHeader[h].setAttributeNS(null, 'y', 0+HeadlineHeight);  
-			tblHeader[h].setAttribute("id", "tblHeader-"+h);
-			tblHeader[h].childNodes[1].classList.add("highcharts-title")	 
-			tblHeader[h].childNodes[1].innerHTML=String("00"+h).slice(-2)
-			this.element.find("svg")[0].appendChild(tblHeader[h])
-			h += 1
-		}	
-		
-		if ( myOptions.showsun == true)
-		{
-		// add the sun-Header to Svg
-		tblHeader[99]=this._CreateSvgBox1("0.5")
-		tblHeader[99].setAttributeNS(null, 'x', offset);
-		tblHeader[99].setAttributeNS(null, 'y', 12+HeadlineHeight);
-		tblHeader[99].setAttributeNS(null, 'width',this.options.mySvgWidth/25*24 );    
-		tblHeader[99].childNodes[0].setAttributeNS(null, 'width',this.options.mySvgWidth/25*24 );    
-		tblHeader[99].setAttribute("id", "tblHeader-99");        		
-		this.element.find("svg")[0].appendChild(tblHeader[99])
-		}
+        // Now do all selected Options
+        if (this.options.showtooltip == true) {
+            this._ShowToolTip()
+        }
 
-		while (d <= 6) {
+        if (myOptions.showsun == true) {
+            this._showSun(HeadlineHeight)
+        }
 
-			tblHeader[d+50]=this._CreateSvgBox1("0.5")
-			tblHeader[d+50].setAttributeNS(null, 'x', 0);
-			tblHeader[d+50].setAttributeNS(null, 'y', (12*myOptions.showsun)+12+d*12+HeadlineHeight);  
-			tblHeader[d+50].setAttribute("id", "tblHeader-"+(50+d));        		
-      tblHeader[d+50].childNodes[1].classList.add("highcharts-title")	 
-			tblHeader[d+50].childNodes[1].innerHTML=myDays[d]
-			this.element.find("svg")[0].appendChild(tblHeader[d+50])
-			
-			h = 0
-			while (h <= 23) {
-				m = 0
-				minutes = 0
-				while (m <= myColSpan-1)
-				{
-				minutes = m * nextValue
+        if (myOptions.showactualtime == true) {
+            this._showActualTime(HeadlineHeight)
+        }
 
-				// *******************************
-				tblHeader[(d+1)*h+m]=this._CreateSvgBox2(myBorder, overlayFill)
-				tblHeader[(d+1)*h+m].setAttributeNS(null, 'x', offset+h*offset+m*offset/myColSpan);
-				tblHeader[(d+1)*h+m].setAttributeNS(null, 'y', (12*myOptions.showsun)+12+d*12+HeadlineHeight);  
-				tblHeader[(d+1)*h+m].colspan = myColSpan;
-				tblHeader[(d+1)*h+m].setAttribute("id", 'svg-'+preFix
-						+ "-"
-						+ String("00"+d).slice(-2)
-						+ "-"
-						+ String("00"+h).slice(-2)
-						+ "-"
-						+ String("00"+minutes).slice(-2) );        		
-
-				this.element.find("svg")[0].appendChild(tblHeader[(d+1)*h+m])			
-				// *********************************
-				m++
-				}
-				h += 1
-			}
-
-			d += 1
-		}
-
-		// Set Lines if horizontal
-		if (myBorderStyle=='horizontal' || myBorderStyle=='hourly')
-		{
-		myLines = []
-		l=0
-		while (l <= 6)
-		{
-		  myLines[l]=this._CreateSvgLine('0.5')
-		  myLines[l].setAttributeNS(null, 'x1', offset);
-  	  myLines[l].setAttributeNS(null, 'x2', offset*25);
-		  myLines[l].setAttributeNS(null, 'y1', (12*myOptions.showsun)+12+12+l*12+HeadlineHeight);
-  	  myLines[l].setAttributeNS(null, 'y2', (12*myOptions.showsun)+12+12+l*12+HeadlineHeight);    
-		  this.element.find("svg")[0].appendChild(myLines[l])				  
-		  l++
-		}
-		}
-				// Set Lines if 1h
-		if ( myBorderStyle=='hourly')
-		{
-		myVertLines = []
-		l=1
-		while (l <= 23)
-		{
-		  myVertLines[l]=this._CreateSvgLine('0.5')
-		  myVertLines[l].setAttributeNS(null, 'x1', offset*l+offset);
-  	  myVertLines[l].setAttributeNS(null, 'x2', offset*l+offset);
-		  myVertLines[l].setAttributeNS(null, 'y1', (12*myOptions.showsun)+12+HeadlineHeight);
-  	  myVertLines[l].setAttributeNS(null, 'y2', (12*myOptions.showsun)+12+12+72+HeadlineHeight);    
-		  this.element.find("svg")[0].appendChild(myVertLines[l])				  
-		  l++
-		}
-		}
-		// Set the different modes for inactive UZSU
-		// Set the opacity based on active or not active
-		if (this.options.inactivestyle & 1)
-		{
-		 myDict.active == false ? this.element.find("svg")[0].style.opacity=0.5 : this.element.find("svg")[0].style.opacity=1.0	
-		}
-		if (myDict.active == false && this.options.inactivestyle & 2)
-		{
-		  myInActiveText=this._CreateSvgText(txtActive)
-		  myInActiveText.setAttributeNS(null, 'y','40px')
-		  myInActiveText.classList.add("highcharts-title")	 
-		  myInActiveText.setAttributeNS(null, 'style','transform: rotate(20deg); font-weight:bold; fill:lightgrey; font-size:3em; stroke-width:0.5; stroke:black; font-family:Monospace; text-anchor:middle')		
-		  myInActiveText.setAttributeNS(null, 'x',this.options.mySvgWidth/2)	
-		  myInActiveText.setAttributeNS(null, 'id','txtInactive')
-		  this.element.find("svg")[0].appendChild(myInActiveText)		
-
-		}
-		myInstance = this
-		// now get the entries
-		
-		for (myItem in myDict.list)
-		 { console.log(myDict.list[myItem]);
-		   myActItem = myDict.list[myItem]
-		   myDays=[]
-		   myTimeDict = []
-		   try
-		   { myDays = myActItem.rrule.split(";")[1].split("=")[1].split(",") }
-		   catch (e)
-		   {}
-		   myDays.forEach(function(element) {
-			 d       = weekDays[element]
-			 myTime  = ''
-			 if (myActItem.time.search("sunrise") == -1 && myActItem.time.search("sunset") == -1 && !(myActItem.hasOwnProperty("series")))
-			 {
-			 	 hours   = myActItem.time.split(":")[0]
-			 	 minutes = myActItem.time.split(":")[1]
-			 	 myTime = myActItem.time
-			 	 myTimeDict.push({
- 				    key:     myTime,
- 				    minutes: minutes,
- 				    hours:   hours
- 				    });
-			 }
-			 else if (myActItem.time.search("sunrise") != -1 || myActItem.time.search("sunset") != -1)
-			 {
-			   if (myActItem.hasOwnProperty("calculated"))
-			   {
-				 hours   = myActItem.calculated.split(":")[0]
-			 	 minutes = myActItem.calculated.split(":")[1]
-	 		 	 myTime = myActItem.calculated
-	 		 	 myTimeDict.push({
- 				    key:     myTime,
- 				    minutes: minutes,
- 				    hours:   hours
- 				    });
-			   }
-			   else
-			   {
-			    if (myActItem.time.search("sunrise") >=0)
-	 		 	{
-			    	hours   = sunrise.split(":")[0];
-			    	minutes = sunrise.split(":")[1];
-			    	myTime=sunrise
-			    	myTimeDict.push({
-	 				    key:     myTime,
-	 				    minutes: minutes,
-	 				    hours:   hours
-	 				    });
-			    }
-	 		    if (myActItem.time.search("sunset") >=0)
-	 		 	{
-	 		    	hours   = sunset.split(":")[0];
-	 		    	minutes = sunset.split(":")[1];
-	 		    	myTime=sunset;
-	 		    	myTimeDict.push({
-	 				    key:     myTime,
-	 				    minutes: minutes,
-	 				    hours:   hours
-	 				    });
-	 		    }
-			   }
-			 }
-			 else if (myActItem.hasOwnProperty("series"))
-			 {
-			   hours   = parseInt(myActItem.series.timeSeriesMin.split(":")[0])
-			   minutes = parseInt(myActItem.series.timeSeriesMin.split(":")[1])
-	 		   myTime  = myActItem.series.timeSeriesMin
-	 		   // Intervall in minutes
-	 		   IntervallMinutes    =  parseInt(myActItem.series.timeSeriesIntervall.split(":")[0])*60
-	 		   IntervallMinutes   +=  parseInt(myActItem.series.timeSeriesIntervall.split(":")[1])	 		   
-	 		   // max Time in Minutes
-			   if (myActItem.series.hasOwnProperty("timeSeriesMax")) //wvhn added
-			   { 
-				maxHours     = parseInt(myActItem.series.timeSeriesMax.split(":")[0])			   
-				maxMinutes   = parseInt(myActItem.series.timeSeriesMax.split(":")[1])
-			   }
-			   else
-			   {
-			    var cycles 	= parseInt(myActItem.series.timeSeriesCount) -1
-				maxMinutes 	= parseInt((minutes + IntervallMinutes * cycles) % 60)
-				maxHours  	= parseInt((minutes + IntervallMinutes * cycles - maxMinutes) / 60) + hours
-			   }	
-	 		   var maxTime = new Date()
-			   maxTime.setMinutes(maxMinutes)
-			   maxTime.setHours(maxHours)
-			   maxTime.setSeconds(0)
-	 		   // Create new date for Start 
-			   var myNewTime = new Date()
-			   myNewTime.setMinutes(minutes)
-			   myNewTime.setHours(hours)
-			   myNewTime.setSeconds(0)
-			   
-			   
-	 		   while (myNewTime <= maxTime)
-	 			   {
-	 			  myTimeDict.push({
-	 				    key:     String("00"+myNewTime.getHours()).slice(-2) + ':' + String("00"+myNewTime.getMinutes()).slice(-2),
-	 				    minutes: String("00"+myNewTime.getMinutes()).slice(-2),
-	 				    hours:   String("00"+myNewTime.getHours()).slice(-2)
-	 				});
-	 			    myNewTime.setTime(myNewTime.getTime() + IntervallMinutes*60000);
-	 			   }
-			 }
-			 for (entry in myTimeDict)
-			 {
-			 myTime = myTimeDict[entry].key
-			 hours  = myTimeDict[entry].hours
-			 minutes = myTimeDict[entry].minutes
-			 
-			 round_up_down = -1
-			 myOptions['val-on'] == myActItem.value ? round_up_down = -1 : round_up_down = -1
-		 	 m       = (Math.round((parseInt(minutes) + (round*round_up_down))/nextValue) * nextValue) % 60;
-			 h       = (m === 0 && minutes>round) ? (hours === 23 ? 0 : hours) : hours;
-			 //console.log("gerundete Zeit :" + String("00"+h).slice(-2) + ':'+String("00"+m).slice(-2))
-
-			 mySvg = 'svg-' + preFix
-				+ "-"
-				+ String("00"+d).slice(-2)
-				+ "-"
-				+ String("00"+h).slice(-2)
-				+ "-"
-				+ String("00"+m).slice(-2)			
-			mySvgCell = $('#'+mySvg)[0]
-			myValue = ''
-			if ( myActItem.active == true)
-			{
-				if (myOptions['val-on'] == myActItem.value)
-				 {
-		 		   myValue = 'ON'
-		 		   // Now the SVG
-		 			   try
-		   		   {
-		 				  mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:"+ myBorder + "px;fill:" + myOptions['color-on'] + "; fill-opacity:1.0; pointer-events:auto;" );
-		 				  mySvgCell.classList.add("ON")
-		   		   }
-					catch (e)
-					{
-						console.log('Error on updateing Cell')
-					}
-	   	 		   
-		 		 }
-				if (myOptions['val-off'] == myActItem.value)
-				 {
-	   	 		   myValue = 'OFF'
-		 		   // Now the SVG
-		   		   mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:"+ myBorder + "px;fill:" + myOptions['color-off'] + "; fill-opacity:1.0; pointer-events:auto;" );
-	   	 		   mySvgCell.classList.add("OFF")   	 		   
-		 		 }
-		 	}
-		 	else
-		 	{
-				if (myOptions['val-on'] == myActItem.value)
-				 {
-		 		   myValue = 'ON'
-		 		   // Now the SVG
-		   		   mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:"+ myBorder + "px;fill:" + myOptions['color-on-disabled'] + "; fill-opacity:1.0");
-	   	 		   mySvgCell.classList.add("DISABLED_ON")	 		   	 		   
-		 		 }
-				if (myOptions['val-off'] == myActItem.value)
-				 {
-		 		   myValue = 'OFF'
-		   		   mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:"+ myBorder + "px;fill:" + myOptions['color-off-disabled'] + "; fill-opacity:1.0");
-	   	 		   mySvgCell.classList.add("DISABLED_ON")	 		   	 		   	 		   	 		   
-		 		 }	 	
-		 	}
-			if ( myOptions.showtooltip == true)
-			 {
-	 		 mySvgCell.ToolTip = ''+myTime+'- Value :'+myValue
-
-			 }
-			 }
-		       })
-		 }
-
-	 	 if (this.options.showtooltip == true)
-			{
-			 $(".ON, .OFF, .DISABLED_OFF, .DISABLED_ON " ).hover(function(event)
-			    {
-				if (event.type == 'mouseenter')
-				{
-				console.log("General mouseover ON")	  
-				/** ************************* */
-			   	myObject = event.target
-			   	myWidth = this.parentNode.width.animVal.value;
-				offset = myWidth/25
-				
-		       		var newSvg  = document.createElementNS("http://www.w3.org/2000/svg", 'svg'); // Create
-																									// a
-																									// svg
-																									// in
-																									// SVG's
-																									// namespace
-				// set width and height
-				newSvg.setAttribute("height", "12");
-				newRect = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); // Create
-																							// a
-																							// rect
-																							// in
-																							// SVG's
-																							// namespace
-				newRect.setAttribute("height", "12");
-
-				newSvg.appendChild(newRect)
-				var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'text'); // Create
-																									// a
-																									// text
-																									// in
-																									// SVG's
-																									// namespace
-				newElement.setAttribute("height", "12");
-				newElement.setAttribute("style", 'fill:white; text-anchor:middle; font-size:0.5em;')
-				newElement.setAttribute("y", 9);
-				newElement.setAttribute("x", offset/2);	
-				var txt = document.createTextNode("");
-				newElement.appendChild(txt);	
-				newSvg.appendChild(newElement)
-
-				/** ************************* */
-			   	mySvgToolTip = newSvg
-			     	mySvgToolTip.setAttributeNS(null, 'width', '45');
-			   	mySvgToolTip.childNodes[0].setAttributeNS(null, 'width', '45');
-			   	mySvgToolTip.childNodes[1].innerHTML=this.ToolTip
-			   	mySvgToolTip.childNodes[1].setAttribute("style", 'fill:white; text-anchor:middle; font-size:0.4em;')
-			   	mySvgToolTip.childNodes[1].setAttributeNS(null, 'x', '22.5');
-
-			   	mySvgToolTip.childNodes[0].setAttributeNS(null, 'style', 'fill:#555; fill-opacity:1.0;');
-			   	mySvgToolTip.childNodes[0].setAttributeNS(null, 'ry', '5');
-			   	mySvgToolTip.childNodes[0].setAttributeNS(null, 'rx', '5');   	     	  
-
-			   	xPos = myObject.x.animVal.value-10
-			   	yPos = myObject.y.animVal.value-10
-			   	xPos >  myWidth-70 ? xPos=myWidth-60 : xPos=xPos
-			   	xPos < 10 ? xPos=10 : xPos=xPos
-				mySvgToolTip.setAttributeNS(null, 'x', xPos);
-				mySvgToolTip.setAttributeNS(null, 'y', yPos);
-				mySvgToolTip.setAttributeNS(null, 'id', 'mySvgToolTip'); 	   	   	   
-				this.parentNode.appendChild(mySvgToolTip)		
-			  	}
-				if (event.type == 'mouseleave')
-				{
-				$("#mySvgToolTip").remove()
-
-			  	}
-			    })
-		  }
-
-		if ( myOptions.showsun == true)
-		{
-			// SunRise-SVG
-			h = sunrise.split(":")[0]
-			m = sunrise.split(":")[1]
-			mySvgSunRise = this._CreateSvgImage("lib/weather/pics/sun_up.png")
-	 		mySvgSunRise.setAttributeNS(null, 'height','12px')
-	 		mySvgSunRise.setAttributeNS(null, 'y',13+HeadlineHeight)
-	 		xSunrise = (parseInt(h)*60+parseInt(m))
-	 		maxSpan = (24*offset)
-	 		mySvgSunRise.setAttributeNS(null, 'id',"SunRiseImg")
-	 		modWidth=320*(12/206)/2
-	 		mySvgSunRise.setAttributeNS(null, 'x',(offset+xSunrise*maxSpan/(24*60)-modWidth))	
-			this.element.find("svg")[0].appendChild(mySvgSunRise)
-			myText=[]
-			myText[0]=this._CreateSvgText(sunrise)
-		   	myText[0].classList.add("highcharts-title")			
-			myText[0].setAttributeNS(null, 'height','12px')
-			myText[0].setAttributeNS(null, 'y',22+HeadlineHeight)
-			myText[0].setAttributeNS(null, 'style','font-size:8px')		
-			myText[0].setAttributeNS(null, 'x',(offset+xSunrise*maxSpan/(24*60)+modWidth))	
-			this.element.find("svg")[0].appendChild(myText[0])		
-	 		mySunLines=[]
-			mySunLines[1]=this._CreateSvgLine('1.0')
-			mySunLines[1].setAttributeNS(null, 'x1', offset+xSunrise*maxSpan/(24*60));
-		  	mySunLines[1].setAttributeNS(null, 'x2', offset+xSunrise*maxSpan/(24*60));
-			mySunLines[1].setAttributeNS(null, 'y1', 22+HeadlineHeight);
-		  	mySunLines[1].setAttributeNS(null, 'y2', 22+7*12+HeadlineHeight);    
-			mySunLines[1].setAttributeNS(null, 'style','stroke:yellow;')			  	
-			this.element.find("svg")[0].appendChild(mySunLines[1])				  
-	 			
-			// Sunset-SVG
-			h = sunset.split(":")[0]
-			m = sunset.split(":")[1]						
-			mySvgSunSet = this._CreateSvgImage("lib/weather/pics/sun_down.png")
-	 		mySvgSunSet.setAttributeNS(null, 'height','12px')
-	 		mySvgSunSet.setAttributeNS(null, 'y',13+HeadlineHeight)
-	 		xSunSet= (parseInt(h)*60+parseInt(m))
-	 		maxSpan = (24*offset)
-	 		mySvgSunSet.setAttributeNS(null, 'id',"SunRiseImg")
-	 		modWidth=320*(12/206)/2
-	 		mySvgSunSet.setAttributeNS(null, 'x',(offset+xSunSet*maxSpan/(24*60)-modWidth))	
-			this.element.find("svg")[0].appendChild(mySvgSunSet)			
-			myText[1]=this._CreateSvgText(sunset)
-		   	myText[1].classList.add("highcharts-title")						
-			myText[1].setAttributeNS(null, 'height','12px')
-			myText[1].setAttributeNS(null, 'y',22+HeadlineHeight)
-			myText[1].setAttributeNS(null, 'style','font-size:8px')		
-			myText[1].setAttributeNS(null, 'x',(offset+xSunSet*maxSpan/(24*60)-25))	
-			this.element.find("svg")[0].appendChild(myText[1])		
-
-			mySunLines[2]=this._CreateSvgLine('1.0')
-			mySunLines[2].setAttributeNS(null, 'x1', offset+xSunSet*maxSpan/(24*60));
-		  	mySunLines[2].setAttributeNS(null, 'x2', offset+xSunSet*maxSpan/(24*60));
-			mySunLines[2].setAttributeNS(null, 'y1', 22+HeadlineHeight);
-		  	mySunLines[2].setAttributeNS(null, 'y2', 22+7*12+HeadlineHeight);    
-			mySunLines[2].setAttributeNS(null, 'style','stroke:yellow;')			  	
-			this.element.find("svg")[0].appendChild(mySunLines[2])				  		
-
-		}	
-		if (myOptions.showactualtime == true)
-		{
-	   	  myDate = new Date()
-	   	  myactHour = myDate.getHours()
-	   	  myactMin  = myDate.getMinutes()
-	  	  myactTime = ('00'+myactHour).slice(-2)+':'+('00'+myactMin).slice(-2)
-
-	 	  // Add the actual TimeLine to the SVG
-		  maxSpan = (24*offset)
-		  actPos  = maxSpan/(24*60)*(myactHour*60+myactMin)
-		  myActTimeLine = this._CreateSvgLine('1.0')
-		  myActTimeLine.setAttributeNS(null, 'x1', actPos+offset);
-		  myActTimeLine.setAttributeNS(null, 'x2', actPos+offset);
-		  myActTimeLine.setAttributeNS(null, 'y1', (12*myOptions.showsun)+10+HeadlineHeight);
-		  myActTimeLine.setAttributeNS(null, 'y2', 30+(7-!myOptions.showsun)*12+HeadlineHeight);    
-		  myActTimeLine.setAttributeNS(null, 'style','stroke:blue;')			  	
-		  myActTimeLine.setAttributeNS(null, 'id', 'actTimeLine-'+this.uuid); 	   	   	   	  
-	  	  this.element.find("svg")[0].appendChild(myActTimeLine)			  	  
-	 	  if (myactHour < 12)
-	 	   { modifier = 1}
-	 	  else
-	 	   { modifier = -43}
-	   	  myActTime = this._CreateSvgBox1("0.5")
-	     	  myActTime.setAttributeNS(null, 'width', '35');
-	   	  myActTime.childNodes[0].setAttributeNS(null, 'width', '35');
-	   	  myActTime.childNodes[1].innerHTML=myactTime
-	   	  myActTime.childNodes[1].setAttributeNS(null, 'x', '17.5');
-	   	  myActTime.childNodes[1].setAttributeNS(null, 'style', 'fill:white;font-size: 0.5em;text-anchor: middle;');
-
-	   	  myActTime.childNodes[0].style.fill='blue'   	  
-	   	  myActTime.childNodes[0].setAttributeNS(null, 'style', 'fill:blue; fill-opacity:1.0;');
-	   	  myActTime.childNodes[0].setAttributeNS(null, 'ry', '5');
-	   	  myActTime.childNodes[0].setAttributeNS(null, 'rx', '5');   	     	  
-		  myActTime.setAttributeNS(null, 'x', actPos+offset+modifier);
-		  myActTime.setAttributeNS(null, 'y', 20+(7-!myOptions.showsun)*12+HeadlineHeight);
-		  myActTime.setAttributeNS(null, 'id', 'actTime-'+this.uuid); 	   	   	   
-	  	  this.element.find("svg")[0].appendChild(myActTime)	
-		}
-		
-		// add Checkbox with Active/InActive
-		btnActive=this._CreateSvgBox1("0.5")
-		btnActive.setAttributeNS(null, 'x', 5);
-		btnActive.setAttributeNS(null, 'y', 5);
-		btnActive.setAttributeNS(null, "width", "25px");
-		btnActive.setAttributeNS(null, "height", "25px");
-				
-		btnActive.setAttribute("id", "btnActive");
-		btnActive.childNodes[0].setAttributeNS(null, "x", "1px");
-		btnActive.childNodes[0].setAttributeNS(null, "y", "5px");		
-		btnActive.childNodes[0].setAttributeNS(null, "rx", "5");
-		btnActive.childNodes[0].setAttributeNS(null, "ry", "5");        
-		btnActive.childNodes[0].setAttributeNS(null, "width", "21px");
-		btnActive.childNodes[0].setAttributeNS(null, "height", "20px");
-		btnActive.childNodes[1].setAttributeNS(null, "width", "19px");
-		btnActive.childNodes[1].setAttributeNS(null, "height", "19px");		
-		btnActive.childNodes[1].setAttributeNS(null, "style", 'fill:black; text-anchor:middle; font-size:9.5px;')
-		btnActive.childNodes[1].setAttributeNS(null, "x", "11.5");
-		btnActive.childNodes[1].setAttributeNS(null, "y", "18.5");				
-
-		btnActive.setAttributeNS(null, 'id', 'btnActive'); 	   	   	   
-		btnActive.childNodes[0].setAttributeNS(null, 'style', ' fill-opacity:1.0;');// fill:lightgray;
+        if (myOptions.fill == true) {
+            this._fillColors(vals_on_color, vals_off_color, TableName)
+        }
 
 
-		myDict.active == false ? btnActive.classList.add("icon0") :    btnActive.classList.add("icon1")
-		myDict.active == false ? btnActive.childNodes[1].innerHTML=String("✘") :btnActive.childNodes[1].innerHTML=String("✔");
-		this.element.find("svg")[0].appendChild(btnActive)
-		  
-		 if (myOptions.fill == false)
-		  {
-		    this._addBackgroundframe()
-		    return
-	    	  }
-		 // Fill the times from ON to OFF
-		 actMode = ''
-		 for (d=0;d<=6;d++)
-		 {
-		   for (h=0;h<=23;h++)
-		   {
-		    minutes = 0
-		    for (m=0;m<=myColSpan-1;m++)
-		    {
-		    minutes = m * nextValue
-		    mySvg = 'svg-' + preFix
-	  		    + "-"
-			    + String("00"+d).slice(-2)
-			    + "-"
-			    + String("00"+h).slice(-2)
-			    + "-"
-			    + String("00"+minutes).slice(-2)			
+        console.log('finished')
 
-		    mySvgCell = $('#'+mySvg)[0]
-		    if (mySvgCell.classList.contains('ON'))  { actMode = 'ON' }
-	    	    if (mySvgCell.classList.contains('OFF')) { actMode = 'OFF' }	    		
-	    	    
-	    	    if (actMode == 'ON')
-	    	     {
-	   	      mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:"+ myBorder + "px;fill:" + myOptions['color-on'] + "; fill-opacity:1.0; pointer-events:auto;");
-	    	     }
-	    	     
-		   }
-		   }
-		 }
-		 // Check if 'ON' after end of the week => if yes search next 'OFF'
-		 if (actMode == 'ON')
-		 {
-	 	 for (d=0;d<=6;d++)
-		 {
-	    	   if (actMode == 'OFF')
-	    	    { break }
-		   for (h=0;h<=23;h++)
-		   {
-		    minutes = 0
-		    for (m=0;m<=myColSpan-1;m++)
-		    {
-		    minutes = m * nextValue	   
-		    mySvg = 'svg-' + preFix
-	  		    + "-"
-			    + String("00"+d).slice(-2)
-			    + "-"
-			    + String("00"+h).slice(-2)
-			    + "-"
-			    + String("00"+minutes).slice(-2)			
+    },
+    // *****************************************************
+    // CreateSerieEntriesWithOutSun
+    // *****************************************************
+    _GetTimeEntryDict: function(actTime) {
+        hours = actTime.split(":")[0];
+        minutes = actTime.split(":")[1];
+        myTime = actTime;
+        myTimeObj = {
+            key: myTime,
+            minutes: minutes,
+            hours: hours
+        };
+        return myTimeObj
+    },
+    // *****************************************************
+    // CreateSerieEntriesWithOutSun
+    // *****************************************************
+    _CreateSerieEntriesWithOutSun: function(myActItem) {
+        myTimeDict1 = []
+        myTimeDict2 = []
+        // Min-Time
+        hours = parseInt(myActItem.series.timeSeriesMin.split(":")[0])
+        minutes = parseInt(myActItem.series.timeSeriesMin.split(":")[1])
+        // Intervall in minutes
+        IntervallMinutes = parseInt(myActItem.series.timeSeriesIntervall.split(":")[0]) * 60
+        IntervallMinutes += parseInt(myActItem.series.timeSeriesIntervall.split(":")[1])
+        // Max-Time
+        if (myActItem.series.hasOwnProperty("timeSeriesMax")) //wvhn added
+        {
+            maxHours = parseInt(myActItem.series.timeSeriesMax.split(":")[0])
+            maxMinutes = parseInt(myActItem.series.timeSeriesMax.split(":")[1])
+        } else {
+            var cycles = parseInt(myActItem.series.timeSeriesCount) - 1
+            maxMinutes = parseInt((minutes + IntervallMinutes * cycles) % 60)
+            maxHours = parseInt((minutes + IntervallMinutes * cycles - maxMinutes) / 60) + hours
+        }
+        // Create new date for End
+        var maxTime = new Date()
+        maxTime.setMinutes(maxMinutes)
+        maxTime.setHours(maxHours)
+        maxTime.setSeconds(0)
+        // Create new date for Start 
+        var myNewTime = new Date()
+        myNewTime.setMinutes(minutes)
+        myNewTime.setHours(hours)
+        myNewTime.setSeconds(0)
+        if (maxTime < myNewTime) // day overflow, so push max Date +1
+        {
+            maxTime.setDate(myEndTime.getDate() + 1);
+        }
 
-		    mySvgCell = $('#'+mySvg)[0]
-	    	    if (mySvgCell.classList.contains('ON'))  { actMode = 'ON' }
-	    	    if (mySvgCell.classList.contains('OFF')) { actMode = 'OFF';break }	    		
-	    	    
-	    	    if (actMode == 'ON')
-	    	     {
-	   	      mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:"+ myBorder + "px;fill:" + myOptions['color-on'] + "; fill-opacity:1.0; pointer-events:auto;");    	      
-	    	     }
-	    	     
-		   }
-		   }
-		 }
-		 }
-	    this._addBackgroundframe()
-	    console.log('finished') 
-	    
-	},  
-	// *****************************************************
-	// create svg-rect with text
-	// *****************************************************
+        actDay = myNewTime.getDay()
+        while (myNewTime <= maxTime) {
+            myObj = {
+                key: String("00" + myNewTime.getHours()).slice(-2) + ':' + String("00" + myNewTime.getMinutes()).slice(-2),
+                minutes: String("00" + myNewTime.getMinutes()).slice(-2),
+                hours: String("00" + myNewTime.getHours()).slice(-2)
+            }
+            actDay == myNewTime.getDay() ? myTimeDict1.push(myObj) : myTimeDict2.push(myObj);
 
-	_CreateSvgBox1: function (Borderwidth)
-	{
-		var newSvg  = document.createElementNS("http://www.w3.org/2000/svg", 'svg'); // Create
-																						// a
-																						// svg
-																						// in
-																						// SVG's
-																						// namespace
-		// set width and height
-		newSvg.setAttribute("width", 400/25);
-		newSvg.setAttribute("height", "12");
-		newRect = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); // Create
-																					// a
-																					// rect
-																					// in
-																					// SVG's
-																					// namespace
-		newRect.setAttribute("width", 400/25);
-		newRect.setAttribute("height", "12");
-		newRect.setAttribute("style", "fill:white; stroke:black;stroke-width:" + Borderwidth + "px; fill-opacity:0.0");
-		newSvg.appendChild(newRect)
-		var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'text'); // Create
-																							// a
-																							// text
-																							// in
-																							// SVG's
-																							// namespace
-		newElement.setAttribute("style", 'text-anchor:middle; font-size:0.5em;')
-		newElement.setAttribute("y", 9);
-		newElement.setAttribute("x", offset/2);	
-		var txt = document.createTextNode("");
-		newElement.appendChild(txt);	
-		newSvg.appendChild(newElement)
-		return newSvg
-	},
-	// *****************************************************
-	// add the background-frame
-	// *****************************************************
-	_addBackgroundframe: function ()
-	{
-	    svgBackGround=this._CreateSvgBox2('0.5',0)
-	    svgBackGround.setAttributeNS(null, 'x', 0);
-	    svgBackGround.setAttributeNS(null, 'y', 40);
-	    svgBackGround.setAttributeNS(null, 'width',this.options.mySvgWidth-0 );
-	    svgBackGround.setAttributeNS(null, 'height','120px' );
-	    svgBackGround.setAttributeNS(null, 'style', "stroke:black;stroke-width:"+ "2.0" + "px; fill-opacity: 0.0; pointer-events:none;");    	              	    
-	    this.element.find("svg")[0].appendChild(svgBackGround)	
-	},
-	// *****************************************************
-	// create svg-rect without text
-	// *****************************************************
-	_CreateSvgBox2: function (StrokeWidth,myOverlay)
-	{
-		newRect = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); // Create
-																					// a
-																					// rect
-																					// in
-																					// SVG's
-																					// namespace
-		newRect.setAttribute("width",400/25/myColSpan+myOverlay );
-		newRect.setAttribute("height", "12");
-		newRect.setAttribute("style", "stroke:black;stroke-width:"+ StrokeWidth + "px;fill:yellow; fill-opacity:0.0; pointer-events:visiblePoint");
+            myNewTime.setTime(myNewTime.getTime() + IntervallMinutes * 60000);
+        }
+        return [myTimeDict1, myTimeDict2] // myTimeDict1 = Times for selected day; myTimeDict2 = Times for day after (overflow the actual day) 
+    },
+    // *****************************************************
+    // CreateSerieEntriesWithSun
+    // *****************************************************
+    _CreateSerieEntriesWithSun: function(myActItem) {
+        myTimeDict = []
+        // Min-Time
+        hours = parseInt(myActItem.seriesCalculated[serie].seriesMin.split(":")[0])
+        minutes = parseInt(myActItem.seriesCalculated[serie].seriesMin.split(":")[1])
+        myStartTime = myActItem.seriesCalculated[serie].seriesMin
+        // Intervall in minutes
+        IntervallMinutes = parseInt(myActItem.series.timeSeriesIntervall.split(":")[0]) * 60
+        IntervallMinutes += parseInt(myActItem.series.timeSeriesIntervall.split(":")[1])
+        // Max-Time
+        maxHours = parseInt(myActItem.seriesCalculated[serie].seriesMax.split(":")[0])
+        maxMinutes = parseInt(myActItem.seriesCalculated[serie].seriesMax.split(":")[1])
+        myEndTime = myActItem.seriesCalculated[serie].seriesMax
+        // Create new date for End
+        var maxTime = new Date()
+        maxTime.setMinutes(maxMinutes)
+        maxTime.setHours(maxHours)
+        maxTime.setSeconds(0)
+        // Create new date for Start 
+        var myNewTime = new Date()
+        myNewTime.setMinutes(minutes)
+        myNewTime.setHours(hours)
+        myNewTime.setSeconds(0)
+        while (myNewTime <= maxTime) {
+            myTimeDict.push({
+                key: String("00" + myNewTime.getHours()).slice(-2) + ':' + String("00" + myNewTime.getMinutes()).slice(-2),
+                minutes: String("00" + myNewTime.getMinutes()).slice(-2),
+                hours: String("00" + myNewTime.getHours()).slice(-2)
+            });
+            myNewTime.setTime(myNewTime.getTime() + IntervallMinutes * 60000);
+        }
+        return myTimeDict
+    },
+    // *****************************************************
+    // fillColors
+    // *****************************************************	
+    _fillColors: function(vals_on_color, vals_off_color, preFix) {
+        // Fill the times from ON to OFF
+        actMode = ''
+        actColor = ''
+        for (d = 0; d <= 6; d++) {
+            for (h = 0; h <= 23; h++) {
+                minutes = 0
+                for (m = 0; m <= myColSpan - 1; m++) {
+                    minutes = m * nextValue
+                    mySvg = 'svg-' + preFix +
+                        "-" +
+                        String("00" + d).slice(-2) +
+                        "-" +
+                        String("00" + h).slice(-2) +
+                        "-" +
+                        String("00" + minutes).slice(-2)
 
-		return newRect
-	},
-	// *****************************************************
-	// create svg-line
-	// *****************************************************
-	_CreateSvgLine: function (StrokeWidth)
-	{
-		newLine = document.createElementNS("http://www.w3.org/2000/svg", 'line'); // Create
-																					// a
-																					// line
-																					// in
-																					// SVG's
-																					// namespace
-		newLine.setAttribute("style", "stroke:black;stroke-width:"+ StrokeWidth + "px; fill-opacity:0.0");
+                    mySvgCell = $('#' + mySvg)[0]
+                    if (mySvgCell.classList.contains('ON')) {
+                        actMode = 'ON';
+                        actColor = mySvgCell.style.getPropertyValue("fill")
+                    }
+                    if (mySvgCell.classList.contains('OFF')) {
+                        actMode = 'OFF';
+                        actColor = mySvgCell.style.getPropertyValue("fill")
+                    }
+                    if (actMode == 'ON') {
+                        mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:" + myBorder + "px;fill:" + actColor + "; fill-opacity:1.0; pointer-events:auto;");
+                    }
+                }
+            }
+        }
+        // Check if 'ON' after end of the week => if yes search next 'OFF'
+        if (vals_on_color.includes(actColor)) {
+            actMode = 'ON'
+            for (d = 0; d <= 6; d++) {
+                if (actMode == 'OFF') {
+                    break
+                }
+                for (h = 0; h <= 23; h++) {
+                    minutes = 0
+                    for (m = 0; m <= myColSpan - 1; m++) {
+                        minutes = m * nextValue
+                        mySvg = 'svg-' + preFix +
+                            "-" +
+                            String("00" + d).slice(-2) +
+                            "-" +
+                            String("00" + h).slice(-2) +
+                            "-" +
+                            String("00" + minutes).slice(-2)
 
-		return newLine
-	},
-	// *****************************************************
-	// create svg-image
-	// *****************************************************
-	_CreateSvgImage: function (ImageUrl)
-	{
-		newImage = document.createElementNS("http://www.w3.org/2000/svg", 'image'); // Create
-																					// a
-																					// Image
-																					// in
-																					// SVG's
-																					// namespace
-		newImage.setAttribute("href", ImageUrl);
+                        mySvgCell = $('#' + mySvg)[0]
+                        if (mySvgCell.classList.contains('ON')) {
+                            actMode = 'OFF';
+                            break
+                        }
+                        if (mySvgCell.classList.contains('OFF')) {
+                            actMode = 'OFF';
+                            break
+                        }
 
-		return newImage
-	},				
-	// *****************************************************
-	// create svg-text
-	// *****************************************************
-	_CreateSvgText: function (Text)
-	{
-		newText = document.createElementNS("http://www.w3.org/2000/svg", 'text'); // Create
-																					// a
-																					// text
-																					// in
-																					// SVG's
-																					// namespace
-		var txt = document.createTextNode(Text);
-		newText.appendChild(txt);	
+                        if (actMode == 'ON') {
+                            mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:" + myBorder + "px;fill:" + actColor + "; fill-opacity:1.0; pointer-events:auto;");
+                        }
+
+                    }
+                }
+            }
+        }
+    },
+    // *****************************************************
+    // create svg-rect with text
+    // *****************************************************
+    _CreateSvgBox1: function(Borderwidth) {
+        var newSvg = document.createElementNS("http://www.w3.org/2000/svg", 'svg'); // Create a svg in SVG namespace
+
+        // set width and height
+        newSvg.setAttribute("width", 400 / 25);
+        newSvg.setAttribute("height", "12");
+        newRect = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); // Create a rect in SVG namespace
+
+        newRect.setAttribute("width", 400 / 25);
+        newRect.setAttribute("height", "12");
+        newRect.setAttribute("style", "fill:white; stroke:black;stroke-width:" + Borderwidth + "px; fill-opacity:0.0");
+        newSvg.appendChild(newRect)
+        var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'text'); // Create a text in SVG namespace
+
+        newElement.setAttribute("style", 'text-anchor:middle; font-size:0.5em;')
+        newElement.setAttribute("y", 9);
+        newElement.setAttribute("x", offset / 2);
+        var txt = document.createTextNode("");
+        newElement.appendChild(txt);
+        newSvg.appendChild(newElement)
+        return newSvg
+    },
+    // *****************************************************
+    // add the background-frame
+    // *****************************************************
+    _addBackgroundframe: function() {
+        svgBackGround = this._CreateSvgBox2('0.5', 0)
+        svgBackGround.setAttributeNS(null, 'x', 0);
+        svgBackGround.setAttributeNS(null, 'y', 40);
+        svgBackGround.setAttributeNS(null, 'width', this.options.mySvgWidth - 0);
+        svgBackGround.setAttributeNS(null, 'height', '120px');
+        svgBackGround.setAttributeNS(null, 'style', "stroke:black;stroke-width:" + "2.0" + "px; fill-opacity: 0.0; pointer-events:none;");
+        this.element.find("svg")[0].appendChild(svgBackGround)
+    },
+    // *****************************************************
+    // create svg-rect without text
+    // *****************************************************
+    _CreateSvgBox2: function(StrokeWidth, myOverlay) {
+        newRect = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); // Create a rect in SVG namespace
+
+        newRect.setAttribute("width", 400 / 25 / myColSpan + myOverlay);
+        newRect.setAttribute("height", "12");
+        newRect.setAttribute("style", "stroke:black;stroke-width:" + StrokeWidth + "px;fill:yellow; fill-opacity:0.0; pointer-events:visiblePoint");
+
+        return newRect
+    },
+    // *****************************************************
+    // create svg-line
+    // *****************************************************
+    _CreateSvgLine: function(StrokeWidth) {
+        newLine = document.createElementNS("http://www.w3.org/2000/svg", 'line'); // Create// Create a line in SVG namespace
+
+        newLine.setAttribute("style", "stroke:black;stroke-width:" + StrokeWidth + "px; fill-opacity:0.0");
+
+        return newLine
+    },
+    // *****************************************************
+    // create svg-image
+    // *****************************************************
+    _CreateSvgImage: function(ImageUrl) {
+        newImage = document.createElementNS("http://www.w3.org/2000/svg", 'image'); // Create a image in SVG namespace
+
+        newImage.setAttribute("href", ImageUrl);
+
+        return newImage
+    },
+    // *****************************************************
+    // create svg-text
+    // *****************************************************
+    _CreateSvgText: function(Text) {
+        newText = document.createElementNS("http://www.w3.org/2000/svg", 'text'); // Create a text in SVG namespace
+
+        var txt = document.createTextNode(Text);
+        newText.appendChild(txt);
 
 
-		return newText
-	},
-	// *****************************************************
-	// CalcTimeLine
-	// *****************************************************
-	_CalcTimeLine: function (myInstance)
-	{
-	   	  myDate = new Date()
-	       	  // Calc the delay
-	       	  var delay = (60 - myDate.getSeconds()) * 1000+1000;
-		  setTimeout(function()
-		  {
-		  offset = myInstance.options.mySvgWidth/25
+        return newText
+    },
+    // *****************************************************
+    // DrawGrid
+    // *****************************************************
+    _DrawGrid: function(myOptions, TableName, myDict) {
+        var myJson = {}
+        var myBorderStyle = ''
+        var preFix = TableName
 
-	 	  if (myactHour < 12)
-	 	   { modifier = 1}
-	 	  else
-	 	   { modifier = -43}
-		  maxSpan = (24*offset)
-		  actPos  = maxSpan/(24*60)*(myactHour*60+myactMin) 	   
-		  myActTimeLine = myInstance.element.find('#actTimeLine-'+myInstance.uuid)[0]
-  		  myActTime     = myInstance.element.find('#actTime-'+myInstance.uuid)[0]
-		  // myActTimeLine = $('#actTimeLine-'+myInstance.uuid, myInstance)
-	  	  // myActTime = $('#actTime-'+myInstance.uuid,myInstance)
+        if (myOptions.borderstyle.explode().length == 1) {
+            myJson[myOptions['granularity']] = myOptions.borderstyle.explode()[0]
+        } else {
+            for (key in myOptions.borderstyle.explode()) {
+                myJson[myOptions.borderstyle.explode()[key].split(":")[0]] = myOptions.borderstyle.explode()[key].split(":")[1]
+            }
+            if (myJson[myOptions['granularity']] != undefined) {
+                myBorderStyle = myJson[myOptions['granularity']]
+            } else {
+                myBorderStyle = 'solid'
+            }
 
-	  	  try
-	  	  {
-		   myActTimeLine.setAttributeNS(null, 'x1', actPos+offset);
-		   myActTimeLine.setAttributeNS(null, 'x2', actPos+offset);
-		   myActTime.setAttributeNS(null, 'x', actPos+offset+modifier); 	     	  
-		  }
-		  catch(e)
-		  {
- 		   console.log('problem while updating TimeLine for '+myInstance.uuid + ' Error : '+e)
-		  }
-		  myDate = new Date()
-	   	  myactHour = myDate.getHours()
-	   	  myactMin  = myDate.getMinutes()
-	  	  myactTime = ('00'+myactHour).slice(-2)+':'+('00'+myactMin).slice(-2)
-	  	  		  
-	     	  myActTime.childNodes[1].innerHTML=myactTime
-	   	  TimeStamp = new Date()	     	  
-	     	  // console.log(TimeStamp + '-' + myactTime + '- Seconds : '+
-				// TimeStamp.getSeconds()+ ' - Offset:'+ offset +'-Instance
-				// :'+myInstance.uuid )
+        }
 
-	       	  myInstance._CalcTimeLine(myInstance)
-		  },delay)
+        switch (myBorderStyle) {
+            case 'hourly': {
+                myBorder = 0.0
+                overlayFill = 0.2
+                break;
+            }
+            case 'solid': {
+                myBorder = 0.2
+                overlayFill = 0
+                break;
+            }
+            case 'horizontal': {
+                myBorder = 0
+                overlayFill = 0.2
+                break;
+            }
+            case 'none': {
+                myBorder = 0
+                overlayFill = 0
+                break;
+            }
+            default: {
+                myBorder = 0.2
+                overlayFill = 0
+                break;
+            }
+        }
+        switch (myOptions['granularity']) {
+            case '5m': {
+                round = 2.5
+                nextValue = 5
+                myColSpan = 12
+                break;
+            }
+            case '10m': {
+                round = 5
+                nextValue = 10
+                myColSpan = 6
+                break;
+            }
+            case '15m': {
+                round = 7.5
+                nextValue = 15
+                myColSpan = 4
+                break;
+            }
+            case '30m': {
+                round = 15
+                nextValue = 30
+                myColSpan = 2
+                break;
+            }
+            case '1h': {
+                round = 30
+                nextValue = 60
+                myColSpan = 1
+                break;
+            }
+            default: {
+                round = 30
+                nextValue = 60
+                myColSpan = 1
+                break;
+            }
+        }
 
-	}
+        if (sv_lang.uzsu.th = 'Do') // Check language
+        {
+            var myDays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+            txtActive = 'inaktiv'
+        } else {
+            var myDays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
+            txtActive = 'Inactive'
+        }
+        var preFix = TableName
+        var HeadlineHeight = 40
+        // get sunrise and sunset
+        sunrise = myDict.sunrise
+        sunset = myDict.sunset
+        weekDays = {
+            'MO': "0",
+            'TU': "1",
+            'WE': "2",
+            'TH': "3",
+            'FR': "4",
+            'SA': "5",
+            'SU': "6"
+        }
+
+        d = 0
+
+        // Clear the SVG
+        tbl2Delete = []
+        this.element.find("svg")[0].childNodes.forEach(function(element) {
+            tbl2Delete.push(element)
+        })
+        while (tbl2Delete.length > 0) {
+            myEntry = tbl2Delete.pop()
+            myEntry.remove()
+        }
+
+
+        this.options.mySvgWidth = 400
+        this.element.find("svg")[0].width.baseVal.value = this.options.mySvgWidth
+        offset = this.options.mySvgWidth / 25
+
+        // Set the viewbox
+        this.element.find("svg")[0].viewBox.baseVal.width = this.options.mySvgWidth + 2 // viewWidth
+        this.element.find("svg")[0].setAttribute('width', '100%')
+
+        // add the Headline to Svg
+
+        if (this.options.headline != '') {
+            var tblHeadline = document.createElementNS("http://www.w3.org/2000/svg", 'text'); // Create a text in SVG namespace
+
+            tblHeadline.setAttribute("style", 'text-anchor:middle; font-size:14px')
+            tblHeadline.setAttributeNS(null, 'x', this.options.mySvgWidth / 2);
+            tblHeadline.setAttributeNS(null, 'y', 29);
+            tblHeadline.setAttribute("id", "tblHeadline");
+            tblHeadline.setAttributeNS(null, 'width', this.options.mySvgWidth - 40);
+            tblHeadline.classList.add("highcharts-title")
+            tblHeadline.innerHTML = this.options.headline
+            this.element.find("svg")[0].appendChild(tblHeadline)
+        }
+
+        tblHeader = []
+        h = 0
+        while (h <= 23) {
+            tblHeader[h] = this._CreateSvgBox1("0.5")
+            tblHeader[h].setAttributeNS(null, 'x', offset + offset * h);
+            tblHeader[h].setAttributeNS(null, 'y', 0 + HeadlineHeight);
+            tblHeader[h].setAttribute("id", "tblHeader-" + h);
+            tblHeader[h].childNodes[1].classList.add("highcharts-title")
+            tblHeader[h].childNodes[1].innerHTML = String("00" + h).slice(-2)
+            this.element.find("svg")[0].appendChild(tblHeader[h])
+            h += 1
+        }
+
+        if (myOptions.showsun == true) {
+            // add the sun-Header to Svg
+            tblHeader[99] = this._CreateSvgBox1("0.5")
+            tblHeader[99].setAttributeNS(null, 'x', offset);
+            tblHeader[99].setAttributeNS(null, 'y', 12 + HeadlineHeight);
+            tblHeader[99].setAttributeNS(null, 'width', this.options.mySvgWidth / 25 * 24);
+            tblHeader[99].childNodes[0].setAttributeNS(null, 'width', this.options.mySvgWidth / 25 * 24);
+            tblHeader[99].setAttribute("id", "tblHeader-99");
+            this.element.find("svg")[0].appendChild(tblHeader[99])
+        }
+
+        while (d <= 6) {
+
+            tblHeader[d + 50] = this._CreateSvgBox1("0.5")
+            tblHeader[d + 50].setAttributeNS(null, 'x', 0);
+            tblHeader[d + 50].setAttributeNS(null, 'y', (12 * myOptions.showsun) + 12 + d * 12 + HeadlineHeight);
+            tblHeader[d + 50].setAttribute("id", "tblHeader-" + (50 + d));
+            tblHeader[d + 50].childNodes[1].classList.add("highcharts-title")
+            tblHeader[d + 50].childNodes[1].innerHTML = myDays[d]
+            this.element.find("svg")[0].appendChild(tblHeader[d + 50])
+
+            h = 0
+            while (h <= 23) {
+                m = 0
+                minutes = 0
+                while (m <= myColSpan - 1) {
+                    minutes = m * nextValue
+
+                    // *******************************
+                    tblHeader[(d + 1) * h + m] = this._CreateSvgBox2(myBorder, overlayFill)
+                    tblHeader[(d + 1) * h + m].setAttributeNS(null, 'x', offset + h * offset + m * offset / myColSpan);
+                    tblHeader[(d + 1) * h + m].setAttributeNS(null, 'y', (12 * myOptions.showsun) + 12 + d * 12 + HeadlineHeight);
+                    tblHeader[(d + 1) * h + m].colspan = myColSpan;
+                    tblHeader[(d + 1) * h + m].setAttribute("id", 'svg-' + preFix +
+                        "-" +
+                        String("00" + d).slice(-2) +
+                        "-" +
+                        String("00" + h).slice(-2) +
+                        "-" +
+                        String("00" + minutes).slice(-2));
+
+                    this.element.find("svg")[0].appendChild(tblHeader[(d + 1) * h + m])
+                    // *********************************
+                    m++
+                }
+                h += 1
+            }
+
+            d += 1
+        }
+
+        // Set Lines if horizontal
+        if (myBorderStyle == 'horizontal' || myBorderStyle == 'hourly') {
+            myLines = []
+            l = 0
+            while (l <= 6) {
+                myLines[l] = this._CreateSvgLine('0.5')
+                myLines[l].setAttributeNS(null, 'x1', offset);
+                myLines[l].setAttributeNS(null, 'x2', offset * 25);
+                myLines[l].setAttributeNS(null, 'y1', (12 * myOptions.showsun) + 12 + 12 + l * 12 + HeadlineHeight);
+                myLines[l].setAttributeNS(null, 'y2', (12 * myOptions.showsun) + 12 + 12 + l * 12 + HeadlineHeight);
+                this.element.find("svg")[0].appendChild(myLines[l])
+                l++
+            }
+        }
+        // Set Lines if 1h
+        if (myBorderStyle == 'hourly') {
+            myVertLines = []
+            l = 1
+            while (l <= 23) {
+                myVertLines[l] = this._CreateSvgLine('0.5')
+                myVertLines[l].setAttributeNS(null, 'x1', offset * l + offset);
+                myVertLines[l].setAttributeNS(null, 'x2', offset * l + offset);
+                myVertLines[l].setAttributeNS(null, 'y1', (12 * myOptions.showsun) + 12 + HeadlineHeight);
+                myVertLines[l].setAttributeNS(null, 'y2', (12 * myOptions.showsun) + 12 + 12 + 72 + HeadlineHeight);
+                this.element.find("svg")[0].appendChild(myVertLines[l])
+                l++
+            }
+        }
+        // Set the different modes for inactive UZSU
+        // Set the opacity based on active or not active
+        if (this.options.inactivestyle & 1) {
+            myDict.active == false ? this.element.find("svg")[0].style.opacity = 0.5 : this.element.find("svg")[0].style.opacity = 1.0
+        }
+        if (myDict.active == false && this.options.inactivestyle & 2) {
+            myInActiveText = this._CreateSvgText(txtActive)
+            myInActiveText.setAttributeNS(null, 'y', '40px')
+            myInActiveText.classList.add("highcharts-title")
+            myInActiveText.setAttributeNS(null, 'style', 'transform: rotate(20deg); font-weight:bold; fill:lightgrey; font-size:3em; stroke-width:0.5; stroke:black; font-family:Monospace; text-anchor:middle')
+            myInActiveText.setAttributeNS(null, 'x', this.options.mySvgWidth / 2)
+            myInActiveText.setAttributeNS(null, 'id', 'txtInactive')
+            this.element.find("svg")[0].appendChild(myInActiveText)
+
+        }
+        return HeadlineHeight
+    },
+    // *****************************************************
+    // fillCells
+    // *****************************************************	
+    _fillCells: function(preFix, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues) {
+        for (entry in myTimeDict) {
+            myTime = myTimeDict[entry].key
+            hours = myTimeDict[entry].hours
+            minutes = myTimeDict[entry].minutes
+
+            round_up_down = -1
+            myOptions['val-on'] == myActItem.value ? round_up_down = -1 : round_up_down = -1
+            m = (Math.round((parseInt(minutes) + (round * round_up_down)) / nextValue) * nextValue) % 60;
+            h = (m === 0 && minutes > round) ? (hours === 23 ? 0 : hours) : hours;
+            //console.log("gerundete Zeit :" + String("00"+h).slice(-2) + ':'+String("00"+m).slice(-2))
+
+            mySvg = 'svg-' + preFix +
+                "-" +
+                String("00" + d).slice(-2) +
+                "-" +
+                String("00" + h).slice(-2) +
+                "-" +
+                String("00" + m).slice(-2)
+            mySvgCell = $('#' + mySvg)[0]
+            myValue = ''
+            if (myActItem.active == true) {
+                if (vals_on.includes(myActItem.value)) {
+                    if (asortValues.hasOwnProperty(myActItem.value)) {
+                        myValue = asortValues[myActItem.value]
+                    } else {
+                        myValue = 'ON'
+                    }
+                    myColor = vals_on_color[vals_on.indexOf(myActItem.value)]
+                    // Now the SVG
+                    try {
+                        mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:" + myBorder + "px;fill:" + myColor + "; fill-opacity:1.0; pointer-events:auto;");
+                        mySvgCell.classList.add("ON")
+                    } catch (e) {
+                        console.log('Error on updateing Cell')
+                    }
+
+                }
+                if (vals_off.includes(myActItem.value)) {
+                    if (asortValues.hasOwnProperty(myActItem.value)) {
+                        myValue = asortValues[myActItem.value]
+                    } else {
+                        myValue = 'OFF'
+                    }
+                    myColor = vals_off_color[vals_off.indexOf(myActItem.value)]
+                    // Now the SVG
+                    mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:" + myBorder + "px;fill:" + myColor + "; fill-opacity:1.0; pointer-events:auto;");
+                    mySvgCell.classList.add("OFF")
+                }
+            } else {
+                if (vals_on.includes(myActItem.value)) {
+                    if (asortValues.hasOwnProperty(myActItem.value)) {
+                        myValue = asortValues[myActItem.value]
+                    } else {
+                        myValue = 'ON'
+                    }
+                    // Now the SVG
+                    mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:" + myBorder + "px;fill:" + myOptions['color-on-disabled'] + "; fill-opacity:1.0");
+                    mySvgCell.classList.add("DISABLED_ON")
+                }
+                if (vals_off.includes(myActItem.value)) {
+                    if (asortValues.hasOwnProperty(myActItem.value)) {
+                        myValue = asortValues[myActItem.value]
+                    } else {
+                        myValue = 'OFF'
+                    }
+                    mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:" + myBorder + "px;fill:" + myOptions['color-off-disabled'] + "; fill-opacity:1.0");
+                    mySvgCell.classList.add("DISABLED_OFF")
+                }
+            }
+            if (myOptions.showtooltip == true) {
+                mySvgCell.ToolTip = '' + myTime + '- Value :' + myValue
+            }
+        }
+
+    },
+    // *****************************************************
+    // _ShowToolTip
+    // *****************************************************	
+    _ShowToolTip: function() {
+        $(".ON, .OFF, .DISABLED_OFF, .DISABLED_ON ").hover(function(event) {
+            if (event.type == 'mouseenter') {
+                console.log("General mouseover ON")
+                /** ************************* */
+                myObject = event.target
+                myWidth = this.parentNode.width.animVal.value;
+                offset = myWidth / 25
+
+                var newSvg = document.createElementNS("http://www.w3.org/2000/svg", 'svg'); // Create a svg in SVG namespace
+
+                // set width and height
+                newSvg.setAttribute("height", "12");
+                newRect = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); // Create a rect in SVG namespace
+
+                newRect.setAttribute("height", "12");
+
+                newSvg.appendChild(newRect)
+                var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'text'); // Create a text in SVG namespace
+
+                newElement.setAttribute("height", "12");
+                newElement.setAttribute("style", 'fill:white; text-anchor:middle; font-size:0.5em;')
+                newElement.setAttribute("y", 9);
+                newElement.setAttribute("x", offset / 2);
+                var txt = document.createTextNode("");
+                newElement.appendChild(txt);
+                newSvg.appendChild(newElement)
+
+                /** ************************* */
+                mySvgToolTip = newSvg
+                mySvgToolTip.setAttributeNS(null, 'width', '45');
+                mySvgToolTip.childNodes[0].setAttributeNS(null, 'width', '45');
+                mySvgToolTip.childNodes[1].innerHTML = this.ToolTip
+                mySvgToolTip.childNodes[1].setAttribute("style", 'fill:white; text-anchor:middle; font-size:0.4em;')
+                mySvgToolTip.childNodes[1].setAttributeNS(null, 'x', '22.5');
+
+                mySvgToolTip.childNodes[0].setAttributeNS(null, 'style', 'fill:#555; fill-opacity:1.0;');
+                mySvgToolTip.childNodes[0].setAttributeNS(null, 'ry', '5');
+                mySvgToolTip.childNodes[0].setAttributeNS(null, 'rx', '5');
+
+                xPos = myObject.x.animVal.value - 10
+                yPos = myObject.y.animVal.value - 10
+                xPos > myWidth - 70 ? xPos = myWidth - 60 : xPos = xPos
+                xPos < 10 ? xPos = 10 : xPos = xPos
+                mySvgToolTip.setAttributeNS(null, 'x', xPos);
+                mySvgToolTip.setAttributeNS(null, 'y', yPos);
+                mySvgToolTip.setAttributeNS(null, 'id', 'mySvgToolTip');
+                this.parentNode.appendChild(mySvgToolTip)
+            }
+            if (event.type == 'mouseleave') {
+                $("#mySvgToolTip").remove()
+
+            }
+        })
+    },
+    // *****************************************************
+    // showSun
+    // *****************************************************	
+    _showSun: function(HeadlineHeight) {
+        // SunRise-SVG
+        h = sunrise.split(":")[0]
+        m = sunrise.split(":")[1]
+        mySvgSunRise = this._CreateSvgImage("lib/weather/pics/sun_up.png")
+        mySvgSunRise.setAttributeNS(null, 'height', '12px')
+        mySvgSunRise.setAttributeNS(null, 'y', 13 + HeadlineHeight)
+        xSunrise = (parseInt(h) * 60 + parseInt(m))
+        maxSpan = (24 * offset)
+        mySvgSunRise.setAttributeNS(null, 'id', "SunRiseImg")
+        modWidth = 320 * (12 / 206) / 2
+        mySvgSunRise.setAttributeNS(null, 'x', (offset + xSunrise * maxSpan / (24 * 60) - modWidth))
+        this.element.find("svg")[0].appendChild(mySvgSunRise)
+        myText = []
+        myText[0] = this._CreateSvgText(sunrise)
+        myText[0].classList.add("highcharts-title")
+        myText[0].setAttributeNS(null, 'height', '12px')
+        myText[0].setAttributeNS(null, 'y', 22 + HeadlineHeight)
+        myText[0].setAttributeNS(null, 'style', 'font-size:8px')
+        myText[0].setAttributeNS(null, 'x', (offset + xSunrise * maxSpan / (24 * 60) + modWidth))
+        this.element.find("svg")[0].appendChild(myText[0])
+        mySunLines = []
+        mySunLines[1] = this._CreateSvgLine('1.0')
+        mySunLines[1].setAttributeNS(null, 'x1', offset + xSunrise * maxSpan / (24 * 60));
+        mySunLines[1].setAttributeNS(null, 'x2', offset + xSunrise * maxSpan / (24 * 60));
+        mySunLines[1].setAttributeNS(null, 'y1', 22 + HeadlineHeight);
+        mySunLines[1].setAttributeNS(null, 'y2', 22 + 7 * 12 + HeadlineHeight);
+        mySunLines[1].setAttributeNS(null, 'style', 'stroke:yellow;')
+        this.element.find("svg")[0].appendChild(mySunLines[1])
+
+        // Sunset-SVG
+        h = sunset.split(":")[0]
+        m = sunset.split(":")[1]
+        mySvgSunSet = this._CreateSvgImage("lib/weather/pics/sun_down.png")
+        mySvgSunSet.setAttributeNS(null, 'height', '12px')
+        mySvgSunSet.setAttributeNS(null, 'y', 13 + HeadlineHeight)
+        xSunSet = (parseInt(h) * 60 + parseInt(m))
+        maxSpan = (24 * offset)
+        mySvgSunSet.setAttributeNS(null, 'id', "SunRiseImg")
+        modWidth = 320 * (12 / 206) / 2
+        mySvgSunSet.setAttributeNS(null, 'x', (offset + xSunSet * maxSpan / (24 * 60) - modWidth))
+        this.element.find("svg")[0].appendChild(mySvgSunSet)
+        myText[1] = this._CreateSvgText(sunset)
+        myText[1].classList.add("highcharts-title")
+        myText[1].setAttributeNS(null, 'height', '12px')
+        myText[1].setAttributeNS(null, 'y', 22 + HeadlineHeight)
+        myText[1].setAttributeNS(null, 'style', 'font-size:8px')
+        myText[1].setAttributeNS(null, 'x', (offset + xSunSet * maxSpan / (24 * 60) - 25))
+        this.element.find("svg")[0].appendChild(myText[1])
+
+        mySunLines[2] = this._CreateSvgLine('1.0')
+        mySunLines[2].setAttributeNS(null, 'x1', offset + xSunSet * maxSpan / (24 * 60));
+        mySunLines[2].setAttributeNS(null, 'x2', offset + xSunSet * maxSpan / (24 * 60));
+        mySunLines[2].setAttributeNS(null, 'y1', 22 + HeadlineHeight);
+        mySunLines[2].setAttributeNS(null, 'y2', 22 + 7 * 12 + HeadlineHeight);
+        mySunLines[2].setAttributeNS(null, 'style', 'stroke:yellow;')
+        this.element.find("svg")[0].appendChild(mySunLines[2])
+    },
+    // *****************************************************
+    // showActualTime
+    // *****************************************************
+    _showActualTime: function(HeadlineHeight) {
+        myDate = new Date()
+        myactHour = myDate.getHours()
+        myactMin = myDate.getMinutes()
+        myactTime = ('00' + myactHour).slice(-2) + ':' + ('00' + myactMin).slice(-2)
+
+        // Add the actual TimeLine to the SVG
+        maxSpan = (24 * offset)
+        actPos = maxSpan / (24 * 60) * (myactHour * 60 + myactMin)
+        myActTimeLine = this._CreateSvgLine('1.0')
+        myActTimeLine.setAttributeNS(null, 'x1', actPos + offset);
+        myActTimeLine.setAttributeNS(null, 'x2', actPos + offset);
+        myActTimeLine.setAttributeNS(null, 'y1', (12 * myOptions.showsun) + 10 + HeadlineHeight);
+        myActTimeLine.setAttributeNS(null, 'y2', 30 + (7 - !myOptions.showsun) * 12 + HeadlineHeight);
+        myActTimeLine.setAttributeNS(null, 'style', 'stroke:blue;')
+        myActTimeLine.setAttributeNS(null, 'id', 'actTimeLine-' + this.uuid);
+        this.element.find("svg")[0].appendChild(myActTimeLine)
+        if (myactHour < 12) {
+            modifier = 1
+        } else {
+            modifier = -43
+        }
+        myActTime = this._CreateSvgBox1("0.5")
+        myActTime.setAttributeNS(null, 'width', '35');
+        myActTime.childNodes[0].setAttributeNS(null, 'width', '35');
+        myActTime.childNodes[1].innerHTML = myactTime
+        myActTime.childNodes[1].setAttributeNS(null, 'x', '17.5');
+        myActTime.childNodes[1].setAttributeNS(null, 'style', 'fill:white;font-size: 0.5em;text-anchor: middle;');
+
+        myActTime.childNodes[0].style.fill = 'blue'
+        myActTime.childNodes[0].setAttributeNS(null, 'style', 'fill:blue; fill-opacity:1.0;');
+        myActTime.childNodes[0].setAttributeNS(null, 'ry', '5');
+        myActTime.childNodes[0].setAttributeNS(null, 'rx', '5');
+        myActTime.setAttributeNS(null, 'x', actPos + offset + modifier);
+        myActTime.setAttributeNS(null, 'y', 20 + (7 - !myOptions.showsun) * 12 + HeadlineHeight);
+        myActTime.setAttributeNS(null, 'id', 'actTime-' + this.uuid);
+        this.element.find("svg")[0].appendChild(myActTime)
+    },
+    // *****************************************************
+    // CreateActiveButton
+    // *****************************************************
+    _CreateActiveButton: function(active) {
+        // add Checkbox with Active/InActive
+        btnActive = this._CreateSvgBox1("0.5")
+        btnActive.setAttributeNS(null, 'x', 5);
+        btnActive.setAttributeNS(null, 'y', 5);
+        btnActive.setAttributeNS(null, "width", "25px");
+        btnActive.setAttributeNS(null, "height", "25px");
+
+        btnActive.setAttribute("id", "btnActive");
+        btnActive.childNodes[0].setAttributeNS(null, "x", "1px");
+        btnActive.childNodes[0].setAttributeNS(null, "y", "5px");
+        btnActive.childNodes[0].setAttributeNS(null, "rx", "5");
+        btnActive.childNodes[0].setAttributeNS(null, "ry", "5");
+        btnActive.childNodes[0].setAttributeNS(null, "width", "21px");
+        btnActive.childNodes[0].setAttributeNS(null, "height", "20px");
+        btnActive.childNodes[1].setAttributeNS(null, "width", "19px");
+        btnActive.childNodes[1].setAttributeNS(null, "height", "19px");
+        btnActive.childNodes[1].setAttributeNS(null, "style", 'fill:black; text-anchor:middle; font-size:9.5px;')
+        btnActive.childNodes[1].setAttributeNS(null, "x", "11.5");
+        btnActive.childNodes[1].setAttributeNS(null, "y", "18.5");
+
+        btnActive.setAttributeNS(null, 'id', 'btnActive');
+        btnActive.childNodes[0].setAttributeNS(null, 'style', ' fill-opacity:1.0;'); // fill:lightgray;
+
+
+        active == false ? btnActive.classList.add("icon0") : btnActive.classList.add("icon1")
+        active == false ? btnActive.childNodes[1].innerHTML = String("✘") : btnActive.childNodes[1].innerHTML = String("✔");
+        this.element.find("svg")[0].appendChild(btnActive)
+    },
+    // *****************************************************
+    // CalcTimeLine
+    // *****************************************************
+    _CalcTimeLine: function(myInstance) {
+        myDate = new Date()
+        // Calc the delay
+        var delay = (60 - myDate.getSeconds()) * 1000 + 1000;
+        setTimeout(function() {
+            offset = myInstance.options.mySvgWidth / 25
+            if (myactHour < 12) {
+                modifier = 1
+            } else {
+                modifier = -43
+            }
+            maxSpan = (24 * offset)
+            actPos = maxSpan / (24 * 60) * (myactHour * 60 + myactMin)
+            myActTimeLine = myInstance.element.find('#actTimeLine-' + myInstance.uuid)[0]
+            myActTime = myInstance.element.find('#actTime-' + myInstance.uuid)[0]
+
+            try {
+                myActTimeLine.setAttributeNS(null, 'x1', actPos + offset);
+                myActTimeLine.setAttributeNS(null, 'x2', actPos + offset);
+                myActTime.setAttributeNS(null, 'x', actPos + offset + modifier);
+            } catch (e) {
+                console.log('problem while updating TimeLine for ' + myInstance.uuid + ' Error : ' + e)
+            }
+            myDate = new Date()
+            myactHour = myDate.getHours()
+            myactMin = myDate.getMinutes()
+            myactTime = ('00' + myactHour).slice(-2) + ':' + ('00' + myactMin).slice(-2)
+
+            myActTime.childNodes[1].innerHTML = myactTime
+            TimeStamp = new Date()
+            // console.log(TimeStamp + '-' + myactTime + '- Seconds : '+
+            // TimeStamp.getSeconds()+ ' - Offset:'+ offset +'-Instance
+            // :'+myInstance.uuid )
+
+            myInstance._CalcTimeLine(myInstance)
+        }, delay)
+
+    }
 
 });
-
-
