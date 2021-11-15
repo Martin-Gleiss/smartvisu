@@ -562,10 +562,10 @@
 * @param {id=} unique id for this widget (optional)
 * @param {item(dict)} the item of the UZSU (NOT the item which is switched by UZSU)
 * @param {text=} headline of Table (optional, default: empty)
-* @param {value=1} value for 'on' state (optional)
-* @param {value=0} value for 'off' state (optional)
-* @param {color=green} the color for the 'on' state, e.g. '#f00' for red (default 'green' of the design)
-* @param {color=red} the color for the 'off' state, e.g. '#f00' for red (default 'red' of the design)
+* @param {value[?]=1} value for 'on' state (optional), if using array form keep in mind to get color array same length, if not last color would be used for missing entries - for correct tool-tip valueparameter list should include all values
+* @param {value[?]=0} value for 'off' state (optional), if using array form keep in mind to get color array same length, if not last color would be used for missing entries - for correct tool-tip valueparameter list should include all values
+* @param {color[?]=green} the color for the 'on' state, e.g. '#f00' for red (default 'green' of the design)
+* @param {color[?]=red} the color for the 'off' state, e.g. '#f00' for red (default 'red' of the design)
 * @param {color=lightgrey} the color for the 'off' state for disabled entries, e.g. '#f00' for red (default 'lightgrey' of the design)
 * @param {color=grey} the color for the 'off' state for disabled entries, e.g. '#f00' for red (default 'grey' of the design)
 * @param {text(false,true)=true} fill the times from ON to OFF with ON-color (default 'true' )
@@ -588,21 +588,19 @@
 * @author      Andre Kohler
 */
 
-
-{% macro uzsutable(id, item, headline, value_on, value_off, color_on, color_off, color_on_disabled, color_off_disabled, fill, granularity, borderstyle, showzoombutton, showtooltip, showsun, showactualtime, inactivestyle, valueType, valueParameterList, _backend) %}
+{% macro uzsutable(id, item, headline, value_on, value_off, color_on, color_off, color_on_disabled, color_off_disabled, fill, granularity, borderstyle, showzoombutton, showtooltip, showsun, showactualtime, inactivestyle, valueType, valueparameterlist, _backend) %}
 	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsutable" data-item="{{ item }}"
 		data-headline="{{ headline|default('') }}" data-designType="{{ _backend|default('') }}"
-		data-val-on="{{ value_on|default(1) }}" data-val-off="{{ value_off|default(0) }}" data-granularity="{{ granularity|default('1h') }}"
-		data-color-on="{{ color_on|default('green') }}" data-color-off="{{ color_off|default('red') }}"
+		data-val-on="{{ implode(value_on)|default(implode(1)) }}"  data-val-off="{{ implode(value_off)|default(implode(0)) }}"" data-granularity="{{ granularity|default('1h') }}"
+		data-color-on="{{ implode(color_on)|default(implode('green')) }}" data-color-off="{{ implode(color_off)|default(implode('red')) }}"
 		data-color-on-disabled="{{ color_on_disabled|default('lightgrey') }}" data-color-off-disabled="{{ color_off_disabled|default('grey') }}"
 		data-fill="{{ fill|default('true') }}" data-borderstyle="{{ implode(borderstyle)|default('solid') }}"
 		data-showtooltip="{{ showtooltip|default('true') }}" data-showsun="{{ showsun|default('true') }}" data-showactualtime="{{ showactualtime|default('true') }}"
-		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueparameterlist)|default(implode(['on:1','off:0'])) }}"
+		data-valueType="{{ valueType|default('bool') }}" data-valueparameterlist="{{ implode(valueparameterlist)|default(implode(['on:1','off:0'])) }}"
 		data-showzoombutton="{{ showzoombutton|default('true') }}" data-inactivestyle="{{ inactivestyle|default('1') }}">
 		
 		<svg id="{{ uid(page, item) }}" class="highcharts-root" width="100%" viewbox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" version="1.1"> 
 		</svg>
-
 
 		{% if showzoombutton == 'true' or showzoombutton == 'True' %}
 		<table width=50% style="font-size:12px;margin-left: auto;margin-right: auto;">
