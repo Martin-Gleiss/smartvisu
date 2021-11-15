@@ -10,6 +10,7 @@
 - plot widgets interpret duration values without units as timestamps (same behaviour as smarthomeNG)
 - new widget appliance.iprouter_v2 displays data from refactored enertex ip router service
 - uzsu widgets support the time series mode provided by the new smarthomeNG UZSU plugin.
+- device.uzsutable provides more colors corresponding to the "on" and "off" values and a fill option until the next switching event..
 
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
