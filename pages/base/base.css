@@ -1512,6 +1512,15 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   padding: 0.1em !important;
   text-align: center !important;
 }
+
+.uzsuTimeInput::-webkit-calendar-picker-indicator,
+.uzsuTimeMaxMinInput::-webkit-calendar-picker-indicator {
+	width: 1.8ex;
+	height:1.8ex;
+	margin-left: 0px;
+	border: 0;
+}
+
 .uzsuTimeInput::-webkit-inner-spin-button,
 .uzsuTimeMaxMinInput::-webkit-inner-spin-button,
 .uzsuTimeOffsetInput::-webkit-inner-spin-button,
