@@ -519,8 +519,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 			"<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeSerieMin uzsuTimeCronseriesstart'>" +
 		  "</div>" +
 		  "<div class='uzsuCell'>" +
-			"<div class='uzsuCellText'>" + sv_lang.uzsu.seriesintervall + "</div>" +
-			"<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuSerieTimeInterval'>" +
+			"<div class='uzsuCellText'>" + sv_lang.uzsu.seriesintervall + "&nbsp;&nbsp;HH : MM</div>" +
+			"<input type='time' data-clear-btn='false' value='00:00' class='uzsuTimeMaxMinInput uzsuSerieTimeInterval'>" +
 		  "</div>" +
 		  "<div class='uzsuCell'>" +
               "<div class='uzsuCellText'></div>" +
@@ -727,9 +727,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     }
 	uzsuCurrentRows.find('.uzsuTimeMax').val(responseEntry.timeMax);
     uzsuCurrentRows.find('.uzsuTimeCron').val(responseEntry.timeCron);
-    if(responseEntry.calculated != null) {
+    if(responseEntry.calculated != null) 
       uzsuCurrentRows.find('.uzsuCalculated').val(responseEntry.calculated);
-    }
+  
 	// fill time series
 	if(self.options.designtype == '0' && this.hasSeries) {
     	if (responseEntry.hasOwnProperty("series"))
@@ -752,8 +752,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             .end().find('[value="'+responseEntry.series.start.timeOffsetType+'"]:radio').prop('checked', true).checkboxradio("refresh");
 			uzsuCurrentRows.find('.uzsuTimeMaxseriesstart').val(responseEntry.series.start.timeMax);
 			uzsuCurrentRows.find('.uzsuTimeCronseriesstart').val(responseEntry.series.start.timeCron);
-			if(responseEntry.calculated != null) 
-			  uzsuCurrentRows.find('.uzsuCalculated').val(responseEntry.calculated);
+			if(responseEntry.hasOwnProperty('seriesCalculated') && responseEntry.seriesCalculated[0].seriesMin != null) 
+			  uzsuCurrentRows.find('.uzsuCalculatedseriesstart').val(responseEntry.seriesCalculated[0].seriesMin);
 		  
 			uzsuCurrentRows.find('.uzsuTimeMinseriesend').val(responseEntry.series.end.timeMin);
 			uzsuCurrentRows.find('.uzsuTimeOffsetInputseriesend').val(parseInt(responseEntry.series.end.timeOffset));
@@ -761,8 +761,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             .end().find('[value="'+responseEntry.series.end.timeOffsetType+'"]:radio').prop('checked', true).checkboxradio("refresh");
 			uzsuCurrentRows.find('.uzsuTimeMaxseriesend').val(responseEntry.series.end.timeMax);
 			uzsuCurrentRows.find('.uzsuTimeCronseriesend').val(responseEntry.series.end.timeCron);
-			if(responseEntry.calculated != null) 
-			  uzsuCurrentRows.find('.uzsuCalculated').val(responseEntry.calculated);
+			if(responseEntry.hasOwnProperty('seriesCalculated') && responseEntry.seriesCalculated[0].seriesMax != null) 
+			  uzsuCurrentRows.find('.uzsuCalculatedseriesend').val(responseEntry.seriesCalculated[0].seriesMax);
 					
 			// den Status richtig setzen
     		if (responseEntry.series.active == true)
@@ -1061,8 +1061,10 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 				responseEntry.series.end.event = uzsuCurrentRows.find('.uzsuEventseriesend select').val();
 			else
 				responseEntry.series.end.event = 'time';
-
-    		}
+			
+			if (responseEntry.hasOwnProperty('seriesCalculated'))
+				delete responseEntry.seriesCalculated;
+			}
     	else
     		{
     		try
@@ -1192,6 +1194,15 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       var responseEntry = response.list[numberOfRow];
       self._uzsuSaveTableRow(responseEntry, tableRow);
     });
+	if (response.hasOwnProperty('SunCalculated'))
+		delete response.SunCalculated;
+	try {
+      delete response.sunrise;
+	  delete response.sunset; 
+	  delete response.lastvalue;
+	  }
+      catch (e) {}
+
     // über json Interface / Treiber herausschreiben
     if (saveSmarthome) {
       this._uzsuCollapseTimestring(response);
@@ -1328,6 +1339,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // Handler, um den Status anhand des Pulldowns SUN zu setzen
     uzsuPopup.delegate('.uzsuRowExpert [class*="uzsuEvent"] select, input[class*="uzsuSunActive"]', 'change', function (){
 	  var searchClass = $(this)[0].className;
+	  if ($(this)[0].nodeName == "SELECT") 
+		searchClass = $(this).parents()[2].className;		  
 	  var searchPos = searchClass.lastIndexOf('series');
 	  var caller = (searchPos < 0 ? '' : searchClass.substring(searchPos));
       self._uzsuSetSunActiveState($(this), caller);
@@ -1357,7 +1370,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   },
 
   _uzsuParseAndCheckResponse: function(response) {
-    var designType = this.options.designtype;
+	var designType = this.options.designtype;
     var valueType = this.options.valuetype;
 	var self = this;
 
