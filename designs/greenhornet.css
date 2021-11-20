@@ -1675,3 +1675,9 @@ html .ui-btn.icon1,
 [data-widget="basic.symbol"] .icon1 {
 	color: #a6f829;
 }
+
+/** set color of calendar picker symbol in webkit time input fields for UZSU */
+.uzsuTimeInput::-webkit-calendar-picker-indicator,
+.uzsuTimeMaxMinInput::-webkit-calendar-picker-indicator {
+	background-image: url(images/webkit_clock_ws.svg);
+}
