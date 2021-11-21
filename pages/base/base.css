@@ -1379,7 +1379,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 }
 
 .smallshut_wrapper {
-  width: 85%;
+  width: 100%;
   float: left;
   overflow: hidden;
 }
