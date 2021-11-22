@@ -93,7 +93,7 @@
 	{%- endfor %}
 {% endif %}
 
-	<script src="vendor/jquery/jquery-2.2.4.{{ config_js }}"></script>
+	<script src="vendor/jquery/jquery-2.2.4.min.js"></script>
 
 	<script>
 		$(document).on("mobileinit", function () {
@@ -117,7 +117,7 @@
 		});
 	</script>
 
-	<script src="vendor/jquery.mobile/jquery.mobile-1.4.5-patch.{{ config_js }}"></script>
+	<script src="vendor/jquery.mobile/jquery.mobile-1.4.5-patch.min.js"></script>
 
 /** JavaScript assets **/
 {% set jsFiles = [
@@ -135,17 +135,13 @@
 		config_animation ? 'widgets/animation.js' : null,
 		'lib/base/base.js',
 		'lib/base/base.php',
+		'driver/io_' ~ config_driver ~ '.js',
 		'pages/' ~ config_pages ~ '/visu.js'
 	] %}
-{% if config_pages != 'docu' and config_pages[:7] != 'example' %}
-	{% set jsFiles = jsFiles|merge(['driver/io_' ~ config_driver ~ '.js']) %}
-	{% if isdir('driver/'~config_driver, '\.js') %}
-		{% for file in dir('driver/'~config_driver, '(?!config)(.*)(\.js)') %}
-			{% set jsFiles = jsFiles|merge([file.path]) %}
-		{% endfor %}
-	{% endif %}
-{% else  %}
-	{% set jsFiles = jsFiles|merge(['driver/io_offline.js']) %}
+{% if isdir('driver/'~config_driver, '\.js') %}
+	{% for file in dir('driver/'~config_driver, '(.*)(\.js)') %}
+		{% set jsFiles = jsFiles|merge([file.path]) %}
+	{% endfor %}
 {% endif %}
 {% for file in dir('widgets', '(.*)(\.js)') %}
 	{% set jsFiles = jsFiles|merge([file.path]) %}
@@ -205,10 +201,8 @@
 	$(document).on("vmousedown pagecontainershow", function() {
 		if(homeTimeout !== undefined)
 			window.clearTimeout(homeTimeout);
-		if($.mobile.activePage && $.mobile.activePage.attr("id").substring($.mobile.activePage.attr("id").length -5) != "index" && $.mobile.activePage.attr("id").substring($.mobile.activePage.attr("id").length -6) != "config") {
-			var params = new URLSearchParams(window.location.search);
-			homeTimeout = window.setTimeout(function() { $.mobile.changePage(window.location.pathname + (params.get('pages') ? '?pages='+params.get('pages') : '')); }, {{ config_backtohometime * 1000 }});
-		}
+		if($.mobile.activePage && $.mobile.activePage.attr("id") != "index" && $.mobile.activePage.attr("id") != "config")
+			homeTimeout = window.setTimeout(function() { $.mobile.changePage("index.php"); }, {{ config_backtohometime * 1000 }});
 	});
 {% endif %}
 
