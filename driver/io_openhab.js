@@ -176,8 +176,8 @@ var io = {
 	 *
 	 * @param      realtime switch
 	 */
-	run: function (realtime) {
-		io.debug && console.log("io.run(realtime = " + realtime + ")");
+	run: function () {
+		io.debug && console.log("io.run(realtime = " + sv.config.driver.realtime + ")");
 
 		if (widget.listeners().length) {
 			var items = widget.listeners();
@@ -193,7 +193,7 @@ var io = {
 				}).done(function(ohItem) {
 					var item = ohItem.name;
 					io.itemType[item] = ohItem.type;
-					if (!realtime) {
+					if (!sv.config.driver.realtime) {
 						var val = io.convertState(item, ohItem.state);
 						io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
 						widget.update(item, val);
@@ -201,7 +201,7 @@ var io = {
 				}).fail(notify.json);
 			}
 
-			if (realtime) {
+			if (sv.config.driver.realtime) {
 				if (io.auth && typeof EventSourcePolyfill == 'function') {
 					io.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 60000, headers: (io.auth !== false ? io.auth : {})});
 				} else if (typeof EventSource == 'function') {

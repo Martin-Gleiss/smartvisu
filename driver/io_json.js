@@ -75,15 +75,15 @@ var io = {
 	/**
 	 * Let the driver work
 	 */
-	run: function (realtime) {
-		// old items
+	run: function () {
+		// refresh all widgets with values from the buffer
 		widget.refresh();
 
-		// new items
+		// get item updates from the backend
 		io.all();
 
 		// run polling
-		if (realtime) {
+		if (sv.config.driver.realtime) {
 			io.start();
 		}
 	},

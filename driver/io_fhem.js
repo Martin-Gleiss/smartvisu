@@ -116,7 +116,7 @@ var io = {
   // -----------------------------------------------------------------------------
   // Called after each page change
   // -----------------------------------------------------------------------------
-  run: function(realtime) {
+  run: function() {
     if (io.socket != undefined)
 		io.log(1, "run (readyState=" + io.socket.readyState + ")");
 	else
@@ -539,13 +539,13 @@ var io = {
     
   },
   
-	/**
-	 * stop all subscribed series
-	 */
-	stopseries: function () {
-		// TODO
-		io.log(2, "series cancelling not yet implemented");
-	},
-  
-  
+   /**
+    * stop all subscribed series
+    */
+   stopseries: function () {
+      // TODO
+	  // if the backend supports cancelling of the series subscriptions this should be implemented here
+	  io.log(2, "series cancelling not yet implemented");
+   },
+    
 };

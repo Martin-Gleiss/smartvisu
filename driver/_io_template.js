@@ -69,7 +69,7 @@ var io = {
 	/**
 	 * Lets the driver work
 	 */
-	run: function (realtime) {
+	run: function () {
 		// TODO   
 	},
 

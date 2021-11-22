@@ -113,11 +113,11 @@ var io = {
 	/**
 	 * Let the driver work
 	 */
-	run: function (realtime) {
-		// old items
+	run: function () {
+		// refresh all widgets with values from the buffer
 		widget.refresh();
 
-		// new items
+		// subscribe item updates from the backend
 		io.monitor();
 	},
 

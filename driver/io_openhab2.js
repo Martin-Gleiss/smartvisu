@@ -127,8 +127,8 @@ var io = {
 	/**
 	 * Lets the driver work
 	 */
-	run: function (realtime) {
-		io.debug && console.debug("io.run(realtime = " + realtime + ")");
+	run: function () {
+		io.debug && console.debug("io.run(realtime = " + sv.config.driver.realtime + ")");
 		
 		if (io.eventListener.readyState == 0 || io.eventListener.readyState == 1) {
 			io.eventListener.close();
@@ -158,7 +158,7 @@ var io = {
 		
         io.plot.init();
 
-		if (realtime) {
+		if (sv.config.driver.realtime) {
 			if (typeof EventSource == 'function') {
 				io.eventListener = new EventSource(io.url + "events?topics=smarthome/items/*/statechanged");
 				io.eventListener.onmessage = function(message) {
