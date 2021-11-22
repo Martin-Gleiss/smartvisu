@@ -18,9 +18,13 @@ var io = {
 	// the address
 	address: '',
 
-	// the port
+	// the ports
 	port: '',
-
+	tlsport: '',
+	
+	// the pages used for offline_*.var filename
+	pages: '',
+	
 	uzsu_type: '0',
 
 	// -----------------------------------------------------------------------------
@@ -61,10 +65,15 @@ var io = {
 	 *
 	 * Driver config parameters are globally available as from v3.2
 	 */
-	init: function (address, port, ssl, username, password) {
-		io.address = sv.config.driver.address;
-		io.port = sv.config.driver.port;
+	init: function () {
+		io.address = '';
+		io.port = '';
+		io.tlsport = '';
 		io.stop();
+		var params = new URLSearchParams(location.search.substring(1));
+		if (params.has("pages"))
+			io.pages = params.get("pages"); 
+		console.log('[io.offline]: driver started with file "./temp/io_'+io.pages+'.var"');
 	},
 
 	/**
@@ -126,7 +135,7 @@ var io = {
 	 */
 	get: function (item) {
 		$.ajax({  url: "driver/io_offline.php",
-			data: {"item": item},
+			data: {"pages": io.pages, "item": item},
 			type: "GET",
 			dataType: 'json',
 			async: true,
@@ -152,7 +161,7 @@ var io = {
 
 		io.stop();
 		$.ajax({  url: "driver/io_offline.php",
-			data: {"item": item, "val": JSON.stringify(val)},
+			data: {"pages": io.pages, "item": item, "val": JSON.stringify(val)},
 			type: 'POST',
 			dataType: 'json',
 			cache: false
@@ -176,7 +185,7 @@ var io = {
 		// only if anyone listens
 		if (items.length) {
 			$.ajax({  url: 'driver/io_offline.php',
-				data: {"item": items},
+				data: {"pages": io.pages, "item": items},
 				type: 'GET',
 				dataType: 'json',
 				async: true,

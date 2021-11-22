@@ -32,9 +32,10 @@ class driver_offline
 	 */
 	public function __construct($request)
 	{
+		$pages = (isset($request['pages']) && $request['pages'] != '') ? $request['pages'] : config_pages;
 		$this->item = explode(",", $request['item']);
 		$this->val = (isset($request['val'])) ? $request['val'] : '';
-		$this->filename = const_path.'temp/offline_' . ((isset($request['pages']) && $request['pages']=='docu') ? 'docu' : config_pages) . '.var';
+		$this->filename = const_path.'temp/offline_'.$pages.'.var';
 	}
 
 	/**

@@ -46,6 +46,7 @@
 - Page navigation away from widget assistant often failed and / or threw errors in console
 - status.activelist expanded all contents when unser returned to the page (now all are collapsed)
 - digiclock disappeared or showed wrong times if more than one page with clock was in the DOM
+- offline data were not correctly loaded if "pages" parameter was used in the URL. Now we evaluate "pages" and set the offline filename accordingly.
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
