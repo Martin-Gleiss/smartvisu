@@ -273,10 +273,10 @@ macro will be called in the "addition" parameter of config_flip for the reverse 
 				element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_port"])').hide());
 				element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_tlsport"])').hide());
 			}
-			else {
+			else if (event.type == 'change'){
 			    element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_address"])').show());
 				element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_port"])').show());
-				if ($('#global_driver').data("hidden").selector.indexOf('driver_tlsport') == -1)
+				if ($('#{{ source }}_driver').data("hidden").selector.indexOf('driver_tlsport') == -1)
 					element.data("hidden", element.closest("fieldset").find('.ui-field-contain:has([name="driver_tlsport"])').show());
 			};
 		})
