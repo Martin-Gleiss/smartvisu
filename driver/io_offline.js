@@ -73,7 +73,7 @@ var io = {
 		var params = new URLSearchParams(location.search.substring(1));
 		if (params.has("pages"))
 			io.pages = params.get("pages"); 
-		console.log('[io.offline]: driver started with file "./temp/io_'+io.pages+'.var"');
+		console.log('[io.offline]: driver started'+(io.pages != '' ? ' with file "./temp/io_'+io.pages+'.var"' :''));
 	},
 
 	/**
