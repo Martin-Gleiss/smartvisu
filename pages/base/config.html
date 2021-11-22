@@ -40,7 +40,7 @@
 		{% set values = read_config(source) %}
 		{% set id = (source != "global") ? '_' ~ source : '' %}
 		<div id="config_tab_{{ source }}">
-			<h2>{{ lang('configuration_page', source ~ 'tab', 'hint') }}</h2>
+			<h2>{{ lang('configuration_page', source ~ 'tab', 'hint')|replace({'%pages%': config_pages}) }}</h2>
 			<form class="configform">
 				<fieldset>
 
