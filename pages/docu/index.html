@@ -271,7 +271,7 @@
 
 {% block footer %}
 	<script>
-		$('#docu_{{ page }}').on('pageinit', function (event) {
+		$('#{{ page }}').on('pageinit', function (event) {
 			prettyPrint();
 		});
 	</script>
