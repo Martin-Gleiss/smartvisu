@@ -72,7 +72,7 @@
 	</div>
 
 	<script type="text/javascript">
-		$('#{{ config_pages~'_'~page }}').on('pagecreate', function (event, ui) {
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
 
 			var feed = document.URL.explode('&');
 			if (feed[1] == null) {

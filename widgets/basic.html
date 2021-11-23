@@ -114,7 +114,7 @@
 */
 {% macro glue(id_from, id_to) %}
 	<script>
-		$('#{{ config_pages~'_'~page }}').on('pageinit', function (event, ui) {
+		$('#{{ page }}').on('pageinit', function (event, ui) {
 			$('#{{ uid(page, id_from) }}').on('click', function () {
 				window.setTimeout(function () {
 					var items = widget.explode($('#{{ uid(page, id_to) }}').attr('data-item'));
