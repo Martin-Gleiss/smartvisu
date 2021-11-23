@@ -70,10 +70,16 @@ var io = {
 		io.port = '';
 		io.tlsport = '';
 		io.stop();
-		var params = new URLSearchParams(location.search.substring(1));
-		if (params.has("pages"))
-			io.pages = params.get("pages"); 
-		console.log('[io.offline]: driver started'+(io.pages != '' ? ' with file "./temp/io_'+io.pages+'.var"' :''));
+		var pagesIndex = location.search.indexOf('pages');
+		var ampersIndex = location.search.indexOf('&');
+		if (pagesIndex > 0){
+			io.pages = (ampersIndex > pagesIndex ? location.search.substring(pagesIndex + 6, ampersIndex) : location.search.substring(pagesIndex + 6)) ;	
+		}
+		// the easy method does not work with older tablets	(e.g. Safari iOS < v10.3)
+		//var params = new URLSearchParams(location.search.substring(1));
+		//if (params.has("pages"))
+		//io.pages = params.get("pages"); 
+		console.log('[io.offline]: driver started'+(io.pages != '' ? ' with file "./temp/offline_'+io.pages+'.var"' :''));
 	},
 
 	/**
