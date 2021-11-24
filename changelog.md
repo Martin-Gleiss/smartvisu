@@ -18,6 +18,8 @@
 - smarthome.py driver accepts a second port for TLS communication. Port & protocol will be switched according to host protocol (http / https) 
 - refactored php service (enertex.iprouter-v2.php) for enertex IP Router connects to current firmware version and provides more data 
 - anchor links can now be used, e.g. href="index.php?page=myPage&anchor=myAnchor" 
+- ressource intensive pages (config, templatechecker, widegt assistant) are cleared from DOM after usage in order to optimize performance. 
+  Browser back/ forward buttons are blocked on these pages.
 
 ### Improvements
 - Driver config data are globally availble now in the sv.config.driver{} array
