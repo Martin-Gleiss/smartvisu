@@ -20,6 +20,7 @@
 - anchor links can now be used, e.g. href="index.php?page=myPage&anchor=myAnchor" 
 - ressource intensive pages (config, templatechecker, widegt assistant) are cleared from DOM after usage in order to optimize performance. 
   Browser back/ forward buttons are blocked on these pages.
+- header menu icons get animated on click in order to visualize an activated link on slow devices 
 
 ### Improvements
 - Driver config data are globally availble now in the sv.config.driver{} array
