@@ -10,22 +10,28 @@
 
 <div id="menu" class="menu">
 
-	<a id="menu-rooms" class="icon1" href="index.php">
-		<img class="icon{% if page == 'index' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}control_building_empty.svg" alt="home" /></a>
+	<a id="{{ page }}_menu-rooms" class="icon1" href="index.php" onclick="linkAnimate(id)">
+		<img class="icon{% if page == 'index' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}control_building_empty.svg" alt="home" /></a>
 		
 	{% if page != 'config' %}
-		<a id="menu-category" class="icon1" href="index.php?page=category">
-			<img class="icon{% if page == 'category' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}time_manual_mode.svg" alt="category" /></a>
+		<a id="{{ page }}_menu-category" class="icon1" href="index.php?page=category" onclick="linkAnimate(id)">
+			<img class="icon{% if page == 'category' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}time_manual_mode.svg" alt="category" /></a>
 
-		<a id="menu-apps" class="icon1" href="index.php?page=apps">
-			<img class="icon{% if page == 'apps' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}it_net.svg" alt="apps" /></a>
+		<a id="{{ page }}_menu-apps" class="icon1" href="index.php?page=apps" onclick="linkAnimate(id)">
+			<img class="icon{% if page == 'apps' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}it_net.svg" alt="apps" /></a>
 			
 	{% else%}	
-		<a id="menu-docu" data-ajax="false" href="index.php?pages=docu&amp;page=index">
+		<a id="{{ page }}_menu-docu" data-ajax="false" href="index.php?pages=docu&amp;page=index" onclick="linkAnimate(id)">
 			<img class="icon {{ pages == 'docu' ? ' icon1' }}" src="{{ icon0 }}edit_copy.svg"/></a>
 	
 	{% endif %}
-		<a id="menu-system" class="icon1" href="index.php?page=systempage">
-			<img class="icon{% if page == 'systempage' %} icon1{% else %} icon0{% endif %} }}" src="{{ icon0 }}edit_settings.svg" alt="config" /></a>
+		<a id="{{ page }}_menu-system" class="icon1" href="index.php?page=systempage" onclick="linkAnimate(id)">
+			<img class="icon{% if page == 'systempage' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}edit_settings.svg" alt="config" /></a>
 
 </div>
+<script>
+function linkAnimate(id) {
+	// animate link icons to show activity on slow devices
+	$('#'+id).find('svg').fadeTo(250, 0.25).fadeTo(250, 1);
+}
+</script>
