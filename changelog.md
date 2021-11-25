@@ -15,7 +15,7 @@
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
 - openHAB driver from Patrik Germann (thanks!) supports SSL and authentication
-- smarthome.py driver accepts a second port for TLS communication. Port & protocol will be switched according to host protocol (http / https) 
+- smarthome(NG) driver (io_smarthome.py.js) accepts a second port for TLS communication. Port & protocol will be switched according to host protocol (http / https) 
 - refactored php service (enertex.iprouter-v2.php) for enertex IP Router connects to current firmware version and provides more data 
 - anchor links can now be used, e.g. href="index.php?page=myPage&anchor=myAnchor" 
 - ressource intensive pages (config, templatechecker, widegt assistant) are cleared from DOM after usage in order to optimize performance. 
