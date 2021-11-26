@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v9.1.0 (2021-05-03)
+ * @license Highcharts JS v9.3.1 (2021-11-05)
  *
  * Boost module
  *
@@ -456,7 +456,8 @@
                 var seriesOptions = series.options,
                     zMin = Number.MAX_VALUE,
                     zMax = -Number.MAX_VALUE;
-                if (gl && shaderProgram && series.type === 'bubble') {
+                if (gl && shaderProgram && series.is('bubble')) {
+                    var pxSizes = series.getPxExtremes();
                     zMin = pick(seriesOptions.zMin, clamp(zCalcMin, seriesOptions.displayNegative === false ?
                         seriesOptions.zThreshold : -Number.MAX_VALUE, zMin));
                     zMax = pick(seriesOptions.zMax, Math.max(zMax, zCalcMax));
@@ -468,8 +469,8 @@
                     setUniform('bubbleZMin', zMin);
                     setUniform('bubbleZMax', zMax);
                     setUniform('bubbleZThreshold', series.options.zThreshold);
-                    setUniform('bubbleMinSize', series.minPxSize);
-                    setUniform('bubbleMaxSize', series.maxPxSize);
+                    setUniform('bubbleMinSize', pxSizes.minPxSize);
+                    setUniform('bubbleMaxSize', pxSizes.maxPxSize);
                 }
             }
             /**
@@ -672,6 +673,9 @@
                 }
                 if (!to || to > length) {
                     to = length;
+                }
+                if (from >= to) {
+                    return false;
                 }
                 drawMode = drawMode || 'points';
                 gl.drawArrays(gl[drawMode.toUpperCase()], from / components, (to - from) / components);
@@ -925,7 +929,7 @@
                     //
                     cullXThreshold = 1, cullYThreshold = 1, 
                     // The following are used in the builder while loop
-                    x, y, d, z, i = -1, px = false, nx = false, low, chartDestroyed = typeof chart.index === 'undefined', nextInside = false, prevInside = false, pcolor = false, drawAsBar = asBar[series.type], isXInside = false, isYInside = true, firstPoint = true, zoneAxis = options.zoneAxis || 'y', zones = options.zones || false, zoneDefColor = false, threshold = options.threshold, gapSize = false;
+                    x, y, d, z, i = -1, px = false, nx = false, low, chartDestroyed = typeof chart.index === 'undefined', nextInside = false, prevInside = false, pcolor = false, drawAsBar = asBar[series.type], isXInside = false, isYInside = true, firstPoint = true, zoneAxis = options.zoneAxis || 'y', zones = options.zones || false, zoneColors, zoneDefColor = false, threshold = options.threshold, gapSize = false;
                 if (options.boostData && options.boostData.length > 0) {
                     return;
                 }
@@ -935,17 +939,26 @@
                         options.gapSize;
                 }
                 if (zones) {
-                    zones.some(function (zone) {
-                        if (typeof zone.value === 'undefined') {
-                            zoneDefColor = new Color(zone.color);
-                            return true;
+                    zoneColors = [];
+                    zones.forEach(function (zone, i) {
+                        if (zone.color) {
+                            var zoneColor = color(zone.color).rgba;
+                            zoneColor[0] /= 255.0;
+                            zoneColor[1] /= 255.0;
+                            zoneColor[2] /= 255.0;
+                            zoneColors[i] = zoneColor;
+                            if (!zoneDefColor && typeof zone.value === 'undefined') {
+                                zoneDefColor = zoneColor;
+                            }
                         }
-                        return false;
                     });
                     if (!zoneDefColor) {
-                        zoneDefColor = ((series.pointAttribs && series.pointAttribs().fill) ||
-                            series.color);
-                        zoneDefColor = new Color(zoneDefColor);
+                        var seriesColor = ((series.pointAttribs && series.pointAttribs().fill) ||
+                                series.color);
+                        zoneDefColor = color(seriesColor).rgba;
+                        zoneDefColor[0] /= 255.0;
+                        zoneDefColor[1] /= 255.0;
+                        zoneDefColor[2] /= 255.0;
                     }
                 }
                 if (chart.inverted) {
@@ -1114,23 +1127,17 @@
                     closeSegment();
                     return;
                 }
-                // Extract color axis
-                // (chart.axes || []).forEach(function (a) {
-                //     if (H.ColorAxis && a instanceof H.ColorAxis) {
-                //         caxis = a;
-                //     }
-                // });
-                while (i < sdata.length - 1) {
-                    d = sdata[++i];
+                var _loop_1 = function () {
+                        d = sdata[++i];
                     if (typeof d === 'undefined') {
-                        continue;
+                        return "continue";
                     }
                     // px = x = y = z = nx = low = false;
                     // chartDestroyed = typeof chart.index === 'undefined';
                     // nextInside = prevInside = pcolor = isXInside = isYInside = false;
                     // drawAsBar = asBar[series.type];
                     if (chartDestroyed) {
-                        break;
+                        return "break";
                     }
                     // Uncomment this to enable color by point.
                     // This currently left disabled as the charts look really ugly
@@ -1194,7 +1201,7 @@
                     }
                     if (!connectNulls && (x === null || y === null)) {
                         beginSegment();
-                        continue;
+                        return "continue";
                     }
                     if (nx && nx >= xMin && nx <= xMax) {
                         nextInside = true;
@@ -1229,12 +1236,12 @@
                         closestLeft.y = y;
                     }
                     if (y === null && connectNulls) {
-                        continue;
+                        return "continue";
                     }
                     // Cull points outside the extremes
                     if (y === null || (!isYInside && !nextInside && !prevInside)) {
                         beginSegment();
-                        continue;
+                        return "continue";
                     }
                     // The first point before and first after extremes should be
                     // rendered (#9962)
@@ -1243,37 +1250,35 @@
                         isXInside = true;
                     }
                     if (!isXInside && !nextInside && !prevInside) {
-                        continue;
+                        return "continue";
                     }
                     if (gapSize && x - px > gapSize) {
                         beginSegment();
                     }
                     // Note: Boost requires that zones are sorted!
                     if (zones) {
-                        pcolor = zoneDefColor.rgba.slice();
+                        var zoneColor_1;
                         zones.some(function (// eslint-disable-line no-loop-func
                         zone, i) {
                             var last = zones[i - 1];
                             if (zoneAxis === 'x') {
                                 if (typeof zone.value !== 'undefined' && x <= zone.value) {
-                                    if (!last || x >= last.value) {
-                                        pcolor = color(zone.color).rgba;
+                                    if (zoneColors[i] && (!last || x >= last.value)) {
+                                        zoneColor_1 = zoneColors[i];
                                     }
                                     return true;
                                 }
                                 return false;
                             }
                             if (typeof zone.value !== 'undefined' && y <= zone.value) {
-                                if (!last || y >= last.value) {
-                                    pcolor = color(zone.color).rgba;
+                                if (zoneColors[i] && (!last || y >= last.value)) {
+                                    zoneColor_1 = zoneColors[i];
                                 }
                                 return true;
                             }
                             return false;
                         });
-                        pcolor[0] /= 255.0;
-                        pcolor[1] /= 255.0;
-                        pcolor[2] /= 255.0;
+                        pcolor = zoneColor_1 || zoneDefColor || pcolor;
                     }
                     // Skip translations - temporary floating point fix
                     if (!settings.useGPUTranslations) {
@@ -1292,7 +1297,7 @@
                             // entirely, as we're not dependandt on lineTo'ing to it.
                             // See #8197
                             if (inst.drawMode === 'points') {
-                                continue;
+                                return "continue";
                             }
                             // Having this here will clamp markers and make the angle
                             // of the last line wrong. See 9166.
@@ -1327,7 +1332,7 @@
                         if (settings.debug.showSkipSummary) {
                             ++skipped;
                         }
-                        continue;
+                        return "continue";
                     }
                     if (drawAsBar) {
                         // maxVal = y;
@@ -1369,6 +1374,17 @@
                     lastY = y;
                     hadPoints = true;
                     firstPoint = false;
+                };
+                // Extract color axis
+                // (chart.axes || []).forEach(function (a) {
+                //     if (H.ColorAxis && a instanceof H.ColorAxis) {
+                //         caxis = a;
+                //     }
+                // });
+                while (i < sdata.length - 1) {
+                    var state_1 = _loop_1();
+                    if (state_1 === "break")
+                        break;
                 }
                 if (settings.debug.showSkipSummary) {
                     console.log('skipped points:', skipped); // eslint-disable-line no-console
@@ -1579,8 +1595,7 @@
                             s.series.symbol] || textureHandles.circle,
                         scolor = [];
                     if (s.segments.length === 0 ||
-                        (s.segmentslength &&
-                            s.segments[0].from === s.segments[0].to)) {
+                        s.segments[0].from === s.segments[0].to) {
                         return;
                     }
                     if (shapeTexture.isReady) {
@@ -1640,6 +1655,11 @@
                         cbuffer.build(s.colorData, 'aColor', 4);
                         cbuffer.bind();
                     }
+                    else {
+                        // #15869, a buffer with fewer points might already be bound by
+                        // a different series/chart causing out of range errors
+                        gl.disableVertexAttribArray(gl.getAttribLocation(shader.program(), 'aColor'));
+                    }
                     // Set series specific uniforms
                     shader.setColor(scolor);
                     setXAxis(s.series.xAxis);
@@ -1664,9 +1684,7 @@
                     // If the line width is < 0, skip rendering of the lines. See #7833.
                     if (lineWidth > 0 || s.drawMode !== 'line_strip') {
                         for (sindex = 0; sindex < s.segments.length; sindex++) {
-                            // if (s.segments[sindex].from < s.segments[sindex].to) {
                             vbuffer.render(s.segments[sindex].from, s.segments[sindex].to, s.drawMode);
-                            // }
                         }
                     }
                     if (s.hasMarkers && showMarkers) {
@@ -1678,9 +1696,7 @@
                         }
                         shader.setDrawAsCircle(true);
                         for (sindex = 0; sindex < s.segments.length; sindex++) {
-                            // if (s.segments[sindex].from < s.segments[sindex].to) {
                             vbuffer.render(s.segments[sindex].from, s.segments[sindex].to, 'POINTS');
-                            // }
                         }
                     }
                 });
@@ -2658,7 +2674,7 @@
 
         return init;
     });
-    _registerModule(_modules, 'Extensions/BoostCanvas.js', [_modules['Core/Chart/Chart.js'], _modules['Core/Color/Color.js'], _modules['Core/Globals.js'], _modules['Core/Color/Palette.js'], _modules['Core/Series/Series.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js']], function (Chart, Color, H, palette, Series, SeriesRegistry, U) {
+    _registerModule(_modules, 'Extensions/BoostCanvas.js', [_modules['Core/Chart/Chart.js'], _modules['Core/Color/Color.js'], _modules['Core/Globals.js'], _modules['Core/Series/Series.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js']], function (Chart, Color, H, Series, SeriesRegistry, U) {
         /* *
          *
          *  License: www.highcharts.com/license
@@ -2807,7 +2823,7 @@
                         target.boostClipRect = chart.renderer.clipRect();
                         target.renderTarget.clip(target.boostClipRect);
                     }
-                    else if (!(target instanceof H.Chart)) {
+                    else if (!(target instanceof Chart)) {
                         // ctx.clearRect(0, 0, width, height);
                     }
                     if (target.canvas.width !== width) {
@@ -2859,7 +2875,7 @@
                             series.pointArrayMap.join(',') === 'low,high'), isStacked = !!options.stacking, cropStart = series.cropStart || 0, loadingOptions = chart.options.loading, requireSorting = series.requireSorting, wasNull, connectNulls = options.connectNulls, useRaw = !xData, minVal, maxVal, minI, maxI, index, sdata = (isStacked ?
                             series.data :
                             (xData || rawData)), fillColor = (series.fillOpacity ?
-                            new Color(series.color).setOpacity(pick(options.fillOpacity, 0.75)).get() :
+                            Color.parse(series.color).setOpacity(pick(options.fillOpacity, 0.75)).get() :
                             series.color), 
                         //
                         stroke = function () {
@@ -2988,7 +3004,7 @@
                     if (rawData.length > 99999) {
                         chart.options.loading = merge(loadingOptions, {
                             labelStyle: {
-                                backgroundColor: color(palette.backgroundColor).setOpacity(0.75).get(),
+                                backgroundColor: color("#ffffff" /* backgroundColor */).setOpacity(0.75).get(),
                                 padding: '1em',
                                 borderRadius: '0.5em'
                             },
@@ -3215,7 +3231,7 @@
 
         return initCanvasBoost;
     });
-    _registerModule(_modules, 'Extensions/Boost/BoostOverrides.js', [_modules['Core/Chart/Chart.js'], _modules['Core/Options.js'], _modules['Core/Series/Point.js'], _modules['Core/Series/Series.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js'], _modules['Extensions/Boost/BoostUtils.js'], _modules['Extensions/Boost/Boostables.js'], _modules['Extensions/Boost/BoostableMap.js']], function (Chart, O, Point, Series, SeriesRegistry, U, butils, boostable, boostableMap) {
+    _registerModule(_modules, 'Extensions/Boost/BoostOverrides.js', [_modules['Core/Chart/Chart.js'], _modules['Core/DefaultOptions.js'], _modules['Core/Series/Point.js'], _modules['Core/Series/Series.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js'], _modules['Extensions/Boost/BoostUtils.js'], _modules['Extensions/Boost/Boostables.js'], _modules['Extensions/Boost/BoostableMap.js']], function (Chart, D, Point, Series, SeriesRegistry, U, butils, boostable, boostableMap) {
         /* *
          *
          *  Copyright (c) 2019-2021 Highsoft AS
@@ -3227,7 +3243,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var getOptions = O.getOptions;
+        var getOptions = D.getOptions;
         var seriesTypes = SeriesRegistry.seriesTypes;
         var addEvent = U.addEvent,
             error = U.error,
@@ -3449,16 +3465,19 @@
         // If the series is a heatmap or treemap, or if the series is not boosting
         // do the default behaviour. Otherwise, process if the series has no extremes.
         wrap(Series.prototype, 'processData', function (proceed) {
-            var series = this,
-                dataToMeasure = this.options.data,
-                firstPoint;
+            var series = this;
+            var dataToMeasure = this.options.data;
             /**
              * Used twice in this function, first on this.options.data, the second
              * time it runs the check again after processedXData is built.
+             * If the data is going to be grouped, the series shouldn't be boosted.
              * @private
-             * @todo Check what happens with data grouping
              */
             function getSeriesBoosting(data) {
+                // Check if will be grouped.
+                if (series.forceCrop) {
+                    return false;
+                }
                 return series.chart.isChartSeriesBoosting() || ((data ? data.length : 0) >=
                     (series.options.boostThreshold || Number.MAX_VALUE));
             }
@@ -3481,6 +3500,7 @@
                 // Enter or exit boost mode
                 if (this.isSeriesBoosting) {
                     // Force turbo-mode:
+                    var firstPoint = void 0;
                     if (this.options.data && this.options.data.length) {
                         firstPoint = this.getFirstValidPoint(this.options.data);
                         if (!isNumber(firstPoint) && !isArray(firstPoint)) {

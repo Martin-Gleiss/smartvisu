@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v9.1.0 (2021-05-03)
+ * @license Highstock JS v9.3.1 (2021-11-05)
  *
  * Advanced Highcharts Stock tools
  *
