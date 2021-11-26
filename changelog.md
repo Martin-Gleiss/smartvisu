@@ -34,6 +34,7 @@
 
 ### Updated Libraries
 - jQuery v2.2.4 with patch in jQuery mobile v1.4.5
+- twig v1.44.6: final and last release for v1.x which still supports global macros (v2.x and v3.x don't)
 
 ### Deprecated
 - openHAB2 driver
