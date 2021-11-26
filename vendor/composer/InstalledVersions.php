@@ -24,24 +24,24 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => '1.0.0+no-version-set',
-    'version' => '1.0.0.0',
+    'pretty_version' => 'dev-develop',
+    'version' => 'dev-develop',
     'aliases' => 
     array (
     ),
-    'reference' => NULL,
+    'reference' => '82bac7797347826e4535162e7563cf660e200dd9',
     'name' => '__root__',
   ),
   'versions' => 
   array (
     '__root__' => 
     array (
-      'pretty_version' => '1.0.0+no-version-set',
-      'version' => '1.0.0.0',
+      'pretty_version' => 'dev-develop',
+      'version' => 'dev-develop',
       'aliases' => 
       array (
       ),
-      'reference' => NULL,
+      'reference' => '82bac7797347826e4535162e7563cf660e200dd9',
     ),
     'mnsami/composer-custom-directory-installer' => 
     array (
@@ -54,21 +54,21 @@ private static $installed = array (
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.22.0',
-      'version' => '1.22.0.0',
+      'pretty_version' => 'v1.23.0',
+      'version' => '1.23.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'c6c942b1ac76c82448322025e084cadc56048b4e',
+      'reference' => '46cd95797e9df938fdd2b03693b5fca5e64b01ce',
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v1.44.2',
-      'version' => '1.44.2.0',
+      'pretty_version' => 'v1.44.6',
+      'version' => '1.44.6.0',
       'aliases' => 
       array (
       ),
-      'reference' => '138c493c5b8ee7cff3821f80b8896d371366b5fe',
+      'reference' => 'ae39480f010ef88adc7938503c9b02d3baf2f3b3',
     ),
   ),
 );
