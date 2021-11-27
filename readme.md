@@ -25,8 +25,7 @@ SEE: [smartvisu.de](http://www.smartvisu.de)
 ## SYSTEM REQUIREMENTS
   * IP-Network, KNX-Bus
   * [smarthomeNG](https://github.com/smarthomeNG), [linknx](http://sourceforge.net/projects/linknx/), [ioBroker](https://github.com/ioBroker/ioBroker), [openHAB](https://www.openhab.org/), [FHEM](https://fhem.de/) or [knxd](https://github.com/knxd/knxd) (deprecated: [eibd](http://www.auto.tuwien.ac.at/~mkoegler/index.php/eibd) ) backend or JSON interface
-  * Webserver with PHP. We highly recommend PHP 7.2 and above since older version are end of life and get no more 
-    security updates. Some features in quad design explicitely require PHP 7.2+
+  * Webserver with PHP 7.3.2 and above. Compatibility with php v8.0 is verified.
   * Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android Tablet
  
  
