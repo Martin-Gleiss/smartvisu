@@ -520,7 +520,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 		  "</div>" +
 		  "<div class='uzsuCell'>" +
 			"<div class='uzsuCellText'>" + sv_lang.uzsu.seriesintervall + "&nbsp;&nbsp;HH : MM</div>" +
-			"<input type='time' data-clear-btn='false' value='00:00' class='uzsuTimeMaxMinInput uzsuSerieTimeInterval'>" +
+			"<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuSerieTimeInterval'>" +
 		  "</div>" +
 		  "<div class='uzsuCell'>" +
               "<div class='uzsuCellText'></div>" +
