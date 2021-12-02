@@ -1678,7 +1678,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     editable: false
   },
 
-  rruleDays: {
+  weekDays: {
     'MO': 0,
     'TU': 1,
     'WE': 2,
@@ -1687,8 +1687,10 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     'SA': 5,
     'SU': 6
   },
+  
+  rruleDays: {},
 
-  _startTimestamp: 4*1000*60*60*24 + new Date(0).getTimezoneOffset()*1000*60,
+  _startTimestamp: 4*1000*60*60*24 + new Date(0).getTimezoneOffset()*1000*60,  //1.1.1970 was a Thursday -> 4 days until Monday
 
   _create: function() {
     this._super();  //call _create method of prototype widget sv.device_uzsu
@@ -2039,7 +2041,6 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
   },
 
   draw: function() {
-    var self = this;
     var chart = this.element.highcharts();
 
     if(this._uzsudata.active)
@@ -2054,7 +2055,19 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var seriesData = { active: [], inactive: [], range: [] };
     var linetype = this._uzsudata.interpolation.type == 'cubic' ? 'spline' : 'line';
     Highcharts.seriesTypes.scatter.prototype.getPointSpline = Highcharts.seriesTypes[linetype].prototype.getPointSpline;
-    $.each(this._uzsudata.list, function(responseEntryIdx, responseEntry) {
+    
+	// as from v3.2 we start with "today" instead of Monday
+	var today = new Date().getDay();		// delivers SU = 0
+	this._startTimestamp = (4 + today - 1) % 7 *1000*60*60*24 + new Date(0).getTimezoneOffset()*1000*60;
+
+	for (var day in this.weekDays) {
+		this.rruleDays[day] = this.weekDays[day] - (6 + today) % 7;
+		if (this.rruleDays[day] < 0)
+			this.rruleDays[day] += 7;
+	}
+	var self = this;
+	
+	$.each(this._uzsudata.list, function(responseEntryIdx, responseEntry) {
       // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button.
       var x, xMin, xMax;
 	  var burstTimes = [];
@@ -2071,10 +2084,10 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       else {
 		  x = self._calculateEventTime(responseEntry.series.start);
 		  if(responseEntry.series.start.timeMin)
-			xMin = responseEntry.series.start.timeMin;
+			xMin = undefined;  // responseEntry.series.start.timeMin
 		  if(responseEntry.series.start.timeMax)
-			xMax = responseEntry.series.start.timeMax;
-
+			xMax = undefined;  // responseEntry.series.start.timeMax
+		  
 		  // determine uzsu series times
 		  var seriesEnd;
 		  var seriesIntervall = new Date('1970-01-01T' + responseEntry.series.timeSeriesIntervall + ':00Z').getTime(); 
@@ -2082,36 +2095,40 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 			  seriesEnd = x + (parseInt(responseEntry.series.end.timeCron) - 1) * seriesIntervall;
 		  else
 			  seriesEnd = self._calculateEventTime(responseEntry.series.end); 
- 		  var i = 0;
-		  burstTimes[0] = x + seriesIntervall; 
-		  while (burstTimes[i] + seriesIntervall <= seriesEnd) {
-			burstTimes[i+1] = burstTimes[i] + seriesIntervall;
-			i++;		  
-		  }
 	  }
-	  if (hasBurst)
-		console.log('UZSU series start times: '+ burstTimes);
 
       var rrule = responseEntry.rrule;
       if (!rrule)
         rrule = 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU';
       var ind = rrule.indexOf('BYDAY=');
-      // wenn der Standard drin ist
+      // if RRULE BYDAY is included 
       if (ind > 0) {
         var days = rrule.substring(ind+6).split(',');
         if (days.length < 7)
           hasDays = true;
-        $.each(days, function(dayIdx, day) {
+     
+		// push all events into the timeline
+		
+		$.each(days, function(dayIdx, day) {
           var rruleOffset = self.rruleDays[day]*1000*60*60*24;
-          var xRecurring = x + rruleOffset;
+		  var sunOffset = 0;
+  		  var sunSeriesOffset = 0;
+		  if (responseEntry.event.indexOf('sun') >= 0 )
+			sunOffset = self._getSunTime(responseEntry.event, self.rruleDays[day]) - self._getSunTime(responseEntry.event, 0);
+		  if (hasBurst && responseEntry.series.start.event.indexOf('sun') >= 0 )
+			sunSeriesOffset = self._getSunTime(responseEntry.series.start.event, self.rruleDays[day]) - self._getSunTime(responseEntry.series.start.event, 0);
+          var xRecurring = x + rruleOffset + sunOffset + sunSeriesOffset;
           var yValue = Number(responseEntry.value);
           seriesData[responseEntry.active ? 'active' : 'inactive'].push({ x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
 		  if (hasBurst){
-			  for (i=0; i < burstTimes.length; i++){
-				  xBurstRecurring = burstTimes[i] + rruleOffset;
-				  if (xBurstRecurring <= 1000*60*60*24 * (hasDays ? 7 : 1) + self._startTimestamp)
-					seriesData['active'].push({ x: xBurstRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
-			  }
+		    var sunSeriesEndOffset = 0;
+			if (responseEntry.series.end.event.indexOf('sun') >= 0 )
+				sunSeriesEndOffset = self._getSunTime(responseEntry.series.end.event, self.rruleDays[day]) - self._getSunTime(responseEntry.series.end.event, 0);
+			xBurstRecurring = xRecurring;
+		    while (xBurstRecurring + seriesIntervall <= seriesEnd + rruleOffset + sunSeriesEndOffset) {
+			    xBurstRecurring += seriesIntervall;
+			    seriesData['active'].push({ x: xBurstRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
+		    }
 		  }
           if(xMin !== undefined || xMax !== undefined) {
             if(xMin !== undefined)
@@ -2159,34 +2176,39 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       for(dayIdx = 0; dayIdx < 7; dayIdx++) {
         if(hasSunrise) {
           plotLines.push({
-            value: self._getSunTime('sunrise')+dayIdx*1000*60*60*24,
+            value: self._getSunTime('sunrise', dayIdx)+dayIdx*1000*60*60*24,
             className: 'uzsu-event-sunrise',
             label: { text: sv_lang.uzsu.sunrise }
           });
-          sunData.push({ x: self._getSunTime('sunrise')+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise', marker: { symbol: 'sunrise' } });
+          sunData.push({ x: self._getSunTime('sunrise', dayIdx)+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise', marker: { symbol: 'sunrise' } });
         }
         if(hasSunset) {
           plotLines.push({
-            value: self._getSunTime('sunset')+dayIdx*1000*60*60*24,
+            value: self._getSunTime('sunset', dayIdx)+dayIdx*1000*60*60*24,
             className: 'uzsu-event-sunset',
             label: { text: sv_lang.uzsu.sunset }
           });
-          sunData.push({ x: self._getSunTime('sunset')+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset', marker: { symbol: 'sunset' } })
+          sunData.push({ x: self._getSunTime('sunset', dayIdx)+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset', marker: { symbol: 'sunset' } })
         }
       }
     }
     chart.xAxis[0].update({
-      max: 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp,
+      min: this._startTimestamp,
+	  max: 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp,
       plotLines: plotLines
     }, false);
     chart.get('sun').setData(sunData, false);
 
     //set active interpolation button
     $.each(this.interpolationButtons, function(idx, button) {
-      if(button.interpolationType == self._uzsudata.interpolation.type)
+      if(button.interpolationType == self._uzsudata.interpolation.type){
         button.element.addClass("icon1");
-      else
+	    button.element.attr('style', 'cursor:pointer;');
+	  }
+      else {
         button.element.removeClass("icon1");
+	    button.element.attr('style', 'cursor:pointer;fill:transparent;');
+	  }
     });
 
     chart.redraw();
@@ -2205,10 +2227,20 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     return new Date('1970-01-01T' + time + 'Z').getTime() + this._startTimestamp;
   },
 
-  _getSunTime: function(event) {
-    if(!this.sunTimes)
-      this.sunTimes = { 'sunrise': (this._uzsudata.sunrise == undefined) ? '06:00' : this._uzsudata.sunrise, 'sunset': (this._uzsudata.sunset == undefined) ? '19:30' : this._uzsudata.sunset };
-    return this._timeToTimestamp(this.sunTimes[event]);
+  _getSunTime: function(event, dayIndex = 0) {
+    if(!this.sunTimes){
+      this.sunTimes = { 'sunrise': [], 'sunset': [] };
+	  for (var day in this.rruleDays){
+		if (this._uzsudata.hasOwnProperty('SunCalculated')){
+			this.sunTimes.sunrise[this.rruleDays[day]] = this._uzsudata.SunCalculated.sunrise[day];
+			this.sunTimes.sunset[this.rruleDays[day]] = this._uzsudata.SunCalculated.sunset[day];
+		} else {
+		  this.sunTimes.sunrise[this.rruleDays[day]] = (this._uzsudata.sunrise == undefined) ? '06:00' : this._uzsudata.sunrise;
+		  this.sunTimes.sunset[this.rruleDays[day]] = (this._uzsudata.sunset == undefined) ? '19:30' : this._uzsudata.sunset;
+		}
+	  }
+	}
+    return this._timeToTimestamp(this.sunTimes[event][dayIndex]);
   },
   
   _calculateEventTime: function(timeEvent={}){
@@ -2221,18 +2253,10 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 		  result += timeEvent.timeOffset*1000*60;
 		else if(timeEvent.timeOffsetType == '' && timeEvent.timeOffset != '')
 		  result = (timeEvent.calculated == undefined) ? result : this._timeToTimestamp(timeEvent.calculated);
-		  console.log('Set '+ timeEvent.event +' based entry to calculated time ' +
-		  timeEvent.calculated + ' for ' + timeEvent.timeCron);
-		if(timeEvent.timeMin) {
-		  resultMin = this._timeToTimestamp(timeEvent.timeMin);
-		  if(result < resultMin)
-			result = resultMin;
-		}
-		if(timeEvent.timeMax) {
-		  resultMax = this._timeToTimestamp(timeEvent.timeMax);
-		  if(result > resultMax)
-			result = resultMax;
-		}
+		if(timeEvent.timeMin) 
+		  result = Math.max(this._timeToTimestamp(timeEvent.timeMin), result);
+		if(timeEvent.timeMax) 
+		  result =  Math.min(this._timeToTimestamp(timeEvent.timeMax), result);
 	}
 	return result;
   },
@@ -2949,8 +2973,8 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         var preFix = TableName
         var HeadlineHeight = 40
         // get sunrise and sunset
-        sunrise = myDict.sunrise
-        sunset = myDict.sunset
+        sunrise = (myDict.sunrise ? myDict.sunrise : '06:00')
+        sunset = (myDict.sunset ? myDict.sunset : '19:30')
         weekDays = {
             'MO': "0",
             'TU': "1",
