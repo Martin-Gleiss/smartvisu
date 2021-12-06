@@ -1675,7 +1675,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     headline: '',
     designtype: '',
     valuetype: 'bool',
-    editable: false
+    editable: false,
+	scrollbar: true
   },
 
   weekDays: {
@@ -1773,9 +1774,9 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
     // draw the plot
     var chart = this.element.highcharts({
-	  chart: { styledMode: true },
-      title: { text: this.options.headline },
+	  title: { text: this.options.headline },
       legend: false,
+	  scrollbar: {enabled: this.options.scrollbar},
       series: [
         { // active
           name: 'active',
@@ -1868,7 +1869,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       },
       tooltip: {
         xDateFormat: '%a, %H:%M',
-        headerFormat: '<span style="font-size: 10px">{point.key}</span><br/>',
+        headerFormat: '<span style="font-size: 10px;">{point.key}</span><br/>',
         pointFormatter: function() {
           var value = (this.series.yAxis.categories) ? this.series.yAxis.categories[this.y] : this.y;
           return '<span class="highcharts-strong">' + value + '</span> (' + this.series.name + ')<br/>';
@@ -1876,6 +1877,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
       },
       chart: {
+		styledMode: true,
         events: {
           click: function(e) { // add point
             if(self.justDragged) { // prevent click event after drop
@@ -2030,6 +2032,48 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           x: -16-self.interpolationButtons.length*20,
           y: 22
         }, false, null);
+	
+	  // Zoom buttons
+      self.customZoomButtons = [
+        { day: 'mo', shape: 'square', xMin: self._startTimestamp, xMax: self._startTimestamp + 24*60*60*1000 },
+        { day: 'tu', shape: 'square', xMin: self._startTimestamp + 24*60*60*1000, xMax: self._startTimestamp + 2*24*60*60*1000 },
+        { day: 'we', shape: 'square', xMin: self._startTimestamp + 24*60*60*1000, xMax: self._startTimestamp + 2*24*60*60*1000 },
+        { day: 'th', shape: 'square', xMin: self._startTimestamp + 24*60*60*1000, xMax: self._startTimestamp + 2*24*60*60*1000 },
+        { day: 'fr', shape: 'square', xMin: self._startTimestamp + 24*60*60*1000, xMax: self._startTimestamp + 2*24*60*60*1000 },
+        { day: 'sa', shape: 'square', xMin: self._startTimestamp + 24*60*60*1000, xMax: self._startTimestamp + 2*24*60*60*1000 },
+        { day: 'su', shape: 'square', xMin: self._startTimestamp + 24*60*60*1000, xMax: self._startTimestamp + 2*24*60*60*1000 },
+        { day: 'w', shape: 'circle', langKey: 'week', xMin: self._startTimestamp, xMax: self._startTimestamp + 7 *24*60*60*1000  },
+      ];
+	  chart.text = [];
+	  	  
+   	  $.each(self.customZoomButtons, function(i, button) {
+		chart.text[i] = chart.renderer.text(sv_lang.uzsu[button.day], null, null)
+		.attr({ align: 'right'} 			)
+		.add( chart.renderer.createElement('g').addClass('highcharts-label').add() )
+		.align({
+		  align: 'left',
+		  x: 118 + (i-1)*20,
+		  y: 22
+		}, false, null);
+	
+		button.element = chart.renderer.button('', null, null, function(e) { 
+		  chart.xAxis[0].setExtremes();
+		  chart.xAxis[0].update({min: button.xMin, max: button.xMax}, false); 
+		  chart.redraw();
+		  }, null,  null,  null,  null, button.shape)
+		  .attr({
+			align: 'right',
+			title: sv_lang.uzsu[button.day],
+		  })
+		  .addClass('icon0 zoom-button')
+		  .css({'fill': 'transparent'})
+		  .add()
+		  .align({
+			align: 'left',
+			x: 120 + (i-1)*20,
+			y: 10
+		  }, false, null);
+      });
     });
   },
 
@@ -2064,12 +2108,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 		this.rruleDays[day] = this.weekDays[day] - (6 + today) % 7;
 		if (this.rruleDays[day] < 0)
 			this.rruleDays[day] += 7;
+		this.customZoomButtons[this.rruleDays[day]].day = day.toLowerCase();
 	}
+
 	var self = this;
 	
 	$.each(this._uzsudata.list, function(responseEntryIdx, responseEntry) {
       // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button.
-      var x, xMin, xMax;
+      var x, xMin, xMax, xSeriesEndMin, xSeriesEndMax;
 	  var burstTimes = [];
 	  hasBurst = responseEntry.hasOwnProperty('series');
 	  hasSunrise = hasSunrise || responseEntry.event == 'sunrise';
@@ -2084,17 +2130,21 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       else {
 		  x = self._calculateEventTime(responseEntry.series.start);
 		  if(responseEntry.series.start.timeMin)
-			xMin = undefined;  // responseEntry.series.start.timeMin
+			xMin = self._timeToTimestamp(responseEntry.series.start.timeMin);
 		  if(responseEntry.series.start.timeMax)
-			xMax = undefined;  // responseEntry.series.start.timeMax
-		  
+			xMax = self._timeToTimestamp(responseEntry.series.start.timeMax);
+
 		  // determine uzsu series times
 		  var seriesEnd;
 		  var seriesIntervall = new Date('1970-01-01T' + responseEntry.series.timeSeriesIntervall + ':00Z').getTime(); 
-		  if (responseEntry.series.end.timeCron.indexOf(':') < 0 )  // series end defined by count of cycles  TODO: check if 'event' can be 'count' instead of 'time'
+		  if (responseEntry.series.hasOwnProperty('timeSeriesCount'))  // series end defined by count of cycles  
 			  seriesEnd = x + (parseInt(responseEntry.series.end.timeCron) - 1) * seriesIntervall;
 		  else
 			  seriesEnd = self._calculateEventTime(responseEntry.series.end); 
+			  if(responseEntry.series.end.timeMin)
+				xSeriesEndMin = self._timeToTimestamp(responseEntry.series.end.timeMin);
+			  if(responseEntry.series.end.timeMax)
+				xSeriesEndMax = self._timeToTimestamp(responseEntry.series.end.timeMax);
 	  }
 
       var rrule = responseEntry.rrule;
@@ -2112,25 +2162,30 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 		$.each(days, function(dayIdx, day) {
           var rruleOffset = self.rruleDays[day]*1000*60*60*24;
 		  var sunOffset = 0;
-  		  var sunSeriesOffset = 0;
 		  if (responseEntry.event.indexOf('sun') >= 0 )
 			sunOffset = self._getSunTime(responseEntry.event, self.rruleDays[day]) - self._getSunTime(responseEntry.event, 0);
-		  if (hasBurst && responseEntry.series.start.event.indexOf('sun') >= 0 )
-			sunSeriesOffset = self._getSunTime(responseEntry.series.start.event, self.rruleDays[day]) - self._getSunTime(responseEntry.series.start.event, 0);
-          var xRecurring = x + rruleOffset + sunOffset + sunSeriesOffset;
+		  else if (hasBurst && responseEntry.series.start.event.indexOf('sun') >= 0 )
+			  sunOffset = self._getSunTime(responseEntry.series.start.event, self.rruleDays[day]) - self._getSunTime(responseEntry.series.start.event, 0);
+		  sunOffset = (x + sunOffset < xMin ? xMin - x : sunOffset);
+		  sunOffset = (x + sunOffset > xMax ? xMax - x : sunOffset);
+
+		  var xRecurring = x + rruleOffset + sunOffset;
           var yValue = Number(responseEntry.value);
           seriesData[responseEntry.active ? 'active' : 'inactive'].push({ x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
 		  if (hasBurst){
 		    var sunSeriesEndOffset = 0;
 			if (responseEntry.series.end.event.indexOf('sun') >= 0 )
 				sunSeriesEndOffset = self._getSunTime(responseEntry.series.end.event, self.rruleDays[day]) - self._getSunTime(responseEntry.series.end.event, 0);
+			sunSeriesEndOffset = (seriesEnd + sunSeriesEndOffset < xSeriesEndMin ? xSeriesEndMin - seriesEnd : sunSeriesEndOffset);
+		    sunSeriesEndOffset = (seriesEnd + sunSeriesEndOffset > xSeriesEndMax ? xSeriesEndMax - seriesEnd : sunSeriesEndOffset);
+
 			xBurstRecurring = xRecurring;
 		    while (xBurstRecurring + seriesIntervall <= seriesEnd + rruleOffset + sunSeriesEndOffset) {
 			    xBurstRecurring += seriesIntervall;
 			    seriesData['active'].push({ x: xBurstRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
 		    }
 		  }
-          if(xMin !== undefined || xMax !== undefined) {
+          if(!hasBurst && (xMin !== undefined || xMax !== undefined)) {
             if(xMin !== undefined)
               seriesData.range.push({ x: xMin+rruleOffset, y: yValue, name: sv_lang.uzsu.earliest, uzsuEntry: responseEntry, className: 'uzsu-min' });
             else
@@ -2203,18 +2258,31 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     $.each(this.interpolationButtons, function(idx, button) {
       if(button.interpolationType == self._uzsudata.interpolation.type){
         button.element.addClass("icon1");
-	    button.element.attr('style', 'cursor:pointer;');
+	 //   button.element.attr('style', 'cursor:pointer;');
 	  }
       else {
         button.element.removeClass("icon1");
-	    button.element.attr('style', 'cursor:pointer;fill:transparent;');
+	  //  button.element.attr('style', 'cursor:pointer;fill:transparent;');
 	  }
     });
+
+	 $.each(this.customZoomButtons, function(idx, button) {
+		if (idx < self.customZoomButtons.length -1){
+			button.xMin = self._startTimestamp + idx * 1000*60*60*24;
+			button.xMax = button.xMin + 1000*60*60*24;
+		} else {
+			button.xMin = self._startTimestamp;
+			button.xMax = button.xMin + 7 * 1000*60*60*24;
+		}
+		chart.text[idx].attr({
+			text: sv_lang.uzsu[button.day],
+		});
+	 });
 
     chart.redraw();
 
     self._plotNowLine();
-    Highcharts.seriesTypes.scatter.prototype.getPointSpline = Highcharts.seriesTypes.line.prototype.getPointSpline;
+   // Highcharts.seriesTypes.scatter.prototype.getPointSpline = Highcharts.seriesTypes.line.prototype.getPointSpline;
   },
 
   _save: function() {
@@ -2447,6 +2515,10 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         if (this.options.designtype === undefined || this.options.designtype === '') {
             this.options.designtype = io.uzsu_type;
         }
+
+        this._DrawGrid(this.options, this.uuid)
+        this._addBackgroundframe()
+
     },
     _update: function(response) {
         this._super(response);
@@ -2536,7 +2608,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         }
 
         // Draw the empty Grid
-        var HeadlineHeight = this._DrawGrid(myOptions, TableName, myDict)
+        var HeadlineHeight = this._DrawGrid(myOptions, TableName)
 
         // Keep Instance of ME because forEach will change "this" !
         myInstance = this
@@ -2605,7 +2677,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         }
 
         if (myOptions.showsun == true) {
-            this._showSun(HeadlineHeight)
+            this._showSun(HeadlineHeight, myDict)
         }
 
         if (myOptions.showactualtime == true) {
@@ -2616,7 +2688,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
             this._fillColors(vals_on_color, vals_off_color, TableName)
         }
 
-
+        this._setInactiveStyle(myDict)
         console.log('finished')
 
     },
@@ -2672,7 +2744,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         }
 
         actDay = myNewTime.getDay()
-        while (myNewTime <= maxTime) {
+        while (myNewTime <= maxTime && IntervallMinutes > 0) {
             myObj = {
                 key: String("00" + myNewTime.getHours()).slice(-2) + ':' + String("00" + myNewTime.getMinutes()).slice(-2),
                 minutes: String("00" + myNewTime.getMinutes()).slice(-2),
@@ -2710,7 +2782,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         myNewTime.setMinutes(minutes)
         myNewTime.setHours(hours)
         myNewTime.setSeconds(0)
-        while (myNewTime <= maxTime) {
+        while (myNewTime <= maxTime && IntervallMinutes > 0) {
             myTimeDict.push({
                 key: String("00" + myNewTime.getHours()).slice(-2) + ':' + String("00" + myNewTime.getMinutes()).slice(-2),
                 minutes: String("00" + myNewTime.getMinutes()).slice(-2),
@@ -2877,7 +2949,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     // *****************************************************
     // DrawGrid
     // *****************************************************
-    _DrawGrid: function(myOptions, TableName, myDict) {
+    _DrawGrid: function(myOptions, TableName) {
         var myJson = {}
         var myBorderStyle = ''
         var preFix = TableName
@@ -2972,9 +3044,6 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         }
         var preFix = TableName
         var HeadlineHeight = 40
-        // get sunrise and sunset
-        sunrise = (myDict.sunrise ? myDict.sunrise : '06:00')
-        sunset = (myDict.sunset ? myDict.sunset : '19:30')
         weekDays = {
             'MO': "0",
             'TU': "1",
@@ -3113,6 +3182,13 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                 l++
             }
         }
+
+        return HeadlineHeight
+    },
+    // *****************************************************
+    // setInactiveStyle
+    // *****************************************************	    
+    _setInactiveStyle: function (myDict) {
         // Set the different modes for inactive UZSU
         // Set the opacity based on active or not active
         if (this.options.inactivestyle & 1) {
@@ -3128,7 +3204,6 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
             this.element.find("svg")[0].appendChild(myInActiveText)
 
         }
-        return HeadlineHeight
     },
     // *****************************************************
     // fillCells
@@ -3270,7 +3345,23 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     // *****************************************************
     // showSun
     // *****************************************************	
-    _showSun: function(HeadlineHeight) {
+    _showSun: function(HeadlineHeight,myDict) {
+        // get sunrise and sunset
+        if (myDict.hasOwnProperty('SunCalculated')) {
+          sunrise = myDict.SunCalculated.sunrise["SU,MO,TU,WE,TH,FR,SA".split(",")[new Date().getDay()]]
+          sunset = myDict.SunCalculated.sunset["SU,MO,TU,WE,TH,FR,SA".split(",")[new Date().getDay()]]
+          }
+        else {
+          if (myDict.hasOwnProperty('sunrise')) {
+            sunrise = myDict.sunrise
+            sunset = myDict.sunset
+            }
+          } 
+        if (sunrise === undefined || sunset === undefined)  {
+          notify.message("WARN", "UZSU-Table widget", "No Sun-Information available. Please upgrade you UZSU-Plugin to 1.6.0 or higher");
+          return
+          }
+        
         // SunRise-SVG
         h = sunrise.split(":")[0]
         m = sunrise.split(":")[1]
