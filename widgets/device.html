@@ -540,18 +540,19 @@
 * @param {text[]=} valueParameterList depending on valueType (optional):
 	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
 	num: [min, max, step]
+* @param {text(false,true)=true} shows a scrollbar below the x-Axis (optional, default: true)	
 * @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
 *
 * @author Stefan Widmer
 */
 
-{% macro uzsugraph(id, item, headline, editable, valueType, valueParameterList, _backend) %}
+{% macro uzsugraph(id, item, headline, editable, valueType, valueParameterList, scrollbar, _backend) %}
 	{% import "basic.html" as basic %}
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsugraph" data-item="{{ item }}"
 		data-headline="{{ headline|default('UZSU') }}" data-editable="{{ editable|default(0) }}" data-designType="{{ _backend }}"
 		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
-		class="plot">
+		data-scrollbar="{{ scrollbar|default('true') }}" class="plot">
 	</div>
 
 {% endmacro %}
