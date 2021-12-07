@@ -18,6 +18,7 @@ $.widget("sv.phone_list", $.sv.widget, {
 			dataType: "json",
 			url: this.options['service-url'],
 			context: this,
+			beforeSend: function(jqXHR, settings) { jqXHR.svProcess = 'Phone List Widget'; },
 			success: function (data) {
 				var ret;
 				var line = '';
@@ -72,6 +73,7 @@ $.widget("sv.phone_missedlist", $.sv.widget, {
 			dataType: "json",
 			url: this.options['service-url'],
 			context: this,
+			beforeSend: function(jqXHR, settings) { jqXHR.svProcess = 'Phone Missedlist Widget'; },
 			success: function (data) {
 				var ret;
 				var line = '';
