@@ -121,6 +121,7 @@ $.widget("sv.multimedia_slideshow", $.sv.widget, {
 			dataType: "json",
 			url: 'lib/getdir.php' + '?directory=' + this.options.directory + '&filter=' + filter,
 			context: this,
+			beforeSend: function(jqXHR, settings) { jqXHR.svProcess = 'Multimedia Slideshow Widget'; },
 			success: function(data) {
 				dataKeys = Object.keys(data);
 				var i;
