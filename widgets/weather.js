@@ -74,6 +74,7 @@ $.widget("sv.weather_current", $.sv.widget, {
 			dataType: "json",
 			url: this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes,
 			context: this,
+			beforeSend: function(jqXHR, settings) { jqXHR.svProcess = 'Weather Widget (current)'; },
 			success: function(data) {
 				element.css('background-image', 'url(lib/weather/pics/' + data.current.icon + '.png)')
 				element.children('.city').html(data.city);
@@ -121,6 +122,7 @@ $.widget("sv.weather_forecast", $.sv.widget, {
 			dataType: "json",
 			url: this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes, 
 			context: this,
+			beforeSend: function(jqXHR, settings) { jqXHR.svProcess = 'Weather Widget (forecast)'; },
 			success: function (data) {
 				element.css('background-image', 'url(lib/weather/pics/' + data.forecast[day].icon + '.png)')
 				element.children('.city').html(data.city);
@@ -163,6 +165,7 @@ $.widget("sv.weather_forecastweek", $.sv.widget, {
 			dataType: "json",
 			url: this.options['service-url'] + '?location=' + this.options.location + '&cache_duration_minutes=' + repeatMinutes,
 			context: this,
+			beforeSend: function(jqXHR, settings) { jqXHR.svProcess = 'Weather Widget (forecastweek)'; },
 			success: function (data) {
 				var forecast = '';
 				for (var i in data.forecast) {

@@ -28,7 +28,7 @@
 - Config page layout adapted to new options
 - Scripts for config page stored in separate js-file (to save some ressources/time on normal visu pages)
 - device.rtrslider sets the display formats according to the decimals of the parameter 'step'
-- improved error notifications with basis for language specific message texts
+- improved error notifications with basis for language specific message texts and error source identification
 - fritz!box TR-064 phone service shows blocked calls as "rejected" instead of outgoing (w/ new icon)
 - additional js-scripts can be loaded with a backend driver if stored in a folder with the drivers name
 - new system menu in navigation on primary side (right hand side) saves ressources. Config page must be called as menu item. 
