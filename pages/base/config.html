@@ -61,7 +61,7 @@
 										] 
 									) }}
 									{{ forms.config_input(source, values, 'title') }}
-									{{ forms.config_select(source, values, 'lang', dir('lang', '^(.*?)\.ini$') ) }}
+									{{ forms.config_select(source, values, 'lang', dir('lang', '^(.*?)\.ini$')|merge(dir('dropins/lang', '^(.*?)\.ini$')) ) }}
 									{{ forms.config_flip(source, values, 'cache', '<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache' ~ id ~ '" class="ui-micro"' ~ (not values['cache'] is defined ? ' disabled="disabled"'|raw) ~ '>' ~ lang('configuration_page', 'cache', 'clearbutton') ~'</button>') }}
 									{{ forms.check_cache ( source, values, 'cache') }}
 								</div>
