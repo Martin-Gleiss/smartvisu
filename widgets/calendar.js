@@ -4,7 +4,8 @@ $.widget("sv.calendar_list", $.sv.widget, {
 	initSelector: 'div[data-widget="calendar.list"]',
 
 	options: {
-		color: ''
+		color: '',
+		weekday: ''		
 	},
 
 	_update: function(response) {
@@ -22,6 +23,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 			$.each(data, function(index, entry) {
 				// "pseudo clone" entry to not mute original object in widget.buffer
 				entry = Object.create(entry);
+				var startDay ='', endDay = '';
 
 				// parse start and end as Date
 				if(isNaN(entry.start)) // legacy: start in format 'y-m-d H:i:s'
@@ -34,22 +36,26 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				else // end as timestamp
 					entry.end = new Date(entry.end*1000);
 
+				if (self.options.weekday != '') {
+					startDay = entry.start.transUnit(self.options.weekday)+', ';
+					endDay = entry.end.transUnit(self.options.weekday)+', ';
+				}
 				// build period string to display
 				var period;
 				// Start and end on same day: show day only once
 				if(entry.end.transUnit('date') == entry.start.transUnit('date'))
-					period = entry.start.transUnit('date') + ' ' + entry.start.transUnit('time') + ' - ' + entry.end.transUnit('time');
+					period = startDay + entry.start.transUnit('date') + ' ' + entry.start.transUnit('time') + ' - ' + entry.end.transUnit('time');
 				// Full day entrys: don't show time
 				else if (entry.start.getHours()+entry.start.getMinutes()+entry.start.getSeconds() == 0
 					&& entry.end.getHours()+entry.end.getMinutes()+entry.end.getSeconds() == 0) {
 					entry.end.setDate(entry.end.getDate()-1); // subtract one day from end
 					if(entry.end.transUnit('date') == entry.start.transUnit('date')) // One day only: Show just start date
-						period = entry.start.transUnit('date');
+						period = startDay + entry.start.transUnit('date');
 					else // Multiple days: Show start and end date
-						period = entry.start.transUnit('date') + ' - ' + entry.end.transUnit('date');
+						period = startDay + entry.start.transUnit('date') + ' - ' + endDay + entry.end.transUnit('date');
 				}
 				else
-					period = entry.start.transUnit('date') + ' ' + entry.start.transUnit('time') + ' - ' + entry.end.transUnit('date') + ' ' + entry.end.transUnit('time');
+					period = startDay + entry.start.transUnit('date') + ' ' + entry.start.transUnit('time') + ' - ' + endDay + entry.end.transUnit('date') + ' ' + entry.end.transUnit('time');
 
 				// handle calendar_event_format in lang.ini
 				$.each(sv_lang.calendar_event_format, function(pattern, attributes) {
