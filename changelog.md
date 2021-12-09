@@ -22,6 +22,7 @@
 - ressource intensive pages (config, templatechecker, widegt assistant) are cleared from DOM after usage in order to optimize performance. 
   Browser back/ forward buttons are blocked on these pages.
 - header menu icons get animated on click in order to visualize an activated link on slow devices 
+- custom language file can be placed in ./dropins/lang
 
 ### Improvements
 - Driver config data are globally availble now in the sv.config.driver{} array

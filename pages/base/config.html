@@ -64,7 +64,7 @@
 											forms.config_hidden('design_icon1', values, defaults, source)
 										] 
 									) }}
-									{{ forms.config_select('lang', values, defaults, source, dir('lang', '^(.*?)\.ini$') ) }}
+									{{ forms.config_select('lang', values, defaults, source, dir('lang', '^(.*?)\.ini$')|merge(dir('dropins/lang', '^(.*?)\.ini$')) ) }}
 									{{ forms.config_cache('cache', values, defaults, source) }}
 								</div>
 							</div>
