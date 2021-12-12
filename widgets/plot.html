@@ -73,7 +73,7 @@
 * Plots a chart of time series data
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item[?](bool,num)} series of item(s); multiple items in array form: [ item1 , item2 ]
+* @param {item[?](bool,num,list)} series of item(s); multiple items in array form: [ item1 , item2 ]
 * @param {text[?](avg,sum,min,max,minmax,minmaxavg,raw,on)=avg} the aggregation mode (optional, default 'avg')
 	May be a single mode or an array with separate mode per item.
 	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
@@ -101,18 +101,20 @@
 * @param {text[?](normal,percent)=normal} stacking of series for each stack (array for multiple stacks in ascending order): 'normal', 'percent' (optional, default=normal). 
 * @param {text[]=} assign stacked series to different stacks: '0', '1, '2'... or ''. Sequence must be same as item sequence (optional, default='')
 * @param {value=0} control for the export of plot data: 0 = none, 1 = images, 2 = images and data (e.g.csv) (optional)
+* @param {text(database,item)=database} source of the data. If set to 'item', data must be provided in a list item (optional, default=database)  
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
 */
 
-{% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export) %}
+{% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export, source) %}
 	{% if (not export is empty) and export > 0 %}
 		<script src="vendor/plot.highcharts/modules/exporting.js"></script>
 		{% if export == 2 %}
 			<script src="vendor/plot.highcharts/modules/export-data.js"></script>
 		{% endif %}
 	{% endif %}
+	{% set source = source|default('database') %}
 	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1h') %}
 
@@ -121,7 +123,7 @@
 	{% set stacking = (stacking is iterable ? stacking : [stacking|default('normal')]) %}
 	{% set stacks = (stacks is iterable ? stacks : [stacks|default('0')]) %}
 	{% set item = (item is iterable ? item : [item]) %}
-  {% set seriesitems = [] %}
+	{% set seriesitems = [] %}
 	{% for itemi in item %}
 		{% if mode|length < loop.index %}
 			{% set mode = mode|merge([mode|last]) %}
@@ -133,12 +135,16 @@
 		{% endif %}
 		{% set counti = count[loop.index0] %}
 
-		{% if modei == 'minmax' %}
-			{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]) ]) %}
-		{% elseif modei == 'minmaxavg' %}
-			{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]), implode(itemi, ['avg', tmin, tmax, counti]) ]) %}
+		{% if source == 'database' %}
+			{% if modei == 'minmax' %}
+				{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]) ]) %}
+			{% elseif modei == 'minmaxavg' %}
+				{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]), implode(itemi, ['avg', tmin, tmax, counti]) ]) %}
+			{% else %}
+				{% set seriesitems = seriesitems|merge([implode(itemi, [modei, tmin, tmax, counti])]) %}
+			{% endif %}
 		{% else %}
-			{% set seriesitems = seriesitems|merge([implode(itemi, [modei, tmin, tmax, counti])]) %}
+			{% set seriesitems = seriesitems|merge([itemi]) %}
 		{% endif %}
 	{% endfor %}
 
@@ -231,7 +237,6 @@
 		class="plot"></div>
 
 {% endmacro %}
-
 
 /******************************************************************************
  * D E P R E C A T E D  W I D G E T S

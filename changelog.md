@@ -13,6 +13,7 @@
 - device.uzsutable provides more colors corresponding to the "on" and "off" values and a fill option until the next switching event.
 - device.uzsugraph provides a scrollbar and zoom buttons to scroll through 7 days stating from "today" (good to review sun-based events)
 - calendar.list can be configured to additionally show the individual weekday in short or long format 
+- plot.period can be used with data from list items (as an alterbnative to standard database series).  
 
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
