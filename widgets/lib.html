@@ -118,3 +118,47 @@
 	</script>
 {% endmacro %}
 
+/**
+* Extend a single block to full screen width
+*
+* @param {id} unique id for the widget.
+*
+* @Author: bonze  (plot resize by Wolfram v. Hülsen)
+*/
+{% macro supersize ( id ) %}
+	{% set uid = uid(page, id) %}
+	 <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
+		<a><img class="supersize" src="icons/sw/control_centr_arrow_up_right.svg" style="position:absolute; width:3em; height:auto; top:0px; right:0px;"></a>
+	</span>
+	<script>
+		$(".supersize").click(function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			e.stopImmediatePropagation();
+			var element = $(this).closest("div");
+			var previousWidth = parseFloat(element.css('width').replace('px',''));
+			var previousHeight = parseFloat(element.find('.ui-collapsible-content').css('height').replace('px',''));
+
+			if (!element.hasClass('overlay')){
+				$(".mask").css('display','block');
+				element.addClass("overlay").show();
+				element.collapsible('expand'); 
+				element.find("h3").addClass("ui-corner-all");
+				element.find(".supersize").attr("src", "icons/sw/jquery_minus.svg");
+			}else{
+				$(".mask").css('display','none');
+				element.removeClass("overlay");
+				element.find("h3").removeClass("ui-corner-all");
+				element.find(".supersize").attr("src", "icons/sw/control_centr_arrow_up_right.svg");
+			}
+			var actualWidth = parseInt(element.css('width').replace('px',''));
+			var sizeFactor = actualWidth / previousWidth;
+			element.find('.ui-collapsible-content').css('height', previousHeight * sizeFactor)
+			.find('.plot').each(function() {
+				var actualPlotHeight = parseFloat($(this).css('height').replace('px',''));
+				$(this).css('height', actualPlotHeight * sizeFactor);
+				$(this).highcharts().setSize(null, null);
+			});
+		});
+	</script>
+{% endmacro %}
