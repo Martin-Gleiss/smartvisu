@@ -217,6 +217,11 @@
 	// Activate the info field in top right corner
 	$(document).on('pagecontainershow', function () {
 		notify.display();	
+		// workaround for jQM theme bug - part II
+		$(this).find('.ui-collapsible-heading').each(function(){
+			var headerClass = 'ui-page-theme-'+ $(this).closest('div').attr('data-theme');
+			$(this).addClass(headerClass);
+		});
 	});
 	
 	// scroll to anchor after page is called w/ anchor link e.g  href="index.php?page=myPage&anchor=myAnchor" 

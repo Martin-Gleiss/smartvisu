@@ -58,6 +58,7 @@
 - digiclock disappeared or showed wrong times if more than one page with clock was in the DOM
 - offline data were not correctly loaded if "pages" parameter was used in the URL. Now we evaluate "pages" and set the offline filename accordingly.
 - after reload, config page showed settings that should have been hidden
+- Firefox ignored jQM theme selection for collapsible block headings.
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
