@@ -14,6 +14,7 @@
 - device.uzsugraph provides a scrollbar and zoom buttons to scroll through 7 days stating from "today" (good to review sun-based events)
 - calendar.list can be configured to additionally show the individual weekday in short or long format 
 - plot.period can be used with data from list items (as an alterbnative to standard database series).  
+- new widget lib.supersize expands single blocks to full screen width and resizes plots (if available). See docu page for design -> blocks
 
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
