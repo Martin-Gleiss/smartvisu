@@ -91,7 +91,7 @@
 			} else {
 				$(document).on('ioAlive', function(){   //else wait for ioAlive event and write then
 					if (io.server != '' ) {
-						var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short');
+						var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short')+'<br>smartVISU server IP: '+sv.info.serverIP+'&nbsp;&nbsp;&nbsp;&nbsp;Remote IP: '+sv.info.remoteIP;
 						$('#connection').html(io.socket.url + connectString);
 					}
 				})
@@ -145,11 +145,13 @@
 				element.collapsible('expand'); 
 				element.find("h3").addClass("ui-corner-all");
 				element.find(".supersize").attr("src", "icons/sw/jquery_minus.svg");
+				element.find('.highcharts-root').addClass('supersized');
 			}else{
 				$(".mask").css('display','none');
 				element.removeClass("overlay");
 				element.find("h3").removeClass("ui-corner-all");
 				element.find(".supersize").attr("src", "icons/sw/control_centr_arrow_up_right.svg");
+				element.find('.highcharts-root').removeClass('supersized');
 			}
 			var actualWidth = parseInt(element.css('width').replace('px',''));
 			var sizeFactor = actualWidth / previousWidth;
