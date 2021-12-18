@@ -203,6 +203,7 @@ var io = {
 	 */
 	stopseries: function () {
 		// TODO
+		$.noop;
 	}
 
 };
