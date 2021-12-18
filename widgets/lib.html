@@ -91,7 +91,7 @@
 			} else {
 				$(document).on('ioAlive', function(){   //else wait for ioAlive event and write then
 					if (io.server != '' ) {
-						var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short')+'<br>smartVISU server IP: '+sv.info.serverIP+'&nbsp;&nbsp;&nbsp;&nbsp;Remote IP: '+sv.info.remoteIP;
+						var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short'); 
 						$('#connection').html(io.socket.url + connectString);
 					}
 				})
