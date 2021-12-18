@@ -1725,7 +1725,7 @@ div.ui-slider-switch{
 .highcharts-container {
   font-family: inherit;
 }
-.highcharts-root {
+.highcharts-root:not(.supersized) {
   max-height: 400px;
 }
 .highcharts-root,
