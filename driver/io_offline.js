@@ -336,7 +336,7 @@ var io = {
 	 * stop all subscribed series
 	 */
 	stopseries: function () {
-		
+		$.noop;		
 	}
 
 };
