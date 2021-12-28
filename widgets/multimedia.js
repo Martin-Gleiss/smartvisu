@@ -8,32 +8,27 @@ $.widget("sv.multimedia_image", $.sv.widget, {
 
   },
     _ticker: null,
+	_currentErrorNotification: 0,
 	
     _init: function() {
       if (this.element.attr('data-repeat'))
-      {
         this.element.attr('data-repeat-milliseconds', Number(new Date().duration(this.element.attr('data-repeat'))));
-      }
       this.element.attr('stopTimer', 'false');
     },
 	
-    _update:
-      function(response) {
+    _update: function(response) {
       var widget_url = this.element.attr('data-url');
       var resp = Array.isArray(response) ? response[0]: response;
 
       if (widget_url)
-      {
         var img_base = widget_url + ((widget_url.indexOf('?') == -1) ? '?' : '&');
-      }
       else
-      {
         var img_base = resp + ((resp.indexOf('?') == -1) ? '?' : '&');
-      }
-		img = img_base + '_=' + new Date().getTime();
-		refreshing = this.element.attr('data-repeat') ? this.element.attr('data-repeat') : 'refresh by item';
-		// console.log("Response: " + response + " Update Multimedia Image: " + img + ", repeat: " + refreshing);
-		this.element.attr('src', img);
+
+	  img = img_base + '_=' + new Date().getTime();
+	  refreshing = this.element.attr('data-repeat') ? this.element.attr('data-repeat') : 'refresh by item';
+	  // console.log("Response: " + response + " Update Multimedia Image: " + img + ", repeat: " + refreshing);
+	  this.element.attr('src', img);
       if (this.element.attr('data-repeat') && ! img.startsWith('_='))
       {
         var delay = Number(this.element.attr('data-repeat-milliseconds'));
@@ -49,6 +44,19 @@ $.widget("sv.multimedia_image", $.sv.widget, {
         console.log("Clear multimediaimage timer " + this._ticker);
         this._ticker = null;
     },
+	
+	// error handling for localized URL (called via ./lib/multimedia/camimage.php)
+	// only called if widget parameter 'localized' = 'true'
+	loadError: function(){
+		//as long as we can't read the already echoed error message directly we try to load the source again to create a proper error message
+		var self = this;
+		$.get(this.element.attr('data-url'))
+		   .fail(function(jqXHR, status, errorthrown){
+			   if (self._currentErrorNotification == 0 || !notify.exists(self._currentErrorNotification) )
+				self._currentErrorNotification = notify.json(jqXHR, status, errorthrown);
+		   }
+		);
+	}
 });
 
 

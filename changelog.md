@@ -13,8 +13,9 @@
 - device.uzsutable provides more colors corresponding to the "on" and "off" values and a fill option until the next switching event.
 - device.uzsugraph provides a scrollbar and zoom buttons to scroll through 7 days stating from "today" (good to review sun-based events)
 - calendar.list can be configured to additionally show the individual weekday in short or long format 
-- plot.period can be used with data from list items (as an alterbnative to standard database series).  
+- plot.period can be used with data from list items (as an alternative to standard database series).  
 - new widget lib.supersize expands single blocks to full screen width and resizes plots (if available). See docu page for design -> blocks
+- multimedia.image uses new parameter 'localize' to enable URLs containing credentials. If 'true', image is loaded by php script ./lib/multimedia/camimage.php
 
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
