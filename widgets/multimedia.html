@@ -34,14 +34,13 @@
 * @param {id=} unique id for this widget
 * @param {text} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
 * @param {text(none,corner,corner-bottom,fill)=none} the mode: 'none', 'corner', 'corner-bottom', 'fill' (optional, default 'none') (optional)
-* @param {unspecified=10i} the reload-time in duration-format or defined as an item that retriggers a refresh (optional, default '10i')
+* @param {duration=10i} the reload-time in duration-format or defined as an item that retriggers a refresh (optional, default '10i')
 * @param {image=} the path/url to a default image that is shown on error and startup
-*
-* stopitem will be set to "true" when new page is loaded in order to stop the image from refreshing till eternity ;)
+* @param {text(true,false)=false} set to 'true' in order to load the image by php script, e.g. if image URL contains credentials (optional, default = 'false')
 *
 * @see misc/fundamentals#Duration-Format
 */
-{% macro image(id, src, mode, refresh, default_img) %}
+{% macro image(id, src, mode, refresh, default_img, localize) %}
 
 	<img {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.image" alt="multimedia.image"
 		{% if mode == 'corner' %}
@@ -52,12 +51,11 @@
 			style="width: 100%" class="multimediaimage"
 		{% endif %}
     data-item="{% if '/' not in src and '\\' not in src %}{{ src }}{% endif %}{% if refresh|first not in ['0','1','2','3','4','5','6','7','8','9'] and refresh %}, {{ refresh }}{% endif %}"
-    data-url="{% if '/' in src or '\\' in src %}{{ src }}{% endif %}"
+    data-url="{% if '/' in src or '\\' in src %}{% if localize == 'true' %}./lib/multimedia/camimage.php?url={% endif %}{{ src }}{% endif %}"
     {% if refresh|first in ['0','1','2','3','4','5','6','7','8','9'] or not refresh %}data-repeat="{{ refresh|default('10i') }}"{% endif %}
     stopTimer="false"
     src="{{ default_img|default('pages/base/pics/trans.png') }}"
-    onerror="javascript:this.src='{{ default_img|default('pages/base/pics/trans.png') }}'" />
-
+    onerror="{% if localize == 'true' %}$(this).widget('loadError');{% endif %}this.src='{{ default_img|default('pages/base/pics/trans.png') }}'" />
 
 {% endmacro %}
 
