@@ -14,8 +14,11 @@
 		<img class="icon{% if page == 'index' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}control_building_empty.svg" alt="home" /></a>
 		
 	{% if page != 'config' %}
+		<a id="{{ page }}_menu-info" class="icon1" href="index.php?page=infopage" onclick="linkAnimate(id)">
+			<img class="icon{% if page == 'infopage' %} icon1{% else %} icon0{% endif %} menu-visible-phone" src="{{ icon0 }}info_info.svg" alt="category" /></a>
+	
 		<a id="{{ page }}_menu-category" class="icon1" href="index.php?page=category" onclick="linkAnimate(id)">
-			<img class="icon{% if page == 'category' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}time_manual_mode.svg" alt="category" /></a>
+			<img class="icon{% if page == 'category' %} icon1{% else %} icon0{% endif %} menu-hide-phone" src="{{ icon0 }}time_manual_mode.svg" alt="category" /></a>
 
 		<a id="{{ page }}_menu-apps" class="icon1" href="index.php?page=apps" onclick="linkAnimate(id)">
 			<img class="icon{% if page == 'apps' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}it_net.svg" alt="apps" /></a>

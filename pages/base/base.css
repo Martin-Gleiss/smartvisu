@@ -16,8 +16,11 @@
   src: url('dosis.eot') format('embedded-opentype'), url('dosis.woff') format('woff'), url('dosis.ttf') format('truetype');
 }
 
-.visible-phone, .visible-tablet, .minimum-tablet, .visible-desktop, .minimum-desktop {
+.visible-phone, .menu-visible-phone, .visible-tablet, .minimum-tablet, .visible-desktop, .minimum-desktop {
   display: none;
+}
+.menu-hide-phone {
+	display: inline-block;
 }
 
 /* Large desktop */
@@ -38,6 +41,12 @@
 @media all and (max-width: 767px) {
   .visible-phone {
     display: block;
+  }
+  .menu-visible-phone {
+	  display: inline-block;
+  }
+  .menu-hide-phone {
+	  display: none;
   }
 }
 
