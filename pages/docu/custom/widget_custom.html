@@ -15,11 +15,11 @@
 
 {% block intro %}
 	Here we display docu pages for custom widgets that are either written by the user or provided with a backend plugin. <br />
-	The widget files are stored in ./dropins (user written) and ./dropins/widgets (plugins). <br />
+	The widget files are stored in ./pages/&lt;yourPages&gt;/widgets or ./dropins (user written) and ./dropins/widgets or ./dropins/shwidgets (plugins). <br />
 	In order to show a docu page for a custom widget, the docu page needs to be created according to the following rules:
 	<ul>
 		<li> Name the docu file "widget_&lt;widgetgroup&gt;.&lt;widget&gt;.html", e.g. widget_mywidgets.myfunction.html</li>
-		<li> Place the docu file in the same directory where the widget files are located </li>
+		<li> Place the docu file in the same directory where the widget files are located (only ./dropins and subtree is possible) </li>
 		<li> Add the following head to the top of your widget file and also your docu file:
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
@@ -48,5 +48,6 @@
 	</ul> <br /> 
 	
 	<h2>Important: The links in the top section of this page have been created out of the available custom widget files. For widgets listed with no active link, the corresponding docu pages have not been found. 
+	If widgets are stored in ./pages/&lt;yourPages&gt;/widgets the docu files must be stored in ./dropins and its subtree. </h2>
 
 {% endblock %}
