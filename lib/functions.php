@@ -28,9 +28,11 @@ function get_lang($code = config_lang) {
 		$result = parse_ini_file(const_path.'lang/'.$code.'.ini', true);
 
 	// recursive call to read extended language file (if specified)
-	if(isset($result['extends']) && !empty($result['extends']))
+	if(isset($result['extends']) && !empty($result['extends'])){
+		if (in_array($result['extends'], array('en', 'de', 'fr', 'nl') ) && !isset($result['baselang']))
+			$result['baselang'] = $result['extends'];
 		$result = array_replace_recursive(get_lang($result['extends']), $result);
-
+	}
 	return $result;
 }
 
