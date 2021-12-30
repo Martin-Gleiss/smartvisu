@@ -21,7 +21,7 @@ require_once 'lib/includes.php';
 $request = array_merge($_GET, $_POST);
 
 // override configured pages if a corresponding request parameter is passed
-$config_pages = (isset($request['pages']) && $request['pages'] != '') ? $request['pages'] : config_pages;
+$actual_pages = (isset($request['pages']) && $request['pages'] != '') ? $request['pages'] : config_pages;
 
 // if page is not in $request use default index page defined in defaults.ini
 if (!isset($request['page']) || $request['page'] == '')
@@ -32,9 +32,9 @@ $config_cache = ($request ['page'] == 'assistant') ? false : config_cache;
 
 header('Cache-Control: must-revalidate');
 require_once 'lib/pagecache.php';
-$cache = new Pagecache(const_path . 'temp/pagecache/' . config_cachefolder . '/' . $config_pages . '/' . $request['page'] . '.html', $config_cache);
+$cache = new Pagecache(const_path . 'temp/pagecache/' . config_cachefolder . '/' . $actual_pages . '/' . $request['page'] . '.html', $config_cache);
 
-if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
+if (is_file(const_path."pages/".$actual_pages."/".$request['page'].".html")
 		or is_file(const_path."apps/".$request['page'].".html")
 		or is_file(const_path."pages/smarthome/".$request['page'].".html")
 		or is_file(const_path."pages/base/".$request['page'].".html")
@@ -46,22 +46,22 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 	
 	$loader = new \Twig\Loader\FilesystemLoader(const_path.'apps');
 
-	if (is_dir(const_path.'pages/'.$config_pages))
-		$loader->addPath(const_path.'pages/'.$config_pages);
+	if (is_dir(const_path.'pages/'.$actual_pages))
+		$loader->addPath(const_path.'pages/'.$actual_pages);
 	
-	if (is_dir(const_path.'pages/'.$config_pages.'/widgets'))
-		$loader->addPath(const_path.'pages/'.$config_pages.'/widgets');
+	if (is_dir(const_path.'pages/'.$actual_pages.'/widgets'))
+		$loader->addPath(const_path.'pages/'.$actual_pages.'/widgets');
 
-	if (dirname($request['page']) != '.' && is_dir(const_path.'pages/'.$config_pages.'/'.dirname($request['page'])))
-		$loader->addPath(const_path.'pages/'.$config_pages.'/'.dirname($request['page']));
+	if (dirname($request['page']) != '.' && is_dir(const_path.'pages/'.$actual_pages.'/'.dirname($request['page'])))
+		$loader->addPath(const_path.'pages/'.$actual_pages.'/'.dirname($request['page']));
 
 	// add smarthome dir if it is not directly chosen. 
 	// allows combination of custom pages with auto-generated pages from smarthomeNG
-	if (config_driver == 'smarthome.py' and $config_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
+	if (config_driver == 'smarthome.py' and $actual_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
 		$loader->addPath(const_path.'pages/smarthome');
 
    // make sure SV doesn't load stuff from dropins unless pages are configured
-	if ($config_pages != '') {
+	if ($actual_pages != '') {
 			$loader->addPath(const_path.'dropins');
 			$loader->addPath(const_path.'dropins/widgets');
 			$loader->addPath(const_path.'dropins/shwidgets');
@@ -100,7 +100,11 @@ if (is_file(const_path."pages/".$config_pages."/".$request['page'].".html")
 		if (substr($key, 0, 6) == 'config')
 			$twig->addGlobal($key, $val);
 	}
-	$twig->addGlobal('config_pages', $config_pages);
+	
+	// TO DO: better global concept for "config_pages" in order to distinguish between actual pages and configured pages
+    // today global value in php can be different from value with same name in Twig if the "pages" parameter is set 
+	$twig->addGlobal('config_pages', $actual_pages);
+	$twig->addGlobal('configured_pages', config_pages);
 	$twig->addGlobal('pagepath', dirname($request['page']));
 	$twig->addGlobal('const_path', const_path);
 	$twig->addGlobal('mbstring_available', function_exists('mb_get_info'));

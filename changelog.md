@@ -63,6 +63,7 @@
 - Firefox ignored jQM theme selection for collapsible block headings
 - some drivers threw errors due to empty function io.stopseries and interrupted the page change process (2nd click necessary to change page)
 - iobroker driver did not work with boolean items. A conversion is integrated now.
+- widgets in ./pages/<yourPages>/widgets were not listed in custom docu page. Their docu files must however be available in ./dropins or its subtree
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
