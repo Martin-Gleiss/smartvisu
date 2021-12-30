@@ -51,15 +51,15 @@ class Items {
 	 */
 	public function ItemExists($name) {
 		if (strpos($name, 'property') === false)
-			return !$this->items[$name] == null;
+			return isset($this->items[$name]) && !$this->items[$name] == null;
 		else {
 			$pos = strpos($name, 'property');
 			$itemname = substr($name, 0, $pos -1);
 			$propertyname = substr($name, $pos + 9); 
-			if (!$this->items[$itemname] == null && itemProperties::propertyExists($propertyname)) 
+			if (isset($this->items[$name]) && !$this->items[$itemname] == null && itemProperties::propertyExists($propertyname)) 
 				$this->items[$name] = itemProperties::getPropertyType($propertyname);
 			
-			return !$this->items[$name] == null;
+			return isset($this->items[$name]) && !$this->items[$name] == null;
 		}
 	}
 
