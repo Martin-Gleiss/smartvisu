@@ -330,7 +330,7 @@ function twig_configmeta($filename)
  *
  * @return string
  */
-function twig_lang($subset, $key, $subkey = null)
+function twig_lang($subset, $key = null, $subkey = null)
 {
 	static $lang;
 
@@ -338,7 +338,10 @@ function twig_lang($subset, $key, $subkey = null)
 		$lang = get_lang();
 
 	if(!isset($subkey)) 
-		return $lang[$subset][$key];
+		if(!isset($key))
+			return $lang[$subset];
+		else
+			return $lang[$subset][$key];
 	else 
 		if (isset($lang[$subset][$key][$subkey]))
 			return $lang[$subset][$key][$subkey]; 

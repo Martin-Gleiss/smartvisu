@@ -38,6 +38,7 @@
 - fritz!box TR-064 phone service shows blocked calls as "rejected" instead of outgoing (w/ new icon)
 - additional js-scripts can be loaded with a backend driver if stored in a folder with the drivers name
 - new system menu in navigation on primary side (right hand side) saves ressources. Config page must be called as menu item. 
+- base language is recognized from first "extends" value during language file processing. Accessible in JavaScript as "sv_lang.baselang" and in twig as lang('baselang') 
 
 ### Updated Libraries
 - jQuery v2.2.4 with patch in jQuery mobile v1.4.5
