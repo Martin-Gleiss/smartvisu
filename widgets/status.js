@@ -272,7 +272,8 @@ $.widget("sv.status_toast", $.sv.widget, {
 				loader: showLoader,  // Whether to show loader or not. True by default
 				loaderBg: loaderBg,  // Background color of the toast loader
 				bgColor: bgColor,
-				textColor: color
+				textColor: color,
+				class: (id != undefined ? id.split("-").slice(1).join("-") : false)  // use widget id parameter(page-section stripped again from uid) as class name for CSS tweaking
 				
 			});
 			
