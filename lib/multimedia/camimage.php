@@ -19,7 +19,7 @@ class mm_camimage extends service
 		 if(isset($request['url'])){
 				// url format is "url=http://admin:xxxxxxxx@192.168.yyy.yyy/record/current.jpg&_=1640270894254" or
 				// "url=http://IP-ADRESSE/cgi-bin/api.cgi?cmd=Snap&channel=0&rs=wuuPhkmUCeI9WG7C&user=user&password=password&_=1640270894254"
-				$this->url = substr($_SERVER['QUERY_STRING'],4, strpos($_SERVER['QUERY_STRING'], '&_=')-4);
+				$this->url = substr($_SERVER['QUERY_STRING'],4, (strpos($_SERVER['QUERY_STRING'], '&_=') >0 ? strpos($_SERVER['QUERY_STRING'], '&_=')-4 : null));
 		 }
 	}
 	
@@ -29,7 +29,7 @@ class mm_camimage extends service
 			if (substr($this->errorMessage, 0, 8) != 'readfile')
 				flush();
 			else 
-				$this->error('multimedia.image','Read request failed with message: '. substr(strrchr($this->errorMessage, ':'), 2));
+				$this->error('multimedia.image','Read request to '.$this->url.' failed with message: '. substr(strrchr($this->errorMessage, ':'), 2));
 		}
 		else
 			$this->error('multimedia.image','image URL is missing in püarameter set');
