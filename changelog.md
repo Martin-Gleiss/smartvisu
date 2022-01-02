@@ -16,6 +16,7 @@
 - plot.period can be used with data from list items (as an alternative to standard database series).  
 - new widget lib.supersize expands single blocks to full screen width and resizes plots (if available). See docu page for design -> blocks
 - multimedia.image uses new parameter 'localize' to enable URLs containing credentials. If 'true', image is loaded by php script ./lib/multimedia/camimage.php
+- status.toast uses the widget id as additional class name (pure id like in parameter set). This can be used for css styling.
 
 ### Other New Features
 - template checker now checks smarthomeNG item properties (valid properties and types)
