@@ -554,7 +554,6 @@ $.widget("sv.plot_period", $.sv.widget, {
                 chart.series[seriesIndex].setData(response[i], true, true, false);
             }
         }
-
         chart.redraw();
     },
 
@@ -1553,6 +1552,247 @@ $.widget("sv.plot_temprose", $.sv.widget, {
                     point.update(response[i] * 1.0, false);
             else
                 chart.series[i < count ? 0 : 1].addPoint(response[i] * 1.0, false);
+        }
+        chart.redraw();
+    },
+
+});
+
+
+// ----- plot.xyplot ----------------------------------------------------------
+$.widget("sv.plot_xyplot", $.sv.widget, {
+
+    initSelector: 'div[data-widget="plot.xyplot"]',
+
+    options: {
+        ymin: '',
+        ymax: '',
+        xmin: '',
+        xmax: '',
+        label: '',
+        color: '',
+        exposure: '',
+        axis: '',
+        zoom: '',
+        mode: '',
+        unit: '',
+        assign: '',
+        opposite: '',
+        ycolor: '',
+        ytype: '',
+        chartOptions: null,
+		stacking: '',
+		stacks: '',
+		exportmenu: 0
+    },
+
+    allowPartialUpdate: true,
+
+    _create: function() {
+        this._super();
+
+        var xMin = null;
+		if (this.options.xmin != '') 
+            xMin = this.options.xmin;
+
+        var xMax = null;
+		if (this.options.xmax != '') 
+            xMax = this.options.xmax;
+
+		
+		var ymin = [];
+        if (this.options.ymin != '') 
+            ymin = String(this.options.ymin).explode();
+
+        var ymax = [];
+        if (this.options.ymax != '') 
+            ymax = String(this.options.ymax).explode();
+
+        var label = String(this.options.label).explode();
+        var color = String(this.options.color).explode();
+        var exposure = String(this.options.exposure).explode();
+        var axis = String(this.options.axis).explode();
+        var zoom = this.options.zoom;
+        var units = String(this.options.unit).explode();
+        var assign = [];
+        if (this.options.assign) {
+            assign = String(this.options.assign).explode();
+        }
+        var opposite = [];
+        if (this.options.opposite) {
+            opposite = String(this.options.opposite).explode();
+        }
+        var ycolor = [];
+        if (this.options.ycolor) {
+            ycolor = String(this.options.ycolor).explode();
+        }
+        var ytype = String(this.options.ytype).explode();
+		var stacking = [];
+		if (this.options.stacking != '') {
+			stacking = String(this.options.stacking).explode();
+		}
+		var stacks = [];
+		if (this.options.stacks != '') {
+			stacks = String(this.options.stacks).explode();
+		}
+		var exportmenu = (this.options.exportmenu >= 1);
+		var styles = [];
+
+        // series
+        var series = [];
+        var seriesCount = this.items.length;
+
+        for (var i = 0; i < seriesCount; i++) {
+			var stack = (stacks.length-1 >= i ? stacks[i]: stacks[stacks.length-1]);
+			var stackingMode = (stacking[stack] ? stacking[stack] : stacking[0]);
+			series.push({
+				type: (exposure[i] != null && (exposure[i].toLowerCase().endsWith('stair') || exposure[i].toLowerCase().endsWith('stack')) ? exposure[i].substr(0, exposure[i].length-5) : exposure[i]),
+				step: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? 'left' : false),
+				name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
+				data: [], // clone
+				yAxis: (assign[i] ? assign[i] - 1 : 0),
+				showInNavigator: true,
+				stacking: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stackingMode : null),
+				stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stack : null)
+			});
+        }
+
+        // y-axis
+        var numAxis = 1;
+        if(assign.length > 0)
+            numAxis = Math.max.apply(null, assign); // find highest y-axis index on assignments
+
+        var yaxis = [];
+        for (var i = 0; i < numAxis; i++) {
+            yaxis[i] = {
+                min: (ymin[i] ? (isNaN(ymin[i]) ? 0 : Number(ymin[i])) : null),
+                max: (ymax[i] ? (isNaN(ymax[i]) ? 1 : Number(ymax[i])) : null),
+                title: {text: axis[i + 1]},
+                opposite: (opposite[i] > 0),
+                endOnTick: false,
+                startOnTick: false,
+                type: ytype[i] || 'linear',
+                svUnit: units[i] || 'float',
+                minTickInterval: 1,
+                showLastLabel: true
+            };
+            styles.push(Array(i+1).join(".highcharts-yaxis ~ ") + ".highcharts-yaxis .highcharts-axis-line { stroke: " + ycolor[i] + "; }");
+            if(ytype[i] == 'boolean') {
+                yaxis[i].categories = [ymin[i] || 0, ymax[i] || 1];
+                yaxis[i].type = 'category';
+            }
+        }
+	
+        // draw the plot
+        var chartOptions = {
+            chart: { styledMode: true }, // used in code below
+            title: { text: null },
+            series: series,
+            xAxis: {
+                type: 'linear',
+                min: xMin,
+                max: xMax,
+                ordinal: false,
+                title: { text: axis[0], align: 'high' }
+            },
+            navigator: {
+                xAxis: {
+                    min: xMin,
+                    max: xMax,
+                }
+            },
+			rangeSelector:{ enabled: false},
+            yAxis: yaxis,
+            legend: {
+                enabled: label.length > 0,
+                align: 'center',
+                verticalAlign: 'top',
+                floating: true,
+            },
+            tooltip: {
+                shared: true,
+                split: false,
+                pointFormatter: function() {
+                    var unit = this.series.yAxis.userOptions.svUnit;
+                    var value = (this.series.yAxis.categories) ? this.series.yAxis.categories[this.y] : parseFloat(this.y).transUnit(unit);
+                    return '<span class="highcharts-color-' + this.colorIndex + '">\u25CF</span> ' + this.series.name + ': <b>' + value + '</b><br/>';
+                }
+            },
+		    navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: exportmenu
+				}
+			},
+			exporting: {
+				buttons: {
+					contextButton: {
+						menuItems: (this.options.exportmenu == 2 ? ['downloadPNG', 'downloadPDF', 'downloadCSV', 'downloadXLS'] : ['downloadPNG', 'downloadPDF']) // TODO: add 'viewFullscreen' when styling is improved
+					}
+				}
+			},
+            plotOptions: {
+                columnrange: {
+                    dataLabels: {
+                        enabled: true,
+                        //inside: false,
+                        formatter: function () {
+                            return parseFloat(this.y).transUnit(this.series.yAxis.userOptions.svUnit);
+                        }
+                    },
+                    tooltip: {
+                        pointFormatter: function() {
+                            var unit = this.series.yAxis.userOptions.svUnit;
+                            var minValue = parseFloat(this.low).transUnit(unit);
+                            var maxValue = parseFloat(this.high).transUnit(unit);
+                            return '<span style="visibility: hidden">\u25CF</span> min: <b>' + minValue + '</b> max: <b>' + maxValue + '</b><br/>';
+                        }
+                    }
+                }
+            },
+        };
+
+        if(zoom) {
+            chartOptions.chart.zoomType = 'x';
+            chartOptions.xAxis.minRange = zoom;
+        }
+        $.extend(true, chartOptions, this.options.chartOptions);
+        Highcharts.chart(this.element[0], chartOptions);
+ 
+        // set series and y-axis colors
+        if (color && color.length > 0) {
+            for (var i = 0; i < color.length; i++) {
+                styles.push(".highcharts-color-" + i + " { fill: " + color[i] + "; stroke: " + color[i] + "; color: " + color[i] + "; }");
+            }
+        }
+        if(styles.length > 0) {
+            var containerId = this.element.find('.highcharts-container')[0].id;
+            styles.unshift('<style type="text/css">');
+            $(styles.join("\n#" + containerId + " ") + "\n</style>").appendTo(this.element.find('.highcharts-container'));
+        }
+    },
+
+    _update: function(response) {
+        // response is: [ [ [x1, y1], [x2, y2] ... ], [ [x1, y1], [x2, y2] ... ], ... ]
+
+        var chart = this.element.highcharts();
+
+        var xMin = null;
+		if (this.options.xmin != '') 
+            xMin = this.options.xmin;
+
+        var xMax = null;
+		if (this.options.xmax != '') 
+            xMax = this.options.xmax;
+		
+        chart.xAxis[0].update({ min: xMin, max: xMax }, false);
+        if(chart.navigator) {
+            chart.navigator.xAxis.update({ min: xMin, max: xMax }, false);
+        }
+
+        var itemCount = response.length;
+        for (var i = 0; i < itemCount; i++) {
+			if (response[i])
+            chart.series[i].setData(response[i], true, true, false);
         }
         chart.redraw();
     },
