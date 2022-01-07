@@ -204,7 +204,9 @@
 			version: '<?php echo config_version_full ?>',
 			icon0: '<?php echo config_design_icon0 ?>',
 			icon1: '<?php echo config_design_icon1 ?>',
+			svHostname: '<?php echo config_sv_hostname ?>',
 			driver: {
+				name: '<?php echo config_driver ?>',
 <?php
 				foreach ($GLOBALS['config'] as $key => $value) {
 					if (strpos($key, 'driver_') === 0) {
