@@ -15,6 +15,7 @@
  * @hide		reverseproxy
  * @hide		driver_username
  * @hide		driver_password
+ * @hide		sv_hostname
  */
 
 /**

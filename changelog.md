@@ -29,7 +29,8 @@
   Browser back/ forward buttons are blocked on these pages.
 - header menu icons get animated on click in order to visualize an activated link on slow devices 
 - custom language file can be placed in ./dropins/lang
-- with the new menu system, the secondary page area containing weather / calendar / phone widgets is now available on smartphone displays (as infopage.html) 
+- with the new menu system, the secondary page area containing weather / calendar / phone widgets is now available on smartphone displays (as infopage.html)
+- new smarthomeNG driver with enhanced connectivity. Connects always with IP v4 & ports, with host name & ports if host name equals configured smartVISU host name, other alpha-numeric requests via URL & port 80/443 
 
 ### Improvements
 - Driver config data are globally availble now in the sv.config.driver{} array

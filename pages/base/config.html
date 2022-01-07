@@ -103,10 +103,13 @@
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
 								<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3><br />
-								{{ forms.config_flip(source, values, 'proxy') }}
-								{{ forms.config_input(source, values, 'proxy_url', 'wide') }}
-								{{ forms.config_input(source, values, 'proxy_user') }}
-								{{ forms.config_input(source, values, 'proxy_password', 'password') }}
+								<div style="min-height:225px">
+									{{ forms.config_input(source, values, 'sv_hostname') }}
+									{{ forms.config_flip(source, values, 'proxy') }}
+									{{ forms.config_input(source, values, 'proxy_url', 'wide') }}
+									{{ forms.config_input(source, values, 'proxy_user') }}
+									{{ forms.config_input(source, values, 'proxy_password', 'password') }}
+								</div>
 							</div>
 						</div>
 					</div>

@@ -5,17 +5,16 @@
  * @copyright   2012 - 2021
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
- * @label       SmartHomeNG
+ * @label       SmartHomeNG new
  *
  * @default     driver_autoreconnect   true
  * @default     driver_port            2424
  * @default     driver_tlsport         2425
- * @default	    reverseproxy           false
+ * @hide	    reverseproxy
  * @hide        driver_realtime
  * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
- * @hide		sv_hostname
  */
 
 
@@ -72,6 +71,13 @@ var io = {
 	 */
 	init: function () {
 		io.address = sv.config.driver.address;
+
+		// if user-called host is not an IP v4 address check if called host is internal hostname of smartVISU server
+		// otherwise assume that call comes from external and then empty io.address
+		if (!$.isNumeric(location.host.replaceAll('.',''))){
+			if ( location.host != sv.config.svHostname ) 
+				io.address = '';
+		} 
 		io.open();
 	},
 
@@ -122,9 +128,10 @@ var io = {
 	open: function () {
 		var protocol = '';
 		var ports = [];
-		ports['ws://'] = sv.config.driver.port;
-		ports['wss://'] = sv.config.driver.tlsport;
-
+		if (io.address){
+			ports['ws://'] = sv.config.driver.port;
+			ports['wss://'] = sv.config.driver.tlsport;
+		}
 		if (!io.address || io.address.indexOf('://') < 0) {
 			// adopt websocket security to current protocol (https -> wss and http -> ws)
 			// if the protocol shall be forced, put it as prefix to the address in the config page

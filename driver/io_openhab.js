@@ -14,6 +14,7 @@
  * @default     driver_autoreconnect    true
  *
  * @hide        reverseproxy
+ * @hide		sv_hostname
  */
 
 /**

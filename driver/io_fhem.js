@@ -13,6 +13,7 @@
  * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
+ * @hide		sv_hostname
  * @default     driver_port 2121
  *
  * This driver has enhancements for using smartVISU with FHEM
@@ -379,7 +380,7 @@ var io = {
         if (re && re.test(item)) {
           io.ownItems.push(item);
         } else {
-          io.fhemItems.push(item);
+          io.fhemItems.push(item); 
         }
       }
       
@@ -464,9 +465,9 @@ var io = {
   splitPlotItem: function(completeItem) {
     var parts = completeItem.split('.');
     // item: hcs.data.OilLevelPlot.avg.5y 6m.0.100	-- count
-    //		 												 \		 \		\ end
-    //		 												 \		 \ start
-    //		 									  		 \ mode
+    //		 						\	\	  \ end
+    //		 						 \	 \ start
+    //		 						  \ mode
     var pos = 0;
     var item = "";
     while (pos < parts.length - 4) {

@@ -13,6 +13,7 @@
  * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
+ * @hide		sv_hostname
  */
 
 
