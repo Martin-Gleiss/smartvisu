@@ -29,14 +29,14 @@ SEE: [smartvisu.de](http://www.smartvisu.de)
 ## INSTALLATION 
   * if you are using Apache2 as web server make sure the following php packets are installed: libawl-php, php-curl, php, php-json, php-xml, php-mbstring
   * the server directory is /var/www/html. Create a subdirectory "smartVISU" (or any other name), set the rights for your user and copy / clone the smartVISU package to that directory
-    ```cd /var/www/html
-	sudo mkdir smartvisu
-	sudo chown smarthome:www-data smartvisu
-	chmod g+rws smartvisu/
-	cd smartvisu
-	git clone git://github.com/Martin-Gleiss/smartvisu.git .```
-	Be sure to type the dot at the end of the last line. Afterwards set the rights for the temp folder and some system configuration and data files:
-    ```bash setpermissions```	
+    cd /var/www/html
+    sudo mkdir smartvisu
+    sudo chown smarthome:www-data smartvisu
+    chmod g+rws smartvisu/
+    cd smartvisu
+    git clone git://github.com/Martin-Gleiss/smartvisu.git .
+   Be sure to type the dot at the end of the last line. Afterwards set the rights for the temp folder and some system configuration and data files:
+    bash setpermissions	
  
 ## 10 STEP GUIDE TOWARDS YOUR VISU
 For your own Project do the following:
