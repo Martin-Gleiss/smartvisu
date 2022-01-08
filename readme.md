@@ -1,6 +1,3 @@
-# Warning ! The current version in this develop branch is experimental and should not be used in productive environments!
-Use version v3.1.0 from the master branch instead.
-
 # smartVISU  
 
 [![Join the chat at https://gitter.im/sVISU/Lobby](https://badges.gitter.im/sVISU/Lobby.svg)](https://gitter.im/sVISU/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -29,7 +26,19 @@ SEE: [smartvisu.de](http://www.smartvisu.de)
   * Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android Tablet
  
  
-## 10 STEP GUIDE
+## INSTALLATION 
+  * if you are using Apache2 as web server make sure the following php packets are installed: libawl-php, php-curl, php, php-json, php-xml, php-mbstring
+  * the server directory is /var/www/html. Create a subdirectory "smartVISU" (or any other name), set the rights for your user and copy / clone the smartVISU package to that directory
+    ```cd /var/www/html
+	sudo mkdir smartvisu
+	sudo chown smarthome:www-data smartvisu
+	chmod g+rws smartvisu/
+	cd smartvisu
+	git clone git://github.com/Martin-Gleiss/smartvisu.git .```
+	Be sure to type the dot at the end of the last line. Afterwards set the rights for the temp folder and some system configuration and data files:
+    ```bash setpermissions```	
+ 
+## 10 STEP GUIDE TOWARDS YOUR VISU
 For your own Project do the following:
     
   1. Create a new directory in "pages", for example "pages/YOURPROJECT".  
@@ -46,14 +55,13 @@ For your own Project do the following:
   4. Create a new page in your project-directory, for example "mypage.html". 
      Note: Do not use "base.html, basic.html, device.html" nor any other reserved name of the system pages.
   5. Fill the page with your preferred content and widgets (see the pages/example*.* sections). 
-     The widget constructor in the system menu will help you to parametrize the widgets correctly.
+     The widget assistant in the system menu will help you to parametrize the widgets correctly.
   6. If you need to change the design, select a design in the user interface section.  
-     If you want to develop your own widgets, place them in ./pages/YOURPROJECT/widgets or ./dropins.   
-     Provide a mywidget.html and a mywidget.js (if you need one). You'll need to import the html
-     file in your pages while javascript will be included automatically.   
+     If you want to develop your own widgets, place them in ./dropins/widgets (preferred) or ./pages/YOURPROJECT/widgets.   
+     Provide a mywidget.html and a mywidget.js (if you need one). The files will be imported automatically.   
      Avoid names which are already used in the "smartvisu/widgets" directory or other sytem file names.
   7. Test your page with: http://localhost/smartVISU/index.php?page=mypage  
-     Note: replace "localhost" with the hostname from your server      
+     Note: replace "localhost" with the hostname or IP address from your server      
   8. Create all pages you need. The template checker will check the formal correctness of the completed set of pages.
   9. At the end of your project set "cache" to "on" in the user interface area to speed up your smartVISU
   10. Enjoy smartVISU!
