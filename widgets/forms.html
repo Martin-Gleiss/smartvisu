@@ -60,7 +60,7 @@
 */
 {% macro config_row(source, values, id, content) %}
 	<div class="ui-field-contain">
-		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
+		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[source][id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
 			{{ lang('configuration_page', id, 'label') }}
 		</label>
 	{% set hint = lang('configuration_page', id, 'hint') %}
@@ -91,7 +91,7 @@
 */
 {% macro config_input(source, values, id, type) %}
 	<div class="ui-field-contain">
-		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
+		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[source][id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
 			{{ lang('configuration_page', id, 'label') }}
 		</label>
 	{% set hint = lang('configuration_page', id, 'hint') %}
@@ -102,7 +102,7 @@
 				{{ hint|nl2br }}
 			</div>
 	{% endif %}
-			<input {% if type == 'wide' %} style="letter-spacing: 0.1em;" {% set type = 'text' %}{% endif %} type="{{ type|default('text') }}" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
+			<input {% if type == 'wide' %} style="letter-spacing: 0.1em;" {% set type = 'text' %}{% endif %} type="{{ type|default('text') }}" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[source][id] }}"{{ not values[source][id] is defined ? ' disabled="disabled"'|raw }} />
 	{% if not hint is empty %}
 		</div>
 	{% endif %}
@@ -122,7 +122,7 @@
 	
 	{% if rowcontent is empty %}
 		<div class="ui-field-contain">
-			<label for="{{ source }}_{{ id }}"{% if source != 'global' and source != 'tplchk' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
+			<label for="{{ source }}_{{ id }}"{% if source != 'global' and source != 'tplchk' %} class="ui-btn{{ values[source][id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
 				{{ lang('configuration_page', id, 'label') }}
 			</label>
 		{% set hint = lang('configuration_page', id, 'hint') %}
@@ -134,41 +134,41 @@
 				</div>
 		{% endif %}
 	{% endif %}
-			<select name="{{ id }}" id="{{ source }}_{{ id }}"{{ files|length <= 20 ? ' data-native-menu="false"'|raw }}{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
-	      {% set metas = [] %}
-	      {% set deprecateds = [] %}
-				{% for file in files %}
-					{% if not file.path %}
-						{% set meta = [] %}
-					{% else %}
-						{% set meta = configmeta(file.path) %}
-						{% if meta != [] %}
-							{% set metas = metas|merge({ (file.name) : meta }) %}
-		          {% if meta['deprecated'] %}
-		            {% set deprecateds = deprecateds|merge([loop.index0]) %}
-							{% endif %}
-						{% endif %}
+				<select name="{{ id }}" id="{{ source }}_{{ id }}"{{ files|length <= 20 ? ' data-native-menu="false"'|raw }}{{ not values[source][id] is defined ? ' disabled="disabled"'|raw }}>
+		{% set metas = [] %}
+		{% set deprecateds = [] %}
+		{% for file in files %}
+			{% if not file.path %}
+				{% set meta = [] %}
+			{% else %}
+				{% set meta = configmeta(file.path) %}
+				{% if meta != [] %}
+					{% set metas = metas|merge({ (file.name) : meta }) %}
+					{% if meta['deprecated'] %}
+						{% set deprecateds = deprecateds|merge([loop.index0]) %}
 					{% endif %}
-          {% if file.group and file.group != prevgroup %}
-						{% if prevgroup %}
-            	</optgroup>
-						{% endif %}
-						{% set prevgroup = file.group %}
-            <optgroup label="{{ file.group }}">
-					{% endif %}
-					<option value="{{ file.name }}"{{ values[id] == file.name ? ' selected="selected"'|raw }}>{{ meta['label']|default(file.label) }}</option>
-				{% endfor %}
-				{% if prevgroup %}
-        	</optgroup>
 				{% endif %}
-			</select>
-			/** display deprecated options in italic
+			{% endif %}
+			{% if file.group and file.group != prevgroup %}
+				{% if prevgroup %}
+					</optgroup>
+				{% endif %}
+				{% set prevgroup = file.group %}
+					<optgroup label="{{ file.group }}">
+			{% endif %}
+					<option value="{{ file.name }}"{{ (values[source][id] is defined and values[source][id] == file.name) or (values[source][id] is not defined and values['global'][id] == file.name) ? ' selected="selected"'|raw }}>{{ meta['label']|default(file.label) }}</option>
+		{% endfor %}
+		{% if prevgroup %}
+					</optgroup>
+		{% endif %}
+				</select>
+		/** display deprecated options in italic */
 				<style type="text/css">
-					{% for deprecated in deprecateds %}
-						#{{ source }}_{{ id }}-listbox-popup li[data-option-index="{{ deprecated }}"] a { font-style: italic; }
-					{% endfor %}
+		{% for deprecated in deprecateds %}
+					#{{ source }}_{{ id }}-listbox-popup li[data-option-index="{{ deprecated }}"] a { font-style: italic; }
+		{% endfor %}
 				</style>
-			*/
+			
 				<script type="text/javascript">
 					$('#{{ source }}_{{ id }}').on('change init', function(event) {
 						var element = $(this);
@@ -216,7 +216,7 @@
 */
 {% macro config_flip(source, values, id, addition) %}
 	<div class="ui-field-contain">
-		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
+		<label for="{{ source }}_{{ id }}"{% if source != 'global' %} class="ui-btn{{ values[source][id] is defined ? ' ui-btn-active'|raw }}"{% endif %}>
 			{{ lang('configuration_page', id, 'label') }}
 		</label>
 	{% set hint = lang('configuration_page', id, 'hint') %}
@@ -227,9 +227,9 @@
 				{{ hint|nl2br }}
 			</div>
 	{% endif %}
-			<select name="{{ id }}" id="{{ source }}_{{ id }}" data-role="flipswitch"{{ not values[id] is defined ? ' disabled="disabled"'|raw }}>
-				<option value="false"{{ not values[id] ? ' selected="selected"'|raw }}>off</option>
-				<option value="true"{{ values[id] ? ' selected="selected"'|raw }}>on</option>
+			<select name="{{ id }}" id="{{ source }}_{{ id }}" data-role="flipswitch"{{ not values[source][id] is defined ? ' disabled="disabled"'|raw }}>
+				<option value="false"{{ not values[source][id] ? ' selected="selected"'|raw }}>off</option>
+				<option value="true"{{ values[source][id] ? ' selected="selected"'|raw }}>on</option>
 			</select>
 			{{ addition|raw }}
 	{% if not hint is empty %}
@@ -247,7 +247,7 @@
 * @param {text} name of the parameter to configure
 */
 {% macro config_hidden(source, values, id) %}
-			<input type="hidden" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[id] }}"{{ not values[id] is defined ? ' disabled="disabled"'|raw }} />
+			<input type="hidden" name="{{ id }}" id="{{ source }}_{{ id }}" value="{{ values[source][id] }}"{{ not values[source][id] is defined ? ' disabled="disabled"'|raw }} />
 {% endmacro %}
 
 

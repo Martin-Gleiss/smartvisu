@@ -42,6 +42,7 @@
 - additional js-scripts can be loaded with a backend driver if stored in a folder with the drivers name
 - new system menu in navigation on primary side (right hand side) saves ressources. Config page must be called as menu item. 
 - base language is recognized from first "extends" value during language file processing. Accessible in JavaScript as "sv_lang.baselang" and in twig as lang('baselang') 
+- config tabs 'pages' and 'device' now show the globally selected options if no specific value is defined (yet select menus only since they steer the options structure as well)
 
 ### Updated Libraries
 - jQuery v2.2.4 with patch in jQuery mobile v1.4.5
