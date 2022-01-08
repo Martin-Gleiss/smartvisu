@@ -35,9 +35,9 @@
 		    {% endfor %}
 			</ul>
 		</div>
-
+	{% set values = [] %}
 	{% for source, title in sources %}
-		{% set values = read_config(source) %}
+		{% set values = values | merge({(source): read_config(source)}) %}
 		{% set id = (source != "global") ? '_' ~ source : '' %}
 		<div id="config_tab_{{ source }}">
 			<h2>{{ lang('configuration_page', source ~ 'tab', 'hint')|replace({'%pages%': config_pages}) }}</h2>
