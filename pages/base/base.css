@@ -16,8 +16,11 @@
   src: url('dosis.eot') format('embedded-opentype'), url('dosis.woff') format('woff'), url('dosis.ttf') format('truetype');
 }
 
-.visible-phone, .visible-tablet, .minimum-tablet, .visible-desktop, .minimum-desktop {
+.visible-phone, .menu-visible-phone, .visible-tablet, .minimum-tablet, .visible-desktop, .minimum-desktop {
   display: none;
+}
+.menu-hide-phone {
+	display: inline-block;
 }
 
 /* Large desktop */
@@ -38,6 +41,12 @@
 @media all and (max-width: 767px) {
   .visible-phone {
     display: block;
+  }
+  .menu-visible-phone {
+	  display: inline-block;
+  }
+  .menu-hide-phone {
+	  display: none;
   }
 }
 
@@ -526,7 +535,7 @@ a.ui-slider-handle-semicircle {
 .ui-slider-semicircle-inner {
   position: absolute;
   width: 118px;
-  height: 59px;
+  height: 60px;
   margin: 15px 15px 0;
   border: 1px solid #000;
   border-bottom: none;
@@ -537,7 +546,7 @@ a.ui-slider-handle-semicircle {
 
 .ui-slider-semicircle-bottom {
   width: 15px;
-  height: 10px;
+  height: 8px;
   margin: 0 0 0 -1px;
   position: absolute;
   top: 100%;
@@ -1379,7 +1388,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 }
 
 .smallshut_wrapper {
-  width: 85%;
+  width: 100%;
   float: left;
   overflow: hidden;
 }
@@ -1414,6 +1423,9 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   display: inline-block;
 }
 
+/**
+ * ---------- UZSU Popup ------------------------------------------------
+ */
 .uzsuPopupContent{
   width: 100%;
   height: 100%;
@@ -1428,7 +1440,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   height: 3.8em;
 }
 /* work around for firefox line break issues with scrollbars */
-.uzsuRow:first-of-type::after {
+.uzsuRow:first-of-type::after{
   content: ".";
   float: right;
   width: 30px;
@@ -1448,6 +1460,25 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   display: block;
   height: 0;
 }
+
+.uzsuRowSeriesLine{
+  float: left;
+  height: 3.8em;
+  border: 1px dotted;
+  margin: 0 0.6em 1.2em 30%;
+}
+.uzsuRowSeries:after{
+  clear: both;
+  content: " ";
+  display: block;
+  height: 0;
+}
+.uzsuCellSeries{
+  float: left;
+  height: 3.1em;
+  margin: 0.2em;
+}
+
 .uzsuRowCondition, .uzsuRowDelayedExec{
   clear: both;
 }
@@ -1465,7 +1496,8 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   height: 3.8em;
   margin-top: 1.2em;
 }
-.uzsuCell, .uzsuCellExpert{
+.uzsuCell, .uzsuCellExpert,
+.uzsuCellExpertSeries {
   float: left;
   height: 3.1em;
   margin: 0.2em;
@@ -1489,6 +1521,15 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   padding: 0.1em !important;
   text-align: center !important;
 }
+
+.uzsuTimeInput::-webkit-calendar-picker-indicator,
+.uzsuTimeMaxMinInput::-webkit-calendar-picker-indicator {
+	width: 1.8ex;
+	height:1.8ex;
+	margin-left: 0px;
+	border: 0;
+}
+
 .uzsuTimeInput::-webkit-inner-spin-button,
 .uzsuTimeMaxMinInput::-webkit-inner-spin-button,
 .uzsuTimeOffsetInput::-webkit-inner-spin-button,
@@ -1518,7 +1559,8 @@ div.ui-input-text{
 div.ui-slider-switch{
   top: 1px !important;
 }
-.uzsuCellExpert div.ui-btn{
+.uzsuCellExpert div.ui-btn,
+.uzsuCellExpertSeries div.ui-btn{
   top: 0.2em !important;
 }
 .ui-disable{
@@ -1533,7 +1575,7 @@ div.ui-slider-switch{
   width: 350px !important;
 }
 @media screen and (max-width: 625px){
-  .uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec, .uzsuCellExpert{
+  .uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec, .uzsuCellExpert, .uzsuRowSeriesLine{
     display: none;
   }
 }
@@ -1692,7 +1734,7 @@ div.ui-slider-switch{
 .highcharts-container {
   font-family: inherit;
 }
-.highcharts-root {
+.highcharts-root:not(.supersized) {
   max-height: 400px;
 }
 .highcharts-root,
@@ -2046,7 +2088,11 @@ div.ui-slider-switch{
   bottom: 0;
   text-align: right;
   font-size: 0.8em;
-  color: #666;
+  
+}
+
+.iprouter .version img {
+	width: 0.8em;
 }
 
 /**
@@ -2605,3 +2651,28 @@ svg.fx-icon.midi,
 [data-tip]:hover:after {
   display:block;
 }
+
+/* widget lib.supersize */
+.overlay{
+	position:absolute;
+	padding: .5%;
+	top:0px;
+	left:0px;
+	width:99%;
+	height:100%;
+	z-index:1000;
+	display:none;
+}
+.mask {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right:0;
+	bottom: 0;
+	width: 100%; 
+	height: 100%;
+	z-index: 900;
+	display:none;
+	background: rgba(0, 0, 0, 0.5);
+	position: fixed; 
+	}

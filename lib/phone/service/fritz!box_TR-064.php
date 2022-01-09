@@ -13,7 +13,7 @@ require_once '../../../lib/includes.php';
 require_once const_path_system . 'phone/phone.php';
 /**
  * This class reads the phonelist of a fritz!box phonesystem via TR-064 protocol
- * This can only work if you enable "Zugriff für Anwendungen zulassen".
+ * This can only work if you enable "Zugriff fÃ¼r Anwendungen zulassen".
  * you can find this config switch inside the web console -> Home network -> Network -> Network Settings
  * It is required that "Extented View" of the web console is enabled - that this checkbox is shown.
  * 
@@ -165,7 +165,7 @@ class phone_fritzbox_TR064 extends phone
 				// bulid data array for smartvisu
 				$this->data[] = array(
 					'pos' =>      (string) $call->Id,
-					'dir' =>      (string) ($call->Type == 1 ? 1 : ($call->Type == 2 ? 0 : -1)),
+					'dir' =>      (string) ($call->Type == 10 ? 10 : 2 - $call->Type),
 					'date' =>     (string) $call->Date,
 					'number' =>   (string) $call->Caller,
 					'name' =>     (string) $call->Name,

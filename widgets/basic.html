@@ -92,11 +92,12 @@
 * @param {text=Off} text for the 'off' state (optional, default 'Off')
 * @param {text=1} value for the 'on' state (optional, default 1)
 * @param {text=0} value for the 'off' state (optional, default 0)
+* @param {color=} alternative color (e.g. '#777') for active switch (optional)
 */
-{% macro flip(id, item, txt_on, txt_off, val_on, val_off) %}
+{% macro flip(id, item, txt_on, txt_off, val_on, val_off, background) %}
 
 	<select{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.flip" data-item="{{ item }}"
-		data-role="flipswitch">
+		data-role="flipswitch" data-background="{{ background }}">
 		<option value="{{ val_off|default(0) }}">{{ txt_off|default('Off') }}</option>
 		<option value="{{ val_on|default(1) }}">{{ txt_on|default('On') }}</option>
 	</select>
@@ -284,11 +285,13 @@
 * @param {image=} icon to show on the button (optional)
 * @param {text=} text printed on the button (optional)
 * @param {type(text)=mini} valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini)
+* @param {text=} lowest allowed value (optional, default: no limit)
+* @param {text=} highest allowed value (optional, default: no limit)
 */
-{% macro offset(id, item, step, icon, text, type) %}
+{% macro offset(id, item, step, icon, text, type, min, max) %}
 	{% import _self as basic %}
 
-	<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.offset" data-item="{{ item }}" data-step="{{ step|default(1) }}" class="
+	<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.offset" data-item="{{ item }}" data-min ="{{ min }}" data-max ="{{ max }}" data-step="{{ step|default(1) }}" class="
 		{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
 			switch ui-link
 		{%- else -%} /**- display as button -*/
@@ -340,7 +343,7 @@
 * Select a specific value (e.g. a scene)
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item(num,list)} an item
+* @param {item(bool,num,list)} an item
 * @param {type(menu)=menu} type: 'menu', 'micro', 'mini', 'midi', 'icon' (optional, default: menu)
 * @param {text[]=[0,1]} list of values (optional, default [0,1])
 * @param {image[]=} list of icons for every button (optional) - not supported for type 'menu'
@@ -501,7 +504,7 @@
 * @param {color[?](icon0,icon1,hidden,blank)=icon0} array of colors; 'icon1' or e. g. '#f00' for red (optional, default: icon0)
 	additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
 * @param {color(icon0,icon1,blink)=} activity indicator which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
-* @param {item(bool,num,list,scene)=} an item to which a value on longpress is sent (optional)
+* @param {text=} an item to which a value is sent on longpress OR an id of a popup, with prefix '#' (optional)
 * @param {text=} the value to send on longpress (optional)
 	If this starts with a + or - sign the value is treated as offset to current stateswitch value.
 * @param {text=} the value to send on releasing after a longpress (optional)
@@ -679,17 +682,13 @@
 * @param {item(num)=} an item for the window left wing status (0=closed, 1=tilt, 2=open) (optional, default = 0)
 * @param {value=0} the value for shutter on top end (optional, default 0)
 * @param {value=255} the value for shutter at bottom end (optional, default 255)
-* @param {color(icon1)=icon1} color for 'open' state e.g. '#f00' for red (constant, 'icon0' and 'icon1' can NOT be used) (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
+* @param {color(icon1,!)=icon1} color for 'open' state e.g. '#f00' for red. Prepend a '!' to make the color constant ('!#f00'). 'icon0' and 'icon1' can NOT be used. (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
 *
 * @author: Wolfram v. Hülsen
 */
 {% macro window(id, item_value, item_window_r, item_window_l, min, max, color) %}
 <svg role="img" {% if id is not empty %}id="{{ uid(page, id) }}"{% endif %} data-widget="basic.window" data-item="{{ item_value }}, {{ item_window_r }}, {{ item_window_l }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
-	{% if color is empty  %}
-		class="icon icon0" 
-	{% else %}
-		class="icon icon1" style="stroke:{{ color }}; fill:{{ color }};"
-	{% endif %}
+	 data-color="{{ color }}" class="icon icon0" 
 	xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 	<!-- window frame -->
 	<rect stroke-width="3" rx="1" x="15" y="25" width="70" height="4" />

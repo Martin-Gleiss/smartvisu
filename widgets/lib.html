@@ -33,15 +33,20 @@
 	{% if config_updatecheck %}
 		<script>
 			$('#index').on('pagecreate', function (event, ui) {
-				$.getJSON('lib/base/check_update.php?local={{ config_version_full }}', function (data) {
-					if (data.update) {
-						notify.update(data.text, 'Your local version is: <b>' + data.local + '</b><br>' +
+				$.ajax({
+					dataType: 'json',
+					url: 'lib/base/check_update.php?local={{ config_version_full }}',
+					beforeSend: function(jqXHR, settings) { jqXHR.svProcess = 'Update Check'; },
+					success: function (data) {
+						if (data.update) {
+							notify.message('update', data.text, 'Your local version is: <b>' + data.local + '</b><br>' +
 							'Latest stable release is: <b>' + data.remote + '</b><br><br>' +
 							'Please visit <a target="_blank" href="http://smartvisu.de">smartVISU.de</a> or <a target="_blank" href="http://github.com/martin-gleiss/smartvisu">github</a> to download the latest version!<br><br>'+
 							'Update check will run again in 7 days from now. <br />');
+						}
 					}
 				})
-				.error(notify.json);
+				.fail(notify.json);
 			});
 		</script>
 	{% else %}
@@ -86,7 +91,7 @@
 			} else {
 				$(document).on('ioAlive', function(){   //else wait for ioAlive event and write then
 					if (io.server != '' ) {
-						var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short');
+						var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short')+'<br>smartVISU server IP: '+sv.info.serverIP+'&nbsp;&nbsp;&nbsp;&nbsp;Remote IP: '+sv.info.remoteIP;
 						$('#connection').html(io.socket.url + connectString);
 					}
 				})
@@ -113,3 +118,49 @@
 	</script>
 {% endmacro %}
 
+/**
+* Extend a single block to full screen width
+*
+* @param {id=} unique id for the widget.
+*
+* @Author: bonze  (plot resize by Wolfram v. Hülsen)
+*/
+{% macro supersize ( id ) %}
+	{% set uid = uid(page, id) %}
+	 <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
+		<a><img class="supersize" src="icons/sw/control_centr_arrow_up_right.svg" style="position:absolute; width:3em; height:auto; top:0px; right:0px;"></a>
+	</span>
+	<script>
+		$(".supersize").click(function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			e.stopImmediatePropagation();
+			var element = $(this).closest("div");
+			var previousWidth = parseFloat(element.css('width').replace('px',''));
+			var previousHeight = parseFloat(element.find('.ui-collapsible-content').css('height').replace('px',''));
+
+			if (!element.hasClass('overlay')){
+				$(".mask").css('display','block');
+				element.addClass("overlay").show();
+				element.collapsible('expand'); 
+				element.find("h3").addClass("ui-corner-all");
+				element.find(".supersize").attr("src", "icons/sw/jquery_minus.svg");
+				element.find('.highcharts-root').addClass('supersized');
+			}else{
+				$(".mask").css('display','none');
+				element.removeClass("overlay");
+				element.find("h3").removeClass("ui-corner-all");
+				element.find(".supersize").attr("src", "icons/sw/control_centr_arrow_up_right.svg");
+				element.find('.highcharts-root').removeClass('supersized');
+			}
+			var actualWidth = parseInt(element.css('width').replace('px',''));
+			var sizeFactor = actualWidth / previousWidth;
+			element.find('.ui-collapsible-content').css('height', previousHeight * sizeFactor)
+			.find('.plot').each(function() {
+				var actualPlotHeight = parseFloat($(this).css('height').replace('px',''));
+				$(this).css('height', actualPlotHeight * sizeFactor);
+				$(this).highcharts().setSize(null, null);
+			});
+		});
+	</script>
+{% endmacro %}

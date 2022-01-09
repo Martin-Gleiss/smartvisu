@@ -33,6 +33,19 @@
 	<div class="html">
 		{{ basic.offset('', 'bath.rtr.set', -0.5, 'minus', '', 'micro') }}
 	</div>
+		
+	New in v3.2: limits can be added 
+	
+	<div class="twig">
+		<code class="prettyprint">
+		&#123;&#123; basic.offset('', 'bath.rtr.set', -0.5, 'minus', '', 'micro', '0', '28') &#125;&#125; <br />
+		&#123;&#123; basic.offset('', 'bath.rtr.set', -0.5, 'minus', '', 'micro', '0', '28') &#125;&#125;
+		</code>
+	</div>
+	<div class="html">
+		{{ basic.offset('', 'bath.rtr.set', -0.5, 'minus', '', 'micro', '0', '28') }}
+		{{ basic.offset('', 'bath.rtr.set', 0.5, 'plus', '', 'micro', '0', '28') }}
+	</div>
 
 {% endblock %}
 

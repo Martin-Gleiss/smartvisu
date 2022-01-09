@@ -122,7 +122,7 @@ Caution: If this is set, the notification gets not shown until the item has sent
 /**
 * Displays a notification toast
 * 
-* @param {id=} unique id for this widget(optional)
+* @param {id=} unique id for this widget(optional)  If set, id is also used as class name for the dynamic toast and can be used for css styling.  
 * @param {item(bool)} a trigger item (true to open, false to close)
 * @param {item(str)=} an item containing the title(optional)
 * @param {item(str)=} an item containing content (optional)
@@ -164,7 +164,7 @@ Caution: If this is set, the notification gets not shown until the item has sent
 * A widget to display messages received in json format
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item(dict,list))} an item contaning messages in json Format 
+* @param {item(dict,list)} an item contaning messages in json Format 
 * @param {text=title} a parameter name for the title (optional, default ='title')
 * @param {text=subtitle} a parameter name for the subtitle (optional, default ='subtitle')
 * @param {text=content} a parameter name for the message (optional, default ='content')
@@ -177,8 +177,8 @@ Caution: If this is set, the notification gets not shown until the item has sent
 	 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.activelist" data-item="{{ item_messages }}"
 		data-title="{{ title }}" data-subtitle="{{ subtitle }}" data-content="{{ content }}" data-level="{{ level }}">
-		<ul data-role="listview" class="ui-listview activelist-container" style="margin-top: 0px;margin-bottom: 0em; margin-right:0px;">
-		</ul>
+		<dl data-role="listview" class="ui-listview activelist-container" style="margin-top: 0px;margin-bottom: 0em; margin-right:0px;">
+		</dl>
 	</div>
 
 {% endmacro %}

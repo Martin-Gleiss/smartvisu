@@ -40,7 +40,7 @@
 	<br> The first example shows how to send a value to an item by the toast. Dim the light using the dimmer and then watch the light while closing the topmost toast via the "Quit" button <br>
 	{{ device.dimmer('', '', 'bath.light.switch', 'bath.light.value', 0, 100, '', icon.light('', '','bath.light.value', 0, 100), icon.light('', '','bath.light.value', 0, 100) )}}
 	<br><br />
-	An item containing content, e.g. the video stream of a door station, can be dsiplayed inside a toast.  
+	An item containing content, e.g. the video stream of a door station, can be displayed inside a toast. Send proper html code in the item or in the text field, e.g. '&lt;img src ="&lt;yourStreamURL&gt;"'.
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 			{{ status.toast('toast5', 'bath.light.switch', '','item.with.content', '', 'HEADER Bewegung erkannt', 'warning', '', 'warning') }}

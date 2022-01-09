@@ -1,14 +1,19 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU / FHEM
- * @author      HCS with adjustments by Julian Pawlowski, Stefan Widmer and raman
+ * @author      HCS with adjustments by Julian Pawlowski, Stefan Widmer, raman an wvhn
  *              original version by Martin Gleiß
  * @copyright   2016
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       FHEM
+ * @hide        driver_tlsport
  * @hide        driver_autoreconnect
  * @hide		reverseproxy
+ * @hide		driver_ssl
+ * @hide		driver_username
+ * @hide		driver_password
+ * @hide		sv_hostname
  * @default     driver_port 2121
  *
  * This driver has enhancements for using smartVISU with FHEM
@@ -75,10 +80,10 @@ var io = {
   // -----------------------------------------------------------------------------
   // Initialization of the driver
   // -----------------------------------------------------------------------------
-  init: function(address, port) {
-    io.log(0, "init (address=" + address + " port=" + port + ")");
-    io.address = address;
-    io.port = port;
+  init: function () {
+    io.log(0, "init (address=" + sv.config.driver.address + " port=" + sv.config.driver.port + ")");
+    io.address = sv.config.driver.address;
+    io.port = sv.config.driver.port;
     
     if (io.alertExceptions) {
       window.onerror = function(message, url, line) {
@@ -87,11 +92,11 @@ var io = {
       };
     }
     
-    if (address === "") {
+    if (io.address === "") {
       io.address = window.location.hostname;
     }
     
-    if (port === "") {
+    if (io.port === "") {
       io.port = window.location.port;
     }
     
@@ -112,20 +117,22 @@ var io = {
   // -----------------------------------------------------------------------------
   // Called after each page change
   // -----------------------------------------------------------------------------
-  run: function(realtime) {
-    io.log(1, "run (readyState=" + io.socket.readyState + ")");
+  run: function() {
+    if (io.socket != undefined)
+		io.log(1, "run (readyState=" + io.socket.readyState + ")");
+	else
+		io.log(1, "run: websocket not available");
     
     if (io.addon) {
       io.addon.run();
     }
     
-    if (io.socket.readyState > 1) {
+    if (io.socket == null || io.socket.readyState > 1) 
       io.open();
-    } else {
+    
       // new items
       widget.refresh();
       io.monitor();
-    }
     
   },
   
@@ -136,6 +143,7 @@ var io = {
   socket: null,
   rcTimer: null,
   addon: null,
+  socketErrorNotification: null,
   
   log: function(level, text) {
     if (io.logLevel >= level) {
@@ -145,19 +153,14 @@ var io = {
   
   
   // -----------------------------------------------------------------------------
-  // Start timer
+  // Start timer - started when the websocket is closed by the backend (onclose event)
   // -----------------------------------------------------------------------------
   startReconnectTimer: function() {
     if (!io.rcTimer) {
       io.log(1, "Reconnect timer started");
       io.rcTimer = setInterval(function() {
         io.log(1, "Reconnect timer fired");
-        notify.add("ConnectionLost",
-          "connection",
-          "Driver: fhem",
-          "Connection to the fhem server lost!");
-        notify.display();
-        if (!io.socket) {
+        if (io.socket == null) {
           io.open();
         }
       }, 60000);
@@ -166,10 +169,10 @@ var io = {
   
   
   // -----------------------------------------------------------------------------
-  // Stop timer
+  // Stop timer - called when the websocket opened again (onopen event)
   // -----------------------------------------------------------------------------
   stopReconnectTimer: function() {
-    if (io.rcTimer) {
+    if (io.rcTimer != null) {
       clearInterval(io.rcTimer);
       io.rcTimer = null;
       io.log(1, "Reconnect timer stopped");
@@ -261,13 +264,13 @@ var io = {
         break;
       
       case 'dialog':
-        notify.info(data.header, data.content);
+        notify.message('info', data.header, data.content);
         break;
       
       case 'proto':
         var proto = data.ver;
         if (proto != io.protocolVersion) {
-          notify.info('Driver: fhem',
+          notify.message('error', 'Driver: fhem',
             'Protocol mismatch<br />Driver is at version v' + io.protocolVersion + '<br />fhem is at version v' + proto);
         }
         break;
@@ -304,9 +307,8 @@ var io = {
         'ver': io.protocolVersion
       });
       io.monitor();
-      if (notify.exists()) {
-        notify.remove();
-      }
+      if(io.socketErrorNotification != null)
+		notify.remove(io.socketErrorNotification);
     };
     
     io.socket.onmessage = function(event) {
@@ -315,12 +317,17 @@ var io = {
     };
     
     io.socket.onerror = function(error) {
-      io.log(1, "socket.onerror: " + error);
+      io.log(1, "socket.onerror: " + error.data);
+	  if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification))
+		io.socketErrorNotification = notify.message('error', 'Driver: fhem', 'Could not connect to fronthem server!<br /> Websocket error ' + error.data + '.');
     };
     
     io.socket.onclose = function() {
       io.log(1, "socket.onclose");
       io.close();
+	  if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification)) {
+		io.socketErrorNotification = notify.message("error", "Driver: fhem", "Connection to the fhem server lost!");
+	  }
       io.startReconnectTimer();
     };
   },
@@ -373,7 +380,7 @@ var io = {
         if (re && re.test(item)) {
           io.ownItems.push(item);
         } else {
-          io.fhemItems.push(item);
+          io.fhemItems.push(item); 
         }
       }
       
@@ -458,9 +465,9 @@ var io = {
   splitPlotItem: function(completeItem) {
     var parts = completeItem.split('.');
     // item: hcs.data.OilLevelPlot.avg.5y 6m.0.100	-- count
-    //		 												 \		 \		\ end
-    //		 												 \		 \ start
-    //		 									  		 \ mode
+    //		 						\	\	  \ end
+    //		 						 \	 \ start
+    //		 						  \ mode
     var pos = 0;
     var item = "";
     while (pos < parts.length - 4) {
@@ -533,12 +540,13 @@ var io = {
     
   },
   
-	/**
-	 * stop all subscribed series
-	 */
-	stopseries: function () {
-		// TODO
-	},
-  
-  
+   /**
+    * stop all subscribed series
+    */
+   stopseries: function () {
+      // TODO
+	  // if the backend supports cancelling of the series subscriptions this should be implemented here
+	  io.log(2, "series cancelling not yet implemented");
+   },
+    
 };

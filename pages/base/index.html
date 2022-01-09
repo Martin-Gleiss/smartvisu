@@ -22,7 +22,7 @@
 	<link rel="apple-touch-icon" href="favicon.png" />
 	<link rel="manifest" href="index.php?page=manifest">
 
-	<script type="text/javascript" src="vendor/jquery/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="vendor/jquery/jquery-2.2.4.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="pages/base/base.css" />
 </head>
 
@@ -125,7 +125,7 @@
 			$('.check').eq(index).children('img').attr('src', 'icons/sw/' + data.icon);
 			$('.check').eq(index).children('span').html(data.text);
 		})
-			.error(function (jqXHR) {
+			.fail(function (jqXHR) {
 				var data = jQuery.parseJSON(jqXHR.responseText)
 				$('.check').eq(index).children('img').attr('src', 'icons/sw/' + data.icon);
 				$('.check').eq(index).children('span').html(data.text);

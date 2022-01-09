@@ -1,0 +1,41 @@
+/**
+* -----------------------------------------------------------------------------
+* @package		 smartVISU
+* @author		 Wolfram v. Hülsen
+* @copyright	 2022 
+* @license		 GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_plot.html" %}
+
+{% block example %}
+
+	This plot displays x/y data provided by the backend in list items which need to have the structure [[ x-value_0, y-value_0 ], ... , [ x-value_n, y-value_n ]]. x-values must be in ascending order.
+	
+
+
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ plot.xyplot('', ['bath.list1', 'bath.list2', 'bath.list3'], '','', '-20', '20', '20', '80', ['0.2','0.6','1.0'], '', ['lightblue','darkblue','lightgreen'], 'spline', ['AT','Vorlauf'], '', '', '', '', '', '°C',
+			{xAxis:{reversed: true }, title:{text: "Heizkurven mit unterscheidlicher Steigung", align: "left"}, legend:{align: "right", floating:true, y:-3}}') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+
+	<div class="html">
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>Heating Curves</h3>
+					{{ plot.xyplot('', ['bath.list1', 'bath.list2', 'bath.list3'], '','', '-20', '20', '20', '80', ['0.2','0.6','1.0'], '', ['lightblue','darkblue','lightgreen'], 'spline', ['AT','Vorlauf'], '', '', '', '', '', '°C',
+					{xAxis:{reversed: true }, title:{text: "Heizkurven mit unterscheidlicher Steigung", align: "left"}, legend:{align: "right", floating:true, y:-3}}) }}
+				</div>
+			</div>
+		</div>
+	</div>
+    <br>
+	<h5>Options</h5>
+	Most of the options are identical to the options of plot.period widget. Please see its documentation for more explanation. 
+{% endblock %}

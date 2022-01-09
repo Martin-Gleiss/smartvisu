@@ -20,20 +20,20 @@
 		{{ calendar.list('', '', 3) }}
 	</div>
 
-	Events of one calendar only:
+	Events of one calendar only and short weekday format:
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; calendar.list('', 'Events in "Personal"', 3, '', '', 'Personal') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; calendar.list('', 'Events in "Personal"', 3, '', '', 'Personal','D') &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ calendar.list('', 'Events in "Personal"', 3, '', '', 'Personal') }}
+		{{ calendar.list('', 'Events in "Personal"', 3, '', '', 'Personal','D') }}
 	</div>
 
-	Calendars with individual colors:
+	Calendars with individual colors and long weekday format:
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; calendar.list('', '', 3, ['#993399','green'], '', ['Personal','Waste']) &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; calendar.list('', '', 3, ['#993399','green'], '', ['Personal','Waste'], 'l') &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ calendar.list('', '', 3, ['#993399','green'], '', ['Personal','Waste']) }}
+		{{ calendar.list('', '', 3, ['#993399','green'], '', ['Personal','Waste'], 'l') }}
 	</div>
 
 {% endblock %}

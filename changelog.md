@@ -1,3 +1,78 @@
+## 3.2.0
+### New / Changed Widgets
+- basic.window and device.window provide an additional color mode: icon0 if closed / custom color if open
+- weather service met.no displays city name retrieved from geonames.org with geo coordinates (new service getLocation.php)
+- basic.offset accepts min / max limits as parameters
+- device.rtrslider offset buttons are limited to min / max but accept a symmetric "tolerance" for backward compatibility
+- basic flip slider track can be styled with any valid color
+- basic.stateswitch can be configured to open any named popup on a long-press (mobile: tap-hold) event 
+- plot.period shows data for the running day from 0:00 to 24:00 if zoom parameter ist set to 'day'
+- plot widgets interpret duration values without units as timestamps (same behaviour as smarthomeNG)
+- new widget appliance.iprouter_v2 displays data from refactored enertex ip router service
+- uzsu widgets support the time series mode provided by the new smarthomeNG UZSU plugin.
+- device.uzsutable provides more colors corresponding to the "on" and "off" values and a fill option until the next switching event.
+- device.uzsugraph provides a scrollbar and zoom buttons to scroll through 7 days stating from "today" (good to review sun-based events)
+- calendar.list can be configured to additionally show the individual weekday in short or long format 
+- plot.period can be used with data from list items (as an alternative to standard database series).  
+- new widget lib.supersize expands single blocks to full screen width and resizes plots (if available). See docu page for design -> blocks
+- multimedia.image uses new parameter 'localize' to enable URLs containing credentials. If 'true', image is loaded by php script ./lib/multimedia/camimage.php
+- status.toast uses the widget id as additional class name (pure id like in parameter set). This can be used for css styling.
+- new widget plot.xyplot displays x/y data provided by the backend in list item(s)
+
+### Other New Features
+- template checker now checks smarthomeNG item properties (valid properties and types)
+- openHAB driver from Patrik Germann (thanks!) supports SSL and authentication
+- smarthome(NG) driver (io_smarthome.py.js) accepts a second port for TLS communication. Port & protocol will be switched according to host protocol (http / https) 
+- refactored php service (enertex.iprouter-v2.php) for enertex IP Router connects to current firmware version and provides more data 
+- anchor links can now be used, e.g. href="index.php?page=myPage&anchor=myAnchor" 
+- ressource intensive pages (config, templatechecker, widegt assistant) are cleared from DOM after usage in order to optimize performance. 
+  Browser back/ forward buttons are blocked on these pages.
+- header menu icons get animated on click in order to visualize an activated link on slow devices 
+- custom language file can be placed in ./dropins/lang
+- with the new menu system, the secondary page area containing weather / calendar / phone widgets is now available on smartphone displays (as infopage.html)
+- new smarthomeNG driver with enhanced connectivity. Connects always with IP v4 & ports, with host name & ports if host name equals configured smartVISU host name, other alpha-numeric requests via URL & port 80/443 
+
+### Improvements
+- Driver config data are globally availble now in the sv.config.driver{} array
+- Config page layout adapted to new options
+- Scripts for config page stored in separate js-file (to save some ressources/time on normal visu pages)
+- device.rtrslider sets the display formats according to the decimals of the parameter 'step'
+- improved error notifications with basis for language specific message texts and error source identification
+- fritz!box TR-064 phone service shows blocked calls as "rejected" instead of outgoing (w/ new icon)
+- additional js-scripts can be loaded with a backend driver if stored in a folder with the drivers name
+- new system menu in navigation on primary side (right hand side) saves ressources. Config page must be called as menu item. 
+- base language is recognized from first "extends" value during language file processing. Accessible in JavaScript as "sv_lang.baselang" and in twig as lang('baselang') 
+- config tabs 'pages' and 'device' now show the globally selected options if no specific value is defined (yet select menus only since they steer the options structure as well)
+
+### Updated Libraries
+- jQuery v2.2.4 with patch in jQuery mobile v1.4.5
+- twig v1.44.6: final and last release for v1.x which still supports global macros (v2.x and v3.x don't)
+- highcharts/ highcharts stock v9.3.1
+
+### Deprecated
+- openHAB2 driver
+- notify.info/warning/error(title, text): use notify.message("info" / "warning" / "error", title, text) instead
+
+### Removed Features
+- replaced several deprecated jQuery / jQuery mobile functions & attributes
+- deprecated Fritz!Box drivers. See deprecation notice in ./lib/phone/service
+
+### Fixed Bugs
+- Sliders for HSV color model did not send updated values if only one slider was changed
+- plot data lost their ascending sequence occationally which resulted in lines across the plots
+- Page navigation away from widget assistant often failed and / or threw errors in console
+- status.activelist expanded all contents when unser returned to the page (now all are collapsed)
+- digiclock disappeared or showed wrong times if more than one page with clock was in the DOM
+- offline data were not correctly loaded if "pages" parameter was used in the URL. Now we evaluate "pages" and set the offline filename accordingly.
+- after reload, config page showed settings that should have been hidden
+- Firefox ignored jQM theme selection for collapsible block headings
+- some drivers threw errors due to empty function io.stopseries and interrupted the page change process (2nd click necessary to change page)
+- iobroker driver did not work with boolean items. A conversion is integrated now.
+
+### Known Bugs
+- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
+
+
 ## 3.1
 ### New / Changed Widgets
 - new weather service API met.no for deprecated yr.no

@@ -352,7 +352,7 @@ html .ui-body-a .ui-slider-track .ui-btn-active,
 html body .ui-group-theme-a .ui-slider-track .ui-btn-active,
 html body div.ui-slider-track.ui-body-a .ui-btn-active {
 	background-color: #f7931e /*{a-active-background-color}*/;
-	border-color: #f7931e /*{a-active-border}*/;
+	border-color: #583d23 /*{a-active-border}*/;
 	color: #ffffff /*{a-active-color}*/;
 	text-shadow: 0 /*{a-active-shadow-x}*/ 1px /*{a-active-shadow-y}*/ 1px /*{a-active-shadow-radius}*/ #444444 /*{a-active-shadow-color}*/;
 }
@@ -1674,4 +1674,10 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 html .ui-btn.icon1,
 [data-widget="basic.print"].icon1 {
 	color: #f9a028;
+}
+
+/** set color of calendar picker symbol in webkit time input fields for UZSU */
+.uzsuTimeInput::-webkit-calendar-picker-indicator,
+.uzsuTimeMaxMinInput::-webkit-calendar-picker-indicator {
+	background-image: url(images/webkit_clock_ws.svg);
 }

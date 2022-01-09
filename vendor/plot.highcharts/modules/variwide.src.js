@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v9.1.0 (2021-05-03)
+ * @license Highcharts JS v9.3.1 (2021-11-05)
  *
  * Highcharts variwide module
  *
@@ -116,8 +116,8 @@
          *
          * */
         Tick.prototype.postTranslate = function (xy, xOrY, index) {
-            var axis = this.axis,
-                pos = xy[xOrY] - axis.pos;
+            var axis = this.axis;
+            var pos = xy[xOrY] - axis.pos;
             if (!axis.horiz) {
                 pos = axis.len - pos;
             }

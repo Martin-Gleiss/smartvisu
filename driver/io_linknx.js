@@ -6,8 +6,13 @@
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @default     driver_port            1028
+ * @hide        driver_tlsport
  * @hide        driver_autoreconnect
  * @hide		reverseproxy
+ * @hide		driver_ssl
+ * @hide		driver_username
+ * @hide		driver_password
+ * @hide		sv_hostname
  */
 
 
@@ -60,27 +65,26 @@ var io = {
 	/**
 	 * Initializion of the driver
 	 *
-	 * @param      the ip or url to the system (optional)
-	 * @param      the port on which the connection should be made (optional)
+	 * Driver config parameters are globally available as from v3.2
 	 */
-	init: function (address, port) {
-		io.address = address;
-		io.port = port;
+	init: function () {
+		io.address = sv.config.driver.address;
+		io.port = sv.config.driver.port;
 		io.stop();
 	},
 
 	/**
 	 * Lets the driver work
 	 */
-	run: function (realtime) {
-		// old items
+	run: function () {
+		// refresh all widgets with values from the buffer
 		widget.refresh();
 
-		// new items
+		// get item updates from the backend
 		io.all();
 
 		// run polling
-		if (realtime) {
+		if (sv.config.driver.realtime) {
 			io.start();
 		}
 	},
@@ -137,7 +141,7 @@ var io = {
 			.done(function (response) {
 				widget.update(item, response[item]);
 			})
-			.error(notify.json);
+			.fail(notify.json);
 	},
 
 	/**
@@ -160,7 +164,7 @@ var io = {
 					io.start();
 				}
 			})
-			.error(notify.json);
+			.fail(notify.json);
 	},
 
 	/**
@@ -190,7 +194,7 @@ var io = {
 						widget.update(item, val);
 					})
 				})
-				.error(notify.json);
+				.fail(notify.json);
 		}
 	},
 	
@@ -199,6 +203,7 @@ var io = {
 	 */
 	stopseries: function () {
 		// TODO
+		$.noop;
 	}
 
 };

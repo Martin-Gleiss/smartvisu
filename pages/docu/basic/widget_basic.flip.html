@@ -20,16 +20,18 @@
 		{{ basic.flip('flip1', 'bath.light.switch') }}
 	</div>
 
-	With other on/off-text
+	With other on/off-text and different track colors
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ basic.flip('flip2', 'bath.light.switch', '1', '0') }}
-		text beside the flip
+		{{ basic.flip('flip2', 'bath.light.switch', '1', '0','','','gold') }} side text 
+		{{ basic.flip('flip3', 'bath.light.switch', '1', '0','','','green') }}
+		{{ basic.flip('flip4', 'bath.light.switch', '1', '0','','','#777') }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-		{{ basic.flip('flip2', 'bath.light.switch', '1', '0') }}
-		text beside the flip
+		{{ basic.flip('flip5', 'bath.light.switch', '1', '0','','','gold') }} side text<br>
+		{{ basic.flip('flip6', 'bath.light.switch', '1', '0','','','green') }}<br>
+		{{ basic.flip('flip7', 'bath.light.switch', '1', '0','','','#777') }}
 	</div>
 
 {% endblock %}

@@ -17,17 +17,22 @@
 function get_lang($code = config_lang) {
 	
 	// does configured language file exist? config.ini could have been copied 
-	if (!is_file(const_path.'lang/'.$code.'.ini')) {
+	if (!is_file(const_path.'lang/'.$code.'.ini') && !is_file(const_path.'dropins/lang/'.$code.'.ini')) {
 		$code = 'en';
 	};
 	
-	// read ini file
-	$result = parse_ini_file(const_path.'lang/'.$code.'.ini', true);
+	// read ini file from /dropins/lang if available - otherwise from /lang
+	if (is_file(const_path.'dropins/lang/'.$code.'.ini'))
+		$result = parse_ini_file(const_path.'dropins/lang/'.$code.'.ini', true);
+	else
+		$result = parse_ini_file(const_path.'lang/'.$code.'.ini', true);
 
 	// recursive call to read extended language file (if specified)
-	if(isset($result['extends']) && !empty($result['extends']))
+	if(isset($result['extends']) && !empty($result['extends'])){
+		if (in_array($result['extends'], array('en', 'de', 'fr', 'nl') ) && !isset($result['baselang']))
+			$result['baselang'] = $result['extends'];
 		$result = array_replace_recursive(get_lang($result['extends']), $result);
-
+	}
 	return $result;
 }
 

@@ -26,9 +26,7 @@
 			<div class="block">
 			    <div class="ui-bar-c ui-li-divider ui-corner-top">Block 1</div>
 			    <div class="ui-fixed ui-body-a ui-corner-bottom">
-
 					<p>This is a static block</p>
-
 				</div>
 			</div>
 			{% endverbatim %}{% endfilter %}</code>
@@ -43,26 +41,31 @@
 				</div>
 			</div>
 		</div> <br />
-		A variable set of blocks which are collapsible. Use 'set-1', 'set-2', 'set-3' to define the number of sections in a block.<br>
+		A variable set of blocks which are collapsible. Use 'set-1', 'set-2', 'set-3' to define the number of sections in a block.
 		Set the attribute 'data-collapsed=&quot;false&quot;' for the open section (only one) and omit the attribute for the others.<br>
-		You can also define the width of the block by adding a width statement to the first div (see last example).
+		You can also define the width of the block by adding a width statement to the first div (see last example).<br>
+		By adding the widget "lib.supersize('')" to the h3-section of a block, the block receives a button which expands the block to full-screen width.
 		<div class="twig">
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 			<div class="block">
+				<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+					<div data-role="collapsible" data-collapsed="false">
+						<h3>{{ lib.supersize('') }}Block 2</h3>
+						<p>This is a collapsible block. If you supersize it, scroll to the top of the page to view the result. </p>
+					</div>
+				</div>
+			</div>
+			
+			<div class="block">
 				<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-
 					<div data-role="collapsible" data-collapsed="false">
 						<h3>Section 1</h3>
-
 						<p>Set of two collapsible blocks with one being collapsed</p>
 					</div>
-
 					<div data-role="collapsible">
 						<h3>Section 2</h3>
-
 						<p>Collapsed by default if 'data-collapsed=&quot;false&quot;' is omitted</p>
 					</div>
-
 				</div>
 			</div>
 			{% endverbatim %}{% endfilter %}</code>
@@ -72,9 +75,9 @@
 				<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
 					<div data-role="collapsible" data-collapsed="false">
-						<h3>Block 2</h3>
+						<h3>{{ lib.supersize('') }}Block 2</h3>
 
-						<p>This is a collapsible block</p>
+						<p>This is a collapsible block. <br>If you supersize it, scroll to the top of the page to view the result.</p>
 					</div>
 
 				</div>
@@ -86,7 +89,7 @@
 					<div data-role="collapsible" data-collapsed="false">
 						<h3>Section 1</h3>
 
-						<p>Set of two blocks with one being collapsible</p>
+						<p>Set of two blocks with one being collapsed</p>
 					</div>
 
 					<div data-role="collapsible">

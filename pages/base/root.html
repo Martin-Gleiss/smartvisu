@@ -93,7 +93,7 @@
 	{%- endfor %}
 {% endif %}
 
-	<script src="vendor/jquery/jquery-2.1.4.min.js"></script>
+	<script src="vendor/jquery/jquery-2.2.4.min.js"></script>
 
 	<script>
 		$(document).on("mobileinit", function () {
@@ -117,7 +117,7 @@
 		});
 	</script>
 
-	<script src="vendor/jquery.mobile/jquery.mobile-1.4.5.min.js"></script>
+	<script src="vendor/jquery.mobile/jquery.mobile-1.4.5-patch.min.js"></script>
 
 /** JavaScript assets **/
 {% set jsFiles = [
@@ -138,6 +138,11 @@
 		'driver/io_' ~ config_driver ~ '.js',
 		'pages/' ~ config_pages ~ '/visu.js'
 	] %}
+{% if isdir('driver/'~config_driver, '\.js') %}
+	{% for file in dir('driver/'~config_driver, '(.*)(\.js)') %}
+		{% set jsFiles = jsFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
 {% for file in dir('widgets', '(.*)(\.js)') %}
 	{% set jsFiles = jsFiles|merge([file.path]) %}
 {% endfor %}
@@ -177,7 +182,7 @@
 	{%- endfor -%}
 	{%- if config_cache and not mbstring_available %}
 
- 	<script>notify.warning('Assets','JavaScript and CSS minification needs PHP mbstring module.')</script>
+ 	<script>notify.message('warning', 'Assets','JavaScript and CSS minification needs PHP mbstring module.')</script>
  	{%- endif -%}
 {% endif %}
 
@@ -185,15 +190,15 @@
 {% block head %}{% endblock %}
 
 <script>
-	io.init('{{ config_driver_address }}', '{{ config_driver_port }}');
+	io.init();
 {% if config_driver_autoreconnect %}
-	activateAutoReconnect('{{ config_driver_address }}', '{{ config_driver_port }}');
+	activateAutoReconnect();
 {% endif %}
 
 {% if config_backtohometime > 0 %}
 	// back to home page
 	var homeTimeout;
-	$(document).on("vmousedown pageshow", function() {
+	$(document).on("vmousedown pagecontainershow", function() {
 		if(homeTimeout !== undefined)
 			window.clearTimeout(homeTimeout);
 		if($.mobile.activePage && $.mobile.activePage.attr("id") != "index" && $.mobile.activePage.attr("id") != "config")
@@ -206,41 +211,29 @@
 	$(document).on('pagecontainerbeforeshow', function () {
 		fx.init();
 		repeater.init();
-		io.run({{ config_driver_realtime }});
+		io.run();
 	});
 
 	// Activate the info field in top right corner
 	$(document).on('pagecontainershow', function () {
-		notify.display();
+		notify.display();	
+		// workaround for jQM theme bug - part II
+		$(this).find('.ui-collapsible-heading').each(function(){
+			var headerClass = 'ui-page-theme-'+ $(this).closest('div').attr('data-theme');
+			$(this).addClass(headerClass);
+		});
 	});
+	
+	// scroll to anchor after page is called w/ anchor link e.g  href="index.php?page=myPage&anchor=myAnchor" 
+	$(document).on('pagecontainerchange', function () {
+		var searchAnchor = location.search.indexOf('anchor');
+		if (searchAnchor > 0) {
+			$.mobile.silentScroll($('#'+location.search.substring(searchAnchor+7)).offset().top);
+		}
+	});	
 
 	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};	
 </script>
-/** activate codemirror only if widget assistant is activated */
-{% if config_widgetassi %}  
-	<script src="vendor/codemirror/lib/codemirror.js"></script>
-    <script src="vendor/codemirror/mode/python/python.js"></script>
-    <script src="vendor/codemirror/mode/yaml/yaml.js"></script>
-    <script src="vendor/codemirror/mode/xml/xml.js"></script>
-    <script src="vendor/codemirror/addon/fold/foldcode.js"></script>
-    <script src="vendor/codemirror/addon/fold/foldgutter.js"></script>
-    <script src="vendor/codemirror/addon/fold/comment-fold.js"></script>
-    <script src="vendor/codemirror/addon/fold/brace-fold.js"></script>
-    <script src="vendor/codemirror/addon/fold/xml-fold.js"></script>
-    <script src="vendor/codemirror/addon/fold/indent-fold.js"></script>
-    <script src="vendor/codemirror/addon/display/fullscreen.js"></script>
-    <script src="vendor/codemirror/addon/display/rulers.js"></script>
-    <script src="vendor/codemirror/addon/hint/show-hint.js"></script>
-    <script src="vendor/codemirror/addon/hint/anyword-hint.js"></script>
-    <script src="vendor/codemirror/addon/dialog/dialog.js"></script>
-    <script src="vendor/codemirror/addon/search/searchcursor.js"></script>
-    <script src="vendor/codemirror/addon/search/search.js"></script>
-    <script src="vendor/codemirror/addon/scroll/annotatescrollbar.js"></script>
-    <script src="vendor/codemirror/addon/search/matchesonscrollbar.js"></script>
-    <script src="vendor/codemirror/addon/search/jump-to-line.js"></script>
-    <script src="vendor/codemirror/addon/edit/matchbrackets.js"></script>
-    <script src="vendor/codemirror/addon/edit/closebrackets.js"></script>
-{% endif %}	
 	
 {% import "lib.html" as lib %}
 {% import "basic.html" as basic %}

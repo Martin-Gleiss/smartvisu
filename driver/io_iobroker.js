@@ -9,8 +9,13 @@
  *
  * @default     driver_autoreconnect   true
  * @default     driver_port            8084
+ * @hide		driver_tlsport 
  * @hide        driver_realtime
  * @hide		reverseproxy
+ * @hide		driver_ssl
+ * @hide		driver_username
+ * @hide		driver_password
+ * @hide		sv_hostname
  */
 
 /**
@@ -72,19 +77,18 @@ var io = {
 			})
 			
 			if(val && val != '')
-				notify.warning('Driver: ioBroker', 'Passing value to a script is not supported in ioBroker.');
+				notify.message('warning', 'Driver: ioBroker', 'Passing value to a script is not supported in ioBroker.');
 		}
 	},
 
 	/**
 	 * Initialization of the driver
 	 *
-	 * @param		the ip or url to the system (optional)
-	 * @param		the port on which the connection should be made (optional)
+	 * Driver config parameters are globally available as from v3.2
 	 */
-	init: function (address, port) {
-		io.address = address;
-		io.port = port;
+	init: function () {
+		io.address = sv.config.driver.address;
+		io.port = sv.config.driver.port;
 		
 		// use current protocol (https or http)
 		// if the protocol should be forced, add it to the address
@@ -110,11 +114,11 @@ var io = {
 	/**
 	 * Let the driver work
 	 */
-	run: function (realtime) {
-		// old items
+	run: function () {
+		// refresh all widgets with values from the buffer
 		widget.refresh();
 
-		// new items
+		// subscribe item updates from the backend
 		io.monitor();
 	},
 
@@ -147,7 +151,7 @@ var io = {
 			console.log("ioBroker: Connected to '" + io.url + "', authenticating...");
 			setTimeout(function () {
 				var wait = setTimeout(function() {
-					notify.error('Driver: ioBroker', 'No answer from server.');
+					notify.message('error', 'Driver: ioBroker', 'No answer from server.');
 				}, 3000);
 
 				io.socket.emit('authenticate', function (isOk, isSecure) {
@@ -161,24 +165,24 @@ var io = {
 						io.isConnected = true;
 						io.monitor();
 					} else {
-						 notify.error('Driver: ioBroker', 'Authentication failed.');
+						 notify.message('error', 'Driver: ioBroker', 'Authentication failed.');
 					}
 				});
 			}, 50);
 		});
 
 		io.socket.on('error', function (err) {
-			 notify.error('Driver: ioBroker', JSON.stringify(err));
+			 notify.message('error', 'Driver: ioBroker', JSON.stringify(err));
 		});
 		
 		io.socket.on('connect_error', function (err) {
 			if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification))
-				io.socketErrorNotification = notify.error('Driver: ioBroker', 'connect_error: '+JSON.stringify(err));
+				io.socketErrorNotification = notify.message('error', 'Driver: ioBroker', 'connect_error: '+JSON.stringify(err));
 			//io.reconnect(connOptions);
 		});
 		
 		io.socket.on('permissionError', function (err) {
-			 notify.error('Driver: ioBroker', 'permissionError: '+JSON.stringify(err));
+			 notify.message('error', 'Driver: ioBroker', 'permissionError: '+JSON.stringify(err));
 		});
 
 		io.socket.on('disconnect', function () {
@@ -270,6 +274,11 @@ var io = {
 
 	stateChanged: function(item, state) {
 		var val = state.val;
+		// convert boolean
+			if (val === false) 
+				val = 0;
+			if (val === true) 
+				val = 1;
 		widget.update(item, val);
 	},
 	
@@ -278,6 +287,7 @@ var io = {
 	 */
 	stopseries: function () {
 		// TODO
+		$.noop;
 	}
 	
 /*

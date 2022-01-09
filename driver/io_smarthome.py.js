@@ -9,8 +9,13 @@
  *
  * @default     driver_autoreconnect   true
  * @default     driver_port            2424
+ * @default     driver_tlsport         2425
  * @default	    reverseproxy           false
  * @hide        driver_realtime
+ * @hide		driver_ssl
+ * @hide		driver_username
+ * @hide		driver_password
+ * @hide		sv_hostname
  */
 
 
@@ -63,24 +68,21 @@ var io = {
 
 	/**
 	 * Initializion of the driver
-	 *
-	 * @param      the ip or url to the system (optional)
-	 * @param      the port on which the connection should be made (optional)
+	 * Driver config parameters are globally available as from v3.2
 	 */
-	init: function (address, port) {
-		io.address = address;
-		io.port = port;
+	init: function () {
+		io.address = sv.config.driver.address;
 		io.open();
 	},
 
 	/**
 	 * Lets the driver work
 	 */
-	run: function (realtime) {
-		// old items
+	run: function () {
+		// refresh all widgets with values from the buffer
 		widget.refresh();
 
-		// new items
+		// subscribe item updates from the backend
 		io.monitor();
 		
 	},
@@ -119,14 +121,20 @@ var io = {
 	 */
 	open: function () {
 		var protocol = '';
+		var ports = [];
+		ports['ws://'] = sv.config.driver.port;
+		ports['wss://'] = sv.config.driver.tlsport;
+
 		if (!io.address || io.address.indexOf('://') < 0) {
 			// adopt websocket security to current protocol (https -> wss and http -> ws)
-			// if the protocol should be forced, add it to the address
+			// if the protocol shall be forced, put it as prefix to the address in the config page
 			protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
 			if (!io.address) {
 				// use url of current page if not defined
 				io.address = location.hostname;
 			}
+			io.port = ports[protocol];
+
 			if (!io.port) {
 				// use port of current page if not defined and needed
 				if (location.port != '') {
@@ -137,8 +145,14 @@ var io = {
 				}
 			}
 		}
+		else {
+			// forced protocol (identified in address)
+			io.port = ports[io.address.substr(0, io.address.indexOf(':'))+'://'];
+		}
+		// DEBUG:
+		console.log("[io.smarthome.py] opening websocket on "+ protocol + io.address + ':' + io.port);
 		io.socket = new WebSocket(protocol + io.address + ':' + io.port);
-
+		
 		io.socket.onopen = function () {
 			// remove socket error notification on reconnect
 			if(io.socketErrorNotification != null)
@@ -189,7 +203,7 @@ var io = {
 					break;
 
 				case 'dialog':
-					notify.info(data.header, data.content);
+					notify.message('info', data.header, data.content);
 					break;
 
 				case 'log':
@@ -212,10 +226,6 @@ var io = {
 					break;
 
 				case 'proto':
-				//	io.version = parseInt(data.ver);
-				//	if (io.version < 3) {
-				//		notify.warning('Driver: smarthome.py', 'Protocol mismatch<br />SmartHome.py is: v' + io.version + '<br /><br /> Update the system!');
-				//	}
 					if (data.server != undefined){ 
 						io.server = data.server;
 						io.opentime = new Date(data.time);
@@ -231,11 +241,11 @@ var io = {
 
 		io.socket.onerror = function (error) {
 			if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification))
-				io.socketErrorNotification = notify.error('Driver: smarthome.py', 'Could not connect to smarthome.py server!<br /> Websocket error ' + error.data + '.');
+				io.socketErrorNotification = notify.message('error', 'Driver: smarthome.py', 'Could not connect to smarthome.py server!<br /> Websocket error ' + error.data + '.');
 		};
 
 		io.socket.onclose = function () {
-			notify.debug('Driver: smarthome.py', 'Connection closed to smarthome.py server!');
+			console.log('[io_smarthome.py]: Connection closed to smarthome.py server!');
 		};
 	},
 
@@ -312,10 +322,7 @@ var io = {
 				if (!unique[items[i]] && (pt instanceof Array) && widget.checkseries(items[i])) {
 					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
 
-					//if (io.version <= 3)
-					//	io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2]});
-					//else
-						io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': pt[pt.length - 1]});
+					io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': pt[pt.length - 1]});
 					
 					unique[items[i]] = 1;
 				}

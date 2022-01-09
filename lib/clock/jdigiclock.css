@@ -1,10 +1,12 @@
  /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Radoslav Dimov, Martin Gleiß
- * @copyright   2009
+ * @author      Radoslav Dimov, Martin Gleiß, Wolfram v. Hülsen
+ * @copyright   2009 - 2021
  * @license     Dual licensed under the MIT and GPL  
  * ----------------------------------------------------------------------------- 
+ *
+ * special thanks to Patrik Germann for the idea of wildcard id's 
  */
  
  
@@ -21,30 +23,30 @@
     z-index:98;
 }
     
-#hours, #minutes {
+[id$="hours"], [id$="minutes"] {
     width:100px;
     height:100px;
     float:left;
     position:relative;
 }
 
-#minutes {
+[id$="minutes"] {
     margin-left:2px;
 }
 
-#hours_bg, #minutes_bg {
+[id$="hours_bg"], [id$="minutes_bg"] {
     position:absolute;
     top:0;
     left:0;
     z-index:99;
 }
 
-#hours_bg img {
+[id$="hours_bg"] img {
     width: 100px;
     height: 100px;
 }
 
-#minutes_bg img {
+[id$="minutes_bg"] img {
     width: 100px;
     height: 100px;
 }
@@ -78,7 +80,7 @@
     font-size:1px;
 }
 
-#am_pm {
+[id$="am_pm"] {
     position:absolute;
     top:77px;
     left:70px;

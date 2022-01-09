@@ -215,13 +215,19 @@
 * @param {value=1} scale-integer, the scale-divider for the scale
 * @param {item(num)=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
 * @param {text[]=} list of additional widgets / content to display
+* @param {value=0} tolerance by which values entered with +/- buttons are allowed to exeed min/max values (optional, default: limiting to min/max)
 *
 * @author Bonze, Wolfram v. Hülsen
 **/
-{% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval, item_offset, supplements) %}
+{% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval, item_offset, supplements, tolerance) %}
 
 {% import "basic.html" as basic %}
 
+	/** set displayed decimals to decimals of step parameter */
+	{% set setformat = lang ('format', 'temp') %}
+	{% set stepparts = step|split('.') %}
+	{% set decs = (stepparts[1] >0 ? stepparts[1]|length : 0) %} {% set setformat = setformat|replace(',1f', ','~decs~'f') %}
+	
 	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{item_actual}},{{item_set}},{{item_offset}}"  
 		data-scale_min="{{min | default('18')}}" data-scale_max="{{max| default('28')}}" data-step="{{step | default('.1')}}"  
 		data-scale_interval="{{scale_interval | default('1')}}" style="margin:auto; position:relative;"> 
@@ -235,17 +241,20 @@
 		<div id="container" style="display: inline-flex; align-content: center; position:relative; height: 140px; width:140px; margin: 30px 30px -30px 30px;">
 			<div class="outerslider" id ="{{ uid(page, id) }}" style="position:absolute; top:0px; margin:auto; z-index: 0;"> </div>
 			<div class="innerslider" id ="{{ uid(page, id) }}" style="position:absolute; margin:auto; top:8px; left:8px;z-index: 2;"> </div>
-			<div class="set" style="position:absolute; top:80px; left: 34px; z-index: 1;">
-				<div class="temp" style="margin-bottom:15px;">Soll: {{ basic.print('', item_set, 'temp' ) }}</div>
+			<div class="set" style="position:absolute; top:80px; left: 32px; min-width:76px; z-index: 1;">
+				<div class="temp" style="margin-bottom:15px;">Soll: {{ basic.print('', item_set, setformat ) }}</div>
 			</div>		
 		</div>		
 	</div>
 	/** elements copied from device.rtr **/
 	{% if item_set %}
+		{% if tolerance is empty %} {% set tolerance = '0' %} {% endif %}
+		{% set min = min | default('18') - tolerance %}
+		{% set max = max | default('28') + tolerance %}
 		<div class="set" style="position:relative; z-index: 3;">
 			<div>
-				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro' ) }}
-				{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro' ) }}
+				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro', min, max) }}
+				{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro', min, max) }}
 			</div>
 		</div>
 	{% endif %}
@@ -531,18 +540,19 @@
 * @param {text[]=} valueParameterList depending on valueType (optional):
 	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
 	num: [min, max, step]
+* @param {text(false,true)=true} shows a scrollbar below the x-Axis (optional, default: true)	
 * @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
 *
 * @author Stefan Widmer
 */
 
-{% macro uzsugraph(id, item, headline, editable, valueType, valueParameterList, _backend) %}
+{% macro uzsugraph(id, item, headline, editable, valueType, valueParameterList, scrollbar, _backend) %}
 	{% import "basic.html" as basic %}
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsugraph" data-item="{{ item }}"
 		data-headline="{{ headline|default('UZSU') }}" data-editable="{{ editable|default(0) }}" data-designType="{{ _backend }}"
 		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
-		class="plot">
+		data-scrollbar="{{ scrollbar|default('true') }}" class="plot">
 	</div>
 
 {% endmacro %}
@@ -553,10 +563,10 @@
 * @param {id=} unique id for this widget (optional)
 * @param {item(dict)} the item of the UZSU (NOT the item which is switched by UZSU)
 * @param {text=} headline of Table (optional, default: empty)
-* @param {value=1} value for 'on' state (optional)
-* @param {value=0} value for 'off' state (optional)
-* @param {color=green} the color for the 'on' state, e.g. '#f00' for red (default 'green' of the design)
-* @param {color=red} the color for the 'off' state, e.g. '#f00' for red (default 'red' of the design)
+* @param {value[?]=1} value for 'on' state (optional), if using array form keep in mind to get color array same length, if not last color would be used for missing entries - for correct tool-tip valueparameter list should include all values
+* @param {value[?]=0} value for 'off' state (optional), if using array form keep in mind to get color array same length, if not last color would be used for missing entries - for correct tool-tip valueparameter list should include all values
+* @param {color[?]=green} the color for the 'on' state, e.g. '#f00' for red (default 'green' of the design)
+* @param {color[?]=red} the color for the 'off' state, e.g. '#f00' for red (default 'red' of the design)
 * @param {color=lightgrey} the color for the 'off' state for disabled entries, e.g. '#f00' for red (default 'lightgrey' of the design)
 * @param {color=grey} the color for the 'off' state for disabled entries, e.g. '#f00' for red (default 'grey' of the design)
 * @param {text(false,true)=true} fill the times from ON to OFF with ON-color (default 'true' )
@@ -579,21 +589,19 @@
 * @author      Andre Kohler
 */
 
-
-{% macro uzsutable(id, item, headline, value_on, value_off, color_on, color_off, color_on_disabled, color_off_disabled, fill, granularity, borderstyle, showzoombutton, showtooltip, showsun, showactualtime, inactivestyle, valueType, valueParameterList, _backend) %}
+{% macro uzsutable(id, item, headline, value_on, value_off, color_on, color_off, color_on_disabled, color_off_disabled, fill, granularity, borderstyle, showzoombutton, showtooltip, showsun, showactualtime, inactivestyle, valueType, valueparameterlist, _backend) %}
 	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsutable" data-item="{{ item }}"
 		data-headline="{{ headline|default('') }}" data-designType="{{ _backend|default('') }}"
-		data-val-on="{{ value_on|default(1) }}" data-val-off="{{ value_off|default(0) }}" data-granularity="{{ granularity|default('1h') }}"
-		data-color-on="{{ color_on|default('green') }}" data-color-off="{{ color_off|default('red') }}"
+		data-val-on="{{ implode(value_on)|default(implode(1)) }}"  data-val-off="{{ implode(value_off)|default(implode(0)) }}"" data-granularity="{{ granularity|default('1h') }}"
+		data-color-on="{{ implode(color_on)|default(implode('green')) }}" data-color-off="{{ implode(color_off)|default(implode('red')) }}"
 		data-color-on-disabled="{{ color_on_disabled|default('lightgrey') }}" data-color-off-disabled="{{ color_off_disabled|default('grey') }}"
 		data-fill="{{ fill|default('true') }}" data-borderstyle="{{ implode(borderstyle)|default('solid') }}"
 		data-showtooltip="{{ showtooltip|default('true') }}" data-showsun="{{ showsun|default('true') }}" data-showactualtime="{{ showactualtime|default('true') }}"
-		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueparameterlist)|default(implode(['on:1','off:0'])) }}"
+		data-valueType="{{ valueType|default('bool') }}" data-valueparameterlist="{{ implode(valueparameterlist)|default(implode(['on:1','off:0'])) }}"
 		data-showzoombutton="{{ showzoombutton|default('true') }}" data-inactivestyle="{{ inactivestyle|default('1') }}">
 		
 		<svg id="{{ uid(page, item) }}" class="highcharts-root" width="100%" viewbox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" version="1.1"> 
 		</svg>
-
 
 		{% if showzoombutton == 'true' or showzoombutton == 'True' %}
 		<table width=50% style="font-size:12px;margin-left: auto;margin-right: auto;">
@@ -626,7 +634,7 @@
  * @param {value=0} the value for opened (optional, default 0)
  * @param {value=255} the value for closed (optional, default 255)
  * @param {value=5} step between two values (optional, default 5)
- * @param {color(icon0,icon1)=icon1} color for 'open' state, e.g. '#f00' for red (constant, 'icon0' and 'icon1' can NOT be used) (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
+ * @param {color(icon0,icon1,!)=icon1} color for 'open' state e.g. '#f00' for red. Prepend a '!' to make the color constant ('!#f00'). 'icon0' and 'icon1' can NOT be used. (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
  *
  * @author Wolfram v. Hülsen
  */

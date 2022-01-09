@@ -512,7 +512,7 @@
       {{ _context['linetext_widget'] }}
     {% endif %}
   {% elseif item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
-  {{ clock.countdown('', item_auto~'.suspend.visu', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1', '', ' ') }}
+  {{ clock.countdown('', item_auto~'.suspend.visu', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1s', '', ' ') }}
   /**
   {{ basic.print(id~'dimmerprint', item_auto~'.suspend_end', 'text') }}
   */
@@ -722,7 +722,7 @@
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {item[](bool,num)=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral), item_seqlock (RGB sequencer lock)
- * @param {item(bool)=} 		item for RGB sequencer (logic)
+ * @param {item(bool)[?]=} 		item for RGB sequencer (logic). Optional an array including a short press item and a long press item or popup id (starting with #). Example: ['light.sequencer', '#popup']. The popup has to be defined on the HTML page by using the popup.extpopup widget. It gets activated on a longpress.
  * @param {color[](icon0,icon1)=} 	array with on/off icon colors
  * @param {unspecified[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
@@ -899,7 +899,7 @@
           {{ _context['linetext_widget'] }}
         {% endif %}
       {% elseif item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
-      {{ clock.countdown('', item_auto~'.suspend.visu', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1', '', ' ') }}
+      {{ clock.countdown('', item_auto~'.suspend.visu', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1s', '', ' ') }}
       /**
       {{ basic.print(id~'dimmerprint', item_auto~'.suspend_end', 'text') }}
       */
@@ -957,7 +957,11 @@
     {% endif %}
 
     {% if column == 'sequencer' and item_seq %}
-      {{ basic.stateswitch(id~'list_seq', item_seq, 'icon', [0,1], ['audio_shuffle', 'audio_shuffle'], '', icon_color, indicator) }}
+          {% if item_seq is not iterable %}
+              {{ basic.stateswitch(id~'list_seq', item_seq, 'icon', [0,1], ['audio_shuffle', 'audio_shuffle'], '', icon_color, indicator) }}
+          {% else %}
+              {{ basic.stateswitch(id~'list_seq', item_seq[0], 'icon', [0,1], ['audio_shuffle', 'audio_shuffle'], '', icon_color, indicator, item_seq[1]) }}
+          {% endif %}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1374,7 +1378,7 @@
           {{ _context['linetext_widget'] }}
         {% endif %}
       {% elseif item_auto and stateengine is defined and (not column_order or 'stateengine' in column_order) %}&nbsp;
-      {{ clock.countdown('', item_auto~'.suspend.visu', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1', '', ' ') }}
+      {{ clock.countdown('', item_auto~'.suspend.visu', item_auto~'.suspend_start.unix_timestamp', item_auto~'.settings.suspendduration.duration_format', '1s', '', ' ') }}
       /**
       {{ basic.print(id~'dimmerprint', item_auto~'.suspend_end', 'text') }}
       */
@@ -2487,7 +2491,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
         {% set sc_1 = item_auto~'.suspend_start.unix_timestamp' %}
         {% set sc_2 = item_auto~'.settings.suspendduration.duration_format' %}
       {% endif %}
-      {{ clock.countdown('', sc_0, sc_1, sc_2, '1', '', ' ') }}
+      {{ clock.countdown('', sc_0, sc_1, sc_2, '1s', '', ' ') }}
       /**
       {{ basic.print(id~'sw_widget', se, 'text') }}
       */

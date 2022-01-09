@@ -18,6 +18,7 @@ require_once 'class.WidgetParameterChecker.php';
 require_once 'class.TemplateChecker.php';
 require_once 'class.Items.php';
 require_once 'class.OldWidgets.php';
+require_once 'class.itemProperties.php';
 
 // avoid fatal timeout errors on older devices while checking pages with plenty of widgets
 set_time_limit (120);

@@ -487,8 +487,8 @@ $.widget("sv.basic_color_slider", $.sv.basic_color, {
 			}
 
 			var oldColors = this._mem;
-			var diffCount = oldColors == null ? 3 : (values[0] != oldColors[0]) + (values[1] != oldColors[1]) + (values[2] != oldColors[2]) -1;
-			this._lockfor = diffCount; // lock widget to ignore next 2 updates
+			var diffCount = oldColors == null ? 3 : (values[0] != oldColors[0]) + (values[1] != oldColors[1]) + (values[2] != oldColors[2]) ;
+			this._lockfor = (colormodel == 'hsv' ? 0 : diffCount -1); // lock widget to ignore next 2 updates
 
 			if(diffCount > 0) {
 				var items = String(this.options.item).explode();
@@ -515,12 +515,20 @@ $.widget("sv.basic_flip", $.sv.widget, {
 	initSelector: 'select[data-widget="basic.flip"]',
 
 	options: {
+		background: null
 	},
 
 	_update: function(response) {
 		this._off( this.element, 'change' );
 		this.element.val(response[0]).flipswitch('refresh');
 		this._on( { 'change': this._events.change } );
+		if (this.options.background != ''){
+			var node = this.element[0].parentElement;
+			if ($(node).hasClass('ui-flipswitch-active'))
+				$(node).css('background-image', 'linear-gradient('+this.options.background+','+this.options.background+')');
+			else
+				$(node).css('background-image', '');
+		}
 	},
 
 	_events: {
@@ -698,6 +706,8 @@ $.widget("sv.basic_offset", $.sv.widget, {
 	initSelector: '[data-widget="basic.offset"]',
 
 	options: {
+		min: null,
+		max: null,
 		step: null
 	},
 
@@ -709,6 +719,10 @@ $.widget("sv.basic_offset", $.sv.widget, {
 			var step = this.options.step * 1;
 			var decs = step.decimals();
 			var newval = (widget.get(this.options.item) * 1 + step).toFixed(decs);
+	    	if (this.options.min !== '')
+				newval = (newval < this.options.min * 1 ? this.options.min : newval);
+	  		if (this.options.max !== '')
+				newval = (newval > this.options.max * 1 ? this.options.max * 1 : newval);
 			this._write(newval);
 		}
 	}
@@ -762,7 +776,7 @@ $.widget("sv.basic_print", $.sv.widget, {
 			var calc = eval(formula);
 		}
 		catch(ex) {
-			notify.error("basic.print: Invalid formula", ex);
+			notify.message("error", "basic.print: Invalid formula", ex);
 		}
 
 		var value; // value for threshold comparison
@@ -954,7 +968,6 @@ $.widget("sv.basic_slider", $.sv.widget, {
 
 	_events: {
 		'slidestart': function (event) {
-			console.log('io slidestart');
 			this._sliding = true;
 			this._inputactive = false;
 		},
@@ -1101,20 +1114,25 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 				'taphold': function (event) {
 					event.preventDefault();
 					event.stopPropagation();
-					if(this.options.valueLongpress != null) {
-						var value = this.options.valueLongpress;
-						if(!isNaN(this._current_val) && typeof value === 'string' && !isNaN(value) && (value.startsWith('+') || value.startsWith('-')))
-							value = Number(this._current_val) + Number(value);
-						io.write(this.options.itemLongpress, value);
-					}
-					if(this.options.valueLongrelease != null) {
-						var item = this.options.itemLongpress;
-						var value = this.options.valueLongrelease;
-						if(!isNaN(this._current_val) && typeof value === 'string' && !isNaN(value) && (value.startsWith('+') || value.startsWith('-')))
-							value = Number(this._current_val) + Number(value);
-						$(document).one('vmouseup', function(event) {
-							io.write(item, value);
-						});
+					if (this.options.itemLongpress.indexOf('#') == -1){
+						if(this.options.valueLongpress != null) {
+							var value = this.options.valueLongpress;
+							if(!isNaN(this._current_val) && typeof value === 'string' && !isNaN(value) && (value.startsWith('+') || value.startsWith('-')))
+								value = Number(this._current_val) + Number(value);
+							io.write(this.options.itemLongpress, value);
+						}
+						if(this.options.valueLongrelease != null) {
+							var item = this.options.itemLongpress;
+							var value = this.options.valueLongrelease;
+							if(!isNaN(this._current_val) && typeof value === 'string' && !isNaN(value) && (value.startsWith('+') || value.startsWith('-')))
+								value = Number(this._current_val) + Number(value);
+							$(document).one('vmouseup', function(event) {
+								io.write(item, value);
+							});
+						}
+					} else {
+						var target = $(this.options.itemLongpress);
+						target.filter('.ui-popup').popup("open");
 					}
 				}
 			});
@@ -1236,7 +1254,7 @@ $.widget("sv.basic_symbol", $.sv.widget, {
       }
 		}
 		catch(ex) {
-			notify.error("basic.symbol: Invalid formula", ex);
+			notify.message("error", "basic.symbol: Invalid formula", ex);
 		}
 
 		if(asThreshold) {
@@ -1508,7 +1526,18 @@ $.widget("sv.basic_window", $.sv.widget, {
 		// response is: {{ gad_value }}, {{ gad_window_r}}, {{ gad_window_l}}
 		this._super(response);
 
+		var color = this.element.attr('data-color');
+		if (color.indexOf('!') > -1){
+			color = color.substr(1);
+			this.element.attr('style', 'stroke: '+ color+'; fill: '+color+';');
+		}
+		else
+			this.element.attr('style', '');
+		
 		this.element.attr('class', 'icon' + (response[1] || response[2] ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
+		if (color != '' && this.element.attr('class') == "icon icon1") {
+			this.element.attr('style', 'stroke: '+ color+'; fill: '+color+';');
+		}
 		
 		var max = parseFloat(this.options.max);
 		var min = parseFloat(this.options.min);

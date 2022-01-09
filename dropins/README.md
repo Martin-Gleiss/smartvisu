@@ -23,3 +23,7 @@ Icons delivered by smartVISU get overridden if you use existing filenames. To ma
 
 To make SVG tintable by smartVISU, set fill and stroke by dedicated attributes and not by style (e.g. `<path fill="#FFF" stroke="#FFF"` instead of `<path style="fill: #FFF; stroke: #FFF;"`).
 Hint: Shrinking the files using [SVGOMG](https://jakearchibald.github.io/svgomg/) with default settings this is replaced for you.
+
+## Custom Language Files
+For extension of the existing language files you can place your own .ini file in the "lang" subfolder. smartVISU config page will find the file and show it in the language selector.
+See readme.txt in the smartVISU/lang folder.

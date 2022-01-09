@@ -14,25 +14,40 @@
 <script>
   var interpol1 = {type: 'cubic', interval: '1', initialized: 'False', itemtype: 'num', initage: ''}
   var liste1 = [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '95', 'time': '20:26'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '10', 'time': '23:00'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '15', 'time': '05:15'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '80', 'calculated': '06:13', 'time': '06:00<sunrise<08:00'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '35', 'time': '09:40'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '35', 'time': '16:45'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '95', 'calculated': '18:12', 'time': '18:00<sunset-30m'}]
-  var kurve1 = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol1, list: liste1};
+  var kurve1 = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol1, list: liste1, "sunset": "19:00", "plugin_version":"1.5.4", "SunCalculated":{"sunrise":{"TH":"07:29", "FR":"07:31", "SA":"07:32", "SU":"07:34", "MO":"07:35", "TU":"07:37",    "WE":"07:38"}, "sunset":{"TH":"16:54", "FR":"16:53", "SA":"16:52", "SU":"16:51", "MO":"16:49", "TU":"16:48", "WE":"16:47"}}};
 
 	var interpol2 = {type: 'none', interval: '1', initialized: 'False', itemtype: 'num', initage: ''}
   var liste2 = [{'rrule': 'FREQ=WEEKLY;BYDAY=SU', 'active': 'True', 'value': '0', 'time': '20:26'}, {'rrule': 'FREQ=WEEKLY;BYDAY=SU', 'active': 'True', 'value': '1', 'time': '05:15'}, {'rrule': 'FREQ=WEEKLY;BYDAY=SU', 'active': 'True', 'value': '0', 'calculated': '16:12', 'time': '15:00<sunset-30m'}, {'rrule': 'FREQ=WEEKLY;BYDAY=SA', 'active': 'True', 'value': '1', 'time': '20:26'}, {'rrule': 'FREQ=WEEKLY;BYDAY=SA', 'active': 'True', 'value': '1', 'time': '05:15'}, {'rrule': 'FREQ=WEEKLY;BYDAY=SA', 'active': 'True', 'value': '0', 'calculated': '16:12', 'time': '16:00<sunset-30m'}]
-  var kurve2 = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol2, list: liste2};
+  var kurve2 = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol2, list: liste2, "sunset": "19:00", "plugin_version":"1.5.4", "SunCalculated":{"sunrise":{"TH":"07:29", "FR":"07:31", "SA":"07:32", "SU":"07:34", "MO":"07:35", "TU":"07:37",    "WE":"07:38"}, "sunset":{"TH":"16:54", "FR":"16:53", "SA":"16:52", "SU":"16:51", "MO":"16:49", "TU":"16:48", "WE":"16:47"}}};
   io.write('uzsuitem', kurve1);
   io.write('uzsuitem2', kurve2);
 </script>
+	The widget displays the UZSU entries as a graph and allows modifications:
+	<ul>
+		<li>a click onto an existing point opens it's settings dialog</li>
+		<li>a click into the graph opens a dialog to add a new entry for the selected time and value </li>
+		<li>single entries can be altered by dragging the respective points on the graph </li>
+		<li>for sunrise/sunset based entries, the min/max times can be altered by dragging the horizontal dashed lines</li>
+		<li>by dragging the sun symbols,interpolation will be simulated with the selected sun times. Settings remain unchanged.</li>
+		<li>the interpolation method can be chosen by clicking on the symbols in the upper right area </li>
+	</ul>
+	<br />
+	Combine the widget with device.uzsuicon in order to access all entries for an item.
+	
+	
 	<h5>Example</h5>
 
 	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; device.uzsugraph('', 'uzsuitem', '', 1, 'num', [0,100,10]) &#125;&#125;<br>
-      &#123;&#123; device.uzsugraph('', 'uzsuitem2', 'Boolean', 1, 'bool', ['On:1', 'Off:0']) &#125;&#125;
-		</code>
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ device.uzsuicon('', 'uzsuitem', '', 'jquery_clock', 'jquery_clock', 'num') }}
+		{{ device.uzsugraph('', 'uzsuitem', '', 1, 'num', [0,100,10]) }}
+		{{ device.uzsugraph('', 'uzsuitem2', 'Boolean', 1, 'bool', ['On:1', 'Off:0'], 'false') }}
+		{% endverbatim %}{% endfilter %}</code>>
 	</div>
 	<div class="html">
+		{{ device.uzsuicon('', 'uzsuitem', '', 'jquery_clock', 'jquery_clock', 'num') }}
 		{{ device.uzsugraph('', 'uzsuitem', '', 1, 'num', [0,100,10]) }}
-		{{ device.uzsugraph('', 'uzsuitem2', 'Boolean', 1, 'bool', ['On:1', 'Off:0']) }}
+		{{ device.uzsugraph('', 'uzsuitem2', 'Boolean', 1, 'bool', ['On:1', 'Off:0'], 'false') }}
 	</div>
 
 {% endblock %}

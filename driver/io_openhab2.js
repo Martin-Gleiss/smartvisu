@@ -5,8 +5,17 @@
  * @copyright   2012 - 2020
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
- * @label       openHAB2
+ * @label       openHAB2 (deprecated)
+ *
+ * @default     driver_port				8080
+ * @default     driver_realtime			true
+ * @default     driver_autoreconnect	true
+ * @default		driver_ssl				false
+ * @hide		driver_tlsport
  * @hide		reverseproxy
+ * @hide		driver_username
+ * @hide		driver_password
+ * @hide		sv_hostname
  */
 
 /**
@@ -107,7 +116,9 @@ var io = {
 	 * @param      the ip or url to the system (optional)
 	 * @param      the port on which the connection should be made (optional)
 	 */
-	init: function (address, port) {
+	init: function () {
+		var address = sv.config.driver.address;
+		var port = sv.config.driver.port;
 		console.info("Type 'io.debug=true;' to console to see more details.");
 		io.debug && console.debug("io.init(address = " + address + ", port = " + port + ")");
 
@@ -117,8 +128,8 @@ var io = {
 	/**
 	 * Lets the driver work
 	 */
-	run: function (realtime) {
-		io.debug && console.debug("io.run(realtime = " + realtime + ")");
+	run: function () {
+		io.debug && console.debug("io.run(realtime = " + sv.config.driver.realtime + ")");
 		
 		if (io.eventListener.readyState == 0 || io.eventListener.readyState == 1) {
 			io.eventListener.close();
@@ -148,7 +159,7 @@ var io = {
 		
         io.plot.init();
 
-		if (realtime) {
+		if (sv.config.driver.realtime) {
 			if (typeof EventSource == 'function') {
 				io.eventListener = new EventSource(io.url + "events?topics=smarthome/items/*/statechanged");
 				io.eventListener.onmessage = function(message) {
@@ -167,15 +178,15 @@ var io = {
 						}
 					}
 				}
-			} else {
-				if (!io.refreshIntervall && widget.listeners().length) {
-					io.refreshIntervall = setInterval(function() {
-						var item = widget.listeners();
-						for (var i = 0; i < widget.listeners().length; i++) {
-							io.read(item[i]);
-						}
-					}, io.timer * 1000);
-				}
+				io.timer = 10;
+			}
+			if (!io.refreshIntervall && widget.listeners().length) {
+				io.refreshIntervall = setInterval(function() {
+					var item = widget.listeners();
+					for (var i = 0; i < widget.listeners().length; i++) {
+						io.read(item[i]);
+					}
+				}, io.timer * 1000);
 			}
 		}
 	},

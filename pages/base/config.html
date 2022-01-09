@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß, Alexander Schwithal, Stefan Widmer, Wolfram v. Hülsen
-* @copyright   2012 - 2020
+* @copyright   2012 - 2022
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -14,8 +14,9 @@
 
 {% block content %}
 
-	/** related JavaScript part located in lib/base/base.js */
-
+	/** related JavaScript part located in lib/base/config.js */
+	<script src="lib/base/config.js"></script>
+	
 	<h1>{{ lang('configuration_page', 'configuration', 'label') }}</h1>
 
 	{%
@@ -34,12 +35,12 @@
 		    {% endfor %}
 			</ul>
 		</div>
-
+	{% set values = [] %}
 	{% for source, title in sources %}
-		{% set values = read_config(source) %}
+		{% set values = values | merge({(source): read_config(source)}) %}
 		{% set id = (source != "global") ? '_' ~ source : '' %}
 		<div id="config_tab_{{ source }}">
-			<h2>{{ lang('configuration_page', source ~ 'tab', 'hint') }}</h2>
+			<h2>{{ lang('configuration_page', source ~ 'tab', 'hint')|replace({'%pages%': config_pages}) }}</h2>
 			<form class="configform">
 				<fieldset>
 
@@ -50,28 +51,27 @@
 							</div>
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'interface', 'label') }}</h3>
-								{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
-								{{ forms.config_row(source, values, 'design',
-									[
-									forms.config_select(source, values, 'design', dir('designs', '(.+?).css'), 'true')
-									,forms.config_hidden(source, values, 'design_icon0')
-									,forms.config_hidden(source, values, 'design_icon1')
-									] 
-								) }}
-								{{ forms.config_flip(source, values, 'cache', '<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache' ~ id ~ '" class="ui-micro"' ~ (not values['cache'] is defined ? ' disabled="disabled"'|raw) ~ '>' ~ lang('configuration_page', 'cache', 'clearbutton') ~'</button>') }}
-								{{ forms.check_cache ( source, values, 'cache') }}
-							</div>
-							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
-								<h3>{{ lang('configuration_page', 'content', 'label') }}</h3>
-								{{ forms.config_input(source, values, 'title') }}
-								{{ forms.config_select(source, values, 'lang', dir('lang', '^(.*?)\.ini$') ) }}
-								{{ forms.config_select(source, values, 'timezone', timezones()) }}
+								<div style="min-height:245px">
+									{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
+									{{ forms.config_row(source, values, 'design',
+										[
+										forms.config_select(source, values, 'design', dir('designs', '(.+?).css'), 'true')
+										,forms.config_hidden(source, values, 'design_icon0')
+										,forms.config_hidden(source, values, 'design_icon1')
+										] 
+									) }}
+									{{ forms.config_input(source, values, 'title') }}
+									{{ forms.config_select(source, values, 'lang', dir('lang', '^(.*?)\.ini$')|merge(dir('dropins/lang', '^(.*?)\.ini$')) ) }}
+									{{ forms.config_flip(source, values, 'cache', '<button type="button" data-theme="a" data-icon="delete" data-inline="true" id="clear_cache' ~ id ~ '" class="ui-micro"' ~ (not values['cache'] is defined ? ' disabled="disabled"'|raw) ~ '>' ~ lang('configuration_page', 'cache', 'clearbutton') ~'</button>') }}
+									{{ forms.check_cache ( source, values, 'cache') }}
+								</div>
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'behaviour', 'label') }}</h3>
 								{{ forms.config_flip(source, values, 'animation') }}
 								{{ forms.config_input(source, values, 'backtohometime', 'wide') }}
 								{{ forms.config_select(source, values, 'timesource', [{"name": "client", "label": "Client"}, {"name": "server", "label": "Server"}] ) }}
+								{{ forms.config_select(source, values, 'timezone', timezones()) }}
 							</div>
 						</div>
 					</div>
@@ -83,20 +83,33 @@
 							</div>
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'ioconnection', 'label') }}</h3>
-								{{ forms.config_select(source, values, 'driver', dir('driver', '^io_(.+?).js') ) }}
-								{{ forms.config_input(source, values, 'driver_address', 'wide') }}
-								{{ forms.config_input(source, values, 'driver_port', 'wide') }}
-								{{ forms.config_flip(source, values, 'driver_realtime') }}
-								{{ forms.config_flip(source, values, 'driver_autoreconnect') }}
-								{{ forms.config_flip(source, values, 'reverseproxy', forms.config_reverseproxy (source, values, 'reverseproxy') ) }}
-								
+								<div style="min-height:245px">
+									{{ forms.config_select(source, values, 'driver', dir('driver', '^io_(.+?).js') ) }}
+									{{ forms.config_input(source, values, 'driver_address', 'wide') }}
+									{{ forms.config_input(source, values, 'driver_port', 'wide') }}
+									{{ forms.config_input(source, values, 'driver_tlsport', 'wide') }}
+									{{ forms.config_flip(source, values, 'driver_realtime') }}
+									{{ forms.config_flip(source, values, 'driver_autoreconnect') }}
+									{{ forms.config_flip(source, values, 'reverseproxy', forms.config_reverseproxy (source, values, 'reverseproxy') ) }}
+								</div>
+							</div>
+							<div class="ui-field-contain" style="margin:0;" data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
+								<h3>{{ lang('configuration_page', 'auth-security', 'title') }}</h3><br />
+								<div style="min-height:184px;">
+									{{ forms.config_flip(source, values, 'driver_ssl') }}
+									{{ forms.config_input(source, values, 'driver_username', 'wide') }}
+									{{ forms.config_input(source, values, 'driver_password', 'wide') }} 
+								</div>
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
-								<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3>
-								{{ forms.config_flip(source, values, 'proxy') }}
-								{{ forms.config_input(source, values, 'proxy_url', 'wide') }}
-								{{ forms.config_input(source, values, 'proxy_user') }}
-								{{ forms.config_input(source, values, 'proxy_password', 'password') }}
+								<h3>{{ lang('configuration_page', 'proxyserver', 'label') }}</h3><br />
+								<div style="min-height:225px">
+									{{ forms.config_input(source, values, 'sv_hostname') }}
+									{{ forms.config_flip(source, values, 'proxy') }}
+									{{ forms.config_input(source, values, 'proxy_url', 'wide') }}
+									{{ forms.config_input(source, values, 'proxy_user') }}
+									{{ forms.config_input(source, values, 'proxy_password', 'password') }}
+								</div>
 							</div>
 						</div>
 					</div>
@@ -147,10 +160,6 @@
 								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'options', 'label') }}</h3>
 							</div>
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
-								<h3>{{ lang('configuration_page', 'widgetassistant', 'label') }}</h3>
-								{{ forms.config_flip(source, values, 'widgetassi') }}
-							</div>
-							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
 								<h3>{{ lang('configuration_page', 'updatecheck', 'label') }}</h3>
 								{{ forms.config_flip(source, values, 'updatecheck') }}
 							</div>
@@ -165,7 +174,7 @@
 		</div>
 	{% endfor %}
 	</div>
-
+	
 	<div id="calendar_googleauth_popup" data-role="popup" data-overlay-theme="a">
 		<div data-role="header" data-theme="c">
 			<h1>{{ lang('configuration_page','calendar_googleauth', 'instruct_title') }}</h1>
