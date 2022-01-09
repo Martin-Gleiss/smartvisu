@@ -55,7 +55,7 @@
     {% if refresh|first in ['0','1','2','3','4','5','6','7','8','9'] or not refresh %}data-repeat="{{ refresh|default('10i') }}"{% endif %}
     stopTimer="false"
     src="{{ default_img|default('pages/base/pics/trans.png') }}"
-    onerror="{% if localize == 'true' %}$(this).widget('loadError');{% endif %}this.src='{{ default_img|default('pages/base/pics/trans.png') }}'" />
+    onerror="{% if localize == 'true' %}$(this).widget('loadError');{% endif %}this.onerror=null;this.src='{{ default_img|default('pages/base/pics/trans.png') }}'" />
 
 {% endmacro %}
 
