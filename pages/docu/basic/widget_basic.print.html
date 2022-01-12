@@ -105,5 +105,12 @@
     {{ basic.print('', 'bath.value', 'text', '"Content of element is: \'" + $("#otherEl").text() + "\'"') }}
   </div>
 
+  An image given as Base64-coded data in a text item can be displayed by using
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		<img id="myimage" src="" />
+		{{basic.print('','<item with data>','script','$("#myimage").attr("src", VAR)') }}	
+    {% endverbatim %}{% endfilter %}</code>
+  </div>
 
 {% endblock %}

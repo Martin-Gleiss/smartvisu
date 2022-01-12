@@ -20,16 +20,19 @@ $( document ).ready(function() {
 	});
 
 </script>
-
+	The widget displays images and streams which are accessible via an URL - nearly everything that can be displayed by putting it's URL
+	into an &lt;img&gt; tag. Some browsers reject URLs containing credentials. For streams containing pure JPEG images, this can be avoided by 
+	setting 'localize' to true even with high fps rates. The localize method does not work on MJPEG streams.  <br>
+	To display images which come as Base64 coded data in an item, see <a href="index.php?page=basic/widget_basic.print">basic.print</a>.
+	
 	<h5>Examples</h5>
-	Use this switch to refresh the image based on an item:<br>
+	The first example uses an item called "webcam_item" which holds the image URL. A second item ("refresh_item") is used
+	to trigger the refreshing of the image with every item update. Use the switch to refresh the image:<br>
 	{{ basic.flip('', 'refresh_item') }}<br>
-	Use the browser console to see result - the number after the image name changes.
+	The image may change only slightly. Inspect the element using the browsers developer tools to see the timestamp changing behind the image name.
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-
 			{{ multimedia.image('', 'webcam_item', 'corner', 'refresh_item') }}
-
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<br />
@@ -42,16 +45,15 @@ $( document ).ready(function() {
 		</div>
 	</div>
 
+	The second example uses a fixed URL and a timer duration. Here, the image is being reloaded every 15 seconds. <br>
+	
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-
 			{{ multimedia.image('', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner', '15s') }}
-
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<br />
 
-	The image is being reloaded every 15 seconds so it is always actual.
 	<div class="html">
 		<div class="block">
 			<div class="image" style="margin: 0px;">
@@ -59,6 +61,6 @@ $( document ).ready(function() {
 			</div>
 		</div>
 	</div>
-
+	
 
 {% endblock %}
