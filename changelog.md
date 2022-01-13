@@ -4,6 +4,7 @@
 ### Other New Features
 
 ### Improvements
+- docu for image displaying widgets improved (multimedia.widget, basic.print)
 
 ### Updated Libraries
 
@@ -12,8 +13,9 @@
 ### Removed Features
 
 ### Fixed Bugs
-- menu itme "smarthomeNG" got lost if new smarthomeNG driver was selected
-- calendars with names containing whitespaces were not loaded
+- menu item "smarthomeNG" got lost if new smarthomeNG driver was selected
+- calendars with names containing whitespaces were not loaded (since at least v2.9)
+- smarthomeNG new driver did not work on old browsers (javascript replaceAll() function not available)
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
