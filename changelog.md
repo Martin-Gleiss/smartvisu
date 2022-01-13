@@ -1,4 +1,25 @@
-## 3.1.a
+## 3.2.1
+### New / Changed Widgets
+
+### Other New Features
+
+### Improvements
+
+### Updated Libraries
+
+### Deprecated
+
+### Removed Features
+
+### Fixed Bugs
+- menu itme "smarthomeNG" got lost if new smarthomeNG driver was selected
+- calendars with names containing whitespaces were not loaded
+
+### Known Bugs
+- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
+
+
+## 3.2.0
 ### New / Changed Widgets
 - basic.window and device.window provide an additional color mode: icon0 if closed / custom color if open
 - weather service met.no displays city name retrieved from geonames.org with geo coordinates (new service getLocation.php)
