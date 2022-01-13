@@ -74,7 +74,7 @@ var io = {
 
 		// if user-called host is not an IP v4 address check if called host is internal hostname of smartVISU server
 		// otherwise assume that call comes from external and then empty io.address
-		if (!$.isNumeric(location.host.replaceAll('.',''))){
+		if (!$.isNumeric(location.host.split('.').join(''))) {  // replaceAll() does not work for old browsers
 			if ( location.host != sv.config.svHostname ) 
 				io.address = '';
 		} 
