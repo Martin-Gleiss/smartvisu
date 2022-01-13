@@ -1,8 +1,8 @@
-
 ## 3.2.1
 ### New / Changed Widgets
 
 ### Other New Features
+- page "driver_debug" for visualizing communication parameters. Good if browser tools are not available, e.g. on smartphones 
 
 ### Improvements
 - docu for image displaying widgets improved (multimedia.widget, basic.print)
