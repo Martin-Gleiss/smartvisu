@@ -19,7 +19,7 @@
 
 <h1>Template Checker</h1>
 <form>
-	{{ forms.config_select('tplchk', { 'tplchck': {'pages': config_pages }}, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
+	{{ forms.config_select('tplchk', { 'tplchk': {'pages': config_pages }}, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
 	<label><input name="checkbox-0 " type="checkbox" id="tplchk_chk_errors_only">Show warnings/errors only</label>
 	<label><input name="checkbox-0 " type="checkbox" id="tplchk_chk_subfolders">Don´t check files in subfolders</label>
 	<div id="chk_items" style="visibility: hidden;">
