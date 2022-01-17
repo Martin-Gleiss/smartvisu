@@ -57,7 +57,7 @@ if (is_file(const_path."pages/".$actual_pages."/".$request['page'].".html")
 
 	// add smarthome dir if it is not directly chosen. 
 	// allows combination of custom pages with auto-generated pages from smarthomeNG
-	if (config_driver == 'smarthome.py' and $actual_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
+	if (substr(config_driver, 0, 9) == 'smarthome' and $actual_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
 		$loader->addPath(const_path.'pages/smarthome');
 
    // make sure SV doesn't load stuff from dropins unless pages are configured
