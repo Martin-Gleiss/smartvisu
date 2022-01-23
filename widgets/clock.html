@@ -1,11 +1,34 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @author      Martin Gleiß and others
+* @copyright   2012 - 2022
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
+
+
+/**
+* Displays a countdown
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item(bool,num)} an item being switched
+* @param {item(num)} an item containing the start time of the countdown (timestamp) 
+* @param {item(str)} an item containing the duration of the countdown (h,i,s format) 
+* @param {duration=10s} the countdown interval in seconds, e.g. '60s' (default: '10s')  
+* @param {text(item,zero)=item} the mode of stopping the timer 'item' (default): countdown runs until item is changed; 'zero' = countdown stops at 00:00:00
+* @param {text='--:--:--'} the text displayed when countdown is inactive (default '--:--:--')
+*
+* @author Wolfram v. Hülsen
+*/
+{% macro countdown(id, item, starttime, duration, interval, stopmode, idletxt ) %}
+	{% if interval is empty %} {% set interval = "10s" %} {% endif %}
+	{% if stopmode != "zero" %} {% set stopmode = "item" %} {% endif %}
+	{% if idletxt is empty %} {% set idletxt = "--:--:--" %} {% endif %}
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.countdown" data-interval="{{ interval }}" data-stopmode="{{ stopmode }}" 
+		data-idletxt="{{ idletxt }}" class="miniclock" data-item="{{ item }}, {{ starttime }}, {{ duration }}">{{ idletxt }}
+	</span>
+{% endmacro %}
 
 
 /**
@@ -16,7 +39,6 @@
 * @param {duration=15i} the refresh interval for weather data (using relative time format), default 15i (15 minutes)
 *
 * @info based on jDigiClock by Radoslav Dimov
-* @link http://www.radoslavdimov.com
 */
 {% macro digiclock(id, location, repeat) %}
 	{% set uid = uid(page, id) %}
@@ -38,7 +60,6 @@
 			</div>
 		</div>
 	{% endif %}
-
 {% endmacro %}
 
 
@@ -53,7 +74,6 @@
 	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i" class="iconclock"
 	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
 	 >{{ icon.clock(id) }}</span>
-
 {% endmacro %}
 
 
@@ -69,27 +89,4 @@
 		data-format="{{ format|default('time') }}"
 		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
 		>{{ "now"|date('H:i') }}</span>
-
-{% endmacro %}
-
-
-/**
-* Displays a countdown
-*
-* @param {id=} unique id for this widget (optional)
-* @param {item(bool,num)} an item being switched
-* @param {item(num)} an item containing the start time of the countdown (timestamp) 
-* @param {item(str)} an item containing the duration of the countdown (h,i,s format) 
-* @param {duration=10s} the countdown interval in seconds, e.g. '60s' (default: '10s')  
-* @param {text(item,zero)=item} the mode of stopping the timer 'item' (default): countdown runs until item is changed; 'zero' = countdown stops at 00:00:00
-* @param {text='--:--:--'} the text displayed when countdown is inactive (default '--:--:--')
-*/
-{% macro countdown(id, item, starttime, duration, interval, stopmode, idletxt ) %}
-
-	{% if interval is empty %} {% set interval = "10s" %} {% endif %}
-	{% if stopmode != "zero" %} {% set stopmode = "item" %} {% endif %}
-	{% if idletxt is empty %} {% set idletxt = "--:--:--" %} {% endif %}
-	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.countdown" data-interval="{{ interval }}" data-stopmode="{{ stopmode }}" 
-		data-idletxt="{{ idletxt }}" class="miniclock" data-item="{{ item }}, {{ starttime }}, {{ duration }}">{{ idletxt }}
-	</span>
 {% endmacro %}

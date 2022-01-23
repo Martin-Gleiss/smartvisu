@@ -1,8 +1,8 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiss
-* @copyright   2012 - 2015
+* @author      Martin Gleiß and others
+* @copyright   2012 - 2022
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -85,7 +85,6 @@
 * @param {duration=10} how long should the widgets be unlocked (optional, default: 10 seconds)
 */
 {% macro codepad(id, code, title, duration) %}
-
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-id="{{ id }}" data-widget="device.codepad" data-val="{{ code|default(config_codepad_code)|md5 }}" data-duration="{{ duration|default('10') }}"
 		data-role="popup" data-overlay-theme="a" class="alert" style="width: 166px;" >
 		<div data-role="header" data-theme="c"><h1>{{ title|default('Enter Code') }}</h1></div>
@@ -101,7 +100,6 @@
 			<a data-val="ok" data-role="button" data-inline="true" data-iconpos="nopic" data-mini="true" >OK</a>
 		</div>
 	</div>
-
 {% endmacro %}
 
 
@@ -134,278 +132,8 @@
 			<p>{{ txt|e }}</p>
 			{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display) }}
 		</div>
-
 {% endmacro %}
 
-
-/**
-* Standard RTR (Room Temperatur Regulator)
-*
-* @param {id=} unique id for this widget (optional)
-* @param {text=} name of the rtr
-* @param {item(num)} an item for the actual temperature
-* @param {item(num)} an item for the set temperature
-* @param {item(bool,num)=} an item for comfort / standby (3x bit or 1x byte, optional)
-* @param {item(bool,num)=} an item for night (3x bit or 1x byte, optional)
-* @param {item(bool,num)=} an item for frost (3x bit or 1x byte, optional)
-* @param {item(bool,num)=} an item for the current state of the actor (optional)
-* @param {item(str)=} an item for a text (some rtr have a text-display), (optional)
-* @param {value=0.5} step for plus/minus buttons (optional, default: 0.5)
-* @param {item(num)=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
-* @param {text[]=} list of additional widgets / content to display
-*/
-{% macro rtr(id, txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements) %}
-	{% import "basic.html" as basic %}
-
-	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtr" class="rtr">
-		<div class="actual">
-			<div class="temp">{{ basic.print('', item_actual, 'temp' ) }}</div>
-			<div class="text">{{ txt }} {% if item_txt %} {{ basic.print('', item_txt, 'text') }} {% endif %}</div>
-		</div>
-		<br>
-		{% if item_set %}
-			<div class="set">
-				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.5)), 'minus', '', 'micro' ) }}
-				<div class="temp">{{ basic.print('', item_set, 'temp' ) }}</div>
-				{{ basic.offset('', item_offset|default(item_set), step|default(0.5), 'plus', '', 'micro' ) }}
-			</div>
-		{% endif %}
-		<br>
-		{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty or supplements is not empty %}
-		<div class="control">
-			{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
-				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
-				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['night', 'standby'] : [3, 2]), ['scene_night.svg', 'scene_night.svg'], '', ['icon1', 'icon0']) }}
-				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['frost', 'standby'] : [4, 2]), ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
-			{% else %}
-				{% if item_comfort is not empty %}
-					{{ basic.stateswitch('', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
-				{% endif %}
-				{% if item_night is not empty %}
-					{{ basic.stateswitch('', item_night, 'icon', '', ['scene_night.svg', 'scene_night.svg']) }}
-				{% endif %}
-				{% if item_frost is not empty %}
-					{{ basic.stateswitch('', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
-				{% endif %}
-			{% endif %}
-			{% if item_state is not empty %}
-				{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
-			{% endif %}
-			{% for supplement in supplements %}
-				{{ supplement|raw }}
-			{% endfor %}
-		</div>
-		{% endif %}
-	</div>
-{% endmacro %}
-
-/**
-* Displays a round slider for RTR
-* @param {id} unique id for this widget (mandatory)
-* @param {item(num)} an item for the actual temperature
-* @param {item(num)} an item for the set temperature
-* @param {item(bool,num)=} an item for comfort / standby (3x bit or 1x byte, optional)
-* @param {item(bool,num)=} an item for night (3x bit or 1x byte, optional)
-* @param {item(bool,num)=} an item for frost (3x bit or 1x byte, optional)
-* @param {item(bool,num)=} an item for the current state of the actor (optional)
-* @param {value=18} the minimum value if the slider is moved to total left (optional, default: 18)  
-* @param {value=28} the maximum value if the slider is moved to total right (optional, default: 28)  
-* @param {value=.1} step between two values (optional, default: .1)  
-* @param {text(false,true)=false} display a scale with values along the slider (optional, default='true')
-* @param {value=1} scale-integer, the scale-divider for the scale
-* @param {item(num)=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
-* @param {text[]=} list of additional widgets / content to display
-* @param {value=0} tolerance by which values entered with +/- buttons are allowed to exeed min/max values (optional, default: limiting to min/max)
-*
-* @author Bonze, Wolfram v. Hülsen
-**/
-{% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval, item_offset, supplements, tolerance) %}
-
-{% import "basic.html" as basic %}
-
-	/** set displayed decimals to decimals of step parameter */
-	{% set setformat = lang ('format', 'temp') %}
-	{% set stepparts = step|split('.') %}
-	{% set decs = (stepparts[1] >0 ? stepparts[1]|length : 0) %} {% set setformat = setformat|replace(',1f', ','~decs~'f') %}
-	
-	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{item_actual}},{{item_set}},{{item_offset}}"  
-		data-scale_min="{{min | default('18')}}" data-scale_max="{{max| default('28')}}" data-step="{{step | default('.1')}}"  
-		data-scale_interval="{{scale_interval | default('1')}}" style="margin:auto; position:relative;"> 
-		
-		/** pseudo divs, to get styles **/
-		<div class="ui-bar-a" style="display:none"> </div>
-		<div class="ui-bar-b" style="display:none"> </div>
-		<div class="ui-page-theme-a ui-btn" style="display:none"> </div>
-		
-		/** double slider with texts **/
-		<div id="container" style="display: inline-flex; align-content: center; position:relative; height: 140px; width:140px; margin: 30px 30px -30px 30px;">
-			<div class="outerslider" id ="{{ uid(page, id) }}" style="position:absolute; top:0px; margin:auto; z-index: 0;"> </div>
-			<div class="innerslider" id ="{{ uid(page, id) }}" style="position:absolute; margin:auto; top:8px; left:8px;z-index: 2;"> </div>
-			<div class="set" style="position:absolute; top:80px; left: 32px; min-width:76px; z-index: 1;">
-				<div class="temp" style="margin-bottom:15px;">Soll: {{ basic.print('', item_set, setformat ) }}</div>
-			</div>		
-		</div>		
-	</div>
-	/** elements copied from device.rtr **/
-	{% if item_set %}
-		{% if tolerance is empty %} {% set tolerance = '0' %} {% endif %}
-		{% set min = min | default('18') - tolerance %}
-		{% set max = max | default('28') + tolerance %}
-		<div class="set" style="position:relative; z-index: 3;">
-			<div>
-				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro', min, max) }}
-				{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro', min, max) }}
-			</div>
-		</div>
-	{% endif %}
-
-	{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty or supplements is not empty %}
-		<div class="control" style="position:relative;">
-			{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
-				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
-				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['night', 'standby'] : [3, 2]), ['scene_night.svg', 'scene_night.svg'], '', ['icon1', 'icon0']) }}
-				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['frost', 'standby'] : [4, 2]), ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
-			{% else %}
-				{% if item_comfort is not empty %}
-					{{ basic.stateswitch('', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
-				{% endif %}
-				{% if item_night is not empty %}
-					{{ basic.stateswitch('', item_night, 'icon', '', ['scene_night.svg', 'scene_day.svg']) }}
-				{% endif %}
-				{% if item_frost is not empty %}
-					{{ basic.stateswitch('', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
-				{% endif %}
-			{% endif %}
-			{% if item_state is not empty %}
-				{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
-			{% endif %}
-			{% for supplement in supplements %}
-				{{ supplement|raw }}
-			{% endfor %}
-		</div>
-	{% endif %}
-		
-{% endmacro %}
-
-/**
-* Standard shutter
-*
-* @param {id=} unique id for this widget (optional)
-* @param {text=} name of the shutter
-* @param {item(bool,num)=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
-* @param {item(bool,num)=} an item for stopping the movement (optional)
-* @param {item(num)} an item for the absolute position of the blinds
-* @param {item(bool,num)=} an item for increase and decrease of the blade (optional, for future use)
-* @param {item(num)=} an item for the absolute angle of the blade (optional)
-* @param {item(num)=} an item for some saved positions (optional)
-* @param {value=0} the value for opened (optional, default 0)
-* @param {value=255} the value for closed (optional, default 255)
-* @param {value=5} step between two values (optional, default 5)
-* @param {text(half,full)=} 'half' blade turns from -1 to +1, 'full' blade turns from 0 to +1 (optional, default 'half')
-* @param {image=} a background image url (relative to smartVISU directory or absolute); optimal size is 100px x 180px (optional)
-* @param {value=0} the value to send for position 1 (optional, default 0)
-* @param {value=1} the value to send for position 2 (optional, default 1)
-* @param {text=Pos1} the text printed on button for position 1 (optional, default Pos1)
-* @param {text=Pos2} the text printed on button for position 2 (optional, default Pos2)
-*
-* @info inspired by Joerg Gutowski
-*/
-{% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) %}
-	{% import "basic.html" as basic %}
-
-	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
-		<table align="center" cellpadding="0">
-			<tr>
-				<td valign="top">
-					<div class="set">
-						{% if item_move is empty %}
-							{{ basic.stateswitch('', item_pos, '', value_top|default('0'), 'carat-u') }}
-						{% else %}
-							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
-						{% endif %}
-					</div>
-				</td>
-				<td rowspan="3" valign="center" class="pos">
-					{{ basic.shutter('', item_pos, item_angle, value_top|default('0'), value_bottom|default('255'), step, mode, background) }}
-				</td>
-				<td valign="top">
-					{% if item_saved %}
-						<div>{{ basic.stateswitch('', item_saved, '', value_pos_1|default(0), 'grid', text_pos_1|default('Pos1'), '', 'blink') }}</div>
-					{% endif %}
-				</td>
-			</tr>
-			<tr>
-				<td valign="center">
-					{% if item_stop %}
-						<div class="set">{{ basic.stateswitch('', item_stop, '', 1, 'delete') }}</div>
-					{% endif %}
-				</td>
-				<td valign="center">{{ txt }}</td>
-			</tr>
-			<tr>
-				<td valign="bottom">
-					<div class="set">
-						{% if item_move is empty %}
-							{{ basic.stateswitch('', item_pos, '', value_bottom|default('255'), 'carat-d') }}
-						{% else %}
-							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
-						{% endif %}
-					</div>
-				</td>
-				<td valign="bottom">
-					{% if item_saved %}
-						<div>{{ basic.stateswitch('', item_saved, '', value_pos_2|default(1), 'grid', text_pos_2|default('Pos2'), '', 'blink') }}</div>
-					{% endif %}
-				</td>
-			</tr>
-		</table>
-	</div>
-
-{% endmacro %}
-
-/**
-* Displays a simple shutter control assembly in table format
-*
-* @param {id=} unique id for this widget (optional)
-* @param {text=} name of the shutter
-* @param {item(bool,num)} a gad/item for long move
-* @param {item(bool,num)} a gad/item for stopping movement
-* @param {item(num)} a gad/item for the actual position
-* @param {item(num)=} a gad/item for the saved position (optional)
-* @param {type=micro} valid types: 'micro', 'mini', 'midi' (optional, default: micro)
-*
-* @author Michael Stemmer and Wolfram v. Huelsen
-*/
-{% macro smallshut(id, txt, item_move, item_stop, item_position, item_saved, type) %}
-{% import "basic.html" as basic %}
-{% import "icon.html" as icon %}
-{% set uid = uid(page, id) %}
-
-	<div class="smallshut"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
-		<span class="ui-shut-txt">
-		{% if txt %} {{ txt }} {% endif %}
-		</span>
-		<span class="ui-shut-btn">
-			{{ basic.stateswitch('',  item_move, type|default('micro'), '0', 'carat-u') }}
-		</span>
-		<span class="ui-shut-btn">
-			{{ basic.stateswitch('', item_stop, type|default('micro'), 1, 'delete') }}
-		</span>
-		<span class="ui-shut-btn">
-			{{ basic.stateswitch('', item_move, type|default('micro'), '1', 'carat-d') }}
-		</span>
-		<span class="ui-shut-btn">
-			{% if item_saved %}
-				{{ basic.stateswitch('', item_saved, type|default('micro'), '1', 'fts_shutter_50.svg') }}
-			{% endif %}
-		</span>
-		<span class="ui-shut-pic">
-			{% if item_position %}
-				{{ icon.shutter(id~'position', '', item_position) }}
-			{% endif %}
-		</span>
-	</div>
-{% endmacro %}
 
 /**
 * Roof window
@@ -486,6 +214,306 @@
 
 
 /**
+* Standard RTR (Room Temperatur Regulator)
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the rtr
+* @param {item(num)} an item for the actual temperature
+* @param {item(num)} an item for the set temperature
+* @param {item(bool,num)=} an item for comfort / standby (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for night (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for frost (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for the current state of the actor (optional)
+* @param {item(str)=} an item for a text (some rtr have a text-display), (optional)
+* @param {value=0.5} step for plus/minus buttons (optional, default: 0.5)
+* @param {item(num)=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
+* @param {text[]=} list of additional widgets / content to display
+*/
+{% macro rtr(id, txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements) %}
+	{% import "basic.html" as basic %}
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtr" class="rtr">
+		<div class="actual">
+			<div class="temp">{{ basic.print('', item_actual, 'temp' ) }}</div>
+			<div class="text">{{ txt }} {% if item_txt %} {{ basic.print('', item_txt, 'text') }} {% endif %}</div>
+		</div>
+		<br>
+		{% if item_set %}
+			<div class="set">
+				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.5)), 'minus', '', 'micro' ) }}
+				<div class="temp">{{ basic.print('', item_set, 'temp' ) }}</div>
+				{{ basic.offset('', item_offset|default(item_set), step|default(0.5), 'plus', '', 'micro' ) }}
+			</div>
+		{% endif %}
+		<br>
+		{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty or supplements is not empty %}
+		<div class="control">
+			{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
+				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['night', 'standby'] : [3, 2]), ['scene_night.svg', 'scene_night.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['frost', 'standby'] : [4, 2]), ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
+			{% else %}
+				{% if item_comfort is not empty %}
+					{{ basic.stateswitch('', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
+				{% endif %}
+				{% if item_night is not empty %}
+					{{ basic.stateswitch('', item_night, 'icon', '', ['scene_night.svg', 'scene_night.svg']) }}
+				{% endif %}
+				{% if item_frost is not empty %}
+					{{ basic.stateswitch('', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
+				{% endif %}
+			{% endif %}
+			{% if item_state is not empty %}
+				{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
+			{% endif %}
+			{% for supplement in supplements %}
+				{{ supplement|raw }}
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div>
+{% endmacro %}
+
+
+/**
+* Displays a round slider for RTR
+* @param {id} unique id for this widget (mandatory)
+* @param {item(num)} an item for the actual temperature
+* @param {item(num)} an item for the set temperature
+* @param {item(bool,num)=} an item for comfort / standby (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for night (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for frost (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for the current state of the actor (optional)
+* @param {value=18} the minimum value if the slider is moved to total left (optional, default: 18)  
+* @param {value=28} the maximum value if the slider is moved to total right (optional, default: 28)  
+* @param {value=.1} step between two values (optional, default: .1)  
+* @param {text(false,true)=false} display a scale with values along the slider (optional, default='true')
+* @param {value=1} scale-integer, the scale-divider for the scale
+* @param {item(num)=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
+* @param {text[]=} list of additional widgets / content to display
+* @param {value=0} tolerance by which values entered with +/- buttons are allowed to exeed min/max values (optional, default: limiting to min/max)
+*
+* @author Bonze, Wolfram v. Hülsen
+*/
+{% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval, item_offset, supplements, tolerance) %}
+	{% import "basic.html" as basic %}
+
+	/** set displayed decimals to decimals of step parameter */
+	{% set setformat = lang ('format', 'temp') %}
+	{% set stepparts = step|split('.') %}
+	{% set decs = (stepparts[1] >0 ? stepparts[1]|length : 0) %} {% set setformat = setformat|replace(',1f', ','~decs~'f') %}
+	
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{item_actual}},{{item_set}},{{item_offset}}"  
+		data-scale_min="{{min | default('18')}}" data-scale_max="{{max| default('28')}}" data-step="{{step | default('.1')}}"  
+		data-scale_interval="{{scale_interval | default('1')}}" style="margin:auto; position:relative;"> 
+		
+		/** pseudo divs, to get styles **/
+		<div class="ui-bar-a" style="display:none"> </div>
+		<div class="ui-bar-b" style="display:none"> </div>
+		<div class="ui-page-theme-a ui-btn" style="display:none"> </div>
+		
+		/** double slider with texts **/
+		<div id="container" style="display: inline-flex; align-content: center; position:relative; height: 140px; width:140px; margin: 30px 30px -30px 30px;">
+			<div class="outerslider" id ="{{ uid(page, id) }}" style="position:absolute; top:0px; margin:auto; z-index: 0;"> </div>
+			<div class="innerslider" id ="{{ uid(page, id) }}" style="position:absolute; margin:auto; top:8px; left:8px;z-index: 2;"> </div>
+			<div class="set" style="position:absolute; top:80px; left: 32px; min-width:76px; z-index: 1;">
+				<div class="temp" style="margin-bottom:15px;">Soll: {{ basic.print('', item_set, setformat ) }}</div>
+			</div>		
+		</div>		
+	</div>
+	/** elements copied from device.rtr **/
+	{% if item_set %}
+		{% if tolerance is empty %} {% set tolerance = '0' %} {% endif %}
+		{% set min = min | default('18') - tolerance %}
+		{% set max = max | default('28') + tolerance %}
+		<div class="set" style="position:relative; z-index: 3;">
+			<div>
+				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro', min, max) }}
+				{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro', min, max) }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty or supplements is not empty %}
+		<div class="control" style="position:relative;">
+			{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
+				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['night', 'standby'] : [3, 2]), ['scene_night.svg', 'scene_night.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['frost', 'standby'] : [4, 2]), ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
+			{% else %}
+				{% if item_comfort is not empty %}
+					{{ basic.stateswitch('', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
+				{% endif %}
+				{% if item_night is not empty %}
+					{{ basic.stateswitch('', item_night, 'icon', '', ['scene_night.svg', 'scene_day.svg']) }}
+				{% endif %}
+				{% if item_frost is not empty %}
+					{{ basic.stateswitch('', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
+				{% endif %}
+			{% endif %}
+			{% if item_state is not empty %}
+				{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
+			{% endif %}
+			{% for supplement in supplements %}
+				{{ supplement|raw }}
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endmacro %}
+
+
+/**
+* Standard shutter
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the shutter
+* @param {item(bool,num)=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+* @param {item(bool,num)=} an item for stopping the movement (optional)
+* @param {item(num)} an item for the absolute position of the blinds
+* @param {item(bool,num)=} an item for increase and decrease of the blade (optional, for future use)
+* @param {item(num)=} an item for the absolute angle of the blade (optional)
+* @param {item(num)=} an item for some saved positions (optional)
+* @param {value=0} the value for opened (optional, default 0)
+* @param {value=255} the value for closed (optional, default 255)
+* @param {value=5} step between two values (optional, default 5)
+* @param {text(half,full)=} 'half' blade turns from -1 to +1, 'full' blade turns from 0 to +1 (optional, default 'half')
+* @param {image=} a background image url (relative to smartVISU directory or absolute); optimal size is 100px x 180px (optional)
+* @param {value=0} the value to send for position 1 (optional, default 0)
+* @param {value=1} the value to send for position 2 (optional, default 1)
+* @param {text=Pos1} the text printed on button for position 1 (optional, default Pos1)
+* @param {text=Pos2} the text printed on button for position 2 (optional, default Pos2)
+*
+* @info inspired by Joerg Gutowski
+*/
+{% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) %}
+	{% import "basic.html" as basic %}
+
+	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
+		<table align="center" cellpadding="0">
+			<tr>
+				<td valign="top">
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.stateswitch('', item_pos, '', value_top|default('0'), 'carat-u') }}
+						{% else %}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
+						{% endif %}
+					</div>
+				</td>
+				<td rowspan="3" valign="center" class="pos">
+					{{ basic.shutter('', item_pos, item_angle, value_top|default('0'), value_bottom|default('255'), step, mode, background) }}
+				</td>
+				<td valign="top">
+					{% if item_saved %}
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_1|default(0), 'grid', text_pos_1|default('Pos1'), '', 'blink') }}</div>
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td valign="center">
+					{% if item_stop %}
+						<div class="set">{{ basic.stateswitch('', item_stop, '', 1, 'delete') }}</div>
+					{% endif %}
+				</td>
+				<td valign="center">{{ txt }}</td>
+			</tr>
+			<tr>
+				<td valign="bottom">
+					<div class="set">
+						{% if item_move is empty %}
+							{{ basic.stateswitch('', item_pos, '', value_bottom|default('255'), 'carat-d') }}
+						{% else %}
+							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
+						{% endif %}
+					</div>
+				</td>
+				<td valign="bottom">
+					{% if item_saved %}
+						<div>{{ basic.stateswitch('', item_saved, '', value_pos_2|default(1), 'grid', text_pos_2|default('Pos2'), '', 'blink') }}</div>
+					{% endif %}
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}
+
+
+/**
+* Displays a simple shutter control assembly in table format
+*
+* @param {id=} unique id for this widget (optional)
+* @param {text=} name of the shutter
+* @param {item(bool,num)} a gad/item for long move
+* @param {item(bool,num)} a gad/item for stopping movement
+* @param {item(num)} a gad/item for the actual position
+* @param {item(num)=} a gad/item for the saved position (optional)
+* @param {type=micro} valid types: 'micro', 'mini', 'midi' (optional, default: micro)
+*
+* @author Michael Stemmer and Wolfram v. Huelsen
+*/
+{% macro smallshut(id, txt, item_move, item_stop, item_position, item_saved, type) %}
+	{% import "basic.html" as basic %}
+	{% import "icon.html" as icon %}
+	{% set uid = uid(page, id) %}
+
+	<div class="smallshut"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
+		<span class="ui-shut-txt">
+		{% if txt %} {{ txt }} {% endif %}
+		</span>
+		<span class="ui-shut-btn">
+			{{ basic.stateswitch('',  item_move, type|default('micro'), '0', 'carat-u') }}
+		</span>
+		<span class="ui-shut-btn">
+			{{ basic.stateswitch('', item_stop, type|default('micro'), 1, 'delete') }}
+		</span>
+		<span class="ui-shut-btn">
+			{{ basic.stateswitch('', item_move, type|default('micro'), '1', 'carat-d') }}
+		</span>
+		<span class="ui-shut-btn">
+			{% if item_saved %}
+				{{ basic.stateswitch('', item_saved, type|default('micro'), '1', 'fts_shutter_50.svg') }}
+			{% endif %}
+		</span>
+		<span class="ui-shut-pic">
+			{% if item_position %}
+				{{ icon.shutter(id~'position', '', item_position) }}
+			{% endif %}
+		</span>
+	</div>
+{% endmacro %}
+
+
+/**
+* Graphical widget for usage of UZSU plugin.
+ Drag points, add new ones by clicking on background and edit or delete them.
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item(dict)} the item of the UZSU (NOT the item which is switched by UZSU)
+* @param {text=UZSU} title of graph (optional, default: UZSU)
+* @param {value(0,1)=0} set to '1' in order to allow changes by dragging points (optional, default: 0)
+* @param {text(bool,num)=bool} supported types are 'bool' and 'num' (optional, default: bool)
+* @param {text[]=} valueParameterList depending on valueType (optional):
+	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
+	num: [min, max, step]
+* @param {text(false,true)=true} shows a scrollbar below the x-Axis (optional, default: true)	
+* @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
+*
+* @author Stefan Widmer
+*/
+
+{% macro uzsugraph(id, item, headline, editable, valueType, valueParameterList, scrollbar, _backend) %}
+	{% import "basic.html" as basic %}
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsugraph" data-item="{{ item }}"
+		data-headline="{{ headline|default('UZSU') }}" data-editable="{{ editable|default(0) }}" data-designType="{{ _backend }}"
+		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
+		data-scrollbar="{{ scrollbar|default('true') }}" class="plot">
+	</div>
+
+{% endmacro %}
+
+
+/**
 * Widget for usage of UZSU plugin
 *
 * @param {id=} unique id for this widget (optional)
@@ -525,37 +553,8 @@
 			<span class="icon-on hide">{{ basic.icon(pic_on|deficon('time_timer_switch.svg'), color_on|default('icon1')) }}</span>
 		</a>
 	</span>
-
 {% endmacro %}
 
-/**
-* Graphical widget for usage of UZSU plugin.
- Drag points, add new ones by clicking on background and edit or delete them.
-*
-* @param {id=} unique id for this widget (optional)
-* @param {item(dict)} the item of the UZSU (NOT the item which is switched by UZSU)
-* @param {text=UZSU} title of graph (optional, default: UZSU)
-* @param {value(0,1)=0} set to '1' in order to allow changes by dragging points (optional, default: 0)
-* @param {text(bool,num)=bool} supported types are 'bool' and 'num' (optional, default: bool)
-* @param {text[]=} valueParameterList depending on valueType (optional):
-	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
-	num: [min, max, step]
-* @param {text(false,true)=true} shows a scrollbar below the x-Axis (optional, default: true)	
-* @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
-*
-* @author Stefan Widmer
-*/
-
-{% macro uzsugraph(id, item, headline, editable, valueType, valueParameterList, scrollbar, _backend) %}
-	{% import "basic.html" as basic %}
-
-	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsugraph" data-item="{{ item }}"
-		data-headline="{{ headline|default('UZSU') }}" data-editable="{{ editable|default(0) }}" data-designType="{{ _backend }}"
-		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
-		data-scrollbar="{{ scrollbar|default('true') }}" class="plot">
-	</div>
-
-{% endmacro %}
 
 /**
 * UZSU-Timetable widget for usage with the UZSU-Plugin
@@ -616,8 +615,8 @@
 		{% endif %}
 
 	</div>
-
 {% endmacro %}
+
 
 /**
  * Displays window status and a simple shutter control assembly in a popup
