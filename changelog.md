@@ -21,10 +21,11 @@
 - menus in config page did not show as dialogs if screen was too small (e.g. split w/ browser tools)
 - config page did not work if ./dropins/lang folder was missing 
 - cache folders were not created separately for different devices. This caused CSS mix if cache was activated and differnet designs were configured  
+- on iOS9 the UZSU widgets did not run and even prevented smartVISU from starting if cache was activated
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
-
+- device.uzsutable does not run on iOS9 devices
 
 ## 3.2.0
 ### New / Changed Widgets
