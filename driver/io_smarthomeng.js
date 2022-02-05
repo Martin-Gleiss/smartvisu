@@ -74,8 +74,8 @@ var io = {
 
 		// if user-called host is not an IP v4 address check if called host is internal hostname of smartVISU server
 		// otherwise assume that call comes from external and then empty io.address
-		if (!$.isNumeric(location.host.split('.').join(''))) {  // replaceAll() does not work for old browsers
-			if ( location.host != sv.config.svHostname ) 
+		if (!$.isNumeric(location.hostname.split('.').join(''))) {  // replaceAll() does not work for old browsers
+			if ( location.hostname != sv.config.svHostname ) 
 				io.address = '';
 		} 
 		io.open();
@@ -140,9 +140,9 @@ var io = {
 				// use url of current page if not defined
 				io.address = location.hostname;
 			}
-			io.port = ports[protocol];
+			io.port = ports[protocol]; 
 
-			if (!io.port) {
+			if (!io.port) { // is still undefined, if io.address was empty at start of io.open
 				// use port of current page if not defined and needed
 				if (location.port != '') {
 					io.port = location.port;
