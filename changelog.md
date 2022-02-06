@@ -3,6 +3,7 @@
 
 ### Other New Features
 - page "driver_debug" for visualizing communication parameters. Good if browser tools are not available, e.g. on smartphones 
+- phone widget widget displays callees image on outgoing calls and accepts images also with callers / callees names 
 
 ### Improvements
 - docu for image displaying widgets improved (multimedia.widget, basic.print)
