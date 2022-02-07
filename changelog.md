@@ -24,10 +24,11 @@
 - cache folders were not created separately for different devices. This caused CSS mix if cache was activated and differnet designs were configured  
 - on iOS9 the UZSU widgets did not run and even prevented smartVISU from starting if cache was activated
 - new smarthomeng.js driver did not work if a port was provided in the URL
+- device.uzsutable did not run on iOS9 devices (even after general uzsu fix)
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
-- device.uzsutable does not run on iOS9 devices
+
 
 ## 3.2.0
 ### New / Changed Widgets
