@@ -3057,15 +3057,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         d = 0
 
         // Clear the SVG
-        tbl2Delete = []
-        this.element.find("svg")[0].childNodes.forEach(function(element) {
-            tbl2Delete.push(element)
-        })
-        while (tbl2Delete.length > 0) {
-            myEntry = tbl2Delete.pop()
-            myEntry.remove()
-        }
-
+        this.element.find("svg")[0].innerHTML=""		
 
         this.options.mySvgWidth = 400
         this.element.find("svg")[0].width.baseVal.value = this.options.mySvgWidth
