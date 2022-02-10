@@ -342,9 +342,7 @@
  * @param {value=0} hide on mobile displays (optional value 1)
  */
 {% macro win_shut (id, txt, left, top, gad_move, gad_stop, gad_pos, gad_shade, gad_window_r, gad_window_l, type, hide) %}
-	{% import   "widgets/window.html" as window %}
 	{% import   "basic.html" as basic %}
-	{% import   "icon.html" as icon %}
 	{% set uid = uid(page, id) %}
 	{% set min = 0 %}
 	{% set max = 100 %}
@@ -361,12 +359,12 @@
 						{%- endif -%}
 					{%- endif -%}"
 		>
-		{{ window.complete(uid~'-icon', gad_pos, gad_window_r, gad_window_l, min, max, color) }}
+		{{ basic.window(uid~'-icon', gad_pos, gad_window_r, gad_window_l, min, max, color) }}
 	</a>
 		
     <div id="{{ uid }}-popup" data-role="popup" style="min-width:200px;">
 		<div>
-			{{ window.complete(uid~'-icon', gad_pos, gad_window_r, gad_window_l, min, max, color) }}
+			{{ basic.window(uid~'-icon', gad_pos, gad_window_r, gad_window_l, min, max, color) }}
 			{{ txt|e }}
         </div>
          <div data-role="controlgroup" data-type="horizontal">

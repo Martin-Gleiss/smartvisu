@@ -669,12 +669,12 @@
 
 
 /**
-* a window with open/tilt/closed status and shutter
+* a window with open/tilted/closed status and shutter
 *
 * @param {id=} unique id for this widget
 * @param {item(num)} an item for the height of the shutter blades
-* @param {item(num)=} an item for the window right wing status (0=closed, 1=tilt, 2=open) (optional, default = 0) 
-* @param {item(num)=} an item for the window left wing status (0=closed, 1=tilt, 2=open) (optional, default = 0)
+* @param {item(num,str)=} an item for the window right wing status (0/'closed', 1/'tilted', 2/'open') (optional, default = 0) 
+* @param {item(num,str)=} an item for the window left wing status (0/'closed', 1/'tilted', 2/'open') (optional, default = 0)
 * @param {value=0} the value for shutter on top end (optional, default 0)
 * @param {value=255} the value for shutter at bottom end (optional, default 255)
 * @param {color(icon1,!)=icon1} color for 'open' state e.g. '#f00' for red. Prepend a '!' to make the color constant ('!#f00'). 'icon0' and 'icon1' can NOT be used. (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
