@@ -191,11 +191,9 @@ var io = {
 	},
 
 	/**
-	 * Reads all values from bus and refreshes the pages
+	 * Reads limited range of items in order to avoid php request overflow
 	 */
-	all: function () {
-		var items = widget.listeners().join(',');
-
+	 getSlice: function(items) {
 		// only if anyone listens
 		if (items.length) {
 			$.ajax({  url: 'driver/io_offline.php',
@@ -218,6 +216,19 @@ var io = {
 			})
 			.fail(notify.json)
 		}
+	},
+
+	/**
+	 * Reads all values from bus and refreshes the pages
+	 */
+	all: function() {
+		var allItems = widget.listeners();
+		var items;
+		
+		do {
+			items = allItems.splice(0,100).join(',');
+			io.getSlice(items);
+		} while (allItems.length > 0); 
 
 		// plots
 		var repeatSeries = function(item, tmin, tmax, ymin, ymax, cnt, step, startval) {
