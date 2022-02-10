@@ -1533,8 +1533,8 @@ $.widget("sv.basic_window", $.sv.widget, {
 		}
 		else
 			this.element.attr('style', '');
-		
-		this.element.attr('class', 'icon' + ((response[1] != 0 && response[1] != 'closed') || (response[2] != 0 && response[2] != 'closed') ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
+
+		this.element.attr('class', 'icon' + ((response[1] && response[1] != 'closed') || (response[2] && response[2] != 'closed') ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
 		if (color != '' && this.element.attr('class') == "icon icon1") {
 			this.element.attr('style', 'stroke: '+ color+'; fill: '+color+';');
 		}
