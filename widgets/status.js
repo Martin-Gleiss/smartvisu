@@ -338,7 +338,9 @@ $.widget("sv.status_activelist", $.sv.widget, {
 	
 
 	_update: function(response) {
-		var node = $(".activelist-container");
+		var self = this
+        // var node = $(".activelist-container");
+        var node = this.element.find('.activelist-container')
 		node.empty();
 		var data = response[0]; 
 		var level = this.options.level;
@@ -354,7 +356,7 @@ $.widget("sv.status_activelist", $.sv.widget, {
 					
 			// handle status_event_format in lang.ini
 			$.each(sv_lang.status_event_format, function(pattern, attributes) {
-				if(messages[level] != null && messages[level].toLowerCase().indexOf(pattern.toLowerCase()) > -1) { // message level contains pattern
+				if (messages[level] != null && messages[level].toLowerCase().indexOf(pattern.toLowerCase()) > -1) { // message level contains pattern
 					// set each defined property
 					$.each(attributes, function(prop, val) {
 						messages[prop] = val;
@@ -364,51 +366,49 @@ $.widget("sv.status_activelist", $.sv.widget, {
 
 						
 			//if no icon provided
-			if(!messages.icon){
+			if (!messages.icon) {
 				//if no default provided
 				if (typeof(sv_lang.status_event_format.default_img_status) === undefined || sv_lang.status_event_format.default_img_status.icon == "" ){
 					messages.icon = "pages/base/pics/trans.png";
 					messages.color = 'transparent';
-				}else{
+				} else {
 					messages.icon = sv_lang.status_event_format.default_img_status.icon;
 					messages.color = sv_lang.status_event_format.default_img_status.color;
 				}
 			}
 
 			// amend icon path/filename
-			if(messages.icon) {
+			if (messages.icon) {
 				// add default path if icon has no path
-				if(messages.icon.indexOf('/') == -1)
-					messages.icon = 'icons/ws/'+messages.icon;
+				if (messages.icon.indexOf('/') == -1)
+					messages.icon = 'icons/ws/' + messages.icon;
 				// add svg suffix if icon has no suffix
-				if(messages.icon.indexOf('.') == -1)
-					messages.icon = messages.icon+'.svg';
+				if (messages.icon.indexOf('.') == -1)
+					messages.icon = messages.icon + '.svg';
 			};
 			
 			var a =  $('<li  data-id= "entry'+i+'" data-icon="false" style="margin-top:1px;margin-bottom:1px; margin-left:1em;  padding:0px; display:block; padding-right:0px;  ">').append(
-					$('<a class="ui-btn" style="padding:0px; width: 100%; max-height:50px;" >'
-				).append(
-					$('<img class="icon" style=" float:left;">').css('background', messages.color ).attr('src', messages.icon)
-				).append(
-					$('<div class="color1" style="float:left; left: 50px; width:6px; height:48px; margin-right:6px;">').css('background', '#666666')
-				).append(
-					$('<h3 style=" overflow: visible; white-space: nowrap;">').text(messages[title])
-				).append(
+					$('<a class="ui-btn" style="padding:0px; width: 100%; max-height:50px;" >').append(
+					$('<img class="icon" style=" float:left;">').css('background', messages.color ).attr('src', messages.icon)).append(
+					$('<div class="color1" style="float:left; left: 50px; width:6px; height:48px; margin-right:6px;">').css('background', '#666666')).append(
+					$('<h3 style=" overflow: visible; white-space: nowrap;">').text(messages[title])).append(
 					$('<p style="margin-top: -0.5em;">').text(messages[subtitle])
 				));
-			$(".activelist-container").append(a);
+			//$(".activelist-container").append(a);
+            node.append(a);
 			
 			//add description text to entry
 			var contentfield = '<div class="content" style=" display: none; margin-left:1em; margin-bottom:2em; height:100%; text-align:left;"> '+messages[content]+'</div>';
-			$(".activelist-container").append(contentfield);
+			//$(".activelist-container").append(contentfield);
+            node.append(contentfield);
 		};
 		
 		//toggle display of description text
-		$(".activelist-container li").click(function() {
+		$(this.element, ".activelist-container").find('li').click(function() {
 			event.preventDefault();
             $(this).toggleClass('open');
             accordionContent = $(this).next('.content');
-            $('.content').not(accordionContent).prev('.content-title').removeClass('open');
+            $(this, '.content').not(accordionContent).prev(this,'.content-title').removeClass('open');
             accordionContent.stop(true, true).slideToggle('slow');
         });
 
