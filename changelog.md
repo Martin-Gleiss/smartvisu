@@ -8,6 +8,7 @@
 ### Improvements
 - docu for image displaying widgets improved (multimedia.widget, basic.print)
 - basic.windows takes 'closed', 'tilted' and 'open' as arguments, as frequently used in fhem. example3.graphic widgets also updated.
+- status.activelist: id can be omitted even if more than one status.activelist is on a page
 
 ### Updated Libraries
 
