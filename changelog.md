@@ -8,7 +8,6 @@
 ### Improvements
 - docu for image displaying widgets improved (multimedia.widget, basic.print)
 - basic.windows takes 'closed', 'tilted' and 'open' as arguments, as frequently used in fhem. example3.graphic widgets also updated.
-- status.activelist: id can be omitted even if more than one status.activelist is on a page
 
 ### Updated Libraries
 
@@ -28,6 +27,7 @@
 - new smarthomeng.js driver did not work if a port was provided in the URL
 - device.uzsutable did not run on iOS9 devices (even after general uzsu fix)
 - offline driver stopped working on large number of items (php request overflow)
+- status.activelist did not work correctly if more than one status.activelist was on a page
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
