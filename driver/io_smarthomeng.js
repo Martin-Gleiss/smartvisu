@@ -11,7 +11,7 @@
  * @default     driver_port            2424
  * @default     driver_tlsport         2425
  * @hide	    reverseproxy
- * @hide        driver_realtime
+ * @hide      driver_realtime
  * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
@@ -74,8 +74,8 @@ var io = {
 
 		// if user-called host is not an IP v4 address check if called host is internal hostname of smartVISU server
 		// otherwise assume that call comes from external and then empty io.address
-		if (!$.isNumeric(location.host.replaceAll('.',''))){
-			if ( location.host != sv.config.svHostname ) 
+		if (!$.isNumeric(location.hostname.split('.').join(''))) {  // replaceAll() does not work for old browsers
+			if ( location.hostname != sv.config.svHostname ) 
 				io.address = '';
 		} 
 		io.open();
@@ -140,9 +140,9 @@ var io = {
 				// use url of current page if not defined
 				io.address = location.hostname;
 			}
-			io.port = ports[protocol];
+			io.port = ports[protocol]; 
 
-			if (!io.port) {
+			if (!io.port) { // is still undefined, if io.address was empty at start of io.open
 				// use port of current page if not defined and needed
 				if (location.port != '') {
 					io.port = location.port;
@@ -157,7 +157,7 @@ var io = {
 			io.port = ports[io.address.substr(0, io.address.indexOf(':'))+'://'];
 		}
 		// DEBUG:
-		console.log("[io.smarthome.py] opening websocket on "+ protocol + io.address + ':' + io.port);
+		console.log("[io.smarthomeng] opening websocket on "+ protocol + io.address + ':' + io.port);
 		io.socket = new WebSocket(protocol + io.address + ':' + io.port);
 		
 		io.socket.onopen = function () {
@@ -178,7 +178,7 @@ var io = {
 			var item, val;
 			var data = JSON.parse(event.data);
 			// DEBUG:
-			console.log("[io.smarthome.py] receiving data: ", event.data);
+			console.log("[io.smarthomeng] receiving data: ", event.data);
 
 			switch (data.cmd) {
 				case 'item':
@@ -248,11 +248,11 @@ var io = {
 
 		io.socket.onerror = function (error) {
 			if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification))
-				io.socketErrorNotification = notify.message('error', 'Driver: smarthome.py', 'Could not connect to smarthome.py server!<br /> Websocket error ' + error.data + '.');
+				io.socketErrorNotification = notify.message('error', 'Driver: smarthomeng', 'Could not connect to smarthomeNG server!<br /> Websocket error ' + error.data + '.');
 		};
 
 		io.socket.onclose = function () {
-			console.log('[io_smarthome.py]: Connection closed to smarthome.py server!');
+			console.log('[io_smarthomeng]: Connection closed to smarthomeNG server!');
 		};
 	},
 
@@ -263,11 +263,11 @@ var io = {
 		if (io.socket.readyState == 1) {
 			io.socket.send(unescape(encodeURIComponent(JSON.stringify(data))));
 			// DEBUG: 
-			console.log('[io.smarthome.py] sending data: ', JSON.stringify(data));
+			console.log('[io.smarthomeng] sending data: ', JSON.stringify(data));
 		}
 		else {
 			// DEBUG:
-			console.log('[io.smarthome.py] web socket not ready: ', JSON.stringify(data));
+			console.log('[io.smarthomeng] web socket not ready: ', JSON.stringify(data));
 			if (data.cmd == 'logic') io.triggerqueue.push(JSON.stringify(data));
 		};
 	},
@@ -298,7 +298,7 @@ var io = {
 	sendqueue: function () {
 		while (io.triggerqueue.length > 0) {
 			// DEBUG:
-			console.log('[io.smarthome.py] send from queue: ', io.triggerqueue[0]);
+			console.log('[io.smarthomeng] send from queue: ', io.triggerqueue[0]);
 			io.socket.send(io.triggerqueue.shift());
 		}
 	},
@@ -342,7 +342,7 @@ var io = {
 	 * Closes the connection
 	 */
 	close: function () {
-		console.log("[io.smarthome.py] close connection");
+		console.log("[io.smarthomeng] close connection");
 
 		if (io.socket.readyState > 0) {
 			io.socket.close();

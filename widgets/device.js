@@ -506,7 +506,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     tt += "</div>";
 
 	// unsichtbare Expertenzeile
-	tt += this._uzsuSetExpertLines(numberOfRow);
+	tt += this._uzsuSetExpertLines(numberOfRow, '');
 	
     // unsichtbare Time-Serieszeile mit Expertenzeilen für Start/Ende
     if (this.options.designtype == '0' && this.hasSeries){
@@ -553,7 +553,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     return tt;
   },
 
-  _uzsuSetExpertLines: function(numberOfRow, caller=''){
+  _uzsuSetExpertLines: function(numberOfRow, caller){
 	      tt = "<div class='uzsuRowExpHoli uzsuExpertLine "+(caller != '' ? 'Series' : '')+"' style='display:none;'>" +
               "<div class='uzsuCellText'>" + (caller != '' ? sv_lang.uzsu.series + ' ' + sv_lang.uzsu[caller] : '') + "</div>" +
 			  "<div class='uzsuRowExpert' style='float: left;'>" +
@@ -822,7 +822,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       uzsuCurrentRows.find('.uzsuHolidayWeekend').prop('checked', responseEntry.holiday.weekend).checkboxradio("refresh");
     }
     // Fallunterscheidung für den Expertenmodus
-    self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEvent select'));
+    self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEvent select'),'');
     self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActive').first());
 	if(self.options.designtype == '0' && this.hasSeries){
 		self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesstart select'), 'seriesstart');
@@ -849,7 +849,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   },
 
   // Toggelt die eingabemöglichkeit für SUN Elemente in Abhängigkeit der Aktivschaltung
-  _uzsuSetSunActiveState: function(element, caller=''){
+  _uzsuSetSunActiveState: function(element, caller){
     // status der eingaben setzen, das brauchen wir an mehreren stellen
     var uzsuRowExpHoli = element.parents('.uzsuRowExpHoli');
 	var searchClass = '.uzsuTimeCron'+caller;
@@ -1936,7 +1936,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
                   if(e.target.uzsuEntry.event == 'time')
                     e.target.uzsuEntry.timeCron = self.element.highcharts().time.dateFormat('%H:%M', e.target.x);
                   else // sunrise or sunset
-                    e.target.uzsuEntry.timeOffset = Math.round(((e.target.x % (1000*60*60*24)) - (self._getSunTime(e.target.uzsuEntry.event) % (1000*60*60*24)))/1000/60);
+                    e.target.uzsuEntry.timeOffset = Math.round(((e.target.x % (1000*60*60*24)) - (self._getSunTime(e.target.uzsuEntry.event, 0) % (1000*60*60*24)))/1000/60);
                   //uzsuEntry.active
                   self._save();
                 }
@@ -2295,7 +2295,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     return new Date('1970-01-01T' + time + 'Z').getTime() + this._startTimestamp;
   },
 
-  _getSunTime: function(event, dayIndex = 0) {
+  _getSunTime: function(event, dayIndex) {
     if(!this.sunTimes){
       this.sunTimes = { 'sunrise': [], 'sunset': [] };
 	  for (var day in this.rruleDays){
@@ -2311,12 +2311,12 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     return this._timeToTimestamp(this.sunTimes[event][dayIndex]);
   },
   
-  _calculateEventTime: function(timeEvent={}){
+  _calculateEventTime: function(timeEvent){
 	var result;
 	if(timeEvent.event == 'time')
         result = this._timeToTimestamp(timeEvent.timeCron);
 	else{
-		result = this._getSunTime(timeEvent.event);
+		result = this._getSunTime(timeEvent.event, 0);
 		if(timeEvent.timeOffsetType == 'm')
 		  result += timeEvent.timeOffset*1000*60;
 		else if(timeEvent.timeOffsetType == '' && timeEvent.timeOffset != '')
@@ -3034,7 +3034,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
             }
         }
 
-        if (sv_lang.uzsu.th = 'Do') // Check language
+        if (sv_lang.uzsu.th == 'Do') // Check language
         {
             var myDays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
             txtActive = 'inaktiv'
@@ -3057,15 +3057,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         d = 0
 
         // Clear the SVG
-        tbl2Delete = []
-        this.element.find("svg")[0].childNodes.forEach(function(element) {
-            tbl2Delete.push(element)
-        })
-        while (tbl2Delete.length > 0) {
-            myEntry = tbl2Delete.pop()
-            myEntry.remove()
-        }
-
+        this.element.find("svg")[0].innerHTML=""		
 
         this.options.mySvgWidth = 400
         this.element.find("svg")[0].width.baseVal.value = this.options.mySvgWidth

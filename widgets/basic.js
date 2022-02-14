@@ -1533,8 +1533,8 @@ $.widget("sv.basic_window", $.sv.widget, {
 		}
 		else
 			this.element.attr('style', '');
-		
-		this.element.attr('class', 'icon' + (response[1] || response[2] ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
+
+		this.element.attr('class', 'icon' + ((response[1] && response[1] != 'closed') || (response[2] && response[2] != 'closed') ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
 		if (color != '' && this.element.attr('class') == "icon icon1") {
 			this.element.attr('style', 'stroke: '+ color+'; fill: '+color+';');
 		}
@@ -1555,18 +1555,21 @@ $.widget("sv.basic_window", $.sv.widget, {
 
 		switch (window_r) {
 			case 0:
+			case 'closed':
 				var rightwing = "translate(0,0) skewY(0) scale(1, 1)";
 				this.element.find('#wing_r').attr('transform', rightwing);
 				var righthandle ="translate(0,0) skewY(0) scale(1, 1)";
 				this.element.find('#handle_r').attr('transform', righthandle);
 				break;
 			case 1:
+			case 'tilted':
 				var rightwing = "translate(-9.8, 14.5) skewX(12) scale(0.97, 0.8)";
 				this.element.find('#wing_r').attr('transform', rightwing);
 				var righthandle = "translate(-10, 14.5) skewX(12) scale(0.97, 0.8)";
 				this.element.find('#handle_r').attr('transform', righthandle);
 				break;
 			case 2:
+			case 'open':
 				var rightwing = "translate(25, 22) skewY(-20) scale(0.7, 0.975)";
 				this.element.find('#wing_r').attr('transform', rightwing);
 				var righthandle = "translate(25, 21.2) skewY(-20) scale(0.7, 1)";
@@ -1575,18 +1578,21 @@ $.widget("sv.basic_window", $.sv.widget, {
 		}
 			switch (window_l) {
 			case 0:
+			case 'closed':
 				var leftwing = "translate(0,0) skewY(0) scale(1, 1)";
 				this.element.find('#wing_l').attr('transform', leftwing);
 				var lefthandle ="translate(0,0) skewY(0) scale(1, 1)";
 				this.element.find('#handle_l').attr('transform', lefthandle);
 				break;
 			case 1:
+			case 'tilted':
 				var leftwing = "translate(-11.5, 14.5) skewX(12) scale(0.97, 0.8)";
 				this.element.find('#wing_l').attr('transform', leftwing);
 				var lefthandle = "translate(-11.3, 14.5) skewX(12) scale(0.97, 0.8)";
 				this.element.find('#handle_l').attr('transform', lefthandle);
 				break;
 			case 2:
+			case 'open':
 				var leftwing = "translate(5, -3.5) skewY(20) scale(0.7, 0.975)";
 				this.element.find('#wing_l').attr('transform', leftwing);
 				var lefthandle = "translate(5, -4.4) skewY(20) scale(0.7, 0.975)";

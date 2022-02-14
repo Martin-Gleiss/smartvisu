@@ -50,15 +50,6 @@ class phone extends service
 			{
 				// date
 				$ds['date'] = transdate('short', strtotime($ds['date']));
-
-				// is there a picture to the caller?
-				if ($ds['number'] != '' and is_file(const_path.'pics/phone/'.$ds['number'].'.jpg'))
-					$ds['pic'] = $ds['number'].'.jpg';
-				elseif ($ds['number'] != '' and is_file(const_path.'pics/phone/'.$ds['number'].'.png'))
-					$ds['pic'] = $ds['number'].'.png';
-				else
-					$ds['pic'] = '0.jpg';
-
 				$ds['text'] = $ds['name'];
 
 				// no name? caller unknown
@@ -95,6 +86,17 @@ class phone extends service
 					if ($ds['called'] !='')
 						$ds['number'] = $ds['called'];
 				}
+				// is there a picture to the caller?
+				if ($ds['number'] != '' and is_file(const_path.'pics/phone/'.$ds['number'].'.jpg'))
+					$ds['pic'] = $ds['number'].'.jpg';
+				elseif ($ds['number'] != '' and is_file(const_path.'pics/phone/'.$ds['number'].'.png'))
+					$ds['pic'] = $ds['number'].'.png';
+				elseif ($ds['name'] != '' and is_file(const_path.'pics/phone/'.$ds['name'].'.jpg'))
+					$ds['pic'] = $ds['name'].'.jpg';
+				elseif ($ds['name'] != '' and is_file(const_path.'pics/phone/'.$ds['name'].'.png'))
+					$ds['pic'] = $ds['name'].'.png';
+				else
+					$ds['pic'] = '0.jpg';
 
 				$ret[] = $ds;
 			}

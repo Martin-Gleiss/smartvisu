@@ -688,22 +688,22 @@
 /**
  * Color chooser for RGB lights. Be aware that the attributes differ from basic.color widget!
  *
-* @param {id=} unique id for this widget (optional)
-* @param {item[?](num,list)} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
-* @param {item(num)=} an item for the green value in RGB model or saturation in HSL and HSV model
+ * @param {id=} unique id for this widget (optional)
+ * @param {item[?](num,list)} an item for the red value in RGB model or hue in HSL and HSV model, or single item containing list of all color values
+ * @param {item(num)=} an item for the green value in RGB model or saturation in HSL and HSV model
 (to let blank if first item contains list of all values)
-* @param {item(num)=} an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
+ * @param {item(num)=} an item for the blue value in RGB model or lightness in HSL model / brightness in HSB model
 (to let blank if first item contains list of all values)
-* @param {value[?]=0} minimum value if the light is off; single value or list of values for each component (optional, default 0)
-* @param {value[?]=255} maximum value if the light is full on; single value or list of values for each component (optional, default 255 for rgb, [360,100,100] for hsl & hsv)
-* @param {value=7} number of shades per color (optional, default 7)
-* @param {value=10} number of colored segments (optional, default 10)
-* @param {text(disc,rect,slider)=disc} 'disc' for circular, 'rect' for rectangular view, 'slider' for HSV sliders (optional, default: disc)
-* @param {text(rgb,hsl,hsv)=rgb} possible values: 'rgb', 'hsl' and 'hsv' (optional, default: rgb)
-* @param {text=} text for the whole line (optional)
-* @param {item(bool)=} an item for the red switch in RGB model
-* @param {item(bool)=} an item for the green value in RGB model
-* @param {item(bool)=} an item for the blue value in RGB model
+ * @param {value[?]=0} minimum value if the light is off; single value or list of values for each component (optional, default 0)
+ * @param {value[?]=255} maximum value if the light is full on; single value or list of values for each component (optional, default 255 for rgb, [360,100,100] for hsl & hsv)
+ * @param {value=7} number of shades per color (optional, default 7)
+ * @param {value=10} number of colored segments (optional, default 10)
+ * @param {text(disc,rect,slider)=disc} 'disc' for circular, 'rect' for rectangular view, 'slider' for HSV sliders (optional, default: disc)
+ * @param {text(rgb,hsl,hsv)=rgb} possible values: 'rgb', 'hsl' and 'hsv' (optional, default: rgb)
+ * @param {text=} text for the whole line (optional)
+ * @param {item(bool)=} an item for the red switch in RGB model
+ * @param {item(bool)=} an item for the green value in RGB model
+ * @param {item(bool)=} an item for the blue value in RGB model
  * @param {value=}    the minimum value which is displayed if the slider is moved to total left (optional, default like min)
  * @param {value=}    the maximum value which is displayed if the slider is moved to total left (optional, default like max)
  * @param {item(dict)=}      a gad/item for UZSU
@@ -722,7 +722,7 @@
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {item[](bool,num)=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral), item_seqlock (RGB sequencer lock)
- * @param {item(bool)[?]=} 		item for RGB sequencer (logic). Optional an array including a short press item and a long press item or popup id (starting with #). Example: ['light.sequencer', '#popup']. The popup has to be defined on the HTML page by using the popup.extpopup widget. It gets activated on a longpress.
+ * @param {item[?](bool)=} 		item for RGB sequencer (logic). Optional an array including a short press item and a long press item or popup id (starting with #). Example: ['light.sequencer', '#popup']. The popup has to be defined on the HTML page by using the popup.extpopup widget. It gets activated on a longpress.
  * @param {color[](icon0,icon1)=} 	array with on/off icon colors
  * @param {unspecified[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.

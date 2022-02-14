@@ -1,8 +1,8 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiss and others
-* @copyright   2012 - 2021
+* @author      Martin Gleiß and others
+* @copyright   2012 - 2022
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -114,7 +114,7 @@
 */
 {% macro glue(id_from, id_to) %}
 	<script>
-		$('#{{ page }}').on('pageinit', function (event, ui) {
+		$('#{{ config_pages~'_'~page }}').on('pageinit', function (event, ui) {
 			$('#{{ uid(page, id_from) }}').on('click', function () {
 				window.setTimeout(function () {
 					var items = widget.explode($('#{{ uid(page, id_to) }}').attr('data-item'));
@@ -340,6 +340,60 @@
 
 
 /**
+* Displays a round slider
+* @param {id=} unique id for this widget (optional)  
+* @param {item(num,list)} an item (list type can be used if slider type is "range")
+* @param {value=0} the minimum value if the slider is moved to total left (optional, default: 0)  
+* @param {value=255} the maximum value if the slider is moved to total right (optional, default: 255)  
+* @param {value=5} step between two values (optional, default: 5)  
+* @param {text=} pretext of the center text/value 
+* @param {text=} text after center text/ value
+* @param {text=} unit of the center value
+* @param {text(false,true)=false} display a scale with values along the slider (optional, default='false')
+* @param {value=20} scale-integer, the scale-divider for the scale
+* @param {text=} icon to be displayed in the center (optional)
+* @param {text(pie,quarter-top-left,quarter-top-right,quarter-bottom-left,quarter-bottom-right,half-top,half-bottom,half-left,half-right,custom-half,custom-quarter)=pie} circleshape slider style (like pie, quarter-top-left, quarter-top-right, quarter-bottom-left, quarter-bottom-right, half-top, half-bottom, half-left, half-right, custom-half, custom-quarter)
+* @param {text(default,range,min-range)=min-range} slidertype (default, min-range,range ) (optional, default = min-range)
+* @param {value=120} radius of the slider (optional, default: 90)  
+* @param {value=15} width of the slide line
+* @param {value=0.1} thickness of the slide line
+*
+* @author Bonze, Wolfram v. Hülsen
+*/
+
+{% macro roundslider(id, item, min, max, step, pre_value, to_value, unit, scale, scale_interval, pic, circleshape, slidertype, radius, width, thickness) %}
+	{% if circleshape not in ['', 'pie', 'quarter-top-left', 'quarter-top-right', 'quarter-bottom-left', 'quarter-bottom-right', 'half-top', 'half-bottom', 'half-left', 'half-right'] %} {% set circleshape = '' %} {% endif %}
+	/**- pic whithout path -*/
+	{% if '/' not in pic and not isfile(pic) %}
+		{% if isfile('dropins/' ~ icon0 ~ pic) %}
+			{% set pic = 'dropins/' ~ icon0 ~ pic %}
+		{% elseif isfile('dropins/' ~ icon0 ~ pic ~ '.svg') %}
+			{% set pic = 'dropins/' ~ icon0 ~ pic ~ '.svg' %}
+		{% elseif isfile('dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
+			{% set pic = 'dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
+		{% elseif isfile(icon0 ~ pic) %}
+			{% set pic = icon0 ~ pic %}
+		{% elseif isfile(icon0 ~ pic ~ '.svg') %}
+			{% set pic = icon0 ~ pic ~ '.svg' %}
+		{% elseif isfile(icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
+			{% set pic = icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
+		{% endif -%}
+	{% endif -%}
+
+	/** pseudo divs, to get styles 	**/
+	<div class="ui-bar-a" style="display:none;"> </div>
+	<div class="ui-bar-b" style="display:none;"> </div>
+	<div class="ui-page-theme-a ui-btn" style="display:none;"> </div>
+		
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.roundslider" data-item="{{item}}" data-values=" {{unit}}, {{pre_value| default('')}}, {{ to_value| default('') }}, {{ scale| default('false')}}" 
+		data-radius="{{radius | default('80')}}" data-scale_min="{{min | default('0')}}" data-scale_max="{{max| default('255')}}" data-step="{{step | default('5')}}" data-scale_interval="{{scale_interval | default('20')}}"
+		data-width="{{width | default('15')}}" data-thickness="{{thickness | default('0.1')}}" data-circleshape="{{circleshape | default('pie')}}" data-slidertype="{{slidertype | default('min-range')}}" data-icon="{{pic}}"
+		style="margin:auto; margin-top:30px; margin-bottom:30px;"> 
+	</div>
+{% endmacro %}
+
+
+/**
 * Select a specific value (e.g. a scene)
 *
 * @param {id=} unique id for this widget (optional)
@@ -427,66 +481,11 @@
 * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
 */
 {% macro slider(id, item, min, max, step, orientation, value_display, min_display, max_display, live) %}
-
 	<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.slider" data-item="{{ item }}"
 		type="range" value="0" min="{{ min_display|default(min)|default(0) }}" max="{{ max_display|default(max)|default(255) }}" step="{{ step|default(5) }}" data-min-send="{{ min|default(0) }}" data-max-send="{{ max|default(255) }}" data-live="{{ live|default(1) }}"
 		data-orientation="{{ orientation|default('horizontal') }}" data-handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" data-highlight="true" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" />
-
 {% endmacro %}
 
-/**
-* Displays a round slider
-* @param {id=} unique id for this widget (optional)  
-* @param {item(num,list)} an item (list type can be used if slider type is "range")
-* @param {value=0} the minimum value if the slider is moved to total left (optional, default: 0)  
-* @param {value=255} the maximum value if the slider is moved to total right (optional, default: 255)  
-* @param {value=5} step between two values (optional, default: 5)  
-* @param {text=} pretext of the center text/value 
-* @param {text=} text after center text/ value
-* @param {text=} unit of the center value
-* @param {text(false,true)=false} display a scale with values along the slider (optional, default='false')
-* @param {value=20} scale-integer, the scale-divider for the scale
-* @param {text=} icon to be displayed in the center (optional)
-* @param {text(pie,quarter-top-left,quarter-top-right,quarter-bottom-left,quarter-bottom-right,half-top,half-bottom,half-left,half-right,custom-half,custom-quarter)=pie} circleshape slider style (like pie, quarter-top-left, quarter-top-right, quarter-bottom-left, quarter-bottom-right, half-top, half-bottom, half-left, half-right, custom-half, custom-quarter)
-* @param {text(default,range,min-range)=min-range} slidertype (default, min-range,range ) (optional, default = min-range)
-* @param {value=120} radius of the slider (optional, default: 90)  
-* @param {value=15} width of the slide line
-* @param {value=0.1} thickness of the slide line
-*
-* @author Bonze, Wolfram v. Hülsen
-**/
-
-{% macro roundslider(id, item, min, max, step, pre_value, to_value, unit, scale, scale_interval, pic, circleshape, slidertype, radius, width, thickness) %}
-
-	{% if circleshape not in ['', 'pie', 'quarter-top-left', 'quarter-top-right', 'quarter-bottom-left', 'quarter-bottom-right', 'half-top', 'half-bottom', 'half-left', 'half-right'] %} {% set circleshape = '' %} {% endif %}
-	/**- pic whithout path -*/
-	{% if '/' not in pic and not isfile(pic) %}
-		{% if isfile('dropins/' ~ icon0 ~ pic) %}
-			{% set pic = 'dropins/' ~ icon0 ~ pic %}
-		{% elseif isfile('dropins/' ~ icon0 ~ pic ~ '.svg') %}
-			{% set pic = 'dropins/' ~ icon0 ~ pic ~ '.svg' %}
-		{% elseif isfile('dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
-			{% set pic = 'dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
-		{% elseif isfile(icon0 ~ pic) %}
-			{% set pic = icon0 ~ pic %}
-		{% elseif isfile(icon0 ~ pic ~ '.svg') %}
-			{% set pic = icon0 ~ pic ~ '.svg' %}
-		{% elseif isfile(icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
-			{% set pic = icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
-		{% endif -%}
-	{% endif -%}
-
-	/** pseudo divs, to get styles 	**/
-	<div class="ui-bar-a" style="display:none;"> </div>
-	<div class="ui-bar-b" style="display:none;"> </div>
-	<div class="ui-page-theme-a ui-btn" style="display:none;"> </div>
-		
-	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.roundslider" data-item="{{item}}" data-values=" {{unit}}, {{pre_value| default('')}}, {{ to_value| default('') }}, {{ scale| default('false')}}" 
-		data-radius="{{radius | default('80')}}" data-scale_min="{{min | default('0')}}" data-scale_max="{{max| default('255')}}" data-step="{{step | default('5')}}" data-scale_interval="{{scale_interval | default('20')}}"
-		data-width="{{width | default('15')}}" data-thickness="{{thickness | default('0.1')}}" data-circleshape="{{circleshape | default('pie')}}" data-slidertype="{{slidertype | default('min-range')}}" data-icon="{{pic}}"
-		style="margin:auto; margin-top:30px; margin-bottom:30px;"> 
-	</div>
-{% endmacro %}
 
 /**
 * A versatile button/switch
@@ -546,7 +545,6 @@
   {% endfor %}
   <a class="ui-btn" style="display: none !important"></a> /** placeholder for last moved control */
   </span>
-
 {% endmacro %}
 
 
@@ -610,7 +608,6 @@
 			</span>
 	  {%- endfor -%}
 	</{% if href is empty %}span{% else %}a{% endif %}>
-
 {% endmacro %}
 
 
@@ -626,7 +623,6 @@
 * @param {color(icon0,icon1)=grey} the color of the filling e. g. '#f00' for red (optional, default grey)
 */
 {% macro tank(id, item_pos, min, max, step, mode, color) %}
-
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.tank" data-item="{{ item_pos }}"
 		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
 		class="tank">
@@ -641,7 +637,6 @@
 			{% endif %}
 			>&nbsp;</div>
 	</div>
-
 {% endmacro %}
 
 
@@ -674,12 +669,12 @@
 
 
 /**
-* a window with open/tilt/closed status and shutter
+* a window with open/tilted/closed status and shutter
 *
 * @param {id=} unique id for this widget
 * @param {item(num)} an item for the height of the shutter blades
-* @param {item(num)=} an item for the window right wing status (0=closed, 1=tilt, 2=open) (optional, default = 0) 
-* @param {item(num)=} an item for the window left wing status (0=closed, 1=tilt, 2=open) (optional, default = 0)
+* @param {item(num,str)=} an item for the window right wing status (0/'closed', 1/'tilted', 2/'open') (optional, default = 0) 
+* @param {item(num,str)=} an item for the window left wing status (0/'closed', 1/'tilted', 2/'open') (optional, default = 0)
 * @param {value=0} the value for shutter on top end (optional, default 0)
 * @param {value=255} the value for shutter at bottom end (optional, default 255)
 * @param {color(icon1,!)=icon1} color for 'open' state e.g. '#f00' for red. Prepend a '!' to make the color constant ('!#f00'). 'icon0' and 'icon1' can NOT be used. (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
@@ -705,7 +700,6 @@
 	<g stroke-width ="2.5" opacity=".8">
 	</g>
 </svg>
-
 {% endmacro %}
 
 

@@ -1,0 +1,61 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Wolfram v. Hülsen
+* @copyright   2022 
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+/** visualizes the most relevant parameters of the websocekt connection
+*   good e.g. on smartphones where no browser console is available
+*/
+
+{% extends "rooms.html" %}
+
+{% block content %}
+	<h1>Display Connection Details</h1>
+	
+	<h2>Configuration Parameters</h2>
+	<ul>
+	  <li>driver name:&nbsp;&nbsp; <span id="line1"></span></li>
+	  <li>sv.driver.address:&nbsp;&nbsp;<span id="line2"></span></li>
+	  <li>sv.config.driver.port:&nbsp;&nbsp; <span id="line3"></span></li>
+	  <li>sv.config.driver.tlsport:&nbsp;&nbsp; <span id="line4"></span></li>
+  	  <li>sv.config.svHostname:&nbsp;&nbsp; <span id="line5"></span></li>
+ 
+	</ul>
+	<h2>Location Info</h2>
+	<ul>
+	  <li>location.host:&nbsp;&nbsp; <span id="line6"></span></li>
+	  <li>location.hostname:&nbsp;&nbsp; <span id="line7"></span></li>
+	  <li>location.protocol:&nbsp;&nbsp;<span id="line8"></span></li>
+	</ul>
+	
+	<h2>Websocket Parameters</h2>
+	<ul>
+	  <li>io.address:&nbsp;&nbsp; <span id="line9"></span></li>
+	  <li>io.port:&nbsp;&nbsp; <span id="line10"></span></li>
+	  <li>Websocket URL:&nbsp;&nbsp; <span id="line11"></span></li>
+	</ul>
+	
+	<span id="line12"></span><br />
+	<span id="line13"></span><br />
+	
+<script>
+	$('#line1').text(sv.config.driver.name);
+	$('#line2').text(sv.config.driver.address);
+	$('#line3').text(sv.config.driver.port);
+	$('#line4').text(sv.config.driver.tlsport);
+	$('#line5').text(sv.config.svHostname);
+	$('#line6').text(location.host);
+	$('#line7').text(location.hostname);
+	$('#line8').text(location.protocol);
+	$('#line9').text(io.address);
+	$('#line10').text(io.port);
+	$('#line11').text(io.socket.url);
+
+</script>
+
+	
+{% endblock %}

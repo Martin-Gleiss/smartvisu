@@ -2,10 +2,31 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2022
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
+
+
+/**
+* A widget to display messages received in json format
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item(dict,list)} an item contaning messages in json Format 
+* @param {text=title} a parameter name for the title (optional, default ='title')
+* @param {text=subtitle} a parameter name for the subtitle (optional, default ='subtitle')
+* @param {text=content} a parameter name for the message (optional, default ='content')
+* @param {text=level} a parameter name for the severity level (optional, default ='level') - corresponds to an icon and color to be defined in the language file
+*
+* @author Wolfram v. Hülsen based on a widget from Bonze
+*/
+{% macro activelist(id, item_messages, title, subtitle, content, level) %}
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.activelist" data-item="{{ item_messages }}"
+		data-title="{{ title }}" data-subtitle="{{ subtitle }}" data-content="{{ content }}" data-level="{{ level }}">
+		<dl data-role="listview" class="ui-listview activelist-container" style="margin-top: 0px;margin-bottom: 0em; margin-right:0px;">
+		</dl>
+	</div>
+{% endmacro %}
 
 
 /**
@@ -26,17 +47,17 @@ the first one is the base color for values below first threshold, so pass one co
 	</span>
 {% endmacro %}
 
+
 /**
 * Show and hide a div or popup or collapse a section.
 *
 * @param {id} unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget (mandatory)
-* @param {item[?](bool,num)} one or more items which trigger the collapse (minimum one, more will be evaluated in formula only)
+* @param {item(bool,num)} an item which triggers the collapse 
 * @param {value[?]=0} the values on which the target will be collapsed (optional, default 0)
 */
 {% macro collapse(id, item_trigger, value) %}
 	{% set value = (value|default([0]) is iterable ? value|default([0]) : [value]) %}	
 	<span id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="status.collapse" data-item="{{ item_trigger }}" data-val="{{ implode(value) }}"></span>
-
 {% endmacro %}
 
 
@@ -48,13 +69,37 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {value(1..50)} maximal number of entries (1 - 50)
 */
 {% macro log(id, item, count) %}
-
 	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.log" data-item="{{ item }}" data-count="{{ count }}"
 		class="log">
 		<ul data-role="listview">
 		</ul>
 	</span>
+{% endmacro %}
 
+
+/**
+* Displays a notification popup window with a message
+*
+* @param {id} unique id for this widget
+* @param {item(bool,num)} an item witch triggers the popup: NOT 0 open it, 0 close it
+* @param {item(str)=} an item with the dynamic message
+* @param {item(num,str)=} an item with a timestamp (e.g. 1974-01-01T12:00:00.000000+01:00 or 01.01.20 12:01)
+* @param {text} a title of the messagebox
+* @param {text=} an additional static text
+* @param {text(info,error)=info} the mode: 'info', 'error' (optional, default 'info')
+*/
+{% macro message(id, item_trigger, item_message, item_timestamp, title, text, mode) %}
+	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.message" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_timestamp }}"></span>
+
+	<div id="{{ uid(page, id) }}-message" class="alert" data-role="popup" data-overlay-theme="a" {% if mode == 'error' %} data-dismissible="false" {% endif %}>
+		<div data-role="header" data-theme="c"><h1>{{ title }}</h1></div>
+		<p><span></span>{{ text }}</p>
+
+		<div class="control">
+			<span class="stamp"></span>
+				<a onClick="$('#{{ uid(page, id) }}-message').popup('close');" data-mini="true" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
+		</div>
+	</div>
 {% endmacro %}
 
 
@@ -81,43 +126,14 @@ Caution: If this is set, the notification gets not shown until the item has sent
 * @info enhancements inspired by Frank Benicke
 */
 {% macro notify(id, item_trigger, item_message, signal, title, text, level, item_ack, ack_value, item_signal, item_title, item_level) %}
-
 	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.notify" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_signal }}, {{ item_title }}, {{ item_level }}"
 		data-signal="{{ signal|default('INFO') }}" data-level="{{ level|default('info') }}"
 		{% if item_ack %}data-item-ack="{{ item_ack }}" data-ack-value="{{ ack_value|default(item_ack == item_trigger ? 0 : 1) }}"{% endif %}
 		data-item-signal="{{ item_signal }}" data-item-title="{{ item_title }}" data-item-level="{{ item_level }}"
 		class="hide"><h1>{{ title }}</h1><p>{{ text }}</p>
 	</span>
-
 {% endmacro %}
 
-
-/**
-* Displays a notification popup window with a message
-*
-* @param {id} unique id for this widget
-* @param {item(bool,num)} an item witch triggers the popup: NOT 0 open it, 0 close it
-* @param {item(str)=} an item with the dynamic message
-* @param {item(num,str)=} an item with a timestamp (e.g. 1974-01-01T12:00:00.000000+01:00 or 01.01.20 12:01)
-* @param {text} a title of the messagebox
-* @param {text=} an additional static text
-* @param {text(info,error)=info} the mode: 'info', 'error' (optional, default 'info')
-*/
-{% macro message(id, item_trigger, item_message, item_timestamp, title, text, mode) %}
-
-	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.message" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_timestamp }}"></span>
-
-	<div id="{{ uid(page, id) }}-message" class="alert" data-role="popup" data-overlay-theme="a" {% if mode == 'error' %} data-dismissible="false" {% endif %}>
-		<div data-role="header" data-theme="c"><h1>{{ title }}</h1></div>
-		<p><span></span>{{ text }}</p>
-
-		<div class="control">
-			<span class="stamp"></span>
-				<a onClick="$('#{{ uid(page, id) }}-message').popup('close');" data-mini="true" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
-		</div>
-	</div>
-
-{% endmacro %}
 
 /**
 * Displays a notification toast
@@ -158,28 +174,3 @@ Caution: If this is set, the notification gets not shown until the item has sent
 	
 	</span>
 {% endmacro %}
-
-
-/**
-* A widget to display messages received in json format
-*
-* @param {id=} unique id for this widget (optional)
-* @param {item(dict,list)} an item contaning messages in json Format 
-* @param {text=title} a parameter name for the title (optional, default ='title')
-* @param {text=subtitle} a parameter name for the subtitle (optional, default ='subtitle')
-* @param {text=content} a parameter name for the message (optional, default ='content')
-* @param {text=level} a parameter name for the severity level (optional, default ='level') - corresponds to an icon and color to be defined in the language file
-*
-* @author Wolfram v. Hülsen based on a widget from Bonze
-**/
-
-{% macro activelist(id, item_messages, title, subtitle, content, level) %}
-	 
-	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.activelist" data-item="{{ item_messages }}"
-		data-title="{{ title }}" data-subtitle="{{ subtitle }}" data-content="{{ content }}" data-level="{{ level }}">
-		<dl data-role="listview" class="ui-listview activelist-container" style="margin-top: 0px;margin-bottom: 0em; margin-right:0px;">
-		</dl>
-	</div>
-
-{% endmacro %}
-

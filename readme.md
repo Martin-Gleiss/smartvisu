@@ -1,7 +1,7 @@
 # smartVISU  
 
 [![Join the chat at https://gitter.im/sVISU/Lobby](https://badges.gitter.im/sVISU/Lobby.svg)](https://gitter.im/sVISU/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-  
+
 ## DESCRIPTION
 smartVISU is a framework to create a visualisation for a knx-installation with simple html-pages.  
 To read and write group-telegrams special tags are used.  
@@ -34,7 +34,7 @@ SEE: [smartvisu.de](http://www.smartvisu.de)
     sudo chown smarthome:www-data smartvisu
     chmod g+rws smartvisu/
     cd smartvisu
-    git clone git://github.com/Martin-Gleiss/smartvisu.git .
+    git clone https://github.com/Martin-Gleiss/smartvisu.git .
     
   * Afterwards set the rights for the temp folder and some system configuration and data files:
  
