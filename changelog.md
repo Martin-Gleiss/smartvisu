@@ -3,6 +3,7 @@
 ### Other New Features
 
 ### Improvements
+- performance increased by avoiding long executions times of frequent jQuery mobile pagecontainer widget calls
 
 ### Updated Libraries
 
