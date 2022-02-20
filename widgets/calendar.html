@@ -32,13 +32,13 @@
 
 	{% if color is empty %}
 		/** build associative array of calendar name and according color */
-    {% set calendarcolors = [] %}
+		{% set calendarcolors = [] %}
 		{% for configname in confignames %}
 			{% set calendarcolors = calendarcolors|merge({ (configname|trim|lower): configcolors[loop.index0]|trim }) %}
 		{% endfor %}
 		/** find color for calendars */
 		{% set calendar = calendar|default(confignames) %}
-    {% set color = [] %}
+		{% set color = [] %}
 		{% for calendarname in (calendar is iterable ? calendar : [calendar]) %}
 			{% set color = color|merge([calendarcolors[calendarname|trim|lower]]) %}
 		{% endfor %}
@@ -67,7 +67,8 @@
 */
 {% macro waste(id, title, calendar, count, repeat) %}
 
-
+	{% set confignames = config_calendar_name|split(',') %}
+	
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="calendar.waste" class="calendarlist"
 		data-item="url:lib/calendar/service/{{ config_calendar_service }}.php?count={{ count|default(5)|url_encode }}&calendar={{ implode(calendar|default(confignames))|url_encode }}"
 		data-repeat="{{ repeat|default('24h') }}" data-count="{{ count|default(5) }}"

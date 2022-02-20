@@ -41,7 +41,7 @@ class calendar extends service
 		if(isset($request['count']))
 			$this->count = $request['count'];
 		if(isset($request['calendar']))
-			$this->calendar_names = preg_split('/,\s/m', strtolower($request['calendar']));
+			$this->calendar_names = preg_split('/,\s+/m', strtolower($request['calendar']));
 		$this->url = config_calendar_url;
 	}
 
