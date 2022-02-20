@@ -12,6 +12,7 @@
 ### Removed Features
 
 ### Fixed Bugs
+- calendar names in config did not allow whitespace after comma
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
