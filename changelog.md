@@ -4,6 +4,7 @@
 
 ### Improvements
 - performance increased by avoiding long executions times of frequent jQuery mobile pagecontainer widget calls
+- template checker now allows RBGA colors 
 
 ### Updated Libraries
 
