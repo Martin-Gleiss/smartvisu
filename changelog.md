@@ -1,9 +1,11 @@
 ## 3.2.b
+### New / Changed Widgets
 
 ### Other New Features
 
 ### Improvements
 - performance increased by avoiding long executions times of frequent jQuery mobile pagecontainer widget calls
+- template checker now allows RBGA colors 
 
 ### Updated Libraries
 
@@ -13,9 +15,11 @@
 
 ### Fixed Bugs
 - calendar names in config did not allow whitespace after comma
+- clock.digiclock always had double events
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
+- widget assistant deletes whitespaces even within the parameters (e.g. calendar names containing whistespaces wont't work)
 
 
 ## 3.2.1
