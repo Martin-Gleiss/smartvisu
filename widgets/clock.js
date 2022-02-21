@@ -46,8 +46,10 @@ $.widget("sv.clock_digiclock", $.sv.clock, {
 
 	// needed to restart the clock if it had been stopped before
 	_update: function() {
-		this.element.attr("stoptimer", "false");
-		this.element.digiclock({ svrOffset: window.servertimeoffset || 0});
+		if (this.element.attr("stoptimer") == "true"){ 
+			this.element.attr("stoptimer", "false");
+			this.element.digiclock({ svrOffset: window.servertimeoffset || 0});
+		}
 	},
 	
 	_exit: function() {
