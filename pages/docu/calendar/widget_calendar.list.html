@@ -20,12 +20,13 @@
 		{{ calendar.list('', '', 3) }}
 	</div>
 
-	Events of one calendar only and short weekday format:
+	Events of one calendar only, short weekday format and clickable info field:<br />
+	(refresh page if no info field is shown)
 	<div class="twig">
-		<code class="prettyprint">&#123;&#123; calendar.list('', 'Events in "Personal"', 3, '', '', 'Personal','D') &#125;&#125;</code>
+		<code class="prettyprint">&#123;&#123; calendar.list('', 'Events in "Personal"', 3, '', '', 'Personal','D', 'active') &#125;&#125;</code>
 	</div>
 	<div class="html">
-		{{ calendar.list('', 'Events in "Personal"', 3, '', '', 'Personal','D') }}
+		{{ calendar.list('', 'Events in "Personal"', 3, '', '', 'Personal','D', 'active') }}
 	</div>
 
 	Calendars with individual colors and long weekday format:

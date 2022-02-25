@@ -60,7 +60,7 @@ class calendar_offline extends calendar
 					'start' => time() + $tag * 24 * 60 * 60,
 					'end' => time() + $tag * 24 * 60 * 60 + 86400 * 5,
 					'title' => $title,
-					'where' => '',
+					'where' => 'DomRep',
 					'icon' => '',
 					'color' => '',
 					'calendarname' => 'personal'
