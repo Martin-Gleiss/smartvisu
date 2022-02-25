@@ -5,7 +5,8 @@ $.widget("sv.calendar_list", $.sv.widget, {
 
 	options: {
 		color: '',
-		weekday: ''		
+		weekday: '',
+		info: ''
 	},
 
 	_update: function(response) {
@@ -19,7 +20,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				calcolors[(calendars[i]||'').toLowerCase()] = color;
 			});
 
-			var ul = node.children('ul:first').empty();
+			var dl = node.children('dl:first').empty();
 			$.each(data, function(index, entry) {
 				// "pseudo clone" entry to not mute original object in widget.buffer
 				entry = Object.create(entry);
@@ -96,7 +97,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				if(entry.icon) {
 					// add default path if icon has no path
 					if(entry.icon.indexOf('/') == -1)
-						entry.icon = 'icons/ws/'+entry.icon;
+						entry.icon = sv.config.icon0 + entry.icon;
 					// add svg suffix if icon has no suffix
 					if(entry.icon.indexOf('.') == -1)
 						entry.icon = entry.icon+'.svg';
@@ -112,16 +113,39 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				).append(
 					$('<p>').text(period)
 				).appendTo(
-				 $('<li data-icon="false">').appendTo(ul)
+				 $('<li data-icon="false">').appendTo(dl)
 				);
-				if(entry.link)
-					a.attr('href', entry.link);
-				if(entry.where)
-					a.append($('<span class="ui-li-count">').text(entry.where));
 
+				if (self.options.info != 'active') {
+					if(entry.link)
+						a.attr('href', entry.link);
+					if(entry.where)
+						a.append($('<span class="ui-li-count">').text(entry.where));		
+				} else {
+					if(entry.link || entry.where) {
+						a.append($('<span class="ui-li-count">').text('Info'));
+						var infoField = '<div class="content" style=" display: none; margin-left:1em; margin-bottom:2em; height:100%; text-align:left;">';
+						if(entry.link)
+							infoField += '<a href="' + entry.link + '" style="padding-left: 0px !important;">Link</a>';
+						if (entry.where) 
+							infoField += (entry.link ? '<br>':'') + entry.where;
+						infoField += '</div>';
+						self.element.find('dl').append(infoField);
+					}
+				}
 			});
 
-			ul.trigger('prepare').listview('refresh').trigger('redraw');
+			dl.trigger('prepare').listview('refresh').trigger('redraw');
+			
+			//toggle display of description text
+			$(this.element, ".activelist-container").find('li').click(function() {
+				event.preventDefault();
+				$(this).toggleClass('open');
+				accordionContent = $(this).next('.content');
+				$(this, '.content').not(accordionContent).prev(this,'.content-title').removeClass('open');
+				accordionContent.stop(true, true).slideToggle('slow');
+			});
+
 	},
 
 	_repeat: function() {
