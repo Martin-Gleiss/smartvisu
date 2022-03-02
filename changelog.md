@@ -15,7 +15,7 @@
 ### Removed Features
 
 ### Fixed Bugs
-- calendar names in config did not allow whitespace after comma
+- calendar names in config did not allow whitespace after comma / iCal calendars ignored calendar names w/ whitespace
 - clock.digiclock always had double events
 - widget assistant deleted whitespaces even within the parameters (e.g. calendar names containing whistespaces wont't work)
 - calendar.list always showed icons in white. Now configured icon0 class is used.
