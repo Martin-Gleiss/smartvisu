@@ -217,7 +217,7 @@
 	- time & timeflip: String with 24hr clock - e.g. '18:31:27' - format for time is taken from language file
 	- duration & durationflip: Number of seconds
 	- any other: Entered value
-* @param {text(text,number,date,dateflip,datecal,dateslide,time,timeflip,duration,durationflip)=text} 'text', 'number', 'date', 'dateflip', 'datecal', 'dateslide', 'time', 'timeflip', 'duration', 'durationflip' (optional, default: text)
+* @param {text(text,textarea,number,date,dateflip,datecal,dateslide,time,timeflip,duration,durationflip)=text} 'text', 'number', 'date', 'dateflip', 'datecal', 'dateslide', 'time', 'timeflip', 'duration', 'durationflip' (optional, default: text)
 * @param {text=} lowest allowed value (optional)
 	- date & dateflip: Number of days before today
 	- time & timeflip: Format is 24hr clock - e.g. '18:31:27'
@@ -238,22 +238,26 @@
 * @info Inspired by Michael Würtenberger, date/time control uses JTSageDateBox
 */
 {% macro input(id, item, type, min, max, step, format) %}
-	<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.input" data-item="{{ item }}"
-		{% if type|lower in ['time', 'timeflip'] %}
-			type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
-			data-min-time="{{ min|default('false') }}" data-max-time="{{ max|default('false') }}"
-		{% elseif type|lower in ['duration', 'durationflip'] %}
-			type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
-			data-min-dur="{{ min|default('false') }}" data-max-dur="{{ max|default('false') }}" data-duration-step="{{ step }}"
-		{% elseif type|lower in ['date', 'dateflip', 'datecal', 'dateslide'] %}
-			type="text" data-role="datebox" data-datebox-mode="{{ (type == 'date' ? type : type|slice(4))~'box' }}" data-use-focus="true"
-			data-min-days="{{ min|default('false') }}" data-max-days="{{ max|default('false') }}"
-			data-stringformat ="{{ format|default('false') }}"
-		{% else %}
-			type="{{ type|default('text') }}"
-			min="{{ min }}" max="{{ max }}" step="{{ step }}"
-		{% endif %}
-		data-clear-btn="false" />
+	{% if type|lower == 'textarea' %}
+		<textarea {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.input" data-item="{{ item }}" type="textarea"></textarea>
+	{% else %}
+		<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.input" data-item="{{ item }}"
+			{% if type|lower in ['time', 'timeflip'] %}
+				type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
+				data-min-time="{{ min|default('false') }}" data-max-time="{{ max|default('false') }}"
+			{% elseif type|lower in ['duration', 'durationflip'] %}
+				type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
+				data-min-dur="{{ min|default('false') }}" data-max-dur="{{ max|default('false') }}" data-duration-step="{{ step }}"
+			{% elseif type|lower in ['date', 'dateflip', 'datecal', 'dateslide'] %}
+				type="text" data-role="datebox" data-datebox-mode="{{ (type == 'date' ? type : type|slice(4))~'box' }}" data-use-focus="true"
+				data-min-days="{{ min|default('false') }}" data-max-days="{{ max|default('false') }}"
+				data-stringformat ="{{ format|default('false') }}"
+			{% else %}
+				type="{{ type|default('text') }}"
+				min="{{ min }}" max="{{ max }}" step="{{ step }}"
+			{% endif %}
+			data-clear-btn="false" />
+	{% endif %}
 {% endmacro %}
 
 
