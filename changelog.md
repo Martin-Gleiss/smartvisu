@@ -2,7 +2,8 @@
 ### New / Changed Widgets
 
 ### Other New Features
-- calendar.list has an option to show event links and locations in collapsible areas scrolling down on click.  
+- calendar.list has an option to show event links and locations in collapsible areas scrolling down on click.
+- device.smallshut also takes numeric position values for item_saved (yet only boolean if position was saved in the actuator)
 
 ### Improvements
 - performance increased by avoiding long executions times of frequent jQuery mobile pagecontainer widget calls
