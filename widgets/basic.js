@@ -602,7 +602,7 @@ $.widget("sv.basic_icon", $.sv.widget, {
 // simple (w/o datebox)
 $.widget("sv.basic_input", $.sv.widget, {
 
-	initSelector: 'input[data-widget="basic.input"][data-role!="datebox"]',
+	initSelector: 'input[data-widget="basic.input"][data-role!="datebox"], textarea[data-widget="basic.input"]',
 
 	_update: function(response) {
 		this.element.val(response[0]);
