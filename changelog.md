@@ -2,7 +2,8 @@
 ### New / Changed Widgets
 
 ### Other New Features
-- calendar.list has an option to show event links and locations in collapsible areas scrolling down on click.  
+- calendar.list has an option to show event links and locations in collapsible areas scrolling down on click.
+- device.smallshut also takes numeric position values for item_saved (yet only boolean if position was saved in the actuator)
 
 ### Improvements
 - performance increased by avoiding long executions times of frequent jQuery mobile pagecontainer widget calls
@@ -15,7 +16,7 @@
 ### Removed Features
 
 ### Fixed Bugs
-- calendar names in config did not allow whitespace after comma
+- calendar names in config did not allow whitespace after comma / iCal calendars ignored calendar names w/ whitespace
 - clock.digiclock always had double events
 - widget assistant deleted whitespaces even within the parameters (e.g. calendar names containing whistespaces wont't work)
 - calendar.list always showed icons in white. Now configured icon0 class is used.

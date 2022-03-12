@@ -26,7 +26,7 @@ SEE: [smartvisu.de](http://www.smartvisu.de)
 ## SYSTEM REQUIREMENTS
   * IP-Network, KNX-Bus
   * [smarthomeNG](https://github.com/smarthomeNG), [linknx](http://sourceforge.net/projects/linknx/), [ioBroker](https://github.com/ioBroker/ioBroker), [openHAB](https://www.openhab.org/), [FHEM](https://fhem.de/) or [knxd](https://github.com/knxd/knxd) (deprecated: [eibd](http://www.auto.tuwien.ac.at/~mkoegler/index.php/eibd) ) backend or JSON interface
-  * Webserver with PHP 7.3.2 and above. Compatibility with php v8.0 is verified.
+  * Webserver with PHP 7.3.2 and above. Compatibility with php v8.0 is verified. PHP packages required: libawl-php php-curl php php-json php-xml php-mbstring
   * Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android Tablet
  
  
