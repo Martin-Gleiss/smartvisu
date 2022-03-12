@@ -261,7 +261,7 @@ var io = {
 	 */
 	send: function (data) {
 		if (io.socket.readyState == 1) {
-			io.socket.send(unescape(encodeURIComponent(JSON.stringify(data))));
+			io.socket.send(JSON.stringify(data));
 			// DEBUG: 
 			console.log('[io.smarthomeng] sending data: ', JSON.stringify(data));
 		}
