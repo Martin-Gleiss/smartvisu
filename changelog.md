@@ -1,15 +1,17 @@
 ## 3.2.b
 ### New / Changed Widgets
-
-### Other New Features
 - calendar.list has an option to show event links and locations in collapsible areas scrolling down on click.
 - device.smallshut also takes numeric position values for item_saved (yet only boolean if position was saved in the actuator)
+- new type 'textarea' for basic.input allows entering a string with multiple lines 
+
+### Other New Features
 
 ### Improvements
 - performance increased by avoiding long executions times of frequent jQuery mobile pagecontainer widget calls
 - template checker now allows RBGA colors 
 
 ### Updated Libraries
+- new icons from knxuf icon set
 
 ### Deprecated
 
@@ -20,6 +22,8 @@
 - clock.digiclock always had double events
 - widget assistant deleted whitespaces even within the parameters (e.g. calendar names containing whistespaces wont't work)
 - calendar.list always showed icons in white. Now configured icon0 class is used.
+- smarthome(NG) drivers did not send special characters in UTF-8 encoding
+- iobroker driver threw errors if item was not set
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text

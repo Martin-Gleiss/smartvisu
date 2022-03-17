@@ -273,12 +273,13 @@ var io = {
 	},
 
 	stateChanged: function(item, state) {
+		if (state === null || typeof state !== 'object') return;
 		var val = state.val;
 		// convert boolean
-			if (val === false) 
-				val = 0;
-			if (val === true) 
-				val = 1;
+		if (val === false) 
+			val = 0;
+		if (val === true) 
+			val = 1;
 		widget.update(item, val);
 	},
 	
