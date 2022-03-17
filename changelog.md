@@ -11,6 +11,7 @@
 - template checker now allows RBGA colors 
 
 ### Updated Libraries
+- new icons from knxuf icon set
 
 ### Deprecated
 
