@@ -1,12 +1,12 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU / FHEM
- * @author      HCS with adjustments by Julian Pawlowski, Stefan Widmer, raman an wvhn
+ * @author      HCS with adjustments by Julian Pawlowski, Stefan Widmer, raman and wvhn
  *              original version by Martin Gleiß
- * @copyright   2016
+ * @copyright   2016 - 2022
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
- * @label       FHEM
+ * @label       FHEM 
  * @hide        driver_tlsport
  * @hide        driver_autoreconnect
  * @hide		reverseproxy
@@ -31,6 +31,10 @@ var io = {
   address: '',
   port: '',
   uzsu_type: '2',
+  
+  // Flag for active socket closing by the client 
+  // needed to interrupt communication e.g. when screen is being turned off on certain tablets
+  clientClosing: false,
   
   // -----------------------------------------------------------------------------
   // Does a read-request and adds the result to the buffer
@@ -324,11 +328,16 @@ var io = {
     
     io.socket.onclose = function() {
       io.log(1, "socket.onclose");
-      io.close();
+      // io.close();
 	  if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification)) {
 		io.socketErrorNotification = notify.message("error", "Driver: fhem", "Connection to the fhem server lost!");
 	  }
-      io.startReconnectTimer();
+      if (io.clientClosing == false) {
+		  io.socket = null;
+		  io.startReconnectTimer();
+	  } 
+	  else 
+		  io.clientClosing = false;
     };
   },
   
@@ -533,8 +542,10 @@ var io = {
   // -----------------------------------------------------------------------------
   close: function() {
     if (io.socket != null) {
-      io.socket.close();
-      io.socket = null;
+      io.clientClosing = true;	  
+	  io.stopReconnectTimer();
+	  io.socket.close();
+	  io.socket = null;
       io.log(1, "socket closed");
     }
     

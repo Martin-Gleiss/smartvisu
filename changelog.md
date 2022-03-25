@@ -5,10 +5,12 @@
 - new type 'textarea' for basic.input allows entering a string with multiple lines 
 
 ### Other New Features
+- fully kiosk browser closes websocket when going to sleep and re-activates it on wake-up
 
 ### Improvements
 - performance increased by avoiding long executions times of frequent jQuery mobile pagecontainer widget calls
 - template checker now allows RBGA colors 
+- fhem driver: websocket can be closed by the client without reconnect
 
 ### Updated Libraries
 - new icons from knxuf icon set
