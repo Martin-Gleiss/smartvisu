@@ -53,7 +53,7 @@ if (empty($_COOKIE['updchk']) && config_updatecheck)
 			$VersionMinor = substr ($VersionOldFormat, 2);
 			$VersionRevision = "0";
 		}
-		$ret["update"] = ($VersionMajor > config_version_major) or ($VersionMinor > config_version_minor) or ($VersionRevision > config_version_revision);
+		$ret["update"] = (($VersionMajor > config_version_major) or ($VersionMinor > config_version_minor) or ($VersionRevision > config_version_revision) ? true : false);
 		$extension = "";
 		if ((isset($data_sv) && !$data_sv->update) && $ret["update"]) 
 			$extension = ' (github only)';
