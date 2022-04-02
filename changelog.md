@@ -27,6 +27,7 @@
 - smarthome(NG) drivers did not send special characters in UTF-8 encoding
 - iobroker driver threw errors if item was not set
 - Updatecheck did not work correctly with version info from github
+- default config values were not applied to boolean options (using flipswitches)
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
