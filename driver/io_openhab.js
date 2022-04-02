@@ -4,7 +4,7 @@
  * @author      Martin Gleiß, Patrik Germann
  * @copyright   2012 - 2021
  * @license     GPL [http://www.gnu.de]
- * @version     2.3.5
+ * @version     2.4.0
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
@@ -12,9 +12,12 @@
  * @default     driver_tlsport          8443
  * @default     driver_realtime         true
  * @default     driver_autoreconnect    true
+ * @default     driver_consoleport      8101
+ * @default     driver_consoleusername  openhab
+ * @default     driver_consolepassword  habopen
  *
  * @hide        reverseproxy
- * @hide		sv_hostname
+ * @hide        sv_hostname
  */
 
 /**
@@ -76,7 +79,7 @@ var io = {
 				transval[0] = "CLOSED";
 				transval[1] = "OPEN";
 			break;
-			case "Dimmer":
+//			case "Dimmer":
 			case "Switch":
 				transval[0] = "OFF";
 				transval[1] = "ON";
@@ -99,11 +102,11 @@ var io = {
 			timeout     : io.timeout,
 			cache       : false
 		}).success(function() {
-			if (io.refreshIntervall) {
+			if (!sv.config.driver.realtime || io.refreshIntervall) {
+				io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
 				widget.update(item, val);
 			}
 		}).fail(notify.json);
-
 	},
 
 	/**
@@ -169,13 +172,12 @@ var io = {
 			} else {
 				notify.json(jqXHR, status, errorthrown);
 			}
+			sv.config.driver.realtime = false;
 		});
 	},
 
 	/**
 	 * Lets the driver work
-	 *
-	 * @param      realtime switch
 	 */
 	run: function () {
 		io.debug && console.log("io.run(realtime = " + sv.config.driver.realtime + ")");
@@ -202,6 +204,16 @@ var io = {
 				}).fail(notify.json);
 			}
 
+			widget.log().each(function () {
+				var logname = $(this).attr('data-item');
+				var logcount = $(this).attr('data-count');
+				var cmd = "log:display -p '%p|%d{YYYY-MM-dd HH:mm:ss.SSS}|%c|%h{%m}%n'" + ((logname == 'default') ? ' -n ' + logcount : ' ' + logname);
+				log = io.console(cmd, function(log){
+					io.debug && console.debug("io.run: widget.log.update(item = " + logname + ", value = " + log + ")");
+					widget.update(logname, log.slice(0, logcount));
+				});
+			});
+
 			if (sv.config.driver.realtime) {
 				if (io.auth && typeof EventSourcePolyfill == 'function') {
 					io.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 60000, headers: (io.auth !== false ? io.auth : {})});
@@ -211,7 +223,7 @@ var io = {
 				if (io.socket != null) {
 					io.socket.addEventListener('ready', function(message) {
 						$.ajax({
-							url         : io.url + '/events/states/' + message.data,
+							url         : io.url + 'events/states/' + message.data,
 							headers     : (io.auth !== false ? io.auth : {}),
 							data        : JSON.stringify(items),
 							method      : 'POST',
@@ -394,6 +406,26 @@ var io = {
 	},
 
 	/**
+	 * Send a command to the console and return the response
+	 *
+	 * @param      command
+	 * @return     response
+	 */
+	console: function (command, response) {
+		$.ajax({
+			url      : 'driver/openhab/console.php',
+			data     : 'cmd=' + command,
+			type     : 'POST',
+			dataType : 'json',
+			timeout  : io.timeout*2,
+			async    : true,
+			cache    : false
+		}).done(function(data) {
+			response(data);
+		}).fail(notify.json);
+	},
+
+	/**
 	 * stop all subscribed series
 	 */
 	stopseries: function () {
@@ -407,5 +439,13 @@ var io = {
 			clearTimeout(io.refreshIntervall);
 			io.refreshIntervall = false;
 		}
+
+		widget.log().each(function () {
+			var logname = $(this).attr('data-item');
+			if (log = widget.get(logname)) {
+				log.length = 0;
+			}
+			widget.update(logname);
+		});
 	}
 }

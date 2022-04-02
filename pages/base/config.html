@@ -95,11 +95,19 @@
 								</div>
 							</div>
 							<div class="ui-field-contain" style="margin:0;" data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
-								<h3>{{ lang('configuration_page', 'auth-security', 'title') }}</h3><br />
-								<div style="min-height:184px;">
+								<h3>{{ lang('configuration_page', 'console', 'label') }}</h3><br />
+								<div style="min-height:224px;">
+									{{ forms.config_input(source, values, 'driver_consoleport', 'wide') }}
+									{{ forms.config_input(source, values, 'driver_consoleusername', 'wide') }}
+									{{ forms.config_input(source, values, 'driver_consolepassword', 'password') }}
+								</div>
+							</div>
+							<div class="ui-field-contain" style="margin:0;" data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
+								<h3>{{ lang('configuration_page', 'auth-security', 'label') }}</h3><br />
+								<div style="min-height:224px;">
 									{{ forms.config_flip(source, values, 'driver_ssl') }}
 									{{ forms.config_input(source, values, 'driver_username', 'wide') }}
-									{{ forms.config_input(source, values, 'driver_password', 'wide') }} 
+									{{ forms.config_input(source, values, 'driver_password', 'password') }} 
 								</div>
 							</div>
 							<div data-role="collapsible" data-collapsed="true" data-theme="c" data-content-theme="a" >
