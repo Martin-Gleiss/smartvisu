@@ -12,6 +12,9 @@
  * @default     driver_autoreconnect	true
  * @default		driver_ssl				false
  * @hide		driver_tlsport
+ * @hide        driver_consoleport
+ * @hide        driver_consoleusername
+ * @hide        driver_consolepassword
  * @hide		reverseproxy
  * @hide		driver_username
  * @hide		driver_password
