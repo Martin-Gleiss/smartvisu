@@ -4,7 +4,7 @@
  * @author      Martin Gleiß, Patrik Germann
  * @copyright   2012 - 2021
  * @license     GPL [http://www.gnu.de]
- * @version     2.4.0
+ * @version     2.4.1
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
@@ -18,6 +18,10 @@
  *
  * @hide        reverseproxy
  * @hide        sv_hostname
+ * @hide        proxy
+ * @hide        proxy_url
+ * @hide        proxy_user
+ * @hide        proxy_password
  */
 
 /**
@@ -58,7 +62,7 @@ var io = {
 			var val = io.convertState(item, state);
 			io.debug && console.log("io.read: widget.update(item = " + item + ", value = " + val + ")");
 			widget.update(item, val);
-			if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer * 1000) {
+			if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer) {
 				io.plot.get(io.plot.listeners[item]);
 			}
 		}).fail(notify.json);
@@ -112,11 +116,15 @@ var io = {
 	/**
 	 * Trigger a logic
 	 *
-	 * @param      the logic
-	 * @param      the value
+	 * @param      command
+	 * @param      options
 	 */
 	trigger: function (name, val) {
 		io.debug && console.log("io.trigger(name = " + name + ", val = " + val + ")");
+		var cmd = name + ((val) ? ' ' + val : '');
+		io.console(cmd, function(response){
+			io.debug && console.debug("io.console.exec(response = " + response + ")");
+		});
 	},
 
 	/**
@@ -153,7 +161,10 @@ var io = {
 			io.run();
 		}
 
-		io.timeout *= 1000;
+		io.timer      *= 1000;
+		io.timeout    *= 1000;
+		io.plot.timer *= 1000;
+		io.log.timer  *= 1000;
 
 		$.ajax({
 			url      : io.url,
@@ -204,19 +215,11 @@ var io = {
 				}).fail(notify.json);
 			}
 
-			widget.log().each(function () {
-				var logname = $(this).attr('data-item');
-				var logcount = $(this).attr('data-count');
-				var cmd = "log:display -p '%p|%d{YYYY-MM-dd HH:mm:ss.SSS}|%c|%h{%m}%n'" + ((logname == 'default') ? ' -n ' + logcount : ' ' + logname);
-				log = io.console(cmd, function(log){
-					io.debug && console.debug("io.run: widget.log.update(item = " + logname + ", value = " + log + ")");
-					widget.update(logname, log.slice(0, logcount));
-				});
-			});
+			io.log.get();
 
 			if (sv.config.driver.realtime) {
 				if (io.auth && typeof EventSourcePolyfill == 'function') {
-					io.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 60000, headers: (io.auth !== false ? io.auth : {})});
+					io.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 18000000, headers: (io.auth !== false ? io.auth : {})});
 				} else if (typeof EventSource == 'function') {
 					io.socket = new EventSource(io.url + 'events/states');
 				}
@@ -243,22 +246,23 @@ var io = {
 							val = io.convertState(item, val);
 							io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
 							widget.update(item, val);
-							if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer * 1000) {
+							if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer) {
 								io.plot.get(io.plot.listeners[item]);
 							}
 						});
 					}
 				} else {
-					for (var i = 0; i < items.length; i++) {
-						io.read(items[i]);
-					}
 					io.refreshIntervall = setInterval(function() {
 						var items = widget.listeners();
 						for (var i = 0; i < widget.listeners().length; i++) {
 							io.read(items[i]);
 						}
-					}, io.timer * 1000);
+					}, io.timer);
 				}
+
+				io.log.refreshIntervall = setInterval(function() {
+					io.log.get();
+				}, io.log.timer);
 			}
 		}
 
@@ -321,9 +325,42 @@ var io = {
 		}
 	},
 
+	log: {
+		// refreshtimer in seconds
+		timer            : 10,
+		refreshIntervall : false,
+
+		/**
+		 * read log
+		 */
+		get: function () {
+			widget.log().each(function () {
+				var logname = $(this).attr('data-item');
+				var logcount = $(this).attr('data-count');
+				var cmd = "log:display -p '%p|%d{YYYY-MM-dd HH:mm:ss.SSS}|%c|%h{%m}%n'" + ((logname == 'default') ? ' -n ' + logcount : ' ' + logname);
+				io.console(cmd, function(log){
+					var newhash = log[0].id; //log[log.length-1].id
+					var lasthash = null;
+					if (widget.get(logname)) {
+						var curlog = widget.get(logname);
+						lasthash = curlog[0].id; //curlog[curlog.length-1].id
+					}
+					io.debug && console.debug("lasthash: "+lasthash);
+					io.debug && console.debug("newhash:  "+newhash);
+					if (newhash != lasthash) {
+						io.debug && console.debug("io.run: widget.log.update(item = " + logname + ", value = " + log + ")");
+						log = log.slice(0, logcount); //log.slice(0 - logcount)
+						widget.update(logname, log);
+					}
+				});
+			});
+		}
+	},
+
 	plot: {
 		items: new Array(),
 		listeners: new Array(),
+		// refreshtimer in seconds
 		timer: 10,
 
 		/**
@@ -412,6 +449,7 @@ var io = {
 	 * @return     response
 	 */
 	console: function (command, response) {
+		io.debug && console.log("io.console(command = " + command + ")");
 		$.ajax({
 			url      : 'driver/openhab/console.php',
 			data     : 'cmd=' + command,
@@ -438,6 +476,11 @@ var io = {
 		if (io.refreshIntervall) {
 			clearTimeout(io.refreshIntervall);
 			io.refreshIntervall = false;
+		}
+
+		if (io.log.refreshIntervall) {
+			clearTimeout(io.log.refreshIntervall);
+			io.log.refreshIntervall = false;
 		}
 
 		widget.log().each(function () {
