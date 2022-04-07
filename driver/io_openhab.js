@@ -4,7 +4,7 @@
  * @author      Martin Gleiß, Patrik Germann
  * @copyright   2012 - 2021
  * @license     GPL [http://www.gnu.de]
- * @version     2.4.1
+ * @version     2.4.2
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
@@ -305,14 +305,7 @@ var io = {
 				if (state.slice(0, 9) == '1970-01-0') {
 					state = new Date(Date.now()).toISOString().slice(0,10) + state.slice(10, 23);
 				}
-				var yyyy = parseInt(state.slice(0, 4));
-				var mi = parseInt(state.slice(5, 7)) - 1;
-				var dd = parseInt(state.slice(8, 10));
-				var hh = parseInt(state.slice(11, 13));
-				var mm = parseInt(state.slice(14, 16));
-				var ss = parseInt(state.slice(17, 19));
-				var ms = parseInt(state.slice(20, 23));
-				return (state == "NULL") ? 0 : new Date(yyyy, mi, dd, hh, mm, ss, ms);
+				return io.convertDateTime(state);
 			case "Number":
 				if (state.indexOf('000000') > 0) {
 					state = state.slice(0, state.indexOf('000000'));
@@ -323,6 +316,25 @@ var io = {
 			default:
 				return (state in transval) ? transval[state] : state;
 		}
+	},
+
+	/**
+	 * convert DateTime from openHAB
+	 *
+	 * @param      DateTime (yyyy-mi-dd hh:mm:ss.ms)
+	 */
+	convertDateTime: function (timestamp) {
+		if (timestamp.length == 23) {
+			var yyyy = parseInt(timestamp.slice(0, 4));
+			var mi = parseInt(timestamp.slice(5, 7)) - 1;
+			var dd = parseInt(timestamp.slice(8, 10));
+			var hh = parseInt(timestamp.slice(11, 13));
+			var mm = parseInt(timestamp.slice(14, 16));
+			var ss = parseInt(timestamp.slice(17, 19));
+			var ms = parseInt(timestamp.slice(20, 23));
+			timestamp = new Date(yyyy, mi, dd, hh, mm, ss, ms);
+		}
+		return timestamp;
 	},
 
 	log: {
@@ -348,8 +360,11 @@ var io = {
 					io.debug && console.debug("lasthash: "+lasthash);
 					io.debug && console.debug("newhash:  "+newhash);
 					if (newhash != lasthash) {
-						io.debug && console.debug("io.run: widget.log.update(item = " + logname + ", value = " + log + ")");
 						log = log.slice(0, logcount); //log.slice(0 - logcount)
+						for (let i=0; i<log.length; i++) {
+							log[i].time = io.convertDateTime(log[i].time);
+						}
+						io.debug && console.debug("io.run: widget.log.update(item = " + logname + ", value = " + log + ")");
 						widget.update(logname, log);
 					}
 				});
