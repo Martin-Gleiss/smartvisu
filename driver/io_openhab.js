@@ -2,9 +2,9 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, Patrik Germann
- * @copyright   2012 - 2021
+ * @copyright   2012 - 2022
  * @license     GPL [http://www.gnu.de]
- * @version     2.4.2
+ * @version     2.4.3
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
@@ -83,7 +83,7 @@ var io = {
 				transval[0] = "CLOSED";
 				transval[1] = "OPEN";
 			break;
-//			case "Dimmer":
+			//case "Dimmer":
 			case "Switch":
 				transval[0] = "OFF";
 				transval[1] = "ON";
@@ -265,7 +265,6 @@ var io = {
 				}, io.log.timer);
 			}
 		}
-
 		io.plot.init();
 	},
 
@@ -385,7 +384,7 @@ var io = {
 			io.debug && console.log("io.plot.init()");
 
 			io.plot.listeners = new Array();
-			widget.plot().each(function(idx) {
+			widget.plot().each(function() {
 				var items = widget.explode($(this).attr('data-item'));
 				for (var i = 0; i < items.length; i++) {
 					var plotItem = items[i];
@@ -497,13 +496,5 @@ var io = {
 			clearTimeout(io.log.refreshIntervall);
 			io.log.refreshIntervall = false;
 		}
-
-		widget.log().each(function () {
-			var logname = $(this).attr('data-item');
-			if (log = widget.get(logname)) {
-				log.length = 0;
-			}
-			widget.update(logname);
-		});
 	}
 }
