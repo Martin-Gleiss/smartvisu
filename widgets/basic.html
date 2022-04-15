@@ -247,14 +247,14 @@
 				data-min-time="{{ min|default('false') }}" data-max-time="{{ max|default('false') }}"
 			{% elseif type|lower in ['duration', 'durationflip'] %}
 				type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
-				data-min-dur="{{ min|default('false') }}" data-max-dur="{{ max|default('false') }}" data-duration-step="{{ step }}"
+				data-min-dur="{{ min|default('false') }}" data-max-dur="{{ max|default('false') }}" data-duration-step="{{ step|default(1) }}"
 			{% elseif type|lower in ['date', 'dateflip', 'datecal', 'dateslide'] %}
 				type="text" data-role="datebox" data-datebox-mode="{{ (type == 'date' ? type : type|slice(4))~'box' }}" data-use-focus="true"
 				data-min-days="{{ min|default('false') }}" data-max-days="{{ max|default('false') }}"
 				data-stringformat ="{{ format|default('false') }}"
 			{% else %}
 				type="{{ type|default('text') }}"
-				min="{{ min }}" max="{{ max }}" step="{{ step }}"
+				min="{{ min }}" max="{{ max }}" step="{{ step|default(1) }}"
 			{% endif %}
 			data-clear-btn="false" />
 	{% endif %}
