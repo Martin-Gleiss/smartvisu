@@ -6,6 +6,8 @@
 
 ### Other New Features
 - fully kiosk browser closes websocket when going to sleep and re-activates it on wake-up
+- openHAB driver enables console commands via basic.trigger (thanks to Patrik Germann)
+- openHAB driver receives log info via openHAB console (thanks to Patrik Germann)
 
 ### Improvements
 - performance increased by avoiding long executions times of frequent jQuery mobile pagecontainer widget calls
@@ -28,6 +30,7 @@
 - iobroker driver threw errors if item was not set
 - Updatecheck did not work correctly with version info from github
 - default config values were not applied to boolean options (using flipswitches)
+- basic.input did not take values for seconds in duration and durationflip mode 
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
