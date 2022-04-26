@@ -1,4 +1,4 @@
-## 3.2.b
+## 3.2.2
 ### New / Changed Widgets
 - calendar.list has an option to show event links and locations in collapsible areas scrolling down on click.
 - device.smallshut also takes numeric position values for item_saved (yet only boolean if position was saved in the actuator)
