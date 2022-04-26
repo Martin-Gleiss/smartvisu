@@ -200,6 +200,7 @@
  * -----------------------------------------------------------------------------
  */
 	var sv = {
+		activePage: {},
 		config: {
 			version: '<?php echo config_version_full ?>',
 			icon0: '<?php echo config_design_icon0 ?>',
@@ -210,7 +211,7 @@
 <?php
 				foreach ($GLOBALS['config'] as $key => $value) {
 					if (strpos($key, 'driver_') === 0) {
-						echo substr($key, 7) . ": '$value',\r\n";
+						echo substr($key, 7) . ": '". $value . "',";
 					}
 				}
 ?>

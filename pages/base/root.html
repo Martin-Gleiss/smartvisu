@@ -209,6 +209,8 @@
 	// Do some actions before page is shown
 	// and run the io  with all widgets
 	$(document).on('pagecontainerbeforeshow', function () {
+		// get active page into an object in order to speed up item / widget updates
+		sv.activePage = $(":mobile-pagecontainer").pagecontainer("getActivePage");
 		fx.init();
 		repeater.init();
 		io.run();
@@ -231,6 +233,12 @@
 			$.mobile.silentScroll($('#'+location.search.substring(searchAnchor+7)).offset().top);
 		}
 	});	
+	
+	// if a fully kiosk browser is active stop the websocket when device goes in sleeping mode 
+	if (typeof fully !== 'undefined')  {
+		fully.bind('screenOn',"io.init();");
+		fully.bind('screenOff',"io.close();");
+	};
 
 	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};	
 </script>

@@ -2,9 +2,9 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, Patrik Germann
- * @copyright   2012 - 2021
+ * @copyright   2012 - 2022
  * @license     GPL [http://www.gnu.de]
- * @version     2.3.5
+ * @version     2.4.3
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
@@ -12,9 +12,16 @@
  * @default     driver_tlsport          8443
  * @default     driver_realtime         true
  * @default     driver_autoreconnect    true
+ * @default     driver_consoleport      8101
+ * @default     driver_consoleusername  openhab
+ * @default     driver_consolepassword  habopen
  *
  * @hide        reverseproxy
- * @hide		sv_hostname
+ * @hide        sv_hostname
+ * @hide        proxy
+ * @hide        proxy_url
+ * @hide        proxy_user
+ * @hide        proxy_password
  */
 
 /**
@@ -55,7 +62,7 @@ var io = {
 			var val = io.convertState(item, state);
 			io.debug && console.log("io.read: widget.update(item = " + item + ", value = " + val + ")");
 			widget.update(item, val);
-			if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer * 1000) {
+			if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer) {
 				io.plot.get(io.plot.listeners[item]);
 			}
 		}).fail(notify.json);
@@ -76,7 +83,7 @@ var io = {
 				transval[0] = "CLOSED";
 				transval[1] = "OPEN";
 			break;
-			case "Dimmer":
+			//case "Dimmer":
 			case "Switch":
 				transval[0] = "OFF";
 				transval[1] = "ON";
@@ -99,21 +106,25 @@ var io = {
 			timeout     : io.timeout,
 			cache       : false
 		}).success(function() {
-			if (io.refreshIntervall) {
+			if (!sv.config.driver.realtime || io.refreshIntervall) {
+				io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
 				widget.update(item, val);
 			}
 		}).fail(notify.json);
-
 	},
 
 	/**
 	 * Trigger a logic
 	 *
-	 * @param      the logic
-	 * @param      the value
+	 * @param      command
+	 * @param      options
 	 */
 	trigger: function (name, val) {
 		io.debug && console.log("io.trigger(name = " + name + ", val = " + val + ")");
+		var cmd = name + ((val) ? ' ' + val : '');
+		io.console(cmd, function(response){
+			io.debug && console.debug("io.console.exec(response = " + response + ")");
+		});
 	},
 
 	/**
@@ -150,7 +161,10 @@ var io = {
 			io.run();
 		}
 
-		io.timeout *= 1000;
+		io.timer      *= 1000;
+		io.timeout    *= 1000;
+		io.plot.timer *= 1000;
+		io.log.timer  *= 1000;
 
 		$.ajax({
 			url      : io.url,
@@ -169,13 +183,12 @@ var io = {
 			} else {
 				notify.json(jqXHR, status, errorthrown);
 			}
+			sv.config.driver.realtime = false;
 		});
 	},
 
 	/**
 	 * Lets the driver work
-	 *
-	 * @param      realtime switch
 	 */
 	run: function () {
 		io.debug && console.log("io.run(realtime = " + sv.config.driver.realtime + ")");
@@ -202,16 +215,18 @@ var io = {
 				}).fail(notify.json);
 			}
 
+			io.log.get();
+
 			if (sv.config.driver.realtime) {
 				if (io.auth && typeof EventSourcePolyfill == 'function') {
-					io.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 60000, headers: (io.auth !== false ? io.auth : {})});
+					io.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 18000000, headers: (io.auth !== false ? io.auth : {})});
 				} else if (typeof EventSource == 'function') {
 					io.socket = new EventSource(io.url + 'events/states');
 				}
 				if (io.socket != null) {
 					io.socket.addEventListener('ready', function(message) {
 						$.ajax({
-							url         : io.url + '/events/states/' + message.data,
+							url         : io.url + 'events/states/' + message.data,
 							headers     : (io.auth !== false ? io.auth : {}),
 							data        : JSON.stringify(items),
 							method      : 'POST',
@@ -231,25 +246,25 @@ var io = {
 							val = io.convertState(item, val);
 							io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
 							widget.update(item, val);
-							if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer * 1000) {
+							if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer) {
 								io.plot.get(io.plot.listeners[item]);
 							}
 						});
 					}
 				} else {
-					for (var i = 0; i < items.length; i++) {
-						io.read(items[i]);
-					}
 					io.refreshIntervall = setInterval(function() {
 						var items = widget.listeners();
 						for (var i = 0; i < widget.listeners().length; i++) {
 							io.read(items[i]);
 						}
-					}, io.timer * 1000);
+					}, io.timer);
 				}
+
+				io.log.refreshIntervall = setInterval(function() {
+					io.log.get();
+				}, io.log.timer);
 			}
 		}
-
 		io.plot.init();
 	},
 
@@ -289,14 +304,7 @@ var io = {
 				if (state.slice(0, 9) == '1970-01-0') {
 					state = new Date(Date.now()).toISOString().slice(0,10) + state.slice(10, 23);
 				}
-				var yyyy = parseInt(state.slice(0, 4));
-				var mi = parseInt(state.slice(5, 7)) - 1;
-				var dd = parseInt(state.slice(8, 10));
-				var hh = parseInt(state.slice(11, 13));
-				var mm = parseInt(state.slice(14, 16));
-				var ss = parseInt(state.slice(17, 19));
-				var ms = parseInt(state.slice(20, 23));
-				return (state == "NULL") ? 0 : new Date(yyyy, mi, dd, hh, mm, ss, ms);
+				return io.convertDateTime(state);
 			case "Number":
 				if (state.indexOf('000000') > 0) {
 					state = state.slice(0, state.indexOf('000000'));
@@ -309,9 +317,64 @@ var io = {
 		}
 	},
 
+	/**
+	 * convert DateTime from openHAB
+	 *
+	 * @param      DateTime (yyyy-mi-dd hh:mm:ss.ms)
+	 */
+	convertDateTime: function (timestamp) {
+		if (timestamp.length == 23) {
+			var yyyy = parseInt(timestamp.slice(0, 4));
+			var mi = parseInt(timestamp.slice(5, 7)) - 1;
+			var dd = parseInt(timestamp.slice(8, 10));
+			var hh = parseInt(timestamp.slice(11, 13));
+			var mm = parseInt(timestamp.slice(14, 16));
+			var ss = parseInt(timestamp.slice(17, 19));
+			var ms = parseInt(timestamp.slice(20, 23));
+			timestamp = new Date(yyyy, mi, dd, hh, mm, ss, ms);
+		}
+		return timestamp;
+	},
+
+	log: {
+		// refreshtimer in seconds
+		timer            : 10,
+		refreshIntervall : false,
+
+		/**
+		 * read log
+		 */
+		get: function () {
+			widget.log().each(function () {
+				var logname = $(this).attr('data-item');
+				var logcount = $(this).attr('data-count');
+				var cmd = "log:display -p '%p|%d{YYYY-MM-dd HH:mm:ss.SSS}|%c|%h{%m}%n'" + ((logname == 'default') ? ' -n ' + logcount : ' ' + logname);
+				io.console(cmd, function(log){
+					var newhash = log[0].id; //log[log.length-1].id
+					var lasthash = null;
+					if (widget.get(logname)) {
+						var curlog = widget.get(logname);
+						lasthash = curlog[0].id; //curlog[curlog.length-1].id
+					}
+					io.debug && console.debug("lasthash: "+lasthash);
+					io.debug && console.debug("newhash:  "+newhash);
+					if (newhash != lasthash) {
+						log = log.slice(0, logcount); //log.slice(0 - logcount)
+						for (let i=0; i<log.length; i++) {
+							log[i].time = io.convertDateTime(log[i].time);
+						}
+						io.debug && console.debug("io.run: widget.log.update(item = " + logname + ", value = " + log + ")");
+						widget.update(logname, log);
+					}
+				});
+			});
+		}
+	},
+
 	plot: {
 		items: new Array(),
 		listeners: new Array(),
+		// refreshtimer in seconds
 		timer: 10,
 
 		/**
@@ -321,7 +384,7 @@ var io = {
 			io.debug && console.log("io.plot.init()");
 
 			io.plot.listeners = new Array();
-			widget.plot().each(function(idx) {
+			widget.plot().each(function() {
 				var items = widget.explode($(this).attr('data-item'));
 				for (var i = 0; i < items.length; i++) {
 					var plotItem = items[i];
@@ -394,6 +457,27 @@ var io = {
 	},
 
 	/**
+	 * Send a command to the console and return the response
+	 *
+	 * @param      command
+	 * @return     response
+	 */
+	console: function (command, response) {
+		io.debug && console.log("io.console(command = " + command + ")");
+		$.ajax({
+			url      : 'driver/openhab/console.php',
+			data     : 'cmd=' + command,
+			type     : 'POST',
+			dataType : 'json',
+			timeout  : io.timeout*2,
+			async    : true,
+			cache    : false
+		}).done(function(data) {
+			response(data);
+		}).fail(notify.json);
+	},
+
+	/**
 	 * stop all subscribed series
 	 */
 	stopseries: function () {
@@ -406,6 +490,11 @@ var io = {
 		if (io.refreshIntervall) {
 			clearTimeout(io.refreshIntervall);
 			io.refreshIntervall = false;
+		}
+
+		if (io.log.refreshIntervall) {
+			clearTimeout(io.log.refreshIntervall);
+			io.log.refreshIntervall = false;
 		}
 	}
 }

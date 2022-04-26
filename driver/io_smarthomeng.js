@@ -12,6 +12,9 @@
  * @default     driver_tlsport         2425
  * @hide	    reverseproxy
  * @hide      driver_realtime
+ * @hide        driver_consoleport
+ * @hide        driver_consoleusername
+ * @hide        driver_consolepassword
  * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
@@ -261,7 +264,7 @@ var io = {
 	 */
 	send: function (data) {
 		if (io.socket.readyState == 1) {
-			io.socket.send(unescape(encodeURIComponent(JSON.stringify(data))));
+			io.socket.send(JSON.stringify(data));
 			// DEBUG: 
 			console.log('[io.smarthomeng] sending data: ', JSON.stringify(data));
 		}

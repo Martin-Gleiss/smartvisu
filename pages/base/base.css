@@ -1218,7 +1218,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   margin-bottom: 4px;
 }
 
-.calendarlist ul,
+.calendarlist dl,
 .phonelist ul {
   margin: 0 !important;
 }
@@ -1259,7 +1259,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 .calendarlist .color {
   position: absolute;
   left: 50px;
-  top: 0;
+  top: 1px;
   width: 6px;
   height: 48px;
 }

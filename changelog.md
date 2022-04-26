@@ -1,3 +1,41 @@
+## 3.2.b
+### New / Changed Widgets
+- calendar.list has an option to show event links and locations in collapsible areas scrolling down on click.
+- device.smallshut also takes numeric position values for item_saved (yet only boolean if position was saved in the actuator)
+- new type 'textarea' for basic.input allows entering a string with multiple lines 
+
+### Other New Features
+- fully kiosk browser closes websocket when going to sleep and re-activates it on wake-up
+- openHAB driver enables console commands via basic.trigger (thanks to Patrik Germann)
+- openHAB driver receives log info via openHAB console (thanks to Patrik Germann)
+
+### Improvements
+- performance increased by avoiding long executions times of frequent jQuery mobile pagecontainer widget calls
+- template checker now allows RBGA colors 
+- fhem driver: websocket can be closed by the client without reconnect
+
+### Updated Libraries
+- new icons from knxuf icon set
+
+### Deprecated
+
+### Removed Features
+
+### Fixed Bugs
+- calendar names in config did not allow whitespace after comma / iCal calendars ignored calendar names w/ whitespace
+- clock.digiclock always had double events
+- widget assistant deleted whitespaces even within the parameters (e.g. calendar names containing whistespaces wont't work)
+- calendar.list always showed icons in white. Now configured icon0 class is used.
+- smarthome(NG) drivers did not send special characters in UTF-8 encoding
+- iobroker driver threw errors if item was not set
+- Updatecheck did not work correctly with version info from github
+- default config values were not applied to boolean options (using flipswitches)
+- basic.input did not take values for seconds in duration and durationflip mode 
+
+### Known Bugs
+- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
+
+
 ## 3.2.1
 ### New / Changed Widgets
 
@@ -7,7 +45,7 @@
 
 ### Improvements
 - docu for image displaying widgets improved (multimedia.widget, basic.print)
-- basic.windows takes 'closed', 'tilted' and 'open' as arguments, as frequently used in fhem. example3.graphic widgets also updated.
+- basic.window takes 'closed', 'tilted' and 'open' as arguments, as frequently used in fhem. example3.graphic widgets also updated.
 
 ### Updated Libraries
 

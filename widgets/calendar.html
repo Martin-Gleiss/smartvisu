@@ -18,13 +18,14 @@
 * @param {duration=1h} the refresh interval for this widget (optional, default 1h)
 * @param {text[?]=} name of calendars to show, multiples in array form (optional, default: as defined in configuration)
 * @param {text(D,l)=} option to display the weekdays: 'D' = short format, 'l' = full name (optional, default = '')
+* @param {text(active)=} option for display of link and location info: ''= on the list item, 'active'= in a clickable content field  (optional, default = '')
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
 *
 * @author Martin Gleiß, Stefan Widmer
 */
-{% macro list(id, title, count, color, repeat, calendar, weekday) %}
+{% macro list(id, title, count, color, repeat, calendar, weekday, info) %}
 
 	/** handle default colors from config */
 	{% set configcolors = config_calendar_color|split(',') %}
@@ -32,13 +33,13 @@
 
 	{% if color is empty %}
 		/** build associative array of calendar name and according color */
-    {% set calendarcolors = [] %}
+		{% set calendarcolors = [] %}
 		{% for configname in confignames %}
 			{% set calendarcolors = calendarcolors|merge({ (configname|trim|lower): configcolors[loop.index0]|trim }) %}
 		{% endfor %}
 		/** find color for calendars */
 		{% set calendar = calendar|default(confignames) %}
-    {% set color = [] %}
+		{% set color = [] %}
 		{% for calendarname in (calendar is iterable ? calendar : [calendar]) %}
 			{% set color = color|merge([calendarcolors[calendarname|trim|lower]]) %}
 		{% endfor %}
@@ -47,9 +48,9 @@
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="calendar.list" class="calendarlist"
 		data-item="url:lib/calendar/service/{{ config_calendar_service }}.php?count={{ count|default(25)|url_encode }}&calendar={{ implode(calendar|default(confignames))|url_encode }}"
 		data-repeat="{{ repeat|default('1h') }}"  data-count="{{ count|default(5) }}"
-		data-calendar="{{ implode(calendar|default(confignames)) }}" data-color="{{ implode(color) }}" data-weekday="{{ weekday|default('') }}">
+		data-calendar="{{ implode(calendar|default(confignames)) }}" data-color="{{ implode(color) }}" data-weekday="{{ weekday|default('') }}" data-info="{{ info|default('') }}" >
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
-		<ul data-role="listview"></ul>
+		<dl data-role="listview" class="ui-listview activelist-container"></dl>
 	</div>
 
 {% endmacro %}
@@ -67,7 +68,8 @@
 */
 {% macro waste(id, title, calendar, count, repeat) %}
 
-
+	{% set confignames = config_calendar_name|split(',') %}
+	
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="calendar.waste" class="calendarlist"
 		data-item="url:lib/calendar/service/{{ config_calendar_service }}.php?count={{ count|default(5)|url_encode }}&calendar={{ implode(calendar|default(confignames))|url_encode }}"
 		data-repeat="{{ repeat|default('24h') }}" data-count="{{ count|default(5) }}"

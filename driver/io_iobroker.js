@@ -12,6 +12,9 @@
  * @hide		driver_tlsport 
  * @hide        driver_realtime
  * @hide		reverseproxy
+ * @hide        driver_consoleport
+ * @hide        driver_consoleusername
+ * @hide        driver_consolepassword
  * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
@@ -273,12 +276,13 @@ var io = {
 	},
 
 	stateChanged: function(item, state) {
+		if (state === null || typeof state !== 'object') return;
 		var val = state.val;
 		// convert boolean
-			if (val === false) 
-				val = 0;
-			if (val === true) 
-				val = 1;
+		if (val === false) 
+			val = 0;
+		if (val === true) 
+			val = 1;
 		widget.update(item, val);
 	},
 	
