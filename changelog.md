@@ -1,10 +1,10 @@
 ## 3.2.c
 ### New / Changed Widgets
- 
 
 ### Other New Features
 
 ### Improvements
+- calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
 
 ### Updated Libraries
 

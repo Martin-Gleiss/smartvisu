@@ -190,8 +190,8 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 				
 				// handle calendar_event_format in lang.ini
 				$.each(sv_lang.calendar_event_format, function(pattern, attributes) {
-					if(entry.title.toLowerCase().trim() == pattern.toLowerCase().trim()) { // event title equals pattern
-						// set each defined property
+					if(entry.title.toLowerCase().trim().indexOf(pattern.toLowerCase().trim()) == 0) { // event title starts with pattern 
+					// set each defined property
 						$.each(attributes, function(prop, val) {
 							entry[prop] = val;
 						});
