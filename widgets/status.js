@@ -38,7 +38,8 @@ $.widget("sv.status_collapse", $.sv.widget, {
 
 	options: {
 		id: null,
-		val: ''
+		val: '',
+		action: 'hide'
 	},
 	
 	_update: function(response) {
@@ -46,7 +47,7 @@ $.widget("sv.status_collapse", $.sv.widget, {
 		var target = $('[data-bind="' + this.options.id + '"]');
 		var comp = String(this.options.val).explode(); 
 
-		if (comp.indexOf(String(response[0])) == -1) {
+		if ((comp.indexOf(String(response[0])) == -1) != (this.options.action == 'show')) {
 			target.not('.ui-collapsible').not('.ui-popup').show();
 			target.filter('.ui-collapsible').collapsible("expand");
 			target.filter('.ui-popup').popup("open");

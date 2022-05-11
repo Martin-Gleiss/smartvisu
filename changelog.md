@@ -1,5 +1,6 @@
 ## 3.2.c
 ### New / Changed Widgets
+- status.collapse now has an option to define the action (hide / show) performed when the trigger item reaches a specified value
 
 ### Other New Features
 
