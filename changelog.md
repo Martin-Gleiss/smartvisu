@@ -1,6 +1,7 @@
 ## 3.2.c
 ### New / Changed Widgets
 - status.collapse now has an option to define the action (hide / show) performed when the trigger item reaches a specified value
+- basic.input: new modes datetime and datetimeflip allow setting datetime items with date and time in one step
 
 ### Other New Features
 
@@ -8,12 +9,14 @@
 - calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
 
 ### Updated Libraries
+- JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits
 
 ### Deprecated
 
 ### Removed Features
 
 ### Fixed Bugs
+- basic.input did not set time/timeflip values if min / max options were defined
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text

@@ -670,6 +670,15 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 		else if(mode == 'timebox' || mode == 'timeflipbox') {// data type time
 			this.element.datebox('setTheDate', response[0]);
 		}
+		else if (mode == 'datetimebox'|| mode == 'datetimeflipbox'){ // data type datetime 
+			if (this.options.stringformat == false){
+				this.element.datebox('setTheDate',new Date(response[0]));
+			}
+			else {
+				var value = this.element.datebox('parseDate', this.options.stringformat, response[0]);
+				this.element.datebox('setTheDate', value);
+			}
+		}
 	},
 
 	_events: {
@@ -680,7 +689,7 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 				var newval;
 				if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
 					newval = this.element.datebox('getLastDur');
-				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox'){ // data type date
+				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox'|| mode == 'datetimebox'|| mode == 'datetimeflipbox'){ // data type date
 					var widgetFormat = this.options['stringformat'];
 					if (widgetFormat == false)
 						newval = this.element.datebox('getTheDate');  // javascript datetime object
