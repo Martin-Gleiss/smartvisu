@@ -213,21 +213,21 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item} an item, sent values are:
-	- date, dateflip, datecal, dateslide: Date object resp. ISO 8601 - e.g. '2017-11-29T23:00:00.000Z' in UTC time (if no string format specified)
+	- date, dateflip, datecal, dateslide, datetime, datetimeflip: Date object resp. ISO 8601 - e.g. '2017-11-29T23:00:00.000Z' in UTC time (if no string format specified)
 	- time & timeflip: String with 24hr clock - e.g. '18:31:27' - format for time is taken from language file
 	- duration & durationflip: Number of seconds
 	- any other: Entered value
-* @param {text(text,textarea,number,date,dateflip,datecal,dateslide,time,timeflip,duration,durationflip)=text} 'text', 'number', 'date', 'dateflip', 'datecal', 'dateslide', 'time', 'timeflip', 'duration', 'durationflip' (optional, default: text)
+* @param {text(text,textarea,number,date,dateflip,datecal,dateslide,datetime,datetimeflip,time,timeflip,duration,durationflip)=text} 'text', 'number', 'date', 'dateflip', 'datecal', 'dateslide', 'datetime', 'datetimeflip', 'time', 'timeflip', 'duration', 'durationflip' (optional, default: text)
 * @param {text=} lowest allowed value (optional)
-	- date & dateflip: Number of days before today
+	- date, dateflip, datetime & datetimeflip: Number of days before today
 	- time & timeflip: Format is 24hr clock - e.g. '18:31:27'
 	- duration & durationflip: in seconds
 * @param {text=} highest allowed value (optional)
-	- date & dateflip: Number of days after today
+	- date, dateflip, datetime & datetimeflip: Number of days after today
 	- time, timeflip: Format is 24hr clock - e.g. '18:31:27'
 	- duration & durationflip: in seconds
 * @param {value=1} step between two values (optional, no effect on date/time types)
-* @param {text=} string format for date only (optional)
+* @param {text=} string format for date and datetime only (optional)
     - empty: default format for date will be standard date object (see above)
     - with given format option, the date will be converted to a string, e.g. '%d.%m.%Y'	represents DD.MM.YYYY.
 	  For options see https://jtsage.dev/DateBox/doc/3-3-output/
@@ -244,7 +244,7 @@
 		<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.input" data-item="{{ item }}"
 			{% if type|lower in ['time', 'timeflip'] %}
 				type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
-				data-min-time="{{ min|default('false') }}" data-max-time="{{ max|default('false') }}"
+				data-min-svtime="{{ min|default('false') }}" data-max-svtime="{{ max|default('false') }}"
 			{% elseif type|lower in ['duration', 'durationflip'] %}
 				type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
 				data-min-dur="{{ min|default('false') }}" data-max-dur="{{ max|default('false') }}" data-duration-step="{{ step|default(1) }}"
@@ -252,6 +252,10 @@
 				type="text" data-role="datebox" data-datebox-mode="{{ (type == 'date' ? type : type|slice(4))~'box' }}" data-use-focus="true"
 				data-min-days="{{ min|default('false') }}" data-max-days="{{ max|default('false') }}"
 				data-stringformat ="{{ format|default('false') }}"
+			{% elseif type|lower in ['datetime', 'datetimeflip'] %}
+				type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
+				data-min-days="{{ min|default('false') }}" data-max-days="{{ max|default('false') }}"
+				data-stringformat ="{{ format|default('false') }}" {% if format is not empty %}data-options='{"overrideDatetimeFormat":"{{ format }}" }'{% endif %}
 			{% else %}
 				type="{{ type|default('text') }}"
 				min="{{ min }}" max="{{ max }}" step="{{ step|default(1) }}"
