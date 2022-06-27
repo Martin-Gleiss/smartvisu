@@ -13,6 +13,7 @@
 - JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits
 
 ### Deprecated
+- smarthome.py.js driver has been deprectated and moved to ./driver/deprecated together with openhab2.js
 
 ### Removed Features
 

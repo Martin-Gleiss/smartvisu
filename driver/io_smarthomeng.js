@@ -5,7 +5,7 @@
  * @copyright   2012 - 2021
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
- * @label       SmartHomeNG new
+ * @label       SmartHomeNG
  *
  * @default     driver_autoreconnect   true
  * @default     driver_port            2424
