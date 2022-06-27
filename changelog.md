@@ -7,6 +7,7 @@
 
 ### Improvements
 - calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
+- lib.supersize hides the block's collapse button if located on the right, adjusts the vertical scroll position and selects the appropriate icon color
 
 ### Updated Libraries
 - JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits

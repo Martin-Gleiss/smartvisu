@@ -91,7 +91,7 @@
 			} else {
 				$(document).on('ioAlive', function(){   //else wait for ioAlive event and write then
 					if (io.server != '' ) {
-						var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short')+'<br>smartVISU server IP: '+sv.info.serverIP+'&nbsp;&nbsp;&nbsp;&nbsp;Remote IP: '+sv.info.remoteIP;
+						var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short');
 						$('#connection').html(io.socket.url + connectString);
 					}
 				})
@@ -123,7 +123,7 @@
 *
 * @param {id=} unique id for the widget.
 *
-* @Author: bonze  (plot resize by Wolfram v. Hülsen)
+* @Author: bonze  (plot resize and icon management by Wolfram v. Hülsen)
 */
 {% macro supersize ( id ) %}
 	{% set uid = uid(page, id) %}
@@ -131,6 +131,14 @@
 		<a><img class="supersize" src="icons/sw/control_centr_arrow_up_right.svg" style="position:absolute; width:3em; height:auto; top:0px; right:0px;"></a>
 	</span>
 	<script>
+		$(".supersize").closest("div").on("collapsiblecreate", function (event, ui){
+			var element = $(this);
+			if (element.parent().attr("data-iconpos") == "right")
+				element.collapsible({iconpos: "none"});
+			var iconPath = element.find("h3 a").css("color") == "rgb(255, 255, 255)" ? "icons/ws/" : "icons/sw/";
+			$(this).find(".supersize").attr("src", iconPath + "control_centr_arrow_up_right.svg"); 
+		});
+		
 		$(".supersize").click(function (e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -138,20 +146,24 @@
 			var element = $(this).closest("div");
 			var previousWidth = parseFloat(element.css('width').replace('px',''));
 			var previousHeight = parseFloat(element.find('.ui-collapsible-content').css('height').replace('px',''));
+			var iconPath = element.find("h3 a").css("color") == "rgb(255, 255, 255)" ? "icons/ws/" : "icons/sw/";
 
 			if (!element.hasClass('overlay')){
 				$(".mask").css('display','block');
 				element.addClass("overlay").show();
 				element.collapsible('expand'); 
 				element.find("h3").addClass("ui-corner-all");
-				element.find(".supersize").attr("src", "icons/sw/jquery_minus.svg");
+				element.find(".supersize").attr("src", iconPath + "jquery_minus.svg");
+				element.find(".supersize").attr("data-ypos", Math.round(window.scrollY));
 				element.find('.highcharts-root').addClass('supersized');
+				$.mobile.silentScroll(0);
 			}else{
 				$(".mask").css('display','none');
 				element.removeClass("overlay");
 				element.find("h3").removeClass("ui-corner-all");
-				element.find(".supersize").attr("src", "icons/sw/control_centr_arrow_up_right.svg");
-				element.find('.highcharts-root').removeClass('supersized');
+				element.find(".supersize").attr("src", iconPath + "control_centr_arrow_up_right.svg");
+				var previousPosition = element.find(".supersize").attr("data-ypos")*1;
+				$.mobile.silentScroll(previousPosition);
 			}
 			var actualWidth = parseInt(element.css('width').replace('px',''));
 			var sizeFactor = actualWidth / previousWidth;
