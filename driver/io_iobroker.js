@@ -63,6 +63,9 @@ var io = {
 	 */
 	write: function (item, val, callback) {
 		if (io.checkConnected) {
+			// convert numeric
+			if ($.isNumeric(val))
+				val = val * 1.0;
 			io.socket.emit('setState', item, val, callback);
 		}
 	},
@@ -278,11 +281,28 @@ var io = {
 	stateChanged: function(item, state) {
 		if (state === null || typeof state !== 'object') return;
 		var val = state.val;
+		
 		// convert boolean
 		if (val === false) 
 			val = 0;
 		if (val === true) 
 			val = 1;
+		
+		// numbers get converted in widget.update -> no need to do it here
+		
+		// text needs no conversion
+		
+		// convert arrays and JSON arrays        
+        if (val &&
+			typeof val === 'string' &&
+			val[0] === '[' &&
+			val[val.length - 1] === ']') {
+			try {
+				val = JSON.parse(val);
+			} catch (e) {
+				console.log('Data seems to be an array, but cannot parse it: ' + val);
+			}
+        }        
 		widget.update(item, val);
 	},
 	
