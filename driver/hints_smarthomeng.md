@@ -1,0 +1,7 @@
+In der aktuellen Version wurde der alte smarthome.py-Treiber entfernt und als Backup in den Ordner ./driver/deprecated verschoben. Der aktuelle Treiber für smarthomeNG ist smarthomeng.js. Er löst die Konflikte, die es im Betrieb hinter einem Reverse Proxy immer wieder zwischen dem externen Zugriff via Domainnamen und dem internen Zugriff via IP-Adresse gab, weil sich beides nicht zusammen konfigurieren ließ.
+
+IP-Adresse / Hostname und die Websocket-Ports für shNG müssen jetzt *immer* angegeben werden. Zudem muss der Hostname des smartVISU-Servers in einem neuen Feld eingetragen werden, sofern der Hostname für den Aufruf der Visu verwendet wird, also z.B. "smarthome.local" anstatt "192.168.2.10". Der Treiber, der im Konfigurationsmenü als „smarthomeNG“ angezeigt wird, verbindet sich dann wie folgt mit dem shNG Websocket:
+
+    - Ruft der Benutzer die Visu mittels IPv4-Adresse auf (z. B. http://192.168.2.10/smartVISU), dann verwendet der Treiber die Adresse und die Ports aus der Konfiguration.
+    - Wird die Visu per Hostname aufgerufen (z.B. http://smarthome.local/smartVISU), dann prüft der Treiber, ob der verwendete Hostname (im Beispiel „smarthome.local“) der konfigurierte SV-Hostname ist und verwendet in diesem Fall wieder die konfigurierte Adresse und die Ports.
+    - entspricht der Hostname im Seitenaufruf nicht dem konfigurierten SV-Hostnamen, dann geht der Treiber von einer externen Verbindung aus und spricht den Websocket über den Hostnamen, Port 80/443 und das Protokoll ws: / wss: an.
