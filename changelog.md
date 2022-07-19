@@ -9,6 +9,7 @@
 - calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
 - lib.supersize hides the block's collapse button if located on the right, adjusts the vertical scroll position and selects the appropriate icon color
 - driver io_iobroker.js optimized to handle numeric data, JSON and arrays.
+- device.uzsuicon and device.uzsutable only initialize a dict, if at least the "active"-property is initialized by the backend. This prevents writing dicts to non-UZSU items
 
 ### Updated Libraries
 - JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits
@@ -20,6 +21,7 @@
 
 ### Fixed Bugs
 - basic.input did not set time/timeflip values if min / max options were defined
+- device.uzsutable threw errors if sunrise was not set
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
