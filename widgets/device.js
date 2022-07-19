@@ -383,15 +383,15 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // data-item ist der sh.py item, in dem alle Attribute lagern, die für die Steuerung notwendig ist ist ja vom typ dict. das item, was tatsächlich per
     // Schaltuhr verwendet wird ist nur als attribut (child) enthalten und wird ausschliesslich vom Plugin verwendet. wird für das rückschreiben der Daten an smarthome.py benötigt
 
-    // wenn keine Daten vorhanden, dann ist kein item mit den eigenschaften hinterlegt und es wird nichts gemacht
-    if (response.length === 0){
-      notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.options.id + ".");
+    // wenn keine Daten vorhanden, bzw. nicht mindestens die Eigenschaft "active" vorhanden ist, dann ist kein UZSU-item angelegt / initialisiert und es wird nichts gemacht
+    if (response.length === 0 || !response[0].hasOwnProperty("active")){
+      notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget '" + this.options.id + "'.");
       return;
     }
 
     this._uzsudata = jQuery.extend(true, {}, response[0]);
 
-    // Initialisierung zunächst wird festgestellt, ob Item mit Eigenschaft vorhanden. Wenn nicht: active = false
+    // Initialisierung: hier ist "active" vorhanden, also ein UZSU-item angelegt. Wenn "list" fehlt, wird dies angelegt und active = false gesetzt, damit im Popup Daten eingetragen werden können
     // ansonsten ist der Status von active gleich dem gesetzten Status
     if (!(this._uzsudata.list instanceof Array)) {
       this._uzsudata = { active: false, list: [] };
@@ -1375,9 +1375,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 	var self = this;
 
     // Fehlerbehandlung für ein nicht vorhandenes DOM Objekt. Das response Objekt ist erst da, wenn es mit update angelegt wurde. Da diese
-    // Schritte asynchron erfolgen, kann es sein, dass das Icon bereits da ist, clickbar, aber nocht keine Daten angekommen. Dann darf ich nicht auf diese Daten zugreifen wollen !
+    // Schritte asynchron erfolgen, kann es sein, dass das Icon bereits da ist, clickbar, aber noch keine Daten angekommen. Dann darf ich nicht auf diese Daten zugreifen wollen !
     if(response.list === undefined){
-      notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget " + this.id + ".");
+      notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget '" + this.id + "'.");
       return false;
     }
 
@@ -2522,7 +2522,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     },
     _update: function(response) {
         this._super(response);
-        this._uzsudata = jQuery.extend(true, {}, response[0]);
+        //this._uzsudata = jQuery.extend(true, {}, response[0]);  // ist Teil vom Prototype Widget (this._super)
         this._DrawTimeTable(this.uuid, this.options, this._uzsudata)
         // Function to keep Data of TimeLine actual
         this._CalcTimeLine(this)
@@ -3348,9 +3348,13 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
             sunrise = myDict.sunrise
             sunset = myDict.sunset
             }
+		  else {
+			sunrise = undefined
+			sunset = undefined  
+		    }
           } 
         if (sunrise === undefined || sunset === undefined)  {
-          notify.message("WARN", "UZSU-Table widget", "No Sun-Information available. Please upgrade you UZSU-Plugin to 1.6.0 or higher");
+          notify.message("warning", "UZSU-Table widget", "No Sun-Information available. Please upgrade your UZSU-Plugin to provide sunrise and sunset (smarthomeNG: v1.6.0 or higher)");
           return
           }
         
