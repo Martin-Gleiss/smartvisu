@@ -23,6 +23,7 @@
 ### Fixed Bugs
 - basic.input did not set time/timeflip values if min / max options were defined
 - device.uzsutable threw errors if sunrise was not set
+- navbars and listviews changed display if an already active anchor was clicked
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
