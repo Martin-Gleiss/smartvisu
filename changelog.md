@@ -10,6 +10,7 @@
 - lib.supersize hides the block's collapse button if located on the right, adjusts the vertical scroll position and selects the appropriate icon color
 - driver io_iobroker.js optimized to handle numeric data, JSON and arrays.
 - device.uzsuicon and device.uzsutable only initialize a dict, if at least the "active"-property is initialized by the backend. This prevents writing dicts to non-UZSU items
+- rooms with navbars in example1.smarthome now show the selected item repeatedly as active - not only at first visit (by adding "ui-state-persistent" to the "ui-btn-active" class)
 
 ### Updated Libraries
 - JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits
