@@ -54,3 +54,9 @@
 	margin-left: -15px !important;
 	background-size: 36px 36px;
 }
+
+/** in some designs the icon color in active navbar buttons needs to be adjusted using the black (sw) or white (ws) icon folder
+#essen.ui-btn-active:after {
+	background-image: url('../../icons/sw/scene_dinner.svg');
+}
+/*
