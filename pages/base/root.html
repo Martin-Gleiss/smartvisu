@@ -239,7 +239,7 @@
 	// active list item gets displayed highlighted if clicked again
     // the effect occurs when clicking on the anchor target but not on image and text
 	$(document).on('click', '[data-role="listview"] li [href*="index.php?page="]', function (event) {	
-		if ($(event.target).hasClass('ui-btn-active')) {
+		if ($(event.target).hasClass('ui-btn')) {
 			setTimeout(function(){
 				$(event.target).removeClass('ui-btn-active');}, 200)
 		}
