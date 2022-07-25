@@ -4,6 +4,7 @@
 - basic.input: new modes datetime and datetimeflip allow setting datetime items with date and time in one step
 
 ### Other New Features
+- if the configured driver is not available (e.g. removed after deprecation) a warning is displayed and the offline driver is used (also in config page) in order to throw no errors due to missing io. 
 
 ### Improvements
 - calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
