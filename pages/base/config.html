@@ -36,8 +36,16 @@
 			</ul>
 		</div>
 	{% set values = [] %}
+	{% set cfg_data = [] %}
 	{% for source, title in sources %}
-		{% set values = values | merge({(source): read_config(source)}) %}
+		{% set cfg_data = read_config(source) %}
+		
+		/** if configured driver is not available and has been changed to 'offline' by root.html, show the active driver (which should be 'offline') */
+		{% if cfg_data['driver'] is defined and cfg_data['driver'] != config_driver %}
+			{% set cfg_data = cfg_data | merge({'driver': config_driver }) %}
+		{% endif %}
+
+		{% set values = values | merge({(source): cfg_data}) %}
 		{% set id = (source != "global") ? '_' ~ source : '' %}
 		<div id="config_tab_{{ source }}">
 			<h2>{{ lang('configuration_page', source ~ 'tab', 'hint')|replace({'%pages%': config_pages}) }}</h2>
