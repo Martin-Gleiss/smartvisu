@@ -263,19 +263,18 @@ $.widget("sv.multimedia_playpause", $.sv.widget, {
 
   },
     _update: function(response){
-        var url = this.element.children().children().attr('src').split('/').slice(0, -1).join('/')+'/';
         if (response[0] == 0 && response[1] == 0 || response[2] == 1)  {
-            this.element.children().children().attr('src', url+'audio_stop.svg');
+            this.element.find('.mm_play, .mm_pause').hide().end().find('.mm_stop').show(); 
             console.log("Playpause: Stop .."+this.element.val());
             this.element.attr('data-val', 0);
             }
         else if (response[1] == 1)  {
-            this.element.children().children().attr('src', url+'audio_pause.svg');
+            this.element.find('.mm_play, .mm_stop').hide().end().find('.mm_pause').show();
             console.log("Playpause: Pause .."+this.element.val());
             this.element.attr('data-val', 1);
             }
         else if (response[0] == 1 && response[1] == 0)  {
-            this.element.children().children().attr('src', url+'audio_play.svg');
+            this.element.find('.mm_pause, .mm_stop').hide().end().find('.mm_play').show();
             this.element.attr('data-val', 2);
             console.log("Playpause: Play .."+this.element.val());
             }

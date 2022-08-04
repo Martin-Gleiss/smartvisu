@@ -1,10 +1,15 @@
 ## 3.2.c
 ### New / Changed Widgets
+- icon styling is now standardized on all widgets including dynamic icons using 6 icon classes defined with the designs plus color names and hex color codes. 4 classes for "red", yellow,"green" and "blue" have been added in the designs
+- svg icons im widgets get loaded directly into the html-DOM in order to provide faster loading and better stylability. This methods also profits from the cache mechanism if activated
+- new widget lib.svgimg loads an svg icon directly into the html-DOM
 - status.collapse now has an option to define the action (hide / show) performed when the trigger item reaches a specified value
 - basic.input: new modes datetime and datetimeflip allow setting datetime items with date and time in one step
+- basic.window & design.window provide more styling capabilities
 
 ### Other New Features
 - if the configured driver is not available (e.g. removed after deprecation) a warning is displayed and the offline driver is used (also in config page) in order to throw no errors due to missing io. 
+- new Javascript function fx.load dynamically inserts svg into html-DOM
 
 ### Improvements
 - calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
@@ -17,7 +22,8 @@
 - JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits
 
 ### Deprecated
-- smarthome.py.js driver has been deprectated and moved to ./driver/deprecated together with openhab2.js
+- smarthome.py.js driver has been deprectated and moved to ./driver/deprecated 
+- openhab2.js driver has been deprectated and moved to ./driver/deprecated
 
 ### Removed Features
 

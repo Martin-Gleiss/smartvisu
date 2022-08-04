@@ -823,9 +823,9 @@ $.widget("sv.basic_print", $.sv.widget, {
 			currentIndex++;
 		});
 		var color = String(this.options.colors).explode()[currentIndex];
-		this.element.removeClass('icon1').show().css('visibility', '').css('color', ''); // clear previous color / effect
-		if (color == 'icon1')
-			this.element.addClass('icon1');
+		this.element.removeClass('[class^="icon"]').show().css('visibility', '').css('color', ''); // clear previous color / effect
+		if (color.indexOf('icon') == 0)
+			this.element.addClass(color);
 		else if (color == 'hidden')
 			this.element.hide();
 		else if (color == 'blank')
@@ -1535,18 +1535,21 @@ $.widget("sv.basic_window", $.sv.widget, {
 		// response is: {{ gad_value }}, {{ gad_window_r}}, {{ gad_window_l}}
 		this._super(response);
 
-		var color = this.element.attr('data-color');
-		if (color.indexOf('!') > -1){
-			color = color.substr(1);
-			this.element.attr('style', 'stroke: '+ color+'; fill: '+color+';');
+		var color = this.element.attr('data-color').explode();
+		var must = false;
+		if (color[1].indexOf('!') > -1){		//support legacy function constant color
+			color[1] = color[1].substr(1);
+			must = true; 
 		}
-		else
-			this.element.attr('style', '');
-
-		this.element.attr('class', 'icon' + ((response[1] && response[1] != 'closed') || (response[2] && response[2] != 'closed') ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
-		if (color != '' && this.element.attr('class') == "icon icon1") {
-			this.element.attr('style', 'stroke: '+ color+'; fill: '+color+';');
+		var style = color.slice();
+		for (var i=0; i<=1; i++){
+			if (color[i].indexOf('icon') == 0) 
+				style[i] = '';
+			else 	
+				color[i] = '';
 		}
+		this.element.attr('class', 'icon' + ((response[1] && response[1] != 'closed') || (response[2] && response[2] != 'closed') || (must == true) ? ' '+color[1] : ' '+color[0]));
+		this.element.attr('style', ((response[1] && response[1] != 'closed') || (response[2] && response[2] != 'closed') || (must == true) ? 'stroke: '+ style[1]+'; fill: '+style[1]+';' : 'stroke: '+ style[0]+'; fill: '+style[0]+';'));
 		
 		var max = parseFloat(this.options.max);
 		var min = parseFloat(this.options.min);
