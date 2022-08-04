@@ -3,13 +3,14 @@ $.widget("sv.dynicon", $.sv.widget, {
 
 	options: {
 		min: 0,
-		max: 255
+		max: 255,
+		col: 'icon0'
 	},
 
 	_update: function(response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 		if(response[1] !== undefined)
-			this.element.attr('class', 'icon' + (response[0] && response[1] ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
+			this.element.attr('class', 'icon ' + (response[0] && response[1] ? 'icon1' : this.options.col)) // addClass does not work in jQuery for svg
 
 		var max = this.options.max;
 		var min = this.options.min;

@@ -340,7 +340,6 @@ $.widget("sv.status_activelist", $.sv.widget, {
 
 	_update: function(response) {
 		var self = this
-        // var node = $(".activelist-container");
         var node = this.element.find('.activelist-container')
 		node.empty();
 		var data = response[0]; 
@@ -395,8 +394,11 @@ $.widget("sv.status_activelist", $.sv.widget, {
 					$('<h3 style=" overflow: visible; white-space: nowrap;">').text(messages[title])).append(
 					$('<p style="margin-top: -0.5em;">').text(messages[subtitle])
 				));
-			//$(".activelist-container").append(a);
             node.append(a);
+			if (messages.icon.indexOf('.svg') != -1) {
+				var newNode= node.find('img')
+				fx.load(messages.icon, 'fx-icon icon0', 'float:left; background:' + messages.color + ';', newNode, 'replace');
+			}
 			
 			//add description text to entry
 			var contentfield = '<div class="content" style=" display: none; margin-left:1em; margin-bottom:2em; height:100%; text-align:left;"> '+messages[content]+'</div>';

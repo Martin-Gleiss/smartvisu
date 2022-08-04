@@ -9,6 +9,7 @@
  */
 
 const SmartvisuButtonTypes = array('micro', 'mini', 'midi', 'icon');
+const SmartvisuIconClasses = array('icon0', 'icon1', 'icon2', 'icon3', 'icon4', 'icon5');
 
 // -----------------------------------------------------------------------------
 // Filters for Twig
@@ -225,10 +226,17 @@ function twig_docu($filenames = null)
 								
 								if ($p['type'] == 'type')
 									$p['valid_values'] = array_merge(SmartvisuButtonTypes, $p['valid_values']);
+								
+								if ($p['type'] == 'color') {
+									if (in_array('icon0to5', $p['valid_values']))	{
+										unset ($p['valid_values'][array_search('icon0to5',$p['valid_values'])]);
+										$p['valid_values'] = array_merge(SmartvisuIconClasses, $p['valid_values']);	
+									}
+								}
 							}
 							elseif ($p['type'] == 'type')
 								$p['valid_values'] = SmartvisuButtonTypes;
-							
+																
 							$p['optional'] = $tag[6] != '';
 							if($p['optional'] && $tag[6] != '=')
 								$p['default'] = substr($tag[6],1);
