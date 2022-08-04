@@ -189,6 +189,7 @@
 {% macro print(id, item, format, formula, threshold, color, info, left, top, id_popup, hide) %}
 	{% import _self as ovbasic %}
 	{% import "basic.html" as basic %}
+	{% set color = color|default('icon0') %}
 	<a id="{{ uid(page, id, overview) }}" {% if not info is empty %}title="{{ info }}"{% endif %}
 	   {% if not hide is empty %}class="hide-mobile"{% endif %} 
 	   {% if not id_popup is empty %}data-rel="popup" href="#{{ uid(page, id_popup) }}" {% endif %}
