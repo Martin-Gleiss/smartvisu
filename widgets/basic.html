@@ -180,8 +180,7 @@
 		{% if  pic|trim|slice(-4, 4) == '.svg' and pic|trim|slice(0,6) == '@icons'  %}
 				<svg class="icon {{ type }}
 			{% else %}
-				<img class="icon {{ type }} 
-			{% endif %}
+				<img class="icon do-fx {{ type }} {% endif %}
 		{%- else -%} /** pic is a dynamic icon */
 			<span class="{{ ( uitype == '' ? 'icon' : 'ui-icn ui-btn-inline') }} {{ uitype }}  /** uitype is empty if icon is called from e.g. stateswitch **/
 		{%- endif %}
