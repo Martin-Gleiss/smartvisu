@@ -6,7 +6,8 @@ $.widget("sv.calendar_list", $.sv.widget, {
 	options: {
 		color: '',
 		weekday: '',
-		info: ''
+		info: '',
+		private: 'show'
 	},
 
 	_update: function(response) {
@@ -67,7 +68,11 @@ $.widget("sv.calendar_list", $.sv.widget, {
 						});
 					}
 				});
-
+				
+				if (entry.class.toLowerCase() == 'private' && self.options.private == 'hide'){
+					entry.title = sv_lang.calendar.private;
+				}
+				
 				// handle tags in event description
 				var tags = (entry.content||'').replace(/\\n/,'\n').match(/@(.+?)\W+(.*)/igm) || [];
 				$.each(tags, function(i, tag) {
