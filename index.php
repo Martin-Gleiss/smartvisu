@@ -118,6 +118,7 @@ if (is_file(const_path."pages/".$actual_pages."/".$request['page'].".html")
 	$twig->addFilter( new \Twig\TwigFilter('smartdate', 'twig_smartdate'));
 	$twig->addFilter( new \Twig\TwigFilter('deficon', 'twig_deficon', array('needs_environment' => true)));
 	$twig->addFilter( new \Twig\TwigFilter('md5', 'twig_md5'));
+	$twig->addFilter( new \Twig\TwigFilter('preg_replace', 'twig_preg_replace'));
 
 	$twig->addFunction( new \Twig\TwigFunction('uid', 'twig_uid'));
 	$twig->addFunction( new \Twig\TwigFunction('once', 'twig_once'));
