@@ -7,10 +7,12 @@
 - basic.input: new modes datetime and datetimeflip allow setting datetime items with date and time in one step
 - basic.window & design.window provide more styling capabilities
 - calendar.list changes event title to "private appointment" if event is marked as private. Enable with new entry 'calendar_private = "1" ' in config.ini (under development)
+- basic.print got a new format option "F" which displays numbers with thousand-sperarators, e.g. 12.345,67 (under development)
 
 ### Other New Features
 - if the configured driver is not available (e.g. removed after deprecation) a warning is displayed and the offline driver is used (also in config page) in order to throw no errors due to missing io. 
 - new Javascript function fx.load dynamically inserts svg into html-DOM
+- new twig filter preg_replace allows regex-based replacements (used for clean svg loading)
 
 ### Improvements
 - calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence

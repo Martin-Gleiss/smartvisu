@@ -63,6 +63,9 @@ function twig_md5($val)
 	return md5($val);
 }
 
+function twig_preg_replace($val, $regex, $replace){
+	return preg_replace ($regex, $replace, $val);
+}
 
 // -----------------------------------------------------------------------------
 // General functions for Twig

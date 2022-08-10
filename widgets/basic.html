@@ -177,10 +177,11 @@
 				{% endif -%}
 			{% endif -%}
 			
-		{% if  pic|trim|slice(-4, 4) == '.svg' and pic|trim|slice(0,6) == '@icons'  %}
+			{% if  pic|trim|slice(-4, 4) == '.svg' and pic|trim|slice(0,6) == '@icons'  %}
 				<svg class="icon {{ type }}
 			{% else %}
-				<img class="icon do-fx {{ type }} {% endif %}
+				<img class="icon do-fx {{ type }} 
+			{% endif %}
 		{%- else -%} /** pic is a dynamic icon */
 			<span class="{{ ( uitype == '' ? 'icon' : 'ui-icn ui-btn-inline') }} {{ uitype }}  /** uitype is empty if icon is called from e.g. stateswitch **/
 		{%- endif %}
@@ -191,7 +192,7 @@
 
 		{%- if pic|trim|slice(0, 4) != '<svg' -%}
 			{% if  pic|trim|slice(-4, 4) == '.svg' and pic|trim|slice(0,6) == '@icons' %}
-				" role="img" aria-label="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}" {{ source( pic )|replace( {'<svg':'', 'stroke="#fff"':'', 'fill="#fff"':'', 'stroke="#FFF"':'', 'fill="#FFF"':''} )|raw }}  
+				" role="img" aria-label="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}" {{ source( pic )|preg_replace('/<.*\n*<svg/','')|replace( {'stroke="#fff"':'', 'fill="#fff"':'', 'stroke="#FFF"':'', 'fill="#FFF"':''} )|raw }}  
 			{% else %}
 				" src="{{ pic|deficon }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}">
 			{% endif %}
