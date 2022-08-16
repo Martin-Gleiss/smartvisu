@@ -20,7 +20,7 @@ $.widget("sv.clock", $.sv.widget, {
 					var servertime = Number(resp) * 1000;
 					// use average of start and end request timestamp and make it local time
 					localtime = localtime / 2 + Date.now() / 2;
-					window.servertimeoffset = localtime - servertime;
+					window.servertimeoffset = parseInt((localtime - servertime)/1000)*1000;
 					while(window.servertimelisteners.length > 0)
 						window.servertimelisteners.shift()._init(); 
 					window.servertimelisteners = null;
@@ -54,6 +54,7 @@ $.widget("sv.clock_digiclock", $.sv.clock, {
 	
 	_exit: function() {
 		this.element.attr("stoptimer", "true");
+		this.element.digiclock({ svrOffset: window.servertimeoffset || 0, stopClock: "true"});
 	},
 });
 
