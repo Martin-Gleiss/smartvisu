@@ -49,15 +49,16 @@ the first one is the base color for values below first threshold, so pass one co
 
 
 /**
-* Show and hide a div or popup or collapse a section.
+* Show and hide a div or popup or collapse a section by a trigger item.
 *
 * @param {id} unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget (mandatory)
 * @param {item(bool,num)} an item which triggers the collapse 
 * @param {value[?]=0} the values on which the target will be collapsed (optional, default 0)
+* @param {text(hide,show)=hide} inverts the widget's behaviour, i.e. 'show' opens a popup instead of closing it if the trigger value is matched (optional, default = hide)
 */
-{% macro collapse(id, item_trigger, value) %}
+{% macro collapse(id, item_trigger, value, action) %}
 	{% set value = (value|default([0]) is iterable ? value|default([0]) : [value]) %}	
-	<span id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="status.collapse" data-item="{{ item_trigger }}" data-val="{{ implode(value) }}"></span>
+	<span id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="status.collapse" data-item="{{ item_trigger }}" data-val="{{ implode(value) }}" data-action="{{ action |default('hide') }}"></span>
 {% endmacro %}
 
 

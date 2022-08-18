@@ -119,6 +119,13 @@
 
 	<script src="vendor/jquery.mobile/jquery.mobile-1.4.5-patch.min.js"></script>
 
+/** if configured backend driver is not available (e.g. deprecated -> removed) start w/ offline driver */
+{% set driver_error_msg = "" %}
+{% if not isfile('driver/io_' ~ config_driver ~ '.js') %}
+	{% set driver_error_msg = 'Configured backend driver not found. Starting with Offline driver' %}
+	{% set config_driver = 'offline'%}
+{% endif %}
+
 /** JavaScript assets **/
 {% set jsFiles = [
 		'lib/base/jquery.mobile.slider.js',
@@ -219,13 +226,37 @@
 	// Activate the info field in top right corner
 	$(document).on('pagecontainershow', function () {
 		notify.display();	
+	{% if driver_error_msg is not empty %}
+		if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification)) 
+			io.socketErrorNotification = notify.message('warning', 'Backend Driver', "{{ driver_error_msg }}");
+	{% endif %}
 		// workaround for jQM theme bug - part II
 		$(this).find('.ui-collapsible-heading').each(function(){
 			var headerClass = 'ui-page-theme-'+ $(this).closest('div').attr('data-theme');
 			$(this).addClass(headerClass);
 		});
 	});
+
+	// workaround for jQm navbar: 
+	// active state gets lost when clicking active menu button
+	$(document).on('click', '[data-role="navbar"] li [href*="index.php?page="]', function (event) {	
+		if ($(event.target).hasClass('ui-btn-active')) {
+			event.preventDefault();
+			//DEBUG: console.log('same page anchor clicked');
+		}
+	});
 	
+	// workaround for jQm listview:
+	// active list item gets displayed highlighted if clicked again
+    // the effect occurs when clicking on the anchor target but not on image and text
+	$(document).on('click', '[data-role="listview"] li [href*="index.php?page="]', function (event) {	
+		if ($(event.target).hasClass('ui-btn')) {
+			setTimeout(function(){
+				$(event.target).removeClass('ui-btn-active');}, 200)
+		}
+		//DEBUG: console.log('anchor clicked', event.target);
+	});
+
 	// scroll to anchor after page is called w/ anchor link e.g  href="index.php?page=myPage&anchor=myAnchor" 
 	$(document).on('pagecontainerchange', function () {
 		var searchAnchor = location.search.indexOf('anchor');

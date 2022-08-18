@@ -6,7 +6,8 @@ $.widget("sv.calendar_list", $.sv.widget, {
 	options: {
 		color: '',
 		weekday: '',
-		info: ''
+		info: '',
+		private: 'show'
 	},
 
 	_update: function(response) {
@@ -67,7 +68,11 @@ $.widget("sv.calendar_list", $.sv.widget, {
 						});
 					}
 				});
-
+				
+				if (entry.class.toLowerCase() == 'private' && self.options.private == 'hide'){
+					entry.title = sv_lang.calendar.private;
+				}
+				
 				// handle tags in event description
 				var tags = (entry.content||'').replace(/\\n/,'\n').match(/@(.+?)\W+(.*)/igm) || [];
 				$.each(tags, function(i, tag) {
@@ -102,11 +107,14 @@ $.widget("sv.calendar_list", $.sv.widget, {
 					if(entry.icon.indexOf('.') == -1)
 						entry.icon = entry.icon+'.svg';
 				}
-				
+
 				// add entry
-				var a = $('<a>').append(
-					$('<img class="icon">').css('background', entry.color ).attr('src', entry.icon)
-				).append(
+				var a = $('<a>');
+				if (entry.icon.indexOf('.svg') == -1)
+					a.append( $('<img class="icon">').css('background', entry.color ).attr('src', entry.icon));
+				else
+					fx.load(entry.icon,'fx-icon icon0', 'background:'+entry.color+';', a, 'prepend');	
+				$(a).append(
 					$('<div class="color">').css('background', calcolors[(entry.calendarname||'').toLowerCase()] || entry.calendarcolor || String(self.options.color).explode()[0] || '#666666')
 				).append(
 					$('<h3>').text(entry.title)
@@ -190,8 +198,8 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 				
 				// handle calendar_event_format in lang.ini
 				$.each(sv_lang.calendar_event_format, function(pattern, attributes) {
-					if(entry.title.toLowerCase().trim() == pattern.toLowerCase().trim()) { // event title equals pattern
-						// set each defined property
+					if(entry.title.toLowerCase().trim().indexOf(pattern.toLowerCase().trim()) == 0) { // event title starts with pattern 
+					// set each defined property
 						$.each(attributes, function(prop, val) {
 							entry[prop] = val;
 						});
@@ -224,7 +232,6 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 					}
 				}
 				
-				//von Calenderlist übernommen
 				if(entry.icon) {
 					// add default path if icon has no path
 					if(entry.icon.indexOf('/') == -1)
@@ -234,22 +241,18 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 						entry.icon = entry.icon+'.svg';
 				}
 				
-				muell_html += '<div style="float: left; width: ' + Math.floor(100 / self.options.count) + '%;">';
-				muell_html += '<div style="margin: 0 1px; ';
-				if (entry.start < morgen)
-					muell_html += 'border-bottom: red 8px inset; overflow: hidden;';
-				else if (entry.start < uebermorgen)
-					muell_html += 'border-bottom: orange 8px inset; overflow: hidden;';
-				muell_html += '">'
-				muell_html += '<img class="icon icon1" src="' + entry.icon + '" style="width: 100%; height: 120%; fill: ' + entry.color + '; stroke: ' + entry.color + '" />';
-				muell_html += '<div style="font-size: 0.9em;text-align: center;">' + entry.start.transUnit('D') + ', ' + entry.start.transUnit('day') + '</div>'
-				muell_html += '</div>';
-				muell_html += '</div>';
+				var a = $('<div style="float: left; width: ' + Math.floor(100 / self.options.count) + '%;">').append(
+					$('<div style="margin: 0 1px; overflow: hidden;">').css('border-bottom', (entry.start < morgen) ? 'red 8px inset' : (entry.start < uebermorgen) ? 'orange 8px inset' : '').append(
+					$('<div style="font-size: 0.9em;text-align: center;">').text( entry.start.transUnit('D') + ', ' + entry.start.transUnit('day') ))
+					);
+		
+				if (entry.icon.indexOf('.svg') == -1)
+					a.find('div').last().before( $('<img class="icon icon1" src="' + entry.icon + '" style="width: 100%; height: 120%; fill: ' + entry.color + '; stroke: ' + entry.color + '" />'));
+				else
+					fx.load(entry.icon,'fx-icon icon1', 'width: 100%; height: 120%; fill: ' + entry.color + '; stroke: ' + entry.color + '"', a.find('div').last(), 'before');			
 
+				node.find('div:first').append(a);
 			});
-
-			node.find('div').html(muell_html);
-			fx.init(); // load svg inline
 	},
 
 	_repeat: function() {

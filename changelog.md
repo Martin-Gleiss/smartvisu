@@ -1,3 +1,46 @@
+## 3.2.c
+### New / Changed Widgets
+- icon styling is now standardized on all widgets including dynamic icons using 6 icon classes defined with the designs plus color names and hex color codes. 4 classes for "red", yellow,"green" and "blue" have been added in the designs
+- svg icons im widgets get loaded directly into the html-DOM in order to provide faster loading and better stylability. This methods also profits from the cache mechanism if activated
+- new widget lib.svgimg loads an svg icon directly into the html-DOM
+- status.collapse now has an option to define the action (hide / show) performed when the trigger item reaches a specified value
+- basic.input: new modes datetime and datetimeflip allow setting datetime items with date and time in one step
+- basic.window & design.window provide more styling capabilities
+- calendar.list changes event title to "private appointment" if event is marked as private. Enable with new entry 'calendar_private = "1" ' in config.ini (under development)
+- basic.print got a new format option "F" which displays numbers with thousand-sperarators, e.g. 12.345,67 (under development)
+
+### Other New Features
+- if the configured driver is not available (e.g. removed after deprecation) a warning is displayed and the offline driver is used (also in config page) in order to throw no errors due to missing io. 
+- new Javascript function fx.load dynamically inserts svg into html-DOM
+- new twig filter preg_replace allows regex-based replacements (used for clean svg loading)
+
+### Improvements
+- calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
+- lib.supersize hides the block's collapse button if located on the right, adjusts the vertical scroll position and selects the appropriate icon color
+- driver io_iobroker.js optimized to handle numeric data, JSON and arrays.
+- device.uzsuicon and device.uzsutable only initialize a dict, if at least the "active"-property is initialized by the backend. This prevents writing dicts to non-UZSU items
+- rooms with navbars in example1.smarthome now show the selected item repeatedly as active - not only at first visit (by adding "ui-state-persistent" to the "ui-btn-active" class)
+
+### Updated Libraries
+- JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits
+
+### Deprecated
+- smarthome.py.js driver has been deprectated and moved to ./driver/deprecated 
+- openhab2.js driver has been deprectated and moved to ./driver/deprecated
+
+### Removed Features
+
+### Fixed Bugs
+- basic.input did not set time/timeflip values if min / max options were defined
+- device.uzsutable threw errors if sunrise was not set
+- navbars and listviews changed display if an already active anchor was clicked
+- server time could not be used as selected in configuration
+- device.uzsugraph threw errors on new points with sun-based series events
+
+### Known Bugs
+- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
+
+
 ## 3.2.2
 ### New / Changed Widgets
 - calendar.list has an option to show event links and locations in collapsible areas scrolling down on click.

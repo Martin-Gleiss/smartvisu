@@ -117,12 +117,12 @@
 	<h4>Coloring Dynamic Icons</h4>
 
 	<div class="docu">
-		Dynamic icons can be displayed in different colors. The color has to be specified as hexadecimal value. 'icon0' and 'icon1' can NOT be used!
+		Dynamic icons can be displayed in different colors. The color can be specified as hexadecimal value or - new in v3.3 with 6 icon classes 'icon0' through 'icon5'.
 		<div class="twig">
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 				{{ icon.blade2('icon5', '', 'bath.light.value', '', '', '#f9a028') }}
 				{{ icon.battery('icon6', '', 'bath.light.value', '', '', '#4176a9') }}
-				{{ icon.meter('icon7', '', 'bath.light.value', '', '', '#25ea4e') }}
+				{{ icon.meter('icon7', '', 'bath.light.value', '', '', 'icon4') }}
 				{% endverbatim %}{% endfilter %}</code>
 		</div>
 	</div>
@@ -137,7 +137,7 @@
 			<div>icon.battery</div>
 		</div>
 		<div class="box">
-			{{ icon.meter('icon7', '', 'bath.light.value', '', '', '#25ea4e') }}
+			{{ icon.meter('icon7', '', 'bath.light.value', '', '', 'icon4') }}
 			<div>icon.meter</div>
 		</div>
 	<br />
@@ -159,14 +159,17 @@
 
 	<div class="docu">
 		A static icon may be based on .png-image or .svg-image. Use "icon0" to show the "normal" version.
-		If you like to show the "highlighted" version .png and .svg differ. The .png based images need a completed directory (located in icons) with all icons rendered in the highlighted color.
-		Highlighted .svg-images only need a style-sheet, defined in the design (located in design).
-		Using .svg-images should be preferred.
-
+		If you like to show the "highlighted" version .png and .svg differ. The .png based images need a complete directory (located in ./icons) with all icons rendered in the highlighted color(s).
+		.svg-images can be colored using 6 classes of a style-sheet, defined in the design-specific css files (located in ./design), or with individual colors.
+		While legacy .png-icons are still supported, using .svg-icons is the preferred solution.  
+        <br><br>
+		As of v3.3 the loading of icons has changed to improve performance and stylability. It is recommended to use the widget "lib.svgimg" on svg icons in ./icons/ws or ./dropins/icons/ws with classes and styling options. 
+		This method is faster in loading and profits from the cache mechanism. For backward compatibility the img-tags will still receive long-term support. 
 		<div class="twig">
 			<h5 style="margin-top: 5px;">normal:</h5>
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
+				{{ lib.svgimg('', 'light_light.svg', 'icon0') }}
 				<img class="icon" src="{{ icon0 }}light_light.svg" />
 				<img class="icon" src="{{ icon0 }}light_light.png" />
 				
@@ -175,6 +178,8 @@
 			<h5>highlighted:</h5>
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
+				{{ lib.svgimg('', 'light_light.svg', 'icon1') }}
+				{{ lib.svgimg('', 'light_light.svg', '', 'fill:red; stroke:red;') }}
 				<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
 				<img class="icon" src="{{ icon1 }}light_light.png" />
 				
@@ -197,17 +202,17 @@
 			{% set cat = file.name|slice(0, 2) %}
 		{% endif %}
 		<div class="box">
-			<a title="{{ file.name }}"><img class="icon" src="{{ icon0~file.name }}" /></a>
+			<a title="{{ file.name }}"> {{ lib.svgimg('', file.name, 'icon0') }} </a>
 			<div>{{ file.name }}</div>
 		</div>
 	{% endfor %}
 
 	<script type="text/javascript">
-		$(document).on('vmouseover', '.box > svg', function () {
-			this.setAttributeNS(null, 'class', 'icon icon1');
+		$(document).on('vmouseover', '.box svg', function () {
+			$(this).addClass('icon1');
 		});
-		$(document).on('vmouseout', '.box > svg', function () {
-			this.setAttributeNS(null, 'class', 'icon icon0');
+		$(document).on('vmouseout', '.box svg', function () {
+			$(this).removeClass('icon1');
 		});
 	</script>
 {% endblock %}

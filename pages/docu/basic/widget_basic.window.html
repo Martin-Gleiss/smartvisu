@@ -18,7 +18,7 @@
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 			{{ basic.window ('', 'shutter', 'window.left', 'window.right') }}
 			{{ basic.window ('', 'shutter', '', 'window.right', '', '', '#f00') }}
-			{{ basic.window ('', 'shutter', '', 'window.right', '', '', '!#f00') }}
+			{{ basic.window ('', 'shutter', 'window.left', 'window.right', '', '', '!icon3') }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 
@@ -41,8 +41,8 @@
 		</div>
 		<br>
 		Default: class icon0 / icon1 colors: &nbsp;{{ basic.window ('', 'bath.light.value', 'bath.light.multistate', 'bath.light.switch') }} <br>
-		Usage of custom color for 'open': &nbsp;&nbsp;&nbsp; {{ basic.window ('', 'bath.light.value', '', 'bath.light.multistate', '', '', '#f00') }} (right window only) <br>
-		Usage of constant custom color: &nbsp;&nbsp;&nbsp; {{ basic.window ('', 'bath.light.value', '', 'bath.light.multistate', '', '', '!#f00') }} (right window only)
+		Usage of custom color for 'open': &nbsp;&nbsp;&nbsp; {{ basic.window ('', 'bath.light.value', '', 'bath.light.multistate', '', '', '#f00') }} reacting only on right wing since no item for left wing is given<br>
+		Usage of constant custom color: &nbsp;&nbsp;&nbsp; {{ basic.window ('', 'bath.light.value', 'bath.light.multistate', 'bath.light.switch', '', '', '!icon3') }} 
 	</div>
 
 

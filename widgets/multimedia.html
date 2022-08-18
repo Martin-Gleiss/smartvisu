@@ -217,13 +217,13 @@
 * @param {item(bool,num)} an item for the pause command
 * @param {item(bool,num)} an item for the stop command
 *
-* @author Onkel Andy
+* @author Onkel Andy, Wolfram v. Hülsen (icon display modification)
 */
 {% macro playpause(id, item_play, item_pause, item_stop) %}
     {% import "basic.html" as basic %}
     <span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.playpause" data-item="{{ item_play }},{{ item_pause }},{{ item_stop }}" class="icon0 ui-link switch" data-val="0">
-    <a>
-    {{ basic.icon('audio_stop', 'icon0') }}
-    </a>
+		<a class = "mm_stop">{{ basic.icon('audio_stop', 'icon0') }}</a>
+		<a class = "mm_play" style="display:none;"> {{ basic.icon('audio_play', 'icon0') }}</a>
+		<a class = "mm_pause" style="display:none;"> {{ basic.icon('audio_pause', 'icon0') }}</a>
     </span>
 {% endmacro %}

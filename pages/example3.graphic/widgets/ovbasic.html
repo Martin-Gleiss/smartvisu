@@ -189,6 +189,7 @@
 {% macro print(id, item, format, formula, threshold, color, info, left, top, id_popup, hide) %}
 	{% import _self as ovbasic %}
 	{% import "basic.html" as basic %}
+	{% set color = color|default('icon0') %}
 	<a id="{{ uid(page, id, overview) }}" {% if not info is empty %}title="{{ info }}"{% endif %}
 	   {% if not hide is empty %}class="hide-mobile"{% endif %} 
 	   {% if not id_popup is empty %}data-rel="popup" href="#{{ uid(page, id_popup) }}" {% endif %}
@@ -233,7 +234,8 @@
 	{% import "basic.html" as basic%}
 
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
-	{% set color = color|default(['','icon1']) %}
+	{% set color = color|default(['icon0','icon1']) %}
+	{% set iconstyles = ['icon0', 'icon1', 'icon2', 'icon3', 'icon4', 'icon5'] %}
 
 	<div id="{{ uid(page, id, overview) }}" {% if info %}title="{{ info }}"{% endif %} style="position: absolute; top: {{ top }}; left: {{ left }}; ">
 
@@ -246,10 +248,9 @@
 			{% for val in value %}
 				{% set pic = icon is iterable ? icon[loop.index0] : icon %}
 				{% if type != 'text' and text is empty %}{% set pic = pic|deficon('control_on_off.svg') %}{% endif %}
-				{% set col = (color is iterable ? color[loop.index0] : color)|default('') %}
+				{% set col = (color is iterable ? color[loop.index0] : color)|default('icon0') %}
 				{% set txt = (text is iterable ? text[loop.index0] : text)|default('') %}
-				<a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" data-col="{{ col }}" {{ col == 'hidden' ? 'style="display: none;"'|raw : col == 'blank' ? 'style="visibility: hidden;"'|raw : col != 'icon1' and col != 'icon0' and not col is empty ? ('style="color: ' ~ col ~ '; fill: ' ~ col ~ '; stroke: ' ~ col ~ ';"')|raw }} class="{{ col == 'icon1' ? 'icon1 ' }}
-					{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
+				<a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" data-col="{{ col }}" {{ col == 'hidden' ? 'style="display: none;"'|raw : col == 'blank' ? 'style="visibility: hidden;"'|raw : col not in iconstyles ? ('style="color: ' ~ col ~ '; fill: ' ~ col ~ '; stroke: ' ~ col ~ ';"')|raw }} class="{{ col in iconstyles ? col~' ' }}					{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
 						switch ui-link absolutepos
 					{%- else -%} /**- display as button -*/
 						ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline absolutepos
@@ -258,7 +259,7 @@
 						{%- endif -%}
 					{%- endif -%}
 					">
-					{%- if not pic is empty -%}{{ basic.icon(pic, not indicator is empty and (col is empty or col == 'icon0') ? 'do-fx' : col) }}{%- endif -%}
+					{%- if not pic is empty -%}{{ basic.icon(pic, col) }}{%- endif -%}
 					{{- txt|e -}}
 				</a>
 			{% endfor %}
@@ -300,22 +301,20 @@
 	{% if type not in ['micro','mini','midi'] %}{% set type = '' %}{% endif %}
 	{% set value = (value|default([1]) is iterable ? value|default([1]) : [value]) %}
 	{% set value = text|length > value|length or icon|length > value|length or color|length > value|length ? value|merge(['']) : value %} /** add an empty value if more icons/texts/colors as values are passed (used for threshold i.a.) */
-	{% set color = color|default('') %}
+	{% set iconstyles = ['icon0', 'icon1', 'icon2', 'icon3', 'icon4', 'icon5'] %}
+	{% set color = color|default('icon0') %}
 	{% if rel == 'popup' %}{% set href = '#'~ uid(page, href) %} {% endif %}
 	<{% if href is empty %}span{% else %}a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{% endif %}{% endif %}{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.symbol"
 		{% if not items is empty %}data-item="{{ implode(items) }}" style="display: none;" {% endif %}
-		data-val="{{ implode(value) }}"
-		data-mode="{{ formula|default('or') }}"
-    class="symbol">
+		data-val="{{ implode(value) }}" data-mode="{{ formula|default('or') }}" class="symbol">
 		{%- for val in value -%}
 			{%- set pic = icon is iterable ? icon[loop.index0] : icon -%}
 			{%- if text is empty %}{% set pic = pic|deficon('control_on_off.svg') %}{% endif -%}
-			{%- set col = (color is iterable ? color[loop.index0] : color)|default('') -%}
+			{%- set col = (color is iterable ? color[loop.index0] : color)|default('icon0') -%}
 			{%- set txt = (text is iterable ? text[loop.index0] : text)|default('') -%}
 			<span data-val="{{ val }}" class="absolutepos {% if type == '' %}switch{% endif %}"
-				style="{% if not loop.first %}display:none;{% endif %} position: absolute; top: {{ top}}; left: {{ left }}; 
-				{% if pic is empty and not txt is empty and not col is empty and col != 'icon1' %}color: {{ col }};{% endif %}"
-				{% if pic is empty and not txt is empty and col == 'icon1' %} class="icon1"{% endif %}>
+				style="{% if not loop.first %}display:none;{% endif %} position: absolute; top: {{ top}}; left: {{ left }}; {% if pic is empty and not txt is empty and not col is empty and col != 'icon1' %}color: {{ col }};{% endif %}"
+				{% if pic is empty and not txt is empty and col in iconstyles %} class="{{col}}"{% endif %}>
 				{%- if pic %}{{ basic.icon(pic, col,'',type) }}{% endif -%}
 				{{- txt|raw -}}
 			</span>

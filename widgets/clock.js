@@ -6,7 +6,7 @@ $.widget("sv.clock", $.sv.widget, {
 
 	_init: function() {
 		this._super();
-		// init servertime offset on all clocks
+		// memorize servertime listeners in order to init them again when servertime has been loaded successfully
 		if(window.servertimeoffset === undefined && this.options["servertime-url"] != '') {
 			if(window.servertimelisteners)
 				window.servertimelisteners.push(this);
@@ -20,10 +20,9 @@ $.widget("sv.clock", $.sv.widget, {
 					var servertime = Number(resp) * 1000;
 					// use average of start and end request timestamp and make it local time
 					localtime = localtime / 2 + Date.now() / 2;
-					window.servertimeoffset = servertime - localtime;
-					//$(bevent.target).find('[data-servertime-url]').trigger('init').trigger('repeat');
+					window.servertimeoffset = parseInt((localtime - servertime)/1000)*1000;
 					while(window.servertimelisteners.length > 0)
-						window.servertimelisteners.shift()._init();
+						window.servertimelisteners.shift()._init(); 
 					window.servertimelisteners = null;
 				});
 			}
@@ -41,7 +40,8 @@ $.widget("sv.clock_digiclock", $.sv.clock, {
 	_init: function() {
 		this._super();
 		this.element.attr("stoptimer", "false");
-		this.element.digiclock({ svrOffset: window.servertimeoffset || 0});
+		if(window.servertimeoffset != undefined || this.options["servertime-url"] == '')	
+			this.element.digiclock({ svrOffset: window.servertimeoffset || 0});
 	},
 
 	// needed to restart the clock if it had been stopped before
@@ -54,6 +54,7 @@ $.widget("sv.clock_digiclock", $.sv.clock, {
 	
 	_exit: function() {
 		this.element.attr("stoptimer", "true");
+		this.element.digiclock({ svrOffset: window.servertimeoffset || 0, stopClock: "true"});
 	},
 });
 

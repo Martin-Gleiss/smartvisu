@@ -115,8 +115,8 @@
 * @param {value=5} step between two values (optional, default: 5)
 * @param {image=light_light} the pic for the 'on' state (optional)
 * @param {image=light_light} the pic for the 'off' state (optional)
-* @param {color(icon0,icon1)=icon1} the color for the 'on' state (optional)
-* @param {color(icon0,icon1)=icon0} the color for the 'off' state (optional)
+* @param {color(icon0to5)=icon1} the color for the 'on' state (optional)
+* @param {color(icon0to5)=icon0} the color for the 'off' state (optional)
 * @param {text(input,handle,both,none)=none} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'none')
 * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
 * @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
@@ -528,8 +528,8 @@
 	num: [min, max, step],
 	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'],
 	text: no value parameter
-* @param {color(icon0,icon1)=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
-* @param {color(icon0,icon1)=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
+* @param {color(icon0to5)=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
+* @param {color(icon0to5)=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
 * @param {type=icon}  button sized 'micro', 'mini' or 'midi' or icon (optional, default = 'icon')
 * @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
 *
@@ -634,7 +634,7 @@
  * @param {value=0} the value for opened (optional, default 0)
  * @param {value=255} the value for closed (optional, default 255)
  * @param {value=5} step between two values (optional, default 5)
- * @param {color(icon0,icon1,!)=icon1} color for 'open' state e.g. '#f00' for red. Prepend a '!' to make the color constant ('!#f00'). 'icon0' and 'icon1' can NOT be used. (optional, default: color is icon0 if window is closed, changes to icon1 if opened)
+ * @param {color[?](icon0to5,!)=icon1} colors for the 'closed' and 'open' state, e.g. ['icon2','icon3'] or  '#f00' or ['green,'red']. Prepend a '!' to make the color constant ('!#f00'). (optional, default ['icon0','icon1'])
  *
  * @author Wolfram v. Hülsen
  */
@@ -647,9 +647,6 @@
 						switch ui-link
 					{%- else -%} /**- display as button -*/
 						ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
-						{%- if not pic is empty -%}
-							{{ not txt is empty ? ' ui-btn-icon-top' }} ui-nodisc-icon
-						{%- endif -%}
 					{%- endif -%}"
 		>
 		{{ basic.window (uid~'-icon', item_pos, item_window_r, item_window_l, min, max, color) }}

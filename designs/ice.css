@@ -1716,7 +1716,14 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 	fill: #000;
 	stop-color: #000;
 }
-.icon1, a.ui-link:hover, a.ui-link:active {
+.ui-btn-c a.ui-link .icon0 {
+	stroke: #000;
+	fill: #000;
+	stop-color: #000;
+}
+.icon1, .icon1.ui-link,
+ a.ui-link:hover, a.ui-link:active,
+.switch.ui-link .icon0:hover {
 	stroke: #5595c6;
 	fill: #5595c6;
 	stop-color: #5595c6;
@@ -1726,4 +1733,66 @@ html .ui-btn.icon1,
 [data-widget="basic.print"].icon1,
 [data-widget="basic.symbol"] .icon1 {
 	color: #5595c6;
+}
+
+/* red icon */
+.icon2,
+.icon2.ui-link {
+	stroke: red;
+	fill: red;
+	stop-color: red;
+}
+.switch.icon2,
+html .ui-btn.icon2,
+[data-widget="basic.print"].icon2,
+[data-widget="basic.symbol"] .icon2 {
+	color: red;
+}
+
+/* yellow icon */
+.icon3,
+.icon3.ui-link {
+	stroke: #D6CC19;
+	fill: #D6CC19;
+	stop-color: #D6CC19;
+}
+.switch.icon3,
+html .ui-btn.icon3,
+[data-widget="basic.print"].icon3,
+[data-widget="basic.symbol"] .icon3 {
+	color: #D6CC19;
+}
+
+/* green icon */
+.icon4,
+.icon4.ui-link {
+	stroke: #00A024;
+	fill: #00A024;
+	stop-color: #00A024;
+}
+.switch.icon4,
+html .ui-btn.icon4,
+[data-widget="basic.print"].icon4,
+[data-widget="basic.symbol"] .icon4 {
+	color: #00A024;
+}
+
+/* blue icon */
+.icon5,
+.icon5.ui-link {
+	stroke: #4176a9;
+	fill: #4176a9;
+	stop-color: #4176a9;
+}
+.switch.icon5,
+html .ui-btn.icon5,
+[data-widget="basic.print"].icon5,
+[data-widget="basic.symbol"] .icon5 {
+	color: #4176a9;
+}
+
+/** set color of calendar picker symbol in webkit time input fields for UZSU */
+.uzsuTimeInput::-webkit-calendar-picker-indicator,
+.uzsuTimeMaxMinInput::-webkit-calendar-picker-indicator {
+	background-image: url(images/webkit_clock_ws.svg);
 }
