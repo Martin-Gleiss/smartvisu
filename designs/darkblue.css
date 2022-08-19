@@ -667,8 +667,7 @@ a.ui-slider-handle-semicircle {
 	stop-color: #fff;
 }
 .icon1, .icon1.ui-link,
- a.ui-link:hover, a.ui-link:active,
-.switch.ui-link .icon0:hover {
+ a.ui-link:hover, a.ui-link:active {
 	stroke: #22aadd;
 	fill: #22aadd;
 	stop-color: #22aadd;
