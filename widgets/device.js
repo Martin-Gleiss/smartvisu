@@ -2288,7 +2288,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
   _save: function() {
     this._uzsuCollapseTimestring(this._uzsudata);
     this._write(this._uzsudata);
-    this._delay(function() { this.draw() }, 1); // has to be delayed to prevent exception in highcharts draggable points
+    if(this._uzsuParseAndCheckResponse(this._uzsudata))
+      this.draw();
   },
 
   _timeToTimestamp: function(time) {
@@ -2427,6 +2428,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     // Handler, um den Status anhand des Pulldowns SUN zu setzen
     uzsuPopup.delegate('.uzsuRowExpert [class*="uzsuEvent"] select, input[class*="uzsuSunActive"]', 'change', function (){
 	  var searchClass = $(this)[0].className;
+	  if ($(this)[0].nodeName == "SELECT") 
+            searchClass = $(this).parents()[2].className;
 	  var searchPos = searchClass.lastIndexOf('series');
 	  var caller = (searchPos < 0 ? '' : searchClass.substring(searchPos));
       self._uzsuSetSunActiveState($(this), caller);
