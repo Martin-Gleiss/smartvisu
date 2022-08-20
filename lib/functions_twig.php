@@ -51,7 +51,7 @@ function twig_deficon(Twig_Environment $env, $val, $def = '')
 	  $ret = array();
 		foreach($val as $pic)
 		{
-	    $ret[] = $entry == '' ? $def : $pic;
+	    $ret[] = $pic == '' ? $def : $pic;
 		}
 	}
 
