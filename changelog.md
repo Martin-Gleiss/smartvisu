@@ -1,7 +1,8 @@
 ## 3.2.c
 ### New / Changed Widgets
 - icon styling is now standardized on all widgets including dynamic icons using 6 icon classes defined with the designs plus color names and hex color codes. 4 classes for "red", yellow,"green" and "blue" have been added in the designs
-- svg icons im widgets get loaded directly into the html-DOM in order to provide faster loading and better stylability. This methods also profits from the cache mechanism if activated
+- svg icons in widgets get loaded directly into the html-DOM in order to provide faster loading and better stylability. This methods also profits from the cache mechanism if activated
+- SVG embedding can be avoided by using full file name with path and adding "/ne" at the end (e.g. "icons/ws/myicon.svg/ne"
 - new widget lib.svgimg loads an svg icon directly into the html-DOM
 - status.collapse now has an option to define the action (hide / show) performed when the trigger item reaches a specified value
 - basic.input: new modes datetime and datetimeflip allow setting datetime items with date and time in one step

@@ -131,8 +131,11 @@
 /**
 * show an icon, optionally colored statically or dynamically by item
 *
-* @param {image} icon to show
-* @param {color(icon0to5,rgb,hsl,hsv,#f00)=icon0} the color in any CSS form (e.g. '#f00' for red) or 'icon1' (default 'icon0' of the design)
+* @param {image} icon to show 
+- smartVISU icons and icons in ./dropins/icons/ws: path and extension may be omitted (e.g. "light_light") 
+- others: full dile name with path and extension
+- to avoid SVG embedding, use full filename with path and extension and add "/ne" at the end, e.g. "dropins/icons/ws/myicon.svg/ne"
+* @param {color(icon0to5,rgb,hsl,hsv,#f00)=icon0} the color in any CSS form (e.g. '#f00' for red) or classes 'icon0' through 'icon5' (default 'icon0' of the design)
 	To use dynamic coloring by item give one of the following color models: 'rgb', 'hsl' or 'hsv'
 * @param {item[?](num,list)=} either one item which sends all three color parts as array or an array of three items each sending one of the color parts.
 * @param {type=icon} icon type / size. valid types: 'micro','mini','midi','icon' (optional, default = 'icon')
@@ -145,6 +148,7 @@
 	{% set iconstyles = ['icon0', 'icon1', 'icon2', 'icon3', 'icon4', 'icon5'] %}
 	{% set iconF = 'icons/ws/' %}
 	{% set colormodels = ['rgb','hsl','hsv'] %}
+	{% set noembed = 0 %} {% if pic|trim|slice(-3,3) == '/ne' %} {% set noembed = "1" %} {% set pic = pic|trim|slice(0,-3) %} {% endif %}
 	{% if type not in ['micro','mini','midi'] %} {% set type = '' %} {% else %} {% set uitype = 'ui-'~type %} {% endif %}
 	
 	{% if pic|trim|slice(0, 1) != '<' or pic|trim|slice(0, 4) == '<svg' -%} /** pic is an icon */
@@ -156,8 +160,8 @@
 		{% if pic|trim|slice(0, 4) != '<svg' -%} /** pic is not a dynamic icon */
 
 			/**- rewrite legacy png to svg if png file does not exist and svg file does -*/
-			/**- and rewrite svg with path to icone namespace -*/
-			{% if ((pic matches '#^icons/../.*\.png$#' and not isfile(pic)) or pic matches '#^icons/../.*\.svg$#') and isfile('iconF' ~ pic|slice(9,-4) ~ '.svg') %}
+			/**- and rewrite smartVISU svg with path to icons namespace -*/
+			{% if ((pic matches '#^icons/../.*\.png$#' and not isfile(pic)) or (pic matches '#^icons/../.*\.svg$#' and noembed == 0) and isfile(iconF ~ pic|slice(9,-4) ~ '.svg')) %}
 				{% if pic|slice(6, 2) != iconF|slice(-3, 2) %}
 					{% set color = pic|slice(6, 2) %}
 				{% endif %}
@@ -180,7 +184,7 @@
 			{% if  pic|trim|slice(-4, 4) == '.svg' and pic|trim|slice(0,6) == '@icons'  %}
 				<svg class="icon {{ type }}
 			{% else %}
-				<img class="icon do-fx {{ type }} 
+				<img class="icon {{ noembed == 1 ? '' :  'do-fx' }} {{ type }} 
 			{% endif %}
 		{%- else -%} /** pic is a dynamic icon */
 			<span class="{{ ( uitype == '' ? 'icon' : 'ui-icn ui-btn-inline') }} {{ uitype }}  /** uitype is empty if icon is called from e.g. stateswitch **/
