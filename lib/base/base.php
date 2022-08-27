@@ -215,6 +215,7 @@
 					}
 				}
 ?>
-			}
+			},
+			timezoneOffset: '<?php echo date('Z') ?>'
 		}
 	};
