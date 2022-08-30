@@ -14,6 +14,7 @@
 - if the configured driver is not available (e.g. removed after deprecation) a warning is displayed and the offline driver is used (also in config page) in order to throw no errors due to missing io. 
 - new Javascript function fx.load dynamically inserts svg into html-DOM
 - new twig filter preg_replace allows regex-based replacements (used for clean svg loading)
+- all clocks, plot.period and plot.rtr are now able to use server time as reference (if configured on the config page)
 
 ### Improvements
 - calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
