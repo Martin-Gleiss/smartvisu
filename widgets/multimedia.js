@@ -32,7 +32,7 @@ $.widget("sv.multimedia_image", $.sv.widget, {
     fetch(img, {method: 'HEAD'})
     .then ( function(response) {
       let contentType = response.headers.get("content-type");
-      if (contentType.startsWith("text/html"))
+      if (!contentType.startsWith("image/"))
       {
         replacement = self.element.attr("onerror").match(/this.src=\'(.*)\'/)[1];
         console.log("Issue with " + img + ". Replacing it with default error image " + replacement);
