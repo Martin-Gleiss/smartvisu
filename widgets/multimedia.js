@@ -15,7 +15,7 @@ $.widget("sv.multimedia_image", $.sv.widget, {
         this.element.attr('data-repeat-milliseconds', Number(new Date().duration(this.element.attr('data-repeat'))));
       this.element.attr('stopTimer', 'false');
     },
-	
+
     _update: function(response) {
       var widget_url = this.element.attr('data-url');
       var resp = Array.isArray(response) ? response[0]: response;
@@ -24,10 +24,24 @@ $.widget("sv.multimedia_image", $.sv.widget, {
         var img_base = widget_url + ((widget_url.indexOf('?') == -1) ? '?' : '&');
       else
         var img_base = resp + ((resp.indexOf('?') == -1) ? '?' : '&');
-
 	  img = img_base + '_=' + new Date().getTime();
 	  refreshing = this.element.attr('data-repeat') ? this.element.attr('data-repeat') : 'refresh by item';
 	  // console.log("Response: " + response + " Update Multimedia Image: " + img + ", repeat: " + refreshing);
+
+    var self = this;
+    fetch(img, {method: 'HEAD'})
+    .then ( function(response) {
+      let contentType = response.headers.get("content-type");
+      if (contentType.startsWith("text/html"))
+      {
+        replacement = self.element.attr("onerror").match(/this.src=\'(.*)\'/)[1];
+        console.log("Issue with " + img + ". Replacing it with default error image " + replacement);
+        self.element.attr('src', replacement);
+      }
+    }).catch (
+      function(error) {
+      console.log('Problem getting header of media file: \n', error);
+    });
 	  this.element.attr('src', img);
       if (this.element.attr('data-repeat') && ! img.startsWith('_='))
       {
@@ -44,7 +58,7 @@ $.widget("sv.multimedia_image", $.sv.widget, {
         console.log("Clear multimediaimage timer " + this._ticker);
         this._ticker = null;
     },
-	
+
 	// error handling for localized URL (called via ./lib/multimedia/camimage.php)
 	// only called if widget parameter 'localized' = 'true'
 	loadError: function(){
@@ -92,7 +106,7 @@ $.widget("sv.multimedia_slideshow", $.sv.widget, {
 	options: {
 		directory: ''
 	},
-	
+
 	_currentErrorNotification: 0,
 
 	_create: function() {
@@ -124,7 +138,7 @@ $.widget("sv.multimedia_slideshow", $.sv.widget, {
 		var currentSet = [];
 		var dataByFile = [];
 		var setChanged = false;
-		
+
 		$.ajax({
 			dataType: "json",
 			url: 'lib/getdir.php' + '?directory=' + this.options.directory + '&filter=' + filter,
@@ -139,10 +153,10 @@ $.widget("sv.multimedia_slideshow", $.sv.widget, {
 				// check for deleted files and remove them from html
 				i = 0;
 				$.each(element.find('img'), function(index){
-					currentSet[i] = $(this).attr('src'); 
+					currentSet[i] = $(this).attr('src');
 					if (!dataByFile.includes(currentSet[i]))
 					$(this).remove();
-					setChanged = true; 	
+					setChanged = true;
 					i++;
 				});
 				// check for new files and append them to html
@@ -152,12 +166,12 @@ $.widget("sv.multimedia_slideshow", $.sv.widget, {
 						element.cycle('add', newSlide);
 					}
 				}
-				
+
 				if (setChanged){
 					element.cycle('reinit');
 					setChanged = false;
 				}
-		
+
 				if (this._currentErrorNotification != 0){
 					notify.remove(this._currentErrorNotification);
 					this._currentErrorNotification = 0;
@@ -264,7 +278,7 @@ $.widget("sv.multimedia_playpause", $.sv.widget, {
   },
     _update: function(response){
         if (response[0] == 0 && response[1] == 0 || response[2] == 1)  {
-            this.element.find('.mm_play, .mm_pause').hide().end().find('.mm_stop').show(); 
+            this.element.find('.mm_play, .mm_pause').hide().end().find('.mm_stop').show();
             console.log("Playpause: Stop .."+this.element.val());
             this.element.attr('data-val', 0);
             }

@@ -32,7 +32,8 @@
 * Displays an image witch is been reloaded after a given time
 *
 * @param {id=} unique id for this widget
-* @param {text} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
+* @param {text} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:WEBPORT/music/current/cover.jpg?player=MACADDRESS'.
+  Furthermore, make sure to list your SV server address/IP in the LMS Server setting Advanced/Security/CORS accepted hosts.
 * @param {text(none,corner,corner-bottom,fill)=none} the mode: 'none', 'corner', 'corner-bottom', 'fill' (optional, default 'none') (optional)
 * @param {text=10i} the reload-time in duration-format or defined as an item that retriggers a refresh (optional, default '10i')
 * @param {image=} the path/url to a default image that is shown on error and startup
@@ -148,7 +149,7 @@
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} class="slideshow cycle-slideshow" data-widget="multimedia.slideshow"
 		data-cycle-log="false" data-cycle-speed="2000" data-cycle-timeout="{{ delay|default(4) * 1000 }}" data-cycle-reverse="{{ reverse|default(0) }}"
-		data-repeat ="{{ refresh|default('1d') }}" data-directory = "{{ dir }}" 
+		data-repeat ="{{ refresh|default('1d') }}" data-directory = "{{ dir }}"
 		data-item="{{ item_prev }}, {{ item_next }}, {{ item_stop }}, {{ item_start }}">
 
 	</div>
