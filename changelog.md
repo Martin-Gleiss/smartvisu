@@ -39,7 +39,8 @@
 - server time could not be used as selected in configuration
 - device.uzsugraph threw errors on new points with sun-based series events
 - twig filter "deficon" did not work on arrays 
-- select menu for timezone in config page did not open correctly 
+- select menu for timezone in config page did not open correctly
+- multimedia.image error handler was deleted after first error. Update by item did not work with timer. 
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
