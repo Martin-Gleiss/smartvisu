@@ -69,7 +69,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 					}
 				});
 				
-				if (entry.class.toLowerCase() == 'private' && self.options.private == 'hide'){
+				if (entry.class != undefined && entry.class.toLowerCase() == 'private' && self.options.private == 'hide'){
 					entry.title = sv_lang.calendar.private;
 				}
 				
