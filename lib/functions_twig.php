@@ -450,8 +450,9 @@ function twig_asset_exists($file) {
 		if(is_file(const_path . 'widgets/'. $file)) $fileExists = 1;
 		if(is_file(const_path . 'dropins/'. $file)) $fileExists = 1;
 		if(is_file(const_path . 'dropins/widgets/' . $file )) $fileExists = 1;
+		if(is_file(const_path . 'dropins/shwidgets/' . $file )) $fileExists = 1;
 		if(is_file(const_path . 'pages/' . $requestpages .'/widgets/'. $file )) $fileExists = 1;
-		$searchpath = 'in ./widgets, ./dropins, ./dropins/widgets and ./pages/'. $requestpages .'/widgets/';
+		$searchpath = 'in ./widgets, ./dropins, ./dropins/widgets, ./dropins/shwidgets and ./pages/'. $requestpages .'/widgets/';
 	} else 	{	
 		// add const_path if $file is relative
 		if (substr($file, 0, 1) != '/') 
