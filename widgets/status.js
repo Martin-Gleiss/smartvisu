@@ -396,8 +396,8 @@ $.widget("sv.status_activelist", $.sv.widget, {
 				));
             node.append(a);
 			if (messages.icon.indexOf('.svg') != -1) {
-				var newNode= node.find('img')
-				fx.load(messages.icon, 'fx-icon icon0', 'float:left; background:' + messages.color + ';', newNode, 'replace');
+				var newNode= $(node).find('img').last();
+				fx.load(messages.icon, 'icon icon0', 'float:left; background:' + messages.color + ';', newNode, 'replaceWith');
 			}
 			
 			//add description text to entry
