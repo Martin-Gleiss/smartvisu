@@ -25,7 +25,7 @@
 * @info inspired by Frank Berlenz
 */
 {% macro blind(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, value_top, value_bottom, step) %}
-	{% import "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 
 	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
 		<table align="center" cellpadding="0">
@@ -124,7 +124,7 @@
 */
 
 {% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos) %}
-	{% import "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 
 		{% if picpos is empty or picpos=='left' %}<div class="dimmer-left" {% else %} <div class="dimmer-right" {% endif %}
 		data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
@@ -155,8 +155,8 @@
 * @author Stefan Widmer
 */
 {% macro roofwindow(id, txt, item_move, item_stop, item_pos, item_saved, value_closed, value_opened, step, value_pos_1, value_pos_2, text_pos_1, text_pos_2) %}
-	{% import "basic.html" as basic %}
-	{% import "icon.html" as icon %}
+	{% import "@widgets/basic.html" as basic %}
+	{% import "@widgets/icon.html" as icon %}
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.roofwindow" data-item="{{ item_pos }}"
 		data-min="{{ value_closed|default('0') }}" data-max="{{ value_opened|default('255') }}" data-step="{{ step|default(5) }}"
@@ -230,7 +230,7 @@
 * @param {text[]=} list of additional widgets / content to display
 */
 {% macro rtr(id, txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements) %}
-	{% import "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtr" class="rtr">
 		<div class="actual">
@@ -296,7 +296,7 @@
 * @author Bonze, Wolfram v. Hülsen
 */
 {% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval, item_offset, supplements, tolerance) %}
-	{% import "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 
 	/** set displayed decimals to decimals of step parameter */
 	{% set setformat = lang ('format', 'temp') %}
@@ -386,7 +386,7 @@
 * @info inspired by Joerg Gutowski
 */
 {% macro shutter(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2, text_pos_1, text_pos_2) %}
-	{% import "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 
 	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
 		<table align="center" cellpadding="0">
@@ -453,8 +453,8 @@
 * @author Michael Stemmer and Wolfram v. Huelsen
 */
 {% macro smallshut(id, txt, item_move, item_stop, item_position, item_saved, type, value_saved) %}
-	{% import "basic.html" as basic %}
-	{% import "icon.html" as icon %}
+	{% import "@widgets/basic.html" as basic %}
+	{% import "@widgets/icon.html" as icon %}
 	{% set uid = uid(page, id) %}
 
 	<div class="smallshut"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
@@ -503,7 +503,7 @@
 */
 
 {% macro uzsugraph(id, item, headline, editable, valueType, valueParameterList, scrollbar, _backend) %}
-	{% import "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsugraph" data-item="{{ item }}"
 		data-headline="{{ headline|default('UZSU') }}" data-editable="{{ editable|default(0) }}" data-designType="{{ _backend }}"
@@ -537,7 +537,7 @@
 */
 
 {% macro uzsuicon(id, item, headline, pic_on, pic_off, valueType, valueParameterList, color_on, color_off, type, _backend) %}
-	{% import "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 	
 	{% if type not in ['micro','mini','midi'] %}
 		{% set type = 'icon' %}
@@ -639,7 +639,7 @@
  * @author Wolfram v. Hülsen
  */
 {% macro window (id, txt, item_move, item_stop, item_pos, item_shade, item_window_r, item_window_l, type, min, max, step, color ) %}
-	{% import   "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 	{% set uid = uid(page, id) %}
 		
 	<a id="{{ uid }}-button" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %} data-rel="popup"

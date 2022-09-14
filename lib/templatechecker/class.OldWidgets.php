@@ -79,6 +79,12 @@ class OldWidgets {
 				"removed" => true,
 				"replacement" => "plot.period(%1\$s, %2\$s, %3\$s, %4\$s, %5\$s, %6\$s, %7\$s, %8\$s, %9\$s, %10\$s, %11\$s, %12\$s, %13\$s, %14\$s, %15\$s, %16\$s)",
 				),
+			"basic.shifter" => array (
+				"name" => "shifter",
+				"params" => "id, item_switch, item_value, pic_on, dummy, min, max",
+				"removed" => true,
+				"replacement" => "%4\$s('%1\$s', '%2\$s', '%3\$s', %6\$s, %7\$s)",
+				),
 		);
 	}
 }

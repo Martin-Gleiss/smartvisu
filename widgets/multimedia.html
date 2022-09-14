@@ -82,7 +82,7 @@
 * @author Axel Otterstätter
 */
 {% macro music(id, item_play, item_stop, item_ff, item_next, item_pos, item_vol, item_mute, item_title, item_artist, item_repeat, item_playlist) %}
-	{% import "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 	{% set uid = uid(page, id) %}
 
 	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} class="music">
@@ -184,7 +184,7 @@
 * @param {type=mini} type: 'mini', 'midi' (optional, default: mini)
 */
 {% macro station(id, item, pic, val, type) %}
-	{% import "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 	{% set uid = uid(page, id) %}
 
 	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} class="station">
@@ -223,7 +223,7 @@
 * @author Onkel Andy, Wolfram v. Hülsen (icon display modification)
 */
 {% macro playpause(id, item_play, item_pause, item_stop) %}
-    {% import "basic.html" as basic %}
+    {% import "@widgets/basic.html" as basic %}
     <span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="multimedia.playpause" data-item="{{ item_play }},{{ item_pause }},{{ item_stop }}" class="icon0 ui-link switch" data-val="0">
 		<a class = "mm_stop">{{ basic.icon('audio_stop', 'icon0') }}</a>
 		<a class = "mm_play" style="display:none;"> {{ basic.icon('audio_play', 'icon0') }}</a>

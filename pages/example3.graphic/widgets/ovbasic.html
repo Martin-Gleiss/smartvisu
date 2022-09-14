@@ -188,7 +188,7 @@
 */
 {% macro print(id, item, format, formula, threshold, color, info, left, top, id_popup, hide) %}
 	{% import _self as ovbasic %}
-	{% import "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 	{% set color = color|default('icon0') %}
 	<a id="{{ uid(page, id, overview) }}" {% if not info is empty %}title="{{ info }}"{% endif %}
 	   {% if not hide is empty %}class="hide-mobile"{% endif %} 
@@ -231,7 +231,7 @@
 */
 {% macro stateswitch(id, item, type, value, icon, text, color, indicator, item_longpress, value_longpress, value_longrelease, info, left, top) %}
 	{% import _self as ovbasic %}
-	{% import "basic.html" as basic%}
+	{% import "@widgets/basic.html" as basic%}
 
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
 	{% set color = color|default(['icon0','icon1']) %}
@@ -297,7 +297,7 @@
 * @author Martin Gleiß and Stefan Widmer
 */
 {% macro symbol(id, left, top, items, text, icon, value, formula, color, href, rel, type) %}
-	{% import "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 	{% if type not in ['micro','mini','midi'] %}{% set type = '' %}{% endif %}
 	{% set value = (value|default([1]) is iterable ? value|default([1]) : [value]) %}
 	{% set value = text|length > value|length or icon|length > value|length or color|length > value|length ? value|merge(['']) : value %} /** add an empty value if more icons/texts/colors as values are passed (used for threshold i.a.) */
@@ -341,7 +341,7 @@
  * @param {value=0} hide on mobile displays (optional value 1)
  */
 {% macro win_shut (id, txt, left, top, gad_move, gad_stop, gad_pos, gad_shade, gad_window_r, gad_window_l, type, hide) %}
-	{% import   "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 	{% set uid = uid(page, id) %}
 	{% set min = 0 %}
 	{% set max = 100 %}

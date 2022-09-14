@@ -18,7 +18,7 @@
 * @param {value=0.5} step for plus/minus buttons (optional, default 0.5°)
 */
 {% macro one(id, txt, gad_actual, gad_set, gad_state, step) %}
-{% import "basic.html" as basic %}
+{% import "@widgets/basic.html" as basic %}
 {% set uid = uid(page, id) %}
 
 /** Design */

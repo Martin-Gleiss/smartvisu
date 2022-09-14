@@ -12,10 +12,8 @@
 
 {% block sidebar %}
 
-	{% import "lib.html" as lib %}
 	{{ lib.updatecheck() }}
 
-	{% import "clock.html" as clock %}
 	{{ clock.digiclock('clock') }}
 
 	<div class="center">
@@ -24,7 +22,6 @@
 
 	<hr>
 
-	{% import "weather.html" as weather %}
 	{{ weather.current('weather') }}
 
 	<hr>

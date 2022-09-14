@@ -19,14 +19,10 @@
 
 {% extends "apps.html" %}
 
-{% import "multimedia.html" as multimedia %}
-
-
 {% block sidebar %}
 	<h3>Seiser Alm (Dolomitisuperski)</h3>
 	<br>
 
-	{% import "weather.html" as weather %}
 	{{ weather.current('weather', 'Italy/Trentino_and_South-Tirol/Kastelruth') }}
 	<hr>
 
