@@ -17,9 +17,8 @@ Hinweise zur Erstellung einer "Übersichtsseite":
    - menu_popup.html	-> der Inhalt des Menüs rechts oben
 
 2. Aufbau von eigenen Seiten
-   - Mindestens folgende Zeilen werden bei einer Block-Dartstellung benötigt:
+   - Mindestens folgende Zeilen werden bei einer Block-Darstellung benötigt:
 
-     {% import "widgets/overview.html" as ov %}
 	 {% block content %}
 	 
 	 <div class="html">

@@ -70,7 +70,7 @@
 * @param {color(icon0to5)=} 
 */
 {% macro iconclock(id, color) %}
-	{% import "icon.html" as icon %}
+	{% import "@widgets/icon.html" as icon %}
 
 	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i" class="iconclock"
 	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}

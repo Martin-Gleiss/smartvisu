@@ -50,7 +50,7 @@ if (is_file(const_path."pages/".$actual_pages."/".$request['page'].".html")
 		$loader->addPath(const_path.'pages/'.$actual_pages);
 	
 	if (is_dir(const_path.'pages/'.$actual_pages.'/widgets'))
-		$loader->addPath(const_path.'pages/'.$actual_pages.'/widgets');
+		$loader->addPath(const_path.'pages/'.$actual_pages.'/widgets');  // deprecated as of v3.3 - remove in a later version
 
 	if (dirname($request['page']) != '.' && is_dir(const_path.'pages/'.$actual_pages.'/'.dirname($request['page'])))
 		$loader->addPath(const_path.'pages/'.$actual_pages.'/'.dirname($request['page']));
@@ -63,12 +63,20 @@ if (is_file(const_path."pages/".$actual_pages."/".$request['page'].".html")
    // make sure SV doesn't load stuff from dropins unless pages are configured
 	if ($actual_pages != '') {
 			$loader->addPath(const_path.'dropins');
-			$loader->addPath(const_path.'dropins/widgets');
-			$loader->addPath(const_path.'dropins/shwidgets');
+			$loader->addPath(const_path.'dropins/widgets');			// deprecated as of v3.3 - remove in a later version
+			$loader->addPath(const_path.'dropins/shwidgets');		// deprecated as of v3.3 - remove in a later version
 	}
 	$loader->addPath(const_path.'pages/base');
-	$loader->addPath(const_path.'widgets');
+	$loader->addPath(const_path.'widgets');							// deprecated as of v3.3 - remove in a later version
 	
+	// create widgets path in namespace @widgets 
+	$loader->addPath(const_path.'widgets', 'widgets');
+	$loader->addPath(const_path.'dropins/widgets', 'widgets');
+	$loader->addPath(const_path.'dropins/shwidgets', 'widgets');
+	if (is_dir(const_path.'pages/'.$actual_pages.'/widgets'))
+		$loader->addPath(const_path.'pages/'.$actual_pages.'/widgets', 'widgets');
+	
+	// create icons path in namespace @icons
 	$loader->addPath(const_path.'icons/ws', 'icons');
 	$loader->addPath(const_path.'dropins/icons/ws', 'icons');
 

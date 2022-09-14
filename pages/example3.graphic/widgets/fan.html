@@ -15,7 +15,7 @@
  * @param {item(bool,num)} item for level up/down (optional)
  */
 {% macro slider (id, item_level, item_auto, item_switch ) %}
-    {% import   "basic.html" as basic %}
+    {% import "@widgets/basic.html" as basic %}
 
 
     <div class="blind" style="padding: 15px;"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
@@ -57,7 +57,7 @@
  * @param {item(bool,num)} item for level up/down (optional)
  */
 {% macro switch (id, item_level, item_auto, item_switch ) %}
-    {% import   "basic.html" as basic %}
+    {% import "@widgets/basic.html" as basic %}
 
     /** Design */
     <div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>

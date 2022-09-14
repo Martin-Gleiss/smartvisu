@@ -102,7 +102,7 @@
 
  */
 {% macro camera (id, txt, left, top, stream, width, height, type, hide) %}
-	{% import   "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 	{% set uid = uid(page, id) %}
 	<a id="{{ uid }}-overview" class="{% if type == 'icon' %} icon {% else %} ui-{{ type|default('mini') }} {% endif %} {% if hide == 1 %}hide-mobile{% endif %}" {% if type != 'icon' %} data-role="button" 
 		data-inline="true" {% endif %} data-rel="popup" data-widget="basic.button" data-iconpos="center" data-position-to="window"

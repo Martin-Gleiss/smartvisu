@@ -80,7 +80,7 @@
 *
 */
 {% macro connection( ) %}
-{% import "basic.html" as basic %}
+{% import "@widgets/basic.html" as basic %}
 	io connection:&nbsp;&nbsp;<span id="connection"></span>
 	<script>
 		$('#connection').html(io.socket.url);

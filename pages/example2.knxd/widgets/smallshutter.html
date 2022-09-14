@@ -17,7 +17,7 @@
 * @param {item(num)}      a gad/item for the actual position 
 */
 {% macro smallshut(id, txt, gad_move, gad_stop, gad_position) %}
-{% import "basic.html" as basic %}
+{% import "@widgets/basic.html" as basic %}
 {% set uid = uid(page, id) %}
 
 /** Design */

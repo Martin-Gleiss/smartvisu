@@ -31,8 +31,8 @@
 * @param {text=left} position of the switch: left (default) or right
 */
 {% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, left, top, type, hide, picpos) %}
-	{% import "basic.html" as basic %}
-	{% import   "icon.html" as icon %}
+	{% import "@widgets/basic.html" as basic %}
+	{% import "@widgets/icon.html" as icon %}
 	{% set uid = uid(page, id) %}
 	<div id="{{ uid }}-overview" style="position: absolute; top: {{ top }}; left: {{ left }};"  {% if txt %}title="{{ txt }}"{% endif %}>
 		<a style="display: none"> </a> 

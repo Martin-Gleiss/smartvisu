@@ -22,7 +22,7 @@
 */
 
 {% macro pic(id, gad_status) %}
-    {% import   "basic.html" as basic %}
+    {% import "@widgets/basic.html" as basic %}
 	<span class="icon">
       {{ basic.symbol(id|_('win2_icon'), gad_status, '',['fts_window_2w.svg','fts_window_2w_tilt.svg', 'fts_window_2w_open.svg'], [0, 1, 2], '', ['icon0', 'icon1', 'icon1']) }}
     </span>
@@ -38,7 +38,7 @@
 */
 
 {% macro one(id, txt, gad_status) %}
-    {% import   "basic.html" as basic %}
+    {% import "@widgets/basic.html" as basic %}
 	<div class="dimmer">
       &nbsp;{{ txt|e }}:&nbsp;&nbsp;&nbsp;&nbsp;
       {{ basic.symbol(id|_('win1_icon'), gad_status, ['geschlossen', 'gekippt', 'geöffnet'],['fts_window_1w.svg','fts_window_1w_tilt.svg', 'fts_window_1w_open.svg'], [0, 1, 2], '', ['icon0', 'icon1', 'icon1']) }}
@@ -55,7 +55,7 @@
 */
 
 {% macro two(id, txt, gad_status) %}
-    {% import   "basic.html" as basic %}
+    {% import "@widgets/basic.html" as basic %}
     <div>
       &nbsp;{{ txt|e }}:&nbsp;&nbsp;&nbsp;&nbsp;
        {{ basic.symbol(id|_('win2_icon'), gad_status, ['geschlossen', 'gekippt', 'geöffnet'],['fts_window_2w.svg','fts_window_2w_tilt.svg', 'fts_window_2w_open.svg'], [0, 1, 2], '', ['icon0', 'icon1', 'icon1']) }}

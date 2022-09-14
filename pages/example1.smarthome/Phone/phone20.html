@@ -50,7 +50,6 @@
 {% block content %}
 	<h1><img class="icon" src='{{ icon0 }}it_telephone.svg' />Telefonliste - letzten 20 Aktivitäten</h1>
 
-	{% import "phone.html" as phone %}
 	{{ phone.list('phonelist', '', 20) }}
 
 {% endblock %}

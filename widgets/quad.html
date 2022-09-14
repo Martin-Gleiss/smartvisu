@@ -82,8 +82,8 @@
              to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
  */
 {% macro symbol(id, item, txt, pic, val, formula, color, href, rel, linetext, columntext, item_plot, icon_plot, place3, place4, column_order) %}
-    {% import "basic.html" as basic %}
-    {% import "plot.html" as plot %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/plot.html" as plot %}
     {% if item is iterable %}
       {% set id = id is empty ? item[0]|replace('.', '_') : id %}
     {% else %}
@@ -178,8 +178,8 @@
  *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
 */
 {% macro print(id, item, format, formula, threshold, color, classname, place2, linetext, columntext, item_plot, icon_plot, place3, place4, column_order) %}
-    {% import "basic.html" as basic %}
-    {% import "plot.html" as plot %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/plot.html" as plot %}
     {% if item is iterable %}
       {% set id = id is empty ? item[0]|replace('.', '_') : id %}
     {% else %}
@@ -268,9 +268,9 @@
  *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
 */
 {% macro rtr(id, linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator, item_plot, icon_plot, item_setpoint, place4, column_order) %}
-    {% import "basic.html" as basic %}
-    {% import "plot.html" as plot %}
-    {% import "device.html" as device %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/plot.html" as plot %}
+    {% import "@widgets/device.html" as device %}
     {% set id = id is empty ? item_actual|replace('.', '_') : id %}
     <li data-icon="false" class="row_rtr">
     <div class="quad_table sorting row_rtr" id="row_{{uid(page, id)}}_sorting">
@@ -360,13 +360,13 @@
  *
 */
 {% macro dimmer(id, linetext, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos, indicator, slider_orientation, item_uzsu, uzsu_attribs, formula, item_plot, icon_plot, item_auto, extpopup, locks, linetext_widget, place4, column_order) %}
-    {% import "basic.html" as basic %}
-    {% import "device.html" as device %}
-    {% import "plot.html" as plot %}
-    {% import "popup.html" as popup %}
-    {% import "clock.html" as clock %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/device.html" as device %}
+    {% import "@widgets/plot.html" as plot %}
+    {% import "@widgets/popup.html" as popup %}
+    {% import "@widgets/clock.html" as clock %}
     {% if asset_exists('stateengine.html') %}
-      {% import "stateengine.html" as stateengine %}
+      {% import "@widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -732,14 +732,14 @@
              Combine elements in one column by putting them in arrays. Standard is [['locks', 'sequencer', 'colorpicker'],'values', 'stateengine', 'plot', 'uzsu']
  */
 {% macro color(id, item_value_r, item_value_g, item_value_b, min, max, step, colors, style, colormodel, linetext, item_switch_r, item_switch_g, item_switch_b, min_display, max_display, item_uzsu, uzsu_attribs, popupcolor, item_switch_ww, item_value_ww, item_plot, icon_plot, item_auto, extpopup, locks, item_seq, icon_color, linetext_widget, place4, column_order) %}
-    {% import "basic.html" as basic %}
-    {% import "plot.html" as plot %}
-    {% import "icon.html" as icon %}
-    {% import "device.html" as device %}
-    {% import "popup.html" as popup %}
-    {% import "clock.html" as clock %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/plot.html" as plot %}
+    {% import "@widgets/icon.html" as icon %}
+    {% import "@widgets/device.html" as device %}
+    {% import "@widgets/popup.html" as popup %}
+    {% import "@widgets/clock.html" as clock %}
     {% if asset_exists('stateengine.html') %}
-      {% import "stateengine.html" as stateengine %}
+      {% import "@widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -1188,14 +1188,14 @@
              Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'], 'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
 {% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, blind_or_shutter, pos_attribs) %}
-    {% import "basic.html" as basic %}
-    {% import "device.html" as device %}
-    {% import "icon.html" as icon %}
-    {% import "plot.html" as plot %}
-    {% import "popup.html" as popup %}
-    {% import "clock.html" as clock %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/device.html" as device %}
+    {% import "@widgets/icon.html" as icon %}
+    {% import "@widgets/plot.html" as plot %}
+    {% import "@widgets/popup.html" as popup %}
+    {% import "@widgets/clock.html" as clock %}
     {% if asset_exists('stateengine.html') %}
-      {% import "stateengine.html" as stateengine %}
+      {% import "@widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# convert array with uzsu and pos items to separate items #} */
@@ -1691,12 +1691,12 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              Combine elements in one column by putting them in arrays.
  */
 {% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, coverUrl, place1, place2, column_order) %}
-    {% import "basic.html" as basic %}
-    {% import "plot.html" as plot %}
-    {% import "device.html" as device %}
-    {% import "multimedia.html" as multimedia %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/plot.html" as plot %}
+    {% import "@widgets/device.html" as device %}
+    {% import "@widgets/multimedia.html" as multimedia %}
     {% if asset_exists('stateengine.html') %}
-      {% import "stateengine.html" as stateengine %}
+      {% import "@widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -2265,14 +2265,14 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
 */
 {% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, item_longpress, value_longpress, value_longrelease, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, linetext_widget, place4, column_order, switch_or_select) %}
-    {% import "basic.html" as basic %}
-    {% import "device.html" as device %}
-    {% import "icon.html" as icon %}
-    {% import "plot.html" as plot %}
-    {% import "popup.html" as popup %}
-    {% import "clock.html" as clock %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/device.html" as device %}
+    {% import "@widgets/icon.html" as icon %}
+    {% import "@widgets/plot.html" as plot %}
+    {% import "@widgets/popup.html" as popup %}
+    {% import "@widgets/clock.html" as clock %}
     {% if asset_exists('stateengine.html') %}
-      {% import "stateengine.html" as stateengine %}
+      {% import "@widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -2942,7 +2942,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @info Inspired by Michael Würtenberger, date/time control uses JTSageDateBox
 */
 {% macro input(id, item, type, min, max, step, place1, place2, linetext, columntext, column_order) %}
-    {% import "basic.html" as basic %}
+    {% import "@widgets/basic.html" as basic %}
     {% if item is iterable %}
       {% set id = id is empty ? item[0]|replace('.', '_') : id %}
     {% else %}
