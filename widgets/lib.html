@@ -199,5 +199,5 @@
 		{% set pic = '@icons/' ~ 'jquery_' ~ pic ~ '.svg' %}
 	{% endif -%}
 	<svg class="icon {{ iconclass }}" {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} {{ (styleoptions is not empty ? 'style ="' ~ styleoptions ~'"' : '')|raw }} role="img" aria-label="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}" 
-	{{ source( pic )|preg_replace('/<.*\n*<svg/','')|replace( {'stroke="#fff"':'', 'fill="#fff"':'', 'stroke="#FFF"':'', 'fill="#FFF"':''} )|raw }} 
+	{{ source( pic )|split('<svg')[1]|replace( {'stroke="#fff"':'', 'fill="#fff"':'', 'stroke="#FFF"':'', 'fill="#FFF"':''} )|raw }}
 {% endmacro %}
