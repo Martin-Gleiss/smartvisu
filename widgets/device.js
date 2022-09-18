@@ -27,7 +27,8 @@ $.widget("sv.device_codepad", $.sv.widget, {
 
     $('[data-bind="' + id + '"]')
     .on('mouseenter', function(event) {
-      clickpreventer.appendTo(this)
+      if (!$(this).closest('[data-bind="' + id + '"]').data('access'))
+		  clickpreventer.appendTo(this)
       .css({
         left: parseInt(event.pageX - clickpreventer.offsetParent().offset().left)-1,
         top:  parseInt(event.pageY - clickpreventer.offsetParent().offset().top)-1,
@@ -35,7 +36,8 @@ $.widget("sv.device_codepad", $.sv.widget, {
       });
     })
     .on('mousemove', '*', function(event) {
-      clickpreventer.appendTo(this)
+      if (!$(this).closest('[data-bind="' + id + '"]').data('access')) 
+		  clickpreventer.appendTo(this)
       .css({
         left: parseInt(event.pageX - clickpreventer.offsetParent().offset().left)-1,
         top:  parseInt(event.pageY - clickpreventer.offsetParent().offset().top)-1,
