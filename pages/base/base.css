@@ -2119,9 +2119,11 @@ svg.icon {
   margin: 1px;
 }
 
+/** do not show hand on icon
 svg.icon:hover {
   cursor: pointer;
 }
+*/
 
 svg.icon text {
   font-size: 30px;
