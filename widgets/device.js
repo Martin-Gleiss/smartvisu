@@ -2660,10 +2660,10 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                             myTimeDict.push(myInstance._GetTimeEntryDict(myActItem.calculated))
                         } else {
                             if (myActItem.time.search("sunrise") >= 0) {
-                                myTimeDict.push(myInstance._GetTimeEntryDict(myActItem.sunrise))
+                                myTimeDict.push(myInstance._GetTimeEntryDict(myDict.sunrise != undefined ? myDict.sunrise : "06:00"))
                             }
                             if (myActItem.time.search("sunset") >= 0) {
-                                myTimeDict.push(myInstance._GetTimeEntryDict(myActItem.sunset))
+                                myTimeDict.push(myInstance._GetTimeEntryDict(myDict.sunset != undefined ? myDict.sunset : "19:30" ))
                             }
                         }
                     }

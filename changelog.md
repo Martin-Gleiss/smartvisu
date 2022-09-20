@@ -37,7 +37,7 @@
 
 ### Fixed Bugs
 - basic.input did not set time/timeflip values if min / max options were defined
-- device.uzsutable threw errors if sunrise was not set
+- device.uzsutable threw errors if sunrise was not set or not calculated
 - navbars and listviews changed display if an already active anchor was clicked
 - server time could not be used as selected in configuration
 - device.uzsugraph threw errors on new points with sun-based series events
