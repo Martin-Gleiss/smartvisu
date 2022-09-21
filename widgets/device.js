@@ -387,7 +387,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 
     // wenn keine Daten vorhanden, bzw. nicht mindestens die Eigenschaft "active" vorhanden ist, dann ist kein UZSU-item angelegt / initialisiert und es wird nichts gemacht
     if (response.length === 0 || !response[0].hasOwnProperty("active")){
-      notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget '" + this.options.id + "'.");
+	  var supplement = (this.options.item.substr(-5) != ".uzsu") ? "Seems this is not an uzsu item. Try '" + this.options.item+".uzsu'." : "";
+      notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "'" + (this.options.id ? " for widget '" + this.options.id + "'. " : ". ") + supplement) ;
       return;
     }
 
@@ -1379,7 +1380,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // Fehlerbehandlung für ein nicht vorhandenes DOM Objekt. Das response Objekt ist erst da, wenn es mit update angelegt wurde. Da diese
     // Schritte asynchron erfolgen, kann es sein, dass das Icon bereits da ist, clickbar, aber noch keine Daten angekommen. Dann darf ich nicht auf diese Daten zugreifen wollen !
     if(response.list === undefined){
-      notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "' for widget '" + this.id + "'.");
+   	  var supplement = (this.options.item.substr(-5) != ".uzsu") ? "Seems this is not an uzsu item. Try '" + this.options.item+".uzsu'." : "";
+      notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "'" + (this.options.id ? " for widget '" + this.options.id + "'. " : ". ") + supplement);
       return false;
     }
 
