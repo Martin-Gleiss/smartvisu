@@ -23,9 +23,11 @@
 - device.uzsuicon and device.uzsutable only initialize a dict, if at least the "active"-property is initialized by the backend. This prevents writing dicts to non-UZSU items
 - rooms with navbars in example1.smarthome now show the selected item repeatedly as active - not only at first visit (by adding "ui-state-persistent" to the "ui-btn-active" class)
 - name spaces for icons and widgets allow more flexibility with filenames
+- some measures to avoid "deprecated" warnings in Twig on php8.1 (set default values in widgets explicitely since arguments in some twig filters must not be empty (null))
 
 ### Updated Libraries
 - JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits
+- Patches in Twig scripts: see CHANGELOG in Twig folder
 
 ### Deprecated
 - smarthome.py.js driver has been deprectated and moved to ./driver/deprecated 

@@ -115,7 +115,7 @@
 		{% endif %}
 	{% endif %}
 	{% set source = source|default('database') %}
-	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
+	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1h') %}
 
 	{% set mode = (mode is iterable ? mode : [mode|default('avg')]) %}
@@ -202,7 +202,7 @@
   Additionally you may pass 'on' to use backend's 'on' function (caution: not all backend databases do support this).
 */
 {% macro rtr(id, item_actual, item_set, item_state, count, tmin, tmax, state_max) %}
-	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
+	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1d') %}
 	{% set count = count|default(100) %}
 	{% set items = [ implode(item_actual, ['avg', tmin, tmax, count]), implode(item_set, ['avg', tmin, tmax, count]) ] %}

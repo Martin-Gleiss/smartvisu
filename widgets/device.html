@@ -300,7 +300,7 @@
 
 	/** set displayed decimals to decimals of step parameter */
 	{% set setformat = lang ('format', 'temp') %}
-	{% set stepparts = step|split('.') %}
+	{% set stepparts = step|default('.1')|split('.') %}
 	{% set decs = (stepparts[1] >0 ? stepparts[1]|length : 0) %} {% set setformat = setformat|replace(',1f', ','~decs~'f') %}
 	
 	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{item_actual}},{{item_set}},{{item_offset}}"  

@@ -243,6 +243,7 @@
 * @info Inspired by Michael Würtenberger, date/time control uses JTSageDateBox
 */
 {% macro input(id, item, type, min, max, step, format) %}
+	{% set type = type|default('text') %}
 	{% if type|lower == 'textarea' %}
 		<textarea {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.input" data-item="{{ item }}" type="textarea"></textarea>
 	{% else %}
