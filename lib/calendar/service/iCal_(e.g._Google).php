@@ -27,12 +27,18 @@ class calendar_ical extends calendar
 	{
 		$i = 0;
 		$config_calendar_names = preg_split('/,\s*/m', strtolower(config_calendar_name));
-		foreach(preg_split('/[\s,]+/m', $this->url) as $url) {
-			if(count($this->calendar_names) == 1 && $this->calendar_names[0] == '' || in_array($config_calendar_names[$i], $this->calendar_names)) {
-				$ical = new ICal($url, array('defaultSpan' => 1));
-				$this->addFromIcs($ical, array('calendarname' => $config_calendar_names[$i]));
+		try {
+			foreach(preg_split('/[\s,]+/m', $this->url) as $url) {
+				if(count($this->calendar_names) == 1 && $this->calendar_names[0] == '' || in_array($config_calendar_names[$i], $this->calendar_names)) {
+					$ical = new ICal($url, array('defaultSpan' => 1));
+					$this->addFromIcs($ical, array('calendarname' => $config_calendar_names[$i]));
+				}
+				$i++;
 			}
-			$i++;
+		}
+		// catch the uncaught exceptions from iCal ("URL not existing" or "Invalid iCal date format")
+		catch(\Exception $e) {
+			$this->error('iCal (e.g.Google) Calendar', $e->getMessage());
 		}
 	}
 }

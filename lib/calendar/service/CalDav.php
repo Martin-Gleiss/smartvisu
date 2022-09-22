@@ -48,7 +48,7 @@ class calendar_caldav extends calendar
 				$loadError = substr(strrchr($this->errorMessage, ':'), 2);
 			elseif (!empty($http_response_header)) 
 				$loadError = $http_response_header[0];
-			$this->error('Calendar: CalDav', 'Read request to "'.$url.'" failed with message "'.$loadError.'"');
+			$this->error('Calendar: CalDav', 'Read request to "'.$url.'" failed with message: "'.$loadError.'"');
 			if (!empty($http_response_header))
 				$this->debug(implode("\n", $http_response_header));
 			echo $this->json();
@@ -145,8 +145,8 @@ XMLQUERY;
 			}
 		}
 		if (!$xml || empty($calurls)) {
-			$calError = $this->errorMessage.'<br><br>Calendar URLs could not be identified in remote answer.<br><br>Try using ICS calendar service';
-			$this->error('Calendar: CalDav', 'Read request failed with message'.$calError );
+			$calError = $this->errorMessage.'".<br><br>Calendar URLs could not be identified in remote answer.<br><br>Try using ICS calendar service';
+			$this->error('Calendar: CalDav', 'Read request failed with message: "'.$calError );
 		}
 		return $calurls;
 	}
