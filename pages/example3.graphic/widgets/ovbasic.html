@@ -114,7 +114,7 @@
 * @see misc/fundamentals#Duration-Format
 */
 {% macro period(id, txt, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions) %}
-	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
+	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1h') %}
 
 	{% set mode = (mode is iterable ? mode : [mode|default('avg')]) %}

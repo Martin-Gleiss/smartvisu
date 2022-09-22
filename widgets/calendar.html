@@ -36,7 +36,7 @@
 		/** build associative array of calendar name and according color */
 		{% set calendarcolors = [] %}
 		{% for configname in confignames %}
-			{% set calendarcolors = calendarcolors|merge({ (configname|trim|lower): configcolors[loop.index0]|trim }) %}
+			{% set calendarcolors = calendarcolors|merge({ (configname|trim|lower): configcolors[loop.index0]|default('grey')|trim }) %}
 		{% endfor %}
 		/** find color for calendars */
 		{% set calendar = calendar|default(confignames) %}
