@@ -75,7 +75,7 @@ class calendar extends service
 				'start' => $ical->iCalDateToUnixTimestamp($event->dtstart, true),
 				'end' => $event->dtend != null ? $ical->iCalDateToUnixTimestamp($event->dtend, true) : $ical->iCalDateToUnixTimestamp($event->dtstart, true),
 				'title' => $event->summary,
-				'content' => str_replace("\\n", "\n", $event->description),
+				'content' => str_replace("\\n", "\n", $event->description != null ? $event->description : ""),
 				'where' => $event->location,
 				'calendarname' => $calmetadata['calendarname'] != '' ? $calmetadata['calendarname'] : $ical->calendarName(),
 				'calendardesc' => $calmetadata['calendardesc'] != '' ? $calmetadata['calendardesc'] : $ical->calendarDescription(),

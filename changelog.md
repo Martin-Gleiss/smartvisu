@@ -28,6 +28,7 @@
 ### Updated Libraries
 - JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits
 - Patches in Twig scripts: see CHANGELOG in Twig folder
+- ICal ICS Parser updated to v3.2.0
 
 ### Deprecated
 - smarthome.py.js driver has been deprectated and moved to ./driver/deprecated 
