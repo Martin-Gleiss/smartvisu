@@ -395,7 +395,7 @@
       {% elseif item == 'plot' and item_plot %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == '' or item == ' ' %}
+      {% elseif item == '' or item == ' ' or item is null %}
         {% set elements = elements|merge({(key):('empty')}) %}
         {% set written = 1 %}
       {% elseif item matches '/^[\\d\\.]+$/' %}
@@ -426,8 +426,8 @@
         {% elseif arrayitem == 'plot' and item_plot %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
-        {% elseif arrayitem == '' or arrayitem == ' ' %}
-          {% set elements = elements|merge({(key):(arrayitem)}) %}
+        {% elseif arrayitem == '' or arrayitem == ' ' or arrayitem is null %}
+          {% set elements = elements|merge({(key):('empty')}) %}
           {% set written = 1 %}
         {% endif %}
       {% endfor %}
@@ -437,7 +437,7 @@
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
             {% endif %}
-        {% else %}
+        {% elseif  column_order[key+1] is not null %}
             {% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
@@ -774,7 +774,7 @@
       {% elseif item == 'plot' and item_plot %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == '' or item == ' ' %}
+      {% elseif item == '' or item == ' ' or item is null %}
         {% set elements = elements|merge({(key):('empty')}) %}
         {% set written = 1 %}
       {% elseif item matches '/^[\\d\\.]+$/' %}
@@ -811,7 +811,7 @@
         {% elseif arrayitem == 'plot' and item_plot %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
-        {% elseif arrayitem == '' or arrayitem == ' ' %}
+        {% elseif arrayitem == '' or arrayitem == ' ' or arrayitem is null %}
           {% set elements = elements|merge({(key):('empty')}) %}
           {% set written = 1 %}
         {% endif %}
@@ -822,8 +822,8 @@
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
             {% endif %}
-        {% else %}
-            {% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
+        {% elseif  column_order[key+1] is not null %}
+			{% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
             {% endif %}
@@ -1242,7 +1242,7 @@
       {% elseif item == 'plot' and item_plot %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == '' or item == ' ' %}
+      {% elseif item == '' or item == ' ' or item is null %}
         {% set elements = elements|merge({(key):('empty')}) %}
         {% set written = 1 %}
       {% elseif item matches '/^[\\d\\.]+$/' %}
@@ -1286,7 +1286,7 @@
           {% elseif arrayitem == 'plot' and item_plot %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
-          {% elseif arrayitem == '' or arrayitem == ' ' %}
+          {% elseif arrayitem == '' or arrayitem == ' ' or arrayitem is null %}
             {% set elements = elements|merge({(key):('empty')}) %}
             {% set written = 1 %}
           {% endif %}
@@ -1298,7 +1298,7 @@
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
             {% endif %}
-        {% else %}
+        {% elseif  column_order[key+1] is not null %}
             {% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
@@ -1776,7 +1776,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
       {% elseif item == 'plot' and item_plot %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == ' ' %}
+      {% elseif item == ' ' or item is null  %}
         {% set elements = elements|merge({(key):('empty')}) %}
         {% set written = 1 %}
       {% elseif item matches '/^[\\d\\.]+$/' %}
@@ -1858,7 +1858,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% elseif arrayitem == 'plot' and item_plot %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
-          {% elseif arrayitem == ' ' %}
+          {% elseif arrayitem == ' ' or arrayitem is null %}
             {% set elements = elements|merge({(key):('empty')}) %}
           {% endif %}
       {% endfor %}
@@ -1868,7 +1868,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
             {% endif %}
-        {% else %}
+        {% elseif  column_order[key+1] is not null %}
             {% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
