@@ -338,6 +338,10 @@ class WidgetParameterChecker {
 		if (!$this->checkParameterNotEmpty($value))
 			return;
 
+		//consider noembed option
+		if (substr($value, -3, 3) == "/ne" )
+			$value = substr($value, 0, -3);
+
 		// inline picture
 		if (in_array($value, TemplateCheckerConfig::SmartvisuInlinePictures))
 			return;
@@ -448,12 +452,7 @@ class WidgetParameterChecker {
 		if (!$this->checkParameterNotEmpty($value))
 			return;
 
-		// these are defined based on the smartvisu layout
-		//wvhn @v3.1 move icon0 / icon1 in valid values of the individual widgets since not all widgets accept them
-		//	if ($value == 'icon0' || $value == 'icon1')
-		//		return;
-
-		// additional widget-specific valid values
+		// widget-specific valid values, e.g. classes icon0 through icon5
 		if ($this->checkParameterValidValues($value))
 			return;
 
@@ -462,8 +461,7 @@ class WidgetParameterChecker {
 			return;
 
 		// basic.window and device.window and maybe other dynamic icons in future have a special color mode (variable / constant)
-		// constant mode needs to start with '!#' and be 5 (!#+3), 6, 8 or 10 (!#+8) characters long including RBGA colors
-		//if ($this->checkParameterValidValues('!') && substr($value, 0, 2) == '!#' && (strlen($value) == 5 || strlen($value) == 6 ||strlen($value) == 8 ||strlen($value) == 10) && ctype_xdigit(substr($value, 2)))
+		// constant mode needs to start with '!' and continue with one of the allowed colors or classes 
 		if ($this->checkParameterValidValues('!') && substr($value, 0, 1) == '!') {
 			$this->checkParameterTypeColor(substr($value,1));
 			return;
