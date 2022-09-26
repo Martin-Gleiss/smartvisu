@@ -799,7 +799,14 @@ button[disabled],
 .highcharts-tooltip text {
 	fill: #000;
 }
-
+.polarChart .highcharts-axis-line,
+.solidgauge .highcharts-axis-line,
+.solidgauge .highcharts-grid-line {
+  stroke: none;
+}
+.highcharts-grid .highcharts-grid-line {
+  stroke: rgba(0, 0, 0, .15);
+}
 
 .highcharts-color-0 {
 	fill: #5595c6;

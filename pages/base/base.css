@@ -1775,7 +1775,7 @@ div.ui-slider-switch{
   font-size: 13px;
 }
 .highcharts-grid .highcharts-grid-line {
-  stroke: rgba(255, 255, 255, .1);
+  stroke: rgba(255, 255, 255, .15);
   stroke-width: 1px;
 }
 

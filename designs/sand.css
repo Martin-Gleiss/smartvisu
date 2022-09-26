@@ -1607,6 +1607,10 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 
 /* Highcharts
 -----------------------------------------------------------------------------------------------------------*/
+
+.highcharts-grid .highcharts-grid-line {
+  stroke: rgba(0, 0, 0, .15);
+}
 .highcharts-color-0 {
 	fill: #f9a028;
 	stroke: #f9a028;
