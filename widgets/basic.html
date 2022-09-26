@@ -160,8 +160,8 @@
 		{% if pic|trim|slice(0, 4) != '<svg' -%} /** pic is not a dynamic icon */
 
 			/**- rewrite legacy png to svg if png file does not exist and svg file does -*/
-			/**- and rewrite smartVISU svg with path to icons namespace -*/
-			{% if ((pic matches '#^icons/../.*\.png$#' and not isfile(pic)) or (pic matches '#^icons/../.*\.svg$#' and noembed == 0) and isfile(iconF ~ pic|slice(9,-4) ~ '.svg')) %}
+			/**- and rewrite smartVISU svg with path to icons namespace if it exists -*/
+			{% if ((pic matches '#^icons/../.*\.png$#' and not isfile(pic)) or (pic matches '#^icons/../.*\.svg$#' and noembed == 0)) and isfile(iconF ~ pic|slice(9,-4) ~ '.svg') %}
 				{% if pic|slice(6, 2) != iconF|slice(-3, 2) %}
 					{% set color = pic|slice(6, 2) %}
 				{% endif %}
@@ -198,7 +198,7 @@
 			{% if  pic|trim|slice(-4, 4) == '.svg' and pic|trim|slice(0,6) == '@icons' %}
 				" role="img" aria-label="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}" {{ source( pic )|split('<svg')[1]|replace( {'stroke="#fff"':'', 'fill="#fff"':'', 'stroke="#FFF"':'', 'fill="#FFF"':''} )|raw }}  
 			{% else %}
-				" src="{{ pic|deficon }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}">
+				" src="{{ pic }}" alt="{{ pic|split('/')|last|split('.')[0:-1]|join('.')|default(pic) }}">
 			{% endif %}
 		{%- else -%}
 			">{{ pic }}</span>
