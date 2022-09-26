@@ -1615,10 +1615,10 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 }
 
 .highcharts-axis .highcharts-axis-line {
-	stroke: #333;
+	stroke: #999;
 }
 .highcharts-tick {
-	stroke: #333;
+	stroke: #999;
 }
 .highcharts-axis-labels {
 	fill: #666;
@@ -1657,6 +1657,16 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 	fill: #000;
 }
 
+.polarChart .highcharts-axis-line,
+.solidgauge .highcharts-axis-line,
+.solidgauge .highcharts-grid-line {
+  stroke: none;
+}
+
+
+.highcharts-grid .highcharts-grid-line {
+  stroke: rgba(0, 0, 0, .15);
+}
 
 .highcharts-color-0 {
 	fill: #5595c6;
