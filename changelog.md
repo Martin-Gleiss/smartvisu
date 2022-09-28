@@ -24,6 +24,7 @@
 - rooms with navbars in example1.smarthome now show the selected item repeatedly as active - not only at first visit (by adding "ui-state-persistent" to the "ui-btn-active" class)
 - name spaces for icons and widgets allow more flexibility with filenames
 - some measures to avoid "deprecated" warnings in Twig on php8.1 (set default values in widgets explicitely since arguments in some twig filters must not be empty (null))
+- web services "phone" and "calendar" throw errors if php-dom module is not loaded
 
 ### Updated Libraries
 - JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits
