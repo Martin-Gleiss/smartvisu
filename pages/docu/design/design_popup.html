@@ -40,7 +40,7 @@ $( document ).ready(function() {
 				{{ popup.locks('locks_popup', ['item_lock', ['green', 'red']], ['item_bwmlock', ['green', 'red']], ['item_force', 'red']) }}
 			</div>
 
-			Any simple widget in popup
+			Any simple widget in popup. If you want to have multiple widget in one line, you need to use arrays within arrays, see example below.
 				<div class="twig">
 					<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 						<a href="#ext_popup" data-rel="popup">
@@ -59,6 +59,52 @@ $( document ).ready(function() {
 		Here are some examples to show how popups are used.
 
 		<h5>Examples</h5>
+
+		Complex extended Popup
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				<a href="#ext_popup" data-rel="popup">
+					Extended Popup with four lines
+				</a>
+				{{ popup.extpopup('ext_popup',
+				['edit_favorites.svg',                                                              // Icon
+					[                                                                                 // Starts a new line
+					['linetext', 'select', 'switch'],                                                 // This line has a Text, a select and a switch
+					'Textexample',                                                                    // The text
+					['item.automatik.settings.sollwert', 'mini', [0,4,6]],                            // The select
+					['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]     // The switch
+					],                                                                                // Ends the line
+					[                                                                                 // Starts the line
+					['switch', 'slider'],                                                             // The second line has a switch and a slider
+					['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']],    // Specific declaration of the switch widget
+					['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']					// Specific declaration of the slider widget
+					],       																																					// End of second line
+					[                                                                                 // Start of second line
+					['slider'],                                                                       // Implements a slider in the third line
+					['item.automatik.settings.sollwert', '0', '1', '0']                               // Specific declaration of the slider widget
+					],                                                                                // End of third line
+					[                                                                                 // Start of fourth line
+					['linetext', 'flip'],                                                             // Defines, that the fourth line includes an inline text and a flip widget
+					'Flip:',                                                                          // Specific declaration of inline text
+					['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']                         // Specific declaration of the flip widget
+					]                                                                                 // Ends the last line
+				]																																										// Ends the popup array
+				) }}
+			{% endverbatim %}{% endfilter %}</code>
+		</div>
+		<div class="html">
+			<a href="#ext_popup" data-rel="popup">
+				Extended Popup with four lines
+			</a>
+			{{ popup.extpopup('ext_popup',
+			['edit_favorites.svg',
+				[['linetext', 'select', 'switch'],'Textexample',['item.automatik.settings.sollwert', 'mini', [0,4,6]],['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]],
+				[['switch', 'slider'],['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']],['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']],
+				[['slider'],['item.automatik.settings.sollwert', '0', '1', '0']],                                                                                // End of third line
+				[['linetext', 'flip'],'Flip:',['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']]                                                                                 // Ends the last line
+			]
+			) }}
+		</div>
 
 		A horizontal popup with some switches
 		<div class="twig">
