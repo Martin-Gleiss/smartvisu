@@ -861,8 +861,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     var uzsuCalc = uzsuRowExpHoli.find('.uzsuCalculated'+caller).val();
 	if (uzsuRowExpHoli.find('.uzsuSunActive'+caller).is(':checked')){
 	  if (caller == 'seriesend'){
-	    uzsuRowExpHoli.prevUntil(searchLine).find('.uzsuSeriesEndTypeInput').last().find(':radio').prop('checked', false).checkboxradio("refresh")
-		  .end().find('[value="t"]:radio').prop('checked', true).checkboxradio("refresh");
+	    uzsuRowExpHoli.prevUntil(searchLine).find('.uzsuSeriesEndTypeInput').last().find(':radio').prop('checked', false).checkboxradio("refresh").checkboxradio( "disable" )
+		  .end().find('[value="t"]:radio').prop('checked', true).checkboxradio("refresh").checkboxradio( "disable" )
+		  .parents().find('.uzsuCellText.uzsuTimeSerieMaxText').text(sv_lang.uzsu.seriesend);
 	  }
       uzsuTimeCron.attr('type','input').val(uzsuRowExpHoli.find('.uzsuEvent'+caller+' select').val()).textinput('disable');
       var myExpertrow = uzsuRowExpHoli.next();
@@ -873,6 +874,10 @@ $.widget("sv.device_uzsu", $.sv.widget, {
         uzsuTimeCron.attr('type','time').val((uzsuCalc == undefined || uzsuCalc == '') ? '00:00' : uzsuCalc);
 	  if(uzsuTimeCron.val().indexOf('series')!=0)
 		uzsuTimeCron.textinput('enable');
+	  if (caller == 'seriesend'){
+	    uzsuRowExpHoli.prevUntil(searchLine).find('.uzsuSeriesEndTypeInput').last().find(':radio').checkboxradio( "enable" )
+		  .end().find('[value="t"]:radio').checkboxradio( "enable" )
+	  }
     }
   },
 
