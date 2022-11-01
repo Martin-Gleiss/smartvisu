@@ -25,11 +25,13 @@
 - name spaces for icons and widgets allow more flexibility with filenames
 - some measures to avoid "deprecated" warnings in Twig on php8.1 (set default values in widgets explicitely since arguments in some twig filters must not be empty (null))
 - web services "phone" and "calendar" throw errors if php-dom module is not loaded
+- plot exporting to png and pdf has been switched to local ("offline") mode. This avoids sending data to highcharts servers.
 
 ### Updated Libraries
 - JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits
 - Patches in Twig scripts: see CHANGELOG in Twig folder
-- ICal ICS Parser updated to v3.2.0
+- ICal ICS Parser v3.2.0
+- Highcharts v10.3.0
 
 ### Deprecated
 - smarthome.py.js driver has been deprectated and moved to ./driver/deprecated 

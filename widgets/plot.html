@@ -110,6 +110,7 @@
 {% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export, source) %}
 	{% if (not export is empty) and export > 0 %}
 		<script src="vendor/plot.highcharts/modules/exporting.js"></script>
+		<script src="vendor/plot.highcharts/modules/offline-exporting.js"></script>
 		{% if export == 2 %}
 			<script src="vendor/plot.highcharts/modules/export-data.js"></script>
 		{% endif %}
@@ -277,6 +278,7 @@
 {% macro xyplot(id, item, xitem, yitem, xmin, xmax, ymin, ymax, label, xylabel, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export) %}
 	{% if (not export is empty) and export > 0 %}
 		<script src="vendor/plot.highcharts/modules/exporting.js"></script>
+		<script src="vendor/plot.highcharts/modules/offline-exporting.js"></script>
 		{% if export == 2 %}
 			<script src="vendor/plot.highcharts/modules/export-data.js"></script>
 		{% endif %}

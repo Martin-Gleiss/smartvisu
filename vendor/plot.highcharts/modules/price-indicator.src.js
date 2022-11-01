@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v9.3.1 (2021-11-05)
+ * @license Highstock JS v10.3.0 (2022-10-31)
  *
  * Advanced Highcharts Stock tools
  *
@@ -8,7 +8,6 @@
  *
  * License: www.highcharts.com/license
  */
-'use strict';
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
         factory['default'] = factory;
@@ -23,10 +22,20 @@
         factory(typeof Highcharts !== 'undefined' ? Highcharts : undefined);
     }
 }(function (Highcharts) {
+    'use strict';
     var _modules = Highcharts ? Highcharts._modules : {};
     function _registerModule(obj, path, args, fn) {
         if (!obj.hasOwnProperty(path)) {
             obj[path] = fn.apply(null, args);
+
+            if (typeof CustomEvent === 'function') {
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'HighchartsModuleLoaded',
+                        { detail: { path: path, module: obj[path] }
+                    })
+                );
+            }
         }
     }
     _registerModule(_modules, 'Extensions/PriceIndication.js', [_modules['Core/Series/Series.js'], _modules['Core/Utilities.js']], function (Series, U) {
@@ -289,7 +298,8 @@
                         yAxis.options.crosshair &&
                         seriesOptions.lastPrice) {
                         // Set the default color from the series, #14888.
-                        yAxis.crosshair.color = yAxis.options.crosshair.color = seriesOptions.lastPrice.color || series.color;
+                        yAxis.crosshair.color = yAxis.options.crosshair.color =
+                            seriesOptions.lastPrice.color || series.color;
                     }
                     yAxis.cross = series.lastPrice;
                     yValue = isArray(y) ? y[3] : y;

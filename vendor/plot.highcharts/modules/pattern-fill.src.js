@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v9.3.1 (2021-11-05)
+ * @license Highcharts JS v10.3.0 (2022-10-31)
  *
  * Module for adding patterns and images as point fills.
  *
@@ -8,7 +8,6 @@
  *
  * License: www.highcharts.com/license
  */
-'use strict';
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
         factory['default'] = factory;
@@ -23,13 +22,23 @@
         factory(typeof Highcharts !== 'undefined' ? Highcharts : undefined);
     }
 }(function (Highcharts) {
+    'use strict';
     var _modules = Highcharts ? Highcharts._modules : {};
     function _registerModule(obj, path, args, fn) {
         if (!obj.hasOwnProperty(path)) {
             obj[path] = fn.apply(null, args);
+
+            if (typeof CustomEvent === 'function') {
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'HighchartsModuleLoaded',
+                        { detail: { path: path, module: obj[path] }
+                    })
+                );
+            }
         }
     }
-    _registerModule(_modules, 'Extensions/PatternFill.js', [_modules['Core/Animation/AnimationUtilities.js'], _modules['Core/Chart/Chart.js'], _modules['Core/Globals.js'], _modules['Core/DefaultOptions.js'], _modules['Core/Series/Point.js'], _modules['Core/Series/Series.js'], _modules['Core/Renderer/SVG/SVGRenderer.js'], _modules['Core/Utilities.js']], function (A, Chart, H, D, Point, Series, SVGRenderer, U) {
+    _registerModule(_modules, 'Extensions/PatternFill.js', [_modules['Core/Animation/AnimationUtilities.js'], _modules['Core/Chart/Chart.js'], _modules['Core/Globals.js'], _modules['Core/Defaults.js'], _modules['Core/Series/Point.js'], _modules['Core/Series/Series.js'], _modules['Core/Renderer/SVG/SVGRenderer.js'], _modules['Core/Utilities.js']], function (A, Chart, H, D, Point, Series, SVGRenderer, U) {
         /* *
          *
          *  Module for using patterns or images as point fills.
@@ -45,6 +54,7 @@
         var animObject = A.animObject;
         var getOptions = D.getOptions;
         var addEvent = U.addEvent,
+            defined = U.defined,
             erase = U.erase,
             merge = U.merge,
             pick = U.pick,
@@ -95,7 +105,7 @@
          * @private
          * @function hashFromObject
          *
-         * @param {object} obj
+         * @param {Object} obj
          *        The javascript object to compute the hash from.
          *
          * @param {boolean} [preSeed=false]
@@ -167,6 +177,12 @@
                 if (!bBox.width || !bBox.height) {
                     pattern._width = 'defer';
                     pattern._height = 'defer';
+                    // Mark the pattern to be flipped later if upside down (#16810)
+                    var scaleY = this.series.chart.mapView &&
+                            this.series.chart.mapView.getSVGTransform().scaleY;
+                    if (defined(scaleY) && scaleY < 0) {
+                        pattern._inverted = true;
+                    }
                     return;
                 }
                 // Handle aspect ratio filling
@@ -242,7 +258,10 @@
             }, attribs;
             if (!id) {
                 this.idCounter = this.idCounter || 0;
-                id = 'highcharts-pattern-' + this.idCounter + '-' + (this.chartIndex || 0);
+                id = ('highcharts-pattern-' +
+                    this.idCounter +
+                    '-' +
+                    (this.chartIndex || 0));
                 ++this.idCounter;
             }
             if (this.forExport) {
@@ -265,6 +284,12 @@
                     x: options._x || options.x || 0,
                     y: options._y || options.y || 0
                 };
+            if (options._inverted) {
+                attrs.patternTransform = 'scale(1, -1)'; // (#16810)
+                if (options.patternTransform) {
+                    options.patternTransform += ' scale(1, -1)';
+                }
+            }
             if (options.patternTransform) {
                 attrs.patternTransform = options.patternTransform;
             }
@@ -357,10 +382,10 @@
                             !(point.shapeArgs &&
                                 point.shapeArgs.width &&
                                 point.shapeArgs.height)) {
-                            colorOptions.pattern._width =
-                                'defer';
-                            colorOptions.pattern._height =
-                                'defer';
+                            colorOptions
+                                .pattern._width = 'defer';
+                            colorOptions
+                                .pattern._height = 'defer';
                         }
                         else {
                             point.calculatePatternDimensions(colorOptions.pattern);
@@ -435,7 +460,7 @@
                 // Add it. This function does nothing if an element with this ID
                 // already exists.
                 this.addPattern(pattern, !this.forExport && pick(pattern.animation, this.globalAnimation, { duration: 100 }));
-                value = "url(" + this.url + "#" + (pattern.id + (this.forExport ? '-export' : '')) + ")";
+                value = "url(".concat(this.url, "#").concat(pattern.id + (this.forExport ? '-export' : ''), ")");
             }
             else {
                 // Not a full pattern definition, just add color
@@ -465,10 +490,10 @@
                         var colorOptions = point.options && point.options.color;
                         if (colorOptions &&
                             colorOptions.pattern) {
-                            colorOptions.pattern._width =
-                                'defer';
-                            colorOptions.pattern._height =
-                                'defer';
+                            colorOptions.pattern
+                                ._width = 'defer';
+                            colorOptions.pattern
+                                ._height = 'defer';
                         }
                     });
                 });
@@ -494,7 +519,10 @@
                             node.getAttribute('color') ||
                             node.getAttribute('stroke');
                     if (id) {
-                        var sanitizedId = id.replace(renderer.url, '').replace('url(#', '').replace(')', '');
+                        var sanitizedId = id
+                                .replace(renderer.url, '')
+                                .replace('url(#', '')
+                                .replace(')', '');
                         usedIds[sanitizedId] = true;
                     }
                 });
@@ -524,11 +552,11 @@
          */ /**
         * Background color for the pattern if a `path` is set (not images).
         * @name Highcharts.PatternOptionsObject#backgroundColor
-        * @type {Highcharts.ColorString}
+        * @type {Highcharts.ColorString|undefined}
         */ /**
         * URL to an image to use as the pattern.
         * @name Highcharts.PatternOptionsObject#image
-        * @type {string}
+        * @type {string|undefined}
         */ /**
         * Width of the pattern. For images this is automatically set to the width of
         * the element bounding box if not supplied. For non-image patterns the default
@@ -536,17 +564,17 @@
         * box dynamically is only supported for patterns with an automatically
         * calculated ID.
         * @name Highcharts.PatternOptionsObject#width
-        * @type {number}
+        * @type {number|undefined}
         */ /**
         * Analogous to pattern.width.
         * @name Highcharts.PatternOptionsObject#height
-        * @type {number}
+        * @type {number|undefined}
         */ /**
         * For automatically calculated width and height on images, it is possible to
         * set an aspect ratio. The image will be zoomed to fill the bounding box,
         * maintaining the aspect ratio defined.
         * @name Highcharts.PatternOptionsObject#aspectRatio
-        * @type {number}
+        * @type {number|undefined}
         */ /**
         * Horizontal offset of the pattern. Defaults to 0.
         * @name Highcharts.PatternOptionsObject#x
@@ -561,20 +589,20 @@
         * attributes like `path.stroke` and `path.fill`. If a path is supplied for the
         * pattern, the `image` property is ignored.
         * @name Highcharts.PatternOptionsObject#path
-        * @type {string|Highcharts.SVGAttributes}
+        * @type {string|Highcharts.SVGAttributes|undefined}
         */ /**
         * SVG `patternTransform` to apply to the entire pattern.
         * @name Highcharts.PatternOptionsObject#patternTransform
-        * @type {string}
+        * @type {string|undefined}
         * @see [patternTransform demo](https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/series/pattern-fill-transform)
         */ /**
         * Pattern color, used as default path stroke.
         * @name Highcharts.PatternOptionsObject#color
-        * @type {Highcharts.ColorString}
+        * @type {Highcharts.ColorString|undefined}
         */ /**
         * Opacity of the pattern as a float value from 0 to 1.
         * @name Highcharts.PatternOptionsObject#opacity
-        * @type {number}
+        * @type {number|undefined}
         */ /**
         * ID to assign to the pattern. This is automatically computed if not added, and
         * identical patterns are reused. To refer to an existing pattern for a
