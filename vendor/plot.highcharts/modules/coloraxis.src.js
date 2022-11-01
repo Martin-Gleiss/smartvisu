@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v9.3.1 (2021-11-05)
+ * @license Highcharts JS v10.3.0 (2022-10-31)
  *
  * ColorAxis module
  *
@@ -7,7 +7,6 @@
  *
  * License: www.highcharts.com/license
  */
-'use strict';
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
         factory['default'] = factory;
@@ -22,10 +21,20 @@
         factory(typeof Highcharts !== 'undefined' ? Highcharts : undefined);
     }
 }(function (Highcharts) {
+    'use strict';
     var _modules = Highcharts ? Highcharts._modules : {};
     function _registerModule(obj, path, args, fn) {
         if (!obj.hasOwnProperty(path)) {
             obj[path] = fn.apply(null, args);
+
+            if (typeof CustomEvent === 'function') {
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'HighchartsModuleLoaded',
+                        { detail: { path: path, module: obj[path] }
+                    })
+                );
+            }
         }
     }
     _registerModule(_modules, 'Core/Axis/Color/ColorAxisComposition.js', [_modules['Core/Color/Color.js'], _modules['Core/Utilities.js']], function (Color, U) {
@@ -85,7 +94,9 @@
                     composedClasses.push(ChartClass);
                     var chartProto = ChartClass.prototype;
                     chartProto.collectionsWithUpdate.push('colorAxis');
-                    chartProto.collectionsWithInit.colorAxis = [chartProto.addColorAxis];
+                    chartProto.collectionsWithInit.colorAxis = [
+                        chartProto.addColorAxis
+                    ];
                     addEvent(ChartClass, 'afterGetAxes', onChartAfterGetAxes);
                     wrapChartCreateAxis(ChartClass);
                 }
@@ -188,7 +199,7 @@
              */
             function onLegendAfterColorizeItem(e) {
                 if (e.visible && e.item.legendColor) {
-                    e.item.legendSymbol.attr({
+                    e.item.legendItem.symbol.attr({
                         fill: e.item.legendColor
                     });
                 }
@@ -234,7 +245,6 @@
              * @private
              * @function Highcharts.colorPointMixin.setVisible
              * @param {boolean} visible
-             * @return {void}
              */
             function pointSetVisible(vis) {
                 var point = this,
@@ -254,7 +264,6 @@
              * translation too
              * @private
              * @function Highcharts.colorSeriesMixin.translateColors
-             * @return {void}
              */
             function seriesTranslateColors() {
                 var series = this,
@@ -272,7 +281,9 @@
                                 point.color || series.color);
                     if (color && point.color !== color) {
                         point.color = color;
-                        if (series.options.legendType === 'point' && point.legendItem) {
+                        if (series.options.legendType === 'point' &&
+                            point.legendItem &&
+                            point.legendItem.label) {
                             series.chart.legend.colorizeItem(point, point.visible);
                         }
                     }
@@ -629,7 +640,7 @@
                      * @type    {Highcharts.ColorString|Highcharts.GradientColorObject|Highcharts.PatternObject}
                      * @product highcharts highstock highmaps
                      */
-                    color: "#999999" /* neutralColor40 */
+                    color: "#999999" /* Palette.neutralColor40 */
                 },
                 /**
                  * The axis labels show the number for each tick.
@@ -671,7 +682,7 @@
                  * @type    {Highcharts.ColorString|Highcharts.GradientColorObject|Highcharts.PatternObject}
                  * @product highcharts highstock highmaps
                  */
-                minColor: "#e6ebf5" /* highlightColor10 */,
+                minColor: "#e6ebf5" /* Palette.highlightColor10 */,
                 /**
                  * The color to represent the maximum of the color axis. Unless
                  * [dataClasses](#colorAxis.dataClasses) or
@@ -690,7 +701,7 @@
                  * @type    {Highcharts.ColorString|Highcharts.GradientColorObject|Highcharts.PatternObject}
                  * @product highcharts highstock highmaps
                  */
-                maxColor: "#003399" /* highlightColor100 */,
+                maxColor: "#003399" /* Palette.highlightColor100 */,
                 /**
                  * Color stops for the gradient of a scalar color axis. Use this in
                  * cases where a linear gradient between a `minColor` and `maxColor`
@@ -698,6 +709,10 @@
                  * first item is a float between 0 and 1 assigning the relative
                  * position in the gradient, and the second item is the color.
                  *
+                 * @sample highcharts/coloraxis/coloraxis-stops/
+                 *         Color axis stops
+                 * @sample highcharts/coloraxis/color-key-with-stops/
+                 *         Color axis stops with custom colorKey
                  * @sample {highmaps} maps/demo/heatmap/
                  *         Heatmap with three color stops
                  *
@@ -832,12 +847,11 @@
                 var _this = _super.call(this,
                     chart,
                     userOptions) || this;
-                _this.beforePadding = false; // Prevents unnecessary padding with `hc-more`
+                // Prevents unnecessary padding with `hc-more`
+                _this.beforePadding = false;
                 _this.chart = void 0;
                 _this.coll = 'colorAxis';
                 _this.dataClasses = void 0;
-                _this.legendItem = void 0;
-                _this.legendItems = void 0;
                 _this.name = ''; // Prevents 'undefined' in legend in IE8
                 _this.options = void 0;
                 _this.stops = void 0;
@@ -907,13 +921,14 @@
             ColorAxis.prototype.initDataClasses = function (userOptions) {
                 var axis = this,
                     chart = axis.chart,
-                    options = axis.options,
-                    len = userOptions.dataClasses.length;
+                    legendItem = axis.legendItem = axis.legendItem || {},
+                    len = userOptions.dataClasses.length,
+                    options = axis.options;
                 var dataClasses,
                     colorCounter = 0,
                     colorCount = chart.options.chart.colorCount;
                 axis.dataClasses = dataClasses = [];
-                axis.legendItems = [];
+                legendItem.labels = [];
                 (userOptions.dataClasses || []).forEach(function (dataClass, i) {
                     var colors;
                     dataClass = merge(dataClass);
@@ -987,7 +1002,7 @@
              */
             ColorAxis.prototype.setAxisSize = function () {
                 var axis = this;
-                var symbol = axis.legendSymbol;
+                var symbol = axis.legendItem && axis.legendItem.symbol;
                 var chart = axis.chart;
                 var legendOptions = chart.options.legend || {};
                 var x,
@@ -1077,7 +1092,7 @@
              */
             ColorAxis.prototype.getOffset = function () {
                 var axis = this;
-                var group = axis.legendGroup;
+                var group = axis.legendItem && axis.legendItem.group;
                 var sideOffset = axis.chart.axisOffset[axis.side];
                 if (group) {
                     // Hook for the getOffset method to add groups to this parent
@@ -1085,6 +1100,16 @@
                     axis.axisParent = group;
                     // Call the base
                     _super.prototype.getOffset.call(this);
+                    var legend_1 = this.chart.legend;
+                    // Adds `maxLabelLength` needed for label padding corrections done
+                    // by `render()` and `getMargins()` (#15551).
+                    legend_1.allItems.forEach(function (item) {
+                        if (item instanceof ColorAxis) {
+                            item.drawLegendSymbol(legend_1, item);
+                        }
+                    });
+                    legend_1.render();
+                    this.chart.getMargins(true);
                     // First time only
                     if (!axis.added) {
                         axis.added = true;
@@ -1124,25 +1149,35 @@
              * @private
              */
             ColorAxis.prototype.drawLegendSymbol = function (legend, item) {
-                var axis = this;
-                var padding = legend.padding;
-                var legendOptions = legend.options;
-                var horiz = axis.horiz;
-                var width = pick(legendOptions.symbolWidth,
-                    horiz ? ColorAxis.defaultLegendLength : 12);
-                var height = pick(legendOptions.symbolHeight,
-                    horiz ? 12 : ColorAxis.defaultLegendLength);
-                var labelPadding = pick(legendOptions.labelPadding,
+                var axis = this,
+                    legendItem = item.legendItem || {},
+                    padding = legend.padding,
+                    legendOptions = legend.options,
+                    itemDistance = pick(legendOptions.itemDistance, 10),
+                    horiz = axis.horiz,
+                    width = pick(legendOptions.symbolWidth,
+                    horiz ? ColorAxis.defaultLegendLength : 12),
+                    height = pick(legendOptions.symbolHeight,
+                    horiz ? 12 : ColorAxis.defaultLegendLength),
+                    labelPadding = pick(
+                    // @todo: This option is not documented, nor implemented when
+                    // vertical
+                    legendOptions.labelPadding,
                     horiz ? 16 : 30);
-                var itemDistance = pick(legendOptions.itemDistance, 10);
                 this.setLegendColor();
                 // Create the gradient
-                item.legendSymbol = this.chart.renderer.rect(0, legend.baseline - 11, width, height).attr({
-                    zIndex: 1
-                }).add(item.legendGroup);
+                if (!legendItem.symbol) {
+                    legendItem.symbol = this.chart.renderer.rect(0, legend.baseline - 11, width, height).attr({
+                        zIndex: 1
+                    }).add(legendItem.group);
+                }
                 // Set how much space this legend item takes up
-                axis.legendItemWidth = width + padding + (horiz ? itemDistance : labelPadding);
-                axis.legendItemHeight = height + padding + (horiz ? labelPadding : 0);
+                legendItem.labelWidth = (width +
+                    padding +
+                    (horiz ?
+                        itemDistance :
+                        this.options.labels.x + this.maxLabelLength));
+                legendItem.labelHeight = height + padding + (horiz ? labelPadding : 0);
             };
             /**
              * Fool the legend.
@@ -1233,15 +1268,16 @@
              * @param {Highcharts.Point} [point]
              *        The Point object if the crosshair snaps to points.
              *
-             * @fires Highcharts.ColorAxis#event:afterDrawCrosshair
-             * @fires Highcharts.ColorAxis#event:drawCrosshair
+             * @emits Highcharts.ColorAxis#event:afterDrawCrosshair
+             * @emits Highcharts.ColorAxis#event:drawCrosshair
              */
             ColorAxis.prototype.drawCrosshair = function (e, point) {
-                var axis = this;
-                var plotX = point && point.plotX;
-                var plotY = point && point.plotY;
-                var axisPos = axis.pos;
-                var axisLen = axis.len;
+                var axis = this,
+                    legendItem = axis.legendItem || {},
+                    plotX = point && point.plotX,
+                    plotY = point && point.plotY,
+                    axisPos = axis.pos,
+                    axisLen = axis.len;
                 var crossPos;
                 if (point) {
                     crossPos = axis.toPixels(point.getNestedProperty(point.series.colorKey));
@@ -1258,10 +1294,10 @@
                     point.plotY = plotY;
                     if (axis.cross &&
                         !axis.cross.addedToColorAxis &&
-                        axis.legendGroup) {
+                        legendItem.group) {
                         axis.cross
                             .addClass('highcharts-coloraxis-marker')
-                            .add(axis.legendGroup);
+                            .add(legendItem.group);
                         axis.cross.addedToColorAxis = true;
                         if (!axis.chart.styledMode &&
                             typeof axis.crosshair === 'object') {
@@ -1325,7 +1361,7 @@
                     axis.destroyItems();
                 }
                 _super.prototype.update.call(this, newOptions, redraw);
-                if (axis.legendItem) {
+                if (axis.legendItem && axis.legendItem.label) {
                     axis.setLegendColor();
                     legend.colorizeItem(this, true);
                 }
@@ -1335,15 +1371,17 @@
              * @private
              */
             ColorAxis.prototype.destroyItems = function () {
-                var axis = this;
-                var chart = axis.chart;
-                if (axis.legendItem) {
+                var axis = this,
+                    chart = axis.chart,
+                    legendItem = axis.legendItem || {};
+                if (legendItem.label) {
                     chart.legend.destroyItem(axis);
                 }
-                else if (axis.legendItems) {
-                    axis.legendItems.forEach(function (item) {
+                else if (legendItem.labels) {
+                    for (var _i = 0, _a = legendItem.labels; _i < _a.length; _i++) {
+                        var item = _a[_i];
                         chart.legend.destroyItem(item);
-                    });
+                    }
                 }
                 chart.isDirtyLegend = true;
             };
@@ -1370,12 +1408,24 @@
              * @private
              */
             ColorAxis.prototype.getDataClassLegendSymbols = function () {
-                var axis = this;
-                var chart = axis.chart;
-                var legendItems = axis.legendItems;
-                var legendOptions = chart.options.legend;
-                var valueDecimals = legendOptions.valueDecimals;
-                var valueSuffix = legendOptions.valueSuffix || '';
+                var axis = this,
+                    chart = axis.chart,
+                    legendItems = (axis.legendItem &&
+                        axis.legendItem.labels ||
+                        []),
+                    legendOptions = chart.options.legend,
+                    valueDecimals = pick(legendOptions.valueDecimals, -1),
+                    valueSuffix = pick(legendOptions.valueSuffix, '');
+                var getPointsInDataClass = function (i) {
+                        return axis.series.reduce(function (points,
+                    s) {
+                            points.push.apply(points,
+                    s.points.filter(function (point) {
+                                return point.dataClass === i;
+                        }));
+                        return points;
+                    }, []);
+                };
                 var name;
                 if (!legendItems.length) {
                     axis.dataClasses.forEach(function (dataClass, i) {
@@ -1408,17 +1458,23 @@
                             options: {},
                             drawLegendSymbol: LegendSymbol.drawRectangle,
                             visible: true,
-                            setState: noop,
                             isDataClass: true,
+                            // Override setState to set either normal or inactive
+                            // state to all points in this data class
+                            setState: function (state) {
+                                for (var _i = 0, _a = getPointsInDataClass(i); _i < _a.length; _i++) {
+                                    var point = _a[_i];
+                                    point.setState(state);
+                                }
+                            },
+                            // Override setState to show or hide all points in this
+                            // data class
                             setVisible: function () {
-                                vis = axis.visible = !vis;
-                                axis.series.forEach(function (series) {
-                                    series.points.forEach(function (point) {
-                                        if (point.dataClass === i) {
-                                            point.setVisible(vis);
-                                        }
-                                    });
-                                });
+                                this.visible = vis = axis.visible = !vis;
+                                for (var _i = 0, _a = getPointsInDataClass(i); _i < _a.length; _i++) {
+                                    var point = _a[_i];
+                                    point.setVisible(vis);
+                                }
                                 chart.legend.colorizeItem(this, vis);
                             }
                         }, dataClass));
@@ -1437,11 +1493,7 @@
              * @private
              */
             ColorAxis.keepProps = [
-                'legendGroup',
-                'legendItemHeight',
-                'legendItemWidth',
-                'legendItem',
-                'legendSymbol'
+                'legendItem'
             ];
             return ColorAxis;
         }(Axis));

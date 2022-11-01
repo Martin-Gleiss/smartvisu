@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v9.3.1 (2021-11-05)
+ * @license Highcharts JS v10.3.0 (2022-10-31)
  *
  * Wind barb series module
  *
@@ -7,7 +7,6 @@
  *
  * License: www.highcharts.com/license
  */
-'use strict';
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
         factory['default'] = factory;
@@ -22,12 +21,59 @@
         factory(typeof Highcharts !== 'undefined' ? Highcharts : undefined);
     }
 }(function (Highcharts) {
+    'use strict';
     var _modules = Highcharts ? Highcharts._modules : {};
     function _registerModule(obj, path, args, fn) {
         if (!obj.hasOwnProperty(path)) {
             obj[path] = fn.apply(null, args);
+
+            if (typeof CustomEvent === 'function') {
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'HighchartsModuleLoaded',
+                        { detail: { path: path, module: obj[path] }
+                    })
+                );
+            }
         }
     }
+    _registerModule(_modules, 'Extensions/DataGrouping/ApproximationRegistry.js', [], function () {
+        /* *
+         *
+         *  (c) 2010-2021 Torstein Honsi
+         *
+         *  License: www.highcharts.com/license
+         *
+         *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
+         *
+         * */
+        /* *
+         *
+         *  Constants
+         *
+         * */
+        /**
+         * Define the available approximation types. The data grouping
+         * approximations takes an array or numbers as the first parameter. In case
+         * of ohlc, four arrays are sent in as four parameters. Each array consists
+         * only of numbers. In case null values belong to the group, the property
+         * .hasNulls will be set to true on the array.
+         *
+         * @product highstock
+         *
+         * @private
+         */
+        var ApproximationRegistry = {
+            // approximations added programmatically
+            };
+        /* *
+         *
+         *  Default Export
+         *
+         * */
+
+        return ApproximationRegistry;
+    });
     _registerModule(_modules, 'Series/OnSeriesComposition.js', [_modules['Series/Column/ColumnSeries.js'], _modules['Core/Series/Series.js'], _modules['Core/Utilities.js']], function (ColumnSeries, Series, U) {
         /* *
          *
@@ -285,7 +331,7 @@
 
         return WindbarbPoint;
     });
-    _registerModule(_modules, 'Series/Windbarb/WindbarbSeries.js', [_modules['Core/Animation/AnimationUtilities.js'], _modules['Core/Globals.js'], _modules['Series/OnSeriesComposition.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js'], _modules['Series/Windbarb/WindbarbPoint.js']], function (A, H, OnSeriesComposition, SeriesRegistry, U, WindbarbPoint) {
+    _registerModule(_modules, 'Series/Windbarb/WindbarbSeries.js', [_modules['Core/Animation/AnimationUtilities.js'], _modules['Extensions/DataGrouping/ApproximationRegistry.js'], _modules['Core/Globals.js'], _modules['Series/OnSeriesComposition.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js'], _modules['Series/Windbarb/WindbarbPoint.js']], function (A, ApproximationRegistry, H, OnSeriesComposition, SeriesRegistry, U, WindbarbPoint) {
         /* *
          *
          *  Wind barb series module
@@ -361,8 +407,8 @@
              * @private
              */
             WindbarbSeries.registerApproximation = function () {
-                if (H.approximations && !H.approximations.windbarb) {
-                    H.approximations.windbarb = function (values, directions) {
+                if (!ApproximationRegistry.windbarb) {
+                    ApproximationRegistry.windbarb = function (values, directions) {
                         var vectorX = 0,
                             vectorY = 0,
                             i,

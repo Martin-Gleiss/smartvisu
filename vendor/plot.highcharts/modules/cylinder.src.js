@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v9.3.1 (2021-11-05)
+ * @license Highcharts JS v10.3.0 (2022-10-31)
  *
  * Highcharts cylinder module
  *
@@ -7,7 +7,6 @@
  *
  * License: www.highcharts.com/license
  */
-'use strict';
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
         factory['default'] = factory;
@@ -22,10 +21,20 @@
         factory(typeof Highcharts !== 'undefined' ? Highcharts : undefined);
     }
 }(function (Highcharts) {
+    'use strict';
     var _modules = Highcharts ? Highcharts._modules : {};
     function _registerModule(obj, path, args, fn) {
         if (!obj.hasOwnProperty(path)) {
             obj[path] = fn.apply(null, args);
+
+            if (typeof CustomEvent === 'function') {
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'HighchartsModuleLoaded',
+                        { detail: { path: path, module: obj[path] }
+                    })
+                );
+            }
         }
     }
     _registerModule(_modules, 'Series/Cylinder/CylinderPoint.js', [_modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js']], function (SeriesRegistry, U) {
@@ -92,7 +101,7 @@
 
         return CylinderPoint;
     });
-    _registerModule(_modules, 'Series/Cylinder/CylinderComposition.js', [_modules['Core/Color/Color.js'], _modules['Core/Globals.js'], _modules['Extensions/Math3D.js'], _modules['Core/Renderer/RendererRegistry.js'], _modules['Core/Utilities.js']], function (Color, H, Math3D, RendererRegistry, U) {
+    _registerModule(_modules, 'Series/Cylinder/CylinderComposition.js', [_modules['Core/Color/Color.js'], _modules['Core/Globals.js'], _modules['Core/Math3D.js'], _modules['Core/Renderer/RendererRegistry.js'], _modules['Core/Utilities.js']], function (Color, H, Math3D, RendererRegistry, U) {
         /* *
          *
          *  Highcharts cylinder - a 3D series
@@ -189,8 +198,24 @@
                     curve2 = bottomPath[2];
                 if (move[0] === 'M' && curve1[0] === 'C' && curve2[0] === 'C') {
                     path.push(['L', curve2[5], curve2[6]]);
-                    path.push(['C', curve2[3], curve2[4], curve2[1], curve2[2], curve1[5], curve1[6]]);
-                    path.push(['C', curve1[3], curve1[4], curve1[1], curve1[2], move[1], move[2]]);
+                    path.push([
+                        'C',
+                        curve2[3],
+                        curve2[4],
+                        curve2[1],
+                        curve2[2],
+                        curve1[5],
+                        curve1[6]
+                    ]);
+                    path.push([
+                        'C',
+                        curve1[3],
+                        curve1[4],
+                        curve1[1],
+                        curve1[2],
+                        move[1],
+                        move[2]
+                    ]);
                 }
             }
             path.push(['Z']);
@@ -229,8 +254,24 @@
                     curve4 = bottomPath[4];
                 if (curve2[0] === 'C' && curve3[0] === 'C' && curve4[0] === 'C') {
                     path.push(['L', curve4[5], curve4[6]]);
-                    path.push(['C', curve4[3], curve4[4], curve4[1], curve4[2], curve3[5], curve3[6]]);
-                    path.push(['C', curve3[3], curve3[4], curve3[1], curve3[2], curve2[5], curve2[6]]);
+                    path.push([
+                        'C',
+                        curve4[3],
+                        curve4[4],
+                        curve4[1],
+                        curve4[2],
+                        curve3[5],
+                        curve3[6]
+                    ]);
+                    path.push([
+                        'C',
+                        curve3[3],
+                        curve3[4],
+                        curve3[1],
+                        curve3[2],
+                        curve2[5],
+                        curve2[6]
+                    ]);
                 }
             }
             path.push(['Z']);

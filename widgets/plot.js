@@ -402,7 +402,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 					contextButton: {
 						menuItems: (this.options.exportmenu == 2 ? ['downloadPNG', 'downloadPDF', 'downloadCSV', 'downloadXLS'] : ['downloadPNG', 'downloadPDF']) // TODO: add 'viewFullscreen' when styling is improved
 					}
-				}
+				},
+				libURL: 'vendor/plot.highcharts/lib/'
 			},
             rangeSelector: { buttons: rangeSelectorButtons },
             plotOptions: {
@@ -1742,7 +1743,8 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
 					contextButton: {
 						menuItems: (this.options.exportmenu == 2 ? ['downloadPNG', 'downloadPDF', 'downloadCSV', 'downloadXLS'] : ['downloadPNG', 'downloadPDF']) // TODO: add 'viewFullscreen' when styling is improved
 					}
-				}
+				},
+				libURL: 'vendor/plot.highcharts/lib/'
 			},
             plotOptions: {
                 columnrange: {

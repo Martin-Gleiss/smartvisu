@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v9.3.1 (2021-11-05)
+ * @license Highcharts JS v10.3.0 (2022-10-31)
  *
  * Item series type for Highcharts
  *
@@ -7,7 +7,6 @@
  *
  * License: www.highcharts.com/license
  */
-'use strict';
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
         factory['default'] = factory;
@@ -22,10 +21,20 @@
         factory(typeof Highcharts !== 'undefined' ? Highcharts : undefined);
     }
 }(function (Highcharts) {
+    'use strict';
     var _modules = Highcharts ? Highcharts._modules : {};
     function _registerModule(obj, path, args, fn) {
         if (!obj.hasOwnProperty(path)) {
             obj[path] = fn.apply(null, args);
+
+            if (typeof CustomEvent === 'function') {
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'HighchartsModuleLoaded',
+                        { detail: { path: path, module: obj[path] }
+                    })
+                );
+            }
         }
     }
     _registerModule(_modules, 'Series/Item/ItemPoint.js', [_modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js']], function (SeriesRegistry, U) {
@@ -74,7 +83,6 @@
                  * */
                 var _this = _super !== null && _super.apply(this,
                     arguments) || this;
-                _this.graphics = void 0;
                 _this.options = void 0;
                 _this.series = void 0;
                 return _this;
@@ -92,7 +100,7 @@
 
         return ItemPoint;
     });
-    _registerModule(_modules, 'Series/Item/ItemSeries.js', [_modules['Core/Globals.js'], _modules['Series/Item/ItemPoint.js'], _modules['Core/DefaultOptions.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js']], function (H, ItemPoint, D, SeriesRegistry, U) {
+    _registerModule(_modules, 'Series/Item/ItemSeries.js', [_modules['Core/Globals.js'], _modules['Series/Item/ItemPoint.js'], _modules['Core/Defaults.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js']], function (H, ItemPoint, D, SeriesRegistry, U) {
         /* *
          *
          *  (c) 2019-2021 Torstein Honsi
@@ -235,7 +243,7 @@
                         y,
                         width,
                         height;
-                    point.graphics = graphics = point.graphics || {};
+                    point.graphics = graphics = point.graphics || [];
                     if (!series.chart.styledMode) {
                         pointAttr = series.pointAttribs(point, point.selected && 'select');
                     }
@@ -244,7 +252,7 @@
                             point.graphic = renderer.g('point')
                                 .add(series.group);
                         }
-                        for (var val = 0; val < point.y; val++) {
+                        for (var val = 0; val < (point.y || 0); val++) {
                             // Semi-circle
                             if (series.center && series.slots) {
                                 // Fill up the slots from left to right
@@ -281,21 +289,24 @@
                                 graphics[val].animate(attr);
                             }
                             else {
+                                if (pointAttr) {
+                                    extend(attr, pointAttr);
+                                }
                                 graphics[val] = renderer
-                                    .symbol(symbol, null, null, null, null, {
+                                    .symbol(symbol, void 0, void 0, void 0, void 0, {
                                     backgroundSize: 'within'
                                 })
-                                    .attr(extend(attr, pointAttr))
+                                    .attr(attr)
                                     .add(point.graphic);
                             }
                             graphics[val].isActive = true;
                             i++;
                         }
                     }
-                    objectEach(graphics, function (graphic, key) {
+                    graphics.forEach(function (graphic, i) {
                         if (!graphic.isActive) {
                             graphic.destroy();
-                            delete graphics[key];
+                            graphics.splice(i, 1);
                         }
                         else {
                             graphic.isActive = false;
@@ -362,9 +373,10 @@
                     rowsOption = this.options.rows, 
                     // How many rows (arcs) should be used
                     rowFraction = (diameter - innerSize) / diameter,
-                    isCircle = fullAngle % (2 * Math.PI) === 0;
+                    isCircle = fullAngle % (2 * Math.PI) === 0,
+                    total = this.total || 0;
                 // Increase the itemSize until we find the best fit
-                while (itemCount > this.total + (rows && isCircle ? rows.length : 0)) {
+                while (itemCount > total + (rows && isCircle ? rows.length : 0)) {
                     finalItemCount = itemCount;
                     // Reset
                     slots.length = 0;
@@ -418,8 +430,7 @@
                  * @private
                  * @param {Highcharts.ItemRowContainerObject} item
                  * Wrapped object with angle and row
-                 * @return {void}
-                 */
+                     */
                 function cutOffRow(item) {
                     if (overshoot > 0) {
                         item.row.colCount--;
@@ -466,7 +477,9 @@
             };
             ItemSeries.prototype.translate = function (_positions) {
                 // Initialize chart without setting data, #13379.
-                if (this.total === 0) {
+                if (this.total === 0 && // check if that is a (semi-)circle
+                    isNumber(this.options.startAngle) &&
+                    isNumber(this.options.endAngle)) {
                     this.center = this.getCenter();
                 }
                 if (!this.slots) {
@@ -638,7 +651,7 @@
          *
          * @type      {Array<number|Array<string,(number|null)>|null|*>}
          * @extends   series.pie.data
-         * @excludes  sliced
+         * @exclude   sliced
          * @product   highcharts
          * @apioption series.item.data
          */

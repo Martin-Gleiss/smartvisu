@@ -1,12 +1,11 @@
 /**
- * @license Highcharts JS v9.3.1 (2021-11-05)
+ * @license Highcharts JS v10.3.0 (2022-10-31)
  *
  * (c) 2017-2021 Highsoft AS
  * Authors: Jon Arild Nygard
  *
  * License: www.highcharts.com/license
  */
-'use strict';
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
         factory['default'] = factory;
@@ -21,10 +20,20 @@
         factory(typeof Highcharts !== 'undefined' ? Highcharts : undefined);
     }
 }(function (Highcharts) {
+    'use strict';
     var _modules = Highcharts ? Highcharts._modules : {};
     function _registerModule(obj, path, args, fn) {
         if (!obj.hasOwnProperty(path)) {
             obj[path] = fn.apply(null, args);
+
+            if (typeof CustomEvent === 'function') {
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'HighchartsModuleLoaded',
+                        { detail: { path: path, module: obj[path] }
+                    })
+                );
+            }
         }
     }
     _registerModule(_modules, 'Core/Geometry/GeometryUtilities.js', [], function () {
@@ -192,7 +201,8 @@
              * Returns the area of the circular segment.
              */
             function getCircularSegmentArea(r, h) {
-                return r * r * Math.acos(1 - h / r) - (r - h) * Math.sqrt(h * (2 * r - h));
+                return (r * r * Math.acos(1 - h / r) -
+                    (r - h) * Math.sqrt(h * (2 * r - h)));
             }
             CircleUtilities.getCircularSegmentArea = getCircularSegmentArea;
             /**
@@ -317,7 +327,7 @@
             }
             CircleUtilities.getCirclesIntersectionPoints = getCirclesIntersectionPoints;
             /**
-             * Tests wether the first circle is completely overlapping the second
+             * Tests whether the first circle is completely overlapping the second
              * circle.
              *
              * @private
@@ -336,7 +346,7 @@
             }
             CircleUtilities.isCircle1CompletelyOverlappingCircle2 = isCircle1CompletelyOverlappingCircle2;
             /**
-             * Tests wether a point lies within a given circle.
+             * Tests whether a point lies within a given circle.
              * @private
              * @param {Highcharts.PositionObject} point
              * The point to test for.
@@ -352,7 +362,7 @@
             }
             CircleUtilities.isPointInsideCircle = isPointInsideCircle;
             /**
-             * Tests wether a point lies within a set of circles.
+             * Tests whether a point lies within a set of circles.
              *
              * @private
              *
@@ -372,7 +382,7 @@
             }
             CircleUtilities.isPointInsideAllCircles = isPointInsideAllCircles;
             /**
-             * Tests wether a point lies outside a set of circles.
+             * Tests whether a point lies outside a set of circles.
              *
              * TODO: add unit tests.
              *
@@ -528,123 +538,86 @@
 
         return CircleUtilities;
     });
-    _registerModule(_modules, 'Series/DrawPointComposition.js', [], function () {
+    _registerModule(_modules, 'Series/DrawPointUtilities.js', [_modules['Core/Utilities.js']], function (U) {
         /* *
          *
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
+        var isNumber = U.isNumber;
         /* *
          *
-         *  Composition
+         *  Functions
          *
          * */
-        var DrawPointComposition;
-        (function (DrawPointComposition) {
-            /* *
-             *
-             *  Declarations
-             *
-             * */
-            /* *
-             *
-             *  Constants
-             *
-             * */
-            var composedClasses = [];
-            /* *
-             *
-             *  Functions
-             *
-             * */
-            /* eslint-disable valid-jsdoc */
-            /**
-             * @private
-             */
-            function compose(PointClass) {
-                if (composedClasses.indexOf(PointClass) === -1) {
-                    composedClasses.push(PointClass);
-                    var pointProto = PointClass.prototype;
-                    pointProto.draw = draw;
-                    if (!pointProto.shouldDraw) {
-                        pointProto.shouldDraw = shouldDraw;
-                    }
+        /**
+         * Handles the drawing of a component.
+         * Can be used for any type of component that reserves the graphic property,
+         * and provides a shouldDraw on its context.
+         *
+         * @private
+         *
+         * @todo add type checking.
+         * @todo export this function to enable usage
+         */
+        function draw(point, params) {
+            var animatableAttribs = params.animatableAttribs,
+                onComplete = params.onComplete,
+                css = params.css,
+                renderer = params.renderer;
+            var animation = (point.series && point.series.chart.hasRendered) ?
+                    // Chart-level animation on updates
+                    void 0 :
+                    // Series-level animation on new points
+                    (point.series &&
+                        point.series.options.animation);
+            var graphic = point.graphic;
+            params.attribs = params.attribs || {};
+            // Assigning class in dot notation does go well in IE8
+            // eslint-disable-next-line dot-notation
+            params.attribs['class'] = point.getClassName();
+            if ((point.shouldDraw())) {
+                if (!graphic) {
+                    point.graphic = graphic = params.shapeType === 'text' ?
+                        renderer.text() :
+                        renderer[params.shapeType](params.shapeArgs || {});
+                    graphic.add(params.group);
                 }
-                return PointClass;
+                if (css) {
+                    graphic.css(css);
+                }
+                graphic
+                    .attr(params.attribs)
+                    .animate(animatableAttribs, params.isNew ? false : animation, onComplete);
             }
-            DrawPointComposition.compose = compose;
-            /**
-             * Handles the drawing of a component.
-             * Can be used for any type of component that reserves the graphic property,
-             * and provides a shouldDraw on its context.
-             *
-             * @private
-             *
-             * @todo add type checking.
-             * @todo export this function to enable usage
-             */
-            function draw(params) {
-                var _this = this;
-                var animatableAttribs = params.animatableAttribs,
-                    onComplete = params.onComplete,
-                    css = params.css,
-                    renderer = params.renderer;
-                var animation = (this.series && this.series.chart.hasRendered) ?
-                        // Chart-level animation on updates
-                        void 0 :
-                        // Series-level animation on new points
-                        (this.series &&
-                            this.series.options.animation);
-                var graphic = this.graphic;
-                params.attribs = params.attribs || {};
-                // Assigning class in dot notation does go well in IE8
-                // eslint-disable-next-line dot-notation
-                params.attribs['class'] = this.getClassName();
-                if (this.shouldDraw()) {
-                    if (!graphic) {
-                        this.graphic = graphic =
-                            renderer[params.shapeType](params.shapeArgs)
-                                .add(params.group);
+            else if (graphic) {
+                var destroy_1 = function () {
+                        point.graphic = graphic = (graphic && graphic.destroy());
+                    if (typeof onComplete === 'function') {
+                        onComplete();
                     }
-                    graphic
-                        .css(css)
-                        .attr(params.attribs)
-                        .animate(animatableAttribs, params.isNew ? false : animation, onComplete);
+                };
+                // animate only runs complete callback if something was animated.
+                if (Object.keys(animatableAttribs).length) {
+                    graphic.animate(animatableAttribs, void 0, function () { return destroy_1(); });
                 }
-                else if (graphic) {
-                    var destroy_1 = function () {
-                            _this.graphic = graphic = (graphic && graphic.destroy());
-                        if (typeof onComplete === 'function') {
-                            onComplete();
-                        }
-                    };
-                    // animate only runs complete callback if something was animated.
-                    if (Object.keys(animatableAttribs).length) {
-                        graphic.animate(animatableAttribs, void 0, function () {
-                            destroy_1();
-                        });
-                    }
-                    else {
-                        destroy_1();
-                    }
+                else {
+                    destroy_1();
                 }
             }
-            /**
-             * @private
-             */
-            function shouldDraw() {
-                return !this.isNull;
-            }
-        })(DrawPointComposition || (DrawPointComposition = {}));
+        }
         /* *
          *
          *  Default Export
          *
          * */
+        var DrawPointUtilities = {
+                draw: draw
+            };
 
-        return DrawPointComposition;
+        return DrawPointUtilities;
     });
-    _registerModule(_modules, 'Series/Venn/VennPoint.js', [_modules['Series/DrawPointComposition.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js']], function (DrawPointComposition, SeriesRegistry, U) {
+    _registerModule(_modules, 'Series/Venn/VennPoint.js', [_modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js']], function (SeriesRegistry, U) {
         /* *
          *
          *  Experimental Highcharts module which enables visualization of a Venn
@@ -677,7 +650,7 @@
                 d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
             };
         })();
-        var ScatterSeries = SeriesRegistry.seriesTypes.scatter;
+        var ScatterPoint = SeriesRegistry.seriesTypes.scatter.prototype.pointClass;
         var extend = U.extend,
             isNumber = U.isNumber;
         /* *
@@ -714,8 +687,7 @@
                 return !!this.shapeArgs;
             };
             return VennPoint;
-        }(ScatterSeries.prototype.pointClass));
-        DrawPointComposition.compose(VennPoint);
+        }(ScatterPoint));
         /* *
          *
          *  Default Export
@@ -1064,11 +1036,10 @@
              * Takes a set and updates the position, and add the set to the list of
              * positioned sets.
              * @private
-             * @param {object} set
+             * @param {Object} set
              * The set to add to its final position.
-             * @param {object} coordinates
+             * @param {Object} coordinates
              * The coordinates to position the set at.
-             * @return {void}
              */
             var positionSet = function positionSet(set,
                 coordinates) {
@@ -1374,10 +1345,12 @@
         /**
          * Takes two sets and finds the one with the largest total overlap.
          * @private
-         * @param {object} a The first set to compare.
-         * @param {object} b The second set to compare.
-         * @return {number} Returns 0 if a and b are equal, <0 if a is greater, >0 if b
-         * is greater.
+         * @param {Object} a
+         * The first set to compare.
+         * @param {Object} b
+         * The second set to compare.
+         * @return {number}
+         * Returns 0 if a and b are equal, <0 if a is greater, >0 if b is greater.
          */
         function sortByTotalOverlap(a, b) {
             return b.totalOverlap - a.totalOverlap;
@@ -1405,7 +1378,7 @@
 
         return VennUtils;
     });
-    _registerModule(_modules, 'Series/Venn/VennSeries.js', [_modules['Core/Animation/AnimationUtilities.js'], _modules['Core/Color/Color.js'], _modules['Core/Geometry/CircleUtilities.js'], _modules['Core/Geometry/GeometryUtilities.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Series/Venn/VennPoint.js'], _modules['Series/Venn/VennUtils.js'], _modules['Core/Utilities.js']], function (A, Color, CU, GU, SeriesRegistry, VennPoint, VennUtils, U) {
+    _registerModule(_modules, 'Series/Venn/VennSeries.js', [_modules['Core/Animation/AnimationUtilities.js'], _modules['Core/Color/Color.js'], _modules['Core/Geometry/CircleUtilities.js'], _modules['Series/DrawPointUtilities.js'], _modules['Core/Geometry/GeometryUtilities.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Series/Venn/VennPoint.js'], _modules['Series/Venn/VennUtils.js'], _modules['Core/Legend/LegendSymbol.js'], _modules['Core/Utilities.js']], function (A, Color, CU, DPU, GU, SeriesRegistry, VennPoint, VennUtils, LegendSymbol, U) {
         /* *
          *
          *  Experimental Highcharts module which enables visualization of a Venn
@@ -1521,14 +1494,14 @@
                         { x: circle.x, y: circle.y + d },
                         { x: circle.x, y: circle.y - d }
                     ]
-                        // Iterate the given points and return the one with the largest
-                        // margin.
+                        // Iterate the given points and return the one with the
+                        // largest margin.
                         .reduce(function (best, point) {
                         var margin = VennUtils.getMarginFromCircles(point,
                             internal,
                             external);
-                        // If the margin better than the current best, then update
-                        // sbest.
+                        // If the margin better than the current best, then
+                        // update sbest.
                         if (best.margin < margin) {
                             best.point = point;
                             best.margin = margin;
@@ -1633,16 +1606,13 @@
                 if (relations.length > 0) {
                     var mapOfIdToCircles_1 = VennUtils.layoutGreedyVenn(relations);
                     var setRelations_1 = relations.filter(VennUtils.isSet);
-                    relations
-                        .forEach(function (relation) {
+                    relations.forEach(function (relation) {
                         var sets = relation.sets;
                         var id = sets.join();
                         // Get shape from map of circles, or calculate intersection.
                         var shape = VennUtils.isSet(relation) ?
                                 mapOfIdToCircles_1[id] :
-                                getAreaOfIntersectionBetweenCircles(sets.map(function (set) {
-                                    return mapOfIdToCircles_1[set];
-                            }));
+                                getAreaOfIntersectionBetweenCircles(sets.map(function (set) { return mapOfIdToCircles_1[set]; }));
                         // Calculate label values if the set has a shape
                         if (shape) {
                             mapOfIdToShape[id] = shape;
@@ -1779,7 +1749,7 @@
                         extend(attribs, series.pointAttribs(point, point.state));
                     }
                     // Draw the point graphic.
-                    point.draw({
+                    DPU.draw(point, {
                         isNew: !point.graphic,
                         animatableAttribs: shapeArgs,
                         attribs: attribs,
@@ -1919,6 +1889,8 @@
              *         Venn diagram
              * @sample {highcharts} highcharts/demo/euler-diagram/
              *         Euler diagram
+             * @sample {highcharts} highcharts/series-venn/point-legend/
+             *         Venn diagram with a legend
              *
              * @extends      plotOptions.scatter
              * @excluding    connectEnds, connectNulls, cropThreshold, dragDrop,
@@ -1933,7 +1905,7 @@
              * @optionparent plotOptions.venn
              */
             VennSeries.defaultOptions = merge(ScatterSeries.defaultOptions, {
-                borderColor: "#cccccc" /* neutralColor20 */,
+                borderColor: "#cccccc" /* Palette.neutralColor20 */,
                 borderDashStyle: 'solid',
                 borderWidth: 1,
                 brighten: 0,
@@ -1951,23 +1923,33 @@
                  * @private
                  */
                 inactiveOtherPoints: true,
+                /**
+                 * @ignore-option
+                 * @private
+                 */
                 marker: false,
                 opacity: 0.75,
                 showInLegend: false,
+                /**
+                 * @ignore-option
+                 *
+                 * @private
+                 */
+                legendType: 'point',
                 states: {
                     /**
                      * @excluding halo
                      */
                     hover: {
                         opacity: 1,
-                        borderColor: "#333333" /* neutralColor80 */
+                        borderColor: "#333333" /* Palette.neutralColor80 */
                     },
                     /**
                      * @excluding halo
                      */
                     select: {
-                        color: "#cccccc" /* neutralColor20 */,
-                        borderColor: "#000000" /* neutralColor100 */,
+                        color: "#cccccc" /* Palette.neutralColor20 */,
+                        borderColor: "#000000" /* Palette.neutralColor100 */,
                         animation: false
                     },
                     inactive: {
@@ -1983,6 +1965,7 @@
         extend(VennSeries.prototype, {
             axisTypes: [],
             directTouch: true,
+            drawLegendSymbol: LegendSymbol.drawRectangle,
             isCartesian: false,
             pointArrayMap: ['value'],
             pointClass: VennPoint,

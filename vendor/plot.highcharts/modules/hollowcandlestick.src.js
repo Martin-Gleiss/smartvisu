@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v9.3.1 (2021-11-05)
+ * @license Highstock JS v10.3.0 (2022-10-31)
  *
  * Hollow Candlestick series type for Highcharts Stock
  *
@@ -7,7 +7,6 @@
  *
  * License: www.highcharts.com/license
  */
-'use strict';
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
         factory['default'] = factory;
@@ -22,10 +21,20 @@
         factory(typeof Highcharts !== 'undefined' ? Highcharts : undefined);
     }
 }(function (Highcharts) {
+    'use strict';
     var _modules = Highcharts ? Highcharts._modules : {};
     function _registerModule(obj, path, args, fn) {
         if (!obj.hasOwnProperty(path)) {
             obj[path] = fn.apply(null, args);
+
+            if (typeof CustomEvent === 'function') {
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'HighchartsModuleLoaded',
+                        { detail: { path: path, module: obj[path] }
+                    })
+                );
+            }
         }
     }
     _registerModule(_modules, 'Series/HollowCandlestick/HollowCandlestickPoint.js', [_modules['Core/Series/SeriesRegistry.js']], function (SeriesRegistry) {
@@ -87,11 +96,8 @@
             /* eslint-disable valid-jsdoc */
             /**
              * Update class name if needed.
-             *
+             * @private
              * @function Highcharts.seriesTypes.hollowcandlestick#getClassName
-             *
-             * @return {string}
-             *
              */
             HollowCandlestickPoint.prototype.getClassName = function () {
                 var className = _super.prototype.getClassName.apply(this);
@@ -199,14 +205,16 @@
              *
              * @function Highcharts.seriesTypes.hollowcandlestick#getPriceMovement
              *
-             * @return {void}
              *
              */
             HollowCandlestickSeries.prototype.getPriceMovement = function () {
-                var series = this,
-                    processedYData = series.allGroupedData || series.yData, // procesed and grouped data
+                var series = this, 
+                    // procesed and grouped data
+                    processedYData = series.allGroupedData || series.yData,
                     hollowCandlestickData = this.hollowCandlestickData;
-                if (!hollowCandlestickData.length && processedYData && processedYData.length) {
+                if (!hollowCandlestickData.length &&
+                    processedYData &&
+                    processedYData.length) {
                     // First point is allways bullish (transparent).
                     hollowCandlestickData.push({
                         isBullish: true,
@@ -226,17 +234,17 @@
              * @function Highcharts.seriesTypes.hollowcandlestick#getLineColor
              *
              * @param {string} trendDirection
-             *        Type of candle direction (bearish/bullish)(down/up).
+             * Type of candle direction (bearish/bullish)(down/up).
              *
              * @return {ColorType}
-             *
+             * Line color
              */
             HollowCandlestickSeries.prototype.getLineColor = function (trendDirection) {
                 var series = this;
                 // Return line color based on trend direction
                 return trendDirection === 'up' ?
-                    series.options.upColor || "#06b535" /* positiveColor */ :
-                    series.options.color || "#f21313" /* negativeColor */;
+                    series.options.upColor || "#06b535" /* Palette.positiveColor */ :
+                    series.options.color || "#f21313" /* Palette.negativeColor */;
             };
             /**
              * Return fill color based on candle type.
@@ -248,7 +256,7 @@
              *        Information about the current candle.
              *
              * @return {ColorType}
-             *
+             * Point fill color
              */
             HollowCandlestickSeries.prototype.getPointFill = function (hollowcandleInfo) {
                 var series = this;
@@ -257,13 +265,12 @@
                     return 'transparent';
                 }
                 return hollowcandleInfo.trendDirection === 'up' ?
-                    series.options.upColor || "#06b535" /* positiveColor */ :
-                    series.options.color || "#f21313" /* negativeColor */;
+                    series.options.upColor || "#06b535" /* Palette.positiveColor */ :
+                    series.options.color || "#f21313" /* Palette.negativeColor */;
             };
             /**
              * @private
              * @function Highcarts.seriesTypes.hollowcandlestick#init
-             * @return {void}
              */
             HollowCandlestickSeries.prototype.init = function () {
                 _super.prototype.init.apply(this, arguments);
@@ -276,13 +283,10 @@
              * @function Highcharts.seriesTypes.hollowcandlestick#isBullish
              *
              * @param {Array<(number)>} dataPoint
-             *        Current point which we calculate.
-
-              * @param {Array<(number)>} previousDataPoint
-             *        Previous point.
+             * Current point which we calculate.
              *
-             * @return {HollowcandleInfo}
-             *
+             * @param {Array<(number)>} previousDataPoint
+             * Previous point.
              */
             HollowCandlestickSeries.prototype.isBullish = function (dataPoint, previousDataPoint) {
                 return {
@@ -295,15 +299,15 @@
             /**
              * Add color and fill attribute for each point.
              *
+             * @private
+             *
              * @function Highcharts.seriesTypes.hollowcandlestick#pointAttribs
              *
              * @param {HollowCandlestickPoint} point
-             *        Point to which we are adding attributes.
+             * Point to which we are adding attributes.
+             *
              * @param {StatesOptionsKey} state
-             *        Current point state.
-             *
-             * @return {SVGAttributes}
-             *
+             * Current point state.
              */
             HollowCandlestickSeries.prototype.pointAttribs = function (point, state) {
                 var attribs = _super.prototype.pointAttribs.call(this,
@@ -313,7 +317,8 @@
                 var index = point.index,
                     hollowcandleInfo = this.hollowCandlestickData[index];
                 attribs.fill = this.getPointFill(hollowcandleInfo) || attribs.fill;
-                attribs.stroke = this.getLineColor(hollowcandleInfo.trendDirection) || attribs.stroke;
+                attribs.stroke = this.getLineColor(hollowcandleInfo.trendDirection) ||
+                    attribs.stroke;
                 // Select or hover states
                 if (state) {
                     stateOptions = this.options.states[state];
@@ -349,7 +354,7 @@
                  * @type    {ColorType}
                  * @product highstock
                  */
-                color: "#f21313" /* negativeColor */,
+                color: "#f21313" /* Palette.negativeColor */,
                 dataGrouping: {
                     groupAll: true,
                     groupPixelWidth: 10
@@ -366,7 +371,7 @@
                  * @type    {ColorType}
                  * @product highstock
                  */
-                lineColor: "#f21313" /* negativeColor */,
+                lineColor: "#f21313" /* Palette.negativeColor */,
                 /**
                  * The fill color of the candlestick when the current
                  * close is higher than the previous one.
@@ -379,7 +384,7 @@
                  * @type    {ColorType}
                  * @product highstock
                  */
-                upColor: "#06b535" /* positiveColor */,
+                upColor: "#06b535" /* Palette.positiveColor */,
                 /**
                  * The color of the line/border of the hollow candlestick when
                  * the current close is higher than the previous one.
@@ -392,7 +397,7 @@
                  * @type    {ColorType}
                  * @product highstock
                  */
-                upLineColor: "#06b535" /* positiveColor */
+                upLineColor: "#06b535" /* Palette.positiveColor */
             });
             return HollowCandlestickSeries;
         }(CandlestickSeries));

@@ -1,5 +1,5 @@
 /**
- * @license Highmaps JS v9.3.1 (2021-11-05)
+ * @license Highmaps JS v10.3.0 (2022-10-31)
  *
  * Tilemap module
  *
@@ -7,7 +7,6 @@
  *
  * License: www.highcharts.com/license
  */
-'use strict';
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
         factory['default'] = factory;
@@ -22,10 +21,20 @@
         factory(typeof Highcharts !== 'undefined' ? Highcharts : undefined);
     }
 }(function (Highcharts) {
+    'use strict';
     var _modules = Highcharts ? Highcharts._modules : {};
     function _registerModule(obj, path, args, fn) {
         if (!obj.hasOwnProperty(path)) {
             obj[path] = fn.apply(null, args);
+
+            if (typeof CustomEvent === 'function') {
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'HighchartsModuleLoaded',
+                        { detail: { path: path, module: obj[path] }
+                    })
+                );
+            }
         }
     }
     _registerModule(_modules, 'Series/Tilemap/TilemapPoint.js', [_modules['Core/Axis/Color/ColorAxisComposition.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js']], function (ColorAxisComposition, SeriesRegistry, U) {
@@ -91,8 +100,6 @@
             /**
              * @private
              * @function Highcharts.Point#haloPath
-             *
-             * @return {Highcharts.SVGElement|Highcharts.SVGPathArray|Array<Highcharts.SVGElement>}
              */
             TilemapPoint.prototype.haloPath = function () {
                 return this.series.tileShape.haloPath.apply(this, arguments);
@@ -133,13 +140,6 @@
         /**
          * Utility func to get padding definition from tile size division
          * @private
-         * @param {Highcharts.TilemapSeries} series
-         * series
-         * @param {Highcharts.number} xDiv
-         * xDiv
-         * @param {Highcharts.number} yDiv
-         * yDiv
-         * @return {Highcharts.TilemapPaddingObject}
          */
         function tilePaddingFromTileSize(series, xDiv, yDiv) {
             var options = series.options;
