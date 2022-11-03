@@ -21,12 +21,8 @@ $.widget("sv.dynicon", $.sv.widget, {
 
 	_events: {
 		'click': function (event) {
-			if (this.options.item) {
-				var items = this.options.item.explode();
-
-				if (items[1]) {
-					io.write(items[1], (widget.get(items[1]) == 0 ? 1 : 0));
-				}
+			if (this.items[1]) {
+				io.write(this.items[1], (widget.get(this.items[1]) == 0 ? 1 : 0));
 			}
 		}
 	}
@@ -313,12 +309,8 @@ $.widget("sv.icon_heating", $.sv.widget, {
 
 	_events: {
 		'click': function (event) {
-			if (this.options.item) {
-				var items = this.options.item.explode();
-
-				if (items[0]) {
-					io.write(items[0], (widget.get(items[0]) == 0 ? 1 : 0));
-				}
+			if (this.items[0]) {
+				io.write(this.items[0], (widget.get(this.items[0]) == 0 ? 1 : 0));
 			}
 		}
 	}
