@@ -1997,7 +1997,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       });
 
       // active/inactive button
-      chart.renderer.button(String.fromCharCode(160)+String.fromCharCode(10004)+String.fromCharCode(160), chart.plotLeft, null, function(e) { self._uzsudata.active = !self._uzsudata.active; self._save(); }, null,  null,  null,  null, 'callout')
+      chart.renderer.button(String.fromCharCode(160)+String.fromCharCode(10004)+String.fromCharCode(160), chart.plotLeft, null, function(e) { self._uzsudata.active = !self._uzsudata.active; self._save(); }, {} , {}, {}, {}, 'callout')
         .attr({
           align: 'right',
           title: sv_lang.uzsu.active
@@ -2013,7 +2013,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       ];
 
       $.each(self.interpolationButtons, function(i, button) {
-        button.element = chart.renderer.button('', null, null, function(e) { self._uzsudata.interpolation.type = button.interpolationType; self._save(); }, null,  null,  null,  null, button.shape)
+        button.element = chart.renderer.button('', null, null, function(e) { self._uzsudata.interpolation.type = button.interpolationType; self._save(); }, {} , {}, {}, {}, button.shape)
           .attr({
             align: 'right',
             title: sv_lang.uzsu[button.langKey],
@@ -2069,7 +2069,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 		  chart.xAxis[0].setExtremes();
 		  chart.xAxis[0].update({min: button.xMin, max: button.xMax}, false); 
 		  chart.redraw();
-		  }, null,  null,  null,  null, button.shape)
+		  }, {}, {}, {}, {}, button.shape)
 		  .attr({
 			align: 'right',
 			title: sv_lang.uzsu[button.day],
