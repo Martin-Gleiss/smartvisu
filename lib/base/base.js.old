@@ -1742,23 +1742,7 @@ $.widget("sv.widget", {
 	},
 
 	_create: function() {
-		// this.items = widget.explode(this.options.item); 
-		
-		// code copied from widget.explode but without reduction to unique items -> allow items to be used multiple times
-		this.items = Array();
-		
-		// More than one item?
-		if (this.options.item.indexOf(',') >= 0) {
-			var parts = this.options.item.explode();
-
-			for (var i = 0; i < parts.length; i++) {
-				if(parts[i] != '' )	this.items.push(parts[i]);	
-			}
-		}
-		// One item
-		else if (this.options.item.trim() != '') {
-			this.items.push(this.options.item.trim());
-		}
+		this.items = widget.explode(this.options.item);
 
 		this.element.data('sv-widget', this);
 
@@ -1780,17 +1764,14 @@ $.widget("sv.widget", {
 */
 
 	/**
-	* Plots allow updates of single items (allowPartialUpdates = true) while most other widgets require data for all items at the same time. 
+	* TODO: check if partial update is still needed here. With smarthome.py the complete series is transferred
 	*/
 	
 	update: function(values, item) {
 		if(this.allowPartialUpdate && item != null) {
 			if (values !== undefined) {
 				var partialValues = new Array(this.items.length);
-				for (var i = 0; i < this.items.length; i++){
-					if (this.items[i] == item)
-						partialValues[i] = values;
-				}
+				partialValues[this.items.indexOf(item)] = values;
 				this._update(partialValues);
 			}
 		}
