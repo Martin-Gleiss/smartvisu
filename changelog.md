@@ -9,6 +9,7 @@
 - basic.window & design.window provide more styling capabilities
 - calendar.list changes event title to "private appointment" if event is marked as private. Enable with new config option "hide private"
 - basic.print got a new format option "F" which displays numbers with thousand-sperarators, e.g. 12.345,67
+- plot.period: xAxis timescale can be overridden by options in the "chartOptions" parameter
 
 ### Other New Features
 - if the configured driver is not available (e.g. removed after deprecation) a warning is displayed and the offline driver is used (also in config page) in order to throw no errors due to missing io. 
