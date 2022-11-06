@@ -497,7 +497,7 @@ $.widget("sv.plot_period", $.sv.widget, {
 		if (window.servertimeoffset != undefined && window.servertimeoffset != 0 && this.options["servertime-url"] != '')
 			chart.time.update({timezoneOffset: parseInt(-Number(sv.config.timezoneOffset)/60 + window.servertimeoffset/60000) });
 
-        if (this.options.chartOptions.xAxis[0].min && this.options.chartOptions.xAxis[0].max){
+        if (this.options.chartOptions && this.options.chartOptions.xAxis != undefined && this.options.chartOptions.xAxis[0].min && this.options.chartOptions.xAxis[0].max){
 			for (var i = 0; i < this.options.chartOptions.xAxis.length; i++){
 				var xMin = new Date() - new Date().duration(this.options.chartOptions.xAxis[i].min);
 				var xMax = new Date() - new Date().duration(this.options.chartOptions.xAxis[i].max);
