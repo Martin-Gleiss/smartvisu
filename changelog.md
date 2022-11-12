@@ -54,6 +54,7 @@
 - multimedia.image error handler was deleted after first error. Update by item did not work with timer. 
 - twig function "asset_exists" did not search in ./dropins/shwidgets (the folder where the backend stores plugin-related widgets)
 - default duration in device.codepad did not disable access due to a missing unit
+- plot.period and plot.xyplot did not accept units in printf-like format, e.g. %01,2f%
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
