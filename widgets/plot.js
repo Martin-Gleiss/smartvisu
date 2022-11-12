@@ -227,6 +227,9 @@ $.widget("sv.plot_period", $.sv.widget, {
         var zoom = this.options.zoom;
         var modes = String(this.options.mode).explode();
         var units = String(this.options.unit).explode();
+		for (var i = 0; i < units.length; i++) {
+			units[i] = units[i].replace(';', ',');		// restore format strings
+		}
         var assign = [];
         if (this.options.assign) {
             assign = String(this.options.assign).explode();
@@ -1637,6 +1640,9 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
         var axis = String(this.options.axis).explode();
         var zoom = this.options.zoom;
         var units = String(this.options.unit).explode();
+		for (var i = 0; i < units.length; i++) {
+			units[i] = units[i].replace(';', ',');		// restore format strings
+		}
         var assign = [];
         if (this.options.assign) {
             assign = String(this.options.assign).explode();
