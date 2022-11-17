@@ -17,6 +17,7 @@
 - new twig filter preg_replace allows regex-based replacements (used for clean svg loading)
 - all clocks, plot.period and plot.rtr are now able to use server time as reference (if configured on the config page)
 - items can be used multiple times in all widgets (double usage had been blocked up to now). 
+- new design "FlatDarkBlue". Thanks to uwe5.
 
 ### Improvements
 - calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
