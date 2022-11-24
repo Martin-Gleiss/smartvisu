@@ -501,30 +501,6 @@ $.widget("sv.plot_period", $.sv.widget, {
 		if (window.servertimeoffset != undefined && window.servertimeoffset != 0 && this.options["servertime-url"] != '')
 			chart.time.update({timezoneOffset: parseInt(-Number(sv.config.timezoneOffset)/60 + window.servertimeoffset/60000) });
 
-        if (this.options.chartOptions && this.options.chartOptions.xAxis != undefined && this.options.chartOptions.xAxis[0].min && this.options.chartOptions.xAxis[0].max){
-			for (var i = 0; i < this.options.chartOptions.xAxis.length; i++){
-				var xMin = new Date() - new Date().duration(this.options.chartOptions.xAxis[i].min);
-				var xMax = new Date() - new Date().duration(this.options.chartOptions.xAxis[i].max);
-				chart.xAxis[i].update({ min: xMin, max: xMax }, false);
-			}
-		}
-		else {
-			var xMin = new Date() - new Date().duration(this.options.tmin);
-			var xMax = new Date() - new Date().duration(this.options.tmax);
-			var dayDuration = 24*3600*1000;
-
-			if (this.options.zoom == "day"){
-				xMin = new Date() - new Date()% dayDuration + chart.time.options.timezoneOffset * 60000;
-				if (new Date() - xMin >= dayDuration)
-					xMin += dayDuration;
-				xMax = xMin + dayDuration;
-			}
-			chart.xAxis[0].update({ min: xMin, max: xMax }, false);
-		}
-        if(chart.navigator) {
-            chart.navigator.xAxis.update({ min: xMin, max: xMax }, false);
-        }
-
         var modes = String(this.options.mode).explode();
         var itemCount = response.length;
 
@@ -577,8 +553,31 @@ $.widget("sv.plot_period", $.sv.widget, {
                 chart.series[seriesIndex].setData(response[i], true, true, false);
             }
         }
-        // make sure xAxis settings are not overwritten by setData()
-		chart.xAxis[0].setExtremes(xMin, xMax);
+ 
+        if (this.options.chartOptions && this.options.chartOptions.xAxis != undefined && this.options.chartOptions.xAxis[0].min && this.options.chartOptions.xAxis[0].max){
+			for (var i = 0; i < this.options.chartOptions.xAxis.length; i++){
+				var xMin = new Date() - new Date().duration(this.options.chartOptions.xAxis[i].min);
+				var xMax = new Date() - new Date().duration(this.options.chartOptions.xAxis[i].max);
+				chart.xAxis[i].setExtremes(xMin, xMax);
+			}
+		}
+		else {
+			var xMin = new Date() - new Date().duration(this.options.tmin);
+			var xMax = new Date() - new Date().duration(this.options.tmax);
+			var dayDuration = 24*3600*1000;
+
+			if (this.options.zoom == "day"){
+				xMin = new Date() - new Date()% dayDuration + chart.time.options.timezoneOffset * 60000;
+				if (new Date() - xMin >= dayDuration)
+					xMin += dayDuration;
+				xMax = xMin + dayDuration;
+			}
+			chart.xAxis[0].setExtremes(xMin, xMax);
+		}
+        if(chart.navigator) {
+            chart.navigator.xAxis.update({ min: xMin, max: xMax }, false);
+        }
+
 		chart.redraw();
     },
 
