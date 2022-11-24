@@ -277,6 +277,7 @@ $.widget("sv.plot_period", $.sv.widget, {
                 series.push({
                     type: (exposure[i] != null && (exposure[i].toLowerCase().endsWith('stair') || exposure[i].toLowerCase().endsWith('stack')) ? exposure[i].substr(0, exposure[i].length-5) : exposure[i]),
                     step: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? 'left' : false),
+                    dataGrouping: {enabled: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? false : true)},
                     name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
                     data: [], // clone
                     yAxis: (assign[i] ? assign[i] - 1 : 0),
@@ -576,7 +577,9 @@ $.widget("sv.plot_period", $.sv.widget, {
                 chart.series[seriesIndex].setData(response[i], true, true, false);
             }
         }
-        chart.redraw();
+        // make sure xAxis settings are not overwritten by setData()
+		chart.xAxis[0].setExtremes(xMin, xMax);
+		chart.redraw();
     },
 
 });

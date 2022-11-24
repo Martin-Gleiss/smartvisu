@@ -56,6 +56,8 @@
 - twig function "asset_exists" did not search in ./dropins/shwidgets (the folder where the backend stores plugin-related widgets)
 - default duration in device.codepad did not disable access due to a missing unit
 - plot.period and plot.xyplot did not accept units in printf-like format, e.g. %01,2f%
+- plot.period showed faulty values on "stair" plots if chart resolution was not enough (corrected by disabling dataGrouping in Highcharts)
+- plot.period changed xAxis scaling if series data exeeded the parametrized range
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
