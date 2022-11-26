@@ -22,6 +22,9 @@
 .menu-hide-phone {
 	display: inline-block;
 }
+.hide-phone {
+   display: block;
+}
 
 /* Large desktop */
 @media all and (min-width: 980px) {
@@ -45,7 +48,7 @@
   .menu-visible-phone {
 	  display: inline-block;
   }
-  .menu-hide-phone {
+  .menu-hide-phone, .hide-phone {
 	  display: none;
   }
 }
