@@ -1,0 +1,169 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Wolfram v. Hülsen
+* @copyright   2012 - 2022
+* @license     GPL [http://www.gnu.de]
+* @version     1.0
+*
+* @title       Tankerkönig
+* @category    mobility
+* @icon        icons/ws/scene_gas_station.svg
+* @color       #b00
+* @description Kraftstoffpreise aller Tankstellen in Deutschland
+*
+* @info        Info und API Key unter
+* @link        https://www.tankerkoenig.de/
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "apps.html" %}
+
+{% block sidebar %}
+	<div>
+	<div class="app">
+		<div class="image" style="background-color: #b00;"><img src="icons/ws/scene_gas_station.svg" alt="Tankerkönig"></div>
+	</div>
+	<h3 style="padding: 40px 0 8px 0;">Tankerkönig</h3>
+	</div>
+	<div class="ui-field-contain">
+		<label for="tkFuel">Kraftstoffsorte</label>
+			<select name="tkFuel" id="tkFuel">
+				<option value="Diesel" selected="selected">Diesel</option>
+				<option value="E10">Super E10 </option>
+				<option value="E5"> Super E5 </option>
+		</select>
+	</div>
+	<div class="ui-field-contain">
+		<label for="tkDistance">Entfernung</label>
+		<select name="tkDistance" id="tkDistance">
+			<option value="1"> 1 km </option>
+			<option value="2"> 2 km </option>
+			<option value="5" selected="selected"> 5 km </option>
+			<option value="10"> 10 km </option>
+			<option value="15"> 15 km </option>
+		</select>
+	</div>
+	<br>
+	{% if not config_tanker_key %} <br><b>API-Key fehlt. Kraftstoffpreise sind Beispielwerte.</b><br> Bitte beschaffen Sie einen API-Key und tragen ihn in der config.ini als "tanker_key" ein. {% endif %}
+	{% if not config_tanker_location and (not config_weather_location or "lat" not in config_weather_location ) %} <br><br><b>Ortsangabe fehlt oder ist im falschen Format.</b><br> 
+	Bitte tragen Sie den Standort in der Form von "lat=123.456&lng=234.567" als Schlüssel "tanker_location" in die config.ini ein, oder verwenden Sie einen Wetterservice, der mit Geokoordinaten konfiguriert wird. {% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+
+	<h3>Kraftstoffpreise</h3>
+	<br />
+
+
+	<style type="text/css">
+		.tvlist ul {
+			margin: 0 !important;
+		}
+
+		.tvlist li {
+			padding: 0 0 0 125px !important;
+		}
+
+		.tvlist .ui-li-thumb {
+			height: 63px;
+			max-width: 113px;
+			top: 5px;
+			left: 5px;
+			border: 1px solid #aaa;
+		}
+
+		.tvlist .ui-li-aside {
+			background-color: white;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			height: 25px;
+			width: 70px;
+			margin: 3px;
+			text-align: center;
+			vertical-align: middle;
+			line-height: 27px;
+		}
+
+		.tvlist li p {
+			height: 35px;
+			white-space: normal;
+		}
+	</style>
+	
+
+	<div id="tanken" data-widget="app.tankerkoenig" class="tvlist">
+		<ul data-role="listview">
+		</ul>
+	</div>
+
+	<script type="text/javascript">
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
+			$('#tkFuel, #tkDistance').on('change init', function(event,ui){
+			var tkLocation = '{{ config_tanker_location ? config_tanker_location : config_weather_location|replace("lon", "lng")|raw }}';
+			var tkKey = '{{ config_tanker_key ? config_tanker_key : "00000000-0000-0000-0000-000000000002" }}';
+			var fuelType = $('#tkFuel').val();
+			var fuelDist = $('#tkDistance').val().toString();
+			$.getJSON('https://creativecommons.tankerkoenig.de/json/list.php?'+tkLocation+'&rad='+fuelDist+'&sort=price&type='+fuelType.toLowerCase()+'&apikey='+tkKey, function (data) {
+				//console.log(data);
+				if (data['status'] != 'error'){
+					var line = '';
+					var entry = data['stations'];
+
+					for (var i in entry) {
+						var ret = '';
+						var opened = (entry[i].isOpen ? 'style = "color: limegreen;">geöffnet' : 'style = "color: red;">geschlossen');
+						ret += '<b><u>' + entry[i].name + ' (' + entry[i].brand + ')</u></b>&nbsp;&nbsp;<span ' + opened + ' </span><br>';
+						ret += entry[i].street + ' ' + entry[i].houseNumber + ', ' + entry[i].postCode + ' ' + entry[i].place+' (' + entry[i].dist + ' km)<br>';
+						ret += '<b>'+fuelType+':&nbsp;</b>' + entry[i].price + '<br><br>';
+
+						line += '<li>' + ret + '</li>';
+					}
+
+					$('#tanken ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
+				}
+				else notify.message('error', 'Tankerkönig App', data['message']);
+			})
+				.fail(notify.json);
+		})
+		$('#tkFuel').trigger('init');
+		});
+	</script>
+
+
+	<hr />
+
+{% endblock %}
+
+/** aus Tankerkoenig API Doku:
+{
+    "ok": true,
+    "license": "CC BY 4.0 -  https:\/\/creativecommons.tankerkoenig.de",
+    "data": "MTS-K",
+    "status": "ok",
+    "stations": [
+        {                                                     Datentyp, Bedeutung
+            "id": "474e5046-deaf-4f9b-9a32-9797b778f047",   - UUID, eindeutige Tankstellen-ID
+            "name": "TOTAL BERLIN",                         - String, Name
+            "brand": "TOTAL",                               - String, Marke
+            "street": "MARGARETE-SOMMER-STR.",              - String, Straße
+            "place": "BERLIN",                              - String, Ort
+            "lat": 52.53083,                                - float, geographische Breite
+            "lng": 13.440946,                               - float, geographische Länge
+            "dist": 1.1,                                    - float, Entfernung zum Suchstandort in km
+            "diesel": 1.109,                                \
+            "e5": 1.339,                                     - float, Spritpreise in Euro
+            "e10": 1.319,                                   /
+            "isOpen": true,                                 - boolean, true, wenn die Tanke zum Zeitpunkt der
+                                                              Abfrage offen hat, sonst false
+            "houseNumber": "2",                             - String, Hausnummer
+            "postCode": 10407                               - integer, PLZ
+        },
+        ... weitere Tankstellen
+    ]
+}
+*/
+

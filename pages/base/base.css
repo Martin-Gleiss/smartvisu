@@ -22,6 +22,9 @@
 .menu-hide-phone {
 	display: inline-block;
 }
+.hide-phone {
+   display: block;
+}
 
 /* Large desktop */
 @media all and (min-width: 980px) {
@@ -45,7 +48,7 @@
   .menu-visible-phone {
 	  display: inline-block;
   }
-  .menu-hide-phone {
+  .menu-hide-phone, .hide-phone {
 	  display: none;
   }
 }
@@ -691,7 +694,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 }
 
 .block .image {
-  margin: 0 5px 13px 5px;
+  margin: 0 6px 13px 3px;
 }
 
 .ui-popup-container .image img,
