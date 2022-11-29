@@ -19,6 +19,7 @@
 - items can be used multiple times in all widgets (double usage had been blocked up to now). 
 - new design "FlatDarkBlue". Thanks to @uwe5.
 - new CSS class .hide-phone hides contents on a smartphone display (accordingly, .visible-phone shows contents only on smartphone displays)
+- new app "Tankerkönig" for gasoline prices in Germany
 
 ### Improvements
 - calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
@@ -30,6 +31,7 @@
 - some measures to avoid "deprecated" warnings in Twig on php8.1 (set default values in widgets explicitely since arguments in some twig filters must not be empty (null))
 - web services "phone" and "calendar" throw errors if php-dom module is not loaded
 - plot exporting to png and pdf has been switched to local ("offline") mode. This avoids sending data to highcharts servers.
+- replaced outdated links in various apps 
 
 ### Updated Libraries
 - JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits
@@ -44,6 +46,7 @@
 
 ### Removed Features
 - basic.shifter (deprecated since v3.0.0)
+- "tv movie" app since they discontinued the rss feed, "Würzburg" app since webcam is inactive
 
 ### Fixed Bugs
 - basic.input did not set time/timeflip values if min / max options were defined
