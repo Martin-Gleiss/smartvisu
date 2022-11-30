@@ -62,6 +62,7 @@
 - plot.period and plot.xyplot did not accept units in printf-like format, e.g. %01,2f%
 - plot.period showed faulty values on "stair" plots if chart resolution was not enough (corrected by disabling dataGrouping in Highcharts)
 - plot.period changed xAxis scaling if series data exeeded the parametrized range
+- blocking of browser back function on config, templatechecker and widget assistant pages did not work since v3.2.1
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
