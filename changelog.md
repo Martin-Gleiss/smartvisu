@@ -20,6 +20,7 @@
 - new design "FlatDarkBlue". Thanks to @uwe5.
 - new CSS class .hide-phone hides contents on a smartphone display (accordingly, .visible-phone shows contents only on smartphone displays)
 - new app "Tankerkönig" for gasoline prices in Germany
+- smarthomeNG driver now has a "loopback" option. If activated, after sending a command items are only updated by the backends answer. Up to now, a send command updated the item internally .
 
 ### Improvements
 - calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
@@ -63,6 +64,7 @@
 - plot.period showed faulty values on "stair" plots if chart resolution was not enough (corrected by disabling dataGrouping in Highcharts)
 - plot.period changed xAxis scaling if series data exeeded the parametrized range
 - blocking of browser back function on config, templatechecker and widget assistant pages did not work since v3.2.1
+- example3.graphic navigation was faulty if called with the pages parameter
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
