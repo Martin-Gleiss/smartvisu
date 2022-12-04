@@ -20,6 +20,7 @@
 - new design "FlatDarkBlue". Thanks to @uwe5.
 - new CSS class .hide-phone hides contents on a smartphone display (accordingly, .visible-phone shows contents only on smartphone displays)
 - new app "Tankerkönig" for gasoline prices in Germany
+- smarthomeNG driver now has a "loopback" option. If activated, after sending a command items are only updated by the backends answer. Up to now, a send command updated the item internally .
 
 ### Improvements
 - calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence

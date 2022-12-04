@@ -178,8 +178,9 @@
 								<h3 class="ui-collapsible-heading">{{ lang('configuration_page', 'options', 'label') }}</h3>
 							</div>
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
-								<h3>{{ lang('configuration_page', 'updatecheck', 'label') }}</h3>
+								<h3>{{ lang('configuration_page', 'functions', 'label') }}</h3>
 								{{ forms.config_flip(source, values, 'updatecheck') }}
+								{% if values[source]['driver'] == 'smarthomeng' %}{{ forms.config_flip(source, values, 'driver_loopback') }}{% endif %}
 							</div>
 						</div>
 					</div>
