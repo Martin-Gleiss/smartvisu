@@ -103,7 +103,7 @@
 	<script type="text/javascript">
 		$('#{{ page }}').on('pagecreate', function (event, ui) {
 			$('#tkFuel, #tkDistance').on('change init', function(event,ui){
-			var tkLocation = '{{ config_tanker_location ? config_tanker_location : config_weather_location|replace("lon", "lng")|raw }}';
+			var tkLocation = '{{ config_tanker_location ? config_tanker_location|raw : config_weather_location|replace("lon", "lng")|raw }}';
 			var tkKey = '{{ config_tanker_key ? config_tanker_key : "00000000-0000-0000-0000-000000000002" }}';
 			var fuelType = $('#tkFuel').val();
 			var fuelDist = $('#tkDistance').val().toString();
