@@ -181,13 +181,13 @@ $.widget("sv.basic_color_rect", $.sv.basic_color, {
 				for (var i = 0; i < colors; i++) {
 					html += '<div data-s="'+s+'" style="background-color: rgb(' + fx.hsv2rgb(i * share, s, 100).join(',') + ');"></div>';
 				}
-				html += '<div style="background-color: rgb(' + fx.hsv2rgb(0, 0, 100 - (s / step - 1) * 16.7).join(',') + ');"></div><br />';
+				html += '<div style="background-color: rgb(' + fx.hsv2rgb(0, 0, 100 - (s / step - 1) * 16.7).join(',') + ');"></div><br>';
 			}
 			for (var v = 100 - step * ((steps + 1) % 2)/2; v >= step/2; v -= step) {
 				for (var i = 0; i < colors; i++) {
 					html += '<div data-v="'+v+'" style="background-color: rgb(' + fx.hsv2rgb(i * share, 100, v).join(',') + ');"></div>';
 				}
-				html += '<div style="background-color: rgb(' + fx.hsv2rgb(0, 0, (v / step - 1) * 16.7).join(',') + ');"></div><br />';
+				html += '<div style="background-color: rgb(' + fx.hsv2rgb(0, 0, (v / step - 1) * 16.7).join(',') + ');"></div><br>';
 			}
 
 			html += '</div>';
@@ -1404,9 +1404,9 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		var unit = decoration[0];
 		var pre_value = decoration[1];
 		var to_value = decoration[2];
-		var scale = decoration[3];
+		var scale = decoration[3] =='true' ? true: false;
 		var scale_interval = this.options.scale_interval;
-		
+	
 		//get colours from css theme
 		var bg_color = $('.ui-bar-b').css('background-color');
 		var font_color = $('.ui-content').css('color');
@@ -1462,8 +1462,7 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 				$("#"+id+" .rs-handle").css('box-shadow', handle_color );
 				$("#"+id+" .rs-handle").css('background-image', handle_color );
 				$("#"+id+" .rs-range").css('background-image', track_color );
-						
-				if (scale == 'true') {
+				if (scale == true) {
 					var o = this.options;
 					var extraSize = 0, 
 					  sizeCorrect = false,
