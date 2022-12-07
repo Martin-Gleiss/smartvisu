@@ -39,6 +39,7 @@
 - Patches in Twig scripts: see CHANGELOG in Twig folder
 - ICal ICS Parser v3.2.0
 - Highcharts v10.3.0
+- minify to v1.3.69 and path-converter to current master branch (2022-12-07) from Matthias Mullie (thanks!)
 
 ### Deprecated
 - smarthome.py.js driver has been deprectated and moved to ./driver/deprecated 
