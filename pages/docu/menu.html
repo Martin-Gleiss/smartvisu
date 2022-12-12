@@ -1,8 +1,8 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiss
-* @copyright   2012 - 2015
+* @author      Martin Gleiß
+* @copyright   2012 - 2022
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -10,11 +10,22 @@
 
 <div id="menu" class="menu">
 			
-	<a id="menu-docu" data-ajax="false" href="index.php?pages=docu">
-		<img class="icon {{ pages == 'docu' ? ' icon1' }}" src="{{ icon0 }}edit_copy.svg" alt="Docu" /></a>
+	<a id="menu-docu" class="icon1" href="index.php?page=index{% if configured_pages != 'docu' %}&pages=docu{% endif %}" onclick="linkAnimate(id)">
+		<img class="icon{% if page == 'index' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}edit_copy.svg" alt="Docu" /></a>
+		
+	{% if configured_pages == 'docu' %}
+		<a id="{{ page }}_menu-apps" class="icon1" href="index.php?page=apps" onclick="linkAnimate(id)">
+			<img class="icon{% if page == 'apps' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}it_net.svg" alt="apps" /></a>
+			
+	{% endif %}
 
-	<a id="menu-system" data-ajax="false" href="index.php?page=config">
-		<img class="icon {{ page == 'config' ? ' icon1' }}" src="{{ icon0 }}edit_settings.svg" alt="Config" /></a>
+	<a id="menu-system" class="icon1" href="index.php?page=config" onclick="linkAnimate(id)">
+		<img class="icon{% if page == 'config' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}edit_settings.svg" alt="Config" /></a>
 
 </div>
-    
+<script>
+function linkAnimate(id) {
+	// animate link icons to show activity on slow devices
+	$('#'+id).find('svg').fadeTo(250, 0.25).fadeTo(250, 1);
+}
+</script>    

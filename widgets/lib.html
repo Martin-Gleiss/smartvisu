@@ -81,18 +81,18 @@
 */
 {% macro connection( ) %}
 {% import "@widgets/basic.html" as basic %}
-	io connection:&nbsp;&nbsp;<span id="connection"></span>
+	io connection:&nbsp;&nbsp;<span id="{{ page }}-connection"></span>
 	<script>
-		$('#connection').html(io.socket.url);
+		$('#{{ page }}-connection').html(io.socket.url);
 		if (io.server != undefined) { 
 			if (io.server != '') {						// if io.server already set write it directly
 				var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short');
-				$('#connection').html(io.socket.url + connectString);
+				$('#{{ page }}-connection').html(io.socket.url + connectString);
 			} else {
 				$(document).on('ioAlive', function(){   //else wait for ioAlive event and write then
 					if (io.server != '' ) {
 						var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short');
-						$('#connection').html(io.socket.url + connectString);
+						$('#{{ page }}-connection').html(io.socket.url + connectString);
 					}
 				})
 			}
