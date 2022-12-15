@@ -33,7 +33,9 @@ var io = {
 	// the port
 	port: '',
 
-	// -----------------------------------------------------------------------------
+    uzsu_type: '0',
+
+    // -----------------------------------------------------------------------------
 	// P U B L I C	 F U N C T I O N S
 	// -----------------------------------------------------------------------------
 
@@ -64,9 +66,12 @@ var io = {
 	write: function (item, val, callback) {
 		if (io.checkConnected) {
 			// convert numeric
-			if ($.isNumeric(val))
+			if ($.isNumeric(val)) {
 				val = val * 1.0;
-			io.socket.emit('setState', item, val, callback);
+                io.socket.emit('setState', item, val, callback);
+            } else {
+                io.socket.emit('setState', item, JSON.stringify(val), callback);
+            }
 		}
 	},
 
@@ -135,7 +140,7 @@ var io = {
 	socket: false,
 
 	isConnected: false,
-	
+    
 	checkConnected() {
 		if (!io.socket || !io.isConnected) {
 			console.log('ioBroker not connected');
@@ -238,6 +243,38 @@ var io = {
 		});
 	},
 
+    plots: [''],	
+    
+    updatePlot: function(item, unique) {
+        var pt = item.split('.');
+
+        if (!unique[item] && (pt instanceof Array) && widget.checkseries(item)) {
+            var id = item.substr(0, item.length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
+            var options = {
+                'aggregate': pt[pt.length - 4], // avg, min, max, on
+                'start': new Date() - new Date().duration(pt[pt.length - 3]),
+                'end': new Date() - new Date().duration(pt[pt.length - 2]),
+                'count': pt[pt.length - 1]
+            };
+            options.aggregate = options.aggregate == 'avg' ? 'average' : options.aggregate == 'on' ? 'total' : options.aggregate;
+           
+            io.socket.emit('getHistory', id, options, function (err, result) {
+                var val = [];
+                $.each(result, function(index, state) {
+                    val.push([state.ts, state.val]);
+                });
+                widget.update(item, val);
+            });
+
+            unique[item] = 1;
+            if (!io.plots[id]) {
+                io.plots[id] = item;
+                io.socket.emit('subscribe', id);
+                io.read(id);
+            }
+        }        
+    },
+    
 	monitor: function() {
 		var items = widget.listeners();
 		if (io.checkConnected() && items.length) {
@@ -245,33 +282,13 @@ var io = {
 			io.read(items);
 
 			// plot
+            io.plots = Array();
 			var unique = Array();
 			widget.plot().each(function (idx) {
 				var items = widget.explode($(this).attr('data-item'));
 				$.each(items, function() {
 					var item = String(this);
-					var pt = item.split('.');
-
-					if (!unique[item] && !widget.get(item) && (pt instanceof Array) && widget.checkseries(item)) {
-						var id = item.substr(0, item.length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
-						var options = {
-							'aggregate': pt[pt.length - 4], // avg, min, max, on
-							'start': new Date() - new Date().duration(pt[pt.length - 3]),
-							'end': new Date() - new Date().duration(pt[pt.length - 2]),
-							'count': pt[pt.length - 1]
-						};
-						options.aggregate = options.aggregate == 'avg' ? 'average' : options.aggregate == 'on' ? 'total' : options.aggregate;
-
-						io.socket.emit('getHistory', id, options, function (err, result) {
-							var val = [];
-							$.each(result, function(index, state) {
-								val.push([state.ts, state.val]);
-							});
-							widget.update(item, val);
-						});
-
-						unique[item] = 1;
-					}
+                    io.updatePlot(item, unique);
 				});
 			});
 		}
@@ -280,30 +297,49 @@ var io = {
 
 	stateChanged: function(item, state) {
 		if (state === null || typeof state !== 'object') return;
-		var val = state.val;
-		
-		// convert boolean
-		if (val === false) 
-			val = 0;
-		if (val === true) 
-			val = 1;
-		
-		// numbers get converted in widget.update -> no need to do it here
-		
-		// text needs no conversion
-		
-		// convert arrays and JSON arrays        
-        if (val &&
-			typeof val === 'string' &&
-			val[0] === '[' &&
-			val[val.length - 1] === ']') {
-			try {
-				val = JSON.parse(val);
-			} catch (e) {
-				console.log('Data seems to be an array, but cannot parse it: ' + val);
-			}
-        }        
-		widget.update(item, val);
+        
+        if (io.plots[item]) {
+            //console.log('item ' + item + ' is a plot (' + io.plots[item] + ')');
+            io.updatePlot(io.plots[item], Array());
+        } else {
+            var val = state.val;
+
+            // convert boolean
+            if (val === false) 
+                val = 0;
+            if (val === true) 
+                val = 1;
+
+            // numbers get converted in widget.update -> no need to do it here
+
+            // text needs no conversion
+
+            // convert arrays and JSON arrays        
+
+            if (val &&
+                typeof val === 'string' &&
+                val[0] === '{' &&
+                val[val.length - 1] === '}') {
+                try {
+                    val = JSON.parse(val);
+                } catch (e) {
+                    console.log('Data seems to be an json, but cannot parse it: ' + val);
+                }
+            } else {     
+                if (val &&
+                    typeof val === 'string' &&
+                    val[0] === '[' &&
+                    val[val.length - 1] === ']') {
+                    try {
+                        val = JSON.parse(val);
+                    } catch (e) {
+                        console.log('Data seems to be an array, but cannot parse it: ' + val);
+                    }
+                }        
+            }       
+
+            widget.update(item, val);
+        }
 	},
 	
 	/**
