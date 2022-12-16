@@ -368,8 +368,14 @@ var io = {
 	* stop all subscribed series
 	*/
 	stopseries: function () {
-		// TODO
-		$.noop;
+		if (io.isConnected) {
+			var items = widget.listeners();
+			io.plots.forEach(plot => {
+				items.push(plot[0]);
+			});
+			io.socket.emit('unsubscribe', items);
+			io.read(items);
+		}
 	}
 
 /*
