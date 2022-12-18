@@ -2,10 +2,13 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @author      Wolfram v. Hülsen
+ * @copyright   2012 - 2021
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ *
+ * read a dircetory on the server, apply a filter to the file extensions
+ * and return an array of available filenames
  */
 
 require_once 'includes.php';
