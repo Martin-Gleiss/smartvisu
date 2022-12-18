@@ -17,7 +17,7 @@
 				{% include 'menu.html' %}
 			</div>
 			<div class="ui-right">
-				<a href="javascript:location.reload()" style="text-decoration:none;color: {{ (config_design_icon0 == 'icons/sw/' ? '#000' : '#fff') }} ;">
+				<a href="javascript:io.close();location.reload();" style="text-decoration:none;color: {{ (config_design_icon0 == 'icons/sw/' ? '#000' : '#fff') }} ;">
 					{{ lib.smartvisu() }}
 					<div class="mini">
 						{{ clock.miniclock('', lang('format','time') ~ ', ' ~ lang('format','day') ) }} v{{ config_version_full }}

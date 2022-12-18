@@ -22,6 +22,7 @@
 - new app "Tankerkönig" for gasoline prices in Germany
 - smarthomeNG driver now has a "loopback" option. If activated, after sending a command items are only updated by the backends answer. Up to now, a send command updated the item internally .
 - iobroker driver now subscribes plot data and updates plots on receiving new values (thanks to @uwe5)
+- javascript add-on for iobroker enables usage of UZSU widgets with iobroker (see "hints_iobroker_uzsu.md in ./driver/iobroker_uzsu/). Thanks to @uwe5 !
 
 ### Improvements
 - calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
@@ -33,7 +34,8 @@
 - some measures to avoid "deprecated" warnings in Twig on php8.1 (set default values in widgets explicitely since arguments in some twig filters must not be empty (null))
 - web services "phone" and "calendar" throw errors if php-dom module is not loaded
 - plot exporting to png and pdf has been switched to local ("offline") mode. This avoids sending data to highcharts servers.
-- replaced outdated links in various apps 
+- replaced outdated links in various apps
+- item monitoring was not stopped with smarthomeNG after page change if new page had no items to monitor (e.g.info page). Now, an empty monitor command is sent in such cases, stopping the former subscriptions.
 
 ### Updated Libraries
 - JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits

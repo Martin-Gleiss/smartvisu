@@ -286,10 +286,11 @@ var io = {
 	 * Monitors the items
 	 */
 	monitor: function () {
-		if (widget.listeners().length) {
+		//if (widget.listeners().length) {
 			// subscribe all items used on the page
+			// or cancel subscription by sending an empty array 
 			io.send({'cmd': 'monitor', 'items': widget.listeners()});
-		}
+		//}
 
 		// subscribe all plots defined for the page 
 		// types: avg, min, max, on
@@ -355,7 +356,7 @@ var io = {
 		console.log("[io.smarthomeng] close connection");
 
 		if (io.socket.readyState > 0) {
-			io.socket.close();
+			io.socket.close(1000);
 		}
 
 		io.socket = null;
