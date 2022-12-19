@@ -167,7 +167,7 @@ var io = {
       io.log(1, "Reconnect timer started");
       io.rcTimer = setInterval(function() {
         io.log(1, "Reconnect timer fired");
-        if (io.socket == null) {
+        if (io.socket == null && document.visibilityState && document.visibilityState != 'hidden' ) {
           io.open();
         }
       }, 60000);
