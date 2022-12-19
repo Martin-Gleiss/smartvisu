@@ -18,6 +18,7 @@ removed:
      - basic._icon
      - plot.minmaxavg
      - plot.multiaxis
+     - basic.shifter
 
 deprecated:
-     - basic.shifter
+     

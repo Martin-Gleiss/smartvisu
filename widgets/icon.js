@@ -3,13 +3,14 @@ $.widget("sv.dynicon", $.sv.widget, {
 
 	options: {
 		min: 0,
-		max: 255
+		max: 255,
+		col: 'icon0'
 	},
 
 	_update: function(response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
 		if(response[1] !== undefined)
-			this.element.attr('class', 'icon' + (response[0] && response[1] ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
+			this.element.attr('class', 'icon ' + (response[0] && response[1] ? 'icon1' : this.options.col)) // addClass does not work in jQuery for svg
 
 		var max = this.options.max;
 		var min = this.options.min;
@@ -20,12 +21,8 @@ $.widget("sv.dynicon", $.sv.widget, {
 
 	_events: {
 		'click': function (event) {
-			if (this.options.item) {
-				var items = this.options.item.explode();
-
-				if (items[1]) {
-					io.write(items[1], (widget.get(items[1]) == 0 ? 1 : 0));
-				}
+			if (this.items[1]) {
+				io.write(this.items[1], (widget.get(this.items[1]) == 0 ? 1 : 0));
 			}
 		}
 	}
@@ -312,12 +309,8 @@ $.widget("sv.icon_heating", $.sv.widget, {
 
 	_events: {
 		'click': function (event) {
-			if (this.options.item) {
-				var items = this.options.item.explode();
-
-				if (items[0]) {
-					io.write(items[0], (widget.get(items[0]) == 0 ? 1 : 0));
-				}
+			if (this.items[0]) {
+				io.write(this.items[0], (widget.get(this.items[0]) == 0 ? 1 : 0));
 			}
 		}
 	}

@@ -1,3 +1,82 @@
+## 3.3
+### New / Changed Widgets
+- icon styling is now standardized on all widgets including dynamic icons using 6 icon classes defined with the designs plus color names and hex color codes. 4 classes for "red", yellow,"green" and "blue" have been added in the designs
+- svg icons in widgets get loaded directly into the html-DOM in order to provide faster loading and better stylability. This methods also profits from the cache mechanism if activated
+- SVG embedding can be avoided by using full file name with path and adding "/ne" at the end (e.g. "icons/ws/myicon.svg/ne"
+- new widget lib.svgimg loads an svg icon directly into the html-DOM
+- status.collapse now has an option to define the action (hide / show) performed when the trigger item reaches a specified value
+- basic.input: new modes datetime and datetimeflip allow setting datetime items with date and time in one step
+- basic.window & design.window provide more styling capabilities
+- calendar.list changes event title to "private appointment" if event is marked as private. Enable with new config option "hide private"
+- basic.print got a new format option "F" which displays numbers with thousand-sperarators, e.g. 12.345,67
+- plot.period: xAxis timescale can be overridden by options in the "chartOptions" parameter
+
+### Other New Features
+- if the configured driver is not available (e.g. removed after deprecation) a warning is displayed and the offline driver is used (also in config page) in order to throw no errors due to missing io. 
+- new Javascript function fx.load dynamically inserts svg into html-DOM
+- new twig filter preg_replace allows regex-based replacements (used for clean svg loading)
+- all clocks, plot.period and plot.rtr are now able to use server time as reference (if configured on the config page)
+- items can be used multiple times in all widgets (double usage had been blocked up to now). 
+- new design "FlatDarkBlue". Thanks to @uwe5.
+- new CSS class .hide-phone hides contents on a smartphone display (accordingly, .visible-phone shows contents only on smartphone displays)
+- new app "Tankerkönig" for gasoline prices in Germany
+- smarthomeNG driver now has a "loopback" option. If activated, after sending a command items are only updated by the backends answer. Up to now, a send command updated the item internally .
+- iobroker driver now subscribes plot data and updates plots on receiving new values (thanks to @uwe5)
+- javascript add-on for iobroker enables usage of UZSU widgets with iobroker (see "hints_iobroker_uzsu.md in ./driver/iobroker_uzsu/). Thanks to @uwe5 !
+
+### Improvements
+- calendar.waste recognizes event titles *starting* with the search pattern from lang.ini instead of requiring full congruence
+- lib.supersize hides the block's collapse button if located on the right, adjusts the vertical scroll position and selects the appropriate icon color
+- driver io_iobroker.js optimized to handle numeric data, JSON and arrays.
+- device.uzsuicon and device.uzsutable only initialize a dict, if at least the "active"-property is initialized by the backend. This prevents writing dicts to non-UZSU items
+- rooms with navbars in example1.smarthome now show the selected item repeatedly as active - not only at first visit (by adding "ui-state-persistent" to the "ui-btn-active" class)
+- name spaces for icons and widgets allow more flexibility with filenames
+- some measures to avoid "deprecated" warnings in Twig on php8.1 (set default values in widgets explicitely since arguments in some twig filters must not be empty (null))
+- web services "phone" and "calendar" throw errors if php-dom module is not loaded
+- plot exporting to png and pdf has been switched to local ("offline") mode. This avoids sending data to highcharts servers.
+- replaced outdated links in various apps
+- item monitoring was not stopped with smarthomeNG after page change if new page had no items to monitor (e.g.info page). Now, an empty monitor command is sent in such cases, stopping the former subscriptions.
+- websocket is only reconnected if smartVISU is visible in the browser. This avoids unnecessary reconnects in mobile browsers and makes reconnecting more reliable.
+- shNG driver now sends status 1000 when actively closing the websocket. This avoids some (but not all) abnormal closing warnings in the backend
+
+### Updated Libraries
+- JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits
+- Patches in Twig scripts: see CHANGELOG in Twig folder
+- ICal ICS Parser v3.2.0
+- Highcharts v10.3.0
+- minify to v1.3.69 and path-converter to current master branch (2022-12-07) from Matthias Mullie (thanks!)
+
+### Deprecated
+- smarthome.py.js driver has been deprectated and moved to ./driver/deprecated 
+- openhab2.js driver has been deprectated and moved to ./driver/deprecated
+- widget import without path is deprecated. New: {% import "@widgets/mywidget.html" as mywidget %}
+
+### Removed Features
+- basic.shifter (deprecated since v3.0.0)
+- "tv movie" app since they discontinued the rss feed, "Würzburg" app since webcam is inactive
+
+### Fixed Bugs
+- basic.input did not set time/timeflip values if min / max options were defined
+- device.uzsutable threw errors if sunrise was not set or not calculated
+- navbars and listviews changed display if an already active anchor was clicked
+- server time could not be used as selected in configuration
+- device.uzsugraph threw errors on new points with sun-based series events
+- twig filter "deficon" did not work on arrays 
+- select menu for timezone in config page did not open correctly
+- multimedia.image error handler was deleted after first error. Update by item did not work with timer. 
+- twig function "asset_exists" did not search in ./dropins/shwidgets (the folder where the backend stores plugin-related widgets)
+- default duration in device.codepad did not disable access due to a missing unit
+- plot.period and plot.xyplot did not accept units in printf-like format, e.g. %01,2f%
+- plot.period showed faulty values on "stair" plots if chart resolution was not enough (corrected by disabling dataGrouping in Highcharts)
+- plot.period changed xAxis scaling if series data exeeded the parametrized range
+- blocking of browser back function on config, templatechecker and widget assistant pages did not work since v3.2.1
+- example3.graphic navigation was faulty if called with the pages parameter
+- basic.roundslider did not show scales in cached mode
+
+### Known Bugs
+- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
+
+
 ## 3.2.2
 ### New / Changed Widgets
 - calendar.list has an option to show event links and locations in collapsible areas scrolling down on click.

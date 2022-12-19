@@ -20,7 +20,7 @@
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 			{{ plot.xyplot('', ['bath.list1', 'bath.list2', 'bath.list3'], '','', '-20', '20', '20', '80', ['0.2','0.6','1.0'], '', ['lightblue','darkblue','lightgreen'], 'spline', ['AT','Vorlauf'], '', '', '', '', '', '°C',
-			{xAxis:{reversed: true }, title:{text: "Heizkurven mit unterscheidlicher Steigung", align: "left"}, legend:{align: "right", floating:true, y:-3}}') }}
+			{xAxis:{reversed: true }, title:{text: "Heizkurven mit unterschiedlicher Steigung", align: "left"}, legend:{align: "right", floating:true, y: 20}}') }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 
@@ -30,7 +30,7 @@
 				<div data-role="collapsible" data-collapsed="false">
 					<h3>Heating Curves</h3>
 					{{ plot.xyplot('', ['bath.list1', 'bath.list2', 'bath.list3'], '','', '-20', '20', '20', '80', ['0.2','0.6','1.0'], '', ['lightblue','darkblue','lightgreen'], 'spline', ['AT','Vorlauf'], '', '', '', '', '', '°C',
-					{xAxis:{reversed: true }, title:{text: "Heizkurven mit unterscheidlicher Steigung", align: "left"}, legend:{align: "right", floating:true, y:-3}}) }}
+					{xAxis:{reversed: true }, title:{text: "Heizkurven mit unterschiedlicher Steigung", align: "left"}, legend:{align: "right", floating:true, y: 20}}) }}
 				</div>
 			</div>
 		</div>

@@ -18,7 +18,7 @@
 * @param {item(num)=} the item to move the shutters to the shade position (optional)
 */
 {% macro one(id, txt, gad_move, gad_stop, gad_pos, gad_shade ) %}
-	{% import   "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 
 	/** Design */
 	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
@@ -65,7 +65,7 @@
 * @param {item(num)=} the item to move the shutter to the shade position (optional)
 */
 {% macro two(id, txt, gad_move, gad_stop, gad_pos, gad_shade) %}
-	{% import   "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 
 	/** Design */
 	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
@@ -104,7 +104,7 @@
 * @param {item(num)=} the item to move the shutters to the shade position (optional)
 */
 {% macro three(id, txt, gad_pos, gad_shade) %}
-	{% import   "basic.html" as basic %}
+	{% import "@widgets/basic.html" as basic %}
 
 	/** Design */
 	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>

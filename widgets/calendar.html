@@ -30,12 +30,13 @@
 	/** handle default colors from config */
 	{% set configcolors = config_calendar_color|split(',') %}
 	{% set confignames = config_calendar_name|split(',') %}
+	{% set configprivate = config_calendar_private == '1' ? 'hide' : 'show' %}
 
 	{% if color is empty %}
 		/** build associative array of calendar name and according color */
 		{% set calendarcolors = [] %}
 		{% for configname in confignames %}
-			{% set calendarcolors = calendarcolors|merge({ (configname|trim|lower): configcolors[loop.index0]|trim }) %}
+			{% set calendarcolors = calendarcolors|merge({ (configname|trim|lower): configcolors[loop.index0]|default('grey')|trim }) %}
 		{% endfor %}
 		/** find color for calendars */
 		{% set calendar = calendar|default(confignames) %}
@@ -48,7 +49,7 @@
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="calendar.list" class="calendarlist"
 		data-item="url:lib/calendar/service/{{ config_calendar_service }}.php?count={{ count|default(25)|url_encode }}&calendar={{ implode(calendar|default(confignames))|url_encode }}"
 		data-repeat="{{ repeat|default('1h') }}"  data-count="{{ count|default(5) }}"
-		data-calendar="{{ implode(calendar|default(confignames)) }}" data-color="{{ implode(color) }}" data-weekday="{{ weekday|default('') }}" data-info="{{ info|default('') }}" >
+		data-calendar="{{ implode(calendar|default(confignames)) }}" data-color="{{ implode(color) }}" data-weekday="{{ weekday|default('') }}" data-info="{{ info|default('') }}" data-private = "{{ configprivate|default('show') }}" >
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
 		<dl data-role="listview" class="ui-listview activelist-container"></dl>
 	</div>

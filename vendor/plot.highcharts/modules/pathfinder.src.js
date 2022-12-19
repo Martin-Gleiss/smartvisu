@@ -1,5 +1,5 @@
 /**
- * @license Highcharts Gantt JS v9.3.1 (2021-11-05)
+ * @license Highcharts Gantt JS v10.3.0 (2022-10-31)
  *
  * Pathfinder
  *
@@ -7,7 +7,6 @@
  *
  * License: www.highcharts.com/license
  */
-'use strict';
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
         factory['default'] = factory;
@@ -22,10 +21,20 @@
         factory(typeof Highcharts !== 'undefined' ? Highcharts : undefined);
     }
 }(function (Highcharts) {
+    'use strict';
     var _modules = Highcharts ? Highcharts._modules : {};
     function _registerModule(obj, path, args, fn) {
         if (!obj.hasOwnProperty(path)) {
             obj[path] = fn.apply(null, args);
+
+            if (typeof CustomEvent === 'function') {
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'HighchartsModuleLoaded',
+                        { detail: { path: path, module: obj[path] }
+                    })
+                );
+            }
         }
     }
     _registerModule(_modules, 'Extensions/ArrowSymbols.js', [_modules['Core/Renderer/SVG/SVGRenderer.js']], function (SVGRenderer) {
@@ -195,7 +204,7 @@
 
         return symbols;
     });
-    _registerModule(_modules, 'Gantt/Connection.js', [_modules['Core/Globals.js'], _modules['Core/DefaultOptions.js'], _modules['Core/Series/Point.js'], _modules['Core/Utilities.js']], function (H, D, Point, U) {
+    _registerModule(_modules, 'Gantt/Connection.js', [_modules['Core/Defaults.js'], _modules['Core/Globals.js'], _modules['Core/Series/Point.js'], _modules['Core/Utilities.js']], function (D, H, Point, U) {
         /* *
          *
          *  (c) 2016 Highsoft AS
@@ -206,6 +215,13 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
+        var defaultOptions = D.defaultOptions;
+        var defined = U.defined,
+            error = U.error,
+            extend = U.extend,
+            merge = U.merge,
+            objectEach = U.objectEach,
+            pick = U.pick;
         /**
          * The default pathfinder algorithm to use for a chart. It is possible to define
          * your own algorithms by adding them to the
@@ -229,15 +245,6 @@
          * @typedef {"fastAvoid"|"simpleConnect"|"straight"|string} Highcharts.PathfinderTypeValue
          */
         ''; // detach doclets above
-        var defaultOptions = D.defaultOptions;
-        var addEvent = U.addEvent,
-            defined = U.defined,
-            error = U.error,
-            extend = U.extend,
-            merge = U.merge,
-            objectEach = U.objectEach,
-            pick = U.pick,
-            splat = U.splat;
         var deg2rad = H.deg2rad,
             max = Math.max,
             min = Math.min;
@@ -1005,11 +1012,11 @@
              *        The radius of the marker, to calculate the additional distance to
              *        the center of the marker.
              *
-             * @param {object} anchor
+             * @param {Object} anchor
              *        The anchor point of the path and marker as an object with x/y
              *        properties.
              *
-             * @return {object}
+             * @return {Object}
              *         The marker vector as an object with x/y properties.
              */
             getMarkerVector: function (radians, markerRadius, anchor) {
@@ -1162,7 +1169,7 @@
          * @private
          * @function pointWithinObstacle
          *
-         * @param {object} obstacle
+         * @param {Object} obstacle
          *        Obstacle to test.
          *
          * @param {Highcharts.Point} point
@@ -1234,10 +1241,10 @@
          * @private
          * @function limitObstacleToBounds
          *
-         * @param {object} obstacle
+         * @param {Object} obstacle
          *        Obstacle to limit.
          *
-         * @param {object} bounds
+         * @param {Object} bounds
          *        Bounds to use as limit.
          *
          * @return {void}
@@ -1260,7 +1267,7 @@
          * @param {Highcharts.PositionObject} end
          *        Ending coordinate, object with x/y props.
          *
-         * @return {object}
+         * @return {Object}
          *         An object with the SVG path in Array form as accepted by the SVG
          *         renderer, as well as an array of new obstacles making up this
          *         path.
@@ -1287,14 +1294,14 @@
          * @param {Highcharts.PositionObject} end
          *        Ending coordinate, object with x/y props.
          *
-         * @param {object} options
+         * @param {Object} options
          *        Options for the algorithm:
          *        - chartObstacles: Array of chart obstacles to avoid
          *        - startDirectionX: Optional. True if starting in the X direction.
          *          If not provided, the algorithm starts in the direction that is
          *          the furthest between start/end.
          *
-         * @return {object}
+         * @return {Object}
          *         An object with the SVG path in Array form as accepted by the SVG
          *         renderer, as well as an array of new obstacles making up this
          *         path.
@@ -1419,7 +1426,7 @@
          * @param {Highcharts.PositionObject} end
          *        Ending coordinate, object with x/y props.
          *
-         * @param {object} options
+         * @param {Object} options
          *        Options for the algorithm.
          *        - chartObstacles:  Array of chart obstacles to avoid
          *        - lineObstacles:   Array of line obstacles to jump over
@@ -1431,7 +1438,7 @@
          *                           direction that is the furthest between
          *                           start/end.
          *
-         * @return {object}
+         * @return {Object}
          *         An object with the SVG path in Array form as accepted by the SVG
          *         renderer, as well as an array of new obstacles making up this
          *         path.
@@ -1566,19 +1573,19 @@
              * @private
              * @function
              *
-             * @param {object} obstacle
+             * @param {Object} obstacle
              *        Obstacle to dodge/escape.
              *
-             * @param {object} fromPoint
+             * @param {Object} fromPoint
              *        Point with x/y props that's dodging/escaping.
              *
-             * @param {object} toPoint
+             * @param {Object} toPoint
              *        Goal point.
              *
              * @param {boolean} dirIsX
              *        Dodge in X dimension.
              *
-             * @param {object} bounds
+             * @param {Object} bounds
              *        Hard and soft boundaries.
              *
              * @return {boolean}
@@ -1826,7 +1833,7 @@
 
         return algorithms;
     });
-    _registerModule(_modules, 'Gantt/Pathfinder.js', [_modules['Gantt/Connection.js'], _modules['Core/Chart/Chart.js'], _modules['Core/Globals.js'], _modules['Core/DefaultOptions.js'], _modules['Core/Series/Point.js'], _modules['Core/Utilities.js'], _modules['Gantt/PathfinderAlgorithms.js']], function (Connection, Chart, H, D, Point, U, pathfinderAlgorithms) {
+    _registerModule(_modules, 'Gantt/Pathfinder.js', [_modules['Gantt/Connection.js'], _modules['Core/Chart/Chart.js'], _modules['Core/Defaults.js'], _modules['Core/Globals.js'], _modules['Core/Series/Point.js'], _modules['Core/Utilities.js'], _modules['Gantt/PathfinderAlgorithms.js']], function (Connection, Chart, D, H, Point, U, pathfinderAlgorithms) {
         /* *
          *
          *  (c) 2016 Highsoft AS
@@ -1837,6 +1844,14 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
+        var defaultOptions = D.defaultOptions;
+        var addEvent = U.addEvent,
+            defined = U.defined,
+            error = U.error,
+            extend = U.extend,
+            merge = U.merge,
+            pick = U.pick,
+            splat = U.splat;
         /**
          * The default pathfinder algorithm to use for a chart. It is possible to define
          * your own algorithms by adding them to the
@@ -1860,17 +1875,7 @@
          * @typedef {"fastAvoid"|"simpleConnect"|"straight"|string} Highcharts.PathfinderTypeValue
          */
         ''; // detach doclets above
-        var defaultOptions = D.defaultOptions;
-        var addEvent = U.addEvent,
-            defined = U.defined,
-            error = U.error,
-            extend = U.extend,
-            merge = U.merge,
-            objectEach = U.objectEach,
-            pick = U.pick,
-            splat = U.splat;
-        var deg2rad = H.deg2rad,
-            max = Math.max,
+        var max = Math.max,
             min = Math.min;
         /*
          @todo:
@@ -2290,7 +2295,8 @@
                             // For Gantt series the connect could be
                             // defined as a dependency
                             if (ganttPointOptions && ganttPointOptions.dependency) {
-                                ganttPointOptions.connect = ganttPointOptions.dependency;
+                                ganttPointOptions.connect = ganttPointOptions
+                                    .dependency;
                             }
                             var to,
                                 connects = (point.options &&
@@ -2392,7 +2398,7 @@
              *
              * @function Highcharts.Pathfinder#getChartObstacles
              *
-             * @param {object} options
+             * @param {Object} options
              *        Options for the calculation. Currenlty only
              *        options.algorithmMargin.
              *
@@ -2451,7 +2457,7 @@
              * @param {Array<object>} obstacles
              *        An array of obstacles to inspect.
              *
-             * @return {object}
+             * @return {Object}
              *         The calculated metrics, as an object with maxHeight and maxWidth
              *         properties.
              */
@@ -2581,11 +2587,11 @@
              *        The radius of the marker, to calculate the additional distance to
              *        the center of the marker.
              *
-             * @param {object} anchor
+             * @param {Object} anchor
              *        The anchor point of the path and marker as an object with x/y
              *        properties.
              *
-             * @return {object}
+             * @return {Object}
              *         The marker vector as an object with x/y properties.
              */
             getMarkerVector: function (radians, markerRadius, anchor) {

@@ -1,3 +1,8 @@
+#Patches for 1.44.6 by wvhn
+
+ * src/Node/Node.php: return-type specifications (like in v3.x) for php 8.1 compatibility
+ * Markup.php: return-type specifications (like in v3.x) for php 8.1 compatibility
+
 # 1.44.6 (2021-11-25)
 
  * Last version for the 1.x series

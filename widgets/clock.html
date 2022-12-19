@@ -67,13 +67,14 @@
 * Displays a clock in icon style
 *
 * @param {id} unique id for this widget
+* @param {color(icon0to5)=} 
 */
-{% macro iconclock(id) %}
-	{% import "icon.html" as icon %}
+{% macro iconclock(id, color) %}
+	{% import "@widgets/icon.html" as icon %}
 
 	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i" class="iconclock"
 	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
-	 >{{ icon.clock(id) }}</span>
+	 >{{ icon.clock(id, '', '', color) }}</span>
 {% endmacro %}
 
 

@@ -69,7 +69,7 @@
  * @param {value[?]=1} either one value (icon disappears when value not true) or array with two or more values, e.g. [0,1] (icon stays) (default 1).
  * @param {formula[?]=or} 'or', 'and' or any JavaScript expression with following variables, result will be compared to comparative value above (default 'or')
  - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
- * @param {color[?](icon0,icon1)=icon0} the color 'icon1' or e. g. '#f00' for red (default 'icon0' of the design)
+ * @param {color[?](icon0to5)=icon0} the color 'icon0' through 'icon5' or e. g. '#f00' for red (default 'icon0' of the design)
  * @param {text=} URL to use as link (optional)
  * @param {text=} used in combination with href as data-rel attribute {e.g. to open a popup} (optional)
  * @param {text=} description text for the whole line
@@ -82,8 +82,8 @@
              to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
  */
 {% macro symbol(id, item, txt, pic, val, formula, color, href, rel, linetext, columntext, item_plot, icon_plot, place3, place4, column_order) %}
-    {% import "basic.html" as basic %}
-    {% import "plot.html" as plot %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/plot.html" as plot %}
     {% if item is iterable %}
       {% set id = id is empty ? item[0]|replace('.', '_') : id %}
     {% else %}
@@ -164,7 +164,7 @@
    - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
    - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
  * @param {value[]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
- * @param {color[?](icon0,icon1)=} array of colors; 'icon1' or e. g. '#f00' for red (optional)
+ * @param {color[?](icon0to5)=} array of colors; 'icon0' through 'icon5' or e. g. '#f00' for red (optional)
    the first one is the base color for values below first threshold, so pass one color more than thresholds.
  * @param {text[?]=} 	    css class name, useful for script hacks (see documentation and example)
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
@@ -178,8 +178,8 @@
  *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
 */
 {% macro print(id, item, format, formula, threshold, color, classname, place2, linetext, columntext, item_plot, icon_plot, place3, place4, column_order) %}
-    {% import "basic.html" as basic %}
-    {% import "plot.html" as plot %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/plot.html" as plot %}
     {% if item is iterable %}
       {% set id = id is empty ? item[0]|replace('.', '_') : id %}
     {% else %}
@@ -255,22 +255,22 @@
  * @param {item(bool,num)=} an item for frost (3x bit or 1x byte, optional)
  * @param {item(bool,num)=} an item for the current state of the actor (optional)
  * @param {item(str)=} an item for a text (some rtr have a text-display), (optional)
- * @param {value=0.5}    		step for plus/minus buttons (optional, default: 0.5)
+ * @param {value=0.5} step for plus/minus buttons (optional, default: 0.5)
  * @param {item(num)=} an item for the offset temperature (optional, if provided set temperature changes will be written to this item instead of 'item_set')
  * @param {text[]=} list of additional widgets / content to display
- * @param {color(icon0,icon1)=}    		color for the popup icon
- * @param {text=}    	activity indicator for the plot icon which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
- * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
- * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {item(num)=} 	    an item for the current setpoint (e.g. valve 0..100%)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {value[](1,2,3,4,5)=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
+ * @param {color(icon0to5)=} color for the popup icon, e.g. 'icon0' through 'icon5'
+ * @param {text=} activity indicator for the plot icon which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon0' through 'icon5' or 'blink' (optional)
+ * @param {unspecified[?]=} array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {image=measure_power_meter} icon triggering the plot popup
+ * @param {item(num)=} an item for the current setpoint (e.g. valve 0..100%)
+ * @param {unspecified=} placeholder attributes for future features, etc.
+ * @param {value[](1,2,3,4,5)=} array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
  *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
 */
 {% macro rtr(id, linetext, item_actual, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step, item_offset, supplements, color, indicator, item_plot, icon_plot, item_setpoint, place4, column_order) %}
-    {% import "basic.html" as basic %}
-    {% import "plot.html" as plot %}
-    {% import "device.html" as device %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/plot.html" as plot %}
+    {% import "@widgets/device.html" as device %}
     {% set id = id is empty ? item_actual|replace('.', '_') : id %}
     <li data-icon="false" class="row_rtr">
     <div class="quad_table sorting row_rtr" id="row_{{uid(page, id)}}_sorting">
@@ -324,8 +324,8 @@
  * @param {value=5}       	step between two values (optional, default 5)
  * @param {image=light_light}       		icon for 'on' state, can also be dynamic (optional, default is light_light)
  * @param {image=light_light}       		icon for 'off' state, can also be dynamic (optional, default is light_light)
- * @param {color(icon0,icon1)=icon1}       	color for 'on' state (optional)
- * @param {color(icon0,icon1)=icon0}       	color for 'off' state (optional)
+ * @param {color(icon0to5)=icon1}       	color for 'on' state (optional)
+ * @param {color(icon0to5)=icon0}       	color for 'off' state (optional)
  * @param {text(input,handle,both,none)=none} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'input')
  * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
  * @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
@@ -360,13 +360,13 @@
  *
 */
 {% macro dimmer(id, linetext, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos, indicator, slider_orientation, item_uzsu, uzsu_attribs, formula, item_plot, icon_plot, item_auto, extpopup, locks, linetext_widget, place4, column_order) %}
-    {% import "basic.html" as basic %}
-    {% import "device.html" as device %}
-    {% import "plot.html" as plot %}
-    {% import "popup.html" as popup %}
-    {% import "clock.html" as clock %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/device.html" as device %}
+    {% import "@widgets/plot.html" as plot %}
+    {% import "@widgets/popup.html" as popup %}
+    {% import "@widgets/clock.html" as clock %}
     {% if asset_exists('stateengine.html') %}
-      {% import "stateengine.html" as stateengine %}
+      {% import "@widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -395,7 +395,7 @@
       {% elseif item == 'plot' and item_plot %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == '' or item == ' ' %}
+      {% elseif item == '' or item == ' ' or item is null %}
         {% set elements = elements|merge({(key):('empty')}) %}
         {% set written = 1 %}
       {% elseif item matches '/^[\\d\\.]+$/' %}
@@ -426,8 +426,8 @@
         {% elseif arrayitem == 'plot' and item_plot %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
-        {% elseif arrayitem == '' or arrayitem == ' ' %}
-          {% set elements = elements|merge({(key):(arrayitem)}) %}
+        {% elseif arrayitem == '' or arrayitem == ' ' or arrayitem is null %}
+          {% set elements = elements|merge({(key):('empty')}) %}
           {% set written = 1 %}
         {% endif %}
       {% endfor %}
@@ -437,7 +437,7 @@
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
             {% endif %}
-        {% else %}
+        {% elseif  column_order[key+1] is not null %}
             {% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
@@ -732,14 +732,14 @@
              Combine elements in one column by putting them in arrays. Standard is [['locks', 'sequencer', 'colorpicker'],'values', 'stateengine', 'plot', 'uzsu']
  */
 {% macro color(id, item_value_r, item_value_g, item_value_b, min, max, step, colors, style, colormodel, linetext, item_switch_r, item_switch_g, item_switch_b, min_display, max_display, item_uzsu, uzsu_attribs, popupcolor, item_switch_ww, item_value_ww, item_plot, icon_plot, item_auto, extpopup, locks, item_seq, icon_color, linetext_widget, place4, column_order) %}
-    {% import "basic.html" as basic %}
-    {% import "plot.html" as plot %}
-    {% import "icon.html" as icon %}
-    {% import "device.html" as device %}
-    {% import "popup.html" as popup %}
-    {% import "clock.html" as clock %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/plot.html" as plot %}
+    {% import "@widgets/icon.html" as icon %}
+    {% import "@widgets/device.html" as device %}
+    {% import "@widgets/popup.html" as popup %}
+    {% import "@widgets/clock.html" as clock %}
     {% if asset_exists('stateengine.html') %}
-      {% import "stateengine.html" as stateengine %}
+      {% import "@widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -774,7 +774,7 @@
       {% elseif item == 'plot' and item_plot %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == '' or item == ' ' %}
+      {% elseif item == '' or item == ' ' or item is null %}
         {% set elements = elements|merge({(key):('empty')}) %}
         {% set written = 1 %}
       {% elseif item matches '/^[\\d\\.]+$/' %}
@@ -811,7 +811,7 @@
         {% elseif arrayitem == 'plot' and item_plot %}
           {% set elements = elements|merge({(key):(arrayitem)}) %}
           {% set written = 1 %}
-        {% elseif arrayitem == '' or arrayitem == ' ' %}
+        {% elseif arrayitem == '' or arrayitem == ' ' or arrayitem is null %}
           {% set elements = elements|merge({(key):('empty')}) %}
           {% set written = 1 %}
         {% endif %}
@@ -822,8 +822,8 @@
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
             {% endif %}
-        {% else %}
-            {% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
+        {% elseif  column_order[key+1] is not null %}
+			{% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
             {% endif %}
@@ -1188,14 +1188,14 @@
              Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'], 'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
 {% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, blind_or_shutter, pos_attribs) %}
-    {% import "basic.html" as basic %}
-    {% import "device.html" as device %}
-    {% import "icon.html" as icon %}
-    {% import "plot.html" as plot %}
-    {% import "popup.html" as popup %}
-    {% import "clock.html" as clock %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/device.html" as device %}
+    {% import "@widgets/icon.html" as icon %}
+    {% import "@widgets/plot.html" as plot %}
+    {% import "@widgets/popup.html" as popup %}
+    {% import "@widgets/clock.html" as clock %}
     {% if asset_exists('stateengine.html') %}
-      {% import "stateengine.html" as stateengine %}
+      {% import "@widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# convert array with uzsu and pos items to separate items #} */
@@ -1242,7 +1242,7 @@
       {% elseif item == 'plot' and item_plot %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == '' or item == ' ' %}
+      {% elseif item == '' or item == ' ' or item is null %}
         {% set elements = elements|merge({(key):('empty')}) %}
         {% set written = 1 %}
       {% elseif item matches '/^[\\d\\.]+$/' %}
@@ -1286,7 +1286,7 @@
           {% elseif arrayitem == 'plot' and item_plot %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
-          {% elseif arrayitem == '' or arrayitem == ' ' %}
+          {% elseif arrayitem == '' or arrayitem == ' ' or arrayitem is null %}
             {% set elements = elements|merge({(key):('empty')}) %}
             {% set written = 1 %}
           {% endif %}
@@ -1298,7 +1298,7 @@
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
             {% endif %}
-        {% else %}
+        {% elseif  column_order[key+1] is not null %}
             {% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
@@ -1691,12 +1691,12 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              Combine elements in one column by putting them in arrays.
  */
 {% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, coverUrl, place1, place2, column_order) %}
-    {% import "basic.html" as basic %}
-    {% import "plot.html" as plot %}
-    {% import "device.html" as device %}
-    {% import "multimedia.html" as multimedia %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/plot.html" as plot %}
+    {% import "@widgets/device.html" as device %}
+    {% import "@widgets/multimedia.html" as multimedia %}
     {% if asset_exists('stateengine.html') %}
-      {% import "stateengine.html" as stateengine %}
+      {% import "@widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -1776,7 +1776,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
       {% elseif item == 'plot' and item_plot %}
         {% set elements = elements|merge({(key):(item)}) %}
         {% set written = 1 %}
-      {% elseif item == ' ' %}
+      {% elseif item == ' ' or item is null  %}
         {% set elements = elements|merge({(key):('empty')}) %}
         {% set written = 1 %}
       {% elseif item matches '/^[\\d\\.]+$/' %}
@@ -1858,7 +1858,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% elseif arrayitem == 'plot' and item_plot %}
             {% set elements = elements|merge({(key):(arrayitem)}) %}
             {% set written = 1 %}
-          {% elseif arrayitem == ' ' %}
+          {% elseif arrayitem == ' ' or arrayitem is null %}
             {% set elements = elements|merge({(key):('empty')}) %}
           {% endif %}
       {% endfor %}
@@ -1868,7 +1868,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
             {% endif %}
-        {% else %}
+        {% elseif  column_order[key+1] is not null %}
             {% if (column_order[key+1] starts with 'empty') or (column_order[key+1] matches '/^[\\d\\.]+$/') or (column_order[key+1] == ' ') %}
             {% elseif written == 1 %}
                 {% set elements = elements|merge({(key):('div')}) %}
@@ -2228,7 +2228,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {image[?]=control_on_off} array of icons (optional, default just if text is empty: control_on_off)
    dynamic icons can be used, e.g. icon.light('', '', value_item, min_display, max_display); please note: these must not be wrapped by apostrophs (')
  * @param {text[]=} array of texts (optional)
- * @param {color[](icon0,icon1,hidden,blank)=} array of colors; 'icon1' or e. g. '#f00' for red (optional, default: icon0)
+ * @param {color[](icon0to5,hidden,blank)=} array of colors; 'icon0'  through 'icon5'or e. g. '#f00' for red (optional, default: icon0)
    additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
  * @param {color[?](icon0,icon1,blink)=} activity indicator which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
  * @param {item(bool,num,list,str)=} an item to which a value on longpress is sent (optional)
@@ -2265,14 +2265,14 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
 */
 {% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, item_longpress, value_longpress, value_longrelease, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, linetext_widget, place4, column_order, switch_or_select) %}
-    {% import "basic.html" as basic %}
-    {% import "device.html" as device %}
-    {% import "icon.html" as icon %}
-    {% import "plot.html" as plot %}
-    {% import "popup.html" as popup %}
-    {% import "clock.html" as clock %}
+    {% import "@widgets/basic.html" as basic %}
+    {% import "@widgets/device.html" as device %}
+    {% import "@widgets/icon.html" as icon %}
+    {% import "@widgets/plot.html" as plot %}
+    {% import "@widgets/popup.html" as popup %}
+    {% import "@widgets/clock.html" as clock %}
     {% if asset_exists('stateengine.html') %}
-      {% import "stateengine.html" as stateengine %}
+      {% import "@widgets/stateengine.html" as stateengine %}
     {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -2878,7 +2878,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {text[]=[0,1]} list of values (optional, default [0,1])
  * @param {image[?]=} list of icons for every button (optional) - not supported for type 'menu'
  * @param {text[?]=} list of texts for every menu entry or button (optional)
- * @param {color[?](icon0,icon1)=icon1} the color for the on state of the buttons (optional, default: icon1) - not supported for type 'menu'
+ * @param {color[?](icon0to5)=icon1} the color for the on state of the buttons, e.g. 'icon0'through'icon5' or '#f00' or 'red' (optional, default: icon1) - not supported for type 'menu'
  * @param {text[?](horizontal,vertical,none)=horizontal} orientation of the controlgroup: 'horizontal', 'vertical' or 'none' for seperate buttons (optional, default: 'horizontal') - not supported for type 'menu'
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
@@ -2942,7 +2942,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @info Inspired by Michael Würtenberger, date/time control uses JTSageDateBox
 */
 {% macro input(id, item, type, min, max, step, place1, place2, linetext, columntext, column_order) %}
-    {% import "basic.html" as basic %}
+    {% import "@widgets/basic.html" as basic %}
     {% if item is iterable %}
       {% set id = id is empty ? item[0]|replace('.', '_') : id %}
     {% else %}

@@ -11,7 +11,9 @@
 {% extends "widget_basic.html" %}
 
 {% block example %}
-
+<script>
+	io.write('bath.time', '2020-01-01T12:00:00.000000+01:00');
+</script>
   <h5>Examples</h5>
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
@@ -109,7 +111,7 @@
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 		<img id="myimage" src="" />
-		{{basic.print('','<item with data>','script','$("#myimage").attr("src", VAR)') }}	
+		{{basic.print('','<<item with data>>','script','$("#myimage").attr("src", VAR)') }}	
     {% endverbatim %}{% endfilter %}</code>
   </div>
 

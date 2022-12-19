@@ -80,19 +80,19 @@
 *
 */
 {% macro connection( ) %}
-{% import "basic.html" as basic %}
-	io connection:&nbsp;&nbsp;<span id="connection"></span>
+{% import "@widgets/basic.html" as basic %}
+	io connection:&nbsp;&nbsp;<span id="{{ page }}-connection"></span>
 	<script>
-		$('#connection').html(io.socket.url);
+		$('#{{ page }}-connection').html(io.socket.url);
 		if (io.server != undefined) { 
 			if (io.server != '') {						// if io.server already set write it directly
 				var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short');
-				$('#connection').html(io.socket.url + connectString);
+				$('#{{ page }}-connection').html(io.socket.url + connectString);
 			} else {
 				$(document).on('ioAlive', function(){   //else wait for ioAlive event and write then
 					if (io.server != '' ) {
-						var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short')+'<br>smartVISU server IP: '+sv.info.serverIP+'&nbsp;&nbsp;&nbsp;&nbsp;Remote IP: '+sv.info.remoteIP;
-						$('#connection').html(io.socket.url + connectString);
+						var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short');
+						$('#{{ page }}-connection').html(io.socket.url + connectString);
 					}
 				})
 			}
@@ -123,14 +123,22 @@
 *
 * @param {id=} unique id for the widget.
 *
-* @Author: bonze  (plot resize by Wolfram v. Hülsen)
+* @Author: bonze  (plot resize and icon management by Wolfram v. Hülsen)
 */
 {% macro supersize ( id ) %}
 	{% set uid = uid(page, id) %}
+	{% import _self as lib %}
 	 <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
-		<a><img class="supersize" src="icons/sw/control_centr_arrow_up_right.svg" style="position:absolute; width:3em; height:auto; top:0px; right:0px;"></a>
+		<a>{{ lib.svgimg ('', 'control_centr_arrow_up_right.svg', 'supersize icon0 sizesmall') }}</a>
+		<a>{{ lib.svgimg ('', 'jquery_minus.svg', 'supersize icon0 sizebig', 'display:none;') }}</a>
 	</span>
 	<script>
+		$(".supersize").closest("div").on("collapsiblecreate", function (event, ui){
+			var element = $(this);
+			if (element.parent().attr("data-iconpos") == "right")
+				element.collapsible({iconpos: "none"});
+		});
+		
 		$(".supersize").click(function (e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -144,14 +152,19 @@
 				element.addClass("overlay").show();
 				element.collapsible('expand'); 
 				element.find("h3").addClass("ui-corner-all");
-				element.find(".supersize").attr("src", "icons/sw/jquery_minus.svg");
+				element.find(".supersize.sizesmall").hide();
+				element.find(".supersize.sizebig").show();
+				element.find(".supersize").attr("data-ypos", Math.round(window.scrollY));
 				element.find('.highcharts-root').addClass('supersized');
+				$.mobile.silentScroll(0);
 			}else{
 				$(".mask").css('display','none');
 				element.removeClass("overlay");
 				element.find("h3").removeClass("ui-corner-all");
-				element.find(".supersize").attr("src", "icons/sw/control_centr_arrow_up_right.svg");
-				element.find('.highcharts-root').removeClass('supersized');
+				element.find(".supersize.sizebig").hide();
+				element.find(".supersize.sizesmall").show();
+				var previousPosition = element.find(".supersize").attr("data-ypos")*1;
+				$.mobile.silentScroll(previousPosition);
 			}
 			var actualWidth = parseInt(element.css('width').replace('px',''));
 			var sizeFactor = actualWidth / previousWidth;
@@ -163,4 +176,28 @@
 			});
 		});
 	</script>
+{% endmacro %}
+
+/**
+* Embed an svg icon into html DOM in order to make it styleable.   
+  icon must be available in ./icons/ws or ./dropins/icons/ws. Otherwise use &lt;img src=... with icon path and name
+*
+* @param {text=} optional id for the icon
+* @param {text} icon name e.g. 'myicon' or 'myicon.svg' 
+* @param {text=} CSS classes for the icon (optional, default='') 
+* @param {text=} styling options in CSS notation (optional, default='')
+*
+* @Author: Wolfram v. Hülsen
+*/
+{% macro svgimg ( id, pic, iconclass, styleoptions ) %}
+	{% set iconF = 'icons/ws/' %}
+	{% if isfile(iconF ~ pic) or isfile('dropins/' ~ iconF ~ pic) %}
+		{% set pic = '@icons/' ~ pic %}
+	{% elseif isfile(iconF ~ pic ~ '.svg') or isfile('dropins/' ~ iconF ~ pic ~ '.svg') %}
+		{% set pic = '@icons/' ~ pic ~ '.svg' %}
+	{% elseif isfile(iconF ~ 'jquery_' ~ pic ~ '.svg') or isfile('dropins/' ~ iconF ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
+		{% set pic = '@icons/' ~ 'jquery_' ~ pic ~ '.svg' %}
+	{% endif -%}
+	<svg class="icon {{ iconclass }}" {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} {{ (styleoptions is not empty ? 'style ="' ~ styleoptions ~'"' : '')|raw }} role="img" aria-label="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}" 
+	{{ source( pic )|split('<svg')[1]|replace( {'stroke="#fff"':'', 'fill="#fff"':'', 'stroke="#FFF"':'', 'fill="#FFF"':''} )|raw }}
 {% endmacro %}

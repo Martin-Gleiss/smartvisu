@@ -5,7 +5,7 @@
  * @copyright   2012 - 2021
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
- * @label       SmartHomeNG new
+ * @label       SmartHomeNG
  *
  * @default     driver_autoreconnect   true
  * @default     driver_port            2424
@@ -55,7 +55,8 @@ var io = {
 	 */
 	write: function (item, val) {
 		io.send({'cmd': 'item', 'id': item, 'val': val});
-		widget.update(item, val);
+		if (!sv.config.driver.loopback) 
+			widget.update(item, val);
 	},
 
 	/**
@@ -250,8 +251,14 @@ var io = {
 		};
 
 		io.socket.onerror = function (error) {
-			if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification))
-				io.socketErrorNotification = notify.message('error', 'Driver: smarthomeng', 'Could not connect to smarthomeNG server!<br /> Websocket error ' + error.data + '.');
+			if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification)) {
+				var msgText = 'Could not connect to smarthomeNG server!<br /> Websocket error: ' + error.data + '.';
+				if (io.address != sv.config.driver.address) {
+					msgText += '<br/><ul><li>If you are calling smartVISU internally by a hostname specify this in config section smartVISU Hostname</li>';
+					msgText += '<li>If you are calling smartVISU from external e.g via a reverse proxy check your router and reverse proxy settings</li></ul>';
+				}
+				io.socketErrorNotification = notify.message('error', 'Driver: smarthomeng', msgText);
+			}
 		};
 
 		io.socket.onclose = function () {
@@ -264,7 +271,7 @@ var io = {
 	 */
 	send: function (data) {
 		if (io.socket.readyState == 1) {
-			io.socket.send(JSON.stringify(data));
+			io.socket.send(JSON.stringify(data),10000);  // to do: check if timeout 10000 really solves the log spamming issue
 			// DEBUG: 
 			console.log('[io.smarthomeng] sending data: ', JSON.stringify(data));
 		}
@@ -279,10 +286,11 @@ var io = {
 	 * Monitors the items
 	 */
 	monitor: function () {
-		if (widget.listeners().length) {
+		//if (widget.listeners().length) {
 			// subscribe all items used on the page
+			// or cancel subscription by sending an empty array 
 			io.send({'cmd': 'monitor', 'items': widget.listeners()});
-		}
+		//}
 
 		// subscribe all plots defined for the page 
 		// types: avg, min, max, on
@@ -348,7 +356,7 @@ var io = {
 		console.log("[io.smarthomeng] close connection");
 
 		if (io.socket.readyState > 0) {
-			io.socket.close();
+			io.socket.close(1000);
 		}
 
 		io.socket = null;

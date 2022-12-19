@@ -20,21 +20,26 @@ $.widget("sv.multimedia_image", $.sv.widget, {
       var widget_url = this.element.attr('data-url');
       var resp = Array.isArray(response) ? response[0]: response;
 
-      if (widget_url)
+      if (widget_url){
         var img_base = widget_url + ((widget_url.indexOf('?') == -1) ? '?' : '&');
-      else
+		var upd_string = 'timer';
+	  }
+      else {
         var img_base = resp + ((resp.indexOf('?') == -1) ? '?' : '&');
+		var upd_string = resp;
+	  }
 
 	  img = img_base + '_=' + new Date().getTime();
-	  refreshing = this.element.attr('data-repeat') ? this.element.attr('data-repeat') : 'refresh by item';
+	  // refreshing = this.element.attr('data-repeat') ? this.element.attr('data-repeat') : 'refresh by item';
 	  // console.log("Response: " + response + " Update Multimedia Image: " + img + ", repeat: " + refreshing);
 	  this.element.attr('src', img);
       if (this.element.attr('data-repeat') && ! img.startsWith('_='))
       {
-        var delay = Number(this.element.attr('data-repeat-milliseconds'));
+        clearTimeout(this._ticker);
+		var delay = Number(this.element.attr('data-repeat-milliseconds'));
         var el = this;
-        this._ticker = setTimeout(function() {el._update("timer");}, delay);
-        console.log("Start timer " + this._ticker);
+        this._ticker = setTimeout(function() {el._update(upd_string);}, delay);
+        console.log("[multimedia.image] Start timer no. " + this._ticker + " with duration " + delay/1000 + " seconds");
       }
       this.element.attr('stopTimer', 'false');
     },
@@ -263,19 +268,18 @@ $.widget("sv.multimedia_playpause", $.sv.widget, {
 
   },
     _update: function(response){
-        var url = this.element.children().children().attr('src').split('/').slice(0, -1).join('/')+'/';
         if (response[0] == 0 && response[1] == 0 || response[2] == 1)  {
-            this.element.children().children().attr('src', url+'audio_stop.svg');
+            this.element.find('.mm_play, .mm_pause').hide().end().find('.mm_stop').show(); 
             console.log("Playpause: Stop .."+this.element.val());
             this.element.attr('data-val', 0);
             }
         else if (response[1] == 1)  {
-            this.element.children().children().attr('src', url+'audio_pause.svg');
+            this.element.find('.mm_play, .mm_stop').hide().end().find('.mm_pause').show();
             console.log("Playpause: Pause .."+this.element.val());
             this.element.attr('data-val', 1);
             }
         else if (response[0] == 1 && response[1] == 0)  {
-            this.element.children().children().attr('src', url+'audio_play.svg');
+            this.element.find('.mm_pause, .mm_stop').hide().end().find('.mm_play').show();
             this.element.attr('data-val', 2);
             console.log("Playpause: Play .."+this.element.val());
             }

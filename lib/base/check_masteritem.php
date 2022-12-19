@@ -57,7 +57,7 @@ if (count($items)>1)
 }
 else
 {
-	header("HTTP/1.0 600 smartVISU Config Error");
+	header("HTTP/1.1 500 Internal Server Error");
 	$ret = array('icon' => 'message_attention.svg', 'text' => "Optional masteritem file is not available - check of item names and types deactivated");
 }
 

@@ -16,7 +16,7 @@
 	{% endif %}
 	{% set dynmacro = [] %}
 	{% for macrofile in macrofiles %}
-		{% set dynmacro = dynmacro|merge(['{% import "' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
+		{% set dynmacro = dynmacro|merge(['{% import "@widgets/' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
 	{% endfor %}
 	{% extends template_from_string(dynmacro|join("\n") ~ '\n{% block root %}{% endblock %}') %}
 {% endif %}
@@ -119,6 +119,13 @@
 
 	<script src="vendor/jquery.mobile/jquery.mobile-1.4.5-patch.min.js"></script>
 
+/** if configured backend driver is not available (e.g. deprecated -> removed) start w/ offline driver */
+{% set driver_error_msg = "" %}
+{% if not isfile('driver/io_' ~ config_driver ~ '.js') %}
+	{% set driver_error_msg = 'Configured backend driver not found. Starting with Offline driver' %}
+	{% set config_driver = 'offline'%}
+{% endif %}
+
 /** JavaScript assets **/
 {% set jsFiles = [
 		'lib/base/jquery.mobile.slider.js',
@@ -219,13 +226,37 @@
 	// Activate the info field in top right corner
 	$(document).on('pagecontainershow', function () {
 		notify.display();	
+	{% if driver_error_msg is not empty %}
+		if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification)) 
+			io.socketErrorNotification = notify.message('warning', 'Backend Driver', "{{ driver_error_msg }}");
+	{% endif %}
 		// workaround for jQM theme bug - part II
 		$(this).find('.ui-collapsible-heading').each(function(){
 			var headerClass = 'ui-page-theme-'+ $(this).closest('div').attr('data-theme');
 			$(this).addClass(headerClass);
 		});
 	});
+
+	// workaround for jQm navbar: 
+	// active state gets lost when clicking active menu button
+	$(document).on('click', '[data-role="navbar"] li [href*="index.php?page="]', function (event) {	
+		if ($(event.target).hasClass('ui-btn-active')) {
+			event.preventDefault();
+			//DEBUG: console.log('same page anchor clicked');
+		}
+	});
 	
+	// workaround for jQm listview:
+	// active list item gets displayed highlighted if clicked again
+    // the effect occurs when clicking on the anchor target but not on image and text
+	$(document).on('click', '[data-role="listview"] li [href*="index.php?page="]', function (event) {	
+		if ($(event.target).hasClass('ui-btn')) {
+			setTimeout(function(){
+				$(event.target).removeClass('ui-btn-active');}, 200)
+		}
+		//DEBUG: console.log('anchor clicked', event.target);
+	});
+
 	// scroll to anchor after page is called w/ anchor link e.g  href="index.php?page=myPage&anchor=myAnchor" 
 	$(document).on('pagecontainerchange', function () {
 		var searchAnchor = location.search.indexOf('anchor');
@@ -243,18 +274,18 @@
 	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};	
 </script>
 	
-{% import "lib.html" as lib %}
-{% import "basic.html" as basic %}
-{% import "calendar.html" as calendar %}
-{% import "clock.html" as clock %}
-{% import "device.html" as device %}
-{% import "icon.html" as icon %}
-{% import "multimedia.html" as multimedia %}
-{% import "phone.html" as phone %}
-{% import "plot.html" as plot %}
-{% import "popup.html" as popup %}
-{% import "status.html" as status %}
-{% import "weather.html" as weather %}
+{% import "@widgets/lib.html" as lib %}
+{% import "@widgets/basic.html" as basic %}
+{% import "@widgets/calendar.html" as calendar %}
+{% import "@widgets/clock.html" as clock %}
+{% import "@widgets/device.html" as device %}
+{% import "@widgets/icon.html" as icon %}
+{% import "@widgets/multimedia.html" as multimedia %}
+{% import "@widgets/phone.html" as phone %}
+{% import "@widgets/plot.html" as plot %}
+{% import "@widgets/popup.html" as popup %}
+{% import "@widgets/status.html" as status %}
+{% import "@widgets/weather.html" as weather %}
 </head>
 
 <body>

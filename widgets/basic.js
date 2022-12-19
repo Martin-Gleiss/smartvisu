@@ -181,13 +181,13 @@ $.widget("sv.basic_color_rect", $.sv.basic_color, {
 				for (var i = 0; i < colors; i++) {
 					html += '<div data-s="'+s+'" style="background-color: rgb(' + fx.hsv2rgb(i * share, s, 100).join(',') + ');"></div>';
 				}
-				html += '<div style="background-color: rgb(' + fx.hsv2rgb(0, 0, 100 - (s / step - 1) * 16.7).join(',') + ');"></div><br />';
+				html += '<div style="background-color: rgb(' + fx.hsv2rgb(0, 0, 100 - (s / step - 1) * 16.7).join(',') + ');"></div><br>';
 			}
 			for (var v = 100 - step * ((steps + 1) % 2)/2; v >= step/2; v -= step) {
 				for (var i = 0; i < colors; i++) {
 					html += '<div data-v="'+v+'" style="background-color: rgb(' + fx.hsv2rgb(i * share, 100, v).join(',') + ');"></div>';
 				}
-				html += '<div style="background-color: rgb(' + fx.hsv2rgb(0, 0, (v / step - 1) * 16.7).join(',') + ');"></div><br />';
+				html += '<div style="background-color: rgb(' + fx.hsv2rgb(0, 0, (v / step - 1) * 16.7).join(',') + ');"></div><br>';
 			}
 
 			html += '</div>';
@@ -670,6 +670,15 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 		else if(mode == 'timebox' || mode == 'timeflipbox') {// data type time
 			this.element.datebox('setTheDate', response[0]);
 		}
+		else if (mode == 'datetimebox'|| mode == 'datetimeflipbox'){ // data type datetime 
+			if (this.options.stringformat == false){
+				this.element.datebox('setTheDate',new Date(response[0]));
+			}
+			else {
+				var value = this.element.datebox('parseDate', this.options.stringformat, response[0]);
+				this.element.datebox('setTheDate', value);
+			}
+		}
 	},
 
 	_events: {
@@ -680,7 +689,7 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 				var newval;
 				if(mode == 'durationbox' || mode == 'durationflipbox') // data type duration
 					newval = this.element.datebox('getLastDur');
-				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox'){ // data type date
+				else if(mode == 'datebox' || mode == 'flipbox' || mode == 'calbox' || mode == 'slidebox'|| mode == 'datetimebox'|| mode == 'datetimeflipbox'){ // data type date
 					var widgetFormat = this.options['stringformat'];
 					if (widgetFormat == false)
 						newval = this.element.datebox('getTheDate');  // javascript datetime object
@@ -814,9 +823,9 @@ $.widget("sv.basic_print", $.sv.widget, {
 			currentIndex++;
 		});
 		var color = String(this.options.colors).explode()[currentIndex];
-		this.element.removeClass('icon1').show().css('visibility', '').css('color', ''); // clear previous color / effect
-		if (color == 'icon1')
-			this.element.addClass('icon1');
+		this.element.removeClass('[class^="icon"]').show().css('visibility', '').css('color', ''); // clear previous color / effect
+		if (color.indexOf('icon') == 0)
+			this.element.addClass(color);
 		else if (color == 'hidden')
 			this.element.hide();
 		else if (color == 'blank')
@@ -1395,9 +1404,9 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		var unit = decoration[0];
 		var pre_value = decoration[1];
 		var to_value = decoration[2];
-		var scale = decoration[3];
+		var scale = decoration[3] =='true' ? true: false;
 		var scale_interval = this.options.scale_interval;
-		
+	
 		//get colours from css theme
 		var bg_color = $('.ui-bar-b').css('background-color');
 		var font_color = $('.ui-content').css('color');
@@ -1453,8 +1462,7 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 				$("#"+id+" .rs-handle").css('box-shadow', handle_color );
 				$("#"+id+" .rs-handle").css('background-image', handle_color );
 				$("#"+id+" .rs-range").css('background-image', track_color );
-						
-				if (scale == 'true') {
+				if (scale == true) {
 					var o = this.options;
 					var extraSize = 0, 
 					  sizeCorrect = false,
@@ -1526,18 +1534,21 @@ $.widget("sv.basic_window", $.sv.widget, {
 		// response is: {{ gad_value }}, {{ gad_window_r}}, {{ gad_window_l}}
 		this._super(response);
 
-		var color = this.element.attr('data-color');
-		if (color.indexOf('!') > -1){
-			color = color.substr(1);
-			this.element.attr('style', 'stroke: '+ color+'; fill: '+color+';');
+		var color = this.element.attr('data-color').explode();
+		var must = false;
+		if (color[1].indexOf('!') > -1){		//support legacy function constant color
+			color[1] = color[1].substr(1);
+			must = true; 
 		}
-		else
-			this.element.attr('style', '');
-
-		this.element.attr('class', 'icon' + ((response[1] && response[1] != 'closed') || (response[2] && response[2] != 'closed') ? ' icon1' : ' icon0')) // addClass does not work in jQuery for svg
-		if (color != '' && this.element.attr('class') == "icon icon1") {
-			this.element.attr('style', 'stroke: '+ color+'; fill: '+color+';');
+		var style = color.slice();
+		for (var i=0; i<=1; i++){
+			if (color[i].indexOf('icon') == 0) 
+				style[i] = '';
+			else 	
+				color[i] = '';
 		}
+		this.element.attr('class', 'icon' + ((response[1] && response[1] != 'closed') || (response[2] && response[2] != 'closed') || (must == true) ? ' '+color[1] : ' '+color[0]));
+		this.element.attr('style', ((response[1] && response[1] != 'closed') || (response[2] && response[2] != 'closed') || (must == true) ? 'stroke: '+ style[1]+'; fill: '+style[1]+';' : 'stroke: '+ style[0]+'; fill: '+style[0]+';'));
 		
 		var max = parseFloat(this.options.max);
 		var min = parseFloat(this.options.min);

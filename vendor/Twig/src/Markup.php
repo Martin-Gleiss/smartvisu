@@ -35,6 +35,7 @@ class Markup implements \Countable
     /**
      * @return int
      */
+	#[\ReturnTypeWillChange]
     public function count()
     {
         return \function_exists('mb_get_info') ? mb_strlen($this->content, $this->charset) : \strlen($this->content);

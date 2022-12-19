@@ -16,12 +16,11 @@
 
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.window ('', 'shutter', 'window.right', 'window.left') }}
-			{{ basic.window ('', 'shutter', '', 'window.left', '', '', '#f00') }}
+			{{ device.window ('', 'Window Kitchen North', 'wkn.move', 'wkn.stop', 'wkn.pos','', 'window.right', 'window.left', 'icon') }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 
- 	Use slider to control the shutter and switches to simulate window status
+ 	Use slider to control the shutter and switches to simulate window status. Click on the icon to open the control popup.
 	
 	<div class="html">
 		

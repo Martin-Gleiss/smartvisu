@@ -18,6 +18,7 @@
  * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
+ * @hide		driver_loopback
  * @hide		sv_hostname
  */
 
@@ -33,15 +34,20 @@ var io = {
 	// the port
 	port: '',
 
+	uzsu_type: '0',
+
+	// value type of all items
+	valueType: Array(),
+	
 	// -----------------------------------------------------------------------------
 	// P U B L I C	 F U N C T I O N S
 	// -----------------------------------------------------------------------------
 
 	/**
-	 * Does a read-request and adds the result to the buffer
-	 *
-	 * @param		the item
-	 */
+	* Does a read-request and adds the result to the buffer
+	*
+	* @param		the item
+	*/
 	read: function (items) {
 		if (io.checkConnected) {
 			io.socket.emit('getStates', items, function (err, data) {
@@ -56,23 +62,64 @@ var io = {
 	},
 
 	/**
-	 * Does a write-request with a value
-	 *
-	 * @param		the item
-	 * @param		the value
-	 */
+	* Does a write-request with a value
+	*
+	* @param		the item
+	* @param		the value
+	*/
 	write: function (item, val, callback) {
 		if (io.checkConnected) {
-			io.socket.emit('setState', item, val, callback);
+			var v = val;
+			//console.log('A) ' + item + ': ' + val);
+			switch (io.valueType[item]) {
+				case 'boolean': // convert to boolean
+					v = ((v == 0) || (v == '') || (v == '0') || (v == 'false')) ? false:true;
+					break;
+				case 'number': // convert to numeric
+					v = v * 1.0;
+					break;
+				case 'json': // convert to json string ("{ ... }")
+					try {
+						v = JSON.stringify(v);
+					} catch (e) {
+						console.log(item + '-data seems to be an json, but cannot convert it: ' + val);
+					}
+					break;
+				case 'string': // convert to string
+					try {						
+						if (val.constructor === Array) {
+							// item return an array but ioBroker used for array a string ("x,y,z...")
+							v = JSON.stringify(v);					
+							if (v.length > 2 && v[0] === '[' && v[v.length - 1] === ']') { 							
+								v = v.slice(1).slice(0, -1); // remove '[' and ']'
+							}
+						}
+					} catch (e) {
+						console.log(item + '-data seems to be an array, but cannot convert it to string: ' + val);
+					}
+					break;
+				case 'array': // convert to array ("[ ... ]")
+					try {
+						v = JSON.stringify(v);
+						if (v.length > 0 && v[0] !== '[') v = '[' + v + ']';						
+					} catch (e) {
+						console.log(item + '-data seems to be an array, but cannot convert it: ' + val);
+					}
+					break;
+				default:
+					break;
+			}
+			//console.log('B) ' + item + ': ' + vval);				
+			io.socket.emit('setState', item, v, callback);
 		}
 	},
 
 	/**
-	 * Trigger a logic
-	 *
-	 * @param		the logic
-	 * @param		the value
-	 */
+	* Trigger a logic
+	*
+	* @param		the logic
+	* @param		the value
+	*/
 	trigger: function (name, val) {
 		if (io.checkConnected) {
 			io.write('javascript.0.scriptEnabled.' + name, false, function() {
@@ -85,10 +132,10 @@ var io = {
 	},
 
 	/**
-	 * Initialization of the driver
-	 *
-	 * Driver config parameters are globally available as from v3.2
-	 */
+	* Initialization of the driver
+	*
+	* Driver config parameters are globally available as from v3.2
+	*/
 	init: function () {
 		io.address = sv.config.driver.address;
 		io.port = sv.config.driver.port;
@@ -115,8 +162,8 @@ var io = {
 	},
 
 	/**
-	 * Let the driver work
-	 */
+	* Let the driver work
+	*/
 	run: function () {
 		// refresh all widgets with values from the buffer
 		widget.refresh();
@@ -127,12 +174,12 @@ var io = {
 
 
 	/**
-	 * This driver uses a websocket
-	 */
+	* This driver uses a websocket
+	*/
 	socket: false,
 
 	isConnected: false,
-	
+
 	checkConnected() {
 		if (!io.socket || !io.isConnected) {
 			console.log('ioBroker not connected');
@@ -143,8 +190,8 @@ var io = {
 	},
 
 	/**
-	 * Opens the connection and add some handlers
-	 */
+	* Opens the connection and add some handlers
+	*/
 	open: function (socketIo) {
 
 		io.socket = new socketIo.connect(io.url);
@@ -168,14 +215,14 @@ var io = {
 						io.isConnected = true;
 						io.monitor();
 					} else {
-						 notify.message('error', 'Driver: ioBroker', 'Authentication failed.');
+						notify.message('error', 'Driver: ioBroker', 'Authentication failed.');
 					}
 				});
 			}, 50);
 		});
 
 		io.socket.on('error', function (err) {
-			 notify.message('error', 'Driver: ioBroker', JSON.stringify(err));
+			notify.message('error', 'Driver: ioBroker', JSON.stringify(err));
 		});
 		
 		io.socket.on('connect_error', function (err) {
@@ -185,7 +232,7 @@ var io = {
 		});
 		
 		io.socket.on('permissionError', function (err) {
-			 notify.message('error', 'Driver: ioBroker', 'permissionError: '+JSON.stringify(err));
+			notify.message('error', 'Driver: ioBroker', 'permissionError: '+JSON.stringify(err));
 		});
 
 		io.socket.on('disconnect', function () {
@@ -197,7 +244,7 @@ var io = {
 		io.socket.on('stateChange', function (id, state) {
 			if (!id || state === null || typeof state !== 'object') return;
 			io.stateChanged(id, state);
-/*
+	/*
 			if (that._connCallbacks.onCommand && id === that.namespace + '.control.command') {
 				if (state.ack) return;
 
@@ -231,8 +278,44 @@ var io = {
 			} else if (that._connCallbacks.onUpdate) {
 				that._connCallbacks.onUpdate(id, state);
 			}
-*/
+	*/
 		});
+	},
+
+	plots: Array(),	// [id, item, stateChanged enabled]
+	firstPlotTimeout: 0,
+
+	updatePlot: function(plot) {
+		var pt = plot[1].split('.');
+		var options = {
+			'aggregate': pt[pt.length - 4], // avg, min, max, on
+			'start': new Date() - new Date().duration(pt[pt.length - 3]),
+			'end': new Date() - new Date().duration(pt[pt.length - 2]),
+			'count': pt[pt.length - 1]
+		};
+		options.aggregate = options.aggregate == 'avg' ? 'average' : options.aggregate == 'on' ? 'total' : options.aggregate;
+		
+		io.socket.emit('getHistory', plot[0], options, function (err, result) {
+			var val = [];
+			$.each(result, function(index, state) {
+				val.push([state.ts, state.val]);
+			});
+			widget.update(plot[1], val);
+		});
+	},
+
+	delayPlots: function() {
+		var items = Array();
+		io.plots.forEach(plot => {
+			io.updatePlot(plot);
+			plot[2] = true; // enable stateChanged
+			items.push(plot[0]);
+		});
+		if (items.length) {
+			//console.log('items: ' + items);
+			io.socket.emit('subscribe', items);
+			io.read(items);
+		}
 	},
 
 	monitor: function() {
@@ -242,58 +325,102 @@ var io = {
 			io.read(items);
 
 			// plot
+			io.plots = Array();                        
+			clearTimeout(io.firstPlotTimeout);
+			io.firstPlotTimeout = 0;
 			var unique = Array();
 			widget.plot().each(function (idx) {
 				var items = widget.explode($(this).attr('data-item'));
 				$.each(items, function() {
-					var item = String(this);
+					var item = String(this);                    
 					var pt = item.split('.');
-
-					if (!unique[item] && !widget.get(item) && (pt instanceof Array) && widget.checkseries(item)) {
-						var id = item.substr(0, item.length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
-						var options = {
-							'aggregate': pt[pt.length - 4], // avg, min, max, on
-							'start': new Date() - new Date().duration(pt[pt.length - 3]),
-							'end': new Date() - new Date().duration(pt[pt.length - 2]),
-							'count': pt[pt.length - 1]
-						};
-						options.aggregate = options.aggregate == 'avg' ? 'average' : options.aggregate == 'on' ? 'total' : options.aggregate;
-
-						io.socket.emit('getHistory', id, options, function (err, result) {
-							var val = [];
-							$.each(result, function(index, state) {
-								val.push([state.ts, state.val]);
-							});
-							widget.update(item, val);
-						});
-
+					if (!unique[item] && (pt instanceof Array) && widget.checkseries(item)) {
 						unique[item] = 1;
+						if (io.plots.find(plot => plot[1] === item) === undefined) {
+							var id = item.substr(0, item.length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
+							io.plots.push([id, item, false]);
+						}
+						io.firstPlotTimeout = -1;
 					}
 				});
 			});
+			
+			// Start subscribing and draw with a delay in the plots so the "normal" widgets are populated with data first.
+			// This speeds up page loading when there is a lot of data in the plots.
+			if (io.firstPlotTimeout == -1) io.firstPlotTimeout = setTimeout(io.delayPlots, 1000);             
 		}
-
 	},
 
 	stateChanged: function(item, state) {
 		if (state === null || typeof state !== 'object') return;
-		var val = state.val;
-		// convert boolean
-		if (val === false) 
-			val = 0;
-		if (val === true) 
-			val = 1;
-		widget.update(item, val);
+		
+		if (io.plots.find(plot => (plot[0] === item) && plot[2]) !== undefined) {
+			//console.log('item ' + item + ' is a plot');
+			// update all plots with the same item name
+			io.plots.forEach(plot => {				
+				//console.log(plot[0] + ": " + plot[1]);
+				if (plot[0] === item) 
+					io.updatePlot(plot);
+			});
+		} else {
+			var val = state.val;
+			io.valueType[item] = typeof val; // remember value type
+			
+			// convert boolean
+			if (val === false) 
+				val = 0;
+			if (val === true) 
+				val = 1;
+
+			// numbers get converted in widget.update -> no need to do it here
+
+			// text needs no conversion
+
+			// convert arrays and JSON arrays        
+
+			if (val &&
+				typeof val === 'string' &&
+				val[0] === '{' &&
+				val[val.length - 1] === '}') {
+				try {
+					val = JSON.parse(val);
+					io.valueType[item] = 'json'; // is used for example by device.uzsuicon
+				} catch (e) {
+					console.log('Data seems to be an json, but cannot parse it: ' + val);
+				}
+			} else {     
+				if (val &&
+					typeof val === 'string' &&
+					val[0] === '[' &&
+					val[val.length - 1] === ']') {
+					try {
+						val = JSON.parse(val);
+						io.valueType[item] = 'array'; // is used for example by basic.select with itemvals/itemtxts or status.activelist
+					} catch (e) {
+						console.log('Data seems to be an array, but cannot parse it: ' + val);
+					}
+				}        
+			}       
+
+			widget.update(item, val);
+		}
 	},
-	
+
 	/**
-	 * stop all subscribed series
-	 */
+	* stop all subscribed series
+	*/
 	stopseries: function () {
-		// TODO
-		$.noop;
+		if (io.isConnected) {
+			var items = widget.listeners();
+			io.plots.forEach(plot => {
+				items.push(plot[0]);
+			});
+			io.socket.emit('unsubscribe', items);
+			io.read(items);
+		}
+		valueType = Array(); // clear list
 	}
-	
+
 /*
 	logout: function() {
 		if (!io.isConnected) {

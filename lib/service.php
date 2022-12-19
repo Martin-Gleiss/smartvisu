@@ -53,15 +53,8 @@ class service
 			}
 		,E_ALL);
 		
-		// the following section has been deactivated by wvhn 
-		// all services bring their own init functions which define the needed communication parameters
-		// (most services threw misleading errors here, because $request was empty)
-
-		//$this->server = $request['server'];
-		//$this->port = (int)$request['port'];
-		//$this->url = $request['url'];
-		//$this->user = $request['user'];
-		//$this->pass = $request['pass'];
+		if (!extension_loaded("dom") && (class_exists("phone") || class_exists("calendar")))
+			$this->error('smartVISU Web Services', 'PHP dom module is not loaded. Please install "php-xml".');
 	}
 
 	/**

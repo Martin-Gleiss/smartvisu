@@ -14,12 +14,12 @@
 
 <h5>Examples</h5>
 
-You may use this widget to hide or collapse some html. To bind divs to the widget, use the "data-bind" attribute in the div - tag.
+You may use this widget to hide or collapse some html or (new in v3.3) show / open it. To bind divs to the widget, use the "data-bind" attribute in the div - tag.
 In this example the div is bound to the status.collapse and will be controled by it. The additional class="hide" will hide the div at startup.
 <div class="twig">
 	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-		{{ status.collapse('w1', 'bath.alert.info') }}
+		{{ status.collapse('w1', 'bath.alert.info', '0', 'hide') }}
 		<div class="hide" data-bind="w1">
 			...
 		</div>
@@ -31,7 +31,7 @@ In this example the div is bound to the status.collapse and will be controled by
 Use it with simple html, to show and hide a <b>div</b>:<br />
 <div class="html">
 	{{ basic.flip('f1', 'bath.alert.info') }}<br />
-	{{ status.collapse('w1', 'bath.alert.info') }}
+	{{ status.collapse('w1', 'bath.alert.info', '', 'hide') }}
 
 	<div class="hide" data-bind="w1">
 		Every simple html-code could be collapsed ... with text and icons <img class="icon" src="{{ icon0 }}audio_audio.svg" alt="sample icon" /> ...

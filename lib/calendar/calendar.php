@@ -70,15 +70,17 @@ class calendar extends service
 		foreach ($events as $event) {
 			if (!isset($calmetadata['calendardesc'])) $calmetadata['calendardesc'] = "";
 			if (!isset($calmetadata['calendarcolor'])) $calmetadata['calendarcolor'] = "";
+			
 			$this->addData(array(
 				'start' => $ical->iCalDateToUnixTimestamp($event->dtstart, true),
 				'end' => $event->dtend != null ? $ical->iCalDateToUnixTimestamp($event->dtend, true) : $ical->iCalDateToUnixTimestamp($event->dtstart, true),
 				'title' => $event->summary,
-				'content' => str_replace("\\n", "\n", $event->description),
+				'content' => str_replace("\\n", "\n", $event->description != null ? $event->description : ""),
 				'where' => $event->location,
 				'calendarname' => $calmetadata['calendarname'] != '' ? $calmetadata['calendarname'] : $ical->calendarName(),
 				'calendardesc' => $calmetadata['calendardesc'] != '' ? $calmetadata['calendardesc'] : $ical->calendarDescription(),
-				'calendarcolor' => $calmetadata['calendarcolor'] != '' ? $calmetadata['calendarcolor'] : ""
+				'calendarcolor' => $calmetadata['calendarcolor'] != '' ? $calmetadata['calendarcolor'] : "",
+				'class' => isset($event->class) ? $event->class : ''
 				//,'link' => ''
 			));
 		}

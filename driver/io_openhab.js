@@ -4,7 +4,7 @@
  * @author      Martin Gleiß, Patrik Germann
  * @copyright   2012 - 2022
  * @license     GPL [http://www.gnu.de]
- * @version     2.4.3
+ * @version     2.5.0
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
@@ -22,6 +22,7 @@
  * @hide        proxy_url
  * @hide        proxy_user
  * @hide        proxy_password
+ * @hide		driver_loopback
  */
 
 /**
@@ -32,12 +33,6 @@ var io = {
 
 	//  debug switch
 	debug   : false,
-
-	// refreshtimer in seconds
-	timer   : 1,
-
-	// servertimeout in seconds
-	timeout : 5,
 
 	// -----------------------------------------------------------------------------
 	// P U B L I C   F U N C T I O N S
@@ -50,22 +45,7 @@ var io = {
 	 */
 	read: function (item) {
 		io.debug && console.log("io.read(item = " + item + ")");
-
-		$.ajax({
-			url     : io.url + 'items/' + item + '/state',
-			headers : (io.auth !== false ? io.auth : {}),
-			type    : 'GET',
-			timeout : io.timeout,
-			async   : true,
-			cache   : false
-		}).done(function(state) {
-			var val = io.convertState(item, state);
-			io.debug && console.log("io.read: widget.update(item = " + item + ", value = " + val + ")");
-			widget.update(item, val);
-			if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer) {
-				io.plot.get(io.plot.listeners[item]);
-			}
-		}).fail(notify.json);
+		io.item.get(item);
 	},
 
 	/**
@@ -76,41 +56,7 @@ var io = {
 	 */
 	write: function (item, val) {
 		io.debug && console.log("io.write(item = " + item + ", val = " + val + ")");
-
-		var transval = new Array();
-		switch (io.itemType[item]) {
-			case "Contact":
-				transval[0] = "CLOSED";
-				transval[1] = "OPEN";
-			break;
-			//case "Dimmer":
-			case "Switch":
-				transval[0] = "OFF";
-				transval[1] = "ON";
-			break;
-			case "Rollershutter":
-				transval[0] = "UP";
-				transval[1] = "STOP";
-				transval[100] = "DOWN";
-			break;
-		}
-
-		var state = (val in transval) ? transval[val] : val;
-		io.debug && console.debug("io.write(item = " + item + ", val = " + state + ")");
-		$.ajax({
-			url         : io.url + 'items/' + item,
-			headers     : (io.auth !== false ? io.auth : {}),
-			data        : state.toString(),
-			method      : 'POST',
-			contentType : 'text/plain',
-			timeout     : io.timeout,
-			cache       : false
-		}).success(function() {
-			if (!sv.config.driver.realtime || io.refreshIntervall) {
-				io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
-				widget.update(item, val);
-			}
-		}).fail(notify.json);
+		io.item.set(item, val);
 	},
 
 	/**
@@ -157,22 +103,21 @@ var io = {
 		}
 		io.debug && console.debug("io.init(auth = " + io.auth + ")");
 
-		if(io.socket != null && io.socket.readyState == 3) {
-			io.run();
-		}
-
-		io.timer      *= 1000;
-		io.timeout    *= 1000;
-		io.plot.timer *= 1000;
-		io.log.timer  *= 1000;
-
+		var serverResponseTimeStart = new Date().getTime();
 		$.ajax({
-			url      : io.url,
+			url      : io.url + 'items?fields=' + encodeURI('name,type'),
 			headers  : (io.auth !== false ? io.auth : {}),
 			type     : 'GET',
-			timeout  : io.timeout,
+			timeout  : 15 * 1000,
 			async    : false,
 			cache    : true
+		}).done(function(ohItems) {
+			io.serverResponseTime = new Date().getTime() - serverResponseTimeStart;
+			for (var i = 0; i < ohItems.length; i++) {
+				if (ohItems[i].type != 'Group') {
+					io.item.type[ohItems[i].name] = ohItems[i].type;
+				}
+			}
 		}).fail(function(jqXHR, status, errorthrown) {
 			if (status == 'error' && jqXHR.statusText.indexOf('NetworkError') === 0) {
 				if (notify.message) { //kompatibiliät zu smartVISU <= 3.1
@@ -185,6 +130,12 @@ var io = {
 			}
 			sv.config.driver.realtime = false;
 		});
+
+		io.serverResponseTime = Math.ceil(io.serverResponseTime / 1000);
+		io.serverTimeout      = (io.serverTimeout + io.serverResponseTime) * 1000;
+		io.item.refreshTimer  = (io.item.refreshTimer + io.serverResponseTime) * 1000;
+		io.plot.refreshTimer  = (io.plot.refreshTimer + io.serverResponseTime) * 1000;
+		io.log.refreshTimer   = (io.log.refreshTimer + io.serverResponseTime) * 1000;
 	},
 
 	/**
@@ -195,77 +146,32 @@ var io = {
 
 		if (widget.listeners().length) {
 			var items = widget.listeners();
-			for (var i = 0; i < items.length; i++) {
-				$.ajax({
-					url      : io.url + 'items/' + items[i],
-					headers  : (io.auth !== false ? io.auth : {}),
-					type     : 'GET',
-					dataType : 'json',
-					timeout  : io.timeout,
-					async    : true,
-					cache    : false
-				}).done(function(ohItem) {
-					var item = ohItem.name;
-					io.itemType[item] = ohItem.type;
-					if (!sv.config.driver.realtime) {
-						var val = io.convertState(item, ohItem.state);
-						io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
-						widget.update(item, val);
-					}
-				}).fail(notify.json);
+
+			io.debug && console.log("io.run: io.item.getall()");
+			io.item.getall();
+
+			if (widget.log().length) {
+				io.debug && console.log("io.run: io.log.get()");
+				io.log.get();
 			}
 
-			io.log.get();
+			if (widget.plot().length) {
+				io.debug && console.log("io.run: io.plot.init()");
+				io.plot.init();
+			}
 
 			if (sv.config.driver.realtime) {
-				if (io.auth && typeof EventSourcePolyfill == 'function') {
-					io.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 18000000, headers: (io.auth !== false ? io.auth : {})});
-				} else if (typeof EventSource == 'function') {
-					io.socket = new EventSource(io.url + 'events/states');
-				}
-				if (io.socket != null) {
-					io.socket.addEventListener('ready', function(message) {
-						$.ajax({
-							url         : io.url + 'events/states/' + message.data,
-							headers     : (io.auth !== false ? io.auth : {}),
-							data        : JSON.stringify(items),
-							method      : 'POST',
-							contentType : 'application/json',
-							timeout     : io.timeout,
-							async       : true,
-							cache       : false
-						}).success(
-							io.debug && console.debug('io.socket.addEventListener = ' + message.data)
-						).fail(notify.json);
-					});
-					io.socket.onmessage = function(message) {
-						var states = JSON.parse(message.data);
-						Object.keys(states).forEach((item) => {
-							var val = states[item].state;
-							io.debug && console.debug("io.run: eventmessage(item = " + item + ", value = " + val + ")");
-							val = io.convertState(item, val);
-							io.debug && console.debug("io.run: widget.update(item = " + item + ", value = " + val + ")");
-							widget.update(item, val);
-							if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.timer) {
-								io.plot.get(io.plot.listeners[item]);
-							}
-						});
-					}
-				} else {
-					io.refreshIntervall = setInterval(function() {
-						var items = widget.listeners();
-						for (var i = 0; i < widget.listeners().length; i++) {
-							io.read(items[i]);
-						}
-					}, io.timer);
-				}
+				io.debug && console.log("io.run: io.item.eventListener(" + items + ")");
+				io.item.eventListener(items);
 
-				io.log.refreshIntervall = setInterval(function() {
-					io.log.get();
-				}, io.log.timer);
+				if (widget.log().length) {
+					io.debug && console.log("io.run: setInterval(io.log.get())");
+					io.log.refreshIntervall = setInterval(function() {
+						io.log.get();
+					}, io.log.refreshTimer);
+				}
 			}
 		}
-		io.plot.init();
 	},
 
 
@@ -276,11 +182,10 @@ var io = {
 	// only be called from the public functions above. You may add or delete some
 	// to fit your requirements and your connected system.
 
-	url              : '',
-	socket           : null,
-	auth             : false,
-	itemType         : new Array(),
-	refreshIntervall : false,
+	url                : '',
+	auth               : false,
+	serverTimeout      : 10,
+	serverResponseTime : 0,
 
 	/**
 	 * convert states from openHAB
@@ -297,7 +202,7 @@ var io = {
 			"CLOSED" : 0, "OPEN" : 1
 		}
 
-		switch (io.itemType[item]) {
+		switch (io.item.type[item]) {
 			case "Color":
 				return (state == "NULL") ? "0,0,0" : state;
 			case "DateTime":
@@ -320,7 +225,7 @@ var io = {
 	/**
 	 * convert DateTime from openHAB
 	 *
-	 * @param      DateTime (yyyy-mi-dd hh:mm:ss.ms)
+	 * @param      timestamp [yyyy-mi-dd hh:mm:ss.ms]
 	 */
 	convertDateTime: function (timestamp) {
 		if (timestamp.length == 23) {
@@ -336,9 +241,142 @@ var io = {
 		return timestamp;
 	},
 
+	item: {
+		type             : new Array(),
+		socket           : null,
+		refreshTimer     : 1,
+		refreshIntervall : false,
+
+		get: function (item) {
+			io.debug && console.log("io.item.get(item = " + item + ")");
+	
+			$.ajax({
+				url     : io.url + 'items/' + item + '/state',
+				headers : (io.auth !== false ? io.auth : {}),
+				type    : 'GET',
+				timeout : io.serverTimeout,
+				async   : true,
+				cache   : false
+			}).done(function(state) {
+				var val = io.convertState(item, state);
+				io.debug && console.debug("io.item.get: widget.update(item = " + item + ", value = " + val + ")");
+				widget.update(item, val);
+				if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.refreshTimer) {
+					io.plot.get(io.plot.listeners[item]);
+				}
+			}).fail(notify.json);
+		},
+
+		getall: function () {
+			io.debug && console.log("io.item.getall()");
+
+			$.ajax({
+				url      : io.url + 'items?fields=' + encodeURI('name,state'),
+				headers  : (io.auth !== false ? io.auth : {}),
+				type     : 'GET',
+				timeout  : io.serverTimeout,
+				async    : true,
+				cache    : false
+			}).done(function(ohItems) {
+				for (var i = 0; i < ohItems.length; i++) {
+					var item = ohItems[i].name;
+					var val = io.convertState(item, ohItems[i].state);
+					if (io.item.type[item] != 'Group') {
+						io.debug && console.debug("io.item.getall: widget.set(item = " + item + ", value = " + val + ")");
+						widget.set(item, val);
+					}
+				}
+				io.debug && console.log("io.item.getall: widget.refresh()");
+				widget.refresh();
+			}).fail(notify.json);
+		},
+
+		set: function (item, val) {
+
+			var transval = new Array();
+			switch (io.item.type[item]) {
+				case "Contact":
+					transval[0] = "CLOSED";
+					transval[1] = "OPEN";
+				break;
+				//case "Dimmer":
+				case "Switch":
+					transval[0] = "OFF";
+					transval[1] = "ON";
+				break;
+				case "Rollershutter":
+					transval[0] = "UP";
+					transval[1] = "STOP";
+					transval[100] = "DOWN";
+				break;
+			}
+
+			var state = (val in transval) ? transval[val] : val;
+			io.debug && console.debug("io.item.set(item = " + item + ", val = " + state + ")");
+			$.ajax({
+				url         : io.url + 'items/' + item,
+				headers     : (io.auth !== false ? io.auth : {}),
+				data        : state.toString(),
+				method      : 'POST',
+				contentType : 'text/plain',
+				timeout     : io.serverTimeout,
+				cache       : false
+			}).success(function() {
+				if (!sv.config.driver.realtime || io.item.refreshIntervall) {
+					io.debug && console.debug("io.item.set: widget.update(item = " + item + ", value = " + val + ")");
+					widget.update(item, val);
+				}
+			}).fail(notify.json);
+		},
+
+		eventListener: function (items) {
+			if (io.auth && typeof EventSourcePolyfill == 'function') {
+				io.item.socket = new EventSourcePolyfill(io.url + 'events/states', {heartbeatTimeout: 18000000, headers: (io.auth !== false ? io.auth : {})});
+			} else if (typeof EventSource == 'function') {
+				io.item.socket = new EventSource(io.url + 'events/states');
+			}
+			if (io.item.socket) {
+				io.debug && console.log("io.item.eventListener: addEventlistener()");
+				io.item.socket.addEventListener('ready', function(message) {
+					$.ajax({
+						url         : io.url + 'events/states/' + message.data,
+						headers     : (io.auth !== false ? io.auth : {}),
+						data        : JSON.stringify(items),
+						method      : 'POST',
+						contentType : 'application/json',
+						timeout     : io.serverTimeout,
+						async       : true,
+						cache       : false
+					}).success(function() {
+						io.debug && console.debug('io.item.socket.addEventListener = ' + message.data);
+						io.item.socket.onmessage = function(message) {
+							io.debug && console.log('io.item.socket.message:');
+							io.debug && console.log(message);
+							var states = JSON.parse(message.data);
+							Object.keys(states).forEach((item) => {
+								var val = states[item].state;
+								io.debug && console.debug("io.item.eventListener: eventmessage(item = " + item + ", value = " + val + ")");
+								val = io.convertState(item, val);
+								io.debug && console.debug("io.item.eventListener: widget.update(item = " + item + ", value = " + val + ")");
+								widget.update(item, val);
+								if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.refreshTimer) {
+									io.plot.get(io.plot.listeners[item]);
+								}
+							});
+						}
+					}).fail(notify.json);
+				});
+			} else {
+				io.debug && console.log("io.item.eventListener: setInterval(io.item.getall())");
+				io.item.refreshIntervall = setInterval(function() {
+					io.item.getall();
+				}, io.item.refreshTimer);
+			}
+		}
+	},
+
 	log: {
-		// refreshtimer in seconds
-		timer            : 10,
+		refreshTimer     : 10,
 		refreshIntervall : false,
 
 		/**
@@ -349,22 +387,24 @@ var io = {
 				var logname = $(this).attr('data-item');
 				var logcount = $(this).attr('data-count');
 				var cmd = "log:display -p '%p|%d{YYYY-MM-dd HH:mm:ss.SSS}|%c|%h{%m}%n'" + ((logname == 'default') ? ' -n ' + logcount : ' ' + logname);
-				io.console(cmd, function(log){
-					var newhash = log[0].id; //log[log.length-1].id
-					var lasthash = null;
-					if (widget.get(logname)) {
-						var curlog = widget.get(logname);
-						lasthash = curlog[0].id; //curlog[curlog.length-1].id
-					}
-					io.debug && console.debug("lasthash: "+lasthash);
-					io.debug && console.debug("newhash:  "+newhash);
-					if (newhash != lasthash) {
-						log = log.slice(0, logcount); //log.slice(0 - logcount)
-						for (let i=0; i<log.length; i++) {
-							log[i].time = io.convertDateTime(log[i].time);
+				io.console(cmd, function(log) {
+					if (log.length) {
+						var newhash = log[0].id; //log[log.length-1].id
+						var lasthash = null;
+						if (widget.get(logname)) {
+							var curlog = widget.get(logname);
+							lasthash = curlog[0].id; //curlog[curlog.length-1].id
 						}
-						io.debug && console.debug("io.run: widget.log.update(item = " + logname + ", value = " + log + ")");
-						widget.update(logname, log);
+						io.debug && console.debug("lasthash: "+lasthash);
+						io.debug && console.debug("newhash:  "+newhash);
+						if (newhash != lasthash) {
+							log = log.slice(0, logcount); //log.slice(0 - logcount)
+							for (let i=0; i<log.length; i++) {
+								log[i].time = io.convertDateTime(log[i].time);
+							}
+							io.debug && console.debug("io.run: widget.log.update(item = " + logname + ", value = " + log + ")");
+							widget.update(logname, log);
+						}
 					}
 				});
 			});
@@ -372,10 +412,9 @@ var io = {
 	},
 
 	plot: {
-		items: new Array(),
-		listeners: new Array(),
-		// refreshtimer in seconds
-		timer: 10,
+		items        : new Array(),
+		listeners    : new Array(),
+		refreshTimer : 10,
 
 		/**
 		 * Initializion of plots
@@ -427,8 +466,8 @@ var io = {
 				headers  : (io.auth !== false ? io.auth : {}),
 				type     : 'GET',
 				dataType : 'json',
-				timeout  : io.timeout,
-				async    : false,
+				timeout  : io.serverTimeout,
+				async    : true,
 				cache    : false
 			}).done(function(persistence) {
 				var plotData = new Array();
@@ -469,7 +508,7 @@ var io = {
 			data     : 'cmd=' + command,
 			type     : 'POST',
 			dataType : 'json',
-			timeout  : io.timeout*2,
+			timeout  : io.serverTimeout*2,
 			async    : true,
 			cache    : false
 		}).done(function(data) {
@@ -482,17 +521,20 @@ var io = {
 	 */
 	stopseries: function () {
 		io.debug && console.log("io.stopseries()");
-		if (io.socket) {
-			io.debug && console.debug("io.socket.close()");
-			io.socket.close();
+
+		if (io.item.socket) {
+			io.debug && console.debug("io.stopseries: io.item.socket.close()");
+			io.item.socket.close();
 		}
 
-		if (io.refreshIntervall) {
-			clearTimeout(io.refreshIntervall);
-			io.refreshIntervall = false;
+		if (io.item.refreshIntervall) {
+			io.debug && console.debug("io.stopseries: clearTimeout(io.item.refreshIntervall)");
+			clearTimeout(io.item.refreshIntervall);
+			io.item.refreshIntervall = false;
 		}
 
 		if (io.log.refreshIntervall) {
+			io.debug && console.debug("io.stopseries: clearTimeout(io.log.refreshIntervall)");
 			clearTimeout(io.log.refreshIntervall);
 			io.log.refreshIntervall = false;
 		}

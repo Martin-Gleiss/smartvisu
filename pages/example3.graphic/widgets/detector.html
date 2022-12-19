@@ -35,7 +35,7 @@
  * @param {item(num)=} the knx gad (groupaddress) for count bus test alarm (optional)
 */
 {% macro popup(id, title, gad_w_alarm, gad_w_testalarm, gad_reset, gad_status_alarm, gad_status_testalarm, gad_serial, gad_time, gad_smokebox, gad_pollution, gad_voltage, gad_temp, gad_errorcode, gad_battery, gad_error, gad_c_smoke, gad_c_temp, gad_c_test, gad_c_wire, gad_c_bus, gad_c_wiretest, gad_c_bustest ) %}
-    {% import   "basic.html" as basic %}
+    {% import   "@widgets/basic.html" as basic %}
 
     <style>
 		.custom-symbol .ui-controlgroup-controls {

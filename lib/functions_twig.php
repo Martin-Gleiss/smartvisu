@@ -9,6 +9,7 @@
  */
 
 const SmartvisuButtonTypes = array('micro', 'mini', 'midi', 'icon');
+const SmartvisuIconClasses = array('icon0', 'icon1', 'icon2', 'icon3', 'icon4', 'icon5');
 
 // -----------------------------------------------------------------------------
 // Filters for Twig
@@ -50,7 +51,7 @@ function twig_deficon(Twig_Environment $env, $val, $def = '')
 	  $ret = array();
 		foreach($val as $pic)
 		{
-	    $ret[] = $entry == '' ? $def : $pic;
+	    $ret[] = $pic == '' ? $def : $pic;
 		}
 	}
 
@@ -62,6 +63,9 @@ function twig_md5($val)
 	return md5($val);
 }
 
+function twig_preg_replace($val, $regex, $replace){
+	return preg_replace ($regex, $replace, $val);
+}
 
 // -----------------------------------------------------------------------------
 // General functions for Twig
@@ -225,10 +229,17 @@ function twig_docu($filenames = null)
 								
 								if ($p['type'] == 'type')
 									$p['valid_values'] = array_merge(SmartvisuButtonTypes, $p['valid_values']);
+								
+								if ($p['type'] == 'color') {
+									if (in_array('icon0to5', $p['valid_values']))	{
+										unset ($p['valid_values'][array_search('icon0to5',$p['valid_values'])]);
+										$p['valid_values'] = array_merge(SmartvisuIconClasses, $p['valid_values']);	
+									}
+								}
 							}
 							elseif ($p['type'] == 'type')
 								$p['valid_values'] = SmartvisuButtonTypes;
-							
+																
 							$p['optional'] = $tag[6] != '';
 							if($p['optional'] && $tag[6] != '=')
 								$p['default'] = substr($tag[6],1);
@@ -439,8 +450,9 @@ function twig_asset_exists($file) {
 		if(is_file(const_path . 'widgets/'. $file)) $fileExists = 1;
 		if(is_file(const_path . 'dropins/'. $file)) $fileExists = 1;
 		if(is_file(const_path . 'dropins/widgets/' . $file )) $fileExists = 1;
+		if(is_file(const_path . 'dropins/shwidgets/' . $file )) $fileExists = 1;
 		if(is_file(const_path . 'pages/' . $requestpages .'/widgets/'. $file )) $fileExists = 1;
-		$searchpath = 'in ./widgets, ./dropins, ./dropins/widgets and ./pages/'. $requestpages .'/widgets/';
+		$searchpath = 'in ./widgets, ./dropins, ./dropins/widgets, ./dropins/shwidgets and ./pages/'. $requestpages .'/widgets/';
 	} else 	{	
 		// add const_path if $file is relative
 		if (substr($file, 0, 1) != '/') 

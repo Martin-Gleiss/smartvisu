@@ -1,6 +1,6 @@
 /*
  * JTSage-DateBox : the full featured Date and Time Picker
- * Date: 2017-09-28T12:48:02-04:00
+ * Date: 2018-06-07T14:42:32-04:00
  * http://dev.jtsage.com/DateBox/
  * https://github.com/jtsage/jquery-mobile-datebox
  *
@@ -243,6 +243,15 @@ div.ui-datebox-datebox-button.ui-btn.ui-corner-all.ui-icon-minus {
 .ui-datebox-flipcontentd div {
 	width: 60px;
 }
+.ui-datebox-flipcontente div {
+	width: 46px;
+}
+.ui-datebox-flipcontentf div {
+	width: 37px;
+}
+.ui-datebox-flipcontentg div {
+	width: 32px;
+}
 .ui-datebox-flipcontent ul {
 	list-style-type: none;
 	display: inline;
@@ -342,12 +351,33 @@ span.ui-datebox-nopad { margin: 0 }
 .ui-grid-e > .ui-block-f {
 	width: 16.65%;
 }
+.ui-grid-f > .ui-block-a,
+.ui-grid-f > .ui-block-b,
+.ui-grid-f > .ui-block-c,
+.ui-grid-f > .ui-block-d,
+.ui-grid-f > .ui-block-e,
+.ui-grid-f > .ui-block-f,
+.ui-grid-f > .ui-block-g {
+	width: 14.25%;
+}
+
 .ui-grid-e { 
+	overflow: hidden;
+}
+.ui-grid-f { 
 	overflow: hidden;
 }
 .ui-block-f {
 	margin: 0;
-	padding: 0;
+	border: 0;
+	float: left;
+	min-height: 1px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.ui-block-g {
+	margin: 0;
 	border: 0;
 	float: left;
 	min-height: 1px;

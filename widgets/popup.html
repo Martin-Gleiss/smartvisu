@@ -33,9 +33,9 @@
  * @param {unspecified[?]=} Any widget function. In total you can add 20 lines max.
   */
 {% macro extpopup(id, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15, line16, line17, line18, line19, line20) %}
-  {% import "basic.html" as basic %}
-  {% import "device.html" as device %}
-  {% import "plot.html" as plot %}
+  {% import "@widgets/basic.html" as basic %}
+  {% import "@widgets/device.html" as device %}
+  {% import "@widgets/plot.html" as plot %}
   {% set elements = {} %}
   {% set class = '' %}
   {% for linenumber in 1..20 %}
@@ -129,7 +129,7 @@
  * @param {item[?](bool)=} on/off lock item for RGB LED sequencer
   */
 {% macro locks(id, lock, bwm_lock, force, seq_lock) %}
-    {% import "basic.html" as basic %}
+    {% import "@widgets/basic.html" as basic %}
   <div {% if not id is empty %} id="{{ id }}"{% endif %} data-role="popup" data-overlay-theme="a" class="locks-popup" style="text-align:center;">
   <div style="margin:auto;text-align:center;display:inline-block;">
     {% if (lock is not iterable and lock != '') or (lock is iterable and lock[0] != '') %}

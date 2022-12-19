@@ -22,6 +22,9 @@
 .menu-hide-phone {
 	display: inline-block;
 }
+.hide-phone {
+   display: block;
+}
 
 /* Large desktop */
 @media all and (min-width: 980px) {
@@ -45,7 +48,7 @@
   .menu-visible-phone {
 	  display: inline-block;
   }
-  .menu-hide-phone {
+  .menu-hide-phone, .hide-phone {
 	  display: none;
   }
 }
@@ -230,7 +233,8 @@ a:hover {
 }
 
 .ui-listview .ui-li-has-thumb > svg:first-child,
-.ui-listview .ui-li-has-thumb>.ui-btn>svg:first-child
+.ui-listview .ui-li-has-thumb>.ui-btn>svg:first-child,
+.ui-listview .ui-btn>svg.fx-icon
 {
   position: absolute;
   left: 0;
@@ -690,7 +694,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 }
 
 .block .image {
-  margin: 0 5px 13px 5px;
+  margin: 0 6px 13px 3px;
 }
 
 .ui-popup-container .image img,
@@ -1774,7 +1778,7 @@ div.ui-slider-switch{
   font-size: 13px;
 }
 .highcharts-grid .highcharts-grid-line {
-  stroke: rgba(255, 255, 255, .1);
+  stroke: rgba(255, 255, 255, .15);
   stroke-width: 1px;
 }
 
@@ -2118,9 +2122,11 @@ svg.icon {
   margin: 1px;
 }
 
+/** do not show hand on icon
 svg.icon:hover {
   cursor: pointer;
 }
+*/
 
 svg.icon text {
   font-size: 30px;
@@ -2653,7 +2659,15 @@ svg.fx-icon.midi,
 }
 
 /* widget lib.supersize */
-.overlay{
+.supersize.icon,
+.supersize.fx-icon {
+	position:absolute; 
+	width:3em; 
+	height:auto; 
+	top:0px; 
+	right:0px;	
+}
+.overlay {
 	position:absolute;
 	padding: .5%;
 	top:0px;

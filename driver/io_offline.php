@@ -51,13 +51,13 @@ class driver_offline
 		$this->fp = fopen($this->filename, 'r+');
 
 		if (!$this->fp) {
-      $this->throwError("Could not open file '".$this->filename."'");
+			$this->throwError("Can not write to file<br>'".str_replace(const_path,'./', $this->filename)."'<br>Please grant writing rights!");
 			return;
 		}
 
 		if (!flock($this->fp, LOCK_EX)) {  // acquire an exclusive lock
 			fclose($this->fp);
-			$this->throwError("Could not aquire lock on file '".$this->filename."'");
+			$this->throwError("Could not aquire lock on file '".str_replace(const_path,'./', $this->filename)."'");
 			return;
 		}
 

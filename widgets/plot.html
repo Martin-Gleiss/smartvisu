@@ -96,7 +96,7 @@
 * @param {value[]=} y-axes setup for left '0' and right '1' hand in array form (optional)
 * @param {color[?]=} y-axes color; multiples in array form (optional)
 * @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
-* @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
+* @param {format[?]=} unit(s) for the y-axis. Either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. Multiples in array form. (optional)
 * @param {text[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
 * @param {text[?](normal,percent)=normal} stacking of series for each stack (array for multiple stacks in ascending order): 'normal', 'percent' (optional, default=normal). 
 * @param {text[]=} assign stacked series to different stacks: '0', '1, '2'... or ''. Sequence must be same as item sequence (optional, default='')
@@ -110,16 +110,22 @@
 {% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export, source) %}
 	{% if (not export is empty) and export > 0 %}
 		<script src="vendor/plot.highcharts/modules/exporting.js"></script>
+		<script src="vendor/plot.highcharts/modules/offline-exporting.js"></script>
 		{% if export == 2 %}
 			<script src="vendor/plot.highcharts/modules/export-data.js"></script>
 		{% endif %}
 	{% endif %}
 	{% set source = source|default('database') %}
-	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
+	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1h') %}
 
 	{% set mode = (mode is iterable ? mode : [mode|default('avg')]) %}
 	{% set count = (count is iterable ? count : [count|default(100)]) %}
+	{% set unit = (unit is iterable ? unit : [unit|default('')]) %}
+	{% set units = [] %}
+	{% for uniti in unit %}
+		{% set units = units|merge([uniti|replace({',' : ';'})]) %}  /** hide comma before implode/explode to allow format strings, e.g. %01,02f% */
+	{% endfor %}
 	{% set stacking = (stacking is iterable ? stacking : [stacking|default('normal')]) %}
 	{% set stacks = (stacks is iterable ? stacks : [stacks|default('0')]) %}
 	{% set item = (item is iterable ? item : [item]) %}
@@ -158,8 +164,9 @@
 		{% if opposite is not empty %} data-opposite="{{ implode(opposite) }}" {% endif %}
 		{% if ycolor is not empty %} data-ycolor="{{ implode(ycolor) }}" {% endif %}
 		{% if stacks is not empty %} data-stacks="{{ implode(stacks) }}" {% endif %}
-		data-ytype="{{ implode(ytype) }}" data-unit="{{ implode(unit) }}" data-stacking="{{ implode(stacking) }}" 
+		data-ytype="{{ implode(ytype) }}" data-unit="{{ implode(units) }}" data-stacking="{{ implode(stacking) }}" 
 		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}" data-exportmenu="{{ export|default(0) }}"
+		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
 		class="plot{% if zoom == 'advanced' %} plot-highstock{% endif %}"></div>
 
 {% endmacro %}
@@ -201,7 +208,7 @@
   Additionally you may pass 'on' to use backend's 'on' function (caution: not all backend databases do support this).
 */
 {% macro rtr(id, item_actual, item_set, item_state, count, tmin, tmax, state_max) %}
-	{% set tmax = (tmax|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
+	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1d') %}
 	{% set count = count|default(100) %}
 	{% set items = [ implode(item_actual, ['avg', tmin, tmax, count]), implode(item_set, ['avg', tmin, tmax, count]) ] %}
@@ -212,6 +219,7 @@
 		data-item="{{ implode(items) }}"
 		data-tmin="{{ tmin }}" data-tmax="{{ tmax }}" data-state-max="{{ state_max == 'on' ? 1 : state_max }}"
 		data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
+		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
 		class="plot"></div>
 
 {% endmacro %}
@@ -262,7 +270,7 @@
 * @param {value[]=} y-axes setup for left '0' and right '1' hand in array form (optional)
 * @param {color[?]=} y-axes color; multiples in array form (optional)
 * @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
-* @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
+* @param {format[?]=} unit(s) for the y-axis. Either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. Multiples in array form. (optional)
 * @param {text[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
 * @param {text[?](normal,percent)=normal} stacking of series for each stack (array for multiple stacks in ascending order): 'normal', 'percent' (optional, default=normal). 
 * @param {text[]=} assign stacked series to different stacks: '0', '1, '2'... or ''. Sequence must be same as item sequence (optional, default='')
@@ -275,10 +283,16 @@
 {% macro xyplot(id, item, xitem, yitem, xmin, xmax, ymin, ymax, label, xylabel, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export) %}
 	{% if (not export is empty) and export > 0 %}
 		<script src="vendor/plot.highcharts/modules/exporting.js"></script>
+		<script src="vendor/plot.highcharts/modules/offline-exporting.js"></script>
 		{% if export == 2 %}
 			<script src="vendor/plot.highcharts/modules/export-data.js"></script>
 		{% endif %}
 	{% endif %}
+	{% set unit = (unit is iterable ? unit : [unit|default('')]) %}
+	{% set units = [] %}
+	{% for uniti in unit %}
+		{% set units = units|merge([uniti|replace({',' : ';'})]) %}  /** hide comma before implode/explode to allow format strings, e.g. %01,02f% */
+	{% endfor %}
 	{% set stacking = (stacking is iterable ? stacking : [stacking|default('normal')]) %}
 	{% set stacks = (stacks is iterable ? stacks : [stacks|default('0')]) %}
 
@@ -291,7 +305,7 @@
 		{% if opposite is not empty %} data-opposite="{{ implode(opposite) }}" {% endif %}
 		{% if ycolor is not empty %} data-ycolor="{{ implode(ycolor) }}" {% endif %}
 		{% if stacks is not empty %} data-stacks="{{ implode(stacks) }}" {% endif %}
-		data-ytype="{{ implode(ytype) }}" data-unit="{{ implode(unit) }}" data-stacking="{{ implode(stacking) }}" 
+		data-ytype="{{ implode(ytype) }}" data-unit="{{ implode(units) }}" data-stacking="{{ implode(stacking) }}" 
 		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}" data-exportmenu="{{ export|default(0) }}"
 		class="plot"></div>
 

@@ -80,7 +80,7 @@
 		<div class="twig">
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 				{% if asset_exists('stateengine.html') %}
-				  {% import "widgets/stateengine.html" as stateengine %}
+				  {% import "@widgets/stateengine.html" as stateengine %}
 				{% endif %}
 				{% endverbatim %}{% endfilter %}
 			</code>

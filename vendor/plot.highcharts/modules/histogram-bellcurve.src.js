@@ -1,12 +1,11 @@
 /**
- * @license Highcharts JS v9.3.1 (2021-11-05)
+ * @license Highcharts JS v10.3.0 (2022-10-31)
  *
  * (c) 2010-2021 Highsoft AS
  * Author: Sebastian Domas
  *
  * License: www.highcharts.com/license
  */
-'use strict';
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
         factory['default'] = factory;
@@ -21,10 +20,20 @@
         factory(typeof Highcharts !== 'undefined' ? Highcharts : undefined);
     }
 }(function (Highcharts) {
+    'use strict';
     var _modules = Highcharts ? Highcharts._modules : {};
     function _registerModule(obj, path, args, fn) {
         if (!obj.hasOwnProperty(path)) {
             obj[path] = fn.apply(null, args);
+
+            if (typeof CustomEvent === 'function') {
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'HighchartsModuleLoaded',
+                        { detail: { path: path, module: obj[path] }
+                    })
+                );
+            }
         }
     }
     _registerModule(_modules, 'Series/DerivedComposition.js', [_modules['Core/Globals.js'], _modules['Core/Series/Series.js'], _modules['Core/Utilities.js']], function (H, Series, U) {
@@ -222,9 +231,9 @@
         /**
          * Returns a function for mapping number to the closed (right opened) bins
          * @private
-         * @param {Array<number>} bins - Width of the bins
-         * @return {Function}
-         **/
+         * @param {Array<number>} bins
+         * Width of the bins
+         */
         function fitToBinLeftClosed(bins) {
             return function (y) {
                 var i = 1;
@@ -374,7 +383,7 @@
                  * which takes a `baseSeries` as a parameter and should return a
                  * positive integer.
                  *
-                 * @type {"square-root"|"sturges"|"rice"|number|function}
+                 * @type {"square-root"|"sturges"|"rice"|number|Function}
                  */
                 binsNumber: 'square-root',
                 /**
@@ -523,7 +532,8 @@
             BellcurveSeries.standardDeviation = function (data, average) {
                 var len = data.length,
                     sum;
-                average = isNumber(average) ? average : BellcurveSeries.mean(data);
+                average = isNumber(average) ?
+                    average : BellcurveSeries.mean(data);
                 sum = data.reduce(function (sum, value) {
                     var diff = value - average;
                     return (sum += diff * diff);

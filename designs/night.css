@@ -1664,7 +1664,13 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 	fill: #fff;
 	stop-color: #fff;
 }
-.icon1, a.ui-link:hover, a.ui-link:active {
+.ui-btn-c a.ui-link .icon0 {
+	stroke: #000;
+	fill: #000;
+	stop-color: #000;
+}
+.icon1, .icon1.ui-link,
+a.ui-link:hover, a.ui-link:active {
 	stroke: #f9a028;
 	fill: #f9a028;
 	stop-color: #f9a028;
@@ -1674,6 +1680,62 @@ html .ui-btn.icon1,
 [data-widget="basic.print"].icon1,
 [data-widget="basic.symbol"] .icon1 {
 	color: #f9a028;
+}
+
+/* red icon */
+.icon2,
+.icon2.ui-link {
+	stroke: red;
+	fill: red;
+	stop-color: red;
+}
+.switch.icon2,
+html .ui-btn.icon2,
+[data-widget="basic.print"].icon2,
+[data-widget="basic.symbol"] .icon2 {
+	color: red;
+}
+
+/* yellow icon */
+.icon3,
+.icon3.ui-link {
+	stroke: yellow;
+	fill: yellow;
+	stop-color: yellow;
+}
+.switch.icon3,
+html .ui-btn.icon3,
+[data-widget="basic.print"].icon3,
+[data-widget="basic.symbol"] .icon3 {
+	color: yellow;
+}
+
+/* green icon */
+.icon4,
+.icon4.ui-link {
+	stroke: limegreen;
+	fill: limegreen;
+	stop-color: limegreen;
+}
+.switch.icon4,
+html .ui-btn.icon4,
+[data-widget="basic.print"].icon4,
+[data-widget="basic.symbol"] .icon4 {
+	color: limegreen;
+}
+
+/* blue icon */
+.icon5,
+.icon5.ui-link {
+	stroke: #2095ff;
+	fill: #2095ff;
+	stop-color: #2095ff;
+}
+.switch.icon5,
+html .ui-btn.icon5,
+[data-widget="basic.print"].icon5,
+[data-widget="basic.symbol"] .icon5 {
+	color: #2095ff;
 }
 
 /** set color of calendar picker symbol in webkit time input fields for UZSU */

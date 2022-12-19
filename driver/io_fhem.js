@@ -16,6 +16,7 @@
  * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
+ * @hide		driver_loopback
  * @hide		sv_hostname
  * @default     driver_port 2121
  *
@@ -167,7 +168,7 @@ var io = {
       io.log(1, "Reconnect timer started");
       io.rcTimer = setInterval(function() {
         io.log(1, "Reconnect timer fired");
-        if (io.socket == null) {
+        if (io.socket == null && document.visibilityState && document.visibilityState != 'hidden' ) {
           io.open();
         }
       }, 60000);
