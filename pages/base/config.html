@@ -180,7 +180,7 @@
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
 								<h3>{{ lang('configuration_page', 'functions', 'label') }}</h3>
 								{{ forms.config_flip(source, values, 'updatecheck') }}
-								{% if values[source]['driver'] == 'smarthomeng' %}{{ forms.config_flip(source, values, 'driver_loopback') }}{% endif %}
+								{{ forms.config_flip(source, values, 'driver_loopback') }}
 							</div>
 						</div>
 					</div>

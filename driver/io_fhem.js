@@ -16,6 +16,7 @@
  * @hide		driver_ssl
  * @hide		driver_username
  * @hide		driver_password
+ * @hide		driver_loopback
  * @hide		sv_hostname
  * @default     driver_port 2121
  *
