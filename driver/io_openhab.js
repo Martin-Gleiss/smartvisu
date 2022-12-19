@@ -22,6 +22,7 @@
  * @hide        proxy_url
  * @hide        proxy_user
  * @hide        proxy_password
+ * @hide		driver_loopback
  */
 
 /**
