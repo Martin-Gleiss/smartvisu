@@ -1,4 +1,4 @@
-## 3.2.c
+## 3.3
 ### New / Changed Widgets
 - icon styling is now standardized on all widgets including dynamic icons using 6 icon classes defined with the designs plus color names and hex color codes. 4 classes for "red", yellow,"green" and "blue" have been added in the designs
 - svg icons in widgets get loaded directly into the html-DOM in order to provide faster loading and better stylability. This methods also profits from the cache mechanism if activated
