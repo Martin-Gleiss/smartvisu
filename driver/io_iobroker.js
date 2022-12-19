@@ -36,6 +36,9 @@ var io = {
 
 	uzsu_type: '0',
 
+	// value type of all items
+	valueType: Array(),
+	
 	// -----------------------------------------------------------------------------
 	// P U B L I C	 F U N C T I O N S
 	// -----------------------------------------------------------------------------
@@ -66,13 +69,48 @@ var io = {
 	*/
 	write: function (item, val, callback) {
 		if (io.checkConnected) {
-			// convert numeric
-			if ($.isNumeric(val)) {
-				val = val * 1.0;
-				io.socket.emit('setState', item, val, callback);
-			} else {
-				io.socket.emit('setState', item, JSON.stringify(val), callback);
+			var v = val;
+			//console.log('A) ' + item + ': ' + val);
+			switch (io.valueType[item]) {
+				case 'boolean': // convert to boolean
+					v = ((v == 0) || (v == '') || (v == '0') || (v == 'false')) ? false:true;
+					break;
+				case 'number': // convert to numeric
+					v = v * 1.0;
+					break;
+				case 'json': // convert to json string ("{ ... }")
+					try {
+						v = JSON.stringify(v);
+					} catch (e) {
+						console.log(item + '-data seems to be an json, but cannot convert it: ' + val);
+					}
+					break;
+				case 'string': // convert to string
+					try {						
+						if (val.constructor === Array) {
+							// item return an array but ioBroker used for array a string ("x,y,z...")
+							v = JSON.stringify(v);					
+							if (v.length > 2 && v[0] === '[' && v[v.length - 1] === ']') { 							
+								v = v.slice(1).slice(0, -1); // remove '[' and ']'
+							}
+						}
+					} catch (e) {
+						console.log(item + '-data seems to be an array, but cannot convert it to string: ' + val);
+					}
+					break;
+				case 'array': // convert to array ("[ ... ]")
+					try {
+						v = JSON.stringify(v);
+						if (v.length > 0 && v[0] !== '[') v = '[' + v + ']';						
+					} catch (e) {
+						console.log(item + '-data seems to be an array, but cannot convert it: ' + val);
+					}
+					break;
+				default:
+					break;
 			}
+			//console.log('B) ' + item + ': ' + vval);				
+			io.socket.emit('setState', item, v, callback);
 		}
 	},
 
@@ -326,7 +364,8 @@ var io = {
 			});
 		} else {
 			var val = state.val;
-
+			io.valueType[item] = typeof val; // remember value type
+			
 			// convert boolean
 			if (val === false) 
 				val = 0;
@@ -345,6 +384,7 @@ var io = {
 				val[val.length - 1] === '}') {
 				try {
 					val = JSON.parse(val);
+					io.valueType[item] = 'json'; // is used for example by device.uzsuicon
 				} catch (e) {
 					console.log('Data seems to be an json, but cannot parse it: ' + val);
 				}
@@ -355,6 +395,7 @@ var io = {
 					val[val.length - 1] === ']') {
 					try {
 						val = JSON.parse(val);
+						io.valueType[item] = 'array'; // is used for example by basic.select with itemvals/itemtxts or status.activelist
 					} catch (e) {
 						console.log('Data seems to be an array, but cannot parse it: ' + val);
 					}
@@ -377,6 +418,7 @@ var io = {
 			io.socket.emit('unsubscribe', items);
 			io.read(items);
 		}
+		valueType = Array(); // clear list
 	}
 
 /*
