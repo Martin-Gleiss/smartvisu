@@ -36,6 +36,8 @@
 - plot exporting to png and pdf has been switched to local ("offline") mode. This avoids sending data to highcharts servers.
 - replaced outdated links in various apps
 - item monitoring was not stopped with smarthomeNG after page change if new page had no items to monitor (e.g.info page). Now, an empty monitor command is sent in such cases, stopping the former subscriptions.
+- websocket is only reconnected if smartVISU is visible in the browser. This avoids unnecessary reconnects in mobile browsers and makes reconnecting more reliable.
+- shNG driver now sends status 1000 when actively closing the websocket. This avoids some (but not all) abnormal closing warnings in the backend
 
 ### Updated Libraries
 - JTSage datebox plugin v4.4.1 with patch for smartVISU time / timeflip limits

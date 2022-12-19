@@ -271,7 +271,7 @@ var io = {
 	 */
 	send: function (data) {
 		if (io.socket.readyState == 1) {
-			io.socket.send(JSON.stringify(data));
+			io.socket.send(JSON.stringify(data),10000);  // to do: check if timeout 10000 really solves the log spamming issue
 			// DEBUG: 
 			console.log('[io.smarthomeng] sending data: ', JSON.stringify(data));
 		}
