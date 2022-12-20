@@ -21,4 +21,4 @@ removed:
      - basic.shifter
 
 deprecated:
-     
+     - dummy.dummy     

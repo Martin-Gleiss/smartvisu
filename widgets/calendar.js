@@ -247,9 +247,9 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 					);
 		
 				if (entry.icon.indexOf('.svg') == -1)
-					a.find('div').last().before( $('<img class="icon icon1" src="' + entry.icon + '" style="width: 100%; height: 120%; fill: ' + entry.color + '; stroke: ' + entry.color + '" />'));
+					a.find('div').last().before( $('<img class="icon icon1" src="' + entry.icon + '" style="width: 100%; height: 120%; fill: ' + entry.color + '; stroke: ' + entry.color + ';" />'));
 				else
-					fx.load(entry.icon,'fx-icon icon1', 'width: 100%; height: 120%; fill: ' + entry.color + '; stroke: ' + entry.color + '"', a.find('div').last(), 'before');			
+					fx.load(entry.icon,'fx-icon icon1', 'width: 100%; height: 120%; fill: ' + entry.color + '; stroke: ' + entry.color + ';', a.find('div').last(), 'before');			
 
 				node.find('div:first').append(a);
 			});
