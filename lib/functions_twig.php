@@ -314,8 +314,9 @@ function twig_configmeta($filename)
 	foreach($header as $tag) {
 		if(array_key_exists($tag[1], $ret)) {
 			if(is_array($ret[$tag[1]])) {
-        $data = preg_split('#\s+#', $tag[2], 2);
-				$ret[$tag[1]][$data[0]] = $data[1];
+				$data = preg_split('#\s+#', $tag[2], 2);
+				$ret[$tag[1]][$data[0]] = (isset($data[1]) && $data[1] != '' ? $data[1] : null);
+				//debug_to_console($tag[1].' '.$data[0].' '.$ret[$tag[1]][$data[0]]);
 			}
 			else
         $ret[$tag[1]] = $tag[2];
