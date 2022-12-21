@@ -185,8 +185,7 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 			uebermorgen.setDate(uebermorgen.getDate() + 1);
 
 			var spalte = 0;
-			var muell_html = "";//<table class ='ui-btn-up-a' style='width:100%;text-align:center;overflow:hidden;'><tr>";
-			
+			node.find('div').html('');			
 			$.each(data, function(index, entry) {
 				// "pseudo clone" entry to not mute original object in widget.buffer
 				entry = Object.create(entry);
