@@ -77,9 +77,12 @@ var io = {
 		io.address = sv.config.driver.address;
 
 		// if user-called host is not an IP v4 address check if called host is internal hostname of smartVISU server
+		// or configured alternative address (manually set an entry "driver_address2" in config.ini)
 		// otherwise assume that call comes from external and then empty io.address
 		if (!$.isNumeric(location.hostname.split('.').join(''))) {  // replaceAll() does not work for old browsers
-			if ( location.hostname != sv.config.svHostname ) 
+			if (sv.config.driver.address2 && sv.config.driver.address2 !='' && location.hostname == sv.config.driver.address2)
+				io.address = sv.config.driver.address2;
+			else if ( location.hostname != sv.config.svHostname ) 
 				io.address = '';
 		} 
 		io.open();
