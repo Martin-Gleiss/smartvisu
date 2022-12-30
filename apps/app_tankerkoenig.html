@@ -55,9 +55,29 @@
 
 {% block content %}
 
+	
+	<div class="visible-phone">
+		<div class="ui-field-contain">
+			<label for="tkFuel1">Kraftstoffsorte</label>
+				<select name="tkFuel1" id="tkFuel1">
+					<option value="Diesel" selected="selected">Diesel</option>
+					<option value="E10">Super E10 </option>
+					<option value="E5"> Super E5 </option>
+			</select>
+		</div>
+		<div class="ui-field-contain">
+			<label for="tkDistance1">Entfernung</label>
+			<select name="tkDistance1" id="tkDistance1">
+				<option value="1"> 1 km </option>
+				<option value="2"> 2 km </option>
+				<option value="5" selected="selected"> 5 km </option>
+				<option value="10"> 10 km </option>
+				<option value="15"> 15 km </option>
+			</select>
+		</div>
+	</div>
 	<h3>Kraftstoffpreise</h3>
 	<br />
-
 
 	<style type="text/css">
 		.tvlist ul {
@@ -65,7 +85,7 @@
 		}
 
 		.tvlist li {
-			padding: 0 0 0 125px !important;
+			padding: 0 0 0 10px !important;
 		}
 
 		.tvlist .ui-li-thumb {
@@ -102,11 +122,12 @@
 
 	<script type="text/javascript">
 		$('#{{ page }}').on('pagecreate', function (event, ui) {
-			$('#tkFuel, #tkDistance').on('change init', function(event,ui){
+			$('#tkFuel, #tkFuel1, #tkDistance, #tkDistance1').on('change init', function(event,ui){
 			var tkLocation = '{{ config_tanker_location ? config_tanker_location|raw : config_weather_location|replace("lon", "lng")|raw }}';
 			var tkKey = '{{ config_tanker_key ? config_tanker_key : "00000000-0000-0000-0000-000000000002" }}';
-			var fuelType = $('#tkFuel').val();
-			var fuelDist = $('#tkDistance').val().toString();
+			var source = ($(window).width() >= 600 ? '' : '1');
+			var fuelType = $('#tkFuel'+ source).val();
+			var fuelDist = $('#tkDistance' + source).val().toString();
 			$.getJSON('https://creativecommons.tankerkoenig.de/json/list.php?'+tkLocation+'&rad='+fuelDist+'&sort=price&type='+fuelType.toLowerCase()+'&apikey='+tkKey, function (data) {
 				//console.log(data);
 				if (data['status'] != 'error'){
