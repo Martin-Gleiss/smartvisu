@@ -22,37 +22,30 @@
 
 {% block sidebar %}
 	<ul data-role="listview" data-dividertheme="c">
-		<li><a data-ajax="false" href="index.php?page=app_tv_spielfilm"><h3>Jetzt</h3></a></li>
-		<li><a data-ajax="false" href="index.php?page=app_tv_spielfilm&feed=heute2015"><h3>Heute, 20:15</h3></a></li>
-		<li><a data-ajax="false" href="index.php?page=app_tv_spielfilm&feed=heute2200"><h3>Heute, 22:00 Uhr</h3></a></li>
-		<li><a data-ajax="false" href="index.php?page=app_tv_spielfilm&feed=filme"><h3>Spielfilm-Highlights des Tages</h3></a></li>
+			<li><a data-ajax="false" href="index.php?page=app_tv_spielfilm"><h3>Jetzt</h3></a></li>
+			<li><a data-ajax="false" href="index.php?page=app_tv_spielfilm&feed=heute2015"><h3>Heute, 20:15</h3></a></li>
+			<li><a data-ajax="false" href="index.php?page=app_tv_spielfilm&feed=heute2200"><h3>Heute, 22:00 Uhr</h3></a></li>
+			<li><a data-ajax="false" href="index.php?page=app_tv_spielfilm&feed=filme"><h3>Spielfilm-Highlights des Tages</h3></a></li>
 	</ul>
 {% endblock %}
 
 
 {% block content %}
 
-	<h3>TV-Programm</h3>
-	<br />
-
-
 	<style type="text/css">
 		.tvlist ul {
 			margin: 0 !important;
 		}
-
 		.tvlist li {
-			padding: 0 0 0 125px !important;
+			padding: 0 0 0 100px !important;
 		}
-
 		.tvlist .ui-li-thumb {
 			height: 63px;
-			max-width: 113px;
+			max-width: 100px;
 			top: 5px;
 			left: 5px;
 			border: 1px solid #aaa;
 		}
-
 		.tvlist .ui-li-aside {
 			background-color: white;
 			border: 1px solid #ccc;
@@ -64,12 +57,24 @@
 			vertical-align: middle;
 			line-height: 27px;
 		}
-
 		.tvlist li p {
 			height: 35px;
 			white-space: normal;
 		}
 	</style>
+	
+	<div class="visible-phone">
+		<div data-role="controlgroup" data-type="horizontal" class="ui-mini" style="margin: 0 0 20px 0;">
+
+			<a data-ajax="false" class="ui-btn ui-corner-all" href="index.php?page=app_tv_spielfilm">Jetzt</a>
+			<a data-ajax="false" class="ui-btn ui-corner-all" href="index.php?page=app_tv_spielfilm&feed=heute2015">20:15 H</a>
+			<a data-ajax="false" class="ui-btn ui-corner-all" href="index.php?page=app_tv_spielfilm&feed=heute2200">22:00 H</a>
+			<a data-ajax="false" class="ui-btn ui-corner-all" href="index.php?page=app_tv_spielfilm&feed=filme">Top Filme</a>
+		</div>
+	</div>
+
+	<h3>TV-Programm</h3>
+	<br />
 
 	<div id="tv" data-widget="app.tvspielfim" class="tvlist">
 		<ul data-role="listview">
@@ -143,7 +148,7 @@
 						case 'ATV':						pic = 'atv.png'; break;
 					}
 					
-					if (pic) {
+					if (pic && $(window).width() >= 600) {
 						ret += '<div class="ui-li-aside">';
 						ret += '<img src="https://a2.tvspielfilm.de/images/tv/sender/mini/' + pic + '" style="height: 100%;">';
 						ret += '</div>';
