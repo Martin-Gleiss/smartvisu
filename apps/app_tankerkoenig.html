@@ -27,7 +27,8 @@
 	</div>
 	<h3 style="padding: 40px 0 8px 0;">Tankerkönig</h3>
 	</div>
-	<div class="ui-field-contain">
+	<br />
+	<div>
 		<label for="tkFuel">Kraftstoffsorte</label>
 			<select name="tkFuel" id="tkFuel">
 				<option value="Diesel" selected="selected">Diesel</option>
@@ -35,7 +36,7 @@
 				<option value="E5"> Super E5 </option>
 		</select>
 	</div>
-	<div class="ui-field-contain">
+	<div>
 		<label for="tkDistance">Entfernung</label>
 		<select name="tkDistance" id="tkDistance">
 			<option value="1"> 1 km </option>
@@ -77,7 +78,8 @@
 		</div>
 	</div>
 	<h3>Kraftstoffpreise</h3>
-	<br />
+	Stand:&nbsp;<span id="tkStand"></span>
+	<br /><br />
 
 	<style type="text/css">
 		.tvlist ul {
@@ -86,26 +88,6 @@
 
 		.tvlist li {
 			padding: 0 0 0 10px !important;
-		}
-
-		.tvlist .ui-li-thumb {
-			height: 63px;
-			max-width: 113px;
-			top: 5px;
-			left: 5px;
-			border: 1px solid #aaa;
-		}
-
-		.tvlist .ui-li-aside {
-			background-color: white;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			height: 25px;
-			width: 70px;
-			margin: 3px;
-			text-align: center;
-			vertical-align: middle;
-			line-height: 27px;
 		}
 
 		.tvlist li p {
@@ -131,6 +113,7 @@
 			$.getJSON('https://creativecommons.tankerkoenig.de/json/list.php?'+tkLocation+'&rad='+fuelDist+'&sort=price&type='+fuelType.toLowerCase()+'&apikey='+tkKey, function (data) {
 				//console.log(data);
 				if (data['status'] != 'error'){
+					$('#tkStand').text(new Date().transUnit('d.m.Y H:i') + ' Uhr');
 					var line = '';
 					var entry = data['stations'];
 
@@ -150,7 +133,10 @@
 			})
 				.fail(notify.json);
 		})
-		$('#tkFuel').trigger('init');
+		$(document).on('pagecontainershow', function(){
+			if (sv.activePage.attr('id') == '{{ page }}')
+				$('#tkFuel').trigger('init');
+		});
 		});
 	</script>
 
