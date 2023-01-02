@@ -159,7 +159,10 @@
 				})
 				.fail(notify.json);
 			});
-			$('#{{ page }} .tvlistMenu').trigger('init');	
+			$(document).on('pagecontainershow', function(){
+				if (sv.activePage.attr('id') == '{{ page }}')
+					$('#{{ page }} .tvlistMenu').trigger('init');	
+			});
 		});
 	</script>
 
