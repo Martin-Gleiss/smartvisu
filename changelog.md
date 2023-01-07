@@ -18,6 +18,7 @@
 - calendar.waste showed double entries if a second calendar with the same URL was on the same page
 - "navbar" workaroud caused navbars on mobile devices to fail. Workaround not necessary if "ui-state-persist" is used.
 - SVG icons with <defs> section in ./dropins/icons/ws caused 404 error in fx.init
+- basic.symbol color parameter did not colorize dynamic icons
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
