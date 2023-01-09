@@ -7,7 +7,8 @@ $.widget("sv.calendar_list", $.sv.widget, {
 		color: '',
 		weekday: '',
 		info: '',
-		private: 'show'
+		private: 'show',
+		daycount: 0
 	},
 
 	_update: function(response) {
@@ -32,7 +33,11 @@ $.widget("sv.calendar_list", $.sv.widget, {
 					entry.start = new Date(Date.parse('20' + entry.start));
 				else // start as timestamp
 					entry.start = new Date(entry.start*1000);
-
+					
+				//skip entry if start is not in the configured time span
+				if (self.options.daycount > 0 && entry.start.getDate() > new Date().getDate() + self.options.daycount - 1 ) 
+					return true;
+				
 				if(isNaN(entry.end)) // legacy: end in format 'y-m-d H:i:s'
 					entry.end = new Date(Date.parse('20' + entry.end));
 				else // end as timestamp

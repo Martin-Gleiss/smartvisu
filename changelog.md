@@ -7,6 +7,7 @@
 - smarthomeNG driver now has an alternative address which can be used in addition to IP-address and SV hostname. This is important if an encrypted connection is required and the certificate is bound to a domain name. 
   This name is not part of the config page and must be defined manually as "driver_address2" in config.ini
 - Tankerkoenig and TV Spielfilm apps optimized for small screens
+- calendar.list has now an option limiting the shown time span (measured in days)
 
 ### Updated Libraries
 
