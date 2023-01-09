@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2022
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -19,13 +19,14 @@
 * @param {text[?]=} name of calendars to show, multiples in array form (optional, default: as defined in configuration)
 * @param {text(D,l)=} option to display the weekdays: 'D' = short format, 'l' = full name (optional, default = '')
 * @param {text(active)=} option for display of link and location info: ''= on the list item, 'active'= in a clickable content field  (optional, default = '')
+* @param {value=0} the time span for the calendar counted in days. '0' means all entries. (optional, default 0)
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
 *
 * @author Martin Gleiß, Stefan Widmer
 */
-{% macro list(id, title, count, color, repeat, calendar, weekday, info) %}
+{% macro list(id, title, count, color, repeat, calendar, weekday, info, daycount) %}
 
 	/** handle default colors from config */
 	{% set configcolors = config_calendar_color|split(',') %}
@@ -49,7 +50,8 @@
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="calendar.list" class="calendarlist"
 		data-item="url:lib/calendar/service/{{ config_calendar_service }}.php?count={{ count|default(25)|url_encode }}&calendar={{ implode(calendar|default(confignames))|url_encode }}"
 		data-repeat="{{ repeat|default('1h') }}"  data-count="{{ count|default(5) }}"
-		data-calendar="{{ implode(calendar|default(confignames)) }}" data-color="{{ implode(color) }}" data-weekday="{{ weekday|default('') }}" data-info="{{ info|default('') }}" data-private = "{{ configprivate|default('show') }}" >
+		data-calendar="{{ implode(calendar|default(confignames)) }}" data-color="{{ implode(color) }}" data-weekday="{{ weekday|default('') }}" data-info="{{ info|default('') }}" data-private = "{{ configprivate|default('show') }}"
+		data-daycount="{{ daycount|default(0) }}">
 		{% if title %} <h2>{{ title }}</h2> {% endif %}
 		<dl data-role="listview" class="ui-listview activelist-container"></dl>
 	</div>
