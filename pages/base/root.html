@@ -197,6 +197,7 @@
 {% block head %}{% endblock %}
 
 <script>
+	console.log('[root.html] first init of driver');
 	io.init();
 {% if config_driver_autoreconnect %}
 	activateAutoReconnect();
@@ -258,7 +259,7 @@
 	
 	// if a fully kiosk browser is active stop the websocket when device goes in sleeping mode 
 	if (typeof fully !== 'undefined')  {
-		fully.bind('screenOn',"io.init();");
+		fully.bind('screenOn',"if (!io.socket) io.init();");
 		fully.bind('screenOff',"io.close();");
 	};
 
