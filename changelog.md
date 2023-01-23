@@ -23,6 +23,7 @@
 - basic.symbol color parameter did not colorize dynamic icons
 - plot.period zoom preset did not work, zoom level got lost during series updates
 - io.close() threw errors with some drivers and blocked page reload via smartVISU logo
+- Fully browser could initialize a second websocket connection by firing "screenOn" event after automatic startup 
 
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
