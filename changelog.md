@@ -1,4 +1,4 @@
-## 3.3.a
+## 3.3.1
 ### New / Changed Widgets
 - calendar.list now has an option limiting the shown time span (measured in days)
 
