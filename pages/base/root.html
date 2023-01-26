@@ -197,6 +197,7 @@
 {% block head %}{% endblock %}
 
 <script>
+	console.log('[root.html] first init of driver');
 	io.init();
 {% if config_driver_autoreconnect %}
 	activateAutoReconnect();
@@ -237,15 +238,6 @@
 		});
 	});
 
-	// workaround for jQm navbar: 
-	// active state gets lost when clicking active menu button
-	$(document).on('click', '[data-role="navbar"] li [href*="index.php?page="]', function (event) {	
-		if ($(event.target).hasClass('ui-btn-active')) {
-			event.preventDefault();
-			//DEBUG: console.log('same page anchor clicked');
-		}
-	});
-	
 	// workaround for jQm listview:
 	// active list item gets displayed highlighted if clicked again
     // the effect occurs when clicking on the anchor target but not on image and text
@@ -267,7 +259,7 @@
 	
 	// if a fully kiosk browser is active stop the websocket when device goes in sleeping mode 
 	if (typeof fully !== 'undefined')  {
-		fully.bind('screenOn',"io.init();");
+		fully.bind('screenOn',"if (!io.socket) io.init();");
 		fully.bind('screenOff',"io.close();");
 	};
 

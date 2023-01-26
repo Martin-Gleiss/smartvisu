@@ -1,0 +1,94 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      René Frieß, Wolfram v. Hülsen
+* @copyright   2012 - 2022
+* @license     GPL [http://www.gnu.de]
+* @version     1.0
+*
+* @title       Der Spiegel
+* @category    news
+* @icon        icons/ws/DER_SPIEGEL.svg
+* @color       #b00
+* @description Nachrichten von Spiegel Online
+*
+* @info        Weitere feeds auf
+* @link        https://www.spiegel.de/dienste/besser-surfen-auf-spiegel-online-so-funktioniert-rss-a-1040321.html
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "apps.html" %}
+
+{% block sidebar %}
+	<ul data-role="listview" data-dividertheme="c" class="newslistMenu">
+			<li><a href="#" data-feed="schlagzeilen/eilmeldungen"><h3>Eilmeldungen</h3></a></li>
+			<li><a href="#" data-feed="schlagzeilen/tops"><h3>Top-Meldungen</h3></a></li>
+			<li><a href="#" data-feed="schlagzeilen"><h3>Schlagzeilen</h3></a></li>
+			<li><a href="#" data-feed="politik"><h3>Politik</h3></a></li>
+			<li><a href="#" data-feed="wirtschaft"><h3>Wirtschaft</h3></a></li>
+			<li><a href="#" data-feed="sport"><h3>Sport</h3></a></li>
+	</ul>
+{% endblock %}
+
+
+{% block content %} 
+    <style type="text/css"> 
+        .newslist ul { 
+			margin: 0 !important;
+        }
+        .newslist li { 
+			padding: 0 0 0 90px !important;
+			height: 75px;
+        }
+    </style>
+	
+	<div class="visible-phone">
+		<div data-role="controlgroup" data-type="horizontal" class="ui-mini newslistMenu" style="margin: 0 0 20px 0;">
+
+			<a class="ui-btn ui-corner-all" href="#" data-feed="schlagzeilen/eilmeldungen">Eilmeld.</a>
+			<a class="ui-btn ui-corner-all" href="#" data-feed="schlagzeilen/tops">Topmeld.</a>
+			<a class="ui-btn ui-corner-all" href="#" data-feed="schlagzeilen">Schlagzeilen</a>
+			<a class="ui-btn ui-corner-all" href="#" data-feed="politik">Politik</a>
+			<a class="ui-btn ui-corner-all" href="#" data-feed="wirtschaft">Wirtschaft</a>
+			<a class="ui-btn ui-corner-all" href="#" data-feed="sport">Sport</a>
+		</div>
+	</div>
+		<h3>DER SPIEGEL - Nachrichten</h3>
+	<br />
+           
+    <div id="spiegel_news" class="newslist"> <ul data-role="listview"> </ul> </div>
+        
+    <script type="text/javascript"> 
+       $('#{{ page }}').on('pagecreate', function (event, ui) {
+		   $('#{{ page }} .newslistMenu').on('init click', function(event){
+				var element = event.target.closest('a');
+				var feed = $(element).attr('data-feed');
+				if (!feed || feed == '') 
+						feed = 'schlagzeilen/eilmeldungen';
+				$.getJSON('lib/feeds/rss.php?url=www.spiegel.de/'+ feed +'/index.rss', function (data) { 
+					var line = ''; 
+					var entry = data['entry']; 
+					if (entry == undefined)
+						line = '<h3>Keine aktuellen Meldungen</h3><br>(www.spiegel.de/'+ feed + ')';
+					for (var i in entry) {
+						var ret = ''; 
+						if (entry[i].image) { 
+						   ret += '<img src="' + entry[i].image.url + '"/>';
+						}
+						ret += '<h3><a class="ui-link" href="' + entry[i].link + '" target="_blank">' +  entry[i].title + '</a></h3>';
+						ret += '<p>' + entry[i].description + '&nbsp;</p>'; 
+						line += '<li>' + ret + '</li>';
+					}
+					$('#spiegel_news ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
+				})
+					.fail(notify.json);
+			});
+			$(document).on('pagecontainershow', function(){
+				if (sv.activePage.attr('id') == '{{ page }}')
+					$('#{{ page }} .newslistMenu').trigger('init');	
+			});
+		});
+					
+</script>
+{% endblock %}

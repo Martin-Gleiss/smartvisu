@@ -1,3 +1,35 @@
+## 3.3.1
+### New / Changed Widgets
+- calendar.list now has an option limiting the shown time span (measured in days)
+
+### Other New Features
+- smarthomeNG driver now has an alternative address which can be used in addition to IP-address and SV hostname. This is important if an encrypted connection is required and the certificate is bound to a domain name. 
+  This name is not part of the config page and must be defined manually as "driver_address2" in config.ini
+- new app for Spiegel Online RSS feed
+
+### Improvements
+- Tankerkoenig and TV Spielfilm apps optimized for small screens
+- bugfixing (most likely) and improved error handling in driver io_json 
+
+### Updated Libraries
+
+### Deprecated
+
+### Removed Features
+
+### Fixed Bugs
+- calendar.waste showed double entries if a second calendar with the same URL was on the same page
+- "navbar" workaroud caused navbars on mobile devices to fail. Workaround not necessary if "ui-state-persist" is used.
+- SVG icons with <defs> section in ./dropins/icons/ws caused 404 error in fx.init
+- basic.symbol color parameter did not colorize dynamic icons
+- plot.period zoom preset did not work, zoom level got lost during series updates
+- io.close() threw errors with some drivers and blocked page reload via smartVISU logo
+- Fully browser could initialize a second websocket connection by firing "screenOn" event after automatic startup 
+
+### Known Bugs
+- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
+
+
 ## 3.3
 ### New / Changed Widgets
 - icon styling is now standardized on all widgets including dynamic icons using 6 icon classes defined with the designs plus color names and hex color codes. 4 classes for "red", yellow,"green" and "blue" have been added in the designs

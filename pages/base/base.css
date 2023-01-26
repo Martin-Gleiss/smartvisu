@@ -2139,7 +2139,9 @@ svg.fx-icon, .icon {
   height: 48px;
 }
 
-.icon1 svg.icon {
+.icon1 svg.icon, .icon2 svg.icon 
+.icon3 svg.icon,.icon4 svg.icon,
+.icon5 svg.icon{
   fill: inherit;
   stroke: inherit;
   color: inherit;

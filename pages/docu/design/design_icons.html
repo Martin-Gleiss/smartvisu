@@ -157,10 +157,10 @@
 	<h2>2. <u>Static Icons</u></h2>
 
 	<div class="docu">
-		A static icon may be based on .png-image or .svg-image. Use "icon0" to show the "normal" version.
-		If you like to show the "highlighted" version .png and .svg differ. The .png based images need a complete directory (located in ./icons) with all icons rendered in the highlighted color(s).
-		.svg-images can be colored using 6 classes of a style-sheet, defined in the design-specific css files (located in ./design), or with individual colors.
-		While legacy .png-icons are still supported, using .svg-icons is the preferred solution.  
+		A static icon may be based on PNG or SVG image. PNG images are not styleable. They must be made available colorized and sorted in subfolders of ./icons by their colors (e.g. ./icons/or). 
+		SVG images get embedded into the html DOM by smartVISU and are then styleable using 6 classes of the configured design or with individual colors. 
+		While "icon0" and "icon1" are the classes for normal and highlighted SVG icons "&#123;&#123; icon0 &#125;&#125;" and "&#123;&#123; icon1 &#125;&#125;" serve as path variables for the icon files in normal and highlighted colors.
+		All icons coming with smartVISU are SVG icons since SVGs are clearly preferred. However, legacy PNG icons are still supported.
         <br><br>
 		As of v3.3 the loading of icons has changed to improve performance and stylability. It is recommended to use the widget "lib.svgimg" on svg icons in ./icons/ws or ./dropins/icons/ws with classes and styling options. 
 		This method is faster in loading and profits from the cache mechanism. For backward compatibility the img-tags will still receive long-term support. 
@@ -168,7 +168,7 @@
 			<h5 style="margin-top: 5px;">normal:</h5>
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-				{{ lib.svgimg('', 'light_light.svg', 'icon0') }}
+				{{ lib.svgimg('', 'light_light', 'icon0') }}
 				<img class="icon" src="{{ icon0 }}light_light.svg" />
 				<img class="icon" src="{{ icon0 }}light_light.png" />
 				
@@ -177,8 +177,8 @@
 			<h5>highlighted:</h5>
 			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-				{{ lib.svgimg('', 'light_light.svg', 'icon1') }}
-				{{ lib.svgimg('', 'light_light.svg', '', 'fill:red; stroke:red;') }}
+				{{ lib.svgimg('', 'light_light', 'icon1') }}
+				{{ lib.svgimg('', 'light_light', '', 'fill:red; stroke:red;') }}
 				<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
 				<img class="icon" src="{{ icon1 }}light_light.png" />
 				
