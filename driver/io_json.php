@@ -29,7 +29,7 @@ class driver_json
 	public function __construct($request)
 	{
 		$this->item = $request['item'];
-		$this->val = $request['val'];
+		$this->val = (isset($request['val']) ? $request['val'] : '');
 	}
 
 	/**
@@ -93,7 +93,7 @@ class driver_json
 				if ($stc == "\4")
 				{
 					if ($res == "1")
-						$ret[$this->item[0]] = $this->val;
+						$ret[$this->item] = $this->val;   /** $ret[$this->item[0]] = $this->val; */
 
 					break;
 				}

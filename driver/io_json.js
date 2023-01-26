@@ -103,6 +103,7 @@ var io = {
 
 	timer: 0,
 	timer_run: false,
+	errorNotification: null,
 
 	/**
 	 * The real-time polling loop, only if there are listeners
@@ -143,9 +144,14 @@ var io = {
 			cache: false
 		})
 			.done(function (response) {
+				if(io.errorNotification != null)
+					notify.remove(io.errorNotification);
 				widget.update(item, response[item]);
 			})
-			.fail(notify.json);
+			.fail(function(jqXHR, status, errorthrown){
+				if(io.errorNotification == null || !notify.exists(io.errorNotification))
+					io.errorNotification = notify.json(jqXHR, status, errorthrown);
+			});
 	},
 
 	/**
@@ -163,13 +169,18 @@ var io = {
 			cache: false
 		})
 			.done(function (response) {
+				if(io.errorNotification != null)
+					notify.remove(io.errorNotification);
 				widget.update(item, response[item]);
 
 				if (timer_run) {
 					io.start();
 				}
 			})
-			.fail(notify.json);
+			.fail(function(jqXHR, status, errorthrown){
+				if(io.errorNotification == null || !notify.exists(io.errorNotification))
+					io.errorNotification = notify.json(jqXHR, status, errorthrown);
+			});
 	},
 
 	/**
@@ -194,12 +205,19 @@ var io = {
 				async: true,
 				cache: false
 			})
-				.done(function (response) {
-					$.each(response, function (item, val) {
-						widget.update(item, val);
-					})
+			.done(function (response) {
+				if(io.errorNotification != null)
+					notify.remove(io.errorNotification);
+				if (typeof response == "string")
+					response = $.parseJSON(response);
+				$.each(response, function (item, val) {
+					widget.update(item, val);
 				})
-				.fail(notify.json);
+			})
+			.fail(function(jqXHR, status, errorthrown){
+				if(io.errorNotification == null || !notify.exists(io.errorNotification))
+				io.errorNotification = notify.json(jqXHR, status, errorthrown);
+			});
 		}
 	},
 	
