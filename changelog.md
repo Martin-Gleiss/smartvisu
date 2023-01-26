@@ -9,6 +9,7 @@
 
 ### Improvements
 - Tankerkoenig and TV Spielfilm apps optimized for small screens
+- bugfixing (most likely) and improved error handling in driver io_json 
 
 ### Updated Libraries
 
