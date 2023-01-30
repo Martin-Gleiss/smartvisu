@@ -50,10 +50,10 @@ $( document ).ready(function() {
 					{% endverbatim %}{% endfilter %}</code>
 				</div>
 				<div class="html">
-					<a href="#ext_popup" data-rel="popup">
+					<a href="#ext_popup1" data-rel="popup">
 						Extended Popup
 					</a>
-					{{ popup.extpopup('ext_popup', ['header', 'Suspendzeit'], ['plot', [['env.system.load','env.core.memory'],'avg', '1d', '', '', '', '',['system load', 'memory'],['#a00','#070'], '',['Time', 'CPU', 'Memory'],'', [1,2], [0,1],['#f00','#0a0']]], [['linetext', 'slider'], 'Slider', ['licht.modus.automatik.settings.suspendduration', '0', '100', '10', 'horizontal', 'handle']], [['symbol', 'slider'], ['item_lock', '', 'secur_locked', '1'], ['licht.modus.automatik.settings.suspendduration', '0', '100', '10', 'horizontal', 'handle']]) }}
+					{{ popup.extpopup('ext_popup1', ['header', 'Suspendzeit'], ['plot', [['env.system.load','env.core.memory'],'avg', '1d', '', '', '', '',['system load', 'memory'],['#a00','#070'], '',['Time', 'CPU', 'Memory'],'', [1,2], [0,1],['#f00','#0a0']]], [['linetext', 'slider'], 'Slider', ['licht.modus.automatik.settings.suspendduration', '0', '100', '10', 'horizontal', 'handle']], [['symbol', 'slider'], ['item_lock', '', 'secur_locked', '1'], ['licht.modus.automatik.settings.suspendduration', '0', '100', '10', 'horizontal', 'handle']]) }}
 				</div>
 
 		Here are some examples to show how popups are used.
@@ -93,10 +93,10 @@ $( document ).ready(function() {
 			{% endverbatim %}{% endfilter %}</code>
 		</div>
 		<div class="html">
-			<a href="#ext_popup" data-rel="popup">
+			<a href="#ext_popup2" data-rel="popup">
 				Extended Popup with four lines
 			</a>
-			{{ popup.extpopup('ext_popup',
+			{{ popup.extpopup('ext_popup2',
 			['edit_favorites.svg',
 				[['linetext', 'select', 'switch'],'Textexample',['item.automatik.settings.sollwert', 'mini', [0,4,6]],['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]],
 				[['switch', 'slider'],['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']],['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']],
