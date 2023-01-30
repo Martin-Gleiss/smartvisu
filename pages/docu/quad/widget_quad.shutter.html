@@ -60,7 +60,7 @@
 {% endfor %}
 
   <h5>Example</h5>
-  
+
 	['extpopup', 'pos_shutter_ext']
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
@@ -73,15 +73,15 @@
 	</ul>
   </div>
 
-  no column order defined
+  No column order defined. Due to setting the last parameter to false, a short press on move icons moves the blind immediately up/down, otherwise only a long press will move the blind.
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-    {{ quad.shutter('shutter2', 'Shutter, Standard', 'shutter.lz', 'shutter.kz', 'shutter.hoehe', 'shutter.kz', 'shutter.lamellen', 'shutter.hoehe', 0, 100, 1, 'full', '', 50, 80) }}
+    {{ quad.shutter('shutter2', 'Shutter, Standard', 'shutter.lz', 'shutter.kz', 'shutter.hoehe', 'shutter.kz', 'shutter.lamellen', 'shutter.hoehe', 0, 100, 1, 'full', '', 50, 80, false) }}
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-      {{ quad.shutter('shutter02', 'Shutter, Standard', 'shutter.lz', 'shutter.kz', 'shutter.hoehe', 'shutter.kz', 'shutter.lamellen', 'shutter.hoehe', 0, 100, 1, 'full', '', 50, 80) }}
+      {{ quad.shutter('shutter02', 'Shutter, Standard', 'shutter.lz', 'shutter.kz', 'shutter.hoehe', 'shutter.kz', 'shutter.lamellen', 'shutter.hoehe', 0, 100, 1, 'full', '', 50, 80, false) }}
     </ul>
   </div>
 
