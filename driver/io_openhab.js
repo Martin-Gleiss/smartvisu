@@ -17,12 +17,11 @@
  * @default     driver_consolepassword  habopen
  *
  * @hide        reverseproxy
- * @hide        sv_hostname
  * @hide        proxy
  * @hide        proxy_url
  * @hide        proxy_user
  * @hide        proxy_password
- * @hide		driver_loopback
+ * @hide	      driver_loopback
  */
 
 /**

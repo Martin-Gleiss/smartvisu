@@ -1,3 +1,25 @@
+## 3.3.b
+### New / Changed Widgets
+- quad.blind and quad.shutter can be configured to move the shutter on short- or longpress
+
+### Other New Features
+
+### Improvements
+- Template checker now ignores multi-line comments  
+- offline driver is noe able to cancel series and log communication information to the console
+
+### Updated Libraries
+
+### Deprecated
+
+### Removed Features
+
+### Fixed Bugs
+ 
+### Known Bugs
+- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
+
+
 ## 3.3.1
 ### New / Changed Widgets
 - calendar.list now has an option limiting the shown time span (measured in days)

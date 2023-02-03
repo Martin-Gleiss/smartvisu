@@ -1152,7 +1152,7 @@
  *
  * @param {id=}     		unique id for this widget
  * @param {text=} text for the whole line
- * @param {item(bool,num)=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+ * @param {item(bool,num)=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted). Long press results in moving, short press in stopping - if not defined otherwise with the parameter "move_on_longpress"
  * @param {item(bool,num)=} an item for stopping the movement (optional)
  * @param {item(num)} an item for the absolute position of the blinds
  * @param {item(bool,num)=} an item for increase and decrease of the blade (optional, for future use)
@@ -1165,7 +1165,7 @@
  * @param {image=} a background image url (relative to smartVISU directory or absolute); optimal size is 100px x 180px (optional)
  * @param {value=0} the value to send for position 1 (optional, default 0)
  * @param {value=1} the value to send for position 2 (optional, default 1)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {text(false,true)=true} 	    Move on long press and stop on short press on up/down buttons
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {item(dict)=}      a gad/item for UZSU
  * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
@@ -1187,7 +1187,7 @@
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'], 'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
-{% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, blind_or_shutter, pos_attribs) %}
+{% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, move_on_longpress, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, blind_or_shutter, pos_attribs) %}
     {% import "@widgets/basic.html" as basic %}
     {% import "@widgets/device.html" as device %}
     {% import "@widgets/icon.html" as icon %}
@@ -1409,14 +1409,22 @@
     {% endif %}
 
     {% if column == 'move_down' and item_move %}
-      {{ basic.stateswitch(id~'_down', item_stop, '', max < min ? 0 : 1, 'control_arrow_down', '', '', 'blink', item_move, max < min ? 0 : 1) }}
+      {% if move_on_longpress is same as true or move_on_longpress == 'true' or move_on_longpress is empty %}
+        {{ basic.stateswitch(id~'_down', item_stop, '', max < min ? 0 : 1, 'control_arrow_down', '', '', 'blink', item_move, max < min ? 0 : 1) }}
+      {% else %}
+        {{ basic.stateswitch(id~'_down', item_move, '', max < min ? 0 : 1, 'control_arrow_down', '', '', 'blink') }}
+      {% endif %}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'move_up' and item_move %}
-      {{ basic.stateswitch(id~'_up', item_stop, '', max < min ? 1 : 0, 'control_arrow_up', '', '', 'blink', item_move, max < min ? 1 : 0) }}
+      {% if move_on_longpress is same as true or move_on_longpress == 'true' or move_on_longpress is empty %}
+        {{ basic.stateswitch(id~'_up', item_stop, '', max < min ? 1 : 0, 'control_arrow_up', '', '', 'blink', item_move, max < min ? 1 : 0) }}
+      {% else %}
+        {{ basic.stateswitch(id~'_up', item_move, '', max < min ? 1 : 0, 'control_arrow_up', '', '', 'blink') }}
+      {% endif %}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1600,7 +1608,7 @@
  *
  * @param {id=}     		unique id for this widget
  * @param {text=}    		text for the whole line
- * @param {item(bool,num)=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted)
+ * @param {item(bool,num)=} an item for the up and down movement (optional, value_top/value_bottom will be sent to item_pos if omitted). Long press results in moving, short press in stopping - if not defined otherwise with the parameter "move_on_longpress"
  * @param {item(bool,num)=} an item for stopping the movement (optional)
  * @param {item(num)} an item for the absolute position of the blinds
  * @param {item(bool,num)=} an item for increase and decrease of the blade (optional)
@@ -1608,7 +1616,7 @@
  * @param {value=0}    		the minimum value for close (optional, default 0)
  * @param {value=255}    		the maximum value for open (optional, default 255)
  * @param {value=5}   		step between two values (optional, default 5)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {text(false,true)=true} 	    Move on long press and stop on short press on up/down buttons
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {item(dict)=}      a gad/item for UZSU
  * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
@@ -1632,9 +1640,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
 
-{% macro blind(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step, place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, pos_attribs, linetext_widget, place4, column_order) %}
+{% macro blind(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step, move_on_longpress, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, pos_attribs, linetext_widget, place4, column_order) %}
   {% import _self as newwidget %}
-  {{ newwidget.shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, '', min, max, step, '', '', '', '', place1, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, 'blind', pos_attribs) }}
+  {{ newwidget.shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, '', min, max, step, '', '', '', '', move_on_longpress, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, 'blind', pos_attribs) }}
 {% endmacro %}
 
 /**
