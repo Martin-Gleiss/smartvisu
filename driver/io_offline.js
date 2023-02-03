@@ -120,6 +120,7 @@ var io = {
 
 	timer: 0,
 	timer_run: false,
+	seriesTimer: [],
 
 	/**
 	 * The real-time polling loop, only if there are listeners
@@ -166,6 +167,7 @@ var io = {
 				val = JSON.parse(response[item]);
 			}
 			catch(e) {}
+			console.log('[io.offline] receiving data: ["'+ item +' ": '+ val + ']');
 			widget.update(item, val);
 		})
 		.fail(notify.json)
@@ -185,6 +187,7 @@ var io = {
 			cache: false
 		})
 		.done(function (response) {
+			console.log('[io.offline] sending data: ["'+ item +' ": '+ response[item].toString() + ']');
 			widget.update(item, JSON.parse(response[item]));
 
 			if (timer_run) {
@@ -208,6 +211,7 @@ var io = {
 				cache: false
 			})
 			.done(function (response) {
+				console.log('[io.offline] receiving data: ' + JSON.stringify(response).replace(/\\\"/g,''));
 				// update all items	
 				$.each(response, function (item, val) {
 					// try to parse as JSON. Use raw value if this fails (value was likely saved before introdution of JSON.stringify in put)
@@ -237,14 +241,14 @@ var io = {
 		// plots
 		var repeatSeries = function(item, tmin, tmax, ymin, ymax, cnt, step, startval) {
 			var series = io.demoseries(tmin, tmax, ymin, ymax, cnt, startval);
+			console.log('[io.offline] sending series data ' + JSON.stringify(series) + ': '+ item, cnt)
 			widget.update(item, series);
 
 			if(step == null)
 				step = Math.round((new Date().duration(tmin) - new Date().duration(tmax)) / cnt);
 			var nextTime = -(new Date().duration(tmax).getTime() - step)/1000;
 			var startval = series[series.length-1][1];
-
-			setTimeout(function(){
+			io.seriesTimer[item] = setTimeout(function(){
 				//repeatSeries(item, tmax, nextTime+"s", ymin, ymax, 1, step, startval);
 				repeatSeries(item, tmax, tmax, ymin, ymax, 1, step, startval);
 			}, step);
@@ -359,7 +363,13 @@ var io = {
 	 * stop all subscribed series
 	 */
 	stopseries: function () {
-		$.noop;		
+		widget.plot().each(function (idx) {
+			var items = widget.explode($(this).attr('data-item'));
+			for (var i = 0; i < items.length; i++) {
+				clearTimeout(io.seriesTimer[items[i]]);
+				console.log('[io_offline] cancelling series '+items[i]);
+			}
+		});
 	}
 
 };

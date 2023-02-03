@@ -6,6 +6,7 @@
 
 ### Improvements
 - Template checker now ignores multi-line comments  
+- offline driver is noe able to cancel series and log communication information to the console
 
 ### Updated Libraries
 
