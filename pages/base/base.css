@@ -1868,6 +1868,7 @@ div.ui-slider-switch{
 .highcharts-pie-series .highcharts-point {
   stroke-width: 0;
 }
+[data-widget="plot.rtr"] .highcharts-empty-series, 
 .polarChart .highcharts-axis-line,
 .solidgauge .highcharts-axis-line,
 .solidgauge .highcharts-grid-line {
