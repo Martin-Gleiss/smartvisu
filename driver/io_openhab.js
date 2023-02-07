@@ -4,7 +4,7 @@
  * @author      Martin Gleiß, Patrik Germann
  * @copyright   2012 - 2022
  * @license     GPL [http://www.gnu.de]
- * @version     2.5.0
+ * @version     2.5.1
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
@@ -21,7 +21,7 @@
  * @hide        proxy_url
  * @hide        proxy_user
  * @hide        proxy_password
- * @hide	      driver_loopback
+ * @hide        driver_loopback
  */
 
 /**
@@ -143,20 +143,24 @@ var io = {
 	run: function () {
 		io.debug && console.log("io.run(realtime = " + sv.config.driver.realtime + ")");
 
-		if (widget.listeners().length) {
-			var items = widget.listeners();
+		if (widget.listeners().length || widget.log().length || widget.series().length) {
+			var items = new Array();
 
-			io.debug && console.log("io.run: io.item.getall()");
-			io.item.getall();
+			if (widget.listeners().length) {
+				items = items.concat(widget.listeners());
+				io.debug && console.log("io.run: io.item.getall()");
+				io.item.getall();
+			}
 
 			if (widget.log().length) {
 				io.debug && console.log("io.run: io.log.get()");
 				io.log.get();
 			}
 
-			if (widget.plot().length) {
+			if (widget.series().length) {
 				io.debug && console.log("io.run: io.plot.init()");
 				io.plot.init();
+				items = items.concat(Object.keys(io.plot.listeners));
 			}
 
 			if (sv.config.driver.realtime) {
