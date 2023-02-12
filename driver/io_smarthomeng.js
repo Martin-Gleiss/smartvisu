@@ -68,6 +68,22 @@ var io = {
 	trigger: function (name, val) {
 		io.send({'cmd': 'logic', 'name': name, 'val': val});
 	},
+	
+	/**
+	 * (re-)start all subscribed series of a single plot widget
+	 * or - if parameter ist empty - all plot widgets on the active page
+	 */
+	startseries: function (plotwidget) {
+		io.plotcontrol('series', plotwidget);
+	},
+	
+	/**
+	 * stop all subscribed series of a single plot widget
+	 * or - if parameter ist empty - all plot widgets on the active page
+	 */
+	stopseries: function (plotwidget) {
+		io.plotcontrol('series_cancel', plotwidget);
+	},
 
 	/**
 	 * Initializion of the driver
@@ -317,35 +333,32 @@ var io = {
 		}
 	},
 	
-	/**
-	 * (re-)start all subscribed series
-	 */
-	startseries: function () {
-		io.plotcontrol('series');
-	},
-	
-	/**
-	 * stop all subscribed series
-	 */
-	stopseries: function () {
-		io.plotcontrol('series_cancel');
-	},
-	
 	// identify all subscribed series and execute given command
-	plotcontrol: function(seriescmd) {
+	plotcontrol: function(seriescmd, plotwidget) {
+
 		var unique = Array();
-		widget.plot().each(function (idx) {
+		var plotWidgets = [];
+		var singleCancel = (seriescmd == 'series_cancel') && (plotwidget != undefined);
+		if (plotwidget === undefined)
+			plotWidgets = widget.plot();
+		else
+			plotWidgets = plotwidget;
+	
+		plotWidgets.each(function (idx) {
 			var items = widget.explode($(this).attr('data-item'));
 			for (var i = 0; i < items.length; i++) {
-
-				var pt = items[i].split('.');
-
-				if (!unique[items[i]] && (pt instanceof Array) && widget.checkseries(items[i])) {
-					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
-
-					io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': pt[pt.length - 1]});
-					
+				var definition = widget.parseseries(items[i]);
+		
+				// prevent cancelling a series if not only the specified plot widget has subscribed it 
+				// TO DO: check what happens if the specified plot requests a series already available for a different plot 
+				if ((singleCancel == true) && (widget.plot(items[i]).length > 1))
 					unique[items[i]] = 1;
+					
+				if (!unique[items[i]] && definition != null) {
+					io.send({'cmd': seriescmd, 'item': definition.item, 'series': definition.mode, 'start': definition.start, 'end': definition.end, 'count': definition.count});
+					unique[items[i]] = 1;
+					if (singleCancel == true)
+						delete widget.buffer[items[i]];
 				}
 			}
 		});
