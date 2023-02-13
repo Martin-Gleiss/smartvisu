@@ -1832,3 +1832,60 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
     },
 
 });
+
+// ----- plot.timeshift -----------------------------------------------------------
+$.widget("sv.plot_timeshift", $.sv.widget, {
+
+	initSelector: '[data-widget="myplot.timeshift"]',
+
+	options: {
+		bind: null,
+		step: null
+	},
+	
+	delta: null,
+	mem_tmin: null,
+	mem_tmax: null,
+
+	_update: function(response) {
+	},
+
+	_events: {
+    'click': function (event) {
+		event.preventDefault();
+		event.stopPropagation();
+		var step = this.options.step;
+		var direction =  ($(event.target).closest('a').hasClass('timeshift-back')) ?  ' ' :  ' -'; 
+		var tmin = $('#'+this.options.bind).attr('data-tmin');
+		var tmax = $('#'+this.options.bind).attr('data-tmax');
+		if (this.delta == null){
+			this.mem_tmin = tmin;
+			this.mem_tmax = tmax;
+		}
+
+		io.stopseries($('#'+this.options.bind));
+		
+		this.delta = this.delta == null ? direction + step : this.delta + direction + step;
+		this.delta = this.delta.replace(' '+ step + ' -' + step, '').replace(' -'+ step + ' ' + step, '');
+		tmin = this.mem_tmin + this.delta;
+		tmax = this.mem_tmax + this.delta;
+		$('#'+this.options.bind).attr('data-tmin', tmin)
+		$('#'+this.options.bind).attr('data-tmax', tmax)
+		var that = $('#'+this.options.bind).data().svWidget
+		that.options.tmin = tmin;
+		that.options.tmax = tmax; 
+
+		var plot = '';
+		var items = $('#'+this.options.bind).attr('data-item').split(/,\s*/);
+		for (var i = 0; i < items.length; i++) {
+			var definition = widget.parseseries(items[i]);
+			that.items[i] =  definition.item + '.' + definition.mode + '.' + tmin + '.' + tmax + '.'  + definition.count;
+			plot = plot + (i >0 ? ',' : '') + that.items[i];
+		}
+		$('#'+this.options.bind).attr('data-item', plot)
+		that.options.item = plot;
+		io.startseries($('#'+this.options.bind));
+	}
+}
+});
+
