@@ -1,6 +1,7 @@
 ## 3.3.b
 ### New / Changed Widgets
 - quad.blind and quad.shutter can be configured to move the shutter on short- or longpress
+- new widget plot.timeshift scrolls a plot in time-range by cancelling actual series in this plot and subscribing new series fo the same item(s) with changed start / end times.
 
 ### Other New Features
 

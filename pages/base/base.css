@@ -1989,9 +1989,14 @@ div.ui-slider-switch{
 #vumeterGradient stop[offset="0.3"] {
   stop-color: #FFF;
 }
-
 .shortdot {
   stroke-dasharray: 2, 2;
+}
+.timeshift-back .icon,
+.timeshift-forward .icon {
+	width:32px; 
+	height:auto; 
+	margin-top:0px; 
 }
 
 /**

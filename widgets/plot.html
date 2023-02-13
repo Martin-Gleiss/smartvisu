@@ -248,6 +248,46 @@
 
 
 /**
+* scrolls plots in the time-range by cancelling actual series and subscribing series with changed start/end
+* @param {id=}  ID of the widget (optional)
+* @param {text}  ID of the plot to scroll (plot must have an ID in this case)
+* @param {duration}  step to scroll with each click in duration format
+* @param {type(head)=mini}  icon type / size. valid types: 'micro','mini','midi','icon' and 'head' if widget is in the headline of a box (optional, default = 'mini')
+* @param {text=} text to show between the buttons (optional, default = '')
+* 
+* @author Wolfram v. Hülsen
+*/
+{% macro timeshift (id, plot, step, type, label) %}
+{% import "@widgets/basic.html" as basic %}
+{% import "@widgets/lib.html" as lib %}
+	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="myplot.timeshift" data-bind ="{{ uid(page, plot) }}" data-step="{{ step }}"
+	{% if type == 'head' %}style="float:right; margin-right:32px;">
+		<a class="timeshift-back">{{ lib.svgimg ('', 'audio_previous.svg', 'icon0') }}</a> {{- label -}}
+		<a class="timeshift-forward">{{ lib.svgimg ('', 'audio_next.svg', 'icon0') }}</a>
+	{% else %}
+		><a class=" 
+		{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
+			switch ui-link
+		{%- else -%} /**- display as button -*/
+			ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
+		{% endif %}
+			 ui-nodisc-icon timeshift-back">{{ basic.icon("audio_previous") }}
+		</a>{{ label }}
+		<a class="
+		{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
+			switch ui-link
+		{%- else -%} /**- display as button -*/
+			ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
+		{% endif %}
+			 ui-nodisc-icon timeshift-forward">{{ basic.icon("audio_next") }}
+		</a>
+	{% endif %}
+	</span>
+{% endmacro %}
+
+
+
+/**
 * Plots a chart of x/y data
 *
 * @param {id=} unique id for this widget (optional)
