@@ -7,8 +7,9 @@
 
 ### Improvements
 - Template checker now ignores multi-line comments  
-- offline driver is noe able to cancel series and log communication information to the console
+- offline driver is noe able to cancel series and to log communication information to the console
 - new functions to subsribe and cancel series for an individual plot (smarthomeNG and offline driver)
+- new function to cancel log subscriptions for an individual or for all log widgets (smarthomeNG driver))
 
 ### Updated Libraries
 

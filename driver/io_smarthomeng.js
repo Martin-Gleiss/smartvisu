@@ -129,8 +129,10 @@ var io = {
 	
 	/**
 	 * This is the protocol version
+	 * send "4" while shNG may answer with variant "4.1" which supports log_cancel
 	 */
 	version: 4,
+	shngProto: null,
 	
 	/**
 	 * This is the websocket module / plugin and the websocket opening time
@@ -259,6 +261,7 @@ var io = {
 					if (data.server != undefined){ 
 						io.server = data.server;
 						io.opentime = new Date(data.time);
+						io.shngProto = data.ver;
 					}
 					$(document).trigger('ioAlive');
 					break;
@@ -365,6 +368,25 @@ var io = {
 	},
 
 		
+	/**
+	 * stop all subscribed logs or a single specified log
+	 * available as of shNG protocol version 4.1
+	 */
+	stoplogs: function (logwidget) {
+		if (io.shngProto < 4.1) 
+			return
+		
+		var logWidgets=[];
+		if (logwidget === undefined)
+			logWidgets = widget.log();
+		else
+			logWidgets = logwidget;
+	
+		logWidgets.each(function (idx) {
+			io.send({'cmd': 'log_cancel', 'name': $(this).attr('data-item'), 'max': $(this).attr('data-count')});
+		})
+	},
+
 	/**
 	 * Closes the connection
 	 */
