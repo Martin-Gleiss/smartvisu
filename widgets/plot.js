@@ -1385,7 +1385,8 @@ $.widget("sv.plot_rtr", $.sv.widget, {
         tmax: '',
         count: 100,
         stateMax: null,
-		"servertime-url": ''
+		"servertime-url": '',
+		chartOptions: null,
     },
 
     allowPartialUpdate: true,
@@ -1396,8 +1397,8 @@ $.widget("sv.plot_rtr", $.sv.widget, {
         var label = String(this.options.label).explode();
         var axis = String(this.options.axis).explode();
 
-        // draw the plot
-        this.element.highcharts({
+        // set up options object
+        var chartOptions= {
             chart: {type: 'line', styledMode: true},
             title: { text: null },
 			time: {timezoneOffset: this.options["servertime-url"] != '' ? parseInt(-Number(sv.config.timezoneOffset)/60 + (window.servertimeoffset/60000 ||0)) : new Date().getTimezoneOffset()},
@@ -1452,7 +1453,13 @@ $.widget("sv.plot_rtr", $.sv.widget, {
                 },
                 shared: true
             }
-        });
+        };
+		
+		// combine chart options with options defined in widget chartOptions parameter
+		$.extend(true, chartOptions, this.options.chartOptions);
+
+		// draw the plot
+		this.element.highcharts(chartOptions);
     },
 
     _update: function(response) {

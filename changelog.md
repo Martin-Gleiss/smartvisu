@@ -2,12 +2,13 @@
 ### New / Changed Widgets
 - quad.blind and quad.shutter can be configured to move the shutter on short- or longpress
 - new widget plot.timeshift scrolls a plot in time-range by cancelling actual series in this plot and subscribing new series fo the same item(s) with changed start / end times.
+- plot.rtr now accepts Highcharts chartOptions object as parameter like plot.period
 
 ### Other New Features
 
 ### Improvements
 - Template checker now ignores multi-line comments  
-- offline driver is noe able to cancel series and to log communication information to the console
+- offline driver is now able to cancel series and to log communication information to the console
 - new functions to subsribe and cancel series for an individual plot (smarthomeNG and offline driver)
 - new function to cancel log subscriptions for an individual or for all log widgets (smarthomeNG driver))
 

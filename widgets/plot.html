@@ -206,8 +206,11 @@
 * @param {text=} maximum value (or type) of the item for the state of the actor (optional, default: guessed according to values)
 	Often used values are 1 for boolean items, 100 for percentages, 255 for 1-byte values.
   Additionally you may pass 'on' to use backend's 'on' function (caution: not all backend databases do support this).
+* @param {text[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+*
+* @see plot/widget_plot.period#chart-options
 */
-{% macro rtr(id, item_actual, item_set, item_state, count, tmin, tmax, state_max) %}
+{% macro rtr(id, item_actual, item_set, item_state, count, tmin, tmax, state_max, chartoptions) %}
 	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1d') %}
 	{% set count = count|default(100) %}
@@ -220,6 +223,7 @@
 		data-tmin="{{ tmin }}" data-tmax="{{ tmax }}" data-state-max="{{ state_max == 'on' ? 1 : state_max }}"
 		data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
 		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}"
 		class="plot"></div>
 
 {% endmacro %}
