@@ -1,0 +1,60 @@
+/**
+* -----------------------------------------------------------------------------
+* @package		 smartVISU
+* @author		 Wolfram v. Hülsen
+* @copyright	 2023
+* @license		 GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_plot.html" %}
+
+{% block example %}
+
+	<p>The widget scrolls a plot in the time-range by cancelling the actual series and subscribing series for the same item(s) with changed start and end time. The "step" parameter defines the time-shift applied for every click on the widgets buttons. 
+	   Use the duration format for "step". The plot to be scrolled must have an ID which must be named in the "plot" parameter. <br /> <br />
+		The widget is available for all backends where the startseries / stopseries methods can be called with a single plot widget as parameter. Actually, these are smarthomeNG and offline drivers. 
+	</p>
+
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ plot.period('plot1', 'bath_plot_value', 'avg', '3h') }}
+			{{ plot.timeshift('', 'plot1', '3h','', ' - 3h + ') }}			
+			
+			
+		<div class="block"> <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>widget in the headline {{ plot.timeshift('', 'plot2', '1h', 'head', '1h') }}</h3>
+					{{ plot.period('plot2', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) }}
+				</div>
+			</div>
+		</div>
+			
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+
+	<div class="html">
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>widget placed somewhere on the page</h3>
+					{{ plot.period('plot11', 'bath_plot_value', 'avg', '3h') }}
+					{{ plot.timeshift('', 'plot11', '3h','', ' - 3h + ') }}
+				</div>
+			</div>
+		</div>
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>widget in the headline {{ plot.timeshift('', 'plot21', '1h', 'head', '1h') }}</h3>
+					{{ plot.period('plot21', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}
