@@ -432,7 +432,7 @@
 * @param {color=} color at begin of gradient e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
 */
 {% macro heating(id, item_switch, item_value, min, max, color) %}
-{% set gradient_id = uid(page, id, item_value~'-gradient', color|default('')) %}
+{% set gradient_id = uid(page, id, item_value~'-gradient') ~'-' ~color|default('') %}
 {% if once(gradient_id) %} /** add gradient definition only once per page */
 <svg data-widget="icon.heating.gradient" data-item="{{ item_value }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" data-col="{{ color }}" xmlns="http://www.w3.org/2000/svg"
 	style="width: 1px; height: 1px; position: absolute; visibility: hidden;">
