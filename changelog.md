@@ -11,6 +11,7 @@
 - offline driver is now able to cancel series and to log communication information to the console
 - new functions to subsribe and cancel series for an individual plot (smarthomeNG and offline driver)
 - new function to cancel log subscriptions for an individual or for all log widgets (smarthomeNG driver))
+- show additional menu icon in header on normal phones - toggle Home/Info button on small phones
 
 ### Updated Libraries
 
@@ -19,6 +20,7 @@
 ### Removed Features
 
 ### Fixed Bugs
+- multiple icons of icon.heating on one page could only be colored with the color of the first occurance and disappeared otherwise 
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
