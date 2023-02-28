@@ -16,10 +16,10 @@
   src: url('dosis.eot') format('embedded-opentype'), url('dosis.woff') format('woff'), url('dosis.ttf') format('truetype');
 }
 
-.visible-phone, .menu-visible-phone, .visible-tablet, .minimum-tablet, .visible-desktop, .minimum-desktop {
+.visible-phone, .menu-visible-phone, .visible-tablet, .minimum-tablet, .visible-desktop, .minimum-desktop, .menu-visible-smallphone  {
   display: none;
 }
-.menu-hide-phone {
+.menu-hide-phone, .menu-hide-smallphone {
 	display: inline-block;
 }
 .hide-phone {
@@ -39,6 +39,11 @@
     display: block;
   }
 }
+@media (min-width: 768px) {
+  .menu-hide-tablet {
+    display: none;
+  }
+}
 
 /* Landscape phone to portrait tablet */
 @media all and (max-width: 767px) {
@@ -49,6 +54,16 @@
 	  display: inline-block;
   }
   .menu-hide-phone, .hide-phone {
+	  display: none;
+  }
+}
+
+/* small phone i.e. iPhone 5, SE */
+@media all and (max-width: 360px){
+  .menu-visible-smallphone {
+	  display: inline-block;
+  }
+  .menu-hide-smallphone {
 	  display: none;
   }
 }

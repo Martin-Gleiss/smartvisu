@@ -11,6 +11,7 @@
 - offline driver is now able to cancel series and to log communication information to the console
 - new functions to subsribe and cancel series for an individual plot (smarthomeNG and offline driver)
 - new function to cancel log subscriptions for an individual or for all log widgets (smarthomeNG driver))
+- show additional menu icon in header on normal phones - toggle Home/Info button on small phones
 
 ### Updated Libraries
 
