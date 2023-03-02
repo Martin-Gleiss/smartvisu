@@ -14,6 +14,7 @@
 - show additional menu icon in header on normal phones - toggle Home/Info button on small phones
 
 ### Updated Libraries
+- MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder
 
 ### Deprecated
 
