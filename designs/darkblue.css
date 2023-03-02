@@ -656,6 +656,10 @@ a.ui-slider-handle-semicircle {
 
 /* smartVISU
 -----------------------------------------------------------------------------------------------------------*/
+.ui-right > .ui-link,
+.ui-right > .ui-link:hover {
+	color: #fff;
+}
 .icon0, a.ui-link {
 	stroke: #fff;
 	fill: #fff;
