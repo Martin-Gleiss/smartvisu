@@ -1,11 +1,9 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Wolfram v. Hülsen
-* @copyright   2021
+* @author      Wolfram v. Hülsen, ramann
+* @copyright   2021 - 2023
 * @license     GPL [http://www.gnu.de]
-*
-* v3.2: system_menu to be used in newly structured system pages
 * -----------------------------------------------------------------------------
 */
 
@@ -14,32 +12,32 @@
 
 		<li data-role="list-divider">System</li>
 		
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=config">
-				<img class="icon" src="{{ icon0 }}message_service.svg" alt="Config" />
+				{{ lib.svgimg ('', 'message_service.svg', 'icon0', '') }}
 				<h3>Configuration</h3>
 			</a>
 		</li>
 		
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=templatechecker">
-				<img class="icon" src="{{ icon0 }}control_clear.svg" alt="Template checker" />
+				{{ lib.svgimg ('', 'control_clear.svg', 'icon0', '') }}
 				<h3>Template checker</h3>
 			</a>
 		</li>
 
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=widget_assistant">
-				<img class="icon" src="{{ icon0 }}jquery_gear.svg" alt="Widget Assistant" />
+				{{ lib.svgimg ('', 'jquery_gear.svg', 'icon0', '') }}
 				<h3>Widget Assistant</h3>
 			</a>
 		</li>
 
 		
 		{% if config_driver == 'smarthome.py' or 'smarthomeng' in config_driver %}
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=smarthomeNG">
-				<img class="icon" src="{{ icon0 }}logo_smarthomeNG.svg" alt="SmartHomeNG" />
+				{{ lib.svgimg ('', 'logo_smarthomeNG.svg', 'icon0', '') }}
 				<h3>SmartHomeNG</h3>
 			</a>
 		</li>
@@ -47,55 +45,55 @@
 
 		<li data-role="list-divider">Help</li>
 		
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?pages=docu&amp;page=index" target="_blank">
-				<img class="icon" src="{{ icon0 }}edit_copy.svg" alt="Documentation" />
+				{{ lib.svgimg ('', 'edit_copy.svg', 'icon0', '') }}
 				<h3>Documentation</h3>
 			</a>
 		</li>
 		
 		{% if isdir('pages/kurzanleitung') %}
-			<li data-icon="false">
+			<li class="ui-li-has-thumb" data-icon="false">
 				<a href="index.php?pages=kurzanleitung&amp;page=index" target="_blank">
-					<img class="icon" src="{{ icon0 }}message_help.svg" alt="Documentation" />
+					{{ lib.svgimg ('', 'message_help.svg', 'icon0', '') }}
 					<h3>Kurzanleitung (German)</h3>
 				</a>
 			</li>
 		{% endif %}
 
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="http://knx-user-forum.de/smartvisu/" target="_blank">
-				<img class="icon" src="{{ icon0 }}time_manual_mode.svg" alt="Support" />
+				{{ lib.svgimg ('', 'time_manual_mode.svg', 'icon0', '') }}
 				<h3>Support on knx-user-forum</h3>
 			</a>
 		</li>
 
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="https://github.com/Martin-Gleiss/smartvisu" target="_blank">
-				<img class="icon" src="{{ icon0 }}GitHub.png" alt="GitHub" />
+				{{ lib.svgimg ('', 'logo_GitHub.svg', 'icon0', '') }}
 				<h3>Source &amp; Issues on GitHub</h3>
 			</a>
 		</li>
 
 		<li data-role="list-divider">Info</li>
 
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=team">
-				<img class="icon" src="{{ icon0 }}weather_sun.svg" alt="Team" />
+				{{ lib.svgimg ('', 'weather_sun.svg', 'icon0', '') }}
 				<h3>Team</h3>
 			</a>
 		</li>
 		
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=credits">
-				<img class="icon" src="{{ icon0 }}time_note.svg" alt="Credits" />
+				{{ lib.svgimg ('', 'time_note.svg', 'icon0', '') }}
 				<h3>Credits</h3>
 			</a>
 		</li>
 		
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=copyright">
-				<img class="icon" src="{{ icon0 }}message_attention.svg" alt="Copyright" />
+				{{ lib.svgimg ('', 'message_attention.svg', 'icon0', '') }}	
 				<h3>Copyright</h3>
 			</a>
 		</li>

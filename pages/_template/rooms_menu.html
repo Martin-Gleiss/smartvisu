@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2023
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -11,13 +11,29 @@
 <ul data-role="listview" data-dividertheme="c">
 
 	<li data-role="list-divider">1st floor</li>
-	<li data-icon="false">
-		<a href="index.php?page=room_sleeping">
-			<img class="icon"' src='{{ icon0 }}scene_sleeping_alternat.svg' alt = "Sleeping"/><h3>Sleeping</h3>
 
+/** 
+* It is recommended to use the new icon embedding with lib.svgimg which gives more styling flexibility.  
+* You MUST use this method if you use dynamic style changes like dark mode.
+*/
+	<li class="ui-li-has-thumb" data-icon="false">
+		<a href="index.php?page=room_sleeping">
+			{{ lib.svgimg ('', 'scene_sleeping_alternat.svg', 'icon0', '') }}<h3>Sleeping</h3>
+			
 			<div class="ui-li-aside"></div>
 		</a>
 	</li>
+	
+/** 
+* The legacy method with <img>-tag is allowed, too but has styling restrictions
+*
+*	<li data-icon="false">
+*		<a href="index.php?page=room_sleeping">
+*			<img class="icon"' src='{{ icon0 }}scene_sleeping_alternat.svg' alt = "Sleeping"/><h3>Sleeping</h3>
+*
+*			<div class="ui-li-aside"></div>
+*		</a>
+*	</li>
+*/
 
-</ul>	
-
+</ul>
