@@ -1658,6 +1658,10 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 
 /* smartVISU
 -----------------------------------------------------------------------------------------------------------*/
+.ui-right > .ui-link,
+.ui-right > .ui-link:hover {
+	color: #fff;
+}
 .icon0, a.ui-link {
 	stroke: #fff;
 	fill: #fff;

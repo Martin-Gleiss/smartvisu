@@ -1656,14 +1656,11 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 .highcharts-tooltip text {
 	fill: #000;
 }
-
 .polarChart .highcharts-axis-line,
 .solidgauge .highcharts-axis-line,
 .solidgauge .highcharts-grid-line {
   stroke: none;
 }
-
-
 .highcharts-grid .highcharts-grid-line {
   stroke: rgba(0, 0, 0, .15);
 }
@@ -1721,6 +1718,10 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 
 /* smartVISU
 -----------------------------------------------------------------------------------------------------------*/
+.ui-right > .ui-link,
+.ui-right > .ui-link:hover {
+	color: #000;
+}
 .icon0, a.ui-link {
 	stroke: #000;
 	fill: #000;

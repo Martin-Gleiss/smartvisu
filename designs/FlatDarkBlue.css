@@ -461,6 +461,10 @@ button[disabled],
 
 /* smartVISU
 -----------------------------------------------------------------------------------------------------------*/
+.ui-right > .ui-link,
+.ui-right > .ui-link:hover {
+	color: #fff;
+}
 .icon0, a.ui-link {
 	stroke: #fff;
 	fill: #fff;
