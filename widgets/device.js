@@ -150,6 +150,9 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 	},
 	
 	_update: function(response) {
+		var element = this.element;
+		var outerSlider = $(element).find('.outerslider');
+		var innerSlider = $(element).find('.innerslider');
 		var item_names = this.options.item.explode();
 		var actualValue = response[0];
 		var setValue = response[1];
@@ -177,7 +180,7 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 					
 		
 	// slider for actual value
-	$("div#"+id+".outerslider").roundSlider({
+	$(outerSlider).roundSlider({
 		value: actualValue,
 		min: scale_min,
 		max: scale_max,
@@ -209,13 +212,12 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 			  "margin-right": '10px',
 			}).appendTo(numberTag);
 			number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
-			$("#"+id+".outerslider .rs-number").css("left", "-25px");
-			$("#"+id+".outerslider .rs-number").css("color",font_color); 
-			$("#"+id+".outerslider .rs-seperator").css("border-color",border_color );
-			$("#"+id+".outerslider .rs-seperator").css("border-width","2px");
-			$("#"+id+".outerslider .rs-seperator").css("width","6px");
-			//$("#"+id+".outerslider.rs-seperator_1").css("height","1px");
-			$("#"+id+".outerslider .rs-seperator").css("margin-left","-6px"); 
+			$(outerSlider).find(".rs-number").css("left", "-25px");
+			$(outerSlider).find(".rs-number").css("color",font_color); 
+			$(outerSlider).find(".rs-seperator").css("border-color",border_color );
+			$(outerSlider).find(".rs-seperator").css("border-width","2px");
+			$(outerSlider).find(".rs-seperator").css("width","6px");
+			$(outerSlider).find(".rs-seperator").css("margin-left","-6px"); 
 			
 		  };
 		 //scala gerade striche (kurz)
@@ -224,11 +226,11 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 			var angle = this._valueToAngle(i);
 			var numberTag = this._addSeperator(angle, "rs-custom_1");
 			numberTag.addClass( "rs-seperator_1" );
-			$("#"+id+".outerslider .rs-seperator_1 .rs-seperator").css("border-color",border_color );
-			$("#"+id+".outerslider .rs-seperator_1 .rs-seperator").css("border-width","1px");
-			$("#"+id+".outerslider .rs-seperator_1 .rs-seperator").css("width","4px");
-			$("#"+id+".outerslider .rs-seperator_1 .rs-seperator").css("height","1px");
-			$("#"+id+".outerslider .rs-custom_1 .rs-seperator").css("left","-10px");  
+			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("border-color",border_color );
+			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("border-width","1px");
+			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("width","4px");
+			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("height","1px");
+			$(outerSlider).find(".rs-custom_1 .rs-seperator").css("left","-10px");  
 			
 		  };
 		},
@@ -248,10 +250,10 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 	});
 
 	var actualString = (actualValue < 10 ? '0' : '') + actualValue.toFixed(decs)+unit;
-	$("div#"+id+".outerslider .rs-tooltip #val").html(actualString);
+	$(outerSlider).find(".rs-tooltip #val").html(actualString);
 
 	// slider for set value
-	$("#"+id+".innerslider").roundSlider({
+	$(innerSlider).roundSlider({
 		value: setValue,
 		min: scale_min,
 		max: scale_max,
@@ -291,7 +293,7 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		},
 			
 		create: function() {
-			$("#"+id).find(".inner-handle").css({
+			$(innerSlider).find(".inner-handle").css({
 				'position': 'absolute',
 				'left': '-35px'}
 				);

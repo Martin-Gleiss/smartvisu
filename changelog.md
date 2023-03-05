@@ -3,6 +3,7 @@
 - quad.blind and quad.shutter can be configured to move the shutter on short- or longpress
 - new widget plot.timeshift scrolls a plot in time-range by cancelling actual series in this plot and subscribing new series fo the same item(s) with changed start / end times.
 - plot.rtr now accepts Highcharts chartOptions object as parameter like plot.period
+- IDs are now optional in basic.roundslider and device.rtrslider
 
 ### Other New Features
 
@@ -13,6 +14,7 @@
 - new function to cancel log subscriptions for an individual or for all log widgets (smarthomeNG driver))
 - show additional menu icon in header on normal phones - toggle Home/Info button on small phones
 - room and system menues now use the icon embedding method of v3.3.x
+- improved icon embedding in basic.roundslider for better stylability
 
 ### Updated Libraries
 - MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder

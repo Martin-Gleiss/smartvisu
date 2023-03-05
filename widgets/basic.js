@@ -1390,7 +1390,8 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 	},
 	
 	_update: function(response) {
-		var id = this.element.attr('id');
+		var element = this.element;
+		var id = element.attr('id');
 		var user_value = response[0];
 		var user_value_item = this.options.item;
 		
@@ -1416,7 +1417,7 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		var handle_color = $(".ui-page-theme-a.ui-btn").css('background-image');
 		
 		//call roundslider plugin
-		$("div#"+id).roundSlider({
+		$(element).roundSlider({
 			circleShape: this.options.circleshape,
 			sliderType: this.options.slidertype,
 			editableTooltip: false,
@@ -1435,9 +1436,15 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 
 			tooltipFormat: function (args) {
 				var val = args.value;
-				var icon = $("div#"+id).attr('data-icon');
+				var icon = $(element).attr('data-icon');
 				if (icon != ''){
-					return "<img src="+icon +" style='width:1em; margin:auto; margin-bottom: 0em; margin-top:-1em; clip-path: circle(); display:block !important;'><div id='value' style='font-weight:bold;font-size:.4em;'>" + args.value + " "+ unit +"</div>";
+					var insertSvg = $(element).siblings('.rs-insert-icon').find('svg');
+					if (insertSvg.length == 1){
+						var rsSvg = insertSvg[0].outerHTML;
+						return rsSvg + "<div id='value' style='font-weight:bold;font-size:.4em;'>" + args.value + " "+ unit +"</div>";
+					}
+					else
+						return "<img src="+icon +" style='width:1em; margin:auto; margin-bottom: 0em; margin-top:-1em; clip-path: circle(); display:block !important;'><div id='value' style='font-weight:bold;font-size:.4em;'>" + args.value + " "+ unit +"</div>";
 				}else{
 					return "<div id='rs_value_pre' style='font-size:0.2em; '>"+ pre_value +"</div><div id='value' style='font-weight:bold;font-size:0.4em;'>" + args.value + " " + unit +"</div><div id='rs_value_to' style='font-size:0.2em;'>"+to_value+"</div>";
 				}
@@ -1458,10 +1465,10 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 				return border_color;
 			},
 			create: function(args){
-				$("#"+id+" .rs-handle").css('box-shadow', '0px 0px 15px #875009');
-				$("#"+id+" .rs-handle").css('box-shadow', handle_color );
-				$("#"+id+" .rs-handle").css('background-image', handle_color );
-				$("#"+id+" .rs-range").css('background-image', track_color );
+				$(element).find(".rs-handle").css('box-shadow', '0px 0px 15px #875009');
+				$(element).find(".rs-handle").css('box-shadow', handle_color );
+				$(element).find(".rs-handle").css('background-image', handle_color );
+				$(element).find(".rs-range").css('background-image', track_color );
 				if (scale == true) {
 					var o = this.options;
 					var extraSize = 0, 
@@ -1484,11 +1491,11 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 						  "margin-right": '10px',
 						}).appendTo(numberTag);
 						number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
-						$("#"+id+" .rs-number").css("color",font_color); 
-						$("#"+id+" .rs-seperator").css("border-color",border_color );
-						$("#"+id+" .rs-seperator").css("border-width","2px");
-						$("#"+id+" .rs-seperator").css("width","10px");
-						$("#"+id+" .rs-seperator").css("margin-left","-10px"); 
+						$(element).find(".rs-number").css("color",font_color); 
+						$(element).find(".rs-seperator").css("border-color",border_color );
+						$(element).find(".rs-seperator").css("border-width","2px");
+						$(element).find(".rs-seperator").css("width","10px");
+						$(element).find(".rs-seperator").css("margin-left","-10px"); 
 						if (sizeCorrect && circleShape.indexOf("bottom") != -1) 
 							  numberTag.css("margin-top", extraSize + 'px');
 						if (sizeCorrect && circleShape.indexOf("right") != -1)
@@ -1500,12 +1507,6 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 					for (var i = o.min; i <= o.max; i += interval) {
 						var angle = this._valueToAngle(i);
 						var numberTag = this._addSeperator(angle, "rs-custom_1");
-						numberTag.addClass( "rs-seperator_1" );
-						$("rs-seperator_1").css("border-color",border_color );
-						$("rs-seperator_1").css("border-width","2px");
-						$("rs-seperator_1").css("width","5px");
-						$("rs-seperator_1").css("height","1px");
-						$("rs-seperator_1").css("margin-left","-10px");
 						if (sizeCorrect && circleShape.indexOf("bottom") != -1) 
 							numberTag.css("margin-top", extraSize + 'px');
 						if (sizeCorrect && circleShape.indexOf("right") != -1)
