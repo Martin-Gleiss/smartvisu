@@ -358,7 +358,7 @@
 
 /**
 * Displays a round slider
-* @param {id} unique id for this widget  
+* @param {id=} unique id for this widget (optional)  
 * @param {item(num,list)} an item (list type can be used if slider type is "range")
 * @param {value=0} the minimum value if the slider is moved to total left (optional, default: 0)  
 * @param {value=255} the maximum value if the slider is moved to total right (optional, default: 255)  
@@ -380,27 +380,36 @@
 
 {% macro roundslider(id, item, min, max, step, pre_value, to_value, unit, scale, scale_interval, pic, circleshape, slidertype, radius, width, thickness) %}
 	{% if circleshape not in ['', 'pie', 'quarter-top-left', 'quarter-top-right', 'quarter-bottom-left', 'quarter-bottom-right', 'half-top', 'half-bottom', 'half-left', 'half-right'] %} {% set circleshape = '' %} {% endif %}
+	{% import "@widgets/lib.html" as lib %}
+	
 	/**- pic whithout path -*/
 	{% if '/' not in pic and not isfile(pic) %}
 		{% if isfile('dropins/' ~ icon0 ~ pic) %}
-			{% set pic = 'dropins/' ~ icon0 ~ pic %}
+			{% set pic = '@icons/' ~ pic %}
 		{% elseif isfile('dropins/' ~ icon0 ~ pic ~ '.svg') %}
-			{% set pic = 'dropins/' ~ icon0 ~ pic ~ '.svg' %}
+			{% set pic = '@icons/' ~ pic ~ '.svg' %}
 		{% elseif isfile('dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
-			{% set pic = 'dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
+			{% set pic = '@icons/' ~ 'jquery_' ~ pic ~ '.svg' %}
 		{% elseif isfile(icon0 ~ pic) %}
-			{% set pic = icon0 ~ pic %}
+			{% set pic = '@icons/' ~ pic %}
 		{% elseif isfile(icon0 ~ pic ~ '.svg') %}
-			{% set pic = icon0 ~ pic ~ '.svg' %}
+			{% set pic = '@icons/' ~ pic ~ '.svg' %}
 		{% elseif isfile(icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
-			{% set pic = icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
+			{% set pic = '@icons/' ~ 'jquery_' ~ pic ~ '.svg' %}
 		{% endif -%}
 	{% endif -%}
-
+	
 	/** pseudo divs, to get styles 	**/
 	<div class="ui-bar-a" style="display:none;"> </div>
 	<div class="ui-bar-b" style="display:none;"> </div>
 	<div class="ui-page-theme-a ui-btn" style="display:none;"> </div>
+	
+	/** load icon to copy into tooltip */
+	<div class = "rs-insert-icon" style = "display:none;"> 
+		{% if  pic|trim|slice(-4, 4) == '.svg' and pic|trim|slice(0,6) == '@icons'  %}
+			{{ lib.svgimg('', pic, 'icon0', 'width:1em; margin:auto; margin-bottom: 0em; margin-top:-1em; display:block !important;') }}
+		{% endif %}
+	</div> 
 		
 	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.roundslider" data-item="{{item}}" data-values=" {{unit}}, {{pre_value| default('')}}, {{ to_value| default('') }}, {{ scale| default('false')}}" 
 		data-radius="{{radius | default('80')}}" data-scale_min="{{min | default('0')}}" data-scale_max="{{max| default('255')}}" data-step="{{step | default('5')}}" data-scale_interval="{{scale_interval | default('20')}}"
