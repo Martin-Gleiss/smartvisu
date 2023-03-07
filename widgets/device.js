@@ -156,7 +156,6 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		var item_names = this.options.item.explode();
 		var actualValue = response[0];
 		var setValue = response[1];
-		var id = this.element.attr('id');
 		var scale_min = this.options.scale_min;  //18;
 		var scale_max = this.options.scale_max;  //28;
 		var step = this.options.step * 1;   //0.1;
@@ -170,15 +169,7 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 			  var offset_old = response[2];
 		}
 						
-		//get colors
-		var bg_color = $('.ui-bar-b').css('background-color');
-		var font_color = $('.ui-content').css('color');
-		var track_color = $('.ui-bar-a').css('background-image');
-		var path_color = $(".ui-bar-a").css('background-color');
-		var border_color = $(".ui-bar-b").css('border-bottom-color');
-		var handle_color = $(".ui-page-theme-a.ui-btn").css('background-image');
-					
-		
+	
 	// slider for actual value
 	$(outerSlider).roundSlider({
 		value: actualValue,
@@ -213,9 +204,6 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 			}).appendTo(numberTag);
 			number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
 			$(outerSlider).find(".rs-number").css("left", "-25px");
-			$(outerSlider).find(".rs-number").css("color",font_color); 
-			$(outerSlider).find(".rs-seperator").css("border-color",border_color );
-			$(outerSlider).find(".rs-seperator").css("border-width","2px");
 			$(outerSlider).find(".rs-seperator").css("width","6px");
 			$(outerSlider).find(".rs-seperator").css("margin-left","-6px"); 
 			
@@ -226,27 +214,16 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 			var angle = this._valueToAngle(i);
 			var numberTag = this._addSeperator(angle, "rs-custom_1");
 			numberTag.addClass( "rs-seperator_1" );
-			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("border-color",border_color );
-			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("border-width","1px");
 			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("width","4px");
+			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("margin-left", "0px");
 			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("height","1px");
-			$(outerSlider).find(".rs-custom_1 .rs-seperator").css("left","-10px");  
 			
 		  };
 		},
 
 		tooltipFormat:function (args){
-			return"<span style='position: relative;top:-2.2em;font-size:0.2em;color:"+font_color+"; '>Ist: </span></br><span id ='val' style='position: relative;top:-2.7em;font-weight:bold;font-size:0.45em;color:"+font_color+";'>" + args.value.toFixed(decs) + unit +"</span>";
+			return"<span style='position: relative;top:-2.2em;font-size:0.2em;'>Ist: </span></br><span id ='val' style='position: relative;top:-2.7em;font-weight:bold;font-size:0.45em;'>" + args.value.toFixed(decs) + unit +"</span>";
 		},
-		rangeColor: function (args) {
-			return border_color;
-		},
-		pathColor: function (args) {
-			return path_color;
-		},
-		borderColor: function (args) {
-			return border_color;
-		}
 	});
 
 	var actualString = (actualValue < 10 ? '0' : '') + actualValue.toFixed(decs)+unit;
@@ -278,20 +255,7 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 			else
 				io.write(item_names[1], args.value);	
 		},
-	
-		tooltipColor: function (args) {
-			return font_color;
-		},
-		rangeColor: function (args) {
-			return bg_color;
-		},
-		pathColor: function (args) {
-			return path_color;
-		},
-		borderColor: function (args) {
-			return border_color;
-		},
-			
+				
 		create: function() {
 			$(innerSlider).find(".inner-handle").css({
 				'position': 'absolute',

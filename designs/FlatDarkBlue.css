@@ -549,3 +549,97 @@ html .ui-btn.icon5,
 .uzsuTimeMaxMinInput::-webkit-calendar-picker-indicator {
 	background-image: url(images/webkit_clock_ws.svg);
 }
+
+
+/* jQuery Roundslider 
+-----------------------------------------------------------------------------------------------------------*/
+
+/*** SVG mode - theming - colors ***/
+.rs-path-inherited .rs-path {
+    opacity: 0.2;
+}
+.rs-svg-mode .rs-path {
+    /*  this will change the slider's path color
+        this can be also done via the property -> 'pathColor'  */
+    stroke: #111111;
+}
+.rs-svg-mode .rs-range {
+    /*  this will change the slider's range color
+        this can be also done via the property -> 'rangeColor'  */
+    stroke: #44739e;
+}
+.rs-svg-mode .rs-border{
+    /*  this will change the slider's border color
+        this can be also done via the property -> 'borderColor'
+        the border width can be changed via the property -> 'borderWidth'  */
+    stroke: #1b1b1b;
+}
+.outerslider.rs-svg-mode .rs-range {
+	stroke: #03a9f4;
+}
+span.rs-number {
+  position: absolute;
+  top: -8px;
+  left: -30px;
+  font-size: 0.8em;
+  font-style: bold;
+  font-family: Arial;
+  color: #fff;
+}
+
+.rs-bar.rs-custom .rs-seperator { 
+	border: 2px solid #1b1b1b; 
+	margin-left: -10px; 
+}
+.rs-bar.rs-custom_1 .rs-seperator {
+	border: 1px solid #d7d7d7;
+	width: 5px;
+	height: 1px;
+	margin-left: 1px;
+}
+.rs-bar.rs-custom_1.rs-seperator_1 .rs-seperator {
+	border: 1px solid #1b1b1b;
+}
+.rs-bar.rs-start .rs-seperator,
+.rs-bar.rs-end .rs-seperator {
+  display: none;
+}
+
+.rs-handle {
+	background-color: #44739e; 
+	border:	2px solid #1b1b1b
+}
+.outerslider .rs-handle {
+	display:none;
+}
+.rs-handle-dot {
+  padding: 11px;
+  background-color: #FFFFFF;
+}
+.rs-handle-dot:after { background-color: #838383; }
+
+/*.cell {
+  border: 1px solid #bbb;
+  padding: 20px;
+  width: 33%;
+  float: left;
+  box-sizing: border-box;
+  background: white;
+}
+*/
+
+.rs-overlay {
+  /* a small fix to hide the overlay */
+  border-radius: 1000px 0 0 0;
+  margin-top: 1px;
+  margin-right: 1px;
+}
+.rs-control {
+  /*border: 1px solid #d7d7d7;*/
+  border-radius: 50%;
+  padding: 1px;
+}
+.rs-tooltip-text {
+  font-size: 2.7em;
+  font-style: bold;
+}

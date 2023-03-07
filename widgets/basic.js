@@ -1391,7 +1391,6 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 	
 	_update: function(response) {
 		var element = this.element;
-		var id = element.attr('id');
 		var user_value = response[0];
 		var user_value_item = this.options.item;
 		
@@ -1407,15 +1406,7 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		var to_value = decoration[2];
 		var scale = decoration[3] =='true' ? true: false;
 		var scale_interval = this.options.scale_interval;
-	
-		//get colours from css theme
-		var bg_color = $('.ui-bar-b').css('background-color');
-		var font_color = $('.ui-content').css('color');
-		var track_color = $('.ui-bar-a').css('background-image');
-		var path_color = $(".ui-bar-a").css('background-color');
-		var border_color = $(".ui-bar-b").css('border-bottom-color');
-		var handle_color = $(".ui-page-theme-a.ui-btn").css('background-image');
-		
+			
 		//call roundslider plugin
 		$(element).roundSlider({
 			circleShape: this.options.circleshape,
@@ -1452,23 +1443,8 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 			update: function (args) {
 				io.write(user_value_item, args.value);
 			},
-			tooltipColor: function (args) {
-				return font_color;
-			},
-			rangeColor: function (args) {
-				return bg_color;
-			},
-			pathColor: function (args) {
-				return path_color;
-			},
-			borderColor: function (args) {
-				return border_color;
-			},
+
 			create: function(args){
-				$(element).find(".rs-handle").css('box-shadow', '0px 0px 15px #875009');
-				$(element).find(".rs-handle").css('box-shadow', handle_color );
-				$(element).find(".rs-handle").css('background-image', handle_color );
-				$(element).find(".rs-range").css('background-image', track_color );
 				if (scale == true) {
 					var o = this.options;
 					var extraSize = 0, 
@@ -1491,9 +1467,6 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 						  "margin-right": '10px',
 						}).appendTo(numberTag);
 						number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
-						$(element).find(".rs-number").css("color",font_color); 
-						$(element).find(".rs-seperator").css("border-color",border_color );
-						$(element).find(".rs-seperator").css("border-width","2px");
 						$(element).find(".rs-seperator").css("width","10px");
 						$(element).find(".rs-seperator").css("margin-left","-10px"); 
 						if (sizeCorrect && circleShape.indexOf("bottom") != -1) 

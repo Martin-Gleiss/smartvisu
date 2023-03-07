@@ -15,6 +15,7 @@
 - show additional menu icon in header on normal phones - toggle Home/Info button on small phones
 - room and system menues now use the icon embedding method of v3.3.x
 - improved icon embedding in basic.roundslider for better stylability
+- round sliders fully styled with CSS
 
 ### Updated Libraries
 - MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder
