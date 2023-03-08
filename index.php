@@ -141,6 +141,7 @@ if (is_file(const_path."pages/".$actual_pages."/".$request['page'].".html")
 	$twig->addFunction( new \Twig\TwigFunction('implode', 'twig_implode', array('is_safe' => array('html'))));
 	$twig->addFunction( new \Twig\TwigFunction('items', 'twig_items'));
 	$twig->addFunction( new \Twig\TwigFunction('asset_exists', 'twig_asset_exists'));
+	$twig->addFunction( new \Twig\TwigFunction('localize_svg', 'twig_localize_svg'));
 
 	// init lexer comments
 	$lexer = new \Twig\Lexer($twig, array('tag_comment' => array('/**', '*/')));

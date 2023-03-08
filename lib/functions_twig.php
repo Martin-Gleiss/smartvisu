@@ -466,4 +466,14 @@ function twig_asset_exists($file) {
 	return $fileExists;
 }
 
+function twig_localize_svg($file) {
+	$path = pathinfo($file);
+	if(!isset($path['extension']) || $path['extension'] == "") $path['extension'] = "svg";
+	$filename = $path['filename'] . '.' . $path['extension']; 
+	if(is_file(const_path . 'icons/ws/'. $filename) || is_file(const_path . 'dropins/icons/ws/'. $filename)) 
+		return '@icons/'.$filename;
+	if (is_file(const_path . 'icons/ws/jquery_'. $filename) || is_file(const_path . 'dropins/icons/ws/jquery_'. $filename)) 
+		return '@icons/jquery_'.$filename; 
+	return $file;		
+}
 ?>
