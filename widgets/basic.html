@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß and others
-* @copyright   2012 - 2022
+* @copyright   2012 - 2023
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -133,7 +133,7 @@
 *
 * @param {image} icon to show 
 - smartVISU icons and icons in ./dropins/icons/ws: path and extension may be omitted (e.g. "light_light") 
-- others: full dile name with path and extension
+- others: full file name with path and extension
 - to avoid SVG embedding, use full filename with path and extension and add "/ne" at the end, e.g. "dropins/icons/ws/myicon.svg/ne"
 * @param {color(icon0to5,rgb,hsl,hsv,#f00)=icon0} the color in any CSS form (e.g. '#f00' for red) or classes 'icon0' through 'icon5' (default 'icon0' of the design)
 	To use dynamic coloring by item give one of the following color models: 'rgb', 'hsl' or 'hsv'
@@ -172,13 +172,7 @@
 
 			/**- pic whithout path -*/
 			{% if '/' not in pic and not isfile(pic) %}
-				{% if isfile(iconF ~ pic) or isfile('dropins/' ~ iconF ~ pic) %}
-					{% set pic = '@icons/' ~ pic %}
-				{% elseif isfile(iconF ~ pic ~ '.svg') or isfile('dropins/' ~ iconF ~ pic ~ '.svg') %}
-					{% set pic = '@icons/' ~ pic ~ '.svg' %}
-				{% elseif isfile(iconF ~ 'jquery_' ~ pic ~ '.svg') or isfile('dropins/' ~ iconF ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
-					{% set pic = '@icons/' ~ 'jquery_' ~ pic ~ '.svg' %}
-				{% endif -%}
+				{% set pic = localize_svg(pic) %}
 			{% endif -%}
 			
 			{% if  pic|trim|slice(-4, 4) == '.svg' and pic|trim|slice(0,6) == '@icons'  %}
@@ -384,19 +378,7 @@
 	
 	/**- pic whithout path -*/
 	{% if '/' not in pic and not isfile(pic) %}
-		{% if isfile('dropins/' ~ icon0 ~ pic) %}
-			{% set pic = '@icons/' ~ pic %}
-		{% elseif isfile('dropins/' ~ icon0 ~ pic ~ '.svg') %}
-			{% set pic = '@icons/' ~ pic ~ '.svg' %}
-		{% elseif isfile('dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
-			{% set pic = '@icons/' ~ 'jquery_' ~ pic ~ '.svg' %}
-		{% elseif isfile(icon0 ~ pic) %}
-			{% set pic = '@icons/' ~ pic %}
-		{% elseif isfile(icon0 ~ pic ~ '.svg') %}
-			{% set pic = '@icons/' ~ pic ~ '.svg' %}
-		{% elseif isfile(icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
-			{% set pic = '@icons/' ~ 'jquery_' ~ pic ~ '.svg' %}
-		{% endif -%}
+		{% set pic = localize_svg(pic) %}
 	{% endif -%}
 	
 	/** load icon to copy into tooltip */
