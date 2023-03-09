@@ -4,6 +4,7 @@
 - new widget plot.timeshift scrolls a plot in time-range by cancelling actual series in this plot and subscribing new series fo the same item(s) with changed start / end times.
 - plot.rtr now accepts Highcharts chartOptions object as parameter like plot.period
 - IDs are now optional in basic.roundslider and device.rtrslider
+- new dynamic icon "icon.slidinggate"
 
 ### Other New Features
 

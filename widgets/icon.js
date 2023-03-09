@@ -417,6 +417,22 @@ $.widget("sv.icon_shutter", $.sv.dynicon, {
 	}
 });
 
+// ----- icon.slidinggate ---------------------------------------------------------
+$.widget("sv.icon_slidinggate", $.sv.dynicon, {
+
+	initSelector: 'svg[data-widget="icon.slidinggate"]',
+
+	_update: function(response) {
+		// response is: {{ gad_value }}, {{ gad_switch }}
+		this._super(response);
+
+		var max = parseFloat(this.options.max);
+		var min = parseFloat(this.options.min);
+
+		var val = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 200);
+		this.element.find('#gate').attr('transform', 'translate('+val+')');
+	}
+});
 
 // ----- icon.ventilation -----------------------------------------------------
 $.widget("sv.icon_ventilation", $.sv.dynicon, {
