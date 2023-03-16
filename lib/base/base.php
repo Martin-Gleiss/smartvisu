@@ -216,6 +216,7 @@
 				}
 ?>
 			},
+			reconnectTime: parseInt('<?php echo config_reconnect_time ?>'),
 			timezoneOffset: '<?php echo date('Z') ?>'
 		}
 	};
