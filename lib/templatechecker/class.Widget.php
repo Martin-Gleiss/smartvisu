@@ -147,6 +147,8 @@ class Widget {
 		$currentParam = '';
 		$lastChar = '';
 		$isArray = false;
+		$isWidget = false;
+		$isWidgetArray = false;
 		foreach (str_split($paramString) as $char) {
 			if ($char == '\'' && $lastChar != '\\') {
 				$inSingleQuotes = !$inSingleQuotes;
@@ -154,8 +156,16 @@ class Widget {
 			} else if ($char == '[' && !$inSingleQuotes) {
 				$squareBracketLevel++;
 				$isArray = true;
+				if (preg_match('/^(.+?\..+?)\((.*)/s', $currentParam)){
+					$currentParam .= $char;
+					if ($isWidget = false && $squareBracketLevel == 1)
+						$isWidgetArray = true;
+					$isWidget = true;
+				}
 			} else if ($char == ']' && !$inSingleQuotes) {
 				$squareBracketLevel--;
+				if ($isWidget == true && (!$isWidgetArray || $squareBracketLevel > 0))
+					$currentParam .= $char;
 			} else if ($char == '(' && !$inSingleQuotes) {
 				$roundBracketLevel++;
 				$currentParam .= $char;
@@ -169,25 +179,39 @@ class Widget {
 				$curlyBracketLevel--;
 				$currentParam .= $char;
 			} else if ($char == ',' && !$inSingleQuotes && $squareBracketLevel == 0 && $roundBracketLevel == 0 && $curlyBracketLevel==0) {
-				if($isArray && $squareBracketLevel == 0 && $curlyBracketLevel == 0)
-					$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
+				if($isArray && $squareBracketLevel == 0 && $curlyBracketLevel == 0){
+					if (!$isWidget)
+						$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
+					else{
+						preg_match_all ('/([a-zA-Z0-9]+?\.[a-zA-Z0-9]+?\(.+?\))/', $currentParam, $foundWidgets);
+						$currentParam = $foundWidgets[0];
+					}
+				}
 				else
 					$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
-				//TODO: Recursively check widgets in parameters
 				$paramArray[] = $currentParam;
 				$currentParam = '';
 				$isArray = false;
+				$isWidget = false;
+				$isWidgetArray = false;				
 			} else {
 				$currentParam .= $char;
 			}
 			$lastChar = $char;
 		}
+
 		if ($currentParam) {
-			if($isArray && $curlyBracketLevel == 0)
-				$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
+			if($isArray && $curlyBracketLevel == 0){
+				if (!$isWidget)
+						$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
+					else{
+						preg_match_all ('/([a-zA-Z0-9]+?\.[a-zA-Z0-9]+?\(.+?\))/', $currentParam, $foundWidgets);
+						$currentParam = $foundWidgets[0];
+					}
+			}
 			else
 				$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
-			$paramArray[] = $currentParam;
+				$paramArray[] = $currentParam;
 		}
 
 		if ($inSingleQuotes) {
