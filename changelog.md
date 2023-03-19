@@ -18,6 +18,7 @@
 - improved icon embedding in basic.roundslider for better stylability
 - round sliders fully styled with CSS
 - reconnect interval can be configured in config.ini by the key "reconnect_time"
+- template checker recursively checks widget calls within widgets (mainly in quad widgets)
 
 ### Updated Libraries
 - MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder

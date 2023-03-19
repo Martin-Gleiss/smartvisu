@@ -195,6 +195,10 @@ class WidgetParameterChecker {
 				case 'percent':
 					$this->checkParameterTypePercent($value);	//new
 					break;
+				case 'widget':
+					// recursive check of widges in parameters is done in TemplateChecker::checkWidget() 
+					// since we don't know the node $node here
+					break;
 				case 'unspecified':
 					// this type is not validated at all
 					$this->addInfo('WIDGET UNSPECIFIED PARAM TYPE', 'Parameter can not be checked, check manually', $value);

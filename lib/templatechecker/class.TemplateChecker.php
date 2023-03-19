@@ -257,8 +257,19 @@ class TemplateChecker {
 		} else {
 			// check all parameters of widget
 			$paramConfigs = array_values($widgetConfig['param']);
+			
 			foreach ($paramConfigs as $paramIndex => $paramConfig) {
-				WidgetParameterChecker::performChecks($widget, $paramIndex, $paramConfig, $this->messages,$this->items, $this); //new: items
+				if ($paramConfig['type'] == 'widget' && $widget->getParam($paramIndex) != NULL){
+					$paramWidgets = $widget->getParam($paramIndex);
+					if (!is_array($paramWidgets))
+						$paramWidgets = array($paramWidgets);
+					for ($i = 0; $i < count($paramWidgets); $i++){
+						$this->checkWidget($node, trim($paramWidgets[$i]));
+					}
+				}
+				else {
+					WidgetParameterChecker::performChecks($widget, $paramIndex, $paramConfig, $this->messages,$this->items, $this); //new: items
+				}
 			}
 			if (array_key_exists('deprecated', $widgetConfig)) {
 				$messageData = $widget->getMessageData();
