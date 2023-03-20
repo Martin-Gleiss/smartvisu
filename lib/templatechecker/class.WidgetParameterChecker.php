@@ -499,8 +499,7 @@ class WidgetParameterChecker {
 			return FALSE;
 		}
 
-
-		if ($this->paramConfig['valid_values']) {
+		if (isset($this->paramConfig['valid_values']) && $this->paramConfig['valid_values']) {
 			if ($this->items->getItemType($value)) {
 				if (in_array($this->items->getItemType($value), $this->paramConfig['valid_values'])) {
 					if (Settings::SHOW_SUCCESS_TOO)

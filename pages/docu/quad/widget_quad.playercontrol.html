@@ -29,13 +29,13 @@
 Volume Control with the following columns: ['uzsu','plot',['volume_up','volume_down'],'volume_slider']
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-{{ quad.playercontrol('volume', 'Volume Slider, UZSU and Plot', '', '', '', '', '', '', '', '', '', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, '', '', '', '', '', 'speakerAB', 'uzsu', ['', '', 'uzsu_value', '', 'icon1', 'icon0'], 'Volume.Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_up','volume_down'],'volume_slider']) }}
+{{ quad.playercontrol('volume', 'Volume Slider, UZSU and Plot', '', '', '', '', '', '', '', '', '', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, '', '', '', '', '', 'speakerAB', 'uzsu', ['', '', 'num', '', 'icon1', 'icon0'], 'Volume.Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_up','volume_down'],'volume_slider']) }}
 
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.playercontrol('volume1', 'Volume Slider, UZSU and Plot', '', '', '', '', '', '', '', '', '', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, '', '', '', '', '', 'speakerAB', 'uzsu', ['', '', 'uzsu_value', '', 'icon1', 'icon0'], 'Volume.Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_up','volume_down'],'volume_slider']) }}
+{{ quad.playercontrol('volume1', 'Volume Slider, UZSU and Plot', '', '', '', '', '', '', '', '', '', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, '', '', '', '', '', 'speakerAB', 'uzsu', ['', '', 'num', '', 'icon1', 'icon0'], 'Volume.Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_up','volume_down'],'volume_slider']) }}
   </ul></div>
 
 Player Control with standard columns

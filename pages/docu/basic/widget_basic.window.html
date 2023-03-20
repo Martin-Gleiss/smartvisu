@@ -29,9 +29,9 @@
 		{{ basic.slider('','bath.light.value') }}
 		Left window:
 		<div data-role="controlgroup" data-type="horizontal"> 
-			{{ basic.stateswitch('', 'bath.light.switch', '', 0, '', '0') }}
-			{{ basic.stateswitch('', 'bath.light.switch', '', 1, '', '1') }}
-			{{ basic.stateswitch('', 'bath.light.switch', '', 2, '', '2') }}
+			{{ basic.stateswitch('', 'bath.light.value2', '', 0, '', '0') }}
+			{{ basic.stateswitch('', 'bath.light.value2', '', 1, '', '1') }}
+			{{ basic.stateswitch('', 'bath.light.value2', '', 2, '', '2') }}
 		</div> &nbsp;&nbsp;
 		Right window:
 		<div data-role="controlgroup" data-type="horizontal">
@@ -40,9 +40,9 @@
 			{{ basic.stateswitch('', 'bath.light.multistate', '', 2, '', '2') }}
 		</div>
 		<br>
-		Default: class icon0 / icon1 colors: &nbsp;{{ basic.window ('', 'bath.light.value', 'bath.light.multistate', 'bath.light.switch') }} <br>
+		Default: class icon0 / icon1 colors: &nbsp;{{ basic.window ('', 'bath.light.value', 'bath.light.multistate', 'bath.light.value2') }} <br>
 		Usage of custom color for 'open': &nbsp;&nbsp;&nbsp; {{ basic.window ('', 'bath.light.value', '', 'bath.light.multistate', '', '', '#f00') }} reacting only on right wing since no item for left wing is given<br>
-		Usage of constant custom color: &nbsp;&nbsp;&nbsp; {{ basic.window ('', 'bath.light.value', 'bath.light.multistate', 'bath.light.switch', '', '', '!icon3') }} 
+		Usage of constant custom color: &nbsp;&nbsp;&nbsp; {{ basic.window ('', 'bath.light.value', 'bath.light.multistate', 'bath.light.value2', '', '', '!icon3') }} 
 	</div>
 
 
