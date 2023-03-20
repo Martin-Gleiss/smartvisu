@@ -27,9 +27,9 @@
 		{{ basic.slider('','bath.blind.pos') }}
 		Left window:
 		<div data-role="controlgroup" data-type="horizontal"> 
-			{{ basic.stateswitch('', 'bath.light.switch', '', 0, '', '0') }}
-			{{ basic.stateswitch('', 'bath.light.switch', '', 1, '', '1') }}
-			{{ basic.stateswitch('', 'bath.light.switch', '', 2, '', '2') }}
+			{{ basic.stateswitch('', 'bath.light.value2', '', 0, '', '0') }}
+			{{ basic.stateswitch('', 'bath.light.value2', '', 1, '', '1') }}
+			{{ basic.stateswitch('', 'bath.light.value2', '', 2, '', '2') }}
 		</div> &nbsp;&nbsp;
 		Right window:
 		<div data-role="controlgroup" data-type="horizontal">
@@ -38,7 +38,7 @@
 			{{ basic.stateswitch('', 'bath.light.multistate', '', 2, '', '2') }}
 		</div>
 		<br>
-		{{ device.window ('', 'Window Kitchen North', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', '', 'bath.light.multistate', 'bath.light.switch', 'icon') }} <br>
+		{{ device.window ('', 'Window Kitchen North', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', '', 'bath.light.multistate', 'bath.light.value2', 'icon') }} <br>
 
 	</div>
 

@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2023
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -25,9 +25,6 @@
        io.write('that.sperren', '0' );
        io.write('bwm.that.sperren', '0' );
        io.write('that.zwangvalue', '0' );
-       io.write('this.uzsu', '{}');
-       io.write('that.uzsu', '{}');
-       io.write('theother.uzsu', '{}');
     });
 </script>
 
@@ -42,34 +39,34 @@
 Standard column order
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-{{ quad.stateswitch('stateswitch11', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', '', 'blink', '', '', '', '', '', 'one switch, standard order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['extra']), [['this.sperren'], 'bwm.this.sperren','this.zwangvalue']) }}
+{{ quad.stateswitch('stateswitch11', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', '', 'blink', '', '', '', '', '', 'one switch, standard order', 'Switch1', 'this.uzsu', '', 'this.plot', '', 'this.stateengine', (extpopup['extra']), [['this.sperren'], 'bwm.this.sperren','this.zwangvalue']) }}
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.stateswitch('stateswitch011', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', '', 'blink', '', '', '', '', '', 'one switch, standard order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['extra']), [['this.sperren'], 'bwm.this.sperren','this.zwangvalue']) }}
+{{ quad.stateswitch('stateswitch011', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], '', '', 'blink', '', '', '', '', '', 'one switch, standard order', 'Switch1', 'this.uzsu', '', 'this.plot', '', 'this.stateengine', (extpopup['extra']), [['this.sperren'], 'bwm.this.sperren','this.zwangvalue']) }}
   </ul></div>
 
 [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks'] with extpopup
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-{{ quad.stateswitch('stateswitch12', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], ['','',''], ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['stateengine']), ['this.sperren'], '', '', '', [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks']) }}
+{{ quad.stateswitch('stateswitch12', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], ['','',''], ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', 'Switch1', 'this.uzsu', '', 'this.plot', '', 'this.stateengine', (extpopup['stateengine']), ['this.sperren'], '', '', '', [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks']) }}
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.stateswitch('stateswitch012', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], ['','',''], ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', 'Switch1', 'this.uszu', '', 'this.plot', '', 'this.stateengine', (extpopup['stateengine']), ['this.sperren'], '', '', '', [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks']) }}
+{{ quad.stateswitch('stateswitch012', 'this', 'icon', [0,3,155], ['edit_numeric_0.svg','edit_numeric_3.svg','edit_numeric_5.svg'], ['','',''], ['','#ff0','#00f'], 'blink', '', '', '', '', '', 'One item with column_order', 'Switch1', 'this.uzsu', '', 'this.plot', '', 'this.stateengine', (extpopup['stateengine']), ['this.sperren'], '', '', '', [['uzsu','switch'], '10', ['plot','stateengine'], '10', 'locks']) }}
   </ul></div>
 
 don't use column_order for multiple switches.
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-{{ quad.stateswitch('stateswitch14', ['this', 'that', 'theother'], ['icon','mini','midi'], [[1,0],'',[0,150]], [['edit_numeric_1.svg','edit_numeric_0.svg'],'',['edit_numeric_0.svg','edit_numeric_9.svg']], ['', ['0','1']], [['',''],'',['','']], ['blink','','blink'], '', '', '', 'place1', 'place2', 'Mixed types with one slider', ['', '', ''], ['this.uszu','','theother.uszu'], ['','',''], '', '', '', '', '', [['this.timer', 0, 10, 1, 'min', 'handle'],'','']) }}
+{{ quad.stateswitch('stateswitch14', ['this', 'that', 'theother'], ['icon','mini','midi'], [[1,0],'',[0,150]], [['edit_numeric_1.svg','edit_numeric_0.svg'],'',['edit_numeric_0.svg','edit_numeric_9.svg']], ['', ['0','1']], [['',''],'',['','']], ['blink','','blink'], '', '', '', 'place1', 'place2', 'Mixed types with one slider', ['', '', ''], ['this.uzsu','','theother.uzsu'], ['','',''], '', '', '', '', '', [['this.timer', 0, 10, 1, 'min', 'handle'],'','']) }}
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-{{ quad.stateswitch('stateswitch014', ['this', 'that', 'theother'], ['icon','mini','midi'], [[1,0],'',[0,150]], [['edit_numeric_1.svg','edit_numeric_0.svg'],'',['edit_numeric_0.svg','edit_numeric_9.svg']], ['', ['0','1']], [['',''],'',['','']], ['blink','','blink'], '', '', '', 'place1', 'place2', 'Mixed types with one slider', ['', '', ''], ['this.uszu','','theother.uszu'], ['','',''], '', '', '', '', '', [['this.timer', 0, 10, 1, 'min', 'handle'],'','']) }}
+{{ quad.stateswitch('stateswitch014', ['this', 'that', 'theother'], ['icon','mini','midi'], [[1,0],'',[0,150]], [['edit_numeric_1.svg','edit_numeric_0.svg'],'',['edit_numeric_0.svg','edit_numeric_9.svg']], ['', ['0','1']], [['',''],'',['','']], ['blink','','blink'], '', '', '', 'place1', 'place2', 'Mixed types with one slider', ['', '', ''], ['this.uzsu','','theother.uzsu'], ['','',''], '', '', '', '', '', [['this.timer', 0, 10, 1, 'min', 'handle'],'','']) }}
   </ul></div>
 
   <div class="twig">

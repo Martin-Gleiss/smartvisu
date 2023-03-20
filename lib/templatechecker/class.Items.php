@@ -70,10 +70,13 @@ class Items {
 	function __construct($path) {
 		$this->ready = FALSE;
 		$this->items = array();
+		// get the main pages path
+		preg_match('/(pages\/[a-zA-Z0-9]+)/', $path, $mainPath);
+	
 		try {
-			if (is_file(const_path.$path.'/masteritem.json'))
+			if (is_file(const_path.$mainPath[0].'/masteritem.json'))
 			{
-			@$myFile = file_get_contents(const_path.'pages/'.config_pages.'/masteritem.json');
+			@$myFile = file_get_contents(const_path.$mainPath[0].'/masteritem.json');
 			$Items1 = str_replace('[','',$myFile);
 			$Items1 = str_replace(']','',$Items1);
 			$Items1 = str_replace("\"",'',$Items1);
