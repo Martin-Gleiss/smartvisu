@@ -823,7 +823,7 @@ $.widget("sv.basic_print", $.sv.widget, {
 			currentIndex++;
 		});
 		var color = String(this.options.colors).explode()[currentIndex];
-		this.element.removeClass('[class^="icon"]').show().css('visibility', '').css('color', ''); // clear previous color / effect
+		this.element.removeClass().show().css('visibility', '').css('color', ''); // clear previous color / effect
 		if (color.indexOf('icon') == 0)
 			this.element.addClass(color);
 		else if (color == 'hidden')
