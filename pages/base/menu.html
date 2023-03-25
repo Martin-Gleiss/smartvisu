@@ -24,7 +24,7 @@
 			
 	{% else%}	
 		<a id="{{ page }}_menu-docu" data-ajax="false" href="index.php?pages=docu&amp;page=index" onclick="linkAnimate(id)">
-			<img class="icon {{ pages == 'docu' ? ' icon1' }}" src="{{ icon0 }}edit_copy.svg"/></a>
+			<img class="icon {{ pages == 'docu' ? ' icon1' : ' icon0' }}" src="{{ icon0 }}edit_copy.svg"/></a>
 	
 	{% endif %}
 		<a id="{{ page }}_menu-system" class="icon1" href="index.php?page=systempage" onclick="linkAnimate(id)">
