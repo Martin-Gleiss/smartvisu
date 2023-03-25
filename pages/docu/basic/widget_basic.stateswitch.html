@@ -97,13 +97,13 @@
 	Dynamic icons can be used by calling the icon.* widgets in the icon parameters:
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
+		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light(), icon.light('','','bath.light.value')]) }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light(), icon.light('','','bath.light.value')]) }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
+		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light(), icon.light('','','bath.light.value')]) }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light(), icon.light('','','bath.light.value')]) }}
 	</div>
 
 	Use a basic.symbol to colorize an icon independently of the buttons value.

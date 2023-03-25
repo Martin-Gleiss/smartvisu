@@ -168,6 +168,9 @@ class WidgetParameterChecker {
 				case 'item':
 					$this->checkParameterTypeItem($value);	//new
 					break;
+				case 'iconseries':
+					$this->checkParameterTypeIconseries($value);
+					break;
 				case 'type':
 					$this->checkParameterTypeType($value);
 					break;
@@ -193,8 +196,8 @@ class WidgetParameterChecker {
 					$this->checkParameterTypePercent($value);	//new
 					break;
 				case 'widget':
-					$node = $this->templateCecker->getCurrentNode();
-					$this->templateCecker->checkWidget($node, $value);
+					// recursive check of widges in parameters is done in TemplateChecker::checkWidget() 
+					// since we don't know the node $node here
 					break;
 				case 'unspecified':
 					// this type is not validated at all
@@ -283,6 +286,55 @@ class WidgetParameterChecker {
 	}
 
 	/**
+	 * Check widget parameter of type "iconseries"
+	 * @param $value mixed parameter value
+	 */
+	private function checkParameterTypeIconseries($value) {
+		if (!$this->checkParameterNotEmpty($value))
+			return;
+
+		if (substr($value, 0, 5) == 'icon.') {
+			if (array_key_exists($value, $this->dynamicIcons)) {
+				// existing dynamic icon
+				if (Settings::SHOW_SUCCESS_TOO)
+					$this->addInfo('WIDGET ICONSERIES PARAM  CHECK', 'Existing dynamic image', $value);
+			} else {
+				// unknown dynamic icon
+				$this->addError('WIDGET ICONSERIES PARAM  CHECK', 'Missing dynamic image', $value);
+			}
+		} else if (substr($value, -7) == '_00.svg') {
+			for ($i = 1; $i < 11; $i++) {
+				$file = str_replace('_00.svg', '_' . $i . '0.svg', $value);
+				// add color if required
+				if (strpos($file, '/') === false && substr($file, 0, 7) != 'icon0~\'' && substr($file, 0, 7) != 'icon1~\'') {
+					$file = Settings::getInstance()->getIcon0() . $file;
+				}
+
+				switch (TemplateChecker::isFileExisting($file)) {
+					case TemplateChecker::FILE_MISSING:
+						$this->addError('WIDGET ICONSERIES PARAM CHECK', 'Image missing', $value, array('Percentage' => $i * 10, 'Checked File' => $file));
+						break;
+					case TemplateChecker::FILE_EXISTING:
+						if (Settings::SHOW_SUCCESS_TOO)
+							$this->addInfo('WIDGET ICONSERIES PARAM  CHECK', 'Image existing', $value, array('Percentage' => $i * 10, 'Checked File' => $file));
+						break;
+					case TemplateChecker::FILE_REMOTE:
+						if (Settings::SHOW_SUCCESS_TOO)
+							$this->addInfo('WIDGET ICONSERIES PARAM  CHECK', 'Image from remote location', $value, array('Percentage' => $i * 10, 'Checked File' => $file));
+						break;
+					case TemplateChecker::FILE_CONTAINS_PARAMS:
+						if (Settings::SHOW_SUCCESS_TOO)
+							$this->addWarning('WIDGET ICONSERIES PARAM  CHECK', 'Image path still contains parameters. Check manually!', $value, array('Percentage' => $i * 10, 'Checked File' => $file));
+						break;
+				}
+			}
+		} else {
+			// unknown dynamic icon
+			$this->addError('WIDGET ICONSERIES PARAM  CHECK', 'Invalid value for iconseries', $value);
+		}
+	}
+
+	/**
 	 * Check widget parameter of type "image"
 	 * @param $value mixed parameter value
 	 */
@@ -302,9 +354,8 @@ class WidgetParameterChecker {
 		if ($this->checkParameterValidValues($value))
 			return;
 
+		//TODO: Replace by recursively checked widgets in parameters in class.Widget.php
 		if (substr($value, 0, 5) == 'icon.') {
-			$node = $this->templateCecker->getCurrentNode();
-			$this->templateCecker->checkWidget($node, $value);
 
 			$dyniconWiget = explode('(', $value, 2);
 			if (array_key_exists($dyniconWiget[0], $this->dynamicIcons)) {
@@ -318,8 +369,6 @@ class WidgetParameterChecker {
 
 		}
 		else if (substr($value, 0, 12) == 'basic.symbol') {
-			$node = $this->templateCecker->getCurrentNode();
-			$this->templateCecker->checkWidget($node, $value);
 			$dyniconWiget = explode('(', $value, 2);
 			if (array_key_exists($dyniconWiget[0], $this->dynamicIcons)) {
 				// existing dynamic icon

@@ -41,6 +41,15 @@ class TemplateChecker {
 	 * Object for the Icons
 	 */
 	private $items;
+	
+	/**
+	 * currently checked Node
+	 */
+	 private $currentNode;
+	 
+	 public function getCurrentNode (){
+			return $this->currentNode;
+	 }
 
 	/**
 	 * Perform template checks for single file
@@ -156,6 +165,7 @@ class TemplateChecker {
 	function checkNode($node, $level = 0) {
 		if ($node == NULL)
 			return;
+		$this->currentNode = $node;
 		if ($node->nodeType == XML_ELEMENT_NODE) {
 			switch ($node->tagName) {
 				case 'img':
@@ -259,17 +269,7 @@ class TemplateChecker {
 			$paramConfigs = array_values($widgetConfig['param']);
 			
 			foreach ($paramConfigs as $paramIndex => $paramConfig) {
-				if ($paramConfig['type'] == 'widget' && $widget->getParam($paramIndex) != NULL){
-					$paramWidgets = $widget->getParam($paramIndex);
-					if (!is_array($paramWidgets))
-						$paramWidgets = array($paramWidgets);
-					for ($i = 0; $i < count($paramWidgets); $i++){
-						$this->checkWidget($node, trim($paramWidgets[$i]));
-					}
-				}
-				else {
-					WidgetParameterChecker::performChecks($widget, $paramIndex, $paramConfig, $this->messages,$this->items, $this); //new: items
-				}
+				WidgetParameterChecker::performChecks($widget, $paramIndex, $paramConfig, $this->messages,$this->items, $this); //new: items
 			}
 			if (array_key_exists('deprecated', $widgetConfig)) {
 				$messageData = $widget->getMessageData();
