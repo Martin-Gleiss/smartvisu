@@ -35,7 +35,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the arrow angle
+* @param {item(num)=} an item for the arrow angle
 * @param {value=0} the minimum value for 0° (optional, default 0, for future use)
 * @param {value=255} the maximum value for 360° (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -63,7 +63,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the charge level
+* @param {item(num)=} an item for the charge level
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255 (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -90,7 +90,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the charge level
+* @param {item(num)=} an item for the charge level
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255 (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -125,7 +125,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the angle of the blades
+* @param {item(num)=} an item for the angle of the blades
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255  (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -162,7 +162,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the angle of the blades
+* @param {item(num)=} an item for the angle of the blades
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255  (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -197,7 +197,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the angle of the blades
+* @param {item(num)=} an item for the angle of the blades
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255 (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -230,7 +230,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the angle of the blades
+* @param {item(num)=} an item for the angle of the blades
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255 (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -263,7 +263,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the filling level
+* @param {item(num)=} an item for the filling level
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255 (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -302,7 +302,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the time
+* @param {item(num)=} an item for the time
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
 */
 {% macro clock(id, item_switch, item_value, color) %}
@@ -334,7 +334,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the angle of the pin
+* @param {item(num)=} an item for the angle of the pin
 * @param {value=0} the minimum value for 0° (optional, default 0, for future use)
 * @param {value=255} the maximum value for 360° (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -367,7 +367,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the travel of the door
+* @param {item(num)=} an item for the travel of the door
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255 (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -395,7 +395,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the height of the blades
+* @param {item(num)=} an item for the height of the blades
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255 (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -426,7 +426,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the value
+* @param {item(num)=} an item for the value
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255 (optional, default 255)
 * @param {color=} color at begin of gradient e.g. '#f00' for red ('icon0' and 'icon1' can NOT be used)
@@ -454,7 +454,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the value
+* @param {item(num)=} an item for the value
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255 (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -496,7 +496,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the angle of the pointer
+* @param {item(num)=} an item for the angle of the pointer
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255 (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -529,7 +529,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the opening
+* @param {item(num)=} an item for the opening
 * @param {value=0} the value for closed (optional, default 0)
 * @param {value=255} the value for fully open (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -557,7 +557,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the height of the blades
+* @param {item(num)=} an item for the height of the blades
 * @param {value=0} the value for top (optional, default 0)
 * @param {value=255} the value for bottom (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -586,7 +586,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the height of the blades
+* @param {item(num)=} an item for the height of the blades
 * @param {value=0} the value for top (optional, default 0)
 * @param {value=255} the value for bottom (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -632,7 +632,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the rotation speed
+* @param {item(num)=} an item for the rotation speed
 * @param {value=0} the minimum value for 0,5s rotation speed (optional, default 0, for future use)
 * @param {value=255} the maximum value for 5s rotation speed (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -664,7 +664,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the volume level
+* @param {item(num)=} an item for the volume level
 * @param {value=0} the minimum value for 0 (optional, default 0, for future use)
 * @param {value=255} the maximum value for 255 (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -691,7 +691,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the rotation speed
+* @param {item(num)=} an item for the rotation speed
 * @param {value=0} the minimum value for 0,5s rotation speed (optional, default 0, for future use)
 * @param {value=255} the maximum value for 5s rotation speed (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -724,7 +724,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the angle of the pin
+* @param {item(num)=} an item for the angle of the pin
 * @param {value=0} the minimum value for 0° (optional, default 0, for future use)
 * @param {value=255} the maximum value for 360° (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -757,7 +757,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the angle of the windsack
+* @param {item(num)=} an item for the angle of the windsack
 * @param {value=0} the minimum value for 0° (optional, default 0, for future use)
 * @param {value=255} the maximum value for ~90° (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)
@@ -790,7 +790,7 @@
 *
 * @param {id=} unique id for this widget
 * @param {item(bool,num)=} an item for switching
-* @param {item(num)} an item for the movement of the sun
+* @param {item(num)=} an item for the movement of the sun
 * @param {value=0} the minimum value for sunrise (optional, default 0, for future use)
 * @param {value=255} the maximum value for sunset (optional, default 255)
 * @param {color(icon0to5)=icon0} color e.g. '#f00' for red or icon0...icon5 (optional, default=icon0)

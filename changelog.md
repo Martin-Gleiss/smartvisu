@@ -26,6 +26,7 @@
 ### Deprecated
 
 ### Removed Features
+- parameter type "iconseries" for template checker removed since basic shifter was removed in v3.3
 
 ### Fixed Bugs
 - multiple icons of icon.heating on one page could only be colored with the color of the first occurance and disappeared otherwise
