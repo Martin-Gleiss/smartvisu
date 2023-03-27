@@ -7,6 +7,7 @@
 - new dynamic icon "icon.slidinggate"
 
 ### Other New Features
+- weather service pirateweather.net as replacement for darksky.net (thanks to aschwith) 
 
 ### Improvements
 - Template checker now ignores multi-line comments  
@@ -27,6 +28,7 @@
 
 ### Removed Features
 - parameter type "iconseries" for template checker removed since basic shifter was removed in v3.3
+- weather service darksky.net removed due to discontinuation of the service
 
 ### Fixed Bugs
 - multiple icons of icon.heating on one page could only be colored with the color of the first occurance and disappeared otherwise
