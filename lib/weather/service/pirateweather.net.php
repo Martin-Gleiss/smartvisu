@@ -2,8 +2,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Stefan Widmer
- * @copyright   2018
+ * @author      aschwith
+ * @copyright   2023
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide		weather_postal
@@ -18,7 +18,7 @@ require_once const_path_system.'class_cache.php';
 /**
  * This class generates a weather
  */
-class weather_darksky extends weather
+class weather_pirateweather extends weather
 {
 
 	/**
@@ -27,18 +27,22 @@ class weather_darksky extends weather
 	public function run()
 	{
 		// api call
-		$cache = new class_cache('darksky_' . $this->location . '.json');
+		$cache = new class_cache('pirateweather_' . $this->location . '.json');
 
 		if ($cache->hit($this->cache_duration_minutes)) {
 			$content = $cache->read();
 		} else {
 			$loadError = '';
-			$url = 'https://api.darksky.net/forecast/' . config_weather_key . '/' . $this->location . '?exclude=minutely,hourly,alerts&units=auto&lang=' . trans('darksky', 'lang');
+			$url = 'https://api.pirateweather.net/forecast/' . config_weather_key . '/' . $this->location . ' ';
 			$content = file_get_contents($url);
+
 			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
 				$cache->write($content);
-			else
+			else {
 				$loadError = substr(strrchr($this->errorMessage, ':'), 2);
+				$this->debug('loadError:' . $loadError );
+			}
+
 		}
 
 		$parsed_json = json_decode($content);
@@ -83,8 +87,8 @@ class weather_darksky extends weather
 			if ($loadError != '')
 				$add = $loadError;
 			else
-				$add = $parsed_json->{'flags'}->{'darksky-unavailable'};
-			$this->error('Weather: darksky.net', 'Read request failed'.($add ? ' with message: <br>'.$add : '!'));
+				$add = $parsed_json->{'flags'}->{'pirateweather-unavailable'};
+			$this->error('Weather: pirateweather.net', 'Read request failed'.($add ? ' with message: <br>'.$add : '!'));
 		}
 	}
 
@@ -119,7 +123,7 @@ class weather_darksky extends weather
 // call the service
 // -----------------------------------------------------------------------------
 
-$service = new weather_darksky(array_merge($_GET, $_POST));
+$service = new weather_pirateweather(array_merge($_GET, $_POST));
 echo $service->json();
 
 ?>
