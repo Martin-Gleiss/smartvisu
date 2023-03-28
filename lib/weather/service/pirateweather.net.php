@@ -33,7 +33,7 @@ class weather_pirateweather extends weather
 			$content = $cache->read();
 		} else {
 			$loadError = '';
-			$url = 'https://api.pirateweather.net/forecast/' . config_weather_key . '/' . $this->location . ' ';
+			$url = 'https://api.pirateweather.net/forecast/' . config_weather_key . '/' . $this->location . '?exclude=minutely,hourly,alerts&units=ca';
 			$content = file_get_contents($url);
 
 			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
