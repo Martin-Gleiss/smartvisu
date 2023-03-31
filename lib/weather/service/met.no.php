@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012 - 2023
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide		weather_postal
@@ -28,6 +28,15 @@ class weather_met extends weather
 	 */
 	public function run()
 	{
+		// there is only one set of units in the API:
+		// temp | precip | dist | speed | pressure  
+		//	°C  |   mm   |  km  |  m/s  | millibar / hPa
+		
+		$speed_factor = 3.6;
+		$units = trans('met.no', 'units');	 // use definitions same as weather.com
+		if ($units == "e" or $units == "h")
+			$speed_factor = 2.24;
+		
 		// api call 
 		$cache = new class_cache('met.no_'.preg_replace(array('/=/','/&/'),'',$this->location).'.json');
 		
@@ -67,12 +76,10 @@ class weather_met extends weather
 					
 			$actualdata = $parsed_json->{'properties'}->{'timeseries'}['0']->{'data'}->{'instant'}->{'details'};
 			$wind_dir = weather::getDirection((float)$actualdata->{'wind_from_direction'});
-			$wind_speed = transunit('speed',round(3.6*(float)$actualdata->{'wind_speed'}, 1));
-			if (substr($wind_speed,-3) =='mph') 
-				$wind_speed = transunit('speed',round(2.24*(float)$actualdata->{'wind_speed'}, 1));
+			$wind_speed = transunit('speed',round($speed_factor*(float)$actualdata->{'wind_speed'}, 1));
 			$wind_desc = weather::getWindDescription($wind_speed);
 			
-			$this->data['current']['temp'] = transunit('temp', (float)$actualdata->{'air_temperature'});
+			$this->data['current']['temp'] = transunit('temp', $units == "e" ? 32 + 1.8*(float)$actualdata->{'air_temperature'} : (float)$actualdata->{'air_temperature'});
 			$this->data['current']['wind'] = $wind_desc.' '.translate('from', 'weather').' '.$wind_dir.' '.translate('at', 'weather').' '.$wind_speed;
 			$this->data['current']['more'] = translate('humidity', 'weather')." ".transunit('%', (float)$actualdata->{'relative_humidity'});
 			$this->data['current']['misc'] = translate('air pressure', 'weather')." ".(float)$actualdata->{'air_pressure_at_sea_level'}.' hPa';
@@ -134,7 +141,10 @@ class weather_met extends weather
 					$this->data['forecast'][$i]['date'] = date('Y-m-d', strtotime($dataset->{'time'})-$timezone*3600);
 					$this->data['forecast'][$i]['conditions'] = translate($forecastCondition, 'met.no');
 					$this->data['forecast'][$i]['icon'] = $this->icon($forecastCondition);
-					$this->data['forecast'][$i]['temp'] = round($maxtemp, 0).'&deg;C'.'/'.round($mintemp, 0).'&deg;C';
+					if ($units == "e")
+						$this->data['forecast'][$i]['temp'] = transunit('weathertemp', round(32 + 1.8 * $maxtemp, 0)).'/'.transunit('weathertemp', round(32 + 1.8 * $mintemp, 0));
+					else	
+						$this->data['forecast'][$i]['temp'] = transunit('weathertemp', round($maxtemp, 0)).'/'.transunit('weathertemp', round($mintemp, 0));
 					
 					$maxtemp = -100;
 					$mintemp = 100;
