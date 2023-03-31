@@ -26,6 +26,12 @@ class weather_pirateweather extends weather
 	 */
 	public function run()
 	{
+		$units = trans('pirateweather', 'units');		// 		temp | precip | dist | speed | pressure
+														// si	 °C  |   mm   |  km  |  m/s  | millibar / hPa
+														// ca    °C  |   mm   |  km  | km/h  | millibar / hPa
+														// us    °F  |  inch  |  mi  |  mph  | millibar / hPa 
+														// uk2   °C  |   mm   |  mi  |  mph  | millibar / hPa
+														
 		// api call
 		$cache = new class_cache('pirateweather_' . $this->location . '.json');
 
@@ -33,7 +39,7 @@ class weather_pirateweather extends weather
 			$content = $cache->read();
 		} else {
 			$loadError = '';
-			$url = 'https://api.pirateweather.net/forecast/' . config_weather_key . '/' . $this->location . '?exclude=minutely,hourly,alerts&units=ca';
+			$url = 'https://api.pirateweather.net/forecast/' . config_weather_key . '/' . $this->location . '?exclude=minutely,hourly,alerts&units='.$units;
 			$content = file_get_contents($url);
 
 			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')

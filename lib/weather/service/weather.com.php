@@ -24,10 +24,11 @@ class weather_weather extends weather
 	 */
 	public function run()
 	{
-		$units = trans('weather.com', 'units');
-		$data_node = 'metric';
-		if ($units == "e") 	$data_node = 'imperial';
-		if ($units == "h") 	$data_node = 'uk_hybrid';
+		$units = trans('weather.com', 'units');				// temp | precip | dist | speed | pressure  
+		$data_node = 'metric';								//	°C  |   mm   |  km  |  km/h | millibar / hPa
+		if ($units == "e") 	$data_node = 'imperial';		//  °F  |  inch  |  mi  |  mph  | inHg 
+		if ($units == "h") 	$data_node = 'uk_hybrid';		//  °C  |   mm   |  mi  |  mph  | millibar / hPa
+		// s = "metric SI" not used yet							°C  |   mm   |  m   |  m/s  | millibar / hPa
 
 		// api call 
 		$cache = new class_cache('weather_'.$this->location.'_current.json');
@@ -38,6 +39,7 @@ class weather_weather extends weather
 		else
 		{
 			$loadError_current = '';
+			// API Doc: https://developer.ibm.com/apis/catalog/weather--current-condition-apis/api/API--weather--personal-weather-station-pws-observations-_-current-conditions
 			$url = 'https://api.weather.com/v2/pws/observations/current?stationId='.$this->location.'&format=json&units='.$units.'&apiKey='.config_weather_key;
 			$content = file_get_contents($url);
 			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
@@ -54,6 +56,7 @@ class weather_weather extends weather
 		else
 		{
 			$loadError_forecast = '';
+			// API Doc: https://developer.ibm.com/apis/catalog/weather--weather-forecast-apis/api/API--weather--daily-forecast-api-3_0#SUNv3DailyForecast
 			$url_forecast = 'https://api.weather.com/v3/wx/forecast/daily/5day?postalKey='.config_weather_postal.'&units='.$units.'&language='.trans('weather', 'lang').'&format=json&apiKey='.config_weather_key;
 			$content_forecast = file_get_contents($url_forecast);
 			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
@@ -83,7 +86,7 @@ class weather_weather extends weather
 				$this->data['current']['wind'] .= ", ".translate('wind_gust', 'wunderground')." ".$wind_gust;
 
 			$this->data['current']['more'] = translate('humidity', 'weather')." ".(string)$parsed_json->{'observations'}[0]->{'humidity'}." %";
-			$this->data['current']['misc'] = translate('air pressure', 'weather')." ".(string)$parsed_json->{'observations'}[0]->{$data_node}->{'pressure'}." hPa";
+			$this->data['current']['misc'] = translate('air pressure', 'weather')." ".(string)$parsed_json->{'observations'}[0]->{$data_node}->{'pressure'}.($units == "e" ? " inHg" : " hPa");
 		}
 		else
 		{
