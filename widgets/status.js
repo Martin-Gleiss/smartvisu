@@ -173,10 +173,6 @@ $.widget("sv.status_toast", $.sv.widget, {
 		textopts: '',
 	},
 
-	_create: function() {
-		this._super();
-	},
-	
 	_update: function(response) {
 		var id = this.element.attr('id');
 
@@ -220,7 +216,6 @@ $.widget("sv.status_toast", $.sv.widget, {
 			}
 		}
 		
-		var showTrigger = items[0];//items[0];
 		var showTitle = items[1];
 		var showText = items[2];
 		var showIcon = items[3];
@@ -253,13 +248,10 @@ $.widget("sv.status_toast", $.sv.widget, {
 			if (sendButton =='') sendButton ='OK';
 			showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ="#'+id+'" type="button" value="'+sendButton+'" data-senditem="'+sendItem+'" data-sendvalue="'+sendVal+'" />';
 		}else{
-			this.options.template = "free";
-			showIcon = response[3] || textOpts[2];
 			if (sendButton != '') showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ="#'+id+'" type="button" value="'+sendButton+'" data-senditem="'+sendItem+'" data-sendvalue="'+sendVal+'" />';
 		};
 		
-		if (response[0]){
-			
+		if (response[0]){	
 			var toast = $.toast({
 				text: showText, // Text that is to be shown in the toast
 				heading: showTitle, // Optional heading to be shown on the toast
@@ -301,7 +293,7 @@ $.widget("sv.status_toast", $.sv.widget, {
 			};
 
 		}else{ 
-			if (allowClose = true){
+			if (allowClose == true){
 				$("div.jq-toast-single").last().remove();
 			};
 		}
@@ -321,8 +313,6 @@ $.widget("sv.status_toast", $.sv.widget, {
         });
 	},
 	
-	_events: {
-	}
 });
 
 // ----- status.activelist ----------------------------------------------------
