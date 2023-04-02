@@ -5,6 +5,7 @@
 - plot.rtr now accepts Highcharts chartOptions object as parameter like plot.period
 - IDs are now optional in basic.roundslider and device.rtrslider
 - new dynamic icon "icon.slidinggate"
+- new widget / dynamic icon "basic.skylight" for a roof window with closed / tilt status and shutter position (thanks to raman)
 
 ### Other New Features
 - weather service pirateweather.net as replacement for darksky.net (thanks to aschwith) 
