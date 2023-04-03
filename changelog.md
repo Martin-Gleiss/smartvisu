@@ -6,6 +6,7 @@
 - IDs are now optional in basic.roundslider and device.rtrslider
 - new dynamic icon "icon.slidinggate"
 - new widget / dynamic icon "basic.skylight" for a roof window with closed / tilt status and shutter position (thanks to raman)
+- id parameter is now fully optional in status toast, even with multiple toasts on a page
 
 ### Other New Features
 - weather service pirateweather.net as replacement for darksky.net (thanks to aschwith) 
@@ -37,6 +38,7 @@
 - colorizing in basic.print did not change colors after first change (due to faulty removeClass() statement)
 - wind speed in openweathermap service was in m/s but unit was km/h
 - status toast was closed on item change even if param_allowclose was 'false'
+- status toast did not always select the right toast to close 
 - duplicte widget updates were triggered if names of items were fully part of other items (e.g. updates on "test.test" triggered also widgets listening to "test.testa" and "test.testb" on the same page )
  
 ### Known Bugs

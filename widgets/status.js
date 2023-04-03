@@ -175,6 +175,10 @@ $.widget("sv.status_toast", $.sv.widget, {
 
 	_update: function(response) {
 		var id = this.element.attr('id');
+		if (id == undefined){
+			id = sv.activePage[0].id + '-' + this.eventNamespace.substring(1);
+		}
+		var element = $(this.element);
 
 		//Style values
 		var params = this.options.style.explode();
@@ -266,11 +270,11 @@ $.widget("sv.status_toast", $.sv.widget, {
 				loaderBg: loaderBg,  // Background color of the toast loader
 				bgColor: bgColor,
 				textColor: color,
-				class: (id != undefined ? id.split("-").slice(1).join("-") : false)  // use widget id parameter(page-section stripped again from uid) as class name for CSS tweaking
+				class: id 
 				
 			});
 			
-			$('#' + id).append(toast);//add toast to widget
+			element.append(toast);//add toast to widget
 		
 		
 			//use smartVISU icon
@@ -294,19 +298,18 @@ $.widget("sv.status_toast", $.sv.widget, {
 
 		}else{ 
 			if (allowClose == true){
-				$("div.jq-toast-single").last().remove();
+				$("div.jq-toast-single." + id).last().remove();
+
 			};
 		}
 		
 		//Close by button click
 		$(".button").click(function() {
-			var button_id = $(this).attr('id'); 
 			var sendItem = $(this).attr('data-senditem');
 			var sendVal= $(this).attr('data-sendvalue'); 
 			if (sendItem == undefined || sendItem == '') {
                 console.log("INFO: TOAST Button pressed, but NO item given ");
             }else{
-               // console.log("INFO-Button: ", button_id, ' ', sendItem, ' ', sendVal);
                 io.write(sendItem, sendVal);
             };
             $(this).closest('div').remove();
