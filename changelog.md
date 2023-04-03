@@ -36,7 +36,8 @@
 - multiple icons of icon.heating on one page could only be colored with the color of the first occurance and disappeared otherwise
 - colorizing in basic.print did not change colors after first change (due to faulty removeClass() statement)
 - wind speed in openweathermap service was in m/s but unit was km/h
-- status toast was closed on item change even if param_allowclose was 'false' 
+- status toast was closed on item change even if param_allowclose was 'false'
+- duplicte widget updates were triggered if names of items were fully part of other items (e.g. updates on "test.test" triggered also widgets listening to "test.testa" and "test.testb" on the same page )
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
