@@ -1426,14 +1426,11 @@ var widget = {
 
 		// update if value has changed or is omitted
 		if (value === undefined || widget.buffer[item] === undefined || widget.buffer[item] !== value && !(widget.buffer[item] instanceof Array && widget.buffer[item].equals(value))) {
+
 			widget.set(item, value);
-			if (widget.checkseries(item))
-				// use "attribute-contains" selector for series items. 
-				// This results in duplicate updates if one series item is entirely part of an other series item (e.g. "heating.act.value.avg.3h.now.10" and "heating.act.value.avg.3h.now.100") which is very much unlikely.
-				$(sv.activePage).find('[data-item*="' + item + '"]').filter(':data("sv-widget")').widget('update', widget.get(item), item) 		
-			else 
-				// use "attribute-contains-word" selector for all other items in order to get exact matches and prevent multiple updates with similar item names
-				$(sv.activePage).find('[data-item~="' + item + '"], [data-item~="' + item + ',"]').filter(':data("sv-widget")').widget('update', widget.get(item), item) 
+			
+			$(sv.activePage).find('[data-item*="' + item + '"]').filter(':data("sv-widget")').widget('update', widget.get(item), item) // new jQuery Mobile style widgets
+			
 		}
 	},
 
@@ -1543,8 +1540,8 @@ var widget = {
 	/**
 	 * Returns all unique series items.
 	 *
-	 * @param    item  item: matches all plot-widgets with that series item (e.g. "heating.act.value.avg.3h.now.100")
-	 * @return   array  unique list of the series items used in plots on the current page
+	 * @param    item  item: matches all plot-widgets with that item
+	 * @return   array  unique list of the items
 	 */
 	series: function (item) {
 		var unique = {};
@@ -1570,7 +1567,7 @@ var widget = {
 	logs: function (item) {
 		var unique = {};
 
-		$(sv.activePage).find('[data-widget="status.log"][data-item'+(item ? '="' + item + '"' : '')+']').each(function (idx) {
+		$(sv.activePage).find('[data-widget="status.log"][data-item'+(item ? '*="' + item + '"' : '')+']').each(function (idx) {
 			var jqNodes = $(this);
 			var items = widget.explode(jqNodes.attr('data-item'));
 			var count = jqNodes.attr('data-count');
@@ -1590,8 +1587,8 @@ var widget = {
 	 * Returns all widgets with plot functionality or plots listening to an item.
 	 * Matching 'plot.' in attribute 'data-widget'.
 	 *
-	 * @param    item  item: matches all plot-widgets with that item (e.g. "heating.act.value.avg.3h.now.100")
-	 * @return   jQuery objectlist: list of all plot-widget objects on the current page
+	 * @param    item  item: matches all plot-widgets with that item
+	 * @return   jQuery objectlist
 	 */
 	plot: function (item) {
 		var ret = $();
