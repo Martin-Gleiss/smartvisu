@@ -63,7 +63,14 @@ class WidgetParameterChecker {
 	private $templateCecker;
 
 	
-
+	/**
+	 * If templatechecker adds default array values they are still in string format, e.g. '[0,1]' 
+	 * These must be integrated into the parameter array as if they had been parsed in the parameter string
+	 * @param $string: string to convert
+	 * @params $start / $end: delimiters used to split the string into array levels - mostly square brackets
+	 * @param $single: 'single' makes the array one-dimensional 
+	 *
+	 */
 	function get_arrays($string, $start, $end, $single){
 		$string = $start . str_replace(', ', ',', $string) . $end;
 		$string = str_replace("'", "", $string);
@@ -142,7 +149,23 @@ class WidgetParameterChecker {
 			return;
 		}
 
-		$values = $this->getParameterValue();
+		// get uzsu item - in quad widgets just before uzsu param array
+		if ($type == 'uzsuparam'){
+			$uzsuitem = $this->widget->getSingleParamString($this->paramIndex - 1);
+			if ($uzsuitem == "''")
+				return;
+		}
+		
+		if ($type == 'plotparam' || $type == 'uzsuparam'){
+			$values = $this->widget->getSingleParamString($this->paramIndex);
+			if ($values == "''")
+				return;
+			if (substr($values, 0, 1) == '[' && substr($values, -1, 1) == ']')
+				$values = substr($values, 1, -1);
+		}
+		else
+			$values = $this->getParameterValue();
+
 		if ($values === NULL)
 			return;
 		if (!is_array($values))
@@ -193,8 +216,19 @@ class WidgetParameterChecker {
 					$this->checkParameterTypePercent($value);	//new
 					break;
 				case 'widget':
-					$node = $this->templateCecker->getCurrentNode();
-					$this->templateCecker->checkWidget($node, $value);
+					$node = $this->widget->getNode();
+					$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->". $value);
+					//DEBUG: echo ($value."<br>");
+					break;
+				case 'plotparam':
+					$node = $this->widget->getNode();
+					$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->plot.period('',". $value .")");
+					// DEBUG: echo "plot.period('',". $value .")".'<br>';
+					break;
+				case 'uzsuparam':
+					$node = $this->widget->getNode(); 
+					$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->device.uzsuicon('', ".$uzsuitem. ", '', " . $value .")");
+					//DEBUG: echo ("device.uzsuicon('', ".$uzsuitem. ", '', " . $value .")<br>");
 					break;
 				case 'unspecified':
 					// this type is not validated at all
@@ -225,6 +259,12 @@ class WidgetParameterChecker {
 			if ($this->getParamConfig('optional', TRUE)) {
 				// missing optional parameter, return default value
 				$value = $this->getParamConfig('default', '');
+				// convert into array if applicable
+				if (!is_array($value)) {
+					$test = explode(',', $value);
+					if (substr( $value, 0, 1 ) === "[" && count($test) > 1)
+						$value = $this->get_arrays($value, '[', ']', 'single');
+				}		
 			} else {
 				// missing mandatory parameter
 				$this->addError('WIDGET PARAM CHECK', 'Mandatory parameter missing', $value);
@@ -235,13 +275,6 @@ class WidgetParameterChecker {
 		// no check for arrayform if value is empty
 		if($value == '')
 			return $value;
-
-		if (!is_array($value))
-			$test = explode(',', $value);
-		if (!is_array($value) && substr( $value, 0, 1 ) === "[" && count($test) > 1)
-		{
-			$value = $this->get_arrays($value, '[', ']', 'single');
-		}
 
 		$allowArray = $this->getParamConfig('array_form', 'no');
 		if (is_array($value) && $allowArray != 'must' && $allowArray != 'may') { // array form
@@ -303,8 +336,8 @@ class WidgetParameterChecker {
 			return;
 
 		if (substr($value, 0, 5) == 'icon.') {
-			$node = $this->templateCecker->getCurrentNode();
-			$this->templateCecker->checkWidget($node, $value);
+			$node = $this->widget->getNode();
+			$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->".$value);
 
 			$dyniconWiget = explode('(', $value, 2);
 			if (array_key_exists($dyniconWiget[0], $this->dynamicIcons)) {
@@ -318,8 +351,8 @@ class WidgetParameterChecker {
 
 		}
 		else if (substr($value, 0, 12) == 'basic.symbol') {
-			$node = $this->templateCecker->getCurrentNode();
-			$this->templateCecker->checkWidget($node, $value);
+			$node = $this->widget->getNode();
+			$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->".$value);
 			$dyniconWiget = explode('(', $value, 2);
 			if (array_key_exists($dyniconWiget[0], $this->dynamicIcons)) {
 				// existing dynamic icon

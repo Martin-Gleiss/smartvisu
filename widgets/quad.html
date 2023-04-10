@@ -260,7 +260,7 @@
  * @param {text[]=} list of additional widgets / content to display
  * @param {color(icon0to5)=} color for the popup icon, e.g. 'icon0' through 'icon5'
  * @param {text=} activity indicator for the plot icon which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon0' through 'icon5' or 'blink' (optional)
- * @param {unspecified[?]=} array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {plotparam[?]=} array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} icon triggering the plot popup
  * @param {item(num)=} an item for the current setpoint (e.g. valve 0..100%)
  * @param {unspecified=} placeholder attributes for future features, etc.
@@ -334,11 +334,11 @@
  * @param {text(horizontal,vertical,bottomup,semicircle,popup)=horizontal} 	if the dimmer slider should be implemented in the column directly.
  						possible options: 'horizontal', 'vertical', 'bottomup', 'semicircle'. 'popup' or empty for popup.
  * @param {item(dict)=}      a gad/item for UZSU
- * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+ * @param {uzsuparam[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {text=}     value type: '%' to recalculate 0-255 values to 0-100%  (e.g. for lights) or any formula
    - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
    - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
- * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
  * @param {item(foo)=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
@@ -707,11 +707,11 @@
  * @param {value=}    the minimum value which is displayed if the slider is moved to total left (optional, default like min)
  * @param {value=}    the maximum value which is displayed if the slider is moved to total left (optional, default like max)
  * @param {item(dict)=}      a gad/item for UZSU
- * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+ * @param {uzsuparam[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {text(rgb,hsv)=}   	colormodel for popup (rgb or hsv)
  * @param {item(bool)=}   	a gad/item to switch on/off fourth color / warm white
  * @param {item(num)=}   	a gad/item for value of fourth color / warm white
- * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
  * @param {item(foo)=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
@@ -1168,8 +1168,8 @@
  * @param {text(false,true)=true} 	    Move on long press and stop on short press on up/down buttons
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {item(dict)=}      a gad/item for UZSU
- * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
- * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {uzsuparam[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+ * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
  * @param {item(foo)=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
@@ -1619,8 +1619,8 @@
  * @param {text(false,true)=true} 	    Move on long press and stop on short press on up/down buttons
  * @param {unspecified=} 	    placeholder attributes for future features, etc.
  * @param {item(dict)=}      a gad/item for UZSU
- * @param {unspecified[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
- * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {uzsuparam[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+ * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
  * @param {item(foo)=} 		"root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
@@ -1678,8 +1678,8 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {item(num)=} 		    a gad/item for duration of current title
  * @param {item[?](num,bool)=} 		    (array of) gad/item for setting speakers A/B
  * @param {item(dict)=}  		    a gad/item for UZSU
- * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
- * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {uzsuparam[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
+ * @param {plotparam[?]=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
  * @param {item(foo)=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
@@ -2251,7 +2251,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {text[?]=} text for each column (optional)
  * @param {item[?](dict)=}  		    a gad/item for UZSU
  * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
- * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {unspecified[?]=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
  * @param {item[?](foo)=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
@@ -2894,7 +2894,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {text[?]=} (array with) text for each column (optional)
  * @param {item[?](dict)=}  		    a gad/item for UZSU
  * @param {unspecified[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
- * @param {unspecified[?](item)=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {unspecified[?]=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
  * @param {item[?](foo)=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.

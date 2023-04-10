@@ -41,15 +41,6 @@ class TemplateChecker {
 	 * Object for the Icons
 	 */
 	private $items;
-	
-	/**
-	 * currently checked Node
-	 */
-	 private $currentNode;
-	 
-	 public function getCurrentNode (){
-			return $this->currentNode;
-	 }
 
 	/**
 	 * Perform template checks for single file
@@ -165,7 +156,6 @@ class TemplateChecker {
 	function checkNode($node, $level = 0) {
 		if ($node == NULL)
 			return;
-		$this->currentNode = $node;
 		if ($node->nodeType == XML_ELEMENT_NODE) {
 			switch ($node->tagName) {
 				case 'img':
@@ -238,7 +228,11 @@ class TemplateChecker {
 		if ($widget == NULL)
 			return;
 
-		$widgetConfig = $this->getWidgetConfig($widget->getName());
+		$widgetName = $widget->getName();
+		if (strpos($widgetName, '->') > 0 )
+			$widgetName = substr($widgetName,  strpos($widgetName, '->') + 2);
+		
+		$widgetConfig = $this->getWidgetConfig($widgetName);
 
 		if ($widgetConfig === NULL || (!array_key_exists('param', $widgetConfig) && !array_key_exists('removed', $widgetConfig)) ) {
 			$this->messages->addWarning('WIDGET PARAM CHECK', 'Unknown widget found. Check manually!', $widget->getLineNumber(), $widget->getMacro(), $widget->getMessageData());

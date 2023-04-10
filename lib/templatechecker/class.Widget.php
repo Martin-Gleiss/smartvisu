@@ -64,6 +64,12 @@ class Widget {
 	 * @var integer
 	 */
 	private $paramCount;
+	
+	private $paramStringArray;
+	
+	public function getSingleParamString($index){
+		return ($this->paramCount >= $index && isset($this->paramStringArray[$index]))? $this->paramStringArray[$index] : NULL;
+	}
 
 	/**
 	 * return single parameter
@@ -129,27 +135,36 @@ class Widget {
 			}			
 			$paramArray = $param_array[0];
 			*/
-			$paramArray = self::splitParameters($parameters, $name, $node, $macro, $messages);			
+
+			$splitResult = self::splitParameters($parameters, $name, $node, $macro, $messages, 1);			
+			$paramArray = $splitResult['values']; 
+			$paramStringArray = $splitResult['strings'];
+
 		} else {
 			// No parameters			
 			$paramArray = array();
+			$paramStringArray = array();
 		}
 
-		return new Widget($node, $macro, $name, $parameters, $paramArray);
+		return new Widget($node, $macro, $name, $parameters, $paramArray, $paramStringArray);
 	}
 
-	private static function splitParameters($paramString, $name, $node, $macro, $messages) {
+	private static function splitParameters($paramString, $name, $node, $macro, $messages, $topLevel) {
 		$inSingleQuotes = FALSE;
 		$squareBracketLevel = 0;
 		$roundBracketLevel = 0;
 		$curlyBracketLevel = 0;
 		$paramArray = array();
+		$paramStringArray = array();
 		$currentParam = '';
 		$lastChar = '';
 		$isArray = false;
 		$isWidget = false;
 		$isWidgetArray = false;
+		$paramStart = 0;
+		$paramLength = 0;
 		foreach (str_split($paramString) as $char) {
+			$paramLength ++;
 			if ($char == '\'' && $lastChar != '\\') {
 				$inSingleQuotes = !$inSingleQuotes;
 				$currentParam .= $char;
@@ -181,7 +196,7 @@ class Widget {
 			} else if ($char == ',' && !$inSingleQuotes && $squareBracketLevel == 0 && $roundBracketLevel == 0 && $curlyBracketLevel==0) {
 				if($isArray && $squareBracketLevel == 0 && $curlyBracketLevel == 0){
 					if (!$isWidget)
-						$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
+						$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages, 0);
 					else{
 						preg_match_all ('/([a-zA-Z0-9]+?\.[a-zA-Z0-9]+?\(.+?\))/', $currentParam, $foundWidgets);
 						$currentParam = $foundWidgets[0];
@@ -189,7 +204,13 @@ class Widget {
 				}
 				else
 					$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
+				
 				$paramArray[] = $currentParam;
+				if ($topLevel == 1) {
+					$paramStringArray[] = trim(substr($paramString, $paramStart, $paramLength -1));
+					$paramStart += $paramLength;
+					$paramLength = 0;
+				}
 				$currentParam = '';
 				$isArray = false;
 				$isWidget = false;
@@ -203,7 +224,7 @@ class Widget {
 		if ($currentParam) {
 			if($isArray && $curlyBracketLevel == 0){
 				if (!$isWidget)
-						$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages);
+						$currentParam = self::splitParameters($currentParam, $name, $node, $macro, $messages, 0);
 					else{
 						preg_match_all ('/([a-zA-Z0-9]+?\.[a-zA-Z0-9]+?\(.+?\))/', $currentParam, $foundWidgets);
 						$currentParam = $foundWidgets[0];
@@ -211,7 +232,10 @@ class Widget {
 			}
 			else
 				$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
-				$paramArray[] = $currentParam;
+
+			$paramArray[] = $currentParam;
+			if ($topLevel == 1) 
+					$paramStringArray[] = trim(substr($paramString, $paramStart, $paramLength));
 		}
 
 		if ($inSingleQuotes) {
@@ -235,7 +259,10 @@ class Widget {
 				$data['Parameter ' . $i++] = $param;
 			$messages->addWarning('WIDGET PARAM SPLIT', 'Curly Brackets not matching!', $node->getLineNo(), $macro, $data);
 		}
-		return $paramArray;
+		if ($topLevel == 0)
+			return $paramArray;
+		else
+			return array ('strings' => $paramStringArray, 'values' => $paramArray );
 	}
 	
 	/**
@@ -246,7 +273,7 @@ class Widget {
 	 * @param string $paramString parameter string of widget
 	 * @param array $paramArray array of parameters
 	 */
-	private function __construct($node, $macro, $name, $paramString, $paramArray) {
+	private function __construct($node, $macro, $name, $paramString, $paramArray, $paramStringArray) {
 		$this->node = $node;
 		$this->macro = $macro;
 		$this->lineNumber = $node->getLineNo();
@@ -254,6 +281,7 @@ class Widget {
 		$this->paramString = $paramString;
 		$this->paramArray = $paramArray;
 		$this->paramCount = count($paramArray);
+		$this->paramStringArray = $paramStringArray;
 	}
 
 }
