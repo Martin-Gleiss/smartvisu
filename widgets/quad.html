@@ -76,8 +76,8 @@
  * @param {text[?]=} description text for the column. Can be array.
  * @param {unspecified[?]=} array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} icon triggering the plot popup
- * @param {unspecified=} placeholder attributes for future features, etc.
- * @param {unspecified=} placeholder attributes for future features, etc.
+ * @param {placeholder=} placeholder attributes for future features, etc.
+ * @param {placeholder=} placeholder attributes for future features, etc.
  * @param {value[](1,2,3,4,5)=} array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
              to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
  */
@@ -167,13 +167,13 @@
  * @param {color[?](icon0to5)=} array of colors; 'icon0' through 'icon5' or e. g. '#f00' for red (optional)
    the first one is the base color for values below first threshold, so pass one color more than thresholds.
  * @param {text[?]=} 	    css class name, useful for script hacks (see documentation and example)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text=}       description text for the whole line
  * @param {text[?]=}     description text for each column
  * @param {unspecified[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {value[](1,2,3,4,5)=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
  *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
 */
@@ -263,7 +263,7 @@
  * @param {plotparam[?]=} array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
  * @param {image=measure_power_meter} icon triggering the plot popup
  * @param {item(num)=} an item for the current setpoint (e.g. valve 0..100%)
- * @param {unspecified=} placeholder attributes for future features, etc.
+ * @param {placeholder=} placeholder attributes for future features, etc.
  * @param {value[](1,2,3,4,5)=} array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)
  *						to reverse the complete order, use [5, 4, 3, 2, 1], to reverse the last two, use [1, 2, 3, 5, 4], etc.
 */
@@ -350,7 +350,7 @@
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {item[](bool,num)=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
  * @param {widget[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text[](switch,value_popup,value_slider,locks,uzsu,stateengine,plot,scenes,extpopup,anynumber)=[['locks', 'switch'], 'value_popup', 'stateengine', 'uzsu', 'plot']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'switch', 'value_popup', 'value_slider', 'locks', 'uzsu', 'stateengine', 'plot', 'scenes', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
@@ -725,7 +725,7 @@
  * @param {item[?](bool)=} 		item for RGB sequencer (logic). Optional an array including a short press item and a long press item or popup id (starting with #). Example: ['light.sequencer', '#popup']. The popup has to be defined on the HTML page by using the popup.extpopup widget. It gets activated on a longpress.
  * @param {color[](icon0,icon1)=} 	array with on/off icon colors
  * @param {widget[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text[](colorpicker,ww_popup,ww_slider,values,sequencer,locks,stateengine,uzsu,plot,extpopup,anynumber)=[[locks, sequencer, colorpicker],values, stateengine, plot, uzsu]}     array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'colorpicker', 'ww_popup', 'ww_slider', 'values', 'sequencer', 'locks', 'stateengine', 'uzsu', 'plot'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
@@ -1166,7 +1166,7 @@
  * @param {value=0} the value to send for position 1 (optional, default 0)
  * @param {value=1} the value to send for position 2 (optional, default 1)
  * @param {text(false,true)=true} 	    Move on long press and stop on short press on up/down buttons
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {item(dict)=}      a gad/item for UZSU
  * @param {uzsuparam[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
@@ -1181,7 +1181,7 @@
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
 
  * @param {widget[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot,extpopup,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
@@ -1620,7 +1620,7 @@
  * @param {value=255}    		the maximum value for open (optional, default 255)
  * @param {value=5}   		step between two values (optional, default 5)
  * @param {text(false,true)=true} 	    Move on long press and stop on short press on up/down buttons
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {item(dict)=}      a gad/item for UZSU
  * @param {uzsuparam[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
@@ -1636,7 +1636,7 @@
  * @param {unspecified[]=} 	    a list with positional attributes: item_saved = an item for some saved positions, value_pos_1 =
 the value to send for position 1, value_pos_2 = the value to send for position 2, text_pos_1 = the text printed on button for position 1, text_pos_2 = the text printed on button for position 2 (optional)
  * @param {widget[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot,extpopup,anynumber)=[[move_down, move_up], pos_popup_shutter, stateengine, plot, uzsu]} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
@@ -1693,8 +1693,8 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {text=} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text[](previous,play,pause,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,stateengine,repeat,source,source_popup,speaker,playpause,playpausestop,playstop,shuffle,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'previous', 'play', 'pause', 'stop', 'next', 'power', 'eject', 'mute', 'volume_slider', 'cover',
             'volume_popup', 'volume_up', 'volume_down', 'song_position', 'uzsu', 'plot', 'stateengine', 'repeat', 'source', 'speaker', 'playpause', 'playstop', 'playpausestop', 'shuffle', 'source_popup'
@@ -2246,8 +2246,8 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {text=} the value to send on longpress (optional)
    If this starts with a + or - sign the value is treated as offset to current stateswitch value.
  * @param {text=} the value to send on releasing after a longpress (optional)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
                        If you want to implement two state switches for one single item (e.g. on/off and timer or restart, etc.)
                        you can provide the following attributes as single statements without arrays.
  * @param {text=} text for the whole line (optional)
@@ -2268,7 +2268,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {unspecified[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
                             You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
  * @param {widget[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text[](switch,stateengine,uzsu,plot,locks,slider,extpopup,anynumber)=['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'switch', 'stateengine', 'uzsu', 'plot', 'locks', 'slider'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
@@ -2892,8 +2892,8 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {text[?]=} list of texts for every menu entry or button (optional)
  * @param {color[?](icon0to5)=icon1} the color for the on state of the buttons, e.g. 'icon0'through'icon5' or '#f00' or 'red' (optional, default: icon1) - not supported for type 'menu'
  * @param {text[?](horizontal,vertical,none)=horizontal} orientation of the controlgroup: 'horizontal', 'vertical' or 'none' for seperate buttons (optional, default: 'horizontal') - not supported for type 'menu'
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text=} text for the whole line (optional)
  * @param {text[?]=} (array with) text for each column (optional)
  * @param {item[?](dict)=}  		    a gad/item for UZSU
@@ -2911,8 +2911,8 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
  * @param {unspecified[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
                             You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text[](select,stateengine,uzsu,plot,locks,extpopup,anynumber)=['locks', 'select', 'stateengine', 'plot', 'uzsu']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
             possible elements are: 'select', 'stateengine', 'uzsu', 'plot', 'locks', 'extpopup'
             For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
@@ -2943,8 +2943,8 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 	- time, timeflip: Format is 24hr clock - e.g. '18:31:27'
 	- duration & durationflip: in seconds
  * @param {value[?]=1} step between two values (optional, no effect on date/time types)
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
- * @param {unspecified=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text=} text for the whole line (optional)
  * @param {text[?]=} (array with) text for each column (optional)
  * @param {value[](1,2,3,4,5)=} 	array with numbers from 1 to 5: Reorder elements to your liking (esp. relevant for smartphones as 5 columns might be too much)

@@ -24,6 +24,7 @@
 - reconnect interval can be configured in config.ini by the key "reconnect_time"
 - template checker recursively checks widget calls within widgets, e.g. dynamic icons and in quad widgets (w/ new parameter type "widget")
 - template checker now checks parameter arrays for plots and uzsu in quad widgets w/ new parameter types "plotparam" and "uzsuparam" (yet only for widgets with one plot / uzsu)
+- reduced checking of parameters of type 'unspecified': no checking of empty parameters and new unchecked type "placeholder"
 
 ### Updated Libraries
 - MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder
