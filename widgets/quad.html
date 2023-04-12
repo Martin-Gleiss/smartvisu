@@ -1186,6 +1186,9 @@
              possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'], 'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
+ * @param {text(blind,shutter)=} 	    Should be untouched as it is set automatically (optional)
+ * @param {unspecified[]=} 	    a list with positional attributes. Should be untouched as it is set automatically (optional)
+
  */
 {% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, move_on_longpress, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, blind_or_shutter, pos_attribs) %}
     {% import "@widgets/basic.html" as basic %}
@@ -2271,6 +2274,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is ['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']
              Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
+ * @param {text(switch,select)=} 	    Should be untouched as it is set automatically (optional)
 */
 {% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, item_longpress, value_longpress, value_longrelease, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, linetext_widget, place4, column_order, switch_or_select) %}
     {% import "@widgets/basic.html" as basic %}
