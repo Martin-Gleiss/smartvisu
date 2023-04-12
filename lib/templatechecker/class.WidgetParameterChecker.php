@@ -149,6 +149,10 @@ class WidgetParameterChecker {
 			return;
 		}
 
+		$values = $this->getParameterValue($type);
+		if ($values === NULL)
+			return;
+		
 		// get uzsu item - in quad widgets just before uzsu param array
 		if ($type == 'uzsuparam'){
 			$uzsuitem = $this->widget->getSingleParamString($this->paramIndex - 1);
@@ -157,17 +161,10 @@ class WidgetParameterChecker {
 		}
 		
 		if ($type == 'plotparam' || $type == 'uzsuparam'){
-			$values = $this->widget->getSingleParamString($this->paramIndex);
-			if ($values == "''")
-				return;
 			if (substr($values, 0, 1) == '[' && substr($values, -1, 1) == ']')
 				$values = substr($values, 1, -1);
 		}
-		else
-			$values = $this->getParameterValue();
 
-		if ($values === NULL)
-			return;
 		if (!is_array($values))
 			$values = array($values);
 
@@ -230,6 +227,9 @@ class WidgetParameterChecker {
 					$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->device.uzsuicon('', ".$uzsuitem. ", '', " . $value .")");
 					//DEBUG: echo ("device.uzsuicon('', ".$uzsuitem. ", '', " . $value .")<br>");
 					break;
+				case 'placeholder':
+					// no need to check anything here
+					break;
 				case 'unspecified':
 					// this type is not validated at all
 					$this->addInfo('WIDGET UNSPECIFIED PARAM TYPE', 'Parameter can not be checked, check manually', $value);
@@ -251,8 +251,13 @@ class WidgetParameterChecker {
 	 *
 	 * @return mixed. value, array of values (if parameter is given in array form) or NULL (if errors occured)
 	 */
-	private function getParameterValue() {
-		$value = $this->widget->getParam($this->paramIndex);
+	private function getParameterValue($type) {
+		
+		$stringParam = $type == 'plotparam' || $type == "uzsuparam" || $type == 'unspecified';
+		if ($stringParam == true)
+			$value = $this->widget->getSingleParamString($this->paramIndex);
+		else
+			$value = $this->widget->getParam($this->paramIndex);
 
 		// parameter not given
 		if ($value == NULL || $value == '') {
@@ -260,7 +265,7 @@ class WidgetParameterChecker {
 				// missing optional parameter, return default value
 				$value = $this->getParamConfig('default', '');
 				// convert into array if applicable
-				if (!is_array($value)) {
+				if (!is_array($value) && $stringParam == false) {
 					$test = explode(',', $value);
 					if (substr( $value, 0, 1 ) === "[" && count($test) > 1)
 						$value = $this->get_arrays($value, '[', ']', 'single');
@@ -273,14 +278,17 @@ class WidgetParameterChecker {
 		}
 
 		// no check for arrayform if value is empty
+		if ($stringParam == true && ($value == "''" || $value == ''))
+			return NULL;
 		if($value == '')
 			return $value;
 
 		$allowArray = $this->getParamConfig('array_form', 'no');
-		if (is_array($value) && $allowArray != 'must' && $allowArray != 'may') { // array form
+		$valueIsArray = is_array($value) || ($stringParam && is_array($this->widget->getParam($this->paramIndex)));
+		if ($valueIsArray && $allowArray != 'must' && $allowArray != 'may') { // array form
 			$this->addError('WIDGET PARAM CHECK', 'Array form not allowed for parameter', $value);
 			return NULL;
-		} else if (!is_array($value) && $allowArray == 'must') { // not array form
+		} else if ($valueIsArray == false && $allowArray == 'must') { // not array form
 			$this->addError('WIDGET PARAM CHECK', 'Array form required for parameter', $value);
 			return NULL;
 		}
