@@ -155,7 +155,15 @@ class WidgetParameterChecker {
 		
 		// get uzsu item - in quad widgets just before uzsu param array
 		if ($type == 'uzsuparam'){
-			$uzsuitem = $this->widget->getSingleParamString($this->paramIndex - 1);
+			$uzsuitem = $this->widget->getParam($this->paramIndex - 1);
+			// we can check only one of the items as dummy in the recursive uzsu eidget check 
+			// so item names in the info lines may differ from the real items 
+			// items have been checked as individual parameters before
+			if (is_array($uzsuitem)){
+				foreach($uzsuitem as $item)
+					if ($item != '') break;
+			}		
+			$uzsuitem = "'". $item . "'";
 			if ($uzsuitem == "''")
 				return;
 		}
