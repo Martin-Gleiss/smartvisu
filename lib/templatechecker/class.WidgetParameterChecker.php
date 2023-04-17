@@ -160,11 +160,6 @@ class WidgetParameterChecker {
 				return;
 		}
 		
-		if ($type == 'plotparam' || $type == 'uzsuparam'){
-			if (substr($values, 0, 1) == '[' && substr($values, -1, 1) == ']')
-				$values = substr($values, 1, -1);
-		}
-
 		if (!is_array($values))
 			$values = array($values);
 
@@ -254,8 +249,39 @@ class WidgetParameterChecker {
 	private function getParameterValue($type) {
 		
 		$stringParam = $type == 'plotparam' || $type == "uzsuparam" || $type == 'unspecified';
-		if ($stringParam == true)
+		if ($stringParam == true){
 			$value = $this->widget->getSingleParamString($this->paramIndex);
+			if ($type != 'unspecified'){
+				
+				// some quad widgets define parameter array sizes by certain parameters
+				// we need to know these in order to parse parameter arrays correctly
+				if (array_key_exists($this->widget->getName(), TemplateCheckerConfig::ArrayDimensionSetter)){
+					$widgetElements = $this->widget->getParam(TemplateCheckerConfig::ArrayDimensionSetter[$this->widget->getName()]);
+					$widgetElementsCount = (is_array($widgetElements) ? count($widgetElements) : 0);
+					$test = json_decode(str_replace("'", '"', $value));
+					if (is_array($test)){
+						if (count($test) == $widgetElementsCount || $widgetElementsCount == 0){
+							$value = [];
+							// prepare populated array elements / ignore empty elements  
+							for ($i = 0; $i < $widgetElementsCount; $i++){
+								if($test[$i] != ''){
+									if (is_array($test[$i]) || $widgetElementsCount == 0){
+										$value[] = substr(str_replace('"', "'", json_encode($test[$i])), 1, -1);}
+									else
+										$value[] = str_replace('"', "'", json_encode($test[$i]));
+								}
+							}   
+						}
+						else 
+							$this->addWarning('WIDGET PARAM CHECK', 'Array size does not match the widgets parameter count, check manually', $value);
+					}
+				}
+				else {
+					if (substr($value, 0, 1) == '[' && substr($value, -1, 1) == ']')
+					$value = substr($value, 1, -1);
+				}
+			}
+		}
 		else
 			$value = $this->widget->getParam($this->paramIndex);
 

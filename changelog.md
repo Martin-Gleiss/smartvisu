@@ -23,7 +23,7 @@
 - round sliders fully styled with CSS
 - reconnect interval can be configured in config.ini by the key "reconnect_time"
 - template checker recursively checks widget calls within widgets, e.g. dynamic icons and in quad widgets (w/ new parameter type "widget")
-- template checker now checks parameter arrays for plots and uzsu in quad widgets w/ new parameter types "plotparam" and "uzsuparam" (yet only for widgets with one plot / uzsu)
+- template checker now checks parameter arrays for plots and uzsu in quad widgets w/ new parameter types "plotparam" and "uzsuparam"
 - reduced checking of parameters of type 'unspecified': no checking of empty parameters and new unchecked type "placeholder"
 - template checker is now able to checks single files 
 
