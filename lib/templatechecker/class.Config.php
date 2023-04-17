@@ -61,4 +61,10 @@ class TemplateCheckerConfig {
 	 */
 	const SmartvisuDurationIntervals = array('s', 'i', 'h', 'd', 'w', 'm', 'y');
 
+	/**
+	 * Array of parameters defining the array sizes in quad widgets. E.g. quad.stateswitch param #2 (type) array size defines the number 
+	 * of plot parameter sets which must be given
+	 */
+	 const ArrayDimensionSetter = array ('quad.stateswitch' => 2, 'quad.select' => 2, 'quad.symbol' => 5, 'quad.print' => 1 );
+
 }
