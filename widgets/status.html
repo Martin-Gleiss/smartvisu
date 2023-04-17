@@ -65,7 +65,7 @@ the first one is the base color for values below first threshold, so pass one co
 /**
 * Displays a list of logging-information
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget (optional)
 * @param {text} the name of the log
 * @param {value(1..50)} maximal number of entries (1 - 50)
 */
@@ -81,7 +81,7 @@ the first one is the base color for values below first threshold, so pass one co
 /**
 * Displays a notification popup window with a message
 *
-* @param {id} unique id for this widget
+* @param {id} unique id for this widget (mandatory)
 * @param {item(bool,num)} an item witch triggers the popup: NOT 0 open it, 0 close it
 * @param {item(str)=} an item with the dynamic message
 * @param {item(num,str)=} an item with a timestamp (e.g. 2020-01-01T12:00:00.000000+01:00 or a Unix timestamp in Milliseconds)
@@ -107,7 +107,7 @@ the first one is the base color for values below first threshold, so pass one co
 /**
 * Displays a notification edge window
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget (optional)
 * @param {item(bool,num)} an item witch triggers the notification
 * @param {item(str)=} an item with the dynamic message
 * @param {text=INFO} a word for the signal corner (optional, default 'INFO')
