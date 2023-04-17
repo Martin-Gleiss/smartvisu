@@ -2265,7 +2265,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {item[](bool,num)=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
- * @param {unspecified[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
+ * @param {sliderparam[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
                             You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
  * @param {widget[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
  * @param {placeholder=} 	    placeholder attributes for future features, etc.
@@ -2909,7 +2909,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {item[]=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
- * @param {unspecified[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
+ * @param {sliderparam[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
                             You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
  * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {placeholder=} 	    placeholder attributes for future features, etc.

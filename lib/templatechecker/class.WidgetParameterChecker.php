@@ -155,7 +155,15 @@ class WidgetParameterChecker {
 		
 		// get uzsu item - in quad widgets just before uzsu param array
 		if ($type == 'uzsuparam'){
-			$uzsuitem = $this->widget->getSingleParamString($this->paramIndex - 1);
+			$uzsuitem = $this->widget->getParam($this->paramIndex - 1);
+			// we can check only one of the items as dummy in the recursive uzsu eidget check 
+			// so item names in the info lines may differ from the real items 
+			// items have been checked as individual parameters before
+			if (is_array($uzsuitem)){
+				foreach($uzsuitem as $item)
+					if ($item != '') break;
+			}		
+			$uzsuitem = "'". $item . "'";
 			if ($uzsuitem == "''")
 				return;
 		}
@@ -222,6 +230,10 @@ class WidgetParameterChecker {
 					$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->device.uzsuicon('', ".$uzsuitem. ", '', " . $value .")");
 					//DEBUG: echo ("device.uzsuicon('', ".$uzsuitem. ", '', " . $value .")<br>");
 					break;
+				case 'sliderparam':
+					$node = $this->widget->getNode(); 
+					$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->basic.slider(''," . $value .")");
+					//DEBUG: echo ("basic.slider('', " . $value .")<br>");
 				case 'placeholder':
 					// no need to check anything here
 					break;
@@ -248,7 +260,7 @@ class WidgetParameterChecker {
 	 */
 	private function getParameterValue($type) {
 		
-		$stringParam = $type == 'plotparam' || $type == "uzsuparam" || $type == 'unspecified';
+		$stringParam = $type == 'plotparam' || $type == "uzsuparam" || $type == 'sliderparam' || $type == 'unspecified';
 		if ($stringParam == true){
 			$value = $this->widget->getSingleParamString($this->paramIndex);
 			if ($type != 'unspecified'){
@@ -265,6 +277,12 @@ class WidgetParameterChecker {
 							// prepare populated array elements / ignore empty elements  
 							for ($i = 0; $i < $widgetElementsCount; $i++){
 								if($test[$i] != ''){
+									if (is_array($test[$i]) && $type == 'sliderparam'){
+										// adjust parameter sequence for basic.slider
+										if (count($test[$i]) > 4)
+											$test[$i] = array_merge(array_slice($test[$i], 0, 4, true), array('horizontal'), count($test[$i]) >= 6 ? array_slice($test[$i], 5, null, true) : null);
+									}
+
 									if (is_array($test[$i]) || $widgetElementsCount == 0){
 										$value[] = substr(str_replace('"', "'", json_encode($test[$i])), 1, -1);}
 									else
