@@ -61,9 +61,10 @@
 								<h3>{{ lang('configuration_page', 'interface', 'label') }}</h3>
 								<div style="min-height:245px">
 									{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
+									{% set designdir = dir('designs', '(.+?).css') %} {% if isdir('dropins/designs') %} {% set designdir = designdir|merge(dir('dropins/designs', '(.+?).css')) %} {% endif %}
 									{{ forms.config_row(source, values, 'design',
 										[
-										forms.config_select(source, values, 'design', dir('designs', '(.+?).css'), 'true')
+										forms.config_select(source, values, 'design', designdir, 'true')
 										,forms.config_hidden(source, values, 'design_icon0')
 										,forms.config_hidden(source, values, 'design_icon1')
 										] 

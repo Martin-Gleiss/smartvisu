@@ -44,6 +44,7 @@
 	<link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.4.5.min.css" />
 
 /** CSS assets **/
+{% set design_css = isfile('designs/' ~ config_design ~ '.css') ? 'designs/' ~ config_design ~ '.css' : 'dropins/designs/' ~ config_design ~ '.css' %}
 {% set cssFiles = [
 		'vendor/plot.highcharts/highcharts.css',
 		'vendor/JTSage/DateBox/css/jtsage-datebox.css',
@@ -54,7 +55,7 @@
 		'pages/base/base.css',
 		'pages/base/quad.css',
 		icon0 ~ 'jquery.mobile.icons.min.css',
-		'designs/' ~ config_design ~ '.css',
+		design_css,
 		'pages/' ~ config_pages ~ '/visu.css'
 	] %}
 {% for file in dir('dropins/shwidgets', '(.*)(\.css)') %}

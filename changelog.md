@@ -11,6 +11,7 @@
 ### Other New Features
 - weather service pirateweather.net as replacement for darksky.net (thanks to aschwith) 
 - improved unit handling in weather services via language files
+- new folder ./dropins/designs for custom design CSS files
 
 ### Improvements
 - Template checker now ignores multi-line comments  
