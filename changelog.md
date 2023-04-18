@@ -7,6 +7,7 @@
 - new dynamic icon "icon.slidinggate"
 - new widget / dynamic icon "basic.skylight" for a roof window with closed / tilt status and shutter position (thanks to raman)
 - id parameter is now fully optional in status toast, even with multiple toasts on a page
+- new "live" parameter in device.blind, device.dimmer and device.window enables the usage of the live mode feture of basic.slider
 
 ### Other New Features
 - weather service pirateweather.net as replacement for darksky.net (thanks to aschwith) 
