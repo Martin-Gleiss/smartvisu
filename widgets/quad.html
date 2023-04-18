@@ -350,7 +350,7 @@
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {item[](bool,num)=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
  * @param {widget[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
- * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
  * @param {text[](switch,value_popup,value_slider,locks,uzsu,stateengine,plot,scenes,extpopup,anynumber)=[['locks', 'switch'], 'value_popup', 'stateengine', 'uzsu', 'plot']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'switch', 'value_popup', 'value_slider', 'locks', 'uzsu', 'stateengine', 'plot', 'scenes', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
@@ -359,7 +359,7 @@
  * @see stateengine#stateengine
  *
 */
-{% macro dimmer(id, linetext, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos, indicator, slider_orientation, item_uzsu, uzsu_attribs, formula, item_plot, icon_plot, item_auto, extpopup, locks, linetext_widget, place4, column_order) %}
+{% macro dimmer(id, linetext, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos, indicator, slider_orientation, item_uzsu, uzsu_attribs, formula, item_plot, icon_plot, item_auto, extpopup, locks, linetext_widget, live, column_order) %}
     {% import "@widgets/basic.html" as basic %}
     {% import "@widgets/device.html" as device %}
     {% import "@widgets/plot.html" as plot %}
@@ -577,7 +577,7 @@
     {% endif %}
 
     {% if column == 'value_slider' and item_value %}
-      {{ basic.slider(id~'_slider_inline', item_value, min, max, step, slider_orientation, value_display, min_display, max_display) }}
+      {{ basic.slider(id~'_slider_inline', item_value, min, max, step, slider_orientation, value_display, min_display, max_display, live) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -597,7 +597,7 @@
                 {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                 {{ basic.stateswitch(id~'dimmerpopup_switch', item_switch, 'icon', [0,1], [pic_off|default('light_light'), pic_on|default('light_light')], '', [color_off, color_on], indicator) }}
                 <p>{{ linetext|e }}</p>
-                {{ basic.slider(id~'dimmerpopup_slider', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
+                {{ basic.slider(id~'dimmerpopup_slider', item_value, min, max, step, slider_orientation, value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : ''), live) }}
                 </div>
               </div>
             </div>
@@ -725,13 +725,13 @@
  * @param {item[?](bool)=} 		item for RGB sequencer (logic). Optional an array including a short press item and a long press item or popup id (starting with #). Example: ['light.sequencer', '#popup']. The popup has to be defined on the HTML page by using the popup.extpopup widget. It gets activated on a longpress.
  * @param {color[](icon0,icon1)=} 	array with on/off icon colors
  * @param {widget[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
- * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
  * @param {text[](colorpicker,ww_popup,ww_slider,values,sequencer,locks,stateengine,uzsu,plot,extpopup,anynumber)=[[locks, sequencer, colorpicker],values, stateengine, plot, uzsu]}     array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'colorpicker', 'ww_popup', 'ww_slider', 'values', 'sequencer', 'locks', 'stateengine', 'uzsu', 'plot'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['locks', 'sequencer', 'colorpicker'],'values', 'stateengine', 'plot', 'uzsu']
  */
-{% macro color(id, item_value_r, item_value_g, item_value_b, min, max, step, colors, style, colormodel, linetext, item_switch_r, item_switch_g, item_switch_b, min_display, max_display, item_uzsu, uzsu_attribs, popupcolor, item_switch_ww, item_value_ww, item_plot, icon_plot, item_auto, extpopup, locks, item_seq, icon_color, linetext_widget, place4, column_order) %}
+{% macro color(id, item_value_r, item_value_g, item_value_b, min, max, step, colors, style, colormodel, linetext, item_switch_r, item_switch_g, item_switch_b, min_display, max_display, item_uzsu, uzsu_attribs, popupcolor, item_switch_ww, item_value_ww, item_plot, icon_plot, item_auto, extpopup, locks, item_seq, icon_color, linetext_widget, live, column_order) %}
     {% import "@widgets/basic.html" as basic %}
     {% import "@widgets/plot.html" as plot %}
     {% import "@widgets/icon.html" as icon %}
@@ -975,7 +975,7 @@
     {% endif %}
 
     {% if column == 'ww_slider' and item_value_ww %}
-      {{ basic.slider(id~'list_slider', item_value_ww, min, max, step, 'horizontal', 'handle', min_display, max_display) }}
+      {{ basic.slider(id~'list_slider', item_value_ww, min, max, step, 'horizontal', 'handle', min_display, max_display, live) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -993,7 +993,7 @@
           {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
           {{ basic.stateswitch(id~'switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(id~'list_ww_switch_icon_off'), icon.light(id~'list_ww_switch_icon_on', '', item_value_ww, min_display, max_display)], '', ['#888800','#aaaa00'], indicator) }}
           <p>Warm White</p>
-          {{ basic.slider(id~'slider_ww', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : '')) }}
+          {{ basic.slider(id~'slider_ww', item_value_ww, min, max, step, 'horizontal', value_display|default('handle'), min_display|default('0'), max_display|default(formula == '%' ? '100' : ''), live) }}
           </div>
         </div>
       </div>
@@ -1023,7 +1023,7 @@
                       {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                       {{ basic.stateswitch(id~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(id~'list_ww_switch_icon_off_color'), icon.light(id~'list_ww_switch_icon_on_color', '', item_value_ww, min_display, max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
-                      {{ basic.slider(id~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                      {{ basic.slider(id~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display, live) }}
                       </div>
                     </div>
                     {% endif %}
@@ -1037,21 +1037,21 @@
                     {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                     {{ basic.stateswitch(id~'popup_switch_r', item_switch_r, 'icon', [0,1], [icon.light(id~'list_r_switch_icon_off'), icon.light(id~'list_r_switch_icon_on', '', item_value_r, min_display, max_display)], '', [color_off|default('icon0'), 'red'], indicator) }}
                     <p>{{ linetext|e }} red</p>
-                    {{ basic.slider(id~'popup_slider_r', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    {{ basic.slider(id~'popup_slider_r', item_value_r, min, max, step, orientation, value_display|default('handle'), min_display, max_display, live) }}
                     </div>
                   </div>
                   <div class="quad_dimmer">
                     {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                     {{ basic.stateswitch(id~'popup_switch_g', item_switch_g, 'icon', [0,1], [icon.light(id~'list_g_switch_icon_off'), icon.light(id~'list_g_switch_icon_on', '', item_value_g, min_display, max_display)], '', [color_off|default('icon0'), 'green'], indicator) }}
                     <p>{{ linetext|e }} green</p>
-                    {{ basic.slider(id~'popup_slider_g', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    {{ basic.slider(id~'popup_slider_g', item_value_g, min, max, step, orientation, value_display|default('handle'), min_display, max_display, live) }}
                     </div>
                   </div>
                   <div class="quad_dimmer">
                     {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                     {{ basic.stateswitch(id~'popup_switch_b', item_switch_b, 'icon', [0,1], [icon.light(id~'list_b_switch_icon_off'), icon.light(id~'list_b_switch_icon_on', '', item_value_b, min_display, max_display)], '', [color_off|default('icon0'), 'blue'], indicator) }}
                     <p>{{ linetext|e }} blue</p>
-                    {{ basic.slider(id~'popup_slider_b', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                    {{ basic.slider(id~'popup_slider_b', item_value_b, min, max, step, orientation, value_display|default('handle'), min_display, max_display, live) }}
                     </div>
                   </div>
                 {% if item_value_ww and item_value_ww  != ' ' %}
@@ -1059,7 +1059,7 @@
                       {% if picpos is empty or picpos=='left' %}<div class="dimmer-left"> {% else %} <div class="dimmer-right"> {% endif %}
                       {{ basic.stateswitch(id~'popup_switch_ww', item_switch_ww, 'icon', [0,1], [icon.light(id~'list_ww_switch_icon_off'), icon.light(id~'list_ww_switch_icon_on', '', item_value_ww, min_display, max_display)], '', [color_off|default('icon0'), 'yellow'], indicator) }}
                       <p>{{ linetext|e }} warm white</p>
-                      {{ basic.slider(id~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display) }}
+                      {{ basic.slider(id~'popup_slider_ww', item_value_ww, min, max, step, orientation, value_display|default('handle'), min_display, max_display, live) }}
                       </div>
                     </div>
               {% endif %}
@@ -1166,7 +1166,7 @@
  * @param {value=0} the value to send for position 1 (optional, default 0)
  * @param {value=1} the value to send for position 2 (optional, default 1)
  * @param {text(false,true)=true} 	    Move on long press and stop on short press on up/down buttons
- * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
  * @param {item(dict)=}      a gad/item for UZSU
  * @param {uzsuparam[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
@@ -1190,7 +1190,7 @@
  * @param {unspecified[]=} 	    a list with positional attributes. Should be untouched as it is set automatically (optional)
 
  */
-{% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, move_on_longpress, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, blind_or_shutter, pos_attribs) %}
+{% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, move_on_longpress, live, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, blind_or_shutter, pos_attribs) %}
     {% import "@widgets/basic.html" as basic %}
     {% import "@widgets/device.html" as device %}
     {% import "@widgets/icon.html" as icon %}
@@ -1524,7 +1524,7 @@
     {% endif %}
 
     {% if column == 'pos_slider' and item_pos %}
-      {{ basic.slider(id~'list_slider', item_pos, min, max, step, 'horizontal', 'handle', min_display, max_display) }}
+      {{ basic.slider(id~'list_slider', item_pos, min, max, step, 'horizontal', 'handle', min_display, max_display, live) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1620,7 +1620,7 @@
  * @param {value=255}    		the maximum value for open (optional, default 255)
  * @param {value=5}   		step between two values (optional, default 5)
  * @param {text(false,true)=true} 	    Move on long press and stop on short press on up/down buttons
- * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
  * @param {item(dict)=}      a gad/item for UZSU
  * @param {uzsuparam[]=}   Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
  * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
@@ -1643,9 +1643,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
 
-{% macro blind(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step, move_on_longpress, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, pos_attribs, linetext_widget, place4, column_order) %}
+{% macro blind(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step, move_on_longpress, live, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, pos_attribs, linetext_widget, place4, column_order) %}
   {% import _self as newwidget %}
-  {{ newwidget.shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, '', min, max, step, '', '', '', '', move_on_longpress, place2, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, 'blind', pos_attribs) }}
+  {{ newwidget.shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, '', min, max, step, '', '', '', '', move_on_longpress, live, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, 'blind', pos_attribs) }}
 {% endmacro %}
 
 /**
@@ -1693,7 +1693,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                        Example: ['stateengine', ['header', 'Suspendzeit'], [['switch', 'slider'], [switch_item, 'icon', [0,1], ['secur_open','secur_locked']],
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {text=} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
- * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
  * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text[](previous,play,pause,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,stateengine,repeat,source,source_popup,speaker,playpause,playpausestop,playstop,shuffle,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'previous', 'play', 'pause', 'stop', 'next', 'power', 'eject', 'mute', 'volume_slider', 'cover',
@@ -1701,7 +1701,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays.
  */
-{% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, coverUrl, place1, place2, column_order) %}
+{% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, coverUrl, live, place2, column_order) %}
     {% import "@widgets/basic.html" as basic %}
     {% import "@widgets/plot.html" as plot %}
     {% import "@widgets/device.html" as device %}
@@ -2077,7 +2077,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
       {% endif %}
     {% endif %}
     {% if column == 'song_position' and item_duration %}
-      {{ multimedia.timeslider(id~'list_slider', item_time, item_duration, '5', 'handle') }}
+      {{ multimedia.timeslider(id~'list_slider', item_time, item_duration, '5', 'handle', live) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2128,7 +2128,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     {% endif %}
 
     {% if column == 'volume_slider' and item_volume %}
-      {{ basic.slider(id~'list_volume', item_volume, min, max, step, 'horizontal', 'handle', volume_min_display, volume_max_display) }}
+      {{ basic.slider(id~'list_volume', item_volume, min, max, step, 'horizontal', 'handle', volume_min_display, volume_max_display, live) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2144,7 +2144,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
         <div class="dimmer dimmer-left">
           {{ basic.stateswitch(id~'list_vol_popup_mute', item_mute, 'icon', [0,1], 'audio_volume_mute', '', color, indicator) }}
           <p>Volume {{ linetext|e }}</p>
-          {{ basic.slider(id~'list_vol_popup_slider', item_volume, volume_min, volume_max, volume_step, 'horizontal', 'handle', volume_min_display|default('0'), volume_max_display|default('100')) }}
+          {{ basic.slider(id~'list_vol_popup_slider', item_volume, volume_min, volume_max, volume_step, 'horizontal', 'handle', volume_min_display|default('0'), volume_max_display|default('100'), live) }}
         </div>
       </div>
       {% if elements[loop.index] == 'div' %}
@@ -2588,6 +2588,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                   {% set slider_step = item_slider[i][3]|default('1') %}
                   {% set slider_format = item_slider[i][4]|default('min') %}
                   {% set value_display = item_slider[i][5]|default('handle') %}
+                  {% set value_live = item_slider[i][6]|default('1') %}
               {% endif %}
               <a href="#{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-rel="popup" data-position-to="window">
                   {% if slider_format == '%' %}
@@ -2602,7 +2603,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                 <div class="dimmer dimmer-left">
                   {{ basic.stateswitch(id~'list_slider_popup_switch'~z~i, item_switch[i], 'icon', value[i], pic[i], '', color[i], indicator[i]) }}
                   <p>{{ linetext|e }}</p>
-                  {{ basic.slider(id~'list_slider_popup_slider'~z~i, slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
+                  {{ basic.slider(id~'list_slider_popup_slider'~z~i, slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display, value_live) }}
                 </div>
               </div>
               {% if arrays[loop.index] == 'div' %}
@@ -2722,6 +2723,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                   {% set slider_step = item_slider[3]|default('1') %}
                   {% set slider_format = item_slider[4]|default('min') %}
                   {% set value_display = item_slider[5]|default('handle') %}
+                  {% set value_live = item_slider[6]|default('1') %}
               {% endif %}
               <a href="#{{ uid(page, id) }}list_slider_popup{{z}}{{i}}" data-rel="popup" data-position-to="window">
                   {% if slider_format == '%' %}
@@ -2736,7 +2738,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                 <div class="dimmer dimmer-left">
                   {{ basic.stateswitch(id~'list_slider_popup_switch'~z~i, item_switch, 'icon', [0,1], pic, '', color, indicator) }}
                   <p>{{ linetext|e }}</p> single
-                  {{ basic.slider(id~'list_slider_popup_slider'~z~i, slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display) }}
+                  {{ basic.slider(id~'list_slider_popup_slider'~z~i, slider_item, slider_min, slider_max, slider_step, 'horizontal', value_display|default('handle'), min_display, max_display, value_live) }}
                 </div>
               </div>
 
