@@ -21,10 +21,11 @@
 * @param {value=0} the value for opened (optional, default 0)
 * @param {value=255} the value for closed (optional, default 255)
 * @param {value=5} step between two values (optional, default: 5)
+* @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
 *
 * @info inspired by Frank Berlenz
 */
-{% macro blind(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, value_top, value_bottom, step) %}
+{% macro blind(id, txt, item_move, item_stop, item_pos, item_shift, item_angle, value_top, value_bottom, step, live) %}
 	{% import "@widgets/basic.html" as basic %}
 
 	<div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
@@ -40,10 +41,10 @@
 					</div>
 				</td>
 				<td rowspan="3" align="left" class="pos">
-					{{ basic.slider('', item_pos, value_top|default('0'), value_bottom|default('255'), step, 'vertical') }}</td>
+					{{ basic.slider('', item_pos, value_top|default('0'), value_bottom|default('255'), step, 'vertical', '', '', '', live) }}</td>
 				<td rowspan="2" valign="bottom" class="angle">
 					{{ txt }}<br />
-					{% if item_angle %} {{ basic.slider('', item_angle, value_top|default('0'), value_bottom|default('255'), step, 'semicircle') }} {% endif %}
+					{% if item_angle %} {{ basic.slider('', item_angle, value_top|default('0'), value_bottom|default('255'), step, 'semicircle', '', '', '', live) }} {% endif %}
 				</td>
 			</tr>
 			<tr>
@@ -121,16 +122,17 @@
 * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
 * @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
 * @param {text(left,right)=left} position of the switch: left (default) or right
+* @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
 */
 
-{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos) %}
+{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos, live) %}
 	{% import "@widgets/basic.html" as basic %}
 
 		{% if picpos is empty or picpos=='left' %}<div class="dimmer-left" {% else %} <div class="dimmer-right" {% endif %}
 		data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
 			{{ basic.stateswitch('', item_switch, 'icon', '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
 			<p>{{ txt|e }}</p>
-			{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display) }}
+			{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display, live) }}
 		</div>
 {% endmacro %}
 
@@ -629,10 +631,11 @@
  * @param {value=255} the value for closed (optional, default 255)
  * @param {value=5} step between two values (optional, default 5)
  * @param {color[?](icon0to5,!)=icon1} colors for the 'closed' and 'open' state, e.g. ['icon2','icon3'] or  '#f00' or ['green,'red']. Prepend a '!' to make the color constant ('!#f00'). (optional, default ['icon0','icon1'])
+ * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped or after click into the track. (optional, default = 1)
  *
  * @author Wolfram v. Hülsen
  */
-{% macro window (id, txt, item_move, item_stop, item_pos, item_shade, item_window_r, item_window_l, type, min, max, step, color ) %}
+{% macro window (id, txt, item_move, item_stop, item_pos, item_shade, item_window_r, item_window_l, type, min, max, step, color, live ) %}
 	{% import "@widgets/basic.html" as basic %}
 	{% set uid = uid(page, id) %}
 		
@@ -659,7 +662,7 @@
 		</div>
 		{% if item_pos %}
 			<div class="pos">
-				{{ basic.slider(id~'slider', item_pos, min , max , step, 'horizontal', 'handle' ) }}
+				{{ basic.slider(id~'slider', item_pos, min , max , step, 'horizontal', 'handle', '', '', live ) }}
 			</div>
 		{% endif %}
         <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
