@@ -264,15 +264,18 @@ class WidgetParameterChecker {
 		if ($stringParam == true){
 			$value = $this->widget->getSingleParamString($this->paramIndex);
 			if ($type != 'unspecified'){
+				$actualWidget = $this->widget->getName();
 				
 				// some quad widgets define parameter array sizes by certain parameters
 				// we need to know these in order to parse parameter arrays correctly
-				if (array_key_exists($this->widget->getName(), TemplateCheckerConfig::ArrayDimensionSetter)){
-					$widgetElements = $this->widget->getParam(TemplateCheckerConfig::ArrayDimensionSetter[$this->widget->getName()]);
+				if (array_key_exists($actualWidget, TemplateCheckerConfig::ArrayDimensionSetter)){
+					$widgetElements = $this->widget->getParam(TemplateCheckerConfig::ArrayDimensionSetter[$actualWidget]);
 					$widgetElementsCount = (is_array($widgetElements) ? count($widgetElements) : 0);
 					$test = json_decode(str_replace("'", '"', $value));
-					if (is_array($test)){
-						if (count($test) == $widgetElementsCount || $widgetElementsCount == 0){
+					$plotSpecial = ($type == 'plotparam' && is_array($test) && count($test) == 17 && in_array($actualWidget, ['quad.stateswitch', 'quad.select']) );
+					$uzsuSpecial = ($type == 'uzsuparam' && !is_array($this->widget->getParam($this->paramIndex - 1)) && in_array($actualWidget, ['quad.stateswitch', 'quad.select']) );			
+					if (is_array($test) && $plotSpecial == false && $uzsuSpecial == false){
+						if (count($test) == $widgetElementsCount || $widgetElementsCount == 0 ){
 							$value = [];
 							// prepare populated array elements / ignore empty elements  
 							for ($i = 0; $i < $widgetElementsCount; $i++){
@@ -292,6 +295,10 @@ class WidgetParameterChecker {
 						}
 						else 
 							$this->addWarning('WIDGET PARAM CHECK', 'Array size does not match the widgets parameter count, check manually', $value);
+					}
+					else {
+						if (substr($value, 0, 1) == '[' && substr($value, -1, 1) == ']')
+						$value = substr($value, 1, -1);
 					}
 				}
 				else {
