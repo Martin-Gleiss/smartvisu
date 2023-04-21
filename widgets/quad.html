@@ -68,13 +68,15 @@
   dynamic icons can be used, e.g. icon.light('', '', value_item, min_display, max_display); please note: these must not be wrapped by apostrophs (')
  * @param {value[?]=1} either one value (icon disappears when value not true) or array with two or more values, e.g. [0,1] (icon stays) (default 1).
  * @param {formula[?]=or} 'or', 'and' or any JavaScript expression with following variables, result will be compared to comparative value above (default 'or')
- - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
+ - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values.
+   The array size of the formula parameter defines the number of columns dispayed by the widget.
  * @param {color[?](icon0to5)=icon0} the color 'icon0' through 'icon5' or e. g. '#f00' for red (default 'icon0' of the design)
  * @param {text=} URL to use as link (optional)
  * @param {text=} used in combination with href as data-rel attribute {e.g. to open a popup} (optional)
  * @param {text=} description text for the whole line
  * @param {text[?]=} description text for the column. Can be array.
- * @param {plotparam[?]=} array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {plotparam[?]=} array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted. 
+                          Array size must match the number of columns, e.g. "[['plotitem1', 'avg', '2d','now'], 'plotitem2', '']" for a table of 3 columns.
  * @param {image=measure_power_meter} icon triggering the plot popup
  * @param {placeholder=} placeholder attributes for future features, etc.
  * @param {placeholder=} placeholder attributes for future features, etc.
@@ -156,7 +158,7 @@
  * Print values in specific format, including expressions
  *
  * @param {id=} unique id for this widget (optional)
- * @param {item[?](bool,num,list)} one or more item(s). Multiple items in array-form: [item1, item2]
+ * @param {item[?](bool,num,list)} one or more item(s). Multiple items in array-form: [item1, item2]. The array size defines the number of columns dispayed by the widget.
  * @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
    Use 'text' to display result as unformatted string, 'html' to render it as unescaped html or 'script' to just execute as JavaScript w/o displaying anything.
  * @ add {format(text,html,script)=}
@@ -170,7 +172,8 @@
  * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text=}       description text for the whole line
  * @param {text[?]=}     description text for each column
- * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+ * @param {plotparam[?]=} 	 array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+                             Array size must match the number of columns, e.g. "[['plotitem1', 'avg', '2d','now'], 'plotitem2', '']" for a table of 3 columns.
  * @param {image=measure_power_meter} 	    icon triggering the plot popup
  * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {placeholder=} 	    placeholder attributes for future features, etc.
@@ -2233,7 +2236,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  *
  * @param {id=} unique id for this widget (optional)
  * @param {item[?](bool,num,list)} an item
- * @param {type[?]=mini} valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini)
+ * @param {type[?]=mini} valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini). The type parameter defines the number of columns in the widget.
  * @param {text[?]=[0,1]} array of values (optional, default [0,1])
    If the item has a value that is not part of the list, the state (icon, text, color) of the last value in the list will be shown.
  * @param {image[?]=control_on_off} array of icons (optional, default just if text is empty: control_on_off)
@@ -2254,7 +2257,11 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {text[?]=} text for each column (optional)
  * @param {item[?](dict)=}  		    a gad/item for UZSU
  * @param {uzsuparam[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
- * @param {plotparam[?]=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+                                Normally the array must have the same dimension as the "type" parameter, e.g. "[['', '', 'num'], '', ['', '', 'bool']]" for a table of 3 columns.
+								Exception: if the parameter "item_uzsu" is a singe item in string format a new column with an uzsu icon is displayed behind the main column block.
+ * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+                                Normally the array must have the same dimension as the "type" parameter, e.g. "[['plotitem1', 'avg', '2d','now'], 'plotitem2', '']" for a table of 3 columns.
+								Exception: a plot parameter array with exactly 17 entries causes a new column with a plot icon to be displayed behind the main column block. Example: "['plotitem1', 'avg', '2d','now', '','','','','','','','','','','','','temp'] 
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
  * @param {item[?](foo)=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
@@ -2888,7 +2895,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  *
  * @param {id=} unique id for this widget (optional)
  * @param {item[?](num,list,scene)} an (array of) item(s)
- * @param {type[?](menu)=menu} type: 'menu', 'micro', 'mini', 'midi', 'icon' (optional, default: menu)
+ * @param {type[?](menu)=menu} type: 'menu', 'micro', 'mini', 'midi', 'icon' (optional, default: menu). The type parameter defines the number of columns in the widget.
  * @param {text[]=[0,1]} list of values (optional, default [0,1])
  * @param {image[?]=} list of icons for every button (optional) - not supported for type 'menu'
  * @param {text[?]=} list of texts for every menu entry or button (optional)
@@ -2900,7 +2907,11 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {text[?]=} (array with) text for each column (optional)
  * @param {item[?](dict)=}  		    a gad/item for UZSU
  * @param {uzsuparam[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
- * @param {plotparam[?]=} 	    	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+                                Normally the array must have the same dimension as the "type" parameter, e.g. "[['', '', 'num'], '', ['', '', 'bool']]" for a table of 3 columns.
+								Exception: if the parameter "item_uzsu" is a singe item in string format a new column with sn uzsu icon is displayed behind the main column block.
+ * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
+                                Normally the array must have the same dimension as the "type" parameter, e.g. "[['plotitem1', 'avg', '2d','now'], 'plotitem2', '']" for a table of 3 columns.
+								Exception: a plot parameter array with exactly 17 entries causes a new column with a plot icon to be displayed behind the main column block. Example: "['plotitem1', 'avg', '2d','now', '','','','','','','','','','','','','temp'] 
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
  * @param {item[?](foo)=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
