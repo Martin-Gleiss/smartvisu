@@ -305,7 +305,7 @@
 	{% set stepparts = step|default('.1')|split('.') %}
 	{% set decs = (stepparts[1] >0 ? stepparts[1]|length : 0) %} {% set setformat = setformat|replace(',1f', ','~decs~'f') %}
 	
-	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{item_actual}},{{item_set}},{{item_offset}}"  
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{ item_actual }}, {{ item_set }}, {{ item_offset }}"  
 		data-scale_min="{{min | default('18')}}" data-scale_max="{{max| default('28')}}" data-step="{{step | default('.1')}}"  
 		data-scale_interval="{{scale_interval | default('1')}}" style="margin:auto; position:relative;"> 
 		
