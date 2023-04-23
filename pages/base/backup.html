@@ -1,0 +1,130 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2022
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "system.html" %}
+
+{% block content %}
+<style>
+    .backupFileInput::file-selector-button {
+        border: 2px solid #cccccc;
+        border-radius: inherit;
+    }
+</style>
+
+<h1>{{ lang('backup', 'title') }}</h1>
+<div class="block">
+    <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" style="position: relative;">
+            <h3>{{ lang('backup', 'export', 'head') }}</h3>
+            <p>
+                {{ lang('backup', 'export', 'hint') }}
+            </p>
+            <br/>
+            <form id="exportBackupFileForm" style="position: absolute; bottom: 0; right: 5px; left: 5px;">
+                <button type="submit" data-theme="b">{{ lang('backup', 'export', 'button') }}</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" style="position: relative;">
+            <h3>{{ lang('backup', 'import', 'head') }}</h3>
+            <p>
+                {{ lang('backup', 'import', 'hint') }}
+            </p>
+            <br/>
+            <form id="restoreBackupFileForm" style="position: absolute; bottom: 0; right: 5px; left: 5px;">
+                <input type="file" accept="application/zip" id="restoreBackupFile" style="padding-top: 0.2em;"
+                       class="backupFileInput" required/>
+                <br/>
+                <button type="submit" data-theme="b">{{ lang('backup', 'import', 'button') }}</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function uploadBackup(formData) {
+        try {
+            const response = await fetch("lib/backup.php", {
+                method: "POST",
+                body: formData,
+            });
+            const result = await response.json();
+            if (response.ok)
+                notify.message("info", result.title, result.text);
+            else
+                notify.message("error", result.title, result.text);
+            document.querySelector("#restoreBackupFile").value = null;
+        } catch (error) {
+            notify.message("error", "Error", error.toString());
+        }
+    }
+
+    function restoreFunc() {
+        let formData = new FormData();
+        formData.append("restoreBackup", "Restore");
+        formData.append("restoreBackupFile", document.querySelector("#restoreBackupFile").files[0]);
+        uploadBackup(formData);
+    }
+
+    async function downloadBackup(formData) {
+        try {
+            const response = await fetch("lib/backup.php", {
+                method: "POST",
+                body: formData,
+            });
+            const result = await response.blob();
+            if (response.ok) {
+                const url = URL.createObjectURL(result);
+
+                const headerparts = response.headers.get('content-disposition').split(';');
+                const filename = headerparts[1].split('=')[1];
+
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = filename;
+                a.click();
+
+                a.remove();
+                URL.revokeObjectURL(url);
+
+                notify.message("info", "Backup", sv_lang.backup.export_successful);
+            } else {
+                const resultJson = await result.text();
+                const resultParsed = JSON.parse(resultJson);
+                notify.message("error", resultParsed.title, resultParsed.text);
+            }
+        } catch (error) {
+            notify.message("error", "Error", error.toString());
+        }
+    }
+
+    function exportFunc() {
+        let formData = new FormData();
+        formData.append("exportBackup", "Backup");
+        downloadBackup(formData);
+    }
+
+    document.querySelector("#restoreBackupFileForm").addEventListener('submit', event => {
+        event.preventDefault();
+        restoreFunc();
+    });
+
+    document.querySelector("#exportBackupFileForm").addEventListener('submit', event => {
+        event.preventDefault();
+        exportFunc();
+    });
+
+</script>
+
+{% endblock %}

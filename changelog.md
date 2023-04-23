@@ -14,6 +14,7 @@
 - improved unit handling in weather services via language files
 - new folder ./dropins/designs for custom design CSS files
 - designs "darkblue" and "flatdarkblue" habe been completed with missing swatches (thanks to @onkelandy)
+- page and service for backup and restore of configuration, dropins and custom pages (thanks to @hijacker7)
 
 ### Improvements
 - Template checker now ignores multi-line comments  
