@@ -1189,11 +1189,11 @@
              possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'], 'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
- * @param {text(blind,shutter)=} 	    Should be untouched as it is set automatically (optional)
- * @param {unspecified[]=} 	    a list with positional attributes. Should be untouched as it is set automatically (optional)
+ * @param {text(blind,shutter)=} 	    Should be left untouched as it is set automatically (optional)
+ * @param {unspecified[]=} 	    a list with positional attributes. Should be left untouched as it is set automatically (optional)
 
  */
-{% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, move_on_longpress, live, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, blind_or_shutter, pos_attribs) %}
+{% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, move_on_longpress, live, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, _blind_or_shutter, _pos_attribs) %}
     {% import "@widgets/basic.html" as basic %}
     {% import "@widgets/device.html" as device %}
     {% import "@widgets/icon.html" as icon %}
@@ -1205,12 +1205,12 @@
     {% endif %}
 
 /**	{# convert array with uzsu and pos items to separate items #} */
-  {% if pos_attribs is iterable %}
-  {% set item_saved = pos_attribs[0]|default(item_saved) %}
-  {% set value_pos_1 = pos_attribs[1]|default(value_pos_1) %}
-  {% set value_pos_2 = pos_attribs[2]|default(value_pos_2) %}
-  {% set text_pos_1 = pos_attribs[3]|default('Pos1') %}
-  {% set text_pos_2 = pos_attribs[4]|default('Pos2') %}
+  {% if _pos_attribs is iterable %}
+  {% set item_saved = _pos_attribs[0]|default(item_saved) %}
+  {% set value_pos_1 = _pos_attribs[1]|default(value_pos_1) %}
+  {% set value_pos_2 = _pos_attribs[2]|default(value_pos_2) %}
+  {% set text_pos_1 = _pos_attribs[3]|default('Pos1') %}
+  {% set text_pos_2 = _pos_attribs[4]|default('Pos2') %}
   {% endif %}
 
 /**	{# most of the following code provides some dummy proofing concerning the column_order. Elements are only added when relevant items exist #} */
@@ -1323,14 +1323,14 @@
       {% elseif item_move and 'move_up' not in elements %}
         {% set multi = multi+1 %}
         {% set elements = elements|merge({(i):('move_up')}) %}
-      {% elseif item_pos and 'pos_popup_shutter' not in elements and not blind_or_shutter %}
+      {% elseif item_pos and 'pos_popup_shutter' not in elements and not _blind_or_shutter %}
         {% set elements = elements|merge({(i):('div')}) %}
-        {% if blind_or_shutter == 'blind' %}
+        {% if _blind_or_shutter == 'blind' %}
           {% set elements = elements|merge({(i+1):('pos_popup_blind')}) %}
         {% else %}
           {% set elements = elements|merge({(i+1):('pos_popup_shutter')}) %}
         {% endif %}
-      {% elseif item_pos and blind_or_shutter == 'blind' and 'pos_popup_blind' not in elements %}
+      {% elseif item_pos and _blind_or_shutter == 'blind' and 'pos_popup_blind' not in elements %}
         {% set elements = elements|merge({(i):('div')}) %}
         {% set elements = elements|merge({(i+1):('pos_popup_blind')}) %}
       {% elseif extpopup and 'extpopup' not in elements and extpopup[0] != 'stateengine' %}
@@ -2281,9 +2281,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is ['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']
              Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
- * @param {text(switch,select)=} 	    Should be untouched as it is set automatically (optional)
+ * @param {text(switch,select)=} 	    Should be left untouched as it is set automatically (optional)
 */
-{% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, item_longpress, value_longpress, value_longrelease, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, linetext_widget, place4, column_order, switch_or_select) %}
+{% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, item_longpress, value_longpress, value_longrelease, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, linetext_widget, place4, column_order, _switch_or_select) %}
     {% import "@widgets/basic.html" as basic %}
     {% import "@widgets/device.html" as device %}
     {% import "@widgets/icon.html" as icon %}
@@ -2543,15 +2543,15 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
             <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}" style="width: {{ column|slice(6) }}px !important;">
           {% elseif column == 'div' %}
             {% set columnnumber = columnnumber+1 %}
-            <div class="column{{ columnnumber }} column_{{ (arrays[loop.index] == 'switch' and switch_or_select == 'select' ? 'select' : arrays[loop.index])  }}" data-order="{{ columnnumber }}">
+            <div class="column{{ columnnumber }} column_{{ (arrays[loop.index] == 'switch' and _switch_or_select == 'select' ? 'select' : arrays[loop.index])  }}" data-order="{{ columnnumber }}">
           {% endif %}
         {% elseif loop.first %}
-          <div class="column{{ columnnumber }} column_{{ (column == 'switch' and switch_or_select == 'select' ? 'select' : column)  }}" data-order="{{ columnnumber }}">
+          <div class="column{{ columnnumber }} column_{{ (column == 'switch' and _switch_or_select == 'select' ? 'select' : column)  }}" data-order="{{ columnnumber }}">
         {% endif %}
         {% if type is iterable %}
           {% if column == 'switch' and item_switch[i] %}
             {% if columntext[i] %}{{ columntext[i]|e }}{% endif %}
-            {% if switch_or_select[i] == 'select' or switch_or_select == 'select' %}
+            {% if _switch_or_select[i] == 'select' or _switch_or_select == 'select' %}
               {{ basic.select(id~'_select'~z~i, item_switch[i], type[i], value[i]|default(value[i][0]), pic[i]|default(pic[i][0]), text[i]|default(text[i][0]), color_on[i]|default(''), indicator[i]) }}
             {% else %}
                   {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch[i], type[i], value[i]|default(''), pic[i]|default(''), text[i]|default(''), color[i]|default(''), indicator[i]|default(''), item_longpress[i]|default(''), value_longpress[i]|default(''), value_longrelease[i]|default('')) }}
@@ -2686,7 +2686,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
         {% else %}
           {% if column == 'switch' and item_switch %}
             {% if columntext %}{{ columntext|e }}{% endif %}
-            {% if switch_or_select == 'select' %}
+            {% if _switch_or_select == 'select' %}
               {{ basic.select(id~'_select'~z~i, item_switch, type, value|default(value[0]), pic|default(pic[0]), text|default(text[0]), color_on|default(''), indicator) }}
             {% else %}
               {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch, type|default(''), value|default(''), pic|default(''), text|default(''), color|default(''), indicator|default(''), item_longpress|default(''), value_longpress|default(''), value_longrelease|default('')) }}

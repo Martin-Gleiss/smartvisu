@@ -14,6 +14,7 @@
 - improved unit handling in weather services via language files
 - new folder ./dropins/designs for custom design CSS files
 - designs "darkblue" and "flatdarkblue" habe been completed with missing swatches (thanks to @onkelandy)
+- new folder ./dropins/designs for custom design CSS files (please adjust urls of e.g. background images in the files)
 - page and service for backup and restore of configuration, dropins and custom pages (thanks to @hijacker7)
 
 ### Improvements
@@ -30,6 +31,7 @@
 - template checker now checks parameter arrays for plots, uzsu and sliders in quad widgets w/ new parameter types "plotparam", "uzsuparam" and "sliderparam"
 - reduced checking of parameters of type 'unspecified': no checking of empty parameters and new unchecked type "placeholder"
 - template checker is now able to check single files 
+- outer slider of device.rtrslider (display slider for actual temperature) is configured as readOnly to disable manual interaction 
 
 ### Updated Libraries
 - MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder
@@ -46,7 +48,7 @@
 - wind speed in openweathermap service was in m/s but unit was km/h
 - status toast was closed on item change even if param_allowclose was 'false'
 - status toast did not always select the right toast to close 
-- duplicte widget updates were triggered if names of items were fully part of other items (e.g. updates on "test.test" triggered also widgets listening to "test.testa" and "test.testb" on the same page )
+- duplicate widget updates were triggered if names of items were fully part of other items (e.g. updates on "test.test" triggered also widgets listening to "test.testa" and "test.testb" on the same page )
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text

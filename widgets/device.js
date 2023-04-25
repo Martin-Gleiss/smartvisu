@@ -188,6 +188,7 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		lineCap: "none",
 		width: "8",
 		svgMode: true,
+		readOnly: true,
 		
 		update: function(args) {},
 		
