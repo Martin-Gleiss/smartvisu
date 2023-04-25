@@ -274,10 +274,9 @@ var io = {
 
 		io.socket.onerror = function (error) {
 			if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification)) {
-				var msgText = 'Could not connect to smarthomeNG server!<br /> Websocket error: ' + error.data + '.';
+				var msgText = sv_lang.status_event_format.error.shngdriver_error + ' ' + error.data + '.';
 				if (io.address != sv.config.driver.address) {
-					msgText += '<br/><ul><li>If you are calling smartVISU internally by a hostname specify this in config section smartVISU Hostname</li>';
-					msgText += '<li>If you are calling smartVISU from external e.g via a reverse proxy check your router and reverse proxy settings</li></ul>';
+					msgText += sv_lang.status_event_format.error.shngdriver_hint;
 				}
 				io.socketErrorNotification = notify.message('error', 'Driver: smarthomeng', msgText);
 			}

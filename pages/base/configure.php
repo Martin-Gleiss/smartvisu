@@ -18,15 +18,15 @@ if(isset($_GET['clear_cache']) && $_GET['clear_cache']) {
 	if($success) {
 		$success = delTree(const_path.'temp/twigcache') || ! is_dir(const_path.'temp/pagecache');
 		if($success)
-			echo json_encode(array('title' => 'Configuration', 'text' => 'Pagecache cleared.'));
+			echo json_encode(array('title' => 'Configuration', 'text' => trans('status_event_format', 'info')['cleared_cache']));
 		else { // save fails
 			header("HTTP/1.0 600 smartVISU Config Error");
-			echo json_encode(array('title' => 'Configuration', 'text' => 'Error deleting Twig cache!<br />Please check the file permissions temp/twigcache'));
+			echo json_encode(array('title' => 'Configuration', 'text' => trans('status_event_format', 'error')['clearing_twig_cache']));
 		}
 	}
 	else { // save fails
 		header("HTTP/1.0 600 smartVISU Config Error");
-		echo json_encode(array('title' => 'Configuration', 'text' => 'Error deleting page cache!<br />Please check the file permissions temp/pagecache'));
+		echo json_encode(array('title' => 'Configuration', 'text' => trans('status_event_format', 'error')['clearing_page_cache']));
 	}
 }
 // save configuration
@@ -36,16 +36,16 @@ else if(isset($_GET['target'])) {
 	if($success) {
 		$success = delTree(const_path.'temp/pagecache/'.config_cachefolder) || ! is_dir(const_path.'temp/pagecache/'.config_cachefolder);
 		if($success)
-			echo json_encode(array('title' => 'Configuration', 'text' => 'Configuration changes saved.'));
+			echo json_encode(array('title' => 'Configuration', 'text' => trans('status_event_format', 'info')['saved_config']));
 		else { // save fails
 			header("HTTP/1.0 600 smartVISU Config Error");
-			echo json_encode(array('title' => 'Configuration', 'text' => 'Error saving config or deleting the cache.<br />Please check the file permissions "config.ini" (it must be writeable)!'));
+			echo json_encode(array('title' => 'Configuration', 'text' => trans('status_event_format', 'error')['saving_config_cache']));
 		}
 
 	}
 	else { // save fails
 		header("HTTP/1.0 600 smartVISU Config Error");
-		echo json_encode(array('title' => 'Configuration', 'text' => 'Error saving configuration!<br />Please check the file permissions on "config.ini" (it must be writeable)!'));
+		echo json_encode(array('title' => 'Configuration', 'text' => trans('status_event_format', 'error')['saving_config']));
 	}
 }
 // read configuration
