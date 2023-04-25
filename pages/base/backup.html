@@ -98,7 +98,7 @@
                 a.remove();
                 URL.revokeObjectURL(url);
 
-                notify.message("info", "Backup", sv_lang.backup.export_successful);
+                notify.message("info", "Backup", sv_lang.backup.export.successful);
             } else {
                 const resultJson = await result.text();
                 const resultParsed = JSON.parse(resultJson);

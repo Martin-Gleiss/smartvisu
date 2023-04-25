@@ -172,14 +172,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             if (!in_array($_FILES['restoreBackupFile']['type'], $mimes)) {
                 header("HTTP/1.0 650 smartVISU Backup Error");
                 header('Content-Type: application/json');
-                echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import_filetype_error')));
+                echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import')['filetype_error']));
                 exit;
             }
             //check size of uploaded file, if larger than 10MB return an error notify
             if ($_FILES["restoreBackupFile"]["size"] > 10 * 1000000) {
                 header("HTTP/1.0 650 smartVISU Backup Error");
                 header('Content-Type: application/json');
-                echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import_filesize_error')));
+                echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import')['filesize_error']));
                 exit;
             }
 
@@ -222,31 +222,29 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 // create the success message for notify, containing the command to change the ownership
                 // if files with a forbidden file extension where found, list them in notify
                 $user = posix_getpwuid(stat("../")["uid"])["name"];
-                $chownCmd = "sudo chown -R " . $user . " " . realpath("../") . "/";
-                header('Content-Type: application/json');
-                if (count($fileskiplist) == 0) {
-                    echo json_encode(array('title' => 'Backup', 'text' => " " . trans('backup', 'import_successful') . '<br>' . trans('backup', 'import_ownership_command') . '<br><br>' . $chownCmd));
-                } else {
-                    $fileskipstring = "";
+                $echomsg = trans('backup', 'import')['successful'] . '<br>' . trans('backup', 'import')['ownership_command'] . '<br><br>' . 'sudo chown -R ' . $user . ' ' . realpath('../') . '/';
+                if (count($fileskiplist) > 0) {
+                    $echomsg .= '<br><br><br>' . trans('backup', 'import')['forbidden_files'] . '<br><br>';
                     foreach ($fileskiplist as $fileskip) {
-                        $fileskipstring .= $fileskip . "<br>";
+                        $echomsg .= $fileskip . '<br>';
                     }
-                    echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import_successful') . '<br>' . trans('backup', 'import_ownership_command') . '<br><br>' . $chownCmd . '<br><br><br>' . trans('backup', 'import_forbidden_files') . '<br><br>' . $fileskipstring));
                 }
+                header('Content-Type: application/json');
+                echo json_encode(array('title' => 'Backup', 'text' => $echomsg));
                 exit;
             } else {
                 // if something went wrong on file save, remove the temp directory and return an error notify
                 delTree($tempdir);
                 header("HTTP/1.0 650 smartVISU Backup Error");
                 header('Content-Type: application/json');
-                echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import_save_error')));
+                echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import')['save_error']));
                 exit;
             }
         }
         // if something went wrong on file upload return an error notify
         header("HTTP/1.0 650 smartVISU Backup Error");
         header('Content-Type: application/json');
-        echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import_faulty_file')));
+        echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import')));
         exit;
     }
     // if the command is not backup or restore return an error notify
