@@ -2934,7 +2934,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         var preFix = TableName
 
         if (myOptions.borderstyle.explode().length == 1) {
-            myJson[myOptions['granularity']] = myOptions.borderstyle.explode()[0]
+            myBorderStyle = myOptions.borderstyle.explode()[0]
         } else {
             for (key in myOptions.borderstyle.explode()) {
                 myJson[myOptions.borderstyle.explode()[key].split(":")[0]] = myOptions.borderstyle.explode()[key].split(":")[1]
