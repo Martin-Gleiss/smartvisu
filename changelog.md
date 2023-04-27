@@ -33,7 +33,8 @@
 - template checker now checks parameter arrays for plots, uzsu and sliders in quad widgets w/ new parameter types "plotparam", "uzsuparam" and "sliderparam"
 - reduced checking of parameters of type 'unspecified': no checking of empty parameters and new unchecked type "placeholder"
 - template checker is now able to check single files 
-- outer slider of device.rtrslider (display slider for actual temperature) is configured as readOnly to disable manual interaction 
+- outer slider of device.rtrslider (display slider for actual temperature) is configured as readOnly to disable manual interaction
+- info message after successful configuration save is shown again after page reload
 
 ### Updated Libraries
 - MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder
