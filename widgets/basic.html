@@ -368,11 +368,12 @@
 * @param {value=120} radius of the slider (optional, default: 90)  
 * @param {value=15} width of the slide line
 * @param {value=0.1} thickness of the slide line
+* @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
 *
 * @author Bonze, Wolfram v. Hülsen
 */
 
-{% macro roundslider(id, item, min, max, step, pre_value, to_value, unit, scale, scale_interval, pic, circleshape, slidertype, radius, width, thickness) %}
+{% macro roundslider(id, item, min, max, step, pre_value, to_value, unit, scale, scale_interval, pic, circleshape, slidertype, radius, width, thickness, live) %}
 	{% if circleshape not in ['', 'pie', 'quarter-top-left', 'quarter-top-right', 'quarter-bottom-left', 'quarter-bottom-right', 'half-top', 'half-bottom', 'half-left', 'half-right'] %} {% set circleshape = '' %} {% endif %}
 	{% import "@widgets/lib.html" as lib %}
 	
@@ -391,7 +392,7 @@
 	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.roundslider" data-item="{{item}}" data-values=" {{unit}}, {{pre_value| default('')}}, {{ to_value| default('') }}, {{ scale| default('false')}}" 
 		data-radius="{{radius | default('80')}}" data-scale_min="{{min | default('0')}}" data-scale_max="{{max| default('255')}}" data-step="{{step | default('5')}}" data-scale_interval="{{scale_interval | default('20')}}"
 		data-width="{{width | default('15')}}" data-thickness="{{thickness | default('0.1')}}" data-circleshape="{{circleshape | default('pie')}}" data-slidertype="{{slidertype | default('min-range')}}" data-icon="{{pic}}"
-		style="margin:auto; margin-top:30px; margin-bottom:30px;"> 
+		data-live="{{ live|default(1) }}" style="margin:auto; margin-top:30px; margin-bottom:30px;"> 
 	</div>
 {% endmacro %}
 
