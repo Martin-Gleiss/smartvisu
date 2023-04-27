@@ -8,6 +8,7 @@
 - new widget / dynamic icon "basic.skylight" for a roof window with closed / tilt status and shutter position (thanks to raman)
 - id parameter is now fully optional in status toast, even with multiple toasts on a page
 - new "live" parameters in device.blind, device.dimmer, device.window, quad.dimmer, quad.color, quad.shutter, quad.blind and quad.playercontrol enable the usage of the live mode feture of basic.slider
+- new live / silent mode for basic.roundslider (similar to basic.slider) 
 
 ### Other New Features
 - weather service pirateweather.net as replacement for darksky.net (thanks to aschwith) 
@@ -16,6 +17,7 @@
 - designs "darkblue" and "flatdarkblue" habe been completed with missing swatches (thanks to @onkelandy)
 - new folder ./dropins/designs for custom design CSS files (please adjust urls of e.g. background images in the files)
 - page and service for backup and restore of configuration, dropins and custom pages (thanks to @hijacker7)
+- new Italian language package (granzie tante a @hijacker7)
 
 ### Improvements
 - Template checker now ignores multi-line comments  

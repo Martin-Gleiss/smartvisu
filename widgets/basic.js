@@ -1383,6 +1383,7 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		slidertype: "min-range",
 		lineCap: "round",
 		icon:"",
+		live: 1
 	},
 
 	_create: function() {
@@ -1393,6 +1394,7 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		var element = this.element;
 		var user_value = response[0];
 		var user_value_item = this.options.item;
+		var liveOption = this.options.live;
 		
 		this.options.handlesize = this.options.width +15; 
 		
@@ -1441,7 +1443,13 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 				}
 			},
 			update: function (args) {
-				io.write(user_value_item, args.value);
+				if (liveOption == 1)
+					io.write(user_value_item, args.value);
+			},
+			
+			change: function (args) {
+				if (liveOption == 0)
+					io.write(user_value_item, args.value);
 			},
 
 			create: function(args){
