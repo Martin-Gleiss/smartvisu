@@ -52,7 +52,7 @@ class weather_pirateweather extends weather
 		}
 
 		$parsed_json = json_decode($content);
-		if ($parsed_json->{'daily'}) {
+		if ($parsed_json != null && $parsed_json->{'daily'}) {
 			$this->debug($parsed_json);
 
 			// today
