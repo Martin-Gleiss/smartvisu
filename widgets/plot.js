@@ -952,7 +952,12 @@ $.widget("sv.plot_gauge_angular", $.sv.widget, {
             title: {
                 text: headline
             },
-            plotOptions: {
+            navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: false
+				}
+			},
+			plotOptions: {
                  gauge: gauge[0],
             },
             pane: pane,
@@ -984,8 +989,8 @@ $.widget("sv.plot_gauge_angular", $.sv.widget, {
             series: series
         });
 
-        styles.push('.outer-pane { fill: url(' + location.pathname + location.search + '#speedometerOuterPaneGradient) }');
-        styles.push('.middle-pane { fill: url(' + location.pathname + location.search + '#speedometerMiddlePaneGradient) }');
+        styles.push('.outer-pane { fill: url(' + document.baseURI + '#speedometerOuterPaneGradient) }');
+        styles.push('.middle-pane { fill: url(' + document.baseURI + '#speedometerMiddlePaneGradient) }');
 
         if(styles.length > 0) {
             var containerId = this.element.find('.highcharts-container')[0].id;
@@ -1164,7 +1169,12 @@ $.widget("sv.plot_gauge_vumeter", $.sv.widget, {
 
             // the value axis
             yAxis: axis,
-
+			
+			navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: false
+				}
+			},
             plotOptions: {
                 gauge: {
                     dataLabels: {
@@ -1189,8 +1199,7 @@ $.widget("sv.plot_gauge_vumeter", $.sv.widget, {
             },
             series: series,
         });
-
-        styles.push('.highcharts-plot-background { fill: url(' + location.pathname + location.search + '#vumeterGradient) }');
+        styles.push('.highcharts-plot-background { fill: url(' + document.baseURI + '#vumeterGradient) }');
 
         if(styles.length > 0) {
             var containerId = this.element.find('.highcharts-container')[0].id;

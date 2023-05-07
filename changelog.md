@@ -51,7 +51,9 @@
 - wind speed in openweathermap service was in m/s but unit was km/h
 - status toast was closed on item change even if param_allowclose was 'false'
 - status toast did not always select the right toast to close 
-- duplicate widget updates were triggered if names of items were fully part of other items (e.g. updates on "test.test" triggered also widgets listening to "test.testa" and "test.testb" on the same page )
+- duplicate widget updates were triggered if names of items were fully part of other items (e.g. updates on "test.test" triggered also widgets listening to "test.testa" and "test.testb" on the same page)
+- plot.gauge (speedometer and vumeter) did only receive correct CSS background styles if page was reloaded 
+- plot.gauge and device.uzsugraph did not disable the export menu correctly
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
