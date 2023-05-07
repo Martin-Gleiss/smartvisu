@@ -1854,6 +1854,9 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       },
       chart: {
 		styledMode: true,
+		exporting: {
+			enabled: false
+		},
         events: {
           click: function(e) { // add point
             if(self.justDragged) { // prevent click event after drop
