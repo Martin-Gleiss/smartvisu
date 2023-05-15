@@ -1772,7 +1772,9 @@ div.ui-slider-switch{
 .highcharts-subtitle {
   fill: #ddd;
 }
-
+.highcharts-graph {
+	stroke-width: 2px;
+}
 .highcharts-axis .highcharts-axis-line {
   stroke: #666;
   stroke-width: 2px;

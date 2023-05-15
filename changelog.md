@@ -38,6 +38,7 @@
 
 ### Updated Libraries
 - MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder
+- Highcharts updated to v11.0.1 (yet only es5 scripts to keep backward compatibility w/ older devices)
 
 ### Deprecated
 

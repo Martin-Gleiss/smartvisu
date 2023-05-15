@@ -284,7 +284,8 @@ $.widget("sv.plot_period", $.sv.widget, {
                     showInNavigator: true,
                     colorIndex: mode == 'minmaxavg' ? i*2+1 : null,
 					stacking: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stackingMode : null),
-					stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stack : null)
+					stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stack : null),
+					borderRadius: 0
                 });
             }
         }
@@ -399,7 +400,12 @@ $.widget("sv.plot_period", $.sv.widget, {
             },
 		    navigation: {	// options for export context menu
 				buttonOptions: {
-					enabled: exportmenu
+					enabled: exportmenu,
+					height: 22,
+					width: 24,
+					symbolSize: 12,
+					symbolX: 12.5,
+					symbolY: 10.5
 				}
 			},
 			exporting: {
@@ -1701,7 +1707,8 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
 				yAxis: (assign[i] ? assign[i] - 1 : 0),
 				showInNavigator: true,
 				stacking: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stackingMode : null),
-				stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stack : null)
+				stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stack : null),
+				borderRadius: 0
 			});
         }
 
@@ -1769,7 +1776,12 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
             },
 		    navigation: {	// options for export context menu
 				buttonOptions: {
-					enabled: exportmenu
+					enabled: exportmenu,
+					height: 22,
+					width: 24,
+					symbolSize: 12,
+					symbolX: 12.5,
+					symbolY: 10.5
 				}
 			},
 			exporting: {
