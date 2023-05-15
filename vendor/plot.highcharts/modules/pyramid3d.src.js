@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v10.3.0 (2022-10-31)
+ * @license Highcharts JS v11.0.1 (2023-05-08)
  *
  * Highcharts 3D funnel module
  *
@@ -51,16 +51,15 @@
          *
          * */
         var __extends = (this && this.__extends) || (function () {
-                var extendStatics = function (d,
-            b) {
-                    extendStatics = Object.setPrototypeOf ||
-                        ({ __proto__: [] } instanceof Array && function (d,
-            b) { d.__proto__ = b; }) ||
-                        function (d,
-            b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            var extendStatics = function (d, b) {
+                extendStatics = Object.setPrototypeOf ||
+                    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+                    function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
                 return extendStatics(d, b);
             };
             return function (d, b) {
+                if (typeof b !== "function" && b !== null)
+                    throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
                 extendStatics(d, b);
                 function __() { this.constructor = d; }
                 d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -85,15 +84,14 @@
          * @requires modules/pyramid3d
          */
         var Pyramid3DSeries = /** @class */ (function (_super) {
-                __extends(Pyramid3DSeries, _super);
+            __extends(Pyramid3DSeries, _super);
             function Pyramid3DSeries() {
                 /* *
                  *
                  *  Static Properties
                  *
                  * */
-                var _this = _super !== null && _super.apply(this,
-                    arguments) || this;
+                var _this = _super !== null && _super.apply(this, arguments) || this;
                 /* *
                  *
                  *  Properties
@@ -133,6 +131,9 @@
                 neckHeight: 0,
                 neckWidth: 0,
                 dataLabels: {
+                    /**
+                     * @default top
+                     */
                     verticalAlign: 'top'
                 }
             });
@@ -154,7 +155,7 @@
          * not specified, it is inherited from [chart.type](#chart.type).
          *
          * @since     7.1.0
-         * @extends   series.pyramid,plotOptions.pyramid3d
+         * @extends   series,plotOptions.pyramid3d
          * @excluding allAreas,boostThreshold,colorAxis,compare,compareBase,dataSorting
          * @product   highcharts
          * @sample    {highcharts} highcharts/demo/pyramid3d/ Pyramid3d
