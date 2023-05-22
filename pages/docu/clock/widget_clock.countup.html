@@ -1,0 +1,32 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_clock.html" %}
+
+{% block example %}
+<script>
+	io.write('bath.light.timestamp', Date("now") );
+</script>
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ clock.countup('', 'bath.light.timestamp', '5s') }}
+		{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+	<br />
+	The timer shows the time elapsed after loading this page in the actual browser session. Click "Trigger" to re-start. 
+	<br />
+	<div class="html">
+		{{ lib.timestamp('', 'bath.light.timestamp') }} 
+		<h3><u>Timer:</u> &nbsp;&nbsp;{{ clock.countup('', 'bath.light.timestamp', '5s') }}</h3>
+	</div>
+
+{% endblock %}

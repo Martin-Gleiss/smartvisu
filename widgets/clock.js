@@ -180,3 +180,34 @@ $.widget("sv.clock_countdown", $.sv.widget, {
 	},
 
 });
+
+// ----- clock.countup ------------------------------------------------------
+$.widget("sv.clock_countup", $.sv.widget, {
+
+	initSelector: 'span[data-widget="clock.countup"]',
+
+	options: {
+		interval: 0,
+		idletxt: '--:--:--',
+		 	},
+
+	_ticker: null,
+
+	_update: function(response) {
+		var item = response[0];
+		var starttime = $.isNumeric(item)? item: Date.parse(item);
+		var interval = +new Date().duration(this.options.interval); // countdown interval in milliseconds
+		var that = this;
+		
+		console.log('[update] item: ', item, ' start: ', starttime);
+		this.element.text(timedisplay(Date.now() - starttime)) 
+		
+		if (this._ticker) 
+			clearInterval(this._ticker);
+		
+		this._ticker = setInterval(function (){
+			that.element.text(timedisplay(Date.now() - starttime))
+		}, interval); 
+	},
+
+});
