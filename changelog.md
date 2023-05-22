@@ -9,6 +9,7 @@
 - id parameter is now fully optional in status toast, even with multiple toasts on a page
 - new "live" parameters in device.blind, device.dimmer, device.window, quad.dimmer, quad.color, quad.shutter, quad.blind and quad.playercontrol enable the usage of the live mode feture of basic.slider
 - new live / silent mode for basic.roundslider (similar to basic.slider) 
+- new widget clock.countup shows the time difference between the actual time and a start time given by an item.
 
 ### Other New Features
 - weather service pirateweather.net as replacement for darksky.net (thanks to aschwith) 

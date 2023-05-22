@@ -32,6 +32,23 @@
 
 
 /**
+* Counts up time difference of the actual time versus a starting time from an item 
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item(num, str)} an item containing the start time as string (e.g. "2023-05-21T23:00:34.566439+02:00") or timestamp
+* @param {duration=10s} the count interval in seconds, e.g. '60s' (default: '10s')  
+*
+* @author Wolfram v. Hülsen
+*/
+{% macro countup(id, item, interval) %}
+	{% if interval is empty %} {% set interval = "10s" %} {% endif %}
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.countup" data-interval="{{ interval }}"  
+		class="miniclock" data-item="{{ item }}">--:--:--
+	</span>
+{% endmacro %}
+
+
+/**
 * Displays a digital clock
 *
 * @param {id} unique id for this widget
