@@ -13,6 +13,7 @@
 {% block example %}
 <script>
 	io.write('bath.time', '2020-01-01T12:00:00.000000+01:00');
+	io.write('bath.light.timestamp', '3726000');
 </script>
   <h5>Examples</h5>
   <div class="twig">
@@ -21,6 +22,7 @@
       {{ basic.print('', ['bath.p1', 'bath.p2', 'bath.p3'], '%', 'VAR1 / SUM(VAR) * 100') }}
       {{ basic.print('', 'bath.value', 'MWh') }}
       {{ basic.print('', 'bath.time', 'time') }}
+	  {{ basic.print('', 'bath.timespan', '', 'timedisplay(VAR)') }}
       {{ basic.print('', 'bath.value', '%01,1f') }}
 	  {{ basic.print('', 'bath.value', 'V', '', '', '', '#print_popup', 'popup' ) }}
     {% endverbatim %}{% endfilter %}</code>
@@ -29,7 +31,8 @@
     a voltage: {{ basic.print('', 'bath.value', 'V') }}<br />
     some calculation: {{ basic.print('', ['bath.p1', 'bath.p2', 'bath.p3'], '%', 'VAR1 / SUM(VAR) * 100') }}<br />
     an unknown unit: {{ basic.print('', 'bath.value', 'MWh') }}<br />
-    a time: {{ basic.print('', 'bath.time', 'time') }}<br />
+    a time from an Unix timedate string: {{ basic.print('', 'bath.time', 'time') }}<br />
+	a timespan provided in Milliseconds: {{ basic.print('', 'bath.light.timestamp', '', 'timedisplay(VAR)') }}<br />
     a custom format (one decimal place): {{ basic.print('', 'bath.value', '%01,1f') }}<br />
 	a voltage with link to a popup: {{ basic.print('', 'bath.value', 'V', '', '', '', '#print_popup', 'popup' ) }}<br />
 	<div id="print_popup" data-role="popup" style="width:280px; height:200px;">
@@ -37,6 +40,7 @@
 			I'm a popup
 		</div>
   </div>
+  You can use built-in smartVISU javascript functions like "timedisplay()" in the example above. View ./lib/base/base.js to find available functions.
 
   <h5>Colors</h5>
   Colors can be assigned with static values or dynamically depending on the threashold values: <br />
