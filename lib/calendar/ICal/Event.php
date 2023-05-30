@@ -11,121 +11,128 @@ class Event
     /**
      * https://www.kanzaki.com/docs/ical/summary.html
      *
-     * @var $summary
+     * @var string
      */
     public $summary;
 
     /**
      * https://www.kanzaki.com/docs/ical/dtstart.html
      *
-     * @var $dtstart
+     * @var string
      */
     public $dtstart;
 
     /**
      * https://www.kanzaki.com/docs/ical/dtend.html
      *
-     * @var $dtend
+     * @var string
      */
     public $dtend;
 
     /**
      * https://www.kanzaki.com/docs/ical/duration.html
      *
-     * @var $duration
+     * @var string
      */
     public $duration;
 
     /**
      * https://www.kanzaki.com/docs/ical/dtstamp.html
      *
-     * @var $dtstamp
+     * @var string
      */
     public $dtstamp;
 
     /**
      * When the event starts, represented as a timezone-adjusted string
      *
-     * @var $dtstart_tz
+     * @var string
      */
     public $dtstart_tz;
 
     /**
      * When the event ends, represented as a timezone-adjusted string
      *
-     * @var $dtend_tz
+     * @var string
      */
     public $dtend_tz;
 
     /**
      * https://www.kanzaki.com/docs/ical/uid.html
      *
-     * @var $uid
+     * @var string
      */
     public $uid;
 
     /**
      * https://www.kanzaki.com/docs/ical/created.html
      *
-     * @var $created
+     * @var string
      */
     public $created;
 
     /**
      * https://www.kanzaki.com/docs/ical/lastModified.html
      *
-     * @var $last_modified
+     * @var string
      */
     public $last_modified;
 
     /**
      * https://www.kanzaki.com/docs/ical/description.html
      *
-     * @var $description
+     * @var string
      */
     public $description;
 
     /**
      * https://www.kanzaki.com/docs/ical/location.html
      *
-     * @var $location
+     * @var string
      */
     public $location;
 
     /**
      * https://www.kanzaki.com/docs/ical/sequence.html
      *
-     * @var $sequence
+     * @var string
      */
     public $sequence;
 
     /**
      * https://www.kanzaki.com/docs/ical/status.html
      *
-     * @var $status
+     * @var string
      */
     public $status;
 
     /**
      * https://www.kanzaki.com/docs/ical/transp.html
      *
-     * @var $transp
+     * @var string
      */
     public $transp;
 
     /**
      * https://www.kanzaki.com/docs/ical/organizer.html
      *
-     * @var $organizer
+     * @var string
      */
     public $organizer;
 
     /**
      * https://www.kanzaki.com/docs/ical/attendee.html
      *
-     * @var $attendee
+     * @var string
      */
     public $attendee;
+
+    /**
+     * Manage additional properties
+     *
+     * @var array<string, mixed>
+     */
+    private $additionalProperties = [];
 
     /**
      * Creates the Event object
@@ -137,8 +144,27 @@ class Event
     {
         foreach ($data as $key => $value) {
             $variable = self::snakeCase($key);
-            $this->{$variable} = self::prepareData($value);
+            if (property_exists($this, $variable)) {
+                $this->{$variable} = $this->prepareData($value);
+            } else {
+                $this->additionalProperties[$variable] = $this->prepareData($value);
+            }
         }
+    }
+
+    /**
+     * Magic getter method
+     *
+     * @param  string $additionalPropertyName
+     * @return mixed
+     */
+    public function __get($additionalPropertyName)
+    {
+        if (array_key_exists($additionalPropertyName, $this->additionalProperties)) {
+            return $this->additionalProperties[$additionalPropertyName];
+        }
+
+        return null;
     }
 
     /**
@@ -151,8 +177,12 @@ class Event
     {
         if (is_string($value)) {
             return stripslashes(trim(str_replace('\n', "\n", $value)));
-        } elseif (is_array($value)) {
-            return array_map('self::prepareData', $value);
+        }
+
+        if (is_array($value)) {
+            return array_map(function ($value) {
+                return $this->prepareData($value);
+            }, $value);
         }
 
         return $value;

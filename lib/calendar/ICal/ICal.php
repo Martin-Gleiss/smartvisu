@@ -4,7 +4,7 @@
  * This PHP class will read an ICS (`.ics`, `.ical`, `.ifb`) file, parse it and return an
  * array of its contents.
  *
- * PHP 5 (≥ 5.3.9)
+ * PHP 5 (≥ 5.6.40)
  *
  * @author  Jonathan Goode <https://github.com/u01jmg3>
  * @license https://opensource.org/licenses/mit-license.php MIT License
@@ -66,7 +66,7 @@ class ICal
     /**
      * Enables customisation of the default time zone
      *
-     * @var string
+     * @var string|null
      */
     public $defaultTimeZone;
 
@@ -94,14 +94,14 @@ class ICal
     /**
      * With this being non-null the parser will ignore all events more than roughly this many days after now.
      *
-     * @var integer
+     * @var integer|null
      */
     public $filterDaysBefore;
 
     /**
      * With this being non-null the parser will ignore all events more than roughly this many days before now.
      *
-     * @var integer
+     * @var integer|null
      */
     public $filterDaysAfter;
 
@@ -880,7 +880,7 @@ class ICal
      *
      * @param  string         $component
      * @param  string|boolean $keyword
-     * @param  string         $value
+     * @param  string|array   $value
      * @return void
      */
     protected function addCalendarComponentWithKeyAndValue($component, $keyword, $value)
@@ -1058,7 +1058,7 @@ class ICal
             $object[1] = $valueObj;
         }
 
-        return $object ?: false;
+        return $object;
     }
 
     /**
@@ -1173,10 +1173,10 @@ class ICal
     /**
      * Returns a date adapted to the calendar time zone depending on the event `TZID`
      *
-     * @param  array  $event
-     * @param  string $key
-     * @param  string $format
-     * @return string|boolean
+     * @param  array       $event
+     * @param  string      $key
+     * @param  string|null $format
+     * @return string|boolean|\DateTime
      */
     public function iCalDateWithTimeZone(array $event, $key, $format = self::DATE_TIME_FORMAT)
     {
@@ -1256,7 +1256,7 @@ class ICal
                     $eventDtstartUnix = $this->iCalDateToUnixTimestamp($event['DTSTART_array'][3]);
 
                     // phpcs:ignore CustomPHPCS.ControlStructures.AssignmentInCondition
-                    if (($alteredEventKey = array_search($eventDtstartUnix, $this->alteredRecurrenceInstances[$event['UID']])) !== false) {
+                    if (($alteredEventKey = array_search($eventDtstartUnix, $this->alteredRecurrenceInstances[$event['UID']], true)) !== false) {
                         $eventKeysToRemove[] = $alteredEventKey;
 
                         $alteredEvent = array_replace_recursive($events[$key], $events[$alteredEventKey]);
@@ -1343,7 +1343,7 @@ class ICal
             }
 
             // Get Interval
-            $interval = (empty($rrules['INTERVAL'])) ? 1 : $rrules['INTERVAL'];
+            $interval = (empty($rrules['INTERVAL'])) ? 1 : (int) $rrules['INTERVAL'];
 
             // Throw an error if this isn't an integer.
             if (!is_int($this->defaultSpan)) {
@@ -1421,15 +1421,15 @@ class ICal
 
                             if (empty($rrules['WKST'])) {
                                 if ($this->defaultWeekStart !== self::ISO_8601_WEEK_START) {
-                                    $wkstTransition = array_search($this->defaultWeekStart, array_keys($this->weekdays));
+                                    $wkstTransition = array_search($this->defaultWeekStart, array_keys($this->weekdays), true);
                                 }
                             } elseif ($rrules['WKST'] !== self::ISO_8601_WEEK_START) {
-                                $wkstTransition = array_search($rrules['WKST'], array_keys($this->weekdays));
+                                $wkstTransition = array_search($rrules['WKST'], array_keys($this->weekdays), true);
                             }
 
                             $matchingDays = array_map(
                                 function ($weekday) use ($initialDayOfWeek, $wkstTransition, $interval) {
-                                    $day = array_search($weekday, array_keys($this->weekdays));
+                                    $day = array_search($weekday, array_keys($this->weekdays), true);
 
                                     if ($day < $initialDayOfWeek) {
                                         $day += 7;
@@ -1456,8 +1456,8 @@ class ICal
                         foreach ($matchingDays as $day) {
                             $clonedDateTime = clone $frequencyRecurringDateTime;
                             $candidateDateTimes[] = $clonedDateTime->setISODate(
-                                $frequencyRecurringDateTime->format('o'),
-                                $frequencyRecurringDateTime->format('W'),
+                                (int) $frequencyRecurringDateTime->format('o'),
+                                (int) $frequencyRecurringDateTime->format('W'),
                                 $day
                             );
                         }
@@ -1495,8 +1495,8 @@ class ICal
 
                             $clonedDateTime = clone $frequencyRecurringDateTime;
                             $candidateDateTimes[] = $clonedDateTime->setDate(
-                                $frequencyRecurringDateTime->format('Y'),
-                                $frequencyRecurringDateTime->format('m'),
+                                (int) $frequencyRecurringDateTime->format('Y'),
+                                (int) $frequencyRecurringDateTime->format('m'),
                                 $day
                             );
                         }
@@ -1510,9 +1510,9 @@ class ICal
                             $bymonthRecurringDatetime = clone $frequencyRecurringDateTime;
                             foreach ($rrules['BYMONTH'] as $byMonth) {
                                 $bymonthRecurringDatetime->setDate(
-                                    $frequencyRecurringDateTime->format('Y'),
+                                    (int) $frequencyRecurringDateTime->format('Y'),
                                     $byMonth,
-                                    $frequencyRecurringDateTime->format('d')
+                                    (int) $frequencyRecurringDateTime->format('d')
                                 );
 
                                 // Determine the days of the month affected
@@ -1529,8 +1529,8 @@ class ICal
                                 // And add each of them to the list of recurrences
                                 foreach ($monthDays as $day) {
                                     $matchingDays[] = $bymonthRecurringDatetime->setDate(
-                                        $frequencyRecurringDateTime->format('Y'),
-                                        $bymonthRecurringDatetime->format('m'),
+                                        (int) $frequencyRecurringDateTime->format('Y'),
+                                        (int) $bymonthRecurringDatetime->format('m'),
                                         $day
                                     )->format('z') + 1;
                                 }
@@ -1569,7 +1569,7 @@ class ICal
                         foreach ($matchingDays as $day) {
                             $clonedDateTime = clone $frequencyRecurringDateTime;
                             $candidateDateTimes[] = $clonedDateTime->setDate(
-                                $frequencyRecurringDateTime->format('Y'),
+                                (int) $frequencyRecurringDateTime->format('Y'),
                                 1,
                                 $day
                             );
@@ -1805,7 +1805,7 @@ class ICal
      */
     protected function getDaysOfMonthMatchingByMonthDayRRule(array $byMonthDays, $initialDateTime)
     {
-        return $this->resolveIndicesOfRange($byMonthDays, $initialDateTime->format('t'));
+        return $this->resolveIndicesOfRange($byMonthDays, (int) $initialDateTime->format('t'));
     }
 
     /**
@@ -1931,7 +1931,7 @@ class ICal
         $byweekDateTime = clone $initialDateTime;
         foreach ($matchingWeeks as $weekNum) {
             $dayNum = $byweekDateTime->setISODate(
-                $initialDateTime->format('Y'),
+                (int) $initialDateTime->format('Y'),
                 $weekNum,
                 1
             )->format('z') + 1;
@@ -1966,7 +1966,7 @@ class ICal
         $monthDateTime = clone $initialDateTime;
         for ($month = 1; $month < 13; $month++) {
             $monthDateTime->setDate(
-                $initialDateTime->format('Y'),
+                (int) $initialDateTime->format('Y'),
                 $month,
                 1
             );
@@ -1974,8 +1974,8 @@ class ICal
             $monthDays = $this->getDaysOfMonthMatchingByMonthDayRRule($byMonthDays, $monthDateTime);
             foreach ($monthDays as $day) {
                 $matchingDays[] = $monthDateTime->setDate(
-                    $initialDateTime->format('Y'),
-                    $monthDateTime->format('m'),
+                    (int) $initialDateTime->format('Y'),
+                    (int) $monthDateTime->format('m'),
                     $day
                 )->format('z') + 1;
             }
@@ -2109,7 +2109,7 @@ class ICal
      * Returns the calendar time zone
      *
      * @param  boolean $ignoreUtc
-     * @return string
+     * @return string|null
      */
     public function calendarTimeZone($ignoreUtc = false)
     {
@@ -2357,7 +2357,7 @@ class ICal
      *
      * @param  string        $date
      * @param  \DateInterval $duration
-     * @param  string        $format
+     * @param  string|null   $format
      * @return integer|\DateTime
      */
     protected function parseDuration($date, $duration, $format = self::UNIX_FORMAT)
