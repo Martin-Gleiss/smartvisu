@@ -31,6 +31,13 @@ class WidgetParameterChecker {
 	 * @var array
 	 */
 	private $paramConfig;
+	
+	/**
+	 * Settings
+	 * @var array
+	 */
+	private $settings;
+	
 
 	/**
 	 * Available dynamic icons

@@ -56,7 +56,7 @@ class Items {
 			$pos = strpos($name, 'property');
 			$itemname = substr($name, 0, $pos -1);
 			$propertyname = substr($name, $pos + 9); 
-			if (isset($this->items[$name]) && !$this->items[$itemname] == null && itemProperties::propertyExists($propertyname)) 
+			if (isset($this->items[$itemname]) && !$this->items[$itemname] == null && itemProperties::propertyExists($propertyname)) 
 				$this->items[$name] = itemProperties::getPropertyType($propertyname);
 			
 			return isset($this->items[$name]) && !$this->items[$name] == null;
