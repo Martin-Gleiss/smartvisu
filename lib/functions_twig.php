@@ -345,7 +345,7 @@ function twig_lang($subset, $key = null, $subkey = null)
 	static $lang;
 
 	if (!$lang)
-		$lang = get_lang_ext();
+		$lang = get_lang();
 
 	if(!isset($subkey)) 
 		if(!isset($key))
