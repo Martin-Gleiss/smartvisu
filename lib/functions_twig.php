@@ -191,7 +191,7 @@ function twig_docu($filenames = null)
 						$rettmp[$headertag] = trim($header[2][$headerno]);
 				}
 
-				$rettmp['subpackage'] = substr(strtolower(utf8_decode(basename($filename))), 0, -5);
+				$rettmp['subpackage'] = substr(strtolower(mb_convert_encoding(basename($filename), 'ISO-8859-1', 'UTF-8')), 0, -5);
 				$rettmp['command'] = $rettmp['subpackage'].".".$rettmp['name'];
 				$rettmp['call'] = $rettmp['command']."(".$rettmp['params'].")";
 
@@ -345,7 +345,7 @@ function twig_lang($subset, $key = null, $subkey = null)
 	static $lang;
 
 	if (!$lang)
-		$lang = get_lang();
+		$lang = get_lang_ext();
 
 	if(!isset($subkey)) 
 		if(!isset($key))

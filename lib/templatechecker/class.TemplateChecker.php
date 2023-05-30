@@ -122,7 +122,7 @@ class TemplateChecker {
     $content = file_get_contents($absFile);
 		libxml_use_internal_errors(true);
 		//$this->domDocument->loadHTMLFile($absFile);
-    $this->domDocument->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
+    $this->domDocument->loadHTML(htmlentities($content));
 		$errors = libxml_get_errors();
 		foreach ($errors as $error) {
 			if (array_key_exists($error->code, $this->ignore_html_error_code)) {
