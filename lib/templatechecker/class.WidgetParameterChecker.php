@@ -271,7 +271,7 @@ class WidgetParameterChecker {
 		
 		$stringParam = $type == 'plotparam' || $type == "uzsuparam" || $type == 'sliderparam' || $type == 'unspecified';
 		if ($stringParam == true){
-			$value = $this->widget->getSingleParamString($this->paramIndex);
+			$value = $this->widget->getSingleParamString($this->paramIndex) || '';
 			if ($type != 'unspecified'){
 				$actualWidget = $this->widget->getName();
 				

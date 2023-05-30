@@ -8,7 +8,7 @@
 ## Installation
 
 ### Requirements
- - PHP 5 (≥ 5.6)
+ - PHP 5 (≥ 5.6.40)
  - [Valid ICS](https://icalendar.org/validator.html) (`.ics`, `.ical`, `.ifb`) file
  - [IANA](https://www.iana.org/time-zones), [Unicode CLDR](http://cldr.unicode.org/translation/timezones) or [Windows](https://support.microsoft.com/en-ca/help/973627/microsoft-time-zone-index-values) Time Zones
 
@@ -69,6 +69,16 @@ composer test
    //   2 => int 1460192400
    //   3 => string 'TZID=America/Detroit:20160409T090000' (length=36)
    ```
+
+### Are you using Outlook?
+
+Outlook has a quirk where it requires the User Agent string to be set in your request headers.
+
+Using the `httpUserAgent` argument when creating your ICal object solves this problem.
+
+```php
+$ical = new ICal($url, array('httpUserAgent' => 'A User Agent'));
+```
 
 ---
 
