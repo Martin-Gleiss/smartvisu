@@ -17,7 +17,7 @@
 	<h5>Example</h5>
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ clock.countup('', 'bath.light.timestamp', '5s') }}
+			{{ clock.countup('', 'bath.light.timestamp', 'bath.light.switch', '5s') }}
 		{% endverbatim %}{% endfilter %}
 		</code>
 	</div>
@@ -25,8 +25,8 @@
 	The timer shows the time elapsed after loading this page in the actual browser session. Click "Trigger" to re-start. 
 	<br />
 	<div class="html">
-		{{ lib.timestamp('', 'bath.light.timestamp') }} 
-		<h3><u>Timer:</u> &nbsp;&nbsp;{{ clock.countup('', 'bath.light.timestamp', '5s') }}</h3>
+		{{ lib.timestamp('tr1', 'bath.light.timestamp') }} 
+		<h3><u>Timer:</u> &nbsp;&nbsp;{{ clock.countup('', 'bath.light.timestamp', 'bath.light.switch', '5s') }}</h3>
 	</div>
 
 {% endblock %}
