@@ -35,15 +35,17 @@
 * Counts up time difference of the actual time versus a starting time from an item 
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item(num, str)} an item containing the start time as string (e.g. "2023-05-21T23:00:34.566439+02:00") or timestamp
+* @param {item(num,str)} an item containing the start time as string (e.g. "2023-05-21T23:00:34.566439+02:00") or timestamp
+* @param {item(num,bool)=} an item used to enable / disable the timer (item value 0=disabled, others = enabled) (optional,default = enabled)
 * @param {duration=10s} the count interval in seconds, e.g. '60s' (default: '10s')  
+* @param {text=} the text displayed if the timer is disabled. If no text is given the display will be hidden (optional, no default)
 *
 * @author Wolfram v. Hülsen
 */
-{% macro countup(id, item, interval) %}
+{% macro countup(id, item, activate, interval, idletxt) %}
 	{% if interval is empty %} {% set interval = "10s" %} {% endif %}
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.countup" data-interval="{{ interval }}"  
-		class="miniclock" data-item="{{ item }}">--:--:--
+		data-idletxt="{{ idletxt }}" class="miniclock" data-item="{{ item }}, {{ activate }}">{{ idletxt }}
 	</span>
 {% endmacro %}
 

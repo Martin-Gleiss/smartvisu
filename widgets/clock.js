@@ -187,27 +187,37 @@ $.widget("sv.clock_countup", $.sv.widget, {
 	initSelector: 'span[data-widget="clock.countup"]',
 
 	options: {
-		interval: 0,
-		idletxt: '--:--:--',
-		 	},
+		interval: '10s',
+		idletxt: null,
+ 	},
 
 	_ticker: null,
 
 	_update: function(response) {
+		var enabled = true;
+		if (this.items[1] != undefined && response[1] == 0 )
+			enabled = false;
 		var item = response[0];
 		var starttime = $.isNumeric(item)? item: Date.parse(item);
 		var interval = +new Date().duration(this.options.interval); // countdown interval in milliseconds
 		var that = this;
 		
-		console.log('[update] item: ', item, ' start: ', starttime);
-		this.element.text(timedisplay(Date.now() - starttime)) 
-		
+		//console.log('[update] item: ', item, ' start: ', starttime, 'enabled:', enabled);
 		if (this._ticker) 
 			clearInterval(this._ticker);
-		
-		this._ticker = setInterval(function (){
-			that.element.text(timedisplay(Date.now() - starttime))
-		}, interval); 
+
+		if (enabled == false){
+			if (this.options.idletxt == undefined)
+				this.element.css("visibility", "hidden");
+			this.element.text(this.options.idletxt);
+		}
+		else {
+			this.element.css("visibility", "visible");
+			this.element.text(timedisplay(Date.now() - starttime)) 
+			this._ticker = setInterval(function (){
+				that.element.text(timedisplay(Date.now() - starttime))
+			}, interval); 
+		}
 	},
 
 });
