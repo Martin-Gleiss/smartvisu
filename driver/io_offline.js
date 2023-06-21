@@ -352,7 +352,7 @@ var io = {
 	startseries: function(plotwidget){
 		var repeatSeries = function(item, tmin, tmax, ymin, ymax, cnt, step, startval) {
 			var series = io.demoseries(tmin, tmax, ymin, ymax, cnt, startval);
-			console.log('[io.offline] sending series data ' + JSON.stringify(series) + ': '+ item, cnt)
+			console.log('[io.offline] receiving series data ' + JSON.stringify(series) + ': '+ item, cnt)
 			widget.update(item, series);
 
 			if(step == null)
