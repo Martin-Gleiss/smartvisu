@@ -20,6 +20,7 @@
 - new folder ./dropins/designs for custom design CSS files (please adjust urls of e.g. background images in the files)
 - page and service for backup and restore of configuration, dropins and custom pages (thanks to @hijacker7)
 - new Italian language package (granzie tante a @hijacker7)
+- eibd/knxd driver now supports status and control GAs in one item, separated by a colon. Format is "GA_state:GA_control", e.g. "1/0/0:1/0/1"
 
 ### Improvements
 - Template checker now ignores multi-line comments  
