@@ -231,6 +231,10 @@ var io = {
 	 * Read a specific item from bus and add it to the buffer
 	 */
 	get: function (item) {
+		
+		var listenItemEnd = item.indexOf(':');
+		var listenItem = (listenItemEnd == -1 ? item : item.substring(0, listenItemEnd));
+		var getForUrl = 'a=' + io.getItemFromItem(listenItem) + '&i=' + io.actualIndexNumber;
 
 		$.ajax({ url: 'http://' + io.address + ':' + io.port + '/cgi-bin/r?' + getForUrl,
 			type: "GET",
@@ -249,11 +253,13 @@ var io = {
 	 */
 	put: function (item, val) {
 		var timer_run = io.timer_run;
+		var sendItemPos = item.indexOf(':');
+		var sendItem = (sendItemPos == -1 ? item : item.substring(sendItemPos + 1));		
 
 		io.stop();
 
 		$.ajax({ url: 'http://' + io.address + ':' + io.port + '/cgi-bin/w',
-			data: ({a: io.getItemFromItem(item), v: io.convertData(val, io.getDataTypeFromItem(item), 'to'), ts: $.now()}),
+			data: ({a: io.getItemFromItem(sendItem), v: io.convertData(val, io.getDataTypeFromItem(sendItem), 'to'), ts: $.now()}),
 			type: "GET",
 			dataType: 'json',
 			cache: false
@@ -286,14 +292,19 @@ var io = {
 			// prepare url
 			var getForUrl = '';
 			var counter = 0;
-
+	
 			var item = widget.listeners();
+			var listenItem;
+			var listenItemEnd;
+
 			for (var i = 0; i < item.length; i++) {
 				if (counter > 0) {
 					getForUrl = getForUrl + '&';
 				}
 
-				getForUrl = getForUrl + 'a=' + io.getItemFromItem(item[i]);
+				listenItemEnd = item[i].indexOf(':');
+				listenItem = (listenItemEnd == -1 ? item[i] : item[i].substring(0, listenItemEnd));
+				getForUrl = getForUrl + 'a=' + io.getItemFromItem(listenItem);
 				counter++;
 			}
 
@@ -316,13 +327,14 @@ var io = {
 								$.each(val, function (id, value) {
 									for (var i = 0; i < item.length; i++) {
 										oneItem = item[i];
-										if (io.getItemFromItem(oneItem) == id) {
-											var dataType = io.getDataTypeFromItem(oneItem);
+										listenItemEnd = oneItem.indexOf(':');			
+										listenItem = (listenItemEnd == -1 ? oneItem : oneItem.substring(0, listenItemEnd));
+										if (io.getItemFromItem(listenItem) == id) {
+											var dataType = io.getDataTypeFromItem(listenItem);
 											value = io.convertData(value, dataType, 'from');
 											widget.update(oneItem, value);
 										}
 									}
-
 								});
 							}
 						})
@@ -351,7 +363,6 @@ var io = {
 			dataType = '1.001';
 		}
 		return dataType;
-		requestItem = itemArray[0] + '/' + itemArray[1] + '/' + itemArray[2];
 	},
 
 	/** get Item from GA String
