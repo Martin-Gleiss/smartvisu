@@ -87,7 +87,7 @@
 	May be a single value or an array of separate counts per item.
 * @param {text[?]=} label for each series; multiples in array form (optional)
 * @param {color[?]=} color for each series; multiples in array form (optional, default: suitable for design)
-* @param {text[?](line,linestack,stair,spline,area,areastair,areaspline,areastack,column,columnstack)=line} type of each serie: 'line', 'linestack', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'areastacked','column', 'columnstacked'; multiples in array form (optional, default 'line')
+* @param {text[?](line,linestack,stair,spline,area,areastair,areaspline,areastack,column,columnstack)=line} type of each serie: 'line', 'linestack', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'areastack','column', 'columnstack'; multiples in array form (optional, default 'line')
 * @param {text[?]=} title for the x-axis and y-axes in array form: [title_x-axis, title_y-axis1, title_y-axis2, ...] (optional)
 * @param {duration(advanced,day)=} minimal time range while zooming or 'advanced' or 'day' (optional, duration-format)
 	By passing 'advanced' a seaparate range selector is shown and data grouping for large amount of data is enabled
@@ -230,6 +230,56 @@
 
 
 /**
+* Plots a chart of time series data
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item(bool,num,list)} series of item(s); multiple items in array form: [ item1 , item2 ]
+* @param {text(avg,sum,min,max,raw,on)=avg} the aggregation mode (optional, default 'avg')
+	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
+* @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format) Value is interpreted as timestamp if no unit is given (e.g. 1629109298731). 
+* @param {duration=now} the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now). Value is interpreted as timestamp if no unit is given (e.g. 1629109298731).
+* @param {value=100} the number of datapoints in the series (optional, default 100)
+* @param {value=120} width of the chart in px (optional, default = 120 px)
+* @param {value=20} height of the chart in px (optional, default = 20 px)
+* @param {text[?](line,stair,spline,area,areastair,areaspline,column)=line} type of each serie: 'line', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'column' (optional, default 'line')
+* @param {format[?]=} unit(s) for the y-axis. Either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. Multiples in array form. (optional)
+* @param {text[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+* @param {text(database,item)=database} source of the data. If set to 'item', data must be provided in a list item (optional, default=database)  
+*
+* @see misc/fundamentals#Array-Form
+* @see misc/fundamentals#Duration-Format
+*/
+
+{% macro sparkline(id, item, mode, tmin, tmax, count, width, height, exposure, unit, source) %}
+	{% set source = source|default('database') %}
+	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
+	{% set tmin = tmin|default('1h') %}
+	{% set mode = mode|default('avg') %}
+	{% set count = count|default(100) %}
+	{% set width = width|default(120) %}
+	{% set height = height|default(20) %}
+	{% set unit = unit|default('') %}
+	{% set unit = unit|replace({',' : ';'}) %}  /** hide comma before implode/explode to allow format strings, e.g. %01,02f% */
+	{% if source == 'database' %}
+		{% set seriesitem = implode(item, [mode, tmin, tmax, count]) %}
+	{% else %}
+		{% set seriesitem = item %}
+	{% endif %}
+	{% set chartoptions = {chart:{backgroundColor: null, borderWidth: 0, margin: [2, 0, 2, 0], width: width, height: height, style: {overflow: 'visible'}, skipClone: true}, title: {text: ''},credits: {enabled: false},
+        xAxis: [{labels: {enabled: false}, title: {text: null}, startOnTick: false, endOnTick: false, tickPositions: [], type: 'datetime'}],
+        yAxis: [{endOnTick: false, startOnTick: false, labels: {enabled: false}, title: {text: null}, tickPositions: [0]}],
+        legend: {enabled: false}, tooltip: {hideDelay: 0, outside: true, shared: true},
+        plotOptions: {series: {animation: false, lineWidth: 1, shadow: false, states: {hover: {lineWidth: 1}}, marker: {radius: 1, states: {hover: {radius: 2}}}, fillOpacity: 0.25}}} %}
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.period" data-mode="{{ mode }}" data-item="{{ seriesitem }}" data-tmin="{{ tmin }}" data-tmax="{{ tmax }}"
+		data-exposure="{{ exposure }}" data-unit="{{ unit }}" data-stacking="normal" data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}" data-exportmenu="0"
+		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}>
+	</div>
+
+{% endmacro %}
+
+
+/**
 * A complete house temperature plot. The rose shows all rooms with there actual and set temperature in one diagramm.
 *
 * @param {id=} unique id for this widget (optional)
@@ -354,7 +404,6 @@
 		class="plot"></div>
 
 {% endmacro %}
-
 
 
 /******************************************************************************
