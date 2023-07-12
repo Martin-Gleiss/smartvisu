@@ -45,6 +45,8 @@
 * @param {text(disc,rect,slider)=disc} 'disc' for circular, 'rect' for rectangular view, 'slider' for HSV sliders (optional, default: disc)
 * @param {text(rgb,hsl,hsv)=rgb} possible values: 'rgb', 'hsl' and 'hsv' (optional, default: rgb)
 *
+* @see misc/fundamentals#Items
+*
 * @author Martin Gleiß and Stefan Widmer
 * @info inspired by Marcus Popp
 */
@@ -93,6 +95,8 @@
 * @param {text=1} value for the 'on' state (optional, default 1)
 * @param {text=0} value for the 'off' state (optional, default 0)
 * @param {color=} alternative color (e.g. '#777') for active switch (optional)
+*
+* @see misc/fundamentals#Items
 */
 {% macro flip(id, item, txt_on, txt_off, val_on, val_off, background) %}
 
@@ -296,6 +300,8 @@
 * @param {type(text)=mini} valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini)
 * @param {text=} lowest allowed value (optional, default: no limit)
 * @param {text=} highest allowed value (optional, default: no limit)
+*
+* @see misc/fundamentals#Items
 */
 {% macro offset(id, item, step, icon, text, type, min, max) %}
 	{% import _self as basic %}
@@ -370,6 +376,8 @@
 * @param {value=0.1} thickness of the slide line
 * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
 *
+* @see misc/fundamentals#Items
+*
 * @author Bonze, Wolfram v. Hülsen
 */
 
@@ -410,6 +418,8 @@
 * @param {text(horizontal,vertical,none)=horizontal} orientation of the controlgroup: 'horizontal', 'vertical' or 'none' for seperate buttons (optional, default: 'horizontal') - not supported for type 'menu'
 * @param {item(list)=} an item containing all selectable values (optional) - overrides existing value definitions
 * @param {item(list)=} an item containing the texts corresponding to the selectable values (optional even if itemvals is specified)
+*
+* @see misc/fundamentals#Items
 */
 {% macro select(id, item, type, value, icon, text, color_on, group, itemvals, itemtxts) %}
 	{% import _self as basic %}
@@ -444,6 +454,8 @@
 * @param {value=5} step between two values (optional, default 5)
 * @param {text(half,full)=half} 'half' blade turns from -1 to +1, 'full' blade turns from 0 to +1 (optional, default 'half')
 * @param {image=} background image url (relative to smartVISU directory or absolute); optimal size is 100px x 180px (optional)
+*
+* @see misc/fundamentals#Items
 *
 * @info inspired by Jörg Gutowski
 */
@@ -519,6 +531,8 @@
 * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
 * @param {value=} the maximum value to display to total right if this should differ from sent/received value (optional, default like max)
 * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
+*
+* @see misc/fundamentals#Items
 */
 {% macro slider(id, item, min, max, step, orientation, value_display, min_display, max_display, live) %}
 	<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.slider" data-item="{{ item }}"
@@ -548,6 +562,7 @@
 	If this starts with a + or - sign the value is treated as offset to current stateswitch value.
 * @param {text=} the value to send on releasing after a longpress (optional)
 *
+* @see misc/fundamentals#Items
 * @see design/design_icons#Icons
 *
 * @author Stefan Widmer

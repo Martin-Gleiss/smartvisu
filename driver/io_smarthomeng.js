@@ -54,7 +54,9 @@ var io = {
 	 * @param      the value
 	 */
 	write: function (item, val) {
-		io.send({'cmd': 'item', 'id': item, 'val': val});
+		var sendItemPos = item.indexOf(':');
+		var sendItem = (sendItemPos == -1 ? item : item.substring(sendItemPos + 1));		
+		io.send({'cmd': 'item', 'id': sendItem, 'val': val});
 		if (!sv.config.driver.loopback) 
 			widget.update(item, val);
 	},
@@ -146,6 +148,7 @@ var io = {
 	socket: false,
 	
 	triggerqueue: [],
+	listeners: [],
 	
 	/**
 	 * Opens the connection and add some handlers
@@ -224,6 +227,8 @@ var io = {
 							val = 1;
 						}
 						widget.update(item, val);
+						if (item != io.listeners[item])
+							widget.update(io.listeners[item], val);
 					}
 					break;
 
@@ -310,7 +315,16 @@ var io = {
 		//if (widget.listeners().length) {
 			// subscribe all items used on the page
 			// or cancel subscription by sending an empty array 
-			io.send({'cmd': 'monitor', 'items': widget.listeners()});
+		var listeners = widget.listeners();
+		var listenItem;
+		var listenItemEnd;
+		for (var i=0; i < listeners.length; i++){
+			listenItemEnd = listeners[i].indexOf(':');
+			listenItem = (listenItemEnd == -1 ? listeners[i] : listeners[i].substring(0, listenItemEnd));
+			if ( io.listeners[listenItem] == undefined || listenItem == io.listeners[listenItem])
+				io.listeners[listenItem] = listeners[i];
+		}
+		io.send({'cmd': 'monitor', 'items': Object.keys(io.listeners)});
 		//}
 
 		// subscribe all plots defined for the page 

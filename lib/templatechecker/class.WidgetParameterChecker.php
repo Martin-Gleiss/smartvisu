@@ -542,6 +542,18 @@ class WidgetParameterChecker {
 	private function checkParameterTypeItem($value) {
 		if ($value == "" || $this->items->getState() == FALSE)
 			return;
+		
+		// check for combined status/control items, e.g. "item_status:item_control"
+		if (strpos($value, ":") !== false){
+			$values = explode(':', $value);
+			if (count($values) != 2){
+				$this->addError('ITEM-EXISTING CHECK', 'Combined status/control item must consist of two items', $value, array());
+				return FALSE;
+			}
+			$this->checkParameterTypeItem($values[0]);
+			$this->checkParameterTypeItem($values[1]);
+			return;
+		}
 
 		if ($this->items->ItemExists($value)) {
 		if (Settings::SHOW_SUCCESS_TOO)
