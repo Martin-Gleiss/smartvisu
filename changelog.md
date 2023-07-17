@@ -62,6 +62,7 @@
 - plot.gauge (speedometer and vumeter) did only receive correct CSS background styles if page was reloaded 
 - plot.gauge and device.uzsugraph did not disable the export menu correctly
 - template checker did not evaluate item properties correctly
+- widget assistant inserted too many quotes in autocomplete mode if user entry had started with a quote
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
