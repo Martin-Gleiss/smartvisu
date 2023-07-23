@@ -993,11 +993,11 @@ function twig_trim_filter($string, $characterMask = null, $side = 'both')
 
     switch ($side) {
         case 'both':
-            return trim($string, $characterMask);
+            return trim((string) $string, $characterMask);
         case 'left':
-            return ltrim($string, $characterMask);
+            return ltrim((string) $string, $characterMask);
         case 'right':
-            return rtrim($string, $characterMask);
+            return rtrim((string) $string, $characterMask);
         default:
             throw new RuntimeError('Trimming side must be "left", "right" or "both".');
     }
