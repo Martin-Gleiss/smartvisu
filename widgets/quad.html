@@ -26,7 +26,7 @@
  */
 {% macro mixed(id, text, div1, div2, div3, div4, div5, div6, div7, div8, div9, div10) %}
     {% set id = id is empty ? text|replace(' ', '_') : id %}
-      <li data-icon="false" class="row_mixed">
+    <li data-icon="false" class="row_mixed">
     <div class="quad_table row_mixed" id="row_{{uid(page, id)|replace('.', '_')}}">
     <div class="text">{{ text|e }}</div>
     {% for divnumber in 1..10 %}
@@ -34,14 +34,14 @@
         {% if _context['div' ~ divnumber] %}
             {% if nummer is iterable %}
                 {% set col = 'multi' %}
-                  <div class="column{{divnumber}} column_{{col}}" data-order="{{divnumber}}">
+                  <div class="column{{divnumber}} column_{{col}}" data-order="{{divnumber}}" data-bind="{{uid(page, id)}}_column{{ divnumber }}">
                   {% for div in nummer %}
                     {{ div }}
                   {% endfor %}
                 </div>
             {% else %}
                 {% set col = _context['div' ~ divnumber]|split('data-widget="').1|split('"').0|replace({'.': '_'}) %}
-                <div class="column{{divnumber}} column_{{col}}" data-order="{{divnumber}}">
+                <div class="column{{divnumber}} column_{{col}}" data-order="{{divnumber}}" data-bind="{{uid(page, id)}}_column{{ col }}">
                   {{ _context['div' ~ divnumber] }}
                 </div>
             {% endif %}
@@ -75,7 +75,7 @@
  * @param {text=} used in combination with href as data-rel attribute {e.g. to open a popup} (optional)
  * @param {text=} description text for the whole line
  * @param {text[?]=} description text for the column. Can be array.
- * @param {plotparam[?]=} array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted. 
+ * @param {plotparam[?]=} array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
                           Array size must match the number of columns, e.g. "[['plotitem1', 'avg', '2d','now'], 'plotitem2', '']" for a table of 3 columns.
  * @param {image=measure_power_meter} icon triggering the plot popup
  * @param {placeholder=} placeholder attributes for future features, etc.
@@ -98,7 +98,7 @@
         {% endif %}
         {% set runs = formula is iterable ? max((formula|length-1),0 ) : 0 %}
         {% for i in 0..runs %}
-          <div class="column{{ column_order[i]|default(i+1) }} {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_symbol' }}" data-order={{ column_order[i]|default(i+1) }}>
+          <div class="column{{ column_order[i]|default(i+1) }} {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_symbol' }}" data-order="{{ column_order[i]|default(i+1) }}" data-bind="{{uid(page, id)}}_column{{ column_order[i]|default(i+1) }}">
             {% if columntext is iterable %}{{ columntext[i] }}{% else %}{{ columntext }}{% endif %}
             {% if item is iterable and item[i] == ' ' %}
 
@@ -197,7 +197,7 @@
           {% if format[i] != 'script' %}
             {% set column_order = column_order[i]|default(i+1) - scriptcolumns %}
             <div class="column{{ column_order}}
-            {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_print' }}" data-order={{ column_order[i]|default(i+1) }}>
+            {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_print' }}" data-order="{{ column_order[i]|default(i+1) }}" data-bind="{{uid(page, id)}}_column{{ column_order }}">
             {% else %}
             <div style="width: 0;">
               {% set scriptcolumns = scriptcolumns + 1 %}
@@ -278,7 +278,7 @@
     <li data-icon="false" class="row_rtr">
     <div class="quad_table sorting row_rtr" id="row_{{uid(page, id)}}_sorting">
         <div class="text">{{ linetext|e }}</div>
-        <div class="column{{ column_order[0]|default(1) }} column_rtr_actual" data-order={{ column_order[0]|default(1) }}>
+        <div class="column{{ column_order[0]|default(1) }} column_rtr_actual" data-order="{{ column_order[0]|default(1) }}" data-bind="{{uid(page, id)}}_column{{ column_order[0]|default(1) }}">
           {{ basic.print(id~'_actual_value', item_actual, '°') }}
           {% if item_plot %}
             <a href="#{{ uid(page, id) }}_plotpopup{{i}}" data-rel="popup">
@@ -295,7 +295,7 @@
             </div>
           {% endif %}
         </div>
-        <div class="column{{ column_order[2]|default(3) }} column_rtr_popup" data-order={{ column_order[2]|default(3) }}>
+        <div class="column{{ column_order[2]|default(3) }} column_rtr_popup" data-order="{{ column_order[2]|default(3) }}" data-bind="{{uid(page, id)}}_column{{ column_order[2]|default(3) }}">
             <a href="#{{ uid(page, id) }}list_rtr_popup" data-rel="popup" data-position-to="window">
                 {{ basic.print(id~'_set', item_set, '°') }}
             </a>
@@ -306,7 +306,7 @@
         </div>
 
 	{% if item_setpoint != '' %}
-        <div class="column{{ column_order[1]|default(2) }} column_setpoint" data-order={{ column_order[1]|default(2) }}>
+        <div class="column{{ column_order[1]|default(2) }} column_setpoint" data-order="{{ column_order[1]|default(2) }}" data-bind="{{uid(page, id)}}_column{{ column_order[1]|default(2) }}">
           {{ basic.print(id~'_setpoint', item_setpoint, '%') }}
         </div>
         {% endif %}
@@ -526,24 +526,24 @@
     {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
       {% if loop.first %}
         {% if column == 'empty' %}
-          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}">
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
         {% else %}
-          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" style="width: {{ column|slice(6) }}px !important;">
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" style="width: {{ column|slice(6) }}px !important;" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
         {% endif %}
       {% elseif column == 'empty' %}
         {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
         </div>
-        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}">
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" data-bind="{{uid(page, id)}}_column{{ columnnumber|length+1 }}">
       {% elseif column starts with 'empty' %}
         {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
         </div>
-        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" style="width: {{ column|slice(6) }}px !important;">
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" style="width: {{ column|slice(6) }}px !important;" data-bind="{{uid(page, id)}}_column{{ columnnumber|length+1 }}">
       {% elseif column == 'div' %}
         {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
-        <div class="column{{ columnnumber|length+1 }} column_{{ elements[loop.index] }}" data-order="{{ columnnumber|length+1 }}">
+        <div class="column{{ columnnumber|length+1 }} column_{{ elements[loop.index] }}" data-order="{{ columnnumber|length+1 }}" data-bind="{{uid(page, id)}}_column{{ columnnumber|length+1 }}">
       {% endif %}
     {% elseif loop.first %}
-      <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}">
+      <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
     {% endif %}
 
     {% if column == 'locks' %}
@@ -912,24 +912,24 @@
     {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
       {% if loop.first %}
         {% if column == 'empty' %}
-          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}">
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
         {% else %}
-          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" style="width: {{ column|slice(6) }}px !important;">
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" style="width: {{ column|slice(6) }}px !important;" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
         {% endif %}
       {% elseif column == 'empty' %}
         {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
         </div>
-        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}">
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" data-bind="{{uid(page, id)}}_column{{ columnnumber|length+1 }}">
       {% elseif column starts with 'empty' %}
         {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
         </div>
-        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" style="width: {{ column|slice(6) }}px !important;">
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" style="width: {{ column|slice(6) }}px !important;" data-bind="{{uid(page, id)}}_column{{ columnnumber|length+1 }}">
       {% elseif column == 'div' %}
         {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
-        <div class="column{{ columnnumber|length+1 }} column_{{ elements[loop.index] }}" data-order="{{ columnnumber|length+1 }}">
+        <div class="column{{ columnnumber|length+1 }} column_{{ elements[loop.index] }}" data-order="{{ columnnumber|length+1 }}" data-bind="{{uid(page, id)}}_column{{ columnnumber|length+1 }}">
       {% endif %}
     {% elseif loop.first %}
-      <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}">
+      <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
     {% endif %}
 
     {% if column == 'locks' %}
@@ -1394,24 +1394,24 @@
     {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
       {% if loop.first %}
         {% if column == 'empty' %}
-          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}">
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
         {% else %}
-          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" style="width: {{ column|slice(6) }}px !important;">
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" style="width: {{ column|slice(6) }}px !important;" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
         {% endif %}
       {% elseif column == 'empty' %}
         {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
         </div>
-        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}">
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" data-bind="{{uid(page, id)}}_column{{ columnnumber|length+1 }}">
       {% elseif column starts with 'empty' %}
         {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
         </div>
-        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" style="width: {{ column|slice(6) }}px !important;">
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" style="width: {{ column|slice(6) }}px !important;" data-bind="{{uid(page, id)}}_column{{ columnnumber|length+1 }}">
       {% elseif column == 'div' %}
         {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
-        <div class="column{{ columnnumber|length+1 }} column_{{ elements[loop.index] }}" data-order="{{ columnnumber|length+1 }}">
+        <div class="column{{ columnnumber|length+1 }} column_{{ elements[loop.index] }}" data-order="{{ columnnumber|length+1 }}" data-bind="{{uid(page, id)}}_column{{ columnnumber|length+1 }}">
       {% endif %}
     {% elseif loop.first %}
-      <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}">
+      <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
     {% endif %}
 
     {% if column == 'move_down' and item_move %}
@@ -1935,21 +1935,6 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     {% set elements = elements|slice(1) %}
   {% endif %}
   {% set columnnumber = {} %}
-/**
-
-{% set ext_elements = [] %}
-{% for id, string in elements %}
-    {% set ext_elements = ext_elements|merge([(string)]) %}
-{% endfor %}
-
-{% set id = id is empty ? item_play|replace('.', '_') : id %}
-
-<div>
-{% for column in elements %}
-  {{ column }},
-{% endfor %}
-</div>
-*/
 
     <li data-icon="false" class="row_playercontrol">
     <div class="quad_table row_playercontrol" id="row_{{uid(page, id)}}">
@@ -1966,24 +1951,24 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
       {% if loop.first %}
         {% if column == 'empty' %}
-          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}">
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
         {% else %}
-          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" style="width: {{ column|slice(6) }}px !important;">
+          <div class="column{{ loop.index }} column_empty" data-order="{{ loop.index }}" style="width: {{ column|slice(6) }}px !important;" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
         {% endif %}
       {% elseif column == 'empty' %}
         {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
         </div>
-        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}">
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" data-bind="{{uid(page, id)}}_column{{ columnnumber|length+1 }}">
       {% elseif column starts with 'empty' %}
         {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
         </div>
-        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" style="width: {{ column|slice(6) }}px !important;">
+        <div class="column{{ columnnumber|length+1 }} column_empty" data-order="{{ columnnumber|length+1 }}" style="width: {{ column|slice(6) }}px !important;" data-bind="{{uid(page, id)}}_column{{ columnnumber|length+1 }}">
       {% elseif column == 'div' %}
         {% set columnnumber = columnnumber|merge({(loop.index):(loop.index)}) %}
-        <div class="column{{ columnnumber|length+1 }} column_{{ elements[loop.index] }}" data-order="{{ columnnumber|length+1 }}">
+        <div class="column{{ columnnumber|length+1 }} column_{{ elements[loop.index] }}" data-order="{{ columnnumber|length+1 }}" data-bind="{{uid(page, id)}}_column{{ columnnumber|length+1 }}">
       {% endif %}
     {% elseif loop.first %}
-      <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}">
+      <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
     {% endif %}
     {% if column == 'power' and item_power %}
       {{ basic.stateswitch(id~'_power', item_power, 'icon', [0,1], '', '', ['icon0','icon1'], 'blink') }}
@@ -2110,7 +2095,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 
     {% if column == 'speaker' and item_speaker %}
       {{ basic.stateswitch(id~'_speaker1', item_speaker[0], 'mini', [1,0], '', 'A', ['icon1', 'icon0'], '') }}
-      {{ basic.stateswitch(id~'_speaker1', item_speaker[1], 'mini', [1,0], '', 'B', ['icon1', 'icon0'], '') }}
+      {{ basic.stateswitch(id~'_speaker2', item_speaker[1], 'mini', [1,0], '', 'B', ['icon1', 'icon0'], '') }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2261,7 +2246,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 								Exception: if the parameter "item_uzsu" is a singe item in string format a new column with an uzsu icon is displayed behind the main column block.
  * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
                                 Normally the array must have the same dimension as the "type" parameter, e.g. "[['plotitem1', 'avg', '2d','now'], 'plotitem2', '']" for a table of 3 columns.
-								Exception: a plot parameter array with exactly 17 entries causes a new column with a plot icon to be displayed behind the main column block. Example: "['plotitem1', 'avg', '2d','now', '','','','','','','','','','','','','temp'] 
+								Exception: a plot parameter array with exactly 17 entries causes a new column with a plot icon to be displayed behind the main column block. Example: "['plotitem1', 'avg', '2d','now', '','','','','','','','','','','','','temp']
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
  * @param {item[?](foo)=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
@@ -2529,24 +2514,24 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
         {% if (column starts with 'empty' and not loop.last) or (column == 'div' and not loop.last) %}
           {% if loop.first %}
             {% if column == 'empty' %}
-              <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}">
+              <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}" data-bind="{{uid(page, id)}}_column{{ columnnumber }}">
             {% else %}
-              <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}" style="width: {{ column|slice(6) }}px !important;">
+              <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}" style="width: {{ column|slice(6) }}px !important;" data-bind="{{uid(page, id)}}_column{{ columnnumber }}">
             {% endif %}
           {% elseif column == 'empty' %}
             {% set columnnumber = columnnumber+1 %}
             </div>
-            <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}">
+            <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}" data-bind="{{uid(page, id)}}_column{{ columnnumber }}">
           {% elseif column starts with 'empty' %}
             {% set columnnumber = columnnumber+1 %}
             </div>
-            <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}" style="width: {{ column|slice(6) }}px !important;">
+            <div class="column{{ columnnumber }} column_empty" data-order="{{ columnnumber }}" style="width: {{ column|slice(6) }}px !important;" data-bind="{{uid(page, id)}}_column{{ columnnumber }}">
           {% elseif column == 'div' %}
             {% set columnnumber = columnnumber+1 %}
-            <div class="column{{ columnnumber }} column_{{ (arrays[loop.index] == 'switch' and _switch_or_select == 'select' ? 'select' : arrays[loop.index])  }}" data-order="{{ columnnumber }}">
+            <div class="column{{ columnnumber }} column_{{ (arrays[loop.index] == 'switch' and _switch_or_select == 'select' ? 'select' : arrays[loop.index])  }}" data-order="{{ columnnumber }}" data-bind="{{uid(page, id)}}_column{{ columnnumber }}">
           {% endif %}
         {% elseif loop.first %}
-          <div class="column{{ columnnumber }} column_{{ (column == 'switch' and _switch_or_select == 'select' ? 'select' : column)  }}" data-order="{{ columnnumber }}">
+          <div class="column{{ columnnumber }} column_{{ (column == 'switch' and _switch_or_select == 'select' ? 'select' : column)  }}" data-order="{{ columnnumber }}" data-bind="{{uid(page, id)}}_column{{ columnnumber }}">
         {% endif %}
         {% if type is iterable %}
           {% if column == 'switch' and item_switch[i] %}
@@ -2911,7 +2896,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 								Exception: if the parameter "item_uzsu" is a singe item in string format a new column with sn uzsu icon is displayed behind the main column block.
  * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
                                 Normally the array must have the same dimension as the "type" parameter, e.g. "[['plotitem1', 'avg', '2d','now'], 'plotitem2', '']" for a table of 3 columns.
-								Exception: a plot parameter array with exactly 17 entries causes a new column with a plot icon to be displayed behind the main column block. Example: "['plotitem1', 'avg', '2d','now', '','','','','','','','','','','','','temp'] 
+								Exception: a plot parameter array with exactly 17 entries causes a new column with a plot icon to be displayed behind the main column block. Example: "['plotitem1', 'avg', '2d','now', '','','','','','','','','','','','','temp']
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
  * @param {item[?](foo)=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
@@ -2979,7 +2964,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
         {% set runs = item is iterable ? max((item|length-1),0 ) : 0 %}
     {% for i in 0..runs %}
         <div class="column{{ column_order[i]|default(i+1) }}
-        {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_input' }}" data-order={{ column_order[i]|default(i+1) }}>
+        {{ item is iterable and item[i] == ' ' ? 'column_empty' : 'column_input' }}" data-order="{{ column_order[i]|default(i+1) }}" data-bind="{{uid(page, id)}}_column{{ column_order[i]|default(i+1) }}">
       {% if item is iterable and item[i] == ' ' %}
       {% elseif runs > 0 %}{{ columntext[i]|e }}
         {{ basic.input(id~'list_input'~i, item[i], type[i], min[i], max[i], step[i]) }}
