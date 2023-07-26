@@ -238,6 +238,8 @@
 	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
 * @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format) Value is interpreted as timestamp if no unit is given (e.g. 1629109298731). 
 * @param {duration=now} the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now). Value is interpreted as timestamp if no unit is given (e.g. 1629109298731).
+* @param {text=} the minimum for the y-axis (optional)
+* @param {text=} the maximum for the y-axis (optional)
 * @param {value=100} the number of datapoints in the series (optional, default 100)
 * @param {value=120} width of the chart in px (optional, default = 120 px)
 * @param {value=20} height of the chart in px (optional, default = 20 px)
@@ -250,7 +252,7 @@
 * @see misc/fundamentals#Duration-Format
 */
 
-{% macro sparkline(id, item, mode, tmin, tmax, count, width, height, exposure, unit, source) %}
+{% macro sparkline(id, item, mode, tmin, tmax, ymin, ymax, count, width, height, exposure, unit, source) %}
 	{% set source = source|default('database') %}
 	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1h') %}
@@ -272,7 +274,8 @@
         plotOptions: {series: {animation: false, lineWidth: 1, shadow: false, states: {hover: {lineWidth: 1}}, marker: {radius: 1, states: {hover: {radius: 2}}}, fillOpacity: 0.25}}} %}
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.period" data-mode="{{ mode }}" data-item="{{ seriesitem }}" data-tmin="{{ tmin }}" data-tmax="{{ tmax }}"
-		data-exposure="{{ exposure }}" data-unit="{{ unit }}" data-stacking="normal" data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}" data-exportmenu="0"
+        {% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
+    	data-exposure="{{ exposure }}" data-unit="{{ unit }}" data-stacking="normal" data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}" data-exportmenu="0"
 		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}>
 	</div>
 
