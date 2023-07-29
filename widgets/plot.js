@@ -353,11 +353,15 @@ $.widget("sv.plot_period", $.sv.widget, {
         var xMax = new Date() - new Date().duration(this.options.tmax);
 		var dayDuration = 24*3600*1000;
 		var timezoneOffset = this.options["servertime-url"] != '' ? parseInt(-Number(sv.config.timezoneOffset)/60 + (window.servertimeoffset/60000 ||0)) : new Date().getTimezoneOffset();
-		if (zoom == "day"){
+		if ((zoom == "day") || (zoom == "yesterday")){
 			xMin = new Date() - new Date() % dayDuration + timezoneOffset * 60000;
 			if (new Date() - xMin >= dayDuration)
 				xMin += dayDuration;
 			xMax = xMin + dayDuration;
+			if (zoom == "yesterday") {
+				xMax = xMin;
+				xMin = xMin - (24*60*60000);
+			}
 			zoom = '';
 		}
 		
@@ -520,11 +524,16 @@ $.widget("sv.plot_period", $.sv.widget, {
 			var xMax = new Date() - new Date().duration(this.options.tmax);
 			var dayDuration = 24*3600*1000;
 
-			if (this.options.zoom == "day"){
+			if ((this.options.zoom == "day") || (this.options.zoom == "yesterday")){
 				xMin = new Date() - new Date()% dayDuration + chart.time.options.timezoneOffset * 60000;
 				if (new Date() - xMin >= dayDuration)
 					xMin += dayDuration;
 				xMax = xMin + dayDuration;
+				if (this.options.zoom == "yesterday") {
+					xMax = xMin;
+					xMin = xMin - (24*60*60000);
+				}
+				zoom = '';
 			}
 			chart.xAxis[0].update({ min: xMin, max: xMax }, false);
 		}

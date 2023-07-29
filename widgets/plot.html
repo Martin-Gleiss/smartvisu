@@ -89,9 +89,10 @@
 * @param {color[?]=} color for each series; multiples in array form (optional, default: suitable for design)
 * @param {text[?](line,linestack,stair,spline,area,areastair,areaspline,areastack,column,columnstack)=line} type of each serie: 'line', 'linestack', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'areastack','column', 'columnstack'; multiples in array form (optional, default 'line')
 * @param {text[?]=} title for the x-axis and y-axes in array form: [title_x-axis, title_y-axis1, title_y-axis2, ...] (optional)
-* @param {duration(advanced,day)=} minimal time range while zooming or 'advanced' or 'day' (optional, duration-format)
+* @param {duration(advanced,day,yesterday)=} minimal time range while zooming or 'advanced' or 'day' (optional, duration-format)
 	By passing 'advanced' a seaparate range selector is shown and data grouping for large amount of data is enabled
 	By passing 'day', the plot is shown from 0:00 until 24:00 on the current day (it makes sense to set tmin to '24h' and tmax to 'now').
+	By passing 'yesterday', the plot is shown from 0:00 until 24:00 on yesterday (it makes sense to set tmin to '48h' and tmax to 'now').
 * @param {value[]=} assignment of the series to the y-axes; multiples in array form (optional)
 * @param {value[]=} y-axes setup for left '0' and right '1' hand in array form (optional)
 * @param {color[?]=} y-axes color; multiples in array form (optional)
