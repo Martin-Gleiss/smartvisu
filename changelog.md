@@ -12,11 +12,11 @@
 - new widget clock.countup shows the time difference between the actual time and a start time given by an item.
 - series data for plots in popups may be loaded on demand during popup open. Add "plotpopup" to the plot ID to postpone the individual series request from page load to popup open. This is now default behaviour for the Quad widgets.
 - new widget plot.sparkline displays trend curves inside tables.
+- plot.period now displays day plots (zoom = 'day') for days in the past - starting next day at 00:00 after tmin ('24h' = today, '48h' = yesterday ...). 
 
 ### Other New Features
 - weather service pirateweather.net as replacement for darksky.net (thanks to aschwith) 
 - improved unit handling in weather services via language files
-- new folder ./dropins/designs for custom design CSS files
 - designs "darkblue" and "flatdarkblue" habe been completed with missing swatches (thanks to @onkelandy)
 - new folder ./dropins/designs for custom design CSS files (please adjust urls of e.g. background images in the files)
 - page and service for backup and restore of configuration, dropins and custom pages (thanks to @hijacker7)
