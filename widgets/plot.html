@@ -91,7 +91,7 @@
 * @param {text[?]=} title for the x-axis and y-axes in array form: [title_x-axis, title_y-axis1, title_y-axis2, ...] (optional)
 * @param {duration(advanced,day)=} minimal time range while zooming or 'advanced' or 'day' (optional, duration-format)
 	By passing 'advanced' a seaparate range selector is shown and data grouping for large amount of data is enabled
-	By passing 'day', the plot is shown from 0:00 until 24:00 on the current day (it makes sense to set tmin to '24h' and tmax to 'now').
+	By passing 'day', the plot is shown from 0:00 until 24:00 on the day starting after tmin. Set tmin  to '24h' or '1d' for today, '48h' or '2d' for yesterday and so on. tmax must be 'now' or at least 48 hours less than tmin. 
 * @param {value[]=} assignment of the series to the y-axes; multiples in array form (optional)
 * @param {value[]=} y-axes setup for left '0' and right '1' hand in array form (optional)
 * @param {color[?]=} y-axes color; multiples in array form (optional)
@@ -317,7 +317,7 @@
 {% macro timeshift (id, plot, step, type, label) %}
 {% import "@widgets/basic.html" as basic %}
 {% import "@widgets/lib.html" as lib %}
-	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="myplot.timeshift" data-bind ="{{ uid(page, plot) }}" data-step="{{ step }}"
+	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.timeshift" data-bind ="{{ uid(page, plot) }}" data-step="{{ step }}"
 	{% if type == 'head' %}style="float:right; margin-right:32px;">
 		<a class="timeshift-back">{{ lib.svgimg ('', 'audio_previous.svg', 'icon0') }}</a> {{- label -}}
 		<a class="timeshift-forward">{{ lib.svgimg ('', 'audio_next.svg', 'icon0') }}</a>

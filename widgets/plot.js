@@ -354,9 +354,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 		var dayDuration = 24*3600*1000;
 		var timezoneOffset = this.options["servertime-url"] != '' ? parseInt(-Number(sv.config.timezoneOffset)/60 + (window.servertimeoffset/60000 ||0)) : new Date().getTimezoneOffset();
 		if (zoom == "day"){
-			xMin = new Date() - new Date() % dayDuration + timezoneOffset * 60000;
-			if (new Date() - xMin >= dayDuration)
-				xMin += dayDuration;
+			xMin -= timezoneOffset * 60000;
+			xMin = xMin - xMin % dayDuration + dayDuration + timezoneOffset * 60000;
 			xMax = xMin + dayDuration;
 			zoom = '';
 		}
@@ -521,9 +520,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 			var dayDuration = 24*3600*1000;
 
 			if (this.options.zoom == "day"){
-				xMin = new Date() - new Date()% dayDuration + chart.time.options.timezoneOffset * 60000;
-				if (new Date() - xMin >= dayDuration)
-					xMin += dayDuration;
+			    xMin -= chart.time.options.timezoneOffset * 60000;
+			    xMin = xMin - xMin % dayDuration + dayDuration + chart.time.options.timezoneOffset * 60000;
 				xMax = xMin + dayDuration;
 			}
 			chart.xAxis[0].update({ min: xMin, max: xMax }, false);
@@ -1864,7 +1862,7 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
 // ----- plot.timeshift -----------------------------------------------------------
 $.widget("sv.plot_timeshift", $.sv.widget, {
 
-	initSelector: '[data-widget="myplot.timeshift"]',
+	initSelector: '[data-widget="plot.timeshift"]',
 
 	options: {
 		bind: null,
@@ -1896,12 +1894,12 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 		this.delta = this.delta == null ? direction + step : this.delta + direction + step;
 		this.delta = this.delta.replace(' '+ step + ' -' + step, '').replace(' -'+ step + ' ' + step, '');
 		tmin = this.mem_tmin + this.delta;
-		tmax = this.mem_tmax + this.delta;
-		$('#'+this.options.bind).attr('data-tmin', tmin)
-		$('#'+this.options.bind).attr('data-tmax', tmax)
-		var that = $('#'+this.options.bind).data().svWidget
+		tmax = ($('#'+this.options.bind).attr('data-zoom') == 'day') ? this.mem_tmax : this.mem_tmax + this.delta;
+		$('#'+this.options.bind).attr('data-tmin', tmin);
+		$('#'+this.options.bind).attr('data-tmax', tmax);
+		var that = $('#'+this.options.bind).data().svWidget;
 		that.options.tmin = tmin;
-		that.options.tmax = tmax; 
+	    that.options.tmax = tmax; 
 
 		var plot = '';
 		var items = $('#'+this.options.bind).attr('data-item').split(/,\s*/);
