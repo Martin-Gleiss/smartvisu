@@ -118,7 +118,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				if (entry.icon.indexOf('.svg') == -1)
 					a.append( $('<img class="icon">').css('background', entry.color ).attr('src', entry.icon));
 				else
-					fx.load(entry.icon,'fx-icon icon0', 'background:'+entry.color+';', a, 'prepend');	
+					fx.load(entry.icon,'icon icon0', 'background:'+entry.color+';', a, 'prepend');	
 				$(a).append(
 					$('<div class="color">').css('background', calcolors[(entry.calendarname||'').toLowerCase()] || entry.calendarcolor || String(self.options.color).explode()[0] || '#666666')
 				).append(
@@ -253,7 +253,7 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 				if (entry.icon.indexOf('.svg') == -1)
 					a.find('div').last().before( $('<img class="icon icon1" src="' + entry.icon + '" style="width: 100%; height: 120%; fill: ' + entry.color + '; stroke: ' + entry.color + ';" />'));
 				else
-					fx.load(entry.icon,'fx-icon icon1', 'width: 100%; height: 120%; fill: ' + entry.color + '; stroke: ' + entry.color + ';', a.find('div').last(), 'before');			
+					fx.load(entry.icon,'icon icon1', 'width: 100%; height: 120%; fill: ' + entry.color + '; stroke: ' + entry.color + ';', a.find('div').last(), 'before');			
 
 				node.find('div:first').append(a);
 			});
