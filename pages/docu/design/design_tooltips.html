@@ -1,0 +1,93 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß, Wolfram v. Hülsen
+* @copyright   2012 - 2023
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+	<h1>Tooltips and Help Texts</h1>
+	
+	<div class="docu">
+
+		{{ lib.smartVISU }} provides functions to add tooltips to it's design elenents or embed popups with help texts into the html page. <br />
+		
+		<h2>1. Tooltips</h2>
+		Put the widget into a html tag containing the attribute "data-tip" and the tooltip text. <br />
+		Note: this may not work on mobile devices running Android since the hover effect is not supported.
+		<br /> 
+		<h4>Example</h4>
+
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				<span data-tip= "Switch for the mirror light">
+	   				{{ basic.stateswitch('', 'bath.light.switch', 'mini', '', 'llight_mirror.svg') }}  
+				</span>
+			{% endverbatim %}{% endfilter %}</code>
+		</div>		
+		<div class="html">
+				<span data-tip= "Switch for the mirror light">
+	   				{{ basic.stateswitch('', 'bath.light.switch', 'mini', '', 'light_mirror.svg') }}  
+				</span>
+		</div> <br />
+
+		<h2>2. Popups with Help Texts</h2>
+		Put the widget and the popup into a div-tag carrying the class "ui-help-container". Make sure to give the popup a unique id. Including the page in the id is recommended in order to avoid cross-page disturbances. <br />
+		
+		<h4>Example</h4>
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				<div class="ui-help-container">
+    				{{ basic.stateswitch('', 'bath.light.switch', 'mini', '', 'light_mirror.svg') }}
+    				<a href="#{{ page }}_myhint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+    				<div data-role="popup" id="{{ page }}_myhint" data-arrow="true" data-theme="c">Switch for the mirror light. </div>​​
+				</div>​
+			{% endverbatim %}{% endfilter %}</code>
+		</div>
+		<div class="html">
+			<div class="ui-help-container">
+    			{{ basic.stateswitch('', 'bath.light.switch', 'mini', '', 'light_mirror.svg') }}
+    			<a href="#{{ page }}_myhint0" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+    			<div data-role="popup" id="{{ page }}_myhint0" data-arrow="true" data-theme="c">Switch for the mirror light. </div>​​
+			</div>​
+ 		</div>
+ 		<br />
+ 
+		As shown above, the standard help popup expects the classes "ui-help-container" and "ui-help-icon" on different levels. If the layout requires working without an additional div tag the styles can be defined in the file ./pages/yourpages/visu.css. 
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				.ui-help-container.ui-help-icon img.icon1,
+.				ui-help-container.ui-help-icon svg.icon1 {
+    				width: 2em;
+    				height: 2em;
+				}
+			{% endverbatim %}{% endfilter %}</code>
+		</div>
+		Or define the styles directly in the img-tag for the anchor icon: 
+		style = "width: 2em; height: 2em;" <br />
+		Then call the popup directly with both classes in the anchor tag. <br />
+		<h4>Example</h4>
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			​{{ basic.stateswitch('', 'bath.light.switch', 'mini', '', 'light_mirror.svg') }} Mirror
+    		<a href="#{{ page }}_myhint1" data-rel="popup" class="ui-help-container ui-help-icon"  data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg"  alt="help"></a>
+    		<div data-role="popup" id="{{ page }}_myhint2" data-arrow="true" data-theme="c">Switch for the mirror light. </div>​​
+			{% endverbatim %}{% endfilter %}</code>
+		</div>
+
+		<div class="html">
+			​{{ basic.stateswitch('', 'bath.light.switch', 'mini', '', 'light_mirror.svg') }} Mirror
+    		<a href="#{{ page }}_myhint2" data-rel="popup" class="ui-help-container ui-help-icon"  data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" style = "width: 2em; height: 2em;" alt="help"></a>
+    		<div data-role="popup" id="{{ page }}_myhint2" data-arrow="true" data-theme="c">Switch for the mirror light. </div>​​
+		</div>
+ 		
+ 	</div>
+
+{% endblock %}
+
