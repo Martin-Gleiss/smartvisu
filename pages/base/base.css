@@ -245,6 +245,7 @@ a:hover {
 .ui-listview>li h5,
 .ui-listview>li h6 {
   margin: 0.6em 0;
+  overflow: visible;
 }
 
 .ui-listview .ui-li-has-thumb > svg:first-child,
@@ -628,15 +629,6 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   clear: left;
 }
 
-/* TODO: Move to listview? */
-.ui-listview > li h1,
-.ui-listview > li h2,
-.ui-listview > li h3,
-.ui-listview > li h4,
-.ui-listview > li h5,
-.ui-listview > li h6 {
-  overflow: visible;
-}
 
 /**
  * ----------------------------------------------------------------------------
@@ -2174,7 +2166,7 @@ svg.icon text {
   font-weight: normal;
 }
 
-.icon1 svg.icon, .icon2 svg.icon 
+:not(.menu a).icon1 svg.icon, .icon2 svg.icon 
 .icon3 svg.icon,.icon4 svg.icon,
 .icon5 svg.icon{
   fill: inherit;
