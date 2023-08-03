@@ -250,7 +250,7 @@ a:hover {
 
 .ui-listview .ui-li-has-thumb > svg:first-child,
 .ui-listview .ui-li-has-thumb>.ui-btn>svg:first-child,
-.ui-listview .ui-btn>svg.icon
+*:not([data-widget="status.activelist"])>.ui-listview .ui-btn>svg.icon
 {
   position: absolute;
   left: 0;
