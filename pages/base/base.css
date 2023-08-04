@@ -250,7 +250,7 @@ a:hover {
 
 .ui-listview .ui-li-has-thumb > svg:first-child,
 .ui-listview .ui-li-has-thumb>.ui-btn>svg:first-child,
-*:not([data-widget="status.activelist"])>.ui-listview .ui-btn>svg.icon
+.ui-listview .ui-btn>svg.icon
 {
   position: absolute;
   left: 0;
@@ -1196,7 +1196,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 }
 
 /**
- * --- W i d g e t s :   C A L E N D A R  &  P H O N E ------------------------
+ * --- W i d g e t s :   C A L E N D A R /  A C T I V E L I S T  &  P H O N E ------------------------
  */
 .calendarlist h2,
 .phonelist h2 {

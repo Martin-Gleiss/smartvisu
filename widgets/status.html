@@ -21,7 +21,7 @@
 * @author Wolfram v. Hülsen based on a widget from Bonze
 */
 {% macro activelist(id, item_messages, title, subtitle, content, level) %}
-	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.activelist" data-item="{{ item_messages }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.activelist" class="calendarlist" data-item="{{ item_messages }}"
 		data-title="{{ title }}" data-subtitle="{{ subtitle }}" data-content="{{ content }}" data-level="{{ level }}">
 		<dl data-role="listview" class="ui-listview activelist-container" style="margin-top: 0px;margin-bottom: 0em; margin-right:0px;">
 		</dl>
