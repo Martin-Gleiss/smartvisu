@@ -380,18 +380,16 @@ $.widget("sv.status_activelist", $.sv.widget, {
 					messages.icon = messages.icon + '.svg';
 			};
 			
-			var a =  $('<li  data-id= "entry'+i+'" data-icon="false" style="margin-top:1px;margin-bottom:1px; margin-left:1em;  padding:0px; display:block; padding-right:0px;  ">').append(
-					$('<a class="ui-btn" style="padding:0px; width: 100%; max-height:50px;" >').append(
-					$('<img class="icon" style=" float:left;">').css('background', messages.color ).attr('src', messages.icon)).append(
-					$('<div class="color1" style="float:left; left: 50px; width:6px; height:48px; margin-right:6px;">').css('background', '#666666')).append(
-					$('<h3 style=" overflow: visible; white-space: nowrap;">').text(messages[title])).append(
-					$('<p style="margin-top: -0.5em;">').text(messages[subtitle])
-				));
-            node.append(a);
-			if (messages.icon.indexOf('.svg') != -1) {
-				var newNode= $(node).find('img').last();
-				fx.load(messages.icon, 'icon icon0', 'float:left; background:' + messages.color + ';', newNode, 'replaceWith');
-			}
+			var a =  $('<a class="ui-btn" >');
+				if (messages.icon.indexOf('.svg') == -1)
+					a.append( $('<img class="icon">').css('background', messages.color ).attr('src', messages.icon));
+				else
+					fx.load(messages.icon,'icon icon0', 'background:'+messages.color+';', a, 'prepend');
+				$(a).append(
+					$('<div class="color">').css('background', '#666666')).append(
+					$('<h3>').text(messages[title])).append(
+					$('<p>').text(messages[subtitle])).appendTo(
+					$('<li  data-id= "entry'+i+'" data-icon="false">').appendTo(node)); 
 			
 			//add description text to entry
 			var contentfield = '<div class="content" style=" display: none; margin-left:1em; margin-bottom:2em; height:100%; text-align:left;"> '+messages[content]+'</div>';
