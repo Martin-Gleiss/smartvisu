@@ -13,6 +13,7 @@
 require_once '../../../lib/includes.php';
 require_once const_path_system.'weather/weather.php';
 require_once const_path_system.'class_cache.php';
+require_once const_path_system.'getLocation.php';
 
 
 /**
@@ -39,7 +40,7 @@ class weather_pirateweather extends weather
 			$content = $cache->read();
 		} else {
 			$loadError = '';
-			$url = 'https://api.pirateweather.net/forecast/' . config_weather_key . '/' . $this->location . '?exclude=minutely,hourly,alerts&units='.$units;
+			$url = 'https://api.pirateweather.net/forecast/' . config_weather_key . '/' . $this->location . '?exclude=minutely,hourly,alerts&lang='.translate('lang', 'pirateweather').'&units='.$units;
 			$content = file_get_contents($url);
 
 			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
@@ -58,7 +59,7 @@ class weather_pirateweather extends weather
 			// today
 			$this->data['current']['temp'] = transunit('temp', (float)$parsed_json->{'currently'}->{'temperature'});
 
-			$this->data['current']['conditions'] = (string)$parsed_json->{'currently'}->{'summary'};
+			$this->data['current']['conditions'] = translate((string)$parsed_json->{'currently'}->{'summary'}, 'pirateweather');
 			$this->data['current']['icon'] = $this->icon((string)$parsed_json->{'currently'}->{'icon'}, $this->icon_sm);
 
 			$wind_speed = transunit('speed', (float)$parsed_json->{'currently'}->{'windSpeed'});
@@ -89,6 +90,9 @@ class weather_pirateweather extends weather
 
 				$i++;
 			}
+			$location = explode(',',$this->location);
+			$this->data['city'] = getLocation($location[0],$location[1]);
+
 		} else {
 			if ($loadError != '')
 				$add = $loadError;
