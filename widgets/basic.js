@@ -1514,7 +1514,18 @@ $.widget("sv.basic_window", $.sv.widget, {
 	
 	_update: function(response) {
 		// response is: {{ gad_value }}, {{ gad_window_r}}, {{ gad_window_l}}
-		this._super(response);
+        // make sure that items are correlated correctly even if optional items are omitted
+        var items = this.options.item.explode();
+        var values = new Array(this.items.length);
+        var j=0;
+        for (var i = 0; i < items.length; i++) {
+            if (items[i] != '') {
+                values[i] = response[j];
+                j++;
+            } else 
+				values[i] = 0;
+        };
+		response = values;
 
 		var color = this.element.attr('data-color').explode();
 		var must = false;
@@ -1610,7 +1621,6 @@ $.widget("sv.basic_skylight", $.sv.widget, {
 
 	_update: function(response) {
 		// response is: {{ gad_value }}, {{ gad_window }}
-		this._super(response);
 		
 		var color = this.element.attr('data-color').explode();
 		var must = false;
