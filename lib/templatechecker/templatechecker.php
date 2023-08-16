@@ -20,8 +20,7 @@ require_once 'class.Items.php';
 require_once 'class.OldWidgets.php';
 require_once 'class.itemProperties.php';
 
-// avoid fatal timeout errors on older devices while checking pages with plenty of widgets
-set_time_limit (120);
+
 
 RequestHandler::run();
 
@@ -44,6 +43,12 @@ class RequestHandler {
 	 * Handle request and return result
 	 */
 	public static function run() {
+		// avoid fatal timeout errors on older devices while checking pages with plenty of widgets
+		$extendTimeout = self::getRequestParameter('extendTimeout');
+		if($extendTimeout == 'true')
+			set_time_limit (240);
+		else
+			set_time_limit (120);
 		$cmd = self::getRequestParameter('cmd');
 		try {
 			if (!$cmd)

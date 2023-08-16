@@ -40,6 +40,7 @@
 - outer slider of device.rtrslider (display slider for actual temperature) is configured as readOnly to disable manual interaction
 - info message after successful configuration save is shown again after page reload
 - first fixes to avoid deprecation warnings in PHP8.2
+- template checker has now an option to extend PHP skript execution timeouts from 120 sec to 240 sec (for slow smartVISU servers)
 
 ### Updated Libraries
 - MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder
