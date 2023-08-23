@@ -34,10 +34,11 @@ $.widget("sv.basic_checkbox", $.sv.widget, {
 $.widget("sv.basic_select", $.sv.widget, {
 
 	initSelector: 'select[data-widget="basic.select"]',
+	_lastValue: null,
 
 	_update: function(response) {
 		//workaround for select menu in page mode (change event comes after _update() )
-		if(response[0] != this.element.val()) 
+		if(this._lastValue != null && this._lastValue != this.element.val() && response[0] != this.element.val()) 
 			return
 		// remove space after kommas in response[0] (relevant for lists)
 		var respval = response[0].toString().trim().replace(/, /gi, ",");
@@ -62,6 +63,7 @@ $.widget("sv.basic_select", $.sv.widget, {
 			this.element.append(optionlist);
 		};
 		this.element.val(respval).selectmenu('refresh');
+		this._lastValue = respval;
 	},
 
 	_events: {
