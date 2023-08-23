@@ -15,7 +15,7 @@
 {% block example %}
 <script>
 $( document ).ready(function() {
-		 io.write('webcam_item', 'http://webcam.anw.at/bild1.jpg');
+		 io.write('webcam_item', 'https://www.berlin.de/webcams/rathaus/webcam.jpg');
 
 	});
 
@@ -49,7 +49,7 @@ $( document ).ready(function() {
 	
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ multimedia.image('', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner', '15s') }}
+			{{ multimedia.image('', 'https://download.wuerzburg.de/downloads/webcam/current.jpg', 'corner', '15s') }}
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<br />
@@ -57,7 +57,7 @@ $( document ).ready(function() {
 	<div class="html">
 		<div class="block">
 			<div class="image" style="margin: 0px;">
-				{{ multimedia.image('', 'http://www.wuerzburg.de/downloads/webcam/cam1.jpg', 'corner', '15s') }}
+				{{ multimedia.image('', 'https://download.wuerzburg.de/downloads/webcam/current.jpg', 'corner', '15s') }}
 			</div>
 		</div>
 	</div>

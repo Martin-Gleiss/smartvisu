@@ -36,6 +36,9 @@ $.widget("sv.basic_select", $.sv.widget, {
 	initSelector: 'select[data-widget="basic.select"]',
 
 	_update: function(response) {
+		//workaround for select menu in page mode (change event comes after _update() )
+		if(response[0] != this.element.val()) 
+			return
 		// remove space after kommas in response[0] (relevant for lists)
 		var respval = response[0].toString().trim().replace(/, /gi, ",");
 		// if response is an array or a string containing a [] it should be handled as a list
