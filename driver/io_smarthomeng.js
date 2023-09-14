@@ -315,6 +315,7 @@ var io = {
 		//if (widget.listeners().length) {
 			// subscribe all items used on the page
 			// or cancel subscription by sending an empty array 
+		io.listeners = [];
 		var listeners = widget.listeners();
 		var listenItem;
 		var listenItemEnd;
