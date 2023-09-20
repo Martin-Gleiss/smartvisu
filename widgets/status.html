@@ -63,6 +63,25 @@ the first one is the base color for values below first threshold, so pass one co
 
 
 /**
+* Apply CSS class to an element depending on a trigger item.
+*
+* @param {id[?]} id or array of ids of the elements to style. Widgets are identified by the plain id while html elements require the format {pagename}-{idname}, e.g. id="mypage-myid" (mandatory)
+* @param {item(bool,num)} an item which triggers the styling
+* @param {value[?]=0} the values on which the target will be styled. Compare operators are supported, e.g. "<20" (optional, default 0)
+* @param {text=blink} custom CSS class used for styling  (optional, default = blink)
+*/
+{% macro customstyle(id, item_trigger, value, action) %}
+	{% set id = id is iterable ? id : [id] %}
+	{% set ids = [] %}
+	{%  for val in id %}
+		{% set ids = ids|merge([uid(page, val)]) %}
+	{% endfor %}
+	{% set value = (value|default([0]) is iterable ? value|default([0]) : [value]) %}	
+	<span data-id="{{ implode(ids) }}" data-widget="status.customstyle" data-item="{{ item_trigger }}" data-val="{{ implode(value) }}" data-action="{{ action |default('blink') }}"></span>
+{% endmacro %}
+
+
+/**
 * Displays a list of logging-information
 *
 * @param {id=} unique id for this widget (optional)

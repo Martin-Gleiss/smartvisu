@@ -13,6 +13,7 @@
 - series data for plots in popups may be loaded on demand during popup open. Add "plotpopup" to the plot ID to postpone the individual series request from page load to popup open. This is now default behaviour for the Quad widgets.
 - new widget plot.sparkline displays trend curves inside tables.
 - plot.period now displays day plots (zoom = 'day') for days in the past - starting next day at 00:00 after tmin ('24h' = today, '48h' = yesterday ...). 
+- new widget status.customstyle applies custom CSS styles to any linked widget or html element if values of a trigger item match the given conditions.
 
 ### Other New Features
 - weather service pirateweather.net as replacement for darksky.net (thanks to aschwith) 
