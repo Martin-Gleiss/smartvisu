@@ -61,6 +61,61 @@ $.widget("sv.status_collapse", $.sv.widget, {
 
 });
 
+// ----- status.customstyle -------------------------------------------------------
+$.widget("sv.status_customstyle", $.sv.widget, {
+
+	initSelector: 'span[data-widget="status.customstyle"]',
+
+	options: {
+		id: null,
+		val: '',
+		action: 'blink'
+	},
+	
+	_update: function(response) {
+		// response is: {{ item_trigger }}
+		var targets = this.options.id.explode();
+		var comp = String(this.options.val).explode(); 
+		var styleActive = false;
+
+		// https://stackoverflow.com/questions/7356123/how-to-call-and-execute-an-operator-from-string
+		var operators = {	
+			'>': function(a, b) { return a > b },
+			'>=': function(a, b) { return a >= b },
+			'<': function(a, b) { return a < b },
+			'<=': function(a, b) { return a <= b },
+			'=': function(a, b) { return a == b }			
+		};
+
+		for (var i = 0; i < comp.length; i++){
+			var compOperator = comp[i].replace(/[0-9]+/, '') || "=";
+			var compValue = comp[i].replace(/[<=>]+/, '');
+			// DEBUG: console.log(comp[i], String(response[0]), compOperator, compValue, operators[compOperator](response[0], compValue )) 
+			styleActive = styleActive || operators[compOperator](response[0], compValue ); 
+		}
+		
+		for (var i = 0; i < targets.length; i++) {
+			var target = $('#' + targets[i]);
+			if (styleActive)  {
+				//DEBUG: console.log('target found', target, this.options.action)
+				target.addClass(this.options.action);
+				if (target.attr('data-widget') == 'basic.stateswitch' ){
+					target.next('a[data-widget="basic.stateswitch"]').addClass(this.options.action);
+					target.children ('a[data-widget="basic.stateswitch"]').addClass(this.options.action);
+				}
+			}
+			else {
+				target.removeClass(this.options.action);
+				if (target.attr('data-widget') == 'basic.stateswitch'){
+					target.next('a[data-widget="basic.stateswitch"]').removeClass(this.options.action);
+					target.children ('a[data-widget="basic.stateswitch"]').removeClass(this.options.action);
+				}
+			}
+		}
+	},
+
+});
+
 
 // ----- status.log -----------------------------------------------------------
 $.widget("sv.status_log", $.sv.widget, {

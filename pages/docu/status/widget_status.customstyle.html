@@ -1,0 +1,110 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_status.html" %}
+
+{% block example %}
+<style>
+	.mystyle {
+		border: dashed red;
+	}
+</style>
+
+<h5>Examples</h5>
+
+You may use this widget to apply your own CSS styles to widgets and html elements depending of an items value. If you wish to style a widget give it a unique id and use the same id as parameter in the customstyle widget. Both - the target widget and 
+the customstyle widget - will concatenate the id with the page id.  For html elements you need to do this by yourself: use the format {pagename}-{idname} to make the ids match. <br>
+Add your custom styles to visu.css in the configured pages folder.
+
+<div class="twig">
+	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+<style>
+.mystyle {border: dashed red;}
+</style>
+
+		{{ status.customstyle('w1', 'bath.light.value', '20', 'mystyle') }}
+		<div id = "{{page}}-w1">
+			...
+		</div>
+
+		{% endverbatim %}{% endfilter %}
+	</code>
+</div>
+
+Toggle the button to start/stop styling:<br />
+<div class="html">
+	{{ basic.stateswitch ('', 'bath.light.value', '',[0,20]) }}<br />
+	{{ status.customstyle('w1', 'bath.light.value', '20', 'mystyle') }}
+
+	<div id = "{{page}}-w1">
+		Every simple html element can be styled - here we draw a red dashed border <img class="icon" src="{{ icon0 }}audio_audio.svg" alt="sample icon" /> ...
+	</div>
+</div>
+
+Multiple Elements can be styled at once by specifying an array of ids. The values of the trigger item can be defined as an array and allow comparative orperators.
+<div class="twig">
+	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+	{{ status.customstyle(['w2', 'w3'], 'bath.light.value2', ['<=20','100','>230'], 'blink') }}
+
+	<div class="block">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div id="{{page}}-w2" data-role="collapsible" data-collapsed="false">
+				<h3>Block</h3>
+				<p>Content</p>
+			</div>
+		</div>
+	</div>
+	
+	<div class="block">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Block</h3>
+				{{ icon.battery('w3', '', 'bath.light.value2') }}
+			</div>
+		</div>
+	</div>
+
+		{% endverbatim %}{% endfilter %}
+	</code>
+</div>
+Use the slider to change values. Elements blink if value meets one of the conitions ['<=20','100','>230'] :
+
+<div class="html">
+	{{ basic.slider ('', 'bath.light.value2') }}<br />
+	{{ status.customstyle(['w2', 'w3'], 'bath.light.value2', ['<=20','100','>230'], 'blink') }}
+
+	<div class="block">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div id="{{page}}-w2" data-role="collapsible" data-collapsed="false">
+				<h3>Block</h3>
+
+				<p>Content</p>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="block">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>Block</h3>
+
+				{{ icon.battery('w3', '', 'bath.light.value2') }}
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
