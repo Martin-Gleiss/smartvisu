@@ -90,7 +90,7 @@
 				if (!feed || feed == '') 
 					feed = 'jetzt';
 
-				$.getJSON('lib/feeds/rss.php?url=tvspielfilm.de/tv-programm/rss/' + feed + '.xml&limit=15', function (data) {
+				$.getJSON('lib/feeds/rss.php?url=www.tvspielfilm.de/tv-programm/rss/' + feed + '.xml&limit=15', function (data) {
 					var line = '';
 					var entry = data['entry'];
 
