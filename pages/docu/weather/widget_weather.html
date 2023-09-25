@@ -34,20 +34,11 @@
 	Additionally, you need your postal code, e.g. '97070:DE'
 
 	<br /><br />
-	<b><a href="http://www.yr.no" target="_blank">yr.no</a></b><br />
-	The location format must be 'Tyskland/Bayern/Würzburg'. Go to the webpage to get your location from the url.
-	The yr.no service is deprecated as per smartVISU v3.1. Replacement is met.no.
-
-	<br /><br />
-	<b><a href="https://darksky.net/dev" target="_blank">darksky.net</a></b><br />
-	You need a key for that service. Go to the webpage to generate your own key.<br />
-	Note: Darksky does only support geo coordinates as latitude,longitude (e.g. 47.3537,8.0317) and no city names.
+	<b><a href="https://pirateweather.net" target="_blank">pirateweather.net</a></b><br />
+	Pirateweather is a replacement for darsky using the same API. You need to register with the service to get an API key.
+	Pirateweather.net only supports geo coordinates in the format {latitude},{longitude} (e.g. 47.3537,8.0317) and no city names.
 	
-	<br /><br />
-	<b><a href="http://www.wunderground.com/weather/api/" target="_blank">wunderground.com</a></b><br />
-	You need a key for that service (but Wunderground will no longer provide free weather API keys).
-	Wunderground Service is deprecated as per smartVISU v3.0.
-
 	<br /><br /><br />
+	More hints can be found in *.md files named according to the services in ./lib/weather/service.<br>
 	Choose your service and enter your location and key on the <a href="index.php?page=config">configuration</a> page.
 {% endblock %}
