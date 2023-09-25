@@ -1,35 +1,85 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiß
-* @copyright   2012 - 2015
-* @license     GPL
-* @version     1.0
+* @author      Martin Gleiß, Wolfram v. Hülsen
+* @copyright   2012 - 2023
+* @license     GPL [http://www.gnu.de]
+* @version     1.2
 *
-* @title       Weather
+* @title       Tagesschau Wetter
 * @category    weather
 * @icon        icons/ws/weather_sun.svg
 * @color       #2f5bc4
-* @description Some weather-maps from tagesschau.de
+* @description Weather prognosis and maps from Tagesschau.de
 *
-* @info        Maps from tagesschau.de, Hessischer Rundfunk, Deutscher Wetterdienst
+* @info        More feeds on
 * @link        http://www.tagesschau.de
 * -----------------------------------------------------------------------------
 */
 
+
 {% extends "apps.html" %}
 
-{% block content %}
-	<h3>Weather</h3>
+{% block sidebar %}
+	<h3>Externe Links:</h3><br>
+	
+	<ul data-role="listview" data-dividertheme="c" class="weatherMenu">
+			<li><a href="https://www.tagesschau.de/wetter/deutschland/wettervorhersage-deutschland-100.html" target="_blank"><h3>Wetter Deutschland</h3></a></li>
+			<li><a href="https://www.tagesschau.de/wetter/regenradar-deutschland/regenradar-deutschland-102.html" target="_blank"><h3>Regenradar für Deutschland</h3></a></li>
+			<li><a href="https://www.tagesschau.de/wetter/unwetter/index.html" target="_blank"><h3>Unwetterwarnungen Deutschland</h3></a></li>
+			<li><a href="https://www.tagesschau.de/wetter/europa-welt/wettervorhersage-europa-100.html target="_blank"><h3>Vorhersage Europa</h3></a></li>
+	</ul>
+{% endblock %}
 
+
+{% block content %}
+
+	<div class="visible-phone">
+		<h3>Externe Links:</h3><br>
+		<div data-role="controlgroup" data-type="horizontal" class="ui-mini weatherMenu" style="margin: 0 0 20px 0;">
+
+			<a class="ui-btn ui-corner-all" href="https://www.tagesschau.de/wetter/deutschland/wettervorhersage-deutschland-100.html" target="_blank">Wetter D</a>
+			<a class="ui-btn ui-corner-all" href="https://www.tagesschau.de/wetter/regenradar-deutschland/regenradar-deutschland-102.html" target="_blank">Radar</a>
+			<a class="ui-btn ui-corner-all" href="https://www.tagesschau.de/wetter/unwetter/index.html" target="_blank">Warn</a>
+			<a class="ui-btn ui-corner-all" href="https://www.tagesschau.de/wetter/europa-welt/wettervorhersage-europa-100.html target="_blank">Wetter EU</a>
+		</div>
+	</div>
+
+	<h3>Wettervorhersage</h3>
+
+	<div id="{{ page }}-weather">
+		<span />
+	</div>
+	
 	{{ weather.map ('day1', 'Day', 'day') }}
 	{{ weather.map ('day2', 'Night', 'night') }}
-	{{ weather.map ('day3', 'Forecast', 'forecast') }}
-	{{ weather.map ('day4', 'Winds', 'wind') }}
-	{{ weather.map ('day5', 'Europe', 'europe') }}
+	{{ weather.map ('day3', 'Clouds', 'clouds') }}
+	{{ weather.map ('day4', 'Wind', 'wind') }}
+	{{ weather.map ('day5', 'Forecast', 'forecast') }}
+	{{ weather.map ('day6', 'Europe', 'europe') }}
 
-	<div style="clear:left;"></div>
+	<script type="text/javascript">
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
+			
+				$.getJSON('lib/weather/maps/tagesschau.php', function (data) {
+
+					var ret = '';
+					ret += '<h3>Deutschland</h3>';
+					ret += '<p>' + data['forecast_D'] + '&nbsp;</p>';
+
+					ret += '<h3>Europa</h3>';
+					ret += '<p>' + data['forecast_EU'] + '&nbsp;</p>';
+
+					$('#{{ page }}-weather span').html(ret);
+				})
+				.fail(notify.json);
+
+		});
+	</script>
+
+
 	<hr />
-	<div class="mini">&copy; tagesschau.de, Hessischer Rundfunk, Deutscher Wetterdienst</div>
+	<div class="mini">&#169; <a href="https://www.tagesschau.de/wetter" target="_blank">https://www.tagesschau.de/wetter</a></div>
+
 {% endblock %}
 

@@ -113,7 +113,7 @@
 *
 * @param {id} unique id for this widget
 * @param {text=} title of the block
-* @param {text(day,night,forecast,wind,europe)} the mode: 'day', 'night', 'forecast', 'wind', 'europe'
+* @param {text(clouds,day,night,forecast,wind,europe)} the mode: 'clouds', 'day', 'night', 'forecast', 'wind', 'europe'
 *
 * @info Maps from tagesschau.de, Hessischer Rundfunk, Deutscher Wetterdienst
 * @link http://www.tagesschau.de
@@ -124,17 +124,7 @@
 	<div class="block">
 		<div class="ui-bar-c ui-li-divider ui-corner-top">{{ title }}</div>
 		<div class="image">
-			{% if mode == 'day' %}
-				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tt_webL.jpg', 'corner-bottom') }}
-			{% elseif mode == 'night' %}
-				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tn_webL.jpg', 'corner-bottom') }}
-			{% elseif mode == 'forecast' %}
-				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-3t_webL.jpg', 'corner-bottom') }}
-			{% elseif mode == 'wind' %}
-				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-wi_webL.jpg', 'corner-bottom') }}
-			{% elseif mode == 'europe' %}
-				{{ multimedia.image(id, 'http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/eu-vs-t_webL.jpg', 'corner-bottom') }}
-			{% endif %}
+				{{ multimedia.image(id, './lib/weather/maps/tagesschau.php?mode='~mode, 'corner-bottom') }}
 		</div>
 	</div>
 
@@ -158,11 +148,12 @@
 		<div class="ui-bar-c ui-li-divider ui-corner-top">{{ title }}</div>
 		<div class="image">
 			<div id='{{ uid }}' data-cycle-auto-height="7:4" data-cycle-log="false" data-cycle-speed="{{ delay|default(2) * 1000 }}">
-				<img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tt_webL.jpg" alt="day">
-				<img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-tn_webL.jpg" alt="night">
-				<img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-3t_webL.jpg" alt="forecast">
-				<img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/de-vs-wi_webL.jpg" alt="wind">
-				<img class="ui-corner-bottom" src="http://wetter.tagesschau.de/import/wetter-cms/vorhersagen/img/eu-vs-t_webL.jpg" alt="europe">
+				<img class="ui-corner-bottom" src="./lib/weather/maps/tagesschau.php?mode=day" alt="day">
+				<img class="ui-corner-bottom" src="./lib/weather/maps/tagesschau.php?mode=night" alt="night">
+				<img class="ui-corner-bottom" src="./lib/weather/maps/tagesschau.php?mode=forecast" alt="forecast">
+				<img class="ui-corner-bottom" src="./lib/weather/maps/tagesschau.php?mode=wind" alt="wind">
+				<img class="ui-corner-bottom" src="./lib/weather/maps/tagesschau.php?mode=clouds" alt="clouds">
+				<img class="ui-corner-bottom" src="./lib/weather/maps/tagesschau.php?mode=europe" alt="europe">
 			</div>
 		</div>
 	</div>
