@@ -30,7 +30,7 @@ class tagesschau extends service
 		parent::init($request);
 
 		//$this->url = 'www.tagesschau.de/api2u/wetter/deutschland/wettervorhersage-deutschland-100.json';
-		$this->cache_duration_minutes = 60*60;
+		$this->cache_duration_minutes = 60;
 		
 		if (isset($request['mode']))
 			$this->mode = $request['mode'];
