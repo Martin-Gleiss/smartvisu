@@ -237,6 +237,9 @@
 			var headerClass = 'ui-page-theme-'+ $(this).closest('div').attr('data-theme');
 			$(this).addClass(headerClass);
 		});
+		{% if config_collapsible_reset %}
+			$(sv.activePage).find('.secondary [data-collapsed="false"] .ui-collapsible-heading-collapsed').parents().first().collapsible('expand');
+		{% endif%}
 	});
 
 	// workaround for jQm listview:

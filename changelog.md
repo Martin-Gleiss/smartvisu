@@ -24,6 +24,7 @@
 - page and service for backup and restore of configuration, dropins and custom pages (thanks to @hijacker7)
 - new Italian language package (granzie tante a @hijacker7)
 - smarthomeNG driver and eibd/knxd driver now support status and control items/GAs in one item, separated by a colon. Format is "item_status:item_control" (or e.g. "1/0/0:1/0/1" for eibd/knxd)
+- new config option "collapsible_reset" resets the room menu in the sidebar to the pages default state on every page change (pagecontainershow event).
 
 ### Improvements
 - Template checker now ignores multi-line comments  
