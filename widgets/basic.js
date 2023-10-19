@@ -950,7 +950,8 @@ $.widget("sv.basic_slider", $.sv.widget, {
 		max: 255,
 		'min-send': 0,
 		'max-send': 255,
-		'live': 1
+		'live': 1,
+		'style': ''
 	},
 
 	_mem: null,
@@ -978,6 +979,12 @@ $.widget("sv.basic_slider", $.sv.widget, {
 		else {
 			this._mem = val;
 		}
+		if (this.options['style'] != ''){
+			//add for colouring the slider track
+			this.element.next('.ui-slider-track').css("background-image", this.options['style']);
+			this.element.next('.ui-slider-track').children(".ui-slider-bg").css("background-image", "none");
+			this.element.next('.ui-slider-track').children(".ui-slider-bg").css("background-color", "transparent");
+		};
 	},
 
 	_events: {
