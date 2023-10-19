@@ -531,12 +531,13 @@
 * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
 * @param {value=} the maximum value to display to total right if this should differ from sent/received value (optional, default like max)
 * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
+* @param {value=} set a colour for the slider track like: linear-gradient(90deg, rgb(229, 234, 255), rgb(255, 177, 111)) (optional)
 *
 * @see misc/fundamentals#Items
 */
-{% macro slider(id, item, min, max, step, orientation, value_display, min_display, max_display, live) %}
+{% macro slider(id, item, min, max, step, orientation, value_display, min_display, max_display, live, style) %}
 	<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.slider" data-item="{{ item }}"
-		type="range" value="0" min="{{ min_display|default(min)|default(0) }}" max="{{ max_display|default(max)|default(255) }}" step="{{ step|default(5) }}" data-min-send="{{ min|default(0) }}" data-max-send="{{ max|default(255) }}" data-live="{{ live|default(1) }}"
+		type="range" value="0" min="{{ min_display|default(min)|default(0) }}" max="{{ max_display|default(max)|default(255) }}" step="{{ step|default(5) }}" data-min-send="{{ min|default(0) }}" data-max-send="{{ max|default(255) }}" data-live="{{ live|default(1) }}" data-style="{{ style|default('') }}"
 		data-orientation="{{ orientation|default('horizontal') }}" data-handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" data-highlight="true" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" />
 {% endmacro %}
 
