@@ -70,6 +70,7 @@
 - widget assistant inserted too many quotes in autocomplete mode if user entry had started with a quote
 - basic.window showed wrong icon when optinal item "window_r" was not defined
 - select menu did not send changed value if screen was smaller than the select list (hence jQuery mobile switched to scrollable page mode)
+- Google oauth authorization for the calendar credentials stopped working due to a changed js library on apis.google.com
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
