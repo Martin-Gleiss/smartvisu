@@ -35,7 +35,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 					entry.start = new Date(entry.start*1000);
 					
 				//skip entry if start is not in the configured time span
-				if (self.options.daycount > 0 && entry.start.getDate() > new Date().getDate() + self.options.daycount - 1 ) 
+				if (self.options.daycount > 0 && entry.start.valueOf() > new Date().valueOf() + parseInt((self.options.daycount - 1) * 86400000 )) 
 					return true;
 				
 				if(isNaN(entry.end)) // legacy: end in format 'y-m-d H:i:s'
