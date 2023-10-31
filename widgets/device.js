@@ -1904,7 +1904,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
                   self.justDragged = false;
                   return;
                 }
-                self._uzsuRuntimePopup(e.point.uzsuEntry)
+				if(e.point.uzsuEntry !== undefined)
+					self._uzsuRuntimePopup(e.point.uzsuEntry)
               },
               drag: function (e) {
               },
@@ -2185,7 +2186,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var data = seriesData.active;
     data.sort(function(a,b) { return a.x - b.x });
 
-    if(data.length > 0) {
+    // add graph points at the ends (not clickable since entryIndex and uzsuEntry are missing)
+	if(data.length > 0) {
       data.unshift({ x: data[data.length-1].x-1000*60*60*24*7, y: data[data.length-1].y, className: data[data.length-1].className });
       data.push({ x: data[1].x+1000*60*60*24*7, y: data[1].y, className: data[1].className });
     }

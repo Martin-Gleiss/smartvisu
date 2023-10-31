@@ -72,7 +72,8 @@
 - basic.window showed wrong icon when optinal item "window_r" was not defined
 - select menu did not send changed value if screen was smaller than the select list (hence jQuery mobile switched to scrollable page mode)
 - Google oauth authorization for the calendar credentials stopped working due to a changed js library on apis.google.com
-- "daycount" option delivered faulty results over the end of a month
+- "daycount" option in calendar.list delivered faulty results over the end of a month
+- device.uzsugraph caused an error if the additional decorative points at the ends of the graph outside the default scroll area were clicked
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
