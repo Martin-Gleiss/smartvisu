@@ -74,6 +74,7 @@
 - Google oauth authorization for the calendar credentials stopped working due to a changed js library on apis.google.com
 - "daycount" option in calendar.list delivered faulty results over the end of a month
 - device.uzsugraph caused an error if the additional decorative points at the ends of the graph outside the default scroll area were clicked
+- duration for 1y was 356 days instead of 365. Nobody noticed that over years :-))) 
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
