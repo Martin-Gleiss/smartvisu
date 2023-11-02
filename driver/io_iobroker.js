@@ -69,9 +69,11 @@ var io = {
 	*/
 	write: function (item, val, callback) {
 		if (io.checkConnected) {
+			var sendItemPos = item.indexOf(':');
+			var sendItem = (sendItemPos == -1 ? item : item.substring(sendItemPos + 1));
 			var v = val;
-			//console.log('A) ' + item + ': ' + val);
-			switch (io.valueType[item]) {
+			//console.log('A) ' + sendItem + ': ' + val);
+			switch (io.valueType[sendItem]) {
 				case 'boolean': // convert to boolean
 					v = ((v == 0) || (v == '') || (v == '0') || (v == 'false')) ? false:true;
 					break;
@@ -82,7 +84,7 @@ var io = {
 					try {
 						v = JSON.stringify(v);
 					} catch (e) {
-						console.log(item + '-data seems to be an json, but cannot convert it: ' + val);
+						console.log(sendItem + '-data seems to be an json, but cannot convert it: ' + val);
 					}
 					break;
 				case 'string': // convert to string
@@ -95,7 +97,7 @@ var io = {
 							}
 						}
 					} catch (e) {
-						console.log(item + '-data seems to be an array, but cannot convert it to string: ' + val);
+						console.log(sendItem + '-data seems to be an array, but cannot convert it to string: ' + val);
 					}
 					break;
 				case 'array': // convert to array ("[ ... ]")
@@ -103,14 +105,14 @@ var io = {
 						v = JSON.stringify(v);
 						if (v.length > 0 && v[0] !== '[') v = '[' + v + ']';						
 					} catch (e) {
-						console.log(item + '-data seems to be an array, but cannot convert it: ' + val);
+						console.log(sendItem + '-data seems to be an array, but cannot convert it: ' + val);
 					}
 					break;
 				default:
 					break;
 			}
-			//console.log('B) ' + item + ': ' + vval);				
-			io.socket.emit('setState', item, v, callback);
+			//console.log('B) ' + sendItem + ': ' + vval);				
+			io.socket.emit('setState', sendItem, v, callback);
 		}
 	},
 
@@ -188,6 +190,8 @@ var io = {
 		else
 			return true;
 	},
+	
+	listeners: [],
 
 	/**
 	* Opens the connection and add some handlers
@@ -319,7 +323,18 @@ var io = {
 	},
 
 	monitor: function() {
-		var items = widget.listeners();
+		io.listeners = [];
+		var listeners = widget.listeners();
+		var listenItem;
+		var listenItemEnd;
+		for (var i=0; i < listeners.length; i++){
+			listenItemEnd = listeners[i].indexOf(':');
+			listenItem = (listenItemEnd == -1 ? listeners[i] : listeners[i].substring(0, listenItemEnd));
+			if ( io.listeners[listenItem] == undefined || listenItem == io.listeners[listenItem])
+				io.listeners[listenItem] = listeners[i];
+		}
+		var items = Object.keys(io.listeners);
+		
 		if (io.checkConnected() && items.length) {
 			io.socket.emit('subscribe', items);
 			io.read(items);
@@ -403,6 +418,8 @@ var io = {
 			}       
 
 			widget.update(item, val);
+			if (item != io.listeners[item])
+				widget.update(io.listeners[item], val);
 		}
 	},
 
@@ -411,7 +428,7 @@ var io = {
 	*/
 	stopseries: function () {
 		if (io.isConnected) {
-			var items = widget.listeners();
+			var items = io.listeners != [] ? Object.keys(io.listeners) : widget.listeners();
 			io.plots.forEach(plot => {
 				items.push(plot[0]);
 			});
