@@ -16,6 +16,8 @@
 - new widget status.customstyle applies custom CSS styles to any linked widget or html element if values of a trigger item match the given conditions.
 - refactored weather app and widgets weather.map and weather.mapslides after change of Tagesschau content management. (Thanks to Tagesschau technical management for hints on new API).
 - new "style" option for basic slider allows applying CSS styles to the slider track
+- basic.stateswitch can now use an additional icon or a simulated dynamic icon in the "indicator" phase when waiting for an item update 
+
 
 ### Other New Features
 - weather service pirateweather.net as replacement for darksky.net (thanks to aschwith) 

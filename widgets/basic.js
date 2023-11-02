@@ -1039,14 +1039,16 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 
 	options: {
 		vals: '',
-		'indicator-type': '',
-		'indicator-duration': 3,
+		indicatorType: '',
+		indicatorDuration: 3,
 		itemLongpress: '',
 		valueLongpress: null,
 		valueLongrelease: null
 	},
 
-	_current_val: null, // current value (used to determin next value to send)
+	_current_val: null, // current value (used to determine next value to send)
+	_simulator: null,
+	_direction: 1,
 
 	_create: function() {
 		this._super();
@@ -1055,44 +1057,61 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 			// get the list of values
 			var list_val = String(this.options.vals).explode();
 
-      // this function is used to revive list entries
-      var combined = [];
-      var temp = '';
-      var start_combine = 2;
-      list_val.forEach(arrayConvert);
-      function arrayConvert(part, index) {
-        if(part.startsWith("[") && ! part.endsWith("]") && start_combine == 2)
-          start_combine = 1;
-        else if (start_combine == 2)
-          combined.push(part);
+			// this function is used to revive list entries
+			var combined = [];
+			var temp = '';
+			var start_combine = 2;
+			list_val.forEach(arrayConvert);
+			function arrayConvert(part, index) {
+				if(part.startsWith("[") && ! part.endsWith("]") && start_combine == 2)
+				  start_combine = 1;
+				else if (start_combine == 2)
+				  combined.push(part);
 
-        if(start_combine == 1) {
-            if(part.endsWith("]"))
-            {
-              start_combine = 0;
-              temp += ', ' + part;
-            }
-            else if (part.startsWith("["))
-              temp += part;
-            else
-              temp += ', ' + part;
-        }
+				if(start_combine == 1) {
+					if(part.endsWith("]"))
+					{
+					  start_combine = 0;
+					  temp += ', ' + part;
+					}
+					else if (part.startsWith("["))
+					  temp += part;
+					else
+					  temp += ', ' + part;
+				}
 
-        if (start_combine == 0)
-          {
-          combined.push(temp);
-          temp = '';
-          list_val = combined;
-          start_combine = 2;
-        }
-      }
+				if (start_combine == 0)
+				  {
+				  combined.push(temp);
+				  temp = '';
+				  list_val = combined;
+				  start_combine = 2;
+				}
+			}
 
+			var indicatorType = this.options.indicatorType;
+			var indicatorDuration = this.options.indicatorDuration;
 			// get the index of the memorised value
 			var old_idx = list_val.indexOf(this._current_val);
 			// compute the next index
 			var new_idx = (old_idx + 1) % list_val.length;
 			// get next value
 			var new_val = list_val[new_idx];
+			// set direction for indicator type 'simulate'
+			if (new_val > this._current_val)
+				this._direction = 1;
+			else if (new_val < this._current_val )
+				this._direction = -1;
+			else if (new_val == 0)
+				this._direction = -1;
+			// make sure every update via the websocket is executed - regardless if an item value is changed or not
+			if(indicatorType && indicatorDuration > 0)
+				widget.set(this.options.item, null);
+			// stop running simulation cycle if necessary
+			if (this._simulator != null){
+				clearInterval(this._simulator);
+				this._simulator = null;				
+			}
 			// send the value to driver
 			io.write(this.options.item, new_val);
 			// memorise the value for next use
@@ -1100,30 +1119,72 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 
 			// activity indicator
 			var target = $(event.delegateTarget);
-			var indicatorType = this.options['indicator-type'];
-			var indicatorDuration = this.options['indicator-duration'];
-			if(indicatorType && indicatorDuration > 0) {
+			var that = this;
+			if(indicatorType && indicatorDuration > 0 && widget.get(this.options.item) == null) {
+				// switch display to the separate indicator icon if defined 
+				var hasIndicatorIcon = (this.element.find('[data-val="indicator"]').length != 0);
+				if (hasIndicatorIcon){
+					this._update('indicator');
+					target = this.element.next('[data-val="indicator"]');
+				}
+				clearTimeout(target.data('indicator-timer'));
+				// find dynamic icon in the target
+				var dynamicIcon = target.find('span>svg[data-widget^="icon."]');
+				if (dynamicIcon.length == 0 && indicatorType == 'simulate')
+					indicatorType = 'blink';
+				
 				// add one time event to stop indicator
 				target.one('stopIndicator',function(event) {
 					clearTimeout(target.data('indicator-timer'));
+					clearInterval(that._simulator);
+					that._simulator = null;
 					event.stopPropagation();
 					var prevColor = target.attr('data-col');
+					var indicatorType = that.options.indicatorType;
+					var dynamicIcon = target.find('span>svg[data-widget^="icon."]');
+					if (dynamicIcon.length == 0 && indicatorType == 'simulate')
+						indicatorType = 'blink';
+					// remove indicator classes and styles
+					if (indicatorType.indexOf('icon') == 0 || indicatorType == 'blink' )
+						target.removeClass(indicatorType).find('svg').removeClass(indicatorType);
+					target.css('color', '').find('svg').css('fill', '').css('stroke', '');
+					// restore previous color
 					if(prevColor != null) {
-						if(prevColor != 'icon1')
-							target.removeClass('icon1').find('svg').removeClass('icon1');
-						if(prevColor != 'blink')
-							target.removeClass('blink').find('svg').removeClass('blink');
-						if(prevColor == 'icon1' || prevColor == 'icon0')
-							prevColor = '';
-						target.css('color', prevColor).find('svg').css('fill', prevColor).css('stroke', prevColor);
+						if(prevColor.indexOf('icon') == 0)
+							target.addClass(prevColor).find('svg').addClass(prevColor);
+						else
+							target.css('color', prevColor).find('svg').css('fill', prevColor).css('stroke', prevColor);
 					}
 				})
 				// set timer to stop indicator after timeout
 				.data('indicator-timer', setTimeout(function() { target.trigger('stopIndicator') }, indicatorDuration*1000 ));
+
+
+				// remove existing classes  and styles
+				var actualCol = target.attr('data-col');
+				if (actualCol.indexOf('icon') == 0 && indicatorType != 'blink' && indicatorType != 'simulate' )
+					target.removeClass(actualCol).find('svg').removeClass(actualCol);
+				target.css('color', '').find('svg').css('fill', '').css('stroke', '');
+
 				// start indicator
-				if(indicatorType == 'icon1' || indicatorType == 'icon0' || indicatorType == 'blink') {
+				if(indicatorType.indexOf('icon') == 0 || indicatorType == 'blink') {
 					target.addClass(indicatorType).find('svg').addClass(indicatorType);
 					indicatorType = '';
+				}
+				
+				if (dynamicIcon.length != 0 && indicatorType == 'simulate' && this._simulator == null) {
+					var iconName = 'sv-' + dynamicIcon.attr("data-widget").replace('.', '_');
+					var iconWidget = dynamicIcon.data(iconName);
+
+					// we could read the current icon value:
+					// var iconVal = parseInt((dynamicIcon.attr('title') || '0%').replace('%', ''));
+					// but currently no need to do so
+					var iconVal = that._direction == 1 ? iconWidget.options.min : iconWidget.options.max ;
+
+					this._simulator = setInterval (function (){
+						iconVal +=  that._direction * 250 * (iconWidget.options.max - iconWidget.options.min) / (indicatorDuration*1000);
+						iconWidget._update([iconVal])
+					},250);
 				}
 				target.css('color', indicatorType).find('svg').css('fill', indicatorType).css('stroke', indicatorType);
 			}
@@ -1174,24 +1235,28 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 	},
 
 	_update: function(response) {
+		if (response == 'indicator')
+			widget.buffer[this.options.item] = '';
 		// remove space after , in response (relevant for lists)
-    var val = response.toString().trim().replace(/, /gi, ",");
-    // is response is an array or a string containing a [] it should be handled as a list
-    var respArray = response[0] instanceof Array;
-    val = val.includes("[") || ! respArray ? val : "[" + val + "]";
+		var val = response.toString().trim().replace(/, /gi, ",");
+		// is response is an array or a string containing a [] it should be handled as a list
+		var respArray = response[0] instanceof Array;
+		val = val.includes("[") || ! respArray ? val : "[" + val + "]";
 
-    // remove space after , in widget data-val entries
-    this.element.children('a[data-widget="basic.stateswitch"]').attr('data-val', function(index, src) {
-        return src.replace(/, /gi, ",")
-    })
+		// remove space after , in widget data-val entries
+		this.element.children('a[data-widget="basic.stateswitch"]').attr('data-val', function(index, src) {
+			return src.replace(/, /gi, ",")
+		})
 		// hide all states
 		this.element.next('a[data-widget="basic.stateswitch"][data-index]').insertBefore(this.element.children('a:eq(' + this.element.next('a[data-widget="basic.stateswitch"][data-index]').attr('data-index') + ')'));
 		// stop activity indicator
 		this.element.children('a[data-widget="basic.stateswitch"]').trigger('stopIndicator');
 		// show the first corrseponding to value. If none corrseponds, the last one will be shown by using .addBack(':last') and .first()
-		this.element.after(this.element.children('a[data-widget="basic.stateswitch"]').filter('[data-val="' + val + '"]:first').addBack(':last').first());
+		this.element.after(response!="indicator" ? this.element.children('a[data-widget="basic.stateswitch"][data-val!="indicator"]').filter('[data-val="' + val + '"]:first').addBack(':last').first() : this.element.children('a[data-widget="basic.stateswitch"]').filter('[data-val="' + val + '"]:first').addBack(':last').first());
+
 		// memorise the value for next use
-		this._current_val = val;
+		if (response != 'indicator')
+			this._current_val = val;
 	},
 
 });
