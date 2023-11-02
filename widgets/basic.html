@@ -557,7 +557,8 @@
 * @param {text[?]=} array of texts (optional)
 * @param {color[?](icon0to5,hidden,blank)=icon0} array of colors; 'icon0' through 'icon5' or e. g. '#f00' for red (optional, default: icon0)
 	additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
-* @param {color(icon0,icon1,blink)=} activity indicator which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
+* @param {color(icon0,icon1,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, 'icon1' or 'blink'. Timeout is 3s by default and can be set globally using the configuration key "indiicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
+	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays.
 * @param {text=} an item to which a value is sent on longpress OR an id of a popup, with prefix '#' (optional)
 * @param {text=} the value to send on longpress (optional)
 	If this starts with a + or - sign the value is treated as offset to current stateswitch value.
@@ -575,13 +576,20 @@
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
 	{% set color = color|default(['icon0','icon1']) %}
 	{% set iconstyles = ['icon0', 'icon1', 'icon2', 'icon3', 'icon4', 'icon5'] %}
+	{% if ":" in indicator %} 
+		{% set indicatorparms = indicator|split(":") %}
+		{% set indicator = indicatorparms[0] %}
+		{% set indicator_duration = indicatorparms[1] %}
+	{% else %} 
+		{% set indicator_duration = config_indicator_duration|default(3) %}
+	{% endif %}
 	
 	<a style="display:none"></a> /** Work around for bug in jQuery Mobile, see https://knx-user-forum.de/forum/supportforen/smartvisu/31967-neues-widget-nur-aktive-lampen-anzeigen-ausschalten-ermöglichen?p=1145001#post1145001 */
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.stateswitch" data-item="{{ item }}"
-		data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ config_indicator_duration|default(3) }}"
+		data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ indicator_duration }}"
 		data-item-longpress="{{ item_longpress }}"{% if not value_longpress is null %} data-value-longpress="{{ value_longpress }}"{% endif %}{% if not value_longrelease is null %} data-value-longrelease="{{ value_longrelease }}"{% endif %}
 		style="display: none; !important">
-	{% for val in value %}
+	{% for val in ( indicator is not empty and icon is iterable and icon|length > value|length ? value|merge(['indicator']) : value) %}
 		{% set pic = icon is iterable ? icon[loop.index0] : icon %}
 		{% if type != 'text' and text is empty %}{% set pic = pic|deficon('control_on_off.svg') %}{% endif %}
 		{% set col = (color is iterable ? color[loop.index0] : color)|default('icon0') %}
