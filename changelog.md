@@ -48,7 +48,7 @@
 - info message after successful configuration save is shown again after page reload
 - first fixes to avoid deprecation warnings in PHP8.2
 - template checker has now an option to extend PHP skript execution timeouts from 120 sec to 240 sec (for slow smartVISU servers)
-
+- included a link to display the changelog in the update message
 ### Updated Libraries
 - MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder
 - Highcharts v11.0.1 (yet only es5 scripts to keep backward compatibility w/ older devices)
