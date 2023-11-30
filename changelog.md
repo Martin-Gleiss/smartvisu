@@ -29,6 +29,7 @@
 - drivers for smarthomeNG, eibd/knxd and ioBroker now support status and control items/GAs in one item, separated by a colon. Format is "item_status:item_control" (or e.g. "1/0/0:1/0/1" for eibd/knxd)
 - new config option "collapsible_reset" resets the room menu in the sidebar to the pages default state on every page change (pagecontainershow event).
 - help texts for GoogleV3 calendar OAuth procedure updated according to current workflow in Google developer console
+- some new icons from KNX-UF icon set (modernized cars, HEV charging, manual)
 
 ### Improvements
 - Template checker now ignores multi-line comments  
@@ -48,6 +49,7 @@
 - info message after successful configuration save is shown again after page reload
 - first fixes to avoid deprecation warnings in PHP8.2
 - template checker has now an option to extend PHP skript execution timeouts from 120 sec to 240 sec (for slow smartVISU servers)
+- included a link to display the changelog in the update message
 
 ### Updated Libraries
 - MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder
