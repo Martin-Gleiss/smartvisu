@@ -50,6 +50,7 @@
 - first fixes to avoid deprecation warnings in PHP8.2
 - template checker has now an option to extend PHP skript execution timeouts from 120 sec to 240 sec (for slow smartVISU servers)
 - included a link to display the changelog in the update message
+- if timesource is configured to "server", DST and client-server-offsets get updated with every page change (no reload needed)
 
 ### Updated Libraries
 - MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder
@@ -79,6 +80,7 @@
 - "daycount" option in calendar.list delivered faulty results over the end of a month
 - device.uzsugraph caused an error if the additional decorative points at the ends of the graph outside the default scroll area were clicked
 - duration for 1y was 356 days instead of 365. Nobody noticed that over years :-))) 
+- clocks / plots did not switch to/from DST if configured time source was server and cache was enabled 
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text

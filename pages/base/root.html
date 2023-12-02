@@ -222,6 +222,13 @@
 		sv.activePage = $(":mobile-pagecontainer").pagecontainer("getActivePage");
 		fx.init();
 		repeater.init();
+		{% if config_timesource == "server" %}
+			if (sv.serverTimezone.transition == 0 || new Date().valueOf() > sv.serverTimezone.transition){
+				console.log('[root.html] getting server time and timezone');
+				getServerTimeAndZone();
+			}
+		{% endif %}
+		
 		io.run();
 	});
 

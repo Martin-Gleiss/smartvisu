@@ -65,7 +65,7 @@
 	/** stopitem will be set to "true" when new page is loaded in order to stop the clock from loading digits till eternity ;) */
 	/** use data-item="" in order to trigger update when page is loaded from cache or by page refresh */
 	<div id="{{ uid }}-digiclock" data-widget="clock.digiclock" class="digiclock" stoptimer="false" data-item=""
-	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+	 {% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
 	 ></div>
 
 	{% if not location is empty %}
@@ -92,7 +92,7 @@
 	{% import "@widgets/icon.html" as icon %}
 
 	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i" class="iconclock"
-	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+	 {% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
 	 >{{ icon.clock(id, '', '', color) }}</span>
 {% endmacro %}
 
@@ -107,6 +107,6 @@
 
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.miniclock" data-repeat="1i" class="miniclock"
 		data-format="{{ format|default('time') }}"
-		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+		{% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
 		>{{ "now"|date('H:i') }}</span>
 {% endmacro %}
