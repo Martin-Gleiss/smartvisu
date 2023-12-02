@@ -166,7 +166,7 @@
 		{% if stacks is not empty %} data-stacks="{{ implode(stacks) }}" {% endif %}
 		data-ytype="{{ implode(ytype) }}" data-unit="{{ implode(units) }}" data-stacking="{{ implode(stacking) }}" 
 		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}" data-exportmenu="{{ export|default(0) }}"
-		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+		{% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
 		class="plot{% if zoom == 'advanced' %} plot-highstock{% endif %}"></div>
 
 {% endmacro %}
@@ -222,7 +222,7 @@
 		data-item="{{ implode(items) }}"
 		data-tmin="{{ tmin }}" data-tmax="{{ tmax }}" data-state-max="{{ state_max == 'on' ? 1 : state_max }}"
 		data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
-		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+		{% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
 		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}"
 		class="plot"></div>
 
@@ -276,7 +276,7 @@
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.period" data-mode="{{ mode }}" data-item="{{ seriesitem }}" data-tmin="{{ tmin }}" data-tmax="{{ tmax }}"
         {% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
     	data-exposure="{{ exposure }}" data-unit="{{ unit }}" data-stacking="normal" data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}" data-exportmenu="0"
-		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}>
+		{% if config_timesource == 'server' %} data-servertime="yes" {% endif %}>
 	</div>
 
 {% endmacro %}

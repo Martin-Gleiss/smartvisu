@@ -201,6 +201,11 @@
  */
 	var sv = {
 		activePage: {},
+		serverTimezone: {
+			offset: 0,
+			DST: 0,
+			transition: 0
+		},
 		config: {
 			version: '<?php echo config_version_full ?>',
 			icon0: '<?php echo config_design_icon0 ?>',
@@ -217,6 +222,6 @@
 ?>
 			},
 			reconnectTime: parseInt('<?php echo config_reconnect_time ?>'),
-			timezoneOffset: '<?php echo date('Z') ?>'
+			timezone: '<?php echo config_timezone ?>'
 		}
 	};
