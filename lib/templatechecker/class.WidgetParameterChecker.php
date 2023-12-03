@@ -523,6 +523,13 @@ class WidgetParameterChecker {
 			return;
 		}
 		
+		// basic.stateswitch and maybe other widgets in the future have a color parameter as indicator with a timeout
+		// timout may be added with a colon followed by an integer value after the color
+		if ($this->checkParameterValidValues(':') && strpos($value, ':') !== false && is_numeric(substr($value, strpos($value, ':')+1 ))) {
+			$this->checkParameterTypeColor(substr($value,0, strpos($value, ':')));
+			return;
+		}
+		
 		// anything else needs to start with '#' and be 4 (#+3), 5, 7 or 9 (#+8) characters long including RBGA colors
 		if (substr($value, 0, 1) == '#' && (strlen($value) == 4 || strlen($value) == 5 ||strlen($value) == 7 ||strlen($value) == 9) && ctype_xdigit(substr($value, 1)))
 			return;
