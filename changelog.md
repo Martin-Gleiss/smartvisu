@@ -62,6 +62,7 @@
 ### Removed Features
 - parameter type "iconseries" for template checker removed since basic shifter was removed in v3.3
 - weather services yr.no and darksky.net removed due to discontinuation of the services
+- notify.error(), notify.warning(), notify.info() removed which had been replaced by notify.message()
 
 ### Fixed Bugs
 - multiple icons of icon.heating on one page could only be colored with the color of the first occurance and disappeared otherwise

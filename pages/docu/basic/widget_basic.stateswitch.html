@@ -172,8 +172,10 @@ with the click on the switch and stopped by a received update or after a defined
 		
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ basic.stateswitch('', 'bath.light.switch', 'midi', '', 'control_arrow_down.svg') }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg']) }}
+		{{ basic.stateswitch('', 'item.st:item.ctl', '','', ['fts_shutter_10','fts_shutter_100'],'','','blink:10') }}
+		{{ basic.stateswitch('', 'item.st:item.ctl', '','', ['fts_garage_door_10','fts_garage_door_100'],'','','red') }}
+		{{ basic.stateswitch('', 'item.st:item.ctl', '','', ['fts_shutter_10','fts_shutter_100', icon.shutter('','','item.st')],'','','simulate:10') }}
+		{{ basic.stateswitch('', 'item.st:item.ctl', '','', ['Light_light','light_light', icon.light('','','item.st')],'','','simulate:10') }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
@@ -184,6 +186,6 @@ with the click on the switch and stopped by a received update or after a defined
 	</div>
 	
 	All indicators run with a timout. Press the update button to simulate a response from the backend. <br>
-	{{ basic.stateswitch('', 'bath.light.value','mini',[0,1], '', 'update', ['icon0', 'icon1']) }}
+	{{ basic.stateswitch('', 'bath.light.value', 'mini',[0,1], '', 'update', ['icon0', 'icon1']) }}
 
 {% endblock %}

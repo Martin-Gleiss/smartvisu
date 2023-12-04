@@ -190,12 +190,13 @@ var io = {
 			cache: false
 		})
 		.done(function (response) {
-			console.log('[io.offline] sending data: ["'+ item +' ": '+ response[item].toString() + ']');
+			console.log('[io.offline] sending data: ["'+ item +'": '+ response[item].toString() + ']');
 			if (item == io.listeners[item])
 				widget.update(item, JSON.parse(response[item]));
 			else {
 				if (io.listeners[item]){
-					console.log('[io.offline] updating item "' +io.listeners[item] + '"');	
+					console.log('[io.offline] updating item "' +io.listeners[item] + '"');
+					widget.update(item, JSON.parse(response[item]));
 					widget.update(io.listeners[item], JSON.parse(response[item]));
 				}
 			}
