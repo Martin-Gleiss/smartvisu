@@ -59,7 +59,9 @@ var io = {
 	 * @param      the value
 	 */
 	write: function (item, val) {
-		io.put(item, val);
+		var sendItemPos = item.indexOf(':');
+		var sendItem = (sendItemPos == -1 ? item : item.substring(sendItemPos + 1));		
+		io.put(sendItem, val);
 	},
 
 	/**
@@ -121,6 +123,7 @@ var io = {
 	timer: 0,
 	timer_run: false,
 	seriesTimer: [],
+	listeners: [],
 
 	/**
 	 * The real-time polling loop, only if there are listeners
@@ -188,7 +191,14 @@ var io = {
 		})
 		.done(function (response) {
 			console.log('[io.offline] sending data: ["'+ item +' ": '+ response[item].toString() + ']');
-			widget.update(item, JSON.parse(response[item]));
+			if (item == io.listeners[item])
+				widget.update(item, JSON.parse(response[item]));
+			else {
+				if (io.listeners[item]){
+					console.log('[io.offline] updating item "' +io.listeners[item] + '"');	
+					widget.update(io.listeners[item], JSON.parse(response[item]));
+				}
+			}
 
 			if (timer_run) {
 				io.start();
@@ -220,6 +230,8 @@ var io = {
 					}
 					catch(e) {}
 					widget.update(item, val);
+					if (item != io.listeners[item])
+						widget.update(io.listeners[item], val);
 				})
 			})
 			.fail(notify.json)
@@ -230,7 +242,18 @@ var io = {
 	 * Reads all values from bus and refreshes the pages
 	 */
 	all: function() {
-		var allItems = widget.listeners();
+		io.listeners = [];
+		var listeners = widget.listeners();
+		var listenItem;
+		var listenItemEnd;
+		for (var i=0; i < listeners.length; i++){
+			listenItemEnd = listeners[i].indexOf(':');
+			listenItem = (listenItemEnd == -1 ? listeners[i] : listeners[i].substring(0, listenItemEnd));
+			if ( io.listeners[listenItem] == undefined || listenItem == io.listeners[listenItem])
+				io.listeners[listenItem] = listeners[i];
+		}
+
+		var allItems = Object.keys(io.listeners);
 		var items;
 		
 		do {
