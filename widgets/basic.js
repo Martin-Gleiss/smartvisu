@@ -1093,6 +1093,7 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 			var indicatorDuration = this.options.indicatorDuration;
 			// get the index of the memorised value
 			var old_idx = list_val.indexOf(this._current_val);
+			var old_val = this._current_val;
 			// compute the next index
 			var new_idx = (old_idx + 1) % list_val.length;
 			// get next value
@@ -1157,8 +1158,12 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 					}
 				})
 				// set timer to stop indicator after timeout
-				.data('indicator-timer', setTimeout(function() { target.trigger('stopIndicator') }, indicatorDuration*1000 ));
-
+				.data('indicator-timer', setTimeout(function() { 
+					if (old_val != undefined && indicatorType == "simulate" && dynamicIcon.length != 0) 
+						that._update(old_val);	
+					target.trigger('stopIndicator') 
+					}, indicatorDuration*1000 
+				));
 
 				// remove existing classes  and styles
 				var actualCol = target.attr('data-col');
@@ -1239,11 +1244,11 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 			widget.buffer[this.options.item] = '';
 		// remove space after , in response (relevant for lists)
 		var val = response.toString().trim().replace(/, /gi, ",");
-		// is response is an array or a string containing a [] it should be handled as a list
+		// if response is an array or a string containing a [] it should be handled as a list
 		var respArray = response[0] instanceof Array;
 		val = val.includes("[") || ! respArray ? val : "[" + val + "]";
 
-		// remove space after , in widget data-val entries
+		// remove space after comma in widget data-val entries
 		this.element.children('a[data-widget="basic.stateswitch"]').attr('data-val', function(index, src) {
 			return src.replace(/, /gi, ",")
 		})
