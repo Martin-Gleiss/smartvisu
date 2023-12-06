@@ -122,11 +122,11 @@
 /**
  * Lock motion sensor and/or light priority in one popup
  *
- * @param {id=} unique id for this widge
- * @param {item[?](bool)=} simple on/off lock item for light
- * @param {item[?](bool)=} simple on/off lock item for motion sensor
- * @param {item[?](num)=} knx force item, expected values are 0, 1 or 2
- * @param {item[?](bool)=} on/off lock item for RGB LED sequencer
+ * @param {id=} unique id for this widget
+ * @param {unspecified[?](bool)=} simple on/off lock item for light (optional: as array with colors)
+ * @param {unspecified[?](bool)=} simple on/off lock item for motion sensor (optional: as array with colors)
+ * @param {unspecified[?](num)=} knx force item, expected values are 0, 1 or 2 (optional: as array with colors)
+ * @param {unspecified[?](bool)=} on/off lock item for RGB LED sequencer (optional: as array with colors)
   */
 {% macro locks(id, lock, bwm_lock, force, seq_lock) %}
     {% import "@widgets/basic.html" as basic %}

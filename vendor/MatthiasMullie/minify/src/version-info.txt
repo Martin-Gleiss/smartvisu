@@ -1,0 +1,1 @@
+this minify version is current master as of 2023-03-02 plus PR #318 as a patch. See https://github.com/matthiasmullie/minify/issues/405 for more info.

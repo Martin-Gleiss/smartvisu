@@ -22,6 +22,7 @@
 	{{ forms.config_select('tplchk', { 'tplchk': {'pages': config_pages }}, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
 	<label><input name="checkbox-0 " type="checkbox" id="tplchk_chk_errors_only">Show warnings/errors only</label>
 	<label><input name="checkbox-0 " type="checkbox" id="tplchk_chk_subfolders">Don´t check files in subfolders</label>
+	<label><input name="checkbox-0 " type="checkbox" id="tplchk_extend_timeout">Extend PHP skript timeout (for slow smartVISU servers)</label>
 	<div id="chk_items" style="visibility: hidden;">
 		<label><input name="checkbox-0 " type="checkbox" id="tplchk_chk_items">Don´t check items / item parameter types - to increase performance</label>
 	</div>

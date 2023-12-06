@@ -31,6 +31,13 @@ class WidgetParameterChecker {
 	 * @var array
 	 */
 	private $paramConfig;
+	
+	/**
+	 * Settings
+	 * @var array
+	 */
+	private $settings;
+	
 
 	/**
 	 * Available dynamic icons
@@ -63,7 +70,14 @@ class WidgetParameterChecker {
 	private $templateCecker;
 
 	
-
+	/**
+	 * If templatechecker adds default array values they are still in string format, e.g. '[0,1]' 
+	 * These must be integrated into the parameter array as if they had been parsed in the parameter string
+	 * @param $string: string to convert
+	 * @params $start / $end: delimiters used to split the string into array levels - mostly square brackets
+	 * @param $single: 'single' makes the array one-dimensional 
+	 *
+	 */
 	function get_arrays($string, $start, $end, $single){
 		$string = $start . str_replace(', ', ',', $string) . $end;
 		$string = str_replace("'", "", $string);
@@ -142,9 +156,27 @@ class WidgetParameterChecker {
 			return;
 		}
 
-		$values = $this->getParameterValue();
+		$values = $this->getParameterValue($type);
 		if ($values === NULL)
 			return;
+		
+		// get uzsu item - in quad widgets just before uzsu param array
+		if ($type == 'uzsuparam'){
+			$uzsuitem = $this->widget->getParam($this->paramIndex - 1);
+			if ($uzsuitem == null || $uzsuitem == '')
+				return;
+			// we can check only one of the items as dummy in the recursive uzsu eidget check 
+			// so item names in the info lines may differ from the real items 
+			// items have been checked as individual parameters before
+			if (is_array($uzsuitem)){
+				foreach($uzsuitem as $item)
+					if ($item != '') break;
+				$uzsuitem = "'". $item . "'";
+			}		
+			if ($uzsuitem == "''")
+				return;
+		}
+		
 		if (!is_array($values))
 			$values = array($values);
 
@@ -167,9 +199,6 @@ class WidgetParameterChecker {
 					break;
 				case 'item':
 					$this->checkParameterTypeItem($value);	//new
-					break;
-				case 'iconseries':
-					$this->checkParameterTypeIconseries($value);
 					break;
 				case 'type':
 					$this->checkParameterTypeType($value);
@@ -195,6 +224,28 @@ class WidgetParameterChecker {
 				case 'percent':
 					$this->checkParameterTypePercent($value);	//new
 					break;
+				case 'widget':
+					$node = $this->widget->getNode();
+					$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->". $value);
+					//DEBUG: echo ($value."<br>");
+					break;
+				case 'plotparam':
+					$node = $this->widget->getNode();
+					$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->plot.period('',". $value .")");
+					// DEBUG: echo "plot.period('',". $value .")".'<br>';
+					break;
+				case 'uzsuparam':
+					$node = $this->widget->getNode(); 
+					$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->device.uzsuicon('', ".$uzsuitem. ", '', " . $value .")");
+					//DEBUG: echo ("device.uzsuicon('', ".$uzsuitem. ", '', " . $value .")<br>");
+					break;
+				case 'sliderparam':
+					$node = $this->widget->getNode(); 
+					$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->basic.slider(''," . $value .")");
+					//DEBUG: echo ("basic.slider('', " . $value .")<br>");
+				case 'placeholder':
+					// no need to check anything here
+					break;
 				case 'unspecified':
 					// this type is not validated at all
 					$this->addInfo('WIDGET UNSPECIFIED PARAM TYPE', 'Parameter can not be checked, check manually', $value);
@@ -216,14 +267,69 @@ class WidgetParameterChecker {
 	 *
 	 * @return mixed. value, array of values (if parameter is given in array form) or NULL (if errors occured)
 	 */
-	private function getParameterValue() {
-		$value = $this->widget->getParam($this->paramIndex);
+	private function getParameterValue($type) {
+		
+		$stringParam = $type == 'plotparam' || $type == "uzsuparam" || $type == 'sliderparam' || $type == 'unspecified';
+		if ($stringParam == true){
+			$value = $this->widget->getSingleParamString($this->paramIndex) || '';
+			if ($type != 'unspecified'){
+				$actualWidget = $this->widget->getName();
+				
+				// some quad widgets define parameter array sizes by certain parameters
+				// we need to know these in order to parse parameter arrays correctly
+				if (array_key_exists($actualWidget, TemplateCheckerConfig::ArrayDimensionSetter)){
+					$widgetElements = $this->widget->getParam(TemplateCheckerConfig::ArrayDimensionSetter[$actualWidget]);
+					$widgetElementsCount = (is_array($widgetElements) ? count($widgetElements) : 0);
+					$test = json_decode(str_replace("'", '"', $value));
+					$plotSpecial = ($type == 'plotparam' && is_array($test) && count($test) == 17 && in_array($actualWidget, ['quad.stateswitch', 'quad.select']) );
+					$uzsuSpecial = ($type == 'uzsuparam' && !is_array($this->widget->getParam($this->paramIndex - 1)) && in_array($actualWidget, ['quad.stateswitch', 'quad.select']) );			
+					if (is_array($test) && $plotSpecial == false && $uzsuSpecial == false){
+						if (count($test) == $widgetElementsCount || $widgetElementsCount == 0 ){
+							$value = [];
+							// prepare populated array elements / ignore empty elements  
+							for ($i = 0; $i < $widgetElementsCount; $i++){
+								if($test[$i] != ''){
+									if (is_array($test[$i]) && $type == 'sliderparam'){
+										// adjust parameter sequence for basic.slider
+										if (count($test[$i]) > 4)
+											$test[$i] = array_merge(array_slice($test[$i], 0, 4, true), array('horizontal'), count($test[$i]) >= 6 ? array_slice($test[$i], 5, null, true) : null);
+									}
+
+									if (is_array($test[$i]) || $widgetElementsCount == 0){
+										$value[] = substr(str_replace('"', "'", json_encode($test[$i])), 1, -1);}
+									else
+										$value[] = str_replace('"', "'", json_encode($test[$i]));
+								}
+							}   
+						}
+						else 
+							$this->addWarning('WIDGET PARAM CHECK', 'Array size does not match the widgets parameter count, check manually', $value);
+					}
+					else {
+						if (substr($value, 0, 1) == '[' && substr($value, -1, 1) == ']')
+						$value = substr($value, 1, -1);
+					}
+				}
+				else {
+					if (substr($value, 0, 1) == '[' && substr($value, -1, 1) == ']')
+					$value = substr($value, 1, -1);
+				}
+			}
+		}
+		else
+			$value = $this->widget->getParam($this->paramIndex);
 
 		// parameter not given
 		if ($value == NULL || $value == '') {
 			if ($this->getParamConfig('optional', TRUE)) {
 				// missing optional parameter, return default value
 				$value = $this->getParamConfig('default', '');
+				// convert into array if applicable
+				if (!is_array($value) && $stringParam == false) {
+					$test = explode(',', $value);
+					if (substr( $value, 0, 1 ) === "[" && count($test) > 1)
+						$value = $this->get_arrays($value, '[', ']', 'single');
+				}		
 			} else {
 				// missing mandatory parameter
 				$this->addError('WIDGET PARAM CHECK', 'Mandatory parameter missing', $value);
@@ -232,21 +338,17 @@ class WidgetParameterChecker {
 		}
 
 		// no check for arrayform if value is empty
+		if ($stringParam == true && ($value == "''" || $value == ''))
+			return NULL;
 		if($value == '')
 			return $value;
 
-		if (!is_array($value))
-			$test = explode(',', $value);
-		if (!is_array($value) && substr( $value, 0, 1 ) === "[" && count($test) > 1)
-		{
-			$value = $this->get_arrays($value, '[', ']', 'single');
-		}
-
 		$allowArray = $this->getParamConfig('array_form', 'no');
-		if (is_array($value) && $allowArray != 'must' && $allowArray != 'may') { // array form
+		$valueIsArray = is_array($value) || ($stringParam && is_array($this->widget->getParam($this->paramIndex)));
+		if ($valueIsArray && $allowArray != 'must' && $allowArray != 'may') { // array form
 			$this->addError('WIDGET PARAM CHECK', 'Array form not allowed for parameter', $value);
 			return NULL;
-		} else if (!is_array($value) && $allowArray == 'must') { // not array form
+		} else if ($valueIsArray == false && $allowArray == 'must') { // not array form
 			$this->addError('WIDGET PARAM CHECK', 'Array form required for parameter', $value);
 			return NULL;
 		}
@@ -282,55 +384,6 @@ class WidgetParameterChecker {
 	}
 
 	/**
-	 * Check widget parameter of type "iconseries"
-	 * @param $value mixed parameter value
-	 */
-	private function checkParameterTypeIconseries($value) {
-		if (!$this->checkParameterNotEmpty($value))
-			return;
-
-		if (substr($value, 0, 5) == 'icon.') {
-			if (array_key_exists($value, $this->dynamicIcons)) {
-				// existing dynamic icon
-				if (Settings::SHOW_SUCCESS_TOO)
-					$this->addInfo('WIDGET ICONSERIES PARAM  CHECK', 'Existing dynamic image', $value);
-			} else {
-				// unknown dynamic icon
-				$this->addError('WIDGET ICONSERIES PARAM  CHECK', 'Missing dynamic image', $value);
-			}
-		} else if (substr($value, -7) == '_00.svg') {
-			for ($i = 1; $i < 11; $i++) {
-				$file = str_replace('_00.svg', '_' . $i . '0.svg', $value);
-				// add color if required
-				if (strpos($file, '/') === false && substr($file, 0, 7) != 'icon0~\'' && substr($file, 0, 7) != 'icon1~\'') {
-					$file = Settings::getInstance()->getIcon0() . $file;
-				}
-
-				switch (TemplateChecker::isFileExisting($file)) {
-					case TemplateChecker::FILE_MISSING:
-						$this->addError('WIDGET ICONSERIES PARAM CHECK', 'Image missing', $value, array('Percentage' => $i * 10, 'Checked File' => $file));
-						break;
-					case TemplateChecker::FILE_EXISTING:
-						if (Settings::SHOW_SUCCESS_TOO)
-							$this->addInfo('WIDGET ICONSERIES PARAM  CHECK', 'Image existing', $value, array('Percentage' => $i * 10, 'Checked File' => $file));
-						break;
-					case TemplateChecker::FILE_REMOTE:
-						if (Settings::SHOW_SUCCESS_TOO)
-							$this->addInfo('WIDGET ICONSERIES PARAM  CHECK', 'Image from remote location', $value, array('Percentage' => $i * 10, 'Checked File' => $file));
-						break;
-					case TemplateChecker::FILE_CONTAINS_PARAMS:
-						if (Settings::SHOW_SUCCESS_TOO)
-							$this->addWarning('WIDGET ICONSERIES PARAM  CHECK', 'Image path still contains parameters. Check manually!', $value, array('Percentage' => $i * 10, 'Checked File' => $file));
-						break;
-				}
-			}
-		} else {
-			// unknown dynamic icon
-			$this->addError('WIDGET ICONSERIES PARAM  CHECK', 'Invalid value for iconseries', $value);
-		}
-	}
-
-	/**
 	 * Check widget parameter of type "image"
 	 * @param $value mixed parameter value
 	 */
@@ -350,8 +403,9 @@ class WidgetParameterChecker {
 		if ($this->checkParameterValidValues($value))
 			return;
 
-		//TODO: Replace by recursively checked widgets in parameters in class.Widget.php
 		if (substr($value, 0, 5) == 'icon.') {
+			$node = $this->widget->getNode();
+			$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->".$value);
 
 			$dyniconWiget = explode('(', $value, 2);
 			if (array_key_exists($dyniconWiget[0], $this->dynamicIcons)) {
@@ -365,6 +419,8 @@ class WidgetParameterChecker {
 
 		}
 		else if (substr($value, 0, 12) == 'basic.symbol') {
+			$node = $this->widget->getNode();
+			$this->templateCecker->checkWidget($node, $this->widget->getName()." #". $this->paramIndex ."->".$value);
 			$dyniconWiget = explode('(', $value, 2);
 			if (array_key_exists($dyniconWiget[0], $this->dynamicIcons)) {
 				// existing dynamic icon
@@ -467,6 +523,13 @@ class WidgetParameterChecker {
 			return;
 		}
 		
+		// basic.stateswitch and maybe other widgets in the future have a color parameter as indicator with a timeout
+		// timout may be added with a colon followed by an integer value after the color
+		if ($this->checkParameterValidValues(':') && strpos($value, ':') !== false && is_numeric(substr($value, strpos($value, ':')+1 ))) {
+			$this->checkParameterTypeColor(substr($value,0, strpos($value, ':')));
+			return;
+		}
+		
 		// anything else needs to start with '#' and be 4 (#+3), 5, 7 or 9 (#+8) characters long including RBGA colors
 		if (substr($value, 0, 1) == '#' && (strlen($value) == 4 || strlen($value) == 5 ||strlen($value) == 7 ||strlen($value) == 9) && ctype_xdigit(substr($value, 1)))
 			return;
@@ -486,6 +549,18 @@ class WidgetParameterChecker {
 	private function checkParameterTypeItem($value) {
 		if ($value == "" || $this->items->getState() == FALSE)
 			return;
+		
+		// check for combined status/control items, e.g. "item_status:item_control"
+		if (strpos($value, ":") !== false){
+			$values = explode(':', $value);
+			if (count($values) != 2){
+				$this->addError('ITEM-EXISTING CHECK', 'Combined status/control item must consist of two items', $value, array());
+				return FALSE;
+			}
+			$this->checkParameterTypeItem($values[0]);
+			$this->checkParameterTypeItem($values[1]);
+			return;
+		}
 
 		if ($this->items->ItemExists($value)) {
 		if (Settings::SHOW_SUCCESS_TOO)
@@ -495,8 +570,7 @@ class WidgetParameterChecker {
 			return FALSE;
 		}
 
-
-		if ($this->paramConfig['valid_values']) {
+		if (isset($this->paramConfig['valid_values']) && $this->paramConfig['valid_values']) {
 			if ($this->items->getItemType($value)) {
 				if (in_array($this->items->getItemType($value), $this->paramConfig['valid_values'])) {
 					if (Settings::SHOW_SUCCESS_TOO)

@@ -54,7 +54,9 @@ var io = {
 	 * @param      the value
 	 */
 	write: function (item, val) {
-		io.send({'cmd': 'item', 'id': item, 'val': val});
+		var sendItemPos = item.indexOf(':');
+		var sendItem = (sendItemPos == -1 ? item : item.substring(sendItemPos + 1));		
+		io.send({'cmd': 'item', 'id': sendItem, 'val': val});
 		if (!sv.config.driver.loopback) 
 			widget.update(item, val);
 	},
@@ -67,6 +69,22 @@ var io = {
 	 */
 	trigger: function (name, val) {
 		io.send({'cmd': 'logic', 'name': name, 'val': val});
+	},
+	
+	/**
+	 * (re-)start all subscribed series of a single plot widget
+	 * or - if parameter ist empty - all plot widgets on the active page
+	 */
+	startseries: function (plotwidget) {
+		io.plotcontrol('series', plotwidget);
+	},
+	
+	/**
+	 * stop all subscribed series of a single plot widget
+	 * or - if parameter ist empty - all plot widgets on the active page
+	 */
+	stopseries: function (plotwidget) {
+		io.plotcontrol('series_cancel', plotwidget);
 	},
 
 	/**
@@ -113,8 +131,10 @@ var io = {
 	
 	/**
 	 * This is the protocol version
+	 * send "4" while shNG may answer with variant "4.1" which supports log_cancel
 	 */
 	version: 4,
+	shngProto: null,
 	
 	/**
 	 * This is the websocket module / plugin and the websocket opening time
@@ -128,6 +148,7 @@ var io = {
 	socket: false,
 	
 	triggerqueue: [],
+	listeners: [],
 	
 	/**
 	 * Opens the connection and add some handlers
@@ -206,6 +227,8 @@ var io = {
 							val = 1;
 						}
 						widget.update(item, val);
+						if (item != io.listeners[item])
+							widget.update(io.listeners[item], val);
 					}
 					break;
 
@@ -243,6 +266,7 @@ var io = {
 					if (data.server != undefined){ 
 						io.server = data.server;
 						io.opentime = new Date(data.time);
+						io.shngProto = data.ver;
 					}
 					$(document).trigger('ioAlive');
 					break;
@@ -255,10 +279,9 @@ var io = {
 
 		io.socket.onerror = function (error) {
 			if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification)) {
-				var msgText = 'Could not connect to smarthomeNG server!<br /> Websocket error: ' + error.data + '.';
+				var msgText = sv_lang.status_event_format.error.shngdriver_error + ' ' + error.data + '.';
 				if (io.address != sv.config.driver.address) {
-					msgText += '<br/><ul><li>If you are calling smartVISU internally by a hostname specify this in config section smartVISU Hostname</li>';
-					msgText += '<li>If you are calling smartVISU from external e.g via a reverse proxy check your router and reverse proxy settings</li></ul>';
+					msgText += sv_lang.status_event_format.error.shngdriver_hint;
 				}
 				io.socketErrorNotification = notify.message('error', 'Driver: smarthomeng', msgText);
 			}
@@ -292,7 +315,17 @@ var io = {
 		//if (widget.listeners().length) {
 			// subscribe all items used on the page
 			// or cancel subscription by sending an empty array 
-			io.send({'cmd': 'monitor', 'items': widget.listeners()});
+		io.listeners = [];
+		var listeners = widget.listeners();
+		var listenItem;
+		var listenItemEnd;
+		for (var i=0; i < listeners.length; i++){
+			listenItemEnd = listeners[i].indexOf(':');
+			listenItem = (listenItemEnd == -1 ? listeners[i] : listeners[i].substring(0, listenItemEnd));
+			if ( io.listeners[listenItem] == undefined || listenItem == io.listeners[listenItem])
+				io.listeners[listenItem] = listeners[i];
+		}
+		io.send({'cmd': 'monitor', 'items': Object.keys(io.listeners)});
 		//}
 
 		// subscribe all plots defined for the page 
@@ -317,41 +350,57 @@ var io = {
 		}
 	},
 	
-	/**
-	 * (re-)start all subscribed series
-	 */
-	startseries: function () {
-		io.plotcontrol('series');
-	},
-	
-	/**
-	 * stop all subscribed series
-	 */
-	stopseries: function () {
-		io.plotcontrol('series_cancel');
-	},
-	
 	// identify all subscribed series and execute given command
-	plotcontrol: function(seriescmd) {
+	plotcontrol: function(seriescmd, plotwidget) {
+
 		var unique = Array();
-		widget.plot().each(function (idx) {
+		var plotWidgets = [];
+		var singleCancel = (seriescmd == 'series_cancel') && (plotwidget != undefined);
+		if (plotwidget === undefined)
+			plotWidgets = widget.plot();
+		else
+			plotWidgets = plotwidget;
+	
+		plotWidgets.each(function (idx) {
 			var items = widget.explode($(this).attr('data-item'));
 			for (var i = 0; i < items.length; i++) {
-
-				var pt = items[i].split('.');
-
-				if (!unique[items[i]] && (pt instanceof Array) && widget.checkseries(items[i])) {
-					var item = items[i].substr(0, items[i].length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
-
-					io.send({'cmd': seriescmd, 'item': item, 'series': pt[pt.length - 4], 'start': pt[pt.length - 3], 'end': pt[pt.length - 2], 'count': pt[pt.length - 1]});
-					
+				var definition = widget.parseseries(items[i]);
+		
+				// prevent cancelling a series if not only the specified plot widget has subscribed it 
+				// TO DO: check what happens if the specified plot requests a series already available for a different plot 
+				if ((singleCancel == true) && (widget.plot(items[i]).length > 1))
 					unique[items[i]] = 1;
+					
+				if (!unique[items[i]] && definition != null) {
+					io.send({'cmd': seriescmd, 'item': definition.item, 'series': definition.mode, 'start': definition.start, 'end': definition.end, 'count': definition.count});
+					unique[items[i]] = 1;
+					if (singleCancel == true)
+						delete widget.buffer[items[i]];
 				}
 			}
 		});
 	},
 
 		
+	/**
+	 * stop all subscribed logs or a single specified log
+	 * available as of shNG protocol version 4.1
+	 */
+	stoplogs: function (logwidget) {
+		if (io.shngProto < 4.1) 
+			return
+		
+		var logWidgets=[];
+		if (logwidget === undefined)
+			logWidgets = widget.log();
+		else
+			logWidgets = logwidget;
+	
+		logWidgets.each(function (idx) {
+			io.send({'cmd': 'log_cancel', 'name': $(this).attr('data-item'), 'max': $(this).attr('data-count')});
+		})
+	},
+
 	/**
 	 * Closes the connection
 	 */

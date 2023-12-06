@@ -59,7 +59,9 @@ var io = {
 	 * @param      the value
 	 */
 	write: function (item, val) {
-		io.put(item, val);
+		var sendItemPos = item.indexOf(':');
+		var sendItem = (sendItemPos == -1 ? item : item.substring(sendItemPos + 1));		
+		io.put(sendItem, val);
 	},
 
 	/**
@@ -120,6 +122,8 @@ var io = {
 
 	timer: 0,
 	timer_run: false,
+	seriesTimer: [],
+	listeners: [],
 
 	/**
 	 * The real-time polling loop, only if there are listeners
@@ -166,6 +170,7 @@ var io = {
 				val = JSON.parse(response[item]);
 			}
 			catch(e) {}
+      console.log('[io.offline] receiving data: ["'+ item +' ": '+ val + ']');
 			widget.update(item, val);
 		})
 		.fail(notify.json)
@@ -185,7 +190,16 @@ var io = {
 			cache: false
 		})
 		.done(function (response) {
-			widget.update(item, JSON.parse(response[item]));
+			console.log('[io.offline] sending data: ["'+ item +'": '+ response[item].toString() + ']');
+			if (item == io.listeners[item])
+				widget.update(item, JSON.parse(response[item]));
+			else {
+				if (io.listeners[item]){
+					console.log('[io.offline] updating item "' +io.listeners[item] + '"');
+					widget.update(item, JSON.parse(response[item]));
+					widget.update(io.listeners[item], JSON.parse(response[item]));
+				}
+			}
 
 			if (timer_run) {
 				io.start();
@@ -208,6 +222,7 @@ var io = {
 				cache: false
 			})
 			.done(function (response) {
+        console.log('[io.offline] receiving data: ' + JSON.stringify(response).replace(/\\\"/g,''));
 				// update all items	
 				$.each(response, function (item, val) {
 					// try to parse as JSON. Use raw value if this fails (value was likely saved before introdution of JSON.stringify in put)
@@ -216,6 +231,8 @@ var io = {
 					}
 					catch(e) {}
 					widget.update(item, val);
+					if (item != io.listeners[item])
+						widget.update(io.listeners[item], val);
 				})
 			})
 			.fail(notify.json)
@@ -226,7 +243,18 @@ var io = {
 	 * Reads all values from bus and refreshes the pages
 	 */
 	all: function() {
-		var allItems = widget.listeners();
+		io.listeners = [];
+		var listeners = widget.listeners();
+		var listenItem;
+		var listenItemEnd;
+		for (var i=0; i < listeners.length; i++){
+			listenItemEnd = listeners[i].indexOf(':');
+			listenItem = (listenItemEnd == -1 ? listeners[i] : listeners[i].substring(0, listenItemEnd));
+			if ( io.listeners[listenItem] == undefined || listenItem == io.listeners[listenItem])
+				io.listeners[listenItem] = listeners[i];
+		}
+
+		var allItems = Object.keys(io.listeners);
 		var items;
 		
 		do {
@@ -235,43 +263,8 @@ var io = {
 		} while (allItems.length > 0); 
 
 		// plots
-		var repeatSeries = function(item, tmin, tmax, ymin, ymax, cnt, step, startval) {
-			var series = io.demoseries(tmin, tmax, ymin, ymax, cnt, startval);
-			widget.update(item, series);
-
-			if(step == null)
-				step = Math.round((new Date().duration(tmin) - new Date().duration(tmax)) / cnt);
-			var nextTime = -(new Date().duration(tmax).getTime() - step)/1000;
-			var startval = series[series.length-1][1];
-
-			setTimeout(function(){
-				//repeatSeries(item, tmax, nextTime+"s", ymin, ymax, 1, step, startval);
-				repeatSeries(item, tmax, tmax, ymin, ymax, 1, step, startval);
-			}, step);
-		}
-
-		widget.plot().each(function (idx) {
-			var items = widget.explode($(this).attr('data-item'));
-
-			for (var i = 0; i < items.length; i++) {
-				var item = items[i].split('.');
-
-				if (widget.get(items[i]) == null && (widget.checkseries(items[i]))) {
-
-					var assign = ($(this).attr('data-assign') || "").explode();
-					var yAxis = (assign[i] ? assign[i] - 1 : 0)
-
-					var ymin = [];
-					if ($(this).attr('data-ymin')) { ymin = $(this).attr('data-ymin').explode(); }
-
-					var ymax = [];
-					if ($(this).attr('data-ymax')) { ymax = $(this).attr('data-ymax').explode(); }
-
-					repeatSeries(items[i], item[item.length - 3], item[item.length - 2], ymin[yAxis], ymax[yAxis], item[item.length - 1]);
-				}
-			}
-		});
-
+		io.startseries();
+		
 		// logs
 		widget.log().each(function (idx) {
 			widget.update($(this).attr('data-item'), io.demolog($(this).attr('data-count')));
@@ -356,10 +349,71 @@ var io = {
 	},
 	
 	/**
-	 * stop all subscribed series
+	 * stop all subscribed series of a single plot or of all plots on the page
 	 */
-	stopseries: function () {
-		$.noop;		
+	stopseries: function (plotwidget) {
+			if (plotwidget === undefined)
+			plotWidgets = widget.plot();
+		else
+			plotWidgets = plotwidget;
+	
+		plotWidgets.each(function (idx) {
+			var items = widget.explode($(this).attr('data-item'));
+			for (var i = 0; i < items.length; i++) {
+				if ((plotwidget == undefined) || (widget.plot(items[i]).length == 1)){
+					clearTimeout(io.seriesTimer[items[i]]);
+					console.log('[io_offline] cancelling series '+items[i]);
+					if (plotwidget != undefined)
+						delete widget.buffer[items[i]];
+				}
+			}
+		});
+	},
+	
+	/**
+	 * start all subscribed series of a single plot or of all plots on the page
+	 */
+	startseries: function(plotwidget){
+		var repeatSeries = function(item, tmin, tmax, ymin, ymax, cnt, step, startval) {
+			var series = io.demoseries(tmin, tmax, ymin, ymax, cnt, startval);
+			console.log('[io.offline] receiving series data ' + JSON.stringify(series) + ': '+ item, cnt)
+			widget.update(item, series);
+
+			if(step == null)
+				step = Math.round((new Date().duration(tmin) - new Date().duration(tmax)) / cnt);
+			var nextTime = -(new Date().duration(tmax).getTime() - step)/1000;
+			var startval = series[series.length-1][1];
+			io.seriesTimer[item] = setTimeout(function(){
+				//repeatSeries(item, tmax, nextTime+"s", ymin, ymax, 1, step, startval);
+				repeatSeries(item, tmax, tmax, ymin, ymax, 1, step, startval);
+			}, step);
+		}
+
+		if (plotwidget === undefined)
+			plotWidgets = widget.plot();
+		else
+			plotWidgets = plotwidget;
+	
+		plotWidgets.each(function (idx) {			
+			var items = widget.explode($(this).attr('data-item'));
+			for (var i = 0; i < items.length; i++) {
+				var item = items[i].split('.');
+
+				if ((plotwidget != undefined || widget.get(items[i]) == null) && (widget.checkseries(items[i]))) {
+
+					var assign = ($(this).attr('data-assign') || "").explode();
+					var yAxis = (assign[i] ? assign[i] - 1 : 0)
+
+					var ymin = [];
+					if ($(this).attr('data-ymin')) { ymin = $(this).attr('data-ymin').explode(); }
+
+					var ymax = [];
+					if ($(this).attr('data-ymax')) { ymax = $(this).attr('data-ymax').explode(); }
+
+					repeatSeries(items[i], item[item.length - 3], item[item.length - 2], ymin[yAxis], ymax[yAxis], item[item.length - 1]);
+				}
+			}
+		});
 	}
 
 };

@@ -33,7 +33,7 @@ class class_cache
 	{
 		$infos = fileinfo($this->file);
 
-		if ($infos["mtime"] + $duration * 60 > time())
+		if (isset($infos["mtime"]) && $infos["mtime"] + $duration * 60 > time())
 			$ret = true;
 		else
 			$ret = false;

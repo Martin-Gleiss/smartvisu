@@ -61,6 +61,61 @@ $.widget("sv.status_collapse", $.sv.widget, {
 
 });
 
+// ----- status.customstyle -------------------------------------------------------
+$.widget("sv.status_customstyle", $.sv.widget, {
+
+	initSelector: 'span[data-widget="status.customstyle"]',
+
+	options: {
+		id: null,
+		val: '',
+		action: 'blink'
+	},
+	
+	_update: function(response) {
+		// response is: {{ item_trigger }}
+		var targets = this.options.id.explode();
+		var comp = String(this.options.val).explode(); 
+		var styleActive = false;
+
+		// https://stackoverflow.com/questions/7356123/how-to-call-and-execute-an-operator-from-string
+		var operators = {	
+			'>': function(a, b) { return a > b },
+			'>=': function(a, b) { return a >= b },
+			'<': function(a, b) { return a < b },
+			'<=': function(a, b) { return a <= b },
+			'=': function(a, b) { return a == b }			
+		};
+
+		for (var i = 0; i < comp.length; i++){
+			var compOperator = comp[i].replace(/[0-9]+/, '') || "=";
+			var compValue = comp[i].replace(/[<=>]+/, '');
+			// DEBUG: console.log(comp[i], String(response[0]), compOperator, compValue, operators[compOperator](response[0], compValue )) 
+			styleActive = styleActive || operators[compOperator](response[0], compValue ); 
+		}
+		
+		for (var i = 0; i < targets.length; i++) {
+			var target = $('#' + targets[i]);
+			if (styleActive)  {
+				//DEBUG: console.log('target found', target, this.options.action)
+				target.addClass(this.options.action);
+				if (target.attr('data-widget') == 'basic.stateswitch' ){
+					target.next('a[data-widget="basic.stateswitch"]').addClass(this.options.action);
+					target.children ('a[data-widget="basic.stateswitch"]').addClass(this.options.action);
+				}
+			}
+			else {
+				target.removeClass(this.options.action);
+				if (target.attr('data-widget') == 'basic.stateswitch'){
+					target.next('a[data-widget="basic.stateswitch"]').removeClass(this.options.action);
+					target.children ('a[data-widget="basic.stateswitch"]').removeClass(this.options.action);
+				}
+			}
+		}
+	},
+
+});
+
 
 // ----- status.log -----------------------------------------------------------
 $.widget("sv.status_log", $.sv.widget, {
@@ -173,12 +228,12 @@ $.widget("sv.status_toast", $.sv.widget, {
 		textopts: '',
 	},
 
-	_create: function() {
-		this._super();
-	},
-	
 	_update: function(response) {
 		var id = this.element.attr('id');
+		if (id == undefined){
+			id = sv.activePage[0].id + '-' + this.eventNamespace.substring(1);
+		}
+		var element = $(this.element);
 
 		//Style values
 		var params = this.options.style.explode();
@@ -220,7 +275,6 @@ $.widget("sv.status_toast", $.sv.widget, {
 			}
 		}
 		
-		var showTrigger = items[0];//items[0];
 		var showTitle = items[1];
 		var showText = items[2];
 		var showIcon = items[3];
@@ -253,13 +307,10 @@ $.widget("sv.status_toast", $.sv.widget, {
 			if (sendButton =='') sendButton ='OK';
 			showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ="#'+id+'" type="button" value="'+sendButton+'" data-senditem="'+sendItem+'" data-sendvalue="'+sendVal+'" />';
 		}else{
-			this.options.template = "free";
-			showIcon = response[3] || textOpts[2];
 			if (sendButton != '') showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ="#'+id+'" type="button" value="'+sendButton+'" data-senditem="'+sendItem+'" data-sendvalue="'+sendVal+'" />';
 		};
 		
-		if (response[0]){
-			
+		if (response[0]){	
 			var toast = $.toast({
 				text: showText, // Text that is to be shown in the toast
 				heading: showTitle, // Optional heading to be shown on the toast
@@ -274,11 +325,11 @@ $.widget("sv.status_toast", $.sv.widget, {
 				loaderBg: loaderBg,  // Background color of the toast loader
 				bgColor: bgColor,
 				textColor: color,
-				class: (id != undefined ? id.split("-").slice(1).join("-") : false)  // use widget id parameter(page-section stripped again from uid) as class name for CSS tweaking
+				class: id 
 				
 			});
 			
-			$('#' + id).append(toast);//add toast to widget
+			element.append(toast);//add toast to widget
 		
 		
 			//use smartVISU icon
@@ -301,28 +352,25 @@ $.widget("sv.status_toast", $.sv.widget, {
 			};
 
 		}else{ 
-			if (allowClose = true){
-				$("div.jq-toast-single").last().remove();
+			if (allowClose == true){
+				$("div.jq-toast-single." + id).last().remove();
+
 			};
 		}
 		
 		//Close by button click
 		$(".button").click(function() {
-			var button_id = $(this).attr('id'); 
 			var sendItem = $(this).attr('data-senditem');
 			var sendVal= $(this).attr('data-sendvalue'); 
 			if (sendItem == undefined || sendItem == '') {
                 console.log("INFO: TOAST Button pressed, but NO item given ");
             }else{
-               // console.log("INFO-Button: ", button_id, ' ', sendItem, ' ', sendVal);
                 io.write(sendItem, sendVal);
             };
             $(this).closest('div').remove();
         });
 	},
 	
-	_events: {
-	}
 });
 
 // ----- status.activelist ----------------------------------------------------
@@ -387,18 +435,16 @@ $.widget("sv.status_activelist", $.sv.widget, {
 					messages.icon = messages.icon + '.svg';
 			};
 			
-			var a =  $('<li  data-id= "entry'+i+'" data-icon="false" style="margin-top:1px;margin-bottom:1px; margin-left:1em;  padding:0px; display:block; padding-right:0px;  ">').append(
-					$('<a class="ui-btn" style="padding:0px; width: 100%; max-height:50px;" >').append(
-					$('<img class="icon" style=" float:left;">').css('background', messages.color ).attr('src', messages.icon)).append(
-					$('<div class="color1" style="float:left; left: 50px; width:6px; height:48px; margin-right:6px;">').css('background', '#666666')).append(
-					$('<h3 style=" overflow: visible; white-space: nowrap;">').text(messages[title])).append(
-					$('<p style="margin-top: -0.5em;">').text(messages[subtitle])
-				));
-            node.append(a);
-			if (messages.icon.indexOf('.svg') != -1) {
-				var newNode= $(node).find('img').last();
-				fx.load(messages.icon, 'icon icon0', 'float:left; background:' + messages.color + ';', newNode, 'replaceWith');
-			}
+			var a =  $('<a class="ui-btn" >');
+				if (messages.icon.indexOf('.svg') == -1)
+					a.append( $('<img class="icon">').css('background', messages.color ).attr('src', messages.icon));
+				else
+					fx.load(messages.icon,'icon icon0', 'background:'+messages.color+';', a, 'prepend');
+				$(a).append(
+					$('<div class="color">').css('background', '#666666')).append(
+					$('<h3>').text(messages[title])).append(
+					$('<p>').text(messages[subtitle])).appendTo(
+					$('<li  data-id= "entry'+i+'" data-icon="false">').appendTo(node)); 
 			
 			//add description text to entry
 			var contentfield = '<div class="content" style=" display: none; margin-left:1em; margin-bottom:2em; height:100%; text-align:left;"> '+messages[content]+'</div>';

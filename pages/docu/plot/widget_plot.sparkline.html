@@ -1,0 +1,60 @@
+/**
+* -----------------------------------------------------------------------------
+* @package		 smartVISU
+* @author		 Wolfram v. Hülsen
+* @copyright	 2012 - 2015
+* @license		 GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_plot.html" %}
+
+{% block example %}
+
+	<h5>Please note</h5>
+	<p>This plot uses historical data series. Available modes depend on backends/drivers and not all of them do support series at all.<br />
+	   As from v3.2, the 'source' parameter enables data to be loaded from list items which need to have the structure [[ timestamp, data ], ... , [ timestamp, data ]].
+	</p>
+
+	<h5>Examples</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			<table>
+				<tr style="height: 25px;">
+					<td style="width: 140px; text-align: left;">PV actual Power</td>
+					<td style="width: 100px;">27.3 kWh</td>
+					<td>{{ plot.sparkline('', 'bath_plot_value', 'avg', '3h', 'now', '','',10) }}<td>
+				</tr>
+				<tr style="height: 25px;">
+					<td style="width: 140px; text-align: left;">actual Consumption</td>
+					<td style="width: 100px;">23.5 kWh</td>
+					<td>{{ plot.sparkline('', 'bath_plot_value2', 'avg', '3h', 'now', '','', 10) }}<td>
+			</td>
+		</table>
+{% endverbatim %}{% endfilter %}</code>
+	</div>
+
+	<div class="html">
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>a simple table with sparkline chart</h3>
+						<table>
+							<tr style="height: 25px;">
+								<td style="width: 140px; text-align: left;">PV actual Power</td>
+								<td style="width: 100px;">27.3 kWh</td>
+								<td>{{ plot.sparkline('', 'bath_plot_value', 'avg', '3h', 'now', '', '', 10) }}<td>
+							</tr>
+							<tr style="height: 25px;">
+								<td style="width: 140px; text-align: left;">actual Consumption</td>
+								<td style="width: 100px;">23.5 kWh</td>
+								<td>{{ plot.sparkline('', 'bath_plot_value2', 'avg', '3h', 'now', '', '', 10) }}<td>
+						</td>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

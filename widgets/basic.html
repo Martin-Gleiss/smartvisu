@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß and others
-* @copyright   2012 - 2022
+* @copyright   2012 - 2023
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -44,6 +44,8 @@
 * @param {value=10} number of colored segments (optional, default 10)
 * @param {text(disc,rect,slider)=disc} 'disc' for circular, 'rect' for rectangular view, 'slider' for HSV sliders (optional, default: disc)
 * @param {text(rgb,hsl,hsv)=rgb} possible values: 'rgb', 'hsl' and 'hsv' (optional, default: rgb)
+*
+* @see misc/fundamentals#Items
 *
 * @author Martin Gleiß and Stefan Widmer
 * @info inspired by Marcus Popp
@@ -93,6 +95,8 @@
 * @param {text=1} value for the 'on' state (optional, default 1)
 * @param {text=0} value for the 'off' state (optional, default 0)
 * @param {color=} alternative color (e.g. '#777') for active switch (optional)
+*
+* @see misc/fundamentals#Items
 */
 {% macro flip(id, item, txt_on, txt_off, val_on, val_off, background) %}
 
@@ -133,7 +137,7 @@
 *
 * @param {image} icon to show 
 - smartVISU icons and icons in ./dropins/icons/ws: path and extension may be omitted (e.g. "light_light") 
-- others: full dile name with path and extension
+- others: full file name with path and extension
 - to avoid SVG embedding, use full filename with path and extension and add "/ne" at the end, e.g. "dropins/icons/ws/myicon.svg/ne"
 * @param {color(icon0to5,rgb,hsl,hsv,#f00)=icon0} the color in any CSS form (e.g. '#f00' for red) or classes 'icon0' through 'icon5' (default 'icon0' of the design)
 	To use dynamic coloring by item give one of the following color models: 'rgb', 'hsl' or 'hsv'
@@ -172,13 +176,7 @@
 
 			/**- pic whithout path -*/
 			{% if '/' not in pic and not isfile(pic) %}
-				{% if isfile(iconF ~ pic) or isfile('dropins/' ~ iconF ~ pic) %}
-					{% set pic = '@icons/' ~ pic %}
-				{% elseif isfile(iconF ~ pic ~ '.svg') or isfile('dropins/' ~ iconF ~ pic ~ '.svg') %}
-					{% set pic = '@icons/' ~ pic ~ '.svg' %}
-				{% elseif isfile(iconF ~ 'jquery_' ~ pic ~ '.svg') or isfile('dropins/' ~ iconF ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
-					{% set pic = '@icons/' ~ 'jquery_' ~ pic ~ '.svg' %}
-				{% endif -%}
+				{% set pic = localize_svg(pic) %}
 			{% endif -%}
 			
 			{% if  pic|trim|slice(-4, 4) == '.svg' and pic|trim|slice(0,6) == '@icons'  %}
@@ -218,7 +216,7 @@
 * Displays an input field
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item} an item, sent values are:
+* @param {item(bool,num,list,str)} an item, sent values are:
 	- date, dateflip, datecal, dateslide, datetime, datetimeflip: Date object resp. ISO 8601 - e.g. '2017-11-29T23:00:00.000Z' in UTC time (if no string format specified)
 	- time & timeflip: String with 24hr clock - e.g. '18:31:27' - format for time is taken from language file
 	- duration & durationflip: Number of seconds
@@ -302,6 +300,8 @@
 * @param {type(text)=mini} valid types: 'micro', 'mini', 'midi', 'icon', 'text' (optional, default: mini)
 * @param {text=} lowest allowed value (optional, default: no limit)
 * @param {text=} highest allowed value (optional, default: no limit)
+*
+* @see misc/fundamentals#Items
 */
 {% macro offset(id, item, step, icon, text, type, min, max) %}
 	{% import _self as basic %}
@@ -358,7 +358,7 @@
 
 /**
 * Displays a round slider
-* @param {id} unique id for this widget  
+* @param {id=} unique id for this widget (optional)  
 * @param {item(num,list)} an item (list type can be used if slider type is "range")
 * @param {value=0} the minimum value if the slider is moved to total left (optional, default: 0)  
 * @param {value=255} the maximum value if the slider is moved to total right (optional, default: 255)  
@@ -374,38 +374,33 @@
 * @param {value=120} radius of the slider (optional, default: 90)  
 * @param {value=15} width of the slide line
 * @param {value=0.1} thickness of the slide line
+* @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
+*
+* @see misc/fundamentals#Items
 *
 * @author Bonze, Wolfram v. Hülsen
 */
 
-{% macro roundslider(id, item, min, max, step, pre_value, to_value, unit, scale, scale_interval, pic, circleshape, slidertype, radius, width, thickness) %}
+{% macro roundslider(id, item, min, max, step, pre_value, to_value, unit, scale, scale_interval, pic, circleshape, slidertype, radius, width, thickness, live) %}
 	{% if circleshape not in ['', 'pie', 'quarter-top-left', 'quarter-top-right', 'quarter-bottom-left', 'quarter-bottom-right', 'half-top', 'half-bottom', 'half-left', 'half-right'] %} {% set circleshape = '' %} {% endif %}
+	{% import "@widgets/lib.html" as lib %}
+	
 	/**- pic whithout path -*/
 	{% if '/' not in pic and not isfile(pic) %}
-		{% if isfile('dropins/' ~ icon0 ~ pic) %}
-			{% set pic = 'dropins/' ~ icon0 ~ pic %}
-		{% elseif isfile('dropins/' ~ icon0 ~ pic ~ '.svg') %}
-			{% set pic = 'dropins/' ~ icon0 ~ pic ~ '.svg' %}
-		{% elseif isfile('dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
-			{% set pic = 'dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
-		{% elseif isfile(icon0 ~ pic) %}
-			{% set pic = icon0 ~ pic %}
-		{% elseif isfile(icon0 ~ pic ~ '.svg') %}
-			{% set pic = icon0 ~ pic ~ '.svg' %}
-		{% elseif isfile(icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
-			{% set pic = icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
-		{% endif -%}
+		{% set pic = localize_svg(pic) %}
 	{% endif -%}
-
-	/** pseudo divs, to get styles 	**/
-	<div class="ui-bar-a" style="display:none;"> </div>
-	<div class="ui-bar-b" style="display:none;"> </div>
-	<div class="ui-page-theme-a ui-btn" style="display:none;"> </div>
+	
+	/** load icon to copy into tooltip */
+	<div class = "rs-insert-icon" style = "display:none;"> 
+		{% if  pic|trim|slice(-4, 4) == '.svg' and pic|trim|slice(0,6) == '@icons'  %}
+			{{ lib.svgimg('', pic, 'icon0', 'width:1em; margin:auto; margin-bottom: 0em; margin-top:-1em; display:block !important;') }}
+		{% endif %}
+	</div> 
 		
 	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.roundslider" data-item="{{item}}" data-values=" {{unit}}, {{pre_value| default('')}}, {{ to_value| default('') }}, {{ scale| default('false')}}" 
 		data-radius="{{radius | default('80')}}" data-scale_min="{{min | default('0')}}" data-scale_max="{{max| default('255')}}" data-step="{{step | default('5')}}" data-scale_interval="{{scale_interval | default('20')}}"
 		data-width="{{width | default('15')}}" data-thickness="{{thickness | default('0.1')}}" data-circleshape="{{circleshape | default('pie')}}" data-slidertype="{{slidertype | default('min-range')}}" data-icon="{{pic}}"
-		style="margin:auto; margin-top:30px; margin-bottom:30px;"> 
+		data-live="{{ live|default(1) }}" style="margin:auto; margin-top:30px; margin-bottom:30px;"> 
 	</div>
 {% endmacro %}
 
@@ -423,6 +418,8 @@
 * @param {text(horizontal,vertical,none)=horizontal} orientation of the controlgroup: 'horizontal', 'vertical' or 'none' for seperate buttons (optional, default: 'horizontal') - not supported for type 'menu'
 * @param {item(list)=} an item containing all selectable values (optional) - overrides existing value definitions
 * @param {item(list)=} an item containing the texts corresponding to the selectable values (optional even if itemvals is specified)
+*
+* @see misc/fundamentals#Items
 */
 {% macro select(id, item, type, value, icon, text, color_on, group, itemvals, itemtxts) %}
 	{% import _self as basic %}
@@ -458,6 +455,8 @@
 * @param {text(half,full)=half} 'half' blade turns from -1 to +1, 'full' blade turns from 0 to +1 (optional, default 'half')
 * @param {image=} background image url (relative to smartVISU directory or absolute); optimal size is 100px x 180px (optional)
 *
+* @see misc/fundamentals#Items
+*
 * @info inspired by Jörg Gutowski
 */
 {% macro shutter(id, item_pos, item_angle, value_top, value_bottom, step, mode, background) %}
@@ -484,6 +483,42 @@
 
 
 /**
+* a skylight (roof window) with open/tilted/closed status and shutter
+*
+* @param {id=} unique id for this widget
+* @param {item(num)} an item for the height of the shutter blades
+* @param {item(num,str)=} an item for the roof window wing status (0/'closed', 1/'tilted', 2/'open') (optional, default = 0) 
+* @param {value=0} the value for shutter on top end (optional, default 0)
+* @param {value=255} the value for shutter at bottom end (optional, default 255)
+* @param {color[?](icon0to5,!)=icon1} color for 'open' state e.g. 'icon0' through 'icon5' or '#f00' for red. Prepend a '!' to make the color constant ('!icon3'). Color is 'icon0' if window is closed and constant color is not forced. (optional)
+*
+* @author: raman
+*/
+{% macro skylight(id, item_value, item_window, min, max, color) %}
+	{% if color is empty %}{% set color = ['icon0', 'icon1'] %}{% endif %}
+	{% if color is not iterable %}{% set color = ['icon0', color] %}{% endif %}
+	<svg role="img" {% if id is not empty %}id="{{ uid(page, id) }}"{% endif %} data-widget="basic.skylight" data-item="{{ item_value }}, {{ item_window }}" data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}"
+		 data-color="{{ implode(color) }}" class="icon icon0" 
+		xmlns="http://www.w3.org/2000/svg" viewBox="20 20 321 321">
+	  <polyline class="icon0" id="blind" fill-opacity=".4" stroke-width="4" stroke-linecap="butt" points="156,100 279,100 203,264 80,264 156,100" />
+	  
+	  <path fill="none" stroke-width="10" d="m207.744,264.139c-2.091,4.48-7.4,8.113-11.861,8.113l-115.944,.023c-4.461,0-6.383-3.633-4.293-8.115l77.917-167.094c2.089-4.48 7.4-8.115 11.861-8.115l115.945-.023c4.459,0 6.381,3.634 4.292,8.115l-77.917,167.096z"/>
+	  <path d="m277.924,104.261-127.503,0 8.769-17.246 127.503,0z"/>
+	  <path d="m76.381,262.584h127.455v6.432h-127.455z"/>
+	  
+	  <path id="window0" fill="none" stroke-width="10" d="m201.967,246.192c-1.693,3.632-5.998,6.577-9.614,6.577l-90.915,.019c-3.616,0-5.174-2.945-3.479-6.578l59.546-127.698c1.694-3.632 6-6.578 9.615-6.578l90.915-.02c3.616,0 5.174,2.946 3.479,6.579l-59.547,127.699z"/>
+	  <path id="knob0" fill-opacity="1" d="m146.288,240.305c-.958,2.055-1.917,4.11-2.876,6.166-1.152,2.47-.717,5.37 1.794,6.841 2.186,1.28 5.689,.676 6.841-1.794 .958-2.055 1.917-4.11 2.876-6.166 1.152-2.47 .717-5.37-1.794-6.841-2.186-1.281-5.689-.676-6.841,1.794z"/>
+	  
+	  <path id="window1" fill="none" stroke-width="0" d="m182.773,241.17c-3.02,3.637-8.404,6.586-12.024,6.586l-91.039,.02c-3.621,0-4.107-2.949-1.087-6.587l103.161-121.862c3.019-3.636 8.404-6.585 12.024-6.585l84.344-.019-14.59,31.144-80.789,97.303z"/>
+	  <path id="knob1" fill-opacity="0" d="m129.036,234.268c-1.708,2.058-3.417,4.115-5.126,6.173-1.739,2.094-2.059,5.012 0,7.07 1.793,1.794 5.328,2.1 7.071,0 1.708-2.058 3.417-4.115 5.126-6.173 1.739-2.094 2.059-5.012 0-7.07-1.793-1.794-5.328-2.1-7.071,0z"/>
+	  
+	  <path id="window2" fill="none" stroke-width="0" d="m181.148,212.418c-3.23,1.883-8.786,3.408-12.406,3.408l-91.04,.01c-3.621,0-3.935-1.525-.704-3.408l113.591-66.168c3.23-1.882 8.787-3.409 12.407-3.409l61.312-.008-13.529,29.015-69.631,40.56z"/>
+	  <path id="knob2" fill-opacity="0" d="m128.62,206.358c-1.829,1.064-3.657,2.129-5.485,3.193-2.352,1.369-3.169,4.493-1.794,6.841 1.378,2.353 4.485,3.166 6.841,1.794 1.829-1.064 3.657-2.129 5.485-3.193 2.352-1.369 3.169-4.493 1.794-6.841-1.378-2.352-4.485-3.166-6.841-1.794z"/>
+	</svg>
+{% endmacro %}
+
+
+/**
 * Displays a slider-control
 *
 * @param {id=} unique id for this widget (optional)
@@ -496,10 +531,13 @@
 * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
 * @param {value=} the maximum value to display to total right if this should differ from sent/received value (optional, default like max)
 * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
+* @param {text=} set a colour for the slider track like: linear-gradient(90deg, rgb(229, 234, 255), rgb(255, 177, 111)) (optional)
+*
+* @see misc/fundamentals#Items
 */
-{% macro slider(id, item, min, max, step, orientation, value_display, min_display, max_display, live) %}
+{% macro slider(id, item, min, max, step, orientation, value_display, min_display, max_display, live, style) %}
 	<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.slider" data-item="{{ item }}"
-		type="range" value="0" min="{{ min_display|default(min)|default(0) }}" max="{{ max_display|default(max)|default(255) }}" step="{{ step|default(5) }}" data-min-send="{{ min|default(0) }}" data-max-send="{{ max|default(255) }}" data-live="{{ live|default(1) }}"
+		type="range" value="0" min="{{ min_display|default(min)|default(0) }}" max="{{ max_display|default(max)|default(255) }}" step="{{ step|default(5) }}" data-min-send="{{ min|default(0) }}" data-max-send="{{ max|default(255) }}" data-live="{{ live|default(1) }}" data-style="{{ style|default('') }}"
 		data-orientation="{{ orientation|default('horizontal') }}" data-handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" data-highlight="true" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" />
 {% endmacro %}
 
@@ -519,12 +557,14 @@
 * @param {text[?]=} array of texts (optional)
 * @param {color[?](icon0to5,hidden,blank)=icon0} array of colors; 'icon0' through 'icon5' or e. g. '#f00' for red (optional, default: icon0)
 	additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
-* @param {color(icon0,icon1,blink)=} activity indicator which is active until response (or a timeout of 3 seconds is reached); pass either a color, 'icon1' or 'blink' (optional)
+* @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
+	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
 * @param {text=} an item to which a value is sent on longpress OR an id of a popup, with prefix '#' (optional)
 * @param {text=} the value to send on longpress (optional)
 	If this starts with a + or - sign the value is treated as offset to current stateswitch value.
 * @param {text=} the value to send on releasing after a longpress (optional)
 *
+* @see misc/fundamentals#Items
 * @see design/design_icons#Icons
 *
 * @author Stefan Widmer
@@ -536,13 +576,20 @@
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
 	{% set color = color|default(['icon0','icon1']) %}
 	{% set iconstyles = ['icon0', 'icon1', 'icon2', 'icon3', 'icon4', 'icon5'] %}
+	{% if ":" in indicator %} 
+		{% set indicatorparms = indicator|split(":") %}
+		{% set indicator = indicatorparms[0] %}
+		{% set indicator_duration = indicatorparms[1] %}
+	{% else %} 
+		{% set indicator_duration = config_indicator_duration|default(3) %}
+	{% endif %}
 	
 	<a style="display:none"></a> /** Work around for bug in jQuery Mobile, see https://knx-user-forum.de/forum/supportforen/smartvisu/31967-neues-widget-nur-aktive-lampen-anzeigen-ausschalten-ermöglichen?p=1145001#post1145001 */
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.stateswitch" data-item="{{ item }}"
-		data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ config_indicator_duration|default(3) }}"
+		data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ indicator_duration }}"
 		data-item-longpress="{{ item_longpress }}"{% if not value_longpress is null %} data-value-longpress="{{ value_longpress }}"{% endif %}{% if not value_longrelease is null %} data-value-longrelease="{{ value_longrelease }}"{% endif %}
 		style="display: none; !important">
-	{% for val in value %}
+	{% for val in ( indicator is not empty and icon is iterable and icon|length > value|length ? value|merge(['indicator']) : value) %}
 		{% set pic = icon is iterable ? icon[loop.index0] : icon %}
 		{% if type != 'text' and text is empty %}{% set pic = pic|deficon('control_on_off.svg') %}{% endif %}
 		{% set col = (color is iterable ? color[loop.index0] : color)|default('icon0') %}

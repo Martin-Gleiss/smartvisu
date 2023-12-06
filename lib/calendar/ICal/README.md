@@ -8,7 +8,7 @@
 ## Installation
 
 ### Requirements
- - PHP 5 (≥ 5.6)
+ - PHP 5 (≥ 5.6.40)
  - [Valid ICS](https://icalendar.org/validator.html) (`.ics`, `.ical`, `.ifb`) file
  - [IANA](https://www.iana.org/time-zones), [Unicode CLDR](http://cldr.unicode.org/translation/timezones) or [Windows](https://support.microsoft.com/en-ca/help/973627/microsoft-time-zone-index-values) Time Zones
 
@@ -69,6 +69,18 @@ composer test
    //   2 => int 1460192400
    //   3 => string 'TZID=America/Detroit:20160409T090000' (length=36)
    ```
+
+### Are you using Outlook?
+
+Outlook has a quirk where it requires the User Agent string to be set in your request headers.
+
+We have done this for you by injecting a default User Agent string, if one has not been specified.
+
+If you wish to provide your own User agent string you can do so by using the `httpUserAgent` argument when creating your ICal object.
+
+```php
+$ical = new ICal($url, array('httpUserAgent' => 'A Different User Agent'));
+```
 
 ---
 
@@ -152,8 +164,8 @@ need to be evaluated before non-fitting events can be dropped.
 | `calendarDescription`                           | -                                                                                             | `public`    | Returns the calendar description                                                                                                                                 |
 | `calendarName`                                  | -                                                                                             | `public`    | Returns the calendar name                                                                                                                                        |
 | `calendarTimeZone`                              | `$ignoreUtc`                                                                                  | `public`    | Returns the calendar time zone                                                                                                                                   |
-| `cleanData`                                     | `$data`                                                                                       | `protected` | Replaces curly quotes and other special characters with their standard equivalents                                                                               |
-| `eventsFromInterval`                            | `$interval`                                                                                   | `public`    | Returns a sorted array of events following a given string, or `false` if no events exist in the range                                                            |
+| `cleanCharacters`                               | `$data`                                                                                       | `protected` | Replaces curly quotes and other special characters with their standard equivalents                                                                               |
+| `eventsFromInterval`                            | `$interval`                                                                                   | `public`    | Returns a sorted array of events following a given string                                                                                                        |
 | `eventsFromRange`                               | `$rangeStart = false`, `$rangeEnd = false`                                                    | `public`    | Returns a sorted array of events in a given range, or an empty array if no events exist in the range                                                             |
 | `events`                                        | -                                                                                             | `public`    | Returns an array of Events                                                                                                                                       |
 | `fileOrUrl`                                     | `$filename`                                                                                   | `protected` | Reads an entire file or URL into an array                                                                                                                        |
@@ -180,7 +192,6 @@ need to be evaluated before non-fitting events can be dropped.
 | `keyValueFromString`                            | `$text`                                                                                       | `public`    | Gets the key value pair from an iCal string                                                                                                                      |
 | `parseLine`                                     | `$line`                                                                                       | `protected` | Parses a line from an iCal file into an array of tokens                                                                                                          |
 | `mb_chr`                                        | `$code`                                                                                       | `protected` | Provides a polyfill for PHP 7.2's `mb_chr()`, which is a multibyte safe version of `chr()`                                                                       |
-| `mb_str_replace`                                | `$search`, `$replace`, `$subject`, `$count = 0`                                               | `protected` | Replaces all occurrences of a search string with a given replacement string                                                                                      |
 | `escapeParamText`                               | `$candidateText`                                                                              | `protected` | Places double-quotes around texts that have characters not permitted in parameter-texts, but are permitted in quoted-texts.                                      |
 | `parseDuration`                                 | `$date`, `$duration`, `$format = 'U'`                                                         | `protected` | Parses a duration and applies it to a date                                                                                                                       |
 | `parseExdates`                                  | `$event`                                                                                      | `public`    | Parses a list of excluded dates to be applied to an Event                                                                                                        |

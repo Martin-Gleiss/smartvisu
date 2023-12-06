@@ -72,13 +72,13 @@
 /**
 * Plots a chart of time series data
 *
-* @param {id=} unique id for this widget (optional)
+* @param {id=} unique id for this widget. Add the string "plotpopup" to activate on-demand plot data loading, i.e. plot data are not loaded during page creation but when the popup containing the plot is opened. (optional)
 * @param {item[?](bool,num,list)} series of item(s); multiple items in array form: [ item1 , item2 ]
 * @param {text[?](avg,sum,min,max,minmax,minmaxavg,raw,on)=avg} the aggregation mode (optional, default 'avg')
 	May be a single mode or an array with separate mode per item.
 	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
-* @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format) Value is enterpreted as timestamp if no unit is given (e.g. 1629109298731). 
-* @param {duration=now} the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now). Value is enterpreted as timestamp if no unit is given (e.g. 1629109298731).
+* @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format) Value is interpreted as timestamp if no unit is given (e.g. 1629109298731). 
+* @param {duration=now} the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now). Value is interpreted as timestamp if no unit is given (e.g. 1629109298731).
 * @param {text[?]=} the minimum for each y-axis; multiples in array form: [ min_y-axis1, min_y-axis2, ...] (optional)
 	If the axis type is boolean the passed value will be the label of the low state (e.g. 'Off')
 * @param {text[?]=} the maximum for each y-axis; multiples in array form: [ max_y-axis1, max_y-axis2, ...] (optional)
@@ -87,11 +87,11 @@
 	May be a single value or an array of separate counts per item.
 * @param {text[?]=} label for each series; multiples in array form (optional)
 * @param {color[?]=} color for each series; multiples in array form (optional, default: suitable for design)
-* @param {text[?](line,linestack,stair,spline,area,areastair,areaspline,areastack,column,columnstack)=line} type of each serie: 'line', 'linestack', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'areastacked','column', 'columnstacked'; multiples in array form (optional, default 'line')
+* @param {text[?](line,linestack,stair,spline,area,areastair,areaspline,areastack,column,columnstack)=line} type of each serie: 'line', 'linestack', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'areastack','column', 'columnstack'; multiples in array form (optional, default 'line')
 * @param {text[?]=} title for the x-axis and y-axes in array form: [title_x-axis, title_y-axis1, title_y-axis2, ...] (optional)
 * @param {duration(advanced,day)=} minimal time range while zooming or 'advanced' or 'day' (optional, duration-format)
 	By passing 'advanced' a seaparate range selector is shown and data grouping for large amount of data is enabled
-	By passing 'day', the plot is shown from 0:00 until 24:00 on the current day (it makes sense to set tmin to '24h' and tmax to 'now').
+	By passing 'day', the plot is shown from 0:00 until 24:00 on the day starting after tmin. Set tmin  to '24h' or '1d' for today, '48h' or '2d' for yesterday and so on. tmax must be 'now' or at least 48 hours less than tmin. 
 * @param {value[]=} assignment of the series to the y-axes; multiples in array form (optional)
 * @param {value[]=} y-axes setup for left '0' and right '1' hand in array form (optional)
 * @param {color[?]=} y-axes color; multiples in array form (optional)
@@ -166,7 +166,7 @@
 		{% if stacks is not empty %} data-stacks="{{ implode(stacks) }}" {% endif %}
 		data-ytype="{{ implode(ytype) }}" data-unit="{{ implode(units) }}" data-stacking="{{ implode(stacking) }}" 
 		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}" data-exportmenu="{{ export|default(0) }}"
-		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+		{% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
 		class="plot{% if zoom == 'advanced' %} plot-highstock{% endif %}"></div>
 
 {% endmacro %}
@@ -206,8 +206,11 @@
 * @param {text=} maximum value (or type) of the item for the state of the actor (optional, default: guessed according to values)
 	Often used values are 1 for boolean items, 100 for percentages, 255 for 1-byte values.
   Additionally you may pass 'on' to use backend's 'on' function (caution: not all backend databases do support this).
+* @param {text[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+*
+* @see plot/widget_plot.period#chart-options
 */
-{% macro rtr(id, item_actual, item_set, item_state, count, tmin, tmax, state_max) %}
+{% macro rtr(id, item_actual, item_set, item_state, count, tmin, tmax, state_max, chartoptions) %}
 	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1d') %}
 	{% set count = count|default(100) %}
@@ -219,8 +222,62 @@
 		data-item="{{ implode(items) }}"
 		data-tmin="{{ tmin }}" data-tmax="{{ tmax }}" data-state-max="{{ state_max == 'on' ? 1 : state_max }}"
 		data-label="{{ lang('plot.rtr', 'label') }}" data-axis="{{ lang('plot.rtr', 'axis') }}"
-		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+		{% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
+		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}"
 		class="plot"></div>
+
+{% endmacro %}
+
+
+/**
+* Plots a chart of time series data
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item(bool,num,list)} series of item(s); multiple items in array form: [ item1 , item2 ]
+* @param {text(avg,sum,min,max,raw,on)=avg} the aggregation mode (optional, default 'avg')
+	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
+* @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format) Value is interpreted as timestamp if no unit is given (e.g. 1629109298731). 
+* @param {duration=now} the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now). Value is interpreted as timestamp if no unit is given (e.g. 1629109298731).
+* @param {text=} the minimum for the y-axis (optional)
+* @param {text=} the maximum for the y-axis (optional)
+* @param {value=100} the number of datapoints in the series (optional, default 100)
+* @param {value=120} width of the chart in px (optional, default = 120 px)
+* @param {value=20} height of the chart in px (optional, default = 20 px)
+* @param {text[?](line,stair,spline,area,areastair,areaspline,column)=line} type of each serie: 'line', 'stair', 'spline', 'area', 'areastair', 'areaspline', 'column' (optional, default 'line')
+* @param {format[?]=} unit(s) for the y-axis. Either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. Multiples in array form. (optional)
+* @param {text[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+* @param {text(database,item)=database} source of the data. If set to 'item', data must be provided in a list item (optional, default=database)  
+*
+* @see misc/fundamentals#Array-Form
+* @see misc/fundamentals#Duration-Format
+*/
+
+{% macro sparkline(id, item, mode, tmin, tmax, ymin, ymax, count, width, height, exposure, unit, source) %}
+	{% set source = source|default('database') %}
+	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
+	{% set tmin = tmin|default('1h') %}
+	{% set mode = mode|default('avg') %}
+	{% set count = count|default(100) %}
+	{% set width = width|default(120) %}
+	{% set height = height|default(20) %}
+	{% set unit = unit|default('') %}
+	{% set unit = unit|replace({',' : ';'}) %}  /** hide comma before implode/explode to allow format strings, e.g. %01,02f% */
+	{% if source == 'database' %}
+		{% set seriesitem = implode(item, [mode, tmin, tmax, count]) %}
+	{% else %}
+		{% set seriesitem = item %}
+	{% endif %}
+	{% set chartoptions = {chart:{backgroundColor: null, borderWidth: 0, margin: [2, 0, 2, 0], width: width, height: height, style: {overflow: 'visible'}, skipClone: true}, title: {text: ''},credits: {enabled: false},
+        xAxis: [{labels: {enabled: false}, title: {text: null}, startOnTick: false, endOnTick: false, tickPositions: [], type: 'datetime'}],
+        yAxis: [{endOnTick: false, startOnTick: false, labels: {enabled: false}, title: {text: null}, tickPositions: [0]}],
+        legend: {enabled: false}, tooltip: {hideDelay: 0, outside: true, shared: true},
+        plotOptions: {series: {animation: false, lineWidth: 1, shadow: false, states: {hover: {lineWidth: 1}}, marker: {radius: 1, states: {hover: {radius: 2}}}, fillOpacity: 0.25}}} %}
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.period" data-mode="{{ mode }}" data-item="{{ seriesitem }}" data-tmin="{{ tmin }}" data-tmax="{{ tmax }}"
+        {% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
+    	data-exposure="{{ exposure }}" data-unit="{{ unit }}" data-stacking="normal" data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}" data-exportmenu="0"
+		{% if config_timesource == 'server' %} data-servertime="yes" {% endif %}>
+	</div>
 
 {% endmacro %}
 
@@ -245,6 +302,46 @@
 		class="plot"></div>
 
 {% endmacro %}
+
+
+/**
+* scrolls plots in the time-range by cancelling actual series and subscribing series with changed start/end
+* @param {id=}  ID of the widget (optional)
+* @param {text}  ID of the plot to scroll (plot must have an ID in this case)
+* @param {duration}  step to scroll with each click in duration format
+* @param {type(head)=mini}  icon type / size. valid types: 'micro','mini','midi','icon' and 'head' if widget is in the headline of a box (optional, default = 'mini')
+* @param {text=} text to show between the buttons (optional, default = '')
+* 
+* @author Wolfram v. Hülsen
+*/
+{% macro timeshift (id, plot, step, type, label) %}
+{% import "@widgets/basic.html" as basic %}
+{% import "@widgets/lib.html" as lib %}
+	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.timeshift" data-bind ="{{ uid(page, plot) }}" data-step="{{ step }}"
+	{% if type == 'head' %}style="float:right; margin-right:32px;">
+		<a class="timeshift-back">{{ lib.svgimg ('', 'audio_previous.svg', 'icon0') }}</a> {{- label -}}
+		<a class="timeshift-forward">{{ lib.svgimg ('', 'audio_next.svg', 'icon0') }}</a>
+	{% else %}
+		><a class=" 
+		{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
+			switch ui-link
+		{%- else -%} /**- display as button -*/
+			ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
+		{% endif %}
+			 ui-nodisc-icon timeshift-back">{{ basic.icon("audio_previous") }}
+		</a>{{ label }}
+		<a class="
+		{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
+			switch ui-link
+		{%- else -%} /**- display as button -*/
+			ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline
+		{% endif %}
+			 ui-nodisc-icon timeshift-forward">{{ basic.icon("audio_next") }}
+		</a>
+	{% endif %}
+	</span>
+{% endmacro %}
+
 
 
 /**
@@ -310,7 +407,6 @@
 		class="plot"></div>
 
 {% endmacro %}
-
 
 
 /******************************************************************************

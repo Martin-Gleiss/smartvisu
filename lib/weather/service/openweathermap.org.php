@@ -32,6 +32,20 @@ class weather_openweathermap extends weather
 	 */
 	public function run()
 	{
+		$units = trans('openweathermap', 'units');	//	 		temp | precip | dist | speed | pressure
+													//	 metric  °C  |   mm   |  m   |  m/s  | millibar / hPa
+													// imperial  °F  |   mm   |  m   |  mph  | millibar / hPa 
+													// standard   K  |   mm   |  m   |  m/s  | millibar / hPa
+													// "hybrid" = imperial with Temp °C
+		
+		$speed_factor = 1;
+		if ($units == "metric" or $units == "standard")
+			$speed_factor = 3.6;					// m/s to km/h
+		if ($units == "hybrid"){
+			$units = "metric";
+			$speed_factor = 2.24;					// m/s to mph
+		}
+		
 		// api call 
 		$cache = new class_cache('openweathermap_'.$this->location.'.json');
 			//error_log($this->cache_duration_minutes);
@@ -49,8 +63,8 @@ class weather_openweathermap extends weather
 			//otherwise consider it to be the city name
 			if (strpos($this->location,'=') === false)
 				$this->location = 'q='.$this->location;
-			$url_current = 'http://api.openweathermap.org/data/2.5/weather?'.$this->location.'&lang='.trans('openweathermap', 'lang').'&units='.trans('openweathermap','units').'&appid='.config_weather_key;
-			$url_forecast = 'http://api.openweathermap.org/data/2.5/forecast?'.$this->location.'&lang='.trans('openweathermap', 'lang').'&units='.trans('openweathermap','units').'&appid='.config_weather_key;
+			$url_current = 'http://api.openweathermap.org/data/2.5/weather?'.$this->location.'&lang='.trans('openweathermap', 'lang').'&units='.$units.'&appid='.config_weather_key;
+			$url_forecast = 'http://api.openweathermap.org/data/2.5/forecast?'.$this->location.'&lang='.trans('openweathermap', 'lang').'&units='.$units.'&appid='.config_weather_key;
 			$content = '{"today":'.file_get_contents($url_current).', "forecast":'.file_get_contents($url_forecast).'}';
 			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
 				$cache->write($content);
@@ -67,7 +81,7 @@ class weather_openweathermap extends weather
 			$this->data['current']['temp'] = transunit('temp', (float)$parsed_json->{'today'}->{'main'}->{'temp'});
 			$this->data['current']['icon'] = $this->icon(substr((string)$parsed_json->{'today'}->{'weather'}[0]->{'icon'}, 0, -1), $this->icon_sm);
 			$this->data['current']['conditions'] = (string)$parsed_json->{'today'}->{'weather'}[0]->{'description'};
-			$wind_speed = transunit('speed', (float)$parsed_json->{'today'}->{'wind'}->{'speed'});
+			$wind_speed = transunit('speed', $speed_factor * (float)$parsed_json->{'today'}->{'wind'}->{'speed'});
 			$wind_dir = weather::getDirection((float)$parsed_json->{'today'}->{'wind'}->{'deg'});
 			$wind_desc = weather::getWindDescription ($wind_speed);
 			$this->data['current']['wind'] = $wind_desc.' '.translate('from', 'weather').' '.$wind_dir.' '.translate('at', 'weather').' '.$wind_speed;

@@ -32,6 +32,25 @@
 
 
 /**
+* Counts up time difference of the actual time versus a starting time from an item 
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item(num,str)} an item containing the start time as string (e.g. "2023-05-21T23:00:34.566439+02:00") or timestamp
+* @param {item(num,bool)=} an item used to enable / disable the timer (item value 0=disabled, others = enabled) (optional,default = enabled)
+* @param {duration=10s} the count interval in seconds, e.g. '60s' (default: '10s')  
+* @param {text=} the text displayed if the timer is disabled. If no text is given the display will be hidden (optional, no default)
+*
+* @author Wolfram v. Hülsen
+*/
+{% macro countup(id, item, activate, interval, idletxt) %}
+	{% if interval is empty %} {% set interval = "10s" %} {% endif %}
+	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.countup" data-interval="{{ interval }}"  
+		data-idletxt="{{ idletxt }}" class="miniclock" data-item="{{ item }}, {{ activate }}">{{ idletxt }}
+	</span>
+{% endmacro %}
+
+
+/**
 * Displays a digital clock
 *
 * @param {id} unique id for this widget
@@ -46,7 +65,7 @@
 	/** stopitem will be set to "true" when new page is loaded in order to stop the clock from loading digits till eternity ;) */
 	/** use data-item="" in order to trigger update when page is loaded from cache or by page refresh */
 	<div id="{{ uid }}-digiclock" data-widget="clock.digiclock" class="digiclock" stoptimer="false" data-item=""
-	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+	 {% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
 	 ></div>
 
 	{% if not location is empty %}
@@ -73,7 +92,7 @@
 	{% import "@widgets/icon.html" as icon %}
 
 	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i" class="iconclock"
-	 {% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+	 {% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
 	 >{{ icon.clock(id, '', '', color) }}</span>
 {% endmacro %}
 
@@ -88,6 +107,6 @@
 
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.miniclock" data-repeat="1i" class="miniclock"
 		data-format="{{ format|default('time') }}"
-		{% if config_timesource == 'server' %} data-servertime-url="lib/clock/servertime.php" {% endif %}
+		{% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
 		>{{ "now"|date('H:i') }}</span>
 {% endmacro %}

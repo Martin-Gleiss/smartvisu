@@ -122,7 +122,7 @@ class TemplateChecker {
     $content = file_get_contents($absFile);
 		libxml_use_internal_errors(true);
 		//$this->domDocument->loadHTMLFile($absFile);
-    $this->domDocument->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
+    $this->domDocument->loadHTML(htmlspecialchars_decode(htmlentities($content)));
 		$errors = libxml_get_errors();
 		foreach ($errors as $error) {
 			if (array_key_exists($error->code, $this->ignore_html_error_code)) {
@@ -228,7 +228,11 @@ class TemplateChecker {
 		if ($widget == NULL)
 			return;
 
-		$widgetConfig = $this->getWidgetConfig($widget->getName());
+		$widgetName = $widget->getName();
+		if (strpos($widgetName, '->') > 0 )
+			$widgetName = substr($widgetName,  strpos($widgetName, '->') + 2);
+		
+		$widgetConfig = $this->getWidgetConfig($widgetName);
 
 		if ($widgetConfig === NULL || (!array_key_exists('param', $widgetConfig) && !array_key_exists('removed', $widgetConfig)) ) {
 			$this->messages->addWarning('WIDGET PARAM CHECK', 'Unknown widget found. Check manually!', $widget->getLineNumber(), $widget->getMacro(), $widget->getMessageData());
@@ -257,6 +261,7 @@ class TemplateChecker {
 		} else {
 			// check all parameters of widget
 			$paramConfigs = array_values($widgetConfig['param']);
+			
 			foreach ($paramConfigs as $paramIndex => $paramConfig) {
 				WidgetParameterChecker::performChecks($widget, $paramIndex, $paramConfig, $this->messages,$this->items, $this); //new: items
 			}

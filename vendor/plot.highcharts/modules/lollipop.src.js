@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v10.3.0 (2022-10-31)
+ * @license Highcharts JS v11.0.1 (2023-05-08)
  *
  * (c) 2009-2021 Sebastian Bochan, Rafal Sebestjanski
  *
@@ -46,64 +46,47 @@
          *
          * */
         var __extends = (this && this.__extends) || (function () {
-                var extendStatics = function (d,
-            b) {
-                    extendStatics = Object.setPrototypeOf ||
-                        ({ __proto__: [] } instanceof Array && function (d,
-            b) { d.__proto__ = b; }) ||
-                        function (d,
-            b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            var extendStatics = function (d, b) {
+                extendStatics = Object.setPrototypeOf ||
+                    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+                    function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
                 return extendStatics(d, b);
             };
             return function (d, b) {
+                if (typeof b !== "function" && b !== null)
+                    throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
                 extendStatics(d, b);
                 function __() { this.constructor = d; }
                 d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
             };
         })();
-        var pointProto = SeriesRegistry.series.prototype.pointClass.prototype,
-            _a = SeriesRegistry.seriesTypes,
-            areaProto = _a.area.prototype,
-            DumbbellPoint = _a.dumbbell.prototype.pointClass;
-        var isObject = U.isObject,
-            extend = U.extend;
+        var Point = SeriesRegistry.series.prototype.pointClass, _a = SeriesRegistry.seriesTypes, ScatterPoint = _a.scatter.prototype.pointClass, DumbbellPoint = _a.dumbbell.prototype.pointClass;
+        var extend = U.extend;
         /* *
          *
          *  Class
          *
          * */
         var LollipopPoint = /** @class */ (function (_super) {
-                __extends(LollipopPoint, _super);
+            __extends(LollipopPoint, _super);
             function LollipopPoint() {
                 /* *
                  *
                  *  Properties
                  *
                  * */
-                var _this = _super !== null && _super.apply(this,
-                    arguments) || this;
+                var _this = _super !== null && _super.apply(this, arguments) || this;
                 _this.options = void 0;
                 _this.series = void 0;
+                _this.plotX = void 0;
                 return _this;
             }
-            /* *
-             *
-             *  Functions
-             *
-             * */
-            LollipopPoint.prototype.init = function (_series, options, _x) {
-                if (isObject(options) && 'low' in options) {
-                    options.y = options.low;
-                    delete options.low;
-                }
-                return pointProto.init.apply(this, arguments);
-            };
             return LollipopPoint;
-        }(DumbbellPoint));
+        }(Point));
         extend(LollipopPoint.prototype, {
-            pointSetState: areaProto.pointClass.prototype.setState,
-            // Does not work with the inherited `isvalid`
-            isValid: pointProto.isValid
+            destroy: DumbbellPoint.prototype.destroy,
+            pointSetState: ScatterPoint.prototype.setState,
+            setState: DumbbellPoint.prototype.setState
         });
         /* *
          *
@@ -113,7 +96,7 @@
 
         return LollipopPoint;
     });
-    _registerModule(_modules, 'Series/Lollipop/LollipopSeries.js', [_modules['Series/Lollipop/LollipopPoint.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Utilities.js']], function (LollipopPoint, SeriesRegistry, U) {
+    _registerModule(_modules, 'Series/Lollipop/LollipopSeries.js', [_modules['Series/Lollipop/LollipopPoint.js'], _modules['Core/Series/SeriesRegistry.js'], _modules['Core/Series/Series.js'], _modules['Core/Utilities.js']], function (LollipopPoint, SeriesRegistry, Series, U) {
         /* *
          *
          *  (c) 2010-2021 Sebastian Bochan, Rafal Sebestjanski
@@ -124,28 +107,22 @@
          *
          * */
         var __extends = (this && this.__extends) || (function () {
-                var extendStatics = function (d,
-            b) {
-                    extendStatics = Object.setPrototypeOf ||
-                        ({ __proto__: [] } instanceof Array && function (d,
-            b) { d.__proto__ = b; }) ||
-                        function (d,
-            b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            var extendStatics = function (d, b) {
+                extendStatics = Object.setPrototypeOf ||
+                    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+                    function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
                 return extendStatics(d, b);
             };
             return function (d, b) {
+                if (typeof b !== "function" && b !== null)
+                    throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
                 extendStatics(d, b);
                 function __() { this.constructor = d; }
                 d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
             };
         })();
-        var _a = SeriesRegistry.seriesTypes,
-            areaProto = _a.area.prototype,
-            colProto = _a.column.prototype,
-            DumbbellSeries = _a.dumbbell;
-        var pick = U.pick,
-            merge = U.merge,
-            extend = U.extend;
+        var _a = SeriesRegistry.seriesTypes, colProto = _a.column.prototype, dumbbellProto = _a.dumbbell.prototype, ScatterSeries = _a.scatter;
+        var extend = U.extend, merge = U.merge;
         /* *
          *
          *  Class
@@ -162,15 +139,14 @@
          *
          */
         var LollipopSeries = /** @class */ (function (_super) {
-                __extends(LollipopSeries, _super);
+            __extends(LollipopSeries, _super);
             function LollipopSeries() {
                 /* *
                  *
                  *  Static Properties
                  *
                  * */
-                var _this = _super !== null && _super.apply(this,
-                    arguments) || this;
+                var _this = _super !== null && _super.apply(this, arguments) || this;
                 /* *
                  *
                  *  Properties
@@ -181,13 +157,26 @@
                 _this.points = void 0;
                 return _this;
             }
-            /* *
+            /**
+             * Extend the series' drawPoints method by applying a connector
+             * and coloring markers.
+             * @private
              *
-             *  Functions
+             * @function Highcharts.Series#drawPoints
              *
-             * */
-            LollipopSeries.prototype.toYData = function (point) {
-                return [pick(point.y, point.low)];
+             * @param {Highcharts.Series} this The series of points.
+             *
+             */
+            LollipopSeries.prototype.drawPoints = function () {
+                var series = this, pointLength = series.points.length;
+                var i = 0, point;
+                _super.prototype.drawPoints.apply(series, arguments);
+                // Draw connectors
+                while (i < pointLength) {
+                    point = series.points[i];
+                    series.drawConnector(point);
+                    i++;
+                }
             };
             /**
              * The lollipop series is a carteseian series with a line anchored from
@@ -207,9 +196,7 @@
              * @since        8.0.0
              * @optionparent plotOptions.lollipop
              */
-            LollipopSeries.defaultOptions = merge(DumbbellSeries.defaultOptions, {
-                /** @ignore-option */
-                lowColor: void 0,
+            LollipopSeries.defaultOptions = merge(Series.defaultOptions, {
                 /** @ignore-option */
                 threshold: 0,
                 /** @ignore-option */
@@ -229,20 +216,25 @@
                         halo: false
                     }
                 },
-                tooltip: {
-                    pointFormat: '<span style="color:{series.color}">●</span> {series.name}: <b>{point.y}</b><br/>'
-                }
+                /** @ignore-option */
+                lineWidth: 0,
+                dataLabels: {
+                    align: void 0,
+                    verticalAlign: void 0
+                },
+                pointRange: 1
             });
             return LollipopSeries;
-        }(DumbbellSeries));
+        }(Series));
         extend(LollipopSeries.prototype, {
-            pointArrayMap: ['y'],
-            pointValKey: 'y',
-            translatePoint: areaProto.translate,
-            drawPoint: areaProto.drawPoints,
+            alignDataLabel: colProto.alignDataLabel,
+            crispCol: colProto.crispCol,
+            drawConnector: dumbbellProto.drawConnector,
             drawDataLabels: colProto.drawDataLabels,
-            setShapeArgs: colProto.translate,
-            pointClass: LollipopPoint
+            getColumnMetrics: colProto.getColumnMetrics,
+            getConnectorAttribs: dumbbellProto.getConnectorAttribs,
+            pointClass: LollipopPoint,
+            translate: colProto.translate
         });
         SeriesRegistry.registerSeriesType('lollipop', LollipopSeries);
         /* *

@@ -202,7 +202,7 @@ $.widget("sv.plot_period", $.sv.widget, {
 		stacking: '',
 		stacks: '',
 		exportmenu: 0,
-		"servertime-url": ''
+		servertime: ''
     },
 
     allowPartialUpdate: true,
@@ -284,7 +284,8 @@ $.widget("sv.plot_period", $.sv.widget, {
                     showInNavigator: true,
                     colorIndex: mode == 'minmaxavg' ? i*2+1 : null,
 					stacking: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stackingMode : null),
-					stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stack : null)
+					stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stack : null),
+					borderRadius: 0
                 });
             }
         }
@@ -351,11 +352,10 @@ $.widget("sv.plot_period", $.sv.widget, {
 		var xMin = new Date() - new Date().duration(this.options.tmin);
         var xMax = new Date() - new Date().duration(this.options.tmax);
 		var dayDuration = 24*3600*1000;
-		var timezoneOffset = this.options["servertime-url"] != '' ? parseInt(-Number(sv.config.timezoneOffset)/60 + (window.servertimeoffset/60000 ||0)) : new Date().getTimezoneOffset();
+		var timezoneOffset = this.options.servertime == 'yes' ? parseInt(-Number(sv.serverTimezone.offset)/60 + (window.servertimeoffset/60000 ||0)) : new Date().getTimezoneOffset();
 		if (zoom == "day"){
-			xMin = new Date() - new Date() % dayDuration + timezoneOffset * 60000;
-			if (new Date() - xMin >= dayDuration)
-				xMin += dayDuration;
+			xMin -= timezoneOffset * 60000;
+			xMin = xMin - xMin % dayDuration + dayDuration + timezoneOffset * 60000;
 			xMax = xMin + dayDuration;
 			zoom = '';
 		}
@@ -399,7 +399,12 @@ $.widget("sv.plot_period", $.sv.widget, {
             },
 		    navigation: {	// options for export context menu
 				buttonOptions: {
-					enabled: exportmenu
+					enabled: exportmenu,
+					height: 22,
+					width: 24,
+					symbolSize: 12,
+					symbolX: 12.5,
+					symbolY: 10.5
 				}
 			},
 			exporting: {
@@ -499,8 +504,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 
         var chart = this.element.highcharts();
 		// window.servertimeoffset should be available now
-		if (window.servertimeoffset != undefined && window.servertimeoffset != 0 && this.options["servertime-url"] != '')
-			chart.time.update({timezoneOffset: parseInt(-Number(sv.config.timezoneOffset)/60 + window.servertimeoffset/60000) });
+		if (window.servertimeoffset != undefined && window.servertimeoffset != 0 && this.options.servertime == 'yes')
+			chart.time.update({timezoneOffset: parseInt(-Number(sv.serverTimezone.offset)/60 + window.servertimeoffset/60000) });
 
         if (this.options.chartOptions && this.options.chartOptions.xAxis != undefined && typeof this.options.chartOptions.xAxis == 'object' && this.options.chartOptions.xAxis[0].min && this.options.chartOptions.xAxis[0].max){
 			for (var i = 0; i < this.options.chartOptions.xAxis.length; i++){
@@ -515,9 +520,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 			var dayDuration = 24*3600*1000;
 
 			if (this.options.zoom == "day"){
-				xMin = new Date() - new Date()% dayDuration + chart.time.options.timezoneOffset * 60000;
-				if (new Date() - xMin >= dayDuration)
-					xMin += dayDuration;
+			    xMin -= chart.time.options.timezoneOffset * 60000;
+			    xMin = xMin - xMin % dayDuration + dayDuration + chart.time.options.timezoneOffset * 60000;
 				xMax = xMin + dayDuration;
 			}
 			chart.xAxis[0].update({ min: xMin, max: xMax }, false);
@@ -952,7 +956,12 @@ $.widget("sv.plot_gauge_angular", $.sv.widget, {
             title: {
                 text: headline
             },
-            plotOptions: {
+            navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: false
+				}
+			},
+			plotOptions: {
                  gauge: gauge[0],
             },
             pane: pane,
@@ -984,8 +993,8 @@ $.widget("sv.plot_gauge_angular", $.sv.widget, {
             series: series
         });
 
-        styles.push('.outer-pane { fill: url(' + location.pathname + location.search + '#speedometerOuterPaneGradient) }');
-        styles.push('.middle-pane { fill: url(' + location.pathname + location.search + '#speedometerMiddlePaneGradient) }');
+        styles.push('.outer-pane { fill: url(' + document.baseURI + '#speedometerOuterPaneGradient) }');
+        styles.push('.middle-pane { fill: url(' + document.baseURI + '#speedometerMiddlePaneGradient) }');
 
         if(styles.length > 0) {
             var containerId = this.element.find('.highcharts-container')[0].id;
@@ -1164,7 +1173,12 @@ $.widget("sv.plot_gauge_vumeter", $.sv.widget, {
 
             // the value axis
             yAxis: axis,
-
+			
+			navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: false
+				}
+			},
             plotOptions: {
                 gauge: {
                     dataLabels: {
@@ -1189,8 +1203,7 @@ $.widget("sv.plot_gauge_vumeter", $.sv.widget, {
             },
             series: series,
         });
-
-        styles.push('.highcharts-plot-background { fill: url(' + location.pathname + location.search + '#vumeterGradient) }');
+        styles.push('.highcharts-plot-background { fill: url(' + document.baseURI + '#vumeterGradient) }');
 
         if(styles.length > 0) {
             var containerId = this.element.find('.highcharts-container')[0].id;
@@ -1385,7 +1398,8 @@ $.widget("sv.plot_rtr", $.sv.widget, {
         tmax: '',
         count: 100,
         stateMax: null,
-		"servertime-url": ''
+		servertime: '',
+		chartOptions: null,
     },
 
     allowPartialUpdate: true,
@@ -1396,11 +1410,11 @@ $.widget("sv.plot_rtr", $.sv.widget, {
         var label = String(this.options.label).explode();
         var axis = String(this.options.axis).explode();
 
-        // draw the plot
-        this.element.highcharts({
+        // set up options object
+        var chartOptions= {
             chart: {type: 'line', styledMode: true},
             title: { text: null },
-			time: {timezoneOffset: this.options["servertime-url"] != '' ? parseInt(-Number(sv.config.timezoneOffset)/60 + (window.servertimeoffset/60000 ||0)) : new Date().getTimezoneOffset()},
+			time: {timezoneOffset: this.options.servertime == 'yes' ? parseInt(-Number(sv.serverTimezone.offset)/60 + (window.servertimeoffset/60000 ||0)) : new Date().getTimezoneOffset()},
             legend: {
                 align: 'center',
                 verticalAlign: 'top',
@@ -1452,7 +1466,13 @@ $.widget("sv.plot_rtr", $.sv.widget, {
                 },
                 shared: true
             }
-        });
+        };
+		
+		// combine chart options with options defined in widget chartOptions parameter
+		$.extend(true, chartOptions, this.options.chartOptions);
+
+		// draw the plot
+		this.element.highcharts(chartOptions);
     },
 
     _update: function(response) {
@@ -1464,8 +1484,8 @@ $.widget("sv.plot_rtr", $.sv.widget, {
         }
 
         var chart = this.element.highcharts();
-		if (window.servertimeoffset != undefined && window.servertimeoffset != 0 && this.options["servertime-url"] != '')
-			chart.time.update({timezoneOffset: parseInt(-Number(sv.config.timezoneOffset)/60 + (window.servertimeoffset/60000)) });
+		if (window.servertimeoffset != undefined && window.servertimeoffset != 0 && this.options.servertime == 'yes')
+			chart.time.update({timezoneOffset: parseInt(-Number(sv.serverTimezone.offset)/60 + (window.servertimeoffset/60000)) });
 
         chart.xAxis[0].setExtremes(new Date() - new Date().duration(this.options.tmin), new Date() - new Date().duration(this.options.tmax), false);
 
@@ -1685,7 +1705,8 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
 				yAxis: (assign[i] ? assign[i] - 1 : 0),
 				showInNavigator: true,
 				stacking: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stackingMode : null),
-				stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stack : null)
+				stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stack : null),
+				borderRadius: 0
 			});
         }
 
@@ -1753,7 +1774,12 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
             },
 		    navigation: {	// options for export context menu
 				buttonOptions: {
-					enabled: exportmenu
+					enabled: exportmenu,
+					height: 22,
+					width: 24,
+					symbolSize: 12,
+					symbolX: 12.5,
+					symbolY: 10.5
 				}
 			},
 			exporting: {
@@ -1832,3 +1858,60 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
     },
 
 });
+
+// ----- plot.timeshift -----------------------------------------------------------
+$.widget("sv.plot_timeshift", $.sv.widget, {
+
+	initSelector: '[data-widget="plot.timeshift"]',
+
+	options: {
+		bind: null,
+		step: null
+	},
+	
+	delta: null,
+	mem_tmin: null,
+	mem_tmax: null,
+
+	_update: function(response) {
+	},
+
+	_events: {
+    'click': function (event) {
+		event.preventDefault();
+		event.stopPropagation();
+		var step = this.options.step;
+		var direction =  ($(event.target).closest('a').hasClass('timeshift-back')) ?  ' ' :  ' -'; 
+		var tmin = $('#'+this.options.bind).attr('data-tmin');
+		var tmax = $('#'+this.options.bind).attr('data-tmax');
+		if (this.delta == null){
+			this.mem_tmin = tmin;
+			this.mem_tmax = tmax;
+		}
+
+		io.stopseries($('#'+this.options.bind));
+		
+		this.delta = this.delta == null ? direction + step : this.delta + direction + step;
+		this.delta = this.delta.replace(' '+ step + ' -' + step, '').replace(' -'+ step + ' ' + step, '');
+		tmin = this.mem_tmin + this.delta;
+		tmax = ($('#'+this.options.bind).attr('data-zoom') == 'day') ? this.mem_tmax : this.mem_tmax + this.delta;
+		$('#'+this.options.bind).attr('data-tmin', tmin);
+		$('#'+this.options.bind).attr('data-tmax', tmax);
+		var that = $('#'+this.options.bind).data().svWidget;
+		that.options.tmin = tmin;
+	    that.options.tmax = tmax; 
+
+		var plot = '';
+		var items = $('#'+this.options.bind).attr('data-item').split(/,\s*/);
+		for (var i = 0; i < items.length; i++) {
+			var definition = widget.parseseries(items[i]);
+			that.items[i] =  definition.item + '.' + definition.mode + '.' + tmin + '.' + tmax + '.'  + definition.count;
+			plot = plot + (i >0 ? ',' : '') + that.items[i];
+		}
+		$('#'+this.options.bind).attr('data-item', plot)
+		that.options.item = plot;
+		io.startseries($('#'+this.options.bind));
+	}
+}
+});
+

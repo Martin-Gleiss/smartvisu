@@ -136,7 +136,7 @@ function twig_dir($dir, $filter = '(.*)')
 }
 
 function twig_docu($filenames = null)
-{	
+{
 	if($filenames == null) {
 		$filenames = array_merge(twig_dir('widgets', '(.*.\.html)'), twig_dir('dropins', '(.*.\.html)'), twig_dir('dropins/widgets', '(.*.\.html)'), twig_dir('dropins/shwidgets', '(.*.\.html)'));
 		if(twig_isdir('pages/'.config_pages.'/widgets'))
@@ -191,7 +191,7 @@ function twig_docu($filenames = null)
 						$rettmp[$headertag] = trim($header[2][$headerno]);
 				}
 
-				$rettmp['subpackage'] = substr(strtolower(utf8_decode(basename($filename))), 0, -5);
+				$rettmp['subpackage'] = substr(strtolower(mb_convert_encoding(basename($filename), 'ISO-8859-1', 'UTF-8')), 0, -5);
 				$rettmp['command'] = $rettmp['subpackage'].".".$rettmp['name'];
 				$rettmp['call'] = $rettmp['command']."(".$rettmp['params'].")";
 
@@ -226,20 +226,20 @@ function twig_docu($filenames = null)
 								}
 								else
 									$p['valid_values'] = explode(',', substr($tag[5],1,-1));
-								
+
 								if ($p['type'] == 'type')
 									$p['valid_values'] = array_merge(SmartvisuButtonTypes, $p['valid_values']);
-								
+
 								if ($p['type'] == 'color') {
 									if (in_array('icon0to5', $p['valid_values']))	{
 										unset ($p['valid_values'][array_search('icon0to5',$p['valid_values'])]);
-										$p['valid_values'] = array_merge(SmartvisuIconClasses, $p['valid_values']);	
+										$p['valid_values'] = array_merge(SmartvisuIconClasses, $p['valid_values']);
 									}
 								}
 							}
 							elseif ($p['type'] == 'type')
 								$p['valid_values'] = SmartvisuButtonTypes;
-																
+
 							$p['optional'] = $tag[6] != '';
 							if($p['optional'] && $tag[6] != '=')
 								$p['default'] = substr($tag[6],1);
@@ -273,7 +273,7 @@ function twig_docu($filenames = null)
 			$dropins = strpos($filename,'dropins');
 			$dropins = $dropins + strpos($filename,'pages/'.config_pages.'/widgets');
 			$docupage = strpos(str_replace(' ', '', substr($file, $endheader, 40)),'{%extends"custom/widget_');
-						
+
 			if ($dropins == false or ($dropins !== false and $docupage == false)) {
 				foreach ($header[1] as $headerno => $headertag)
 				{
@@ -347,14 +347,14 @@ function twig_lang($subset, $key = null, $subkey = null)
 	if (!$lang)
 		$lang = get_lang();
 
-	if(!isset($subkey)) 
+	if(!isset($subkey))
 		if(!isset($key))
 			return $lang[$subset];
 		else
 			return $lang[$subset][$key];
-	else 
+	else
 		if (isset($lang[$subset][$key][$subkey]))
-			return $lang[$subset][$key][$subkey]; 
+			return $lang[$subset][$key][$subkey];
 }
 
 /**
@@ -429,15 +429,15 @@ function twig_items () {
 		$Items2 = explode(",",$Items1);
 		$itemlist = array();
 		$i = 0;
-		
-		foreach ($Items2 as $key) { 
+
+		foreach ($Items2 as $key) {
 			$itemlist[$i] = trim(explode('|',$key)[0]);
 			$i = $i+1;
 		}
 	}
 	else
 		$itemlist[0] = 'masteritem file not found';
-	
+
 	return $itemlist;
 }
 
@@ -454,16 +454,26 @@ function twig_asset_exists($file) {
 		if(is_file(const_path . 'dropins/shwidgets/' . $file )) $fileExists = 1;
 		if(is_file(const_path . 'pages/' . $requestpages .'/widgets/'. $file )) $fileExists = 1;
 		$searchpath = 'in ./widgets, ./dropins, ./dropins/widgets, ./dropins/shwidgets and ./pages/'. $requestpages .'/widgets/';
-	} else 	{	
+	} else 	{
 		// add const_path if $file is relative
-		if (substr($file, 0, 1) != '/') 
-			if(is_file(const_path.$file)) 
-				$fileExists = 1; 	
+		if (substr($file, 0, 1) != '/')
+			if(is_file(const_path.$file))
+				$fileExists = 1;
 		$searchpath = 'for '. $file;
 	}
 	if ($fileExists == 0) debug_to_console($file.' not found. Looked '.$searchpath);
-	
+
 	return $fileExists;
 }
 
+function twig_localize_svg($file) {
+	$path = pathinfo((string) $file);
+	if(!isset($path['extension']) || $path['extension'] == "") $path['extension'] = "svg";
+	$filename = $path['filename'] . '.' . $path['extension'];
+	if(is_file(const_path . 'icons/ws/'. $filename) || is_file(const_path . 'dropins/icons/ws/'. $filename))
+		return '@icons/'.$filename;
+	if (is_file(const_path . 'icons/ws/jquery_'. $filename) || is_file(const_path . 'dropins/icons/ws/jquery_'. $filename))
+		return '@icons/jquery_'.$filename;
+	return $file;
+}
 ?>

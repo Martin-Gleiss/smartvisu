@@ -168,17 +168,11 @@ Parameter is an url. Currently the checks for the type 'text' are performed.
 ## Parameter type 'unspecified'
 Parameters of this type will not be checked.
 
-## Parameter type 'iconseries'
-Parameter defines an iconseries.  
+## Parameter type 'widget'
+Parameter defines complete widget call including parameters. The widget is then recursively checked like any other widget. 
 Valid values:
 
-* Any known dynamic icon of SmartVISU
-* Set of 10 icons in SmartVisu icon directory.  
-As parameter "\[filename\]_00.svg" needs to be given.  
-Files "\[filename\]_10.svg", "\[filename\]_20.svg", "\[filename\]_30.svg", ...,  "\[filename\]_90.svg" and "\[filename\]_100.svg" are being used.  
-Their existence is checked by the template checker
-
-This may be **deprecated** in future versions since basic.shifter is deprecated already.
+* Any known widget of SmartVISU with set of parameters.
 
 **Additional settings:**  
 

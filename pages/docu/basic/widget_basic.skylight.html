@@ -1,0 +1,38 @@
+    {% extends "custom/widget_custom.html" %}
+    {% block example %}
+
+    <h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			{{ basic.skylight('first_window', 'bath.blind.pos', 'bath.window.state') }}
+			{{ basic.skylight('second_window', 'bath.blind.pos', 'bath.window.state', '', '', 'red') }}
+			{{ basic.skylight('third_window', 'bath.blind.pos', 'bath.window.state', '', '', '!icon3') }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	
+	Use slider to control the shutter and switches to simulate window status
+	
+	<div class="html">
+		
+		{{ basic.slider('','bath.light.value') }}
+		First window:
+		<div data-role="controlgroup" data-type="horizontal"> 
+			{{ basic.stateswitch('', 'bath.light.value2', '', 0, '', '0') }}
+			{{ basic.stateswitch('', 'bath.light.value2', '', 1, '', '1') }}
+			{{ basic.stateswitch('', 'bath.light.value2', '', 2, '', '2') }}
+		</div> &nbsp;&nbsp;
+		Second and third window:
+		<div data-role="controlgroup" data-type="horizontal">
+			{{ basic.stateswitch('', 'bath.light.multistate', '', 0, '', '0') }}
+			{{ basic.stateswitch('', 'bath.light.multistate', '', 1, '', '1') }}
+			{{ basic.stateswitch('', 'bath.light.multistate', '', 2, '', '2') }}
+		</div>
+		<br>
+		Default: class icon0 / icon1 colors: &nbsp;{{ basic.skylight('', 'bath.light.value', 'bath.light.value2') }} <br>
+		Usage of custom color for 'open': &nbsp;&nbsp;&nbsp; {{ basic.skylight('', 'bath.light.value', 'bath.light.multistate', '', '', 'red') }} <br>
+		Usage of constant custom color: &nbsp;&nbsp;&nbsp; {{ basic.skylight('', 'bath.light.value', 'bath.light.multistate', '', '', '!icon3') }}
+	</div>
+
+    {% endblock %}
+
+

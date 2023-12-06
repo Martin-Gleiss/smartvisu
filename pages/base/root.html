@@ -44,6 +44,7 @@
 	<link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.4.5.min.css" />
 
 /** CSS assets **/
+{% set design_css = isfile('designs/' ~ config_design ~ '.css') ? 'designs/' ~ config_design ~ '.css' : 'dropins/designs/' ~ config_design ~ '.css' %}
 {% set cssFiles = [
 		'vendor/plot.highcharts/highcharts.css',
 		'vendor/JTSage/DateBox/css/jtsage-datebox.css',
@@ -54,7 +55,7 @@
 		'pages/base/base.css',
 		'pages/base/quad.css',
 		icon0 ~ 'jquery.mobile.icons.min.css',
-		'designs/' ~ config_design ~ '.css',
+		design_css,
 		'pages/' ~ config_pages ~ '/visu.css'
 	] %}
 {% for file in dir('dropins/shwidgets', '(.*)(\.css)') %}
@@ -221,6 +222,13 @@
 		sv.activePage = $(":mobile-pagecontainer").pagecontainer("getActivePage");
 		fx.init();
 		repeater.init();
+		{% if config_timesource == "server" %}
+			if (sv.serverTimezone.transition == 0 || new Date().valueOf() > sv.serverTimezone.transition){
+				console.log('[root.html] getting server time and timezone');
+				getServerTimeAndZone();
+			}
+		{% endif %}
+		
 		io.run();
 	});
 
@@ -236,6 +244,9 @@
 			var headerClass = 'ui-page-theme-'+ $(this).closest('div').attr('data-theme');
 			$(this).addClass(headerClass);
 		});
+		{% if config_collapsible_reset %}
+			$(sv.activePage).find('.secondary [data-collapsed="false"] .ui-collapsible-heading-collapsed').parents().first().collapsible('expand');
+		{% endif%}
 	});
 
 	// workaround for jQm listview:

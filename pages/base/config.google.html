@@ -50,7 +50,8 @@ It is called by adding '.nip.io' to the hostname, which actually is an IP number
 					client_id: params.clientId,
 					scope: 'https://www.googleapis.com/auth/calendar.readonly',
 					prompt: 'consent',
-					response_type: 'code'
+					response_type: 'code',
+					plugin_name: 'smartVISU'
 				},
 				function(resp) {
 					if (resp.error)

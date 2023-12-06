@@ -15,6 +15,25 @@
 
 	<div class="docu">
 
+		<h2>Items</h2>
+
+		Items represent the status and control addresses for devices in the backend system. smartVISU subscribes status information for all items on a page from the backend and sends 
+		control commands to the same items. It is to be expected that the backend always returns the correct status after a control command has been sent. 
+		In some cases, status and control values differ in the backend, e.g. if an actor has been blocked or an action is delayed. Then, it makes sense to use different / combined items. <br>
+		As of v3.4 smartVISU supports combined status and control items in the backend drivers for smarthomeNG and eibd/knxd. Format is 'item_status:item_control'. A colon separates the two items.
+		The status info is read from the status item as before while control commands are sent to the control item.  
+		<br />
+
+		<h5>Example</h5>
+
+		<div class="twig">
+			<code class="prettyprint">
+				... 'bath.light.switch' ... -> normal syntax in most cases<br />
+				... 'bath.light.switch.status:bath.light.switch.control' ... -> combined status and control item<br />
+			</code>
+		</div>
+		<br />
+
 		<h2>Array Form</h2>
 
 		Some widgets may have an array as a parameter. Use [ ... , ... ] to define it. An array is only needed if you have more than one object.<br />

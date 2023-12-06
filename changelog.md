@@ -1,3 +1,92 @@
+## 3.4
+### New / Changed Widgets
+- quad.blind and quad.shutter can be configured to move the shutter on short- or longpress
+- new widget plot.timeshift scrolls a plot in time-range by cancelling actual series in this plot and subscribing new series fo the same item(s) with changed start / end times.
+- plot.rtr now accepts Highcharts chartOptions object as parameter like plot.period
+- IDs are now optional in basic.roundslider and device.rtrslider
+- new dynamic icon "icon.slidinggate"
+- new widget / dynamic icon "basic.skylight" for a roof window with closed / tilt status and shutter position (thanks to raman)
+- id parameter is now fully optional in status toast, even with multiple toasts on a page
+- new "live" parameters in device.blind, device.dimmer, device.window, quad.dimmer, quad.color, quad.shutter, quad.blind and quad.playercontrol enable the usage of the live mode feture of basic.slider
+- new live / silent mode for basic.roundslider (similar to basic.slider) 
+- new widget clock.countup shows the time difference between the actual time and a start time given by an item.
+- series data for plots in popups may be loaded on demand during popup open. Add "plotpopup" to the plot ID to postpone the individual series request from page load to popup open. This is now default behaviour for the Quad widgets.
+- new widget plot.sparkline displays trend curves inside tables.
+- plot.period now displays day plots (zoom = 'day') for days in the past - starting next day at 00:00 after tmin ('24h' = today, '48h' = yesterday ...). 
+- new widget status.customstyle applies custom CSS styles to any linked widget or html element if values of a trigger item match the given conditions.
+- refactored weather app and widgets weather.map and weather.mapslides after change of Tagesschau content management. (Thanks to Tagesschau technical management for hints on new API).
+- new "style" option for basic slider allows applying CSS styles to the slider track
+- basic.stateswitch can now use an additional icon or a simulated dynamic icon in the "indicator" phase when waiting for an item update 
+
+
+### Other New Features
+- weather service pirateweather.net as replacement for darksky.net (thanks to aschwith) 
+- improved unit handling in weather services via language files
+- designs "darkblue" and "flatdarkblue" habe been completed with missing swatches (thanks to @onkelandy)
+- new folder ./dropins/designs for custom design CSS files (please adjust urls of e.g. background images in the files)
+- page and service for backup and restore of configuration, dropins and custom pages (thanks to @hijacker7)
+- new Italian language package (granzie tante a @hijacker7)
+- drivers smarthomeNG, eibd/knxd, offline and ioBroker now support status and control items/GAs in one item, separated by a colon. Format is "item_status:item_control" (or e.g. "1/0/0:1/0/1" for eibd/knxd)
+- new config option "collapsible_reset" resets the room menu in the sidebar to the pages default state on every page change (pagecontainershow event).
+- help texts for GoogleV3 calendar OAuth procedure updated according to current workflow in Google developer console
+- some new icons from KNX-UF icon set (modernized cars, HEV charging, manual)
+
+### Improvements
+- Template checker now ignores multi-line comments  
+- offline driver is now able to cancel series and to log communication information to the console
+- new functions to subsribe and cancel series for an individual plot (smarthomeNG and offline driver)
+- new function to cancel log subscriptions for an individual or for all log widgets (smarthomeNG driver))
+- show additional menu icon in header on normal phones - toggle Home/Info button on small phones
+- room and system menues now use the icon embedding method of v3.3.x
+- improved icon embedding in basic.roundslider for better stylability
+- round sliders fully styled with CSS
+- reconnect interval can be configured in config.ini by the key "reconnect_time"
+- template checker recursively checks widget calls within widgets, e.g. dynamic icons and in quad widgets (w/ new parameter type "widget")
+- template checker now checks parameter arrays for plots, uzsu and sliders in quad widgets w/ new parameter types "plotparam", "uzsuparam" and "sliderparam"
+- reduced checking of parameters of type 'unspecified': no checking of empty parameters and new unchecked type "placeholder"
+- template checker is now able to check single files 
+- outer slider of device.rtrslider (display slider for actual temperature) is configured as readOnly to disable manual interaction
+- info message after successful configuration save is shown again after page reload
+- first fixes to avoid deprecation warnings in PHP8.2
+- template checker has now an option to extend PHP skript execution timeouts from 120 sec to 240 sec (for slow smartVISU servers)
+- included a link to display the changelog in the update message
+- if timesource is configured to "server", DST and client-server-offsets get updated with every page change (no reload needed)
+
+### Updated Libraries
+- MatthiasMullie/minify patched to get back to the original performance see version-info in the src folder
+- Highcharts v11.0.1 (yet only es5 scripts to keep backward compatibility w/ older devices)
+- iCal ICS parser v3.2.1 (php 8.2 compatible)
+
+### Deprecated
+
+### Removed Features
+- parameter type "iconseries" for template checker removed since basic shifter was removed in v3.3
+- weather services yr.no and darksky.net removed due to discontinuation of the services
+- notify.error(), notify.warning(), notify.info() removed which had been replaced by notify.message()
+
+### Fixed Bugs
+- multiple icons of icon.heating on one page could only be colored with the color of the first occurance and disappeared otherwise
+- colorizing in basic.print did not change colors after first change (due to faulty removeClass() statement)
+- wind speed in openweathermap service was in m/s but unit was km/h
+- status toast was closed on item change even if param_allowclose was 'false'
+- status toast did not always select the right toast to close 
+- duplicate widget updates were triggered if names of items were fully part of other items (e.g. updates on "test.test" triggered also widgets listening to "test.testa" and "test.testb" on the same page)
+- plot.gauge (speedometer and vumeter) did only receive correct CSS background styles if page was reloaded 
+- plot.gauge and device.uzsugraph did not disable the export menu correctly
+- template checker did not evaluate item properties correctly
+- widget assistant inserted too many quotes in autocomplete mode if user entry had started with a quote
+- basic.window showed wrong icon when optinal item "window_r" was not defined
+- select menu did not send changed value if screen was smaller than the select list (hence jQuery mobile switched to scrollable page mode)
+- Google oauth authorization for the calendar credentials stopped working due to a changed js library on apis.google.com
+- "daycount" option in calendar.list delivered faulty results over the end of a month
+- device.uzsugraph caused an error if the additional decorative points at the ends of the graph outside the default scroll area were clicked
+- duration for 1y was 356 days instead of 365. Nobody noticed that over years :-))) 
+- clocks / plots did not switch to/from DST if configured time source was server and cache was enabled 
+ 
+### Known Bugs
+- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
+
+
 ## 3.3.1
 ### New / Changed Widgets
 - calendar.list now has an option limiting the shown time span (measured in days)

@@ -97,13 +97,13 @@
 	Dynamic icons can be used by calling the icon.* widgets in the icon parameters:
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
+		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light(), icon.light('','','bath.light.value')]) }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light(), icon.light('','','bath.light.value')]) }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light('','','bath.light.switch'), icon.light('','','bath.light.value')]) }}
+		{{ basic.stateswitch('', 'bath.light.switch', '', '', [icon.light(), icon.light('','','bath.light.value')]) }}
+		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', [icon.light(), icon.light('','','bath.light.value')]) }}
 	</div>
 
 	Use a basic.symbol to colorize an icon independently of the buttons value.
@@ -162,109 +162,30 @@
 	</div>
 
 
-	<h5>Replacement of deprecated widgets</h5>
-	Click button (replacement of deprecated <i>basic.button</i>)
+	<h5>New as of v3.4: Activity Indicators</h5>
+smartVISU can be configured to wait for the backends item update after a command sent instead of updating items internally. While some backends wait for the response of the respective actor before responding, others just echo 
+the received command as item update. For the latter, smartVISU v3.4 introduces combined status and control items which send the command to the control item and receive the response on the status item. The user needs to
+link these to the respective control and status objects in the backend. To visualize an ongoing activity, the "indicator" parameter can be set to highlight the active switch with different options. The indicator will be started
+with the click on the switch and stopped by a received update or after a defined timeout. <br>
+
+	<h5>Examples</h5>
+		
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.button('', 'bath.light.switch') }}
-			{{ basic.stateswitch('', 'bath.light.switch', '', 1) }}
-			
-			{{ basic.button('', 'bath.light.switch', 'Off', 'grid', 0, 'midi', 'icon1') }}
-			{{ basic.stateswitch('', 'bath.light.switch', 'midi', 0, 'grid', 'Off', 'icon1') }}
-			
-			new: icon instead of button
-			{{ basic.stateswitch('', 'bath.light.switch', 'icon', 1) }}
+		{{ basic.stateswitch('', 'item.st:item.ctl', '','', ['fts_shutter_10','fts_shutter_100'],'','','blink:10') }}
+		{{ basic.stateswitch('', 'item.st:item.ctl', '','', ['fts_garage_door_10','fts_garage_door_100'],'','','red') }}
+		{{ basic.stateswitch('', 'item.st:item.ctl', '','', ['fts_shutter_10','fts_shutter_100', icon.shutter('','','item.st')],'','','simulate:10') }}
+		{{ basic.stateswitch('', 'item.st:item.ctl', '','', ['light_light','light_light', icon.light('','','item.st')],'','','simulate:10') }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
-		{{ basic.stateswitch('', 'bath.light.switch', '', 1) }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'midi', 0, 'grid', 'Off', 'icon1') }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', 1) }}
+		{{ basic.stateswitch('', 'bath.light.value:bath.light.value2', '','', ['fts_shutter_10','fts_shutter_100'],'','','blink:10') }}
+		{{ basic.stateswitch('', 'bath.light.value:bath.light.value2', '','', ['fts_garage_door_10','fts_garage_door_100'],'','','red') }}
+		{{ basic.stateswitch('', 'bath.light.value:bath.light.value2', '','', ['fts_shutter_10','fts_shutter_100', icon.shutter('','','bath.light.value')],'','','simulate:10') }}
+		{{ basic.stateswitch('', 'bath.light.value:bath.light.value2', '','', ['light_light','light_light', icon.light('','','bath.light.value')],'','','simulate:10') }}
 	</div>
-
-	Switch button (replacement of deprecated <i>basic.dual</i>)
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.dual('', 'bath.light.switch') }}
-			{{ basic.stateswitch('', 'bath.light.switch') }}
-			
-			{{ basic.dual('', 'bath.light.switch', 'control_arrow_up.svg', 'control_arrow_down.svg', 0, 1, 'midi', '#f00', 'icon1') }}
-			{{ basic.stateswitch('', 'bath.light.switch', 'midi', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['icon1', '#f00']) }}
-			
-			new: text on dual
-			{{ basic.stateswitch('', 'bath.light.switch', '', '', '', ['Off', 'On']) }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		{{ basic.stateswitch('', 'bath.light.switch') }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'midi', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['icon1', '#f00']) }}
-		{{ basic.stateswitch('', 'bath.light.switch', '', '', '', ['Off', 'On']) }}
-	</div>
-
-	Switching icon (replacement of deprecated <i>basic.switch</i>)
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.switch('', 'bath.light.switch') }}
-			{{ basic.stateswitch('', 'bath.light.switch', 'icon') }};
-			
-			{{ basic.switch('', 'bath.light.switch', 'control_arrow_up.svg', 'control_arrow_down.svg', 0, 1, '#f00', 'icon1') }}
-			{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['icon1', '#f00']) }}
-			
-			new: jQuery icons
-			{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', ['user', 'grid'], '', ['#f00', 'icon1']) }}
-			
-			new: text switch
-			{{ basic.stateswitch('', 'bath.light.switch', 'text', '', '', ['On', 'Off']) }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon') }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['control_arrow_down.svg', 'control_arrow_up.svg'], '', ['icon1', '#f00'], 'green') }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', ['user', 'grid'], '', ['#f00', 'icon1']) }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'text', '', '', ['On', 'Off']) }}
-	</div>
-
-	Multistate (replacement of deprecated <i>basic.multistate</i>)
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.multistate('', 'bath.multistate', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg']) }}
-			{{ basic.stateswitch('', 'bath.multistate', '', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg']) }}
-			
-			{{ basic.multistate('', 'bath.multistate', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], 'midi', ['icon0', 'icon1', '#f00']) }}
-			{{ basic.stateswitch('', 'bath.multistate', 'midi', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], '', ['icon0', 'icon1', '#f00']) }}
-			
-			new: add text
-			{{ basic.stateswitch('', 'bath.multistate', '', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], ['Down', 'Left', 'Up'], ['icon0', 'icon1', '#f00']) }}
-			
-			new: show as icon
-			{{ basic.stateswitch('', 'bath.multistate', 'icon', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], '', ['icon0', 'icon1', '#f00']) }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		{{ basic.stateswitch('', 'bath.multistate', '', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg']) }}
-		{{ basic.stateswitch('', 'bath.multistate', 'midi', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], '', ['icon0', 'icon1', '#f00']) }}
-		{{ basic.stateswitch('', 'bath.multistate', '', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], ['Down', 'Left', 'Up'], ['icon0', 'icon1', '#f00']) }}
-		{{ basic.stateswitch('', 'bath.multistate', 'icon', [5,6,7], ['control_arrow_down.svg', 'control_arrow_left.svg', 'control_arrow_up.svg'], '', ['icon0', 'icon1', '#f00']) }}
-	</div>
-
-
-	Hiding switch (replacement of never released <i>basic.hiddenswitch</i>)
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.hiddenswitch('', 'bath.light.switch') }}
-			{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', '', '', ['blank', 'icon1']) }}
-			
-			{{ basic.hiddenswitch('', 'bath.light.switch', 'text', 'light_light.svg', 0, 1, 'icon1') }}
-			{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['', 'light_light.svg'], ['', 'text'], ['blank', 'icon0']) }}
-			
-			new: show as button
-			{{ basic.stateswitch('', 'bath.light.switch', '', '', '', '', ['blank', '']) }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', '', '', '', ['blank', 'icon1']) }}
-		{{ basic.stateswitch('', 'bath.light.switch', 'icon', [1,0], ['', 'light_light.svg'], ['', 'text'], ['blank', '']) }}
-		{{ basic.stateswitch('', 'bath.light.switch', '', '', '', '', ['blank', '']) }}
-	</div>
+	
+	All indicators run with a timout. Press the update button to simulate a response from the backend. <br>
+	{{ basic.stateswitch('', 'bath.light.value', 'mini',[0,1], '', 'update', ['icon0', 'icon1']) }}
 
 {% endblock %}

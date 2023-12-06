@@ -46,7 +46,7 @@ class rss extends service
 		if ($cache->hit())
 			$xml = simplexml_load_string($cache->read());
 		else
-			$xml = simplexml_load_string($cache->write(file_get_contents('http://'.$this->url)));
+			$xml = simplexml_load_string($cache->write(file_get_contents('https://'.$this->url)));
 
 		if ($xml)
 		{

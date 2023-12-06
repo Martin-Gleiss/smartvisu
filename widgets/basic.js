@@ -34,8 +34,12 @@ $.widget("sv.basic_checkbox", $.sv.widget, {
 $.widget("sv.basic_select", $.sv.widget, {
 
 	initSelector: 'select[data-widget="basic.select"]',
+	_lastValue: null,
 
 	_update: function(response) {
+		//workaround for select menu in page mode (change event comes after _update() )
+		if(this._lastValue != null && this._lastValue != this.element.val() && response[0] != this.element.val()) 
+			return
 		// remove space after kommas in response[0] (relevant for lists)
 		var respval = response[0].toString().trim().replace(/, /gi, ",");
 		// if response is an array or a string containing a [] it should be handled as a list
@@ -59,6 +63,7 @@ $.widget("sv.basic_select", $.sv.widget, {
 			this.element.append(optionlist);
 		};
 		this.element.val(respval).selectmenu('refresh');
+		this._lastValue = respval;
 	},
 
 	_events: {
@@ -823,7 +828,7 @@ $.widget("sv.basic_print", $.sv.widget, {
 			currentIndex++;
 		});
 		var color = String(this.options.colors).explode()[currentIndex];
-		this.element.removeClass('[class^="icon"]').show().css('visibility', '').css('color', ''); // clear previous color / effect
+		this.element.removeClass().show().css('visibility', '').css('color', ''); // clear previous color / effect
 		if (color.indexOf('icon') == 0)
 			this.element.addClass(color);
 		else if (color == 'hidden')
@@ -945,7 +950,8 @@ $.widget("sv.basic_slider", $.sv.widget, {
 		max: 255,
 		'min-send': 0,
 		'max-send': 255,
-		'live': 1
+		'live': 1,
+		'style': ''
 	},
 
 	_mem: null,
@@ -973,6 +979,12 @@ $.widget("sv.basic_slider", $.sv.widget, {
 		else {
 			this._mem = val;
 		}
+		if (this.options['style'] != ''){
+			//add for colouring the slider track
+			this.element.next('.ui-slider-track').css("background-image", this.options['style']);
+			this.element.next('.ui-slider-track').children(".ui-slider-bg").css("background-image", "none");
+			this.element.next('.ui-slider-track').children(".ui-slider-bg").css("background-color", "transparent");
+		};
 	},
 
 	_events: {
@@ -1027,14 +1039,16 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 
 	options: {
 		vals: '',
-		'indicator-type': '',
-		'indicator-duration': 3,
+		indicatorType: '',
+		indicatorDuration: 3,
 		itemLongpress: '',
 		valueLongpress: null,
 		valueLongrelease: null
 	},
 
-	_current_val: null, // current value (used to determin next value to send)
+	_current_val: null, // current value (used to determine next value to send)
+	_simulator: null,
+	_direction: 1,
 
 	_create: function() {
 		this._super();
@@ -1043,44 +1057,62 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 			// get the list of values
 			var list_val = String(this.options.vals).explode();
 
-      // this function is used to revive list entries
-      var combined = [];
-      var temp = '';
-      var start_combine = 2;
-      list_val.forEach(arrayConvert);
-      function arrayConvert(part, index) {
-        if(part.startsWith("[") && ! part.endsWith("]") && start_combine == 2)
-          start_combine = 1;
-        else if (start_combine == 2)
-          combined.push(part);
+			// this function is used to revive list entries
+			var combined = [];
+			var temp = '';
+			var start_combine = 2;
+			list_val.forEach(arrayConvert);
+			function arrayConvert(part, index) {
+				if(part.startsWith("[") && ! part.endsWith("]") && start_combine == 2)
+				  start_combine = 1;
+				else if (start_combine == 2)
+				  combined.push(part);
 
-        if(start_combine == 1) {
-            if(part.endsWith("]"))
-            {
-              start_combine = 0;
-              temp += ', ' + part;
-            }
-            else if (part.startsWith("["))
-              temp += part;
-            else
-              temp += ', ' + part;
-        }
+				if(start_combine == 1) {
+					if(part.endsWith("]"))
+					{
+					  start_combine = 0;
+					  temp += ', ' + part;
+					}
+					else if (part.startsWith("["))
+					  temp += part;
+					else
+					  temp += ', ' + part;
+				}
 
-        if (start_combine == 0)
-          {
-          combined.push(temp);
-          temp = '';
-          list_val = combined;
-          start_combine = 2;
-        }
-      }
+				if (start_combine == 0)
+				  {
+				  combined.push(temp);
+				  temp = '';
+				  list_val = combined;
+				  start_combine = 2;
+				}
+			}
 
+			var indicatorType = this.options.indicatorType;
+			var indicatorDuration = this.options.indicatorDuration;
 			// get the index of the memorised value
 			var old_idx = list_val.indexOf(this._current_val);
+			var old_val = this._current_val;
 			// compute the next index
 			var new_idx = (old_idx + 1) % list_val.length;
 			// get next value
 			var new_val = list_val[new_idx];
+			// set direction for indicator type 'simulate'
+			if (new_val > this._current_val)
+				this._direction = 1;
+			else if (new_val < this._current_val )
+				this._direction = -1;
+			else if (new_val == 0)
+				this._direction = -1;
+			// make sure every update via the websocket is executed - regardless if an item value is changed or not
+			if(indicatorType && indicatorDuration > 0)
+				widget.set(this.options.item, null);
+			// stop running simulation cycle if necessary
+			if (this._simulator != null){
+				clearInterval(this._simulator);
+				this._simulator = null;				
+			}
 			// send the value to driver
 			io.write(this.options.item, new_val);
 			// memorise the value for next use
@@ -1088,30 +1120,76 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 
 			// activity indicator
 			var target = $(event.delegateTarget);
-			var indicatorType = this.options['indicator-type'];
-			var indicatorDuration = this.options['indicator-duration'];
-			if(indicatorType && indicatorDuration > 0) {
+			var that = this;
+			if(indicatorType && indicatorDuration > 0 && widget.get(this.options.item) == null) {
+				// switch display to the separate indicator icon if defined 
+				var hasIndicatorIcon = (this.element.find('[data-val="indicator"]').length != 0);
+				if (hasIndicatorIcon){
+					this._update('indicator');
+					target = this.element.next('[data-val="indicator"]');
+				}
+				clearTimeout(target.data('indicator-timer'));
+				// find dynamic icon in the target
+				var dynamicIcon = target.find('span>svg[data-widget^="icon."]');
+				if (dynamicIcon.length == 0 && indicatorType == 'simulate')
+					indicatorType = 'blink';
+				
 				// add one time event to stop indicator
 				target.one('stopIndicator',function(event) {
 					clearTimeout(target.data('indicator-timer'));
+					clearInterval(that._simulator);
+					that._simulator = null;
 					event.stopPropagation();
 					var prevColor = target.attr('data-col');
+					var indicatorType = that.options.indicatorType;
+					var dynamicIcon = target.find('span>svg[data-widget^="icon."]');
+					if (dynamicIcon.length == 0 && indicatorType == 'simulate')
+						indicatorType = 'blink';
+					// remove indicator classes and styles
+					if (indicatorType.indexOf('icon') == 0 || indicatorType == 'blink' )
+						target.removeClass(indicatorType).find('svg').removeClass(indicatorType);
+					target.css('color', '').find('svg').css('fill', '').css('stroke', '');
+					// restore previous color
 					if(prevColor != null) {
-						if(prevColor != 'icon1')
-							target.removeClass('icon1').find('svg').removeClass('icon1');
-						if(prevColor != 'blink')
-							target.removeClass('blink').find('svg').removeClass('blink');
-						if(prevColor == 'icon1' || prevColor == 'icon0')
-							prevColor = '';
-						target.css('color', prevColor).find('svg').css('fill', prevColor).css('stroke', prevColor);
+						if(prevColor.indexOf('icon') == 0)
+							target.addClass(prevColor).find('svg').addClass(prevColor);
+						else
+							target.css('color', prevColor).find('svg').css('fill', prevColor).css('stroke', prevColor);
 					}
 				})
 				// set timer to stop indicator after timeout
-				.data('indicator-timer', setTimeout(function() { target.trigger('stopIndicator') }, indicatorDuration*1000 ));
+				.data('indicator-timer', setTimeout(function() { 
+					if (old_val != undefined && indicatorType == "simulate" && dynamicIcon.length != 0) 
+						that._update(old_val);	
+					target.trigger('stopIndicator') 
+					}, indicatorDuration*1000 
+				));
+
+				// remove existing classes  and styles
+				var actualCol = target.attr('data-col');
+				if (actualCol.indexOf('icon') == 0 && indicatorType != 'blink' && indicatorType != 'simulate' )
+					target.removeClass(actualCol).find('svg').removeClass(actualCol);
+				target.css('color', '').find('svg').css('fill', '').css('stroke', '');
+
 				// start indicator
-				if(indicatorType == 'icon1' || indicatorType == 'icon0' || indicatorType == 'blink') {
+				if(indicatorType.indexOf('icon') == 0 || indicatorType == 'blink') {
 					target.addClass(indicatorType).find('svg').addClass(indicatorType);
 					indicatorType = '';
+				}
+				
+				if (dynamicIcon.length != 0 && indicatorType == 'simulate' && this._simulator == null) {
+					var iconName = 'sv-' + dynamicIcon.attr("data-widget").replace('.', '_');
+					var iconWidget = dynamicIcon.data(iconName);
+
+					// we could read the current icon value:
+					// var iconVal = parseInt((dynamicIcon.attr('title') || '0%').replace('%', ''));
+					// but currently no need to do so
+					var iconVal = that._direction == 1 ? iconWidget.options.min : iconWidget.options.max ;
+
+					this._simulator = setInterval (function (){
+						iconVal +=  that._direction * 250 * (iconWidget.options.max - iconWidget.options.min) / (indicatorDuration*1000);
+						iconWidget._update([iconVal])
+					},250);
 				}
 				target.css('color', indicatorType).find('svg').css('fill', indicatorType).css('stroke', indicatorType);
 			}
@@ -1162,24 +1240,28 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 	},
 
 	_update: function(response) {
+		if (response == 'indicator')
+			widget.buffer[this.options.item] = '';
 		// remove space after , in response (relevant for lists)
-    var val = response.toString().trim().replace(/, /gi, ",");
-    // is response is an array or a string containing a [] it should be handled as a list
-    var respArray = response[0] instanceof Array;
-    val = val.includes("[") || ! respArray ? val : "[" + val + "]";
+		var val = response.toString().trim().replace(/, /gi, ",");
+		// if response is an array or a string containing a [] it should be handled as a list
+		var respArray = response[0] instanceof Array;
+		val = val.includes("[") || ! respArray ? val : "[" + val + "]";
 
-    // remove space after , in widget data-val entries
-    this.element.children('a[data-widget="basic.stateswitch"]').attr('data-val', function(index, src) {
-        return src.replace(/, /gi, ",")
-    })
+		// remove space after comma in widget data-val entries
+		this.element.children('a[data-widget="basic.stateswitch"]').attr('data-val', function(index, src) {
+			return src.replace(/, /gi, ",")
+		})
 		// hide all states
 		this.element.next('a[data-widget="basic.stateswitch"][data-index]').insertBefore(this.element.children('a:eq(' + this.element.next('a[data-widget="basic.stateswitch"][data-index]').attr('data-index') + ')'));
 		// stop activity indicator
 		this.element.children('a[data-widget="basic.stateswitch"]').trigger('stopIndicator');
 		// show the first corrseponding to value. If none corrseponds, the last one will be shown by using .addBack(':last') and .first()
-		this.element.after(this.element.children('a[data-widget="basic.stateswitch"]').filter('[data-val="' + val + '"]:first').addBack(':last').first());
+		this.element.after(response!="indicator" ? this.element.children('a[data-widget="basic.stateswitch"][data-val!="indicator"]').filter('[data-val="' + val + '"]:first').addBack(':last').first() : this.element.children('a[data-widget="basic.stateswitch"]').filter('[data-val="' + val + '"]:first').addBack(':last').first());
+
 		// memorise the value for next use
-		this._current_val = val;
+		if (response != 'indicator')
+			this._current_val = val;
 	},
 
 });
@@ -1383,6 +1465,7 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		slidertype: "min-range",
 		lineCap: "round",
 		icon:"",
+		live: 1
 	},
 
 	_create: function() {
@@ -1390,9 +1473,10 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 	},
 	
 	_update: function(response) {
-		var id = this.element.attr('id');
+		var element = this.element;
 		var user_value = response[0];
 		var user_value_item = this.options.item;
+		var liveOption = this.options.live;
 		
 		this.options.handlesize = this.options.width +15; 
 		
@@ -1406,17 +1490,9 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 		var to_value = decoration[2];
 		var scale = decoration[3] =='true' ? true: false;
 		var scale_interval = this.options.scale_interval;
-	
-		//get colours from css theme
-		var bg_color = $('.ui-bar-b').css('background-color');
-		var font_color = $('.ui-content').css('color');
-		var track_color = $('.ui-bar-a').css('background-image');
-		var path_color = $(".ui-bar-a").css('background-color');
-		var border_color = $(".ui-bar-b").css('border-bottom-color');
-		var handle_color = $(".ui-page-theme-a.ui-btn").css('background-image');
-		
+			
 		//call roundslider plugin
-		$("div#"+id).roundSlider({
+		$(element).roundSlider({
 			circleShape: this.options.circleshape,
 			sliderType: this.options.slidertype,
 			editableTooltip: false,
@@ -1435,33 +1511,30 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 
 			tooltipFormat: function (args) {
 				var val = args.value;
-				var icon = $("div#"+id).attr('data-icon');
+				var icon = $(element).attr('data-icon');
 				if (icon != ''){
-					return "<img src="+icon +" style='width:1em; margin:auto; margin-bottom: 0em; margin-top:-1em; clip-path: circle(); display:block !important;'><div id='value' style='font-weight:bold;font-size:.4em;'>" + args.value + " "+ unit +"</div>";
+					var insertSvg = $(element).siblings('.rs-insert-icon').find('svg');
+					if (insertSvg.length == 1){
+						var rsSvg = insertSvg[0].outerHTML;
+						return rsSvg + "<div id='value' style='font-weight:bold;font-size:.4em;'>" + args.value + " "+ unit +"</div>";
+					}
+					else
+						return "<img src="+icon +" style='width:1em; margin:auto; margin-bottom: 0em; margin-top:-1em; clip-path: circle(); display:block !important;'><div id='value' style='font-weight:bold;font-size:.4em;'>" + args.value + " "+ unit +"</div>";
 				}else{
 					return "<div id='rs_value_pre' style='font-size:0.2em; '>"+ pre_value +"</div><div id='value' style='font-weight:bold;font-size:0.4em;'>" + args.value + " " + unit +"</div><div id='rs_value_to' style='font-size:0.2em;'>"+to_value+"</div>";
 				}
 			},
 			update: function (args) {
-				io.write(user_value_item, args.value);
+				if (liveOption == 1)
+					io.write(user_value_item, args.value);
 			},
-			tooltipColor: function (args) {
-				return font_color;
+			
+			change: function (args) {
+				if (liveOption == 0)
+					io.write(user_value_item, args.value);
 			},
-			rangeColor: function (args) {
-				return bg_color;
-			},
-			pathColor: function (args) {
-				return path_color;
-			},
-			borderColor: function (args) {
-				return border_color;
-			},
+
 			create: function(args){
-				$("#"+id+" .rs-handle").css('box-shadow', '0px 0px 15px #875009');
-				$("#"+id+" .rs-handle").css('box-shadow', handle_color );
-				$("#"+id+" .rs-handle").css('background-image', handle_color );
-				$("#"+id+" .rs-range").css('background-image', track_color );
 				if (scale == true) {
 					var o = this.options;
 					var extraSize = 0, 
@@ -1484,11 +1557,8 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 						  "margin-right": '10px',
 						}).appendTo(numberTag);
 						number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
-						$("#"+id+" .rs-number").css("color",font_color); 
-						$("#"+id+" .rs-seperator").css("border-color",border_color );
-						$("#"+id+" .rs-seperator").css("border-width","2px");
-						$("#"+id+" .rs-seperator").css("width","10px");
-						$("#"+id+" .rs-seperator").css("margin-left","-10px"); 
+						$(element).find(".rs-seperator").css("width","10px");
+						$(element).find(".rs-seperator").css("margin-left","-10px"); 
 						if (sizeCorrect && circleShape.indexOf("bottom") != -1) 
 							  numberTag.css("margin-top", extraSize + 'px');
 						if (sizeCorrect && circleShape.indexOf("right") != -1)
@@ -1500,12 +1570,6 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 					for (var i = o.min; i <= o.max; i += interval) {
 						var angle = this._valueToAngle(i);
 						var numberTag = this._addSeperator(angle, "rs-custom_1");
-						numberTag.addClass( "rs-seperator_1" );
-						$("rs-seperator_1").css("border-color",border_color );
-						$("rs-seperator_1").css("border-width","2px");
-						$("rs-seperator_1").css("width","5px");
-						$("rs-seperator_1").css("height","1px");
-						$("rs-seperator_1").css("margin-left","-10px");
 						if (sizeCorrect && circleShape.indexOf("bottom") != -1) 
 							numberTag.css("margin-top", extraSize + 'px');
 						if (sizeCorrect && circleShape.indexOf("right") != -1)
@@ -1532,7 +1596,18 @@ $.widget("sv.basic_window", $.sv.widget, {
 	
 	_update: function(response) {
 		// response is: {{ gad_value }}, {{ gad_window_r}}, {{ gad_window_l}}
-		this._super(response);
+        // make sure that items are correlated correctly even if optional items are omitted
+        var items = this.options.item.explode();
+        var values = new Array(this.items.length);
+        var j=0;
+        for (var i = 0; i < items.length; i++) {
+            if (items[i] != '') {
+                values[i] = response[j];
+                j++;
+            } else 
+				values[i] = 0;
+        };
+		response = values;
 
 		var color = this.element.attr('data-color').explode();
 		var must = false;
@@ -1614,6 +1689,59 @@ $.widget("sv.basic_window", $.sv.widget, {
 		var val = Math.round(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 38);
 		
 		fx.grid(this.element[0], val, [14, 30], [86, 68]);
+	}
+});
+
+// ----- widget_skylight ------------------------------------------------------
+$.widget("sv.basic_skylight", $.sv.widget, {
+
+	initSelector: 'svg[data-widget="basic.skylight"]',
+	options: {
+		min: 0,
+		max: 255
+	},
+
+	_update: function(response) {
+		// response is: {{ gad_value }}, {{ gad_window }}
+		
+		var color = this.element.attr('data-color').explode();
+		var must = false;
+		if (color[1].indexOf('!') > -1){		//support legacy function constant color
+			color[1] = color[1].substr(1);
+			must = true; 
+		}
+		var style = color.slice();
+		for (var i=0; i<=1; i++){
+			if (color[i].indexOf('icon') == 0) 
+				style[i] = '';
+			else 	
+				color[i] = '';
+		}
+		this.element.attr('class', 'icon' + ((response[1] && response[1] != 'closed') || (response[2] && response[2] != 'closed') || (must == true) ? ' '+color[1] : ' '+color[0]));
+		this.element.attr('style', ((response[1] && response[1] != 'closed') || (response[2] && response[2] != 'closed') || (must == true) ? 'stroke: '+ style[1]+'; fill: '+style[1]+';' : 'stroke: '+ style[0]+'; fill: '+style[0]+';'));
+
+		var max = parseFloat(this.options.max);
+		var min = parseFloat(this.options.min);        
+		var x = response[1] * 1; 
+		var y = Math.min(Math.max((response[0] - min) / (max - min), 0), 1);
+		
+		var m1 = (264 - 100) / (80 - 154);
+		var m2 = (264 - 100) / (205 - 279);
+		
+		var y0 = 100 + (164 * y);
+		var x1 = (y0 - 100) / ((264 - 100) / (80 - 156)) + 156;
+		var x2 = (y0 - 100) / ((264 - 100) / (203 - 279)) + 279;
+		
+		var points = "156,100 279,100 " + x2 + "," + y0 + " " + x1 + "," + y0 + " 156,100";
+		
+		this.element.find('#blind').attr('points', points);
+		
+		this.element.find('#window0').attr('stroke-width', x === 0 ? '10':'0');
+		this.element.find('#knob0').attr('fill-opacity', x === 0 ? '1':'0');
+		this.element.find('#window1').attr('stroke-width', x === 1 ? '10':'0');
+		this.element.find('#knob1').attr('fill-opacity', x === 1 ? '1':'0');
+		this.element.find('#window2').attr('stroke-width', x === 2 ? '10':'0');
+		this.element.find('#knob2').attr('fill-opacity', x === 2 ? '1':'0');
 	}
 });
 

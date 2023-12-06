@@ -69,4 +69,16 @@
 		{{ basic.slider('', 'bath.light.value', 0, 255, 5, '', 'both') }}
 	</div>
 
+	Style
+	<div class="twig">
+		<code class="prettyprint">
+			&#123;&#123; basic.slider('', 'bath.light.color_temperature',0, 255, 5, '', 'none', '', '', 1, 'linear-gradient(90deg, rgb(229, 234, 255), rgb(255, 177, 111))') &#125;&#125;<br>
+			&#123;&#123; basic.slider('', 'bath.light.color_temperature',0, 255, 5, '', 'none', '', '', 1, 'linear-gradient(90deg, rgb(255, 0, 0), rgb(0, 0, 255))') &#125;&#125;
+		</code>
+	</div>
+	<div class="html">
+		{{ basic.slider('', 'bath.light.color_temperature',0, 255, 5, '', 'none', '', '', 1, 'linear-gradient(90deg, rgb(229, 234, 255), rgb(255, 177, 111))') }}<br>
+		{{ basic.slider('', 'bath.light.color_temperature',0, 255, 5, '', 'none', '', '', 1, 'linear-gradient(90deg, rgb(255, 0, 0), rgb(0, 0, 255))') }}
+	</div>
+
 {% endblock %}

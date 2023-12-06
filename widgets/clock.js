@@ -1,31 +1,18 @@
 $.widget("sv.clock", $.sv.widget, {
 
 	options: {
-		"servertime-url": ""
+		servertime: ""
 	},
 
 	_init: function() {
 		this._super();
+
 		// memorize servertime listeners in order to init them again when servertime has been loaded successfully
-		if(window.servertimeoffset === undefined && this.options["servertime-url"] != '') {
+		if(window.servertimeoffset === undefined && this.options.servertime == 'yes') {
 			if(window.servertimelisteners)
 				window.servertimelisteners.push(this);
 			else {
 				window.servertimelisteners = [this];
-				var localtime = Date.now();
-				$.ajax({
-					url: this.options["servertime-url"],
-					cache: false
-				}).done(function(resp) {
-					var servertime = Number(resp) * 1000;
-					// use average of start and end request timestamp and make it local time
-					localtime = localtime / 2 + Date.now() / 2;
-					window.servertimeoffset = parseInt((localtime - servertime)/1000)*1000;
-					window.serverTimezoneOffset = parseInt(Number(sv.config.timezoneOffset) + new Date().getTimezoneOffset()*60)*1000;  // php: negative value west of UTC, js: positive value west of UTC
-					while(window.servertimelisteners.length > 0)
-						window.servertimelisteners.shift()._init(); 
-					window.servertimelisteners = null;
-				});
 			}
 		}
 	},
@@ -41,7 +28,7 @@ $.widget("sv.clock_digiclock", $.sv.clock, {
 	_init: function() {
 		this._super();
 		this.element.attr("stoptimer", "false");
-		if(window.servertimeoffset != undefined || this.options["servertime-url"] == '')	
+		if(window.servertimeoffset != undefined || this.options.servertime == '')	
 			this.element.digiclock({ svrOffset: (window.servertimeoffset || 0) - (window.serverTimezoneOffset || 0) });
 	},
 
@@ -177,6 +164,47 @@ $.widget("sv.clock_countdown", $.sv.widget, {
 				that.element.text(timedisplay(timetogo));
 			};			
 		};
+	},
+
+});
+
+// ----- clock.countup ------------------------------------------------------
+$.widget("sv.clock_countup", $.sv.widget, {
+
+	initSelector: 'span[data-widget="clock.countup"]',
+
+	options: {
+		interval: '10s',
+		idletxt: null,
+ 	},
+
+	_ticker: null,
+
+	_update: function(response) {
+		var enabled = true;
+		if (this.items[1] != undefined && response[1] == 0 )
+			enabled = false;
+		var item = response[0];
+		var starttime = $.isNumeric(item)? item: Date.parse(item);
+		var interval = +new Date().duration(this.options.interval); // countdown interval in milliseconds
+		var that = this;
+		
+		//console.log('[update] item: ', item, ' start: ', starttime, 'enabled:', enabled);
+		if (this._ticker) 
+			clearInterval(this._ticker);
+
+		if (enabled == false){
+			if (this.options.idletxt == undefined)
+				this.element.css("visibility", "hidden");
+			this.element.text(this.options.idletxt);
+		}
+		else {
+			this.element.css("visibility", "visible");
+			this.element.text(timedisplay(Date.now() - starttime)) 
+			this._ticker = setInterval(function (){
+				that.element.text(timedisplay(Date.now() - starttime))
+			}, interval); 
+		}
 	},
 
 });

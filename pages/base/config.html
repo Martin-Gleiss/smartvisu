@@ -61,9 +61,10 @@
 								<h3>{{ lang('configuration_page', 'interface', 'label') }}</h3>
 								<div style="min-height:245px">
 									{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
+									{% set designdir = dir('designs', '(.+?).css') %} {% if isdir('dropins/designs') %} {% set designdir = designdir|merge(dir('dropins/designs', '(.+?).css')) %} {% endif %}
 									{{ forms.config_row(source, values, 'design',
 										[
-										forms.config_select(source, values, 'design', dir('designs', '(.+?).css'), 'true')
+										forms.config_select(source, values, 'design', designdir, 'true')
 										,forms.config_hidden(source, values, 'design_icon0')
 										,forms.config_hidden(source, values, 'design_icon1')
 										] 
@@ -181,6 +182,7 @@
 								<h3>{{ lang('configuration_page', 'functions', 'label') }}</h3>
 								{{ forms.config_flip(source, values, 'updatecheck') }}
 								{{ forms.config_flip(source, values, 'driver_loopback') }}
+								{{ forms.config_flip(source, values, 'collapsible_reset') }}
 							</div>
 						</div>
 					</div>
@@ -214,21 +216,24 @@
 						<ol type="a">
 							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_6a')|raw }}</li>
 							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_6b')|raw }}</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_6c')|raw }}</li>
 						</ol>
 					</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7')|raw }}
 						<ol type="a">
 							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7a')|raw }}</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7b')|raw }}<br>
-								<input type="text" type="hidden" name="script_origin" id="script_origin" readonly="readonly" onclick="this.select();"> <!-- filled in by JavaScript -->
-							</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7c')|raw }}</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7b')|raw }}</li>
 						</ol>
 					</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_8')|raw }}</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_9')|raw }}</li>
-					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_10')|raw }}</li>
+						<ol type="a">
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_9a')|raw }}</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_9b')|raw }}<br>
+								<input type="text" type="hidden" name="script_origin" id="script_origin" readonly="readonly" onclick="this.select();"> <!-- filled in by JavaScript -->
+							</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_9c')|raw }}</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_9d')|raw }}</li>
+						</ol>					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_10')|raw }}</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_11')|raw }}
 						<input type="file" id="google_json_file">
 						 {{ lang('configuration_page','calendar_googleauth', 'instruct_11_hint')|raw }}

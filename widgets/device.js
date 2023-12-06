@@ -150,10 +150,12 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 	},
 	
 	_update: function(response) {
+		var element = this.element;
+		var outerSlider = $(element).find('.outerslider');
+		var innerSlider = $(element).find('.innerslider');
 		var item_names = this.options.item.explode();
 		var actualValue = response[0];
 		var setValue = response[1];
-		var id = this.element.attr('id');
 		var scale_min = this.options.scale_min;  //18;
 		var scale_max = this.options.scale_max;  //28;
 		var step = this.options.step * 1;   //0.1;
@@ -167,17 +169,9 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 			  var offset_old = response[2];
 		}
 						
-		//get colors
-		var bg_color = $('.ui-bar-b').css('background-color');
-		var font_color = $('.ui-content').css('color');
-		var track_color = $('.ui-bar-a').css('background-image');
-		var path_color = $(".ui-bar-a").css('background-color');
-		var border_color = $(".ui-bar-b").css('border-bottom-color');
-		var handle_color = $(".ui-page-theme-a.ui-btn").css('background-image');
-					
-		
+	
 	// slider for actual value
-	$("div#"+id+".outerslider").roundSlider({
+	$(outerSlider).roundSlider({
 		value: actualValue,
 		min: scale_min,
 		max: scale_max,
@@ -194,6 +188,7 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		lineCap: "none",
 		width: "8",
 		svgMode: true,
+		readOnly: true,
 		
 		update: function(args) {},
 		
@@ -209,13 +204,9 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 			  "margin-right": '10px',
 			}).appendTo(numberTag);
 			number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
-			$("#"+id+".outerslider .rs-number").css("left", "-25px");
-			$("#"+id+".outerslider .rs-number").css("color",font_color); 
-			$("#"+id+".outerslider .rs-seperator").css("border-color",border_color );
-			$("#"+id+".outerslider .rs-seperator").css("border-width","2px");
-			$("#"+id+".outerslider .rs-seperator").css("width","6px");
-			//$("#"+id+".outerslider.rs-seperator_1").css("height","1px");
-			$("#"+id+".outerslider .rs-seperator").css("margin-left","-6px"); 
+			$(outerSlider).find(".rs-number").css("left", "-25px");
+			$(outerSlider).find(".rs-seperator").css("width","6px");
+			$(outerSlider).find(".rs-seperator").css("margin-left","-6px"); 
 			
 		  };
 		 //scala gerade striche (kurz)
@@ -224,34 +215,23 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 			var angle = this._valueToAngle(i);
 			var numberTag = this._addSeperator(angle, "rs-custom_1");
 			numberTag.addClass( "rs-seperator_1" );
-			$("#"+id+".outerslider .rs-seperator_1 .rs-seperator").css("border-color",border_color );
-			$("#"+id+".outerslider .rs-seperator_1 .rs-seperator").css("border-width","1px");
-			$("#"+id+".outerslider .rs-seperator_1 .rs-seperator").css("width","4px");
-			$("#"+id+".outerslider .rs-seperator_1 .rs-seperator").css("height","1px");
-			$("#"+id+".outerslider .rs-custom_1 .rs-seperator").css("left","-10px");  
+			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("width","4px");
+			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("margin-left", "0px");
+			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("height","1px");
 			
 		  };
 		},
 
 		tooltipFormat:function (args){
-			return"<span style='position: relative;top:-2.2em;font-size:0.2em;color:"+font_color+"; '>Ist: </span></br><span id ='val' style='position: relative;top:-2.7em;font-weight:bold;font-size:0.45em;color:"+font_color+";'>" + args.value.toFixed(decs) + unit +"</span>";
+			return"<span style='position: relative;top:-2.2em;font-size:0.2em;'>Ist: </span></br><span id ='val' style='position: relative;top:-2.7em;font-weight:bold;font-size:0.45em;'>" + args.value.toFixed(decs) + unit +"</span>";
 		},
-		rangeColor: function (args) {
-			return border_color;
-		},
-		pathColor: function (args) {
-			return path_color;
-		},
-		borderColor: function (args) {
-			return border_color;
-		}
 	});
 
 	var actualString = (actualValue < 10 ? '0' : '') + actualValue.toFixed(decs)+unit;
-	$("div#"+id+".outerslider .rs-tooltip #val").html(actualString);
+	$(outerSlider).find(".rs-tooltip #val").html(actualString);
 
 	// slider for set value
-	$("#"+id+".innerslider").roundSlider({
+	$(innerSlider).roundSlider({
 		value: setValue,
 		min: scale_min,
 		max: scale_max,
@@ -276,22 +256,9 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 			else
 				io.write(item_names[1], args.value);	
 		},
-	
-		tooltipColor: function (args) {
-			return font_color;
-		},
-		rangeColor: function (args) {
-			return bg_color;
-		},
-		pathColor: function (args) {
-			return path_color;
-		},
-		borderColor: function (args) {
-			return border_color;
-		},
-			
+				
 		create: function() {
-			$("#"+id).find(".inner-handle").css({
+			$(innerSlider).find(".inner-handle").css({
 				'position': 'absolute',
 				'left': '-35px'}
 				);
@@ -1887,6 +1854,9 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       },
       chart: {
 		styledMode: true,
+		exporting: {
+			enabled: false
+		},
         events: {
           click: function(e) { // add point
             if(self.justDragged) { // prevent click event after drop
@@ -1934,7 +1904,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
                   self.justDragged = false;
                   return;
                 }
-                self._uzsuRuntimePopup(e.point.uzsuEntry)
+				if(e.point.uzsuEntry !== undefined)
+					self._uzsuRuntimePopup(e.point.uzsuEntry)
               },
               drag: function (e) {
               },
@@ -2215,7 +2186,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var data = seriesData.active;
     data.sort(function(a,b) { return a.x - b.x });
 
-    if(data.length > 0) {
+    // add graph points at the ends (not clickable since entryIndex and uzsuEntry are missing)
+	if(data.length > 0) {
       data.unshift({ x: data[data.length-1].x-1000*60*60*24*7, y: data[data.length-1].y, className: data[data.length-1].className });
       data.push({ x: data[1].x+1000*60*60*24*7, y: data[1].y, className: data[1].className });
     }
@@ -2967,7 +2939,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         var preFix = TableName
 
         if (myOptions.borderstyle.explode().length == 1) {
-            myJson[myOptions['granularity']] = myOptions.borderstyle.explode()[0]
+            myBorderStyle = myOptions.borderstyle.explode()[0]
         } else {
             for (key in myOptions.borderstyle.explode()) {
                 myJson[myOptions.borderstyle.explode()[key].split(":")[0]] = myOptions.borderstyle.explode()[key].split(":")[1]

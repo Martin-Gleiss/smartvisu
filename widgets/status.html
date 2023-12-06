@@ -21,7 +21,7 @@
 * @author Wolfram v. Hülsen based on a widget from Bonze
 */
 {% macro activelist(id, item_messages, title, subtitle, content, level) %}
-	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.activelist" data-item="{{ item_messages }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.activelist" class="calendarlist" data-item="{{ item_messages }}"
 		data-title="{{ title }}" data-subtitle="{{ subtitle }}" data-content="{{ content }}" data-level="{{ level }}">
 		<dl data-role="listview" class="ui-listview activelist-container" style="margin-top: 0px;margin-bottom: 0em; margin-right:0px;">
 		</dl>
@@ -63,9 +63,28 @@ the first one is the base color for values below first threshold, so pass one co
 
 
 /**
+* Apply CSS class to an element depending on a trigger item.
+*
+* @param {text[?]} id or array of ids of the elements to style. Widgets are identified by the plain id while html elements require the format {pagename}-{idname}, e.g. id="mypage-myid" (mandatory)
+* @param {item(bool,num)} an item which triggers the styling
+* @param {text[?]=0} the values on which the target will be styled. Compare operators are supported, e.g. "<20" (optional, default 0)
+* @param {text=blink} custom CSS class used for styling  (optional, default = blink)
+*/
+{% macro customstyle(id, item_trigger, value, action) %}
+	{% set id = id is iterable ? id : [id] %}
+	{% set ids = [] %}
+	{%  for val in id %}
+		{% set ids = ids|merge([uid(page, val)]) %}
+	{% endfor %}
+	{% set value = (value|default([0]) is iterable ? value|default([0]) : [value]) %}	
+	<span data-id="{{ implode(ids) }}" data-widget="status.customstyle" data-item="{{ item_trigger }}" data-val="{{ implode(value) }}" data-action="{{ action |default('blink') }}"></span>
+{% endmacro %}
+
+
+/**
 * Displays a list of logging-information
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget (optional)
 * @param {text} the name of the log
 * @param {value(1..50)} maximal number of entries (1 - 50)
 */
@@ -81,7 +100,7 @@ the first one is the base color for values below first threshold, so pass one co
 /**
 * Displays a notification popup window with a message
 *
-* @param {id} unique id for this widget
+* @param {id} unique id for this widget (mandatory)
 * @param {item(bool,num)} an item witch triggers the popup: NOT 0 open it, 0 close it
 * @param {item(str)=} an item with the dynamic message
 * @param {item(num,str)=} an item with a timestamp (e.g. 2020-01-01T12:00:00.000000+01:00 or a Unix timestamp in Milliseconds)
@@ -107,7 +126,7 @@ the first one is the base color for values below first threshold, so pass one co
 /**
 * Displays a notification edge window
 *
-* @param {id} unique id for this widget
+* @param {id=} unique id for this widget (optional)
 * @param {item(bool,num)} an item witch triggers the notification
 * @param {item(str)=} an item with the dynamic message
 * @param {text=INFO} a word for the signal corner (optional, default 'INFO')
@@ -148,7 +167,7 @@ Caution: If this is set, the notification gets not shown until the item has sent
 * @param {text=} plain text or html code as content (optional, default = '')
 * @param {text=} smartvisu icon to be used instead of the standard icons (info, warning, success, error). (optional, default = '')
 * @param {text=} standard template to be used (success, error, warning, info) (optional, default = '')
-* @param {item(bool, num, str, list)=} an item to send a value on button-press (optional, default = '')
+* @param {item(bool,num,str,list)=} an item to send a value on button-press (optional, default = '')
 * @param {text=} button text (optional, default = '') button will show only if text is specified
 * @param {text=0} value to be sent when the button is pressed (optional, default = '0')
 * @param {text(false,true)=true} an option to close the toast manually (true, false) (optional, default = 'true')
@@ -169,7 +188,7 @@ Caution: If this is set, the notification gets not shown until the item has sent
 		data-item="{{ item_trigger }}, {{ item_title }}, {{ item_content }}, {{ item_icon  }}"
 		data-textopts="{{ text_title }}, {{ text_content | default('')}}, {{ text_icon | default('') }}" 
 		data-buttonopts="{{ text_button |  default('') }}, {{ item_button | default('') }}, {{ value_button | default('0') }}"
-		data-template="{{param_template | default('')}}" 
+		data-template="{{param_template | default('free')}}" 
 		data-style="{{param_bgColor | default('gray')}}, {{param_color | default('#9EC600')}},{{param_loaderbg | default('#eee')}},{{param_align | default('left')}},{{param_position | default('bottom-left')}},{{param_stack | default('5')}},{{param_showloader | default('true')}},{{param_hideafter | default('5000')}},{{param_allowclose | default('true')}},{{param_showhide | default('slide')}}" 
 		>
 	
