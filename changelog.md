@@ -26,7 +26,7 @@
 - new folder ./dropins/designs for custom design CSS files (please adjust urls of e.g. background images in the files)
 - page and service for backup and restore of configuration, dropins and custom pages (thanks to @hijacker7)
 - new Italian language package (granzie tante a @hijacker7)
-- drivers for smarthomeNG, eibd/knxd and ioBroker now support status and control items/GAs in one item, separated by a colon. Format is "item_status:item_control" (or e.g. "1/0/0:1/0/1" for eibd/knxd)
+- drivers smarthomeNG, eibd/knxd, offline and ioBroker now support status and control items/GAs in one item, separated by a colon. Format is "item_status:item_control" (or e.g. "1/0/0:1/0/1" for eibd/knxd)
 - new config option "collapsible_reset" resets the room menu in the sidebar to the pages default state on every page change (pagecontainershow event).
 - help texts for GoogleV3 calendar OAuth procedure updated according to current workflow in Google developer console
 - some new icons from KNX-UF icon set (modernized cars, HEV charging, manual)
@@ -62,6 +62,7 @@
 ### Removed Features
 - parameter type "iconseries" for template checker removed since basic shifter was removed in v3.3
 - weather services yr.no and darksky.net removed due to discontinuation of the services
+- notify.error(), notify.warning(), notify.info() removed which had been replaced by notify.message()
 
 ### Fixed Bugs
 - multiple icons of icon.heating on one page could only be colored with the color of the first occurance and disappeared otherwise
