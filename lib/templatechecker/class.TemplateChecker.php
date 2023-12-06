@@ -169,7 +169,7 @@ class TemplateChecker {
 			}
 		} else if ($node->nodeType == XML_TEXT_NODE) {
 			// do not check code wrapped by {% verbatim %} or in twig comment /**...*/
-			$value = preg_replace('/{%\s*verbatim\s*%}.*?{%\s*endverbatim\s*%}|\/\*\*.*?\*\//', '', trim($node->textContent));
+			$value = preg_replace('/{%\s*verbatim\s*%}.*?{%\s*endverbatim\s*%}|\/\*\*\s*.*?\s*\*\//', '', trim($node->textContent));
 			if (preg_match_all("/{{(.*?)}}/s", $value, $macros)) {
 				for ($i = 0; $i < count($macros[0]); $i++)
 					$this->checkWidget($node, trim($macros[1][$i]));
