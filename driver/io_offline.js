@@ -170,7 +170,7 @@ var io = {
 				val = JSON.parse(response[item]);
 			}
 			catch(e) {}
-			console.log('[io.offline] receiving data: ["'+ item +' ": '+ val + ']');
+      console.log('[io.offline] receiving data: ["'+ item +' ": '+ val + ']');
 			widget.update(item, val);
 		})
 		.fail(notify.json)
@@ -222,7 +222,7 @@ var io = {
 				cache: false
 			})
 			.done(function (response) {
-				console.log('[io.offline] receiving data: ' + JSON.stringify(response).replace(/\\\"/g,''));
+        console.log('[io.offline] receiving data: ' + JSON.stringify(response).replace(/\\\"/g,''));
 				// update all items	
 				$.each(response, function (item, val) {
 					// try to parse as JSON. Use raw value if this fails (value was likely saved before introdution of JSON.stringify in put)
