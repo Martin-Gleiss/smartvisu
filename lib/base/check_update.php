@@ -41,18 +41,10 @@ if (empty($_COOKIE['updchk']) && config_updatecheck)
 
 	if($VersionBuffer !== false){
 		// Filter version info from the array
-		$VersionOldFormat = substr ($VersionBuffer [2], 27, -4);
+		$VersionMajor = substr ($VersionBuffer [2], 33, -4);
+		$VersionMinor = substr ($VersionBuffer [3], 33, -4);
+		$VersionRevision = substr ($VersionBuffer [4], 36, -4);
 
-		if ($VersionBuffer [4]) {		// version-info.php contains new version formats
-			$VersionMajor = substr ($VersionBuffer [3], 33, -4);
-			$VersionMinor = substr ($VersionBuffer [4], 33, -4);
-			$VersionRevision = substr ($VersionBuffer [5], 36, -4);
-		}
-		else{
-			$VersionMajor = substr ($VersionOldFormat, 0, 1);
-			$VersionMinor = substr ($VersionOldFormat, 2);
-			$VersionRevision = "0";
-		}
 		$ret["update"] = (($VersionMajor > config_version_major) or ($VersionMinor > config_version_minor) or ($VersionRevision > config_version_revision) ? true : false);
 		$extension = "";
 		if ((isset($data_sv) && !$data_sv->update) && $ret["update"]) 
