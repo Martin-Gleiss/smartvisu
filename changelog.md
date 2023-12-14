@@ -1,3 +1,23 @@
+## 3.4.a
+### New / Changed Widgets
+
+### Other New Features
+
+### Improvements
+
+### Updated Libraries
+
+### Deprecated
+
+### Removed Features
+
+### Fixed Bugs
+ 
+### Known Bugs
+- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
+- smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php 
+
+
 ## 3.4
 ### New / Changed Widgets
 - quad.blind and quad.shutter can be configured to move the shutter on short- or longpress
