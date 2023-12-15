@@ -12,6 +12,7 @@
 ### Removed Features
 
 ### Fixed Bugs
+- system page was not shown due to missing infoblock.html if pages were configured to "Smarthome" but pages had not been created yet by the "smartvisu" plugin of smarthomeNG. 
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
