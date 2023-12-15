@@ -2,6 +2,10 @@
 
 [![Join the chat at https://gitter.im/sVISU/Lobby](https://badges.gitter.im/sVISU/Lobby.svg)](https://gitter.im/sVISU/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
   
+## Warning ! The current version in this develop branch is experimental and should not be used in productive environments!
+Use version v3.4 from master branch instead.
+
+
 ## DESCRIPTION
 smartVISU is a framework to create a visualisation for a knx-installation with simple html-pages.  
 To read and write group-telegrams special tags are used.  
@@ -22,7 +26,7 @@ SEE: [smartvisu.de](http://www.smartvisu.de)
 ## SYSTEM REQUIREMENTS
   * IP-Network, KNX-Bus
   * [smarthomeNG](https://github.com/smarthomeNG), [linknx](http://sourceforge.net/projects/linknx/), [ioBroker](https://github.com/ioBroker/ioBroker), [openHAB](https://www.openhab.org/), [FHEM](https://fhem.de/) or [knxd](https://github.com/knxd/knxd) (deprecated: [eibd](http://www.auto.tuwien.ac.at/~mkoegler/index.php/eibd) ) backend or JSON interface
-  * Webserver with PHP 7.3.2 and above. Compatibility with php v8.2 is verified. PHP packages required: libawl-php php-curl php php-json php-xml php-mbstring
+  * Webserver with PHP 7.3.2 and above. Compatibility with php v8.0 is verified. PHP packages required: libawl-php php-curl php php-json php-xml php-mbstring
   * Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android Tablet
  
  

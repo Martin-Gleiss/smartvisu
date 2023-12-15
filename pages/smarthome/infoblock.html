@@ -1,0 +1,29 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Wolfram v. Hülsen
+* @copyright   2021
+* @license     GPL [http://www.gnu.de]
+*
+* dummy info block -  to be displayed if user configured infoblock.html is missing
+* -----------------------------------------------------------------------------
+*/
+
+<div style="text-align: center;">
+	<br><br><br>
+{% if lang('baselang') != 'de' %}
+	<b>The file infoblock.html is missng here.</b><br><br>
+	{% if config_pages == 'smarthome' %}
+	Start the page generation process in smarthomeNG to have the file copied from the _template folder.
+	{% else %}
+	Copy the file from the folder ./pages/_template to the folder containig your own pages and cusomize the content to your needs.
+	{% endif %}
+{% else %}
+	<b>Hier fehlt die Datei infoblock.html.</b><br><br>
+	{% if config_pages == 'smarthome' %}
+	Starte die Autogenerierung der Seiten in smarthomeNG, um eine Kopie aus dem Ordner _template zu erzeugen.
+	{% else %}
+	Kopiere die Datei aus dem Ordner ./pages/_template in den Ordner mit Deinen Seiten und passe den Inhalt bei Bedarf nach Deinen Wünschen an.
+	{% endif %}
+{% endif %}
+</div>
