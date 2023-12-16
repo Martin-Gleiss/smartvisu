@@ -1381,7 +1381,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       }
       else {
         this.hasInterpolation = true
-        console.log('UZSU interpolation set to ' + response.interpolation.type);
+        console.log('UZSU interpolation for item "' + this.options.item + '" set to ' + response.interpolation.type);
       }
 	  //plugin version in dict has been introduced with the series functionality - no explicit version check necessary
 	  if (response.plugin_version === undefined){
@@ -1676,12 +1676,6 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
     // init data (used if no update follows because item does not exist yet)
     this._uzsudata = { active : true, list : [] }
-
-// already called in _create of prototype widget
-//    this.options.designtype = String(this.options.designtype);
-//    if(this.options.designtype === undefined || this.options.designtype === '') {
-//      this.options.designtype = io.uzsu_type;
-//    }
 
     var valueParameterList = this.options.valueparameterlist.explode();
     if(valueParameterList.length === 0){
@@ -2078,7 +2072,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 	var hasBurst = false;
     var seriesData = { active: [], inactive: [], range: [] };
     var linetype = this._uzsudata.interpolation.type == 'cubic' ? 'spline' : 'line';
-    Highcharts.seriesTypes.scatter.prototype.getPointSpline = Highcharts.seriesTypes[linetype].prototype.getPointSpline;
+ //   Highcharts.seriesTypes.scatter.prototype.getPointSpline = Highcharts.seriesTypes[linetype].prototype.getPointSpline;
     
 	// as from v3.2 we start with "today" instead of Monday
 	var today = new Date().getDay();		// delivers SU = 0
@@ -2194,7 +2188,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
     chart.get('active').setData(data, false, null, false);
     chart.get('active').update({
-      type: 'scatter',
+      type: this._uzsudata.interpolation.type == 'cubic' ? 'spline' : 'line',
       step: this._uzsudata.interpolation.type != 'cubic' && this._uzsudata.interpolation.type != 'linear' ? 'left' : false,
     }, false);
 
@@ -2263,7 +2257,6 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     chart.redraw();
 
     self._plotNowLine();
-   // Highcharts.seriesTypes.scatter.prototype.getPointSpline = Highcharts.seriesTypes.line.prototype.getPointSpline;
   },
 
   _save: function() {
