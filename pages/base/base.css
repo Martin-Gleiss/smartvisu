@@ -1609,7 +1609,10 @@ div.ui-slider-switch{
 .uzsuCell [data-tip]:after {
 	left: -190px;
 }
-.highcharts-root .uzsu-event-sunrise {
+/**
+ * ---------- UZSU Graph ------------------------------------------------
+ */
+ .highcharts-root .uzsu-event-sunrise {
   fill: #ffffff;
   stroke: rgba(255, 255, 255, 0.5);
 }
@@ -1628,6 +1631,12 @@ div.ui-slider-switch{
 .uzsu-all-inactive .uzsu-active-toggler {
   fill: #808080;
   stroke: #808080;
+}
+[data-widget="device.uzsugraph"] .highcharts-navigator, 
+[data-widget="device.uzsugraph"] .highcharts-navigator-series, 
+[data-widget="device.uzsugraph"] .highcharts-navigator-xaxis,
+[data-widget="device.uzsugraph"] .highcharts-navigator-yaxis {
+  display: none;
 }
 
 /**
