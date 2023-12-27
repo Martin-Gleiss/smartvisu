@@ -11,6 +11,7 @@
 ### Deprecated
 
 ### Removed Features
+- old wiget pathnames w/o namespace (deprecated in v3.3)
 
 ### Fixed Bugs
 - system page was not shown due to missing infoblock.html if pages were configured to "Smarthome" but pages had not been created yet by the "smartvisu" plugin of smarthomeNG.
