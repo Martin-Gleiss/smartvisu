@@ -5,12 +5,14 @@
 - improved spline display for the starting point in device.uzsugraph
 
 ### Improvements
+- allowed database modes for series moved into the individual backend drivers
 
 ### Updated Libraries
 
 ### Deprecated
 
 ### Removed Features
+- old wiget pathnames w/o namespace (deprecated in v3.3)
 
 ### Fixed Bugs
 - system page was not shown due to missing infoblock.html if pages were configured to "Smarthome" but pages had not been created yet by the "smartvisu" plugin of smarthomeNG.

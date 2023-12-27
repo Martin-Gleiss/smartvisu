@@ -2,8 +2,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiss
- * @copyright   2012 - 2015
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2023
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -44,39 +44,39 @@ if (is_file(const_path."pages/".$actual_pages."/".$request['page'].".html")
 	// init template engine
 	require_once const_path.'vendor/autoload.php';
 	
+	//----------------------------------------------------------
+	// create search path for all templates
+	//----------------------------------------------------------
 	$loader = new \Twig\Loader\FilesystemLoader(const_path.'apps');
 
 	if (is_dir(const_path.'pages/'.$actual_pages))
 		$loader->addPath(const_path.'pages/'.$actual_pages);
 	
-	if (is_dir(const_path.'pages/'.$actual_pages.'/widgets'))
-		$loader->addPath(const_path.'pages/'.$actual_pages.'/widgets');  // deprecated as of v3.3 - remove in a later version
-
 	if (dirname($request['page']) != '.' && is_dir(const_path.'pages/'.$actual_pages.'/'.dirname($request['page'])))
 		$loader->addPath(const_path.'pages/'.$actual_pages.'/'.dirname($request['page']));
 
-	// add smarthome dir if it is not directly chosen. 
-	// allows combination of custom pages with auto-generated pages from smarthomeNG
+	// add smarthome dir if it is not directly chosen - allows combination of custom pages with auto-generated pages from smarthomeNG
 	if (substr(config_driver, 0, 9) == 'smarthome' and $actual_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
 		$loader->addPath(const_path.'pages/smarthome');
 
-   // make sure SV doesn't load stuff from dropins unless pages are configured
+	// make sure SV doesn't load stuff from dropins unless pages are configured
 	if ($actual_pages != '') {
 			$loader->addPath(const_path.'dropins');
-			$loader->addPath(const_path.'dropins/widgets');			// deprecated as of v3.3 - remove in a later version
-			$loader->addPath(const_path.'dropins/shwidgets');		// deprecated as of v3.3 - remove in a later version
 	}
 	$loader->addPath(const_path.'pages/base');
-	$loader->addPath(const_path.'widgets');							// deprecated as of v3.3 - remove in a later version
 	
+	//----------------------------------------------------------
 	// create widgets path in namespace @widgets 
+	//----------------------------------------------------------
 	$loader->addPath(const_path.'widgets', 'widgets');
 	$loader->addPath(const_path.'dropins/widgets', 'widgets');
 	$loader->addPath(const_path.'dropins/shwidgets', 'widgets');
 	if (is_dir(const_path.'pages/'.$actual_pages.'/widgets'))
 		$loader->addPath(const_path.'pages/'.$actual_pages.'/widgets', 'widgets');
 	
+	//----------------------------------------------------------
 	// create icons path in namespace @icons
+	//----------------------------------------------------------
 	$loader->addPath(const_path.'icons/ws', 'icons');
 	$loader->addPath(const_path.'dropins/icons/ws', 'icons');
 
@@ -112,8 +112,7 @@ if (is_file(const_path."pages/".$actual_pages."/".$request['page'].".html")
 			$twig->addGlobal($key, $val);
 	}
 	
-	// TO DO: better global concept for "config_pages" in order to distinguish between actual pages and configured pages
-    // today global value in php can be different from value with same name in Twig if the "pages" parameter is set 
+    // attention: global value for config_pages in php can be different from value with same name in Twig if the "pages" parameter is set 
 	$twig->addGlobal('config_pages', $actual_pages);
 	$twig->addGlobal('configured_pages', config_pages);
 	$twig->addGlobal('pagepath', dirname($request['page']));
@@ -187,7 +186,7 @@ else
 	echo str_repeat(" ", 60).date('H:i, d.m').", v".config_version_full."\n";
 	echo str_repeat("-", 80)."\n\n";
 	echo "Error loading Page '<b>".$request['page']."</b>' !\n\n";
-	echo "Check config.php -> 'config_pages' for correct Pages/Project configuration\n";
+	echo "Check configuration page for correct pages / project configuration\n";
 	echo "or try the <a href='index.php'>index</a> page!\n\n";
 	echo str_repeat("-", 80)."\n\n";
 	echo "\n</pre>";

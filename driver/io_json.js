@@ -104,6 +104,12 @@ var io = {
 	timer: 0,
 	timer_run: false,
 	errorNotification: null,
+	
+	/**
+	 * supported aggregate functions in the backends database
+	 */
+	aggregates: [],
+
 
 	/**
 	 * The real-time polling loop, only if there are listeners
@@ -221,12 +227,4 @@ var io = {
 		}
 	},
 	
-	/**
-	 * stop all subscribed series
-	 */
-	stopseries: function () {
-		// TODO
-		$.noop;
-	}
-
 };

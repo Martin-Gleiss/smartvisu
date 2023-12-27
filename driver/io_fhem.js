@@ -153,6 +153,12 @@ var io = {
   addon: null,
   socketErrorNotification: null,
   
+  /**
+   * supported aggregate functions in the backends database
+   * modes implemented in the fronthem file "99_fronthemUtils.pm"
+   */
+  aggregates: ['avg', 'min', 'max', 'sum', 'raw'],
+  
   log: function(level, text) {
     if (io.logLevel >= level) {
       console.log("[io.fhem]: " + text);

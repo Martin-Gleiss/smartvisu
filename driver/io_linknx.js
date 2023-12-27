@@ -103,6 +103,13 @@ var io = {
 
 	timer: 0,
 	timer_run: false,
+	
+	/**
+	 * supported aggregate functions in the backends database
+	 * TODO: check which aggregates are valid for ioBroker
+	 */
+	aggregates: [],
+
 
 	/**
 	 * The real-time polling loop, only if there are listeners
@@ -202,12 +209,4 @@ var io = {
 		}
 	},
 	
-	/**
-	 * stop all subscribed series
-	 */
-	stopseries: function () {
-		// TODO
-		$.noop;
-	}
-
 };
