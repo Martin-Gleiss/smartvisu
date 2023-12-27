@@ -5,6 +5,7 @@
 - improved spline display for the starting point in device.uzsugraph
 
 ### Improvements
+- allowed database modes for series moved into the individual backend drivers
 
 ### Updated Libraries
 

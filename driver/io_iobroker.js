@@ -192,6 +192,19 @@ var io = {
 	},
 	
 	listeners: [],
+	
+	/**
+	 * supported aggregate functions in the backends database
+	 * https://www.iobroker.net/docu/index-83.htm?page_id=4531&lang=en
+	 * - minmax - is ordered as 2 series: min and max
+	 * - min
+	 * - max
+	 * - avergage = avg 
+	 * - total = on 
+	 * - count
+	 */
+	aggregates: ['avg', 'min', 'max', 'on', 'count'],
+
 
 	/**
 	* Opens the connection and add some handlers

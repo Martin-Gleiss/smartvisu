@@ -126,6 +126,12 @@ var io = {
 	listeners: [],
 
 	/**
+	 * supported aggregate functions in the backends database
+	 */
+	aggregates: ['avg', 'min', 'max', 'sum', 'diff', 'rate', 'on', 'raw', 'count'],
+
+
+	/**
 	 * The real-time polling loop, only if there are listeners
 	 */
 	loop: function () {
