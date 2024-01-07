@@ -30,6 +30,8 @@ class TemplateChecker {
 	 * @var type 
 	 */
 	private $fileName;
+	
+	private $driver;
 
 	/**
 	 * DOMDocument object for file
@@ -41,6 +43,14 @@ class TemplateChecker {
 	 * Object for the Icons
 	 */
 	private $items;
+	
+	/**
+	 * get configured driver
+	 * @return string
+	 */
+	public function getDriver() {
+		return $this->driver;
+	}
 
 	/**
 	 * Perform template checks for single file
@@ -74,6 +84,11 @@ class TemplateChecker {
 		$this->items = new Items(pathinfo($fileName)["dirname"]); //new
 		if ($checkItems == "false")
 			{ $this->items->setState(FALSE);}
+
+		// some checks require info of the configured driver (e.g. database aggregation modes in backend)
+		// get the configured driver if templaechecker is called from the configured pages or use offline driver instead
+		$fileFolder = str_replace('/widgets', '', $widgetFolder);
+		$this->driver = (substr($fileFolder, 6, ) == config_pages ? config_driver : 'offline');
 	}
 
 	/**

@@ -141,7 +141,7 @@ var io = {
 	 * https://smarthomeng.github.io/smarthome/plugins/database/README.html
 	 * TODO: check how comparator for count can be implemented, e.g. "count>10"
 	 */
-	aggregates: ['avg', 'min', 'max', 'sum', 'on', 'raw', 'count', 'countall', 'integrate', 'differentiate'],
+	aggregates: ['avg', 'min', 'max', 'diff', 'sum', 'on', 'raw', 'count', 'countall', 'integrate', 'differentiate', 'duration'],
 	
 	/**
 	 * This is the websocket module / plugin and the websocket opening time

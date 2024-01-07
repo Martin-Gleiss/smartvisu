@@ -119,7 +119,7 @@ class WidgetParameterChecker {
 	 * @param array $paramConfig Config for parameter to check
 	 * @param MessageCollection $messages Collection of messages to add messages to
 	 */
-	private function __construct($widget, $paramIndex, $paramConfig, $messages,$items, $templateCecker) {
+	private function __construct($widget, $paramIndex, $paramConfig, $messages, $items, $templateCecker) {
 		$this->widget = $widget;
 		$this->paramIndex = $paramIndex;
 		$this->paramConfig = $paramConfig;
@@ -165,7 +165,7 @@ class WidgetParameterChecker {
 			$uzsuitem = $this->widget->getParam($this->paramIndex - 1);
 			if ($uzsuitem == null || $uzsuitem == '')
 				return;
-			// we can check only one of the items as dummy in the recursive uzsu eidget check 
+			// we can check only one of the items as dummy in the recursive uzsu widget check 
 			// so item names in the info lines may differ from the real items 
 			// items have been checked as individual parameters before
 			if (is_array($uzsuitem)){
@@ -199,6 +199,9 @@ class WidgetParameterChecker {
 					break;
 				case 'item':
 					$this->checkParameterTypeItem($value);	//new
+					break;
+				case 'mode':
+					$this->checkParameterTypeMode($value);	//new
 					break;
 				case 'type':
 					$this->checkParameterTypeType($value);
@@ -498,6 +501,25 @@ class WidgetParameterChecker {
 			return;
 
 		$this->addError('WIDGET TYPE PARAM CHECK', 'Unknown type', $value);
+	}
+	
+	/**
+	 * Check widget parameter of type "mode" (database aggregations provided by the backend)
+	 * @param $value mixed parameter value
+	 */
+	private function checkParameterTypeMode($value) {
+		if (!$this->checkParameterNotEmpty($value))
+			return;
+		
+		$driver = $this->templateCecker->getDriver();
+		if (in_array($value, TemplateCheckerConfig::aggregationModes[$driver]))
+			return;
+
+		// additional widget-specific valid values
+		if ($this->checkParameterValidValues($value))
+			return;
+
+		$this->addError('WIDGET MODE PARAM CHECK', 'Mode not supported by backend "'.$driver.'"', $value);
 	}
 
 	/**

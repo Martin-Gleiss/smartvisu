@@ -6,6 +6,7 @@
 
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers
+- parameter type "mode" introduced. Templatechecker reads available database modes individually for configured backend.
 
 ### Updated Libraries
 
