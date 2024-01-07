@@ -19,6 +19,7 @@
 - system page was not shown due to missing infoblock.html if pages were configured to "Smarthome" but pages had not been created yet by the "smartvisu" plugin of smarthomeNG.
 - behaviour of device.uzsugraph interpolation style was inconsistent if more than one uzsugraph widget was on a page.  
 - device.uzsugraph threw an error while a point was dragged
+- status.activelist did not display texts if no svg icon was selected, i.e. the default icon "trans.png" was displayed
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
