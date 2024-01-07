@@ -66,5 +66,19 @@ class TemplateCheckerConfig {
 	 * of plot parameter sets which must be given
 	 */
 	 const ArrayDimensionSetter = array ('quad.stateswitch' => 2, 'quad.select' => 2, 'quad.symbol' => 5, 'quad.print' => 1 );
+	 
+	 /**
+	 * Array of aggregation modes provided for plots by the individual backend systems 
+	 */
+	 const aggregationModes = array( 
+		'eibd' => array(),
+		'fhem' => array('avg', 'min', 'max', 'minmax', 'minmaxavg', 'sum', 'raw'),
+		'iobroker' => array('avg', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'count'),
+		'json' => array(),
+		'linknx' => array(),
+		'offline' => array('avg', 'min', 'max', 'minmax', 'minmaxavg', 'sum', 'diff', 'rate', 'on', 'raw', 'count'),
+		'openhab' => array('avg', 'min', 'max', 'minmax', 'minmaxavg', 'sum', 'diff', 'on', 'raw', 'count'),
+		'smarthomeng' => array('avg', 'min', 'max', 'minmax', 'minmaxavg', 'diff', 'sum', 'on', 'raw', 'count', 'countall', 'integrate', 'differentiate', 'duration')
+	);
 
 }

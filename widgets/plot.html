@@ -74,7 +74,7 @@
 *
 * @param {id=} unique id for this widget. Add the string "plotpopup" to activate on-demand plot data loading, i.e. plot data are not loaded during page creation but when the popup containing the plot is opened. (optional)
 * @param {item[?](bool,num,list)} series of item(s); multiple items in array form: [ item1 , item2 ]
-* @param {text[?](avg,sum,min,max,minmax,minmaxavg,raw,on)=avg} the aggregation mode (optional, default 'avg')
+* @param {mode[?]=avg} the aggregation mode (optional, default 'avg')
 	May be a single mode or an array with separate mode per item.
 	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
 * @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format) Value is interpreted as timestamp if no unit is given (e.g. 1629109298731). 
@@ -234,7 +234,7 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item(bool,num,list)} series of item(s); multiple items in array form: [ item1 , item2 ]
-* @param {text(avg,sum,min,max,raw,on)=avg} the aggregation mode (optional, default 'avg')
+* @param {mode[?]=avg} the aggregation mode (optional, default 'avg')
 	Available modes depend on backend, common ones are 'avg', 'sum', 'min', 'max', 'minmax', 'minmaxavg', 'on', 'raw'. See backend's documentation for further information.
 * @param {duration=1h} the minimum time (x-axis): '1h', '2h'... (duration-format) Value is interpreted as timestamp if no unit is given (e.g. 1629109298731). 
 * @param {duration=now} the maximum time (x-axis): '', '1h', '2h'... (duration-format, default: now). Value is interpreted as timestamp if no unit is given (e.g. 1629109298731).
