@@ -618,7 +618,7 @@
 * If more than one item is given, they will be combined with formula.
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item[?](bool,num,str,list,scene)=} zero, one or more item(s). More items in array form: [item1, item2] (optional)
+* @param {item[?](bool,num,list,scene)=} zero, one or more item(s). More items in array form: [item1, item2] (optional)
 * @param {text[?]=} the text, printed when item has value val (optional)
 * @param {image[?]=control_on_off} the icon shown when item has value val (optional, default 'control_on_off' if text is empty)
 	dynamic icons can be used, e.g. icon.light('', '', value_item); please note: these must not be wrapped by apostrophs (')
@@ -683,22 +683,23 @@
 * @param {value=0} the value for empty (optional, default 0)
 * @param {value=255} the value for full (optional, default 255)
 * @param {value=5} step between two values (optional, default 5, for future use)
-* @param {text(none,cylinder,water,pallets)=none} the mode: 'none', 'cylinder', 'water', 'pallets' (optional, default 'none')
-* @param {color[?]=} array of colors; e. g. '#f00' for red (optional)
-* @param {text[]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
+* @param {text(none,cylinder,water,pellets)=none} the mode: 'none', 'cylinder', 'water', 'pellets' (optional, default 'none')
+* @param {color[?]=} single color or array of colors; e. g. '#f00' for red. If thresholds are used provide one color more than thresholds (optional)
+* @param {text[]=} array of upper thresholds; the color according to highest reached threshold is applied (optional)
 */
 {% macro tank(id, item_pos, min, max, step, mode, color, threshold) %}
 
-	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.tank2" data-item="{{ item_pos }}"
+	{% set color = color is iterable ? color : [color] %}
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.tank" data-item="{{ item_pos }}"
 		data-min="{{ min|default('0') }}" data-max="{{ max|default('255') }}" data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}"
 		class="tank">
 		<div
 			{% if mode == 'cylinder' %}
-				style="background-image: url('pages/base/pics/scale_cylinder.png'); background-color: {{ '#444' }};"
+				style="background-image: url('pages/base/pics/scale_cylinder.png'); background-color: {{ color[0]|default('#444') }};"
 			{% elseif mode == 'water' %}
 				style="background-image: url('pages/base/pics/scale_water.png'); background-color: {{ color[0]|default('#09f') }};"
-			{% elseif mode == 'pallets' %}
-				style="background-image: url('pages/base/pics/scale_pallets.png'); background-color: {{ color[0]|default('#eb7') }};
+			{% elseif mode == 'pellets' or mode == 'pallets' %} /** remove typo "pallets" over time */
+				style="background-image: url('pages/base/pics/scale_pellets.png'); background-color: {{ color[0]|default('#eb7') }};
 					-moz-border-radius: 10em 10em 0.5em 0.5em; -webkit-border-radius: 10em 10em 0.5em 0.5em; border-radius: 10em 10em 0.5em 0.5em;"
 			{% endif %}
 			>&nbsp;</div>

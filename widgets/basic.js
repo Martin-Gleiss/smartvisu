@@ -495,7 +495,7 @@ $.widget("sv.basic_color_slider", $.sv.basic_color, {
 			var diffCount = oldColors == null ? 3 : (values[0] != oldColors[0]) + (values[1] != oldColors[1]) + (values[2] != oldColors[2]) ;
 			this._lockfor = (colormodel == 'hsv' ? 0 : diffCount -1); // lock widget to ignore next 2 updates
 
-			if(diffCount >= 0) {
+			if(diffCount > 0) {
 				var items = String(this.options.item).explode();
 				if(items[1] == '') { // all values as list in one item
 					io.write(items[0], values);
@@ -1376,7 +1376,7 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 // ----- basic.tank -----------------------------------------------------------
 $.widget("sv.basic_tank", $.sv.widget, {
 
-	initSelector: 'div[data-widget="basic.tank2"]',
+	initSelector: 'div[data-widget="basic.tank"]',
 
 	options: {
 		min: 0,

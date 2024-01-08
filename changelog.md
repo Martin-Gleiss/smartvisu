@@ -1,5 +1,6 @@
 ## 3.4.a
 ### New / Changed Widgets
+- basic.tank is now able to change colors according to reached thresholds
 
 ### Other New Features
 - improved spline display for the starting point in device.uzsugraph
@@ -20,6 +21,7 @@
 - behaviour of device.uzsugraph interpolation style was inconsistent if more than one uzsugraph widget was on a page.  
 - device.uzsugraph threw an error while a point was dragged
 - status.activelist did not display texts if no svg icon was selected, i.e. the default icon "trans.png" was displayed
+- corrected background image name "scale_pallets.png" to "scale_pellets.png"
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
