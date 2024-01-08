@@ -1380,7 +1380,9 @@ $.widget("sv.basic_tank", $.sv.widget, {
 
 	options: {
 		min: 0,
-    max: 255,
+		max: 255,
+		thresholds: "",
+		colors: ""
 	},
 
 	_update: function(response) {
@@ -1388,13 +1390,24 @@ $.widget("sv.basic_tank", $.sv.widget, {
 		var min = this.options.min;
 
 		var factor = Math.min(Math.max((response[0] - min) / (max - min), 0), 1);
-
+		
+		// colorize
+		var value=parseFloat(response[0])
+		var currentIndex = 0;
+		$.each(String(this.options.thresholds).explode(), function(index, threshold) {
+			if((isNaN(value) || isNaN(threshold)) ? (threshold > value) : (parseFloat(threshold) > parseFloat(value)))
+				return false;
+			currentIndex++;
+		});
+		var color = String(this.options.colors).explode()[currentIndex];
+		this.element.find('div').css('background-color', color);
+		
 		this.element.attr('title', Math.round(factor * 100) + '%')
 			.find('div').css('height', factor * this.element.height());
+
 	},
 
 });
-
 // ----- basic.trigger ---------------------------------------------------------
 $.widget("sv.basic_trigger", $.sv.widget, {
 
