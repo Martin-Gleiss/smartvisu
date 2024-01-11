@@ -795,8 +795,14 @@ $.widget("sv.basic_print", $.sv.widget, {
 
 		var value; // value for threshold comparison
 		if (formatLower == 'date' || formatLower == 'time' || formatLower == 'short' || formatLower == 'long') { // Date
-			value = new Date(calc);
-			calc = value.transUnit(format);
+			if (isNaN(calc)) {
+				theDate = new Date(calc);
+			}
+			else {
+				theDate = new Date(parseFloat(calc));
+			}
+			calc = theDate.transUnit(format);
+			value = theDate.getTime();
 		}
 		else if (formatLower == 'script') { // Script
 			value = null;
