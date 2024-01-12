@@ -797,6 +797,7 @@ $.widget("sv.basic_print", $.sv.widget, {
 		if (formatLower == 'date' || formatLower == 'time' || formatLower == 'short' || formatLower == 'long') { // Date
 			value = new Date(calc);
 			calc = value.transUnit(format);
+			value = value.getTime();
 		}
 		else if (formatLower == 'script') { // Script
 			value = null;
