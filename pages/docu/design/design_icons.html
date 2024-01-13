@@ -191,7 +191,7 @@
 
 	<div class="docu">
 		Icons located in "{{ icon0 }}"
-		<br/><b>Important:</b> These images are available as .svg-image only. By default smartVisu does not come with .png-images. 
+		<br/><b>Important:</b> These images are available as .svg-image only. By default smartVISU does not come with .png-images. 
 	</div>
 
 	{% set cat = 'au' %}
@@ -205,6 +205,19 @@
 			<div>{{ file.name }}</div>
 		</div>
 	{% endfor %}
+	<div style="clear:left;"><br /><br /></div>
+	
+	<div class="docu">
+			Custom SVG icons provided by you in "dropins/{{ icon0 }}" 
+	</div>
+	{% set iconlist = dir('dropins/'~icon0, '(.*\.svg)') %}
+	{% for file in  iconlist %}
+		<div class="box">
+			<a title="{{ file.name }}"> {{ lib.svgimg('', file.name, 'icon0') }} </a>
+			<div>{{ file.name }}</div>
+		</div>
+	{% endfor %}
+	
 
 	<script type="text/javascript">
 		$(document).on('vmouseover', '.box svg', function () {

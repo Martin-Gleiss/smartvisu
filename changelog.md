@@ -9,6 +9,7 @@
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers
 - parameter type "mode" introduced. Templatechecker reads available database modes individually for configured backend.
+- docu page design>icons shows all icons in dropins/icons/ws (or .../sw, whatever is configured) 
 
 ### Updated Libraries
 
