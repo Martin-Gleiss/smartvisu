@@ -259,12 +259,36 @@
 		}
 		//DEBUG: console.log('anchor clicked', event.target);
 	});
+	
+	// detect link target with anchor and scroll to it, e.g  href="index.php?page=myPage&anchor=myAnchor"
+	$(document).on('click', 'a[href*="&anchor="]', function (event) {	
+		event.preventDefault();
+		if (event.target.href !== undefined)
+			var targetURI = event.target.href;
+		else 
+			targetURI = $(event.target).parents('a.ui-link').first()[0].href;
+				
+		var anchorPos = targetURI.indexOf('&anchor');
+		var anchor = targetURI.substring(anchorPos+8);
+		var target = targetURI.substring(0, anchorPos);
+		var targetOffset = $(sv.activePage).find('.ui-content').offset().top;
 
-	// scroll to anchor after page is called w/ anchor link e.g  href="index.php?page=myPage&anchor=myAnchor" 
+		if (location.href.indexOf(target) == 0){
+			$.mobile.silentScroll($(sv.activePage).find('#'+ anchor).offset().top - targetOffset);
+			//DEBUG: console.log('same page link clicked: '+ anchor)
+		}
+		else {
+			$(':mobile-pagecontainer').pagecontainer('change', target);
+			window.anchorTarget = anchor
+			//DEBUG: console.log('new page link clicked: '+ anchor)
+		}
+	});
 	$(document).on('pagecontainerchange', function () {
-		var searchAnchor = location.search.indexOf('anchor');
-		if (searchAnchor > 0) {
-			$.mobile.silentScroll($('#'+location.search.substring(searchAnchor+7)).offset().top);
+		if (window.anchorTarget != null) {
+			//DEBUG: console.log ('click on new page anchor target "'+ window.anchorTarget + '" detected');
+			var targetOffset = $(sv.activePage).find('.ui-content').offset().top;
+			$.mobile.silentScroll($(sv.activePage).find('#'+ window.anchorTarget).offset().top - targetOffset);
+			window.anchorTarget = null;
 		}
 	});	
 	

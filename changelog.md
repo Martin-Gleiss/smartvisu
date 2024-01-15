@@ -9,6 +9,7 @@
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers
 - parameter type "mode" introduced. Templatechecker reads available database modes individually for configured backend.
+- docu page design>icons shows all icons in dropins/icons/ws (or .../sw, whatever is configured) 
 
 ### Updated Libraries
 
@@ -24,6 +25,7 @@
 - status.activelist did not display texts if no svg icon was selected, i.e. the default icon "trans.png" was displayed
 - corrected background image name "scale_pallets.png" to "scale_pellets.png"
 - basic.print did not print timestamps correctly as dates and was not able to colorize them
+- links on same page with anchor did not work under all conditions, e.g. href="index.php?page=myPage&anchor=myAnchor"
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
