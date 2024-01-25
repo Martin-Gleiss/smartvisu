@@ -35,6 +35,12 @@ $.widget("sv.basic_select", $.sv.widget, {
 
 	initSelector: 'select[data-widget="basic.select"]',
 	_lastValue: null,
+	_timer: null,
+	
+	options: {
+		indicatorType: '',
+		indicatorDuration: 3
+	},
 
 	_update: function(response) {
 		//workaround for select menu in page mode (change event comes after _update() )
@@ -64,11 +70,20 @@ $.widget("sv.basic_select", $.sv.widget, {
 		};
 		this.element.val(respval).selectmenu('refresh');
 		this._lastValue = respval;
+		clearTimeout(this._timer);
+		this.element.parents('.ui-select').removeClass('blink');
 	},
 
 	_events: {
 		'change': function(ev) {
 			this._write(this.element.val());
+			if (this.options.indicatorType != ''){
+				var that = this;
+				this.element.parents('.ui-select').addClass('blink');
+				this._timer = setTimeout(function(){
+					that.element.parents('.ui-select').removeClass('blink');
+				}, this.options.indicatorDuration*1000);
+			}
 		}
 	}
 

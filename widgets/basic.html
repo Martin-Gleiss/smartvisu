@@ -416,15 +416,26 @@
 * @param {text[]=} list of texts for every menu entry or button (optional)
 * @param {color(icon0to5)=icon1} the color for the on state of the buttons 'icon0' through 'icon5' or color names or codes like #f00 (optional, default: icon1) - not supported for type 'menu'
 * @param {text(horizontal,vertical,none)=horizontal} orientation of the controlgroup: 'horizontal', 'vertical' or 'none' for seperate buttons (optional, default: 'horizontal') - not supported for type 'menu'
-* @param {item(list)=} an item containing all selectable values (optional) - overrides existing value definitions
-* @param {item(list)=} an item containing the texts corresponding to the selectable values (optional even if itemvals is specified)
+* @param {item(list)=} an item containing all selectable values (optional) - overrides existing value definitions, available for menu type only
+* @param {item(list)=} an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for menu type only
+* @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
+	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
+	The indicator options will not be applied to the select element of type 'menu' which will convert all options to 'blink'.
 *
 * @see misc/fundamentals#Items
 */
-{% macro select(id, item, type, value, icon, text, color_on, group, itemvals, itemtxts) %}
+{% macro select(id, item, type, value, icon, text, color_on, group, itemvals, itemtxts, indicator) %}
 	{% import _self as basic %}
 	{% if type == 'menu' or type is empty %}
-		<select{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select" data-native-menu="false" data-item="{{ item }}, {{ itemvals }}, {{ itemtxts }}">
+		{% if ":" in indicator %} 
+			{% set indicatorparms = indicator|split(":") %}
+			{% set indicator = indicatorparms[0] %}
+			{% set indicator_duration = indicatorparms[1] %}
+		{% else %} 
+			{% set indicator_duration = config_indicator_duration|default(3) %}
+		{% endif %}
+		<select{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select" data-native-menu="false" data-item="{{ item }}, {{ itemvals }}, {{ itemtxts }}" 
+		data-indicator-type="{{ indicator }}" data-indicator-duration="{{ indicator_duration }}">
 		<option></option>
 		{% if itemvals == '' or itemvals is empty %}
 			{% for val in value|default([0,1]) %}
@@ -436,7 +447,10 @@
 		<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select"{% if group != 'none' %} data-role="controlgroup" data-type="{{ group|default('horizontal') }}"{% endif %}>
 			{% for val in value|default([0,1]) %}
 				{% set pic = icon is iterable ? icon[loop.index0]|default(icon[0]) : icon %}
-				{{basic.stateswitch('', item, type|default('mini'), [val, val], pic, (text is iterable ? text[loop.index0]|default(text[0]) : text)|default(pic is empty ? val : ''), [color_on|default('icon1'), ''])}}
+				{% if indicator is not empty and icon is iterable and icon|length > value|length %}
+					{% set pic = [pic, pic]|merge([icon[icon|length-1]]) %}
+				{% endif %}
+				{{basic.stateswitch('', item, type|default('mini'), [val, val], pic, (text is iterable ? text[loop.index0]|default(text[0]) : text)|default(pic is empty ? val : ''), [color_on|default('icon1'), ''], indicator)}}
 			{% endfor %}
 		</div>
 	{% endif %}

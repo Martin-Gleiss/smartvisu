@@ -1,6 +1,7 @@
 ## 3.4.a
 ### New / Changed Widgets
 - basic.tank is now able to change colors according to reached thresholds
+- additional option for basic.select to support activity indicator like basic.stateswitch
 
 ### Other New Features
 - improved spline display for the starting point in device.uzsugraph
