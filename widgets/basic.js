@@ -586,6 +586,7 @@ $.widget("sv.basic_icon", $.sv.widget, {
 				values = response;
 
 			var rgb;
+			var alpha = (values.length == 4 ? values[3] : 1);
 			switch(this.options.colormodel) {
 				case 'rgb':
 					rgb = [
@@ -593,6 +594,7 @@ $.widget("sv.basic_icon", $.sv.widget, {
 						Math.round(Math.min(Math.max((values[1] - min[1]) / (max[1] - min[1]), 0), 1) * 255),
 						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 255)
 					];
+					rgb.push(alpha);
 					break;
 				case 'hsl':
 					var hsl = [
@@ -601,6 +603,7 @@ $.widget("sv.basic_icon", $.sv.widget, {
 						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 100)
 					];
 					rgb = fx.hsl2rgb(hsl[0], hsl[1], hsl[2]);
+					rgb.push(alpha);
 					break;
 				case 'hsv':
 					var hsv = [
@@ -609,10 +612,18 @@ $.widget("sv.basic_icon", $.sv.widget, {
 						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 100)
 					];
 					rgb = fx.hsv2rgb(hsv[0], hsv[1], hsv[2]);
+					rgb.push(alpha);
+					break;
+				case 'hex':
+					rgb = values;
+					if (rgb.length == 7) 
+						rgb += 'FF';
 					break;
 			}
-
-			this.element.css('color', 'rgb(' + rgb.join(',') + ')').find('svg').css('fill', 'rgb(' + rgb.join(',') + ')').css('stroke', 'rgb(' + rgb.join(',') + ')');
+			if (rgb instanceof Array)
+				this.element.css('color', 'rgba(' + rgb.join(',') + ')').find('svg').css('fill', 'rgba(' + rgb.join(',') + ')').css('stroke', 'rgba(' + rgb.join(',') + ')');
+			else
+				this.element.css('color', rgb).find('svg').css('fill', rgb).css('stroke', rgb);
 	},
 
 });

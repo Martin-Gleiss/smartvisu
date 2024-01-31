@@ -139,9 +139,9 @@
 - smartVISU icons and icons in ./dropins/icons/ws: path and extension may be omitted (e.g. "light_light") 
 - others: full file name with path and extension
 - to avoid SVG embedding, use full filename with path and extension and add "/ne" at the end, e.g. "dropins/icons/ws/myicon.svg/ne"
-* @param {color(icon0to5,rgb,hsl,hsv,#f00)=icon0} the color in any CSS form (e.g. '#f00' for red) or classes 'icon0' through 'icon5' (default 'icon0' of the design)
-	To use dynamic coloring by item give one of the following color models: 'rgb', 'hsl' or 'hsv'
-* @param {item[?](num,list)=} either one item which sends all three color parts as array or an array of three items each sending one of the color parts.
+* @param {color(icon0to5,rgb,hsl,hsv,hex,#f00)=icon0} the color in any CSS form (e.g. '#f00' for red) or classes 'icon0' through 'icon5' (default 'icon0' of the design)
+	To use dynamic coloring by item give one of the following color models: 'rgb', 'hsl', 'hsv' or 'hex'. Alpha vaiues in the items will be automatically added, so e.g. specified 'rgb' converts to rgba.
+* @param {item[?](num,list)=} either one item which sends all three/four color parts as array or an array of three /four items each sending one of the color parts.
 * @param {type=icon} icon type / size. valid types: 'micro','mini','midi','icon' (optional, default = 'icon')
 *
 * @see design/design_icons#Icons (list of available pictures)
@@ -151,7 +151,7 @@
 {% macro icon(pic, color, item, type) %}
 	{% set iconstyles = ['icon0', 'icon1', 'icon2', 'icon3', 'icon4', 'icon5'] %}
 	{% set iconF = 'icons/ws/' %}
-	{% set colormodels = ['rgb','hsl','hsv'] %}
+	{% set colormodels = ['rgb','hsl','hsv','hex'] %}
 	{% set noembed = 0 %} {% if pic|trim|slice(-3,3) == '/ne' %} {% set noembed = "1" %} {% set pic = pic|trim|slice(0,-3) %} {% endif %}
 	{% if type not in ['micro','mini','midi'] %} {% set type = '' %} {% else %} {% set uitype = 'ui-'~type %} {% endif %}
 	
