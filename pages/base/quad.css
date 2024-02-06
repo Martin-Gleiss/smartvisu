@@ -2,11 +2,10 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012
- * @license     GPL <http://www.gnu.de>
+ * @copyright   2012 - 2024
+ * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
-
 
 @CHARSET "UTF-8";
 .quad *, *:before, *:after {
@@ -261,10 +260,10 @@
     height: 65px;
 }
 
-.quad_tiles .ui-ri-aside img.icon {
+.quad_tiles .ui-ri-aside img.icon,
+.quad_tiles .ui-ri-aside svg.icon {
     height: 24px;
     width: 24px;
-
 }
 
 .quad_tiles .ui-btn {
@@ -293,7 +292,6 @@
 
 .quad_list .ui-li-static {
   display: table-row;
-
 }
 
 .quad_list li {
@@ -306,28 +304,20 @@
 .quad_list .ui-li-divider {
     padding: 0 0 0 10px;
 }
+
 .quad_list .ui-li-static.ui-li {
     padding: 0;
 }
+
 .quad_list li:nth-child(odd) {
     /**background-color: #1d1d1d;*/
 }
+
 .quad_list li:nth-child(even) {
     /**background-color: #212121;*/
 }
-.quad_list img.icon {
-    height: 32px;
-    width: 32px;
-    margin-top: -4px;
-}
 
-.quad_list svg.icon {
-    height: 32px;
-    width: 32px;
-    margin-top: -4px;
-}
-
-.quad_list svg.fx-icon {
+.quad_list img.icon, .quad_list svg.icon, .quad_list svg.fx-icon {
     height: 32px;
     width: 32px;
     margin-top: -4px;
@@ -419,8 +409,7 @@
     min-width: 300px;
 }
 
-.quad_rtr-popup
-{
+.quad_rtr-popup {
     height: 180px;
     min-width: 320px;
     text-align: center;
@@ -586,12 +575,10 @@
 
 .quad_list .column_symbol{
   height: 37px !important;
-
 }
 
 .quad_list .column_pos{
   width: 130px !important;
-
 }
 
 .quad_list div.column_plot, div.column_stateengine, div.column_uzsu, div.column_move_up, div.column_move_down, div.column_stop, div.column_mute {
@@ -655,13 +642,11 @@ div.quad_cover-popup img {
     margin: 5px 0 8px 0;
 }
 
-
-.column_value_slider, .column_pos_slider, .column_song_position, .column_volume_slider
-{
+.column_value_slider, .column_pos_slider, .column_song_position, .column_volume_slider {
     vertical-align: middle;
 }
 
-.docu_text{
+.docu_text {
     margin-top: 20px;
     margin-bottom: 10px;
 }
