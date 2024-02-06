@@ -29,6 +29,7 @@
 - basic.print did not print timestamps correctly as dates and was not able to colorize them
 - links on same page with anchor did not work under all conditions, e.g. href="index.php?page=myPage&anchor=myAnchor"
 - config page overwrote the global driver configuration when called from docu or example pages
+- small icons on tiles in quad design got too big in v3.3 due to missing CSS definitions for SVG icon
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
