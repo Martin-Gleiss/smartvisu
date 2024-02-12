@@ -1303,19 +1303,19 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		mode: '',
 		val: '',
 	},
-  _events: {
-    'update': function (event, response) {
-      event.stopPropagation();
-    }
-  },
+	_events: {
+		'update': function (event, response) {
+		event.stopPropagation();
+		}
+	},
+
 	_update: function(response) {
 		// response will be an array, if more than one item is requested
 		var formula = this.options.mode;
 		var values = String(this.options.val).explode();
-    var asThreshold = false;
-    var anyShown = false;
-    var bit = false;
-		// legacy support
+		var asThreshold = false;
+		var anySymbolShown = false;
+
 		if(formula == 'or') {
 			formula = 'VAR';
 		}
@@ -1324,17 +1324,13 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 			// If this is true, this one value will be returned and used for selecting the proper symbol.
 			formula = 'VAR.every(function(entry, i, arr) { return entry == arr[0] }) ? VAR[0] : null';
 		}
-    else if(formula == 'min') {
-			// To fulfill "and" condition, every entry in response has to have the same value.
-			// If this is true, this one value will be returned and used for selecting the proper symbol.
-      formula = 'VAR.some(function(entry, i, arr) { return entry >= parseFloat(comp[c]) }) ? comp[c] : null';
+		else if(formula == 'min') {
+			formula = 'VAR.some(function(entry, i, arr) { return entry >= parseFloat(comp[c]) }) ? comp[c] : null';
 		}
-    else if(formula == 'max') {
-			// To fulfill "and" condition, every entry in response has to have the same value.
-			// If this is true, this one value will be returned and used for selecting the proper symbol.
-      formula = 'VAR.every(function(entry, i, arr) { return entry <= parseFloat(comp[c]) }) ? comp[c] : null';
+		else if(formula == 'max') {
+			formula = 'VAR.every(function(entry, i, arr) { return entry <= parseFloat(comp[c]) }) ? comp[c] : null';
 		}
-    this.element.attr('formula', formula);
+		this.element.attr('formula', formula);
 		if(formula.startsWith('>')) {
 			formula = formula.length == 1 ? 'VAR' : formula.substring(1);
 			asThreshold = true;
@@ -1343,33 +1339,29 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
 		var VAR = response;
 		try {
-      var val = null;
-      if (formula == 'VAR.some(function(entry, i, arr) { return entry >= parseFloat(comp[c]) }) ? comp[c] : null'
-          || formula == 'VAR.every(function(entry, i, arr) { return entry <= parseFloat(comp[c]) }) ? comp[c] : null') {
-        var val_prev = null;
-        var comp = this.element.attr('data-val').split(", ");
-        for (var c = 0; c < comp.length; c++) {
-             val_prev = val;
-  			     val = eval(formula);
+			var val = null;
+			if (formula == 'VAR.some(function(entry, i, arr) { return entry >= parseFloat(comp[c]) }) ? comp[c] : null'
+				|| formula == 'VAR.every(function(entry, i, arr) { return entry <= parseFloat(comp[c]) }) ? comp[c] : null') {
+				var val_prev = null;
+				var comp = this.element.attr('data-val').split(", ");
+				for (var c = 0; c < comp.length; c++) {
+					val_prev = val;
+					val = eval(formula);
 
-             // DEBUG: console.log("run: " + c + " comparison: " + comp[c] + "; response: " + VAR + "; value: " + val + ", prev: " + val_prev);
-             if (val == null && this.element.attr('data-mode') == 'min')
-             {
-               val = val_prev;
-               break;
-             }
-             else if (comp[c] == '' || (val_prev != null && val > val_prev && this.element.attr('data-mode') == 'max'))
-             {
-               val = val_prev;
-               break;
-             }
-
-        }
-      }
-      else
-      {
-        val = eval(formula);
-      }
+					// DEBUG: console.log("run: " + c + " comparison: " + comp[c] + "; response: " + VAR + "; value: " + val + ", prev: " + val_prev);
+					if (val == null && this.element.attr('data-mode') == 'min'){
+						val = val_prev;
+						break;
+					}
+					else if (comp[c] == '' || (val_prev != null && val > val_prev && this.element.attr('data-mode') == 'max')){
+						val = val_prev;
+						break;
+					}
+				}
+			}
+			else {
+				val = eval(formula);
+			}
 		}
 		catch(ex) {
 			notify.message("error", "basic.symbol: Invalid formula", ex);
@@ -1385,16 +1377,14 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 			val = values[currentIndex];
 		}
 
+		// show the parent span only if any symbol is shown
 		var filter = Array.isArray(val) ? '[data-val="'+val.join('"],[data-val="')+'"]' : '[data-val="'+(typeof val === 'boolean' ? Number(val) : val)+'"]';
-    anyShown = this.element.children('span').hide().filter(filter).first().show().length > 0;
-		if(anyShown)
-    {
+		anySymbolShown = this.element.children('span').hide().filter(filter).first().show().length > 0;
+		if(anySymbolShown)
 			this.element.show();
-    }
 		else
-    {
 			this.element.hide();
-    }
+
 	},
 
 });
