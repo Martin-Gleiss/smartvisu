@@ -244,7 +244,7 @@
 		<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.stateswitch" data-item="{{ item }}"
 			data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ config_indicator_duration|default(3) }}"
 			data-item-longpress="{{ item_longpress }}"{% if not value_longpress is null %} data-value-longpress="{{ value_longpress }}"{% endif %}{% if not value_longrelease is null %} data-value-longrelease="{{ value_longrelease }}"{% endif %}
-			style="display: none; !important">
+			style="display: none !important;">
 			{% for val in value %}
 				{% set pic = icon is iterable ? icon[loop.index0] : icon %}
 				{% if type != 'text' and text is empty %}{% set pic = pic|deficon('control_on_off.svg') %}{% endif %}

@@ -33,11 +33,6 @@
 {% macro current(id, location, repeat, itemtemp, itemwind, windfmt, itemhumi, humitxt, humifmt, itemmisc, misctxt, miscfmt, itemmisc1, misc1txt, misc1fmt) %}
 	{% set uid = uid(page, id) %}
 	
-
-	{% if once('digiweather') %}
-		<link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
-	{% endif %}
-
 	<div class="center">
 		<div id="{{ uid }}-weather" class="weather" data-widget="weather.current" data-item="{{ itemtemp }}, {{ itemwind }}, {{ itemhumi }}, {{ itemmisc }}, {{ itemmisc1 }} " 
 			data-windfmt="{{ windfmt|default('value') }}" data-humitxt="{{ humitxt }}" data-humifmt="{{ humifmt }}" data-misctxt="{{ misctxt }}" data-miscfmt="{{ miscfmt }}"
@@ -69,10 +64,6 @@
 {% macro forecast(id, location, day, repeat) %}
 	{% set uid = uid(page, id) %}
 
-	{% if once('digiweather') %}
-		<link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
-	{% endif %}
-
 	<div class="center">
 		<div id="{{ uid }}-forecast" class="forecast" data-widget="weather.forecast" data-repeat="{{ repeat|default('3h') }}"
 			data-service-url="lib/weather/service/{{ config_weather_service|url_encode }}.php" data-location="{{ location|default(config_weather_location)|url_encode }}" data-day="{{ day|default(1) }}">
@@ -97,10 +88,6 @@
 */
 {% macro forecastweek(id, location, repeat) %}
 	{% set uid = uid(page, id) %}
-
-	{% if once('digiweather') %}
-		<link rel="stylesheet" type="text/css" href="lib/weather/jdigiweather.css" />
-	{% endif %}
 
 	<div id="{{ uid }}-forecastweek" class="forecastweek" data-widget="weather.forecastweek" data-repeat="{{ repeat|default('3h') }}"
 			data-service-url="lib/weather/service/{{ config_weather_service|url_encode }}.php" data-location="{{ location|default(config_weather_location)|url_encode }}">
