@@ -1193,7 +1193,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   -webkit-border-radius: 0.1em 0.1em 0.3em 0.3em;
   border-radius: 0.1em 0.1em 0.3em 0.3em;
   opacity: 0.85;
-  filter: alpha(opacity=85);
+  filter: alpha(opacity=85);  /* IE7+ command for opacity */
 }
 
 /**

@@ -116,7 +116,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				// add entry
 				var a = $('<a>');
 				if (entry.icon.indexOf('.svg') == -1)
-					a.append( $('<img class="icon">').css('background', entry.color ).attr('src', entry.icon));
+					a.append( $('<img class="icon">').css('background', entry.color ).attr('src', entry.icon).attr('alt', entry.icon));
 				else
 					fx.load(entry.icon,'icon icon0', 'background:'+entry.color+';', a, 'prepend');	
 				$(a).append(

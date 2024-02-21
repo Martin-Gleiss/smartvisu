@@ -2704,8 +2704,6 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         }
 
         this._setInactiveStyle(myDict)
-        console.log('finished')
-
     },
     // *****************************************************
     // CreateSerieEntriesWithOutSun
@@ -2925,7 +2923,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
 
         newRect.setAttribute("width", 400 / 25 / myColSpan + myOverlay);
         newRect.setAttribute("height", "12");
-        newRect.setAttribute("style", "stroke:black;stroke-width:" + StrokeWidth + "px;fill:yellow; fill-opacity:0.0; pointer-events:visiblePoint");
+        newRect.setAttribute("style", "stroke:black;stroke-width:" + StrokeWidth + "px;fill:yellow; fill-opacity:0.0; pointer-events:visiblePainted");
 
         return newRect
     },
@@ -3225,7 +3223,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
             myOptions['val-on'] == myActItem.value ? round_up_down = -1 : round_up_down = -1
             m = (Math.round((parseInt(minutes) + (round * round_up_down)) / nextValue) * nextValue) % 60;
             h = (m === 0 && minutes > round) ? (hours === 23 ? 0 : hours) : hours;
-            //console.log("gerundete Zeit :" + String("00"+h).slice(-2) + ':'+String("00"+m).slice(-2))
+            //DEBUG: console.log("gerundete Zeit :" + String("00"+h).slice(-2) + ':'+String("00"+m).slice(-2))
 
             mySvg = 'svg-' + preFix +
                 "-" +
@@ -3249,7 +3247,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                         mySvgCell.setAttributeNS(null, 'style', "stroke:black;stroke-width:" + myBorder + "px;fill:" + myColor + "; fill-opacity:1.0; pointer-events:auto;");
                         mySvgCell.classList.add("ON")
                     } catch (e) {
-                        console.log('Error on updateing Cell')
+                        console.log('Error on updating Cell')
                     }
 
                 }
@@ -3297,7 +3295,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     _ShowToolTip: function() {
         $(".ON, .OFF, .DISABLED_OFF, .DISABLED_ON ").hover(function(event) {
             if (event.type == 'mouseenter') {
-                console.log("General mouseover ON")
+                //DEBUG: console.log("General mouseover ON")
                 /** ************************* */
                 myObject = event.target
                 myWidth = this.parentNode.width.animVal.value;
@@ -3536,9 +3534,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
 
             myActTime.childNodes[1].innerHTML = myactTime
             TimeStamp = new Date()
-            // console.log(TimeStamp + '-' + myactTime + '- Seconds : '+
-            // TimeStamp.getSeconds()+ ' - Offset:'+ offset +'-Instance
-            // :'+myInstance.uuid )
+            //DEBUG: console.log(TimeStamp + '-' + myactTime + '- Seconds: '+ TimeStamp.getSeconds()+ ' - Offset: '+ offset +'-Instance: '+myInstance.uuid )
 
             myInstance._CalcTimeLine(myInstance)
         }, delay)

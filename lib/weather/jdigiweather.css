@@ -77,7 +77,7 @@
 
 .weather .temp .unit {
     font-size: 14pt;
-    vertical-align: texttop;
+    vertical-align: text-top;
 }
 
 .weather .city {

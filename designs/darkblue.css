@@ -1434,7 +1434,6 @@ span.rs-number {
   top: -8px;
   left: -30px;
   font-size: 0.8em;
-  font-style: bold;
   font-family: Arial;
   color: #fff;
 }
@@ -1499,5 +1498,4 @@ span.rs-number {
 }
 .rs-tooltip-text {
   font-size: 2.7em;
-  font-style: bold;
 }
