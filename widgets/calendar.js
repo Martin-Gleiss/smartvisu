@@ -102,6 +102,8 @@ $.widget("sv.calendar_list", $.sv.widget, {
 						entry.color = sv_lang.calendar_event_format.default_img_list.color;
 					}
 				}
+				if (entry.color == undefined)
+					entry.color = 'transparent';
 
 				// amend icon path/filename
 				if(entry.icon) {

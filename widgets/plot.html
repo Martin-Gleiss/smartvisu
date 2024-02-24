@@ -92,8 +92,8 @@
 * @param {duration(advanced,day)=} minimal time range while zooming or 'advanced' or 'day' (optional, duration-format)
 	By passing 'advanced' a seaparate range selector is shown and data grouping for large amount of data is enabled
 	By passing 'day', the plot is shown from 0:00 until 24:00 on the day starting after tmin. Set tmin  to '24h' or '1d' for today, '48h' or '2d' for yesterday and so on. tmax must be 'now' or at least 48 hours less than tmin. 
-* @param {value[]=} assignment of the series to the y-axes; multiples in array form (optional)
-* @param {value[]=} y-axes setup for left '0' and right '1' hand in array form (optional)
+* @param {value[?]=} assignment of the series to the y-axes; multiples in array form (optional)
+* @param {value[?]=} y-axes setup for left '0' and right '1' hand in array form (optional)
 * @param {color[?]=} y-axes color; multiples in array form (optional)
 * @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
 * @param {format[?]=} unit(s) for the y-axis. Either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. Multiples in array form. (optional)

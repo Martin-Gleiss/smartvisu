@@ -28,7 +28,7 @@ class itemProperties {
 		'last_update_by' => 'str',
 		'last_value' => 'str',
 		'name' => 'str',
-		'on_change_unxpanded' => 'list',
+		'on_change_unexpanded' => 'list',
 		'on_change' => 'list',
 		'on_update' => 'list',
 		'on_update_unexpanded' => 'list',
@@ -47,7 +47,7 @@ class itemProperties {
 	);
 	
 	public static function propertyExists($name) {
-		return !self::properties[$name] == null;
+		return isset(self::properties[$name]); 
 	}
 	
 	public static function getPropertyType($name) {

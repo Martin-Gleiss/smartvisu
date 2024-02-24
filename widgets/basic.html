@@ -602,7 +602,7 @@
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.stateswitch" data-item="{{ item }}"
 		data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ indicator_duration }}"
 		data-item-longpress="{{ item_longpress }}"{% if not value_longpress is null %} data-value-longpress="{{ value_longpress }}"{% endif %}{% if not value_longrelease is null %} data-value-longrelease="{{ value_longrelease }}"{% endif %}
-		style="display: none; !important">
+		style="display: none !important;">
 	{% for val in ( indicator is not empty and icon is iterable and icon|length > value|length ? value|merge(['indicator']) : value) %}
 		{% set pic = icon is iterable ? icon[loop.index0] : icon %}
 		{% if type != 'text' and text is empty %}{% set pic = pic|deficon('control_on_off.svg') %}{% endif %}
@@ -622,7 +622,7 @@
 			{{- txt|e -}}
 		</a>
   {% endfor %}
-  <a class="ui-btn" style="display: none !important"></a> /** placeholder for last moved control */
+  <a class="ui-btn" style="display: none !important;"></a> /** placeholder for last moved control */
   </span>
 {% endmacro %}
 
