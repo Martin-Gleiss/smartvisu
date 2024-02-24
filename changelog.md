@@ -32,6 +32,7 @@
 - small icons on tiles in quad design got too big in v3.3 due to missing CSS definitions for SVG icon
 - template checker did not check parameters in double quotes correctly
 - template checker gave faulty replacement hint for removed widget basic.text
+- template checker threw errors if an item property was not in the properties class
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
