@@ -2,9 +2,9 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, Patrik Germann
- * @copyright   2012 - 2022
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
- * @version     2.5.2
+ * @version     2.5.3
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
@@ -22,6 +22,7 @@
  * @hide        proxy_user
  * @hide        proxy_password
  * @hide        driver_loopback
+ * @hide        driver_signalBusy
  */
 
 /**
