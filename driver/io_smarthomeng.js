@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, Martin Sinn, Wolfram v. Hülsen
- * @copyright   2012 - 2021
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       SmartHomeNG
@@ -156,6 +156,8 @@ var io = {
 	
 	triggerqueue: [],
 	listeners: [],
+	monitorComplete: null,
+	openItems: [],	
 	
 	/**
 	 * Opens the connection and add some handlers
@@ -221,9 +223,8 @@ var io = {
 						item = data.items[i][0];
 						val = data.items[i][1];
 						/* not supported:
-						 if (data.items[i].length > 2) {
-						 data.p[i][2] options for visu
-						 };
+						 if (data.items[i].length > 2)
+							data.p[i][2] options for visu;
 						 */
 
 						// convert binary
@@ -234,16 +235,16 @@ var io = {
 							val = 1;
 						}
 						widget.update(item, val);
+						io.openItems.removeEntry(item);
 						if (item != io.listeners[item])
 							widget.update(io.listeners[item], val);
 					}
 					break;
 
 				case 'series':
-					//if (io.version <= 3)
-					//	data.sid = data.sid + '.100';
-					
-					widget.update(data.sid.replace(/\|/g, '\.'), data.series);
+					item = data.sid.replace(/\|/g, '\.');
+					widget.update(item, data.series);
+					io.openItems.removeEntry(item);
 					break;
 
 				case 'dialog':
@@ -253,6 +254,7 @@ var io = {
 				case 'log':
 					if (data.init) {
 						widget.update(data.name, data.log);
+						io.openItems.removeEntry(data.name);
 					}
 					else {
 						var log = widget.get(data.name); // only a reference
@@ -281,6 +283,10 @@ var io = {
 				case 'url':
 					$.mobile.changePage(data.url);
 					break;					
+			}
+			if (io.monitorCompleted == false && io.openItems.length == 0){
+				io.monitorCompleted = true;
+				$('.smartvisu .visu').removeClass('blink');
 			}
 		};
 
@@ -319,9 +325,8 @@ var io = {
 	 * Monitors the items
 	 */
 	monitor: function () {
-		//if (widget.listeners().length) {
-			// subscribe all items used on the page
-			// or cancel subscription by sending an empty array 
+		io.monitorCompleted = false;
+		// subscribe all items used on the page or cancel subscription by sending an empty array 
 		io.listeners = [];
 		var listeners = widget.listeners();
 		var listenItem;
@@ -333,17 +338,18 @@ var io = {
 				io.listeners[listenItem] = listeners[i];
 		}
 		io.send({'cmd': 'monitor', 'items': Object.keys(io.listeners)});
-		//}
+		io.openItems = Object.keys(io.listeners);
 
 		// subscribe all plots defined for the page 
-		// types: avg, min, max, on
 		io.startseries ();
 		
-		// log
+		// subscribe all log items defined for the page
 		widget.log().each(function (idx) {
 			io.send({'cmd': 'log', 'name': $(this).attr('data-item'), 'max': $(this).attr('data-count')});
-		
+			io.openItems.push($(this).attr('data-item'));
 		});
+		if (sv.config.driver.signalBusy)
+			$('.smartvisu .visu').addClass('blink');
 	},
 
 	/**
@@ -381,6 +387,8 @@ var io = {
 				if (!unique[items[i]] && definition != null) {
 					io.send({'cmd': seriescmd, 'item': definition.item, 'series': definition.mode, 'start': definition.start, 'end': definition.end, 'count': definition.count});
 					unique[items[i]] = 1;
+					if (seriescmd == 'series')
+						io.openItems.push(items[i]);
 					if (singleCancel == true)
 						delete widget.buffer[items[i]];
 				}

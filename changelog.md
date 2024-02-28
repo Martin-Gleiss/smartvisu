@@ -7,6 +7,7 @@
 ### Other New Features
 - improved spline display for the starting point in device.uzsugraph
 - new icons scene_cooking_drink and scene_robovac_dock (thanks to @Pacifia15))
+- smarthomeNG driver: new configurable option "signalBusy" lets "VISU" logo in the top-right corner blink after a new page is loaded (i.e. "monitor" command has been sent) until all subscribed items have been received. 
 
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers
