@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Raik Alber and Martin Gleiß
- * @copyright   2013
+ * @copyright   2013 - 2024
  * @license     GPL [http://www.gnu.de]
  * @version        0.2
  * -----------------------------------------------------------------------------
@@ -17,6 +17,7 @@
  * @hide		driver_username
  * @hide		driver_password
  * @hide		driver_loopback
+ * @hide        driver_signalBusy
  * @hide		sv_hostname
  */
 
