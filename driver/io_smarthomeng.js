@@ -11,7 +11,7 @@
  * @default     driver_port            2424
  * @default     driver_tlsport         2425
  * @hide	    reverseproxy
- * @hide      driver_realtime
+ * @hide        driver_realtime
  * @hide        driver_consoleport
  * @hide        driver_consoleusername
  * @hide        driver_consolepassword
@@ -258,7 +258,13 @@ var io = {
 					}
 					else {
 						var log = widget.get(data.name); // only a reference
-
+						
+						// workaround for shNG bug which sends updates for all registered memlogs instead of only the ones requested by smartVISU
+						if (log == undefined) {
+							console.log('[io.smarthomeng] ignoring data for not requested log "' + data.name + '"');
+							break;
+						}
+						
 						for (var i = 0; i < data.log.length; i++) {
 							log.unshift(data.log[i]);
 
