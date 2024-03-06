@@ -7,6 +7,9 @@
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide		weather_postal
+ * @hide		weather_key
+ * 
+ * specify weather_location	formatted "latitude=xx.xxxx&longitude=yy.yyyy"
  */
 
 
@@ -45,9 +48,11 @@ class weather_openmeteo extends weather
 	 */
 	public function run()
 	{
-		$units = self::unitString[trans('weather', 'units')];				
-														
-														
+		$units = self::unitString[trans('weather', 'units')];
+		$timeZone = '&timezone='.config_timezone;
+		$requestCurrent = '&current=weather_code,surface_pressure,temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day';
+		$requestForecast = '&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max';
+		
 		// api call
 		$cache = new class_cache('openmeteo_' . $this->location . '.json');
 
@@ -55,7 +60,7 @@ class weather_openmeteo extends weather
 			$content = $cache->read();
 		} else {
 			$loadError = '';
-			$url = 'https://api.open-meteo.com/v1/forecast?'. $this->location. '&current=weather_code,surface_pressure,temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max'.$units;
+			$url = 'https://api.open-meteo.com/v1/forecast?'. $this->location.$requestCurrent.$requestForecast.$units.$timeZone;
 
 			$content = file_get_contents($url);
 
@@ -77,7 +82,8 @@ class weather_openmeteo extends weather
 
 			$this->data['current']['conditions'] = translate(WMO::weatherCode[$parsed_json->{'current'}->{'weather_code'}]['condition'], 'met.no');
 			$this->data['current']['icon'] = WMO::weatherCode[$parsed_json->{'current'}->{'weather_code'}]['icon'];
-
+			if ($parsed_json->{'current'}->{'is_day'} == 0 and is_file(const_path_system.'weather/pics/'.str_replace('sun_', 'moon_', $this->data['current']['icon']).'.png') )
+				$this->data['current']['icon'] = str_replace('sun_', 'moon_', $this->data['current']['icon']);
 			$wind_speed = transunit('speed', (float)$parsed_json->{'current'}->{'wind_speed_10m'});
 			$wind_gust = transunit('speed', (float)$parsed_json->{'current'}->{'wind_gusts_10m'});
 			$wind_dir = weather::getDirection((int)$parsed_json->{'current'}->{'wind_direction_10m'});
@@ -93,16 +99,19 @@ class weather_openmeteo extends weather
 			$this->data['current']['misc'] = translate('air pressure', 'weather') . " " . $parsed_json->{'current'}->{'surface_pressure'}.' hPa';
 
 			// forecast
+			//include current day before noon, then switch to next day
+			preg_match('/(.*)T(.*)/', $parsed_json->{'current'}->{'time'}, $currentTime);
+			$firstDay = $currentTime[2] <= '12:00' ? 1 : 0;
+			
 			$i = 0;
 			foreach ($parsed_json->{'daily'}->{'time'} as $index=>$day) {
 
-				if ($index == 0 || $index > 4 ) // next 4 days only todo: get same day befor noon inro forecast
+				if ($index + $firstDay == 0 || $index + $firstDay > 4 ) // next 4 days only
 					continue;
 
 				$this->data['forecast'][$i]['date'] = $day;
 				$this->data['forecast'][$i]['conditions'] = translate(WMO::weatherCode[$parsed_json->{'daily'}->{'weather_code'}[$index]]['condition'], 'met.no');
-				$this->data['forecast'][$i]['icon'] = WMO::weatherCode[$parsed_json->{'daily'}->{'weather_code'}[$index]]['icon'];;
-
+				$this->data['forecast'][$i]['icon'] = WMO::weatherCode[$parsed_json->{'daily'}->{'weather_code'}[$index]]['icon'];
 				$this->data['forecast'][$i]['temp'] = round((float)$parsed_json->{'daily'}->{'temperature_2m_min'}[$index], 0) . '&deg;/' . round((float)$parsed_json->{'daily'}->{'temperature_2m_max'}[$index], 0) . '&deg;';
 
 				$i++;
