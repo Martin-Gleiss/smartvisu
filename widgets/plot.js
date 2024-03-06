@@ -576,13 +576,13 @@ $.widget("sv.plot_period", $.sv.widget, {
                         return [[ value[0], maxValue, minValue ]];
                 });
 
-                chart.series[seriesIndex].setData(values, true, true, false);
+                chart.series[seriesIndex].setData(values, false);
             }
             else if (response[i]) {
-                chart.series[seriesIndex].setData(response[i], true, true, false);
+                chart.series[seriesIndex].setData(response[i], false);
             }
         }
-
+		//DEBUG: console.log('chart redraw _update() end');
 		chart.redraw();
     },
 
@@ -1852,7 +1852,7 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
         var itemCount = response.length;
         for (var i = 0; i < itemCount; i++) {
 			if (response[i])
-            chart.series[i].setData(response[i], true, true, false);
+            chart.series[i].setData(response[i], false);
         }
         chart.redraw();
     },

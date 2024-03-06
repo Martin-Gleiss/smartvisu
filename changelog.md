@@ -35,6 +35,7 @@
 - template checker did not check parameters in double quotes correctly
 - template checker gave faulty replacement hint for removed widget basic.text
 - template checker threw errors if an item property was not in the properties class
+- plot.period and plot.xyplot drawed the plots twice after series update
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
