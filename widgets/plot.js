@@ -388,6 +388,14 @@ $.widget("sv.plot_period", $.sv.widget, {
                 verticalAlign: 'top',
                 floating: true,
             },
+            boost: {
+				debug: {
+					timeRendering:false,
+					timeSeriesProcessing:false,
+					timeSetup:false
+				},
+				enabled:true
+			},
             tooltip: {
                 shared: true,
                 split: false,
@@ -576,13 +584,17 @@ $.widget("sv.plot_period", $.sv.widget, {
                         return [[ value[0], maxValue, minValue ]];
                 });
 
-                chart.series[seriesIndex].setData(values, true, true, false);
+                chart.series[seriesIndex].setData(values, false);
             }
             else if (response[i]) {
-                chart.series[seriesIndex].setData(response[i], true, true, false);
+                chart.series[seriesIndex].setData(response[i], false);
             }
+	
+		// disable data grouping for series with 5000 points and more if boost mode is enabled in order to let boost mode work
+		if (response[i] && response[i].length >= 5000 && chart.series[seriesIndex].options.dataGrouping.enabled && chart.options.boost.enabled)
+			chart.series[seriesIndex].update({"dataGrouping": {"enabled": false}}, false);
         }
-
+		//DEBUG: console.log('chart redraw _update() end');
 		chart.redraw();
     },
 
@@ -1690,11 +1702,11 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
 		var exportmenu = (this.options.exportmenu >= 1);
 		var styles = [];
 
-        // series
-        var series = [];
-        var seriesCount = this.items.length;
+		// series
+		var series = [];
+		var seriesCount = this.items.length;
 
-        for (var i = 0; i < seriesCount; i++) {
+		for (var i = 0; i < seriesCount; i++) {
 			var stack = (stacks.length-1 >= i ? stacks[i]: stacks[stacks.length-1]);
 			var stackingMode = (stacking[stack] ? stacking[stack] : stacking[0]);
 			series.push({
@@ -1706,7 +1718,8 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
 				showInNavigator: true,
 				stacking: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stackingMode : null),
 				stack: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stack') ? stack : null),
-				borderRadius: 0
+				borderRadius: 0,
+				dataGrouping: {enabled: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? false : true)},
 			});
         }
 
@@ -1754,25 +1767,33 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
                     max: xMax,
                 },
 				stickToMax: false
-            },
+			},
 			rangeSelector:{ enabled: false},
-            yAxis: yaxis,
-            legend: {
-                enabled: label.length > 0,
-                align: 'center',
-                verticalAlign: 'top',
-                floating: true,
-            },
-            tooltip: {
-                shared: true,
-                split: false,
-                pointFormatter: function() {
-                    var unit = this.series.yAxis.userOptions.svUnit;
-                    var value = (this.series.yAxis.categories) ? this.series.yAxis.categories[this.y] : parseFloat(this.y).transUnit(unit);
-                    return '<span class="highcharts-color-' + this.colorIndex + '">\u25CF</span> ' + this.series.name + ': <b>' + value + '</b><br/>';
-                }
-            },
-		    navigation: {	// options for export context menu
+			yAxis: yaxis,
+			legend: {
+				enabled: label.length > 0,
+				align: 'center',
+				verticalAlign: 'top',
+				floating: true,
+			},
+			boost: {
+				debug: {
+					timeRendering:false,
+					timeSeriesProcessing:false,
+					timeSetup:false
+				},
+				enabled:true
+			},
+			tooltip: {
+				shared: true,
+				split: false,
+				pointFormatter: function() {
+					var unit = this.series.yAxis.userOptions.svUnit;
+					var value = (this.series.yAxis.categories) ? this.series.yAxis.categories[this.y] : parseFloat(this.y).transUnit(unit);
+					return '<span class="highcharts-color-' + this.colorIndex + '">\u25CF</span> ' + this.series.name + ': <b>' + value + '</b><br/>';
+				}
+			},
+			navigation: {	// options for export context menu
 				buttonOptions: {
 					enabled: exportmenu,
 					height: 22,
@@ -1851,8 +1872,12 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
 
         var itemCount = response.length;
         for (var i = 0; i < itemCount; i++) {
-			if (response[i])
-            chart.series[i].setData(response[i], true, true, false);
+			if (response[i]){
+				chart.series[i].setData(response[i], false);
+				// disable data grouping for series with 5000 points and more if boost mode is enabled in order to let boost mode work
+				if (response[i].length >= 5000 && chart.series[i].options.dataGrouping.enabled && chart.options.boost.enabled)
+					chart.series[i].update({"dataGrouping": {"enabled": false}}, false);
+			}
         }
         chart.redraw();
     },

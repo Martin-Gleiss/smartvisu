@@ -13,7 +13,8 @@
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers
 - parameter type "mode" introduced. Templatechecker reads available database modes individually for configured backend.
-- docu page design>icons shows all icons in dropins/icons/ws (or .../sw, whatever is configured) 
+- docu page design>icons shows all icons in dropins/icons/ws (or .../sw, whatever is configured)
+- Highcharts module boost.js is activated on demand for series with 5000 or more data points to speed up rendering (plot.period, plot.sparkline). In plot.xyplot we can not do this since there is no size info. But most likely list items with xy-data are not so big. 
 
 ### Updated Libraries
 
@@ -35,6 +36,7 @@
 - template checker did not check parameters in double quotes correctly
 - template checker gave faulty replacement hint for removed widget basic.text
 - template checker threw errors if an item property was not in the properties class
+- plot.period and plot.xyplot drawed the plots twice after series update
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text

@@ -108,51 +108,60 @@
 */
 
 {% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export, source) %}
-	{% if (not export is empty) and export > 0 %}
-		<script src="vendor/plot.highcharts/modules/exporting.js"></script>
-		<script src="vendor/plot.highcharts/modules/offline-exporting.js"></script>
-		{% if export == 2 %}
-			<script src="vendor/plot.highcharts/modules/export-data.js"></script>
-		{% endif %}
-	{% endif %}
-	{% set source = source|default('database') %}
-	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
-	{% set tmin = tmin|default('1h') %}
+	{%- if (not export is empty) and export > 0 -%}
+		{%- if once('plotimageexport') -%}
+			<script src="vendor/plot.highcharts/modules/exporting.js"></script>
+			<script src="vendor/plot.highcharts/modules/offline-exporting.js"></script>
+		{%- endif -%}
+		{%- if export == 2 -%}
+			{%- if once('plotdataexport') -%}
+				<script src="vendor/plot.highcharts/modules/export-data.js"></script>
+			{%- endif -%}
+		{%- endif -%}
+	{%- endif -%}
+	
+	{%- set source = source|default('database') -%}
+	{%- set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax -%}
+	{%- set tmin = tmin|default('1h') -%}
 
-	{% set mode = (mode is iterable ? mode : [mode|default('avg')]) %}
-	{% set count = (count is iterable ? count : [count|default(100)]) %}
-	{% set unit = (unit is iterable ? unit : [unit|default('')]) %}
-	{% set units = [] %}
-	{% for uniti in unit %}
-		{% set units = units|merge([uniti|replace({',' : ';'})]) %}  /** hide comma before implode/explode to allow format strings, e.g. %01,02f% */
-	{% endfor %}
-	{% set stacking = (stacking is iterable ? stacking : [stacking|default('normal')]) %}
-	{% set stacks = (stacks is iterable ? stacks : [stacks|default('0')]) %}
-	{% set item = (item is iterable ? item : [item]) %}
-	{% set seriesitems = [] %}
-	{% for itemi in item %}
-		{% if mode|length < loop.index %}
-			{% set mode = mode|merge([mode|last]) %}
-		{% endif %}
-		{% set modei = mode[loop.index0] %}
+	{%- set mode = (mode is iterable ? mode : [mode|default('avg')]) -%}
+	{%- set count = (count is iterable ? count : [count|default(100)]) -%}
+	{%- set unit = (unit is iterable ? unit : [unit|default('')]) -%}
+	{%- set units = [] -%}
+	{%- for uniti in unit -%}
+		{%- set units = units|merge([uniti|replace({',' : ';'})]) -%}  /** hide comma before implode/explode to allow format strings, e.g. %01,02f% */
+	{%- endfor -%}
+	{%- set stacking = (stacking is iterable ? stacking : [stacking|default('normal')]) -%}
+	{%- set stacks = (stacks is iterable ? stacks : [stacks|default('0')]) -%}
+	{%- set item = (item is iterable ? item : [item]) -%}
+	{%- set seriesitems = [] -%}
+	{%- for itemi in item -%}
+		{%- if mode|length < loop.index -%}
+			{%- set mode = mode|merge([mode|last]) -%}
+		{%- endif -%}
+		{%- set modei = mode[loop.index0] -%}
 
-		{% if count|length < loop.index %}
-			{% set count = count|merge([count|last]) %}
-		{% endif %}
-		{% set counti = count[loop.index0] %}
-
-		{% if source == 'database' %}
-			{% if modei == 'minmax' %}
-				{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]) ]) %}
-			{% elseif modei == 'minmaxavg' %}
-				{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]), implode(itemi, ['avg', tmin, tmax, counti]) ]) %}
-			{% else %}
-				{% set seriesitems = seriesitems|merge([implode(itemi, [modei, tmin, tmax, counti])]) %}
-			{% endif %}
-		{% else %}
-			{% set seriesitems = seriesitems|merge([itemi]) %}
-		{% endif %}
-	{% endfor %}
+		{%- if count|length < loop.index -%}
+			{%- set count = count|merge([count|last]) -%}
+		{%- endif -%}
+		{%- set counti = count[loop.index0] -%}
+		{%- if mode == 'raw' or counti >= 5000 -%}
+			{%- if once('plotboost') -%}
+				<script src="vendor/plot.highcharts/modules/boost.js"></script>
+			{%- endif -%}
+		{%- endif -%}
+		{%- if source == 'database' -%}
+			{%- if modei == 'minmax' -%}
+				{%- set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]) ]) -%}
+			{%- elseif modei == 'minmaxavg' -%}
+				{%- set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]), implode(itemi, ['avg', tmin, tmax, counti]) ]) -%}
+			{%- else -%}
+				{%- set seriesitems = seriesitems|merge([implode(itemi, [modei, tmin, tmax, counti])]) -%}
+			{%- endif -%}
+		{%- else -%}
+			{%- set seriesitems = seriesitems|merge([itemi]) -%}
+		{%- endif -%}
+	{%- endfor -%}
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.period" data-mode="{{ implode(mode) }}"
 		data-item="{{ implode(seriesitems) }}"
@@ -167,7 +176,8 @@
 		data-ytype="{{ implode(ytype) }}" data-unit="{{ implode(units) }}" data-stacking="{{ implode(stacking) }}" 
 		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}" data-exportmenu="{{ export|default(0) }}"
 		{% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
-		class="plot{% if zoom == 'advanced' %} plot-highstock{% endif %}"></div>
+		class="plot{% if zoom == 'advanced' %} plot-highstock{% endif %}">
+	</div>
 
 {% endmacro %}
 
@@ -258,6 +268,12 @@
 	{% set tmin = tmin|default('1h') %}
 	{% set mode = mode|default('avg') %}
 	{% set count = count|default(100) %}
+	{%- if mode == 'raw' or count >= 5000 -%}
+		{%- if once('plotboost') -%}
+			<script src="vendor/plot.highcharts/modules/boost.js"></script>
+		{%- endif -%}
+	{%- endif -%}
+	/** there is no way to measure the series length from here like in plot.period. So we can't import boost.js on demand for big series. Load it explicitely on the visu page if needed. */
 	{% set width = width|default(120) %}
 	{% set height = height|default(20) %}
 	{% set unit = unit|default('') %}
@@ -378,20 +394,24 @@
 */
 
 {% macro xyplot(id, item, xitem, yitem, xmin, xmax, ymin, ymax, label, xylabel, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export) %}
-	{% if (not export is empty) and export > 0 %}
-		<script src="vendor/plot.highcharts/modules/exporting.js"></script>
-		<script src="vendor/plot.highcharts/modules/offline-exporting.js"></script>
-		{% if export == 2 %}
-			<script src="vendor/plot.highcharts/modules/export-data.js"></script>
-		{% endif %}
-	{% endif %}
-	{% set unit = (unit is iterable ? unit : [unit|default('')]) %}
-	{% set units = [] %}
-	{% for uniti in unit %}
-		{% set units = units|merge([uniti|replace({',' : ';'})]) %}  /** hide comma before implode/explode to allow format strings, e.g. %01,02f% */
-	{% endfor %}
-	{% set stacking = (stacking is iterable ? stacking : [stacking|default('normal')]) %}
-	{% set stacks = (stacks is iterable ? stacks : [stacks|default('0')]) %}
+	{%- if (not export is empty) and export > 0 -%}
+		{%- if once('plotimageexport') -%}
+			<script src="vendor/plot.highcharts/modules/exporting.js"></script>
+			<script src="vendor/plot.highcharts/modules/offline-exporting.js"></script>
+		{%- endif -%}
+		{%- if export == 2 -%}
+			{%- if once('plotdataexport') -%}
+				<script src="vendor/plot.highcharts/modules/export-data.js"></script>
+			{%- endif -%}
+		{%- endif -%}
+	{%- endif -%}
+	{%- set unit = (unit is iterable ? unit : [unit|default('')]) -%}
+	{%- set units = [] -%}
+	{%- for uniti in unit -%}
+		{%- set units = units|merge([uniti|replace({',' : ';'})]) -%}  /** hide comma before implode/explode to allow format strings, e.g. %01,02f% */
+	{%- endfor -%}
+	{%- set stacking = (stacking is iterable ? stacking : [stacking|default('normal')]) -%}
+	{%- set stacks = (stacks is iterable ? stacks : [stacks|default('0')]) -%}
 
 	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.xyplot" data-item="{{ implode(item) }}"
 		{% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
