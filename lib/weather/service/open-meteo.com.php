@@ -112,7 +112,7 @@ class weather_openmeteo extends weather
 				$this->data['forecast'][$i]['date'] = $day;
 				$this->data['forecast'][$i]['conditions'] = translate(WMO::weatherCode[$parsed_json->{'daily'}->{'weather_code'}[$index]]['condition'], 'met.no');
 				$this->data['forecast'][$i]['icon'] = WMO::weatherCode[$parsed_json->{'daily'}->{'weather_code'}[$index]]['icon'];
-				$this->data['forecast'][$i]['temp'] = round((float)$parsed_json->{'daily'}->{'temperature_2m_min'}[$index], 0) . '&deg;/' . round((float)$parsed_json->{'daily'}->{'temperature_2m_max'}[$index], 0) . '&deg;';
+				$this->data['forecast'][$i]['temp'] = round((float)$parsed_json->{'daily'}->{'temperature_2m_max'}[$index], 0) . '&deg;/' . round((float)$parsed_json->{'daily'}->{'temperature_2m_min'}[$index], 0) . '&deg;';
 
 				$i++;
 			}
