@@ -4,7 +4,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Thomas Ernst
- * @copyright   2016
+ * @copyright   2016 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -19,7 +19,7 @@ require_once 'class.TemplateChecker.php';
 require_once 'class.Items.php';
 require_once 'class.OldWidgets.php';
 require_once 'class.itemProperties.php';
-
+require_once const_path.'vendor/autoload.php';
 
 
 RequestHandler::run();

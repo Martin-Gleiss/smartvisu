@@ -15,6 +15,7 @@
 - parameter type "mode" introduced. Templatechecker reads available database modes individually for configured backend.
 - docu page design>icons shows all icons in dropins/icons/ws (or .../sw, whatever is configured)
 - Highcharts module boost.js is activated on demand for series with 5000 or more data points to speed up rendering (plot.period, plot.sparkline). In plot.xyplot we can not do this since there is no size info. But most likely list items with xy-data are not so big. 
+- templatechecker now checks the twig syntax of html pages
 
 ### Updated Libraries
 

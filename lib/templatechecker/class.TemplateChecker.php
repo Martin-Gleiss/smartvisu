@@ -121,11 +121,61 @@ class TemplateChecker {
 			return;
 		}
 
+		if (!$this->checkTwigTemplate($absFile))
+			return;
+
 		if (!$this->readFile($absFile))
 			return;
 
 		$this->checkNode($this->domDocument->documentElement);
 	}
+
+		private function checkTwigTemplate($absFile) {
+			$templatePath = pathinfo($absFile, PATHINFO_DIRNAME);
+			$loader = new \Twig\Loader\FilesystemLoader($templatePath);
+			$twig = new \Twig\Environment($loader);
+			$twig->addFilter( new \Twig\TwigFilter('_', 'twig_concat'));
+			$twig->addFilter( new \Twig\TwigFilter('bit', 'twig_bit'));
+			$twig->addFilter( new \Twig\TwigFilter('substr', 'twig_substr'));
+			$twig->addFilter( new \Twig\TwigFilter('smartdate', 'twig_smartdate'));
+			$twig->addFilter( new \Twig\TwigFilter('deficon', 'twig_deficon', array('needs_environment' => true)));
+			$twig->addFilter( new \Twig\TwigFilter('md5', 'twig_md5'));
+			$twig->addFilter( new \Twig\TwigFilter('preg_replace', 'twig_preg_replace'));
+
+			$twig->addFunction( new \Twig\TwigFunction('uid', 'twig_uid'));
+			$twig->addFunction( new \Twig\TwigFunction('once', 'twig_once'));
+			$twig->addFunction( new \Twig\TwigFunction('isfile', 'twig_isfile'));
+			$twig->addFunction( new \Twig\TwigFunction('isdir', 'twig_isdir'));
+			$twig->addFunction( new \Twig\TwigFunction('dir', 'twig_dir'));
+			$twig->addFunction( new \Twig\TwigFunction('docu', 'twig_docu'));
+			$twig->addFunction( new \Twig\TwigFunction('configmeta', 'twig_configmeta'));
+			$twig->addFunction( new \Twig\TwigFunction('lang', 'twig_lang'));
+			$twig->addFunction( new \Twig\TwigFunction('read_config', 'twig_read_config'));
+			$twig->addFunction( new \Twig\TwigFunction('timezones', 'twig_timezones'));
+			$twig->addFunction( new \Twig\TwigFunction('implode', 'twig_implode', array('is_safe' => array('html'))));
+			$twig->addFunction( new \Twig\TwigFunction('items', 'twig_items'));
+			$twig->addFunction( new \Twig\TwigFunction('asset_exists', 'twig_asset_exists'));
+			$twig->addFunction( new \Twig\TwigFunction('localize_svg', 'twig_localize_svg'));
+
+			// init lexer comments
+			$lexer = new \Twig\Lexer($twig, array('tag_comment' => array('/**', '*/')));
+			$twig->setLexer($lexer);
+			$templateName = pathinfo($absFile, PATHINFO_BASENAME);
+
+			try {
+				// Lade das Template
+				$template = $twig->load($templateName);
+
+				// Prüfe die Syntax des Templates
+				$template->getSourceContext()->getCode();
+				
+				//if (Settings::SHOW_SUCCESS_TOO)
+				//	$this->messages->addInfo('TWIG PARSER', 'Twig syntax is valid.');
+			} catch (\Twig\Error\SyntaxError $e) {
+				$this->messages->addError('TWIG TEMPLATE PARSER', 'Twig syntax error: '. $e->getMessage(), $e->getLine());
+			}
+			return true;
+		}
 
 	/**
 	 * Open file
@@ -244,8 +294,13 @@ class TemplateChecker {
 			return;
 
 		$widgetName = $widget->getName();
+		
+		// strip calling macros name in recursive check
 		if (strpos($widgetName, '->') > 0 )
 			$widgetName = substr($widgetName,  strpos($widgetName, '->') + 2);
+
+		// a test with twig tokenize as marcro syntax checker in this place showed no significant advantage
+		// https://stackoverflow.com/questions/27191916/check-if-string-has-valid-twig-syntax
 		
 		$widgetConfig = $this->getWidgetConfig($widgetName);
 
