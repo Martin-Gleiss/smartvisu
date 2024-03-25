@@ -7,8 +7,9 @@
 ### Other New Features
 - improved spline display for the starting point in device.uzsugraph
 - new icons scene_cooking_drink and scene_robovac_dock (thanks to @Pacifia15))
-- smarthomeNG driver: new configurable option "signalBusy" lets "VISU" logo in the top-right corner blink after a new page is loaded (i.e. "monitor" command has been sent) until all subscribed items have been received. 
+- smarthomeNG and ioBroker drivers: new configurable option "signalBusy" lets "VISU" logo in the top-right corner blink after a new page is loaded (i.e. "monitor" command has been sent) until all subscribed items have been received. 
 - new weatherservice open-meteo.com
+- ioBroker driver now supports subscribing and unsubscribing series for individual plots which enables usage of plot.timeshift with ioBroker (thanks to YellowFlash for testing!)
 
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers

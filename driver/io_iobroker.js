@@ -19,7 +19,6 @@
  * @hide		driver_username
  * @hide		driver_password
  * @hide		driver_loopback
- * @hide        driver_signalBusy
  * @hide		sv_hostname
  */
 
@@ -204,7 +203,9 @@ var io = {
 	 * - total = on 
 	 * - count
 	 */
-	aggregates: ['avg', 'min', 'max', 'on', 'count'],
+	aggregates: ['avg', 'average', 'min', 'max', 'total', 'on', 'count'],
+	monitorComplete: null,
+	openItems: [],
 
 
 	/**
@@ -262,6 +263,11 @@ var io = {
 		io.socket.on('stateChange', function (id, state) {
 			if (!id || state === null || typeof state !== 'object') return;
 			io.stateChanged(id, state);
+			if (io.monitorCompleted == false && io.openItems.length == 0){
+				io.monitorCompleted = true;
+				$('.smartvisu .visu').removeClass('blink');
+			}
+
 	/*
 			if (that._connCallbacks.onCommand && id === that.namespace + '.control.command') {
 				if (state.ack) return;
@@ -319,12 +325,23 @@ var io = {
 				val.push([state.ts, state.val]);
 			});
 			widget.update(plot[1], val);
+			io.openItems.removeEntry(plot[1]);
 		});
 	},
 
-	delayPlots: function() {
+	subscribePlots: function(plotitem) {
+		var plotItems = [];
 		var items = Array();
-		io.plots.forEach(plot => {
+
+		if (plotitem == undefined)
+			plotItems = io.plots;
+		else
+			plotItems = plotitem; 
+		
+		//DEBUG: 
+		console.log('[io_iobroker] subscribing series: ', plotItems);
+						
+		plotItems.forEach(plot => {
 			io.updatePlot(plot);
 			plot[2] = true; // enable stateChanged
 			items.push(plot[0]);
@@ -337,6 +354,7 @@ var io = {
 	},
 
 	monitor: function() {
+		io.monitorCompleted = false;
 		io.listeners = [];
 		var listeners = widget.listeners();
 		var listenItem;
@@ -348,35 +366,23 @@ var io = {
 				io.listeners[listenItem] = listeners[i];
 		}
 		var items = Object.keys(io.listeners);
+		io.openItems = Object.keys(io.listeners);
+
 		
-		if (io.checkConnected() && items.length) {
-			io.socket.emit('subscribe', items);
-			io.read(items);
+		if (io.checkConnected()) {
+			if (items.length) {
+				io.socket.emit('subscribe', items);
+				io.read(items);
+			}
 
 			// plot
 			io.plots = Array();                        
 			clearTimeout(io.firstPlotTimeout);
 			io.firstPlotTimeout = 0;
-			var unique = Array();
-			widget.plot().each(function (idx) {
-				var items = widget.explode($(this).attr('data-item'));
-				$.each(items, function() {
-					var item = String(this);                    
-					var pt = item.split('.');
-					if (!unique[item] && (pt instanceof Array) && widget.checkseries(item)) {
-						unique[item] = 1;
-						if (io.plots.find(plot => plot[1] === item) === undefined) {
-							var id = item.substr(0, item.length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
-							io.plots.push([id, item, false]);
-						}
-						io.firstPlotTimeout = -1;
-					}
-				});
-			});
+			io.startseries();
 			
-			// Start subscribing and draw with a delay in the plots so the "normal" widgets are populated with data first.
-			// This speeds up page loading when there is a lot of data in the plots.
-			if (io.firstPlotTimeout == -1) io.firstPlotTimeout = setTimeout(io.delayPlots, 1000);             
+			if (sv.config.driver.signalBusy)
+				$('.smartvisu .visu').addClass('blink');
 		}
 	},
 
@@ -432,25 +438,93 @@ var io = {
 			}       
 
 			widget.update(item, val);
+			io.openItems.removeEntry(item);
 			if (item != io.listeners[item])
 				widget.update(io.listeners[item], val);
 		}
 	},
 
 	/**
-	* stop all subscribed series
+	* start subscriptions for all plots in a page or a single specified plot
 	*/
-	stopseries: function () {
-		if (io.isConnected) {
-			var items = io.listeners != [] ? Object.keys(io.listeners) : widget.listeners();
-			io.plots.forEach(plot => {
-				items.push(plot[0]);
+	startseries: function(plotwidget){
+		var unique = Array();
+		var plotWidgets = [];
+		var plotsLength = io.plots.length;
+		var reorderPlots = [];
+		if (plotwidget === undefined)
+			plotWidgets = widget.plot();
+		else
+			plotWidgets = plotwidget;		
+	
+		plotWidgets.each(function (idx) {
+			var items = widget.explode($(this).attr('data-item'));
+			$.each(items, function() {
+				var item = String(this);                    
+				var pt = item.split('.');
+				if (!unique[item] && (pt instanceof Array) && widget.checkseries(item)) {
+					unique[item] = 1;
+					var id = item.substr(0, item.length - 4 - pt[pt.length - 4].length - pt[pt.length - 3].length - pt[pt.length - 2].length - pt[pt.length - 1].length);
+					if (io.plots.find(plot => plot[1] === item) === undefined) {
+						io.plots.push([id, item, false]);
+						io.openItems.push(item);
+					}
+					else
+						reorderPlots.push([id, item, false]);						
+					
+					io.firstPlotTimeout = -1;
+				}
 			});
-			io.socket.emit('unsubscribe', items);
-			io.read(items);
+		});
+		if (plotwidget == undefined){
+			// Start subscribing the plots with delay so the "normal" widgets are populated with data first.
+			// This speeds up page loading when there is a lot of data in the plots.
+			if (io.firstPlotTimeout == -1) 
+				io.firstPlotTimeout = setTimeout(io.subscribePlots, 1000);
 		}
-		valueType = Array(); // clear list
-	}
+		else {
+			io.subscribePlots(reorderPlots.concat(io.plots.slice(plotsLength)));
+		}
+	},
+
+
+	/**
+	* stop subscriptions for all plots in a page or a single specified plot
+	* plotwidget is the jQuery object representing a specific plot widget
+	*/
+	stopseries: function (plotwidget) {
+		var items = Array();
+		if (io.isConnected) {
+			if (plotwidget != undefined){
+				var plotitems = widget.explode(plotwidget.attr('data-item'));
+				$.each(plotitems, function() {
+					if (widget.plot(this).length == 1){		// stop series if plotitem is used only once
+						var item = String(this);
+						var plotIndex = io.plots.findIndex(plot => plot[1] === item);
+						//DEBUG:
+						console.log('[io_iobroker] cancelling series: '+ item + ' at index: ' + plotIndex);
+						
+						// delete entry in the plots array so plot update is skipped even if base item is updated
+						io.plots.splice(plotIndex, 1);
+						delete widget.buffer[item];
+					}
+				})
+			}
+			else {
+				// all items - Cancelling on page change is OK but we should find a more suitable location (ToDo)
+				items = io.listeners != [] ? Object.keys(io.listeners) : widget.listeners();
+				
+				io.valueType = Array(); // clear list
+				// all series items
+				io.plots.forEach(plot => {
+					items.push(plot[0]);
+				});
+				io.socket.emit('unsubscribe', items);
+				io.read(items);
+			}
+		}
+
+	},
 
 /*
 	logout: function() {
