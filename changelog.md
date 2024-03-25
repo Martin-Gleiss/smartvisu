@@ -7,8 +7,9 @@
 ### Other New Features
 - improved spline display for the starting point in device.uzsugraph
 - new icons scene_cooking_drink and scene_robovac_dock (thanks to @Pacifia15))
-- smarthomeNG driver: new configurable option "signalBusy" lets "VISU" logo in the top-right corner blink after a new page is loaded (i.e. "monitor" command has been sent) until all subscribed items have been received. 
+- smarthomeNG and ioBroker drivers: new configurable option "signalBusy" lets "VISU" logo in the top-right corner blink after a new page is loaded (i.e. "monitor" command has been sent) until all subscribed items have been received. 
 - new weatherservice open-meteo.com
+- ioBroker driver now supports subscribing and unsubscribing series for individual plots which enables usage of plot.timeshift with ioBroker (thanks to YellowFlash for testing!)
 
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers
@@ -16,6 +17,7 @@
 - docu page design>icons shows all icons in dropins/icons/ws (or .../sw, whatever is configured)
 - Highcharts module boost.js is activated on demand for series with 5000 or more data points to speed up rendering (plot.period, plot.sparkline). In plot.xyplot we can not do this since there is no size info. But most likely list items with xy-data are not so big. 
 - templatechecker now checks the twig syntax of html pages
+- console.log is activated in cache mode if parameter "debug" is set to "1" in config.ini
 
 ### Updated Libraries
 
@@ -38,6 +40,7 @@
 - template checker gave faulty replacement hint for removed widget basic.text
 - template checker threw errors if an item property was not in the properties class
 - plot.period and plot.xyplot drawed the plots twice after series update
+- notify.add() notification threw errors if message was not of type "text" 
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text

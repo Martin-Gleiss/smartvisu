@@ -28,7 +28,7 @@ require_once $path . '/minify/src/Exceptions/IOException.php';
 require_once $path . '/path-converter/src/ConverterInterface.php';
 require_once $path . '/path-converter/src/Converter.php';
 
-if($type == 'javascript')
+if($type == 'javascript' && defined('config_debug') && !config_debug)
 	array_unshift($request['files'], 'console.log = function() {};');
 
 foreach($request['files'] as $fileName) {
