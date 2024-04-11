@@ -1,0 +1,351 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Wolfram v. Hülsen
+* @copyright   2012 - 2024
+* @license     GPL [http://www.gnu.de]
+* @version     1.0
+*
+* @title       Plot Analyser
+* @category    visu
+* @icon        icons/ws/measure_power_meter.svg
+* @color       #b00
+* @description Analyse plots with flexible configuration of series parameters
+*
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "apps.html" %}
+
+{% block sidebar %}
+		<style type="text/css">
+
+		.apdisplay .ui-field-contain,
+		.apdisplay .ui-input-text {
+			margin: .2em 0;
+		}
+		.apdisplay .ui-select{
+			margin:0;
+			padding: 0 2% 0 2%;
+			
+		}
+		.apdisplay .ui-select .ui-btn { 
+                   scale: 80%;
+                 }
+		
+	</style>
+	<div>
+		<div class="app">
+			<div class="image" style="background-color: #b00;"><img src="icons/ws/measure_power_meter.svg" alt="Plot Analyser"></div>
+		</div>
+		<h3 style="padding: 40px 0 8px 0;">Plot Analyser</h3>
+	</div>
+
+	<h2>Global Plot Settings:</h2>
+	<div class= "apdisplay">
+		<div class="ui-field-contain">
+			<label for="apDataSource">Data Source (DB / Item)</label>
+			<select id="apDataSource"><option value="database">Database</option><option value="item">Item</option></select>
+		</div>
+		<div class="ui-field-contain" style="width:30%; display:inline-block;"><label style="width:30%;">Time Axis</label></div>
+		<div class="ui-field-contain" style="width:34%;display:inline-block;">
+			<label for="apTmin">tmin</label>
+			<input id="apTmin"/>
+		</div>
+		<div class="ui-field-contain" style="width:34%; float:right;">
+			<label for="apTmax">tmax</label>
+			<input id="apTmax"/>
+		</div>
+		<hr>
+		<table>
+			<tr>
+				<td style = "width:30%;"></td><td style = "width:17%;">Y Axis 1</td><td style = "width:17%;">Y Axis 2</td><td style = "width:17%;">Y Axis 3</td><td style = "width:17%;">Y Axis 4</td>
+			</tr>
+			<tr>
+				<td>Activate axis</td><td><input type="checkbox" id="apYact1"></td><td><input type="checkbox" id="apYact2"></td><td><input type="checkbox" id="apYact3"></td><td><input type="checkbox" id="apYact4"></td>
+			</tr>
+			<tr>
+				<td> Y-axis min value</td><td><input id="apYmin1"/></td><td><input id="apYmin2"/></td><td><input id="apYmin3"/></td><td><input id="apYmin4"/></td>
+			</tr>
+			<tr>
+				<td> Y-axis max value</td><td><input id="apYmax1"/></td><td><input id="apYmax2"/></td><td><input id="apYmax3"/></td><td><input id="apYmax4"/></td>
+			</tr>
+			<tr>
+				<td> Y-axis position</td>
+				<td><select id="apYpos1"><option value="0">left</option><option value="1">right</option></select></td>
+				<td><select id="apYpos2"><option value="0">left</option><option value="1">right</option></select></td>
+				<td><select id="apYpos3"><option value="0">left</option><option value="1">right</option></select></td>
+				<td><select id="apYpos4"><option value="0">left</option><option value="1">right</option></select></td>
+			</tr>
+			<tr>
+				<td> Y-axis scale type</td>
+				<td><select id="apYtype1"><option value="linear">linear</option><option value="logarithmic">logarithm</option><option value="boolean">bool</option></select></td>
+				<td><select id="apYtype2"><option value="linear">linear</option><option value="logarithmic">logarithm</option><option value="boolean">bool</option></select></td>
+				<td><select id="apYtype3"><option value="linear">linear</option><option value="logarithmic">logarithm</option><option value="boolean">bool</option></select></td>
+				<td><select id="apYtype4"><option value="linear">linear</option><option value="logarithmic">logarithm</option><option value="boolean">bool</option></select></td>
+			</tr>
+			<tr>
+				<td> Y-axis unit</td><td><input id="apYunit1"/></td><td><input id="apYunit2"/></td><td><input id="apYunit3"/></td><td><input id="apYunit4"/></td>
+			</tr>
+		</table>
+
+		<div class="ui-field-contain">
+			<label for="apChartopts">Chart options</label>
+			<input id="apChartopts"/>
+		</div>
+		<hr/>
+		<h2>Item specific Settings:</h2>
+			{%
+		set sources = {
+			'1': 'Item 1',
+			'2': 'Item 2',
+			'3': 'Item 3',
+			'4': 'Item 4',
+			'5': 'Item 5'
+		}
+		%}
+
+		<div data-role="tabs" id="apSource">
+			<div data-role="navbar">
+				<ul>
+				{% for source, title in sources %}
+						<li data-source="{{ source }}"><a href="#ap_tab_{{ source }}" data-ajax="false"{{ loop.first ? ' class="ui-btn-active"'|raw }}>{{ title }}</a></li>
+				{% endfor %}
+				</ul>
+			</div>
+			<hr>
+		{% for source, title in sources %}
+		<div id="ap_tab_{{ source }}">
+			<form class="configform">
+				<fieldset>
+					<div class="ui-field-contain">
+						<label for="apItem{{source}}">Item(s)</label>
+						<input id="apItem{{source}}"/>
+					</div>
+					<div class="ui-field-contain">
+						<label for="apMode{{source}}"> DB mode</label>
+						<select id="apMode{{source}}">
+						</select>
+					</div>
+					<div class="ui-field-contain">
+						<label for="apCount">Count(s)</label>
+						<input id="apCount{{source}}"/>
+					</div>
+					<div class="ui-field-contain">
+						<label for="apExposure{{source}}">Series type(s)</label>
+						<input id="apExposure{{source}}"/>
+					</div>
+					<div class="ui-field-contain">
+						<label for="apColor{{source}}">Color(s)</label>
+						<input id="apColor{{source}}"/>
+					</div>
+					<div class="ui-field-contain">
+						<label for="apAssign{{source}}">Y axis no(s).</label>
+						<input id="apAssign{{source}}"/>
+					</div>
+							<div class="ui-field-contain">
+						<label for="apStacking{{source}}">Stacking(s)</label>
+						<input id="apStacking{{source}}"/>
+					</div>
+					<div class="ui-field-contain">
+						<label for="apStacks{{source}}">Stack(s).</label>
+						<input id="apStacks{{source}}"/>
+					</div>
+				</form>
+			</div>
+		{% endfor %}
+		</div>
+	</div>
+	<hr>
+	<button id="apSubmit">Start Plot</button>
+
+{% endblock %}
+
+
+{% block content %}
+	
+	<style type="text/css">
+
+		.apdisplay .highcharts-root:not(.supersized) {
+			max-height: 800px;
+		}
+		.apdisplay .plot.plot-highstock {
+			height: 500px;
+		}
+	</style>
+	
+   {% set mode = "raw" %} 			/** just init to activate boost mode */
+   {% set zoom = "advanced" %} 		/** enable navigator */
+   {% set export = 2 %} 			/** activate export menu */
+
+	<div id="analyse-plots" data-widget="app.analyse_plots" class="apdisplay">
+	
+		{{ plot.period('analyse-plotpopup', item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export, source) }}
+	</div>
+
+/**	options not (yet) used
+	data-axis = [ x axix name and y axis name(s) ]
+	data-ycolor = [colors of y axes ]
+*/
+
+
+	<script type="text/javascript">
+		$('#{{ page }}').on('pagecreate', function (event, ui) {
+			
+			// get available database modes from backend driver and make
+			// them selectable options
+			// var modes = io.aggregates ? io.aggregates.concat(['minmax', 'minmaxavg']) : ['avg', 'min', 'max', 'diff', 'sum', 'on', 'raw', 'count', 'countall', 'integrate', 'differentiate', 'duration', 'minmax', 'minmaxavg'];
+			var modes = io.aggregates.concat(['minmax', 'minmaxavg']);
+			var modeslist = ""
+			$.each(modes, function(idx, mode){
+				modeslist += "<option value=\"" + mode + "\">" +  mode  + "</option>";
+			})
+			for (var i=1; i<6; i++){
+				$('#apMode'+ i).append(modeslist).val('avg').selectmenu('refresh');
+			}
+			
+			// start plot display on button click
+			$('#apSubmit ').on('click', function(event,ui){
+			
+				var plot = $('[id*="analyse-plotpopup"]');
+				var plotId = plot.attr('id');
+				var that = plot.data().svWidget;
+								
+				// stop subscription for actual plot
+				if (io.stopseries )
+					io.stopseries(plot);
+				that.element.highcharts().destroy();
+				var apSeries = "", apCount = "", apExposure = "", apColor = "", apMode = "", apLabel = "", apAssign = "", apStacking = "", apStacks = "";
+
+				// Data source: database or item
+				var apDataSource = $('#apDataSource').val().toString() || 'database';
+
+				// time axis
+				var apTmin = $('#apTmin').val().toString() || '1h';
+				var apTmax = $('#apTmax').val().toString() || 'now';
+				
+				//y-axis parameters for 4 axes				
+				var apYmins = [], apYmaxs = [], apYtypes = [],apYposs = [], apYunits = [];
+				for (var i=1; i<5; i++){
+					console.log($('#apYact'+i).val().toString())
+					apYmins[i-1] = $('#apYact'+i).prop('checked') ? $('#apYmin'+i).val().toString() || '' : ''; 
+					apYmaxs [i-1] = $('#apYact'+i).prop('checked') ? $('#apYmax'+i).val().toString() || '' : '';
+					apYtypes[i-1] = $('#apYact'+i).prop('checked') ? $('#apYtype'+i).val().toString() || '' : '';
+					apYposs[i-1] = $('#apYact'+i).prop('checked') ? $('#apYpos' +i).val().toString() || '' : '';
+					apYunits[i-1] = $('#apYact'+i).prop('checked') ? $('#apYunit' +i).val().toString() || '' : '';
+				}
+				var apYmin = apYmins.join(',');
+				var apYmax = apYmaxs.join(',');
+				var apYtype = apYtypes.join(',');
+				var apYpos = apYposs.join(',');
+				var apYunit = apYunits.join(',');
+				var apChartopts = $('#apChartopts').val() || '';
+
+				// item specific settings organized in 5 tabs
+				for (var source = 1; source < 6; source++){
+					var apItems = $('#apItem'+ source).val().toString().split(/,\s*/);
+					if (apItems =='')
+						apItems = null;
+					var apModes = $('#apMode' + source).val().toString();
+					var apCounts = $('#apCount' + source).val().toString().split(/,\s*/);
+					var apExposures = $('#apExposure' + source).val().toString().split(/,\s*/);
+					var apColors = $('#apColor' + source).val().toString().split(/,\s*/);
+					var apAssigns = $('#apAssign' + source).val().toString().split(/,\s*/);
+					var apStackings = $('#apStacking' + source).val().toString().split(/,\s*/);
+					var apStackss = $('#apStacks' + source).val().toString().split(/,\s*/);
+
+					// every tab can have more than one item
+					$.each(apItems, function(idx, apItem){
+						var delimiter = (idx == 0 && source== 1) ? '': ',';
+						if (apSeries != '')
+							apSeries += ',';
+						if (apCounts[idx] == undefined || apCounts[idx] == '')
+							apCounts[idx] = 100;
+						if (apExposures[idx] == undefined || apExposures[idx] == '')
+							apExposures[idx] = 'line';
+						if (apColors[idx] == undefined) 
+							apColors[idx] = '';
+						if (apAssigns[idx] == undefined || apAssigns[idx] == '')
+							apAssigns[idx] = 1;
+						if (apStackings[idx] == undefined || apStackings[idx] == '') 
+							apStackings[idx] = 'normal';
+						if (apStackss[idx] == undefined) 
+							apStackss[idx] = '';
+						if (apDataSource == 'database'){
+							if (apModes.indexOf("minmax") == 0){
+								apSeries += [apItem, "min", apTmin, apTmax, apCounts[idx]].join('.') +',';
+								apSeries += [apItem, "max", apTmin, apTmax, apCounts[idx]].join('.');
+								if (apModes == "minmaxavg")
+									apSeries += ',' + [apItem, "avg", apTmin, apTmax, apCounts[idx]].join('.');
+							} else
+									apSeries += [apItem, apModes, apTmin, apTmax, apCounts[idx]].join('.');
+						} else
+							apSeries += apItem;
+
+						apLabel += delimiter + apItem;
+						apCount += delimiter + apCounts[idx];
+						apExposure += delimiter + apExposures[idx];
+						apColor += delimiter + apColors[idx];
+						apMode += delimiter + apModes;
+						apAssign += delimiter + apAssigns[idx];
+						apStacking += delimiter + apStackings[idx];
+						apStacks += delimiter + apStackss[idx];
+					})
+				}
+
+				// populate widget parameters from input elements
+				plot.attr('data-tmin', apTmin);
+				that.options.tmin = apTmin;
+				plot.attr('data-tmax', apTmax);
+				that.options.tmax = apTmax;
+				plot.attr('data-ymin', apYmin);
+				that.options.ymin = apYmin;
+				plot.attr('data-ymax', apYmax);
+				that.options.ymax = apYmax;
+				plot.attr('data-ytype', apYtype);
+				that.options.ytype = apYtype;
+				plot.attr('data-opposite', apYpos);
+				that.options.opposite = apYpos;
+				plot.attr('data-unit', apYunit);
+				that.options.unit = apYunit;
+				plot.attr('data-chart-options', apChartopts);
+				if (apChartopts != undefined && apChartopts != ''){
+					try {that.options.chartOptions = JSON.parse(apChartopts);} 
+					catch(error){notify.message('error', 'No valid JSON', 'please use quotes for the individual properties, e.g. {"rangeSelector":{"selected":"2"}}');}
+				}
+				
+				plot.attr('data-item',  apSeries);
+				that.options.item = apSeries;
+				that.items = apSeries.split(',');
+				plot.attr('data-mode',  apMode);
+				that.options.mode = apMode;
+				plot.attr('data-count', apCount);
+				that.options.count = apCount;
+				plot.attr('data-exposure', apExposure);
+				that.options.exposure = apExposure;
+				plot.attr('data-color', apColor);
+				that.options.color = apColor;
+				plot.attr('data-label', apLabel);
+				that.options.label = apLabel;
+				plot.attr('data-assign', apAssign);
+				that.options.assign = apAssign;
+				plot.attr('data-stacking', apStacking);
+				that.options.stacking = apStacking;
+				plot.attr('data-stacks', apStacks);
+				that.options.stacks = apStacks;
+				
+				that._create()
+								
+				// start new series subscription
+				if (io.startseries)
+					io.startseries(plot);
+			})
+		});
+
+	</script>
+
+	<hr />
+{% endblock %}
+
+
