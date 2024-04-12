@@ -3,6 +3,7 @@
 - basic.tank is now able to change colors according to reached thresholds
 - additional option for basic.select to support activity indicator like basic.stateswitch
 - basic.icon accepts alpha values for rgb(a)/hsl(a)/hsv(a) and also hex rgb(a) values in items
+- new app analyse_plots enables live parametrizing of plot.period
 
 ### Other New Features
 - improved spline display for the starting point in device.uzsugraph
