@@ -166,12 +166,22 @@
 {% block content %}
 	
 	<style type="text/css">
-
 		.apdisplay .highcharts-root:not(.supersized) {
 			max-height: 800px;
 		}
 		.apdisplay .plot.plot-highstock {
 			height: 500px;
+		}
+		.apdisplay .twig {
+			-webkit-touch-callout: none!important;
+			-webkit-user-select: text!important;
+			-moz-user-select: text!important;
+			-ms-user-select: text!important;
+			user-select: text!important;
+			font-size: 1.2em;
+			white-space: nowrap;
+			overflow-x: scroll;	
+			padding-bottom: 1em;
 		}
 	</style>
 	
@@ -182,6 +192,13 @@
 	<div id="analyse-plots" data-widget="app.analyse_plots" class="apdisplay">
 	
 		{{ plot.period('analyse-plotpopup', item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export, source) }}
+		<br>
+		<h2>Generated widget code: </h2>
+		<div id="apWidgetCode" class="twig">
+				{% filter trim|escape|nl2br %}{% verbatim %}
+				{{ plot.period(...) }}
+				{% endverbatim %}{% endfilter %}
+		</div>
 	</div>
 
 /**	options not (yet) used
@@ -216,7 +233,7 @@
 				if (io.stopseries )
 					io.stopseries(plot);
 				that.element.highcharts().destroy();
-				var apSeries = "", apCount = "", apExposure = "", apColor = "", apMode = "", apLabel = "", apAssign = "", apStacking = "", apStacks = "";
+				var apSeries = "", apCount = "", apExposure = "", apColor = "", apMode = "", apLabel = "", apAssign = "", apStacking = "", apStacks = "", apBaseItems = "";
 
 				// Data source: database or item
 				var apDataSource = $('#apDataSource').val().toString() || 'database';
@@ -227,13 +244,18 @@
 				
 				//y-axis parameters for 4 axes				
 				var apYmins = [], apYmaxs = [], apYtypes = [],apYposs = [], apYunits = [];
+				// check active axis with highest number
 				for (var i=1; i<5; i++){
-					console.log($('#apYact'+i).val().toString())
-					apYmins[i-1] = $('#apYact'+i).prop('checked') ? $('#apYmin'+i).val().toString() || '' : ''; 
-					apYmaxs [i-1] = $('#apYact'+i).prop('checked') ? $('#apYmax'+i).val().toString() || '' : '';
-					apYtypes[i-1] = $('#apYact'+i).prop('checked') ? $('#apYtype'+i).val().toString() || '' : '';
-					apYposs[i-1] = $('#apYact'+i).prop('checked') ? $('#apYpos' +i).val().toString() || '' : '';
-					apYunits[i-1] = $('#apYact'+i).prop('checked') ? $('#apYunit' +i).val().toString() || '' : '';
+					if ($('#apYact'+i).prop('checked'))
+						var apMaxYaxis = i;
+				}
+				// evaluate settings up to highest active axis
+				for (var i=1; i<apMaxYaxis+1; i++){
+					apYmins[i-1]  = $('#apYmin'+i).val().toString() || ''; 
+					apYmaxs [i-1] = $('#apYmax'+i).val().toString() || '';
+					apYtypes[i-1] = $('#apYtype'+i).val().toString();
+					apYposs[i-1]  = $('#apYpos' +i).val().toString();
+					apYunits[i-1] = $('#apYunit' +i).val().toString() || '';
 				}
 				var apYmin = apYmins.join(',');
 				var apYmax = apYmaxs.join(',');
@@ -291,6 +313,7 @@
 						apAssign += delimiter + apAssigns[idx];
 						apStacking += delimiter + apStackings[idx];
 						apStacks += delimiter + apStackss[idx];
+						apBaseItems += delimiter + apItem;
 					})
 				}
 
@@ -340,7 +363,25 @@
 				// start new series subscription
 				if (io.startseries)
 					io.startseries(plot);
-			})
+					
+				// update widget code display field
+				var widgetCode = ["''", setWidgetParam(apBaseItems, ''), setWidgetParam(apMode, 'avg'), setWidgetParam(apTmin, '1h'), setWidgetParam(apTmax, 'now'), setWidgetParam(apYmin, ''), setWidgetParam(apYmax, ''),
+								 setWidgetParam(apCount, '100'), setWidgetParam(apLabel, ''), setWidgetParam(apColor, ''), setWidgetParam(apExposure, 'line'), "''", "'advanced'", setWidgetParam(apAssign, ''),
+								 setWidgetParam(apYpos, ''), "''", setWidgetParam(apYtype, 'linear'), setWidgetParam(apYunit, ''), 	apChartopts ? apChartopts: "''", setWidgetParam(apStacking, 'normal'), setWidgetParam(apStacks, ''), "2", 
+								 "'"+apDataSource+"'"	].join(', '); 
+				var widgetCodeHtml = $('#apWidgetCode').html();
+				$('#apWidgetCode').html(widgetCodeHtml.replace(/period\(.*\)/, 'period('+widgetCode+')'));
+			});
+			
+			function setWidgetParam(widgetParam, defaultValue){
+				if (widgetParam.split(/,\s*/).every(function(element){return element == defaultValue}))
+					widgetParam = '';
+				var paramLength = widgetParam.split(',').length;
+				var ret = paramLength > 1 ? "['":"'";
+				ret += widgetParam.split(/,\s*/).join("', '");
+				ret += paramLength > 1 ? "']" : "'";
+				return ret;
+			}
 		});
 
 	</script>
