@@ -337,8 +337,8 @@
 * @param {color[?](icon0to5,hidden,blank)=icon0} array of colors; 'icon0' through 'icon5' or e. g. '#f00' for red (optional, default = icon0 )
   additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
   the first one is the base color for values below first threshold, so pass one color more than thresholds.
-* @param {text=} URL to use as link (optional)
-* @param {text=} used in combination with href as data-rel attribute {e.g. to open a popup} (optional)
+* @param {text=} URL to use as link or id of a widget to add a tooltip (optional)
+* @param {text=} use 'tooltip' in combination with a widget id as href in order to attach a tooltip to that widget. Any other text will interpret href as link to a popup (optional)
 *
 * @see misc/fundamentals#Array-Form
 *
@@ -347,11 +347,12 @@
 */
 {% macro print(id, item, format, formula, threshold, color, href, rel) %}
 {% set color = color|default('icon0') %}
-{% if href is empty %}{% else %}<a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{% endif %}>{% endif %}
+{% if href is not empty and rel != 'tooltip' %}<a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{% endif %}>{% endif %}
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-item="{{ implode(item) }}" class="text" data-widget="basic.print"
 		data-format="{{ format }}" data-formula="{{ formula|default('VAR1') }}"
-		data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}">---</span>
-  {% if href is empty %}{% else %}</a>{% endif %}
+		data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}"
+		{% if rel == 'tooltip' %}data-bind="{{ uid(page, href) }}"{% endif %}>---</span>
+  {% if href is not empty and rel != 'tooltip' %}</a>{% endif %}
 
 {% endmacro %}
 

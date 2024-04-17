@@ -779,7 +779,8 @@ $.widget("sv.basic_print", $.sv.widget, {
 	format: "",
 	formula: "",
 	thresholds: "",
-	colors: ""
+	colors: "",
+	bind: ""
 	},
 
 	_update: function(response) {
@@ -846,7 +847,14 @@ $.widget("sv.basic_print", $.sv.widget, {
 			this.element.html(calc);
 		else
 			this.element.text(calc);
-
+		
+		if (this.options.bind != ''){
+			this.element.hide();
+			$('#'+this.options.bind).attr('data-tip', calc);
+			return;
+		}
+			
+		
 		// colorize
 		var currentIndex = 0;
 		$.each(String(this.options.thresholds).explode(), function(index, threshold) {
