@@ -5,6 +5,7 @@
 - basic.icon accepts alpha values for rgb(a)/hsl(a)/hsv(a) and also hex rgb(a) values in items
 - new app analyse_plots enables live parametrizing of plot.period
 - basic.print can be used to generate a tooltip on a linked widget (parameter href = widget-id, rel = 'tooltip')
+- additional color and indicator options for basic.trigger
 
 ### Other New Features
 - improved spline display for the starting point in device.uzsugraph
@@ -43,6 +44,7 @@
 - template checker threw errors if an item property was not in the properties class
 - plot.period and plot.xyplot drawed the plots twice after series update
 - notify.add() notification threw errors if message was not of type "text" 
+- basic.trigger showed oversized button instead of specified type "icon"
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text

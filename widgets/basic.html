@@ -733,18 +733,29 @@
 * @param {text=1} value to send if the button is pressed (optional, default 1)
 * @param {type=mini} type: 'micro', 'mini', 'midi' (optional, default: mini)
 * @param {text(button,page,both)=button} trigger event: 'button', 'page', 'both' (optional, default: button)
+* @param {color(icon0to5)=} single color e. g. '#f00' for red or icon class. (optional)
+* @param {color(icon0to5,blink,:)=} activity indicator which is active until the timeout is reached; pass either a color, icon class or 'blink'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
 */
-{% macro trigger(id, name, txt, icon, val, type, event) %}
+{% macro trigger(id, name, txt, icon, val, type, event, color, indicator) %}
 	{% import _self as basic %}
+	{% set iconstyles = ['icon0', 'icon1', 'icon2', 'icon3', 'icon4', 'icon5'] %}
+	{% if ":" in indicator %} 
+		{% set indicatorparms = indicator|split(":") %}
+		{% set indicator = indicatorparms[0] %}
+		{% set indicator_duration = indicatorparms[1] %}
+	{% else %} 
+			{% set indicator_duration = config_indicator_duration|default(3) %}
+	{% endif %}
 
 	<a{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.trigger" data-name="{{ name }}" data-val="{{ val }}"
-		data-triggerevent="{{ event }}"
-		{% if event == 'page' %} style="display: none;" {% endif %}
-		class="ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline ui-shadow
+		data-triggerevent="{{ event }}" data-color="{{ color }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ indicator_duration }}"
+		{% if event == 'page' %} style="display: none;" {% else %} {{ color is not empty and color not in iconstyles ? ('style="color: ' ~ color ~ ';"')|raw : '' }} {% endif %}
+		{%- if type == 'icon' -%} class="switch ui-link {% else %} class="ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline ui-shadow {% endif %}
+		{{ color in iconstyles ? color~' ' }}
 		{%- if icon is empty -%}
 			">
 		{%- else -%}
-			{{ txt ? ' ui-nodisc-icon ui-btn-icon-top' : '' }}">{{ basic.icon(icon) }}
+			{{ txt ? ' ui-nodisc-icon ui-btn-icon-top' : '' }}">{{ basic.icon(icon, color) }}
 		{%- endif -%}
 		{{- txt|e -}}
 	</a>

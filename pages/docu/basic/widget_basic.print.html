@@ -56,7 +56,19 @@
     {{ basic.print('', 'bath.light.value', '', '', '', '#f00') }}<br />
     {{ basic.print('', 'bath.light.value', '', '', [100,200], ['green', '', 'icon1']) }}<br />
   </div>
-
+  <h5>Usage as Tooltip</h5>
+  By giving any other widget an id and referencing this in the parameter href, a dynamic tooltip can be created on that widget by passing the value 'tooltip' to the parameter "rel". Some widgets need to be wrapped in a span containing the id.
+  Hover with the mouse over the flipswitch to see the effect. (Note: Will not work on Android devices wich do not support hover effects)
+  <div class="twig">
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+    <span id="{{ uid (page, 'myFlip1') }}">{{ basic.flip('', 'bath.light.switch') }}<span>
+    {{ basic.print('', 'bath.light.switch', 'text', 'VAR=="1"?"Schaltuhr ist an":"Schalter ist aus"','','','myFlip1','tooltip') }}    {% endverbatim %}{% endfilter %}</code>
+  </div>
+  <div class="html">
+    <span id="{{ uid (page, 'myFlip1') }}">{{ basic.flip('myFlip1', 'bath.light.switch') }}<span>
+    {{ basic.print('', 'bath.light.switch', 'text', 'VAR=="1"?"Schalter ist an":"Schalter ist aus"','','','myFlip1','tooltip') }}<br />
+  </div>
+  
   <h5>Advanced Scripting</h5>
   basic.print can also be used for some "hacks".<br>
   This example shows how to update the color of a widget text based on the value of ANOTHER item. Click on the heater icon and change the temperature. The temperature print will turn red if the heater is off and green if it is on.<br>

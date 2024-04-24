@@ -1441,7 +1441,10 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 	options: {
 		name: null,
 		val: '',
-		triggerevent: 'button'
+		triggerevent: 'button',
+		color: '',
+		indicatorType: '',
+		indicatorDuration: 3
 	},
 	
 	_create: function () {
@@ -1459,6 +1462,25 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 	_events: {
 		'click': function (event) {
 			io.trigger(this.options.name, this.options.val != null ? String(this.options.val) : null);
+			var indicatorType = this.options.indicatorType;
+			var oldClass = this.options.color.indexOf('icon') == 0 && indicatorType != 'blink' ? this.options.color : '';
+			var oldColor = this.options.color.indexOf('icon') != 0 && indicatorType != 'blink' ? this.options.color : '';
+			if (indicatorType != ''){
+				var that = this;
+				if(indicatorType.indexOf('icon') == 0 || indicatorType == 'blink'){
+					this.element.find('svg').addBack().removeClass(oldClass).addClass(indicatorType);
+					if (oldColor != '')
+						indicatorType = '';
+				}
+				this.element.css('color', indicatorType).find('svg').css('fill', indicatorType).css('stroke', indicatorType);
+	
+				this._timer = setTimeout(function(){
+					var indicatorType = that.options.indicatorType;
+					if(indicatorType.indexOf('icon') == 0 || indicatorType == 'blink')
+						that.element.find('svg').addBack().removeClass(indicatorType).addClass(oldClass);
+					that.element.css('color', oldColor).find('svg').css('fill', oldColor).css('stroke', oldColor);
+				}, this.options.indicatorDuration*1000);
+			}
 			
 		},
 	},
