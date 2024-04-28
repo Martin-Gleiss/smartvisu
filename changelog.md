@@ -6,6 +6,7 @@
 - new app analyse_plots enables live parametrizing of plot.period
 - basic.print can be used to generate a tooltip on a linked widget (parameter href = widget-id, rel = 'tooltip')
 - additional color and indicator options for basic.trigger
+- plot.sparkline can now open links and popups. Tooltip shows parameter "id" as curve name (label)
 
 ### Other New Features
 - improved spline display for the starting point in device.uzsugraph
