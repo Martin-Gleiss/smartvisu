@@ -22,6 +22,7 @@
 - Highcharts module boost.js is activated on demand for series with 5000 or more data points to speed up rendering (plot.period, plot.sparkline). In plot.xyplot we can not do this since there is no size info. But most likely list items with xy-data are not so big. 
 - templatechecker now checks the twig syntax of html pages
 - console.log is activated in cache mode if parameter "debug" is set to "1" in config.ini
+- active elements are allowed on menu buttons in rooms_menu
 
 ### Updated Libraries
 

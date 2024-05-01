@@ -279,10 +279,12 @@
     left: 7px;
     right: 0px;
     position: absolute;
+	z-index:3;
 }
 
 .quad_tiles .ui-li-aside {
     top: 0 !important;
+	z-index:3;
 }
 
 .quad_list a {
