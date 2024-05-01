@@ -279,6 +279,7 @@ a:hover {
 .ui-li-aside {
   font-size: 0.8em; /* 0.875em; */
   right: .6em !important;
+  z-index: 3;
 }
 
 .ui-li-aside .icon {
@@ -1752,10 +1753,6 @@ div.ui-slider-switch{
 .plot.plot-highstock {
   height: 315px;
 }
-.plot.plot-highstock {
-	height: 315px;
-}
-
 .block .ui-fixed .plot,
 .block .set-1 .plot {
   min-height: 14.5em;
