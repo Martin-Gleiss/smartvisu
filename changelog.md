@@ -3,7 +3,7 @@
 - basic.tank is now able to change colors according to reached thresholds
 - additional option for basic.select to support activity indicator like basic.stateswitch
 - basic.icon accepts alpha values for rgb(a)/hsl(a)/hsv(a) and also hex rgb(a) values in items
-- new app analyse_plots enables live parametrizing of plot.period
+- new app analyse_plots enables live parametrizing of plot.period plus travelling through time with plot.timeshift
 - basic.print can be used to generate a tooltip on a linked widget (parameter href = widget-id, rel = 'tooltip')
 - additional color and indicator options for basic.trigger
 - plot.sparkline can now open links and popups. Tooltip shows parameter "id" as curve name (label)
