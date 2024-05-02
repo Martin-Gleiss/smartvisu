@@ -47,6 +47,7 @@
 - plot.period and plot.xyplot drawed the plots twice after series update
 - notify.add() notification threw errors if message was not of type "text" 
 - basic.trigger showed oversized button instead of specified type "icon"
+- device.uzsutable did not display correctly during and after supersize mode
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
