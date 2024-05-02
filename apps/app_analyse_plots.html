@@ -19,7 +19,7 @@
 {% extends "apps.html" %}
 
 {% block sidebar %}
-		<style type="text/css">
+	<style type="text/css">
 
 		.apdisplay .ui-field-contain,
 		.apdisplay .ui-input-text {
@@ -31,9 +31,8 @@
 			
 		}
 		.apdisplay .ui-select .ui-btn { 
-                   scale: 80%;
-                 }
-		
+			scale: 80%;
+		}
 	</style>
 	<div>
 		<div class="app">
@@ -192,6 +191,10 @@
 	<div id="analyse-plots" data-widget="app.analyse_plots" class="apdisplay">
 	
 		{{ plot.period('analyse-plotpopup', item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export, source) }}
+
+		<div style="display:inline-block">
+			<span style="width:25%">timeline shift interval:&nbsp;&nbsp;</span><span style="display:inline-block;width:35%" ><input id="apShift" value="1d"/></span>{{ plot.timeshift('analyse-timeshift','analyse-plotpopup', '1d','mini', '- 1d +') }}
+		</div>
 		<br>
 		<h2>Generated widget code: </h2>
 		<div id="apWidgetCode" class="twig">
@@ -382,6 +385,15 @@
 				ret += paramLength > 1 ? "']" : "'";
 				return ret;
 			}
+			
+			$('#apShift').on('change', function () {
+				var apShift = $('#apShift').val();
+				var timeshift = $('[id*="analyse-timeshift"]');
+				var tsWidget = timeshift.data().svWidget;
+				timeshift.attr('data-step', apShift);
+				tsWidget.options.step = apShift;
+				$('#app_analyse_plots-analyse-timeshift')[0].childNodes[1].data = '- ' + apShift + ' +\n\t\t'
+			})
 		});
 
 	</script>
