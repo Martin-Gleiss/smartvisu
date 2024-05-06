@@ -14,6 +14,7 @@
 - smarthomeNG and ioBroker drivers: new configurable option "signalBusy" lets "VISU" logo in the top-right corner blink after a new page is loaded (i.e. "monitor" command has been sent) until all subscribed items have been received. 
 - new weatherservice open-meteo.com
 - ioBroker driver now supports subscribing and unsubscribing series for individual plots which enables usage of plot.timeshift with ioBroker (thanks to YellowFlash for testing!)
+- new weather service VisualCrossing
 
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers
@@ -47,6 +48,7 @@
 - plot.period and plot.xyplot drawed the plots twice after series update
 - notify.add() notification threw errors if message was not of type "text" 
 - basic.trigger showed oversized button instead of specified type "icon"
+- device.uzsutable did not display correctly during and after supersize mode
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text

@@ -164,6 +164,7 @@
 				element.find("h3").removeClass("ui-corner-all");
 				element.find(".supersize.sizebig").hide();
 				element.find(".supersize.sizesmall").show();
+				element.find('.highcharts-root').removeClass('supersized');
 				var previousPosition = element.find(".supersize").attr("data-ypos")*1;
 				$.mobile.silentScroll(previousPosition);
 			}
@@ -174,7 +175,8 @@
 				var actualPlotHeight = parseFloat($(this).css('height').replace('px',''));
 				$(this).css('height', actualPlotHeight * sizeFactor);
 				$(this).highcharts().setSize(null, null);
-			});
+			}).end()
+			.find('[data-widget="device.uzsutable"] .highcharts-root').css('max-height', sizeFactor < 1 ? '' : 400*sizeFactor+"px");
 		});
 	</script>
 {% endmacro %}
