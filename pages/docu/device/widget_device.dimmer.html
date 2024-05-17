@@ -32,5 +32,13 @@
 	<div class="html">
 		{{ device.dimmer('', '', 'bath.light.switch', 'bath.light.value', 20, 100, 10, icon.light('', '','bath.light.value',20,100), icon.light(), 'green', '#ff0000', 'handle', 0 ) }}
 	</div>
-
+	
+  Dimmer with a button-styled switch
+  	<div class="twig">
+		<code class="prettyprint">&#123;&#123; device.dimmer('', 'Dimmer', 'bath.light.switch', 'bath.light.value', '', '', '', '', '', '', '', '', '', '', 'left', 0, 'mini') &#125;&#125;</code>
+	</div>
+	<div class="html">
+		{{ device.dimmer('', 'Dimmer', 'bath.light.switch', 'bath.light.value', '', '', '', '', '', '', '', '', '', '', 'left', 0, 'mini')}}
+	</div>
+  
 {% endblock %}

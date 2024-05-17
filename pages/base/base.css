@@ -1274,16 +1274,30 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 }
 
 .dimmer .switch,
-.dimmer-left .switch {
+.dimmer-left .switch,
+.dimmer-left .ui-midi,
+.dimmer-left .ui-mini,
+.dimmer-left .ui-micro {
   float: left;
   padding-left: 0;
   margin-right: 12px;
 }
 
-.dimmer-right .switch {
+.dimmer-right .switch,
+.dimmer-right .ui-midi,
+.dimmer-right .ui-mini,
+.dimmer-right .ui-micro {
   float: right;
   padding-right: 0;
   margin-left: 12px;
+}
+.dimmer-left .ui-btn.ui-midi,
+.dimmer-right .ui-btn.ui-midi {
+	margin-top: -5px;
+}
+.dimmer-left .ui-btn.ui-micro,
+.dimmer-right .ui-btn.ui-micro {
+	margin-top: 10px;
 }
 
 .dimmer .icon,
@@ -1294,11 +1308,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 }
 
 .dimmer p,
-.dimmer-left p {
-  margin: 0;
-  padding: 0 0 5px 15px;
-}
-
+.dimmer-left p,
 .dimmer-right p {
   margin: 0;
   padding: 0 0 5px 15px;
@@ -1307,10 +1317,34 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 .dimmer .ui-slider,
 .dimmer-left .ui-slider {
   margin-left: 45px;
-
 }
+
 .dimmer-right .ui-slider {
   margin-right: 45px;
+}
+.dimmer-left.ui-midi .ui-slider {
+	margin-left: 64px;
+}
+.dimmer-right.ui-midi .ui-slider {
+	margin-right: 64px;
+}
+.dimmer-left.ui-mini .ui-slider {
+	margin-left: 48px;
+}
+.dimmer-right.ui-mini .ui-slider {
+	margin-right: 48px;
+}
+.dimmer-left.ui-micro .ui-slider {
+	margin-left: 38px;
+}
+.dimmer-right.ui-micro .ui-slider {
+	margin-right: 38px;
+}
+.dimmer-notext .ui-slider {
+	margin-top: 4px;
+}
+.dimmer-notext.ui-micro .ui-slider {
+	margin-top: 8px;
 }
 
 .codepad {
