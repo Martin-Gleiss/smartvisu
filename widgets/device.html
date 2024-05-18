@@ -131,7 +131,7 @@
 
 		<div class="
 		{{ picpos is empty or picpos=='left' ? 'dimmer-left' : 'dimmer-right' }}
-		{{ type in ['midi', 'mini', 'micro'] ? 'ui-'~type : '' }}
+		{{ type in ['midi', 'mini', 'micro'] ? 'dimmer-'~type : '' }}
 		{{ txt is empty ? 'dimmer-notext' : '' }} "
 		data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
 			{{ basic.stateswitch('', item_switch, type|default('icon'), '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}

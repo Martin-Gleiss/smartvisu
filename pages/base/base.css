@@ -1322,28 +1322,28 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 .dimmer-right .ui-slider {
   margin-right: 45px;
 }
-.dimmer-left.ui-midi .ui-slider {
+.dimmer-left.dimmer-midi .ui-slider {
 	margin-left: 64px;
 }
-.dimmer-right.ui-midi .ui-slider {
+.dimmer-right.dimmer-midi .ui-slider {
 	margin-right: 64px;
 }
-.dimmer-left.ui-mini .ui-slider {
+.dimmer-left.dimmer-mini .ui-slider {
 	margin-left: 48px;
 }
-.dimmer-right.ui-mini .ui-slider {
+.dimmer-right.dimmer-mini .ui-slider {
 	margin-right: 48px;
 }
-.dimmer-left.ui-micro .ui-slider {
+.dimmer-left.dimmer-micro .ui-slider {
 	margin-left: 38px;
 }
-.dimmer-right.ui-micro .ui-slider {
+.dimmer-right.dimmer-micro .ui-slider {
 	margin-right: 38px;
 }
 .dimmer-notext .ui-slider {
 	margin-top: 4px;
 }
-.dimmer-notext.ui-micro .ui-slider {
+.dimmer-notext.dimmer-micro .ui-slider {
 	margin-top: 8px;
 }
 
