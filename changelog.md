@@ -17,6 +17,7 @@
 - ioBroker driver now supports subscribing and unsubscribing series for individual plots which enables usage of plot.timeshift with ioBroker (thanks to YellowFlash for testing!)
 - new weather service VisualCrossing
 - improved vertical alignment of slider track in device.dimmer when no text is configured
+- ioBroker driver is now able to provide item properties from the "state" object using the keyword "property", e.g. "myItem.property.lc" to get the "last changed" property for that item 
 
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers

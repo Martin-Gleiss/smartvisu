@@ -56,24 +56,24 @@ class weather_visualcrossing extends weather
 			$this->debug($parsed_json);
 
 			// today
-			$this->data['current']['temp'] = transunit('temp', (float)$parsed_json->{'days'}[0]->{'temp'});
+			$this->data['current']['temp'] = transunit('temp', (float)$parsed_json->{'currentConditions'}->{'temp'});
 
-			$this->data['current']['conditions'] = translate((string)$parsed_json->{'days'}[0]->{'conditions'}, 'visualcrossing');
-			$this->data['current']['icon'] = $this->icon((string)$parsed_json->{'days'}[0]->{'icon'}, $this->icon_sm);
+			$this->data['current']['conditions'] = translate((string)$parsed_json->{'currentConditions'}->{'conditions'}, 'visualcrossing');
+			$this->data['current']['icon'] = $this->icon((string)$parsed_json->{'currentConditions'}->{'icon'}, $this->icon_sm);
 
-			$wind_speed = transunit('speed', (float)$parsed_json->{'days'}[0]->{'windspeed'});
-			$wind_gust = transunit('speed', (float)$parsed_json->{'days'}[0]->{'windgust'});
-			$wind_dir = weather::getDirection((int)$parsed_json->{'days'}[0]->{'winddir'});
+			$wind_speed = transunit('speed', (float)$parsed_json->{'currentConditions'}->{'windspeed'});
+			$wind_gust = transunit('speed', (float)$parsed_json->{'currentConditions'}->{'windgust'});
+			$wind_dir = weather::getDirection((int)$parsed_json->{'currentConditions'}->{'winddir'});
 
 			$this->data['current']['wind'] = translate('wind', 'weather') . " " . $wind_speed;
 			// when there is no wind, direction is blank
-			if ($parsed_json->{'days'}[0]->{'windspeed'} != 0)
+			if ($parsed_json->{'currentConditions'}->{'windspeed'} != 0)
 				$this->data['current']['wind'] .= " " . translate('from', 'weather') . " " . $wind_dir;
 			if ($wind_gust > 0)
 				$this->data['current']['wind'] .= ", " . translate('wind_gust', 'weather') . " " . $wind_gust;
 
-			$this->data['current']['more'] = translate('humidity', 'weather') . " " . transunit('%', 100 * (float)$parsed_json->{'days'}[0]->{'humidity'});
-			$this->data['current']['misc'] = translate('air pressure', 'weather') . " " . $parsed_json->{'days'}[0]->{'pressure'}.' hPa';
+			$this->data['current']['more'] = translate('humidity', 'weather') . " " . transunit('%', (float)$parsed_json->{'currentConditions'}->{'humidity'});
+			$this->data['current']['misc'] = translate('air pressure', 'weather') . " " . $parsed_json->{'currentConditions'}->{'pressure'}.' hPa';
 
 			// forecast
 			$i = 0;

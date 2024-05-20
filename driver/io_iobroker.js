@@ -1,7 +1,7 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Stefan Widmer (inspired by https://github.com/ioBroker/ioBroker.socketio/blob/master/example/conn.js)
+ * @author      Stefan Widmer (inspired by https://github.com/ioBroker/ioBroker.socketio/blob/master/example/conn.js), Wolfram v. Hülsen
  * @copyright   2017 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
@@ -192,6 +192,12 @@ var io = {
 	},
 	
 	listeners: [],
+	/**
+	* array of items where a property is requested on the page with keyword "property": 
+	* <myItem>.property.<propertyName> e.g. kitchen.light.property.lc
+	* if any property is requested for an item the driver maps all properties for that item
+	*/
+	properties: [],     
 	
 	/**
 	 * supported aggregate functions in the backends database
@@ -356,14 +362,23 @@ var io = {
 	monitor: function() {
 		io.monitorCompleted = false;
 		io.listeners = [];
+		io.properties = [];
 		var listeners = widget.listeners();
 		var listenItem;
 		var listenItemEnd;
 		for (var i=0; i < listeners.length; i++){
 			listenItemEnd = listeners[i].indexOf(':');
 			listenItem = (listenItemEnd == -1 ? listeners[i] : listeners[i].substring(0, listenItemEnd));
+
+			if (listenItem.indexOf('.property') != -1){
+				listenItemEnd = listenItem.indexOf('.property');
+				listenItem =  listenItem.substring(0, listenItemEnd);
+				if (!io.properties.includes(listenItem))
+					io.properties.push(listenItem);
+			}
+				
 			if ( io.listeners[listenItem] == undefined || listenItem == io.listeners[listenItem])
-				io.listeners[listenItem] = listeners[i];
+				io.listeners[listenItem] = listeners[i].indexOf('.property') == -1 ? listeners[i] : listenItem;
 		}
 		var items = Object.keys(io.listeners);
 		io.openItems = Object.keys(io.listeners);
@@ -441,6 +456,12 @@ var io = {
 			io.openItems.removeEntry(item);
 			if (item != io.listeners[item])
 				widget.update(io.listeners[item], val);
+			if (io.properties.includes(item)){
+				for (var key in state){
+					if (state.hasOwnProperty(key) && key != 'val')
+						widget.update(item + '.property.' + key, state[key] );
+				}
+			}
 		}
 	},
 
