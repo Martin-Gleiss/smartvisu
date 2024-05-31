@@ -2277,8 +2277,12 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              Combine elements in one column by putting them in arrays. Standard is ['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']
              Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
  * @param {text(switch,select)=} 	    Should be left untouched as it is set automatically (optional)
+ * @param {item(list)=} Should be left untouched. an item containing all selectable values (optional) - overrides existing value definitions, available for select menu type only
+ * @param {item(list)=} Should be left untouched. an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for select menu type only
+
 */
-{% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, item_longpress, value_longpress, value_longrelease, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, linetext_widget, place4, column_order, _switch_or_select) %}
+
+{% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, item_longpress, value_longpress, value_longrelease, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, linetext_widget, place4, column_order, _switch_or_select, itemvals, itemtxts) %}
     {% import "@widgets/basic.html" as basic %}
     {% import "@widgets/device.html" as device %}
     {% import "@widgets/icon.html" as icon %}
@@ -2547,7 +2551,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% if column == 'switch' and item_switch[i] %}
             {% if columntext[i] %}{{ columntext[i]|e }}{% endif %}
             {% if _switch_or_select[i] == 'select' or _switch_or_select == 'select' %}
-              {{ basic.select(id~'_select'~z~i, item_switch[i], type[i], value[i]|default(value[i][0]), pic[i]|default(pic[i][0]), text[i]|default(text[i][0]), color_on[i]|default(''), indicator[i]) }}
+              {{ basic.select(id~'_select'~z~i, item_switch[i], type[i], value[i]|default(value[i][0]), pic[i]|default(pic[i][0]), text[i]|default(text[i][0]), color_on[i]|default(''), '', itemvals[i]|default(''), itemtxts[i]|default(''), indicator[i]) }}
             {% else %}
                   {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch[i], type[i], value[i]|default(''), pic[i]|default(''), text[i]|default(''), color[i]|default(''), indicator[i]|default(''), item_longpress[i]|default(''), value_longpress[i]|default(''), value_longrelease[i]|default('')) }}
             {% endif %}
@@ -2682,7 +2686,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% if column == 'switch' and item_switch %}
             {% if columntext %}{{ columntext|e }}{% endif %}
             {% if _switch_or_select == 'select' %}
-              {{ basic.select(id~'_select'~z~i, item_switch, type, value|default(value[0]), pic|default(pic[0]), text|default(text[0]), color_on|default(''), indicator) }}
+              {{ basic.select(id~'_select'~z~i, item_switch, type, value|default(value[0]), pic|default(pic[0]), text|default(text[0]), color_on|default(''), '', itemvals|default(''), itemtxts|default(''), indicator) }}
             {% else %}
               {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch, type|default(''), value|default(''), pic|default(''), text|default(''), color|default(''), indicator|default(''), item_longpress|default(''), value_longpress|default(''), value_longrelease|default('')) }}
             {% endif %}
@@ -2895,9 +2899,11 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {image[?]=} list of icons for every button (optional) - not supported for type 'menu'
  * @param {text[?]=} list of texts for every menu entry or button (optional)
  * @param {color[?](icon0to5)=icon1} the color for the on state of the buttons, e.g. 'icon0'through'icon5' or '#f00' or 'red' (optional, default: icon1) - not supported for type 'menu'
- * @param {text[?](horizontal,vertical,none)=horizontal} orientation of the controlgroup: 'horizontal', 'vertical' or 'none' for seperate buttons (optional, default: 'horizontal') - not supported for type 'menu'
- * @param {placeholder=} 	    placeholder attributes for future features, etc.
- * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {item(list)=} an item containing all selectable values (optional) - overrides existing value definitions, available for menu type only
+ * @param {item(list)=} an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for menu type only
+ * @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
+ 	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
+ 	The indicator options will not be applied to the select element of type 'menu' which will convert all options to 'blink'.
  * @param {text=} text for the whole line (optional)
  * @param {text[?]=} (array with) text for each column (optional)
  * @param {item[?](dict)=}  		    a gad/item for UZSU
@@ -2927,9 +2933,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
             Combine elements in one column by putting them in arrays. Standard is ['locks', 'select', 'stateengine', 'plot', 'uzsu']
             Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
  */
-{% macro select(id, item_select, type, value, pic, text, color_on, group, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order) %}
+{% macro select(id, item_select, type, value, pic, text, color_on, itemvals, itemtxts, indicator, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order) %}
   {% import _self as intern %}
-  {{ intern.stateswitch(id, item_select, type, value, pic, text, color_on, place0, place1, place2, place3, place4, place5, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place6, place7, column_order, 'select') }}
+  {{ intern.stateswitch(id, item_select, type, value, pic, text, color_on, indicator, place1, place2, place3, place4, place5, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place6, place7, column_order, 'select', itemvals, itemtxts) }}
 {% endmacro %}
 
 /**
