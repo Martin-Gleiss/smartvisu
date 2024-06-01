@@ -8,6 +8,7 @@
 - additional color and indicator options for basic.trigger
 - plot.sparkline can now open links and popups. Tooltip shows parameter "id" as curve name (label)
 - device.dimmer extended with an option "type" to display the switch as button  (midi, mini, micro, icon)
+- indicator option introduced in all quad design widgets using basic.stateswitch or basic.select
 
 ### Other New Features
 - improved spline display for the starting point in device.uzsugraph
