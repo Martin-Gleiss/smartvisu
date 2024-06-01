@@ -733,8 +733,12 @@
              possible elements are: 'colorpicker', 'ww_popup', 'ww_slider', 'values', 'sequencer', 'locks', 'stateengine', 'uzsu', 'plot'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['locks', 'sequencer', 'colorpicker'],'values', 'stateengine', 'plot', 'uzsu']
+ * @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
+ 	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
+ 	The indicator options will not be applied to the select element of type 'menu' which will convert all options to 'blink'.
+
  */
-{% macro color(id, item_value_r, item_value_g, item_value_b, min, max, step, colors, style, colormodel, linetext, item_switch_r, item_switch_g, item_switch_b, min_display, max_display, item_uzsu, uzsu_attribs, popupcolor, item_switch_ww, item_value_ww, item_plot, icon_plot, item_auto, extpopup, locks, item_seq, icon_color, linetext_widget, live, column_order) %}
+{% macro color(id, item_value_r, item_value_g, item_value_b, min, max, step, colors, style, colormodel, linetext, item_switch_r, item_switch_g, item_switch_b, min_display, max_display, item_uzsu, uzsu_attribs, popupcolor, item_switch_ww, item_value_ww, item_plot, icon_plot, item_auto, extpopup, locks, item_seq, icon_color, linetext_widget, live, column_order, indicator) %}
     {% import "@widgets/basic.html" as basic %}
     {% import "@widgets/plot.html" as plot %}
     {% import "@widgets/icon.html" as icon %}
@@ -1184,7 +1188,9 @@
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
 
  * @param {widget[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
- * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
+ 	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
+ 	The indicator options will not be applied to the select element of type 'menu' which will convert all options to 'blink'.
  * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot,extpopup,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
@@ -1193,7 +1199,7 @@
  * @param {unspecified[]=} 	    a list with positional attributes. Should be left untouched as it is set automatically (optional)
 
  */
-{% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, move_on_longpress, live, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, _blind_or_shutter, _pos_attribs) %}
+{% macro shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, min, max, step, mode, background, value_pos_1, value_pos_2, move_on_longpress, live, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, indicator, column_order, _blind_or_shutter, _pos_attribs) %}
     {% import "@widgets/basic.html" as basic %}
     {% import "@widgets/device.html" as device %}
     {% import "@widgets/icon.html" as icon %}
@@ -1416,9 +1422,9 @@
 
     {% if column == 'move_down' and item_move %}
       {% if move_on_longpress is same as true or move_on_longpress == 'true' or move_on_longpress is empty %}
-        {{ basic.stateswitch(id~'_down', item_stop, '', max < min ? 0 : 1, 'control_arrow_down', '', '', 'blink', item_move, max < min ? 0 : 1) }}
+        {{ basic.stateswitch(id~'_down', item_stop, '', max < min ? 0 : 1, 'control_arrow_down', '', '', indicator, item_move, max < min ? 0 : 1) }}
       {% else %}
-        {{ basic.stateswitch(id~'_down', item_move, '', max < min ? 0 : 1, 'control_arrow_down', '', '', 'blink') }}
+        {{ basic.stateswitch(id~'_down', item_move, '', max < min ? 0 : 1, 'control_arrow_down', '', '', indicator) }}
       {% endif %}
       {% if elements[loop.index] == 'div' %}
         </div>
@@ -1427,9 +1433,9 @@
 
     {% if column == 'move_up' and item_move %}
       {% if move_on_longpress is same as true or move_on_longpress == 'true' or move_on_longpress is empty %}
-        {{ basic.stateswitch(id~'_up', item_stop, '', max < min ? 1 : 0, 'control_arrow_up', '', '', 'blink', item_move, max < min ? 1 : 0) }}
+        {{ basic.stateswitch(id~'_up', item_stop, '', max < min ? 1 : 0, 'control_arrow_up', '', '', indicator, item_move, max < min ? 1 : 0) }}
       {% else %}
-        {{ basic.stateswitch(id~'_up', item_move, '', max < min ? 1 : 0, 'control_arrow_up', '', '', 'blink') }}
+        {{ basic.stateswitch(id~'_up', item_move, '', max < min ? 1 : 0, 'control_arrow_up', '', '', indicator) }}
       {% endif %}
       {% if elements[loop.index] == 'div' %}
         </div>
@@ -1437,7 +1443,7 @@
     {% endif %}
 
     {% if column == 'stop' and item_stop %}
-      {{ basic.stateswitch(id~'_stop', item_stop, 'icon', '', 'control_cancel', '', 'icon0', 'blink') }}
+      {{ basic.stateswitch(id~'_stop', item_stop, 'icon', '', 'control_cancel', '', 'icon0', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1487,7 +1493,7 @@
           <td valign="top">
             {% if item_saved %}
               <div style="margin-right:5px;margin-left:5px;">
-              {{ basic.stateswitch(id~'_saved1_ext', item_saved, '', value_pos_1, '', text_pos_1, 'icon0', 'blink') }}
+              {{ basic.stateswitch(id~'_saved1_ext', item_saved, '', value_pos_1, '', text_pos_1, 'icon0', indicator) }}
               &nbsp;</div>
             {% endif %}
           </td>
@@ -1496,7 +1502,7 @@
           <td valign="bottom">
             {% if item_saved %}
               <div style="margin-right:5px;margin-left:5px;">
-              {{ basic.stateswitch(id~'_saved2_ext', item_saved, '', value_pos_2, '', text_pos_2, 'icon0', 'blink') }}
+              {{ basic.stateswitch(id~'_saved2_ext', item_saved, '', value_pos_2, '', text_pos_2, 'icon0', indicator) }}
               &nbsp;</div>
             {% endif %}
           </td>
@@ -1508,19 +1514,19 @@
     {% endif %}
 
     {% if column == 'pos' and item_saved and value_pos_2 and value_pos_1 %}
-      {{ basic.select(id~'pos', item_saved, 'mini', [value_pos_1, value_pos_2, 0], '', [text_pos_1, text_pos_2, 0], 'icon1', 'horizontal') }}
+      {{ basic.select(id~'pos', item_saved, 'mini', [value_pos_1, value_pos_2, 0], '', [text_pos_1, text_pos_2, 0], 'icon1', 'horizontal', '', '', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
 
     {% elseif column == 'pos1' and item_saved and value_pos_1 and 'pos' not in elements %}
-      {{ basic.stateswitch(id~'_saved1', item_saved, '', [value_pos_1, 0], '', [0, text_pos_1], 'icon0', 'blink') }}
+      {{ basic.stateswitch(id~'_saved1', item_saved, '', [value_pos_1, 0], '', [0, text_pos_1], 'icon0', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
 
     {% elseif column == 'pos2' and item_saved and value_pos_2 and 'pos' not in elements %}
-      {{ basic.stateswitch(id~'_saved2', item_saved, '', [value_pos_2, 0], '', [0, text_pos_2], 'icon0', 'blink') }}
+      {{ basic.stateswitch(id~'_saved2', item_saved, '', [value_pos_2, 0], '', [0, text_pos_2], 'icon0', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -1639,16 +1645,18 @@
  * @param {unspecified[]=} 	    a list with positional attributes: item_saved = an item for some saved positions, value_pos_1 =
 the value to send for position 1, value_pos_2 = the value to send for position 2, text_pos_1 = the text printed on button for position 1, text_pos_2 = the text printed on button for position 2 (optional)
  * @param {widget[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
- * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
+ 	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
+ 	The indicator options will not be applied to the select element of type 'menu' which will convert all options to 'blink'.
  * @param {text[](move_up,move_down,stop,pos_slider,pos_shutter,pos_shutter_ext,pos_popup_shutter,pos_popup_blind,pos1,pos2,stateengine,uzsu,plot,extpopup,anynumber)=[[move_down, move_up], pos_popup_shutter, stateengine, plot, uzsu]} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'move_down', 'move_up', 'stop', 'pos_slider', 'pos_shutter', 'pos_shutter_ext' (with the two saved positions), 'pos_popup_shutter', 'pos_popup_blind', 'pos1', 'pos2', 'stateengine', 'uzsu', 'plot', 'extpopup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays. Standard is [['move_down', 'move_up'],'pos_popup_shutter', 'stateengine', 'plot', 'uzsu']
  */
 
-{% macro blind(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step, move_on_longpress, live, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, pos_attribs, linetext_widget, place4, column_order) %}
+{% macro blind(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, min, max, step, move_on_longpress, live, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, pos_attribs, linetext_widget, indicator, column_order) %}
   {% import _self as newwidget %}
-  {{ newwidget.shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, '', min, max, step, '', '', '', '', move_on_longpress, live, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, place4, column_order, 'blind', pos_attribs) }}
+  {{ newwidget.shutter(id, linetext, item_move, item_stop, item_pos, item_shift, item_angle, '', min, max, step, '', '', '', '', move_on_longpress, live, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, linetext_widget, indicator, column_order, 'blind', pos_attribs) }}
 {% endmacro %}
 
 /**
@@ -1697,14 +1705,16 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {text=} the path/url or item to the image. For squeezebox create an item with the following value: 'http://IP:PORT/music/current/cover.jpg?player=MACADDRESS'
  * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
- * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
+ 	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
+ 	The indicator options will not be applied to the select element of type 'menu' which will convert all options to 'blink'.
  * @param {text[](previous,play,pause,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,stateengine,repeat,source,source_popup,speaker,playpause,playpausestop,playstop,shuffle,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'previous', 'play', 'pause', 'stop', 'next', 'power', 'eject', 'mute', 'volume_slider', 'cover',
             'volume_popup', 'volume_up', 'volume_down', 'song_position', 'uzsu', 'plot', 'stateengine', 'repeat', 'source', 'speaker', 'playpause', 'playstop', 'playpausestop', 'shuffle', 'source_popup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays.
  */
-{% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, coverUrl, live, place2, column_order) %}
+{% macro playercontrol(id, linetext, item_previous, item_play, item_pause, item_stop, item_next, item_power, item_eject, item_repeat, item_shuffle, source, item_mute, item_volume, item_volumeup, item_volumedown, volume_min, volume_max, volume_step, volume_min_display, volume_max_display, volume_threshold, item_album, item_artist, item_title, item_time, item_duration, item_speaker, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, coverUrl, live, indicator, column_order) %}
     {% import "@widgets/basic.html" as basic %}
     {% import "@widgets/plot.html" as plot %}
     {% import "@widgets/device.html" as device %}
@@ -1971,14 +1981,14 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
       <div class="column{{ loop.index }} column_{{ column }}" data-order="{{ loop.index }}" data-bind="{{uid(page, id)}}_column{{ loop.index }}">
     {% endif %}
     {% if column == 'power' and item_power %}
-      {{ basic.stateswitch(id~'_power', item_power, 'icon', [0,1], '', '', ['icon0','icon1'], 'blink') }}
+      {{ basic.stateswitch(id~'_power', item_power, 'icon', [0,1], '', '', ['icon0','icon1'], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'eject' and item_eject %}
-      {{ basic.stateswitch(id~'_eject', item_eject, 'icon', '1', 'audio_eject', '', 'icon0', '') }}
+      {{ basic.stateswitch(id~'_eject', item_eject, 'icon', '1', 'audio_eject', '', 'icon0', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2003,34 +2013,34 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     {% endif %}
 
     {% if column == 'previous' and item_previous %}
-      {{ basic.stateswitch(id~'_prev', item_previous, 'icon', '1', 'audio_previous', '', 'icon0', '') }}
+      {{ basic.stateswitch(id~'_prev', item_previous, 'icon', '1', 'audio_previous', '', 'icon0', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'next' and item_next %}
-      {{ basic.stateswitch(id~'_prev', item_next, 'icon', '1', 'audio_next', '', 'icon0', '') }}
+      {{ basic.stateswitch(id~'_prev', item_next, 'icon', '1', 'audio_next', '', 'icon0', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'play' and item_play %}
-      {{ basic.stateswitch(id~'_play', item_play, 'icon', '1', 'audio_play', '', 'icon1', '') }}
+      {{ basic.stateswitch(id~'_play', item_play, 'icon', '1', 'audio_play', '', 'icon1', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% elseif column == 'pause' and item_pause %}
-      {{ basic.stateswitch(id~'_pause', item_pause, 'icon', '1', 'audio_pause', '', 'icon1', 'blink') }}
+      {{ basic.stateswitch(id~'_pause', item_pause, 'icon', '1', 'audio_pause', '', 'icon1', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% elseif column == 'playstop' and item_play %}
-      {{ basic.stateswitch(id~'_playstop', item_play, 'icon', ['0','1'], ['audio_play', 'audio_stop'], '', ['icon0', 'icon1'], 'blink') }}
+      {{ basic.stateswitch(id~'_playstop', item_play, 'icon', ['0','1'], ['audio_play', 'audio_stop'], '', ['icon0', 'icon1'], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% elseif column == 'playpause' and item_pause %}
-      {{ basic.stateswitch(id~'_playpause', item_play, 'icon', ['0','1'], ['audio_play', 'audio_pause'], '', ['icon0', 'icon1'], 'blink') }}
+      {{ basic.stateswitch(id~'_playpause', item_play, 'icon', ['0','1'], ['audio_play', 'audio_pause'], '', ['icon0', 'icon1'], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2041,25 +2051,25 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
       {% endif %}
     {% endif %}
     {% if column == 'stop' and item_stop %}
-      {{ basic.stateswitch(id~'_stop', item_stop, 'icon', '1', 'audio_stop', '', 'icon0', '') }}
+      {{ basic.stateswitch(id~'_stop', item_stop, 'icon', '1', 'audio_stop', '', 'icon0', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'mute' and item_mute %}
-      {{ basic.stateswitch(id~'_mute', item_mute, 'icon', [0,1], 'audio_volume_mute', '', '', '') }}
+      {{ basic.stateswitch(id~'_mute', item_mute, 'icon', [0,1], 'audio_volume_mute', '', '', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
         {% if column == 'volume_up' and item_volumeup %}
-      {{ basic.stateswitch(id~'_volup', item_volumeup, 'icon', '1', 'audio_volume_high', '', 'icon0', '') }}
+      {{ basic.stateswitch(id~'_volup', item_volumeup, 'icon', '1', 'audio_volume_high', '', 'icon0', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'volume_down' and item_volumedown %}
-      {{ basic.stateswitch(id~'_voldown', item_volumedown, 'icon', '1', 'audio_volume_low', '', 'icon0', '') }}
+      {{ basic.stateswitch(id~'_voldown', item_volumedown, 'icon', '1', 'audio_volume_low', '', 'icon0', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2087,15 +2097,15 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
               {% set text_source = text_source|merge([item[2]|default('')]) %}
           {% endif %}
       {% endfor %}
-      {{ basic.select(id~'_select', item_source, type_source, value_source, pic_source, text_source, 'icon1') }}
+      {{ basic.select(id~'_select', item_source, type_source, value_source, pic_source, text_source, 'icon1', 'horizontal', '', '', indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
 
     {% if column == 'speaker' and item_speaker %}
-      {{ basic.stateswitch(id~'_speaker1', item_speaker[0], 'mini', [1,0], '', 'A', ['icon1', 'icon0'], '') }}
-      {{ basic.stateswitch(id~'_speaker2', item_speaker[1], 'mini', [1,0], '', 'B', ['icon1', 'icon0'], '') }}
+      {{ basic.stateswitch(id~'_speaker1', item_speaker[0], 'mini', [1,0], '', 'A', ['icon1', 'icon0'], indicator) }}
+      {{ basic.stateswitch(id~'_speaker2', item_speaker[1], 'mini', [1,0], '', 'B', ['icon1', 'icon0'], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2103,13 +2113,13 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
 
 
     {% if column == 'repeat' and item_repeat %}
-      {{ basic.stateswitch(id~'_repeat', item_repeat, 'icon', [0,1,2], ['audio_repeat_song','audio_repeat_song','audio_repeat'], '', ['icon0','icon1','icon1'], '') }}
+      {{ basic.stateswitch(id~'_repeat', item_repeat, 'icon', [0,1,2], ['audio_repeat_song','audio_repeat_song','audio_repeat'], '', ['icon0','icon1','icon1'], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'shuffle' and item_shuffle %}
-      {{ basic.stateswitch(id~'_shuffle', item_shuffle, 'icon', [0,1,2], ['audio_shuffle','audio_shuffle','audio_shuffle_album'], '', ['icon0','icon1','icon1'], '') }}
+      {{ basic.stateswitch(id~'_shuffle', item_shuffle, 'icon', [0,1,2], ['audio_shuffle','audio_shuffle','audio_shuffle_album'], '', ['icon0','icon1','icon1'], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2236,17 +2246,17 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {text=} the value to send on releasing after a longpress (optional)
  * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {placeholder=} 	    placeholder attributes for future features, etc.
-                       If you want to implement two state switches for one single item (e.g. on/off and timer or restart, etc.)
-                       you can provide the following attributes as single statements without arrays.
+   If you want to implement two state switches for one single item (e.g. on/off and timer or restart, etc.)
+   you can provide the following attributes as single statements without arrays.
  * @param {text=} text for the whole line (optional)
  * @param {text[?]=} text for each column (optional)
  * @param {item[?](dict)=}  		    a gad/item for UZSU
  * @param {uzsuparam[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
                                 Normally the array must have the same dimension as the "type" parameter, e.g. "[['', '', 'num'], '', ['', '', 'bool']]" for a table of 3 columns.
-								Exception: if the parameter "item_uzsu" is a singe item in string format a new column with an uzsu icon is displayed behind the main column block.
+								                Exception: if the parameter "item_uzsu" is a singe item in string format a new column with an uzsu icon is displayed behind the main column block.
  * @param {plotparam[?]=} 	    array with all plot.period attributes to show a plot in popup. Alternatively just the item to be plotted.
                                 Normally the array must have the same dimension as the "type" parameter, e.g. "[['plotitem1', 'avg', '2d','now'], 'plotitem2', '']" for a table of 3 columns.
-								Exception: a plot parameter array with exactly 17 entries causes a new column with a plot icon to be displayed behind the main column block. Example: "['plotitem1', 'avg', '2d','now', '','','','','','','','','','','','','temp']
+								                Exception: a plot parameter array with exactly 17 entries causes a new column with a plot icon to be displayed behind the main column block. Example: "['plotitem1', 'avg', '2d','now', '','','','','','','','','','','','','temp']
  * @param {image=measure_power_meter} 	    	    icon triggering the plot popup
  * @param {item[?](foo)=} 			    "root item" which holds stateengine information. show current state of stateengine/stateengine item. Adjust icons and states below accordingly
  * @param {unspecified[]=}      Array of arrays for extended popup window. Use this to create an icon to open a popup with switches, sliders, flips or select menues.
@@ -2258,7 +2268,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
                        [slider_item, slider_min, slider_max, slider_step, '', 'handle']]
  * @param {item[](bool,num)=}      	array with items for locking. You have to be aware of the order: item_lock, item_bwmlock (presence sensor), item_force (force on/off/neutral)
  * @param {sliderparam[?]=}    additional item for changing value (e.g. timer). A slider popup will be shown
-                            You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
+                               You can provide additional attributes as an array: item, min, max, step, format, value_display (handle, etc.)
  * @param {widget[?]=} 	    Widget(s) to be shown right after linetext. Can be used to show a countdown or other additional information. Example: basic.symbol('', 'licht.og.essen.sa') - don't put basic.symbol() in high commas! (optional)
  * @param {placeholder=} 	    placeholder attributes for future features, etc.
  * @param {text[](switch,stateengine,uzsu,plot,locks,slider,extpopup,anynumber)=['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
@@ -2267,8 +2277,12 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              Combine elements in one column by putting them in arrays. Standard is ['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']
              Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
  * @param {text(switch,select)=} 	    Should be left untouched as it is set automatically (optional)
+ * @param {item(list)=} Should be left untouched. an item containing all selectable values (optional) - overrides existing value definitions, available for select menu type only
+ * @param {item(list)=} Should be left untouched. an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for select menu type only
+
 */
-{% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, item_longpress, value_longpress, value_longrelease, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, linetext_widget, place4, column_order, _switch_or_select) %}
+
+{% macro stateswitch(id, item_switch, type, value, pic, text, color, indicator, item_longpress, value_longpress, value_longrelease, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, linetext_widget, place4, column_order, _switch_or_select, itemvals, itemtxts) %}
     {% import "@widgets/basic.html" as basic %}
     {% import "@widgets/device.html" as device %}
     {% import "@widgets/icon.html" as icon %}
@@ -2537,7 +2551,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% if column == 'switch' and item_switch[i] %}
             {% if columntext[i] %}{{ columntext[i]|e }}{% endif %}
             {% if _switch_or_select[i] == 'select' or _switch_or_select == 'select' %}
-              {{ basic.select(id~'_select'~z~i, item_switch[i], type[i], value[i]|default(value[i][0]), pic[i]|default(pic[i][0]), text[i]|default(text[i][0]), color_on[i]|default(''), indicator[i]) }}
+              {{ basic.select(id~'_select'~z~i, item_switch[i], type[i], value[i]|default(value[i][0]), pic[i]|default(pic[i][0]), text[i]|default(text[i][0]), color_on[i]|default(''), '', itemvals[i]|default(''), itemtxts[i]|default(''), indicator[i]) }}
             {% else %}
                   {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch[i], type[i], value[i]|default(''), pic[i]|default(''), text[i]|default(''), color[i]|default(''), indicator[i]|default(''), item_longpress[i]|default(''), value_longpress[i]|default(''), value_longrelease[i]|default('')) }}
             {% endif %}
@@ -2672,7 +2686,7 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
           {% if column == 'switch' and item_switch %}
             {% if columntext %}{{ columntext|e }}{% endif %}
             {% if _switch_or_select == 'select' %}
-              {{ basic.select(id~'_select'~z~i, item_switch, type, value|default(value[0]), pic|default(pic[0]), text|default(text[0]), color_on|default(''), indicator) }}
+              {{ basic.select(id~'_select'~z~i, item_switch, type, value|default(value[0]), pic|default(pic[0]), text|default(text[0]), color_on|default(''), '', itemvals|default(''), itemtxts|default(''), indicator) }}
             {% else %}
               {{ basic.stateswitch(id~'_stateswitch'~z~i, item_switch, type|default(''), value|default(''), pic|default(''), text|default(''), color|default(''), indicator|default(''), item_longpress|default(''), value_longpress|default(''), value_longrelease|default('')) }}
             {% endif %}
@@ -2885,9 +2899,11 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {image[?]=} list of icons for every button (optional) - not supported for type 'menu'
  * @param {text[?]=} list of texts for every menu entry or button (optional)
  * @param {color[?](icon0to5)=icon1} the color for the on state of the buttons, e.g. 'icon0'through'icon5' or '#f00' or 'red' (optional, default: icon1) - not supported for type 'menu'
- * @param {text[?](horizontal,vertical,none)=horizontal} orientation of the controlgroup: 'horizontal', 'vertical' or 'none' for seperate buttons (optional, default: 'horizontal') - not supported for type 'menu'
- * @param {placeholder=} 	    placeholder attributes for future features, etc.
- * @param {placeholder=} 	    placeholder attributes for future features, etc.
+ * @param {item(list)=} an item containing all selectable values (optional) - overrides existing value definitions, available for menu type only
+ * @param {item(list)=} an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for menu type only
+ * @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
+ 	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
+ 	The indicator options will not be applied to the select element of type 'menu' which will convert all options to 'blink'.
  * @param {text=} text for the whole line (optional)
  * @param {text[?]=} (array with) text for each column (optional)
  * @param {item[?](dict)=}  		    a gad/item for UZSU
@@ -2917,9 +2933,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
             Combine elements in one column by putting them in arrays. Standard is ['locks', 'select', 'stateengine', 'plot', 'uzsu']
             Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
  */
-{% macro select(id, item_select, type, value, pic, text, color_on, group, place1, place2, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order) %}
+{% macro select(id, item_select, type, value, pic, text, color_on, itemvals, itemtxts, indicator, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place3, place4, column_order) %}
   {% import _self as intern %}
-  {{ intern.stateswitch(id, item_select, type, value, pic, text, color_on, place0, place1, place2, place3, place4, place5, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place6, place7, column_order, 'select') }}
+  {{ intern.stateswitch(id, item_select, type, value, pic, text, color_on, indicator, place1, place2, place3, place4, place5, linetext, columntext, item_uzsu, uzsu_attribs, item_plot, icon_plot, item_auto, extpopup, locks, item_slider, place6, place7, column_order, 'select', itemvals, itemtxts) }}
 {% endmacro %}
 
 /**
