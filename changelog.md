@@ -9,6 +9,7 @@
 - plot.sparkline can now open links and popups. Tooltip shows parameter "id" as curve name (label)
 - device.dimmer extended with an option "type" to display the switch as button  (midi, mini, micro, icon)
 - indicator option introduced in all quad design widgets using basic.stateswitch or basic.select
+- clock.countdown now accepts ISO time strings, fixed contdown duration instead of an item and a new comparative value as starting condition
 
 ### Other New Features
 - improved spline display for the starting point in device.uzsugraph
