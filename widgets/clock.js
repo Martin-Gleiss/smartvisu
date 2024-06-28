@@ -110,6 +110,8 @@ $.widget("sv.clock_countdown", $.sv.widget, {
 		interval: 0,
 		stopmode: 'item',
 		idletxt: '--:--:--',
+		fixduration: '',
+		condition: null,
 		 	},
 
 	_currentstarttime: 0,
@@ -120,19 +122,19 @@ $.widget("sv.clock_countdown", $.sv.widget, {
 
 	_update: function(response) {
 		var item = response[0];
-		var starttime = +response[1];
-		var durationitem = response[2];
+		var starttime = $.isNumeric(response[1])? +response[1]: Date.parse(response[1]);
+		var durationitem = response[2] != undefined ? response[2] : this.options.fixduration;
 		var actualtime = Date.now();
 		var itemduration = +new Date().duration(durationitem);  // item duration in milliseconds
 		var interval = +new Date().duration(this.options.interval); // countdown interval in milliseconds
-		
+		var release = this.options.condition == undefined || item == this.options.condition;
 		// console.log('[update] item: ', item, ' _old: ', this._olditem, ' start: ', starttime,' duration: ', itemduration, ' actual: ', actualtime, ' _current: ', this._currentstarttime);
 		
 		// allow change of duration during running countdown
 		this._currentduration = itemduration;
 		
 		// count down if starttime is set and duration exeeds current time
-		if (starttime > this._currentstarttime && starttime + itemduration >  actualtime && this._timer_run == false) { 
+		if (starttime > this._currentstarttime && starttime + itemduration >  actualtime && this._timer_run == false && release) { 
 			this._currentstarttime = starttime;
 			// memorize item for abort on change
 			this._olditem = item;
