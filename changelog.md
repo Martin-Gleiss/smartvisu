@@ -20,6 +20,7 @@
 - new weather service VisualCrossing
 - improved vertical alignment of slider track in device.dimmer when no text is configured
 - ioBroker driver is now able to provide item properties from the "state" object using the keyword "property", e.g. "myItem.property.lc" to get the "last changed" property for that item 
+- digest authentication method integrated in CalDav calendar service. Logfile for cURL messages if service is called with debug parameter.
 
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers

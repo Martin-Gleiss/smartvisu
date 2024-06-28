@@ -2,8 +2,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Johannes Willnecker, Sebastian Helms, Serge Wagener, Stefan Widmer
- * @copyright   2015-2017
+ * @author      Johannes Willnecker, Sebastian Helms, Serge Wagener, Stefan Widmer, Wolfram v. Hülsen
+ * @copyright   2015-2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       CalDav (e.g. ownCloud, Nextcloud, ...)
@@ -25,34 +25,73 @@ class calendar_caldav extends calendar
 	/**
 	 * Helper function to query CalDav
 	 */
-	private function get_caldav_data($url, $method, $xmlquery, $depth = 0)
+	private function get_caldav_data($url, $method, $xmlquery, $depth = 0, $digest = 0)
 	{
 		$loadError = '';
-		$ctxopts = array('http' =>
-			array(
-				'method' => $method,
-				'header' => "Depth: ".$depth.
-					"\r\nContent-Type: text/xml; charset='UTF-8'".
-					"\r\nUser-Agent: DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374)",
-				'content' => $xmlquery
-			)
-		);
-		if(config_calendar_username != '' && config_calendar_password != '')
-			$ctxopts['http']['header'] .= "\r\nAuthorization: Basic " . base64_encode(config_calendar_username.':'.config_calendar_password);
 
-		$context = stream_context_create($ctxopts);
-		$caldavresponse = file_get_contents($url, false, $context);
+		if ($digest == 1) {
+			$ch = curl_init();
+			
+			// if calendar is in debug mode write cURL messages to a logfile
+			if ($this->debug) {
+				$fp = fopen(const_path.'/temp/curllog.txt', 'w');
+				curl_Setopt($ch, CURLOPT_STDERR, $fp);
+			}
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_Setopt($ch, CURLOPT_VERBOSE, 1);
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				"Depth: ".$depth,
+				"Content-Type: text/xml; charset='UTF-8'",
+				"User-Agent: DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374)"
+			));
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlquery);
 
-		if ($caldavresponse === false) {
-			if (substr($this->errorMessage, 0, 17) == 'file_get_contents')
-				$loadError = substr(strrchr($this->errorMessage, ':'), 2);
-			elseif (!empty($http_response_header)) 
-				$loadError = $http_response_header[0];
-			$this->error('Calendar: CalDav', 'Read request to "'.$url.'" failed with message: "'.$loadError.'"');
-			if (!empty($http_response_header))
-				$this->debug(implode("\n", $http_response_header));
-			echo $this->json();
-			exit;
+			// Setting for Digest Authentication (CURLAUTH_DIGEST) does not work with Baikal / Sabre Dav -> use CURLAUTH_ANY
+			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+			curl_setopt($ch, CURLOPT_USERPWD, config_calendar_username . ":" . config_calendar_password);
+
+			$caldavresponse = curl_exec($ch);
+
+			if ($caldavresponse === false) {
+				$loadError = curl_error($ch);
+				$this->error('Calendar: CalDav', 'Read request to "'.$url.'" failed with message: "'.$loadError.'"');
+				echo $this->json();
+				curl_close($ch);
+				exit;
+			}
+			curl_close($ch);
+			if ($this->debug)
+				fclose($fp);
+		
+		} else {
+			$ctxopts = array('http' =>
+				array(
+					'method' => $method,
+					'header' => "Depth: ".$depth.
+						"\r\nContent-Type: text/xml; charset='UTF-8'".
+						"\r\nUser-Agent: DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374)",
+					'content' => $xmlquery
+				)
+			);
+			if(config_calendar_username != '' && config_calendar_password != '')
+				$ctxopts['http']['header'] .= "\r\nAuthorization: Basic " . base64_encode(config_calendar_username.':'.config_calendar_password);
+
+			$context = stream_context_create($ctxopts);
+			$caldavresponse = file_get_contents($url, false, $context);
+
+			if ($caldavresponse === false) {
+				if (substr($this->errorMessage, 0, 17) == 'file_get_contents')
+					$loadError = substr(strrchr($this->errorMessage, ':'), 2);
+				elseif (!empty($http_response_header)) 
+					$loadError = $http_response_header[0];
+				$this->error('Calendar: CalDav', 'Read request to "'.$url.'" failed with message: "'.$loadError.'"');
+				if (!empty($http_response_header))
+					$this->debug(implode("\n", $http_response_header));
+				echo $this->json();
+				exit;
+			}
 		}
 
 		$xml = simplexml_load_string($caldavresponse, null, LIBXML_NOCDATA, 'DAV:');
@@ -65,14 +104,14 @@ class calendar_caldav extends calendar
 	 * @param $davbaseurl may be the url of WebDav root (e.g. https://server/dav/), of a principal (e.g. https://server/dav/principals/users/USER/) or of user's calendar home (e.g. https://server/caldav/USER/calendars/)
 	 * @param $calnames array of calendar display names to load. if null or an array containing one empty string is passed, all calendars will be loaded
 	 */
-	private function get_calendar_urls($davbaseurl, $calnames = array('')) {
+	private function get_calendar_urls($davbaseurl, $calnames = array(''), $digest = 0) {
 		// extract server root url
 		$urlparsed = parse_url($davbaseurl);
 		$calserver = (isset($urlparsed['scheme']) ? $urlparsed['scheme'] : 'https') . '://' . (isset($urlparsed['host']) ? $urlparsed['host'] : '') . (isset($urlparsed['port']) ? ':'.$urlparsed['port'] : '');
 
 		// Get user principal
 		$xmlquery = '<D:propfind xmlns:D="DAV:"><D:prop><D:current-user-principal/></D:prop></D:propfind>';
-		$xml = $this->get_caldav_data($davbaseurl, "PROPFIND", $xmlquery);
+		$xml = $this->get_caldav_data($davbaseurl, "PROPFIND", $xmlquery, 0, $digest);
 		$principal_url = (!$xml ? "" : $xml->response->propstat->prop->{'current-user-principal'}->href);
 		$this->debug((string)$principal_url, 'principal_url');
 		// use configured url if no current-user-principal returned
@@ -86,7 +125,7 @@ class calendar_caldav extends calendar
 
 		// Get home url of user's calendars
 		$xmlquery = '<D:propfind xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop><C:calendar-home-set/></D:prop></D:propfind>';
-		$xml = $this->get_caldav_data($principal_url, "PROPFIND", $xmlquery);
+		$xml = $this->get_caldav_data($principal_url, "PROPFIND", $xmlquery, 0, $digest);
 		$calendar_home_url = (!$xml ? "" : $xml->response->propstat->prop->children('urn:ietf:params:xml:ns:caldav')->{'calendar-home-set'}->children('DAV:')->href);
 		$this->debug((string)$calendar_home_url, 'calendar_home_url');
 		// use configured url if no calendar-home-set returned
@@ -112,7 +151,7 @@ class calendar_caldav extends calendar
 	</D:prop>
 </D:propfind>
 XMLQUERY;
-		$xml = $this->get_caldav_data($calendar_home_url, 'PROPFIND', $xmlquery, 1);
+		$xml = $this->get_caldav_data($calendar_home_url, 'PROPFIND', $xmlquery, 1, $digest);
 
 		$calurls = array();
 		if ($xml != false){ 
@@ -154,7 +193,7 @@ XMLQUERY;
 	/**
 	 * Get data of a calendar
 	 */
-	private function get_calendar_data($calurl)
+	private function get_calendar_data($calurl, $digest = 0)
 	{
 		$calStart = gmdate("Ymd\THis\Z");
 		$calEnd = gmdate("Ymd\THis\Z", strtotime("+4 weeks"));
@@ -178,7 +217,7 @@ XMLQUERY;
 </C:calendar-query>
 XMLQUERY;
 
-		return $this->get_caldav_data($calurl, 'REPORT', $xmlquery, 1);
+		return $this->get_caldav_data($calurl, 'REPORT', $xmlquery, 1, $digest);
 	}
 
 	/**
@@ -196,12 +235,22 @@ XMLQUERY;
 		- https://p01-caldav.icloud.com/{user}/calendars/
 		*/
 		$calbaseurl = str_replace('{user}', config_calendar_username, $this->url);
-		$calurls = $this->get_calendar_urls($calbaseurl, $this->calendar_names);
+
+		// Check required authentification method
+		$digest = 0;
+		$wwwAuthHeader = get_headers($calbaseurl, true);
+		if (isset($wwwAuthHeader['WWW-Authenticate']) && substr($wwwAuthHeader['WWW-Authenticate'], 0, 6 ) == "Digest" )
+			$digest = 1;
+
+		$this->debug( $digest == 1 ? 'Digest Auth' : 'Basic Auth', 'Authentication Method of Base URL');
+		// var_dump(get_headers($calbaseurl, true));
+
+		$calurls = $this->get_calendar_urls($calbaseurl, $this->calendar_names, $digest);
 
 		// get plain ics
 		foreach ($calurls as $calurl => $calmetadata)
 		{
-			$xml = $this->get_calendar_data($calurl);
+			$xml = $this->get_calendar_data($calurl, $digest);
 			// extract and parse ics data from CalDav response (= merged content of each <cal:calendar-data> node)
 			$ical = new ICal();
 			$xml->registerXPathNamespace('C', 'urn:ietf:params:xml:ns:caldav');
