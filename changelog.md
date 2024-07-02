@@ -30,6 +30,7 @@
 - templatechecker now checks the twig syntax of html pages
 - console.log is activated in cache mode if parameter "debug" is set to "1" in config.ini
 - active elements are allowed on menu buttons in rooms_menu
+- offline driver initializes UZSU data for items ending on ".uzsu" if no data are available
 
 ### Updated Libraries
 
