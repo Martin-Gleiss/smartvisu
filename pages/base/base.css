@@ -260,6 +260,11 @@ a:hover {
   max-width: 5em;
 }
 
+.ui-listview [data-widget].ui-btn>svg.icon,
+.ui-listview [data-widget] .ui-btn>svg.icon {
+  position: unset;
+}
+
 .ui-listview .ui-li-has-thumb > img:first-child,
 .ui-listview .ui-li-has-thumb > .ui-btn > img:first-child,
 .ui-listview .ui-li-has-thumb .ui-li-thumb,
