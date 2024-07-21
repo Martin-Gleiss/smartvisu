@@ -37,4 +37,22 @@
 		{{ calendar.list('', '', 3, ['#993399','green'], '', ['Personal','Waste'], 'l') }}
 	</div>
 
+	You can specify your own icons and colors for calendar events in the language file , e.g. .dropins/lang/mylang.ini in the section "[calendar_event_format]". 
+	<div class="twig">
+		<code class="prettyprint">
+			blue bin[icon] = message_garbage <br>
+			blue bin[color] = #0000FF
+		</code>
+	</div>
+	<b>Attention:</b> calendar.list searches for the specified keywords and applies icon and color to the event if it's title <u>contains</u> a keyword. With the above example it will display the same for "buy blue binoculars" 
+	and "blue bin". Specify the more specific keywords in sequence behind the more general ones in order to optimize pattern matching.<br><br>
+	
+	A default icon and color can be defined using "default_img_list". If no default is defined a transparent image "trans.png" will be displayed. 
+		<div class="twig">
+		<code class="prettyprint">
+			default_img_list[icon] = message_achtung <br>
+			default_img_list[color] = "rgb(32, 178, 170)"
+		</code>
+	</div>
+	
 {% endblock %}
