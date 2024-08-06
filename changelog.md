@@ -31,6 +31,7 @@
 - console.log is activated in cache mode if parameter "debug" is set to "1" in config.ini
 - active elements are allowed on menu buttons in rooms_menu
 - offline driver initializes UZSU data for items ending on ".uzsu" if no data are available
+- import of black/white jQuery mobile mini icons moved from root.html into <design>.css (for preparation of dark mode support)
 
 ### Updated Libraries
 

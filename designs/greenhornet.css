@@ -12,6 +12,7 @@
 *
 */
 
+@import '../icons/ws/jquery.mobile.icons.min.css';
 
 /* Globals */
 /* Font
@@ -207,7 +208,7 @@ html .ui-alt-icon .ui-radio-off:after {
 	width: 8px;
 	height: 8px;
 	border-width: 5px;
-	border-style: solid; 
+	border-style: solid;
 }
 .ui-alt-icon.ui-btn.ui-radio-on:after,
 .ui-alt-icon .ui-btn.ui-radio-on:after {
@@ -1749,7 +1750,7 @@ html .ui-btn.icon5,
 	background-image: url(images/webkit_clock_ws.svg);
 }
 
-/* jQuery Roundslider 
+/* jQuery Roundslider
 -----------------------------------------------------------------------------------------------------------*/
 
 /*** SVG mode - theming - colors ***/
@@ -1782,9 +1783,9 @@ span.rs-number {
   color: #fff;
 }
 
-.rs-bar.rs-custom .rs-seperator { 
-	border: 2px solid #457703; 
-	margin-left: -10px; 
+.rs-bar.rs-custom .rs-seperator {
+	border: 2px solid #457703;
+	margin-left: -10px;
 }
 .rs-bar.rs-custom_1 .rs-seperator {
 	border: 1px solid #d7d7d7;
@@ -1801,7 +1802,7 @@ span.rs-number {
 }
 
 .rs-handle {
-	background-color: #838383; 
+	background-color: #838383;
 	background-image: -webkit-gradient(linear, left top, left bottom, from( #444444 /*{a-bup-background-start}*/), to( #2d2d2d /*{a-bup-background-end}*/)); /* Saf4+, Chrome */
 	background-image: -webkit-linear-gradient( #444444 /*{a-bup-background-start}*/, #2d2d2d /*{a-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
 	background-image:    -moz-linear-gradient( #444444 /*{a-bup-background-start}*/, #2d2d2d /*{a-bup-background-end}*/); /* FF3.6 */
