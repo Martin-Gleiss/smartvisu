@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2024
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,7 +12,7 @@
 
 {% block content %}
 
-	<h1><img class="icon" src='{{ icon0 }}control_building_control.svg' />Haus</h1>
+	<h1>{{ lib.svgimg ('', 'control_building_control.svg', 'icon0', '') }}Haus</h1>
 
 	<div class="preblock">
 		{{ basic.stateswitch('modus_mode', 'modus_heizung_komfort','midi', '', ['user_available.svg', 'user_away.svg']) }}

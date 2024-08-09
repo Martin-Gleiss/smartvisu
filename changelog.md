@@ -21,6 +21,8 @@
 - improved vertical alignment of slider track in device.dimmer when no text is configured
 - ioBroker driver is now able to provide item properties from the "state" object using the keyword "property", e.g. "myItem.property.lc" to get the "last changed" property for that item 
 - digest authentication method integrated in CalDav calendar service. Logfile for cURL messages if service is called with debug parameter.
+- new design "lightblue" (inspired by ramann)
+- new design "darkmode_blue" as combination of darkblue.css and lightblue.css supports dark mode of the device. Custom darkmode combinations can be defined in ./dropins/designs.
 
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers
@@ -31,6 +33,8 @@
 - console.log is activated in cache mode if parameter "debug" is set to "1" in config.ini
 - active elements are allowed on menu buttons in rooms_menu
 - offline driver initializes UZSU data for items ending on ".uzsu" if no data are available
+- import of black/white jQuery mobile mini icons moved from root.html into <design>.css (for preparation of dark mode support)
+- all examples adapted to support dark mode (v3.3 icon handling in menu.html and sides menus)
 
 ### Updated Libraries
 
@@ -56,10 +60,12 @@
 - notify.add() notification threw errors if message was not of type "text" 
 - basic.trigger showed oversized button instead of specified type "icon"
 - device.uzsutable did not display correctly during and after supersize mode
+- widgets used within listviews placed their icons not in the center
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
-- smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php 
+- smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
+- background images defined with "url(myImageLocation)" - used e.g. on tabs - do not yet support dark mode. This can be individually corrected in visu.css. 
 
 
 ## 3.4

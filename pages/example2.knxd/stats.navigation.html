@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Raik Alber
-* @copyright   2012 - 2015
+* @copyright   2012 - 2024
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -10,29 +10,29 @@
 
 <ul data-role="listview" data-dividertheme="c">
     <li data-role="list-divider">Temperaturen</li>
-    <li data-icon="false">
+    <li class="ui-li-has-thumb" data-icon="false">
         <a href="index.php?page=stats.temperaturen">
-            <img class="icon icon0" src="{{ icon0 }}sani_floor_heating.svg"/><h3>Fußbodenheizung</h3>
+            {{ lib.svgimg ('', 'sani_floor_heating.svg', 'icon0', '') }}<h3>Fußbodenheizung</h3>
         </a>
     </li>
-    <li data-icon="false">
+    <li class="ui-li-has-thumb" data-icon="false">
         <a href="index.php?page=stats.rolllaeden">
-            <img class="icon icon0" src="{{ icon0 }}fts_shutter.svg"/><h3>Rollläden</h3>
+            {{ lib.svgimg ('', 'fts_shutter.svg', 'icon0', '') }}<h3>Rollläden</h3>
         </a>
     </li>
-    <li data-icon="false">
+    <li class="ui-li-has-thumb" data-icon="false">
         <a href="index.php?page=stats.strommessung">
-            <img class="icon icon0" src="{{ icon0 }}measure_power.svg"/><h3>Strommessung</h3>
+            {{ lib.svgimg ('', 'measure_power.svg', 'icon0', '') }}<h3>Strommessung</h3>
         </a>
     </li>
-    <li data-icon="false">
+    <li class="ui-li-has-thumb" data-icon="false">
         <a href="index.php?page=stats.sysinfo.smarthome">
-            <img class="icon icon0" src="{{ icon0 }}time_graph.svg"/><h3>Smarthomeinfo</h3>
+            {{ lib.svgimg ('', 'time_graph.svg', 'icon0', '') }}<h3>Smarthomeinfo</h3>
         </a>
     </li>
-    <li data-icon="false">
+    <li class="ui-li-has-thumb" data-icon="false">
         <a href="index.php?page=stats.sysinfo.system">
-            <img class="icon icon0" src="{{ icon0 }}it_server.svg"/><h3>Systeminfo</h3>
+            {{ lib.svgimg ('', 'it_server.svg', 'icon0', '') }}<h3>Systeminfo</h3>
         </a>
     </li>
 </ul>

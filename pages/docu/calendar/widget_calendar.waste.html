@@ -27,5 +27,24 @@
 			</div>
 		</div>
 	</div>
+	
+		You can specify your own icons and colors for calendar events in the language file , e.g. .dropins/lang/mylang.ini in the section "[calendar_event_format]". 
+		If the icon is defined as "message_garbage" the widget converts it to "message_garbage_2" which is the roll-out garbage container.
+	<div class="twig">
+		<code class="prettyprint">
+			blue bin[icon] = message_garbage <br>
+			blue bin[color] = #0000FF
+		</code>
+	</div>
+	<b>Attention:</b> calendar.waste searches for the specified keywords and applies icon and color to the event if it's title <u>starts with</u> a keyword. With the above example it will display the same for "blue binoculars" 
+	and "blue bin". Specify the more specific keywords in sequence behind the more general ones in order to optimize pattern matching. <br><br>
+	
+	A default icon and color can be defined using "default_img_waste". If no default is defined a transparent image "trans.png" will be displayed. 
+		<div class="twig">
+		<code class="prettyprint">
+			default_img_waste[icon] = message_achtung <br>
+			default_img_waste[color] = "rgb(32, 178, 170)"
+		</code>
+	</div>
 
 {% endblock %}

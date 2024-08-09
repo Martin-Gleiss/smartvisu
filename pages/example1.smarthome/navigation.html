@@ -10,9 +10,9 @@
 
 <ul data-role="listview" data-dividertheme="c">
 	<li data-role="list-divider">Verbrauchsdaten</li>
-	<li data-icon="false">
+	<li class="ui-li-has-thumb" data-icon="false">
 		<a href="index.php?page=KG.Keller">
-			<img class="icon" src="{{ icon0 }}sani_pump.svg" />
+			{{ lib.svgimg ('', 'sani_pump.svg', 'icon0', '') }}
 
 			<h3>Energieverbrauch</h3>
 
@@ -25,9 +25,9 @@
 
 	</li>
 	<li data-role="list-divider">Erdgeschoss</li>
-	<li data-icon="false">
+	<li class="ui-li-has-thumb" data-icon="false">
 		<a href="index.php?page=EG.Esszimmer">
-			<img class="icon" src="{{ icon0 }}scene_dinner.svg" />
+			{{ lib.svgimg ('', 'scene_dinner.svg', 'icon0', '') }}
 
 			<h3>Esszimmer / Küche</h3>
 		</a>
@@ -41,16 +41,16 @@
 			{{ basic.print('heiztmitEGEssen', 'EG.Esszimmer.temperature.stellgroesse', '%') }}
 		</div>
 	</li>
-	<li data-icon="false">
+	<li class="ui-li-has-thumb" data-icon="false">
 		<a href="index.php?page=EG.Marco">
-			<img class="icon" src="{{ icon0 }}it_pc.svg" />
+			{{ lib.svgimg ('', 'it_pc.svg', 'icon0', '') }}
 
 			<h3>Büro Marco</h3>
 		</a>
 	</li>
-	<li data-icon="false">
+	<li class="ui-li-has-thumb" data-icon="false">
 		<a href="index.php?page=EG.Badezimmer">
-			<img class="icon" src="{{ icon0 }}scene_bathroom.svg" />
+			{{ lib.svgimg ('', 'scene_bathroom.svg', 'icon0', '') }}
 
 			<h3>Bad / WC</h3>
 
@@ -61,9 +61,9 @@
 			</div>
 		</a>
 	</li>
-	<li data-icon="false">
+	<li class="ui-li-has-thumb" data-icon="false">
 		<a href="index.php?page=EG.Flure">
-			<img class="icon" src="{{ icon0 }}scene_stairs.svg" />
+			{{ lib.svgimg ('', 'scene_stairs.svg', 'icon0', '') }}
 
 			<h3>Flure / Nebenräume</h3>
 		</a>
@@ -76,9 +76,9 @@
 			{{ basic.print('FlurDieleTemperatur', 'EG.FlureNebenraume.temperature2', '°C') }}
 		</div>
 	</li>
-	<li data-icon="false">
+	<li class="ui-li-has-thumb" data-icon="false">
 		<a href="index.php?page=EG.Aussen">
-			<img class="icon" src="{{ icon0 }}control_building_outside.svg" />
+			{{ lib.svgimg ('', 'control_building_outside.svg', 'icon0', '') }}
 
 			<h3>Aussenanlage</h3>
 		</a>
@@ -91,9 +91,9 @@
 		</div>
 	</li>
 	<li data-role="list-divider">Obergeschoss</li>
-	<li data-icon="false">
+	<li class="ui-li-has-thumb" data-icon="false">
 		<a href="index.php?page=OG.Johanna">
-			<img class="icon" src="{{ icon0 }}scene_childs_room.svg" />
+			{{ lib.svgimg ('', 'scene_childs_room.svg', 'icon0', '') }}
 
 			<h3>Johanna</h3>
 		</a>
@@ -105,9 +105,9 @@
 			{{ basic.print('heiztmitJohanna', 'OG.Johanna.temperature.stellgroesse', '%') }}
 		</div>
 	</li>
-	<li data-icon="false">
+	<li class="ui-li-has-thumb" data-icon="false">
 		<a href="index.php?page=OG.BueroIngrid">
-			<img class="icon" src="{{ icon0 }}it_pc.svg" />
+			{{ lib.svgimg ('', 'it_pc.svg', 'icon0', '') }}
 
 			<h3>Büro Ingrid</h3>
 		</a>
@@ -119,9 +119,9 @@
 			{{ basic.print('heiztmitPhilipp', 'OG.Philipp.temperature.stellgroesse', '%') }}
 		</div>
 	</li>
-	<li data-icon="false">
+	<li class="ui-li-has-thumb" data-icon="false">
 		<a href="index.php?page=OG.SchlafenAnkleide">
-			<img class="icon" src="{{ icon0 }}scene_sleeping_alternat.svg" />
+			{{ lib.svgimg ('', 'scene_sleeping_alternat.svg', 'icon0', '') }}
 
 			<h3>Schlafen / Ankleide</h3>
 		</a>
@@ -137,9 +137,9 @@
 		</div>
 	</li>
 	<li data-role="list-divider">Dachgeschoss</li>
-	<li data-icon="false">
+	<li class="ui-li-has-thumb" data-icon="false">
 		<a href="index.php?page=DG.Wohnen">
-			<img class="icon" src="{{ icon0 }}scene_livingroom.svg" />
+			{{ lib.svgimg ('', 'scene_livingroom.svg', 'icon0', '') }}
 
 			<h3>Wohnen</h3>
 		</a>
@@ -154,9 +154,9 @@
 			{{ basic.print('heiztmitDGWohnen', 'DG.Wohnen.stellgroesse', '%') }}
 		</div>
 	</li>
-	<li data-icon="false">
+	<li class="ui-li-has-thumb" data-icon="false">
 		<a href="index.php?page=DG.Schlafen">
-			<img class="icon" src="{{ icon0 }}scene_sleeping_alternat.svg" />
+			{{ lib.svgimg ('', 'scene_sleeping_alternat.svg', 'icon0', '') }}
 
 			<h3>Schlafen</h3>
 		</a>
