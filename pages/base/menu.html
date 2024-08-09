@@ -23,7 +23,7 @@
 			<img class="icon{% if page == 'apps' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}it_net.svg" alt="apps" /></a>
 			
 	{% else%}	
-		<a id="{{ page }}_menu-docu" data-ajax="false" href="index.php?pages=docu&amp;page=index" onclick="linkAnimate(id)">
+		<a id="{{ page }}_menu-docu" class="icon1" data-ajax="false" href="index.php?pages=docu&amp;page=index" onclick="linkAnimate(id)">
 			<img class="icon {{ pages == 'docu' ? ' icon1' : ' icon0' }}" src="{{ icon0 }}edit_copy.svg"/></a>
 	
 	{% endif %}

@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -15,19 +15,19 @@
 <ul data-role="listview" data-dividertheme="c">
 
 	<li data-role="list-divider">Wärmepumpe</li>
-    <li data-icon="false">
+    <li class="ui-li-has-thumb" data-icon="false">
         <a href="index.php?page=category">
-            <img class="icon icon0" src="{{ icon0 }}sani_buffer_temp_all.svg"/><h3>Wärmepumpe</h3>
+            {{ lib.svgimg ('', 'sani_buffer_temp_all.svg', 'icon0', '') }}<h3>Wärmepumpe</h3>
         </a>
     </li>
-    <li data-icon="false">
+    <li class="ui-li-has-thumb" data-icon="false">
         <a href="index.php?page=category_fussboden">
-            <img class="icon" src="{{ icon0 }}sani_floor_heating.svg"/><h3>Fußbodenheizung</h3>
+            {{ lib.svgimg ('', 'sani_floor_heating.svg', 'icon0', '') }}<h3>Fußbodenheizung</h3>
         </a>
     </li>
-    <li data-icon="false">
+    <li class="ui-li-has-thumb" data-icon="false">
         <a href="index.php?page=category_stromzaehler">
-            <img class="icon" src="{{ icon0 }}measure_power_meter.svg"/><h3>Stromzähler</h3>
+            {{ lib.svgimg ('', 'measure_power_meter.svg', 'icon0', '') }}<h3>Stromzähler</h3>
         </a>
     </li>
 </ul>
@@ -36,7 +36,7 @@
 
 {% block content %}
 
-    <h1><img class="icon" src='{{ icon0 }}sani_buffer_temp_all.svg'/>Wärmepumpe</h1>
+    <h1>{{ lib.svgimg ('', 'sani_buffer_temp_all.svg', 'icon0', '') }}Wärmepumpe</h1>
     <!--<object data="http://servicewelt/index.php" type="text/html" style="width:100%; height:750px;">
 	   Bitte einen aktuellen Browser verwenden.
     </object>-->
