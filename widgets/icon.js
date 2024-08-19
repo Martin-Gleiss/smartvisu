@@ -220,7 +220,7 @@ $.widget("sv.icon_clock", $.sv.dynicon, {
 		var ang_l = (response[0] % 60) / 60 * 2 * Math.PI;
 		this.element.find('#hand_l').attr('points', '50,50 ' + fx.rotate([50, 30], ang_l, [50, 50]).toString());
 
-		var ang_s = (Math.floor(response[0] / 60) * 5) / 60 * 2 * Math.PI;
+		var ang_s = (response[0] / 60) / 12 * 2 * Math.PI;
 		this.element.find('#hand_s').attr('points', '50,50 ' + fx.rotate([50, 35], ang_s, [50, 50]).toString());
 
 		var timestring = ('0' + Math.floor(response[0] / 60)).substr(-2) + ':' + ('0' + (response[0] % 60)).substr(-2);
