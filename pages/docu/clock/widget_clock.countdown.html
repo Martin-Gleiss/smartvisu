@@ -12,7 +12,7 @@
 
 {% block example %}
 <script>
-	$( document ).ready(function() {
+	$( document ).on('pageinit', function() {
 		var now = +new Date();	
 		io.write('bath.light.timestamp', 0 );
 		io.write('bath.light.timestamp2', 0 );
