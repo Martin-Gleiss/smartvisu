@@ -62,6 +62,7 @@
 - device.uzsutable did not display correctly during and after supersize mode
 - widgets used within listviews placed their icons not in the center
 - clock.iconclock / icon.clock rounded the position of the short pointer to full hours. Now the pointer moves constantly like on any other analog clock.
+- basic.shutter used same CSS classes for positive and negative blade angles in "half" mode. 
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text

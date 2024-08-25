@@ -891,44 +891,44 @@ $.widget("sv.basic_shutter", $.sv.widget, {
 		var max = parseInt(this.options.max);
 		var min = parseInt(this.options.min);
 
-		var a = 13;
+		// response is {item_position},{item_angle}
+		var bladeSize = 13;
 		var mode = (this.options.mode == 'half' ? 0.5 : 1);
 		if (response[1] !== undefined) {
-			a = parseInt(13 / mode * ((response[1] - min) / (max - min) + mode - 1));
+			bladeSize = parseInt(13 / mode * ((response[1] - min) / (max - min) + mode - 1));
 		}
 
 		var style;
 
 		var h = parseInt(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 13 * 14);
-		$.each(this.element.find('.blade-pos, .blade-neg').get().reverse(), function(i) {
-			if (h >= 14) {
-				var w = 13 - Math.abs(a);
-				style = 'height: ' + ((h > (12-i) * 14) && a == 13 ? (14 - w) : (15 - w)) + 'px;';
+		$.each(this.element.find('.blade-pos, .blade-neg').get(), function(i) {
+			var bladeGap = 13 - Math.abs(bladeSize);
+			if (h > 14) {
+				style = 'height: ' + ((h > i * 14) && bladeSize == 13 ? (14 - bladeGap) : (15 - bladeGap)) + 'px;';
 
-				if (a != 13) {
-					style += 'margin-top: ' + (h - 15 >= 14 ? w : parseInt(w / 2)) + 'px;';
-				}
-				else {
-					style += 'border-top: 1px dotted ' + (h > (12-i) * 14 ? '#ccc' : '#333') + ';';
-				}
+				if (bladeSize != 13)
+					style += 'margin-top: ' + bladeGap  + 'px;';
+				else
+					style += 'border-top: 1px dotted ' + (h > i * 14 ? '#ccc' : '#333') + ';';
 
-				if (a > 0) {
+				if (bladeSize > 0)
 					$(this).attr('class', 'blade-pos');
-				}
-				else {
-					$(this).attr('class', 'blade-pos');
-				}
-
-				$(this).attr('style', style);
-
+				else
+					$(this).attr('class', 'blade-neg');
+				
 				h = h - 15;
 			}
-			else {
-				style = 'height: ' + h + 'px;';
-				style += 'border-top: 1px dotted #aaa;';
-				$(this).attr('style', style);
+			else if (h > 1) {
+				bladeGap = parseInt(bladeGap * h/15);
+				style = 'height: ' +  (h - bladeGap) + 'px;';
+				style += 'margin-top: ' + bladeGap + 'px;';
 				h = 1;
 			}
+			else{
+				style = 'height:  1px;';
+				style += 'border-top: 1px dotted #aaa;';
+			}
+			$(this).attr('style', style);
 		});
 	},
 
