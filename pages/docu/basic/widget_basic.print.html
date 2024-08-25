@@ -61,11 +61,11 @@
   Hover with the mouse over the flipswitch to see the effect. (Note: Will not work on Android devices wich do not support hover effects)
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-    <span id="{{ uid (page, 'myFlip1') }}">{{ basic.flip('', 'bath.light.switch') }}<span>
+    <span id="{{ uid (page, 'myFlip1') }}">{{ basic.flip('', 'bath.light.switch') }}</span>
     {{ basic.print('', 'bath.light.switch', 'text', 'VAR=="1"?"Schaltuhr ist an":"Schalter ist aus"','','','myFlip1','tooltip') }}    {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
-    <span id="{{ uid (page, 'myFlip1') }}">{{ basic.flip('myFlip1', 'bath.light.switch') }}<span>
+    <span id="{{ uid (page, 'myFlip1') }}">{{ basic.flip('myFlip1', 'bath.light.switch') }}</span>
     {{ basic.print('', 'bath.light.switch', 'text', 'VAR=="1"?"Schalter ist an":"Schalter ist aus"','','','myFlip1','tooltip') }}<br />
   </div>
   
