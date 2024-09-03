@@ -1599,7 +1599,7 @@ div.ui-slider-switch{
   width: 350px !important;
 }
 @media screen and (max-width: 625px){
-  .uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec, .uzsuCellExpert, .uzsuRowSeriesLine{
+  .uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec, .uzsuCellExpert, .uzsuRowSeriesLine, .uzsuCellSeries {
     display: none;
   }
 }
