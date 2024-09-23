@@ -71,6 +71,7 @@
 		<?php echo 'shortmonth = ' . trans('shortmonth', '', '') . ';'; ?>
 		<?php echo 'weekday = ' . trans('weekday', '', '') . ';'; ?>
 		<?php echo 'shortday = ' . trans('shortday', '', '') . ';'; ?>
+		<?php echo 'actualday = ' . trans('actualday', '', '') . ';'; ?>
 
 		if (unit == '') {
 			return this;
@@ -82,10 +83,26 @@
 // 259200000
 
 		var val = this;
+		
+		// replace a selectable format string with "today" or "tomorrow" if applicable
+		// format string to replace must be given in brackets (e.g. 't(d)' prints the short weekday if it is not today or tomorrow) 
+		var tPos = ret.indexOf('t');
+		if (tPos > -1){
+			var daynow = '';
+			var tomorrow = new Date(new Date().valueOf() + 24*60*60*1000).toDateString();
+			if (val.toDateString() == new Date().toDateString())
+				daynow = actualday[0];
+			else if (val.toDateString() == tomorrow)
+				daynow = actualday[1];
+			if (ret[tPos+1] == "(" )
+				ret = daynow != '' ? ret.replace(/\(.*\)/, '') : ret.replace(/[\(\)]/g, '');
+		}
 
 		// iterate over each character
 		ret = ret.replace(/./g, function(char) {
 			switch (char) {
+				case 't':
+					return daynow;
 				case 'l':
 					return weekday[val.getDay()];
 				case 'D':

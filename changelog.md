@@ -10,6 +10,7 @@
 - device.dimmer extended with an option "type" to display the switch as button  (midi, mini, micro, icon)
 - indicator option introduced in all quad design widgets using basic.stateswitch or basic.select
 - clock.countdown now accepts ISO time strings, fixed contdown duration instead of an item and a new comparative value as starting condition
+- calendar.list uses a new format called "calendardate" in the language file which can be defined to show "today" and "tomorrow" with other date information. 
 
 ### Other New Features
 - improved spline display for the starting point in device.uzsugraph
@@ -23,6 +24,7 @@
 - digest authentication method integrated in CalDav calendar service. Logfile for cURL messages if service is called with debug parameter.
 - new design "lightblue" (inspired by ramann)
 - new design "darkmode_blue" as combination of darkblue.css and lightblue.css supports dark mode of the device. Custom darkmode combinations can be defined in ./dropins/designs.
+- new date format "t" shows "today" and "tomorrow", if applicable. It replaces format definition given in brackets. Example: "t(l), d.m." shows "today, 23.09." or "Wednesday, 25.09."
 
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers
