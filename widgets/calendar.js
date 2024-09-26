@@ -51,18 +51,18 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				var period;
 				// Start and end on same day: show day only once
 				if(entry.end.transUnit('date') == entry.start.transUnit('date'))
-					period = startDay + entry.start.transUnit('date') + ' ' + entry.start.transUnit('time') + ' - ' + entry.end.transUnit('time');
+					period = startDay + entry.start.transUnit('calendardate') + ' ' + entry.start.transUnit('time') + ' - ' + entry.end.transUnit('time');
 				// Full day entrys: don't show time
 				else if (entry.start.getHours()+entry.start.getMinutes()+entry.start.getSeconds() == 0
 					&& entry.end.getHours()+entry.end.getMinutes()+entry.end.getSeconds() == 0) {
 					entry.end.setDate(entry.end.getDate()-1); // subtract one day from end
 					if(entry.end.transUnit('date') == entry.start.transUnit('date')) // One day only: Show just start date
-						period = startDay + entry.start.transUnit('date');
+						period = startDay + entry.start.transUnit('calendardate');
 					else // Multiple days: Show start and end date
-						period = startDay + entry.start.transUnit('date') + ' - ' + endDay + entry.end.transUnit('date');
+						period = startDay + entry.start.transUnit('calendardate') + ' - ' + endDay + entry.end.transUnit('calendardate');
 				}
 				else
-					period = startDay + entry.start.transUnit('date') + ' ' + entry.start.transUnit('time') + ' - ' + endDay + entry.end.transUnit('date') + ' ' + entry.end.transUnit('time');
+					period = startDay + entry.start.transUnit('calendardate') + ' ' + entry.start.transUnit('time') + ' - ' + endDay + entry.end.transUnit('calendardate') + ' ' + entry.end.transUnit('time');
 
 				// handle calendar_event_format in lang.ini
 				$.each(sv_lang.calendar_event_format, function(pattern, attributes) {
