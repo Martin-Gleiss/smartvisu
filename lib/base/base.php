@@ -2,8 +2,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiß, Stefan Widmer
- * @copyright   2012 - 2017
+ * @author      Martin Gleiß, Stefan Widmer, Wolfram v. Hülsen
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
