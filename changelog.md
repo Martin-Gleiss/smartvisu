@@ -39,6 +39,7 @@
 - all examples adapted to support dark mode (v3.3 icon handling in menu.html and sides menus)
 
 ### Updated Libraries
+- Twig template engine: security fixes (v1.44.6 -> v1.44.8) and CS fixes as preparation for php 8.4 release
 
 ### Deprecated
 

@@ -19,6 +19,7 @@ function get_lang($code = config_lang) {
 	// does configured language file exist? config.ini could have been copied 
 	if (!is_file(const_path.'lang/'.$code.'.ini') && !is_file(const_path.'dropins/lang/'.$code.'.ini')) {
 		$code = 'en';
+		if (!is_file(const_path.'lang/en.ini')) return array();
 	};
 	// read ini file from /dropins/lang if available - otherwise from /lang
 	if (is_file(const_path.'dropins/lang/'.$code.'.ini'))
