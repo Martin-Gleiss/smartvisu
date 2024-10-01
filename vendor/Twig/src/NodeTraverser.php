@@ -60,7 +60,7 @@ class NodeTraverser
         return $node;
     }
 
-    protected function traverseForVisitor(NodeVisitorInterface $visitor, \Twig_NodeInterface $node = null)
+    protected function traverseForVisitor(NodeVisitorInterface $visitor, ?\Twig_NodeInterface $node = null)
     {
         if (null === $node) {
             return;

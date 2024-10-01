@@ -1,3 +1,9 @@
+#Patches for 1.44.6 by wvhn (2024-10-01)
+ * mark parameter types explicitely nullable in functions in order to avoid deprecated warnings from php 8.4 
+ * introduce security update (one commit in v1.44.7) in .\src\Looader\FilesystemLoader.php
+ * introduce security update (one commit in v1.44.8) in .\src\Extension\CoreExtension.php
+ * bump version to v1.44.8 
+
 #Patches for 1.44.6 by wvhn
 
  * src/Node/Node.php: return-type specifications (like in v3.x) for php 8.1 compatibility

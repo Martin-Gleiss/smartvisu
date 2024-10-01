@@ -56,7 +56,7 @@ class ArrayExpression extends AbstractExpression
         return false;
     }
 
-    public function addElement(AbstractExpression $value, AbstractExpression $key = null)
+    public function addElement(AbstractExpression $value, ?AbstractExpression $key = null)
     {
         if (null === $key) {
             $key = new ConstantExpression(++$this->index, $value->getTemplateLine());
