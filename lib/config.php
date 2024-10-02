@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Stefan Widmer
- * @copyright   2016
+ * @copyright   2016 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -110,9 +110,9 @@ class config {
 				$success = write_ini_file($config, const_path.'pages/'.$pages.'/config.ini', false);
 				break;
 			case 'cookie':
-				$basepath = substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, -strlen(substr($_SERVER['SCRIPT_FILENAME'], strlen(const_path))));
+				$basepath = substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, -\strlen(substr($_SERVER['SCRIPT_FILENAME'], \strlen(const_path))));
 							
-				if(count($config) > 0){ // some options are set
+				if(\count($config) > 0){ // some options are set
 					foreach ($config as $key=>&$val) {
 						$val = ($val == "true") ? "1" : $val;
 						$val = ($val == "false") ? "" : $val;

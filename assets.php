@@ -28,7 +28,7 @@ require_once $path . '/minify/src/Exceptions/IOException.php';
 require_once $path . '/path-converter/src/ConverterInterface.php';
 require_once $path . '/path-converter/src/Converter.php';
 
-if($type == 'javascript' && defined('config_debug') && !config_debug)
+if($type == 'javascript' && \defined('config_debug') && !config_debug)
 	array_unshift($request['files'], 'console.log = function() {};');
 
 foreach($request['files'] as $fileName) {
@@ -37,10 +37,10 @@ foreach($request['files'] as $fileName) {
 	if(substr_compare($fileName, '.php', -4) == 0) {
 		ob_start();
 		//$wd_was = getcwd();
-    chdir(dirname(const_path.$fileName));
+    chdir(\dirname(const_path.$fileName));
 	  include const_path.$fileName;
 	  //chdir($wd_was);
-    chdir(dirname($_SERVER['SCRIPT_FILENAME']));
+    chdir(\dirname($_SERVER['SCRIPT_FILENAME']));
 	  $rawcontent = ob_get_clean();
  	}
  	// otherwise just add it

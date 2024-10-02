@@ -190,7 +190,7 @@ class TemplateChecker {
     $this->domDocument->loadHTML(htmlspecialchars_decode(htmlentities($content)));
 		$errors = libxml_get_errors();
 		foreach ($errors as $error) {
-			if (array_key_exists($error->code, $this->ignore_html_error_code)) {
+			if (\array_key_exists($error->code, $this->ignore_html_error_code)) {
 				$conditions = $this->ignore_html_error_code[$error->code];
 				$ignore = true;
 				if (isset($conditions['maxline']) && $error->line > $conditions['maxline'])
@@ -236,7 +236,7 @@ class TemplateChecker {
 			// do not check code wrapped by {% verbatim %} or in twig comment /**...*/
 			$value = preg_replace('/{%\s*verbatim\s*%}.*?{%\s*endverbatim\s*%}|\/\*\*\s*.*?\s*\*\//', '', trim($node->textContent));
 			if (preg_match_all("/{{(.*?)}}/s", $value, $macros)) {
-				for ($i = 0; $i < count($macros[0]); $i++)
+				for ($i = 0; $i < \count($macros[0]); $i++)
 					$this->checkWidget($node, trim($macros[1][$i]));
 			}
 		}
@@ -304,17 +304,17 @@ class TemplateChecker {
 		
 		$widgetConfig = $this->getWidgetConfig($widgetName);
 
-		if ($widgetConfig === NULL || (!array_key_exists('param', $widgetConfig) && !array_key_exists('removed', $widgetConfig)) ) {
+		if ($widgetConfig === NULL || (!\array_key_exists('param', $widgetConfig) && !array_key_exists('removed', $widgetConfig)) ) {
 			$this->messages->addWarning('WIDGET PARAM CHECK', 'Unknown widget found. Check manually!', $widget->getLineNumber(), $widget->getMacro(), $widget->getMessageData());
 			// var_dump ($this); //will show the whole widget array within a list item with "unknown widget" error
 			return;
 			}
-		if (array_key_exists('removed', $widgetConfig)) {
+		if (\array_key_exists('removed', $widgetConfig)) {
 			$paramConfigs = explode (',', $widgetConfig['params']);  // Parameters of widget macro
-			$paramConfigLen = count($paramConfigs);
+			$paramConfigLen = \count($paramConfigs);
 			$messageData = $widget->getMessageData();
 			$messageParams = explode(',', $messageData['Parameters']); // Parameters in widget call
-			$messageParamsLen = count($messageParams);
+			$messageParamsLen = \count($messageParams);
 			// fill missing parameters w/ empty quotes
 			if ($paramConfigLen > $messageParamsLen){
 				do {
@@ -323,7 +323,7 @@ class TemplateChecker {
 				} while ($messageParamsLen < $paramConfigLen);
 			}
 			
-			if(array_key_exists('replacement', $widgetConfig)) {
+			if(\array_key_exists('replacement', $widgetConfig)) {
 				$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $messageParams));
 				$messageData['Replacement'] = str_replace ("['', '']", "''", $messageData['Replacement']);
 			}
@@ -335,9 +335,9 @@ class TemplateChecker {
 			foreach ($paramConfigs as $paramIndex => $paramConfig) {
 				WidgetParameterChecker::performChecks($widget, $paramIndex, $paramConfig, $this->messages,$this->items, $this); //new: items
 			}
-			if (array_key_exists('deprecated', $widgetConfig)) {
+			if (\array_key_exists('deprecated', $widgetConfig)) {
 				$messageData = $widget->getMessageData();
-				if(array_key_exists('replacement', $widgetConfig)) {
+				if(\array_key_exists('replacement', $widgetConfig)) {
 					$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $widget->getParamArray() + array_map(function($element) { return isset($element['default']) ? "'" . $element['default']. "'" : null; }, $paramConfigs)));
 				}
 			$this->messages->addWarning('WIDGET DEPRECATION CHECK', 'Deprecated widget', $widget->getLineNumber(), $widget->getMacro(), $messageData);
@@ -351,7 +351,7 @@ class TemplateChecker {
 	 * @return array parameter config for widget or NULL if widget is unknown
 	 */
 	private function getWidgetConfig($name) {
-		if (array_key_exists($name, $this->widgets)) {
+		if (\array_key_exists($name, $this->widgets)) {
 			return $this->widgets[$name];
 		} else {
 			return NULL;
@@ -378,7 +378,7 @@ class TemplateChecker {
 
 		// replace {{ icon0 }} and {{ icon1 }}
 		if (preg_match_all("/{{(.*?)}}/s", $file, $match)) {
-			for ($i = 0; $i < count($match[0]); $i++) {
+			for ($i = 0; $i < \count($match[0]); $i++) {
 				switch (strtolower(trim($match[1] [$i]))) {
 					case 'icon0':
 						$file = str_replace($match[0][$i], $settings->getIcon0(), $file);

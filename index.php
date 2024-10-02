@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2023
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -52,8 +52,8 @@ if (is_file(const_path."pages/".$actual_pages."/".$request['page'].".html")
 	if (is_dir(const_path.'pages/'.$actual_pages))
 		$loader->addPath(const_path.'pages/'.$actual_pages);
 	
-	if (dirname($request['page']) != '.' && is_dir(const_path.'pages/'.$actual_pages.'/'.dirname($request['page'])))
-		$loader->addPath(const_path.'pages/'.$actual_pages.'/'.dirname($request['page']));
+	if (\dirname($request['page']) != '.' && is_dir(const_path.'pages/'.$actual_pages.'/'.\dirname($request['page'])))
+		$loader->addPath(const_path.'pages/'.$actual_pages.'/'.\dirname($request['page']));
 
 	// add smarthome dir if it is not directly chosen - allows combination of custom pages with auto-generated pages from smarthomeNG
 	if (substr(config_driver, 0, 9) == 'smarthome' and $actual_pages != 'smarthome' and is_dir(const_path."pages/smarthome"))
@@ -84,7 +84,7 @@ if (is_file(const_path."pages/".$actual_pages."/".$request['page'].".html")
 	$twig = new \Twig\Environment($loader);
 	$twig->addExtension(new \Twig\Extension\StringLoaderExtension());
 	
-	if (defined('config_debug')) {
+	if (\defined('config_debug')) {
 		if (config_debug) {
 			$twig->enableDebug();
 			$twig->addExtension(new \Twig\Extension\DebugExtension());
@@ -115,7 +115,7 @@ if (is_file(const_path."pages/".$actual_pages."/".$request['page'].".html")
     // attention: global value for config_pages in php can be different from value with same name in Twig if the "pages" parameter is set 
 	$twig->addGlobal('config_pages', $actual_pages);
 	$twig->addGlobal('configured_pages', config_pages);
-	$twig->addGlobal('pagepath', dirname($request['page']));
+	$twig->addGlobal('pagepath', \dirname($request['page']));
 	$twig->addGlobal('const_path', const_path);
 	$twig->addGlobal('mbstring_available', function_exists('mb_get_info'));
 

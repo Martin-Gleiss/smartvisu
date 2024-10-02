@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -49,7 +49,7 @@ class calendar extends service
 	{
 		// find greatest index which has a lower date
 		// (beginning on highest index because of greater chance of having a later date)
-		for($i = count($this->data)-1; $i >= 0; $i--) {
+		for($i = \count($this->data)-1; $i >= 0; $i--) {
 			if($this->data[$i]['start'] < $line['start'] || $this->data[$i]['start'] == $line['start'] && $this->data[$i]['end'] < $line['end'])
 				break;
 		}
@@ -58,7 +58,7 @@ class calendar extends service
 			// insert new line after found index
 			array_splice($this->data, $i+1, 0, array($line));
 			// reduce size to max result size
-			if(count($this->data) > $this->count)
+			if(\count($this->data) > $this->count)
 				array_pop($this->data);
 		}
 	}

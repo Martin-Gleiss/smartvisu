@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Stefan Widmer
- * @copyright   2016
+ * @copyright   2016 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -37,7 +37,7 @@ class Pagecache
 		if(!empty($this->file) && file_exists($this->file)) { // requested file does exist in cache
 			$mtime = (int)@filemtime($this->file);
 		  $gmt_mtime = gmdate('D, d M Y H:i:s', $mtime) . ' GMT';
-		  $etag = sprintf('%08x-%08x', crc32($this->file), $mtime);
+		  $etag = \sprintf('%08x-%08x', crc32($this->file), $mtime);
 
 		  header('ETag: "' . $etag . '"');
 		  header('Last-Modified: ' . $gmt_mtime);
@@ -93,7 +93,7 @@ class Pagecache
 		if(!empty($this->file)) {
 
 			if(empty($this->tmpFile)) {
-			  $dir = dirname($this->file);
+			  $dir = \dirname($this->file);
 
 			  if (!is_dir($dir))
 			    mkdir($dir, 0775, true);

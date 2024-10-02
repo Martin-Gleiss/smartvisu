@@ -27,12 +27,12 @@ function get_lang($code = config_lang) {
 	else
 		$result = parse_ini_file(const_path.'lang/'.$code.'.ini', true);
 
-	if (in_array($code, array('en', 'de', 'fr', 'it', 'nl') ) && !isset($result['baselang']))
+	if (\in_array($code, array('en', 'de', 'fr', 'it', 'nl') ) && !isset($result['baselang']))
 			$result['baselang'] = $code;
 
 	// recursive call to read extended language file (if specified)
 	if(isset($result['extends']) && !empty($result['extends'])){
-		if (in_array($result['extends'], array('en', 'de', 'fr', 'it', 'nl') ) && !isset($result['baselang']))
+		if (\in_array($result['extends'], array('en', 'de', 'fr', 'it', 'nl') ) && !isset($result['baselang']))
 			$result['baselang'] = $result['extends'];
 		$result = array_replace_recursive(get_lang($result['extends']), $result);
 	}
@@ -56,7 +56,7 @@ function trans($subset, $key = '', $mode = '')
 	if (!$lang)
 		$lang = get_lang();
 
-	if (is_array($lang[$subset]) && $key == '')
+	if (\is_array($lang[$subset]) && $key == '')
 	{
 		foreach (($lang[$subset]) as $key => $val)
 		{
@@ -95,7 +95,7 @@ function translate($text, $subset)
 	if (!$lang)
 		$lang = get_lang();
 
-	if (is_array($lang[$subset]))
+	if (\is_array($lang[$subset]))
 	{
 		$keys = array();
 		$vals = array();
@@ -127,9 +127,9 @@ function transunit($unit, $value)
 	$fmt = trans('format', $unit);
 
 	if (strpos($fmt, ',') !== false)
-		return str_replace('.', ',', sprintf(str_replace(',', '.', $fmt), $value));
+		return str_replace('.', ',', \sprintf(str_replace(',', '.', $fmt), $value));
 	else
-		return sprintf($fmt, $value);
+		return \sprintf($fmt, $value);
 }
 
 
@@ -150,7 +150,7 @@ function transdate($format = '', $timestamp = null)
 		$lang = get_lang();
 
 	//if ($lang['format'][$format] != '')  // throws php notices if array key is not existing
-	if (array_key_exists($format, $lang['format']))
+	if (\array_key_exists($format, $lang['format']))
 		$format = $lang['format'][$format];
 
 	if ($timestamp == '')
@@ -222,10 +222,10 @@ function fileread($file)
 function filewrite($file, $ret)
 {
 	// add base path if file does not already start with it
-	if(substr($file, 0, strlen(const_path)) !== const_path)
+	if(substr($file, 0, \strlen(const_path)) !== const_path)
 		$file = const_path . $file;
 
-	$dir = dirname($file);
+	$dir = \dirname($file);
 	if (!is_dir($dir))
 		mkdir($dir, 0777, true);
 
@@ -268,7 +268,7 @@ function delTree($dir) {
  */
 function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
 
-	$tmpFile = tempnam(dirname($path), basename($path));
+	$tmpFile = tempnam(\dirname($path), basename($path));
 
 	if (!$handle = fopen($tmpFile, 'w'))
 		return false;
@@ -283,15 +283,15 @@ function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
 			$success &= false !== fwrite($handle, '['.$section.']'.PHP_EOL);
 
 		foreach($values as $key=>$elem) {
-			if(is_array($elem))
+			if(\is_array($elem))
 				$key .= '[]';
 			else
 				$elem = array($elem);
 
 			foreach($elem as $val)
 			{
-				$val = strval($val);
-				if ($val !== 'true' && $val !== 'false' && (!is_int($val) || $val !== '0' && substr($val, 0, 1) === '0'))
+				$val = \strval($val);
+				if ($val !== 'true' && $val !== 'false' && (!\is_int($val) || $val !== '0' && substr($val, 0, 1) === '0'))
 					$val = '"'.preg_replace('/["\\\\]/', '\\\\$0', $val).'"';
 				$success &= false !== fwrite($handle, $key.' = '.$val.PHP_EOL);
 			}
@@ -321,7 +321,7 @@ function write_ini_file($assoc_arr, $path, $has_sections=FALSE) {
 function debug_to_console($data) {
     $data = '[PHP debug]: ' . $data;
     $output = 'console.log(' . json_encode($data) . ');';
-    $output = sprintf('<script>%s</script>', $output);
+    $output = \sprintf('<script>%s</script>', $output);
     echo $output;
     }
 

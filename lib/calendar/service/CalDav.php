@@ -169,7 +169,7 @@ XMLQUERY;
 				$displayname = strtolower($response->propstat->prop->displayname);
 				$this->debug((string)$response->href, 'calendar_url of \''.$displayname.'\'');
 				// add only requested (by URL parameter or configuration) calendars or all, if none requested
-				if(in_array($displayname, $calnames) || $calnames === array('')) {
+				if(\in_array($displayname, $calnames) || $calnames === array('')) {
 					$description = $response->propstat->prop->children('urn:ietf:params:xml:ns:caldav')->{'calendar-description'};
 					$color = $response->propstat->prop->children('http://apple.com/ns/ical/')->{'calendar-color'};
 					$calendar_url = $response->href;

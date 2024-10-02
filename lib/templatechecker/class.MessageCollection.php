@@ -4,7 +4,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Thomas Ernst
- * @copyright   2016
+ * @copyright   2016 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -136,7 +136,7 @@ class MessageCollection {
 		);
 		
 		foreach($this->messages as $message) {
-			if (!array_key_exists($message['test'], $ret[$message['severity']]))
+			if (!\array_key_exists($message['test'], $ret[$message['severity']]))
 					$ret[$message['severity']][$message['test']] = array();
 			$ret[$message['severity']][$message['test']][] = $message;
 		}
@@ -149,7 +149,7 @@ class MessageCollection {
 	 * @return int number of messages
 	 */
 	public function getMessageCount($severity) {
-		if (array_key_exists($severity, $this->messageCount))
+		if (\array_key_exists($severity, $this->messageCount))
 			return($this->messageCount[$severity]);
 		return 0;
 	}
