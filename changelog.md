@@ -37,6 +37,7 @@
 - offline driver initializes UZSU data for items ending on ".uzsu" if no data are available
 - import of black/white jQuery mobile mini icons moved from root.html into <design>.css (for preparation of dark mode support)
 - all examples adapted to support dark mode (v3.3 icon handling in menu.html and sides menus)
+- use global namespace with native php functions profiting from OpCache (for faster code execution)
 
 ### Updated Libraries
 - Twig template engine: security fixes (v1.44.6 -> v1.44.8) and CS fixes as preparation for php 8.4 release

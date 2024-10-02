@@ -280,7 +280,7 @@ class Widget {
 		$this->name = $name;
 		$this->paramString = $paramString;
 		$this->paramArray = $paramArray;
-		$this->paramCount = count($paramArray);
+		$this->paramCount = \count($paramArray);
 		$this->paramStringArray = $paramStringArray;
 	}
 

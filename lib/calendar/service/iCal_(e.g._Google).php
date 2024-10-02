@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Stefan Widmer
- * @copyright   2016
+ * @copyright   2016 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       ICS/iCal (e.g. Google)
@@ -29,7 +29,7 @@ class calendar_ical extends calendar
 		$config_calendar_names = preg_split('/,\s*/m', strtolower(config_calendar_name));
 		try {
 			foreach(preg_split('/[\s,]+/m', $this->url) as $url) {
-				if(count($this->calendar_names) == 1 && $this->calendar_names[0] == '' || in_array($config_calendar_names[$i], $this->calendar_names)) {
+				if(\count($this->calendar_names) == 1 && $this->calendar_names[0] == '' || \in_array($config_calendar_names[$i], $this->calendar_names)) {
 					$ical = new ICal($url, array('defaultSpan' => 1));
 					$this->addFromIcs($ical, array('calendarname' => $config_calendar_names[$i]));
 				}

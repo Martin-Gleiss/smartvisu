@@ -87,7 +87,7 @@ class RequestHandler {
 			if (substr($item, 0, 1) != '.') {
 				if (is_dir(const_path . $dir . '/' . $item) && $subfolders == "true") {
 					$ret = array_merge($ret, self::getFileArray($dir . '/' . $item, $suffix, $subfolders));
-				} else if (substr($item, -strlen($suffix)) == $suffix) {
+				} else if (substr($item, -\strlen($suffix)) == $suffix) {
 					$id = str_replace('/', '-', $dir . '/' . $item);
 					$id = str_replace('.', '-', $id);
 					$ret[$id] = $dir . '/' . $item;

@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Stefan Widmer
- * @copyright   2016
+ * @copyright   2016 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -55,7 +55,7 @@ else {
 	$sources = array('all');
 	if(isset($_GET['source']))
 		$sources = $_GET['source'];
-	if(!is_array($sources)) $sources = array($sources);
+	if(!\is_array($sources)) $sources = array($sources);
 
 	$result = array();
 	foreach($sources as $source) {

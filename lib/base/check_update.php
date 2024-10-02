@@ -2,8 +2,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiss, Wolfram v. Huelsen
- * @copyright   2012 - 2015
+ * @author      Martin Gleiß, Wolfram v. Hülsen
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -18,7 +18,7 @@ if (empty($_COOKIE['updchk']) && config_updatecheck)
 	set_error_handler(
 			function($errno, $errstr, $errfile, $errline)
 			{
-			if (defined('config_debug') && config_debug == 1)
+			if (\defined('config_debug') && config_debug == 1)
 				return false;	// hand over to standard error reporting
 			else
 				return true;
@@ -74,7 +74,7 @@ if (empty($_COOKIE['updchk']) && config_updatecheck)
 	}
 
 	if ($ret["update"]){
-		$basepath = substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, -strlen(substr($_SERVER['SCRIPT_FILENAME'], strlen(const_path))));
+		$basepath = substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, -\strlen(substr($_SERVER['SCRIPT_FILENAME'], \strlen(const_path))));
 		$exptime = time()+3600*24*7; // 1 week until next version check
 		setcookie('updchk', 'version checked', ['expires' => $exptime, 'path' => $basepath, 'samesite' => 'Lax']); 
 	}
