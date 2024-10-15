@@ -38,6 +38,7 @@
 - import of black/white jQuery mobile mini icons moved from root.html into <design>.css (for preparation of dark mode support)
 - all examples adapted to support dark mode (v3.3 icon handling in menu.html and sides menus)
 - use global namespace with native php functions profiting from OpCache (for faster code execution)
+- added "advanced" zoom for multiple x axes
 
 ### Updated Libraries
 - Twig template engine: security fixes (v1.44.6 -> v1.44.8) and CS fixes as preparation for php 8.4 release
@@ -67,6 +68,7 @@
 - widgets used within listviews placed their icons not in the center
 - clock.iconclock / icon.clock rounded the position of the short pointer to full hours. Now the pointer moves constantly like on any other analog clock.
 - basic.shutter used same CSS classes for positive and negative blade angles in "half" mode. 
+- plot.period threw errors in advanced zoom mode if multiple x axes were given in the chartoptions parameter
  
 ### Known Bugs
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text

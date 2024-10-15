@@ -481,6 +481,30 @@ $.widget("sv.plot_period", $.sv.widget, {
 
             $.extend(true, chartOptions, this.options.chartOptions);
 			
+			// handle navigator for multiple x axes
+			if (this.options.chartOptions && this.options.chartOptions.xAxis != undefined && typeof this.options.chartOptions.xAxis == 'object' && this.options.chartOptions.xAxis[0].min && this.options.chartOptions.xAxis[0].max){
+				// avoid error in Highcharts Stock Navigator if xAxis values (received via data-chart-options as durations) are not numeric
+				for (var i = 0; i < this.options.chartOptions.xAxis.length; i++){
+					chartOptions.xAxis[i].min = new Date() - new Date().duration(this.options.chartOptions.xAxis[i].min);
+					chartOptions.xAxis[i].max = new Date() - new Date().duration(this.options.chartOptions.xAxis[i].max);
+				}
+				chartOptions.navigator.xAxis.min = chartOptions.xAxis[0].min;
+				chartOptions.navigator.xAxis.max = chartOptions.xAxis[0].max;
+			
+				// register zoom events for multiple x axes 
+				if (this.options.chartOptions.xAxis.length > 1){
+					var xAxesCount = this.options.chartOptions.xAxis.length;
+					chartOptions.xAxis[0].events = {
+						setExtremes: function(event){
+							for (var i= 1; i< xAxesCount;  i++){
+								that.element.highcharts().xAxis[i].setExtremes(event.min + chartOptions.xAxis[i].min - chartOptions.xAxis[0].min , event.max + chartOptions.xAxis[i].max - chartOptions.xAxis[0].max);
+							}
+						}
+					}
+				}
+			}
+
+			
             Highcharts.stockChart(this.element[0], chartOptions);
         }
         else {
@@ -521,6 +545,8 @@ $.widget("sv.plot_period", $.sv.widget, {
 				var xMax = new Date() - new Date().duration(this.options.chartOptions.xAxis[i].max);
 				chart.xAxis[i].update({ min: xMin, max: xMax }, false);
 			}
+			xMin = new Date() - new Date().duration(this.options.chartOptions.xAxis[0].min);
+			xMax = new Date() - new Date().duration(this.options.chartOptions.xAxis[0].max);
 		}
 		else {
 			var xMin = new Date() - new Date().duration(this.options.tmin);
@@ -1939,4 +1965,3 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 	}
 }
 });
-
