@@ -41,7 +41,8 @@
 - added "advanced" zoom for multiple x axes
 
 ### Updated Libraries
-- Twig template engine: security fixes (v1.44.6 -> v1.44.8) and CS fixes as preparation for php 8.4 release
+- Twig template engine: manually inserted security fixes (v1.44.6 -> v1.44.8) and CS (Coding Standard) fixes as preparation for php 8.4 release
+- ICS Parser v3.4.1
 
 ### Deprecated
 
