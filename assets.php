@@ -57,12 +57,12 @@ foreach($request['files'] as $fileName) {
 
 	$content = "\n/* ".$fileName." */\n";
 
-	// avoid errors thrown by minifying already minified highcharts files
-	if ( substr_compare($fileName, 'vendor/plot.highcharts', 0, 22) == 0 )
-		$content .= preg_replace('#\/\*\*.*?\*\/#s', '', file_get_contents($fileName));
+	// avoid errors thrown by minifying already minified highcharts .js files
+	if ( $type != 'css' && substr_compare($fileName, 'vendor/plot.highcharts', 0, 22) == 0 )
+		$content .= preg_replace('#\/\*\*.*?\*\/#s', '', file_get_contents($fileName), 1);
 	else
-		// get minified content
-		$content .= $minifier->execute("assets." . $type);
+		// get minified content and strip first multiline comment
+		$content .= preg_replace('#\/\*[\*!].*?\*\/\n?#s', '', $minifier->execute("assets." . $type), 1);
 
 	if($type == 'javascript')
 	  $content .= ';';
