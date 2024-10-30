@@ -231,18 +231,24 @@
 		io.run();
 	});
 
-	// Activate the info field in top right corner
+	// Do some actions on page show
 	$(document).on('pagecontainershow', function () {
+		// Activate the info field in top right corner
 		notify.display();	
-	{% if driver_error_msg is not empty %}
+		// show warning if driver error has been detected
+		{% if driver_error_msg is not empty %}
 		if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification)) 
 			io.socketErrorNotification = notify.message('warning', 'Backend Driver', "{{ driver_error_msg }}");
-	{% endif %}
-		// workaround for jQM theme bug - part II
+		{% endif %}
+
+		/* workaround for jQM theme bug in Firefox - obsolete after fix in Firefox
 		$(this).find('.ui-collapsible-heading').each(function(){
 			var headerClass = 'ui-page-theme-'+ $(this).closest('div').attr('data-theme');
 			$(this).addClass(headerClass);
 		});
+		*/
+		
+		// reset all collapsibles in menu to original state
 		{% if config_collapsible_reset %}
 			$(sv.activePage).find('.secondary [data-collapsed="false"] .ui-collapsible-heading-collapsed').parents().first().collapsible('expand');
 		{% endif%}
