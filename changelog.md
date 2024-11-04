@@ -273,9 +273,9 @@
 - blocking of browser back function on config, templatechecker and widget assistant pages did not work since v3.2.1
 - example3.graphic navigation was faulty if called with the pages parameter
 - basic.roundslider did not show scales in cached mode
+- if item contained a stringified number with leading zero widget.set converted it back to numeric format 
 
 ### Known Bugs
-- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
 ## 3.2.2
