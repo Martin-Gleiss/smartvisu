@@ -39,9 +39,11 @@
 - all examples adapted to support dark mode (v3.3 icon handling in menu.html and sides menus)
 - use global namespace with native php functions profiting from OpCache (for faster code execution)
 - added "advanced" zoom for multiple x axes
+- avoid minifying of already minified highcharts files which throws errors in cache mode on new highcharts versions 
 
 ### Updated Libraries
-- Twig template engine: security fixes (v1.44.6 -> v1.44.8) and CS fixes as preparation for php 8.4 release
+- Twig template engine: manually inserted security fixes (v1.44.6 -> v1.44.8) and CS (Coding Standard) fixes as preparation for php 8.4 release
+- ICS Parser v3.4.1
 
 ### Deprecated
 
@@ -271,9 +273,9 @@
 - blocking of browser back function on config, templatechecker and widget assistant pages did not work since v3.2.1
 - example3.graphic navigation was faulty if called with the pages parameter
 - basic.roundslider did not show scales in cached mode
+- if item contained a stringified number with leading zero widget.set converted it back to numeric format 
 
 ### Known Bugs
-- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
 ## 3.2.2

@@ -36,12 +36,10 @@ foreach($request['files'] as $fileName) {
 	// if filename ends with '.php', evaluate it and add the result
 	if(substr_compare($fileName, '.php', -4) == 0) {
 		ob_start();
-		//$wd_was = getcwd();
-    chdir(\dirname(const_path.$fileName));
-	  include const_path.$fileName;
-	  //chdir($wd_was);
-    chdir(\dirname($_SERVER['SCRIPT_FILENAME']));
-	  $rawcontent = ob_get_clean();
+		chdir(\dirname(const_path.$fileName));
+		include const_path.$fileName;
+		chdir(\dirname($_SERVER['SCRIPT_FILENAME']));
+		$rawcontent = ob_get_clean();
  	}
  	// otherwise just add it
 	else
@@ -59,8 +57,12 @@ foreach($request['files'] as $fileName) {
 
 	$content = "\n/* ".$fileName." */\n";
 
-	// get minified content
-	$content .= $minifier->execute("assets." . $type);
+	// avoid errors thrown by minifying already minified highcharts .js files
+	if ( $type != 'css' && substr_compare($fileName, 'vendor/plot.highcharts', 0, 22) == 0 )
+		$content .= preg_replace('#\/\*\*.*?\*\/#s', '', file_get_contents($fileName), 1);
+	else
+		// get minified content and strip first multiline comment
+		$content .= preg_replace('#\/\*[\*!].*?\*\/\n?#s', '', $minifier->execute("assets." . $type), 1);
 
 	if($type == 'javascript')
 	  $content .= ';';
