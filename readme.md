@@ -7,26 +7,28 @@ Use version v3.4 from master branch instead.
 
 
 ## DESCRIPTION
-smartVISU is a framework to create a visualisation for a knx-installation with simple html-pages.  
-To read and write group-telegrams special tags are used.  
-You don't need to know javascript.  
+smartVISU is a framework to create a visualisation for smart home environments with simple html-pages.  
+It can be used with several smart home automation backends or directly on KNX.  
+Page programming is done in HTML with a powerful collection of pre-defined widgets. Pages of various example houses can be copied to simplify creation of a custom visualisation.
+An integrated live documentation shows usage and parametrsation of the widgets. A widget assistant helps with parametrisation and live testing of widgets and a template checker checks for correct page syntax. 
   
-SEE: [smartvisu.de](http://www.smartvisu.de)
+SEE: [smartvisu.de](https://www.smartvisu.de)
 
 
 ## FEATURES
   * Pretty: Responsive design, auto adjustment to smartphones and tablets
   * Strict: One template for all devices
-  * Easy: Implementation with HTML5
-  * Simple: Connect to KNX with commands directly in HTML
-  * Universal: Small concept of widgets
-  * Connectable: Using drivers for different KNX installations 
+  * Easy: Implementation with HTML5 and configurable widgets
+  * Simple: Various examples allow a visu creation with very low programming skills
+  * Universal: Powerful widgets for all visualisation purposes
+  * Connectable: Drivers adapt the visu to different smart home environments
+  * Supportive: An active community is ready to assist in the [support forum](https://knx-user-forum.de/forum/supportforen/smartvisu)
 
 
 ## SYSTEM REQUIREMENTS
-  * IP-Network, KNX-Bus
-  * [smarthomeNG](https://github.com/smarthomeNG), [linknx](http://sourceforge.net/projects/linknx/), [ioBroker](https://github.com/ioBroker/ioBroker), [openHAB](https://www.openhab.org/), [FHEM](https://fhem.de/) or [knxd](https://github.com/knxd/knxd) (deprecated: [eibd](http://www.auto.tuwien.ac.at/~mkoegler/index.php/eibd) ) backend or JSON interface
-  * Webserver with PHP 7.3.2 and above. Compatibility with php v8.2 is verified. PHP packages required: libawl-php php-curl php php-json php-xml php-mbstring
+  * IP-Network and / or KNX-Bus
+  * [smarthomeNG](https://github.com/smarthomeNG), [linknx](https://sourceforge.net/projects/linknx/), [ioBroker](https://github.com/ioBroker/ioBroker), [openHAB](https://www.openhab.org/), [FHEM](https://fhem.de/) or [knxd](https://github.com/knxd/knxd) (deprecated: [eibd](http://www.auto.tuwien.ac.at/~mkoegler/index.php/eibd) ) backend or JSON interface
+  * Webserver with PHP 7.3.2 and above (PHP >=8.0 recommended). Compatibility with PHP v8.4 is verified. PHP packages required: libawl-php php-curl php php-json php-xml php-mbstring
   * Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android Tablet
  
  
@@ -38,7 +40,7 @@ SEE: [smartvisu.de](http://www.smartvisu.de)
     sudo chown smarthome:www-data smartvisu
     chmod g+rws smartvisu/
     cd smartvisu
-    git clone https://github.com/Martin-Gleiss/smartvisu.git .
+    git clone https://github.com/Martin-Gleiss/smartvisu.git . ```
     
   * Afterwards set the rights for the temp folder and some system configuration and data files:
  
