@@ -40,7 +40,7 @@ SEE: [smartvisu.de](https://www.smartvisu.de)
     sudo chown smarthome:www-data smartvisu
     chmod g+rws smartvisu/
     cd smartvisu
-    git clone https://github.com/Martin-Gleiss/smartvisu.git . ```
+    git clone https://github.com/Martin-Gleiss/smartvisu.git .
     
   * Afterwards set the rights for the temp folder and some system configuration and data files:
  
