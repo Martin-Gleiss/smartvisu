@@ -25,6 +25,7 @@
 - new design "lightblue" (inspired by ramann)
 - new design "darkmode_blue" as combination of darkblue.css and lightblue.css supports dark mode of the device. Custom darkmode combinations can be defined in ./dropins/designs.
 - new date format "t" shows "today" and "tomorrow", if applicable. It replaces format definition given in brackets. Example: "t(l), d.m." shows "today, 23.09." or "Wednesday, 25.09."
+- smarthomeNG driver has a new ping function to improve stability of websocket connections on sleepy devices. Set an optional config key "ping_interval" in seconds (0 = disabled)
 
 ### Improvements
 - allowed database modes for series moved into the individual backend drivers
@@ -71,9 +72,9 @@
 - clock.iconclock / icon.clock rounded the position of the short pointer to full hours. Now the pointer moves constantly like on any other analog clock.
 - basic.shutter used same CSS classes for positive and negative blade angles in "half" mode. 
 - plot.period threw errors in advanced zoom mode if multiple x axes were given in the chartoptions parameter
+- if item contained a stringified number with leading zero widget.set converted it back to numeric format 
  
 ### Known Bugs
-- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
 - background images defined with "url(myImageLocation)" - used e.g. on tabs - do not yet support dark mode. This can be individually corrected in visu.css. 
 
@@ -273,9 +274,9 @@
 - blocking of browser back function on config, templatechecker and widget assistant pages did not work since v3.2.1
 - example3.graphic navigation was faulty if called with the pages parameter
 - basic.roundslider did not show scales in cached mode
-- if item contained a stringified number with leading zero widget.set converted it back to numeric format 
 
 ### Known Bugs
+- if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
 ## 3.2.2

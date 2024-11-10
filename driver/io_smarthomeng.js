@@ -10,14 +10,14 @@
  * @default     driver_autoreconnect   true
  * @default     driver_port            2424
  * @default     driver_tlsport         2425
- * @hide	    reverseproxy
+ * @hide        reverseproxy
  * @hide        driver_realtime
  * @hide        driver_consoleport
  * @hide        driver_consoleusername
  * @hide        driver_consolepassword
- * @hide		driver_ssl
- * @hide		driver_username
- * @hide		driver_password
+ * @hide        driver_ssl
+ * @hide        driver_username
+ * @hide        driver_password
  */
 
 
@@ -103,6 +103,8 @@ var io = {
 			else if ( location.hostname != sv.config.svHostname ) 
 				io.address = '';
 		} 
+		clearTimeout(io.pingTimer);
+		io.socketState = '';
 		io.open();
 	},
 
@@ -116,6 +118,20 @@ var io = {
 		// subscribe item updates from the backend
 		io.monitor();
 		
+	},
+	
+	pingTimer: null,
+	pingInterval: null,
+	socketState: '',
+	
+	ping: function(){
+		io.socketState = 'pinging';
+		console.log('[io.smarthomeng] starting ping');
+		io.send({"cmd":"ping"});
+		io.pingTimer = setTimeout(function(){
+			io.socketState = 'offline';
+			console.log('[io.smarthomeng] no answer on ping');
+		},2000);
 	},
 
 
@@ -212,6 +228,12 @@ var io = {
 		};
 
 		io.socket.onmessage = function (event) {
+			clearTimeout(io.pingTimer);
+			clearTimeout(io.pingInterval);
+			io.socketState = 'running';
+			if (sv.config.pingInterval > 0)
+				io.pingInterval = setTimeout(io.ping, sv.config.pingInterval * 1000);
+
 			var item, val;
 			var data = JSON.parse(event.data);
 			// DEBUG:
@@ -288,7 +310,7 @@ var io = {
 
 				case 'url':
 					$.mobile.changePage(data.url);
-					break;					
+					break;	
 			}
 			if (io.monitorCompleted == false && io.openItems.length == 0){
 				io.monitorCompleted = true;
