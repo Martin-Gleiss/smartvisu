@@ -239,6 +239,7 @@
 ?>
 			},
 			reconnectTime: parseInt('<?php echo config_reconnect_time ?>'),
+			pingInterval: parseInt('<?php echo config_ping_interval ?>'),
 			timezone: '<?php echo config_timezone ?>'
 		}
 	};
