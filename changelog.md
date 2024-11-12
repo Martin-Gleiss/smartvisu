@@ -9,7 +9,7 @@
 - plot.sparkline can now open links and popups. Tooltip shows parameter "id" as curve name (label)
 - device.dimmer extended with an option "type" to display the switch as button  (midi, mini, micro, icon)
 - indicator option introduced in all quad design widgets using basic.stateswitch or basic.select
-- clock.countdown now accepts ISO time strings, fixed contdown duration instead of an item and a new comparative value as starting condition
+- clock.countdown now accepts ISO time strings, fixed countdown duration instead of an item and a new comparative value as starting condition
 - calendar.list uses a new format called "calendardate" in the language file which can be defined to show "today" and "tomorrow" with other date information. 
 
 ### Other New Features
@@ -86,7 +86,7 @@
 - plot.rtr now accepts Highcharts chartOptions object as parameter like plot.period
 - IDs are now optional in basic.roundslider and device.rtrslider
 - new dynamic icon "icon.slidinggate"
-- new widget / dynamic icon "basic.skylight" for a roof window with closed / tilt status and shutter position (thanks to raman)
+- new widget / dynamic icon "basic.skylight" for a roof window with closed / tilt status and shutter position (thanks to ramann)
 - id parameter is now fully optional in status toast, even with multiple toasts on a page
 - new "live" parameters in device.blind, device.dimmer, device.window, quad.dimmer, quad.color, quad.shutter, quad.blind and quad.playercontrol enable the usage of the live mode feture of basic.slider
 - new live / silent mode for basic.roundslider (similar to basic.slider) 

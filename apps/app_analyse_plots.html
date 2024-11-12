@@ -25,6 +25,9 @@
 		.apdisplay .ui-input-text {
 			margin: .2em 0;
 		}
+		.apdisplay .ui-field-contain .ui-help-container .ui-input-text {
+			margin: .2em 2.5em .2em 0;
+		}
 		.apdisplay .ui-select{
 			margin:0;
 			padding: 0 2% 0 2%;
@@ -41,13 +44,13 @@
 		<h3 style="padding: 40px 0 8px 0;">Plot Analyser</h3>
 	</div>
 
-	<h2>Global Plot Settings:</h2>
+	<h2>{{ lang('plot_analyser', 'Global') }}:</h2>
 	<div class= "apdisplay">
 		<div class="ui-field-contain">
-			<label for="apDataSource">Data Source (DB / Item)</label>
-			<select id="apDataSource"><option value="database">Database</option><option value="item">Item</option></select>
+			<label for="apDataSource">{{ lang('plot_analyser', 'Source') }}</label>
+			<select id="apDataSource"><option value="database">{{ lang('plot_analyser', 'Database') }}</option><option value="item">Item</option></select>
 		</div>
-		<div class="ui-field-contain" style="width:30%; display:inline-block;"><label style="width:30%;">Time Axis</label></div>
+		<div class="ui-field-contain" style="width:30%; display:inline-block;"><label style="width:30%;">{{ lang('plot_analyser', 'Time') }}</label></div>
 		<div class="ui-field-contain" style="width:34%;display:inline-block;">
 			<label for="apTmin">tmin</label>
 			<input id="apTmin"/>
@@ -59,42 +62,48 @@
 		<hr>
 		<table>
 			<tr>
-				<td style = "width:30%;"></td><td style = "width:17%;">Y Axis 1</td><td style = "width:17%;">Y Axis 2</td><td style = "width:17%;">Y Axis 3</td><td style = "width:17%;">Y Axis 4</td>
+				<td style = "width:30%;"></td><td style = "width:17%;">Y {{ lang('plot_analyser', 'Axis') }} 1</td><td style = "width:17%;">Y {{ lang('plot_analyser', 'Axis') }} 2</td><td style = "width:17%;">Y {{ lang('plot_analyser', 'Axis') }} 3</td><td style = "width:17%;">Y {{ lang('plot_analyser', 'Axis') }} 4</td>
 			</tr>
 			<tr>
-				<td>Activate axis</td><td><input type="checkbox" id="apYact1"></td><td><input type="checkbox" id="apYact2"></td><td><input type="checkbox" id="apYact3"></td><td><input type="checkbox" id="apYact4"></td>
+				<td>{{ lang('plot_analyser', 'Axis') }} {{ lang('plot_analyser', 'active') }}</td><td><input type="checkbox" id="apYact1"></td><td><input type="checkbox" id="apYact2"></td><td><input type="checkbox" id="apYact3"></td><td><input type="checkbox" id="apYact4"></td>
 			</tr>
 			<tr>
-				<td> Y-axis min value</td><td><input id="apYmin1"/></td><td><input id="apYmin2"/></td><td><input id="apYmin3"/></td><td><input id="apYmin4"/></td>
+				<td> Y min</td><td><input id="apYmin1"/></td><td><input id="apYmin2"/></td><td><input id="apYmin3"/></td><td><input id="apYmin4"/></td>
 			</tr>
 			<tr>
-				<td> Y-axis max value</td><td><input id="apYmax1"/></td><td><input id="apYmax2"/></td><td><input id="apYmax3"/></td><td><input id="apYmax4"/></td>
+				<td> Y max</td><td><input id="apYmax1"/></td><td><input id="apYmax2"/></td><td><input id="apYmax3"/></td><td><input id="apYmax4"/></td>
 			</tr>
 			<tr>
-				<td> Y-axis position</td>
-				<td><select id="apYpos1"><option value="0">left</option><option value="1">right</option></select></td>
-				<td><select id="apYpos2"><option value="0">left</option><option value="1">right</option></select></td>
-				<td><select id="apYpos3"><option value="0">left</option><option value="1">right</option></select></td>
-				<td><select id="apYpos4"><option value="0">left</option><option value="1">right</option></select></td>
+				<td> Y {{ lang('plot_analyser', 'Axis') }} Position</td>
+				<td><select id="apYpos1"><option value="0">{{ lang('plot_analyser', 'left') }}</option><option value="1">{{ lang('plot_analyser', 'right') }}</option></select></td>
+				<td><select id="apYpos2"><option value="0">{{ lang('plot_analyser', 'left') }}</option><option value="1">{{ lang('plot_analyser', 'right') }}</option></select></td>
+				<td><select id="apYpos3"><option value="0">{{ lang('plot_analyser', 'left') }}</option><option value="1">{{ lang('plot_analyser', 'right') }}</option></select></td>
+				<td><select id="apYpos4"><option value="0">{{ lang('plot_analyser', 'left') }}</option><option value="1">{{ lang('plot_analyser', 'right') }}</option></select></td>
 			</tr>
 			<tr>
-				<td> Y-axis scale type</td>
+				<td> Y {{ lang('plot_analyser', 'Axis') }} {{ lang('plot_analyser', 'scale') }}</td>
 				<td><select id="apYtype1"><option value="linear">linear</option><option value="logarithmic">logarithm</option><option value="boolean">bool</option></select></td>
 				<td><select id="apYtype2"><option value="linear">linear</option><option value="logarithmic">logarithm</option><option value="boolean">bool</option></select></td>
 				<td><select id="apYtype3"><option value="linear">linear</option><option value="logarithmic">logarithm</option><option value="boolean">bool</option></select></td>
 				<td><select id="apYtype4"><option value="linear">linear</option><option value="logarithmic">logarithm</option><option value="boolean">bool</option></select></td>
 			</tr>
 			<tr>
-				<td> Y-axis unit</td><td><input id="apYunit1"/></td><td><input id="apYunit2"/></td><td><input id="apYunit3"/></td><td><input id="apYunit4"/></td>
+				<td> Y {{ lang('plot_analyser', 'Axis') }} {{ lang('plot_analyser', 'Unit') }}</td><td><input id="apYunit1"/></td><td><input id="apYunit2"/></td><td><input id="apYunit3"/></td><td><input id="apYunit4"/></td>
 			</tr>
 		</table>
 
 		<div class="ui-field-contain">
 			<label for="apChartopts">Chart options</label>
-			<input id="apChartopts"/>
+			<div class="ui-help-container">
+				<a href="#apChartopts_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+				<div data-role="popup" id="apChartopts_hint" data-arrow="true" data-theme="c">
+					{{ lang('plot_analyser', 'Chartopts', 'hint') }}
+				</div>
+				<input id="apChartopts"/>
+			</div>
 		</div>
 		<hr/>
-		<h2>Item specific Settings:</h2>
+		<h2>{{ lang('plot_analyser', 'itemSettings') }}:</h2>
 			{%
 		set sources = {
 			'1': 'Item 1',
@@ -120,36 +129,78 @@
 				<fieldset>
 					<div class="ui-field-contain">
 						<label for="apItem{{source}}">Item(s)</label>
-						<input id="apItem{{source}}"/>
+						<div class="ui-help-container">
+							<a href="#apItem{{source}}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+							<div data-role="popup" id="apItem{{source}}_hint" data-arrow="true" data-theme="c">
+								{{ lang('plot_analyser', 'Item', 'hint') }}
+							</div>
+							<input id="apItem{{source}}"/>
+						</div>
 					</div>
 					<div class="ui-field-contain">
-						<label for="apMode{{source}}"> DB mode</label>
+						<label for="apMode{{source}}"> DB Aggregation</label>
 						<select id="apMode{{source}}">
 						</select>
 					</div>
 					<div class="ui-field-contain">
-						<label for="apCount">Count(s)</label>
-						<input id="apCount{{source}}"/>
+						<label for="apCount">{{ lang('plot_analyser', 'Count', 'label') }}</label>
+						<div class="ui-help-container">
+							<a href="#apCount{{source}}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+							<div data-role="popup" id="apCount{{source}}_hint" data-arrow="true" data-theme="c">
+								{{ lang('plot_analyser', 'Count', 'hint') }} Default: 100
+							</div>
+							<input id="apCount{{source}}"/>
+						</div>
 					</div>
 					<div class="ui-field-contain">
-						<label for="apExposure{{source}}">Series type(s)</label>
-						<input id="apExposure{{source}}"/>
+						<label for="apExposure{{source}}">{{ lang('plot_analyser', 'Exposure', 'label') }}</label>
+						<div class="ui-help-container">
+							<a href="#apExposure{{source}}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+							<div data-role="popup" id="apExposure{{source}}_hint" data-arrow="true" data-theme="c">
+								{{ lang('plot_analyser', 'Exposure', 'hint') }} line, linestack, stair, spline, area, areastair, areaspline, areastack, column, columnstack. Default: line
+							</div>
+							<input id="apExposure{{source}}"/>
+						</div>
 					</div>
 					<div class="ui-field-contain">
-						<label for="apColor{{source}}">Color(s)</label>
-						<input id="apColor{{source}}"/>
+						<label for="apColor{{source}}">{{ lang('plot_analyser', 'Color', 'label') }}</label>
+						<div class="ui-help-container">
+							<a href="#apColor{{source}}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+							<div data-role="popup" id="apColor{{source}}_hint" data-arrow="true" data-theme="c">
+								{{ lang('plot_analyser', 'Color', 'hint') }} 
+							</div>
+							<input id="apColor{{source}}"/>
+						</div>
 					</div>
 					<div class="ui-field-contain">
-						<label for="apAssign{{source}}">Y axis no(s).</label>
-						<input id="apAssign{{source}}"/>
+						<label for="apAssign{{source}}">{{ lang('plot_analyser', 'Assign', 'label') }} </label>
+						<div class="ui-help-container">
+							<a href="#apAssign{{source}}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+							<div data-role="popup" id="apAssign{{source}}_hint" data-arrow="true" data-theme="c">
+								{{ lang('plot_analyser', 'Assign', 'hint') }} 
+							</div>						
+							<input id="apAssign{{source}}"/>
+						</div>
 					</div>
 							<div class="ui-field-contain">
 						<label for="apStacking{{source}}">Stacking(s)</label>
-						<input id="apStacking{{source}}"/>
+						<div class="ui-help-container">
+							<a href="#apStacking{{source}}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+							<div data-role="popup" id="apStacking{{source}}_hint" data-arrow="true" data-theme="c">
+								{{ lang('plot_analyser', 'Stacking', 'hint') }} normal, percent. Default: normal
+							</div>						
+							<input id="apStacking{{source}}"/>
+						</div>
 					</div>
 					<div class="ui-field-contain">
-						<label for="apStacks{{source}}">Stack(s).</label>
-						<input id="apStacks{{source}}"/>
+						<label for="apStacks{{source}}">Stack(s)</label>
+						<div class="ui-help-container">
+							<a href="#apStacks{{source}}_hint" data-rel="popup" class="ui-help-icon" data-transition="pop"><img class="icon icon1" src="icons/ws/message_help.svg" alt="help"></a>
+							<div data-role="popup" id="apStacks{{source}}_hint" data-arrow="true" data-theme="c">
+								{{ lang('plot_analyser', 'Stacks', 'hint') }} 
+							</div>						
+							<input id="apStacks{{source}}"/>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -193,10 +244,10 @@
 		{{ plot.period('analyse-plotpopup', item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export, source) }}
 
 		<div style="display:inline-block">
-			<span style="width:25%">timeline shift interval:&nbsp;&nbsp;</span><span style="display:inline-block;width:35%" ><input id="apShift" value="1d"/></span>{{ plot.timeshift('analyse-timeshift','analyse-plotpopup', '1d','mini', '- 1d +') }}
+			<span style="width:25%">{{ lang('plot_analyser', 'Shift', 'label') }}:&nbsp;&nbsp;</span><span style="display:inline-block;width:35%" ><input id="apShift" value="1d"/></span>{{ plot.timeshift('analyse-timeshift','analyse-plotpopup', '1d','mini', '- 1d +') }}
 		</div>
 		<br>
-		<h2>Generated widget code: </h2>
+		<h2>{{ lang('plot_analyser', 'Code', 'label') }}: </h2>
 		<div id="apWidgetCode" class="twig">
 				{% filter trim|escape|nl2br %}{% verbatim %}
 				{{ plot.period(...) }}
@@ -370,7 +421,7 @@
 				// update widget code display field
 				var widgetCode = ["''", setWidgetParam(apBaseItems, ''), setWidgetParam(apMode, 'avg'), setWidgetParam(apTmin, '1h'), setWidgetParam(apTmax, 'now'), setWidgetParam(apYmin, ''), setWidgetParam(apYmax, ''),
 								 setWidgetParam(apCount, '100'), setWidgetParam(apLabel, ''), setWidgetParam(apColor, ''), setWidgetParam(apExposure, 'line'), "''", "'advanced'", setWidgetParam(apAssign, ''),
-								 setWidgetParam(apYpos, ''), "''", setWidgetParam(apYtype, 'linear'), setWidgetParam(apYunit, ''), 	apChartopts ? apChartopts: "''", setWidgetParam(apStacking, 'normal'), setWidgetParam(apStacks, ''), "2", 
+								 setWidgetParam(apYpos, ''), "''", setWidgetParam(apYtype, 'linear'), setWidgetParam(apYunit, ''), 	apChartopts ? apChartopts.replace(/\"/g, ''): "''", setWidgetParam(apStacking, 'normal'), setWidgetParam(apStacks, ''), "2", 
 								 "'"+apDataSource+"'"	].join(', '); 
 				var widgetCodeHtml = $('#apWidgetCode').html();
 				$('#apWidgetCode').html(widgetCodeHtml.replace(/period\(.*\)/, 'period('+widgetCode+')'));
