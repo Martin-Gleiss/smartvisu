@@ -2,8 +2,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiss
- * @copyright   2012 - 2015
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -20,12 +20,12 @@ $reqver = '7.3.2';
 
 if (version_compare(PHP_VERSION, $reqver, '>='))
 {
-	$ret = array('icon' => 'message_ok.svg', 'text' => 'PHP v'.phpversion().' is ok');
+	$ret = array('icon' => 'message_ok.svg', 'text' => 'PHP v'.phpversion().' '.translate(' is ok', 'templatechecker'));
 }
 else
 {
 	header("HTTP/1.0 600 smartVISU Config Error");
-	$ret = array('icon' => 'message_attention.svg', 'text' => 'PHP v'.phpversion().' failure, you need at least '.$reqver.'!');
+	$ret = array('icon' => 'message_attention.svg', 'text' => 'PHP v'.phpversion().' '.trans('templatechecker', 'oldversion'.' '.$reqver.'!'));
 }
 
 echo json_encode($ret);

@@ -17,12 +17,12 @@ $request = array_merge($_GET, $_POST);
 
 if ((!is_file(const_path.'config.ini') && is_writeable(const_path)) || (is_file(const_path.'config.ini') && is_writeable(const_path.'config.ini')))
 {
-	$ret = array('icon' => 'message_ok.svg', 'text' => "'config.ini' file is writeable or can be created");
+	$ret = array('icon' => 'message_ok.svg', 'text' => "'config.ini' ".translate('file is writeable or can be created', 'templatechecker'));
 }
 else
 {
 	header("HTTP/1.0 600 smartVISU Config Error");
-	$ret = array('icon' => 'message_attention.svg', 'text' => "'".const_path."config.ini' file isn't writeable or can't be created!");
+	$ret = array('icon' => 'message_attention.svg', 'text' => "'".const_path."config.ini' ".translate('file isnt writeable or cant be created', 'templatechecker'));
 }
 
 echo json_encode($ret);
