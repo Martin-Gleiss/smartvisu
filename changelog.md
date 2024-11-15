@@ -40,7 +40,9 @@
 - all examples adapted to support dark mode (v3.3 icon handling in menu.html and sides menus)
 - use global namespace with native php functions profiting from OpCache (for faster code execution)
 - added "advanced" zoom for multiple x axes
-- avoid minifying of already minified highcharts files which throws errors in cache mode on new highcharts versions 
+- avoid minifying of already minified highcharts files which throws errors in cache mode on new highcharts versions
+- templatechecker now directly checks system requirements on page show - not any more only after starting the complete test program
+- language support for system checks and templatechecker 
 
 ### Updated Libraries
 - Twig template engine: manually inserted security fixes (v1.44.6 -> v1.44.8) and CS (Coding Standard) fixes as preparation for php 8.4 release

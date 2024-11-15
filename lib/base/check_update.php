@@ -48,29 +48,29 @@ if (empty($_COOKIE['updchk']) && config_updatecheck)
 		$ret["update"] = (($VersionMajor > config_version_major) or ($VersionMinor > config_version_minor) or ($VersionRevision > config_version_revision) ? true : false);
 		$extension = "";
 		if ((isset($data_sv) && !$data_sv->update) && $ret["update"]) 
-			$extension = ' (github only)';
+			$extension = ' ('.trans('templatechecker', 'github').')';
 		$ret["remote"] = $VersionMajor.".".$VersionMinor.".".$VersionRevision.$extension;
 		
 		if (config_version_revision >= "a") {
 			$ret["update"] = true;
 			$ret["icon"] = 'message_attention.svg';
-			$ret["text"] = 'This version from develop branch might be unstable';
+			$ret["text"] = trans('update','develop');
 		}
 		else {
 			if ( $ret["update"] ) {
 				$ret["icon"] = 'message_attention.svg';
-				$ret["text"] = 'smartVISU update available!';
+				$ret["text"] = trans('update','newer');
 			}
 			else {
 				$ret["icon"] = 'message_ok.svg';
-				$ret["text"] = 'smartVISU is up to date';
+				$ret["text"] = trans('update','ok');
 			}
 		}
 	}
 	else {
 		$ret["update"] = false;
 		$ret["icon"] = 'text_na.svg';
-		$ret["text"] = 'no answer from update servers';
+		$ret["text"] = trans('update','fail');
 	}
 
 	if ($ret["update"]){
@@ -83,7 +83,7 @@ else
 {
 	$ret["update"] = false;
 	$ret["icon"] = 'message_ok.svg';
-	$ret["text"] = 'update check skipped for 7 days';
+	$ret["text"] = trans('update','skip');
 }	
 echo json_encode($ret);
 ?>
