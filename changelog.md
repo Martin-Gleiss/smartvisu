@@ -42,7 +42,7 @@
 - added "advanced" zoom for multiple x axes
 - avoid minifying of already minified highcharts files which throws errors in cache mode on new highcharts versions
 - templatechecker now directly checks system requirements on page show - not any more only after starting the complete test program
-- language support for system checks and templatechecker 
+- language support for system checks, lib.updatecheck(), templatechecker and widget assistant
 
 ### Updated Libraries
 - Twig template engine: manually inserted security fixes (v1.44.6 -> v1.44.8) and CS (Coding Standard) fixes as preparation for php 8.4 release
@@ -75,6 +75,7 @@
 - basic.shutter used same CSS classes for positive and negative blade angles in "half" mode. 
 - plot.period threw errors in advanced zoom mode if multiple x axes were given in the chartoptions parameter
 - if item contained a stringified number with leading zero widget.set converted it back to numeric format 
+- some shortcuts in widget assistant did not work as expected
  
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php

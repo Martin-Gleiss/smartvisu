@@ -51,25 +51,26 @@ pre {
 </style>
 
 <h1 id="smartvisu-widget-assistant">smartvisu - Widget Assistant</h1>
-<h2 id="table-of-content">Table of Content</h2>
+<h2 id="table-of-content">Inhalt</h2>
 <ol>
-<li><a href="#howitworks">How it works</a></li>
+<li><a href="#howitworks">Funktionsweise</a></li>
 <li><a href="#hotkeys">Hot-Keys</a> <sup><span style="color:red"> <strong></strong></span></sup></li>
-<li><a href="#issues">Known issues</a> <sup><span style="color:red"> <strong></strong></span></sup></li>
-<li><a href="#logic_shng">Logics to create masteritem.json from shNG</a></li>
-<li><a href="#script_fronthem">Script to create masteritem.json for FHEM</a></li>
+<li><a href="#issues">Bekannte Probleme</a> <sup><span style="color:red"> <strong></strong></span></sup></li>
+<li><a href="#logic_shng">Logik zum Erstellen der masteritem.json in shNG</a></li>
+<li><a href="#script_fronthem">Skript zum Erstellen der masteritem.json in FHEM</a></li>
 </ol>
 <p><a name="howitworks"/></a></p>
-<h2 id="how-it-works">How it works</h2>
-<p>This tool should help you to create widgets for your smartvisu-Web-Interface. It will assist you with autocompletes for widgets, items, icons and colors. The autocomplete mode can be selected.<br><br>
-Just start entering a widget name in the editor or press CTRL-Space to open the widget autocomplete. After you have selected a widget (like basic.symbol...) and enter the opening bracket you will get a tooltip for this widget. 
-The actual parameter is highlighted in red and all the available details will be shown in the tooltip-window. For icons and colors you will see a preview in the tooltip-window. Autocompletes will insert the parameters with quotes. 
-If no autocomplete is present or you do not use it make sure to enter the quotes manually.
-After completing the wiget you can render it in a new window. The widget in the rendered window is fully working. If there is a syntax error in the created widget, you will get a TWIG-Error.
-The final widget including the brackets &quot;{{&quot; + &quot;}}&quot; will be stored on rendering to the clipboard.
-You can paste the widget-code directly to your html-file.</p>
-<p>You can render multiple widgets by separating them by a <strong><code>&lt;br&gt;</code></strong>-TAG</p>
-<h2>Example :</h2>
+<h2 id="how-it-works">Funktionsweise</h2>
+<p>Dieses Tool hilft bei der Erstellung von Widgets für Ihre Visualisierung mit smartVISU.
+Es unterstützt mit Autovervollständigung vorhandener und im Kontext zulässiger Widgets, Items, Icons und Farben. Der Modus der Autovervollständigung kann ausgewählt werden.<br><br>
+Beginnen Sie einfach im Editor mit der Eingabe eines Widget-Namens oder öffnen Sie die Liste mit CTRL-Leerzeichen. Nachdem Sie ein Widget ausgewählt haben (z.B. basic.symbol...) und die erste Klammer eintippen, 
+wird ein Fenster mit Erläuterungen (Tooltip) für dieses Widget angezeigt. Der jeweils zu bearbeitende Parameter wird in roter Schrift angezeigt und alle dazu verfügbaren Details werden darunter gelistet. 
+Für Icons und Farben wird eine Vorschau im Tooltip angezeigt. Alle Parameter müssen mit Anführungszeichen eingegeben werden, wobei die Autovervollständigung die Parameter automatisch in Anführungszeichen setzt.<br><br> 
+Nachdem das Widget vollständig eingegeben ist, können Sie es entweder auf dieser Seite, oder in einem neuen Fenster (empfohlen) anzeigen lassen und live testen. Das Widget ist voll funktionsfähig.
+Es wird lediglich ein Twig-Error angezeigt, wenn ein Fehler in der Syntax ist. Zudem wird der eingegebene Widget Code einschließlich der Klammern &quot;{{&quot; + &quot;}}&quot; in die Zwischenablage 
+kopiert und kann direkt in Ihre Visu-Seiten eingefügt werden.</p>
+<p>Man kann mehrere Widgets gleichezitig rendern, indem man sie mit einem <strong><code>&lt;br&gt;</code></strong>-TAG trennt.</p>
+<h2>Beispiel:</h2>
 <pre><code>plot.period(&#39;&#39;, [&#39;licht.og.terrasse.screens.warm.dimmen&#39;, &#39;licht.og.terrasse.screens.kalt.dimmen&#39;, &#39;licht.og.terrasse.decke.dimmen&#39;], &#39;max&#39;, &#39;1w&#39;, &#39;now&#39;, &#39;0&#39;, &#39;110&#39;, &#39;1000&#39;, [&#39;Screens warm&#39;, &#39;Screens kalt&#39;, &#39;Decke&#39;], [&#39;#daa&#39;, &#39;#aad&#39;, &#39;#955&#39;], [&#39;stair&#39;, &#39;stair&#39;, &#39;stair&#39;], [&#39;Uhrzeit&#39;, &#39;Helligkeit&#39;], &#39;advanced&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, { yAxis: [ { tickInterval: 40 } ], legend: {align: &#39;right&#39;, verticalAlign: &#39;top&#39;, y: 50, layout: &#39;vertical&#39;}, chart: { marginRight: 110} })
 <strong>&lt;br&gt;</strong>
 basic.stateswitch(&#39;&#39;,&#39;OG.Bad.Licht&#39;,&#39;midi&#39;,&#39;&#39;,&#39;light_ceiling_light&#39;,&#39;Licht Bad&#39;,&#39;&#39;,&#39;&#39;,&#39;&#39;,&#39;&#39;,&#39;&#39;)
@@ -81,63 +82,60 @@ quad.dimmer(&#39;Lueftungsstufe1&#39;, &#39;Lüftungsstufe&#39;, &#39;Haustechni
 <table>
 <thead>
 <tr>
-<th>Shortcut</th>
-<th>function</th>
+<th>Kurzbefehl</th>
+<th>Funktion</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>STRG+1</td>
-<td>only Items in autocomplete-Dict</td>
+<td>Autovervollständigung nur für Items</td>
 </tr>
 <tr>
 <td>STRG+2</td>
-<td>only Widgets in autocomplete-Dict</td>
+<td>Autovervollständigung nur für Widgets</td>
 </tr>
 <tr>
 <td>STRG+3</td>
-<td>only Icons in autocomplete-Dict</td>
+<td>Autovervollständigung nur für Icons</td>
 </tr>
 <tr>
 <td>STRG+4</td>
-<td>all in autocomplete-Dict</td>
+<td>Autovervollständigung für alles</td>
 </tr>
 <tr>
 <td>STRG+5</td>
-<td>only Colors in autocomplete-Dict</td>
+<td>Autovervollständigung nur für Farben</td>
 </tr>
 <tr>
 <td>STRG+6</td>
-<td>autocomplete-Dict is OFF</td>
+<td>Autovervollständigung AUS</td>
 </tr>
 <tr>
 <td>STRG+9</td>
-<td>switch ON/OFF Wildcard search in autocomplete dict</td>
+<td>Platzhaltersuche für Autovervollständigung ein/ausschalten</td>
 </tr>
 <tr>
 <td>STRG+Space</td>
-<td>opens the actual autocomplete-Dict</td>
+<td>öffnet die aktuelle Liste zur Autovervollständigung</td>
 </tr>
 <tr>
 <td>STRG+F</td>
-<td>find value in widgets</td>
+<td>Ausdruck im Code suchen</td>
 </tr>
 <tr>
 <td>STRG+SHIFT+R</td>
-<td>replace value in widgets - use ENTER to go to replacement-value</td>
+<td>Ausdruck im Code ersetzen - ENTER wechselt zum Ersatz-Ausdruck</td>
 </tr>
 </tbody>
 </table>
 <p><a name="issues"/></a></p>
-<h2 id="known-issues">Known Issues</h2>
-<p>It is possible to render the new widget into the iframe on the actual page.
-But this will destroy the loaded index.php. You will get in trouble when you want
-to use the navigation of smartvisu again.
-No solution right now.  You can reload the page with bypassing the cache,
-then everthing is working again. (STRG+F5 / CTRL + Shift + R)</p>
+<h2 id="known-issues">Bekannte Probleme</h2>
+<p>Man kann das neue Widget in den iframe auf der aktuellen Seite rendern. Dies wird jedoch die geladene index.php zerstören, so dass Probleme in der weiteren Navigation in smartVISU entstehen.
+Derzeit gibt es dafür nur die Lösung, die Seite neu zu laden (CTRL+F5 / CTRL + Shift + R).</p>
 <p><a name="logic_shng"/></a></p>
-<h2 id="logic-to-create-masteritem-json-from-shng">Logic to create masteritem.json from shNG</h2>
-<p>Only needed for smarthomeNG <= v1.7.2. As of v1.8 the smartvisu plugin writes the file as default.</p>
+<h2 id="logic-to-create-masteritem-json-from-shng">Logik zum Erstellen der masteritem.json in shNG</h2>
+<p>Wird nur für shNG Versionen <= v1.7.2 benötigt. Ab v1.8 erstellt das smartvisu plugin die Datei standardmäßig.</p>
 <pre><code>#!/usr/bin/env python3
 # create_master_item.py
 import json
@@ -152,7 +150,7 @@ f.write(json.dumps(item_list))
 f.close()
 </code></pre>
 <p><a name="script_fronthem"/></a></p>
-<h2 id="script-to-create-masteritem-json-for-fhem">Script to create masteritem.json for FHEM</h2>
-<p>A script can be found in the fronthem / smartVISU Forum<br>
+<h2 id="script-to-create-masteritem-json-for-fhem">Skript zum Erstellen der masteritem.json in FHEM</h2>
+<p>Ein Skript ist im fronthem / smartVISU Forum verfügbar<br>
 <a href="https://forum.fhem.de/index.php/topic,118508.msg1135044.html#msg1135044">https://forum.fhem.de/index.php/topic,118508.msg1135044.html#msg1135044</a></p>
 

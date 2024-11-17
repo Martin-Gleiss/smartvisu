@@ -107,100 +107,83 @@
 
     
     {% set actPage = config_pages %}
-    <div id="widget_list" data-myWidgetList="{{ widgetlist|json_encode() }}">
-        <!-- Here is the place for all the widgets   -->
-    </div>
-    
+	<div id="widget_list" data-myWidgetList="{{ widgetlist|json_encode() }}">
+		<!-- Here is the place for all the widgets   -->
+	</div>
 
     <div id="actual_page" data-actPage="{{ actPage }}">
-        <!-- Here is the place for actual_page   -->
-    </div>
+		<!-- Here is the place for actual_page   -->
+	</div>
 
+	<div>
+		<!-- for tests -->
+	</div>
 
-    <div>
-        <!-- for tests -->
-    </div>
-		<div id="Assistant_div" class="block" style="width:100%; min-height:400px">
-			<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-				<div data-role="collapsible" data-collapsed="false" id="myCollapse">
-					<h3>Widget - Assistant</h3>
+	<div id="Assistant_div" class="block" style="width:100%; min-height:400px">
+		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false" id="myCollapse">
+				<h3>Widget Editor</h3>
 
-    	                <textarea autocomplete="off" id="txt_widget" name="txt_widget"></textarea>
+					<textarea autocomplete="off" id="txt_widget" name="txt_widget"></textarea>
 
-                    <div id="overlay" style="display: none">
-                      <div id="overlaytext" style="text-align: left; font-size: 0.9em">ToolTip-Text</div>
-                      <a onclick="closeTooltip()" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-link ui-btn ui-icon-delete ui-btn-icon-notext ui-shadow ui-corner-all" role="button">Close</a>
-                    </div>
-                    <div id="filteroverlay" style="display: none">
-                      <div id="filteroverlaytext" style="text-align: center; font-size: 0.9em">auto-complete filtered by : <br>widgets</div>                    
-                      <a onclick="closeFilterTip()" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-link ui-btn ui-icon-delete ui-btn-icon-notext ui-shadow ui-corner-all" role="button">Close</a>
-                    </div>                    
-		   <div>
-		   <table style="width:100%"> 
-  		   <tr>
-		       <td style="width:60%">
-              <button class="ui-btn ui-input-btn ui-btn-b ui-corner-all ui-shadow" onclick="getPreview()">Preview widget & copy final Widget to Clipboard</button>
-     		   </td>
-  		   </tr>
-		   </table> 
-		   </div> 
-                        <table style="width: 100%;font-size: 0.9em;">
-                            <tr>
-                                <td style="text-align: left; width:25%" rowspan=2>
-                                    <img id ="items_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Items loaded
-                                    <br>
-                                    <span>
-                                    <img id ="colors_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" >Colors loaded
-                                    </span>
-                                    <br>
-                                    <img id ="icons_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Icons loaded
-                                    <br>
-                                    <img id ="widgets_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Widgets loaded
-                                </td>
-                                <td style="text-align: left; width:25%">
-                                	<label style="font-size: 1.0em;"><input name="render_2_Window" id="render_2_Window" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbsp Preview in new window</label>
-                                </td>
-                                <td style="text-align: left; width:25%">
-                                	<label id="Wildcard_label" style="font-size: 1.0em;"><input name="Wildcard_search" id="Wildcard_search" type="checkbox">&nbsp&nbsp&nbsp&nbsp Wildcard search</label>                                
-                                </td>
-                                <td style="text-align: left; width:25%">
-                                  <div class="ui-field-contain">
-                                      <select id="select_autocomplete" name="select_autocomplete" data-native-menu="false" onchange="ChangeDictbyMouse(event)">
-                                              <option value="1">Items</option>                                            
-                                              <option value="2" selected="selected">Widgets</option>
-                                              <option value="3">Icons</option>                                            
-                                              <option value="4">All</option>
-                                              <option value="5">Colors</option>
-                                              <option value="6">Autocomplete OFF</option>                                            
-                                      </select>
-                                  </div>                     		
-                                </td>
-                               
-                            </tr>
-                            <tr style="height:58px">
-                                <td style="text-align: left;">
-
-                                </td>
-                                <td id="td_selected_dict" style="width: 80px;border-radius: 8px;" colspan=2>
-                                     <div id="selected_dict"> </div>
-                                </td>
-
-
-
-                            </tr>
-
-
-                        </table>
+				<div id="overlay" style="display: none">
+					<div id="overlaytext" style="text-align: left; font-size: 0.9em">ToolTip-Text</div>
+					<a onclick="closeTooltip()" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-link ui-btn ui-icon-delete ui-btn-icon-notext ui-shadow ui-corner-all" role="button">Close</a>
+				</div>
+				<div id="filteroverlay" style="display: none">
+					<div id="filteroverlaytext" style="text-align: center; font-size: 0.9em">auto-complete filtered by : <br>widgets</div>                    
+					<a onclick="closeFilterTip()" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-link ui-btn ui-icon-delete ui-btn-icon-notext ui-shadow ui-corner-all" role="button">Close</a>
+				</div>                    
+				<div>
+					<button class="ui-btn ui-input-btn ui-btn-b ui-corner-all ui-shadow" onclick="getPreview()">{{ lang('widgetassi', 'render') }} </button>
+				</div> 
+					<table style="width: 100%;font-size: 0.9em;">
+						<tr>
+							<td style="text-align: left; width:25%" rowspan=2>
+								<img id ="items_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Items {{ lang('templatechecker', 'loaded') }}<br>
+								<img id ="colors_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" >{{ lang('widgetassi', 'colors') }} {{ lang('templatechecker', 'loaded') }}<br>
+								<img id ="icons_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Icons {{ lang('templatechecker', 'loaded') }}<br>
+								<img id ="widgets_loaded" src="pics/led/lamp_red.png" style="height:20px;width:20px; display: inline;vertical-align: middle;" > Widgets {{ lang('templatechecker', 'loaded') }}
+							</td>
+							<td style="text-align: left; width:25%">
+								<label style="font-size: 1.0em;"><input name="render_2_Window" id="render_2_Window" type="checkbox" checked="true" >&nbsp&nbsp&nbsp&nbsp{{ lang('widgetassi', 'preview') }}</label>
+							</td>
+							<td style="text-align: left; width:25%">
+								<label id="Wildcard_label" style="font-size: 1.0em;"><input name="Wildcard_search" id="Wildcard_search" type="checkbox">&nbsp&nbsp&nbsp&nbsp{{ lang('widgetassi', 'wildcard') }}</label>                                
+							</td>
+							<td style="text-align: left; width:25%">
+								<div>
+									<select id="select_autocomplete" name="select_autocomplete" data-native-menu="false" onchange="ChangeDictbyMouse(event)">
+										<option>{{ lang('widgetassi', 'acUse') }}</option>
+										<option value="1">Items</option>                                            
+										<option value="2" selected="selected">Widgets</option>
+										<option value="3">Icons</option>                                            
+										<option value="5">{{ lang('widgetassi', 'colors') }}</option>
+										<option value="4">{{ lang('widgetassi', 'all') }}</option>
+										<option value="6">{{ lang('widgetassi', 'acOff') }}</option>                                            
+									</select>
+								</div>                     		
+							</td>  
+						</tr>
+						<tr style="height:58px">
+							<td style="text-align: left;">
+							</td>
+							<td id="td_selected_dict" style="width: 80px;border-radius: 8px;" colspan=2>
+								<div id="selected_dict"> </div>
+							</td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>
 
+		{% set readme = lang('baselang') != 'de' ? 'lib/widget_assistant/README.html' : 'lib/widget_assistant/README_DE.html' %}
 		<div id="Assistant_div" class="block" style="width:100%; min-height:600px">
 			<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false" id="myCollapse">
-					<h3>Widget-Preview</h3>
+					<h3>{{ lang('widgetassi', 'waDocu') }}</h3>
                         <div id="Ausgabe" style="min-height: 250px;">
-                            <iframe id="render_frame" src="lib/widget_assistant/README.html" style="min-height: inherit;width: 100%; ">
+                            <iframe id="render_frame" src="{{ readme }}" style="min-height: inherit;width: 100%; ">
                             </iframe>
                         </div>
 				</div>
@@ -243,10 +226,11 @@ var widgetCodeMirror = CodeMirror.fromTextArea($("#txt_widget")[0], {
        	    actDictMode = 2
             ChangeDict(6)
         },        
-        "Ctrl-7": function(cm) {
-	    changeCloseBrackets(true)
+ /**       "Ctrl-7": function(cm) {
+			changeCloseBrackets(true)
         },
-        "Ctrl-9": function(cm) {
+ */
+		"Ctrl-9": function(cm) {
             ChangeSearch()
         },
 
