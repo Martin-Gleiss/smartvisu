@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2023
+* @copyright   2012 - 2024
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -83,18 +83,20 @@
 */
 {% macro connection( ) %}
 {% import "@widgets/basic.html" as basic %}
-	io connection:&nbsp;&nbsp;<span id="{{ page }}-connection"></span>
+	<span id="{{ page }}-connection"></span>
 	<script>
 		$('#{{ page }}-connection').html(io.socket.url);
 		if (io.server != undefined) { 
 			if (io.server != '') {						// if io.server already set write it directly
-				var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short');
-				$('#{{ page }}-connection').html(io.socket.url + connectString);
+				var connectString = 'smarthomeNG Websocket Server: '+ io.server + ', '+ sv_lang['system']['connected']+': '+ io.opentime.transUnit('short') +
+									 '<br>Websocket URL:&nbsp;&nbsp;' + io.socket.url;
+				$('#{{ page }}-connection').html(connectString);
 			} else {
 				$(document).on('ioAlive', function(){   //else wait for ioAlive event and write then
 					if (io.server != '' ) {
-						var connectString = '<br>smarthomeNG websocket server: '+ io.server + '<br>connected since: '+ io.opentime.transUnit('short');
-						$('#{{ page }}-connection').html(io.socket.url + connectString);
+						var connectString = 'smarthomeNG Websocket Server: '+ io.server + ', '+ sv_lang['system']['connected'] + ': '+ io.opentime.transUnit('short') +
+											'<br>Websocket URL:&nbsp;&nbsp;' + io.socket.url;
+						$('#{{ page }}-connection').html(connectString);
 					}
 				})
 			}

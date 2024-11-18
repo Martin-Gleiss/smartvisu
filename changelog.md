@@ -1,4 +1,8 @@
 ## 3.4.a
+### Important for the current release to avoid breaking changes
+- imports of widgets must be deleted from the visu pages or the namespace @widgets must be used. 
+  Visit https://knx-user-forum.de/forum/supportforen/smartvisu/1920060-handlungsbedarf-ma%C3%9Fnahmen-gegen-seitenladefehler-ab-v3-4-a-v3-5
+
 ### New / Changed Widgets
 - basic.tank is now able to change colors according to reached thresholds
 - additional option for basic.select to support activity indicator like basic.stateswitch

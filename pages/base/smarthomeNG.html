@@ -1,8 +1,8 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiss
-* @copyright   2012 - 2015
+* @author      Martin Gleiß
+* @copyright   2012 - 2024
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -46,11 +46,11 @@
 	</div>
 
 	<div style="clear: left;"></div>
-	system start: {{ basic.print('systemstart', 'env.system.start', 'short') }},
-	SmartHomeNG start: {{ basic.print('corestart', 'env.core.start', 'short') }}<br />
+	System Start: {{ basic.print('systemstart', 'env.system.start', 'short') }},&nbsp;
+	SmartHomeNG Start: {{ basic.print('corestart', 'env.core.start', 'short') }}<br />
 	{{ lib.connection() }}<br />
 	
-	<h2>Location</h2>
+	<h2>{{ lang('system', 'location')|capitalize }}</h2>
 	<div>
 		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/sun_up.png" alt="sunrise">
 		{{ basic.print('sunrise', 'env.location.sunrise', 'time') }}
@@ -60,7 +60,7 @@
 		{{ basic.print('moonrise', 'env.location.moonrise', 'time') }}
 		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/moon_down.png" alt="moonset">
 		{{ basic.print('moonset', 'env.location.moonset', 'time') }},
-		moonphase: {{ basic.print('moonphase', 'env.location.moonphase') }}, moonlight: {{ basic.print('moonlight', 'env.location.moonlight', '%') }}
+		{{ lang('system', 'moonphase') }}: {{ basic.print('moonphase', 'env.location.moonphase') }}, {{ lang('system', 'moonlight') }}: {{ basic.print('moonlight', 'env.location.moonlight', '%') }}
 	</div>
 	
 	
