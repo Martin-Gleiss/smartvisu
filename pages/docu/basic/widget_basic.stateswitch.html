@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      WIDMER Stefan
-* @copyright   2017
+* @copyright   2017 - 2024
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -71,7 +71,7 @@
 		{{ basic.stateswitch('', 'bath.light.switch', '', '', '', '', ['green', '#f00'], '', 'bath.multistate', '+6', 5) }}
 	</div>
 	
-	<h5>New in v3.2: Long press opening popup</h5>
+	<h5>Long press opening popup</h5>
     <div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 			{{ basic.stateswitch('', 'bath.light.scene', '', 0, 'status_available', '', '', '', '#pop1') }}
@@ -92,7 +92,7 @@
 	</div>
 
 	<h5>Styling</h5>
-	New in v3.3: 6 classes 'icon0' to 'icon5' are available for coloring the icons. Pass them in the "color" parameter.
+	6 classes 'icon0' to 'icon5' are available for coloring the icons. Pass them in the "color" parameter.
 	<br><br>
 	Dynamic icons can be used by calling the icon.* widgets in the icon parameters:
 	<div class="twig">

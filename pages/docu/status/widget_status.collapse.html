@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2024
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -14,7 +14,7 @@
 
 <h5>Examples</h5>
 
-You may use this widget to hide or collapse some html or (new in v3.3) show / open it. To bind divs to the widget, use the "data-bind" attribute in the div - tag.
+You may use this widget to hide or collapse some html or show / open it. To bind a div to the widget, use the "data-bind" attribute in the div - tag.
 In this example the div is bound to the status.collapse and will be controled by it. The additional class="hide" will hide the div at startup.
 <div class="twig">
 	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
@@ -106,7 +106,7 @@ Or use it to show and hide collapsible <b>sections</b>:<br />
 
 </div>
 
-<b>New in v3.1:</b> a list of values can be used to make collapsing more flexible <br>
+A list of values can be used to make collapsing more flexible <br>
 Select a value to show the effects.
 	{{ basic.select('s1', 'bath.multistate', 'mini', [0, 1, '2', 3, 4], '', [0, 1, 2, 3, 4] ) }}<br>
 	<div class="twig">
