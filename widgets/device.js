@@ -303,6 +303,7 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
   //         {   "active" : bool,
   //          "list"      :          Liste von einträgen mit schaltzeiten
   //          [{"active"  :false,    Ist der einzelne Eintrag darin aktiv ?
+  //            "once"    :false,    Wird der Vorgang nur einmal ausgeführt?
   //            "rrule"   :'',       Wochen / Tag Programmstring
   //            "value"   :0,        Wert, der gesetzt wird
   //            "time"    :'00:00'   Uhrzeitstring des Schaltpunktes, '19:00<sunset+15m<22:00' bei SUN-Ebents, 'series' bei Zeitreihen
@@ -452,8 +453,10 @@ $.widget("sv.device_uzsu", $.sv.widget, {
          "<div class='uzsuCell'>" +
            "<div class='uzsuCellText'></div>" +
            "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
-             "<label><input type='checkbox' class='uzsuActive'>" + sv_lang.uzsu.act + "</label>" +
-           "</fieldset>" +
+             "<label><input type='checkbox' class='uzsuActive'>" + sv_lang.uzsu.act + "</label>";
+	if (this.hasOnce)
+		tt+= "<label><input type='checkbox' class='uzsuOnce'>1 x</label>";
+	tt+=    "</fieldset>" +
          "</div>" +
          "<div class='uzsuCellExpert'>" +
            "<div class='uzsuCellText'>" + sv_lang.uzsu.expert + "</div>" +
@@ -675,6 +678,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     }
     // Values in der Zeile setzen
     uzsuCurrentRows.find('.uzsuActive').prop('checked',responseEntry.active).checkboxradio("refresh");
+	if (this.hasOnce)
+		uzsuCurrentRows.find('.uzsuOnce').prop('checked',responseEntry.once).checkboxradio("refresh");
     // hier die conditions, wenn sie im json angelegt worden sind und zwar pro zeile !
     if(self.options.designtype == '2'){
       // Condition
@@ -947,6 +952,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     uzsuCurrentRows = $(tableRow).nextUntil('.uzsuRow').addBack();
     responseEntry.value = uzsuCurrentRows.find('.uzsuValueCell select, .uzsuValueCell input').val();
     responseEntry.active = uzsuCurrentRows.find('.uzsuActive').is(':checked');
+	if (this.hasOnce)
+		responseEntry.once = uzsuCurrentRows.find('.uzsuOnce').is(':checked');
     // hier die conditions, wenn im json angelegt
     if(self.options.designtype == '2'){
       // conditions
@@ -1070,14 +1077,18 @@ $.widget("sv.device_uzsu", $.sv.widget, {
                   "<button data-mini='true' data-icon='arrow-d' data-iconpos='notext' class='ui-icon-shadow'></button>" +
                 "</div>";
               }
-              tt+= "<div class='uzsuCell' style='float: left'>" +
-                "<form>" +
-                  "<fieldset data-mini='true'>" +
+           tt+= "<div class='uzsuCell' style='float: left'>" +
+                  "<fieldset  data-mini='true'>" +
                     "<label><input type='checkbox' id='uzsuGeneralActive'>" + sv_lang.uzsu.active + "</label>" +
-                  "</fieldset>" +
-                "</form>" +
-              "</div>" +
-              "<div class='uzsuCell' style='float: left'>" +
+                  "</fieldset>"+ 
+                "</div>";				
+              if (this.hasOnce)
+               tt+= "<div class='uzsuCell' style='float: left'>" +
+			          "<fieldset data-mini='true'>" +
+                         "<label><input type='checkbox' id='uzsuGeneralOnce'>"+ sv_lang.uzsu.once +"</label>" + 
+                      "</fieldset>" +
+                     "</div>";
+         tt+="<div class='uzsuCell' style='float: left'>" +
               "<div data-role='controlgroup' data-type='horizontal' data-inline='true' data-mini='true'>" +
                 "<button id='uzsuAddTableRow'>" + sv_lang.uzsu.add + "</button>" +
                 "<button id='uzsuSortTime'>" + sv_lang.uzsu.sort + "</button>" +
@@ -1139,6 +1150,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       $('#uzsuInitialized').prop('checked', response.interpolation.initialized).checkboxradio("refresh");
     }
     $('#uzsuGeneralActive').prop('checked', response.active).checkboxradio("refresh");
+	if (this.hasOnce)
+		$('#uzsuGeneralOnce').prop('checked', response.once).checkboxradio("refresh");
     // dann die Werte der Tabelle
     $('.uzsuRow').each(function(numberOfRow, tableRow) {
       var responseEntry = response.list[numberOfRow];
@@ -1157,6 +1170,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     var numberOfEntries = response.list.length;
     // hier werden die Daten aus der Tabelle wieder in die items im Backend zurückgespielt bitte darauf achten, dass das zurückspielen exakt dem der Anzeige enspricht. Gesamthafte Aktivierung
     response.active = $('#uzsuGeneralActive').is(':checked');
+	if (this.hasOnce)
+		response.once = $('#uzsuGeneralOnce').is(':checked');
     // Interpolation
     if(this.hasInterpolation) {
       response.interpolation.type = $('#uzsuInterpolationType').val();
@@ -1368,6 +1383,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       return false;
     }
 
+	this.hasOnce = false;
     // Interpolation für SmartHomeNG setzen
     if(designType == '0') {
       if(response.interpolation === undefined){
@@ -1390,6 +1406,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 	  }
 	  else {
 		  this.hasSeries = true;
+		  if (response.plugin_version >= '2.1.0')
+			  this.hasOnce = true;
 	  }
     }
 
@@ -1488,7 +1506,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
         }
       }
     });
-	if (designType = "0")
+	if (designType = "0" && io.address != undefined && io.address != '')  // preserve plugin_version only in offline driver
 		delete response.plugin_version;
     return true;
   },
@@ -1879,7 +1897,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
               yValue = max;
             yValue = Math.round((yValue - min) / step) * step + min;
 
-            var uzsuEntry = { active: true, event: 'time', timeCron: self.element.highcharts().time.dateFormat('%H:%M', firstX), value: yValue };
+            var uzsuEntry = { active: true, once: false, event: 'time', timeCron: self.element.highcharts().time.dateFormat('%H:%M', firstX), value: yValue };
             self._uzsuRuntimePopup(uzsuEntry);
 
           }
@@ -2123,11 +2141,11 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 		hasSunrise = hasSunrise || responseEntry.event == 'sunrise';
 		hasSunset = hasSunset ||responseEntry.event == 'sunset';
 		if(!hasBurst){
-		x =  self._calculateEventTime(responseEntry);
-		if(responseEntry.timeMin)
-			xMin = self._timeToTimestamp(responseEntry.timeMin);
-		if(responseEntry.timeMax)
-			xMax = self._timeToTimestamp(responseEntry.timeMax);
+			x =  self._calculateEventTime(responseEntry);
+			if(responseEntry.timeMin)
+				xMin = self._timeToTimestamp(responseEntry.timeMin);
+			if(responseEntry.timeMax)
+				xMax = self._timeToTimestamp(responseEntry.timeMax);
 		}
 		else {
 			x = self._calculateEventTime(responseEntry.series.start);

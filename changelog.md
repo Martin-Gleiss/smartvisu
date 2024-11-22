@@ -14,7 +14,8 @@
 - device.dimmer extended with an option "type" to display the switch as button  (midi, mini, micro, icon)
 - indicator option introduced in all quad design widgets using basic.stateswitch or basic.select
 - clock.countdown now accepts ISO time strings, fixed countdown duration instead of an item and a new comparative value as starting condition
-- calendar.list uses a new format called "calendardate" in the language file which can be defined to show "today" and "tomorrow" with other date information. 
+- calendar.list uses a new format called "calendardate" in the language file which can be defined to show "today" and "tomorrow" with other date information.
+- device.uzsuicon is prepared for one-time events (provided by smarthomeNG UZSU plugin as of version 2.1.0)
 
 ### Other New Features
 - improved spline display for the starting point in device.uzsugraph
