@@ -2089,10 +2089,17 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
   draw: function() {
 	var chart = this.element.highcharts();
 
-	if(this._uzsudata.active)
+	if(this._uzsudata.active && !this._uzsudata.once){
 		this.element.removeClass('uzsu-all-inactive');
+		this.element.removeClass('uzsu-general-once');
+		this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+ String.fromCharCode(10004) + String.fromCharCode(160))
+	}
 	else
 		this.element.addClass('uzsu-all-inactive');
+	if (this._uzsudata.once){
+		this.element.addClass('uzsu-general-once');
+		this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+'1 x' + String.fromCharCode(160))
+	}
 
 	var hasDays = false;
 	var hasSunrise = false;
@@ -2175,13 +2182,16 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 		if (ind > 0) {
 			var days = rrule.substring(ind+6).split(',');
 			// memorize whether at least one data point is not repeating every day so the initial display will be a week graph
-			if (days.length < 7)
+			if (days.length < 7 || responseEntry.once)
 				hasDays = true;
+			// get sequence of the days as an array to find out which is the next event to be executed if "once" is true
+			var rruleDaySequence = days.map(function(d){return self.rruleDays[d]});
 
-			// push all events into the timeline
+			// push all events into the timeline starting from Monday. Sorting will be done later
 			$.each(days, function(dayIdx, day) {
 				var rruleOffset = self.rruleDays[day]*1000*60*60*24;
 				var sunOffset = 0;
+				var isActive = responseEntry.active && !(responseEntry.once && self.rruleDays[day] != Math.min.apply(null, rruleDaySequence))
 				if (responseEntry.event.indexOf('sun') >= 0 )
 					sunOffset = self._getSunTime(responseEntry.event, self.rruleDays[day]) - self._getSunTime(responseEntry.event, 0);
 				else if (hasBurst && responseEntry.series.start.event.indexOf('sun') >= 0 )
@@ -2191,7 +2201,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
 				var xRecurring = x + rruleOffset + sunOffset;
 				var yValue = Number(responseEntry.value);
-				seriesData[responseEntry.active ? 'active' : 'inactive'].push({ x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
+				seriesData[isActive ? 'active' : 'inactive'].push({ x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
 				if (hasBurst){
 					var sunSeriesEndOffset = 0;
 					if (responseEntry.series.end.event.indexOf('sun') >= 0 )
@@ -2202,7 +2212,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 					xBurstRecurring = xRecurring;
 					while (xBurstRecurring + seriesIntervall <= seriesEnd + rruleOffset + sunSeriesEndOffset) {
 						xBurstRecurring += seriesIntervall;
-						seriesData['active'].push({ x: xBurstRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
+						seriesData[isActive ? 'active' : 'inactive'].push({ x: xBurstRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
 					}
 				}
 				if(!hasBurst && (xMin !== undefined || xMax !== undefined)) {
