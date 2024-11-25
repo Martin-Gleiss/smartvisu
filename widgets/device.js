@@ -301,9 +301,10 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
   //
   // Datenmodell: Austausch über JSON Element
   //         {   "active" : bool,
+  //          "once"      : bool,    gesamte Liste wird nur einmal ausgeführt
   //          "list"      :          Liste von einträgen mit schaltzeiten
   //          [{"active"  :false,    Ist der einzelne Eintrag darin aktiv ?
-  //            "once"    :false,    Wird der Vorgang nur einmal ausgeführt?
+  //            "once"    :false,    Eintrag wird nur einmal ausgeführt
   //            "rrule"   :'',       Wochen / Tag Programmstring
   //            "value"   :0,        Wert, der gesetzt wird
   //            "time"    :'00:00'   Uhrzeitstring des Schaltpunktes, '19:00<sunset+15m<22:00' bei SUN-Ebents, 'series' bei Zeitreihen
@@ -2089,10 +2090,17 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
   draw: function() {
 	var chart = this.element.highcharts();
 
-	if(this._uzsudata.active)
+	if(this._uzsudata.active && !this._uzsudata.once){
 		this.element.removeClass('uzsu-all-inactive');
+		this.element.removeClass('uzsu-general-once');
+		this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+ String.fromCharCode(10004) + String.fromCharCode(160))
+	}
 	else
 		this.element.addClass('uzsu-all-inactive');
+	if (this._uzsudata.once){
+		this.element.addClass('uzsu-general-once');
+		this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+'1 x' + String.fromCharCode(160))
+	}
 
 	var hasDays = false;
 	var hasSunrise = false;
@@ -2175,13 +2183,16 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 		if (ind > 0) {
 			var days = rrule.substring(ind+6).split(',');
 			// memorize whether at least one data point is not repeating every day so the initial display will be a week graph
-			if (days.length < 7)
+			if (days.length < 7 || responseEntry.once)
 				hasDays = true;
+			// get sequence of the days as an array to find out which is the next event to be executed if "once" is true
+			var rruleDaySequence = days.map(function(d){return self.rruleDays[d]});
 
-			// push all events into the timeline
+			// push all events into the timeline starting from Monday. Sorting will be done later
 			$.each(days, function(dayIdx, day) {
 				var rruleOffset = self.rruleDays[day]*1000*60*60*24;
 				var sunOffset = 0;
+				var isActive = responseEntry.active && !(responseEntry.once && self.rruleDays[day] != Math.min.apply(null, rruleDaySequence))
 				if (responseEntry.event.indexOf('sun') >= 0 )
 					sunOffset = self._getSunTime(responseEntry.event, self.rruleDays[day]) - self._getSunTime(responseEntry.event, 0);
 				else if (hasBurst && responseEntry.series.start.event.indexOf('sun') >= 0 )
@@ -2191,7 +2202,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
 				var xRecurring = x + rruleOffset + sunOffset;
 				var yValue = Number(responseEntry.value);
-				seriesData[responseEntry.active ? 'active' : 'inactive'].push({ x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
+				seriesData[isActive ? 'active' : 'inactive'].push({ x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
 				if (hasBurst){
 					var sunSeriesEndOffset = 0;
 					if (responseEntry.series.end.event.indexOf('sun') >= 0 )
@@ -2202,7 +2213,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 					xBurstRecurring = xRecurring;
 					while (xBurstRecurring + seriesIntervall <= seriesEnd + rruleOffset + sunSeriesEndOffset) {
 						xBurstRecurring += seriesIntervall;
-						seriesData['active'].push({ x: xBurstRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
+						seriesData[isActive ? 'active' : 'inactive'].push({ x: xBurstRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
 					}
 				}
 				if(!hasBurst && (xMin !== undefined || xMax !== undefined)) {
@@ -2555,7 +2566,6 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     },
     _update: function(response) {
         this._super(response);
-        //this._uzsudata = jQuery.extend(true, {}, response[0]);  // ist Teil vom Prototype Widget (this._super)
         this._DrawTimeTable(this.uuid, this.options, this._uzsudata)
         // Function to keep Data of TimeLine actual
         this._CalcTimeLine(this)
@@ -2645,6 +2655,17 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
 
         // Keep Instance of ME because forEach will change "this" !
         myInstance = this
+		
+		// create day sequence to evaluate the right execution day for one-time events
+		var today = new Date().getDay();		// delivers SU = 0
+		var rruleDays = [];
+		var rruleDayNames = [];
+		for (var day in weekDays) {
+			rruleDays[day] = weekDays[day] - (6 + today) % 7;
+			if (rruleDays[day] < 0)
+				rruleDays[day] += 7;
+			rruleDayNames[rruleDays[day]] = day;
+		}
 
         // now get the entries
         for (myItem in myDict.list) {
@@ -2655,13 +2676,17 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                 myDays = myActItem.rrule.split(";")[1].split("=")[1].split(",")
             } catch (e) {}
 
+			// build sequence of days to make sure "once matches first entry 
+			var rruleDaySequence = myDays.map(function(d){return rruleDays[d]});
+			var isActive 
+
             //// for Series
             if (myActItem.hasOwnProperty("series")) {
                 if (myActItem.hasOwnProperty("seriesCalculated")) {
                     for (serie in myActItem.seriesCalculated) {
                         myTimeDict = myInstance._CreateSerieEntriesWithSun(myActItem)
                         d = weekDays[myActItem.seriesCalculated[serie].seriesDay]
-                        myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues);
+                        myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                     }
                 } else {
                     myTimeDict = myInstance._CreateSerieEntriesWithOutSun(myActItem)
@@ -2670,8 +2695,8 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                     myDays.forEach(function(element) {
                         d1 = weekDays[element]
                         d1 != 6 ? d2 = d1 + 1 : d2 = 0
-                        myInstance._fillCells(TableName, myTimeDict1, myActItem, d1, vals_on, vals_off, vals_on_color, vals_off_color, asortValues);
-                        myInstance._fillCells(TableName, myTimeDict2, myActItem, d2, vals_on, vals_off, vals_on_color, vals_off_color, asortValues);
+                        myInstance._fillCells(TableName, myTimeDict1, myActItem, d1, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
+                        myInstance._fillCells(TableName, myTimeDict2, myActItem, d2, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                     });
                 }
 
@@ -2680,6 +2705,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
             else {
                 myDays.forEach(function(element) {
                     d = weekDays[element]
+					isActive = myActItem.active && !(myActItem.once && element != rruleDayNames[Math.min.apply(null, rruleDaySequence)])
                     myTimeDict = []
                     if (myActItem.time.search("sunrise") == -1 && myActItem.time.search("sunset") == -1 && !(myActItem.hasOwnProperty("series"))) {
                         myTimeDict.push(myInstance._GetTimeEntryDict(myActItem.time))
@@ -2695,7 +2721,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                             }
                         }
                     }
-                    myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues);
+                    myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                 })
             }
         }
@@ -3231,7 +3257,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     // *****************************************************
     // fillCells
     // *****************************************************	
-    _fillCells: function(preFix, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues) {
+    _fillCells: function(preFix, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive) {
         for (entry in myTimeDict) {
             myTime = myTimeDict[entry].key
             hours = myTimeDict[entry].hours
@@ -3252,7 +3278,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                 String("00" + m).slice(-2)
             mySvgCell = $('#' + mySvg)[0]
             myValue = ''
-            if (myActItem.active == true) {
+            if (isActive) {
                 if (vals_on.includes(myActItem.value)) {
                     if (asortValues.hasOwnProperty(myActItem.value)) {
                         myValue = asortValues[myActItem.value]
@@ -3379,15 +3405,11 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
             sunrise = myDict.sunrise
             sunset = myDict.sunset
             }
-		  else {
-			sunrise = undefined
-			sunset = undefined  
+		  else {  // dummys for docu page
+			sunrise = "04.54"
+			sunset = "21:30"  
 		    }
           } 
-        if (sunrise === undefined || sunset === undefined)  {
-          notify.message("warning", "UZSU-Table widget", "No Sun-Information available. Please upgrade your UZSU-Plugin to provide sunrise and sunset (smarthomeNG: v1.6.0 or higher)");
-          return
-          }
         
         // SunRise-SVG
         h = sunrise.split(":")[0]

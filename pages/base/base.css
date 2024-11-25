@@ -1673,6 +1673,10 @@ div.ui-slider-switch{
   fill: #808080;
   stroke: #808080;
 }
+.uzsu-all-inactive.uzsu-general-once .uzsu-active-toggler {
+  fill: #FF8080;
+  stroke: #FF8080;
+}
 [data-widget="device.uzsugraph"] .highcharts-navigator, 
 [data-widget="device.uzsugraph"] .highcharts-navigator-series, 
 [data-widget="device.uzsugraph"] .highcharts-navigator-xaxis,
