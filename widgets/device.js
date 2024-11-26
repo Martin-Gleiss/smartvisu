@@ -399,7 +399,6 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             "<div class='uzsuCell'>" +
               "<div class='uzsuCellText'>" + sv_lang.uzsu.weekday + "</div>" +
               "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuWeekday'>";
-                // rrule Wochentage (ist eine globale Variable von SV, Sonntag hat index 0 deshalb Modulo 7)
                var daydate = new Date(0);
                $.each([ 'MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU' ], function(index, value) {
                  daydate.setDate(5 + index); // Set date to one on according weekday (05.01.1970 was a monday)
@@ -2686,6 +2685,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                     for (serie in myActItem.seriesCalculated) {
                         myTimeDict = myInstance._CreateSerieEntriesWithSun(myActItem)
                         d = weekDays[myActItem.seriesCalculated[serie].seriesDay]
+						isActive = myActItem.active && !(myActItem.once && myActItem.seriesCalculated[serie].seriesDay != rruleDayNames[Math.min.apply(null, rruleDaySequence)])
                         myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                     }
                 } else {
@@ -2694,8 +2694,9 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                     myTimeDict2 = myTimeDict[1]
                     myDays.forEach(function(element) {
                         d1 = weekDays[element]
-                        d1 != 6 ? d2 = d1 + 1 : d2 = 0
+						isActive = myActItem.active && !(myActItem.once && element != rruleDayNames[Math.min.apply(null, rruleDaySequence)])
                         myInstance._fillCells(TableName, myTimeDict1, myActItem, d1, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
+                        d1 != 6 ? d2 = d1 + 1 : d2 = 0
                         myInstance._fillCells(TableName, myTimeDict2, myActItem, d2, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                     });
                 }
@@ -3090,15 +3091,8 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                 break;
             }
         }
-
-        if (sv_lang.uzsu.th == 'Do') // Check language
-        {
-            var myDays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
-            txtActive = 'inaktiv'
-        } else {
-            var myDays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
-            txtActive = 'Inactive'
-        }
+        var myDays = [sv_lang.uzsu.mo, sv_lang.uzsu.tu, sv_lang.uzsu.we, sv_lang.uzsu.th, sv_lang.uzsu.fr, sv_lang.uzsu.sa, sv_lang.uzsu.su]
+        txtActive = sv_lang.uzsu.inactive
         var preFix = TableName
         var HeadlineHeight = 40
         weekDays = {
