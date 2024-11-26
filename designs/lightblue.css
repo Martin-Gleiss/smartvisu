@@ -1261,6 +1261,63 @@ a.ui-slider-handle-semicircle {
 
 /* Highcharts
 -----------------------------------------------------------------------------------------------------------*/
+.highcharts-title {
+	fill: #000;
+}
+.highcharts-subtitle {
+	fill: #666;
+}
+
+.highcharts-axis .highcharts-axis-line {
+	stroke: #999;
+}
+.highcharts-tick {
+	stroke: #999;
+}
+.highcharts-axis-labels {
+	fill: #666;
+}
+.highcharts-axis-title {
+	fill: #999;
+}
+
+.highcharts-legend-item text {
+	fill: #666;
+}
+.highcharts-legend-item:hover text {
+	fill: #333;
+}
+.highcharts-legend-item-hidden * {
+	fill: #ccc;
+	stroke: #ccc;
+}
+
+.highcharts-markers path {
+	stroke: #fff;
+}
+
+.highcharts-label text {
+	fill: #000;
+}
+.highcharts-data-labels {
+	fill: #000;
+	color: #000;
+}
+
+.highcharts-tooltip-box {
+	fill: #dcdcdc;
+}
+.highcharts-tooltip text {
+	fill: #000;
+}
+.polarChart .highcharts-axis-line,
+.solidgauge .highcharts-axis-line,
+.solidgauge .highcharts-grid-line {
+  stroke: none;
+}
+.highcharts-grid .highcharts-grid-line {
+  stroke: rgba(0, 0, 0, .15);
+}
 .highcharts-color-0 {
 	fill: #6BABFF;
 	stroke: #6BABFF;
