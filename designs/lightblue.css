@@ -102,10 +102,12 @@ label.ui-btn {
 .ui-btn {
 	text-decoration: none !important;
 }
+/** set button after checkbox to flat blue 
 .ui-checkbox .ui-btn.ui-corner-all.ui-btn-inherit.ui-btn-icon-left.ui-checkbox-on {
 	background-color: #6BABFF;
 	background-image: inherit;
 }
+*/
 
 /* Corner rounding
 -----------------------------------------------------------------------------------------------------------*/
@@ -1460,6 +1462,10 @@ html .ui-btn.icon5,
 	background-image: url(images/webkit_clock_ws.svg);
 }
 
+/** set color of selected autocomplete tooltip in widget assistant */
+#widget_assistant #selected_dict>strong {
+	color: #FFFFFF;
+} 
 
 /* jQuery Roundslider
 -----------------------------------------------------------------------------------------------------------*/

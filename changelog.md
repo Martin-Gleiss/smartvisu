@@ -48,6 +48,7 @@
 - avoid minifying of already minified highcharts files which throws errors in cache mode on new highcharts versions
 - templatechecker now directly checks system requirements on page show - not any more only after starting the complete test program
 - language support for system checks, lib.updatecheck(), templatechecker and widget assistant
+- improved location search for weather services avoids display of company names instead of city names
 
 ### Updated Libraries
 - Twig template engine: manually inserted security fixes (v1.44.6 -> v1.44.8) and CS (Coding Standard) fixes as preparation for php 8.4 release
@@ -56,7 +57,7 @@
 ### Deprecated
 
 ### Removed Features
-- old wiget pathnames w/o namespace (deprecated in v3.3)
+- old widget pathnames w/o namespace (deprecated in v3.3)
 
 ### Fixed Bugs
 - system page was not shown due to missing infoblock.html if pages were configured to "Smarthome" but pages had not been created yet by the "smartvisu" plugin of smarthomeNG.

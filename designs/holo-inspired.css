@@ -954,6 +954,11 @@ html .ui-btn.icon5,
 font-family: Dosis;
 }
 
+/** set color of selected autocomplete tooltip in widget assistant */
+#widget_assistant #selected_dict>strong {
+	color: #FFFFFF;
+} 
+
 
 /* jQuery Roundslider
 -----------------------------------------------------------------------------------------------------------*/

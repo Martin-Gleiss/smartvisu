@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Wolfram v. Hülsen
- * @copyright   2012 - 2021
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  *
@@ -17,7 +17,7 @@ function getLocation($lat, $lon) {
 	if ($cache->hit(7*24*60))		//cache duration of one week should be sufficient for city names 
 		$content = $cache->read();
 	else {
-		$url = 'http://api.geonames.org/findNearbyPostalCodesJSON?'.$location.'&radius=2&username=smartvisu_location';
+		$url = 'http://api.geonames.org/findNearbyPlaceNameJSON?'.$location.'&radius=2&cities=cities500&username=smartvisu_location';
 		
 		$content = file_get_contents($url,false);
 		if ($content === false) 
@@ -28,7 +28,7 @@ function getLocation($lat, $lon) {
 
 	$parsed_json = json_decode($content);
 
-	$ret = $parsed_json->{'postalCodes'}['0']->{'placeName'};		
+	$ret = $parsed_json->{'geonames'}['0']->{'name'};		
 	return $ret;
 }
 
