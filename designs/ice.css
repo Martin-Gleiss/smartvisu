@@ -1808,6 +1808,11 @@ html .ui-btn.icon5,
 	background-image: url(images/webkit_clock_ws.svg);
 }
 
+/** set color of selected autocomplete tooltip in widget assistant */
+#widget_assistant #selected_dict>strong {
+	color: #FFFFFF;
+} 
+
 /* jQuery Roundslider
 -----------------------------------------------------------------------------------------------------------*/
 

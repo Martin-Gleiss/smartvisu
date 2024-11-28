@@ -20,16 +20,16 @@
 <h2>{{ lang('templatechecker', 'system') }}:</h2>
 <div>
 	<div class="check" data-check="check_config.php">
-		<img src="pages/base/pics/trans.png" alt=""><span>'config.ini' {{ lang('templatechecker', 'File') }}</span></div>
+		<img src="pages/base/pics/trans.png" alt=""><span>'config.ini' {{ lang('templatechecker', 'file') }}</span></div>
 
 	<div class="check" data-check="check_temp.php">
-		<img src="pages/base/pics/trans.png" alt=""><span>'temp' {{ lang('templatechecker', 'Directory') }}</span></div>
+		<img src="pages/base/pics/trans.png" alt=""><span>'temp' {{ lang('templatechecker', 'directory') }}</span></div>
 
 	<div class="check" data-check="check_php.php">
 		<img src="pages/base/pics/trans.png" alt=""><span>php version</span></div>
 
 	<div class="check" data-check="check_php_mbstring.php">
-		<img src="pages/base/pics/trans.png" alt=""><span>php {{ lang('templatechecker', 'Extension') }} 'mbstring'</span></div>
+		<img src="pages/base/pics/trans.png" alt=""><span>php {{ lang('templatechecker', 'extension') }} 'mbstring'</span></div>
 
 	<div class="check" data-check="check_update.php">
 		<img src="pages/base/pics/trans.png" alt=""><span>newer version</span></div>
@@ -39,7 +39,7 @@
 <form>
 	{{ forms.config_select('tplchk', { 'tplchk': {'pages': config_pages }}, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
 	<div class="check" id="check_masteritem" data-check="check_masteritem.php">
-			<img src="pages/base/pics/trans.png" alt=""><span>Masteritem {{lang('templatechecker', 'File') }}</span></div>
+			<img src="pages/base/pics/trans.png" alt=""><span>Masteritem {{lang('templatechecker', 'file') }}</span></div>
 	<label><input name="checkbox-0 " type="checkbox" id="tplchk_chk_errors_only">{{ lang('templatechecker', 'showEW') }}</label>
 	<label><input name="checkbox-0 " type="checkbox" id="tplchk_chk_subfolders">{{ lang('templatechecker', 'subfolders') }}</label>
 	<label><input name="checkbox-0 " type="checkbox" id="tplchk_extend_timeout">{{ lang('templatechecker', 'timeout') }}</label>

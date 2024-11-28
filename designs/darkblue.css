@@ -102,10 +102,12 @@ label.ui-btn {
 .ui-btn {
 	text-decoration: none !important;
 }
+/** set button after checkbox to flat blue 
 .ui-checkbox .ui-btn.ui-corner-all.ui-btn-inherit.ui-btn-icon-left.ui-checkbox-on {
 	background-color: #22AADD;
 	background-image: inherit;
 }
+*/
 
 /* Corner rounding
 -----------------------------------------------------------------------------------------------------------*/
