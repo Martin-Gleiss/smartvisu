@@ -1,4 +1,4 @@
-## 3.4.a
+## 3.5
 ### Important for the current release to avoid breaking changes
 - imports of widgets must be deleted from the visu pages or the namespace @widgets must be used. 
   Visit https://knx-user-forum.de/forum/supportforen/smartvisu/1920060-handlungsbedarf-ma%C3%9Fnahmen-gegen-seitenladefehler-ab-v3-4-a-v3-5
