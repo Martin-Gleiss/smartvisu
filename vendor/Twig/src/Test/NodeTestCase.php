@@ -41,7 +41,7 @@ abstract class NodeTestCase extends TestCase
         }
     }
 
-    protected function getCompiler(Environment $environment = null)
+    protected function getCompiler(?Environment $environment = null)
     {
         return new Compiler(null === $environment ? $this->getEnvironment() : $environment);
     }

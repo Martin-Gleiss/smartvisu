@@ -12,6 +12,7 @@
 *
 */
 
+@import '../icons/ws/jquery.mobile.icons.min.css';
 
 /* Globals */
 /* Font
@@ -101,10 +102,12 @@ label.ui-btn {
 .ui-btn {
 	text-decoration: none !important;
 }
+/** set button after checkbox to flat blue 
 .ui-checkbox .ui-btn.ui-corner-all.ui-btn-inherit.ui-btn-icon-left.ui-checkbox-on {
 	background-color: #22AADD;
 	background-image: inherit;
 }
+*/
 
 /* Corner rounding
 -----------------------------------------------------------------------------------------------------------*/
@@ -1434,7 +1437,6 @@ span.rs-number {
   top: -8px;
   left: -30px;
   font-size: 0.8em;
-  font-style: bold;
   font-family: Arial;
   color: #fff;
 }
@@ -1499,5 +1501,4 @@ span.rs-number {
 }
 .rs-tooltip-text {
   font-size: 2.7em;
-  font-style: bold;
 }

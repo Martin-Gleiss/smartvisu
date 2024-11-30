@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -92,10 +92,10 @@ class service
 	{
 		$ret = "";
 
-		if (count($this->error) == 0)
+		if (\count($this->error) == 0)
 			$this->run(); 
 
-		if (count($this->error) == 0)
+		if (\count($this->error) == 0)
 		{
 			$this->prepare();
 			$ret = $this->data;
@@ -108,7 +108,8 @@ class service
 
 		$this->debug($ret, "data");
 
-		header('Content-Type: text/json');
+		if (!$this->debug )
+			header('Content-Type: application/json');
 		return json_encode($ret);
 	}
 

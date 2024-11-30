@@ -1,0 +1,112 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2023
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "index.html" %}
+{% block content %}
+
+	<h1>User Extensions</h1>
+
+	<div class="docu">
+	
+		Depending on the update method used, smartVISU files can get overwritten during the update, so changes and extensions written by the user can get lost. Therefore it is highly recommended to not change any 
+		of the original files and folders that come with smartVISU. There are special protected areas reserved for user-written code.
+	
+		<h2>Custom Pages</h2>
+
+		Folders with indiviual visu pages shall be added to the folder ./pages. Such a folder is named ./pages/&lt;yourPages&gt; in the present docuemntation. All subfolders in ./pages not originating from smartVISU 
+		sources will be protected from being overwritten during an update. Pages can also be added to the ./dropins folder but in favour of a clear page structure and origin this is not recommended.  
+		
+		<br /><br />
+
+		<h2>Dropins Folder for User generated Content</h2>
+
+		All user generated code should be placed into the ./dropins folder and its subfolders which are protected, too. Generally, the ./dropins folders will be read at the very end of the page loading process. 
+		This will result in different behaviour of duplicate filenames depending on the file type. 
+		<ul>
+			<li> html pages will be found as the first hit in the following order: ./apps, ./pages/&lt;yourPages&gt;, ./pages/smarthome (if smarthomeNG is configured as backend), ./dropins and ./pages/base.</li>
+			<li> html widgets as well as .svg, .css and .js files will be imported at the end of the page loading process and overwrite definitions made before.</li>
+		</ul>
+		Although there are namespaces and dedicated folder structures now for widgets and icons it is recommended to avoid using duplicate filenames in order to avoid unwanted behaviour. It is good practise  
+		to name	own extensions e.g. with a "my_" in front which is not used in all official smartVISU content.
+		<br/><br />
+		
+		
+		<h2>Custom Widgets</h2>
+
+		Place your own widgets .html and .js files in ./dropins/widgets. They will be imported automatically from there. See <a href="index.php?page=custom/widget_custom">custom widget docu</a> for the generation 
+		of your own documentation page for the widget. If you need to import certain widgets within your own widgets use the '@widgets' namespace:
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				{% import "@widgets/mywidget.html" as mywidget %}
+			{% endverbatim %}{% endfilter %}</code>
+		</div>
+		SmarthomeNG - if auto page generation is activated - places plugin widgets in ./dropins/shwidgets. Don't place your own widgets there since smarthomeNG will empty the folder on startup.<br>
+		Widgets can also be placed in a subfolder of your pages folder: ./pages/&lt;yourPages&gt;/widgets. They will get imported from there but the docu page in the folder will not be found.
+		<br /><br />
+
+		<h2>Additional Icons</h2>
+
+		Place your own icons in ./dropins/icons. They will be found automatically there. Normally, white icons are sufficient and should be placed in ./dropins/icons/ws. smartVISU widgets will not use black icons 
+		unless you force them to do so by specifying the full path. Black icons should then be placed in ./dropins/icons/sw.<br>
+		Keep in mind that SVG icons need a certain format to enable dynamic colorization in smartVISU. The forum and also the GitHub wiki provide some hints for that.
+		<br /><br />
+
+		<h2>Language Customization</h2>
+
+		smartVISU loads the language information recursively, starting with the configured language file and continuing with the language in the "extends = xx" statement. Extensions of the language files 
+		can be placed in the folder ./dropins/lang. The procedure is described in ./lang/readme.txt. Create a file named e.g. "custom.ini", define the base language and fill in your individual formats and texts.
+		
+		<div class="twig">
+			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+				;define a title or delete the following line
+				;@label My Language
+				;define the base language
+				extends = "en"
+				
+				;do not forget the category names
+				[format]
+				kwh = "%01,3f kWh"
+				...
+			{% endverbatim %}{% endfilter %}</code>
+		</div>
+		The custom language will be displayed in the configuration menu with its file name or - if the @label line is present - with the defined label. Select this item to activate the language extension. 
+		
+		<br /><br />
+		
+		<h2>Custom CSS definitions</h2>
+
+		There are many options to place custom CSS definitions for styling pages and widgets. 
+		<ul>
+			<li>small changes can be made in ./pages/&lt;yourPages&gt;/visu.css to override definitions made in the official smartVISU CSS files.</li>
+			<li>CSS belonging to custom widgets should be placed with the widgets in the same folders. They have a higher priority than visu.css in case of conflicts.</li>
+			<li>further custom CSS definitions can be placed in the ./dropins folder or in ./pages/&lt;yourPages&gt;/css. The latter has the highest priority in case of conflicts.</li>
+		</ul>
+		
+		<br />
+		
+		<h2>Javascript Extensions</h2>
+
+		JavaScript extensions besides the .js widget files can be made in the following ways: 
+		<ul>
+			<li>integrate small JavaScript extensions in ./pages/&lt;yourPages&gt;/visu.js. These are prioritized over the basic smartVISU functions and drivers but below all widgets.</li>
+			<li>putting .js extensions in the widget folders is not recommended but will work.</li>
+			<li>higher priority in case of conflicts is given to JavaScript files in the folders ./dropins or in ./pages/&lt;yourPages&gt;/js. The latter has the highest priority.</li>
+		</ul>
+		Defining a JavaScript function or widget in a folder with high priority will replace the function with the same name read earlier in a low priority folder. 
+		<br /><br />
+
+		<h2>More Information</h2>
+		
+		More information can be found on the <a href="https://github.com/Martin-Gleiss/smartvisu/wiki">wiki pages.</a><br>
+		Please contribute there if you like to share your knowledge. We'll integrate the contents into this inline documentation later.
+		
+	</div>
+
+{% endblock %}

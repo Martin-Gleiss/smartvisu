@@ -123,14 +123,18 @@
 * @param {value=} the maximum value to display if the slider is moved to total right if this should differ from sent/received value (optional, default like max)
 * @param {text(left,right)=left} position of the switch: left (default) or right
 * @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
+* @param {type=icon} icon or button type. Valid types: 'micro', 'mini', 'midi', 'icon' (optional, default: icon)
 */
 
-{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos, live) %}
+{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, picpos, live, type) %}
 	{% import "@widgets/basic.html" as basic %}
 
-		{% if picpos is empty or picpos=='left' %}<div class="dimmer-left" {% else %} <div class="dimmer-right" {% endif %}
+		<div class="
+		{{ picpos is empty or picpos=='left' ? 'dimmer-left' : 'dimmer-right' }}
+		{{ type in ['midi', 'mini', 'micro'] ? 'dimmer-'~type : '' }}
+		{{ txt is empty ? 'dimmer-notext' : '' }} "
 		data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
-			{{ basic.stateswitch('', item_switch, 'icon', '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
+			{{ basic.stateswitch('', item_switch, type|default('icon'), '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
 			<p>{{ txt|e }}</p>
 			{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display, live) }}
 		</div>
@@ -527,7 +531,7 @@
 * @param {color(icon0to5)=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
 * @param {color(icon0to5)=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
 * @param {type=icon}  button sized 'micro', 'mini' or 'midi' or icon (optional, default = 'icon')
-* @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
+* @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver, parameter is hidden in docu)
 *
 * @author Michael Wuertenberger
 */
@@ -542,7 +546,7 @@
 	{% endif %}
 
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.uzsuicon" data-item="{{ item }}"
-		data-headline="{{ headline|default('UZSU') }}" data-designType="{{ backend }}"
+		data-headline="{{ headline|default('UZSU') }}" data-designType="{{ _backend }}"
 		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueParameterList) }}"
 		{% if type == 'icon' %} class="icon" {% else %} class="ui-btn {{ uitype }} ui-corner-all ui-btn-inline ui-shadow" {% endif %} >
 		<a>

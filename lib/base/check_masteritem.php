@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Andre Kohler
- * @copyright   2020
+ * @copyright   2020 -2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -53,12 +53,12 @@ function load_items ()
 $items = load_items();
 if (count($items)>1)
 {
-	$ret = array('icon' => 'message_ok.svg', 'text' => "Masteritem file read");
+	$ret = array('icon' => 'message_ok.svg', 'text' => trans('templatechecker', 'misuccess'));
 }
 else
 {
 	header("HTTP/1.1 500 Internal Server Error");
-	$ret = array('icon' => 'message_attention.svg', 'text' => "Optional masteritem file is not available - check of item names and types deactivated");
+	$ret = array('icon' => 'message_attention.svg', 'text' => trans('templatechecker', 'mifail'));
 }
 
 echo json_encode($ret);

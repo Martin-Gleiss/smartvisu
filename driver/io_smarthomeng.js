@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, Martin Sinn, Wolfram v. Hülsen
- * @copyright   2012 - 2021
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       SmartHomeNG
@@ -10,14 +10,14 @@
  * @default     driver_autoreconnect   true
  * @default     driver_port            2424
  * @default     driver_tlsport         2425
- * @hide	    reverseproxy
- * @hide      driver_realtime
+ * @hide        reverseproxy
+ * @hide        driver_realtime
  * @hide        driver_consoleport
  * @hide        driver_consoleusername
  * @hide        driver_consolepassword
- * @hide		driver_ssl
- * @hide		driver_username
- * @hide		driver_password
+ * @hide        driver_ssl
+ * @hide        driver_username
+ * @hide        driver_password
  */
 
 
@@ -103,6 +103,8 @@ var io = {
 			else if ( location.hostname != sv.config.svHostname ) 
 				io.address = '';
 		} 
+		clearTimeout(io.pingTimer);
+		io.socketState = '';
 		io.open();
 	},
 
@@ -116,6 +118,20 @@ var io = {
 		// subscribe item updates from the backend
 		io.monitor();
 		
+	},
+	
+	pingTimer: null,
+	pingInterval: null,
+	socketState: '',
+	
+	ping: function(){
+		io.socketState = 'pinging';
+		console.log('[io.smarthomeng] starting ping');
+		io.send({"cmd":"ping"});
+		io.pingTimer = setTimeout(function(){
+			io.socketState = 'offline';
+			console.log('[io.smarthomeng] no answer on ping');
+		},2000);
 	},
 
 
@@ -135,6 +151,13 @@ var io = {
 	 */
 	version: 4,
 	shngProto: null,
+
+	/**
+	 * supported aggregate functions in the backends database
+	 * https://smarthomeng.github.io/smarthome/plugins/database/README.html
+	 * TODO: check how comparator for count can be implemented, e.g. "count>10"
+	 */
+	aggregates: ['avg', 'min', 'max', 'diff', 'sum', 'on', 'raw', 'count', 'countall', 'integrate', 'differentiate', 'duration'],
 	
 	/**
 	 * This is the websocket module / plugin and the websocket opening time
@@ -149,6 +172,8 @@ var io = {
 	
 	triggerqueue: [],
 	listeners: [],
+	monitorComplete: null,
+	openItems: [],	
 	
 	/**
 	 * Opens the connection and add some handlers
@@ -203,6 +228,12 @@ var io = {
 		};
 
 		io.socket.onmessage = function (event) {
+			clearTimeout(io.pingTimer);
+			clearTimeout(io.pingInterval);
+			io.socketState = 'running';
+			if (sv.config.pingInterval > 0)
+				io.pingInterval = setTimeout(io.ping, sv.config.pingInterval * 1000);
+
 			var item, val;
 			var data = JSON.parse(event.data);
 			// DEBUG:
@@ -214,9 +245,8 @@ var io = {
 						item = data.items[i][0];
 						val = data.items[i][1];
 						/* not supported:
-						 if (data.items[i].length > 2) {
-						 data.p[i][2] options for visu
-						 };
+						 if (data.items[i].length > 2)
+							data.p[i][2] options for visu;
 						 */
 
 						// convert binary
@@ -227,16 +257,16 @@ var io = {
 							val = 1;
 						}
 						widget.update(item, val);
+						io.openItems.removeEntry(item);
 						if (item != io.listeners[item])
 							widget.update(io.listeners[item], val);
 					}
 					break;
 
 				case 'series':
-					//if (io.version <= 3)
-					//	data.sid = data.sid + '.100';
-					
-					widget.update(data.sid.replace(/\|/g, '\.'), data.series);
+					item = data.sid.replace(/\|/g, '\.');
+					widget.update(item, data.series);
+					io.openItems.removeEntry(item);
 					break;
 
 				case 'dialog':
@@ -246,10 +276,17 @@ var io = {
 				case 'log':
 					if (data.init) {
 						widget.update(data.name, data.log);
+						io.openItems.removeEntry(data.name);
 					}
 					else {
 						var log = widget.get(data.name); // only a reference
-
+						
+						// workaround for shNG bug which sends updates for all registered memlogs instead of only the ones requested by smartVISU
+						if (log == undefined) {
+							console.log('[io.smarthomeng] ignoring data for not requested log "' + data.name + '"');
+							break;
+						}
+						
 						for (var i = 0; i < data.log.length; i++) {
 							log.unshift(data.log[i]);
 
@@ -273,7 +310,11 @@ var io = {
 
 				case 'url':
 					$.mobile.changePage(data.url);
-					break;					
+					break;	
+			}
+			if (io.monitorCompleted == false && io.openItems.length == 0){
+				io.monitorCompleted = true;
+				$('.smartvisu .visu').removeClass('blink');
 			}
 		};
 
@@ -312,9 +353,8 @@ var io = {
 	 * Monitors the items
 	 */
 	monitor: function () {
-		//if (widget.listeners().length) {
-			// subscribe all items used on the page
-			// or cancel subscription by sending an empty array 
+		io.monitorCompleted = false;
+		// subscribe all items used on the page or cancel subscription by sending an empty array 
 		io.listeners = [];
 		var listeners = widget.listeners();
 		var listenItem;
@@ -326,17 +366,18 @@ var io = {
 				io.listeners[listenItem] = listeners[i];
 		}
 		io.send({'cmd': 'monitor', 'items': Object.keys(io.listeners)});
-		//}
+		io.openItems = Object.keys(io.listeners);
 
 		// subscribe all plots defined for the page 
-		// types: avg, min, max, on
 		io.startseries ();
 		
-		// log
+		// subscribe all log items defined for the page
 		widget.log().each(function (idx) {
 			io.send({'cmd': 'log', 'name': $(this).attr('data-item'), 'max': $(this).attr('data-count')});
-		
+			io.openItems.push($(this).attr('data-item'));
 		});
+		if (sv.config.driver.signalBusy)
+			$('.smartvisu .visu').addClass('blink');
 	},
 
 	/**
@@ -374,6 +415,8 @@ var io = {
 				if (!unique[items[i]] && definition != null) {
 					io.send({'cmd': seriescmd, 'item': definition.item, 'series': definition.mode, 'start': definition.start, 'end': definition.end, 'count': definition.count});
 					unique[items[i]] = 1;
+					if (seriescmd == 'series')
+						io.openItems.push(items[i]);
 					if (singleCancel == true)
 						delete widget.buffer[items[i]];
 				}

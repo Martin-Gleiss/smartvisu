@@ -21,7 +21,8 @@
         height: 45px;
     }
 
-    .ui-header img.icon, .ui-header svg.icon1 {
+    .ui-header img.icon, .ui-header svg.icon0,
+	.ui-header svg.icon1 {
         width: 32px;
         height: 32px;
     }

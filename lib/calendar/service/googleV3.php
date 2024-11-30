@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package	 smartVISU
  * @author	  Martin Gleiß (basic version), Carsten Gotschlich (google API V3), Thorsten Moll (cache, multiple calendars), Stefan Widmer (refactoring, made configurable)
- * @copyright   2012 - 2017
+ * @copyright   2012 - 2024
  * @license	 GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       Google API
@@ -117,7 +117,7 @@ class calendar_google extends calendar
 			}
 
 			// then retrieve the users calendars available and cache them, too
-			if(!isset($cache_content['calendarList']) || count(array_diff($this->calendar_names, array_keys($cache_content['calendarList']))) > 0) {
+			if(!isset($cache_content['calendarList']) || \count(array_diff($this->calendar_names, array_keys($cache_content['calendarList']))) > 0) {
 				$resturl = 'https://www.googleapis.com/calendar/v3/users/me/calendarList?fields=items(id,summary,colorId,backgroundColor)';
 				$content = @file_get_contents($resturl, false, $context);
 				if ($content !== false) {
@@ -158,11 +158,11 @@ class calendar_google extends calendar
 
 			foreach ($cache_content['calendarList'] as $calkey => $calmetadata) {
 				// check if calendar is in selected list
-				if(!in_array($calkey, $this->calendar_names) && $this->calendar_names !== array(''))
+				if(!\in_array($calkey, $this->calendar_names) && $this->calendar_names !== array(''))
 					continue;
 
 				// if max event count is reached, just query events which end before last one
-				$last = count($this->data) == $this->count ? end($this->data) : null;
+				$last = \count($this->data) == $this->count ? end($this->data) : null;
 
 				$resturl = 'https://www.googleapis.com/calendar/v3/calendars/'. urlencode($calmetadata['id']) . '/events?fields=items(start,end,colorId,summary,description,location,htmlLink)&singleEvents=true&q=-%22%40visu+no%22&orderBy=startTime&timeMin='.urlencode(date('c')) . ($last != null ? '&timeMax='.urlencode(date('c', $last['end'])) : '') . '&maxResults='. $this->count;
 				$content = @file_get_contents($resturl, false, $context);

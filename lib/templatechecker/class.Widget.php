@@ -203,7 +203,7 @@ class Widget {
 					}
 				}
 				else
-					$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
+					$currentParam = trim($currentParam, " \t\n\r\0\x0B'\"");
 				
 				$paramArray[] = $currentParam;
 				if ($topLevel == 1) {
@@ -231,7 +231,7 @@ class Widget {
 					}
 			}
 			else
-				$currentParam = trim($currentParam, " \t\n\r\0\x0B'");
+				$currentParam = trim($currentParam, " \t\n\r\0\x0B'\"");
 
 			$paramArray[] = $currentParam;
 			if ($topLevel == 1) 
@@ -280,7 +280,7 @@ class Widget {
 		$this->name = $name;
 		$this->paramString = $paramString;
 		$this->paramArray = $paramArray;
-		$this->paramCount = count($paramArray);
+		$this->paramCount = \count($paramArray);
 		$this->paramStringArray = $paramStringArray;
 	}
 

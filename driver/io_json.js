@@ -1,8 +1,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiss
- * @copyright   2012 - 2015
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       JSON
@@ -16,6 +16,7 @@
  * @hide		driver_username
  * @hide		driver_password
  * @hide		driver_loopback
+ * @hide        driver_signalBusy
  * @hide		sv_hostname
  */
 
@@ -104,6 +105,12 @@ var io = {
 	timer: 0,
 	timer_run: false,
 	errorNotification: null,
+	
+	/**
+	 * supported aggregate functions in the backends database
+	 */
+	aggregates: [],
+
 
 	/**
 	 * The real-time polling loop, only if there are listeners
@@ -221,12 +228,4 @@ var io = {
 		}
 	},
 	
-	/**
-	 * stop all subscribed series
-	 */
-	stopseries: function () {
-		// TODO
-		$.noop;
-	}
-
 };

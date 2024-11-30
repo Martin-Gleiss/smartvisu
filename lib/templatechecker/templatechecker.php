@@ -4,7 +4,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Thomas Ernst
- * @copyright   2016
+ * @copyright   2016 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -19,7 +19,7 @@ require_once 'class.TemplateChecker.php';
 require_once 'class.Items.php';
 require_once 'class.OldWidgets.php';
 require_once 'class.itemProperties.php';
-
+require_once const_path.'vendor/autoload.php';
 
 
 RequestHandler::run();
@@ -87,7 +87,7 @@ class RequestHandler {
 			if (substr($item, 0, 1) != '.') {
 				if (is_dir(const_path . $dir . '/' . $item) && $subfolders == "true") {
 					$ret = array_merge($ret, self::getFileArray($dir . '/' . $item, $suffix, $subfolders));
-				} else if (substr($item, -strlen($suffix)) == $suffix) {
+				} else if (substr($item, -\strlen($suffix)) == $suffix) {
 					$id = str_replace('/', '-', $dir . '/' . $item);
 					$id = str_replace('.', '-', $id);
 					$ret[$id] = $dir . '/' . $item;

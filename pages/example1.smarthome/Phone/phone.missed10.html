@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2024
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,30 +12,30 @@
 {% block sidebar %}
 	<ul data-role="listview" data-dividertheme="c">
 		<li data-role="list-divider">Telefonlisten</li>
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=Phone/phone_plus">
-				<img class="icon" src="{{ icon0 }}phone_call.svg" />
+				{{ lib.svgimg ('', 'phone_call.svg', 'icon0', '') }}
 
-				<h3>letzten 10</h3>
+				<h3>letzte 10</h3>
 			</a>
 		</li>
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=Phone/phone20">
-				<img class="icon" src="{{ icon0 }}phone_call.svg" />
+				{{ lib.svgimg ('', 'phone_call.svg', 'icon0', '') }}
 
-				<h3>letzten 20</h3>
+				<h3>letzte 20</h3>
 			</a>
 		</li>
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=Phone/phone30">
-				<img class="icon" src="{{ icon0 }}phone_call.svg" />
+				{{ lib.svgimg ('', 'phone_call.svg', 'icon0', '') }}
 
-				<h3>letzten 30</h3>
+				<h3>letzte 30</h3>
 			</a>
 		</li>
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=Phone/phone.missed10">
-				<img class="icon" src="{{ icon0 }}phone_missed_out.svg" />
+				{{ lib.svgimg ('', 'phone_missed_out.svg', 'icon0', '') }}
 
 				<h3>verpasste Anrufe</h3>
 
@@ -49,7 +49,7 @@
 
 {% block content %}
 
-	<h1><img class="icon" src='{{ icon0 }}it_telephone.svg' />Telefonliste - letzten 10 verpassten</h1>
+	<h1>{{ lib.svgimg ('', 'it_telephone.svg', 'icon0', '') }}Telefonliste - letzte 10 verpasste</h1>
 
 	{{ phone.missedlist('phonelist', '', 10) }}
 

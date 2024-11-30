@@ -41,7 +41,7 @@
 		{% set cfg_data = read_config(source) %}
 		
 		/** if configured driver is not available and has been changed to 'offline' by root.html, show the active driver (which should be 'offline') */
-		{% if cfg_data['driver'] is defined and cfg_data['driver'] != config_driver %}
+		{% if cfg_data['driver'] is defined and not isfile('driver/io_' ~ cfg_data['driver'] ~ '.js')  %}
 			{% set cfg_data = cfg_data | merge({'driver': config_driver }) %}
 		{% endif %}
 
@@ -181,8 +181,9 @@
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a" >
 								<h3>{{ lang('configuration_page', 'functions', 'label') }}</h3>
 								{{ forms.config_flip(source, values, 'updatecheck') }}
-								{{ forms.config_flip(source, values, 'driver_loopback') }}
 								{{ forms.config_flip(source, values, 'collapsible_reset') }}
+								{{ forms.config_flip(source, values, 'driver_loopback') }}
+								{{ forms.config_flip(source, values, 'driver_signalBusy') }}
 							</div>
 						</div>
 					</div>

@@ -1,8 +1,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiss
- * @copyright   2012 - 2015
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @default     driver_port            1028
@@ -16,6 +16,7 @@
  * @hide		driver_username
  * @hide		driver_password
  * @hide		driver_loopback
+ * @hide        driver_signalBusy
  * @hide		sv_hostname
  */
 
@@ -103,6 +104,13 @@ var io = {
 
 	timer: 0,
 	timer_run: false,
+	
+	/**
+	 * supported aggregate functions in the backends database
+	 * TODO: check which aggregates are valid for ioBroker
+	 */
+	aggregates: [],
+
 
 	/**
 	 * The real-time polling loop, only if there are listeners
@@ -202,12 +210,4 @@ var io = {
 		}
 	},
 	
-	/**
-	 * stop all subscribed series
-	 */
-	stopseries: function () {
-		// TODO
-		$.noop;
-	}
-
 };

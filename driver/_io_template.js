@@ -81,6 +81,13 @@ var io = {
 	// only be called from the public functions above. You may add or delete some
 	// to fit your requirements and your connected system.
 
+
+	/**
+	 * supported aggregate functions in the backends database
+	 * TODO: check which aggregates are valid for the backend and adapt the array
+	 */
+	aggregates: ['avg', 'min', 'max', 'sum', 'diff', 'rate', 'on', 'raw', 'count'],
+
 	// TODO
 
 	/**

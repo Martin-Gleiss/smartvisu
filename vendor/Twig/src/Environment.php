@@ -41,11 +41,11 @@ use Twig\TokenParser\TokenParserInterface;
  */
 class Environment
 {
-    public const VERSION = '1.44.6';
-    public const VERSION_ID = 14406;
+    public const VERSION = '1.44.8';
+    public const VERSION_ID = 14408;
     public const MAJOR_VERSION = 1;
     public const MINOR_VERSION = 44;
-    public const RELEASE_VERSION = 6;
+    public const RELEASE_VERSION = 8;
     public const EXTRA_VERSION = '';
 
     protected $charset;
@@ -119,7 +119,7 @@ class Environment
      *                   (default to -1 which means that all optimizations are enabled;
      *                   set it to 0 to disable).
      */
-    public function __construct(LoaderInterface $loader = null, $options = [])
+    public function __construct(?LoaderInterface $loader = null, $options = [])
     {
         if (null !== $loader) {
             $this->setLoader($loader);

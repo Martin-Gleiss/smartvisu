@@ -1,0 +1,1565 @@
+/*!
+* jQuery Mobile 1.4.5
+* Git HEAD hash: 68e55e78b292634d3991c795f06f5e37a512decc <> Date: Fri Oct 31 2014 17:33:30 UTC
+* http://jquerymobile.com
+*
+* Copyright 2010, 2014 jQuery Foundation, Inc. and othercontributors
+* Released under the MIT license.
+* http://jquery.org/license
+*
+* @default	design_icon0	icons/sw/
+* @default	design_icon1	icons/bl/
+*
+*/
+
+@import '../icons/sw/jquery.mobile.icons.min.css';
+
+/* Globals */
+/* Font
+-----------------------------------------------------------------------------------------------------------*/
+.ui-body-a,
+.ui-page-theme-a .ui-body-inherit,
+html .ui-bar-a .ui-body-inherit,
+html .ui-body-a .ui-body-inherit,
+html body .ui-group-theme-a .ui-body-inherit,
+html .ui-panel-page-container-a {
+        background: #ffffff /*{a-body-background-color}*/;
+        border-color: #dddddd /*{a-body-border}*/;
+        color: #333333 /*{a-body-color}*/;
+        text-shadow: 0 /*{a-body-shadow-x}*/ -1px /*{a-body-shadow-y}*/ 1px /*{a-body-shadow-radius}*/ #f3f3f3 /*{a-body-shadow-color}*/;
+        /* Copied from 1.3 custom theme: */
+        background-image: -webkit-gradient(linear, left top, left bottom, from( #f8f8f8 ), to( #dddddd )); /* Saf4+, Chrome */
+        background-image: -webkit-linear-gradient( #f8f8f8, #dddddd ); /* Chrome 10+, Saf5.1+ */
+        background-image:    -moz-linear-gradient( #f8f8f8, #dddddd ); /* FF3.6 */
+        background-image:     -ms-linear-gradient( #f8f8f8, #dddddd ); /* IE10 */
+        background-image:      -o-linear-gradient( #f8f8f8, #dddddd ); /* Opera 11.10+ */
+        background-image:         linear-gradient( #f8f8f8, #dddddd );
+}
+html {
+	font-size: 100%;
+}
+body,
+input,
+select,
+textarea,
+button,
+.ui-btn {
+	font-size: 1em;
+	line-height: 1.3;
+	font-family: Dosis, Helvetica, Arial, sans-serif /*{global-font-family}*/;
+}
+legend,
+.ui-input-text input,
+.ui-input-search input {
+	color: inherit;
+	text-shadow: inherit;
+}
+/* Form labels (overrides font-weight bold in bars, and mini font-size) */
+.ui-mobile label,
+div.ui-controlgroup-label {
+	font-weight: normal;
+	font-size: 14px;
+}
+/* Separators
+-----------------------------------------------------------------------------------------------------------*/
+/* Field contain separator (< 28em) */
+.ui-field-contain {
+	border-bottom-color: #828282;
+	border-bottom-color: rgba(0,0,0,.15);
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+/* Table opt-in classes: strokes between each row, and alternating row stripes */
+/* Classes table-stroke and table-stripe are deprecated in 1.4. */
+.table-stroke thead th,
+.table-stripe thead th,
+.table-stripe tbody tr:last-child {
+	border-bottom: 1px solid #d6d6d6; /* non-RGBA fallback */
+	border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.table-stroke tbody th,
+.table-stroke tbody td {
+	border-bottom: 1px solid #e6e6e6; /* non-RGBA fallback  */
+	border-bottom: 1px solid rgba(0,0,0,.05);
+}
+.table-stripe.table-stroke tbody tr:last-child th,
+.table-stripe.table-stroke tbody tr:last-child td {
+	border-bottom: 0;
+}
+.table-stripe tbody tr:nth-child(odd) td,
+.table-stripe tbody tr:nth-child(odd) th {
+	background-color: #eeeeee; /* non-RGBA fallback  */
+	background-color: rgba(0,0,0,.04);
+}
+/* Buttons
+-----------------------------------------------------------------------------------------------------------*/
+.ui-btn,
+label.ui-btn {
+	font-weight: bold;
+	border-width: 1px;
+	border-style: solid;
+}
+.ui-btn {
+	text-decoration: none !important;
+}
+/** set button after checkbox to flat blue 
+.ui-checkbox .ui-btn.ui-corner-all.ui-btn-inherit.ui-btn-icon-left.ui-checkbox-on {
+	background-color: #6BABFF;
+	background-image: inherit;
+}
+*/
+
+/* Corner rounding
+-----------------------------------------------------------------------------------------------------------*/
+/* Class ui-btn-corner-all deprecated in 1.4 */
+.ui-corner-all {
+	-webkit-border-radius: .6em /*{global-radii-blocks}*/;
+	border-radius: .6em /*{global-radii-blocks}*/;
+}
+/* Buttons */
+.ui-btn-corner-all,
+.ui-btn.ui-corner-all,
+/* Slider track */
+.ui-slider-track.ui-corner-all,
+/* Flipswitch */
+.ui-flipswitch.ui-corner-all,
+/* Count bubble */
+.ui-li-count {
+	-webkit-border-radius: .3125em /*{global-radii-buttons}*/;
+	border-radius: .3125em /*{global-radii-buttons}*/;
+}
+/* Icon-only buttons */
+.ui-btn-icon-notext.ui-btn-corner-all,
+.ui-btn-icon-notext.ui-corner-all {
+	/*-webkit-border-radius: .5em;*/
+	/*border-radius: .5em;*/
+}
+/* Radius clip workaround for cleaning up corner trapping */
+.ui-btn-corner-all,
+.ui-corner-all {
+	-webkit-background-clip: padding;
+	background-clip: padding-box;
+}
+/* Popup arrow */
+.ui-popup.ui-corner-all > .ui-popup-arrow-guide {
+	left: .6em /*{global-radii-blocks}*/;
+	right: .6em /*{global-radii-blocks}*/;
+	top: .6em /*{global-radii-blocks}*/;
+	bottom: .6em /*{global-radii-blocks}*/;
+}
+/* Shadow
+-----------------------------------------------------------------------------------------------------------*/
+.ui-shadow {
+	-webkit-box-shadow: 0 1px 3px /*{global-box-shadow-size}*/ rgba(0,0,0,.2) /*{global-box-shadow-color}*/;
+	-moz-box-shadow: 0 1px 3px /*{global-box-shadow-size}*/ rgba(0,0,0,.2) /*{global-box-shadow-color}*/;
+	box-shadow: 0 1px 3px /*{global-box-shadow-size}*/ rgba(0,0,0,.2) /*{global-box-shadow-color}*/;
+}
+.ui-shadow-inset {
+	-webkit-box-shadow: inset 0 1px 3px /*{global-box-shadow-size}*/ rgba(0,0,0,.2) /*{global-box-shadow-color}*/;
+	-moz-box-shadow: inset 0 1px 3px /*{global-box-shadow-size}*/ rgba(0,0,0,.2) /*{global-box-shadow-color}*/;
+	box-shadow: inset 0 1px 3px /*{global-box-shadow-size}*/ rgba(0,0,0,.2) /*{global-box-shadow-color}*/;
+}
+.ui-overlay-shadow {
+	-webkit-box-shadow: 0 0 12px 		rgba(0,0,0,.6);
+	-moz-box-shadow: 0 0 12px 			rgba(0,0,0,.6);
+	box-shadow: 0 0 12px 				rgba(0,0,0,.6);
+}
+/* Icons
+-----------------------------------------------------------------------------------------------------------*/
+.ui-btn-icon-left:after,
+.ui-btn-icon-right:after,
+.ui-btn-icon-top:after,
+.ui-btn-icon-bottom:after,
+.ui-btn-icon-notext:after {
+	background-color: #666 /*{global-icon-color}*/;
+	background-color: rgba(255,255,255,.04) /*{global-icon-disc}*/;
+	background-position: center center;
+	background-repeat: no-repeat;
+	-webkit-border-radius: .5em;
+	border-radius: .5em;
+}
+/* Alt icons */
+.ui-alt-icon.ui-btn:after,
+.ui-alt-icon .ui-btn:after,
+html .ui-alt-icon.ui-checkbox-off:after,
+html .ui-alt-icon.ui-radio-off:after,
+html .ui-alt-icon .ui-checkbox-off:after,
+html .ui-alt-icon .ui-radio-off:after {
+	background-color: #666 /*{global-icon-color}*/;
+	background-color: rgba(25, 181, 240, 0.43) /*{global-icon-disc}*/;
+}
+/* No disc */
+.ui-nodisc-icon.ui-btn:after,
+.ui-nodisc-icon .ui-btn:after {
+	background-color: transparent;
+}
+/* Icon shadow */
+.ui-shadow-icon.ui-btn:after,
+.ui-shadow-icon .ui-btn:after {
+	-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.3) /*{global-icon-shadow}*/;
+	-moz-box-shadow: 0 1px 0 rgba(255,255,255,.3) /*{global-icon-shadow}*/;
+	box-shadow: 0 1px 0 rgba(255,255,255,.3) /*{global-icon-shadow}*/;
+}
+/* Checkbox and radio */
+.ui-btn.ui-checkbox-off:after,
+.ui-btn.ui-checkbox-on:after,
+.ui-btn.ui-radio-off:after,
+.ui-btn.ui-radio-on:after {
+	display: block;
+	width: 18px;
+	height: 18px;
+	margin: -9px 2px 0 2px;
+}
+.ui-checkbox-off:after,
+.ui-btn.ui-radio-off:after {
+	filter: Alpha(Opacity=30);
+	opacity: .3;
+}
+.ui-btn.ui-checkbox-off:after,
+.ui-btn.ui-checkbox-on:after {
+	-webkit-border-radius: .1875em;
+	border-radius: .1875em;
+}
+.ui-btn.ui-checkbox-off:after {
+	background-color: #666;
+	background-color: rgba(0,0,0,.3);
+}
+.ui-radio .ui-btn.ui-radio-on:after {
+	background-image: none;
+	background-color: #333333;
+	width: 8px;
+	height: 8px;
+	border-width: 5px;
+	border-style: solid;
+}
+.ui-alt-icon.ui-btn.ui-radio-on:after,
+.ui-alt-icon .ui-btn.ui-radio-on:after {
+	background-color: #000;
+}
+/* Loader */
+.ui-icon-loading {
+	background: url("images/ajax-loader.gif");
+	background-size: 2.875em 2.875em;
+}
+/* Swatches */
+/* A
+-----------------------------------------------------------------------------------------------------------*/
+/* Bar: Toolbars, dividers, slider track */
+.ui-bar-a,
+.ui-page-theme-a .ui-bar-inherit,
+html .ui-bar-a .ui-bar-inherit,
+html .ui-body-a .ui-bar-inherit,
+html body .ui-group-theme-a .ui-bar-inherit {
+	background-color: #f5f5f5 /*{a-bar-background-color}*/;
+	border-color: #c9c9c9 /*{a-bar-border}*/;
+	color: #333333 /*{a-bar-color}*/;
+	text-shadow: 0 /*{a-bar-shadow-x}*/ 1px /*{a-bar-shadow-y}*/ 0 /*{a-bar-shadow-radius}*/ #dddddd /*{a-bar-shadow-color}*/;
+	font-weight: bold;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #f8f8f8 ), to( #dddddd )); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient( #f8f8f8, #dddddd ); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient( #f8f8f8, #dddddd ); /* FF3.6 */
+    background-image:     -ms-linear-gradient( #f8f8f8, #dddddd ); /* IE10 */
+    background-image:      -o-linear-gradient( #f8f8f8, #dddddd ); /* Opera 11.10+ */
+    background-image:         linear-gradient( #f8f8f8, #dddddd );
+}
+html .ui-slider-track.ui-shadow-inset.ui-bar-inherit.ui-corner-all.ui-vertical {
+	background-color: #f5f5f5 /*{a-bar-background-color}*/;
+	border-color: #c9c9c9 /*{a-bar-border}*/;
+	color: #333333 /*{a-bar-color}*/;
+	text-shadow: 0 /*{a-bar-shadow-x}*/ 1px /*{a-bar-shadow-y}*/ 0 /*{a-bar-shadow-radius}*/ #dddddd /*{a-bar-shadow-color}*/;
+	font-weight: bold;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #f8f8f8 ), to( #dddddd )); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient( left, #f8f8f8, #dddddd ); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient( #f8f8f8, #dddddd ); /* FF3.6 */
+    background-image:     -ms-linear-gradient( right, #f8f8f8, #dddddd ); /* IE10 */
+    background-image:      -o-linear-gradient( right, #f8f8f8, #dddddd ); /* Opera 11.10+ */
+    background-image:         linear-gradient( to right, #f8f8f8, #dddddd );
+}
+.ui-bar-a {
+	border-width: 1px;
+	border-style: solid;
+}
+/* Page and overlay */
+.ui-overlay-a,
+.ui-page-theme-a,
+.ui-page-theme-a .ui-panel-wrapper {
+	background-color: #f9f9f9 /*{a-page-background-color}*/;
+	border-color: #454545 /*{a-page-border}*/;
+	color: #333333 /*{a-page-color}*/;
+	text-shadow: 0 /*{a-page-shadow-x}*/ 1px /*{a-page-shadow-y}*/ 0 /*{a-page-shadow-radius}*/ #dddddd /*{a-page-shadow-color}*/;
+}
+/* Body: Read-only lists, text inputs, collapsible content */
+.ui-body-a,
+.ui-page-theme-a .ui-body-inherit,
+html .ui-bar-a .ui-body-inherit,
+html .ui-body-a .ui-body-inherit,
+html body .ui-group-theme-a .ui-body-inherit,
+html .ui-panel-page-container-a {
+	background-color: #2a2a2a /*{a-body-background-color}*/;
+	border-color: #f5f5f5 /*{a-body-border}*/;
+	color: #333333 /*{a-body-color}*/;
+	text-shadow: 0 /*{a-body-shadow-x}*/ 1px /*{a-body-shadow-y}*/ 0 /*{a-body-shadow-radius}*/ #dddddd /*{a-body-shadow-color}*/;
+}
+.ui-body-a {
+	border-width: 1px;
+	border-style: solid;
+}
+/* Links */
+.ui-page-theme-a a,
+html .ui-bar-a a,
+html .ui-body-a a,
+html body .ui-group-theme-a a {
+	color: #000000 /*{a-link-color}*/;
+	font-weight: bold;
+}
+.ui-page-theme-a a:visited,
+html .ui-bar-a a:visited,
+html .ui-body-a a:visited,
+html body .ui-group-theme-a a:visited {
+    color: #000000 /*{a-link-visited}*/;
+}
+.ui-page-theme-a a:hover,
+html .ui-bar-a a:hover,
+html .ui-body-a a:hover,
+html body .ui-group-theme-a a:hover {
+	color: #0088bb /*{a-link-hover}*/;
+}
+.ui-page-theme-a a:active,
+html .ui-bar-a a:active,
+html .ui-body-a a:active,
+html body .ui-group-theme-a a:active {
+	color: #0088bb /*{a-link-active}*/;
+}
+/* Button up */
+.ui-page-theme-a .ui-btn,
+html .ui-bar-a .ui-btn,
+html .ui-body-a .ui-btn,
+html body .ui-group-theme-a .ui-btn,
+html head + body .ui-btn.ui-btn-a,
+/* Button visited */
+.ui-page-theme-a .ui-btn:visited,
+html .ui-bar-a .ui-btn:visited,
+html .ui-body-a .ui-btn:visited,
+html body .ui-group-theme-a .ui-btn:visited,
+html head + body .ui-btn.ui-btn-a:visited {
+	background-color: #ffffff /*{a-bup-background-color}*/;
+	border-color: #dddddd /*{a-bup-border}*/;
+	color: #333333 /*{a-bup-color}*/;
+	text-shadow: 0 /*{a-bup-shadow-x}*/ 1px /*{a-bup-shadow-y}*/ 0 /*{a-bup-shadow-radius}*/ #dddddd /*{a-bup-shadow-color}*/;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #f9f9f9 /*{a-bup-background-start}*/), to( #a6a6a6 /*{a-bup-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #f9f9f9 /*{a-bup-background-start}*/, #a6a6a6 /*{a-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #f9f9f9 /*{a-bup-background-start}*/, #a6a6a6 /*{a-bup-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #f9f9f9 /*{a-bup-background-start}*/, #a6a6a6 /*{a-bup-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #f9f9f9 /*{a-bup-background-start}*/, #a6a6a6 /*{a-bup-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #f9f9f9 /*{a-bup-background-start}*/, #a6a6a6 /*{a-bup-background-end}*/);
+}
+/* Button hover */
+.ui-page-theme-a .ui-btn:hover,
+html .ui-bar-a .ui-btn:hover,
+html .ui-body-a .ui-btn:hover,
+html body .ui-group-theme-a .ui-btn:hover,
+html head + body .ui-btn.ui-btn-a:hover {
+	background-color: #ededed /*{a-bhover-background-color}*/;
+	border-color: #dddddd /*{a-bhover-border}*/;
+	color: #333333 /*{a-bhover-color}*/;
+	text-shadow: 0 /*{a-bhover-shadow-x}*/ 1px /*{a-bhover-shadow-y}*/ 0 /*{a-bhover-shadow-radius}*/ #dddddd /*{a-bhover-shadow-color}*/;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #ededed /*{a-bhover-background-start}*/), to( #d3d3d3 /*{a-bhover-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #ededed /*{a-bhover-background-start}*/, #d3d3d3 /*{a-bhover-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #ededed /*{a-bhover-background-start}*/, #d3d3d3 /*{a-bhover-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #ededed /*{a-bhover-background-start}*/, #d3d3d3 /*{a-bhover-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #ededed /*{a-bhover-background-start}*/, #d3d3d3 /*{a-bhover-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #ededed /*{a-bhover-background-start}*/, #d3d3d3 /*{a-bhover-background-end}*/);
+}
+/* Button down */
+.ui-page-theme-a .ui-btn:active,
+html .ui-bar-a .ui-btn:active,
+html .ui-body-a .ui-btn:active,
+html body .ui-group-theme-a .ui-btn:active,
+html head + body .ui-btn.ui-btn-a:active {
+	background-color: #969696 /*{a-bdown-background-color}*/;
+	border-color: #dddddd /*{a-bdown-border}*/;
+	color: #333333 /*{a-bdown-color}*/;
+	text-shadow: 0 /*{a-bdown-shadow-x}*/ 1px /*{a-bdown-shadow-y}*/ 0 /*{a-bdown-shadow-radius}*/ #dddddd /*{a-bdown-shadow-color}*/;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #8e8e8e /*{a-bdown-background-start}*/), to( #a2a2a2 /*{a-bdown-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #8e8e8e /*{a-bdown-background-start}*/, #a2a2a2 /*{a-bdown-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #8e8e8e /*{a-bdown-background-start}*/, #a2a2a2 /*{a-bdown-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #8e8e8e /*{a-bdown-background-start}*/, #a2a2a2 /*{a-bdown-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #8e8e8e /*{a-bdown-background-start}*/, #a2a2a2 /*{a-bdown-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #8e8e8e /*{a-bdown-background-start}*/, #a2a2a2 /*{a-bdown-background-end}*/);
+}
+/* Active button */
+.ui-page-theme-a .ui-btn.ui-btn-active,
+html .ui-bar-a .ui-btn.ui-btn-active,
+html .ui-body-a .ui-btn.ui-btn-active,
+html body .ui-group-theme-a .ui-btn.ui-btn-active,
+html head + body .ui-btn.ui-btn-a.ui-btn-active,
+/* Active checkbox icon */
+.ui-page-theme-a .ui-checkbox-on:after,
+html .ui-bar-a .ui-checkbox-on:after,
+html .ui-body-a .ui-checkbox-on:after,
+html body .ui-group-theme-a .ui-checkbox-on:after,
+.ui-btn.ui-checkbox-on.ui-btn-a:after,
+/* Active flipswitch background */
+.ui-page-theme-a .ui-flipswitch-active,
+html .ui-bar-a .ui-flipswitch-active,
+html .ui-body-a .ui-flipswitch-active,
+html body .ui-group-theme-a .ui-flipswitch-active,
+html body .ui-flipswitch.ui-bar-a.ui-flipswitch-active,
+/* Active slider track */
+.ui-page-theme-a .ui-slider-track .ui-btn-active,
+html .ui-bar-a .ui-slider-track .ui-btn-active,
+html .ui-body-a .ui-slider-track .ui-btn-active,
+html body .ui-group-theme-a .ui-slider-track .ui-btn-active,
+html body div.ui-slider-track.ui-body-a .ui-btn-active {
+	background-color: #6BABFF /*{a-active-background-color}*/;
+	/*border-color: #125d79;*/
+	color: #333333 /*{a-active-color}*/;
+	/*text-shadow: 0 1px 0 #0088bb;*/
+	background-image: none;
+}
+/* Active radio button icon */
+.ui-page-theme-a .ui-radio-on:after,
+html .ui-bar-a .ui-radio-on:after,
+html .ui-body-a .ui-radio-on:after,
+html body .ui-group-theme-a .ui-radio-on:after,
+.ui-btn.ui-radio-on.ui-btn-a:after {
+	border-color: #6BABFF /*{a-active-background-color}*/;
+}
+/* Focus */
+.ui-page-theme-a .ui-btn:focus,
+html .ui-bar-a .ui-btn:focus,
+html .ui-body-a .ui-btn:focus,
+html body .ui-group-theme-a .ui-btn:focus,
+html head + body .ui-btn.ui-btn-a:focus,
+/* Focus buttons and text inputs with div wrap */
+.ui-page-theme-a .ui-focus,
+html .ui-bar-a .ui-focus,
+html .ui-body-a .ui-focus,
+html body .ui-group-theme-a .ui-focus,
+html head + body .ui-btn-a.ui-focus,
+html head + body .ui-body-a.ui-focus {
+	-webkit-box-shadow: 0 0 12px #6BABFF /*{a-active-background-color}*/;
+	-moz-box-shadow: 0 0 12px #6BABFF /*{a-active-background-color}*/;
+	box-shadow: 0 0 12px #6BABFF /*{a-active-background-color}*/;
+}
+
+/* B
+-----------------------------------------------------------------------------------------------------------*/
+/* Bar: Toolbars, dividers, slider track */
+.ui-bar-b,
+.ui-page-theme-b .ui-bar-inherit,
+html .ui-bar-b .ui-bar-inherit,
+html .ui-body-b .ui-bar-inherit,
+html body .ui-group-theme-b .ui-bar-inherit {
+	background-color: #5e87b0 /*{b-bar-background-color}*/;
+	border-color: #456f9a /*{b-bar-border}*/;
+	color: #ffffff /*{b-bar-color}*/;
+	text-shadow: 0 /*{b-bar-shadow-x}*/ 1px /*{b-bar-shadow-y}*/ 1px /*{b-bar-shadow-radius}*/ #3e6790 /*{b-bar-shadow-color}*/;
+	font-weight: bold;
+}
+.ui-bar-b {
+	border-width: 1px;
+	border-style: solid;
+}
+/* Page and overlay */
+.ui-overlay-b,
+.ui-page-theme-b,
+.ui-page-theme-b .ui-panel-wrapper {
+	background-color: #f2f2f2 /*{b-page-background-color}*/;
+	border-color: #858585 /*{b-page-border}*/;
+	color: #f3f3f3 /*{b-page-color}*/;
+	text-shadow: 0 /*{b-page-shadow-x}*/ 0 /*{b-page-shadow-y}*/ 0 /*{b-page-shadow-radius}*/ #eeeeee /*{b-page-shadow-color}*/;
+}
+/* Body: Read-only lists, text inputs, collapsible content */
+.ui-body-b,
+.ui-page-theme-b .ui-body-inherit,
+html .ui-bar-b .ui-body-inherit,
+html .ui-body-b .ui-body-inherit,
+html body .ui-group-theme-b .ui-body-inherit,
+html .ui-panel-page-container-b {
+	background-color: #f2f2f2 /*{b-body-background-color}*/;
+	border-color: #858585 /*{b-body-border}*/;
+	color: #000000 /*{b-body-color}*/;
+	text-shadow: 0 /*{b-body-shadow-x}*/ 0 /*{b-body-shadow-y}*/ 0 /*{b-body-shadow-radius}*/ #eeeeee /*{b-body-shadow-color}*/;
+}
+.ui-body-b {
+	border-width: 1px;
+	border-style: solid;
+}
+/* Links */
+.ui-page-theme-b a,
+html .ui-bar-b a,
+html .ui-body-b a,
+html body .ui-group-theme-b a {
+	color: #2489CE /*{b-link-color}*/;
+	font-weight: bold;
+}
+.ui-page-theme-b a:visited,
+html .ui-bar-b a:visited,
+html .ui-body-b a:visited,
+html body .ui-group-theme-b a:visited {
+    color: #2489CE /*{b-link-visited}*/;
+}
+.ui-page-theme-b a:hover,
+html .ui-bar-b a:hover,
+html .ui-body-b a:hover,
+html body .ui-group-theme-b a:hover {
+	color: #2489CE /*{b-link-hover}*/;
+}
+.ui-page-theme-b a:active,
+html .ui-bar-b a:active,
+html .ui-body-b a:active,
+html body .ui-group-theme-b a:active {
+	color: #2489CE /*{b-link-active}*/;
+}
+/* Button up */
+.ui-page-theme-b .ui-btn,
+html .ui-bar-b .ui-btn,
+html .ui-body-b .ui-btn,
+html body .ui-group-theme-b .ui-btn,
+html head + body .ui-btn.ui-btn-b,
+/* Button visited */
+.ui-page-theme-b .ui-btn:visited,
+html .ui-bar-b .ui-btn:visited,
+html .ui-body-b .ui-btn:visited,
+html body .ui-group-theme-b .ui-btn:visited,
+html head + body .ui-btn.ui-btn-b:visited {
+	background-color: #396b9e /*{b-bup-background-color}*/;
+	border-color: #044062 /*{b-bup-border}*/;
+	color: #000000 /*{b-bup-color}*/;
+	text-shadow: 0 /*{b-bup-shadow-x}*/ 1px /*{b-bup-shadow-y}*/ 1px /*{b-bup-shadow-radius}*/ #194b7e /*{b-bup-shadow-color}*/;
+}
+/* Button hover */
+.ui-page-theme-b .ui-btn:hover,
+html .ui-bar-b .ui-btn:hover,
+html .ui-body-b .ui-btn:hover,
+html body .ui-group-theme-b .ui-btn:hover,
+html head + body .ui-btn.ui-btn-b:hover {
+	background-color: #4b88b6 /*{b-bhover-background-color}*/;
+	border-color: #00415e /*{b-bhover-border}*/;
+	color: #808080 /*{b-bhover-color}*/;
+	text-shadow: 0 /*{b-bhover-shadow-x}*/ 1px /*{b-bhover-shadow-y}*/ 1px /*{b-bhover-shadow-radius}*/ #194b7e /*{b-bhover-shadow-color}*/;
+}
+/* Button down */
+.ui-page-theme-b .ui-btn:active,
+html .ui-bar-b .ui-btn:active,
+html .ui-body-b .ui-btn:active,
+html body .ui-group-theme-b .ui-btn:active,
+html head + body .ui-btn.ui-btn-b:active {
+	background-color: #4e89c5 /*{b-bdown-background-color}*/;
+	border-color: #225377 /*{b-bdown-border}*/;
+	color: #ffffff /*{b-bdown-color}*/;
+	text-shadow: 0 /*{b-bdown-shadow-x}*/ 1px /*{b-bdown-shadow-y}*/ 1px /*{b-bdown-shadow-radius}*/ #194b7e /*{b-bdown-shadow-color}*/;
+}
+/* Active button */
+.ui-page-theme-b .ui-btn.ui-btn-active,
+html .ui-bar-b .ui-btn.ui-btn-active,
+html .ui-body-b .ui-btn.ui-btn-active,
+html body .ui-group-theme-b .ui-btn.ui-btn-active,
+html head + body .ui-btn.ui-btn-b.ui-btn-active,
+/* Active checkbox icon */
+.ui-page-theme-b .ui-checkbox-on:after,
+html .ui-bar-b .ui-checkbox-on:after,
+html .ui-body-b .ui-checkbox-on:after,
+html body .ui-group-theme-b .ui-checkbox-on:after,
+.ui-btn.ui-checkbox-on.ui-btn-b:after,
+/* Active flipswitch background */
+.ui-page-theme-b .ui-flipswitch-active,
+html .ui-bar-b .ui-flipswitch-active,
+html .ui-body-b .ui-flipswitch-active,
+html body .ui-group-theme-b .ui-flipswitch-active,
+html body .ui-flipswitch.ui-bar-b.ui-flipswitch-active,
+/* Active slider track */
+.ui-page-theme-b .ui-slider-track .ui-btn-active,
+html .ui-bar-b .ui-slider-track .ui-btn-active,
+html .ui-body-b .ui-slider-track .ui-btn-active,
+html body .ui-group-theme-b .ui-slider-track .ui-btn-active,
+html body div.ui-slider-track.ui-body-b .ui-btn-active {
+	background-color: #387bbe /*{b-active-background-color}*/;
+	border-color: #2373a5 /*{b-active-border}*/;
+	color: #ffffff /*{b-active-color}*/;
+	text-shadow: 0 /*{b-active-shadow-x}*/ 1px /*{b-active-shadow-y}*/ 0 /*{b-active-shadow-radius}*/ #3373a5 /*{b-active-shadow-color}*/;
+}
+/* Active radio button icon */
+.ui-page-theme-b .ui-radio-on:after,
+html .ui-bar-b .ui-radio-on:after,
+html .ui-body-b .ui-radio-on:after,
+html body .ui-group-theme-b .ui-radio-on:after,
+.ui-btn.ui-radio-on.ui-btn-b:after {
+	border-color: #387bbe /*{b-active-background-color}*/;
+}
+/* Focus */
+.ui-page-theme-b .ui-btn:focus,
+html .ui-bar-b .ui-btn:focus,
+html .ui-body-b .ui-btn:focus,
+html body .ui-group-theme-b .ui-btn:focus,
+html head + body .ui-btn.ui-btn-b:focus,
+/* Focus buttons and text inputs with div wrap */
+.ui-page-theme-b .ui-focus,
+html .ui-bar-b .ui-focus,
+html .ui-body-b .ui-focus,
+html body .ui-group-theme-b .ui-focus,
+html head + body .ui-btn-b.ui-focus,
+html head + body .ui-body-b.ui-focus {
+	-webkit-box-shadow: 0 0 12px #387bbe /*{b-active-background-color}*/;
+	-moz-box-shadow: 0 0 12px #387bbe /*{b-active-background-color}*/;
+	box-shadow: 0 0 12px #387bbe /*{b-active-background-color}*/;
+}
+
+
+/* C
+-----------------------------------------------------------------------------------------------------------*/
+/* Bar: Toolbars, dividers, slider track */
+.ui-bar-c,
+.ui-page-theme-c .ui-bar-inherit,
+html .ui-bar-c .ui-bar-inherit,
+html .ui-body-c .ui-bar-inherit,
+html body .ui-group-theme-c .ui-bar-inherit {
+	background-color: #44739e /*{c-bar-background-color}*/;
+	border-color: #464646 /*{c-bar-border}*/;
+	color: #ffffff /*{c-bar-color}*/;
+	text-shadow: 0 /*{c-bar-shadow-x}*/ 1px /*{c-bar-shadow-y}*/ 1px /*{c-bar-shadow-radius}*/ #f9f9f9 /*{c-bar-shadow-color}*/;
+	font-weight: bold;
+}
+.ui-bar-c {
+	border-width: 1px;
+	border-style: solid;
+}
+/* Page and overlay */
+.ui-overlay-c,
+.ui-page-theme-c,
+.ui-page-theme-c .ui-panel-wrapper {
+	background-color: #f9f9f9 /*{c-page-background-color}*/;
+	border-color: #aaaaaa /*{c-page-border}*/;
+	color: #333333 /*{c-page-color}*/;
+	text-shadow: 0 /*{c-page-shadow-x}*/ 0 /*{c-page-shadow-y}*/ 0 /*{c-page-shadow-radius}*/ #ffffff /*{c-page-shadow-color}*/;
+}
+/* Body: Read-only lists, text inputs, collapsible content */
+.ui-body-c,
+.ui-page-theme-c .ui-body-inherit,
+html .ui-bar-c .ui-body-inherit,
+html .ui-body-c .ui-body-inherit,
+html body .ui-group-theme-c .ui-body-inherit,
+html .ui-panel-page-container-c {
+	background-color: #44739e /*{c-body-background-color}*/;
+	border-color: #aaaaaa /*{c-body-border}*/;
+	color: #eeeeee /*{c-body-color}*/;
+	text-shadow: 0 /*{c-body-shadow-x}*/ 0 /*{c-body-shadow-y}*/ 0 /*{c-body-shadow-radius}*/ #ffffff /*{c-body-shadow-color}*/;
+}
+.ui-body-c {
+	border-width: 1px;
+	border-style: solid;
+}
+/* Links */
+.ui-page-theme-c a,
+html .ui-bar-c a,
+html .ui-body-c a,
+html body .ui-group-theme-c a {
+	color: #2489CE /*{c-link-color}*/;
+	font-weight: bold;
+}
+.ui-page-theme-c a:visited,
+html .ui-bar-c a:visited,
+html .ui-body-c a:visited,
+html body .ui-group-theme-c a:visited {
+    color: #2489CE /*{c-link-visited}*/;
+}
+.ui-page-theme-c a:hover,
+html .ui-bar-c a:hover,
+html .ui-body-c a:hover,
+html body .ui-group-theme-c a:hover {
+	color: #2489CE /*{c-link-hover}*/;
+}
+.ui-page-theme-c a:active,
+html .ui-bar-c a:active,
+html .ui-body-c a:active,
+html body .ui-group-theme-c a:active {
+	color: #2489CE /*{c-link-active}*/;
+}
+/* Button up */
+.ui-page-theme-c .ui-btn,
+html .ui-bar-c .ui-btn,
+html .ui-body-c .ui-btn,
+html body .ui-group-theme-c .ui-btn,
+html head + body .ui-btn.ui-btn-c,
+/* Button visited */
+.ui-page-theme-c .ui-btn:visited,
+html .ui-bar-c .ui-btn:visited,
+html .ui-body-c .ui-btn:visited,
+html body .ui-group-theme-c .ui-btn:visited,
+html head + body .ui-btn.ui-btn-c:visited {
+	background-color: #eeeeee /*{c-bup-background-color}*/;
+	border-color: #cccccc /*{c-bup-border}*/;
+	color: #2F3E46 /*{c-bup-color}*/;
+	text-shadow: 0 /*{c-bup-shadow-x}*/ 1px /*{c-bup-shadow-y}*/ 0 /*{c-bup-shadow-radius}*/ #ffffff /*{c-bup-shadow-color}*/;
+}
+/* Button hover */
+.ui-page-theme-c .ui-btn:hover,
+html .ui-bar-c .ui-btn:hover,
+html .ui-body-c .ui-btn:hover,
+html body .ui-group-theme-c .ui-btn:hover,
+html head + body .ui-btn.ui-btn-c:hover {
+	background-color: #dfdfdf /*{c-bhover-background-color}*/;
+	border-color: #bbbbbb /*{c-bhover-border}*/;
+	color: ##2F3E46 /*{c-bhover-color}*/;
+	text-shadow: 0 /*{c-bhover-shadow-x}*/ 1px /*{c-bhover-shadow-y}*/ 0 /*{c-bhover-shadow-radius}*/ #ffffff /*{c-bhover-shadow-color}*/;
+}
+/* Button down */
+.ui-page-theme-c .ui-btn:active,
+html .ui-bar-c .ui-btn:active,
+html .ui-body-c .ui-btn:active,
+html body .ui-group-theme-c .ui-btn:active,
+html head + body .ui-btn.ui-btn-c:active {
+	background-color: #d6d6d6 /*{c-bdown-background-color}*/;
+	border-color: #bbbbbb /*{c-bdown-border}*/;
+	color: #2F3E46 /*{c-bdown-color}*/;
+	text-shadow: 0 /*{c-bdown-shadow-x}*/ 1px /*{c-bdown-shadow-y}*/ 0 /*{c-bdown-shadow-radius}*/ #ffffff /*{c-bdown-shadow-color}*/;
+}
+/* Active button */
+.ui-page-theme-c .ui-btn.ui-btn-active,
+html .ui-bar-c .ui-btn.ui-btn-active,
+html .ui-body-c .ui-btn.ui-btn-active,
+html body .ui-group-theme-c .ui-btn.ui-btn-active,
+html head + body .ui-btn.ui-btn-c.ui-btn-active,
+/* Active checkbox icon */
+.ui-page-theme-c .ui-checkbox-on:after,
+html .ui-bar-c .ui-checkbox-on:after,
+html .ui-body-c .ui-checkbox-on:after,
+html body .ui-group-theme-c .ui-checkbox-on:after,
+.ui-btn.ui-checkbox-on.ui-btn-c:after,
+/* Active flipswitch background */
+.ui-page-theme-c .ui-flipswitch-active,
+html .ui-bar-c .ui-flipswitch-active,
+html .ui-body-c .ui-flipswitch-active,
+html body .ui-group-theme-c .ui-flipswitch-active,
+html body .ui-flipswitch.ui-bar-c.ui-flipswitch-active,
+/* Active slider track */
+.ui-page-theme-c .ui-slider-track .ui-btn-active,
+html .ui-bar-c .ui-slider-track .ui-btn-active,
+html .ui-body-c .ui-slider-track .ui-btn-active,
+html body .ui-group-theme-c .ui-slider-track .ui-btn-active,
+html body div.ui-slider-track.ui-body-c .ui-btn-active {
+	background-color: #387bbe /*{c-active-background-color}*/;
+	border-color: #2373a5 /*{c-active-border}*/;
+	color: #ffffff /*{c-active-color}*/;
+	text-shadow: 0 /*{c-active-shadow-x}*/ 1px /*{c-active-shadow-y}*/ 0 /*{c-active-shadow-radius}*/ #3373a5 /*{c-active-shadow-color}*/;
+}
+/* Active radio button icon */
+.ui-page-theme-c .ui-radio-on:after,
+html .ui-bar-c .ui-radio-on:after,
+html .ui-body-c .ui-radio-on:after,
+html body .ui-group-theme-c .ui-radio-on:after,
+.ui-btn.ui-radio-on.ui-btn-c:after {
+	border-color: #387bbe /*{c-active-background-color}*/;
+}
+/* Focus */
+.ui-page-theme-c .ui-btn:focus,
+html .ui-bar-c .ui-btn:focus,
+html .ui-body-c .ui-btn:focus,
+html body .ui-group-theme-c .ui-btn:focus,
+html head + body .ui-btn.ui-btn-c:focus,
+/* Focus buttons and text inputs with div wrap */
+.ui-page-theme-c .ui-focus,
+html .ui-bar-c .ui-focus,
+html .ui-body-c .ui-focus,
+html body .ui-group-theme-c .ui-focus,
+html head + body .ui-btn-c.ui-focus,
+html head + body .ui-body-c.ui-focus {
+	-webkit-box-shadow: 0 0 12px #387bbe /*{c-active-background-color}*/;
+	-moz-box-shadow: 0 0 12px #387bbe /*{c-active-background-color}*/;
+	box-shadow: 0 0 12px #387bbe /*{c-active-background-color}*/;
+}
+
+
+/* D
+-----------------------------------------------------------------------------------------------------------*/
+/* Bar: Toolbars, dividers, slider track */
+.ui-bar-d,
+.ui-page-theme-d .ui-bar-inherit,
+html .ui-bar-d .ui-bar-inherit,
+html .ui-body-d .ui-bar-inherit,
+html body .ui-group-theme-d .ui-bar-inherit {
+	background-color: #bbbbbb /*{d-bar-background-color}*/;
+	border-color: #666666 /*{d-bar-border}*/;
+	color: #333333 /*{d-bar-color}*/;
+	text-shadow: 0 /*{d-bar-shadow-x}*/ 1px /*{d-bar-shadow-y}*/ 0 /*{d-bar-shadow-radius}*/ #eeeeee /*{d-bar-shadow-color}*/;
+	font-weight: bold;
+}
+.ui-bar-d {
+	border-width: 1px;
+	border-style: solid;
+}
+/* Page and overlay */
+.ui-overlay-d,
+.ui-page-theme-d,
+.ui-page-theme-d .ui-panel-wrapper {
+	background-color: #ffffff /*{d-page-background-color}*/;
+	border-color: #bbbbbb /*{d-page-border}*/;
+	color: #333333 /*{d-page-color}*/;
+	text-shadow: 0 /*{d-page-shadow-x}*/ 0 /*{d-page-shadow-y}*/ 0 /*{d-page-shadow-radius}*/ #ffffff /*{d-page-shadow-color}*/;
+}
+/* Body: Read-only lists, text inputs, collapsible content */
+.ui-body-d,
+.ui-page-theme-d .ui-body-inherit,
+html .ui-bar-d .ui-body-inherit,
+html .ui-body-d .ui-body-inherit,
+html body .ui-group-theme-d .ui-body-inherit,
+html .ui-panel-page-container-d {
+	background-color: #ffffff /*{d-body-background-color}*/;
+	border-color: #bbbbbb /*{d-body-border}*/;
+	color: #333333 /*{d-body-color}*/;
+	text-shadow: 0 /*{d-body-shadow-x}*/ 0 /*{d-body-shadow-y}*/ 0 /*{d-body-shadow-radius}*/ #ffffff /*{d-body-shadow-color}*/;
+}
+.ui-body-d {
+	border-width: 1px;
+	border-style: solid;
+}
+/* Links */
+.ui-page-theme-d a,
+html .ui-bar-d a,
+html .ui-body-d a,
+html body .ui-group-theme-d a {
+	color: #2489CE /*{d-link-color}*/;
+	font-weight: bold;
+}
+.ui-page-theme-d a:visited,
+html .ui-bar-d a:visited,
+html .ui-body-d a:visited,
+html body .ui-group-theme-d a:visited {
+    color: #2489CE /*{d-link-visited}*/;
+}
+.ui-page-theme-d a:hover,
+html .ui-bar-d a:hover,
+html .ui-body-d a:hover,
+html body .ui-group-theme-d a:hover {
+	color: #2489CE /*{d-link-hover}*/;
+}
+.ui-page-theme-d a:active,
+html .ui-bar-d a:active,
+html .ui-body-d a:active,
+html body .ui-group-theme-d a:active {
+	color: #2489CE /*{d-link-active}*/;
+}
+/* Button up */
+.ui-page-theme-d .ui-btn,
+html .ui-bar-d .ui-btn,
+html .ui-body-d .ui-btn,
+html body .ui-group-theme-d .ui-btn,
+html head + body .ui-btn.ui-btn-d,
+/* Button visited */
+.ui-page-theme-d .ui-btn:visited,
+html .ui-bar-d .ui-btn:visited,
+html .ui-body-d .ui-btn:visited,
+html body .ui-group-theme-d .ui-btn:visited,
+html head + body .ui-btn.ui-btn-d:visited {
+	background-color: #ffffff /*{d-bup-background-color}*/;
+	border-color: #bbbbbb /*{d-bup-border}*/;
+	color: #333333 /*{d-bup-color}*/;
+	text-shadow: 0 /*{d-bup-shadow-x}*/ 1px /*{d-bup-shadow-y}*/ 0 /*{d-bup-shadow-radius}*/ #ffffff /*{d-bup-shadow-color}*/;
+}
+/* Button hover */
+.ui-page-theme-d .ui-btn:hover,
+html .ui-bar-d .ui-btn:hover,
+html .ui-body-d .ui-btn:hover,
+html body .ui-group-theme-d .ui-btn:hover,
+html head + body .ui-btn.ui-btn-d:hover {
+	background-color: #eeeeee /*{d-bhover-background-color}*/;
+	border-color: #aaaaaa /*{d-bhover-border}*/;
+	color: #333333 /*{d-bhover-color}*/;
+	text-shadow: 0 /*{d-bhover-shadow-x}*/ 1px /*{d-bhover-shadow-y}*/ 0 /*{d-bhover-shadow-radius}*/ #ffffff /*{d-bhover-shadow-color}*/;
+}
+/* Button down */
+.ui-page-theme-d .ui-btn:active,
+html .ui-bar-d .ui-btn:active,
+html .ui-body-d .ui-btn:active,
+html body .ui-group-theme-d .ui-btn:active,
+html head + body .ui-btn.ui-btn-d:active {
+	background-color: #eeeeee /*{d-bdown-background-color}*/;
+	border-color: #aaaaaa /*{d-bdown-border}*/;
+	color: #333333 /*{d-bdown-color}*/;
+	text-shadow: 0 /*{d-bdown-shadow-x}*/ 1px /*{d-bdown-shadow-y}*/ 0 /*{d-bdown-shadow-radius}*/ #ffffff /*{d-bdown-shadow-color}*/;
+}
+/* Active button */
+.ui-page-theme-d .ui-btn.ui-btn-active,
+html .ui-bar-d .ui-btn.ui-btn-active,
+html .ui-body-d .ui-btn.ui-btn-active,
+html body .ui-group-theme-d .ui-btn.ui-btn-active,
+html head + body .ui-btn.ui-btn-d.ui-btn-active,
+/* Active checkbox icon */
+.ui-page-theme-d .ui-checkbox-on:after,
+html .ui-bar-d .ui-checkbox-on:after,
+html .ui-body-d .ui-checkbox-on:after,
+html body .ui-group-theme-d .ui-checkbox-on:after,
+.ui-btn.ui-checkbox-on.ui-btn-d:after,
+/* Active flipswitch background */
+.ui-page-theme-d .ui-flipswitch-active,
+html .ui-bar-d .ui-flipswitch-active,
+html .ui-body-d .ui-flipswitch-active,
+html body .ui-group-theme-d .ui-flipswitch-active,
+html body .ui-flipswitch.ui-bar-d.ui-flipswitch-active,
+/* Active slider track */
+.ui-page-theme-d .ui-slider-track .ui-btn-active,
+html .ui-bar-d .ui-slider-track .ui-btn-active,
+html .ui-body-d .ui-slider-track .ui-btn-active,
+html body .ui-group-theme-d .ui-slider-track .ui-btn-active,
+html body div.ui-slider-track.ui-body-d .ui-btn-active {
+	background-color: #387bbe /*{d-active-background-color}*/;
+	border-color: #2373a5 /*{d-active-border}*/;
+	color: #ffffff /*{d-active-color}*/;
+	text-shadow: 0 /*{d-active-shadow-x}*/ 1px /*{d-active-shadow-y}*/ 1px /*{d-active-shadow-radius}*/ #3373a5 /*{d-active-shadow-color}*/;
+}
+/* Active radio button icon */
+.ui-page-theme-d .ui-radio-on:after,
+html .ui-bar-d .ui-radio-on:after,
+html .ui-body-d .ui-radio-on:after,
+html body .ui-group-theme-d .ui-radio-on:after,
+.ui-btn.ui-radio-on.ui-btn-d:after {
+	border-color: #387bbe /*{d-active-background-color}*/;
+}
+/* Focus */
+.ui-page-theme-d .ui-btn:focus,
+html .ui-bar-d .ui-btn:focus,
+html .ui-body-d .ui-btn:focus,
+html body .ui-group-theme-d .ui-btn:focus,
+html head + body .ui-btn.ui-btn-d:focus,
+/* Focus buttons and text inputs with div wrap */
+.ui-page-theme-d .ui-focus,
+html .ui-bar-d .ui-focus,
+html .ui-body-d .ui-focus,
+html body .ui-group-theme-d .ui-focus,
+html head + body .ui-btn-d.ui-focus,
+html head + body .ui-body-d.ui-focus {
+	-webkit-box-shadow: 0 0 12px #387bbe /*{d-active-background-color}*/;
+	-moz-box-shadow: 0 0 12px #387bbe /*{d-active-background-color}*/;
+	box-shadow: 0 0 12px #387bbe /*{d-active-background-color}*/;
+}
+
+
+/* E
+-----------------------------------------------------------------------------------------------------------*/
+/* Bar: Toolbars, dividers, slider track */
+.ui-bar-e,
+.ui-page-theme-e .ui-bar-inherit,
+html .ui-bar-e .ui-bar-inherit,
+html .ui-body-e .ui-bar-inherit,
+html body .ui-group-theme-e .ui-bar-inherit {
+	background-color: #44739e /*{e-bar-background-color}*/;
+	border-color: #F7C942 /*{e-bar-border}*/;
+	color: #eeeeee /*{e-bar-color}*/;
+	text-shadow: 0 /*{e-bar-shadow-x}*/ 1px /*{e-bar-shadow-y}*/ 0 /*{e-bar-shadow-radius}*/ #ffffff /*{e-bar-shadow-color}*/;
+	font-weight: bold;
+}
+.ui-bar-e {
+	border-width: 1px;
+	border-style: solid;
+}
+/* Page and overlay */
+.ui-overlay-e,
+.ui-page-theme-e,
+.ui-page-theme-e .ui-panel-wrapper {
+	background-color: #fff9df /*{e-page-background-color}*/;
+	border-color: #F7C942 /*{e-page-border}*/;
+	color: #333333 /*{e-page-color}*/;
+	text-shadow: 0 /*{e-page-shadow-x}*/ 0 /*{e-page-shadow-y}*/ 0 /*{e-page-shadow-radius}*/ #ffffff /*{e-page-shadow-color}*/;
+}
+/* Body: Read-only lists, text inputs, collapsible content */
+.ui-body-e,
+.ui-page-theme-e .ui-body-inherit,
+html .ui-bar-e .ui-body-inherit,
+html .ui-body-e .ui-body-inherit,
+html body .ui-group-theme-e .ui-body-inherit,
+html .ui-panel-page-container-e {
+	background-color: #44739e /*{e-body-background-color}*/;
+	border-color: #F7C942 /*{e-body-border}*/;
+	color: #eeeeee /*{e-body-color}*/;
+	text-shadow: 0 /*{e-body-shadow-x}*/ 0 /*{e-body-shadow-y}*/ 0 /*{e-body-shadow-radius}*/ #ffffff /*{e-body-shadow-color}*/;
+}
+.ui-body-e {
+	border-width: 1px;
+	border-style: solid;
+}
+/* Links */
+.ui-page-theme-e a,
+html .ui-bar-e a,
+html .ui-body-e a,
+html body .ui-group-theme-e a {
+	color: #2489CE /*{e-link-color}*/;
+	font-weight: bold;
+}
+.ui-page-theme-e a:visited,
+html .ui-bar-e a:visited,
+html .ui-body-e a:visited,
+html body .ui-group-theme-e a:visited {
+    color: #2489CE /*{e-link-visited}*/;
+}
+.ui-page-theme-e a:hover,
+html .ui-bar-e a:hover,
+html .ui-body-e a:hover,
+html body .ui-group-theme-e a:hover {
+	color: #2489CE /*{e-link-hover}*/;
+}
+.ui-page-theme-e a:active,
+html .ui-bar-e a:active,
+html .ui-body-e a:active,
+html body .ui-group-theme-e a:active {
+	color: #2489CE /*{e-link-active}*/;
+}
+/* Button up */
+.ui-page-theme-e .ui-btn,
+html .ui-bar-e .ui-btn,
+html .ui-body-e .ui-btn,
+html body .ui-group-theme-e .ui-btn,
+html head + body .ui-btn.ui-btn-e,
+/* Button visited */
+.ui-page-theme-e .ui-btn:visited,
+html .ui-bar-e .ui-btn:visited,
+html .ui-body-e .ui-btn:visited,
+html body .ui-group-theme-e .ui-btn:visited,
+html head + body .ui-btn.ui-btn-e:visited {
+	background-color: #fadb4e /*{e-bup-background-color}*/;
+	border-color: #F4C63f /*{e-bup-border}*/;
+	color: #222222 /*{e-bup-color}*/;
+	text-shadow: 0 /*{e-bup-shadow-x}*/ 1px /*{e-bup-shadow-y}*/ 0 /*{e-bup-shadow-radius}*/ #ffffff /*{e-bup-shadow-color}*/;
+}
+/* Button hover */
+.ui-page-theme-e .ui-btn:hover,
+html .ui-bar-e .ui-btn:hover,
+html .ui-body-e .ui-btn:hover,
+html body .ui-group-theme-e .ui-btn:hover,
+html head + body .ui-btn.ui-btn-e:hover {
+	background-color: #fbe26f /*{e-bhover-background-color}*/;
+	border-color: #F2C43d /*{e-bhover-border}*/;
+	color: #333333 /*{e-bhover-color}*/;
+	text-shadow: 0 /*{e-bhover-shadow-x}*/ 1px /*{e-bhover-shadow-y}*/ 0 /*{e-bhover-shadow-radius}*/ #ffffff /*{e-bhover-shadow-color}*/;
+}
+/* Button down */
+.ui-page-theme-e .ui-btn:active,
+html .ui-bar-e .ui-btn:active,
+html .ui-body-e .ui-btn:active,
+html body .ui-group-theme-e .ui-btn:active,
+html head + body .ui-btn.ui-btn-e:active {
+	background-color: #fceda7 /*{e-bdown-background-color}*/;
+	border-color: #F2C43d /*{e-bdown-border}*/;
+	color: #333333 /*{e-bdown-color}*/;
+	text-shadow: 0 /*{e-bdown-shadow-x}*/ 1px /*{e-bdown-shadow-y}*/ 0 /*{e-bdown-shadow-radius}*/ #ffffff /*{e-bdown-shadow-color}*/;
+}
+/* Active button */
+.ui-page-theme-e .ui-btn.ui-btn-active,
+html .ui-bar-e .ui-btn.ui-btn-active,
+html .ui-body-e .ui-btn.ui-btn-active,
+html body .ui-group-theme-e .ui-btn.ui-btn-active,
+html head + body .ui-btn.ui-btn-e.ui-btn-active,
+/* Active checkbox icon */
+.ui-page-theme-e .ui-checkbox-on:after,
+html .ui-bar-e .ui-checkbox-on:after,
+html .ui-body-e .ui-checkbox-on:after,
+html body .ui-group-theme-e .ui-checkbox-on:after,
+.ui-btn.ui-checkbox-on.ui-btn-e:after,
+/* Active flipswitch background */
+.ui-page-theme-e .ui-flipswitch-active,
+html .ui-bar-e .ui-flipswitch-active,
+html .ui-body-e .ui-flipswitch-active,
+html body .ui-group-theme-e .ui-flipswitch-active,
+html body .ui-flipswitch.ui-bar-e.ui-flipswitch-active,
+/* Active slider track */
+.ui-page-theme-e .ui-slider-track .ui-btn-active,
+html .ui-bar-e .ui-slider-track .ui-btn-active,
+html .ui-body-e .ui-slider-track .ui-btn-active,
+html body .ui-group-theme-e .ui-slider-track .ui-btn-active,
+html body div.ui-slider-track.ui-body-e .ui-btn-active {
+	background-color: #387bbe /*{e-active-background-color}*/;
+	border-color: #2373a5 /*{e-active-border}*/;
+	color: #ffffff /*{e-active-color}*/;
+	text-shadow: 0 /*{e-active-shadow-x}*/ 1px /*{e-active-shadow-y}*/ 1px /*{e-active-shadow-radius}*/ #3373a5 /*{e-active-shadow-color}*/;
+}
+/* Active radio button icon */
+.ui-page-theme-e .ui-radio-on:after,
+html .ui-bar-e .ui-radio-on:after,
+html .ui-body-e .ui-radio-on:after,
+html body .ui-group-theme-e .ui-radio-on:after,
+.ui-btn.ui-radio-on.ui-btn-e:after {
+	border-color: #387bbe /*{e-active-background-color}*/;
+}
+/* Focus */
+.ui-page-theme-e .ui-btn:focus,
+html .ui-bar-e .ui-btn:focus,
+html .ui-body-e .ui-btn:focus,
+html body .ui-group-theme-e .ui-btn:focus,
+html head + body .ui-btn.ui-btn-e:focus,
+/* Focus buttons and text inputs with div wrap */
+.ui-page-theme-e .ui-focus,
+html .ui-bar-e .ui-focus,
+html .ui-body-e .ui-focus,
+html body .ui-group-theme-e .ui-focus,
+html head + body .ui-btn-e.ui-focus,
+html head + body .ui-body-e.ui-focus {
+	-webkit-box-shadow: 0 0 12px #387bbe /*{e-active-background-color}*/;
+	-moz-box-shadow: 0 0 12px #387bbe /*{e-active-background-color}*/;
+	box-shadow: 0 0 12px #387bbe /*{e-active-background-color}*/;
+}
+
+
+/* Structure */
+/* Disabled
+-----------------------------------------------------------------------------------------------------------*/
+/* Class ui-disabled deprecated in 1.4. :disabled not supported by IE8 so we use [disabled] */
+.ui-disabled,
+.ui-state-disabled,
+button[disabled],
+.ui-select .ui-btn.ui-state-disabled {
+	filter: Alpha(Opacity=30);
+	opacity: .3;
+	cursor: default !important;
+	pointer-events: none;
+}
+/* Focus state outline
+-----------------------------------------------------------------------------------------------------------*/
+.ui-btn:focus,
+.ui-btn.ui-focus {
+	outline: 0;
+}
+/* Unset box-shadow in browsers that don't do it right */
+.ui-noboxshadow .ui-shadow,
+.ui-noboxshadow .ui-shadow-inset,
+.ui-noboxshadow .ui-overlay-shadow,
+.ui-noboxshadow .ui-shadow-icon.ui-btn:after,
+.ui-noboxshadow .ui-shadow-icon .ui-btn:after,
+.ui-noboxshadow .ui-focus,
+.ui-noboxshadow .ui-btn:focus,
+.ui-noboxshadow  input:focus,
+.ui-noboxshadow .ui-panel {
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+}
+.ui-noboxshadow .ui-btn:focus,
+.ui-noboxshadow .ui-focus {
+	outline-width: 1px;
+	outline-style: auto;
+}
+
+/* Clock in header
+-----------------------------------------------------------------------------------------------------------*/
+.ui-header .ui-right div.ui-grid-b {
+	margin-left: 1.3125em;
+}
+
+
+/* ui-slider value
+-----------------------------------------------------------------------------------------------------------*/
+.ui-slider-track .ui-btn.ui-slider-handle {
+  line-height: 26px;
+}
+
+/* bottomup / vertical slider
+-----------------------------------------------------------------------------------------------------------*/
+html .ui-slider-track-bottomup.ui-shadow-inset.ui-bar-inherit.ui-corner-all,
+html .ui-slider-track-vertical.ui-shadow-inset.ui-bar-inherit.ui-corner-all {
+	background-color: #f5f5f5 /*{a-bar-background-color}*/;
+	border-color: #c9c9c9 /*{a-bar-border}*/;
+	color: #333333 /*{a-bar-color}*/;
+	text-shadow: 0 /*{a-bar-shadow-x}*/ 1px /*{a-bar-shadow-y}*/ 0 /*{a-bar-shadow-radius}*/ #dddddd /*{a-bar-shadow-color}*/;
+	font-weight: bold;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #f8f8f8 ), to( #dddddd )); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient( left, #f8f8f8, #dddddd ); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient( #f8f8f8, #dddddd ); /* FF3.6 */
+    background-image:     -ms-linear-gradient( right, #f8f8f8, #dddddd ); /* IE10 */
+    background-image:      -o-linear-gradient( right, #f8f8f8, #dddddd ); /* Opera 11.10+ */
+    background-image:         linear-gradient( to right, #f8f8f8, #dddddd );
+}
+.ui-slider-track-bottomup .ui-btn.ui-slider-handle,
+.ui-slider-track-vertical .ui-btn.ui-slider-handle {
+  height: 28px;
+  margin: -8.8px 0 0 -8.8px;
+  outline: 0 none;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  width: 28px;
+  z-index: 1;
+}
+
+html .ui-slider-track-bottomup.ui-shadow-inset.ui-bar-inherit.ui-corner-all .ui-slider-bg.ui-btn-active,
+html .ui-slider-track-vertical.ui-shadow-inset.ui-bar-inherit.ui-corner-all .ui-slider-bg.ui-btn-active {
+	background-color: #6BABFF;
+	border-color: #125d79;
+	-webkit-border-radius: inherit;
+	border-radius: inherit;
+	color: #333333;
+	text-shadow: 0 1px 0 #0088bb;
+}
+
+.ui-slider-track-semicircle.ui-shadow-inset.ui-bar-inherit.ui-corner-all {
+	background-color: #f5f5f5 !important;
+	border-color: #c9c9c9 !important;
+	color: #333333 !important;
+	text-shadow: 0 1px 0 #dddddd !important;
+	font-weight: bold !important;
+	background-image: -webkit-gradient(radial, left top, left bottom, from( #dddddd ), to( #f8f8f8 )) !important; /* Saf4+, Chrome */
+    background-image: -webkit-radial-gradient( circle, #dddddd 30%, #f8f8f8 70% ) !important; /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-radial-gradient( circle, #dddddd 30%, #f8f8f8 70% ) !important; /* FF3.6 */
+    background-image:     -ms-radial-gradient( circle, #dddddd 30%, #f8f8f8 70% ) !important; /* IE10 */
+    background-image:      -o-radial-gradient( circle, #dddddd 30%, #f8f8f8 70% ) !important; /* Opera 11.10+ */
+    background-image:         radial-gradient( circle, #dddddd 30%, #f8f8f8 70% ) !important;
+}
+
+.ui-slider-track-semicircle.ui-btn-active {
+	background-color: #6BABFF !important;
+    border-color: #125d79 !important;
+    color: #333333 !important;
+    text-shadow: 0 1px 0 #0088bb !important;
+}
+
+.ui-slider-track-semicircle .ui-slider-handle,
+a.ui-slider-handle-semicircle {
+	-webkit-border-radius: .6em !important;
+	border-radius: .6em !important;
+}
+
+.ui-slider-track-semicircle .ui-slider-bg.ui-bg-left {
+  	background-color: #6BABFF;
+    border-color: #125d79;
+    color: #333333;
+    text-shadow: 0 1px 0 #0088bb;
+}
+
+.ui-slider-track-semicircle .ui-slider-bg.ui-bg-right {
+  	background-color: #6BABFF;
+    border-color: #125d79;
+    color: #333333;
+    text-shadow: 0 1px 0 #0088bb;
+}
+
+.ui-slider-semicircle-cut {
+	border-top: 1px solid #6F6E6E;
+	border-left: 1px solid #6F6E6E;
+	border-right: 1px solid #6F6E6E;
+	border-bottom: 0;
+}
+.ui-slider-semicircle-box .ui-bottom-left{
+	background: #6BABFF;
+	width: 15px;
+	border-top: 0;
+	border-left: 1px solid #6F6E6E;
+	border-right: 1px solid #6F6E6E;
+	border-bottom: 1px solid #6F6E6E;
+}
+.ui-slider-semicircle-box .ui-bottom-right{
+	/*background: #f9f9f9;*/
+	width: 14px;
+	border-top: 0;
+	border-left: 1px solid #6F6E6E;
+	border-right: 1px solid #6F6E6E;
+	border-bottom: 1px solid #6F6E6E;
+
+	background-image: -webkit-gradient(linear, left, right, from( #2F2F2F ), to( #f8f8f8 )); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient(left, #2F2F2F 30%, #f8f8f8 70% ); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient(left, #2F2F2F 30%, #f8f8f8 70% ); /* FF3.6 */
+    background-image:     -ms-linear-gradient(left, #2F2F2F 30%, #f8f8f8 70% ); /* IE10 */
+    background-image:      -o-linear-gradient(left, #2F2F2F 30%, #f8f8f8 70% ); /* Opera 11.10+ */
+    background-image:         linear-gradient(to right, #2F2F2F 30%, #f8f8f8 70%);
+}
+
+
+/* Highcharts
+-----------------------------------------------------------------------------------------------------------*/
+.highcharts-title {
+	fill: #000;
+}
+.highcharts-subtitle {
+	fill: #666;
+}
+
+.highcharts-axis .highcharts-axis-line {
+	stroke: #999;
+}
+.highcharts-tick {
+	stroke: #999;
+}
+.highcharts-axis-labels {
+	fill: #666;
+}
+.highcharts-axis-title {
+	fill: #999;
+}
+
+.highcharts-legend-item text {
+	fill: #666;
+}
+.highcharts-legend-item:hover text {
+	fill: #333;
+}
+.highcharts-legend-item-hidden * {
+	fill: #ccc;
+	stroke: #ccc;
+}
+
+.highcharts-markers path {
+	stroke: #fff;
+}
+
+.highcharts-label text {
+	fill: #000;
+}
+.highcharts-data-labels {
+	fill: #000;
+	color: #000;
+}
+
+.highcharts-tooltip-box {
+	fill: #dcdcdc;
+}
+.highcharts-tooltip text {
+	fill: #000;
+}
+.polarChart .highcharts-axis-line,
+.solidgauge .highcharts-axis-line,
+.solidgauge .highcharts-grid-line {
+  stroke: none;
+}
+.highcharts-grid .highcharts-grid-line {
+  stroke: rgba(0, 0, 0, .15);
+}
+.highcharts-color-0 {
+	fill: #6BABFF;
+	stroke: #6BABFF;
+	color: #6BABFF;
+}
+.highcharts-color-1 {
+	fill: #4176A9;
+	stroke: #4176A9;
+	color: #4176A9;
+}
+.highcharts-color-2 {
+	fill: #6640FF;
+	stroke: #6640FF;
+	color: #6640FF;
+}
+.highcharts-color-3 {
+	fill: #00bcd4;
+	stroke: #00bcd4;
+	color: #00bcd4;
+}
+.highcharts-color-4 {
+	fill: #03a9f4;
+	stroke: #03a9f4;
+	color: #03a9f4;
+}
+.highcharts-color-5 {
+	fill: #2196f3;
+	stroke: #2196f3;
+	color: #2196f3;
+}
+.highcharts-color-6 {
+	fill: #3f51b5;
+	stroke: #3f51b5;
+	color: #3f51b5;
+}
+.highcharts-color-7 {
+	fill: #673ab7;
+	stroke: #673ab7;
+	color: #673ab7;
+}
+.highcharts-color-8 {
+	fill: #673ab7;
+	stroke: #673ab7;
+	color: #673ab7;
+}
+.highcharts-color-9 {
+	fill: #009688;
+	stroke: #009688;
+	color: #009688;
+}
+
+/* smartVISU
+-----------------------------------------------------------------------------------------------------------*/
+.ui-right > .ui-link,
+.ui-right > .ui-link:hover {
+	color: #333333;
+}
+.icon0, a.ui-link {
+	stroke: #333333;
+	fill: #333333;
+	stop-color: #333333;
+}
+.ui-btn-c a.ui-link .icon0 {
+	stroke: #333333;
+	fill: #333333;
+	stop-color: #333333;
+}
+.icon1, .icon1.ui-link,
+ a.ui-link:hover, a.ui-link:active {
+	stroke: #6BABFF;
+	fill: #6BABFF;
+	stop-color: #6BABFF;
+}
+.switch.icon1,
+html .ui-btn.icon1,
+[data-widget="basic.print"].icon1,
+[data-widget="basic.symbol"] .icon1 {
+	color: #6BABFF;
+}
+
+/* red icon */
+.icon2,
+.icon2.ui-link {
+	stroke: red;
+	fill: red;
+	stop-color: red;
+}
+.switch.icon2,
+html .ui-btn.icon2,
+[data-widget="basic.print"].icon2,
+[data-widget="basic.symbol"] .icon2 {
+	color: red;
+}
+
+/* yellow icon */
+.icon3,
+.icon3.ui-link {
+	stroke: #E1D500;
+	fill: #E1D500;
+	stop-color: #E1D500;
+}
+.switch.icon3,
+html .ui-btn.icon3,
+[data-widget="basic.print"].icon3,
+[data-widget="basic.symbol"] .icon3 {
+	color: #E1D500;
+}
+
+/* green icon */
+.icon4,
+.icon4.ui-link {
+	stroke: limegreen;
+	fill: limegreen;
+	stop-color: limegreen;
+}
+.switch.icon4,
+html .ui-btn.icon4,
+[data-widget="basic.print"].icon4,
+[data-widget="basic.symbol"] .icon4 {
+	color: limegreen;
+}
+
+/* blue icon */
+.icon5,
+.icon5.ui-link {
+	stroke: #4176a9;
+	fill: #4176a9;
+	stop-color: #4176a9;
+}
+.switch.icon5,
+html .ui-btn.icon5,
+[data-widget="basic.print"].icon5,
+[data-widget="basic.symbol"] .icon5 {
+	color: #4176a9;
+}
+
+/** set color of calendar picker symbol in webkit time input fields for UZSU */
+.uzsuTimeInput::-webkit-calendar-picker-indicator,
+.uzsuTimeMaxMinInput::-webkit-calendar-picker-indicator {
+	background-image: url(images/webkit_clock_ws.svg);
+}
+
+/** set color of selected autocomplete tooltip in widget assistant */
+#widget_assistant #selected_dict>strong {
+	color: #FFFFFF;
+} 
+
+/* jQuery Roundslider
+-----------------------------------------------------------------------------------------------------------*/
+
+/*** SVG mode - theming - colors ***/
+.rs-path-inherited .rs-path {
+    opacity: 0.2;
+}
+.rs-svg-mode .rs-path {
+    /*  this will change the slider's path color
+        this can be also done via the property -> 'pathColor'  */
+    stroke: #ffffff;
+}
+.rs-svg-mode .rs-range {
+    /*  this will change the slider's range color
+        this can be also done via the property -> 'rangeColor'  */
+    stroke: #6BABFF;
+}
+.rs-svg-mode .rs-border {
+    /*  this will change the slider's border color
+        this can be also done via the property -> 'borderColor'
+        the border width can be changed via the property -> 'borderWidth'  */
+    stroke: #c9c9c9;
+}
+.outerslider.rs-svg-mode .rs-range {
+	stroke: #44739e;
+}
+span.rs-number {
+  position: absolute;
+  top: -8px;
+  left: -30px;
+  font-size: 0.8em;
+  font-family: Arial;
+  color: #333333;
+}
+
+.rs-bar.rs-custom .rs-seperator {
+	border: 2px solid #c9c9c9;
+	margin-left: -10px;
+}
+.rs-bar.rs-custom_1 .rs-seperator {
+	border: 1px solid #d7d7d7;
+	width: 5px;
+	height: 1px;
+	margin-left: 1px;
+}
+.rs-bar.rs-custom_1.rs-seperator_1 .rs-seperator {
+	border: 1px solid #c9c9c9;
+}
+.rs-bar.rs-start .rs-seperator,
+.rs-bar.rs-end .rs-seperator {
+  display: none;
+}
+
+.rs-handle {
+	background-color: #838383;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #f9f9f9 /*{a-bup-background-start}*/), to( #a6a6a6 /*{a-bup-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #f9f9f9 /*{a-bup-background-start}*/, #a6a6a6 /*{a-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #f9f9f9 /*{a-bup-background-start}*/, #a6a6a6 /*{a-bup-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #f9f9f9 /*{a-bup-background-start}*/, #a6a6a6 /*{a-bup-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #f9f9f9 /*{a-bup-background-start}*/, #a6a6a6 /*{a-bup-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #f9f9f9 /*{a-bup-background-start}*/, #a6a6a6 /*{a-bup-background-end}*/);
+	box-shadow: 0px 0px 15px #6BABFF;
+}
+.outerslider .rs-handle {
+	display:none;
+}
+.rs-handle-dot {
+  padding: 11px;
+  background-color: #FFFFFF;
+}
+.rs-handle-dot:after { background-color: #838383; }
+
+/*.cell {
+  border: 1px solid #bbb;
+  padding: 20px;
+  width: 33%;
+  float: left;
+  box-sizing: border-box;
+  background: white;
+}
+*/
+
+.rs-overlay {
+  /* a small fix to hide the overlay */
+  border-radius: 1000px 0 0 0;
+  margin-top: 1px;
+  margin-right: 1px;
+}
+.rs-control {
+  /*border: 1px solid #d7d7d7;*/
+  border-radius: 50%;
+  padding: 1px;
+}
+.rs-tooltip-text {
+  font-size: 2.7em;
+}

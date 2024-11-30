@@ -3,7 +3,7 @@
  * @package     smartVISU / FHEM
  * @author      HCS with adjustments by Julian Pawlowski, Stefan Widmer, raman and wvhn
  *              original version by Martin Gleiß
- * @copyright   2016 - 2022
+ * @copyright   2016 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       FHEM 
@@ -17,6 +17,7 @@
  * @hide		driver_username
  * @hide		driver_password
  * @hide		driver_loopback
+ * @hide        driver_signalBusy
  * @hide		sv_hostname
  * @default     driver_port 2121
  *
@@ -152,6 +153,12 @@ var io = {
   rcTimer: null,
   addon: null,
   socketErrorNotification: null,
+  
+  /**
+   * supported aggregate functions in the backends database
+   * modes implemented in the fronthem file "99_fronthemUtils.pm"
+   */
+  aggregates: ['avg', 'min', 'max', 'sum', 'raw'],
   
   log: function(level, text) {
     if (io.logLevel >= level) {

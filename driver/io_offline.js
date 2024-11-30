@@ -17,6 +17,7 @@
  * @hide		driver_username
  * @hide		driver_password
  * @hide		driver_loopback
+ * @hide        driver_signalBusy
  * @hide		sv_hostname
  */
 
@@ -126,6 +127,12 @@ var io = {
 	listeners: [],
 
 	/**
+	 * supported aggregate functions in the backends database
+	 */
+	aggregates: ['avg', 'min', 'max', 'sum', 'diff', 'rate', 'on', 'raw', 'count'],
+
+
+	/**
 	 * The real-time polling loop, only if there are listeners
 	 */
 	loop: function () {
@@ -170,6 +177,9 @@ var io = {
 				val = JSON.parse(response[item]);
 			}
 			catch(e) {}
+			// initialize UZSU data if item is an UZSU item and no data available
+			if (item.slice(-5).toLowerCase() == '.uzsu' && val == null) 
+				val = {"active":"false", "interpolation": {"type": "none", "initialized": false, "interval": 5, "initage": 0, "itemtype": "bool"}, "list": [], "plugin_version": "2.0.0"}
 			console.log('[io.offline] receiving data: ["'+ item +' ": '+ val + ']');
 			widget.update(item, val);
 		})
@@ -230,6 +240,9 @@ var io = {
 						val = JSON.parse(response[item]);
 					}
 					catch(e) {}
+					// initialize UZSU data if item is an UZSU item and no data available
+					if (item.slice(-5).toLowerCase() == '.uzsu' && val == null) 
+							val = {"active":"false", "interpolation": {"type": "none", "initialized": false, "interval": 5, "initage": 0, "itemtype": "bool"}, "list": [], "plugin_version": "2.0.0"}
 					widget.update(item, val);
 					if (item != io.listeners[item])
 						widget.update(io.listeners[item], val);

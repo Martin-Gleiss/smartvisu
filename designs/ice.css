@@ -12,6 +12,7 @@
 *
 */
 
+@import '../icons/sw/jquery.mobile.icons.min.css';
 
 /* Globals */
 /* Font
@@ -1807,7 +1808,12 @@ html .ui-btn.icon5,
 	background-image: url(images/webkit_clock_ws.svg);
 }
 
-/* jQuery Roundslider 
+/** set color of selected autocomplete tooltip in widget assistant */
+#widget_assistant #selected_dict>strong {
+	color: #FFFFFF;
+} 
+
+/* jQuery Roundslider
 -----------------------------------------------------------------------------------------------------------*/
 
 /*** SVG mode - theming - colors ***/
@@ -1836,14 +1842,13 @@ span.rs-number {
   top: -8px;
   left: -30px;
   font-size: 0.8em;
-  font-style: bold;
   font-family: Arial;
   color: #000;
 }
 
-.rs-bar.rs-custom .rs-seperator { 
-	border: 2px solid #456f9a; 
-	margin-left: -10px; 
+.rs-bar.rs-custom .rs-seperator {
+	border: 2px solid #456f9a;
+	margin-left: -10px;
 }
 .rs-bar.rs-custom_1 .rs-seperator {
 	border: 1px solid #d7d7d7;
@@ -1860,7 +1865,7 @@ span.rs-number {
 }
 
 .rs-handle {
-	background-color: #838383; 
+	background-color: #838383;
 	background-image: -webkit-gradient(linear, left top, left bottom, from( #FFFFFF /*{a-bup-background-start}*/), to( #d9d9d9 /*{a-bup-background-end}*/)); /* Saf4+, Chrome */
 	background-image: -webkit-linear-gradient( #FFFFFF /*{a-bup-background-start}*/, #d9d9d9 /*{a-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
 	background-image:    -moz-linear-gradient( #FFFFFF /*{a-bup-background-start}*/, #d9d9d9 /*{a-bup-background-end}*/); /* FF3.6 */
@@ -1898,5 +1903,4 @@ span.rs-number {
 }
 .rs-tooltip-text {
   font-size: 2.7em;
-  font-style: bold;
 }

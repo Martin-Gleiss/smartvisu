@@ -1,3 +1,93 @@
+## 3.5
+### Important for the current release to avoid breaking changes
+- imports of widgets must be deleted from the visu pages or the namespace @widgets must be used. 
+  Visit https://knx-user-forum.de/forum/supportforen/smartvisu/1920060-handlungsbedarf-ma%C3%9Fnahmen-gegen-seitenladefehler-ab-v3-4-a-v3-5
+
+### New / Changed Widgets
+- basic.tank is now able to change colors according to reached thresholds
+- additional option for basic.select to support activity indicator like basic.stateswitch
+- basic.icon accepts alpha values for rgb(a)/hsl(a)/hsv(a) and also hex rgb(a) values in items
+- new app analyse_plots enables live parametrizing of plot.period plus travelling through time with plot.timeshift
+- basic.print can be used to generate a tooltip on a linked widget (parameter href = widget-id, rel = 'tooltip')
+- additional color and indicator options for basic.trigger
+- plot.sparkline can now open links and popups. Tooltip shows parameter "id" as curve name (label)
+- device.dimmer extended with an option "type" to display the switch as button  (midi, mini, micro, icon)
+- indicator option introduced in all quad design widgets using basic.stateswitch or basic.select
+- clock.countdown now accepts ISO time strings, fixed countdown duration instead of an item and a new comparative value as starting condition
+- calendar.list uses a new format called "calendardate" in the language file which can be defined to show "today" and "tomorrow" with other date information.
+- device.uzsuicon, device.uzsugraph and device.uzsutable are prepared for one-time events (provided by smarthomeNG UZSU plugin as of version 2.1.0)
+
+### Other New Features
+- improved spline display for the starting point in device.uzsugraph
+- new icons scene_cooking_drink and scene_robovac_dock (thanks to @Pacifia15))
+- smarthomeNG and ioBroker drivers: new configurable option "signalBusy" lets "VISU" logo in the top-right corner blink after a new page is loaded (i.e. "monitor" command has been sent) until all subscribed items have been received. 
+- new weatherservice open-meteo.com
+- ioBroker driver now supports subscribing and unsubscribing series for individual plots which enables usage of plot.timeshift with ioBroker (thanks to YellowFlash for testing!)
+- new weather service VisualCrossing
+- improved vertical alignment of slider track in device.dimmer when no text is configured
+- ioBroker driver is now able to provide item properties from the "state" object using the keyword "property", e.g. "myItem.property.lc" to get the "last changed" property for that item 
+- digest authentication method integrated in CalDav calendar service. Logfile for cURL messages if service is called with debug parameter.
+- new design "lightblue" (inspired by ramann)
+- new design "darkmode_blue" as combination of darkblue.css and lightblue.css supports dark mode of the device. Custom darkmode combinations can be defined in ./dropins/designs.
+- new date format "t" shows "today" and "tomorrow", if applicable. It replaces format definition given in brackets. Example: "t(l), d.m." shows "today, 23.09." or "Wednesday, 25.09."
+- smarthomeNG driver has a new ping function to improve stability of websocket connections on sleepy devices. Set an optional config key "ping_interval" in seconds (0 = disabled)
+
+### Improvements
+- allowed database modes for series moved into the individual backend drivers
+- parameter type "mode" introduced. Templatechecker reads available database modes individually for configured backend.
+- docu page design>icons shows all icons in dropins/icons/ws (or .../sw, whatever is configured)
+- Highcharts module boost.js is activated on demand for series with 5000 or more data points to speed up rendering (plot.period, plot.sparkline). In plot.xyplot we can not do this since there is no size info. But most likely list items with xy-data are not so big. 
+- templatechecker now checks the twig syntax of html pages
+- console.log is activated in cache mode if parameter "debug" is set to "1" in config.ini
+- active elements are allowed on menu buttons in rooms_menu
+- offline driver initializes UZSU data for items ending on ".uzsu" if no data are available
+- import of black/white jQuery mobile mini icons moved from root.html into <design>.css (for preparation of dark mode support)
+- all examples adapted to support dark mode (v3.3 icon handling in menu.html and sides menus)
+- use global namespace with native php functions profiting from OpCache (for faster code execution)
+- added "advanced" zoom for multiple x axes
+- avoid minifying of already minified highcharts files which throws errors in cache mode on new highcharts versions
+- templatechecker now directly checks system requirements on page show - not any more only after starting the complete test program
+- language support for system checks, lib.updatecheck(), templatechecker and widget assistant
+- improved location search for weather services avoids display of company names instead of city names
+
+### Updated Libraries
+- Twig template engine: manually inserted security fixes (v1.44.6 -> v1.44.8) and CS (Coding Standard) fixes as preparation for php 8.4 release
+- ICS Parser v3.4.1
+
+### Deprecated
+
+### Removed Features
+- old widget pathnames w/o namespace (deprecated in v3.3)
+
+### Fixed Bugs
+- system page was not shown due to missing infoblock.html if pages were configured to "Smarthome" but pages had not been created yet by the "smartvisu" plugin of smarthomeNG.
+- behaviour of device.uzsugraph interpolation style was inconsistent if more than one uzsugraph widget was on a page.  
+- device.uzsugraph threw an error while a point was dragged
+- status.activelist did not display texts if no svg icon was selected, i.e. the default icon "trans.png" was displayed
+- corrected background image name "scale_pallets.png" to "scale_pellets.png"
+- basic.print did not print timestamps correctly as dates and was not able to colorize them
+- links on same page with anchor did not work under all conditions, e.g. href="index.php?page=myPage&anchor=myAnchor"
+- config page overwrote the global driver configuration when called from docu or example pages
+- small icons on tiles in quad design got too big in v3.3 due to missing CSS definitions for SVG icon
+- template checker did not check parameters in double quotes correctly
+- template checker gave faulty replacement hint for removed widget basic.text
+- template checker threw errors if an item property was not in the properties class
+- plot.period and plot.xyplot drawed the plots twice after series update
+- notify.add() notification threw errors if message was not of type "text" 
+- basic.trigger showed oversized button instead of specified type "icon"
+- device.uzsutable did not display correctly during and after supersize mode
+- widgets used within listviews placed their icons not in the center
+- clock.iconclock / icon.clock rounded the position of the short pointer to full hours. Now the pointer moves constantly like on any other analog clock.
+- basic.shutter used same CSS classes for positive and negative blade angles in "half" mode. 
+- plot.period threw errors in advanced zoom mode if multiple x axes were given in the chartoptions parameter
+- if item contained a stringified number with leading zero widget.set converted it back to numeric format 
+- some shortcuts in widget assistant did not work as expected
+ 
+### Known Bugs
+- smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
+- background images defined with "url(myImageLocation)" - used e.g. on tabs - do not yet support dark mode. This can be individually corrected in visu.css. 
+
+
 ## 3.4
 ### New / Changed Widgets
 - quad.blind and quad.shutter can be configured to move the shutter on short- or longpress
@@ -5,7 +95,7 @@
 - plot.rtr now accepts Highcharts chartOptions object as parameter like plot.period
 - IDs are now optional in basic.roundslider and device.rtrslider
 - new dynamic icon "icon.slidinggate"
-- new widget / dynamic icon "basic.skylight" for a roof window with closed / tilt status and shutter position (thanks to raman)
+- new widget / dynamic icon "basic.skylight" for a roof window with closed / tilt status and shutter position (thanks to ramann)
 - id parameter is now fully optional in status toast, even with multiple toasts on a page
 - new "live" parameters in device.blind, device.dimmer, device.window, quad.dimmer, quad.color, quad.shutter, quad.blind and quad.playercontrol enable the usage of the live mode feture of basic.slider
 - new live / silent mode for basic.roundslider (similar to basic.slider) 

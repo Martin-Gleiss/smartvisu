@@ -1,0 +1,12 @@
+/*
+*
+* This file activates the design 'darkblue.css' by default and switches to 'lightblue.css' if the device is not in dark mode.
+* You can build your own pair of dark/light mode designs by changing the file names to the desired designs.
+* It is recommended to place the file - e.g. 'mydarkmode.css' - in ./dropins/designs. Then, the folder structure has to be considered 
+* in the @import statements, e.g. @import '../../designs/greenhornet.css', (prefers-color-scheme: dark);
+*
+*/
+
+@import 'darkblue.css';
+@import 'lightblue.css',(prefers-color-scheme: light);
+

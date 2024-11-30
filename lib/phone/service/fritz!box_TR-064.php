@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Stefan Vonbrunn
- * @copyright   2014 - 2018
+ * @copyright   2014 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -35,9 +35,9 @@ class phone_fritzbox_TR064 extends phone
         // maximum number of records fetched from phonesystem.
         $this->max_calls_to_fetch = 20;
         // use some default user if only password is set on smartvisu 
-        if (strlen($this->user) == 0 && strlen($this->pass) > 0)
+        if (\strlen($this->user) == 0 && strlen($this->pass) > 0)
             $this->user = 'admin';
-        if (strlen($this->port) == 0)
+        if (\strlen($this->port) == 0)
             $this->port = '49000';
     }
     /**
@@ -47,7 +47,7 @@ class phone_fritzbox_TR064 extends phone
     {
         $header[] = 'Content-type: text/xml;charset="utf-8"\r\n';
         $header[] = 'SOAPAction: urn:dslforum-org:service:X_AVM-DE_OnTel:1#GetCallList';
-        $header[] = sprintf('Content-Length: %d', strlen($content));
+        $header[] = \sprintf('Content-Length: %d', \strlen($content));
         $context  = array(
             'http' => array(
                 'method' => 'POST',

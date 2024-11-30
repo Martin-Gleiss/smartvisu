@@ -51,18 +51,18 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				var period;
 				// Start and end on same day: show day only once
 				if(entry.end.transUnit('date') == entry.start.transUnit('date'))
-					period = startDay + entry.start.transUnit('date') + ' ' + entry.start.transUnit('time') + ' - ' + entry.end.transUnit('time');
+					period = startDay + entry.start.transUnit('calendardate') + ' ' + entry.start.transUnit('time') + ' - ' + entry.end.transUnit('time');
 				// Full day entrys: don't show time
 				else if (entry.start.getHours()+entry.start.getMinutes()+entry.start.getSeconds() == 0
 					&& entry.end.getHours()+entry.end.getMinutes()+entry.end.getSeconds() == 0) {
 					entry.end.setDate(entry.end.getDate()-1); // subtract one day from end
 					if(entry.end.transUnit('date') == entry.start.transUnit('date')) // One day only: Show just start date
-						period = startDay + entry.start.transUnit('date');
+						period = startDay + entry.start.transUnit('calendardate');
 					else // Multiple days: Show start and end date
-						period = startDay + entry.start.transUnit('date') + ' - ' + endDay + entry.end.transUnit('date');
+						period = startDay + entry.start.transUnit('calendardate') + ' - ' + endDay + entry.end.transUnit('calendardate');
 				}
 				else
-					period = startDay + entry.start.transUnit('date') + ' ' + entry.start.transUnit('time') + ' - ' + endDay + entry.end.transUnit('date') + ' ' + entry.end.transUnit('time');
+					period = startDay + entry.start.transUnit('calendardate') + ' ' + entry.start.transUnit('time') + ' - ' + endDay + entry.end.transUnit('calendardate') + ' ' + entry.end.transUnit('time');
 
 				// handle calendar_event_format in lang.ini
 				$.each(sv_lang.calendar_event_format, function(pattern, attributes) {
@@ -102,6 +102,8 @@ $.widget("sv.calendar_list", $.sv.widget, {
 						entry.color = sv_lang.calendar_event_format.default_img_list.color;
 					}
 				}
+				if (entry.color == undefined)
+					entry.color = 'transparent';
 
 				// amend icon path/filename
 				if(entry.icon) {
@@ -116,7 +118,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				// add entry
 				var a = $('<a>');
 				if (entry.icon.indexOf('.svg') == -1)
-					a.append( $('<img class="icon">').css('background', entry.color ).attr('src', entry.icon));
+					a.append( $('<img class="icon">').css('background', entry.color ).attr('src', entry.icon).attr('alt', entry.icon));
 				else
 					fx.load(entry.icon,'icon icon0', 'background:'+entry.color+';', a, 'prepend');	
 				$(a).append(

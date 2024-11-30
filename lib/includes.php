@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -11,7 +11,7 @@
 /**
  * Path of system-directory
  */
-define ('const_path_system', dirname(__FILE__).'/');
+define ('const_path_system', \dirname(__FILE__).'/');
 /**
  * Path of smartVISU
  */
@@ -66,8 +66,8 @@ if($GLOBALS['config']['proxy'] == true) {
 		)
 	);
 
-	if(strlen(proxy_user) > 0) {
-		$proxy_opts['http']['header'] = sprintf('Authorization: Basic %s:%s', base64_encode(config_proxy_user), base64_encode(config_proxy_password));
+	if(\strlen(proxy_user) > 0) {
+		$proxy_opts['http']['header'] = \sprintf('Authorization: Basic %s:%s', base64_encode(config_proxy_user), base64_encode(config_proxy_password));
 	}
 	$default = stream_context_get_default($proxy_opts);
 }
@@ -84,7 +84,7 @@ date_default_timezone_set(config_timezone);
 set_error_handler(
 	function($errno, $errstr, $errfile, $errline)
 	{
-		if (defined('config_debug') && config_debug == 1)				
+		if (\defined('config_debug') && config_debug == 1)				
 			return false;	// hand over to standard error reporting
 		else
 			return true;	// ignore warnings

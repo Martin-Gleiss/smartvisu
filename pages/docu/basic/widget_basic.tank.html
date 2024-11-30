@@ -21,8 +21,8 @@
 			{{ basic.tank('tank3', 'bath.value', 0, 255, 5, 'cylinder', '#f90' ) }}
 			{{ basic.tank('tank4', 'bath.value', 0, 255, 5, 'water') }}
 			{{ basic.tank('tank5', 'bath.value', 0, 255, 5, 'water', '#0c0') }}
-			{{ basic.tank('tank6', 'bath.value', 0, 255, 5, 'pallets') }}
-
+			{{ basic.tank('tank6', 'bath.value', 0, 255, 5, 'pellets') }}
+			{{ basic.tank('tank7', 'bath.value', 0, 255, 5, 'cylinder', ['#c00','#cc0','#0c0','#cc0','#c00'], [80,100,155,200]) }}
 			{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<br />
@@ -32,7 +32,8 @@
 		{{ basic.slider('slider1', 'bath.value', 0, 255, 5) }}
 	</div>
 
-	From left to right: 'none', 'cylinder', 'cylinder' orange, 'water', 'water' green, 'pallets'
+	From left to right: 'none', 'cylinder', 'cylinder' orange, 'water', 'water' green, 'pellets', 'cylinder'<br>
+	The last one will have different colors depending on the value <80: red, 80-99: yellow, 100-154: green, 155-199: yellow, >=200: red
 	<div class="html">
 
 		{{ basic.tank('tank1', 'bath.value') }}
@@ -40,7 +41,8 @@
 		{{ basic.tank('tank3', 'bath.value', 0, 255, 5, 'cylinder', '#f90' ) }}
 		{{ basic.tank('tank4', 'bath.value', 0, 255, 5, 'water') }}
 		{{ basic.tank('tank5', 'bath.value', 0, 255, 5, 'water', '#0c0') }}
-		{{ basic.tank('tank6', 'bath.value', 0, 255, 5, 'pallets') }}
+		{{ basic.tank('tank6', 'bath.value', 0, 255, 5, 'pellets') }}
+		{{ basic.tank('tank7', 'bath.value', 0, 255, 5, 'cylinder', ['#c00','#cc0','#0c0','#cc0','#c00'], [80,100,155,200]) }}
 
 	</div>
 

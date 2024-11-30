@@ -250,13 +250,19 @@ a:hover {
 
 .ui-listview .ui-li-has-thumb > svg:first-child,
 .ui-listview .ui-li-has-thumb>.ui-btn>svg:first-child,
-.ui-listview .ui-btn>svg.icon
+.ui-listview .ui-btn>svg.icon,
+.ui-listview .ui-btn>img.icon
 {
   position: absolute;
   left: 0;
   top: 0;
   max-height: 5em;
   max-width: 5em;
+}
+
+.ui-listview [data-widget].ui-btn>svg.icon,
+.ui-listview [data-widget] .ui-btn>svg.icon {
+  position: unset;
 }
 
 .ui-listview .ui-li-has-thumb > img:first-child,
@@ -278,6 +284,7 @@ a:hover {
 .ui-li-aside {
   font-size: 0.8em; /* 0.875em; */
   right: .6em !important;
+  z-index: 3;
 }
 
 .ui-li-aside .icon {
@@ -1192,7 +1199,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   -webkit-border-radius: 0.1em 0.1em 0.3em 0.3em;
   border-radius: 0.1em 0.1em 0.3em 0.3em;
   opacity: 0.85;
-  filter: alpha(opacity=85);
+  filter: alpha(opacity=85);  /* IE7+ command for opacity */
 }
 
 /**
@@ -1272,16 +1279,30 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 }
 
 .dimmer .switch,
-.dimmer-left .switch {
+.dimmer-left .switch,
+.dimmer-left .ui-midi,
+.dimmer-left .ui-mini,
+.dimmer-left .ui-micro {
   float: left;
   padding-left: 0;
   margin-right: 12px;
 }
 
-.dimmer-right .switch {
+.dimmer-right .switch,
+.dimmer-right .ui-midi,
+.dimmer-right .ui-mini,
+.dimmer-right .ui-micro {
   float: right;
   padding-right: 0;
   margin-left: 12px;
+}
+.dimmer-left .ui-btn.ui-midi,
+.dimmer-right .ui-btn.ui-midi {
+	margin-top: -5px;
+}
+.dimmer-left .ui-btn.ui-micro,
+.dimmer-right .ui-btn.ui-micro {
+	margin-top: 10px;
 }
 
 .dimmer .icon,
@@ -1292,11 +1313,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 }
 
 .dimmer p,
-.dimmer-left p {
-  margin: 0;
-  padding: 0 0 5px 15px;
-}
-
+.dimmer-left p,
 .dimmer-right p {
   margin: 0;
   padding: 0 0 5px 15px;
@@ -1305,10 +1322,34 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 .dimmer .ui-slider,
 .dimmer-left .ui-slider {
   margin-left: 45px;
-
 }
+
 .dimmer-right .ui-slider {
   margin-right: 45px;
+}
+.dimmer-left.dimmer-midi .ui-slider {
+	margin-left: 64px;
+}
+.dimmer-right.dimmer-midi .ui-slider {
+	margin-right: 64px;
+}
+.dimmer-left.dimmer-mini .ui-slider {
+	margin-left: 48px;
+}
+.dimmer-right.dimmer-mini .ui-slider {
+	margin-right: 48px;
+}
+.dimmer-left.dimmer-micro .ui-slider {
+	margin-left: 38px;
+}
+.dimmer-right.dimmer-micro .ui-slider {
+	margin-right: 38px;
+}
+.dimmer-notext .ui-slider {
+	margin-top: 4px;
+}
+.dimmer-notext.dimmer-micro .ui-slider {
+	margin-top: 8px;
 }
 
 .codepad {
@@ -1558,7 +1599,7 @@ div.ui-slider-switch{
   width: 350px !important;
 }
 @media screen and (max-width: 625px){
-  .uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec, .uzsuCellExpert, .uzsuRowSeriesLine{
+  .uzsuRowExpert, .uzsuRowHoliday, .uzsuRowCondition, .uzsuRowDelayedExec, .uzsuCellExpert, .uzsuRowSeriesLine, .uzsuCellSeries {
     display: none;
   }
 }
@@ -1609,7 +1650,10 @@ div.ui-slider-switch{
 .uzsuCell [data-tip]:after {
 	left: -190px;
 }
-.highcharts-root .uzsu-event-sunrise {
+/**
+ * ---------- UZSU Graph ------------------------------------------------
+ */
+ .highcharts-root .uzsu-event-sunrise {
   fill: #ffffff;
   stroke: rgba(255, 255, 255, 0.5);
 }
@@ -1628,6 +1672,16 @@ div.ui-slider-switch{
 .uzsu-all-inactive .uzsu-active-toggler {
   fill: #808080;
   stroke: #808080;
+}
+.uzsu-all-inactive.uzsu-general-once .uzsu-active-toggler {
+  fill: #FF8080;
+  stroke: #FF8080;
+}
+[data-widget="device.uzsugraph"] .highcharts-navigator, 
+[data-widget="device.uzsugraph"] .highcharts-navigator-series, 
+[data-widget="device.uzsugraph"] .highcharts-navigator-xaxis,
+[data-widget="device.uzsugraph"] .highcharts-navigator-yaxis {
+  display: none;
 }
 
 /**
@@ -1742,10 +1796,6 @@ div.ui-slider-switch{
 .plot.plot-highstock {
   height: 315px;
 }
-.plot.plot-highstock {
-	height: 315px;
-}
-
 .block .ui-fixed .plot,
 .block .set-1 .plot {
   min-height: 14.5em;

@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2024
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -15,23 +15,23 @@
 	<ul data-role="listview" data-dividertheme="c">
 
 		<li data-role="list-divider">Kategorien</li>
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=category_house">
-				<img class="icon" src="{{ icon0 }}control_building_control.svg" />
+				{{ lib.svgimg ('', 'control_building_control.svg', 'icon0', '') }}
 
 				<h3>Haus</h3>
 			</a>
 		</li>
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=category_phone">
-				<img class="icon" src="{{ icon0 }}it_telephone.svg" />
+				{{ lib.svgimg ('', 'it_telephone.svg', 'icon0', '') }}
 
 				<h3>Telefonliste</h3>
 			</a>
 		</li>
-		<li data-icon="false">
+		<li class="ui-li-has-thumb" data-icon="false">
 			<a href="index.php?page=category_calendar">
-				<img class="icon" src="{{ icon0 }}time_calendar.svg" />
+				{{ lib.svgimg ('', 'time_calendar.svg', 'icon0', '') }}
 
 				<h3>Terminkalender</h3>
 			</a>
@@ -43,7 +43,7 @@
 
 {% block content %}
 
-	<h1><img class="icon" src='{{ icon0 }}time_manual_mode.svg' />Kategorien</h1>
+	<h1>{{ lib.svgimg ('', 'time_manual_mode.svg', 'icon0', '') }}Kategorien</h1>
 	<a href="index.php?page=category_house">Haus</a>&nbsp;
 	<a href="index.php?page=category_phone">Telefonliste</a>&nbsp;
 	<a href="index.php?page=category_calendar">Terminkalender</a>&nbsp;

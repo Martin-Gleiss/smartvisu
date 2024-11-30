@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -45,7 +45,7 @@ function twig_smartdate($val, $format = 'date')
 
 function twig_deficon(Twig_Environment $env, $val, $def = '')
 {
-	if (!is_array($val))
+	if (!\is_array($val))
 		$ret = $val == '' ? $def : $val;
 	else {
 	  $ret = array();
@@ -142,7 +142,7 @@ function twig_docu($filenames = null)
 		if(twig_isdir('pages/'.config_pages.'/widgets'))
 			$filenames = array_merge($filenames, twig_dir('pages/'.config_pages.'/widgets', '(.*.\.html)'));
 	}
-	elseif(!is_array($filenames))
+	elseif(!\is_array($filenames))
 		if(twig_isfile($filenames) == false && $filenames != const_path.'widgets/icon.html' && $filenames != const_path.'widgets/basic.html') // basic.html needed for template-checker
 			{
 				$filenames = array($filenames);
@@ -156,7 +156,7 @@ function twig_docu($filenames = null)
 
 	foreach($filenames as $filename) {
 
-		if(is_array($filename))
+		if(\is_array($filename))
 			$filename = const_path.$filename['path'];
 		$file = file_get_contents($filename);
 
@@ -167,7 +167,7 @@ function twig_docu($filenames = null)
 		// Body
 		preg_match_all('#\/\*\*[\r\n]+(.+?)\*\/\s+?\{\% *macro(.+?)\%\}.*?\{\% *endmacro *\%\}#is', strstr($file, '*/'), $widgets);
 
-		if (count($widgets[2]) > 0)
+		if (\count($widgets[2]) > 0)
 		{
 			foreach ($widgets[2] as $no => $macro)
 			{
@@ -231,7 +231,7 @@ function twig_docu($filenames = null)
 									$p['valid_values'] = array_merge(SmartvisuButtonTypes, $p['valid_values']);
 
 								if ($p['type'] == 'color') {
-									if (in_array('icon0to5', $p['valid_values']))	{
+									if (\in_array('icon0to5', $p['valid_values']))	{
 										unset ($p['valid_values'][array_search('icon0to5',$p['valid_values'])]);
 										$p['valid_values'] = array_merge(SmartvisuIconClasses, $p['valid_values']);
 									}
@@ -312,8 +312,8 @@ function twig_configmeta($filename)
 	preg_match_all('#.+?@(.+?)\W+(.*)#i', $file, $header, PREG_SET_ORDER);
 	$ret = array('label' => null, 'hide' => array(), 'default' => array(), 'deprecated' => null);
 	foreach($header as $tag) {
-		if(array_key_exists($tag[1], $ret)) {
-			if(is_array($ret[$tag[1]])) {
+		if(\array_key_exists($tag[1], $ret)) {
+			if(\is_array($ret[$tag[1]])) {
 				$data = preg_split('#\s+#', $tag[2], 2);
 				$ret[$tag[1]][$data[0]] = (isset($data[1]) && $data[1] != '' ? $data[1] : null);
 				//debug_to_console($tag[1].' '.$data[0].' '.$ret[$tag[1]][$data[0]]);
@@ -371,7 +371,7 @@ function twig_read_config($source)
 }
 
 function twig_timezones() {
-  $inlist = timezone_identifiers_list();
+	$inlist = timezone_identifiers_list();
 	$outlist = array();
 	foreach($inlist as $tz) {
     $tzparts = explode('/', $tz, 2);
@@ -396,12 +396,12 @@ function twig_implode($mixed, $suffix = '', $delimiter = '.')
 {
 	$ret = '';
 
-	if (is_array($suffix))
+	if (\is_array($suffix))
 		$suffix = $delimiter.implode($delimiter, $suffix);
 	elseif ($suffix != '')
 		$suffix = $delimiter.$suffix;
 
-	if (is_array($mixed))
+	if (\is_array($mixed))
 	{
 		foreach ($mixed as $value)
 		{

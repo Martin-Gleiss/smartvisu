@@ -30,6 +30,8 @@ class TemplateChecker {
 	 * @var type 
 	 */
 	private $fileName;
+	
+	private $driver;
 
 	/**
 	 * DOMDocument object for file
@@ -41,6 +43,14 @@ class TemplateChecker {
 	 * Object for the Icons
 	 */
 	private $items;
+	
+	/**
+	 * get configured driver
+	 * @return string
+	 */
+	public function getDriver() {
+		return $this->driver;
+	}
 
 	/**
 	 * Perform template checks for single file
@@ -74,6 +84,11 @@ class TemplateChecker {
 		$this->items = new Items(pathinfo($fileName)["dirname"]); //new
 		if ($checkItems == "false")
 			{ $this->items->setState(FALSE);}
+
+		// some checks require info of the configured driver (e.g. database aggregation modes in backend)
+		// get the configured driver if templaechecker is called from the configured pages or use offline driver instead
+		$fileFolder = str_replace('/widgets', '', $widgetFolder);
+		$this->driver = (substr($fileFolder, 6, ) == config_pages ? config_driver : 'offline');
 	}
 
 	/**
@@ -106,11 +121,61 @@ class TemplateChecker {
 			return;
 		}
 
+		if (!$this->checkTwigTemplate($absFile))
+			return;
+
 		if (!$this->readFile($absFile))
 			return;
 
 		$this->checkNode($this->domDocument->documentElement);
 	}
+
+		private function checkTwigTemplate($absFile) {
+			$templatePath = pathinfo($absFile, PATHINFO_DIRNAME);
+			$loader = new \Twig\Loader\FilesystemLoader($templatePath);
+			$twig = new \Twig\Environment($loader);
+			$twig->addFilter( new \Twig\TwigFilter('_', 'twig_concat'));
+			$twig->addFilter( new \Twig\TwigFilter('bit', 'twig_bit'));
+			$twig->addFilter( new \Twig\TwigFilter('substr', 'twig_substr'));
+			$twig->addFilter( new \Twig\TwigFilter('smartdate', 'twig_smartdate'));
+			$twig->addFilter( new \Twig\TwigFilter('deficon', 'twig_deficon', array('needs_environment' => true)));
+			$twig->addFilter( new \Twig\TwigFilter('md5', 'twig_md5'));
+			$twig->addFilter( new \Twig\TwigFilter('preg_replace', 'twig_preg_replace'));
+
+			$twig->addFunction( new \Twig\TwigFunction('uid', 'twig_uid'));
+			$twig->addFunction( new \Twig\TwigFunction('once', 'twig_once'));
+			$twig->addFunction( new \Twig\TwigFunction('isfile', 'twig_isfile'));
+			$twig->addFunction( new \Twig\TwigFunction('isdir', 'twig_isdir'));
+			$twig->addFunction( new \Twig\TwigFunction('dir', 'twig_dir'));
+			$twig->addFunction( new \Twig\TwigFunction('docu', 'twig_docu'));
+			$twig->addFunction( new \Twig\TwigFunction('configmeta', 'twig_configmeta'));
+			$twig->addFunction( new \Twig\TwigFunction('lang', 'twig_lang'));
+			$twig->addFunction( new \Twig\TwigFunction('read_config', 'twig_read_config'));
+			$twig->addFunction( new \Twig\TwigFunction('timezones', 'twig_timezones'));
+			$twig->addFunction( new \Twig\TwigFunction('implode', 'twig_implode', array('is_safe' => array('html'))));
+			$twig->addFunction( new \Twig\TwigFunction('items', 'twig_items'));
+			$twig->addFunction( new \Twig\TwigFunction('asset_exists', 'twig_asset_exists'));
+			$twig->addFunction( new \Twig\TwigFunction('localize_svg', 'twig_localize_svg'));
+
+			// init lexer comments
+			$lexer = new \Twig\Lexer($twig, array('tag_comment' => array('/**', '*/')));
+			$twig->setLexer($lexer);
+			$templateName = pathinfo($absFile, PATHINFO_BASENAME);
+
+			try {
+				// Lade das Template
+				$template = $twig->load($templateName);
+
+				// Prüfe die Syntax des Templates
+				$template->getSourceContext()->getCode();
+				
+				//if (Settings::SHOW_SUCCESS_TOO)
+				//	$this->messages->addInfo('TWIG PARSER', 'Twig syntax is valid.');
+			} catch (\Twig\Error\SyntaxError $e) {
+				$this->messages->addError('TWIG TEMPLATE PARSER', 'Twig syntax error: '. $e->getMessage(), $e->getLine());
+			}
+			return true;
+		}
 
 	/**
 	 * Open file
@@ -125,7 +190,7 @@ class TemplateChecker {
     $this->domDocument->loadHTML(htmlspecialchars_decode(htmlentities($content)));
 		$errors = libxml_get_errors();
 		foreach ($errors as $error) {
-			if (array_key_exists($error->code, $this->ignore_html_error_code)) {
+			if (\array_key_exists($error->code, $this->ignore_html_error_code)) {
 				$conditions = $this->ignore_html_error_code[$error->code];
 				$ignore = true;
 				if (isset($conditions['maxline']) && $error->line > $conditions['maxline'])
@@ -171,7 +236,7 @@ class TemplateChecker {
 			// do not check code wrapped by {% verbatim %} or in twig comment /**...*/
 			$value = preg_replace('/{%\s*verbatim\s*%}.*?{%\s*endverbatim\s*%}|\/\*\*\s*.*?\s*\*\//', '', trim($node->textContent));
 			if (preg_match_all("/{{(.*?)}}/s", $value, $macros)) {
-				for ($i = 0; $i < count($macros[0]); $i++)
+				for ($i = 0; $i < \count($macros[0]); $i++)
 					$this->checkWidget($node, trim($macros[1][$i]));
 			}
 		}
@@ -229,22 +294,27 @@ class TemplateChecker {
 			return;
 
 		$widgetName = $widget->getName();
+		
+		// strip calling macros name in recursive check
 		if (strpos($widgetName, '->') > 0 )
 			$widgetName = substr($widgetName,  strpos($widgetName, '->') + 2);
+
+		// a test with twig tokenize as marcro syntax checker in this place showed no significant advantage
+		// https://stackoverflow.com/questions/27191916/check-if-string-has-valid-twig-syntax
 		
 		$widgetConfig = $this->getWidgetConfig($widgetName);
 
-		if ($widgetConfig === NULL || (!array_key_exists('param', $widgetConfig) && !array_key_exists('removed', $widgetConfig)) ) {
+		if ($widgetConfig === NULL || (!\array_key_exists('param', $widgetConfig) && !array_key_exists('removed', $widgetConfig)) ) {
 			$this->messages->addWarning('WIDGET PARAM CHECK', 'Unknown widget found. Check manually!', $widget->getLineNumber(), $widget->getMacro(), $widget->getMessageData());
 			// var_dump ($this); //will show the whole widget array within a list item with "unknown widget" error
 			return;
 			}
-		if (array_key_exists('removed', $widgetConfig)) {
+		if (\array_key_exists('removed', $widgetConfig)) {
 			$paramConfigs = explode (',', $widgetConfig['params']);  // Parameters of widget macro
-			$paramConfigLen = count($paramConfigs);
+			$paramConfigLen = \count($paramConfigs);
 			$messageData = $widget->getMessageData();
 			$messageParams = explode(',', $messageData['Parameters']); // Parameters in widget call
-			$messageParamsLen = count($messageParams);
+			$messageParamsLen = \count($messageParams);
 			// fill missing parameters w/ empty quotes
 			if ($paramConfigLen > $messageParamsLen){
 				do {
@@ -253,7 +323,7 @@ class TemplateChecker {
 				} while ($messageParamsLen < $paramConfigLen);
 			}
 			
-			if(array_key_exists('replacement', $widgetConfig)) {
+			if(\array_key_exists('replacement', $widgetConfig)) {
 				$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $messageParams));
 				$messageData['Replacement'] = str_replace ("['', '']", "''", $messageData['Replacement']);
 			}
@@ -265,9 +335,9 @@ class TemplateChecker {
 			foreach ($paramConfigs as $paramIndex => $paramConfig) {
 				WidgetParameterChecker::performChecks($widget, $paramIndex, $paramConfig, $this->messages,$this->items, $this); //new: items
 			}
-			if (array_key_exists('deprecated', $widgetConfig)) {
+			if (\array_key_exists('deprecated', $widgetConfig)) {
 				$messageData = $widget->getMessageData();
-				if(array_key_exists('replacement', $widgetConfig)) {
+				if(\array_key_exists('replacement', $widgetConfig)) {
 					$messageData['Replacement'] = preg_replace("/(\\s*,\\s*''\\s*)+(\\)\\s*}}\\s*)$/", '$2', vsprintf($widgetConfig['replacement'], $widget->getParamArray() + array_map(function($element) { return isset($element['default']) ? "'" . $element['default']. "'" : null; }, $paramConfigs)));
 				}
 			$this->messages->addWarning('WIDGET DEPRECATION CHECK', 'Deprecated widget', $widget->getLineNumber(), $widget->getMacro(), $messageData);
@@ -281,7 +351,7 @@ class TemplateChecker {
 	 * @return array parameter config for widget or NULL if widget is unknown
 	 */
 	private function getWidgetConfig($name) {
-		if (array_key_exists($name, $this->widgets)) {
+		if (\array_key_exists($name, $this->widgets)) {
 			return $this->widgets[$name];
 		} else {
 			return NULL;
@@ -308,7 +378,7 @@ class TemplateChecker {
 
 		// replace {{ icon0 }} and {{ icon1 }}
 		if (preg_match_all("/{{(.*?)}}/s", $file, $match)) {
-			for ($i = 0; $i < count($match[0]); $i++) {
+			for ($i = 0; $i < \count($match[0]); $i++) {
 				switch (strtolower(trim($match[1] [$i]))) {
 					case 'icon0':
 						$file = str_replace($match[0][$i], $settings->getIcon0(), $file);

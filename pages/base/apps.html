@@ -1,8 +1,8 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @author      Martin Gleiß, Wolfram v. Hülsen
+* @copyright   2012 - 2024
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -14,6 +14,7 @@
 
 	{% if page=='apps' %}
 
+		{% set language = lang('baselang') %}
 		{% for file in dir('apps', 'app_(.+?).html') %}
 
 			{% set app = docu('apps/app_'~file.name~'.html') %}
@@ -27,7 +28,11 @@
 				<h3 style="padding: 40px 0 8px 0;">{{ app.title|e }}</h3>
 
 				<div>
-					{{ app.description }}
+					{% if attribute(app, 'description_' ~ language) is defined %}
+						{{ attribute(app, 'description_'~language ) }}
+					{% else %}
+						{{ app.description }}
+					{% endif %}
 				</div>
 
 				{% if app.info or app.link %}
@@ -35,7 +40,12 @@
 				{% endif %}
 
 				{% if app.info %}
-					{{ app.info }} <br />
+					{% if attribute(app, 'info_' ~ language) is defined %}
+						{{ attribute(app, 'info_'~language ) }}
+					{% else %}
+						{{ app.info }}
+					{% endif %}
+					<br />
 				{% endif %}
 				{% if app.link %}
 					<a href="{{ app.link }}" target="_blank">{{ app.link|e }}</a> <br />
@@ -46,9 +56,9 @@
 				{% endif %}
 
 				{% if app.author %}
-					Author: {{ app.author }}<br />
+					{{ lang('templatechecker', 'author')|capitalize }}: {{ app.author }}<br />
 				{% endif %}
-				<div class="mini">File: {{ file.file }}</div>
+				<div class="mini">{{ lang('templatechecker', 'file')|capitalize }}: {{ file.file }}</div>
 				{% if app.version %}
 					<div class="mini">Version: {{ app.version }}</div>
 				{% endif %}

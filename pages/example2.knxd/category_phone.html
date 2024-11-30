@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2024
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,7 +12,7 @@
 
 {% block content %}
 
-	<h1><img class="icon" src='{{ icon0 }}it_telephone.svg' />Telefonliste</h1>
+	<h1>{{ lib.svgimg ('', 'it_telephone.svg', 'icon0', '') }}Telefonliste</h1>
 
 	{{ phone.list('phonelist') }}
 

@@ -1,8 +1,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiss, Stefan Widmer
- * @copyright   2012 - 2016
+ * @author      Martin Gleiss, Stefan Widmer, Wolfram v. Hülsen
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -35,6 +35,12 @@ $.widget("sv.basic_select", $.sv.widget, {
 
 	initSelector: 'select[data-widget="basic.select"]',
 	_lastValue: null,
+	_timer: null,
+	
+	options: {
+		indicatorType: '',
+		indicatorDuration: 3
+	},
 
 	_update: function(response) {
 		//workaround for select menu in page mode (change event comes after _update() )
@@ -56,7 +62,7 @@ $.widget("sv.basic_select", $.sv.widget, {
 			var resptxts = [];
 			if (response[2] != undefined)
 				resptxts = response[2].toString().split(",");
-	  	  
+
 			$.each(respopts.split(","), function(index, value) {
 				optionlist += "<option value=\"" + value + "\">" + (resptxts[index] != undefined ? resptxts[index] : value) + "</option>";
 			});
@@ -64,11 +70,20 @@ $.widget("sv.basic_select", $.sv.widget, {
 		};
 		this.element.val(respval).selectmenu('refresh');
 		this._lastValue = respval;
+		clearTimeout(this._timer);
+		this.element.parents('.ui-select').removeClass('blink');
 	},
 
 	_events: {
 		'change': function(ev) {
 			this._write(this.element.val());
+			if (this.options.indicatorType != ''){
+				var that = this;
+				this.element.parents('.ui-select').addClass('blink');
+				this._timer = setTimeout(function(){
+					that.element.parents('.ui-select').removeClass('blink');
+				}, this.options.indicatorDuration*1000);
+			}
 		}
 	}
 
@@ -88,7 +103,7 @@ $.widget("sv.basic_color", $.sv.widget, {
 		colors: 10,
 	},
 
-  _mem: null,
+	_mem: null,
 	_lockfor: 0,
 
 	_update: function(response) {
@@ -173,7 +188,7 @@ $.widget("sv.basic_color_rect", $.sv.basic_color, {
 	initSelector: 'a[data-style="rect"][data-widget="basic.color"]',
 
 	_events: {
-    'click': function(event) {
+		'click': function(event) {
 			var self = this;
 			var html = '<div class="rgb-popup">';
 			var node = this.element;
@@ -418,7 +433,7 @@ $.widget("sv.basic_color_disc", $.sv.basic_color, {
 							io.write(items[1], values[1]);
 							io.write(items[2], values[2]);
 						}
-            self._mem = values;
+						self._mem = values;
 					}
 
 					$(this).popup("close");
@@ -571,6 +586,7 @@ $.widget("sv.basic_icon", $.sv.widget, {
 				values = response;
 
 			var rgb;
+			var alpha = (values.length == 4 ? values[3] : 1);
 			switch(this.options.colormodel) {
 				case 'rgb':
 					rgb = [
@@ -578,6 +594,7 @@ $.widget("sv.basic_icon", $.sv.widget, {
 						Math.round(Math.min(Math.max((values[1] - min[1]) / (max[1] - min[1]), 0), 1) * 255),
 						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 255)
 					];
+					rgb.push(alpha);
 					break;
 				case 'hsl':
 					var hsl = [
@@ -586,6 +603,7 @@ $.widget("sv.basic_icon", $.sv.widget, {
 						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 100)
 					];
 					rgb = fx.hsl2rgb(hsl[0], hsl[1], hsl[2]);
+					rgb.push(alpha);
 					break;
 				case 'hsv':
 					var hsv = [
@@ -594,10 +612,18 @@ $.widget("sv.basic_icon", $.sv.widget, {
 						Math.round(Math.min(Math.max((values[2] - min[2]) / (max[2] - min[2]), 0), 1) * 100)
 					];
 					rgb = fx.hsv2rgb(hsv[0], hsv[1], hsv[2]);
+					rgb.push(alpha);
+					break;
+				case 'hex':
+					rgb = values;
+					if (rgb.length == 7) 
+						rgb += 'FF';
 					break;
 			}
-
-			this.element.css('color', 'rgb(' + rgb.join(',') + ')').find('svg').css('fill', 'rgb(' + rgb.join(',') + ')').css('stroke', 'rgb(' + rgb.join(',') + ')');
+			if (rgb instanceof Array)
+				this.element.css('color', 'rgba(' + rgb.join(',') + ')').find('svg').css('fill', 'rgba(' + rgb.join(',') + ')').css('stroke', 'rgba(' + rgb.join(',') + ')');
+			else
+				this.element.css('color', rgb).find('svg').css('fill', rgb).css('stroke', rgb);
 	},
 
 });
@@ -729,13 +755,13 @@ $.widget("sv.basic_offset", $.sv.widget, {
 	},
 
 	_events: {
-    'click': function (event) {
+		'click': function (event) {
 			var step = this.options.step * 1;
 			var decs = step.decimals();
 			var newval = (widget.get(this.options.item) * 1 + step).toFixed(decs);
-	    	if (this.options.min !== '')
+			if (this.options.min !== '')
 				newval = (newval < this.options.min * 1 ? this.options.min : newval);
-	  		if (this.options.max !== '')
+			if (this.options.max !== '')
 				newval = (newval > this.options.max * 1 ? this.options.max * 1 : newval);
 			this._write(newval);
 		}
@@ -750,10 +776,11 @@ $.widget("sv.basic_print", $.sv.widget, {
 	initSelector: '[data-widget="basic.print"]',
 
 	options: {
-    format: "",
-    formula: "",
-    thresholds: "",
-    colors: ""
+	format: "",
+	formula: "",
+	thresholds: "",
+	colors: "",
+	bind: ""
 	},
 
 	_update: function(response) {
@@ -794,17 +821,18 @@ $.widget("sv.basic_print", $.sv.widget, {
 		}
 
 		var value; // value for threshold comparison
-		if (formatLower == 'date' || formatLower == 'time' || formatLower == 'short' || formatLower == 'long') { // Date
+		if (formatLower == 'date' || formatLower == 'time' || formatLower == 'short' || formatLower == 'long' || formatLower == 'calendardate' ) { // Date
 			value = new Date(calc);
 			calc = value.transUnit(format);
+			value = value.getTime();
 		}
 		else if (formatLower == 'script') { // Script
 			value = null;
 			calc = ''; // no output for format 'script'
 		}
-    else if (formatLower == 'text2br') { // String with \r\n, \r or \n to be converted to <br />
-            calc = response[0].replace(/(?:\r\n|\r|\n)/g, '<br />');
-    }
+		else if (formatLower == 'text2br') { // String with \r\n, \r or \n to be converted to <br />
+			calc = response[0].replace(/(?:\r\n|\r|\n)/g, '<br />');
+		}
 		else if (formatLower == 'text' || formatLower == 'html' || isNaN(calc)) { // String
 			value = calc;
 		}
@@ -819,7 +847,14 @@ $.widget("sv.basic_print", $.sv.widget, {
 			this.element.html(calc);
 		else
 			this.element.text(calc);
-
+		
+		if (this.options.bind != ''){
+			this.element.hide();
+			$('#'+this.options.bind).attr('data-tip', calc);
+			return;
+		}
+			
+		
 		// colorize
 		var currentIndex = 0;
 		$.each(String(this.options.thresholds).explode(), function(index, threshold) {
@@ -847,7 +882,7 @@ $.widget("sv.basic_shutter", $.sv.widget, {
 
 	options: {
 		min: 0,
-    max: 255,
+		max: 255,
 		step: 5,
 		mode: 'half'
 	},
@@ -856,44 +891,44 @@ $.widget("sv.basic_shutter", $.sv.widget, {
 		var max = parseInt(this.options.max);
 		var min = parseInt(this.options.min);
 
-		var a = 13;
+		// response is {item_position},{item_angle}
+		var bladeSize = 13;
 		var mode = (this.options.mode == 'half' ? 0.5 : 1);
 		if (response[1] !== undefined) {
-			a = parseInt(13 / mode * ((response[1] - min) / (max - min) + mode - 1));
+			bladeSize = parseInt(13 / mode * ((response[1] - min) / (max - min) + mode - 1));
 		}
 
 		var style;
 
 		var h = parseInt(Math.min(Math.max((response[0] - min) / (max - min), 0), 1) * 13 * 14);
-		$.each(this.element.find('.blade-pos, .blade-neg').get().reverse(), function(i) {
-			if (h >= 14) {
-				var w = 13 - Math.abs(a);
-				style = 'height: ' + ((h > (12-i) * 14) && a == 13 ? (14 - w) : (15 - w)) + 'px;';
+		$.each(this.element.find('.blade-pos, .blade-neg').get(), function(i) {
+			var bladeGap = 13 - Math.abs(bladeSize);
+			if (h > 14) {
+				style = 'height: ' + ((h > i * 14) && bladeSize == 13 ? (14 - bladeGap) : (15 - bladeGap)) + 'px;';
 
-				if (a != 13) {
-					style += 'margin-top: ' + (h - 15 >= 14 ? w : parseInt(w / 2)) + 'px;';
-				}
-				else {
-					style += 'border-top: 1px dotted ' + (h > (12-i) * 14 ? '#ccc' : '#333') + ';';
-				}
+				if (bladeSize != 13)
+					style += 'margin-top: ' + bladeGap  + 'px;';
+				else
+					style += 'border-top: 1px dotted ' + (h > i * 14 ? '#ccc' : '#333') + ';';
 
-				if (a > 0) {
+				if (bladeSize > 0)
 					$(this).attr('class', 'blade-pos');
-				}
-				else {
-					$(this).attr('class', 'blade-pos');
-				}
-
-				$(this).attr('style', style);
-
+				else
+					$(this).attr('class', 'blade-neg');
+				
 				h = h - 15;
 			}
-			else {
-				style = 'height: ' + h + 'px;';
-				style += 'border-top: 1px dotted #aaa;';
-				$(this).attr('style', style);
+			else if (h > 1) {
+				bladeGap = parseInt(bladeGap * h/15);
+				style = 'height: ' +  (h - bladeGap) + 'px;';
+				style += 'margin-top: ' + bladeGap + 'px;';
 				h = 1;
 			}
+			else{
+				style = 'height:  1px;';
+				style += 'border-top: 1px dotted #aaa;';
+			}
+			$(this).attr('style', style);
 		});
 	},
 
@@ -1064,28 +1099,28 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 			list_val.forEach(arrayConvert);
 			function arrayConvert(part, index) {
 				if(part.startsWith("[") && ! part.endsWith("]") && start_combine == 2)
-				  start_combine = 1;
+					start_combine = 1;
 				else if (start_combine == 2)
-				  combined.push(part);
+					combined.push(part);
 
 				if(start_combine == 1) {
 					if(part.endsWith("]"))
 					{
-					  start_combine = 0;
-					  temp += ', ' + part;
+						start_combine = 0;
+						temp += ', ' + part;
 					}
 					else if (part.startsWith("["))
-					  temp += part;
+						temp += part;
 					else
-					  temp += ', ' + part;
+						temp += ', ' + part;
 				}
 
 				if (start_combine == 0)
-				  {
-				  combined.push(temp);
-				  temp = '';
-				  list_val = combined;
-				  start_combine = 2;
+					{
+					combined.push(temp);
+					temp = '';
+					list_val = combined;
+					start_combine = 2;
 				}
 			}
 
@@ -1165,7 +1200,7 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 					}, indicatorDuration*1000 
 				));
 
-				// remove existing classes  and styles
+				// remove existing classes and styles
 				var actualCol = target.attr('data-col');
 				if (actualCol.indexOf('icon') == 0 && indicatorType != 'blink' && indicatorType != 'simulate' )
 					target.removeClass(actualCol).find('svg').removeClass(actualCol);
@@ -1187,7 +1222,7 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 					var iconVal = that._direction == 1 ? iconWidget.options.min : iconWidget.options.max ;
 
 					this._simulator = setInterval (function (){
-						iconVal +=  that._direction * 250 * (iconWidget.options.max - iconWidget.options.min) / (indicatorDuration*1000);
+						iconVal += that._direction * 250 * (iconWidget.options.max - iconWidget.options.min) / (indicatorDuration*1000);
 						iconWidget._update([iconVal])
 					},250);
 				}
@@ -1276,19 +1311,19 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		mode: '',
 		val: '',
 	},
-  _events: {
-    'update': function (event, response) {
-      event.stopPropagation();
-    }
-  },
+	_events: {
+		'update': function (event, response) {
+		event.stopPropagation();
+		}
+	},
+
 	_update: function(response) {
 		// response will be an array, if more than one item is requested
 		var formula = this.options.mode;
 		var values = String(this.options.val).explode();
-    var asThreshold = false;
-    var anyShown = false;
-    var bit = false;
-		// legacy support
+		var asThreshold = false;
+		var anySymbolShown = false;
+
 		if(formula == 'or') {
 			formula = 'VAR';
 		}
@@ -1297,17 +1332,13 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 			// If this is true, this one value will be returned and used for selecting the proper symbol.
 			formula = 'VAR.every(function(entry, i, arr) { return entry == arr[0] }) ? VAR[0] : null';
 		}
-    else if(formula == 'min') {
-			// To fulfill "and" condition, every entry in response has to have the same value.
-			// If this is true, this one value will be returned and used for selecting the proper symbol.
-      formula = 'VAR.some(function(entry, i, arr) { return entry >= parseFloat(comp[c]) }) ? comp[c] : null';
+		else if(formula == 'min') {
+			formula = 'VAR.some(function(entry, i, arr) { return entry >= parseFloat(comp[c]) }) ? comp[c] : null';
 		}
-    else if(formula == 'max') {
-			// To fulfill "and" condition, every entry in response has to have the same value.
-			// If this is true, this one value will be returned and used for selecting the proper symbol.
-      formula = 'VAR.every(function(entry, i, arr) { return entry <= parseFloat(comp[c]) }) ? comp[c] : null';
+		else if(formula == 'max') {
+			formula = 'VAR.every(function(entry, i, arr) { return entry <= parseFloat(comp[c]) }) ? comp[c] : null';
 		}
-    this.element.attr('formula', formula);
+		this.element.attr('formula', formula);
 		if(formula.startsWith('>')) {
 			formula = formula.length == 1 ? 'VAR' : formula.substring(1);
 			asThreshold = true;
@@ -1316,33 +1347,29 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 		formula = formula.replace(/VAR(\d+)/g, 'VAR[$1-1]');
 		var VAR = response;
 		try {
-      var val = null;
-      if (formula == 'VAR.some(function(entry, i, arr) { return entry >= parseFloat(comp[c]) }) ? comp[c] : null'
-          || formula == 'VAR.every(function(entry, i, arr) { return entry <= parseFloat(comp[c]) }) ? comp[c] : null') {
-        var val_prev = null;
-        var comp = this.element.attr('data-val').split(", ");
-        for (var c = 0; c < comp.length; c++) {
-             val_prev = val;
-  			     val = eval(formula);
+			var val = null;
+			if (formula == 'VAR.some(function(entry, i, arr) { return entry >= parseFloat(comp[c]) }) ? comp[c] : null'
+				|| formula == 'VAR.every(function(entry, i, arr) { return entry <= parseFloat(comp[c]) }) ? comp[c] : null') {
+				var val_prev = null;
+				var comp = this.element.attr('data-val').split(", ");
+				for (var c = 0; c < comp.length; c++) {
+					val_prev = val;
+					val = eval(formula);
 
-             // DEBUG: console.log("run: " + c + " comparison: " + comp[c] + "; response: " + VAR + "; value: " + val + ", prev: " + val_prev);
-             if (val == null && this.element.attr('data-mode') == 'min')
-             {
-               val = val_prev;
-               break;
-             }
-             else if (comp[c] == '' || (val_prev != null && val > val_prev && this.element.attr('data-mode') == 'max'))
-             {
-               val = val_prev;
-               break;
-             }
-
-        }
-      }
-      else
-      {
-        val = eval(formula);
-      }
+					// DEBUG: console.log("run: " + c + " comparison: " + comp[c] + "; response: " + VAR + "; value: " + val + ", prev: " + val_prev);
+					if (val == null && this.element.attr('data-mode') == 'min'){
+						val = val_prev;
+						break;
+					}
+					else if (comp[c] == '' || (val_prev != null && val > val_prev && this.element.attr('data-mode') == 'max')){
+						val = val_prev;
+						break;
+					}
+				}
+			}
+			else {
+				val = eval(formula);
+			}
 		}
 		catch(ex) {
 			notify.message("error", "basic.symbol: Invalid formula", ex);
@@ -1358,16 +1385,14 @@ $.widget("sv.basic_symbol", $.sv.widget, {
 			val = values[currentIndex];
 		}
 
+		// show the parent span only if any symbol is shown
 		var filter = Array.isArray(val) ? '[data-val="'+val.join('"],[data-val="')+'"]' : '[data-val="'+(typeof val === 'boolean' ? Number(val) : val)+'"]';
-    anyShown = this.element.children('span').hide().filter(filter).first().show().length > 0;
-		if(anyShown)
-    {
+		anySymbolShown = this.element.children('span').hide().filter(filter).first().show().length > 0;
+		if(anySymbolShown)
 			this.element.show();
-    }
 		else
-    {
 			this.element.hide();
-    }
+
 	},
 
 });
@@ -1380,7 +1405,9 @@ $.widget("sv.basic_tank", $.sv.widget, {
 
 	options: {
 		min: 0,
-    max: 255,
+		max: 255,
+		thresholds: "",
+		colors: ""
 	},
 
 	_update: function(response) {
@@ -1388,13 +1415,24 @@ $.widget("sv.basic_tank", $.sv.widget, {
 		var min = this.options.min;
 
 		var factor = Math.min(Math.max((response[0] - min) / (max - min), 0), 1);
-
+		
+		// colorize
+		var value=parseFloat(response[0])
+		var currentIndex = 0;
+		$.each(String(this.options.thresholds).explode(), function(index, threshold) {
+			if((isNaN(value) || isNaN(threshold)) ? (threshold > value) : (parseFloat(threshold) > parseFloat(value)))
+				return false;
+			currentIndex++;
+		});
+		var color = String(this.options.colors).explode()[currentIndex];
+		this.element.find('div').css('background-color', color);
+		
 		this.element.attr('title', Math.round(factor * 100) + '%')
 			.find('div').css('height', factor * this.element.height());
+
 	},
 
 });
-
 // ----- basic.trigger ---------------------------------------------------------
 $.widget("sv.basic_trigger", $.sv.widget, {
 
@@ -1403,7 +1441,10 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 	options: {
 		name: null,
 		val: '',
-		triggerevent: 'button'
+		triggerevent: 'button',
+		color: '',
+		indicatorType: '',
+		indicatorDuration: 3
 	},
 	
 	_create: function () {
@@ -1421,6 +1462,25 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 	_events: {
 		'click': function (event) {
 			io.trigger(this.options.name, this.options.val != null ? String(this.options.val) : null);
+			var indicatorType = this.options.indicatorType;
+			var oldClass = this.options.color.indexOf('icon') == 0 && indicatorType != 'blink' ? this.options.color : '';
+			var oldColor = this.options.color.indexOf('icon') != 0 && indicatorType != 'blink' ? this.options.color : '';
+			if (indicatorType != ''){
+				var that = this;
+				if(indicatorType.indexOf('icon') == 0 || indicatorType == 'blink'){
+					this.element.find('svg').addBack().removeClass(oldClass).addClass(indicatorType);
+					if (oldColor != '')
+						indicatorType = '';
+				}
+				this.element.css('color', indicatorType).find('svg').css('fill', indicatorType).css('stroke', indicatorType);
+	
+				this._timer = setTimeout(function(){
+					var indicatorType = that.options.indicatorType;
+					if(indicatorType.indexOf('icon') == 0 || indicatorType == 'blink')
+						that.element.find('svg').addBack().removeClass(indicatorType).addClass(oldClass);
+					that.element.css('color', oldColor).find('svg').css('fill', oldColor).css('stroke', oldColor);
+				}, this.options.indicatorDuration*1000);
+			}
 			
 		},
 	},
@@ -1429,21 +1489,21 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 
 // ----- basic.listview ----------------------------------------------------------
 $.widget("sv.basic_listview", $.sv.widget, {
-         initSelector: '[data-widget="basic.listview"]',
-         options: {
-                size: "5"
-        },
-         _update: function(response) {
-                var size = this.options.size;
-                var line = '';
-                if (response[0] instanceof Array) {
-                        var list = response[0];
-                        for (var i = 0; i < list.length && i < size; i++) {
-                                line += '<li>' +  list[i]+ '</li>';
-                        }
-                        this.element.find('ul').html(line).listview('refresh');
-                }
-        },
+		initSelector: '[data-widget="basic.listview"]',
+		options: {
+			size: "5"
+		},
+		_update: function(response) {
+			var size = this.options.size;
+			var line = '';
+			if (response[0] instanceof Array) {
+				var list = response[0];
+				for (var i = 0; i < list.length && i < size; i++) {
+					line += '<li>' + list[i]+ '</li>';
+				}
+				this.element.find('ul').html(line).listview('refresh');
+			}
+		},
 });
 
 // ----- basic.roundslider-------------------------------------------------------
@@ -1537,32 +1597,32 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 			create: function(args){
 				if (scale == true) {
 					var o = this.options;
-					var extraSize = 0, 
-					  sizeCorrect = false,
-					  circleShape = o.circleShape;
+					var extraSize = 0;
+					var sizeCorrect = false;
+					var circleShape = o.circleShape;
 					var isFullCircle = (circleShape == "full" || circleShape == "pie" || circleShape.indexOf("custom") === 0);
 					if (o.svgMode && !isFullCircle && o.lineCap != "none") {
 						extraSize = (o.lineCap === "butt") ? (o.borderWidth / 2) : ((o.width / 2) + o.borderWidth);
 						sizeCorrect = true;
 					};
-						
+
 					//scale odd ticks (long w/ numbers)
 					for (var i = o.min; i <= o.max; i += scale_interval) {
 						var angle = this._valueToAngle(i);
 						var numberTag = this._addSeperator(angle, "rs-custom");
 						var number = numberTag.children();
 						number.clone().css({
-						  "width": o.width + this._border(),
-						  "margin-top": this._border(true) / -2,
-						  "margin-right": '10px',
+							"width": o.width + this._border(),
+							"margin-top": this._border(true) / -2,
+							"margin-right": '10px',
 						}).appendTo(numberTag);
 						number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
 						$(element).find(".rs-seperator").css("width","10px");
 						$(element).find(".rs-seperator").css("margin-left","-10px"); 
 						if (sizeCorrect && circleShape.indexOf("bottom") != -1) 
-							  numberTag.css("margin-top", extraSize + 'px');
+							numberTag.css("margin-top", extraSize + 'px');
 						if (sizeCorrect && circleShape.indexOf("right") != -1)
-							  numberTag.css("margin-right", -extraSize + 'px');
+							numberTag.css("margin-right", -extraSize + 'px');
 					};
 
 					//scale even ticks (short)
@@ -1596,17 +1656,17 @@ $.widget("sv.basic_window", $.sv.widget, {
 	
 	_update: function(response) {
 		// response is: {{ gad_value }}, {{ gad_window_r}}, {{ gad_window_l}}
-        // make sure that items are correlated correctly even if optional items are omitted
-        var items = this.options.item.explode();
-        var values = new Array(this.items.length);
-        var j=0;
-        for (var i = 0; i < items.length; i++) {
-            if (items[i] != '') {
-                values[i] = response[j];
-                j++;
-            } else 
+		// make sure that items are correlated correctly even if optional items are omitted
+		var items = this.options.item.explode();
+		var values = new Array(this.items.length);
+		var j=0;
+		for (var i = 0; i < items.length; i++) {
+			if (items[i] != '') {
+				values[i] = response[j];
+				j++;
+			} else 
 				values[i] = 0;
-        };
+		};
 		response = values;
 
 		var color = this.element.attr('data-color').explode();
@@ -1631,7 +1691,7 @@ $.widget("sv.basic_window", $.sv.widget, {
 		if(response[2] !== undefined) {
 			var window_l = response[2];
 		} else { 
-		    window_l = 0; 
+			window_l = 0; 
 		}
 		if(response[1] !== undefined) {
 			var window_r = response[1];
@@ -1721,7 +1781,7 @@ $.widget("sv.basic_skylight", $.sv.widget, {
 		this.element.attr('style', ((response[1] && response[1] != 'closed') || (response[2] && response[2] != 'closed') || (must == true) ? 'stroke: '+ style[1]+'; fill: '+style[1]+';' : 'stroke: '+ style[0]+'; fill: '+style[0]+';'));
 
 		var max = parseFloat(this.options.max);
-		var min = parseFloat(this.options.min);        
+		var min = parseFloat(this.options.min);
 		var x = response[1] * 1; 
 		var y = Math.min(Math.max((response[0] - min) / (max - min), 0), 1);
 		

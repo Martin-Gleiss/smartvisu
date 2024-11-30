@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2023
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide		weather_postal
@@ -123,7 +123,7 @@ class weather_met extends weather
 
 				$searchTimes = array (0, 6, 12, 18);
 				if ($day == $nextday && $dayready == 0) {
-					if (in_array ($actualTime, $searchTimes)) {
+					if (\in_array ($actualTime, $searchTimes)) {
 						$mintemp_6h = (float)$dataset->{'data'}->{'next_6_hours'}->{'details'}->{'air_temperature_min'};
 						$maxtemp_6h = (float)$dataset->{'data'}->{'next_6_hours'}->{'details'}->{'air_temperature_max'};
 						if($maxtemp_6h >  $maxtemp) $maxtemp = $maxtemp_6h;

@@ -4,7 +4,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Andre Kohler
- * @copyright   2020
+ * @copyright   2020 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -86,7 +86,7 @@ class Items {
 				$this->items[trim(explode('|',$key)[0])] = trim(explode('|',$key)[1]);
 				}
 			}
-			if ($this->items != NULL && count($this->items) > 1)
+			if ($this->items != NULL && \count($this->items) > 1)
 			$this->ready = TRUE;
 		}
 		catch (Exception $e) {

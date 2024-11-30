@@ -62,7 +62,7 @@ $( document ).ready(function() {
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
     <li data-role="list-divider">Szenen</li>
 
-{{ quad.select('lichtmodus_select', 'licht.modus.visu', 'menu', [0,1,2,3,4], ['time_graph', 'light_office', 'scene_livingroom', 'scene_cinema', 'scene_sleeping'], ['Lichtkurve', 'Arbeit', 'Chillen', 'Kino', 'Nacht'], '', 'none', '', '', 'Lichtmodus', '', '', '', '', '', 'licht.modus.automatik', ['stateengine', ['header', 'Suspendzeit'], ['slider', ['licht.modus.automatik.settings.suspendduration', '0', '480', '10', 'horizontal', 'handle']]], '', '', '', '', ['select', 'stateengine']) }}
+{{ quad.select('lichtmodus_select', 'licht.modus.visu', 'menu', [0,1,2,3,4], ['time_graph', 'light_office', 'scene_livingroom', 'scene_cinema', 'scene_sleeping'], ['Lichtkurve', 'Arbeit', 'Chillen', 'Kino', 'Nacht'], '', '', '', '', 'Lichtmodus', '', '', '', '', '', 'licht.modus.automatik', ['stateengine', ['header', 'Suspendzeit'], ['slider', ['licht.modus.automatik.settings.suspendduration', '0', '480', '10', 'horizontal', 'handle']]], '', '', '', '', ['select', 'stateengine']) }}
     <li data-role="list-divider">Küche</li>
     {{ quad.stateswitch('licht_og_kueche', 'licht.og.kueche.sa', 'icon', [0,1], ['light_light','light_light'], '', ['icon0', 'icon1'], 'blink', '', '', '', '', '', 'Küchenlicht', '', 'licht.og.kueche.uzsu', ['', '', 'bool'], ['licht.og.kueche.sa', 'max', '', '', '0', '1', '3000'], '', '', '', ['licht.og.kueche.sperren','bwm.og.kueche.sperren'], '', '', '', ['locks', 'switch', 'plot']) }}
 

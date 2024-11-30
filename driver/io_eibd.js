@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Raik Alber and Martin Gleiß
- * @copyright   2013
+ * @copyright   2013 - 2024
  * @license     GPL [http://www.gnu.de]
  * @version        0.2
  * -----------------------------------------------------------------------------
@@ -17,6 +17,7 @@
  * @hide		driver_username
  * @hide		driver_password
  * @hide		driver_loopback
+ * @hide        driver_signalBusy
  * @hide		sv_hostname
  */
 
@@ -110,6 +111,11 @@ var io = {
 	lastRequestStarted: 0,
 	reloadAllDataTime: 1800,
 	restartRequestTime: 60,
+	
+	/**
+	 * supported aggregate functions in the backends database
+	 */
+	aggregates: [],
 
 	checkRequest: function () {
 
@@ -374,14 +380,6 @@ var io = {
 		requestItem = itemArray[0] + '/' + itemArray[1] + '/' + itemArray[2];
 
 		return requestItem;
-	},
-	
-	/**
-	 * stop all subscribed series
-	 */
-	stopseries: function () {
-		// TODO
-		$.noop;
 	}
-
+	
 };

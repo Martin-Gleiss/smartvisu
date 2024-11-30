@@ -298,7 +298,7 @@ abstract class Template implements \Twig_TemplateInterface
      *
      * @return bool true if the block exists, false otherwise
      */
-    public function hasBlock($name, array $context = null, array $blocks = [])
+    public function hasBlock($name, ?array $context = null, array $blocks = [])
     {
         if (null === $context) {
             @trigger_error('The '.__METHOD__.' method is internal and should never be called; calling it directly is deprecated since version 1.28 and won\'t be possible anymore in 2.0.', \E_USER_DEPRECATED);
@@ -332,7 +332,7 @@ abstract class Template implements \Twig_TemplateInterface
      *
      * @return array An array of block names
      */
-    public function getBlockNames(array $context = null, array $blocks = [])
+    public function getBlockNames(?array $context = null, array $blocks = [])
     {
         if (null === $context) {
             @trigger_error('The '.__METHOD__.' method is internal and should never be called; calling it directly is deprecated since version 1.28 and won\'t be possible anymore in 2.0.', \E_USER_DEPRECATED);

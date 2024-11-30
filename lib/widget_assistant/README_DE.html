@@ -1,0 +1,156 @@
+<style>
+
+body
+{
+  color :whitesmoke
+}
+a {color:green}
+table {
+	border-collapse: collapse;
+      }
+table,th,td {
+	border: 1px solid;
+	text-align: left;
+	padding: 4px;
+}
+
+* {
+    font-family: Dosis, Helvetica, Arial, sans-serif;
+  }
+
+.blinkklasse {
+
+  animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 0;
+  }
+  50.01%, 100% {
+    opacity: 1;
+  }
+}
+
+pre {
+  /* background: #f4f4f4; */
+  border: 1px solid #ddd;
+  border-left: 3px solid #f2334c;
+  color: #666;
+  page-break-inside: avoid;
+  font-family: monospace;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 1.6em;
+  max-width: 100%;
+  overflow: auto;
+  padding: 1em 1.5em;
+  display: block;
+  word-wrap: break-word;
+}
+</style>
+
+<h1 id="smartvisu-widget-assistant">smartvisu - Widget Assistant</h1>
+<h2 id="table-of-content">Inhalt</h2>
+<ol>
+<li><a href="#howitworks">Funktionsweise</a></li>
+<li><a href="#hotkeys">Hot-Keys</a> <sup><span style="color:red"> <strong></strong></span></sup></li>
+<li><a href="#issues">Bekannte Probleme</a> <sup><span style="color:red"> <strong></strong></span></sup></li>
+<li><a href="#logic_shng">Logik zum Erstellen der masteritem.json in shNG</a></li>
+<li><a href="#script_fronthem">Skript zum Erstellen der masteritem.json in FHEM</a></li>
+</ol>
+<p><a name="howitworks"/></a></p>
+<h2 id="how-it-works">Funktionsweise</h2>
+<p>Dieses Tool hilft bei der Erstellung von Widgets für Ihre Visualisierung mit smartVISU.
+Es unterstützt mit Autovervollständigung vorhandener und im Kontext zulässiger Widgets, Items, Icons und Farben. Der Modus der Autovervollständigung kann ausgewählt werden.<br><br>
+Beginnen Sie einfach im Editor mit der Eingabe eines Widget-Namens oder öffnen Sie die Liste mit CTRL-Leerzeichen. Nachdem Sie ein Widget ausgewählt haben (z.B. basic.symbol...) und die erste Klammer eintippen, 
+wird ein Fenster mit Erläuterungen (Tooltip) für dieses Widget angezeigt. Der jeweils zu bearbeitende Parameter wird in roter Schrift angezeigt und alle dazu verfügbaren Details werden darunter gelistet. 
+Für Icons und Farben wird eine Vorschau im Tooltip angezeigt. Alle Parameter müssen mit Anführungszeichen eingegeben werden, wobei die Autovervollständigung die Parameter automatisch in Anführungszeichen setzt.<br><br> 
+Nachdem das Widget vollständig eingegeben ist, können Sie es entweder auf dieser Seite, oder in einem neuen Fenster (empfohlen) anzeigen lassen und live testen. Das Widget ist voll funktionsfähig.
+Es wird lediglich ein Twig-Error angezeigt, wenn ein Fehler in der Syntax ist. Zudem wird der eingegebene Widget Code einschließlich der Klammern &quot;{{&quot; + &quot;}}&quot; in die Zwischenablage 
+kopiert und kann direkt in Ihre Visu-Seiten eingefügt werden.</p>
+<p>Man kann mehrere Widgets gleichezitig rendern, indem man sie mit einem <strong><code>&lt;br&gt;</code></strong>-TAG trennt.</p>
+<h2>Beispiel:</h2>
+<pre><code>plot.period(&#39;&#39;, [&#39;licht.og.terrasse.screens.warm.dimmen&#39;, &#39;licht.og.terrasse.screens.kalt.dimmen&#39;, &#39;licht.og.terrasse.decke.dimmen&#39;], &#39;max&#39;, &#39;1w&#39;, &#39;now&#39;, &#39;0&#39;, &#39;110&#39;, &#39;1000&#39;, [&#39;Screens warm&#39;, &#39;Screens kalt&#39;, &#39;Decke&#39;], [&#39;#daa&#39;, &#39;#aad&#39;, &#39;#955&#39;], [&#39;stair&#39;, &#39;stair&#39;, &#39;stair&#39;], [&#39;Uhrzeit&#39;, &#39;Helligkeit&#39;], &#39;advanced&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, { yAxis: [ { tickInterval: 40 } ], legend: {align: &#39;right&#39;, verticalAlign: &#39;top&#39;, y: 50, layout: &#39;vertical&#39;}, chart: { marginRight: 110} })
+<strong>&lt;br&gt;</strong>
+basic.stateswitch(&#39;&#39;,&#39;OG.Bad.Licht&#39;,&#39;midi&#39;,&#39;&#39;,&#39;light_ceiling_light&#39;,&#39;Licht Bad&#39;,&#39;&#39;,&#39;&#39;,&#39;&#39;,&#39;&#39;,&#39;&#39;)
+<strong>&lt;br&gt;</strong>
+quad.dimmer(&#39;Lueftungsstufe1&#39;, &#39;Lüftungsstufe&#39;, &#39;Haustechnik.Lueftung&#39;, &#39;Haustechnik.Lueftung.stufe&#39;, 0, 100, 5, icon.ventilation(), icon.ventilation(&#39;&#39;,&#39;&#39;,&#39;Haustechnik.Lueftung.stufe&#39;), &#39;&#39;, &#39;&#39;, &#39;&#39;, 0, 100, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;,   &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, [&#39;switch&#39;, &#39;value_popup&#39;]) 
+</code></pre>
+<p><a name="hotkeys"/></a></p>
+<h2 id="hot-keys">Hot-Keys</h2>
+<table>
+<thead>
+<tr>
+<th>Kurzbefehl</th>
+<th>Funktion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STRG+1</td>
+<td>Autovervollständigung nur für Items</td>
+</tr>
+<tr>
+<td>STRG+2</td>
+<td>Autovervollständigung nur für Widgets</td>
+</tr>
+<tr>
+<td>STRG+3</td>
+<td>Autovervollständigung nur für Icons</td>
+</tr>
+<tr>
+<td>STRG+4</td>
+<td>Autovervollständigung für alles</td>
+</tr>
+<tr>
+<td>STRG+5</td>
+<td>Autovervollständigung nur für Farben</td>
+</tr>
+<tr>
+<td>STRG+6</td>
+<td>Autovervollständigung AUS</td>
+</tr>
+<tr>
+<td>STRG+9</td>
+<td>Platzhaltersuche für Autovervollständigung ein/ausschalten</td>
+</tr>
+<tr>
+<td>STRG+Space</td>
+<td>öffnet die aktuelle Liste zur Autovervollständigung</td>
+</tr>
+<tr>
+<td>STRG+F</td>
+<td>Ausdruck im Code suchen</td>
+</tr>
+<tr>
+<td>STRG+SHIFT+R</td>
+<td>Ausdruck im Code ersetzen - ENTER wechselt zum Ersatz-Ausdruck</td>
+</tr>
+</tbody>
+</table>
+<p><a name="issues"/></a></p>
+<h2 id="known-issues">Bekannte Probleme</h2>
+<p>Man kann das neue Widget in den iframe auf der aktuellen Seite rendern. Dies wird jedoch die geladene index.php zerstören, so dass Probleme in der weiteren Navigation in smartVISU entstehen.
+Derzeit gibt es dafür nur die Lösung, die Seite neu zu laden (CTRL+F5 / CTRL + Shift + R).</p>
+<p><a name="logic_shng"/></a></p>
+<h2 id="logic-to-create-masteritem-json-from-shng">Logik zum Erstellen der masteritem.json in shNG</h2>
+<p>Wird nur für shNG Versionen <= v1.7.2 benötigt. Ab v1.8 erstellt das smartvisu plugin die Datei standardmäßig.</p>
+<pre><code>#!/usr/bin/env python3
+# create_master_item.py
+import json
+from lib.item import Items
+items = Items.get_instance()
+items_sorted = sorted(items.return_items(), key=lambda k: str.lower(k['_path']), reverse=False)
+item_list = []
+for item in items_sorted:
+    item_list.append(item._path + "|" + item._type )
+f = open("/var/www/html/smartvisu/pages/<strong>YOUR_PAGES</strong>/masteritem.json", "w")
+f.write(json.dumps(item_list))
+f.close()
+</code></pre>
+<p><a name="script_fronthem"/></a></p>
+<h2 id="script-to-create-masteritem-json-for-fhem">Skript zum Erstellen der masteritem.json in FHEM</h2>
+<p>Ein Skript ist im fronthem / smartVISU Forum verfügbar<br>
+<a href="https://forum.fhem.de/index.php/topic,118508.msg1135044.html#msg1135044">https://forum.fhem.de/index.php/topic,118508.msg1135044.html#msg1135044</a></p>
+

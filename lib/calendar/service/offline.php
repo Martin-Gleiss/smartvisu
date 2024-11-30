@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide        calendar_url
@@ -29,9 +29,9 @@ class calendar_offline extends calendar
 	public function run()
 	{
 		$event = array();
-		if(in_array('personal', $this->calendar_names))
+		if(\in_array('personal', $this->calendar_names))
 			$event += array_merge($event, array('Meeting', 'Doctor', 'Holidays', 'Trip'));
-		if(in_array('waste', $this->calendar_names)) {
+		if(\in_array('waste', $this->calendar_names)) {
 			$waste = array('green bin', 'blue bin', 'yellow bin', 'black bin');
 			$event += array_merge($event, $waste);
 		}
@@ -40,9 +40,9 @@ class calendar_offline extends calendar
 		{
 			$tag = $tag + rand(1, 3);
 			$colors = array('#44a', '#642', '#555', '#660');
-			$title = $event[rand(0, count($event)-1)];
+			$title = $event[rand(0, \count($event)-1)];
 
-			if(isset($waste) && in_array($title, $waste)) {
+			if(isset($waste) && \in_array($title, $waste)) {
 				$this->data[] = array( // single hole day event
 					'pos' => $i,
 					'start' => time() + $tag * 24 * 60 * 60,
@@ -50,7 +50,7 @@ class calendar_offline extends calendar
 					'title' => $title,
 					'where' => '',
 					'icon' => 'icons/ws/message_garbage.svg',
-					'color' => $colors[rand(0, count($colors)-1)],
+					'color' => $colors[rand(0, \count($colors)-1)],
 					'calendarname' => 'waste'
 				);
 			}

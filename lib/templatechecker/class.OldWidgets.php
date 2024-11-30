@@ -59,7 +59,7 @@ class OldWidgets {
 				"name" => "text",
 				"params" => "id, item, txt_on, txt_off, val_on, val_off",
 				"removed" => true,
-				"replacement" => "basic.symbol(%1\$s, %2\$s, [%3\$s, %4\$s], [%5\$s, %6\$s])",
+				"replacement" => "basic.symbol(%1\$s, %2\$s, [%3\$s, %4\$s], '', [%5\$s, %6\$s])",
 				),
 			"basic.value" => array (
 				"name" => "value",

@@ -2,9 +2,9 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, Patrik Germann
- * @copyright   2012 - 2022
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
- * @version     2.5.1
+ * @version     2.5.3
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
@@ -22,6 +22,7 @@
  * @hide        proxy_user
  * @hide        proxy_password
  * @hide        driver_loopback
+ * @hide        driver_signalBusy
  */
 
 /**
@@ -189,6 +190,13 @@ var io = {
 	auth               : false,
 	serverTimeout      : 10,
 	serverResponseTime : 0,
+	
+	/**
+	 * supported aggregate functions in the backends database
+	 * since this must be configured by the user in the backend we leave some common modes as dummies
+	 */
+	aggregates: ['avg', 'min', 'max', 'sum', 'diff', 'on', 'raw', 'count'],
+
 
 	/**
 	 * convert states from openHAB

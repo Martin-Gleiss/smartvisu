@@ -2,8 +2,8 @@
 /**
  * -----------------------------------------------------------------------------
  * @package     smartVISU
- * @author      Martin Gleiss, Wolfram v. Huelsen
- * @copyright   2012 - 2015
+ * @author      Martin Gleiß, Wolfram v. Hülsen
+ * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -18,7 +18,7 @@ if (empty($_COOKIE['updchk']) && config_updatecheck)
 	set_error_handler(
 			function($errno, $errstr, $errfile, $errline)
 			{
-			if (defined('config_debug') && config_debug == 1)
+			if (\defined('config_debug') && config_debug == 1)
 				return false;	// hand over to standard error reporting
 			else
 				return true;
@@ -48,33 +48,33 @@ if (empty($_COOKIE['updchk']) && config_updatecheck)
 		$ret["update"] = (($VersionMajor > config_version_major) or ($VersionMinor > config_version_minor) or ($VersionRevision > config_version_revision) ? true : false);
 		$extension = "";
 		if ((isset($data_sv) && !$data_sv->update) && $ret["update"]) 
-			$extension = ' (github only)';
+			$extension = ' ('.trans('templatechecker', 'github').')';
 		$ret["remote"] = $VersionMajor.".".$VersionMinor.".".$VersionRevision.$extension;
 		
 		if (config_version_revision >= "a") {
 			$ret["update"] = true;
 			$ret["icon"] = 'message_attention.svg';
-			$ret["text"] = 'This version from develop branch might be unstable';
+			$ret["text"] = trans('update','develop');
 		}
 		else {
 			if ( $ret["update"] ) {
 				$ret["icon"] = 'message_attention.svg';
-				$ret["text"] = 'smartVISU update available!';
+				$ret["text"] = trans('update','newer');
 			}
 			else {
 				$ret["icon"] = 'message_ok.svg';
-				$ret["text"] = 'smartVISU is up to date';
+				$ret["text"] = trans('update','ok');
 			}
 		}
 	}
 	else {
 		$ret["update"] = false;
 		$ret["icon"] = 'text_na.svg';
-		$ret["text"] = 'no answer from update servers';
+		$ret["text"] = trans('update','fail');
 	}
 
 	if ($ret["update"]){
-		$basepath = substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, -strlen(substr($_SERVER['SCRIPT_FILENAME'], strlen(const_path))));
+		$basepath = substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, -\strlen(substr($_SERVER['SCRIPT_FILENAME'], \strlen(const_path))));
 		$exptime = time()+3600*24*7; // 1 week until next version check
 		setcookie('updchk', 'version checked', ['expires' => $exptime, 'path' => $basepath, 'samesite' => 'Lax']); 
 	}
@@ -83,7 +83,7 @@ else
 {
 	$ret["update"] = false;
 	$ret["icon"] = 'message_ok.svg';
-	$ret["text"] = 'update check skipped for 7 days';
+	$ret["text"] = trans('update','skip');
 }	
 echo json_encode($ret);
 ?>

@@ -29,17 +29,12 @@ class weather_offline extends weather
 		// today
 		$this->data['city'] = ucfirst($this->location);
 
-		if (config_lang == 'de')
-			$windspeed = ' mit '.round(1 * 3.6, 1).' km/h';
-		elseif (config_lang == 'nl')
-			$windspeed = ' met '.round(1 * 3.6, 1).' km/u';
-		else
-			$windspeed = ' at '.round(1 * 2.24, 1).' MPH';
+		$windspeed = ' '.translate('at','weather').' '.transunit('speed', 3.6);
 
 		$this->data['current']['temp'] = '25&deg;C';
-		$this->data['current']['conditions'] = translate('clear sky', 'yr.no');
+		$this->data['current']['conditions'] = translate('clear sky', 'weather');
 		$this->data['current']['icon'] = $this->icon_sm.'1';
-		$this->data['current']['wind'] = translate('light breeze from N', 'yr.no').$windspeed;
+		$this->data['current']['wind'] = translate('light breeze from N', 'weather').$windspeed;
 		$this->data['current']['more'] = '45%, 1050 hPa';
 
 		// forecast
@@ -47,7 +42,7 @@ class weather_offline extends weather
 		for ($i = 0; $i < $days; $i++)
 		{
 			$this->data['forecast'][$i]['date'] = date('Y-m-d', time() + 24 * 60 * 60 * ($i + 1));
-			$this->data['forecast'][$i]['conditions'] = translate('clear sky', 'yr.no');
+			$this->data['forecast'][$i]['conditions'] = translate('clear sky', 'weather');
 			$this->data['forecast'][$i]['icon'] = 'sun_'.rand(1, 5);
 			$this->data['forecast'][$i]['temp'] = rand(22, 25).'&deg;/'.rand(18, 20).'&deg;';
 		}

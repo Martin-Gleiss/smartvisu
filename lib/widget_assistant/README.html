@@ -54,91 +54,28 @@ pre {
 <h2 id="table-of-content">Table of Content</h2>
 <ol>
 <li><a href="#howitworks">How it works</a></li>
-<li><a href="#ChangeLog">ChangeLog</a> <sup><span style="color:red"> <strong>Update</strong></span></sup></li>
 <li><a href="#hotkeys">Hot-Keys</a> <sup><span style="color:red"> <strong></strong></span></sup></li>
 <li><a href="#issues">Known issues</a> <sup><span style="color:red"> <strong></strong></span></sup></li>
-<li><a href="#logic_shng">Logics to create masteritem.json from shNG</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
-<li><a href="#script_fronthem">Script to create masteritem.json for FHEM</a> <sup><span style="color:red"> <strong>new</strong></span></sup></li>
+<li><a href="#logic_shng">Logics to create masteritem.json from shNG</a></li>
+<li><a href="#script_fronthem">Script to create masteritem.json for FHEM</a></li>
 </ol>
 <p><a name="howitworks"/></a></p>
 <h2 id="how-it-works">How it works</h2>
-<p>This tool should help you to create widgets for your smartvisu-Web-Interface.
-It will assist you with autocompletes for widgets, items, icons, and colors.
-After you have selected a widget (like basic.symbol...) you will get a tooltip for this kind of widget. The actual parameter is highlighted in red and all the available details will be shown in the tooltip-window.
-For icons and colors you will see a preview in the tooltip-window.
-After completing the wiget you can render it in a new window. The widget in the rendered window is fully working, except there is an error in the created widget, you will get a TWIG-Error.
+<p>This tool should help you to create widgets for your smartvisu-Web-Interface. It will assist you with autocompletes for widgets, items, icons and colors. The autocomplete mode can be selected.<br><br>
+Just start entering a widget name in the editor or press CTRL-Space to open the widget autocomplete. After you have selected a widget (like basic.symbol...) and enter the opening bracket you will get a tooltip for this widget. 
+The actual parameter is highlighted in red and all the available details will be shown in the tooltip-window. For icons and colors you will see a preview in the tooltip-window. Autocompletes will insert the parameters with quotes. 
+If no autocomplete is present or you do not use it make sure to enter the quotes manually.
+After completing the wiget you can render it in a new window. The widget in the rendered window is fully working. If there is a syntax error in the created widget, you will get a TWIG-Error.
 The final widget including the brackets &quot;{{&quot; + &quot;}}&quot; will be stored on rendering to the clipboard.
 You can paste the widget-code directly to your html-file.</p>
-<p>Right now you can render multiple widgets, you have to separate the different widgets
-by a <strong><code>&lt;br&gt;</code></strong>-TAG</p>
+<p>You can render multiple widgets by separating them by a <strong><code>&lt;br&gt;</code></strong>-TAG</p>
 <h2>Example :</h2>
-<pre><code>
-plot.period(&#39;&#39;, [&#39;licht.og.terrasse.screens.warm.dimmen&#39;, &#39;licht.og.terrasse.screens.kalt.dimmen&#39;, &#39;licht.og.terrasse.decke.dimmen&#39;], &#39;max&#39;, &#39;1w&#39;, &#39;now&#39;, &#39;0&#39;, &#39;110&#39;, &#39;1000&#39;, [&#39;Screens warm&#39;, &#39;Screens kalt&#39;, &#39;Decke&#39;], [&#39;#daa&#39;, &#39;#aad&#39;, &#39;#955&#39;], [&#39;stair&#39;, &#39;stair&#39;, &#39;stair&#39;], [&#39;Uhrzeit&#39;, &#39;Helligkeit&#39;], &#39;advanced&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, { yAxis: [ { tickInterval: 40 } ], legend: {align: &#39;right&#39;, verticalAlign: &#39;top&#39;, y: 50, layout: &#39;vertical&#39;}, chart: { marginRight: 110} })
+<pre><code>plot.period(&#39;&#39;, [&#39;licht.og.terrasse.screens.warm.dimmen&#39;, &#39;licht.og.terrasse.screens.kalt.dimmen&#39;, &#39;licht.og.terrasse.decke.dimmen&#39;], &#39;max&#39;, &#39;1w&#39;, &#39;now&#39;, &#39;0&#39;, &#39;110&#39;, &#39;1000&#39;, [&#39;Screens warm&#39;, &#39;Screens kalt&#39;, &#39;Decke&#39;], [&#39;#daa&#39;, &#39;#aad&#39;, &#39;#955&#39;], [&#39;stair&#39;, &#39;stair&#39;, &#39;stair&#39;], [&#39;Uhrzeit&#39;, &#39;Helligkeit&#39;], &#39;advanced&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, { yAxis: [ { tickInterval: 40 } ], legend: {align: &#39;right&#39;, verticalAlign: &#39;top&#39;, y: 50, layout: &#39;vertical&#39;}, chart: { marginRight: 110} })
 <strong>&lt;br&gt;</strong>
 basic.stateswitch(&#39;&#39;,&#39;OG.Bad.Licht&#39;,&#39;midi&#39;,&#39;&#39;,&#39;light_ceiling_light&#39;,&#39;Licht Bad&#39;,&#39;&#39;,&#39;&#39;,&#39;&#39;,&#39;&#39;,&#39;&#39;)
 <strong>&lt;br&gt;</strong>
 quad.dimmer(&#39;Lueftungsstufe1&#39;, &#39;Lüftungsstufe&#39;, &#39;Haustechnik.Lueftung&#39;, &#39;Haustechnik.Lueftung.stufe&#39;, 0, 100, 5, icon.ventilation(), icon.ventilation(&#39;&#39;,&#39;&#39;,&#39;Haustechnik.Lueftung.stufe&#39;), &#39;&#39;, &#39;&#39;, &#39;&#39;, 0, 100, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;,   &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, [&#39;switch&#39;, &#39;value_popup&#39;]) 
 </code></pre>
-<p><a name="ChangeLog"/></a></p>
-<h2 id="change-log">Change-Log</h2>
-<h4 id="2021-05-01-version-1-2-0">2021.05.01 - Version 1.2.0</h4>
-<ul>
-<li>added support for all valid values of widget-types from twig-docu</li>
-<li>some optical changes</li>
-<li>added widget specific colours to autocomplete dict for colors (for example 'hidden','blank' for basic.print)</li>
-</ul>
-<h4 id="2021-01-18-version-1-1-0">2021.01.18 - Version 1.1.0</h4>
-<ul>
-<li>changed handling for &quot;render in new window&quot; - if there is no Window a new one will be opened, else the opened window would be refreshed, also if there is a twig error</li>
-<li>more fixes for &quot;nasty&quot;, &quot;nested&quot; widgets</li>
-<li>some optical changes</li>
-</ul>
-<h4 id="2020-11-08-version-1-0-0">2020.11.08 - Version 1.0.0</h4>
-<ul>
-<li>added support for multi-widget creation (widgets have to be separated by <strong>&lt;br&gt;</strong>-TAG)</li>
-<li>fixed problem for &quot;nasty&quot;, &quot;nested&quot; widgets</li>
-<li>added check for all brackets closed before rendering</li>
-</ul>
-<h4 id="2020-05-15-version-1-0-0">2020.05.15 - Version 1.0.0</h4>
-<ul>
-<li>added switching for autoclose quotes</li>
-<li>added filter for item-autocomplete based on item data-type</li>
-<li>added checkbox to open agiain new window for the preview</li>
-<li>added data-types to items in basic-widgets (basic.html)</li>
-<li>added alert when receiving &quot;strange&quot; widget-informations (most based on README.html-Files in /dropins/widgets-folder)</li>
-</ul>
-<h4 id="2020-05-03-version-1-0-0">2020.05.03 - Version 1.0.0</h4>
-<ul>
-<li>added autocomplete dict for parameters with the following names &quot;type&quot;, &quot;mode&quot;,  &quot;style&quot;, &quot;colormodel&quot;, &quot;orientation&quot;, &quot;valueType&quot; </li>
-</ul>
-<h4 id="2020-05-02-version-1-0-0">2020.05.02 - Version 1.0.0</h4>
-<ul>
-<li>set filter to *svg while collectin icons in /icon/ws/ ( There is a stylesheet in the folder)</li>
-<li>until no widget is selected the Widget-only dict is acive</li>
-<li>added Close-Button to the Tooltip-Window</li>
-<li>added closeBrackets feature for CodeMirror and solved problem with CSS </li>
-<li>added direct copy of the final widget to the clipboard when rendering the widget</li>
-</ul>
-<h4 id="2020-05-01-version-1-0-0">2020.05.01 - Version 1.0.0</h4>
-<ul>
-<li>added support for nested widgets like <pre><code>{{ basic.symbol(&#39;&#39;, &#39;bath.light.switch&#39;, &#39;&#39;, icon.light(&#39;&#39;,&#39;&#39;,&#39;bath.light.value&#39;) ) }}
-</code></pre></li>
-<li>added bracket-matching</li>
-<li>added autoswitch to dict depending on parameter -&gt; type / you can switch to a dict using the Hot-Keys</li>
-<li>removed deprecated widgets from widget generator</li>
-</ul>
-<h4 id="2020-04-26-version-1-0-0">2020.04.26 - Version 1.0.0</h4>
-<ul>
-<li>added search in autocompletes with wildcard (a word with 3 chars will match all entries in the acitve dict like <code>*your_chars*</code></li>
-<li>added Hot-Key &#39;CTRL+Space&#39; to activate the autocomplete-hint without entering a search key</li>
-<li>added preview in tooltip for colors and icons</li>
-</ul>
-<h4 id="2020-04-25-launch-of-version-1-0-0">2020.04.25 - launch of Version 1.0.0</h4>
-<ul>
-<li>Beta Version for tests distributed</li>
-</ul>
-<h2 id="requirements">Requirements</h2>
-<p>actual smartvisu-Version - you can find it here</p>
 <p><a name="hotkeys"/></a></p>
 <h2 id="hot-keys">Hot-Keys</h2>
 <table>
@@ -150,12 +87,8 @@ quad.dimmer(&#39;Lueftungsstufe1&#39;, &#39;Lüftungsstufe&#39;, &#39;Haustechni
 </thead>
 <tbody>
 <tr>
-<td>STRG+0</td>
-<td>switch OFF autocomplete-Dict</td>
-</tr>
-<tr>
 <td>STRG+1</td>
-<td>switch ON autocomplete-Dict</td>
+<td>only Items in autocomplete-Dict</td>
 </tr>
 <tr>
 <td>STRG+2</td>
@@ -178,14 +111,6 @@ quad.dimmer(&#39;Lueftungsstufe1&#39;, &#39;Lüftungsstufe&#39;, &#39;Haustechni
 <td>autocomplete-Dict is OFF</td>
 </tr>
 <tr>
-<td>STRG+7</td>
-<td>switch ON/OFF autocomplete for Ouotes<sup><span style="color:red"> <strong>(1)</strong></span></sup> - take some time to build the autocomplete</td>
-</tr>
-<tr>
-<td>STRG+8</td>
-<td>only Items in autocomplete-Dict</td>
-</tr>
-<tr>
 <td>STRG+9</td>
 <td>switch ON/OFF Wildcard search in autocomplete dict</td>
 </tr>
@@ -203,8 +128,6 @@ quad.dimmer(&#39;Lueftungsstufe1&#39;, &#39;Lüftungsstufe&#39;, &#39;Haustechni
 </tr>
 </tbody>
 </table>
-<p>(1) when autocomplete for quotes is on - the autocomplete dict will return all values <strong>without</strong> quotes<br>
-    when autocomplete for quotes is off - the autocomplete dictionary will return all values <strong>with</strong> quotes</p>
 <p><a name="issues"/></a></p>
 <h2 id="known-issues">Known Issues</h2>
 <p>It is possible to render the new widget into the iframe on the actual page.
@@ -215,8 +138,7 @@ then everthing is working again. (STRG+F5 / CTRL + Shift + R)</p>
 <p><a name="logic_shng"/></a></p>
 <h2 id="logic-to-create-masteritem-json-from-shng">Logic to create masteritem.json from shNG</h2>
 <p>Only needed for smarthomeNG <= v1.7.2. As of v1.8 the smartvisu plugin writes the file as default.</p>
-<pre><code>
-#!/usr/bin/env python3
+<pre><code>#!/usr/bin/env python3
 # create_master_item.py
 import json
 from lib.item import Items
