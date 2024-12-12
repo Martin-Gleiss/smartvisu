@@ -360,6 +360,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "'" + (this.options.id ? " for widget '" + this.options.id + "'. " : ". ") + supplement) ;
       return;
     }
+	// enable widget and buttons which may have been disabled after user has edited the dict
+    $('[data-widget="device.uzsuicon"][data-item="'+ this.options.item + '"]').removeClass('blink'); 
+    $('[data-widget*="device.uzsu"][data-item="'+ this.options.item + '"]').widget('enable').find('.uzsu-active-toggler').removeClass('hidden').show();
 
     this._uzsudata = jQuery.extend(true, {}, response[0]);
 
@@ -1056,6 +1059,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     		}
 
     };
+	if (responseEntry.hasOwnProperty('activeToday'))
+		delete responseEntry.activeToday;
   },
   
   //----------------------------------------------------------------------------
@@ -1293,6 +1298,11 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       // jetzt wird die Kopie auf das Original kopiert und geschlossen
       self._uzsuSaveTable(response, true);
       uzsuPopup.popup('close');
+      // disable editing until dict update has been received
+      self._disabled = true;
+      $('[data-widget="device.uzsuicon"][data-item="'+ self.options.item + '"]').addClass('blink'); 
+      $('[data-widget*="device.uzsu"][data-item="'+ self.options.item + '"]').widget('disable').find('.uzsu-active-toggler').addClass('hidden').hide();
+      setTimeout(function(){$('[data-widget*="device.uzsu"][data-item="'+ self.options.item + '"]').widget('enable').find('.uzsu-active-toggler').removeClass('hidden').show();}, 15000); // fallback in case update is not coming
     });
     // Eintrag hinzufügen mit add
     uzsuPopup.find('#uzsuAddTableRow').bind('click', function(e) {
@@ -1698,21 +1708,17 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var valueParameterList = this.options.valueparameterlist.explode();
     if(valueParameterList.length === 0){
       if(this.options.valuetype === 'bool') valueParameterList = ['1', '0', '1'];
-      else if (this.options.valuetype === 'num') valueParameterList = [''];
-      else if (this.options.valuetype === 'list') valueParameterList = [''];
+      else 
+		  valueParameterList = [];
     }
 
     var min = null, max = null, step = 1;
     if(this.options.valuetype === 'bool') {
-      if(valueParameterList.length === 0)
-        valueParameterList = ['0', '1'];
       min = parseFloat(valueParameterList[1].split(':')[1] !== undefined ? valueParameterList[1].split(':')[1] : valueParameterList[1]);
       max = parseFloat(valueParameterList[0].split(':')[1] !== undefined ? valueParameterList[0].split(':')[1] : valueParameterList[0]);
       step = 1;
     }
-    if(this.options.valuetype === 'num') {
-      if(valueParameterList.length === 0)
-        valueParameterList = []
+    if(this.options.valuetype === 'num' && valueParameterList.length != 0) {
       min = parseFloat(valueParameterList[0]);
       max = parseFloat(valueParameterList[1]);
       step = parseFloat(valueParameterList[2]) || 1;
@@ -1764,6 +1770,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var chart = this.element.highcharts({
 	  title: { text: this.options.headline },
       legend: false,
+	  time: {timezoneOffset: new Date().getTimezoneOffset()},
       series: [
         { // active
           name: 'active',
@@ -1885,17 +1892,19 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
               self.justDragged = false;
               return;
             }
+            if (self.element.find('.uzsu-active-toggler').hasClass('hidden'))
+              return;
 
             // find timestamp of first point and round it to minimal time step
             var firstX = Math.round((e.xAxis[0].value - e.xAxis[0].axis.min) % (1000*60*60*24) / (timeStep)) * timeStep + e.xAxis[0].axis.min;
 
             // round and limit value
             var yValue = e.yAxis[0].value;
-            if(yValue < min)
+            if(min != undefined && yValue < min)
               yValue = min;
-            else if(yValue > max)
+            else if(max != undefined && yValue > max)
               yValue = max;
-            yValue = Math.round((yValue - min) / step) * step + min;
+            yValue = Math.round((yValue - min || 0) / step) * step + min || 0;
 
             var uzsuEntry = { active: true, once: false, event: 'time', timeCron: self.element.highcharts().time.dateFormat('%H:%M', firstX), value: yValue };
             self._uzsuRuntimePopup(uzsuEntry);
@@ -1967,11 +1976,11 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
 
         position.x = Math.round((position.x - self._startTimestamp) % (1000*60*60*24) / (timeStep)) * timeStep + self._startTimestamp;
-        if(position.y < min)
+        if(min != undefined && position.y < min)
           position.y = min;
-        else if(position.y > max)
+        else if(max != undefined && position.y > max)
           position.y = max;
-        position.y = Math.round((position.y - min) / step) * step + min;
+        position.y = Math.round((position.y - min || 0) / step) * step + min || 0;
         if(chart.yAxis[0].categories)
           position.y = chart.yAxis[0].categories[position.y];
 
@@ -1990,10 +1999,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       });
 
       // active/inactive button
-      chart.renderer.button(String.fromCharCode(160)+String.fromCharCode(10004)+String.fromCharCode(160), chart.plotLeft, null, function(e) { self._uzsudata.active = !self._uzsudata.active; self._save(); }, {} , {}, {}, {}, 'callout')
+      chart.renderer.button(String.fromCharCode(160)+String.fromCharCode(10004)+String.fromCharCode(160), 40, null, function(e) { 
+			self._uzsudata.active = !self._uzsudata.active;
+			self._save(); 
+			this.attr('title', !self._uzsudata.active ? sv_lang.uzsu.inactive : self._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active);
+		}, {} , {}, {}, {}, 'callout')
         .attr({
           align: 'right',
-          title: sv_lang.uzsu.active
+          title: !self._uzsudata.active ? sv_lang.uzsu.inactive : self._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active
         })
         .addClass('highcharts-color-0 uzsu-active-toggler')
         .add()
@@ -2092,14 +2105,21 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 	if(this._uzsudata.active && !this._uzsudata.once){
 		this.element.removeClass('uzsu-all-inactive');
 		this.element.removeClass('uzsu-general-once');
-		this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+ String.fromCharCode(10004) + String.fromCharCode(160))
+		this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+ String.fromCharCode(10004) + String.fromCharCode(160));
 	}
-	else
+	else {
 		this.element.addClass('uzsu-all-inactive');
-	if (this._uzsudata.once){
-		this.element.addClass('uzsu-general-once');
-		this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+'1 x' + String.fromCharCode(160))
+		if (!this._uzsudata.active) {
+			this.element.removeClass('uzsu-general-once');
+			this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+ String.fromCharCode(10004) + String.fromCharCode(160));
+		}
+		else {
+			this.element.addClass('uzsu-general-once');
+			this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+'1 x' + String.fromCharCode(160));
+		}
 	}
+	this.element.find('.uzsu-active-toggler').attr('title', !this._uzsudata.active ? sv_lang.uzsu.inactive : this._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active)
+	.end().find('title').text(!this._uzsudata.active ? sv_lang.uzsu.inactive : this._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active);
 
 	var hasDays = false;
 	var hasSunrise = false;
@@ -2112,7 +2132,13 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
 	// ******************************************************************************
 	// set start timestamp for the graph and texts for weekdays in zoom buttons - 
-	// as from v3.2 the graph starts with current day instead of Monday
+	// graph starts with current day
+	//
+	// weekdays:  			Object {'Mo': 0, ..., 'Su': 6}
+	// rruleDays:		 	Object {'Mo': days from now til Monday, ..., 'Su': days from now til Sunday}
+	// days:				Array ['Mi', 'Th', 'Sa'] active days from rrule
+	// rruleDaySequence: 	Array [2, 3, 0] Sequence of days in rrule - above example read on a Saturday 
+	//						"once" is executed on the day with the lowest number in the sequence
 	// ******************************************************************************
 	var today = new Date().getDay();		// delivers SU = 0
 	this._startTimestamp = (4 + today - 1) % 7 *1000*60*60*24 + new Date(0).getTimezoneOffset()*1000*60;
@@ -2185,13 +2211,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 			if (days.length < 7 || responseEntry.once)
 				hasDays = true;
 			// get sequence of the days as an array to find out which is the next event to be executed if "once" is true
-			var rruleDaySequence = days.map(function(d){return self.rruleDays[d]});
+			var rruleDaySequence = days.map(function(d){return self.rruleDays[d] == 0 && (hasBurst ? seriesEnd : x) < self._timeToTimestamp(new Date().transUnit('H:m')) ? self.rruleDays[d]+7 : self.rruleDays[d]});
 
 			// push all events into the timeline starting from Monday. Sorting will be done later
 			$.each(days, function(dayIdx, day) {
 				var rruleOffset = self.rruleDays[day]*1000*60*60*24;
 				var sunOffset = 0;
-				var isActive = responseEntry.active && !(responseEntry.once && self.rruleDays[day] != Math.min.apply(null, rruleDaySequence))
+				var isActive = (responseEntry.activeToday && self.rruleDays[day] == 0) || (responseEntry.active && !(responseEntry.once && self.rruleDays[day] != Math.min.apply(null, rruleDaySequence)));
+				//DEBUG: if (responseEntry.once) console.log(responseEntry.activeToday, responseEntry.active, self.rruleDays[day], rruleDaySequence, isActive)
 				if (responseEntry.event.indexOf('sun') >= 0 )
 					sunOffset = self._getSunTime(responseEntry.event, self.rruleDays[day]) - self._getSunTime(responseEntry.event, 0);
 				else if (hasBurst && responseEntry.series.start.event.indexOf('sun') >= 0 )
@@ -2327,9 +2354,13 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
   _save: function() {
     this._uzsuCollapseTimestring(this._uzsudata);
     this._write(this._uzsudata);
-	// this causes a highcharts error and is not necessary since _update() will be called anyway after writing 
-	//   if(this._uzsuParseAndCheckResponse(this._uzsudata))
-	//      this.draw();
+	
+    // disable editing until dict update has been received   
+    this.element.widget('disable');
+    $('[data-widget="device.uzsuicon"][data-item="'+ self.options.item + '"]').addClass('blink'); 
+    $('[data-widget*="device.uzsu"][data-item="'+ self.options.item + '"] .uzsu-active-toggler').hide();
+    setTimeout(function(){this.element.widget('enable');}, 15000); // fallback in case update is not coming
+ 
   },
 
   _timeToTimestamp: function(time) {
@@ -2502,10 +2533,9 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
                     "<button id='uzsuCancel'>" + sv_lang.uzsu.cancel + "</button>" +
                     "<button id='uzsuSaveQuit'>" + sv_lang.uzsu.ok + "</button>" +
                   "</div>" +
-                "</div>" +
               "</div>" +
-            "</span>" +
-          "</div>";
+          "</div>" +
+      "</div>";
     // und der Abschluss des uzsuClear als Rahmen für den float:left und des uzsuPopup divs
     tt += "</div></div>";
     return tt;
@@ -2675,18 +2705,22 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                 myDays = myActItem.rrule.split(";")[1].split("=")[1].split(",")
             } catch (e) {}
 
-			// build sequence of days to make sure "once matches first entry 
+			// build sequence of days to make sure "once" matches first entry 
 			var rruleDaySequence = myDays.map(function(d){return rruleDays[d]});
 			var isActive 
 
             //// for Series
             if (myActItem.hasOwnProperty("series")) {
+				var seriesEnd
                 if (myActItem.hasOwnProperty("seriesCalculated")) {
                     for (serie in myActItem.seriesCalculated) {
                         myTimeDict = myInstance._CreateSerieEntriesWithSun(myActItem)
+						seriesEnd = myTimeDict[myTimeDict.length -1].key;
+						rruleDaySequence = myDays.map(function(d){return rruleDays[d] == 0 && seriesEnd < new Date().transUnit('H:m') ? rruleDays[d] + 7 : rruleDays[d]});
                         d = weekDays[myActItem.seriesCalculated[serie].seriesDay]
-						isActive = myActItem.active && !(myActItem.once && myActItem.seriesCalculated[serie].seriesDay != rruleDayNames[Math.min.apply(null, rruleDaySequence)])
-                        myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
+						isActive = (myActItem.activeToday && myActItem.seriesCalculated[serie].seriesDay == rruleDayNames[0]) || (myActItem.active && !(myActItem.once && myActItem.seriesCalculated[serie].seriesDay != rruleDayNames[Math.min.apply(null, rruleDaySequence)]))
+						//DEBUG: console.log(myActItem.seriesCalculated[serie].seriesDay, d, rruleDayNames, myDays, rruleDaySequence, myTimeDict, isActive)
+						myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                     }
                 } else {
                     myTimeDict = myInstance._CreateSerieEntriesWithOutSun(myActItem)
@@ -2694,8 +2728,11 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                     myTimeDict2 = myTimeDict[1]
                     myDays.forEach(function(element) {
                         d1 = weekDays[element]
-						isActive = myActItem.active && !(myActItem.once && element != rruleDayNames[Math.min.apply(null, rruleDaySequence)])
-                        myInstance._fillCells(TableName, myTimeDict1, myActItem, d1, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
+						seriesEnd = myTimeDict[1].length == 0 ? myTimeDict1[myTimeDict1.length-1].key : '23:59';
+						rruleDaySequence = myDays.map(function(d){return rruleDays[d] == 0 && seriesEnd < new Date().transUnit('H:m') ? rruleDays[d] + 7 : rruleDays[d]});
+						isActive = (myActItem.activeToday && element == rruleDayNames[0] ) || (myActItem.active && !(myActItem.once && element != rruleDayNames[Math.min.apply(null, rruleDaySequence)]));
+ 						//DEBUG: console.log(element, d1, rruleDayNames, myDays, rruleDaySequence, myTimeDict1, myTimeDict2, seriesEnd, isActive)
+						myInstance._fillCells(TableName, myTimeDict1, myActItem, d1, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                         d1 != 6 ? d2 = d1 + 1 : d2 = 0
                         myInstance._fillCells(TableName, myTimeDict2, myActItem, d2, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                     });
@@ -2706,7 +2743,6 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
             else {
                 myDays.forEach(function(element) {
                     d = weekDays[element]
-					isActive = myActItem.active && !(myActItem.once && element != rruleDayNames[Math.min.apply(null, rruleDaySequence)])
                     myTimeDict = []
                     if (myActItem.time.search("sunrise") == -1 && myActItem.time.search("sunset") == -1 && !(myActItem.hasOwnProperty("series"))) {
                         myTimeDict.push(myInstance._GetTimeEntryDict(myActItem.time))
@@ -2722,6 +2758,9 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                             }
                         }
                     }
+					rruleDaySequence = myDays.map(function(d){return rruleDays[d] == 0 && myTimeDict[myTimeDict.length-1].key < new Date().transUnit('H:m') ? rruleDays[d] + 7 : rruleDays[d]});
+					isActive = (myActItem.activeToday && element == rruleDayNames[0] ) || (myActItem.active && !(myActItem.once && element != rruleDayNames[Math.min.apply(null, rruleDaySequence)]));
+					//DEBUG: console.log(element, d, rruleDayNames, myDays, rruleDaySequence, myTimeDict, isActive)
                     myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                 })
             }
@@ -3509,23 +3548,24 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     _CreateActiveButton: function(active) {
         // add Checkbox with Active/InActive
         btnActive = this._CreateSvgBox1("0.5")
-        btnActive.setAttributeNS(null, 'x', 5);
-        btnActive.setAttributeNS(null, 'y', 5);
-        btnActive.setAttributeNS(null, "width", "25px");
-        btnActive.setAttributeNS(null, "height", "25px");
+        btnActive.setAttributeNS(null, 'x', 0);
+        btnActive.setAttributeNS(null, 'y', 15);
+        btnActive.setAttributeNS(null, "width", "15px");
+        btnActive.setAttributeNS(null, "height", "15px");
 
         btnActive.setAttribute("id", "btnActive");
-        btnActive.childNodes[0].setAttributeNS(null, "x", "1px");
-        btnActive.childNodes[0].setAttributeNS(null, "y", "5px");
-        btnActive.childNodes[0].setAttributeNS(null, "rx", "5");
-        btnActive.childNodes[0].setAttributeNS(null, "ry", "5");
-        btnActive.childNodes[0].setAttributeNS(null, "width", "21px");
-        btnActive.childNodes[0].setAttributeNS(null, "height", "20px");
+		btnActive.setAttribute("class", "uzsu-active-toggler");
+        btnActive.childNodes[0].setAttributeNS(null, "x", "0px");
+        btnActive.childNodes[0].setAttributeNS(null, "y", "0px");
+        btnActive.childNodes[0].setAttributeNS(null, "rx", "1");
+        btnActive.childNodes[0].setAttributeNS(null, "ry", "1");
+        btnActive.childNodes[0].setAttributeNS(null, "width", "14.5px");
+        btnActive.childNodes[0].setAttributeNS(null, "height", "14px");
         btnActive.childNodes[1].setAttributeNS(null, "width", "19px");
         btnActive.childNodes[1].setAttributeNS(null, "height", "19px");
         btnActive.childNodes[1].setAttributeNS(null, "style", 'fill:black; text-anchor:middle; font-size:9.5px;')
-        btnActive.childNodes[1].setAttributeNS(null, "x", "11.5");
-        btnActive.childNodes[1].setAttributeNS(null, "y", "18.5");
+        btnActive.childNodes[1].setAttributeNS(null, "x", "7.5");
+        btnActive.childNodes[1].setAttributeNS(null, "y", "11");
 
         btnActive.setAttributeNS(null, 'id', 'btnActive');
         btnActive.childNodes[0].setAttributeNS(null, 'style', ' fill-opacity:1.0;'); // fill:lightgray;

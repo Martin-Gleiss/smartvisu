@@ -1,6 +1,8 @@
 ## 3.5.a
 
 ### New / Changed Widgets
+- UZSU widgets support one-time events with "once" property back in time on the current day unsing "activeToday" property 
+- UZSU widgets dnow disable editing the events until the backend has updated the dict with data from the former edit
 
 ### Other New Features
 
@@ -13,6 +15,8 @@
 ### Removed Features
 
 ### Fixed Bugs
+- device.uzsutable did not show zoom buttons per default if optional parameter 'showzoombuttons' was empty
+- device.uzsugraph did not work with value type 'num' if optional parameter 'valueparameterlist' was empty
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
