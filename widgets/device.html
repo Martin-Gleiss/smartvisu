@@ -490,12 +490,12 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item(dict)} the item of the UZSU (NOT the item which is switched by UZSU)
-* @param {text=UZSU} title of graph (optional, default: UZSU)
+* @param {text=UZSU} title of the graph (optional, default: UZSU)
 * @param {value(0,1)=0} set to '1' in order to allow changes by dragging points (optional, default: 0)
 * @param {text(bool,num)=bool} supported types are 'bool' and 'num' (optional, default: bool)
-* @param {text[]=} valueParameterList depending on valueType (optional):
+* @param {text[]=} parameter list for y-axis depending on valueType (optional):
 	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
-	num: [min, max, step]
+	num: [min, max, step]  min/max limits the y-axis scale, step is used for rounding values while dragging / adding points
 * @param {text(false,true)=true} shows a scrollbar below the x-Axis (optional, default: true)	
 * @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
 *
@@ -524,9 +524,9 @@
 * @param {image=time_timer_switch} the pic for the 'off' state (optional)
 * @param {text(bool,num,list,text)=bool} supported types are 'bool', 'num', 'list', 'text' (optional, default: bool)
 * @param {text[?]=} valueParameterList depending on valueType (optional):
-	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
-	num: [min, max, step],
-	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'],
+	bool: ['text on','text off'] or ['text1:value1','text2:value2'] for flipswitch (default: 'On', 'Off'),
+	num: [min, max, step] as limits and step for numeric input (default: ''),
+	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'] as parameter set for a select element (default: '')
 	text: no value parameter
 * @param {color(icon0to5)=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
 * @param {color(icon0to5)=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
@@ -579,10 +579,10 @@
 * @param {text(false,true)=true} show the actual time as line on the table (default 'true' )
 * @param {value(1,2,3)=1} style of inactive-mode 1=opacity 50% /  2=Text "Inactive". You can combine 1+2=3 (default '1' )
 * @param {text(bool,num,list,text)=bool} supported types are 'bool', 'num', 'list', 'text' (optional, default: bool)
-* @param {text[]=}  depending on valueType (optional):
-	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
-	num: [min, max, step],
-	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'],
+* @param {text[]=} parameter list for value editing -  depending on valueType (optional):
+	bool: ['text on','text off'] or ['text1:value1','text2:value2'] for flipswitch (default: 'On', 'Off'),
+	num: [min, max, step] as limits and step for numeric input (default: ''),
+	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'] as parameter set for a select element (default: '')
 	text: no value parameter
 * @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
 *
@@ -603,7 +603,7 @@
 		<svg id="{{ uid(page, item) }}" class="highcharts-root" width="100%" viewbox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" version="1.1"> 
 		</svg>
 
-		{% if showzoombutton == 'true' or showzoombutton == 'True' %}
+		{% if showzoombutton|default('true') == 'true' or showzoombutton == 'True' %}
 		<table width=50% style="font-size:12px;margin-left: auto;margin-right: auto;">
 		<tr>
 		<td width=20%> <button type="button" id="5m" >5m</button></td>
