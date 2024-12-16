@@ -352,7 +352,7 @@ $.widget("sv.plot_period", $.sv.widget, {
 		var xMin = new Date() - new Date().duration(this.options.tmin);
         var xMax = new Date() - new Date().duration(this.options.tmax);
 		var dayDuration = 24*3600*1000;
-		var timezoneOffset = this.options.servertime == 'yes' ? parseInt(-Number(sv.serverTimezone.offset)/60 + (window.servertimeoffset/60000 ||0)) : new Date().getTimezoneOffset();
+		var timezoneOffset = this.options.servertime == 'yes' ? parseInt(-Number(sv.serverTimezone.offset)/60) + parseInt(window.servertimeoffset/60000 ||0) : new Date().getTimezoneOffset();
 		if (zoom == "day"){
 			xMin -= timezoneOffset * 60000;
 			xMin = xMin - xMin % dayDuration + dayDuration + timezoneOffset * 60000;
@@ -540,7 +540,7 @@ $.widget("sv.plot_period", $.sv.widget, {
         var chart = this.element.highcharts();
 		// window.servertimeoffset should be available now
 		if (window.servertimeoffset != undefined && window.servertimeoffset != 0 && this.options.servertime == 'yes')
-			chart.time.update({timezoneOffset: parseInt(-Number(sv.serverTimezone.offset)/60 + window.servertimeoffset/60000) });
+			chart.time.update({timezoneOffset: parseInt(-Number(sv.serverTimezone.offset)/60) + parseInt(window.servertimeoffset/60000) });
 		var actualDate = new Date();
 
         if (this.options.chartOptions && this.options.chartOptions.xAxis != undefined && typeof this.options.chartOptions.xAxis == 'object' && this.options.chartOptions.xAxis[0].min && this.options.chartOptions.xAxis[0].max){
@@ -1454,7 +1454,7 @@ $.widget("sv.plot_rtr", $.sv.widget, {
         var chartOptions= {
             chart: {type: 'line', styledMode: true},
             title: { text: null },
-			time: {timezoneOffset: this.options.servertime == 'yes' ? parseInt(-Number(sv.serverTimezone.offset)/60 + (window.servertimeoffset/60000 ||0)) : new Date().getTimezoneOffset()},
+			time: {timezoneOffset: this.options.servertime == 'yes' ? parseInt(-Number(sv.serverTimezone.offset)/60) + parseInt(window.servertimeoffset/60000 ||0) : new Date().getTimezoneOffset()},
             legend: {
                 align: 'center',
                 verticalAlign: 'top',
@@ -1525,7 +1525,7 @@ $.widget("sv.plot_rtr", $.sv.widget, {
 
         var chart = this.element.highcharts();
 		if (window.servertimeoffset != undefined && window.servertimeoffset != 0 && this.options.servertime == 'yes')
-			chart.time.update({timezoneOffset: parseInt(-Number(sv.serverTimezone.offset)/60 + (window.servertimeoffset/60000)) });
+			chart.time.update({timezoneOffset: parseInt(-Number(sv.serverTimezone.offset)/60) + parseInt(window.servertimeoffset/60000) });
 
         chart.xAxis[0].setExtremes(new Date() - new Date().duration(this.options.tmin), new Date() - new Date().duration(this.options.tmax), false);
 
