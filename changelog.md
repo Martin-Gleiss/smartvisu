@@ -17,6 +17,7 @@
 ### Fixed Bugs
 - device.uzsutable did not show zoom buttons per default if optional parameter 'showzoombuttons' was empty
 - device.uzsugraph did not work with value type 'num' if optional parameter 'valueparameterlist' was empty
+- in some cases, the server time offset could cause a deviation of 1 minute in plots
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
