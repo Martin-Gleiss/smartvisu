@@ -1059,7 +1059,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     		}
 
     };
-	if (responseEntry.hasOwnProperty('activeToday'))
+	if (responseEntry.hasOwnProperty('activeToday') && this.popupStartDay != new Date().getDay())
 		delete responseEntry.activeToday;
   },
   
@@ -1262,6 +1262,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   //----------------------------------------------------------------------------
   _uzsuRuntimePopup: function(response) {
     var self = this;
+	this.popupStartDay = new Date().getDay();
     // Steuerung des Popups erst einmal wird der Leeranteil angelegt
     // erst den Header, dann die Zeilen, dann den Footer
     var tt = this._uzsuBuildTableHeader();
@@ -2357,9 +2358,10 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 	
     // disable editing until dict update has been received   
     this.element.widget('disable');
-    $('[data-widget="device.uzsuicon"][data-item="'+ self.options.item + '"]').addClass('blink'); 
-    $('[data-widget*="device.uzsu"][data-item="'+ self.options.item + '"] .uzsu-active-toggler').hide();
-    setTimeout(function(){this.element.widget('enable');}, 15000); // fallback in case update is not coming
+	var self = this;
+    $('[data-widget="device.uzsuicon"][data-item="'+ this.options.item + '"]').addClass('blink'); 
+    $('[data-widget*="device.uzsu"][data-item="'+ this.options.item + '"] .uzsu-active-toggler').hide();
+    setTimeout(function(){self.element.widget('enable');}, 15000); // fallback in case update is not coming
  
   },
 
@@ -2423,6 +2425,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
  _uzsuRuntimePopup: function(responseEntry) {
     var self = this;
+	this.popupStartDay = new Date().getDay();
     // Steuerung des Popups erst einmal wird der Leeranteil angelegt
     // erst den Header, dann die Zeilen, dann den Footer
     var tt = this._uzsuBuildTableHeader();
@@ -2719,7 +2722,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
 						rruleDaySequence = myDays.map(function(d){return rruleDays[d] == 0 && seriesEnd < new Date().transUnit('H:m') ? rruleDays[d] + 7 : rruleDays[d]});
                         d = weekDays[myActItem.seriesCalculated[serie].seriesDay]
 						isActive = (myActItem.activeToday && myActItem.seriesCalculated[serie].seriesDay == rruleDayNames[0]) || (myActItem.active && !(myActItem.once && myActItem.seriesCalculated[serie].seriesDay != rruleDayNames[Math.min.apply(null, rruleDaySequence)]))
-						//DEBUG: console.log(myActItem.seriesCalculated[serie].seriesDay, d, rruleDayNames, myDays, rruleDaySequence, myTimeDict, isActive)
+						//DEBUG: console.log('with sun: ', myActItem.seriesCalculated[serie].seriesDay, d, rruleDayNames, myDays, rruleDaySequence, myTimeDict, isActive)
 						myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                     }
                 } else {
@@ -2728,10 +2731,10 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                     myTimeDict2 = myTimeDict[1]
                     myDays.forEach(function(element) {
                         d1 = weekDays[element]
-						seriesEnd = myTimeDict[1].length == 0 ? myTimeDict1[myTimeDict1.length-1].key : '23:59';
+						seriesEnd = myTimeDict[1].length == 0 && !myTimeDict1.length == 0 ? myTimeDict1[myTimeDict1.length-1].key : '23:59';
 						rruleDaySequence = myDays.map(function(d){return rruleDays[d] == 0 && seriesEnd < new Date().transUnit('H:m') ? rruleDays[d] + 7 : rruleDays[d]});
 						isActive = (myActItem.activeToday && element == rruleDayNames[0] ) || (myActItem.active && !(myActItem.once && element != rruleDayNames[Math.min.apply(null, rruleDaySequence)]));
- 						//DEBUG: console.log(element, d1, rruleDayNames, myDays, rruleDaySequence, myTimeDict1, myTimeDict2, seriesEnd, isActive)
+ 						//DEBUG: console.log('without sun: ', element, d1, rruleDayNames, myDays, rruleDaySequence, myTimeDict1, myTimeDict2, seriesEnd, isActive)
 						myInstance._fillCells(TableName, myTimeDict1, myActItem, d1, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                         d1 != 6 ? d2 = d1 + 1 : d2 = 0
                         myInstance._fillCells(TableName, myTimeDict2, myActItem, d2, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
