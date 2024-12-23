@@ -822,8 +822,11 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     	targetRow.find('[class*="uzsuCellExpert"] button').addClass('ui-btn-active');
     	targetRow.find('[class*="uzsuCellSeries"] button').removeClass('ui-btn-active');
     	}
-    else
-      targetRow.find('[class*="uzsuCellExpert"] button').removeClass('ui-btn-active');
+    else{
+      // wenn der Expertenbutton in eine Serienzeile steht, schalte ihn nur inaktiv, wenn beide Zeilen (seriesstart und seriesend) inaktiv sind
+      if (!(sourceRow.hasClass('Series') && sourceRow.next().hasClass('Series') ? sourceRow.next().find('[class*="expertActive"]').is(':checked') : sourceRow.prev().find('[class*="expertActive"]').is(':checked'))) 
+        targetRow.find('[class*="uzsuCellExpert"] button').removeClass('ui-btn-active');
+	}
   },
 
   // Toggelt die eingabemöglichkeit für SUN Elemente in Abhängigkeit der Aktivschaltung
@@ -1059,8 +1062,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     		}
 
     };
-	if (responseEntry.hasOwnProperty('activeToday') && this.popupStartDay != new Date().getDay())
-		delete responseEntry.activeToday;
+	if (responseEntry.hasOwnProperty('activeToday') && (this.popupStartDay != new Date().getDay() || uzsuCurrentRows.hasClass('changed')))
+		responseEntry.activeToday = false;
   },
   
   //----------------------------------------------------------------------------
@@ -1364,7 +1367,10 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       else
         self._uzsuShowInterpolationLine(e);
     });
-
+	// mark changed entries
+    uzsuPopup.delegate('input, select', 'change', function (e){
+        $(e.target).parents('.uzsuRow').addClass('changed');
+	});
     // hier wir die aktuelle Seite danach durchsucht, wo das Popup ist und im folgenden das Popup initialisiert, geöffnet und die schliessen
     // Funktion daran gebunden. Diese entfernt wieder das Popup aus dem DOM Baum nach dem Schliessen mit remove
     uzsuPopup.popup('open'); //.css({ position: 'fixed', top: '30px' });
@@ -2716,6 +2722,12 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
             if (myActItem.hasOwnProperty("series")) {
 				var seriesEnd
                 if (myActItem.hasOwnProperty("seriesCalculated")) {
+					// sun times start after "now" in seriesCalculated and if a series is running todays data are repeated at the end
+					// since sun times differ normally over a week there is a risk of double entries in the timetable. So we need to drop the double entries
+					if (myActItem.seriesCalculated[myActItem.seriesCalculated.length - 1].seriesDay == myActItem.seriesCalculated[0].seriesDay){
+						// DEBUG: console.log(myActItem.seriesCalculated)
+						myActItem.seriesCalculated[0].seriesMax = myActItem.seriesCalculated[0].seriesMin;
+					}
                     for (serie in myActItem.seriesCalculated) {
                         myTimeDict = myInstance._CreateSerieEntriesWithSun(myActItem)
 						seriesEnd = myTimeDict[myTimeDict.length -1].key;
@@ -2740,7 +2752,6 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                         myInstance._fillCells(TableName, myTimeDict2, myActItem, d2, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                     });
                 }
-
             }
             //// for Standard-Entries
             else {
