@@ -14,67 +14,75 @@
 * @param {text=} the ip of the KNXnet/IP-Router
 * @param {text=} the password of the KNXnet/IP-Router
 *
-* @info works with firmware 1.025, 1.029
+* @info works with firmware 1.025, 1.029, 1.043
 */
 {% macro iprouter(id, server, password) %}
 	{% set uid = uid(page, id) %}
-	
-	<div id="{{ uid }}" class="iprouter">
-		<div class="from"></div>
-		<div class="to"></div>
-	
-		<div class="tunnels"></div>
-		<div class="version"></div>
+	<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false" id="{{ uid }}-title">
+			<h3><img style="height: 25px; vertical-align: middle;" src="lib/appliance/pics/logo_enertex.png" alt="enertex"> &nbsp; Enertex&#174; KNXnet/IP Router</h3>
+			<div id="{{ uid }}" class="iprouter">
+				<div class="from"></div>
+				<div class="to"></div>
+
+				<div class="tunnels"></div>
+				<div class="version"></div>
+			</div>
+		</div>
 	</div>
 	
 	<script type="text/javascript">
 		$('#{{ page }}').on('pagecreate', function (event, ui) {
-			$.getJSON('lib/appliance/enertex.iprouter.php?server={{ server }}&pass={{ password }}', function (data) {
-				$('#{{ uid }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png" alt="from">');
-				$('#{{ uid }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png" alt="to">');
-	
-				var ret = '';
-				for (var i in data.tunnels) {
-	
-					ret += '<div class="traffic">' + data.tunnels[i].tx_tun_req + ' t<img src="lib/appliance/pics/dir_in.png" alt="in">';
-					ret += '<br />' + data.tunnels[i].rx_tun_req + ' t<img src="lib/appliance/pics/dir_out.png" alt="out"></div>';
-					ret += '<div class="tunnel">T ' + i + '</div>';
-					ret += '<div class="address">knx: ' + data.tunnels[i].knx_address + '<br />ip: ' + (data.tunnels[i].ip_control ? data.tunnels[i].ip_control : data.tunnels[i].hpai_control) + '</div>';
-				}
-				$('#{{ uid }} .tunnels').html(ret);
-				$('#{{ uid }} .version').html(data.date + ', up: ' + data.uptime + ', v ' + data.firmware_version);
-			})
-				.fail(notify.json);
+			{% if server %}
+				$.getJSON('lib/appliance/enertex.iprouter.php?server={{ server }}&pass={{ password }}', function (data) {
+					$('#{{ uid }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png" alt="from">');
+					$('#{{ uid }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png" alt="to">');
+
+					var ret = '';
+					for (var i in data.tunnels) {
+
+						ret += '<div class="traffic">' + data.tunnels[i].tx_tun_req + ' t<img src="lib/appliance/pics/dir_in.png" alt="in">';
+						ret += '<br />' + data.tunnels[i].rx_tun_req + ' t<img src="lib/appliance/pics/dir_out.png" alt="out"></div>';
+						ret += '<div class="tunnel">T ' + i + '</div>';
+						ret += '<div class="address">knx: ' + data.tunnels[i].knx_address + '<br />ip: ' + (data.tunnels[i].ip_control ? data.tunnels[i].ip_control : data.tunnels[i].hpai_control) + '</div>';
+					}
+					$('#{{ uid }} .tunnels').html(ret);
+					$('#{{ uid }} .version').html(data.date + ', up: ' + data.uptime + ', v ' + data.firmware_version);
+				})
+					.fail(notify.json);
+			{% else %}
+				$('#{{ uid }} .version').html("Missing configuration");
+			{% endif %}
 		});
 	</script>
 {% endmacro %}
 
 /**
-* enertex KNXnet/IP-Router
+* enertex device
 *
 * @param {id} unique id for this widget
-* @param {text=} the ip of the KNXnet/IP-Router
-* @param {text=} the password of the KNXnet/IP-Router
+* @param {text=} the ip of the device
+* @param {text=} the password of the device
+* @param {value=1} show closed tunnels (default 1)
 *
 * @info works with firmware 1.062
 */
-{% macro iprouter_v2(id, server, password) %}
+{% macro iprouter_v2(id, server, password, showclosed) %}
 	{% set uid = uid(page, id) %}
 	
-	<div class="block" style="min-height: 410px">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">		
-		  <div data-role="collapsible" data-collapsed="false" id="{{ uid }}-title">
-		    <h3><img style="height: 25px; vertical-align: middle;" src="lib/appliance/pics/logo_enertex.png" alt="enertex"> &nbsp; Enertex&#174; KNX IP Secure <span class="device">Interface</span></h3>
-			<div id="{{ uid }}" class="iprouter" style="height: 410px;">
+	<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false" id="{{ uid }}-title">
+			<h3><img style="height: 25px; vertical-align: middle;" src="lib/appliance/pics/logo_enertex.png" alt="enertex"> &nbsp; Enertex&#174; <span class="device">device</span></h3>
+			<div id="{{ uid }}" class="iprouter">
 				<div class="from"></div>
 				<div class="to"></div>
-			
+
 				<div class="tunnels"></div>
 				<div class="version"></div>
 			</div>
-		  </div>          
 		</div>
 	</div>
+
 	<style>
 	.pop_left {
 		display: inline-block; 
@@ -107,48 +115,59 @@
 	<script type="text/javascript">
 
 		$('#{{ page }}').on('pagecreate', function (event, ui) {
-			var device = { data: {}}; // global object for all data read from Enertex device
+			{% if server %}
+				var device = { data: {}}; // global object for all data read from Enertex device
 
-			$.getJSON('lib/appliance/enertex.iprouter-v2.php?server={{ server }}&pass={{ password }}', function (data) {
-			//$.getJSON('temp/enertex.json', function (data) {  // use this to test with an existing data set instead of a physical device
-				$('#{{ uid }}-title .device').html(data.devicetype);
-				$('#{{ uid }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png" alt="from">');
-				$('#{{ uid }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png" alt="to">');
-	
-				var ret = '';
-				for (var i in data.tunnels) {
-					var tunnelOpen = data.tunnels[i]['tunnel_'+i].indexOf('open') >= 0;
-					ret += '<div class="traffic"' + (tunnelOpen ? '>' + data.tunnels[i].tx_tun_req + ' t<img src="lib/appliance/pics/dir_in.png" alt="in">' : ' style="margin-top: 10px; height: 28px">closed');
-					ret += (tunnelOpen ? '<br />' + data.tunnels[i].rx_tun_req + ' t<img src="lib/appliance/pics/dir_out.png" alt="out">' : '') + '</div>';
-					ret += '<div class="tunnel">' + (tunnelOpen ? '<a href="#{{ uid }}-tunnel-popup" data-rel="popup" data-tunnel="'+i.toString()+'" style="text-decoration: none;">T ' + i + '</a></div>' : 'T ' + i + '</div>') ;
-					ret += '<div class="address">knx: ' + data.tunnels[i].knx_address + '<br />ip: ' + (data.tunnels[i].ip_control ? data.tunnels[i].ip_control : data.tunnels[i].hpai_control) + '</div>';
-				}
-				$('#{{ uid }} .tunnels').html(ret);
-				$('#{{ uid }} .version').html('KNX: '+ data.ip_dev_knx_address +  ' <img src="pics/led/' + (data.knx_bus_state == 'up' ? 'lamp_green.png" alt="green">' : 'lamp_red.png" alt="red">') + '&nbsp;&nbsp; IP: '+data.ip+' / ' + data.ip_mode +'<br>'
-					+ data.date + ', up: ' + data.uptime + ', v ' + data.firmware_version +'<br> TP Data: ' + data.tp_bus_voltage + ', ' + data.tp_bus_current + ', ' + data.tp_temperature + ', ' + data.tx_tp_rate);
-				device.data = data;
-			})
-				.fail(notify.json);
-				
-			$('#{{ uid }} .tunnels').on('click', function(event) {
-				var tunnel = event.target.attributes['data-tunnel'].value;
-				var tunnelData = device.data.tunnels[tunnel];
-				$('#{{ uid }}-tunnel-popup .P0').html('Tunnel '+tunnel.toString());
-				$('#{{ uid }}-tunnel-popup .P1').html(tunnelData['tunnel_'+tunnel]);
-				$('#{{ uid }}-tunnel-popup .P2').html(tunnelData['knx_address']);
-				$('#{{ uid }}-tunnel-popup .P3').html(tunnelData['hpai_control']);
-				$('#{{ uid }}-tunnel-popup .P4').html(tunnelData['hpai_data']);
-				$('#{{ uid }}-tunnel-popup .P5').html(tunnelData['connect_type']);
-				$('#{{ uid }}-tunnel-popup .P6').html(tunnelData['communication']);
-				$('#{{ uid }}-tunnel-popup .P7').html(tunnelData['tx_tun_req']);
-				$('#{{ uid }}-tunnel-popup .P8').html(tunnelData['tx_tun_re_req']);
-				$('#{{ uid }}-tunnel-popup .P9').html(tunnelData['rx_tun_req']);
-				$('#{{ uid }}-tunnel-popup .P10').html(tunnelData['rx_tun_re_req_identified']);
-				$('#{{ uid }}-tunnel-popup .P11').html(tunnelData['rx_tun_req_wrong_seq']);
-				$('#{{ uid }}-tunnel-popup .P12').html(tunnelData['current_tunnel_buffer']);
-				$('#{{ uid }}-tunnel-popup .P13').html(tunnelData['connected_since_utc']);
-			});
-			
+				$.getJSON('lib/appliance/enertex.iprouter-v2.php?server={{ server }}&pass={{ password }}', function (data) {
+				//$.getJSON('temp/enertex.json', function (data) {  // use this to test with an existing data set instead of a physical device
+					$('#{{ uid }}-title .device').html(data.devicetype);
+					$('#{{ uid }} .from').html(data.rx_from_knx + '<img src="lib/appliance/pics/dir_in.png" alt="from">');
+					$('#{{ uid }} .to').html(data.tx_to_knx + '<img src="lib/appliance/pics/dir_out.png" alt="to">');
+
+					var ret = '';
+					var tun = 0
+					for (var i in data.tunnels) {
+						var tunnelOpen = data.tunnels[i]['tunnel_'+i].indexOf('open') >= 0;
+						if (tunnelOpen || ({{showclosed|default(1)}}==1)) {
+							ret += '<div class="traffic"' + (tunnelOpen ? '>' + data.tunnels[i].tx_tun_req + ' t<img src="lib/appliance/pics/dir_in.png" alt="in">' : ' style="margin-top: 10px; height: 28px">closed');
+							ret += (tunnelOpen ? '<br />' + data.tunnels[i].rx_tun_req + ' t<img src="lib/appliance/pics/dir_out.png" alt="out">' : '') + '</div>';
+							ret += '<div class="tunnel">' + (tunnelOpen ? '<a href="#{{ uid }}-tunnel-popup" data-rel="popup" data-tunnel="'+i.toString()+'" style="text-decoration: none;">T ' + i + '</a></div>' : 'T ' + i + '</div>') ;
+							ret += '<div class="address">' + 'knx: ' + data.tunnels[i].knx_address + '<br />ip: ' + (tunnelOpen ? (data.tunnels[i].ip_control ? data.tunnels[i].ip_control : data.tunnels[i].hpai_control) : 'n/a') + '</div>';
+							tun++;
+						}
+					}
+					height = tun * 30 + 140;
+					if (height > 230) {
+						document.getElementById('{{ uid }}').style["height"] = height + 'px';
+					}
+					$('#{{ uid }} .tunnels').html(ret);
+					$('#{{ uid }} .version').html('KNX: '+ data.ip_dev_knx_address + ' <img src="pics/led/' + (data.knx_bus_state == 'up' ? 'lamp_green.png" alt="green">' : 'lamp_red.png" alt="red">') + '&nbsp;&nbsp; IP: '+data.ip+ (data.ip_mode ? ' / ' + data.ip_mode : '') +'<br>'
+						+ data.date + ', up: ' + data.uptime + ', v ' + data.firmware_version + (data.tp_bus_voltage ? '<br> TP Data: ' + data.tp_bus_voltage + ', ' + data.tp_bus_current + ', ' + data.tp_temperature + ', ' + data.tx_tp_rate : ''));
+					device.data = data;
+				})
+					.fail(notify.json);
+					
+				$('#{{ uid }} .tunnels').on('click', function(event) {
+					var tunnel = event.target.attributes['data-tunnel'].value;
+					var tunnelData = device.data.tunnels[tunnel];
+					$('#{{ uid }}-tunnel-popup .P0').html('Tunnel '+tunnel.toString());
+					$('#{{ uid }}-tunnel-popup .P1').html(tunnelData['tunnel_'+tunnel]);
+					$('#{{ uid }}-tunnel-popup .P2').html(tunnelData['knx_address']);
+					$('#{{ uid }}-tunnel-popup .P3').html(tunnelData['hpai_control']);
+					$('#{{ uid }}-tunnel-popup .P4').html(tunnelData['hpai_data']);
+					$('#{{ uid }}-tunnel-popup .P5').html(tunnelData['connect_type']);
+					$('#{{ uid }}-tunnel-popup .P6').html(tunnelData['communication']);
+					$('#{{ uid }}-tunnel-popup .P7').html(tunnelData['tx_tun_req']);
+					$('#{{ uid }}-tunnel-popup .P8').html(tunnelData['tx_tun_re_req']);
+					$('#{{ uid }}-tunnel-popup .P9').html(tunnelData['rx_tun_req']);
+					$('#{{ uid }}-tunnel-popup .P10').html(tunnelData['rx_tun_re_req_identified']);
+					$('#{{ uid }}-tunnel-popup .P11').html(tunnelData['rx_tun_req_wrong_seq']);
+					$('#{{ uid }}-tunnel-popup .P12').html(tunnelData['current_tunnel_buffer']);
+					$('#{{ uid }}-tunnel-popup .P13').html(tunnelData['connected_since_utc']);
+				});
+			{% else %}
+				$('#{{ uid }} .version').html("Missing configuration");
+			{% endif %}
 		});
 		
 	</script>
