@@ -1122,8 +1122,16 @@ $.widget("sv.device_uzsu", $.sv.widget, {
                         "<option value='cubic'>" + sv_lang.uzsu.cubic + "</option>" +
                         "<option value='linear'>" + sv_lang.uzsu.linear + "</option>" +
                       "</select>" +
-                    "</div>" +
-                    "<div class='uzsuCell'>" +
+                    "</div>"
+              if(this.hasOnce)     
+                 tt += "<div class='uzsuCell'>" +
+                      "<div class='uzsuCellText'>" + sv_lang.uzsu.intperiod + "</div>" +
+                      "<select data-mini='true' data-native-menu='false' id='uzsuInterpolationPeriod'>" +
+                        "<option value='false'>" + sv_lang.uzsu.conti + "</option>" +
+                        "<option value='true'>" + sv_lang.uzsu.perday + "</option>" +
+                      "</select>" +
+                    "</div>"
+              tt += "<div class='uzsuCell'>" +
                       "<div class='uzsuCellText'>" + sv_lang.uzsu.intervaltime + "</div>" +
                       "<input type='number' data-clear-btn='false' id='uzsuInterpolationInterval' style='width:50px;' min='0' class='uzsuValueInput positivenumbers'>" +
                     "</div>" +
@@ -1153,6 +1161,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // INTERPOLATION
     if(this.hasInterpolation) {
       $('#uzsuInterpolationType').val(response.interpolation.type).selectmenu("refresh", true);
+      if(this.hasOnce){
+         $('#uzsuInterpolationPeriod').val(response.interpolation.perday.toString()).selectmenu("refresh", true);
+      }
       $('#uzsuInterpolationInterval').val(response.interpolation.interval);
       $('#uzsuInitAge').val(response.interpolation.initage);
       $('#uzsuInitialized').prop('checked', response.interpolation.initialized).checkboxradio("refresh");
@@ -1186,6 +1197,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       response.interpolation.interval = $('#uzsuInterpolationInterval').val();
       response.interpolation.initage = $('#uzsuInitAge').val();
       response.interpolation.initialized = $('#uzsuInitialized').is(':checked');
+      if (this.hasOnce)
+         response.interpolation.perday = $('#uzsuInterpolationPeriod').val() == "true";
     }
     // Einzeleinträge
     $('.uzsuRow').each(function(numberOfRow, tableRow) {
@@ -2266,7 +2279,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
 	var navigatorMin = this._startTimestamp
 	var navigatorMax = navigatorMin + 7*24*60*60*1000;
-
+		
 	// ******************************************************************************
 	// set plot data for active points
 	// ******************************************************************************
