@@ -1162,7 +1162,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     if(this.hasInterpolation) {
       $('#uzsuInterpolationType').val(response.interpolation.type).selectmenu("refresh", true);
       if(this.hasOnce){
-         $('#uzsuInterpolationPeriod').val(response.interpolation.perday.toString()).selectmenu("refresh", true);
+         $('#uzsuInterpolationPeriod').val(response.interpolation.perday.toString().toLowerCase()).selectmenu("refresh", true);
       }
       $('#uzsuInterpolationInterval').val(response.interpolation.interval);
       $('#uzsuInitAge').val(response.interpolation.initage);
@@ -2276,6 +2276,17 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 			});
 		}
 	});
+	
+	// push additional points for daywise interpolation
+	if (this._uzsudata.interpolation.hasOwnProperty('perday') && this._uzsudata.interpolation.perday == true) {
+		for (var i = 1; i < 8; i++) {
+			seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 10, y: -999});
+			seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 20, y: -999});
+			seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 30, y: -999});
+			if (i != 7)
+				seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 40, y: -999});
+		}
+	}
 
 	var navigatorMin = this._startTimestamp
 	var navigatorMax = navigatorMin + 7*24*60*60*1000;
@@ -2290,14 +2301,34 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 	// 2 points at start in order to improve fitting of spline to UZSU interpolation
 
 	if(data.length > 0) {
-		navigatorMin =  data[data.length-1].x-1000*60*60*24*7;
-		data.unshift({ x: navigatorMin, y: data[data.length-1].y, className: data[data.length-1].className });
-		data.unshift({ x: data[data.length-2].x-1000*60*60*24*7, y: data[data.length-2].y, className: data[data.length-2].className });
-		navigatorMax = data[2].x+1000*60*60*24*7;
-		data.push({ x: navigatorMax, y: data[2].y, className: data[2].className });
-		// 2nd point at end would cause highcharts to break the plot area boundaries during dragging -> omit this for now	
-		// and wait for the solution for https://github.com/highcharts/highcharts/issues/20351
-		// data.push({ x: data[3].x+1000*60*60*24*7, y: data[3].y, className: data[3].className });
+		if (self._uzsudata.interpolation.hasOwnProperty('perday') && self._uzsudata.interpolation.perday == true) {
+			var dayEnd
+			for (var i = 1; i< 8; i++){
+				dayEnd = data.findIndex(function(element){return element.y == -999});
+				data[dayEnd].x = data[dayEnd-1].x + 10;
+				data[dayEnd].y = null;
+				data[dayEnd+1].x = data[dayEnd-1].x + 20;
+				data[dayEnd+1].y = data[dayEnd-1].y;
+				data[dayEnd+2].x = data[dayEnd+4] ? data[dayEnd+4].x - 20 : navigatorMax;
+				data[dayEnd+2].y = data[dayEnd-1].y;
+				if (i != 7){
+					data[dayEnd+3].x = data[dayEnd+4].x - 10;
+					data[dayEnd+3].y = null;
+				}
+			}
+			data.unshift({x: data[0].x - 10, y: null });
+			data.unshift({x: data[0].x - 20, y: data[data.length - 1].y});
+			data.unshift({x: navigatorMin, y: data[data.length - 1].y});
+		} else {
+			navigatorMin =  data[data.length-1].x-1000*60*60*24*7;
+			data.unshift({ x: navigatorMin, y: data[data.length-1].y, className: data[data.length-1].className });
+			data.unshift({ x: data[data.length-2].x-1000*60*60*24*7, y: data[data.length-2].y, className: data[data.length-2].className });
+			navigatorMax = data[2].x+1000*60*60*24*7;
+			data.push({ x: navigatorMax, y: data[2].y, className: data[2].className });
+			// 2nd point at end would cause highcharts to break the plot area boundaries during dragging -> omit this for now	
+			// and wait for the solution for https://github.com/highcharts/highcharts/issues/20351
+			// data.push({ x: data[3].x+1000*60*60*24*7, y: data[3].y, className: data[3].className });
+		}
 	}
 
 	chart.get('active').setData(data, false, null, false);
