@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, Wolfram v. Hülsen
- * @copyright   2012 - 2021
+ * @copyright   2012 - 2025
  * @license     GPL [http://www.gnu.de]
  *
  * based on a php Telnet class from Dalibor Andzakovic and others 
@@ -32,6 +32,7 @@ define ('EOR',  chr(25));
 /**
  * This service reads some information from an enertex knxnet/iprouter
  */
+#[AllowDynamicProperties]
 class enertex_iprouter extends service
 {
 	// A delay between a write and a read in microseconds
@@ -213,7 +214,12 @@ class enertex_iprouter extends service
 			}
 			
 			$this->close();
-			$this->data['devicetype'] = explode('-',$this->data['hardware_type'])[3] == '13' ? 'Router' : 'Interface';
+			$this->data['devicetype'] = explode('-',$this->data['hardware_type'])[3] == '13' ? 'KNX IP Secure Router' : 'KNX IP Secure Interface';
+			// older devices dont' provide hardware info
+			if (!$this->data['hardware_type']) {
+				$this->data['ip_dev_knx_address'] = $this->data['knx_address'];
+				$this->data['devicetype'] = 'KNXnet/IP Router';
+			}
 		}
 	}
 
