@@ -4,6 +4,7 @@
 - UZSU widgets support one-time events with "once" property back in time on the current day using "activeToday" property 
 - UZSU widgets now disable editing the events until the backend has updated the dict with data from the former edit
 - device.uzsuicon and device.uzsugraph support the "perday" option for interpolation (interpolation with the days events only, not across day borders)
+- Enertex (R) appliance.iprouter_v2 widget has been adapted to older device types and has got a new option to hide closed tunnels (thanks to @stoepf)
 
 ### Other New Features
 

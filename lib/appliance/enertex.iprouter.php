@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -17,6 +17,7 @@ require_once const_path_system.'service.php';
 /**
  * This service reads some information from an enertex knxnet/iprouter
  */
+#[AllowDynamicProperties]
 class enertex_iprouter extends service
 {
 	// A delay between a write and a read
