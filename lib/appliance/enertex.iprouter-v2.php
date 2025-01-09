@@ -213,7 +213,12 @@ class enertex_iprouter extends service
 			}
 			
 			$this->close();
-			$this->data['devicetype'] = explode('-',$this->data['hardware_type'])[3] == '13' ? 'Router' : 'Interface';
+			$this->data['devicetype'] = explode('-',$this->data['hardware_type'])[3] == '13' ? 'KNX IP Secure Router' : 'KNX IP Secure Interface';
+			// older devices dont' provide hardware info
+			if (!$this->data['hardware_type']) {
+				$this->data['ip_dev_knx_address'] = $this->data['knx_address'];
+				$this->data['devicetype'] = 'KNXnet/IP Router';
+			}
 		}
 	}
 
