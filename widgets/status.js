@@ -88,8 +88,8 @@ $.widget("sv.status_customstyle", $.sv.widget, {
 		};
 
 		for (var i = 0; i < comp.length; i++){
-			var compOperator = comp[i].replace(/[0-9]+/, '') || "=";
 			var compValue = comp[i].replace(/[<=>]+/, '');
+			var compOperator = $.isNumeric(compValue)? comp[i].replace(/[0-9\.]+/, '') || "=" : "=";
 			// DEBUG: console.log(comp[i], String(response[0]), compOperator, compValue, operators[compOperator](response[0], compValue )) 
 			styleActive = styleActive || operators[compOperator](response[0], compValue ); 
 		}
