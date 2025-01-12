@@ -67,7 +67,7 @@ the first one is the base color for values below first threshold, so pass one co
 *
 * @param {text[?]} id or array of ids of the elements to style. Widgets are identified by the plain id while html elements require the format {pagename}-{idname}, e.g. id="mypage-myid" (mandatory)
 * @param {item(bool,num),str} an item which triggers the styling
-* @param {text[?]=0} the values on which the target will be styled. Compare operators are supported, e.g. "<20" (optional, default 0)
+* @param {text[?]=0} the values on which the target will be styled in array form. Compare operators are supported for numeric values, e.g. "<20". Use a sole "=" to match an empty sring (optional, default 0)
 * @param {text=blink} custom CSS class used for styling  (optional, default = blink)
 */
 {% macro customstyle(id, item_trigger, value, action) %}
