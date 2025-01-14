@@ -52,7 +52,7 @@ the first one is the base color for values below first threshold, so pass one co
 * Show and hide a div or popup or collapse a section by a trigger item.
 *
 * @param {id} unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget (mandatory)
-* @param {item(bool,num, str)} an item which triggers the collapse 
+* @param {item(bool,num,str)} an item which triggers the collapse 
 * @param {value[?]=0} the values on which the target will be collapsed (optional, default 0)
 * @param {text(hide,show)=hide} inverts the widget's behaviour, i.e. 'show' opens a popup instead of closing it if the trigger value is matched (optional, default = hide)
 */
@@ -66,7 +66,7 @@ the first one is the base color for values below first threshold, so pass one co
 * Apply CSS class to an element depending on a trigger item.
 *
 * @param {text[?]} id or array of ids of the elements to style. Widgets are identified by the plain id while html elements require the format {pagename}-{idname}, e.g. id="mypage-myid" (mandatory)
-* @param {item(bool,num),str} an item which triggers the styling
+* @param {item(bool,num,str)} an item which triggers the styling
 * @param {text[?]=0} the values on which the target will be styled in array form. Compare operators are supported for numeric values, e.g. "<20". Use a sole "=" to match an empty sring (optional, default 0)
 * @param {text=blink} custom CSS class used for styling  (optional, default = blink)
 */
