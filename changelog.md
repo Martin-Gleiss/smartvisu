@@ -10,6 +10,7 @@
 ### Other New Features
 
 ### Improvements
+- twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
 
 ### Updated Libraries
 
