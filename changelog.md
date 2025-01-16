@@ -5,10 +5,13 @@
 - UZSU widgets now disable editing the events until the backend has updated the dict with data from the former edit
 - device.uzsuicon and device.uzsugraph support the "perday" option for interpolation (interpolation with the days events only, not across day borders)
 - Enertex (R) appliance.iprouter_v2 widget has been adapted to older device types and has got a new option to hide closed tunnels (thanks to @stoepf)
+- status.collapse and status.customstyle allow items of type "str" (no comparative operators (<,<=,=>,>) allowed with text). 
+- status badge is now able to display symbols
 
 ### Other New Features
 
 ### Improvements
+- twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
 
 ### Updated Libraries
 

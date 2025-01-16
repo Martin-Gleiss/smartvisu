@@ -466,14 +466,18 @@ function twig_asset_exists($file) {
 	return $fileExists;
 }
 
-function twig_localize_svg($file) {
+function twig_localize_svg($file, $full = false) {
 	$path = pathinfo((string) $file);
 	if(!isset($path['extension']) || $path['extension'] == "") $path['extension'] = "svg";
 	$filename = $path['filename'] . '.' . $path['extension'];
-	if(is_file(const_path . 'icons/ws/'. $filename) || is_file(const_path . 'dropins/icons/ws/'. $filename))
-		return '@icons/'.$filename;
-	if (is_file(const_path . 'icons/ws/jquery_'. $filename) || is_file(const_path . 'dropins/icons/ws/jquery_'. $filename))
-		return '@icons/jquery_'.$filename;
+	if (is_file(const_path . 'icons/ws/'. $filename))
+		return $full == true ? 'icons/ws/'.$filename :  '@icons/'.$filename ;
+	if (is_file(const_path . 'dropins/icons/ws/'. $filename))
+		return $full == true ? 'dropins/icons/ws/'. $filename : '@icons/'.$filename;
+	if (is_file(const_path . 'icons/ws/jquery_'. $filename))
+		return $full == true ? 'icons/ws/jquery_'. $filename : '@icons/jquery_'.$filename;
+	if(is_file(const_path . 'dropins/icons/ws/jquery_'. $filename))
+		return $full == true ? 'dropins/icons/ws/jquery_'. $filename : '@icons/jquery_'.$filename;
 	return $file;
 }
 ?>
