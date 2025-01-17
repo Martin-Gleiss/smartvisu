@@ -6,6 +6,8 @@ $.widget("sv.dynicon", $.sv.widget, {
 		max: 255,
 		col: 'icon0'
 	},
+	
+	_disabled: false,
 
 	_update: function(response) {
 		// response is: {{ gad_value }}, {{ gad_switch }}
@@ -21,10 +23,18 @@ $.widget("sv.dynicon", $.sv.widget, {
 
 	_events: {
 		'click': function (event) {
-			if (this.items[1]) {
+			if (this.items[1] && !this._disabled) {
 				io.write(this.items[1], (widget.get(this.items[1]) == 0 ? 1 : 0));
 			}
 		}
+	},
+	
+	_enable: function(){
+		this._disabled = false;
+	},
+	
+	_disable: function(){
+		this._disabled = true;
 	}
 
 });

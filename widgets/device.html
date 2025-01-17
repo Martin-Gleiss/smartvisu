@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß and others
-* @copyright   2012 - 2022
+* @copyright   2012 - 2025
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -326,7 +326,7 @@
 		{% if tolerance is empty %} {% set tolerance = '0' %} {% endif %}
 		{% set min = min | default('18') - tolerance %}
 		{% set max = max | default('28') + tolerance %}
-		<div class="set" style="position:relative; z-index: 3;">
+		<div class="set" style="position:relative; z-index: 3; padding: 0 65px 0px 65px">
 			<div>
 				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro', min, max) }}
 				{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro', min, max) }}
@@ -642,8 +642,9 @@
 {% macro window (id, txt, item_move, item_stop, item_pos, item_shade, item_window_r, item_window_l, type, min, max, step, color, live ) %}
 	{% import "@widgets/basic.html" as basic %}
 	{% set uid = uid(page, id) %}
+	{% set popupid = id is empty ? uid(page, 'popup') : uid %}
 		
-	<a id="{{ uid }}-button" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %} data-rel="popup"
+	<a id="{{ uid }}-button" href="#{{ popupid }}" {% if txt %}title="{{ txt }}"{% endif %} data-rel="popup"
 		class=" {%- if type == 'icon' -%} /**- display as icon -*/
 						switch ui-link
 					{%- else -%} /**- display as button -*/
@@ -653,7 +654,7 @@
 		{{ basic.window (uid~'-icon', item_pos, item_window_r, item_window_l, min, max, color) }}
 	</a>
 		
-    <div id="{{ uid }}-popup" data-role="popup" style="min-width:200px;">
+    <div id="{{ popupid }}" data-role="popup" style="min-width:200px;">
 		<div>
 			{{ basic.window(uid~'-icon', item_pos, item_window_r, item_window_l, min, max, '') }}
 			{{ txt|e }}

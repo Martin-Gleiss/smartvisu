@@ -9,6 +9,7 @@
 - status badge is now able to display symbols
 
 ### Other New Features
+- all jQm widgets with write access to items have got a disable and enable method callable with "$(mySelector).widget('disable')" / "$(mySelector).widget('enable')" (basic.*, icon.*, device.rtrslider, device.roofwindow).
 
 ### Improvements
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
