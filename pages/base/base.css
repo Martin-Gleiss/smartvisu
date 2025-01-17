@@ -1014,6 +1014,12 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   background: red;
   color:white;
 }
+[data-widget="status.badge"] span svg.fx-icon,
+[data-widget="status.badge"] span .icon {
+   vertical-align: text-bottom;
+   width: 20px;
+   height: 20px;
+}​
 
 [data-widget="basic.color"] .ui-slider-bg {
   display: none;
