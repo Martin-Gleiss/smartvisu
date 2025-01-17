@@ -102,6 +102,8 @@ $.widget("sv.device_roofwindow", $.sv.widget, {
 		max: 255,
 		step: 5,
 	},
+	
+	_disabled: false,
 
 	_getVal: function(event) {
 		var min = this.options.min;
@@ -115,20 +117,34 @@ $.widget("sv.device_roofwindow", $.sv.widget, {
 
 	_events: {
 		'click .pos': function (event) {
-			this._write(this._getVal(event));
+			if (this._disabled == false)
+				this._write(this._getVal(event));
 		},
 
 		'mouseenter .pos': function (event) {
-			this.element.find('.control').fadeIn(400);
+			if (this._disabled == false)
+				this.element.find('.control').fadeIn(400);
 		},
 
 		'mouseleave .pos': function (event) {
-			this.element.find('.control').fadeOut(400);
+			if (this._disabled == false)
+				this.element.find('.control').fadeOut(400);
 		},
 
 		'mousemove .pos': function (event) {
-			$(event.currentTarget).attr('title', this._getVal(event));
+			if (this._disabled == false)
+				$(event.currentTarget).attr('title', this._getVal(event));
 		}
+	},
+	
+	_enable: function(){
+		this._disabled = false;
+		this.element.find('[data-widget="basic.stateswitch"]').filter(':data("sv-widget")').widget('enable');
+	},
+	
+	_disable: function(){
+		this._disabled = true;
+		this.element.find('[data-widget="basic.stateswitch"]').filter(':data("sv-widget")').widget('disable');
 	}
 
 });
@@ -267,6 +283,19 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 	},
 	
 	_events: {
+	},
+	
+	_enable: function(){
+		this.element.find('.innerslider').roundSlider('enable').end()
+		.next('.set').find('[data-widget]').filter(':data("sv-widget")').widget('enable').end().end()
+		.next('.control').find('[data-widget]').filter(':data("sv-widget")').widget('enable');
+	},
+	
+	_disable: function(){
+		this.element.find('.innerslider').roundSlider('disable').end()
+		.next('.set').find('[data-widget]').filter(':data("sv-widget")').widget('disable').end().end()
+		.next('.control').find('[data-widget]').filter(':data("sv-widget")').widget('disable');
+
 	}
 });
 

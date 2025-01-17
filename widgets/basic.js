@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiss, Stefan Widmer, Wolfram v. Hülsen
- * @copyright   2012 - 2024
+ * @copyright   2012 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -25,12 +25,20 @@ $.widget("sv.basic_checkbox", $.sv.widget, {
 		'change': function(ev) {
 			this._write(this.element.prop('checked') ? this.options['val-on'] : this.options['val-off']);
 		}
+	},
+	
+	_enable: function(){
+		this.element.prop('disabled', false);
+	},
+	
+	_disable: function(){
+		this.element.prop('disabled', true);
 	}
 
 });
 
 
-// ----- basic.select ----------------------------------------------------------
+// ----- basic.select type 'menu' -------------------------------------------------
 $.widget("sv.basic_select", $.sv.widget, {
 
 	initSelector: 'select[data-widget="basic.select"]',
@@ -85,10 +93,32 @@ $.widget("sv.basic_select", $.sv.widget, {
 				}, this.options.indicatorDuration*1000);
 			}
 		}
+	},
+	
+	_enable: function(){
+		this.element.selectmenu('enable');
+	},
+	
+	_disable: function(){
+		this.element.selectmenu('disable');
 	}
 
 });
 
+// ----- basic.select w/ buttons -------------------------------------------------
+$.widget("sv.basic_select_buttons", $.sv.widget, {
+
+	initSelector: 'div[data-widget="basic.select"]',	
+	
+	_enable: function(){
+		this.element.removeClass('ui-state-disabled');
+	},
+	
+	_disable: function(){
+		this.element.addClass('ui-state-disabled');
+	}
+
+});
 
 // ----- basic.color ----------------------------------------------------------
 // base widget for all 3 types
@@ -180,6 +210,14 @@ $.widget("sv.basic_color", $.sv.widget, {
 		}
 
 	},
+	
+	_enable: function(){
+		this.element.removeClass('ui-state-disabled');
+	},
+	
+	_disable: function(){
+		this.element.addClass('ui-state-disabled');
+	}
 });
 
 // type = rect
@@ -555,6 +593,14 @@ $.widget("sv.basic_flip", $.sv.widget, {
 		'change': function (event) {
 			this._write(this.element.val());
 		}
+	},
+	
+	_enable: function(){
+		this.element.flipswitch('enable');
+	},
+	
+	_disable: function(){
+				this.element.flipswitch('disable');
 	}
 
 });
@@ -676,6 +722,14 @@ $.widget("sv.basic_input", $.sv.widget, {
 
 			this._write(newval);
 		}
+	},
+	
+	_enable: function(){
+		this.element.prop('disabled', false);
+	},
+	
+	_disable: function(){
+		this.element.prop('disabled', true);
 	}
 
 });
@@ -736,6 +790,14 @@ $.widget("sv.basic_input_datebox", $.sv.widget, {
 				this._write(newval);
 			}
 		}
+	},
+	
+	_enable: function(){
+		this.element.datebox('enable');
+	},
+	
+	_disable: function(){
+		this.element.datebox('disable');
 	}
 
 });
@@ -765,6 +827,14 @@ $.widget("sv.basic_offset", $.sv.widget, {
 				newval = (newval > this.options.max * 1 ? this.options.max * 1 : newval);
 			this._write(newval);
 		}
+	},
+	
+	_enable: function(){
+		this.element.removeClass('ui-state-disabled');
+	},
+	
+	_disable: function(){
+		this.element.addClass('ui-state-disabled');
 	}
 
 });
@@ -968,6 +1038,14 @@ $.widget("sv.basic_shutter", $.sv.widget, {
 		'mousemove': function (event) {
 			this.element.attr('title', this._getVal(event));
 		},
+	},
+		
+	_enable: function(){
+		this.element.removeClass('ui-state-disabled');
+	},
+	
+	_disable: function(){
+		this.element.addClass('ui-state-disabled');
 	}
 
 });
@@ -1063,7 +1141,16 @@ $.widget("sv.basic_slider", $.sv.widget, {
 			this._write(val);
 			this._delay(function() { if(this._timer) { this._timer = false; this._send(); } }, 400);
 		}
+	},
+	
+	_enable: function(){
+		this.element.slider('enable');
+	},
+	
+	_disable: function(){
+				this.element.slider('disable');
 	}
+
 
 });
 
@@ -1089,6 +1176,7 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 		this._super();
 
 		var shortpressEvent = function(event) {
+			if (this._disabled) return;
 			// get the list of values
 			var list_val = String(this.options.vals).explode();
 
@@ -1298,6 +1386,14 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 		if (response != 'indicator')
 			this._current_val = val;
 	},
+	
+	_enable: function(){
+		this.element.next('a').removeClass('ui-state-disabled');
+	},
+	
+	_disable: function(){
+		this.element.next('a').addClass('ui-state-disabled');;
+	}
 
 });
 
@@ -1484,6 +1580,14 @@ $.widget("sv.basic_trigger", $.sv.widget, {
 			
 		},
 	},
+		
+	_enable: function(){
+		this.element.removeClass('ui-state-disabled');
+	},
+	
+	_disable: function(){
+		this.element.addClass('ui-state-disabled');
+	}
 	
 });
 
@@ -1642,6 +1746,14 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 	},
 	
 	_events: {
+	},
+			
+	_enable: function(){
+		this.element.roundSlider('enable');
+	},
+	
+	_disable: function(){
+		this.element.roundSlider('disable');
 	}
 });
 
@@ -1804,4 +1916,3 @@ $.widget("sv.basic_skylight", $.sv.widget, {
 		this.element.find('#knob2').attr('fill-opacity', x === 2 ? '1':'0');
 	}
 });
-
