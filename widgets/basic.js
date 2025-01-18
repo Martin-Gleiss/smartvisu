@@ -1389,10 +1389,12 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 	
 	_enable: function(){
 		this.element.next('a').removeClass('ui-state-disabled');
+		this.element.find('a[data-widget]').removeClass('ui-state-disabled');
 	},
 	
 	_disable: function(){
-		this.element.next('a').addClass('ui-state-disabled');;
+		this.element.next('a').addClass('ui-state-disabled');
+		this.element.find('a[data-widget]').addClass('ui-state-disabled');
 	}
 
 });
