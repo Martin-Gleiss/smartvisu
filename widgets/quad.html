@@ -1671,8 +1671,8 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {item(bool,num)=} 			    a gad/item for the next title
  * @param {item(bool,num)=}  		    a gad/item for turning power on/off
  * @param {item(bool,num)=}  		    a gad/item to eject
- * @param {item(num,bool)=}    	    a gad/item to repeat. 0 = off. 1 = song. 2 = playlist
- * @param {item(num,bool)=}    	    a gad/item to shuffle. 0 = off. 1 = song. 2 = album
+ * @param {item(num,str)=}    	    a gad/item to repeat. 0 = off. 1 = song. 2 = playlist
+ * @param {item(num,str)=}    	    a gad/item to shuffle. 0 = off. 1 = song. 2 = album
  * @param {unspecified[]=}    		        array providing these information: [item to change source/playlist, select-type, [value1, icon1, text1], [value2, icon2, text2], etc.]
  * @param {item(bool,num)=}    	    a gad/item to set mute
  * @param {item(num)=}    	    a gad/item to set the volume
@@ -1708,9 +1708,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
  	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
  	The indicator options will not be applied to the select element of type 'menu' which will convert all options to 'blink'.
- * @param {text[](previous,play,pause,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,stateengine,repeat,source,source_popup,speaker,playpause,playpausestop,playstop,shuffle,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+ * @param {text[](previous,play,pause,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,stateengine,repeat,source,source_popup,speaker,playpause,playpausestop,playstop,shuffle,anynumber,repeat_num,shuffle_num)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'previous', 'play', 'pause', 'stop', 'next', 'power', 'eject', 'mute', 'volume_slider', 'cover',
-            'volume_popup', 'volume_up', 'volume_down', 'song_position', 'uzsu', 'plot', 'stateengine', 'repeat', 'source', 'speaker', 'playpause', 'playstop', 'playpausestop', 'shuffle', 'source_popup'
+            'volume_popup', 'volume_up', 'volume_down', 'song_position', 'uzsu', 'plot', 'stateengine', 'repeat(_num)', 'source', 'speaker', 'playpause', 'playstop', 'playpausestop', 'shuffle(_num)', 'source_popup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays.
  */
@@ -2111,15 +2111,26 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
       {% endif %}
     {% endif %}
 
-
+    {% if column == 'repeat_num' and item_repeat %}
+      {{ basic.stateswitch(id~'_repeat', item_repeat, 'icon', [0, 1, 2], ['audio_repeat_song', 'audio_repeat_song', 'audio_repeat'], '', ['icon0','icon1','icon1'], indicator) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+    {% if column == 'shuffle_num' and item_shuffle %}
+      {{ basic.stateswitch(id~'_shuffle', item_shuffle, 'icon', [0, 1, 2], ['audio_shuffle', 'audio_shuffle', 'audio_shuffle_album'], '', ['icon0','icon1','icon1'], indicator) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
     {% if column == 'repeat' and item_repeat %}
-      {{ basic.stateswitch(id~'_repeat', item_repeat, 'icon', [0,1,2], ['audio_repeat_song','audio_repeat_song','audio_repeat'], '', ['icon0','icon1','icon1'], indicator) }}
+      {{ basic.stateswitch(id~'_repeat', item_repeat, 'icon', ['OFF', 'SONG', 'PLAYLIST'], ['audio_repeat_song', 'audio_repeat_song', 'audio_repeat'], '', ['icon0','icon1','icon1'], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'shuffle' and item_shuffle %}
-      {{ basic.stateswitch(id~'_shuffle', item_shuffle, 'icon', [0,1,2], ['audio_shuffle','audio_shuffle','audio_shuffle_album'], '', ['icon0','icon1','icon1'], indicator) }}
+      {{ basic.stateswitch(id~'_shuffle', item_shuffle, 'icon', ['OFF', 'SONG', 'ALBUM'], ['audio_shuffle', 'audio_shuffle', 'audio_shuffle_album'], '', ['icon0','icon1','icon1'], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
