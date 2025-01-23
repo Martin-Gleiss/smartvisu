@@ -1027,6 +1027,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 
 .switch {
   display: inline-block;
+  position: relative;
 }
 .absolutepos .switch,
 .switch.absolutepos{
@@ -1154,6 +1155,10 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   position: absolute;
   right: 0;
   bottom: 0;
+}
+
+.colordisc.ui-link {
+  position: relative;
 }
 
 .colordisc span {
@@ -1446,6 +1451,7 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   width: 11% !important;
   padding-left:0%;
   display: inline-block;
+  position: relative;
 }
 
 .smallshut .ui-shut-pic .icon {
@@ -2441,6 +2447,61 @@ svg.icon.midi,
      width: 300px;
  }
  
+/**
+ * ------ Show badge on some disabled widgets using buttons -------
+*/
+[data-widget="basic.select"].ui-controlgroup {
+	position: relative;
+}
+[data-widget="basic.stateswitch"].ui-state-disabled::after,
+[data-widget="basic.offset"].ui-state-disabled::after,
+[data-widget="basic.trigger"].ui-state-disabled::after,
+[data-widget="basic.shutter"].ui-state-disabled::after,
+[data-widget="basic.select"].ui-controlgroup.ui-state-disabled::after,
+[data-widget="basic.select"]:not(.ui-controlgroup).ui-state-disabled a[data-widget="basic.stateswitch"]::after,
+[data-widget="device.dimmer"].ui-state-disabled a[data-widget="basic.stateswitch"]::after, 
+[data-widget="device.roofwindow"].ui-state-disabled .pos::after,
+.smallshut.ui-state-disabled  .ui-shut-pic::after,
+.blind.ui-state-disabled .shutter::after  {
+    content: url("../../icons/ws/jquery_lock.svg");
+    position:absolute;    
+    top:4px;
+    right:0px;
+    display:inline-flex;
+    min-width:16px;
+    height:16px;
+	justify-content: center;
+    text-align:center;
+    color: white;
+    border:1px solid red;
+    border-radius:10px;
+    background: red !important;
+	left: unset;
+	width: unset;
+}
+[data-widget="basic.stateswitch"].ui-micro.ui-state-disabled::after,
+[data-widget="basic.offset"].ui-micro.ui-state-disabled::after,
+[data-widget="basic.trigger"].ui-micro.ui-state-disabled::after,
+[data-widget="basic.select"].ui-state-disabled a[data-widget="basic.stateswitch"].ui-micro::after,
+[data-widget="device.dimmer"].ui-state-disabled a[data-widget="basic.stateswitch"].ui-micro::after {
+	top: 2px;
+}
+[data-widget="basic.stateswitch"].ui-midi.ui-state-disabled::after,
+[data-widget="basic.offset"].ui-midi.ui-state-disabled::after,
+[data-widget="basic.trigger"].ui-midi.ui-state-disabled::after,
+[data-widget="basic.select"].ui-state-disabled a[data-widget="basic.stateswitch"].ui-midi::after,
+[data-widget="device.dimmer"].ui-state-disabled a[data-widget="basic.stateswitch"].ui-midi::after {
+	top: 6px;
+}
+/** ... and exclude some child widgets */
+[data-widget="device.rtr"].ui-state-disabled > .set .ui-state-disabled::after,
+[data-widget="device.rtr"].ui-state-disabled > .control .ui-state-disabled::after,
+[data-widget="device.rtrslider"].ui-state-disabled + .set .ui-state-disabled::after,
+[data-widget="device.rtrslider"].ui-state-disabled + .set + .control .ui-state-disabled::after,
+.blind.ui-state-disabled .set .ui-state-disabled::after {
+	display: none;
+}
+
 
 /**
  * --- T e m p l a t e :   B A S E --------------------------------------------

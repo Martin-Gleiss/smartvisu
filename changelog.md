@@ -7,9 +7,11 @@
 - Enertex (R) appliance.iprouter_v2 widget has been adapted to older device types and has got a new option to hide closed tunnels (thanks to @stoepf)
 - status.collapse and status.customstyle allow items of type "str" (no comparative operators (<,<=,=>,>) allowed with text). 
 - status badge is now able to display symbols
+- new widget status.disable disables widgets and attaches a "locked" badge mainly to the button-type elements
 
 ### Other New Features
 - all jQm widgets with write access to items have got a disable and enable method callable with "$(mySelector).widget('disable')" / "$(mySelector).widget('enable')" (basic.*, icon.*, device.rtrslider, device.roofwindow).
+- new methods "widget.enable(jQObject)" and "widget.disable(jQObject)" handle the different widget types for enable/disable
 
 ### Improvements
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
