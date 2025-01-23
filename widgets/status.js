@@ -147,8 +147,9 @@ $.widget("sv.status_log", $.sv.widget, {
 				line += '<li data-icon="false">' + ret + '</li>';
 			}
 			this.element.find('ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
-	}
-},
+		}
+	},
+
 });
 
 
@@ -196,7 +197,7 @@ $.widget("sv.status_notify", $.sv.widget, {
 		}
 
 	},
-
+	
 });
 
 
@@ -219,7 +220,7 @@ $.widget("sv.status_message", $.sv.widget, {
 			console.log(id + ' ' + response[0]);
 		}
 	},
-
+	
 });
 
 // ----- status.toast -------------------------------------------------------
@@ -468,7 +469,30 @@ $.widget("sv.status_activelist", $.sv.widget, {
             $(this, '.content').not(accordionContent).prev(this,'.content-title').removeClass('open');
             accordionContent.stop(true, true).slideToggle('slow');
         });
-
 	},
-
+	
 });
+
+
+// ----- status.disable -------------------------------------------------------
+$.widget("sv.status_disable", $.sv.widget, {
+
+	initSelector: 'span[data-widget="status.disable"]',
+
+	options: {
+		id: null,
+		val: '',
+	},
+	
+	_update: function(response) {
+		// response is: {{ item_trigger }}
+		var targets = this.options.id.explode().map(function(x){return $('#'+ x)});
+		var val = this.options.val;
+		var command = response[0] == val ? 'disable' : 'enable';
+
+		widget[command]($(targets))
+	},
+	
+});
+
+

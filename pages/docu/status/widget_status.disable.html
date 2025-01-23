@@ -1,0 +1,67 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Wolfram v. Hülsen
+* @copyright   2012 - 2025
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_status.html" %}
+
+{% block example %}
+	The widgets disables other widgets if a predefined value is reached in the trigger item. All items basic.*, icon.* and device.* which write to items
+	can be disabled.<br/>
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+		{{ basic.stateswitch('sw1', 'bath.light', 'midi') }}
+		{{ status.disable('sw1', 'bath.light.switch', '1') }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ basic.flip('', 'bath.light.switch') }} Use the switch to disable the widgets<br/>
+		{{ basic.stateswitch('sw1', 'bath.light', 'midi') }}
+		{{ status.disable('sw1', 'bath.light.switch', '1') }}
+		<br/>
+	</div>
+	A trigger item can disable multiple widgets if their ids are given in array form.<br/>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+		{{ basic.color('c2', 'bath.color.r', 'bath.color.g', 'bath.color.b') }}
+		{{ basic.select('s2', 'bath.multistate', '', [5,6,7], '', ['Down', 'Left', 'Up']) }}
+		{{ device.dimmer('d20', 'Dimmer', 'bath.light', 'bath.light.value') }}
+		{{status.disable(['c20', 's20', 'd20'], 'bath.light.switch', '1') }}
+	{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html" style="display:inline;">
+		{{ basic.color('c20', 'bath.color.r', 'bath.color.g', 'bath.color.b') }}
+		<div style="width:25%; display: inline-block; vertical-align: middle;">{{ basic.select('s20', 'bath.multistate', '', [5,6,7], '', ['Down', 'Left', 'Up']) }}</div>
+		<div style="width:50%; display: inline-block; vertical-align: middle;">{{ device.dimmer('d20', 'Dimmer', 'bath.light', 'bath.light.value') }}</div>
+		{{status.disable(['c20', 's20', 'd20'], 'bath.light.switch', '1') }}
+	</div>
+	<br/>
+	Widgets incorporating different functions by using other widgets (e.g. device.shutter) can be disabled in total or partially by disabling single functions.
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+		{{ device.shutter('myID1', 'West', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle', 'bath.blind.stored') }}
+		{{ device.shutter('myID2', 'South', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle', 'bath.blind.stored') }}
+		{{ status.disable(['myID1', 'myID2-up', 'myID2-down', 'myID2-saved1', 'myID2-saved2'], 'bath.light.switch', '1') }} 
+	{% endraw %}{% endfilter %}</code>	
+	</div>
+	<div class="html" style="display:inline;">	
+		<div style="width: 25%; display: inline-block;"> {{ device.shutter ('myID1', 'West', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle', 'bath.blind.stored') }} </div>
+		<div style="width: 25%; display: inline-block;"> {{ device.shutter ('myID2', 'South', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', 'bath.blind.adjust', 'bath.blind.angle', 'bath.blind.stored') }} </div>
+		{{ status.disable(['myID1', 'myID2-up', 'myID2-down', 'myID2-saved1', 'myID2-saved2'], 'bath.light.switch', '1') }} 
+	</div>
+	To address the single functions use the given id and attach the function name:<br>
+	<ul>
+		<li>dimmer: '-switch', '-slider'</li>
+		<li>blind: '-up', '-down', '-stop', '-pos', '-angle', '-plus', '-minus'</li>
+		<li>roofwindow and shutter: '-up', '-down', '-stop', '-saved1', '-saved2'</li>
+		<li>window: '-up', '-down', '-stop', '-pos', '-shade'</li>
+		<li>rtr and rtrslider: '-plus', '-minus', '-comfort', '-night', '-frost', '-state'</li>
+	</ul>
+{% endblock %}
+
