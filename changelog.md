@@ -8,6 +8,8 @@
 - status.collapse and status.customstyle allow items of type "str" (no comparative operators (<,<=,=>,>) allowed with text). 
 - status badge is now able to display symbols
 - new widget status.disable disables widgets and attaches a "locked" badge mainly to the button-type elements
+- basic print has always printed values with a leading and tailing whitespace. This is still default behaviour but can be avoided for text with format 'trimtext'
+- basic print is now able to decode URIs if the format 'uridecode' is used 
 
 ### Other New Features
 - all jQm widgets with write access to items have got a disable and enable method callable with "$(mySelector).widget('disable')" / "$(mySelector).widget('enable')" (basic.*, icon.*, device.rtrslider, device.roofwindow).

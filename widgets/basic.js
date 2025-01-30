@@ -903,7 +903,15 @@ $.widget("sv.basic_print", $.sv.widget, {
 		else if (formatLower == 'text2br') { // String with \r\n, \r or \n to be converted to <br />
 			calc = response[0].replace(/(?:\r\n|\r|\n)/g, '<br />');
 		}
-		else if (formatLower == 'text' || formatLower == 'html' || isNaN(calc)) { // String
+		else if (formatLower == 'uridecode') { // String containing an encoded URI
+			try {
+			  calc = decodeURIComponent(calc);
+			} catch (e) {
+			  console.log(e);
+			}
+			value = calc;
+		}
+		else if (formatLower == 'text' || formatLower == 'trimtext' || formatLower == 'html' || isNaN(calc)) { // String
 			value = calc;
 		}
 		else { // Number
@@ -912,11 +920,12 @@ $.widget("sv.basic_print", $.sv.widget, {
 			//console.log('print: '+ value +' with format '+ format + ' is ' + calc);
 		}
 
+		var space = formatLower == 'trimtext' ? '' : ' ';
 		// print the result
 		if (formatLower == 'html' || formatLower == 'text2br')
 			this.element.html(calc);
 		else
-			this.element.text(calc);
+			this.element.text(space + calc + space);
 		
 		if (this.options.bind != ''){
 			this.element.hide();

@@ -329,7 +329,8 @@
 * @param {item[?](bool,num,list,str)} one or more item(s). Multiple items in array-form: [item1, item2]
 * @param {format=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
   Formats 'date', 'time', 'long', 'short' and 'calendardate' are applicable on valid timestamps like "2020-01-01T12:00:00.000000+01:00" or Unix timestamps in Milliseconds
-  Use 'text' to display result as unformatted string, 'html' to render it as unescaped html, 'text2br' to convert line endings like '\r', '\n' or '\r\n' to HTML breaks or 'script' to just execute as JavaScript w/o displaying anything.
+  Use 'text' to display result as unformatted string, 'trimtext' similar to 'text' but with no leading and tailing whitespace,   'html' to render it as unescaped html, 
+  'text2br' to convert line endings like '\r', '\n' or '\r\n' to HTML breaks, 'uridecode' to decode the escaped characters in an URI or 'script' to just execute as JavaScript w/o displaying anything.
 * @param {formula=VAR} any valid JavaScript expression with following variables and aggregate functions (optional, default: VAR)
   - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
   - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
@@ -346,13 +347,13 @@
 * @info inspired by Martin Gleiß and Raik Alber
 */
 {% macro print(id, item, format, formula, threshold, color, href, rel) %}
-{% set color = color|default('icon0') %}
-{% if href is not empty and rel != 'tooltip' %}<a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{% endif %}>{% endif %}
+{%- set color = color|default('icon0') -%}
+{%- if href is not empty and rel != 'tooltip' -%}<a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{%- endif %}>{%- endif -%}
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-item="{{ implode(item) }}" class="text" data-widget="basic.print"
 		data-format="{{ format }}" data-formula="{{ formula|default('VAR1') }}"
 		data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}"
 		{% if rel == 'tooltip' %}data-bind="{{ uid(page, href) }}"{% endif %}>---</span>
-  {% if href is not empty and rel != 'tooltip' %}</a>{% endif %}
+  {%- if href is not empty and rel != 'tooltip' -%}</a>{%- endif -%}
 
 {% endmacro %}
 
