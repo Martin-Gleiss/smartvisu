@@ -1950,11 +1950,11 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     <div class="quad_table row_playercontrol" id="row_{{uid(page, id)}}">
     <div class="text">{{ linetext|e }}
     {% if item_artist %}
-    : {{ basic.print(id~'artist', item_artist, 'text') }},&nbsp;
+    : {{ basic.print(id~'artist', item_artist, 'trimtext') }},&nbsp;
     {% endif %}
 
     {% if item_title %}
-    {{ basic.print(id~'title', item_title, 'text') }}
+    {{ basic.print(id~'title', item_title, 'trimtext') }}
     {% endif %}
     </div>
     {% for column in elements %}
