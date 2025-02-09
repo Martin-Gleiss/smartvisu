@@ -173,7 +173,7 @@ function twig_docu($filenames = null)
 			{
 				$rettmp = array();
 
-				preg_match_all('#(.+?)\((.+?)(\)|,\s+_)#i', $macro, $desc); // param scanning ends on first param name beginning with _
+				preg_match_all('#(.+?)\((.*?)(\)|,\s+_)#i', $macro, $desc); // param scanning ends on first param name beginning with _
 				$rettmp['name'] = trim($desc[1][0]);
 				$rettmp['params'] = trim($desc[2][0]);
 
