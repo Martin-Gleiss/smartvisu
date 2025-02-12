@@ -13,5 +13,5 @@
 1. check for file smartVISU/temp/openweathermap_YOURCITY.json
 	this is the api response from openweathermap.org after you have called the service once. 
 	View it with a json viewer (i.e. addon to chrome)
-2. debug the service by calling YOURSERVER/smartVISU/lib/weather/service/openweathermap.org.php?debug=1
+2. debug the service by calling the following URL in your browser: YOURSERVER/smartVISU/lib/weather/service/openweathermap.org.php?debug=1
 3. check for 'openweathermap.org' entries in var/log/nginx/error.log (or /var/log/apache2/)

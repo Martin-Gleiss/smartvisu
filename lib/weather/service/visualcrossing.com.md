@@ -11,5 +11,5 @@
 1. check for file smartVISU/temp/visualcrossing_YOURLOCATION.json
 	this is the api response from visualcrossing.com after you have called the service once. 
 	View it with a json viewer (normally integrated in the browser)
-2. debug the service by calling YOURSERVER/smartVISU/lib/weather/service/visualcrossing.com.php?debug=1
+2. debug the service by calling the following URL in your browser: YOURSERVER/smartVISU/lib/weather/service/visualcrossing.com.php?debug=1
 3. check for 'visualcrossing.com' entries in var/log/nginx/error.log (or /var/log/apache2/)
