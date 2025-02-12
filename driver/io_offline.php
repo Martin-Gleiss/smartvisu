@@ -61,7 +61,7 @@ class driver_offline
 			return;
 		}
 
-		while (($line = fgets($this->fp, 10240)) !== false)
+		while (($line = fgets($this->fp, 10240)) !== false && trim($line) != '')
 		{
 			list($item, $val) = explode('=', $line, 2);
 			$val = trim($val);
