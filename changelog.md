@@ -17,6 +17,7 @@
 
 ### Improvements
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
+- docu page "Fundamentals" explains the format and unit conversion for e.g. basic.print
 
 ### Updated Libraries
 

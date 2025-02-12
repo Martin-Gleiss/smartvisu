@@ -45,10 +45,8 @@
 				... ['bath_plot1', 'bath_plot2', 'bath_plot3'] ... -> 3 items as an array<br />
 				... 'bath_plot1' ... -> only one item, no array needed<br />
 			</code>
-		</div>
-
-
-		<br />
+		</div><br />
+		
 
 		<h2>Duration Format</h2>
 
@@ -62,6 +60,33 @@
 			<code class="prettyprint">
 				... '10i 30s' ... -> 10 minutes + 30 seconds<br />
 				... '2w' ... -> 2 weeks<br />
+			</code>
+		</div><br />
+		
+
+		<h2>Formats and Units</h2>
+
+		Widgets like basic.print allow formatting dates and numbers and add units. The prototype functions "transUnit(unit)" manage the conversion.<br />
+		<ul>
+			<li>standard formats for unit names are defined in the configured language file in the [format] section. Example: the unit "temp" is defined as "%01,1f °C" in ./lang/de.ini.
+			You can define your own standard formats in a custom language file in ./dropins/lang.</li>
+			<li>the unit string is parsed as format string if unit is not the name of a standard format</li>
+			<li>for numbers there is a check whether unit is a valid format string. Otherwise the unit string will be appeded to the number.</li>
+		</ul>
+		Fomat options for numbers are described in the php manual for "printf()". Format options for dates are:<br />
+		<b>l</b> = long weekday, e.g. "Monday", <b>D</b> = short weekday, e.g. "Mo", <b>d</b> = two digit day date, e.g. "05", <b>j</b> = day date, "e.g."5", 
+		<b>m</b> = two digit month date, <b>n</b> = month date, <b>F</b> = full month name, e.g. "January", <b>M</b> = short month name, e.g. "Jan",
+		<b>y</b> = two digit year, <b>Y</b> = full year, <b>H</b> = two digit hour, <b>G</b> = hour, <b>i</b> = two digit minute, <b>s</b> = two digit second. <br />
+		<b>t</b> displays "today" or "tomorrow" if applicable and otherwise applies format given in parentheses. 
+
+
+		<h5>Example</h5>
+
+		<div class="twig">
+			<code class="prettyprint">
+				'l, d.m.Y' -> Monday, 03.02.2025<br />
+				't(l), d.m.Y H:i' -> today, 03.02.2025 10:12 / tomorrow, 04.02.2025 / Wednesday, 05.02.2025<br />
+				't(D, d.m.) H:i'  -> today 10:12 / tomorrow 10:12 / We, 05.02. 10:12<br />	
 			</code>
 		</div>
 		
