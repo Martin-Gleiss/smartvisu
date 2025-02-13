@@ -1930,7 +1930,7 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 	},
 
 	_events: {
-    'click': function (event) {
+	'click': function (event) {
 		event.preventDefault();
 		event.stopPropagation();
 		var step = this.options.step;
@@ -1952,7 +1952,7 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 		$('#'+this.options.bind).attr('data-tmax', tmax);
 		var that = $('#'+this.options.bind).data().svWidget;
 		that.options.tmin = tmin;
-	    that.options.tmax = tmax; 
+		that.options.tmax = tmax; 
 
 		var plot = '';
 		var items = $('#'+this.options.bind).attr('data-item').split(/,\s*/);
@@ -1963,6 +1963,7 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 		}
 		$('#'+this.options.bind).attr('data-item', plot)
 		that.options.item = plot;
+		that.element.highcharts().xAxis[0].setExtremes(null, null);  //reset zoom level before updating the plot
 		io.startseries($('#'+this.options.bind));
 	}
 }
