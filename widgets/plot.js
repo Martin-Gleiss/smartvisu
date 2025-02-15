@@ -1919,7 +1919,8 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 
 	options: {
 		bind: null,
-		step: null
+		step: null,
+		zoom: 0
 	},
 	
 	delta: null,
@@ -1963,7 +1964,12 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 		}
 		$('#'+this.options.bind).attr('data-item', plot)
 		that.options.item = plot;
-		that.element.highcharts().xAxis[0].setExtremes(null, null);  //reset zoom level before updating the plot
+		if (this.options.zoom == 1){
+			var delta = new Date().duration(direction + step);
+			var extremes = that.element.highcharts().xAxis[0].getExtremes();
+			that.element.highcharts().xAxis[0].setExtremes(extremes.userMin - delta, extremes.userMax - delta); //set new zooming range for updated plot
+		} else
+			that.element.highcharts().xAxis[0].setExtremes(null, null);  //reset zoom level before updating the plot
 		io.startseries($('#'+this.options.bind));
 	}
 }
