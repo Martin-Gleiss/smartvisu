@@ -329,13 +329,14 @@
 * @param {duration}  step to scroll with each click in duration format
 * @param {type(head)=mini}  icon type / size. valid types: 'micro','mini','midi','icon' and 'head' if widget is in the headline of a box (optional, default = 'mini')
 * @param {text=} text to show between the buttons (optional, default = '')
+* @param {value(0,1)=0} handle zoom level on time shift: 0 = reset zoom, 1 = transfer actual zoom level to new x axis. (optional, default = 0)
 * 
 * @author Wolfram v. Hülsen
 */
-{% macro timeshift (id, plot, step, type, label) %}
+{% macro timeshift (id, plot, step, type, label, zoom) %}
 {% import "@widgets/basic.html" as basic %}
 {% import "@widgets/lib.html" as lib %}
-	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.timeshift" data-bind ="{{ uid(page, plot) }}" data-step="{{ step }}"
+	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.timeshift" data-bind ="{{ uid(page, plot) }}" data-step="{{ step }}" data-zoom="{{ zoom|default(0) }}"
 	{% if type == 'head' %}style="float:right; margin-right:32px;">
 		<a class="timeshift-back">{{ lib.svgimg ('', 'audio_previous.svg', 'icon0') }}</a> {{- label -}}
 		<a class="timeshift-forward">{{ lib.svgimg ('', 'audio_next.svg', 'icon0') }}</a>
@@ -429,7 +430,6 @@
 		class="plot"></div>
 
 {% endmacro %}
-
 
 /******************************************************************************
  * D E P R E C A T E D  W I D G E T S

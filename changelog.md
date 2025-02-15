@@ -11,6 +11,7 @@
 - basic print has always printed values with a leading and tailing whitespace. This is still default behaviour but can be avoided for text with format 'trimtext'
 - basic print is now able to decode URIs if the format 'uridecode' is used
 - calendar.waste got a configuratble date format called "wastedate" in the language files
+- plot.timeshift got an option to preserve or reset the current zoom level on the shifted x axis / app analyse_plot preserves the zoom level now
 
 ### Other New Features
 - all jQm widgets with write access to items have got a disable and enable method callable with "$(mySelector).widget('disable')" / "$(mySelector).widget('enable')" (basic.*, icon.*, device.rtrslider, device.roofwindow).
