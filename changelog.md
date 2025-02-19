@@ -1,5 +1,4 @@
-## 3.5.a
-
+## v3.5.a | current development version
 ### New / Changed Widgets
 - UZSU widgets support one-time events with "once" property back in time on the current day using "activeToday" property 
 - UZSU widgets now disable editing the events until the backend has updated the dict with data from the former edit
@@ -38,7 +37,7 @@
 - background images defined with "url(myImageLocation)" - used e.g. on tabs - do not yet support dark mode. This can be individually corrected in visu.css. 
 
 
-## 3.5
+## v3.5 | 30.11.2024
 ### Important for the current release to avoid breaking changes
 - imports of widgets must be deleted from the visu pages or the namespace @widgets must be used. 
   Visit https://knx-user-forum.de/forum/supportforen/smartvisu/1920060-handlungsbedarf-ma%C3%9Fnahmen-gegen-seitenladefehler-ab-v3-4-a-v3-5
@@ -128,7 +127,7 @@
 - background images defined with "url(myImageLocation)" - used e.g. on tabs - do not yet support dark mode. This can be individually corrected in visu.css. 
 
 
-## 3.4
+## v3.4 | 06.12.2023
 ### New / Changed Widgets
 - quad.blind and quad.shutter can be configured to move the shutter on short- or longpress
 - new widget plot.timeshift scrolls a plot in time-range by cancelling actual series in this plot and subscribing new series fo the same item(s) with changed start / end times.
@@ -217,7 +216,7 @@
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
-## 3.3.1
+## v3.3.1 | 26.1.2023
 ### New / Changed Widgets
 - calendar.list now has an option limiting the shown time span (measured in days)
 
@@ -249,7 +248,7 @@
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
-## 3.3
+## v3.3 | 20.12.2022
 ### New / Changed Widgets
 - icon styling is now standardized on all widgets including dynamic icons using 6 icon classes defined with the designs plus color names and hex color codes. 4 classes for "red", yellow,"green" and "blue" have been added in the designs
 - svg icons in widgets get loaded directly into the html-DOM in order to provide faster loading and better stylability. This methods also profits from the cache mechanism if activated
@@ -328,7 +327,7 @@
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
-## 3.2.2
+## v3.2.2 | 26.4.2022
 ### New / Changed Widgets
 - calendar.list has an option to show event links and locations in collapsible areas scrolling down on click.
 - device.smallshut also takes numeric position values for item_saved (yet only boolean if position was saved in the actuator)
@@ -366,7 +365,7 @@
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
-## 3.2.1
+## v3.2.1 | 14.2.2022
 ### New / Changed Widgets
 
 ### Other New Features
@@ -401,7 +400,7 @@
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
-## 3.2.0
+## v3.2.0 | 9.1.2022
 ### New / Changed Widgets
 - basic.window and device.window provide an additional color mode: icon0 if closed / custom color if open
 - weather service met.no displays city name retrieved from geonames.org with geo coordinates (new service getLocation.php)
@@ -476,7 +475,7 @@
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
-## 3.1
+## v3.1 | 7.5.2021
 ### New / Changed Widgets
 - new weather service API met.no for deprecated yr.no
 - new widget status.activelist to display json messages as active listview
@@ -542,7 +541,7 @@
 ### Known Bugs
 
 
-## 3.0.1
+## v3.0.1 | 6.2.2021
 ### New / Changed Widgets
 
 ### Other New Features
@@ -568,8 +567,7 @@
   (root cause documented in base.js line 1804)
 
 
-## 3.0
-
+## v3.0 | 28.1.2021
 ### New / Changed Widgets
 - new "widget assistant" tool to parametrize and test widgets (thanks to Andre Kohler)
 - template checker checks for items and item types with masteritem file form backend (thanks to Andre Kohler)
@@ -659,8 +657,8 @@
 - On Apple devices with Safari browser, the widget assistant does not open a new window for rendering. 
   Deactivate "Preview in new Window" option to view the result in the box below the option panel.
 
-## 2.9.2
 
+## 2.9.2 | 14.5.2020
 ### New / Changed Widgets
 - basic.stateswitch accepts items of type 'list'
 - default icon can be defined for calendar / waste calendar, improved icon definition.
@@ -688,8 +686,8 @@
 - example3.graphic: centering of icons was missing in absolute positioning of visu elements
 - mixed spelling of "adress" / "address" in eibd driver 
 
-## v 2.9
 
+## v2.9 | 30.3.20
 ### New / Changed Widgets
 - ID is now optional in most widgets
 - New: basic.stateswitch (improves and supersedes basic.button, basic.dual, basic.multistate and basic.switch)
@@ -786,8 +784,7 @@
 - Calendar service GoogleV3 (use ICS/iCal instead)
 
 
-## v 2.8 03.10.16
-
+## v2.8 | 03.10.2016
 ### New / Changed Widgets
 - new widget: basic.multistate
 - new widget: plot.multiaxes
@@ -823,8 +820,7 @@
 - highcharts updated to version 4.2.6
 
 
-## v 2.7 03.11.13
-
+## v2.7 | 03.11.2013
 - new: SmartHome.py Montior page
 - new: animations on/off for better performance on slow devices
 - new model house: alber, as eibd-driver example by Raik Alber
@@ -842,8 +838,8 @@
   see index.php?page=design/design_icons for examples
 - update plot.highcharts 3.0.5
 
-## v 2.6 06.08.13
 
+## v2.6 | 06.08.2013
 - dynamic icons: svg-icons for continuous values
 - new: config splitted in lib/defaults.php and config.php (individual)
 - improved devive.rtr now with more modes depending on the driver
@@ -851,8 +847,8 @@
 - update vendor/jquery 2.0.3 (IE 6, 7, 8 are no longer supported)
 - update vendor/jquery.mobile 1.3.2
 
-## v 2.5 01.06.13
 
+## v2.5 | 01.06.2013
 - new apps: tv-movie, tv-spielfilm
 - new: rss-feed-reader (lib/feeds)
 - new widget: multimedia.station for tv- and radio-stations 
@@ -865,8 +861,8 @@
 - new model-house: fleischer by Marco Fleischer
 - new: animations :-) [beta]
 
-## v 2.4 26.04.13 Happy Birthday smartVISU!
 
+## v2.4 | 26.04.2013 Happy Birthday smartVISU!
 - improved widget: basic.shutter, now with dynamic symbols
 - improved design: cube v2, best viewed with solar_winds.png background                                          
 - project: visu.css and visu.js are included if they are in own project
@@ -881,8 +877,8 @@
 - improved drivers: only refresh if necessary
 - update vendor/jquery.mobile 1.3.1
 
-## v 2.3 04.03.13
 
+## v2.3 | 04.03.2013
 - device.rtr now with 3x bit-mode or 1x byte-mode
 - undeprecated: basic.glue: used to glue widgets together
 - new language: fr, special tanks to Pierre-Yves Kerviel
@@ -901,8 +897,8 @@
 - improved speed: gzip compressed output
 - improved speed: javascript separated
 
-## v 2.2 01.02.13
 
+## v2.2 | 01.02.2013
 - new driver: SmartHome.py (with websocket)
 - new driver: domotiga (with websocket)
 - improved error handling and notification
@@ -917,8 +913,8 @@
 - new smart.alert js-function for alerts and logging
 - driver linknx: with error-handling
 
-## v 2.1 09.01.12
 
+## v2.1 | 09.01.2012
 - new pages: otterstaetter (as model-home)
 - widget: multimedia.music for a player
 - widget: appliance.iprouter for the enertex knxnet/ip-router
@@ -931,8 +927,8 @@
 - improved design: weather and clock for small devices  
 - changed design: header now fixed on mobile devices
 
-## v 2.0 14.12.12
 
+## v2.0 | 14.12.2012
 - realtime polling
 - updated driver: 'linknx' for polling
 - updated driver: 'offline' for polling
@@ -942,8 +938,8 @@
 - docu for popups
 - new <?php tags in all files
 
-## v 1.9 28.11.12
 
+## v1.9 | 28.11.2012
 - new widget-file: widgets/calendar.html for google calendar
   use the google-calendar private xml-adress in the config dialog
   with http: (not https:). In your event you may use:  
@@ -954,8 +950,8 @@
 - improved design of configuration
 - fixes in phonelist
 
-## v 1.8 02.11.12
 
+## v1.8 | 02.11.2012
 - new widget-file: widgets/phone.html for phonelists
   A phone system is required. Supported are:
   Auerwald VoiP 5010, VoiP 5020, Commander Basic.2
@@ -963,8 +959,8 @@
 - add: apps now support more docu
 - updated: jQuery plugins
 
-## v 1.7 06.10.12
 
+## v1.7 | 06.10.2012
 - new feature: Apps (an app is a complete html-page, which can be easily
   used in your project. Use lib.app('NAME OF APP') to show one on your page.
   all apps are located in pages/apps
@@ -980,8 +976,8 @@
 - update lib/jQueryMobile 1.2.0
 - smartVISU moved to code.google.com 
 
-## v 1.6 25.09.12
 
+## v1.6 | 25.09.2012
 - weather-widget now configurable
 - weather-widget with new service: wunderground.com
   generate your key for free at: http://www.wunderground.com/weather/api/
@@ -993,8 +989,8 @@
 - update lib/jQuery 1.8.2
 - update lib/Twig 1.9.2
 
-## v 1.5 01.08.12
 
+## v1.5 | 01.08.2012
 - new basic-widget: "basic.smybol" to display a gad
 - new device-widget: "device.blind" to control blinds, with 2 new slider 
   types (vertical, semicircle)
@@ -1002,29 +998,29 @@
 - more docu     
 - update lib/jQueryMobile 1.1.1
 
-## v 1.4 02.07.12
 
+## v1.4 | 02.07.2012
 - new and official "smartVISU" - Logo 
   special thanks to Björn Bertschy
 - position fixed on MainMenu
 - smother scrolling, better responsive design
 
-## v 1.3 19.06.12
 
+## v1.3 | 19.06.2012
 - background picture support (17 backgrounds in 'pics/bg' included)
 - widget-documentation, with phpdoc based documentation
 - update display mechanism
 - basic language support
 
-## v 1.2 18.05.12
 
+## v1.2 | 18.05.2012
 - clock and weather
 
-## v 1.1 03.05.12
 
+## v1.1 | 03.05.2012
 - add config
 - more designs
 
-## v 1.0 26.04.12
 
+## v1.0 | 26.04.2012
 - first offical release
