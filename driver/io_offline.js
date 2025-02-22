@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiss
- * @copyright   2012 - 2015
+ * @copyright   2012 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide        driver_address
@@ -329,7 +329,10 @@ var io = {
 				val = (min * 1) + ((max - min) / 2);
 
 			while (tmin <= tmax) {
-				val += Math.random() * (2 * delta) - delta;
+				var increment = Math.random() * (2 * delta) - delta;
+				if (val + increment >= max || val + increment <= min)
+					increment *= -1;
+				val += increment;
 				ret.push([tmin, val.toFixed(2) * 1.0]);
 				tmin += step;
 			}
