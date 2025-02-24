@@ -15,6 +15,7 @@
 ### Other New Features
 - all jQm widgets with write access to items have got a disable and enable method callable with "$(mySelector).widget('disable')" / "$(mySelector).widget('enable')" (basic.*, icon.*, device.rtrslider, device.roofwindow).
 - new methods "widget.enable(jQObject)" and "widget.disable(jQObject)" handle the different widget types for enable/disable
+- improved openHAB driver: better decoding of numeric values / obsolete aggregation modes removed for series item (thanks to Patrik Germann)
 
 ### Improvements
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
@@ -25,6 +26,7 @@
 ### Deprecated
 
 ### Removed Features
+- since openHAB does not provide aggregation modes for series-items, these have been removed from the driver and only "raw" is left. With openHAB being the backend, plot widgets MUST use "raw" now as mandatory parameter.
 
 ### Fixed Bugs
 - device.uzsutable did not show zoom buttons per default if optional parameter 'showzoombuttons' was empty
