@@ -4,7 +4,7 @@
  * @author      Martin Gleiß, Patrik Germann
  * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
- * @version     2.5.3
+ * @version     2.5.4
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
@@ -193,9 +193,8 @@ var io = {
 	
 	/**
 	 * supported aggregate functions in the backends database
-	 * since this must be configured by the user in the backend we leave some common modes as dummies
 	 */
-	aggregates: ['avg', 'min', 'max', 'sum', 'diff', 'on', 'raw', 'count'],
+	aggregates: ['raw'],
 
 
 	/**
@@ -213,6 +212,11 @@ var io = {
 			"CLOSED" : 0, "OPEN" : 1
 		}
 
+		if ($.isNumeric(state)) {
+			// Workaround, weil in openHAB numerische Werte manchmal viele Nullen nachkomma hat.
+			state = parseFloat((state.indexOf('000000') > 0) ? state.slice(0, state.indexOf('000000')) : state);
+		}
+
 		switch (io.item.type[item]) {
 			case "Color":
 				return (state == "NULL") ? "0,0,0" : state;
@@ -221,11 +225,6 @@ var io = {
 					state = new Date(Date.now()).toISOString().slice(0,10) + state.slice(10, 23);
 				}
 				return io.convertDateTime(state);
-			case "Number":
-				if (state.indexOf('000000') > 0) {
-					state = state.slice(0, state.indexOf('000000'));
-				}
-				return parseFloat((state == "NULL") ? 0 : state);
 			case "String":
 				return (state == "NULL") ? "" : state;
 			default:
@@ -370,8 +369,12 @@ var io = {
 								val = io.convertState(item, val);
 								io.debug && console.debug("io.item.eventListener: widget.update(item = " + item + ", value = " + val + ")");
 								widget.update(item, val);
-								if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.refreshTimer) {
-									io.plot.get(io.plot.listeners[item]);
+
+								if (io.plot.listeners[item]) {
+									var plotval = new Array;
+									plotval.push([Date.now(), io.plot.convertValue(val)]);
+									io.debug && console.debug("io.item.eventListener: widget.update(item = " + io.plot.listeners[item] + ", value = " + plotval + ")");
+									widget.update(io.plot.listeners[item], plotval);
 								}
 							});
 						}
@@ -426,6 +429,15 @@ var io = {
 		items        : new Array(),
 		listeners    : new Array(),
 		refreshTimer : 10,
+
+		convertValue: function (value) {
+			if (isNaN(value)) {
+				value = 0;
+			} else if (Number(value) == value && value % 1 !== 0) { //isFloat
+				value = Math.round((value + Number.EPSILON) * 100) / 100; //Rundung auf max. zwei Nachkommastellen
+			}
+			return value;
+		},
 
 		/**
 		 * Initializion of plots
@@ -485,12 +497,7 @@ var io = {
 				if (persistence.data.length > 0) {
 					$.each(persistence.data, function(key, data) {
 						var val = io.convertState(item, data.state);
-						if (isNaN(val)) {
-							val = 0;
-						} else if (Number(val) == val && val % 1 !== 0) { //isFloat
-							val = parseFloat(val).toFixed(2);
-						}
-						plotData.push([data.time, parseFloat(val)]);
+						plotData.push([data.time, io.plot.convertValue(val)]);
 					});
 					plotData.sort(function(a, b) {
 						return a[0] - b[0];
