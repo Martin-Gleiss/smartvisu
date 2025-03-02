@@ -72,7 +72,7 @@ var io = {
 	 * @param      the value
 	 */
 	trigger: function (name, val) {
-		// not supported
+		console.log('[io.offline]: unsupported trigger command. Name: ' + name + ', value:', val);
 	},
 
 	/**

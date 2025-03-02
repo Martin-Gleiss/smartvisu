@@ -26,13 +26,14 @@
 ### Deprecated
 
 ### Removed Features
-- since openHAB does not provide aggregation modes for series-items, these have been removed from the driver and only "raw" is left. With openHAB being the backend, plot widgets MUST use "raw" now as mandatory parameter.
+- since openHAB does not provide aggregation modes for series-items, these have been removed from the driver and only "raw" and "avg" are left. With openHAB being the backend, plot widgets should use "raw".
 
 ### Fixed Bugs
 - device.uzsutable did not show zoom buttons per default if optional parameter 'showzoombuttons' was empty
 - device.uzsugraph did not work with value type 'num' if optional parameter 'valueparameterlist' was empty
 - in some cases, the server time offset could cause a deviation of 1 minute in plots
-- plot.timeshift did not reset the zoom level when changing data and caused missing graphs if plot had been zoomed before. 
+- plot.timeshift did not reset the zoom level when changing data and caused missing graphs if plot had been zoomed before.
+- default value in basic.trigger docu was wrong 
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
