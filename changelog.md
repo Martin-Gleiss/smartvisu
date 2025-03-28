@@ -22,6 +22,7 @@
 - docu page "Fundamentals" explains the format and unit conversion for e.g. basic.print
 
 ### Updated Libraries
+- Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.
 
 ### Deprecated
 
