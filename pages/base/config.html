@@ -167,6 +167,7 @@
 										,forms.config_hidden(source, values, 'calendar_google_client_id')
 										,forms.config_hidden(source, values, 'calendar_google_client_secret')
 										,forms.config_hidden(source, values, 'calendar_google_refresh_token')
+										,'<span id="calendar_googleauth_success" style="display: none;">&nbsp;&nbsp;'~lib.svgimg ('', 'message_ok.svg', 'micro icon1', '')~'<b>'~lang("configuration_page","calendar_googleauth", "success")~'</b></span>'
 									]
 								) }}
 							</div>
