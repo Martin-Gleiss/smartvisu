@@ -9,7 +9,7 @@
 - new widget status.disable disables widgets and attaches a "locked" badge mainly to the button-type elements
 - basic print has always printed values with a leading and tailing whitespace. This is still default behaviour but can be avoided for text with format 'trimtext'
 - basic print is now able to decode URIs if the format 'uridecode' is used
-- calendar.waste got a configuratble date format called "wastedate" in the language files
+- calendar.waste got a configurable date format called "wastedate" in the language files
 - plot.timeshift got an option to preserve or reset the current zoom level on the shifted x axis / app analyse_plot preserves the zoom level now
 
 ### Other New Features
@@ -20,6 +20,7 @@
 ### Improvements
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
 - docu page "Fundamentals" explains the format and unit conversion for e.g. basic.print
+- success message for Google V3 calendar authorization
 
 ### Updated Libraries
 - Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.
