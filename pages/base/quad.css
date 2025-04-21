@@ -11,6 +11,9 @@
 .quad *, *:before, *:after {
     box-sizing: border-box;
 }
+.quad .ui-flipswitch {
+	box-sizing: content-box;
+}
 
 .quad a, .quad img {
     -webkit-touch-callout: none !important;
