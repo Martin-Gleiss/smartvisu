@@ -145,7 +145,7 @@
 			{%- set count = count|merge([count|last]) -%}
 		{%- endif -%}
 		{%- set counti = count[loop.index0] -%}
-		{%- if mode == 'raw' or counti >= 5000 -%}
+		{%- if (mode == 'raw' or counti >= 5000) and zoom != 'advanced' -%}
 			{%- if once('plotboost') -%}
 				<script src="vendor/plot.highcharts/modules/boost.js"></script>
 			{%- endif -%}
@@ -268,12 +268,11 @@
 	{% set tmin = tmin|default('1h') %}
 	{% set mode = mode|default('avg') %}
 	{% set count = count|default(100) %}
-	{%- if mode == 'raw' or count >= 5000 -%}
+	{%- if (mode == 'raw' or count >= 5000) and zoom != 'advanced' -%}
 		{%- if once('plotboost') -%}
 			<script src="vendor/plot.highcharts/modules/boost.js"></script>
 		{%- endif -%}
 	{%- endif -%}
-	/** there is no way to measure the series length from here like in plot.period. So we can't import boost.js on demand for big series. Load it explicitely on the visu page if needed. */
 	{% set width = width|default(120) %}
 	{% set height = height|default(20) %}
 	{% set unit = unit|default('') %}

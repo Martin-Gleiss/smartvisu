@@ -21,6 +21,7 @@
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
 - docu page "Fundamentals" explains the format and unit conversion for e.g. basic.print
 - success message for Google V3 calendar authorization
+- limit Highcharts boost mode to charts without navigator (where dataGrouping is not active)
 
 ### Updated Libraries
 - Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.
