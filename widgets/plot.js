@@ -277,7 +277,7 @@ $.widget("sv.plot_period", $.sv.widget, {
                 series.push({
                     type: (exposure[i] != null && (exposure[i].toLowerCase().endsWith('stair') || exposure[i].toLowerCase().endsWith('stack')) ? exposure[i].substr(0, exposure[i].length-5) : exposure[i]),
                     step: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? 'left' : false),
-                    dataGrouping: {enabled: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? false : true)},
+                    dataGrouping: {enabled: ((exposure[i] != null && exposure[i].toLowerCase().endsWith('stair')) || zoom != 'advanced' ? false : true)},
                     name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
                     data: [], // clone
                     yAxis: (assign[i] ? assign[i] - 1 : 0),
@@ -622,8 +622,10 @@ $.widget("sv.plot_period", $.sv.widget, {
 		if (response[i] && response[i].length >= 5000 && chart.series[seriesIndex].options.dataGrouping.enabled && chart.options.boost.enabled)
 			chart.series[seriesIndex].update({"dataGrouping": {"enabled": false}}, false);
         }
-		//DEBUG: console.log('chart redraw _update() end');
+		//Measure plot generation time
+		//DEBUG: console.time('line');
 		chart.redraw();
+		//DEBUG: console.timeEnd('line');
     },
 
 });

@@ -21,6 +21,7 @@
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
 - docu page "Fundamentals" explains the format and unit conversion for e.g. basic.print
 - success message for Google V3 calendar authorization
+- limit Highcharts boost mode to charts without navigator (where dataGrouping is not active)
 
 ### Updated Libraries
 - Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.
@@ -35,7 +36,8 @@
 - device.uzsugraph did not work with value type 'num' if optional parameter 'valueparameterlist' was empty
 - in some cases, the server time offset could cause a deviation of 1 minute in plots
 - plot.timeshift did not reset the zoom level when changing data and caused missing graphs if plot had been zoomed before.
-- default value in basic.trigger docu was wrong 
+- default value in basic.trigger docu was wrong
+- flipswitch lost its control knob in Quad design when switched to "on"
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
