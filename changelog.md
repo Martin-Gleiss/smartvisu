@@ -20,7 +20,7 @@
 ### Improvements
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
 - docu page "Fundamentals" explains the format and unit conversion for e.g. basic.print
-- success message for Google V3 calendar authorization
+- success message for Google V3 calendar authorization / known credentials serve as default values
 - limit Highcharts boost mode to charts without navigator (where dataGrouping is not active)
 
 ### Updated Libraries

@@ -163,7 +163,7 @@
 								{{ forms.config_flip(source, values, 'calendar_private') }}
 								{{ forms.config_row(source, values, 'calendar_google_refresh_token',
 									[
-										'<a href="#calendar_googleauth_popup" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-icon-left ui-icon-action ui-micro' ~ (not values['calendar_google_refresh_token'] is defined ? ' ui-btn-active') ~ ' " data-icon="delete" data-inline="true" id="' ~ source ~ '_calendar_googleauth_button">' ~ lang('configuration_page', 'calendar_google_refresh_token', 'button') ~ '</a>'
+										'<a href="#calendar_googleauth_popup" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-icon-left ui-icon-action ui-micro' ~ (not values[source]['calendar_google_refresh_token'] is defined ? ' ui-btn-active') ~ ' " data-icon="delete" data-inline="true" id="' ~ source ~ '_calendar_googleauth_button">' ~ lang('configuration_page', 'calendar_google_refresh_token', 'button') ~ '</a>'
 										,forms.config_hidden(source, values, 'calendar_google_client_id')
 										,forms.config_hidden(source, values, 'calendar_google_client_secret')
 										,forms.config_hidden(source, values, 'calendar_google_refresh_token')
@@ -260,11 +260,11 @@
 				</div>
 				<div class="ui-field-contain">
 					<label for="client_id">{{ lang('configuration_page', 'calendar_googleauth', 'client_id') }}:</label>
-					<input type="text" name="client_id" id="client_id" value="">
+					<input type="text" name="client_id" id="client_id" value="{{config_calendar_google_client_id|default('')}}">
 				</div>
 				<div class="ui-field-contain">
 					<label for="client_secret"> {{ lang('configuration_page', 'calendar_googleauth', 'client_secret') }}:</label>
-					<input type="text" id="client_secret" value=""> <!-- no name attribute, so it is not sent by submitting form -->
+					<input type="text" id="client_secret" value="{{config_calendar_google_client_secret|default('')}}"> <!-- no name attribute, so it is not sent by submitting form -->
 				</div>
 
 				<div id="calendar_googleauth_submitcontainer" style="position: relative; overflow: hidden;">
