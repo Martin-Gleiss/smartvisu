@@ -38,6 +38,7 @@
 - plot.timeshift did not reset the zoom level when changing data and caused missing graphs if plot had been zoomed before.
 - default value in basic.trigger docu was wrong
 - flipswitch lost its control knob in Quad design when switched to "on"
+- links in calendar.list only worked in 'active' mode (i.e. in active lists with expandable Info fields)
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php

@@ -153,14 +153,15 @@ $.widget("sv.calendar_list", $.sv.widget, {
 			dl.trigger('prepare').listview('refresh').trigger('redraw');
 			
 			//toggle display of description text
-			$(this.element, ".activelist-container").find('li').click(function() {
-				event.preventDefault();
-				$(this).toggleClass('open');
-				accordionContent = $(this).next('.content');
-				$(this, '.content').not(accordionContent).prev(this,'.content-title').removeClass('open');
-				accordionContent.stop(true, true).slideToggle('slow');
-			});
-
+			if (self.options.info == 'active') {
+				$(this.element, ".activelist-container").find('li').click(function() {
+					event.preventDefault();
+					$(this).toggleClass('open');
+					accordionContent = $(this).next('.content');
+					$(this, '.content').not(accordionContent).prev(this,'.content-title').removeClass('open');
+					accordionContent.stop(true, true).slideToggle('slow');
+				});
+			}
 	},
 
 	_repeat: function() {
