@@ -20,7 +20,8 @@
 ### Improvements
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
 - docu page "Fundamentals" explains the format and unit conversion for e.g. basic.print
-- success message for Google V3 calendar authorization
+- success message for Google V3 calendar authorization / known credentials serve as default values
+- googleV3 calendar service places an authorization link directly into the calendar list if authorization fails due to invalid refresh token
 - limit Highcharts boost mode to charts without navigator (where dataGrouping is not active)
 
 ### Updated Libraries
@@ -38,6 +39,7 @@
 - plot.timeshift did not reset the zoom level when changing data and caused missing graphs if plot had been zoomed before.
 - default value in basic.trigger docu was wrong
 - flipswitch lost its control knob in Quad design when switched to "on"
+- links in calendar.list only worked in 'active' mode (i.e. in active lists with expandable Info fields)
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
