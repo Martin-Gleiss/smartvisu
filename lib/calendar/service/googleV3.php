@@ -74,8 +74,21 @@ class calendar_google extends calendar
 				$this->time = microtime(true);
 			} 
 			else{ 
-				$loadError = substr(strrchr($this->errorMessage, ':'), 2).'<br><br>Unable to retrieve access token.';
-				$this->error('Calendar: Google', $loadError);
+			//	$loadError = substr(strrchr($this->errorMessage, ':'), 2).'<br><br>Unable to retrieve access token. Please re-authorize';
+			//	$this->error('Calendar: Google', $loadError);
+				
+				// show an "authorize" message in the calendar instead of throwing an error
+				$this->addData(array(
+							'start' => strtotime('today midnight'),
+							'end' => strtotime('today midnight') + 24*60*60,
+							'title' => trans('configuration_page', 'calendar_google_authorize','obj')['hint'],
+							'content' => '',
+							'where' => '',
+							'color' => '',
+							'link' => 'index.php?page=config&action=google_reauthorize',
+							'calendarname' => ' ',
+							'calendarcolor' => 'red',
+						));
 			}	
 		}
 		if (isset($token)) {

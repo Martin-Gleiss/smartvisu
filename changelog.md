@@ -21,6 +21,7 @@
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
 - docu page "Fundamentals" explains the format and unit conversion for e.g. basic.print
 - success message for Google V3 calendar authorization / known credentials serve as default values
+- googleV3 calendar service places an authorization link directly into the calendar list if authorization fails due to invalid refresh token
 - limit Highcharts boost mode to charts without navigator (where dataGrouping is not active)
 
 ### Updated Libraries
