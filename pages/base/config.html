@@ -152,7 +152,7 @@
 								{{ forms.config_input(source, values, 'phone_user') }}
 								{{ forms.config_input(source, values, 'phone_pass', 'password') }}
 							</div>
-							<div data-role="collapsible" data-theme="c" data-content-theme="a">
+							<div class="config_calendar" data-role="collapsible" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'calendar', 'label') }}</h3>
 								{{ forms.config_select(source, values, 'calendar_service', dir('lib/calendar/service', '(.+?).php') ) }}
 								{{ forms.config_input(source, values, 'calendar_url') }}
