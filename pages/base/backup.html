@@ -108,7 +108,7 @@
                 a.remove();
                 URL.revokeObjectURL(url);
 
-                if (response.headers.get('filesize') > response.headers.get('maxpostsize') || response.headers.get('filesize') > response.headers.get('maxuploadsize'))
+                if (parseInt(response.headers.get('filesize')) > parseInt(response.headers.get('maxpostsize')) || parseInt(response.headers.get('filesize')) > parseInt(response.headers.get('maxuploadsize')))
                     $('.exportSizeWarning').html(sv_lang.backup.export.size + '<br>post_max_size = ' + response.headers.get('maxpostsize') + '<br>upload_max_filesize = ' + response.headers.get('maxuploadsize') )
                     .css('border', 'solid red').css('padding', '4px 0 4px 0');
 
