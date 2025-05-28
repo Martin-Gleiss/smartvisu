@@ -111,7 +111,7 @@ $.widget("sv.clock_countdown", $.sv.widget, {
 		stopmode: 'item',
 		idletxt: '--:--:--',
 		fixduration: '',
-		condition: null,
+		condition: '',
 		 	},
 
 	_currentstarttime: 0,
@@ -127,7 +127,7 @@ $.widget("sv.clock_countdown", $.sv.widget, {
 		var actualtime = Date.now();
 		var itemduration = +new Date().duration(durationitem);  // item duration in milliseconds
 		var interval = +new Date().duration(this.options.interval); // countdown interval in milliseconds
-		var release = this.options.condition == undefined || item == this.options.condition;
+		var release = this.options.condition == '' || item == this.options.condition;
 		// console.log('[update] item: ', item, ' _old: ', this._olditem, ' start: ', starttime,' duration: ', itemduration, ' actual: ', actualtime, ' _current: ', this._currentstarttime);
 		
 		// allow change of duration during running countdown
