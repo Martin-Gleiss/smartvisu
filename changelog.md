@@ -23,6 +23,7 @@
 - success message for Google V3 calendar authorization / known credentials serve as default values
 - googleV3 calendar service places an authorization link directly into the calendar list if authorization fails due to invalid refresh token
 - limit Highcharts boost mode to charts without navigator (where dataGrouping is not active)
+- extended error handling in backup function. Early warning if backup file exeeds size limits for restore operation.
 
 ### Updated Libraries
 - Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.

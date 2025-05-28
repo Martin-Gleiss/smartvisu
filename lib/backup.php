@@ -99,7 +99,8 @@ function rcp($src, $dst)
 {
     $dir = opendir($src);
     if (! $dir === false){
-        mkdir($dst, 0777, true);
+        if (!is_dir($dst))
+            mkdir($dst, 0777, true);
         while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
                 if (is_dir($src . '/' . $file)) {
@@ -115,6 +116,10 @@ function rcp($src, $dst)
 
 // accept only post requests
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
+
+    $maxpostsize = ini_parse_quantity(ini_get('post_max_size'));
+    $maxuploadsize = ini_parse_quantity(ini_get('upload_max_filesize'));
+
     if (isset($_POST['exportBackup'])) {
         if (!extension_loaded("zip")) {
             header("HTTP/1.0 650 smartVISU Backup Error");
@@ -143,6 +148,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         header("Content-Transfer-Encoding: binary");
         header('Pragma: no-cache');
         header('Expires: 0');
+        // add filesize info and php limits
+        header('filesize: '. filesize ($backupfile));
+        header('maxpostsize: '. $maxpostsize );
+        header('maxuploadsize: '. $maxuploadsize);
 
         // send the file contents.
         set_time_limit(0);
@@ -158,7 +167,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if (!extension_loaded("zip")) {
             header("HTTP/1.0 650 smartVISU Backup Error");
             header('Content-Type: application/json');
-            echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'zip_module_error') . '<br><br>sudo apt install php' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '-zip<br>sudo systemctl restart apache2'));
+            echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'zip_module_error') . '<br><br><span class="allowTextCopy">sudo apt install php' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '-zip<br>sudo systemctl restart apache2</span>'));
+            exit;
+        }
+
+        // Check if system temp directory for upload is writeable
+        $sys_tempdir = ( ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir());
+        if (!is_writeable($sys_tempdir)) {
+            header("HTTP/1.0 650 smartVISU Backup Error");
+            header('Content-Type: application/json');
+            echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import')['tmp_file_error'].': '. $sys_tempdir ));
+            exit;
+        }
+
+        //if size of uploaded file is larger than alloweed in php.ini return an error
+        if ($_FILES["restoreBackupFile"]["error"] == 1) {
+            header("HTTP/1.0 650 smartVISU Backup Error");
+            header('Content-Type: application/json');
+            echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import')['filesize_error']));
             exit;
         }
 
@@ -173,13 +199,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 header("HTTP/1.0 650 smartVISU Backup Error");
                 header('Content-Type: application/json');
                 echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import')['filetype_error']));
-                exit;
-            }
-            //check size of uploaded file, if larger than 10MB return an error notify
-            if ($_FILES["restoreBackupFile"]["size"] > 10 * 1000000) {
-                header("HTTP/1.0 650 smartVISU Backup Error");
-                header('Content-Type: application/json');
-                echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import')['filesize_error']));
                 exit;
             }
 
@@ -222,7 +241,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 // create the success message for notify, containing the command to change the ownership
                 // if files with a forbidden file extension where found, list them in notify
                 $user = posix_getpwuid(stat("../")["uid"])["name"];
-                $echomsg = trans('backup', 'import')['successful'] . '<br>' . trans('backup', 'import')['ownership_command'] . '<br><br>' . 'sudo chown -R ' . $user . ' ' . realpath('../') . '/';
+                $echomsg = trans('backup', 'import')['successful'] . '<br>' . trans('backup', 'import')['ownership_command'] . '<br><br><span class="allowTextCopy">sudo chown -R ' . $user . ' ' . realpath('../') . '/</span>';
                 if (count($fileskiplist) > 0) {
                     $echomsg .= '<br><br><br>' . trans('backup', 'import')['forbidden_files'] . '<br><br>';
                     foreach ($fileskiplist as $fileskip) {
@@ -244,13 +263,23 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // if something went wrong on file upload return an error notify
         header("HTTP/1.0 650 smartVISU Backup Error");
         header('Content-Type: application/json');
-        echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import')));
+        echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import')['faulty_file'].': '. $_FILES["restoreBackupFile"]["error"]));
         exit;
     }
-    // if the command is not backup or restore return an error notify
+    // if the command is not backup or restore or file size exeeds post_max_size in php.ini return an error notify
     header("HTTP/1.0 650 smartVISU Backup Error");
     header('Content-Type: application/json');
     echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'unknown_command')));
     exit;
 }
+/** php File Upload Errors
+    0 => 'There is no error, the file uploaded with success',
+    1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+    2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+    3 => 'The uploaded file was only partially uploaded',
+    4 => 'No file was uploaded',
+    6 => 'Missing a temporary folder',
+    7 => 'Failed to write file to disk.',
+    8 => 'A PHP extension stopped the file upload.',
+*/
 ?>
