@@ -439,6 +439,83 @@
 
 
 /**
+* Small RTR (Room Temperatur Regulator) as table line with popup
+*
+* @param {id=} unique id for this widget
+* @param {text=}     name of the rtr
+* @param {item(num)} a gad/item for the actual temperature (mandatory)
+* @param {item(num)} a gad/item for the set temperature (mandatory)
+* @param {item(bool,num)=} an item for comfort / standby (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for night (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for frost (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for the current state of the actuator (optional)
+* @param {value=0.5} step for plus/minus buttons (optional, default: 0.5)
+* @param {text[]=} list of additional widgets / content to display
+* @param {text[bool,num]=} type of the actor and valve state: bool=on/off, num = PWM percentage value (optional, default = bool)
+*/
+{% macro smallrtr(id, txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, step, supplements, statetype) %}
+{% import "@widgets/basic.html" as basic %}
+{% set uid = uid(page, id) %}
+
+	<div id="{{ uid }}" class="rtr">
+		<table style="width:100%; text-align: left; table-layout: fixed;">
+			<tr align = "center">
+				<th width="20%">{% if txt %} {{ txt }} {% endif %}</th>
+				<td width="11%"><div class="temp">{{ basic.print(id~'actual', item_actual, '°C' ) }}</div></td>
+				<td width="9%">
+					{{ basic.offset(id~'minus', item_set, -(step|default(0.5)), 'minus', '', 'micro') }}
+				</td>
+				<td width="11%"><div class="temp">{{ basic.print(id~'set', item_set, '°C' ) }}</div></td>
+				<td width="9%">
+					{{ basic.offset(id~'plus', item_set, (step|default(0.5)), 'plus', '', 'micro') }}
+				</td>
+				<td width="10%" >
+					{% if item_state %}
+						{% if statetype == 'num' %}
+							{{ basic.print(id~'state', item_state, '%', '', 0.1, ['icon0', 'icon1'] ) }}
+						{% else %}
+							{{ basic.symbol(id~'state', item_state, '', 'sani_floor_heating.svg', [0,1], '', ['icon0', 'icon1'], '','', 'mini') }}
+						{% endif %}
+					{% endif %}
+				</td>
+				<td width="20%">
+					{% for supplement in supplements %}
+						{{ supplement|raw }}
+					{% endfor %}
+				</td>
+				<td width="10%">
+			  
+					{% if item_comfort is not empty %}
+						{{ basic.symbol('', item_comfort, '', ['user_away', 'user_available', 'user_away'], [1,2], '>', '', '#'~uid~'-popup', 'popup', 'mini' ) }}
+				  
+						<div id="{{ uid }}-popup" data-role="popup">
+						<div>
+						{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
+							{{ basic.stateswitch(id~'sw_comfort', item_comfort, 'icon', [1, 2], ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
+							{{ basic.stateswitch(id~'sw_night', item_comfort, 'icon', [3, 2], ['scene_night.svg', 'scene_night.svg'], '', ['icon1', 'icon0']) }}
+							{{ basic.stateswitch(id~'sw_frost', item_comfort, 'icon', [4, 2], ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
+						{% else %}
+							{% if item_comfort is not empty %}
+								{{ basic.stateswitch(id~'sw_comfort', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
+							{% endif %}
+							{% if item_night is not empty %}
+								{{ basic.stateswitch(id~'sw_night', item_night, 'icon', '', ['scene_night.svg', 'scene_night.svg']) }}
+							{% endif %}
+							{% if item_frost is not empty %}
+								{{ basic.stateswitch(id~'sw_frost', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
+							{% endif %}
+						{% endif %}
+				   {% endif %}
+					</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}​
+
+
+/**
 * Displays a simple shutter control assembly in table format
 *
 * @param {id=} unique id for this widget (optional)
