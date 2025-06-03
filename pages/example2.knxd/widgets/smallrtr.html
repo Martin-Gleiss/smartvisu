@@ -1,7 +1,7 @@
 /**
 * -----------------------------------------------------------------------------
 * @package     smartVISU
-* @author      Martin Gleiss and others
+* @author      Martin Gleiß and others
 * @copyright   2012 - 2025
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
@@ -27,23 +27,16 @@
             <th width="25%">{% if txt %} {{ txt }} {% endif %}</th>
             <td width="15%"><div class="temp">{{ basic.print(id~'actual', item_actual, '°C' ) }}</div></td>
             <td width="15%">
-                {% if item_set %}
 					{{ basic.offset(id~'minus', item_set, -(step|default(0.5)), 'minus', '', 'micro') }}
-				{% endif %}
             </td>
             <td width="15%"><div class="temp">{{ basic.print(id~'set', item_set, '°C' ) }}</div></td>
             <td width="15%">
-                {% if item_set %}
                     {{ basic.offset(id~'plus', item_set, (step|default(0.5)), 'plus', '', 'micro') }}
-                {% endif %}
             </td>
             <td width="15%">
-                {{ basic.symbol(id~'stateon', item_state, '', 'sani_floor_heating.svg', 1, '', 'icon0') }}
-                {{ basic.symbol(id~'stateoff', item_state, '', 'sani_floor_heating.svg', 0) }}
+                {{ basic.symbol(id~'state', item_state, '', 'sani_floor_heating.svg', [0,1], '', ['icon0', 'icon1'], '','', 'mini') }}
             </td>
         </tr>
-
     </table>
-
 </div>
 {% endmacro %}
