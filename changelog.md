@@ -44,6 +44,7 @@
 - flipswitch lost its control knob in Quad design when switched to "on"
 - links in calendar.list only worked in 'active' mode (i.e. in active lists with expandable Info fields)
 - clock.countdown did not start reliably if "condition" was empty. 
+- icons for checked requirements in template checker were not styled correctly in designs using dark/bright mode 
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
