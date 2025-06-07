@@ -25,6 +25,7 @@
 - googleV3 calendar service places an authorization link directly into the calendar list if authorization fails due to invalid refresh token
 - limit Highcharts boost mode to charts without navigator (where dataGrouping is not active)
 - extended error handling in backup function. Early warning if backup file exeeds size limits for restore operation.
+- templatechecker looks for masteritem.json in configured pages directory if pages to check are in "smarthome" folder 
 
 ### Updated Libraries
 - Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.
@@ -43,6 +44,7 @@
 - flipswitch lost its control knob in Quad design when switched to "on"
 - links in calendar.list only worked in 'active' mode (i.e. in active lists with expandable Info fields)
 - clock.countdown did not start reliably if "condition" was empty. 
+- icons for checked requirements in template checker were not styled correctly in designs using dark/bright mode 
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
