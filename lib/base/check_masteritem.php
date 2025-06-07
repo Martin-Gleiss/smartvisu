@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Andre Kohler
- * @copyright   2020 -2024
+ * @copyright   2020 -2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -25,7 +25,8 @@ function load_items ()
 		{ 
 			return $myArray;
 		}
-	
+	if ($mypages == 'smarthome' && !is_file(const_path.'pages/'.$mypages.'/masteritem.json') && config_pages != 'smarthome')
+		$mypages = config_pages; 
 
 	try {
 		if (is_file(const_path.'pages/'.$mypages.'/masteritem.json'))
@@ -40,13 +41,12 @@ function load_items ()
 				$myArray[trim(explode('|',$key)[0])] = trim(explode('|',$key)[1]);
 				}
 		}
-		
 	}
 	catch (Exception $e) {
 		$myArray = NULL;
 	}
-	
-    return $myArray;
+
+	return $myArray;
 }
 // main
 

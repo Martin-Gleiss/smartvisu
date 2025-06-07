@@ -4,7 +4,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Andre Kohler
- * @copyright   2020 - 2024
+ * @copyright   2020 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -72,7 +72,10 @@ class Items {
 		$this->items = array();
 		// get the main pages path
 		preg_match('/(pages\/[a-zA-Z0-9]+)/', $path, $mainPath);
-	
+
+		if ($mainPath[0] == 'pages/smarthome' && !is_file(const_path.$mainPath[0].'/masteritem.json') && config_pages != 'smarthome')
+			$mainPath[0] = 'pages/'.config_pages; 
+
 		try {
 			if (is_file(const_path.$mainPath[0].'/masteritem.json'))
 			{
