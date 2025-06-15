@@ -45,7 +45,8 @@
 - links in calendar.list only worked in 'active' mode (i.e. in active lists with expandable Info fields)
 - clock.countdown did not start reliably if "condition" was empty. 
 - icons for checked requirements in template checker were not styled correctly in designs using dark/bright mode
-- widget assistant sometimes did not show rendered results due to a timing problem. Fixed by waiting for the file write result. 
+- widget assistant sometimes did not show rendered results due to a timing problem. Fixed by waiting for the file write result.
+- after a page reload, clock.countdown started if "condition" was changed after the trigger.
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php

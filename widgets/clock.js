@@ -152,7 +152,7 @@ $.widget("sv.clock_countdown", $.sv.widget, {
 			console.log('countdown timer stopped by item at ', new Date().transUnit("H:i:s"));
 		};
 		
-		if (this._currentstarttime > 0) this._currentstarttime = starttime;
+		this._currentstarttime = starttime;
 		
 		function countdown(that) {
 			var telapsed = Date.now() - that._currentstarttime;
