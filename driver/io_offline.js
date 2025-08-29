@@ -61,7 +61,19 @@ var io = {
 	 */
 	write: function (item, val) {
 		var sendItemPos = item.indexOf(':');
-		var sendItem = (sendItemPos == -1 ? item : item.substring(sendItemPos + 1));		
+		var sendItem = (sendItemPos == -1 ? item : item.substring(sendItemPos + 1));
+		
+		// simulate some item propertiers but write only to widget.buffer . not to temp file 
+		widget.update(sendItem + '.property.prev_value', widget.get (sendItem + '.property.last_value'));
+		widget.update(sendItem + '.property.last_value', widget.get (sendItem));
+		widget.update(sendItem + '.property.prev_change', widget.get (sendItem + '.property.last_change'));
+		widget.update(sendItem + '.property.prev_update', widget.get (sendItem + '.property.last_update'));
+		widget.update(sendItem + '.property.prev_trigger', widget.get (sendItem + '.property.last_trigger'));
+		widget.update(sendItem + '.property.last_change', new Date());
+		widget.update(sendItem + '.property.last_update', new Date());
+		widget.update(sendItem + '.property.last_trigger', new Date());
+
+		// and finally update the item
 		io.put(sendItem, val);
 	},
 
@@ -243,6 +255,16 @@ var io = {
 					// initialize UZSU data if item is an UZSU item and no data available
 					if (item.slice(-5).toLowerCase() == '.uzsu' && val == null) 
 							val = {"active":"false", "interpolation": {"type": "none", "initialized": false, "interval": 5, "initage": 0, "itemtype": "bool"}, "list": [], "plugin_version": "2.0.0"}
+						
+					// simulate some item properties
+					if (item.indexOf('.property.') != -1 && val == null) {
+						var itemProperty = item.slice(item.indexOf('.property.')+10 );
+						if (['last_change', 'last_update', 'last_trigger', 'prev_change', 'prev_update', 'prev_trigger'].includes(itemProperty))
+							val = new Date();
+						else if (['last_value', 'prev_value'].includes(itemProperty)) 
+							val = 0
+					}
+					
 					widget.update(item, val);
 					if (item != io.listeners[item])
 						widget.update(io.listeners[item], val);
