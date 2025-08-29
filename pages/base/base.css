@@ -615,6 +615,20 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
   height: 32px;
 }
 
+/** --------- input --------- */
+/* allow format option "text" to disable spin-buttons */
+input[type=number].textfield {
+	appearance: textfield;
+	-webkit-appearance: textfield;
+	-moz-appearance: textfield;
+}
+input[type=number].textfield::-webkit-outer-spin-button,
+input[type=number].textfield::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
 /** --------- grid --------- */
 .ui-grid-f {
   overflow: hidden;
