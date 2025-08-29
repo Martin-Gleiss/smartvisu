@@ -12,11 +12,13 @@
 - calendar.waste got a configurable date format called "wastedate" in the language files
 - plot.timeshift got an option to preserve or reset the current zoom level on the shifted x axis / app analyse_plot preserves the zoom level now
 - new widget "device.smallrtr" displays a room temperature regulator as a table line
+- new format option "text" in basic.input removes the spin-buttons from number input fields
 
 ### Other New Features
 - all jQm widgets with write access to items have got a disable and enable method callable with "$(mySelector).widget('disable')" / "$(mySelector).widget('enable')" (basic.*, icon.*, device.rtrslider, device.roofwindow).
 - new methods "widget.enable(jQObject)" and "widget.disable(jQObject)" handle the different widget types for enable/disable
 - improved openHAB driver: better decoding of numeric values / obsolete aggregation modes removed for series item (thanks to Patrik Germann)
+- offline driver simulates some item properties, e.g. "last_change", "last_value", "prev_change" ... for testing (item properties are supported in iobroker and smarthomeNG already) 
 
 ### Improvements
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
