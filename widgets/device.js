@@ -1811,7 +1811,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var chart = this.element.highcharts({
 	  title: { text: this.options.headline },
       legend: false,
-	  time: {timezoneOffset: new Date().getTimezoneOffset()},
+	  // time: {timezoneOffset: new Date().getTimezoneOffset()},
       series: [
         { // active
           name: 'active',
