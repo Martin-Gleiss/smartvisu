@@ -27,7 +27,8 @@
 - googleV3 calendar service places an authorization link directly into the calendar list if authorization fails due to invalid refresh token
 - limit Highcharts boost mode to charts without navigator (where dataGrouping is not active)
 - extended error handling in backup function. Early warning if backup file exeeds size limits for restore operation.
-- templatechecker looks for masteritem.json in configured pages directory if pages to check are in "smarthome" folder 
+- templatechecker looks for masteritem.json in configured pages directory if pages to check are in "smarthome" folder
+- roundsliders get initialized already in _create method in order to show the slider even if item value is undefined.
 
 ### Updated Libraries
 - Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.

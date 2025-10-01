@@ -155,15 +155,12 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 
 	_create: function() {
 		this._super();
-	},
-	
-	_update: function(response) {
+
 		var element = this.element;
+		var that = this;
 		var outerSlider = $(element).find('.outerslider');
 		var innerSlider = $(element).find('.innerslider');
 		var item_names = this.options.item.explode();
-		var actualValue = response[0];
-		var setValue = response[1];
 		var scale_min = this.options.scale_min;  //18;
 		var scale_max = this.options.scale_max;  //28;
 		var step = this.options.step * 1;   //0.1;
@@ -180,7 +177,7 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 	
 	// slider for actual value
 	$(outerSlider).roundSlider({
-		value: actualValue,
+		value: scale_min,
 		min: scale_min,
 		max: scale_max,
 		step: step,
@@ -235,12 +232,9 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		},
 	});
 
-	var actualString = (actualValue < 10 ? '0' : '') + actualValue.toFixed(decs)+unit;
-	$(outerSlider).find(".rs-tooltip #val").html(actualString);
-
 	// slider for set value
 	$(innerSlider).roundSlider({
-		value: setValue,
+		value: scale_min,
 		min: scale_min,
 		max: scale_max,
 		step: step, 
@@ -273,8 +267,19 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
 		  }
 		});
 	},
-	
-	_events: {
+
+	_update: function(response){
+		var outerSlider = this.element.find('.outerslider');
+		var innerSlider = this.element.find('.innerslider');
+		var step = this.options.step * 1;   //0.1;
+		var decs = step.decimals();
+		var unit = "°C";
+		var actualValue = response[0];
+		var setValue = response[1];
+		var actualString = (actualValue < 10 ? '0' : '') + actualValue.toFixed(decs)+unit;
+		$(outerSlider).roundSlider('setValue', actualValue);
+		$(outerSlider).find(".rs-tooltip #val").html(actualString);
+		$(innerSlider).roundSlider('setValue', setValue);		
 	},
 	
 	_enable: function(){

@@ -1645,12 +1645,9 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 
 	_create: function() {
 		this._super();
-	},
-	
-	_update: function(response) {
+
 		var element = this.element;
-		var user_value = response[0];
-		var user_value_item = this.options.item;
+		var that = this;		
 		var liveOption = this.options.live;
 		
 		this.options.handlesize = this.options.width +15; 
@@ -1679,7 +1676,7 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 			min: this.options.scale_min,
 			max: this.options.scale_max,
 			step: this.options.step,
-			value: user_value,
+			value: this.options.scale_min,
 			lineCap: this.options.lineCap,
 			startAngle: this.options.startangle,
 			svgMode: true,
@@ -1701,12 +1698,12 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 			},
 			update: function (args) {
 				if (liveOption == 1)
-					io.write(user_value_item, args.value);
+					that._write(args.value);
 			},
 			
 			change: function (args) {
 				if (liveOption == 0)
-					io.write(user_value_item, args.value);
+					that._write(args.value);
 			},
 
 			create: function(args){
@@ -1755,10 +1752,11 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 			
 		});
 	},
-	
-	_events: {
+
+	_update: function(response) {
+		this.element.roundSlider( 'setValue', response[0])
 	},
-			
+	
 	_enable: function(){
 		this.element.roundSlider('enable');
 	},
