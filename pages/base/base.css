@@ -2531,7 +2531,7 @@ svg.icon.midi,
 */
 .sv-state-undefined,
 .ui-btn.sv-state-undefined {
-	border: 2px solid red!important;
+	outline: 2px solid red!important;
 }
 
 /**
