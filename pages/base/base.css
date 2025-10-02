@@ -2526,6 +2526,13 @@ svg.icon.midi,
 	display: none;
 }
 
+/**
+ * ------ Show red frame on widgets where an item is undefined -------
+*/
+.sv-state-undefined,
+.ui-btn.sv-state-undefined {
+	border: 2px solid red!important;
+}
 
 /**
  * --- T e m p l a t e :   B A S E --------------------------------------------

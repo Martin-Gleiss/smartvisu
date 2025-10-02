@@ -14,7 +14,12 @@ $.widget("sv.basic_checkbox", $.sv.widget, {
 
 	options: {
 		'val-on': null,
-		'val-off': null
+		'val-off': null,
+	},
+
+	_create: function(){
+		this._super();
+		this.visibleElement = $(this.element[0].parentElement);
 	},
 
 	_update: function(response) {
@@ -50,6 +55,11 @@ $.widget("sv.basic_select", $.sv.widget, {
 		indicatorDuration: 3
 	},
 
+	_create: function(){
+		this._super();
+		this.visibleElement = $(this.element.siblings('a.ui-btn'));
+	},
+	
 	_update: function(response) {
 		//workaround for select menu in page mode (change event comes after _update() )
 		if(this._lastValue != null && this._lastValue != this.element.val() && response[0] != this.element.val()) 
@@ -135,6 +145,12 @@ $.widget("sv.basic_color", $.sv.widget, {
 
 	_mem: null,
 	_lockfor: 0,
+	
+	_create: function(){
+		this._super();
+		this.visibleElement = $(this.element.find('span, .ui-slider'));
+	},
+	
 
 	_update: function(response) {
 		// response is: {{ gad_r }}, {{ gad_g }}, {{ gad_b }}
@@ -575,17 +591,22 @@ $.widget("sv.basic_flip", $.sv.widget, {
 	options: {
 		background: null
 	},
+	
+	_create: function(){
+		this._super();
+		this.visibleElement = $(this.element[0].parentElement);
+	},
 
 	_update: function(response) {
 		this._off( this.element, 'change' );
 		this.element.val(response[0]).flipswitch('refresh');
 		this._on( { 'change': this._events.change } );
 		if (this.options.background != ''){
-			var node = this.element[0].parentElement;
-			if ($(node).hasClass('ui-flipswitch-active'))
-				$(node).css('background-image', 'linear-gradient('+this.options.background+','+this.options.background+')');
+			var node = this.visibleElement;
+			if (node.hasClass('ui-flipswitch-active'))
+				node.css('background-image', 'linear-gradient('+this.options.background+','+this.options.background+')');
 			else
-				$(node).css('background-image', '');
+				node.css('background-image', '');
 		}
 	},
 
@@ -615,6 +636,11 @@ $.widget("sv.basic_icon", $.sv.widget, {
 		min: 0,
 		max: 255,
 		colormodel: 'rgb'
+	},
+	
+	_create: function(){
+		this._super();
+		this.visibleElement = $(this.element.children());
 	},
 
 	_update: function(response) {
@@ -1082,7 +1108,11 @@ $.widget("sv.basic_slider", $.sv.widget, {
 	_sliding: false,
 	_inputactive: false,
 	_changeactive: false,
-
+	
+	_create: function(){
+		this._super();
+		this.visibleElement = $(this.element[0].parentElement);
+	},
 
 	_update: function(response) {
 		var val = response[0];
@@ -1183,6 +1213,7 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 
 	_create: function() {
 		this._super();
+		this.visibleElement = this.element.children('a[data-widget="basic.stateswitch"]');
 
 		var shortpressEvent = function(event) {
 			if (this._disabled) return;
@@ -1538,8 +1569,8 @@ $.widget("sv.basic_tank", $.sv.widget, {
 			.find('div').css('height', factor * this.element.height());
 
 	},
-
 });
+
 // ----- basic.trigger ---------------------------------------------------------
 $.widget("sv.basic_trigger", $.sv.widget, {
 
