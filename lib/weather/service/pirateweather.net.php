@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      aschwith
- * @copyright   2023
+ * @copyright   2023 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide		weather_postal
@@ -33,14 +33,17 @@ class weather_pirateweather extends weather
 														// us    °F  |  inch  |  mi  |  mph  | millibar / hPa 
 														// uk2   °C  |   mm   |  mi  |  mph  | millibar / hPa
 														
+		// if the user has taken geo coordinates from a different weather service we translate it for him - also good for the docu page
+		$location = (substr($this->location, 0, 3) == 'lat') ? preg_replace('/lat\D*=(\d*\.?\d*)&lon\D*=(\d*\.?\d*)(&.*)?/', '$1,$2', $this->location) : $this->location;
+		
 		// api call
-		$cache = new class_cache('pirateweather_' . $this->location . '.json');
+		$cache = new class_cache('pirateweather_' . $location . '.json');
 
 		if ($cache->hit($this->cache_duration_minutes)) {
 			$content = $cache->read();
 		} else {
 			$loadError = '';
-			$url = 'https://api.pirateweather.net/forecast/' . config_weather_key . '/' . $this->location . '?exclude=minutely,hourly,alerts&lang='.translate('lang', 'pirateweather').'&units='.$units;
+			$url = 'https://api.pirateweather.net/forecast/' . config_weather_key . '/' . $location . '?exclude=minutely,hourly,alerts&lang='.translate('lang', 'pirateweather').'&units='.$units;
 			$content = file_get_contents($url);
 
 			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')

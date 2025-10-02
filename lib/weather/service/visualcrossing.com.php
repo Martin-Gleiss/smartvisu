@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Wolfram v. Hülsen based on a service from aschwith
- * @copyright   2024
+ * @copyright   2024 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide		weather_postal
@@ -32,14 +32,17 @@ class weather_visualcrossing extends weather
 														// us       °F  |  inch  |  mi  |  mph  | millibar / hPa 
 														// uk       °C  |   mm   |  mi  |  mph  | millibar / hPa
 														
+		// if the user has taken geo coordinates from a different weather service we translate it for him - also good for the docu page
+		$location = (substr($this->location, 0, 3) == 'lat') ? preg_replace('/lat\D*=(\d*\.?\d*)&lon\D*=(\d*\.?\d*)(&.*)?/', '$1,$2', $this->location) : $this->location;
+
 		// api call
-		$cache = new class_cache('visualcrossing_' . $this->location . '.json');
+		$cache = new class_cache('visualcrossing_' . $location . '.json');
 
 		if ($cache->hit($this->cache_duration_minutes)) {
 			$content = $cache->read();
 		} else {
 			$loadError = '';
-			$url ='https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'.$this->location.'?lang='.trans('visualcrossing', 'lang').'&unitGroup='.$units.'&include=days,current&key='.config_weather_key.'&contentType=json';
+			$url ='https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'.$location.'?lang='.trans('visualcrossing', 'lang').'&unitGroup='.$units.'&include=days,current&key='.config_weather_key.'&contentType=json';
 			$content = file_get_contents($url);
 
 			if (substr($this->errorMessage, 0, 17) != 'file_get_contents')
@@ -89,11 +92,11 @@ class weather_visualcrossing extends weather
 
 				$i++;
 			}
-			if( preg_match('/[A-Za-z]/', $this->location))
-				$this->data['city'] = $this->location;
+			if( preg_match('/[A-Za-z]/', $location))
+				$this->data['city'] = $location;
 			else {
-				$location = explode(',',$this->location);
-				$this->data['city'] = getLocation($location[0],$location[1]);
+				$coordinates = explode(',', $location);
+				$this->data['city'] = getLocation($coordinates[0],$coordinates[1]);
 			}
 
 		} else {

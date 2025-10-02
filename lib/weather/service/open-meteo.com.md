@@ -1,8 +1,8 @@
 # Open-meteo.com weather service for smartVISU
 
 ## Installation
-1. in SmartVISU config page 1. choose open-meteo.com, 2. enter your location (i.e. Köln)   
-	Location can be entered in the following ways:
+1. in smartVISU config page 1. choose open-meteo.com, 
+2. enter your location. Location can be entered in the following ways:
 	* use latitude and longitude of your location e.g. `latitude=50.93331&longitude=6.95`
 
 ## Troubleshooting/Debug:
