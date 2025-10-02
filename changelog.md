@@ -18,7 +18,8 @@
 - all jQm widgets with write access to items have got a disable and enable method callable with "$(mySelector).widget('disable')" / "$(mySelector).widget('enable')" (basic.*, icon.*, device.rtrslider, device.roofwindow).
 - new methods "widget.enable(jQObject)" and "widget.disable(jQObject)" handle the different widget types for enable/disable
 - improved openHAB driver: better decoding of numeric values / obsolete aggregation modes removed for series item (thanks to Patrik Germann)
-- offline driver simulates some item properties, e.g. "last_change", "last_value", "prev_change" ... for testing (item properties are supported in iobroker and smarthomeNG already) 
+- offline driver simulates some item properties, e.g. "last_change", "last_value", "prev_change" ... for testing (item properties are supported in iobroker and smarthomeNG already)
+- widgets are shown with red border if an item is undefined
 
 ### Improvements
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
@@ -27,7 +28,9 @@
 - googleV3 calendar service places an authorization link directly into the calendar list if authorization fails due to invalid refresh token
 - limit Highcharts boost mode to charts without navigator (where dataGrouping is not active)
 - extended error handling in backup function. Early warning if backup file exeeds size limits for restore operation.
-- templatechecker looks for masteritem.json in configured pages directory if pages to check are in "smarthome" folder 
+- templatechecker looks for masteritem.json in configured pages directory if pages to check are in "smarthome" folder
+- roundsliders get initialized already in _create method in order to show the slider even if item value is undefined.
+- new widget property "this.visibleElement" points to the styleable element for some widgets where it differs from "this.element"
 
 ### Updated Libraries
 - Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.

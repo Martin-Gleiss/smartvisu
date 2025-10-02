@@ -14,7 +14,12 @@ $.widget("sv.basic_checkbox", $.sv.widget, {
 
 	options: {
 		'val-on': null,
-		'val-off': null
+		'val-off': null,
+	},
+
+	_create: function(){
+		this._super();
+		this.visibleElement = $(this.element[0].parentElement);
 	},
 
 	_update: function(response) {
@@ -50,6 +55,11 @@ $.widget("sv.basic_select", $.sv.widget, {
 		indicatorDuration: 3
 	},
 
+	_create: function(){
+		this._super();
+		this.visibleElement = $(this.element.siblings('a.ui-btn'));
+	},
+	
 	_update: function(response) {
 		//workaround for select menu in page mode (change event comes after _update() )
 		if(this._lastValue != null && this._lastValue != this.element.val() && response[0] != this.element.val()) 
@@ -135,6 +145,12 @@ $.widget("sv.basic_color", $.sv.widget, {
 
 	_mem: null,
 	_lockfor: 0,
+	
+	_create: function(){
+		this._super();
+		this.visibleElement = $(this.element.find('span, .ui-slider'));
+	},
+	
 
 	_update: function(response) {
 		// response is: {{ gad_r }}, {{ gad_g }}, {{ gad_b }}
@@ -575,17 +591,22 @@ $.widget("sv.basic_flip", $.sv.widget, {
 	options: {
 		background: null
 	},
+	
+	_create: function(){
+		this._super();
+		this.visibleElement = $(this.element[0].parentElement);
+	},
 
 	_update: function(response) {
 		this._off( this.element, 'change' );
 		this.element.val(response[0]).flipswitch('refresh');
 		this._on( { 'change': this._events.change } );
 		if (this.options.background != ''){
-			var node = this.element[0].parentElement;
-			if ($(node).hasClass('ui-flipswitch-active'))
-				$(node).css('background-image', 'linear-gradient('+this.options.background+','+this.options.background+')');
+			var node = this.visibleElement;
+			if (node.hasClass('ui-flipswitch-active'))
+				node.css('background-image', 'linear-gradient('+this.options.background+','+this.options.background+')');
 			else
-				$(node).css('background-image', '');
+				node.css('background-image', '');
 		}
 	},
 
@@ -615,6 +636,11 @@ $.widget("sv.basic_icon", $.sv.widget, {
 		min: 0,
 		max: 255,
 		colormodel: 'rgb'
+	},
+	
+	_create: function(){
+		this._super();
+		this.visibleElement = $(this.element.children());
 	},
 
 	_update: function(response) {
@@ -1082,7 +1108,11 @@ $.widget("sv.basic_slider", $.sv.widget, {
 	_sliding: false,
 	_inputactive: false,
 	_changeactive: false,
-
+	
+	_create: function(){
+		this._super();
+		this.visibleElement = $(this.element[0].parentElement);
+	},
 
 	_update: function(response) {
 		var val = response[0];
@@ -1183,6 +1213,7 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
 
 	_create: function() {
 		this._super();
+		this.visibleElement = this.element.children('a[data-widget="basic.stateswitch"]');
 
 		var shortpressEvent = function(event) {
 			if (this._disabled) return;
@@ -1538,8 +1569,8 @@ $.widget("sv.basic_tank", $.sv.widget, {
 			.find('div').css('height', factor * this.element.height());
 
 	},
-
 });
+
 // ----- basic.trigger ---------------------------------------------------------
 $.widget("sv.basic_trigger", $.sv.widget, {
 
@@ -1645,12 +1676,9 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 
 	_create: function() {
 		this._super();
-	},
-	
-	_update: function(response) {
+
 		var element = this.element;
-		var user_value = response[0];
-		var user_value_item = this.options.item;
+		var that = this;		
 		var liveOption = this.options.live;
 		
 		this.options.handlesize = this.options.width +15; 
@@ -1679,7 +1707,7 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 			min: this.options.scale_min,
 			max: this.options.scale_max,
 			step: this.options.step,
-			value: user_value,
+			value: this.options.scale_min,
 			lineCap: this.options.lineCap,
 			startAngle: this.options.startangle,
 			svgMode: true,
@@ -1701,12 +1729,12 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 			},
 			update: function (args) {
 				if (liveOption == 1)
-					io.write(user_value_item, args.value);
+					that._write(args.value);
 			},
 			
 			change: function (args) {
 				if (liveOption == 0)
-					io.write(user_value_item, args.value);
+					that._write(args.value);
 			},
 
 			create: function(args){
@@ -1755,10 +1783,11 @@ $.widget("sv.basic_roundslider", $.sv.widget, {
 			
 		});
 	},
-	
-	_events: {
+
+	_update: function(response) {
+		this.element.roundSlider( 'setValue', response[0])
 	},
-			
+	
 	_enable: function(){
 		this.element.roundSlider('enable');
 	},
