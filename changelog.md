@@ -19,7 +19,7 @@
 - new methods "widget.enable(jQObject)" and "widget.disable(jQObject)" handle the different widget types for enable/disable
 - improved openHAB driver: better decoding of numeric values / obsolete aggregation modes removed for series item (thanks to Patrik Germann)
 - offline driver simulates some item properties, e.g. "last_change", "last_value", "prev_change" ... for testing (item properties are supported in iobroker and smarthomeNG already)
-- widgets are shown with red border if an item is undefined
+- widgets are shown with red border if an item is undefined (active if "driver busy signalling" is configured)
 
 ### Improvements
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
@@ -31,6 +31,7 @@
 - templatechecker looks for masteritem.json in configured pages directory if pages to check are in "smarthome" folder
 - roundsliders get initialized already in _create method in order to show the slider even if item value is undefined.
 - new widget property "this.visibleElement" points to the styleable element for some widgets where it differs from "this.element"
+- unified format for geo coordinates in weather services: lat=...&lon=... gets translated into individual formats for the services pirateweather.net, open-meteo.com and visualcrossing.com
 
 ### Updated Libraries
 - Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.
