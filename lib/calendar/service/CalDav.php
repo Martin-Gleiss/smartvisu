@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Johannes Willnecker, Sebastian Helms, Serge Wagener, Stefan Widmer, Wolfram v. Hülsen
- * @copyright   2015-2024
+ * @copyright   2015-2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       CalDav (e.g. ownCloud, Nextcloud, ...)
@@ -256,17 +256,18 @@ XMLQUERY;
 			$xml->registerXPathNamespace('C', 'urn:ietf:params:xml:ns:caldav');
 			$caldata = $xml->xpath('//C:calendar-data');
 			$this->debug(implode("\n", $caldata), "ICS Data of '".$calurl."'");
+			// hand calendar data over to iCal class for parsing
 			$ical->initString(implode("\n",$caldata));
+			// evaluate parsed calendar into our own array of events
 			$this->addFromIcs($ical, $calmetadata);
 		}
 	}
-
 }
 
 
-// -----------------------------------------------------------------------------
-// call the service
-// -----------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
+// call the service only if script has been called directly - not as a child of other scripts
+// -------------------------------------------------------------------------------------------
 if (realpath(__FILE__) == realpath($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME'])) {
 	header('Content-Type: application/json');
 	$service = new calendar_caldav(array_merge($_GET, $_POST));
