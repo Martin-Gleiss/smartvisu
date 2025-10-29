@@ -20,6 +20,7 @@
 - improved openHAB driver: better decoding of numeric values / obsolete aggregation modes removed for series item (thanks to Patrik Germann)
 - offline driver simulates some item properties, e.g. "last_change", "last_value", "prev_change" ... for testing (item properties are supported in iobroker and smarthomeNG already)
 - widgets are shown with red border if an item is undefined (active if "driver busy signalling" is configured)
+- calenders now evaluate time zone information inside the events
 
 ### Improvements
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
@@ -32,6 +33,8 @@
 - roundsliders get initialized already in _create method in order to show the slider even if item value is undefined.
 - new widget property "this.visibleElement" points to the styleable element for some widgets where it differs from "this.element"
 - unified format for geo coordinates in weather services: lat=...&lon=... gets translated into individual formats for the services pirateweather.net, open-meteo.com and visualcrossing.com
+- language support for error texts in calendar services
+- translate function considers CR and LF as delimiters
 
 ### Updated Libraries
 - Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.

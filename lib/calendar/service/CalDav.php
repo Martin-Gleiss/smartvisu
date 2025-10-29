@@ -56,7 +56,7 @@ class calendar_caldav extends calendar
 
 			if ($caldavresponse === false) {
 				$loadError = curl_error($ch);
-				$this->error('Calendar: CalDav', 'Read request to "'.$url.'" failed with message: "'.$loadError.'"');
+				$this->error('Calendar: CalDav', translate('Read request to "'.$url.'" failed with message: " '.$loadError.' "', 'calendar_error_message'));
 				echo $this->json();
 				curl_close($ch);
 				exit;
@@ -86,7 +86,7 @@ class calendar_caldav extends calendar
 					$loadError = substr(strrchr($this->errorMessage, ':'), 2);
 				elseif (!empty($http_response_header)) 
 					$loadError = $http_response_header[0];
-				$this->error('Calendar: CalDav', 'Read request to "'.$url.'" failed with message: "'.$loadError.'"');
+				$this->error('Calendar: CalDav', translate('Read request to "'.$url.'" failed with message: " '.$loadError.' "', 'calendar_error_message'));
 				if (!empty($http_response_header))
 					$this->debug(implode("\n", $http_response_header));
 				echo $this->json();
@@ -184,8 +184,9 @@ XMLQUERY;
 			}
 		}
 		if (!$xml || empty($calurls)) {
-			$calError = $this->errorMessage.'".<br><br>Calendar URLs could not be identified in remote answer.<br><br>Try using ICS calendar service';
-			$this->error('Calendar: CalDav', 'Read request failed with message: "'.$calError );
+			$calError = translate('Read request failed with message: ', 'calendar_error_message').($this->errorMessage != '' ? '" '.translate($this->errorMessage, 'calendar_error_message').'".' : '');
+			$calError .= '<br><br>'.trans('calendar_error_message', 'missingxml'); 
+			$this->error('Calendar: CalDav', $calError);
 		}
 		return $calurls;
 	}
@@ -235,6 +236,11 @@ XMLQUERY;
 		- https://p01-caldav.icloud.com/{user}/calendars/
 		*/
 		$calbaseurl = str_replace('{user}', config_calendar_username, $this->url);
+		if ($calbaseurl == ''){
+			$this->error('Calendar: CalDav', trans('calendar_error_message', 'missingurl'));
+			echo $this->json();
+			exit;
+		}
 
 		// Check required authentification method
 		$digest = 0;

@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Stefan Widmer
- * @copyright   2016 - 2024
+ * @copyright   2016 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       ICS/iCal (e.g. Google)
@@ -30,7 +30,9 @@ class calendar_ical extends calendar
 		try {
 			foreach(preg_split('/[\s,]+/m', $this->url) as $url) {
 				if(\count($this->calendar_names) == 1 && $this->calendar_names[0] == '' || \in_array($config_calendar_names[$i], $this->calendar_names)) {
+					//hand calendar URL over to iCal for parsing 
 					$ical = new ICal($url, array('defaultSpan' => 1));
+					// evaluate parsed calendar into our own array of events
 					$this->addFromIcs($ical, array('calendarname' => $config_calendar_names[$i]));
 				}
 				$i++;
@@ -38,16 +40,15 @@ class calendar_ical extends calendar
 		}
 		// catch the uncaught exceptions from iCal ("URL not existing" or "Invalid iCal date format")
 		catch(\Exception $e) {
-			$this->error('iCal (e.g.Google) Calendar', $e->getMessage());
+			$this->error('iCal (e.g.Google) Calendar', translate($e->getMessage(), 'calendar_error_message'));
 		}
 	}
 }
 
 
-// -----------------------------------------------------------------------------
-// call the service
-// -----------------------------------------------------------------------------
-
+// -------------------------------------------------------------------------------------------
+// call the service only if script has been called directly - not as a child of other scripts
+// -------------------------------------------------------------------------------------------
 if (realpath(__FILE__) == realpath($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME'])) {
 	header('Content-Type: application/json');
 	$service = new calendar_ical(array_merge($_GET, $_POST));
