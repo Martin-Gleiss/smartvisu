@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, Wolfram v. Hülsen
- * @copyright   2012 - 2024
+ * @copyright   2012 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -104,7 +104,7 @@ function translate($text, $subset)
 
 		foreach (($lang[$subset]) as $key => $val)
 		{
-			$keys[] = '#_'.str_replace(' ', '_', $key).'([_!\,\.])#i';
+			$keys[] = '#_'.str_replace(' ', '_', $key).'([_!\,\.\r\n])#i';
 			$vals[] = '_'.$val.'$1';
 		}
 
