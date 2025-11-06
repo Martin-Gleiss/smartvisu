@@ -59,7 +59,7 @@
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
-- background images defined with "url(myImageLocation)" - used e.g. on tabs - do not yet support dark mode. This can be individually corrected in visu.css. 
+- background images defined with "url(myImageLocation)" - used e.g. on tabs - do not support dark mode in some design combinations. This can be individually corrected by using media queries (@media (prefers-color-scheme: dark) ...) with different icon paths in the urls. 
 
 
 ## v3.5 | 30.11.2024
