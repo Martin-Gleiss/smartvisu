@@ -12,7 +12,6 @@
 *
 */
 
-@import '../icons/ws/jquery.mobile.icons.min.css';
 
 /* Globals */
 /* Font
@@ -208,7 +207,7 @@ html .ui-alt-icon .ui-radio-off:after {
 	width: 8px;
 	height: 8px;
 	border-width: 5px;
-	border-style: solid;
+	border-style: solid; 
 }
 .ui-alt-icon.ui-btn.ui-radio-on:after,
 .ui-alt-icon .ui-btn.ui-radio-on:after {
@@ -1047,12 +1046,9 @@ html head + body .ui-body-e.ui-focus {
 button[disabled],
 .ui-select .ui-btn.ui-state-disabled {
 	filter: Alpha(Opacity=30);
-	opacity: .5;
+	opacity: .3;
 	cursor: default !important;
 	pointer-events: none;
-}
-#config .ui-state-disabled {
-	opacity: .3;
 }
 /* Focus state outline
 -----------------------------------------------------------------------------------------------------------*/
@@ -1607,59 +1603,93 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 	background-image:         linear-gradient( #b2FF33 /*{global-active-background-start}*/, #91e12a /*{global-active-background-end}*/);
 }
 
+/* Plots, e.g. Highcharts
+-----------------------------------------------------------------------------------------------------------*/
+:root {	
+	--plot-color-0: #a6f829;
+	--plot-color-1: #65961a;
+	--plot-color-2: #486c12;
+	--plot-color-3: #91e12a;
+	--plot-color-4: #a2fa2f;
+	--plot-color-5: #b2ff33;
+	--plot-color-6: #a7e530;
+	--plot-color-7: #ccff3b;
+	--plot-color-8: #fceda7;
+	--plot-color-9: #fadb4e;
 
-/* Highcharts
+	//Highcharts default values which must be added in order to define colors for different charting frameworks
+	--plot-title: #333333;
+	--plot-subtitle: #666666;
+	--plot-axis: #333333;
+	--plot-tick: #333333;
+	--plot-axis-labels : #333333;
+	--plot-axis-title: #666666;
+	--plot-legend-text: #333333;
+	--plot-legend-text-hover: #000000;
+	--plot-legend-item-hidden:#666666;
+	--plot-markers: #ffffff;
+	--plot-label: #333333;
+	--plot-data-labels: #333333;
+	--plot-tooltip-box: #ffffff;
+	--plot-tooltip-text: #333333;
+	--plot-polar-line: none;
+	--plot-grid-line: #e6e6e6;	
+}
+
+/* Highcharts 
+   we could set --higharts-color-n directly but this has unwanted effects on highlighted series
 -----------------------------------------------------------------------------------------------------------*/
 .highcharts-color-0 {
-	fill: #a6f829;
-	stroke: #a6f829;
-	color: #a6f829;
+	fill: var(--plot-color-0);
+	stroke: var(--plot-color-0);
+	color: var(--plot-color-0);
 }
 .highcharts-color-1 {
-	fill: #65961a;
-	stroke: #65961a;
-	color: #65961a;
+	fill: var(--plot-color-1);
+	stroke: var(--plot-color-1);
+	color: var(--plot-color-1);
 }
 .highcharts-color-2 {
-	fill: #486c12;
-	stroke: #486c12;
-	color: #486c12;
+	fill: var(--plot-color-2);
+	stroke: var(--plot-color-2);
+	color: var(--plot-color-2);
 }
 .highcharts-color-3 {
-	fill: #91e12a;
-	stroke: #91e12a;
-	color: #91e12a;
+	fill: var(--plot-color-3);
+	stroke: var(--plot-color-3);
+	color: var(--plot-color-3);
 }
 .highcharts-color-4 {
-	fill: #a2fa2f;
-	stroke: #a2fa2f;
-	color: #a2fa2f;
+	fill: var(--plot-color-4);
+	stroke: var(--plot-color-4);
+	color: var(--plot-color-4);
 }
 .highcharts-color-5 {
-	fill: #b2ff33;
-	stroke: #b2ff33;
-	color: #b2ff33;
+	fill: var(--plot-color-5);
+	stroke: var(--plot-color-5);
+	color: var(--plot-color-5);
 }
 .highcharts-color-6 {
-	fill: #a7e530;
-	stroke: #a7e530;
-	color: #a7e530;
+	fill: var(--plot-color-6);
+	stroke: var(--plot-color-6);
+	color: var(--plot-color-6);
 }
 .highcharts-color-7 {
-	fill: #ccff3b;
-	stroke: #ccff3b;
-	color: #ccff3b;
+	fill: var(--plot-color-7);
+	stroke: var(--plot-color-7);
+	color: var(--plot-color-7);
 }
 .highcharts-color-8 {
-	fill: #fceda7;
-	stroke: #fceda7;
-	color: #fceda7;
+	fill: var(--plot-color-8);
+	stroke: var(--plot-color-8);
+	color: var(--plot-color-8);
 }
 .highcharts-color-9 {
-	fill: #fadb4e;
-	stroke: #fadb4e;
-	color: #fadb4e;
+	fill: var(--plot-color-9);
+	stroke: var(--plot-color-9);
+	color: var(--plot-color-9);
 }
+
 
 /* smartVISU
 -----------------------------------------------------------------------------------------------------------*/
@@ -1753,7 +1783,7 @@ html .ui-btn.icon5,
 	background-image: url(images/webkit_clock_ws.svg);
 }
 
-/* jQuery Roundslider
+/* jQuery Roundslider 
 -----------------------------------------------------------------------------------------------------------*/
 
 /*** SVG mode - theming - colors ***/
@@ -1786,9 +1816,9 @@ span.rs-number {
   color: #fff;
 }
 
-.rs-bar.rs-custom .rs-seperator {
-	border: 2px solid #457703;
-	margin-left: -10px;
+.rs-bar.rs-custom .rs-seperator { 
+	border: 2px solid #457703; 
+	margin-left: -10px; 
 }
 .rs-bar.rs-custom_1 .rs-seperator {
 	border: 1px solid #d7d7d7;
@@ -1805,7 +1835,7 @@ span.rs-number {
 }
 
 .rs-handle {
-	background-color: #838383;
+	background-color: #838383; 
 	background-image: -webkit-gradient(linear, left top, left bottom, from( #444444 /*{a-bup-background-start}*/), to( #2d2d2d /*{a-bup-background-end}*/)); /* Saf4+, Chrome */
 	background-image: -webkit-linear-gradient( #444444 /*{a-bup-background-start}*/, #2d2d2d /*{a-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
 	background-image:    -moz-linear-gradient( #444444 /*{a-bup-background-start}*/, #2d2d2d /*{a-bup-background-end}*/); /* FF3.6 */

@@ -1120,6 +1120,94 @@ button[disabled],
     top: 10px;
 }
 
+
+/* Plots, e.g. Highcharts
+-----------------------------------------------------------------------------------------------------------*/
+:root {	
+	--plot-color-0: #22aadd;
+	--plot-color-1: #4176a9;
+	--plot-color-2: #6640ff;
+	--plot-color-3: #00bcd4;
+	--plot-color-4: #03a9f4;
+	--plot-color-5: #2196f3;
+	--plot-color-6: #3f51b5;
+	--plot-color-7: #673ab7;
+	--plot-color-8: #673ab7;
+	--plot-color-9: #009688;
+
+	//Highcharts default values which must be added in order to define colors for different charting frameworks
+	--plot-title: #333333;
+	--plot-subtitle: #666666;
+	--plot-axis: #333333;
+	--plot-tick: #333333;
+	--plot-axis-labels : #333333;
+	--plot-axis-title: #666666;
+	--plot-legend-text: #333333;
+	--plot-legend-text-hover: #000000;
+	--plot-legend-item-hidden:#666666;
+	--plot-markers: #ffffff;
+	--plot-label: #333333;
+	--plot-data-labels: #333333;
+	--plot-tooltip-box: #ffffff;
+	--plot-tooltip-text: #333333;
+	--plot-polar-line: none;
+	--plot-grid-line: #e6e6e6;	
+}
+
+/* Highcharts 
+   we could set --higharts-color-n directly but this has unwanted effects on highlighted series
+-----------------------------------------------------------------------------------------------------------*/
+.highcharts-color-0 {
+	fill: var(--plot-color-0);
+	stroke: var(--plot-color-0);
+	color: var(--plot-color-0);
+}
+.highcharts-color-1 {
+	fill: var(--plot-color-1);
+	stroke: var(--plot-color-1);
+	color: var(--plot-color-1);
+}
+.highcharts-color-2 {
+	fill: var(--plot-color-2);
+	stroke: var(--plot-color-2);
+	color: var(--plot-color-2);
+}
+.highcharts-color-3 {
+	fill: var(--plot-color-3);
+	stroke: var(--plot-color-3);
+	color: var(--plot-color-3);
+}
+.highcharts-color-4 {
+	fill: var(--plot-color-4);
+	stroke: var(--plot-color-4);
+	color: var(--plot-color-4);
+}
+.highcharts-color-5 {
+	fill: var(--plot-color-5);
+	stroke: var(--plot-color-5);
+	color: var(--plot-color-5);
+}
+.highcharts-color-6 {
+	fill: var(--plot-color-6);
+	stroke: var(--plot-color-6);
+	color: var(--plot-color-6);
+}
+.highcharts-color-7 {
+	fill: var(--plot-color-7);
+	stroke: var(--plot-color-7);
+	color: var(--plot-color-7);
+}
+.highcharts-color-8 {
+	fill: var(--plot-color-8);
+	stroke: var(--plot-color-8);
+	color: var(--plot-color-8);
+}
+.highcharts-color-9 {
+	fill: var(--plot-color-9);
+	stroke: var(--plot-color-9);
+	color: var(--plot-color-9);
+}
+
 /* smartVISU
 -----------------------------------------------------------------------------------------------------------*/
 .ui-right > .ui-link,
