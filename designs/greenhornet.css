@@ -1617,24 +1617,7 @@ html body div.ui-slider-track.ui-body-e .ui-btn-active {
 	--plot-color-7: #ccff3b;
 	--plot-color-8: #fceda7;
 	--plot-color-9: #fadb4e;
-
-	//Highcharts default values which must be added in order to define colors for different charting frameworks
-	--plot-title: #333333;
-	--plot-subtitle: #666666;
-	--plot-axis: #333333;
-	--plot-tick: #333333;
-	--plot-axis-labels : #333333;
-	--plot-axis-title: #666666;
-	--plot-legend-text: #333333;
-	--plot-legend-text-hover: #000000;
-	--plot-legend-item-hidden:#666666;
-	--plot-markers: #ffffff;
-	--plot-label: #333333;
-	--plot-data-labels: #333333;
-	--plot-tooltip-box: #ffffff;
-	--plot-tooltip-text: #333333;
-	--plot-polar-line: none;
-	--plot-grid-line: #e6e6e6;	
+	/* some more default values are defined in ./pages/base/base.css */
 }
 
 /* Highcharts 

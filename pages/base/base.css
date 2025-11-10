@@ -1840,7 +1840,7 @@ div.ui-slider-switch{
   min-height: 9.94em;
 }
 
-/* Highcharts */
+/* Plots, e.g. Highcharts */
 .highcharts-container {
   font-family: inherit;
 }
@@ -1855,85 +1855,97 @@ div.ui-slider-switch{
 .highcharts-plot-border {
   stroke-width: 0;
 }
-
+:root {
+--plot-title: #fff;
+--plot-subtitle: #ddd;
+--plot-axis: #666;
+--plot-tick: #666;
+--plot-axis-labels : #999;
+--plot-axis-title: #aaa;
+--plot-legend-text: #ccc;
+--plot-legend-text-hover: #fff;
+--plot-legend-item-hidden:#333;
+--plot-markers: #fff;
+--plot-label: #ccc;
+--plot-data-labels: #ccc;
+--plot-tooltip-box: #272727;
+--plot-tooltip-text: #fff;
+--plot-polar-line: none;
+--plot-grid-line: #rgba(255, 255, 255, .15);	
+}
 .highcharts-title {
   font-size: 18px;
-  fill: #fff;
+  fill: var(--plot-title);
 }
 .highcharts-subtitle {
-  fill: #ddd;
+  fill: var(--plot-subtitle);
 }
 .highcharts-graph {
 	stroke-width: 2px;
 }
 .highcharts-axis .highcharts-axis-line {
-  stroke: #666;
+  stroke: var(--plot-axis);
   stroke-width: 2px;
 }
 .highcharts-tick {
-  stroke: #666;
+  stroke: var(--plot-tick);
   stroke-width: 1px;
 }
 .highcharts-xaxis .highcharts-tick {
   stroke-width: 2px;
 }
 .highcharts-axis-labels {
-  fill: #999;
+  fill: var(--plot-axis-labels);
   font-size: 14px;
 }
 .highcharts-axis-title {
-  fill: #aaa;
+  fill: var(--plot-axis-title);
   font-size: 13px;
 }
 .highcharts-grid .highcharts-grid-line {
-  stroke: rgba(255, 255, 255, .15);
+  stroke: var(--plot-grid-line);
   stroke-width: 1px;
 }
-
 .highcharts-legend-item text {
-  fill: #ccc;
+  fill: var(--plot-legend-text);
   font-size: 12px;
   font-weight: normal;
 }
 .highcharts-legend-item:hover text {
-  fill: #fff;
+  fill: var(--plot-legend-text-hover);
 }
 .highcharts-legend-item-hidden * {
-  fill: #333;
-  stroke: #333;
+  fill: var(--plot-legend-item-hidden);
+  stroke: var(--plot-legend-item-hidden);
 }
-
 .highcharts-markers path {
-  stroke: #fff;
+  stroke: var(--plot-markers);
 }
 .highcharts-column-series rect.highcharts-point,
 .highcharts-markers path.highcharts-halo {
   fill: inherit;
 }
-
 .highcharts-label-box {
   fill: none;
 }
 .highcharts-label text {
-  fill: #ccc;
+  fill: var(--plot-label);
 }
 .highcharts-data-labels {
-  fill: #ccc;
-  color: #ccc;
+  fill: var(--plot-data-labels);
+  color: var(--plot-data-labels);
   font-size: 11px;
   font-weight: normal;
 }
-
 .highcharts-tooltip-box,
 .highcharts-tooltip-box .highcharts-label-box {
-	fill: #272727;
+	fill: var(--plot-tooltip-box);
 	fill-opacity: 0.8;
 	stroke-width: 0;
 }
 .highcharts-tooltip text {
-  fill: #fff;
+  fill: var(--plot-tooltip-text);
 }
-
 .highcharts-button {
   fill: #f7f7f7;
   stroke: #cccccc;
@@ -1979,7 +1991,7 @@ div.ui-slider-switch{
 .polarChart .highcharts-axis-line,
 .solidgauge .highcharts-axis-line,
 .solidgauge .highcharts-grid-line {
-  stroke: none;
+  stroke: var(--plot-polar-line);
 }
 
 .highcharts-crosshair-thin {
