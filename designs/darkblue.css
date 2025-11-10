@@ -1,4 +1,4 @@
-/*!
+/*
 * jQuery Mobile 1.4.5
 * Git HEAD hash: 68e55e78b292634d3991c795f06f5e37a512decc <> Date: Fri Oct 31 2014 17:33:30 UTC
 * http://jquerymobile.com
@@ -12,7 +12,7 @@
 *
 */
 
-@import '../icons/ws/jquery.mobile.icons.min.css';
+@import "../icons/ws/jquery.mobile.icons.min.css";
 
 /* Globals */
 /* Font
@@ -1277,24 +1277,7 @@ a.ui-slider-handle-semicircle {
 	--plot-color-7: #673ab7;
 	--plot-color-8: #673ab7;
 	--plot-color-9: #009688;
-
-	//Highcharts default values which must be added in order to define colors for different charting frameworks
-	--plot-title: #333333;
-	--plot-subtitle: #666666;
-	--plot-axis: #333333;
-	--plot-tick: #333333;
-	--plot-axis-labels : #333333;
-	--plot-axis-title: #666666;
-	--plot-legend-text: #333333;
-	--plot-legend-text-hover: #000000;
-	--plot-legend-item-hidden:#666666;
-	--plot-markers: #ffffff;
-	--plot-label: #333333;
-	--plot-data-labels: #333333;
-	--plot-tooltip-box: #ffffff;
-	--plot-tooltip-text: #333333;
-	--plot-polar-line: none;
-	--plot-grid-line: #e6e6e6;	
+	/* some more default values are defined in ./pages/base/base.css */
 }
 
 /* Highcharts 

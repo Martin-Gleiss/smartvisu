@@ -6,8 +6,8 @@
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
+@charset "UTF-8";
 
-@CHARSET "UTF-8";
 .quad *, *:before, *:after {
     box-sizing: border-box;
 }
