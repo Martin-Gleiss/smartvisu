@@ -1324,6 +1324,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       popupafterclose: function(ev, ui) {
         $(this).remove();
         $(window).off('resize', self._onresize);
+		var target = $(self.element).parents('[data-role="popup"].uzsu_reopen');
+		if (target.length != 0)
+			target.popup('open');
       }
     });
     // dann speichern wir uns für cancel die ursprünglichen im DOM gespeicherten Werte in eine Variable ab
@@ -1702,15 +1705,24 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
       // hier werden die Parameter aus den Attributen herausgenommen und beim Öffnen mit .open(....) an das Popup Objekt übergeben
       // und zwar mit deep copy, damit ich bei cancel die ursprünglichen werte nicht überschrieben habe
       var response = jQuery.extend(true, {}, this._uzsudata);
+	  var that = this;
 
       if (this._uzsuParseAndCheckResponse(response)) {
-        // Öffnen des Popups bei clicken des icons und Ausführung der Eingabefunktion
-        this._uzsuRuntimePopup(response);
+		  // Öffnen des Popups bei clicken des icons und Ausführung der Eingabefunktion
+		  // vorher das übergeordnete Popup schließen, falls uzsuicon in einem Popup platziert ist
+		  var target = $(this.element).parents('[data-role="popup"]');
+		  if (target.length != 0){
+			  target.popup().on('popupafterclose', function(){
+				  that._uzsuRuntimePopup(response);
+				  target.popup().off('popupafterclose');
+				  });
+			  target.popup('close');
+		  } 
+		  else
+			  this._uzsuRuntimePopup(response);
       }
     }
   },
-
-
 
 });
 
