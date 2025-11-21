@@ -56,7 +56,9 @@
 			{{ device.uzsuicon('uzsu9', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'mini') }}
 		</div>
 	</div>
-	
-	
+	<h5>Usage inside popups</h5>
+	Until v3.5.0, device.uzsuicon does not work if placed inside a popup because chaining of popups is forbidden. As of v3.6.0, the widget closes the parent popup before opening the UZSU editor. 
+	Re-opening of the parent popup after closing the editor can be configured by giving the popup &lt;div data-role="popup"&gt; the class "uzsu_reopen". This makes sense if the popup is clearly positioned 
+	on the page by CSS. Otherwise the popup will open somewhere but not resume its original position. 	
 
 {% endblock %}

@@ -13,6 +13,7 @@
 - plot.timeshift got an option to preserve or reset the current zoom level on the shifted x axis / app analyse_plot preserves the zoom level now
 - new widget "device.smallrtr" displays a room temperature regulator as a table line
 - new format option "text" in basic.input removes the spin-buttons from number input fields
+- device.uzsuicon is now allowed to be placed inside a popup which is closed before UZSU data editing. Re-opening afterwards can be controlled by giving the popup the class "uzsu_reopen". 
 
 ### Other New Features
 - all jQm widgets with write access to items have got a disable and enable method callable with "$(mySelector).widget('disable')" / "$(mySelector).widget('enable')" (basic.*, icon.*, device.rtrslider, device.roofwindow).

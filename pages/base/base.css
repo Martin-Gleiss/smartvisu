@@ -1871,7 +1871,7 @@ div.ui-slider-switch{
 --plot-tooltip-box: #272727;
 --plot-tooltip-text: #fff;
 --plot-polar-line: none;
---plot-grid-line: #rgba(255, 255, 255, .15);	
+--plot-grid-line: rgba(255, 255, 255, .15);	
 }
 .highcharts-title {
   font-size: 18px;
