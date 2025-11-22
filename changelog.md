@@ -36,6 +36,7 @@
 - unified format for geo coordinates in weather services: lat=...&lon=... gets translated into individual formats for the services pirateweather.net, open-meteo.com and visualcrossing.com
 - language support for error texts in calendar services
 - translate function considers CR and LF as delimiters
+- new methods 'changeSize' and 'changeColorScheme' in prototype $.sv.widget allow better individual style adaption inside the widgets (for future extensions)
 
 ### Updated Libraries
 - Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.

@@ -1,5 +1,14 @@
+// ----- prototype plot widget with some common methods
+$.widget("sv.plot_highcharts", $.sv.widget, {
+	
+	_changeSize: function(){
+		//DEBUG: console.log('resize');
+		this.element.highcharts().setSize(null, null);
+	}
+});
+
 // ----- plot.comfortchart ----------------------------------------------------
-$.widget("sv.plot_comfortchart", $.sv.widget, {
+$.widget("sv.plot_comfortchart", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.comfortchart"]',
 
@@ -69,7 +78,10 @@ $.widget("sv.plot_comfortchart", $.sv.widget, {
                 formatter: function () {
                     return this.x.transUnit('temp') + ' / ' + this.y.transUnit('%');
                 }
-            }
+            },
+			accessibility: {
+				enabled: false
+			}
         });
     },
 
@@ -93,7 +105,7 @@ $.widget("sv.plot_comfortchart", $.sv.widget, {
 
 
 // ----- plot.heatingcurve ----------------------------------------------------
-$.widget("sv.plot_heatingcurve", $.sv.widget, {
+$.widget("sv.plot_heatingcurve", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.heatingcurve"]',
 
@@ -142,7 +154,10 @@ $.widget("sv.plot_heatingcurve", $.sv.widget, {
                 formatter: function () {
                     return this.x.transUnit('temp') + ' / ' + this.y.transUnit('temp');
                 }
-            }
+            },
+			accessibility: {
+				enabled: false
+			}
         };
 
         var userOptions = this.options.chartOptions;
@@ -178,7 +193,7 @@ $.widget("sv.plot_heatingcurve", $.sv.widget, {
 
 
 // ----- plot.period ----------------------------------------------------------
-$.widget("sv.plot_period", $.sv.widget, {
+$.widget("sv.plot_period", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.period"]',
 
@@ -443,6 +458,9 @@ $.widget("sv.plot_period", $.sv.widget, {
                     }
                 }
             },
+			accessibility: {
+				enabled: false
+			}
         };
 
         if(zoom == 'advanced') { // use highstock
@@ -632,7 +650,7 @@ $.widget("sv.plot_period", $.sv.widget, {
 
 
 // ----- plot.gauge solid ------------------------------------------------------
-$.widget("sv.plot_gauge_", $.sv.widget, {
+$.widget("sv.plot_gauge_", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.gauge"][data-mode^="solid"]',
 
@@ -727,6 +745,9 @@ $.widget("sv.plot_gauge_", $.sv.widget, {
                     stickyTracking: false
                 },
             },
+			accessibility: {
+				enabled: false
+			},
 
             series: [{
                 name: headline,
@@ -796,7 +817,7 @@ $.widget("sv.plot_gauge_", $.sv.widget, {
 
 
 // ----- plot.gauge angular ----------------------------------------------------
-$.widget("sv.plot_gauge_angular", $.sv.widget, {
+$.widget("sv.plot_gauge_angular", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.gauge"][data-mode="speedometer"], div[data-widget="plot.gauge"][data-mode="scale"]',
 
@@ -1030,6 +1051,9 @@ $.widget("sv.plot_gauge_angular", $.sv.widget, {
                     ]
                 }
             },
+			accessibility: {
+				enabled: false
+			},
             // the value axis
             yAxis: yaxis,
             series: series
@@ -1115,7 +1139,7 @@ $.widget("sv.plot_gauge_angular", $.sv.widget, {
 
 
 // ----- plot.gauge-vumeter ----------------------------------------------------------
-$.widget("sv.plot_gauge_vumeter", $.sv.widget, {
+$.widget("sv.plot_gauge_vumeter", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.gauge"][data-mode="vumeter"]',
 
@@ -1243,6 +1267,9 @@ $.widget("sv.plot_gauge_vumeter", $.sv.widget, {
                     ]
                 }
             },
+			accessibility: {
+				enabled: false
+			},
             series: series,
         });
         styles.push('.highcharts-plot-background { fill: url(' + document.baseURI + '#vumeterGradient) }');
@@ -1286,7 +1313,7 @@ $.widget("sv.plot_gauge_vumeter", $.sv.widget, {
 
 
 // ----- plot.pie --------------------------------------------------------------
-$.widget("sv.plot_pie", $.sv.widget, {
+$.widget("sv.plot_pie", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.pie"]',
 
@@ -1364,6 +1391,9 @@ $.widget("sv.plot_pie", $.sv.widget, {
                     showInLegend: isLegend
                 }
             },
+			accessibility: {
+				enabled: false
+			},
             series: [{
                 name: headline,
                 colorByPoint: true,
@@ -1427,7 +1457,7 @@ $.widget("sv.plot_pie", $.sv.widget, {
 
 
 // ----- plot.rtr -------------------------------------------------------------
-$.widget("sv.plot_rtr", $.sv.widget, {
+$.widget("sv.plot_rtr", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.rtr"]',
 
@@ -1507,7 +1537,10 @@ $.widget("sv.plot_rtr", $.sv.widget, {
                     return this.series.name + ' <b>' + this.y.transUnit('temp') + '</b><br>';
                 },
                 shared: true
-            }
+            },
+			accessibility: {
+				enabled: false
+			}
         };
 		
 		// combine chart options with options defined in widget chartOptions parameter
@@ -1568,7 +1601,7 @@ $.widget("sv.plot_rtr", $.sv.widget, {
 
 
 // ----- plot.temprose --------------------------------------------------------
-$.widget("sv.plot_temprose", $.sv.widget, {
+$.widget("sv.plot_temprose", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.temprose"]',
 
@@ -1622,7 +1655,10 @@ $.widget("sv.plot_temprose", $.sv.widget, {
                 layout: 'vertical',
                 align: 'center',
                 floating: true,
-            }
+            },
+			accessibility: {
+				enabled: false
+			}
         });
     },
 
@@ -1651,7 +1687,7 @@ $.widget("sv.plot_temprose", $.sv.widget, {
 
 
 // ----- plot.xyplot ----------------------------------------------------------
-$.widget("sv.plot_xyplot", $.sv.widget, {
+$.widget("sv.plot_xyplot", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.xyplot"]',
 
@@ -1860,6 +1896,9 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
                     }
                 }
             },
+			accessibility: {
+				enabled: false
+			}
         };
 
         if(zoom) {

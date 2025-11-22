@@ -47,7 +47,7 @@
 	The widget offers styling options which will be transferred directly to Highcharts. You can even override existing plot options defined by the widget: 
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ plot.heatingcurve('p2', 'heatingcurve', 'outdoor_temp', 'flow_temp', { yAxis: { min:  20, max: 36, tickInterval: 2}, legend: { verticalAlign: 'bottom', y: -50 }}, legend: { verticalAlign: 'bottom', y: -50 }} ) }}
+			{{ plot.heatingcurve('p2', 'heatingcurve', 'outdoor_temp', 'flow_temp', { yAxis: { min:  20, max: 36, tickInterval: 2}, legend: { verticalAlign: 'bottom', y: -50 }} ) }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 	<div class="html">
