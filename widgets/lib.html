@@ -177,7 +177,7 @@
 			.find('.plot').each(function() {
 				var actualPlotHeight = parseFloat($(this).css('height').replace('px',''));
 				$(this).css('height', actualPlotHeight * sizeFactor);
-				$(this).highcharts().setSize(null, null);
+				$(this).widget('changeSize');
 			}).end()
 			.find('[data-widget="device.uzsutable"] .highcharts-root').css('max-height', sizeFactor < 1 ? '' : 400*sizeFactor+"px");
 		});
