@@ -37,6 +37,7 @@
 - language support for error texts in calendar services
 - translate function considers CR and LF as delimiters
 - new methods 'changeSize' and 'changeColorScheme' in prototype $.sv.widget allow better individual style adaption inside the widgets (for future extensions)
+- compatibility with PHP8.5 is approved and small changes on deprecated features are implemented.  
 
 ### Updated Libraries
 - Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.

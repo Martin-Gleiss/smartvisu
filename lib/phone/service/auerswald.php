@@ -40,6 +40,10 @@ class phone_auerswald extends phone
 
 		if ((int)$login->login > 0)
 		{
+			// $http_rsponse_header is deprecated as of PHP 8.5. Replacement for PHP >= 8.4
+			if (function_exists('http_get_last_response_headers')) 
+				$http_response_header = http_get_last_response_headers();
+
 			/*
 			---> response-header
 			[0] => HTTP/1.1 200 OK

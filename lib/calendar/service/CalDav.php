@@ -58,10 +58,10 @@ class calendar_caldav extends calendar
 				$loadError = curl_error($ch);
 				$this->error('Calendar: CalDav', translate('Read request to "'.$url.'" failed with message: " '.$loadError.' "', 'calendar_error_message'));
 				echo $this->json();
-				curl_close($ch);
+				if (PHP_VERSION_ID < 80000) curl_close($ch);
 				exit;
 			}
-			curl_close($ch);
+			if (PHP_VERSION_ID < 80000) curl_close($ch);
 			if ($this->debug)
 				fclose($fp);
 		
@@ -82,6 +82,10 @@ class calendar_caldav extends calendar
 			$caldavresponse = file_get_contents($url, false, $context);
 
 			if ($caldavresponse === false) {
+				 // $http_rsponse_header is deprecated as of PHP 8.5. Replacement for PHP >= 8.4
+				if (function_exists('http_get_last_response_headers')) 
+					$http_response_header = http_get_last_response_headers();
+
 				if (substr($this->errorMessage, 0, 17) == 'file_get_contents')
 					$loadError = substr(strrchr($this->errorMessage, ':'), 2);
 				elseif (!empty($http_response_header)) 
