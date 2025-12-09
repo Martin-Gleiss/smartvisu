@@ -15,7 +15,7 @@
 
 	<div data-role="collapsible-set" style="margin-top: -15px;" data-inset="false" data-mini="true" data-content-theme="a">
 
-		<div data-role="collapsible"{{ pagepath not in ['design','misc'] ? ' data-collapsed="false"' }} data-theme="c" data-content-theme="a">
+		<div data-role="collapsible"{{ pagepath not in ['design','quad','misc'] ? ' data-collapsed="false"' }} data-theme="c" data-content-theme="a">
 			<h3>Widgets</h3>
 
 			<ul data-role="listview">
@@ -92,7 +92,7 @@
 			</ul>
 		</div>
 
-		<div data-role="collapsible"{{ pagepath == 'design' ? ' data-collapsed="false"' }} data-theme="c" data-content-theme="a">
+		<div data-role="collapsible"{{ pagepath in ['design','quad'] ? ' data-collapsed="false"' }} data-theme="c" data-content-theme="a">
 			<h3>Design</h3>
 
 			<ul data-role="listview" data-dividertheme="c">
