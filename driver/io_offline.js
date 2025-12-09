@@ -390,19 +390,18 @@ var io = {
 	 * stop all subscribed series of a single plot or of all plots on the page
 	 */
 	stopseries: function (plotwidget) {
-			if (plotwidget === undefined)
-			plotWidgets = widget.plot();
+		if (plotwidget === undefined)
+			plotWidgets = widget.plot();	// all plot widgets 
 		else
-			plotWidgets = plotwidget;
+			plotWidgets = plotwidget;		// single plot widget given in parameter
 	
 		plotWidgets.each(function (idx) {
 			var items = widget.explode($(this).attr('data-item'));
 			for (var i = 0; i < items.length; i++) {
-				if ((plotwidget == undefined) || (widget.plot(items[i]).length == 1)){
+				if ((plotwidget == undefined || widget.plot(items[i]).length == 1) && widget.checkseries(items[i])){
 					clearTimeout(io.seriesTimer[items[i]]);
 					console.log('[io_offline] cancelling series '+items[i]);
-					if (plotwidget != undefined)
-						delete widget.buffer[items[i]];
+					delete widget.buffer[items[i]];
 				}
 			}
 		});
@@ -436,8 +435,7 @@ var io = {
 			var items = widget.explode($(this).attr('data-item'));
 			for (var i = 0; i < items.length; i++) {
 				var item = items[i].split('.');
-
-				if ((plotwidget != undefined || widget.get(items[i]) == null) && (widget.checkseries(items[i]))) {
+				if ((plotwidget != undefined || widget.get(items[i]) == null) && widget.checkseries(items[i])) {
 
 					var assign = ($(this).attr('data-assign') || "").explode();
 					var yAxis = (assign[i] ? assign[i] - 1 : 0)
