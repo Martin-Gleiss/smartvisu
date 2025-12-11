@@ -135,7 +135,7 @@ $.widget("sv.plot_heatingcurve", $.sv.plot_highcharts, {
             chart: { className: 'heatingcurve', styledMode: true },
             title: { text: 'Heizkurve', y: 70 },
             xAxis: { min: -30, max: 20, minTickInterval: 5, title: { text: 'AT', align: 'high', margin: -2, x: -5, y: -40 } },
-            yAxis: { min:  22, max: 33, minTickInterval: 5, title: { text: 'VL', align: 'high', rotation: 00, x: 60, y: 20 } },
+            yAxis: { min:  22, max: 33, minTickInterval: 5, title: { text: 'VL', align: 'high', rotation: 0, x: 60, y: 20 } },
             legend: {
                 align: 'center',
                 verticalAlign: 'top',
@@ -185,8 +185,6 @@ $.widget("sv.plot_heatingcurve", $.sv.plot_highcharts, {
             point.update([response[1] * 1.0, response[2] * 1.0], true);
         else
             chart.series[1].addPoint([response[1] * 1.0, response[2] * 1.0], true);
-
-        // chart.redraw();
     }
 
 });
