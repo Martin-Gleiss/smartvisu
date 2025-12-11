@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2025
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -108,7 +108,7 @@
 */
 
 {% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export, source) %}
-	{%- if (not export is empty) and export > 0 -%}
+	{%- if (not export is empty) and export > 0 and config_plot_library == 'highcharts' -%}
 		{%- if once('plotimageexport') -%}
 			<script src="vendor/plot.highcharts/modules/exporting.js"></script>
 			<script src="vendor/plot.highcharts/modules/offline-exporting.js"></script>
@@ -145,7 +145,7 @@
 			{%- set count = count|merge([count|last]) -%}
 		{%- endif -%}
 		{%- set counti = count[loop.index0] -%}
-		{%- if (mode == 'raw' or counti >= 5000) and zoom != 'advanced' -%}
+		{%- if (mode == 'raw' or counti >= 5000) and zoom != 'advanced' and config_plot_library == 'highcharts' -%}
 			{%- if once('plotboost') -%}
 				<script src="vendor/plot.highcharts/modules/boost.js"></script>
 			{%- endif -%}
@@ -268,7 +268,7 @@
 	{% set tmin = tmin|default('1h') %}
 	{% set mode = mode|default('avg') %}
 	{% set count = count|default(100) %}
-	{%- if (mode == 'raw' or count >= 5000) and zoom != 'advanced' -%}
+	{%- if (mode == 'raw' or count >= 5000) and zoom != 'advanced' and config_plot_library == 'highcharts' -%}
 		{%- if once('plotboost') -%}
 			<script src="vendor/plot.highcharts/modules/boost.js"></script>
 		{%- endif -%}
@@ -396,7 +396,7 @@
 */
 
 {% macro xyplot(id, item, xitem, yitem, xmin, xmax, ymin, ymax, label, xylabel, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export) %}
-	{%- if (not export is empty) and export > 0 -%}
+	{%- if (not export is empty) and export > 0 and config_plot_library == 'highcharts' -%}
 		{%- if once('plotimageexport') -%}
 			<script src="vendor/plot.highcharts/modules/exporting.js"></script>
 			<script src="vendor/plot.highcharts/modules/offline-exporting.js"></script>

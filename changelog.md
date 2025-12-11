@@ -22,6 +22,7 @@
 - offline driver simulates some item properties, e.g. "last_change", "last_value", "prev_change" ... for testing (item properties are supported in iobroker and smarthomeNG already)
 - widgets are shown with red border if an item is undefined (active if "driver busy signalling" is configured)
 - calenders now evaluate time zone information inside the events
+- the plot library can now be chosen via a config variable and a configuration file. An alternative for Highcharts will be presented in the next development version.
 
 ### Improvements
 - twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true

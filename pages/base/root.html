@@ -42,11 +42,18 @@
 	<link rel="manifest" href="index.php?page=manifest">
 
 	<link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.4.5.min.css" />
+	
+/** define files to import for configured plot library */
+{% set plotcfg  = configmeta('lib/config/plot.'~config_plot_library~'.cfg') %}
+{% set plot_css = plotcfg["default"]["plot_css"]|trim %}
+{% set plot_lib = plotcfg["default"]["plot_lib"]|trim|split(',') %}
+{% set plot_js  = plotcfg["default"]["plot_js"]|trim %}
+
 
 /** CSS assets **/
 {% set design_css = isfile('designs/' ~ config_design ~ '.css') ? 'designs/' ~ config_design ~ '.css' : 'dropins/designs/' ~ config_design ~ '.css' %}
 {% set cssFiles = [
-		'vendor/plot.highcharts/highcharts.css',
+		plot_css,
 		'vendor/JTSage/DateBox/css/jtsage-datebox.css',
 		'vendor/jquery.roundslider/roundslider.css',
 		'vendor/jquery.toast/toast.css',
@@ -105,8 +112,8 @@
 	</script>
 
 	<script>
-		// work around a bug of jQuery Mobile 1.4.5 themes
 		$(document).on("pagebeforecreate", function( event, ui ) {
+			// work around a bug of jQuery Mobile 1.4.5 themes
 			$(this).find('div[data-role="collapsible-set"][data-theme]').each(function() {
 				$(this).find('div[data-role="collapsible"]:not([data-theme])').attr('data-theme', $(this).attr('data-theme'));
 				$(this).attr('data-theme','');
@@ -114,6 +121,11 @@
 			$(this).find('ul[data-role="listview"][data-dividertheme]').each(function() {
 				$(this).find('li[data-role="list-divider"]:not([data-theme])').attr('data-theme', $(this).attr('data-dividertheme'));
 			});
+			
+			// start event handlers needed for e.g. eCharts to determine color scheme and size
+			if (typeof plotDesign == 'object')
+				plotDesign.init();
+
 		});
 	</script>
 
@@ -127,12 +139,10 @@
 {% endif %}
 
 /** JavaScript assets **/
-{% set jsFiles = [
-		'lib/base/jquery.mobile.slider.js',
-		'vendor/plot.highcharts/highstock.js',
-		'vendor/plot.highcharts/highcharts-more.js',
-		'vendor/plot.highcharts/modules/draggable-points.js',
-		'vendor/plot.highcharts/modules/solid-gauge.js',
+/** we put one of our own scripts first in order to avoid vendor libraries setting "use-strict" which throws errors in cache mode */
+{% set jsFiles = ['lib/base/jquery.mobile.slider.js']|
+		merge(plot_lib)|
+		merge([
 		'vendor/jquery.cycle2/jquery.cycle2.js',
 		'vendor/jquery.roundslider/jquery-1.61.roundslider.js',
 		'vendor/jquery.toast/jquery.toast.js',
@@ -144,7 +154,7 @@
 		'lib/base/base.php',
 		'driver/io_' ~ config_driver ~ '.js',
 		'pages/' ~ config_pages ~ '/visu.js'
-	] %}
+	]) %}
 {% if isdir('driver/'~config_driver, '\.js') %}
 	{% for file in dir('driver/'~config_driver, '(.*)(\.js)') %}
 		{% set jsFiles = jsFiles|merge([file.path]) %}
@@ -153,6 +163,7 @@
 {% for file in dir('widgets', '(.*)(\.js)') %}
 	{% set jsFiles = jsFiles|merge([file.path]) %}
 {% endfor %}
+{% set jsFiles = jsFiles|merge([plot_js]) %}
 {% for file in dir('dropins/shwidgets', '(.*)(\.js)') %}
 	{% set jsFiles = jsFiles|merge([file.path]) %}
 {% endfor %}
@@ -219,6 +230,7 @@
 	$(document).on('pagecontainerbeforeshow', function () {
 		// get active page into an object in order to speed up item / widget updates
 		sv.activePage = $(":mobile-pagecontainer").pagecontainer("getActivePage");
+
 		fx.init();
 		repeater.init();
 		{% if config_timesource == "server" %}
@@ -226,8 +238,7 @@
 				console.log('[root.html] getting server time and timezone');
 				getServerTimeAndZone();
 			}
-		{% endif %}
-		
+		{% endif %}	
 		io.run();
 	});
 
@@ -241,13 +252,6 @@
 			io.socketErrorNotification = notify.message('warning', 'Backend Driver', "{{ driver_error_msg }}");
 		{% endif %}
 
-		/* workaround for jQM theme bug in Firefox - obsolete after fix in Firefox
-		$(this).find('.ui-collapsible-heading').each(function(){
-			var headerClass = 'ui-page-theme-'+ $(this).closest('div').attr('data-theme');
-			$(this).addClass(headerClass);
-		});
-		*/
-		
 		// reset all collapsibles in menu to original state
 		{% if config_collapsible_reset %}
 			$(sv.activePage).find('.secondary [data-collapsed="false"] .ui-collapsible-heading-collapsed').parents().first().collapsible('expand');
