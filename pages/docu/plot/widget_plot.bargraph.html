@@ -1,0 +1,53 @@
+/**
+* -----------------------------------------------------------------------------
+* @package		smartVISU
+* @author		Martin Gleiß
+* @copyright	2012 - 2025
+* @license		GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_plot.html" %}
+
+{% block example %}
+<script>
+	$( document ).ready(function() {
+			 io.write('bath.p1', 23 );
+			 io.write('bath.p2', 37 );
+			 io.write('bath.p3', 44 );
+		});
+
+</script>
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+					{{ plot.bargraph('', ['bath.p1','bath.p2','bath.p3'], ['Bar 1','Bar 2','Bar 3']) }}
+					{{ plot.bargraph('', ['bath.p1','bath.p2','bath.p3'], ['Bar 1','Bar 2','Bar 3'], ['#FF0000','#FFFFFF','#000000'], '0', '100', 'Axis Title', 'Chart Title', 'horizontal', 'temp') }}
+		{% endverbatim %}{% endfilter %}</code>
+	</div>
+
+	<div class="html">
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>a simple plot in vertical mode</h3>
+					{{ plot.bargraph('', ['bath.p1','bath.p2','bath.p3'], ['Bar 1','Bar 2','Bar 3']) }}
+				</div>
+			</div>
+		</div>
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>Custon colors, horizontal mode </h3>
+					{{ plot.bargraph('', ['bath.p1','bath.p2','bath.p3'], ['Bar 1','Bar 2','Bar 3'], ['#FF0000','#FFFFFF','#000000'], '0', '100', 'Axis Title', 'Chart Title', 'horizontal', 'temp') }}
+				</div>
+			</div>
+		</div>
+
+	</div>
+	All API options of the plot library are accessible by the "chartoptions" parameter. See the docu for <a href="index.php?page=plot/widget_plot.period">plot.period</a> for more information.
+
+{% endblock %}

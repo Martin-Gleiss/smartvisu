@@ -2013,3 +2013,111 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 	}
 }
 });
+
+// ----- plot.bargraph --------------------------------------------------------------
+$.widget("sv.plot_bargraph", $.sv.plot_highcharts, {
+
+    initSelector: 'div[data-widget="plot.bargraph"]',
+
+    options: {
+        label: '',
+        color: '',
+		ymin: '',
+		ymax: '',
+		yaxis: '',
+        text: '',
+        mode: '',
+		unit: '',
+		chartOptions: null
+    },
+
+    _create: function() {
+        this._super();
+		
+        var ymin = this.options.ymin || null;
+        var ymax = this.options.ymax || null;
+        var labels = String(this.options.label).explode();
+        var color = String(this.options.color).explode();
+        var yaxis = this.options.yaxis;
+        var mode = this.options.mode;
+        var unit = this.options.unit.replace(';', ',');		// restore format strings
+		
+        var color = [];
+        if (this.options.color) 
+			color = String(this.options.color).explode();
+
+        // design
+        var headline = this.options.text;
+
+        // draw the plot
+        var chartOptions = {
+            chart: {
+                type: mode == 'vertical' ? 'column' : 'bar',
+				styledMode: true
+            },
+            legend: {
+                enabled: false
+            },
+            title: {
+                text: headline
+            },
+            tooltip: {
+                formatter: function() {
+                    return this.x + ': <b>' + this.y.transUnit(unit) + '</b>';
+                },
+            },
+            navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: false
+				}
+			},
+			xAxis: {
+				categories: labels
+			},
+			yAxis: {
+				min: ymin,
+				max: ymax,
+				title: {text: yaxis}
+			},			
+			accessibility: {
+				enabled: false
+			},
+            series: [{
+                colorByPoint: true,
+				data: []
+            }],
+        };
+		
+		$.extend(true, chartOptions, this.options.chartOptions);
+		this.element.highcharts(chartOptions);
+
+        //set custom colors
+        styles = [];
+        if (color && color.length > 0) {
+            for (var i = 0; i < color.length; i++) {
+                styles.push(".highcharts-color-" + i + " { fill: " + color[i] + "; stroke: " + color[i] + "; color: " + color[i] + "; }");
+            }
+        }
+        if(styles.length > 0) {
+            var containerId = this.element.find('.highcharts-container')[0].id;
+            styles.unshift('<style type="text/css">');
+            $(styles.join("\n#" + containerId + " ") + "\n</style>").appendTo(this.element.find('.highcharts-container'));
+        }
+    },
+
+    _update: function(response) {
+        var data = [];
+        var items = this.items;
+        for (i = 0; i < items.length; i++) {
+            if (response[i])
+                data[i] = response[i];
+            else
+                data[i] = widget.get(items[i]);
+        }
+
+        var chart = this.element.highcharts();
+        chart.series[0].setData(data, false);
+        chart.redraw();
+    },
+
+});

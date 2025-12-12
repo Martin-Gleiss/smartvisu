@@ -14,9 +14,10 @@
 - new widget "device.smallrtr" displays a room temperature regulator as a table line
 - new format option "text" in basic.input removes the spin-buttons from number input fields
 - device.uzsuicon is now allowed to be placed inside a popup which is closed before UZSU data editing. Re-opening afterwards can be controlled by giving the popup the class "uzsu_reopen". 
+- new widget plot.bargraph displays an array of items of type 'num' as bar or column chart
 
 ### Other New Features
-- all jQm widgets with write access to items have got a disable and enable method callable with "$(mySelector).widget('disable')" / "$(mySelector).widget('enable')" (basic.*, icon.*, device.rtrslider, device.roofwindow).
+- all jQm widgets with write access to items have got a disable and enable method callable with "$(mySelector).widget('disable')" / "$(mySelector).widget('enable')" (basic.\*, icon.\*, device.rtrslider, device.roofwindow).
 - new methods "widget.enable(jQObject)" and "widget.disable(jQObject)" handle the different widget types for enable/disable
 - improved openHAB driver: better decoding of numeric values / obsolete aggregation modes removed for series item (thanks to Patrik Germann)
 - offline driver simulates some item properties, e.g. "last_change", "last_value", "prev_change" ... for testing (item properties are supported in iobroker and smarthomeNG already)
@@ -751,7 +752,7 @@
 - device.blind & device.shutter: item_move is now optional
 - basic.shutter & device.shutter: min/max are renamed to value_top/bottom and value_top may be less than value_bottom
 - device.shutter: Value and text for pos1 and pos2 can be set by parameter
-- basic.tank & icon.* (dynamic icons): min is now implemented and max may be less than min
+- basic.tank & icon.\* (dynamic icons): min is now implemented and max may be less than min
 - device.dimmer: New parameters to specify pic, color, 'min_display', 'max_display' and position of the switch (left or right)
 - device.rtr: New parameters to specify separate offset item and additional content
 - Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)

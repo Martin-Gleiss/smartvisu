@@ -8,6 +8,33 @@
 */
 
 /**
+* A bar graph
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item[?]} one or more item(s). More items in array form: [ item1 , item2 ] (mandatory)
+* @param {text[]} one or more label(s) as x-axis categories. More labels in array form: [ label1 , label2 ] (mandatory)
+* @param {color[]=} color for each item e. g. '#f00' for red. More color/s in array form: ['#f00','#fff'] (optional, default: sutiable for design)
+* @param {text=} the minimum value for the y-axis (optional, no default)
+* @param {text=} the maximum value for the y-axis (optional, no default)
+* @param {text[?]=} title for the y-axis (optional)
+* @param {text=} text for headline (optional)
+* @param {text(horizontal,vertical)=vertical} orientation of the bars (optional, default: 'vertical')
+* @param {format[?]=} unit for the y-axis. Either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
+* @param {text[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+*
+* @author Wolfram v. Hülsen
+*/
+{% macro bargraph(id, item, label, color, ymin, ymax, yaxis, text, mode, unit, chartoptions) %}
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.bargraph" data-item="{{ implode(item) }}"
+		data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-ymin="{{ ymin }}" data-ymax="{{ ymax }}" data-yaxis="{{ yaxis }} "
+		data-text="{{ text|default('') }}" data-mode="{{ mode|default('vertical') }}" data-unit="{{ unit }}" data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}"
+		class="plot"></div>
+
+{% endmacro %}
+
+
+/**
 * The diagram showing curves of relative humidity and effective temperature superimposed upon rectangular coordinates. The comfort-zones indicate when humans feel good.
 *
 * @param {id=} unique id for this widget (optional)
