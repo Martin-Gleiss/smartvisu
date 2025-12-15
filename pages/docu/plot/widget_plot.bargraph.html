@@ -23,7 +23,7 @@
 	<div class="twig">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 					{{ plot.bargraph('', ['bath.p1','bath.p2','bath.p3'], ['Bar 1','Bar 2','Bar 3']) }}
-					{{ plot.bargraph('', ['bath.p1','bath.p2','bath.p3'], ['Bar 1','Bar 2','Bar 3'], ['#FF0000','#FFFFFF','#000000'], '0', '100', 'Axis Title', 'Chart Title', 'horizontal', 'temp') }}
+					{{ plot.bargraph('', ['bath.p1','bath.p2','bath.p3'], ['Bar 1','Bar 2','Bar 3'], ['#f00','#fff','#000'], '0', '100', 'Axis Title', 'Chart Title', 'horizontal', 'temp','inside', ['#000', '#000', '#fff']) }}
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
 
@@ -42,7 +42,7 @@
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false">
 					<h3>Custon colors, horizontal mode </h3>
-					{{ plot.bargraph('', ['bath.p1','bath.p2','bath.p3'], ['Bar 1','Bar 2','Bar 3'], ['#FF0000','#FFFFFF','#000000'], '0', '100', 'Axis Title', 'Chart Title', 'horizontal', 'temp') }}
+					{{ plot.bargraph('', ['bath.p1','bath.p2','bath.p3'], ['Bar 1','Bar 2','Bar 3'], ['#f00','#fff','#000'], '0', '100', 'Axis Title', 'Chart Title', 'horizontal', 'temp', 'inside', ['#000', '#000', '#fff']) }}
 				</div>
 			</div>
 		</div>

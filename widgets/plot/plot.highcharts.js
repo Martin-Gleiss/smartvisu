@@ -2020,7 +2020,7 @@ $.widget("sv.plot_bargraph", $.sv.plot_highcharts, {
     initSelector: 'div[data-widget="plot.bargraph"]',
 
     options: {
-        label: '',
+        xlabel: '',
         color: '',
 		ymin: '',
 		ymax: '',
@@ -2028,6 +2028,8 @@ $.widget("sv.plot_bargraph", $.sv.plot_highcharts, {
         text: '',
         mode: '',
 		unit: '',
+		datalabel: 'off',
+		datalabelcolor: '',
 		chartOptions: null
     },
 
@@ -2036,7 +2038,7 @@ $.widget("sv.plot_bargraph", $.sv.plot_highcharts, {
 		
         var ymin = this.options.ymin || null;
         var ymax = this.options.ymax || null;
-        var labels = String(this.options.label).explode();
+        var xlabels = String(this.options.xlabel).explode();
         var color = String(this.options.color).explode();
         var yaxis = this.options.yaxis;
         var mode = this.options.mode;
@@ -2045,9 +2047,16 @@ $.widget("sv.plot_bargraph", $.sv.plot_highcharts, {
         var color = [];
         if (this.options.color) 
 			color = String(this.options.color).explode();
-
-        // design
+		
+		var datalabelcolor = [];	
+			if (this.options.datalabelcolor) 
+				datalabelcolor = String(this.options.datalabelcolor).explode();
+			
         var headline = this.options.text;
+		
+		var datalabel = {enabled: this.options.datalabel != 'off' };
+		if (this.options.datalabel == 'inside')
+			datalabel.inside = true;
 
         // draw the plot
         var chartOptions = {
@@ -2072,7 +2081,7 @@ $.widget("sv.plot_bargraph", $.sv.plot_highcharts, {
 				}
 			},
 			xAxis: {
-				categories: labels
+				categories: xlabels
 			},
 			yAxis: {
 				min: ymin,
@@ -2084,20 +2093,32 @@ $.widget("sv.plot_bargraph", $.sv.plot_highcharts, {
 			},
             series: [{
                 colorByPoint: true,
+				dataLabels: datalabel,
 				data: []
             }],
         };
 		
 		$.extend(true, chartOptions, this.options.chartOptions);
+		//DEBUG: console.log(chartOptions)
+		
 		this.element.highcharts(chartOptions);
 
-        //set custom colors
+        //set custom colors and other styles 
         styles = [];
         if (color && color.length > 0) {
             for (var i = 0; i < color.length; i++) {
                 styles.push(".highcharts-color-" + i + " { fill: " + color[i] + "; stroke: " + color[i] + "; color: " + color[i] + "; }");
             }
         }
+		if (datalabelcolor && datalabelcolor.length > 0) {
+            for (var i = 0; i < datalabelcolor.length; i++) {
+                styles.push(".highcharts-data-label-color-" + i + " text {fill: " + datalabelcolor[i] + "; stroke: " + datalabelcolor[i] + "; color: " + datalabelcolor[i] + "; font-size: unset; }");
+            }
+        } else if (datalabel.enabled == true) {
+			for (var i = 0; i < this.items.length; i++) {
+                styles.push(".highcharts-data-label-color-" + i + " text {font-size: unset; }");
+            }
+		}
         if(styles.length > 0) {
             var containerId = this.element.find('.highcharts-container')[0].id;
             styles.unshift('<style type="text/css">');
