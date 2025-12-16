@@ -2,10 +2,6 @@
 
 [![Join the chat at https://gitter.im/sVISU/Lobby](https://badges.gitter.im/sVISU/Lobby.svg)](https://gitter.im/sVISU/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
   
-## Warning ! The current version in this develop branch is experimental and should not be used in productive environments!
-Use version v3.5 from master branch instead.
-
-
 ## DESCRIPTION
 smartVISU is a framework to create a visualisation for smart home environments with simple html-pages.  
 It can be used with several smart home automation backends or directly on KNX.  
@@ -28,7 +24,7 @@ SEE: [smartvisu.de](https://www.smartvisu.de)
 ## SYSTEM REQUIREMENTS
   * IP-Network and / or KNX-Bus
   * [smarthomeNG](https://github.com/smarthomeNG), [linknx](https://sourceforge.net/projects/linknx/), [ioBroker](https://github.com/ioBroker/ioBroker), [openHAB](https://www.openhab.org/), [FHEM](https://fhem.de/) or [knxd](https://github.com/knxd/knxd) (deprecated: [eibd](http://www.auto.tuwien.ac.at/~mkoegler/index.php/eibd) ) backend or JSON interface
-  * Webserver with PHP 7.3.2 and above (PHP >=8.0 recommended). Compatibility with PHP v8.4 is verified. PHP packages required: libawl-php php-curl php php-json php-xml php-mbstring
+  * Webserver with PHP 7.3.2 and above (PHP >=8.0 recommended). Compatibility with PHP v8.5 is verified. PHP packages required: libawl-php php-curl php php-json php-xml php-mbstring
   * Firefox, Chrome, IE, Safari, iPhone, iPad, Android Phone or Android Tablet
  
  
