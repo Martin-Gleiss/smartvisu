@@ -1,4 +1,4 @@
-## v3.5.a | current development version
+## v3.6.0 | 16.12.2025
 ### New / Changed Widgets
 - UZSU widgets support one-time events with "once" property back in time on the current day using "activeToday" property 
 - UZSU widgets now disable editing the events until the backend has updated the dict with data from the former edit
