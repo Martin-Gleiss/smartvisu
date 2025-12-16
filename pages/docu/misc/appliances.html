@@ -2,28 +2,43 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2025
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
 
 
 {% extends "index.html" %}
+{% import "@widgets/appliance.html" as appliance %}
 
 {% block content %}
 
-	<h1>Appliances</h1>
-
-	<div class="block">
-		<div class="ui-bar-c ui-li-divider ui-corner-top">
-			<img src="lib/appliance/pics/logo_enertex.png" alt="enertex">enertex KNXnet/IP Router
-		</div>
-		<div class="ui-fixed ui-body-a ui-corner-bottom">
-
-			{{ appliance.iprouter('iprouter1') }}
-
-		</div>
+	<h1>Appliances</h1><br/>
+	Currently, there are two widgets for displaying status data for Enertex(R) KNX/IP routers: appliance.iprouter and appliance.iprouter_v2.<br/>
+	Since these devices are not widely used, smartVISU does not import the widget file automatically.
+	For using the widgets you need to import them in the respective visu page. The IP address and password of the device can be passed as widget parameters or as options
+	"appliance_iprouter_server" and "appliance_iprouter_pass" in config.ini.<br/>
+	The fourth parameter controls the display of closed tunnels. Set it to "0" in order to show only open tunnels.<br> 
+	While appliance.iprouter_v2 provides a collapsible block, appliance.iprouter does not (for backward compatibility reasons). <br/> <br/>
+	
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{% import "@widgets/appliance.html" as appliance %}
+			{{ appliance.iprouter_v2('iprouter1', '<IP of the device>', '<password>', 1) }}
+		{% endverbatim %}{% endfilter %} </code>
 	</div>
+	<br/>
+	{{ appliance.iprouter_v2('iprouter1', '', '', 1) }}
+
+	/** display dummy info if no device is connected */
+	{% set uid = uid(page, 'iprouter1') %}	
+	<script type="text/javascript">
+	if ($('#{{ uid }} .from').html() == ''){
+		$('#{{ uid}} .from').html('1234<img src="lib/appliance/pics/dir_in.png" alt="from">');
+		$('#{{ uid }} .to').html('321<img src="lib/appliance/pics/dir_out.png" alt="to">');
+		$('#{{ uid }} .tunnels').html('see more info here if a device is connected');
+		}
+	</script>
 
 
 {% endblock %}

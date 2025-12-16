@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß and others
-* @copyright   2012 - 2023
+* @copyright   2012 - 2025
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -231,12 +231,13 @@
 	- time, timeflip: Format is 24hr clock - e.g. '18:31:27'
 	- duration & durationflip: in seconds
 * @param {value=1} step between two values (optional, no effect on date/time types)
-* @param {text=} string format for date and datetime only (optional)
+* @param {text=} string format for date / datetime or number.  (optional) 
     - empty: default format for date will be standard date object (see above)
     - with given format option, the date will be converted to a string, e.g. '%d.%m.%Y'	represents DD.MM.YYYY.
 	  For options see https://jtsage.dev/DateBox/doc/3-3-output/
 	- to globally change time format for timeboxes, use the override method of JTSage in your visu.js:
 	  jQuery.extend(jQuery.jtsage.datebox.prototype.options, {overrideTimeOutput: "%H:%M", overrideTimeFieldOrder: ["h","i"] })
+	- For input type number, the option 'text' suppresses the up/down buttons
 *
 * @author Stefan Widmer
 * @info Inspired by Michael Würtenberger, date/time control uses JTSageDateBox
@@ -246,6 +247,7 @@
 	{% if type|lower == 'textarea' %}
 		<textarea {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.input" data-item="{{ item }}" type="textarea"></textarea>
 	{% else %}
+		{% if type|lower != 'number' and format == 'text' %}{% set format = '' %}{% endif %}
 		<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.input" data-item="{{ item }}"
 			{% if type|lower in ['time', 'timeflip'] %}
 				type="text" data-role="datebox" data-datebox-mode="{{ type~'box' }}" data-use-focus="true"
@@ -264,8 +266,12 @@
 			{% else %}
 				type="{{ type|default('text') }}"
 				min="{{ min }}" max="{{ max }}" step="{{ step|default(1) }}"
+			{% endif %}	
+			data-clear-btn="false" 
+			{% if type|lower == 'number' and format == 'text' %}
+				class="textfield"
 			{% endif %}
-			data-clear-btn="false" />
+			/>
 	{% endif %}
 {% endmacro %}
 
@@ -329,7 +335,8 @@
 * @param {item[?](bool,num,list,str)} one or more item(s). Multiple items in array-form: [item1, item2]
 * @param {format=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
   Formats 'date', 'time', 'long', 'short' and 'calendardate' are applicable on valid timestamps like "2020-01-01T12:00:00.000000+01:00" or Unix timestamps in Milliseconds
-  Use 'text' to display result as unformatted string, 'html' to render it as unescaped html, 'text2br' to convert line endings like '\r', '\n' or '\r\n' to HTML breaks or 'script' to just execute as JavaScript w/o displaying anything.
+  Use 'text' to display result as unformatted string, 'trimtext' similar to 'text' but with no leading and tailing whitespace,   'html' to render it as unescaped html, 
+  'text2br' to convert line endings like '\r', '\n' or '\r\n' to HTML breaks, 'uridecode' to decode the escaped characters in an URI or 'script' to just execute as JavaScript w/o displaying anything.
 * @param {formula=VAR} any valid JavaScript expression with following variables and aggregate functions (optional, default: VAR)
   - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
   - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
@@ -341,18 +348,19 @@
 * @param {text=} use 'tooltip' in combination with a widget id as href in order to attach a tooltip to that widget. Any other text will interpret href as link to a popup (optional)
 *
 * @see misc/fundamentals#Array-Form
+* @see misc/fundamentals#Formats and Units
 *
 * @author Stefan Widmer
 * @info inspired by Martin Gleiß and Raik Alber
 */
 {% macro print(id, item, format, formula, threshold, color, href, rel) %}
-{% set color = color|default('icon0') %}
-{% if href is not empty and rel != 'tooltip' %}<a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{% endif %}>{% endif %}
+{%- set color = color|default('icon0') -%}
+{%- if href is not empty and rel != 'tooltip' -%}<a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{%- endif %}>{%- endif -%}
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-item="{{ implode(item) }}" class="text" data-widget="basic.print"
 		data-format="{{ format }}" data-formula="{{ formula|default('VAR1') }}"
 		data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color) }}"
 		{% if rel == 'tooltip' %}data-bind="{{ uid(page, href) }}"{% endif %}>---</span>
-  {% if href is not empty and rel != 'tooltip' %}</a>{% endif %}
+  {%- if href is not empty and rel != 'tooltip' -%}</a>{%- endif -%}
 
 {% endmacro %}
 
@@ -724,13 +732,13 @@
 
 
 /**
-* A widget to trigger a logic (e. g. in smarthomeNG)
+* A widget to trigger a logic (e.g. in smarthomeNG)
 *
 * @param {id=} unique id for this widget (optional)
 * @param {text} the name of the trigger (logic)
 * @param {text=} text printed on the button (optional)
 * @param {image=} icon to show on the button (optional)
-* @param {text=1} value to send if the button is pressed (optional, default 1)
+* @param {text=} value to send with the trigger (optional, default = empty string)
 * @param {type=mini} type: 'micro', 'mini', 'midi' (optional, default: mini)
 * @param {text(button,page,both)=button} trigger event: 'button', 'page', 'both' (optional, default: button)
 * @param {color(icon0to5)=} single color e. g. '#f00' for red or icon class. (optional)

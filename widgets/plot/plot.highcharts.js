@@ -1,5 +1,14 @@
+// ----- prototype plot widget with some common methods
+$.widget("sv.plot_highcharts", $.sv.widget, {
+	
+	_changeSize: function(){
+		//DEBUG: console.log('resize');
+		this.element.highcharts().setSize(null, null);
+	}
+});
+
 // ----- plot.comfortchart ----------------------------------------------------
-$.widget("sv.plot_comfortchart", $.sv.widget, {
+$.widget("sv.plot_comfortchart", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.comfortchart"]',
 
@@ -69,7 +78,10 @@ $.widget("sv.plot_comfortchart", $.sv.widget, {
                 formatter: function () {
                     return this.x.transUnit('temp') + ' / ' + this.y.transUnit('%');
                 }
-            }
+            },
+			accessibility: {
+				enabled: false
+			}
         });
     },
 
@@ -93,7 +105,7 @@ $.widget("sv.plot_comfortchart", $.sv.widget, {
 
 
 // ----- plot.heatingcurve ----------------------------------------------------
-$.widget("sv.plot_heatingcurve", $.sv.widget, {
+$.widget("sv.plot_heatingcurve", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.heatingcurve"]',
 
@@ -123,7 +135,7 @@ $.widget("sv.plot_heatingcurve", $.sv.widget, {
             chart: { className: 'heatingcurve', styledMode: true },
             title: { text: 'Heizkurve', y: 70 },
             xAxis: { min: -30, max: 20, minTickInterval: 5, title: { text: 'AT', align: 'high', margin: -2, x: -5, y: -40 } },
-            yAxis: { min:  22, max: 33, minTickInterval: 5, title: { text: 'VL', align: 'high', rotation: 00, x: 60, y: 20 } },
+            yAxis: { min:  22, max: 33, minTickInterval: 5, title: { text: 'VL', align: 'high', rotation: 0, x: 60, y: 20 } },
             legend: {
                 align: 'center',
                 verticalAlign: 'top',
@@ -142,7 +154,10 @@ $.widget("sv.plot_heatingcurve", $.sv.widget, {
                 formatter: function () {
                     return this.x.transUnit('temp') + ' / ' + this.y.transUnit('temp');
                 }
-            }
+            },
+			accessibility: {
+				enabled: false
+			}
         };
 
         var userOptions = this.options.chartOptions;
@@ -170,15 +185,13 @@ $.widget("sv.plot_heatingcurve", $.sv.widget, {
             point.update([response[1] * 1.0, response[2] * 1.0], true);
         else
             chart.series[1].addPoint([response[1] * 1.0, response[2] * 1.0], true);
-
-        // chart.redraw();
     }
 
 });
 
 
 // ----- plot.period ----------------------------------------------------------
-$.widget("sv.plot_period", $.sv.widget, {
+$.widget("sv.plot_period", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.period"]',
 
@@ -277,7 +290,7 @@ $.widget("sv.plot_period", $.sv.widget, {
                 series.push({
                     type: (exposure[i] != null && (exposure[i].toLowerCase().endsWith('stair') || exposure[i].toLowerCase().endsWith('stack')) ? exposure[i].substr(0, exposure[i].length-5) : exposure[i]),
                     step: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? 'left' : false),
-                    dataGrouping: {enabled: (exposure[i] != null && exposure[i].toLowerCase().endsWith('stair') ? false : true)},
+                    dataGrouping: {enabled: ((exposure[i] != null && exposure[i].toLowerCase().endsWith('stair')) || zoom != 'advanced' ? false : true)},
                     name: (label[i] == null ? 'Item ' + (i+1) : label[i]),
                     data: [], // clone
                     yAxis: (assign[i] ? assign[i] - 1 : 0),
@@ -352,7 +365,7 @@ $.widget("sv.plot_period", $.sv.widget, {
 		var xMin = new Date() - new Date().duration(this.options.tmin);
         var xMax = new Date() - new Date().duration(this.options.tmax);
 		var dayDuration = 24*3600*1000;
-		var timezoneOffset = this.options.servertime == 'yes' ? parseInt(-Number(sv.serverTimezone.offset)/60 + (window.servertimeoffset/60000 ||0)) : new Date().getTimezoneOffset();
+		var timezoneOffset = this.options.servertime == 'yes' ? parseInt(-Number(sv.serverTimezone.offset)/60) + parseInt(window.servertimeoffset/60000 ||0) : new Date().getTimezoneOffset();
 		if (zoom == "day"){
 			xMin -= timezoneOffset * 60000;
 			xMin = xMin - xMin % dayDuration + dayDuration + timezoneOffset * 60000;
@@ -443,6 +456,9 @@ $.widget("sv.plot_period", $.sv.widget, {
                     }
                 }
             },
+			accessibility: {
+				enabled: false
+			}
         };
 
         if(zoom == 'advanced') { // use highstock
@@ -540,7 +556,7 @@ $.widget("sv.plot_period", $.sv.widget, {
         var chart = this.element.highcharts();
 		// window.servertimeoffset should be available now
 		if (window.servertimeoffset != undefined && window.servertimeoffset != 0 && this.options.servertime == 'yes')
-			chart.time.update({timezoneOffset: parseInt(-Number(sv.serverTimezone.offset)/60 + window.servertimeoffset/60000) });
+			chart.time.update({timezoneOffset: parseInt(-Number(sv.serverTimezone.offset)/60) + parseInt(window.servertimeoffset/60000) });
 		var actualDate = new Date();
 
         if (this.options.chartOptions && this.options.chartOptions.xAxis != undefined && typeof this.options.chartOptions.xAxis == 'object' && this.options.chartOptions.xAxis[0].min && this.options.chartOptions.xAxis[0].max){
@@ -622,15 +638,17 @@ $.widget("sv.plot_period", $.sv.widget, {
 		if (response[i] && response[i].length >= 5000 && chart.series[seriesIndex].options.dataGrouping.enabled && chart.options.boost.enabled)
 			chart.series[seriesIndex].update({"dataGrouping": {"enabled": false}}, false);
         }
-		//DEBUG: console.log('chart redraw _update() end');
+		//Measure plot generation time
+		//DEBUG: console.time('line');
 		chart.redraw();
+		//DEBUG: console.timeEnd('line');
     },
 
 });
 
 
 // ----- plot.gauge solid ------------------------------------------------------
-$.widget("sv.plot_gauge_", $.sv.widget, {
+$.widget("sv.plot_gauge_", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.gauge"][data-mode^="solid"]',
 
@@ -725,6 +743,9 @@ $.widget("sv.plot_gauge_", $.sv.widget, {
                     stickyTracking: false
                 },
             },
+			accessibility: {
+				enabled: false
+			},
 
             series: [{
                 name: headline,
@@ -794,7 +815,7 @@ $.widget("sv.plot_gauge_", $.sv.widget, {
 
 
 // ----- plot.gauge angular ----------------------------------------------------
-$.widget("sv.plot_gauge_angular", $.sv.widget, {
+$.widget("sv.plot_gauge_angular", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.gauge"][data-mode="speedometer"], div[data-widget="plot.gauge"][data-mode="scale"]',
 
@@ -1028,6 +1049,9 @@ $.widget("sv.plot_gauge_angular", $.sv.widget, {
                     ]
                 }
             },
+			accessibility: {
+				enabled: false
+			},
             // the value axis
             yAxis: yaxis,
             series: series
@@ -1113,7 +1137,7 @@ $.widget("sv.plot_gauge_angular", $.sv.widget, {
 
 
 // ----- plot.gauge-vumeter ----------------------------------------------------------
-$.widget("sv.plot_gauge_vumeter", $.sv.widget, {
+$.widget("sv.plot_gauge_vumeter", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.gauge"][data-mode="vumeter"]',
 
@@ -1241,6 +1265,9 @@ $.widget("sv.plot_gauge_vumeter", $.sv.widget, {
                     ]
                 }
             },
+			accessibility: {
+				enabled: false
+			},
             series: series,
         });
         styles.push('.highcharts-plot-background { fill: url(' + document.baseURI + '#vumeterGradient) }');
@@ -1284,7 +1311,7 @@ $.widget("sv.plot_gauge_vumeter", $.sv.widget, {
 
 
 // ----- plot.pie --------------------------------------------------------------
-$.widget("sv.plot_pie", $.sv.widget, {
+$.widget("sv.plot_pie", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.pie"]',
 
@@ -1362,6 +1389,9 @@ $.widget("sv.plot_pie", $.sv.widget, {
                     showInLegend: isLegend
                 }
             },
+			accessibility: {
+				enabled: false
+			},
             series: [{
                 name: headline,
                 colorByPoint: true,
@@ -1425,7 +1455,7 @@ $.widget("sv.plot_pie", $.sv.widget, {
 
 
 // ----- plot.rtr -------------------------------------------------------------
-$.widget("sv.plot_rtr", $.sv.widget, {
+$.widget("sv.plot_rtr", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.rtr"]',
 
@@ -1454,7 +1484,7 @@ $.widget("sv.plot_rtr", $.sv.widget, {
         var chartOptions= {
             chart: {type: 'line', styledMode: true},
             title: { text: null },
-			time: {timezoneOffset: this.options.servertime == 'yes' ? parseInt(-Number(sv.serverTimezone.offset)/60 + (window.servertimeoffset/60000 ||0)) : new Date().getTimezoneOffset()},
+			time: {timezoneOffset: this.options.servertime == 'yes' ? parseInt(-Number(sv.serverTimezone.offset)/60) + parseInt(window.servertimeoffset/60000 ||0) : new Date().getTimezoneOffset()},
             legend: {
                 align: 'center',
                 verticalAlign: 'top',
@@ -1505,7 +1535,10 @@ $.widget("sv.plot_rtr", $.sv.widget, {
                     return this.series.name + ' <b>' + this.y.transUnit('temp') + '</b><br>';
                 },
                 shared: true
-            }
+            },
+			accessibility: {
+				enabled: false
+			}
         };
 		
 		// combine chart options with options defined in widget chartOptions parameter
@@ -1525,7 +1558,7 @@ $.widget("sv.plot_rtr", $.sv.widget, {
 
         var chart = this.element.highcharts();
 		if (window.servertimeoffset != undefined && window.servertimeoffset != 0 && this.options.servertime == 'yes')
-			chart.time.update({timezoneOffset: parseInt(-Number(sv.serverTimezone.offset)/60 + (window.servertimeoffset/60000)) });
+			chart.time.update({timezoneOffset: parseInt(-Number(sv.serverTimezone.offset)/60) + parseInt(window.servertimeoffset/60000) });
 
         chart.xAxis[0].setExtremes(new Date() - new Date().duration(this.options.tmin), new Date() - new Date().duration(this.options.tmax), false);
 
@@ -1566,7 +1599,7 @@ $.widget("sv.plot_rtr", $.sv.widget, {
 
 
 // ----- plot.temprose --------------------------------------------------------
-$.widget("sv.plot_temprose", $.sv.widget, {
+$.widget("sv.plot_temprose", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.temprose"]',
 
@@ -1620,7 +1653,10 @@ $.widget("sv.plot_temprose", $.sv.widget, {
                 layout: 'vertical',
                 align: 'center',
                 floating: true,
-            }
+            },
+			accessibility: {
+				enabled: false
+			}
         });
     },
 
@@ -1649,7 +1685,7 @@ $.widget("sv.plot_temprose", $.sv.widget, {
 
 
 // ----- plot.xyplot ----------------------------------------------------------
-$.widget("sv.plot_xyplot", $.sv.widget, {
+$.widget("sv.plot_xyplot", $.sv.plot_highcharts, {
 
     initSelector: 'div[data-widget="plot.xyplot"]',
 
@@ -1858,6 +1894,9 @@ $.widget("sv.plot_xyplot", $.sv.widget, {
                     }
                 }
             },
+			accessibility: {
+				enabled: false
+			}
         };
 
         if(zoom) {
@@ -1919,7 +1958,8 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 
 	options: {
 		bind: null,
-		step: null
+		step: null,
+		zoom: 0
 	},
 	
 	delta: null,
@@ -1930,7 +1970,7 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 	},
 
 	_events: {
-    'click': function (event) {
+	'click': function (event) {
 		event.preventDefault();
 		event.stopPropagation();
 		var step = this.options.step;
@@ -1952,7 +1992,7 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 		$('#'+this.options.bind).attr('data-tmax', tmax);
 		var that = $('#'+this.options.bind).data().svWidget;
 		that.options.tmin = tmin;
-	    that.options.tmax = tmax; 
+		that.options.tmax = tmax; 
 
 		var plot = '';
 		var items = $('#'+this.options.bind).attr('data-item').split(/,\s*/);
@@ -1963,7 +2003,142 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 		}
 		$('#'+this.options.bind).attr('data-item', plot)
 		that.options.item = plot;
+		if (this.options.zoom == 1){
+			var delta = new Date().duration(direction + step);
+			var extremes = that.element.highcharts().xAxis[0].getExtremes();
+			that.element.highcharts().xAxis[0].setExtremes(extremes.userMin - delta, extremes.userMax - delta); //set new zooming range for updated plot
+		} else
+			that.element.highcharts().xAxis[0].setExtremes(null, null);  //reset zoom level before updating the plot
 		io.startseries($('#'+this.options.bind));
 	}
 }
+});
+
+// ----- plot.bargraph --------------------------------------------------------------
+$.widget("sv.plot_bargraph", $.sv.plot_highcharts, {
+
+    initSelector: 'div[data-widget="plot.bargraph"]',
+
+    options: {
+        xlabel: '',
+        color: '',
+		ymin: '',
+		ymax: '',
+		yaxis: '',
+        text: '',
+        mode: '',
+		unit: '',
+		datalabel: 'off',
+		datalabelcolor: '',
+		chartOptions: null
+    },
+
+    _create: function() {
+        this._super();
+		
+        var ymin = this.options.ymin || null;
+        var ymax = this.options.ymax || null;
+        var xlabels = String(this.options.xlabel).explode();
+        var color = String(this.options.color).explode();
+        var yaxis = this.options.yaxis;
+        var mode = this.options.mode;
+        var unit = this.options.unit.replace(';', ',');		// restore format strings
+		
+        var color = [];
+        if (this.options.color) 
+			color = String(this.options.color).explode();
+		
+		var datalabelcolor = [];	
+			if (this.options.datalabelcolor) 
+				datalabelcolor = String(this.options.datalabelcolor).explode();
+			
+        var headline = this.options.text;
+		
+		var datalabel = {enabled: this.options.datalabel != 'off' };
+		if (this.options.datalabel == 'inside')
+			datalabel.inside = true;
+
+        // draw the plot
+        var chartOptions = {
+            chart: {
+                type: mode == 'vertical' ? 'column' : 'bar',
+				styledMode: true
+            },
+            legend: {
+                enabled: false
+            },
+            title: {
+                text: headline
+            },
+            tooltip: {
+                formatter: function() {
+                    return this.x + ': <b>' + this.y.transUnit(unit) + '</b>';
+                },
+            },
+            navigation: {	// options for export context menu
+				buttonOptions: {
+					enabled: false
+				}
+			},
+			xAxis: {
+				categories: xlabels
+			},
+			yAxis: {
+				min: ymin,
+				max: ymax,
+				title: {text: yaxis}
+			},			
+			accessibility: {
+				enabled: false
+			},
+            series: [{
+                colorByPoint: true,
+				dataLabels: datalabel,
+				data: []
+            }],
+        };
+		
+		$.extend(true, chartOptions, this.options.chartOptions);
+		//DEBUG: console.log(chartOptions)
+		
+		this.element.highcharts(chartOptions);
+
+        //set custom colors and other styles 
+        styles = [];
+        if (color && color.length > 0) {
+            for (var i = 0; i < color.length; i++) {
+                styles.push(".highcharts-color-" + i + " { fill: " + color[i] + "; stroke: " + color[i] + "; color: " + color[i] + "; }");
+            }
+        }
+		if (datalabelcolor && datalabelcolor.length > 0) {
+            for (var i = 0; i < datalabelcolor.length; i++) {
+                styles.push(".highcharts-data-label-color-" + i + " text {fill: " + datalabelcolor[i] + "; stroke: " + datalabelcolor[i] + "; color: " + datalabelcolor[i] + "; font-size: unset; }");
+            }
+        } else if (datalabel.enabled == true) {
+			for (var i = 0; i < this.items.length; i++) {
+                styles.push(".highcharts-data-label-color-" + i + " text {font-size: unset; }");
+            }
+		}
+        if(styles.length > 0) {
+            var containerId = this.element.find('.highcharts-container')[0].id;
+            styles.unshift('<style type="text/css">');
+            $(styles.join("\n#" + containerId + " ") + "\n</style>").appendTo(this.element.find('.highcharts-container'));
+        }
+    },
+
+    _update: function(response) {
+        var data = [];
+        var items = this.items;
+        for (i = 0; i < items.length; i++) {
+            if (response[i])
+                data[i] = response[i];
+            else
+                data[i] = widget.get(items[i]);
+        }
+
+        var chart = this.element.highcharts();
+        chart.series[0].setData(data, false);
+        chart.redraw();
+    },
+
 });

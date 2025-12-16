@@ -1,4 +1,73 @@
-## 3.5
+## v3.6.0 | 16.12.2025
+### New / Changed Widgets
+- UZSU widgets support one-time events with "once" property back in time on the current day using "activeToday" property 
+- UZSU widgets now disable editing the events until the backend has updated the dict with data from the former edit
+- device.uzsuicon and device.uzsugraph support the "perday" option for interpolation (interpolation with the days events only, not across day borders)
+- Enertex (R) appliance.iprouter_v2 widget has been adapted to older device types and has got a new option to hide closed tunnels (thanks to @stoepf)
+- status.collapse and status.customstyle allow items of type "str" (no comparative operators (<,<=,=>,>) allowed with text). 
+- status badge is now able to display symbols
+- new widget status.disable disables widgets and attaches a "locked" badge mainly to the button-type elements
+- basic print has always printed values with a leading and tailing whitespace. This is still default behaviour but can be avoided for text with format 'trimtext'
+- basic print is now able to decode URIs if the format 'uridecode' is used
+- calendar.waste got a configurable date format called "wastedate" in the language files
+- plot.timeshift got an option to preserve or reset the current zoom level on the shifted x axis / app analyse_plot preserves the zoom level now
+- new widget "device.smallrtr" displays a room temperature regulator as a table line
+- new format option "text" in basic.input removes the spin-buttons from number input fields
+- device.uzsuicon is now allowed to be placed inside a popup which is closed before UZSU data editing. Re-opening afterwards can be controlled by giving the popup the class "uzsu_reopen". 
+- new widget plot.bargraph displays an array of items of type 'num' as bar or column chart
+
+### Other New Features
+- all jQm widgets with write access to items have got a disable and enable method callable with "$(mySelector).widget('disable')" / "$(mySelector).widget('enable')" (basic.\*, icon.\*, device.rtrslider, device.roofwindow).
+- new methods "widget.enable(jQObject)" and "widget.disable(jQObject)" handle the different widget types for enable/disable
+- improved openHAB driver: better decoding of numeric values / obsolete aggregation modes removed for series item (thanks to Patrik Germann)
+- offline driver simulates some item properties, e.g. "last_change", "last_value", "prev_change" ... for testing (item properties are supported in iobroker and smarthomeNG already)
+- widgets are shown with red border if an item is undefined (active if "driver busy signalling" is configured)
+- calenders now evaluate time zone information inside the events
+- the plot library can now be chosen via a config variable and a configuration file. An alternative for Highcharts will be presented in the next development version.
+
+### Improvements
+- twig function "localize_svg" returns full icon path instead of namespace if parameter "$full" is set to true
+- docu page "Fundamentals" explains the format and unit conversion for e.g. basic.print
+- success message for Google V3 calendar authorization / known credentials serve as default values
+- googleV3 calendar service places an authorization link directly into the calendar list if authorization fails due to invalid refresh token
+- limit Highcharts boost mode to charts without navigator (where dataGrouping is not active)
+- extended error handling in backup function. Early warning if backup file exeeds size limits for restore operation.
+- templatechecker looks for masteritem.json in configured pages directory if pages to check are in "smarthome" folder
+- roundsliders get initialized already in _create method in order to show the slider even if item value is undefined.
+- new widget property "this.visibleElement" points to the styleable element for some widgets where it differs from "this.element"
+- unified format for geo coordinates in weather services: lat=...&lon=... gets translated into individual formats for the services pirateweather.net, open-meteo.com and visualcrossing.com
+- language support for error texts in calendar services
+- translate function considers CR and LF as delimiters
+- new methods 'changeSize' and 'changeColorScheme' in prototype $.sv.widget allow better individual style adaption inside the widgets (for future extensions)
+- compatibility with PHP8.5 is approved and small changes on deprecated features are implemented.  
+
+### Updated Libraries
+- Authorization to Google Calendar API stopped working for new clients. Usage of new Google scripts re-enable authorizing with new clients.
+
+### Deprecated
+
+### Removed Features
+- since openHAB does not provide aggregation modes for series-items, these have been removed from the driver and only "raw" and "avg" are left. With openHAB being the backend, plot widgets should use "raw".
+
+### Fixed Bugs
+- device.uzsutable did not show zoom buttons per default if optional parameter 'showzoombuttons' was empty
+- device.uzsugraph did not work with value type 'num' if optional parameter 'valueparameterlist' was empty
+- in some cases, the server time offset could cause a deviation of 1 minute in plots
+- plot.timeshift did not reset the zoom level when changing data and caused missing graphs if plot had been zoomed before.
+- default value in basic.trigger docu was wrong
+- flipswitch lost its control knob in Quad design when switched to "on"
+- links in calendar.list only worked in 'active' mode (i.e. in active lists with expandable Info fields)
+- clock.countdown did not start reliably if "condition" was empty. 
+- icons for checked requirements in template checker were not styled correctly in designs using dark/bright mode
+- widget assistant sometimes did not show rendered results due to a timing problem. Fixed by waiting for the file write result.
+- after a page reload, clock.countdown started if "condition" was changed after the trigger.
+
+### Known Bugs
+- smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
+- background images defined with "url(myImageLocation)" - used e.g. on tabs - do not support dark mode in some design combinations. This can be individually corrected by using media queries (@media (prefers-color-scheme: dark) ...) with different icon paths in the urls. 
+
+
+## v3.5 | 30.11.2024
 ### Important for the current release to avoid breaking changes
 - imports of widgets must be deleted from the visu pages or the namespace @widgets must be used. 
   Visit https://knx-user-forum.de/forum/supportforen/smartvisu/1920060-handlungsbedarf-ma%C3%9Fnahmen-gegen-seitenladefehler-ab-v3-4-a-v3-5
@@ -88,7 +157,7 @@
 - background images defined with "url(myImageLocation)" - used e.g. on tabs - do not yet support dark mode. This can be individually corrected in visu.css. 
 
 
-## 3.4
+## v3.4 | 06.12.2023
 ### New / Changed Widgets
 - quad.blind and quad.shutter can be configured to move the shutter on short- or longpress
 - new widget plot.timeshift scrolls a plot in time-range by cancelling actual series in this plot and subscribing new series fo the same item(s) with changed start / end times.
@@ -177,7 +246,7 @@
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
-## 3.3.1
+## v3.3.1 | 26.1.2023
 ### New / Changed Widgets
 - calendar.list now has an option limiting the shown time span (measured in days)
 
@@ -209,7 +278,7 @@
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
-## 3.3
+## v3.3 | 20.12.2022
 ### New / Changed Widgets
 - icon styling is now standardized on all widgets including dynamic icons using 6 icon classes defined with the designs plus color names and hex color codes. 4 classes for "red", yellow,"green" and "blue" have been added in the designs
 - svg icons in widgets get loaded directly into the html-DOM in order to provide faster loading and better stylability. This methods also profits from the cache mechanism if activated
@@ -288,7 +357,7 @@
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
-## 3.2.2
+## v3.2.2 | 26.4.2022
 ### New / Changed Widgets
 - calendar.list has an option to show event links and locations in collapsible areas scrolling down on click.
 - device.smallshut also takes numeric position values for item_saved (yet only boolean if position was saved in the actuator)
@@ -326,7 +395,7 @@
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
-## 3.2.1
+## v3.2.1 | 14.2.2022
 ### New / Changed Widgets
 
 ### Other New Features
@@ -361,7 +430,7 @@
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
-## 3.2.0
+## v3.2.0 | 9.1.2022
 ### New / Changed Widgets
 - basic.window and device.window provide an additional color mode: icon0 if closed / custom color if open
 - weather service met.no displays city name retrieved from geonames.org with geo coordinates (new service getLocation.php)
@@ -436,7 +505,7 @@
 - if item contains a stringified number (e.g. with leading zero). widget.set converts it back to numeric format - so basic.print can not print it as text
 
 
-## 3.1
+## v3.1 | 7.5.2021
 ### New / Changed Widgets
 - new weather service API met.no for deprecated yr.no
 - new widget status.activelist to display json messages as active listview
@@ -502,7 +571,7 @@
 ### Known Bugs
 
 
-## 3.0.1
+## v3.0.1 | 6.2.2021
 ### New / Changed Widgets
 
 ### Other New Features
@@ -528,8 +597,7 @@
   (root cause documented in base.js line 1804)
 
 
-## 3.0
-
+## v3.0 | 28.1.2021
 ### New / Changed Widgets
 - new "widget assistant" tool to parametrize and test widgets (thanks to Andre Kohler)
 - template checker checks for items and item types with masteritem file form backend (thanks to Andre Kohler)
@@ -619,8 +687,8 @@
 - On Apple devices with Safari browser, the widget assistant does not open a new window for rendering. 
   Deactivate "Preview in new Window" option to view the result in the box below the option panel.
 
-## 2.9.2
 
+## 2.9.2 | 14.5.2020
 ### New / Changed Widgets
 - basic.stateswitch accepts items of type 'list'
 - default icon can be defined for calendar / waste calendar, improved icon definition.
@@ -648,8 +716,8 @@
 - example3.graphic: centering of icons was missing in absolute positioning of visu elements
 - mixed spelling of "adress" / "address" in eibd driver 
 
-## v 2.9
 
+## v2.9 | 30.3.20
 ### New / Changed Widgets
 - ID is now optional in most widgets
 - New: basic.stateswitch (improves and supersedes basic.button, basic.dual, basic.multistate and basic.switch)
@@ -684,7 +752,7 @@
 - device.blind & device.shutter: item_move is now optional
 - basic.shutter & device.shutter: min/max are renamed to value_top/bottom and value_top may be less than value_bottom
 - device.shutter: Value and text for pos1 and pos2 can be set by parameter
-- basic.tank & icon.* (dynamic icons): min is now implemented and max may be less than min
+- basic.tank & icon.\* (dynamic icons): min is now implemented and max may be less than min
 - device.dimmer: New parameters to specify pic, color, 'min_display', 'max_display' and position of the switch (left or right)
 - device.rtr: New parameters to specify separate offset item and additional content
 - Use of dynamic icons in other widgets possible (e.g. basic.multiswitch or basic.symbol)
@@ -746,8 +814,7 @@
 - Calendar service GoogleV3 (use ICS/iCal instead)
 
 
-## v 2.8 03.10.16
-
+## v2.8 | 03.10.2016
 ### New / Changed Widgets
 - new widget: basic.multistate
 - new widget: plot.multiaxes
@@ -783,8 +850,7 @@
 - highcharts updated to version 4.2.6
 
 
-## v 2.7 03.11.13
-
+## v2.7 | 03.11.2013
 - new: SmartHome.py Montior page
 - new: animations on/off for better performance on slow devices
 - new model house: alber, as eibd-driver example by Raik Alber
@@ -802,8 +868,8 @@
   see index.php?page=design/design_icons for examples
 - update plot.highcharts 3.0.5
 
-## v 2.6 06.08.13
 
+## v2.6 | 06.08.2013
 - dynamic icons: svg-icons for continuous values
 - new: config splitted in lib/defaults.php and config.php (individual)
 - improved devive.rtr now with more modes depending on the driver
@@ -811,8 +877,8 @@
 - update vendor/jquery 2.0.3 (IE 6, 7, 8 are no longer supported)
 - update vendor/jquery.mobile 1.3.2
 
-## v 2.5 01.06.13
 
+## v2.5 | 01.06.2013
 - new apps: tv-movie, tv-spielfilm
 - new: rss-feed-reader (lib/feeds)
 - new widget: multimedia.station for tv- and radio-stations 
@@ -825,8 +891,8 @@
 - new model-house: fleischer by Marco Fleischer
 - new: animations :-) [beta]
 
-## v 2.4 26.04.13 Happy Birthday smartVISU!
 
+## v2.4 | 26.04.2013 Happy Birthday smartVISU!
 - improved widget: basic.shutter, now with dynamic symbols
 - improved design: cube v2, best viewed with solar_winds.png background                                          
 - project: visu.css and visu.js are included if they are in own project
@@ -841,8 +907,8 @@
 - improved drivers: only refresh if necessary
 - update vendor/jquery.mobile 1.3.1
 
-## v 2.3 04.03.13
 
+## v2.3 | 04.03.2013
 - device.rtr now with 3x bit-mode or 1x byte-mode
 - undeprecated: basic.glue: used to glue widgets together
 - new language: fr, special tanks to Pierre-Yves Kerviel
@@ -861,8 +927,8 @@
 - improved speed: gzip compressed output
 - improved speed: javascript separated
 
-## v 2.2 01.02.13
 
+## v2.2 | 01.02.2013
 - new driver: SmartHome.py (with websocket)
 - new driver: domotiga (with websocket)
 - improved error handling and notification
@@ -877,8 +943,8 @@
 - new smart.alert js-function for alerts and logging
 - driver linknx: with error-handling
 
-## v 2.1 09.01.12
 
+## v2.1 | 09.01.2012
 - new pages: otterstaetter (as model-home)
 - widget: multimedia.music for a player
 - widget: appliance.iprouter for the enertex knxnet/ip-router
@@ -891,8 +957,8 @@
 - improved design: weather and clock for small devices  
 - changed design: header now fixed on mobile devices
 
-## v 2.0 14.12.12
 
+## v2.0 | 14.12.2012
 - realtime polling
 - updated driver: 'linknx' for polling
 - updated driver: 'offline' for polling
@@ -902,8 +968,8 @@
 - docu for popups
 - new <?php tags in all files
 
-## v 1.9 28.11.12
 
+## v1.9 | 28.11.2012
 - new widget-file: widgets/calendar.html for google calendar
   use the google-calendar private xml-adress in the config dialog
   with http: (not https:). In your event you may use:  
@@ -914,8 +980,8 @@
 - improved design of configuration
 - fixes in phonelist
 
-## v 1.8 02.11.12
 
+## v1.8 | 02.11.2012
 - new widget-file: widgets/phone.html for phonelists
   A phone system is required. Supported are:
   Auerwald VoiP 5010, VoiP 5020, Commander Basic.2
@@ -923,8 +989,8 @@
 - add: apps now support more docu
 - updated: jQuery plugins
 
-## v 1.7 06.10.12
 
+## v1.7 | 06.10.2012
 - new feature: Apps (an app is a complete html-page, which can be easily
   used in your project. Use lib.app('NAME OF APP') to show one on your page.
   all apps are located in pages/apps
@@ -940,8 +1006,8 @@
 - update lib/jQueryMobile 1.2.0
 - smartVISU moved to code.google.com 
 
-## v 1.6 25.09.12
 
+## v1.6 | 25.09.2012
 - weather-widget now configurable
 - weather-widget with new service: wunderground.com
   generate your key for free at: http://www.wunderground.com/weather/api/
@@ -953,8 +1019,8 @@
 - update lib/jQuery 1.8.2
 - update lib/Twig 1.9.2
 
-## v 1.5 01.08.12
 
+## v1.5 | 01.08.2012
 - new basic-widget: "basic.smybol" to display a gad
 - new device-widget: "device.blind" to control blinds, with 2 new slider 
   types (vertical, semicircle)
@@ -962,29 +1028,29 @@
 - more docu     
 - update lib/jQueryMobile 1.1.1
 
-## v 1.4 02.07.12
 
+## v1.4 | 02.07.2012
 - new and official "smartVISU" - Logo 
   special thanks to Björn Bertschy
 - position fixed on MainMenu
 - smother scrolling, better responsive design
 
-## v 1.3 19.06.12
 
+## v1.3 | 19.06.2012
 - background picture support (17 backgrounds in 'pics/bg' included)
 - widget-documentation, with phpdoc based documentation
 - update display mechanism
 - basic language support
 
-## v 1.2 18.05.12
 
+## v1.2 | 18.05.2012
 - clock and weather
 
-## v 1.1 03.05.12
 
+## v1.1 | 03.05.2012
 - add config
 - more designs
 
-## v 1.0 26.04.12
 
+## v1.0 | 26.04.2012
 - first offical release

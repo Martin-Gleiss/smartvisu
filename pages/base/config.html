@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß, Alexander Schwithal, Stefan Widmer, Wolfram v. Hülsen
-* @copyright   2012 - 2022
+* @copyright   2012 - 2025
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -152,7 +152,7 @@
 								{{ forms.config_input(source, values, 'phone_user') }}
 								{{ forms.config_input(source, values, 'phone_pass', 'password') }}
 							</div>
-							<div data-role="collapsible" data-theme="c" data-content-theme="a">
+							<div class="config_calendar" data-role="collapsible" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'calendar', 'label') }}</h3>
 								{{ forms.config_select(source, values, 'calendar_service', dir('lib/calendar/service', '(.+?).php') ) }}
 								{{ forms.config_input(source, values, 'calendar_url') }}
@@ -163,10 +163,11 @@
 								{{ forms.config_flip(source, values, 'calendar_private') }}
 								{{ forms.config_row(source, values, 'calendar_google_refresh_token',
 									[
-										'<a href="#calendar_googleauth_popup" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-icon-left ui-icon-action ui-micro' ~ (not values['calendar_google_refresh_token'] is defined ? ' ui-btn-active') ~ ' " data-icon="delete" data-inline="true" id="' ~ source ~ '_calendar_googleauth_button">' ~ lang('configuration_page', 'calendar_google_refresh_token', 'button') ~ '</a>'
+										'<a href="#calendar_googleauth_popup" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-icon-left ui-icon-action ui-micro' ~ (not values[source]['calendar_google_refresh_token'] is defined ? ' ui-btn-active') ~ ' " data-icon="delete" data-inline="true" id="' ~ source ~ '_calendar_googleauth_button">' ~ lang('configuration_page', 'calendar_google_refresh_token', 'button') ~ '</a>'
 										,forms.config_hidden(source, values, 'calendar_google_client_id')
 										,forms.config_hidden(source, values, 'calendar_google_client_secret')
 										,forms.config_hidden(source, values, 'calendar_google_refresh_token')
+										,'<span id="calendar_googleauth_success" style="display: none;">&nbsp;&nbsp;'~lib.svgimg ('', 'message_ok.svg', 'micro icon1', '')~'<b>'~lang("configuration_page","calendar_googleauth", "success")~'</b></span>'
 									]
 								) }}
 							</div>
@@ -212,34 +213,37 @@
 						</ul>
 					</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_4')|raw }}</li>
-					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_5')|raw }}</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_5')|raw }}
+						<ol type="a">
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_6a')|raw }}</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_6b')|raw }}</li>
+						</ol>
+					</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_6')|raw }}
 						<ol type="a">
 							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_6a')|raw }}</li>
 							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_6b')|raw }}</li>
 						</ol>
 					</li>
-					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7')|raw }}
-						<ol type="a">
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7a')|raw }}</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7b')|raw }}</li>
-						</ol>
-					</li>
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_7')|raw }}</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_8')|raw }}</li>
-					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_9')|raw }}</li>
 						<ol type="a">
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_9a')|raw }}</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_9b')|raw }}<br>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_8a')|raw }}</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_8b')|raw }}<br>
 								<input type="text" type="hidden" name="script_origin" id="script_origin" readonly="readonly" onclick="this.select();"> <!-- filled in by JavaScript -->
 							</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_9c')|raw }}</li>
-							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_9d')|raw }}</li>
-						</ol>					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_10')|raw }}</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_8c')|raw }}</li>
+							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_8d')|raw }}</li>
+						</ol>
+
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_9')|raw }}</li>
+
+					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_10')|raw }}</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_11')|raw }}
 						<input type="file" id="google_json_file">
 						 {{ lang('configuration_page','calendar_googleauth', 'instruct_11_hint')|raw }}
 					</li>
-					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_12')|raw }}</li>
+					<li id="instr_12">{{ lang('configuration_page','calendar_googleauth', 'instruct_12')|raw }}</li>
 					<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_13')|raw }}
 						<ul>
 							<li>{{ lang('configuration_page','calendar_googleauth', 'instruct_13a')|raw }}</li>
@@ -256,11 +260,11 @@
 				</div>
 				<div class="ui-field-contain">
 					<label for="client_id">{{ lang('configuration_page', 'calendar_googleauth', 'client_id') }}:</label>
-					<input type="text" name="client_id" id="client_id" value="">
+					<input type="text" name="client_id" id="client_id" value="{{config_calendar_google_client_id|default('')}}">
 				</div>
 				<div class="ui-field-contain">
 					<label for="client_secret"> {{ lang('configuration_page', 'calendar_googleauth', 'client_secret') }}:</label>
-					<input type="text" id="client_secret" value=""> <!-- no name attribute, so it is not sent by submitting form -->
+					<input type="text" id="client_secret" value="{{config_calendar_google_client_secret|default('')}}"> <!-- no name attribute, so it is not sent by submitting form -->
 				</div>
 
 				<div id="calendar_googleauth_submitcontainer" style="position: relative; overflow: hidden;">

@@ -2,10 +2,40 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2025
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
+
+/**
+* A bar graph
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item[?]} one or more item(s). More items in array form: [ item1 , item2 ] (mandatory)
+* @param {text[]} one or more label(s) as x-axis categories. More labels in array form: [ label1 , label2 ] (mandatory)
+* @param {color[]=} color for each item e.g. '#f00' for red. More color/s in array form: ['#f00','#fff'] (optional, default: sutiable for design)
+* @param {text=} the minimum value for the y-axis (optional, no default)
+* @param {text=} the maximum value for the y-axis (optional, no default)
+* @param {text[?]=} title for the y-axis (optional)
+* @param {text=} text for headline (optional)
+* @param {text(horizontal,vertical)=vertical} orientation of the bars (optional, default: 'vertical')
+* @param {format[?]=} unit for the y-axis. Either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
+* @param {text(outside,inside,off)=} position of the data labels (optional, default = off)
+* @param {color[]=} color for each data label e.g. '#f00' for red. More color/s in array form: ['#f00','#fff'] (optional, default: sutiable for design)
+* @param {text[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+*
+* @author Wolfram v. Hülsen
+*/
+{% macro bargraph(id, item, xlabel, color, ymin, ymax, yaxis, text, mode, unit, datalabel, datalabelcolor, chartoptions) %}
+
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.bargraph" data-item="{{ implode(item) }}"
+		data-xlabel="{{ implode(xlabel) }}" data-color="{{ implode(color) }}" data-ymin="{{ ymin }}" data-ymax="{{ ymax }}" data-yaxis="{{ yaxis }} "
+		data-text="{{ text|default('') }}" data-mode="{{ mode|default('vertical') }}" data-unit="{{ unit }}" data-datalabel="{{ datalabel|default('off') }}"
+		data-datalabelcolor="{{ implode(datalabelcolor) }}" data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}"
+		class="plot"></div>
+
+{% endmacro %}
+
 
 /**
 * The diagram showing curves of relative humidity and effective temperature superimposed upon rectangular coordinates. The comfort-zones indicate when humans feel good.
@@ -108,7 +138,7 @@
 */
 
 {% macro period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export, source) %}
-	{%- if (not export is empty) and export > 0 -%}
+	{%- if (not export is empty) and export > 0 and config_plot_library == 'highcharts' -%}
 		{%- if once('plotimageexport') -%}
 			<script src="vendor/plot.highcharts/modules/exporting.js"></script>
 			<script src="vendor/plot.highcharts/modules/offline-exporting.js"></script>
@@ -145,7 +175,7 @@
 			{%- set count = count|merge([count|last]) -%}
 		{%- endif -%}
 		{%- set counti = count[loop.index0] -%}
-		{%- if mode == 'raw' or counti >= 5000 -%}
+		{%- if (mode == 'raw' or counti >= 5000) and zoom != 'advanced' and config_plot_library == 'highcharts' -%}
 			{%- if once('plotboost') -%}
 				<script src="vendor/plot.highcharts/modules/boost.js"></script>
 			{%- endif -%}
@@ -268,12 +298,11 @@
 	{% set tmin = tmin|default('1h') %}
 	{% set mode = mode|default('avg') %}
 	{% set count = count|default(100) %}
-	{%- if mode == 'raw' or count >= 5000 -%}
+	{%- if (mode == 'raw' or count >= 5000) and zoom != 'advanced' and config_plot_library == 'highcharts' -%}
 		{%- if once('plotboost') -%}
 			<script src="vendor/plot.highcharts/modules/boost.js"></script>
 		{%- endif -%}
 	{%- endif -%}
-	/** there is no way to measure the series length from here like in plot.period. So we can't import boost.js on demand for big series. Load it explicitely on the visu page if needed. */
 	{% set width = width|default(120) %}
 	{% set height = height|default(20) %}
 	{% set unit = unit|default('') %}
@@ -329,13 +358,14 @@
 * @param {duration}  step to scroll with each click in duration format
 * @param {type(head)=mini}  icon type / size. valid types: 'micro','mini','midi','icon' and 'head' if widget is in the headline of a box (optional, default = 'mini')
 * @param {text=} text to show between the buttons (optional, default = '')
+* @param {value(0,1)=0} handle zoom level on time shift: 0 = reset zoom, 1 = transfer actual zoom level to new x axis. (optional, default = 0)
 * 
 * @author Wolfram v. Hülsen
 */
-{% macro timeshift (id, plot, step, type, label) %}
+{% macro timeshift (id, plot, step, type, label, zoom) %}
 {% import "@widgets/basic.html" as basic %}
 {% import "@widgets/lib.html" as lib %}
-	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.timeshift" data-bind ="{{ uid(page, plot) }}" data-step="{{ step }}"
+	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.timeshift" data-bind ="{{ uid(page, plot) }}" data-step="{{ step }}" data-zoom="{{ zoom|default(0) }}"
 	{% if type == 'head' %}style="float:right; margin-right:32px;">
 		<a class="timeshift-back">{{ lib.svgimg ('', 'audio_previous.svg', 'icon0') }}</a> {{- label -}}
 		<a class="timeshift-forward">{{ lib.svgimg ('', 'audio_next.svg', 'icon0') }}</a>
@@ -396,7 +426,7 @@
 */
 
 {% macro xyplot(id, item, xitem, yitem, xmin, xmax, ymin, ymax, label, xylabel, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export) %}
-	{%- if (not export is empty) and export > 0 -%}
+	{%- if (not export is empty) and export > 0 and config_plot_library == 'highcharts' -%}
 		{%- if once('plotimageexport') -%}
 			<script src="vendor/plot.highcharts/modules/exporting.js"></script>
 			<script src="vendor/plot.highcharts/modules/offline-exporting.js"></script>
@@ -429,7 +459,6 @@
 		class="plot"></div>
 
 {% endmacro %}
-
 
 /******************************************************************************
  * D E P R E C A T E D  W I D G E T S

@@ -84,6 +84,10 @@ class phone_speedport_w_724V extends phone
 
 		if ($this->getSpeedportStatus($login, 'login') == 'success')
 		{
+		// $http_rsponse_header is deprecated as of PHP 8.5. Replacement for PHP >= 8.4
+		if (function_exists('http_get_last_response_headers')) 
+			$http_response_header = http_get_last_response_headers();
+
 			// store the authentication cookie
 			foreach ($http_response_header as $response)
 			{

@@ -91,7 +91,7 @@ $.widget("sv.calendar_list", $.sv.widget, {
 				
 				});
 				
-				//fals kein icon angegeben
+				//falls kein icon angegeben
 				if(!entry.icon){
 					//falls kein default angegeben
 					if (typeof(sv_lang.calendar_event_format.default_img_list) === undefined || sv_lang.calendar_event_format.default_img_list.icon == "" ){
@@ -153,14 +153,15 @@ $.widget("sv.calendar_list", $.sv.widget, {
 			dl.trigger('prepare').listview('refresh').trigger('redraw');
 			
 			//toggle display of description text
-			$(this.element, ".activelist-container").find('li').click(function() {
-				event.preventDefault();
-				$(this).toggleClass('open');
-				accordionContent = $(this).next('.content');
-				$(this, '.content').not(accordionContent).prev(this,'.content-title').removeClass('open');
-				accordionContent.stop(true, true).slideToggle('slow');
-			});
-
+			if (self.options.info == 'active') {
+				$(this.element, ".activelist-container").find('li').click(function() {
+					event.preventDefault();
+					$(this).toggleClass('open');
+					accordionContent = $(this).next('.content');
+					$(this, '.content').not(accordionContent).prev(this,'.content-title').removeClass('open');
+					accordionContent.stop(true, true).slideToggle('slow');
+				});
+			}
 	},
 
 	_repeat: function() {
@@ -249,7 +250,7 @@ $.widget("sv.calendar_waste", $.sv.widget, {
 				
 				var a = $('<div style="float: left; width: ' + Math.floor(100 / self.options.count) + '%;">').append(
 					$('<div style="margin: 0 1px; overflow: hidden;">').css('border-bottom', (entry.start < morgen) ? 'red 8px inset' : (entry.start < uebermorgen) ? 'orange 8px inset' : '').append(
-					$('<div style="font-size: 0.9em;text-align: center;">').text( entry.start.transUnit('D') + ', ' + entry.start.transUnit('day') ))
+					$('<div style="font-size: 0.9em;text-align: center;">').text( entry.start.transUnit('wastedate') ))
 					);
 		
 				if (entry.icon.indexOf('.svg') == -1)

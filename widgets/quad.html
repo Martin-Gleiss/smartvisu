@@ -1671,8 +1671,8 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {item(bool,num)=} 			    a gad/item for the next title
  * @param {item(bool,num)=}  		    a gad/item for turning power on/off
  * @param {item(bool,num)=}  		    a gad/item to eject
- * @param {item(num,bool)=}    	    a gad/item to repeat. 0 = off. 1 = song. 2 = playlist
- * @param {item(num,bool)=}    	    a gad/item to shuffle. 0 = off. 1 = song. 2 = album
+ * @param {item(num,str)=}    	    a gad/item to repeat. 0 = off. 1 = song. 2 = playlist
+ * @param {item(num,str)=}    	    a gad/item to shuffle. 0 = off. 1 = song. 2 = album
  * @param {unspecified[]=}    		        array providing these information: [item to change source/playlist, select-type, [value1, icon1, text1], [value2, icon2, text2], etc.]
  * @param {item(bool,num)=}    	    a gad/item to set mute
  * @param {item(num)=}    	    a gad/item to set the volume
@@ -1708,9 +1708,9 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
  	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
  	The indicator options will not be applied to the select element of type 'menu' which will convert all options to 'blink'.
- * @param {text[](previous,play,pause,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,stateengine,repeat,source,source_popup,speaker,playpause,playpausestop,playstop,shuffle,anynumber)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
+ * @param {text[](previous,play,pause,stop,next,power,eject,mute,volume_slider,cover,volume_popup,volume_up,volume_down,song_position,uzsu,plot,stateengine,repeat,source,source_popup,speaker,playpause,playpausestop,playstop,shuffle,anynumber,repeat_num,shuffle_num)=} 	array with element description: Reorder elements to your liking (esp. relevant for smartphones as several columns might be too much)
              possible elements are: 'previous', 'play', 'pause', 'stop', 'next', 'power', 'eject', 'mute', 'volume_slider', 'cover',
-            'volume_popup', 'volume_up', 'volume_down', 'song_position', 'uzsu', 'plot', 'stateengine', 'repeat', 'source', 'speaker', 'playpause', 'playstop', 'playpausestop', 'shuffle', 'source_popup'
+            'volume_popup', 'volume_up', 'volume_down', 'song_position', 'uzsu', 'plot', 'stateengine', 'repeat(_num)', 'source', 'speaker', 'playpause', 'playstop', 'playpausestop', 'shuffle(_num)', 'source_popup'
              For empty columns either use ' ' or a number to define the column width (e.g. '40' = 40 pixels width)
              Combine elements in one column by putting them in arrays.
  */
@@ -1950,11 +1950,11 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
     <div class="quad_table row_playercontrol" id="row_{{uid(page, id)}}">
     <div class="text">{{ linetext|e }}
     {% if item_artist %}
-    : {{ basic.print(id~'artist', item_artist, 'text') }},&nbsp;
+    : {{ basic.print(id~'artist', item_artist, 'trimtext') }},&nbsp;
     {% endif %}
 
     {% if item_title %}
-    {{ basic.print(id~'title', item_title, 'text') }}
+    {{ basic.print(id~'title', item_title, 'trimtext') }}
     {% endif %}
     </div>
     {% for column in elements %}
@@ -2111,15 +2111,26 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
       {% endif %}
     {% endif %}
 
-
+    {% if column == 'repeat_num' and item_repeat %}
+      {{ basic.stateswitch(id~'_repeat', item_repeat, 'icon', [0, 1, 2], ['audio_repeat_song', 'audio_repeat_song', 'audio_repeat'], '', ['icon0','icon1','icon1'], indicator) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
+    {% if column == 'shuffle_num' and item_shuffle %}
+      {{ basic.stateswitch(id~'_shuffle', item_shuffle, 'icon', [0, 1, 2], ['audio_shuffle', 'audio_shuffle', 'audio_shuffle_album'], '', ['icon0','icon1','icon1'], indicator) }}
+      {% if elements[loop.index] == 'div' %}
+        </div>
+      {% endif %}
+    {% endif %}
     {% if column == 'repeat' and item_repeat %}
-      {{ basic.stateswitch(id~'_repeat', item_repeat, 'icon', [0,1,2], ['audio_repeat_song','audio_repeat_song','audio_repeat'], '', ['icon0','icon1','icon1'], indicator) }}
+      {{ basic.stateswitch(id~'_repeat', item_repeat, 'icon', ['OFF', 'SONG', 'PLAYLIST'], ['audio_repeat_song', 'audio_repeat_song', 'audio_repeat'], '', ['icon0','icon1','icon1'], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
     {% endif %}
     {% if column == 'shuffle' and item_shuffle %}
-      {{ basic.stateswitch(id~'_shuffle', item_shuffle, 'icon', [0,1,2], ['audio_shuffle','audio_shuffle','audio_shuffle_album'], '', ['icon0','icon1','icon1'], indicator) }}
+      {{ basic.stateswitch(id~'_shuffle', item_shuffle, 'icon', ['OFF', 'SONG', 'ALBUM'], ['audio_shuffle', 'audio_shuffle', 'audio_shuffle_album'], '', ['icon0','icon1','icon1'], indicator) }}
       {% if elements[loop.index] == 'div' %}
         </div>
       {% endif %}
@@ -2277,8 +2288,8 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              Combine elements in one column by putting them in arrays. Standard is ['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']
              Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
  * @param {text(switch,select)=} 	    Should be left untouched as it is set automatically (optional)
- * @param {item(list)=} Should be left untouched. an item containing all selectable values (optional) - overrides existing value definitions, available for select menu type only
- * @param {item(list)=} Should be left untouched. an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for select menu type only
+ * @param {item[?](list)=} Should be left untouched. an item containing all selectable values (optional) - overrides existing value definitions, available for select menu type only
+ * @param {item[?](list)=} Should be left untouched. an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for select menu type only
 
 */
 
@@ -2899,14 +2910,14 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {image[?]=} list of icons for every button (optional) - not supported for type 'menu'
  * @param {text[?]=} list of texts for every menu entry or button (optional)
  * @param {color[?](icon0to5)=icon1} the color for the on state of the buttons, e.g. 'icon0'through'icon5' or '#f00' or 'red' (optional, default: icon1) - not supported for type 'menu'
- * @param {item(list)=} an item containing all selectable values (optional) - overrides existing value definitions, available for menu type only
- * @param {item(list)=} an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for menu type only
+ * @param {item[?](list)=} an item containing all selectable values (optional) - overrides existing value definitions, available for menu type only
+ * @param {item[?](list)=} an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for menu type only
  * @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
  	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
  	The indicator options will not be applied to the select element of type 'menu' which will convert all options to 'blink'.
  * @param {text=} text for the whole line (optional)
  * @param {text[?]=} (array with) text for each column (optional)
- * @param {item[?](dict)=}  		    a gad/item for UZSU
+ * @param {item[?](dict)=}  	a gad/item for UZSU
  * @param {uzsuparam[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
                                 Normally the array must have the same dimension as the "type" parameter, e.g. "[['', '', 'num'], '', ['', '', 'bool']]" for a table of 3 columns.
 								Exception: if the parameter "item_uzsu" is a singe item in string format a new column with sn uzsu icon is displayed behind the main column block.

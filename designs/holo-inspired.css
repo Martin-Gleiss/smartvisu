@@ -1,4 +1,4 @@
-/*!
+/*
 * jQuery Mobile 1.4.5
 * Git HEAD hash: 68e55e78b292634d3991c795f06f5e37a512decc <> Date: Fri Oct 31 2014 17:33:30 UTC
 * http://jquerymobile.com
@@ -12,7 +12,7 @@
 *
 */
 
-@import '../icons/sw/jquery.mobile.icons.min.css';
+@import "../icons/sw/jquery.mobile.icons.min.css";
 
 /* Globals */
 /* Font
@@ -719,9 +719,12 @@ html head + body .ui-body-c.ui-focus {
 button[disabled],
 .ui-select .ui-btn.ui-state-disabled {
 	filter: Alpha(Opacity=30);
-	opacity: .3;
+	opacity: .5;
 	cursor: default !important;
 	pointer-events: none;
+}
+#config .ui-state-disabled {
+	opacity: .3;
 }
 /* Focus state outline
 -----------------------------------------------------------------------------------------------------------*/
@@ -749,115 +752,143 @@ button[disabled],
 	outline-style: auto;
 }
 
-/* Highcharts
+/* Plots, e.g. Highcharts
+-----------------------------------------------------------------------------------------------------------*/
+:root {	
+	--plot-color-0: #5595c6;
+	--plot-color-1: #416f92;
+	--plot-color-2: #2e4f68;
+	--plot-color-3: #6facd5;
+	--plot-color-4: #2489ce;
+	--plot-color-5: #5393c5;
+	--plot-color-6: #387bbe;
+	--plot-color-7: #387bbe;
+	--plot-color-8: #00bcd4;
+	--plot-color-9: #3f51b5;
+
+	--plot-title: #000;
+	--plot-subtitle: #666;
+	--plot-axis: #333;
+	--plot-tick: #333;
+	--plot-axis-labels : #666;
+	--plot-axis-title: #999;
+	--plot-legend-text: #666;
+	--plot-legend-text-hover: #333;
+	--plot-legend-item-hidden:#ccc;
+	--plot-markers: #fff;
+	--plot-label: #000;
+	--plot-data-labels: #000;
+	--plot-tooltip-box: #dcdcdc;
+	--plot-tooltip-text: #000;
+	--plot-polar-line: none;
+	--plot-grid-line: rgba(0, 0, 0, .15);
+}
+
+
+/* Highcharts 
+   we could set --higharts-color-n directly but this has unwanted effects on highlighted series
 -----------------------------------------------------------------------------------------------------------*/
 .highcharts-title {
-	fill: #000;
+	fill: var(--plot-title);
 }
 .highcharts-subtitle {
-	fill: #666;
+	fill: var(--plot-subtitle);
 }
-
 .highcharts-axis .highcharts-axis-line {
-	stroke: #333;
+	stroke: var(--plot-axis);
 }
 .highcharts-tick {
-	stroke: #333;
+	stroke: var(--plot-tick);
 }
 .highcharts-axis-labels {
-	fill: #666;
+	fill: var(--plot-axis-labels);
 }
 .highcharts-axis-title {
-	fill: #999;
+	fill: var(--plot-axis-title);
 }
-
 .highcharts-legend-item text {
-	fill: #666;
+	fill: var(--plot-legend-text);
 }
 .highcharts-legend-item:hover text {
-	fill: #333;
+	fill: var(--plot-legend-text-hover);
 }
 .highcharts-legend-item-hidden * {
-	fill: #ccc;
-	stroke: #ccc;
+	fill: var(--plot-legend-item-hidden);
+	stroke: var(--plot-legend-item-hidden);
 }
-
 .highcharts-markers path {
-	stroke: #fff;
+	stroke: var(--plot-markers);
 }
-
 .highcharts-label text {
-	fill: #000;
+	fill: var(--plot-label);
 }
 .highcharts-data-labels {
-	fill: #000;
-	color: #000;
+	fill: var(--plot-data-labels);
+	color: var(--plot-data-labels);
 }
-
 .highcharts-tooltip-box {
-	fill: #dcdcdc;
+	fill: var(--plot-tooltip-box);
 }
 .highcharts-tooltip text {
-	fill: #000;
+	fill: var(--plot-tooltip-text);
 }
 .polarChart .highcharts-axis-line,
 .solidgauge .highcharts-axis-line,
 .solidgauge .highcharts-grid-line {
-  stroke: none;
+  stroke: var(--plot-polar-line);
 }
 .highcharts-grid .highcharts-grid-line {
-  stroke: rgba(0, 0, 0, .15);
+  stroke: var(--plot-grid-line);
 }
-
 .highcharts-color-0 {
-	fill: #5595c6;
-	stroke: #5595c6;
-	color: #5595c6;
+	fill: var(--plot-color-0);
+	stroke: var(--plot-color-0);
+	color: var(--plot-color-0);
 }
 .highcharts-color-1 {
-	fill: #416f92;
-	stroke: #416f92;
-	color: #416f92;
+	fill: var(--plot-color-1);
+	stroke: var(--plot-color-1);
+	color: var(--plot-color-1);
 }
 .highcharts-color-2 {
-	fill: #2e4f68;
-	stroke: #2e4f68;
-	color: #2e4f68;
+	fill: var(--plot-color-2);
+	stroke: var(--plot-color-2);
+	color: var(--plot-color-2);
 }
 .highcharts-color-3 {
-	fill: #6facd5;
-	stroke: #6facd5;
-	color: #6facd5;
+	fill: var(--plot-color-3);
+	stroke: var(--plot-color-3);
+	color: var(--plot-color-3);
 }
 .highcharts-color-4 {
-	fill: #2489ce;
-	stroke: #2489ce;
-	color: #2489ce;
+	fill: var(--plot-color-4);
+	stroke: var(--plot-color-4);
+	color: var(--plot-color-4);
 }
 .highcharts-color-5 {
-	fill: #5393c5;
-	stroke: #5393c5;
-	color: #5393c5;
+	fill: var(--plot-color-5);
+	stroke: var(--plot-color-5);
+	color: var(--plot-color-5);
 }
 .highcharts-color-6 {
-	fill: #387bbe;
-	stroke: #387bbe;
-	color: #387bbe;
+	fill: var(--plot-color-6);
+	stroke: var(--plot-color-6);
+	color: var(--plot-color-6);
 }
 .highcharts-color-7 {
-	fill: #387bbe;
-	stroke: #387bbe;
-	color: #387bbe;
+	fill: var(--plot-color-7);
+	stroke: var(--plot-color-7);
+	color: var(--plot-color-7);
 }
 .highcharts-color-8 {
-	fill: #00bcd4;
-	stroke: #00bcd4;
-	color: #00bcd4;
+	fill: var(--plot-color-8);
+	stroke: var(--plot-color-8);
+	color: var(--plot-color-8);
 }
 .highcharts-color-9 {
-	fill: #3f51b5;
-	stroke: #3f51b5;
-	color: #3f51b5;
+	fill: var(--plot-color-9);
+	stroke: var(--plot-color-9);
+	color: var(--plot-color-9);
 }
 
 /* smartVISU

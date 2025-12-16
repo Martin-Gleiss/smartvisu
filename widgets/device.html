@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß and others
-* @copyright   2012 - 2022
+* @copyright   2012 - 2025
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -34,39 +34,39 @@
 				<td valign="top">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.stateswitch('', item_pos, '', value_top|default('0'), 'carat-u') }}
+							{{ basic.stateswitch(id~'-up', item_pos, '', value_top|default('0'), 'carat-u') }}
 						{% else %}
-							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
+							{{ basic.stateswitch(id~'-up', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
 						{% endif %}
 					</div>
 				</td>
 				<td rowspan="3" align="left" class="pos">
-					{{ basic.slider('', item_pos, value_top|default('0'), value_bottom|default('255'), step, 'vertical', '', '', '', live) }}</td>
+					{{ basic.slider(id~'-pos', item_pos, value_top|default('0'), value_bottom|default('255'), step, 'vertical', '', '', '', live) }}</td>
 				<td rowspan="2" valign="bottom" class="angle">
 					{{ txt }}<br />
-					{% if item_angle %} {{ basic.slider('', item_angle, value_top|default('0'), value_bottom|default('255'), step, 'semicircle', '', '', '', live) }} {% endif %}
+					{% if item_angle %} {{ basic.slider(id~'-angle', item_angle, value_top|default('0'), value_bottom|default('255'), step, 'semicircle', '', '', '', live) }} {% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>
 					{% if item_stop %}
-						<div class="set">{{ basic.stateswitch('', item_stop, '', 1, 'delete') }}</div> {% endif %}</td>
+						<div class="set">{{ basic.stateswitch(id~'-stop', item_stop, '', 1, 'delete') }}</div> {% endif %}</td>
 			</tr>
 			<tr>
 				<td valign="bottom">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.stateswitch('', item_pos, '', value_bottom|default('255'), 'carat-d') }}
+							{{ basic.stateswitch(id~'-down', item_pos, '', value_bottom|default('255'), 'carat-d') }}
 						{% else %}
-							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
+							{{ basic.stateswitch(id~'-down', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
 						{% endif %}
 					</div>
 				</td>
 				<td valign="bottom">
 					{% if item_shift %}
 						<div class="set">
-							<span style="float: left;">{{ basic.stateswitch('', item_shift, '', 0, 'minus') }}</span>
-							<span style="float: right;">{{ basic.stateswitch('', item_shift, '', 1, 'plus') }}</span>
+							<span style="float: left;">{{ basic.stateswitch(id~'-minus', item_shift, '', 0, 'minus') }}</span>
+							<span style="float: right;">{{ basic.stateswitch(id~'-plus', item_shift, '', 1, 'plus') }}</span>
 						</div>
 					{% endif %}
 				</td>
@@ -134,9 +134,9 @@
 		{{ type in ['midi', 'mini', 'micro'] ? 'dimmer-'~type : '' }}
 		{{ txt is empty ? 'dimmer-notext' : '' }} "
 		data-widget="device.dimmer"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
-			{{ basic.stateswitch('', item_switch, type|default('icon'), '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
+			{{ basic.stateswitch(id~'-switch', item_switch, type|default('icon'), '', [ pic_off|default('light_light.svg'), pic_on|default('light_light.svg') ], '', [ color_off , color_on|default('icon1') ]) }}
 			<p>{{ txt|e }}</p>
-			{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display, live) }}
+			{{ basic.slider(id~'-slider', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display, live) }}
 		</div>
 {% endmacro %}
 
@@ -172,28 +172,28 @@
 				<td valign="top">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.stateswitch('', item_pos, '', value_opened|default('255'), 'carat-u') }}
+							{{ basic.stateswitch(id~'-up', item_pos, '', value_opened|default('255'), 'carat-u') }}
 						{% else %}
-							{{ basic.stateswitch('', item_move, '', value_opened|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
+							{{ basic.stateswitch(id~'-up', item_move, '', value_opened|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
 						{% endif %}
 					</div>
 				</td>
 				<td rowspan="3" valign="center" class="pos">
 					<div class="control hide">
-						<img class="icon pos" src="icons/ws/control_arrow_up_down.svg" alt="up/down" />
+						<img class="icon pos" src= "{{ icon0 }}/control_arrow_up_down.svg" alt="up/down" />
 					</div>
-					{{ icon.roofwindow('', '', item_pos, value_closed|default('0'), value_opened|default('255')) }}
+					{{ icon.roofwindow(id~'-window', '', item_pos, value_closed|default('0'), value_opened|default('255')) }}
 				</td>
 				<td valign="top">
 					{% if item_saved %}
-						<div>{{ basic.stateswitch('', item_saved, '', value_pos_1|default(0), 'grid', text_pos_1|default('Pos1'), '', 'blink') }}</div>
+						<div class="set">{{ basic.stateswitch(id~'-saved1', item_saved, '', value_pos_1|default(0), 'grid', text_pos_1|default('Pos1'), '', 'blink') }}</div>
 					{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td valign="center">
 					{% if item_stop %}
-						<div class="set">{{ basic.stateswitch('', item_stop, '', 1, 'delete') }}</div>
+						<div class="set">{{ basic.stateswitch(id~'-stop', item_stop, '', 1, 'delete') }}</div>
 					{% endif %}
 				</td>
 				<td valign="center">{{ txt }}</td>
@@ -202,15 +202,15 @@
 				<td valign="bottom">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.stateswitch('', item_pos, '', value_closed|default('0'), 'carat-d') }}
+							{{ basic.stateswitch(id~'-down', item_pos, '', value_closed|default('0'), 'carat-d') }}
 						{% else %}
-							{{ basic.stateswitch('', item_move, '', value_opened|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
+							{{ basic.stateswitch(id~'-down', item_move, '', value_opened|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
 						{% endif %}
 					</div>
 				</td>
 				<td valign="bottom">
 					{% if item_saved %}
-						<div>{{ basic.stateswitch('', item_saved, '', value_pos_2|default(1), 'grid', text_pos_2|default('Pos2'), '', 'blink') }}</div>
+						<div class="set">{{ basic.stateswitch(id~'-saved2', item_saved, '', value_pos_2|default(1), 'grid', text_pos_2|default('Pos2'), '', 'blink') }}</div>
 					{% endif %}
 				</td>
 			</tr>
@@ -246,31 +246,31 @@
 		<br>
 		{% if item_set %}
 			<div class="set">
-				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.5)), 'minus', '', 'micro' ) }}
+				{{ basic.offset(id~'-minus', item_offset|default(item_set), -(step|default(0.5)), 'minus', '', 'micro' ) }}
 				<div class="temp">{{ basic.print('', item_set, 'temp' ) }}</div>
-				{{ basic.offset('', item_offset|default(item_set), step|default(0.5), 'plus', '', 'micro' ) }}
+				{{ basic.offset(id~'-plus', item_offset|default(item_set), step|default(0.5), 'plus', '', 'micro' ) }}
 			</div>
 		{% endif %}
 		<br>
 		{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty or supplements is not empty %}
 		<div class="control">
 			{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
-				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
-				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['night', 'standby'] : [3, 2]), ['scene_night.svg', 'scene_night.svg'], '', ['icon1', 'icon0']) }}
-				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['frost', 'standby'] : [4, 2]), ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch(id~'-comfort', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch(id~'-night', item_comfort, 'icon', (config_driver == 'linknx' ? ['night', 'standby'] : [3, 2]), ['scene_night.svg', 'scene_night.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch(id~'-frost', item_comfort, 'icon', (config_driver == 'linknx' ? ['frost', 'standby'] : [4, 2]), ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
 			{% else %}
 				{% if item_comfort is not empty %}
-					{{ basic.stateswitch('', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
+					{{ basic.stateswitch(id~'-comfort', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
 				{% endif %}
 				{% if item_night is not empty %}
-					{{ basic.stateswitch('', item_night, 'icon', '', ['scene_night.svg', 'scene_night.svg']) }}
+					{{ basic.stateswitch(id~'-night', item_night, 'icon', '', ['scene_night.svg', 'scene_night.svg']) }}
 				{% endif %}
 				{% if item_frost is not empty %}
-					{{ basic.stateswitch('', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
+					{{ basic.stateswitch(id~'-frost', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
 				{% endif %}
 			{% endif %}
 			{% if item_state is not empty %}
-				{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
+				{{ basic.stateswitch(id~'-state', item_state, 'icon', '', 'sani_heating.svg') }}
 			{% endif %}
 			{% for supplement in supplements %}
 				{{ supplement|raw }}
@@ -326,10 +326,10 @@
 		{% if tolerance is empty %} {% set tolerance = '0' %} {% endif %}
 		{% set min = min | default('18') - tolerance %}
 		{% set max = max | default('28') + tolerance %}
-		<div class="set" style="position:relative; z-index: 3;">
+		<div class="set" style="position:relative; z-index: 3; padding: 0 65px 0px 65px">
 			<div>
-				{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro', min, max) }}
-				{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro', min, max) }}
+				{{ basic.offset(id~'-minus', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro', min, max) }}
+				{{ basic.offset(id~'-plus', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro', min, max) }}
 			</div>
 		</div>
 	{% endif %}
@@ -337,22 +337,22 @@
 	{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty or supplements is not empty %}
 		<div class="control" style="position:relative;">
 			{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
-				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
-				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['night', 'standby'] : [3, 2]), ['scene_night.svg', 'scene_night.svg'], '', ['icon1', 'icon0']) }}
-				{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['frost', 'standby'] : [4, 2]), ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch(id~'-comfort', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch(id~'-night', item_comfort, 'icon', (config_driver == 'linknx' ? ['night', 'standby'] : [3, 2]), ['scene_night.svg', 'scene_night.svg'], '', ['icon1', 'icon0']) }}
+				{{ basic.stateswitch(id~'-frost', item_comfort, 'icon', (config_driver == 'linknx' ? ['frost', 'standby'] : [4, 2]), ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
 			{% else %}
 				{% if item_comfort is not empty %}
-					{{ basic.stateswitch('', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
+					{{ basic.stateswitch(id~'-comfort', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
 				{% endif %}
 				{% if item_night is not empty %}
-					{{ basic.stateswitch('', item_night, 'icon', '', ['scene_night.svg', 'scene_day.svg']) }}
+					{{ basic.stateswitch(id~'-night', item_night, 'icon', '', ['scene_night.svg', 'scene_day.svg']) }}
 				{% endif %}
 				{% if item_frost is not empty %}
-					{{ basic.stateswitch('', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
+					{{ basic.stateswitch(id~'-frost', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
 				{% endif %}
 			{% endif %}
 			{% if item_state is not empty %}
-				{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
+				{{ basic.stateswitch(id~'-state', item_state, 'icon', '', 'sani_heating.svg') }}
 			{% endif %}
 			{% for supplement in supplements %}
 				{{ supplement|raw }}
@@ -394,25 +394,25 @@
 				<td valign="top">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.stateswitch('', item_pos, '', value_top|default('0'), 'carat-u') }}
+							{{ basic.stateswitch(id~'-up', item_pos, '', value_top|default('0'), 'carat-u') }}
 						{% else %}
-							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
+							{{ basic.stateswitch(id~'-up', item_move, '', value_bottom|default('255') < value_top|default('0') ? 1 : 0, 'carat-u', '', '', 'blink' ) }}
 						{% endif %}
 					</div>
 				</td>
 				<td rowspan="3" valign="center" class="pos">
-					{{ basic.shutter('', item_pos, item_angle, value_top|default('0'), value_bottom|default('255'), step, mode, background) }}
+					{{ basic.shutter(id~'-shutter', item_pos, item_angle, value_top|default('0'), value_bottom|default('255'), step, mode, background) }}
 				</td>
 				<td valign="top">
 					{% if item_saved %}
-						<div>{{ basic.stateswitch('', item_saved, '', value_pos_1|default(0), 'grid', text_pos_1|default('Pos1'), '', 'blink') }}</div>
+						<div class="set">{{ basic.stateswitch(id~'-saved1', item_saved, '', value_pos_1|default(0), 'grid', text_pos_1|default('Pos1'), '', 'blink') }}</div>
 					{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td valign="center">
 					{% if item_stop %}
-						<div class="set">{{ basic.stateswitch('', item_stop, '', 1, 'delete') }}</div>
+						<div class="set">{{ basic.stateswitch(id~'-stop', item_stop, '', 1, 'delete') }}</div>
 					{% endif %}
 				</td>
 				<td valign="center">{{ txt }}</td>
@@ -421,21 +421,98 @@
 				<td valign="bottom">
 					<div class="set">
 						{% if item_move is empty %}
-							{{ basic.stateswitch('', item_pos, '', value_bottom|default('255'), 'carat-d') }}
+							{{ basic.stateswitch(id~'-down', item_pos, '', value_bottom|default('255'), 'carat-d') }}
 						{% else %}
-							{{ basic.stateswitch('', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
+							{{ basic.stateswitch(id~'-down', item_move, '', value_bottom|default('255') < value_top|default('0') ? 0 : 1, 'carat-d', '', '', 'blink' ) }}
 						{% endif %}
 					</div>
 				</td>
 				<td valign="bottom">
 					{% if item_saved %}
-						<div>{{ basic.stateswitch('', item_saved, '', value_pos_2|default(1), 'grid', text_pos_2|default('Pos2'), '', 'blink') }}</div>
+						<div class="set">{{ basic.stateswitch(id~'-saved2', item_saved, '', value_pos_2|default(1), 'grid', text_pos_2|default('Pos2'), '', 'blink') }}</div>
 					{% endif %}
 				</td>
 			</tr>
 		</table>
 	</div>
 {% endmacro %}
+
+
+/**
+* Small RTR (Room Temperatur Regulator) as table line with popup
+*
+* @param {id=} unique id for this widget
+* @param {text=}     name of the rtr
+* @param {item(num)} a gad/item for the actual temperature (mandatory)
+* @param {item(num)} a gad/item for the set temperature (mandatory)
+* @param {item(bool,num)=} an item for comfort / standby (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for night (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for frost (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for the current state of the actuator (optional)
+* @param {value=0.5} step for plus/minus buttons (optional, default: 0.5)
+* @param {text[]=} list of additional widgets / content to display
+* @param {text[bool,num]=} type of the actor and valve state: bool=on/off, num = PWM percentage value (optional, default = bool)
+*/
+{% macro smallrtr(id, txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, step, supplements, statetype) %}
+{% import "@widgets/basic.html" as basic %}
+{% set uid = uid(page, id) %}
+
+	<div id="{{ uid }}" class="rtr">
+		<table style="width:100%; text-align: left; table-layout: fixed;">
+			<tr align = "center">
+				<th width="20%">{% if txt %} {{ txt }} {% endif %}</th>
+				<td width="11%"><div class="temp">{{ basic.print(id~'actual', item_actual, '°C' ) }}</div></td>
+				<td width="9%">
+					{{ basic.offset(id~'minus', item_set, -(step|default(0.5)), 'minus', '', 'micro') }}
+				</td>
+				<td width="11%"><div class="temp">{{ basic.print(id~'set', item_set, '°C' ) }}</div></td>
+				<td width="9%">
+					{{ basic.offset(id~'plus', item_set, (step|default(0.5)), 'plus', '', 'micro') }}
+				</td>
+				<td width="10%" >
+					{% if item_state %}
+						{% if statetype == 'num' %}
+							{{ basic.print(id~'state', item_state, '%', '', 0.1, ['icon0', 'icon1'] ) }}
+						{% else %}
+							{{ basic.symbol(id~'state', item_state, '', 'sani_floor_heating.svg', [0,1], '', ['icon0', 'icon1'], '','', 'mini') }}
+						{% endif %}
+					{% endif %}
+				</td>
+				<td width="20%">
+					{% for supplement in supplements %}
+						{{ supplement|raw }}
+					{% endfor %}
+				</td>
+				<td width="10%">
+			  
+					{% if item_comfort is not empty %}
+						{{ basic.symbol('', item_comfort, '', ['user_away', 'user_available', 'user_away'], [1,2], '>', '', '#'~uid~'-popup', 'popup', 'mini' ) }}
+				  
+						<div id="{{ uid }}-popup" data-role="popup">
+						<div>
+						{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
+							{{ basic.stateswitch(id~'sw_comfort', item_comfort, 'icon', [1, 2], ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
+							{{ basic.stateswitch(id~'sw_night', item_comfort, 'icon', [3, 2], ['scene_night.svg', 'scene_night.svg'], '', ['icon1', 'icon0']) }}
+							{{ basic.stateswitch(id~'sw_frost', item_comfort, 'icon', [4, 2], ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
+						{% else %}
+							{% if item_comfort is not empty %}
+								{{ basic.stateswitch(id~'sw_comfort', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
+							{% endif %}
+							{% if item_night is not empty %}
+								{{ basic.stateswitch(id~'sw_night', item_night, 'icon', '', ['scene_night.svg', 'scene_night.svg']) }}
+							{% endif %}
+							{% if item_frost is not empty %}
+								{{ basic.stateswitch(id~'sw_frost', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
+							{% endif %}
+						{% endif %}
+				   {% endif %}
+					</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endmacro %}​
 
 
 /**
@@ -462,17 +539,17 @@
 		{% if txt %} {{ txt }} {% endif %}
 		</span>
 		<span class="ui-shut-btn">
-			{{ basic.stateswitch('',  item_move, type|default('micro'), '0', 'carat-u') }}
+			{{ basic.stateswitch(id~'-up',  item_move, type|default('micro'), '0', 'carat-u') }}
 		</span>
 		<span class="ui-shut-btn">
-			{{ basic.stateswitch('', item_stop, type|default('micro'), 1, 'delete') }}
+			{{ basic.stateswitch(id~'-stop', item_stop, type|default('micro'), 1, 'delete') }}
 		</span>
 		<span class="ui-shut-btn">
-			{{ basic.stateswitch('', item_move, type|default('micro'), '1', 'carat-d') }}
+			{{ basic.stateswitch(id~'-down', item_move, type|default('micro'), '1', 'carat-d') }}
 		</span>
 		<span class="ui-shut-btn">
 			{% if item_saved %}
-				{{ basic.stateswitch('', item_saved, type|default('micro'), value_saved|default(1), 'fts_shutter_50.svg') }}
+				{{ basic.stateswitch(id~'-saved', item_saved, type|default('micro'), value_saved|default(1), 'fts_shutter_50.svg') }}
 			{% endif %}
 		</span>
 		<span class="ui-shut-pic">
@@ -490,12 +567,12 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item(dict)} the item of the UZSU (NOT the item which is switched by UZSU)
-* @param {text=UZSU} title of graph (optional, default: UZSU)
+* @param {text=UZSU} title of the graph (optional, default: UZSU)
 * @param {value(0,1)=0} set to '1' in order to allow changes by dragging points (optional, default: 0)
 * @param {text(bool,num)=bool} supported types are 'bool' and 'num' (optional, default: bool)
-* @param {text[]=} valueParameterList depending on valueType (optional):
+* @param {text[]=} parameter list for y-axis depending on valueType (optional):
 	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
-	num: [min, max, step]
+	num: [min, max, step]  min/max limits the y-axis scale, step is used for rounding values while dragging / adding points
 * @param {text(false,true)=true} shows a scrollbar below the x-Axis (optional, default: true)	
 * @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
 *
@@ -524,9 +601,9 @@
 * @param {image=time_timer_switch} the pic for the 'off' state (optional)
 * @param {text(bool,num,list,text)=bool} supported types are 'bool', 'num', 'list', 'text' (optional, default: bool)
 * @param {text[?]=} valueParameterList depending on valueType (optional):
-	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
-	num: [min, max, step],
-	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'],
+	bool: ['text on','text off'] or ['text1:value1','text2:value2'] for flipswitch (default: 'On', 'Off'),
+	num: [min, max, step] as limits and step for numeric input (default: ''),
+	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'] as parameter set for a select element (default: '')
 	text: no value parameter
 * @param {color(icon0to5)=icon1} the color for the 'on' state, e.g. '#f00' for red (default 'icon1' of the design)
 * @param {color(icon0to5)=icon0} the color for the 'off' state, e.g. '#f00' for red (default 'icon0' of the design)
@@ -579,10 +656,10 @@
 * @param {text(false,true)=true} show the actual time as line on the table (default 'true' )
 * @param {value(1,2,3)=1} style of inactive-mode 1=opacity 50% /  2=Text "Inactive". You can combine 1+2=3 (default '1' )
 * @param {text(bool,num,list,text)=bool} supported types are 'bool', 'num', 'list', 'text' (optional, default: bool)
-* @param {text[]=}  depending on valueType (optional):
-	bool: ['text on','text off'] or ['text1:value1','text2:value2'],
-	num: [min, max, step],
-	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'],
+* @param {text[]=} parameter list for value editing -  depending on valueType (optional):
+	bool: ['text on','text off'] or ['text1:value1','text2:value2'] for flipswitch (default: 'On', 'Off'),
+	num: [min, max, step] as limits and step for numeric input (default: ''),
+	list: ['value1','value2','value3'] or ['text1:value1','text2:value2','text3:value3'] as parameter set for a select element (default: '')
 	text: no value parameter
 * @param {value=} identifier for the backend: 0=smarthomeNG style, 2= fhem style (not necessary, default is derived from io driver)
 *
@@ -603,7 +680,7 @@
 		<svg id="{{ uid(page, item) }}" class="highcharts-root" width="100%" viewbox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" version="1.1"> 
 		</svg>
 
-		{% if showzoombutton == 'true' or showzoombutton == 'True' %}
+		{% if showzoombutton|default('true') == 'true' or showzoombutton == 'True' %}
 		<table width=50% style="font-size:12px;margin-left: auto;margin-right: auto;">
 		<tr>
 		<td width=20%> <button type="button" id="5m" >5m</button></td>
@@ -642,8 +719,9 @@
 {% macro window (id, txt, item_move, item_stop, item_pos, item_shade, item_window_r, item_window_l, type, min, max, step, color, live ) %}
 	{% import "@widgets/basic.html" as basic %}
 	{% set uid = uid(page, id) %}
+	{% set popupid = id is empty ? uid(page, 'popup') : uid %}
 		
-	<a id="{{ uid }}-button" href="#{{ uid }}-popup" {% if txt %}title="{{ txt }}"{% endif %} data-rel="popup"
+	<a id="{{ uid }}-button" href="#{{ popupid }}" {% if txt %}title="{{ txt }}"{% endif %} data-rel="popup"
 		class=" {%- if type == 'icon' -%} /**- display as icon -*/
 						switch ui-link
 					{%- else -%} /**- display as button -*/
@@ -653,20 +731,20 @@
 		{{ basic.window (uid~'-icon', item_pos, item_window_r, item_window_l, min, max, color) }}
 	</a>
 		
-    <div id="{{ uid }}-popup" data-role="popup" style="min-width:200px;">
+    <div id="{{ popupid }}" data-role="popup" style="min-width:200px;">
 		<div>
-			{{ basic.window(uid~'-icon', item_pos, item_window_r, item_window_l, min, max, '') }}
+			{{ basic.window(popupid~'-icon1', item_pos, item_window_r, item_window_l, min, max, '') }}
 			{{ txt|e }}
         </div>
          <div data-role="controlgroup" data-type="horizontal">
-			{{ basic.stateswitch(id~'up', item_move, 'mini', 0, 'control_arrow_up.svg') }}
-			{{ basic.stateswitch(id~'down', item_move, 'mini', 1, 'control_arrow_down.svg') }}
-			{% if item_stop %}{{ basic.stateswitch(id~'stop', item_stop, 'mini', 1, 'audio_stop.svg') }}{% endif %}
-			{% if item_shade %}{{ basic.stateswitch(id~'shade', item_shade, 'mini', 1, 'fts_shutter_50.svg') }}{% endif %}
+			{{ basic.stateswitch(popupid~'-up', item_move, 'mini', 0, 'control_arrow_up.svg') }}
+			{{ basic.stateswitch(popupid~'-down', item_move, 'mini', 1, 'control_arrow_down.svg') }}
+			{% if item_stop %}{{ basic.stateswitch(popupid~'-stop', item_stop, 'mini', 1, 'audio_stop.svg') }}{% endif %}
+			{% if item_shade %}{{ basic.stateswitch(popupid~'-shade', item_shade, 'mini', 1, 'fts_shutter_50.svg') }}{% endif %}
 		</div>
 		{% if item_pos %}
 			<div class="pos">
-				{{ basic.slider(id~'slider', item_pos, min , max , step, 'horizontal', 'handle', '', '', live ) }}
+				{{ basic.slider(popupid~'-pos', item_pos, min , max , step, 'horizontal', 'handle', '', '', live ) }}
 			</div>
 		{% endif %}
         <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>

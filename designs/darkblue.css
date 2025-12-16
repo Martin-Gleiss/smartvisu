@@ -1,4 +1,4 @@
-/*!
+/*
 * jQuery Mobile 1.4.5
 * Git HEAD hash: 68e55e78b292634d3991c795f06f5e37a512decc <> Date: Fri Oct 31 2014 17:33:30 UTC
 * http://jquerymobile.com
@@ -12,7 +12,7 @@
 *
 */
 
-@import '../icons/ws/jquery.mobile.icons.min.css';
+@import "../icons/ws/jquery.mobile.icons.min.css";
 
 /* Globals */
 /* Font
@@ -1108,9 +1108,12 @@ html head + body .ui-body-e.ui-focus {
 button[disabled],
 .ui-select .ui-btn.ui-state-disabled {
 	filter: Alpha(Opacity=30);
-	opacity: .3;
+	opacity: .5;
 	cursor: default !important;
 	pointer-events: none;
+}
+#config .ui-state-disabled {
+	opacity: .3;
 }
 /* Focus state outline
 -----------------------------------------------------------------------------------------------------------*/
@@ -1261,57 +1264,74 @@ a.ui-slider-handle-semicircle {
 }
 
 
-/* Highcharts
+/* Plots, e.g. Highcharts
+-----------------------------------------------------------------------------------------------------------*/
+:root {	
+	--plot-color-0: #22aadd;
+	--plot-color-1: #4176a9;
+	--plot-color-2: #6640ff;
+	--plot-color-3: #00bcd4;
+	--plot-color-4: #03a9f4;
+	--plot-color-5: #2196f3;
+	--plot-color-6: #3f51b5;
+	--plot-color-7: #673ab7;
+	--plot-color-8: #673ab7;
+	--plot-color-9: #009688;
+	/* some more default values are defined in ./pages/base/base.css */
+}
+
+/* Highcharts 
+   we could set --higharts-color-n directly but this has unwanted effects on highlighted series
 -----------------------------------------------------------------------------------------------------------*/
 .highcharts-color-0 {
-	fill: #22AADD;
-	stroke: #22AADD;
-	color: #22AADD;
+	fill: var(--plot-color-0);
+	stroke: var(--plot-color-0);
+	color: var(--plot-color-0);
 }
 .highcharts-color-1 {
-	fill: #4176A9;
-	stroke: #4176A9;
-	color: #4176A9;
+	fill: var(--plot-color-1);
+	stroke: var(--plot-color-1);
+	color: var(--plot-color-1);
 }
 .highcharts-color-2 {
-	fill: #6640FF;
-	stroke: #6640FF;
-	color: #6640FF;
+	fill: var(--plot-color-2);
+	stroke: var(--plot-color-2);
+	color: var(--plot-color-2);
 }
 .highcharts-color-3 {
-	fill: #00bcd4;
-	stroke: #00bcd4;
-	color: #00bcd4;
+	fill: var(--plot-color-3);
+	stroke: var(--plot-color-3);
+	color: var(--plot-color-3);
 }
 .highcharts-color-4 {
-	fill: #03a9f4;
-	stroke: #03a9f4;
-	color: #03a9f4;
+	fill: var(--plot-color-4);
+	stroke: var(--plot-color-4);
+	color: var(--plot-color-4);
 }
 .highcharts-color-5 {
-	fill: #2196f3;
-	stroke: #2196f3;
-	color: #2196f3;
+	fill: var(--plot-color-5);
+	stroke: var(--plot-color-5);
+	color: var(--plot-color-5);
 }
 .highcharts-color-6 {
-	fill: #3f51b5;
-	stroke: #3f51b5;
-	color: #3f51b5;
+	fill: var(--plot-color-6);
+	stroke: var(--plot-color-6);
+	color: var(--plot-color-6);
 }
 .highcharts-color-7 {
-	fill: #673ab7;
-	stroke: #673ab7;
-	color: #673ab7;
+	fill: var(--plot-color-7);
+	stroke: var(--plot-color-7);
+	color: var(--plot-color-7);
 }
 .highcharts-color-8 {
-	fill: #673ab7;
-	stroke: #673ab7;
-	color: #673ab7;
+	fill: var(--plot-color-8);
+	stroke: var(--plot-color-8);
+	color: var(--plot-color-8);
 }
 .highcharts-color-9 {
-	fill: #009688;
-	stroke: #009688;
-	color: #009688;
+	fill: var(--plot-color-9);
+	stroke: var(--plot-color-9);
+	color: var(--plot-color-9);
 }
 
 /* smartVISU

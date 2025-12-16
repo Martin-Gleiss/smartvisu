@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiss
- * @copyright   2012 - 2015
+ * @copyright   2012 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide        driver_address
@@ -61,7 +61,19 @@ var io = {
 	 */
 	write: function (item, val) {
 		var sendItemPos = item.indexOf(':');
-		var sendItem = (sendItemPos == -1 ? item : item.substring(sendItemPos + 1));		
+		var sendItem = (sendItemPos == -1 ? item : item.substring(sendItemPos + 1));
+		
+		// simulate some item propertiers but write only to widget.buffer . not to temp file 
+		widget.update(sendItem + '.property.prev_value', widget.get (sendItem + '.property.last_value'));
+		widget.update(sendItem + '.property.last_value', widget.get (sendItem));
+		widget.update(sendItem + '.property.prev_change', widget.get (sendItem + '.property.last_change'));
+		widget.update(sendItem + '.property.prev_update', widget.get (sendItem + '.property.last_update'));
+		widget.update(sendItem + '.property.prev_trigger', widget.get (sendItem + '.property.last_trigger'));
+		widget.update(sendItem + '.property.last_change', new Date());
+		widget.update(sendItem + '.property.last_update', new Date());
+		widget.update(sendItem + '.property.last_trigger', new Date());
+
+		// and finally update the item
 		io.put(sendItem, val);
 	},
 
@@ -72,7 +84,7 @@ var io = {
 	 * @param      the value
 	 */
 	trigger: function (name, val) {
-		// not supported
+		console.log('[io.offline]: unsupported trigger command. Name: ' + name + ', value:', val);
 	},
 
 	/**
@@ -243,6 +255,16 @@ var io = {
 					// initialize UZSU data if item is an UZSU item and no data available
 					if (item.slice(-5).toLowerCase() == '.uzsu' && val == null) 
 							val = {"active":"false", "interpolation": {"type": "none", "initialized": false, "interval": 5, "initage": 0, "itemtype": "bool"}, "list": [], "plugin_version": "2.0.0"}
+						
+					// simulate some item properties
+					if (item.indexOf('.property.') != -1 && val == null) {
+						var itemProperty = item.slice(item.indexOf('.property.')+10 );
+						if (['last_change', 'last_update', 'last_trigger', 'prev_change', 'prev_update', 'prev_trigger'].includes(itemProperty))
+							val = new Date();
+						else if (['last_value', 'prev_value'].includes(itemProperty)) 
+							val = 0
+					}
+					
 					widget.update(item, val);
 					if (item != io.listeners[item])
 						widget.update(io.listeners[item], val);
@@ -329,7 +351,10 @@ var io = {
 				val = (min * 1) + ((max - min) / 2);
 
 			while (tmin <= tmax) {
-				val += Math.random() * (2 * delta) - delta;
+				var increment = Math.random() * (2 * delta) - delta;
+				if (val + increment >= max || val + increment <= min)
+					increment *= -1;
+				val += increment;
 				ret.push([tmin, val.toFixed(2) * 1.0]);
 				tmin += step;
 			}
@@ -365,19 +390,18 @@ var io = {
 	 * stop all subscribed series of a single plot or of all plots on the page
 	 */
 	stopseries: function (plotwidget) {
-			if (plotwidget === undefined)
-			plotWidgets = widget.plot();
+		if (plotwidget === undefined)
+			plotWidgets = widget.plot();	// all plot widgets 
 		else
-			plotWidgets = plotwidget;
+			plotWidgets = plotwidget;		// single plot widget given in parameter
 	
 		plotWidgets.each(function (idx) {
 			var items = widget.explode($(this).attr('data-item'));
 			for (var i = 0; i < items.length; i++) {
-				if ((plotwidget == undefined) || (widget.plot(items[i]).length == 1)){
+				if ((plotwidget == undefined || widget.plot(items[i]).length == 1) && widget.checkseries(items[i])){
 					clearTimeout(io.seriesTimer[items[i]]);
 					console.log('[io_offline] cancelling series '+items[i]);
-					if (plotwidget != undefined)
-						delete widget.buffer[items[i]];
+					delete widget.buffer[items[i]];
 				}
 			}
 		});
@@ -411,8 +435,7 @@ var io = {
 			var items = widget.explode($(this).attr('data-item'));
 			for (var i = 0; i < items.length; i++) {
 				var item = items[i].split('.');
-
-				if ((plotwidget != undefined || widget.get(items[i]) == null) && (widget.checkseries(items[i]))) {
+				if ((plotwidget != undefined || widget.get(items[i]) == null) && widget.checkseries(items[i])) {
 
 					var assign = ($(this).attr('data-assign') || "").explode();
 					var yAxis = (assign[i] ? assign[i] - 1 : 0)

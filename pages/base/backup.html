@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2022
+* @copyright   2012 - 2025
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -27,6 +27,7 @@
                 {{ lang('backup', 'export', 'hint') }}
             </p>
             <br/>
+            <div class="exportSizeWarning"></div>
             <form id="exportBackupFileForm" style="position: absolute; bottom: 0; right: 5px; left: 5px;">
                 <button type="submit" data-theme="b">{{ lang('backup', 'export', 'button') }}</button>
             </form>
@@ -54,20 +55,29 @@
 
 <script>
     async function uploadBackup(formData) {
+        var response = {}
         try {
-            const response = await fetch("lib/backup.php", {
+            response = await fetch("lib/backup.php", {
                 method: "POST",
                 body: formData,
             });
-            const result = await response.json();
+            const result = await response.clone().json();
             if (response.ok)
                 notify.message("info", result.title, result.text);
             else
                 notify.message("error", result.title, result.text);
             document.querySelector("#restoreBackupFile").value = null;
         } catch (error) {
-            notify.message("error", "Error", error.toString());
+            // if json error message is preceded by a system message: retrieve original error message from php script
+            var fullText = await response.text();
+            var myError = fullText.split(/({.*})/);
+            if (myError.length > 1){
+                var skriptMessage = JSON.parse(myError[1]);
+                notify.message("error", skriptMessage.title, skriptMessage.text)		
+            } else
+                notify.message("error", "Error", error.toString()  );
         }
+		$('[type="submit"]').removeAttr('disabled');
     }
 
     function restoreFunc() {
@@ -98,6 +108,10 @@
                 a.remove();
                 URL.revokeObjectURL(url);
 
+                if (parseInt(response.headers.get('filesize')) > parseInt(response.headers.get('maxpostsize')) || parseInt(response.headers.get('filesize')) > parseInt(response.headers.get('maxuploadsize')))
+                    $('.exportSizeWarning').html(sv_lang.backup.export.size + '<br>post_max_size = ' + response.headers.get('maxpostsize') + '<br>upload_max_filesize = ' + response.headers.get('maxuploadsize') )
+                    .css('border', 'solid red').css('padding', '4px 0 4px 0');
+
                 notify.message("info", "Backup", sv_lang.backup.export.successful);
             } else {
                 const resultJson = await result.text();
@@ -107,6 +121,7 @@
         } catch (error) {
             notify.message("error", "Error", error.toString());
         }
+        $('[type="submit"]').removeAttr('disabled');
     }
 
     function exportFunc() {
@@ -115,13 +130,16 @@
         downloadBackup(formData);
     }
 
-    document.querySelector("#restoreBackupFileForm").addEventListener('submit', event => {
+    $('#restoreBackupFileForm').on('submit', function(event) {
         event.preventDefault();
+        $('[type="submit"]').attr('disabled','');
         restoreFunc();
     });
 
-    document.querySelector("#exportBackupFileForm").addEventListener('submit', event => {
+    $('#exportBackupFileForm').on('submit', function(event) {
         event.preventDefault();
+        $('[type="submit"]').attr('disabled','');
+        $('.exportSizeWarning').html('').css('border', '').css('padding', '');;
         exportFunc();
     });
 

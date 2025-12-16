@@ -4,7 +4,7 @@
  * @author      Martin Gleiß, Patrik Germann
  * @copyright   2012 - 2024
  * @license     GPL [http://www.gnu.de]
- * @version     2.5.3
+ * @version     2.6.0
  * -----------------------------------------------------------------------------
  * @label       openHAB
  *
@@ -69,7 +69,10 @@ var io = {
 		io.debug && console.log("io.trigger(name = " + name + ", val = " + val + ")");
 		var cmd = name + ((val) ? ' ' + val : '');
 		io.console(cmd, function(response){
-			io.debug && console.debug("io.console.exec(response = " + response + ")");
+			io.debug && console.debug('io.console(response = [' + response + '])');
+			if (response.length && response[0]) {
+				notify.message('info', sv_lang.status_event_format.info.response, response.join('<br>'));
+			}
 		});
 	},
 
@@ -169,7 +172,7 @@ var io = {
 				io.item.eventListener(items);
 
 				if (widget.log().length) {
-					io.debug && console.log("io.run: setInterval(io.log.get())");
+					io.debug && console.log("io.run: setInterval(io.log.get(), " + io.log.refreshTimer + ")");
 					io.log.refreshIntervall = setInterval(function() {
 						io.log.get();
 					}, io.log.refreshTimer);
@@ -193,9 +196,9 @@ var io = {
 	
 	/**
 	 * supported aggregate functions in the backends database
-	 * since this must be configured by the user in the backend we leave some common modes as dummies
+	 * ('avg' is not really supported, is only for compatibility to plots without aggregate mode)
 	 */
-	aggregates: ['avg', 'min', 'max', 'sum', 'diff', 'on', 'raw', 'count'],
+	aggregates: ['raw','avg'],
 
 
 	/**
@@ -213,6 +216,11 @@ var io = {
 			"CLOSED" : 0, "OPEN" : 1
 		}
 
+		if ($.isNumeric(state)) {
+			// Workaround, weil in openHAB numerische Werte manchmal viele Nullen nachkomma hat.
+			state = parseFloat((state.indexOf('000000') > 0) ? state.slice(0, state.indexOf('000000')) : state);
+		}
+
 		switch (io.item.type[item]) {
 			case "Color":
 				return (state == "NULL") ? "0,0,0" : state;
@@ -221,11 +229,6 @@ var io = {
 					state = new Date(Date.now()).toISOString().slice(0,10) + state.slice(10, 23);
 				}
 				return io.convertDateTime(state);
-			case "Number":
-				if (state.indexOf('000000') > 0) {
-					state = state.slice(0, state.indexOf('000000'));
-				}
-				return parseFloat((state == "NULL") ? 0 : state);
 			case "String":
 				return (state == "NULL") ? "" : state;
 			default:
@@ -370,8 +373,12 @@ var io = {
 								val = io.convertState(item, val);
 								io.debug && console.debug("io.item.eventListener: widget.update(item = " + item + ", value = " + val + ")");
 								widget.update(item, val);
-								if (io.plot.listeners[item] && Date.now() - io.plot.items[io.plot.listeners[item]] > io.plot.refreshTimer) {
-									io.plot.get(io.plot.listeners[item]);
+
+								if (io.plot.listeners[item]) {
+									var plotval = new Array;
+									plotval.push([Date.now(), io.plot.convertValue(val)]);
+									io.debug && console.debug("io.item.eventListener: widget.update(item = " + io.plot.listeners[item] + ", value = " + plotval + ")");
+									widget.update(io.plot.listeners[item], plotval);
 								}
 							});
 						}
@@ -394,26 +401,27 @@ var io = {
 		 * read log
 		 */
 		get: function () {
+			io.debug && console.log("io.log.get()");
+
 			widget.log().each(function () {
 				var logname = $(this).attr('data-item');
 				var logcount = $(this).attr('data-count');
-				var cmd = "log:display -p '%p|%d{YYYY-MM-dd HH:mm:ss.SSS}|%c|%h{%m}%n'" + ((logname == 'default') ? ' -n ' + logcount : ' ' + logname);
+				io.debug && console.debug("io.log.get(logname = " + logname + ")");
+				var cmd = "log:display " + logname + ((logcount) ? " " + logcount : null);
 				io.console(cmd, function(log) {
 					if (log.length) {
-						var newhash = log[0].id; //log[log.length-1].id
+						var newhash = log[0].id;
 						var lasthash = null;
 						if (widget.get(logname)) {
 							var curlog = widget.get(logname);
-							lasthash = curlog[0].id; //curlog[curlog.length-1].id
+							lasthash = curlog[0].id;
 						}
-						io.debug && console.debug("lasthash: "+lasthash);
-						io.debug && console.debug("newhash:  "+newhash);
+						io.debug && console.debug("io.log.get(logname = " + logname + ", lasthash = " + lasthash + ", newhash = " + newhash + ")");
 						if (newhash != lasthash) {
-							log = log.slice(0, logcount); //log.slice(0 - logcount)
 							for (let i=0; i<log.length; i++) {
 								log[i].time = io.convertDateTime(log[i].time);
 							}
-							io.debug && console.debug("io.run: widget.log.update(item = " + logname + ", value = " + log + ")");
+							io.debug && console.debug("io.log.get: widget.log.update(item = " + logname + ", value = " + log + ")");
 							widget.update(logname, log);
 						}
 					}
@@ -427,6 +435,35 @@ var io = {
 		listeners    : new Array(),
 		refreshTimer : 10,
 
+		convertValue: function (value) {
+			io.debug && console.debug("io.plot.convertValue(" + value + ")");
+
+			if (isNaN(value)) {
+				value = 0;
+			} else if (Number(value) == value && value % 1 !== 0) { //isFloat
+				value = Math.round((value + Number.EPSILON) * 100) / 100; //Rundung auf max. zwei Nachkommastellen
+			}
+			return value;
+		},
+
+		convertItem: function (item) {
+			io.debug && console.debug("io.plot.convertItem(item = " + item + ")");
+
+			var i = item.split('.');
+			if (i.length >= 5) {
+				var o = new Object;
+				o.count = i[i.length -1];
+				o.tmax = i[i.length -2];
+				o.tmin = i[i.length -3];
+				o.mode = i[i.length -4];
+				o.item = i.slice(0, i.length -4).join('.');
+				o.name = item;
+				return o;
+			} else {
+				return false;
+			}
+		},
+
 		/**
 		 * Initializion of plots
 		 */
@@ -437,14 +474,13 @@ var io = {
 			widget.plot().each(function() {
 				var items = widget.explode($(this).attr('data-item'));
 				for (var i = 0; i < items.length; i++) {
-					var plotItem = items[i];
-					var pt = plotItem.split('.');
-					if (!io.plot.items[plotItem] && (pt instanceof Array) && widget.checkseries(plotItem)) {
-						if (pt[3] == 'now') {
-							io.plot.listeners[pt[0]] = plotItem;
+					var pI = io.plot.convertItem(items[i]);
+					if (!io.plot.items[pI.name] && pI && widget.checkseries(pI.name)) {
+						if (pI.tmax == 'now') {
+							io.plot.listeners[pI.item] = pI.name;
 						}
-						io.plot.get(plotItem);
-						io.plot.items[plotItem] = true;
+						io.plot.get(pI.name);
+						io.plot.items[pI.name] = true;
 					}
 				}
 			});
@@ -458,18 +494,14 @@ var io = {
 		get: function(plotItem) {
 			io.debug && console.log("io.plot.get(plotItem = " + plotItem + ")");
 
-			var pt = plotItem.split('.');
-			var item = pt[0];
-			var tmin = new Date().duration(pt[2]);
-			var tmax = pt[3];
-
-			var starttime = new Date(Date.now() - tmin);
-			var url = io.url + "persistence/items/" + item + "?starttime=" + starttime.toISOString();
-
-			if (tmax != 'now') {
-				tmax = new Date().duration(pt[3]);
-				var endtime = new Date(new Date() - tmax);
-				url += "&endtime=" + endtime.toISOString();
+			var pI = io.plot.convertItem(plotItem);
+			pI.dtmin = new Date().duration(pI.tmin);
+			pI.starttime = new Date(Date.now() - pI.dtmin);
+			var url = io.url + "persistence/items/" + pI.item + "?starttime=" + pI.starttime.toISOString();
+			if (pI.tmax != 'now') {
+				pI.dtmax = new Date().duration(pI.tmax);
+				pI.endtime = new Date(new Date() - pI.dtmax);
+				url += "&endtime=" + pI.endtime.toISOString();
 			}
 
 			$.ajax({
@@ -484,13 +516,8 @@ var io = {
 				var plotData = new Array();
 				if (persistence.data.length > 0) {
 					$.each(persistence.data, function(key, data) {
-						var val = io.convertState(item, data.state);
-						if (isNaN(val)) {
-							val = 0;
-						} else if (Number(val) == val && val % 1 !== 0) { //isFloat
-							val = parseFloat(val).toFixed(2);
-						}
-						plotData.push([data.time, parseFloat(val)]);
+						var val = io.convertState(pI.item, data.state);
+						plotData.push([data.time, io.plot.convertValue(val)]);
 					});
 					plotData.sort(function(a, b) {
 						return a[0] - b[0];
@@ -507,13 +534,14 @@ var io = {
 	},
 
 	/**
-	 * Send a command to the console and return the response
+	 * Send a command to the console and execute callback
 	 *
 	 * @param      command
-	 * @return     response
+	 * @param      function (callback)
 	 */
-	console: function (command, response) {
+	console: function (command, func) {
 		io.debug && console.log("io.console(command = " + command + ")");
+		
 		$.ajax({
 			url      : 'driver/openhab/console.php',
 			data     : 'cmd=' + command,
@@ -523,7 +551,7 @@ var io = {
 			async    : true,
 			cache    : false
 		}).done(function(data) {
-			response(data);
+			func(data);
 		}).fail(notify.json);
 	},
 

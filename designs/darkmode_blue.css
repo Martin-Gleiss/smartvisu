@@ -7,6 +7,5 @@
 *
 */
 
-@import 'darkblue.css';
-@import 'lightblue.css',(prefers-color-scheme: light);
-
+@import "darkblue.css";
+@import "lightblue.css",(prefers-color-scheme: light);

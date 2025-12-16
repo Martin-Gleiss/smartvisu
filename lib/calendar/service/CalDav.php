@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Johannes Willnecker, Sebastian Helms, Serge Wagener, Stefan Widmer, Wolfram v. Hülsen
- * @copyright   2015-2024
+ * @copyright   2015-2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       CalDav (e.g. ownCloud, Nextcloud, ...)
@@ -56,12 +56,12 @@ class calendar_caldav extends calendar
 
 			if ($caldavresponse === false) {
 				$loadError = curl_error($ch);
-				$this->error('Calendar: CalDav', 'Read request to "'.$url.'" failed with message: "'.$loadError.'"');
+				$this->error('Calendar: CalDav', translate('Read request to "'.$url.'" failed with message: " '.$loadError.' "', 'calendar_error_message'));
 				echo $this->json();
-				curl_close($ch);
+				if (PHP_VERSION_ID < 80000) curl_close($ch);
 				exit;
 			}
-			curl_close($ch);
+			if (PHP_VERSION_ID < 80000) curl_close($ch);
 			if ($this->debug)
 				fclose($fp);
 		
@@ -82,11 +82,15 @@ class calendar_caldav extends calendar
 			$caldavresponse = file_get_contents($url, false, $context);
 
 			if ($caldavresponse === false) {
+				 // $http_rsponse_header is deprecated as of PHP 8.5. Replacement for PHP >= 8.4
+				if (function_exists('http_get_last_response_headers')) 
+					$http_response_header = http_get_last_response_headers();
+
 				if (substr($this->errorMessage, 0, 17) == 'file_get_contents')
 					$loadError = substr(strrchr($this->errorMessage, ':'), 2);
 				elseif (!empty($http_response_header)) 
 					$loadError = $http_response_header[0];
-				$this->error('Calendar: CalDav', 'Read request to "'.$url.'" failed with message: "'.$loadError.'"');
+				$this->error('Calendar: CalDav', translate('Read request to "'.$url.'" failed with message: " '.$loadError.' "', 'calendar_error_message'));
 				if (!empty($http_response_header))
 					$this->debug(implode("\n", $http_response_header));
 				echo $this->json();
@@ -184,8 +188,9 @@ XMLQUERY;
 			}
 		}
 		if (!$xml || empty($calurls)) {
-			$calError = $this->errorMessage.'".<br><br>Calendar URLs could not be identified in remote answer.<br><br>Try using ICS calendar service';
-			$this->error('Calendar: CalDav', 'Read request failed with message: "'.$calError );
+			$calError = translate('Read request failed with message: ', 'calendar_error_message').($this->errorMessage != '' ? '" '.translate($this->errorMessage, 'calendar_error_message').'".' : '');
+			$calError .= '<br><br>'.trans('calendar_error_message', 'missingxml'); 
+			$this->error('Calendar: CalDav', $calError);
 		}
 		return $calurls;
 	}
@@ -235,6 +240,11 @@ XMLQUERY;
 		- https://p01-caldav.icloud.com/{user}/calendars/
 		*/
 		$calbaseurl = str_replace('{user}', config_calendar_username, $this->url);
+		if ($calbaseurl == ''){
+			$this->error('Calendar: CalDav', trans('calendar_error_message', 'missingurl'));
+			echo $this->json();
+			exit;
+		}
 
 		// Check required authentification method
 		$digest = 0;
@@ -256,17 +266,18 @@ XMLQUERY;
 			$xml->registerXPathNamespace('C', 'urn:ietf:params:xml:ns:caldav');
 			$caldata = $xml->xpath('//C:calendar-data');
 			$this->debug(implode("\n", $caldata), "ICS Data of '".$calurl."'");
+			// hand calendar data over to iCal class for parsing
 			$ical->initString(implode("\n",$caldata));
+			// evaluate parsed calendar into our own array of events
 			$this->addFromIcs($ical, $calmetadata);
 		}
 	}
-
 }
 
 
-// -----------------------------------------------------------------------------
-// call the service
-// -----------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
+// call the service only if script has been called directly - not as a child of other scripts
+// -------------------------------------------------------------------------------------------
 if (realpath(__FILE__) == realpath($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME'])) {
 	header('Content-Type: application/json');
 	$service = new calendar_caldav(array_merge($_GET, $_POST));

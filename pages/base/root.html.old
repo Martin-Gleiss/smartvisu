@@ -1,0 +1,327 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+/** handle dropins - only if page configuration is completed */
+{% if config_pages != "" %}
+	{% set macrofiles = dir('dropins/shwidgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
+	{% set macrofiles = macrofiles|merge(dir('dropins/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
+	/** additional widgets in current pages */
+	{% if isdir('pages/'~config_pages~'/widgets', '^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$') %}
+		{% set macrofiles = macrofiles|merge(dir('pages/'~config_pages~'/widgets','^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.html$')) %}
+	{% endif %}
+	{% set dynmacro = [] %}
+	{% for macrofile in macrofiles %}
+		{% set dynmacro = dynmacro|merge(['{% import "@widgets/' ~ macrofile['file'] ~ '" as ' ~ macrofile['name'] ~ ' %}']) %}
+	{% endfor %}
+	{% extends template_from_string(dynmacro|join("\n") ~ '\n{% block root %}{% endblock %}') %}
+{% endif %}
+
+{% block root %}
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>{{ config_title }}</title>
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1.3, minimum-scale=1" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="mobile-web-app-capable" content="yes" />
+
+	<link rel="icon" href="favicon.png" />
+	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" href="favicon.png" />
+	<link rel="manifest" href="index.php?page=manifest">
+
+	<link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.4.5.min.css" />
+
+/** CSS assets **/
+{% set design_css = isfile('designs/' ~ config_design ~ '.css') ? 'designs/' ~ config_design ~ '.css' : 'dropins/designs/' ~ config_design ~ '.css' %}
+{% set cssFiles = [
+		'vendor/plot.highcharts/highcharts.css',
+		'vendor/JTSage/DateBox/css/jtsage-datebox.css',
+		'vendor/jquery.roundslider/roundslider.css',
+		'vendor/jquery.toast/toast.css',
+		'lib/clock/jdigiclock.css',
+		'lib/weather/jdigiweather.css',
+		'pages/base/base.css',
+		'pages/base/quad.css',
+		design_css,
+		'pages/' ~ config_pages ~ '/visu.css'
+	] %}
+{% for file in dir('dropins/shwidgets', '(.*)(\.css)') %}
+	{% set cssFiles = cssFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins/widgets', '(.*)(\.css)') %}
+	{% set cssFiles = cssFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins', '(.*)(\.css)') %}
+	{% set cssFiles = cssFiles|merge([file.path]) %}
+{% endfor %}
+{% if isdir('pages/'~config_pages~'/widgets') %}
+	{% for file in dir('pages/'~config_pages~'/widgets', '(.*)(\.css)') %}
+		{% set cssFiles = cssFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
+{% if isdir('pages/'~config_pages~'/css') %}
+	{% for file in dir('pages/'~config_pages~'/css', '(.*)(\.css)') %}
+		{% set cssFiles = cssFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
+{%- if config_cache and mbstring_available %} /** only use minified and merged version if page cache is activated and mbstring available. otherwise use original single files. **/
+	<link rel="stylesheet" href="assets.php?pages={{ config_pages }}&amp;type=css
+	{%- for cssFile in cssFiles -%}
+		{%- if cssFile is not empty and isfile(cssFile) -%}
+			&amp;{{- 'files[]'|url_encode -}}={{- cssFile|url_encode -}}
+		{%- endif -%}
+	{%- endfor -%}
+	" />
+{% else -%}
+	{%- for cssFile in cssFiles -%}
+		{%- if cssFile is not empty and isfile(cssFile) %}
+
+	<link rel="stylesheet" href="{{ cssFile }}" />
+		{%- endif -%}
+	{%- endfor %}
+{% endif %}
+
+	<script src="vendor/jquery/jquery-2.2.4.min.js"></script>
+
+	<script>
+		$(document).on("mobileinit", function () {
+{%- if config_transition != 'fade' %}
+			$.mobile.defaultPageTransition = '{{ config_transition }}';
+{% endif %}
+			$.event.special.tap.emitTapOnTaphold = false;
+		});
+	</script>
+
+	<script>
+		// work around a bug of jQuery Mobile 1.4.5 themes
+		$(document).on("pagebeforecreate", function( event, ui ) {
+			$(this).find('div[data-role="collapsible-set"][data-theme]').each(function() {
+				$(this).find('div[data-role="collapsible"]:not([data-theme])').attr('data-theme', $(this).attr('data-theme'));
+				$(this).attr('data-theme','');
+			});
+			$(this).find('ul[data-role="listview"][data-dividertheme]').each(function() {
+				$(this).find('li[data-role="list-divider"]:not([data-theme])').attr('data-theme', $(this).attr('data-dividertheme'));
+			});
+		});
+	</script>
+
+	<script src="vendor/jquery.mobile/jquery.mobile-1.4.5-patch.min.js"></script>
+
+/** if configured backend driver is not available (e.g. deprecated -> removed) start w/ offline driver */
+{% set driver_error_msg = "" %}
+{% if not isfile('driver/io_' ~ config_driver ~ '.js') %}
+	{% set driver_error_msg = 'Configured backend driver not found. Starting with Offline driver' %}
+	{% set config_driver = 'offline'%}
+{% endif %}
+
+/** JavaScript assets **/
+{% set jsFiles = [
+		'lib/base/jquery.mobile.slider.js',
+		'vendor/plot.highcharts/highstock.js',
+		'vendor/plot.highcharts/highcharts-more.js',
+		'vendor/plot.highcharts/modules/draggable-points.js',
+		'vendor/plot.highcharts/modules/solid-gauge.js',
+		'vendor/jquery.cycle2/jquery.cycle2.js',
+		'vendor/jquery.roundslider/jquery-1.61.roundslider.js',
+		'vendor/jquery.toast/jquery.toast.js',
+		'vendor/JTSage/DateBox/js/jtsage-datebox.js',
+		'lib/clock/jquery.jdigiclock.js',
+		'vendor/JTSage/DateBox/js/i18n/jtsage-datebox.i18n.'~lang('DateBox', 'lang')~'.utf8.js',
+		config_animation ? 'widgets/animation.js' : null,
+		'lib/base/base.js',
+		'lib/base/base.php',
+		'driver/io_' ~ config_driver ~ '.js',
+		'pages/' ~ config_pages ~ '/visu.js'
+	] %}
+{% if isdir('driver/'~config_driver, '\.js') %}
+	{% for file in dir('driver/'~config_driver, '(.*)(\.js)') %}
+		{% set jsFiles = jsFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
+{% for file in dir('widgets', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins/shwidgets', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins/widgets', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% for file in dir('dropins', '(.*)(\.js)') %}
+	{% set jsFiles = jsFiles|merge([file.path]) %}
+{% endfor %}
+{% if isdir('pages/'~config_pages~'/widgets', '\.js') %}
+	{% for file in dir('pages/'~config_pages~'/widgets', '(.*)(\.js)') %}
+		{% set jsFiles = jsFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
+{% if isdir('pages/'~config_pages~'/js', '\.js') %}
+	{% for file in dir('pages/'~config_pages~'/js', '(.*)(\.js)') %}
+		{% set jsFiles = jsFiles|merge([file.path]) %}
+	{% endfor %}
+{% endif %}
+{%- if config_cache and mbstring_available -%} /** only use minified and merged version if page cache is activated and mbstring available. otherwise use original single files. **/
+	<script src="assets.php?pages={{ config_pages }}&amp;type=javascript
+	{%- for jsFile in jsFiles -%}
+		{%- if jsFile is not empty and isfile(jsFile) -%}
+			&amp;{{- 'files[]'|url_encode -}}={{- jsFile|url_encode -}}
+		{%- endif -%}
+	{%- endfor -%}
+	"></script>
+{%- else -%}
+	{%- for jsFile in jsFiles -%}
+		{%- if jsFile is not empty and isfile(jsFile) %}
+
+	<script src="{{ jsFile }}"></script>
+		{%- endif -%}
+	{%- endfor -%}
+	{%- if config_cache and not mbstring_available %}
+
+ 	<script>notify.message('warning', 'Assets','JavaScript and CSS minification needs PHP mbstring module.')</script>
+ 	{%- endif -%}
+{% endif %}
+
+
+{% block head %}{% endblock %}
+
+<script>
+	console.log('[root.html] first init of driver');
+	io.init();
+{% if config_driver_autoreconnect %}
+	activateAutoReconnect();
+{% endif %}
+
+{% if config_backtohometime > 0 %}
+	// back to home page
+	var homeTimeout;
+	$(document).on("vmousedown pagecontainershow", function() {
+		if(homeTimeout !== undefined)
+			window.clearTimeout(homeTimeout);
+		if($.mobile.activePage && $.mobile.activePage.attr("id") != "index" && $.mobile.activePage.attr("id") != "config")
+			homeTimeout = window.setTimeout(function() { $.mobile.changePage("index.php"); }, {{ config_backtohometime * 1000 }});
+	});
+{% endif %}
+
+	// Do some actions before page is shown
+	// and run the io  with all widgets
+	$(document).on('pagecontainerbeforeshow', function () {
+		// get active page into an object in order to speed up item / widget updates
+		sv.activePage = $(":mobile-pagecontainer").pagecontainer("getActivePage");
+		fx.init();
+		repeater.init();
+		{% if config_timesource == "server" %}
+			if (sv.serverTimezone.transition == 0 || new Date().valueOf() > sv.serverTimezone.transition){
+				console.log('[root.html] getting server time and timezone');
+				getServerTimeAndZone();
+			}
+		{% endif %}
+		
+		io.run();
+	});
+
+	// Do some actions on page show
+	$(document).on('pagecontainershow', function () {
+		// Activate the info field in top right corner
+		notify.display();	
+		// show warning if driver error has been detected
+		{% if driver_error_msg is not empty %}
+		if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification)) 
+			io.socketErrorNotification = notify.message('warning', 'Backend Driver', "{{ driver_error_msg }}");
+		{% endif %}
+
+		/* workaround for jQM theme bug in Firefox - obsolete after fix in Firefox
+		$(this).find('.ui-collapsible-heading').each(function(){
+			var headerClass = 'ui-page-theme-'+ $(this).closest('div').attr('data-theme');
+			$(this).addClass(headerClass);
+		});
+		*/
+		
+		// reset all collapsibles in menu to original state
+		{% if config_collapsible_reset %}
+			$(sv.activePage).find('.secondary [data-collapsed="false"] .ui-collapsible-heading-collapsed').parents().first().collapsible('expand');
+		{% endif%}
+	});
+
+	// workaround for jQm listview:
+	// active list item gets displayed highlighted if clicked again
+    // the effect occurs when clicking on the anchor target but not on image and text
+	$(document).on('click', '[data-role="listview"] li [href*="index.php?page="]', function (event) {	
+		if ($(event.target).hasClass('ui-btn')) {
+			setTimeout(function(){
+				$(event.target).removeClass('ui-btn-active');}, 200)
+		}
+		//DEBUG: console.log('anchor clicked', event.target);
+	});
+	
+	// detect link target with anchor and scroll to it, e.g  href="index.php?page=myPage&anchor=myAnchor"
+	$(document).on('click', 'a[href*="&anchor="]', function (event) {	
+		event.preventDefault();
+		if (event.target.href !== undefined)
+			var targetURI = event.target.href;
+		else 
+			targetURI = $(event.target).parents('a.ui-link').first()[0].href;
+				
+		var anchorPos = targetURI.indexOf('&anchor');
+		var anchor = targetURI.substring(anchorPos+8);
+		var target = targetURI.substring(0, anchorPos);
+		var targetOffset = $(sv.activePage).find('.ui-content').offset().top;
+
+		if (location.href.indexOf(target) == 0){
+			$.mobile.silentScroll($(sv.activePage).find('#'+ anchor).offset().top - targetOffset);
+			//DEBUG: console.log('same page link clicked: '+ anchor)
+		}
+		else {
+			$(':mobile-pagecontainer').pagecontainer('change', target);
+			window.anchorTarget = anchor
+			//DEBUG: console.log('new page link clicked: '+ anchor)
+		}
+	});
+	$(document).on('pagecontainerchange', function () {
+		if (window.anchorTarget != null) {
+			//DEBUG: console.log ('click on new page anchor target "'+ window.anchorTarget + '" detected');
+			var targetOffset = $(sv.activePage).find('.ui-content').offset().top;
+			$.mobile.silentScroll($(sv.activePage).find('#'+ window.anchorTarget).offset().top - targetOffset);
+			window.anchorTarget = null;
+		}
+	});	
+	
+	// if a fully kiosk browser is active stop the websocket when device goes in sleeping mode 
+	if (typeof fully !== 'undefined')  {
+		fully.bind('screenOn',"if (!io.socket) io.init();");
+		fully.bind('screenOff',"io.close();");
+	};
+
+	$.mobile.page.prototype.options.domCache = {{ (config_cache_dom ? 'true' : 'false') }};	
+</script>
+	
+{% import "@widgets/lib.html" as lib %}
+{% import "@widgets/basic.html" as basic %}
+{% import "@widgets/calendar.html" as calendar %}
+{% import "@widgets/clock.html" as clock %}
+{% import "@widgets/device.html" as device %}
+{% import "@widgets/icon.html" as icon %}
+{% import "@widgets/multimedia.html" as multimedia %}
+{% import "@widgets/phone.html" as phone %}
+{% import "@widgets/plot.html" as plot %}
+{% import "@widgets/popup.html" as popup %}
+{% import "@widgets/status.html" as status %}
+{% import "@widgets/weather.html" as weather %}
+</head>
+
+<body>
+{% block body %}{% endblock %}
+</body>
+</html>
+{% endblock root %}

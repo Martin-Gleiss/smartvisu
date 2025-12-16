@@ -64,45 +64,45 @@ $( document ).ready(function() {
     ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine'] with stateengine popup. Short press on move icons moves the blind immediately up/down, otherwise only a long press will move the blind.
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-    {{ quad.blind('blind1', 'Blind Popup. Quad-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, false, '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', (stateengine['item1']), '', 'place3', 'place4', ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine']) }}
+    {{ quad.blind('blind1', 'Blind Popup. Quad-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, false, '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', (stateengine['item1']), '', '', '', ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine']) }}
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.blind('blind01', 'Blind Popup. Quad-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, false, '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', (stateengine['item1']), '', 'place3', 'place4', ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine']) }}
+    {{ quad.blind('blind01', 'Blind Popup. Quad-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, false, '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', (stateengine['item1']), '', '', '', ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine']) }}
   </ul></div>
 
     ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-    {{ quad.blind('blind2', 'Blind Slider. Standard-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['pic_on', 'pic_off', 'valueType', 'valueParameterList', 'color_on', 'color_off'], 'blind.hoehe', '', '', '', '', 'place3', 'place4', ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']) }}
+    {{ quad.blind('blind2', 'Blind Slider. Standard-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['pic_on', 'pic_off', 'valueType', 'valueParameterList', 'color_on', 'color_off'], 'blind.hoehe', '', '', '', '', '', '', ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']) }}
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.blind('blind02', 'Blind Slider. Standard-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', '', '', 'place3', 'place4', ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']) }}
+    {{ quad.blind('blind02', 'Blind Slider. Standard-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', '', '', '', '', ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']) }}
   </ul></div>
 
     ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-    {{ quad.blind('blind3', 'Blind with position selector', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['blind.hoehe', '50', '80', '0'], 'place3', 'place4', ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']) }}
+    {{ quad.blind('blind3', 'Blind with position selector', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['blind.hoehe', '50', '80', '0'], '', '', ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']) }}
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.blind('blind03', 'Blind with position selector', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['blind.hoehe', '50', '80', '0'], 'place3', 'place4', ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']) }}
+    {{ quad.blind('blind03', 'Blind with position selector', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['blind.hoehe', '50', '80', '0'], '', '', ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']) }}
   </ul></div>
 
     [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']
   <div class="twig">
     <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
-    {{ quad.blind('blind4', 'Blind 2 different popups', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['time_automatic', 'time_automatic', 'num', [0,255,10], 'icon1', 'icon0'], 'blind.hoehe', '', '', '', '', 'place3', 'place4', [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']) }}
+    {{ quad.blind('blind4', 'Blind 2 different popups', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['time_automatic', 'time_automatic', 'num', [0,255,10], 'icon1', 'icon0'], 'blind.hoehe', '', '', '', '', '', '', [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']) }}
     {% endraw %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
-    {{ quad.blind('blind04', 'Blind 2 different popups', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['time_automatic', 'time_automatic', 'num', [0,255,10], 'icon1', 'icon0'], 'blind.hoehe', '', '', '', '', 'place3', 'place4', [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']) }}
+    {{ quad.blind('blind04', 'Blind 2 different popups', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['time_automatic', 'time_automatic', 'num', [0,255,10], 'icon1', 'icon0'], 'blind.hoehe', '', '', '', '', '', '', [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']) }}
   </ul></div>
 
   no column_order

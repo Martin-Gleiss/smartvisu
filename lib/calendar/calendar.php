@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2024
+ * @copyright   2012 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -72,8 +72,8 @@ class calendar extends service
 			if (!isset($calmetadata['calendarcolor'])) $calmetadata['calendarcolor'] = "";
 			
 			$this->addData(array(
-				'start' => $ical->iCalDateToUnixTimestamp($event->dtstart, true),
-				'end' => $event->dtend != null ? $ical->iCalDateToUnixTimestamp($event->dtend, true) : $ical->iCalDateToUnixTimestamp($event->dtstart, true),
+				'start' => $ical->iCalDateToUnixTimestamp($event->dtstart_tz, true),
+				'end' => $event->dtend != null ? $ical->iCalDateToUnixTimestamp($event->dtend_tz, true) : $ical->iCalDateToUnixTimestamp($event->dtstart_tz, true),
 				'title' => $event->summary,
 				'content' => str_replace("\\n", "\n", $event->description != null ? $event->description : ""),
 				'where' => $event->location,

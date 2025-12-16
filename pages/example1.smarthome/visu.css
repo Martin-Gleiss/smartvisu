@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -30,18 +30,6 @@
     .ui-header .ui-title {
         margin: 0 0 6px 30px;
     }
-}
-
-#EG_Esszimmer-EG_Esszimmer_blind {
-	background-image: url('../../pages/base/pics/ShutterEG.png');
-}
-
-#OG_SchlafenAnkleide-OG_Schlafen_Rollo {
-	background-image: url('../../pics/shutter/ShutterOG.png');
-}
-
-#DG_Wohnen-DG_Wohnen_Rollo {
-	background-image: url('../../pics/shutter/ShutterDG.png');
 }
 
 .nav-custom .ui-btn {

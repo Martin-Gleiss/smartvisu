@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Wolfram v. Hülsen
- * @copyright   2024
+ * @copyright   2024 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide		weather_postal
@@ -53,14 +53,18 @@ class weather_openmeteo extends weather
 		$requestCurrent = '&current=weather_code,surface_pressure,temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day';
 		$requestForecast = '&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max';
 		
+		// if the user has taken geo coordinates from a different weather service we translate it for him - also good for the docu page
+		$location = (substr($this->location, 0, 4) == 'lat=') ? str_replace('lat=','latitude=', str_replace('lon=', 'longitude=', $this->location)) : $this->location;
+		$location = (strpos($location, '&altitude') === false) ? $location : substr($location, 0, strpos($location, '&altitude'));
+
 		// api call
-		$cache = new class_cache('openmeteo_' . $this->location . '.json');
+		$cache = new class_cache('openmeteo_' . $location . '.json');
 
 		if ($cache->hit($this->cache_duration_minutes)) {
 			$content = $cache->read();
 		} else {
 			$loadError = '';
-			$url = 'https://api.open-meteo.com/v1/forecast?'. $this->location.$requestCurrent.$requestForecast.$units.$timeZone;
+			$url = 'https://api.open-meteo.com/v1/forecast?'.$location.$requestCurrent.$requestForecast.$units.$timeZone;
 
 			$content = file_get_contents($url);
 
@@ -116,8 +120,8 @@ class weather_openmeteo extends weather
 
 				$i++;
 			}
-			$location = explode('&',$this->location);
-			$this->data['city'] = getLocation(str_replace('latitude=','',$location[0],),str_replace('longitude=','',$location[1]));
+			$coordinates = explode('&',$location);
+			$this->data['city'] = getLocation(str_replace('latitude=','',$coordinates[0],),str_replace('longitude=','',$coordinates[1]));
 
 		} else {
 			if ($loadError != '')

@@ -6,10 +6,13 @@
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
+@charset "UTF-8";
 
-@CHARSET "UTF-8";
 .quad *, *:before, *:after {
     box-sizing: border-box;
+}
+.quad .ui-flipswitch {
+	box-sizing: content-box;
 }
 
 .quad a, .quad img {

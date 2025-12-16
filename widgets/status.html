@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2022
+* @copyright   2012 - 2025
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -37,12 +37,17 @@
 * @param {value[?]=} array of upper thresholds; the color according to greatest reached threshold is applied (optional)
 * @param {color[?](hidden)=red} array of colors or 'hidden' to not diplay (optional, default red)
 the first one is the base color for values below first threshold, so pass one color more than thresholds.
+* @param {image[?]('')=''} array of symbols to display, corresponding to colors. The item value will be shown instead of undefined symbols in the list.
 *
-* @author Christian aka hhhc and Stefan Widmer
+* @author Christian aka hhhc, Stefan Widmer and Wolfram v. Hülsen
 */
-{% macro badge(id, item, threshold, color) %}
+{% macro badge(id, item, threshold, color, symbol) %}
+	{% set symbols = [] %}
+	{%  for val in symbol %}
+		{% set symbols = symbols|merge(val == '' ? [''] : [localize_svg(val, true)]) %}
+	{% endfor %}
 	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.badge" data-item="{{ item }}"
-	data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color)|default('red') }}">
+	data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color)|default('red') }}" data-symbols="{{ implode(symbols) }}" >
 		<span style="display:none"></span>
 	</span>
 {% endmacro %}
@@ -52,7 +57,7 @@ the first one is the base color for values below first threshold, so pass one co
 * Show and hide a div or popup or collapse a section by a trigger item.
 *
 * @param {id} unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget (mandatory)
-* @param {item(bool,num)} an item which triggers the collapse 
+* @param {item(bool,num,str)} an item which triggers the collapse 
 * @param {value[?]=0} the values on which the target will be collapsed (optional, default 0)
 * @param {text(hide,show)=hide} inverts the widget's behaviour, i.e. 'show' opens a popup instead of closing it if the trigger value is matched (optional, default = hide)
 */
@@ -66,8 +71,8 @@ the first one is the base color for values below first threshold, so pass one co
 * Apply CSS class to an element depending on a trigger item.
 *
 * @param {text[?]} id or array of ids of the elements to style. Widgets are identified by the plain id while html elements require the format {pagename}-{idname}, e.g. id="mypage-myid" (mandatory)
-* @param {item(bool,num)} an item which triggers the styling
-* @param {text[?]=0} the values on which the target will be styled. Compare operators are supported, e.g. "<20" (optional, default 0)
+* @param {item(bool,num,str)} an item which triggers the styling
+* @param {text[?]=0} the values on which the target will be styled in array form. Compare operators are supported for numeric values, e.g. "<20" or ">=10". Use a sole "=" to match an empty sring (optional, default 0)
 * @param {text=blink} custom CSS class used for styling  (optional, default = blink)
 */
 {% macro customstyle(id, item_trigger, value, action) %}
@@ -78,6 +83,26 @@ the first one is the base color for values below first threshold, so pass one co
 	{% endfor %}
 	{% set value = (value|default([0]) is iterable ? value|default([0]) : [value]) %}	
 	<span data-id="{{ implode(ids) }}" data-widget="status.customstyle" data-item="{{ item_trigger }}" data-val="{{ implode(value) }}" data-action="{{ action |default('blink') }}"></span>
+{% endmacro %}
+
+
+/**
+* Disables one or more widgets
+*
+* @param {text[?]} id or array of ids of the widgets to disable. Widgets are identified by the plain id without the page name. (mandatory)
+* @param {item(bool,num,str)} an item which triggers the disabling (mandatory)
+* @param {text=0} the value on which the target will be disabled (optional, default=1)
+*
+* @author Wolfram v. Hülsen
+*/
+{% macro disable(id, item, value, icon, color) %}
+	{% import _self as basic %}
+	{% set id = id is iterable ? id : [id] %}
+	{% set ids = [] %}
+	{%  for val in id %}
+		{% set ids = ids|merge([uid(page, val)]) %}
+	{% endfor %}
+	<span data-id="{{ implode(ids) }}" data-widget="status.disable" data-item="{{ item }}" data-val="{{ value|default(1) }}" />
 {% endmacro %}
 
 

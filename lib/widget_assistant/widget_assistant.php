@@ -49,8 +49,8 @@ function render_inline ($value)
 	}
 	$myFile = file_get_contents('tmpl_assistant_2.html');
 	$myFile = str_replace("{{ %widget% }}",$myNewWidgets, $myFile);
-	file_put_contents('../../pages/'.config_pages.'/assistant.html', $myFile);
-    return 'OK';
+	$success = file_put_contents('../../pages/'.config_pages.'/assistant.html', $myFile);
+    return $success;
 }
 
 // ************************************************************************
@@ -68,8 +68,8 @@ function render_outline ($value)
 	}
 	$myFile = file_get_contents('tmpl_assistant_1.html');
 	$myFile = str_replace("{{ %widget% }}",$myNewWidgets, $myFile);
-	file_put_contents('../../pages/'.config_pages.'/assistant.html', $myFile);
-    return 'OK';
+	$success = file_put_contents('../../pages/'.config_pages.'/assistant.html', $myFile);
+    return $success;
 }
 
 // ************************************************
