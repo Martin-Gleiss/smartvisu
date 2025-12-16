@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2015
+ * @copyright   2012 - 2025
  * @license     GPL [http://www.gnu.de]
  * ----------------------------------------------------------------------------- 
  */
@@ -20,3 +20,32 @@
 	}
 }
 
+/**
+  As of v3.6 you can change the plot colors centrally defined in base.css and <design>.css
+  by changing the values of the CSS-variables (most are self-explanatory):
+ 
+  --plot-color-0 ... --plot-color-9 	colors for the plot lines / areas
+  --plot-title , --plot-subtitle		text colors for title and subtitle
+  --plot-axis, --plot-tick				line colors for the axes
+  --plot-axis-labels
+  --plot-axis-title	
+  --plot-legend-text
+  --plot-legend-text-hover
+  --plot-legend-item-hidden
+  --plot-markers						path colors for markers / symbols in line charts
+  --plot-label
+  --plot-data-labels
+  --plot-tooltip-box
+  --plot-tooltip-text
+  --plot-polar-line
+  --plot-grid-line
+ 
+  How to redefine variables:
+ -------------------------
+:root {
+   --plot-color-0: red;
+   --plot-title: #fff;
+}
+ -------------------------
+  Note: these changes affect all plots globally
+*/

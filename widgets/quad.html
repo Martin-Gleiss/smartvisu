@@ -2288,8 +2288,8 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
              Combine elements in one column by putting them in arrays. Standard is ['locks', 'switch', 'slider', 'stateengine', 'plot', 'uzsu']
              Be aware that this only works with lines containing one switch only! For multiple switches leave column_order empty and rely on the defaults.
  * @param {text(switch,select)=} 	    Should be left untouched as it is set automatically (optional)
- * @param {item(list)=} Should be left untouched. an item containing all selectable values (optional) - overrides existing value definitions, available for select menu type only
- * @param {item(list)=} Should be left untouched. an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for select menu type only
+ * @param {item[?](list)=} Should be left untouched. an item containing all selectable values (optional) - overrides existing value definitions, available for select menu type only
+ * @param {item[?](list)=} Should be left untouched. an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for select menu type only
 
 */
 
@@ -2910,14 +2910,14 @@ the value to send for position 1, value_pos_2 = the value to send for position 2
  * @param {image[?]=} list of icons for every button (optional) - not supported for type 'menu'
  * @param {text[?]=} list of texts for every menu entry or button (optional)
  * @param {color[?](icon0to5)=icon1} the color for the on state of the buttons, e.g. 'icon0'through'icon5' or '#f00' or 'red' (optional, default: icon1) - not supported for type 'menu'
- * @param {item(list)=} an item containing all selectable values (optional) - overrides existing value definitions, available for menu type only
- * @param {item(list)=} an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for menu type only
+ * @param {item[?](list)=} an item containing all selectable values (optional) - overrides existing value definitions, available for menu type only
+ * @param {item[?](list)=} an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for menu type only
  * @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
  	You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
  	The indicator options will not be applied to the select element of type 'menu' which will convert all options to 'blink'.
  * @param {text=} text for the whole line (optional)
  * @param {text[?]=} (array with) text for each column (optional)
- * @param {item[?](dict)=}  		    a gad/item for UZSU
+ * @param {item[?](dict)=}  	a gad/item for UZSU
  * @param {uzsuparam[]=}   	    Array with standard UZSU parameters: pic_on, pic_off, valueType, valueParameterList, color_on, color_off. (optional)
                                 Normally the array must have the same dimension as the "type" parameter, e.g. "[['', '', 'num'], '', ['', '', 'bool']]" for a table of 3 columns.
 								Exception: if the parameter "item_uzsu" is a singe item in string format a new column with sn uzsu icon is displayed behind the main column block.
