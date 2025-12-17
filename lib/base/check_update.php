@@ -48,7 +48,7 @@ if (empty($_COOKIE['updchk']) && config_updatecheck)
 		$ret["update"] = (($VersionMajor > config_version_major) or ($VersionMinor > config_version_minor) or ($VersionRevision > config_version_revision) ? true : false);
 		$extension = "";
 		if ((isset($data_sv) && !$data_sv->update) && $ret["update"]) 
-			$extension = ' ('.trans('templatechecker', 'github').')';
+			$extension = ' ('.trans('update', 'github').')';
 		$ret["remote"] = $VersionMajor.".".$VersionMinor.".".$VersionRevision.$extension;
 		
 		if (config_version_revision >= "a") {
