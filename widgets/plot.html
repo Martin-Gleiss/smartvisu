@@ -131,7 +131,7 @@
 * @param {text[?](normal,percent)=normal} stacking of series for each stack (array for multiple stacks in ascending order): 'normal', 'percent' (optional, default=normal). 
 * @param {text[]=} assign stacked series to different stacks: '0', '1, '2'... or ''. Sequence must be same as item sequence (optional, default='')
 * @param {value=0} control for the export of plot data: 0 = none, 1 = images, 2 = images and data (e.g.csv) (optional)
-* @param {text(database,item)=database} source of the data. If set to 'item', data must be provided in a list item (optional, default=database)  
+* @param {text[?](database,item)=database} source of the data for every item - multiples in array form. If set to 'item', data must be provided in a list item (optional, default=database)  
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
@@ -150,7 +150,7 @@
 		{%- endif -%}
 	{%- endif -%}
 	
-	{%- set source = source|default('database') -%}
+	{%- set source = (source is iterable ? source : [source|default('database')]) -%}
 	{%- set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax -%}
 	{%- set tmin = tmin|default('1h') -%}
 
@@ -170,7 +170,10 @@
 			{%- set mode = mode|merge([mode|last]) -%}
 		{%- endif -%}
 		{%- set modei = mode[loop.index0] -%}
-
+		{%- if source|length < loop.index -%}
+			{%- set source = source|merge([source|last]) -%}
+		{%- endif -%}
+		{%- set sourcei = source[loop.index0] -%}
 		{%- if count|length < loop.index -%}
 			{%- set count = count|merge([count|last]) -%}
 		{%- endif -%}
@@ -180,7 +183,7 @@
 				<script src="vendor/plot.highcharts/modules/boost.js"></script>
 			{%- endif -%}
 		{%- endif -%}
-		{%- if source == 'database' -%}
+		{%- if sourcei == 'database' -%}
 			{%- if modei == 'minmax' -%}
 				{%- set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]) ]) -%}
 			{%- elseif modei == 'minmaxavg' -%}

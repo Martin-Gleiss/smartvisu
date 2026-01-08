@@ -1,5 +1,6 @@
 ## v3.6.a | current development version
 ### New / Changed Widgets
+- plot.period data sources (item / database) can now be mixed, i.e. specified individually for each item
 
 ### Other New Features
 
