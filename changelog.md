@@ -1,6 +1,7 @@
 ## v3.6.a | current development version
 ### New / Changed Widgets
 - plot.period data sources (item / database) can now be mixed, i.e. specified individually for each item
+- widgets for absolute positioning in example3.graphic (ovbasic.html, ovdevice.html) updated to provide functionality identical to the corresponding standard widgets
 
 ### Other New Features
 
