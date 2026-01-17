@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, changes for SV2.9 by Wolfram v. Hülsen
- * @copyright   2012
+ * @copyright   2012 - 2025
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -42,7 +42,7 @@
 		
 			<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.color"
 			data-style="{{ style }}" data-colormodel="{{ colormodel|default('rgb') }}"
-			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colorspace == 'hsv' ? [360,100,100] : 255)) }}"
+			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colormodel == 'hsv' ? [360,100,100] : 255)) }}"
 			data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
 			data-item="{{ item_r_h }}, {{ item_g_s }}, {{ item_b_l_v }}" >
 			
@@ -65,7 +65,7 @@
 		<a{% if not id is empty %} id="{{ uid(page, id, overview) }}"{% endif %} data-widget="basic.color"
 			data-style="{{ style }}" data-colormodel="{{ colormodel|default('rgb') }}"
 			data-item="{{ item_r_h }}, {{ item_g_s }}, {{ item_b_l_v }}"
-			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colorspace == 'hsv' ? [360,100,100] : 255)) }}"
+			data-min="{{ implode(min|default('0')) }}" data-max="{{ implode(max|default(colormodel == 'hsl' or colormodel == 'hsv' ? [360,100,100] : 255)) }}"
 			data-step="{{ steps|default(7) }}" data-colors="{{ colors|default(10) }}"
 			class="colordisc"><span style="
 				{% if type == 'micro' %}width: 28px; height: 28px; margin-top: -14px; margin-left: -7px;
@@ -83,7 +83,7 @@
 * Period: A simple popup-widget for plotting charts
 *         to use together with the print-Widget
 *
-* @param {id=} unique id for this widget (optional)
+* @param {id=} unique id for this widget. Add the string "plotpopup" to activate on-demand plot data loading, i.e. plot data are not loaded during page creation but when the popup containing the plot is opened. (optional)
 * @param {text=} title of the chart (optional)
 * @param {item[?](bool,num)} series of item(s); multiple items in array form: [ item1 , item2 ]
 * @param {text[?](avg,sum,min,max,minmax,minmaxavg,raw,on)=} the aggregation mode (optional, default 'avg')
@@ -109,54 +109,21 @@
 * @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
 * @param {format[?]=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
 * @param {unspecified[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+* @param {text[?](normal,percent)=normal} stacking of series for each stack (array for multiple stacks in ascending order): 'normal', 'percent' (optional, default=normal). 
+* @param {text[]=} assign stacked series to different stacks: '0', '1, '2'... or ''. Sequence must be same as item sequence (optional, default='')
+* @param {value=0} control for the export of plot data: 0 = none, 1 = images, 2 = images and data (e.g.csv) (optional)
+* @param {text(database,item)=database} source of the data. If set to 'item', data must be provided in a list item (optional, default=database)  
 *
 * @see misc/fundamentals#Array-Form
 * @see misc/fundamentals#Duration-Format
 */
-{% macro period(id, txt, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions) %}
-	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
-	{% set tmin = tmin|default('1h') %}
-
-	{% set mode = (mode is iterable ? mode : [mode|default('avg')]) %}
-	{% set count = (count is iterable ? count : [count|default(100)]) %}
-	{% set item = (item is iterable ? item : [item]) %}
-  {% set seriesitems = [] %}
-	{% for itemi in item %}
-		{% if mode|length < loop.index %}
-			{% set mode = mode|merge([mode|last]) %}
-		{% endif %}
-		{% set modei = mode[loop.index0] %}
-
-		{% if count|length < loop.index %}
-			{% set count = count|merge([count|last]) %}
-		{% endif %}
-		{% set counti = count[loop.index0] %}
-
-		{% if modei == 'minmax' %}
-			{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]) ]) %}
-		{% elseif modei == 'minmaxavg' %}
-			{% set seriesitems = seriesitems|merge([ implode(itemi, ['min', tmin, tmax, counti]), implode(itemi, ['max', tmin, tmax, counti]), implode(itemi, ['avg', tmin, tmax, counti]) ]) %}
-		{% else %}
-			{% set seriesitems = seriesitems|merge([implode(itemi, [modei, tmin, tmax, counti])]) %}
-		{% endif %}
-	{% endfor %}
+{% macro period(id, txt, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export, source) %}
+	{% import "@widgets/plot.html" as plot %}
 	<div id="{{ uid(page, id) }}" data-role="popup" class="ui-content" style="min-width: 400px; min-height: 210px; ">
 		<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
 		{% if txt %}<div> {{ txt }} </div>{% endif %}
-	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.period" data-mode="{{ implode(mode) }}"
-		data-item="{{ implode(seriesitems) }}"
-		{% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
-		data-tmin="{{ tmin }}" data-tmax="{{ tmax }}"
-		data-label="{{ implode(label) }}" data-color="{{ implode(color) }}" data-exposure="{{ implode(exposure) }}" data-axis="{{ implode(axis) }}"
-		{% if zoom is not empty %} data-zoom="{{ zoom }}" {% endif %}
-		{% if assign is not empty %} data-assign="{{ implode(assign) }}" {% endif %}
-		{% if opposite is not empty %} data-opposite="{{ implode(opposite) }}" {% endif %}
-		{% if ycolor is not empty %} data-ycolor="{{ implode(ycolor) }}" {% endif %}
-		data-ytype="{{ implode(ytype) }}"
-		data-unit="{{ implode(unit) }}"
-		data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}"
-		class="plot{% if zoom == 'advanced' %} plot-highstock{% endif %}"></div>
-</div>
+		{{ plot.period (id~'plot', item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions, stacking, stacks, export, source) }}
+	</div>
 {% endmacro %}
 
 
@@ -166,8 +133,9 @@
  * @param {id=} unique id for this widget (optional)
  * @param {item[?]} one or more item(s). Multiple items in array-form: [item1, item2]
  * @param {format=} either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix.
-   Use 'text' to display result as unformatted string, 'html' to render it as unescaped html or 'script' to just execute as JavaScript w/o displaying anything.
- 
+   Formats 'date', 'time', 'long', 'short' and 'calendardate' are applicable on valid timestamps like "2020-01-01T12:00:00.000000+01:00" or Unix timestamps in Milliseconds
+   Use 'text' to display result as unformatted string, 'trimtext' similar to 'text' but with no leading and tailing whitespace, 'html' to render it as unescaped html, 
+  'text2br' to convert line endings like '\r', '\n' or '\r\n' to HTML breaks, 'uridecode' to decode the escaped characters in an URI or 'script' to just execute as JavaScript w/o displaying anything.
  * @param {formula=VAR} any valid JavaScript expression with following variables and aggregate functions (optional, default: VAR)
    - VAR1, VAR2, ... represent the corresponding item's value, VAR is an array of all item values
    - SUM(VAR), AVG(VAR), SUB(VAR), MIN(VAR) and MAX(VAR) aggregate the values
@@ -187,8 +155,6 @@
  * @info inspired by Martin Gleiß and Raik Alber
 */
 {% macro print(id, item, format, formula, threshold, color, info, left, top, id_popup, hide) %}
-	{% import _self as ovbasic %}
-	{% import "@widgets/basic.html" as basic %}
 	{% set color = color|default('icon0') %}
 	<a id="{{ uid(page, id, overview) }}" {% if not info is empty %}title="{{ info }}"{% endif %}
 	   {% if not hide is empty %}class="hide-mobile"{% endif %} 
@@ -202,8 +168,7 @@
 
 
 /**
-* A versatile button/switch
-* (supersedes .button, .dual, .hiddenswitch, .multistate and .switch)
+* A versatile button/switch 
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item(bool,num,list,scene)} an item
@@ -230,27 +195,34 @@
 * @info Based on work of Martin GLEISS and Pierre-Yves KERVIEL
 */
 {% macro stateswitch(id, item, type, value, icon, text, color, indicator, item_longpress, value_longpress, value_longrelease, info, left, top) %}
-	{% import _self as ovbasic %}
 	{% import "@widgets/basic.html" as basic%}
 
 	{% set value = (value|default([0,1]) is iterable ? value|default([0,1]) : [value]) %}
 	{% set color = color|default(['icon0','icon1']) %}
 	{% set iconstyles = ['icon0', 'icon1', 'icon2', 'icon3', 'icon4', 'icon5'] %}
+	{% if ":" in indicator %} 
+		{% set indicatorparms = indicator|split(":") %}
+		{% set indicator = indicatorparms[0] %}
+		{% set indicator_duration = indicatorparms[1] %}
+	{% else %} 
+		{% set indicator_duration = config_indicator_duration|default(3) %}
+	{% endif %}
 
 	<div id="{{ uid(page, id, overview) }}" {% if info %}title="{{ info }}"{% endif %} style="position: absolute; top: {{ top }}; left: {{ left }}; ">
-
+		/** can not just call basic.stateswitch here because we need the class "absolutepos" for correct positioning of the UI elements */
 		<a style="display:none"></a> /** Work around for bug in jQuery Mobile, see https://knx-user-forum.de/forum/supportforen/smartvisu/31967-neues-widget-nur-aktive-lampen-anzeigen-ausschalten-ermöglichen?p=1145001#post1145001 */
 
 		<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.stateswitch" data-item="{{ item }}"
-			data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ config_indicator_duration|default(3) }}"
+			data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ config_indicator_duration }}"
 			data-item-longpress="{{ item_longpress }}"{% if not value_longpress is null %} data-value-longpress="{{ value_longpress }}"{% endif %}{% if not value_longrelease is null %} data-value-longrelease="{{ value_longrelease }}"{% endif %}
 			style="display: none !important;">
-			{% for val in value %}
+			{% for val in ( indicator is not empty and icon is iterable and icon|length > value|length ? value|merge(['indicator']) : value) %}
 				{% set pic = icon is iterable ? icon[loop.index0] : icon %}
 				{% if type != 'text' and text is empty %}{% set pic = pic|deficon('control_on_off.svg') %}{% endif %}
 				{% set col = (color is iterable ? color[loop.index0] : color)|default('icon0') %}
 				{% set txt = (text is iterable ? text[loop.index0] : text)|default('') %}
-				<a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" data-col="{{ col }}" {{ col == 'hidden' ? 'style="display: none;"'|raw : col == 'blank' ? 'style="visibility: hidden;"'|raw : col not in iconstyles ? ('style="color: ' ~ col ~ '; fill: ' ~ col ~ '; stroke: ' ~ col ~ ';"')|raw }} class="{{ col in iconstyles ? col~' ' }}					{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
+				<a data-widget="basic.stateswitch" data-val="{{ val }}" data-index="{{ loop.index0 }}" data-col="{{ col }}" {{ col == 'hidden' ? 'style="display: none;"'|raw : col == 'blank' ? 'style="visibility: hidden;"'|raw : col not in iconstyles ? ('style="color: ' ~ col ~ '; fill: ' ~ col ~ '; stroke: ' ~ col ~ ';"')|raw }} class="{{ col in iconstyles ? col~' ' }}
+				{%- if type == 'icon' or type == 'text' -%} /**- display as icon -*/
 						switch ui-link absolutepos
 					{%- else -%} /**- display as button -*/
 						ui-btn ui-{{ type|default('mini') }} ui-corner-all ui-btn-inline absolutepos
@@ -263,7 +235,7 @@
 					{{- txt|e -}}
 				</a>
 			{% endfor %}
-			<a class="ui-btn" style="display: none !important"></a> /** placeholder for last moved control */
+			<a class="ui-btn" style="display: none !important;"></a> /** placeholder for last moved control */
 		</span>
 	</div>
 
@@ -413,5 +385,3 @@
 		});
 	</script>
 {% endmacro %}	
-
-

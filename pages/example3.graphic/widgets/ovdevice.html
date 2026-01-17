@@ -29,8 +29,9 @@
 * @param {type(micro,mini,midi,icon)=micro} type: 'micro', 'mini', 'midi', 'icon' (optional, default: micro)
 * @param {value=0} hide on mobile displays (optional value 1)
 * @param {text=left} position of the switch: left (default) or right
+* @param {value=1} 'live mode': if enabled, values will be sent during sliding. '0' sends values only when sliding is stopped, after click into track or if value is edited in input field. (optional, default = 1)
 */
-{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, left, top, type, hide, picpos) %}
+{% macro dimmer(id, txt, item_switch, item_value, min, max, step, pic_on, pic_off, color_on, color_off, value_display, min_display, max_display, left, top, type, hide, picpos, live) %}
 	{% import "@widgets/basic.html" as basic %}
 	{% import "@widgets/icon.html" as icon %}
 	{% set uid = uid(page, id) %}
@@ -56,7 +57,7 @@
 			{% if picpos is empty or picpos=='left' %}<span class="ui-dimmer-left"> {% else %} <span class="ui-dimmer-right"> {% endif %}
 				{{ basic.stateswitch('', item_switch, type, '', [ pic_off|default('light_light'), pic_on|default('light_light') ], '', [ color_off , color_on|default('icon1') ]) }}
 				{{ txt|e }}
-				{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display) }} 
+				{{ basic.slider('', item_value, min, max, step, 'horizontal', value_display|default('none'), min_display, max_display, live) }} 
 			</span>
 		</div>
         <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
