@@ -14,6 +14,7 @@
 ### Removed Features
 
 ### Fixed Bugs
+- device specific settings could not be read if visu root folder name was a symlink (because of incorrect cookie path determination)
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
