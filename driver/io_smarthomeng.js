@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, Martin Sinn, Wolfram v. Hülsen
- * @copyright   2012 - 2024
+ * @copyright   2012 - 2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @label       SmartHomeNG
@@ -40,7 +40,8 @@ var io = {
 	// -----------------------------------------------------------------------------
 
 	/**
-	 * Does a read-request and adds the result to the buffer
+	 * The read method is empty since items are subscribed 
+	 * using the monitor method and updated by websocket events
 	 *
 	 * @param      the item
 	 */
@@ -49,13 +50,16 @@ var io = {
 
 	/**
 	 * Does a write-request with a value
+	 * and updates all listening widgets if driver is not configured to wait for the backends answer
 	 *
-	 * @param      the item
+	 * @param      the item - can be plain "myItem" (rw) or combined "myStatusItem:myControlItem" (r:w)
 	 * @param      the value
 	 */
 	write: function (item, val) {
-		var sendItemPos = item.indexOf(':');
-		var sendItem = (sendItemPos == -1 ? item : item.substring(sendItemPos + 1));		
+		// identify the control item to send to
+		var sendItemPos = item != undefined ? item.indexOf(':') : 0;
+		var sendItem = (sendItemPos == -1 ? item : item.substring(sendItemPos + 1));
+		
 		io.send({'cmd': 'item', 'id': sendItem, 'val': val});
 		if (!sv.config.driver.loopback) 
 			widget.update(item, val);
@@ -89,14 +93,19 @@ var io = {
 
 	/**
 	 * Initializion of the driver
-	 * Driver config parameters are globally available as from v3.2
+	 * Driver config parameters in php (config_driver_<option>) are globally available in javaScript as sv.config.driver.<option>
+	 * 
+	 * The client knows the called URL from the browser line (location.hostname)
+	 *   - if the hostname is an IPv4 address it's easy: just use this for the websocket connection with the configured ports
+	 *   - otherwise we need to distinguish beetween two possible scenarios:
+	 *     a) hostname is the internal hostname of the smartVISU server (config_sv_hostname) or an alternative name specified as config_driver_address2: 
+	 *        -> use this name for the websocket connection with the configured ports
+	 *     b) hostname is not registered in the configuration so we assume it is an external address used to connect a reverse proxy
+	 *        -> clear io.address and use the external address with ports 80 or 443 which the reverse proxy will translate into the correct internal addresses
 	 */
 	init: function () {
 		io.address = sv.config.driver.address;
 
-		// if user-called host is not an IP v4 address check if called host is internal hostname of smartVISU server
-		// or configured alternative address (manually set an entry "driver_address2" in config.ini)
-		// otherwise assume that call comes from external and then empty io.address
 		if (!$.isNumeric(location.hostname.split('.').join(''))) {  // replaceAll() does not work for old browsers
 			if (sv.config.driver.address2 && sv.config.driver.address2 !='' && location.hostname == sv.config.driver.address2)
 				io.address = sv.config.driver.address2;
@@ -117,9 +126,12 @@ var io = {
 
 		// subscribe item updates from the backend
 		io.monitor();
-		
 	},
 	
+	/**
+	 * The ping method can be used to keep the connection open on devices with agressivly configured websocket timeouts. It is not active by default.
+	 * Manually specify the paramater "ping_interval" in config.ini with an integer number representing the time in seconds to activate it. 
+	 */
 	pingTimer: null,
 	pingInterval: null,
 	socketState: '',
@@ -138,13 +150,9 @@ var io = {
 	// -----------------------------------------------------------------------------
 	// C O M M U N I C A T I O N   F U N C T I O N S
 	// -----------------------------------------------------------------------------
-	// The functions in this paragraph may be changed. They are all private and are
-	// only be called from the public functions above. You may add or delete some
-	// to fit your requirements and your connected system.
+	// The functions in this paragraph are subject to change. They are private and may
+	// only be called from the public functions above. 
 
-	// New in
-	// v4: count - Patch
-	
 	/**
 	 * This is the protocol version
 	 * send "4" while shNG may answer with variant "4.1" which supports log_cancel
@@ -160,59 +168,60 @@ var io = {
 	aggregates: ['avg', 'min', 'max', 'diff', 'sum', 'on', 'raw', 'count', 'countall', 'integrate', 'differentiate', 'duration'],
 	
 	/**
-	 * This is the websocket module / plugin and the websocket opening time
+	 * Properties for the websocket connection
 	 */
+	socket: false,
 	server: '', 
 	opentime: null,
 
 	/**
-	 * This driver uses a websocket
+	 * Properties for the status of transmitted data
 	 */
-	socket: false,
-	
 	triggerqueue: [],
 	listeners: [],
 	monitorComplete: null,
 	openItems: [],	
 	
 	/**
-	 * Opens the connection and add some handlers
+	 * Opens the connection and adds the event handlers for the communication
+	 * The websocket protocol is adapted to the current protocol (https -> wss and http -> ws)
+	 * unless it is forced to a certain protocol by adding this as prefix to the driver address in the config page
+	 * The port can be forced by specifying it in the URL.
 	 */
 	open: function () {
 		var protocol = '';
 		var ports = [];
+		// assign configured ports to the protocol variants
 		if (io.address){
-			ports['ws://'] = sv.config.driver.port;
+			// use configured ports if connection is internal
+			ports['ws://']  = sv.config.driver.port;
 			ports['wss://'] = sv.config.driver.tlsport;
+		} else {
+			// use forced or standard ports if connection is external
+			ports['ws://']  = location.port != '' ? location.port : 80;
+			ports['wss://'] = location.port != '' ? location.port : 443;
+			
+			// and use URL of current page as driver address if connection is external
+			io.address = location.hostname;
 		}
-		if (!io.address || io.address.indexOf('://') < 0) {
-			// adopt websocket security to current protocol (https -> wss and http -> ws)
-			// if the protocol shall be forced, put it as prefix to the address in the config page
+		
+		// if websocket protocol is not forced 
+		if (io.address.indexOf('://') < 0) {
+			// adopt websocket security from URL
 			protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
-			if (!io.address) {
-				// use url of current page if not defined
-				io.address = location.hostname;
-			}
 			io.port = ports[protocol]; 
-
-			if (!io.port) { // is still undefined, if io.address was empty at start of io.open
-				// use port of current page if not defined and needed
-				if (location.port != '') {
-					io.port = location.port;
-				} else {
-					if (location.protocol == 'http:') io.port = '80';
-					if (location.protocol == 'https:') io.port = '443';
-				}
-			}
 		}
 		else {
-			// forced protocol (identified in address)
+			// use forced protocol (identified in address)
 			io.port = ports[io.address.substr(0, io.address.indexOf(':'))+'://'];
 		}
 		// DEBUG:
 		console.log("[io.smarthomeng] opening websocket on "+ protocol + io.address + ':' + io.port);
+		
+		// now start the websocket
 		io.socket = new WebSocket(protocol + io.address + ':' + io.port);
 		
+		// websocket event handlers
 		io.socket.onopen = function () {
 			// remove socket error notification on reconnect
 			if(io.socketErrorNotification != null)
@@ -228,12 +237,14 @@ var io = {
 		};
 
 		io.socket.onmessage = function (event) {
+			// stop ping timers and reactivate interval if ping is configured
 			clearTimeout(io.pingTimer);
 			clearTimeout(io.pingInterval);
 			io.socketState = 'running';
 			if (sv.config.pingInterval > 0)
 				io.pingInterval = setTimeout(io.ping, sv.config.pingInterval * 1000);
 
+			// process the received data
 			var item, val;
 			var data = JSON.parse(event.data);
 			// DEBUG:
@@ -244,10 +255,6 @@ var io = {
 					for (var i = 0; i < data.items.length; i++) {
 						item = data.items[i][0];
 						val = data.items[i][1];
-						/* not supported:
-						 if (data.items[i].length > 2)
-							data.p[i][2] options for visu;
-						 */
 
 						// convert binary
 						if (val === false) {
@@ -258,6 +265,7 @@ var io = {
 						}
 						widget.update(item, val);
 						io.openItems.removeEntry(item);
+						// update also widgets listening on combined status:control items based on the actual item
 						if (item != io.listeners[item])
 							widget.update(io.listeners[item], val);
 					}
@@ -350,13 +358,21 @@ var io = {
 	},
 
 	/**
-	 * Monitors the items
+	 * Monitors the items, series and logs:
+	 *   - sends subscription commands to the backend
+	 *   - registers subscribed items, series and logs in "io.openItems" where they are individually removed when the first update is received
+	 *   - starts signalling "driver busy" if configured (blinking VISU-Symbol)
+	 *
+	 *   Items can be plain "myItem" (rw) or combined "myStatusItem:myControlItem" (r:w)
+	 *   The monitored items are stored in an associative array "io.listeners" using the backends item as key and the smartVISU item as value.
+	 *   So each entry is either io.listeners['myItem'] = 'myItem' or io.listeners['myStatusItem'] = 'myStatusItem:myControlItem'
 	 */
 	monitor: function () {
 		io.monitorCompleted = false;
 		// subscribe all items used on the page or cancel subscription by sending an empty array 
-		io.listeners = [];
 		var listeners = widget.listeners();
+		// prepare the associative array of items we listen to as keys
+		io.listeners = [];
 		var listenItem;
 		var listenItemEnd;
 		for (var i=0; i < listeners.length; i++){
@@ -365,6 +381,7 @@ var io = {
 			if ( io.listeners[listenItem] == undefined || listenItem == io.listeners[listenItem])
 				io.listeners[listenItem] = listeners[i];
 		}
+		// now send the item subscription command
 		io.send({'cmd': 'monitor', 'items': Object.keys(io.listeners)});
 		io.openItems = Object.keys(io.listeners);
 
