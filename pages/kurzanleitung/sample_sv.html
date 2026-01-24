@@ -1,0 +1,62 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "main.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}message_info.svg' />weitere Beispiele
+{% endblock %}
+
+{% block submenu %}
+	<style>
+		#selfwidgets:after {
+			background: url({{ icon0 }}edit_copy.svg);
+		}
+		
+		#cam:after {
+			background: url({{ icon0 }}it_camera.svg);
+		}
+
+		#codepad:after {
+			background: url({{ icon0 }}edit_input_numeric.svg);
+		}
+
+		#statusnotify .ui-icon {
+			background: url({{ icon0 }}secur_alarm.svg);
+		}
+
+
+	</style>
+
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=sample_sv_cam" id="cam" class="ui-btn-icon-top">Kamera einbinden</a></li>		
+			<li><a href="index.php?page=sample_sv_self_widgets" id="selfwidgets" class="ui-btn-icon-top">eigene oder angepasste Widgets erstellen</a></li>
+		</ul>
+	</div>	
+	
+<br>
+{% endblock %}
+
+{% block docu %}
+Die Kurzanleitung beschreibt die für den Anfang mit einer Hausautomation wesentlichen Elemente. Weitere Widgets sind verfügbar, die hier nicht beschrieben sind. Dazu gehören:
+<ul>
+	<li>Widgets für Multimedia-Anwendungen</li>
+	<li>Triggern von Logiken im Backend</li>
+	<li>Statusmeldungen, ausgelöst von bestimmten Ereignissen</li>
+	<li>Codepad für die Eingabe von Zahlencodes</li>
+	<li>Dynamische Icons, die sich mit item-Werten verändern</li>
+	<li>und vieles mehr ...</li>
+</ul>	
+Eine vollständige Beschreibung aller Möglichkeiten befindet sich in der Inline-Doku. Der Aufruf erfolgt vom System-Menü aus.
+Zudem können über die Config-Seite verschiedene Beispiel-Installationen aufgerufen werden, die gute Vorlagen für eigene Aktivitäten bilden.<br>
+<br>
+Ebenfalls im System-Menü befindet sich der "Template Checker", der die selbst erstellten Seiten auf formale Richtigkeit prüft. Der "Widget Assistent" hilft bei der Parametrierung der Widgets und bietet eine Live-Testmöglichkeit.<br><br />
+Wer tiefer einsteigen und auch eigene Widgets erstellen möchte, findet oben den Link zu weiteren Informationen.
+{% endblock %}

@@ -1,0 +1,37 @@
+
+
+{% extends "installation.html" %}
+
+{% block headline %}
+    <img class="icon" src='{{ icon0 }}edit_save.svg' />Rund um Installationen - das Image für den Raspberry Pi
+{% endblock %}
+
+{% block docu %}
+
+	Vorab hier nochmal der Hinweis nicht die billigste SD-Card zu verwenden. Aufgrund der "limitierten" Schreibzyklen einer jeden SD-Card, sollte man eine SLC mit mid. 4GB und mind. 30MB/s verwenden.<br>
+	Für erste Testzwecke geht natürlich auch jede normale SD-Card.<br>
+	Um das Image für den Raspberry Pi auf die SD-Card zu bringen, benötigt man einen entsprechenden Card-Reader und <a href="http://sourceforge.net/projects/win32diskimager/files/latest/download" target="_blank">Win32DiskImager</a>. 
+	<br /><br />
+	<ul>
+	<li>Wenn man Win32DiskImager installiert hat, läd man sich das Image auf <a href="https://github.com/smarthomeNG/raspberrypi-image" target="_blank">Github</a> herunter und entpackt es irgendwo auf seiner Festplatte.</li>
+	<li>Danach steckt man die SD-Card (ohne Schreibschutz) in den Card-Reader und formatiert diese (FAT32)</li>
+	<li>Nun öffnet man den Win32DiskImager und wählt ganz oben rechts (Device) den Laufwerksbuchstaben der SD-Card aus.</li>
+	<li>Jetzt klickt man auf den "blauen Ordner" und wählt in der Ordnerstruktur das entpackte Image aus.</li>
+	<li>Im nächsten Schritt überprüft man nochmal die Auswahlkreterien und klick dann auf "Write" und bestätigt die nachfolgende Warnhinweis mit "Yes".</li>
+	<li>Jetzt wird das Image auf der SD-Card entpackt. Dieser Vorgang kann ein paar Minuten dauern.</li>
+	<li>Nachdem die Complete-Meldung mit "Write Successful" erfolgreich abgeschlossen und mit "OK" bestätig wurde, kann man das Programm mit "Exit" schließen.</li>
+	<li>Nun nimmt man die SD-Card aus dem Card-Reader und steckt sie in den noch nicht an das Stromnetz angeschlossenen Raspberry Pi.</li>
+	<li>Danach schließt man den Raspberry Pi an das Netzwerk und die Stromversorgung an, so dass der Raspberry Pi startet.</li>
+	<li>Für die Kommunikation mit dem Rapberry Pi benötigt man einen SSH-Client wie z.B. Putty. Damit loggt man sich unter dem User "smarthome" ohne Passwort ein.</li>
+	<li>Das Setup des Images ist in dessen <a href="https://github.com/smarthomeNG/raspberrypi-image/wikiG/raspberrypi-image" target="_blank">Doku</a> beschrieben. </li>
+	<li>Wenn alles erledigt ist, öffnet man den Browser und gibt dort ein:
+	<div class="html">
+		<code>http://smarthome.local/smartVISU/</code>
+	</div>
+	oder alternativ mit der IP des Raspberry Pi z.B. (IP ist beispielhaft und muß angepasst werden):
+	<div class="html">
+		<code>http://192.168.1.62/smartVISU/</code>
+	</div></li>
+	<li>Nun erscheint der Startbildschirm von smartVISU, auf dem zunächst verschiedene Voraussetzungen abgeprüft werden und von dem aus man dann die Konfiguration starten kann.</li>
+	 
+{% endblock %}

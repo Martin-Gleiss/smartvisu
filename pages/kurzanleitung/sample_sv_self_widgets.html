@@ -1,0 +1,241 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "sample_sv.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}edit_copy.svg' />Beispiel - eigene oder angepasste Widgets erstellen
+{% endblock %}
+
+{% block docu %}
+
+    <div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Rollosteuerung</h3>
+				{{ widget_my_rollo.rollobedienung('Rollo1', 'Wohnen Süd', 'Rollo.Wohnen.Sued.fahren', 'Rollo.Wohnen.Sued.stop', 'Rollo.Wohnen.Sued.position') }}
+				{{ widget_my_rollo.rollobedienung('Rollo2', 'Wohnen Nord', 'Rollo.Wohnen.Nord.fahren', 'Rollo.Wohnen.Nord.stop', 'Rollo.Wohnen.Nord.position') }}
+				{{ widget_my_rollo.rollobedienung('Rollo3', 'Wohnen beide', 'Rollo.Wohnen.beide.fahren', 'Rollo.Wohnen.beide.stop', '') }}			
+        </div>
+    </div>    
+    </div>
+
+
+
+Manchmal ist es durchaus sinnvoll "eigene" Widgets zu erstellen. Dies um vieleicht abseits der Standartwidgets auf sich selber zugeschnittene Layouts oder Bedienmöglichkeiten zu realisisieren.
+Das Thema ist jedoch sehr komplex, und wir möchten diese Anleitung nach wie vor möglichst einfach erklärt halten. Daher werde ich hier nur ein kleines Beispiel aufzeigen.<br>
+Ziel soll es sein, ein einfaches Widget zur Rollosteuerung zu erstellen. Dabei sollen unter anderem mehrere Rollos bedient werden können (Auf/Stop/Ab). Weiterhin soll der Positions-Status der Rollos angezeigt werden.
+Um dies zu realisieren, bedienen wir uns der Standardwidgets "basic.stateswitch" und "basic.print".<br>
+Als erstes erstellen wir in unserem Pages-Verzeichnis eine html-Seite die unseren Widget-Code beinhaltet. Vorzugsweise nennen wir diese Datei "widget_my_rollo.html"<br>
+Was brauchen wir als erstes?<br>
+Wir brauchen zum einen: <br>
+
+<ul>
+	<li>eine Bezeichnungsmöglickeit für die Rollos</li>
+	<li>einen Button für Auf</li>
+	<li>einen Button für Stop</li>
+	<li>einen Button für Ab</li>
+	<li>ein Feld für den Positions-Status</li>
+</ul>
+
+Als erstes legen wir in unsere "widget_my_rollo.html" die notwendigen Parameter fest. Weiterhin legen wir den Namen fest, mit dem das Widget aufgerufen werden soll ("rollobedienung")<br>
+Zuletzt müssen alle innerhalb eines Widgets verwendeten Widgets explizit importiert werden. Da sich ab smartVISU v3.2.c die Importmethode ändert, machen wir das gleich versionsabhängig.<br> 
+	<div class="block" style="width:100%">
+	<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+                  <h3>widget_my_rollo.html - PartI</h3>
+	<table style=";width:100%;">{% raw %}
+		<tbody>
+			<tr align="left">
+				<td style="vertical-align:top">
+					/**<br />
+					* Mein Rollo-Widget<br />
+					* <br />
+					* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eindeutige ID für dieses Widget<br />
+					* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; der Name des Rollos <br />
+					* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; das gad/item für den Fahr-Befehl<br />
+					* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; das gad/item für den Stop-Befehl<br />
+					* @param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; das gad/item für den Positionsstatus<br />
+					*<br />
+					*/<br />
+					{% macro rollobedienung(id, txt, gad_move, gad_stop, gad_position) %}<br />
+					{% import config_version_full >= "3.2.c" ? "@widgets/basic.html" : "basic.html" as basic %}
+					{% set uid = uid(page, id) %}<br />
+					<br />
+
+
+				</td>
+			</tr>
+		</tbody>
+	</table>
+          </div>
+    </div>
+    </div>	
+{% endraw %}
+<br /><br />
+Als nächstes bestimmen wir via html noch die Anordnung der Texte, Buttons und Statusmeldungen und binden die entsprechenden Standartwidgets mit ein.<br>
+Dazu erweitern wir unser Widget entsprechend und schließen das ganze mit endmacro.<br>
+	<div class="block" style="width:100%">
+	<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+                  <h3>widget_my_rollo.html - PartII</h3>
+	<table style=";width:100%;">{% raw %}
+		<tbody>
+			<tr align="left">
+				<td style="vertical-align:top">
+					/** Design */<br />
+					&lt;div id="{{ uid }}" class="rollobedienung"><br />
+					&nbsp;&nbsp;&nbsp; &lt;table style="width:100%; text-align: left;"><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;th width="35%">{% if txt %} {{ txt }} {% endif %}&lt;/th><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td width="15%"><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% if gad_move %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ basic.stateswitch(id~'up', gad_move, 'mini', 0, 'arrow-u') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% endif %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/td><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td width="15%"><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% if gad_stop %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ basic.stateswitch(id~'stop', gad_stop, 'mini', 1, icon0~'audio_stop.svg') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% endif %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/td><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td width="15%"><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% if gad_move %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ basic.stateswitch(id~'down', gad_move, 'mini', 1, 'arrow-d') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% endif %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/td><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td width="20%"><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {% if gad_position %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ basic.print(id~'position', gad_position, '%') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% endif %}&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/td><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr><br />
+					&nbsp;&nbsp;&nbsp; &lt;/table><br />
+					&lt;/div><br />
+					{% endmacro %}<br />						
+						
+
+				</td>
+			</tr>
+		</tbody>
+	</table>
+          </div>
+    </div>
+    </div>
+{% endraw %}
+
+<br /><br />
+
+
+Letztendlich sieht der komplette Widget-Code wie folgt aus:<br>
+	<div class="block" style="width:100%">
+	<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="true">
+                  <h3>widget_my_rollo.html - komplett (klick mich)</h3>
+	<table style=";width:100%;">{% raw %}
+		<tbody>
+			<tr align="left">
+				<td style="vertical-align:top">
+					/**<br />
+					* Mein Rollo-Widget<br />
+					* <br />
+					* @param {id=} eindeutige ID für dieses Widget (optional)<br />
+					* @param {text=} der Name des Rollos (optional) <br />
+					* @param {item((bool,num)} das gad/item für den Fahr-Befehl<br />
+					* @param {item((bool,num)} das gad/item für den Stop-Befehl<br />
+					* @param {item((num)} das gad/item für die Position<br />
+					*<br />
+					*/<br />
+					{% macro rollobedienung(id, txt, gad_move, gad_stop, gad_position) %}<br />
+					{% import config_version_full >= "3.2.c" ? "@widgets/basic.html" : "basic.html" as basic %}<br />
+					{% set uid = uid(page, id) %}<br />
+					<br />				
+					/** Design */<br />
+					&lt;div id="{{ uid }}" class="rollobedienung"><br />
+					&nbsp;&nbsp;&nbsp; &lt;table style="width:100%; text-align: left;"><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;th width="35%">{% if txt %} {{ txt }} {% endif %}&lt;/th><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td width="15%"><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% if gad_move %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ basic.stateswitch(id~'up', gad_move, 'mini', 0, 'arrow-u') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% endif %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/td><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td width="15%"><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% if gad_stop %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ basic.stateswitch(id~'stop', gad_stop, 'mini', 1, icon0~'audio_stop.svg') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% endif %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/td><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td width="15%"><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% if gad_move %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ basic.stateswitch(id~'down', gad_move, 'mini', 1, 'arrow-d') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% endif %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/td><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td width="20%"><br />
+					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {% if gad_position %}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ basic.print(id~'position', gad_position, '%') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% endif %}&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/td><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr><br />
+					&nbsp;&nbsp;&nbsp; &lt;/table><br />
+					&lt;/div><br />
+					{% endmacro %}<br />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+          </div>
+    </div>
+    </div>
+{% endraw %}
+	
+<br /><br />
+Kommen wir zur Einbindung unseres Widgets in unsere html-Seite.<br />	
+Wenn wir das Widget in einen der dafür vorgesehenen Ordner ./dropins/widgets oder ./pages/&lt;eigene Seiten &gt;/widgets ablegen, importiert smartVISU dieses automatisch. Widgets, die mit smarthomeNG-Plugins ausgeliefert werden, werden 
+bei automatischer Seitenerstellung in den von smarthomeNG verwalteten Ordner ./dropis/shwidgets kopiert und von dort ebenfalls automatisch eingelesen. <br>
+Nur wenn man andere Ordner verwendet, z.B. den Ordner der eigenen Seiten, muss man sich selbst um den Import kümmern:<br>
+		<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{% import "widget_my_rollo.html" as widget_my_rollo %}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+	<br>
+In der Seite wird dann der Aufruf des Widgets mit unserem erstellten Macro "rollobedienung" inkl. der verwendeten Items platziert:<br>
+		<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ widget_my_rollo.rollobedienung('Rollo1', 'Wohnen Süd', 'Rollo.Wohnen.Sued.fahren', 'Rollo.Wohnen.Sued.stop', 'Rollo.Wohnen.Sued.position') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+	
+	<br>
+	
+Zusammenfassend sieht das obige Beispiel somit wie folgt aus:<br>
+<textarea cols="50" rows="3">{% raw %}	
+    <div class="block" style="width:100%">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    	<div data-role="collapsible" data-collapsed="false">
+            <h3>Rollosteuerung</h3>
+				{% import "widget_my_rollo.html" as widget_my_rollo %} /** ggfls. weglassen ! */
+				{{ widget_my_rollo.rollobedienung('Rollo1', 'Wohnen Süd', 'Rollo.Wohnen.Sued.fahren', 'Rollo.Wohnen.Sued.stop', 'Rollo.Wohnen.Sued.position') }}
+				{{ widget_my_rollo.rollobedienung('Rollo2', 'Wohnen Nord', 'Rollo.Wohnen.Nord.fahren', 'Rollo.Wohnen.Nord.stop', 'Rollo.Wohnen.Nord.position') }}
+				{{ widget_my_rollo.rollobedienung('Rollo3', 'Wohnen beide', 'Rollo.Wohnen.beide.fahren', 'Rollo.Wohnen.beide.stop', '') }}			
+        </div>
+    </div>    
+    </div>
+{% endraw %}
+</textarea>	
+
+	
+	
+	
+	
+	
+	
+	
+{% endblock %}

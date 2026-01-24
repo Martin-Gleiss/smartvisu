@@ -1,0 +1,52 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+/**
+* Mein Rollo-Widget
+*
+* @param {id=} eindeutige ID für dieses Widget
+* @param {text=} der Name des Rollos
+* @param {item(bool,num)} das gad/item für den Fahr-Befehl
+* @param {item(bool,num)} das gad/item für den Stop-Befehl
+* @param {item(bool,num)} das gad/item für die Position
+*
+*/
+{% macro rollobedienung(id, txt, gad_move, gad_stop, gad_position) %}
+{% import config_version_full >= "3.2.c" ? "@widgets/basic.html" : "basic.html" as basic %}
+{% set uid = uid(page, id) %}
+
+/** Design */
+<div id="{{ uid }}" class="rollobedienung">
+    <table style="width:100%; text-align: left;">
+        <tr>
+            <th width="35%">{% if txt %} {{ txt }} {% endif %}</th>
+            <td width="15%">
+                {% if gad_move %}
+                    {{ basic.stateswitch(id~'up', gad_move, 'mini', '0', 'arrow-u' ) }}
+                {% endif %}
+            </td>
+            <td width="15%">
+                {% if gad_stop %}
+                    {{ basic.stateswitch(id~'stop', gad_stop, 'mini', '1', icon0~'audio_stop.svg') }}
+                {% endif %}
+            </td>
+            <td width="15%">
+                {% if gad_move %}
+                    {{ basic.stateswitch(id~'down', gad_move, 'mini', '1', 'arrow-d') }}
+                {% endif %}
+            </td>
+            <td width="20%">
+                {% if gad_position %}
+                   {{ basic.print(id~'position', gad_position, '%') }}
+                {% endif %}                   
+            </td>
+        </tr>
+    </table>
+</div>
+{% endmacro %}

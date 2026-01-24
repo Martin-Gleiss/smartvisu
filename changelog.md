@@ -4,6 +4,7 @@
 - widgets for absolute positioning in example3.graphic (ovbasic.html, ovdevice.html) updated to provide functionality identical to the corresponding standard widgets
 
 ### Other New Features
+- German "Kurzanleitung" is now integrated in the pages dircectory
 
 ### Improvements
 

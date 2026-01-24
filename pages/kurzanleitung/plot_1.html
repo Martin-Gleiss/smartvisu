@@ -1,0 +1,58 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "main.html" %}
+
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}measure_power.svg' />Plots / Graphen
+{% endblock %}
+
+
+{% block submenu %}
+	<style>
+		#plotperiod:after {
+			background: url({{ icon0 }}time_note.svg);
+		}
+
+		#plotperiodzoom:after {
+			background: url({{ icon0 }}time_note.svg);
+		}
+
+		#plotrtr:after {
+			background: url({{ icon0 }}time_note.svg);
+		}
+		
+		#plottemprose:after {
+			background: url({{ icon0 }}time_note.svg);
+		}
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=plot_plot.period" id="plotperiod" class="ui-btn-icon-top">plot.period</a></li>
+			<li><a href="index.php?page=plot_plot.periodzoom" id="plotperiodzoom" class="ui-btn-icon-top">plot.period (zoom)</a></li>
+			<li><a href="index.php?page=plot_plot.rtr" id="plotrtr" class="ui-btn-icon-top">plot.rtr</a></li>
+			<li><a href="index.php?page=plot_plot.temprose" id="plottemprose" class="ui-btn-icon-top"">plot.temprose</a></li>			
+		</ul>
+	</div>
+{% endblock %}
+
+
+{% block docu %}
+	Hier einige Besipiel für die die Widgets: 
+	
+	<ul>
+		<li>plot.period (+ zoom-Erweiterung)</li>
+		<li>plot.rtr</li>
+		<li>plot.temprose</li>
+	</ul>
+{% endblock %}
+
+

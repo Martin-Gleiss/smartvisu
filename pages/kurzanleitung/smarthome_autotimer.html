@@ -1,0 +1,46 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2026
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "smarthome.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}time_timer.svg' />SmartHomeNG - Autotimer
+{% endblock %}
+
+{% block docu %}
+<h4>Treppenhausschaltung:</h4>
+Hier muss im entsprechenden Item nur eine Zeile hinzugefügt werden.<br>
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3" style="font-family:'Courier New'; font-size:12px">
+Flur:
+    Wandlampen:
+       type: bool
+       visu_acl: rw
+       autotimer: 5m = 0
+       knx_dpt: 1
+       knx_send: 0/0/12
+       knx_init: 0/1/12
+</textarea>
+<br>
+Die Zeile <span style="color:#FF0000">autotimer = 5m = 0</span> im Item bewirkt, dass auf das Item Flur.Wandlampe oder die Gruppenadresse 0/0/12 nach einem EIN-Befehl nach 5m eine 0 gesendet 
+bekommt und somit AUS geht.<br><br>
+Kurzerklärung:<br>
+<ul>
+	<li><i>autotimer</i> = Aufruf/Befehl</li>
+	<li><i>5m</i> = gibt die zeitliche Dauer an, nach der eine Aktion ausgeführt werden soll ( z.B. 10 = 10 Sekunden; 20m = 20Minuten )</li>
+	<li><i>0</i> = Wert der zu senden ist</li>
+</ul>
+Es ist möglich jeden Wert für einen unterstützen Datentyp zu senden ( z.B. nach 6 Stunden einen Solltemperaturwert ).<br>
+Wichtig ist dabei, dass der zu sendende knx_dpt im Item zum Typ passen muss ( s. Grundlagen --> 1.4 Item ). <br>
+Als Dauer und Wert können ab smarthomeNG v1.3 auch items angegeben werden.  
+<br><br>
+Eine ausführliche Dokumentation zum Attribut autotimer findet man <a href="https://smarthomeng.github.io/smarthome/referenz/items/standard_attribute/autotimer.html" target="_blank">hier</a>.
+
+{% endblock %}
+
