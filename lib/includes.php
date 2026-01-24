@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012 - 2024
+ * @copyright   2012 - 2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -48,9 +48,17 @@ require_once const_path_system.'config.php';
 $config = new config();
 $GLOBALS['config'] = $config->get();
 
-// define constant for all config values (for backward compatibility)
+// we allow some config keys to be provided in the request for quick testing
+$allowed_request_keys = ['cache', 'debug', 'design', 'driver', 'driver_address', 'plot_library'];
+
+$request = array_merge($_GET, $_POST);
+
+// define constant for all config values (for backward compatibility) and allow selected request keys to override the configuration
 foreach ($GLOBALS['config'] as $key => $value) {
-	define('config_' . $key, $value);
+	if (in_Array($key, $allowed_request_keys) && isset($request[$key])) 
+		define ('config_' . $key, $request[$key]);
+	else 
+		define('config_' . $key, $value);
 }
 define ('config_version_full', config_version_major.".".config_version_minor.".".config_version_revision);
 
