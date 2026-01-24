@@ -1,0 +1,108 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2026
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "smarthome.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}time_clock.svg' />SmartHomeNG - UZSU
+{% endblock %}
+
+{% block docu %}
+<script>
+  var interpol1 = {type: 'cubic', interval: '1', initialized: 'False', itemtype: 'num', initage: ''}
+  var liste1 = [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '0', 'time': '20:26'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '1', 'time': '05:15'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '1', 'calculated': '06:13', 'time': '06:00<sunrise<08:00'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '0', 'calculated': '18:12', 'time': '18:00<sunset-30m'}]
+  var RolloSued = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol1, list: liste1};
+  var liste2 = [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '18', 'time': '22:00'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '22', 'time': '05:00'}]
+  var Betriebsart = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol1, list: liste2};
+
+  io.write('Erdgeschoss.Office.RolloSued.fahren.uzsu', RolloSued);
+  io.write('Erdgeschoss.Office.Heizung.Betriebsart.uzsu', Betriebsart);
+
+</script>
+	smarthomeNG verfügt über ein Plugin für eine <b>U</b>niverselle <b>Z</b>eit<b>S</b>chalt<b>U</b>hr (UZSU), das wiederkehrende Ereignisse zu festgelegten Tagen / Zeitpunkten ausführt. Die UZSU-Widgets von smartVISU ermöglichen eine 
+	komfortable Programmierung und übersichtliche Darstellung der Ereignisse.<br><br>
+	Beispiele:<br>
+	
+	<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Uhr für Schaltzustände (bool)</h3>
+			{{ device.uzsuicon('', 'Erdgeschoss.Office.RolloSued.fahren.uzsu', 'EG Büro - Rollo Süd', '', '', 'bool', ['Ab', 'Auf']) }}
+        </div>
+	</div>
+	</div> 	
+	<div class="block">
+    <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+		<div data-role="collapsible" data-collapsed="false">
+			<h3>Uhr für Zahlenwerte (num)</h3>
+			{{ device.uzsuicon('', 'Erdgeschoss.Office.Heizung.Betriebsart.uzsu', 'EG Büro - Heizung', '', '', 'num') }}
+        </div>
+	</div>
+	</div> 
+<br><br>
+Um die Zeitschaltuhr so wie im Beispiel zu nutzen benötigen wir also das Plugin und ein Widget.<br><br>
+Das Plugin kann bequem über das Admin Interface von smarthomeNG konfiguriert werden im Menü Plugins --> Konfiguration wird das UZSU Plugin ausgewählt.
+
+Um für ein item die Funktion einer Zeitschaltuhr einzurichten, reicht es aus, im item das struct "uzsu.child" anzugeben. smarthomeNG baut dann beim Neustart den entsprechenden item-Baum mit allen erforderlichen Elementen auf. 
+Die items für die beiden Beispiele sehen damit wie folgt aus:<br>
+
+	<textarea cols="50" rows="3" style="font-family:'Courier New'; font-size:12px">	
+Erdgeschoss:
+    Office:
+        RolloSued:
+            fahren:
+                type: bool
+                visu_acl: rw
+                knx_dpt: 1
+                enforce_updates: yes
+                knx_send: 0/2/35
+                struct: uzsu.child
+
+        Heizung:
+            Betriebsart:
+                type: num
+                visu_acl: rw
+                database: yes
+                knx_dpt: 9
+                knx_send: 2/2/8
+                knx_listen: 2/1/8
+                struct: uzsu.child
+	</textarea>
+<br>	
+
+Der fertige Widget-Code für den oberen linken Block (bool) sieht so aus:
+<textarea cols="50" rows="3" style="font-family:'Courier New'; font-size:12px">{% raw %}
+<div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+         <h3>Uhr 1bit</h3>
+         {{ device.uzsuicon('', 'Erdgeschoss.Office.RolloSued.fahren.uzsu', 'EG Büro - Rollo Süd', '', '', 'bool', ['Ab', 'Auf']) }}
+      </div>
+   </div>
+</div> 	
+{% endraw %}
+</textarea>
+
+<br>
+Der fertige Widget-Code für den oberen rechten Block (num) lautet:
+<textarea cols="50" rows="3" style="font-family:'Courier New'; font-size:12px">{% raw %}	
+<div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+         <h3>Uhr 1byte</h3>
+         {{ device.uzsuicon('uzsu2', 'Erdgeschoss.Office.Heizung.Betriebsart.uzsu', 'EG Büro - Heizung', '', '', 'num', '', '') }}
+      </div>
+   </div>
+</div> 
+{% endraw %}
+</textarea>
+Weitere Infos zum UZSU-Plugin findet man <a href="https://smarthomeng.github.io/smarthome/plugins/uzsu/user_doc.html" target="_blank">hier</a>. Die Widgets sind in der Inline-Doku von smartVISU beschrieben.
+
+{% endblock %}
+

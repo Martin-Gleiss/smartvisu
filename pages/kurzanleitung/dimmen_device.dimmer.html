@@ -1,0 +1,97 @@
+{% extends "dimmen.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}light_light_dim_50.svg' />Dimmen - device.dimmer
+{% endblock %}
+
+{% block docu %}
+Das Widget device.dimmer beinhaltet einen Schalter (das Leuchtensymbol) und einen Schieberegler. Es wird in der Regel mit einem Schalt-item von Typ bool und einem Dimm-item vom Typ num verwendet.
+Hier ein Beispiel für 2 Dimmer in einem gemeinsamen Block vom Typ 5:<br>
+
+<div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="false">
+                  <h3>Wohnzimmer</h3>
+                  {{ device.dimmer('', 'Spots 1', 'Wohnzimmer.Spot1.Schalten', 'Wohnzimmer.Spot1.Dimmen', 0, 100, 10) }}
+                  {{ device.dimmer('', 'Spots 2', 'Wohnzimmer.Spot2.Schalten', 'Wohnzimmer.Spot2.Dimmen', 0, 100, 10) }}
+          </div>
+    </div>
+</div>
+
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3"  style="font-family:'Courier New'; font-size:12px">
+%YAML 1.1
+---
+
+Wohnzimmer:
+
+    Spot1:
+        Schalten:
+            type: bool
+            visu_acl: rw
+            knx_dpt: 1
+            knx_listen: 0/1/1
+            knx_send: 0/0/1
+            knx_init: 0/1/1
+
+        Dimmen:
+            type: num
+            visu_acl: rw
+            knx_dpt: 5001
+            knx_listen: 0/4/1
+            knx_send: 0/3/1
+            knx_init: 0/4/1
+
+    Spot2:
+        Schalten:
+            type: bool
+            visu_acl: rw
+            knx_dpt: 1
+            knx_listen: 0/1/2
+            knx_send: 0/0/2
+            knx_init: 0/1/2
+
+        Dimmen:
+            type: num
+            visu_acl: rw
+            knx_dpt: 5001
+            knx_listen: 0/4/2
+            knx_send: 0/3/2
+            knx_init: 0/4/2
+</textarea>
+<br><br>
+Das Widget für Spot 1, welches wir verwenden, sieht so aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ device.dimmer('', 'Spots 1', 'Wohnzimmer.Spot1.Schalten', 'Wohnzimmer.Spot1.Dimmen', 0, 100, 10) }}
+		{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br><br>
+Das Widget für Spot 2 lautet entsprechend:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		{{ device.dimmer('', 'Spots 2', 'Wohnzimmer.Spot2.Schalten', 'Wohnzimmer.Spot2.Dimmen', 0, 100, 10) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br><br>
+Der gesamte html-Code für beide Dimmer in einem Block vom Typ 5 wird damit wie folgt zusammen gesetzt:<br>
+<textarea cols="50" rows="3"  style="font-family:'Courier New'; font-size:12px">{% raw %}
+   <div class="block" style="width:100%">
+      <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+         <div data-role="collapsible" data-collapsed="false">
+             <h3>Wohnzimmer</h3>
+             {{ device.dimmer('', 'Spots 1', 'Wohnzimmer.Spot1.Schalten', 'Wohnzimmer.Spot1.Dimmen', 0, 100, 10) }}
+             {{ device.dimmer('', 'Spots 2', 'Wohnzimmer.Spot2.Schalten', 'Wohnzimmer.Spot2.Dimmen', 0, 100, 10) }}
+         </div>
+      </div>
+   </div>
+{% endraw %}
+</textarea>
+<br><br>
+Weiterführende Infos zu dem Widget gibt es in der Inline Dokumentation.
+
+{% endblock %}
+
+

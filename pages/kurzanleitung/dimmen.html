@@ -1,0 +1,51 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "main.html" %}
+
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}light_light_dim_50.svg' />Dimmen
+{% endblock %}
+
+
+{% block submenu %}
+	<style>
+		#basicslider:after {
+			background: url({{ icon0 }}light_control.svg);
+		}
+
+		#devicedimmer:after {
+			background: url({{ icon0 }}light_control.svg);
+		}
+
+	</style>
+
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=dimmen_basic.slider" id="basicslider" class="ui-btn-icon-top">Schieberegler</a></li>
+			<li><a href="index.php?page=dimmen_device.dimmer" id="devicedimmer" class="ui-btn-icon-top">Dimmer</a></li>
+		</ul>
+	</div>
+<br>
+{% endblock %}
+
+{% block docu %}
+	Die verwendeten Widgets sind: 
+	
+	<ul>
+		<li>basic.slider</li>
+		<li>device.dimmer</li>
+	</ul>
+	Weitere Einzelheiten und vertiefende Beispiele sind in der Inline-Doku enthalten.
+
+{% endblock %}
+
+

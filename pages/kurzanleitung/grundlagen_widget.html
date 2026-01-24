@@ -1,0 +1,182 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2026
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "grundlagen.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}time_note.svg' />Grundlagen - Widgets
+{% endblock %}
+
+{% block docu %}
+<h4>Was ist ein Widget?</h4>
+Widgets könnte man "laienhaft" als vorgefertigte Bausteine mit oftmals zusätzlichen Einstellungsmöglichkeiten beschreiben.
+Es gibt verschiedene Widgets für die verschiedenen Anwendungen (Licht, Heizung, Rollo, Multimedia etc.), die das Gestalten der Visu erleichtern. In den Widgets werden u.a. die Items eingefügt.<br>
+Derzeit werden mit dem aktuellen Image über 40 Widgets mitgeliefert.Eigene Widgets können selber geschrieben werden. Alle Widgets sind im /pages/Docu in englischer Sprache dokumentiert.<br>
+   <div class="block" style="width:100%">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+          <div data-role="collapsible" data-collapsed="true">
+                  <h3>Liste verfügbarer Widgets (hier klicken)</h3>
+				  	<table style=";width:100%;">
+		<tbody>
+			<tr align="left">
+				<td style="vertical-align:top">
+					<ul>
+						<li><i>basic.checkbox</i> - Chekbox mit Text</li>
+						<li><i>basic.color</i> - erweiterte RGB-Steuerung</li>
+						<li><i>basic.flip</i> - Flip-Schalter</li>
+						<li><i>basic.glue</i> - Verbindungswidget</li>
+						<li><i>basic.icon</i> - Stellt Icons dar</li>
+						<li><i>basic.input</i> - Eingabe von Texten, Zahlen und Datumseinstellungen</li>
+						<li><i>basic.listview</i> - Anzeige einer Liste</li>
+						<li><i>basic.offset</i> - Einstellen von Offsetwerten</li>
+						<li><i>basic.print</i> - Ausgabe von Texten, Zahlenwerten, Formeln etc.</li>
+						<li><i>basic.roundslider</i> - Runder Schieberegler</li>
+						<li><i>basic.select</i> - Auswahlmenü (Dropdown Menü oder Schalter)</li>
+						<li><i>basic.shutter</i> - Rollo/ Jalousiesteuerung</li>
+						<li><i>basic.skylight</i> - Anzeige der Zustände eines Dachfensters</li>
+						<li><i>basic.slider</i> - Schieberegler</li>
+						<li><i>basic.stateswitch</i> - Schalter mit Mehrfachfunktionen</li>
+						<li><i>basic.symbol</i> - Status über Symbol</li>
+						<li><i>basic.tank</i> - Füllstandsanzeige</li>
+						<li><i>basic.trigger</i> - Triggert Logiken</li>
+						<li><i>basic.window</i> - Anzeige von Zuständen eines Fensters</li>
+						<br>
+						<li><i>calendar.list</i> - Kalenderliste</li>
+						<li><i>calendar.waste</i> - Müll-Kalender</li>
+						<li><i>clock.countdown</i> - Anzeige eines Countdowns</li>
+						<li><i>clock.countup</i> - Anzeige eines Zeitzählers ab gegebener Startzeit</li>
+						<li><i>clock.digiclock</i> - Uhr (mit Symbol)</li>
+						<li><i>clock.iconclock</i> - kleine Iconuhr</li>
+						<li><i>clock.miniclock</i> - Uhr</li> 
+						<br>
+						<li><i>device.blind</i> - Rollo/ Jalousiesteuerung</li>
+						<li><i>device.codepad</i> - schützt Widgets mit einem Zahlencode</li>
+						<li><i>device.dimmer</i> - Dimmer</li>
+						<li><i>device.roofwindow</i> - Anzeige von Zuständen und Bedienelementen eines Dachfensters</li>
+						<li><i>device.rtr</i> - Temperaturregler</li>
+						<li><i>device.rtrslider</i> - Temperaturregler mit rundem Schieberegler</li>
+						<li><i>device.shutter</i> - Jalousiesteuerung</li> 
+						<li><i>device.smallrtr</i> - Mehrere Temperaturregler in Tabellenform </li> 
+						<li><i>device.smallshut</i> - Mehrere Jalousiesteuerungen in Tabellenform </li> 
+						<li><i>device.uzsugraph</i> - Grafisches Einstellen der universellen Zeitschaltuhr</li>
+						<li><i>device.uzsuicon</i> - Einstellen der universellen Zeitschaltuhr</li>
+						<li><i>device.uzsutable</i> - Tabellendarstellung für die universelle Zeitschaltuhr</li>
+						<li><i>device.window</i> - Anzeige von Zuständen eines Fensters mit Rolladen</li>
+						<br>
+						<li><i>multimedia.audio</i> - spielt ein Soundfile</li>
+						<li><i>multimedia.image</i> - Bilder, Cams einbinden</li>
+						<li><i>multimedia.music</i> - Musikplayer</li>
+						<li><i>multimedia.playpause</i> - Schaltet bei Mediendateien zwischen Play und Pause um</li>
+						<li><i>multimedia.slideshow</i> - Diashow</li>
+						<li><i>multimedia.station</i> - Fernbedienungen</li>
+						<li><i>multimedia.timeslider</i> - Anzeige / Einstellen der aktuellen Laufzeit einer Mediendatei</li>
+						<br>
+						<li><i>phone.list</i> - Telefonliste</li>
+						<li><i>phone.missedlist</i> - verpasste Anrufe</li>
+						<br>
+						<li><i>plot.bargraph</i> - Vergleich mehrerer items in Form eines Balkendiagramms</li>
+						<li><i>plot.comfortchart</i> - Komfort-Diagramm für Temperatur und Luftfeuchte</li>
+						<li><i>plot.gauge</i> - Rundinstrument</li>
+						<li><i>plot.heatingcurve</i> - Soll- und Ist-Temperatur auf der Heizkurve</li>
+						<li><i>plot.period</i> - Diagramm für Datenreihen aus der Datenbank oder einem item</li>
+						<li><i>plot.pie</i> - Kuchen-Diagramm</li>
+						<li><i>plot.rtr</i> - Soll / Ist Temperaturdiagramm für einen Regler</li>
+						<li><i>plot.sparkline</i> - Anzeige von Trendlinien z.B. in Tabellen</li>
+						<li><i>plot.temprose</i> - Darstellung mehrerer Temperaturen in einem Netz</li>
+						<li><i>plot.timeshift</i> - vorwärts/rückwärts blättern auf der Zeitachse für plot.period</li>
+						<li><i>plot.xyplot</i> - Darstellung eines XY-Diagramms aus einem List-Item</li>
+						<br>
+						<li><i>status.activelist</i> - Zeigt eine Liste mit erweiiterbaren Textfeldern</li>
+						<li><i>status.badge</i> - Kleine Statusanzeige an einem Widget</li>
+						<li><i>status.collapse</i> - blended definierte Bereiche einer Seite in Abhängigkeit eines items aus oder ein</li>
+						<li><i>status.customstyle</i> - verändert das Aussehen von Visu-Elementen in Abhängigkeit eines items</li>
+						<li><i>status.disable</i> - aktiviert/deaktiviert Widgets in Abhängigkeit von einem item</li>
+						<li><i>status.log</i> - Zeigt Log-Informationen des Backends an</li>
+						<li><i>status.message</i> - Popup mit einer Nachricht</li>
+						<li><i>status.notify</i> - Meldungen (Warnung, Hinweis, Fehler)</li>
+						<li><i>status.toast</i> - Meldungen (Warnung, Hinweis, Fehler) in Form eines Toasts</li>
+						<br>
+						<li><i>weather.current</i> - Wetter</li>
+						<li><i>weather.forecast</i> - Wettervorschau</li>
+						<li><i>weather.forecastweek</i> - Wettervorschau Woche</li>
+						<li><i>weather.map</i> - Wetterkarte</li>
+						<li><i>weather.mapslides</i> - Wetterkarte Diashow</li>
+					</ul>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+          </div>
+    </div>
+    </div>	
+<br><br>
+Ein Widget besteht aus dem Namen des Widgets (Funktion), einer eindeutigen ID, dem Item und meist zusätzlichen Einstellungsparametern.
+<br>
+Ein Beispiel: <br>
+Das Widget basic.stateswitch setzt sich wie folgt zusammen.<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch(id, item, style, [val_on, val_off], [pic_on, pic_off], ...) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br>
+Hierbei ist folgendes definiert:
+<ul>
+	<li><i>basic.stateswitch</i> = Name des Widgets (Funktion)</li>
+	<li><i>id</i> = ID des Widgets - meist optional (Der Name der ID kann beliebig vergeben werden, darf auf einer html-Seite aber nur einmalig vorhanden sein)</li>
+	<li><i>item</i> = das Item, das angesprochen werden soll</li>
+	<li><i>style</i> = die Darstellung des Switches als Icon oder Button (micro, mini, midi)</li>
+	<li><i>val_on</i> = zu sendender Wert für Zustand 1/An</li>
+	<li><i>val_off</i> = zu sendender Wert für Zustand 0/Aus</li>
+	<li><i>pic_on</i> = Icon für Zustand 1/An</li>
+	<li><i>pic_off</i> = Icon für Zustand 0/Aus</li>
+</ul>
+Bei "style", "val_on", "val_off", "pic_on", "pic_off" sind im dazugehörigen Code bereits standardmäßig Werte und Bilder hinterlegt. Diese sind im einzelnen:<br>
+style = mini<br>
+pic_on = control_on_off.png <br>
+pic_off = control_on_off.png<br>
+val_on = 1<br>
+val_off = 0<br>
+<br><br>
+Ein normaler "Schalter" für Das Deckenlicht könnte dann wie folgt aussehen<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+			{{ basic.stateswitch('S1', 'EG.Wohnzimmer.Deckenlicht.schalten') }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+{{ basic.stateswitch('S1', 'EG.Wohnzimmer.Deckenlicht.schalten') }}<br>
+Somit haben wir einen "Schalter" auf der VISU der das vorher definierte Item ein- und ausschaltet.
+<br>
+
+Wollte man den "Schalter" nun etwas anpassen (z.B. ein anderes Icon für EIN und AUS), müßte man den Code etwas erweitern<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+{{ basic.stateswitch('S2', 'EG.Wohnzimmer.Deckenlicht.schalten', 'icon','',['light_light.svg', 'light_light.svg']) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+Das Ergebnis sieht somit wie folgt aus:<br>
+{{ basic.stateswitch('S2', 'EG.Wohnzimmer.Deckenlicht.schalten', 'icon','', ['light_light.svg', 'light_light.svg']) }}
+<br>
+Benötigt man einen negierten Schaltwert, gibt man diesen einfach über die val_on und val_off Attribute vor.<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+{{ basic.stateswitch('S3', 'EG.Wohnzimmer.Deckenlicht.schalten','micro',[0,1],['light_light.svg','light_light.svg']) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+Das Ergebnis sieht somit wie folgt aus:<br>
+{{ basic.stateswitch('S3', 'EG.Wohnzimmer.Deckenlicht.schalten','micro',[0,1],['light_light.svg','light_light.svg']) }}
+<br><br>
+Im weiteren Verlauf dieser Anleitung wird näher auf einige grundlegende Widgets eingegangen.
+{% endblock %}
+

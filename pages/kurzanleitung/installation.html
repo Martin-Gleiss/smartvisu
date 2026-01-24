@@ -1,0 +1,49 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 -2022
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "main.html" %}
+
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}edit_save.svg' />Rund um Installationen
+{% endblock %}
+
+
+{% block submenu %}
+	<style>
+		#image:after {
+			background: url({{ icon0 }}edit_save.svg);
+		}
+
+		#nonimage:after{
+			background: url({{ icon0 }}edit_save.svg);
+		}
+
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=installation.image" id="image" data-icon="custom">Image</a></li>
+			<li><a href="index.php?page=installation.nonimage" id="nonimage" data-icon="custom">non Image</a></li>
+		</ul>
+	</div>
+<br>
+{% endblock %}
+
+
+{% block docu %}
+	Hier folgen Beschreibungen für folgende Sektionen: 
+	
+	<ul>
+		<li>Image - wie bringt man das Image für den Raspberry Pi auf die SD-Card</li>
+		<li>non Image - Installation ohne Image -- Komplettbeschreibung für sV, SmartHomeNG, 1-Wire und knxd</li>
+	</ul>
+{% endblock %}
+
+

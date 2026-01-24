@@ -1,0 +1,165 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2022
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "schalten.html" %}
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}light_light.svg' />Schalten & Status - basic.symbol
+{% endblock %}
+
+{% block docu %}
+Anbei ein Beispiel um Statusmeldungen in einem Block-Typ 2 anzuzeigen:<br>
+
+<div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+         <h3>Status Fenster / Türen</h3>
+         <table width=100%>
+           <tr>
+             <td align=left>
+               {{ basic.symbol('', 'Wohnzimmer.FensterSued', ['Fenster Süd ist zu', 'Fenster Süd ist auf'], ['fts_window_1w.svg', 'fts_window_1w_open.svg'], [0,1]) }}
+
+             </td>
+           </tr>
+           <tr>
+             <td align=left>
+               {{ basic.symbol('', 'Wohnzimmer.FensterWest', ['Fenster West ist zu', 'Fenster West ist auf'], ['fts_window_1w.svg', 'fts_window_1w_open.svg'], [0,1]) }}
+             </td>
+           </tr>
+           <tr>
+             <td align=left>
+               {{ basic.symbol('', 'Wohnzimmer.TerrasseTuer', 'Terrassentür ist auf', 'fts_door_open.svg', 1) }}
+               {{ basic.symbol('', 'Wohnzimmer.TerrasseTuer', 'Terrassentür ist zu', 'fts_door.svg', 0) }}
+             </td>
+           </tr>
+         </table> 
+      </div>
+    </div>
+</div>
+
+   <div class="block">
+   <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+      <div data-role="collapsible" data-collapsed="false">
+          <h3>Status setzen für Fenster und Tür</h3>
+             <table width=100%>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.FensterSued', 'icon') }} Fenster Sued
+                 </td>
+               </tr>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.FensterWest', 'icon') }} Fenster West
+                 </td>
+               </tr>
+               <tr>
+                 <td align=left>
+                   {{ basic.stateswitch('', 'Wohnzimmer.TerrasseTuer', 'icon') }} Terassentür
+                 </td>
+               </tr>
+             </table> 
+      </div>
+    </div>
+</div>
+
+Das Beispiel-Item sieht so aus:<br>
+<textarea cols="50" rows="3" style="font-family:'Courier New'; font-size:12px">
+%YAML 1.1
+---
+
+Wohnzimmer:
+
+    FensterSued:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 6/6/3
+
+    FensterWest:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 6/6/4
+
+    FensterNord:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 6/6/5
+
+    TerrasseTuer:
+        type: bool
+        visu_acl: rw
+        knx_dpt: 1
+        knx_cache: 6/6/6
+</textarea>
+<br>
+Es wird empfohlen, die Parameter als Arrays anzugeben, weil dann nur ein Widget-Aufruf benötigt wird. Das Widget für den Status Fenster Süd sieht dann wie folgt aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		   {{ basic.symbol('', 'Wohnzimmer.FensterSued', ['Fenster Süd ist zu', 'Fenster Süd ist auf'], ['fts_window_1w.svg', 'fts_window_1w_open.svg'], [0,1]) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br>
+Das Widget für den Status Fenster West ist ensprechend:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		   {{ basic.symbol('', 'Wohnzimmer.FensterWest', ['Fenster West ist zu', 'Fenster West ist auf'], ['fts_window_1w.svg', 'fts_window_1w_open.svg'], [0,1]) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br>
+Alternativ (aus Laufzeitgründen nicht empfohlen) kann man für jeden item-Wert ein einzelnes Widget angeben. Dies sieht für den Status Terrassentür wie folgt aus:<br>
+	<div class="linux">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+		   {{ basic.symbol('', 'Wohnzimmer.TerrasseTuer', 'Terrassentür ist auf', 'fts_door_open.svg', 1) }}
+		   {{ basic.symbol('', 'Wohnzimmer.TerrasseTuer', 'Terrassentür ist zu', 'fts_door.svg', 0) }}
+			{% endverbatim %}{% endfilter %}
+		</code>
+	</div>
+<br>
+Der dazugehörige html-Code in Block-Typ 2 sieht so aus:<br>
+<textarea cols="50" rows="3" style="font-family:'Courier New'; font-size:12px">{% raw %}
+  <div class="block">
+     <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false">
+           <h3>Status Fenster / Türen</h3>
+           <table width=100%>
+              <tr>
+                 <td align=left>
+                    {{ basic.symbol('', 'Wohnzimmer.FensterSued', ['Fenster Süd ist zu', 'Fenster Süd ist auf'], ['fts_window_1w.svg', 'fts_window_1w_open.svg'], [0,1]) }}
+                 </td>
+              </tr>
+              <tr>
+                 <td align=left>
+                    {{ basic.symbol('', 'Wohnzimmer.FensterWest', ['Fenster West ist zu', 'Fenster West ist auf'], ['fts_window_1w.svg', 'fts_window_1w_open.svg'], [0,1]) }}
+                 </td>
+              </tr>
+              <tr>
+                 <td align=left>
+                    {{ basic.symbol('', 'Wohnzimmer.TerrasseTuer', 'Terrassentür ist auf', 'fts_door_open.svg', 1) }}
+                    {{ basic.symbol('', 'Wohnzimmer.TerrasseTuer', 'Terrassentür ist zu', 'fts_door.svg', 0) }}
+                 </td>
+              </tr>
+           </table> 
+        </div>
+     </div>
+  </div>
+{% endraw %}
+</textarea>
+<br><br>
+Anmerkung:<br>
+Wenn jemand sagt: "Mich interessiert nicht zu sehen, wenn das Fenster geschlossen ist, sondern nur, wenn es offen ist.", kann man den Widget-Code bzw. die Array-Werte für z.B. Status 0 weglassen.<br>
+Dann erscheint in der Visu nur eine Symbolmeldung, wenn das Fenster geöffnet ist.
+<br><br>
+Weiterführende Infos zu dem Widget gibt es in der Inline Dokumentation.
+
+{% endblock %}
+

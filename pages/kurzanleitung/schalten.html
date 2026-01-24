@@ -1,0 +1,60 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "main.html" %}
+
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}light_light.svg' />Schalten & Status
+{% endblock %}
+
+
+{% block submenu %}
+	<style>
+		#basicswitch:after {
+			background: url({{ icon0 }}control_on_off.svg);
+		}
+
+		#basicbutton:after {
+			background: url({{ icon0 }}scene_party.svg);
+		}
+
+		#basicdual:after {
+			background: url({{ icon0 }}control_switch_1.svg);
+		}
+
+		#basicsymbol:after {
+			background: url({{ icon0 }}fts_window_1w_open.svg);
+		}
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=schalten_basic.switch" id="basicswitch" class="ui-btn-icon-top">Schalter</a></li>
+			<li><a href="index.php?page=schalten_basic.button" id="basicbutton" class="ui-btn-icon-top">Taster / Szenen</a></li>
+			<li><a href="index.php?page=schalten_basic.dual" id="basicdual" class="ui-btn-icon-top">Umschalter</a></li>
+			<li><a href="index.php?page=schalten_basic.symbol" id="basicsymbol" class="ui-btn-icon-top">Anzeige</a></li>
+		</ul>
+	</div>
+<br>
+{% endblock %}
+
+
+{% block docu %}
+	Die hier verwendeten Widgets sind: 
+	
+	<ul>
+		<li>basic.stateswitch</li>
+		<li>basic.symbol</li>
+
+	</ul>
+	Weitere Einzelheiten und vertiefende Beispiele sind in der Inline-Doku enthalten.
+{% endblock %}
+
+

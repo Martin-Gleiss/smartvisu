@@ -1,0 +1,207 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2026
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "main.html" %}
+
+
+{% block headline %}
+	<img class="icon" src='{{ icon0 }}edit_paste.svg' />Willkommen - Vorwort
+{% endblock %}
+
+
+{% block submenu %}
+	<style>
+		#Thema1:after{
+			background: url({{ icon0 }}edit_paste.svg);
+		}
+
+		#Thema2:after {
+			background: url({{ icon0 }}edit_paste.svg);
+		}
+
+		#Thema3:after {
+			background: url({{ icon0 }}edit_settings.svg);
+		}
+
+		#Thema4:after {
+			background: url({{ icon0 }}time_note.svg);
+		}
+
+		#Thema5:after {
+			background: url({{ icon0 }}time_note.svg);
+		}
+	</style>
+	<div data-role="navbar" class="nav-custom">
+		<ul>
+			<li><a href="index.php?page=grundlagen_einfuehrung" id="Thema1" class="ui-btn-icon-top">Einführung</a></li>
+			<li><a href="index.php?page=grundlagen_schnittstelle" id="Thema2" class="ui-btn-icon-top">Schnittstelle</a></li>
+			<li><a href="index.php?page=grundlagen_configseite" id="Thema3" class="ui-btn-icon-top">Config-Seite</a></li>
+			<li><a href="index.php?page=grundlagen_item" id="Thema4" class="ui-btn-icon-top">Items</a></li>
+			<li><a href="index.php?page=grundlagen_widget" id="Thema5" class="ui-btn-icon-top">Widgets</a></li>
+		</ul>
+	</div>
+{% endblock %}
+
+
+{% block docu %}
+	v2.5 - Januar 2026<br>
+
+	<h4>Herzlich Willkommen!</h4>
+
+	Diese Anleitung für smartVISU ist dafür gedacht, anhand einiger Beispiele dem Nutzer die Möglichkeit zu geben <em>wichtige</em> Zusammenhänge
+	zu erkennen, um auch ohne tiefgreifende Linux- oder Html-Kenntnisse den Einstieg zu ermöglichen.
+	Gewisse Basics sollte jedoch schon vorhanden sein.<br>
+	Diese Anleitung bezieht sich vorrangig auf das fertige Image von SmartHomeNG für Raspberry PI.
+
+	Es wird hier also die Erstellung <em>von Hand</em> beschrieben, mit der man auch am Weitesten kommt.<br><br>
+	Diese Anleitung wird stetig erweitert und jeder einzelne kann dabei mitwirken.<br>
+	Ideen, Vorschläge, Codes, Textpassagen und ggf. Screenshots können im KNX User Forum im Projektforum SmartVISU gepostet werden, via github oder gitter.im geteilt werden.
+	<br>
+	<br>
+	Nun viel Spaß beim Lesen dieser Kurzanleitung. Los gehts mit dem oberen Button "Einführung".<br>
+	Ihr / Euer<br>
+	smartVISU -Team*<br><br>
+	<small>*Autoren dieser Anleitung</small><br>
+	<small>Marco Fleischer</small><br>
+	<small>Bernd Meiners</small><br>
+	<small>Wolfram v. Hülsen</small><br>
+<br>
+<br>
+<br>
+
+<div class="block"style="width:100%">
+  <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+  	<div data-role="collapsible" data-collapsed="true" >
+			<h3>History  (hier klicken)</h3>
+			<table width=100%>
+			   <td align=left>
+					<small>v2.5 - letzte Änderung: 22. Januar 2026</small><br>
+					<ul>
+						<li>Anpassung auf smartVISU v3.6</li>
+						<li>Neue widgets ergänzt</li>
+						<li>Links zur smarthomeNG-Doku aktualisiert</li>
+						<li>Undokumentierte Features ergänzt</li> 
+					</ul>
+			   </td>
+			</table>
+			<table width=100%>
+			   <td align=left>
+					<small>v2.4 - letzte Änderung: 2. Dezember 2024</small><br>
+					<ul>
+						<li>Anpassung auf smartVISU v3.5</li>
+						<li>Neue Optionen auf der Config-Seite</li>
+						<li>Neue widgets ergänzt</li>
+					</ul>
+			   </td>
+			</table>
+			<table width=100%>
+			   <td align=left>
+					<small>v2.3 - letzte Änderung: 30. November 2022</small><br>
+					<ul>
+						<li>Anpassung auf smartVISU v3.2.c / Vorbereitung auf v3.3</li>
+						<li>Import von Widgtes geändert</li>
+						<li>Adressierung einzelner Icons geändert</li> 
+						<li>"Menüpunkt Downloads" durch "Icons" ersetzt.</li> 
+					</ul>
+			   </td>
+			</table>
+			<hr>
+			<table width=100%>
+			   <td align=left>
+					<small>v2.2 - letzte Änderung: 28. Juni 2022</small><br>
+					<ul>
+						<li>Anpassung auf smartVISU v3.2</li>
+						<li>Liste der Widgets vervollständigt</li>
+						<li>Layoutverbesserungen und Fehlerkorrekturen</li> 
+						<li>smarthomeNG-Seiten aktualisiert / entfernt </li>
+					</ul>
+			   </td>
+			</table>
+			<hr>
+			<table width=100%>
+			   <td align=left>
+					<small>v2.1 - letzte Änderung: 7. Oktober 2020</small><br>
+					<ul>
+						<li>Komplettüberarbeitung Beispielseiten mit Offline-Daten</li>
+						<li>smartControl entfernt</li>
+						<li>Updatehinweise</li>
+					</ul>
+			   </td>
+			</table>
+			<hr>
+			<table width=100%>
+			   <td align=left>
+					<small>v2.0 - letzte Änderung: August 2020</small><br>
+					<ul>
+						<li>Anpassung auf SmartVISU 2.9</li>
+					</ul>
+			   </td>
+			</table>
+			<hr>
+     	<table width=100%>
+     		<td align=left>
+					<small>v1.11 - letzte Änderung: 04.01.2015</small><br>
+					<ul>
+						<li><small>Erweiterung - </small><a href="index.php?page=smarthome_wetter"><small>Wetter Wunderground</small></a></li>
+					</ul>
+       	</td>
+     	</table>
+			<hr>
+     	<table width=100%>
+     		<td align=left>
+					<small>v1.10 - letzte Änderung: 01.01.2015</small><br>
+					<ul>
+						<li><small>Erweiterung - </small><a href="index.php?page=installation"><small>Neue Sektion - Rund um Installationen</small></a></li>
+						<li><small>Änderung - </small><a href="index.php?page=grundlagen_widget"><small>Anpasung Beschreibung Grundlagen Widgets</small></a></li>
+					</ul>
+       	</td>
+   		</table>
+			<hr>
+     	<table width=100%>
+     		<td align=left>
+					<small>v1.9 - letzte Änderung: 22.12.2014</small><br>
+					<ul>
+						<li><small>Erweiterung - Widget Multiplot</small></li>
+						<li><small>Erweiterung - </small><a href="index.php?page=download_samsung"><small>Icons Samsung-Plugin</small></a></li>
+					</ul>
+       	</td>
+     	</table>
+			<hr>
+   		<table width=100%>
+     		<td align=left>
+					<small>v1.8 - letzte Änderung: 21.12.2014</small><br>
+					<ul>
+						<li><small>Erweiterung - </small><a href="index.php?page=sample_sv_cam"><small>Einbindung Cam</small></a></li>
+						<li><small>Erweiterung - </small><a href="index.php?page=sample_sv_self_widgets"><small>Widgets erstellen</small></a></li>
+					</ul>
+       	</td>
+     	</table>
+			<hr>
+     	<table width=100%>
+     		<td align=left>
+					<small>v1.7 - letzte Änderung: 05.12.2014</small><br>
+					<ul>
+						<li><small>Erweiterung - </small><a href="index.php?page=download_icons"><small>Icon-Pack</small></a></li>
+					</ul>
+       	</td>
+     	</table>
+			<hr>
+     	<table width=100%>
+     		<td align=left>
+					<small>v1.0 bis 1.6 - letzte Änderung: bis 11.2014</small><br>
+					<ul>
+						<li><small>Erstellung / Erweiterung / Anpassung</small></li>
+					</ul>
+       	</td>
+     	</table>
+		</div>
+  </div>
+</div>
+{% endblock %}
