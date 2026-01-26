@@ -71,7 +71,7 @@ Für Icons und Farben wird eine Vorschau im Tooltip angezeigt. Alle Parameter m�
 Nachdem das Widget vollständig eingegeben ist, können Sie es entweder auf dieser Seite, oder in einem neuen Fenster (empfohlen) anzeigen lassen und live testen. Das Widget ist voll funktionsfähig.
 Es wird lediglich ein Twig-Error angezeigt, wenn ein Fehler in der Syntax ist. Zudem wird der eingegebene Widget Code einschließlich der Klammern &quot;{{&quot; + &quot;}}&quot; in die Zwischenablage 
 kopiert und kann direkt in Ihre Visu-Seiten eingefügt werden.</p>
-<p>Man kann mehrere Widgets gleichezitig rendern, indem man sie mit einem <strong><code>&lt;br&gt;</code></strong>-TAG trennt.</p>
+<p>Man kann mehrere Widgets gleichzeitig rendern, indem man sie mit einem <strong><code>&lt;br&gt;</code></strong>-TAG trennt.</p>
 <h2>Beispiel:</h2>
 <pre><code>plot.period(&#39;&#39;, [&#39;licht.og.terrasse.screens.warm.dimmen&#39;, &#39;licht.og.terrasse.screens.kalt.dimmen&#39;, &#39;licht.og.terrasse.decke.dimmen&#39;], &#39;max&#39;, &#39;1w&#39;, &#39;now&#39;, &#39;0&#39;, &#39;110&#39;, &#39;1000&#39;, [&#39;Screens warm&#39;, &#39;Screens kalt&#39;, &#39;Decke&#39;], [&#39;#daa&#39;, &#39;#aad&#39;, &#39;#955&#39;], [&#39;stair&#39;, &#39;stair&#39;, &#39;stair&#39;], [&#39;Uhrzeit&#39;, &#39;Helligkeit&#39;], &#39;advanced&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, { yAxis: [ { tickInterval: 40 } ], legend: {align: &#39;right&#39;, verticalAlign: &#39;top&#39;, y: 50, layout: &#39;vertical&#39;}, chart: { marginRight: 110} })
 <strong>&lt;br&gt;</strong>
@@ -79,6 +79,9 @@ basic.stateswitch(&#39;&#39;,&#39;OG.Bad.Licht&#39;,&#39;midi&#39;,&#39;&#39;,&#
 <strong>&lt;br&gt;</strong>
 quad.dimmer(&#39;Lueftungsstufe1&#39;, &#39;Lüftungsstufe&#39;, &#39;Haustechnik.Lueftung&#39;, &#39;Haustechnik.Lueftung.stufe&#39;, 0, 100, 5, icon.ventilation(), icon.ventilation(&#39;&#39;,&#39;&#39;,&#39;Haustechnik.Lueftung.stufe&#39;), &#39;&#39;, &#39;&#39;, &#39;&#39;, 0, 100, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;,   &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, [&#39;switch&#39;, &#39;value_popup&#39;]) 
 </code></pre>
+<p>In den Experten-Einstellungen kann man für die Ergebnisseite einige Einstellungen der Konfiguration überschreiben: Design, Treiber, Adresse des Backend-Systems und Plot-Bibliothek. Das ermöglicht ein vereinfachtes
+Testen, ohne dass man vorher die Konfiguration ändern muss, z.B. indem man im Feld "Driver" den Wert "offline" ohne Anführungszeichen eingibt, damit das Widget nicht mit dem eingestellten Backend-System getestet wird. 
+Die Werte sind so zu verwenden, wie sie in der config.ini stehen.  </p>
 <p><a name="hotkeys"/></a></p>
 <h2 id="hot-keys">Hot-Keys</h2>
 <table>

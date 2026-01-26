@@ -33,7 +33,7 @@ SEE: [smartvisu.de](https://www.smartvisu.de)
  
  
 ## INSTALLATION 
-  * if you are using Apache2 as web server make sure the following php packets are installed: libawl-php, php-curl, php, php-json, php-xml, php-mbstring
+  * if you are using Apache2 as web server make sure the following php packets are installed: libawl-php, php-curl, php, php-json, php-xml, php-mbstring, php-zip
   * the server directory is /var/www/html. Create a subdirectory "smartVISU" (or any other name), set the rights for your user and copy / clone the smartVISU package to that directory (be sure to type the dot at the end of the last line).
     ```cd /var/www/html
     sudo mkdir smartvisu
