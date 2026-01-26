@@ -5,7 +5,8 @@
 
 ### Other New Features
 - German "Kurzanleitung" v2.5 is now integrated in the pages dircectory
-- some config options can be overridden using request parameters in the URL: cache, debug, design, driver, driver_address, plot_library - useful for quick tests, also in widget assistant
+- some config options can be overridden using request parameters in the URL: cache, debug, design, driver, driver_address, plot_library - useful for quick tests
+- widget assistant has got an option "expert settings" with 4 input fields to override the configuration settings design, driver, driver_address and plot_library
 
 ### Improvements
 

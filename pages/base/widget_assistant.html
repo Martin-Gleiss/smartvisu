@@ -120,8 +120,8 @@
 	</div>
 
 	<div id="Assistant_div" class="block" style="width:100%; min-height:400px">
-		<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-			<div data-role="collapsible" data-collapsed="false" id="myCollapse">
+		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+			<div data-role="collapsible" data-collapsed="false">
 				<h3>Widget Editor</h3>
 
 					<textarea autocomplete="off" id="txt_widget" name="txt_widget"></textarea>
@@ -167,20 +167,39 @@
 						</tr>
 						<tr style="height:58px">
 							<td style="text-align: left;">
+								<label style="font-size: 1.0em;"><input name="expert_mode" id="expert_mode" type="checkbox" >&nbsp&nbsp&nbsp&nbsp{{ lang('widgetassi', 'waExpert') }}</label>	
 							</td>
 							<td id="td_selected_dict" style="width: 80px;border-radius: 8px;" colspan=2>
 								<div id="selected_dict"> </div>
 							</td>
 						</tr>
 					</table>
+					<div id="WA_Expert_div" style="display: none;">
+						<div class="ui-field-contain" style="width:24%;display:inline-block;">
+							<label for="waExpert-1">Design</label>
+							<input id="waExpert-1"/>
+						</div>
+						<div class="ui-field-contain" style="width:24%; display:inline-block;">
+							<label for="waExpert-2">Driver</label>
+							<input id="waExpert-2"/>
+						</div>
+						<div class="ui-field-contain" style="width:24%; display:inline-block;">
+							<label for="waExpert-3">Address</label>
+							<input id="waExpert-3"/>
+						</div>
+						<div class="ui-field-contain" style="width:24%; display:inline-block;">
+							<label for="waExpert-4">Plot Lib.</label>
+							<input id="waExpert-4"/>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 
 		{% set readme = lang('baselang') != 'de' ? 'lib/widget_assistant/README.html' : 'lib/widget_assistant/README_DE.html' %}
-		<div id="Assistant_div" class="block" style="width:100%; min-height:600px">
-			<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-				<div data-role="collapsible" data-collapsed="false" id="myCollapse">
+		<div id="WA_Readme_div" class="block" style="width:100%; min-height:600px">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false" >
 					<h3>{{ lang('widgetassi', 'waDocu') }}</h3>
                         <div id="Ausgabe" style="min-height: 250px;">
                             <iframe id="render_frame" src="{{ readme }}" style="min-height: inherit;width: 100%; ">
