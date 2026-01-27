@@ -295,7 +295,7 @@
 				// stop subscription for actual plot
 				if (io.stopseries )
 					io.stopseries(plot);
-				that.element.highcharts().destroy();
+				plot.widget('destroy');
 				var apSeries = "", apCount = "", apExposure = "", apColor = "", apMode = "", apLabel = "", apAssign = "", apStacking = "", apStacks = "", apBaseItems = "";
 
 				// Data source: database or item

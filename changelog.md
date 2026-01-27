@@ -9,6 +9,7 @@
 - widget assistant has got an option "expert settings" with 4 input fields to override the configuration settings design, driver, driver_address and plot_library
 
 ### Improvements
+- a destroy method for widgets is now available. Useful e.g. for the app "analyse_plot" to destroy a plot before displaying a new one
 
 ### Updated Libraries
 

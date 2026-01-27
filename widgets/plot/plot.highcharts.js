@@ -4,7 +4,12 @@ $.widget("sv.plot_highcharts", $.sv.widget, {
 	_changeSize: function(){
 		//DEBUG: console.log('resize');
 		this.element.highcharts().setSize(null, null);
+	},
+	
+	_destroy: function() {
+		this.element.highcharts().destroy();
 	}
+
 });
 
 // ----- plot.comfortchart ----------------------------------------------------
