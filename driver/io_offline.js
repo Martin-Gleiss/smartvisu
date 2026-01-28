@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiss
- * @copyright   2012 - 2025
+ * @copyright   2012 - 2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  * @hide        driver_address
@@ -101,6 +101,11 @@ var io = {
 		var ampersIndex = location.search.indexOf('&');
 		if (pagesIndex > 0){
 			io.pages = (ampersIndex > pagesIndex ? location.search.substring(pagesIndex + 6, ampersIndex) : location.search.substring(pagesIndex + 6)) ;	
+			// strip options from page name
+			var optionsIndex = io.pages.indexOf('&');
+			if (optionsIndex != -1)
+				io.pages = io.pages.substring(0, optionsIndex); 
+				
 		}
 		// the easy method does not work with older tablets	(e.g. Safari iOS < v10.3)
 		//var params = new URLSearchParams(location.search.substring(1));
