@@ -2012,16 +2012,14 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 			$('#'+this.options.bind).attr('data-item', plot)
 			that.options.item = plot;
 
-			if (this.options.zoom == 1){
-				//set new zooming range for updated plot
-				var delta = new Date().duration(direction + step);
-				var extremes = that.element.highcharts().xAxis[0].getExtremes();
-				if (extremes.userMin == undefined || extremes.userMax == undefined )
-					that.element.highcharts().xAxis[0].setExtremes(extremes.min - delta , extremes.max - delta); 
-				else
-					that.element.highcharts().xAxis[0].setExtremes(extremes.userMin - delta , extremes.userMax - delta); 
-			} else
-				that.element.highcharts().xAxis[0].setExtremes(null, null);  //reset zoom level before updating the plot
+			// preserve zoom range if activated and chart has been zoomed before
+			var timeDelta = new Date().duration(direction + step);
+			var extremes = that.element.highcharts().xAxis[0].getExtremes();
+			if (this.options.zoom == 1 && extremes.userMin && extremes.userMax)
+				that.element.highcharts().xAxis[0].setExtremes(extremes.userMin - timeDelta , extremes.userMax - timeDelta); 
+			else
+				//reset x-axis extremes before updating the plot
+				that.element.highcharts().xAxis[0].setExtremes(null, null);
 
 			// subscribe all series at the backend
 			io.startseries($('#'+this.options.bind));
