@@ -295,7 +295,10 @@
 				// stop subscription for actual plot
 				if (io.stopseries )
 					io.stopseries(plot);
-				that.element.highcharts().destroy();
+				// destroy old plot object and timeshift memory
+				plot.widget('destroy');
+				$('[id*="analyse-timeshift"]').widget('destroy');
+				
 				var apSeries = "", apCount = "", apExposure = "", apColor = "", apMode = "", apLabel = "", apAssign = "", apStacking = "", apStacks = "", apBaseItems = "";
 
 				// Data source: database or item

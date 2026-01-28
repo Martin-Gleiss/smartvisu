@@ -9,6 +9,7 @@
 - widget assistant has got an option "expert settings" with 4 input fields to override the configuration settings design, driver, driver_address and plot_library
 
 ### Improvements
+- a destroy method for widgets is now available. Useful e.g. for the app "analyse_plot" to destroy a plot before displaying a new one
 
 ### Updated Libraries
 
@@ -18,6 +19,8 @@
 
 ### Fixed Bugs
 - device specific settings could not be read if visu root folder name was a symlink (because of incorrect cookie path determination)
+- timeshift function in app "analyse_plots" did not take new plot duration if this was changed for the plot.
+- plot.timeshift made the plot disappear if it was used on plots with zoom=advanced while the preserve zoom option was enabled but the plot was not zoomed 
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php

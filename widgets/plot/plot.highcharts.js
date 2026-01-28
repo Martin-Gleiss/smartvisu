@@ -4,7 +4,12 @@ $.widget("sv.plot_highcharts", $.sv.widget, {
 	_changeSize: function(){
 		//DEBUG: console.log('resize');
 		this.element.highcharts().setSize(null, null);
+	},
+	
+	_destroy: function() {
+		this.element.highcharts().destroy();
 	}
+
 });
 
 // ----- plot.comfortchart ----------------------------------------------------
@@ -1970,48 +1975,65 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 	},
 
 	_events: {
-	'click': function (event) {
-		event.preventDefault();
-		event.stopPropagation();
-		var step = this.options.step;
-		var direction =  ($(event.target).closest('a').hasClass('timeshift-back')) ?  ' ' :  ' -'; 
-		var tmin = $('#'+this.options.bind).attr('data-tmin');
-		var tmax = $('#'+this.options.bind).attr('data-tmax');
-		if (this.delta == null){
-			this.mem_tmin = tmin;
-			this.mem_tmax = tmax;
-		}
+		'click': function (event) {
+			event.preventDefault();
+			event.stopPropagation();
+			var step = this.options.step;
+			var direction =  ($(event.target).closest('a').hasClass('timeshift-back')) ?  ' ' :  ' -'; 
+			var tmin = $('#'+this.options.bind).attr('data-tmin');
+			var tmax = $('#'+this.options.bind).attr('data-tmax');
+			if (this.delta == null){
+				this.mem_tmin = tmin;
+				this.mem_tmax = tmax;
+			}
 
-		io.stopseries($('#'+this.options.bind));
-		
-		this.delta = this.delta == null ? direction + step : this.delta + direction + step;
-		this.delta = this.delta.replace(' '+ step + ' -' + step, '').replace(' -'+ step + ' ' + step, '');
-		tmin = this.mem_tmin + this.delta;
-		tmax = ($('#'+this.options.bind).attr('data-zoom') == 'day') ? this.mem_tmax : this.mem_tmax + this.delta;
-		$('#'+this.options.bind).attr('data-tmin', tmin);
-		$('#'+this.options.bind).attr('data-tmax', tmax);
-		var that = $('#'+this.options.bind).data().svWidget;
-		that.options.tmin = tmin;
-		that.options.tmax = tmax; 
+			io.stopseries($('#'+this.options.bind));
+			
+			this.delta = this.delta == null ? direction + step : this.delta + direction + step;
+			this.delta = this.delta.replace(' '+ step + ' -' + step, '').replace(' -'+ step + ' ' + step, '');
 
-		var plot = '';
-		var items = $('#'+this.options.bind).attr('data-item').split(/,\s*/);
-		for (var i = 0; i < items.length; i++) {
-			var definition = widget.parseseries(items[i]);
-			that.items[i] =  definition.item + '.' + definition.mode + '.' + tmin + '.' + tmax + '.'  + definition.count;
-			plot = plot + (i >0 ? ',' : '') + that.items[i];
+			// calculate new tmin / tmax and set html5 attributes and widget options
+			tmin = this.mem_tmin + this.delta;
+			tmax = ($('#'+this.options.bind).attr('data-zoom') == 'day') ? this.mem_tmax : this.mem_tmax + this.delta;
+			$('#'+this.options.bind).attr('data-tmin', tmin);
+			$('#'+this.options.bind).attr('data-tmax', tmax);
+			var that = $('#'+this.options.bind).data().svWidget;
+			that.options.tmin = tmin;
+			that.options.tmax = tmax; 
+
+			// shift all series of the plot and set html5 attributes and options for the new series
+			var plot = '';
+			var items = $('#'+this.options.bind).attr('data-item').split(/,\s*/);
+			for (var i = 0; i < items.length; i++) {
+				var definition = widget.parseseries(items[i]);
+				that.items[i] =  definition.item + '.' + definition.mode + '.' + tmin + '.' + tmax + '.'  + definition.count;
+				plot = plot + (i >0 ? ',' : '') + that.items[i];
+			}
+			$('#'+this.options.bind).attr('data-item', plot)
+			that.options.item = plot;
+
+			if (this.options.zoom == 1){
+				//set new zooming range for updated plot
+				var delta = new Date().duration(direction + step);
+				var extremes = that.element.highcharts().xAxis[0].getExtremes();
+				if (extremes.userMin == undefined || extremes.userMax == undefined )
+					that.element.highcharts().xAxis[0].setExtremes(extremes.min - delta , extremes.max - delta); 
+				else
+					that.element.highcharts().xAxis[0].setExtremes(extremes.userMin - delta , extremes.userMax - delta); 
+			} else
+				that.element.highcharts().xAxis[0].setExtremes(null, null);  //reset zoom level before updating the plot
+
+			// subscribe all series at the backend
+			io.startseries($('#'+this.options.bind));
 		}
-		$('#'+this.options.bind).attr('data-item', plot)
-		that.options.item = plot;
-		if (this.options.zoom == 1){
-			var delta = new Date().duration(direction + step);
-			var extremes = that.element.highcharts().xAxis[0].getExtremes();
-			that.element.highcharts().xAxis[0].setExtremes(extremes.userMin - delta, extremes.userMax - delta); //set new zooming range for updated plot
-		} else
-			that.element.highcharts().xAxis[0].setExtremes(null, null);  //reset zoom level before updating the plot
-		io.startseries($('#'+this.options.bind));
+	},
+	
+	_destroy: function() {
+		this.mem_tmin = null;
+		this.mem_tmax = null;
+		this.delta = null;
 	}
-}
+	
 });
 
 // ----- plot.bargraph --------------------------------------------------------------
