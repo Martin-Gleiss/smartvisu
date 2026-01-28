@@ -1991,6 +1991,8 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 			
 			this.delta = this.delta == null ? direction + step : this.delta + direction + step;
 			this.delta = this.delta.replace(' '+ step + ' -' + step, '').replace(' -'+ step + ' ' + step, '');
+
+			// calculate new tmin / tmax and set html5 attributes and widget options
 			tmin = this.mem_tmin + this.delta;
 			tmax = ($('#'+this.options.bind).attr('data-zoom') == 'day') ? this.mem_tmax : this.mem_tmax + this.delta;
 			$('#'+this.options.bind).attr('data-tmin', tmin);
@@ -1999,6 +2001,7 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 			that.options.tmin = tmin;
 			that.options.tmax = tmax; 
 
+			// shift all series of the plot and set html5 attributes and options for the new series
 			var plot = '';
 			var items = $('#'+this.options.bind).attr('data-item').split(/,\s*/);
 			for (var i = 0; i < items.length; i++) {
@@ -2008,12 +2011,19 @@ $.widget("sv.plot_timeshift", $.sv.widget, {
 			}
 			$('#'+this.options.bind).attr('data-item', plot)
 			that.options.item = plot;
+
 			if (this.options.zoom == 1){
+				//set new zooming range for updated plot
 				var delta = new Date().duration(direction + step);
 				var extremes = that.element.highcharts().xAxis[0].getExtremes();
-				that.element.highcharts().xAxis[0].setExtremes(extremes.userMin - delta, extremes.userMax - delta); //set new zooming range for updated plot
+				if (extremes.userMin == undefined || extremes.userMax == undefined )
+					that.element.highcharts().xAxis[0].setExtremes(extremes.min - delta , extremes.max - delta); 
+				else
+					that.element.highcharts().xAxis[0].setExtremes(extremes.userMin - delta , extremes.userMax - delta); 
 			} else
 				that.element.highcharts().xAxis[0].setExtremes(null, null);  //reset zoom level before updating the plot
+
+			// subscribe all series at the backend
 			io.startseries($('#'+this.options.bind));
 		}
 	},
