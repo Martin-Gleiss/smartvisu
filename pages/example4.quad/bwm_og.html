@@ -2,13 +2,13 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Onkel Andy
- * @copyright   2020
+ * @copyright   2020 - 2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
 
 
-{% extends "quad_root.html" %}
+{% extends "quad_base.html" %}
 
 {% block title %}
 BWM
@@ -21,32 +21,32 @@ BWM
 {% block content %}
 <script>
 $( document ).ready(function() {
-		 io.write('bwm.og.kueche.helligkeitsschwelle', '10' );
-     io.write('bwm.og.kueche.nachlaufzeit', '20' );
-     io.write('bwm.og.kueche.reichweite', '90' );
-     io.write('bwm.og.helligkeitswert', '90' );
-     io.write('bwm.og.kueche.helligkeitstrigger', '1' );
-     io.write('bwm.og.essen.helligkeitsschwelle', '100' );
-     io.write('bwm.og.essen.nachlaufzeit', '2' );
-     io.write('bwm.og.essen.reichweite', '30' );
-     io.write('bwm.og.helligkeitswert', '120' );
-     io.write('bwm.og.essen.helligkeitstrigger', '0' );
-     io.write('bewegung.og.zeitstatus', '15' );
+    io.write('bwm.og.kueche.helligkeitsschwelle', '10' );
+    io.write('bwm.og.kueche.nachlaufzeit', '20' );
+    io.write('bwm.og.kueche.reichweite', '90' );
+    io.write('bwm.og.helligkeitswert', '90' );
+    io.write('bwm.og.kueche.helligkeitstrigger', '1' );
+    io.write('bwm.og.essen.helligkeitsschwelle', '100' );
+    io.write('bwm.og.essen.nachlaufzeit', '2' );
+    io.write('bwm.og.essen.reichweite', '30' );
+    io.write('bwm.og.helligkeitswert', '120' );
+    io.write('bwm.og.essen.helligkeitstrigger', '0' );
+    io.write('bewegung.og.zeitstatus', '15' );
 
-	});
+});
 
 </script>
 <div style="padding:10px;"><a href="index.php?page=bwm_eg">EG</a> | OG</div>
 
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
-     <li data-role="list-divider">Bewegungswerte</li>
-     {{ quad.mixed('', 'OG Bewegung',
-     [basic.symbol('', '', 'Allgemein'),
-     basic.symbol('bewegung_og', 'bewegung.og.zeitstatus', ['0', '5', '15', '30'], ['message_presence','message_presence','message_presence','message_presence'], ['0', '5', '15', '30'], 'or', ['icon0', 'icon1', 'icon1', 'icon1'], '#bewegung_og_popup', 'popup'),
-     popup.extpopup('bewegung_og_popup', [['plot'], ['bewegung.og', 'max', '12h', 'now', '0', '1.5', '5000', 'OG', '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'bool']])
-     ]) }}
+    <li data-role="list-divider">Bewegungswerte</li>
+    {{ quad.mixed('', 'OG Bewegung',
+    [basic.symbol('', '', 'Allgemein'),
+    basic.symbol('bewegung_og', 'bewegung.og.zeitstatus', ['0', '5', '15', '30'], ['message_presence','message_presence','message_presence','message_presence'], ['0', '5', '15', '30'], 'or', ['icon0', 'icon1', 'icon1', 'icon1'], '#bewegung_og_popup', 'popup'),
+    popup.extpopup('bewegung_og_popup', [['plot'], ['bewegung.og', 'max', '12h', 'now', '0', '1.5', '5000', 'OG', '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'bool']])
+    ]) }}
 
-    <li data-role="list-divider">Küche</li>
+   <li data-role="list-divider">Küche</li>
 {{ quad.mixed('bwm_kueche1', 'BWM Küche Werte', [basic.symbol('', '', '', 'weather_light_meter'), basic.print('', 'bwm.og.helligkeitswert')], basic.symbol('', 'bwm.og.kueche.helligkeitstrigger', '', ['status_light_off', 'status_light_high'], [0,1], '', ['icon0', 'icon1'])) }}
 
 {{ quad.mixed('', 'BWM Küche Settings',

@@ -2,13 +2,13 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Onkel Andy
- * @copyright   2020
+ * @copyright   2020 -2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
 
 
-{% extends "quad_root.html" %}
+{% extends "quad_base.html" %}
 
 {% block title %}
 BWM
@@ -21,32 +21,32 @@ BWM
 {% block content %}
 <script>
 $( document ).ready(function() {
-		 io.write('bwm.eg.bad.helligkeitsschwelle', '10' );
-     io.write('bwm.eg.bad.nachlaufzeit', '20' );
-     io.write('bwm.eg.bad.reichweite', '90' );
-     io.write('wetterstation.helligkeit.osten', '90' );
-     io.write('bwm.eg.bad.helligkeitstrigger', '1' );
-     io.write('bwm.eg.gang.helligkeitsschwelle', '100' );
-     io.write('bwm.eg.gang.nachlaufzeit', '2' );
-     io.write('bwm.eg.gang.reichweite', '30' );
-     io.write('bwm.eg.gang.helligkeitswert', '120' );
-     io.write('bwm.eg.gang.helligkeitstrigger', '0' );
-     io.write('bewegung.eg.zeitstatus', '15' );
+    io.write('bwm.eg.bad.helligkeitsschwelle', '10' );
+    io.write('bwm.eg.bad.nachlaufzeit', '20' );
+    io.write('bwm.eg.bad.reichweite', '90' );
+    io.write('wetterstation.helligkeit.osten', '90' );
+    io.write('bwm.eg.bad.helligkeitstrigger', '1' );
+    io.write('bwm.eg.gang.helligkeitsschwelle', '100' );
+    io.write('bwm.eg.gang.nachlaufzeit', '2' );
+    io.write('bwm.eg.gang.reichweite', '30' );
+    io.write('bwm.eg.gang.helligkeitswert', '120' );
+    io.write('bwm.eg.gang.helligkeitstrigger', '0' );
+    io.write('bewegung.eg.zeitstatus', '15' );
 
-	});
+});
 
 </script>
 <div style="padding:10px;">EG | <a href="index.php?page=bwm_og">OG</a></div>
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
-     <li data-role="list-divider">Bewegungswerte</li>
+    <li data-role="list-divider">Bewegungswerte</li>
 
-     {{ quad.mixed('', 'EG Bewegung',
-     [basic.symbol('', '', 'Allgemein'),
-     basic.symbol('bewegung_og', 'bewegung.eg.zeitstatus', ['0', '5', '15', '30'], ['message_presence','message_presence','message_presence','message_presence'], ['0', '5', '15', '30'], 'or', ['icon0', 'icon1', 'icon1', 'icon1'], '#bewegung_eg_popup', 'popup'),
-     popup.extpopup('bewegung_eg_popup', [['plot'], ['bewegung.eg', 'max', '12h', 'now', '0', '1.5', '5000', 'EG', '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'bool']])
-     ]) }}
+    {{ quad.mixed('', 'EG Bewegung',
+    [basic.symbol('', '', 'Allgemein'),
+    basic.symbol('bewegung_og', 'bewegung.eg.zeitstatus', ['0', '5', '15', '30'], ['message_presence','message_presence','message_presence','message_presence'], ['0', '5', '15', '30'], 'or', ['icon0', 'icon1', 'icon1', 'icon1'], '#bewegung_eg_popup', 'popup'),
+    popup.extpopup('bewegung_eg_popup', [['plot'], ['bewegung.eg', 'max', '12h', 'now', '0', '1.5', '5000', 'EG', '#aa0', 'stair',  ['Uhrzeit', 'Wert'], '3s', '', '', '', '', 'bool']])
+    ]) }}
 
-     <li data-role="list-divider">Bad EG</li>
+    <li data-role="list-divider">Bad EG</li>
 {{ quad.mixed('bwm_bad1', 'BWM Bad Werte',
 [basic.symbol('', '', '', 'weather_light_meter'),
 basic.print('', 'wetterstation.helligkeit.osten')],

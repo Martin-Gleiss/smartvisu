@@ -2,13 +2,13 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Onkel Andy
- * @copyright   2020
+ * @copyright   2020 - 2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
 
 
-{% extends "quad_root.html" %}
+{% extends "quad_base.html" %}
 
 {% block title %}
 Jalousien
@@ -21,21 +21,22 @@ Jalousien
 {% block content %}
 <script>
 $( document ).ready(function() {
-		 io.write('markisen.m1.hoehe', '100' );
-     io.write('jalousien.og.westen_essen.hoehe', '20' );
+    io.write('markisen.m1.hoehe', '100' );
+    io.write('jalousien.og.westen_essen.hoehe', '20' );
 
-     var interpol = {type: 'none', interval: '', initialized: 'False', itemtype: 'num', initage: ''}
-     var liste = [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '40', 'time': '07:50'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '80', 'time': '18:55'}]
-     var markise = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol, list: liste};
-     io.write('markisen.m1.hoehe.uzsu', markise);
+    var interpol = {type: 'none', interval: '', initialized: 'False', itemtype: 'num', initage: ''}
+    var liste = [{'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '40', 'time': '07:50'}, {'rrule': 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU', 'active': 'True', 'value': '80', 'time': '18:55'}]
+    var markise = {sunrise: '06:11', active: 'True', lastvalue: '0', interpolation: interpol, list: liste};
+    io.write('markisen.m1.hoehe.uzsu', markise);
 
-	});
+});
 
 </script>
 <ul data-role="listview" data-dividertheme="c" class="quad_list">
 
   <li data-role="list-divider">Markise</li>
-    {{ quad.blind('markisen_m1', 'Markise', 'markisen.m1.lz', 'markisen.m1.kz', 'markisen.m1.hoehe', 'markisen.m1.kz', '', 0, 100, 5, '', '', 'markisen.m1.hoehe.uzsu', ['', '', 'num'], 'markisen.m1.hoehe', '', 'markisen.m1.automatik', (stateengine['markisen_m1']), '', '', '', [['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine', 'uzsu', 'plot']) }}
+    {{ quad.blind('markisen_m1_await_plotpopup', 'Markise', 'markisen.m1.lz', 'markisen.m1.kz', 'markisen.m1.hoehe', 'markisen.m1.kz', '', 0, 100, 5, '', '', 'markisen.m1.hoehe.uzsu', ['', '', 'num'], 'markisen.m1.hoehe', '', 'markisen.m1.automatik', (stateengine['markisen_m1']), '', '', '', [['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine', 'uzsu', 'plot']) }}
+    {{ quad.blind('markisen_m2', 'Markise', 'markisen.m1.lz', 'markisen.m1.kz', 'markisen.m1.hoehe', 'markisen.m1.kz', '', 0, 100, 5, '', '', 'markisen.m1.hoehe.uzsu', ['', '', 'num'], 'markisen.m1.hoehe', '', 'markisen.m1.automatik', (stateengine['markisen_m1']), '', '', '', [['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine', 'uzsu', 'plot']) }}
 
   <li data-role="list-divider">Jalousien OG</li>
     {{ quad.blind('jalousien_og_osten_wohnen', 'Wohnen', 'jalousien.og.osten_wohnen.lz', 'jalousien.og.osten_wohnen.kz', 'jalousien.og.osten_wohnen.hoehe', 'jalousien.og.osten_wohnen.kz', '', 0, 100, 5, '', '', 'jalousien.og.osten_wohnen.hoehe.uzsu', ['', '', 'num'], 'jalousien.og.osten_wohnen.hoehe', '', 'jalousien.og.osten_wohnen.automatik', (stateengine['jalousien_og_osten_wohnen']), '', '', '', [['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine', 'plot']) }}
