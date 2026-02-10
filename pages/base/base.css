@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß, Stefan Widmer, Wolfram v. Hülsen
- * @copyright   2012 - 2025
+ * @copyright   2012 - 2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -19,7 +19,7 @@
   display: none;
 }
 .menu-hide-phone, .menu-hide-smallphone {
-	display: inline-block;
+  display: inline-block;
 }
 .hide-phone {
    display: block;
@@ -53,17 +53,17 @@
 	  display: inline-block;
   }
   .menu-hide-phone, .hide-phone {
-	  display: none;
+    display: none;
   }
 }
 
 /* small phone i.e. iPhone 5, SE */
 @media all and (max-width: 360px){
   .menu-visible-smallphone {
-	  display: inline-block;
+    display: inline-block;
   }
   .menu-hide-smallphone {
-	  display: none;
+    display: none;
   }
 }
 
@@ -71,13 +71,13 @@
  * --- G E N E R A L  ---------------------------------------------------------
  */
  body {                           /* prevent copying elements from smartVISU pages
-	-youbkit-touch-callout: none; /* iOS Safari */
-	-youbkit-user-select: none;   /* Chrome 6.0+, Safari 3.1+, Edge & Opera 15+ */
-	-moz-user-select: none;       /* Firefox */
-	-ms-user-select: none;        /* IE 10+ and Edge */
-	user-select: none;            /* Non-prefixed version,  currently supported by Chrome and Opera */
-	-webkit-touch-callout: none;                /* iOS prevent callout to copy image, etc when tap to hold */
-	-webkit-user-select: none;                  /* iOS prevent copy paste, to allow, change 'none' to 'text' */
+    -youbkit-touch-callout: none; /* iOS Safari */
+    -youbkit-user-select: none;   /* Chrome 6.0+, Safari 3.1+, Edge & Opera 15+ */
+    -moz-user-select: none;       /* Firefox */
+    -ms-user-select: none;        /* IE 10+ and Edge */
+    user-select: none;            /* Non-prefixed version,  currently supported by Chrome and Opera */
+    -webkit-touch-callout: none;                /* iOS prevent callout to copy image, etc when tap to hold */
+    -webkit-user-select: none;                  /* iOS prevent copy paste, to allow, change 'none' to 'text' */
 }
 
 .allowTextCopy {                  /* class to selectively allow copying text */
@@ -197,7 +197,7 @@ html body .ui-page .hide {
 
 /* min-height for scrollbars and push out url, min-width for smallest device */
 .ui-content {
-/*	min-height: 850px; */
+/*    min-height: 850px; */
   min-width: 290px;
 }
 
@@ -381,8 +381,8 @@ a:hover {
   font-size: 0.8em;
 }
 .ui-btn.ui-btn-inline.ui-micro.absolutepos {
-	margin-top: -14px;
-	margin-left: -14px;	
+    margin-top: -14px;
+    margin-left: -14px;    
 } 
 .ui-btn.ui-btn-inline.ui-btn-icon-left.ui-micro {
   padding: 0 .5em 0 2em;
@@ -404,8 +404,8 @@ a:hover {
   font-size: 0.8em;
 }
 .ui-btn.ui-btn-inline.ui-mini.absolutepos {
-	margin-top: -21px;
-	margin-left: -21px;	
+  margin-top: -21px;
+  margin-left: -21px;    
 } 
 .ui-btn.ui-btn-inline.ui-btn-icon-left.ui-mini {
   padding: 0 .5em 0 2em;
@@ -446,8 +446,8 @@ a:hover {
   padding: 0;
 }
 .ui-btn.ui-btn-inline.ui-midi.absolutepos {
-	margin-top: -28px;
-	margin-left: -28px;	
+    margin-top: -28px;
+    margin-left: -28px;    
 } 
 .ui-btn.ui-btn-inline.ui-btn-icon-left.ui-midi {
   padding: 0 .5em 0 2em;
@@ -617,9 +617,9 @@ input.ui-slider-input.ui-slider-no-input[data-orientation='semicircle'] {
 /** --------- input --------- */
 /* allow format option "text" to disable spin-buttons */
 input[type=number].textfield {
-	appearance: textfield;
-	-webkit-appearance: textfield;
-	-moz-appearance: textfield;
+    appearance: textfield;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
 }
 input[type=number].textfield::-webkit-outer-spin-button,
 input[type=number].textfield::-webkit-inner-spin-button {
@@ -1052,8 +1052,8 @@ input[type=number].textfield::-webkit-inner-spin-button {
 }
 .absolutepos .switch,
 .switch.absolutepos{
-	margin-top: -24px;
-	margin-left: -24px;
+  margin-top: -24px;
+  margin-left: -24px;
 }
 .switch.icon {
   vertical-align: middle;
@@ -1087,8 +1087,8 @@ input[type=number].textfield::-webkit-inner-spin-button {
 }
 
 .roofwindow .pos {
-	overflow: hidden;
-	position: relative;
+    overflow: hidden;
+    position: relative;
 }
 .roofwindow svg[data-widget="icon.roofwindow"] {
   width: 200px;
@@ -1330,11 +1330,11 @@ input[type=number].textfield::-webkit-inner-spin-button {
 }
 .dimmer-left .ui-btn.ui-midi,
 .dimmer-right .ui-btn.ui-midi {
-	margin-top: -5px;
+  margin-top: -5px;
 }
 .dimmer-left .ui-btn.ui-micro,
 .dimmer-right .ui-btn.ui-micro {
-	margin-top: 10px;
+  margin-top: 10px;
 }
 
 .dimmer .icon,
@@ -1360,28 +1360,28 @@ input[type=number].textfield::-webkit-inner-spin-button {
   margin-right: 45px;
 }
 .dimmer-left.dimmer-midi .ui-slider {
-	margin-left: 64px;
+  margin-left: 64px;
 }
 .dimmer-right.dimmer-midi .ui-slider {
-	margin-right: 64px;
+  margin-right: 64px;
 }
 .dimmer-left.dimmer-mini .ui-slider {
-	margin-left: 48px;
+  margin-left: 48px;
 }
 .dimmer-right.dimmer-mini .ui-slider {
-	margin-right: 48px;
+  margin-right: 48px;
 }
 .dimmer-left.dimmer-micro .ui-slider {
-	margin-left: 38px;
+  margin-left: 38px;
 }
 .dimmer-right.dimmer-micro .ui-slider {
-	margin-right: 38px;
+  margin-right: 38px;
 }
 .dimmer-notext .ui-slider {
-	margin-top: 4px;
+  margin-top: 4px;
 }
 .dimmer-notext.dimmer-micro .ui-slider {
-	margin-top: 8px;
+  margin-top: 8px;
 }
 
 .codepad {
@@ -1581,10 +1581,10 @@ input[type=number].textfield::-webkit-inner-spin-button {
 
 .uzsuTimeInput::-webkit-calendar-picker-indicator,
 .uzsuTimeMaxMinInput::-webkit-calendar-picker-indicator {
-	width: 1.8ex;
-	height:1.8ex;
-	margin-left: 0px;
-	border: 0;
+    width: 1.8ex;
+    height:1.8ex;
+    margin-left: 0px;
+    border: 0;
 }
 
 .uzsuTimeInput::-webkit-inner-spin-button,
@@ -1681,7 +1681,7 @@ div.ui-slider-switch{
   display:block;
 }
 .uzsuCell [data-tip]:after {
-	left: -190px;
+  left: -190px;
 }
 /**
  * ---------- UZSU Graph ------------------------------------------------
@@ -1871,7 +1871,7 @@ div.ui-slider-switch{
 --plot-tooltip-box: #272727;
 --plot-tooltip-text: #fff;
 --plot-polar-line: none;
---plot-grid-line: rgba(255, 255, 255, .15);	
+--plot-grid-line: rgba(255, 255, 255, .15);    
 }
 .highcharts-title {
   font-size: 18px;
@@ -1881,7 +1881,7 @@ div.ui-slider-switch{
   fill: var(--plot-subtitle);
 }
 .highcharts-graph {
-	stroke-width: 2px;
+    stroke-width: 2px;
 }
 .highcharts-axis .highcharts-axis-line {
   stroke: var(--plot-axis);
@@ -1939,9 +1939,9 @@ div.ui-slider-switch{
 }
 .highcharts-tooltip-box,
 .highcharts-tooltip-box .highcharts-label-box {
-	fill: var(--plot-tooltip-box);
-	fill-opacity: 0.8;
-	stroke-width: 0;
+    fill: var(--plot-tooltip-box);
+    fill-opacity: 0.8;
+    stroke-width: 0;
 }
 .highcharts-tooltip text {
   fill: var(--plot-tooltip-text);
@@ -2113,9 +2113,9 @@ div.ui-slider-switch{
 }
 .timeshift-back .icon,
 .timeshift-forward .icon {
-	width:32px; 
-	height:auto; 
-	margin-top:0px; 
+    width:32px; 
+    height:auto; 
+    margin-top:0px; 
 }
 
 /**
@@ -2221,7 +2221,7 @@ div.ui-slider-switch{
 }
 
 .iprouter .version img {
-	width: 0.8em;
+  width: 0.8em;
 }
 
 /**
@@ -2230,13 +2230,13 @@ div.ui-slider-switch{
  
 /** ------- icons: basic data for scalable icons */
 .ui-icn {
-	margin: 1px;
-	padding: 0;
-	display: inline-block;
-	position: relative;
-	text-align: center;
-	overflow: hidden;
-	white-space: nowrap;
+    margin: 1px;
+    padding: 0;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
 }
 /** ----------------------------------------------------------------*/
 
@@ -2287,7 +2287,7 @@ svg.icon.micro,
 svg.icon.mini,
 .icon.mini {
   width: 42px;
-  height: 42px;	
+  height: 42px;    
 }
 
 .absolutepos svg.icon.mini,
@@ -2313,37 +2313,37 @@ svg.icon.midi,
  * --- W i d g e t s :   L I B  ----------------------------------------------
  */
 .supersize.icon {
-	position:absolute; 
-	width:3em; 
-	height:auto; 
-	top:0px; 
-	right:0px;	
+  position:absolute; 
+  width:3em; 
+  height:auto; 
+  top:0px; 
+  right:0px;    
 }
 .overlay {
-	position:absolute;
-	padding: .5%;
-	top:0px;
-	left:0px;
-	width:99%;
-	height:100%;
-	z-index:1000;
-	display:none;
+  position:absolute;
+  padding: .5%;
+  top:0px;
+  left:0px;
+  width:99%;
+  height:100%;
+  z-index:1000;
+  display:none;
 }
 .mask {
-	position: absolute;
-	left: 0;
-	top: 0;
-	right:0;
-	bottom: 0;
-	width: 100%; 
-	height: 100%;
-	z-index: 900;
-	display:none;
-	background: rgba(0, 0, 0, 0.5);
-	position: fixed; 
+  position: absolute;
+  left: 0;
+  top: 0;
+  right:0;
+  bottom: 0;
+  width: 100%; 
+  height: 100%;
+  z-index: 900;
+  display:none;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed; 
 }
-	
-	
+
+
 /**
  * --- W i d g e t s :   P O P U P  ----------------------------------------------
  */
@@ -2484,7 +2484,7 @@ svg.icon.midi,
  * ------ Show badge on some disabled widgets using buttons -------
 */
 [data-widget="basic.select"].ui-controlgroup {
-	position: relative;
+  position: relative;
 }
 [data-widget="basic.stateswitch"].ui-state-disabled::after,
 [data-widget="basic.offset"].ui-state-disabled::after,
@@ -2496,37 +2496,37 @@ svg.icon.midi,
 [data-widget="device.roofwindow"].ui-state-disabled .pos::after,
 .smallshut.ui-state-disabled  .ui-shut-pic::after,
 .blind.ui-state-disabled .shutter::after  {
-    /**  content: url("../../icons/ws/jquery_lock.svg"); */
-    content:  url("data:image/svg+xml;encoding=utf-8, <svg xmlns='http://www.w3.org/2000/svg' viewBox='-7 -7 28 28' width='15' height='15' stroke-width='0' xml:space='preserve'><path fill='white' d='M12,6V5c0-2.762-2.238-5-5-5C4.239,0,2,2.238,2,5v1H1v8h12V6H12z M7.5,9.848V12h-1V9.848 C6.207,9.673,6,9.366,6,9c0-0.553,0.448-1,1-1s1,0.447,1,1C8,9.366,7.793,9.673,7.5,9.848z M10,6H4V5c0-1.657,1.343-3,3-3 s3,1.343,3,3V6z'/></svg>");
-    position:absolute;    
-    top:4px;
-    right:0px;
-    display:inline-flex;
-    min-width:16px;
-    height:16px;
-	justify-content: center;
-    text-align:center;
-    color: white;
-    border:1px solid red;
-    border-radius:10px;
-    background: red !important;
-	left: unset;
-	width: unset;
-	align-items: center;
+  /**  content: url("../../icons/ws/jquery_lock.svg"); */
+  content:  url("data:image/svg+xml;encoding=utf-8, <svg xmlns='http://www.w3.org/2000/svg' viewBox='-7 -7 28 28' width='15' height='15' stroke-width='0' xml:space='preserve'><path fill='white' d='M12,6V5c0-2.762-2.238-5-5-5C4.239,0,2,2.238,2,5v1H1v8h12V6H12z M7.5,9.848V12h-1V9.848 C6.207,9.673,6,9.366,6,9c0-0.553,0.448-1,1-1s1,0.447,1,1C8,9.366,7.793,9.673,7.5,9.848z M10,6H4V5c0-1.657,1.343-3,3-3 s3,1.343,3,3V6z'/></svg>");
+  position:absolute;    
+  top:4px;
+  right:0px;
+  display:inline-flex;
+  min-width:16px;
+  height:16px;
+  justify-content: center;
+  text-align:center;
+  color: white;
+  border:1px solid red;
+  border-radius:10px;
+  background: red !important;
+  left: unset;
+  width: unset;
+  align-items: center;
 }
 [data-widget="basic.stateswitch"].ui-micro.ui-state-disabled::after,
 [data-widget="basic.offset"].ui-micro.ui-state-disabled::after,
 [data-widget="basic.trigger"].ui-micro.ui-state-disabled::after,
 [data-widget="basic.select"].ui-state-disabled a[data-widget="basic.stateswitch"].ui-micro::after,
 [data-widget="device.dimmer"].ui-state-disabled a[data-widget="basic.stateswitch"].ui-micro::after {
-	top: 2px;
+  top: 2px;
 }
 [data-widget="basic.stateswitch"].ui-midi.ui-state-disabled::after,
 [data-widget="basic.offset"].ui-midi.ui-state-disabled::after,
 [data-widget="basic.trigger"].ui-midi.ui-state-disabled::after,
 [data-widget="basic.select"].ui-state-disabled a[data-widget="basic.stateswitch"].ui-midi::after,
 [data-widget="device.dimmer"].ui-state-disabled a[data-widget="basic.stateswitch"].ui-midi::after {
-	top: 6px;
+  top: 6px;
 }
 /** ... and exclude some child widgets */
 [data-widget="device.rtr"].ui-state-disabled > .set .ui-state-disabled::after,
@@ -2534,7 +2534,7 @@ svg.icon.midi,
 [data-widget="device.rtrslider"].ui-state-disabled + .set .ui-state-disabled::after,
 [data-widget="device.rtrslider"].ui-state-disabled + .set + .control .ui-state-disabled::after,
 .blind.ui-state-disabled .set .ui-state-disabled::after {
-	display: none;
+  display: none;
 }
 
 /**
@@ -2542,8 +2542,8 @@ svg.icon.midi,
 */
 .sv-state-undefined,
 .ui-btn.sv-state-undefined {
-	outline: 2px solid red!important;
-	animation: pulse 2s infinite;
+  outline: 2px solid red!important;
+  animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
@@ -2640,4 +2640,20 @@ svg.icon.midi,
 }
 #config .ui-checkbox.ui-state-disabled .ui-checkbox-off {
   opacity: .3;
+}
+
+/**
+ * --- S y s t e m   I n f o   W i d g e t ---------------------------------
+ */
+ .ui-page > .ui-header .svstatus {
+  width: 22px;
+  float: right;
+  margin-right: 6px;
+  margin-left: -6px;
+}
+
+.svstatus [data-tip]:after {
+  left: unset;
+  top:35px;
+  right: 0px;
 }

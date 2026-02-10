@@ -5,10 +5,11 @@
 
 ### Other New Features
 - German "Kurzanleitung" v2.5 is now integrated in the pages dircectory
-- some config options can be overridden using request parameters in the URL: cache, debug, design, driver, driver_address, plot_library - useful for quick tests
+- some config options can be overridden using request parameters in the URL: cache, debug, design, driver, driver_address, plot_library and svstatus - useful for quick tests
 - widget assistant has got an option "expert settings" with 4 input fields to override the configuration settings design, driver, driver_address and plot_library
 - the changeable config options are available in javaScript as "sv.config.cache", "sv.config.design", "sv.config.driver.name", "sv.config.driver.address" ...
 - the smartVISU icon is available now as SVG "logo_smartvisu.svg" in ./icons/ws and ./icons/sw
+- the widget "lib.sysinfo" shows the current settings of the options changeable with the request parameters and can be activated in the headline with 'svstatus="1"' (config.ini or request parameter)
 
 ### Improvements
 - a destroy method for widgets is now available. Useful e.g. for the app "analyse_plot" to destroy a plot before displaying a new one
