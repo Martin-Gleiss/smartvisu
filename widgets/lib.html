@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2024
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -13,15 +13,15 @@
 */
 {% macro smartvisu(mode) %}
 
-	{% if mode == 'app' %}
-		<div class="app">
-			<div class="image">
-				<div class="smartvisu"><span class="smart">smart</span><br /><span class="visu">VISU</span></div>
-			</div>
-		</div>
-	{% else %}
-		<span class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span></span>
-	{% endif %}
+    {% if mode == 'app' %}
+        <div class="app">
+            <div class="image">
+                <div class="smartvisu"><span class="smart">smart</span><br /><span class="visu">VISU</span></div>
+            </div>
+        </div>
+    {% else %}
+        <span class="smartvisu"><span class="smart">smart</span><span class="visu">VISU</span></span>
+    {% endif %}
 
 {% endmacro %}
 
@@ -30,30 +30,30 @@
 * Check for new updates of smartVISU
 */
 {% macro updatecheck( ) %}
-	{% if config_updatecheck %}
-		<script>
-			$('#index').on('pagecreate', function (event, ui) {
-				$.ajax({
-					dataType: 'json',
-					url: 'lib/base/check_update.php?local={{ config_version_full }}',
-					beforeSend: function(jqXHR, settings) { jqXHR.svProcess = 'Update Check'; },
-					success: function (data) {
-						if (data.update) {
-							notify.message('update', data.text, sv_lang['update']['local'] +': <b>' + data.local + '</b><br>' +
-							sv_lang['update']['remote'] +': <b>' + data.remote + '</b><br><br>' +
-							sv_lang['update']['visit'] + ' <a target="_blank" href="http://smartvisu.de">smartVISU.de</a> '+ sv_lang['templatechecker']['or'] +
-							' <a target="_blank" href="http://github.com/martin-gleiss/smartvisu">github</a> ' + sv_lang['update']['latest'] + '!<br><br>'+
-							'<a target="_blank" href="http://github.com/martin-gleiss/smartvisu/blob/master/changelog.md">' + sv_lang['update']['view'] + '</a><br><br>'+
-							sv_lang['update']['recheck'] + '. <br />');
-						}
-					}
-				})
-				.fail(notify.json);
-			});
-		</script>
-	{% else %}
-		<!-- Check for updates disabled in configuration -->
-	{% endif %}
+    {% if config_updatecheck %}
+        <script>
+            $('#index').on('pagecreate', function (event, ui) {
+                $.ajax({
+                    dataType: 'json',
+                    url: 'lib/base/check_update.php?local={{ config_version_full }}',
+                    beforeSend: function(jqXHR, settings) { jqXHR.svProcess = 'Update Check'; },
+                    success: function (data) {
+                        if (data.update) {
+                            notify.message('update', data.text, sv_lang['update']['local'] +': <b>' + data.local + '</b><br>' +
+                            sv_lang['update']['remote'] +': <b>' + data.remote + '</b><br><br>' +
+                            sv_lang['update']['visit'] + ' <a target="_blank" href="http://smartvisu.de">smartVISU.de</a> '+ sv_lang['templatechecker']['or'] +
+                            ' <a target="_blank" href="http://github.com/martin-gleiss/smartvisu">github</a> ' + sv_lang['update']['latest'] + '!<br><br>'+
+                            '<a target="_blank" href="http://github.com/martin-gleiss/smartvisu/blob/master/changelog.md">' + sv_lang['update']['view'] + '</a><br><br>'+
+                            sv_lang['update']['recheck'] + '. <br />');
+                        }
+                    }
+                })
+                .fail(notify.json);
+            });
+        </script>
+    {% else %}
+        <!-- Check for updates disabled in configuration -->
+    {% endif %}
 {% endmacro %}
 
 
@@ -67,14 +67,14 @@
 */
 {% macro app(name, title) %}
 
-	{% set app = docu('apps/'~name~'.html') %}
+    {% set app = docu('apps/'~name~'.html') %}
 
-	<div class="app">
-		<a href="index.php?page={{ name }}">
-			<div class="image" style="background-color: #{{ app.color }};"><img src="{{ app.icon }}" alt="{{ app.name }}"></div>
-			<div>{{ title|default(app.title|e) }}</div>
-		</a>
-	</div>
+    <div class="app">
+        <a href="index.php?page={{ name }}">
+            <div class="image" style="background-color: #{{ app.color }};"><img src="{{ app.icon }}" alt="{{ app.name }}"></div>
+            <div>{{ title|default(app.title|e) }}</div>
+        </a>
+    </div>
 {% endmacro %}
 
 /**
@@ -83,25 +83,25 @@
 */
 {% macro connection( ) %}
 {% import "@widgets/basic.html" as basic %}
-	<span id="{{ page }}-connection"></span>
-	<script>
-		$('#{{ page }}-connection').html(io.socket.url);
-		if (io.server != undefined) { 
-			if (io.server != '') {						// if io.server already set write it directly
-				var connectString = 'smarthomeNG Websocket Server: '+ io.server + ', '+ sv_lang['system']['connected']+': '+ io.opentime.transUnit('short') +
-									 '<br>Websocket URL:&nbsp;&nbsp;' + io.socket.url;
-				$('#{{ page }}-connection').html(connectString);
-			} else {
-				$(document).on('ioAlive', function(){   //else wait for ioAlive event and write then
-					if (io.server != '' ) {
-						var connectString = 'smarthomeNG Websocket Server: '+ io.server + ', '+ sv_lang['system']['connected'] + ': '+ io.opentime.transUnit('short') +
-											'<br>Websocket URL:&nbsp;&nbsp;' + io.socket.url;
-						$('#{{ page }}-connection').html(connectString);
-					}
-				})
-			}
-		}
-	</script>
+    <span id="{{ page }}-connection"></span>
+    <script>
+        $('#{{ page }}-connection').html(io.socket.url);
+        if (io.server != undefined) { 
+            if (io.server != '') {                        // if io.server already set write it directly
+                var connectString = 'smarthomeNG Websocket Server: '+ io.server + ', '+ sv_lang['system']['connected']+': '+ io.opentime.transUnit('short') +
+                                     '<br>Websocket URL:&nbsp;&nbsp;' + io.socket.url;
+                $('#{{ page }}-connection').html(connectString);
+            } else {
+                $(document).on('ioAlive', function(){   //else wait for ioAlive event and write then
+                    if (io.server != '' ) {
+                        var connectString = 'smarthomeNG Websocket Server: '+ io.server + ', '+ sv_lang['system']['connected'] + ': '+ io.opentime.transUnit('short') +
+                                            '<br>Websocket URL:&nbsp;&nbsp;' + io.socket.url;
+                        $('#{{ page }}-connection').html(connectString);
+                    }
+                })
+            }
+        }
+    </script>
 {% endmacro %}
 
 /**
@@ -113,13 +113,13 @@
 * @Author: Wolfram v. Hülsen
 */
 {% macro timestamp (id, item) %}
-	<button type="button" data-theme="a" data-inline="true" id="send_timestamp_{{ uid(page, id) }}" class="ui-midi">Trigger</button> Click to start
-	<script>
-		$('#send_timestamp_{{ uid(page, id) }} ').click(function() {
-			var now = +new Date();	
-			io.write('{{ item }}', now );
-		});
-	</script>
+    <button type="button" data-theme="a" data-inline="true" id="send_timestamp_{{ uid(page, id) }}" class="ui-midi">Trigger</button> Click to start
+    <script>
+        $('#send_timestamp_{{ uid(page, id) }} ').click(function() {
+            var now = +new Date();    
+            io.write('{{ item }}', now );
+        });
+    </script>
 {% endmacro %}
 
 /**
@@ -130,58 +130,58 @@
 * @Author: bonze  (plot resize and icon management by Wolfram v. Hülsen)
 */
 {% macro supersize ( id ) %}
-	{% set uid = uid(page, id) %}
-	{% import _self as lib %}
-	 <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
-		<a>{{ lib.svgimg ('', 'control_centr_arrow_up_right.svg', 'supersize icon0 sizesmall') }}</a>
-		<a>{{ lib.svgimg ('', 'jquery_minus.svg', 'supersize icon0 sizebig', 'display:none;') }}</a>
-	</span>
-	<script>
-		$(".supersize").closest("div").on("collapsiblecreate", function (event, ui){
-			var element = $(this);
-			if (element.parent().attr("data-iconpos") == "right")
-				element.collapsible({iconpos: "none"});
-		});
-		
-		$(".supersize").click(function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-			e.stopImmediatePropagation();
-			var element = $(this).closest("div");
-			var previousWidth = parseFloat(element.css('width').replace('px',''));
-			var previousHeight = parseFloat(element.find('.ui-collapsible-content').css('height').replace('px',''));
+    {% set uid = uid(page, id) %}
+    {% import _self as lib %}
+     <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} >
+        <a>{{ lib.svgimg ('', 'control_centr_arrow_up_right.svg', 'supersize icon0 sizesmall') }}</a>
+        <a>{{ lib.svgimg ('', 'jquery_minus.svg', 'supersize icon0 sizebig', 'display:none;') }}</a>
+    </span>
+    <script>
+        $(".supersize").closest("div").on("collapsiblecreate", function (event, ui){
+            var element = $(this);
+            if (element.parent().attr("data-iconpos") == "right")
+                element.collapsible({iconpos: "none"});
+        });
+        
+        $(".supersize").click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            var element = $(this).closest("div");
+            var previousWidth = parseFloat(element.css('width').replace('px',''));
+            var previousHeight = parseFloat(element.find('.ui-collapsible-content').css('height').replace('px',''));
 
-			if (!element.hasClass('overlay')){
-				$(".mask").css('display','block');
-				element.addClass("overlay").show();
-				element.collapsible('expand'); 
-				element.find("h3").addClass("ui-corner-all");
-				element.find(".supersize.sizesmall").hide();
-				element.find(".supersize.sizebig").show();
-				element.find(".supersize").attr("data-ypos", Math.round(window.scrollY));
-				element.find('.highcharts-root').addClass('supersized');
-				$.mobile.silentScroll(0);
-			}else{
-				$(".mask").css('display','none');
-				element.removeClass("overlay");
-				element.find("h3").removeClass("ui-corner-all");
-				element.find(".supersize.sizebig").hide();
-				element.find(".supersize.sizesmall").show();
-				element.find('.highcharts-root').removeClass('supersized');
-				var previousPosition = element.find(".supersize").attr("data-ypos")*1;
-				$.mobile.silentScroll(previousPosition);
-			}
-			var actualWidth = parseInt(element.css('width').replace('px',''));
-			var sizeFactor = actualWidth / previousWidth;
-			element.find('.ui-collapsible-content').css('height', previousHeight * sizeFactor)
-			.find('.plot').each(function() {
-				var actualPlotHeight = parseFloat($(this).css('height').replace('px',''));
-				$(this).css('height', actualPlotHeight * sizeFactor);
-				$(this).widget('changeSize');
-			}).end()
-			.find('[data-widget="device.uzsutable"] .highcharts-root').css('max-height', sizeFactor < 1 ? '' : 400*sizeFactor+"px");
-		});
-	</script>
+            if (!element.hasClass('overlay')){
+                $(".mask").css('display','block');
+                element.addClass("overlay").show();
+                element.collapsible('expand'); 
+                element.find("h3").addClass("ui-corner-all");
+                element.find(".supersize.sizesmall").hide();
+                element.find(".supersize.sizebig").show();
+                element.find(".supersize").attr("data-ypos", Math.round(window.scrollY));
+                element.find('.highcharts-root').addClass('supersized');
+                $.mobile.silentScroll(0);
+            }else{
+                $(".mask").css('display','none');
+                element.removeClass("overlay");
+                element.find("h3").removeClass("ui-corner-all");
+                element.find(".supersize.sizebig").hide();
+                element.find(".supersize.sizesmall").show();
+                element.find('.highcharts-root').removeClass('supersized');
+                var previousPosition = element.find(".supersize").attr("data-ypos")*1;
+                $.mobile.silentScroll(previousPosition);
+            }
+            var actualWidth = parseInt(element.css('width').replace('px',''));
+            var sizeFactor = actualWidth / previousWidth;
+            element.find('.ui-collapsible-content').css('height', previousHeight * sizeFactor)
+            .find('.plot').each(function() {
+                var actualPlotHeight = parseFloat($(this).css('height').replace('px',''));
+                $(this).css('height', actualPlotHeight * sizeFactor);
+                $(this).widget('changeSize');
+            }).end()
+            .find('[data-widget="device.uzsutable"] .highcharts-root').css('max-height', sizeFactor < 1 ? '' : 400*sizeFactor+"px");
+        });
+    </script>
 {% endmacro %}
 
 /**
@@ -196,7 +196,47 @@
 * @Author: Wolfram v. Hülsen
 */
 {% macro svgimg ( id, pic, iconclass, styleoptions ) %}
-	{% set pic = localize_svg(pic) %}
-	<svg class="icon {{ iconclass }}" {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} {{ (styleoptions is not empty ? 'style ="' ~ styleoptions ~'"' : '')|raw }} role="img" aria-label="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}" 
-	{{ source( pic )|split('<svg')[1]|replace( {'stroke="#fff"':'', 'fill="#fff"':'', 'stroke="#FFF"':'', 'fill="#FFF"':''} )|raw }}
+    {% set pic = localize_svg(pic) %}
+    <svg class="icon {{ iconclass }}" {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} {{ (styleoptions is not empty ? 'style ="' ~ styleoptions ~'"' : '')|raw }} 
+        role="img" aria-label="{{ pic|split('/')|last|split('.')[0:-1]|join('.') }}" 
+        {{ source( pic )|split('<svg')[1]|replace( {'stroke="#fff"' : '', 'fill="#fff"' : '', 'stroke="#FFF"' : '', 'fill="#FFF"' : ''} )|raw }}   
+    /** no /> at this point! (will be part of source file) */
+{% endmacro %}
+
+/**
+* Displays system info for the properties that can be changed by request parameters
+* 
+*/
+{% macro sysinfo( ) %}
+    {% import _self as lib %}
+    
+    {% set uid = page~"-sysinfo" %}
+    <span id="{{ uid }}" class="sysinfo"> 
+        <span id="{{ uid }}_online">{{ lib.svgimg ( 'sysinfo_online_svg', 'status_led', '', 'height:20px;width:20px; margin-top: 1px; margin-bottom: 0px; display: inline;vertical-align: top; fill: #c80000' )}} </span>
+        <span id="{{ uid }}_cache" style="height:16px; display: inline-block;">
+            {{ lib.svgimg ( 'sysinfo_cache_svg', 'status_led', '', 'height:20px;width:20px; margin-top: -4px; margin-bottom: 0px; display: inline;vertical-align: top; fill: #c80000' )}}
+        </span>
+        <span id="{{ uid }}_info" style="display: inline-block">
+            {{ lib.svgimg ( 'sysinfo_info_svg', 'jquery_info', 'icon0', 'height:20px;width:20px; margin-top: -8px; margin-bottom: 0px;display: inline;vertical-align: top;')}}
+        </span>
+    </span>
+    <script>
+        $(document).on('pagecontainerbeforeshow', function(){
+            var driverOffline = sv.config.driver.name == 'offline';
+            if (driverOffline == true) {
+                $('#{{ uid }}_online_svg').css('fill', '#C80000'); 
+                $('#{{ uid }}_online').attr('data-tip', 'offline');
+            } else {
+                $('#{{ uid }}_online_svg').css('fill', '#00A000');
+                $('#{{ uid }}_online').attr('data-tip', sv.config.driver.name + ' @ ' + sv.config.driver.address );
+            }
+            $('#{{ uid }}_cache_svg').css('fill', (sv.config.cache == true ? '#00A000' :'#C80000')); 
+            $('#{{ uid }}_cache').attr('data-tip', 'cache ' + (sv.config.cache != "" ? 'on' : 'off'));
+            var infoContent = 'Debug mode  : ' + (sv.config.debug == "1" ? 'on' : 'off') + ' | ' +
+                              'Design CSS  : ' + sv.config.design + ' | ' +
+                              'Plot library: {{ config_plot_library }}';
+            $('#{{ uid }}_info').attr('data-tip', infoContent);
+        });
+ 
+    </script>
 {% endmacro %}

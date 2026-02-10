@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiß
- * @copyright   2012
+ * @copyright   2012 - 2026
  * @license     GPL <http://www.gnu.de>
  * -----------------------------------------------------------------------------
  */
@@ -20,6 +20,12 @@
         {% include 'menu.html' %}
       </div>
       <div class="quad ui-right">
+    {%- if config_svstatus == "1" -%}
+        /** will show right of the smartVISU field because it is the first element floating right; */
+        <div class="svstatus hide-phone">
+            {{ lib.sysinfo() }}
+        </div>
+    {% endif %}
         <div style="float:right;">
           <a href="javascript:location.reload()" style="text-decoration:none;color: {{ (config_design_icon0 == 'icons/sw/' ? '#000' : '#fff') }} ;">
             {{ lib.smartvisu() }}
