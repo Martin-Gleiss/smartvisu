@@ -2,13 +2,13 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Onkel Andy
- * @copyright   2020
+ * @copyright   2020 - 2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
 
 
-{% extends "quad_root.html" %}
+{% extends "quad_base.html" %}
 
 {% block title %}
 Licht
@@ -21,40 +21,38 @@ Licht
 {% block content %}
 <script>
 $( document ).ready(function() {
-		 io.write('licht.modus.visu', '1' );
-     io.write('licht.og.led_effekt.r.dimmen', '100' );
-     io.write('licht.og.led_effekt.g.dimmen', '20' );
-     io.write('licht.og.led_effekt.b.dimmen', '50' );
-     io.write('licht.og.led_effekt.ww.dimmen', '10' );
-     io.write('licht.og.led_effekt.r.sa', '1' );
-     io.write('licht.og.led_effekt.g.sa', '1' );
-     io.write('licht.og.led_effekt.b.sa', '1' );
-     io.write('licht.og.led_effekt.ww.sa', '1' );
-     io.write('licht.og.essen.warm.dimmen', '20' );
-     io.write('licht.og.essen.warm.sa', '1' );
-     io.write('licht.og.essen.kalt.dimmen', '0' );
-     io.write('licht.og.essen.kalt.sa', '0' );
-     io.write('licht.og.wohnen.warm.dimmen', '60' );
-     io.write('licht.og.wohnen.warm.sa', '1' );
-     io.write('licht.og.wohnen.kalt.dimmen', '50' );
-     io.write('licht.og.wohnen.kalt.sa', '1' );
-     io.write('bwm.og.essen.sperren', '1' );
-     io.write('licht.og.kueche.sperren', '1' );
-     io.write('bwm.og.kueche.sperren', '0' );
-     io.write('licht.og.essen.warm.zwangvalue', '0' );
-     io.write('licht.og.essen.kalt.zwangvalue', '0' );
-     io.write('licht.og.wohnen.warm.zwangvalue', '0' );
-     io.write('licht.og.wohnen.kalt.zwangvalue', '0' );
-     io.write('bwm.og.terrasse.sperren', '0' );
-     io.write('licht.og.terrasse.decke.zwangvalue', '3' );
-     io.write('licht.og.terrasse.wand.sperren', '0' );
-     io.write('bwm.og.terrasse.sperren', '0' );
+    io.write('licht.modus.visu', '1' );
+    io.write('licht.og.led_effekt.r.dimmen', '100' );
+    io.write('licht.og.led_effekt.g.dimmen', '20' );
+    io.write('licht.og.led_effekt.b.dimmen', '50' );
+    io.write('licht.og.led_effekt.ww.dimmen', '10' );
+    io.write('licht.og.led_effekt.r.sa', '1' );
+    io.write('licht.og.led_effekt.g.sa', '1' );
+    io.write('licht.og.led_effekt.b.sa', '1' );
+    io.write('licht.og.led_effekt.ww.sa', '1' );
+    io.write('licht.og.essen.warm.dimmen', '20' );
+    io.write('licht.og.essen.warm.sa', '1' );
+    io.write('licht.og.essen.kalt.dimmen', '0' );
+    io.write('licht.og.essen.kalt.sa', '0' );
+    io.write('licht.og.wohnen.warm.dimmen', '60' );
+    io.write('licht.og.wohnen.warm.sa', '1' );
+    io.write('licht.og.wohnen.kalt.dimmen', '50' );
+    io.write('licht.og.wohnen.kalt.sa', '1' );
+    io.write('bwm.og.essen.sperren', '1' );
+    io.write('licht.og.kueche.sperren', '1' );
+    io.write('bwm.og.kueche.sperren', '0' );
+    io.write('licht.og.essen.warm.zwangvalue', '0' );
+    io.write('licht.og.essen.kalt.zwangvalue', '0' );
+    io.write('licht.og.wohnen.warm.zwangvalue', '0' );
+    io.write('licht.og.wohnen.kalt.zwangvalue', '0' );
+    io.write('bwm.og.terrasse.sperren', '0' );
+    io.write('licht.og.terrasse.decke.zwangvalue', '3' );
+    io.write('licht.og.terrasse.wand.sperren', '0' );
+    io.write('bwm.og.terrasse.sperren', '0' );
+    io.write('licht.og.led_effekt.sequencer.sperren', '1' );
+    io.write('licht.og.terrasse.decke.dimmen', '50' );
 
-     io.write('licht.og.led_effekt.sequencer.sperren', '1' );
-     io.write('licht.og.terrasse.decke.dimmen', '50' );
-
-	});
-
+});
 </script>
 <div style="padding:10px;"><a href="index.php?page=licht_eg">EG</a> | OG | <a href="index.php?page=bwm_og">BWM</a>
  | <a href="index.php?page=licht_kurven">Lichtkurven</a></div>

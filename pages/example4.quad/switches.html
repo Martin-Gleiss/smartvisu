@@ -2,12 +2,12 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Onkel Andy
- * @copyright   2020
+ * @copyright   2020 - 2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
 
-{% extends "quad_root.html" %}
+{% extends "quad_base.html" %}
 
 {% block title %}
 Steckdosen
@@ -20,10 +20,10 @@ Steckdosen
 {% block content %}
 <script>
 $( document ).ready(function() {
-		 io.write('steckdosen.eg.terrasse.sa.ausschalttimer.minutes', '5' );
-     io.write('steckdosen.og.terrasse.sa.ausschalttimer.minutes', '2' );
-     io.write('steckdosen.eg.bad_heizung.sa.ausschalttimer.minutes', '10' );
-	});
+    io.write('steckdosen.eg.terrasse.sa.ausschalttimer.minutes', '5' );
+    io.write('steckdosen.og.terrasse.sa.ausschalttimer.minutes', '2' );
+    io.write('steckdosen.eg.bad_heizung.sa.ausschalttimer.minutes', '10' );
+});
 
 </script>
 
