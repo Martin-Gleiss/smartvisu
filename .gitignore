@@ -1,4 +1,7 @@
 config.ini
+!pages/example?.*/config.ini
+!pages/docu/config.ini
+!pages/kurzanleitung/config.ini
 .DS_Store
 
 # ignore directories below /pages exept listed exceptions
