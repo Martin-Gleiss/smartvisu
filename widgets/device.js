@@ -28,7 +28,7 @@ $.widget("sv.device_codepad", $.sv.widget, {
     $('[data-bind="' + id + '"]')
     .on('mouseenter', function(event) {
       if (!$(this).closest('[data-bind="' + id + '"]').data('access'))
-		  clickpreventer.appendTo(this)
+          clickpreventer.appendTo(this)
       .css({
         left: parseInt(event.pageX - clickpreventer.offsetParent().offset().left)-1,
         top:  parseInt(event.pageY - clickpreventer.offsetParent().offset().top)-1,
@@ -36,8 +36,8 @@ $.widget("sv.device_codepad", $.sv.widget, {
       });
     })
     .on('mousemove', '*', function(event) {
-      if (!$(this).closest('[data-bind="' + id + '"]').data('access')) 
-		  clickpreventer.appendTo(this)
+      if (!$(this).closest('[data-bind="' + id + '"]').data('access'))
+          clickpreventer.appendTo(this)
       .css({
         left: parseInt(event.pageX - clickpreventer.offsetParent().offset().left)-1,
         top:  parseInt(event.pageY - clickpreventer.offsetParent().offset().top)-1,
@@ -95,49 +95,49 @@ $.widget("sv.device_codepad", $.sv.widget, {
 // ----- device.roofwindow ------------------------------------------------------
 $.widget("sv.device_roofwindow", $.sv.widget, {
 
-	initSelector: 'div[data-widget="device.roofwindow"]',
+    initSelector: 'div[data-widget="device.roofwindow"]',
 
-	options: {
-		min: 0,
-		max: 255,
-		step: 5,
-	},
+    options: {
+        min: 0,
+        max: 255,
+        step: 5,
+    },
 
-	_getVal: function(event) {
-		var min = this.options.min;
-		var max = this.options.max;
-		var step = this.options.step;
+    _getVal: function(event) {
+        var min = this.options.min;
+        var max = this.options.max;
+        var step = this.options.step;
 
-		var offset = $(event.currentTarget).offset();
-		var y = event.pageY - offset.top;
-		return max - Math.floor(y / $(event.currentTarget).outerHeight() * (max - min) / step) * step;
-	},
+        var offset = $(event.currentTarget).offset();
+        var y = event.pageY - offset.top;
+        return max - Math.floor(y / $(event.currentTarget).outerHeight() * (max - min) / step) * step;
+    },
 
-	_events: {
-		'click .pos': function (event) {
-			this._write(this._getVal(event));
-		},
+    _events: {
+        'click .pos': function (event) {
+            this._write(this._getVal(event));
+        },
 
-		'mouseenter .pos': function (event) {
-			this.element.find('.control').fadeIn(400);
-		},
+        'mouseenter .pos': function (event) {
+            this.element.find('.control').fadeIn(400);
+        },
 
-		'mouseleave .pos': function (event) {
-			this.element.find('.control').fadeOut(400);
-		},
+        'mouseleave .pos': function (event) {
+            this.element.find('.control').fadeOut(400);
+        },
 
-		'mousemove .pos': function (event) {
-			$(event.currentTarget).attr('title', this._getVal(event));
-		}
-	},
-	
-	_enable: function(){
-		this.element.removeClass('ui-state-disabled');
-	},
-	
-	_disable: function(){
-		this.element.addClass('ui-state-disabled');
-	}
+        'mousemove .pos': function (event) {
+            $(event.currentTarget).attr('title', this._getVal(event));
+        }
+    },
+
+    _enable: function(){
+        this.element.removeClass('ui-state-disabled');
+    },
+
+    _disable: function(){
+        this.element.addClass('ui-state-disabled');
+    }
 
 });
 
@@ -145,155 +145,155 @@ $.widget("sv.device_roofwindow", $.sv.widget, {
 // ----- device.rtrslider-------------------------------------------------------
 $.widget("sv.device_rtrslider", $.sv.widget, {
 
-	initSelector: 'div[data-widget="device.rtrslider"]',
-	options: {
-		step: 0.1,
-		scale_interval: 1, 
-		scale_min: 18, 
-		scale_max: 28, 
-	},
+    initSelector: 'div[data-widget="device.rtrslider"]',
+    options: {
+        step: 0.1,
+        scale_interval: 1,
+        scale_min: 18,
+        scale_max: 28,
+    },
 
-	_create: function() {
-		this._super();
+    _create: function() {
+        this._super();
 
-		var element = this.element;
-		var that = this;
-		var outerSlider = $(element).find('.outerslider');
-		var innerSlider = $(element).find('.innerslider');
-		var item_names = this.options.item.explode();
-		var scale_min = this.options.scale_min;  //18;
-		var scale_max = this.options.scale_max;  //28;
-		var step = this.options.step * 1;   //0.1;
-		var decs = step.decimals();
-		var unit = "°C";
-		var scale_interval = this.options.scale_interval;
-		
-		// some RTR use a different item for temperature offset, eg. MDT
-		if (item_names[2] != "")	{
-			  var set_old = response[1];
-			  var offset_old = response[2];
-		}
-						
-	
-	// slider for actual value
-	$(outerSlider).roundSlider({
-		value: scale_min,
-		min: scale_min,
-		max: scale_max,
-		step: step,
-		sliderType: "min-range",
-		radius: 70,
-		showTooltip: true,
-		editableTooltip: false,
-		circleShape: "full",
-		startAngle: "315",
-		endAngle: "225",
-		handleShape: "round",
-		handleSize: "0",
-		lineCap: "none",
-		width: "8",
-		svgMode: true,
-		readOnly: true,
-		
-		update: function(args) {},
-		
-		create: function(args) {
-		  var o = this.options;
-		  for (var i = o.min; i <= o.max; i += scale_interval) {
-			var angle = this._valueToAngle(i);
-			var numberTag = this._addSeperator(angle, "rs-custom");
-			var number = numberTag.children();
-			number.clone().css({
-			  "width": o.width + this._border(),
-			  "margin-top": this._border(true) / -2,
-			  "margin-right": '10px',
-			}).appendTo(numberTag);
-			number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
-			$(outerSlider).find(".rs-number").css("left", "-25px");
-			$(outerSlider).find(".rs-seperator").css("width","6px");
-			$(outerSlider).find(".rs-seperator").css("margin-left","-6px"); 
-			
-		  };
-		 //scala gerade striche (kurz)
-		  var interval = scale_interval/2;
-		  for (var i = o.min; i <= o.max; i += interval) {
-			var angle = this._valueToAngle(i);
-			var numberTag = this._addSeperator(angle, "rs-custom_1");
-			numberTag.addClass( "rs-seperator_1" );
-			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("width","4px");
-			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("margin-left", "0px");
-			$(outerSlider).find(".rs-seperator_1 .rs-seperator").css("height","1px");
-			
-		  };
-		},
+        var element = this.element;
+        var that = this;
+        var outerSlider = $(element).find('.outerslider');
+        var innerSlider = $(element).find('.innerslider');
+        var item_names = this.options.item.explode();
+        var scale_min = this.options.scale_min;  //18;
+        var scale_max = this.options.scale_max;  //28;
+        var step = this.options.step * 1;   //0.1;
+        var decs = step.decimals();
+        var unit = "°C";
+        var scale_interval = this.options.scale_interval;
 
-		tooltipFormat:function (args){
-			return"<span style='position: relative;top:-2.2em;font-size:0.2em;'>Ist: </span></br><span id ='val' style='position: relative;top:-2.7em;font-weight:bold;font-size:0.45em;'>" + args.value.toFixed(decs) + unit +"</span>";
-		},
-	});
+        // some RTR use a different item for temperature offset, eg. MDT
+        if (item_names[2] != "")    {
+              var set_old = response[1];
+              var offset_old = response[2];
+        }
 
-	// slider for set value
-	$(innerSlider).roundSlider({
-		value: scale_min,
-		min: scale_min,
-		max: scale_max,
-		step: step, 
-		width: 12,
-		sliderType: "min-range",
-		radius: 62,
-		showTooltip: false,
-		circleShape: "full",
-		startAngle: "315",
-		endAngle: "225",
-		handleShape: "round",
-		handleSize: "25",
-		lineCap: "none",
-		editableTooltip: false,
-		svgMode: true,
-		update: function (args) {
-			if (item_names[2] != "") { 
-				var delta = args.value - set_old;
-				io.write(item_names[2], (offset_old + delta).toFixed(decs));
-			}
-			else
-				io.write(item_names[1], args.value);	
-		},
-				
-		create: function() {
-			$(innerSlider).find(".inner-handle").css({
-				'position': 'absolute',
-				'left': '-35px'}
-				);
-		  }
-		});
-	},
 
-	_update: function(response){
-		var outerSlider = this.element.find('.outerslider');
-		var innerSlider = this.element.find('.innerslider');
-		var step = this.options.step * 1;   //0.1;
-		var decs = step.decimals();
-		var unit = "°C";
-		var actualValue = response[0];
-		var setValue = response[1];
-		var actualString = (actualValue < 10 ? '0' : '') + actualValue.toFixed(decs)+unit;
-		$(outerSlider).roundSlider('setValue', actualValue);
-		$(outerSlider).find(".rs-tooltip #val").html(actualString);
-		$(innerSlider).roundSlider('setValue', setValue);		
-	},
-	
-	_enable: function(){
-		this.element.removeClass('ui-state-disabled').find('.innerslider').roundSlider('enable').end()
-		.next('.set').find('[data-widget]').filter(':data("sv-widget")').widget('enable').end().end()
-		.next('.control').find('[data-widget]').filter(':data("sv-widget")').widget('enable');
-	},
-	
-	_disable: function(){
-		this.element.addClass('ui-state-disabled').find('.innerslider').roundSlider('disable').end()
-		.next('.set').find('[data-widget]').filter(':data("sv-widget")').widget('disable').end().end()
-		.next('.control').find('[data-widget]').filter(':data("sv-widget")').widget('disable');
+    // slider for actual value
+    $(outerSlider).roundSlider({
+        value: scale_min,
+        min: scale_min,
+        max: scale_max,
+        step: step,
+        sliderType: "min-range",
+        radius: 70,
+        showTooltip: true,
+        editableTooltip: false,
+        circleShape: "full",
+        startAngle: "315",
+        endAngle: "225",
+        handleShape: "round",
+        handleSize: "0",
+        lineCap: "none",
+        width: "8",
+        svgMode: true,
+        readOnly: true,
 
-	}
+        update: function(args) {},
+
+        create: function(args) {
+          var o = this.options;
+          for (var i = o.min; i <= o.max; i += scale_interval) {
+            var angle = this._valueToAngle(i);
+            var numberTag = this._addSeperator(angle, "rs-custom");
+            var number = numberTag.children();
+            number.clone().css({
+              "width": o.width + this._border(),
+              "margin-top": this._border(true) / -2,
+              "margin-right": '10px',
+            }).appendTo(numberTag);
+            number.removeClass().addClass("rs-number").html(i).rsRotate(-angle);
+            $(outerSlider).find(".rs-number").css("left", "-25px");
+            $(outerSlider).find(".rs-seperator").css("width","6px");
+            $(outerSlider).find(".rs-seperator").css("margin-left","-6px");
+
+          };
+         //scala gerade striche (kurz)
+          var interval = scale_interval/2;
+          for (var i = o.min; i <= o.max; i += interval) {
+            var angle = this._valueToAngle(i);
+            var numberTag = this._addSeperator(angle, "rs-custom_1");
+            numberTag.addClass( "rs-seperator_1" );
+            $(outerSlider).find(".rs-seperator_1 .rs-seperator").css("width","4px");
+            $(outerSlider).find(".rs-seperator_1 .rs-seperator").css("margin-left", "0px");
+            $(outerSlider).find(".rs-seperator_1 .rs-seperator").css("height","1px");
+
+          };
+        },
+
+        tooltipFormat:function (args){
+            return"<span style='position: relative;top:-2.2em;font-size:0.2em;'>Ist: </span></br><span id ='val' style='position: relative;top:-2.7em;font-weight:bold;font-size:0.45em;'>" + args.value.toFixed(decs) + unit +"</span>";
+        },
+    });
+
+    // slider for set value
+    $(innerSlider).roundSlider({
+        value: scale_min,
+        min: scale_min,
+        max: scale_max,
+        step: step,
+        width: 12,
+        sliderType: "min-range",
+        radius: 62,
+        showTooltip: false,
+        circleShape: "full",
+        startAngle: "315",
+        endAngle: "225",
+        handleShape: "round",
+        handleSize: "25",
+        lineCap: "none",
+        editableTooltip: false,
+        svgMode: true,
+        update: function (args) {
+            if (item_names[2] != "") {
+                var delta = args.value - set_old;
+                io.write(item_names[2], (offset_old + delta).toFixed(decs));
+            }
+            else
+                io.write(item_names[1], args.value);
+        },
+
+        create: function() {
+            $(innerSlider).find(".inner-handle").css({
+                'position': 'absolute',
+                'left': '-35px'}
+                );
+          }
+        });
+    },
+
+    _update: function(response){
+        var outerSlider = this.element.find('.outerslider');
+        var innerSlider = this.element.find('.innerslider');
+        var step = this.options.step * 1;   //0.1;
+        var decs = step.decimals();
+        var unit = "°C";
+        var actualValue = response[0];
+        var setValue = response[1];
+        var actualString = (actualValue < 10 ? '0' : '') + actualValue.toFixed(decs)+unit;
+        $(outerSlider).roundSlider('setValue', actualValue);
+        $(outerSlider).find(".rs-tooltip #val").html(actualString);
+        $(innerSlider).roundSlider('setValue', setValue);
+    },
+
+    _enable: function(){
+        this.element.removeClass('ui-state-disabled').find('.innerslider').roundSlider('enable').end()
+        .next('.set').find('[data-widget]').filter(':data("sv-widget")').widget('enable').end().end()
+        .next('.control').find('[data-widget]').filter(':data("sv-widget")').widget('enable');
+    },
+
+    _disable: function(){
+        this.element.addClass('ui-state-disabled').find('.innerslider').roundSlider('disable').end()
+        .next('.set').find('[data-widget]').filter(':data("sv-widget")').widget('disable').end().end()
+        .next('.control').find('[data-widget]').filter(':data("sv-widget")').widget('disable');
+
+    }
 });
 
 
@@ -334,32 +334,32 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
   //            "rrule"   :'',       Wochen / Tag Programmstring
   //            "value"   :0,        Wert, der gesetzt wird
   //            "time"    :'00:00'   Uhrzeitstring des Schaltpunktes, '19:00<sunset+15m<22:00' bei SUN-Ebents, 'series' bei Zeitreihen
-  //					  Dies wird intern wie folgt zerlegt (nicht Bestandteil des Dict)
-  //		              "timeMin"  :'',      Untere Schranke SUN
-  //            		  "timeMax"  :'',      Oberere Schranke SUN
-  //            		  "timeCron" :'00:00',    Schaltzeitpunkt
-  //            		  "timeOffset":''        Offset für Schaltzeitpunkt in Minuten oder Grad
-  //            		  "timeOffsetType":'m'        'm' = Offset in Minuten, '' Offset in Höhengrad (Altitude)
-  //			"series"  :			 Liste für die Beschreibung der Zeitserien-Parameter
-  //					  "active": true, 
-  //					  "timeSeriesMin": "16:00<sunset+20m<20:00"   Startzeit der Serie 
-  // 					  "timeSeriesMax": "04:00"					  Endzeit der Serie 
-  //					  "timeSeriesCount": 4						  Anzahl Zyklen (alternativ zu timeSeriesMax)
-  // 					  "timeSeriesIntervall": "01:00"}			  Intervall für die Serie
+  //                      Dies wird intern wie folgt zerlegt (nicht Bestandteil des Dict)
+  //                      "timeMin"  :'',      Untere Schranke SUN
+  //                      "timeMax"  :'',      Oberere Schranke SUN
+  //                      "timeCron" :'00:00',    Schaltzeitpunkt
+  //                      "timeOffset":''        Offset für Schaltzeitpunkt in Minuten oder Grad
+  //                      "timeOffsetType":'m'        'm' = Offset in Minuten, '' Offset in Höhengrad (Altitude)
+  //            "series"  :          Liste für die Beschreibung der Zeitserien-Parameter
+  //                      "active": true,
+  //                      "timeSeriesMin": "16:00<sunset+20m<20:00"   Startzeit der Serie
+  //                       "timeSeriesMax": "04:00"                      Endzeit der Serie
+  //                      "timeSeriesCount": 4                          Anzahl Zyklen (alternativ zu timeSeriesMax)
+  //                       "timeSeriesIntervall": "01:00"}              Intervall für die Serie
   //            "condition"  :   {  Ein Struct für die Verwendung mit conditions (aktuell nur FHEM), weil dort einige Option mehr angeboten werden
   //                      "deviceString"  : text  Bezeichnung des Devices oder Auswertestring
   //                      "type"      : text  Auswertetype (logische Verknüpfung oder Auswahl String)
-  //                      "value"      : text  Vergleichwert
+  //                      "value"     : text  Vergleichwert
   //                      "active"    : bool  Aktiviert ja/nein
   //                    }
   //            "delayedExec":   {  Ein Struct für die Verwendung mit delayed exec (aktuell nur FHEM), weil dort einige Option mehr angeboten werden
   //                      "deviceString"  : text  Bezeichnung des Devices oder Auswertestring
   //                      "type"      : text  Auswertetype (logische Verknüpfung oder Auswahl String)
-  //                      "value"      : text  Vergleichwert
+  //                      "value"     : text  Vergleichwert
   //                      "active"    : bool  Aktiviert ja/nein
   //                    }
   //            "holiday":    {
-  //                      "workday"  : bool  Aktiviert ja/nein
+  //                      "workday"   : bool  Aktiviert ja/nein
   //                      "weekend"   : bool  Aktiviert ja/nein
   //                    }
   //          ]
@@ -377,23 +377,20 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   },
 
   _update: function(response) {
-    // data-item ist der sh.py item, in dem alle Attribute lagern, die für die Steuerung notwendig ist ist ja vom typ dict. das item, was tatsächlich per
-    // Schaltuhr verwendet wird ist nur als attribut (child) enthalten und wird ausschliesslich vom Plugin verwendet. wird für das rückschreiben der Daten an smarthome.py benötigt
-
     // wenn keine Daten vorhanden, bzw. nicht mindestens die Eigenschaft "active" vorhanden ist, dann ist kein UZSU-item angelegt / initialisiert und es wird nichts gemacht
     if (response.length === 0 || !response[0].hasOwnProperty("active")){
-	  var supplement = (this.options.item.substr(-5) != ".uzsu") ? "Seems this is not an uzsu item. Try '" + this.options.item+".uzsu'." : "";
+      var supplement = (this.options.item.substr(-5) != ".uzsu") ? "Seems this is not an uzsu item. Try '" + this.options.item+".uzsu'." : "";
       notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "'" + (this.options.id ? " for widget '" + this.options.id + "'. " : ". ") + supplement) ;
       return;
     }
-	// enable widget and buttons which may have been disabled after user has edited the dict
-    $('[data-widget="device.uzsuicon"][data-item="'+ this.options.item + '"]').removeClass('blink'); 
+    // enable widget and buttons which may have been disabled after user has edited the dict
+    $('[data-widget="device.uzsuicon"][data-item="'+ this.options.item + '"]').removeClass('blink');
     $('[data-widget*="device.uzsu"][data-item="'+ this.options.item + '"]').widget('enable').find('.uzsu-active-toggler').removeClass('hidden').show();
 
     this._uzsudata = jQuery.extend(true, {}, response[0]);
 
     // Initialisierung: hier ist "active" vorhanden, also ein UZSU-item angelegt. Wenn "list" fehlt, wird dies angelegt und active = false gesetzt, damit im Popup Daten eingetragen werden können
-    // ansonsten ist der Status von active gleich dem gesetzten Status
+    // anderenfalls ist der Status von active gleich dem gesetzten Status
     if (!(this._uzsudata.list instanceof Array)) {
       this._uzsudata = { active: false, list: [] };
     }
@@ -438,42 +435,42 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 
     tt += "<div class='uzsuCell uzsuValueCell'>" +
             "<div class='uzsuCellText'>" + sv_lang.uzsu.value + "</div>";
-			if (this.options.valuetype === 'bool') {
-			  // Unterscheidung Anzeige und Werte
-			  if (valueParameterList[0].split(':')[1] === undefined) {
-				tt += "<select data-role='flipswitch'>" +
-						"<option value='0'>" + valueParameterList[1] + "</option>" +
-						"<option value='1'>"  + valueParameterList[0] + "</option>" +
-					  "</select>";
-			  }
-			  else {
-				tt += "<select data-role='flipswitch'>" +
-						"<option value='" + valueParameterList[1].split(':')[1]  + "'>" + valueParameterList[1].split(':')[0] + "</option>" +
-						"<option value='" + valueParameterList[0].split(':')[1]  + "'>" + valueParameterList[0].split(':')[0] + "</option>" +
-					  "</select>";
-			  }
-			}
-			else if (this.options.valuetype === 'num') {
-			  var addedclass = (parseFloat(valueParameterList[0]) < 0) ? "" : " positivenumbers";
-			  tt +=   "<input type='number' min='" + parseFloat(valueParameterList[0]) + "' max='" + parseFloat(valueParameterList[1]) + "' step='" + parseFloat(valueParameterList[2]) + "' data-clear-btn='false' class='uzsuValueInput" + addedclass + "' pattern='[0-9]*'>";
-			}
-			else if (this.options.valuetype === 'text') {
-			  tt +=   "<input type='text' data-clear-btn='false' class='uzsuTextInput'>";
-			}
-			else if (this.options.valuetype === 'list') {
-			  // das Listenformat mit select ist sehr umfangreich nur einzubauen.
-			  tt +=   "<select data-mini='true'>";
-					  for (var numberOfListEntry = 0; numberOfListEntry < valueParameterList.length; numberOfListEntry++) {
-						// Unterscheidung Anzeige und Werte
-						if (valueParameterList[0].split(':')[1] === undefined) {
-						  tt += "<option value='" + valueParameterList[numberOfListEntry].split(':')[0]  + "'>"+ valueParameterList[numberOfListEntry].split(':')[0]  + "</option>";
-						}
-						else {
-						  tt += "<option value='" + valueParameterList[numberOfListEntry].split(':')[1]  + "'>"+ valueParameterList[numberOfListEntry].split(':')[0]  + "</option>";
-						}
-					  }
-			  tt +=   "</select>";
-			}
+            if (this.options.valuetype === 'bool') {
+              // Unterscheidung Anzeige und Werte
+              if (valueParameterList[0].split(':')[1] === undefined) {
+                tt += "<select data-role='flipswitch'>" +
+                        "<option value='0'>" + valueParameterList[1] + "</option>" +
+                        "<option value='1'>"  + valueParameterList[0] + "</option>" +
+                      "</select>";
+              }
+              else {
+                tt += "<select data-role='flipswitch'>" +
+                        "<option value='" + valueParameterList[1].split(':')[1]  + "'>" + valueParameterList[1].split(':')[0] + "</option>" +
+                        "<option value='" + valueParameterList[0].split(':')[1]  + "'>" + valueParameterList[0].split(':')[0] + "</option>" +
+                      "</select>";
+              }
+            }
+            else if (this.options.valuetype === 'num') {
+              var addedclass = (parseFloat(valueParameterList[0]) < 0) ? "" : " positivenumbers";
+              tt +=   "<input type='number' min='" + parseFloat(valueParameterList[0]) + "' max='" + parseFloat(valueParameterList[1]) + "' step='" + parseFloat(valueParameterList[2]) + "' data-clear-btn='false' class='uzsuValueInput" + addedclass + "' pattern='[0-9]*'>";
+            }
+            else if (this.options.valuetype === 'text') {
+              tt +=   "<input type='text' data-clear-btn='false' class='uzsuTextInput'>";
+            }
+            else if (this.options.valuetype === 'list') {
+              // das Listenformat mit select ist sehr umfangreich nur einzubauen.
+              tt +=   "<select data-mini='true'>";
+                      for (var numberOfListEntry = 0; numberOfListEntry < valueParameterList.length; numberOfListEntry++) {
+                        // Unterscheidung Anzeige und Werte
+                        if (valueParameterList[0].split(':')[1] === undefined) {
+                          tt += "<option value='" + valueParameterList[numberOfListEntry].split(':')[0]  + "'>"+ valueParameterList[numberOfListEntry].split(':')[0]  + "</option>";
+                        }
+                        else {
+                          tt += "<option value='" + valueParameterList[numberOfListEntry].split(':')[1]  + "'>"+ valueParameterList[numberOfListEntry].split(':')[0]  + "</option>";
+                        }
+                      }
+              tt +=   "</select>";
+            }
     tt+= "</div>"
     tt+= "<div class='uzsuCell'>" +
            "<div class='uzsuCellText'>" + sv_lang.uzsu.time + "</div>" +
@@ -483,82 +480,82 @@ $.widget("sv.device_uzsu", $.sv.widget, {
            "<div class='uzsuCellText'></div>" +
            "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
              "<label><input type='checkbox' class='uzsuActive'>" + sv_lang.uzsu.act + "</label>";
-	if (this.hasOnce)
-		tt+= "<label><input type='checkbox' class='uzsuOnce'>1 x</label>";
-	tt+=    "</fieldset>" +
+    if (this.hasOnce)
+        tt+= "<label><input type='checkbox' class='uzsuOnce'>1 x</label>";
+    tt+=    "</fieldset>" +
          "</div>" +
          "<div class='uzsuCellExpert'>" +
            "<div class='uzsuCellText'>" + sv_lang.uzsu.expert + "</div>" +
            "<button data-mini='true' data-icon='arrow-d' data-iconpos='notext' class='ui-icon-shadow'></button>" +
-         "</div>" 
-	if (this.options.designtype == '0' && this.hasSeries){	 
+         "</div>"
+    if (this.options.designtype == '0' && this.hasSeries){
       tt+= "<div class='uzsuCellSeries'>" +
            "<div class='uzsuCellText'>" + sv_lang.uzsu.series + "</div>" +
            "<button data-mini='true' data-icon='arrow-r' data-iconpos='notext' class='ui-icon-shadow'></button>" +
-         "</div>" 
+         "</div>"
     }
-	  tt+= "<div class='uzsuCell'>" +
+        tt+= "<div class='uzsuCell'>" +
            "<div class='uzsuCellText'></div>" +
            "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
              "<button class='uzsuDelTableRow' data-mini='true'>" + sv_lang.uzsu.del + "</button>" +
            "</fieldset>" +
          "</div>";
-	
+
     // Tabelle Zeile abschliessen
     tt += "</div>";
 
-	// unsichtbare Expertenzeile
-	tt += this._uzsuSetExpertLines(numberOfRow, '');
-	
+    // unsichtbare Expertenzeile
+    tt += this._uzsuSetExpertLines(numberOfRow, '');
+
     // unsichtbare Time-Serieszeile mit Expertenzeilen für Start/Ende
     if (this.options.designtype == '0' && this.hasSeries){
-		tt +=   "<div class='uzsuRowSeries' style='display:none;'>" +
-		"<div class='uzsuCellText'></div>" +
-		"<div class='uzsuRowSeriesLine' style='float: left;'>" +
-		  "<div class='uzsuRowExpertText'>" + 'Series' + "</div>" +
-		  "<div class='uzsuCell'>" +
-			"<div class='uzsuCellText'>" + sv_lang.uzsu.seriesstart + "</div>" +
-			"<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeSerieMin uzsuTimeCronseriesstart'>" +
-		  "</div>" +
-		  "<div class='uzsuCell'>" +
-			"<div class='uzsuCellText'>" + sv_lang.uzsu.seriesintervall + "&nbsp;&nbsp;HH : MM</div>" +
-			"<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuSerieTimeInterval'>" +
-		  "</div>" +
-		  "<div class='uzsuCell'>" +
+        tt +=   "<div class='uzsuRowSeries' style='display:none;'>" +
+        "<div class='uzsuCellText'></div>" +
+        "<div class='uzsuRowSeriesLine' style='float: left;'>" +
+          "<div class='uzsuRowExpertText'>" + 'Series' + "</div>" +
+          "<div class='uzsuCell'>" +
+            "<div class='uzsuCellText'>" + sv_lang.uzsu.seriesstart + "</div>" +
+            "<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeSerieMin uzsuTimeCronseriesstart'>" +
+          "</div>" +
+          "<div class='uzsuCell'>" +
+            "<div class='uzsuCellText'>" + sv_lang.uzsu.seriesintervall + "&nbsp;&nbsp;HH : MM</div>" +
+            "<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuSerieTimeInterval'>" +
+          "</div>" +
+          "<div class='uzsuCell'>" +
               "<div class='uzsuCellText'></div>" +
               "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuSeriesEndTypeInput'>" +
                   "<label title='"+sv_lang.uzsu.seriesend+"'><input type='radio' name='uzsuSeriesEndTypeInput"+numberOfRow+"' value='t' checked='checked'>t</label>" +
                   "<label title='"+sv_lang.uzsu.seriescount+"'><input type='radio' name='uzsuSeriesEndTypeInput"+numberOfRow+"' value=''>#</label>" +
               "</fieldset>" +
           "</div>" +
-		  "<div class='uzsuCell'>" +
-			"<div class='uzsuCellText uzsuTimeSerieMaxText'>" + sv_lang.uzsu.seriesend + "</div>" +
-			"<input type='time' min='0' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeSerieMax uzsuValueInput uzsuTimeCronseriesend'>" +
-		  "</div>" +      
-		  "<div class='uzsuCell'>" +
-		    "<div class='uzsuCellText'></div>" +
-			"<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
-			  "<label><input type='checkbox' class='uzsuSeriesActive'>" + sv_lang.uzsu.act + "</label>" +
-			"</fieldset>" +
-		  "</div>" + 
-		"</div>" +
-		"<div class='uzsuCellExpertSeries'>" +
+          "<div class='uzsuCell'>" +
+            "<div class='uzsuCellText uzsuTimeSerieMaxText'>" + sv_lang.uzsu.seriesend + "</div>" +
+            "<input type='time' min='0' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeSerieMax uzsuValueInput uzsuTimeCronseriesend'>" +
+          "</div>" +
+          "<div class='uzsuCell'>" +
+            "<div class='uzsuCellText'></div>" +
+            "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
+              "<label><input type='checkbox' class='uzsuSeriesActive'>" + sv_lang.uzsu.act + "</label>" +
+            "</fieldset>" +
+          "</div>" +
+        "</div>" +
+        "<div class='uzsuCellExpertSeries'>" +
           "<div class='uzsuCellText'>" + sv_lang.uzsu.expert + "</div>" +
           "<button data-mini='true' data-icon='arrow-d' data-iconpos='notext' class='ui-icon-shadow'></button>" +
-        "</div> </div>" 
-		// unsichtbare Expertenzeilen für Serienstart und -end
-		tt += this._uzsuSetExpertLines(numberOfRow, 'seriesstart');
-		tt += this._uzsuSetExpertLines(numberOfRow, 'seriesend');
-		
-		//tt += "</div>";    
-	}
+        "</div> </div>"
+        // unsichtbare Expertenzeilen für Serienstart und -end
+        tt += this._uzsuSetExpertLines(numberOfRow, 'seriesstart');
+        tt += this._uzsuSetExpertLines(numberOfRow, 'seriesend');
+
+        //tt += "</div>";
+    }
     return tt;
   },
 
   _uzsuSetExpertLines: function(numberOfRow, caller){
-	      tt = "<div class='uzsuRowExpHoli uzsuExpertLine "+(caller != '' ? 'Series' : '')+"' style='display:none;'>" +
+          tt = "<div class='uzsuRowExpHoli uzsuExpertLine "+(caller != '' ? 'Series' : '')+"' style='display:none;'>" +
               "<div class='uzsuCellText'>" + (caller != '' ? sv_lang.uzsu.series + ' ' + sv_lang.uzsu[caller] : '') + "</div>" +
-			  "<div class='uzsuRowExpert' style='float: left;'>" +
+              "<div class='uzsuRowExpert' style='float: left;'>" +
               "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.sun + "</div>" +
               "<div class='uzsuCell'>" +
                 "<div class='uzsuCellText'>" + sv_lang.uzsu.earliest + "</div>" +
@@ -605,7 +602,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
               "</div>";
             }
       tt += "</div>";  // end .uzsuRowExpert
-	  
+
       // hier die Einträge für holiday weekend oder nicht
       if (this.options.designtype == '2'){
         tt +=   "<div class='uzsuRowHoliday' style='float: left;'>" +
@@ -682,16 +679,16 @@ $.widget("sv.device_uzsu", $.sv.widget, {
                 "</fieldset>" +
               "</div>" +
             "</div>"; // end .uzsuRowDelayedExec
-	}
-	return tt;
+    }
+    return tt;
   },
-  
+
   _uzsuFillTableRow: function(responseEntry, tableRow) {
-    
-	var self = this;
+
+    var self = this;
     // dann die Werte einer Tabellenzeile füllen
     uzsuCurrentRows = $(tableRow).nextUntil('.uzsuRow').addBack();
-	
+
     if(responseEntry.value != null) {
       // beim Schreiben der Daten Unterscheidung, da sonst das Element falsch genutzt wird mit Flipswitch für die bool Variante
       if (self.options.valuetype === 'bool') {
@@ -707,8 +704,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     }
     // Values in der Zeile setzen
     uzsuCurrentRows.find('.uzsuActive').prop('checked',responseEntry.active).checkboxradio("refresh");
-	if (this.hasOnce)
-		uzsuCurrentRows.find('.uzsuOnce').prop('checked',responseEntry.once).checkboxradio("refresh");
+    if (this.hasOnce)
+        uzsuCurrentRows.find('.uzsuOnce').prop('checked',responseEntry.once).checkboxradio("refresh");
     // hier die conditions, wenn sie im json angelegt worden sind und zwar pro zeile !
     if(self.options.designtype == '2'){
       // Condition
@@ -723,60 +720,60 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       uzsuCurrentRows.find('.uzsuDelayedExecActive').prop('checked',responseEntry.delayedExec.active).checkboxradio("refresh");
     }
     // fill expert line
-	uzsuCurrentRows.find('.uzsuTimeMin').val(responseEntry.timeMin);
+    uzsuCurrentRows.find('.uzsuTimeMin').val(responseEntry.timeMin);
     uzsuCurrentRows.find('.uzsuTimeOffsetInput').val(parseInt(responseEntry.timeOffset));
     if(self.options.designtype == '0') {
       uzsuCurrentRows.find('.uzsuTimeOffsetTypeInput').find(':radio').prop('checked', false).checkboxradio("refresh")
         .end().find('[value="'+responseEntry.timeOffsetType+'"]:radio').prop('checked', true).checkboxradio("refresh");
     }
-	uzsuCurrentRows.find('.uzsuTimeMax').val(responseEntry.timeMax);
+    uzsuCurrentRows.find('.uzsuTimeMax').val(responseEntry.timeMax);
     uzsuCurrentRows.find('.uzsuTimeCron').val(responseEntry.timeCron);
-    if(responseEntry.calculated != null) 
+    if(responseEntry.calculated != null)
       uzsuCurrentRows.find('.uzsuCalculated').val(responseEntry.calculated);
-  
-	// fill time series
-	if(self.options.designtype == '0' && this.hasSeries) {
-    	if (responseEntry.hasOwnProperty("series"))
-    		{
-    		uzsuCurrentRows.find('.uzsuSeriesActive').prop('checked',responseEntry.series.active).checkboxradio("refresh");
-    		uzsuCurrentRows.find('.uzsuTimeSerieMin').val(responseEntry.series.timeSeriesMin);
-     		uzsuCurrentRows.find('.uzsuSerieTimeInterval').val(responseEntry.series.timeSeriesIntervall);
-			var timeSeriesEndType = "t";
-			if (responseEntry.series.hasOwnProperty("timeSeriesCount"))
-				timeSeriesEndType ="";	
-			uzsuCurrentRows.find('.uzsuSeriesEndTypeInput').find(':radio').prop('checked', false).checkboxradio("refresh")
-			   .end().find('[value="'+timeSeriesEndType+'"]:radio').prop('checked', true).checkboxradio("refresh");
-			self._uzsuSetSeriesEndType(uzsuCurrentRows.find('.uzsuSeriesEndTypeInput'));
-			uzsuCurrentRows.find('.uzsuTimeSerieMax').val(timeSeriesEndType == "t" ? responseEntry.series.timeSeriesMax : responseEntry.series.timeSeriesCount);
-		
-			// fill expert lines for series
-			uzsuCurrentRows.find('.uzsuTimeMinseriesstart').val(responseEntry.series.start.timeMin);
-			uzsuCurrentRows.find('.uzsuTimeOffsetInputseriesstart').val(parseInt(responseEntry.series.start.timeOffset));
+
+    // fill time series
+    if(self.options.designtype == '0' && this.hasSeries) {
+        if (responseEntry.hasOwnProperty("series"))
+            {
+            uzsuCurrentRows.find('.uzsuSeriesActive').prop('checked',responseEntry.series.active).checkboxradio("refresh");
+            uzsuCurrentRows.find('.uzsuTimeSerieMin').val(responseEntry.series.timeSeriesMin);
+             uzsuCurrentRows.find('.uzsuSerieTimeInterval').val(responseEntry.series.timeSeriesIntervall);
+            var timeSeriesEndType = "t";
+            if (responseEntry.series.hasOwnProperty("timeSeriesCount"))
+                timeSeriesEndType ="";
+            uzsuCurrentRows.find('.uzsuSeriesEndTypeInput').find(':radio').prop('checked', false).checkboxradio("refresh")
+               .end().find('[value="'+timeSeriesEndType+'"]:radio').prop('checked', true).checkboxradio("refresh");
+            self._uzsuSetSeriesEndType(uzsuCurrentRows.find('.uzsuSeriesEndTypeInput'));
+            uzsuCurrentRows.find('.uzsuTimeSerieMax').val(timeSeriesEndType == "t" ? responseEntry.series.timeSeriesMax : responseEntry.series.timeSeriesCount);
+
+            // fill expert lines for series
+            uzsuCurrentRows.find('.uzsuTimeMinseriesstart').val(responseEntry.series.start.timeMin);
+            uzsuCurrentRows.find('.uzsuTimeOffsetInputseriesstart').val(parseInt(responseEntry.series.start.timeOffset));
             uzsuCurrentRows.find('.uzsuTimeOffsetTypeInputseriesstart').find(':radio').prop('checked', false).checkboxradio("refresh")
             .end().find('[value="'+responseEntry.series.start.timeOffsetType+'"]:radio').prop('checked', true).checkboxradio("refresh");
-			uzsuCurrentRows.find('.uzsuTimeMaxseriesstart').val(responseEntry.series.start.timeMax);
-			uzsuCurrentRows.find('.uzsuTimeCronseriesstart').val(responseEntry.series.start.timeCron);
-			if(responseEntry.hasOwnProperty('seriesCalculated') && responseEntry.seriesCalculated[0].seriesMin != null) 
-			  uzsuCurrentRows.find('.uzsuCalculatedseriesstart').val(responseEntry.seriesCalculated[0].seriesMin);
-		  
-			uzsuCurrentRows.find('.uzsuTimeMinseriesend').val(responseEntry.series.end.timeMin);
-			uzsuCurrentRows.find('.uzsuTimeOffsetInputseriesend').val(parseInt(responseEntry.series.end.timeOffset));
+            uzsuCurrentRows.find('.uzsuTimeMaxseriesstart').val(responseEntry.series.start.timeMax);
+            uzsuCurrentRows.find('.uzsuTimeCronseriesstart').val(responseEntry.series.start.timeCron);
+            if(responseEntry.hasOwnProperty('seriesCalculated') && responseEntry.seriesCalculated[0].seriesMin != null)
+              uzsuCurrentRows.find('.uzsuCalculatedseriesstart').val(responseEntry.seriesCalculated[0].seriesMin);
+
+            uzsuCurrentRows.find('.uzsuTimeMinseriesend').val(responseEntry.series.end.timeMin);
+            uzsuCurrentRows.find('.uzsuTimeOffsetInputseriesend').val(parseInt(responseEntry.series.end.timeOffset));
             uzsuCurrentRows.find('.uzsuTimeOffsetTypeInputseriesend').find(':radio').prop('checked', false).checkboxradio("refresh")
             .end().find('[value="'+responseEntry.series.end.timeOffsetType+'"]:radio').prop('checked', true).checkboxradio("refresh");
-			uzsuCurrentRows.find('.uzsuTimeMaxseriesend').val(responseEntry.series.end.timeMax);
-			uzsuCurrentRows.find('.uzsuTimeCronseriesend').val(responseEntry.series.end.timeCron);
-			if(responseEntry.hasOwnProperty('seriesCalculated') && responseEntry.seriesCalculated[0].seriesMax != null) 
-			  uzsuCurrentRows.find('.uzsuCalculatedseriesend').val(responseEntry.seriesCalculated[0].seriesMax);
-					
-			// den Status richtig setzen
-    		if (responseEntry.series.active == true)
-    			{
-    			self._uzsuSetSeriesColor(uzsuCurrentRows.find('.uzsuSeriesActive').first());
-    			self._uzsuSetSeriesActiveState(uzsuCurrentRows.find('.uzsuRowSeriesLine .uzsuSeriesActive'))
-    			}
-    		}
+            uzsuCurrentRows.find('.uzsuTimeMaxseriesend').val(responseEntry.series.end.timeMax);
+            uzsuCurrentRows.find('.uzsuTimeCronseriesend').val(responseEntry.series.end.timeCron);
+            if(responseEntry.hasOwnProperty('seriesCalculated') && responseEntry.seriesCalculated[0].seriesMax != null)
+              uzsuCurrentRows.find('.uzsuCalculatedseriesend').val(responseEntry.seriesCalculated[0].seriesMax);
+
+            // den Status richtig setzen
+            if (responseEntry.series.active == true)
+                {
+                self._uzsuSetSeriesColor(uzsuCurrentRows.find('.uzsuSeriesActive').first());
+                self._uzsuSetSeriesActiveState(uzsuCurrentRows.find('.uzsuRowSeriesLine .uzsuSeriesActive'))
+                }
+            }
       }
-    
+
 
     // und die pull down Menüs richtig, damit die Einträge wieder stimmen und auch der active state gesetzt wird
     if(responseEntry.event === 'time'){
@@ -786,26 +783,26 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       uzsuCurrentRows.find('.uzsuSunActive').prop('checked',true).checkboxradio("refresh");
       uzsuCurrentRows.find('.uzsuRowExpert .uzsuEvent select').val(responseEntry.event).selectmenu('refresh', true);
     }
-	
-	if(responseEntry.timeCron === 'series'){
-		if(responseEntry.series.start.event === 'time'){
-		  uzsuCurrentRows.find('.uzsuSunActiveseriesstart').prop('checked',false).checkboxradio("refresh");
-		}
-		else{
-		  uzsuCurrentRows.find('.uzsuSunActiveseriesstart').prop('checked',true).checkboxradio("refresh");
-		  uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesstart select').val(responseEntry.series.start.event).selectmenu('refresh', true);
-		}
 
-		if(responseEntry.series.end.event === 'time'){
-		  uzsuCurrentRows.find('.uzsuSunActiveseriesend').prop('checked',false).checkboxradio("refresh");
-		}
-		else{
-		  uzsuCurrentRows.find('.uzsuSunActiveseriesend').prop('checked',true).checkboxradio("refresh");
-		  uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesend select').val(responseEntry.series.end.event).selectmenu('refresh', true);
-		}
-	}
-	
-	
+    if(responseEntry.timeCron === 'series'){
+        if(responseEntry.series.start.event === 'time'){
+          uzsuCurrentRows.find('.uzsuSunActiveseriesstart').prop('checked',false).checkboxradio("refresh");
+        }
+        else{
+          uzsuCurrentRows.find('.uzsuSunActiveseriesstart').prop('checked',true).checkboxradio("refresh");
+          uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesstart select').val(responseEntry.series.start.event).selectmenu('refresh', true);
+        }
+
+        if(responseEntry.series.end.event === 'time'){
+          uzsuCurrentRows.find('.uzsuSunActiveseriesend').prop('checked',false).checkboxradio("refresh");
+        }
+        else{
+          uzsuCurrentRows.find('.uzsuSunActiveseriesend').prop('checked',true).checkboxradio("refresh");
+          uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesend select').val(responseEntry.series.end.event).selectmenu('refresh', true);
+        }
+    }
+
+
     // in der Tabelle die Werte der rrule, dabei gehe ich von dem Standardformat FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU aus und setze für jeden Eintrag den Button.
     var rrule = responseEntry.rrule;
     if (typeof rrule === "undefined") {
@@ -828,12 +825,12 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // Fallunterscheidung für den Expertenmodus
     self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEvent select'),'');
     self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActive').first());
-	if(self.options.designtype == '0' && this.hasSeries){
-		self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesstart select'), 'seriesstart');
-		self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActiveseriesstart').first());
-		self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesend select'), 'seriesend');
-		self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActiveseriesend').first());
-	}
+    if(self.options.designtype == '0' && this.hasSeries){
+        self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesstart select'), 'seriesstart');
+        self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActiveseriesstart').first());
+        self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesend select'), 'seriesend');
+        self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActiveseriesend').first());
+    }
   },
 
   //----------------------------------------------------------------------------
@@ -845,30 +842,30 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     var targetRow = sourceRow.prevAll('.uzsuRow, .uzsuRowSeries').first();
     if (sourceRow.find('[class*="expertActive"]').is(':checked'))
       {
-    	targetRow.find('[class*="uzsuCellExpert"] button').addClass('ui-btn-active');
-    	targetRow.find('[class*="uzsuCellSeries"] button').removeClass('ui-btn-active');
-    	}
+        targetRow.find('[class*="uzsuCellExpert"] button').addClass('ui-btn-active');
+        targetRow.find('[class*="uzsuCellSeries"] button').removeClass('ui-btn-active');
+        }
     else{
       // wenn der Expertenbutton in eine Serienzeile steht, schalte ihn nur inaktiv, wenn beide Zeilen (seriesstart und seriesend) inaktiv sind
-      if (!(sourceRow.hasClass('Series') && sourceRow.next().hasClass('Series') ? sourceRow.next().find('[class*="expertActive"]').is(':checked') : sourceRow.prev().find('[class*="expertActive"]').is(':checked'))) 
+      if (!(sourceRow.hasClass('Series') && sourceRow.next().hasClass('Series') ? sourceRow.next().find('[class*="expertActive"]').is(':checked') : sourceRow.prev().find('[class*="expertActive"]').is(':checked')))
         targetRow.find('[class*="uzsuCellExpert"] button').removeClass('ui-btn-active');
-	}
+    }
   },
 
   // Toggelt die eingabemöglichkeit für SUN Elemente in Abhängigkeit der Aktivschaltung
   _uzsuSetSunActiveState: function(element, caller){
     // status der eingaben setzen, das brauchen wir an mehreren stellen
     var uzsuRowExpHoli = element.parents('.uzsuRowExpHoli');
-	var searchClass = '.uzsuTimeCron'+caller;
-	var searchLine = (caller == '' ? '.uzsuRowExpHoli' : '.uzsuRowSeriesLine')
+    var searchClass = '.uzsuTimeCron'+caller;
+    var searchLine = (caller == '' ? '.uzsuRowExpHoli' : '.uzsuRowSeriesLine')
     var uzsuTimeCron = uzsuRowExpHoli.prevUntil(searchLine).find(searchClass).last();
     var uzsuCalc = uzsuRowExpHoli.find('.uzsuCalculated'+caller).val();
-	if (uzsuRowExpHoli.find('.uzsuSunActive'+caller).is(':checked')){
-	  if (caller == 'seriesend'){
-	    uzsuRowExpHoli.prevUntil(searchLine).find('.uzsuSeriesEndTypeInput').last().find(':radio').prop('checked', false).checkboxradio("refresh").checkboxradio( "disable" )
-		  .end().find('[value="t"]:radio').prop('checked', true).checkboxradio("refresh").checkboxradio( "disable" )
-		  .parents().find('.uzsuCellText.uzsuTimeSerieMaxText').text(sv_lang.uzsu.seriesend);
-	  }
+    if (uzsuRowExpHoli.find('.uzsuSunActive'+caller).is(':checked')){
+      if (caller == 'seriesend'){
+        uzsuRowExpHoli.prevUntil(searchLine).find('.uzsuSeriesEndTypeInput').last().find(':radio').prop('checked', false).checkboxradio("refresh").checkboxradio( "disable" )
+          .end().find('[value="t"]:radio').prop('checked', true).checkboxradio("refresh").checkboxradio( "disable" )
+          .parents().find('.uzsuCellText.uzsuTimeSerieMaxText').text(sv_lang.uzsu.seriesend);
+      }
       uzsuTimeCron.attr('type','input').val(uzsuRowExpHoli.find('.uzsuEvent'+caller+' select').val()).textinput('disable');
       var myExpertrow = uzsuRowExpHoli.next();
       myExpertrow.find('.uzsuSeriesActive').prop('checked',false).checkboxradio("refresh");
@@ -876,12 +873,12 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     else{
       if(uzsuTimeCron.val().indexOf('sun')===0)
         uzsuTimeCron.attr('type','time').val((uzsuCalc == undefined || uzsuCalc == '') ? '00:00' : uzsuCalc);
-	  if(uzsuTimeCron.val().indexOf('series')!=0)
-		uzsuTimeCron.textinput('enable');
-	  if (caller == 'seriesend'){
-	    uzsuRowExpHoli.prevUntil(searchLine).find('.uzsuSeriesEndTypeInput').last().find(':radio').checkboxradio( "enable" )
-		  .end().find('[value="t"]:radio').checkboxradio( "enable" )
-	  }
+      if(uzsuTimeCron.val().indexOf('series')!=0)
+        uzsuTimeCron.textinput('enable');
+      if (caller == 'seriesend'){
+        uzsuRowExpHoli.prevUntil(searchLine).find('.uzsuSeriesEndTypeInput').last().find(':radio').checkboxradio( "enable" )
+          .end().find('[value="t"]:radio').checkboxradio( "enable" )
+      }
     }
   },
 
@@ -892,14 +889,14 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     var uzsuTimeCron = uzsuRowSeries.prevUntil('.uzsuRowSeries').find('.uzsuTimeCron');
     var uzsuCalc = uzsuRowSeries.find('.uzsuCalculated').val();
     if (uzsuRowSeries.find('.uzsuSeriesActive').is(':checked')){
-    	uzsuTimeCron.attr('type','input').val('series').textinput('disable');
-    	//uzsuTimeCron.attr('type','input').textinput('disable');
-    	var myExpertrow = uzsuRowSeries.prevUntil('.uzsuRow');
-    	myExpertrow.find('.uzsuSunActive').prop('checked',false).checkboxradio("refresh");
+        uzsuTimeCron.attr('type','input').val('series').textinput('disable');
+        //uzsuTimeCron.attr('type','input').textinput('disable');
+        var myExpertrow = uzsuRowSeries.prevUntil('.uzsuRow');
+        myExpertrow.find('.uzsuSunActive').prop('checked',false).checkboxradio("refresh");
     }
     else{
       if(uzsuTimeCron.val().indexOf('series')===0)
-   	    uzsuTimeCron.attr('type','time').val((uzsuCalc == undefined || uzsuCalc == '') ? '00:00' : uzsuCalc);
+           uzsuTimeCron.attr('type','time').val((uzsuCalc == undefined || uzsuCalc == '') ? '00:00' : uzsuCalc);
       uzsuTimeCron.textinput('enable');
     }
   },
@@ -908,20 +905,20 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   _uzsuSetSeriesColor: function(changedCheckbox){
     var rows = changedCheckbox.parents('.uzsuRowSeries, .uzsuRowCondition, .uzsuRowDelayedExec').prevAll('.uzsuRow').first().nextUntil('.uzsuRow').addBack();
     if (rows.find('.uzsuSeriesActive').is(':checked'))
-    	{
-    	rows.find('.uzsuCellSeries button').addClass('ui-btn-active');
-    	rows.find('[class*="uzsuCellExpert"] button').removeClass('ui-btn-active');
-    	}
+        {
+        rows.find('.uzsuCellSeries button').addClass('ui-btn-active');
+        rows.find('[class*="uzsuCellExpert"] button').removeClass('ui-btn-active');
+        }
     else
-    	rows.find('.uzsuCellSeries button').removeClass('ui-btn-active');
-  },  
-  
+        rows.find('.uzsuCellSeries button').removeClass('ui-btn-active');
+  },
+
   // switch input format for series end time / number of cycles
   _uzsuSetSeriesEndType: function(element){
-	  var uzsuRowSeriesLine = element.parents('.uzsuRowSeries');
-	  var uzsuSeriesEndType = element.find(':radio:checked').val();
-	  uzsuRowSeriesLine.find('input.uzsuTimeMaxMinInput.uzsuTimeSerieMax').attr('type', uzsuSeriesEndType == 't' ? 'time' : 'number');
-  	  uzsuRowSeriesLine.find('.uzsuCellText.uzsuTimeSerieMaxText').text(uzsuSeriesEndType == 't' ? sv_lang.uzsu.seriesend : sv_lang.uzsu.seriescount);
+      var uzsuRowSeriesLine = element.parents('.uzsuRowSeries');
+      var uzsuSeriesEndType = element.find(':radio:checked').val();
+      uzsuRowSeriesLine.find('input.uzsuTimeMaxMinInput.uzsuTimeSerieMax').attr('type', uzsuSeriesEndType == 't' ? 'time' : 'number');
+        uzsuRowSeriesLine.find('.uzsuCellText.uzsuTimeSerieMaxText').text(uzsuSeriesEndType == 't' ? sv_lang.uzsu.seriesend : sv_lang.uzsu.seriescount);
    },
 
   // Serienzeile mit Eingaben auf der Hauptzeile benutzbar machen oder sperren bzw. die Statusupdates in die Zeile eintragen
@@ -932,11 +929,11 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     var uzsuSerieButton = $(e.currentTarget);
     var row = uzsuSerieButton.closest('.uzsuRow');
     // Zeile anzeigen
-	row.nextUntil('.uzsuRow', '.uzsuRowSeries').show();
+    row.nextUntil('.uzsuRow', '.uzsuRowSeries').show();
     // jetzt noch den Button einfärben
     uzsuSerieButton.buttonMarkup({ icon: "arrow-l" });
-  },  
-  
+  },
+
   //Expertenzeile mit Eingaben auf der Hauptzeile benutzbar machen oder sperren bzw. die Statusupdates in die Zeile eintragen
   _uzsuShowExpertLine: function(e, caller) {
     // erst einmal alle verschwinden lassen
@@ -944,10 +941,10 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // Tabellezeile ermitteln, wo augerufen wurde
     var uzsuExpertButton = $(e.currentTarget);
     var row = uzsuExpertButton.closest(caller == 'Series' ? '.uzsuRowSeries' : '.uzsuRow');
-	if (caller == "Series")
-		row.nextUntil('.uzsuRow', '.Series').show();
-	else
-		row.nextUntil('.uzsuRow', '.uzsuExpertLine').not('.Series').show();
+    if (caller == "Series")
+        row.nextUntil('.uzsuRow', '.Series').show();
+    else
+        row.nextUntil('.uzsuRow', '.uzsuExpertLine').not('.Series').show();
 
     // jetzt noch den Button in der Zeile drüber auf arrow up ändern
     uzsuExpertButton.buttonMarkup({ icon: "arrow-u" });
@@ -959,7 +956,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   _uzsuHideAllSeriesLines: function() {
     $('.uzsuRowSeries, .Series').hide();
     $('.uzsuCellSeries button').buttonMarkup({ icon: "arrow-r" });
-	$('.uzsuCellExpertSeries button').buttonMarkup({ icon: "arrow-d" });
+    $('.uzsuCellExpertSeries button').buttonMarkup({ icon: "arrow-d" });
   },
 
   //Interpolationszeile
@@ -984,8 +981,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     uzsuCurrentRows = $(tableRow).nextUntil('.uzsuRow').addBack();
     responseEntry.value = uzsuCurrentRows.find('.uzsuValueCell select, .uzsuValueCell input').val();
     responseEntry.active = uzsuCurrentRows.find('.uzsuActive').is(':checked');
-	if (this.hasOnce)
-		responseEntry.once = uzsuCurrentRows.find('.uzsuOnce').is(':checked');
+    if (this.hasOnce)
+        responseEntry.once = uzsuCurrentRows.find('.uzsuOnce').is(':checked');
     // hier die conditions, wenn im json angelegt
     if(self.options.designtype == '2'){
       // conditions
@@ -1033,65 +1030,65 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       responseEntry.holiday.workday = uzsuCurrentRows.find('.uzsuHolidayWorkday').is(':checked');
       responseEntry.holiday.weekend = uzsuCurrentRows.find('.uzsuHolidayWeekend').is(':checked');
     }
-	
-	// Serienzeiten
-    if(self.options.designtype === '0' && this.hasSeries){
-    	if (uzsuCurrentRows.find('.uzsuCellSeries button').hasClass("ui-btn-active") == true)
-    		{
-	    	responseEntry.series = {};
-	    	responseEntry.series.active = uzsuCurrentRows.find('.uzsuCellSeries button').hasClass("ui-btn-active")
-	    	responseEntry.series.timeSeriesMin = uzsuCurrentRows.find('.uzsuTimeSerieMin').val();
-			var timeSeriesEndType = uzsuCurrentRows.find('.uzsuSeriesEndTypeInput :radio:checked').val();
-			if (timeSeriesEndType == "t"){
-				responseEntry.series.timeSeriesMax = uzsuCurrentRows.find('.uzsuTimeSerieMax').val();
-				if (responseEntry.series.hasOwnProperty('timeSeriesCount'))
-					delete responseEntry.series.timeSeriesCount;
-			}
-			else {
-				responseEntry.series.timeSeriesCount = uzsuCurrentRows.find('.uzsuTimeSerieMax').val();
-				if (responseEntry.series.hasOwnProperty('timeSeriesMax'))
-					delete responseEntry.series.timeSeriesMax;
-	    	}
-			responseEntry.series.timeSeriesIntervall = uzsuCurrentRows.find('.uzsuSerieTimeInterval').val();
-			
-			responseEntry.series.start = {};
-			responseEntry.series.start.timeCron = uzsuCurrentRows.find('.uzsuTimeCronseriesstart').val();
-			responseEntry.series.start.timeMin = uzsuCurrentRows.find('.uzsuTimeMinseriesstart').val();
-			responseEntry.series.start.timeMax = uzsuCurrentRows.find('.uzsuTimeMaxseriesstart').val();
-			responseEntry.series.start.timeOffset = uzsuCurrentRows.find('.uzsuTimeOffsetInputseriesstart').val();;
-			responseEntry.series.start.timeOffsetType = uzsuCurrentRows.find('.uzsuTimeOffsetTypeInputseriesstart :radio:checked').val();
-			if(uzsuCurrentRows.find('.uzsuSunActiveseriesstart').is(':checked'))
-				responseEntry.series.start.event = uzsuCurrentRows.find('.uzsuEventseriesstart select').val();
-			else
-				responseEntry.series.start.event = 'time';
 
-			responseEntry.series.end = {};
-			responseEntry.series.end.timeCron = uzsuCurrentRows.find('.uzsuTimeCronseriesend').val();
-			responseEntry.series.end.timeMin = uzsuCurrentRows.find('.uzsuTimeMinseriesend').val();
-			responseEntry.series.end.timeMax = uzsuCurrentRows.find('.uzsuTimeMaxseriesend').val();
-			responseEntry.series.end.timeOffset = uzsuCurrentRows.find('.uzsuTimeOffsetInputseriesend').val();;
-			responseEntry.series.end.timeOffsetType = uzsuCurrentRows.find('.uzsuTimeOffsetTypeInputseriesend :radio:checked').val();
-			if(uzsuCurrentRows.find('.uzsuSunActiveseriesend').is(':checked'))
-				responseEntry.series.end.event = uzsuCurrentRows.find('.uzsuEventseriesend select').val();
-			else
-				responseEntry.series.end.event = 'time';
-			
-			if (responseEntry.hasOwnProperty('seriesCalculated'))
-				delete responseEntry.seriesCalculated;
-			}
-    	else
-    		{
-    		try
-    		 { delete responseEntry.series; }
-    		catch (e)
-    		 {}
-    		}
+    // Serienzeiten
+    if(self.options.designtype === '0' && this.hasSeries){
+        if (uzsuCurrentRows.find('.uzsuCellSeries button').hasClass("ui-btn-active") == true)
+            {
+            responseEntry.series = {};
+            responseEntry.series.active = uzsuCurrentRows.find('.uzsuCellSeries button').hasClass("ui-btn-active")
+            responseEntry.series.timeSeriesMin = uzsuCurrentRows.find('.uzsuTimeSerieMin').val();
+            var timeSeriesEndType = uzsuCurrentRows.find('.uzsuSeriesEndTypeInput :radio:checked').val();
+            if (timeSeriesEndType == "t"){
+                responseEntry.series.timeSeriesMax = uzsuCurrentRows.find('.uzsuTimeSerieMax').val();
+                if (responseEntry.series.hasOwnProperty('timeSeriesCount'))
+                    delete responseEntry.series.timeSeriesCount;
+            }
+            else {
+                responseEntry.series.timeSeriesCount = uzsuCurrentRows.find('.uzsuTimeSerieMax').val();
+                if (responseEntry.series.hasOwnProperty('timeSeriesMax'))
+                    delete responseEntry.series.timeSeriesMax;
+            }
+            responseEntry.series.timeSeriesIntervall = uzsuCurrentRows.find('.uzsuSerieTimeInterval').val();
+
+            responseEntry.series.start = {};
+            responseEntry.series.start.timeCron = uzsuCurrentRows.find('.uzsuTimeCronseriesstart').val();
+            responseEntry.series.start.timeMin = uzsuCurrentRows.find('.uzsuTimeMinseriesstart').val();
+            responseEntry.series.start.timeMax = uzsuCurrentRows.find('.uzsuTimeMaxseriesstart').val();
+            responseEntry.series.start.timeOffset = uzsuCurrentRows.find('.uzsuTimeOffsetInputseriesstart').val();;
+            responseEntry.series.start.timeOffsetType = uzsuCurrentRows.find('.uzsuTimeOffsetTypeInputseriesstart :radio:checked').val();
+            if(uzsuCurrentRows.find('.uzsuSunActiveseriesstart').is(':checked'))
+                responseEntry.series.start.event = uzsuCurrentRows.find('.uzsuEventseriesstart select').val();
+            else
+                responseEntry.series.start.event = 'time';
+
+            responseEntry.series.end = {};
+            responseEntry.series.end.timeCron = uzsuCurrentRows.find('.uzsuTimeCronseriesend').val();
+            responseEntry.series.end.timeMin = uzsuCurrentRows.find('.uzsuTimeMinseriesend').val();
+            responseEntry.series.end.timeMax = uzsuCurrentRows.find('.uzsuTimeMaxseriesend').val();
+            responseEntry.series.end.timeOffset = uzsuCurrentRows.find('.uzsuTimeOffsetInputseriesend').val();;
+            responseEntry.series.end.timeOffsetType = uzsuCurrentRows.find('.uzsuTimeOffsetTypeInputseriesend :radio:checked').val();
+            if(uzsuCurrentRows.find('.uzsuSunActiveseriesend').is(':checked'))
+                responseEntry.series.end.event = uzsuCurrentRows.find('.uzsuEventseriesend select').val();
+            else
+                responseEntry.series.end.event = 'time';
+
+            if (responseEntry.hasOwnProperty('seriesCalculated'))
+                delete responseEntry.seriesCalculated;
+            }
+        else
+            {
+            try
+             { delete responseEntry.series; }
+            catch (e)
+             {}
+            }
 
     };
-	if (responseEntry.hasOwnProperty('activeToday') && (this.popupStartDay != new Date().getDay() || uzsuCurrentRows.hasClass('changed')))
-		responseEntry.activeToday = false;
+    if (responseEntry.hasOwnProperty('activeToday') && (this.popupStartDay != new Date().getDay() || uzsuCurrentRows.hasClass('changed')))
+        responseEntry.activeToday = false;
   },
-  
+
   //----------------------------------------------------------------------------
   // Funktionen für den Seitenaufbau
   //----------------------------------------------------------------------------
@@ -1114,12 +1111,12 @@ $.widget("sv.device_uzsu", $.sv.widget, {
            tt+= "<div class='uzsuCell' style='float: left'>" +
                   "<fieldset  data-mini='true'>" +
                     "<label><input type='checkbox' id='uzsuGeneralActive'>" + sv_lang.uzsu.active + "</label>" +
-                  "</fieldset>"+ 
-                "</div>";				
+                  "</fieldset>"+
+                "</div>";
               if (this.hasOnce)
                tt+= "<div class='uzsuCell' style='float: left'>" +
-			          "<fieldset data-mini='true'>" +
-                         "<label><input type='checkbox' id='uzsuGeneralOnce'>"+ sv_lang.uzsu.once +"</label>" + 
+                      "<fieldset data-mini='true'>" +
+                         "<label><input type='checkbox' id='uzsuGeneralOnce'>"+ sv_lang.uzsu.once +"</label>" +
                       "</fieldset>" +
                      "</div>";
          tt+="<div class='uzsuCell' style='float: left'>" +
@@ -1149,7 +1146,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
                         "<option value='linear'>" + sv_lang.uzsu.linear + "</option>" +
                       "</select>" +
                     "</div>"
-              if(this.hasOnce)     
+              if(this.hasOnce)
                  tt += "<div class='uzsuCell'>" +
                       "<div class='uzsuCellText'>" + sv_lang.uzsu.intperiod + "</div>" +
                       "<select data-mini='true' data-native-menu='false' id='uzsuInterpolationPeriod'>" +
@@ -1195,8 +1192,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       $('#uzsuInitialized').prop('checked', response.interpolation.initialized).checkboxradio("refresh");
     }
     $('#uzsuGeneralActive').prop('checked', response.active).checkboxradio("refresh");
-	if (this.hasOnce)
-		$('#uzsuGeneralOnce').prop('checked', response.once).checkboxradio("refresh");
+    if (this.hasOnce)
+        $('#uzsuGeneralOnce').prop('checked', response.once).checkboxradio("refresh");
     // dann die Werte der Tabelle
     $('.uzsuRow').each(function(numberOfRow, tableRow) {
       var responseEntry = response.list[numberOfRow];
@@ -1215,8 +1212,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     var numberOfEntries = response.list.length;
     // hier werden die Daten aus der Tabelle wieder in die items im Backend zurückgespielt bitte darauf achten, dass das zurückspielen exakt dem der Anzeige enspricht. Gesamthafte Aktivierung
     response.active = $('#uzsuGeneralActive').is(':checked');
-	if (this.hasOnce)
-		response.once = $('#uzsuGeneralOnce').is(':checked');
+    if (this.hasOnce)
+        response.once = $('#uzsuGeneralOnce').is(':checked');
     // Interpolation
     if(this.hasInterpolation) {
       response.interpolation.type = $('#uzsuInterpolationType').val();
@@ -1231,13 +1228,13 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       var responseEntry = response.list[numberOfRow];
       self._uzsuSaveTableRow(responseEntry, tableRow);
     });
-	if (response.hasOwnProperty('SunCalculated'))
-		delete response.SunCalculated;
-	try {
+    if (response.hasOwnProperty('SunCalculated'))
+        delete response.SunCalculated;
+    try {
       delete response.sunrise;
-	  delete response.sunset; 
-	  delete response.lastvalue;
-	  }
+      delete response.sunset;
+      delete response.lastvalue;
+      }
       catch (e) {}
 
     // über json Interface / Treiber herausschreiben
@@ -1304,7 +1301,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   //----------------------------------------------------------------------------
   _uzsuRuntimePopup: function(response) {
     var self = this;
-	this.popupStartDay = new Date().getDay();
+    this.popupStartDay = new Date().getDay();
     // Steuerung des Popups erst einmal wird der Leeranteil angelegt
     // erst den Header, dann die Zeilen, dann den Footer
     var tt = this._uzsuBuildTableHeader();
@@ -1324,9 +1321,9 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       popupafterclose: function(ev, ui) {
         $(this).remove();
         $(window).off('resize', self._onresize);
-		var target = $(self.element).parents('[data-role="popup"].uzsu_reopen');
-		if (target.length != 0)
-			target.popup('open');
+        var target = $(self.element).parents('[data-role="popup"].uzsu_reopen');
+        if (target.length != 0)
+            target.popup('open');
       }
     });
     // dann speichern wir uns für cancel die ursprünglichen im DOM gespeicherten Werte in eine Variable ab
@@ -1346,7 +1343,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       uzsuPopup.popup('close');
       // disable editing until dict update has been received
       self._disabled = true;
-      $('[data-widget="device.uzsuicon"][data-item="'+ self.options.item + '"]').addClass('blink'); 
+      $('[data-widget="device.uzsuicon"][data-item="'+ self.options.item + '"]').addClass('blink');
       $('[data-widget*="device.uzsu"][data-item="'+ self.options.item + '"]').widget('disable').find('.uzsu-active-toggler').addClass('hidden').hide();
       setTimeout(function(){$('[data-widget*="device.uzsu"][data-item="'+ self.options.item + '"]').widget('enable').find('.uzsu-active-toggler').removeClass('hidden').show();}, 15000); // fallback in case update is not coming
     });
@@ -1362,17 +1359,17 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     uzsuPopup.delegate('.uzsuDelTableRow', 'click', function(e) {
       self._uzsuDelTableRow(response, e);
     });
-	// call time series mode
+    // call time series mode
     uzsuPopup.delegate('.uzsuCellSeries button', 'click', function(e) {
         if($(this).hasClass('ui-icon-arrow-l'))
-        	self._uzsuHideAllSeriesLines();
+            self._uzsuHideAllSeriesLines();
         else
             self._uzsuShowSeriesLine(e);
       });
     // call Expert Mode
     uzsuPopup.delegate('[class*="uzsuCellExpert"] button', 'click', function(e) {
-	  var caller = $(this).parent()[0].className;
-	  caller = (caller.length > 14 ? caller.substring(14) : ''); 
+      var caller = $(this).parent()[0].className;
+      caller = (caller.length > 14 ? caller.substring(14) : '');
       if($(this).hasClass('ui-icon-arrow-u'))
         self._uzsuHideAllExpertLines();
       else
@@ -1384,11 +1381,11 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     });
     // Handler, um den Status anhand des Pulldowns SUN zu setzen
     uzsuPopup.delegate('.uzsuRowExpert [class*="uzsuEvent"] select, input[class*="uzsuSunActive"]', 'change', function (){
-	  var searchClass = $(this)[0].className;
-	  if ($(this)[0].nodeName == "SELECT") 
-		searchClass = $(this).parents()[2].className;		  
-	  var searchPos = searchClass.lastIndexOf('series');
-	  var caller = (searchPos < 0 ? '' : searchClass.substring(searchPos));
+      var searchClass = $(this)[0].className;
+      if ($(this)[0].nodeName == "SELECT")
+        searchClass = $(this).parents()[2].className;
+      var searchPos = searchClass.lastIndexOf('series');
+      var caller = (searchPos < 0 ? '' : searchClass.substring(searchPos));
       self._uzsuSetSunActiveState($(this), caller);
     });
     // Handler, um den Series button Status zu setzen
@@ -1398,10 +1395,10 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     uzsuPopup.delegate('.uzsuRowSeries .uzsuEvent select, input.uzsuSeriesActive', 'change', function (){
       self._uzsuSetSeriesActiveState($(this));
     });
-	// switch input type for series end mode
-	uzsuPopup.delegate('.uzsuRowSeries fieldset.uzsuSeriesEndTypeInput', 'change', function (){
-		self._uzsuSetSeriesEndType($(this));
-	});
+    // switch input type for series end mode
+    uzsuPopup.delegate('.uzsuRowSeries fieldset.uzsuSeriesEndTypeInput', 'change', function (){
+        self._uzsuSetSeriesEndType($(this));
+    });
     // call Interpolation Mode
     uzsuPopup.delegate('.uzsuCellInterpolation button', 'click', function(e) {
       if($(this).hasClass('ui-icon-arrow-u'))
@@ -1409,24 +1406,24 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       else
         self._uzsuShowInterpolationLine(e);
     });
-	// mark changed entries
+    // mark changed entries
     uzsuPopup.delegate('input, select', 'change', function (e){
         $(e.target).parents('.uzsuRow').addClass('changed');
-	});
+    });
     // hier wir die aktuelle Seite danach durchsucht, wo das Popup ist und im folgenden das Popup initialisiert, geöffnet und die schliessen
     // Funktion daran gebunden. Diese entfernt wieder das Popup aus dem DOM Baum nach dem Schliessen mit remove
     uzsuPopup.popup('open'); //.css({ position: 'fixed', top: '30px' });
   },
 
   _uzsuParseAndCheckResponse: function(response) {
-	var designType = this.options.designtype;
+    var designType = this.options.designtype;
     var valueType = this.options.valuetype;
-	var self = this;
+    var self = this;
 
     // Fehlerbehandlung für ein nicht vorhandenes DOM Objekt. Das response Objekt ist erst da, wenn es mit update angelegt wurde. Da diese
     // Schritte asynchron erfolgen, kann es sein, dass das Icon bereits da ist, clickbar, aber noch keine Daten angekommen. Dann darf ich nicht auf diese Daten zugreifen wollen !
     if(response.list === undefined){
-   	  var supplement = (this.options.item.substr(-5) != ".uzsu") ? "Seems this is not an uzsu item. Try '" + this.options.item+".uzsu'." : "";
+         var supplement = (this.options.item.substr(-5) != ".uzsu") ? "Seems this is not an uzsu item. Try '" + this.options.item+".uzsu'." : "";
       notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "'" + (this.options.id ? " for widget '" + this.options.id + "'. " : ". ") + supplement);
       return false;
     }
@@ -1442,7 +1439,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       return false;
     }
 
-	this.hasOnce = false;
+    this.hasOnce = false;
     // Interpolation für SmartHomeNG setzen
     if(designType == '0') {
       if(response.interpolation === undefined){
@@ -1458,16 +1455,16 @@ $.widget("sv.device_uzsu", $.sv.widget, {
         this.hasInterpolation = true
         console.log('UZSU interpolation for item "' + this.options.item + '" set to ' + response.interpolation.type);
       }
-	  //plugin version in dict has been introduced with the series functionality - no explicit version check necessary
-	  if (response.plugin_version === undefined){
+      //plugin version in dict has been introduced with the series functionality - no explicit version check necessary
+      if (response.plugin_version === undefined){
         this.hasSeries = false
         console.log('UZSU series not available. Update the smarthomeNG UZSU plugin to enable series.');
-	  }
-	  else {
-		  this.hasSeries = true;
-		  if (response.plugin_version >= '2.1.0')
-			  this.hasOnce = true;
-	  }
+      }
+      else {
+          this.hasSeries = true;
+          if (response.plugin_version >= '2.1.0')
+              this.hasOnce = true;
+      }
     }
 
     //
@@ -1495,50 +1492,50 @@ $.widget("sv.device_uzsu", $.sv.widget, {
           entry.timeOffsetType = timeParts[6];
         }
         delete entry.time;
-		
-		if(entry.timeCron == 'series')
-		{
-			self.hasSeries = true;
-			entry.series.start = {};
-			var timeParts = (entry.series.timeSeriesMin || "").match(/^((\d{1,2}:\d{1,2})<)?(sunrise|sunset)(([+-]\d+)([m°]?))?(<(\d{1,2}:\d{1,2}))?$/);
-			if(timeParts == null) { // entry.series.timeSeriesMin is a plain time string
-			  entry.series.start.event = "time";
-			  entry.series.start.timeCron = entry.series.timeSeriesMin;
-			  entry.series.start.timeMin = "";
-			  entry.series.start.timeMax = "";
-			  entry.series.start.timeOffset = "";
-			  entry.series.start.timeOffsetType = "m";
-			}
-			else { // entry.time is a sun event
-			  entry.series.start.event = timeParts[3];
-			  entry.series.start.timeCron = '00:00';
-			  entry.series.start.timeMin = timeParts[2];
-			  entry.series.start.timeMax = timeParts[8];
-			  entry.series.start.timeOffset = Number(timeParts[5]);
-			  entry.series.start.timeOffsetType = timeParts[6];
-			}
-			delete entry.series.timeSeriesMin;
-			
-			entry.series.end = {};
-			var timeParts = (entry.series.timeSeriesMax || "").match(/^((\d{1,2}:\d{1,2})<)?(sunrise|sunset)(([+-]\d+)([m°]?))?(<(\d{1,2}:\d{1,2}))?$/);
-			if(timeParts == null) { // entry.series.timeSeriesMax is a plain time string
-			  entry.series.end.event = "time";
-			  entry.series.end.timeCron = (entry.series.timeSeriesMax != undefined ? entry.series.timeSeriesMax : entry.series.timeSeriesCount);
-			  entry.series.end.timeMin = "";
-			  entry.series.end.timeMax = "";
-			  entry.series.end.timeOffset = "";
-			  entry.series.end.timeOffsetType = "m";
-			}
-			else { // entry.time is a sun event
-			  entry.series.end.event = timeParts[3];
-			  entry.series.end.timeCron = '00:00';
-			  entry.series.end.timeMin = timeParts[2];
-			  entry.series.end.timeMax = timeParts[8];
-			  entry.series.end.timeOffset = Number(timeParts[5]);
-			  entry.series.end.timeOffsetType = timeParts[6];
-			}
-			delete entry.series.timeSeriesMax;
-		}
+
+        if(entry.timeCron == 'series')
+        {
+            self.hasSeries = true;
+            entry.series.start = {};
+            var timeParts = (entry.series.timeSeriesMin || "").match(/^((\d{1,2}:\d{1,2})<)?(sunrise|sunset)(([+-]\d+)([m°]?))?(<(\d{1,2}:\d{1,2}))?$/);
+            if(timeParts == null) { // entry.series.timeSeriesMin is a plain time string
+              entry.series.start.event = "time";
+              entry.series.start.timeCron = entry.series.timeSeriesMin;
+              entry.series.start.timeMin = "";
+              entry.series.start.timeMax = "";
+              entry.series.start.timeOffset = "";
+              entry.series.start.timeOffsetType = "m";
+            }
+            else { // entry.time is a sun event
+              entry.series.start.event = timeParts[3];
+              entry.series.start.timeCron = '00:00';
+              entry.series.start.timeMin = timeParts[2];
+              entry.series.start.timeMax = timeParts[8];
+              entry.series.start.timeOffset = Number(timeParts[5]);
+              entry.series.start.timeOffsetType = timeParts[6];
+            }
+            delete entry.series.timeSeriesMin;
+
+            entry.series.end = {};
+            var timeParts = (entry.series.timeSeriesMax || "").match(/^((\d{1,2}:\d{1,2})<)?(sunrise|sunset)(([+-]\d+)([m°]?))?(<(\d{1,2}:\d{1,2}))?$/);
+            if(timeParts == null) { // entry.series.timeSeriesMax is a plain time string
+              entry.series.end.event = "time";
+              entry.series.end.timeCron = (entry.series.timeSeriesMax != undefined ? entry.series.timeSeriesMax : entry.series.timeSeriesCount);
+              entry.series.end.timeMin = "";
+              entry.series.end.timeMax = "";
+              entry.series.end.timeOffset = "";
+              entry.series.end.timeOffsetType = "m";
+            }
+            else { // entry.time is a sun event
+              entry.series.end.event = timeParts[3];
+              entry.series.end.timeCron = '00:00';
+              entry.series.end.timeMin = timeParts[2];
+              entry.series.end.timeMax = timeParts[8];
+              entry.series.end.timeOffset = Number(timeParts[5]);
+              entry.series.end.timeOffsetType = timeParts[6];
+            }
+            delete entry.series.timeSeriesMax;
+        }
 
         // test, ob die RRULE fehlerhaft ist
         if (entry.rrule && (entry.rrule.length > 0) && (entry.rrule.indexOf('FREQ=WEEKLY;BYDAY=') !== 0)) {
@@ -1546,7 +1543,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             return false;
           }
         }
-		
+
       }
 
       // wenn designType = '2' und damit fhem auslegung ist muss der JSON String auf die entsprechenden einträge erweitert werden (falls nichts vorhanden)
@@ -1565,8 +1562,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
         }
       }
     });
-	if (designType = "0" && io.address != undefined && io.address != '')  // preserve plugin_version only in offline driver
-		delete response.plugin_version;
+    if (designType = "0" && io.address != undefined && io.address != '')  // preserve plugin_version only in offline driver
+        delete response.plugin_version;
     return true;
   },
 
@@ -1601,55 +1598,55 @@ $.widget("sv.device_uzsu", $.sv.widget, {
           entry.time += '<' + entry.timeMax;
         }
       }
-		if (entry.time === 'series'){
-		  if(entry.series.start.event === 'time'){
-			// wenn der eintrag time ist, dann kommt die zeit rein
-			entry.series.timeSeriesMin = entry.series.start.timeCron;
-		  }
-		  else{
-			// ansonsten wird er aus den Bestandteilen zusammengebaut
-			entry.series.timeSeriesMin = '';
-			if(entry.series.start.timeMin != null && entry.series.start.timeMin.length > 0){
-			  entry.series.timeSeriesMin += entry.series.start.timeMin + '<';
-			}
-			entry.series.timeSeriesMin += entry.series.start.event;
-			if(entry.series.start.timeOffset > 0){
-			  entry.series.timeSeriesMin += '+' + entry.series.start.timeOffset + (entry.series.start.timeOffsetType == undefined ? '' : entry.series.start.timeOffsetType);
-			}
-			else if(entry.series.start.timeOffset < 0){
-			  entry.series.timeSeriesMin += entry.series.start.timeOffset + (entry.series.start.timeOffsetType == undefined ? '' : entry.series.start.timeOffsetType);
-			}
-			if(entry.series.start.timeMax != null && entry.series.start.timeMax.length > 0){
-			  entry.series.timeSeriesMin += '<' + entry.series.start.timeMax;
-			}
-		  }
-		  if (!entry.series.hasOwnProperty('timeSeriesCount')){
-		    if(entry.series.end.event === 'time'){
-			  // wenn der eintrag time ist, dann kommt die zeit rein
-			  entry.series.timeSeriesMax = entry.series.end.timeCron;
-		    }
-		    else{
-		  	  // ansonsten wird er aus den Bestandteilen zusammengebaut
-			  entry.series.timeSeriesMax = '';
-			  if(entry.series.end.timeMin != null && entry.series.end.timeMin.length > 0){
-			    entry.series.timeSeriesMax += entry.series.end.timeMin + '<';
-			  }
-			  entry.series.timeSeriesMax += entry.series.end.event;
-			  if(entry.series.end.timeOffset > 0){
-			    entry.series.timeSeriesMax += '+' + entry.series.end.timeOffset + (entry.series.end.timeOffsetType == undefined ? '' : entry.series.end.timeOffsetType);
-			  }
-			  else if(entry.series.end.timeOffset < 0){
-			    entry.series.timeSeriesMax += entry.series.end.timeOffset + (entry.series.end.timeOffsetType == undefined ? '' : entry.series.end.timeOffsetType);
-			  }
-			  if(entry.series.end.timeMax != null && entry.series.end.timeMax.length > 0){
-			    entry.series.timeSeriesMax += '<' + entry.series.end.timeMax;
-			  }
-		    }
-		  }
-		  delete entry.series.start;
-		  delete entry.series.end;
-		  
-		}
+        if (entry.time === 'series'){
+          if(entry.series.start.event === 'time'){
+            // wenn der eintrag time ist, dann kommt die zeit rein
+            entry.series.timeSeriesMin = entry.series.start.timeCron;
+          }
+          else{
+            // ansonsten wird er aus den Bestandteilen zusammengebaut
+            entry.series.timeSeriesMin = '';
+            if(entry.series.start.timeMin != null && entry.series.start.timeMin.length > 0){
+              entry.series.timeSeriesMin += entry.series.start.timeMin + '<';
+            }
+            entry.series.timeSeriesMin += entry.series.start.event;
+            if(entry.series.start.timeOffset > 0){
+              entry.series.timeSeriesMin += '+' + entry.series.start.timeOffset + (entry.series.start.timeOffsetType == undefined ? '' : entry.series.start.timeOffsetType);
+            }
+            else if(entry.series.start.timeOffset < 0){
+              entry.series.timeSeriesMin += entry.series.start.timeOffset + (entry.series.start.timeOffsetType == undefined ? '' : entry.series.start.timeOffsetType);
+            }
+            if(entry.series.start.timeMax != null && entry.series.start.timeMax.length > 0){
+              entry.series.timeSeriesMin += '<' + entry.series.start.timeMax;
+            }
+          }
+          if (!entry.series.hasOwnProperty('timeSeriesCount')){
+            if(entry.series.end.event === 'time'){
+              // wenn der eintrag time ist, dann kommt die zeit rein
+              entry.series.timeSeriesMax = entry.series.end.timeCron;
+            }
+            else{
+                // ansonsten wird er aus den Bestandteilen zusammengebaut
+              entry.series.timeSeriesMax = '';
+              if(entry.series.end.timeMin != null && entry.series.end.timeMin.length > 0){
+                entry.series.timeSeriesMax += entry.series.end.timeMin + '<';
+              }
+              entry.series.timeSeriesMax += entry.series.end.event;
+              if(entry.series.end.timeOffset > 0){
+                entry.series.timeSeriesMax += '+' + entry.series.end.timeOffset + (entry.series.end.timeOffsetType == undefined ? '' : entry.series.end.timeOffsetType);
+              }
+              else if(entry.series.end.timeOffset < 0){
+                entry.series.timeSeriesMax += entry.series.end.timeOffset + (entry.series.end.timeOffsetType == undefined ? '' : entry.series.end.timeOffsetType);
+              }
+              if(entry.series.end.timeMax != null && entry.series.end.timeMax.length > 0){
+                entry.series.timeSeriesMax += '<' + entry.series.end.timeMax;
+              }
+            }
+          }
+          delete entry.series.start;
+          delete entry.series.end;
+
+        }
 
       // Clear unused properties for SmartHomeNG
       if (self.options.designtype == '0') {
@@ -1705,21 +1702,21 @@ $.widget("sv.device_uzsuicon", $.sv.device_uzsu, {
       // hier werden die Parameter aus den Attributen herausgenommen und beim Öffnen mit .open(....) an das Popup Objekt übergeben
       // und zwar mit deep copy, damit ich bei cancel die ursprünglichen werte nicht überschrieben habe
       var response = jQuery.extend(true, {}, this._uzsudata);
-	  var that = this;
+      var that = this;
 
       if (this._uzsuParseAndCheckResponse(response)) {
-		  // Öffnen des Popups bei clicken des icons und Ausführung der Eingabefunktion
-		  // vorher das übergeordnete Popup schließen, falls uzsuicon in einem Popup platziert ist
-		  var target = $(this.element).parents('[data-role="popup"]');
-		  if (target.length != 0){
-			  target.popup().on('popupafterclose', function(){
-				  that._uzsuRuntimePopup(response);
-				  target.popup().off('popupafterclose');
-				  });
-			  target.popup('close');
-		  } 
-		  else
-			  this._uzsuRuntimePopup(response);
+          // Öffnen des Popups bei clicken des icons und Ausführung der Eingabefunktion
+          // vorher das übergeordnete Popup schließen, falls uzsuicon in einem Popup platziert ist
+          var target = $(this.element).parents('[data-role="popup"]');
+          if (target.length != 0){
+              target.popup().on('popupafterclose', function(){
+                  that._uzsuRuntimePopup(response);
+                  target.popup().off('popupafterclose');
+                  });
+              target.popup('close');
+          }
+          else
+              this._uzsuRuntimePopup(response);
       }
     }
   },
@@ -1738,7 +1735,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     designtype: '',
     valuetype: 'bool',
     editable: false,
-	scrollbar: true
+    scrollbar: true
   },
 
   weekDays: {
@@ -1750,7 +1747,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     'SA': 5,
     'SU': 6
   },
-  
+
   rruleDays: {},
 
   _startTimestamp: 4*1000*60*60*24 + new Date(0).getTimezoneOffset()*1000*60,  //1.1.1970 was a Thursday -> 4 days until Monday
@@ -1759,15 +1756,15 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     this._super();  //call _create method of prototype widget sv.device_uzsu
 
     var self = this;
-
+    
     // init data (used if no update follows because item does not exist yet)
     this._uzsudata = { active : true, list : [] }
 
     var valueParameterList = this.options.valueparameterlist.explode();
     if(valueParameterList.length === 0){
       if(this.options.valuetype === 'bool') valueParameterList = ['1', '0', '1'];
-      else 
-		  valueParameterList = [];
+      else
+          valueParameterList = [];
     }
 
     var min = null, max = null, step = 1;
@@ -1826,9 +1823,9 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
     // prepare the plot
     var chart = this.element.highcharts({
-	  title: { text: this.options.headline },
+      title: { text: this.options.headline },
       legend: false,
-	  // time: {timezoneOffset: new Date().getTimezoneOffset()},
+      //time: {timezoneOffset: new Date().getTimezoneOffset()},   //to do: uncomment with next Highcharts version
       series: [
         { // active
           name: 'active',
@@ -1899,7 +1896,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       xAxis: {
         type: 'datetime',
         ordinal:false,
-		min: this._startTimestamp,
+        min: this._startTimestamp,
         max: 1000*60*60*24 + this._startTimestamp,
         showLastLabel: false,
         crosshair: { snap: false },
@@ -1926,24 +1923,25 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           return '<span class="highcharts-strong">' + value + '</span> (' + this.series.name + ')<br/>';
         }
       },
-	  navigator: {
-		enabled: true,
-		min: this._startTimestamp,
+      navigator: {
+        enabled: true,
+        min: this._startTimestamp,
         max: 1000*60*60*24*7 + this._startTimestamp,
-	  },
-	  rangeSelector: {
-		enabled: false,
-	  },
-	  scrollbar: {
-		enabled: this.options.scrollbar,
-		showFull: false
-	  },
+      },
+      rangeSelector: {
+        enabled: false,
+      },
+      scrollbar: {
+        enabled: this.options.scrollbar,
+        showFull: false
+      },
       chart: {
-		styledMode: true,
-		marginBottom: 0,
-		exporting: {
-			enabled: false
-		},
+        styledMode: true,
+        marginBottom: 0,
+        marginTop: self.options.headline == '' ? 45 : null,
+        exporting: {
+            enabled: false
+        },
         events: {
           click: function(e) { // add point
             if(self.justDragged) { // prevent click event after drop
@@ -1972,46 +1970,46 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       },
       plotOptions: {
         series: {
-			dragDrop : {
-				draggableX: this.options.editable,
-				dragPrecisionX: timeStep,
-				draggableY: this.options.editable,
-				dragPrecisionY: step,
-				dragMinY: min,
-				dragMaxY: max
-		    },
-			cursor: this.options.editable ? 'move' : null,
-			marker: { enabled: true },
-			dataGrouping: { enabled: false },
-			stickyTracking: false,
-			findNearestPointBy: 'xy',
-			type: 'scatter',
-			lineWidth: 2,
-			  point: {
-				events: {
-				  click: function (e) {
-					if(self.justDragged) { // prevent click event after drop
-					  self.justDragged = false;
-					  return;
-					}
-					if(e.point.uzsuEntry !== undefined)
-						self._uzsuRuntimePopup(e.point.uzsuEntry)
-				  },
-				  drag: function (e) {
-				  },
-				  drop: function (e) {
-					self.justDragged = true; // used to prevent click event after drop
-					if(e.target.uzsuEntry !== undefined) {
-					  e.target.uzsuEntry.value = e.target.y;
-					  if(e.target.uzsuEntry.event == 'time')
-						e.target.uzsuEntry.timeCron = self.element.highcharts().time.dateFormat('%H:%M', e.target.x);
-					  else // sunrise or sunset
-						e.target.uzsuEntry.timeOffset = Math.round(((e.target.x % (1000*60*60*24)) - (self._getSunTime(e.target.uzsuEntry.event, 0) % (1000*60*60*24)))/1000/60);
-					  self._save();
-					}
-				  }
-				}
-			}
+            dragDrop : {
+                draggableX: this.options.editable,
+                dragPrecisionX: timeStep,
+                draggableY: this.options.editable,
+                dragPrecisionY: step,
+                dragMinY: min,
+                dragMaxY: max
+            },
+            cursor: this.options.editable ? 'move' : null,
+            marker: { enabled: true },
+            dataGrouping: { enabled: false },
+            stickyTracking: false,
+            findNearestPointBy: 'xy',
+            type: 'scatter',
+            lineWidth: 2,
+              point: {
+                events: {
+                  click: function (e) {
+                    if(self.justDragged) { // prevent click event after drop
+                      self.justDragged = false;
+                      return;
+                    }
+                    if(e.point.uzsuEntry !== undefined)
+                        self._uzsuRuntimePopup(e.point.uzsuEntry)
+                  },
+                  drag: function (e) {
+                  },
+                  drop: function (e) {
+                    self.justDragged = true; // used to prevent click event after drop
+                    if(e.target.uzsuEntry !== undefined) {
+                      e.target.uzsuEntry.value = e.target.y;
+                      if(e.target.uzsuEntry.event == 'time')
+                        e.target.uzsuEntry.timeCron = self.element.highcharts().time.dateFormat('%H:%M', e.target.x);
+                      else // sunrise or sunset
+                        e.target.uzsuEntry.timeOffset = Math.round(((e.target.x % (1000*60*60*24)) - (self._getSunTime(e.target.uzsuEntry.event, 0) % (1000*60*60*24)))/1000/60);
+                      self._save();
+                    }
+                  }
+                }
+            }
         }
       },
     },
@@ -2057,11 +2055,11 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       });
 
       // active/inactive button
-      chart.renderer.button(String.fromCharCode(160)+String.fromCharCode(10004)+String.fromCharCode(160), 40, null, function(e) { 
-			self._uzsudata.active = !self._uzsudata.active;
-			self._save(); 
-			this.attr('title', !self._uzsudata.active ? sv_lang.uzsu.inactive : self._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active);
-		}, {} , {}, {}, {}, 'callout')
+      chart.renderer.button(String.fromCharCode(160)+String.fromCharCode(10004)+String.fromCharCode(160), 40, null, function(e) {
+            self._uzsudata.active = !self._uzsudata.active;
+            self._save();
+            this.attr('title', !self._uzsudata.active ? sv_lang.uzsu.inactive : self._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active);
+        }, {} , {}, {}, {}, 'callout')
         .attr({
           align: 'right',
           title: !self._uzsudata.active ? sv_lang.uzsu.inactive : self._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active
@@ -2069,44 +2067,46 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         .addClass('highcharts-color-0 uzsu-active-toggler')
         .add()
 
-      // Interpolation buttons
-      self.interpolationButtons = [
-        { interpolationType: 'none', shape: 'square', langKey: 'nointerpolation' },
-        { interpolationType: 'cubic', shape: 'circle', langKey: 'cubic' },
-        { interpolationType: 'linear', shape: 'triangle', langKey: 'linear' },
-      ];
+        if (self.options.designtype == 0){
+          // Interpolation buttons
+          self.interpolationButtons = [
+            { interpolationType: 'none', shape: 'square', langKey: 'nointerpolation' },
+            { interpolationType: 'cubic', shape: 'circle', langKey: 'cubic' },
+            { interpolationType: 'linear', shape: 'triangle', langKey: 'linear' },
+          ];
 
-      $.each(self.interpolationButtons, function(i, button) {
-        button.element = chart.renderer.button('', null, null, function(e) { self._uzsudata.interpolation.type = button.interpolationType; self._save(); }, {} , {}, {}, {}, button.shape)
-          .attr({
-            align: 'right',
-            title: sv_lang.uzsu[button.langKey],
-            "data-interpolation-type": button.interpolationType
-          })
-          .addClass('icon0 interpolation-button')
-          .css({'fill': 'transparent'})
-          .add()
-          .align({
-            align: 'right',
-            x: -16-(self.interpolationButtons.length-i-1)*20,
-            y: 10
-          }, false, null);
-      });
+          $.each(self.interpolationButtons, function(i, button) {
+            button.element = chart.renderer.button('', null, null, function(e) { self._uzsudata.interpolation.type = button.interpolationType; self._save(); }, {} , {}, {}, {}, button.shape)
+              .attr({
+                align: 'right',
+                title: sv_lang.uzsu[button.langKey],
+                "data-interpolation-type": button.interpolationType
+              })
+              .addClass('icon0 interpolation-button')
+              .css({'fill': 'transparent'})
+              .add()
+              .align({
+                align: 'right',
+                x: -16-(self.interpolationButtons.length-i-1)*20,
+                y: 10
+              }, false, null);
+          });
 
-      chart.renderer.text(sv_lang.uzsu.interpolation+': ', null, null)
-        .attr({
-          align: 'right'}
-        )
-        .add(
-          chart.renderer.createElement('g').addClass('highcharts-label').add()
-        )
-        .align({
-          align: 'right',
-          x: -16-self.interpolationButtons.length*20,
-          y: 22
-        }, false, null);
-	
-	  // Zoom buttons
+          chart.renderer.text(sv_lang.uzsu.interpolation+': ', null, null)
+            .attr({
+              align: 'right'}
+            )
+            .add(
+              chart.renderer.createElement('g').addClass('highcharts-label').add()
+            )
+            .align({
+              align: 'right',
+              x: -16-self.interpolationButtons.length*20,
+              y: 22
+            }, false, null);
+        };
+
+      // Zoom buttons
       self.customZoomButtons = [
         { day: 'mo', shape: 'square', xMin:               0, xMax: 24*60*60*1000 },
         { day: 'tu', shape: 'square', xMin:   24*60*60*1000, xMax: 2*24*60*60*1000 },
@@ -2117,35 +2117,35 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         { day: 'su', shape: 'square', xMin: 6*24*60*60*1000, xMax: 7*24*60*60*1000 },
         { day: 'w',  shape: 'circle', xMin:               0, xMax: 7 *24*60*60*1000, langKey: 'week' },
       ];
-	  chart.text = [];
-	  	  
-   	  $.each(self.customZoomButtons, function(i, button) {
-		chart.text[i] = chart.renderer.text(sv_lang.uzsu[button.day], null, null)
-		.attr({ align: 'right'} 			)
-		.add( chart.renderer.createElement('g').addClass('highcharts-label').add() )
-		.align({
-		  align: 'left',
-		  x: 118 + (i-1)*20,
-		  y: 22
-		}, false, null);
-	
-		button.element = chart.renderer.button('', null, null, function(e) { 
-		  chart.xAxis[0].setExtremes();
-		  chart.xAxis[0].update({min: self._startTimestamp + button.xMin, max: self._startTimestamp + button.xMax}, false); 
-		  chart.redraw();
-		  }, {}, {}, {}, {}, button.shape)
-		  .attr({
-			align: 'right',
-			title: sv_lang.uzsu[button.day],
-		  })
-		  .addClass('icon0 zoom-button')
-		  .css({'fill': 'transparent'})
-		  .add()
-		  .align({
-			align: 'left',
-			x: 120 + (i-1)*20,
-			y: 10
-		  }, false, null);
+      chart.text = [];
+
+         $.each(self.customZoomButtons, function(i, button) {
+        chart.text[i] = chart.renderer.text(sv_lang.uzsu[button.day], null, null)
+        .attr({ align: 'right'}             )
+        .add( chart.renderer.createElement('g').addClass('highcharts-label').add() )
+        .align({
+          align: 'left',
+          x: 118 + (i-1)*20,
+          y: 22
+        }, false, null);
+
+        button.element = chart.renderer.button('', null, null, function(e) {
+          chart.xAxis[0].setExtremes();
+          chart.xAxis[0].update({min: self._startTimestamp + button.xMin, max: self._startTimestamp + button.xMax}, false);
+          chart.redraw();
+          }, {}, {}, {}, {}, button.shape)
+          .attr({
+            align: 'right',
+            title: sv_lang.uzsu[button.day],
+          })
+          .addClass('icon0 zoom-button')
+          .css({'fill': 'transparent'})
+          .add()
+          .align({
+            align: 'left',
+            x: 120 + (i-1)*20,
+            y: 10
+          }, false, null);
       });
     });
   },
@@ -2158,299 +2158,301 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
   },
 
   draw: function() {
-	var chart = this.element.highcharts();
+    var chart = this.element.highcharts();
+    
+    var interpolation = this.hasInterpolation ? this._uzsudata.interpolation : {type: 'none'};
 
-	if(this._uzsudata.active && !this._uzsudata.once){
-		this.element.removeClass('uzsu-all-inactive');
-		this.element.removeClass('uzsu-general-once');
-		this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+ String.fromCharCode(10004) + String.fromCharCode(160));
-	}
-	else {
-		this.element.addClass('uzsu-all-inactive');
-		if (!this._uzsudata.active) {
-			this.element.removeClass('uzsu-general-once');
-			this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+ String.fromCharCode(10004) + String.fromCharCode(160));
-		}
-		else {
-			this.element.addClass('uzsu-general-once');
-			this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+'1 x' + String.fromCharCode(160));
-		}
-	}
-	this.element.find('.uzsu-active-toggler').attr('title', !this._uzsudata.active ? sv_lang.uzsu.inactive : this._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active)
-	.end().find('title').text(!this._uzsudata.active ? sv_lang.uzsu.inactive : this._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active);
+    if(this._uzsudata.active && !this._uzsudata.once){
+        this.element.removeClass('uzsu-all-inactive');
+        this.element.removeClass('uzsu-general-once');
+        this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+ String.fromCharCode(10004) + String.fromCharCode(160));
+    }
+    else {
+        this.element.addClass('uzsu-all-inactive');
+        if (!this._uzsudata.active) {
+            this.element.removeClass('uzsu-general-once');
+            this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+ String.fromCharCode(10004) + String.fromCharCode(160));
+        }
+        else {
+            this.element.addClass('uzsu-general-once');
+            this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+'1 x' + String.fromCharCode(160));
+        }
+    }
+    this.element.find('.uzsu-active-toggler').attr('title', !this._uzsudata.active ? sv_lang.uzsu.inactive : this._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active)
+    .end().find('title').text(!this._uzsudata.active ? sv_lang.uzsu.inactive : this._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active);
 
-	var hasDays = false;
-	var hasSunrise = false;
-	var hasSunset = false;
-	var hasBurst = false;
-	var seriesData = { active: [], inactive: [], range: [] };
-	var linetype = this._uzsudata.interpolation.type == 'cubic' ? 'spline' : 'line';
-	var self = this;
-
-
-	// ******************************************************************************
-	// set start timestamp for the graph and texts for weekdays in zoom buttons - 
-	// graph starts with current day
-	//
-	// weekdays:  			Object {'Mo': 0, ..., 'Su': 6}
-	// rruleDays:		 	Object {'Mo': days from now til Monday, ..., 'Su': days from now til Sunday}
-	// days:				Array ['Mi', 'Th', 'Sa'] active days from rrule
-	// rruleDaySequence: 	Array [2, 3, 0] Sequence of days in rrule - above example read on a Saturday 
-	//						"once" is executed on the day with the lowest number in the sequence
-	// ******************************************************************************
-	var today = new Date().getDay();		// delivers SU = 0
-	this._startTimestamp = (4 + today - 1) % 7 *1000*60*60*24 + new Date(0).getTimezoneOffset()*1000*60;
-
-	for (var day in this.weekDays) {
-		this.rruleDays[day] = this.weekDays[day] - (6 + today) % 7;
-		if (this.rruleDays[day] < 0)
-			this.rruleDays[day] += 7;
-		this.customZoomButtons[this.rruleDays[day]].day = day.toLowerCase();
-	}
-	$.each(this.customZoomButtons, function(idx, button) {
-		chart.text[idx].attr({ text: sv_lang.uzsu[button.day] });
-	});
+    var hasDays = false;
+    var hasSunrise = false;
+    var hasSunset = false;
+    var hasBurst = false;
+    var seriesData = { active: [], inactive: [], range: [] };
+    var linetype = interpolation.type == 'cubic' ? 'spline' : 'line';
+    var self = this;
 
 
-	// ******************************************************************************
-	// highlight active interpolation button
-	// ******************************************************************************
-	$.each(this.interpolationButtons, function(idx, button) {
-		if(button.interpolationType == self._uzsudata.interpolation.type)
-			button.element.addClass("icon1");
-		else 
-			button.element.removeClass("icon1");
-	});
+    // ******************************************************************************
+    // set start timestamp for the graph and texts for weekdays in zoom buttons -
+    // graph starts with current day
+    //
+    // weekdays:              Object {'Mo': 0, ..., 'Su': 6}
+    // rruleDays:             Object {'Mo': days from now til Monday, ..., 'Su': days from now til Sunday}
+    // days:                Array ['Mi', 'Th', 'Sa'] active days from rrule
+    // rruleDaySequence:     Array [2, 3, 0] Sequence of days in rrule - above example read on a Saturday
+    //                        "once" is executed on the day with the lowest number in the sequence
+    // ******************************************************************************
+    var today = new Date().getDay();        // delivers SU = 0
+    this._startTimestamp = (4 + today - 1) % 7 *1000*60*60*24 + new Date(0).getTimezoneOffset()*1000*60;
 
-	
-	// ******************************************************************************
-	// create timeline with all events from UZSU data
-	// ******************************************************************************
-	$.each(this._uzsudata.list, function(responseEntryIdx, responseEntry) {
-		var x, xMin, xMax, xSeriesEndMin, xSeriesEndMax;
-		hasBurst = responseEntry.hasOwnProperty('series');
-		hasSunrise = hasSunrise || responseEntry.event == 'sunrise';
-		hasSunset = hasSunset ||responseEntry.event == 'sunset';
-		if(!hasBurst){
-			x =  self._calculateEventTime(responseEntry);
-			if(responseEntry.timeMin)
-				xMin = self._timeToTimestamp(responseEntry.timeMin);
-			if(responseEntry.timeMax)
-				xMax = self._timeToTimestamp(responseEntry.timeMax);
-		}
-		else {
-			x = self._calculateEventTime(responseEntry.series.start);
-			if(responseEntry.series.start.timeMin)
-				xMin = self._timeToTimestamp(responseEntry.series.start.timeMin);
-			if(responseEntry.series.start.timeMax)
-				xMax = self._timeToTimestamp(responseEntry.series.start.timeMax);
-
-			// determine uzsu series times
-			var seriesEnd;
-			var seriesIntervall = new Date('1970-01-01T' + responseEntry.series.timeSeriesIntervall + ':00Z').getTime(); 
-			if (responseEntry.series.hasOwnProperty('timeSeriesCount'))  // series end defined by count of cycles  
-				seriesEnd = x + (parseInt(responseEntry.series.end.timeCron) - 1) * seriesIntervall;
-			else
-				seriesEnd = self._calculateEventTime(responseEntry.series.end); 
-			if(responseEntry.series.end.timeMin)
-				xSeriesEndMin = self._timeToTimestamp(responseEntry.series.end.timeMin);
-			if(responseEntry.series.end.timeMax)
-				xSeriesEndMax = self._timeToTimestamp(responseEntry.series.end.timeMax);
-		}
-
-		var rrule = responseEntry.rrule;
-		if (!rrule)
-			rrule = 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU';
-		var ind = rrule.indexOf('BYDAY=');
-		// if RRULE BYDAY is included 
-		if (ind > 0) {
-			var days = rrule.substring(ind+6).split(',');
-			// memorize whether at least one data point is not repeating every day so the initial display will be a week graph
-			if (days.length < 7 || responseEntry.once)
-				hasDays = true;
-			// get sequence of the days as an array to find out which is the next event to be executed if "once" is true
-			var rruleDaySequence = days.map(function(d){return self.rruleDays[d] == 0 && (hasBurst ? seriesEnd : x) < self._timeToTimestamp(new Date().transUnit('H:m')) ? self.rruleDays[d]+7 : self.rruleDays[d]});
-
-			// push all events into the timeline starting from Monday. Sorting will be done later
-			$.each(days, function(dayIdx, day) {
-				var rruleOffset = self.rruleDays[day]*1000*60*60*24;
-				var sunOffset = 0;
-				var isActive = (responseEntry.activeToday && self.rruleDays[day] == 0) || (responseEntry.active && !(responseEntry.once && self.rruleDays[day] != Math.min.apply(null, rruleDaySequence)));
-				//DEBUG: if (responseEntry.once) console.log(responseEntry.activeToday, responseEntry.active, self.rruleDays[day], rruleDaySequence, isActive)
-				if (responseEntry.event.indexOf('sun') >= 0 )
-					sunOffset = self._getSunTime(responseEntry.event, self.rruleDays[day]) - self._getSunTime(responseEntry.event, 0);
-				else if (hasBurst && responseEntry.series.start.event.indexOf('sun') >= 0 )
-					sunOffset = self._getSunTime(responseEntry.series.start.event, self.rruleDays[day]) - self._getSunTime(responseEntry.series.start.event, 0);
-				sunOffset = (x + sunOffset < xMin ? xMin - x : sunOffset);
-				sunOffset = (x + sunOffset > xMax ? xMax - x : sunOffset);
-
-				var xRecurring = x + rruleOffset + sunOffset;
-				var yValue = Number(responseEntry.value);
-				seriesData[isActive ? 'active' : 'inactive'].push({ x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
-				if (hasBurst){
-					var sunSeriesEndOffset = 0;
-					if (responseEntry.series.end.event.indexOf('sun') >= 0 )
-						sunSeriesEndOffset = self._getSunTime(responseEntry.series.end.event, self.rruleDays[day]) - self._getSunTime(responseEntry.series.end.event, 0);
-					sunSeriesEndOffset = (seriesEnd + sunSeriesEndOffset < xSeriesEndMin ? xSeriesEndMin - seriesEnd : sunSeriesEndOffset);
-					sunSeriesEndOffset = (seriesEnd + sunSeriesEndOffset > xSeriesEndMax ? xSeriesEndMax - seriesEnd : sunSeriesEndOffset);
-
-					xBurstRecurring = xRecurring;
-					while (xBurstRecurring + seriesIntervall <= seriesEnd + rruleOffset + sunSeriesEndOffset) {
-						xBurstRecurring += seriesIntervall;
-						seriesData[isActive ? 'active' : 'inactive'].push({ x: xBurstRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
-					}
-				}
-				if(!hasBurst && (xMin !== undefined || xMax !== undefined)) {
-					if(xMin !== undefined)
-						seriesData.range.push({ x: xMin+rruleOffset, y: yValue, name: sv_lang.uzsu.earliest, uzsuEntry: responseEntry, className: 'uzsu-min' });
-					else
-						seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-min uzsu-hidden', marker: { enabled: false } });
-					if(xMax !== undefined)
-						seriesData.range.push({ x: xMax+rruleOffset, y: yValue, name: sv_lang.uzsu.latest, uzsuEntry: responseEntry, className: 'uzsu-max' });
-					else
-						seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-max uzsu-hidden', marker: { enabled: false } });
-					seriesData.range.push({ x: xMax+rruleOffset+1, y: null, uzsuEntry: responseEntry });
-				}
-			});
-		}
-	});
-	
-	// push additional points for daywise interpolation
-	if (this._uzsudata.interpolation.hasOwnProperty('perday') && this._uzsudata.interpolation.perday == true) {
-		for (var i = 1; i < 8; i++) {
-			seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 10, y: -999});
-			seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 20, y: -999});
-			seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 30, y: -999});
-			if (i != 7)
-				seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 40, y: -999});
-		}
-	}
-
-	var navigatorMin = this._startTimestamp
-	var navigatorMax = navigatorMin + 7*24*60*60*1000;
-		
-	// ******************************************************************************
-	// set plot data for active points
-	// ******************************************************************************
-	var data = seriesData.active;
-	data.sort(function(a,b) { return a.x - b.x });
-
-	// add graph points at the ends (not clickable since entryIndex and uzsuEntry are missing)
-	// 2 points at start in order to improve fitting of spline to UZSU interpolation
-
-	if(data.length > 0) {
-		if (self._uzsudata.interpolation.hasOwnProperty('perday') && self._uzsudata.interpolation.perday == true) {
-			var dayEnd
-			for (var i = 1; i< 8; i++){
-				dayEnd = data.findIndex(function(element){return element.y == -999});
-				data[dayEnd].x = data[dayEnd-1].x + 10;
-				data[dayEnd].y = null;
-				data[dayEnd+1].x = data[dayEnd-1].x + 20;
-				data[dayEnd+1].y = data[dayEnd-1].y;
-				data[dayEnd+2].x = data[dayEnd+4] ? data[dayEnd+4].x - 20 : navigatorMax;
-				data[dayEnd+2].y = data[dayEnd-1].y;
-				if (i != 7){
-					data[dayEnd+3].x = data[dayEnd+4].x - 10;
-					data[dayEnd+3].y = null;
-				}
-			}
-			data.unshift({x: data[0].x - 10, y: null });
-			data.unshift({x: data[0].x - 20, y: data[data.length - 1].y});
-			data.unshift({x: navigatorMin, y: data[data.length - 1].y});
-		} else {
-			navigatorMin =  data[data.length-1].x-1000*60*60*24*7;
-			data.unshift({ x: navigatorMin, y: data[data.length-1].y, className: data[data.length-1].className });
-			data.unshift({ x: data[data.length-2].x-1000*60*60*24*7, y: data[data.length-2].y, className: data[data.length-2].className });
-			navigatorMax = data[2].x+1000*60*60*24*7;
-			data.push({ x: navigatorMax, y: data[2].y, className: data[2].className });
-			// 2nd point at end would cause highcharts to break the plot area boundaries during dragging -> omit this for now	
-			// and wait for the solution for https://github.com/highcharts/highcharts/issues/20351
-			// data.push({ x: data[3].x+1000*60*60*24*7, y: data[3].y, className: data[3].className });
-		}
-	}
-
-	chart.get('active').setData(data, false, null, false);
-	chart.get('active').update({
-		type: this._uzsudata.interpolation.type == 'cubic' ? 'spline' : 'line',
-		step: this._uzsudata.interpolation.type != 'cubic' && this._uzsudata.interpolation.type != 'linear' ? 'left' : false,
-		}, false);
+    for (var day in this.weekDays) {
+        this.rruleDays[day] = this.weekDays[day] - (6 + today) % 7;
+        if (this.rruleDays[day] < 0)
+            this.rruleDays[day] += 7;
+        this.customZoomButtons[this.rruleDays[day]].day = day.toLowerCase();
+    }
+    $.each(this.customZoomButtons, function(idx, button) {
+        chart.text[idx].attr({ text: sv_lang.uzsu[button.day] });
+    });
 
 
-	// ******************************************************************************
-	// set plot data for inactive points
-	// ******************************************************************************
-	data = seriesData.inactive;
-	data.sort(function(a,b) { return a.x - b.x });
-	chart.get('inactive').setData(data, false, null, false);
+    // ******************************************************************************
+    // highlight active interpolation button
+    // ******************************************************************************
+    $.each(this.interpolationButtons, function(idx, button) {
+        if(button.interpolationType == self._uzsudata.interpolation.type)
+            button.element.addClass("icon1");
+        else
+            button.element.removeClass("icon1");
+    });
 
 
-	// ******************************************************************************
-	// set plot data for min/max times on sun events and the sun times themselves
-	// ******************************************************************************
-	chart.get('range').setData(seriesData.range, false, null, false);
+    // ******************************************************************************
+    // create timeline with all events from UZSU data
+    // ******************************************************************************
+    $.each(this._uzsudata.list, function(responseEntryIdx, responseEntry) {
+        var x, xMin, xMax, xSeriesEndMin, xSeriesEndMax;
+        hasBurst = responseEntry.hasOwnProperty('series');
+        hasSunrise = hasSunrise || responseEntry.event == 'sunrise';
+        hasSunset = hasSunset ||responseEntry.event == 'sunset';
+        if(!hasBurst){
+            x =  self._calculateEventTime(responseEntry);
+            if(responseEntry.timeMin)
+                xMin = self._timeToTimestamp(responseEntry.timeMin);
+            if(responseEntry.timeMax)
+                xMax = self._timeToTimestamp(responseEntry.timeMax);
+        }
+        else {
+            x = self._calculateEventTime(responseEntry.series.start);
+            if(responseEntry.series.start.timeMin)
+                xMin = self._timeToTimestamp(responseEntry.series.start.timeMin);
+            if(responseEntry.series.start.timeMax)
+                xMax = self._timeToTimestamp(responseEntry.series.start.timeMax);
 
-	plotLines = [];
-	sunData = [];
-	if(hasSunrise || hasSunset) {
-		for(dayIdx = 0; dayIdx < 7; dayIdx++) {
-			if(hasSunrise) {
-				plotLines.push({
-					value: self._getSunTime('sunrise', dayIdx)+dayIdx*1000*60*60*24,
-					className: 'uzsu-event-sunrise',
-					label: { text: sv_lang.uzsu.sunrise }
-				});
-				sunData.push({ x: self._getSunTime('sunrise', dayIdx)+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise', marker: { symbol: 'sunrise' } });
-			}
-			if(hasSunset) {
-				plotLines.push({
-					value: self._getSunTime('sunset', dayIdx)+dayIdx*1000*60*60*24,
-					className: 'uzsu-event-sunset',
-					label: { text: sv_lang.uzsu.sunset }
-				});
-				sunData.push({ x: self._getSunTime('sunset', dayIdx)+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset', marker: { symbol: 'sunset' } })
-			}
-		}
-	}
-	chart.get('sun').setData(sunData, false);
+            // determine uzsu series times
+            var seriesEnd;
+            var seriesIntervall = new Date('1970-01-01T' + responseEntry.series.timeSeriesIntervall + ':00Z').getTime();
+            if (responseEntry.series.hasOwnProperty('timeSeriesCount'))  // series end defined by count of cycles
+                seriesEnd = x + (parseInt(responseEntry.series.end.timeCron) - 1) * seriesIntervall;
+            else
+                seriesEnd = self._calculateEventTime(responseEntry.series.end);
+            if(responseEntry.series.end.timeMin)
+                xSeriesEndMin = self._timeToTimestamp(responseEntry.series.end.timeMin);
+            if(responseEntry.series.end.timeMax)
+                xSeriesEndMax = self._timeToTimestamp(responseEntry.series.end.timeMax);
+        }
+
+        var rrule = responseEntry.rrule;
+        if (!rrule)
+            rrule = 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU';
+        var ind = rrule.indexOf('BYDAY=');
+        // if RRULE BYDAY is included
+        if (ind > 0) {
+            var days = rrule.substring(ind+6).split(',');
+            // memorize whether at least one data point is not repeating every day so the initial display will be a week graph
+            if (days.length < 7 || responseEntry.once)
+                hasDays = true;
+            // get sequence of the days as an array to find out which is the next event to be executed if "once" is true
+            var rruleDaySequence = days.map(function(d){return self.rruleDays[d] == 0 && (hasBurst ? seriesEnd : x) < self._timeToTimestamp(new Date().transUnit('H:m')) ? self.rruleDays[d]+7 : self.rruleDays[d]});
+
+            // push all events into the timeline starting from Monday. Sorting will be done later
+            $.each(days, function(dayIdx, day) {
+                var rruleOffset = self.rruleDays[day]*1000*60*60*24;
+                var sunOffset = 0;
+                var isActive = (responseEntry.activeToday && self.rruleDays[day] == 0) || (responseEntry.active && !(responseEntry.once && self.rruleDays[day] != Math.min.apply(null, rruleDaySequence)));
+                //DEBUG: if (responseEntry.once) console.log(responseEntry.activeToday, responseEntry.active, self.rruleDays[day], rruleDaySequence, isActive)
+                if (responseEntry.event.indexOf('sun') >= 0 )
+                    sunOffset = self._getSunTime(responseEntry.event, self.rruleDays[day]) - self._getSunTime(responseEntry.event, 0);
+                else if (hasBurst && responseEntry.series.start.event.indexOf('sun') >= 0 )
+                    sunOffset = self._getSunTime(responseEntry.series.start.event, self.rruleDays[day]) - self._getSunTime(responseEntry.series.start.event, 0);
+                sunOffset = (x + sunOffset < xMin ? xMin - x : sunOffset);
+                sunOffset = (x + sunOffset > xMax ? xMax - x : sunOffset);
+
+                var xRecurring = x + rruleOffset + sunOffset;
+                var yValue = Number(responseEntry.value);
+                seriesData[isActive ? 'active' : 'inactive'].push({ x: xRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
+                if (hasBurst){
+                    var sunSeriesEndOffset = 0;
+                    if (responseEntry.series.end.event.indexOf('sun') >= 0 )
+                        sunSeriesEndOffset = self._getSunTime(responseEntry.series.end.event, self.rruleDays[day]) - self._getSunTime(responseEntry.series.end.event, 0);
+                    sunSeriesEndOffset = (seriesEnd + sunSeriesEndOffset < xSeriesEndMin ? xSeriesEndMin - seriesEnd : sunSeriesEndOffset);
+                    sunSeriesEndOffset = (seriesEnd + sunSeriesEndOffset > xSeriesEndMax ? xSeriesEndMax - seriesEnd : sunSeriesEndOffset);
+
+                    xBurstRecurring = xRecurring;
+                    while (xBurstRecurring + seriesIntervall <= seriesEnd + rruleOffset + sunSeriesEndOffset) {
+                        xBurstRecurring += seriesIntervall;
+                        seriesData[isActive ? 'active' : 'inactive'].push({ x: xBurstRecurring, y: yValue, className: 'uzsu-'+responseEntryIdx+' uzsu-event-'+responseEntry.event, entryIndex: responseEntryIdx, uzsuEntry: responseEntry });
+                    }
+                }
+                if(!hasBurst && (xMin !== undefined || xMax !== undefined)) {
+                    if(xMin !== undefined)
+                        seriesData.range.push({ x: xMin+rruleOffset, y: yValue, name: sv_lang.uzsu.earliest, uzsuEntry: responseEntry, className: 'uzsu-min' });
+                    else
+                        seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-min uzsu-hidden', marker: { enabled: false } });
+                    if(xMax !== undefined)
+                        seriesData.range.push({ x: xMax+rruleOffset, y: yValue, name: sv_lang.uzsu.latest, uzsuEntry: responseEntry, className: 'uzsu-max' });
+                    else
+                        seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-max uzsu-hidden', marker: { enabled: false } });
+                    seriesData.range.push({ x: xMax+rruleOffset+1, y: null, uzsuEntry: responseEntry });
+                }
+            });
+        }
+    });
+
+    // push additional points for daywise interpolation
+    if (interpolation.hasOwnProperty('perday') && interpolation.perday == true) {
+        for (var i = 1; i < 8; i++) {
+            seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 10, y: -999});
+            seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 20, y: -999});
+            seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 30, y: -999});
+            if (i != 7)
+                seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 40, y: -999});
+        }
+    }
+
+    var navigatorMin = this._startTimestamp
+    var navigatorMax = navigatorMin + 7*24*60*60*1000;
+
+    // ******************************************************************************
+    // set plot data for active points
+    // ******************************************************************************
+    var data = seriesData.active;
+    data.sort(function(a,b) { return a.x - b.x });
+
+    // add graph points at the ends (not clickable since entryIndex and uzsuEntry are missing)
+    // 2 points at start in order to improve fitting of spline to UZSU interpolation
+
+    if(data.length > 0) {
+        if (interpolation.hasOwnProperty('perday') && interpolation.perday == true) {
+            var dayEnd
+            for (var i = 1; i< 8; i++){
+                dayEnd = data.findIndex(function(element){return element.y == -999});
+                data[dayEnd].x = data[dayEnd-1].x + 10;
+                data[dayEnd].y = null;
+                data[dayEnd+1].x = data[dayEnd-1].x + 20;
+                data[dayEnd+1].y = data[dayEnd-1].y;
+                data[dayEnd+2].x = data[dayEnd+4] ? data[dayEnd+4].x - 20 : navigatorMax;
+                data[dayEnd+2].y = data[dayEnd-1].y;
+                if (i != 7){
+                    data[dayEnd+3].x = data[dayEnd+4].x - 10;
+                    data[dayEnd+3].y = null;
+                }
+            }
+            data.unshift({x: data[0].x - 10, y: null });
+            data.unshift({x: data[0].x - 20, y: data[data.length - 1].y});
+            data.unshift({x: navigatorMin, y: data[data.length - 1].y});
+        } else {
+            navigatorMin =  data[data.length-1].x-1000*60*60*24*7;
+            data.unshift({ x: navigatorMin, y: data[data.length-1].y, className: data[data.length-1].className });
+            data.unshift({ x: data[data.length-2].x-1000*60*60*24*7, y: data[data.length-2].y, className: data[data.length-2].className });
+            navigatorMax = data[2].x+1000*60*60*24*7;
+            data.push({ x: navigatorMax, y: data[2].y, className: data[2].className });
+            // 2nd point at end would cause highcharts to break the plot area boundaries during dragging -> omit this for now
+            // and wait for the solution for https://github.com/highcharts/highcharts/issues/20351
+            // data.push({ x: data[3].x+1000*60*60*24*7, y: data[3].y, className: data[3].className });
+        }
+    }
+
+    chart.get('active').setData(data, false, null, false);
+    chart.get('active').update({
+        type: interpolation.type == 'cubic' ? 'spline' : 'line',
+        step: interpolation.type != 'cubic' && interpolation.type != 'linear' ? 'left' : false,
+        }, false);
 
 
-	// ******************************************************************************
-	// update the plot boundaries and draw the plot
-	// ******************************************************************************
-	chart.xAxis[0].update({
-		min: this._startTimestamp,
-		max: 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp,
-	//	floor: this._startTimestamp,
-		plotLines: plotLines
-		}, false);
+    // ******************************************************************************
+    // set plot data for inactive points
+    // ******************************************************************************
+    data = seriesData.inactive;
+    data.sort(function(a,b) { return a.x - b.x });
+    chart.get('inactive').setData(data, false, null, false);
 
-	chart.update({
-	  navigator: {
-		xAxis: {
-		 min: navigatorMin,
-		 max: navigatorMax,
-		}
-	  }
-	});
-	
-	chart.xAxis[0].setExtremes(this._startTimestamp, 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp)
 
-	chart.redraw();
+    // ******************************************************************************
+    // set plot data for min/max times on sun events and the sun times themselves
+    // ******************************************************************************
+    chart.get('range').setData(seriesData.range, false, null, false);
 
-	self._plotNowLine();
+    plotLines = [];
+    sunData = [];
+    if(hasSunrise || hasSunset) {
+        for(dayIdx = 0; dayIdx < 7; dayIdx++) {
+            if(hasSunrise) {
+                plotLines.push({
+                    value: self._getSunTime('sunrise', dayIdx)+dayIdx*1000*60*60*24,
+                    className: 'uzsu-event-sunrise',
+                    label: { text: sv_lang.uzsu.sunrise }
+                });
+                sunData.push({ x: self._getSunTime('sunrise', dayIdx)+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise', marker: { symbol: 'sunrise' } });
+            }
+            if(hasSunset) {
+                plotLines.push({
+                    value: self._getSunTime('sunset', dayIdx)+dayIdx*1000*60*60*24,
+                    className: 'uzsu-event-sunset',
+                    label: { text: sv_lang.uzsu.sunset }
+                });
+                sunData.push({ x: self._getSunTime('sunset', dayIdx)+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset', marker: { symbol: 'sunset' } })
+            }
+        }
+    }
+    chart.get('sun').setData(sunData, false);
+
+
+    // ******************************************************************************
+    // update the plot boundaries and draw the plot
+    // ******************************************************************************
+    chart.xAxis[0].update({
+        min: this._startTimestamp,
+        max: 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp,
+    //    floor: this._startTimestamp,
+        plotLines: plotLines
+        }, false);
+
+    chart.update({
+      navigator: {
+        xAxis: {
+         min: navigatorMin,
+         max: navigatorMax,
+        }
+      }
+    });
+
+    chart.xAxis[0].setExtremes(this._startTimestamp, 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp)
+
+    chart.redraw();
+
+    self._plotNowLine();
   },
 
   _save: function() {
     this._uzsuCollapseTimestring(this._uzsudata);
     this._write(this._uzsudata);
-	
-    // disable editing until dict update has been received   
+
+    // disable editing until dict update has been received
     this.element.widget('disable');
-	var self = this;
-    $('[data-widget="device.uzsuicon"][data-item="'+ this.options.item + '"]').addClass('blink'); 
+    var self = this;
+    $('[data-widget="device.uzsuicon"][data-item="'+ this.options.item + '"]').addClass('blink');
     $('[data-widget*="device.uzsu"][data-item="'+ this.options.item + '"] .uzsu-active-toggler').hide();
     setTimeout(function(){self.element.widget('enable');}, 15000); // fallback in case update is not coming
- 
+
   },
 
   _timeToTimestamp: function(time) {
@@ -2458,37 +2460,37 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
   },
 
   _getSunTime: function(event, dayIndex) {
-	if(!this.sunTimes){
-		this.sunTimes = { 'sunrise': [], 'sunset': [] };
-	for (var day in this.rruleDays){
-		if (this._uzsudata.hasOwnProperty('SunCalculated')){
-			this.sunTimes.sunrise[this.rruleDays[day]] = this._uzsudata.SunCalculated.sunrise[day];
-			this.sunTimes.sunset[this.rruleDays[day]] = this._uzsudata.SunCalculated.sunset[day];
-		} else {
-			this.sunTimes.sunrise[this.rruleDays[day]] = (this._uzsudata.sunrise == undefined) ? '06:00' : this._uzsudata.sunrise;
-			this.sunTimes.sunset[this.rruleDays[day]] = (this._uzsudata.sunset == undefined) ? '19:30' : this._uzsudata.sunset;
-		}
-		}
-		}
-	return this._timeToTimestamp(this.sunTimes[event][dayIndex]);
+    if(!this.sunTimes){
+      this.sunTimes = { 'sunrise': [], 'sunset': [] };
+      for (var day in this.rruleDays){
+        if (this._uzsudata.hasOwnProperty('SunCalculated')){
+          this.sunTimes.sunrise[this.rruleDays[day]] = this._uzsudata.SunCalculated.sunrise[day];
+          this.sunTimes.sunset[this.rruleDays[day]] = this._uzsudata.SunCalculated.sunset[day];
+        } else {
+          this.sunTimes.sunrise[this.rruleDays[day]] = (this._uzsudata.sunrise == undefined) ? '06:00' : this._uzsudata.sunrise;
+          this.sunTimes.sunset[this.rruleDays[day]] = (this._uzsudata.sunset == undefined) ? '19:30' : this._uzsudata.sunset;
+        }
+      }
+    }
+    return this._timeToTimestamp(this.sunTimes[event][dayIndex]);
   },
-  
+
   _calculateEventTime: function(timeEvent){
-	var result;
-	if(timeEvent.event == 'time')
+    var result;
+    if(timeEvent.event == 'time')
         result = this._timeToTimestamp(timeEvent.timeCron);
-	else{
-		result = this._getSunTime(timeEvent.event, 0);
-		if(timeEvent.timeOffsetType == 'm')
-		  result += timeEvent.timeOffset*1000*60;
-		else if(timeEvent.timeOffsetType == '' && timeEvent.timeOffset != '')
-		  result = (timeEvent.calculated == undefined) ? result : this._timeToTimestamp(timeEvent.calculated);
-		if(timeEvent.timeMin) 
-		  result = Math.max(this._timeToTimestamp(timeEvent.timeMin), result);
-		if(timeEvent.timeMax) 
-		  result =  Math.min(this._timeToTimestamp(timeEvent.timeMax), result);
-	}
-	return result;
+    else{
+        result = this._getSunTime(timeEvent.event, 0);
+        if(timeEvent.timeOffsetType == 'm')
+          result += timeEvent.timeOffset*1000*60;
+        else if(timeEvent.timeOffsetType == '' && timeEvent.timeOffset != '')
+          result = (timeEvent.calculated == undefined) ? result : this._timeToTimestamp(timeEvent.calculated);
+        if(timeEvent.timeMin)
+          result = Math.max(this._timeToTimestamp(timeEvent.timeMin), result);
+        if(timeEvent.timeMax)
+          result =  Math.min(this._timeToTimestamp(timeEvent.timeMax), result);
+    }
+    return result;
   },
 
   _plotNowLine: function(id) {
@@ -2513,7 +2515,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
  _uzsuRuntimePopup: function(responseEntry) {
     var self = this;
-	this.popupStartDay = new Date().getDay();
+    this.popupStartDay = new Date().getDay();
     // Steuerung des Popups erst einmal wird der Leeranteil angelegt
     // erst den Header, dann die Zeilen, dann den Footer
     var tt = this._uzsuBuildTableHeader();
@@ -2567,17 +2569,17 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       }
       uzsuPopup.popup('close');
     });
-	// call time series mode
+    // call time series mode
     uzsuPopup.delegate('.uzsuCellSeries button', 'click', function(e) {
         if($(this).hasClass('ui-icon-arrow-l'))
-        	self._uzsuHideAllSeriesLines();
+            self._uzsuHideAllSeriesLines();
         else
             self._uzsuShowSeriesLine(e);
       });
     // call Expert Mode
     uzsuPopup.delegate('[class*="uzsuCellExpert"] button', 'click', function(e) {
-	  var caller = $(this).parent()[0].className;
-	  caller = (caller.length > 14 ? caller.substring(14) : ''); 
+      var caller = $(this).parent()[0].className;
+      caller = (caller.length > 14 ? caller.substring(14) : '');
       if($(this).hasClass('ui-icon-arrow-u'))
         self._uzsuHideAllExpertLines();
       else
@@ -2589,11 +2591,11 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     });
     // Handler, um den Status anhand des Pulldowns SUN zu setzen
     uzsuPopup.delegate('.uzsuRowExpert [class*="uzsuEvent"] select, input[class*="uzsuSunActive"]', 'change', function (){
-	  var searchClass = $(this)[0].className;
-	  if ($(this)[0].nodeName == "SELECT") 
+      var searchClass = $(this)[0].className;
+      if ($(this)[0].nodeName == "SELECT")
             searchClass = $(this).parents()[2].className;
-	  var searchPos = searchClass.lastIndexOf('series');
-	  var caller = (searchPos < 0 ? '' : searchClass.substring(searchPos));
+      var searchPos = searchClass.lastIndexOf('series');
+      var caller = (searchPos < 0 ? '' : searchClass.substring(searchPos));
       self._uzsuSetSunActiveState($(this), caller);
     });
     // Handler, um den Series button Status zu setzen
@@ -2603,10 +2605,10 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     uzsuPopup.delegate('.uzsuRowSeries .uzsuEvent select, input.uzsuSeriesActive', 'change', function (){
       self._uzsuSetSeriesActiveState($(this));
     });
-	// switch input type for series end mode
-	uzsuPopup.delegate('.uzsuRowSeries fieldset.uzsuSeriesEndTypeInput', 'change', function (){
-		self._uzsuSetSeriesEndType($(this));
-	});
+    // switch input type for series end mode
+    uzsuPopup.delegate('.uzsuRowSeries fieldset.uzsuSeriesEndTypeInput', 'change', function (){
+        self._uzsuSetSeriesEndType($(this));
+    });
     // hier wir die aktuelle Seite danach durchsucht, wo das Popup ist und im folgenden das Popup initialisiert, geöffnet und die schliessen
     // Funktion daran gebunden. Diese entfernt wieder das Popup aus dem DOM Baum nach dem Schliessen mit remove
     uzsuPopup.popup('open');
@@ -2674,11 +2676,6 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     },
     _create: function() {
         this._super();
-
-        this.options.designtype = String(this.options.designtype);
-        if (this.options.designtype === undefined || this.options.designtype === '') {
-            this.options.designtype = io.uzsu_type;
-        }
 
         this._DrawGrid(this.options, this.uuid)
         this._addBackgroundframe()
@@ -2775,17 +2772,17 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
 
         // Keep Instance of ME because forEach will change "this" !
         myInstance = this
-		
-		// create day sequence to evaluate the right execution day for one-time events
-		var today = new Date().getDay();		// delivers SU = 0
-		var rruleDays = [];
-		var rruleDayNames = [];
-		for (var day in weekDays) {
-			rruleDays[day] = weekDays[day] - (6 + today) % 7;
-			if (rruleDays[day] < 0)
-				rruleDays[day] += 7;
-			rruleDayNames[rruleDays[day]] = day;
-		}
+
+        // create day sequence to evaluate the right execution day for one-time events
+        var today = new Date().getDay();        // delivers SU = 0
+        var rruleDays = [];
+        var rruleDayNames = [];
+        for (var day in weekDays) {
+            rruleDays[day] = weekDays[day] - (6 + today) % 7;
+            if (rruleDays[day] < 0)
+                rruleDays[day] += 7;
+            rruleDayNames[rruleDays[day]] = day;
+        }
 
         // now get the entries
         for (myItem in myDict.list) {
@@ -2796,28 +2793,28 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                 myDays = myActItem.rrule.split(";")[1].split("=")[1].split(",")
             } catch (e) {}
 
-			// build sequence of days to make sure "once" matches first entry 
-			var rruleDaySequence = myDays.map(function(d){return rruleDays[d]});
-			var isActive 
+            // build sequence of days to make sure "once" matches first entry
+            var rruleDaySequence = myDays.map(function(d){return rruleDays[d]});
+            var isActive
 
             //// for Series
             if (myActItem.hasOwnProperty("series")) {
-				var seriesEnd
+                var seriesEnd
                 if (myActItem.hasOwnProperty("seriesCalculated")) {
-					// sun times start after "now" in seriesCalculated and if a series is running todays data are repeated at the end
-					// since sun times differ normally over a week there is a risk of double entries in the timetable. So we need to drop the double entries
-					if (myActItem.seriesCalculated[myActItem.seriesCalculated.length - 1].seriesDay == myActItem.seriesCalculated[0].seriesDay){
-						// DEBUG: console.log(myActItem.seriesCalculated)
-						myActItem.seriesCalculated[0].seriesMax = myActItem.seriesCalculated[0].seriesMin;
-					}
+                    // sun times start after "now" in seriesCalculated and if a series is running todays data are repeated at the end
+                    // since sun times differ normally over a week there is a risk of double entries in the timetable. So we need to drop the double entries
+                    if (myActItem.seriesCalculated[myActItem.seriesCalculated.length - 1].seriesDay == myActItem.seriesCalculated[0].seriesDay){
+                        // DEBUG: console.log(myActItem.seriesCalculated)
+                        myActItem.seriesCalculated[0].seriesMax = myActItem.seriesCalculated[0].seriesMin;
+                    }
                     for (serie in myActItem.seriesCalculated) {
                         myTimeDict = myInstance._CreateSerieEntriesWithSun(myActItem)
-						seriesEnd = myTimeDict[myTimeDict.length -1].key;
-						rruleDaySequence = myDays.map(function(d){return rruleDays[d] == 0 && seriesEnd < new Date().transUnit('H:m') ? rruleDays[d] + 7 : rruleDays[d]});
+                        seriesEnd = myTimeDict[myTimeDict.length -1].key;
+                        rruleDaySequence = myDays.map(function(d){return rruleDays[d] == 0 && seriesEnd < new Date().transUnit('H:m') ? rruleDays[d] + 7 : rruleDays[d]});
                         d = weekDays[myActItem.seriesCalculated[serie].seriesDay]
-						isActive = (myActItem.activeToday && myActItem.seriesCalculated[serie].seriesDay == rruleDayNames[0]) || (myActItem.active && !(myActItem.once && myActItem.seriesCalculated[serie].seriesDay != rruleDayNames[Math.min.apply(null, rruleDaySequence)]))
-						//DEBUG: console.log('with sun: ', myActItem.seriesCalculated[serie].seriesDay, d, rruleDayNames, myDays, rruleDaySequence, myTimeDict, isActive)
-						myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
+                        isActive = (myActItem.activeToday && myActItem.seriesCalculated[serie].seriesDay == rruleDayNames[0]) || (myActItem.active && !(myActItem.once && myActItem.seriesCalculated[serie].seriesDay != rruleDayNames[Math.min.apply(null, rruleDaySequence)]))
+                        //DEBUG: console.log('with sun: ', myActItem.seriesCalculated[serie].seriesDay, d, rruleDayNames, myDays, rruleDaySequence, myTimeDict, isActive)
+                        myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                     }
                 } else {
                     myTimeDict = myInstance._CreateSerieEntriesWithOutSun(myActItem)
@@ -2825,11 +2822,11 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                     myTimeDict2 = myTimeDict[1]
                     myDays.forEach(function(element) {
                         d1 = weekDays[element]
-						seriesEnd = myTimeDict[1].length == 0 && !myTimeDict1.length == 0 ? myTimeDict1[myTimeDict1.length-1].key : '23:59';
-						rruleDaySequence = myDays.map(function(d){return rruleDays[d] == 0 && seriesEnd < new Date().transUnit('H:m') ? rruleDays[d] + 7 : rruleDays[d]});
-						isActive = (myActItem.activeToday && element == rruleDayNames[0] ) || (myActItem.active && !(myActItem.once && element != rruleDayNames[Math.min.apply(null, rruleDaySequence)]));
- 						//DEBUG: console.log('without sun: ', element, d1, rruleDayNames, myDays, rruleDaySequence, myTimeDict1, myTimeDict2, seriesEnd, isActive)
-						myInstance._fillCells(TableName, myTimeDict1, myActItem, d1, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
+                        seriesEnd = myTimeDict[1].length == 0 && !myTimeDict1.length == 0 ? myTimeDict1[myTimeDict1.length-1].key : '23:59';
+                        rruleDaySequence = myDays.map(function(d){return rruleDays[d] == 0 && seriesEnd < new Date().transUnit('H:m') ? rruleDays[d] + 7 : rruleDays[d]});
+                        isActive = (myActItem.activeToday && element == rruleDayNames[0] ) || (myActItem.active && !(myActItem.once && element != rruleDayNames[Math.min.apply(null, rruleDaySequence)]));
+                         //DEBUG: console.log('without sun: ', element, d1, rruleDayNames, myDays, rruleDaySequence, myTimeDict1, myTimeDict2, seriesEnd, isActive)
+                        myInstance._fillCells(TableName, myTimeDict1, myActItem, d1, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                         d1 != 6 ? d2 = d1 + 1 : d2 = 0
                         myInstance._fillCells(TableName, myTimeDict2, myActItem, d2, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                     });
@@ -2854,9 +2851,9 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
                             }
                         }
                     }
-					rruleDaySequence = myDays.map(function(d){return rruleDays[d] == 0 && myTimeDict[myTimeDict.length-1].key < new Date().transUnit('H:m') ? rruleDays[d] + 7 : rruleDays[d]});
-					isActive = (myActItem.activeToday && element == rruleDayNames[0] ) || (myActItem.active && !(myActItem.once && element != rruleDayNames[Math.min.apply(null, rruleDaySequence)]));
-					//DEBUG: console.log(element, d, rruleDayNames, myDays, rruleDaySequence, myTimeDict, isActive)
+                    rruleDaySequence = myDays.map(function(d){return rruleDays[d] == 0 && myTimeDict[myTimeDict.length-1].key < new Date().transUnit('H:m') ? rruleDays[d] + 7 : rruleDays[d]});
+                    isActive = (myActItem.activeToday && element == rruleDayNames[0] ) || (myActItem.active && !(myActItem.once && element != rruleDayNames[Math.min.apply(null, rruleDaySequence)]));
+                    //DEBUG: console.log(element, d, rruleDayNames, myDays, rruleDaySequence, myTimeDict, isActive)
                     myInstance._fillCells(TableName, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive);
                 })
             }
@@ -2926,7 +2923,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         maxTime.setMinutes(maxMinutes)
         maxTime.setHours(maxHours)
         maxTime.setSeconds(0)
-        // Create new date for Start 
+        // Create new date for Start
         var myNewTime = new Date()
         myNewTime.setMinutes(minutes)
         myNewTime.setHours(hours)
@@ -2947,7 +2944,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
 
             myNewTime.setTime(myNewTime.getTime() + IntervallMinutes * 60000);
         }
-        return [myTimeDict1, myTimeDict2] // myTimeDict1 = Times for selected day; myTimeDict2 = Times for day after (overflow the actual day) 
+        return [myTimeDict1, myTimeDict2] // myTimeDict1 = Times for selected day; myTimeDict2 = Times for day after (overflow the actual day)
     },
     // *****************************************************
     // CreateSerieEntriesWithSun
@@ -2970,7 +2967,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         maxTime.setMinutes(maxMinutes)
         maxTime.setHours(maxHours)
         maxTime.setSeconds(0)
-        // Create new date for Start 
+        // Create new date for Start
         var myNewTime = new Date()
         myNewTime.setMinutes(minutes)
         myNewTime.setHours(hours)
@@ -2987,7 +2984,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     },
     // *****************************************************
     // fillColors
-    // *****************************************************	
+    // *****************************************************
     _fillColors: function(vals_on_color, vals_off_color, preFix) {
         // Fill the times from ON to OFF
         actMode = ''
@@ -3243,7 +3240,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         d = 0
 
         // Clear the SVG
-        this.element.find("svg")[0].innerHTML=""		
+        this.element.find("svg")[0].innerHTML=""
 
         this.options.mySvgWidth = 400
         this.element.find("svg")[0].width.baseVal.value = this.options.mySvgWidth
@@ -3365,7 +3362,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     },
     // *****************************************************
     // setInactiveStyle
-    // *****************************************************	    
+    // *****************************************************
     _setInactiveStyle: function (myDict) {
         // Set the different modes for inactive UZSU
         // Set the opacity based on active or not active
@@ -3385,7 +3382,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     },
     // *****************************************************
     // fillCells
-    // *****************************************************	
+    // *****************************************************
     _fillCells: function(preFix, myTimeDict, myActItem, d, vals_on, vals_off, vals_on_color, vals_off_color, asortValues, isActive) {
         for (entry in myTimeDict) {
             myTime = myTimeDict[entry].key
@@ -3464,7 +3461,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     },
     // *****************************************************
     // _ShowToolTip
-    // *****************************************************	
+    // *****************************************************
     _ShowToolTip: function() {
         $(".ON, .OFF, .DISABLED_OFF, .DISABLED_ON ").hover(function(event) {
             if (event.type == 'mouseenter') {
@@ -3522,7 +3519,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
     },
     // *****************************************************
     // showSun
-    // *****************************************************	
+    // *****************************************************
     _showSun: function(HeadlineHeight,myDict) {
         // get sunrise and sunset
         if (myDict.hasOwnProperty('SunCalculated')) {
@@ -3534,12 +3531,12 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
             sunrise = myDict.sunrise
             sunset = myDict.sunset
             }
-		  else {  // dummys for docu page
-			sunrise = "04.54"
-			sunset = "21:30"  
-		    }
-          } 
-        
+          else {  // dummys for docu page
+            sunrise = "04.54"
+            sunset = "21:30"
+            }
+          }
+
         // SunRise-SVG
         h = sunrise.split(":")[0]
         m = sunrise.split(":")[1]
@@ -3650,7 +3647,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
         btnActive.setAttributeNS(null, "height", "15px");
 
         btnActive.setAttribute("id", "btnActive");
-		btnActive.setAttribute("class", "uzsu-active-toggler");
+        btnActive.setAttribute("class", "uzsu-active-toggler");
         btnActive.childNodes[0].setAttributeNS(null, "x", "0px");
         btnActive.childNodes[0].setAttributeNS(null, "y", "0px");
         btnActive.childNodes[0].setAttributeNS(null, "rx", "1");
