@@ -2,6 +2,7 @@
 ### New / Changed Widgets
 - plot.period data sources (item / database) can now be mixed, i.e. specified individually for each item
 - widgets for absolute positioning in example3.graphic (ovbasic.html, ovdevice.html) updated to provide functionality identical to the corresponding standard widgets
+- empty title is now allowed in device.uzsugraph and is the new default. (Default was "UZSU" before in order to occupy the space above the graph for the layout.)
 
 ### Other New Features
 - German "Kurzanleitung" v2.5 is now integrated in the pages dircectory
@@ -26,6 +27,7 @@
 - timeshift function in app "analyse_plots" did not take new plot duration if this was changed for the plot.
 - plot.timeshift made the plot disappear if it was used on plots with zoom=advanced while the preserve zoom option was enabled but the plot was not zoomed
 - .gitignore was faulty and ignored the important config.ini files in the example and documents directoroes.
+- device.uzsugraph did not work for backends w/o UZSU interpolation feature
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
