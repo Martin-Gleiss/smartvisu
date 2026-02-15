@@ -14,6 +14,7 @@
 
 ### Improvements
 - a destroy method for widgets is now available. Useful e.g. for the app "analyse_plot" to destroy a plot before displaying a new one
+- an error message is shown in status.activelist if data received is not in JSON format
 
 ### Updated Libraries
 
