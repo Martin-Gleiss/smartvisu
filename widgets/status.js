@@ -1,40 +1,40 @@
 // ----- status.badge -------------------------------------------------------
 $.widget("sv.status_badge", $.sv.widget, {
 
-	initSelector: 'span[data-widget="status.badge"]',
+    initSelector: 'span[data-widget="status.badge"]',
 
-	options: {
-		 thresholds: '',
-		 colors: '',
-		 symbols: ''
-	},
-	
-	_update: function(response) {
-		
-		// coloring
-		var currentIndex = 0;
-		$.each(String(this.options.thresholds).explode(), function(index, threshold) {
-			if((isNaN(response[0]) || isNaN(threshold)) ? (threshold > response[0]) : (parseFloat(threshold) > parseFloat(response[0])))
-				return false;
-			currentIndex++;
-		});
-		var color = String(this.options.colors).explode()[currentIndex];
-		var symbol = String(this.options.symbols).explode()[currentIndex] || '';
+    options: {
+         thresholds: '',
+         colors: '',
+         symbols: ''
+    },
 
-		if (symbol == '')
-			this.element.children('span').text(response[0]);
-		else {
-			this.element.children('span').text('');
-			fx.load(symbol, 'icon', 'stroke: #fff; fill: #fff', this.element.children('span'), 'append'  )
-		}
+    _update: function(response) {
 
-		if(color == 'hidden') {
-			this.element.children('span').hide().css('background-color', null);
-		}
-		else {
-			this.element.children('span').show().css('background-color', color);
-		}
-	},
+        // coloring
+        var currentIndex = 0;
+        $.each(String(this.options.thresholds).explode(), function(index, threshold) {
+            if((isNaN(response[0]) || isNaN(threshold)) ? (threshold > response[0]) : (parseFloat(threshold) > parseFloat(response[0])))
+                return false;
+            currentIndex++;
+        });
+        var color = String(this.options.colors).explode()[currentIndex];
+        var symbol = String(this.options.symbols).explode()[currentIndex] || '';
+
+        if (symbol == '')
+            this.element.children('span').text(response[0]);
+        else {
+            this.element.children('span').text('');
+            fx.load(symbol, 'icon', 'stroke: #fff; fill: #fff', this.element.children('span'), 'append'  )
+        }
+
+        if(color == 'hidden') {
+            this.element.children('span').hide().css('background-color', null);
+        }
+        else {
+            this.element.children('span').show().css('background-color', color);
+        }
+    },
 
 });
 
@@ -42,85 +42,85 @@ $.widget("sv.status_badge", $.sv.widget, {
 // ----- status.collapse -------------------------------------------------------
 $.widget("sv.status_collapse", $.sv.widget, {
 
-	initSelector: 'span[data-widget="status.collapse"]',
+    initSelector: 'span[data-widget="status.collapse"]',
 
-	options: {
-		id: null,
-		val: '',
-		action: 'hide'
-	},
-	
-	_update: function(response) {
-		// response is: {{ item_trigger }}
-		var target = $('[data-bind="' + this.options.id + '"]');
-		var comp = String(this.options.val).explode(); 
+    options: {
+        id: null,
+        val: '',
+        action: 'hide'
+    },
 
-		if ((comp.indexOf(String(response[0])) == -1) != (this.options.action == 'show')) {
-			target.not('.ui-collapsible').not('.ui-popup').show();
-			target.filter('.ui-collapsible').collapsible("expand");
-			target.filter('.ui-popup').popup("open");
-		}
-		else {
-			target.not('.ui-collapsible').not('.ui-popup').hide();
-			target.filter('.ui-collapsible').collapsible("collapse");
-			target.filter('.ui-popup').popup("close");
-		}
-	},
+    _update: function(response) {
+        // response is: {{ item_trigger }}
+        var target = $('[data-bind="' + this.options.id + '"]');
+        var comp = String(this.options.val).explode();
+
+        if ((comp.indexOf(String(response[0])) == -1) != (this.options.action == 'show')) {
+            target.not('.ui-collapsible').not('.ui-popup').show();
+            target.filter('.ui-collapsible').collapsible("expand");
+            target.filter('.ui-popup').popup("open");
+        }
+        else {
+            target.not('.ui-collapsible').not('.ui-popup').hide();
+            target.filter('.ui-collapsible').collapsible("collapse");
+            target.filter('.ui-popup').popup("close");
+        }
+    },
 
 });
 
 // ----- status.customstyle -------------------------------------------------------
 $.widget("sv.status_customstyle", $.sv.widget, {
 
-	initSelector: 'span[data-widget="status.customstyle"]',
+    initSelector: 'span[data-widget="status.customstyle"]',
 
-	options: {
-		id: null,
-		val: '',
-		action: 'blink'
-	},
-	
-	_update: function(response) {
-		// response is: {{ item_trigger }}
-		var targets = this.options.id.explode();
-		var comp = String(this.options.val).explode(); 
-		var styleActive = false;
+    options: {
+        id: null,
+        val: '',
+        action: 'blink'
+    },
 
-		// https://stackoverflow.com/questions/7356123/how-to-call-and-execute-an-operator-from-string
-		var operators = {	
-			'>': function(a, b) { return a > b },
-			'>=': function(a, b) { return a >= b },
-			'<': function(a, b) { return a < b },
-			'<=': function(a, b) { return a <= b },
-			'=': function(a, b) { return a == b }			
-		};
+    _update: function(response) {
+        // response is: {{ item_trigger }}
+        var targets = this.options.id.explode();
+        var comp = String(this.options.val).explode();
+        var styleActive = false;
 
-		for (var i = 0; i < comp.length; i++){
-			var compValue = comp[i].replace(/[<=>]+/, '');
-			var compOperator = $.isNumeric(compValue)? comp[i].replace(/[0-9\.]+/, '') || "=" : "=";
-			// DEBUG: console.log(comp[i], String(response[0]), compOperator, compValue, operators[compOperator](response[0], compValue )) 
-			styleActive = styleActive || operators[compOperator](response[0], compValue ); 
-		}
-		
-		for (var i = 0; i < targets.length; i++) {
-			var target = $('#' + targets[i]);
-			if (styleActive)  {
-				//DEBUG: console.log('target found', target, this.options.action)
-				target.addClass(this.options.action);
-				if (target.attr('data-widget') == 'basic.stateswitch' ){
-					target.next('a[data-widget="basic.stateswitch"]').addClass(this.options.action);
-					target.children ('a[data-widget="basic.stateswitch"]').addClass(this.options.action);
-				}
-			}
-			else {
-				target.removeClass(this.options.action);
-				if (target.attr('data-widget') == 'basic.stateswitch'){
-					target.next('a[data-widget="basic.stateswitch"]').removeClass(this.options.action);
-					target.children ('a[data-widget="basic.stateswitch"]').removeClass(this.options.action);
-				}
-			}
-		}
-	},
+        // https://stackoverflow.com/questions/7356123/how-to-call-and-execute-an-operator-from-string
+        var operators = {
+            '>': function(a, b) { return a > b },
+            '>=': function(a, b) { return a >= b },
+            '<': function(a, b) { return a < b },
+            '<=': function(a, b) { return a <= b },
+            '=': function(a, b) { return a == b }
+        };
+
+        for (var i = 0; i < comp.length; i++){
+            var compValue = comp[i].replace(/[<=>]+/, '');
+            var compOperator = $.isNumeric(compValue)? comp[i].replace(/[0-9\.]+/, '') || "=" : "=";
+            // DEBUG: console.log(comp[i], String(response[0]), compOperator, compValue, operators[compOperator](response[0], compValue ))
+            styleActive = styleActive || operators[compOperator](response[0], compValue );
+        }
+
+        for (var i = 0; i < targets.length; i++) {
+            var target = $('#' + targets[i]);
+            if (styleActive)  {
+                //DEBUG: console.log('target found', target, this.options.action)
+                target.addClass(this.options.action);
+                if (target.attr('data-widget') == 'basic.stateswitch' ){
+                    target.next('a[data-widget="basic.stateswitch"]').addClass(this.options.action);
+                    target.children ('a[data-widget="basic.stateswitch"]').addClass(this.options.action);
+                }
+            }
+            else {
+                target.removeClass(this.options.action);
+                if (target.attr('data-widget') == 'basic.stateswitch'){
+                    target.next('a[data-widget="basic.stateswitch"]').removeClass(this.options.action);
+                    target.children ('a[data-widget="basic.stateswitch"]').removeClass(this.options.action);
+                }
+            }
+        }
+    },
 
 });
 
@@ -128,27 +128,27 @@ $.widget("sv.status_customstyle", $.sv.widget, {
 // ----- status.log -----------------------------------------------------------
 $.widget("sv.status_log", $.sv.widget, {
 
-	initSelector: 'span[data-widget="status.log"]',
+    initSelector: 'span[data-widget="status.log"]',
 
-	options: {
-		count: 10
-	},
-	
-	_update: function(response) {
-		var ret;
-		var line = '';
-		if (response[0] instanceof Array) {
-			// only the last entries
-			var list = response[0].slice(0, this.options.count);
-			for (var i = 0; i < list.length; i++) {
-				ret = '<div class="color ' + list[i].level.toLowerCase() + '"></div>';
-				ret += '<h3>' + new Date(list[i].time).transLong() + '</h3>';
-				ret += '<p>' + list[i].message.htmlescape() + '</p>';
-				line += '<li data-icon="false">' + ret + '</li>';
-			}
-			this.element.find('ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
-		}
-	},
+    options: {
+        count: 10
+    },
+
+    _update: function(response) {
+        var ret;
+        var line = '';
+        if (response[0] instanceof Array) {
+            // only the last entries
+            var list = response[0].slice(0, this.options.count);
+            for (var i = 0; i < list.length; i++) {
+                ret = '<div class="color ' + list[i].level.toLowerCase() + '"></div>';
+                ret += '<h3>' + new Date(list[i].time).transLong() + '</h3>';
+                ret += '<p>' + list[i].message.htmlescape() + '</p>';
+                line += '<li data-icon="false">' + ret + '</li>';
+            }
+            this.element.find('ul').html(line).trigger('prepare').listview('refresh').trigger('redraw');
+        }
+    },
 
 });
 
@@ -156,343 +156,347 @@ $.widget("sv.status_log", $.sv.widget, {
 // ----- status.notify ----------------------------------------------------------
 $.widget("sv.status_notify", $.sv.widget, {
 
-	initSelector: 'span[data-widget="status.notify"]',
+    initSelector: 'span[data-widget="status.notify"]',
 
-	options: {
-		level: 'info',
-		signal: 'INFO',
-		itemAck: null,
-		ackValue: 1,
-		itemSignal: null,
-		itemTitle: null,
-		itemLevel: null
-	},
+    options: {
+        level: 'info',
+        signal: 'INFO',
+        itemAck: null,
+        ackValue: 1,
+        itemSignal: null,
+        itemTitle: null,
+        itemLevel: null
+    },
 
-	_update: function(response) {
+    _update: function(response) {
 
-		var level = this.options.level, signal = this.options.signal, title = this.element.find('h1').text();
+        var level = this.options.level, signal = this.options.signal, title = this.element.find('h1').text();
 
-		if (response[0] != 0) {
-			if (response.length > 2) {
-				if(this.options.itemSignal)
-					signal = response[2];
-				else if (this.options.itemTitle)
-					title = response[2];
-				else if(notify.messagesPerLevel.hasOwnProperty(response[2]))
-					level = response[2];
+        if (response[0] != 0) {
+            if (response.length > 2) {
+                if(this.options.itemSignal)
+                    signal = response[2];
+                else if (this.options.itemTitle)
+                    title = response[2];
+                else if(notify.messagesPerLevel.hasOwnProperty(response[2]))
+                    level = response[2];
 
-				if (response.length > 3) {
-					if (this.options.itemTitle)
-						title = response[3];
-					else if(notify.messagesPerLevel.hasOwnProperty(response[3]))
-						level = response[3];
+                if (response.length > 3) {
+                    if (this.options.itemTitle)
+                        title = response[3];
+                    else if(notify.messagesPerLevel.hasOwnProperty(response[3]))
+                        level = response[3];
 
-					if(response[4] && notify.messagesPerLevel.hasOwnProperty(response[4]))
-						level = response[4];
-				}
-			}
+                    if(response[4] && notify.messagesPerLevel.hasOwnProperty(response[4]))
+                        level = response[4];
+                }
+            }
 
-			notify.add(level, signal, title, '<b>' + response[1] + '</b><br  />' + this.element.find('p').html(), this.options.itemAck, this.options.ackValue);
-			notify.display();
-		}
+            notify.add(level, signal, title, '<b>' + response[1] + '</b><br  />' + this.element.find('p').html(), this.options.itemAck, this.options.ackValue);
+            notify.display();
+        }
 
-	},
-	
+    },
+
 });
 
 
 // ----- status.message -------------------------------------------------------
 $.widget("sv.status_message", $.sv.widget, {
 
-	initSelector: 'span[data-widget="status.message"]',
+    initSelector: 'span[data-widget="status.message"]',
 
-	_update: function(response) {
-		// response is: {{ gad_trigger }}, {{ gad_message }}
-		var id = this.element.attr('id');
-		if (response[0] != 0) {
-			$('#' + id + '-message p span').html(response[1] ? '<b>' + response[1] + '</b><br />' : '');
-			$('#' + id + '-message .stamp').html(response[2] ? new Date(response[2]).transShort() : new Date().transShort());
-			$('#' + id + '-message').popup('open');
-			console.log(id + ' open ' + response[0]);
-		}
-		else {
-			$('#' + id + '-message').popup('close');
-			console.log(id + ' ' + response[0]);
-		}
-	},
-	
+    _update: function(response) {
+        // response is: {{ gad_trigger }}, {{ gad_message }}
+        var id = this.element.attr('id');
+        if (response[0] != 0) {
+            $('#' + id + '-message p span').html(response[1] ? '<b>' + response[1] + '</b><br />' : '');
+            $('#' + id + '-message .stamp').html(response[2] ? new Date(response[2]).transShort() : new Date().transShort());
+            $('#' + id + '-message').popup('open');
+            console.log(id + ' open ' + response[0]);
+        }
+        else {
+            $('#' + id + '-message').popup('close');
+            console.log(id + ' ' + response[0]);
+        }
+    },
+
 });
 
 // ----- status.toast -------------------------------------------------------
 $.widget("sv.status_toast", $.sv.widget, {
 
-	initSelector: 'span[data-widget="status.toast"]',
+    initSelector: 'span[data-widget="status.toast"]',
 
-	options: {
-		template: null,
-		hideAfter:null,
-		showHide: null, 
-		style: '',
-		buttonopts: '',
-		textopts: '',
-	},
+    options: {
+        template: null,
+        hideAfter:null,
+        showHide: null,
+        style: '',
+        buttonopts: '',
+        textopts: '',
+    },
 
-	_update: function(response) {
-		var id = this.element.attr('id');
-		if (id == undefined){
-			id = sv.activePage[0].id + '-' + this.eventNamespace.substring(1);
-		}
-		var element = $(this.element);
+    _update: function(response) {
+        var id = this.element.attr('id');
+        if (id == undefined){
+            id = sv.activePage[0].id + '-' + this.eventNamespace.substring(1);
+        }
+        var element = $(this.element);
 
-		//Style values
-		var params = this.options.style.explode();
-		var bgColor = params[0];
-		var color = params[1];
-		var loaderBg = params[2];
-		var textAlign = params[3];
-		var showPosition = params[4];
-		var stack = params[5];
-		var showLoader = (params[6] == 'true' ? true : false);
-		var hideAfter = params[7];
-		var allowClose = (params[8] == 'true' ? true : false);
-		var showHide = params[9];
-		
-		//Button
-		var buttonOpts = this.options.buttonopts.explode();
-		var sendButton = buttonOpts[0];
-		var sendItem = buttonOpts[1];
-		var sendVal = buttonOpts[2];
-				
-		//Title, Text, Icon check if text or item
-		var itemsStr = this.options.item.explode();
-		var items = [];
-		var textOpts = this.options.textopts.explode();
-		
-		var i2 =0;
-		items.push(response[0]);
-		for (var i = 1; i < itemsStr.length; i++) {
-			if(itemsStr[i]!= ''){
-				items.push(response[i-i2]);
-				i2= 0;
-			}else{
-				if(textOpts[i-1]){
-					items.push(textOpts[i-1]);
-					i2++;
-				}else{
-					items.push('');
-				}
-			}
-		}
-		
-		var showTitle = items[1];
-		var showText = items[2];
-		var showIcon = items[3];
-		
-		//Template 
-		if(this.options.template == 'info'){
-			showIcon = 'info';
-			hideAfter = 5000;
-			bgColor = '#81BEF7';
-			allowClose = true;
-			color = '#eee';
-		}else if(this.options.template == 'success'){
-			showIcon = 'success';
-			hideAfter = 5000;
-			bgColor = '#1ad600';
-			allowClose = true;
-			color = '#000';
-		}else if (this.options.template == 'warning'){
-			showIcon = 'warning';
-			bgColor = '#ff6609';
-			allowClose = true;
-			hideAfter= false;
-			color = '#000000';
-		}else if (this.options.template == 'error'){
-			showIcon = 'error';
-			hideAfter= false;
-			bgColor = '#e03d3d';
-			allowClose = false;
-			color = '#FFF';
-			if (sendButton =='') sendButton ='OK';
-			showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ="#'+id+'" type="button" value="'+sendButton+'" data-senditem="'+sendItem+'" data-sendvalue="'+sendVal+'" />';
-		}else{
-			if (sendButton != '') showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ="#'+id+'" type="button" value="'+sendButton+'" data-senditem="'+sendItem+'" data-sendvalue="'+sendVal+'" />';
-		};
-		
-		if (response[0]){	
-			var toast = $.toast({
-				text: showText, // Text that is to be shown in the toast
-				heading: showTitle, // Optional heading to be shown on the toast
-				icon: showIcon, // Type of toast icon
-				showHideTransition: showHide, // fade, slide or plain
-				allowToastClose: allowClose, // Boolean value true or false
-				hideAfter: hideAfter, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
-				stack: 99, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
-				position: showPosition, // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-				textAlign: textAlign,  // Text alignment i.e. left, right or center
-				loader: showLoader,  // Whether to show loader or not. True by default
-				loaderBg: loaderBg,  // Background color of the toast loader
-				bgColor: bgColor,
-				textColor: color,
-				class: id 
-				
-			});
-			
-			element.append(toast);//add toast to widget
-		
-		
-			//use smartVISU icon
-			if (textOpts[2]){ 
-				var pic = textOpts[2];
+        //Style values
+        var params = this.options.style.explode();
+        var bgColor = params[0];
+        var color = params[1];
+        var loaderBg = params[2];
+        var textAlign = params[3];
+        var showPosition = params[4];
+        var stack = params[5];
+        var showLoader = (params[6] == 'true' ? true : false);
+        var hideAfter = params[7];
+        var allowClose = (params[8] == 'true' ? true : false);
+        var showHide = params[9];
 
-				// add default path if icon has no path
-				if(pic.indexOf('.') == -1){
-					pic = pic+'.svg';
-				};
-				if(pic.indexOf('/') == -1){
-					pic = 'icons/ws/'+pic;
-				}else{
-					pic = pic;	
-				};
-				
-				$("div.jq-toast-single").last().addClass('jq-has-icon');
-				$("div.jq-has-icon").last().css({'background-position-x': '5px','background-size': '3.5em' }); //fetch button id
-				$("div.jq-toast-single").last().css({'background-image':'url('+pic+')'}); //fetch button id
-			};
+        //Button
+        var buttonOpts = this.options.buttonopts.explode();
+        var sendButton = buttonOpts[0];
+        var sendItem = buttonOpts[1];
+        var sendVal = buttonOpts[2];
 
-		}else{ 
-			if (allowClose == true){
-				$("div.jq-toast-single." + id).last().remove();
+        //Title, Text, Icon check if text or item
+        var itemsStr = this.options.item.explode();
+        var items = [];
+        var textOpts = this.options.textopts.explode();
 
-			};
-		}
-		
-		//Close by button click
-		$(".button").click(function() {
-			var sendItem = $(this).attr('data-senditem');
-			var sendVal= $(this).attr('data-sendvalue'); 
-			if (sendItem == undefined || sendItem == '') {
+        var i2 =0;
+        items.push(response[0]);
+        for (var i = 1; i < itemsStr.length; i++) {
+            if(itemsStr[i]!= ''){
+                items.push(response[i-i2]);
+                i2= 0;
+            }else{
+                if(textOpts[i-1]){
+                    items.push(textOpts[i-1]);
+                    i2++;
+                }else{
+                    items.push('');
+                }
+            }
+        }
+
+        var showTitle = items[1];
+        var showText = items[2];
+        var showIcon = items[3];
+
+        //Template
+        if(this.options.template == 'info'){
+            showIcon = 'info';
+            hideAfter = 5000;
+            bgColor = '#81BEF7';
+            allowClose = true;
+            color = '#eee';
+        }else if(this.options.template == 'success'){
+            showIcon = 'success';
+            hideAfter = 5000;
+            bgColor = '#1ad600';
+            allowClose = true;
+            color = '#000';
+        }else if (this.options.template == 'warning'){
+            showIcon = 'warning';
+            bgColor = '#ff6609';
+            allowClose = true;
+            hideAfter= false;
+            color = '#000000';
+        }else if (this.options.template == 'error'){
+            showIcon = 'error';
+            hideAfter= false;
+            bgColor = '#e03d3d';
+            allowClose = false;
+            color = '#FFF';
+            if (sendButton =='') sendButton ='OK';
+            showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ="#'+id+'" type="button" value="'+sendButton+'" data-senditem="'+sendItem+'" data-sendvalue="'+sendVal+'" />';
+        }else{
+            if (sendButton != '') showText+='<br/><input class ="button ui-btn ui-mini ui-corner-all ui-btn-inline" id ="#'+id+'" type="button" value="'+sendButton+'" data-senditem="'+sendItem+'" data-sendvalue="'+sendVal+'" />';
+        };
+
+        if (response[0]){
+            var toast = $.toast({
+                text: showText, // Text that is to be shown in the toast
+                heading: showTitle, // Optional heading to be shown on the toast
+                icon: showIcon, // Type of toast icon
+                showHideTransition: showHide, // fade, slide or plain
+                allowToastClose: allowClose, // Boolean value true or false
+                hideAfter: hideAfter, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                stack: 99, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                position: showPosition, // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                textAlign: textAlign,  // Text alignment i.e. left, right or center
+                loader: showLoader,  // Whether to show loader or not. True by default
+                loaderBg: loaderBg,  // Background color of the toast loader
+                bgColor: bgColor,
+                textColor: color,
+                class: id
+
+            });
+
+            element.append(toast);//add toast to widget
+
+            //use smartVISU icon
+            if (textOpts[2]){
+                var pic = textOpts[2];
+
+                // add default path if icon has no path
+                if(pic.indexOf('.') == -1){
+                    pic = pic+'.svg';
+                };
+                if(pic.indexOf('/') == -1){
+                    pic = 'icons/ws/'+pic;
+                }else{
+                    pic = pic;
+                };
+
+                $("div.jq-toast-single").last().addClass('jq-has-icon');
+                $("div.jq-has-icon").last().css({'background-position-x': '5px','background-size': '3.5em' }); //fetch button id
+                $("div.jq-toast-single").last().css({'background-image':'url('+pic+')'}); //fetch button id
+            };
+
+        }else{
+            if (allowClose == true){
+                $("div.jq-toast-single." + id).last().remove();
+
+            };
+        }
+
+        //Close by button click
+        $(".button").click(function() {
+            var sendItem = $(this).attr('data-senditem');
+            var sendVal= $(this).attr('data-sendvalue');
+            if (sendItem == undefined || sendItem == '') {
                 console.log("INFO: TOAST Button pressed, but NO item given ");
             }else{
                 io.write(sendItem, sendVal);
             };
             $(this).closest('div').remove();
         });
-	},
-	
+    },
+
 });
 
 // ----- status.activelist ----------------------------------------------------
 $.widget("sv.status_activelist", $.sv.widget, {
 
-	initSelector: '[data-widget="status.activelist"]',
+    initSelector: '[data-widget="status.activelist"]',
 
-	options: {
-		level: '',
-		title: '',
-		subtitle: '',
-		content: ''
-	},
-	
+    options: {
+        level: '',
+        title: '',
+        subtitle: '',
+        content: ''
+    },
 
-	_update: function(response) {
-		var self = this
+    _update: function(response) {
+        var self = this
         var node = this.element.find('.activelist-container')
-		node.empty();
-		var data = response[0]; 
-		var level = this.options.level;
-		var title = this.options.title;
-		var subtitle = this.options.subtitle;
-		var content = this.options.content;
-		
-		for (var i = 0; i < data.length; i++) { 
-			showMessage(data[i]);
-		};
-		
-		function showMessage(messages) {
-					
-			// handle status_event_format in lang.ini
-			$.each(sv_lang.status_event_format, function(pattern, attributes) {
-				if (messages[level] != null && messages[level].toLowerCase().indexOf(pattern.toLowerCase()) > -1) { // message level contains pattern
-					// set each defined property
-					$.each(attributes, function(prop, val) {
-						messages[prop] = val;
-					});
-				}
-			});
+        node.empty();
+        var data = response[0];
+        var level = this.options.level;
+        var title = this.options.title;
+        var subtitle = this.options.subtitle;
+        var content = this.options.content;
 
-						
-			//if no icon provided
-			if (!messages.icon) {
-				//if no default provided
-				if (typeof(sv_lang.status_event_format.default_img_status) === undefined || sv_lang.status_event_format.default_img_status.icon == "" ){
-					messages.icon = "pages/base/pics/trans.png";
-					messages.color = 'transparent';
-				} else {
-					messages.icon = sv_lang.status_event_format.default_img_status.icon;
-					messages.color = sv_lang.status_event_format.default_img_status.color;
-				}
-			}
+        if (typeof data != Array) {
+            data = [{}];
+            data[0][level] = 'error';
+            data[0][title] = sv_lang.status_event_format.error.invalid_data;
+            data[0][subtitle] = '';
+            data[0][content] = sv_lang.status_event_format.error.expected + ': "' + response[0] + '"';
+        }
 
-			// amend icon path/filename
-			if (messages.icon) {
-				// add default path if icon has no path
-				if (messages.icon.indexOf('/') == -1)
-					messages.icon = 'icons/ws/' + messages.icon;
-				// add svg suffix if icon has no suffix
-				if (messages.icon.indexOf('.') == -1)
-					messages.icon = messages.icon + '.svg';
-			};
-			
-			var a =  $('<a class="ui-btn" >');
-				if (messages.icon.indexOf('.svg') == -1)
-					a.append( $('<img class="icon">').css('background', messages.color ).attr('src', messages.icon));
-				else
-					fx.load(messages.icon,'icon icon0', 'background:'+messages.color+';', a, 'prepend');
-				$(a).append(
-					$('<div class="color">').css('background', '#666666')).append(
-					$('<h3>').text(messages[title])).append(
-					$('<p>').text(messages[subtitle])).appendTo(
-					$('<li  data-id= "entry'+i+'" data-icon="false">').appendTo(node)); 
-			
-			//add description text to entry
-			var contentfield = '<div class="content" style=" display: none; margin-left:1em; margin-bottom:2em; height:100%; text-align:left;"> '+messages[content]+'</div>';
-			//$(".activelist-container").append(contentfield);
+        for (var i = 0; i < data.length; i++) {
+            showMessage(data[i]);
+        };
+
+        function showMessage(messages) {
+
+            // handle status_event_format in lang.ini
+            $.each(sv_lang.status_event_format, function(pattern, attributes) {
+                if (messages[level] != null && messages[level].toLowerCase().indexOf(pattern.toLowerCase()) > -1) { // message level contains pattern
+                    // set each defined property
+                    $.each(attributes, function(prop, val) {
+                        messages[prop] = val;
+                    });
+                }
+            });
+
+            //if no icon provided
+            if (!messages.icon) {
+                //if no default provided
+                if (typeof(sv_lang.status_event_format.default_img_status) === undefined || sv_lang.status_event_format.default_img_status.icon == "" ){
+                    messages.icon = "pages/base/pics/trans.png";
+                    messages.color = 'transparent';
+                } else {
+                    messages.icon = sv_lang.status_event_format.default_img_status.icon;
+                    messages.color = sv_lang.status_event_format.default_img_status.color;
+                }
+            }
+
+            // amend icon path/filename
+            if (messages.icon) {
+                // add default path if icon has no path
+                if (messages.icon.indexOf('/') == -1)
+                    messages.icon = 'icons/ws/' + messages.icon;
+                // add svg suffix if icon has no suffix
+                if (messages.icon.indexOf('.') == -1)
+                    messages.icon = messages.icon + '.svg';
+            };
+
+            var a =  $('<a class="ui-btn" >');
+                if (messages.icon.indexOf('.svg') == -1)
+                    a.append( $('<img class="icon">').css('background', messages.color ).attr('src', messages.icon));
+                else
+                    fx.load(messages.icon,'icon icon0', 'background:'+messages.color+';', a, 'prepend');
+                $(a).append(
+                    $('<div class="color">').css('background', '#666666')).append(
+                    $('<h3>').text(messages[title])).append(
+                    $('<p>').text(messages[subtitle])).appendTo(
+                    $('<li  data-id= "entry'+i+'" data-icon="false">').appendTo(node));
+
+            //add description text to entry
+            var contentfield = '<div class="content" style=" display: none; margin-left:1em; margin-bottom:2em; height:100%; text-align:left;"> '+messages[content]+'</div>';
             node.append(contentfield);
-		};
-		
-		//toggle display of description text
-		$(this.element, ".activelist-container").find('li').click(function() {
-			event.preventDefault();
+        };
+
+        //toggle display of description text
+        $(this.element, ".activelist-container").find('li').click(function() {
+            event.preventDefault();
             $(this).toggleClass('open');
             accordionContent = $(this).next('.content');
             $(this, '.content').not(accordionContent).prev(this,'.content-title').removeClass('open');
             accordionContent.stop(true, true).slideToggle('slow');
         });
-	},
-	
+    },
+
 });
 
 
 // ----- status.disable -------------------------------------------------------
 $.widget("sv.status_disable", $.sv.widget, {
 
-	initSelector: 'span[data-widget="status.disable"]',
+    initSelector: 'span[data-widget="status.disable"]',
 
-	options: {
-		id: null,
-		val: '',
-	},
-	
-	_update: function(response) {
-		// response is: {{ item_trigger }}
-		var targets = this.options.id.explode().map(function(x){return $('#'+ x)});
-		var val = this.options.val;
-		var command = response[0] == val ? 'disable' : 'enable';
+    options: {
+        id: null,
+        val: '',
+    },
 
-		widget[command]($(targets))
-	},
-	
+    _update: function(response) {
+        // response is: {{ item_trigger }}
+        var targets = this.options.id.explode().map(function(x){return $('#'+ x)});
+        var val = this.options.val;
+        var command = response[0] == val ? 'disable' : 'enable';
+
+        widget[command]($(targets))
+    },
+
 });
 
 
