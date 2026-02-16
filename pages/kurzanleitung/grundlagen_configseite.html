@@ -111,10 +111,11 @@
 	<li><i>TLS-Port</i> = Port zur verschlüsselten Verbindung mit Backend (empfohlen = Standard TLS-Port von SmartHomeNG = 2425)</li>
 	<li><i>Reconnect</i> = Verbindungen zum Backend wiederherstellen, z.B. wenn Browser Tab inaktiv war (empfohlen = on). Intervall: 5 sec, oder in config.ini einstellbar mit dem Schlüssel "reconnect_time".</li>
 </ul>
-Der Treiber für smarthomeNG erkennt die bestehenden Verbindung, in dem er zwischen numerischer IP-Adresse und textförmiger URL unterscheidet. Wird die Visu nicht über die IP-Adresse aufgerufen, sondern über einen Hostnamen, 
-dann muss dieser Hostname <b>zwingend</b> im Abschnitt "smartVISU Hostname / Proxy Server" eingegeben werden! Anderenfalls interpretiert der Treiber dies als Verbindung von außen und verwendet die http(s)-Ports 80 und 443 
-anstelle der eingestellten Ports für den Websocket. In einzelnen Fällen benötigen Anwender neben dem smartVISU-Hostnamen noch einen zweiten reservierten Hostnamen. Dieser kann in der jeweiligen config.ini als Schlüssel 
-"driver_address2" manuell eingetragen werden.
+Der Treiber für smarthomeNG erkennt die bestehenden Verbindung, in dem er in der Browser-Adresszeile zwischen numerischer IP-Adresse und textförmigem Hostnamen unterscheidet. Wird die Visu nicht über die IP-Adresse aufgerufen, 
+sondern über einen Hostnamen, dann muss dieser Hostname <b>zwingend</b> im Abschnitt "smartVISU Hostname / Proxy Server" eingegeben werden, damit der Treiber die konfigurierte Adresse verwendet! Anderenfalls interpretiert der 
+Treiber dies als Verbindung von außen und verwendet die http(s)-Ports 80 und 443 anstelle der eingestellten Ports für den Websocket. In einzelnen Fällen benötigen Anwender neben dem smartVISU-Hostnamen noch einen zweiten reservierten Hostnamen, 
+der mit den konfigurierten Ports für den Websocket verwendet wird. Dieser kann in der jeweiligen config.ini als Schlüssel "driver_address2" manuell eingetragen werden. Siehe hierzu auch die Datei "hints_smarthomeng.md" im smartVISU
+Unterordner "driver". 
 <div id="config_tab_{{ source }}_2">
 	<form class="configform">
 		<fieldset>
