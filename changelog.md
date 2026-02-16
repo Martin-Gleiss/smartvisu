@@ -22,6 +22,7 @@
 - base template for quad design is now quad_base.html (according to base.html in standard design). quad_root.html is deprecated and kept only to avoid breaking changes.
 
 ### Removed Features
+- drivers deprecated in 2022 have been removed from ./driver/deprecated/
 
 ### Fixed Bugs
 - device specific settings could not be read if visu root folder name was a symlink (because of incorrect cookie path determination)
