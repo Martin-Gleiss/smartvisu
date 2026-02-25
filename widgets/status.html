@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2025
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,7 +12,7 @@
 * A widget to display messages received in json format
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item(dict,list)} an item contaning messages in json Format 
+* @param {item(dict,list)} an item contaning messages in json Format
 * @param {text=title} a parameter name for the title (optional, default ='title')
 * @param {text=subtitle} a parameter name for the subtitle (optional, default ='subtitle')
 * @param {text=content} a parameter name for the message (optional, default ='content')
@@ -21,11 +21,11 @@
 * @author Wolfram v. Hülsen based on a widget from Bonze
 */
 {% macro activelist(id, item_messages, title, subtitle, content, level) %}
-	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.activelist" class="calendarlist" data-item="{{ item_messages }}"
-		data-title="{{ title }}" data-subtitle="{{ subtitle }}" data-content="{{ content }}" data-level="{{ level }}">
-		<dl data-role="listview" class="ui-listview activelist-container" style="margin-top: 0px;margin-bottom: 0em; margin-right:0px;">
-		</dl>
-	</div>
+    <div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.activelist" class="calendarlist" data-item="{{ item_messages }}"
+        data-title="{{ title }}" data-subtitle="{{ subtitle }}" data-content="{{ content }}" data-level="{{ level }}">
+        <dl data-role="listview" class="ui-listview activelist-container" style="margin-top: 0px;margin-bottom: 0em; margin-right:0px;">
+        </dl>
+    </div>
 {% endmacro %}
 
 
@@ -42,14 +42,14 @@ the first one is the base color for values below first threshold, so pass one co
 * @author Christian aka hhhc, Stefan Widmer and Wolfram v. Hülsen
 */
 {% macro badge(id, item, threshold, color, symbol) %}
-	{% set symbols = [] %}
-	{%  for val in symbol %}
-		{% set symbols = symbols|merge(val == '' ? [''] : [localize_svg(val, true)]) %}
-	{% endfor %}
-	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.badge" data-item="{{ item }}"
-	data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color)|default('red') }}" data-symbols="{{ implode(symbols) }}" >
-		<span style="display:none"></span>
-	</span>
+    {% set symbols = [] %}
+    {%  for val in symbol %}
+        {% set symbols = symbols|merge(val == '' ? [''] : [localize_svg(val, true)]) %}
+    {% endfor %}
+    <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.badge" data-item="{{ item }}"
+    data-thresholds="{{ implode(threshold) }}" data-colors="{{ implode(color)|default('red') }}" data-symbols="{{ implode(symbols) }}" >
+        <span style="display:none"></span>
+    </span>
 {% endmacro %}
 
 
@@ -57,13 +57,13 @@ the first one is the base color for values below first threshold, so pass one co
 * Show and hide a div or popup or collapse a section by a trigger item.
 *
 * @param {id} unique id for this widget. Use this id in a div in the data-bind attribute to bind it to that widget (mandatory)
-* @param {item(bool,num,str)} an item which triggers the collapse 
+* @param {item(bool,num,str)} an item which triggers the collapse
 * @param {value[?]=0} the values on which the target will be collapsed (optional, default 0)
 * @param {text(hide,show)=hide} inverts the widget's behaviour, i.e. 'show' opens a popup instead of closing it if the trigger value is matched (optional, default = hide)
 */
 {% macro collapse(id, item_trigger, value, action) %}
-	{% set value = (value|default([0]) is iterable ? value|default([0]) : [value]) %}	
-	<span id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="status.collapse" data-item="{{ item_trigger }}" data-val="{{ implode(value) }}" data-action="{{ action |default('hide') }}"></span>
+    {% set value = (value|default([0]) is iterable ? value|default([0]) : [value]) %}
+    <span id="{{ uid(page, id) }}" data-id="{{ id }}" data-widget="status.collapse" data-item="{{ item_trigger }}" data-val="{{ implode(value) }}" data-action="{{ action |default('hide') }}"></span>
 {% endmacro %}
 
 
@@ -74,15 +74,21 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {item(bool,num,str)} an item which triggers the styling
 * @param {text[?]=0} the values on which the target will be styled in array form. Compare operators are supported for numeric values, e.g. "<20" or ">=10". Use a sole "=" to match an empty sring (optional, default 0)
 * @param {text=blink} custom CSS class used for styling  (optional, default = blink)
+* @param {text(standard,duration)=standard} 'duration' interprets the item value as timestamp and triggers on the time difference given in the 'value' parameter (optional, default = standard)
+* @param {duration=} repeat interval to compare the age of a timestamp while valuetype=duration (optional, no default)
+*
+* @author Wolfram v. Hülsen
 */
-{% macro customstyle(id, item_trigger, value, action) %}
-	{% set id = id is iterable ? id : [id] %}
-	{% set ids = [] %}
-	{%  for val in id %}
-		{% set ids = ids|merge([uid(page, val)]) %}
-	{% endfor %}
-	{% set value = (value|default([0]) is iterable ? value|default([0]) : [value]) %}	
-	<span data-id="{{ implode(ids) }}" data-widget="status.customstyle" data-item="{{ item_trigger }}" data-val="{{ implode(value) }}" data-action="{{ action |default('blink') }}"></span>
+{% macro customstyle(id, item_trigger, value, action, valuetype, repeat) %}
+    {% set id = id is iterable ? id : [id] %}
+    {% set ids = [] %}
+    {%  for val in id %}
+        {% set ids = ids|merge([uid(page, val)]) %}
+    {% endfor %}
+    {% set value = (value|default([0]) is iterable ? value|default([0]) : [value]) %}
+    <span data-id="{{ implode(ids) }}" data-widget="status.customstyle" data-item="{{ item_trigger }}" data-val="{{ implode(value) }}" data-action="{{ action |default('blink') }}"
+          data-valuetype="{{ valuetype|default('standard') }}" {%- if valuetype == 'duration' and repeat is not empty -%}data-repeat="{{ repeat }}" {%- endif -%}
+    />
 {% endmacro %}
 
 
@@ -96,13 +102,13 @@ the first one is the base color for values below first threshold, so pass one co
 * @author Wolfram v. Hülsen
 */
 {% macro disable(id, item, value, icon, color) %}
-	{% import _self as basic %}
-	{% set id = id is iterable ? id : [id] %}
-	{% set ids = [] %}
-	{%  for val in id %}
-		{% set ids = ids|merge([uid(page, val)]) %}
-	{% endfor %}
-	<span data-id="{{ implode(ids) }}" data-widget="status.disable" data-item="{{ item }}" data-val="{{ value|default(1) }}" />
+    {% import _self as basic %}
+    {% set id = id is iterable ? id : [id] %}
+    {% set ids = [] %}
+    {%  for val in id %}
+        {% set ids = ids|merge([uid(page, val)]) %}
+    {% endfor %}
+    <span data-id="{{ implode(ids) }}" data-widget="status.disable" data-item="{{ item }}" data-val="{{ value|default(1) }}" />
 {% endmacro %}
 
 
@@ -114,11 +120,11 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {value(1..50)} maximal number of entries (1 - 50)
 */
 {% macro log(id, item, count) %}
-	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.log" data-item="{{ item }}" data-count="{{ count }}"
-		class="log">
-		<ul data-role="listview">
-		</ul>
-	</span>
+    <span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.log" data-item="{{ item }}" data-count="{{ count }}"
+        class="log">
+        <ul data-role="listview">
+        </ul>
+    </span>
 {% endmacro %}
 
 
@@ -134,17 +140,17 @@ the first one is the base color for values below first threshold, so pass one co
 * @param {text(info,error)=info} the mode: 'info', 'error' (optional, default 'info')
 */
 {% macro message(id, item_trigger, item_message, item_timestamp, title, text, mode) %}
-	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.message" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_timestamp }}"></span>
+    <span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.message" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_timestamp }}"></span>
 
-	<div id="{{ uid(page, id) }}-message" class="alert" data-role="popup" data-overlay-theme="a" {% if mode == 'error' %} data-dismissible="false" {% endif %}>
-		<div data-role="header" data-theme="c"><h1>{{ title }}</h1></div>
-		<p><span></span>{{ text }}</p>
+    <div id="{{ uid(page, id) }}-message" class="alert" data-role="popup" data-overlay-theme="a" {% if mode == 'error' %} data-dismissible="false" {% endif %}>
+        <div data-role="header" data-theme="c"><h1>{{ title }}</h1></div>
+        <p><span></span>{{ text }}</p>
 
-		<div class="control">
-			<span class="stamp"></span>
-				<a onClick="$('#{{ uid(page, id) }}-message').popup('close');" data-mini="true" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
-		</div>
-	</div>
+        <div class="control">
+            <span class="stamp"></span>
+                <a onClick="$('#{{ uid(page, id) }}-message').popup('close');" data-mini="true" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
+        </div>
+    </div>
 {% endmacro %}
 
 
@@ -171,19 +177,19 @@ Caution: If this is set, the notification gets not shown until the item has sent
 * @info enhancements inspired by Frank Benicke
 */
 {% macro notify(id, item_trigger, item_message, signal, title, text, level, item_ack, ack_value, item_signal, item_title, item_level) %}
-	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.notify" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_signal }}, {{ item_title }}, {{ item_level }}"
-		data-signal="{{ signal|default('INFO') }}" data-level="{{ level|default('info') }}"
-		{% if item_ack %}data-item-ack="{{ item_ack }}" data-ack-value="{{ ack_value|default(item_ack == item_trigger ? 0 : 1) }}"{% endif %}
-		data-item-signal="{{ item_signal }}" data-item-title="{{ item_title }}" data-item-level="{{ item_level }}"
-		class="hide"><h1>{{ title }}</h1><p>{{ text }}</p>
-	</span>
+    <span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.notify" data-item="{{ item_trigger }}, {{ item_message }}, {{ item_signal }}, {{ item_title }}, {{ item_level }}"
+        data-signal="{{ signal|default('INFO') }}" data-level="{{ level|default('info') }}"
+        {% if item_ack %}data-item-ack="{{ item_ack }}" data-ack-value="{{ ack_value|default(item_ack == item_trigger ? 0 : 1) }}"{% endif %}
+        data-item-signal="{{ item_signal }}" data-item-title="{{ item_title }}" data-item-level="{{ item_level }}"
+        class="hide"><h1>{{ title }}</h1><p>{{ text }}</p>
+    </span>
 {% endmacro %}
 
 
 /**
 * Displays a notification toast
-* 
-* @param {id=} unique id for this widget(optional)  If set, id is also used as class name for the dynamic toast and can be used for css styling.  
+*
+* @param {id=} unique id for this widget(optional)  If set, id is also used as class name for the dynamic toast and can be used for css styling.
 * @param {item(bool)} a trigger item (true to open, false to close)
 * @param {item(str)=} an item containing the title(optional)
 * @param {item(str)=} an item containing content (optional)
@@ -204,18 +210,18 @@ Caution: If this is set, the notification gets not shown until the item has sent
 * @param {text=5} number of stacked toasts. 'false' to show one stack at a time / count showing the number of stacked toasts (optional, default = '5')
 * @param {text(left,center,right)=left} Alignment of text in the toast i.e. left, right, center (optional, default = 'left')
 * @param {text=} Toast position on display (optional, bottom-left, bottom-right, top-left, top-right....) (optional, default = 'bottom-left')
-* 
-* @author bonze 
+*
+* @author bonze
 */
 {% macro toast(id, item_trigger, item_title, item_content, item_icon, text_title, text_content, text_icon, param_template, item_button, text_button, value_button, param_allowclose, param_hideafter, param_showhide, param_showloader, param_color, param_bgColor, param_stack, param_align, param_position ) %}
 
-	<span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.toast" 
-		data-item="{{ item_trigger }}, {{ item_title }}, {{ item_content }}, {{ item_icon  }}"
-		data-textopts="{{ text_title }}, {{ text_content | default('')}}, {{ text_icon | default('') }}" 
-		data-buttonopts="{{ text_button |  default('') }}, {{ item_button | default('') }}, {{ value_button | default('0') }}"
-		data-template="{{param_template | default('free')}}" 
-		data-style="{{param_bgColor | default('gray')}}, {{param_color | default('#9EC600')}},{{param_loaderbg | default('#eee')}},{{param_align | default('left')}},{{param_position | default('bottom-left')}},{{param_stack | default('5')}},{{param_showloader | default('true')}},{{param_hideafter | default('5000')}},{{param_allowclose | default('true')}},{{param_showhide | default('slide')}}" 
-		>
-	
-	</span>
+    <span {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="status.toast"
+        data-item="{{ item_trigger }}, {{ item_title }}, {{ item_content }}, {{ item_icon  }}"
+        data-textopts="{{ text_title }}, {{ text_content | default('')}}, {{ text_icon | default('') }}"
+        data-buttonopts="{{ text_button |  default('') }}, {{ item_button | default('') }}, {{ value_button | default('0') }}"
+        data-template="{{param_template | default('free')}}"
+        data-style="{{param_bgColor | default('gray')}}, {{param_color | default('#9EC600')}},{{param_loaderbg | default('#eee')}},{{param_align | default('left')}},{{param_position | default('bottom-left')}},{{param_stack | default('5')}},{{param_showloader | default('true')}},{{param_hideafter | default('5000')}},{{param_allowclose | default('true')}},{{param_showhide | default('slide')}}" 
+        >
+
+    </span>
 {% endmacro %}

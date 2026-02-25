@@ -77,7 +77,9 @@ $.widget("sv.status_customstyle", $.sv.widget, {
     options: {
         id: null,
         val: '',
-        action: 'blink'
+        action: 'blink',
+        valuetype: '',
+        repeat: null
     },
 
     _update: function(response) {
@@ -85,6 +87,7 @@ $.widget("sv.status_customstyle", $.sv.widget, {
         var targets = this.options.id.explode();
         var comp = String(this.options.val).explode();
         var styleActive = false;
+        this.memResponse = response;
 
         // https://stackoverflow.com/questions/7356123/how-to-call-and-execute-an-operator-from-string
         var operators = {
@@ -97,13 +100,17 @@ $.widget("sv.status_customstyle", $.sv.widget, {
 
         for (var i = 0; i < comp.length; i++){
             var compValue = comp[i].replace(/[<=>]+/, '');
-            var compOperator = $.isNumeric(compValue)? comp[i].replace(/[0-9\.]+/, '') || "=" : "=";
+            var compOperator = $.isNumeric(compValue)? comp[i].replace(/[0-9\.]+/, '') || "=" : this.options.valuetype.toLowerCase() == 'duration' ? comp[i].replace(/[0-9sihdmy\.]+/, '') || "=": "=";
             // DEBUG: console.log(comp[i], String(response[0]), compOperator, compValue, operators[compOperator](response[0], compValue ))
-            styleActive = styleActive || operators[compOperator](response[0], compValue );
+            if (this.options.valuetype.toLowerCase() == 'duration')
+                styleActive = styleActive || operators[compOperator](new Date() - new Date(response[0]), new Date().duration(compValue).valueOf() );
+            else
+                styleActive = styleActive || operators[compOperator](response[0], compValue );
         }
 
         for (var i = 0; i < targets.length; i++) {
             var target = $('#' + targets[i]);
+            var activeTooltip = target.attr('data-tip');
             if (styleActive)  {
                 //DEBUG: console.log('target found', target, this.options.action)
                 target.addClass(this.options.action);
@@ -121,6 +128,11 @@ $.widget("sv.status_customstyle", $.sv.widget, {
             }
         }
     },
+    
+    _repeat: function() {
+        if (this.memResponse != undefined)
+            this._update(this.memResponse);
+    }
 
 });
 
