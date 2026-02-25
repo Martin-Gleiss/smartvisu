@@ -3,6 +3,7 @@
 - plot.period data sources (item / database) can now be mixed, i.e. specified individually for each item
 - widgets for absolute positioning in example3.graphic (ovbasic.html, ovdevice.html) updated to provide functionality identical to the corresponding standard widgets
 - empty title is now allowed in device.uzsugraph and is the new default. (Default was "UZSU" before in order to occupy the space above the graph for the layout.)
+- status.customstyle has got a new option to compare elapsed time after a timestamp given by an item - e.g. to show timeouts on widgets which don't receive sensor updates any more
 
 ### Other New Features
 - German "Kurzanleitung" v2.5 is now integrated in the pages dircectory
